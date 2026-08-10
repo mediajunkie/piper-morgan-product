@@ -1597,3 +1597,48 @@ WHAT WAS MEASURED (three iterations, each falsified by the next):
 STILL TRUE AND UNCHANGED: the never-glob-the-inbox rule (adopted cohort-wide by CIO) is the actual control.
   It prevents the failure. What I could not build is the DETECTOR for the failure — those are different
   things, and I said I'd deliver the second.
+
+---
+2026-08-10 06:5x PT — Arch — FLOOR-HONESTY CONTRACT (#1517) SPECCED. Two findings; the contract is ONE PROPERTY, not a sixth guard.
+
+OWED FROM the 08-09 inversion ruling (decision ③, taken and ruled DECOUPLED: #1517 is a trust/safety defect
+  that reproduces however routing got there; coupling it to a month-long rebuild leaves a live honesty
+  defect waiting on an architecture bet). Spec at
+  docs/internal/architecture/current/floor-honesty-contract-1517-spec.md — 🟡 NOT RATIFIED, trust lens owed
+  to CXO/HOST.
+
+FINDING 1 — HALF OF #1517 IS ALREADY BUILT, AND THE BUILT HALF STRUCTURALLY CANNOT REACH THE OTHER.
+  ✅ "denies a registered capability": wired_chat_actions() feeds the floor manifest
+     (conversational_floor.py:243-251); test_floor_capability_honesty_1517.py asserts DISJOINT from
+     UNWIRED_WRITE_DECLINES, 13 tests.
+  ❌ "fabricates a retraction" ('the 3pm one wasn't saved' while it WAS in the DB): NO TEST ANYWHERE.
+  ⚠️ A MANIFEST ANSWERS "CAN I DO X?" IT CANNOT ANSWER "DID X HAPPEN?" — and "wasn't saved" is a claim about
+  STATE, not capability. Checked before speccing, having twice this week ruled on things already built.
+
+FINDING 2 — 🔴 THE COHORT HAS SOLVED FABRICATION FIVE TIMES, EACH PER-SURFACE, NONE GENERAL:
+  test_real_plugins_do_not_fabricate_configured (plugins) · test_global_credential_write_admin_1485 (my own
+  #1484 "wasn't saved" contract) · test_places_1192 ("I see…" a nonexistent connection) ·
+  test_todos_put_real_repo_1548 (unconfirmed success payload) · test_file_search_simulation_guard_1436
+  (simulated hits blended with real). #1517 IS THE SIXTH INSTANCE OF ONE CLASS AND A SIXTH BESPOKE GUARD IS
+  THE WRONG RESPONSE.
+  ⭐ CXO's sentence from the #1536 thread is the principle and transfers exactly: "A CRITERION SATISFIABLE BY
+  INVENTION PASSES CONFIDENTLY — WHICH IS WORSE THAN ONE THAT FAILS." A denial satisfiable by invention is
+  emitted confidently; the user cannot tell it from a true one.
+
+THE CONTRACT: ⭐ AN ASSERTION ABOUT SYSTEM STATE REQUIRES A READ OF THAT STATE. FABRICATION IS
+  ASSERTING-WITHOUT-READING. Three obligations: H1 no unread state claims (the honest form is an offer to
+  look, not a verdict) · H2 no retraction of a recorded success (#1517's literal incident) · H3 no denial of
+  a registered capability (already built; folded in for completeness).
+  ⚠️ EXPLICITLY NOT REQUIRED: reading state every turn. The obligation is not to ASSERT what you have not
+  read — silence and "let me check" both satisfy it. Stated because the expensive misreading is "query the
+  DB before every reply."
+  ENFORCEMENT AT THE SEAM, ⛔ NOT A PHRASE LIST (the five fabrications share no vocabulary;
+  test_no_banned_robot_script_phrases is right for VOICE and wrong for this): a TYPED CARRIER so a state
+  claim with no read is UNRENDERABLE · JUDGE-EVALUATED CORPUS CASES with #1517's transcript verbatim as case
+  1 · a DENOMINATOR GUARD modelled on the plugins check, which already carries one — a fabrication check
+  that scans nothing reports the same clean as one that scanned everything.
+  NOT DECIDED BY ARCH: the carrier's shape; whether the other five migrate (they work — would not gate
+  #1517 on it); the user-facing wording (CXO's lane — the spec specifies the PROPERTY, not the COPY).
+  ROUTED TO CXO/HOST as a product judgment, not architectural: H1's honest form is "I don't know, let me
+  look" — is there a threshold past which "I don't know" is its own trust cost, and does that argue for the
+  floor READING more often rather than ASSERTING less? Arch's view: read more often.
