@@ -23,7 +23,19 @@ PM-attention items live **here**, in the section immediately below.
   in production?), **retention practice** (none exists in code), **contact address**.
 - 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a
   claim, not metadata.
-- 🟡 **Architecture diagram** — redrawn at your request, still awaiting a time to discuss. No urgency named.
+- 🟢 **Architecture diagram — REVISION 1 SHIPPED 08-10**, direct conversation with PM. Corrected the
+  surface-primacy error (08-01 diagram wrongly said web was "largely deleted"/"no first screen we own" —
+  contradicts PM's own 08-08 correction; flagged as a plausible SOURCE of the withdrawn "which surface
+  survives" sort key, not asserted as proven). Artifact:
+  https://claude.ai/code/artifact/3cfc6edf-6757-415e-8487-955d496548c5 · source
+  `dev/active/pdr-006-architecture-2026-08-10-rev1.html` (08-01 original untouched — cited across this
+  week's mail archive). **PM is reviewing and will return with notes — pace is PM's, don't chase.**
+  ⭐ **Open question PM raised, unresolved, mine to keep live**: when a user's own LLM client already has
+  an independent MCP connector to a service Piper also connects to, does it matter which one supplies the
+  data? **My answer (given, not yet re-confirmed by PM): yes** — (1) only data through Piper's own server
+  composts into the colleague model, (2) only Piper's connectors sit inside the identity/consent boundary,
+  (3) two tools for one job is the alias-collision problem across providers. **No existing doc addresses
+  this** (checked PDR-006 + ADR-070; ADR-070's BYOC is the opposite direction — Piper as client).
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
