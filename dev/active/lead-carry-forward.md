@@ -10,7 +10,7 @@
 - Post-deploy verdicts on the 12 amber rows.
 
 ## Next build queue (unblocked, in order)
-1. **Inversion Phase 1** — the ONLY substantial unstarted MVP work besides #1190. Quality-banked to a FRESH SESSION (explicit trigger, named): conditions per Arch (per-category corpus gate incl. #1559's two PM verbatims, registry-derived grammar, AGREE-rows narrowing w/ probe-row citations). Effect enum + rail hygiene (#1560) land first — both done/in-flight.
+1. **Inversion Phase 1** — the ONLY substantial unstarted MVP work besides #1190. Quality-banked to a FRESH SESSION (explicit trigger, named): conditions per Arch (per-category corpus gate incl. #1559's two PM verbatims, registry-derived grammar, AGREE-rows narrowing w/ probe-row citations). Effect enum + rail hygiene (#1560) DONE. **NEW (Arch 08-10): when the judge corpus stands up, include the five-fabrication-class cases (floor-honesty contract spec, 1517) — one instrument, not two.**
 2. #1423/#1522 tails (silent-death un-swallow; false-trails cleanup).
 3. #1190 — blocked on PM's close/reopen DESTRUCTIVE word (question on the issue).
 4. #1553 F6-F10 (Production/PUB).
