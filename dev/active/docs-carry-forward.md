@@ -13,32 +13,25 @@ stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
 
-## 🟠 ACTIVE — Weekly Docs Audit #1583, 6 of 8 sections done, 2 remain — pick up next fire
+## ✅ RESOLVED 2026-08-10 — Weekly Docs Audit #1583, CLOSED
 
-**All 3 background subagents landed and were consolidated this fire** (verified each factual claim before
-acting — caught nothing wrong this time, but the discipline is what makes that trustworthy). Real fixes
-shipped: CITATIONS.md Serena attribution (`32d6cba9b`), NAVIGATION.md/INDEX.md methodology-43-47 gap
-(`34457f82f`), duplicate draft removed (`06209210d`). Two tracking issues filed for what's too large for
-one sitting: **#1584** (~240 broken links, 2 methodology cross-ref drifts) and **#1585** (11 stale
-current-state docs, 6 duplicate-file clusters).
+Full 2-fire audit, all 8 sections genuinely completed (not token-checked) — first fully-worked weekly
+audit + first confirmed real fire of the nudged cron. Closed via `close-issue-properly` in the correct
+order (body checkboxes first, then comment, then close), verified the close actually landed
+(`gh issue view --json state,stateReason`).
 
-**Completion Matrix state** (posted to #1583, both progress comments):
-- ✅ Briefing Freshness, Link Integrity, Omnibus Coverage, GitHub Issues Sync, Quality Checks (both READMEs)
-- ⏳ **Sprint & Roadmap Alignment** — checked, roadmap.md is PPM's actively-maintained artifact (4 days
-  old), marked verified-current rather than edited (not my lane) — arguably done, but worth a final look
-  next fire before checking the box.
-- ⏳ **Pattern & Knowledge Capture** — pattern-count sub-check done (no real discrepancy). Session-log
-  pattern-mining sub-item NOT started — this is the one genuinely open piece of audit work.
-- ⏳ **Staggered-audit-calendar update** — final closing step, blocked on everything else finishing.
-
-**Next fire, in order**: (1) do the session-log pattern-mining pass, (2) confirm Sprint/Roadmap can be
-checked off, (3) update `docs/internal/operations/staggered-audit-calendar-2026.md`, (4) fill the final
-Completion Matrix and close #1583 via `close-issue-properly`. Do NOT close early — Pattern-046 (no silent
-skipping) applies to the checklist's own gate.
+**Shipped**: CITATIONS.md Serena attribution (`32d6cba9b`), NAVIGATION.md/INDEX.md methodology-43-47 gap
+(`34457f82f`), duplicate draft removed (`06209210d`), staggered-audit-calendar updated (`3132faf7d`).
+**Filed**: #1584 (~240 broken links, 2 methodology cross-ref drifts), #1585 (11 stale current-state docs,
+6 duplicate-file clusters). Both are the checklist's own "create issue for complex cases" procedure, not
+a deferral.
 
 **New PM item, not urgent**: root README.md's MIT license badge has **no LICENSE file anywhere in repo
-history** (verified via `find` + `git log --all`) — needs PM's call (add LICENSE vs. adjust badge), added
-below in "Awaiting PM specifically."
+history** (verified via `find` + `git log --all`) — needs PM's call (add LICENSE vs. adjust badge), see
+"Awaiting PM specifically" below.
+
+**Next Monday (08-17)**: same trigger check applies — verify `weekly-docs-audit.yml` fired, work the
+resulting issue with the same rigor. This audit is now the template for how thorough that should be.
 
 ## 🟡 AWAITING PM (3+ days now) — write up the line-count methodology proposal, or hold?
 
