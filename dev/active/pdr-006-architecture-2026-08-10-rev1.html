@@ -1,0 +1,314 @@
+<title>PDR-006 — Hosted MCP Architecture (rev. 1)</title>
+<style>
+  :root {
+    --paper:#fbfaf8; --ink:#1b1f24; --rule:#d7d3cc; --muted:#6f6a63;
+    --accent:#2f6f6a; --accent-soft:#e3ecea; --risk:#a8432c; --risk-soft:#f6e7e2;
+    --card:#ffffff; --shade:#f3f1ed;
+    --sans: ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+    --serif: Georgia,"Iowan Old Style","Times New Roman",serif;
+    --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#15181b; --ink:#e8e5e0; --rule:#343a3f; --muted:#9a958d;
+      --accent:#6fb5ad; --accent-soft:#1d2a29; --risk:#d98a72; --risk-soft:#2a1d19;
+      --card:#1c2023; --shade:#1a1e21; }
+  }
+  :root[data-theme="dark"] { --paper:#15181b; --ink:#e8e5e0; --rule:#343a3f; --muted:#9a958d;
+    --accent:#6fb5ad; --accent-soft:#1d2a29; --risk:#d98a72; --risk-soft:#2a1d19;
+    --card:#1c2023; --shade:#1a1e21; }
+  :root[data-theme="light"] { --paper:#fbfaf8; --ink:#1b1f24; --rule:#d7d3cc; --muted:#6f6a63;
+    --accent:#2f6f6a; --accent-soft:#e3ecea; --risk:#a8432c; --risk-soft:#f6e7e2;
+    --card:#ffffff; --shade:#f3f1ed; }
+
+  body { background:var(--paper); color:var(--ink); font-family:var(--serif);
+    line-height:1.6; margin:0; padding:3rem 1.25rem 5rem; }
+  .wrap { max-width:60rem; margin:0 auto; display:flex; flex-direction:column; gap:2.75rem; }
+  .prose { max-width:36rem; }
+  h1,h2,h3,.eyebrow { font-family:var(--sans); text-wrap:balance; }
+  h1 { font-size:2.1rem; line-height:1.15; letter-spacing:-.02em; margin:0 0 .4rem; font-weight:640; }
+  h2 { font-size:1.15rem; letter-spacing:-.01em; margin:0 0 .9rem; font-weight:640;
+    padding-bottom:.5rem; border-bottom:1px solid var(--rule); }
+  h3 { font-size:.94rem; margin:0 0 .35rem; font-weight:640; }
+  .eyebrow { font-size:.7rem; text-transform:uppercase; letter-spacing:.14em;
+    color:var(--muted); font-weight:600; }
+  .lede { font-size:1.04rem; color:var(--muted); margin:.2rem 0 0; }
+  code, .mono { font-family:var(--mono); font-size:.85em; }
+  section { display:flex; flex-direction:column; gap:1rem; }
+
+  /* ---- scope banner ---- */
+  .scope { border:1px solid var(--accent); background:var(--accent-soft); padding:.9rem 1.1rem;
+    display:flex; flex-direction:column; gap:.3rem; }
+  .scope .name { font-family:var(--sans); font-weight:700; font-size:.82rem; color:var(--accent);
+    text-transform:uppercase; letter-spacing:.06em; }
+  .scope .detail { font-size:.88rem; color:var(--ink); }
+
+  /* ---- diagram ---- */
+  .diagram { display:flex; flex-direction:column; gap:0; }
+  .tier-label { font-family:var(--sans); font-size:.7rem; text-transform:uppercase;
+    letter-spacing:.14em; color:var(--muted); font-weight:600; margin-bottom:.6rem; }
+  .clients { display:grid; grid-template-columns:repeat(auto-fit,minmax(11rem,1fr)); gap:.75rem; }
+  .node { background:var(--card); border:1px solid var(--rule); padding:.85rem .95rem;
+    display:flex; flex-direction:column; gap:.3rem; }
+  .node .name { font-family:var(--sans); font-weight:640; font-size:.9rem; }
+  .node .detail { font-size:.8rem; color:var(--muted); line-height:1.45; }
+  .caps { display:flex; flex-wrap:wrap; gap:.3rem; margin-top:.2rem; }
+  .cap { font-family:var(--sans); font-size:.63rem; letter-spacing:.04em; padding:.12rem .4rem;
+    border:1px solid var(--rule); color:var(--muted); text-transform:uppercase; }
+  .cap.on { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+  .cap.off { border-style:dashed; text-decoration:line-through; }
+
+  .flow { display:flex; align-items:center; justify-content:center; gap:.6rem;
+    color:var(--muted); font-family:var(--sans); font-size:.72rem; letter-spacing:.06em;
+    text-transform:uppercase; padding:.7rem 0; }
+  .flow::before, .flow::after { content:""; flex:1; height:1px; background:var(--rule); }
+
+  .boundary { border:1px solid var(--risk); background:var(--risk-soft);
+    padding:.9rem 1rem; display:flex; flex-direction:column; gap:.3rem; }
+  .boundary .name { font-family:var(--sans); font-weight:700; font-size:.86rem;
+    color:var(--risk); letter-spacing:.02em; }
+  .boundary .detail { font-size:.83rem; color:var(--ink); }
+
+  .server { background:var(--card); border:1px solid var(--accent); border-top-width:3px; padding:1.1rem; }
+  .server-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(9rem,1fr)); gap:.6rem; margin-top:.7rem; }
+  .chip { border:1px solid var(--rule); padding:.5rem .6rem; font-size:.8rem; background:var(--shade); }
+  .chip b { font-family:var(--sans); font-size:.78rem; display:block; }
+  .chip .sub { display:block; color:var(--muted); font-size:.74rem; margin-top:.15rem; }
+
+  .data { display:grid; grid-template-columns:repeat(auto-fit,minmax(8rem,1fr)); gap:.6rem; }
+
+  /* ---- tables ---- */
+  .scroll { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:.86rem; }
+  th,td { text-align:left; padding:.5rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top; }
+  th { font-family:var(--sans); font-size:.7rem; text-transform:uppercase; letter-spacing:.1em;
+    color:var(--muted); font-weight:600; }
+  td.num { font-variant-numeric:tabular-nums; }
+
+  .note { border-left:2px solid var(--accent); padding:.15rem 0 .15rem .9rem; color:var(--muted); font-size:.9rem; }
+  .note.risk { border-left-color:var(--risk); }
+  .note.good { border-left-color:var(--accent); }
+  .gates { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:.75rem; }
+  .gate { border:1px solid var(--rule); border-left:3px solid var(--risk); padding:.8rem .9rem; background:var(--card); }
+  .gate.closed { border-left-color:var(--accent); }
+  .tag { font-family:var(--sans); font-size:.63rem; letter-spacing:.05em; padding:.1rem .4rem;
+    border:1px solid var(--rule); color:var(--muted); text-transform:uppercase; }
+  .tag.pm { border-color:var(--accent); color:var(--accent); }
+  .tag.open { border-color:var(--risk); color:var(--risk); }
+
+  /* ---- revision log ---- */
+  .rev { display:flex; flex-direction:column; gap:.6rem; }
+  .rev-item { display:grid; grid-template-columns:6.5rem 1fr; gap:.8rem; font-size:.88rem; }
+  .rev-item .k { font-family:var(--sans); font-size:.68rem; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--muted); padding-top:.15rem; }
+
+  footer { color:var(--muted); font-size:.8rem; border-top:1px solid var(--rule); padding-top:1rem; }
+  a { color:var(--accent); }
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">PDR-006 · Ratified 2026-07-31 · Diagram revision 1 of 2026-08-01</p>
+  <h1>Hosted MCP endpoint &amp; plugin distribution</h1>
+  <p class="lede">Piper's server holds tools, connectors and persisted context. The client's model does
+  the reasoning — and composes what the user actually reads.</p>
+</header>
+
+<section>
+  <div class="scope">
+    <span class="name">Scope of this page</span>
+    <span class="detail">This is one surface's architecture — <strong>chat hosts reached through the
+    plugin + hosted MCP endpoint</strong> — not the architecture of Piper. Web, Slack, phone and CLI have
+    their own jobs and are not drawn here because they don't route through this endpoint, not because
+    they've gone away. <a href="#surfaces">Why that distinction is the point of this revision ↓</a></span>
+  </div>
+</section>
+
+<section>
+  <h2>The architecture</h2>
+
+  <div class="diagram">
+    <p class="tier-label">Client surfaces — the user's own subscription, not ours</p>
+    <div class="clients">
+      <div class="node">
+        <span class="name">Claude — Chat &amp; web</span>
+        <span class="detail">Plugin installs on all paid plans.</span>
+        <span class="caps"><i class="cap on">skills</i><i class="cap on">connectors</i><i class="cap on">mcp</i><i class="cap off">hooks</i></span>
+      </div>
+      <div class="node">
+        <span class="name">Claude — Cowork &amp; Code</span>
+        <span class="detail">Full plugin package, hooks included.</span>
+        <span class="caps"><i class="cap on">skills</i><i class="cap on">connectors</i><i class="cap on">mcp</i><i class="cap on">hooks</i></span>
+      </div>
+      <div class="node">
+        <span class="name">ChatGPT</span>
+        <span class="detail">User pastes the MCP URL and adds skills manually. We are a URL they point at.</span>
+        <span class="caps"><i class="cap on">mcp</i><i class="cap">skills (manual)</i></span>
+      </div>
+    </div>
+
+    <div class="flow">tool call ↓ &nbsp;·&nbsp; ↑ tool result, recomposed by their model</div>
+
+    <div class="boundary">
+      <span class="name">Caller-identity boundary — fail closed</span>
+      <span class="detail">Every call resolves to an <code>owner_id</code> <em>before</em> touching server
+      state. No identity, no read. Never default to a system or anonymous owner.
+      <strong>All ADR-079 owner-scoping sits downstream of this line</strong> — a handler reached with a
+      caller-chosen identity produces a read that looks correctly scoped while the owner is the forged
+      thing, and the derived lint cannot see it. <span class="tag pm">carrier confirmed</span> a plugin's
+      <code>headersHelper</code> supplies dynamic per-request auth headers — the boundary has a named
+      transport now, not just a requirement.</span>
+    </div>
+
+    <div class="server">
+      <p class="tier-label" style="margin:0">mcp.pipermorgan.ai — a pure tool server, no server-side LLM</p>
+      <div class="server-grid">
+        <div class="chip"><b>Tool catalog</b>derived from the registry, not hand-kept
+          <span class="sub">~38 canonical actions, not the 100+ classifier aliases — see note below</span></div>
+        <div class="chip"><b>Effect declared, not inferred</b>every action states READ / WRITE / DESTRUCTIVE
+          <span class="sub">required field, no default — added since the July draft</span></div>
+        <div class="chip"><b>Resources</b>reads: profile, preferences, composted insight</div>
+        <div class="chip"><b>Tools</b>writes: mutating <code>update_*</code> calls</div>
+        <div class="chip"><b>Connectors</b>GitHub · Notion · Slack · Calendar</div>
+      </div>
+    </div>
+
+    <div class="flow">owner-scoped access</div>
+
+    <div class="data">
+      <div class="chip"><b>PostgreSQL</b>conversations, MUX state</div>
+      <div class="chip"><b>Redis</b>cache &amp; session</div>
+      <div class="chip"><b>Vector store</b>retrieval</div>
+      <div class="chip"><b>Keychain</b>OAuth tokens</div>
+    </div>
+  </div>
+  <p class="note">The endpoint itself does not exist yet — <code>services/mcp/server/</code> is absent from
+  <code>main</code> and the deployed artifact alike (checked directly, not inferred). Everything above is
+  the design the code will implement, not a description of a running system.</p>
+</section>
+
+<section id="surfaces">
+  <h2>What was wrong in the July/August-1 diagram — and why it mattered beyond this document</h2>
+  <div class="prose">
+    <p>The 08-01 revision said the web client was <em>"largely deleted by the pivot"</em> and that under
+    this model <em>"there is no first screen we own."</em> <strong>That was wrong, not simplified</strong>
+    — and PM has since named the general shape of the error directly:</p>
+    <blockquote class="note" style="font-style:italic">"The fundamental idea of the modeled user experience
+    is that it is not specific to any one surface. It's a holistic user experience, which is expressed on
+    each surface as appropriate… I have never said that we are abandoning any one of those services."
+    <span style="display:block;font-style:normal;margin-top:.3rem;color:var(--ink)">— PM, 2026-08-08, quoted
+    in <code>docs/internal/design/experience-across-surfaces.md</code></span></blockquote>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>08-01 diagram said</th><th>Corrected</th></tr></thead>
+      <tbody>
+        <tr><td>Web client <strong>largely deleted</strong>; <strong>no first screen we own</strong>.</td>
+            <td>Web wasn't deleted. Per PDR-005 it was never the <strong>primary distribution
+            channel</strong> — a sequencing decision, not an existence claim. Its actual job:
+            conversations · radar · settings — the one surface where <em>the shape of what's moving</em>
+            is visible at all. <span class="tag pm">PM's own words</span></td></tr>
+        <tr><td><em>(unstated)</em> — the diagram implied "MCP-plugin" described the whole product.</td>
+            <td><strong>It described one surface's route in.</strong> Chat hosts get skills + MCP; Slack
+            is a channel bot, not a second web UI; phone is notifications only; CLI is still maintained.
+            Same knowledge, different expression per surface — never a different product.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note risk">Why this is worth more than a wording fix: PPM independently built a fix-list sort
+  key on <em>"which surface survives PDR-006,"</em> PM ratified it in good faith, and it was withdrawn
+  three days later as a false question with no referent. <strong>This diagram is a plausible source of
+  that framing</strong> — it's the artifact that first drew "no first screen we own" as settled fact, nine
+  days before the correction. Flagging rather than assuming no connection, since I can't rule it out and
+  the cost of the wrong framing was real cohort time.</p>
+</section>
+
+<section>
+  <h2>The consequence worth sitting with — narrowed to where it actually applies</h2>
+  <div class="prose">
+    <p>Our first alpha tester's verdict was <em>"just an LLM with extra UI."</em> <strong>On the chat-host
+    surface specifically</strong>, that becomes true by design — it <em>is</em> their model, plus our
+    tools, because we don't control that surface's rendering. <strong>This does not generalise to Piper as
+    a whole</strong>: web has radar and a UI we do control; that's the surface where "extra UI" isn't the
+    complaint, because there the interface is ours to make good.</p>
+    <p class="note risk">We have never tested whether our honesty survives recomposition by a model we
+    don't control. That risk is real and unchanged since July — see the gate below, which now has actual
+    evidence rather than just the concern.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Ratified ≠ shippable</h2>
+  <div class="gates">
+    <div class="gate">
+      <h3>#1458 — cross-caller state isolation <span class="tag open">open</span></h3>
+      <p style="margin:.2rem 0 0;font-size:.86rem;color:var(--muted)">Redis, in-process floor/context
+      state, and rate-limiting were never traced. The question moved from "can an anonymous caller see
+      state" to <strong>"can caller A see caller B's"</strong> — strictly harder. Blocks multi-tenant serving.
+      Unchanged since July; no new evidence either direction.</p>
+    </div>
+    <div class="gate">
+      <h3>#1463 — verification rubric branch <span class="tag open">open, with new evidence</span></h3>
+      <p style="margin:.2rem 0 0;font-size:.86rem;color:var(--muted)">No existing rubric fits a surface
+      where the client's model writes the user-visible reply. <strong>Probe A ran since July</strong>:
+      refusals survive as failure-shaped payloads, 6/6 across both Claude and GPT — structured fields help
+      but are <strong>not sufficient on GPT</strong>. API-layer only; a deployed-host retest is still
+      pending, and it's blocked on the endpoint above not existing yet, not on anything ops-side.</p>
+    </div>
+  </div>
+  <p class="note">Corrected since July: <code>mcp.pipermorgan.ai</code> is still not deployed (the server
+  package is unbuilt, not merely undeployed). The privacy-policy line was wrong outright — a page exists
+  at <code>pipermorgan.ai/privacy</code> and returns 200. What's actually open: whether its content is
+  substantive (server-rendered text is 29 characters; can't confirm from an agent seat whether a browser
+  renders more) and three unresolved items — sub-processor completeness, retention practice, contact
+  address. A directory listing still needs domain-ownership verification either way.</p>
+</section>
+
+<section>
+  <h2>One distinction that keeps getting collapsed</h2>
+  <div class="prose">
+    <p><code>services/mcp/consumer/</code> is Piper as an MCP <strong>client</strong>, calling out to
+    other people's servers. <code>mcp.pipermorgan.ai</code> is Piper as an MCP <strong>server</strong>,
+    being called in. Opposite directions.</p>
+    <p>A live consumer family — CORE-MCP-MIGRATION #198 — precedents <em>nothing</em> about the server
+    side, which is where the identity risk above actually lives.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Revision notes — flagged for your review, not resolved by me</h2>
+  <div class="rev">
+    <div class="rev-item"><span class="k">Corrected</span><span>The "no first screen we own" framing and
+    the web-deletion claim — both factually wrong per PM's 08-08 correction, not merely dated.</span></div>
+    <div class="rev-item"><span class="k">Added</span><span>Explicit scope banner, so this page can't be
+    read as "the architecture" again. Everything drawn here is the chat-host/plugin route specifically.</span></div>
+    <div class="rev-item"><span class="k">Added</span><span>Tool-catalog specificity — ~38 canonical
+    actions vs. 100+ classifier aliases, and the required, defaultless <code>effect</code> field — both
+    shipped this week, neither existed at the July draft.</span></div>
+    <div class="rev-item"><span class="k">Added</span><span>Remote-MCP transport confirmation
+    (<code>headersHelper</code>) as the caller-identity boundary's actual carrier, resolving a gap that
+    was open at drawing time.</span></div>
+    <div class="rev-item"><span class="k">Updated</span><span>#1463's gate card now carries Probe A's
+    actual result instead of just the concern that motivated running it.</span></div>
+    <div class="rev-item"><span class="k">Corrected</span><span>The privacy-policy line — it asserted "no
+    policy exists," which was checked from the repo, not the live site. A page exists; what's open is
+    narrower than the diagram claimed.</span></div>
+    <div class="rev-item"><span class="k">Untouched</span><span>#1458's gate, the client/server MCP
+    distinction, and the core diagram's boundary/server/data tiers — re-checked, still accurate, no
+    changes made for the sake of making changes.</span></div>
+    <div class="rev-item"><span class="k">Not my call</span><span>Whether this diagram should exist at all
+    as a standalone artifact once <code>experience-across-surfaces.md</code> is ratified, or whether it
+    should be folded in as that page's "chat hosts" row expanded. Flagging rather than deciding.</span></div>
+  </div>
+</section>
+
+<footer>
+  Drawn 1 August 2026 for PDR-006, ratified 31 July. <strong>Revision 1: 10 August 2026</strong>, correcting
+  the surface-primacy framing per PM's 08-08 clarification and updating the two gates with what's shipped
+  or measured since. Not yet reviewed by Architect, CXO, or PPM — PM asked for this pass first.
+  Source kept in-repo: <span class="mono">dev/active/pdr-006-architecture-2026-08-10-rev1.html</span>.
+  The 08-01 version stays in git unmodified — it's cited across this week's mail archive and shouldn't move
+  out from under those citations.
+</footer>
+
+</div>
