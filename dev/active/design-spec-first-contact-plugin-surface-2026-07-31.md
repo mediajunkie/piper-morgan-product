@@ -269,39 +269,60 @@ pass**, and neither tells you anything about the product.*
 
 All items assume a **cold account with one connector authorized**, in a real client session.
 
-### 7a. Gate criterion — closeable today, against a running build
+### 7a. Gate criterion — RULED 2026-08-10, the converged three
 
-1. The first Piper tool invocation returns content naming **at least one real entity from the user's
-   own data**.
-2. The user-visible reply contains **no request for scope** before that reading.
-3. The reply carries **an offer or an opinion**, not only a status.
+> ✅ **SETTLED.** PM ruled **#1536 → MVP + Beta Blockers sprint** (Lead relay, 08-10), and its gate criteria
+> are **the converged three** — my two-tier structure + PPM's merge + Arch's H1 clarification. **This
+> section is now that, rather than a proposal about it.** *Supersedes the 08-09/08-10 defect annotations,
+> retained below the line for provenance.*
 
-> 🔴 **DEFECT FOUND 2026-08-09 — DO NOT RATIFY AS WRITTEN. A fourth item is required.**
->
-> Applying PPM's #1536 analysis to this wording: **item 1 is AC1; item 3 is *stance*; AC2's property —
-> *only Piper could have produced this* — is genuinely absent.** ⚠️ **Stance is not a substitute for
-> provenance**: *"You have 12 open issues; that's a lot"* carries an opinion and could have been produced
-> by anything with read access. **This criterion passes it**, which is the echo case #1536 exists to
-> answer — *"an LLM with extra UI."*
->
-> **Why AC2 isn't here, which constrains the fix**: §7a's constraint is *binary and checkable now*, and
-> *"only Piper could produce it"* is a **judgment**. Importing it verbatim would break the property that
-> makes §7a a gate rather than an opinion. **What's needed is AC2's binary shadow.**
->
-> ⚠️ **REVISED 2026-08-10 — DO NOT ADD ITEM 4 AS A LOCAL CHECK.** PPM's fix to it (*verifiable against
-> the connected source*) turned out to be **the same predicate** that fixes #1536's AC3 — and Arch
-> documented the same morning that we have built **five per-surface fabrication guards and never
-> generalised** (plugins · #1484 credential route · places · todos · file search). **A property re-derived
-> per surface wants one home.** ⛔ **So AC3's gate item should CITE the general fabrication contract
-> (`floor-honesty-contract-1517-spec.md`, Arch, 🟡 unratified), not restate it here.** *One predicate
-> closing two holes in two documents is not elegance — it's the signal it belongs in neither.*
->
-> **Superseded proposal, kept for the record — with PM:** *The content includes at least one entity attribute that could not have
-> been derived from the user's message alone* — a title, state, timestamp or link Piper had to fetch.
-> **Mechanical, can fail, kills the echo case.** ⚠️ **Weaker than AC2** (it proves a *fetch*, not
-> *uniqueness*) — **a weaker binary that can fail beats a stronger judgment that can't.**
+**All items assume a cold account with one connector authorized, in a real client session.**
 
-**Binary, and every one is checkable now.** This is the wording proposed as canonical (see §7c).
+| # | Gate item | Tier | Carrier |
+|---|---|---|---|
+| **1** | The user's own data appears in the **first exchange, unprompted** — the first tool invocation returns content naming at least one **real entity** from it | 🚪 **GATE** | binary as written |
+| **2** | **No fabricated entities.** A named entity is a claim about stored state | 🚪 **GATE — by CITATION** | ⚠️ cites **H1** of `floor-honesty-contract-1517-spec.md` (Arch, 🟡 unratified). **Do not restate the predicate here** — five per-surface fabrication guards already exist and were never generalised |
+| **3** | What is shown is **something only Piper could produce** | 📋 **§7b conformance** | a **judgment** — reviewed for *done*, **never gated**. It cannot fail cleanly, and a gate item that can't fail isn't one |
+
+⚠️ **`AC4` ("works from the first session, not after warm-up") is DELETED, not placed** — PPM: it is
+entailed by item 1, which already says *cold account* and *first exchange*. **Three items, not four.**
+
+#### ⚠️ Two items from my original §7a that the converged three do NOT contain — decision owed
+
+**These were mine, are not in #1536, and I am not going to let them vanish in a restructure or survive one
+by inertia:**
+
+- **(i)** the reply contains **no request for scope** before that reading
+- **(ii)** the reply carries **an offer or an opinion**, not only a status
+
+**Both are real properties and neither is a fabrication or provenance concern.** ✏️ **My read: (i) is a
+gate item** — it is binary, checkable, and it is the *"five-field demand"* Jake actually hit. **(ii) is
+stance and belongs in §7b** beside item 3. ⛔ **Flagged rather than decided** — with PM and PPM.
+
+---
+
+*Provenance — the superseded annotations, kept because the reasoning is the record:*
+
+<details><summary>08-09/08-10 defect trail</summary>
+
+**08-09**: applying PPM's #1536 analysis found item 1 = AC1, item 3 = *stance*, and **AC2's provenance
+property genuinely absent** — *"You have 12 open issues; that's a lot"* carries an opinion and could come
+from anything with read access. **Why AC2 wasn't here**: §7a's constraint is *binary and checkable now*,
+and *"only Piper could produce it"* is a judgment; importing it verbatim would break the property that
+makes §7a a gate. **A binary gate's design constraint can select against its own purpose.**
+
+**08-10**: the proposed binary shadow (*an attribute that could not have been derived from the user's
+message alone*) had a fabrication hole (PPM), and its fix — *verifiable against the connected source* —
+turned out to be **the same predicate** that fixes AC3. **Arch, same morning: five per-surface fabrication
+guards, never generalised.** ⭐ **One predicate closing two holes in two documents is not elegance — it's
+the signal it belongs in neither.** Hence citation, not restatement.
+
+**Also 08-10, Arch's boundary**: the *storefront tense* finding (*"knows your work"* is a state a cold
+account lacks) is **NOT H1** — H1 governs a system asserting a fact it did not read; copy performs no read.
+**Its failure is tense and audience.** *Test: if the enforcement doesn't transfer, the contract doesn't
+either.*
+
+</details>
 
 ### 7b. Spec conformance — required for *done*, beyond the gate
 
