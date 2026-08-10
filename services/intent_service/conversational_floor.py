@@ -864,6 +864,15 @@ class ConversationalFloor:
                     else:
                         lines.append(f"- Pending todo: {text}")
 
+        # #1573 (#1425 honesty): the pending-todos lookup FAILED — todos may
+        # exist. Say we couldn't check; NEVER present this as "no todos".
+        if domain_context.get("pending_todos_source_failed"):
+            lines.append(
+                "- Todo check FAILED: could not load the user's pending todos "
+                "just now. If todos come up, say you couldn't check them — do "
+                "not claim there are none."
+            )
+
         if "completed_todos" in domain_context:
             completed = domain_context["completed_todos"]
             if isinstance(completed, list) and completed:
