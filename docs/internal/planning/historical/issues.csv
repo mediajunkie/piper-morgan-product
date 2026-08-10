@@ -1,0 +1,94 @@
+issue_number,issue_title,status
+166,BUG: Web UI Regression Debugging - Post-Personality Enhancement,Open
+168,STANDUP-REGRESS: Time formatting and GitHub activity broken after UX-105,Closed
+167,OPS-TEST: Review regression testing for gaps,Open
+105,UX-PIPER: Response Personality Enhancement,Open
+153,INFR-AGENT: Research and optimize Code Agent permissions to match Cursor efficiency,Open
+155,OPS-STAND: Make performance metrics human-readable,Closed
+157,FLY-AUDIT: Weekly Docs Audit - 2025-09-08,Open
+165,CORE-NOTN: Upgrade Notion database API,Open
+164,"INFR-DOCS: Refactor 2,703-line pattern catalog into structured directory",Open
+163,BUG: Standup GitHub token regression after Docker restart + mock removal,Closed
+158,OPS-STAND: Remove mock data fallbacks that hide integration failures,Closed
+144,FLY-AUDIT: Weekly Docs Audit - 2025-09-01,Closed
+162,OPS-STAND: Surface the sophisticated multi-modal generation system,Open
+161,OPS-STAND: Implement real Slack reminder integration,Open
+160,OPS-STAND: Transform standup from generator to interactive assistant,Open
+159,OPS-STAND: Create Sprint model for tracking team goals and cadence,Open
+95,UX-FTUX: [Epic] Standup Experience Excellence,Open
+151,OPS-STAND: Fix: Standup web UI shows blank fields that CLI populates correctly,Closed
+149,OPS-STAND-CLI: Morning Standup CLI Investigation & Repair,Closed
+119,OPS-STAND-MVP: Morning Standup Feature Implementation,Open
+146,FLY-IMP: Implement Three-Tier Verification Pyramid,Open
+147,FLY-IMP: Implement Mandatory Handoff Protocol with Verification,Open
+148,FLY-IMP: Extract Configuration Layer from Mandatory Handoff Protocol,Open
+99,CORE-KNOW: Connect Knowledge Graph to Conversation,Open
+57,FEAT-MEET: Transcript Analysis & Visualization,Open
+145,INFR-DATA: Fix asyncio initialization bug in Slack integration causing test failures,Open
+152,"INFR-AGENT: Create session continuity system to prevent ""work amnesia""",Open
+154,UX-DESIGN: Establish design system for consistent UI development,Open
+156,INFR-AGENT: Document and enforce standard environment configurations,Open
+143,FLY-IMP: Establish performance benchmarking framework for configuration system,Open
+142,CORE-NOTN: Fix enhanced validation API connectivity for NotionMCPAdapter,Open
+141,CORE-NOTN: Complete testing and documentation for configuration refactoring,Open
+140,CORE-NOTN: Refactor commands to use configuration instead of hardcoded values,Open
+138,CORE-NOTN: Design user configuration schema for Notion integration,Open
+137,CORE-NOTN: Audit codebase for hardcoded Notion values,Open
+136,CORE-NOTN: Refactor Notion hardcoded values to user configuration,Open
+134,CORE-NOTN: Notion integration for knowledge management workflows,Open
+128,UX-FTUX: Wizard Implementation,Open
+118,INFR-AGENT: Multi-Agent Coordinator Operational Deployment,Open
+115,INFR-DATA: Fix IntentEnricher Dependency Injection Anti-Pattern,Open
+114,INFR-DATA: Remove Legacy DatabasePool Class and Deprecated RepositoryFactory,Open
+113,INFR-DATA: Migrate main.py from DatabasePool to AsyncSessionFactory,Open
+109,CORE-INT: GitHub Legacy Integration Deprecation Strategy,Open
+107,CORE-INT: Learning Integration,Open
+106,FEAT-STRAT: Strategic Recommendations,Open
+96,FEAT-INTENT: Add Conversational Intent Categories,Open
+100,FEAT-PROJ: Project Portfolio Awareness,Open
+101,FEAT-TIME: Temporal Context System,Open
+102,UX-GREET: Calendar Scanning on Greeting,Open
+103,FEAT-PRIOR: Priority Calculation Engine,Open
+150,PM-150: Add Morning Standup API Endpoints to FastAPI Web App,Closed
+129,PM-123: Implement `piper issue create` Command with Verification,Closed
+139,PM-132: Implement Notion configuration loader,Closed
+135,KNOW-001.1: Implement core publish command for markdown to Notion,Closed
+131,Weekly Docs Audit - 2025-08-25,Closed
+133,PM-127: Calendar Integration for Morning Standup,Closed
+132,PM-126: Document Memory Content Implementation,Closed
+127,PM-121: Canonical Query Integration,Closed
+130,DOC-002: README Radical Restructure - Three-Tier Documentation Architecture,Closed
+120,PM-120: Configuration Separation Architecture,Closed
+125,Weekly Docs Audit - 2025-08-23,Closed
+126,PM-120: Configuration Separation Architecture,Closed
+112,Weekly Docs Audit - 2025-08-18,Closed
+124,PM-033e: Enhanced Autonomy Multi-Agent Coordination [RETROACTIVE DOCUMENTATION],Closed
+123,PM-039b: MCP Configuration Migration [RETROACTIVE DOCUMENTATION],Closed
+122,PMP-004: Basic Workflow State Persistence [RETROACTIVE DOCUMENTATION],Closed
+121,PM-020: Bulk Operations Support [RETROACTIVE DOCUMENTATION],Closed
+117,PM-117: Critical Coverage Enhancement - Multi-Agent Coordinator & Excellence Flywheel,Closed
+116,PM-116: Smoke Test Infrastructure - <5 Second Critical Path Testing,Closed
+60,PM-033: MCP Integration Pilot,Closed
+93,PM-033d: MCP Server Mode - Transform Piper to Ecosystem Hub,Closed
+92,PM-033c: Bridge Existing Agents - Slack Services MCP Conversion,Closed
+91,PM-033b: Tool Federation - External Development Tool Integration,Closed
+110,UX-001.13: Mac Dock Integration for One-Click Startup,Closed
+108,"DOC-001: Fix Critical README.md Issues - Broken Links, Outdated Structure, GitHub Pages",Closed
+40,ADR Required: Eliminate Direct Environment Access in FileRepository,Closed
+94,PM-033a: MCP Consumer Foundation - GitHub Integration,Closed
+89,PM-090: Authentication Foundation - JWT-Based Security System,Closed
+90,CRITICAL: Workflow Factory Bug - 100% Failure Rate,Closed
+27,PM-056: Create domain/database schema validator,Closed
+88,PM-089: Error Message Enhancement - User Experience Transformation,Closed
+11,PM-005: User Feedback Tracking,Closed
+59,PM-030: Advanced Knowledge Graph Implementation,Closed
+54,PM-072: README Modernization,Closed
+84,Environment Regression: FastAPI Middleware Import Blocking All Tests,Closed
+79,PM-040: Advanced Knowledge Graph Implementation,Closed
+85,Foundation Repair - Database & Slack Integration Architecture,Closed
+86,PM-088 Phase 2: User Guide Implementation - Complete Conversational AI Documentation,Closed
+83,PM-072-SUB: Modernize Main Repository README,Closed
+38,PM-058: Resolve AsyncPG Connection Pool Concurrency in Test Suite,Closed
+61,PM-034: LLM-Based Intent Classification,Closed
+80,PM-034.1: LLM-Based Intent Classification with Knowledge Graph Context,Closed
+69,PM-079: Refine Slack Workflow Notifications - Reduce Verbosity,Closed
