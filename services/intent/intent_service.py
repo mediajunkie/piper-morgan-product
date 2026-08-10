@@ -12514,6 +12514,40 @@ Content to summarize:
         # Issue #907: Build floor context from available state
         from services.intent_service.conversational_floor import ConversationalFloor, FloorContext
 
+        # #1570: context assembly is floor-ENTRY-independent, not just
+        # category-independent (#1566 one level up). This entry — the
+        # generic-QUERY fall-through, the offer-acceptance fallback, and the
+        # ANALYSIS/SYNTHESIS/STRATEGY/LEARNING fall-throughs — never gathered
+        # ANY domain context, so a data query landing here ("what todos are
+        # pending?" emitted as an unrailed QUERY action, PM live 2026-08-10)
+        # floored with zero user data while the store had rows, and the model
+        # honestly reported seeing none. Gather the same baseline
+        # _handle_floor_with_context would, unless the caller curated its own
+        # context (#1187 summarize). Fail-graceful: a gather failure degrades
+        # to the pre-#1570 contextless floor, never a dead turn.
+        domain_context_provenance: Optional[Dict[str, Dict[str, Any]]] = None
+        if domain_context is None:
+            try:
+                from services.intent_service.context_assembler import ContextAssembler
+
+                assembler = ContextAssembler()
+                domain_context = await assembler.gather_context(
+                    intent_category=(
+                        intent.category.value.upper() if intent.category else "UNKNOWN"
+                    ),
+                    user_id=user_id,
+                    session_id=session_id,
+                    intent_action=intent.action,
+                )
+                domain_context_provenance = assembler.get_last_provenance()
+            except Exception as e:
+                self.logger.warning(
+                    "unknown_intent_context_gather_failed",
+                    error=str(e),
+                    action=intent.action,
+                )
+                domain_context = None
+
         # Gather conversation history (#1122: shared builder, excludes in-flight turn)
         history = build_recent_history(session_id, user_id)
 
@@ -12530,6 +12564,8 @@ Content to summarize:
             intent_confidence=intent.confidence,
             # #1187: optional fetched source content for the floor to summarize.
             domain_context=domain_context,
+            # #1030 R4 parity with _handle_floor_with_context (#1570).
+            domain_context_provenance=domain_context_provenance,
         )
 
         floor = ConversationalFloor()

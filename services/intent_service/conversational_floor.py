@@ -19,13 +19,71 @@ Architecture: One new terminal node in the routing graph. Everything upstream
 untouched. The floor replaces a dead-end with a conversation.
 """
 
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import structlog
 
 logger = structlog.get_logger()
+
+
+# ---- #1570: internal-scaffolding strip (renderer-side class kill) ----
+#
+# PM live 2026-08-10: floor replies carried literal lines like
+# "[Available context: no todo data returned this turn]" — text that exists
+# NOWHERE in this codebase. The model imitates the scaffolding vocabulary its
+# own prompt teaches (the addendum names "[Available context]" repeatedly, and
+# _build_prompt injects "[Context: ...]" / "[Reference binding: ...]" /
+# "[Redirect context: ...]" blocks). #1393 already added a prompt-side
+# prohibition; the live transcripts prove instruction alone does not hold.
+#
+# This is the structural guarantee: a bracketed block that OPENS with one of
+# OUR OWN scaffolding headers is machinery by construction — those headers are
+# defined by _build_prompt / _format_domain_context, never by user content —
+# so it is stripped from the model's output before it becomes user copy. This
+# is a carrier fix, not a phrase-list ban: the model's paraphrases of CONTENT
+# pass through untouched; only the bracketed machinery grammar is
+# unrenderable. If a new scaffolding block is ever added to the prompt
+# builders, its header MUST join this pattern in the same commit.
+_SCAFFOLDING_BLOCK_RE = re.compile(
+    r"\[\s*(?:available\s+context|context\s*:|reference\s+binding|redirect\s+context)"
+    r"[^\[\]]*\]",
+    re.IGNORECASE | re.DOTALL,
+)
+
+# Honest fallback for the degenerate case where the model emitted ONLY
+# scaffolding (stripping must never yield empty user copy).
+_SCAFFOLDING_ONLY_FALLBACK = (
+    "I don't have that information in front of me right now — "
+    "could you ask again in one short line?"
+)
+
+
+def strip_scaffolding_artifacts(text: str) -> Tuple[str, int]:
+    """Remove internal-scaffolding bracket blocks from floor output.
+
+    Returns (clean_text, blocks_stripped). Whitespace left behind by a
+    removed block is collapsed (no doubled blank lines, no dangling
+    trailing spaces). If the entire message was scaffolding, returns an
+    honest fallback line instead of empty user copy.
+    """
+    if not text:
+        return text, 0
+
+    clean, n = _SCAFFOLDING_BLOCK_RE.subn("", text)
+    if n == 0:
+        return text, 0
+
+    # Tidy the residue: per-line trailing whitespace, collapsed blank runs.
+    clean = re.sub(r"[ \t]+\n", "\n", clean)
+    clean = re.sub(r"\n{3,}", "\n\n", clean)
+    clean = re.sub(r"[ \t]{2,}", " ", clean).strip()
+
+    if not clean:
+        clean = _SCAFFOLDING_ONLY_FALLBACK
+    return clean, n
 
 
 # ---- Floor System Prompt ----
@@ -1027,6 +1085,21 @@ class ConversationalFloor:
                 system=system_prompt,
                 user_id=ctx.user_id,  # #1415: per-user provider selection
             )
+
+            # #1570: internal scaffolding is structurally unrenderable in user
+            # copy — strip it here, at the single seam every floor reply
+            # passes through, and log so prompt-discipline regressions stay
+            # visible (a silent strip would hide the model drifting back into
+            # scaffolding imitation).
+            message, scaffolding_stripped = strip_scaffolding_artifacts(message)
+            if scaffolding_stripped:
+                logger.warning(
+                    "floor_scaffolding_stripped",
+                    blocks=scaffolding_stripped,
+                    session_id=ctx.session_id,
+                    user_id=ctx.user_id,
+                    intent_category=ctx.intent_category,
+                )
 
             logger.info(
                 "conversational_floor_hit",
