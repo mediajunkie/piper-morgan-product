@@ -413,7 +413,7 @@
 - **GitHub Actions** - CI/CD automation
 - **pre-commit hooks** - Code quality enforcement
 - **pytest-asyncio** - Asynchronous test support
-- **Serena MCP Server** (jamescalam/serena) - Symbolic code analysis via MCP
+- **Serena MCP Server** (oraios/serena) - Symbolic code analysis via MCP
   - Language Server Protocol (LSP) integration for semantic code understanding
   - Supports: find_symbol, search_for_pattern, get_symbols_overview operations
   - *Recommended by: John Phamvan (Kind Systems CEO)*
