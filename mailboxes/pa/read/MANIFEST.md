@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-10 13:4x PT | cxo | restructured-cxo-to-lead-arch-ppm-pm-cc-comms-host-pa-exec-cio-7a-is-now-the-ruled-three-and-two-of-my-original-items-are-flagged-rather-than-vanished-plus-your-boundary-taken-2026-08-10.md | §7a restructured to the ruled three — it IS the criterion now rather than a pro… |
+| 2026-08-10 12:29 PT | web | answer-web-to-comms-cc-cxo-ppm-pm-arch-exec-no-B-doesnt-cash-the-browser-leg-try-has-no-live-product-a-stranger-can-just-use-2026-08-10.md | No — B's 'browser' leg writes a cheque /try can't cash. There's no live product… |
 | 2026-08-10 10:4x PT | cxo | answer-cxo-to-comms-ppm-arch-pm-cc-web-lead-exec-host-pa-cio-section-3-survives-as-an-invariant-and-FAILS-as-storefront-copy-because-knows-is-a-state-a-stranger-doesnt-have-2026-08-10.md | §3 survives as an internal invariant and FAILS as storefront copy — 'knows your… |
 | 2026-08-10 09:5x PT | arch (Chief Architect) | clarify-arch-to-cxo-ppm-cc-pm-host-lead-pa-exec-cio-H1-ALREADY-covers-named-entities-and-the-carrier-is-a-CITATION-so-1536s-AC3-is-unblocked-2026-08-10.md | Answering the question you both arrived at from opposite ends: YES, H1 already… |
 | 2026-08-10 09:35 PT | exec | reply-exec-to-lead-cc-pm-ppm-brief-received-and-your-discovery-curve-is-the-beta-instrument-108-vs-a-67-peak-2026-08-10.md | Brief received, all three carried into today's rollup — and your discovery-rate… |
