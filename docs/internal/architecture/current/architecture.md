@@ -1,7 +1,7 @@
 # Architecture Overview
 
 > ⚠️ **STALE ARCHITECTURE WARNING (Apr 11, 2026)**
-> This document describes the September 2025 architecture and predates the M1 floor inversion (#911), the Apr 8 IDENTITY full migration to floor, and several other M1-era architectural decisions. The diagrams below show "Intent Classifier → Workflow Factory" as the application core; the current reality is "Classifier → Action Gate → (Floor with Context | Canonical Handler | Workflow Dispatcher)" per [ADR-059](adrs/adr-059-workflow-dispatcher.md) and [ADR-060](adrs/adr-060-floor-first-routing.md).
+> This document describes the September 2025 architecture and predates the M1 floor inversion (#911), the Apr 8 IDENTITY full migration to floor, and several other M1-era architectural decisions. The diagrams below show "Intent Classifier → Workflow Factory" as the application core; the current reality is "Classifier → Action Gate → (Floor with Context | Canonical Handler | Workflow Dispatcher)" per [ADR-059](adrs/adr-059-workflow-dispatcher-offer-consolidation.md) and [ADR-060](adrs/adr-060-floor-first-routing.md).
 >
 > **Full rewrite pending in M2a doc cleanup.** Use this document for high-level DDD context only; refer to the ADRs above for current routing reality.
 

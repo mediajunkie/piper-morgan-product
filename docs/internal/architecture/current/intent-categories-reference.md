@@ -84,7 +84,7 @@ greeting, or a GUIDANCE setup request).
 
 `ANALYSIS`, `SYNTHESIS`, `STRATEGY`, `PLANNING`, `REVIEW`, `LEARNING`, `QUERY`
 fall through to the pre-existing workflow dispatcher path
-([ADR-059](adrs/adr-059-workflow-dispatcher.md)).
+([ADR-059](adrs/adr-059-workflow-dispatcher-offer-consolidation.md)).
 
 ---
 
@@ -301,7 +301,7 @@ projects, issues, or meetings that did not exist.
 
 - [ADR-060: Floor-First Routing](adrs/adr-060-floor-first-routing.md) — the ADR
   behind #911; note the ADR itself has some staleness but the core principle stands
-- [ADR-059: Workflow Dispatcher](adrs/adr-059-workflow-dispatcher.md) — the
+- [ADR-059: Workflow Dispatcher](adrs/adr-059-workflow-dispatcher-offer-consolidation.md) — the
   legacy path that workflow-routed categories still take
 - [architecture.md](architecture.md) — system-wide view
 - [llm-configuration.md](llm-configuration.md) — provider-agnostic LLM setup

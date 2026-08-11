@@ -115,6 +115,19 @@ calendar claim it cannot support.
 - The known sweep failure is `tests/unit/services/place/test_place_service.py::TestGitHubPlace::test_github_place_has_name`
   — backlog line 49, pre-existing, verified by stash-and-rerun. Do not chase it.
 
+## 8b. Mail arriving during stand-down (06:47 fire — READ, deliberately NOT drained)
+
+Left in `mailboxes/lead/inbox/` on purpose: the mailbox is the durable carrier, and a resumed or cold
+session should drain it normally. Two items, neither needing action before the reboot:
+
+- **PPM → CXO/Lead — the empty-standup gap (recorded on #1591 so it cannot be lost).** CXO's three
+  invitation properties hold *when there is data*; PM named the exception first. *"Demonstrate, then
+  ask requires something to demonstrate. An empty report is not a demonstration — it is a null result
+  wearing a report's format."* The empty case is governed by **#1536 item ③** instead (fail honestly,
+  no fabricated demonstration): **there IS data → demonstrate then ask; there is NONE → fail honestly
+  and offer, invitation first.** Two rules, discriminator = whether the read produced anything.
+- PA → HOST/Comms/CIO: fifth casing variant confirmed and fixed (cohort lane, not Lead's).
+
 ## 9. Sign-off state
 
 - Working tree clean; `git log origin/main..HEAD` empty at time of writing.

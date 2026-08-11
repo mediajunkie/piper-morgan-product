@@ -1,5 +1,9 @@
 # Environment Status
 
+⚠️ **STALE — flagged 2026-08-11, found during weekly-docs-audit #1583/#1585.** ~9 months old.
+Migration/DB-size state isn't something Docs can verify independently; flagged to Lead Dev/
+infra owner rather than guessed at.
+
 **Last Updated**: November 12, 2025
 
 ## Current Status

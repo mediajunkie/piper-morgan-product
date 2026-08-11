@@ -398,8 +398,8 @@ What happens to existing `ProjectIntegration` records with GitHub configs?
 - [CXO Memo: Domain Model Response (Feb 26, 2026)](memo-cxo-domain-model-response-2026-02-26.md)
 - [PPM Memo: Domain Model Synthesis (Feb 26, 2026)](memo-ppm-domain-model-synthesis-2026-02-26.md)
 - [Lead Developer Memo: Domain Model Gaps (Feb 26, 2026)](2026-02-26-domain-model-product-project-repo-relationships.md)
-- [ADR-045: Object Model](adr-045-object-model.md)
-- [domain-models.md](domain-models.md) — requires update per this PDR
+- [ADR-045: Object Model](../../architecture/current/adrs/adr-045-object-model.md)
+- [domain-models.md](../../architecture/current/models/domain-models.md) — requires update per this PDR
 
 ---
 

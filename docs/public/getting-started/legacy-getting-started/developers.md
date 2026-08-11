@@ -327,10 +327,10 @@ For testing MCP integration and production readiness:
 
 - Read the [Architecture Documentation](../architecture/)
 - Review the [Excellence Flywheel Methodology](../development/methodology-core/)
-- Check out [Multi-Agent Coordinator Guide](../architecture/multi-agent-coordinator-pm-guide.md)
-- Explore [Architecture Patterns](../patterns/README.md) - 27 consolidated patterns
+- Check out [Multi-Agent Coordinator Guide](../../../internal/architecture/current/multi-agent-coordinator-pm-guide.md)
+- Explore [Architecture Patterns](../../../internal/architecture/current/patterns/README.md) - 27 consolidated patterns
 - Study [MCP Integration Patterns](../architecture/mcp-integration-patterns.md)
-- Review [API Reference](../architecture/api-reference.md)
+- Review [API Reference](../../../internal/architecture/current/api-reference.md)
 
 ---
 
@@ -344,10 +344,10 @@ Piper Morgan uses a **three-tier documentation structure**:
 
 ## Key Development Resources
 
-- **[Staging Deployment Guide](../operations/staging-deployment-guide.md)** - Production-grade local staging
+- **[Staging Deployment Guide](../../../internal/operations/legacy-operations/staging-deployment-guide.md)** - Production-grade local staging
 - **[Excellence Flywheel Methodology](../development/methodology-core/)** - Core development philosophy
-- **[Test Infrastructure Guide](../development/TEST-GUIDE.md)** - Smart test execution (599+ tests)
-- **[Multi-Agent Integration](../development/MULTI_AGENT_INTEGRATION_GUIDE.md)** - AI coordination patterns
-- **[Morning Standup MVP](../development/MORNING_STANDUP_MVP_GUIDE.md)** - CLI interface usage
+- **[Test Infrastructure Guide](../../../internal/development/active/pending-review/TEST-GUIDE.md)** - Smart test execution (599+ tests)
+- **[Multi-Agent Integration](../../../internal/development/methodology-core/MULTI_AGENT_INTEGRATION_GUIDE.md)** - AI coordination patterns
+- **[Morning Standup MVP](../../../internal/development/tools/MORNING_STANDUP_MVP_GUIDE.md)** - CLI interface usage
 
 *For production deployment, see the [Production Guide](production.md). For API integration, see [API Integration](api-integration.md).*
