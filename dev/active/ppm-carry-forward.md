@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-09 STOP (~22:45 PT) — DAY CLOSED. Six clean fires. Cron **`e4f3b4e8`**.
+**Last rewritten**: 2026-08-10 STOP (~22:40 PT) — DAY CLOSED. Six clean fires. Cron **`25f1a782`**.
 ✅ **Jake conversion COMPLETE: #1536–#1540 filed 08-09, zero rows unfiled.**
 
 ## ✅ FTUX FIVE RULED (2026-08-10) — HOLD STATE ENDED
@@ -306,11 +306,12 @@ already answered before sending.**
 
 ## Cron
 
-**ARMED** — job **`e4f3b4e8`**, CronList-verified exactly one. Prompt carries the owed merge (with a
-delete-when-done instruction) and a new standing line: **when someone proposes elevating YOUR
-artifact, audit it before accepting — unaudited is not sound.**
+**ARMED** — job **`25f1a782`**, CronList-verified exactly one. Prompt gained two standing lines:
+**PROXIES** (*safe when the remainder is ROUTED, dangerous when merely IMPLIED — say "gateable
+fraction", never "shadow"*) and **MAIL-SEND CAN FAIL SILENTLY** (*a transient fetch failure leaves the
+memo unsent with no other signal; read the tail, verify it landed*).
 
-⚠️ Session-only + 7-day auto-expiry, both silent. **Three clean days running** (08-07/08/09).
+**Four clean days running** (08-07/08/09/10). ⚠️ Session-only + 7-day auto-expiry, both silent.
 
 ---
 
