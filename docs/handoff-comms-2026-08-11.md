@@ -9,7 +9,9 @@
 
 ---
 
-## 0. 🔴 CRON IS PARKED — READ THIS FIRST, IT IS THE THING THAT WON'T ANNOUNCE ITSELF
+## 0. ✅ CRON RE-ARMED POST-REBOOT (2026-08-11 13:15 PT) — this section is now historical
+
+**Update 2026-08-11 13:15 PT**: reboot completed, session resumed via `claude --resume`, and per Pard's post-reboot notice this cron was re-armed exactly as documented below — new job **`d0f1ca12`**, same expression and prompt, `CronList`-verified as the sole job. The registry's parked note is cleared. The rest of this section is kept as the historical record of the park and the exact restore recipe, in case a future park needs the same discipline.
 
 **I deliberately cancelled my duty-cycle schedule at 2026-08-11 ~06:5x PT, before the reboot, per Pard's second stand-down notice.** `CronList` verified: **"No scheduled jobs."**
 
