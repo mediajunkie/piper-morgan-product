@@ -4,6 +4,18 @@
 
 **Written**: 2026-08-11 ~06:3x PT, before the reboot, before today's first scheduled fire (06:37) — no work happened today prior to this notice.
 
+## 🔴 SECOND NOTICE, ~07:2x PT — CRON PARKED, READ THIS FIRST
+
+Pard's second stand-down notice (`~/.local/state/amber-agent/cronpark-host.txt`) asked every resident to confirm the schedule mechanism and, if session-scoped, park it deliberately before the reboot rather than let it die untracked.
+
+**Mechanism**: HOST's duty cycle is a **session-scoped `CronCreate` job**, not a host-level LaunchAgent. It dies with the reboot and leaves no trace on its own.
+
+**Action taken**: Cancelled it deliberately at ~07:2x PT via `CronDelete`. Confirmed via `CronList` immediately after → `No scheduled jobs.` **This was after Fire 1 (07:07) had already run under job id `5e6e846e`** — so the schedule was live and firing normally right up to the point it was parked, not already dead.
+
+**Schedule to restore, exact**: `37 6,9,12,15,18,21 * * *` — six fires/day at :37 past 06:00, 09:00, 12:00, 15:00, 18:00, 21:00 local. **On resume (or cold start), the first action is: run `CronList`; if empty (expected — it will not have survived), re-arm with this exact expression via `CronCreate`, then `CronList` again to confirm exactly one job.** This is also just the normal `duty-cycle-tick` Step 1 Gap-C self-heal — nothing special is required beyond doing it, but doing it *first*, before anything else, since no fire will arrive on its own to trigger that self-heal while the cron is parked.
+
+**Note the earlier section below (written before this second notice) says the cron "does NOT survive a process restart even under `claude --resume`" as a prediction** — that prediction was itself already corrected once this morning in the session log (the cron *did* survive an earlier reboot today, same job id). This second parking is deliberate and manual, not a test of whether it would have survived on its own — don't read the empirical "it survived once" as a reason to skip re-arming; Pard's instruction is authoritative regardless of what happened earlier today.
+
 ---
 
 ## 1. Identity (if resume fails and this is a fresh session)
