@@ -4,8 +4,9 @@
 
 ## Cron
 
-- ⚠️ **ROTATED at the 2026-08-05 STOP.** New job **`c635f4d1`**, same expression `12 6,9,12,15,18,21 * * *`, fresh 7-day clock — **expires ~2026-08-12**. Old `e37fa867` deleted. Registry row updated.
-- **Done CREATE-THEN-DELETE, inverting the skill's documented delete-then-create.** A failed *create* leaves you silently dark until a human notices; a failed *delete* leaves duplicates that Step 1 detects and heals on the next fire. **Prefer the failure mode that announces itself.**
+- ⚠️ **ROTATED at the 2026-08-10 STOP.** New job **`f53ad8c5`**, same expression, fresh 7-day clock — **expires ~2026-08-17**. Prior `c635f4d1` deleted; `CronList` verified exactly one job.
+- **Second consecutive rotation done CREATE-THEN-DELETE**, inverting the skill's documented order. A failed *create* leaves you silently dark; a failed *delete* leaves duplicates Step 1 detects and heals next fire. **Prefer the failure mode that announces itself.**
+- **Registry row edited as plain text, not via `csv.writer`** — that re-quotes `#` comment lines containing quotes and corrupted 7 of them on 2026-08-05. Verified 0 corrupted / 70 intact, 1 line changed.
 
 ## The one dated thing
 

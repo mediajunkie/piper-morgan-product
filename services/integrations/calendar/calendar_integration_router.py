@@ -233,8 +233,18 @@ class CalendarIntegrationRouter:
 
         Issue #596: Added user_id parameter for timezone-aware queries.
 
+        #1425: falls back to the instance ``user_id``, exactly as
+        ``get_todays_events`` already did. It did not, so the greeting path
+        (which builds the router WITH a user, then calls this with no argument)
+        reached the adapter as ``user_id=None`` — and the adapter's
+        ``_get_user_timezone(None)`` skips the preference lookup entirely and
+        returns its hardcoded ``America/Los_Angeles`` fallback. The day-boundary
+        window therefore belonged to no particular user. What a user's timezone
+        SHOULD be, system-wide, is #1572; this is only the plumbing.
+
         Args:
-            user_id: Optional user ID for timezone-aware day boundaries
+            user_id: Optional user ID for timezone-aware day boundaries.
+                    If not provided, uses self._user_id from __init__.
 
         Returns:
             Dict[str, Any]: Temporal awareness summary with current meeting,
@@ -245,10 +255,12 @@ class CalendarIntegrationRouter:
         """
         integration, is_legacy = self._get_preferred_integration("get_temporal_summary")
 
+        effective_user_id = user_id or self._user_id
+
         if integration:
             if is_legacy:
                 self._warn_deprecation_if_needed("get_temporal_summary", is_legacy)
-            return await integration.get_temporal_summary(user_id=user_id)
+            return await integration.get_temporal_summary(user_id=effective_user_id)
         else:
             raise RuntimeError("No calendar integration available for get_temporal_summary")
 

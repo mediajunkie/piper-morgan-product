@@ -22,8 +22,13 @@ def parse(path):
         # BOTH bold-colon placements: `**From**: X` AND `**From:** X` (Pard/Janus use the latter),
         # plus a bare `From: X` line. 314 of 1,517 header-style memos used the inside-colon form
         # and were invisible to the first version of this parser (found by CIO 2026-08-10).
-        h = re.search(r'\*\*From\*\*:\s*([^·\n]+)|\*\*From:\*\*\s*([^·\n]+)|^From:\s*([^·\n]+)', txt, re.M)
-        t = re.search(r'\*\*To\*\*:\s*([^·\n]+)|\*\*To:\*\*\s*([^·\n]+)|^To:\s*([^·\n]+)', txt, re.M)
+        # re.I added same day (PA): a fourth variant, ALL-CAPS `FROM:`/`TO:` inside a `---...---`
+        # block that isn't valid YAML (early-era memos, pre-frontmatter convention) — matches the
+        # outer frontmatter regex but yields empty via g('from')'s lowercase-only key, then falls
+        # through here where the bare-line alternative was case-sensitive and missed it too.
+        # 24 of 179 cohort-wide unparsed files, measured, had exactly this shape.
+        h = re.search(r'\*\*From\*\*:\s*([^·\n]+)|\*\*From:\*\*\s*([^·\n]+)|^From:\s*([^·\n]+)', txt, re.M | re.I)
+        t = re.search(r'\*\*To\*\*:\s*([^·\n]+)|\*\*To:\*\*\s*([^·\n]+)|^To:\s*([^·\n]+)', txt, re.M | re.I)
         frm = next((g for g in h.groups() if g), '').strip() if h else ''
         to  = next((g for g in t.groups() if g), '').strip() if t else ''
     if not sub:                                       # fall back to the H1
