@@ -56,7 +56,7 @@ def format_greeting_conscious(
 
     # Calendar context with source attribution
     if calendar_summary and not calendar_summary.get("error"):
-        calendar_section = _build_calendar_narrative(calendar_summary)
+        calendar_section = _build_calendar_narrative(calendar_summary, user_timezone)
         if calendar_section:
             sections.append(calendar_section)
 
@@ -216,54 +216,189 @@ def _build_greeting_opening(time_of_day: str, user_name: Optional[str] = None) -
     return f"{greeting}!"
 
 
-def _build_calendar_narrative(summary: Dict[str, Any]) -> Optional[str]:
-    """Build calendar narrative with source transparency."""
-    parts = []
+def _build_calendar_narrative(
+    summary: Dict[str, Any],
+    user_timezone: Optional[str] = None,
+) -> Optional[str]:
+    """Build calendar narrative with source transparency.
 
-    # Source attribution
-    parts.append("I took a look at your calendar ")
+    Two honesty rules, both paid for by a live greeting PM read on 2026-08-10
+    that claimed a clear day over four real events and offered "focus time
+    between 2:09 am and 6:00 pm":
 
+    1. **The zero-claim needs an established read** (#1425 / m-44).
+       ``total_meetings_today == 0`` is what a genuinely empty day, an open
+       circuit breaker, a failed authenticate, and a swallowed exception all
+       look like. Only ``events_read_established`` distinguishes them. Without
+       it we say nothing about the day's shape — silence is recoverable, a
+       false all-clear is not.
+    2. **No unlabeled clock face** (time-handling audit F2). Free-block times
+       are computed from the SERVER clock (UTC on Fly), so their bare
+       ``%I:%M %p`` renders a UTC instant as if it were the reader's local
+       time. Render them only in a zone we can name; otherwise omit.
+
+    Returns None when nothing can be said honestly — the caller then omits the
+    calendar section entirely, rather than leaving a stranded "I took a look at
+    your calendar." with no observation behind it.
+    """
     # Meeting load assessment
     stats = summary.get("stats", {})
     total_meetings = stats.get("total_meetings_today", 0)
+    read_established = bool(summary.get("events_read_established"))
 
+    load_assessment = None
     if total_meetings == 0:
-        parts.append("and it looks like you have a clear day ahead - nice!")
+        # Rule 1: only an established read may be reported as an empty day.
+        if read_established:
+            load_assessment = "and it looks like you have a clear day ahead - nice!"
     elif total_meetings >= 4:
-        parts.append(f"and it looks like you have a packed day with {total_meetings} meetings")
+        # A nonzero count is self-evidencing: rows came back, so they exist.
+        load_assessment = (
+            f"and it looks like you have a packed day with {total_meetings} meetings"
+        )
     else:
         meeting_word = "meeting" if total_meetings == 1 else "meetings"
-        parts.append(f"and see you have {total_meetings} {meeting_word} today")
+        load_assessment = f"and see you have {total_meetings} {meeting_word} today"
 
-    # Current/next meeting
+    observations = []
+
+    # Current/next meeting. These times come from the calendar provider carrying
+    # the event's OWN offset, so their clock face is already the user's local
+    # one — a different layer from the server-computed free block below (m-43).
     if summary.get("current_meeting"):
         meeting = summary["current_meeting"]
         name = meeting.get("summary", "a meeting")
-        parts.append(f". I see you're currently in {name}")
+        observations.append(f"I see you're currently in {name}")
     elif summary.get("next_meeting"):
         meeting = summary["next_meeting"]
         name = meeting.get("summary", "a meeting")
         start_time = _format_time(meeting.get("start_time", ""))
         if start_time:
-            parts.append(f". Your next one is {name} at {start_time}")
+            observations.append(f"Your next one is {name} at {start_time}")
         else:
-            parts.append(f". Your next one is {name}")
+            observations.append(f"Your next one is {name}")
 
-    # Free blocks (if any)
-    if summary.get("free_blocks"):
-        blocks = summary["free_blocks"][:2]
-        if blocks:
-            block = blocks[0]
-            start = _format_time(block.get("start_time", ""))
-            end = _format_time(block.get("end_time", ""))
-            if start and end:
-                parts.append(f". I noticed you have some focus time between {start} and {end}")
+    # Free blocks — server-clock derived, so zone-labeled or not at all.
+    free_block_phrase = _format_free_block(summary.get("free_blocks"), user_timezone)
+    if free_block_phrase:
+        observations.append(free_block_phrase)
 
-    return "".join(parts) + "."
+    if not load_assessment and not observations:
+        return None  # nothing honest to say; omit the calendar line entirely
+
+    if load_assessment:
+        narrative = "I took a look at your calendar " + load_assessment
+    else:
+        # No day-shape claim available, but a concrete observation stands on
+        # its own — attribution first, then the thing actually observed.
+        narrative = "I took a look at your calendar. " + observations.pop(0)
+
+    for observation in observations:
+        # "…clear day ahead - nice!. I noticed…" was the observed copy; don't
+        # stack a period onto a sentence that already ended.
+        separator = " " if narrative.endswith(("!", "?", ".")) else ". "
+        narrative += separator + observation
+
+    if not narrative.endswith((".", "!", "?")):
+        narrative += "."
+    return narrative
+
+
+# Free blocks come in three shapes, and they are NOT the same layer (m-43):
+#
+#   "between_meetings" — both boundaries are real event timestamps carrying the
+#       calendar's own offset. The clock face is already the reader's. Safe.
+#   "before_meeting"   — starts at the SERVER's wall clock, ends at a real event.
+#       Half server-derived, so the start face is unattributable without a zone.
+#   "free_block"       — the synthetic "no meetings came back, so treat the rest
+#       of the server's day as free" block. Not an observation about the user's
+#       day at all: it is the absence of one, wearing an interval's clothes, and
+#       both of its boundaries are server-clock artifacts (``now`` and
+#       ``now.replace(hour=18)``). This is the one that told PM he had "focus
+#       time between 2:09 am and 6:00 pm" — 02:09 being the UTC instant of his
+#       own request. Never rendered as user copy.
+_EVENT_DERIVED_BLOCK_TYPES = {"between_meetings"}
+_SYNTHETIC_BLOCK_TYPES = {"free_block"}
+
+
+def _format_free_block(
+    free_blocks: Optional[List[Dict[str, Any]]],
+    user_timezone: Optional[str],
+) -> Optional[str]:
+    """Render the first free block that can be stated honestly, or None.
+
+    Rule: a clock face is printable only if the reader can tell which clock it
+    is on. Event-derived boundaries already carry the calendar's offset;
+    server-derived ones need a timezone we can NAME, and are otherwise omitted.
+    The general per-user timezone answer is #1572, not this.
+    """
+    if not free_blocks:
+        return None
+
+    tz = None
+    if user_timezone:
+        try:
+            from zoneinfo import ZoneInfo
+
+            tz = ZoneInfo(user_timezone)
+        except Exception:
+            tz = None
+
+    for block in free_blocks[:2]:
+        block_type = block.get("type")
+        if block_type in _SYNTHETIC_BLOCK_TYPES:
+            continue
+
+        start_dt = _parse_iso(block.get("start_time", ""))
+        end_dt = _parse_iso(block.get("end_time", ""))
+        if not start_dt or not end_dt:
+            continue
+        if end_dt <= start_dt:
+            # `now.replace(hour=18)` runs backwards past 18:00 server time.
+            continue
+
+        if block_type in _EVENT_DERIVED_BLOCK_TYPES:
+            start, end = _format_time(block.get("start_time", "")), _format_time(
+                block.get("end_time", "")
+            )
+        elif tz is not None:
+            # Unknown/server-derived, but we can name a zone → convert + label.
+            start, end = _format_time_labeled(start_dt, tz), _format_time_labeled(end_dt, tz)
+        else:
+            continue
+
+        if start and end:
+            return f"I noticed you have some focus time between {start} and {end}"
+    return None
+
+
+def _parse_iso(time_str: str) -> Optional[datetime]:
+    """Parse an ISO timestamp, or None. Naive values are rejected: without an
+    offset there is no way to say which clock they belong to, and guessing is
+    exactly the failure this module is fixing."""
+    if not time_str or "T" not in str(time_str):
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(time_str).replace("Z", "+00:00"))
+    except (ValueError, AttributeError):
+        return None
+    return parsed if parsed.tzinfo is not None else None
+
+
+def _format_time_labeled(dt: datetime, tz) -> str:
+    """Clock face in ``tz``, WITH the zone abbreviation attached."""
+    local = dt.astimezone(tz)
+    label = local.strftime("%Z") or str(tz)
+    return f"{local.strftime('%I:%M %p').lstrip('0').lower()} {label}"
 
 
 def _format_time(time_str: str) -> str:
-    """Format time string to readable format."""
+    """Format time string to readable format.
+
+    Only for provider-supplied event times, which carry the event's own offset
+    (so the clock face is already the reader's). Never use this on a
+    server-clock-derived instant — see ``_format_free_block``.
+    """
     if not time_str or "T" not in str(time_str):
         return ""
     try:

@@ -113,12 +113,22 @@ class TemporalSummaryResult:
     "connected but empty calendar". When False, handlers should NOT mention
     calendar at all (Option A: silent) rather than claiming "no meetings".
 
+    #1425 / m-44: added `events_read_established`. `success` and
+    `calendar_connected` were both True in the case PM hit on 2026-08-10 —
+    what was missing is whether the day's events were ever actually
+    enumerated. `get_todays_events` answers `[]` for a genuinely empty day, an
+    open circuit breaker, a failed authenticate, and any swallowed exception,
+    so `total_meetings_today == 0` alone can NEVER carry an emptiness claim.
+    Only this flag can: it is True iff the events query completed, whatever it
+    returned.
+
     This follows the Result pattern used elsewhere in the codebase
     (IntentProcessingResult, ValidationResult, etc.)
     """
 
     success: bool
     calendar_connected: bool = True  # Issue #789: Distinguish not-connected from empty
+    events_read_established: bool = False  # #1425: did the events read actually happen?
     current_meeting: Optional[Dict[str, Any]] = None
     next_meeting: Optional[Dict[str, Any]] = None
     free_blocks: Optional[List[Dict[str, Any]]] = None
@@ -141,6 +151,7 @@ class TemporalSummaryResult:
         return {
             "success": True,
             "calendar_connected": self.calendar_connected,  # Issue #789
+            "events_read_established": self.events_read_established,  # #1425
             "current_meeting": self.current_meeting,
             "next_meeting": self.next_meeting,
             "free_blocks": self.free_blocks,
@@ -469,11 +480,27 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                 logger.warning(f"Could not get user timezone: {e}")
         return "America/Los_Angeles"  # Default fallback
 
+    def _now_server_local(self) -> datetime:
+        """The SERVER's wall clock, timezone-aware.
+
+        Named as its own seam because it is exactly the thing that misled a
+        user: on Fly the server runs UTC, so this is a UTC instant wearing no
+        label. Anything derived from it (free blocks) must be zone-labeled or
+        suppressed by the renderer — never printed as a bare clock face
+        (time-handling audit F2, 2026-08-10). Deciding the USER's timezone is
+        #1572; this method only makes the dependency visible and patchable.
+        """
+        return datetime.now().astimezone()
+
     async def get_todays_events(self, user_id: Optional[str] = None) -> List[Dict[str, Any]]:
         """
         Get today's calendar events from Google Calendar (with token counting).
 
         Issue #586: Added user_id parameter for timezone-aware queries.
+
+        Returns a plain list — unchanged contract. Callers that need to tell a
+        genuinely empty day from a failed read must use ``_fetch_todays_events``
+        (#1425), because this method answers ``[]`` to both.
 
         Args:
             user_id: Optional user ID for timezone-aware day boundaries
@@ -481,13 +508,27 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
         Returns:
             List[Dict[str, Any]]: List of today's calendar events
         """
+        events, _established = await self._fetch_todays_events(user_id)
+        return events
+
+    async def _fetch_todays_events(
+        self, user_id: Optional[str] = None
+    ) -> tuple[List[Dict[str, Any]], bool]:
+        """Today's events PLUS whether the read actually happened (#1425).
+
+        Returns ``(events, established)``. ``established`` is True only when the
+        Google query completed; it is False for an open circuit breaker, a
+        failed authenticate, and any exception below. This is the distinction
+        the greeting needs before it may call a day clear — ``[]`` on its own
+        cannot support that claim (m-44).
+        """
         if self._circuit_open:
             logger.warning("Google Calendar circuit breaker is open")
-            return []
+            return [], False
 
         if not self._service:
             if not await self.authenticate():
-                return []
+                return [], False
 
         try:
             # Issue #586: Get user's timezone for day boundary calculation
@@ -540,12 +581,12 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
 
             logger.info(f"Retrieved {len(events)} events for today (timezone: {user_timezone})")
             self._reset_circuit_breaker()
-            return events
+            return events, True
 
         except Exception as e:
             logger.error(f"Failed to retrieve calendar events: {e}")
             self._handle_error()
-            return []
+            return [], False
 
     def _process_event(self, event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """
@@ -689,14 +730,24 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
         async def _get():
             from datetime import datetime, timedelta
 
-            events = await self.get_todays_events(user_id=user_id)
+            # #1425: a failed events read must not become "your whole day is
+            # free" — that is the same unestablished-emptiness claim as
+            # "clear day ahead", one layer down.
+            events, established = await self._fetch_todays_events(user_id)
+            if not established:
+                return []
             meetings = [e for e in events if not e["is_all_day"]]
 
             # Issue #596: Use timezone-aware datetime to avoid comparison errors
-            now = datetime.now().astimezone()
+            now = self._now_server_local()
 
             if not meetings:
                 end_of_day = now.replace(hour=18, minute=0, second=0, microsecond=0)
+                if end_of_day <= now:
+                    # `replace(hour=18)` runs BACKWARDS once the clock is past
+                    # 18:00, yielding a block that ends before it starts.
+                    # Emit nothing rather than a negative interval.
+                    return []
                 return [
                     {
                         "start_time": now.isoformat(),
@@ -788,7 +839,9 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                 current_meeting = await self.get_current_meeting(user_id=user_id)
                 next_meeting = await self.get_next_meeting(user_id=user_id)
                 free_blocks = await self.get_free_time_blocks(user_id=user_id)
-                all_events = await self.get_todays_events(user_id=user_id)
+                # #1425: keep the read-establishment bit, don't discard it into
+                # a bare list — the greeting cannot claim an empty day without it.
+                all_events, events_read_established = await self._fetch_todays_events(user_id)
 
                 total_meetings = len([e for e in all_events if not e["is_all_day"]])
                 total_meeting_time = sum(
@@ -807,6 +860,7 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                 result = TemporalSummaryResult(
                     success=True,
                     calendar_connected=True,  # Issue #789: Explicitly connected
+                    events_read_established=events_read_established,  # #1425
                     current_meeting=current_meeting,
                     next_meeting=next_meeting,
                     free_blocks=free_blocks,

@@ -110,7 +110,44 @@ class TestCalendarGreeting:
 
     @pytest.mark.asyncio
     async def test_greeting_with_empty_calendar(self, handler, greeting_intent):
-        """Greeting handles empty calendar gracefully."""
+        """Greeting handles an ESTABLISHED empty calendar gracefully.
+
+        #1425: this fixture gained ``events_read_established``. Without it the
+        summary is indistinguishable from a failed read that returned [], and
+        the greeting must no longer call such a day clear — see
+        ``test_greeting_does_not_claim_clear_day_on_unestablished_read`` below,
+        which is the shape PM actually hit on 2026-08-10.
+        """
+        mock_summary = {
+            "current_meeting": None,
+            "next_meeting": None,
+            "free_blocks": [],
+            "events_read_established": True,
+            "stats": {
+                "total_meetings_today": 0,
+                "total_meeting_minutes": 0,
+                "total_free_minutes": 480,
+            },
+        }
+
+        with patch.object(handler, "_get_calendar_summary", new_callable=AsyncMock) as mock_cal:
+            mock_cal.return_value = mock_summary
+
+            result = await handler.respond(greeting_intent)
+
+            # Consciousness-aware formatting may use different phrases (Issue #633-638)
+            msg = result["message"].lower()
+            assert "clear" in msg, f"Expected mention of clear calendar, got: {result['message']}"
+
+    @pytest.mark.asyncio
+    async def test_greeting_does_not_claim_clear_day_on_unestablished_read(
+        self, handler, greeting_intent
+    ):
+        """#1425 / m-44: zero rows with nothing attesting the read happened.
+
+        This is exactly what the deployed greeting was handed at 02:09Z on
+        2026-08-10 — and it answered "a clear day ahead" over four real events.
+        """
         mock_summary = {
             "current_meeting": None,
             "next_meeting": None,
@@ -127,9 +164,9 @@ class TestCalendarGreeting:
 
             result = await handler.respond(greeting_intent)
 
-            # Consciousness-aware formatting may use different phrases (Issue #633-638)
             msg = result["message"].lower()
-            assert "clear" in msg, f"Expected mention of clear calendar, got: {result['message']}"
+            assert "clear" not in msg, result["message"]
+            assert "took a look at your calendar" not in msg, result["message"]
 
     @pytest.mark.asyncio
     async def test_greeting_with_current_meeting(self, handler, greeting_intent):
