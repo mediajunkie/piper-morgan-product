@@ -1649,3 +1649,37 @@ THE CONTRACT: ⭐ AN ASSERTION ABOUT SYSTEM STATE REQUIRES A READ OF THAT STATE.
 FTUX five (#1536-#1540) → Production milestone + PUB sprint, ALL FIVE (including the CXO-contested #1536). PM explicitly clarifies/overrides the 08-07 blanket statement ("alpha-feedback findings we act on are Beta Blockers"): something can be discovered in alpha AND deliberately deferred pre-beta — that is what Production/PUB placement means, front-loaded during Production work because the beta stays invite-only until the PUB sprint completes. PM: "I'm comfortable with my placement of those issues and with clarifying or overriding my needlessly blanket statement from earlier." CXO's tension (prep memo 08-09) is thereby resolved: "out of alpha" = the public beta. PPM's hold state on the five ends; boards written by Lead.
 2026-08-10 ~10:45 PT [Lead, PM amendment moments later]: "if CXO feels that one of the issues should be kept in the MVP milestone, I am inclined to defer to that and err on the side of including." CXO's on-record position (prep memo 08-09) argues exactly one — #1536 COLDSTART — for the private-beta gate. Applied: #1536 → MVP milestone + Beta Blockers sprint; #1537-#1540 remain Production/PUB. Gate criteria for 1536 are the converged three properties (own-data-first-exchange = gate; no-fabricated-entities = gate via citation per Arch's H1 clarify; only-Piper-could = conformance).
 2026-08-10 ~10:55 PT [Lead, relaying PM in-conversation ruling]: #1190 APPROVED per Lead recommendation — close_issue/reopen_issue flip WRITE → DESTRUCTIVE in the effect enum (they were classified WRITE on recoverability grounds; PM rules the blast-radius protection is the point). The #1190 confirmation turn builds against needs_confirm (= effect == DESTRUCTIVE), using the pending-offer store as the pending-ACTION carrier — deliberately designed so the same machinery later binds #1571's drafted-issue continuation. Answers the open threshold question recorded on #1190 (08-09).
+
+---
+2026-08-10 18:4x PT — Arch — STANDING CONVENTION ADOPTED: state a ruling's SCOPE inside the ruling
+
+EARNED THREE TIMES IN ONE FORTNIGHT, each costing someone else rework:
+  1. I ratified the inversion's DIRECTION; the proposal's "the pre-classifier as a ROUTER dies" clause rode
+     along on my GO. Lead's probe falsified it and I had to narrow my own ratification the same day.
+  2. I ruled `needs_consent = effect >= WRITE` against PA'S SPEC'S parallel `ToolEffect`, not the landed
+     `EffectClass` — ruled on a COPY; PA had to reconcile two definitions of one concept.
+  3. My fabrication material sat ADJACENT to CXO's storefront finding, and CXO filed a tense-and-audience
+     finding under a fabrication heading.
+⭐ CXO'S DIAGNOSIS REFRAMES ALL THREE AS MINE RATHER THAN READER ERROR: "PROXIMITY DOES ATTRIBUTIVE WORK. A
+  finding placed next to a contract reads as governed by it, whether or not anyone says so. The document's
+  structure asserted something its sentences didn't." I had been treating these as misreadings; they are a
+  property of HOW I FILE.
+
+THE CONVENTION (recorded in arch-carry-forward; applies before any ruling ships):
+  1. NAME THE OBJECT the ruling is about — not "the effect enum" but "EffectClass in shared_types.py, not
+     PA's spec's parallel ToolEffect." Half this week's rework was ruling on a copy.
+  2. NAME AT LEAST ONE THING THE RULING DOES NOT COVER, especially the adjacent thing a reader would most
+     plausibly assume it does. CONTROL CASE: the #1484 gate ruling did exactly this ("does not fix #1481,
+     does not close #1485's class") and was not over-read once.
+  3. IF RATIFYING A DOCUMENT, SAY WHICH CLAUSES — a ratified DIRECTION is not a ratified SENTENCE.
+  ⚠️ Same discipline for PLACEMENT: material filed adjacent to a contract inherits its apparent scope. If
+  adding something a contract's enforcement cannot reach, SAY SO IN THE MATERIAL, not the covering memo.
+
+CONTEXT — the #1536 thread closed itself without me, and produced one reusable finding worth recording:
+  ⭐ PPM: "A CRITERION THAT ONLY FIRES WHEN ANOTHER CRITERION ALREADY FIRES IS A LABEL, NOT A GATE — and it
+  inflates the gate's apparent thoroughness." Same shape as AC4 (which I called a phantom denominator on
+  08-10). Third instance in that thread; the cure is deletion or demotion to a diagnostic note, not placement.
+  CXO kept item (i) as a diagnostic note rather than deleting the sentence, explicitly because "a future
+  editor's looser version might gate against the behaviour we want" — preserving the reasoning against a
+  wrong revival, which is the same move as leaving my own withdrawn recommendation visible in the
+  release-train sketch.

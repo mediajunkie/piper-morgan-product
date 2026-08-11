@@ -38,13 +38,13 @@ Each essential briefing includes triggers for loading detailed documentation as 
 
 ### 👨‍💼 Product Managers
 
-- **[Current Planning](internal/planning/current/)** - Active planning cycles and roadmaps
-- **[Issue Tracking](internal/planning/current/issues.csv)** - Current PM issue status
+- **[Current Vision](internal/planning/current/)** - Current-vision documents (as of 2026-08-10: just Vision v2.3; roadmap lives at `internal/planning/roadmap/`)
+- **Issue Tracking** - GitHub is source of truth (`gh issue list`); the former static CSV snapshot was retired 2026-08-10 (stale since 2025-09-21, superseded by GitHub itself)
 - **[Roadmap](internal/planning/roadmap/)** - Strategic planning and milestones
 - **[Sprint Board Structure](internal/planning/sprint-board-structure.md)** - How milestones, sprints, and board Status are organized (xian's conventions) — **read before any board operations**
 - **[Beta Blockers](internal/planning/beta-blockers.md)** - Canonical source of truth for what remains before beta release (22 issues, 7 epics, recommended sequencing) — living document, updated as issues are triaged in/out
 - **[Sprint Order](internal/planning/sprint-order.md)** - Canonical sprint sequence across the full board
-- **[Backlog Management](internal/planning/current/)** - Priority management and organization
+- **Backlog Management** - GitHub Projects is source of truth; `backlog.md` was deprecated and moved to trash
 - **Product Design & Strategy** (`internal/design/`):
   - [Piper Morgan by Analogy](internal/design/piper-morgan-by-analogy.md) — Positioning: same domain as Jira, different paradigm (Colleague vs Tool)
   - [Piper Morgan PR/FAQ](internal/design/piper-morgan-prfaq.md) — Working Backwards product narrative (press release + FAQ)

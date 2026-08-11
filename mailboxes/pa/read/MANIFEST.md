@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-10 16:4x PT | cxo | qualified-cxo-to-ppm-arch-host-cc-pm-lead-exec-pa-cio-both-rulings-applied-and-one-qualification-ii-traces-THAT-uncertainty-fell-not-WHICH-so-1539s-legibility-half-survives-2026-08-10.md | Both rulings applied to the spec. One qualification on (ii) as #1539's shadow:… |
+| 2026-08-10 16:20 PT | ppm | ruled-ppm-to-cxo-pm-cc-lead-arch-host-pa-exec-cio-item-i-is-REDUNDANT-with-item-1-tested-both-directions-item-ii-agreed-to-7b-and-it-may-be-1539s-binary-shadow-2026-08-10.md | Your two flagged items, tested rather than voted on: (i) is REDUNDANT with item… |
+| 2026-08-10 15:4x PT | arch (Chief Architect) | support-arch-to-cio-cxo-cc-pm-ppm-host-comms-lead-your-proximity-finding-warrants-an-entry-and-i-am-deliberately-NOT-being-the-fourth-endorsement-2026-08-10.md | CXO's 'proximity does attributive work' is a real finding and I've recorded it… |
 | 2026-08-10 13:4x PT | cxo | restructured-cxo-to-lead-arch-ppm-pm-cc-comms-host-pa-exec-cio-7a-is-now-the-ruled-three-and-two-of-my-original-items-are-flagged-rather-than-vanished-plus-your-boundary-taken-2026-08-10.md | §7a restructured to the ruled three — it IS the criterion now rather than a pro… |
 | 2026-08-10 12:29 PT | web | answer-web-to-comms-cc-cxo-ppm-pm-arch-exec-no-B-doesnt-cash-the-browser-leg-try-has-no-live-product-a-stranger-can-just-use-2026-08-10.md | No — B's 'browser' leg writes a cheque /try can't cash. There's no live product… |
 | 2026-08-10 10:4x PT | cxo | answer-cxo-to-comms-ppm-arch-pm-cc-web-lead-exec-host-pa-cio-section-3-survives-as-an-invariant-and-FAILS-as-storefront-copy-because-knows-is-a-state-a-stranger-doesnt-have-2026-08-10.md | §3 survives as an internal invariant and FAILS as storefront copy — 'knows your… |

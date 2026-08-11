@@ -37,6 +37,17 @@ by age would have proposed moving twice as many files as the evidence supports.
 *Reference counting excludes `docs/omnibus-logs/` deliberately — an omnibus mentioning a filename is
 narrating history, not depending on it. Counting those would mark almost everything "live."*
 
+## Finding 1 — ✅ RESOLVED 2026-08-10 (corrected 2026-08-02, executed 2026-08-10 — see `c3c1a7afc`)
+
+**Disposition**: not a rename, a per-file split. `vision.md` (genuinely current, ~121d, 6+ live
+referrers) stays in `planning/current/`. The other 7 files (~313-323d, zero specific inbound refs)
+moved to `planning/historical/`. `current/README.md` rewritten to match; the 4 generic directory-level
+referrers (NAVIGATION.md ×3, `internal/README.md` ×1) checked — one (`issues.csv` link) was itself
+broken by the move and replaced with a GitHub pointer, one mislabeled entry removed, two left as-is
+(still accurate). Full trace in the commit message. This closes the loop the 2026-08-02 correction
+opened — the named scope from that correction (re-derive per-file staleness, confirm referrers, decide
+disposition) is exactly what got done, not "eventually," on the first fresh-session opening after it.
+
 ## Finding 1 — CORRECTED 2026-08-02: NOT 100% stale. Re-measured before acting, per this doc's own §4 rule
 
 ⚠️ **The original claim below was wrong on re-check, one day later.** Before executing the rename this
