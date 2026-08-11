@@ -13,10 +13,32 @@
 | Sync | **0 behind `origin/main`**, working tree clean |
 | Yesterday's log | `dev/2026/08/10/2026-08-10-0902-exec-code-log.md` — **`DAY-CLOSED: 2026-08-10` verified** |
 | Today's log | `dev/2026/08/11/2026-08-11-0621-exec-code-log.md` — open, records this stand-down |
-| Cron | `bbcf593f` @ `32 8,20 * * *` — **session-scoped; it dies with the reboot. RE-ARM IT FIRST on resume**, then verify exactly one job via `CronList` |
+| Cron | ⏸ **PARKED DELIBERATELY at 06:40 PT** — see §0a. Schedule to restore: **`32 8,20 * * *`**. **RE-ARM FIRST on resume.** |
 | Registry row | `dev/active/duty-cycle-registry.tsv`, line `exec` — currently `active`. If the seat stays dark past a day, park it with a falsifiable clearing condition |
 | Work in hand | **None.** Nothing parked mid-flight, nothing half-written |
 | Inbox | **2 unread, both cc-only, deliberately not triaged** (see §4) |
+
+## 0a. ⏸ YOUR SCHEDULE IS PARKED — restore it before anything else
+
+**I cancelled my own duty-cycle schedule at 06:40 PT on 2026-08-11**, deliberately, before Amber's reboot. Two reasons, both from Pard's stand-down: no fire should arrive after the handoff was written (work done then isn't covered by it), and **a schedule killed by a reboot is invisible afterwards** — the seat comes back looking healthy and quietly never fires again.
+
+**Mechanism**: session-scoped `CronCreate`. It is in-memory, never written to disk, and leaves **no trace** after the session ends. There is no file to inspect and nothing will remind you. **This paragraph is the only record.**
+
+**Restore it as your first action on resume:**
+
+```
+CronCreate   cron: "32 8,20 * * *"   recurring: true
+prompt: DUTY CYCLE TICK — Exec (Chief of Staff). Run the `duty-cycle-tick` skill and follow it
+exactly. Constants: role=exec, worktree=/Users/xian/Development/piper-morgan-worktrees/exec,
+branch=claude/exec-cycle, cron=32 8,20 * * *, model=Opus 5. End every fire with:
+scripts/duty-cycle-heartbeat.sh exec {START|WATCH|WORK|STOP} --if-quiet
+```
+
+Then **`CronList` to verify exactly one job** — the delete-then-create discipline exists because a bare create stacks a duplicate on a job that may still be alive.
+
+**Cadence context**: `32 8,20` is 2x/day, the run-lean throttle this role has carried since the migration hold. The pre-throttle expression is `32 6,9,12,15,18,21` (6x/day) — **do not restore that one without PM's word.** The registry row (`dev/active/duty-cycle-registry.tsv`, line `exec`) records `32 8,20` and a 13h threshold; it currently reads `active` and will be **wrong** for as long as the seat is dark. If the seat stays down beyond a day, park the row with a falsifiable clearing condition — *"clear only when a cron job is actually armed."*
+
+**Not mine**: `com.designinproduct.janus-cycle` is the one host-level LaunchAgent on this machine. It belongs to Janus, survives the reboot on its own, and must not be touched by this seat.
 
 ## 1. Read these first, in this order
 
@@ -66,4 +88,4 @@ Both cc-only, both from 08-10, both in `mailboxes/exec/inbox/`. **Not triaged be
 
 You have everything above plus ~1,100 memos in `mailboxes/exec/read/` and the full session-log history under `dev/2026/`. **The single most useful orienting move**: read yesterday's session log end to end, then run `python3 scripts/sprint-truth.py` and `python3 scripts/discovery-rate.py`. Those two commands plus that one log reconstruct the state of play faster than anything else here.
 
-— Exec, standing down 2026-08-11 06:25 PT
+— Exec, standing down 2026-08-11 06:25 PT · **schedule parked 06:40 PT, restore per §0a**
