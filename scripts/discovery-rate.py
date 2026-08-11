@@ -21,6 +21,7 @@ Requires: gh CLI authenticated. Uses REST (survives GraphQL quota exhaustion).
 """
 
 import json
+import re
 import subprocess
 import sys
 from collections import Counter
@@ -49,6 +50,24 @@ def fetch_issues(since: datetime) -> list:
             if datetime.fromisoformat(i["created_at"].replace("Z", "+00:00")) >= since]
 
 
+CLASS_RE = re.compile(r"^\s*Class:\s*(.+?)\s*$", re.MULTILINE | re.IGNORECASE)
+
+
+def issue_class(issue: dict) -> str:
+    """The `Class:` tag from an issue body, or "" if untagged.
+
+    Exec's amended contract (2026-08-10) measures the NEW-CLASS rate, not the
+    raw rate: raw cannot distinguish "the fix worked" from "PM tested less" —
+    same curve, opposite readings. The class vocabulary lives at
+    docs/internal/operations/failure-class-vocabulary.md.
+    """
+    m = CLASS_RE.search(issue.get("body") or "")
+    if not m:
+        return ""
+    # "NEW — foo" and "NEW: foo" both mean a newly-named class; keep the name.
+    return m.group(1).lstrip("—:- ").strip()
+
+
 def main() -> None:
     weeks = int(sys.argv[1]) if len(sys.argv) > 1 else 8
     now = datetime.now(timezone.utc)
@@ -75,6 +94,59 @@ def main() -> None:
     print()
     print("contract: structural work should BEND this downward from 2026-08-08;")
     print("flat/rising at 2026-09-01 => the hard conversation, with this data.")
+
+    # ---- NEW-CLASS rate (Exec's amended contract, 2026-08-10) ----------------
+    # Reports its own coverage FIRST and refuses to compute a rate it cannot
+    # support. An unclassified corpus must read as "not measured", never as
+    # "no new classes" — that is the m-44 failure this instrument would
+    # otherwise reproduce (a false all-clear is emitted identically to a real
+    # one). See failure-class-vocabulary.md class 5.
+    tagged = {i["number"]: issue_class(i) for i in issues if issue_class(i)}
+    print()
+    print("NEW-CLASS RATE — of this week's findings, how many are already-named classes?")
+    print(f"coverage: {len(tagged)} of {len(issues)} issues carry a `Class:` tag "
+          f"({100 * len(tagged) // max(len(issues), 1)}%)")
+    if not tagged:
+        print("  NOT MEASURED — no issue in the window carries a `Class:` tag.")
+        print("  This is a coverage gap, NOT a finding of zero new classes.")
+        print("  Add `Class: <family>` at filing time; vocabulary at")
+        print("  docs/internal/operations/failure-class-vocabulary.md")
+        return
+
+    # A class is "new" in the week it first appears anywhere in the window.
+    first_seen: dict = {}
+    for i in sorted(issues, key=lambda x: x["created_at"]):
+        c = issue_class(i)
+        if c and c not in first_seen:
+            created = datetime.fromisoformat(i["created_at"].replace("Z", "+00:00"))
+            first_seen[c] = int((now - created).days // 7)
+
+    # Per-week COVERAGE, because a week with no tagged issues has zero coverage
+    # and NOT zero new classes. Printing "(all previously named)" for an
+    # untagged week is the false-clear this instrument is supposed to detect.
+    tagged_per_week: Counter = Counter()
+    for i in issues:
+        if issue_class(i):
+            created = datetime.fromisoformat(i["created_at"].replace("Z", "+00:00"))
+            tagged_per_week[int((now - created).days // 7)] += 1
+
+    print()
+    for w in range(weeks - 1, -1, -1):
+        start = (now - timedelta(weeks=w + 1)).date()
+        end = (now - timedelta(weeks=w)).date()
+        new_here = sorted(c for c, wk in first_seen.items() if wk == w)
+        label = "this week →" if w == 0 else f"{start}..{end}"
+        if not tagged_per_week[w]:
+            print(f"  {label:>24}    – NOT MEASURED "
+                  f"(0 of {per_week[w]} issues tagged)")
+            continue
+        cov = f"[{tagged_per_week[w]}/{per_week[w]} tagged]"
+        print(f"  {label:>24}  {len(new_here):3d} new {cov:>16}  "
+              f"{', '.join(new_here) if new_here else '(all previously named)'}")
+    print()
+    print("read: falling NEW-CLASS count = convergence (we keep finding the same")
+    print("families). Falling RAW count alone proves nothing — it reads the same")
+    print("whether the structural work landed or PM simply tested less.")
 
 
 if __name__ == "__main__":
