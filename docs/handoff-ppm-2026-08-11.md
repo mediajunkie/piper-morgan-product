@@ -2,9 +2,11 @@
 
 **Role**: Principal Product Manager (PPM) · slug `ppm-code`
 **Worktree**: `~/Development/piper-morgan-worktrees/ppm` (Model A) · branch `claude/ppm-cycle`
-**Cron at stand-down**: `25f1a782` — `52 6,9,12,15,18,21`, six fires/day. **Session-only; it does NOT
-survive the reboot.** ⚠️ **On resume, `CronList` will show ZERO — re-arm immediately (Gap-C self-heal)
-and note it in the fire entry.** The prompt text to restore is reproduced in §6.
+**Cron**: 🅿️ **PARKED DELIBERATELY 2026-08-11 07:20** (was `25f1a782`, `52 6,9,12,15,18,21`,
+session-scoped). **`CronList` verified: no scheduled jobs.** ⚠️ **On resume it will still read zero —
+that is expected and deliberate, NOT a Gap-C failure.** **Restore it from §6, which now holds the
+schedule and the FULL prompt verbatim** (it previously held only a pointer to the job id, which no
+longer exists).
 
 **Written for the case where resume fails for me specifically.** A cold start can pick up from this
 file plus `dev/active/ppm-carry-forward.md`.
@@ -64,14 +66,87 @@ no open log for today and nothing parked mid-task.
 
 ---
 
-## 6. Cron prompt to restore on resume
+## 6. 🅿️ CRON DELIBERATELY PARKED — schedule + full prompt recorded here
 
-Re-arm `52 6,9,12,15,18,21` with the prompt currently in `25f1a782`. Its load-bearing clauses:
-**heartbeat first (clock-checked, not tick-order)** · **no standing owed item, and delete any owed
-block the fire it completes** · **stacked ticks = one wake; CronList before diagnosing** · **Step 0
-verifies the PRIOR day's sentinel** · **delete-then-create at STOP, CronList-verify exactly one** ·
-plus the standing lines in §4 above (dates, milestone sequence, surfaces, counts, audit bias, general
-contracts, proxies, mail-send).
+**Mechanism: session-scoped `CronCreate` (`CronList` labels it `[session-only]`).** It dies with the
+reboot and **leaves no trace** — so it was **cancelled deliberately at 07:20 on 2026-08-11**, per
+Pard's second stand-down notice, rather than left to be killed silently.
+
+**Two reasons it was parked rather than left running:**
+1. **No scheduled fire arrives between the handoff being written and the reboot** — work done after
+   this file was written would not be covered by it.
+2. ⭐ **A schedule killed by a reboot is invisible afterwards.** The seat comes back looking healthy
+   and quietly never fires again. **Parked-and-written-down survives; killed-and-forgotten doesn't.**
+
+> ⚠️ **THIS SECTION IS THE ONLY COPY.** It previously said *"the prompt currently in `25f1a782`"* — a
+> pointer to a job that **no longer exists.** The literal text is now inlined below, and the prompt was
+> transcribed **before** the delete for exactly that reason.
+
+### Schedule
+
+```
+52 6,9,12,15,18,21 * * *     (recurring, six fires/day)
+```
+First fire of the day = **START** · last (21:52) = **STOP** · all others = **WORK**.
+
+### Prompt — restore verbatim
+
+```
+DUTY CYCLE TICK — role: PPM (Principal Product Manager), slug ppm-code.
+Worktree: /Users/xian/Development/piper-morgan-worktrees/ppm (Model A, branch claude/ppm-cycle).
+Cron: 52 6,9,12,15,18,21 — first fire of the day = START, last (21:52) = STOP, all others = WORK.
+
+FIRST ACTION: emit the wake heartbeat — scripts/duty-cycle-heartbeat.sh ppm <TYPE> — passing this
+fire's ACTUAL dispatch type. Check the CLOCK, not the tick order: past 21:52 is STOP even if earlier
+fires were missed.
+
+⛔ NO STANDING OWED WORK ITEM.
+⚠️ RULE, earned twice: if you add an owed item here, DELETE IT THE FIRE IT COMPLETES. A stale
+instruction in a prompt read six times a day is a standing order to redo finished work.
+
+Read dev/active/ppm-carry-forward.md for current state. Then run the duty-cycle-tick skill exactly
+(START / WATCH / WORK / STOP).
+
+If SEVERAL ticks arrive stacked, that is ONE wake, not several. Run CronList: exactly one job means
+the fires QUEUED, not a cron failure. A cohort-wide account freeze causes this too and is invisible
+from inside a seat — do not diagnose the cause from your own vantage.
+
+STEP 0: verify the PRIOR day's log carries its DAY-CLOSED sentinel before starting today's work.
+
+RE-ARM RULE: at STOP, CronDelete-old THEN CronCreate-new, and verify with CronList that exactly ONE
+job exists. If CronList shows ZERO at any fire, re-arm immediately and note it in the entry.
+
+DATES: do not carry a beta date here. It has been wrong twice. Beta moved back a month 2026-08-08;
+the date is PM's to set.
+
+MILESTONE SEQUENCE (PM, 2026-08-09): MVP → Production → Fast Follow. "Not MVP" NEVER defaults to
+Fast Follow. Production = required for PUBLIC beta, worked in the PUB sprint.
+
+BEFORE RE-ASKING PM ANYTHING: check GitHub first. Items have twice been answered by ACTION not answer.
+
+SURFACES: the web UI is NOT going away. The modeled UX is holistic, expressed per surface (phone,
+Slack, web, other-chat, CLI — all maintained). "Which surface survives" is a false question.
+
+COUNTS: never report a total without its parts. Use scripts/sprint-truth.py output verbatim. It is
+milestone-scoped — unmilestoned work is invisible to it by construction.
+
+AUDIT BIAS: when someone proposes elevating YOUR artifact, audit it before accepting. Unaudited is
+not sound. Corrections are evidence of attention, not of fault.
+
+GENERAL CONTRACTS: before citing one as closing your hole, check it actually reaches your case.
+
+PROXIES: a proxy is safe when the remainder is ROUTED, dangerous when merely IMPLIED. Say "gateable
+fraction", never "shadow" — shadow implies substitution and lets the remainder disappear.
+
+MAIL-SEND CAN FAIL SILENTLY: a transient "fetch origin/main failed" leaves the memo unsent with no
+other signal. Read the tail of every send; verify it landed before saying you sent it.
+```
+
+### On restore
+
+**Re-arm with the above, then `CronList` to verify exactly ONE job exists.** ⛔ **Do not treat the
+first post-reboot tick as evidence the schedule is armed** — a manually-delivered tick and a scheduled
+fire look identical from inside the session. **Only `CronList` distinguishes them.**
 
 ---
 

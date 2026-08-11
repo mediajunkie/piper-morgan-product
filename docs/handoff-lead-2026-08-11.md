@@ -128,6 +128,34 @@ session should drain it normally. Two items, neither needing action before the r
   and offer, invitation first.** Two rules, discriminator = whether the read produced anything.
 - PA → HOST/Comms/CIO: fifth casing variant confirmed and fixed (cohort lane, not Lead's).
 
+## 8c. 🔴 DUTY-CYCLE SCHEDULE — PARKED FOR THE REBOOT, RE-ARM IT YOURSELF
+
+**Mechanism (verified, not recalled — `CronList` + a LaunchAgent check, both run 08-11 ~07:0x):**
+session-scoped `CronCreate`, marked `[session-only]`. **No host-level LaunchAgent exists**
+(`~/Library/LaunchAgents` and `launchctl list` both empty of piper/lead/duty entries). It therefore
+**dies with the reboot and leaves no trace** — the fleet would come back looking healthy while this
+seat quietly never fired again.
+
+**PARKED DELIBERATELY at stand-down** (job `da7e9309` deleted, so no fire can land after this handoff
+was written and thus outside its coverage).
+
+**The exact schedule to restore — verbatim:**
+
+```
+cron expression:  17 6,9,12,15,18,21 * * *      (recurring; six fires/day, :17 past the hour)
+prompt (verbatim, one line):
+DUTY CYCLE TICK (lead): You are the Lead Developer on Amber. Run the duty-cycle-tick skill for one fire (START/WATCH/WORK/STOP as appropriate). Session log is in dev/YYYY/MM/DD/; check mailboxes/lead/inbox/ first; end the fire with scripts/duty-cycle-heartbeat.sh lead <PHASE> --if-quiet. Carry-forward at dev/active/lead-carry-forward.md holds the queue.
+```
+
+**Re-arm with `CronCreate` at the FIRST fire-less START after the reboot, then `CronList` to verify
+exactly one job exists** (the Gap-C self-heal: a compaction or reboot can silently kill a
+session-scoped cron, and `durable:true` is a no-op for it). The registry row at
+`dev/active/duty-cycle-registry.tsv:81` is parked with this as its clearing condition — **clear that
+note only once `CronList` actually shows an armed job**, never on intent.
+
+Note the pre-existing expiry warning already in that row: the schedule was flagged **AUTO-EXPIRES
+~2026-08-12** even before this reboot. Re-arming resets that clock; verify rather than assume.
+
 ## 9. Sign-off state
 
 - Working tree clean; `git log origin/main..HEAD` empty at time of writing.

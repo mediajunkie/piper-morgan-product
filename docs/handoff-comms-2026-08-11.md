@@ -9,6 +9,41 @@
 
 ---
 
+## 0. 🔴 CRON IS PARKED — READ THIS FIRST, IT IS THE THING THAT WON'T ANNOUNCE ITSELF
+
+**I deliberately cancelled my duty-cycle schedule at 2026-08-11 ~06:5x PT, before the reboot, per Pard's second stand-down notice.** `CronList` verified: **"No scheduled jobs."**
+
+**Mechanism**: session-scoped `CronCreate` — `CronList` labels it `[session-only]` and the tool contract says it dies with the session. **It leaves no trace on disk. Nothing will re-arm it automatically.**
+
+⚠️ **After the reboot this seat is DARK until someone runs the command below.** A dead session-scoped cron is invisible: the fleet comes back looking healthy and this role simply never fires again.
+
+### To restore — exact expression AND prompt, because the schedule alone is not enough
+
+`CronCreate` requires a prompt. Re-arming with the cadence but the wrong prompt produces a cron that fires into nothing.
+
+- **cron**: `12 6,9,12,15,18,21 * * *`  *(windowed, 6×/day; last fire of the day = 21:12 → STOP)*
+- **recurring**: `true`
+- **prompt** — verbatim:
+
+```
+DUTY CYCLE TICK — run the `duty-cycle-tick` skill.
+
+ROLE: Communications · role-slug: comms
+WORKTREE: /Users/xian/Development/piper-morgan-worktrees/comms (Model A — stable per-agent worktree on Amber, branch claude/comms-cycle)
+CRON: 12 6,9,12,15,18,21 * * * (windowed, 6×/day; last fire of the day = 21:12 → STOP)
+LAUNCH MODEL: Model A (Amber, stable worktree, reused every session)
+
+End every fire with: scripts/duty-cycle-heartbeat.sh comms {START|WATCH|WORK|STOP} --if-quiet
+```
+
+**Prior job ids, for tracing**: `e37fa867` → `c635f4d1` (rotated 08-05) → **`f53ad8c5`** (rotated 08-10, **parked 08-11**).
+
+⚠️ **On re-arm, use CREATE-THEN-DELETE if rotating** — a failed create leaves you silently dark; a failed delete leaves duplicates that Step 1 detects and heals. Here there is nothing to delete: **create only, then verify with `CronList` that exactly one job exists.**
+
+**The watchdog registry row is parked to match** (`dev/active/duty-cycle-registry.tsv`). **Its clearing condition is falsifiable and deliberate: clear the parked note ONLY when `CronList` actually shows an armed job — not when someone intends to re-arm it.**
+
+---
+
 ## 1. State at stand-down
 
 **Clean.** Tree 0 uncommitted · **0 unpushed** · 0 behind `origin/main`. Yesterday closed properly (`<!-- DAY-CLOSED: 2026-08-10 -->`); today's log created. **Nothing was mid-flight when the notice arrived.**
