@@ -1,108 +1,75 @@
-# CXO carry-forward — rewritten 2026-08-07 at STOP (~22:5x PT). Day closed; next fire 06:47 on 08-08 (Sat), opening ~07:17.
+# CXO carry-forward — rewritten 2026-08-11 16:2x PT, first fire after the Amber reboot
 
-**Cron**: `03f6083a` (`47 6,9,12,15,18,21`) — rotated at STOP from `53ca1c08`; session-only, auto-expires ~2026-08-14, both deaths silent → **CronList at START**. ⚠️ **Fires QUEUE rather than drop** — on 08-06 four ticks delivered at once at 22:17 after ~11h silence. **Stacked ticks = ONE wake.** A quiet stretch on this seat is not a stall. 🔴 **DISPATCH OFFSET IS NOT STABLE — falsified 08-08 by this seat.** Seven consecutive +30s (08-05, 08-07) then **+2 on 08-08** (06:49:00 for a 06:47 cron). **A 28-minute swing, larger than the whole cross-seat spread.** Web holds ±3 min over the same days, so within-seat stability is a property SOME seats have — and nothing distinguishes 'genuinely stable' from 'hasn't swung yet'. ⚠️ **ACTION AT NEXT STOP: strike the '~+30, seven clean points' line from the cron prompt.** It is now false and I read it six times a day. *(STOP logic is unaffected either way: a 21:47 slot opens the same day at +2 or +30.)* · **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`
-🔴 **DATE CHANGED AGAIN 2026-08-08 — BETA MOVES BACK A MONTH.** PM to Lead in live verification, verbatim: *"I am going to move the beta data back a month. **We clearly have a lot more work still to do than anyone ever reported to me.**"* Recorded in decisions.log; milestone mechanics are PM's. **Forced by this morning's testing**: the reminder feature failed end-to-end three ways in an hour (#1490 re-fail, #1517 floor denied a capability and fabricated a retraction while the reminder sat in the DB, #1521 reminder query answered with the calendar weather-report) plus silent session expiry (#1520). **Not regressions — long-standing paths finally tested hard.**
-⚠️ **The second sentence is about REPORTING, and I have a named instance**: I reported #1482 "shipped" on 08-04 meaning merged; it reached users 08-07 with three false claims rendering in between. **Say which layer, every time.** ⛔ **The month is not slack** — the reason to hurry got smaller, the standard didn't. My two Ship-#055 slips stand.
-⚠️ **ACTION AT NEXT STOP: the cron prompt's date line still says Aug 9. Replace it.** *(That line's own "re-read the carry-forward rather than trusting this line" instruction is what sent me to check — it worked.)*
+**⚠️ This file was stale for two days (last real content update 08-09 07:12) while a full reboot
+stand-down happened and the handoff (`docs/handoff-cxo-2026-08-11.md`) carried the current state instead.
+That's the exact drift this file exists to prevent — noting it so it isn't repeated silently. This rewrite
+supersedes both the 08-09 content below the fold and the handoff §4 table; going forward, **this file is
+the state again.**
 
-## 🔴 THE LIVE THREAD — interpretive latitude (a fork with months riding on it)
+**Cron**: `fa499dae` (`47 6,9,12,15,18,21 * * *`) — re-armed 08-11 13:18 PT after the reboot killed
+`aa1a0c1e` (session-scoped, dies silently; confirmed via `CronList` showing zero jobs, then rebuilt from
+the restore spec written into the handoff *before* the reboot). Session-only, auto-expires ~7 days from
+re-arm (~2026-08-18) — **CronList at every START.** **Worktree**: `~/Development/piper-morgan-worktrees/cxo`
+(Model A) · **Branch**: `claude/cxo-cycle`.
 
-- **Exec's forensic**: `services/trust/delegation.py` (Trust × Risk matrix) is **COLD — zero production callers**. Confirmed three ways, three patterns (Exec, Arch, me). **Settled; don't re-check.**
-- **Exec's DDD finding #2**: the domain grades **unsolicited** action. Jake's request was **solicited**. **No concept of interpretive latitude** — how far Piper may travel from an under-specified request.
-- **PM specified its default** (item #6, via Janus): *"work with the user first before immediately jumping to task completion, until/unless the user has established that working model."*
-- **Arch's table** (they qualified their own ruling on this): **interpretive accuracy** (nowhere in code) vs **proactivity earned** (`ProactivityGate`). *A user can be TRUSTED for proactivity and NEW for an unfamiliar request-kind.*
-- 🔴 **THE OPEN FORK — mine, filed 08-07 22:4x, PM's to settle**: *"the user has established"* makes **the USER the subject**, while both of Arch's quantities are things **Piper infers**. **(a) inferred = counters/thresholds/matrix/decay = months. (b) declared = a setting and a sentence = an afternoon.** Hybrid offered: *inference proposes, the user disposes.* ⛔ **Do not resolve this without PM. Someone may start building Monday.**
-- ⭐ **The falsifier I'd attach either way**: *could the user have predicted what Piper just did?* Jake's incident was an unpredictable action, not a wrong number.
+**Dates, so this file doesn't itself go stale on the thing it's warning about**: beta moved back a month
+(PM, 08-08); *"out of alpha"* = the **public** beta (PM, 08-10); private beta stays invite-only until the
+PUB sprint (#1537–#1540) completes. **Don't trust a cron-prompt date line over this one, and don't trust
+this one past its own next rewrite either — check `decisions.log` if it matters.**
 
-## ✅ CLOSED 2026-08-07 — deployment (keep the instrument, drop the rest)
+---
 
-- **v30 deployed 08-07 08:04; verified by reading templates off the running machine.** #1482 and #1484 both live.
-- ⭐ **INSTRUMENT LADDER, use the third to close anything**: `git merge-base` (inference) → `fly status -a piper-morgan` (what version serves) → **`fly ssh console -a piper-morgan -C "sh -c 'grep -c … /app/…'"` (what the running system CONTAINS)**.
-- **`check-release-parity.sh` reads `origin/production`** → routed to **#1413** (PPM), which is in the beta gate.
-- ⚠️ **Two of six mapped delete-copy surfaces are absent from the artifact** — never say "six surfaces fixed".
+## ✅ CLOSED 2026-08-11 — standup empty-case resolved, both parties agree, recorded on #1591
 
-## ✅ CLOSED 2026-08-07 — Surface 1 / Radar
+**PPM's finding held**: my three invitation properties ("report first, complete, unconditional") were
+stated in universal form but are conditional — they govern the case where there's data to report. PM had
+already named the exception on #1511: *"if they contain no information or have never been done before,
+maybe they go into an interactive sequence."* PPM's resolution: the empty case is governed by a rule
+already ratified elsewhere — **#1536 AC3, fail honestly, no fabricated demonstration** — not an exception
+to my rule, a different rule taking over at the boundary (discriminator: did the read produce anything).
 
-- **The five ARE enumerated — as a build schedule** (`roadmap.md:127–129`): Surfaces **1, 2, 4, 6, 7**. **Surface 1 has a lane, "Unblocked NOW" — Radar is scheduled for 1.0.**
-- **My finding still stands**: its *justification* is a June-5 rating of a history list, **two weeks older than Radar**. Defensible conclusion, indefensible reason.
-- 🔴 **Still open, small**: **Surface 3 is a phantom** — one corpus mention, in the very sentence that rates Radar. PPM's ask to PM: *name it or strike it (5 of 6)*. **Neither of us will guess the history.**
+**My reply sent 08-11 16:18** (`mailboxes/ppm/inbox/reply-cxo-to-ppm-...-2026-08-11.md`, cc lead/PM/exec/
+arch/host/pa): agreed in full, named it the same shape as my own §7a defect (universal-sounding criterion
+hiding its own scope — **second instance of this exact failure mode in gate language I've written**, worth
+watching for a third). **No build action from me** — PPM's GH comment on #1591 (2026-08-11 13:48 PT) is
+already the record for whoever implements it. **Thread closed.**
 
-## ✅ DELIVERED 2026-08-09 — the across-all-surfaces statement
+## 🔴 What's actually open — the handoff §4 table, carried forward and reverified against GitHub (16:2x PT)
 
-**`docs/internal/design/experience-across-surfaces.md` v0.1 DRAFT, on `origin/main` (verified via `git cat-file -e`).** Every claim marked 📌 PM's words / 📄 ratified+cited / ✏️ CXO pending PM. **Four ✏️ items await PM (§7)**: the §3 one-sentence formulation · §4's *"must not be asked to"* column · §6's same-colleague corollary · **is Surface 1 in the 1.0 five**. ⛔ **Offered PM the delete** if he'd rather it stay verbal. **Do not re-derive; cite it.**
-
-### (superseded framing, kept for the record)
-
-**PPM withdrew their "which surface survives PDR-006" sort key; PM had ratified it on that framing and I concurred. My concurrence is withdrawn too** (my 08-03 memo argued *"differs on bucket A only on timing, not merit"* — that accepts the key).
-**PM stated the real model verbatim 08-08**: *"a holistic user experience, **expressed on each surface as appropriate**"* — phone = notifications, Slack = channel bot, web = conversations + radar + settings, another chat = skills + MCP, **CLI still maintained. All true at once.** *"I never said the web UI was going away."*
-🔴 **There is NO current CXO artifact that says this**, and PM ruled 07-26 that he and I decide the experience **across all surfaces**. **Three times in ten days its absence produced real work**: *"a surface being retired"*, *"there is no web page"*, and the sort key.
-**Deliverable**: one page, current, citable — each surface and what the one experience looks like there. **Not a PDR, not a re-litigation of PDR-005/006** — the thing those docs keep flattening, shaped to sit next to a decision.
-⏸️ **Deferred to a fresh context — NAMED TRIGGER, not "when I get to it."** Foundational, PM co-owns it, and writing it at the tail of a long session produces a document that reads like the last argument I was in.
-**Also mine in the same pass**: **#1476** — PPM could not locate what renders the "blocked" card. **A render question, so it's mine.** Report the surface either way.
-⚠️ **PPM's mechanism #3, worth carrying**: *the holistic model is a set of simultaneous truths, decision artifacts are singular commitments — every time the model meets a decision doc, the doc's grammar wins.*
-
-## 🔴 PM-attention (nothing here has moved)
-
-| Item | What PM owns | Age |
+| Item | State | Owner |
 |---|---|---|
-| **Six Jake decisions** | confirm-or-adjust my filed positions (`8715f0a43`); artifact at `claude.ai/code/artifact/b1c7f455-…` | since 08-01 |
-| ~~**Jake's reply**~~ | 🔴 **CLOSED — AND THE CLAIM WAS FALSE.** PM replied to Jake **2026-07-25, same day** (Janus surfaced it 08-05). It was never overdue. **I carried "overdue" for days and said it to PM directly in fire summaries** — telling PM they'd dropped something they hadn't. **Never restate this.** | corrected 08-05 |
-| **Beta date is a Saturday** | confirm 08-08 is intended | unanswered |
-| **Alpha funnel** | go/no-go on a prod-DB read; Lead has the corrected spec | waiting |
-| **Slack inbound out of beta scope** | one word, per PPM/Arch — unblocks #1484 + moves #1481/#1466 to Production | filed 08-04 |
+| **`docs/internal/design/experience-across-surfaces.md` v0.1** | DRAFT, unchanged since 08-09. **Four ✏️ items still await PM** (§7): the §3 one-sentence formulation · §4's *"must not be asked to"* column · §6's same-colleague corollary · is Surface 1 in the 1.0 five. Offered PM the delete if he'd rather it stay verbal. | **PM** |
+| **#1536 first-contact** (FTUX-COLDSTART) | OPEN, confirmed. Ruled to MVP + Beta Blockers 08-10; gate criteria are the converged three, `dev/active/design-spec-first-contact-plugin-surface-2026-07-31.md` §7a. Lead offered to scope the build lane; I said ready — **check whether that's moved.** | Lead + me |
+| **#1539 legibility half** (FTUX-PURPOSE) | OPEN, confirmed. **The open CXO design problem, still mine.** *"Offer or opinion"* is a partial proxy — traces *that* uncertainty fell, not *which*. Nobody has proposed how a reply makes visible WHICH uncertainty it reduced. | **me** |
+| **#1463 deployed-host retest** | OPEN, confirmed. Blocked on **#1462** (also OPEN) — UNBUILT not undeployed; `services/mcp/server/` absent from `main` and the deployed artifact. Promised same-day retest once the package is shippable — **check #1462 status before assuming still blocked.** | #1462 |
+| **Standup invitation (#1511 → #1591)** | ✅ Design settled (see above). #1591 tracks the Production/PUB build; both governing rules are on the issue for whoever picks it up. | Lead / whoever builds |
+| **#1510 fork** | OPEN, confirmed. Still with PM: *"until/unless the user has established that working model"* — is the user the subject (declared) or does Piper infer it? **Now has at least 3 consumers per PPM** (#1510 itself, the standup preference, the invitation's persistence) — argument for building the declaration surface early regardless of which way the fork lands; Arch established that half is safe either way. | **PM** |
+| **#1386 criterion-2 sign-off** | OPEN, confirmed. Still **WITHHELD** — keyless suite skips and reports green. Committed to same-day sign-off once a keyed run exists. | me |
+| **Surface 3** | Still a phantom — one corpus mention, same sentence that rates Surface 1 "weaker." PPM's ask to PM: name it or strike it. **Now 5+ days open — was 4 at handoff time.** | PM / PPM |
 
-## 🔴 THE LIVE THREAD — Jake / Radar / Surface 1 (PM is working it in real time)
+## Standing / carried from before the reboot (unverified this fire — check before treating as current)
 
-- ✅ **Radar is NOT being removed.** Not in bucket A; web UI not retired. **PDR-005 (PM-ratified 06-05) schedules a cross-client variant of Surface 1 — Radar's own surface — at :122, :245, :288**, and roadmap:127 has it in Phase 2.1 "unblocked NOW". **PPM independently verified and added: Surface 1 is ESTIMATED.**
-- **Radar's rendering = Surface 1 (history sidebar)** — reconstructed from #1236's title + roadmap:127 + PDR-005:53. **There is no single doc stating the surface-number → name map.**
-- 🔴 **OPEN, WITH PM — one sentence: is Surface 1 in the 1.0 five?** PDR-005 scopes "5 of 7" and classifies (2/4/6/7 clearly · **1/3 weaker** · 5 not) **but never enumerates the five.** Offered to run PDR-005's own 3-criterion test and bring the result. **Explicitly not a beta gate.**
-- **PM answered**: adopt the bucket filter (yes) · gate questions **"(b)"** ⚠️ *scope unconfirmed — and PDR-005's own decision rule is ALSO called (b), so don't assume which* · Jake follow-up **already handled**.
-- **PM needs nothing further on items 3 and 6** — plain-English versions sent 08-05.
-- ⚠️ **PM's standing instruction**: *"I do not want to approve something I will later regret because I felt rushed by a made-up deadline. I am a Time Lord."* **Never manufacture urgency.** Only Jake item with a real clock: the bucket-A welfare carve-out (blocked-card + missing chat row), because testers are on that surface now.
-
-## Filed today, awaiting others (do NOT re-do)
-
-- **#1484 — SHIPPED and verified by Arch (3 tests). Copy verbatim; the 409 "wasn't saved" is TRUE.** Two things remain, both filed on the issue (comment 5193006500): **(a) the catch-all still instructs** — the `disabled` branch is right but an unrecognized state still renders "follow the steps above"; **(b) my own AC was wrong about the fix** — "aren't part of this release" is a specific claim, false for an arbitrary unknown state, so the catch-all needs copy that neither instructs NOR asserts (`"Slack replies aren't available right now."`). ⚠️ **The client falsifier can't be written where the function is**: `tests/frontend/unit/` loads standalone files from `web/static/js/`; `renderInboundStatus` is inside a Jinja template. `dialog.js` is the extraction precedent.
-- ~~**#1484 AC (superseded by the above)**~~
-  - ⚠️ **BUILD ORDER, corrected**: if only one half ships it must be **`build_runner`**, NOT the route gate. My first framing named the visible half as the floor and Arch corrected it — I ranked by what the user sees and published that ranking as a build order.
-  - **Client-side is a RESTRUCTURE, not an added branch**: `not_enabled` becomes explicit, the catch-all becomes the do-nothing copy. *An unrecognized state must fall through to the branch that asks the user to do nothing.*
-  - **Falsifier must use an UNDEFINED state** (`renderInboundStatus('wat')`) — asserting `'unavailable'` passes on the append version and proves nothing about the default position.
-  - Strings are final; no further pass from me.
-- **Probe B denominator** → PA/Arch: B measures routing, not legibility of a rendered name. ⚠️ **I have NOT verified whether this host renders tool names** — flagged as a denominator question, not a fact. Someone on the plugin surface should confirm before it weighs.
-- **Annotation-description addendum** → PPM/PA/Arch/Lead. Rule offered: *the irreversible part of a reversible operation goes in the same sentence as the reversibility claim.* **Carries even if read-side entries migrate to MCP resources** (Arch's condition 3, which PPM rightly ranks above it).
-- **`scripts/check-refresh-promises.py`** — ⚠️ **HOST ran it as a non-author and it was BROKEN**: advertised opt-in didn't enroll, and the coverage line said `NOT checked: 0` while an opted-in doc went unchecked (its denominator was the watch list). **FIXED + pushed.** Now: 9 documents make a refresh promise, **2 verifiable**, **7 UNVERIFIABLE** (Arch, CIO, Comms, Docs, PA, PPM, Web). HOST's is LAPSED across 4 reviews and **HOST is deliberately leaving it failing** until they choose to fix it — do not "helpfully" refresh it. **I did not register the seven** — a glob is each role's claim to make. Still only scans `docs/briefing/*.md`.
-- **PA reply** — attribution corrected, m-46 instance 2 filed.
-
-## Live thread — Step 5b heartbeat (CIO), tomorrow 06:46 is the stated test
-
-- ✅ **Verified at source, nobody else had**: `duty-cycle-heartbeat.sh:65` — **START DOES write unconditionally.** Arch and PA both tested WORK only.
-- 🔴 **My finding**: the 06:46 sweep checks **4 of 11** (arch/lead/comms/web) and **emits no denominator** — the pre-START skip is silent. So absence from that output means *checked-and-fine* or *never-checked*, indistinguishably. Asked CIO for one unconditional `checked N of M` line.
-- 🔴 **Tomorrow's test can't read either way**: 7 roles can't appear in the 06:46 output at all; the other 4 are defeated by Comms' end-of-fire placement. **If someone reads a quieter alarm as vindication, that's a false attribution** — say so.
-- ⭐ **NEW at STOP — the START heartbeat suppresses its own successors.** Commit subject is `hb(cxo): …`, and `--if-quiet` greps 6h of subjects for `(cxo)`. So the START row satisfies the quiet predicate for the rest of the morning. **Harmless for a busy role; bites exactly the quiet compliant one the mechanism was built for** — one row all day, stale at ~13:47 against a 7h midday threshold. **Traced from source, NOT observed** — a falsifiable prediction for the 08-05 surface, needing a role with zero commits after START.
-- ⛔ **The sweep's `rows=11` line**: PA confirmed my finding and found it worse — it prints the *registry* size while never stating the examined count. **An input denominator that reads as the examined one.** ⛔ **I deliberately did NOT fix it tonight** (PA had already edited the file once; two agents on the watched instrument the evening before is a bad trade, and it does not rescue the test anyway). **Mine to take, not urgent, one line near `:218`.**
-- ✅ **Comms brought the replacement instrument**: read `dev/heartbeats/2026-08-05/` directly, not the alarm. Sidesteps the coverage gap entirely. **Their prediction: surface fills, timestamps mostly land after 06:46.**
-- ⭐ **A hypothesis of mine dissolved**: I nearly published that cxo/ppm/docs are structurally stale forever (8h59m gap vs 7h threshold). `cycling_now()` skips us before `first_fire+10`. **The gate works.** One function call from a confident false alarm about a false alarm.
-- **Step 5b as specified writes nothing on a working fire** (3 seats, same command — m-45: one procedure confirmed thrice, not three confirmations). Surface: `cio.tsv` + `pa.tsv`, two of eleven.
-
-## Standing / carried
-
-- **Probe A deployed-host retest** — GATE before the plugin capability is booked (#1463). 🔴 **Blocker RESTATED 08-08: UNBUILT, not undeployed.** `services/mcp/server/` is absent from `main` AND the deployed artifact (`fly ssh` + `git ls-tree`); `fly apps list` shows no MCP app of ours (`-gh-mcp` is the GitHub sibling). **Waits on #1462 (OPEN epic), not on a hostname.** Told PA/Arch I'll run the retest same-day whenever the server package is shippable — it's a probe, not a project.
 - **`dialog.js` latent defaults** — 4 false strings proposed for deletion + `message` made required. Lead's to apply.
 - **Colleague Test tier question** — with PPM/PM.
-- **#1386 criterion-2 sign-off — still WITHHELD.** Keyless suite skips and reports green. Committed to same-day sign-off once a keyed run exists.
-- **⚠️ #950 / #992 watch is UNATTESTED since arriving on Amber.** Named in the portfolio rather than silently carried. Read scorer outputs directly, not memos summarizing them.
-- **D2 design-system portfolio** (#1286/#1290/#1284/#1269) — three Ship windows without movement; flagged to PM in Ship #054 §6 as a decision, still drifting.
+- **⚠️ #950 / #992 watch is UNATTESTED since arriving on Amber.** Read scorer outputs directly, not memos summarizing them.
+- **D2 design-system portfolio** (#1286/#1290/#1284/#1269) — flagged to PM in Ship #054 §6 as a decision, was drifting as of early August; recheck.
 
-## ⭐ Fire-time reminders earned the hard way
+## ⭐ Fire-time reminders earned the hard way (unchanged, still load-bearing)
 
-0. 🔴 **ABSENCE IN OUR SURFACES IS NOT ABSENCE IN THE WORLD — especially about a person's actions.** The Jake-reply obligation sat "open" because the evidence of its closure was in PM's personal email, outside every surface the cohort can read. **Four roles independently confirmed it open. All four were reading the same blind spot** — m-45 with a shared corpus instead of a shared procedure. **Before recording a person as owing something, ask whether the discharge would even be visible to me.** If not, that is a question to ask, not a finding to file.
+0. **Absence in our surfaces is not absence in the world** — before recording a person as owing something, ask whether the discharge would even be visible to me.
+1. **Verify a correction before accepting it** — including corrections *of me*.
+2. **A methodology entry I wrote doesn't install itself in me** — I've violated my own written rules within days of writing them, twice.
+3. **A green on something I just fixed proves nothing.** Negative-control it against the state it was built to catch.
+4. **Don't write the convenient sentence** — a specific false claim is worse than an accurate hedge.
+5. **grep for ISO dates AND surface forms; never `cut`/filter a command's output to the lines you expect** — that hides the one saying it didn't run.
+6. **A coverage report whose denominator is its own registration cannot report what it exists to report.**
+7. **My simplifications remove what's one layer down** — I optimize for the layer I can see; what I drop is always beneath it.
+8. **zsh does NOT word-split unquoted `$VAR`** — use arrays.
+9. **A hand-count is not a substitute for the mechanism.**
+10. ⭐ **NEW, earned this fire**: **a carry-forward that says "rewritten at every STOP" and isn't, is worse than one that admits it's stale** — the handoff caught what this file missed only because the reboot forced a from-scratch write. The lesson isn't "write better handoffs," it's **check this file's own git log before trusting its header.**
 
-1. **Verify a correction before accepting it** — including corrections *of me*. Accepting a provenance claim on assertion is the same move that caused the error being corrected.
-2. **m-46 applies to me most on the claim my argument leans on.** Authoring a methodology entry does not install it — I violated m-46 four days after writing it.
-3. **A green on something I just fixed proves nothing.** Negative-control it against the state it was built to catch, or don't ship it.
-4. **Don't write the convenient sentence.** "Your token wasn't saved" was false-as-specced; caught mid-draft, two days after shipping the same error in #1482 string 6.
-5. **grep for ISO dates AND surface forms, and never `cut` your own confirming output** (the beta-date miss that PPM inherited).
-6. **A coverage report whose denominator is its own registration cannot report what it exists to report.** I shipped that defect inside the script written to honor the lesson, 3h after m-46 instance 2.
-7. **My simplifications remove what's one layer down** — 3rd instance this cycle (the biased ask; the Slack deep-link; the #1484 build order). *I optimize for the layer I can see; what I drop is always beneath it.*
-8. 🔴 **zsh does NOT word-split unquoted `$VAR`** — 14 mail paths arrived as one argument and `mail-send` refused; **my own `grep` filter hid the refusal.** Use arrays; and *never filter a command's output to the lines you expect* — that hides the one saying it didn't run.
-9. **A hand-count is not a substitute for the mechanism** — mine under-reported the failure by 50% while I was writing about that exact failure.
+---
+
+*Next STOP: rewrite this file again, don't just append. If a fire ends without touching this file, that's
+the same silent drift that produced tonight's two-day gap — say so explicitly rather than let the next
+fire discover it.*
