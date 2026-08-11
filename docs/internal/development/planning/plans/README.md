@@ -6,7 +6,7 @@ This directory contains internal documentation for plans, including team procedu
 
 ## Documentation Files
 
-- **[Core Intent Quality Layer4 Gameplan](CORE-INTENT-QUALITY-layer4-gameplan.md)** - Documentation and guidance
+- **[Core Intent Quality Layer4 Gameplan](../../../planning/roadmap/CORE/CORE-INTENT-QUALITY-layer4-gameplan.md)** - Documentation and guidance
 - **[Documentation Update Plan 2025 07 28](documentation-update-plan-2025-07-28.md)** - Documentation and guidance
 - **[Gameplan Core Ui Fix V2](gameplan-core-ui-fix-v2.md)** - Documentation and guidance
 - **[Gameplan Core Ui Fix](gameplan-core-ui-fix.md)** - Documentation and guidance

@@ -567,7 +567,7 @@ python main.py
 - **[Intent Classification Guide](guides/intent-classification-guide.md)** - Intent system deep dive
 - **[Architecture Decisions](internal/architecture/current/adrs/)** - Design rationale
 - **[Domain Models Reference](internal/architecture/current/models/)** - Complete model documentation
-- **[CLAUDE.md](CLAUDE.md)** - Agent development guidelines
+- **[CLAUDE.md](../CLAUDE.md)** - Agent development guidelines
 
 ---
 
