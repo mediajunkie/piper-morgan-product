@@ -1,12 +1,12 @@
 # Lead carry-forward — rewritten 2026-08-11 ~16:2x PT (supersedes 08-10 21:50; cron-prompt blurbs are stale by construction)
 
 ## Live state
-- **Ninth cut STILL STAGED at `31a09b331`, awaiting PM's deploy word** — unchanged across the reboot. Contains #1589 (greeting can't claim emptiness from a read that can't establish it; synthetic whole-day free-blocks never render) + #1590 (#1314's default-repo helper was OAuth-callback-only → every GitHub read returned empty for pre-07-04 accounts; resolver now self-heals at read time). Fly is at **v48**, machine started, 1/1 checks.
+- ✅ **NINTH CUT DEPLOYED 08-11 16:0x on PM's word — Fly v49**, machine on version 49, started, 1/1 checks; app-level `/health` 200 with `intent_service: healthy`. Verified zero application-code drift between the staged `31a09b331` and the deployed `ad8c079e8` (only 3 helper scripts). **Awaiting PM's retest verdicts on #1589/#1590** — start a fresh conversation. Contained #1589 (greeting can't claim emptiness from a read that can't establish it; synthetic whole-day free-blocks never render) + #1590 (#1314's default-repo helper was OAuth-callback-only → every GitHub read returned empty for pre-07-04 accounts; resolver now self-heals at read time). Fly is at **v48**, machine started, 1/1 checks.
 - **Amber rebooted 08-11 ~07:30** (macOS 26.6). Session resumed intact; cron re-armed as **`2a4809de`** (new 7-day expiry ~08-18 — every pre-reboot expiry date in the registry is now stale).
 - 🔴 **Docker data services do NOT survive a reboot** — postgres/redis/chromadb were all `Exited(255)` 6h after, nothing restarted them, nothing alerts. Restarted; filed **#1594** (Ongoing). After any host reboot: `docker compose up -d postgres redis chromadb` before assuming dev works.
 
 ## Awaiting PM (decisions, not work)
-- **Deploy word for the ninth cut.** Nothing else blocks it.
+- ~~Deploy word for the ninth cut~~ ✅ **GIVEN + SHIPPED 08-11 (v49).** Now awaiting **retest verdicts** on #1589/#1590.
 - **Sprint field for #1595** (the Inversion epic) — deliberately left unset; Sprint changes are PM-gated and I won't infer one, even for the MVP spine.
 - **#1510 fork** — working-mode declared vs inferred. **Three consumers wait on it**: #1591's invitation persistence, the standup preference capture, #1509. None of them may grow a local preference store (PPM + CXO both ruled).
 - **#1190** — close/reopen DESTRUCTIVE threshold word (question is on the issue).
