@@ -194,6 +194,8 @@ def main():
     un = unmilestoned_open()
     if un is None:
         print("⚠️  UNMILESTONED COUNT UNAVAILABLE — this figure covers ONE milestone only.")
+    elif not un:
+        print("PLUS 0 unmilestoned — every open issue carries a milestone.")
     else:
         held = [i for i in un if any(l.get("name") == "awaiting-decision"
                                      for l in (i.get("labels") or []))]

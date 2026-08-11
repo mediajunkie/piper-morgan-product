@@ -1,8 +1,9 @@
-# Lead carry-forward — rewritten 2026-08-10 ~12:50 PT (supersedes all prior; cron-prompt blurbs are stale by construction)
+# Lead carry-forward — rewritten 2026-08-10 ~21:50 PT (supersedes all prior; cron-prompt blurbs are stale by construction)
 
 ## Live state
-- **SEVEN CUTS DEPLOYED cumulative; 7th ~11:50 (1190 confirm gate + 1569 reminder identity)**. PM drained their ENTIRE decision queue live (~10:30-11:30): 1536→MVP (CXO deference, PM rationale on issue), 1537-40→Production/PUB, 1190 approved+BUILT+DEPLOYED, 1511 two-modes direction→PPM spec, 1569 ratified+BUILT+DEPLOYED, auto-add=UI-only (click path given). Decision-to-production <2h.
-- 0 agents out. Verdict state: 1547+1517 closed; 12-step retest list current vs 7th cut. Discovery curve 108/wk vs 67 peak = the beta instrument (Exec).
+- **8 cuts DEPLOYED today; NINTH STAGED (1589+1590) awaiting PM's word** — PM's evening test found first-contact didn't fire + the greeting lied; both diagnosed from LIVE FLY LOGS and fixed within ~2h. #1590 root: #1314's default-repo helper is OAuth-callback-only, so pre-07-04 accounts are permanently repo-less and EVERY GitHub read returns empty (Radar included, 10 warnings in PM's 3-min window) — resolver now self-heals. #1589: greeting can't claim emptiness from a read that can't establish it; synthetic whole-day free-blocks never render.
+- **Standups PASSED** ("beta ready") → #1511 MVP closed, Production half = #1591 (PPM spec + CXO's three invitation properties now carried).
+- 0 agents out. Sweeps: 8 consecutive backlog-only (9,458 latest).
 
 ## Awaiting PM (decisions, not work)
 - FTUX five #1536-#1540 + #1511 two-standups — escalated per triage; PPM confirmed unmilestoned-is-the-ask.
