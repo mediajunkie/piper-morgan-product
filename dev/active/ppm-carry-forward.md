@@ -1,8 +1,27 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-10 STOP (~22:40 PT) — DAY CLOSED. Six clean fires. Cron **`25f1a782`**.
+**Last rewritten**: 2026-08-11 16:22 PT (WORK fire, post-reboot). Cron **`71dc6b7c`** (re-armed
+13:18 after the Amber macOS 26.6 reboot; this fire is the first observed since re-arm — registry
+row's clearing condition now fully satisfied: armed + CronList-verified + a fire has run).
 ✅ **Jake conversion COMPLETE: #1536–#1540 filed 08-09, zero rows unfiled.**
+
+## 🔴 AWARENESS FROM 08-11 16:1x — Lead's escalation to PM (not mine to action, but changes what I cite)
+Read via mail triage, addressed to PM with PPM cc'd; **no PPM-owned decision, PM's three calls
+(#1600 ratchet-fix-now?, #1599 is_admin grant method, deploy word)** — do not chase these, PM has
+them. **What changes my own reasoning going forward:**
+- **MVP open count moved 51 → 48**, composition not just number — 9 genuinely closed with evidence,
+  2 (#1411, #1431) have live reproducing defects despite looking closeable, #1485 blocked by the new
+  admin-403 beta blocker, #1480's client-side half is unverified (grep-only, JS never executed).
+  ⚠️ **Do not cite "51 open" going forward — it's stale as of today.** Re-run `sprint-truth.py`
+  before citing any count rather than trusting this note past today.
+- **CI has been red on `main` two days** (#1600, ratchet ceilings breached, gating `smoke` marks
+  failing) and **Architecture Enforcement red on every push since 08-09 15:07** — a STOP condition
+  per CLAUDE.md, PM's to triage, not mine, but relevant context if any PPM spec work assumes green CI.
+- **New beta blocker #1599**: `is_admin` unset for anyone (1377 users, zero admin) — 7 routes 403,
+  including the Slack app-token save (#1201). PM-gated.
+Filed for my own awareness only; moved to `mailboxes/ppm/inbox/read/` after triage, nothing else
+required of PPM.
 
 ## ✅ FTUX FIVE RULED (2026-08-10) — HOLD STATE ENDED
 **#1536 → MVP + Beta Blockers** (PM: *"if CXO feels one of the issues should be kept in MVP, I am
