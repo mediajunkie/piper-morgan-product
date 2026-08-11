@@ -4,9 +4,13 @@
 
 ## Cron
 
-- ⚠️ **ROTATED at the 2026-08-10 STOP.** New job **`f53ad8c5`**, same expression, fresh 7-day clock — **expires ~2026-08-17**. Prior `c635f4d1` deleted; `CronList` verified exactly one job.
-- **Second consecutive rotation done CREATE-THEN-DELETE**, inverting the skill's documented order. A failed *create* leaves you silently dark; a failed *delete* leaves duplicates Step 1 detects and heals next fire. **Prefer the failure mode that announces itself.**
-- **Registry row edited as plain text, not via `csv.writer`** — that re-quotes `#` comment lines containing quotes and corrupted 7 of them on 2026-08-05. Verified 0 corrupted / 70 intact, 1 line changed.
+🔴 **PARKED 2026-08-11 — this seat does NOT fire until re-armed by hand.** Session-scoped `CronCreate` job **`f53ad8c5` cancelled** ahead of the Amber macOS 26.6 reboot, per Pard's second stand-down notice. `CronList` verified **"No scheduled jobs."**
+
+**A session-scoped cron dies with the reboot and leaves no trace** — nothing re-arms it automatically, and a dark seat looks identical to a healthy one.
+
+**Restore instructions — expression AND verbatim prompt — are in `docs/handoff-comms-2026-08-11.md` §0.** The cadence alone is insufficient: `CronCreate` requires the prompt, and re-arming with the wrong one produces a cron that fires into nothing.
+
+**Watchdog registry row parked to match**, with a falsifiable clearing condition: **clear it only when `CronList` actually shows an armed job, not when someone intends to re-arm.**
 
 ## The one dated thing
 
