@@ -31,6 +31,18 @@ def parse(path):
         t = re.search(r'\*\*To\*\*:\s*([^·\n]+)|\*\*To:\*\*\s*([^·\n]+)|^To:\s*([^·\n]+)', txt, re.M | re.I)
         frm = next((g for g in h.groups() if g), '').strip() if h else ''
         to  = next((g for g in t.groups() if g), '').strip() if t else ''
+    if not frm:                                       # fifth variant: bold inline arrow, no From:/To:
+        # `**Pard → HOST, arch, CIO** (19:40):` — Pard's consistent convention, no From:/To: field
+        # at all (found by HOST 2026-08-10, re-verifying PA's fourth-variant fix on a corpus PA
+        # hadn't checked). 18 of 155 cohort-wide unparsed files matched this shape, measured.
+        # ⚠️ ANCHORED to the first ~300 chars, not searched whole-document: an unanchored version
+        # matched "**M2f closed** ... **M2g tail**"-style bold arrows deep in roadmap/workstream
+        # BODIES and mis-assigned a "sender" from unrelated prose — 68 false-positive flips against
+        # a control-tested 18. The convention is always the document's OPENING line; enforce that.
+        a = re.search(r'\*\*([^*→\n]+?)\s*→\s*([^*\n]+?)\*\*', txt[:300])
+        if a:
+            frm = a.group(1).strip()
+            to = a.group(2).strip()
     if not sub:                                       # fall back to the H1
         h1 = re.search(r'^#\s+(.*)$', txt, re.M)
         sub = h1.group(1).strip() if h1 else ''
