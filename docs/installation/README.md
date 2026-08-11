@@ -69,4 +69,6 @@ Running! Open http://localhost:8001
 ---
 
 **Last Updated**: October 29, 2025
-**Status**: Ready for alpha testing
+**Status**: Ready for alpha testing *(directionally still true — alpha is ongoing per
+`docs/README.md` — but this page's own content wasn't re-verified today; flagged 2026-08-11
+during #1583/#1585 rather than silently re-dating without a real review)*

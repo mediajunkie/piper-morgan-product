@@ -22,6 +22,10 @@ The trust property underneath it: PM can step away **because** the board is veri
 
 ## Priorities — current, steerable *(Rule 4: each has a direction + status + forward indicator)*
 
+⚠️ **STALE — flagged 2026-08-11, found during weekly-docs-audit #1583/#1585.** The status column
+below is ~52 days old. Left un-rewritten — Docs doesn't own Exec's priority narrative and won't
+fabricate a replacement; flagged to Exec directly for a refresh.
+
 | Priority | Direction (advancing toward) | Status (2026-06-19) | How we'll know it's moving |
 |---|---|---|---|
 | **Coordinate-through-Exec maturation** | PM interfaces mostly with Exec; per-agent direct load drops | First real rep today — sprint triage → 6 kickoffs → portfolio-wave launch | PM dividing attention by fewer threads; more work routed *through* me, not around me |

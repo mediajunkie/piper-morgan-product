@@ -112,6 +112,11 @@ skunkworks/mobile/piper-mobile-poc/
 
 ### Current State (as of Jan 23, 2026)
 
+*(This table is frozen, not silently stale — project Status is "On Hold" per the top of this
+doc, so the Jan 23 snapshot reflects where it stopped, not where it currently stands. Noted
+2026-08-11 during weekly-docs-audit #1583/#1585 since the bare "Current State" heading could
+otherwise read as live.)*
+
 | Component | Status |
 |-----------|--------|
 | Conceptual framework | ✓ Complete |

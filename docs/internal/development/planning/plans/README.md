@@ -6,10 +6,9 @@ This directory contains internal documentation for plans, including team procedu
 
 ## Documentation Files
 
-- **[Core Intent Quality Layer4 Gameplan](CORE-INTENT-QUALITY-layer4-gameplan.md)** - Documentation and guidance
+- **[Core Intent Quality Layer4 Gameplan](../../../planning/roadmap/CORE/CORE-INTENT-QUALITY-layer4-gameplan.md)** - Documentation and guidance
 - **[Documentation Update Plan 2025 07 28](documentation-update-plan-2025-07-28.md)** - Documentation and guidance
-- **[Gameplan Core Ui Fix V2](gameplan-core-ui-fix-v2.md)** - Documentation and guidance
-- **[Gameplan Core Ui Fix](gameplan-core-ui-fix.md)** - Documentation and guidance
+- **[Gameplan Core Ui Fix V2](gameplan-core-ui-fix-v2.md)** - Revised gameplan (v1 superseded, archived to `docs/internal/planning/historical/`)
 - **[Pm078 Tdd Implementation Plan](pm078-tdd-implementation-plan.md)** - Documentation and guidance
 - **[Ux Piper 105 Phase0 Gameplan](ux-piper-105-phase0-gameplan.md)** - Documentation and guidance
 
