@@ -1,20 +1,15 @@
-# Comms
+# Comms Images
 
 ## Overview
 
-This directory contains documentation for comms in the Piper Morgan system.
-
-## Documentation Files
-
-- **[Xian Voice Tone Guide 2025 08 27](xian-voice-tone-guide-2025-08-27.md)** - Documentation and guidance
-- **[Xian Voice Tone Guide](xian-voice-tone-guide.md)** - Documentation and guidance
+Image assets for Comms' blog and narrative content — not documentation. (This file previously
+claimed to index documentation files that don't live here; corrected 2026-08-11 during #1584.)
 
 ## Subdirectories
 
-- **[Blog](blog/README.md)** - Blog documentation
-- **[Growing Piper](growing-piper/README.md)** - Growing Piper documentation
-- **[Rosenslides](rosenslides/README.md)** - Rosenslides documentation
-- **[Shipping News](shipping-news/README.md)** - Shipping News documentation
+- **[Blog](blog/README.md)** - Blog post images
+- **[Growing Piper](growing-piper/README.md)** - Growing Piper narrative images
+- **[Rosenslides](rosenslides/README.md)** - Rosenslides images
 
 ## Navigation
 

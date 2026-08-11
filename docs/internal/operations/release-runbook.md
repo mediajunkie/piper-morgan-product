@@ -165,7 +165,7 @@ python -m pytest tests/ --collect-only -q 2>/dev/null | tail -3
 ```
 
 - [ ] `docs/ALPHA_KNOWN_ISSUES.md` - Update test count (e.g., "2100+ tests")
-- [ ] `docs/internal/testing/canonical-query-test-matrix-v2.md` - Review and update if new queries implemented:
+- [ ] `docs/internal/testing/canonical-query-test-matrix-v3.md` - Review and update if new queries implemented:
   - Update "Last Tested" date
   - Update coverage percentages if changed
   - Mark any newly passing queries

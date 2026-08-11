@@ -27,7 +27,7 @@ Each guide includes:
 
 ## Need Help?
 
-- Check our [troubleshooting guide](../troubleshooting.md)
+- Check our [troubleshooting guide](../../../troubleshooting.md)
 - Review the [architecture documentation](../architecture/)
 - Visit our [user guides](../user-guides/) for detailed feature explanations
 

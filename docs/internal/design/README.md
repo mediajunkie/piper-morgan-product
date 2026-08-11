@@ -33,7 +33,7 @@ When specs conflict, defer to higher-numbered authority:
 
 | Precedence | Type | Purpose | Location |
 |------------|------|---------|----------|
-| 4 (highest) | **PDRs** | Strategic intent ("why we decided") | [docs/internal/pdr/](../pdr/) |
+| 4 (highest) | **PDRs** | Strategic intent ("why we decided") | [docs/internal/pdr/](../product/pdr/) |
 | 3 | **Design Briefs** | Tactical direction ("what we're doing") | [briefs/](briefs/) |
 | 2 | **UX Specs** | Implementation details ("how it works") | [specs/](specs/) |
 | 1 (lowest) | **Voice Guides** | Tone and copy ("how it sounds") | [specs/empty-state-voice-guide-v1.md](specs/empty-state-voice-guide-v1.md) |
@@ -192,7 +192,7 @@ Historical UX audits:
 
 ## Related Resources
 
-- [PDRs](../pdr/) - Product Decision Records (strategic)
+- [PDRs](../product/pdr/) - Product Decision Records (strategic)
 - [ADRs](../architecture/current/adrs/) - Architecture Decision Records (technical)
 - [Pattern Library](../architecture/current/patterns/) - Implementation patterns
 - [CXO Briefing](../../briefing/BRIEFING-ESSENTIAL-CXO.md) - CXO role context

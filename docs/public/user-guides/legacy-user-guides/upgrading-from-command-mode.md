@@ -455,7 +455,7 @@ Piper: "Added bug #456 and task #457 to current sprint"
 
 ### Advanced Usage
 - **Advanced Conversation Features** - Complex patterns and use cases *(coming soon)*
-- **[Team Migration Guide](../development/team-migration-guide.md)** - Rolling out conversational AI across teams *(coming soon)*
+- **[Team Migration Guide](../../../internal/development/tools/team-migration-guide.md)** - Rolling out conversational AI across teams *(coming soon)*
 
 ---
 

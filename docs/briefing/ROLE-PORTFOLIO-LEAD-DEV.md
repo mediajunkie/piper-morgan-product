@@ -25,6 +25,11 @@ Two things define the lane:
 The why: the product only exists as far as it's shipped and it works. Lead Dev is where intent becomes reality — and where the reality is **verified, not asserted**.
 
 ## 2. Current goals & priorities — June 2026 (D1 sprint)
+
+⚠️ **STALE — flagged 2026-08-11, found during weekly-docs-audit #1583/#1585.** This section is
+~52 days old; the D1 sprint has closed and "Beta 0.9 due Jul 4" has slipped to Aug 8. Left
+un-rewritten — Docs doesn't own Lead Dev's priority narrative and won't fabricate a replacement;
+flagged to Lead Dev directly for a refresh.
 *(The self-refreshing layer, Rule 5; steerable per Rule 4 — each has a direction + a way to tell I'm moving toward it. Updated at each weekly review.)*
 
 - **D1 — Beta design quality (active).** Direction: every app surface reads as one coherent product. Status: **F2 page-shell COMPLETE** (22/22 pages on `app_shell`; #1171 closed; off-chrome drift class retired). Open: #1264 nav-token (closed; CXO ratifying the tentative palette), #1268 nav-coverage, #1270 documents/files object-model (CXO+PPM), #1267 projects Beta-blocker (Architect strategy).
