@@ -142,6 +142,11 @@ Piper Morgan is an AI-powered product management assistant being built in public
 
 ### Current State (as of March 2026)
 
+⚠️ **STALE — flagged 2026-08-11, found during weekly-docs-audit #1583/#1585.** This section is
+~5 months old (`last_verified: 2026-06-19`). Current version is v0.8.11.0, well past M1-M3/D1/
+RECONNECT. Left un-rewritten here — Docs doesn't own PA's role narrative and won't fabricate a
+replacement; flagged to PA directly for a refresh.
+
 - **Version**: v0.8.6
 - **Milestone**: M0 (Conversational Glue) complete. M1 (MVP Foundation) in active sprint.
 - **Team**: 14 agent roles coordinated by xian as PM-orchestrator, each operating in separate chat sessions with shared project knowledge.

@@ -1,5 +1,11 @@
 # Cohort Agent Status — working tree + duty-cycle adoption
 
+⚠️ **STALE — flagged 2026-08-11, found during weekly-docs-audit #1583/#1585.** This snapshot
+(2026-06-02) predates the full Amber/Model-A migration (2026-07-25, see CLAUDE.md §"Worktree
+model") — its whole premise (tracking per-agent Model A/B migration progress) is superseded, not
+just data-stale. Left un-rewritten — Docs doesn't own this tracker ("CIO keeps it current," per
+its own text below) and won't fabricate a replacement; flagged to CIO directly.
+
 **Purpose**: PM's at-a-glance tracker for the v0.7 rollout — per agent: which working tree it operates from, whether it's on the duty cycle, and which version/rules. PM's working tool for manual engagement until all agents are migrated.
 
 **Snapshot date**: 2026-06-02 (CIO — launch-procedure finding + remaining-steps checklist added; supersedes 2026-06-01). **This is a hand-maintained snapshot** — see "Keeping it current" below; ideally derived later (methodology-36 candidate). Rows verified against `git worktree list` + session/cycle-log presence + PM ground truth.

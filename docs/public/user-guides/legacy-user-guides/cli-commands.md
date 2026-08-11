@@ -364,13 +364,13 @@ python main.py issues status
 ### Technical Resources
 
 - [Issue Intelligence Feature Documentation](../features/issue-intelligence.md) - Complete feature reference
-- [Canonical Queries Architecture](../development/canonical-queries-architecture.md) - Technical architecture
-- [CLI Development Guide](../development/CLI_STANDUP_IMPLEMENTATION.md) - For developers
+- [Canonical Queries Architecture](../../../internal/architecture/canonical-queries-architecture.md) - Technical architecture
+- [CLI Development Guide](../../../internal/development/tools/CLI_STANDUP_IMPLEMENTATION.md) - For developers
 
 ### Integration Guides
 
-- [GitHub Integration Setup](../production/github-integration-setup.md) - Configuration guide
-- [Multi-Agent Coordination](../development/MULTI_AGENT_INTEGRATION_GUIDE.md) - Advanced workflows
+- [GitHub Integration Setup](../../../internal/operations/production/github-integration-setup.md) - Configuration guide
+- [Multi-Agent Coordination](../../../internal/development/methodology-core/MULTI_AGENT_INTEGRATION_GUIDE.md) - Advanced workflows
 
 ---
 
@@ -628,11 +628,11 @@ Options:
 
 **Ready to transform your workflow?**
 
-**[🚀 Start with Morning Standup](../development/MORNING_STANDUP_MVP_GUIDE.md)**
+**[🚀 Start with Morning Standup](../../../internal/development/tools/MORNING_STANDUP_MVP_GUIDE.md)**
 
 **[📊 Master Issue Intelligence](../features/issue-intelligence.md)**
 
-**[🔄 Understand the Learning System](../development/canonical-queries-architecture.md)**
+**[🔄 Understand the Learning System](../../../internal/architecture/canonical-queries-architecture.md)**
 
 ---
 
