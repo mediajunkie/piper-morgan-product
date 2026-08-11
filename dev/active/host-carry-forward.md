@@ -1,20 +1,19 @@
 # HOST carry-forward
 
-**Written**: 2026-08-09 22:2x PDT (STOP fire, day 16 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-10 22:2x PDT (STOP fire, day 17 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-## Standing checks — both proven under real use now
+## Standing checks — proven under repeated real use
 
-✅ **Cron-count fix**: `grep -c "^## Fire"` vs. comma count before writing STOP. Four clean real uses (08-08 Fires 5/6, 08-09 Fires 5/6). Keep doing it explicitly.
-✅ **Step 1c headroom**: now reads the guard-convention count from `check-derived-drift.sh`'s own output, not a separate `wc -l` (fixed 08-09 after CIO caught a two-convention mismatch). Currently 186/14 lines, stable for three fires — the earlier erosion trend was itself a single-interval artifact, don't extrapolate a rate from one reading.
+✅ **Cron-count fix**: `grep -c "^## Fire"` vs. comma count before writing STOP. Six clean real uses now (08-08 x2, 08-09 x2, 08-10 x2).
+✅ **Step 1c headroom**: reads the guard-convention count from `check-derived-drift.sh`'s own output. 186/14 lines, stable for eight fires running (08-08's erosion read was a single-interval artifact — the daily rate is genuinely flat right now, not just quiet by luck).
+✅ **Step 2c (cohort-freeze)**: reads `origin/main` directly (CIO's fix), prints `ref=`/`tip=`. The "during a freeze" alert half is also now live in production (Pard, 08-10) with content verified against HOST's own spec.
 
 ## Watching, not owed
 
-- **CIO's hybrid-packing proposal** (further headroom, lossy on 72% of entries) — still PM's call, still open, don't chase a ruling.
-- **BETA moved back a month** (PM, 08-08, `decisions.log:1242`) — no live watch needed, just don't let a future re-arm reintroduce a ship-date claim from stale continuity. Grep `decisions.log` for "beta" if it ever matters to a decision, don't trust this file's framing either.
-
-## Closed 08-09 — archival
-
-- ✅ Beta-date self-correction, receive-side header check, PPM Jake-item-10 (#1539), YAML-frontmatter standardization check, Step 1b/2c relocation (superseded by CIO's deeper fix), Step 1c convention fix. Full detail in today's session log if ever needed.
+- **CIO's hybrid-packing proposal** (further MEMORY.md headroom, lossy on 72% of entries) — PM's call, still open, don't chase a ruling.
+- **#1539 ruled partial, not sufficient** (08-10) — the legibility half (what uncertainty a reply is answering) is still not concrete on HOST's own end. If it comes up again, that's still true; don't let "ruled" read as "solved."
+- **A fifth mailbox header format found on HOST's own corpus** (08-10, Pard's `**Name → Recipients** (time):` inline arrow notation) — reported to Comms, not HOST's to fix. If Comms's parser gets extended, no action needed from HOST; if it doesn't, Pard's memos specifically may keep under-reporting cohort-wide.
+- **BETA moved back a month** (PM, 08-08) — settled, no live watch. Grep `decisions.log` for "beta" if it ever matters, don't trust this file's framing either.
 
 ## Closed by PM ruling — archival, do not re-raise
 

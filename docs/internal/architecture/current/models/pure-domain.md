@@ -237,7 +237,7 @@ intent.workflow = workflow
 **Cross-References**:
 - Service: IntentService *(proposed; doc TBD)*
 - Repository: IntentRepository *(proposed; doc TBD)*
-- Enum: [IntentCategory](../../services/shared_types.py)
+- Enum: [IntentCategory](../../../../../services/shared_types.py)
 
 ### Task
 **Purpose**: Individual task within a workflow
@@ -297,7 +297,7 @@ task.status = TaskStatus.COMPLETED
 **Cross-References**:
 - Service: TaskService (planned)
 - Repository: TaskRepository (planned)
-- Enum: [TaskType, TaskStatus](../../services/shared_types.py)
+- Enum: [TaskType, TaskStatus](../../../../../services/shared_types.py)
 
 ### Workflow
 **Purpose**: A workflow definition and execution state
@@ -359,9 +359,9 @@ workflow.status = WorkflowStatus.IN_PROGRESS
 ```
 
 **Cross-References**:
-- Service: [workflows.py](../../services/orchestration/workflows.py)
-- Repository: [workflow_repository_legacy_removed.py](../../services/repositories/workflow_repository_legacy_removed.py)
-- Enum: [WorkflowType, WorkflowStatus](../../services/shared_types.py)
+- Service: `services/orchestration/workflows.py` — **removed**, no successor found (unlike the repository below, no `_legacy_removed` stub was left behind)
+- Repository: [workflow_repository_legacy_removed.py](../../../../../services/repositories/workflow_repository_legacy_removed.py)
+- Enum: [WorkflowType, WorkflowStatus](../../../../../services/shared_types.py)
 
 ### WorkflowResult
 **Purpose**: Result of workflow execution

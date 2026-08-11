@@ -168,8 +168,8 @@ This migration is intentionally easy - the wrapper pattern supports it naturally
 
 ## References
 
-- [Plugin Interface Definition](../../../services/plugins/plugin_interface.py)
-- [Plugin Registry](../../../services/plugins/plugin_registry.py)
+- [Plugin Interface Definition](../../../../../services/plugins/plugin_interface.py)
+- [Plugin Registry](../../../../../services/plugins/plugin_registry.py)
 - [Plugin Development Guide](../../../../guides/plugin-development-guide.md) - Practical tutorial
 - [Plugin System README](../../../../../services/plugins/README.md)
 
