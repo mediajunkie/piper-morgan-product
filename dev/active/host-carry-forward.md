@@ -119,4 +119,4 @@
 
 ## Cron
 
-Current job **`f77a6afa`** (chain … `2cebafed → 2d87bd9f → fd14a8e7`), expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList` **and** the registry row this STOP; they agree. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+**2026-08-11 ~07:5x PT: Amber reboot cycle.** Job `f77a6afa` was deliberately parked (`CronDelete`) at ~07:2x PT per Pard's second stand-down notice (`cronpark-host.txt`), confirmed via `CronList` → empty, and recorded in `docs/handoff-host-2026-08-11.md`. Post-reboot, Pard's `post-reboot-nudge-2026-08-11.md` confirmed the session-scoped cron did NOT survive (as expected — that's what "parked" means, not a new failure). Re-armed per the handoff's documented instructions: `CronList` → empty confirmed, `CronCreate` on the exact schedule, `CronList` again → exactly one job. Current job **`d0a0a5eb`** (chain … `2cebafed → 2d87bd9f → fd14a8e7 → f77a6afa → d0a0a5eb`), expression **`37 6,9,12,15,18,21 * * *`**. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
