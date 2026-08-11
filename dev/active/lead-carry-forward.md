@@ -1,25 +1,32 @@
-# Lead carry-forward — rewritten 2026-08-10 ~21:50 PT (supersedes all prior; cron-prompt blurbs are stale by construction)
+# Lead carry-forward — rewritten 2026-08-11 ~16:2x PT (supersedes 08-10 21:50; cron-prompt blurbs are stale by construction)
 
 ## Live state
-- **8 cuts DEPLOYED today; NINTH STAGED (1589+1590) awaiting PM's word** — PM's evening test found first-contact didn't fire + the greeting lied; both diagnosed from LIVE FLY LOGS and fixed within ~2h. #1590 root: #1314's default-repo helper is OAuth-callback-only, so pre-07-04 accounts are permanently repo-less and EVERY GitHub read returns empty (Radar included, 10 warnings in PM's 3-min window) — resolver now self-heals. #1589: greeting can't claim emptiness from a read that can't establish it; synthetic whole-day free-blocks never render.
-- **Standups PASSED** ("beta ready") → #1511 MVP closed, Production half = #1591 (PPM spec + CXO's three invitation properties now carried).
-- 0 agents out. Sweeps: 8 consecutive backlog-only (9,458 latest).
+- **Ninth cut STILL STAGED at `31a09b331`, awaiting PM's deploy word** — unchanged across the reboot. Contains #1589 (greeting can't claim emptiness from a read that can't establish it; synthetic whole-day free-blocks never render) + #1590 (#1314's default-repo helper was OAuth-callback-only → every GitHub read returned empty for pre-07-04 accounts; resolver now self-heals at read time). Fly is at **v48**, machine started, 1/1 checks.
+- **Amber rebooted 08-11 ~07:30** (macOS 26.6). Session resumed intact; cron re-armed as **`2a4809de`** (new 7-day expiry ~08-18 — every pre-reboot expiry date in the registry is now stale).
+- 🔴 **Docker data services do NOT survive a reboot** — postgres/redis/chromadb were all `Exited(255)` 6h after, nothing restarted them, nothing alerts. Restarted; filed **#1594** (Ongoing). After any host reboot: `docker compose up -d postgres redis chromadb` before assuming dev works.
 
 ## Awaiting PM (decisions, not work)
-- FTUX five #1536-#1540 + #1511 two-standups — escalated per triage; PPM confirmed unmilestoned-is-the-ask.
-- Post-deploy verdicts on the 12 amber rows.
+- **Deploy word for the ninth cut.** Nothing else blocks it.
+- **Sprint field for #1595** (the Inversion epic) — deliberately left unset; Sprint changes are PM-gated and I won't infer one, even for the MVP spine.
+- **#1510 fork** — working-mode declared vs inferred. **Three consumers wait on it**: #1591's invitation persistence, the standup preference capture, #1509. None of them may grow a local preference store (PPM + CXO both ruled).
+- **#1190** — close/reopen DESTRUCTIVE threshold word (question is on the issue).
+- Post-deploy verdicts on the amber ledger rows.
 
 ## Next build queue (unblocked, in order)
-1. **Inversion Phase 1** — the ONLY substantial unstarted MVP work besides #1190. Quality-banked to a FRESH SESSION (explicit trigger, named): conditions per Arch (per-category corpus gate incl. #1559's two PM verbatims, registry-derived grammar, AGREE-rows narrowing w/ probe-row citations). Effect enum + rail hygiene (#1560) DONE. **NEW (Arch 08-10): when the judge corpus stands up, include the five-fabrication-class cases (floor-honesty contract spec, 1517) — one instrument, not two.**
-2. #1423/#1522 tails (silent-death un-swallow; false-trails cleanup).
-3. #1190 — blocked on PM's close/reopen DESTRUCTIVE word (question on the issue).
-4. #1553 F6-F10 (Production/PUB).
+1. **#1595 Inversion Phase 0** — corpus baseline, per category. **Needs nothing from Arch; starts immediately.** Epic filed 08-11 with all four ratified decisions + both amendments as acceptance criteria. Then Phase 1 behind a flag (shadow-scored, routes logged not executed).
+2. **Closure sweep tail** — 16 open MVP issues are the subject of a shipped fix/feat commit; 3 subagents verified batches on 08-11. #1573 already closed with evidence. Whatever the batches return, the MVP open count is **overstated**, which distorts PM's read of what's left.
+3. **#1572** per-user timezone umbrella (supply is 0%; every user-typed clock time reads on the server's UTC clock).
+4. #1423 / #1436 remaining slices; #1592 (Fly credentials.json ERROR noise).
 
 ## Standing
-- Discovery-rate weekly (Exec daily rollup carries it + unmilestoned count; PPM's two-populations split ratified in mail 08-09).
-- Moratorium on piecemeal routing fixes holds — failures → corpus (1492, 1527, 1505 tagged).
-- Milestone sequence: MVP → Production → Fast Follow (PM correction 08-09, memory-pinned).
-- Watch for: PM word on close/reopen DESTRUCTIVE threshold when #1190 builds; CIO memory-architecture + merge-guard rulings still pending.
+- **Milestone sequence: MVP → Production → Fast Follow.** "Not MVP" never defaults to Fast Follow — ask which of the two later steps. (Caught myself defaulting #1594 to Production on 08-11; it's Ongoing.)
+- Moratorium on piecemeal routing fixes holds — failures → corpus (#1559, #1579, #1492, #1527, #1505 tagged). Handler-branch and rail-key fixes ARE sanctioned.
+- Discovery rate is measured as **new-class rate**, not raw. I owe filing-time `Class:` tags + a consolidated class vocabulary in `docs/internal/operations/` — the families exist across five audit docs and nowhere consolidated. **Not started.**
+- Test-support artifacts require verify-first — never hand PM a command/seed/step without reading the schema/route/template it touches.
+
+## ⚠️ Correction to my own prior carry-forward (found 08-11 reading Arch's ruling verbatim)
+My 08-10 note said the floor-honesty contract's fabrication cases should ride the inversion's judge corpus "rather than building a second instrument." True, but it **flattened Arch's actual ruling and reversed its emphasis.** Arch ruled #1517 **DECOUPLED** from the inversion: it is a trust/safety defect, not a routing defect, it reproduces whenever the floor is reached however routing got there, and *"coupling it to a month-long rebuild leaves a live honesty defect waiting on an architecture bet."* **Spec now, ship against the CURRENT floor; the inversion ADOPTS rather than CONTAINS it.** One instrument eventually — but the fix must not wait for it. Reading my own summary instead of the ruling would have parked a live honesty defect behind a month-long build.
 
 ## Friction log (for next infra pass)
-- Agent session logs collide on same-HHMM filenames (3× today); rebase flattens merge-resolution renames — consider agent-id suffix in log filename convention.
+- Agent session logs collide on same-HHMM filenames; rebase flattens merge-resolution renames — consider an agent-id suffix in the log filename convention.
+- Push races to `origin/main` are frequent when the fleet resumes together (3 rebase-and-retry cycles on 08-11 alone). `mail-send.sh` handles this automatically; plain `git push origin HEAD:main` does not.
