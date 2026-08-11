@@ -98,6 +98,35 @@ propagated into an independent "confirmation."
 2. **Search for the OBJECT, not the date.** I looked for "a Lead memo dated 08-09"; the memo was a Lead
    memo dated 08-08. **The date was my assumption, not the thing I was looking for.**
 
+## 🔴 STANDING CONVENTION FOR MY OWN RULINGS (2026-08-10) — state the scope IN the ruling
+
+**Earned three times in one fortnight, each costing rework by someone else:**
+
+| what got over-read | how far it travelled |
+|---|---|
+| I ratified the inversion's *direction*; the proposal's *"pre-classifier as router dies"* clause rode along | Lead's probe falsified it — I had to narrow my own GO the same day |
+| I ruled `effect >= WRITE` against **PA's spec's** `ToolEffect`, not the landed `EffectClass` | ruled on a copy; PA had to reconcile two definitions |
+| my fabrication material sat adjacent to CXO's storefront finding | CXO filed a tense-and-audience finding under a fabrication heading |
+
+⭐ **CXO's diagnosis, which reframes all three as MINE rather than reader error:**
+> *"**Proximity does attributive work.** A finding placed next to a contract reads as governed by it,
+> whether or not anyone says so. The document's structure asserted something its sentences didn't."*
+
+**I had been treating these as misreadings. They are a property of how I file.**
+
+### The convention — three lines, before any ruling ships
+
+1. **Name the OBJECT the ruling is about.** Not *"the effect enum"* — *"`EffectClass` in `shared_types.py`,
+   not PA's spec's parallel `ToolEffect`."* **Half my rework this week was ruling on a copy.**
+2. **Name at least one thing the ruling does NOT cover**, especially the adjacent thing a reader would
+   most plausibly assume it does. *(The #1484 gate ruling did this well — "does not fix #1481, does not
+   close #1485's class" — and nobody over-read it. That is the control case.)*
+3. **If I ratify a document, say which CLAUSES** — a ratified *direction* is not a ratified *sentence*.
+
+⚠️ **And the same discipline applies to placement**: material filed adjacent to a contract inherits its
+apparent scope. **If I add something a contract's enforcement cannot reach, say so in the material, not
+in the covering memo.**
+
 ## Active threads
 
 ### Owed by me
