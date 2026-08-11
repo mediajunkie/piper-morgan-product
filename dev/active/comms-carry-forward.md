@@ -1,57 +1,39 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-03 STOP fire (21:42 PDT). Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-11 15:47 PT fire (post-reboot). Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
-🔴 **PARKED 2026-08-11 — this seat does NOT fire until re-armed by hand.** Session-scoped `CronCreate` job **`f53ad8c5` cancelled** ahead of the Amber macOS 26.6 reboot, per Pard's second stand-down notice. `CronList` verified **"No scheduled jobs."**
-
-**A session-scoped cron dies with the reboot and leaves no trace** — nothing re-arms it automatically, and a dark seat looks identical to a healthy one.
-
-**Restore instructions — expression AND verbatim prompt — are in `docs/handoff-comms-2026-08-11.md` §0.** The cadence alone is insufficient: `CronCreate` requires the prompt, and re-arming with the wrong one produces a cron that fires into nothing.
-
-**Watchdog registry row parked to match**, with a falsifiable clearing condition: **clear it only when `CronList` actually shows an armed job, not when someone intends to re-arm.**
+✅ **ARMED — job `d0f1ca12`, re-armed 2026-08-11 13:15 PT post-reboot.** Same expression `12 6,9,12,15,18,21 * * *`, verbatim prompt from `docs/handoff-comms-2026-08-11.md` §0. `CronList`-verified exactly one job. Auto-expires ~2026-08-18. Registry row cleared.
 
 ## The one dated thing
 
-**Tue Aug 11 publishes *The Write-Path Chase* (Beat 21).** ✅ Pre-passed Aug 9, two days early. **550 words and that is FINE** — measured, published narratives run 597–2,564 and *Almost Beta* (597) shipped clean. **DO NOT PAD.** Structurally complete: verify-by-read-back rule → five stacked releases → issue #104 confirmed.
-⚠️ **One flag for PM**: text says *"five stacked point releases"* but names **three** problems — same three-vs-five miscount class PM cut from Ship #054.
-**Needs PM: voice pass + art only.** Zero open brackets. **Publish-ready memo goes to Docs FROM ME.**
+**Tue Aug 11 (today) publishes *The Write-Path Chase* (Beat 21).** PM's voice pass **landed 11:12 PT** (2 admin-UI edits) while Comms was in reboot stand-down. Ran template-audit this fire, found + fixed 3 mechanical defects (unclosed parenthesis, a garbled sentence fragment, a "you work"/"your work" typo) — commit `04dfa1f94`. Flagged one fact-check question in the calendar row rather than guessing: PM's edit added "never set in the database" for what was fact-checked as an `Intent.original_message` object attribute, not necessarily a DB column.
 
-⚠️ **OPEN: Aug 8 *Verify at the User Path* is `published` but NOT syndicated** — no Medium, no LinkedIn, while Aug 9 (published later) is fully `distributed`. Filed with Dispatch at `~/Development/dispatch/mail/` (they are NOT on the `mailboxes/` system); Docs tracking. **I own the calendar columns and offered to fill them from URLs.**
+🔴 **STILL BLOCKS PUBLISH: art.** `image`/`alt`/`caption` all empty. Voice pass is done; art is not. **Needs PM.**
 
-🆕 **BYOC task force is LIVE** — convened 8/9 after seven weeks; **PPM and Web both took their lanes within hours.** PPM: the bar isn't a connector *count*, it's #1440's ratified five-point contract. Web: `/try` exists but assumes a **web-first** visitor, not a storefront arrival. **Next move is mine** — the listing copy, once PM/CXO settle *product vs model*.
+**When PM clears both (database wording + art)**: re-run template-audit's frontmatter check, then send the publish-ready memo to Docs **from Comms** — do not assume PM will tell Docs (cost the Aug 6 slot once already).
 
-## Open PM questions — 4 across 3 posts, best answered in one pass
+## Open items, unchanged from the pre-reboot handoff (docs/handoff-comms-2026-08-11.md), still live
 
-| post | pubDate | question |
-|---|---|---|
-| *The List That Lies* | **Aug 4** | Was the Jun 29 gate removal on the live server PM's own? |
-| *Drained on Paper* | Aug 6 | Who declared the backlog drained? Does the dishes/baby line land as written? |
-| *No Undo* | Sep 12 | Is the babysitter/baby analogy PM's own framing? |
+- ⭐ **Beats steer — the only item with a real date besides today's post.** 8 candidates for 7 slots; narrative queue runs dry after Aug 18. Artifact: `docs/internal/planning/comms/upcoming-beats-plan.html`. Needs: 5 beats or 4, titles for 25/28 (28 collides with Ship #054), Beat 24's refuted A-plot claim restated, PM's call on whether PM appears in Beat 25.
+- **CXO's §3 entity-model line** in `docs/internal/design/experience-across-surfaces.md` — flagged 3×, still ✏️ pending PM.
+- **Dispatch syndication** (filed at `~/Development/dispatch/mail/`, not `mailboxes/`): 3 fully unsyndicated posts (*The Package and the First Bite*, *Drained on Paper*, *Verify at the User Path*), 1 partial (*The Team Catches the Cycle*, Medium only).
+- **BYOC listing copy v4** — task force live, v3 sent 08-10, open question routed to PPM (does "answers from that model" hold against #1440's contract for connectors live at listing time).
 
-Surfaced only because `template-audit` check #5 was blind to `[PM: …]` until Aug 3. **No bracket ever reached a reader** — verified against the live page.
+## Just closed this fire
 
-## Owed by me, with a named trigger
-
-✅ **DISCHARGED 4 Aug — the PreToolUse exit-0 observation.** A PreToolUse hook exiting 0 **does** reach the agent (`check-branch.sh` printed to me on commit `eb6919e0c`). CIO's silent-no-op fear doesn't hold for **stdout**. ⚠️ **stderr remains unresolved** — my replication staged nothing and measured an empty index; that run was **inconclusive, not a null**. The practical fix needs neither: `exit 0` with the message on stdout.
-
-🆕 **OWED tomorrow morning — the heartbeat surface check.** I proposed it to CIO as the test that replaces tomorrow's uninformative 06:46 alarm, so I should run it:
-```
-ls dev/heartbeats/2026-08-05/
-for f in dev/heartbeats/2026-08-05/*.tsv; do head -1 "$f"; done
-```
-**My stated prediction** (so it can be falsified): the surface **fills** — several role files, each with a START row — **and most START timestamps land after 06:46**. That would close "nobody runs it" + "it declines to write" and confirm "it runs too late" with a number.
-⚠️ **Weakest link, flagged**: I inferred "the surface will fill" by **reading** that START bypasses `--if-quiet` at `duty-cycle-heartbeat.sh:65`. **I have not watched a START write** — mine today ran before CIO's change. If the surface is still `cio.tsv` only, the promotion didn't take either.
+✅ **`scan-inbox.py` thread fully closed.** HOST's fourth+fifth-variant find → PA's fifth-variant fix (self-caught 68 false positives before shipping) → Docs' independent corpus check (caught their own off-by-one near-miss) → my own corpus check (400 read memos, 8 unparsed, all genuinely senderless documents, zero real memos missed) → wrap-up sent crediting all four by name. Script now at `dbf45fc67`, five variants handled, nothing outstanding.
 
 ## Waiting on others
 
-- **HOST/CIO** — two hook items I deliberately did not touch: (1) staging-warn behaviour still blocks vs. stated intent; (2) `pre-commit-reconcile-drafts.sh` **header** still teaches the inverted model, incl. the backwards "promote to exit 1 (hard-block)" instruction.
-- **Docs** — nothing owed; archival closed (23 files), validator shipped, calendar 0 dangling.
-- **PM** — Beats 24–28 steer (**the only item with a real date**: narrative queue runs dry after Aug 18); voice-pass + art on Beats 21–23 (Aug 11/13/18); `/hooks` open or restart for HOST's memory counterweight; compose-UI restore-banner check.
-- **Web/PM** — era split + featuring the current post on the blog index. My POV is in `docs/internal/planning/comms/upcoming-beats-plan.html`.
+- **PM** — Beats 24–28 steer; art + database-wording confirmation on today's post; voice-pass + art on Beats 22–23 (Aug 13/18).
+- **PPM** — BYOC listing copy v4 blocker (the #1440-contract question).
+- **CXO/PM** — entity-model ratification.
+- **Dispatch** — syndication for the 4 posts above (Comms owns the calendar columns, offered to fill from URLs once syndicated).
 
-## Verified today, don't re-derive
+## Verified this fire, don't re-derive
 
-- Beta target **2026-08-08 (Saturday, deliberate)** — `decisions.log:303`, PM Time Lord prerogative. HOST's "zero occurrences" memo was **retracted same day** (grepped `Aug 8`, missed the ISO rendering). Ship #054 line 77 carries it and is **correct — do not soften it**. Noted on the calendar row.
-- Footer-tease chain across the next 10 posts: **clean**. Ships sit outside the chain (6/6 carry no tease; 7/8 narratives tease past them) — now encoded in `template-audit` v1.4.
+- `scan-inbox.py` at `dbf45fc67` is clean on my own full corpus (inbox 5/5, sent 145/145, read 400/400 with 8 correctly-senderless documents).
+- Today's post footer tease verified against the live calendar: next post is *Alpha Launches* (Aug 13) — correct, no fix needed.
+- "issue #104" in today's post's narrative prose (template-audit check 14) judged a legitimate exception, not a fresh finding — it's the piece's literal payoff, already accepted at the 2026-08-09 pre-pass.

@@ -12,7 +12,8 @@
    at every STOP and is the single place current threads live.
 2. **`docs/briefing/BRIEFING-ESSENTIAL-CXO.md`** for the role; **`docs/briefing/ROLE-PORTFOLIO-CXO.md`**
    for what I'm advancing and its honest status (two lines are marked *slipped as drift*, deliberately).
-3. **Re-arm the cron.** It is **session-scoped and dies with the session** — see §3.
+3. ✅ **Cron re-armed** 08-11 13:18 PT (job `fa499dae`) — done, not a to-do. It is **session-scoped and
+   dies with the session** (again), so keep checking `CronList` at every START — see §3.
 4. **Read the one parked inbox item** (§2).
 5. ⚠️ **Do not trust the cron prompt's date line.** It has gone stale three times in six days. **Dates are
    PM's.** Last state: beta moved **back a month** (PM, 08-08); *"out of alpha"* = the **public** beta
@@ -63,37 +64,43 @@ its own scope.
 
 **Everything else was drained to `read/` before stand-down; the inbox was at (0,0) at the 08-10 STOP.**
 
-## 3. 🅿️ CRON IS PARKED — deliberately cancelled 2026-08-11 ~07:4x, pre-reboot. RESTORE IT.
+## 3. ✅ CRON RESTORED — 2026-08-11 13:18 PT, per Pard's post-reboot nudge
 
-> ⛔ **THERE IS NO SCHEDULE RIGHT NOW. This seat will not fire again until someone re-arms it.**
-> **Parked on purpose** (Pard's second stand-down notice), **not lost** — so that a schedule killed by the
-> reboot could not come back looking healthy while quietly never firing.
+**Re-armed, not still parked.** Pard's `docs/notices/post-reboot-nudge-2026-08-11.md` (mediajunkie repo)
+confirmed the reboot completed (`resumed=24 failed=0 cold=0`) and instructed every session-scoped-cron
+resident to re-arm and verify — session-scoped jobs die with the reboot and nothing re-arms them
+automatically.
 
-**Mechanism, stated plainly**: **session-scoped `CronCreate`.** `CronList` reported it as `[session-only]`.
-**It would have died at the reboot leaving no trace**, which is why it was cancelled deliberately and
-written down here instead.
-
-**To restore — this is the whole restore spec:**
+**Restore executed exactly per the spec below** (the spec itself is left intact as a record — it's what
+made this a 2-command action instead of a reconstruction):
 
 | | |
 |---|---|
-| **Expression** | **`47 6,9,12,15,18,21 * * *`** |
-| **Job id at park time** | `aa1a0c1e` (a new id is issued on re-arm; **record the transition** — a changed cron id is a documented cause of phantom-peer misreads) |
+| **Expression** | `47 6,9,12,15,18,21 * * *` (unchanged) |
+| **Job id at park time (pre-reboot)** | `aa1a0c1e` |
+| **Job id after restore (post-reboot)** | **`fa499dae`** — **the transition is recorded here on purpose**, per the spec's own warning that a changed cron id is a documented cause of phantom-peer misreads |
+| **Verified** | `CronList` → exactly one job, correct expression, immediately after `CronCreate`. Not assumed. |
+| **First tool calls this session** | `CronList` (empty, confirming still-parked) then `CronCreate` then `CronList` (verify) — **no permission or trust prompt appeared on any of the three**, reported per item 3 of Pard's nudge. |
+
+**Original restore spec, kept for the record (this is what was actually followed):**
+
+| | |
+|---|---|
 | **Prompt** | *"DUTY CYCLE TICK — CXO"* + role/worktree/launch-model constants, **"run the `duty-cycle-tick` skill"**, and **"READ `dev/active/cxo-carry-forward.md` FIRST — it is the state, this prompt is not."** |
-| **Fire-time reminders** | **§5 of this handoff carries them.** They were embedded in the cron prompt; each cost something. Rebuild the prompt from §5 if the original text is unavailable. |
-| **Verify after re-arming** | `CronList` must show **exactly one** job for that expression. |
+| **Fire-time reminders** | §5 of this handoff carries them; they were rebuilt into the new prompt from there since the original prompt text wasn't separately preserved. |
 
-⚠️ **First fire after restore should be a START** (new day / no log for the day), and **`Step 0` is to check
-that the previous day was closed properly.**
+⚠️ **First fire after restore should be treated as a START** (no 08-11 duty-cycle log entry exists yet —
+today's log only has the stand-down/reboot sequence) — **`Step 0` is to check that 08-10 was closed
+properly** (it was — verified earlier today, see the 08-11 session log).
 
-## 3b. Cron behaviour to expect once restored
+## 3b. Cron behaviour to expect now that it's restored
 
-
-
-- **Expression**: `47 6,9,12,15,18,21 * * *`. **Job id at stand-down: `aa1a0c1e`.**
+- **Expression**: `47 6,9,12,15,18,21 * * *`. **Job id: `fa499dae`** (was `aa1a0c1e` before the reboot;
+  parked, then re-armed 08-11 13:18 PT — see §3).
 - ⚠️ **Session-scoped. It dies with the session AND auto-expires ~7 days, and BOTH deaths are silent.**
   **Run `CronList` at every START.** If zero jobs match the expression, **re-arm immediately** before
-  anything else.
+  anything else. **This just happened once already** (the reboot) — treat a future empty `CronList` as
+  the same category of event, not a surprise.
 - ⚠️ **Dispatch offset is NOT stable on this seat** — +30 for seven consecutive fires (08-05/07), +1 to +4
   all day 08-08, a steady +22 on 08-09/08-10. **Compute the next slot from the clock, never from a
   remembered offset.** **Fires QUEUE rather than drop**: on 08-06 four ticks arrived at once after ~11h of

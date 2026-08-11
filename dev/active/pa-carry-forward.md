@@ -13,7 +13,12 @@ PM-attention items live **here**, in the section immediately below.
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-04 fire 3.)*
 
-**Beta target: Monday 2026-08-09 — TOMORROW.** (PM: 08-08 was a misremembering; not a sprint deadline.)
+**Beta target: MOVED BACK A MONTH from 2026-08-09** (PM, 08-08 10:10 PT, in-conversation with Lead,
+verbatim: *"I am going to move the beta date back a month. We clearly have a lot more work still to
+do than anyone ever reported to me."* — `decisions.log:1242`). No new fixed date recorded as of this
+fire; 08-08's Fundamentals-First ruling governs the moved-beta month's priority order
+(Understanding-Layer Inversion first, surface polish deferred). The 08-09 line this replaced was two
+days stale.
 
 - ⏱️ **TEN SECONDS: open `https://pipermorgan.ai/privacy` in a browser** and say whether a real policy
   renders. URL returns **200**; **server-rendered text is 29 characters.** PA cannot execute JS, so this
@@ -58,13 +63,17 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-06 START (07:12)
+## Active state — 2026-08-11 WORK (15:49)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/06/2026-08-06-0712-pa-code-log.md` (8/05 DAY-CLOSED, verified strict)
+- **Session log**: `dev/2026/08/11/2026-08-11-0623-pa-code-log.md` (spans the Amber reboot standdown;
+  8/10 DAY-CLOSED, verified strict)
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
-- **Cron**: `42 6,9,12,15,18,21`. Session-only; expires ~2026-08-10. 🔴 **First action any new session:
+- **Cron**: `42 6,9,12,15,18,21`. Job `138cb509`, re-armed 2026-08-11 ~08:xx PT after the Amber reboot
+  (deliberately parked pre-reboot as job `c9d53faa`, per `docs/handoff-pa-2026-08-11.md`; Pard's
+  post-reboot notice confirmed session-scoped crons don't survive and must be re-armed manually — no
+  auto re-arm exists). Session-only; expires ~2026-08-18. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
 
