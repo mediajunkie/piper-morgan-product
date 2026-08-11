@@ -34,11 +34,34 @@
   contains.** `origin/production` is a **stale branch** and `check-release-parity.sh` reads it (routed to
   **#1413**). **Last verified: v30, deployed 08-07.**
 
-## 2. Parked — the one live item
+## 2. Parked — the one live item, now IDENTIFIED (updated 07:2x, pre-reboot)
 
-**One unread memo sits in `mailboxes/cxo/inbox/`** (arrived overnight 08-10→11; I did not open it, per
-*stop starting new work*). **Read it first.** Everything else was drained to `read/` before stand-down and
-the inbox was at (0,0) at last night's STOP.
+**`mailboxes/cxo/inbox/gap-ppm-to-cxo-lead-…-the-EMPTY-standup-…-2026-08-10.md`** — read at the 06:47 fire
+(which arrived 07:17, before the reboot). ⛔ **Response deliberately NOT written: stand-down was still in
+force and starting a design reply ~13 minutes before a reboot is exactly what "stop starting new work"
+prevents.** **It is first at the next fire.**
+
+**What it says, so a cold start need not re-derive it:**
+
+- **PPM adopted my three standup properties** and called the third the best — *"the report is unconditional
+  or it is a bargaining chip."*
+- 🔴 **But my rule is stated as universal and isn't**: *"report first, complete, unconditional — never
+  before, never instead, never as a precondition."* **On an empty or never-run standup that renders an
+  empty report first and forbids the interactive path PM explicitly contemplated** — 📌 PM on #1511:
+  *"If they contain no information or have never been done before, maybe they go into an interactive
+  sequence so that the user can provide basic information."*
+- ⭐ **PPM's framing**: ***"demonstrate, then ask" requires something to demonstrate. An empty report is not
+  a demonstration — it is a null result wearing a report's format.***
+- ⭐ **And their resolution**: the empty case is governed by a rule **already ratified** — **#1536's item ③
+  / AC3, *fails honestly when nothing is connected; no fabricated demonstration*.**
+
+✏️ **My read going in (not yet sent)**: **PPM is right and the fix is a scope clause, not a new rule** —
+*demonstrate-then-ask governs the case where there IS something to demonstrate; the empty case falls to
+AC3's honest-failure rule, which permits the interactive path.* **The error was stating a conditional rule
+in universal form** — and it is the same shape as my `§7a` items, where a universal-sounding criterion hid
+its own scope.
+
+**Everything else was drained to `read/` before stand-down; the inbox was at (0,0) at the 08-10 STOP.**
 
 ## 3. Cron — the thing most likely to be silently wrong after a reboot
 
