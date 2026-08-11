@@ -19,10 +19,13 @@ def parse(path):
         g = lambda k: (re.search(rf'^{k}:\s*"?(.*?)"?\s*$', fm, re.M) or [None, ''])[1]
         frm, to, sub = g('from'), g('to'), g('subject')
     if not frm:                                       # header style
-        h = re.search(r'\*\*From\*\*:\s*([^·\n]+)', txt)
-        t = re.search(r'\*\*To\*\*:\s*([^·\n]+)', txt)
-        frm = h.group(1).strip() if h else ''
-        to  = t.group(1).strip() if t else ''
+        # BOTH bold-colon placements: `**From**: X` AND `**From:** X` (Pard/Janus use the latter),
+        # plus a bare `From: X` line. 314 of 1,517 header-style memos used the inside-colon form
+        # and were invisible to the first version of this parser (found by CIO 2026-08-10).
+        h = re.search(r'\*\*From\*\*:\s*([^·\n]+)|\*\*From:\*\*\s*([^·\n]+)|^From:\s*([^·\n]+)', txt, re.M)
+        t = re.search(r'\*\*To\*\*:\s*([^·\n]+)|\*\*To:\*\*\s*([^·\n]+)|^To:\s*([^·\n]+)', txt, re.M)
+        frm = next((g for g in h.groups() if g), '').strip() if h else ''
+        to  = next((g for g in t.groups() if g), '').strip() if t else ''
     if not sub:                                       # fall back to the H1
         h1 = re.search(r'^#\s+(.*)$', txt, re.M)
         sub = h1.group(1).strip() if h1 else ''
@@ -34,7 +37,11 @@ files = [f for f in sorted(glob.glob(os.path.join(d, '*.md')))
 blank = 0
 for i, f in enumerate(files, 1):
     frm, to, sub = parse(f)
-    if not frm and not sub:
+    # ⚠️ WAS `not frm and not sub` — an AND. The H1 fallback always supplies a subject, so a memo
+    # with NO sender still counted as parsed and the summary said `unparsed: 0`. That is the same
+    # over-permissive-threshold error as a `>=2 copies` check: it reports clean by measuring the
+    # thing that is never missing. Sender is the load-bearing field; if it is empty, say so.
+    if not frm:
         blank += 1
     flag = '⚠ ' if re.match(r'(URGENT|CORRECTION|RULING|FALSIFIED|WITHDRAWN)', os.path.basename(f)) else '  '
     print(f"{flag}[{i}] from:{frm[:14]:14} to:{to[:34]:34}")
