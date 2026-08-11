@@ -25,7 +25,7 @@
 ## Standing
 - **Milestone sequence: MVP → Production → Fast Follow.** "Not MVP" never defaults to Fast Follow — ask which of the two later steps. (Caught myself defaulting #1594 to Production on 08-11; it's Ongoing.)
 - Moratorium on piecemeal routing fixes holds — failures → corpus (#1559, #1579, #1492, #1527, #1505 tagged). Handler-branch and rail-key fixes ARE sanctioned.
-- Discovery rate is measured as **new-class rate**, not raw. I owe filing-time `Class:` tags + a consolidated class vocabulary in `docs/internal/operations/` — the families exist across five audit docs and nowhere consolidated. **Not started.**
+- Discovery rate is measured as **new-class rate**, not raw. ✅ **DONE 08-11**: `docs/internal/operations/failure-class-vocabulary.md` (16 product + 4 process families) and `scripts/discovery-rate.py` now computes it. Honest coverage today: **1 of 190 issues tagged** — forward-only, no back-filling (a class assigned retroactively by whoever wants the curve to bend is not evidence). Flagged to Exec that Sep 1 gives a thin window. **Remaining habit: add `Class:` at filing time.**
 - Test-support artifacts require verify-first — never hand PM a command/seed/step without reading the schema/route/template it touches.
 
 ## ⚠️ Correction to my own prior carry-forward (found 08-11 reading Arch's ruling verbatim)
