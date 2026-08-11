@@ -511,9 +511,9 @@ todo.progress_percentage = 100
 ```
 
 **Cross-References**:
-- Service: [todo_knowledge_service.py](../../services/todo/todo_knowledge_service.py)
-- Repository: [todo_repository.py](../../services/repositories/todo_repository.py)
-- API: [todo_management.py](../../services/api/todo_management.py)
+- Service: [todo_knowledge_service.py](../../../../../services/todo/todo_knowledge_service.py)
+- Repository: [todo_repository.py](../../../../../services/repositories/todo_repository.py)
+- API: [todo_management.py](../../../../../services/api/todo_management.py)
 
 ### TodoList
 **Purpose**: Collection of todos for organization
@@ -597,8 +597,8 @@ todo_list.activity_count += 1
 ```
 
 **Cross-References**:
-- Service: [todo_knowledge_service.py](../../services/todo/todo_knowledge_service.py)
-- Repository: [universal_list_repository.py](../../services/repositories/universal_list_repository.py)
+- Service: [todo_knowledge_service.py](../../../../../services/todo/todo_knowledge_service.py)
+- Repository: [universal_list_repository.py](../../../../../services/repositories/universal_list_repository.py)
 
 ---
 

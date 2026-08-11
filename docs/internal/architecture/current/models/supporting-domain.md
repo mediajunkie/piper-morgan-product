@@ -162,7 +162,7 @@ node.access_count += 1
 **Cross-References**:
 - Service: KnowledgeGraphService *(proposed; doc TBD)*
 - Repository: KnowledgeNodeRepository *(proposed; doc TBD)*
-- Enum: [NodeType](../../services/shared_types.py)
+- Enum: [NodeType](../../../../../services/shared_types.py)
 
 ### KnowledgeEdge
 **Purpose**: An edge in the knowledge graph representing a relationship
@@ -216,7 +216,7 @@ edge.weight = min(1.0, edge.weight + 0.1)
 **Cross-References**:
 - Service: KnowledgeGraphService *(proposed; doc TBD)*
 - Repository: KnowledgeEdgeRepository *(proposed; doc TBD)*
-- Enum: [EdgeType](../../services/shared_types.py)
+- Enum: [EdgeType](../../../../../services/shared_types.py)
 
 ---
 
