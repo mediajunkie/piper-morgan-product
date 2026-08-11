@@ -6,16 +6,35 @@
 
 ---
 
-## 1. 🔴 FIRST THING AFTER RESUME — the cron is dead and nothing re-arms it
+## 1. 🔴 FIRST THING AFTER RESUME — MY SCHEDULE IS PARKED. RE-ARM IT.
 
-**My duty cycle runs on the harness's session-scoped `CronCreate`. It does not survive the reboot, and no mechanism restores it.** *(This is the gap I raised on Pard's stand-down runbook on 08-05 and re-raised twice; as of last night it is still open.)*
+**⛔ I cancelled my own cron at 07:0x on 2026-08-11, deliberately, per Pard's second stand-down notice.
+This is a PARK, not a casualty — the absence is intentional and recorded here so it does not depend on
+anyone's memory surviving the reboot.**
+
+**Mechanism**: the harness's **session-scoped `CronCreate`** (`CronList` reports `[session-only]`; the tool
+writes nothing to disk and the job dies with the session). **Not a LaunchAgent. Nothing restores it.**
 
 ```
-Re-arm:   cron expr  27 6,9,12,15,18,21   (6×/day)
-Verify:   CronList → EXACTLY ONE job
-Then:     update my row in dev/active/duty-cycle-registry.tsv with the new job id
+THE SCHEDULE TO RESTORE — this is the whole point of writing it down:
+
+  cron expression   27 6,9,12,15,18,21 * * *        (6×/day, offset :27)
+  recurring         true
+  prompt            DUTY CYCLE TICK — ROLE: Chief Architect (arch) |
+                    WORKTREE: /Users/xian/Development/piper-morgan-worktrees/arch
+                    (Model A, stable per-agent path) | BRANCH: claude/arch-cycle |
+                    CRON: 27 6,9,12,15,18,21 | LAUNCH MODEL: Model A (Amber).
+                    Run the duty-cycle-tick skill and follow it. State lives in
+                    dev/active/arch-carry-forward.md and dev/active/arch-standing-items.md
+                    — read them at fire time; do not assume anything about them
+                    from this prompt.
+
+AFTER re-arming:  CronList → verify EXACTLY ONE job
+THEN:             update my row in dev/active/duty-cycle-registry.tsv with the new job id
+                  (last recorded there: 679e5b66 — now CANCELLED, so that row is stale
+                   until you update it)
 ```
-**Last armed**: `679e5b66` at the 08-10 STOP, auto-expiring ~2026-08-17. **That job is gone after the reboot.**
+**Cancelled job was `679e5b66`**, armed at the 08-10 STOP. **`CronList` verified empty at park time.**
 ⚠️ **A fleet that comes back with no crons looks exactly like a healthy fleet** — sessions present, panes foreground, census matching — and never wakes. **Phase 6 verifies sessions; what died is schedules.**
 
 ⚠️ **My registry row is NOT parked.** I judged the resume window too short to park-and-unpark, and parking without unparking is its own hazard. **If I am still dark past ~2 fires (≈09:27, 12:27), park it** — a correct alert nobody can act on spends the belt's credibility.

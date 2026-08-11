@@ -13,18 +13,31 @@ checkout `~/Development/piper-morgan-product`).
 
 ## 🔴 FIRST ACTION AFTER RESUME OR COLD START — re-arm the cron
 
-**`CronCreate` jobs are session-scoped and DO NOT survive a process exit.** Job **`97a48595`** was armed
-at the 2026-08-10 STOP and **will be dead after the reboot** whether or not the conversation resumes.
-**Nothing announces this** — a dead cron looks exactly like a quiet day.
+> ## ⛔ THE SCHEDULE IS PARKED. I CANCELLED IT DELIBERATELY AT 06:3x ON 2026-08-11.
+> **This is not a cron that died — it is one I killed on purpose**, per Pard's second stand-down notice,
+> so that no fire could arrive after this handoff was written and therefore land outside its coverage.
+> **`CronList` returning "No scheduled jobs" is the EXPECTED state right now, not a fault.**
+>
+> ### The exact schedule to restore — this line is the whole point of parking it
+> ```
+> CronCreate   cron: "7 10,16,22 * * *"   recurring: true
+> ```
+> **LEAN cadence, PM-approved.** Three fires daily at 10:07 / 16:07 / 22:07 PT. *(Fires arrive ~+30 min
+> after the cron minute — that is measured scheduler dispatch latency, not a fault.)* The prompt body to
+> restore is the one in the 2026-08-10 STOP entry of `dev/2026/08/10/2026-08-10-1037-cio-code-log.md`;
+> if that is unreachable, a thin prompt naming role + worktree + cadence + "run the `duty-cycle-tick`
+> skill" is sufficient, because **the procedure lives in the skill, not the prompt.**
 
-```
-CronList                       → expect ZERO jobs; if so, re-arm immediately
-CronCreate  "7 10,16,22 * * *" → LEAN cadence, PM-approved
-```
+**Why this was worth doing rather than letting the reboot take it**: `CronCreate` jobs are session-scoped
+and do not survive a process exit — **resume restores the conversation, not the scheduler.** A schedule
+killed by a reboot is **invisible afterwards**: the fleet comes back looking healthy and quietly never
+fires again. **Parking it deliberately and writing the cadence down here means restoring it depends on
+this file rather than on anyone's memory surviving the reboot** — including mine.
 
-Then **update the `state` column of the `cio` row in `dev/active/duty-cycle-registry.tsv`** with the new
-job id and a ~7-day expiry. The registry records **intended cadence, not a live job** — only the owning
-agent can verify it, because `CronList` is session-scoped.
+After re-arming: **update the `state` column of the `cio` row in `dev/active/duty-cycle-registry.tsv`**
+with the new job id and a ~7-day expiry, and **clear the parked note there** (see below). The registry
+records **intended cadence, not a live job** — only the owning agent can verify it, because `CronList` is
+session-scoped.
 
 **The full fire procedure is the `duty-cycle-tick` skill** (`.claude/skills/duty-cycle-tick/SKILL.md`).
 Do not reconstruct it from memory; it is versioned and has been corrected many times.

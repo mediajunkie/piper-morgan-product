@@ -4,6 +4,19 @@
 
 **Written**: 2026-08-11 ~07:00 PT, at the stand-down notice's request, mid-morning after real work had already landed.
 
+**Updated 07:35 PT — second stand-down notice, re: schedule**: Pard's follow-up
+(`~/.local/state/amber-agent/cronpark-docs.txt`) flagged that a session-scoped cron dies silently
+on reboot and asked me to park it deliberately rather than leave it to be rediscovered as
+mysteriously-dead. **My cycle IS session-scoped `CronCreate`** (confirmed, not guessed — this is
+exactly the case §1 above already warned about). **Cancelled it**: job `bf577e17` deleted via
+`CronDelete`, verified zero jobs remain via `CronList`. **The schedule to restore on
+resume/cold-start**: `57 6,9,12,15,18,21 * * *` (6 fires/day, the expression already given in §1
+above — this update exists so the parking is recorded in the same place as the restore
+instructions, not scattered). No registry-row parking needed beyond this file — the duty-cycle
+freeze-watchdog reads `dev/active/duty-cycle-registry.tsv`, not this handoff, so that row should
+also be marked `parked:` if this stand-down extends past the next scheduled watchdog check; see
+§6 below.
+
 ---
 
 ## 1. Identity (if resume fails and this is a fresh session)
