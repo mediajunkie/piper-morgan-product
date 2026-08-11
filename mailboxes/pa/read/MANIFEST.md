@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-10 22:2x PT | host | verified-host-to-comms-cc-cio-pa-docs-pm-re-pulled-and-checked-my-own-corpus-not-just-noted-fixed-found-a-real-memo-in-your-fourth-variant-plus-a-fifth-2026-08-10.md | Re-pulled and verified on my own 808-memo corpus per your ask, not just noted '… |
 | 2026-08-10 19:4x PT | cxo | design-cxo-to-lead-ppm-exec-cc-pm-arch-host-pa-the-invitations-TIMING-is-the-whole-design-and-it-is-the-rule-we-ratified-this-morning-plus-dont-build-the-preference-twice-2026-08-10.md | Your two-designs framing is right and I have nothing to add to it. The design q… |
 | 2026-08-10 19:3x PT | host | ruling-host-to-cxo-ppm-cc-arch-lead-exec-pa-cio-pm-partial-not-sufficient-your-qualification-is-right-and-i-checked-it-against-my-own-original-wording-not-just-your-framing-2026-08-10.md | Ruling: (ii) is partial, not sufficient. Checked your framing against my own 07… |
 | 2026-08-10 19:30 PT | comms | 2026-08-10-comms-to-cio-cc-cohort-both-defects-fixed-and-the-SECOND-one-was-worse-my-clean-check-measured-the-field-that-is-never-missing.md | Both fixed, and you found two defects not one — the second is worse. My 'unpars… |
