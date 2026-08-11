@@ -104,44 +104,46 @@
 
 <div class="wrap">
   <header>
-    <p class="stamp">Chief of Staff · Monday 10 August 2026</p>
+    <p class="stamp">Chief of Staff · Monday 10 August 2026 · evening update, 18:45</p>
     <h1>Attention rollup</h1>
-    <p class="standfirst">The weekend answered the beta-date question with a number nobody had looked at: discovery is accelerating, not settling.</p>
+    <p class="standfirst">Three of this morning's four asks closed while you were out. Discovery is still the number that matters — and it now has a pre-registered date attached to it.</p>
   </header>
 
   <dl class="band">
-    <div class="fact"><dt>Discovery this wk</dt><dd>108</dd></div>
+    <div class="fact"><dt>Discovery this wk</dt><dd>107</dd></div>
     <div class="fact"><dt>Prior 8-wk peak</dt><dd>67</dd></div>
-    <div class="fact"><dt>Closed since Fri</dt><dd>~30</dd></div>
-    <div class="fact"><dt>Deploys</dt><dd>4</dd></div>
-    <div class="fact"><dt>Awaiting your call</dt><dd>7</dd></div>
+    <div class="fact"><dt>Filed today</dt><dd>27</dd></div>
+    <div class="fact"><dt>Deployed</dt><dd>v47</dd></div>
+    <div class="fact"><dt>Awaiting you</dt><dd>1</dd></div>
   </dl>
 
   <section>
     <h2>The one thing</h2>
     <div class="card lead">
-      <h3>Discovery ran to 108 issues this week — against a prior eight-week peak of 67 and a last-week figure of 18.</h3>
-      <p>That is roughly six times last week and nearly double the highest week on record, and it happened because you spent real time in the product. <strong>It is the clearest vindication of moving the date that exists</strong>, and it is a better beta instrument than any open count.</p>
+      <h3>Discovery is running at 107 issues this week — against a prior eight-week peak of 67 and a last-week figure of 18.</h3>
+      <p>That is roughly six times last week and well above the highest week on record, and it happened because you spent real time in the product. Twenty-seven of them were filed today alone. <strong>It is the clearest vindication of moving the date that exists</strong>, and it is a better beta instrument than any open count.</p>
       <p class="note"><strong>Why the rate beats the count:</strong> the open number moves with triage — it fell 26→17 while work grew, then rose to 48 once triage put findings where they belonged. Neither move meant much. <strong>The discovery rate measures something the count cannot: whether the product is still surprising you.</strong> Beta is ready when that curve falls while your usage holds steady — not when a backlog empties. The tool is development's, <code>scripts/discovery-rate.py</code>, and I'd make it the weekly number you watch.</p>
     </div>
   </section>
 
   <section>
-    <h2>Needs your decision</h2>
-
-    <div class="card act">
-      <p><span class="chip crit">7 items, unmilestoned by design</span></p>
-      <h3>The sort — still open, and it is the only thing blocking these</h3>
-      <p>#1536–#1540 (the alpha-feedback five), #1511 (two standups, one name), #1569. All deliberately unmilestoned: <strong>their unmilestoned state is the ask.</strong> The sorting analysis with four dimensions and three approaches is in the remaining-work artifact; my recommendation was travel-first with the dependency honored.</p>
-      <p class="note">Once you rule, the milestones follow immediately and this population empties to zero.</p>
-    </div>
-
-    <div class="card act">
-      <h3>Two smaller ones</h3>
+    <h2>Closed while you were out</h2>
+    <div class="card done">
       <ul class="plain">
-        <li><strong>An <code>awaiting-decision</code> label.</strong> Product management found that "unmilestoned: 7" conflates <em>a decision waiting on you</em> with <em>work nobody has examined</em> — opposite remedies. The distinction isn't derivable from GitHub today. One label fixes it; the code already reads it. Taxonomy is yours and theirs, not mine.</li>
-        <li><strong>Twelve issues carry the MVP milestone but aren't on the board</strong> — up from seven yesterday, so it's compounding. Filing with a milestone doesn't add them, and board-derived views can't see them.</li>
+        <li><strong>You ruled the sort</strong> — cold-start (#1536) into MVP, the other four to Production, #1569 to MVP. That's a sharper call than my recommendation: I sorted for <em>order</em>, you sorted for <em>the gate</em>, and only the item that changes the value answer is beta-blocking. The held population went 7 → 1.</li>
+        <li><strong>The board-membership gap is closed</strong> — it was 12 this morning and compounding; development ran a board-completeness pass and the reconciliation now reports <em>all 49 open MVP issues present on the board</em>. That ask is gone.</li>
+        <li><strong>Development's discovery tool carries a pre-registered contract</strong>, which partly answers the confound I flagged this morning: <em>"structural work should bend this downward from Aug 8; flat or rising at Sep 1 ⇒ the hard conversation, with this data."</em> A date, a direction, and a named consequence, written before the result. That's the right shape and I'd hold us to it.</li>
       </ul>
+      <p class="note">Today: 27 issues filed, 3 closed, v47 deployed. The rate hasn't broken — which is expected this early and is exactly what the Sep 1 checkpoint is for.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Needs your decision — down to one, plus one small</h2>
+    <div class="card act">
+      <h3>#1511 — two standups wearing one name</h3>
+      <p>Slack <code>/standup</code> generates a summary; web <code>/standup</code> runs a conversational interview. Same command, two different products. Found by you, live-testing. Product management has filed a spec and the hold has ended, so this is now waiting only on where it goes.</p>
+      <p class="note">The other two unmilestoned items are documentation debt filed today — 240 broken internal links and 11 stale current-state docs. Those are the <em>not-yet-triaged</em> population rather than the awaiting-you one, which is exactly the distinction an <code>awaiting-decision</code> label would make visible. Still one label away.</p>
     </div>
   </section>
 
@@ -171,6 +173,7 @@
   </section>
 
   <footer>
-    <p><strong>Live-state pass this morning.</strong> Discovery-rate curve from development's tool against GitHub creation timestamps; board and milestone counts reconciled two ways after last week's blind-spot findings; the seven unmilestoned enumerated individually rather than counted. Where a population isn't distinguishable in the data, this page says so rather than splitting it by inference.</p>
+    <p>⚠️ <strong>One figure I could not verify, and I would rather say so than infer it.</strong> The board reports ten MVP items with no status set, which my tool counts as not-done. I suspect they are closed issues that were never given a board status — meaning the not-done figure may be overstated by up to ten. <strong>The check hit the GitHub rate limit</strong> (5,000/hour, shared across all eleven agents) and failed cleanly rather than returning a wrong answer. I will confirm it on the next fire and correct the number either way.</p>
+    <p><strong>Live-state pass this morning and again this evening.</strong> Discovery-rate curve from development's tool against GitHub creation timestamps; board and milestone counts reconciled two ways after last week's blind-spot findings; the seven unmilestoned enumerated individually rather than counted. Where a population isn't distinguishable in the data, this page says so rather than splitting it by inference.</p>
   </footer>
 </div>

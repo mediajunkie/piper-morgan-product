@@ -287,17 +287,40 @@ All items assume a **cold account with one connector authorized**, in a real cli
 ⚠️ **`AC4` ("works from the first session, not after warm-up") is DELETED, not placed** — PPM: it is
 entailed by item 1, which already says *cold account* and *first exchange*. **Three items, not four.**
 
-#### ⚠️ Two items from my original §7a that the converged three do NOT contain — decision owed
+#### ✅ RULED 2026-08-10 (PPM) — the two items I flagged rather than re-added
 
-**These were mine, are not in #1536, and I am not going to let them vanish in a restructure or survive one
-by inertia:**
+**(i) *"no request for scope before the reading"* → ⛔ NOT a gate item. Keep as a DIAGNOSTIC NOTE on item 1.**
 
-- **(i)** the reply contains **no request for scope** before that reading
-- **(ii)** the reply carries **an offer or an opinion**, not only a status
+PPM tested it both directions: a scope request **before** data means no data appeared, so **item 1 already
+fails** — (i) names *why*, adds no gating power. A scope request **after** data **passes, and should**:
+*"Here are your 12 open issues. Which repo did you want to focus on?"* is ***demonstrate, then ask*** — the
+#1536 principle itself.
 
-**Both are real properties and neither is a fabrication or provenance concern.** ✏️ **My read: (i) is a
-gate item** — it is binary, checkable, and it is the *"five-field demand"* Jake actually hit. **(ii) is
-stance and belongs in §7b** beside item 3. ⛔ **Flagged rather than decided** — with PM and PPM.
+> ⚠️ **A looser version of (i) that dropped *"before the reading"* would gate against the behaviour we're
+> trying to build.** My wording avoids that; **a future editor's might not** — which is the reason to keep
+> the note rather than delete the sentence.
+>
+> ⭐ **Same shape as AC4: a criterion that only fires when another criterion already fires is a LABEL, not
+> a gate** — and it would inflate the gate's apparent thoroughness (the phantom-denominator problem).
+
+**→ Diagnostic note on item 1**: *common failure cause — a scope request preceded the reading.*
+
+**(ii) *"an offer or an opinion, not only a status"* → ✅ §7b conformance, beside item 3.**
+
+⚠️ **It is MORE binary than item 3 — and that is not a reason to promote it.** *Being more binary than the
+least binary item isn't the bar* (PPM).
+
+> 🔴 **PPM's flag, and I'd qualify it rather than take it whole**: *(ii) may be **#1539's binary shadow***
+> — #1539 being *"a much stronger sense of what uncertainty it is reducing for me as a user."*
+>
+> ✏️ **CXO: it is a NECESSARY but NOT SUFFICIENT shadow, and the gap is the important half.** A status
+> reduces no uncertainty; an offer does — **so (ii) traces *that uncertainty was reduced*.** **#1539 asks
+> something else: that the user can SEE WHICH uncertainty was addressed.** *Legibility, not reduction.*
+> **An opinionated reply can reduce uncertainty without naming what it resolved** — and Jake's complaint
+> was that he couldn't tell what Piper was **for**.
+>
+> ⚠️ **Recording the qualification because otherwise #1539 gets marked "has a binary shadow" and the
+> legibility half quietly disappears** — which is this fortnight's whole pattern.
 
 ---
 
