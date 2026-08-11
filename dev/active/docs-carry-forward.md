@@ -13,20 +13,20 @@ stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
 
-## 🟢 NEXT UP — docs-tree flattening plan (PM asked 08-10, sequenced after #1584/#1585)
+## ✅ RESOLVED 2026-08-11 (Fire 1) — docs-tree flattening plan drafted, awaiting PM's go/no-go
 
-PM wants a plan (not immediate action, explicitly "wary of precipitous changes") to flatten parts of
-the docs tree. Real evidence gathered while fixing #1584 tonight: `docs/internal/architecture/current/
-models/` is 5 levels deep and that depth directly caused ~15 off-by-one `../` broken links across 5
-files (fixed in `a0fd56987`); the same root cause (files moved into a nested subdir, cross-links never
-updated) produced 3 more of #1584's systemic clusters. Also found 4 separate instances of an
-auto-generated-boilerplate-README pattern (hallucinated subdirectory listings) scattered through the
-tree — a related but distinct defect class.
+Plan written: `docs/internal/operations/docs-tree-flattening-plan-2026-08-11.md` (`0bca3ca8c`).
+One high-confidence candidate (`docs/internal/planning/roadmap/CORE/`, 9 subdirs/76 files, every
+filename already fully encodes its epic — nesting is 100% redundant). 3 categories explicitly
+ruled out with reasons (adrs/patterns sound as-is; legacy-guides carry real info, already fixed;
+image archive deep-by-design). **Not executed** — a document only, per PM's stated wariness.
 
-**Plan should cover**: inventory of directories deep/complex enough to cause this class of bug,
-proposed flatter target shape, staged execution (small batches, link-check after each — same
-discipline as tonight's Finding-1 and #1584/#1585 work, not a blanket sweep). Draft as a document for
-PM review, don't execute.
+**Bigger finding along the way, filed separately as #1593**: `.github/workflows/link-checker.yml`
+correctly detects broken links (verified against a pre-#1584-fix run's own log) but the workflow
+always reports success regardless — very likely the actual reason ~240 broken links accumulated
+silently. This matters more than the flattening plan itself; flagged as such in the plan doc.
+
+**Awaiting PM**: go/no-go on executing the one recommended flatten (`roadmap/CORE/`).
 
 ## ✅ RESOLVED 2026-08-10/11 (PM-directed, overnight) — #1584 and #1585 worked through
 
@@ -94,15 +94,19 @@ Run every fire, not just START.
 - **PDR-007 awaits CIO ONLY** — Arch ✅ Web ✅. Measurement window runs to 2026-08-27.
 - **CIO's day-of-week duty-check proposal reply** — sent 08-04, no reply, not urgent.
 - **#1584 Part C, #1475, #1486** — all OPEN, unchanged, not urgent.
+- **#1593** (link-checker.yml never fails despite detecting real breaks, filed 08-11) — not
+  mine to fix (CI/workflow ownership), not urgent, but worth a periodic check whether it's
+  picked up since it explains a real recurring-defect mechanism.
 - **4 mail flags sent 08-11 06:50-06:56** (PA/Exec/Lead Dev/CIO re: their stale docs + CIO re:
   #1584 Part C) — no reply expected soon, not urgent, just don't re-flag redundantly.
+- **Docs-tree flattening plan go/no-go** — plan posted, awaiting PM's decision on executing the
+  one recommended flatten (`roadmap/CORE/`). Not chasing.
 
 ## Owed by me — unblocked, priority order
 
-1. **Docs-tree flattening plan** — see 🟢 NEXT UP above. Highest priority next fire.
-2. **#1486's actual checklist** — not urgent.
-3. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
-4. **`docs-standing-items.md` stale** — low priority.
+1. **#1486's actual checklist** — not urgent.
+2. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
+3. **`docs-standing-items.md` stale** — low priority.
 
 ## Standing lessons (carried, still live — 11 items in the cron prompt; not restating all here)
 
