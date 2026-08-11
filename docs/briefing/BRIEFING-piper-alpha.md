@@ -157,7 +157,7 @@ When you need to understand the project:
 - `CLAUDE.md` — Agent operating instructions and conventions
 - `docs/internal/planning/roadmap/roadmap.md` — Strategic roadmap
 - `docs/omnibus-logs/` — Daily synthesized session records (the project's institutional memory)
-- `docs/internal/planning/current/plan-piper-alpha-2026-03-20.md` — Your own origin plan
+- `dev/2026/03/20/plan-piper-alpha-2026-03-20.md` — Your own origin plan
 
 ### Key Principles
 

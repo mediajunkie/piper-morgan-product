@@ -11,10 +11,10 @@
 
 **New Structure**:
 - **Hub Document**: [models-architecture.md](models-architecture.md) - Navigation and summaries
-- **Pure Domain**: [models/pure-domain.md](models/pure-domain.md) - 8 core business models
-- **Supporting Domain**: [models/supporting-domain.md](models/supporting-domain.md) - 7 business models with data structures
-- **Integration & Transfer**: [models/integration.md](models/integration.md) - 16 external system models
-- **Infrastructure**: [models/infrastructure.md](models/infrastructure.md) - 8 system operation models
+- **Pure Domain**: [models/pure-domain.md](pure-domain.md) - 8 core business models
+- **Supporting Domain**: [models/supporting-domain.md](supporting-domain.md) - 7 business models with data structures
+- **Integration & Transfer**: [models/integration.md](integration.md) - 16 external system models
+- **Infrastructure**: [models/infrastructure.md](infrastructure.md) - 8 system operation models
 
 **Migration Benefits**:
 - All 39 models now documented (vs. previous 20)
@@ -51,10 +51,10 @@
 ## 🔗 Quick Access to New Architecture
 
 ### By Technical Layer
-- **[Pure Domain Models](models/pure-domain.md)** - Core business concepts (8 models)
-- **[Supporting Domain Models](models/supporting-domain.md)** - Business with data structures (7 models)
-- **[Integration Models](models/integration.md)** - External system contracts (16 models)
-- **[Infrastructure Models](models/infrastructure.md)** - System mechanisms (8 models)
+- **[Pure Domain Models](pure-domain.md)** - Core business concepts (8 models)
+- **[Supporting Domain Models](supporting-domain.md)** - Business with data structures (7 models)
+- **[Integration Models](integration.md)** - External system contracts (16 models)
+- **[Infrastructure Models](infrastructure.md)** - System mechanisms (8 models)
 
 ### By Business Function
 - **#pm** - [Product Management](models-architecture.md#pm-models) (12 models)
@@ -63,22 +63,22 @@
 - **#spatial** - [Spatial Intelligence](models-architecture.md#spatial-models) (5 models)
 
 ### Core Models (New Locations)
-- [Product](models/pure-domain.md#product) - Products being managed
-- [Feature](models/pure-domain.md#feature) - Features or capabilities
-- [WorkItem](models/integration.md#workitem) - Universal work items
-- [Workflow](models/pure-domain.md#workflow) - Workflow definition and state
-- [Task](models/pure-domain.md#task) - Individual tasks within workflows
-- [Intent](models/pure-domain.md#intent) - User intent parsed from natural language
+- [Product](pure-domain.md#product) - Products being managed
+- [Feature](pure-domain.md#feature) - Features or capabilities
+- [WorkItem](integration.md#workitem) - Universal work items
+- [Workflow](pure-domain.md#workflow) - Workflow definition and state
+- [Task](pure-domain.md#task) - Individual tasks within workflows
+- [Intent](pure-domain.md#intent) - User intent parsed from natural language
 
 ### Project Management (New Locations)
-- [Project](models/integration.md#project) - PM projects with integrations
-- [ProjectIntegration](models/integration.md#projectintegration) - Integration configurations
+- [Project](integration.md#project) - PM projects with integrations
+- [ProjectIntegration](integration.md#projectintegration) - Integration configurations
 
 ### Infrastructure Models (New Locations)
-- [Event](models/infrastructure.md#event) - Base event class
-- [List](models/infrastructure.md#list) - Universal lists
-- [Todo](models/infrastructure.md#todo) - Task management
-- [Conversation](models/infrastructure.md#conversation) - User-AI conversations
+- [Event](infrastructure.md#event) - Base event class
+- [List](infrastructure.md#list) - Universal lists
+- [Todo](infrastructure.md#todo) - Task management
+- [Conversation](infrastructure.md#conversation) - User-AI conversations
 
 ## Recent Updates Summary
 

@@ -82,6 +82,19 @@ Arch's/Lead's to keep.)*
 > ✅ **Item ③ gates on: *every entity named in a user-facing claim carries a citation.*** **No fourth
 > wording patch needed.** The block is discharged.
 
+⚠️ **Terminology correction (PPM, 2026-08-10 evening).** I first described the citation as AC2's
+*"binary shadow."* **Wrong word — *shadow* implies SUBSTITUTION.** The citation gates only AC2's
+**proof-a-fetch-happened** half; its **proof-the-result-was-worth-having** half is a separate property.
+**The correct term is the GATEABLE FRACTION**, and the rule that makes it safe:
+
+> ⭐ **A proxy is safe when the remainder is ROUTED. It is dangerous when the remainder is merely
+> IMPLIED.**
+
+**This case is safe because the remainder IS routed** — explicitly, by name, to item ② (§7b) and to
+**#1539**. *Not because the citation stands in for AC2.* **CXO caught the same wording creating a real
+risk on a different item the same day** — it would have marked #1539 as "has a shadow," put the proxy
+in the gate, and let the legibility half quietly disappear.
+
 ---
 
 ## What PM would be blessing

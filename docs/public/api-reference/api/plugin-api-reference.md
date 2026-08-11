@@ -895,7 +895,7 @@ Based on benchmark results from `scripts/benchmarks/`:
 - **[Pattern-031: Plugin Wrapper](../../../internal/architecture/current/patterns/pattern-031-plugin-wrapper.md)** - Architecture pattern
 - **[ADR-034: Plugin Architecture](../../../internal/architecture/current/adrs/adr-034-plugin-architecture.md)** - Implementation record
 - **[Plugin Quick Reference](../../../guides/plugin-quick-reference.md)** - Cheat sheet
-- **[Demo Plugin](../../services/integrations/demo/)** - Example implementation
+- **[Demo Plugin](../../../services/integrations/demo/)** - Example implementation
 
 ---
 

@@ -39,7 +39,14 @@ set -uo pipefail
 # caller would have read as a detected freeze. Caught only because the known-negative test was run as
 # well as the known-positive. Hence the trap: any unhandled error is 3, never 1.
 trap 'rc=$?; [ "$rc" -ne 0 ] && [ "$rc" -ne 1 ] && echo "cohort-freeze: FAIL internal error rc=$rc (NOT a detection, NOT an all-clear)" >&2 && exit 3' ERR
-REPO="${FREEZE_REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+# PIPER_REPO accepted as an alias 2026-08-10: Pard's watchdog wrapper invokes this with
+# PIPER_REPO="$REPO" (matching how it calls duty-cycle-freeze-check.sh), and this script read only
+# FREEZE_REPO -- so the caller's explicit intent was SILENTLY IGNORED. Not a live bug today, because
+# self-derivation from the script's own location happens to give the same answer, but a caller
+# setting a variable that has no effect is exactly the kind of quiet mismatch that surfaces later as
+# "it was configured correctly and did the wrong thing". Precedence: FREEZE_REPO, then PIPER_REPO,
+# then self-derive.
+REPO="${FREEZE_REPO:-${PIPER_REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}}"
 REG="${DUTY_CYCLE_REGISTRY:-$REPO/dev/active/duty-cycle-registry.tsv}"
 HB="${HEARTBEAT_DIR:-$REPO/dev/heartbeats}"
 WINDOW_H="${COHORT_FREEZE_WINDOW_H:-4}"      # hours to look back
@@ -124,7 +131,15 @@ if [ "$sched" -lt "$MIN_SCHED" ]; then
   exit 0
 fi
 if [ "$emitted" -eq 0 ]; then
-  echo "COHORT-FREEZE $sched scheduled fires across $roles watched roles in the last ${WINDOW_H}h, ZERO emissions. This is an ENVIRONMENT event (account limit / host outage), not N separate stalls — stand the cohort down and notify PM rather than alerting per-role."
+  # ⚠️ 2026-08-10 (Pard): the old text asserted "This IS an ENVIRONMENT event (account limit / host
+  # outage)" -- more than this measures. It measures EMISSIONS REACHING origin/main. A cohort that is
+  # working but NOT DELIVERING is indistinguishable from a frozen one, and Pard has two real instances:
+  # Janus's July fires committed without pushing, and an 08-05 unattended fire produced a session log,
+  # three mail replies and a code fix and delivered none of them. Both would read as blackout here.
+  # That is not a false positive -- a cohort-wide delivery failure IS worth waking someone for -- but
+  # naming the wrong cause sends the responder to the wrong place. So the message now states what was
+  # measured and lists the causes as alternatives, per m-44.
+  echo "COHORT-FREEZE $sched scheduled fires across $roles watched roles in the last ${WINDOW_H}h, and ZERO emissions REACHED origin/main. Something cohort-wide, not N separate stalls — stand the cohort down and notify PM. ⚠️ CAUSE NOT DETERMINED: this measures DELIVERY, so an account limit, a host outage, AND a cohort that is working-but-not-pushing all look identical here. Check whether work exists un-pushed on the seats before concluding the cohort is idle."
   exit 1
 fi
 exit 0

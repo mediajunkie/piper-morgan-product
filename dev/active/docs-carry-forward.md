@@ -13,6 +13,24 @@ stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
 
+## ✅ RESOLVED 2026-08-10 (Fire 4) — `planning/current/` Finding 1, 12 days deferred, trigger finally arrived
+
+Deferred since 08-02 pending a named scope (re-derive per-file staleness, confirm which of 13 referrers
+need updating, decide disposition). A genuine compaction + a genuinely quiet fire supplied that opening.
+Re-derived via `git log`: `vision.md` (~121d) is genuinely current, referenced by name from 6+ live
+briefing paths — stays put. The other 7 files (~313-323d, zero specific referrers) moved to
+`planning/historical/` (`c3c1a7afc`). **Per-file split, not the originally-proposed blanket rename** —
+a rename would have silently broken vision.md's live references. Also fixed 2 unrelated broken links
+found while checking referrers (NAVIGATION.md's stale `issues.csv` pointer + mislabeled Backlog entry;
+BRIEFING-piper-alpha.md's wrong path to its own origin plan). Original audit doc marked ✅ RESOLVED.
+
+**Also retired the bare "97 docs >30d" carry-forward line** — untraceable methodology, and while
+investigating I independently rediscovered the filesystem-mtime trap already documented in the 08-01
+audit doc (confirmed: `find -mtime` in this Model-A worktree shows every file as ~Jul 29 checkout time
+regardless of real edit history — verified against `session-log-templates/INDEX.md`, ~11 months off).
+Live tools are unaffected (they correctly use git log/frontmatter dates); the bare "97" number is now
+superseded by #1585's properly-measured list anyway.
+
 ## ✅ RESOLVED 2026-08-10 — Weekly Docs Audit #1583, CLOSED
 
 Full 2-fire audit, all 8 sections genuinely completed (not token-checked) — first fully-worked weekly
@@ -87,12 +105,8 @@ permanence, per standing lesson 10.
 
 ## Owed by me — unblocked, priority order
 
-1. **`planning/current/` Finding 1** — fresh careful pass needed, not a rename. Named trigger (fresh
-   session/compaction) still hasn't arrived — twelve days running now. This session was compacted
-   08-09; still hasn't found a natural opening since.
-2. **97 docs >30d asserting current-state language** — no deadline.
-3. **#1486's actual checklist** — not urgent.
-4. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
+1. **#1486's actual checklist** — not urgent.
+2. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
 5. **`docs-standing-items.md` stale** — low priority.
 
 ## Resolved 2026-08-10 — do NOT re-open
