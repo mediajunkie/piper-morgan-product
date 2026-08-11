@@ -2,14 +2,13 @@
 
 ## Overview
 
-This directory contains documentation for images in the Piper Morgan system.
-
+Image assets — favicons, logos, and content images. (Corrected 2026-08-11 during #1584: previously
+listed two subdirectories, `architecture/` and `screenshots/`, that don't exist.)
 
 ## Subdirectories
 
-- **[Architecture](architecture/README.md)** - Architecture documentation
-- **[Blog](blog/README.md)** - Blog documentation
-- **[Screenshots](screenshots/README.md)** - Screenshots documentation
+- **[Blog](blog/README.md)** - Blog post images
+- **[Alpha Onboarding](alpha-onboarding/)** - Alpha testing screenshots
 
 ## Navigation
 

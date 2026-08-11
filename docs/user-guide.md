@@ -370,7 +370,7 @@ python cli/commands/notion.py search --query "Q4 2025"
 1. Check system health: `curl http://localhost:8001/health`
 2. Review Docker logs: `docker-compose logs`
 3. Verify API keys in environment configuration
-4. See [Deployment Guide](deployment/deployment-summary.md) for setup issues
+4. See [Deployment Guide](internal/operations/deployment/deployment-summary.md) for setup issues
 
 ## Future Capabilities
 
@@ -404,8 +404,8 @@ Current system limitations make user feedback collection manual:
 For current development status, see:
 
 - One-Page Summary (coming soon) - Current capabilities and gaps
-- [Roadmap](planning/../planning/roadmap.md) - Development timeline
-- [Backlog](planning/backlog.md) - Detailed feature status
+- [Roadmap](internal/planning/roadmap/roadmap.md) - Development timeline
+- **Backlog** - GitHub is source of truth (`gh issue list`); `backlog.md` was deprecated and moved to trash
 
 This user guide will be updated as system capabilities evolve and mature.
 
