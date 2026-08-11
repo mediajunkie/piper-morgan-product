@@ -2,7 +2,9 @@
 
 **Purpose**: durable handoff record for the next Architect session (duty-cycle-tick + PM-ratified single-log discipline 2026-06-12 + escalations-doc FOLD 2026-06-17). PM-attention items ride here.
 
-**Last rewritten**: 2026-08-04 22:2x PT (day-close). Prior 2026-08-03 22:00, 2026-08-02 22:00; full rewrite 2026-07-29 10:30 — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
+**Last rewritten**: 2026-08-04 22:2x PT (day-close); **environment table patched 2026-08-11 15:5x PT post-reboot** (cron job id only — substantive threads below are NOT re-verified today, still dated 08-04/08-08; treat "Owed by me" / "For PM" as needing a fresh GH check before acting, not as current fact). Prior 2026-08-03 22:00, 2026-08-02 22:00; full rewrite 2026-07-29 10:30 — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
+
+**2026-08-11 post-reboot note**: Amber rebooted for macOS 26.6 (Pard's stand-down/post-reboot notices). Parked cron pre-reboot, re-armed post-reboot (`3e79e19a`), verified exactly one job. Mail inbox drained this fire — 2 cc-level memos (PA's mail-parser fix confirmation, PPM's empty-standup exception ruling), neither addressed to arch, no action needed, both read in full and moved to `read/` (not globbed), verified empty at `origin/main`. Standing-items checked: nothing unblocked — remaining open items are either gated on another role's build or explicitly need a dedicated non-fire session. No substantive architectural work this fire; the reboot cycle was the fire's content.
 
 ---
 
@@ -14,7 +16,7 @@
 | Worktree model | **Model A** — stable per-agent path, reused every session. **The path is load-bearing** (Claude Code keys per-path state; a fresh path silently orphans accumulated state) |
 | Worktree | `/Users/xian/Development/piper-morgan-worktrees/arch` |
 | Branch | `claude/arch-cycle` |
-| Cron | **`27 6,9,12,15,18,21`** (6×/day, offset :27), job **`cdc8155b`**, re-armed 2026-08-04 22:1x at STOP (delete-then-create; prior `7cdf98a0`). **Session-only — dies with the session.** Empty `CronList` → re-arm this expression |
+| Cron | **`27 6,9,12,15,18,21`** (6×/day, offset :27), job **`3e79e19a`**, re-armed 2026-08-11 post-reboot (macOS 26.6; see `docs/handoff-arch-2026-08-11.md` §1 — parked pre-reboot as `679e5b66`, reboot killed it as expected for session-scoped `CronCreate`, re-armed after resume, `CronList`-verified exactly one). **Session-only — dies with the session.** Empty `CronList` → re-arm this expression |
 | Registry row | **`active`** in `dev/active/duty-cycle-registry.tsv` (the "cron NOT armed" parked note was cleared 7/29 per its own stated condition) |
 | Memory | shared cohort pool (~169 files), keyed to the git **common** dir — shared by construction with every role |
 | Mail | `scripts/mail-send.sh` push-to-ref from this worktree. **Never** touch PM's main checkout working tree (HARD RULE — PM saves uncommitted work there) |

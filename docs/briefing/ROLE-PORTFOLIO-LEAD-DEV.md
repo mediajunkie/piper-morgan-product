@@ -5,9 +5,9 @@ status: DRAFT — pilot wave (HOST reviewing)
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md (v0.1, PM-ratified 2026-06-14)
 sibling: docs/briefing/BRIEFING-ESSENTIAL-LEAD-DEV.md (stable identity / how-to-operate)
 version: v0.1
-last_reviewed: 2026-06-17
+last_reviewed: 2026-08-11
 valid_from: "2026-06-17"
-last_verified: "2026-06-19"
+last_verified: "2026-08-11"
 ---
 
 # Lead Developer Role Portfolio (pilot)
@@ -24,17 +24,17 @@ Two things define the lane:
 
 The why: the product only exists as far as it's shipped and it works. Lead Dev is where intent becomes reality — and where the reality is **verified, not asserted**.
 
-## 2. Current goals & priorities — June 2026 (D1 sprint)
+## 2. Current goals & priorities — August 2026 (Beta Blockers sprint)
 
-⚠️ **STALE — flagged 2026-08-11, found during weekly-docs-audit #1583/#1585.** This section is
-~52 days old; the D1 sprint has closed and "Beta 0.9 due Jul 4" has slipped to Aug 8. Left
-un-rewritten — Docs doesn't own Lead Dev's priority narrative and won't fabricate a replacement;
-flagged to Lead Dev directly for a refresh.
-*(The self-refreshing layer, Rule 5; steerable per Rule 4 — each has a direction + a way to tell I'm moving toward it. Updated at each weekly review.)*
+*(The self-refreshing layer, Rule 5; steerable per Rule 4 — each has a direction + a way to tell I'm moving toward it. Updated at each weekly review. Refreshed 2026-08-11 by Lead Dev after Docs flagged the June/D1 section 52 days stale — the D1 items below are retired, not carried.)*
 
-- **D1 — Beta design quality (active).** Direction: every app surface reads as one coherent product. Status: **F2 page-shell COMPLETE** (22/22 pages on `app_shell`; #1171 closed; off-chrome drift class retired). Open: #1264 nav-token (closed; CXO ratifying the tentative palette), #1268 nav-coverage, #1270 documents/files object-model (CXO+PPM), #1267 projects Beta-blocker (Architect strategy).
-- **ADR-071 consolidating refactor.** Direction: all content anchored to user-auth (multi-tenancy-ready). Status: #1252-P2 (doc-store) + #1238 (Radar Document source) shipped+closed; P7 owner_id cutover deferred + tracked (#1257).
-- **Upcoming MVP sprints** (post-D1, PM-agreed sequence): RECONNECT (connector) → M4 (trust + learning) → M5 (distribution + polish). **Beta 0.9 due Jul 4.**
+Counts verified against GitHub 2026-08-11: **MVP 51 open / 1,034 closed · Production 163 open · Fast Follow 43 open.** Sprint = **Beta Blockers - Hard Gates Only** (private-beta gate). Milestone sequence is **MVP → Production → Fast Follow**; "not MVP" never defaults to Fast Follow (PM correction 08-09).
+
+- **Close the MVP gate (active, dominant).** Direction: the 51 remaining MVP issues reach zero, each with evidence in the issue and a user-verifiable path. How I tell I'm moving: cuts shipped and PM-retested — nine assembled across 08-09/08-10, eight deployed (Fly v48), the ninth (#1589/#1590) staged awaiting PM's deploy word. The tracker PM actually reads is `dev/active/honest-mvp-ledger-2026-08-08.html`.
+- **Fundamentals over patches (PM directive, binding).** Direction: routing failures become **corpus** entries for the Understanding-Layer Inversion rather than one-off pre-classifier patterns — the moratorium holds; handler-branch and rail-key fixes stay sanctioned. How I tell: the **new-class discovery rate** (Exec's amended Sep 1 contract — of this week's findings, how many are instances of an already-named failure class vs. genuinely new). Raw rate was unfalsifiable and was replaced.
+- **Understanding-Layer Inversion, Phase 1** — the only substantial unstarted MVP build. Direction: routing derives from a registry-derived canonical grammar instead of accreted patterns. Arch's GO carries conditions: per-category corpus gate (never aggregate), narrowing only the ~14 AGREE rows, each citing its probe row; the five fabrication-class cases join that judge corpus rather than getting a second instrument.
+- **Time handling (#1572 umbrella).** Direction: per-user timezone actually exists. Root: supply is 0% (no column, no browser capture, no writer) while consumption scaffolding is ~80% built, so every user-typed clock time is read on the server's UTC clock. Audit: `docs/internal/operations/time-handling-audit-2026-08-10.md`.
+- **Beta date.** PM moved it back a month after live-testing surfaced substantially more unfinished work than had been reported. The honest-ledger discipline that came out of that — no "done" without a PM-retestable path — is the standing correction, not a one-time cleanup.
 
 ## 3. Standing responsibilities — slow-pace (monitoring / sustaining / cadence)
 *(The hidden-load layer the 360 surfaced — ~half the actual work, invisible in issues/metrics. Named so it can be steered, Rule 2 — and so it sits *under* purpose, not as a job-jar.)*

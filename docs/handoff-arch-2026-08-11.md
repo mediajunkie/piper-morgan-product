@@ -6,11 +6,13 @@
 
 ---
 
-## 1. 🔴 FIRST THING AFTER RESUME — MY SCHEDULE IS PARKED. RE-ARM IT.
+## 1. ✅ RE-ARMED post-reboot — job `3e79e19a`, verified via CronList (exactly one job).
 
-**⛔ I cancelled my own cron at 07:0x on 2026-08-11, deliberately, per Pard's second stand-down notice.
-This is a PARK, not a casualty — the absence is intentional and recorded here so it does not depend on
-anyone's memory surviving the reboot.**
+**Done at resume**, per Pard's post-reboot-nudge.txt. Old job `679e5b66` was parked (cancelled
+deliberately) at 07:0x on 2026-08-11 per Pard's second stand-down notice, then the reboot happened,
+then this seat resumed and re-armed from the schedule recorded below. Registry row updated
+(`dev/active/duty-cycle-registry.tsv`) to `3e79e19a`. **This section is now historical — kept for
+the next reboot, since the schedule below is still the one to restore.**
 
 **Mechanism**: the harness's **session-scoped `CronCreate`** (`CronList` reports `[session-only]`; the tool
 writes nothing to disk and the job dies with the session). **Not a LaunchAgent. Nothing restores it.**
