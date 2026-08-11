@@ -12,9 +12,13 @@
 - **#1190** — close/reopen DESTRUCTIVE threshold word (question is on the issue).
 - Post-deploy verdicts on the amber ledger rows.
 
+## 🔴 TOP OF QUEUE — PM-gated, escalated 08-11 16:1x
+- **#1600 CI RED ON MAIN 2 DAYS** — `silent_death_core` 225 vs 209 + `todo_markers` 73 vs 71, both `@pytest.mark.smoke` (**gating**); Architecture Enforcement failed on every push since 08-09 15:07; mypy gate 17 over across 5 codes. Verified locally, worktree clean. **Asked PM whether to fix ahead of everything else.** Fix is mostly free — most of the 16 new sites want a `# silent-ok: <reason>` annotation, not a ceiling raise. **Never raise the ceiling.**
+- **#1599 BETA BLOCKER `is_admin`** — 1377 users, **0 admins**; migration seeds `xian@example.com` (placeholder, not PM's address); no code path sets it. #1485/#1508 are correct fixes that turned a dormant gap into a live block — **PM cannot save the Slack app token** (#1201). Must be true **at cut time**. Asked PM how they want it granted.
+
 ## Next build queue (unblocked, in order)
 1. **#1595 Inversion Phase 0** — corpus baseline, per category. **Needs nothing from Arch; starts immediately.** Epic filed 08-11 with all four ratified decisions + both amendments as acceptance criteria. Then Phase 1 behind a flag (shadow-scored, routes logged not executed).
-2. **Closure sweep tail** — 16 open MVP issues are the subject of a shipped fix/feat commit; 3 subagents verified batches on 08-11. #1573 already closed with evidence. Whatever the batches return, the MVP open count is **overstated**, which distorts PM's read of what's left.
+2. ~~Closure sweep~~ **DONE 08-11**. Of 16 candidates only **9 closed** — the caution was justified. Held open with findings: #1411 (PM's own gate unmet, no cut since the fix), #1431 (defect **reproduced at HEAD**: `"show me my archived projects"` → STATUS 1.0; the **`me` token** is the discriminator), #1485 (blocked by #1599), #1480 (client half verified by *grepping the JS* — wrong layer), #1423/#1436 (genuine slices). **MVP 51 → 48.**
 3. **#1572** per-user timezone umbrella (supply is 0%; every user-typed clock time reads on the server's UTC clock).
 4. #1423 / #1436 remaining slices; #1592 (Fly credentials.json ERROR noise).
 
