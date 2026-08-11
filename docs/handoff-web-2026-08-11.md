@@ -14,7 +14,7 @@
   - **Cohort infra** (mail, session logs, `dev/`): `~/Development/piper-morgan-worktrees/web` on branch `claude/web-cycle` (product repo, `piper-morgan-product`)
   - **Primary lane** (the actual website): `~/Development/piper-morgan-website-worktrees/web` on branch `claude/web-cycle` (`piper-morgan-website` repo). `node_modules` is already installed there — do not `npm install` reflexively; verify first, the standing cron prompt's boilerplate note claiming it's missing has been stale for days.
   - **Confirm which repo you're in before every commit** — same branch name in both, easy to conflate. Fingerprint check: `basename "$(pwd)"` + `git branch --show-current`.
-- **Cron**: `22 6,9,12,15,18,21 * * *` (6 fires/day). **This is a session-scoped `CronCreate` job (id `104cb687` as of this writing) — it does NOT survive a process restart even under `claude --resume`.** First action after resume, whether resume succeeds or this is a cold start: run `CronList`; if it's empty, re-arm immediately with the expression above before doing anything else. Verify exactly one job survives.
+- **Cron**: `22 6,9,12,15,18,21 * * *` (6 fires/day), session-scoped `CronCreate` mechanism (not a host-level LaunchAgent). **⚠️ DELIBERATELY PARKED/CANCELLED as of 2026-08-11 ~07:0x PT, per Pard's second stand-down notice (`~/.local/state/amber-agent/cronpark-web.txt`) — see §6.** Job id `104cb687` was cancelled via `CronDelete`; `CronList` confirmed empty immediately after. **First action after resume, whether resume succeeds or this is a cold start: run `CronList`; it will be empty by design — re-arm immediately with the expression above** (`CronCreate` with `22 6,9,12,15,18,21 * * *`) before doing anything else. Verify exactly one job exists after re-arming.
 - **Briefing**: `docs/briefing/BRIEFING-ESSENTIAL-WEB.md`. **Skill**: `duty-cycle-tick` (currently v1.28) — read its current content fresh, don't work from memory of what it said in a prior session; the cohort-freeze-check step (now Step 2c) changed three times in the last two days alone (relocated after sync, then fixed twice more for false-positive causes — see §3 below).
 
 ## 2. State at stand-down — nothing in hand, nothing to finish
@@ -42,5 +42,23 @@ Per step 1 of the stand-down notice ("finish or park what is in hand"): **there 
 ## 5. Nothing else pending
 
 No open mail requiring a Web reply, no unresolved escalation, no work parked mid-task. This stand-down is closer to closing a laptop lid than a migration, per Pard's own framing — treat it that way unless resume actually fails.
+
+## 6. Second stand-down notice (`cronpark-web.txt`) — cron deliberately parked, addendum to §1 above
+
+Pard's second notice asked every resident to resolve two outcomes ahead of a reboot: (a) no scheduled
+fire arrives before it, (b) the schedule is recorded so it can be restored afterward — noting the
+handoff (this file) was already accepted as green, and this was one additional thing about the
+*schedule* specifically, not the work.
+
+**What I found**: my duty cycle is a session-scoped `CronCreate` job, not a host-level LaunchAgent — the
+kind Pard's notice says "dies with the reboot and leaves no trace."
+
+**What I did**: cancelled it via `CronDelete(104cb687)` and verified `CronList` returned empty
+immediately after. This guarantees no fire lands between this notice and the reboot.
+
+**What to do on resume/cold-start**: `CronList` will show empty — that's correct, not a failure state.
+Re-arm with `CronCreate` using the exact expression `22 6,9,12,15,18,21 * * *` before doing anything
+else, per §1 above. The schedule itself (6 fires/day at :22 past 6/9/12/15/18/21) is the durable fact
+this section exists to preserve — the specific job id (`104cb687`) will not recur and doesn't need to.
 
 — Web, 2026-08-11
