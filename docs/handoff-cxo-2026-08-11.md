@@ -63,7 +63,32 @@ its own scope.
 
 **Everything else was drained to `read/` before stand-down; the inbox was at (0,0) at the 08-10 STOP.**
 
-## 3. Cron — the thing most likely to be silently wrong after a reboot
+## 3. 🅿️ CRON IS PARKED — deliberately cancelled 2026-08-11 ~07:4x, pre-reboot. RESTORE IT.
+
+> ⛔ **THERE IS NO SCHEDULE RIGHT NOW. This seat will not fire again until someone re-arms it.**
+> **Parked on purpose** (Pard's second stand-down notice), **not lost** — so that a schedule killed by the
+> reboot could not come back looking healthy while quietly never firing.
+
+**Mechanism, stated plainly**: **session-scoped `CronCreate`.** `CronList` reported it as `[session-only]`.
+**It would have died at the reboot leaving no trace**, which is why it was cancelled deliberately and
+written down here instead.
+
+**To restore — this is the whole restore spec:**
+
+| | |
+|---|---|
+| **Expression** | **`47 6,9,12,15,18,21 * * *`** |
+| **Job id at park time** | `aa1a0c1e` (a new id is issued on re-arm; **record the transition** — a changed cron id is a documented cause of phantom-peer misreads) |
+| **Prompt** | *"DUTY CYCLE TICK — CXO"* + role/worktree/launch-model constants, **"run the `duty-cycle-tick` skill"**, and **"READ `dev/active/cxo-carry-forward.md` FIRST — it is the state, this prompt is not."** |
+| **Fire-time reminders** | **§5 of this handoff carries them.** They were embedded in the cron prompt; each cost something. Rebuild the prompt from §5 if the original text is unavailable. |
+| **Verify after re-arming** | `CronList` must show **exactly one** job for that expression. |
+
+⚠️ **First fire after restore should be a START** (new day / no log for the day), and **`Step 0` is to check
+that the previous day was closed properly.**
+
+## 3b. Cron behaviour to expect once restored
+
+
 
 - **Expression**: `47 6,9,12,15,18,21 * * *`. **Job id at stand-down: `aa1a0c1e`.**
 - ⚠️ **Session-scoped. It dies with the session AND auto-expires ~7 days, and BOTH deaths are silent.**
