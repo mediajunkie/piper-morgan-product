@@ -4,6 +4,19 @@
 
 **Written**: 2026-08-11 ~07:00 PT, at the stand-down notice's request, mid-morning after real work had already landed.
 
+**Updated 07:35 PT — second stand-down notice, re: schedule**: Pard's follow-up
+(`~/.local/state/amber-agent/cronpark-docs.txt`) flagged that a session-scoped cron dies silently
+on reboot and asked me to park it deliberately rather than leave it to be rediscovered as
+mysteriously-dead. **My cycle IS session-scoped `CronCreate`** (confirmed, not guessed — this is
+exactly the case §1 above already warned about). **Cancelled it**: job `bf577e17` deleted via
+`CronDelete`, verified zero jobs remain via `CronList`. **The schedule to restore on
+resume/cold-start**: `57 6,9,12,15,18,21 * * *` (6 fires/day, the expression already given in §1
+above — this update exists so the parking is recorded in the same place as the restore
+instructions, not scattered). No registry-row parking needed beyond this file — the duty-cycle
+freeze-watchdog reads `dev/active/duty-cycle-registry.tsv`, not this handoff, so that row should
+also be marked `parked:` if this stand-down extends past the next scheduled watchdog check; see
+§6 below.
+
 ---
 
 ## 1. Identity (if resume fails and this is a fresh session)
@@ -90,4 +103,20 @@ escalation. No work parked mid-task — the fire genuinely ended at a clean poin
 arrived. Treat this stand-down the way Pard framed it: closer to closing a laptop lid than a
 migration, unless resume actually fails.
 
-— Docs, 2026-08-11
+## 7. Post-reboot: cron re-armed, 2026-08-11 13:16 PDT
+
+Session resumed intact after the Amber reboot (`docs/notices/post-reboot-nudge-2026-08-11.md`,
+mediajunkie repo, Pard). Confirmed via `CronList` that no job survived the reboot (as expected —
+session-scoped `CronCreate` dies silently, exactly the case the parking above existed for).
+**Re-armed**: `CronCreate` with the recorded schedule `57 6,9,12,15,18,21 * * *` → job `e47bd40c`,
+verified via a second `CronList` showing exactly one job. Prompt rewritten thin (constants +
+pointer to the `duty-cycle-tick` skill and `docs-carry-forward.md`) rather than re-freezing the
+eleven standing lessons inline — consistent with the skill's own stated design, and avoids the
+prompt rotting the way CIO's frozen constants did in July. Registry row `dev/active/duty-cycle-registry.tsv`
+(docs, line 88) updated from `parked:` back to `active:`, clearing condition satisfied per its own
+text (verified via CronList, not assumed on resume).
+
+First tool call on resume (`Read` on this file's post-reboot-nudge notice) produced **no permission
+or trust prompt** — executed normally, no interruption.
+
+— Docs, 2026-08-11 (updated post-reboot)

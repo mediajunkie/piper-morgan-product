@@ -1,9 +1,29 @@
-# PA cold-start handoff — 2026-08-11 06:23 PT
+# PA cold-start handoff — 2026-08-11 06:23 PT (cron-park addendum 08:0x PT)
 
 **Written for the Amber reboot standdown (Pard's notice).** Session should resume via `claude --resume`
 with full conversation intact — this document is the belt in case resume fails for this seat specifically.
 If you're reading this because resume worked, you don't need it; go straight to `dev/active/
 pa-carry-forward.md`, which is the living state file and will be more current than this snapshot.
+
+## ⛔ SCHEDULE WAS DELIBERATELY PARKED FOR THE REBOOT — RE-ARM ON RESUME
+
+**Mechanism**: `CronCreate`, session-scoped. Per Pard's second standdown notice, this dies with the
+reboot and leaves no trace — verified experimentally on the first standdown of this same day (a prior job
+vanished silently after the earlier reboot, and had to be re-armed from scratch on resume).
+
+**Parked deliberately** (not lost): job `c9d53faa`, cron expression `42 6,9,12,15,18,21 * * *`, was
+**cancelled via `CronDelete` at 08:0x PT**, confirmed empty via `CronList` immediately after, specifically
+so no fire could arrive between the park and the reboot and go uncovered by this handoff.
+
+**On resume, if `CronList` is empty** — expected and correct, not an error — **re-arm with exactly**:
+```
+cron: "42 6,9,12,15,18,21 * * *"
+recurring: true
+prompt: <the standard "DUTY CYCLE TICK (PA)..." prompt — see any recent fire in the session-log
+         history, or ask; do not improvise the wording, only the schedule matters here>
+```
+This is the same schedule this seat has run since 2026-07-26 (PM-approved), unchanged by the reboot —
+only the running job instance was parked, not the schedule itself.
 
 ## Identity and mechanics, if starting cold
 
@@ -11,9 +31,9 @@ pa-carry-forward.md`, which is the living state file and will be more current th
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` — **stable, reused, never fresh** (Model A).
   Never operate from the shared checkout `~/Development/piper-morgan-product`.
 - **Branch**: `claude/pa-cycle`
-- **Cron**: `42 6,9,12,15,18,21` — session-scoped, dies silently on session loss. **First action: run
-  `CronList`.** If empty, re-arm with `CronCreate` before anything else — a cold start after this reboot
-  is exactly the kind of event that kills a session-scoped cron.
+- **Cron**: `42 6,9,12,15,18,21` — session-scoped. **Deliberately parked ahead of this reboot, not
+  accidentally dead — see the ⛔ section at the top of this document before treating an empty `CronList`
+  as a problem.**
 - **Session log convention**: `dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-pa-code-log.md`. Check for `<!--
   DAY-CLOSED: YYYY-MM-DD -->` using the **anchored pattern**, never `grep -c` (see gotcha below).
 - **Keychain**: use `/Users/xian/Development/piper-morgan-worktrees/lead/venv/bin/python` — any other
@@ -66,9 +86,14 @@ context.** This paragraph exists only for the cold-start case.
 ## What was in flight when the standdown notice arrived
 
 Nothing mid-task. 2026-08-10 closed cleanly (verified `DAY-CLOSED`, strict pattern) before this session's
-next fire would have opened. This handoff and the standdown steps are the only work this session.
+next fire would have opened. Between the first and second standdown notices, one normal duty-cycle fire
+ran (07:12 PT) — re-armed the cron after the earlier reboot killed it, refreshed a stale role briefing,
+drained mail. That fire's own log entry is in today's session log; nothing from it is uncommitted.
 
 ---
 *Written 2026-08-11 06:23 PT, in response to Pard's Amber-reboot standdown notice
-(`/Users/xian/.local/state/amber-agent/standdown-pa.txt`). Not a routine handoff — see
-`dev/active/handoff-pa-2026-07-31.md` for the durable lessons doc, which this does not replace.*
+(`/Users/xian/.local/state/amber-agent/standdown-pa.txt`); amended ~08:0x PT for the second notice
+(`/Users/xian/.local/state/amber-agent/cronpark-pa.txt`), which asked specifically that the schedule be
+parked and recorded before this reboot rather than left to die silently a second time. Not a routine
+handoff — see `dev/active/handoff-pa-2026-07-31.md` for the durable lessons doc, which this does not
+replace.*
