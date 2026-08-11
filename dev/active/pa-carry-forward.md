@@ -64,7 +64,10 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
 - **Session log**: `dev/2026/08/06/2026-08-06-0712-pa-code-log.md` (8/05 DAY-CLOSED, verified strict)
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
-- **Cron**: `42 6,9,12,15,18,21`. Session-only; expires ~2026-08-10. 🔴 **First action any new session:
+- **Cron**: `42 6,9,12,15,18,21`. Job `138cb509`, re-armed 2026-08-11 ~08:xx PT after the Amber reboot
+  (deliberately parked pre-reboot as job `c9d53faa`, per `docs/handoff-pa-2026-08-11.md`; Pard's
+  post-reboot notice confirmed session-scoped crons don't survive and must be re-armed manually — no
+  auto re-arm exists). Session-only; expires ~2026-08-18. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
 

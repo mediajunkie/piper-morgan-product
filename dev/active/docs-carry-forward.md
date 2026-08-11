@@ -1,13 +1,16 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-11 06:56 PDT (DAY-CLOSED 2026-08-10, PM-directed overnight block)
-**Session log**: `dev/2026/08/10/2026-08-10-0727-docs-code-log.md` (DAY-CLOSED verified — includes a
-long PM-engaged block 19:11-06:56 working through #1584/#1585)
+**Updated**: 2026-08-11 13:16 PDT (post-Amber-reboot resume, cron re-armed)
+**Session log**: `dev/2026/08/11/2026-08-11-0645-docs-code-log.md` (STAND-DOWN, SECOND STAND-DOWN,
+and POST-REBOOT RESUME sections all logged; 08-10 log carries DAY-CLOSED)
 
 **Worktrees**: product `~/Development/piper-morgan-worktrees/docs` @ `claude/docs-cycle` · website
 `~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
-**Cron**: `bf577e17`, unchanged since 08-09 STOP — re-verify at next fire's START, no re-arm needed
-yet (7-day window not expired).
+**Cron**: `e47bd40c` (re-armed 2026-08-11 13:16 PDT post-reboot, replaces `bf577e17` which was
+deliberately CronDelete'd ahead of the reboot per Pard's second stand-down notice). Same schedule
+`57 6,9,12,15,18,21 * * *`. Prompt rewritten thin (constants + pointer to `duty-cycle-tick` skill +
+this file), not re-frozen with the eleven standing lessons inline — recoverable verbatim from
+`dev/active/duty-cycle-registry.tsv`'s STOP-chain history if ever needed. Registry row: `active:`.
 **Hooks on this seat**: standalone `git commit` BLOCKS; compound `add && commit` BYPASSES. Mitigation:
 stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
