@@ -140,7 +140,10 @@ class ConversationHandler:
             # auth → no summary → greeting simply omits the calendar.
             if not await calendar_router.authenticate():
                 return None
-            summary = await calendar_router.get_temporal_summary()
+            # #1425: thread the principal explicitly. This call site dropped it,
+            # so the adapter computed the day window in its hardcoded fallback
+            # timezone rather than the user's.
+            summary = await calendar_router.get_temporal_summary(user_id=user_id)
             return summary
         except Exception as e:
             logger.warning(f"Could not fetch calendar for greeting: {e}")

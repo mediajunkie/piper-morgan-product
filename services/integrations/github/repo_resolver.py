@@ -9,6 +9,9 @@ per-call resolution decision tree:
    #1042 Phase 1.5) → use it
 3. **Env-var fallback**: `PIPER_DEFAULT_REPO` (dev escape hatch per PM Q4
    disposition 2026-05-04) → use it + log a deprecation warning
+3.5 **Read-time recovery** (#1590): GitHub connected but no default repo ever
+   set → search the user's repos once, apply #1314's default-default rule,
+   persist it, and re-resolve. Additive: it runs only where step 4 used to fire.
 4. **Unresolved**: raise `UnresolvedRepoError` for handler to render as a
    graceful "which repo?" message
 
@@ -29,6 +32,7 @@ from __future__ import annotations
 import logging
 import os
 import re
+import time
 from dataclasses import dataclass
 from typing import Any, Dict, List, Literal, Optional
 from uuid import UUID
@@ -36,6 +40,13 @@ from uuid import UUID
 logger = logging.getLogger(__name__)
 
 ENV_DEFAULT_REPO = "PIPER_DEFAULT_REPO"
+
+# ── #1590 read-time recovery guard ────────────────────────────────────────────
+# Recovery costs one GitHub search; the live incident logged TEN unresolved
+# resolutions inside one window, so an unguarded attempt would be ten searches.
+# In-process, monotonic, per-user, TTL-bounded.
+_RECOVERY_TTL_SECONDS = 300
+_recovery_attempts: Dict[str, float] = {}
 
 # WS-1 P4 (#1226 / #1199): the flat-file GitHub-preferences store
 # (data/github_preferences.json) was RETIRED 2026-06-21. The user-default and github-handle
@@ -85,6 +96,15 @@ class UnresolvedRepoError(Exception):
     """
 
 
+def reset_recovery_guard() -> None:
+    """Clear the in-process #1590 recovery guard.
+
+    For tests and for any surface that deliberately re-arms recovery (e.g. after
+    a user connects a new account mid-process). Not called on any hot path.
+    """
+    _recovery_attempts.clear()
+
+
 def parse_full_name(value: str) -> tuple[str, str]:
     """Parse `owner/name` into a tuple, raising ValueError on bad shape."""
     if not value or not _FULL_NAME_RE.match(value):
@@ -107,6 +127,12 @@ async def resolve_repo(
     2. ``user_id``'s ``default_repo`` preference (source="user_default")
     3. ``$PIPER_DEFAULT_REPO`` env var (dev fallback; logs deprecation warning;
        source="env_var")
+    3.5. **Read-time recovery** (#1590) — when ``user_id`` is present, GitHub is
+       connected (binding-first ``IntegrationStatusService``), and no preference
+       exists: search the user's repos ONCE, apply #1314's default-default rule,
+       persist, re-resolve (source="user_default"). See
+       ``_attempt_default_repo_recovery``. Strictly additive — it can only turn a
+       raise into a success, never change an existing outcome.
     4. Otherwise → raise ``UnresolvedRepoError``
 
     RETIRED (#1315, PM-directed 2026-07-04): the project-scoped path and the
@@ -161,12 +187,158 @@ async def resolve_repo(
             )
             return ResolvedRepo(owner=owner, name=name, source="env_var")
 
+    # Path 3.5 (#1590): read-time recovery of a never-set default repo.
+    # STRICTLY additive — it runs only where the code above would already have
+    # raised, so every existing resolution outcome is unchanged.
+    if user_id is not None:
+        recovered = await _attempt_default_repo_recovery(user_id)
+        if recovered is not None:
+            return recovered
+
     # Path 4: unresolved
     raise UnresolvedRepoError(
         "No repo could be resolved for this query. "
         "Pass owner/name explicitly, set a default_repo preference, "
         "or set PIPER_DEFAULT_REPO."
     )
+
+
+def _claim_recovery_attempt(key: str) -> bool:
+    """Claim the one recovery attempt allowed for ``key`` in this TTL window.
+
+    Returns True if the caller may proceed, False if an attempt was already made
+    recently. The claim is stamped BEFORE the caller awaits anything: the live
+    incident logged ten unresolved resolutions inside one window, and a guard that
+    stamps on completion would let all ten race past it into ten GitHub searches.
+
+    Scope is process-lifetime + TTL, deliberately NOT Redis-backed:
+    ``ContextCache`` (#984) degrades to a cache MISS whenever Redis is unavailable,
+    which would turn the guard off exactly when the system is least healthy — the
+    opposite of what a rate guard must do. A per-worker in-process bound is the
+    honest claim: at most one recovery search per user per worker per TTL.
+    """
+    now = time.monotonic()
+    last = _recovery_attempts.get(key)
+    if last is not None and (now - last) < _RECOVERY_TTL_SECONDS:
+        return False
+    _recovery_attempts[key] = now
+    return True
+
+
+async def _attempt_default_repo_recovery(user_id: UUID) -> Optional[ResolvedRepo]:
+    """Recover a missing ``default_repo`` at READ time (#1590), then re-resolve.
+
+    #1314's ``apply_default_default_if_unset`` was wired only into the GitHub OAuth
+    callback (``web/api/routes/settings_integrations.py``), behind
+    ``if repos_result.repositories:``. Any account that connected before that shipped
+    (2026-07-04), or whose repo search was empty/failed at that instant, is stuck at
+    zero forever: every GitHub read comes back empty and the #1536 first-contact demo
+    correctly refuses to show anything — the blank generic interface it exists to
+    prevent. Diagnosed from live Fly logs (v48): ``UnresolvedRepoError`` ten times in
+    one window for a user whose connector was BOUND.
+
+    Placed at the ``resolve_repo`` seam so every GitHub surface benefits at once
+    (first-contact, Radar, the adapter's repo-scoped reads, the integration router,
+    spatial, the intent handlers, and #1342's ``resolve_target``) — those callers
+    share no other common point.
+
+    Guarantees:
+
+    - **Principal-safe**: the caller only reaches here with a non-None ``user_id``;
+      anonymous resolution is untouched.
+    - **Gated on connection**: the canonical binding-first
+      ``IntegrationStatusService`` (#1329/#1547) — the same gate Radar passed while
+      resolution was failing. An unconfigured user never costs a search.
+    - **Never asks a scope question**: this persists a default, it does not prompt.
+      A user with genuinely zero accessible repos degrades exactly as before (the
+      caller's existing ``UnresolvedRepoError`` path).
+    - **Never overwrites**: ``apply_default_default_if_unset`` short-circuits on an
+      existing preference, and resolution only reaches here when there wasn't one.
+    - **Never raises**: any failure returns None and the caller raises
+      ``UnresolvedRepoError`` as it does today.
+
+    Returns:
+        The newly-resolved ``ResolvedRepo`` (source ``user_default`` — the preference
+        now genuinely exists and is what every later read will find), or None.
+    """
+    key = str(user_id)
+    if not _claim_recovery_attempt(key):
+        logger.debug(
+            "default_repo_recovery_skipped user=%s reason=recently_attempted ttl=%ss",
+            key,
+            _RECOVERY_TTL_SECONDS,
+        )
+        return None
+
+    try:
+        from services.integrations.integration_status_service import (
+            IntegrationStatusService,
+        )
+
+        if not await IntegrationStatusService().is_configured(key, "github"):
+            logger.info(
+                "default_repo_recovery_skipped user=%s reason=github_not_configured", key
+            )
+            return None
+    except Exception as e:
+        logger.warning("default_repo_recovery_status_check_failed user=%s error=%s", key, e)
+        return None
+
+    logger.info(
+        "default_repo_recovery_attempt user=%s reason=unresolved_repo_with_github_connected "
+        "(#1590, applying #1314 rule)",
+        key,
+    )
+
+    try:
+        from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+        repos_result = await GitHubMCPSpatialAdapter().search_user_repositories(key)
+        repos = list(repos_result.repositories or [])
+    except Exception as e:
+        logger.warning("default_repo_recovery_search_failed user=%s error=%s", key, e)
+        return None
+
+    if not repos:
+        # Genuinely zero accessible repos, or an honest degrade (no binding /
+        # unreachable). Either way there is nothing to default to — m-44: this is
+        # not an assertion that the account HAS no repos, only that the read
+        # returned none. The guard keeps it to one attempt per TTL.
+        logger.info(
+            "default_repo_recovery_no_repos user=%s degraded=%s",
+            key,
+            repos_result.degradation is not None,
+        )
+        return None
+
+    rule = "single_repo" if len(repos) == 1 else "oldest_active"
+    try:
+        await apply_default_default_if_unset(user_id, repos)
+    except Exception as e:
+        logger.warning("default_repo_recovery_persist_failed user=%s error=%s", key, e)
+        return None
+
+    resolved = await _resolve_from_user_default(user_id)
+    if resolved is None:
+        # Persisted-but-unreadable is a real state change we failed to confirm;
+        # say so rather than reporting a clean miss (m-44).
+        logger.warning(
+            "default_repo_recovery_unverified user=%s repo_count=%d "
+            "detail=preference_not_readable_after_write",
+            key,
+            len(repos),
+        )
+        return None
+
+    logger.info(
+        "default_repo_recovery_succeeded user=%s repo=%s rule=%s repo_count=%d "
+        "(#1314 default-default applied at read time)",
+        key,
+        resolved.full_name,
+        rule,
+        len(repos),
+    )
+    return resolved
 
 
 async def read_user_github_handle(user_id) -> Optional[str]:
