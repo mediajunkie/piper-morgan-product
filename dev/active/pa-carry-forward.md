@@ -13,7 +13,12 @@ PM-attention items live **here**, in the section immediately below.
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-04 fire 3.)*
 
-**Beta target: Monday 2026-08-09 — TOMORROW.** (PM: 08-08 was a misremembering; not a sprint deadline.)
+**Beta target: MOVED BACK A MONTH from 2026-08-09** (PM, 08-08 10:10 PT, in-conversation with Lead,
+verbatim: *"I am going to move the beta date back a month. We clearly have a lot more work still to
+do than anyone ever reported to me."* — `decisions.log:1242`). No new fixed date recorded as of this
+fire; 08-08's Fundamentals-First ruling governs the moved-beta month's priority order
+(Understanding-Layer Inversion first, surface polish deferred). The 08-09 line this replaced was two
+days stale.
 
 - ⏱️ **TEN SECONDS: open `https://pipermorgan.ai/privacy` in a browser** and say whether a real policy
   renders. URL returns **200**; **server-rendered text is 29 characters.** PA cannot execute JS, so this
