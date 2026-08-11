@@ -212,7 +212,7 @@ Use the anti-pattern index to:
 ## Legacy References
 
 - Original catalog: `pattern-catalog.md` (consolidated into this README; file removed)
-- Previous index: [archive/PATTERN-INDEX-legacy.md](archive/PATTERN-INDEX-legacy.md)
+- Previous index: `archive/PATTERN-INDEX-legacy.md` (also removed, no `archive/` subdirectory exists)
 
 ---
 

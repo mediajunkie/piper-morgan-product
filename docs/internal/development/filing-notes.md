@@ -45,5 +45,5 @@ Each essential briefing includes references to load additional context only when
 
 ## Navigation
 
-- **[Full Navigation](NAVIGATION.md)** - Complete internal documentation hub
+- **[Full Navigation](../../NAVIGATION.md)** - Complete internal documentation hub
 - **[README](README.md)** - Public project information and user documentation

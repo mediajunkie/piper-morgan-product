@@ -9,7 +9,6 @@ This directory contains internal documentation for active, including team proced
 
 - **[In Progress](in-progress/README.md)** - In Progress documentation and resources
 - **[Pending Review](pending-review/README.md)** - Pending Review documentation and resources
-- **[Ready For Integration](ready-for-integration/README.md)** - Ready For Integration documentation and resources
 
 ## Navigation
 

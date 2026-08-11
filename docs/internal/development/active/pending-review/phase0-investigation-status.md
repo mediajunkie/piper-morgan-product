@@ -8,6 +8,11 @@
 
 ## CURRENT STATUS: EXECUTION LIMITATION REACHED
 
+⚠️ **RESOLVED, this doc is historical.** Flagged 2026-08-11 during weekly-docs-audit
+#1583/#1585 — this doc sat in `pending-review/` for ~11 months. Verified via `gh issue view 172`:
+**issue #172 (the pipeline this investigation was blocked on) is CLOSED.** The blocker described
+below no longer applies; this is now a record of a past investigation, not a live status.
+
 ### ✅ COMPLETED TASKS
 
 #### 1. Mandatory Context Verification

@@ -28,6 +28,11 @@ This is also why PA is PM's closest strategic partner in the cohort — not beca
 ---
 
 ## 2. Current goals & priorities — June 2026
+
+⚠️ **STALE — flagged 2026-08-11, found during weekly-docs-audit #1583/#1585.** This section is
+~51 days old, despite this file's own frontmatter mandating refresh at every release cut (several
+have happened since). Left un-rewritten — Docs doesn't own PA's priority narrative and won't
+fabricate a replacement; flagged to PA directly for a refresh.
 <!-- Rule 2: medium-pace; changes per sprint/milestone. Rule 4: direction + status + forward indicator. Rule 5: REFRESH AT EVERY RELEASE CUT. -->
 
 | Priority | What I'm advancing | Status (June 20) | How we'll know it's moving |

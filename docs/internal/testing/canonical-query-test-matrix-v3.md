@@ -5,7 +5,7 @@
 **Author**: Lead Developer
 **Status**: Active — supersedes v1 and v2
 
-> **v1 and v2 archived**: `docs/internal/testing/canonical-query-test-matrix.md` (Dec 2025) and `canonical-query-test-matrix-v2.md` (Jan 2026) describe a pre-M1 architecture in which canonical handlers were the primary routing destination. After the M1 floor inversion (#911) and the Apr 8 IDENTITY full migration (commit 33e6758a), most read-only categories route to the conversational floor. v1 and v2 remain in-repo for historical reference but should not be used as current truth.
+> **v1 and v2 archived**: `docs/internal/testing/historical/canonical-query-test-matrix.md` (Dec 2025) and `canonical-query-test-matrix-v2.md` (Jan 2026, moved to `historical/` 2026-08-11) describe a pre-M1 architecture in which canonical handlers were the primary routing destination. After the M1 floor inversion (#911) and the Apr 8 IDENTITY full migration (commit 33e6758a), most read-only categories route to the conversational floor. v1 and v2 remain in-repo for historical reference but should not be used as current truth.
 
 ---
 

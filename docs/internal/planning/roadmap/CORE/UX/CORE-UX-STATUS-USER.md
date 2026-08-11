@@ -1,5 +1,12 @@
 # CORE-UX-STATUS-USER: Status Checker Should Detect Current User
 
+⚠️ **The Alpha fix is already shipped.** Flagged 2026-08-11 during weekly-docs-audit
+#1583/#1585 — verified directly against `scripts/status_checker.py:79`, which already reads
+`SELECT id, username FROM users ORDER BY created_at DESC LIMIT 1`, exactly the "Alpha Solution
+(Quick Fix)" proposed below. The unchecked Acceptance Criteria checkboxes are stale, not
+reflecting real state — this doc's Alpha scope is done; only the Beta scope (JWT detection,
+`--user` flag) remains genuinely open, if still wanted.
+
 **Sprint**: A7
 **Priority**: Medium
 **Effort**: 3 hours

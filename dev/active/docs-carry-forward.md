@@ -1,172 +1,132 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-09 22:27 PDT (Fire 6, STOP — DAY-CLOSED 2026-08-09)
-**Session log**: `dev/2026/08/09/2026-08-09-0715-docs-code-log.md` (yesterday's is
-`dev/2026/08/08/2026-08-08-0713-docs-code-log.md`, DAY-CLOSED verified)
+**Updated**: 2026-08-11 06:56 PDT (DAY-CLOSED 2026-08-10, PM-directed overnight block)
+**Session log**: `dev/2026/08/10/2026-08-10-0727-docs-code-log.md` (DAY-CLOSED verified — includes a
+long PM-engaged block 19:11-06:56 working through #1584/#1585)
 
 **Worktrees**: product `~/Development/piper-morgan-worktrees/docs` @ `claude/docs-cycle` · website
 `~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
-**Cron**: re-arming at STOP (delete-then-create; see final action) — `57 6,9,12,15,18,21`. Registry row
-must match after re-arm.
+**Cron**: `bf577e17`, unchanged since 08-09 STOP — re-verify at next fire's START, no re-arm needed
+yet (7-day window not expired).
 **Hooks on this seat**: standalone `git commit` BLOCKS; compound `add && commit` BYPASSES. Mitigation:
 stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
 
-## ✅ RESOLVED 2026-08-10 (Fire 4) — `planning/current/` Finding 1, 12 days deferred, trigger finally arrived
+## ✅ RESOLVED 2026-08-11 (Fire 1) — docs-tree flattening plan drafted, awaiting PM's go/no-go
 
-Deferred since 08-02 pending a named scope (re-derive per-file staleness, confirm which of 13 referrers
-need updating, decide disposition). A genuine compaction + a genuinely quiet fire supplied that opening.
-Re-derived via `git log`: `vision.md` (~121d) is genuinely current, referenced by name from 6+ live
-briefing paths — stays put. The other 7 files (~313-323d, zero specific referrers) moved to
-`planning/historical/` (`c3c1a7afc`). **Per-file split, not the originally-proposed blanket rename** —
-a rename would have silently broken vision.md's live references. Also fixed 2 unrelated broken links
-found while checking referrers (NAVIGATION.md's stale `issues.csv` pointer + mislabeled Backlog entry;
-BRIEFING-piper-alpha.md's wrong path to its own origin plan). Original audit doc marked ✅ RESOLVED.
+Plan written: `docs/internal/operations/docs-tree-flattening-plan-2026-08-11.md` (`0bca3ca8c`).
+One high-confidence candidate (`docs/internal/planning/roadmap/CORE/`, 9 subdirs/76 files, every
+filename already fully encodes its epic — nesting is 100% redundant). 3 categories explicitly
+ruled out with reasons (adrs/patterns sound as-is; legacy-guides carry real info, already fixed;
+image archive deep-by-design). **Not executed** — a document only, per PM's stated wariness.
 
-**Also retired the bare "97 docs >30d" carry-forward line** — untraceable methodology, and while
-investigating I independently rediscovered the filesystem-mtime trap already documented in the 08-01
-audit doc (confirmed: `find -mtime` in this Model-A worktree shows every file as ~Jul 29 checkout time
-regardless of real edit history — verified against `session-log-templates/INDEX.md`, ~11 months off).
-Live tools are unaffected (they correctly use git log/frontmatter dates); the bare "97" number is now
-superseded by #1585's properly-measured list anyway.
+**Bigger finding along the way, filed separately as #1593**: `.github/workflows/link-checker.yml`
+correctly detects broken links (verified against a pre-#1584-fix run's own log) but the workflow
+always reports success regardless — very likely the actual reason ~240 broken links accumulated
+silently. This matters more than the flattening plan itself; flagged as such in the plan doc.
+
+**Awaiting PM**: go/no-go on executing the one recommended flatten (`roadmap/CORE/`).
+
+## ✅ RESOLVED 2026-08-10/11 (PM-directed, overnight) — #1584 and #1585 worked through
+
+**#1584** (broken links): ~240 → 34 residual, ~155 fixed across 25 files, 5 commits
+(`a0fd56987`, `253b46855`, `003185bea`, `8596e4518`, plus the citation fix earlier). Residual is
+mostly non-issues (PM-034 dead links needing someone with project history, computer:// artifacts,
+intentional template placeholders) or genuinely-missing content with no findable successor. Part C
+(methodology-19 numbering drift) mailed to CIO, stays open — his lane. Progress comment posted, issue
+left open for the residual.
+
+**#1585** (stale docs + duplicates): Part A — 5 role/infra-owned docs got honest staleness banners
+(not fabricated rewrites) + direct mail to each owner (PA, Exec, Lead Dev, CIO); 3 more independently
+verified with real evidence (issue #172 confirmed closed, a fix confirmed already-shipped in
+`status_checker.py`, a frozen-not-stale clarification); 1 finding self-corrected as out-of-scope
+(`docs/refactor/` is a completed project's artifact trail, not meant to stay current — worth stating
+plainly, not quietly fixing). Part B — 3 of 6 duplicate clusters reconciled with clear supersession
+evidence (`33c945eb7`), 3 left flagged as genuinely ambiguous. Progress comment posted, issue left open.
+
+**Full trace**: tonight's session log entry (`dev/2026/08/10/...`, "PM engaged 19:11-06:56").
+
+## ✅ RESOLVED 2026-08-10 — `planning/current/` Finding 1, 12 days deferred, trigger arrived
+
+Re-derived per-file staleness, confirmed `vision.md` is genuinely current (6+ live referrers) and
+stays put; the other 7 files moved to `planning/historical/`. Per-file split, not the originally-
+proposed blanket rename. `c3c1a7afc`.
 
 ## ✅ RESOLVED 2026-08-10 — Weekly Docs Audit #1583, CLOSED
 
-Full 2-fire audit, all 8 sections genuinely completed (not token-checked) — first fully-worked weekly
-audit + first confirmed real fire of the nudged cron. Closed via `close-issue-properly` in the correct
-order (body checkboxes first, then comment, then close), verified the close actually landed
-(`gh issue view --json state,stateReason`).
+First fully-worked weekly audit, first confirmed real fire of the nudged cron. All 8 sections
+genuine. Filed #1584/#1585 as the checklist's own "create issue for complex cases" step, not a
+deferral.
 
-**Shipped**: CITATIONS.md Serena attribution (`32d6cba9b`), NAVIGATION.md/INDEX.md methodology-43-47 gap
-(`34457f82f`), duplicate draft removed (`06209210d`), staggered-audit-calendar updated (`3132faf7d`).
-**Filed**: #1584 (~240 broken links, 2 methodology cross-ref drifts), #1585 (11 stale current-state docs,
-6 duplicate-file clusters). Both are the checklist's own "create issue for complex cases" procedure, not
-a deferral.
+## 🟡 AWAITING PM — write up the line-count methodology proposal, or hold?
 
-**New PM item, not urgent**: root README.md's MIT license badge has **no LICENSE file anywhere in repo
-history** (verified via `find` + `git log --all`) — needs PM's call (add LICENSE vs. adjust badge), see
-"Awaiting PM specifically" below.
-
-**Next Monday (08-17)**: same trigger check applies — verify `weekly-docs-audit.yml` fired, work the
-resulting issue with the same rigor. This audit is now the template for how thorough that should be.
-
-## 🟡 AWAITING PM (3+ days now) — write up the line-count methodology proposal, or hold?
-
-PM asked (08-07) what the HIGH-COMPLEXITY omnibus line-count target protects against and whether it's
-serving its purpose. Answered with real data: 3 Aug 4-6 files (107-133 lines) vs. a compliant
-reference day (Jul 19, 575 lines) have nearly identical word/entry counts — the whole gap is
-formatting (hard-wrap + blank lines vs. single-line-per-bullet style), not depth. Recommended
-entry-count/word-count over line-count as the real signal. **Explicitly asked PM: write this up as a
-proposal to CIO (methodology owner), or hold?** No answer through all of 08-08 or 08-09. Not chasing
-it — staying at "hold until told" is the correct default for a genuine external dependency, not a
-failure to follow up. Exec independently corroborated and would back a proposal — not the same as PM's
-go-ahead.
+Asked 08-07, still no answer as of 08-10 STOP (4 days now). Not chasing — genuine external
+dependency, correct to hold.
 
 ## Mail-loop scan — `scripts/scan-inbox.py` (Comms, 08-07), case-insensitive filter
 
 ```bash
 python3 scripts/scan-inbox.py mailboxes/docs/inbox | grep -iE "to:\s*docs\b|to:.*,\s*docs\b"
 ```
-Run every fire, not just START. Worked cleanly across all 6 fires again today (08-09) — one flagged
-match was a broadcast cc (Exec's memo, `to: ppm`, docs one of 10 `cc:` names), correctly recognized as
-not-owed rather than treated as new mail. Second full day the tooling has been fully reliable after two
-straight days of finding real gaps (08-05, 08-07) — still worth re-testing rather than assuming
-permanence, per standing lesson 10.
+Run every fire, not just START.
 
 ## Day-of-week duty triggers — CHECK EVERY START
 
-- **Every Monday**: Weekly Docs Audit (`weekly-docs-audit.yml`, ~9am PT) — verify it fired. **Tomorrow,
-  08-10, is the live instance — see the 🔴 item above.**
-- **First Monday of month**: Monthly Housekeeping Audit (fixed 08-04, next due ~09-01).
-- **Every Friday, EARLY**: omnibus logs Fri–Thu — done weekly now, ran clean 08-07.
-- **Not mine**: Skill-Candidates Review (1st Tuesday), Role Health Check (4-weekly, HOST).
-
-**Proposed but not shipped**: generalized day-of-week trigger version routed to CIO 08-04. No reply yet.
+- **Every Monday**: Weekly Docs Audit — verify it fired. Next: 08-17.
+- **First Monday of month**: Monthly Housekeeping Audit — next due ~09-01.
+- **Every Friday, EARLY**: omnibus logs Fri–Thu.
+- **Today, Tuesday 08-11**: Skill-Candidates Review (1st Tuesday) — **not mine**, PM+Exec+CIO.
+- **Not mine otherwise**: Role Health Check (4-weekly, HOST).
 
 ---
 
 ## Awaiting PM specifically
 
-- **website#31, converter double-`<em>` bug** — filed 08-05, still 0 comments as of 08-09 22:27, not
-  urgent, no chase needed: (a) fix forward-only vs. regenerate the ~15-post Ship back-catalog, (b)
-  should Ship `**Metrics**` become a real `###` header.
-- **MIT license badge, no LICENSE file** (found 08-10, weekly-docs-audit #1583) — root README.md
-  displays an MIT badge; `find . -iname "LICENSE*"` and `git log --all -- LICENSE*` both return zero
-  hits, repo-wide, all of history. Needs PM's call: add a real LICENSE file, or adjust/remove the badge.
-  Not urgent, not blocking, flagged in #1583's progress comment.
+- **website#31, converter double-`<em>` bug** — filed 08-05, 0 comments, not urgent: (a) fix
+  forward-only vs. regenerate the ~15-post Ship back-catalog, (b) should Ship `**Metrics**` become a
+  real `###` header.
+- **MIT license badge, no LICENSE file** (found 08-10, #1583) — root README.md displays MIT badge,
+  zero LICENSE-file hits repo-wide all of history. Needs PM's call: add LICENSE vs. adjust badge.
 
 ## Awaiting others — check, don't re-derive
 
-- **PDR-007 awaits CIO ONLY** — Arch ✅ Web ✅, no objection. Measurement window runs to 2026-08-27.
-  Checked 08-09 22:27: still no matching PR.
-- **CIO's day-of-week duty-check proposal reply** — sent 08-04, no reply yet, not urgent.
-- **#1475 / #1486** — both OPEN, unchanged, not urgent.
+- **PDR-007 awaits CIO ONLY** — Arch ✅ Web ✅. Measurement window runs to 2026-08-27.
+- **CIO's day-of-week duty-check proposal reply** — sent 08-04, no reply, not urgent.
+- **#1584 Part C, #1475, #1486** — all OPEN, unchanged, not urgent.
+- **#1593** (link-checker.yml never fails despite detecting real breaks, filed 08-11) — not
+  mine to fix (CI/workflow ownership), not urgent, but worth a periodic check whether it's
+  picked up since it explains a real recurring-defect mechanism.
+- **4 mail flags sent 08-11 06:50-06:56** (PA/Exec/Lead Dev/CIO re: their stale docs + CIO re:
+  #1584 Part C) — no reply expected soon, not urgent, just don't re-flag redundantly.
+- **Docs-tree flattening plan go/no-go** — plan posted, awaiting PM's decision on executing the
+  one recommended flatten (`roadmap/CORE/`). Not chasing.
 
 ## Owed by me — unblocked, priority order
 
 1. **#1486's actual checklist** — not urgent.
 2. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
-5. **`docs-standing-items.md` stale** — low priority.
-
-## Resolved 2026-08-10 — do NOT re-open
-
-- **Jul 29–Aug 3 activity-log backfill, 77 rows** — deferred since 08-04 (that day's own omnibus
-  catch-up explicitly deferred its Step 10.5). Delegated to a background subagent, verified
-  independently (row counts, field-count parse, convention spot-check, diff scope), committed
-  `98b569e3c`, pushed clean.
-
-## Resolved 2026-08-09 — do NOT re-open
-
-- **"Over-Checking Pays Dividends"** published clean; template-audit v1.9 applied live for the first
-  time (PM's negation-reveal word-order discriminator). Retro-fixed yesterday's post's stale footer
-  tease (targeted single-string replace, verified exactly-one-occurrence before/after). Both
-  live-verified via distinct content checks.
-- **Syndication for today's post** — Medium then LinkedIn URLs both landed and were set; `status`
-  correctly held at `published` until both confirmed, then bumped to `distributed`.
-- **Web's 2 fixes I'd left unblocked for 11 days** — traced from PM's question about Dispatch's
-  stale-calendar friction to my own unanswered 07-29 memo; resolved with clear decisions same-day, Web
-  shipped both within the hour (`1b95fa5`), verified the actual commit diff matches before closing.
-- **Dispatch-DinP's canonicalSite semantics question** — checked both owned skills' source text rather
-  than answering from memory; confirmed no drift, quoted verbatim in reply.
-
-## Resolved 2026-08-08 — do NOT re-open
-
-- **"Verify at the User Path, Not the Data Layer"** — published clean, first live use of
-  `template-audit` v1.8's throat-clearing checks.
-- **Comms' publish-ready memo apparent-discrepancy** — resolved via commit timestamps; sequencing, not
-  a real gap.
+3. **`docs-standing-items.md` stale** — low priority.
 
 ## Standing lessons (carried, still live — 11 items in the cron prompt; not restating all here)
 
-**Today's addition candidate, considered and declined**: no new durable process gap surfaced today.
-Rather than force a 12th lesson for continuity's sake, the existing 11 carry forward unchanged — a
-deliberate call, not an oversight. If tomorrow's weekly-audit check turns up something, that's the next
-real candidate.
+**No new durable process gap surfaced 08-10/11** that isn't already covered by the existing 11 —
+tonight's self-corrections (pattern-count false-positive, baseline-test-status over-scope) are
+instances of "verify before reporting," already standing lesson 4/9 territory, not a new category.
 
-**Verification only counts when applied to your own latest fix, not the fix you inherited.** Live again
-today: verified Web's `1b95fa5` against the actual diff rather than trusting the memo description, and
-it matched exactly — the payoff of checking rather than assuming.
-
-**Holding a blocked item across multiple STOPs is legitimate when the block is a genuine external
-dependency, not a self-imposed pause.** The line-count proposal is now 3+ days in — still the right
-call: don't fabricate an answer, don't bury the ask, don't manufacture urgency that isn't there.
+**Verify before fixing scales, not just for small cases.** 155 link fixes tonight — the two
+self-corrections along the way (not the absence of errors) are the actual evidence the discipline
+held under volume, not just in isolated small checks.
 
 ## Watch items (not owed to me, but adjacent)
 
-- **Syndication gap, now 3 posts not 1 (updated 08-10 07:27)** — Comms' 08-09 report was scoped to 2
-  rows she happened to compare; a proper sweep this morning (08-10) found 3 genuinely unsyndicated
-  (*The Package and the First Bite* Jul 9, *Drained on Paper* Aug 7, *Verify at the User Path* Aug 8)
-  and 1 partial (*The Team Catches the Cycle*, Medium only). 2 more were bookkeeping-only and Comms
-  fixed those herself (commit `46782a55e`, verified real). All filed with Dispatch already. Nothing for
-  me until URLs land.
+- **Syndication gap, 3 posts** — filed with Dispatch, nothing for me until URLs land.
 - **Puppeteer extraction cause** — Pard's lane.
-- **methodology-20's mutually unsatisfiable compression rules** — CIO owns.
 - **`pre-commit-broad-staging-warn.sh` blocking despite advisory design** — documented, not escalated.
 - **Blog index is client-rendered, returns a shell** — Comms's finding, not mine unless it becomes one.
 
 ## The one thing I most want to carry into the next fire
 
-**Monday's weekly-docs-audit check is the first real test of the nudged cron** — treat a no-fire as a
-process gap worth same-day attention, not a "watch and see" item to defer again. Everything else today
-was applying disciplines that already existed; tomorrow's first move is a genuine unknown.
+**The docs-tree flattening plan is real, PM-requested work, sequenced explicitly after #1584/#1585
+— which are now done.** Start there. Today is also Tuesday (Skill-Candidates Review day, not mine) —
+no special trigger for Docs beyond the usual mail/gated-item loop.
