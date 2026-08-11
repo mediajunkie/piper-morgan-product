@@ -14,7 +14,7 @@
   - **Cohort infra** (mail, session logs, `dev/`): `~/Development/piper-morgan-worktrees/web` on branch `claude/web-cycle` (product repo, `piper-morgan-product`)
   - **Primary lane** (the actual website): `~/Development/piper-morgan-website-worktrees/web` on branch `claude/web-cycle` (`piper-morgan-website` repo). `node_modules` is already installed there — do not `npm install` reflexively; verify first, the standing cron prompt's boilerplate note claiming it's missing has been stale for days.
   - **Confirm which repo you're in before every commit** — same branch name in both, easy to conflate. Fingerprint check: `basename "$(pwd)"` + `git branch --show-current`.
-- **Cron**: `22 6,9,12,15,18,21 * * *` (6 fires/day). **This is a session-scoped `CronCreate` job (id `104cb687` as of this writing) — it does NOT survive a process restart even under `claude --resume`.** First action after resume, whether resume succeeds or this is a cold start: run `CronList`; if it's empty, re-arm immediately with the expression above before doing anything else. Verify exactly one job survives.
+- **Cron**: `22 6,9,12,15,18,21 * * *` (6 fires/day), session-scoped `CronCreate` mechanism (not a host-level LaunchAgent). **RE-ARMED post-reboot as of 2026-08-11, job id `f3d7d286` — see §7.** (History: deliberately parked pre-reboot per `cronpark-web.txt`, job id `104cb687` — see §6; then the reboot happened; then re-armed per Pard's fleet-wide post-reboot nudge.) **If `CronList` ever comes back empty again: re-arm immediately with the expression above before doing anything else, then verify exactly one job exists.**
 - **Briefing**: `docs/briefing/BRIEFING-ESSENTIAL-WEB.md`. **Skill**: `duty-cycle-tick` (currently v1.28) — read its current content fresh, don't work from memory of what it said in a prior session; the cohort-freeze-check step (now Step 2c) changed three times in the last two days alone (relocated after sync, then fixed twice more for false-positive causes — see §3 below).
 
 ## 2. State at stand-down — nothing in hand, nothing to finish
@@ -43,4 +43,39 @@ Per step 1 of the stand-down notice ("finish or park what is in hand"): **there 
 
 No open mail requiring a Web reply, no unresolved escalation, no work parked mid-task. This stand-down is closer to closing a laptop lid than a migration, per Pard's own framing — treat it that way unless resume actually fails.
 
+## 6. Second stand-down notice (`cronpark-web.txt`) — cron deliberately parked, addendum to §1 above
+
+Pard's second notice asked every resident to resolve two outcomes ahead of a reboot: (a) no scheduled
+fire arrives before it, (b) the schedule is recorded so it can be restored afterward — noting the
+handoff (this file) was already accepted as green, and this was one additional thing about the
+*schedule* specifically, not the work.
+
+**What I found**: my duty cycle is a session-scoped `CronCreate` job, not a host-level LaunchAgent — the
+kind Pard's notice says "dies with the reboot and leaves no trace."
+
+**What I did**: cancelled it via `CronDelete(104cb687)` and verified `CronList` returned empty
+immediately after. This guarantees no fire lands between this notice and the reboot.
+
+**What to do on resume/cold-start**: `CronList` will show empty — that's correct, not a failure state.
+Re-arm with `CronCreate` using the exact expression `22 6,9,12,15,18,21 * * *` before doing anything
+else, per §1 above. The schedule itself (6 fires/day at :22 past 6/9/12/15/18/21) is the durable fact
+this section exists to preserve — the specific job id (`104cb687`) will not recur and doesn't need to.
+
 — Web, 2026-08-11
+
+## 7. Post-reboot nudge (`post-reboot-nudge-2026-08-11.md`) — cron re-armed after the actual reboot
+
+Pard's fleet-wide post-reboot nudge (24 residents) confirmed the reboot completed and asked every
+session-scoped-cron resident to re-arm and verify, since nothing does it automatically.
+
+**Found**: `CronList` returned empty on this resumed session — consistent with §6 (I had deliberately
+parked the cron pre-reboot) and with the reboot having actually happened in between.
+
+**Did**: re-armed via `CronCreate` with the exact expression `22 6,9,12,15,18,21 * * *`, verified via
+`CronList` immediately after — exactly one job, new id `f3d7d286` (the old id `104cb687` does not
+recur, per §6's own note). Not one of the notice's six unaccounted-mechanism seats (Web's mechanism —
+session-scoped `CronCreate` — was already known and documented in §1/§6). Reported in chat: no
+permission/trust prompt observed on this session's first tool calls (the Read calls for the notice
+itself and this handoff completed with no visible prompt).
+
+— Web, 2026-08-11 (post-reboot)
