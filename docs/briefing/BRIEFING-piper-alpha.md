@@ -140,13 +140,46 @@ Key things to know about working with xian:
 
 Piper Morgan is an AI-powered product management assistant being built in public. It's both a software product (a PM tool with structured handlers, entity model, trust gradients, and learning infrastructure) and a methodology laboratory (the process of building it generates transferable insights about multi-agent coordination, human-AI collaboration, and systematic quality).
 
-### Current State (as of March 2026)
+### Current State (as of August 2026)
+
+*Refreshed 2026-08-11 by PA, per Docs' staleness flag (weekly-docs-audit #1583/#1585) — the March
+section below is preserved in git history if you need the prior snapshot for comparison.*
+
+- **Version**: v0.8.11.0 (last tag). Beta target: Monday 2026-08-09 has passed; PM moved the gate back a
+  month after finding the sprint's real remaining work was under-reported (denominator confusion between
+  "build queue empty" and "sprint complete" — see `decisions.log`, early August).
+- **Host**: the cohort migrated from Claude Desktop to Amber, an always-on host, on 2026-07-25. PA and all
+  duty-cycle roles now run as persistent, cron-driven autonomous sessions in a stable per-agent worktree
+  (Model A) rather than Desktop's ephemeral per-session worktree (Model B). See CLAUDE.md's "Worktree
+  model" section for the operative details.
+- **Team**: **Tier 1 Leadership (7)** — Lead Dev, Chief Architect, Chief of Staff (Exec), CXO, CIO, HOST,
+  PPM; **Tier 2 Staff (4)** — Comms, Docs, Web, PA; **Tier 3 Specialized** — Coding Agents (`prog`),
+  plus non-Piper agents in the cohort (Pard, Janus) on adjacent infrastructure/cross-project work. Full
+  tiering: `docs/briefing/ROSTER.md`.
+- **Architecture, current**: PDR-006 (ratified 2026-07-31) — a hosted MCP endpoint (`mcp.pipermorgan.ai`)
+  + plugin distribution to Claude/ChatGPT chat hosts, alongside (not replacing) the web/Slack/CLI/phone
+  surfaces. The server package itself is still unbuilt (epic #1462, open). See
+  `docs/internal/design/experience-across-surfaces.md` for the ratified statement that no surface is being
+  abandoned — a real point of cohort-wide confusion this week, now corrected at the source.
+  A second major architecture thread is live as of 2026-08-09: an "understanding layer inversion" for the
+  intent-routing/pre-classifier stack (constrained structured output instead of pattern-matched aliases),
+  ratified by Arch, currently in Phase 0 (corpus baseline).
+- **Key recent decision**: the effect-declaration pattern — every workflow/tool action now declares
+  READ/WRITE/DESTRUCTIVE as a required, defaultless, ordered field (`EffectClass(IntEnum)`,
+  `services/shared_types.py`) rather than having mutation-safety inferred. Shipped 2026-08-09, directly
+  informed by PA's own registry-alias measurement work.
+- **Sibling project**: Klatch (klatch.dinp.xyz) — unchanged in role; still a local-first Claude
+  conversation manager and methodology laboratory. Cross-pollination briefs: `docs/briefs/cross-pollination/`.
+
+<details><summary>Prior snapshot (March 2026, superseded 2026-08-11)</summary>
 
 - **Version**: v0.8.6
 - **Milestone**: M0 (Conversational Glue) complete. M1 (MVP Foundation) in active sprint.
 - **Team**: 14 agent roles coordinated by xian as PM-orchestrator, each operating in separate chat sessions with shared project knowledge.
 - **Key recent decision**: "The LLM is the floor, not the ceiling" — Piper should always be at least as good as a well-prompted LLM. Structured handlers make it better, not different. (ADR-060, Mar 19)
 - **Sibling project**: Klatch (klatch.dinp.xyz) — a local-first Claude conversation manager that serves as both a methodology laboratory and a tooling project. Cross-pollination briefs surface insights between the two projects daily at designinproduct.com/internal/
+
+</details>
 
 ### Key Documents
 

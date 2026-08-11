@@ -25,7 +25,7 @@ This document describes the complete data model for Piper Morgan, including doma
 
 ## Domain Models
 
-> **📋 For Complete Domain Model Documentation**: See [Models Architecture Hub](models-architecture.md) - comprehensive documentation of all 39 domain models organized by technical layers with DDD purity warnings, usage patterns, and cross-references.
+> **📋 For Complete Domain Model Documentation**: See [Models Architecture Hub](models/models-architecture.md) - comprehensive documentation of all 39 domain models organized by technical layers with DDD purity warnings, usage patterns, and cross-references.
 >
 > **This section** focuses on database schema mapping and persistence concerns. For pure domain logic and field definitions, use the Models Architecture Hub.
 
