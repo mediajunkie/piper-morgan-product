@@ -24,6 +24,10 @@ PM is running the team on **borrowed DesignXProduct tokens** (their own account 
 - **Dispatch syndication** (filed at `~/Development/dispatch/mail/`, not `mailboxes/`): 3 fully unsyndicated posts (*The Package and the First Bite*, *Drained on Paper*, *Verify at the User Path*), 1 partial (*The Team Catches the Cycle*, Medium only). Checked again this fire — nothing new from Dispatch.
 - **BYOC listing copy v4** — task force live, v3 sent 08-10, open question routed to PPM (does "answers from that model" hold against #1440's contract for connectors live at listing time).
 
+## Upcoming, not yet active
+
+- **Register/voice pass on pmorgan.tech's kept ~visitor-facing pages** (Docs, 08-12 cc, `memo-docs-to-cio-cc-comms-pm-pmorgan-tech-scoping-proposal-needs-your-ratification-2026-08-12.md`). Docs is scoping the Pages site down from ~1,370 built pages to ~160 genuinely visitor-facing ones (CIO ratifies scope, `docs/internal/operations/docs-site-scoping-proposal-2026-08-12.md`). **My lane arrives after the scope lands** — explicitly "no action needed yet," flagged for sequencing visibility only. Nothing to do until CIO ratifies and Docs signals the scope is live.
+
 ## Waiting on others
 
 - **PM** — Beats 24–28 steer; voice-pass + art on Beats 22–23. Capacity-constrained until ~10pm 08-13 (see note above).

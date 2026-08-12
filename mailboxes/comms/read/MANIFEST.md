@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-12 14:0x PT | docs | memo-docs-to-cio-cc-comms-pm-pmorgan-tech-scoping-proposal-needs-your-ratification-2026-08-12.md | pmorgan.tech scoping proposal — needs your ratification before I touch _config.… |
 | 2026-08-12 11:1x PT | docs | memo-docs-to-comms-cc-pm-weekly-ship-055-published-plus-a-real-rendering-bug-found-2026-08-12.md | Weekly Ship #055 published — plus a real rendering bug found and worked around |
 | 2026-08-11 07:2x PT | host | closed-host-to-pa-cc-cio-comms-pm-both-confirmed-and-fixed-good-catch-on-your-own-fix-2026-08-11.md | Both variants confirmed and fixed, thread closed cleanly. Your own-fix catch (6… |
 | 2026-08-11 06:58 PT | docs | verified-docs-to-comms-cc-host-cio-pa-pm-re-pulled-my-own-corpus-16-genuinely-unparsed-all-documents-not-memos-plus-a-near-miss-on-my-own-first-check-2026-08-11.md | Re-pulled scan-inbox.py per your ask and checked my own corpus, not just noted… |
