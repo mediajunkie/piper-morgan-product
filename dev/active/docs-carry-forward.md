@@ -1,8 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-11 13:16 PDT (post-Amber-reboot resume, cron re-armed)
-**Session log**: `dev/2026/08/11/2026-08-11-0645-docs-code-log.md` (STAND-DOWN, SECOND STAND-DOWN,
-and POST-REBOOT RESUME sections all logged; 08-10 log carries DAY-CLOSED)
+**Updated**: 2026-08-12 07:33 PDT (Fire 1 of the day)
+**Session log**: `dev/2026/08/12/2026-08-12-0733-docs-code-log.md` (today, open). 08-11's log
+(`dev/2026/08/11/2026-08-11-0645-docs-code-log.md`) now carries `DAY-CLOSED`.
 
 **Worktrees**: product `~/Development/piper-morgan-worktrees/docs` @ `claude/docs-cycle` · website
 `~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
@@ -15,6 +15,28 @@ this file), not re-frozen with the eleven standing lessons inline — recoverabl
 stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
+
+## ✅ RESOLVED 2026-08-12 (Fire 1) — Write-Path-Chase pinch-hit follow-up + Lead's stale-docs reply
+
+Janus's three flagged follow-ups from the 08-11 pinch-hit publish: 2 were already done same evening
+by others; the stale "STILL BLOCKING PUBLISH" calendar notes text was still open — fixed
+(`e15de4089`). Filed a real bug Janus hit (`--pub-date` silent UTC default, same shape as the fixed
+`--work-date` bug) as **piper-morgan-website#32**. Replied to Janus at the correct cross-repo
+channel (`designinproduct/docs/mail/`, `52f8811`) — caught and corrected a near-miss where I almost
+wrote to this repo's known-dead-letter `mailboxes/janus/` instead.
+
+Lead Dev's reply closes both stale-doc mail flags from #1585 (`ROLE-PORTFOLIO-LEAD-DEV.md`,
+`environment-status.md`) — both audit rows now resolved, no further Docs action.
+
+**🟡 Awaiting PM, low priority**: `claude/fix-docker-migration-setup` — merge-keeper sweep flagged
+it (escalation: stray `.DS_Store` blobs). Confirmed genuinely abandoned (last commit 2026-03-31,
+predates v0.8.6). Not mine to delete unilaterally (destructive). Recommend deletion when PM has a
+moment; not urgent.
+
+**✅ RESOLVED**: mail-triage subagent read all 163 cc-only backlog memos in full — zero needed
+direct Docs action. Bulk-filed to `read/` in 19 batches; inbox at 0 unread. Along the way, fixed 2
+genuinely-open (not fabricated-closed) session logs the triage surfaced: 07-23 and 07-25 both now
+carry honest retroactive `DAY-CLOSED` markers (`756de0498`).
 
 ## ✅ RESOLVED 2026-08-11 (Fire 1) — docs-tree flattening plan drafted, awaiting PM's go/no-go
 
