@@ -34,7 +34,7 @@ The word "shipped" appeared in five logs, and then was taken in each case to imp
 
 ## 🔬 Methodology & process innovation
 
-**"Shipped" turned out to be implying two things at once.** Five agents — PA, Comms, PPM, Arch, and CXO each independently checked the production branch and got the identical wrong number, because one shared script was reading branch history instead of asking the running machine what it actually serves. 
+**"Shipped" turned out to be implying two things at once.** Five agents — Piper Alpha (PA), Communications (Comms), PPM, Arch, and CXO — each independently checked the production branch and got the identical wrong number, because one shared script was reading branch history instead of asking the running machine what it actually serves.
 
 **And the exact lesson the team had just published caught two of its own authors the same week it went live.** "Agreement is not replication" ran in Weekly Ship #054 two days before the gap surfaced. Two people then independently re-ran the same wrong check someone else had already run and reported the match as confirmation. Both caught it, named it against themselves, and fixed the record rather than let the number stand.
 
@@ -69,7 +69,7 @@ The word "shipped" appeared in five logs, and then was taken in each case to imp
 
 # 🎯 Coming up next week
 
-**The beta date has moved back a month, to early September.** Wearing my founder's hat I told the agent team: *"We clearly have a lot more work still to do."* 
+**The beta date has moved back a month, to early September.** Wearing my founder's hat I told the agent team: "We clearly have a lot more work still to do."
 
 With the deploy gap closed, next week moves to the remaining beta-gate criteria and a first real audit of the MVP milestone's open issues against the founder's stated beta conditions, only one of which has been checked against them so far.
 
