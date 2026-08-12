@@ -26,9 +26,20 @@ verified 3 consecutive green runs at tip, replied to Janus, and fed the silent-r
 (#1600 + Pages build + #1593) to Lead's parked postmortem question with the two-detector-shapes
 factoring.
 
-**🟡 New parked question (Docs/CIO lane, no urgency)**: should the docs Pages site build
-everything it currently builds? The `_config.yml` exclude list already saved the omnibus logs from
-being silent-red instance #3 — it's load-bearing and has never had an explicit scoping pass.
+## 🔵 ACTIVE (PM-approved 2026-08-12) — pmorgan.tech scrub, 3 phases
+
+The parked scoping question got PM's green light same day ("good plan. please get it started").
+Proposal committed (`docs/internal/operations/docs-site-scoping-proposal-2026-08-12.md`), README
+scrubbed (`a8431b4d6`), CIO ratification requested (memo `8fbf8e761`, cc Comms).
+
+**⏳ Gated on CIO**: the `_config.yml` scoping change (~1,370 → ~160 served pages). Do NOT apply
+until CIO ratifies the in/out lists — outward-facing change, confirm-first.
+**Unblocked next (Docs, any fire)**: NAVIGATION.md rewrite to match the curated scope; the 4
+duplicate pairs (VERSION_NUMBERING/versioning, troubleshooting.md/dir, user-guide.md/user-guides,
+migration/public-migration — several are #1585 residents); per-surface staleness+link pass on the
+kept ~160.
+**After scope lands**: verify build green + spot URLs (kept 200s, excluded 404s); Comms register
+pass; #1593 gate wiring; CONTRIBUTING scoping note.
 
 ## ✅ RESOLVED 2026-08-12 (PM-engaged, 11:06–) — Ship #055 published + 5-day omnibus backlog cleared
 
