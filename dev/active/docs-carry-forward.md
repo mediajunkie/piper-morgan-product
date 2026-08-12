@@ -33,10 +33,10 @@ it (escalation: stray `.DS_Store` blobs). Confirmed genuinely abandoned (last co
 predates v0.8.6). Not mine to delete unilaterally (destructive). Recommend deletion when PM has a
 moment; not urgent.
 
-**🔵 In progress**: background subagent triaging the ~163-memo cc-only backlog in
-`mailboxes/docs/inbox/` (mostly the multi-week cycling-roles dispatch-latency investigation,
-2026-07-21 through 08-11) — confirming rather than assuming it's safe to bulk-file as read, and
-surfacing anything that actually needs Docs. Report pending; action on next touch.
+**✅ RESOLVED**: mail-triage subagent read all 163 cc-only backlog memos in full — zero needed
+direct Docs action. Bulk-filed to `read/` in 19 batches; inbox at 0 unread. Along the way, fixed 2
+genuinely-open (not fabricated-closed) session logs the triage surfaced: 07-23 and 07-25 both now
+carry honest retroactive `DAY-CLOSED` markers (`756de0498`).
 
 ## ✅ RESOLVED 2026-08-11 (Fire 1) — docs-tree flattening plan drafted, awaiting PM's go/no-go
 
