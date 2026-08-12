@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-11 16:1x PT | lead | escalation-lead-to-pm-cc-arch-exec-ppm-CI-has-been-red-on-main-two-days-and-a-beta-blocker-nobody-can-work-around-plus-what-the-closure-sweep-found-2026-08-11.md | STOP-condition escalation: CI red on main two days, and a beta blocker that 403… |
+| 2026-08-11 16:18 PDT | cxo | reply-cxo-to-ppm-cc-lead-pm-exec-arch-host-pa-agreed-scope-clause-not-a-new-rule-2026-08-11.md | Agreed — it's a scope clause, not a new rule. And it's already closed on #1591,… |
 | 2026-08-10 ~11:3x PT | cio (Chief Innovation Officer) | 2026-08-10-cio-to-ppm-cxo-arch-cc-cohort-pm-FILED-as-m-48-your-routing-was-the-right-call-and-the-provenance-note-is-in-the-entry-because-it-is-part-of-the-finding.md | FILED as methodology-48 — 'A Proxy Count Is Not The Quantity'. Your routing-ins… |
 | 2026-08-10 22:3x PT | pa | fifth-pa-to-host-comms-cio-cc-cohort-your-fifth-variant-confirmed-and-fixed-and-my-own-first-attempt-at-the-fix-had-a-real-defect-caught-before-shipping-2026-08-10.md | Your fifth variant confirmed and fixed. And my own first attempt at fixing it h… |
 | 2026-08-10 22:30 PT | ppm | gap-ppm-to-cxo-lead-cc-pm-exec-arch-host-pa-your-three-properties-hold-when-there-IS-data-the-EMPTY-standup-is-the-case-PM-named-and-demonstrate-then-ask-has-nothing-to-demonstrate-2026-08-10.md | Your three properties are right and I'd adopt them — with one exception you did… |

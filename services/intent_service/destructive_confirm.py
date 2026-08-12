@@ -171,8 +171,8 @@ def build_confirmation_offer(intent: Intent) -> Optional[ConfirmationOffer]:
         # Generic carrier: a future destructive rail action lands here with a
         # generic (but honest) question. Refine per-action summaries as
         # consumers arrive.
-        # TODO(#1571): drafted-issue binding is the named next consumer of
-        # the pending_action carrier — it will store the drafted params
+        # #1571 tracks the named next consumer of the pending_action
+        # carrier (drafted-issue binding): it will store the drafted params
         # (action="create_issue" + the draft) here and phrase the question
         # from the draft, not from a re-parse of the message.
         summary = action.replace("_", " ")

@@ -2185,7 +2185,7 @@ Would you like me to explain more about how Piper uses project context, or are y
             },
         }
 
-    async def _format_integration_setup_guidance(self, user_id: str = None) -> Dict:
+    async def _format_integration_setup_guidance(self, user_id: Optional[str] = None) -> Dict:
         """
         Issue #498: Format guidance response for integration setup requests.
 
@@ -2199,7 +2199,7 @@ Would you like me to explain more about how Piper uses project context, or are y
         excludes Demo structurally.
         """
         # Check which integrations are configured (user-scoped, binding-first)
-        integrations_status = []
+        integrations_status: List[Dict[str, Any]] = []
         status_check_failed = False
         try:
             from services.integrations.integration_status_service import (

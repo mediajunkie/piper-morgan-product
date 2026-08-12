@@ -464,7 +464,7 @@ async def run_archived_projects_query_workflow(
             project_repo = ProjectRepository(session)
             portfolio_service = PortfolioService(project_repo)
             projects = await portfolio_service.list_archived_projects(user_id=user_id)
-    except Exception as e:
+    except Exception as e:  # silent-ok: error-logged with context and returns success=False — honest degrade, never fake-empty (#1425)
         logger.error(
             "archived_projects_query_failed", error=str(e), user_id=user_id
         )

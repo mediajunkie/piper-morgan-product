@@ -1,3 +1,25 @@
+# CXO carry-forward — rewritten 2026-08-12 10:5x PT
+
+**Superseding the 08-11 16:2x version below — updated in place after acting on two of the open items this
+fire (#1536 conformance review, #1539 candidate articulation). Read this header block; the table further
+down is still accurate for everything else and wasn't re-verified again this fire beyond what's noted.**
+
+**This fire (08-12, ~10:17–10:5x)**: closed 08-11 properly (no STOP had been written; no activity found
+18:47–21:47 on 08-11, not a stall, cron stayed armed). Inbox was empty (0,0). Reviewed #1536's just-landed
+build (commit `43d2a4fce`) against the gate criteria I co-defined — **item 3 (only-Piper-could) reads as
+met**, posted as a GH comment; flagged that live user-verification is still Lead's "next cut," not done by
+me, not assumed done. While reviewing that copy, found a concrete connection to **#1539** (mine, previously
+untouched, no comments): the #1536 demo is impressive but doesn't *name* the uncertainty it resolves —
+posted a candidate one-sentence articulation (✏️ pending PM) plus the specific gap in the shipped copy.
+**Neither #1536 nor #1539 closed by me** — #1536 isn't mine to close (user-verification pending, and it was
+never mine to certify alone); #1539 is explicitly "PM+CXO's to answer," and I offered a candidate, not a
+ruling.
+
+---
+
+*(Everything below this line is the 08-11 16:2x rewrite, left as-is — still the best record of the fuller
+open-item table and standing discipline. Update it in place at the next STOP rather than re-appending.)*
+
 # CXO carry-forward — rewritten 2026-08-11 16:2x PT, first fire after the Amber reboot
 
 **⚠️ This file was stale for two days (last real content update 08-09 07:12) while a full reboot
@@ -39,8 +61,8 @@ already the record for whoever implements it. **Thread closed.**
 | Item | State | Owner |
 |---|---|---|
 | **`docs/internal/design/experience-across-surfaces.md` v0.1** | DRAFT, unchanged since 08-09. **Four ✏️ items still await PM** (§7): the §3 one-sentence formulation · §4's *"must not be asked to"* column · §6's same-colleague corollary · is Surface 1 in the 1.0 five. Offered PM the delete if he'd rather it stay verbal. | **PM** |
-| **#1536 first-contact** (FTUX-COLDSTART) | OPEN, confirmed. Ruled to MVP + Beta Blockers 08-10; gate criteria are the converged three, `dev/active/design-spec-first-contact-plugin-surface-2026-07-31.md` §7a. Lead offered to scope the build lane; I said ready — **check whether that's moved.** | Lead + me |
-| **#1539 legibility half** (FTUX-PURPOSE) | OPEN, confirmed. **The open CXO design problem, still mine.** *"Offer or opinion"* is a partial proxy — traces *that* uncertainty fell, not *which*. Nobody has proposed how a reply makes visible WHICH uncertainty it reduced. | **me** |
+| **#1536 first-contact** (FTUX-COLDSTART) | ✅ **Built and merged 08-10** (`43d2a4fce`, Lead-merged, 2510 tests green). **CXO conformance-reviewed 08-12**: item 3 (only-Piper-could) meets the bar. **Still OPEN** — live user-verification is Lead's flagged "next cut," not yet run by anyone as far as I can see. Check before assuming done. | Lead (verification) |
+| **#1539 legibility half** (FTUX-PURPOSE) | OPEN. **Candidate articulation posted 08-12** (✏️ pending PM): *"Piper reduces 'is anything actually tracking this for me'..."* — plus a concrete, evidence-based gap: #1536's shipped copy demos capability but doesn't name the uncertainty it resolves. **With PM now**, not stalled on me. | PM (to rule on the candidate) |
 | **#1463 deployed-host retest** | OPEN, confirmed. Blocked on **#1462** (also OPEN) — UNBUILT not undeployed; `services/mcp/server/` absent from `main` and the deployed artifact. Promised same-day retest once the package is shippable — **check #1462 status before assuming still blocked.** | #1462 |
 | **Standup invitation (#1511 → #1591)** | ✅ Design settled (see above). #1591 tracks the Production/PUB build; both governing rules are on the issue for whoever picks it up. | Lead / whoever builds |
 | **#1510 fork** | OPEN, confirmed. Still with PM: *"until/unless the user has established that working model"* — is the user the subject (declared) or does Piper infer it? **Now has at least 3 consumers per PPM** (#1510 itself, the standup preference, the invitation's persistence) — argument for building the declaration surface early regardless of which way the fork lands; Arch established that half is safe either way. | **PM** |
