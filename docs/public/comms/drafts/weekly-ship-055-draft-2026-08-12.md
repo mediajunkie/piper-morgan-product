@@ -28,7 +28,7 @@ The word "shipped" appeared in five logs, and then was taken in each case to imp
 
 **The Beta Blockers build queue went from sixteen untouched-looking items to empty on Tuesday.** Every item shipped with evidence a continuous-integration run could arbitrate: the fail-closed Slack gate, a reachability ratchet designed and built the same day it was ratified, a release-parity checker, and a set of honest delete-confirmation strings replacing five false "this cannot be undone" claims. The discovered-work discipline filed fifteen-plus new issues along the way — every wave found more real bugs than it was briefed to look for.
 
-**And then the week's real story: for four days, none of it was actually running.** Both fixes merged Tuesday. The server users were actually talking to stayed on a build from four days earlier, straight through Thursday — the Slack leak Arch had ruled acceptable, because the safety gate existed, was live-exploitable the whole time, since the gate that made that ruling true had never reached production. In CXO's own words, tracing the gap in their own report: *"the fix's premise was that the word must match the behavior, and for two days my report didn't match the deployment."* The founder deployed Friday morning, six releases in one sitting, and closed it.
+**And then the week's real story: for four days, none of it was actually running.** Both fixes merged Tuesday. The server users were actually talking to stayed on a build from four days earlier, straight through Thursday — the Slack leak Arch had ruled acceptable, because the safety gate existed, was live-exploitable the whole time, since the gate that made that ruling true had never reached production. In CXO's own words, tracing the gap in their own report: *"The fix's premise was the word must match the behavior. For two days my report didn't match the deployment."* The founder deployed Friday morning — one release carrying seventeen commits — and closed it.
 
 **A regression rode in on the fix meant to prevent exactly this kind of harm.** An unescaped apostrophe in the honesty-copy change silently broke the chat-history renderer. It passed continuous integration green, because nothing in the test suite parses JavaScript embedded inside a template. Found and fixed the same morning. The gap is now named and pinned so the same class can't recur invisibly.
 
@@ -58,7 +58,7 @@ The word "shipped" appeared in five logs, and then was taken in each case to imp
 
 - **Issues closed:** 4, verified live against GitHub
 - **Beta Blockers build queue:** 16 → 0
-- **Deployed artifact lag found:** 4 days (fixes merged Aug 4, deployed Aug 7 across six releases)
+- **Deployed artifact lag found:** 4 days (fixes merged Aug 4, deployed Aug 7 in one release, version 29→30)
 - **MVP milestone (= beta gate):** 21 open, countable again after 3 weeks blocked
 - **Publications:** 4 (2 insight, 1 building narrative, 1 Weekly Ship)
 - **All 10 workstream reports filed on the day requested** — the first cycle under the new reporting standard, and the first time the two contributor-tier roles (development, documentation) plus the product assistant and web design were asked for one at all
@@ -91,7 +91,7 @@ With the deploy gap closed, next week moves to the remaining beta-gate criteria 
 
 **Example from this week**: two ratified security fixes merged Tuesday and weren't deployed until Friday. In that gap, three false "cannot be undone" claims kept rendering to real users, and a leak the team believed was closed by construction was live, because the construction that closed it existed only on the branch. Five people independently checked the wrong layer and got the same wrong, reassuring answer, because the tool they all used only ever asked the branch.
 
-**Why it matters**: a criterion filed a month earlier — *"impossible-by-construction only protects if the construction is deployed and verified"* — predicted this exact scenario and sat unchecked in the readiness gate the whole time. The gap wasn't a failure to write the rule. It was a team using one word for two layers until the difference became a live security exposure.
+**Why it matters**: a criterion filed a month earlier — *"impossible-by-construction only protects if the construction is deployed and verified"* — predicted this exact scenario and sat unchecked in the readiness gate the whole time. The rule itself was correct a month before the gap opened. What failed was a team using one word for two layers until the difference became a live security exposure.
 
 **Application beyond this week**: name the layer in the sentence, not just the property. Say which one you mean — branch, build, or the machine a user is actually talking to. A tool that measures the wrong layer makes the same mistake for everyone who trusts it, which is worse than one person's error, because it looks like confirmation instead of a shared blind spot.
 
