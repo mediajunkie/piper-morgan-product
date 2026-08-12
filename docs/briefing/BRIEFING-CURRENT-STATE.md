@@ -188,8 +188,8 @@ last_verified: "2026-08-12"
 
 - **#1117 INTENT-TEMPORAL-OVERGREEDY fix shipped (May 30)**: `services/intent_service/pre_classifier.py` got `COMPLETION_HISTORY_PATTERNS` (5 regex) routing "when did I complete/finish/ship/deliver/launch X" queries to STATUS/`check_completion_status` BEFORE the TEMPORAL classifier eats them. Architect-disposition memo (May 28 Option C to M3) effectively superseded by inline fix — pre-classifier floor-routing works.
 - **#1031 INSIGHT JOURNAL unblocked (May 30 1:56 PT)**: PM screenshot at 1:56 PM confirmed page renders with 5 seeded insights. Root cause was two layers:
-  1. `templates/layouts/base.html` referenced by `{% extends "layouts/base.html" %}` in `templates/insights/journal.html` since May 3 but the file had never been created → TemplateNotFound. Created in commit `b0216a7ce`.
-  2. First base.html had an HTML comment containing `{% extends %}` that Jinja parsed → RecursionError. Fixed in `c1f3eee71` using per-line Jinja-native `{# ... #}` comments.
+  1. {% raw %}`templates/layouts/base.html` referenced by `{% extends "layouts/base.html" %}` in `templates/insights/journal.html` since May 3 but the file had never been created → TemplateNotFound. Created in commit `b0216a7ce`.{% endraw %}
+  2. {% raw %}First base.html had an HTML comment containing `{% extends %}` that Jinja parsed → RecursionError. Fixed in `c1f3eee71` using per-line Jinja-native `{# ... #}` comments.{% endraw %}
   - **Memory pin born from this**: `feedback_ui_fix_requires_template_render_test_not_curl_200` — UI fix verification requires a real `template.render()` test on the actual file, not just curl-returns-200. This pin then caught the Surface 2 structural gap one day later.
 - **#1047 M2D-UAT in progress (May 30–31)**: 7 surfaces walked through with PM. Surface 1 (Insight Journal page #1031) PASSES quality-wise but "barely" per PM ("almost undiscoverable, not connected to learning, relationship to history etc unclear"). PM directed: no scope-cut, take things one at a time, realign first.
 - **4 discovered-work issues filed (May 31)**: applying the new verification pin's discipline against the #1047 surfaces revealed:
