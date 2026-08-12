@@ -33,13 +33,16 @@ Proposal committed (`docs/internal/operations/docs-site-scoping-proposal-2026-08
 scrubbed (`a8431b4d6`), CIO ratification requested (memo `8fbf8e761`, cc Comms).
 
 **⏳ Gated on CIO**: the `_config.yml` scoping change (~1,370 → ~160 served pages). Do NOT apply
-until CIO ratifies the in/out lists — outward-facing change, confirm-first.
-**Unblocked next (Docs, any fire)**: NAVIGATION.md rewrite to match the curated scope; the 4
-duplicate pairs (VERSION_NUMBERING/versioning, troubleshooting.md/dir, user-guide.md/user-guides,
-migration/public-migration — several are #1585 residents); per-surface staleness+link pass on the
-kept ~160.
-**After scope lands**: verify build green + spot URLs (kept 200s, excluded 404s); Comms register
-pass; #1593 gate wiring; CONTRIBUTING scoping note.
+until CIO ratifies the in/out lists — outward-facing change, confirm-first. CIO also now holds a
+4th flagged judgment call: user-guide.md exclude-until-rewritten (aspirational-1.0 content,
+banner applied 08-12).
+**✅ Done (Fire 4, 08-12)**: the 4 duplicate pairs — versioning pair cross-linked (not dupes:
+scheme vs strategy), troubleshooting/README de-boilerplated, user-guide.md honest-bannered +
+flagged, migration dirs recorded as different-topics. `6a44a4e1f`.
+**After scope lands** (named trigger: CIO's reply): NAVIGATION.md rewrite; per-surface
+staleness+link pass on the final keep-list; verify build green + spot URLs (kept 200s, excluded
+404s); Comms register pass; CONTRIBUTING scoping note. (#1593's gate is already FIXED by Lead
+08-12 — ratchet live in link-checker.yml, verified; #1608 filed for the liveness half.)
 
 ## ✅ RESOLVED 2026-08-12 (PM-engaged, 11:06–) — Ship #055 published + 5-day omnibus backlog cleared
 
