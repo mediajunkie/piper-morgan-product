@@ -52,6 +52,13 @@ class TodoRepository(BaseRepository):
         """
         if not owner_id:
             raise ValueError("owner_id is required for multi-tenancy isolation")
+        # #1603: id/owner_id columns are String (varchar). A UUID-typed param
+        # has no varchar=uuid operator in Postgres — the chat path passed one
+        # (via a #1436 UUID() coercion) and every completion failed while the
+        # str-passing web route worked. Normalize at THE layer that knows its
+        # column types; str() is idempotent for the existing str callers.
+        todo_id = str(todo_id)
+        owner_id = str(owner_id)
 
         filters = [TodoDB.id == todo_id]
         if not is_admin:  # Only check ownership if not admin
@@ -231,6 +238,13 @@ class TodoRepository(BaseRepository):
         """
         if not owner_id:
             raise ValueError("owner_id is required for multi-tenancy isolation")
+        # #1603: id/owner_id columns are String (varchar). A UUID-typed param
+        # has no varchar=uuid operator in Postgres — the chat path passed one
+        # (via a #1436 UUID() coercion) and every completion failed while the
+        # str-passing web route worked. Normalize at THE layer that knows its
+        # column types; str() is idempotent for the existing str callers.
+        todo_id = str(todo_id)
+        owner_id = str(owner_id)
 
         # Separate inherited fields (from ItemDB) from child-specific fields (from TodoDB)
         # updated_at lives on parent ItemDB; including it in child_updates causes
@@ -334,6 +348,13 @@ class TodoRepository(BaseRepository):
         """
         if not owner_id:
             raise ValueError("owner_id is required for multi-tenancy isolation")
+        # #1603: id/owner_id columns are String (varchar). A UUID-typed param
+        # has no varchar=uuid operator in Postgres — the chat path passed one
+        # (via a #1436 UUID() coercion) and every completion failed while the
+        # str-passing web route worked. Normalize at THE layer that knows its
+        # column types; str() is idempotent for the existing str callers.
+        todo_id = str(todo_id)
+        owner_id = str(owner_id)
 
         filters = [TodoDB.id == todo_id]
         if not is_admin:  # Only check ownership if not admin
