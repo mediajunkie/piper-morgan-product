@@ -67,7 +67,7 @@ A refactor that passes step 3 but skips step 4 produces a load-bearing comment w
 - Authoring or reviewing a refactor PR with substantial line-count delta in entry-point / mount / startup / plugin-registry files.
 - Conducting an `audit-cascade` or `code-review` skill pass on a refactor of cross-cutting infrastructure.
 - Investigating Pattern-073 instances where the cause is suspected to be a silent wiring removal.
-- Reviewing methodology-19 (Cleanup as Pattern) cleanup commits, since cleanup-shaped refactors are high-risk for this failure mode.
+- Reviewing cleanup-shaped refactor commits, since cleanup-shaped refactors are high-risk for this failure mode. (No standalone "cleanup as pattern" methodology was ever filed — see the corrected cross-reference below.)
 
 ### This framing does not apply when
 
@@ -129,7 +129,7 @@ Cross-agent: any role conducting `code-review` or `audit-cascade` on a refactor 
 - **Lead Dev proposal memo** (May 27): `mailboxes/cio/read/memo-lead-to-cio-cc-pm-methodology-candidate-load-bearing-line-count-deltas-2026-05-27.md`
 - **CIO disposition memo** (May 27): `mailboxes/lead/read/memo-cio-to-lead-cc-pm-methodology-37-disposition-coverage-audit-gate-different-layer-than-pattern-073-2026-05-27.md`
 - **methodology-30 Consumer-Trace Verification** (sibling discipline, different lifecycle moment): `docs/internal/development/methodology-core/methodology-30-CONSUMER-TRACE-VERIFICATION.md`
-- **methodology-19 Cleanup as Pattern** (refactor-as-cleanup is the failure-mode adjacency): `docs/internal/development/methodology-core/methodology-19-CLEANUP-AS-PATTERN.md`
+- ~~**methodology-19 Cleanup as Pattern**~~ — **broken reference, resolved 2026-08-12 (CIO, #1584 Part C).** `methodology-19-CLEANUP-AS-PATTERN.md` was never filed; slot 19 belongs to `methodology-19-INTEGRATION-POINTS.md` and has since 2026-05-27 predates this doc. No sibling methodology on refactor-as-cleanup exists today — the closest filed discipline is `methodology-35-ASYMMETRIC-DISCIPLINE-CREATION-WITHOUT-PAIRED-CLEANUP.md`, but it addresses paired-cleanup-at-creation-time, not cleanup-shaped-refactor-risk, so it is noted here rather than substituted as an equivalent.
 - **Pattern-073 Documentation-Asserted-Behavior Drift** (recognition discipline; catches what prevention misses): `docs/internal/architecture/current/patterns/pattern-073-documentation-asserted-behavior-drift.md`
 - **methodology-28 Pre-Filing Slot-Availability Check** (CIO discipline that allocated slot 37): `docs/internal/development/methodology-core/methodology-28-PRE-FILING-SLOT-AVAILABILITY-CHECK.md`
 - **Forensic report on #1129** (the empirical case study this methodology is built on): `dev/active/slack-inbound-forensics-2026-05-27.md`
