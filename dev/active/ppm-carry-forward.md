@@ -1,8 +1,30 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-10 STOP (~22:40 PT) — DAY CLOSED. Six clean fires. Cron **`25f1a782`**.
+**Last rewritten**: 2026-08-12 07:22 PT (START fire). Cron **`71dc6b7c`**, unchanged since the
+08-11 post-reboot re-arm. 08-11 retroactively closed this fire (missed STOP fires, see Cron
+section below); nothing lost. Sprint-truth re-run fresh this fire: **MVP 48 not done / 1042
+done** (matches Lead's 08-11 escalation figure, now independently verified rather than trusted).
+The three PM-open items (criterion blessing, #1510 fork, Surface 1/3) re-checked via GitHub —
+all still genuinely open, no PM movement since 08-10.
 ✅ **Jake conversion COMPLETE: #1536–#1540 filed 08-09, zero rows unfiled.**
+
+## 🔴 AWARENESS FROM 08-11 16:1x — Lead's escalation to PM (not mine to action, but changes what I cite)
+Read via mail triage, addressed to PM with PPM cc'd; **no PPM-owned decision, PM's three calls
+(#1600 ratchet-fix-now?, #1599 is_admin grant method, deploy word)** — do not chase these, PM has
+them. **What changes my own reasoning going forward:**
+- **MVP open count moved 51 → 48**, composition not just number — 9 genuinely closed with evidence,
+  2 (#1411, #1431) have live reproducing defects despite looking closeable, #1485 blocked by the new
+  admin-403 beta blocker, #1480's client-side half is unverified (grep-only, JS never executed).
+  ⚠️ **Do not cite "51 open" going forward — it's stale as of today.** Re-run `sprint-truth.py`
+  before citing any count rather than trusting this note past today.
+- **CI has been red on `main` two days** (#1600, ratchet ceilings breached, gating `smoke` marks
+  failing) and **Architecture Enforcement red on every push since 08-09 15:07** — a STOP condition
+  per CLAUDE.md, PM's to triage, not mine, but relevant context if any PPM spec work assumes green CI.
+- **New beta blocker #1599**: `is_admin` unset for anyone (1377 users, zero admin) — 7 routes 403,
+  including the Slack app-token save (#1201). PM-gated.
+Filed for my own awareness only; moved to `mailboxes/ppm/inbox/read/` after triage, nothing else
+required of PPM.
 
 ## ✅ FTUX FIVE RULED (2026-08-10) — HOLD STATE ENDED
 **#1536 → MVP + Beta Blockers** (PM: *"if CXO feels one of the issues should be kept in MVP, I am
@@ -261,25 +283,18 @@ already answered before sending.**
 
 ## Active PM threads
 
-| Item | State | Next action |
-|---|---|---|
-| **Ship #053** | ✅ Sent 2026-07-28 (window Jul 17-23), on time despite same-day kickoff | None |
-| **Jul 19 log** | ✅ Retroactively closed 2026-07-28 (had no DAY-CLOSED marker, flagged by Exec's kickoff) | None |
-| **#1386 gate run** | 🔴 **WINDOW LOCKED FRI 07-31** — Lead drives from ~06:17; CXO + PPM verify + sign off **on the issue** by noon. Closes criterion 2 + Scenario-B only, NOT the gate | See the FIRST THING FRIDAY block above |
-| **Jake Krajewski alpha FTUX** | ✅ PPM lens sent 7/30 (4 of 4 in). **Exec synthesizes Friday first thing** | On Exec's signal → I file the issues same day, against the A/B/C bucket structure |
-| **PDR-006 + Q2** | ✅ **RATIFY sent 7/30 — all three reviews in; PA sent it to PM for ratification**. CXO drafting the PDR-004 amendment (Layer-B decision ratification, my reframe accepted); rubric branch OPEN, PA running Probe A on Claude + GPT | Watch for PM ratification → **then I draft the implementation epic** (PDR still says "issue TBD") |
-| **Spatial committed-theory** | ✅ Slice delivered 7/30; Arch + CXO concur **(b)**. L3-beyond-GitHub NOT promised → cold island disposes freely. **L4 substance stands**: #1174 OPEN/Production, zero implementation, and "earned proactivity" is differentiator 4 of 4. ⛔ **My "milestone split" finding was WITHDRAWN** — M4 was swept; #1174 in Production is CORRECT by rule. CXO owns #1174, taking option (i) — which needs **no milestone change at all** | Owed by me: repoint stale `(M4/M5)` refs in roadmap.md + sprint-board-structure.md **as a class** |
-| **Hooks** | ✅ **SETTLED.** Defect was TOCTOU (PreToolUse fires before the gated command, so a compound `add && commit` is judged against an empty index). Pard installed a real `.git/hooks/pre-commit` in the **common dir** — covers all worktrees by construction. **Do NOT probe** (v1.22 retired the probe apparatus); verify the hook file exists | Closed for PPM |
-| **#1394 / ADR-078** | ✅ Architecture COMPLETE (unchanged since 7/16, reconfirmed OPEN-pending-D5-probe by 7/26 session) | Watch only |
-| **Beta Blockers sprint recount** | Not possible — `gh` token lacks `read:project` scope (found by 7/26 session). Last real count: 21 open at 7/16 close | Needs `gh auth refresh -s read:project` — PM's call |
-| **roadmap.md / BRIEFING-CURRENT-STATE.md** | Current as of 7/19 only — 9+ days stale now given everything since | Needs a real refresh once the above items settle, not urgent today |
-| **Docs-tree audit** | Plan delivered 7/13, still PM-gated as of last check | Watch |
+⚠️ **Pruned 2026-08-12** — the table this replaced (dated 7/28–7/31: Ship #053, the 07-31 gate
+window, Jake's PPM-lens-only stage, PDR-006 pre-ratification, spatial (b), hooks TOCTOU, etc.) was
+**three weeks stale and every row already superseded by newer sections above** (Jake is fully
+converged and filed 08-09; PDR-006/spatial/hooks status folded into other sections; #1386's 07-31
+window closed criterion 2 only, already recorded). Kept as a pointer, not carried forward as
+content — if any of those threads turn out to still be open, that's a finding, not an inheritance.
+**Current open-for-PM items are the three in `docs/handoff-ppm-2026-08-11.md` §2** (criterion
+blessing, #1510 fork, Surface 1/3) — re-checked via GitHub at this fire (08-12 07:22): **all three
+still genuinely open, no new PM comment on #1510, #1386, or the criterion doc since 08-10.**
 
 ## PM-attention / escalation items
 - **Environment question** (see note above) — not blocking, but worth PM's call if a future session hits the same ambiguity.
-
-## Mail status (2026-07-30)
-**Inbox ZERO.** 50 memos triaged to `read/` at Fire 1, MANIFESTs regenerated. Deep-read: everything addressed *to* PPM + everything gating owed work. Triaged-not-deep-read: hook/m-44 cross-traffic where PPM is cc'd (now settled in CLAUDE.md).
 
 ## Parked (no current trigger)
 - Pre-7/5-crisis entity-model lane — unverified since 6/18.
@@ -306,12 +321,18 @@ already answered before sending.**
 
 ## Cron
 
-**ARMED** — job **`25f1a782`**, CronList-verified exactly one. Prompt gained two standing lines:
-**PROXIES** (*safe when the remainder is ROUTED, dangerous when merely IMPLIED — say "gateable
-fraction", never "shadow"*) and **MAIL-SEND CAN FAIL SILENTLY** (*a transient fetch failure leaves the
-memo unsent with no other signal; read the tail, verify it landed*).
+**ARMED** — job **`71dc6b7c`** (re-armed 08-11 13:18 post-reboot; the 08-11 06:52 job `25f1a782`
+was deliberately parked pre-reboot, not lost — see `docs/handoff-ppm-2026-08-11.md` §6-7).
+`CronList`-verified exactly one, and the clearing condition (armed + verified + a fire has run) was
+satisfied at the 08-11 16:22 WORK fire. Prompt carries the standing lines: **PROXIES** (*safe when
+the remainder is ROUTED, dangerous when merely IMPLIED — say "gateable fraction", never "shadow"*)
+and **MAIL-SEND CAN FAIL SILENTLY** (*a transient fetch failure leaves the memo unsent with no other
+signal; read the tail, verify it landed*).
 
-**Four clean days running** (08-07/08/09/10). ⚠️ Session-only + 7-day auto-expiry, both silent.
+⚠️ **08-11's log had to be retroactively closed at this fire** — the 18:52/21:52 STOP fires never
+reached the session (heartbeat history confirms zero rows, not dropped work; likely absorbed by the
+reboot-recovery gap). Nothing was lost. ⚠️ **Session-only + 7-day auto-expiry, both silent** —
+`71dc6b7c` expires ~2026-08-18 if not re-armed sooner.
 
 ---
 

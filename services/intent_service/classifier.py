@@ -280,7 +280,7 @@ class IntentClassifier:
                         ).list_for_session(
                             owner_id=str(user_id), conversation_id=str(session_id)
                         )
-                except Exception as e:
+                except Exception as e:  # silent-ok: ledger read failure falls through to the normal (non-Stage-0) path, logged; an empty ledger binds nothing rather than binding wrongly
                     logger.warning("b3_ledger_read_failed", error=str(e))
                     activities = []
                 for a in activities:

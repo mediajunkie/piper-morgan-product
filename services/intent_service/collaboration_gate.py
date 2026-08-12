@@ -70,9 +70,9 @@ FRAMING_EXECUTE = "execute"
 FRAMING_AMBIGUOUS = "ambiguous"
 
 
-# TODO(#1510): replace with WorkflowEntry.effect once the enum lands
-# (READ < WRITE < DESTRUCTIVE is being added to WorkflowEntry in a parallel
-# change; this local mapping is the agreed integration point until then).
+# #1510 tracks replacing this with WorkflowEntry.effect (the EffectClass
+# enum LANDED via #1557; the derivation swap awaits #1510's declared-vs-
+# inferred fork and #1190 coordination — both recorded on those issues).
 # Deliberately covers ONLY the create-issue family — the wired gate site for
 # the #1510 ungated half. Extending to close/reopen/comment awaits both the
 # effect enum and coordination with #1190 (destructive-mutation confirmation),
@@ -246,7 +246,7 @@ async def get_working_mode(user_id: Optional[str]) -> WorkingMode:
         return WorkingMode.COLLABORATE
     try:
         raw = (await _load_preferences(str(user_id))).get(WORKING_MODE_PREF_KEY)
-    except Exception as e:
+    except Exception as e:  # silent-ok: fail-safe DIRECTION is the point — a storage error degrades to collaborate-first (draft+ask), never escalates to direct execution (#1510)
         logger.warning("working_mode_read_failed user_id=%s error=%s", user_id, e)
         return WorkingMode.COLLABORATE
     try:
@@ -261,7 +261,7 @@ async def set_working_mode(user_id: Optional[str], mode: WorkingMode) -> bool:
         return False
     try:
         return await _save_preference(str(user_id), WORKING_MODE_PREF_KEY, mode.value)
-    except Exception as e:
+    except Exception as e:  # silent-ok: False = "not persisted", surfaced to the caller honestly rather than claiming a save that did not happen
         logger.warning("working_mode_write_failed user_id=%s error=%s", user_id, e)
         return False
 

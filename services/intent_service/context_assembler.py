@@ -127,6 +127,8 @@ def _compute_deadline_proximity(due_date: Optional[datetime]) -> str:
         return "none"
 
     due = ensure_utc(due_date)
+    if due is None:  # ensure_utc is None-in-None-out; guarded above, narrowed here for mypy and for honesty if the guard ever moves
+        return "none"
     now = utc_now()
     if due < now:
         return "overdue"
@@ -363,7 +365,7 @@ class ContextAssembler:
             if reminder_ctx:
                 context.update(reminder_ctx)
                 self._attribute_provenance(list(reminder_ctx.keys()), user_id=user_id)
-        except Exception as e:
+        except Exception as e:  # silent-ok: reminder slice is additive; failure merges source_failed upstream so the floor says "couldn't check", never "none due" (#1425/#1566)
             logger.warning("context_assembler_reminder_gather_error", error=str(e))
 
         # #1536 FTUX-COLDSTART: on the FIRST exchange of a conversation, when
@@ -388,7 +390,7 @@ class ContextAssembler:
                     if fc_ctx:
                         context.update(fc_ctx)
                         self._attribute_provenance(list(fc_ctx.keys()), user_id=user_id)
-            except Exception as e:
+            except Exception as e:  # silent-ok: first-contact demo is an enhancement; failure skips the demo, logged, and the greeting proceeds without a claim (#1536)
                 logger.warning("context_assembler_first_contact_error", error=str(e))
 
         # #960: Context contract violation logging — warn when a data-query

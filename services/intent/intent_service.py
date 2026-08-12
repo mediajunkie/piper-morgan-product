@@ -1378,6 +1378,13 @@ class IntentService:
                 # Use primary intent (substantive) for main processing
                 # The greeting will be handled via multi_intent context
                 intent = multi_result.primary_intent
+                if intent is None:
+                    # has_substantive_intent implies a primary in practice, but
+                    # nothing enforces it — same fallback as the sibling branch
+                    # rather than an unguarded attribute access (mypy [union-attr])
+                    intent = await self.intent_classifier.classify(
+                        message, user_id=user_id, session_id=session_id
+                    )
                 # Mark that we detected a greeting so response can include acknowledgment
                 if intent.context is None:
                     intent.context = {}
@@ -1479,7 +1486,7 @@ class IntentService:
 
             # Issue #300 Phase 4: Get proactive automation patterns
             # Issue #490: Only fetch patterns if we have an authenticated user
-            automation_patterns = []
+            automation_patterns: List[Dict[str, Any]] = []
             try:
                 if learning_user_id:
                     async with AsyncSessionFactory.session_scope() as db_session:
@@ -1526,7 +1533,7 @@ class IntentService:
 
             # Deduplicate by pattern_id, preferring automation_patterns (auto_triggered=True)
             seen_pattern_ids = set()
-            all_suggestions = []
+            all_suggestions: List[Dict[str, Any]] = []
 
             # Add automation patterns first (higher priority)
             for pattern in automation_patterns:
@@ -2874,7 +2881,10 @@ class IntentService:
         message_text = (
             intent.original_message or intent.context.get("original_message", "") or ""
         ).lower()
-        if session_id and re.search(r"\binterview\b|\binteractive\b", message_text):
+        # user_id required too: the interview is the USER's flow — an anonymous
+        # interview would key state to nobody (#1532 class). Anonymous falls
+        # through to the report, which degrades to the honest empty summary.
+        if session_id and user_id and re.search(r"\binterview\b|\binteractive\b", message_text):
             self.logger.info(
                 "Standup interview token detected — dispatching interactive flow (#1511)",
                 user_id=user_id,
@@ -12544,8 +12554,8 @@ Content to summarize:
             reminder_ctx = await ContextAssembler()._gather_reminder_context(user_id)
             if reminder_ctx:
                 context.update(reminder_ctx)
-        except Exception:
-            pass
+        except Exception as e:  # silent-ok: reminder enrichment on the GUIDANCE path is additive; a failed gather degrades to no-reminders but is LOGGED (was a bare pass — the zero-log shape #1423 calls strictly worse)
+            self.logger.warning("guidance_reminder_gather_failed", error=str(e))
 
         return context
 
@@ -12680,7 +12690,7 @@ Content to summarize:
                     intent_action=intent.action,
                 )
                 domain_context_provenance = assembler.get_last_provenance()
-            except Exception as e:
+            except Exception as e:  # silent-ok: floor-entry gather failure degrades to a contextless floor turn, logged; the floor makes no data claim it cannot support (#1570/#1425)
                 self.logger.warning(
                     "unknown_intent_context_gather_failed",
                     error=str(e),
