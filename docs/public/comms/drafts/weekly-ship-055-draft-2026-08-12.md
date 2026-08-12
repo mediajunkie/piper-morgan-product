@@ -8,9 +8,9 @@ caption: ''
 
 *July 31–August 6, 2026*
 
-Last week's Ship was about checks that report "all clear" without measuring anything. This week the team found the same failure at the scale that matters most: two ratified security fixes merged to the main branch on Tuesday, and the running server didn't have either of them for four days.
+Last week's Ship discussed checks that report "all clear" without measuring anything. This week the team found the same failure at the scale that matters most: two major security fixes merged to the main branch on Tuesday, and the running server didn't have either of them for four days.
 
-Nobody lied about it. Five different people, working independently, each said "shipped" and meant "merged" — because that's what the word has meant in practice for months. The gap only became visible when someone finally compared the branch to the machine actually serving users, and the team spent the rest of the week tracing exactly how a true sentence about one layer became a false one about another.
+The word "shipped" appeared in five logs, and then was taken in each case to imply "merged" — because that's what the word has meant in practice for months. The gap was easy to see as soon as we compared the branch to the machine actually serving users, and the team then traced exactly how a true sentence about one layer became a false one about another.
 
 ---
 
@@ -22,7 +22,7 @@ Nobody lied about it. Five different people, working independently, each said "s
 
 **Slack-to-Piper account linking shipped start to finish in one day** (Aug 4): design ratified with binding security conditions, a UX flow spec corrected mid-build when the chief experience role (CXO) caught it silently dropping a required proof-of-control step, a full build, independent security re-verification against the shipped code, and a guard a second, read-based review pass found half-vacuous and fixed the same day.
 
-**A cross-user data leak in Slack was found, chased, and ultimately held rather than shipped.** The product assistant found that Slack's direct-message path bound every sender's identity to whoever owned the connection. The chief architect role (Arch) ruled the proposed scope-out unsound — reachable at runtime, not just at setup — and a fail-closed gate was built the same night. The founder then made the harder call directly: the feature is **held from alpha, beta, and every release until it's genuinely safe**, with the rest of the connector work moved earlier in the schedule instead.
+**A cross-user data leak in the Slack in integration was found, chased, and ultimately held rather than shipped.** The product assistant agent (Piper Alpha) found that Slack's direct-message path bound every sender's identity to whoever owned the connection. The chief architect role (Arch) ruled the proposed scope-out unsound — reachable at runtime, not just at setup — and a fail-closed gate was built the same night. The founder then made the harder call directly: the feature is **held from alpha, beta, and every release until it's genuinely safe**, with the rest of the connector work moved earlier in the schedule instead.
 
 ## ⚙️ Engineering & architecture
 
@@ -34,7 +34,7 @@ Nobody lied about it. Five different people, working independently, each said "s
 
 ## 🔬 Methodology & process innovation
 
-**"Shipped" turned out to be doing two jobs at once, and the week is the record of finding that out.** Five people — the product assistant, communications, product management, architecture, and experience — each independently checked the production branch and got the identical wrong number, because one shared script was reading branch history instead of asking the running machine what it actually serves. That's not five people making the same mistake. That's the tooling making it five times.
+**"Shipped" turned out to be implying two things at once.** Five agents — PA, Comms, PPM, Arch, and CXO each independently checked the production branch and got the identical wrong number, because one shared script was reading branch history instead of asking the running machine what it actually serves. 
 
 **And the exact lesson the team had just published caught two of its own authors the same week it went live.** "Agreement is not replication" ran in Weekly Ship #054 two days before the gap surfaced. Two people then independently re-ran the same wrong check someone else had already run and reported the match as confirmation. Both caught it, named it against themselves, and fixed the record rather than let the number stand.
 
@@ -49,7 +49,7 @@ Nobody lied about it. Five different people, working independently, each said "s
 - Aug 4: "[The List That Lies](https://pipermorgan.ai/blog/the-list-that-lies/)" — building
 - Aug 5: [Weekly Ship #054: Clear Is Not a Measurement](https://pipermorgan.ai/shipping-news/weekly-ship-054-clear-is-not-a-measurement) — shipping news
 
-[![A translucent dolphinoid AI gatekeeper confidently consults a ledger beside an observant human, as the supposedly secured gate stands wide open behind them](https://pipermorgan.ai/assets/blog-images/the-list-that-lies-ai-gatekeeper.png)](https://pipermorgan.ai/blog/the-list-that-lies/)
+[![A translucent dolphinoid AI gatekeeper confidently consults a ledger beside an observant human, as the supposedly secured gate stands wide open behind them](https://pipermorgan.ai/assets/blog-images/the-list-that-lies.webp)](https://pipermorgan.ai/blog/the-list-that-lies/)
 *"Nothing can go wrong!"*
 
 ## 📊 Governance & operations
@@ -63,13 +63,13 @@ Nobody lied about it. Five different people, working independently, each said "s
 - **Publications:** 4 (2 insight, 1 building narrative, 1 Weekly Ship)
 - **All 10 workstream reports filed on the day requested** — the first cycle under the new reporting standard, and the first time the two contributor-tier roles (development, documentation) plus the product assistant and web design were asked for one at all
 
-**The reviews were unusually willing to correct themselves in public this week.** One role marked its own newly-built ratchet "unattested" rather than assume it worked. Another found its own coordination framework had lapsed across four straight review cycles while it was busy checking everyone else's. A third's headline number was wrong by two orders of magnitude, said so plainly, and confirmed the underlying finding held anyway. The chief innovation role (CIO) put the sharpest version of the question to the founder directly: *"every correction that mattered came from someone other than the author. None of it is mechanized."*
+**The agents providing weekly reviews corrected each other's own mistakes in real time.** One role marked its own newly-built ratchet "unattested" rather than assume it worked. Another found its own coordination framework had lapsed across four straight review cycles while it was busy checking everyone else's. A third's headline number was wrong by two orders of magnitude, said so plainly, and confirmed the underlying finding held anyway.
 
 ---
 
 # 🎯 Coming up next week
 
-**The beta date has moved back a month, to early September.** The founder's own words, from the decision record: *"We clearly have a lot more work still to do than anyone ever reported to me."* That's a statement about the team's reporting, not the underlying work, and it lands in the same week as a security posture that was true on the branch and false on the server for four days — precisely the kind of gap that produces it. No correction notice on last week's Ship, which correctly reported the target that was live when it published. This sentence is the honest update.
+**The beta date has moved back a month, to early September.** Wearing my founder's hat I told the agent team: *"We clearly have a lot more work still to do."* 
 
 With the deploy gap closed, next week moves to the remaining beta-gate criteria and a first real audit of the MVP milestone's open issues against the founder's stated beta conditions, only one of which has been checked against them so far.
 
