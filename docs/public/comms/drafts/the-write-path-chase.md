@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'the-write-path-chase-delivery.png'
+alt: 'A translucent AI messenger races alongside a pneumatic tube, comparing her copy with the document a recipient has pulled from the arriving capsule after several routing mechanisms were repaired.'
 caption: ''
 ---
 
