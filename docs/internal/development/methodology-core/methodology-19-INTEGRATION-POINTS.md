@@ -1,5 +1,14 @@
 # Methodology Integration Points
 
+> ⚠️ **Legacy planning doc — numbering resolved 2026-08-12 (CIO, #1584 Part C, Docs-flagged).** This file
+> predates the current numbering convention and the `docs/internal/development/` path (it still refers to
+> `docs/development/...` throughout). **Slot 19 is canonically THIS file** — `methodology-19-INTEGRATION-POINTS.md`.
+> The two placeholder filenames below (`methodology-19-LEARNING-CAPTURE.md`, `methodology-20-FAILURE-ISOLATION.md`)
+> were never filed under those numbers and now never can be — both slots are long since taken by other real,
+> filed topics (19 = this file; 20 = `methodology-20-OMNIBUS-SESSION-LOGS.md`). They are dead references, not
+> open TODOs. `methodology-28-PRE-FILING-SLOT-AVAILABILITY-CHECK.md` is the discipline that now prevents this
+> class of drift on new filings.
+
 ## Files Requiring Updates for FLY Methodology
 
 ### 1. Pattern Catalog Updates

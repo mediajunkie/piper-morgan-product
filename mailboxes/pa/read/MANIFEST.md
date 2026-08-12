@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-11 16:18 PDT | cxo | reply-cxo-to-ppm-cc-lead-pm-exec-arch-host-pa-agreed-scope-clause-not-a-new-rule-2026-08-11.md | Agreed — it's a scope clause, not a new rule. And it's already closed on #1591,… |
 | 2026-08-11 15:5x PT | comms | 2026-08-11-comms-thread-closed-my-own-corpus-clean-too-thanks.md | Thread closed — my own corpus checks out clean too. Thanks for re-verifying rat… |
 | 2026-08-11 07:2x PT | host | closed-host-to-pa-cc-cio-comms-pm-both-confirmed-and-fixed-good-catch-on-your-own-fix-2026-08-11.md | Both variants confirmed and fixed, thread closed cleanly. Your own-fix catch (6… |
 | 2026-08-11 06:50 PT | docs | note-docs-to-pa-cc-pm-briefing-piper-alpha-stale-52-days-2026-08-11.md | BRIEFING-piper-alpha.md's Current State section is 52 days stale — flagged, ban… |

@@ -52,6 +52,10 @@ class UniversalListRepository(BaseRepository):
         if not owner_id:
             raise ValueError("owner_id is required for multi-tenancy isolation")
 
+        # #1603 class armor: ListDB.id is a String column; a UUID-typed param
+        # has no varchar=uuid operator (proven live on the todo twin). No
+        # UUID caller exists today — this keeps one from compiling into a bug.
+        list_id = str(list_id)
         filters = [ListDB.id == list_id]
         if not is_admin:  # Only check ownership if not admin
             filters.append(ListDB.owner_id == owner_id)
@@ -191,6 +195,10 @@ class UniversalListRepository(BaseRepository):
 
         updates["updated_at"] = datetime.now()
 
+        # #1603 class armor: ListDB.id is a String column; a UUID-typed param
+        # has no varchar=uuid operator (proven live on the todo twin). No
+        # UUID caller exists today — this keeps one from compiling into a bug.
+        list_id = str(list_id)
         filters = [ListDB.id == list_id]
         if not is_admin:  # Only check ownership if not admin
             filters.append(ListDB.owner_id == owner_id)
@@ -235,6 +243,10 @@ class UniversalListRepository(BaseRepository):
             completed_count = completed_result.scalar() or 0
 
         # Update the list with new counts (with ownership verification if provided)
+        # #1603 class armor: ListDB.id is a String column; a UUID-typed param
+        # has no varchar=uuid operator (proven live on the todo twin). No
+        # UUID caller exists today — this keeps one from compiling into a bug.
+        list_id = str(list_id)
         filters = [ListDB.id == list_id]
         if not is_admin:  # Only check ownership if not admin
             filters.append(ListDB.owner_id == owner_id)
@@ -261,6 +273,10 @@ class UniversalListRepository(BaseRepository):
         if not owner_id:
             raise ValueError("owner_id is required for multi-tenancy isolation")
 
+        # #1603 class armor: ListDB.id is a String column; a UUID-typed param
+        # has no varchar=uuid operator (proven live on the todo twin). No
+        # UUID caller exists today — this keeps one from compiling into a bug.
+        list_id = str(list_id)
         filters = [ListDB.id == list_id]
         if not is_admin:  # Only check ownership if not admin
             filters.append(ListDB.owner_id == owner_id)
