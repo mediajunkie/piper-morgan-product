@@ -57,6 +57,32 @@ jobs:
           format: detailed
           output: link-checker-results.md
 
+      # #1593: lychee detected breakage correctly for months while this
+      # workflow reported success — "green that lies" (postmortem instance 3,
+      # Docs memo 2026-08-12). The fix is NOT fail:true — 125 legacy errors
+      # are mid-burn-down under #1584, and a binary gate would go permanently
+      # red, recreating #1600's "red nobody sees" on day one. RATCHET instead
+      # (house pattern, scripts/ratchet_ceilings.json discipline): NEW
+      # breakage fails the job immediately; legacy debt only shrinks. Lower
+      # the ceiling in the same commit as any link cleanup.
+      - name: Broken-link ratchet gate (#1593)
+        if: always()
+        run: |
+          CEILING=125
+          COUNT=$(grep -oE '🚫 Errors\.+[0-9]+' link-checker-results.md | grep -oE '[0-9]+$' || echo "")
+          if [ -z "$COUNT" ]; then
+            echo "::error::#1593 ratchet could not read an error count from lychee output — refusing to pass on a missing measurement (m-44: a clear that measured nothing is not a clear)"
+            exit 1
+          fi
+          echo "broken links: $COUNT (frozen ceiling: $CEILING — #1584 burn-down)"
+          if [ "$COUNT" -gt "$CEILING" ]; then
+            echo "::error::broken links $COUNT exceed frozen ceiling $CEILING — new breakage may not ship. Fix the new links, or (for cleanup) lower CEILING in this workflow in the same commit."
+            exit 1
+          fi
+          if [ "$COUNT" -lt "$CEILING" ]; then
+            echo "::warning::broken links $COUNT are BELOW ceiling $CEILING — cleanup happened; lower CEILING to $COUNT in this workflow to lock it in (shrink-lock)"
+          fi
+
       - name: Create link checker summary
         if: always()
         run: |

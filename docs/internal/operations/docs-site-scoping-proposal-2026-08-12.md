@@ -1,0 +1,98 @@
+# pmorgan.tech scoping proposal — curate the public docs site to its visitor-facing surface
+
+**Author**: Docs · **Date**: 2026-08-12 · **Status**: PROPOSED — awaiting CIO ratification (scope)
++ Comms register pass (kept pages) · **PM**: plan approved in principle 2026-08-12 ("good plan.
+please get it started"); this doc is the concrete scope for ratification.
+
+## The problem, one paragraph
+
+pmorgan.tech (GitHub Pages, Jekyll, serving `/docs` on `main`) is the "documentation site" every
+Weekly Ship P.S. points readers at. What a visitor actually gets: a page titled
+`piper-morgan-product` (the repo slug — no site title configured), rendering nearly the whole
+1,814-file docs tree — 740 files of `internal/` (ADRs, ops runbooks, sprint planning, the
+editorial calendar with candid working notes rendered as HTML), 146 cross-pollination briefs, 30
+role briefings, 11 reboot handoffs — with the ~160 genuinely visitor-facing pages drowning in it.
+**This is a curation problem, not a privacy one**: the repo is public by design ("Yes, you can
+copy it"), so nothing here is secret; it's that the site has no editorial stance about what it
+*is*. The current `_config.yml` exclude list is a 9-pattern denylist whose one big save (the 443
+omnibus logs) is a filename-pattern accident (`**/*log*.md`), and it has never had a deliberate
+pass — which is also how the build sat dead for 2.5 months unnoticed (fixed by Janus 2026-08-12).
+
+## The principle
+
+**The docs site is product documentation for visitors, alpha testers, and developers. The working
+corpus stays on GitHub, one click away, for anyone who wants the open-development view.** Scoping
+the *site* does not hide anything — it gives the site a legible purpose.
+
+## Proposed scope
+
+### EXCLUDE from the build (working corpus — ~1,655 files)
+
+| Surface | Files | Rationale |
+|---|---|---|
+| `internal/` | 740 | ADRs, methodologies, ops, planning, comms working material — team-facing |
+| `omnibus-logs/` | 443 | Already excluded by pattern accident; make it explicit and deliberate |
+| `public/comms/` | 208 | Blog drafts + published-draft archive + calendar working files — the *blog* is the public face of these, at pipermorgan.ai |
+| `briefs/` | 146 | Cross-project agent briefs — team-facing |
+| `operations/` | 58 | Duty-cycle design, cohort ops — team-facing |
+| `briefing/` | 30 | Role briefings — agent-facing |
+| `refactor/` | 8 | Completed refactor project's dated artifact trail |
+| `handoff-*.md` (top level) | 11 | Reboot-day handoffs — agent-facing, transient |
+| `agent-protocols/` | 6 | Agent-facing procedure docs |
+| `processes/` | 3 | Internal env-sync/migration checklists |
+| `reference/` (singular) | 1 | Pard's fleet runbook — infra-facing |
+| `research/` | 1 | Internal MCP evaluation (2026-03) |
+| `00-START-HERE-LEAD-DEV.md` | 1 | Agent-facing |
+
+### KEEP in the build (visitor-facing surface — ~160 files)
+
+- **Index**: `README.md` (already a decent front door; scrub in progress) + a real `title:` in
+  `_config.yml`
+- **Alpha testers**: `ALPHA_QUICKSTART`, `ALPHA_TESTING_GUIDE`, `ALPHA_FEATURE_GUIDE`,
+  `ALPHA_KNOWN_ISSUES`, `ALPHA_AGREEMENT_v2`, `alpha/` (2)
+- **Getting started / users**: `public/getting-started/` (8), `public/user-guides/` (16),
+  `user-guide.md`, `guides/` (15), `installation/` (7), `setup/` (2), `troubleshooting/` (2) +
+  `troubleshooting.md`, `features/` (5), `integrations/` (3), `configuration/` (2)
+- **Developers**: `api/` (3), `public/api-reference/` (7), `TECHNICAL-DEVELOPERS.md`,
+  `CONTRIBUTING.md`, `dev-tips/` (5), `TESTING.md` + `testing/` (7), `security/` (1),
+  `api-key-management.md`, `database-production-setup.md`, `public/migration/` (1) +
+  `migration/` (3), `VERSION_NUMBERING.md` + `versioning.md`
+- **Record**: `releases/` (19), `legal/` (1), `accessibility/` (3), `references/` (2, citations),
+  `NAVIGATION.md` (needs rewrite to match the curated scope — currently maps the whole tree)
+- **Assets**: `assets/` (images used by kept pages)
+
+### Judgment calls flagged for CIO (not silently decided)
+
+1. **`testing/` + `TESTING.md`** — some content is internal test-ops rather than contributor
+   docs; kept by default, CIO may pull either way.
+2. **`dev-tips/`** — developer-facing but written team-inward; kept by default.
+3. **Duplicate pairs** the scrub should collapse regardless of scope: `VERSION_NUMBERING.md` vs.
+   `versioning.md`, `troubleshooting.md` vs. `troubleshooting/`, `user-guide.md` vs.
+   `public/user-guides/`, `migration/` vs. `public/migration/` — several are already #1585
+   duplicate-cluster residents.
+
+## Mechanics
+
+One `_config.yml` change — extend `exclude:` with the 13 surfaces above (directory names + the
+handoff/start-here globs), add `title: Piper Morgan Documentation`, keep the existing log/session
+patterns as belt-and-suspenders. Fully reversible; no file moves; no content edits; GitHub
+unaffected. The Pages build re-runs on push, and the result is verifiable the same way the
+2026-08-12 revival was (run conclusion + spot-URL checks — a kept page 200s, an excluded page
+404s).
+
+## Sequencing (per the approved 3-phase plan)
+
+1. **This doc ratified** → apply the `_config.yml` change (Docs) → verify build + spot URLs.
+2. **Scrub the kept ~160 pages** (Docs, batched): README first (in progress), then NAVIGATION.md
+   rewrite, then the duplicate pairs, then staleness/link pass per surface. Comms register pass
+   rides on the scrubbed pages, not the pre-scrub ones.
+3. **Guard rails**: #1593 (link-checker gate) wired for the kept surface; a scoping note in
+   CONTRIBUTING ("what lands in the public build"); the exclude list gets an owner (Docs) and a
+   review trigger (any new top-level directory in `docs/`).
+
+## Division of labor (PM-set, 2026-08-12)
+
+- **Docs**: execution — config, README, navigation, scrub, verification. Owns this doc.
+- **CIO**: ratify/adjust the in/out scope above (governance of the project's documentation face).
+- **Comms**: register/voice pass on kept visitor-facing pages after scrub (public-prose
+  expectations now apply to them).
