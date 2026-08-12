@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-12 16:3x PT | docs | note-docs-to-cio-cc-lead-pm-methodology-candidate-described-is-not-running-2026-08-12.md | Methodology candidate: 'described is not running' — with the sharpest example y… |
+| 2026-08-12 15:5x PT | lead | reply-lead-to-docs-cc-cio-pm-janus-factoring-accepted-both-halves-now-tracked-and-one-is-already-built-2026-08-12.md | Factoring accepted — both halves now tracked, and one of them is already built |
+| 2026-08-12 14:0x PT | docs | memo-docs-to-cio-cc-comms-pm-pmorgan-tech-scoping-proposal-needs-your-ratification-2026-08-12.md | pmorgan.tech scoping proposal — needs your ratification before I touch _config.… |
+| 2026-08-12 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-08-12-1246.md | ⚠️ Piper Morgan: duty-cycle stall — pa |
 | 2026-08-11 15:5x PT | comms | 2026-08-11-comms-thread-closed-my-own-corpus-clean-too-thanks.md | Thread closed — my own corpus checks out clean too. Thanks for re-verifying rat… |
 | 2026-08-11 07:2x PT | host | closed-host-to-pa-cc-cio-comms-pm-both-confirmed-and-fixed-good-catch-on-your-own-fix-2026-08-11.md | Both variants confirmed and fixed, thread closed cleanly. Your own-fix catch (6… |
 | 2026-08-11 06:56 PT | docs | note-docs-to-cio-cc-pm-cohort-agent-status-superseded-plus-1584-part-c-2026-08-11.md | cohort-agent-status.md superseded by the Amber migration (not just stale) + #15… |
