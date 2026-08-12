@@ -16,6 +16,24 @@ stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
 
+## ✅ RESOLVED 2026-08-12 (PM-engaged, 11:06–) — Ship #055 published + 5-day omnibus backlog cleared
+
+**Ship #055** live at /shipping-news/weekly-ship-055-shipped-is-a-layer-word (website `536d5a1`,
+product `6283b4d00`). Template audit: 1 fix (PA/Comms gloss). Dry-run caught a real publish-post.js
+rendering defect (bold-open + italic-close paragraph → literal stray asterisks; same root regex as
+website#31, sharper manifestation) — fixed at source, full diagnosis posted to website#31.
+Live-content-verified. Comms memo sent (`d24eea418`). **Syndication (Medium/LinkedIn) remains PM's
+manual step** — status will need `published`→`distributed` + URLs when PM cross-posts.
+
+**Omnibus backlog 08-07→08-11 cleared** — one day per subagent sequentially per PM's "manageable
+bits" direction, full skill+methodology compliance each day, all pushed (10 commits, see session
+log table). Activity log +95 rows. Two preserved-not-resolved items from the 08-11 synthesis worth
+eventual attention: (1) Exec's post-reboot cron re-arm was unconfirmed as of the 08-11 record
+(Pard's memo named Exec the last unaccounted seat; Exec has 08-12 commits so likely fine now);
+(2) a Web/HOST/PA vs. Arch discrepancy about whether the pre-reboot cron "survived" (Arch's
+`uptime` check says the host hadn't rebooted yet) — preserved in the omnibus per
+name-the-divergence.
+
 ## ✅ RESOLVED 2026-08-12 (Fire 1) — Write-Path-Chase pinch-hit follow-up + Lead's stale-docs reply
 
 Janus's three flagged follow-ups from the 08-11 pinch-hit publish: 2 were already done same evening

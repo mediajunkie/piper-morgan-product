@@ -1899,20 +1899,58 @@ async def save_notion_preferences(
 
 
 @router.get("/github")
-async def get_github_settings():
+async def get_github_settings(current_user: JWTClaims = Depends(get_current_user)):
     """
-    Get GitHub integration status.
+    Get GitHub integration status FOR THE CALLER.
 
     Returns whether GitHub is configured and validates token if present.
     Issue #541: ALPHA-SETUP-GITHUB stuck state recovery
+
+    #1604: this endpoint decided visibility of the default-repo card while
+    checking user_id="system" (the env token) — the WRONG PRINCIPAL. An
+    OAuth-connected user with no system env token read as "Not Connected",
+    which hid the one control (default repo) their account state needed —
+    PM hit exactly this live. Binding-first via IntegrationStatusService
+    (the #1534 authority), then token-validity via the CALLER's resolution
+    chain. Principal-dropped class (#1532/#1501 family).
     """
     try:
         from services.integrations.github.config_service import GitHubConfigService
+        from services.integrations.integration_status_service import (
+            IntegrationStatusService,
+        )
+
+        uid = str(current_user.sub)
+        status_info = await IntegrationStatusService().get_status(uid, "github")
+        if status_info.get("configured"):
+            # Connected per the binding-first authority. Validity: resolve a
+            # token AS THE CALLER where one exists; an OAuth binding with no
+            # PAT still counts as valid-connected (the binding IS the auth).
+            config_service = GitHubConfigService()
+            token = config_service.get_authentication_token(user_id=uid)
+            if token:
+                from services.integrations.github.token_validator import (
+                    verify_github_token,
+                )
+
+                test_result = await verify_github_token(token)
+                is_valid = test_result.get("authenticated", False)
+                return {
+                    "configured": True,
+                    "valid": is_valid,
+                    "username": test_result.get("username") if is_valid else None,
+                    "error": test_result.get("error") if not is_valid else None,
+                }
+            return {
+                "configured": True,
+                "valid": True,
+                "username": None,
+                "error": None,
+            }
 
         config_service = GitHubConfigService()
-        # Issue #891: get_authentication_token requires user_id since #734.
-        # This is an unauthenticated status-check endpoint, so use "system"
-        # to check env var tokens without user-scoped keychain lookup.
+        # Legacy fallback: a system env token (pre-OAuth deployments) still
+        # reads as configured rather than breaking those setups.
         token = config_service.get_authentication_token(user_id="system")
 
         if token:
