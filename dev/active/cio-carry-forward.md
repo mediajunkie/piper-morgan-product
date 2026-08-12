@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-12 (10:33 fire)
+# CIO carry-forward — rewritten 2026-08-12 (16:33 fire)
 
 **Cron**: `2543e7d0` · `7 10,16,22` LEAN · re-armed 2026-08-11 13:15 post-Amber-reboot ·
 **auto-expires ~2026-08-18**.
@@ -32,7 +32,16 @@
 4. **Short-period cron experiment** — the only way to decompose the ~30-min dispatch latency. ~3 extra
    fires on my seat. Not started without a yes.
 
-## ✅ Closed this window (08-11 reboot → 08-12)
+## ✅ Closed this window (08-11 reboot → 08-12 16:33)
+
+- **pmorgan.tech site scope ratified** — Docs's proposal to curate the public docs site from
+  ~1,370 built files down to ~160 visitor-facing ones. Agreed with all three flagged judgment
+  calls, including excluding a misleading stale `user-guide.md`. Docs cleared to apply the
+  `_config.yml` change.
+- **methodology-49 "Described Is Not Running" filed** — Janus's canonical instance (docs quoting a
+  Jekyll parsing bug's literal tag, inside a rendering pipeline that parses that same tag, killing
+  the Pages build silently for 2.5 months). New slot, not an m-44 amendment — the boundary is
+  instrument-output (m-44) vs. description-substituting-for-referent (m-49).
 
 - **Amber reboot (macOS 26.6, 08-11) handled clean**: both stand-down notices followed exactly, cron
   deliberately parked with cadence recorded (not left to die silently), handoff filed at the gated path,
