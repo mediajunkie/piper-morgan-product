@@ -16,7 +16,7 @@
 
 ## 🔴 TOP OF QUEUE — PM-gated
 - ✅ ~~#1600 CI red~~ **CLOSED 08-12** — PM said "take #1600 next"; done. Green Architecture Enforcement run `31612409836` OBSERVED on main (first since 08-09). 3 mypy ceilings LOWERED (union_attr 209→172). Discovered: **#1602** (e2e one-shot after #1532, A/B/A-proven). Open mechanism question for PM/Exec: how does a red gating workflow persist unnoticed 2 days?
-- **#1599 BETA BLOCKER `is_admin`** — 1377 users, **0 admins**; migration seeds `xian@example.com` (placeholder, not PM's address); no code path sets it. #1485/#1508 are correct fixes that turned a dormant gap into a live block — **PM cannot save the Slack app token** (#1201). Must be true **at cut time**. Asked PM how they want it granted.
+- ✅ ~~#1599~~ **migration BUILT + pushed 08-12** (revision `a1599admin`, targets username `dinp` — PM confirmed the beta login is username-based; the most-cited email would have been a silent zero-row match, #1599's own defect). Fail-loud on Fly release, warned no-op on fresh dev/CI DBs. **Takes effect at next deploy** → then PM's Slack app-token save (#1201) is the behavioral check. PM's production-era plan on the issue: separate admin account, username `xian`.
 
 ## Next build queue (unblocked, in order)
 1. **#1595 Inversion Phase 0** — corpus baseline, per category. **Needs nothing from Arch; starts immediately.** Epic filed 08-11 with all four ratified decisions + both amendments as acceptance criteria. Then Phase 1 behind a flag (shadow-scored, routes logged not executed).
