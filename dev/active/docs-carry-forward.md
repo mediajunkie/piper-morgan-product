@@ -16,6 +16,20 @@ stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
 
+## ✅ RESOLVED 2026-08-12 (Fire 3, 13:27) — mail drain: Ship #055 closed, #1584 Part C done, Pages build revived
+
+Comms closed the Ship #055 thread (independent live-verify, clean). CIO completed #1584 Part C +
+retired cohort-agent-status.md — spot-verified in-tree, completion comment posted to #1584. Janus
+root-caused and fixed the docs Pages build (dead since ~May 31 — literal `{% extends %}` in
+BRIEFING-CURRENT-STATE.md's own bug documentation; Liquid parses tags inside code spans); Docs
+verified 3 consecutive green runs at tip, replied to Janus, and fed the silent-red family
+(#1600 + Pages build + #1593) to Lead's parked postmortem question with the two-detector-shapes
+factoring.
+
+**🟡 New parked question (Docs/CIO lane, no urgency)**: should the docs Pages site build
+everything it currently builds? The `_config.yml` exclude list already saved the omnibus logs from
+being silent-red instance #3 — it's load-bearing and has never had an explicit scoping pass.
+
 ## ✅ RESOLVED 2026-08-12 (PM-engaged, 11:06–) — Ship #055 published + 5-day omnibus backlog cleared
 
 **Ship #055** live at /shipping-news/weekly-ship-055-shipped-is-a-layer-word (website `536d5a1`,
