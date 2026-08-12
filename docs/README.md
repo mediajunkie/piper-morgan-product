@@ -59,10 +59,10 @@ ChromaDB (port 8000) — vector search
 LLM: Claude (Anthropic)
 ```
 
-**Key docs:**
-- [Architecture Decision Records](internal/architecture/current/adrs/adr-index.md) — 78 decisions with rationale (as of 2026-07-09)
-- [Patterns catalog](internal/architecture/current/patterns/) — reusable implementation patterns
-- [BRIEFING-CURRENT-STATE.md](briefing/BRIEFING-CURRENT-STATE.md) — live sprint status (agents: read this first)
+**Key docs** (working corpus — on GitHub, not this site):
+- [Architecture Decision Records](https://github.com/mediajunkie/piper-morgan-product/tree/main/docs/internal/architecture/current/adrs) — every architectural decision with rationale
+- [Patterns catalog](https://github.com/mediajunkie/piper-morgan-product/tree/main/docs/internal/architecture/current/patterns) — reusable implementation patterns
+- [BRIEFING-CURRENT-STATE.md](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/briefing/BRIEFING-CURRENT-STATE.md) — live sprint status (agents: read this first)
 
 ---
 
@@ -85,11 +85,13 @@ alembic upgrade head
 python main.py   # server at localhost:8001
 ```
 
-> **Note**: If launching from a Claude Code shell, strip the inherited Anthropic env vars first — see the warning in [CLAUDE.md](../CLAUDE.md).
+> **Note**: If launching from a Claude Code shell, strip the inherited Anthropic env vars first — see the warning in [CLAUDE.md](https://github.com/mediajunkie/piper-morgan-product/blob/main/CLAUDE.md).
 
 ---
 
 ## Where things live
+
+The working corpus lives in [the repository](https://github.com/mediajunkie/piper-morgan-product) — this site serves the visitor-facing documentation; everything below is one click away on GitHub:
 
 | What | Where |
 |---|---|
@@ -105,7 +107,7 @@ python main.py   # server at localhost:8001
 
 ## What's next
 
-**RECONNECT** — the connector refactor — is active now, replacing a patchwork setup with a clean contract (ADR-070). After that: **M4 Trust + Learning**, then **M5 Distribution + Polish**, then **0.9.0 beta** (targeting July 4, 2026).
+Piper Morgan is in invite-only alpha, working toward the **0.9.0 beta** (targeting early September 2026). The release sequence from here: **MVP** (the beta gate — alpha findings that must land before the private beta), then **Production** (required for the public beta), then **Fast Follow**.
 
 Follow the weekly ships at [pipermorgan.ai/shipping-news](https://pipermorgan.ai/shipping-news) to see what's shipping.
 
