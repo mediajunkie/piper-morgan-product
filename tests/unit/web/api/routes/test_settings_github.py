@@ -22,9 +22,59 @@ from web.api.routes.settings_integrations import (
     save_github_token,
 )
 
+# #1604: the endpoint is now caller-scoped (principal-dropped fix) — it takes
+# the authenticated user's claims and consults IntegrationStatusService
+# (binding-first) BEFORE the token-resolution fallback. Direct-call tests pass
+# a claims stub; the legacy system-token cases mock the binding as absent so
+# they exercise the fallback they were written for.
+_STATUS_SVC = (
+    "services.integrations.integration_status_service.IntegrationStatusService"
+)
+
+
+def _claims(sub: str = "11111111-2222-3333-4444-555555555555"):
+    c = MagicMock()
+    c.sub = sub
+    return c
+
+
+def _status_service_mock(configured: bool):
+    inst = MagicMock()
+    inst.get_status = AsyncMock(
+        return_value={"configured": configured, "via": "oauth" if configured else None}
+    )
+    svc = MagicMock(return_value=inst)
+    return svc
+
 
 class TestGetGitHubSettings:
     """Tests for GET /api/v1/settings/integrations/github"""
+
+    @pytest.mark.asyncio
+    async def test_oauth_connected_caller_reads_configured_without_pat(self):
+        """#1604 — PM's exact live state: OAuth-connected, no PAT anywhere.
+
+        The old endpoint checked user_id="system" and answered Not Connected,
+        hiding the default-repo card from the one account state that needed
+        it. Binding-first must answer configured=True, valid=True.
+        """
+        mock_config_service = MagicMock()
+        mock_config_service.get_authentication_token.return_value = None
+
+        with (
+            patch(_STATUS_SVC, new=_status_service_mock(configured=True)),
+            patch(
+                "services.integrations.github.config_service.GitHubConfigService",
+                return_value=mock_config_service,
+            ),
+        ):
+            result = await get_github_settings(current_user=_claims())
+
+        assert result["configured"] is True
+        assert result["valid"] is True
+        # And critically: the caller's id was consulted, never "system".
+        called_with = mock_config_service.get_authentication_token.call_args
+        assert called_with.kwargs.get("user_id") != "system"
 
     @pytest.mark.asyncio
     async def test_returns_not_configured_when_no_token(self):
@@ -32,11 +82,14 @@ class TestGetGitHubSettings:
         mock_config_service = MagicMock()
         mock_config_service.get_authentication_token.return_value = None
 
-        with patch(
-            "services.integrations.github.config_service.GitHubConfigService",
-            return_value=mock_config_service,
+        with (
+            patch(_STATUS_SVC, new=_status_service_mock(configured=False)),
+            patch(
+                "services.integrations.github.config_service.GitHubConfigService",
+                return_value=mock_config_service,
+            ),
         ):
-            result = await get_github_settings()
+            result = await get_github_settings(current_user=_claims())
 
             assert result["configured"] is False
             assert result["valid"] is False
@@ -60,8 +113,9 @@ class TestGetGitHubSettings:
                     return_value={"authenticated": True, "username": "testuser", "error": None}
                 ),
             ),
+            patch(_STATUS_SVC, new=_status_service_mock(configured=True)),
         ):
-            result = await get_github_settings()
+            result = await get_github_settings(current_user=_claims())
 
             assert result["configured"] is True
             assert result["valid"] is True
@@ -89,8 +143,9 @@ class TestGetGitHubSettings:
                     }
                 ),
             ),
+            patch(_STATUS_SVC, new=_status_service_mock(configured=True)),
         ):
-            result = await get_github_settings()
+            result = await get_github_settings(current_user=_claims())
 
             assert result["configured"] is True
             assert result["valid"] is False
