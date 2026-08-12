@@ -6,6 +6,8 @@
 
 **2026-08-11 post-reboot note**: Amber rebooted for macOS 26.6 (Pard's stand-down/post-reboot notices). Parked cron pre-reboot, re-armed post-reboot (`3e79e19a`), verified exactly one job. Mail inbox drained this fire — 2 cc-level memos (PA's mail-parser fix confirmation, PPM's empty-standup exception ruling), neither addressed to arch, no action needed, both read in full and moved to `read/` (not globbed), verified empty at `origin/main`. Standing-items checked: nothing unblocked — remaining open items are either gated on another role's build or explicitly need a dedicated non-fire session. No substantive architectural work this fire; the reboot cycle was the fire's content.
 
+**2026-08-12 09:5x PT START note**: 08-11's last two fires + 08-12's first two queued without a turn (`cohort-freeze-detect.sh` rc=0 — session-specific, not cohort-wide). Retroactive `DAY-CLOSED` written for 08-11. Today's inbox drained: 2 more cc-level memos — **Lead's STOP-condition escalation to PM** (CI red on `main` two days, `test_completion_ratchets.py` two failures over ceiling, `Architecture Enforcement` red since 08-09 15:07; plus a beta blocker — no `is_admin=true` user exists, #1485/#1508's admin-gating turned a dormant gap into a live block on PM saving the Slack token; filed **#1600** and **#1599**, both awaiting PM's word) and **CXO's closed loop with PPM** on the empty-standup exception (already resolved via GH comment on #1591). Neither addressed to arch, nothing owed by me on either — noting Lead's escalation here only for situational awareness (CI/beta-blocker state), not because it's mine to act on. Standing-items unchanged: still 3 open, still nothing unblocked.
+
 ---
 
 ## Environment (verified 2026-07-29, not assumed)
