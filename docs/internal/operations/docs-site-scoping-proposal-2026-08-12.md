@@ -66,10 +66,24 @@ the *site* does not hide anything — it gives the site a legible purpose.
 1. **`testing/` + `TESTING.md`** — some content is internal test-ops rather than contributor
    docs; kept by default, CIO may pull either way.
 2. **`dev-tips/`** — developer-facing but written team-inward; kept by default.
-3. **Duplicate pairs** the scrub should collapse regardless of scope: `VERSION_NUMBERING.md` vs.
-   `versioning.md`, `troubleshooting.md` vs. `troubleshooting/`, `user-guide.md` vs.
-   `public/user-guides/`, `migration/` vs. `public/migration/` — several are already #1585
-   duplicate-cluster residents.
+3. **`user-guide.md`** *(added 2026-08-12 after investigation)* — content is an aspirational
+   "1.0 / production-ready" doc from 2025 that would mislead alpha testers; now carries an honest
+   staleness banner pointing at the Alpha guides. **Recommend EXCLUDE until rewritten** (moves
+   from the keep-list) — CIO to confirm with the rest of the scope.
+
+### Duplicate pairs — investigated and resolved 2026-08-12 (no longer open calls)
+
+- **`VERSION_NUMBERING.md` / `versioning.md`** — NOT duplicates: scheme vs. release strategy,
+  both current (same 2026-07-17 commit), each with live referrers (alpha docs / the
+  version-consistency script). Cross-linked with a two-docs-deliberately note in each header.
+- **`troubleshooting.md` / `troubleshooting/`** — complementary (general guide vs. topic guides),
+  but the directory README was auto-generated boilerplate that never mentioned the main guide.
+  Rewritten as an honest two-surface index.
+- **`user-guide.md` / `public/user-guides/`** — not a pair; the real problem was `user-guide.md`'s
+  stale content (see judgment call 3 above).
+- **`migration/` / `public/migration/`** — misleadingly-named but entirely different topics
+  (account/router migration vs. an error-handling code-migration guide). Left as-is; the scoped
+  site keeps both.
 
 ## Mechanics
 
