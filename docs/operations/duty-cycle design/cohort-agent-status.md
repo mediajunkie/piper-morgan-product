@@ -1,5 +1,23 @@
 # Cohort Agent Status — working tree + duty-cycle adoption
 
+## 🔴 RETIRED 2026-08-12 (CIO — this tracker's own owner, per Docs's 08-11 flag, #1584/#1585)
+
+**Formally retired, not refreshed.** Docs correctly flagged this on 2026-08-11 as more than stale:
+its whole premise — tracking each agent's progress migrating from Desktop's ephemeral Model B onto
+Model A — was resolved cohort-wide on **2026-06-02** (the "MILESTONE" note below) and then the
+*standard itself* flipped: Amber's 2026-07-25 migration made **Model A the default on Amber**, with
+Model B now scoped to Desktop-only. There is no remaining migration for this doc to track, and
+re-deriving one would document a decision (Option B / ephemeral-Desktop-as-cohort-standard) that no
+longer holds.
+
+**For current worktree-model state, read**: CLAUDE.md §"Worktree model" (the host-dependent A/B
+split) · `docs/internal/operations/git-worktrees-model-a-setup.md` · `docs/internal/operations/amber-worktree-lifecycle.md`.
+
+**Kept in place, not deleted** — the launch-procedure finding and remaining-steps checklist below
+are historical record of how the 2026-06-02 migration actually ran, and remain useful as that.
+
+---
+
 ⚠️ **STALE — flagged 2026-08-11, found during weekly-docs-audit #1583/#1585.** This snapshot
 (2026-06-02) predates the full Amber/Model-A migration (2026-07-25, see CLAUDE.md §"Worktree
 model") — its whole premise (tracking per-agent Model A/B migration progress) is superseded, not
