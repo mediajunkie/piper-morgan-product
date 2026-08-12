@@ -79,7 +79,7 @@ def is_first_exchange(session_id: Optional[str], user_id: Optional[str] = None) 
         if any(getattr(t, "response", None) is not None for t in turns):
             return False
         return len(turns) <= 1  # at most the in-flight turn (#1122)
-    except Exception as e:
+    except Exception as e:  # silent-ok: newness probe only gates a demo; a broken probe must never break the greeting, and False = no-demo (safe default, #1536)
         logger.warning("first_contact_newness_check_error", error=str(e))
         return False
 
@@ -93,6 +93,8 @@ def _humanize_recency(updated_at: Optional[str]) -> str:
         # GitHub returns Zulu time; fromisoformat needs +00:00 (#1573 pattern:
         # ensure_utc guards naive-vs-aware comparisons).
         parsed = ensure_utc(datetime.fromisoformat(str(updated_at).replace("Z", "+00:00")))
+        if parsed is None:  # ensure_utc is None-in-None-out; fromisoformat never returns None, narrowed for mypy
+            return f"updated {str(updated_at)[:10]}"
         days = (utc_now() - parsed).days
         if days <= 0:
             return "updated today"
@@ -101,7 +103,7 @@ def _humanize_recency(updated_at: Optional[str]) -> str:
         if days < 14:
             return f"updated {days} days ago"
         return f"updated {parsed.strftime('%B %d')}"
-    except Exception:
+    except Exception:  # silent-ok: pure display formatting; fallback renders the raw date rather than losing the row
         return f"updated {str(updated_at)[:10]}"
 
 
@@ -136,7 +138,7 @@ async def gather_first_contact_demo(
             # gate above already covers them; each needs only its own
             # _compute + renderer lines.
             return {}
-    except Exception as e:
+    except Exception as e:  # silent-ok: integration-status probe failure -> skip the demo ({}); the demo is an enhancement, never a gate on the turn
         logger.warning("first_contact_status_check_error", error=str(e))
         return {}
 
@@ -151,7 +153,7 @@ async def gather_first_contact_demo(
             ttl_seconds=_TTL_FIRST_CONTACT,
             compute_fn=lambda: _compute_first_contact_github(user_id),
         )
-    except Exception as e:
+    except Exception as e:  # silent-ok: cache/gather failure -> skip the demo ({}); logged, and the floor makes no claim about it (#1536 AC3)
         logger.warning("first_contact_gather_error", error=str(e))
         return {}
 
@@ -189,7 +191,7 @@ async def _compute_first_contact_github(user_id: str) -> Optional[Dict[str, Any]
         # and crucially no "which repo?" question injected ahead of data.
         logger.info("first_contact_no_repo_resolved", user_id=user_id)
         return None
-    except Exception as e:
+    except Exception as e:  # silent-ok: honest degrade — source_failed renders as "couldn't check", never fake-empty (#1425)
         logger.warning("first_contact_repo_resolve_error", error=str(e))
         return {"source_failed": True}
 
@@ -206,7 +208,7 @@ async def _compute_first_contact_github(user_id: str) -> Optional[Dict[str, Any]
             )
         finally:
             await router.close()  # #1279: release the per-call aiohttp session
-    except Exception as e:
+    except Exception as e:  # silent-ok: honest degrade — source_failed renders as "couldn't check", never fake-empty (#1425)
         logger.warning("first_contact_github_read_error", error=str(e))
         return {"source_failed": True}
 

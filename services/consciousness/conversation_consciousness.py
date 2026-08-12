@@ -341,7 +341,7 @@ def _format_free_block(
             from zoneinfo import ZoneInfo
 
             tz = ZoneInfo(user_timezone)
-        except Exception:
+        except Exception:  # silent-ok: invalid/unknown tz string -> tz=None -> no local clock face is rendered (never a wrong one, #1589); per-turn logging would be noise for a stored bad value
             tz = None
 
     for block in free_blocks[:2]:

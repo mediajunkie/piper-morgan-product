@@ -317,7 +317,7 @@ def capability_manifest_block() -> str:
 
 # Exposed for the #1517 prompt-content tests: the static prose must stay free
 # of hand-written capability names (the derived list is the only carrier).
-capability_manifest_block.__wrapped_static__ = _CAPABILITY_MANIFEST_STATIC
+setattr(capability_manifest_block, "__wrapped_static__", _CAPABILITY_MANIFEST_STATIC)
 
 
 # ---- Data Classes ----
@@ -557,7 +557,7 @@ class ConversationalFloor:
         if not ctx.denial_mode:
             try:
                 manifest = f"\n\n{capability_manifest_block()}"
-            except Exception as e:
+            except Exception as e:  # silent-ok: manifest failure must never take down the floor; logged loudly because a silent absence would recreate the deny-wired-capabilities gap (#1517)
                 logger.warning("floor_capability_manifest_error", error=str(e))
 
         return f"{base}\n\n{addendum}{manifest}{warmth}"

@@ -78,6 +78,15 @@ class TestProvenanceRoundtrip:
                     "blocked_items": [{"number": 1089, "title": "Sample"}],
                 }
             ),
+        ), patch.object(
+            assembler,
+            # #1566 made due-reminders ride EVERY category gather — added after
+            # this test was written, so real dev-DB reminder rows leaked a 3rd
+            # provenance key into a test that believed it had mocked its whole
+            # context. Mock it too: this test's subject is the provenance
+            # roundtrip, not the reminder rider.
+            "_gather_reminder_context",
+            AsyncMock(return_value={}),
         ):
             domain_context = await assembler.gather_context(
                 intent_category="STATUS",
