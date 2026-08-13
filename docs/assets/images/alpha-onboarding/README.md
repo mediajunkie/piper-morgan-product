@@ -1,5 +1,10 @@
 # Alpha Onboarding Screenshots
 
+> ⚠️ **The five screenshots below were never actually added to the repo** (verified 2026-08-13:
+> no files present, no deletion in git history — this README described an intended state, not an
+> actual one). Their embeds in ALPHA_TESTING_GUIDE.md are commented out until someone with a
+> running setup wizard captures them per the instructions below.
+
 This directory contains screenshots for the Alpha testing documentation.
 
 ## Screenshots

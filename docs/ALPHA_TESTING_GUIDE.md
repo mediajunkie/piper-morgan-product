@@ -372,13 +372,13 @@ The GUI setup wizard provides a visual, step-by-step interface for configuration
 
 ### Step 1: Welcome Screen
 
-![Setup Wizard - Welcome](assets/images/alpha-onboarding/setup-wizard-welcome.png)
+<!-- screenshot pending capture (file was never added to the repo — found 2026-08-13): ![Setup Wizard - Welcome](assets/images/alpha-onboarding/setup-wizard-welcome.png) -->
 
 The welcome screen introduces the setup process and explains what will be configured. Click "Get Started" to begin.
 
 ### Step 2: System Health Check
 
-![Setup Wizard - Health Check](assets/images/alpha-onboarding/setup-wizard-health-check.png)
+<!-- screenshot pending capture (file was never added to the repo — found 2026-08-13): ![Setup Wizard - Health Check](assets/images/alpha-onboarding/setup-wizard-health-check.png) -->
 
 Automatic validation of your system:
 - ✓ Docker installed and running
@@ -390,7 +390,7 @@ If any checks fail, the wizard provides specific guidance on how to fix them.
 
 ### Step 3: API Key Configuration
 
-![Setup Wizard - API Keys](assets/images/alpha-onboarding/setup-wizard-api-keys.png)
+<!-- screenshot pending capture (file was never added to the repo — found 2026-08-13): ![Setup Wizard - API Keys](assets/images/alpha-onboarding/setup-wizard-api-keys.png) -->
 
 Configure your LLM API keys through a web form interface. This is **much easier** than the command-line method - you can see what you're typing, correct mistakes easily, and get immediate validation feedback.
 
@@ -403,7 +403,7 @@ You can configure one, two, or all three providers. At least one is required.
 
 ### Step 4: User Account Creation
 
-![Setup Wizard - User Creation](assets/images/alpha-onboarding/setup-wizard-user-creation.png)
+<!-- screenshot pending capture (file was never added to the repo — found 2026-08-13): ![Setup Wizard - User Creation](assets/images/alpha-onboarding/setup-wizard-user-creation.png) -->
 
 Create your admin account:
 - Username (alphanumeric, unique)
@@ -415,7 +415,7 @@ The form provides real-time feedback on password strength and format requirement
 
 ### Step 5: Setup Complete
 
-![Setup Wizard - Success](assets/images/alpha-onboarding/setup-wizard-success.png)
+<!-- screenshot pending capture (file was never added to the repo — found 2026-08-13): ![Setup Wizard - Success](assets/images/alpha-onboarding/setup-wizard-success.png) -->
 
 Setup confirmation screen with:
 - Summary of what was configured
