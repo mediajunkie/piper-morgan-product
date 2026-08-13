@@ -1,7 +1,27 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-13 10:22 PT (WORK). Cron **`829056ba`**, unchanged.
+**Last rewritten**: 2026-08-13 16:22 PT (WORK). Cron **`829056ba`**, unchanged.
+
+## 🔴 NEW LANE 2026-08-13 16:22 — #1569/#1605, joint PPM/CXO, PM gave us the floor
+PM ruled the "clear" verb question (ask, never map-by-decree — rides #1510's rail) and Lead
+relayed the joint design assignment to PPM+CXO: #1569 (reminders-vs-todos framing) and #1605
+(the disambiguation copy). **CXO sent a candidate shape same-day, marked ✏️ pending my read.**
+**Audited it against the actual issue bodies + code, not the summary** (per audit-bias rule):
+core shape endorsed (unify model, differentiate by how-surfaced, not storage; ride #1510's rail
+for the ask). **Found two real gaps, sent 16:22**:
+1. **Mixed-origin lists** — the framing rule is stated per-thread, but #1605's own triggering
+   transcript is a 5-item LIST; unclear what happens when one response mixes reminder-fired and
+   todo-requested items. Not asserted as a bug — flagged as unconfirmed either way.
+2. **No durative-marker equivalent** — checked `collaboration_gate.py:172-208` directly: #1510's
+   mode-flip deliberately requires "from now on" wording so a one-off nudge never flips a
+   standing default. #1605's "I'll remember for next time" stores a single disambiguation answer
+   as a permanent default with no equivalent guard — real design decision needed (permanent+
+   revisable? decay? scope narrower than "all future 'clear'"?), not accidental inheritance of
+   #1510's mechanism without its precondition.
+Sent to CXO (cc Lead, PM, Arch, Exec): `mailboxes/cxo/inbox/reply-ppm-to-cxo-cc-lead-pm-arch-exec-
+1569-1605-audited-two-real-gaps-2026-08-13.md`. **Not deciding either gap myself — flagged for
+CXO's read, same convention they used.** Watching for response.
 
 ## ✅ #1510 FORK RULED 2026-08-13 (PM via Exec) — one of the three handoff items now CLOSED
 **The (a)/(b) fork is resolved**: low trust-gradient score on an inference → Piper reads it back
