@@ -121,7 +121,7 @@ class TestSearchHandlerThreadsPrincipal:
             result = await svc._handle_search_documents_notion(
                 _search_intent(), "wf-1", "sess-1"
             )
-        assert "Settings → Notion" in result.message
+        assert "Settings → Integrations → Notion" in result.message  # 1604: the REAL route (the old string pinned a path that never existed)
         gate.assert_called_once_with("694d8f4e-0000-0000-0000-000000000042")
 
     @pytest.mark.asyncio
