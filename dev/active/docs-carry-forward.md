@@ -9,10 +9,9 @@
 **Done**: batch 1 ALPHA_* (feature-guide bannered + PA refresh-offer mailed; phantom screenshots
 found-and-commented; rest clean) · batch 2 guides/+getting-started (2 fixes, 3 false positives
 checked, legacy-* archives → site-excluded, flag-not-silent).
-**🔵 In flight**: ALPHA_FEATURE_GUIDE v0.8.11 draft (PA said YES to the split 08-13 am) —
-subagent producing the sourced draft to `dev/active/draft-alpha-feature-guide-v0.8.11-for-pa-review.md`;
-on completion, hand to PA for claim-by-claim live-alpha verification. Live guide stays bannered
-until PA attests. Also awaiting: Lead's attestation on #1611 (8081 two-process — live path or
+**⏳ Awaiting PA**: feature-guide draft DELIVERED (`b5a51df04`, 85 tagged claims, 11-item
+check-list, handoff memo `c58844715`) — PA verifies claim-by-claim against the live alpha, then I
+fold verdicts, strip tags, ship with PA's attestation named. Live guide stays bannered meanwhile. Also awaiting: Lead's attestation on #1611 (8081 two-process — live path or
 fossil; evidence posted); PM's address for #1610 (legal placeholder ×3 files, next rollup).
 **Remaining batches**: installation/ + setup/ + troubleshooting/ · features/ + integrations/ +
 configuration/ · api/ + public/api-reference/ + dev-tips/ · testing/ (CIO's file-level-discretion
