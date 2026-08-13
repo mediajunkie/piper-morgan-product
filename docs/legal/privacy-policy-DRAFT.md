@@ -73,8 +73,11 @@ session. This derivation is **rule-based, not model-inferred**.
 ## Who your data is shared with (sub-processors)
 
 **Large language model providers.** To generate responses, your conversation content and relevant
-context are sent to a third-party model provider. Depending on configuration, this may be
-**Anthropic, OpenAI, or Google**. Their handling of that data is governed by their own terms.
+context are sent to **Anthropic**. The application code also supports OpenAI and Google as providers,
+but neither is provisioned with production credentials today, so neither receives your data at this
+time — this list will be updated if that changes. If you supply your own Anthropic API key (bring-your-
+own-chat), that key is used in place of ours, but the provider is still Anthropic. Their handling of
+that data is governed by their own terms.
 
 **Hosting and infrastructure.** The service runs on **Fly.io**, with data stored in PostgreSQL, Redis,
 and a vector database used for search and retrieval.
@@ -82,8 +85,13 @@ and a vector database used for search and retrieval.
 **Services you explicitly connect.** Data flows to and from GitHub, Notion, Slack, and Google Calendar
 only for accounts you have connected and only as needed for the actions you request.
 
-🔍 *Confirm this list is complete and name the specific provider(s) actually in production before
-publishing — an incomplete sub-processor list is a compliance exposure, not just an omission.*
+✅ **RESOLVED 2026-08-13.** Verified against the code, not configuration intent: `services/llm/
+clients.py` and `fly.toml`'s production secrets list show only `ANTHROPIC_API_KEY` is set server-side;
+OpenAI and Gemini clients exist in code but are never instantiated in production (no key configured),
+and the fallback order (`clients.py:46`) only reaches a provider with both a configured client and
+user consent. The BYOC path (#1162, `services/llm/request_key.py`) is Anthropic-only — no equivalent
+exists for OpenAI or Gemini. This section now states that accurately rather than the prior three-way
+hedge.
 
 ## Credentials and access tokens
 
@@ -148,8 +156,17 @@ That is exactly the *"converts a gap into a misrepresentation"* risk this draft 
 have shipped it as a question to PM rather than an answer, which would have put the burden of a code
 audit on the person least placed to do it.
 
-🔍 **Retention.** *No retention policy was found in the code. Either state the real practice ("retained
-until you delete your account") or define one. Do not state a period we don't enforce.*
+🔍 **Retention — ground truth confirmed 2026-08-13, policy still to be drafted.** No retention or
+expiry logic exists anywhere in the code for conversation or message data — verified across
+`services/database/`, `services/domain/`, and the product's own background-job scheduler
+(`services/scheduler/`, plain asyncio). The **only** automated data-cleanup job in the product is
+`EthicsAuditCleanupJob` (`web/startup.py:451-452`, `retention_days=90`), and it purges just the
+`ethics_audit_log` table — decision metadata, not conversations. Combined with the soft-delete-only
+finding above and the absence of any account-deletion path: **today, conversation and message data is
+retained indefinitely, with no automatic expiry and no way for a user to fully remove it themselves.**
+A real retention policy still needs to be drafted — PM-directed, not code-derived, since it's a values
+call about what the practice *should* be, not just a description of what exists. Do not state a period
+we don't enforce.
 
 ## Alpha and beta software
 
@@ -177,7 +194,7 @@ We will update this page when practices change, and revise the "Last updated" da
 
 ## Contact
 
-Questions, deletion requests, or privacy concerns: **[CONTACT EMAIL — PM to supply]**
+Questions, deletion requests, or privacy concerns: **privacy@pipermorgan.ai**
 
 ---
 
