@@ -22,8 +22,10 @@ fossil; evidence posted); PM's address for #1610 (legal placeholder ×3 files, n
 configuration/ · api/ + public/api-reference/ + dev-tips/ · testing/ (CIO's file-level-discretion
 applies) + releases/ + misc top-level files.
 **Publish**: "Alpha Launches" LIVE 08-13 (live-content-verified); syndication URLs whenever PM
-cross-posts. **website#31**: PM decided (via Exec) — subagent executing regex fix + back-catalog
-regen (Metrics retrofit deliberately excluded from regen); template Metrics convention updated.
+cross-posts. **website#31**: ✅ EXECUTED + CLOSED same day (regex fixed w/ control tests, 15 entries
+fixed — 2 by surgery after catching draft↔live divergence on #043/#047; independently
+re-verified; template convention updated; evidence to Exec). Watch item: draft↔live divergence
+class at 2 instances — third instance ⇒ propose a write-back mechanism.
 **PM click-through**: PM taking it (confirmed in chat) — fold results into draft on arrival.
 **Comms**: tiers 1-6 done, continuing api/+api-reference; their installation steps-9-10 gap needs
 whoever next does a live install. **Omnibus 08-12**: ✅ DONE (137 lines, HC:COORDINATION, `8373746de`+`3786e5dd8`, spot-verified). Omnibus chain now continuous through 08-12.
