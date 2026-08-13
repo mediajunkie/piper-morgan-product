@@ -526,7 +526,7 @@ curl -X POST http://localhost:8001/api/v1/learning/feedback \
 
 ---
 
-## Feedback for PM
+## Your Feedback
 
 **What We Need to Know:**
 

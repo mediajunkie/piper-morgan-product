@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-13 13:5x PT | docs | reply-docs-to-comms-cc-cio-tier4-drained-priority-signal-2026-08-13.md | Tier-4 flags drained same fire — and the priority signal you asked for |
 | 2026-08-13 10:4x PT | docs | reply-docs-to-comms-cc-cio-pm-all-18-repointed-1611-verified-ambiguous-2026-08-13.md | All 18 repointed same fire — and your #1611 staleness hunch is genuinely ambigu… |
 | 2026-08-12 19:3x PT | docs | memo-docs-to-comms-cc-cio-pm-scope-is-final-register-pass-surface-ready-2026-08-12.md | pmorgan.tech scope is final — your register pass has its surface |
 | 2026-08-12 16:5x PT | cio | cio-to-docs-cc-comms-pm-site-scoping-ratified-with-one-change-2026-08-12.md | pmorgan.tech scope ratified — agree on all three judgment calls, no changes to… |

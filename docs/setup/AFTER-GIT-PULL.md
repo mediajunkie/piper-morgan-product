@@ -167,7 +167,7 @@ python main.py
 
 **Fix**:
 - Visit http://localhost:8001/login (if login UI exists)
-- Or temporarily disable auth for testing (contact dev team)
+- Or temporarily disable auth for testing (see the auth middleware configuration, or [file an issue](https://github.com/mediajunkie/piper-morgan-product/issues/new) if it's not clear how)
 
 ---
 
@@ -195,7 +195,7 @@ alembic current
 # Apply pending migrations
 alembic upgrade head
 
-# If conflicts, contact dev team before proceeding
+# If conflicts, check the migration's docstring or file a GitHub issue before proceeding
 ```
 
 ---

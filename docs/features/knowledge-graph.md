@@ -122,7 +122,7 @@ Response: "I need more information about which website project..."
 ```
 User: "What's the status of the website project?"
 Context Enhanced With:
-  - Project: pmorgan.tech Website MVP (SITE-001)
+  - Project: pmorgan.tech Website Initial Launch (SITE-001)
   - Status: in_progress, 3 of 5 phases complete
   - Focus: technical foundation, design system
   - Blockers: ConvertKit integration, Medium RSS feeds

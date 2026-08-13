@@ -35,12 +35,40 @@ meta-instruction, caught before any surface and persisted per-user to the
 **collaborate-first gate at the top of `_handle_create_issue`** — compose-phrased
 requests ("help me write a ticket about X", the Jake shape) always draft-and-ask,
 explicit imperatives always execute, and AMBIGUOUS framing is decided by the declared
-mode (collaborate unless the user established execute). The gate is action-effect
-keyed via a local mapping (TODO(#1510): `WorkflowEntry.effect` once the enum lands)
-and currently wired for the create-issue family only. Background: the classifier
+mode (collaborate unless the user established execute). Background: the classifier
 prompt has NO compose-side action name for issue writes, so compose and execute
 phrasings collapse into `create_ticket`/`create_issue` at surface 2 — the classifier
 half is corpus material (routing moratorium); the gate is the action-layer half.
+
+**#1509 unified consent gate (2026-08-13)** — `services/intent_service/consent_gate.py`
+generalizes #1190 + #1510 into ONE decision (`decide_consent(effect, framing, mode)`;
+the named boundary condition lives in that module's docstring, per #1509 AC-1). At the
+surface-3 dispatch branch, every `needs_consent` entry (declared `effect >= WRITE`,
+the Arch derivation) is evaluated BEFORE dispatch: **DESTRUCTIVE → CONFIRM** in every
+cell (the #1190 yes/no gate, behavior unchanged — the verdict just has one home);
+**WRITE + compose framing → COLLABORATE**; **WRITE + explicit imperative → PROCEED**
+(the imperative IS the consent); **WRITE + ambiguous → the declared working mode
+decides**; **READ → PROCEED always**. A held WRITE turn renders one of two copy
+surfaces (copy selection, not a second gate): the create family falls through to
+`_handle_create_issue`'s #1510 draft-collaboration copy (its `gate_holds` now
+DELEGATES to the same `decide_consent`, with effect looked up from the registry — the
+swap the old `GATED_WRITE_ACTIONS` comment tracked; the set survives as
+`DRAFT_COLLABORATION_ACTIONS`, copy-surface selection only); every other held WRITE
+action gets the generic consent check — a #1190-carrier pending offer
+(`confirm_pending_action`, "kind": "consent_check") whose "yes" re-dispatches the
+ORIGINAL intent, "no"/bare-exit cancels honestly, off-intent abandons via the pop.
+The check copy states the action + its declared effect tier
+(`capability_legibility.describe_effect`, registry-derived) — the gate's own prompt is
+a capability-legibility surface (`capability_legibility.py` holds the full derivation
+chain: registry effect → `decide_consent` → behavior lines; `chat_pointers` POINTER
+rows → example asks; `capability_catalog()` is the #1462 tool-description seam).
+Framing generalized in the same commit: the anchored execute-imperative check runs
+FIRST and carries the update/comment/reminder/preference verb families, so every
+deterministic-surface phrasing (#1411/B3/#1560/#1327) stays an un-checked imperative.
+⚠️ Known boundary: legacy `_handle_execution_intent` chain actions (todo family) have
+no declared effect and are OUTSIDE this gate — their consent rides their rail
+migration (#1605/#1569 lane); `capability_legibility.catalog_coverage()` states the
+denominator.
 
 ## The vocabularies (where action names live)
 

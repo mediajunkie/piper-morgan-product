@@ -70,14 +70,16 @@ FRAMING_EXECUTE = "execute"
 FRAMING_AMBIGUOUS = "ambiguous"
 
 
-# #1510 tracks replacing this with WorkflowEntry.effect (the EffectClass
-# enum LANDED via #1557; the derivation swap awaits #1510's declared-vs-
-# inferred fork and #1190 coordination — both recorded on those issues).
-# Deliberately covers ONLY the create-issue family — the wired gate site for
-# the #1510 ungated half. Extending to close/reopen/comment awaits both the
-# effect enum and coordination with #1190 (destructive-mutation confirmation),
-# whose confirmation-turn design owns those verbs.
-GATED_WRITE_ACTIONS = frozenset(
+# #1509 (2026-08-13): the tracked derivation swap LANDED — gate membership is
+# now DERIVED from the declared WorkflowEntry.effect via the unified consent
+# decision (services/intent_service/consent_gate.py; boundary condition named
+# there). This set's remaining role is COPY-SURFACE SELECTION ONLY: actions
+# whose consent check renders as the rich draft-collaboration turn below
+# (slot-filled subject, shape-the-body invitation) instead of the generic
+# yes/no consent check. It decides HOW a held turn reads, never WHETHER a
+# turn is held — adding an action here does not gate it, and removing one
+# does not ungate it.
+DRAFT_COLLABORATION_ACTIONS = frozenset(
     {
         "create_issue",
         "create_github_issue",
@@ -87,6 +89,17 @@ GATED_WRITE_ACTIONS = frozenset(
         "new_github_issue",
     }
 )
+
+# Back-compat alias (pre-#1509 name). The semantics changed with the rename —
+# see the comment above — so new code should use DRAFT_COLLABORATION_ACTIONS.
+GATED_WRITE_ACTIONS = DRAFT_COLLABORATION_ACTIONS
+
+
+def is_draft_collaboration_action(action: Optional[str]) -> bool:
+    """Does a held consent turn for this action render as the draft
+    collaboration (this module's copy) rather than the generic check
+    (consent_gate's)? Copy-surface selection only — never gate membership."""
+    return action in DRAFT_COLLABORATION_ACTIONS
 
 
 # ---------------------------------------------------------------------------
@@ -110,12 +123,21 @@ _COMPOSE_RE = re.compile(
 
 # Execute markers: an explicit imperative aimed at the write itself, allowing
 # politeness/address prefixes ("please…", "hey piper, …", "can you…").
+# #1509 verb generalization: the gate now covers EVERY WRITE-effect rail
+# action (update/comment/reminder/preference families, not just creates), so
+# the imperative verb list carries those families' verb-initial shapes —
+# "change the title of issue #108 to X" and "remind me at 3pm to Y" are
+# explicit imperatives and must read EXECUTE, or the generalized gate would
+# confiscate imperatives (the thing #1510 promised it never does).
+# "draft"/"write" stay OUT: drafting is compose by definition (#1510).
 _EXECUTE_RE = re.compile(
     r"^\s*"
     r"(?:(?:please|hey|hi|ok(?:ay)?|piper)[,!\s]+)*"
     r"(?:go\s+ahead\s+and\s+)?"
     r"(?:(?:can|could|would|will)\s+you\s+(?:please\s+)?)?"
-    r"(?:create|file|open|make|add|submit|log)\b",
+    r"(?:create|file|open|make|add|submit|log"
+    r"|update|change|set|edit|modify|rename"
+    r"|comment|reply|post|remind|use|append|assign|schedule|mark|move)\b",
     re.IGNORECASE,
 )
 
@@ -123,17 +145,23 @@ _EXECUTE_RE = re.compile(
 def classify_framing(message: Optional[str]) -> str:
     """Deterministic compose/execute/ambiguous read of a request's phrasing.
 
-    Compose markers are checked first so "help me create a ticket…" reads as
-    compose, not execute. Anything with neither marker is AMBIGUOUS — and
-    ambiguity is exactly what the declared mode (default: collaborate) decides.
+    The ANCHORED execute check runs first (#1509 ordering fix): it only
+    matches an imperative verb at the head of the message (politeness
+    prefixes allowed), so a verb-initial imperative that merely MENTIONS a
+    compose word later ("add the draft notes to the meeting doc") reads as
+    the imperative it is. Compose-phrased asks are untouched by the ordering:
+    "help me create…", "let's write…", and bare "draft…" all fail the
+    anchored execute match and land on their compose markers exactly as
+    before. Anything with neither marker is AMBIGUOUS — and ambiguity is
+    exactly what the declared mode (default: collaborate) decides.
     """
     text = (message or "").strip()
     if not text:
         return FRAMING_AMBIGUOUS
-    if _COMPOSE_RE.search(text):
-        return FRAMING_COMPOSE
     if _EXECUTE_RE.search(text):
         return FRAMING_EXECUTE
+    if _COMPOSE_RE.search(text):
+        return FRAMING_COMPOSE
     return FRAMING_AMBIGUOUS
 
 
@@ -274,24 +302,30 @@ async def set_working_mode(user_id: Optional[str], mode: WorkingMode) -> bool:
 async def gate_holds(action: Optional[str], message: Optional[str], user_id: Optional[str]) -> bool:
     """True → collaborate (draft + ask) instead of executing this action.
 
-    Semantics (#1510, collaborate-first):
-    - Non-gated actions never hold (this gate covers external writes only).
-    - COMPOSE framing always holds — an explicit ask for drafting help is
-      collaboration by definition, whatever the declared mode.
-    - EXECUTE framing never holds — explicit imperatives keep working; the
+    #1509: now a DELEGATION to the unified consent decision
+    (``consent_gate.decide_consent`` — one function for all three gate
+    paths; the boundary condition is named there, not here). The #1510
+    semantics are unchanged as a projection of that matrix:
+    - Non-write actions never hold (effect < WRITE → PROCEED).
+    - COMPOSE framing always holds; EXECUTE framing never holds — the
       default confiscates ambiguity, not imperatives.
-    - AMBIGUOUS framing is decided by the declared mode: collaborate-first
-      unless the user has established EXECUTE ("just do things directly from
-      now on"). Mode-tied, not per-verb.
+    - AMBIGUOUS framing is decided by the declared mode. Mode-tied,
+      not per-verb: membership is the DECLARED WorkflowEntry.effect (the
+      derivation swap the old GATED_WRITE_ACTIONS comment tracked).
+    - DESTRUCTIVE actions never hold HERE (decide_consent → CONFIRM): the
+      #1190 confirmation gate at the rail owns them.
     """
-    if action not in GATED_WRITE_ACTIONS:
+    from services.intent_service.consent_gate import (
+        ConsentDecision,
+        effect_for_action,
+        evaluate_consent,
+    )
+    from services.shared_types import EffectClass
+
+    effect = effect_for_action(action)
+    if effect is None or effect < EffectClass.WRITE:
         return False
-    framing = classify_framing(message)
-    if framing == FRAMING_COMPOSE:
-        return True
-    if framing == FRAMING_EXECUTE:
-        return False
-    return (await get_working_mode(user_id)) is not WorkingMode.EXECUTE
+    return (await evaluate_consent(effect, message, user_id)) is ConsentDecision.COLLABORATE
 
 
 # ---------------------------------------------------------------------------
