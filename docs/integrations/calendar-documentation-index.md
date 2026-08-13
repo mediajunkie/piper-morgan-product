@@ -12,7 +12,7 @@
 
 ### Architecture Decisions
 **File**: [`docs/internal/architecture/current/adrs/adr-038-spatial-intelligence-patterns.md`](../internal/architecture/current/adrs/adr-038-spatial-intelligence-patterns.md)
-**Purpose**: Delegated MCP Pattern documentation
+**Purpose**: Delegated Model Context Protocol (MCP) Pattern documentation
 
 ### Configuration Guide
 **File**: [`docs/configuration/calendar-setup.md`](../configuration/calendar-setup.md)

@@ -1,7 +1,7 @@
 # Calendar Integration Guide
 
 ## Overview
-Complete guide for Calendar integration using the Delegated MCP Pattern with Google Calendar API.
+Complete guide for Calendar integration using the Delegated Model Context Protocol (MCP) Pattern with Google Calendar API.
 
 ## Architecture
 The Calendar integration uses a **Delegated MCP Pattern** where:
@@ -43,5 +43,5 @@ See [Calendar Tests Documentation](../testing/calendar-tests.md) for comprehensi
 See [Calendar Troubleshooting Guide](../troubleshooting/calendar-issues.md) for common issues.
 
 ## Related Documentation
-- [ADR-038: Spatial Intelligence Patterns](../internal/architecture/current/adrs/adr-038-spatial-intelligence-patterns.md)
+- [Architecture Decision Record (ADR) 038: Spatial Intelligence Patterns](../internal/architecture/current/adrs/adr-038-spatial-intelligence-patterns.md)
 - MCP Integration Guide *(proposed; doc TBD)*
