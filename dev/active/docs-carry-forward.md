@@ -1,8 +1,13 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-12 07:33 PDT (Fire 1 of the day)
-**Session log**: `dev/2026/08/12/2026-08-12-0733-docs-code-log.md` (today, open). 08-11's log
-(`dev/2026/08/11/2026-08-11-0645-docs-code-log.md`) now carries `DAY-CLOSED`.
+**Updated**: 2026-08-12 22:3x PDT (STOP fire — DAY-CLOSED 2026-08-12)
+**Session log**: `dev/2026/08/12/2026-08-12-0733-docs-code-log.md` (closed; 6 fires + 2
+PM-engaged blocks — the docs-site scoping day). Sign-off checklist clean.
+**Tomorrow's first-fire orientation**: the docs-site curation is LIVE and verified — remaining
+scrub is the per-surface staleness+link pass on the kept ~160 pages (batched, my pace) in
+parallel with Comms's register pass (they start `dev-tips/` first, fresh session). Cron
+`e47bd40c` deliberately not rotated at STOP (thin prompt = no state to refresh; expires ~08-18,
+rotate before then).
 
 **Worktrees**: product `~/Development/piper-morgan-worktrees/docs` @ `claude/docs-cycle` · website
 `~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
