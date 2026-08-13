@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'alpha-launches-before-opening.png'
+alt: 'A translucent theater company rehearses and repairs the real stage while a human founder holds the curtain and invited audience members wait outside the closed doors.'
+caption: '"I think we''re ready!"'
 ---
 
 # Alpha Launches
