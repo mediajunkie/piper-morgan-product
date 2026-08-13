@@ -1046,6 +1046,19 @@ class IntentService:
                         from services.intent_service import verified_inference as _vi
 
                         _vi.mark_declined(session_id, _vi_payload.get("inference_key"))
+                    # #1591: a declined standup-interview invitation is not
+                    # re-asked this session (CXO: cheap to decline; the rail's
+                    # session decline memory is the one anti-nag mechanism —
+                    # build_interview_invitation consults it before re-arming).
+                    # Declining changes NOTHING else: no store write, and the
+                    # next report renders identically.
+                    elif _vi_payload.get("kind") == "standup_interview_invitation":
+                        from services.intent_service import verified_inference as _vi
+                        from services.intent_service.standup_preferences import (
+                            INVITE_DECLINE_KEY,
+                        )
+
+                        _vi.mark_declined(session_id, INVITE_DECLINE_KEY)
                     decline_msg = pending_offer.get(
                         "decline_message",
                         "No worries, just let me know if you change your mind.",
@@ -1072,11 +1085,19 @@ class IntentService:
                     # #1510: off-intent on a verification read-back abandons
                     # it the same way (the pop discarded it; nothing stored)
                     # — logged under its own name for honest observability.
+                    # #1591: an ignored invitation is dropped, NOT marked
+                    # declined — off-intent isn't a "no", and the invitation
+                    # may honestly repeat on a later report (CXO's interim:
+                    # "a repeated invitation that is cheap to decline").
                     self.logger.info(
                         (
                             "verification_read_back_abandoned"
                             if _vi_payload.get("kind") == "verify_inference"
-                            else "destructive_confirmation_abandoned"
+                            else (
+                                "standup_invitation_abandoned"
+                                if _vi_payload.get("kind") == "standup_interview_invitation"
+                                else "destructive_confirmation_abandoned"
+                            )
                         ),
                         action=pending_offer["pending_action"].get("action"),
                         session_id=session_id,
@@ -2739,12 +2760,18 @@ class IntentService:
                 success=True,
                 # #1511: one deterministic teaching line on the OPENING only —
                 # the interview names the quick report so both modes are
-                # discoverable from either. 'give me my standup' is the
-                # deterministically-claimed report phrasing (#1269 cue); bare
-                # 'standup' is known to be conflated by the LLM classifier.
+                # discoverable from either. #1591 changed the taught phrase
+                # from 'give me my standup' to 'my standup report': once a
+                # verified standup_mode=interview preference exists, the
+                # GENERIC phrasing redirects to the interview (stored — not
+                # re-inferred), so the taught escape must carry the explicit
+                # report token. Still deterministically claimed (the
+                # _is_standup_query 'my standup' cue matches; \breport\b hits
+                # the handler's report-token branch); bare 'standup' remains
+                # conflated by the LLM classifier and is not taught.
                 message=(
                     f"{response.message}\n\n"
-                    "Want the quick report instead? Say 'give me my standup'."
+                    "Want the quick report instead? Say 'my standup report'."
                 ),
                 intent_data={
                     "category": IntentCategory.EXECUTION.value,
@@ -2908,7 +2935,29 @@ class IntentService:
         #1511 (MVP slice — pure disambiguation): ``session_id`` is threaded (claim site +
         dispatch rail) ONLY so the interview-token branch below can key the interactive
         flow to the session; the report itself still ignores it.
+
+        #1591 (Production/PUB half — preference capture + invitation), a CONSUMER of the
+        #1510 verified-inference rail (services/intent_service/verified_inference.py):
+
+        - **Stored preference honored, never re-inferred**: a verified ``standup_mode``
+          in the rail's store redirects a generic standup ask to the interview (or keeps
+          the report, invitation-free). Read via ``get_verified_inference`` — the ONE
+          preference persistence (PPM+CXO: no local standup store).
+        - **CXO's three properties**: the report renders FIRST and COMPLETE; the
+          invitation (or a low-confidence read-back) is appended AFTER; declining is one
+          cheap turn and changes nothing — same report next time, no thinning.
+        - **PPM's empty rule**: an empty read has nothing to demonstrate — fail honestly
+          and lead with the invitation instead (discriminator: ``summary.is_empty()``).
+        - **Preference inference**: repeated mode choices feed the rail's shared
+          confidence gate; low-confidence signals arm the rail's read-back (acceptance
+          stores source=user_verified via the verify_inference workflow); high-confidence
+          follows the rail's auto-apply semantics.
+        Both asks bind via the EXISTING #846 pending-offer carrier (#1529 ordering —
+        offer beats resume-check — holds by construction; no second offer mechanism).
         """
+        from services.intent_service import standup_preferences as sp
+        from services.intent_service import verified_inference as vi
+
         # #1511: "two standups wear one name." This handler claims all standup
         # phrasings, which left the EXISTING interactive interview (#585,
         # StandupConversationHandler) unaddressable from chat. #1431 pattern —
@@ -2925,10 +2974,38 @@ class IntentService:
         # interview would key state to nobody (#1532 class). Anonymous falls
         # through to the report, which degrades to the honest empty summary.
         if session_id and user_id and re.search(r"\binterview\b|\binteractive\b", message_text):
+            # #1591: an explicit interview choice is mode-preference EVIDENCE
+            # (the issue's own example signal) — recorded in the transient
+            # tally, never stored directly (only verified values are stored).
+            sp.record_mode_choice(user_id, sp.MODE_INTERVIEW)
             self.logger.info(
                 "Standup interview token detected — dispatching interactive flow (#1511)",
                 user_id=user_id,
                 session_id=session_id,
+            )
+            return await self._start_standup_conversation(user_id, session_id)
+
+        # #1591: symmetric explicit report token — the escape hatch that keeps
+        # the report reachable for a user whose STORED preference is the
+        # interview (without it, the interview's own teaching line would loop
+        # them back into the interview forever). Same #1431 token-branch shape
+        # as the interview token: handler-internal, no claim widening.
+        explicit_report = bool(re.search(r"\breport\b|\bquick\b", message_text))
+
+        # #1591: stored preference consumed FIRST (the rail's "stored — not
+        # re-inferred each time"): a hit skips inference entirely. Fail-safe
+        # direction is the rail's (a storage error reads as "nothing stored").
+        stored_mode = None
+        if user_id:
+            _stored = await vi.get_verified_inference(user_id, sp.STANDUP_MODE_KEY)
+            if _stored:
+                stored_mode = _stored.get("value")
+        if stored_mode == sp.MODE_INTERVIEW and session_id and user_id and not explicit_report:
+            self.logger.info(
+                "Stored standup-mode preference honored — dispatching interview (#1591)",
+                user_id=user_id,
+                session_id=session_id,
+                source=_stored.get("source"),
             )
             return await self._start_standup_conversation(user_id, session_id)
 
@@ -2937,19 +3014,134 @@ class IntentService:
 
             summary = await build_user_standup_summary(user_id)
 
+            if summary.is_empty():
+                # #1591 / PPM's rule: an empty report is "a null result wearing
+                # a report's format" — nothing to demonstrate, so demonstrate-
+                # then-ask yields to fail-honestly-and-offer: say so plainly
+                # and the invitation IS the first move. No mode choice is
+                # recorded (an empty render demonstrates nothing) and no
+                # inference runs. A stored preference (either mode) or an
+                # in-session decline suppresses the armed offer — the honest
+                # empty statement stands alone with the teaching line.
+                # Symmetric anti-nag (see the non-empty branch): a declined
+                # mode read-back quiets the empty-lead invitation too.
+                invite = (
+                    sp.build_interview_invitation(user_id, session_id)
+                    if stored_mode is None
+                    and not vi.was_declined(session_id, sp.STANDUP_MODE_KEY)
+                    else None
+                )
+                if invite is not None:
+                    self.workflow_offer_service.set_pending_offer(
+                        session_id, invite, user_id=user_id
+                    )
+                    empty_message = sp.INVITE_EMPTY_LEAD
+                else:
+                    empty_message = (
+                        "I don't have anything to build your standup from yet — no "
+                        "observed activity in your connected tools. Say 'my standup "
+                        "interview' any time to capture one interactively."
+                    )
+                return IntentProcessingResult(
+                    success=True,
+                    message=empty_message,
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                        "context": {"standup_data": summary.to_dict(), "empty": True},
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=False,
+                    clarification_type=None,
+                )
+
+            # #1591: a served, non-empty report the user asked for is a (weak)
+            # report-mode choice — evidence for the inference below.
+            sp.record_mode_choice(user_id, sp.MODE_REPORT)
+
+            # #1511: one deterministic teaching line — the report names the
+            # interview so the guided mode is discoverable. Copy teaches
+            # 'my standup interview' because that phrasing is claimed by the
+            # existing _is_standup_query cue ("my standup") and therefore
+            # routes deterministically; bare "standup interview" is not a
+            # claimed phrasing (widening the claim is off-limits under the
+            # moratorium). #1591 layers at most ONE ask onto it per turn:
+            # the read-back (low-confidence inferred preference) or the
+            # invitation — never both, and never before the complete report.
+            trailing = "Want the guided version instead? Say 'my standup interview'."
+            # #1591 anti-nag, symmetric: a "no" to EITHER standup ask (the
+            # invitation or the mode read-back) quiets BOTH for the session —
+            # a user who just declined does not get a different question on
+            # the very next report (CXO: cheap to decline means the decline
+            # buys quiet, not a rephrased ask). Session-scoped via the rail's
+            # decline memory; nothing is stored, and a fresh session may ask
+            # again (the honest interim: a repeated invitation that is cheap
+            # to decline).
+            declined_any_ask = vi.was_declined(
+                session_id, sp.INVITE_DECLINE_KEY
+            ) or vi.was_declined(session_id, sp.STANDUP_MODE_KEY)
+            if session_id and user_id and stored_mode is None and not declined_any_ask:
+                asked = False
+                signal = sp.infer_mode_signal(user_id)
+                if signal is not None:
+                    inferred_mode, confidence = signal
+                    meta_mode = await vi.get_meta_mode(user_id)
+                    decision = vi.decide(confidence, meta_mode)
+                    if decision is vi.VerificationDecision.READ_BACK:
+                        offer = vi.build_read_back_offer(
+                            user_id,
+                            sp.STANDUP_MODE_KEY,
+                            inferred_mode,
+                            sp.MODE_DESCRIPTIONS[inferred_mode],
+                            confidence=confidence,
+                            session_id=session_id,
+                        )
+                        if offer is not None:  # None = declined this session (anti-nag)
+                            self.workflow_offer_service.set_pending_offer(
+                                session_id, offer.offer, user_id=user_id
+                            )
+                            trailing = offer.question
+                            asked = True
+                    elif decision is vi.VerificationDecision.AUTO_APPLY:
+                        # Rail auto-apply semantics: apply without a read-back.
+                        # Stored ONLY under a trust meta-preference (the rail's
+                        # SOURCE_META_AUTO provenance); DEFAULT high-confidence
+                        # applies without storing — PM's ruling stores VERIFIED
+                        # values, and this one wasn't read back.
+                        if meta_mode is vi.VerificationMetaMode.TRUST_INFERENCES:
+                            await vi.store_verified_inference(
+                                user_id,
+                                sp.STANDUP_MODE_KEY,
+                                inferred_mode,
+                                source=vi.SOURCE_META_AUTO,
+                                confidence=confidence,
+                            )
+                        if inferred_mode == sp.MODE_INTERVIEW:
+                            self.logger.info(
+                                "Standup-mode inference auto-applied — dispatching interview (#1591)",
+                                user_id=user_id,
+                                confidence=confidence,
+                            )
+                            return await self._start_standup_conversation(
+                                user_id, session_id
+                            )
+                        # Confidently-report user: don't nag with the invitation.
+                        asked = True
+                if not asked:
+                    invite = sp.build_interview_invitation(user_id, session_id)
+                    if invite is not None:  # None = declined this session / unarmable
+                        self.workflow_offer_service.set_pending_offer(
+                            session_id, invite, user_id=user_id
+                        )
+                        trailing = sp.INVITE_AFTER_REPORT
+
             return IntentProcessingResult(
                 success=True,
-                # #1511: one deterministic teaching line — the report names the
-                # interview so the guided mode is discoverable. Copy teaches
-                # 'my standup interview' because that phrasing is claimed by the
-                # existing _is_standup_query cue ("my standup") and therefore
-                # routes deterministically; bare "standup interview" is not a
-                # claimed phrasing (widening the claim is off-limits under the
-                # moratorium).
-                message=(
-                    f"Good morning! {summary.to_prose()}\n\n"
-                    "Want the guided version instead? Say 'my standup interview'."
-                ),
+                # CXO property 1 pinned in the string shape itself: the
+                # complete report prose renders first; the single trailing
+                # ask (teaching line / invitation / read-back) comes after.
+                message=f"Good morning! {summary.to_prose()}\n\n{trailing}",
                 intent_data={
                     "category": intent.category.value,
                     "action": intent.action,

@@ -375,6 +375,76 @@ async def run_verify_inference_workflow(
     }
 
 
+async def run_standup_interview_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1591: start the EXISTING #585 interactive standup interview on an
+    accepted invitation.
+
+    Dispatched ONLY by the offer-acceptance seam — the "yes" turn against the
+    invitation appended after a standup report (or leading an honest-empty
+    one). Registered action_triggered=False (the verify_inference/#1190
+    pattern) so the classifier/rail can never reach it.
+
+    This is pure wiring to the existing flow: acceptance calls
+    ``IntentService._start_standup_conversation`` — the SAME entry the
+    ``/standup`` command and the #1511 interview-token branch use — so all
+    three doors open the one interview (escape tiers, resume, teaching copy
+    unchanged). CXO property 3 note: DECLINE never reaches this function —
+    the generic decline path answers with the offer's decline_message and
+    changes nothing.
+    """
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    payload = ctx.get("pending_action") or {}
+    if payload.get("kind") != "standup_interview_invitation":
+        logger.error(
+            "standup_interview_missing_or_foreign_payload",
+            has_payload=bool(payload),
+            kind=payload.get("kind"),
+        )
+        return None
+    if intent_service is None:
+        logger.error("standup_interview_workflow_missing_intent_service")
+        return None
+    # #1532: the interview is the USER's flow. The invitation was built for
+    # the user it was offered to; if the accepting turn's principal differs
+    # (auth changed between turns), don't start a conversation keyed to the
+    # wrong user — decline-shaped no-op (mirrors run_verify_inference_workflow).
+    offer_user = payload.get("user_id")
+    principal = str(user_id) if user_id else None
+    if offer_user and principal and offer_user != principal:
+        logger.warning(
+            "standup_interview_principal_mismatch",
+            offer_user=offer_user,
+            turn_user=principal,
+        )
+        return {
+            "message": "Let's hold off on that — nothing has been started.",
+            "intent_data": {
+                "category": "execution",
+                "action": "standup_interview",
+                "principal_mismatch": True,
+            },
+        }
+    effective_user = principal or offer_user
+    if not effective_user or not session_id:
+        logger.error(
+            "standup_interview_workflow_missing_principal_or_session",
+            has_user=bool(effective_user),
+            has_session=bool(session_id),
+        )
+        return None
+    result = await intent_service._start_standup_conversation(effective_user, session_id)
+    # The acceptance seam consumes {"message", "intent_data"}; the interview
+    # entry returns IntentProcessingResult — adapt (confirm_pending_action idiom).
+    if isinstance(result, dict):
+        return result
+    return {"message": result.message, "intent_data": result.intent_data}
+
+
 async def run_comment_issue_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -921,6 +991,21 @@ def register_default_workflows() -> None:
             effect=EffectClass.WRITE,
             description="Store a user-verified inference (#1510 read-back acceptance)",
             requires_context=["pending_action"],
+        ),
+        # #1591: accepted standup-interview invitation → start the EXISTING
+        # #585 interview. Offer-acceptance ONLY (action_triggered=False — the
+        # deterministic claim + interview token already route classified
+        # standup intents; an accidental action collision must not start a
+        # conversation). effect: WRITE (explicit + defaultless per #1557,
+        # classified by READING the handler: _start_standup_conversation →
+        # StandupConversationHandler.start_conversation → manager
+        # .create_conversation → repo.add — a durable conversation row is
+        # created; mutating, not destructive).
+        "standup_interview": WorkflowEntry(
+            entry_point=run_standup_interview_workflow,
+            effect=EffectClass.WRITE,
+            description="Start the #585 standup interview from an accepted invitation (#1591)",
+            requires_context=["pending_action", "intent_service"],
         ),
         "update_document": document_update_entry,
         "edit_document": document_update_entry,
