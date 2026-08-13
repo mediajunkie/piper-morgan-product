@@ -62,11 +62,17 @@ NEUTRAL_DEFAULT_CONTEXT: dict = {
 # ADR-075 OQ-3 (CXO UX direction): first-response injection copy. Appended
 # ONCE, after the answer (capability first, metadata second), never before,
 # never per-response. Capability-affirming register, not a degraded/error
-# state; actionable (points at Settings -> Profile); non-catastrophizing.
+# state; non-catastrophizing; names no affordance it cannot cash (#1604).
+# #1604 sweep (2026-08-12): this copy shipped "add your context in
+# Settings → Profile" — A PAGE THAT DOES NOT EXIST, in the single line every
+# new user sees first. The overlay mechanism (PIPER.user.md, ADR-075 D4) is
+# file-based and unreachable from the hosted beta, so there is NO real
+# surface to point at; the honest fix is to remove the fabricated
+# affordance, not substitute a different one. A real context-editing
+# surface is filed as its own product gap.
 FIRST_RESPONSE_PERSONALIZATION_NOTICE = (
     "(Running with a default configuration for now — I'm fully useful "
-    "as-is, but once you add your context in Settings → Profile, "
-    "I'll be tuned to your role and priorities.)"
+    "as-is, and I'll tune to your role and priorities as I learn them.)"
 )
 
 
