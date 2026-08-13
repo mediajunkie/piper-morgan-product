@@ -158,3 +158,52 @@ jobs:
           echo "## Windows Unit Test Results" >> %GITHUB_STEP_SUMMARY%
           echo "See test output above for details" >> %GITHUB_STEP_SUMMARY%
         shell: cmd
+
+  # Ported from the retired ci.yml (2026-08-13). NOTE: this job is currently
+  # RED for a REAL reason — cohort memo filenames exceed Windows path limits,
+  # so a Windows user cannot clone the repo at all. Filed as its own issue at
+  # port time; the check is working, the repo is what's broken.
+  windows-clone-test:
+    runs-on: windows-latest
+    name: Windows Clone & File Verification
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Verify Windows clone successful
+      run: |
+        echo "✅ Repository cloned successfully on Windows"
+        echo "Checking for Windows-illegal characters in filenames..."
+
+    - name: Check for Windows-illegal filename characters
+      run: |
+        $illegalChars = @(':', '<', '>', '"', '|', '?', '*')
+        $foundIssues = $false
+
+        Get-ChildItem -Recurse -ErrorAction SilentlyContinue | ForEach-Object {
+          foreach ($char in $illegalChars) {
+            if ($_.Name -match [regex]::Escape($char)) {
+              Write-Output "❌ Found illegal character '$char' in: $($_.FullName)"
+              $foundIssues = $true
+            }
+          }
+        }
+
+        if ($foundIssues) {
+          Write-Output "❌ Windows-illegal characters found in repository"
+          exit 1
+        } else {
+          Write-Output "✅ No Windows-illegal characters found"
+          Write-Output "✅ Repository is Windows-compatible"
+        }
+
+    - name: Verify all files present
+      run: |
+        $fileCount = (Get-ChildItem -Recurse -File -ErrorAction SilentlyContinue | Measure-Object).Count
+        Write-Output "✅ Total files present: $fileCount"
+
+        if ($fileCount -lt 100) {
+          Write-Output "⚠️  Warning: File count seems low, but continuing..."
+        }
+
+        Write-Output "✅ Windows clone test passed"

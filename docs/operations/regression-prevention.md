@@ -295,7 +295,7 @@ graph LR
 
 **Active Workflows**:
 1. `architecture-enforcement.yml` - Pattern compliance
-2. `ci.yml` - Main integration pipeline
+2. ~~`ci.yml`~~ — RETIRED 2026-08-13 (PM-directed): structurally red since inception (plain `pytest tests/` inherited `--maxfail=1` + no llm filter), gated nothing. Its two live-value pieces were PORTED at retirement: the behavioral config test → `config-validation.yml` (behavioral-validation job); the Windows clone/filename check → `windows-test.yml`. Gap audit on the retirement record (decisions.log 2026-08-13).
 3. `config-validation.yml` - Configuration checks
 4. `dependency-health.yml` - Weekly library health
 5. `deploy.yml` - Deployment automation
