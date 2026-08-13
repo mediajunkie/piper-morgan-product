@@ -19,14 +19,14 @@ mine to design, with Exec's standing offer to think it through together.
 **Immediate implication for the task list below**: before picking up any of the Owed/watch items,
 ask whether it's outcome-shaped enough to spec for a subagent rather than build solo.
 
-**★ Already applied once, same day, not just theorized**: #1616 (Windows clone breaks on
-over-length `mailboxes/` filenames — found when Lead retired the never-green `ci.yml`) — ratified
-Lead's own recommendation (filename-length lint + `core.longpaths` workaround doc, don't touch
-history) and **dispatched a subagent (`acf0ae9ad153ad702`) to implement it** rather than building
-it myself. **Running in background as of the 16:37 fire — REVIEW THE DIFF on the next fire or the
-completion notification, whichever lands first, before anything is committed/pushed.** Do not let
-this go stale unreviewed; it's the pilot for the whole operating-mode shift and needs to actually
-close the loop to count as evidence either way.
+**★ Already applied and CLOSED the same day, not just theorized**: #1616 (Windows clone breaks on
+over-length `mailboxes/` filenames — found when Lead retired the never-green `ci.yml`). Spec'd the
+outcome, dispatched a subagent, **independently verified its work rather than trusting the
+report** (re-ran the lint myself, cross-checked the claimed house-pattern match, confirmed nothing
+else broke) — everything held up. Landed `814f364e2`, issue closed with evidence. **First real
+data point for the mode shift, and the lesson worth carrying forward isn't "delegation works," it's
+"the review step is where the trust actually gets earned" — a pilot that skipped independent
+verification wouldn't have told me anything.**
 
 **Connects directly to the in-flight Janus/Themis thread** (08-12 reply, `~/Development/designinproduct/docs/mail/`):
 the director posture is more portable cross-project than the operator posture was. **Not
