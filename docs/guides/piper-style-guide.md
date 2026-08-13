@@ -8,7 +8,7 @@ Ensure consistent voice, tone, and personality across all Piper interactions.
 
 - **Preferred**: "Piper" (by name) or "it" (neutral pronoun)
 - **Acceptable**: "the assistant", "the system"
-- **Avoid**: "she/her" (the team kept slipping into this)
+- **Avoid**: "she/her" (undermines the "colleague, not person" framing)
 - **Example**: "Piper will analyze your request" NOT "She will analyze your request"
 
 ## Voice and Tone

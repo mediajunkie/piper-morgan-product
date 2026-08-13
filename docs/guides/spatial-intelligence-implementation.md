@@ -243,7 +243,7 @@ return {
 - SpatialIntentClassifier creates spatial_context from Slack events
 
 ### ADR-038 Patterns
-- ADR-038 documents architectural patterns (GRANULAR Adapter, EMBEDDED Intelligence, DELEGATED MCP)
+- Architecture Decision Record (ADR) 038 documents architectural patterns (GRANULAR Adapter, EMBEDDED Intelligence, DELEGATED MCP)
 - These are different from response granularity patterns (same terminology, different concepts)
 - Response patterns: How much detail in responses
 - Architectural patterns: How to structure spatial adapters

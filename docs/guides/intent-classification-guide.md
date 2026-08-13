@@ -2,7 +2,7 @@
 
 **Last Updated**: April 11, 2026
 **Status**: Current (post-M1 floor inversion)
-**See also**: [ADR-060: Floor-First Routing](../internal/architecture/current/adrs/adr-060-floor-first-routing.md), [Canonical Handlers Architecture](canonical-handlers-architecture.md)
+**See also**: [Architecture Decision Record (ADR) 060: Floor-First Routing](../internal/architecture/current/adrs/adr-060-floor-first-routing.md), [Canonical Handlers Architecture](canonical-handlers-architecture.md)
 
 > **REWRITE NOTE (April 11, 2026)**
 > The previous version of this guide described a "fast path canonical (~1ms)
