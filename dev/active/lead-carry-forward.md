@@ -25,6 +25,10 @@
 3. **#1572** per-user timezone umbrella (supply is 0%; every user-typed clock time reads on the server's UTC clock).
 4. #1423 / #1436 remaining slices; #1592 (Fly credentials.json ERROR noise).
 
+## Tracker artifact — BRIDGE state (08-13 afternoon)
+- PM's canonical tracker URL (fbb9edcf…) lives on the **pipermorgan.ai** account; today's designinproduct.com skeleton-crew login cannot update it. **Bridge artifact published**: https://claude.ai/code/artifact/4d78432f-f6d3-4a93-9992-219f88ee5e41 (from scratchpad copy `mvp-tracker-bridge.html`).
+- **AFTER tonight's 10pm account switch back to pipermorgan.ai**: republish `dev/active/honest-mvp-ledger-2026-08-08.html` to the ORIGINAL URL (restores PM's bookmark), then mark the bridge superseded. The canonical file is on origin/main and current to v52.
+
 ## Standing
 - **Milestone sequence: MVP → Production → Fast Follow.** "Not MVP" never defaults to Fast Follow — ask which of the two later steps. (Caught myself defaulting #1594 to Production on 08-11; it's Ongoing.)
 - Moratorium on piecemeal routing fixes holds — failures → corpus (#1559, #1579, #1492, #1527, #1505 tagged). Handler-branch and rail-key fixes ARE sanctioned.

@@ -23,7 +23,7 @@ cd piper-morgan-workspace
 
 # 2. Download Piper Morgan
 git clone https://github.com/mediajunkie/piper-morgan-product.git
-cd piper-morgan
+cd piper-morgan-product
 
 # 3. Create virtual environment
 python3 -m venv venv
@@ -65,7 +65,7 @@ python main.py
 
 ```bash
 # 1. Navigate to folder
-cd ~/piper-morgan-workspace/piper-morgan
+cd ~/piper-morgan-workspace/piper-morgan-product
 
 # 2. Activate virtual environment
 source venv/bin/activate           # Mac/Linux
@@ -98,7 +98,7 @@ python main.py
 ## 📂 Key Files & Folders
 
 ```
-~/piper-morgan-workspace/piper-morgan/
+~/piper-morgan-workspace/piper-morgan-product/
 ├── venv/                          # Virtual environment (created during install)
 ├── config/
 │   └── PIPER.user.md             # Your configuration (created from example)

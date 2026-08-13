@@ -1089,6 +1089,9 @@ class IntentService:
                     # declined — off-intent isn't a "no", and the invitation
                     # may honestly repeat on a later report (CXO's interim:
                     # "a repeated invitation that is cheap to decline").
+                    # #1509: an abandoned consent check logs under its own
+                    # name — the off-intent tier semantics are identical
+                    # (the pop already cancelled it; nothing can fire).
                     self.logger.info(
                         (
                             "verification_read_back_abandoned"
@@ -1096,7 +1099,11 @@ class IntentService:
                             else (
                                 "standup_invitation_abandoned"
                                 if _vi_payload.get("kind") == "standup_interview_invitation"
-                                else "destructive_confirmation_abandoned"
+                                else (
+                                    "consent_check_abandoned"
+                                    if _vi_payload.get("kind") == "consent_check"
+                                    else "destructive_confirmation_abandoned"
+                                )
                             )
                         ),
                         action=pending_offer["pending_action"].get("action"),
@@ -1815,11 +1822,27 @@ class IntentService:
                 # intent via run_confirm_pending_action_workflow; "no" and
                 # bare exits cancel honestly; any other message abandons the
                 # action (it was popped — nothing can fire it later).
-                # Orthogonal to the #1510 collaborate-gate: execute-mode
-                # users still confirm destructive actions (different
-                # failures, different protections).
+                # #1509: the CONFIRM verdict comes from the UNIFIED consent
+                # decision (consent_gate.decide_consent — one function for
+                # the #1190 confirm tier, the #1510 collaborate tier, and
+                # the generic consent check below; boundary condition named
+                # in that module). For DESTRUCTIVE entries the verdict is
+                # CONFIRM in every cell (execute-mode users still confirm —
+                # different failures, different protections), so #1190
+                # behavior is unchanged; the decision just has one home.
                 _rail_entry = _action_workflows[intent.action]
-                if _rail_entry.needs_confirm:
+                if _rail_entry.needs_consent:
+                    from services.intent_service import consent_gate as _consent
+
+                    _consent_user = user_id or _principal_from_intent(intent)
+                    _consent_verdict = await _consent.evaluate_consent(
+                        _rail_entry.effect, message, _consent_user
+                    )
+                else:
+                    _consent_verdict = None
+                if _consent_verdict is not None and (
+                    _consent_verdict is _consent.ConsentDecision.CONFIRM
+                ):
                     from services.intent_service.destructive_confirm import (
                         build_confirmation_offer,
                     )
@@ -1852,6 +1875,52 @@ class IntentService:
                         )
                     # None → verified read-only clarification shape (no
                     # parseable target); the handler asks "which issue?".
+                elif _consent_verdict is not None and (
+                    _consent_verdict is _consent.ConsentDecision.COLLABORATE
+                ):
+                    # ── #1509 consent check (WRITE tier, held turn) ────────
+                    # Draft-collaboration actions (the create family) fall
+                    # THROUGH to their handler, whose #1510 gate consults the
+                    # SAME decision function and renders the richer draft
+                    # copy (slot-filled subject, shape-the-body invitation)
+                    # — copy-surface selection, not a second gate. Every
+                    # other held WRITE action gets the generic consent check:
+                    # a #1190-carrier pending offer whose "yes" re-dispatches
+                    # the ORIGINAL intent (never re-classified), "no"/bare
+                    # exit cancels honestly, off-intent abandons via the pop.
+                    from services.intent_service import (
+                        collaboration_gate as _collab_gate,
+                    )
+
+                    if not _collab_gate.is_draft_collaboration_action(intent.action):
+                        _check = _consent.build_consent_check_offer(
+                            intent, _rail_entry.effect
+                        )
+                        self.workflow_offer_service.set_pending_offer(
+                            session_id, _check.offer, user_id=user_id
+                        )
+                        self.logger.info(
+                            "consent_check_offered",
+                            action=intent.action,
+                            effect=_rail_entry.effect.name,
+                            session_id=session_id,
+                        )
+                        # Return DIRECTLY (same reason as the confirm turn):
+                        # _apply_soft_offer would overwrite the pending check.
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_check.question,
+                            intent_data={
+                                "category": intent.category.value,
+                                "action": intent.action,
+                                "confidence": intent.confidence,
+                                "consent_check_pending": True,
+                                "consent_effect": _rail_entry.effect.name.lower(),
+                            },
+                            requires_clarification=True,
+                            suggestions=all_suggestions,
+                            preferences=preferences,
+                        )
 
                 dispatched = await dispatch_workflow(
                     workflow_type=intent.action,

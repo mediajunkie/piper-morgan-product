@@ -9,9 +9,14 @@
 **Done**: batch 1 ALPHA_* (feature-guide bannered + PA refresh-offer mailed; phantom screenshots
 found-and-commented; rest clean) · batch 2 guides/+getting-started (2 fixes, 3 false positives
 checked, legacy-* archives → site-excluded, flag-not-silent).
-**⏳ Awaiting PA**: feature-guide draft DELIVERED (`b5a51df04`, 85 tagged claims, 11-item
-check-list, handoff memo `c58844715`) — PA verifies claim-by-claim against the live alpha, then I
-fold verdicts, strip tags, ship with PA's attestation named. Live guide stays bannered meanwhile. Also awaiting: Lead's attestation on #1611 (8081 two-process — live path or
+**🔵 Feature guide**: PA's verification went CODE-LEVEL (no browser on their seat — premise
+caught and corrected honestly). 4 findings folded into the draft layer-labeled (`03540e35b`);
+GitHub OAuth question RESOLVED. PA continuing code-level on the rest; **4 items need a browser —
+queued as a ~5-min PM click-through**. Ship/hold call if PM's pass doesn't come: PM's, but a
+code-level-grounded refresh already beats the v0.8.6 doc. Live guide stays bannered.
+**Awaiting PM** (surface at next engagement, don't chase): the 4-item click-through · security@
+vs support@ for audit-logging.md · stale docker branch deletion. (#1610 RESOLVED by Exec;
+#1611 with Lead; #1616 = memo filenames break Windows clones — my filenames now shorter.) Also awaiting: Lead's attestation on #1611 (8081 two-process — live path or
 fossil; evidence posted); PM's address for #1610 (legal placeholder ×3 files, next rollup).
 **Remaining batches**: installation/ + setup/ + troubleshooting/ · features/ + integrations/ +
 configuration/ · api/ + public/api-reference/ + dev-tips/ · testing/ (CIO's file-level-discretion

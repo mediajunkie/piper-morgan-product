@@ -12,7 +12,7 @@
 ### Spatial Adapter Issues
 **Symptom**: "Spatial context extraction failed"
 **Solutions**:
-- Verify MCP service is running
+- Verify the Model Context Protocol (MCP) service is running
 - Check GoogleCalendarAdapter inheritance
 - Validate BaseSpatialAdapter integration
 

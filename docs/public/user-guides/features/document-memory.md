@@ -1,5 +1,8 @@
 # Document Memory Integration
 
+> **Note on `PM-NNN` references** (added 2026-08-13): IDs like PM-011/PM-124/PM-126 are the project's 2025-era internal ticket numbers, predating the move to GitHub Issues as the sole tracker. They're kept as historical references; where a GitHub mapping is known it's shown inline (e.g. PM-126 = GitHub #132). They are not links and have no current lookup surface.
+
+
 **Status**: ✅ **OPERATIONAL** - Complete CLI integration with DocumentService extensions
 **Date**: August 25, 2025
 **Issue**: PM-126 (GitHub #132)

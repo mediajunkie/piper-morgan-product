@@ -439,7 +439,7 @@ If you're stuck:
 1. **Check this guide** for your specific error
 2. **Check CONTRIBUTING.md** Windows Development section
 3. **Check GitHub Issues** - many Windows issues have solutions
-4. **Ask in team chat** - include error message and steps taken
+4. **If you don't find an existing issue, [file a new one](https://github.com/mediajunkie/piper-morgan-product/issues/new)** - include error message and steps taken
 
 ---
 

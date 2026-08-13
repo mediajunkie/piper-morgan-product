@@ -202,19 +202,24 @@ guessing `[RN 0.8.9]`. Connector configuration is stored in the database and sur
   configured default repo, settable in the GUI or conversationally `[RN 0.8.7]` `[BRIEFING]`.
 - **Writes**: issue creation with confirmation, close/reopen with fuzzy matching `[RN 0.8.7]`.
 - **"My work" scoping**: Radar shows issues assigned to your configured handle `[RN 0.8.8]`.
-- Connection method (PAT vs OAuth) is under active change — see "PA: please check" below.
+- **Connection method**: OAuth first, presented as "Recommended," with a personal access token
+  (PAT) field as a fallback below it `[PA code-level 08-13: templates/settings_github.html +
+  settings_integrations.py /github/connect + /github/save, both wired to the live Settings page;
+  RN 0.8.9's "OAuth not started" is stale]`.
 
 ### Google Calendar
 
 - Listed as a current integration `[README]`; calendar/deadline data feeds the floor's context
-  `[RN 0.8.7]`. Setup via Settings → Integrations (OAuth) and schedule queries ("what's on my
-  calendar?") are v0.8.6-era claims `[v0.8.6 guide — RETEST]`.
+  `[RN 0.8.7]`. A real OAuth flow exists in the shipped code `[PA code-level 08-13:
+  services/integrations/calendar/oauth_handler.py]`; the end-to-end schedule query ("what's on my
+  calendar?") remains unverified live `[v0.8.6 guide — RETEST]`.
 
 ### Notion
 
 - Listed as a current integration `[README]`; real page-append (no demo-fallback fabrication)
-  `[RN 0.8.7]`. Page creation / search / document analysis are v0.8.6-era claims
-  `[v0.8.6 guide — RETEST]`.
+  `[RN 0.8.7]`. **Connection method: a pasted Notion API key** (`secret_…`, from your own Notion
+  integration) via a Settings card — not OAuth `[PA code-level 08-13: templates/settings_notion.html]`.
+  Page creation / search / document analysis behavior remains v0.8.6-era `[v0.8.6 guide — RETEST]`.
 
 ### Slack — mostly HELD, read this
 
@@ -298,30 +303,39 @@ onboarding email `[KNOWN-ISSUES]`.
 ---
 ---
 
-## PA: please check (unresolved by written sources — verify or cut)
+## PA: please check — STATUS after PA's code-level pass (2026-08-13)
 
-1. **GitHub connection method on hosted**: RN 0.8.9 (June 22) says PAT-only, "OAuth not started";
-   the briefing (July) describes a GitHub MCP connector with per-user OAuth live on hosted, and
-   "TESTER-LOOP CLOSED — GitHub leg works end-to-end on hosted". What does Settings → Integrations
-   → GitHub actually ask a tester for today — PAT, OAuth, or both? The guide currently ducks this.
-2. **Google Calendar end-to-end**: README lists it, but every concrete claim (OAuth connect flow,
-   "what's on my calendar?", event creation, availability) is v0.8.6-era. Does the connect flow
-   work on hosted? (Briefing frames GCal completion as RECONNECT R2 / #1441 — i.e., future work.)
-3. **Notion end-to-end**: same shape as Calendar — README lists it; concrete flows (create page,
-   search, document analysis) are v0.8.6-era. #1442 suggests completion is future work.
+> **Verification-layer note** (PA's framing, kept because it's exactly right): PA's seat has no
+> browser, so items below marked *code-level* were verified by reading the shipped `production`
+> source — a real but weaker layer than live observation: it proves the code path exists and what
+> it does, not that a tester experiences it correctly. Four items are now specific enough that a
+> ~5-minute live click-through (PM has browser + hosted access) closes them: (a) GitHub Settings
+> shows OAuth-recommended + PAT-fallback, (b) Notion's field is a pasted API key, (c) whether the
+> /standup page renders and is worth mentioning, (d) an eyeball of the "Where to focus your
+> testing" tone/honesty claims.
+
+1. ~~**GitHub connection method on hosted**~~ **RESOLVED code-level, high confidence (PA 08-13)**:
+   OAuth presented first and labeled "Recommended" (#1317, ADR-070 C), PAT kept as fallback below.
+   Folded into the GitHub section; RN 0.8.9's "OAuth not started" is stale.
+2. **Google Calendar end-to-end**: *partially advanced* — a real OAuth flow exists in shipped code
+   (PA 08-13: `oauth_handler.py`, #537/#577); the live "what's on my calendar?" query remains
+   unverified. (Briefing frames GCal completion as RECONNECT R2 / #1441.)
+3. **Notion connection method**: ~~unknown~~ **RESOLVED code-level (PA 08-13)**: pasted Notion API
+   key via a Settings card, not OAuth. Page-creation/search behavior still needs live check.
 4. **Slack outbound** (send message to a channel): the 0.8.11 known-issues doc lists "Slack
    outbound, DMs, @-mentions" as working, but that predates the 2026-08-06 hold. I've held the
    whole Slack section to "don't expect to drive Piper from Slack"; if outbound-only genuinely
    works and is available to testers, the section could say so — but only on live verification.
 5. **Sharing lists/todos/projects by email + roles**: v0.8.6-era claim, never re-verified in any
    release note since. Works on hosted with a second account?
-6. **Integration health dashboard** ("Test All", green/yellow/red): v0.8.6-era claim; I omitted it
-   from the draft entirely. Re-add only if it exists on hosted.
+6. ~~**Integration health dashboard**~~ **CONFIRMED CUT (PA 08-13, code-level)**: no "Test All"
+   surface anywhere in app code — only an internal Grafana ops dashboard and a 2025 gameplan doc.
+   The omission stands as a deliberate cut, not a maybe.
 7. **`/standup` and `/help` chat slash-commands**: v0.8.6-era; omitted. Note the slash-command
    surface was being normalized in Aug 2026 (decisions.log) — check what actually exists.
-8. **Standup access points**: I claim "ask in chat or find it in Radar" from RN 0.8.9. The
-   dedicated /standup PAGE was called "legacy/stale" in RN 0.8.7/0.8.8 — is there still a standup
-   page on hosted, and should the guide mention it or steer away?
+8. **Standup access points**: *factually advanced (PA 08-13, code-level)*: `GET /standup` still
+   renders (`web/api/routes/ui.py:366`) — the route was downgraded in emphasis, not removed.
+   Remaining question is editorial, not factual: mention it to testers or steer to chat/Radar only?
 9. **Accessibility section**: the v0.8.6 guide claimed WCAG 2.1 AA, keyboard nav, screen-reader
    landmarks. RN 0.8.8 adds px→rem. I omitted the section rather than carry an unverified
    compliance claim — restore only if someone can attest it.
