@@ -183,7 +183,7 @@ def _current_time_of_day(user_timezone: Optional[str]) -> str:
         from zoneinfo import ZoneInfo
 
         now = datetime.now(ZoneInfo(user_timezone))
-    except Exception:
+    except Exception:  # silent-ok: invalid stored tz -> neutral greeting, no day-part claim; per-turn logging would be noise for a stored bad value (#1589 rationale)
         # Unknown/invalid tz name — degrade to neutral rather than guess.
         return "unknown"
     return _get_time_of_day(now.hour)
