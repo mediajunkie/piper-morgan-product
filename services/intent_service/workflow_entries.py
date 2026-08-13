@@ -965,14 +965,18 @@ def register_default_workflows() -> None:
             description="Meeting scheduling via slot-filling",
             requires_context=["trigger_message"],
         ),
-        # #1190: the confirmed-destructive-action executor. Offer-acceptance
+        # #1190: the confirmed-deferred-action executor. Offer-acceptance
         # ONLY (action_triggered=False — the classifier/rail can never emit
         # it; an accidental key/action collision must not fire a deferred
-        # write). effect: DESTRUCTIVE — dispatching it performs the deferred
-        # destructive write with its stored parameters. It is not itself
-        # confirm-gated: the gate lives at the rail seam, which this entry is
-        # structurally excluded from, and the confirmation turn HAS already
-        # happened when this dispatches.
+        # write). effect: DESTRUCTIVE — the CEILING of what dispatching it
+        # can perform: it executes the deferred action with its stored
+        # parameters. #1509 reuses this same carrier + entry for accepted
+        # WRITE-tier consent checks (deliberately — one acceptance path, no
+        # parallel gate), so the deferred action may be WRITE or DESTRUCTIVE;
+        # the declaration stays at the ceiling per the ordered-enum contract.
+        # It is not itself consent/confirm-gated: the gate lives at the rail
+        # seam, which this entry is structurally excluded from, and the
+        # consent/confirmation turn HAS already happened when this dispatches.
         "confirm_pending_action": WorkflowEntry(
             entry_point=run_confirm_pending_action_workflow,
             effect=EffectClass.DESTRUCTIVE,
