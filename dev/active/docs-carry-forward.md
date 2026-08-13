@@ -1,13 +1,22 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-12 22:3x PDT (STOP fire — DAY-CLOSED 2026-08-12)
-**Session log**: `dev/2026/08/12/2026-08-12-0733-docs-code-log.md` (closed; 6 fires + 2
-PM-engaged blocks — the docs-site scoping day). Sign-off checklist clean.
-**Tomorrow's first-fire orientation**: the docs-site curation is LIVE and verified — remaining
-scrub is the per-surface staleness+link pass on the kept ~160 pages (batched, my pace) in
-parallel with Comms's register pass (they start `dev-tips/` first, fresh session). Cron
-`e47bd40c` deliberately not rotated at STOP (thin prompt = no state to refresh; expires ~08-18,
-rotate before then).
+**Updated**: 2026-08-13 07:5x PDT (Fire 1 — alpha + guides staleness batches done)
+**Session log**: `dev/2026/08/13/2026-08-13-0727-docs-code-log.md` (open). 08-12 closed.
+**Cron**: `e47bd40c`, expires ~08-18 — **rotate at a STOP before then**.
+
+## 🔵 ACTIVE — staleness pass on the curated keep-list (batched over fires)
+
+**Done**: batch 1 ALPHA_* (feature-guide bannered + PA refresh-offer mailed; phantom screenshots
+found-and-commented; rest clean) · batch 2 guides/+getting-started (2 fixes, 3 false positives
+checked, legacy-* archives → site-excluded, flag-not-silent).
+**⏳ Awaiting**: PA's answer on the ALPHA_FEATURE_GUIDE refresh split (I draft / they attest) —
+if they don't pick it up, I draft next fire and route for attestation anyway.
+**Remaining batches**: installation/ + setup/ + troubleshooting/ · features/ + integrations/ +
+configuration/ · api/ + public/api-reference/ + dev-tips/ · testing/ (CIO's file-level-discretion
+applies) + releases/ + misc top-level files.
+**Omnibus 08-12**: subagent dispatched this fire, results pending notification.
+**Comms register pass**: started (their `9f6ab1732` touched 2 ALPHA docs) — parallel, different
+dimensions, agreed.
 
 **Worktrees**: product `~/Development/piper-morgan-worktrees/docs` @ `claude/docs-cycle` · website
 `~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
