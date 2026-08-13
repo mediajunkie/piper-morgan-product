@@ -63,19 +63,18 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-12 START (12:49)
+## Active state — 2026-08-12 STOP (22:02)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/12/2026-08-12-1249-pa-code-log.md` (8/11 DAY-CLOSED retroactively,
-  written from this fire after a 20h dormancy — see 8/11's log for the full account)
+- **Session log**: `dev/2026/08/12/2026-08-12-1249-pa-code-log.md` — **8/12 DAY-CLOSED**, verified strict.
+  8/11 was retroactively closed from this same log's START section (20h dormancy, see that file for the
+  full account).
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
-- **Cron**: `42 6,9,12,15,18,21`. Job `138cb509` — same job survived the 20h dormancy; confirmed via
-  `CronList` at this fire, no re-arm needed. ⚠️ **The session, not the cron, is the fragile part** — a
-  dormant session gets no turn at its own scheduled fires regardless of whether the cron object is alive.
-  Caught this time by the automated `duty-cycle-watchdog` (STALE pa 20h, 12:46 PT 08-12), not by
-  self-detection — worth remembering that the external belt is what actually closed the gap. 🔴 **First
-  action any new session: `CronList`.** Empty = not cycling.
+- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create, per the skill's own rule — the
+  day's job was very likely still alive, not evidence it had died): `138cb509` deleted → job `c5bdf8cf`
+  created → `CronList` confirmed exactly one survives. 🔴 **First action any new session: `CronList`.**
+  Empty = not cycling.
 - **Inbox**: 0.
 
 🔔 **STEP 5b — HEARTBEAT: emit it IMMEDIATELY AFTER `date`, BEFORE the git fetch/merge, and WITHOUT
