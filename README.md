@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/mediajunkie/piper-morgan-product/workflows/Tests/badge.svg)](https://github.com/mediajunkie/piper-morgan-product/actions)
 [![Documentation](https://img.shields.io/badge/docs-pmorgan.tech-brightgreen.svg)](https://pmorgan.tech)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 An intelligent product management assistant that transforms routine PM tasks into natural conversations while providing strategic insights through AI-powered analysis.
 
