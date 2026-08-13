@@ -1,24 +1,25 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-13 06:5x PT fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-13 09:48 PT fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
 ✅ **ARMED — job `6d5f873a`.** Same expression `12 6,9,12,15,18,21 * * *`. Auto-expires ~2026-08-19.
 
-## The one thing to do first next session
+## pmorgan.tech register pass — status
 
-⭐ **Register/voice pass, tier 3: `docs/guides/` (15 files) + `docs/public/getting-started/README.md` — deferred deliberately, with a real reason, not "no rush."**
+**Tiers 1–3 all touched. Not the whole ~160-file KEEP surface — naming the denominator:**
 
-Tiers 1 (`dev-tips/`, the CIO obligation) and 2 (five `ALPHA_*` docs, highest-traffic) are **done and pushed** this fire — see below. Tier 3 is a different kind of task: spot-checked `canonical-handlers-architecture.md` and it's dense internal architecture documentation (commit hashes, ADR cross-references, internal code paths, terms like "M1 floor inversion" used without gloss) — 4,313 lines across 16 files. This isn't a tone problem like `dev-tips/` was; it's a real question of whether an external reader can follow architecture prose written for engineers, which needs fresh, careful attention rather than being squeezed in at the end of an already-substantial fire. **Named trigger: a fresh session, because the remaining surface is architecturally dense and deserves undivided focus, not because of time pressure** (this fire still had capacity — mail stayed empty throughout).
+- ✅ **Tier 1, `dev-tips/` (5 files, the CIO obligation)** — done. Commit `d5b1eca37`.
+- ✅ **Tier 2, five `ALPHA_*` docs** — done. Commit `9f6ab1732`.
+- ✅ **Tier 3, `guides/` (15) + `getting-started/` (3 current files)** — 17 of 18 done, 1 (`mac-dock-integration.md`) deliberately left untouched, filed as #1611. Commit `c6dcc2074`.
+- ⬜ **Not started**: the rest of the KEEP list — `public/user-guides/` (16), `installation/` (7), `features/` (5), `integrations/` (3), `configuration/` (2), `setup/` (2), `troubleshooting/` (2) + `troubleshooting.md`, `api/` (3), `public/api-reference/` (7), and more. Docs hasn't named a next priority within this remainder yet — check for a follow-up memo before picking a starting point, since their own staleness+link pass may surface a better order.
 
-Authoritative surface list: KEEP section of `docs/internal/operations/docs-site-scoping-proposal-2026-08-12.md`. Parallel with Docs' own staleness+link pass remains fine.
+## Filed this morning, not fixed — need someone else
 
-## Done this fire (2026-08-13 morning)
-
-- ✅ **`dev-tips/` (5 files) — the CIO obligation, discharged.** Fixed: hardcoded personal paths/aliases that don't generalize (PM's own checkout path, the `piper` shell alias, "already in ~/.zshrc"), an internal-only skill-name example, "our"/"team" possessives. Two files (`landing-the-plane-checklist.md`, `version-bump-and-venv-fix.md`) are genuinely internal-process/historical-incident content — added one-line framing notes rather than rewriting the substance out of content that's honestly "how this team works." Commit `d5b1eca37`.
-- ✅ **Five `ALPHA_*` docs — reviewed, mostly clean.** `ALPHA_KNOWN_ISSUES.md`, `ALPHA_AGREEMENT_v2.md`, `ALPHA_QUICKSTART.md` needed no register changes — already correctly addressed to an external tester with the right "we/you" distinction. `ALPHA_FEATURE_GUIDE.md`: glossed "Gall's Law," linked 2 bare issue refs to match the doc's own convention. `ALPHA_TESTING_GUIDE.md`: all 22 issue references were bare (unlike its siblings) — linked systematically; glossed "SEC-RBAC" (unexplained internal shorthand) twice. Commit `9f6ab1732`.
-- 🆕 **Filed #1610**: `ALPHA_AGREEMENT_v2.md` ships with a literal `[contact email]` placeholder in a legal agreement — gap open since Oct 2025, duplicated in 2 other docs (`privacy-policy-DRAFT.md`, `email-template.md`). Didn't fix it myself (don't know the real address, and guessing on a legal doc is worse than the visible placeholder). Needs a PM decision, then one fix applied across all three files.
+- **#1610**: `ALPHA_AGREEMENT_v2.md` ships with a literal `[contact email]` placeholder — open since Oct 2025, duplicated in 2 other docs. Needs PM's actual address.
+- **#1611**: `mac-dock-integration.md` is built around PM's own "6:00 AM PT standup" routine and describes what looks like a stale two-process architecture (port 8081) contradicting every current doc. Needs architecture verification + a scoping call, not a register fix.
+- **18 broken links** (9 files) pointing at content the scoping proposal excluded — sent to Docs as a memo (`2026-08-13-comms-to-docs-cc-cio-pm-tier-3-findings-broken-links-plus-two-filed-issues.md`) with the full file:line list, not fixed myself (their dimension, and 18 instances is too many to guess a repointing pattern for).
 
 ## PM capacity note — may still apply this morning
 
@@ -31,7 +32,7 @@ PM has been running the team on borrowed DesignXProduct tokens; own account acce
 - **CXO's §3 entity-model line** in `docs/internal/design/experience-across-surfaces.md` — flagged 3×, still pending.
 - **Dispatch syndication**: 3 fully unsyndicated posts, 1 partial. Checked repeatedly, nothing new.
 - **BYOC listing copy v4** — open question routed to PPM.
-- 🆕 **#1610** (above) — needs PM's contact-email decision.
+- 🆕 **#1610, #1611** (above) — need PM/architecture-owner decisions.
 
 ## Waiting on others
 
@@ -39,3 +40,4 @@ PM has been running the team on borrowed DesignXProduct tokens; own account acce
 - **PPM** — BYOC listing copy v4 blocker.
 - **CXO/PM** — entity-model ratification.
 - **Dispatch** — syndication for the 4 posts above.
+- **Docs** — the 18 broken links; whoever picks up #1611's architecture question.
