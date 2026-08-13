@@ -27,12 +27,10 @@
   .banner b { color:var(--ver); }
   section { background:var(--card); border:1px solid var(--rule); border-radius:10px;
     padding:1rem 1.3rem; margin-top:1rem; }
-  h2 { font-size:.8rem; letter-spacing:.07em; text-transform:uppercase; margin:0 0 .6rem; }
-  ul { margin:0; padding-left:1.1rem; display:flex; flex-direction:column; gap:.4rem; font-size:.94rem; }
-  ul.checks { list-style:none; padding-left:.1rem; }
-  ul.checks li { display:flex; gap:.55rem; align-items:baseline; }
-  ul.checks input { transform:translateY(2px); accent-color:var(--ver); }
-  b.n { font-variant-numeric:tabular-nums; }
+  h2 { font-size:1.02rem; margin:.1rem 0 .6rem; }
+  ul { margin:.3rem 0 .2rem; padding-left:1.2rem; }
+  li { margin:.3rem 0; font-size:.92rem; }
+  .n { color:var(--trust); }
   .st { font-size:.7rem; font-weight:650; border-radius:999px; padding:.05rem .5rem; margin-left:.3rem; white-space:nowrap; }
   .s-build { background:var(--fund-bg); color:var(--fund); }
   .s-verify { background:var(--infra-bg); color:var(--infra); }
@@ -40,6 +38,8 @@
   .s-block { background:var(--alert-bg); color:var(--alert); }
   .s-done { background:var(--ver-bg); color:var(--ver); font-weight:750; }
   .why { color:var(--soft); font-size:.85em; }
+  ul.checks { list-style:none; padding-left:.2rem; }
+  ul.checks li { display:flex; gap:.5rem; align-items:baseline; }
   ul.checks li.done > label > b:first-child { text-decoration:line-through; text-decoration-thickness:1.5px; text-decoration-color:var(--ver); }
   ul.checks li.done > label { color:var(--soft); }
   ul.checks li.done .why { opacity:.85; }
@@ -47,18 +47,17 @@
 </style>
 <main>
   <h1>MVP sprint — fundamentals to polish</h1>
-  <p class="sub">Mon Aug 10 ~7:15 AM · everything through wave 3 is DEPLOYED and live · build queue empty · check-offs persist in your browser</p>
+  <p class="sub">Thu Aug 13 ~1:40 PM · <b>v52 LIVE</b> (12 releases since Fri) · MVP 48 open / 1,049 closed · check-offs persist in your browser</p>
 
-  
-
+  <div class="banner"><b>v52 just deployed — the #1510 arc went ruling → shared rail → first consumer in one day.</b> Your morning ruling (infer → read back at low confidence → store on verify; meta-feedback its own channel) is built as one shared mechanism, and the standup preference loop (#1591) is the first consumer riding it. Also in v52: error toasts now show the server's real explanation (#1614 — every toast app-wide had been canned copy). Your six live verdicts today closed <b>#1589 #1590 #1599 #1485 #1604 #1603</b>.</div>
 
   <div class="dash" style="display:flex;flex-direction:column;gap:.5rem;background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1rem 1.3rem;margin-bottom:0">
-    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--fund)">1 · Fundamentals</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:65%;background:var(--infra)"></span><span style="width:9%;background:var(--alert)"></span><span style="width:26%;background:var(--pol)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">23: 15 built-untested · 2 diagnosing · 4 → corpus · 2 rail/sibling small</span></div>
-    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--trust)">2 · Trust</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:91%;background:var(--infra)"></span><span style="width:9%;background:var(--pol)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">12: 11 built-untested (security wave landed) · #1190 not started (wants your close/reopen word)</span></div>
-    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--ver)">3 · Verification queue</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:100%;background:var(--infra)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">12 test steps below — ALL LIVE</span></div>
-    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--infra)">4 · Launch infrastructure</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:25%;background:var(--done)"></span><span style="width:25%;background:var(--infra)"></span><span style="width:50%;background:var(--pol)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">4: discovery-rate LIVE ✓ · #1436 mypy gate built (in 2nd cut) · #1278 residuals · #1386 gate last</span></div>
-    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--pol)">5 · Polish</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:100%;background:var(--pol)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">deferred by your ruling — 0 in sprint</span></div>
-    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--done)">Closed since Fri</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:100%;background:var(--done)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">22 closed · 2 honest reopens (both re-built, in cut)</span></div>
+    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--fund)">1 · Fundamentals</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:35%;background:var(--done)"></span><span style="width:15%;background:var(--infra)"></span><span style="width:25%;background:var(--fund)"></span><span style="width:25%;background:var(--pol)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">Inversion IN SPRINT (your ruling) · Phase 0 SHIPPED · Phase 1 = next big build · #1423 at 200</span></div>
+    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--trust)">2 · Trust</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:55%;background:var(--done)"></span><span style="width:30%;background:var(--infra)"></span><span style="width:15%;background:var(--pol)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">security wave CLOSED · #1190 live · #1510 rail + #1591 in v52 (your loop test below) · #1509 next</span></div>
+    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--ver)">3 · Verification queue</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:60%;background:var(--done)"></span><span style="width:40%;background:var(--infra)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">your round today: 6/6 PASS · 4 fresh tests below, all live on v52</span></div>
+    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--infra)">4 · Launch infrastructure</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:75%;background:var(--done)"></span><span style="width:25%;background:var(--infra)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">admin grant LIVE (proven) · CI green; never-green workflow retired (your ruling) · liveness belt live</span></div>
+    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--pol)">5 · Polish</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:100%;background:var(--pol)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">still deferred by your ruling · #1615 formatting nits + #1568 todos-edit UI queued small</span></div>
+    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--done)">Closed since Fri</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:100%;background:var(--done)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">42 closed (6 on today's verdicts) · MVP 48 open</span></div>
     <div style="display:flex;gap:1rem;flex-wrap:wrap;font-size:.72rem;color:var(--soft);padding-top:.3rem;border-top:1px solid var(--rule)">
       <span><b>Status stages:</b></span>
       <span style="background:var(--pol-bg);color:var(--pol);border-radius:999px;padding:.05rem .5rem">not started / deferred</span>
@@ -70,182 +69,48 @@
     </div>
   </div>
 
-
   <section class="v">
-    <h2>✅ Post-deploy test list (exact steps — all in this cut)</h2>
+    <h2>✅ Your live test list (everything below is ON v52 now)</h2>
     <ul class="checks" id="testlist">
-      <li class="done"><input type="checkbox" id="t-conn" checked><label for="t-conn"><b>#1547 connector truth — ✓ PASS (your 7:15 test) · CLOSED</b> <span class="why">all four wired, both directions, no Demo. #1534 setup-guidance surface still wants its own look.</span></label></li>
-      <li><input type="checkbox" id="t-1411"><label for="t-1411"><b>#1411 issue update — ✗ LIVE FAIL on the # form (your 7:31 transcript)</b> <span class="why">the pinned test is green but production takes a different entry path — the Stage-0 seam isn't on it (probe-shape ≠ live-shape, #1555 family). No-hash form DID route (progress), then dead-ended on repo clarification → <b class="n">#1567</b> filed (natural repo names + clarification that binds). Full form worked: "Updated issue #108: Testing" ✓ — and the struck-through old title on GitHub is #1543's pre-fix garbage, replaced. Diagnosis agent OUT NOW (live-path trace + shared-seam fix). #1543's create-test ("create an issue about the login bug") still wants your run.</span></label></li>
-      <li class="done"><input type="checkbox" id="t-1542" checked><label for="t-1542"><b>#1542 durations — ✓ math PASS (your 7:29 test)</b> <span class="why">"in two hours" stored exactly +2h — 16:27 UTC IS 9:27 AM your time; the card showed the UTC clock face ("4:27 PM") with no label. Display = #1535 (per-user tz), storage correct.</span></label></li>
-      <li class="done"><input type="checkbox" id="t-1541" checked><label for="t-1541"><b>#1541 todos page — delete ✓ complete ✓ no-due-date ✓ (your verdict 8) · EDIT ✗</b> <span class="why">the Edit button was always a "coming soon" stub — #1548 fixed the ROUTE but no UI ever called it; my test step claimed a control that didn't exist (owned — the verify-first-for-test-instructions lesson, recurred). <b class="n">#1568</b> filed → MVP: wire inline edit to the working PUT + humanize the raw ISO dates.</span></label></li>
-      <li class="done"><input type="checkbox" id="t-1545" checked><label for="t-1545"><b>#1545 insights — no live test needed (your verdict 11)</b> <span class="why">it's defensive behavior: only visible when a malformed row exists. CI pins it (red-tested against the exact shape that 500'd you); nothing for you to do.</span></label></li>
-      <li><input type="checkbox" id="t-1431"><label for="t-1431"><b>#1431 archived — ✗ FAIL (verdict 10)</b> <span class="why">your phrasing floors instead of reaching the fixed branch, AND the floor denied a wired capability (archived-list has no rail key — same hole create_reminder had). Under #1570 diagnosis.</span></label></li>
-      <li class="done"><input type="checkbox" id="t-1512b"><label for="t-1512b"><b>#1548/#1512 todos edit + priority</b> — edit a todo's title (it saves, no silent failure); Add form has a priority dropdown; a "high" todo can feed tomorrow's standup Today bucket.</label></li>
-      <li class="done"><input type="checkbox" id="t-1517" checked><label for="t-1517"><b>#1517 no more gaslighting — ✓ verified (your 7:17 transcript) · CLOSED</b> <span class="why">it CREATED (no denial), and under challenge: no fabrication, offered to check, honest recovery. NEW BUG filed off the same transcript: <b class="n">#1562</b> "today"→Tuesday (no today-branch + server-UTC past-roll) → MVP, next dispatch. Also filed: #1563 dangling floor offers · #1564 iPad layout float · #1565 "You're currently in: Sandra and Brian".</span></label></li>
-      <li><input type="checkbox" id="t-1510"><label for="t-1510"><b>#1510 collaborate-first — compose half PASS · continuation FAIL (your 7:58 tail)</b> <span class="why">the draft flow held (no premature execution), then its own suggested phrase "file it in [owner/repo]" hit a FALSE canned denial from the files family — create_issue is wired; you'd used it minutes before. <b class="n">#1571</b> filed → MVP: stop teaching phrases that don't route + bind the drafted issue as a pending offer. Flip still untested.</span></label></li>
-      <li><input type="checkbox" id="t-1491"><label for="t-1491"><b>#1491 reminders surface — ✗ PARTIAL (your report)</b> <span class="why">fetch fixed (Due-now bucket populates, "show my reminders" works — impossible before), but proactive surfacing only fires on plain conversational turns → your 4 due reminders never appeared. Root found + filed: <b class="n">#1566</b> (category-gated gathering + over-promising copy) → MVP, dispatching.</span></label></li>
-      <li><input type="checkbox" id="t-escape2"><label for="t-escape2"><b>#1529 offer-binding</b> — <i>archive Zebra</i> (no such project) → offer appears → <i>Yes please</i>. <span class="why">Pass = it lists your projects (yesterday this launched the standup hijack).</span></label></li>
-          <li class="done"><input type="checkbox" id="t-1511" checked><label for="t-1511"><b>#1511 standups — ✓ PASS, CLOSED (your verdict)</b> <span class="why">"the essence is there and looks beta ready." Both modes reachable, each teaching the other. Polish ("clumsy/crude") + the first-run fallback carried to #1591 (Production/PUB) with PPM's spec intact.</span></label></li>
-      <li><input type="checkbox" id="t-1536b"><label for="t-1536b"><b>#1536 first-contact — ✗ DID NOT FIRE (your 7:08 PM test)</b> <span class="why">the wiring is present, so a gate skipped it — leading suspicion: GitHub connected but no <b>default repo</b>, so it correctly refused to ask a scope question and then showed nothing. That's a real gap, not a refresh problem. Filed <b class="n">#1590</b>; diagnosis agent running.</span></label></li>
-      <li><input type="checkbox" id="t-1589"><label for="t-1589"><b>Calendar greeting is wrong — <b class="n">#1589</b></b> <span class="why">"clear day ahead" against four real events, and "2:09 am" is the UTC instant wearing a local clock face. Same root your time audit named (F2/F3); the honest rule is that an emptiness claim needs a read that can establish emptiness.</span></label></li>
-</ul>
-  </section>
-
-  <section class="f">
-    <h2>1 · Fundamentals — 21 open (expanded by triage)</h2>
-    <ul>
-      <li><b>Routing rework (inversion)</b> <span class="st s-build">RATIFIED — Phase 1 next build</span> <span class="why">Arch GO w/ conditions (per-category corpus gate, registry-derived grammar, AGREE-rows narrowing w/ probe citations). Effect enum landed first per sequencing. Riders that close with it: <b class="n">#1488</b> (diagnosed — your create_ticket repro), corpus trio <b class="n">#1492/#1527/#1505</b>, divergence <b class="n">#1555</b>→Production.</span></li>
-      <li><b>Status-truth</b>: <b class="n">#1547</b> <span class="st s-verify">built — deployed cut</span> + <b class="n">#1534</b> <span class="st s-verify">closes with it</span> · slice 2 = #1553 (Production/PUB)</li>
-      <li><b>Todos &amp; reminders truth</b>: <b class="n">#1541-#1545</b> <span class="st s-verify">built</span> · <b class="n">#1491/#1493</b> datetime class <span class="st s-verify">built — 2nd cut</span> · <b class="n">#1472</b> <span class="st s-verify">verified pre-fixed + ratchet</span> · <b class="n">#1548</b> real PUT + <b class="n">#1512</b> priority control <span class="st s-verify">BUILT — 3rd cut</span> (todo edits actually save; Today bucket feedable from UI)</li>
-      <li><b>Issue rail</b>: <b class="n">#1411</b> explicit-#N + <b class="n">#1543</b> titles <span class="st s-verify">built — deployed cut</span> · <b class="n">#1431</b> archived list <span class="st s-verify">re-built</span></li>
-      <li><b>Silent-death / false-trails tails</b>: <b class="n">#1423</b> + <b class="n">#1522</b> <span class="st s-block">diagnosing — queued after inversion</span> · <b class="n">#1518</b> telemetry <span class="st s-verify">LIVE (close candidate)</span></li>
-    </ul>
-  </section>
-
-  <section class="t">
-    <h2>2 · Trust — 11 open (expanded by triage)</h2>
-    <ul>
-      <li><b class="n">#1510</b> collaborate-first <span class="st s-verify">BUILT — 2nd cut</span> · <b class="n">#1557</b> effect enum <span class="st s-verify">BUILT (ordering invariant asserted; Arch+PA thread closed)</span> · <b class="n">#1190</b> destructive-confirm <span class="st s-todo">not started — consumes needs_confirm; close/reopen threshold question on the issue</span></li>
-      <li><b>Security four</b> (from triage): <b class="n">#1501</b> owner filter (live leak proven: 62 cross-tenant rows pre-fix) · <b class="n">#1507/#1508</b> pre-existed, verified+swept (mirror bug → #1558) · <b class="n">#1517</b> floor honesty (capability manifest + anti-retraction; routing miss → corpus #1559 + rail #1560) <span class="st s-verify">ALL BUILT — 3rd cut</span></li>
-      <li><b class="n">#1529</b> flow escape <span class="st s-verify">built · your offer-binding test below</span> · <b class="n">#1532</b> conversation ownership <span class="st s-verify">built</span> · <b class="n">#1485</b> slack token scope <span class="st s-verify">built</span> · <b class="n">#1480</b> deep-link <span class="st s-verify">built</span></li>
-      <li><b>FTUX five #1536-#1540 + #1511</b> <span class="st s-block">awaiting your CXO discussion</span> <span class="why">your gut: PUB sprint / Production milestone — board untouched until you rule</span></li>
-    </ul>
-  </section>
-
-  <section class="i">
-    <h2>Decisions & unblocks only you can do</h2>
-    <h2>Decisions & unblocks only you can do</h2>
-    <ul>
-      <li><b>Deploy go-word</b> — fly CLI verified working from my seat (authed as you); say "deploy" and the 2nd cut ships without your laptop.</li>
-      <li><b>FTUX ruling after your CXO talk</b> — #1536-#1540 + #1511; boards stay untouched till then.</li>
-      <li><b>Post-deploy verdicts</b> — 20 built items, 9-step test list above.</li>
-    </ul>
-  </section>
-
-  <script>
-    document.querySelectorAll('#testlist input').forEach(cb => {
-      cb.checked = localStorage.getItem('mvp-' + cb.id) === '1';
-      cb.addEventListener('change', () => localStorage.setItem('mvp-' + cb.id, cb.checked ? '1' : '0'));
-    });
-  </script>
-</main><div class="banner"><b>NINTH CUT READY — both halves of tonight's finding.</b> <b>#1590</b>: the resolver now self-heals your missing default repo on first read (that's why every GitHub surface was empty, Radar included) → first-contact should finally show your actual issues. <b>#1589</b>: the greeting can no longer claim "a clear day" from a read that can't establish one, and the phantom "2:09 am" window is gone. Swept 9,458 passed. Say "deploy" whenever.</div>e>MVP sprint tracker — fundamentals to polish</title>
-<style>
-  :root { --bg:#FBFAF7; --ink:#20242A; --soft:#646C77; --rule:#E5E2DB; --card:#FFFFFF;
-    --fund:#7A3E9D; --fund-bg:#F3EBF8; --trust:#1F4E79; --trust-bg:#E8F0F8;
-    --ver:#166B45; --ver-bg:#E9F3EC; --infra:#8A5A00; --infra-bg:#F9F0DC;
-    --pol:#5A6570; --pol-bg:#EDEFF1; --done:#166B45; --bar:#E3E0D9; --alert:#A32C22; --alert-bg:#F9E9E6; }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg:#171A1E; --ink:#E7E9EC; --soft:#9AA3AD; --rule:#31363D; --card:#1F242A;
-      --fund:#C79BE8; --fund-bg:#2C2135; --trust:#7FB0DC; --trust-bg:#1C2A38;
-      --ver:#5FC08D; --ver-bg:#17301F; --infra:#E0B25C; --infra-bg:#332708;
-      --pol:#AEB6BE; --pol-bg:#262B31; --done:#5FC08D; --bar:#2C3138; --alert:#E58B80; --alert-bg:#3A1F1B; } }
-  :root[data-theme="dark"] { --bg:#171A1E; --ink:#E7E9EC; --soft:#9AA3AD; --rule:#31363D; --card:#1F242A;
-    --fund:#C79BE8; --fund-bg:#2C2135; --trust:#7FB0DC; --trust-bg:#1C2A38;
-    --ver:#5FC08D; --ver-bg:#17301F; --infra:#E0B25C; --infra-bg:#332708;
-    --pol:#AEB6BE; --pol-bg:#262B31; --done:#5FC08D; --bar:#2C3138; --alert:#E58B80; --alert-bg:#3A1F1B; }
-  :root[data-theme="light"] { --bg:#FBFAF7; --ink:#20242A; --soft:#646C77; --rule:#E5E2DB; --card:#FFFFFF;
-    --fund:#7A3E9D; --fund-bg:#F3EBF8; --trust:#1F4E79; --trust-bg:#E8F0F8;
-    --ver:#166B45; --ver-bg:#E9F3EC; --infra:#8A5A00; --infra-bg:#F9F0DC;
-    --pol:#5A6570; --pol-bg:#EDEFF1; --done:#166B45; --bar:#E3E0D9; --alert:#A32C22; --alert-bg:#F9E9E6; }
-  body { background:var(--bg); color:var(--ink); margin:0; padding:2rem 1.25rem 4rem;
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height:1.5; }
-  main { max-width:80ch; margin:0 auto; }
-  h1 { font-size:1.4rem; margin:0 0 .25rem; }
-  .sub { color:var(--soft); margin:0 0 1rem; font-size:.92rem; }
-  .banner { background:var(--ver-bg); border:1px solid var(--rule); border-radius:10px;
-    padding:.8rem 1.2rem; font-size:.95rem; margin-bottom:1rem; }
-  .banner b { color:var(--ver); }
-  section { background:var(--card); border:1px solid var(--rule); border-radius:10px;
-    padding:1rem 1.3rem; margin-top:1rem; }
-  h2 { font-size:.8rem; letter-spacing:.07em; text-transform:uppercase; margin:0 0 .6rem; }
-  ul { margin:0; padding-left:1.1rem; display:flex; flex-direction:column; gap:.4rem; font-size:.94rem; }
-  ul.checks { list-style:none; padding-left:.1rem; }
-  ul.checks li { display:flex; gap:.55rem; align-items:baseline; }
-  ul.checks input { transform:translateY(2px); accent-color:var(--ver); }
-  b.n { font-variant-numeric:tabular-nums; }
-  .st { font-size:.7rem; font-weight:650; border-radius:999px; padding:.05rem .5rem; margin-left:.3rem; white-space:nowrap; }
-  .s-build { background:var(--fund-bg); color:var(--fund); }
-  .s-verify { background:var(--infra-bg); color:var(--infra); }
-  .s-todo { background:var(--pol-bg); color:var(--pol); }
-  .s-block { background:var(--alert-bg); color:var(--alert); }
-  .s-done { background:var(--ver-bg); color:var(--ver); font-weight:750; }
-  .why { color:var(--soft); font-size:.85em; }
-  ul.checks li.done > label > b:first-child { text-decoration:line-through; text-decoration-thickness:1.5px; text-decoration-color:var(--ver); }
-  ul.checks li.done > label { color:var(--soft); }
-  ul.checks li.done .why { opacity:.85; }
-  .f h2{color:var(--fund)} .t h2{color:var(--trust)} .v h2{color:var(--ver)} .i h2{color:var(--infra)} .p h2{color:var(--pol)}
-</style>
-<main>
-  <h1>MVP sprint — fundamentals to polish</h1>
-  <p class="sub">Mon Aug 10 ~7:15 AM · everything through wave 3 is DEPLOYED and live · build queue empty · check-offs persist in your browser</p>
-
-  
-
-
-  <div class="dash" style="display:flex;flex-direction:column;gap:.5rem;background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1rem 1.3rem;margin-bottom:0">
-    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--fund)">1 · Fundamentals</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:65%;background:var(--infra)"></span><span style="width:9%;background:var(--alert)"></span><span style="width:26%;background:var(--pol)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">23: 15 built-untested · 2 diagnosing · 4 → corpus · 2 rail/sibling small</span></div>
-    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--trust)">2 · Trust</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:91%;background:var(--infra)"></span><span style="width:9%;background:var(--pol)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">12: 11 built-untested (security wave landed) · #1190 not started (wants your close/reopen word)</span></div>
-    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--ver)">3 · Verification queue</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:100%;background:var(--infra)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">12 test steps below — ALL LIVE</span></div>
-    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--infra)">4 · Launch infrastructure</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:25%;background:var(--done)"></span><span style="width:25%;background:var(--infra)"></span><span style="width:50%;background:var(--pol)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">4: discovery-rate LIVE ✓ · #1436 mypy gate built (in 2nd cut) · #1278 residuals · #1386 gate last</span></div>
-    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--pol)">5 · Polish</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:100%;background:var(--pol)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">deferred by your ruling — 0 in sprint</span></div>
-    <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--done)">Closed since Fri</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:100%;background:var(--done)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">22 closed · 2 honest reopens (both re-built, in cut)</span></div>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;font-size:.72rem;color:var(--soft);padding-top:.3rem;border-top:1px solid var(--rule)">
-      <span><b>Status stages:</b></span>
-      <span style="background:var(--pol-bg);color:var(--pol);border-radius:999px;padding:.05rem .5rem">not started / deferred</span>
-      <span style="background:var(--alert-bg);color:var(--alert);border-radius:999px;padding:.05rem .5rem">diagnosing / blocked</span>
-      <span style="background:var(--fund-bg);color:var(--fund);border-radius:999px;padding:.05rem .5rem">building (agent out)</span>
-      <span style="background:var(--infra-bg);color:var(--infra);border-radius:999px;padding:.05rem .5rem">built — NOT yet tested</span>
-      <span style="background:var(--ver-bg);color:var(--ver);border-radius:999px;padding:.05rem .5rem">✓ tested &amp; accepted</span>
-      <span>bar segments use these exact colors, left = closest to done</span>
-    </div>
-  </div>
-
-
-  <section class="v">
-    <h2>✅ Post-deploy test list (exact steps — all in this cut)</h2>
-    <ul class="checks" id="testlist">
-      <li class="done"><input type="checkbox" id="t-conn" checked><label for="t-conn"><b>#1547 connector truth — ✓ PASS (your 7:15 test) · CLOSED</b> <span class="why">all four wired, both directions, no Demo. #1534 setup-guidance surface still wants its own look.</span></label></li>
-      <li><input type="checkbox" id="t-1411"><label for="t-1411"><b>#1411 issue update — ✗ LIVE FAIL on the # form (your 7:31 transcript)</b> <span class="why">the pinned test is green but production takes a different entry path — the Stage-0 seam isn't on it (probe-shape ≠ live-shape, #1555 family). No-hash form DID route (progress), then dead-ended on repo clarification → <b class="n">#1567</b> filed (natural repo names + clarification that binds). Full form worked: "Updated issue #108: Testing" ✓ — and the struck-through old title on GitHub is #1543's pre-fix garbage, replaced. Diagnosis agent OUT NOW (live-path trace + shared-seam fix). #1543's create-test ("create an issue about the login bug") still wants your run.</span></label></li>
-      <li class="done"><input type="checkbox" id="t-1542" checked><label for="t-1542"><b>#1542 durations — ✓ math PASS (your 7:29 test)</b> <span class="why">"in two hours" stored exactly +2h — 16:27 UTC IS 9:27 AM your time; the card showed the UTC clock face ("4:27 PM") with no label. Display = #1535 (per-user tz), storage correct.</span></label></li>
-      <li class="done"><input type="checkbox" id="t-1541" checked><label for="t-1541"><b>#1541 todos page — delete ✓ complete ✓ no-due-date ✓ (your verdict 8) · EDIT ✗</b> <span class="why">the Edit button was always a "coming soon" stub — #1548 fixed the ROUTE but no UI ever called it; my test step claimed a control that didn't exist (owned — the verify-first-for-test-instructions lesson, recurred). <b class="n">#1568</b> filed → MVP: wire inline edit to the working PUT + humanize the raw ISO dates.</span></label></li>
-      <li class="done"><input type="checkbox" id="t-1545" checked><label for="t-1545"><b>#1545 insights — no live test needed (your verdict 11)</b> <span class="why">it's defensive behavior: only visible when a malformed row exists. CI pins it (red-tested against the exact shape that 500'd you); nothing for you to do.</span></label></li>
-      <li><input type="checkbox" id="t-1431"><label for="t-1431"><b>#1431 archived — ✗ FAIL (verdict 10)</b> <span class="why">your phrasing floors instead of reaching the fixed branch, AND the floor denied a wired capability (archived-list has no rail key — same hole create_reminder had). Under #1570 diagnosis.</span></label></li>
-      <li class="done"><input type="checkbox" id="t-1512b"><label for="t-1512b"><b>#1548/#1512 todos edit + priority</b> — edit a todo's title (it saves, no silent failure); Add form has a priority dropdown; a "high" todo can feed tomorrow's standup Today bucket.</label></li>
-      <li class="done"><input type="checkbox" id="t-1517" checked><label for="t-1517"><b>#1517 no more gaslighting — ✓ verified (your 7:17 transcript) · CLOSED</b> <span class="why">it CREATED (no denial), and under challenge: no fabrication, offered to check, honest recovery. NEW BUG filed off the same transcript: <b class="n">#1562</b> "today"→Tuesday (no today-branch + server-UTC past-roll) → MVP, next dispatch. Also filed: #1563 dangling floor offers · #1564 iPad layout float · #1565 "You're currently in: Sandra and Brian".</span></label></li>
-      <li><input type="checkbox" id="t-1510"><label for="t-1510"><b>#1510 collaborate-first — compose half PASS · continuation FAIL (your 7:58 tail)</b> <span class="why">the draft flow held (no premature execution), then its own suggested phrase "file it in [owner/repo]" hit a FALSE canned denial from the files family — create_issue is wired; you'd used it minutes before. <b class="n">#1571</b> filed → MVP: stop teaching phrases that don't route + bind the drafted issue as a pending offer. Flip still untested.</span></label></li>
-      <li><input type="checkbox" id="t-1491"><label for="t-1491"><b>#1491 reminders surface — ✗ PARTIAL (your report)</b> <span class="why">fetch fixed (Due-now bucket populates, "show my reminders" works — impossible before), but proactive surfacing only fires on plain conversational turns → your 4 due reminders never appeared. Root found + filed: <b class="n">#1566</b> (category-gated gathering + over-promising copy) → MVP, dispatching.</span></label></li>
-      <li><input type="checkbox" id="t-escape2"><label for="t-escape2"><b>#1529 offer-binding</b> — <i>archive Zebra</i> (no such project) → offer appears → <i>Yes please</i>. <span class="why">Pass = it lists your projects (yesterday this launched the standup hijack).</span></label></li>
+      <li><input type="checkbox" id="t-1591loop"><label for="t-1591loop"><b>NEW · standup preference loop (#1591 on the #1510 rail)</b> <span class="why">"give me my standup" → complete report, then ONE trailing invitation → "yes" starts the interview / "no" changes nothing and doesn't re-ask this session. Then: "use the interview from now on" → Piper reads the inference back → confirm → your NEXT standup goes straight to interview, no re-asking. An EMPTY standup (nothing to report) should fail honestly and lead with the invitation instead of demonstrating nothing.</span></label></li>
+      <li><input type="checkbox" id="t-1614"><label for="t-1614"><b>NEW · error toasts tell the truth (#1614)</b> <span class="why">redo the bad Slack token save: the toast should now show the real "starts with xapp-" explanation instead of "couldn't connect / check Socket Mode." Every error toast app-wide had been showing canned copy.</span></label></li>
+      <li><input type="checkbox" id="t-1510flip"><label for="t-1510flip"><b>#1510 mode-flip — still untested</b> <span class="why">"just do things directly from now on" → behavior shifts per your ruling; destructive actions STILL confirm (#1190 composes — execute mode still gets "Close issue #108? (yes/no)").</span></label></li>
+      <li><input type="checkbox" id="t-1411"><label for="t-1411"><b>#1411 status-word retest — your own gate</b> <span class="why">"change the status of issue #108 to in progress" — your 08-10 verdict was "initial fail, partial pass"; the fix has been deployed and waiting for your retest since. The issue stays open until the pair works for you (your rule).</span></label></li>
+      <li class="done"><input type="checkbox" id="t-1603" checked><label for="t-1603"><b>#1603 complete todo — ✓ PASS · CLOSED</b> <span class="why">chat completion works; root was a varchar=uuid break introduced by a type-annotation fix; the repository boundary now normalizes.</span></label></li>
+      <li class="done"><input type="checkbox" id="t-1604" checked><label for="t-1604"><b>#1604 default-repo dropdown — ✓ PASS · CLOSED</b> <span class="why">the control existed all along; the status endpoint asked about the wrong principal ("system", not you). Caller-scoped now.</span></label></li>
+      <li class="done"><input type="checkbox" id="t-1599" checked><label for="t-1599"><b>#1599 admin grant — ✓ PASS (prod-log proof) · CLOSED (+#1485)</b> <span class="why">your test-token click cleared require_admin and was refused by format validation before any write. Grant live; your Slack token untouched.</span></label></li>
+      <li class="done"><input type="checkbox" id="t-1590" checked><label for="t-1590"><b>#1590 first-contact demo — ✓ PASS · CLOSED</b> <span class="why">fresh conversation showed your real repo: 95 open items, #109/#108/#107. Formatting nit → #1615.</span></label></li>
+      <li class="done"><input type="checkbox" id="t-1589" checked><label for="t-1589"><b>#1589 greeting honesty — ✓ PASS ×2 · CLOSED</b> <span class="why">"very accurate calendar assessment"; no fabricated clear-day claim, no UTC clock face. Elapsed-focus-time tense nit → #1615.</span></label></li>
     </ul>
   </section>
 
   <section class="f">
-    <h2>1 · Fundamentals — 21 open (expanded by triage)</h2>
+    <h2>1 · Fundamentals</h2>
     <ul>
-      <li><b>Routing rework (inversion)</b> <span class="st s-build">RATIFIED — Phase 1 next build</span> <span class="why">Arch GO w/ conditions (per-category corpus gate, registry-derived grammar, AGREE-rows narrowing w/ probe citations). Effect enum landed first per sequencing. Riders that close with it: <b class="n">#1488</b> (diagnosed — your create_ticket repro), corpus trio <b class="n">#1492/#1527/#1505</b>, divergence <b class="n">#1555</b>→Production.</span></li>
-      <li><b>Status-truth</b>: <b class="n">#1547</b> <span class="st s-verify">built — deployed cut</span> + <b class="n">#1534</b> <span class="st s-verify">closes with it</span> · slice 2 = #1553 (Production/PUB)</li>
-      <li><b>Todos &amp; reminders truth</b>: <b class="n">#1541-#1545</b> <span class="st s-verify">built</span> · <b class="n">#1491/#1493</b> datetime class <span class="st s-verify">built — 2nd cut</span> · <b class="n">#1472</b> <span class="st s-verify">verified pre-fixed + ratchet</span> · <b class="n">#1548</b> real PUT + <b class="n">#1512</b> priority control <span class="st s-verify">BUILT — 3rd cut</span> (todo edits actually save; Today bucket feedable from UI)</li>
-      <li><b>Issue rail</b>: <b class="n">#1411</b> explicit-#N + <b class="n">#1543</b> titles <span class="st s-verify">built — deployed cut</span> · <b class="n">#1431</b> archived list <span class="st s-verify">re-built</span></li>
-      <li><b>Silent-death / false-trails tails</b>: <b class="n">#1423</b> + <b class="n">#1522</b> <span class="st s-block">diagnosing — queued after inversion</span> · <b class="n">#1518</b> telemetry <span class="st s-verify">LIVE (close candidate)</span></li>
+      <li><b>Understanding-Layer Inversion</b> <b class="n">#1595</b> <span class="st s-done">IN SPRINT — your ruling today</span> <span class="st s-verify">Phase 0 SHIPPED</span> <span class="why">93-row corpus, every row source-cited; per-category baseline 36/39 asserted rows matched; five categories named un-gateable (REVIEW-only denominators) as the remaining Phase-0 work. <b>Phase 1 — the constrained routing call behind a flag, shadow-scored — is the next substantial build.</b> Corpus keeps feeding: #1579, #1606, your live phrasings.</span></li>
+      <li><b>Silent-death burn-down</b> <b class="n">#1423</b> <span class="st s-build">254 → 200</span> <span class="why">slice 3b took the "silent nine" (zero-log swallows — incl. conversation-history assembly, where a failure silently lost the LLM the whole conversation). Next: the 57 MED handlers.</span></li>
+      <li><b>Todo/data truth</b>: <b class="n">#1603</b> <span class="st s-done">✓ closed on your test</span> · <b class="n">#1570 #1573 #1541 #1560</b> <span class="st s-done">closed</span> · <b class="n">#1568</b> edit UI <span class="st s-todo">queued small</span></li>
+      <li><b>Issue rail</b>: <b class="n">#1411</b> <span class="st s-verify">fix deployed — awaiting YOUR retest (your gate)</span> · <b class="n">#1431</b> <span class="st s-block">repo method fixed; your "show me my archived projects" phrasing is corpus row #1579 (the "me" token)</span></li>
+      <li><b>Time</b>: <b class="n">#1572</b> per-user tz umbrella <span class="st s-todo">queued after Inversion Phase 1</span> <span class="why">supply is still 0% — every typed clock time reads on server UTC; #1615's tense nit joins this family.</span></li>
     </ul>
   </section>
 
   <section class="t">
-    <h2>2 · Trust — 11 open (expanded by triage)</h2>
+    <h2>2 · Trust</h2>
     <ul>
-      <li><b class="n">#1510</b> collaborate-first <span class="st s-verify">BUILT — 2nd cut</span> · <b class="n">#1557</b> effect enum <span class="st s-verify">BUILT (ordering invariant asserted; Arch+PA thread closed)</span> · <b class="n">#1190</b> destructive-confirm <span class="st s-todo">not started — consumes needs_confirm; close/reopen threshold question on the issue</span></li>
-      <li><b>Security four</b> (from triage): <b class="n">#1501</b> owner filter (live leak proven: 62 cross-tenant rows pre-fix) · <b class="n">#1507/#1508</b> pre-existed, verified+swept (mirror bug → #1558) · <b class="n">#1517</b> floor honesty (capability manifest + anti-retraction; routing miss → corpus #1559 + rail #1560) <span class="st s-verify">ALL BUILT — 3rd cut</span></li>
-      <li><b class="n">#1529</b> flow escape <span class="st s-verify">built · your offer-binding test below</span> · <b class="n">#1532</b> conversation ownership <span class="st s-verify">built</span> · <b class="n">#1485</b> slack token scope <span class="st s-verify">built</span> · <b class="n">#1480</b> deep-link <span class="st s-verify">built</span></li>
-      <li><b>FTUX five #1536-#1540 + #1511</b> <span class="st s-block">awaiting your CXO discussion</span> <span class="why">your gut: PUB sprint / Production milestone — board untouched until you rule</span></li>
+      <li><b>The #1510 arc — ruled this morning, shipped this afternoon</b>: shared verified-inference rail <span class="st s-verify">in v52</span> · <b class="n">#1591</b> standup preference capture <span class="st s-verify">in v52 — your loop test above</span> · <b class="n">#1509</b> consent gate + capability legibility <span class="st s-build">next consumer</span> <span class="why">one store, one scoring gate, meta-feedback its own channel per your ruling. One flag with PPM: the interview's taught phrase changed (a stored-preference user was locked in a loop by their own preference).</span></li>
+      <li><b class="n">#1190</b> destructive confirm <span class="st s-verify">LIVE (your close/reopen DESTRUCTIVE ruling)</span> <span class="why">"Close issue #108? (yes/no)" — and it composes with mode-flip: execute mode still confirms destructive actions.</span></li>
+      <li><b>Security wave</b> <span class="st s-done">ALL CLOSED</span>: <b class="n">#1485 #1507 #1508 #1532 #1558</b> <span class="why">incl. the two-account session exchange run live at HEAD — mutual 404, both directions, no over-block. #1601 (str(None) principal edge) → Production.</span></li>
+      <li><b>Honesty plumbing</b>: <b class="n">#1614</b> toasts <span class="st s-verify">in v52</span> · <b class="n">#1609</b> <span class="st s-todo">Production</span> <span class="why">no context-editing surface exists — the "Settings → Profile" the first-response copy pointed at was never built; copy fixed, gap filed.</span></li>
     </ul>
   </section>
 
   <section class="i">
-    <h2>Decisions & unblocks only you can do</h2>
-    <h2>Decisions & unblocks only you can do</h2>
+    <h2>Decisions &amp; open PM items</h2>
     <ul>
-      <li><b>Deploy go-word</b> — fly CLI verified working from my seat (authed as you); say "deploy" and the 2nd cut ships without your laptop.</li>
-      <li><b>FTUX ruling after your CXO talk</b> — #1536-#1540 + #1511; boards stay untouched till then.</li>
-      <li><b>Post-deploy verdicts</b> — 20 built items, 9-step test list above.</li>
+      <li><b>Nothing blocks the build queue right now.</b> Today's decisions (Inversion into the sprint · CI workflow retired with gap audit — which found Windows users can't clone the repo at all, #1616 · both deploy words) are all executed.</li>
+      <li><b>Optional, PPM-lane but yours to shortcut</b>: what "clear my reminders" means (complete / delete / dismiss — #1605/#1569) · PPM's word on the #1591 teaching-line change · #1616 filename policy (rec: length-lint on new mailbox files + the Windows workaround doc).</li>
+      <li><b>Watch for</b>: Sep 1 discovery-rate first measurement (forward-only tagging live since 08-12; it will be a first data point, not a trend — Exec will say so in the report).</li>
     </ul>
   </section>
 
