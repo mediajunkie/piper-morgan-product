@@ -38,9 +38,11 @@ user-guide.md + NAVIGATION.md (post-ratification, self-declared internal-audienc
 silent) excluded; site title added. NAVIGATION count-rot stripped (11 stale counts). CONTRIBUTING
 two-surfaces guard-rail added. Comms handoff sent (register-pass surface final; dev-tips/ first).
 methodology-49 "Described Is Not Running" filed by CIO from my routed candidate, verified.
-**⏳ Pending verification**: background watcher on the Pages build → on green, record spot-URL
-results (kept 200 / excluded 404 / new title) in the session log. If the build is red or URLs
-don't flip, that's a finding, not a formality — check before claiming the scoping "done."
+**✅ VERIFIED COMPLETE (20:2x)**: build green, all spot-URLs correct (kept 200 / excluded 404 /
+title "Piper Morgan Documentation"). Verification found + fixed 2 real defects same evening: the
+`reference`→`references/` exclude prefix collision (trailing slash now load-bearing, commented)
+and CONTRIBUTING's pre-existing never-rendered gap (special-filename plugin behavior, frontmatter
+added). The curation is live end to end.
 **Remaining scrub queue**: per-surface staleness+link pass on the final keep-list (~160 pages,
 batched over fires; CIO's testing/ file-level-discretion condition applies during this pass);
 Comms register pass (their cadence); #1608 is Lead/CIO's lane. (#1593 FIXED by Lead 08-12,
