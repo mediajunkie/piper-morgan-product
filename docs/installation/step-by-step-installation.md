@@ -68,6 +68,24 @@ cd piper-morgan-workspace
 
 ---
 
+### Step 3: Download Piper Morgan
+
+**Type this command** (press Enter after each line):
+
+```bash
+git clone https://github.com/mediajunkie/piper-morgan-product.git
+cd piper-morgan-product
+```
+
+**What these do**:
+
+- `git clone ...` downloads the Piper Morgan code into a new `piper-morgan-product` folder
+- `cd piper-morgan-product` moves you into that folder
+
+**Verify it worked**: Type `pwd` and press Enter. You should see a path ending in `piper-morgan-product`.
+
+---
+
 ## 🚀 Start Docker (Required Before Wizard)
 
 Piper Morgan's database runs in Docker. First, **make sure Docker Desktop is running**:
@@ -122,7 +140,7 @@ Go back to your **original terminal tab** (the one in the piper-morgan-product f
 
 ## 🎯 Recommended: Use the Setup Wizard (Automated)
 
-Instead of doing Steps 5-10 manually, you can use the automated setup wizard:
+Instead of doing the manual steps below, you can use the automated setup wizard:
 
 ```bash
 python3.12 main.py setup
@@ -147,7 +165,9 @@ If you prefer to do it manually, continue below. Otherwise, you're done! 🎉
 
 ## Manual Setup (Optional Alternative)
 
-If you prefer to understand each step, follow Steps 5-10 below. Both approaches work!
+If you prefer to understand each step, follow the steps below. Both approaches work!
+
+⚠️ **Note**: these steps currently stop after installing dependencies (Step 8) and don't yet cover verifying the install or starting the server — if you're following the manual path, use the [Quick Reference](./quick-reference.md)'s steps 6 onward (verify installation, then `python main.py`) to finish.
 
 ### Step 5: Create a Python Virtual Environment
 
@@ -245,7 +265,7 @@ Press Enter.
 
 ### Step 8: Install All Python Dependencies (THE KEY STEP)
 
-**This is the step that fixes the structlog error!** This command installs all the Python packages Piper Morgan needs.
+This command installs all the Python packages Piper Morgan needs.
 
 **Type this command**:
 
