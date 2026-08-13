@@ -29,6 +29,7 @@ exclude:
   - research
   - 00-START-HERE-LEAD-DEV.md
   - user-guide.md
+  - NAVIGATION.md
   # Pre-existing patterns (kept as belt-and-suspenders)
   - archive
   - archive/

@@ -64,8 +64,14 @@ the *site* does not hide anything — it gives the site a legible purpose.
   `CONTRIBUTING.md`, `dev-tips/` (5), `TESTING.md` + `testing/` (7), `security/` (1),
   `api-key-management.md`, `database-production-setup.md`, `public/migration/` (1) +
   `migration/` (3), `VERSION_NUMBERING.md` + `versioning.md`
-- **Record**: `releases/` (19), `legal/` (1), `accessibility/` (3), `references/` (2, citations),
-  `NAVIGATION.md` (needs rewrite to match the curated scope — currently maps the whole tree)
+- **Record**: `releases/` (19), `legal/` (1), `accessibility/` (3), `references/` (2, citations)
+- ~~`NAVIGATION.md`~~ **moved to EXCLUDE 2026-08-12** (post-ratification, Docs, consistent with
+  the ratified principle rather than a scope expansion): its own header declares it
+  internal-audience ("Agents, developers, architects, and internal contributors") and points
+  visitors to README.md — and nearly everything it maps is in the excluded corpus. Rewriting it
+  into a second visitor nav would duplicate README. It stays the internal navigation surface on
+  GitHub; site-exclusion note added to its header, rot-prone counts stripped (all were stale when
+  checked). Flagged to CIO for the record rather than silently applied.
 - **Assets**: `assets/` (images used by kept pages)
 
 ### Judgment calls flagged for CIO (not silently decided)
