@@ -1,8 +1,10 @@
 # Landing the Plane: Session End Checklist
 
+**What this is**: the checklist Piper Morgan's own coding agents run at the end of every session, kept here for transparency into how the team actually works — not a set of steps you need to follow as a visitor. If you're building your own agent-workflow discipline, the shape below (discover → verify → close → sync → report) may be useful as a reference.
+
 **Purpose**: Ensure no work is lost, all tasks are tracked, and the codebase is in a clean state before ending a session.
 
-**When to use**: At the end of EVERY coding session, before the agent shuts down.
+**When to use**: At the end of every Piper Morgan coding-agent session, before the agent shuts down.
 
 ---
 

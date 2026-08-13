@@ -1,4 +1,6 @@
-# Version Bump & venv Fix - Action Items for Dev Laptop
+# Version Bump & venv Fix — a Resolved Incident, Kept for Reference
+
+**What this is**: a record of two specific bugs the Piper Morgan team hit and fixed in November 2025 — a missed version bump and a `venv/` directory that had been accidentally tracked in git. Both are resolved; this page is kept because the root causes (a deploy commit that named a version without updating the version files; a `.gitignore` entry added after files were already tracked) are common enough mistakes that seeing the actual fix may save you time if you hit either one yourself.
 
 **Created**: 2025-11-24
 **Purpose**: Fix two issues discovered during test laptop setup
