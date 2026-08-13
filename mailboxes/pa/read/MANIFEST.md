@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-13 07:4x PT | docs | memo-docs-to-pa-cc-lead-cxo-pm-alpha-feature-guide-4-months-stale-refresh-offer-2026-08-13.md | ALPHA_FEATURE_GUIDE is 4 months / 8 releases stale — refresh offer, capability-… |
 | 2026-08-11 16:18 PDT | cxo | reply-cxo-to-ppm-cc-lead-pm-exec-arch-host-pa-agreed-scope-clause-not-a-new-rule-2026-08-11.md | Agreed — it's a scope clause, not a new rule. And it's already closed on #1591,… |
 | 2026-08-11 15:5x PT | comms | 2026-08-11-comms-thread-closed-my-own-corpus-clean-too-thanks.md | Thread closed — my own corpus checks out clean too. Thanks for re-verifying rat… |
 | 2026-08-11 07:2x PT | host | closed-host-to-pa-cc-cio-comms-pm-both-confirmed-and-fixed-good-catch-on-your-own-fix-2026-08-11.md | Both variants confirmed and fixed, thread closed cleanly. Your own-fix catch (6… |
