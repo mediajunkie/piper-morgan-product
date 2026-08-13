@@ -99,23 +99,23 @@ v0.8.11.0 is the "Finish the Unfinished" release: a systematic audit of half-don
 
 **Your data, correctly yours:**
 
-- **Personality questionnaire works again** (#1422): questionnaire answers now actually shape Piper's tone — warmth, confidence, level of detail. A database column lost in an earlier migration had been silently discarding them. Prior answers were unrecoverable, so everyone re-answers once after updating.
-- **Your LLM provider choice is yours** (#1415): provider selection (default provider + authorized list) now resolves per user. One user's setup can no longer pin the whole instance to their provider.
-- **Owner-scoping fixes** (#1420, #1421, #1434): similarity search and default-project resolution are scoped to your account, and they fail closed — deny rather than fall back to shared data — when ownership can't be confirmed. An authentication check that silently fell back to a global key is also fixed.
-- **List/todo metadata persists** (#1435): a bug silently discarded list and todo metadata on every save.
+- **Personality questionnaire works again** ([#1422](https://github.com/mediajunkie/piper-morgan-product/issues/1422)): questionnaire answers now actually shape Piper's tone — warmth, confidence, level of detail. A database column lost in an earlier migration had been silently discarding them. Prior answers were unrecoverable, so everyone re-answers once after updating.
+- **Your LLM provider choice is yours** ([#1415](https://github.com/mediajunkie/piper-morgan-product/issues/1415)): provider selection (default provider + authorized list) now resolves per user. One user's setup can no longer pin the whole instance to their provider.
+- **Owner-scoping fixes** ([#1420](https://github.com/mediajunkie/piper-morgan-product/issues/1420), [#1421](https://github.com/mediajunkie/piper-morgan-product/issues/1421), [#1434](https://github.com/mediajunkie/piper-morgan-product/issues/1434)): similarity search and default-project resolution are scoped to your account, and they fail closed — deny rather than fall back to shared data — when ownership can't be confirmed. An authentication check that silently fell back to a global key is also fixed.
+- **List/todo metadata persists** ([#1435](https://github.com/mediajunkie/piper-morgan-product/issues/1435)): a bug silently discarded list and todo metadata on every save.
 
 **Honest conversation:**
 
-- **Greetings don't swallow your question** (#1416): "Hi! How do I address you?" gets the question answered — only pure pleasantries get the short greeting response.
-- **"Connect my GitHub" gets real guidance** (#1417): connect/setup requests reach a real answer pointing at Settings → Integrations, instead of a wrong generic decline.
-- **No more false "there is nothing" claims** (#1425): status, agenda, retrospective, and priority answers distinguish "the lookup failed" from "genuinely empty" — you'll see "I couldn't check your todos just now" instead of a false "no pending tasks."
-- **No more false capability denials** (#1426): stale responses claiming Piper can't accept file uploads or set reminders (both have worked for a while) are gone.
-- **Classification failures tell the truth** (#1414): LLM key and quota problems surface an honest message about the key instead of "Something unexpected happened."
-- **Session memory recall** (#1394): "what did we create this session?" reads a real ledger of session activity, and follow-ups like "update the title" resolve to the issue you just created.
+- **Greetings don't swallow your question** ([#1416](https://github.com/mediajunkie/piper-morgan-product/issues/1416)): "Hi! How do I address you?" gets the question answered — only pure pleasantries get the short greeting response.
+- **"Connect my GitHub" gets real guidance** ([#1417](https://github.com/mediajunkie/piper-morgan-product/issues/1417)): connect/setup requests reach a real answer pointing at Settings → Integrations, instead of a wrong generic decline.
+- **No more false "there is nothing" claims** ([#1425](https://github.com/mediajunkie/piper-morgan-product/issues/1425)): status, agenda, retrospective, and priority answers distinguish "the lookup failed" from "genuinely empty" — you'll see "I couldn't check your todos just now" instead of a false "no pending tasks."
+- **No more false capability denials** ([#1426](https://github.com/mediajunkie/piper-morgan-product/issues/1426)): stale responses claiming Piper can't accept file uploads or set reminders (both have worked for a while) are gone.
+- **Classification failures tell the truth** ([#1414](https://github.com/mediajunkie/piper-morgan-product/issues/1414)): LLM key and quota problems surface an honest message about the key instead of "Something unexpected happened."
+- **Session memory recall** ([#1394](https://github.com/mediajunkie/piper-morgan-product/issues/1394)): "what did we create this session?" reads a real ledger of session activity, and follow-ups like "update the title" resolve to the issue you just created.
 
 **Under the hood:**
 
-- Route-level cleanups: several endpoints return clean validation errors (422/404) instead of crashing with 500s, and knowledge-graph writes now record which user acted (#1436).
+- Route-level cleanups: several endpoints return clean validation errors (422/404) instead of crashing with 500s, and knowledge-graph writes now record which user acted ([#1436](https://github.com/mediajunkie/piper-morgan-product/issues/1436)).
 - Build-time ratchets now count known debt classes (unscoped data reads, silently-swallowed exceptions, stubs) and fail the build if any count grows — the audited problems can't quietly return.
 
 **Database Migration Required**: Run `alembic upgrade head` after updating (two migrations: the session-activity ledger and the restored preferences column).
@@ -319,7 +319,7 @@ This 2-minute questionnaire configures:
 - **Learning Style**: examples, explanations, exploration
 - **Feedback Level**: minimal, moderate, detailed
 
-**Returning tester?** Re-answer the questionnaire once after updating to 0.8.11 — answers saved before this release were lost to a database bug (#1422), and your answers now genuinely shape Piper's tone.
+**Returning tester?** Re-answer the questionnaire once after updating to 0.8.11 — answers saved before this release were lost to a database bug ([#1422](https://github.com/mediajunkie/piper-morgan-product/issues/1422)), and your answers now genuinely shape Piper's tone.
 
 ### Step 6: Verify Installation
 
@@ -436,7 +436,7 @@ Personalization and honesty are the focus this release. **Does the questionnaire
 
 Each walk below is a concrete sequence you can follow and report on.
 
-### Test Walk 1: Questionnaire → tone shift (#1422)
+### Test Walk 1: Questionnaire → tone shift ([#1422](https://github.com/mediajunkie/piper-morgan-product/issues/1422))
 
 1. Re-answer the personality questionnaire: run `python main.py preferences` (or use the Settings page)
 2. Answer deliberately — for example, pick "concise" and "minimal feedback"
@@ -444,9 +444,9 @@ Each walk below is a concrete sequence you can follow and report on.
 4. Check: does the tone reflect your answers (shorter, more direct)?
 5. Change your answers to the opposite (for example, "detailed") and chat again — does the tone shift with them?
 
-**Note**: answers from before 0.8.11 were lost to a database bug (#1422) and can't be recovered — everyone re-answers once.
+**Note**: answers from before 0.8.11 were lost to a database bug ([#1422](https://github.com/mediajunkie/piper-morgan-product/issues/1422)) and can't be recovered — everyone re-answers once.
 
-### Test Walk 2: Your own LLM provider (#1415)
+### Test Walk 2: Your own LLM provider ([#1415](https://github.com/mediajunkie/piper-morgan-product/issues/1415))
 
 1. Go to Settings → LLM Keys
 2. Enter your own API key and select your provider as the default
@@ -454,34 +454,34 @@ Each walk below is a concrete sequence you can follow and report on.
 4. Check your provider's usage dashboard — do the requests show up there?
 5. If you can test with a second user: have each account pick a different provider, and confirm each user's chats hit their own provider — not the other user's.
 
-### Test Walk 3: Greeting + question in one message (#1416)
+### Test Walk 3: Greeting + question in one message ([#1416](https://github.com/mediajunkie/piper-morgan-product/issues/1416))
 
 1. Send: "Hi! What can you help me with?"
 2. Check: does the reply answer the question, not just greet you back?
 3. Try variants: "Good morning — what's on my list today?", "Hey Piper, how do I address you?"
 4. A pure greeting ("Hi!") should still get a short, friendly response.
 
-### Test Walk 4: Connect-my-GitHub guidance (#1417)
+### Test Walk 4: Connect-my-GitHub guidance ([#1417](https://github.com/mediajunkie/piper-morgan-product/issues/1417))
 
 1. In chat, send: "connect my github"
 2. Check: do you get concrete guidance pointing at Settings → Integrations — not a generic "I can't do that"?
 3. Try variants: "can you connect my slack", "set up my github integration"
 
-### Test Walk 5: Honest status and agenda claims (#1425)
+### Test Walk 5: Honest status and agenda claims ([#1425](https://github.com/mediajunkie/piper-morgan-product/issues/1425))
 
 1. Ask: "what's my status?", "what's on my agenda?", or "what's my standup?"
 2. Check every claim about your todos and issues against what you actually have
 3. "I couldn't check your todos just now" is correct behavior when a lookup fails
 4. A false "you have no pending tasks" when you DO have tasks is a bug — please report it
 
-### Test Walk 6: Honest LLM-key errors (#1414)
+### Test Walk 6: Honest LLM-key errors ([#1414](https://github.com/mediajunkie/piper-morgan-product/issues/1414))
 
 1. Temporarily break your API key (remove it in Settings, or paste an invalid one)
 2. Send a chat message
 3. Check: does the error say something honest about the key or provider problem — not "Something unexpected happened"?
 4. Restore your key and confirm chat works again
 
-### Test Walk 7: Session recall (#1394)
+### Test Walk 7: Session recall ([#1394](https://github.com/mediajunkie/piper-morgan-product/issues/1394))
 
 1. In chat, create something — for example, "create an issue about testing session recall"
 2. Ask: "what did we create this session?"
@@ -767,7 +767,7 @@ The setup wizard (GUI or CLI) will guide you through Docker installation with pl
 - Make sure other user exists in database
 - Try conversational command: "share my [resource] with [email] as editor"
 - Verify resource ownership (you must own the resource to share it)
-- Check that SEC-RBAC is active: `python main.py status`
+- Check that owner-based access control (internally called SEC-RBAC) is active: `python main.py status`
 
 ---
 
@@ -812,7 +812,7 @@ SEVERITY: [blocker/major/minor]
 - Preference data is stored locally in your database
 - You can opt out of analytics in settings
 - Setup wizard completion statistics help us improve onboarding
-- SEC-RBAC Phase 1 ensures owner-based access control
+- Owner-based access control (internally called SEC-RBAC Phase 1) keeps your resources yours
 - Shared resources require explicit permission grants
 - Your files, lists, todos, and projects are private by default
 - **Note**: Data is not yet fully encrypted at rest (see `ALPHA_KNOWN_ISSUES.md` for details)

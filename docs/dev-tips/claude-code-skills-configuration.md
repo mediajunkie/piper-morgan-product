@@ -21,14 +21,11 @@ No skills found
 
 **Fix**: Launch Claude Code from the project root:
 ```bash
-cd /Users/xian/Development/piper-morgan
+cd /path/to/piper-morgan
 claude
 ```
 
-Or use the `piper` alias (already configured in ~/.zshrc):
-```bash
-piper  # Does cd + starts server
-```
+If you launch the project often, a shell alias that does the `cd` for you (and starts anything else you need) saves a step.
 
 ---
 
@@ -39,7 +36,7 @@ piper  # Does cd + starts server
 | Personal | `~/.claude/skills/<name>/SKILL.md` | All your projects |
 | Project | `.claude/skills/<name>/SKILL.md` | This project only |
 
-Our skills are project-level, so they require launching from the project directory.
+This project's skills are project-level, so they require launching from the project directory.
 
 ---
 
@@ -47,7 +44,7 @@ Our skills are project-level, so they require launching from the project directo
 
 If you have many comprehensive skills, they may exceed the default 15,000 character budget. Check with `/context` for warnings about excluded skills.
 
-**Fix** (already in ~/.zshrc):
+**Fix**: raise the budget in your shell profile:
 ```bash
 export SLASH_COMMAND_TOOL_CHAR_BUDGET=50000
 ```
@@ -62,10 +59,9 @@ claude
 /skills  # Should show 5 skills
 ```
 
-Or invoke directly:
+Or invoke any of them directly by name, e.g.:
 ```
-/audit-cascade
-/check-mailbox
+/your-skill-name
 ```
 
 ---

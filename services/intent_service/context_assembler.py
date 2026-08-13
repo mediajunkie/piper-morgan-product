@@ -65,7 +65,7 @@ async def _current_time_for_user(user_id=None) -> str:
         from zoneinfo import ZoneInfo
 
         return datetime.now(ZoneInfo(tz_name)).strftime("%I:%M %p %Z")
-    except Exception:
+    except Exception:  # silent-ok: pure display; a stored bad tz would log every turn — no clock face beats a wrong one (#1589 rationale)
         return ""
 
 
@@ -1452,7 +1452,8 @@ class ContextAssembler:
         try:
             await resolve_repo(user_id=uid)
             return True
-        except Exception:
+        except Exception as e:  # silent-ok: probe answers False, but LOGGED — UnresolvedRepoError is the expected miss; any OTHER exception is a broken resolver reading as "no repo" (#1423 3b)
+            logger.warning("repo_probe_unexpected_error", error=str(e))
             return False
 
     # ------------------------------------------------------------------
@@ -1673,7 +1674,7 @@ class ContextAssembler:
                     # #1573 sweep: ensure_utc guards an offset-less string
                     # from a naive-vs-aware TypeError against the cutoff.
                     return ensure_utc(datetime.fromisoformat(s.replace("Z", "+00:00")))
-                except Exception:
+                except Exception:  # silent-ok: per-item parse, None-on-failure is the documented contract; per-row logging is noise
                     return None
 
             recent = []
@@ -1736,7 +1737,7 @@ class ContextAssembler:
                     # #1573 sweep: ensure_utc guards an offset-less string
                     # from a naive-vs-aware TypeError against now/cutoff.
                     return ensure_utc(datetime.fromisoformat(str(s).replace("Z", "+00:00")))
-                except Exception:
+                except Exception:  # silent-ok: per-item parse, None-on-failure is the documented contract; per-row logging is noise
                     return None
 
             items = []

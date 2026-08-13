@@ -99,7 +99,7 @@ rm test.txt
 ## Benefits
 
 ✅ Commits succeed on first try
-✅ Consistent formatting across team
+✅ Consistent formatting across contributors
 ✅ No manual newline management
 ✅ Works automatically in most editors
 ✅ Reduces cognitive load

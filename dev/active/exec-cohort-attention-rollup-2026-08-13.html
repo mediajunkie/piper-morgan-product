@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-08-13</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#16160f; --card:#1e1e19; --line:#33332b; --ink:#ededE6; --mute:#a0a093;
+            --red:#e38672; --amber:#d5a44b; --grey:#8a8a8a; --green:#79b885; --link:#7aa2f7; }
+  }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:860px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.25rem; }
+  .legend { font-size:.8rem; color:var(--mute); margin:.5rem 0 1.5rem; }
+  .legend span { margin-right:1rem; white-space:nowrap; display:inline-block; }
+  h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .item.decision { border-left-color:var(--red); }
+  .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; }
+  .agent { font-weight:700; }
+  .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
+         border-radius:4px; background:#eee; color:#444; }
+  .sev.drift { background:#fdf3e2; color:var(--amber); }
+  .summary { margin:.35rem 0 .3rem; }
+  .links a { color:var(--link); text-decoration:none; font-size:.82rem; margin-right:.9rem; }
+  .links a:hover { text-decoration:underline; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  .bigclear { font-size:1.05rem; color:var(--green); font-weight:600; margin:0; }
+  .resolved { font-size:.86rem; color:var(--mute); margin-top:.25rem; }
+  .resolved s { color:#999; }
+  .stat-row { display:flex; gap:.6rem; margin:1rem 0 0; flex-wrap:wrap; }
+  .stat { flex:1; min-width:130px; background:var(--card); border:1px solid var(--line);
+          border-radius:6px; padding:.6rem .8rem; }
+  .stat dt { font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--mute); margin:0; }
+  .stat dd { margin:.15rem 0 0; font-size:1.3rem; font-weight:700; }
+  footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec (Chief of Staff) · <b>Thursday, August 13, 2026 · 07:45 PT</b> · live-state pass · sources: 10 role carry-forwards + live GitHub + exec inbox sweep · closing the Fri Aug 7 – Thu Aug 13 sprint week</p>
+
+  <dl class="stat-row">
+    <div class="stat"><dt>Blockers</dt><dd>0</dd></div>
+    <div class="stat"><dt>Decisions</dt><dd>9</dd></div>
+    <div class="stat"><dt>Drift/awareness</dt><dd>4</dd></div>
+    <div class="stat"><dt>Resolved this week</dt><dd>7</dd></div>
+    <div class="stat"><dt>MVP not done</dt><dd>52</dd></div>
+  </dl>
+
+  <p class="legend">
+    <span>🛑 <b>Blocker</b> — work stuck (TOP)</span>
+    <span>🔴 <b>Decision</b> — needs your call</span>
+    <span>🟡 <b>Drift/awareness</b> — worth knowing, no decision</span>
+    <span>⚪ <b>Clean</b> — no open PM item</span>
+  </p>
+
+  <h2>🛑 Blockers — work that's stuck</h2>
+  <div class="item clear"><p class="bigclear">✅ No blocked work right now.</p>
+  <p class="summary" style="color:var(--mute);font-size:.85rem;margin-top:.3rem">Checked: exec inbox (0 unread), all 10 carry-forwards' "awaiting" sections — every open item is either mid-build or genuinely PM-gated, none reports a hard stop.</p></div>
+
+  <h2>🔴 Decisions awaiting you</h2>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Lead / CXO / PPM</span><span class="sev">Product</span></div>
+    <p class="summary"><b>#1510 — declared vs. inferred working-mode fork.</b> Still open (verified live). PM's own 08-10 comment on the issue left the substantive question unresolved ("the compose flow passed, the fail is the continuation"). Three consumers are waiting on the answer: #1591's invitation persistence, the standup preference capture, and #1509 — none may build a local preference store until this lands.</p>
+    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/1510">#1510 →</a></div>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">CIO</span><span class="sev">Strategic</span></div>
+    <p class="summary"><b>Innovation agenda: should CIO's lane shift from building mechanisms to protecting a property?</b> Open since Aug 2 (11 days). This week's evidence is the sharpest yet — CIO's own line: "every correction that mattered came from someone other than the author. None of it is mechanized."</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Comms</span><span class="sev">Legal</span></div>
+    <p class="summary"><b>#1610 — real contact email needed.</b> <code>ALPHA_AGREEMENT_v2.md</code> §15 ships a literal <code>[contact email]</code> placeholder in a legal agreement, gap open since Oct 2025, duplicated in the privacy policy draft and an email template. One real address fixes all three. <i>Likely the same underlying gap PA flagged separately in the privacy-policy review below — worth answering once.</i></p>
+    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/1610">#1610 →</a></div>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">PA</span><span class="sev">Legal</span></div>
+    <p class="summary"><b>Privacy policy — three real gaps, all yours.</b> Sub-processor completeness (which LLM provider is actually in production, named correctly?), retention practice (none exists in code — the policy shouldn't claim one), and the contact address (same gap as #1610). <code>/privacy</code> also renders as 29 characters of server-side text — undecided from an agent seat whether a real policy shows once JS runs, and Anthropic's review may fetch without JS.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Comms</span><span class="sev">Editorial</span></div>
+    <p class="summary"><b>Narrative beats need a steer.</b> 8 candidate beats for 7 open slots; the queue runs dry after Aug 18 with no direction given. Beats 22–23 (this week's slots) still need your voice-pass + art.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Docs</span><span class="sev">Content</span></div>
+    <p class="summary"><b>website#31 — a rendering bug live since Ship #039, affecting 15+ published Ships.</b> Filed Aug 5, still unanswered. Two small calls: fix forward-only vs. regenerate the back-catalog, and whether Ship's <b>Metrics</b> line becomes a real heading.</p>
+    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-website/issues/31">website#31 →</a></div>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Docs</span><span class="sev">Legal</span></div>
+    <p class="summary"><b>MIT license badge, no LICENSE file.</b> Root README displays an MIT badge; zero LICENSE-file hits anywhere in repo history. Add the file, or adjust the badge.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Docs</span><span class="sev">Housekeeping</span></div>
+    <p class="summary"><b>Docs-tree flattening — go/no-go.</b> One high-confidence candidate (<code>roadmap/CORE/</code>, 9 subdirs/76 files, every filename already encodes its epic — nesting is fully redundant). Plan-only, not executed, per your stated wariness about this class of change.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">CXO</span><span class="sev">Design</span></div>
+    <p class="summary"><b><code>experience-across-surfaces.md</code> — four small wording calls.</b> A one-sentence formulation, a column label, a corollary, and whether Surface 1 counts among the 1.0 five. Unchanged since Aug 9. Note: the Surface-1 question was separately settled elsewhere this week (CXO/PPM converged it's in) — worth confirming this doc just needs updating to match rather than a fresh decision.</p>
+  </div>
+
+  <h2>🟡 Drift / awareness — no decision, worth knowing</h2>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">CIO</span><span class="sev drift">Instrument</span></div>
+    <p class="summary">Shared memory index (<code>MEMORY.md</code>) has 13 lines of headroom before its silent-truncation ceiling. Not urgent (flat rate, ~3 lines/day), but the fix (a denser packing format) needs your ruling before Lead builds it.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">HOST</span><span class="sev drift">Infra</span></div>
+    <p class="summary">A memory-overlimit warning hook is registered but not actually live — needs a settings-reload or session restart that no agent can trigger itself. Purely operational; flagged so it isn't mistaken for shipped protection.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Docs</span><span class="sev drift">Backlog</span></div>
+    <p class="summary">Docs' own mailbox inbox sits at 149+ unread — the cohort's one real mail backlog. Self-reported, not blocking anything named.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Sprint state</span><span class="sev drift">Live count</span></div>
+    <p class="summary"><b>MVP: 52 not done</b> (verified live via <code>sprint-truth.py</code> just now — 11 Sprint Backlog untouched, 1 Blocked, 3 In Progress, 28 In Review awaiting mostly your verification, 8 with no status set, plus 1 issue carrying the milestone but absent from the board entirely). <b>In Review is the largest bucket</b> — the critical path this week has been review capacity, not build capacity.</p>
+  </div>
+
+  <h2>⚪ Clean — no open PM item</h2>
+  <div class="item clear">
+    <p class="clean"><b>Arch</b> — nothing owed; spatial review complete on their slice, waiting on Lead's estimate + your call.<br>
+    <b>Web</b> — fully drained, zero open threads; BYOC destination-page work waiting on two upstream decisions (Comms' listing copy, PPM's connector-honesty gate) that aren't Web's to resolve.<br>
+    <b>PPM</b> — six clean fires yesterday, all three of PPM's own open items (criterion blessing, #1510, Surface 1/3) are cross-listed above under other roles, not separately owed.<br>
+    <b>Lead</b> — build queue unblocked and moving (#1608, #1595 Phase 0, #1572); nothing gated on you beyond the deploy-and-verify already in flight for #1599.</p>
+  </div>
+
+  <h2>✅ Resolved since the last board (2026-08-12)</h2>
+  <div class="item resolved">
+    <p><s>Lead's STOP-condition escalation — CI red on main 2 days (#1600)</s> — closed 08-12, you said "take #1600 next," green run observed on main.</p>
+    <p><s>#1599 — no admin user exists, 7 routes 403</s> — you gave the decision via Janus (proper migration against your real address); built and pushed, takes effect at next deploy.</p>
+    <p><s>#1462 milestone unset</s> — set to Production 08-07 ("PUB — Public beta" sprint, with #1463).</p>
+    <p><s>#1459 milestone unset</s> — set to Production.</p>
+    <p><s>#1481 Slack cross-user leak, beta scope call</s> — you ruled HELD from alpha/beta/release until safe, connector work front-loaded in Production, 08-06.</p>
+    <p><s>First-contact criterion wording ("one word converts it")</s> — you ruled 08-10, #1536 built and merged same day; only live-user verification remains (Lead's queue, not a decision).</p>
+    <p><s>Empty-standup design exception (#1511/#1591)</s> — CXO and PPM converged: demonstrate-then-ask when there's data, #1536 AC3's honest-failure interactive path when there isn't. Closed on #1591's GitHub thread.</p>
+  </div>
+
+  <footer>
+    <b>Bottom line:</b> zero blockers, nine small decisions (most one sentence or one word), sprint sits at 52 not-done with review capacity — not build capacity — as the actual constraint. Seven real items closed since yesterday's board, which is the week's shape: build finished days ago, this week was verification and cleanup catching up to it.<br><br>
+    <b>Live-state pass performed</b>: all 10 role carry-forwards read; every GitHub-issue-backed candidate re-checked live (#1462, #1459, #1600, #1599, #1481, #1510, #1536, #1591, #1610, website#31) rather than trusted from a doc; MVP count re-run via <code>sprint-truth.py</code> fresh this morning rather than cited from any role's memo. Exec inbox swept for blocker mail: 0 unread.
+  </footer>
+</div>
+</body>
+</html>

@@ -16,7 +16,7 @@ Piper Morgan just closed its M1 "Foundation" milestone. If you tested an earlier
 - **Todo completion actually works.** "Complete todo 1" or "complete the deployment plan todo" now persists the change in the database. A stack of three nested repository bugs was fixed on April 11.
 - **GitHub errors are friendlier.** Ask Piper to create an issue before configuring GitHub and you get a clear "GitHub isn't connected yet" message instead of a cryptic error.
 - **Fabrication guardrails.** The floor is now constrained against inventing todos, projects, or calendar events when it doesn't actually have that context. If you ask about your todos and you have none, Piper will say so.
-- **Portfolio Onboarding wizard is disabled.** The conversational floor handles first interactions instead. (A Gall's Law decision — the wizard was hijacking too many sessions.)
+- **Portfolio Onboarding wizard is disabled.** The conversational floor handles first interactions instead. (A Gall's Law call — the aphorism that a complex system that works evolves from a simple one that worked, not the other way around — since the wizard was hijacking too many sessions.)
 
 See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for the full list of fixes and for M2 carryover issues you should know about.
 
@@ -89,7 +89,7 @@ The floor is the default. Handlers only win when they're confident they can do t
 | Actions | "Create a GitHub issue about X" "Give me a status report" "Complete todo 1" |
 | Open-ended | "How should I think about this roadmap?" "What would you do here?" — these now reach the conversational floor and get real answers |
 
-**Fabrication discipline**: the floor is instructed not to invent data it doesn't have. If you ask about todos that don't exist, you should get "I don't see any todos in your list right now" — not a plausible-but-fake list. This is a first pass; if you catch a fabrication, please report it (issue #960).
+**Fabrication discipline**: the floor is instructed not to invent data it doesn't have. If you ask about todos that don't exist, you should get "I don't see any todos in your list right now" — not a plausible-but-fake list. This is a first pass; if you catch a fabrication, please report it ([#960](https://github.com/mediajunkie/piper-morgan-product/issues/960)).
 
 > **Context quirk**: A one-word reply like "OK" or "sure" after a multi-turn exchange may occasionally lose context ([#922](https://github.com/mediajunkie/piper-morgan-product/issues/922)). If Piper seems confused, restate the request fully. A deeper fix is in M2.
 
@@ -308,7 +308,7 @@ All sensitive operations are logged:
 For alpha testers who want to know what's under the hood:
 
 - **Database**: PostgreSQL (via Docker on port 5433)
-- **Test coverage**: 6,250+ tests passing (post-Apr 11 dead code cleanup #963)
+- **Test coverage**: 6,250+ tests passing (post-Apr 11 dead code cleanup [#963](https://github.com/mediajunkie/piper-morgan-product/issues/963))
 - **API**: FastAPI on port 8001
 - **Auth**: JWT tokens with bcrypt passwords
 - **LLM providers**: OpenAI or Anthropic (pick one at setup, swap later from Settings)
