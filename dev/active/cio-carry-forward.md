@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-13 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-13 (16:37 WORK)
 
 **Cron**: `b2807f51` · `7 10,16,22` LEAN · re-armed 2026-08-12 22:37 STOP (delete-then-create) ·
 **auto-expires ~2026-08-19**.
@@ -17,8 +17,16 @@ No deadline; sequencing (what stays hand-built vs. what starts getting delegated
 mine to design, with Exec's standing offer to think it through together.
 
 **Immediate implication for the task list below**: before picking up any of the Owed/watch items,
-ask whether it's outcome-shaped enough to spec for a subagent rather than build solo. Not yet
-applied to anything — this is the lens going forward, not a retroactive redo of this week's work.
+ask whether it's outcome-shaped enough to spec for a subagent rather than build solo.
+
+**★ Already applied once, same day, not just theorized**: #1616 (Windows clone breaks on
+over-length `mailboxes/` filenames — found when Lead retired the never-green `ci.yml`) — ratified
+Lead's own recommendation (filename-length lint + `core.longpaths` workaround doc, don't touch
+history) and **dispatched a subagent (`acf0ae9ad153ad702`) to implement it** rather than building
+it myself. **Running in background as of the 16:37 fire — REVIEW THE DIFF on the next fire or the
+completion notification, whichever lands first, before anything is committed/pushed.** Do not let
+this go stale unreviewed; it's the pilot for the whole operating-mode shift and needs to actually
+close the loop to count as evidence either way.
 
 **Connects directly to the in-flight Janus/Themis thread** (08-12 reply, `~/Development/designinproduct/docs/mail/`):
 the director posture is more portable cross-project than the operator posture was. **Not
