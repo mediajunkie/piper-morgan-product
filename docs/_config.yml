@@ -32,6 +32,9 @@ exclude:
   - 00-START-HERE-LEAD-DEV.md
   - user-guide.md
   - NAVIGATION.md
+  # legacy archives: self-described historical docs carrying pre-reorg dead links (2026-08-13)
+  - public/getting-started/legacy-getting-started/
+  - public/user-guides/legacy-user-guides/
   # Pre-existing patterns (kept as belt-and-suspenders)
   - archive
   - archive/
