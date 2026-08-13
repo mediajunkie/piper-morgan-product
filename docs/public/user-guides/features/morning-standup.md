@@ -343,7 +343,7 @@ See [Morning Standup MVP Guide](../../../internal/development/tools/MORNING_STAN
 
 ## Usage
 
-Daily 6 AM standup with prominent performance metrics,
+Run it as part of your own daily standup routine, with prominent performance metrics,
 project context, and GitHub activity display.
 
 ## Quick Start

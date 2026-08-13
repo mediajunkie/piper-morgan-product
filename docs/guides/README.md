@@ -25,8 +25,8 @@ This directory contains developer guides and implementation documentation for th
 
 ## Navigation
 
-- **[📚 Documentation Home](../../README.md)**
-- **[🧭 Navigation Hub](../NAVIGATION.md)**
+- **[📚 Documentation Home](../README.md)**
+- **[🧭 Navigation Hub](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/NAVIGATION.md)**
 
 ---
 

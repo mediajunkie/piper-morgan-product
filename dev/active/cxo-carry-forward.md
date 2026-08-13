@@ -12,10 +12,18 @@ ruling describes — no redesign needed, just noting the fit and that #1591's "h
 caveat is now stale. #1536/#1539 still unchanged (no PM/Lead response, ~27h). Also closed a second stale
 standing-items.md entry this fire (spatial ADR item A — done 07-29, never marked).
 
-**Today in one line**: closed out 08-11 (retroactive STOP, no gap activity, cron held); reviewed #1536's
-landed build and used a finding from that review to unstick #1539 with a candidate articulation; connected
-the newly-ruled #1510 fork to #1591's build spec. **Nothing owed by me right now.** Next fire: re-check
-#1536/#1539/#1591 for response before assuming still-parked.
+**08-13, 13:17 fire**: both #1510 and #1591 got **built** since the last fire (Lead, riding the verified-
+inference rail from the morning's ruling) — the connection I posted at 10:17 was picked up fast. Lead
+flagged two judgment calls explicitly for CXO/PPM eyes: (1) symmetric anti-nag — declining either standup
+ask quiets both, session-scoped; (2) the #1511 teaching-line changed so a stored interview preference can't
+trap the user out of reaching the plain report by name. **Reviewed both, endorsed both** (GH comment on
+#1591) — call 1 is the right generalization of "cheap to decline" beyond what my original three properties
+literally covered, call 2 fixes a real trap without touching property 3. Noted PPM should still confirm on
+their own slice's copy. **Remaining on both issues: PM's live retest** — not mine, not attempted.
+
+**Today in one line**: closed out 08-11; reviewed #1536's build, unstuck #1539; connected the ruled #1510
+fork to #1591; reviewed and endorsed the two implementation judgment calls that followed. **Nothing owed by
+me right now.** Next fire: re-check #1536/#1539/#1510/#1591 for movement before assuming still-parked.
 
 ---
 
@@ -88,7 +96,8 @@ already the record for whoever implements it. **Thread closed.**
 | **#1539 legibility half** (FTUX-PURPOSE) | OPEN. **Candidate articulation posted 08-12** (✏️ pending PM): *"Piper reduces 'is anything actually tracking this for me'..."* — plus a concrete, evidence-based gap: #1536's shipped copy demos capability but doesn't name the uncertainty it resolves. **With PM now**, not stalled on me. | PM (to rule on the candidate) |
 | **#1463 deployed-host retest** | OPEN, confirmed. Blocked on **#1462** (also OPEN) — UNBUILT not undeployed; `services/mcp/server/` absent from `main` and the deployed artifact. Promised same-day retest once the package is shippable — **check #1462 status before assuming still blocked.** | #1462 |
 | **Standup invitation (#1511 → #1591)** | ✅ Design settled (see above). #1591 tracks the Production/PUB build; both governing rules are on the issue for whoever picks it up. | Lead / whoever builds |
-| **#1510 fork** | ✅ **RULED 08-13** (PM via Exec): low-confidence inference → read back to user → verify → store, don't re-infer; extend `preference_detection.py`'s `confidence_score` gate, resurrect `is_low_confidence()`. Meta-feedback about the verification process is a separate signal from task-preference feedback. **Connected to #1591** (CXO, same fire) — the invitation properties already implement the read-back shape. Issue itself likely closeable by whoever's building it; not mine to close. | Lead/whoever builds |
+| **#1510 fork** | ✅ **RULED 08-13, BUILT same day** (`836c5a188`, Lead) — `verified_inference.py` + wiring, 41 unit + 4 real-Postgres integration tests, ratchets/smoke green. Remaining: PM's live mode-flip retest. Not mine. | PM (retest) |
+| **#1591 standup invitation** | ✅ **BUILT 08-13** (`43d9e8230`, Lead) on the verified-inference rail. Every CXO/PPM spec pin has a named test. **Two judgment calls flagged for CXO/PPM — reviewed and endorsed both** (symmetric anti-nag; #1511 teaching-line trap fix). Remaining: PM's live retest + PPM's word on call 2's copy touch. Not mine further. | PM (retest), PPM (copy confirm) |
 | **#1386 criterion-2 sign-off** | OPEN, confirmed. Still **WITHHELD** — keyless suite skips and reports green. Committed to same-day sign-off once a keyed run exists. | me |
 | **Surface 3** | Still a phantom — one corpus mention, same sentence that rates Surface 1 "weaker." PPM's ask to PM: name it or strike it. **Now 5+ days open — was 4 at handoff time.** | PM / PPM |
 

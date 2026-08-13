@@ -2,7 +2,7 @@
 
 **Last Updated**: April 11, 2026
 **Status**: Current (post-M1 floor inversion)
-**See also**: [Architecture Decision Record (ADR) 060: Floor-First Routing](../internal/architecture/current/adrs/adr-060-floor-first-routing.md), [Canonical Handlers Architecture](canonical-handlers-architecture.md)
+**See also**: [Architecture Decision Record (ADR) 060: Floor-First Routing](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-060-floor-first-routing.md), [Canonical Handlers Architecture](canonical-handlers-architecture.md)
 
 > **REWRITE NOTE (April 11, 2026)**
 > The previous version of this guide described a "fast path canonical (~1ms)
@@ -139,7 +139,7 @@ The two methods are complementary, not strict inverses: a category can be
 unmigrated (returns `False` from both) and fall through to the legacy
 dispatcher.
 
-See [ADR-060](../internal/architecture/current/adrs/adr-060-floor-first-routing.md)
+See [ADR-060](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-060-floor-first-routing.md)
 for the rationale behind this gate structure.
 
 ### Stage 4: Dispatch
@@ -340,11 +340,11 @@ Key things to watch:
 
 ## Related Documentation
 
-- [ADR-060: Floor-First Routing](../internal/architecture/current/adrs/adr-060-floor-first-routing.md) —
+- [ADR-060: Floor-First Routing](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-060-floor-first-routing.md) —
   the routing principle this guide implements
 - [Canonical Handlers Architecture](canonical-handlers-architecture.md) —
   current canonical scope and the action gate
-- [Canonical Queries Architecture (historical)](../internal/architecture/canonical-queries-architecture.md) —
+- [Canonical Queries Architecture (historical)](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/canonical-queries-architecture.md) —
   the pre-M1 design, preserved as historical context
 
 ---

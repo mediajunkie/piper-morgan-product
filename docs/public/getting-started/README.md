@@ -7,7 +7,7 @@ This directory contains documentation for getting started in the Piper Morgan sy
 
 ## Subdirectories
 
-- **[Legacy Getting Started](legacy-getting-started/README.md)** - Legacy Getting Started documentation
+- **[Legacy Getting Started](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/public/getting-started/legacy-getting-started/README.md)** - Legacy Getting Started documentation
 - **[Setup](setup/README.md)** - Setup documentation
 
 ## Navigation

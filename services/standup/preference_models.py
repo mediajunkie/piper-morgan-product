@@ -131,6 +131,25 @@ class UserStandupPreference:
         """Check if preference confidence is low enough to prompt user."""
         return self.confidence < threshold
 
+    def is_low_confidence(self) -> bool:
+        """#1510 read-back trigger (PM ruling via Exec 2026-08-13): is this
+        preference's confidence low enough that Piper should read the
+        inference back to the user for verification before relying on it?
+
+        NOTE (resurrection with a correction): #1510's ruling comment named
+        this method as "already-defined-but-unused" — it did not in fact
+        exist under this name; ``needs_confirmation()`` above was the nearest
+        analog. Defined here as the ruling intended, delegating to the SHARED
+        confidence gate (services/personality/preference_detection.py
+        thresholds via services/intent_service/verified_inference.py) so the
+        standup consumer (#1591) and every other consumer ask one gate, not
+        two. Lazy import: keeps this dataclass module dependency-free at
+        import time.
+        """
+        from services.intent_service.verified_inference import is_low_confidence
+
+        return is_low_confidence(self.confidence)
+
 
 @dataclass
 class PreferenceChange:

@@ -787,7 +787,7 @@ We need your feedback to improve! Please report:
 ### How to Report
 
 1. **GitHub Issues**: Preferred for bugs (if comfortable with GitHub)
-2. **Email**: christian@[domain] for private feedback
+2. **Email**: xian@pipermorgan.ai for private feedback
 3. **Weekly Check-in**: Optional 15-minute calls available
 
 ### Helpful Feedback Format
