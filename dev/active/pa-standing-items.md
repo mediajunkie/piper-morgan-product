@@ -43,7 +43,9 @@ _Strategic threads PM flagged to revisit — not operational/owed items; no near
 
 ### Pending external action
 
-_(none as of this prune)_
+| # | Item | Filed | Notes |
+|---|---|---|---|
+| 1 | **ALPHA_FEATURE_GUIDE refresh — Docs drafts, PA verifies** | 2026-08-13 | Docs found `docs/ALPHA_FEATURE_GUIDE.md` 4 months / 8 releases stale (v0.8.6, pre-hosted-alpha), added an interim banner, offered a split: Docs drafts the v0.8.11 refresh from release notes + README + BRIEFING-CURRENT-STATE (mechanical), PA verifies capability claims against the live hosted alpha (product-capability truth). Agreed to the split rather than owning the rewrite wholesale — `mailboxes/pa/sent/reply-pa-to-docs-...-2026-08-13.md`. **Triggers on Docs's draft landing** — nothing for PA to do until then. |
 
 ### PA-queued
 

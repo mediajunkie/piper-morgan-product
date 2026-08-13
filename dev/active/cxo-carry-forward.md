@@ -4,10 +4,18 @@
 fires today, no rotation needed. Session-only, auto-expires ~2026-08-18 — **CronList at START.**
 **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`.
 
+**08-13, 10:17 fire**: PM ruled the #1510 declared-vs-inferred fork (low-confidence inference → read back
+to user → verify → store, not re-infer; meta-feedback about the verification process is a separate signal
+from task-preference feedback). **Posted the connection to #1591** (standup invitation persistence, which
+was explicitly waiting on this): the invitation-properties design already IS the read-back mechanism the
+ruling describes — no redesign needed, just noting the fit and that #1591's "honest interim, no store yet"
+caveat is now stale. #1536/#1539 still unchanged (no PM/Lead response, ~27h). Also closed a second stale
+standing-items.md entry this fire (spatial ADR item A — done 07-29, never marked).
+
 **Today in one line**: closed out 08-11 (retroactive STOP, no gap activity, cron held); reviewed #1536's
-landed build and used a finding from that review to unstick #1539 with a candidate articulation; three
-quiet-but-verified fires after that, nothing moved. **Nothing owed by me right now** — both live threads
-(#1536, #1539) are with other people. Next fire should re-check both before assuming still-parked.
+landed build and used a finding from that review to unstick #1539 with a candidate articulation; connected
+the newly-ruled #1510 fork to #1591's build spec. **Nothing owed by me right now.** Next fire: re-check
+#1536/#1539/#1591 for response before assuming still-parked.
 
 ---
 
@@ -80,7 +88,7 @@ already the record for whoever implements it. **Thread closed.**
 | **#1539 legibility half** (FTUX-PURPOSE) | OPEN. **Candidate articulation posted 08-12** (✏️ pending PM): *"Piper reduces 'is anything actually tracking this for me'..."* — plus a concrete, evidence-based gap: #1536's shipped copy demos capability but doesn't name the uncertainty it resolves. **With PM now**, not stalled on me. | PM (to rule on the candidate) |
 | **#1463 deployed-host retest** | OPEN, confirmed. Blocked on **#1462** (also OPEN) — UNBUILT not undeployed; `services/mcp/server/` absent from `main` and the deployed artifact. Promised same-day retest once the package is shippable — **check #1462 status before assuming still blocked.** | #1462 |
 | **Standup invitation (#1511 → #1591)** | ✅ Design settled (see above). #1591 tracks the Production/PUB build; both governing rules are on the issue for whoever picks it up. | Lead / whoever builds |
-| **#1510 fork** | OPEN, confirmed. Still with PM: *"until/unless the user has established that working model"* — is the user the subject (declared) or does Piper infer it? **Now has at least 3 consumers per PPM** (#1510 itself, the standup preference, the invitation's persistence) — argument for building the declaration surface early regardless of which way the fork lands; Arch established that half is safe either way. | **PM** |
+| **#1510 fork** | ✅ **RULED 08-13** (PM via Exec): low-confidence inference → read back to user → verify → store, don't re-infer; extend `preference_detection.py`'s `confidence_score` gate, resurrect `is_low_confidence()`. Meta-feedback about the verification process is a separate signal from task-preference feedback. **Connected to #1591** (CXO, same fire) — the invitation properties already implement the read-back shape. Issue itself likely closeable by whoever's building it; not mine to close. | Lead/whoever builds |
 | **#1386 criterion-2 sign-off** | OPEN, confirmed. Still **WITHHELD** — keyless suite skips and reports green. Committed to same-day sign-off once a keyed run exists. | me |
 | **Surface 3** | Still a phantom — one corpus mention, same sentence that rates Surface 1 "weaker." PPM's ask to PM: name it or strike it. **Now 5+ days open — was 4 at handoff time.** | PM / PPM |
 

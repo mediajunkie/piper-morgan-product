@@ -12,7 +12,7 @@ This guide helps teams migrate to Piper Morgan's intent classification system. T
 
 Before migrating to intent classification:
 - [ ] Understand the 13 intent categories (see Categories Reference *(proposed; doc TBD)*)
-- [ ] Review [ADR-032](../internal/architecture/current/adrs/adr-032-intent-classification-universal-entry.md)
+- [ ] Review [Architecture Decision Record (ADR) 032](../internal/architecture/current/adrs/adr-032-intent-classification-universal-entry.md)
 - [ ] Read [Intent Classification Guide](./intent-classification-guide.md)
 
 ## Migration Scenarios

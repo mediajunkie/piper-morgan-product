@@ -2,7 +2,7 @@
 
 **Last Updated**: April 11, 2026
 **Status**: Current (post-M1 floor inversion)
-**See also**: [ADR-060: Floor-First Routing](../internal/architecture/current/adrs/adr-060-floor-first-routing.md)
+**See also**: [Architecture Decision Record (ADR) 060: Floor-First Routing](../internal/architecture/current/adrs/adr-060-floor-first-routing.md)
 
 ---
 

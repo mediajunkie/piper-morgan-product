@@ -65,6 +65,11 @@ the *site* does not hide anything — it gives the site a legible purpose.
   `api-key-management.md`, `database-production-setup.md`, `public/migration/` (1) +
   `migration/` (3), `VERSION_NUMBERING.md` + `versioning.md`
 - **Record**: `releases/` (19), `legal/` (1), `accessibility/` (3), `references/` (2, citations)
+- ~~`legacy-getting-started/` + `legacy-user-guides/`~~ **moved to EXCLUDE 2026-08-13**
+  (post-ratification, Docs, same consistent-with-principle basis): self-described legacy/
+  historical archives whose remaining broken links (12, all pre-reorg directory targets that
+  never existed post-reorg — the #1584 flagged-residual class) make them worse-than-absent on a
+  curated visitor site. They remain on GitHub as the historical record. Flagged, not silent.
 - ~~`NAVIGATION.md`~~ **moved to EXCLUDE 2026-08-12** (post-ratification, Docs, consistent with
   the ratified principle rather than a scope expansion): its own header declares it
   internal-audience ("Agents, developers, architects, and internal contributors") and points

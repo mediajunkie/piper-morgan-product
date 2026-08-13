@@ -3,6 +3,14 @@
 **Version**: 0.8.6
 **Last Updated**: April 11, 2026
 
+> ⚠️ **This guide describes the April 2026 (v0.8.6) alpha — the product has moved substantially
+> since** (current release: v0.8.11.0; the alpha is now **hosted at
+> [alpha.pipermorgan.ai](https://alpha.pipermorgan.ai)** — no local install needed). Newer
+> capabilities not yet covered here include the hosted setup, GitHub connector via OAuth, morning
+> standup, and the Radar view. For current setup use the
+> **[Alpha Quick Start](ALPHA_QUICKSTART.md)**; for what changed each release, see
+> **[Release Notes](releases/)**. A v0.8.11 refresh of this guide is in progress (2026-08-13).
+
 A guide to what Piper Morgan can do in the current alpha release.
 
 ---
