@@ -1,7 +1,7 @@
-# CIO carry-forward — rewritten 2026-08-12 (16:33 fire)
+# CIO carry-forward — rewritten 2026-08-12 (22:37 STOP)
 
-**Cron**: `2543e7d0` · `7 10,16,22` LEAN · re-armed 2026-08-11 13:15 post-Amber-reboot ·
-**auto-expires ~2026-08-18**.
+**Cron**: `b2807f51` · `7 10,16,22` LEAN · re-armed 2026-08-12 22:37 STOP (delete-then-create) ·
+**auto-expires ~2026-08-19**.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
@@ -9,53 +9,55 @@
 
 ## ⏸ AWAITING PM
 
-1. **Memory-index hybrid packing.** Headroom now **13 lines** (guard convention, `check-derived-drift.sh`,
-   2026-08-12) — down from 15 on 08-10, ~3/day still holding. **Report a BOUND, not a forecast** — do
-   not issue a point estimate on this number again (three retracted point estimates already, in both
-   directions, 08-08→08-10).
+1. **Memory-index hybrid packing.** Headroom **13 lines** (guard convention), unchanged across today
+   — no intraday growth, consistent with the ~3/day figure being a multi-day rate. **Report a BOUND,
+   not a forecast** — do not issue a point estimate on this number (three retracted point estimates
+   already, in both directions, 08-08→08-10).
    **The fix**: pack the **127 of 178 self-describing slugs** at 4/line, keep the ~48 terse ones
    described → **~185 → ~90 lines**. **Lead will build the generator change on PM's ruling.**
    🛑 **NEVER delete memory files to make the index fit** — irreversible, memory is not under version
    control. Full arithmetic: `docs/internal/operations/memory-index-size-limits.md`.
-   ⚠️ **New signal, not yet investigated**: `check-derived-drift.sh` also flags a **byte-level DRIFT** at
-   the *same* 187-line count (on-disk 21,061B vs. generator-would-emit 21,072B) — content differs
-   without the line count changing. Worth a look before the next generator touch.
+   ⚠️ **Byte-level DRIFT still present, still not investigated**: `check-derived-drift.sh` flags
+   on-disk 21,061B vs. generator-would-emit 21,072B at the *same* 187-line count. Worth a look before
+   the next generator touch.
 2. **Cross-project division-of-labor proposal (Janus, 08-11, direct to me + cc Themis).** PM raised
-   whether CIO's cross-project synthesis work should move toward the DxP account — full transfer vs.
-   staying PM-embedded. **Replied 08-12** (`~/Development/designinproduct/docs/mail/`, commit `32bc14b`):
-   the PM-embedded operational lane (registries, mailbox drain, freeze detection, incident forensics)
-   isn't portable without real cost — its value comes from being wrong inside PM's actual
-   infrastructure and corrected by the other ten agents in real time. Proposed a curation offload
-   instead (package durable findings for DxP on an event-based cadence) rather than a role transfer.
-   **Surfaced to PM directly in chat same fire** — PM's resourcing/account call, not mine to make alone.
+   whether CIO's cross-project synthesis work should move toward the DxP account. **Replied 08-12**
+   (`~/Development/designinproduct/docs/mail/`, commit `32bc14b`): the PM-embedded operational lane
+   isn't portable without real cost; proposed a curation offload instead of a role transfer.
+   **Surfaced to PM directly in chat same fire** — PM's resourcing/account call, not mine alone.
 3. **Innovation agenda §6** — building mechanisms vs protecting a property. Awaiting PM's read since 08-02.
-4. **Short-period cron experiment** — the only way to decompose the ~30-min dispatch latency. ~3 extra
-   fires on my seat. Not started without a yes.
+4. **Short-period cron experiment** — decomposing the ~30-min dispatch latency. ~3 extra fires on my
+   seat. Not started without a yes.
 
-## ✅ Closed this window (08-11 reboot → 08-12 16:33)
+## ✅ Closed today (2026-08-12, full day)
 
-- **pmorgan.tech site scope ratified** — Docs's proposal to curate the public docs site from
-  ~1,370 built files down to ~160 visitor-facing ones. Agreed with all three flagged judgment
-  calls, including excluding a misleading stale `user-guide.md`. Docs cleared to apply the
-  `_config.yml` change.
-- **methodology-49 "Described Is Not Running" filed** — Janus's canonical instance (docs quoting a
-  Jekyll parsing bug's literal tag, inside a rendering pipeline that parses that same tag, killing
-  the Pages build silently for 2.5 months). New slot, not an m-44 amendment — the boundary is
-  instrument-output (m-44) vs. description-substituting-for-referent (m-49).
-
-- **Amber reboot (macOS 26.6, 08-11) handled clean**: both stand-down notices followed exactly, cron
-  deliberately parked with cadence recorded (not left to die silently), handoff filed at the gated path,
-  resumed via Pard's runbook, re-armed and `CronList`-verified. 08-11's missing STOP retroactively closed
-  08-12 (Step 0 self-heal) — the whole day was the reboot, no work fire occurred.
-- **#1584 Part C fixed** — `methodology-19`/`methodology-37` numbering drift (Docs-flagged 08-11).
-  Two dead placeholders annotated, one broken cross-ref struck.
+- **Amber reboot (macOS 26.6, 08-11) closed out**: 08-11's missing STOP retroactively closed via Step
+  0 self-heal — the whole day was the reboot, no work fire occurred, `<!-- DAY-CLOSED: 2026-08-11 -->`
+  written retroactively.
+- **#1584 Part C fixed** — `methodology-19`/`methodology-37` numbering drift. Two dead placeholders
+  annotated, one broken cross-ref struck.
 - **`cohort-agent-status.md` retired** — Amber migration superseded its whole premise, not just staled it.
 - **`BRIEFING-CURRENT-STATE.md` refreshed** — real content hadn't moved since 08-01 despite a fresher
   frontmatter date (>7 days, CLAUDE.md's mandatory trigger). CIO-lane entry added; engineering/CI left
   un-re-attested.
-- **Freeze monitor LIVE end to end** (from the pre-reboot window, still holding): Pard's wrapper fires
-  the positive branch in production; cron-executed copy verified current.
-- **m-43 through m-48 filed** in the methodology corpus (pre-reboot window).
+- **pmorgan.tech public-site scope ratified** — Docs's proposal to curate ~1,370 built files down to
+  ~160 visitor-facing ones. Agreed with all three flagged judgment calls (excluded a stale, misleading
+  `user-guide.md`). Docs cleared to apply the `_config.yml` change.
+- **methodology-49 "Described Is Not Running" filed** — Janus's canonical instance: docs quoting a
+  Jekyll parsing bug's literal tag, inside a rendering pipeline that parses that same tag, killed the
+  Pages build silently for 2.5 months. New slot, not an m-44 amendment — boundary is
+  instrument-output (m-44) vs. description-substituting-for-referent (m-49).
+- **Two stall alerts triaged, both already resolved before I saw them** (`pa` at 10:33 fire, `arch`+`web`
+  at 22:37 STOP) — see Watch item below.
+
+## Watch
+
+- **Two of today's three watchdog alerts had already self-resolved by the time they reached my
+  inbox** (`pa` 10:33, `arch`+`web` 22:37) — both roles' own heartbeats show recovery within minutes
+  of the alert's detection timestamp. Not yet a methodology candidate (one day's observation), but if
+  this recurs, the dyn-threshold may be tuned close enough to normal fire-gaps that a role idling
+  right up to threshold trips the alert and then self-heals on its own next scheduled fire before the
+  relay ever reaches me. Worth a second day's data before naming it.
 
 ## Owed / watch
 

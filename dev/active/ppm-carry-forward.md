@@ -1,12 +1,14 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-12 07:22 PT (START fire). Cron **`71dc6b7c`**, unchanged since the
-08-11 post-reboot re-arm. 08-11 retroactively closed this fire (missed STOP fires, see Cron
-section below); nothing lost. Sprint-truth re-run fresh this fire: **MVP 48 not done / 1042
-done** (matches Lead's 08-11 escalation figure, now independently verified rather than trusted).
-The three PM-open items (criterion blessing, #1510 fork, Surface 1/3) re-checked via GitHub —
-all still genuinely open, no PM movement since 08-10.
+**Last rewritten**: 2026-08-12 22:22 PT (STOP). **Six clean fires today** (START 07:22 →
+WORK×4 → this STOP). Cron re-armed at STOP: **`829056ba`** (was `71dc6b7c`, delete-then-create,
+`CronList`-verified exactly one). Day was quiet after the START fire's checks: one FYI memo
+triaged at 10:22, three genuinely quiet WORK fires (13:22/16:22/19:22, no commits per no-churn
+discipline), nothing in flight at close. **MVP 48 not done / 1042 done** (verified fresh at
+START, unchanged all day). The three PM-open items (criterion blessing, #1510 fork, Surface
+1/3) checked via GitHub at every fire today — still all genuinely open, no PM movement since
+08-10.
 ✅ **Jake conversion COMPLETE: #1536–#1540 filed 08-09, zero rows unfiled.**
 
 ## 🔴 AWARENESS FROM 08-11 16:1x — Lead's escalation to PM (not mine to action, but changes what I cite)
@@ -321,18 +323,19 @@ still genuinely open, no new PM comment on #1510, #1386, or the criterion doc si
 
 ## Cron
 
-**ARMED** — job **`71dc6b7c`** (re-armed 08-11 13:18 post-reboot; the 08-11 06:52 job `25f1a782`
-was deliberately parked pre-reboot, not lost — see `docs/handoff-ppm-2026-08-11.md` §6-7).
-`CronList`-verified exactly one, and the clearing condition (armed + verified + a fire has run) was
-satisfied at the 08-11 16:22 WORK fire. Prompt carries the standing lines: **PROXIES** (*safe when
-the remainder is ROUTED, dangerous when merely IMPLIED — say "gateable fraction", never "shadow"*)
-and **MAIL-SEND CAN FAIL SILENTLY** (*a transient fetch failure leaves the memo unsent with no other
-signal; read the tail, verify it landed*).
+**ARMED** — job **`829056ba`** (re-armed at 08-12 22:22 STOP; delete-then-create,
+`CronList`-verified exactly one). Prior job `71dc6b7c` (re-armed 08-11 13:18 post-reboot) retired
+cleanly at a normal STOP — no gap, no incident. Prompt gained a cleanup at this re-arm: dropped
+the POST-REBOOT NOTE line since that event is fully closed and re-litigating it six times a day
+was becoming the exact stale-context clutter the "no standing owed item" rule warns about. Prompt
+still carries the standing lines: **PROXIES** (*safe when the remainder is ROUTED, dangerous when
+merely IMPLIED — say "gateable fraction", never "shadow"*) and **MAIL-SEND CAN FAIL SILENTLY**
+(*a transient fetch failure leaves the memo unsent with no other signal; read the tail, verify it
+landed*).
 
-⚠️ **08-11's log had to be retroactively closed at this fire** — the 18:52/21:52 STOP fires never
-reached the session (heartbeat history confirms zero rows, not dropped work; likely absorbed by the
-reboot-recovery gap). Nothing was lost. ⚠️ **Session-only + 7-day auto-expiry, both silent** —
-`71dc6b7c` expires ~2026-08-18 if not re-armed sooner.
+**Five clean days running now** (08-08/09/10, the 08-11 reboot day handled cleanly via
+park→re-arm→retroactive-close, 08-12 six-for-six). ⚠️ **Session-only + 7-day auto-expiry, both
+silent** — `829056ba` expires ~2026-08-19 if not re-armed sooner.
 
 ---
 

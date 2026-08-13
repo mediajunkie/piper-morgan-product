@@ -657,7 +657,8 @@ def build_recent_history(
                 history.append({"role": "user", "content": turn.message})
             if turn.response:
                 history.append({"role": "assistant", "content": turn.response})
-    except Exception:
+    except Exception as e:  # silent-ok: degrades to no-history, but LOGGED — silently empty history is the floor-amnesia shape (#1596); the LLM loses the whole conversation with no trace (#1423 3b)
+        logger.warning("conversation_history_assembly_failed", error=str(e))
         return []
     return history
 

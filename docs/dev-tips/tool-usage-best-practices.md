@@ -119,7 +119,7 @@ The `.editorconfig` file automatically:
 1. **Don't panic** - just re-stage and commit
 2. **Note the issue** - report what hook failed
 3. **Check if preventable** - was it a newline issue?
-4. **Update this doc** if you discover a new pattern
+4. **Consider filing an issue or opening a PR** if you discover a new pattern worth documenting
 
 ---
 
