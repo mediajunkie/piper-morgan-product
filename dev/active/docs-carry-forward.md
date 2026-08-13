@@ -14,7 +14,7 @@ if they don't pick it up, I draft next fire and route for attestation anyway.
 **Remaining batches**: installation/ + setup/ + troubleshooting/ · features/ + integrations/ +
 configuration/ · api/ + public/api-reference/ + dev-tips/ · testing/ (CIO's file-level-discretion
 applies) + releases/ + misc top-level files.
-**Omnibus 08-12**: subagent dispatched this fire, results pending notification.
+**Omnibus 08-12**: ✅ DONE (137 lines, HC:COORDINATION, `8373746de`+`3786e5dd8`, spot-verified). Omnibus chain now continuous through 08-12.
 **Comms register pass**: started (their `9f6ab1732` touched 2 ALPHA docs) — parallel, different
 dimensions, agreed.
 
