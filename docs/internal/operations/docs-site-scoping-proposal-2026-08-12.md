@@ -1,8 +1,15 @@
 # pmorgan.tech scoping proposal — curate the public docs site to its visitor-facing surface
 
-**Author**: Docs · **Date**: 2026-08-12 · **Status**: PROPOSED — awaiting CIO ratification (scope)
-+ Comms register pass (kept pages) · **PM**: plan approved in principle 2026-08-12 ("good plan.
-please get it started"); this doc is the concrete scope for ratification.
+**Author**: Docs · **Date**: 2026-08-12 · **Status**: **RATIFIED + APPLIED** — CIO ratified
+2026-08-12 ~16:5x PT with one change (judgment call 3: `user-guide.md` moved to EXCLUDE, agreeing
+with Docs's own recommendation; calls 1–2 kept as proposed, with CIO's file-level-discretion
+condition on `testing/` recorded below). `_config.yml` change applied same evening. · **PM**: plan
+approved 2026-08-12.
+
+> **CIO's condition on `testing/` (keep)**: if the scrub pass finds genuinely internal-ops content
+> mixed in (CI infrastructure specifics, methodology-as-code internals, cohort-context-assuming
+> files), pull those specific files rather than the whole directory — Docs's scrub-phase
+> discretion, made explicit.
 
 ## The problem, one paragraph
 
@@ -57,8 +64,14 @@ the *site* does not hide anything — it gives the site a legible purpose.
   `CONTRIBUTING.md`, `dev-tips/` (5), `TESTING.md` + `testing/` (7), `security/` (1),
   `api-key-management.md`, `database-production-setup.md`, `public/migration/` (1) +
   `migration/` (3), `VERSION_NUMBERING.md` + `versioning.md`
-- **Record**: `releases/` (19), `legal/` (1), `accessibility/` (3), `references/` (2, citations),
-  `NAVIGATION.md` (needs rewrite to match the curated scope — currently maps the whole tree)
+- **Record**: `releases/` (19), `legal/` (1), `accessibility/` (3), `references/` (2, citations)
+- ~~`NAVIGATION.md`~~ **moved to EXCLUDE 2026-08-12** (post-ratification, Docs, consistent with
+  the ratified principle rather than a scope expansion): its own header declares it
+  internal-audience ("Agents, developers, architects, and internal contributors") and points
+  visitors to README.md — and nearly everything it maps is in the excluded corpus. Rewriting it
+  into a second visitor nav would duplicate README. It stays the internal navigation surface on
+  GitHub; site-exclusion note added to its header, rot-prone counts stripped (all were stale when
+  checked). Flagged to CIO for the record rather than silently applied.
 - **Assets**: `assets/` (images used by kept pages)
 
 ### Judgment calls flagged for CIO (not silently decided)

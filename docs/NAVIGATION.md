@@ -4,7 +4,14 @@
 **Audience**: Agents, developers, architects, and internal contributors
 **Public Documentation**: See [README.md](README.md) for pmorgan.tech public site
 
-**Last Updated**: July 14, 2026
+> **Excluded from the pmorgan.tech build as of 2026-08-12** (docs-site scoping, CIO-ratified —
+> see `internal/operations/docs-site-scoping-proposal-2026-08-12.md`): this hub's own header
+> declares it internal-audience, and nearly everything it maps is in the excluded working corpus.
+> It remains the internal navigation surface, on GitHub. Counts below are deliberately being
+> removed as they rot (each was stale when checked 2026-08-12); trust the directories, not the
+> parentheticals.
+
+**Last Updated**: August 12, 2026 (site-exclusion note + count removal; structural content July 14, 2026)
 **Status**: ✅ **Complete Internal Navigation System** - Role-based access for development teams
 
 ---
@@ -55,8 +62,8 @@ Each essential briefing includes triggers for loading detailed documentation as 
 
 - **[Architecture Hub](internal/architecture/current/)** - Current architectural decisions
 - **[Domain Models](internal/architecture/current/models/)** - Hub-and-spoke model documentation
-- **[ADRs](internal/architecture/current/adrs/)** - Architectural Decision Records (63)
-- **[Patterns](internal/architecture/current/patterns/)** - Established architectural patterns (63)
+- **[ADRs](internal/architecture/current/adrs/)** - Architectural Decision Records
+- **[Patterns](internal/architecture/current/patterns/)** - Established architectural patterns
 - **[Pattern Families](internal/architecture/current/patterns/PATTERN-FAMILIES.md)** - 8 pattern families index
 - **[Five-Layer Context Mapping](internal/architecture/current/five-layer-context-mapping.md)** - How PM injects context at each layer (agent team + product), with gap analysis
 - **[Technical Evolution](internal/architecture/evolution/)** - Architecture development history
@@ -110,7 +117,7 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 
 - **[Development Tools](internal/development/tools/)** - Setup guides and development workflows
 - **[Active Work](internal/development/active/)** - Current development status
-- **[Methodology](internal/development/methodology-core/)** - Development methodologies (48 methodology docs, methodology-00 through -47)
+- **[Methodology](internal/development/methodology-core/)** - Development methodologies (see INDEX.md for the current roster)
 - **[Methodology Index](internal/development/methodology-core/INDEX.md)** - Comprehensive methodology navigation
 - **[Weekly Ship Process Guide](internal/development/weekly-ship-process-guide.md)** - Ship production process (v1.1)
 - **[Colleague Test (operational v2.1)](internal/testing/colleague-test-rubric.md)** - Canonical scoring rubric (R/C/T 0-3, ≥7/9 pass, decline-path Tone=0 auto-fail)
@@ -131,7 +138,7 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 
 - **[Session Logs Archive](../dev/2025/)** - Chronological development history (dev/2025/MM/DD/ structure)
 - **[Agent Activity Log](internal/operations/agent-activity-log.csv)** - Per-session index: date, role, slug, environment (code/web), model, log filename. Cross-project consumable (Janus sibling project)
-- **[Omnibus Logs](omnibus-logs/)** - Daily session consolidations (288 logs through Mar 22, 2026)
+- **[Omnibus Logs](omnibus-logs/)** - Daily session consolidations
 - **[Retro Omnibus Evaluations](omnibus-logs/retro/)** - Dispatch automation pilot iterations and evaluations
 - **[Cross-Pollination Briefs](briefs/cross-pollination/)** - Inter-project intelligence (Klatch ↔ Piper Morgan)
 - **[Development Logs](internal/development/active/)** - Active development work and status files
@@ -213,7 +220,7 @@ Post-embedded downloadable files (skill zips, templates, etc.) live in the **web
 
 ```
 ├── current/                   # Active architectural decisions
-│   ├── models/               # Hub-and-spoke model docs (39 models)
+│   ├── models/               # Hub-and-spoke model docs
 │   ├── adrs/                 # Current ADRs
 │   ├── patterns/             # Established patterns
 │   └── [core-specs]          # API, technical specifications
@@ -311,9 +318,9 @@ Weekly/monthly session consolidations - 100+ consolidated logs for historical re
 
 #### ADRs & Decisions
 
-- **Active ADRs**: `docs/internal/architecture/current/adrs/` (63 decisions)
-- **Patterns**: `docs/internal/architecture/current/patterns/` (63 patterns)
-- **PDRs**: `docs/internal/product/pdr/` (6 product design records)
+- **Active ADRs**: `docs/internal/architecture/current/adrs/` 
+- **Patterns**: `docs/internal/architecture/current/patterns/` 
+- **PDRs**: `docs/internal/product/pdr/` 
 
 ### 🎨 Assets (`assets/` and `docs/assets/`)
 
@@ -366,7 +373,7 @@ Weekly/monthly session consolidations - 100+ consolidated logs for historical re
 - **Code References**: `internal/architecture/current/models/`
 - **Processes**: `internal/development/methodology-core/`
 - **Images/Assets**: `assets/` with inventory in README
-- **ADRs**: `internal/architecture/current/adrs/` (61 decisions)
+- **ADRs**: `internal/architecture/current/adrs/` 
 
 ---
 
@@ -445,8 +452,8 @@ Weekly/monthly session consolidations - 100+ consolidated logs for historical re
 ### For Research & Analysis
 
 - **[Omnibus Logs](omnibus-logs/)** - Strategic insights and weekly summaries (100+ logs)
-- **[ADRs](internal/architecture/current/adrs/)** - Architectural decision records (63)
-- **[Patterns Catalog](internal/architecture/current/patterns/)** - Implementation patterns (63)
+- **[ADRs](internal/architecture/current/adrs/)** - Architectural decision records
+- **[Patterns Catalog](internal/architecture/current/patterns/)** - Implementation patterns
 - **[Session Logs](../dev/)** - Historical development sessions by date
 
 ---

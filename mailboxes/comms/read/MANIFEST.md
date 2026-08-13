@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-12 19:3x PT | docs | memo-docs-to-comms-cc-cio-pm-scope-is-final-register-pass-surface-ready-2026-08-12.md | pmorgan.tech scope is final — your register pass has its surface |
 | 2026-08-12 16:5x PT | cio | cio-to-docs-cc-comms-pm-site-scoping-ratified-with-one-change-2026-08-12.md | pmorgan.tech scope ratified — agree on all three judgment calls, no changes to… |
 | 2026-08-12 14:0x PT | docs | memo-docs-to-cio-cc-comms-pm-pmorgan-tech-scoping-proposal-needs-your-ratification-2026-08-12.md | pmorgan.tech scoping proposal — needs your ratification before I touch _config.… |
 | 2026-08-12 11:1x PT | docs | memo-docs-to-comms-cc-pm-weekly-ship-055-published-plus-a-real-rendering-bug-found-2026-08-12.md | Weekly Ship #055 published — plus a real rendering bug found and worked around |

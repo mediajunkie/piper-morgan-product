@@ -234,12 +234,15 @@ Buttondown CSP live-bug — all predecessor's, pre-7/19. Admin calendar runtime 
 autosave ask #1 — mine, 7/29 (see Active threads above for verification limits).
 
 ## Cron state
-- **ARMED** — `f3d7d286`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
-  History: `104cb687` was live through the 2026-08-11 06:28 fire, then deliberately parked (`CronDelete`)
-  per Pard's second stand-down notice (`cronpark-web.txt`) ahead of the Amber reboot — recorded in
-  `docs/handoff-web-2026-08-11.md` §6. Re-armed post-reboot per Pard's fleet-wide nudge
-  (`post-reboot-nudge-2026-08-11.md`), same expression, new id `f3d7d286` — handoff §7. No cadence
-  change, so the registry row (expression-keyed, no job-id column) needed no update.
+- **ARMED** — `30b85233`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
+  Re-armed via delete-then-create at the 2026-08-12 21:52 STOP (routine day-close re-arm, not a
+  cadence change — prior id `f3d7d286` had been live all day since the post-reboot re-arm, itself
+  documented in `docs/handoff-web-2026-08-11.md` §7). Registry row (expression-keyed, no job-id
+  column) needed no update.
+- **2026-08-11 was retroactively DAY-CLOSED on 2026-08-12** (Step 0 self-heal — that day ended via
+  the reboot stand-down notices, not an explicit STOP; reconstructed cleanly from git history, no
+  gaps). 2026-08-12 itself was a quiet day, closed normally: four fires, zero mail, zero unblocked
+  task work, zero code changes. Nothing new to carry forward from either day.
 - **Wake-time heartbeat practice — DONE 2026-08-05, ongoing**: emitted `scripts/duty-cycle-heartbeat.sh
   web START` (no `--if-quiet`) as the very first action of the 06:27 fire, before sync/mail/anything.
   Wrote `dev/heartbeats/2026-08-05/web.tsv` to `origin/main` at 06:28:00, well ahead of the cohort's
