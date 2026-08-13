@@ -13,6 +13,15 @@
 - **For Integration**: See [Integration Patterns](#integration-patterns)
 - **For Debugging**: See [Common Issues & Solutions](#common-issues--solutions)
 
+> **Adding docs? Know the two surfaces.** The pmorgan.tech site builds only the visitor-facing
+> subset of `docs/` — the working corpus (`internal/`, `briefs/`, `briefing/`, `operations/`,
+> omnibus logs, and similar) is deliberately excluded via `docs/_config.yml` and lives on GitHub
+> only (scoped 2026-08-12, CIO-ratified; rationale in
+> `docs/internal/operations/docs-site-scoping-proposal-2026-08-12.md`). If you add a **new
+> top-level directory** under `docs/`, decide which surface it belongs to and update the
+> `_config.yml` exclude list accordingly — an unclassified directory ships to the public site by
+> default. The exclude list is owned by Docs.
+
 ---
 
 ## Getting Started with Piper Morgan
