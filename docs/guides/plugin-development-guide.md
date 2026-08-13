@@ -25,7 +25,7 @@ Before starting, ensure you have:
 - [ ] Piper Morgan development environment set up
 - [ ] Familiarity with FastAPI
 - [ ] Understanding of Python async/await
-- [ ] Read [Pattern-031: Plugin Wrapper](../internal/architecture/current/patterns/pattern-031-plugin-wrapper.md)
+- [ ] Read [Pattern-031: Plugin Wrapper](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/patterns/pattern-031-plugin-wrapper.md)
 
 ## Step 1: Plan Your Integration
 
@@ -508,7 +508,7 @@ Once your integration works:
 
 ## Related Documentation
 
-- [Pattern-031: Plugin Wrapper](../internal/architecture/current/patterns/pattern-031-plugin-wrapper.md) - Architectural details
+- [Pattern-031: Plugin Wrapper](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/patterns/pattern-031-plugin-wrapper.md) - Architectural details
 - [Plugin System README](../../services/plugins/README.md) - System overview
 - Configuration Guide *(proposed; doc TBD)* - Config management
 
