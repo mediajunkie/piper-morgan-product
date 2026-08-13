@@ -1,6 +1,6 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-13 09:48 PT fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-13 12:45 PT fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
@@ -8,18 +8,20 @@
 
 ## pmorgan.tech register pass — status
 
-**Tiers 1–3 all touched. Not the whole ~160-file KEEP surface — naming the denominator:**
+**Tiers 1–4 touched. Not the whole ~160-file KEEP surface — naming the denominator:**
 
 - ✅ **Tier 1, `dev-tips/` (5 files, the CIO obligation)** — done. Commit `d5b1eca37`.
 - ✅ **Tier 2, five `ALPHA_*` docs** — done. Commit `9f6ab1732`.
 - ✅ **Tier 3, `guides/` (15) + `getting-started/` (3 current files)** — 17 of 18 done, 1 (`mac-dock-integration.md`) deliberately left untouched, filed as #1611. Commit `c6dcc2074`.
-- ⬜ **Not started**: the rest of the KEEP list — `public/user-guides/` (16), `installation/` (7), `features/` (5), `integrations/` (3), `configuration/` (2), `setup/` (2), `troubleshooting/` (2) + `troubleshooting.md`, `api/` (3), `public/api-reference/` (7), and more. Docs hasn't named a next priority within this remainder yet — check for a follow-up memo before picking a starting point, since their own staleness+link pass may surface a better order.
+- ✅ **Tier 4, `public/user-guides/` (7 current files after `legacy-user-guides/` exclusion)** — 6 of 7 fixed/clean. Commit `f7bab9aa0`.
+- ⬜ **Not started, and explicitly holding here**: told Docs I'm not continuing further into the remaining ~150 KEEP files without a priority signal, rather than guessing at scope on my own. Remainder includes `installation/` (7), `features/` (5, top-level — distinct from `user-guides/features/`), `integrations/` (3), `configuration/` (2), `setup/` (2), `troubleshooting/` (2) + `troubleshooting.md`, `api/` (3), `public/api-reference/` (7), and more. **Check for a Docs memo naming a next priority before picking a starting point.**
 
-## Filed this morning, not fixed — need someone else
+## Filed, not fixed — need someone else
 
-- **#1610**: `ALPHA_AGREEMENT_v2.md` ships with a literal `[contact email]` placeholder — open since Oct 2025, duplicated in 2 other docs. Needs PM's actual address.
-- **#1611**: `mac-dock-integration.md` is built around PM's own "6:00 AM PT standup" routine and describes what looks like a stale two-process architecture (port 8081) contradicting every current doc. Needs architecture verification + a scoping call, not a register fix.
-- **18 broken links** (9 files) pointing at content the scoping proposal excluded — sent to Docs as a memo (`2026-08-13-comms-to-docs-cc-cio-pm-tier-3-findings-broken-links-plus-two-filed-issues.md`) with the full file:line list, not fixed myself (their dimension, and 18 instances is too many to guess a repointing pattern for).
+- **#1610**: `ALPHA_AGREEMENT_v2.md`'s `[contact email]` placeholder. Needs PM's actual address; Docs has it on their next PM-touchpoint rollup.
+- **#1611**: `mac-dock-integration.md`'s stale-architecture question. **Verified by Docs, not just my hunch**: the port-8081 two-process pattern is genuinely still live in code (`port_configuration_service.py` default + 3 scripts) despite every current doc contradicting it — routed to Lead. File stays in KEEP untouched until Lead attests which way it resolves.
+- **24 broken links total** (18 tier-3 + 6 tier-4) pointing at now-excluded content — **all 18 from tier 3 already repointed by Docs** (absolute GitHub URLs, commit `dc200c524`), same-fire turnaround. Tier-4's 6 sent as a follow-up memo, not yet confirmed fixed.
+- **`PM-NNN` legacy ticket-ID pattern** (PM-011, PM-124, PM-126) found in `user-guides/features/` — flagged to Docs, unclear if these still resolve to anything current. Not acted on further.
 
 ## PM capacity note — may still apply this morning
 
@@ -40,4 +42,4 @@ PM has been running the team on borrowed DesignXProduct tokens; own account acce
 - **PPM** — BYOC listing copy v4 blocker.
 - **CXO/PM** — entity-model ratification.
 - **Dispatch** — syndication for the 4 posts above.
-- **Docs** — the 18 broken links; whoever picks up #1611's architecture question.
+- **Docs** — tier-4's 6 broken links; a priority signal for the ~150-file remainder; whoever picks up #1611 (routed to Lead).
