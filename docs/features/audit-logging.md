@@ -932,8 +932,8 @@ finally:
 ## Support
 
 For issues or questions:
-- GitHub Issues: [#249 CORE-AUDIT-LOGGING](https://github.com/your-org/piper-morgan/issues/249)
-- Security concerns: security@your-org.com
+- GitHub Issues: [#249 CORE-AUDIT-LOGGING](https://github.com/mediajunkie/piper-morgan-product/issues/249) (closed — the implementing issue, kept as the historical reference)
+- Security concerns: [support@pipermorgan.ai](mailto:support@pipermorgan.ai) <!-- pending PM's call on a dedicated security@ address (Exec memo 2026-08-13); repoint if one is created -->
 - Documentation updates: Submit PR to `docs/features/audit-logging.md`
 
 ---

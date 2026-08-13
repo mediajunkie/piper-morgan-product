@@ -1,5 +1,8 @@
 # Morning Standup CLI - User Guide
 
+> **Note on `PM-NNN` references** (added 2026-08-13): IDs like PM-011/PM-124/PM-126 are the project's 2025-era internal ticket numbers, predating the move to GitHub Issues as the sole tracker. They're kept as historical references; where a GitHub mapping is known it's shown inline (e.g. PM-126 = GitHub #132). They are not links and have no current lookup surface.
+
+
 **Status**: ✅ **PRODUCTION READY** with **ISSUE INTELLIGENCE INTEGRATION**
 **Created**: August 24, 2025
 **Last Updated**: August 24, 2025
@@ -211,8 +214,8 @@ python -c "from services.features.issue_intelligence import IssueIntelligenceCan
 
 ### Support
 
-- **Architecture Documentation**: [Canonical Queries Architecture](../../../internal/architecture/canonical-queries-architecture.md)
-- **Development Guide**: [Morning Standup MVP Guide](../../../internal/development/tools/MORNING_STANDUP_MVP_GUIDE.md)
+- **Architecture Documentation**: [Canonical Queries Architecture](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/canonical-queries-architecture.md)
+- **Development Guide**: [Morning Standup MVP Guide](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/development/tools/MORNING_STANDUP_MVP_GUIDE.md)
 - **Integration Testing**: [Integration Guide](integration-guide.md)
 
 ## 📝 Changelog
@@ -227,7 +230,7 @@ python -c "from services.features.issue_intelligence import IssueIntelligenceCan
 
 ### Previous Versions
 
-See [Morning Standup MVP Guide](../../../internal/development/tools/MORNING_STANDUP_MVP_GUIDE.md) for complete development history.
+See [Morning Standup MVP Guide](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/development/tools/MORNING_STANDUP_MVP_GUIDE.md) for complete development history.
 
 ---
 
