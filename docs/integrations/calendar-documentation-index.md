@@ -11,7 +11,7 @@
 **Purpose**: Test suite documentation with 21 test methods
 
 ### Architecture Decisions
-**File**: [`docs/internal/architecture/current/adrs/adr-038-spatial-intelligence-patterns.md`](../internal/architecture/current/adrs/adr-038-spatial-intelligence-patterns.md)
+**File**: [`docs/internal/architecture/current/adrs/adr-038-spatial-intelligence-patterns.md`](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-038-spatial-intelligence-patterns.md)
 **Purpose**: Delegated Model Context Protocol (MCP) Pattern documentation
 
 ### Configuration Guide

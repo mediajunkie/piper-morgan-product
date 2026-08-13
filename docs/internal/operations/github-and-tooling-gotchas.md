@@ -85,3 +85,22 @@ for p in ['slack_client_id', 'slack_client_secret', 'notion', 'github']:
 ```
 
 **User-scoped credentials** (Slack bot/user tokens, per ADR-058): `KeychainService.store_api_key(provider, value, username=user_id)`. Account name becomes `f"{user_id}_{provider}_api_key"`. Same gotcha; same fix.
+
+## Amber billing hazard: never export `ANTHROPIC_API_KEY` host-wide (shell profile / launchctl)
+
+*(Relocated 2026-08-13 from `docs/setup/llm-api-keys-setup.md`, where it had been written for the
+wrong audience — a visitor-facing setup doc; Comms caught it in the docs-site register pass,
+commit `285f2a0c1` has the removal. Original warning, Pard 2026-08-05, preserved verbatim below;
+it had no other home in the repo.)*
+
+> ⚠️ **Never use a shell-profile or `launchctl setenv` export of `ANTHROPIC_API_KEY` on Amber (or
+> any shared multi-session host).** Claude Code reads `ANTHROPIC_API_KEY` from the environment, so
+> a host-wide export silently redirects **every resident session's** billing off the Max
+> subscription onto metered API — no error, no signal until the Console bill. On Amber use
+> KeychainService only. *(Pard, 2026-08-05; verified clean at time of writing — prevention, not
+> remediation.)*
+
+Related but distinct from CLAUDE.md's `ANTHROPIC_API_KEY` warning: that one covers the transient
+shell-*inherited* empty key shadowing the server's credential resolution; this one covers a
+*persistent host-wide* export capturing every session's billing. Both resolve to the same rule —
+credentials go through KeychainService, never the environment, on shared hosts.

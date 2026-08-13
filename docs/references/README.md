@@ -10,7 +10,7 @@ This directory contains documentation for references in the Piper Morgan system.
 
 ## Navigation
 
-- **[📚 Documentation Home](../../README.md)**
+- **[📚 Documentation Home](../README.md)**
 ---
 
 **Last Updated**: October 1, 2025

@@ -447,7 +447,7 @@ If you're stuck:
 
 - [CONTRIBUTING.md - Windows Development Section](../CONTRIBUTING.md#windows-development)
 - [Installation Troubleshooting](./troubleshooting.md)
-- [Development Setup Guide](../internal/development/tools/setup.md)
+- [Development Setup Guide](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/development/tools/setup.md)
 - [Getting Started](./step-by-step-installation.md)
 
 ---

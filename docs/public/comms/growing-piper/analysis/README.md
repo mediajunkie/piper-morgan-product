@@ -13,7 +13,7 @@ This directory contains:
 ## Navigation
 
 - **[← Back to Growing Piper](../README.md)**
-- **[📚 Documentation Home](../../README.md)**
+- **[📚 Documentation Home](../../../../README.md)**
 
 ---
 

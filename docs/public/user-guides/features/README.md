@@ -14,7 +14,7 @@ This directory contains documentation for features in the Piper Morgan system.
 
 ## Navigation
 
-- **[📚 Documentation Home](../../README.md)**
+- **[📚 Documentation Home](../../../README.md)**
 
 ---
 
