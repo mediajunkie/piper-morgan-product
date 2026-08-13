@@ -2,7 +2,16 @@
 
 **Owner**: CXO (cxo-code) | **Host**: Amber | **Worktree**: `~/Development/piper-morgan-worktrees/cxo` on `claude/cxo-cycle` (Model A, stable path)
 **Purpose**: durable task list for the duty cycle (cron-referenced). Updated as threads move.
-**Last updated**: 2026-07-29 (predecessor handoff absorbed; Jake FTUX + Ship 053 shipped)
+**Last updated**: 2026-08-13 (item A closed on re-verification; see note below)
+
+⚠️ **This file has not been the operative day-to-day tracking surface since late July — every duty-cycle
+fire since the 08-11 reboot has worked off `dev/active/cxo-carry-forward.md`'s rolling table instead, and
+that table has moved on without this file being touched.** Checked today (08-13) after noticing item A
+below still read as an open live risk; it wasn't — closed 2026-07-29, just never marked here. **Treat this
+file as historical/predecessor-plus-July backlog, not current state; check `cxo-carry-forward.md` first for
+anything live.** Not deleting it — real backlog items below (B′/#1463, thread 5 spatial-review-watch) are
+still accurate and worth keeping visible — but the two-files-both-claiming-to-be-current problem is the
+same drift the carry-forward itself got caught in on 08-11; noting it here rather than letting it repeat.
 
 ## Added 2026-07-29 — from the predecessor's handoff
 
@@ -11,7 +20,7 @@ Handoff preserved verbatim at `dev/active/cxo-handoff-from-predecessor-2026-07-2
 
 | Pri | Item | State |
 |---|---|---|
-| **A** | **Get the spatial (b) UX argument into the ADR corpus** | ⚠️ **Live risk, unaddressed.** The argument for (b) — that the cold adapter chain is a *different, later* capability (ambient presence), not a failed attempt at the shipped one — exists **only in memos**. An agent reading ADR-013 against cold code would reasonably default to (c) supersede, which would be wrong. Flagged to PM in Ship 053 §6; I asked to own it rather than assuming. **Do before the disposition ratifies.** |
+| ~~**A**~~ | ~~**Get the spatial (b) UX argument into the ADR corpus**~~ | ✅ **CLOSED 2026-07-29 — done the same day this item was written, never marked here.** `docs/internal/architecture/current/spatial-intelligence-experience-thesis.md` written and landed; the two-tier distinction (live reasoning vs. cold ambient-presence adapter, argued as two capabilities not one at partial completion) annotated onto ADR-013, ADR-038, and `spatial-intelligence-competitive-advantage.md` — all three surfaces where the wrong "failed ambition → supersede" inference was possible. Verified via `decisions.log` 2026-07-29 CXO entry, re-checked 08-13 rather than trusted from memory. Committed-theory review itself is **still open** (Arch, `adr-013` notice) — that part is thread 5 below, watch-only, correctly not mine to act on. |
 | ~~**B**~~ | ~~**Colleague Test → ADR corpus**~~ | ✅ **CLOSED 2026-07-30 (`30e1ca346`) — it was already done, and the handoff was factually wrong.** Not "just an issue comment": there is a 180-line canonical doc (`development/colleague-test.md`), a versioned rubric (`testing/colleague-test-rubric.md` **v2.3.2**), a UI branch rubric, and **DoD Layer B enforcing it as a Done-gate** — the mechanism my predecessor themselves closed as #683 on 2026-06-03. **Residual gap** (real, routed to PPM+PM, *not* mine to mint): the instrument has no ratified tier status while the gate depending on it is treated as binding. My weak lean: sufficient as-is. |
 | **B′** | **NEW — PDR-006's plugin surface has no fitting Colleague-Test rubric** | Layer B's Branch-or-Anchor discipline says naming the absence *is* a Layer-B finding. Under PDR-006 the **client LLM composes the user-visible reply from our tool output** — so R/C/T no longer scores what the user reads. Proposed branch dimensions: sufficiency · **honesty-under-recomposition** · capability truthfulness. ⚠️ The middle one matters most: **our honest-decline discipline is a property of text we control, and we have never tested whether a hedge survives another LLM paraphrasing it.** Open before the plugin surface reaches users. |
 | **C** | **Jake FTUX follow-through** | Review filed `fc28057ea`. Exec synthesizes once all four lenses (CXO ✅, HOST ✅, PPM, PA) are in. **Watch for the synthesis** — my §3 pairing (capability legibility + HOST's consent gate = one feature) is the thing most likely to get collapsed into HOST's half alone. |
