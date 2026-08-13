@@ -17,6 +17,19 @@ from services.personality.personality_profile import (
     TechnicalPreference,
 )
 
+# ── The confidence gate's thresholds, hoisted to named constants (#1510) ──
+# These are THE shared inference-confidence gate for the cohort: PM's 2026-08-13
+# ruling on #1510 (relayed by Exec) directed the verified-inference mechanism to
+# EXTEND this existing confidence_score gate rather than build a parallel
+# scoring system. `services/intent_service/verified_inference.py` imports these
+# same constants — one gate, two consumers, no drift surface. Values unchanged
+# from the original inline literals (auto-apply ≥0.9 / suggest ≥0.4).
+AUTO_APPLY_THRESHOLD = 0.9
+"""Confidence at/above which an inference may be applied without asking."""
+
+SUGGESTION_THRESHOLD = 0.4
+"""Confidence floor below which an inference is too weak to even surface."""
+
 
 class PreferenceDimension(Enum):
     """The 4 dimensions of user preference we detect"""
@@ -78,11 +91,11 @@ class PreferenceHint:
 
     def confidence_level(self) -> ConfidenceLevel:
         """Classify confidence into categories"""
-        if self.confidence_score >= 0.9:
+        if self.confidence_score >= AUTO_APPLY_THRESHOLD:
             return ConfidenceLevel.VERY_HIGH
         elif self.confidence_score >= 0.7:
             return ConfidenceLevel.HIGH
-        elif self.confidence_score >= 0.4:
+        elif self.confidence_score >= SUGGESTION_THRESHOLD:
             return ConfidenceLevel.MEDIUM
         else:
             return ConfidenceLevel.LOW
@@ -90,13 +103,13 @@ class PreferenceHint:
     def is_ready_for_suggestion(self) -> bool:
         """Should we suggest this preference to user?"""
         # Only suggest if confidence is MEDIUM or higher
-        return self.confidence_score >= 0.4
+        return self.confidence_score >= SUGGESTION_THRESHOLD
 
     def is_ready_for_auto_apply(self) -> bool:
         """Can we automatically apply this preference?"""
         # Only auto-apply if confidence is VERY_HIGH (0.9+)
         # and it's explicit feedback or behavioral signal (strong evidence)
-        return self.confidence_score >= 0.9 and self.detection_method in (
+        return self.confidence_score >= AUTO_APPLY_THRESHOLD and self.detection_method in (
             DetectionMethod.EXPLICIT_FEEDBACK,
             DetectionMethod.BEHAVIORAL_SIGNALS,
         )

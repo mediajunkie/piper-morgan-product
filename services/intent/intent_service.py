@@ -931,6 +931,29 @@ class IntentService:
                 session_id, user_id=user_id
             )
             if pending_offer:
+                # #1510 (inferred half, PM ruling via Exec 2026-08-13): on a
+                # verification read-back turn, meta-feedback about the
+                # verification PROCESS ("stop asking me every time", "don't
+                # make assumptions") is a DISTINCT steering signal with its
+                # own handling — checked BEFORE generic accept/decline
+                # because meta phrasings can co-occur with a decline ("no,
+                # stop asking me every time"). This lives here — inside the
+                # confirmation flow's own turn handling — deliberately: the
+                # routing moratorium bars pre-classifier additions, and
+                # handler-internal turn logic is the sanctioned seam.
+                _vi_payload = pending_offer.get("pending_action") or {}
+                if _vi_payload.get("kind") == "verify_inference":
+                    from services.intent_service import verified_inference as _vi
+
+                    _vi_meta = await _vi.handle_verification_turn_meta(
+                        pending_offer, message, session_id=session_id, user_id=user_id
+                    )
+                    if _vi_meta is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_vi_meta["message"],
+                            intent_data=_vi_meta["intent_data"],
+                        )
                 response_type = detect_offer_response(message)
                 # #1190: a pending DESTRUCTIVE confirmation treats bare exit
                 # commands ("cancel", "stop", "forget it" — #888 ∪ #1529
@@ -1014,6 +1037,15 @@ class IntentService:
                         )
 
                 elif response_type == "decline":
+                    # #1510: a declined verification read-back discards
+                    # WITHOUT storing (the pop above already removed the
+                    # offer) and is NOT re-asked this session — the
+                    # session-scoped decline memo is what
+                    # build_read_back_offer consults before re-offering.
+                    if _vi_payload.get("kind") == "verify_inference":
+                        from services.intent_service import verified_inference as _vi
+
+                        _vi.mark_declined(session_id, _vi_payload.get("inference_key"))
                     decline_msg = pending_offer.get(
                         "decline_message",
                         "No worries, just let me know if you change your mind.",
@@ -1037,8 +1069,15 @@ class IntentService:
                 # removed the pending action, so nothing can ever fire it,
                 # and normal processing answers the new message.
                 elif pending_offer.get("pending_action"):
+                    # #1510: off-intent on a verification read-back abandons
+                    # it the same way (the pop discarded it; nothing stored)
+                    # — logged under its own name for honest observability.
                     self.logger.info(
-                        "destructive_confirmation_abandoned",
+                        (
+                            "verification_read_back_abandoned"
+                            if _vi_payload.get("kind") == "verify_inference"
+                            else "destructive_confirmation_abandoned"
+                        ),
                         action=pending_offer["pending_action"].get("action"),
                         session_id=session_id,
                     )
