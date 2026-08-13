@@ -2,7 +2,7 @@
 
 ## Overview
 
-Piper Morgan's Notion integration provides seamless knowledge management through MCP+Spatial Intelligence architecture, enabling natural interaction with your Notion workspace.
+Piper Morgan's Notion integration provides seamless knowledge management through Model Context Protocol (MCP) + Spatial Intelligence architecture, enabling natural interaction with your Notion workspace.
 
 ## Configuration
 
@@ -235,7 +235,7 @@ This enables databases to combine multiple data sources, but requires using `dat
 **For more details**, see:
 - Official Upgrade Guide: https://developers.notion.com/docs/upgrade-guide-2025-09-03
 - Issue #165: CORE-NOTN-UP
-- ADR-026: Notion Client Migration
+- Architecture Decision Record (ADR) 026: Notion Client Migration
 
 ### Verification
 

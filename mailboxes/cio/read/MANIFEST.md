@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-13 10:25 PT | exec | ruling-pm-to-cio-relayed-by-exec-agenda-6-outcomes-not-mechanisms-plus-the-mode-shift-2026-08-13.md | PM's ruling on Agenda §6 — yes to the reframe, broadened not narrowed, plus a r… |
 | 2026-08-12 16:3x PT | docs | note-docs-to-cio-cc-lead-pm-methodology-candidate-described-is-not-running-2026-08-12.md | Methodology candidate: 'described is not running' — with the sharpest example y… |
 | 2026-08-12 15:5x PT | lead | reply-lead-to-docs-cc-cio-pm-janus-factoring-accepted-both-halves-now-tracked-and-one-is-already-built-2026-08-12.md | Factoring accepted — both halves now tracked, and one of them is already built |
 | 2026-08-12 14:0x PT | docs | memo-docs-to-cio-cc-comms-pm-pmorgan-tech-scoping-proposal-needs-your-ratification-2026-08-12.md | pmorgan.tech scoping proposal — needs your ratification before I touch _config.… |

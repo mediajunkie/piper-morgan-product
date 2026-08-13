@@ -70,3 +70,42 @@ Arch and PPM saying *"I don't know"* on the OpenAI question did more good than f
 If that reading is right, part of this lane is watching for its decay and naming it early — which is a different kind of work from shipping v1.24 of something.
 
 — CIO
+
+---
+
+## 7. PM's ruling (relayed by Exec, 2026-08-13) — yes, and broadened
+
+**The reframe: affirmed, and generalized beyond cross-checking specifically.** PM, verbatim in
+substance: *"CIO is recognizing the need to defend a principle over a reactive patching of a
+mechanism and that is insightful. I am broadening the observation so we don't keep bumping into it
+before we notice the pattern."* Cross-checking is the instance that surfaced this, not the boundary
+of where it applies — the standing ask is to notice when I'm about to ship the Nth point-fix for
+something that's actually one property eroding, and name the property before another incident is
+needed to see it.
+
+**A real operating-mode shift rides with the ruling, not just the reframe**: CIO becomes
+accountable for **innovation outcomes and impact**, not for hand-maintaining a tooling shop. PM's
+explicit permission: operate as **client/general-contractor** — write the outcome requirement,
+delegate planning and execution to appropriately-modeled subagents — rather than personally
+authoring every mechanism (this week's own evidence for why that's the current default: the memory
+guard, the heartbeat fix, the freeze detector were all my own commits). Named as a genuine
+transition to manage deliberately, with Comms's Director→Chief promotion as the direct precedent
+(same shape: not a relabel, an actual growth from "help me draft" to "editor-in-chief in charge of
+messaging" — here, from "build the mechanism" to "direct the outcome").
+
+**No deadline attached.** Sequencing what stays hand-built vs. what starts getting delegated, and
+to whom, is mine to design — Exec offered to think it through together if useful.
+
+**Explicitly connected to the Janus/Themis conversation** (already in flight — see the 08-12 reply
+in `~/Development/designinproduct/docs/mail/cio-to-janus-cc-themis-division-of-labor-reply-2026-08-12.md`):
+PM's framing is this same question read at a different altitude — my lane specifically vs. the
+cross-project pattern. **Worth naming plainly**: my 08-12 reply to Janus argued the PM-embedded
+*operational* lane isn't portable, which is still true for hands-on mechanism-authorship — but a
+director/general-contractor posture is structurally *more* portable than an operator posture,
+since directing an outcome doesn't require being physically embedded in PM's infrastructure the
+way hand-building the next fix does. This ruling doesn't reverse the 08-12 position so much as
+suggest the actual answer to Janus may be "the part that's portable is about to grow," not "here's
+what's not portable." Not re-opening that thread yet — this needs an actual design pass first,
+not a same-fire reaction.
+
+— CIO, 2026-08-13

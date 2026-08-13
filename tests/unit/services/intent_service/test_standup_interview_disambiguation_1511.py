@@ -36,7 +36,11 @@ from services.intent.intent_service import IntentProcessingResult, IntentService
 from services.shared_types import IntentCategory
 
 REPORT_TEACHING_LINE = "Want the guided version instead? Say 'my standup interview'."
-INTERVIEW_TEACHING_LINE = "Want the quick report instead? Say 'give me my standup'."
+# #1591 updated the taught report phrase: the generic 'give me my standup' now
+# honors a stored standup_mode=interview preference (redirects to the
+# interview), so the interview's escape line must carry the explicit report
+# token to stay a working escape. Still claimed by the 'my standup' cue.
+INTERVIEW_TEACHING_LINE = "Want the quick report instead? Say 'my standup report'."
 
 
 # ---------------------------------------------------------------------------
@@ -52,6 +56,35 @@ def intent_service():
             return IntentService()
 
 
+@pytest.fixture(autouse=True)
+def _clean_1591_transient_state():
+    """#1591 wired preference capture into the handler these tests drive; its
+    transient module state (mode tally, session decline memory) must not leak
+    between tests."""
+    from services.intent_service import standup_preferences as sp
+    from services.intent_service import verified_inference as vi
+
+    sp._MODE_CHOICES.clear()
+    vi._SESSION_DECLINES.clear()
+    yield
+    sp._MODE_CHOICES.clear()
+    vi._SESSION_DECLINES.clear()
+
+
+@pytest.fixture(autouse=True)
+def _no_stored_standup_mode(monkeypatch):
+    """Pin the rail's store read to a miss at its persistence seam — these
+    #1511 tests assert the NO-stored-preference behavior; the real seam would
+    try the DB. (#1591's own tests exercise the stored paths.)"""
+
+    async def _load(user_id):
+        return {}
+
+    from services.intent_service import collaboration_gate
+
+    monkeypatch.setattr(collaboration_gate, "_load_preferences", _load)
+
+
 def _standup_intent(message: str, action: str = "get_standup") -> Intent:
     return Intent(
         category=IntentCategory.STATUS,
@@ -63,6 +96,9 @@ def _standup_intent(message: str, action: str = "get_standup") -> Intent:
 
 def _fake_summary():
     summary = MagicMock()
+    # #1591: the handler now branches on is_empty() (PPM's empty-case rule);
+    # these tests exercise the WITH-data report shape.
+    summary.is_empty.return_value = False
     summary.to_prose.return_value = "Here's your derived standup."
     summary.to_dict.return_value = {"sections": []}
     return summary

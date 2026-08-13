@@ -139,7 +139,7 @@ This agreement is governed by the laws of California, USA, without regard to con
 ## 15. Contact
 
 For questions about this agreement or the software:
-Email: [contact email]
+Email: support@pipermorgan.ai
 GitHub: https://github.com/mediajunkie/piper-morgan-product
 
 ---

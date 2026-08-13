@@ -1,12 +1,24 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-13 07:22 PT (START). Cron **`829056ba`**, unchanged since 08-12
-STOP. Sync clean, inbox empty, 08-12 sentinel confirmed. **MVP 52 not done / 1043 done**
-(re-run fresh — moved from 08-12's 48; the shift is in the no-status-set bucket, 5→8, plus one
-more Done — read as overnight filing churn, not a regression, since Sprint Backlog/In Review/In
-Progress held steady). The three PM-open items (criterion blessing, #1510 fork, Surface 1/3)
-checked via GitHub — still all genuinely open, no PM movement since 08-10.
+**Last rewritten**: 2026-08-13 10:22 PT (WORK). Cron **`829056ba`**, unchanged.
+
+## ✅ #1510 FORK RULED 2026-08-13 (PM via Exec) — one of the three handoff items now CLOSED
+**The (a)/(b) fork is resolved**: low trust-gradient score on an inference → Piper reads it back
+to the user for verification → once verified, stored, not re-inferred each time. Meta-feedback
+about the *verification process* ("stop asking me") stays a separate signal from feedback about
+task-preference *content* — don't fold the two into one mechanism. Milestone deliberately left
+open by the ruling — PM's words: *"that's the next actor's call."*
+**Cross-linked to my own owned spec**: posted on #1511 connecting this ruling to the
+Production-half preference-capture design (the anti-goal risk I flagged 08-10 — asking at the
+moment of least information — is exactly what "observe, read back once, store" resolves).
+**#1591 already got the same cross-link from another role, independently, ~4 min before this
+fire** — no duplication, complementary (different issue, same ruling). **Two of three handoff
+items now open; only criterion blessing + Surface 1/3 remain.**
+
+**Sync clean, inbox empty. `MVP 52 not done / 1043 done`** (checked fresh at 07:22 START — the
+52-from-48 shift was overnight filing churn in the no-status-set bucket, not a regression;
+unchanged again at this fire).
 ✅ **Jake conversion COMPLETE: #1536–#1540 filed 08-09, zero rows unfiled.**
 
 ## 🔴 AWARENESS FROM 08-11 16:1x — Lead's escalation to PM (not mine to action, but changes what I cite)
@@ -289,9 +301,9 @@ window, Jake's PPM-lens-only stage, PDR-006 pre-ratification, spatial (b), hooks
 converged and filed 08-09; PDR-006/spatial/hooks status folded into other sections; #1386's 07-31
 window closed criterion 2 only, already recorded). Kept as a pointer, not carried forward as
 content — if any of those threads turn out to still be open, that's a finding, not an inheritance.
-**Current open-for-PM items are the three in `docs/handoff-ppm-2026-08-11.md` §2** (criterion
-blessing, #1510 fork, Surface 1/3) — re-checked via GitHub at this fire (08-12 07:22): **all three
-still genuinely open, no new PM comment on #1510, #1386, or the criterion doc since 08-10.**
+**The three in `docs/handoff-ppm-2026-08-11.md` §2 were the open-for-PM baseline. Status as of
+08-13 10:22**: **#1510 fork RULED 08-13** (see top of this file) — down to **two remaining**:
+criterion blessing, Surface 1/3. Neither has moved since 08-10 as of this fire.
 
 ## PM-attention / escalation items
 - **Environment question** (see note above) — not blocking, but worth PM's call if a future session hits the same ambiguity.

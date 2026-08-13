@@ -144,8 +144,8 @@ Attachments:
 - `[Name]` - Tester's first name
 - `[2/3/4]` - Tester number (keep cohort small)
 - `[DATE/TIME]` - Scheduled setup call
-- `[domain]` - Your actual email domain
-- `christian@[domain]` - Your actual contact email
+- `[domain]` - `pipermorgan.ai`
+- `christian@[domain]` - `xian@pipermorgan.ai`
 
 ---
 

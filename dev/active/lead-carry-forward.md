@@ -10,7 +10,7 @@
 ## Awaiting PM (decisions, not work)
 - ~~Deploy word for the ninth cut~~ ✅ **GIVEN + SHIPPED 08-11 (v49).** Now awaiting **retest verdicts** on #1589/#1590.
 - **Sprint field for #1595** (the Inversion epic) — deliberately left unset; Sprint changes are PM-gated and I won't infer one, even for the MVP spine.
-- **#1510 fork** — working-mode declared vs inferred. **Three consumers wait on it**: #1591's invitation persistence, the standup preference capture, #1509. None of them may grow a local preference store (PPM + CXO both ruled).
+- ✅ ~~#1510 fork~~ **RULED (PM via Exec 08-13) + MECHANISM BUILT** (`836c5a188`): infer → read-back at low confidence → store on verify; meta-feedback its own channel. **Next: wire the consumers** — #1591 preference capture (PPM's spec governs UX), then #1509. PM's live mode-flip test still open on #1510.
 - **#1190** — close/reopen DESTRUCTIVE threshold word (question is on the issue).
 - Post-deploy verdicts on the amber ledger rows.
 

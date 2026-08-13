@@ -279,6 +279,172 @@ async def run_confirm_pending_action_workflow(
     return {"message": result.message, "intent_data": result.intent_data}
 
 
+async def run_verify_inference_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1510 (inferred half): store a USER-VERIFIED inference.
+
+    Dispatched ONLY by the offer-acceptance seam in process_intent — the
+    "yes" turn against a stored verification read-back
+    (``verified_inference.VERIFY_INFERENCE_WORKFLOW``). Registered
+    action_triggered=False so the classifier/rail can never reach it (the
+    #1190 confirm_pending_action pattern).
+
+    The context carries the read-back's ``pending_action`` payload (built by
+    ``verified_inference.build_read_back_offer``). Acceptance is the PM-ruled
+    "once verified, it's stored — not re-inferred each time" write: the value
+    lands in the user's verified-inference store (users.preferences JSONB —
+    the ONE preference persistence, PPM+CXO) with source=user_verified
+    provenance. Returns the acceptance-seam dict shape; None on wiring gaps
+    (caller routes to floor — safe default, nothing stored).
+
+    #1532 (no principal dropping): the write goes to the turn's authenticated
+    user. If the offer was built for a DIFFERENT user (auth changed between
+    turns), nothing is stored — never write one principal's inference into
+    another's store.
+    """
+    from services.intent_service import verified_inference as vi
+
+    ctx = context or {}
+    payload = ctx.get("pending_action") or {}
+    if payload.get("kind") != vi.VERIFY_INFERENCE_KIND:
+        logger.error(
+            "verify_inference_missing_or_foreign_payload",
+            has_payload=bool(payload),
+            kind=payload.get("kind"),
+        )
+        return None
+
+    key = payload.get("inference_key")
+    description = payload.get("summary") or "that inference"
+    if not key:
+        logger.error("verify_inference_malformed_record", has_key=False)
+        return None
+
+    offer_user = payload.get("user_id")
+    principal = str(user_id) if user_id else None
+    if offer_user and principal and offer_user != principal:
+        logger.warning(
+            "verify_inference_principal_mismatch",
+            offer_user=offer_user,
+            turn_user=principal,
+        )
+        return {
+            "message": f"I won't assume {description} — nothing has been stored.",
+            "intent_data": {
+                "category": "execution",
+                "action": vi.VERIFY_INFERENCE_WORKFLOW,
+                "verified": False,
+                "principal_mismatch": True,
+            },
+        }
+
+    persisted = await vi.store_verified_inference(
+        principal or offer_user,
+        key,
+        payload.get("inference_value"),
+        source=vi.SOURCE_USER_VERIFIED,
+        confidence=payload.get("confidence"),
+    )
+    logger.info(
+        "inference_verified_and_stored",
+        inference_key=key,
+        persisted=persisted,
+        user_id=principal or offer_user,
+    )
+    # Honest persistence copy (collaboration_gate.mode_confirmation_message
+    # rule): a claimed-durable save that didn't happen is a confabulated
+    # capability.
+    message = f"Thanks — noted: {description}. I'll remember that instead of guessing next time."
+    if not persisted:
+        message = (
+            f"Thanks — I'll go with {description} for now, but I couldn't save it "
+            "just now, so I may ask again in a future session."
+        )
+    return {
+        "message": message,
+        "intent_data": {
+            "category": "execution",
+            "action": vi.VERIFY_INFERENCE_WORKFLOW,
+            "verified": True,
+            "persisted": persisted,
+            "inference_key": key,
+        },
+    }
+
+
+async def run_standup_interview_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1591: start the EXISTING #585 interactive standup interview on an
+    accepted invitation.
+
+    Dispatched ONLY by the offer-acceptance seam — the "yes" turn against the
+    invitation appended after a standup report (or leading an honest-empty
+    one). Registered action_triggered=False (the verify_inference/#1190
+    pattern) so the classifier/rail can never reach it.
+
+    This is pure wiring to the existing flow: acceptance calls
+    ``IntentService._start_standup_conversation`` — the SAME entry the
+    ``/standup`` command and the #1511 interview-token branch use — so all
+    three doors open the one interview (escape tiers, resume, teaching copy
+    unchanged). CXO property 3 note: DECLINE never reaches this function —
+    the generic decline path answers with the offer's decline_message and
+    changes nothing.
+    """
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    payload = ctx.get("pending_action") or {}
+    if payload.get("kind") != "standup_interview_invitation":
+        logger.error(
+            "standup_interview_missing_or_foreign_payload",
+            has_payload=bool(payload),
+            kind=payload.get("kind"),
+        )
+        return None
+    if intent_service is None:
+        logger.error("standup_interview_workflow_missing_intent_service")
+        return None
+    # #1532: the interview is the USER's flow. The invitation was built for
+    # the user it was offered to; if the accepting turn's principal differs
+    # (auth changed between turns), don't start a conversation keyed to the
+    # wrong user — decline-shaped no-op (mirrors run_verify_inference_workflow).
+    offer_user = payload.get("user_id")
+    principal = str(user_id) if user_id else None
+    if offer_user and principal and offer_user != principal:
+        logger.warning(
+            "standup_interview_principal_mismatch",
+            offer_user=offer_user,
+            turn_user=principal,
+        )
+        return {
+            "message": "Let's hold off on that — nothing has been started.",
+            "intent_data": {
+                "category": "execution",
+                "action": "standup_interview",
+                "principal_mismatch": True,
+            },
+        }
+    effective_user = principal or offer_user
+    if not effective_user or not session_id:
+        logger.error(
+            "standup_interview_workflow_missing_principal_or_session",
+            has_user=bool(effective_user),
+            has_session=bool(session_id),
+        )
+        return None
+    result = await intent_service._start_standup_conversation(effective_user, session_id)
+    # The acceptance seam consumes {"message", "intent_data"}; the interview
+    # entry returns IntentProcessingResult — adapt (confirm_pending_action idiom).
+    if isinstance(result, dict):
+        return result
+    return {"message": result.message, "intent_data": result.intent_data}
+
+
 async def run_comment_issue_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -811,6 +977,34 @@ def register_default_workflows() -> None:
             entry_point=run_confirm_pending_action_workflow,
             effect=EffectClass.DESTRUCTIVE,
             description="Execute a confirmed pending destructive action (#1190)",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #1510 (inferred half, PM ruling via Exec 2026-08-13): store a
+        # user-verified inference on the read-back's accepted turn.
+        # Offer-acceptance ONLY (action_triggered=False — the classifier/rail
+        # can never emit it). effect: WRITE (explicit + defaultless per
+        # #1557/Arch 2026-08-09) — acceptance writes the verified value into
+        # users.preferences JSONB (the set_default_repo precedent: a durable
+        # per-user preference write, mutating but not destructive).
+        "verify_inference": WorkflowEntry(
+            entry_point=run_verify_inference_workflow,
+            effect=EffectClass.WRITE,
+            description="Store a user-verified inference (#1510 read-back acceptance)",
+            requires_context=["pending_action"],
+        ),
+        # #1591: accepted standup-interview invitation → start the EXISTING
+        # #585 interview. Offer-acceptance ONLY (action_triggered=False — the
+        # deterministic claim + interview token already route classified
+        # standup intents; an accidental action collision must not start a
+        # conversation). effect: WRITE (explicit + defaultless per #1557,
+        # classified by READING the handler: _start_standup_conversation →
+        # StandupConversationHandler.start_conversation → manager
+        # .create_conversation → repo.add — a durable conversation row is
+        # created; mutating, not destructive).
+        "standup_interview": WorkflowEntry(
+            entry_point=run_standup_interview_workflow,
+            effect=EffectClass.WRITE,
+            description="Start the #585 standup interview from an accepted invitation (#1591)",
             requires_context=["pending_action", "intent_service"],
         ),
         "update_document": document_update_entry,

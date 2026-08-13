@@ -142,7 +142,15 @@ try:
 
         # Return friendly message to user. Build the response first so we
         # can apply cookie-clearing (Issue #1078) if the raiser asked for it.
-        response = JSONResponse(status_code=exc.status_code, content={"message": friendly_message})
+        # Both keys, deliberately: FastAPI's native error shape is {"detail"},
+        # and fetch-side consumers read err.detail — this handler's {"message"}
+        # rewrite silently starved them all into their canned fallback copy
+        # (found live 2026-08-13: the Slack app-token 400's precise explanation
+        # rendered as generic "Couldn't connect" — one label, two objects).
+        response = JSONResponse(
+            status_code=exc.status_code,
+            content={"message": friendly_message, "detail": friendly_message},
+        )
 
         # #1078: HTTPExceptionWithCookieClear signals that auth cookies must
         # be cleared as part of this 4xx — apply to the rebuilt response so
