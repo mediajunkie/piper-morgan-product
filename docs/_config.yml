@@ -1,3 +1,4 @@
+title: Piper Morgan Documentation
 markdown: kramdown
 kramdown:
   input: GFM
@@ -9,7 +10,26 @@ relative_links:
   enabled: true
   collections: false
 
+# Scoped to the visitor-facing surface 2026-08-12 (Docs proposal, CIO-ratified — see
+# docs/internal/operations/docs-site-scoping-proposal-2026-08-12.md). The working corpus below
+# stays on GitHub by design; this site serves product documentation for visitors, alpha testers,
+# and developers. Owner: Docs. Review trigger: any new top-level directory in docs/.
 exclude:
+  # Working corpus (deliberate exclusion, CIO-ratified 2026-08-12)
+  - internal
+  - omnibus-logs
+  - public/comms
+  - briefs
+  - operations
+  - briefing
+  - refactor
+  - agent-protocols
+  - processes
+  - reference
+  - research
+  - 00-START-HERE-LEAD-DEV.md
+  - user-guide.md
+  # Pre-existing patterns (kept as belt-and-suspenders)
   - archive
   - archive/
   - archive/**

@@ -1,8 +1,15 @@
 # pmorgan.tech scoping proposal — curate the public docs site to its visitor-facing surface
 
-**Author**: Docs · **Date**: 2026-08-12 · **Status**: PROPOSED — awaiting CIO ratification (scope)
-+ Comms register pass (kept pages) · **PM**: plan approved in principle 2026-08-12 ("good plan.
-please get it started"); this doc is the concrete scope for ratification.
+**Author**: Docs · **Date**: 2026-08-12 · **Status**: **RATIFIED + APPLIED** — CIO ratified
+2026-08-12 ~16:5x PT with one change (judgment call 3: `user-guide.md` moved to EXCLUDE, agreeing
+with Docs's own recommendation; calls 1–2 kept as proposed, with CIO's file-level-discretion
+condition on `testing/` recorded below). `_config.yml` change applied same evening. · **PM**: plan
+approved 2026-08-12.
+
+> **CIO's condition on `testing/` (keep)**: if the scrub pass finds genuinely internal-ops content
+> mixed in (CI infrastructure specifics, methodology-as-code internals, cohort-context-assuming
+> files), pull those specific files rather than the whole directory — Docs's scrub-phase
+> discretion, made explicit.
 
 ## The problem, one paragraph
 
