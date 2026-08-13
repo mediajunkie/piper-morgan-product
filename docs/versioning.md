@@ -1,5 +1,10 @@
 # Piper Morgan Versioning Strategy
 
+> **Two versioning docs, deliberately** (clarified 2026-08-12): this one explains the release
+> **strategy** — branch model, cut process, and the VERSION/pyproject must-match rule that
+> `scripts/check-version-consistency.py` enforces. **[VERSION_NUMBERING.md](VERSION_NUMBERING.md)**
+> explains the numbering **scheme** — what each tier of X.Y.Z means.
+
 ## Current Version: 0.8.11.0 (released 2026-07-17; `main` and `production` converged at the cut)
 
 v0.8.11.0 was cut from `main` (pyproject/VERSION bumped there) and `production` fast-forwarded to the same commit — ending the v0.8.9.1→v0.8.10.14 era of production-only cherry-pick cuts (whose content had all been merged back to main). From here, releases cut from `main`; `production` tracks the released commit.

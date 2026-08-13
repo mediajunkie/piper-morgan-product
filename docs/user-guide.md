@@ -1,5 +1,12 @@
 # Piper Morgan 1.0 - User Guide
 
+> ⚠️ **STALE — describes a target state, not the current product** (banner added 2026-08-12, Docs).
+> This guide was written for an aspirational "1.0 / production-ready" Piper Morgan. The current
+> release is **v0.8.11.0, invite-only alpha** — several capabilities below are partial, changed,
+> or not yet wired. For what actually works today, use the **[Alpha Feature
+> Guide](ALPHA_FEATURE_GUIDE.md)** and **[Alpha Quick Start](ALPHA_QUICKSTART.md)**. This doc is
+> queued for rewrite or retirement in the 2026-08 docs-site scrub.
+
 **Current Status**: Production-ready AI-powered PM assistant with advanced spatial intelligence
 
 ## Production Capabilities Overview

@@ -1,27 +1,16 @@
-# Troubleshooting Guide
+# Troubleshooting
 
-## Overview
+Two troubleshooting surfaces exist — this directory holds topic-specific guides; the
+comprehensive general guide lives one level up:
 
-This directory contains troubleshooting guides, common issues, diagnostic procedures, and resolution steps for the Piper Morgan system.
+- **[Troubleshooting Guide](../troubleshooting.md)** — the main guide: setup-wizard issues,
+  Docker, database, server startup, common errors
+- **[Calendar Issues](calendar-issues.md)** — Google Calendar connector diagnostics
 
-## Documentation Files
-
-This directory contains 1 documentation file with comprehensive information about troubleshooting.
-
-## Usage
-
-When encountering issues with Piper Morgan:
-1. Check the relevant troubleshooting guides in this directory
-2. Follow the diagnostic procedures outlined
-3. Apply the recommended resolution steps
-4. Escalate to development team if issues persist
-
-## Navigation
-
-- **[📚 Documentation Home](../README.md)**
+If you hit something neither covers, file it at
+[GitHub Issues](https://github.com/mediajunkie/piper-morgan-product/issues).
 
 ---
 
-**Last Updated**: October 1, 2025
-**Maintained By**: Documentation Team
-**Purpose**: Directory navigation and content overview
+*Rewritten 2026-08-12 (Docs, docs-site scrub): the previous README was auto-generated boilerplate
+that described this directory generically and didn't mention the main guide at all.*
