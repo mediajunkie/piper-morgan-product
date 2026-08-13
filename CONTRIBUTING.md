@@ -420,6 +420,18 @@ venv\Scripts\activate.bat
 python -m pytest "tests\my test\test_file.py"
 ```
 
+**Problem**: `git clone` fails partway through with `Filename too long`
+**Solution**: Some `mailboxes/` memo filenames are long by convention (they encode sender,
+recipient, and subject inline) and can overflow Windows' 260-character `MAX_PATH` once the
+clone-destination path is added. Enable long-path support (per-repo or globally):
+```
+git config --global core.longpaths true
+```
+If that isn't enough, Windows itself also needs long paths enabled at the OS level — see
+`docs/internal/operations/github-and-tooling-gotchas.md` ("Windows: `git clone` fails with
+'Filename too long'") for the registry setting and full detail. New `mailboxes/` filenames are
+capped going forward (#1616); existing long ones are intentionally left as historical record.
+
 ### GitHub Actions: Windows Validation
 
 GitHub Actions automatically validates repository compatibility on Windows via the `windows-clone-test` job. This ensures:

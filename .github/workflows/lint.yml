@@ -2,7 +2,10 @@ name: Code Quality
 
 # Code Quality Workflow — fires on Python source + lint config changes
 # Category: services/web/tests + Python + lint config + scripts + workflow-self-edits
-# Excludes: docs/mailboxes/dev/skills/hooks (lint covers code, not docs)
+# Excludes: docs/dev/skills/hooks (lint covers code, not docs)
+# mailboxes/** added 2026-08-13 (#1616) for the mailbox filename-length gate below —
+# real mailbox writes land via scripts/mail-send.sh's commit-tree path, which this
+# workflow's push trigger sees regardless of how the commit was built.
 # See: GH Actions refactor Phase 1 (2026-05-27)
 
 on:
@@ -20,6 +23,7 @@ on:
       - 'setup.cfg'
       - 'scripts/**'
       - '.github/workflows/**'
+      - 'mailboxes/**'
   pull_request:
     branches: [main]
     paths:
@@ -34,6 +38,7 @@ on:
       - 'setup.cfg'
       - 'scripts/**'
       - '.github/workflows/**'
+      - 'mailboxes/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -106,6 +111,17 @@ jobs:
           # as ADR-071 D4 threading lands.
           python scripts/principal_threading_lint.py --baseline .principal-threading-baseline.txt
 
+      - name: Mailbox filename-length gate (#1616)
+        run: |
+          # Ratchet: fails on a NEW mailboxes/ path over 180 characters —
+          # Windows' effective MAX_PATH (260 chars, incl. clone-path prefix)
+          # makes this repo un-cloneable on Windows once exceeded (confirmed
+          # by the windows-clone-test job in windows-test.yml, currently red
+          # for pre-existing offenders). Pre-existing long paths are
+          # baselined in .mailbox-filename-lint-baseline.txt and left as
+          # historical record — this only blocks new ones going forward.
+          python scripts/mailbox_filename_lint.py --baseline .mailbox-filename-lint-baseline.txt
+
       - name: Quality summary
         run: |
           echo "## Code Quality Results" >> $GITHUB_STEP_SUMMARY
@@ -114,4 +130,5 @@ jobs:
           echo "✅ token-discipline gate passed (no new hardcoded values)" >> $GITHUB_STEP_SUMMARY
           echo "✅ native-dialog gate passed (no new native confirm/alert/prompt)" >> $GITHUB_STEP_SUMMARY
           echo "✅ principal-threading gate passed (no new context.get user_id degradations)" >> $GITHUB_STEP_SUMMARY
+          echo "✅ mailbox filename-length gate passed (no new mailboxes/ path over 180 chars)" >> $GITHUB_STEP_SUMMARY
           echo "Environment: Python 3.11" >> $GITHUB_STEP_SUMMARY
