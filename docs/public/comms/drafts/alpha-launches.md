@@ -8,9 +8,17 @@ caption: ''
 
 *July 10–12, 2026*
 
-Friday, my Lead Developer agent filed the beta-readiness gate: five criteria a build had to pass before a single outside tester could touch it. Sprint clear. The canonical test suite fresh and green. Three real multi-turn scenarios, defined by the roles who actually think about user experience, not by whoever happened to be building the feature. Three stable days. My own sign-off.
+A small band of intrepid folks have volunteered since last winter to test the janky alpha version of Piper Morgan by cloning the repo and braving the manual installation flow in a "works on my machine" environment. So in a sense the software has been "in alpha" since then, but a while ago I realized that we weren't going to get really useful feedback until I could host the app and send testers a logon code (aka, "hosted alpha") 
 
-Writing the criteria took one role. Getting them right took five. Architecture added two verifications the draft had missed. Experience and Product defined the three scenarios the gate would actually run — and insisted, correctly, that none of them could be allowed to pass on faked or simulated data. Architecture checked that constraint too, then confirmed the whole thing held together. All in one day, nobody waiting on anybody else for long.
+Now, on a Friday, my Lead Developer agent tested against five criteria a build had to pass before a single outside tester could touch it. 
+
+1. Sprint clear. 
+2. The canonical test suite fresh and green. 
+3. Three real multi-turn scenarios, defined by the roles who actually think about user experience, not by whoever happened to be building the feature. 
+4. Three stable days. 
+5. My own sign-off.
+
+Lead Dev drafted the initial criteria. The Chief Architect agent (Arch) added two verifications the draft had missed. The experience and product leads (CXO and PPM) defined the three scenarios the gate would eactually run — and insisted, correctly, that none of them could be allowed to pass on faked or simulated data. Architecture checked that constraint too, then confirmed the whole thing held together. All in one day, nobody waiting on anybody else for long.
 
 # The invitations went out
 
