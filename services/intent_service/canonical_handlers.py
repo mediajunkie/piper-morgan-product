@@ -1314,7 +1314,8 @@ class CanonicalHandlers:
                 config_service = CalendarConfigService()
                 if not config_service.is_configured(user_id):
                     return None
-            except Exception:
+            except Exception as e:  # silent-ok: calendar context degrades to absent, but LOGGED — a FAILED config probe must not silently read as not-configured (wrong-empty, #1423 3b; honest degrade_reason is #1231-family follow-up)
+                logger.warning("calendar_config_probe_failed", error=str(e), user_id=user_id)
                 return None
 
             # Get calendar router from plugin
@@ -1564,7 +1565,8 @@ class CanonicalHandlers:
 
                     logger.debug("GitHub not configured for user — honest-degrade (#1231)")
                     return {"degrade_reason": DegradationReason.NOT_CONFIGURED}
-            except Exception:
+            except Exception as e:  # silent-ok: degrades to empty context, but LOGGED — this block's own comment says "never a silent {}" and the exception path was doing exactly that (#1423 3b)
+                logger.warning("github_status_probe_failed", error=str(e), user_id=user_id)
                 return {}
 
             # Import and instantiate GitHub domain service

@@ -736,7 +736,8 @@ class IntentService:
 
             from services.automation.autonomous_executor import get_autonomous_executor
             from services.intent_service.workflow_dispatcher import dispatch_workflow
-        except Exception:  # pragma: no cover - import safety
+        except Exception as e:  # pragma: no cover - import safety  # silent-ok: autonomous execution degrades to none, but LOGGED — silence here hides a broken feature behind an enabled flag (#1423 3b)
+            self.logger.warning("autonomous_executor_import_failed", error=str(e))
             return []
 
         try:
