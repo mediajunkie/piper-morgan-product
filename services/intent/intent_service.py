@@ -3087,7 +3087,7 @@ class IntentService:
                     success=True,
                     message=(
                         "I'd love to help search your documents, but Notion isn't configured yet. "
-                        "To enable document search, connect Notion in Settings → Notion "
+                        "To enable document search, connect Notion in Settings → Integrations → Notion "
                         "(or set NOTION_API_KEY locally). Once connected, I can search your "
                         "entire Notion workspace for you!"
                     ),
@@ -3222,7 +3222,7 @@ class IntentService:
                     success=True,
                     message=(
                         "I'd love to analyze your document, but Notion isn't configured yet. "
-                        "To enable document analysis, connect Notion in Settings → Notion "
+                        "To enable document analysis, connect Notion in Settings → Integrations → Notion "
                         "(or set NOTION_API_KEY locally). Alternatively, you can upload a file directly "
                         "and I'll analyze that instead!"
                     ),
@@ -3404,7 +3404,7 @@ class IntentService:
                     success=True,
                     message=(
                         "I'd love to help update your document, but Notion isn't configured yet. "
-                        "To enable document updates, connect Notion in Settings → Notion "
+                        "To enable document updates, connect Notion in Settings → Integrations → Notion "
                         "(or set NOTION_API_KEY locally). Once connected, I can update documents "
                         "in your Notion workspace!"
                     ),

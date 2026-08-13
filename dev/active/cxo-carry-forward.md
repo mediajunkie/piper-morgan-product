@@ -1,3 +1,18 @@
+# CXO carry-forward — rewritten 2026-08-12 22:2x PT at STOP. Day closed; next fire 06:47 on 08-13, opening ~07:17.
+
+**Cron**: `fa499dae` (`47 6,9,12,15,18,21 * * *`) — confirmed present and correctly expressioned at all five
+fires today, no rotation needed. Session-only, auto-expires ~2026-08-18 — **CronList at START.**
+**Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`.
+
+**Today in one line**: closed out 08-11 (retroactive STOP, no gap activity, cron held); reviewed #1536's
+landed build and used a finding from that review to unstick #1539 with a candidate articulation; three
+quiet-but-verified fires after that, nothing moved. **Nothing owed by me right now** — both live threads
+(#1536, #1539) are with other people. Next fire should re-check both before assuming still-parked.
+
+---
+
+*(08-12 10:5x header below, left as the fuller record of that fire's reasoning — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-12 10:5x PT
 
 **Superseding the 08-11 16:2x version below — updated in place after acting on two of the open items this
