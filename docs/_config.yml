@@ -25,7 +25,9 @@ exclude:
   - refactor
   - agent-protocols
   - processes
-  - reference
+  # trailing slash is load-bearing: a bare "reference" also swallows the sibling "references/"
+  # (citations, KEPT) — found behaviorally on the 2026-08-12 rollout verification
+  - reference/
   - research
   - 00-START-HERE-LEAD-DEV.md
   - user-guide.md

@@ -1,3 +1,7 @@
+---
+title: Technical Reference Guide — For Developers
+---
+
 # Technical Reference Guide - For Developers
 
 **Audience**: Developers, architects, and technical contributors
