@@ -1,0 +1,68 @@
+name: CI Liveness Detector
+
+# #1608 — the "red nobody sees" detector. Weekly + manual. Companion to
+# link-checker's ratchet gate (#1593, the "green that lies" shape): a
+# liveness check alone reports a lying-green workflow healthy forever.
+#
+# Reporting: ONE updating issue, never a per-workflow alert storm — the
+# freeze-watchdog lesson (noise trains people to skim; one legible surface).
+
+on:
+  schedule:
+    - cron: "23 14 * * 2" # Tuesdays 14:23 UTC — off the :00 stampede
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  issues: write
+
+jobs:
+  liveness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run liveness check
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set +e
+          OUT=$(bash scripts/ci_liveness_check.sh)
+          RC=$?
+          set -e
+          echo "$OUT"
+          echo "$OUT" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "report<<LIVENESS_EOF"
+            echo "$OUT"
+            echo "LIVENESS_EOF"
+            echo "rc=$RC"
+          } >> "$GITHUB_OUTPUT"
+          # exit 2 = the check could not measure — fail THIS job loudly
+          # (a detector that dies must not read as quiet health — m-44).
+          if [ "$RC" -eq 2 ]; then exit 2; fi
+
+      - name: Create or update the tracking issue
+        if: steps.check.outputs.rc == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPORT: ${{ steps.check.outputs.report }}
+        run: |
+          TITLE="CI LIVENESS: workflows with no recent success (auto-updated by ci-liveness.yml, #1608)"
+          BODY="$REPORT
+
+---
+_Auto-generated $(date -u +%Y-%m-%dT%H:%MZ) by \`ci-liveness.yml\`. One issue, updated in place — close it only when the flagged list is empty or every flagged workflow is triaged (fixed, retired, or moved to dormant-ok WITH a reason in \`scripts/ci_liveness_check.sh\`)._"
+          EXISTING=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"CI LIVENESS:\" in:title" --json number --jq '.[0].number // ""')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --repo "$GITHUB_REPOSITORY" --body "$BODY"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body "$BODY" --label "" || \
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body "$BODY"
+          fi
+
+      - name: All clear (measured)
+        if: steps.check.outputs.rc == '0'
+        run: echo "liveness measured clean — denominator in the step summary"
