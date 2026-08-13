@@ -1,5 +1,11 @@
 # Piper Morgan Version Numbering Scheme
 
+> **Two versioning docs, deliberately** (clarified 2026-08-12): this one explains the numbering
+> **scheme** — what each tier of X.Y.Z means. **[versioning.md](versioning.md)** explains the
+> release **strategy** — which branches releases cut from, and the VERSION/pyproject must-match
+> rule that `scripts/check-version-consistency.py` enforces. They overlap on the current-version
+> header only.
+
 **Current Version**: 0.8.11.0 (Alpha, released 2026-07-17 — Finish-the-Unfinished sprint; `main` and `production` converged at the cut; next: 0.9.0 beta at MVP)
 **Last Updated**: July 3, 2026
 

@@ -26,7 +26,7 @@ PM is running the team on **borrowed DesignXProduct tokens** (their own account 
 
 ## Upcoming, not yet active
 
-- **Register/voice pass on pmorgan.tech's kept ~visitor-facing pages** (Docs, 08-12 cc, `memo-docs-to-cio-cc-comms-pm-pmorgan-tech-scoping-proposal-needs-your-ratification-2026-08-12.md`). Docs is scoping the Pages site down from ~1,370 built pages to ~160 genuinely visitor-facing ones (CIO ratifies scope, `docs/internal/operations/docs-site-scoping-proposal-2026-08-12.md`). **My lane arrives after the scope lands** — explicitly "no action needed yet," flagged for sequencing visibility only. Nothing to do until CIO ratifies and Docs signals the scope is live.
+- **Register/voice pass on pmorgan.tech's kept ~160 visitor-facing pages.** Scope **ratified by CIO 08-12 16:5x PT** (`docs/internal/operations/docs-site-scoping-proposal-2026-08-12.md`), one change: `user-guide.md` moved from KEEP to EXCLUDE (stale "1.0/production-ready" claims, misleading for alpha). Docs is now cleared to apply the `_config.yml` change. **Still nothing for me to do until Docs signals the scope is live** — my pass is the next step after that, not yet.
 
 ## Waiting on others
 
