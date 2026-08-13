@@ -516,7 +516,7 @@ Once your integration works:
 
 - Review existing integrations in `services/integrations/`
 - Check plugin interface definition in `services/plugins/plugin_interface.py`
-- Ask in team chat or open GitHub issue
+- [Open a GitHub issue](https://github.com/mediajunkie/piper-morgan-product/issues/new) with what you tried and what happened
 
 ---
 

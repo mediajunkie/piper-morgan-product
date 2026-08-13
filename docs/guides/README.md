@@ -18,7 +18,9 @@ This directory contains developer guides and implementation documentation for th
 
 ### Handler Implementation (GREAT-4C)
 - **[Spatial Intelligence Implementation](spatial-intelligence-implementation.md)** - GREAT-4C Phase 1: Spatial patterns for response granularity
-- **[Error Handling Implementation](error-handling-implementation.md)** - GREAT-4C Phase 2: Graceful degradation for handler failures
+- ~~Error Handling Implementation~~ — GREAT-4C Phase 2 guide was never filed here (dead link
+  removed 2026-08-13; the only related filed doc is the narrower
+  [error-handling migration guide](../public/migration/error-handling-migration.md))
 - **[PIPER Cache Guide](piper-cache-guide.md)** - GREAT-4C Phase 3: Two-layer caching architecture and monitoring
 
 ## Navigation

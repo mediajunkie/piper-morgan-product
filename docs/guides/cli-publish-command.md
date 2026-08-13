@@ -43,7 +43,7 @@ python cli/commands/publish.py publish docs/guide.md --to notion --location a1b2
   - Table converted to plain text (advanced formatting not yet supported)
 ```
 
-#### Publish to Notion Database (ADRs)
+#### Publish to Notion Database (Architecture Decision Records, or ADRs)
 
 ```bash
 python cli/commands/publish.py publish docs/adrs/adr-026.md --to notion --database <database-id>

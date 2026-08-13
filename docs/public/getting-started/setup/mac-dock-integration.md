@@ -498,7 +498,7 @@ top -pid $(cat .piper-backend.pid) -pid $(cat .piper-frontend.pid)
 
 - **Main Site**: [pmorgan.tech](https://pmorgan.tech)
 - **Setup Guides**: [docs/setup/](../setup/)
-- **User Guides**: [docs/user-guides/](../user-guides/)
+- **User Guides**: [docs/user-guides/](../../user-guides/)
 
 ---
 
