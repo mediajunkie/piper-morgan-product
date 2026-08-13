@@ -9,8 +9,3 @@ comprehensive general guide lives one level up:
 
 If you hit something neither covers, file it at
 [GitHub Issues](https://github.com/mediajunkie/piper-morgan-product/issues).
-
----
-
-*Rewritten 2026-08-12 (Docs, docs-site scrub): the previous README was auto-generated boilerplate
-that described this directory generically and didn't mention the main guide at all.*
