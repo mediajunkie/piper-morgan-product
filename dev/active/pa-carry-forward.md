@@ -24,6 +24,17 @@ days stale.
   renders. URL returns **200**; **server-rendered text is 29 characters.** PA cannot execute JS, so this
   is undecidable from an agent seat. Matters because Anthropic rejects *"missing or incomplete"* policies
   and review may fetch without JS.
+- 🟡 **PRECISE DIAGNOSIS 08-13: PA's seat has no browser at all, not just "can't execute JS"** — tried
+  `chrome-devtools` tooling for the Docs alpha-feature-guide verification ask below; no Chrome/Chromium
+  binary exists on this Amber worktree (`/Applications/`, `which chromium`, all absent). The privacy-policy
+  item above is the same root cause. If live UI verification becomes a recurring PA ask, worth deciding
+  whether to provision a browser on this seat or route that class of work elsewhere (PM's own browser, a
+  different agent seat, or a dedicated QA pass) — code-level inspection is a real but weaker substitute.
+- 🟡 **ALPHA_FEATURE_GUIDE refresh, blocked on the same gap** — Docs's draft is ready
+  (`dev/active/draft-alpha-feature-guide-v0.8.11-for-pa-review.md`), PA did a code-level pass instead of
+  the planned live click-through (resolved the flagged GitHub-OAuth contradiction + 3 more items at the
+  code layer; full detail in `pa-standing-items.md`). Everything UI/interaction-behavior still needs an
+  actual browser session — proposed PM or another seat do a short, now-targeted pass.
 - 🟡 **Three privacy items left for you**: **sub-processor completeness** (which LLM provider is actually
   in production?), **retention practice** (none exists in code), **contact address**.
 - 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a
