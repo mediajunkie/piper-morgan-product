@@ -8,6 +8,8 @@
 
 **2026-08-12 09:5x PT START note**: 08-11's last two fires + 08-12's first two queued without a turn (`cohort-freeze-detect.sh` rc=0 — session-specific, not cohort-wide). Retroactive `DAY-CLOSED` written for 08-11. Today's inbox drained: 2 more cc-level memos — **Lead's STOP-condition escalation to PM** (CI red on `main` two days, `test_completion_ratchets.py` two failures over ceiling, `Architecture Enforcement` red since 08-09 15:07; plus a beta blocker — no `is_admin=true` user exists, #1485/#1508's admin-gating turned a dormant gap into a live block on PM saving the Slack token; filed **#1600** and **#1599**, both awaiting PM's word) and **CXO's closed loop with PPM** on the empty-standup exception (already resolved via GH comment on #1591). Neither addressed to arch, nothing owed by me on either — noting Lead's escalation here only for situational awareness (CI/beta-blocker state), not because it's mine to act on. Standing-items unchanged: still 3 open, still nothing unblocked.
 
+**2026-08-12 STOP note (day-close)**: rest of the day was quiet — three more WORK fires (12:49/15:49/18:49), inbox empty and standing-items unchanged at every check, no commits needed beyond heartbeats. **DAY-CLOSED written for 08-12.** Re-armed via delete-then-create at STOP: `1ec65cec` (prior `3e79e19a`). Registry row updated. **Still worth checking fresh tomorrow rather than trusting this note**: Lead's #1600 (CI ratchets)/#1599 (is_admin beta blocker) were still awaiting PM's word as of this STOP — if PM answered overnight, that may have generated follow-on mail. Nothing else changed in the substantive threads (Owed by me / For PM sections below) — those remain dated 08-04/08-08 and still need a fresh GH check before anyone acts on them as current, per the 08-11 note above.
+
 ---
 
 ## Environment (verified 2026-07-29, not assumed)
@@ -18,7 +20,7 @@
 | Worktree model | **Model A** — stable per-agent path, reused every session. **The path is load-bearing** (Claude Code keys per-path state; a fresh path silently orphans accumulated state) |
 | Worktree | `/Users/xian/Development/piper-morgan-worktrees/arch` |
 | Branch | `claude/arch-cycle` |
-| Cron | **`27 6,9,12,15,18,21`** (6×/day, offset :27), job **`3e79e19a`**, re-armed 2026-08-11 post-reboot (macOS 26.6; see `docs/handoff-arch-2026-08-11.md` §1 — parked pre-reboot as `679e5b66`, reboot killed it as expected for session-scoped `CronCreate`, re-armed after resume, `CronList`-verified exactly one). **Session-only — dies with the session.** Empty `CronList` → re-arm this expression |
+| Cron | **`27 6,9,12,15,18,21`** (6×/day, offset :27), job **`1ec65cec`**, re-armed at 08-12 STOP via delete-then-create (prior `3e79e19a`, itself re-armed post-reboot 08-11 — see `docs/handoff-arch-2026-08-11.md` §1 for the reboot story). **Session-only — dies with the session.** Empty `CronList` → re-arm this expression |
 | Registry row | **`active`** in `dev/active/duty-cycle-registry.tsv` (the "cron NOT armed" parked note was cleared 7/29 per its own stated condition) |
 | Memory | shared cohort pool (~169 files), keyed to the git **common** dir — shared by construction with every role |
 | Mail | `scripts/mail-send.sh` push-to-ref from this worktree. **Never** touch PM's main checkout working tree (HARD RULE — PM saves uncommitted work there) |
