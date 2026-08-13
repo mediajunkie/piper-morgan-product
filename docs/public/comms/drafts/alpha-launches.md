@@ -27,7 +27,9 @@ The beta-readiness gate got to do the thing it existed for against the real, liv
 
 It found eight real defects before a single tester encountered any of them. An apostrophe rendered wrong. A title cut off mid-parse. A query that returned someone else's usage numbers instead of their own. Ten scanner bots hitting the site within minutes of it going public and accidentally filling up the same capacity gauge real users would need. Each one found, fixed, and deployed the same day it was found — several within the same hour.
 
-One scenario didn't pass clean the first time, and that was the most useful result of all: it surfaced a real gap. Piper couldn't yet resolve "actually, change the title" without being told explicitly which issue "it" referred to. A real boundary, honestly discovered instead of quietly shipped — a capability that isn't built yet. It got a plain-language explanation written for new testers before anyone could stumble into it, and the underlying question — how does Piper know what "that" refers to — became its own piece of architecture work.
+One scenario didn't pass clean the first time, and that was the most useful result of all: it surfaced a real gap. Piper couldn't yet resolve "actually, change the title" without being told explicitly which issue "it" referred to. Mechanisms built into the architecture long ago for 
+
+A real boundary, honestly discovered instead of quietly shipped — a capability that isn't built yet. It got a plain-language explanation written for new testers before anyone could stumble into it, and the underlying question — how does Piper know what "that" refers to — became its own piece of architecture work.
 
 Eight bugs closed, one honest gap named, before any outside person's experience of the product was anything other than working correctly.
 
