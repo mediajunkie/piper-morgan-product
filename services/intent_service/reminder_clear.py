@@ -118,6 +118,15 @@ def variant_two_disclosure(verb: str = "clear") -> str:
     )
 
 
+def variant_two_always_ask_question() -> str:
+    """RATIFIED COPY (CXO 2026-08-14 07:19, PPM confirmed 07:22) — V2's form
+    under ALWAYS_ASK: a stored mapping is a prior EXPLICIT answer, not an
+    assumption, so it is never flushed — but under "don't make assumptions"
+    the assert-then-disclose form becomes a QUESTION that leads with the
+    stored value as the suggested answer. Verbatim; a drifted word is a bug."""
+    return "Want me to mark these done, like usual, or something different this time?"
+
+
 def variant_three_question(count: int, verb: str = "clear", noun: str = "reminder") -> str:
     """Variant 3 — stored default = delete (DESTRUCTIVE): the question that
     rides the #1190 confirm gate. Ratified form is the N>1 shape; N==1 takes
@@ -207,6 +216,10 @@ def detect_clear_family_ask(message: Optional[str]) -> Optional[ClearAsk]:
 # ---------------------------------------------------------------------------
 # Target resolution + batch operations
 # ---------------------------------------------------------------------------
+
+
+_DIFFERENT_ANSWER_RE = re.compile(r"\b(different|something else|not (this|that)|delete)\b", re.I)
+_USUAL_ANSWER_RE = re.compile(r"\b(yes|yeah|yep|sure|ok(ay)?|usual|as usual|like usual|done|please do)\b", re.I)
 
 
 def _plural(noun: str, n: int) -> str:
@@ -501,7 +514,40 @@ async def maybe_handle_clear_family(
 
     # ── Variant 2: stored default = complete (WRITE) — auto-apply +
     #    disclosure-after; no block; one-turn correction window armed.
+    #    EXCEPT under ALWAYS_ASK (CXO/PPM ruling 2026-08-14): the stored
+    #    mapping is NOT flushed (a prior explicit answer is not an
+    #    assumption), but the form flips from assert-then-disclose to a
+    #    question that LEADS with the stored value. V3 needs no such flip —
+    #    it already blocks in every mode.
     if stored_value == VALUE_COMPLETE:
+        from services.intent_service.verified_inference import (
+            VerificationMetaMode as _VMM,
+        )
+
+        if await get_meta_mode(principal) is _VMM.ALWAYS_ASK:
+            offer = _verb_question_offer(
+                principal, ask.verb, ask.noun, ids, texts, original_message
+            )
+            offer["pending_action"]["stored_default_leading"] = VALUE_COMPLETE
+            intent_service.workflow_offer_service.set_pending_offer(
+                session_id, offer, user_id=user_id
+            )
+            logger.info(
+                "reminder_clear_always_ask_question",
+                verb=ask.verb,
+                targets=len(ids),
+                session_id=session_id,
+            )
+            return IntentProcessingResult(
+                success=True,
+                message=variant_two_always_ask_question(),
+                intent_data={
+                    **base_intent_data,
+                    "verb_default_leading": VALUE_COMPLETE,
+                    "verb_disambiguation_pending": True,
+                },
+                requires_clarification=True,
+            )
         done, failed = await _complete_ids(todo_service, ids, texts, todo_user_id)
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
@@ -763,6 +809,71 @@ async def _handle_verb_answer_turn(
     wants_complete = bool(_COMPLETE_ANSWER_RE.search(message))
     if wants_delete and wants_complete:
         return None  # contradictory — fall to generic handling (likely off-intent)
+
+    # ── ALWAYS_ASK leading-question answers (CXO/PPM 2026-08-14): the stored
+    #    default is a prior explicit answer — NEVER flipped here. "like
+    #    usual"/bare yes → complete without re-store ceremony; "different"/
+    #    delete → the V3 confirm for THIS batch only, stored default intact.
+    if payload.get("stored_default_leading") == VALUE_COMPLETE:
+        if wants_delete or _DIFFERENT_ANSWER_RE.search(message):
+            intent_service.workflow_offer_service.set_pending_offer(
+                session_id,
+                _delete_confirmation_offer(
+                    principal, verb, noun, ids, texts, original_message
+                ),
+                user_id=user_id,
+            )
+            logger.info(
+                "reminder_clear_always_ask_this_time_delete",
+                session_id=session_id,
+            )
+            return {
+                # ⚠️ COPY SEAM (glue): the parenthetical is Lead-drafted.
+                "message": (
+                    f"{variant_three_question(len(ids), verb, noun)}\n"
+                    f"(Your usual '{verb}' stays mark-done — this is just "
+                    f"for this batch.)"
+                ),
+                "intent_data": {
+                    "category": "execution",
+                    "action": CLEAR_DELETE_WORKFLOW,
+                    "this_time_only": True,
+                    "destructive_confirmation_pending": True,
+                },
+                "requires_clarification": True,
+            }
+        if wants_complete or _USUAL_ANSWER_RE.search(message):
+            todo_service = intent_service.todo_handlers.todo_service
+            try:
+                user_uuid = UUID(str(principal))
+            except (ValueError, TypeError):
+                return {
+                    "message": (
+                        "I need you to be logged in to update todos. "
+                        "Nothing has been changed."
+                    ),
+                    "intent_data": {
+                        "category": "execution",
+                        "action": CLARIFY_CLEAR_VERB_WORKFLOW,
+                        "error_type": "AuthenticationRequired",
+                    },
+                }
+            done, failed = await _complete_ids(todo_service, ids, texts, user_uuid)
+            logger.info(
+                "reminder_clear_always_ask_usual_applied",
+                completed=len(done),
+                failed=failed,
+                session_id=session_id,
+            )
+            return {
+                "message": _completion_summary(done, failed, noun),
+                "intent_data": {
+                    "category": "execution",
+                    "action": "complete_todo",
+                    "verb_default_applied": VALUE_COMPLETE,
+                },
+            }
+        return None  # not an answer — generic handling
 
     if wants_delete:
         persisted = await store_verified_inference(

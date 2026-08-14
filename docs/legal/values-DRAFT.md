@@ -1,6 +1,14 @@
 # What Piper Morgan Is For — Piper Morgan (scaffold)
 
-> ⚠️ **DRAFT SCAFFOLD — for PM and HOST review, not publication.**
+> ⚠️ **DRAFT SCAFFOLD — HOST's substance check is complete; for PM review before publication.**
+> **HOST re-verified all three commitments against source** (not just that the citations resolve):
+> confirmed item 3's timing is accurate as written; found item 2 was actually slightly underselling
+> what's true (route-level owner enforcement, not just an ADR description — tightened); flagged one
+> precision nuance on item 1 (`#1366` was ~27.5 hours, not "within a day" — tightened to "by the
+> next day," which is exactly accurate rather than approximately accurate). Full exchange:
+> `mailboxes/comms/read/reply-host-to-comms-cc-exec-pm-values-doc-substance-check-passed-one-nuance-
+> plus-a-voice-lean-2026-08-14.md`. One open decision below (Voice) has a HOST lean recorded, not a
+> ruling.
 > **Origin**: PM decided to open-source Piper Morgan under Apache 2.0 (patent grant + trademark
 > carve-out, paired with a separate trademark process PM is running with Themis) and asked HOST +
 > Comms to draft this jointly, no deadline, no fixed shape. Full context: `mailboxes/host/read/
@@ -58,7 +66,7 @@ why it's named here. Removing it would turn a private engineering decision into 
 break from what Piper Morgan is.
 
 We've gotten this wrong once. A configuration file briefly leaked one user's project context and
-default settings to every other user on a shared instance. It was found, fixed within a day, and
+default settings to every other user on a shared instance. It was found, fixed by the next day, and
 the automated check that now guards against that class of bug exists *because* it happened. We're
 naming the incident here on purpose — a system that only ever claims things went right is making a
 weaker promise than one that shows you what it does when something goes wrong.
@@ -67,7 +75,8 @@ weaker promise than one that shows you what it does when something goes wrong.
 
 Some of what Piper does involves judgment calls about what it should or shouldn't do on your
 behalf. Those decisions aren't just logged somewhere internal. They're recorded on a surface you
-can actually read yourself, in your own account.
+— and only you — can read: the read route checks who's asking and refuses anyone but you or an
+admin, the same way access to your account itself is protected.
 
 A fork could keep the internal logging and quietly drop the part you can see — and from the
 outside, in casual use, it would look identical. It wouldn't be identical. The difference is
@@ -102,8 +111,13 @@ three things are still true when you run it — not the license or the codebase 
 - **A fourth commitment?** HOST's list was a first pass, explicitly open to more. The retention
   question (§3/§4 of the retention scaffold) may eventually produce a values-relevant statement of
   its own once PM decides it — deliberately not anticipated here.
-- **Voice**: drafted in PM's own first-person voice, consistent with the blog. Could also work
-  third-person/institutional if that reads better paired with a license file. PM's call.
+- **Voice — PM's decision, both a lean and a counter-lean on record**: drafted in PM's own
+  first-person voice, consistent with the blog. HOST leans third-person/institutional instead, for
+  a reason specific to this document's job: it sits next to a license file and gets checked by
+  strangers evaluating a fork, possibly years out, with no context on PM as a person — first-person
+  voice works when the reader already trusts the speaker, and this document's whole purpose is to
+  work for a reader who doesn't yet. Not drafted in that voice here; noted as HOST's lean for PM to
+  weigh, not applied unilaterally.
 
-**Next step**: HOST review — does the substance hold up to the same scrutiny you applied building
-the list? Then PM.
+**Next step**: PM. Substance is HOST-checked; the open decisions above (placement, license
+relationship, a possible fourth commitment, voice) are PM's to make.

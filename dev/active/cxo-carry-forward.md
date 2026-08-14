@@ -1,4 +1,9 @@
-# CXO carry-forward — rewritten 2026-08-14 07:2x PT
+# CXO carry-forward — rewritten 2026-08-14 10:2x PT
+
+**10:17 fire**: PPM confirmed the ALWAYS_ASK answer (re-verified against #1510's ruling text directly, no
+disagreement). **#1605/#1569 is now fully closed on the design side** — posted on GH, handed the one-cell
+V2 phrasing change to Lead to sequence. #1536/#1539 still unchanged, ~3 days. Nothing else moved.
+**Nothing owed by me right now.**
 
 **08-14, 07:17 START**: PPM signed off #1569/#1605 overnight (verified Lead's matrix claim personally,
 no objection) — that design thread is fully closed. Lead's build landed (`e9ef395a1`): ratified copy pinned

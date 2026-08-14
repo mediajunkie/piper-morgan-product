@@ -112,6 +112,18 @@ unaffected. The Pages build re-runs on push, and the result is verifiable the sa
 2026-08-12 revival was (run conclusion + spot-URL checks — a kept page 200s, an excluded page
 404s).
 
+## Status update, 2026-08-14: phase-2 staleness/link pass COMPLETE (Docs dimension)
+
+Every KEEP surface swept across 6 batches (08-13/08-14): ALPHA_* · guides/+getting-started ·
+features/+integrations/+configuration (with Comms tier-5) · installation/+setup/+troubleshooting
+(with Comms tier-6) · api/+api-reference/+dev-tips · testing/+releases/+top-level (final; 42
+files, 0 broken links; testing/ passed CIO's file-discretion check — 0 internal-signal hits in
+all 7 files, no pulls needed). Totals across the pass: ~40 broken/wrong links repointed or fixed,
+2 stale-content banners (feature-guide → PA-verified refresh in progress; user-guide → excluded),
+5 phantom screenshots neutralized, the 64-file Documentation-Home pattern fixed in KEEP scope,
+1 internal-audience warning rehomed, PM-NNN historical IDs glossed. Comms's register dimension
+continues at their cadence (their remaining tiers overlap surfaces Docs has already link-swept).
+
 ## Sequencing (per the approved 3-phase plan)
 
 1. **This doc ratified** → apply the `_config.yml` change (Docs) → verify build + spot URLs.

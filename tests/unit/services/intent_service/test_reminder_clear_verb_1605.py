@@ -713,3 +713,88 @@ class TestEmptyTargets:
         assert "there are none to clear" in result.message
         assert "(yes/no)" not in result.message
         assert "Nothing has been changed" in result.message
+
+
+class TestAlwaysAskLeadingQuestion:
+    """CXO/PPM ruling 2026-08-14 (ratified 07:19/confirmed 07:22): under
+    ALWAYS_ASK a stored complete-default is NOT flushed — a prior explicit
+    answer is not an assumption — but V2's form flips from assert-then-
+    disclose to a QUESTION leading with the stored value. V3 unchanged
+    (already blocks in every mode)."""
+
+    pytestmark = pytest.mark.asyncio
+
+    def test_ratified_copy_pin(self):
+        assert rc.variant_two_always_ask_question() == (
+            "Want me to mark these done, like usual, or something different this time?"
+        )
+
+    async def test_always_ask_with_stored_complete_asks_instead_of_applying(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = "e2e-1605-aa"
+        _seed_verb_default(pref_store, "complete")
+        pref_store["inference_verification_meta"] = {
+            "mode": "always_ask", "set_at": "2026-08-14T07:22:00+00:00",
+        }
+        _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
+        result = await live_service.process_intent(
+            message="clear my reminders", session_id=sid, user_id=_USER
+        )
+        assert result.message.startswith(rc.variant_two_always_ask_question())
+        assert todo_boundary["completed"] == [] and todo_boundary["deleted"] == []
+        assert result.intent_data.get("verb_disambiguation_pending") is True
+
+    async def test_usual_answer_completes_without_flipping_store(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = "e2e-1605-aa-usual"
+        _seed_verb_default(pref_store, "complete")
+        pref_store["inference_verification_meta"] = {
+            "mode": "always_ask", "set_at": "2026-08-14T07:22:00+00:00",
+        }
+        _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
+        todo_boundary["allow_complete"] = True
+        await live_service.process_intent(
+            message="clear my reminders", session_id=sid, user_id=_USER
+        )
+        result = await live_service.process_intent(
+            message="yes, like usual", session_id=sid, user_id=_USER
+        )
+        assert len(todo_boundary["completed"]) == 2
+        # stored default untouched, no re-store ceremony in the copy
+        assert pref_store["verified_inferences"][rc.inference_key("clear")]["value"] == "complete"
+        assert "remember" not in result.message.lower()
+
+    async def test_different_this_time_blocks_via_v3_and_keeps_store(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = "e2e-1605-aa-diff"
+        _seed_verb_default(pref_store, "complete")
+        pref_store["inference_verification_meta"] = {
+            "mode": "always_ask", "set_at": "2026-08-14T07:22:00+00:00",
+        }
+        _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
+        await live_service.process_intent(
+            message="clear my reminders", session_id=sid, user_id=_USER
+        )
+        result = await live_service.process_intent(
+            message="something different this time — delete them", session_id=sid, user_id=_USER
+        )
+        assert "(yes/no)" in result.message
+        assert todo_boundary["deleted"] == []  # gated pre-confirm
+        # stored default NOT flipped ('this time' honored)
+        assert pref_store["verified_inferences"][rc.inference_key("clear")]["value"] == "complete"
+        assert result.intent_data.get("this_time_only") is True
+
+    async def test_default_meta_mode_unchanged_v2_still_discloses(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = "e2e-1605-aa-default"
+        _seed_verb_default(pref_store, "complete")
+        _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
+        todo_boundary["allow_complete"] = True
+        result = await live_service.process_intent(
+            message="clear my reminders", session_id=sid, user_id=_USER
+        )
+        assert result.message.startswith(variant_two_disclosure())
