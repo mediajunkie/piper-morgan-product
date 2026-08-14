@@ -18,8 +18,8 @@ code-level-grounded refresh already beats the v0.8.6 doc. Live guide stays banne
 vs support@ for audit-logging.md · stale docker branch deletion. (#1610 RESOLVED by Exec;
 #1611 with Lead; #1616 = memo filenames break Windows clones — my filenames now shorter.) Also awaiting: Lead's attestation on #1611 (8081 two-process — live path or
 fossil; evidence posted); PM's address for #1610 (legal placeholder ×3 files, next rollup).
-**Remaining batches**: testing/ (CIO file-discretion) + releases/ + misc top-level files — FINAL
-batch. (installation/setup/troubleshooting had Comms's tier-6 + my earlier fixes; features/
+**✅ STALENESS PASS COMPLETE (08-14 fire 2)** — all 6 batches done, final batch 0-defect;
+testing/ passed CIO's condition with evidence; proposal doc carries the completion record. (installation/setup/troubleshooting had Comms's tier-6 + my earlier fixes; features/
 integrations/configuration done in fire-4 sweep; api/api-reference/dev-tips done 08-14 fire 1,
 cleanest batch yet: 1 defect.)
 **Publish**: "Alpha Launches" LIVE 08-13 + Medium cross-post recorded (status=distributed;
