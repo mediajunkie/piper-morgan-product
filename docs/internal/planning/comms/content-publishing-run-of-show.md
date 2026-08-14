@@ -16,7 +16,7 @@
 | 4 | **PM** | Creates image (ChatGPT cartoon for narratives/insights). Fills frontmatter: `image:`, `alt:`, `caption:`. | Frontmatter populated in the draft |
 | 5 | **Docs** | Final proof: template checklist + voice guide + ready-for-publication check. Confirms image frontmatter complete. | Verbal or memo go-ahead to PM; or routes back to Comms with specific flags |
 | 6 | **Docs** | Runs `publish-to-blog` skill. Updates `editorial-calendar.csv` with blog URL + pubDate. | Post live at `pipermorgan.ai/blog/{slug}` |
-| 7 | **Dispatch** | Syndicates to Medium (canonical link back to blog). Cross-posts to LinkedIn. Updates `editorial-calendar.csv` with Medium + LinkedIn URLs. | Calendar row complete; `canonicalSite: distributed` |
+| 7 | **Dispatch** | Syndicates to Medium (canonical link back to blog). Cross-posts to LinkedIn — ⚠️ **cover-image upload is manual by design** (both automation paths confirmed dead 2026-08-12: the `file_upload` MCP tool and scripted/manual clipboard paste both fail against LinkedIn's drop zones; don't re-attempt or file a bug for it). Updates `editorial-calendar.csv` with Medium + LinkedIn URLs. | Calendar row complete; `canonicalSite: distributed` |
 
 ---
 
