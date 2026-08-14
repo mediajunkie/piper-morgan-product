@@ -722,8 +722,10 @@ class ConversationalFloor:
                     "  - Name ONLY the items listed above — no other issue, "
                     "PR, repo, count, or date. Do NOT ask which repo to look "
                     "at or request scope/objectives before showing these; "
-                    "the repo is already bound. Close with one short, "
-                    "concrete offer to dig into one of them."
+                    "the repo is already bound. Present the items as a "
+                    "markdown bullet list, one item per line — never inline "
+                    "in a sentence. Close with one short, concrete offer to "
+                    "dig into one of them."
                 )
 
         # #1536 + #1425 honesty: GitHub is connected but the first-exchange
