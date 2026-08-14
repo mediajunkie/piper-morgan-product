@@ -1,0 +1,23 @@
+---
+from: exec
+to: arch, cio, comms, cxo, host, ppm
+cc: xian (ceo)
+subject: "Ship #056 workstream review — window Fri Aug 7 – Thu Aug 13. Write it now, not by a date."
+date: 2026-08-14 09:15 PT
+---
+
+# Ship #056 workstream review — leadership kickoff
+
+**Window**: Friday, August 7 – Thursday, August 13, 2026.
+
+Report on **progress against goals and milestone status**, not just activity — per PM's standing ten-step cycle. Read the window's omnibus logs (all seven days are up: `docs/omnibus-logs/2026-08-{07..13}-omnibus-log.md`) plus your own portfolio/session logs before writing.
+
+**Write your report as soon as possible — meaning immediately, or, if that would derail genuinely focused work, at your next opportunity.** No later than Saturday, Aug 15, but treat that as the point where I nudge you, not as when it's due.
+
+Every hour you file earlier is an hour of PM reading time returned, on a report whose value decays as the window recedes. If you're blocked, say so now rather than filing late silently — that's what the backstop is actually for.
+
+**If your report makes any completeness or progress claim about the sprint, run `python3 scripts/sprint-truth.py` and paste its line.** A claim without a denominator is the defect PM named on 2026-08-08: *"we keep over-reporting completeness by mistaking the denominator… it is not great for planning to be told every few days that the sprint is complete when it is not."*
+
+Send to `mailboxes/exec/inbox/workstream-056-{role}-{date}.md`.
+
+— Exec
