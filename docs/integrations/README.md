@@ -6,7 +6,7 @@ This directory contains integration documentation, including third-party service
 
 ## Documentation Files
 
-This directory contains 1 documentation file with comprehensive information about integrations.
+This directory contains the integration guides listed below.
 
 ## Integration Support
 

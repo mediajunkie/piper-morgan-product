@@ -85,3 +85,60 @@ for p in ['slack_client_id', 'slack_client_secret', 'notion', 'github']:
 ```
 
 **User-scoped credentials** (Slack bot/user tokens, per ADR-058): `KeychainService.store_api_key(provider, value, username=user_id)`. Account name becomes `f"{user_id}_{provider}_api_key"`. Same gotcha; same fix.
+
+## Amber billing hazard: never export `ANTHROPIC_API_KEY` host-wide (shell profile / launchctl)
+
+*(Relocated 2026-08-13 from `docs/setup/llm-api-keys-setup.md`, where it had been written for the
+wrong audience — a visitor-facing setup doc; Comms caught it in the docs-site register pass,
+commit `285f2a0c1` has the removal. Original warning, Pard 2026-08-05, preserved verbatim below;
+it had no other home in the repo.)*
+
+> ⚠️ **Never use a shell-profile or `launchctl setenv` export of `ANTHROPIC_API_KEY` on Amber (or
+> any shared multi-session host).** Claude Code reads `ANTHROPIC_API_KEY` from the environment, so
+> a host-wide export silently redirects **every resident session's** billing off the Max
+> subscription onto metered API — no error, no signal until the Console bill. On Amber use
+> KeychainService only. *(Pard, 2026-08-05; verified clean at time of writing — prevention, not
+> remediation.)*
+
+Related but distinct from CLAUDE.md's `ANTHROPIC_API_KEY` warning: that one covers the transient
+shell-*inherited* empty key shadowing the server's credential resolution; this one covers a
+*persistent host-wide* export capturing every session's billing. Both resolve to the same rule —
+credentials go through KeychainService, never the environment, on shared hosts.
+
+---
+
+## Windows: `git clone` fails with "Filename too long"
+
+**When**: Cloning this repo on Windows fails partway through with errors like
+`error: unable to create file mailboxes/.../some-very-long-memo-name.md: Filename too long`.
+
+**Why**: Windows' effective `MAX_PATH` is 260 characters, counting the full path INCLUDING the
+clone-destination prefix (e.g. `C:\Users\alexandra\Documents\GitHub\piper-morgan-product\`, often
+50-90 characters on its own). Cohort mailbox memo filenames are long by convention (they encode
+sender, recipients, and subject inline) — some existing `mailboxes/` paths already exceed 250
+characters on their own, which overflows the Windows budget once the clone prefix is added. This
+was caught by the `windows-clone-test` job (now in `.github/workflows/windows-test.yml`; ported
+2026-08-13 from the retired always-red `ci.yml`, where the same red had been invisible for
+unrelated reasons). See #1616.
+
+**Fix (the practical 90% fix — no repo change needed)**: git-for-windows supports long paths;
+it's just off by default. Enable it per-repo or globally:
+```
+git config --global core.longpaths true
+```
+This alone is often enough. If clone still fails, Windows itself also needs long-path support
+enabled at the OS level (Windows 10 version 1607+ / Windows 11, admin PowerShell, one-time,
+requires reboot):
+```powershell
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
+  -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+```
+Both settings are opt-in and non-destructive — enabling them doesn't change anything about the
+repo itself, only what the local Windows filesystem/git client will accept.
+
+**What the repo does going forward**: `scripts/mailbox_filename_lint.py` (wired into `lint.yml`,
+`.mailbox-filename-lint-baseline.txt` for the ratchet) blocks new `mailboxes/` paths over 180
+characters, so the problem stops getting worse. Existing long filenames are **intentionally left
+as historical record**, not renamed — per #1616's recommendation, only rename them if a real
+Windows contributor needs to work in the repo and the workaround above genuinely doesn't cover
+their case.

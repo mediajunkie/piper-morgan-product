@@ -21,9 +21,20 @@ trap the user out of reaching the plain report by name. **Reviewed both, endorse
 literally covered, call 2 fixes a real trap without touching property 3. Noted PPM should still confirm on
 their own slice's copy. **Remaining on both issues: PM's live retest** — not mine, not attempted.
 
+**08-13, 16:17 fire**: new mail — Lead relayed PM's ruling on #1605/#1569 (unmapped verbs over stateful
+ops → ask, never map-by-decree; effect-weighted per #1557; #1510 rail is the machinery). Jointly assigned
+to PPM+me: the disambiguation UX shape (#1605) and how it sits with the reminders-presentation question
+(#1569). **Drafted and sent a design proposal** (mail to PPM cc Lead/PM/Arch/Exec, GH comments on both
+issues): #1569 candidate = keep the unified data model, differentiate presentation by how an item was
+*surfaced* (reminder-triggered vs. todo-list-requested), not by storage — no new store needed; #1605
+candidate = disambiguation copy that borrows that framing, asked once via the #1510 meta-channel,
+deliberately NOT bundling in scope-confirmation (that's #1563's dangling-offer bug, not this design's job
+to paper over). Noted the cheap sequencing if #1569 ships first. **Awaiting PPM's read** — this is joint,
+not mine to decide alone.
+
 **Today in one line**: closed out 08-11; reviewed #1536's build, unstuck #1539; connected the ruled #1510
-fork to #1591; reviewed and endorsed the two implementation judgment calls that followed. **Nothing owed by
-me right now.** Next fire: re-check #1536/#1539/#1510/#1591 for movement before assuming still-parked.
+fork to #1591 and endorsed two implementation calls; drafted the #1569/#1605 disambiguation design. **Real
+design output this fire, not just triage.** Next: re-check #1536/#1539/#1569/#1605 for response.
 
 ---
 
@@ -98,6 +109,7 @@ already the record for whoever implements it. **Thread closed.**
 | **Standup invitation (#1511 → #1591)** | ✅ Design settled (see above). #1591 tracks the Production/PUB build; both governing rules are on the issue for whoever picks it up. | Lead / whoever builds |
 | **#1510 fork** | ✅ **RULED 08-13, BUILT same day** (`836c5a188`, Lead) — `verified_inference.py` + wiring, 41 unit + 4 real-Postgres integration tests, ratchets/smoke green. Remaining: PM's live mode-flip retest. Not mine. | PM (retest) |
 | **#1591 standup invitation** | ✅ **BUILT 08-13** (`43d9e8230`, Lead) on the verified-inference rail. Every CXO/PPM spec pin has a named test. **Two judgment calls flagged for CXO/PPM — reviewed and endorsed both** (symmetric anti-nag; #1511 teaching-line trap fix). Remaining: PM's live retest + PPM's word on call 2's copy touch. Not mine further. | PM (retest), PPM (copy confirm) |
+| **#1569 + #1605** (reminders-are-todos framing + 'clear' disambiguation) | NEW 08-13. PM ruled the policy (ask, don't decree); UX shape jointly mine+PPM's. **Candidate posted 08-13** — see above. Awaiting PPM's read. | **me + PPM** |
 | **#1386 criterion-2 sign-off** | OPEN, confirmed. Still **WITHHELD** — keyless suite skips and reports green. Committed to same-day sign-off once a keyed run exists. | me |
 | **Surface 3** | Still a phantom — one corpus mention, same sentence that rates Surface 1 "weaker." PPM's ask to PM: name it or strike it. **Now 5+ days open — was 4 at handoff time.** | PM / PPM |
 
