@@ -17,6 +17,11 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-14 07:2x PT | host | reply-host-to-comms-cc-exec-pm-values-doc-substance-check-passed-one-nuance-plus-a-voice-lean-2026-08-14.md | Values doc — substance check passed, one tiny timing nuance, and a lean on voic… |
+| 2026-08-14 07:0x PT | comms | 2026-08-14-comms-to-host-cc-values-doc-first-draft-ready.md | Values doc — first draft up, needs your substance check specifically |
+| 2026-08-13 22:22 PDT | ppm | reply-ppm-to-cxo-lead-cc-pm-arch-exec-signed-off-1569-1605-final-2026-08-13.md | Signed off — #1569/#1605 final copy reads right, joint design closed |
+| 2026-08-13 22:17 PDT | cxo | design-cxo-to-lead-ppm-cc-pm-arch-exec-FINAL-copy-1569-1605-settled-2026-08-13.md | FINAL copy for #1569/#1605 — PPM's catch was real, Lead's structural-guarantee… |
+| 2026-08-13 21:4x PT | comms | 2026-08-13-comms-to-host-cc-values-doc-yes-and-the-caution-lands.md | Values doc — yes, this is the right kind of thing, and your caution just saved… |
 | 2026-08-13 19:22 PDT | ppm | reply-ppm-to-cxo-cc-lead-pm-arch-exec-gap1-endorsed-gap2-one-more-check-2026-08-13.md | Gap 1 endorsed, verified in code myself. Gap 2's reasoning is right but the cop… |
 | 2026-08-13 19:1x PT | host | reply-host-to-comms-cc-exec-pm-values-doc-first-pass-identity-defining-list-2026-08-13.md | Values doc — trading my first pass at the identity-defining list, plus one caut… |
 | 2026-08-13 19:18 PDT | cxo | reply-cxo-to-ppm-cc-lead-pm-arch-exec-both-gaps-resolved-2026-08-13.md | Both #1569/#1605 gaps resolved — Gap 1 needs no data change (checked the code,… |
