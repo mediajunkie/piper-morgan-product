@@ -3070,6 +3070,60 @@ class IntentService:
         message_text = (
             intent.original_message or intent.context.get("original_message", "") or ""
         ).lower()
+
+        # ── #1591 declaration path (PM live 2026-08-13) — checked FIRST ──
+        # "use the standup interview format by default from now on" contains
+        # the interview token; without this ordering the token branch below
+        # would START an interview instead of storing the declared default.
+        # A declaration is the highest-confidence signal there is: stored
+        # directly via the rail (source=user_declared, confidence 1.0) with
+        # confirmation copy — never a read-back question, never a fabricated
+        # floor promise. In-handler branch only (#1431 pattern): the turn is
+        # here because a standup surface already claimed it; the tokenless
+        # phrasing is a #1595 corpus row, not claimed.
+        declared_standup_mode = sp.detect_standup_mode_declaration(message_text)
+        if declared_standup_mode is not None:
+            if not user_id:
+                return IntentProcessingResult(
+                    success=True,
+                    message=sp.DECLARATION_NO_USER_MESSAGE,
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                        "standup_mode_declared": declared_standup_mode,
+                        "persisted": False,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=False,
+                )
+            _persisted = await vi.store_verified_inference(
+                user_id,
+                sp.STANDUP_MODE_KEY,
+                declared_standup_mode,
+                source=vi.SOURCE_USER_DECLARED,
+                confidence=1.0,
+            )
+            self.logger.info(
+                "Standup-mode declaration stored (#1591)",
+                user_id=user_id,
+                standup_mode=declared_standup_mode,
+                persisted=_persisted,
+            )
+            return IntentProcessingResult(
+                success=True,
+                message=sp.declaration_confirmation(declared_standup_mode, _persisted),
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                    "standup_mode_declared": declared_standup_mode,
+                    "persisted": _persisted,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+            )
+
         # user_id required too: the interview is the USER's flow — an anonymous
         # interview would key state to nobody (#1532 class). Anonymous falls
         # through to the report, which degrades to the honest empty summary.

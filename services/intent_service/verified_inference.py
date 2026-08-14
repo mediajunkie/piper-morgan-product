@@ -85,6 +85,12 @@ process steering is not a task preference and must not be folded in."""
 # consumer) needs to distinguish an explicit yes from a meta-endorsed apply.
 SOURCE_USER_VERIFIED = "user_verified"  # user answered the read-back with an accept
 SOURCE_META_AUTO = "meta_auto"  # applied under a "stop asking me" meta-preference
+# #1591 declaration path (PM live 2026-08-13): the user STATED the preference
+# outright ("use the standup interview format by default from now on") — the
+# highest-confidence signal there is. A declaration is not an inference: it
+# warrants store + confirmation copy, never a read-back question (reading a
+# user's own words back as a question would be verification theater).
+SOURCE_USER_DECLARED = "user_declared"
 
 
 class VerificationDecision(str, Enum):
