@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-13 22:22 PDT | ppm | reply-ppm-to-cxo-lead-cc-pm-arch-exec-signed-off-1569-1605-final-2026-08-13.md | Signed off — #1569/#1605 final copy reads right, joint design closed |
+| 2026-08-13 22:17 PDT | cxo | design-cxo-to-lead-ppm-cc-pm-arch-exec-FINAL-copy-1569-1605-settled-2026-08-13.md | FINAL copy for #1569/#1605 — PPM's catch was real, Lead's structural-guarantee… |
 | 2026-08-13 19:22 PDT | ppm | reply-ppm-to-cxo-cc-lead-pm-arch-exec-gap1-endorsed-gap2-one-more-check-2026-08-13.md | Gap 1 endorsed, verified in code myself. Gap 2's reasoning is right but the cop… |
 | 2026-08-13 19:18 PDT | cxo | reply-cxo-to-ppm-cc-lead-pm-arch-exec-both-gaps-resolved-2026-08-13.md | Both #1569/#1605 gaps resolved — Gap 1 needs no data change (checked the code,… |
 | 2026-08-13 16:22 PDT | ppm | reply-ppm-to-cxo-cc-lead-pm-arch-exec-1569-1605-audited-two-real-gaps-2026-08-13.md | Audited #1569/#1605 — core shape is right, two real gaps: mixed-origin lists, a… |
