@@ -29,7 +29,7 @@ re-verified; template convention updated; evidence to Exec). Watch item: draft�
 class at 2 instances — third instance ⇒ propose a write-back mechanism.
 **PM click-through**: PM taking it (confirmed in chat) — fold results into draft on arrival.
 **Comms**: tiers 1-6 done, continuing api/+api-reference; their installation steps-9-10 gap needs
-whoever next does a live install. **Omnibus 08-12**: ✅ DONE (137 lines, HC:COORDINATION, `8373746de`+`3786e5dd8`, spot-verified). Omnibus chain now continuous through 08-12.
+whoever next does a live install. **Omnibus 08-13**: ✅ DONE (149 lines, `a963a8a18`+`9411abf45`, chain continuous). **Omnibus 08-12**: ✅ DONE (137 lines, HC:COORDINATION, `8373746de`+`3786e5dd8`, spot-verified). Omnibus chain now continuous through 08-12.
 **Comms register pass**: started (their `9f6ab1732` touched 2 ALPHA docs) — parallel, different
 dimensions, agreed.
 
