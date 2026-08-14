@@ -21,8 +21,8 @@ fossil; evidence posted); PM's address for #1610 (legal placeholder ×3 files, n
 **Remaining batches**: installation/ + setup/ + troubleshooting/ · features/ + integrations/ +
 configuration/ · api/ + public/api-reference/ + dev-tips/ · testing/ (CIO's file-level-discretion
 applies) + releases/ + misc top-level files.
-**Publish**: "Alpha Launches" LIVE 08-13 (live-content-verified); syndication URLs whenever PM
-cross-posts. **website#31**: ✅ EXECUTED + CLOSED same day (regex fixed w/ control tests, 15 entries
+**Publish**: "Alpha Launches" LIVE 08-13 + Medium cross-post recorded (status=distributed;
+building theme = Medium-only, no LinkedIn leg — complete). **website#31**: ✅ EXECUTED + CLOSED same day (regex fixed w/ control tests, 15 entries
 fixed — 2 by surgery after catching draft↔live divergence on #043/#047; independently
 re-verified; template convention updated; evidence to Exec). Watch item: draft↔live divergence
 class at 2 instances — third instance ⇒ propose a write-back mechanism.

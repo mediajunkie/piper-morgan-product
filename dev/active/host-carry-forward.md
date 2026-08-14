@@ -1,6 +1,6 @@
 # HOST carry-forward
 
-**Written**: 2026-08-12 22:0x PDT (STOP fire, day 19 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-13 22:0x PDT (STOP fire, day 20 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -120,4 +120,9 @@
 
 ## Cron
 
-Current job **`9d57a06f`** (chain … `f77a6afa → d0a0a5eb → 9d57a06f`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-12 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`4894dc35`** (chain … `d0a0a5eb → 9d57a06f → 4894dc35`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-13 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+
+## New this window (08-13) — two substantive threads, both open with others
+
+- **Retention/learning-scope policy scaffold** (`docs/legal/data-retention-policy-DRAFT.md`) — PM's ask via Exec, drafted and sent for review. Awaiting PM. Don't re-draft; if it comes up again, it's PM's to react to.
+- **Values/ethics document** (open-source protection, joint with Comms) — first-pass identity-defining list sent (no-cross-user-learning/ADR-079, audit-transparency read surface/ADR-063, hash-only audit discipline/Pattern-071). Comms confirmed the list and the framing test ("would a fork quietly drop this while looking identical from outside"), deferred prose-drafting to a fresh session. **Not owed further by HOST right now** — Comms is picking up drafting; HOST can keep adding to the substance list if more surfaces, per Comms's explicit invite, but nothing pending.
