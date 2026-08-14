@@ -12,13 +12,14 @@
 **PM's Agenda §6 ruling** (full record: `dev/active/cio-innovation-agenda-2026-08-02.md` §7): CIO
 operates client/general-contractor — spec outcomes, delegate to subagents, review before landing.
 
-**Two applications so far, and the second sharpened the first**:
+**Two applications so far, both closed, and the second sharpened the first**:
 1. **#1616** (08-13, closed): well-bounded, delegated, independently verified, landed clean.
-2. **Recurring-instrument self-firing** (08-14, in progress): the same lens applied to TWO items
-   in one ask, and they needed *different* treatment. Skill-candidates review had a ratified
-   cadence + clear owner → delegated (subagent `ad661280bd7802b31`, in flight — **REVIEW BEFORE
-   LANDING**, same discipline as #1616). Agent 360 had no ratified cadence at all → did NOT
-   delegate; routed the actual gap to HOST instead of building around it.
+2. **Recurring-instrument self-firing** (08-14, 2 of 3 done): applied to TWO items in one ask, and
+   they needed *different* treatment. Skill-candidates review had a ratified cadence + clear owner
+   → delegated, independently re-derived (not just re-confirmed) the day-guard logic by hand
+   across all 12 months, landed clean (`32327bedc`). Agent 360 had no ratified cadence → did NOT
+   delegate; routed the gap to HOST instead of building around it — still awaiting HOST's ruling.
+   `docs/briefing/ROLE-PORTFOLIO-CIO.md`'s tracker row updated.
 
 **The lesson worth carrying into the design conversation with Exec**: the mode isn't "delegate
 everything that looks bounded" — it's "verify the outcome is actually well-specified before
@@ -41,18 +42,12 @@ not just theory.
 3. **Short-period cron experiment** — decomposing the ~30-min dispatch latency. Not started
    without a yes.
 
-## In flight — needs review before landing
-
-- **Skill-candidates-review self-firing workflow** (subagent `ad661280bd7802b31`, dispatched
-  08-14 10:5x). **When it completes: read the actual diff, cross-check the boundary-condition
-  logic by hand (don't just trust its trace), verify the cron/date-list shape decision was
-  reasoned not copied, THEN commit.** Same discipline that made #1616 real evidence rather than a
-  lucky first try.
-
 ## ✅ Closed recently (08-11 → 08-14)
 
 - **Agenda §6 answered and now twice-applied** — see above.
 - **#1616 closed** — mailbox filename-length lint, delegation pilot #1.
+- **Skill-candidates-review self-firing workflow shipped** — delegation pilot #2, recurring-
+  instrument ask now 2/3 done.
 - **Amber reboot (08-11), 08-13's missing STOP** — both retroactively closed cleanly.
 - **#1584 Part C, `cohort-agent-status.md` retirement, `BRIEFING-CURRENT-STATE.md` refresh,
   pmorgan.tech scope ratification, methodology-49** — all 08-12/08-13.
