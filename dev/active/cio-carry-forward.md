@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-14 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-14 (16:37 WORK)
 
 **Cron**: `b2807f51` · `7 10,16,22` LEAN · re-armed 2026-08-12 22:37 STOP (delete-then-create) ·
 **auto-expires ~2026-08-19**.
@@ -37,17 +37,28 @@ not just theory.
    **report the current reading (13) rather than re-asserting the old rate.** Fix: pack the 127 of
    178 self-describing slugs at 4/line → ~185→~90 lines. Lead builds on PM's ruling.
    🛑 Never delete memory files to fit. Full arithmetic: `docs/internal/operations/memory-index-size-limits.md`.
-2. **Agent 360 cadence** — routed to HOST (cc Exec, PM) 08-14. Once ratified, the workflow build
-   is mechanical (~30 min subagent work, template proven twice now).
-3. **Short-period cron experiment** — decomposing the ~30-min dispatch latency. Not started
+2. **Short-period cron experiment** — decomposing the ~30-min dispatch latency. Not started
    without a yes.
+
+## In flight — needs review before landing
+
+- **Agent 360 self-firing workflow** (subagent `a376d8d49f3c36099`, dispatched 08-14 ~17:0x).
+  **Cadence ratified by HOST same day: 42 days, anchored on v0.4's actual fielding date
+  (2026-08-14) → next due 2026-09-25.** When it completes: verify the day-count gate logic
+  independently (don't just re-run its trace — recompute by hand), confirm it notifies HOST not
+  Exec, confirm it doesn't touch the other two workflow files or the questionnaire file, THEN
+  commit. This closes the recurring-instrument ask at 3/3 if it holds up.
 
 ## ✅ Closed recently (08-11 → 08-14)
 
-- **Agenda §6 answered and now twice-applied** — see above.
+- **Agenda §6 answered and twice-applied** — see above.
 - **#1616 closed** — mailbox filename-length lint, delegation pilot #1.
-- **Skill-candidates-review self-firing workflow shipped** — delegation pilot #2, recurring-
-  instrument ask now 2/3 done.
+- **Skill-candidates-review self-firing workflow shipped** — delegation pilot #2.
+- **Agent 360 v0.4 fielded and answered in full** (`mailboxes/host/sent/agent-360-response-cio-
+  2026-08-14.md`) — substantive, cited response covering the two retroactive-close incidents, the
+  two self-resolved watchdog alerts, both delegation pilots, and the briefing-staleness finding.
+- **Agent 360 cadence ratified by HOST**: 42 days, derived from real fielding history (34, 42 days
+  apart). Third workflow now in flight (see above).
 - **Amber reboot (08-11), 08-13's missing STOP** — both retroactively closed cleanly.
 - **#1584 Part C, `cohort-agent-status.md` retirement, `BRIEFING-CURRENT-STATE.md` refresh,
   pmorgan.tech scope ratification, methodology-49** — all 08-12/08-13.
