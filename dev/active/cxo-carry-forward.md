@@ -1,4 +1,12 @@
-# CXO carry-forward — rewritten 2026-08-14 10:2x PT
+# CXO carry-forward — rewritten 2026-08-14 16:2x PT
+
+**16:17 fire**: HOST fielded Agent 360 v0.4 (cohort-wide, ~2-week window). Queue was otherwise empty, so
+answered it this fire rather than deferring — real, specific content from this week's work throughout
+(the two stale-tracker catches, the #1510/#1591/#1569/#1605 threads, the mailbox-hook block, the reboot
+survival gap). **Found my own freeze-watchdog registry row was stale** (still referenced the pre-reboot
+cron id) while answering §10.4 — fixed it, cited the fix honestly in the response rather than hiding it.
+Sent to HOST, full response at `mailboxes/host/sent/agent-360-response-cxo-2026-08-14.md` /
+`mailboxes/cxo/sent/`.
 
 **10:17 fire**: PPM confirmed the ALWAYS_ASK answer (re-verified against #1510's ruling text directly, no
 disagreement). **#1605/#1569 is now fully closed on the design side** — posted on GH, handed the one-cell

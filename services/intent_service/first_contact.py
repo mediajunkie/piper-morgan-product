@@ -259,15 +259,23 @@ def render_first_contact_block(payload: Optional[Dict[str, Any]]) -> str:
     open_count = payload.get("open_count", len(items))
     noun = "open item" if open_count == 1 else "open items"
 
+    # #1615: the chat frontend renders this through marked.parse
+    # (web/assets/bot-message-renderer.js), where a single "\n" inside a
+    # paragraph collapses to a space — "•"-glyph lines became one run-on
+    # sentence in PM's 08-13 retest. Emit real markdown list syntax instead:
+    # a blank line before/after the list and "- " items, which marked breaks
+    # into <ul><li> rows.
     lines = [
         f"Here's what I can already see in {repo} — the GitHub repo you've "
-        f"connected: {open_count} {noun}, most recently active:"
+        f"connected: {open_count} {noun}, most recently active:",
+        "",
     ]
     for it in items:
         kind = "PR" if it.get("type") == "pr" else "issue"
         recency = it.get("recency") or ""
         recency_part = f", {recency}" if recency else ""
-        lines.append(f'• #{it.get("number")} "{it.get("title")}" ({kind}{recency_part})')
+        lines.append(f'- #{it.get("number")} "{it.get("title")}" ({kind}{recency_part})')
+    lines.append("")
     lines.append("Want me to dig into any of these?")
     return "\n".join(lines)
 
