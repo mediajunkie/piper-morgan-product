@@ -43,9 +43,7 @@ _Strategic threads PM flagged to revisit — not operational/owed items; no near
 
 ### Pending external action
 
-| # | Item | Filed | Notes |
-|---|---|---|---|
-| 1 | **ALPHA_FEATURE_GUIDE refresh — code-level pass ~done, awaiting the live click-through** | 2026-08-13 | Draft at `dev/active/draft-alpha-feature-guide-v0.8.11-for-pa-review.md`. **Blocker**: no Chrome/Chromium on this Amber worktree — the split assumed live browser access; false here. Code-level pass instead (weaker layer, named as such throughout). ⚠️ **Self-caught mid-pass**: first batch cited `origin/production`, which is **4,195 commits / 18 days stale relative to `origin/main`** and predates the #1481 Slack hold entirely — the Docker build workflow triggers off `main`, not `production`, so `production` looks abandoned, not the deploy source. Re-verified all four prior findings against `origin/main` — all held, only the cited ref was wrong. Corrected in a follow-up memo. **Resolved, `origin/main`, code-level**: GitHub Settings shows OAuth first (recommended, #1317/ADR-070 C) + PAT fallback (settles the RN-0.8.9-vs-briefing contradiction); Calendar OAuth flow present; Notion uses a pasted API key, not OAuth; "Test All" health dashboard absent from app code; `/standup` route still renders; file upload limits (10MB, .txt/.pdf/.docx/.md/.json) match exactly; sharing-by-email + viewer/editor/admin roles confirmed on Lists/Todos/Projects (API takes `user_id`, UI label is "Email or User ID"); Slack outbound is NOT gated by the inbound hold's flag, but the only wired caller found is the standup-post skill, not a general send-to-channel action. **Two items left that need a live session, not more code reading**: Calendar's actual query behavior, the hosted signup/invite flow. **Everything UI/interaction (chat tone, drag-drop, autosave, honesty claims) still needs a browser** — Docs has queued the 4-item click-through for PM's next engagement. Sent: two follow-up memos in `mailboxes/pa/sent/` (2026-08-13, "blocked on live verification" + "correction: wrong branch"). |
+_(none as of this update — see Resolved below)_
 
 ### PA-queued
 
@@ -59,7 +57,9 @@ _(none as of this prune)_
 
 ### Resolved (preserved for one cycle)
 
-_(none as of this prune — see below for what was retired and why)_
+| # | Item | Resolved | Notes |
+|---|---|---|---|
+| R5 | **ALPHA_FEATURE_GUIDE refresh — PA's part done** | 2026-08-13 | Docs confirmed: correction folded (all tags now cite `origin/main`), all 7 code-level findings incorporated, PA's "Email or User ID" nuance kept, the #4 dispatch-layer grep Docs ran independently confirmed PA's standup-only read. PM picked up the 4-item live click-through directly. Nothing further for PA — Docs folds PM's results and ships. Full trail: this session's 08-13 log, three sent memos in `mailboxes/pa/sent/`. |
 
 ---
 

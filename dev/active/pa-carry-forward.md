@@ -30,14 +30,13 @@ days stale.
   item above is the same root cause. If live UI verification becomes a recurring PA ask, worth deciding
   whether to provision a browser on this seat or route that class of work elsewhere (PM's own browser, a
   different agent seat, or a dedicated QA pass) — code-level inspection is a real but weaker substitute.
-- 🟡 **ALPHA_FEATURE_GUIDE refresh, code-level pass ~done, awaiting the live click-through** — Docs's
-  draft is nearly through PA's review (`dev/active/draft-alpha-feature-guide-v0.8.11-for-pa-review.md`);
-  7 of 11 flagged items resolved at the code layer (full detail in `pa-standing-items.md`). ⚠️ **Also
-  surfacing this because it's not just a doc-review artifact**: mid-pass, PA found `origin/production` is
-  4,195 commits / 18 days stale and NOT what CI actually builds from (`docker.yml` triggers on `main`) —
-  self-caught, re-verified, corrected. Worth knowing if anyone else has been treating `production` as
-  ground truth for "what's live." Everything UI/interaction-behavior still needs an actual browser
-  session — Docs has queued a short click-through for PM's next engagement.
+- ✅ **ALPHA_FEATURE_GUIDE refresh — PA's part DONE 08-13.** 7 of 11 flagged items resolved at the code
+  layer, folded into Docs's draft. **PM is doing the 4-item live click-through directly** (picked it up
+  same-day) — nothing further owed from PA; Docs folds PM's results and ships.
+- 🟡 **`origin/production` is 4,195 commits / 18 days stale and NOT what CI builds from** (`docker.yml`
+  triggers on `main`) — found mid-pass on the item above, self-caught and corrected before it propagated.
+  Surfacing on its own line since it's bigger than that one doc review: worth knowing if anyone else has
+  been treating `production` as ground truth for "what's live."
 - 🟡 **Three privacy items left for you**: **sub-processor completeness** (which LLM provider is actually
   in production?), **retention practice** (none exists in code), **contact address**.
 - 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a
