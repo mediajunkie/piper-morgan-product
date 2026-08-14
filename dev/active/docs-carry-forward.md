@@ -2,7 +2,7 @@
 
 **Updated**: 2026-08-13 07:5x PDT (Fire 1 — alpha + guides staleness batches done)
 **Session log**: `dev/2026/08/13/2026-08-13-0727-docs-code-log.md` (open). 08-12 closed.
-**Cron**: `e47bd40c`, expires ~08-18 — **rotate at a STOP before then**.
+**Cron**: `2967db0e` (rotated 08-14 day-open, fresh 7-day window to ~08-21).
 
 ## 🔵 ACTIVE — staleness pass on the curated keep-list (batched over fires)
 
@@ -18,9 +18,10 @@ code-level-grounded refresh already beats the v0.8.6 doc. Live guide stays banne
 vs support@ for audit-logging.md · stale docker branch deletion. (#1610 RESOLVED by Exec;
 #1611 with Lead; #1616 = memo filenames break Windows clones — my filenames now shorter.) Also awaiting: Lead's attestation on #1611 (8081 two-process — live path or
 fossil; evidence posted); PM's address for #1610 (legal placeholder ×3 files, next rollup).
-**Remaining batches**: installation/ + setup/ + troubleshooting/ · features/ + integrations/ +
-configuration/ · api/ + public/api-reference/ + dev-tips/ · testing/ (CIO's file-level-discretion
-applies) + releases/ + misc top-level files.
+**Remaining batches**: testing/ (CIO file-discretion) + releases/ + misc top-level files — FINAL
+batch. (installation/setup/troubleshooting had Comms's tier-6 + my earlier fixes; features/
+integrations/configuration done in fire-4 sweep; api/api-reference/dev-tips done 08-14 fire 1,
+cleanest batch yet: 1 defect.)
 **Publish**: "Alpha Launches" LIVE 08-13 + Medium cross-post recorded (status=distributed;
 building theme = Medium-only, no LinkedIn leg — complete). **website#31**: ✅ EXECUTED + CLOSED same day (regex fixed w/ control tests, 15 entries
 fixed — 2 by surgery after catching draft↔live divergence on #043/#047; independently
