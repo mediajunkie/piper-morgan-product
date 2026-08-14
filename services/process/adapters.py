@@ -435,6 +435,70 @@ class StandupProcessAdapter:
                 error=str(e),
             )
 
+    async def in_completion_tail(
+        self,
+        user_id: Optional[str],
+        session_id: Optional[str],
+    ) -> bool:
+        """#1617: True when the conversation is in a post-summary tail state —
+        the standup content has been rendered and delivered (REFINING is
+        entered exactly when the summary renders; FINALIZING is the legacy
+        'share or save?' tail). An off-tail turn here can only be a command
+        the user wants answered, never interview material."""
+        from services.shared_types import StandupConversationState
+
+        conversation = await self._get_conversation(user_id, session_id)
+        if not conversation:
+            return False
+        return conversation.state in (
+            StandupConversationState.REFINING,
+            StandupConversationState.FINALIZING,
+        )
+
+    async def release(
+        self,
+        user_id: Optional[str],
+        session_id: Optional[str],
+    ) -> None:
+        """#1617: end a DELIVERED standup for good — completion-tail release.
+
+        The summary was rendered and stands; the honest terminal state is
+        COMPLETE (the work happened — distinct from close()'s ABANDONED for
+        exits/refusals). Falls back to ABANDONED if the COMPLETE transition
+        is invalid from the current state. Both are terminal: no further
+        claiming, no resume re-offer.
+        """
+        from services.shared_types import StandupConversationState
+
+        conversation = await self._get_conversation(user_id, session_id)
+        if not conversation:
+            logger.warning(
+                "Cannot release standup — no conversation found",
+                user_id=user_id,
+                session_id=session_id,
+            )
+            return
+
+        manager, _ = self._get_components()
+        try:
+            await manager.transition_state(conversation.id, StandupConversationState.COMPLETE)
+            logger.info(
+                "Standup conversation released (completion-tail, #1617)",
+                conversation_id=conversation.id,
+                user_id=user_id,
+            )
+        except Exception:
+            try:
+                await manager.transition_state(
+                    conversation.id, StandupConversationState.ABANDONED
+                )
+            except Exception as e:
+                logger.warning(
+                    "Error releasing standup conversation",
+                    conversation_id=conversation.id,
+                    error=str(e),
+                )
+
     async def close(
         self,
         user_id: Optional[str],

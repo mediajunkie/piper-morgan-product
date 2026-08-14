@@ -280,6 +280,7 @@ class IntentService:
         trust_stage: Optional[TrustStage] = None,
         user_id: Optional[str] = None,
         formality_baseline: Optional[float] = None,
+        off_topic_prefix: Optional[str] = None,
     ) -> "IntentProcessingResult":
         """
         Issue #767: Check for soft invocation opportunity and append offer.
@@ -294,10 +295,28 @@ class IntentService:
             current_turn: Current conversation turn number
             trust_stage: User's resolved trust stage (Issue #826).
                 None falls back to BUILDING for backward compatibility.
+            off_topic_prefix: #899/#1617 — honest pause/release copy from a
+                guided-process escape on THIS turn. Found while pinning #1617's
+                transcript: the end-of-method prefix prepend (#899) never ran
+                for any of the early handler returns that funnel through here
+                (the rail dispatch among them), so the flow silently vanished
+                with no acknowledgment. Applied here so every funneled return
+                carries it; the end-of-method prepend still covers the
+                fall-through path.
 
         Returns:
             Modified result with offer appended, or original result unchanged
         """
+        if off_topic_prefix and result.message:
+            result = IntentProcessingResult(
+                success=result.success,
+                message=f"{off_topic_prefix}\n\n{result.message}",
+                intent_data=result.intent_data,
+                workflow_id=result.workflow_id,
+                requires_clarification=result.requires_clarification,
+                suggestions=result.suggestions,
+                preferences=result.preferences,
+            )
         if not result.success:
             return result
 
@@ -1413,6 +1432,7 @@ class IntentService:
                         trust_stage=resolved_trust_stage,
                         user_id=user_id,
                         formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                     )
                 except Exception as e:
                     # Graceful fallback: process primary intent only
@@ -1656,6 +1676,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # Issue #286: Handle canonical intents (PORTFOLIO, EXECUTION, STATUS, etc.)
@@ -1695,6 +1716,7 @@ class IntentService:
                         trust_stage=resolved_trust_stage,
                         user_id=user_id,
                         formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                     )
 
                 # Issue #595: Add greeting prefix if multi-intent with greeting detected
@@ -1782,6 +1804,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # Issue #883 + #1094: workflows are no longer pre-created. Handlers
@@ -1944,6 +1967,7 @@ class IntentService:
                         trust_stage=resolved_trust_stage,
                         user_id=user_id,
                         formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                     )
 
             # Handle QUERY intents with domain services
@@ -1960,6 +1984,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # GREAT-4D Phase 1: Handle EXECUTION intents with domain services
@@ -1975,6 +2000,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # GREAT-4D Phase 2: Handle ANALYSIS intents with domain services
@@ -1990,6 +2016,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # GREAT-4D Phase 4: Handle SYNTHESIS intents
@@ -2005,6 +2032,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # GREAT-4D Phase 5: Handle STRATEGY intents
@@ -2020,6 +2048,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # GREAT-4D Phase 6: Handle LEARNING intents
@@ -2035,6 +2064,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # GREAT-4D Phase 7: Handle UNKNOWN intents via conversational floor (#907)
@@ -2057,6 +2087,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # Fallback for truly unhandled categories (should never reach here)
@@ -3039,6 +3070,60 @@ class IntentService:
         message_text = (
             intent.original_message or intent.context.get("original_message", "") or ""
         ).lower()
+
+        # ── #1591 declaration path (PM live 2026-08-13) — checked FIRST ──
+        # "use the standup interview format by default from now on" contains
+        # the interview token; without this ordering the token branch below
+        # would START an interview instead of storing the declared default.
+        # A declaration is the highest-confidence signal there is: stored
+        # directly via the rail (source=user_declared, confidence 1.0) with
+        # confirmation copy — never a read-back question, never a fabricated
+        # floor promise. In-handler branch only (#1431 pattern): the turn is
+        # here because a standup surface already claimed it; the tokenless
+        # phrasing is a #1595 corpus row, not claimed.
+        declared_standup_mode = sp.detect_standup_mode_declaration(message_text)
+        if declared_standup_mode is not None:
+            if not user_id:
+                return IntentProcessingResult(
+                    success=True,
+                    message=sp.DECLARATION_NO_USER_MESSAGE,
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                        "standup_mode_declared": declared_standup_mode,
+                        "persisted": False,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=False,
+                )
+            _persisted = await vi.store_verified_inference(
+                user_id,
+                sp.STANDUP_MODE_KEY,
+                declared_standup_mode,
+                source=vi.SOURCE_USER_DECLARED,
+                confidence=1.0,
+            )
+            self.logger.info(
+                "Standup-mode declaration stored (#1591)",
+                user_id=user_id,
+                standup_mode=declared_standup_mode,
+                persisted=_persisted,
+            )
+            return IntentProcessingResult(
+                success=True,
+                message=sp.declaration_confirmation(declared_standup_mode, _persisted),
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                    "standup_mode_declared": declared_standup_mode,
+                    "persisted": _persisted,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+            )
+
         # user_id required too: the interview is the USER's flow — an anonymous
         # interview would key state to nobody (#1532 class). Anonymous falls
         # through to the report, which degrades to the honest empty summary.
@@ -8004,8 +8089,186 @@ class IntentService:
                 error_type="GitHubError",
             )
 
+    @staticmethod
+    def _detect_unmapped_status_value(message: str) -> Optional[str]:
+        """#1411 (PM live 2026-08-13, mechanism 2): extract the target VALUE of a
+        status/state update ("change the status of issue #108 to Done" → "Done").
+
+        Returns the value string only when the message has the update-verb +
+        status/state-field + "to <value>" shape; None otherwise. A trailing
+        "in <repo words>" clause is repo routing, not part of the value (PM's
+        "to Done in my default repository" phrasing). The caller decides what
+        the value MAPS to — this is extraction only.
+        """
+        import re as _re
+
+        if not message:
+            return None
+        m = _re.search(
+            r"\b(?:change|update|set|edit|modify|move)\b[^\n]*?"
+            r"\bthe\s+(?:status|state)\b[^\n]*?\bto\s+(.+)$",
+            message,
+            _re.IGNORECASE,
+        )
+        if not m:
+            return None
+        value = _re.sub(r"\s+in\s+.+$", "", m.group(1).strip(), flags=_re.IGNORECASE)
+        value = value.strip().strip("\"'‘’“”").rstrip(" .!?,;:")
+        return value or None
+
+    # Status values a user plausibly means "close the issue" by. NOT a synonym
+    # decree (PM explicitly REJECTED map-by-decree, decisions.log 2026-08-13
+    # ~14:1x): none of these ever maps silently — every one produces the ASK
+    # ("By 'X' do you mean close the issue?"), and only the user's explicit
+    # "yes" dispatches the close. Growing this set grows who gets ASKED, never
+    # who gets acted on.
+    _CLOSE_SHAPED_STATUS_VALUES = frozenset(
+        {"done", "closed", "close", "complete", "completed", "resolved", "finished"}
+    )
+
+    async def _resolve_default_repository(self, user_id: Optional[str]) -> Optional[str]:
+        """#1411 (PM live 2026-08-13, mechanism 1): the update slot-fill's
+        default-repo consult — the SAME resolve_repo rail first_contact.py and
+        the #1590 read-time recovery use (explicit arg → user default → env →
+        #1590 recovery). Returns "owner/name" or None; never raises (an error
+        here degrades to the honest "which repo?" ask, same fail-safe
+        direction as first_contact)."""
+        from services.integrations.github.repo_resolver import (
+            UnresolvedRepoError,
+            resolve_repo,
+        )
+
+        try:
+            uid = UUID(str(user_id)) if user_id else None
+        except (ValueError, TypeError):
+            uid = None
+        try:
+            resolved = await resolve_repo(user_id=uid)
+        except UnresolvedRepoError:
+            return None
+        except Exception as e:  # silent-ok: fail-safe DIRECTION — a resolver error degrades to the honest repository ask, never fabricates a target repo for a WRITE
+            self.logger.warning(
+                "update_issue_default_repo_resolution_failed",
+                user_id=user_id,
+                error=str(e),
+            )
+            return None
+        return resolved.full_name
+
+    def _offer_status_close_clarification(
+        self,
+        intent: Intent,
+        original_message: str,
+        issue_number: int,
+        session_id: Optional[str],
+        user_id: Optional[str],
+    ) -> Optional[IntentProcessingResult]:
+        """#1411 / PM's clarify-first ruling (decisions.log 2026-08-13 ~14:1x):
+        an unmapped field VALUE over a WRITE operation ASKS instead of erroring.
+
+        "change the status of issue #108 to Done" carries a field the parser
+        can't map (GitHub issues have only open/closed) and a value ("Done")
+        whose plausible meaning is DESTRUCTIVE (close). Per the ruling this is
+        the #1510 rail's low-confidence read-back applied to VERB/value
+        interpretation, effect-weighted (#1557): the candidate mapping's
+        EffectClass is DESTRUCTIVE, so ``consent_gate.decide_verb_interpretation``
+        yields READ_BACK in every meta mode below the auto-apply bar — the ask
+        IS the fix, never a silent synonym mapping (the decree PM rejected).
+
+        The ask rides the EXISTING #1190 pending_action carrier (kind
+        distinguishes it); "yes" dispatches close_issue through the SAME
+        confirm_pending_action path #1190 uses (PM live-verified end-to-end
+        2026-08-13), with the ``destructive_confirmed`` marker so it executes
+        in one turn — this ask already named the close explicitly. "no"/bare
+        exit cancels honestly; off-intent abandons via the pop.
+
+        Returns the ask result, or None → the caller falls through to the
+        honest "no fields" error (value absent, not close-shaped, or no
+        session to bind the answer to).
+        """
+        if not session_id:
+            return None
+        value = self._detect_unmapped_status_value(original_message)
+        if not value or value.lower() not in self._CLOSE_SHAPED_STATUS_VALUES:
+            return None
+
+        from services.intent_service.consent_gate import decide_verb_interpretation
+        from services.intent_service.destructive_confirm import (
+            CONFIRM_PENDING_ACTION_WORKFLOW,
+        )
+        from services.intent_service.verified_inference import VerificationDecision
+        from services.shared_types import EffectClass
+
+        # Effect-weighted gate (one scoring system): a close-shaped status
+        # value is a plausible-but-unverified mapping (0.7 — between the
+        # suggestion floor and the auto-apply bar) onto a DESTRUCTIVE
+        # operation → READ_BACK regardless of meta mode (#1190's principle:
+        # process steering never lowers a destructive ask).
+        decision = decide_verb_interpretation(0.7, EffectClass.DESTRUCTIVE)
+        if decision is not VerificationDecision.READ_BACK:
+            return None
+
+        close_context: dict = {"original_message": original_message}
+        if user_id:
+            close_context["user_id"] = str(user_id)
+        close_intent = Intent(
+            category=IntentCategory.QUERY,
+            action="close_issue",
+            original_message=original_message,
+            confidence=intent.confidence,
+            context=close_context,
+        )
+        summary = f"close issue #{issue_number}"
+        question = f"By '{value}' do you mean close issue #{issue_number}? (yes/no)"
+        self.workflow_offer_service.set_pending_offer(
+            session_id,
+            {
+                "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+                "pending_action": {
+                    # ``kind`` distinguishes this ask from a #1190 destructive
+                    # confirmation / #1509 consent check in the seam's logs;
+                    # the acceptance path ignores it (carrier contract:
+                    # action + intent + summary, #1190's, unchanged).
+                    "kind": "unmapped_field_value_clarification",
+                    "action": "close_issue",
+                    "intent": close_intent,
+                    "summary": summary,
+                },
+                "decline_message": (
+                    f"Okay — I haven't changed issue #{issue_number}. You can "
+                    "name a field to update (title, body, labels, assignees), "
+                    f"or say 'close issue #{issue_number}' if that's what you "
+                    "meant."
+                ),
+            },
+            user_id=user_id,
+        )
+        self.logger.info(
+            "unmapped_status_value_clarification_offered",
+            issue_number=issue_number,
+            value=value,
+            session_id=session_id,
+        )
+        return IntentProcessingResult(
+            success=True,
+            message=question,
+            intent_data={
+                "category": intent.category.value,
+                "action": intent.action,
+                "confidence": intent.confidence,
+                "unmapped_field_clarification_pending": True,
+                "unmapped_value": value,
+            },
+            workflow_id=None,
+            requires_clarification=True,
+        )
+
     async def _handle_update_issue(
-        self, intent: Intent, workflow_id: str, user_id: str = None
+        self,
+        intent: Intent,
+        workflow_id: str,
+        session_id: str = None,
+        user_id: str = None,
     ) -> IntentProcessingResult:
         """
         Handle update_issue/update_ticket action.
@@ -8014,6 +8277,12 @@ class IntentService:
 
         GREAT-4D Phase 1: FULLY IMPLEMENTED
         Issue #943: Added pre-flight check for GitHub configuration.
+        Issue #1411 (PM live 2026-08-13): the slot-fill consults the user's
+        default repo (resolve_repo) before erroring, and an unmapped
+        close-shaped status value asks ("By 'Done' do you mean close the
+        issue?") instead of the dead-end "no fields" error. ``session_id``
+        is threaded (rail: pass_session_id) solely so that ask can bind via
+        the #846 pending-offer store.
         """
         # Issue #943 pre-flight, rebuilt for #1220/#1382 (2026-07-09) — same
         # binding-aware gate as _handle_create_issue: the old PAT-only check
@@ -8091,9 +8360,21 @@ class IntentService:
                 )
 
             if not repository:
+                # #1411 (PM live 2026-08-13): consult the user's default repo
+                # BEFORE erroring — PM said "in my default repository" and
+                # still got the refusal because this path never called the
+                # resolver that already powers first_contact/#1590.
+                repository = await self._resolve_default_repository(_user_id)
+
+            if not repository:
                 return IntentProcessingResult(
                     success=False,
-                    message="Cannot update issue: repository not specified. Please specify which repository.",
+                    message=(
+                        "Cannot update issue: repository not specified and no "
+                        "default repo is set. Tell me the repository "
+                        "(owner/name), or say 'set my default repo to "
+                        "owner/name' and I'll use that from then on."
+                    ),
                     intent_data={
                         "category": intent.category.value,
                         "action": intent.action,
@@ -8105,6 +8386,19 @@ class IntentService:
 
             # Ensure at least one field to update is provided
             if not any([title, body, state, labels, assignees]):
+                # #1411 / clarify-first (PM ruling 2026-08-13): a close-shaped
+                # status value ("status → Done") ASKS instead of erroring.
+                clarify = self._offer_status_close_clarification(
+                    intent,
+                    intent.original_message
+                    or intent.context.get("original_message")
+                    or "",
+                    issue_number,
+                    session_id,
+                    _user_id,
+                )
+                if clarify is not None:
+                    return clarify
                 return IntentProcessingResult(
                     success=False,
                     message="Cannot update issue: no fields to update specified. Please provide at least one field to update (title, body, state, labels, or assignees).",

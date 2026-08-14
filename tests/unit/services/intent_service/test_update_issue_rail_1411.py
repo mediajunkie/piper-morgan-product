@@ -90,7 +90,9 @@ class TestUpdateIssueElifRetired:
 
 class TestUpdateIssueRailDispatch:
     """Behavioral: the rail entry actually invokes _handle_update_issue with the
-    handler's (intent, workflow_id, user_id) shape — not just key membership."""
+    handler's (intent, workflow_id, session_id, user_id) shape — not just key
+    membership. session_id threaded since the #1411 clarify-first ask (2026-08-13):
+    the unmapped-status-value ask binds via the session-keyed #846 offer store."""
 
     @pytest.mark.asyncio
     async def test_rail_dispatch_invokes_handler(self):
@@ -104,7 +106,7 @@ class TestUpdateIssueRailDispatch:
             user_id="u-1",
             context={"intent": intent, "workflow_id": "wf-1", "intent_service": svc},
         )
-        svc._handle_update_issue.assert_awaited_once_with(intent, "wf-1", "u-1")
+        svc._handle_update_issue.assert_awaited_once_with(intent, "wf-1", "s-1", "u-1")
         assert result is expected
 
     @pytest.mark.asyncio
@@ -119,4 +121,4 @@ class TestUpdateIssueRailDispatch:
             user_id="u-1",
             context={"intent": intent, "workflow_id": "wf-2", "intent_service": svc},
         )
-        svc._handle_update_issue.assert_awaited_once_with(intent, "wf-2", "u-1")
+        svc._handle_update_issue.assert_awaited_once_with(intent, "wf-2", "s-1", "u-1")

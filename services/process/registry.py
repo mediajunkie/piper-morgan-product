@@ -382,6 +382,53 @@ class ProcessRegistry:
                 error=str(close_err),
             )
 
+    async def _in_completion_tail(
+        self,
+        handler: GuidedProcess,
+        user_id: Optional[str],
+        session_id: Optional[str],
+    ) -> bool:
+        """#1617: is this flow in a post-delivery completion tail? Duck-typed
+        (``in_completion_tail`` on the adapter) so the GuidedProcess protocol
+        doesn't force a migration; absent/failing → False (mid-flow
+        semantics, the conservative direction)."""
+        checker = getattr(handler, "in_completion_tail", None)
+        if checker is None:
+            return False
+        try:
+            return bool(await checker(user_id, session_id))
+        except Exception as e:
+            logger.warning(
+                "Completion-tail check failed, treating as mid-flow",
+                process_type=handler.process_type.value,
+                error=str(e),
+            )
+            return False
+
+    async def _release_process(
+        self,
+        handler: GuidedProcess,
+        user_id: Optional[str],
+        session_id: Optional[str],
+    ) -> None:
+        """#1617: end a flow whose work is already DELIVERED (completion-tail
+        release). Prefers the adapter's ``release()`` (terminal COMPLETE — the
+        work happened; no resume nag) and falls back to ``_close_process``
+        (terminal ABANDONED) for handlers without it. Duck-typed like close."""
+        releaser = getattr(handler, "release", None)
+        if releaser is None:
+            await self._close_process(handler, user_id, session_id)
+            return
+        try:
+            await releaser(user_id, session_id)
+        except Exception as release_err:
+            logger.warning(
+                "Error releasing completed process, falling back to close",
+                process_type=handler.process_type.value,
+                error=str(release_err),
+            )
+            await self._close_process(handler, user_id, session_id)
+
     async def _handle_escape_signal(
         self,
         handler: GuidedProcess,
@@ -397,15 +444,27 @@ class ProcessRegistry:
         proceed to the flow's handler. Detection failures never trap the user
         IN the flow silently — they log and return None (the pre-existing
         #888 exact-match escape above remains the guaranteed hatch).
+
+        #1617 (completion-tail release): when the flow is in a post-delivery
+        tail state, the off_intent tier additionally consults the
+        deterministic cross-domain detectors (escape.check_escape's
+        ``in_completion_tail``), and an off-intent turn RELEASES the flow
+        (terminal — its work stands; nothing to resume) instead of
+        suspending it, so normal processing answers the turn and every
+        subsequent turn is free.
         """
+        in_tail = await self._in_completion_tail(handler, user_id, session_id)
         try:
             from services.process.escape import (
                 check_escape,
                 format_exit_message,
                 format_refusal_prefix,
+                format_release_prefix,
             )
 
-            signal = check_escape(message, handler.process_type)
+            signal = check_escape(
+                message, handler.process_type, in_completion_tail=in_tail
+            )
         except Exception as e:
             logger.warning(
                 "Escape check failed, message proceeds to flow handler",
@@ -449,7 +508,19 @@ class ProcessRegistry:
                 response_message=format_exit_message(handler.process_type),
             )
 
-        # off_intent — Option A UX (#899): pause (resumable) + answer.
+        # off_intent — two sub-cases:
+        # #1617: in a completion tail the flow's work is DELIVERED — release
+        # it for good (terminal; a suspended tail would re-offer resuming a
+        # standup that already exists, the resume-nag loop) and let normal
+        # processing answer with the honest release prefix.
+        if in_tail:
+            await self._release_process(handler, user_id, session_id)
+            return ProcessCheckResult.off_topic_pause(
+                process_type=handler.process_type,
+                pause_message=format_release_prefix(handler.process_type),
+            )
+
+        # Mid-flow — Option A UX (#899): pause (resumable) + answer.
         try:
             await handler.suspend(user_id, session_id)
         except Exception as suspend_err:
