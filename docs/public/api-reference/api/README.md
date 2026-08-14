@@ -18,7 +18,7 @@ This directory contains detailed API documentation, including technical specific
 ## Navigation
 
 - **[← Back to Api Reference](../README.md)**
-- **[📚 Documentation Home](../../README.md)**
+- **[📚 Documentation Home](../../../README.md)**
 
 ---
 

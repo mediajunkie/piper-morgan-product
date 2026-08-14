@@ -13,7 +13,7 @@ This directory contains:
 ## Navigation
 
 - **[← Back to Comms](../README.md)**
-- **[📚 Documentation Home](../../README.md)**
+- **[📚 Documentation Home](../../../README.md)**
 
 ---
 

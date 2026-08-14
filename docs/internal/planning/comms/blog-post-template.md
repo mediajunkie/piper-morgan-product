@@ -167,9 +167,16 @@ Every Ship includes a list of the prior week's other publications (narratives + 
 
 Pull dates, slugs, alt text, and workDates from `docs/internal/planning/comms/editorial-calendar.csv`. The publish-to-blog skill generates final URLs; in draft, link to `/blog/{slug}` form.
 
-### Metrics tables
+### Metrics section (Ships)
 
-Keep metrics tables rich and well-formed for the canonical post (pipermorgan.ai). Markdown tables render cleanly on the blog. LinkedIn collapses tables, so PM flattens those by hand at cross-post time — that's a syndication-target limitation, not a draft problem. Don't pre-flatten tables in the canonical draft.
+**Convention updated 2026-08-13 (PM decision via Exec, website#31 thread)**: the Metrics block in
+a Ship uses a **real smaller heading** (`### Metrics (date range)` in draft markdown) followed by
+the bullet list — not a bold pseudo-label line (`**Metrics (…):**`), and not the markdown table
+this section previously prescribed. (Ships since #050 had already drifted to bold-label + bullets;
+the written convention now matches what actually ships, with the label promoted to a real heading.
+PM holds this less firmly than the emphasis fix it rode with — if a case argues for something
+else, surface it rather than treating this as fully locked.) Historical note: real tables render
+fine on the blog but LinkedIn collapses them, which is part of why the drift happened.
 
 ### Footer convention for Ships
 

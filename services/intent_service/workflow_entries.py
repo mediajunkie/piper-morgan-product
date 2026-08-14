@@ -808,8 +808,14 @@ def register_default_workflows() -> None:
     # effect: WRITE — _handle_update_issue calls github_router.update_issue with
     # title/body/label fields (~L7594). Prior values recoverable via GitHub edit
     # history, so WRITE not DESTRUCTIVE.
+    # #1411 clarify-first (2026-08-13): session_id threaded too — the unmapped
+    # status-value ask binds via the #846 pending-offer store, which is
+    # session-keyed. Handler signature is (intent, workflow_id, session_id,
+    # user_id), the _handle_create_issue shape.
     update_issue_entry = WorkflowEntry(
-        entry_point=_make_query_dispatch_entry_point("_handle_update_issue", pass_user_id=True),
+        entry_point=_make_query_dispatch_entry_point(
+            "_handle_update_issue", pass_session_id=True, pass_user_id=True
+        ),
         effect=EffectClass.WRITE,
         description="Update-issue via action dispatch (#1411)",
         requires_context=["intent", "intent_service"],

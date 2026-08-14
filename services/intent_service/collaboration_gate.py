@@ -172,12 +172,22 @@ def classify_framing(message: Optional[str]) -> str:
 # A declaration is a STANDING instruction, so it needs a durative marker
 # ("from now on", "going forward", …) — a bare "just do it" is a one-off nudge
 # about the current task, not a working-model change. "go back to…" carries
-# its own durativity (it names a standing state to return to).
+# its own durativity (it names a standing state to return to). "by default"
+# added 2026-08-13 (#1591): PM's live declaration was "…by default from now
+# on" — "by default" alone is durative by meaning ("make this the standing
+# default") and is shared with the standup-mode declaration detector.
 _DURATIVE_RE = re.compile(
     r"\b(?:from\s+now\s+on|going\s+forward|in\s+(?:the\s+)?future|always|"
-    r"go\s+back\s+to)\b",
+    r"by\s+default|go\s+back\s+to)\b",
     re.IGNORECASE,
 )
+
+
+def has_durative_marker(message: Optional[str]) -> bool:
+    """Public read of the shared durative-marker vocabulary (#1591: the
+    standup-mode declaration detector composes with THIS definition of
+    "standing instruction" rather than growing a diverging copy — #1555)."""
+    return bool(message) and bool(_DURATIVE_RE.search(message))
 
 # Collaborate-mode declarations / reverts. Checked FIRST: negated execute
 # phrasings ("stop doing things directly…") contain execute-ish substrings.

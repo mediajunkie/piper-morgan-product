@@ -47,6 +47,7 @@ What IS here:
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any, Dict, Optional, Tuple
 
 from services.intent_service import verified_inference as vi
@@ -83,6 +84,89 @@ INVITE_KIND = "standup_interview_invitation"
 # session-scoped decline memory (vi.mark_declined / vi.was_declined) — reusing
 # the sanctioned anti-nag mechanism rather than inventing a second one.
 INVITE_DECLINE_KEY = "standup_interview_invitation"
+
+# ---------------------------------------------------------------------------
+# #1591 declaration path (PM live 2026-08-13) — a DIRECT declaration turn
+# ---------------------------------------------------------------------------
+# PM: "use the standup interview format by default from now on" → the floor
+# improvised an unstored promise that broke two turns later. The wiring below
+# infers preference from BEHAVIOR; a declaration is the highest-confidence
+# signal there is and had no path to the store. Scope (sanctioned): ONLY
+# standup-token phrasings — they ride the already-claiming standup surface as
+# an in-handler branch (#1431 pattern; no new pre-classifier patterns, no
+# claim widening under the moratorium). The tokenless "use the interview from
+# now on" is a #1595 corpus row, deliberately NOT claimed here.
+#
+# A declaration composes with the rail as STORE + CONFIRMATION COPY, never a
+# read-back (reading the user's own words back as a question would be
+# verification theater) — stored source=user_declared, confidence 1.0.
+
+_INTERVIEW_TOKEN_RE = re.compile(r"\binterview\b|\binteractive\b", re.IGNORECASE)
+_REPORT_TOKEN_RE = re.compile(r"\breport\b|\bquick\b", re.IGNORECASE)
+# "back to X" names a standing state to return to — the switch-back marker
+# the confirmation copy below teaches ("back to my standup report").
+_SWITCH_BACK_RE = re.compile(r"\bback\s+to\b", re.IGNORECASE)
+
+
+def detect_standup_mode_declaration(message: Optional[str]) -> Optional[str]:
+    """Detect a standing standup-mode declaration; None for anything else.
+
+    Requires ALL of: the standup token (scope — see block comment), exactly
+    one mode direction (interview xor report tokens; both present is
+    ambiguous → no declaration), and durativity — the shared working-mode
+    durative vocabulary (``collaboration_gate.has_durative_marker``, composed
+    not copied) or the switch-back marker. One-off asks ("my standup
+    interview") carry no durative marker and are untouched.
+    """
+    text = (message or "").strip()
+    if not text or "standup" not in text.lower():
+        return None
+    from services.intent_service.collaboration_gate import has_durative_marker
+
+    if not (has_durative_marker(text) or _SWITCH_BACK_RE.search(text)):
+        return None
+    wants_interview = bool(_INTERVIEW_TOKEN_RE.search(text))
+    wants_report = bool(_REPORT_TOKEN_RE.search(text))
+    if wants_interview == wants_report:  # neither, or both (ambiguous)
+        return None
+    return MODE_INTERVIEW if wants_interview else MODE_REPORT
+
+
+def declaration_confirmation(mode: str, persisted: bool) -> str:
+    """Confirmation copy for a stored declaration — states the new standing
+    default and teaches the ROUTABLE switch-back phrase (#1571: never teach a
+    phrase that doesn't route; both taught phrases carry the 'my standup' cue
+    _is_standup_query claims, so they resolve deterministically).
+    ``persisted=False`` must be visible (collaboration_gate's honesty rule —
+    claiming a durable change that didn't save is a confabulated capability).
+    """
+    if mode == MODE_INTERVIEW:
+        msg = (
+            "Interview by default from now on — got it. Say 'back to my "
+            "standup report' any time to switch back."
+        )
+    else:
+        msg = (
+            "Quick report by default from now on — got it. Say 'my standup "
+            "interview' any time for the guided version."
+        )
+    if not persisted:
+        msg += (
+            "\n\n(Heads up: I couldn't save that preference just now, so it "
+            "may not stick across sessions.)"
+        )
+    return msg
+
+
+# The honest reply when a declaration arrives with no signed-in user: there
+# is no store to write (#1532 — the preference is the USER's), and claiming
+# otherwise would be the exact fabricated promise this path exists to replace.
+DECLARATION_NO_USER_MESSAGE = (
+    "I can't save a standing standup preference without a signed-in user. "
+    "Say 'my standup interview' for the guided version any time, or 'my "
+    "standup report' for the quick one."
+)
+
 
 # ---------------------------------------------------------------------------
 # Mode-choice tally (transient inference EVIDENCE — not a preference store)

@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-13 16:5x PT | docs | note-docs-to-pa-pm-doing-clickthrough-2026-08-13.md | PM is on their way for the click-through — plus your correction folded, and you… |
 | 2026-08-13 13:5x PT | docs | reply-docs-to-pa-cc-lead-cxo-pm-findings-folded-yes-continue-code-level-2026-08-13.md | Findings folded, layer-labeled — yes, continue the code-level pass; the 4-item… |
 | 2026-08-13 10:5x PT | docs | memo-docs-to-pa-cc-lead-cxo-pm-feature-guide-draft-ready-85-tagged-claims-2026-08-13.md | Feature-guide draft ready — 85 tagged claims, 11-item check-list, one source co… |
 | 2026-08-13 07:4x PT | docs | memo-docs-to-pa-cc-lead-cxo-pm-alpha-feature-guide-4-months-stale-refresh-offer-2026-08-13.md | ALPHA_FEATURE_GUIDE is 4 months / 8 releases stale — refresh offer, capability-… |

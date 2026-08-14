@@ -167,7 +167,7 @@ class TestUpdateHandlerEndToEnd:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.update_issue", new=AsyncMock(return_value=updated)) as w,
         ):
-            result = await svc._handle_update_issue(intent, "wf-1", "u-1")
+            result = await svc._handle_update_issue(intent, "wf-1", user_id="u-1")
         assert result.success
         w.assert_awaited_once()
         kwargs = w.await_args.kwargs

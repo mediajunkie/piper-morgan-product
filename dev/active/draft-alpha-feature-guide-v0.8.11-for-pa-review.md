@@ -203,14 +203,14 @@ guessing `[RN 0.8.9]`. Connector configuration is stored in the database and sur
 - **Writes**: issue creation with confirmation, close/reopen with fuzzy matching `[RN 0.8.7]`.
 - **"My work" scoping**: Radar shows issues assigned to your configured handle `[RN 0.8.8]`.
 - **Connection method**: OAuth first, presented as "Recommended," with a personal access token
-  (PAT) field as a fallback below it `[PA code-level 08-13: templates/settings_github.html +
+  (PAT) field as a fallback below it `[PA code-level 08-13, origin/main: templates/settings_github.html +
   settings_integrations.py /github/connect + /github/save, both wired to the live Settings page;
   RN 0.8.9's "OAuth not started" is stale]`.
 
 ### Google Calendar
 
 - Listed as a current integration `[README]`; calendar/deadline data feeds the floor's context
-  `[RN 0.8.7]`. A real OAuth flow exists in the shipped code `[PA code-level 08-13:
+  `[RN 0.8.7]`. A real OAuth flow exists in the shipped code `[PA code-level 08-13, origin/main:
   services/integrations/calendar/oauth_handler.py]`; the end-to-end schedule query ("what's on my
   calendar?") remains unverified live `[v0.8.6 guide — RETEST]`.
 
@@ -218,7 +218,7 @@ guessing `[RN 0.8.9]`. Connector configuration is stored in the database and sur
 
 - Listed as a current integration `[README]`; real page-append (no demo-fallback fabrication)
   `[RN 0.8.7]`. **Connection method: a pasted Notion API key** (`secret_…`, from your own Notion
-  integration) via a Settings card — not OAuth `[PA code-level 08-13: templates/settings_notion.html]`.
+  integration) via a Settings card — not OAuth `[PA code-level 08-13, origin/main: templates/settings_notion.html]`.
   Page creation / search / document analysis behavior remains v0.8.6-era `[v0.8.6 guide — RETEST]`.
 
 ### Slack — mostly HELD, read this
@@ -322,12 +322,17 @@ onboarding email `[KNOWN-ISSUES]`.
    unverified. (Briefing frames GCal completion as RECONNECT R2 / #1441.)
 3. **Notion connection method**: ~~unknown~~ **RESOLVED code-level (PA 08-13)**: pasted Notion API
    key via a Settings card, not OAuth. Page-creation/search behavior still needs live check.
-4. **Slack outbound** (send message to a channel): the 0.8.11 known-issues doc lists "Slack
-   outbound, DMs, @-mentions" as working, but that predates the 2026-08-06 hold. I've held the
-   whole Slack section to "don't expect to drive Piper from Slack"; if outbound-only genuinely
-   works and is available to testers, the section could say so — but only on live verification.
-5. **Sharing lists/todos/projects by email + roles**: v0.8.6-era claim, never re-verified in any
-   release note since. Works on hosted with a second account?
+4. ~~**Slack outbound**~~ **RESOLVED, narrow (PA trace + Docs dispatch-grep, 08-13)**: the
+   inbound hold's flag (`slack_inbound_enabled()`) is scoped to inbound only, and the outbound
+   path isn't gated by it — but the ONLY caller of `slack_domain_service` anywhere in services/
+   is `standup_workflow_skill.py`, and no intent/action handler exposes a generic "send this to
+   #channel." So outbound Slack exists as standup-posting, not as a general tester action. The
+   guide's "don't expect to drive Piper from Slack" stands; no broader claim is safe.
+5. ~~**Sharing lists/todos/projects**~~ **CONFIRMED all three surfaces (PA code-level 08-13,
+   origin/main)**: `/share` endpoints with viewer/editor/admin roles on lists/todos/projects
+   (SEC-RBAC Phase 2/3). Tester-facing "share by email" is accurate (the UI field is labeled
+   "Email or User ID" even though the wire format is user_id). Live two-account behavior still
+   unwatched, but the surface exists as claimed.
 6. ~~**Integration health dashboard**~~ **CONFIRMED CUT (PA 08-13, code-level)**: no "Test All"
    surface anywhere in app code — only an internal Grafana ops dashboard and a 2025 gameplan doc.
    The omission stands as a deliberate cut, not a maybe.
@@ -342,8 +347,9 @@ onboarding email `[KNOWN-ISSUES]`.
 10. **Hosted signup flow**: is the invite flow "click link → create account" (invite-token gate,
     #1344 arc) — and does the questionnaire appear during onboarding or only in Settings? The
     setup steps in "Getting set up" are assembled, not observed.
-11. **File upload size/format limits on hosted** ("PDF, DOCX, TXT, MD, JSON up to 10MB"):
-    v0.8.6-era numbers; confirm they still hold.
+11. ~~**File upload size/format limits**~~ **CONFIRMED exact (PA code-level 08-13, origin/main)**:
+    `web/api/routes/files.py` — `MAX_FILE_SIZE = 10MB`, extensions {.txt, .pdf, .docx, .md, .json}.
+    The v0.8.6 numbers hold verbatim.
 
 ### Deliberately omitted (found in sources, judged not safe to claim)
 

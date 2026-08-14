@@ -531,17 +531,25 @@ class StandupConversationHandler:
             "thanks",
         ]
         if any(word in message_lower for word in acceptance_words):
+            # #1617 (PM live 2026-08-13): the final confirmation COMPLETES the
+            # flow — no FINALIZING tail turn. The old tail ('share this or
+            # save your preferences?') claimed every subsequent turn and its
+            # answer was never even read (_handle_finalizing ignored it);
+            # "change the status of issue #108 to Done" was swallowed twice.
+            # A confirmed flow releases entirely; COMPLETE is terminal, so
+            # the registry stops claiming and normal intent processing owns
+            # the next turn.
             await self.manager.transition_state(
-                conversation.id, StandupConversationState.FINALIZING
+                conversation.id, StandupConversationState.COMPLETE
             )
             return ConversationResponse(
                 message=(
                     f"Great! Here's your final standup:\n\n{conversation.current_standup}\n\n"
-                    "Would you like to share this or save your preferences for next time?"
+                    "Have a great day!"
                 ),
-                state=StandupConversationState.FINALIZING,
+                state=StandupConversationState.COMPLETE,
                 standup_content=conversation.current_standup,
-                suggestions=["Just copy it", "Save preferences", "Share with team"],
+                requires_input=False,
             )
 
         # Check for start over

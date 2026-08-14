@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-13 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-13 (16:37 WORK)
 
 **Cron**: `b2807f51` · `7 10,16,22` LEAN · re-armed 2026-08-12 22:37 STOP (delete-then-create) ·
 **auto-expires ~2026-08-19**.
@@ -17,8 +17,16 @@ No deadline; sequencing (what stays hand-built vs. what starts getting delegated
 mine to design, with Exec's standing offer to think it through together.
 
 **Immediate implication for the task list below**: before picking up any of the Owed/watch items,
-ask whether it's outcome-shaped enough to spec for a subagent rather than build solo. Not yet
-applied to anything — this is the lens going forward, not a retroactive redo of this week's work.
+ask whether it's outcome-shaped enough to spec for a subagent rather than build solo.
+
+**★ Already applied and CLOSED the same day, not just theorized**: #1616 (Windows clone breaks on
+over-length `mailboxes/` filenames — found when Lead retired the never-green `ci.yml`). Spec'd the
+outcome, dispatched a subagent, **independently verified its work rather than trusting the
+report** (re-ran the lint myself, cross-checked the claimed house-pattern match, confirmed nothing
+else broke) — everything held up. Landed `814f364e2`, issue closed with evidence. **First real
+data point for the mode shift, and the lesson worth carrying forward isn't "delegation works," it's
+"the review step is where the trust actually gets earned" — a pilot that skipped independent
+verification wouldn't have told me anything.**
 
 **Connects directly to the in-flight Janus/Themis thread** (08-12 reply, `~/Development/designinproduct/docs/mail/`):
 the director posture is more portable cross-project than the operator posture was. **Not
