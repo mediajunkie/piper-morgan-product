@@ -125,6 +125,35 @@ says "todo"; mixed-origin turns instruct todo-list-first + a separate
 "Also due:" reminder block, an item in both origins appearing in the reminder
 block only. No new store, no schema change, no per-item data field.
 
+**#1595 Phase 1 inversion shadow observer (2026-08-14) — an explicitly
+NON-dispatching fifth party that watches the chain, never joins it.** When
+`PIPER_INVERSION_SHADOW` is on (default OFF), `process_intent` fires-and-forgets
+one async task AFTER the turn completes
+(`services/intent_service/inversion_shadow.maybe_schedule_shadow_check`): the
+same utterance goes through the CONSTRAINED inversion routing call
+(`services/intent_service/inversion_router.route` — one Haiku-class LLM call,
+task type `inversion_routing`, output validated against a grammar of canonical
+operations DERIVED FROM THE REGISTRY AT CALL TIME: rail entries collapsed by
+shared-entry alias identity + `ACTION_REGISTRY`-only canonicals + NONE/CLARIFY;
+strict JSON + one repair retry + honest REFUSED, never a guessed route), and a
+structured line (`shadow_route_agreement` / `shadow_route_disagreement`,
+registry-alias-aware comparison against the #1518 production label) becomes
+corpus telemetry. **Nothing dispatches from it**: the decision type is
+un-importable from dispatch code by construction —
+`tests/test_architecture_enforcement.py::TestInversionShadowNoExecutionBoundary`
+enforces that only `inversion_shadow.py` may reference the router, and that
+`intent_service.py` sees only the fire-and-forget scheduler. This is Arch's
+"falsifiable CONTINUOUSLY" property (decisions.log 2026-08-09 09:0x): surfaces
+0–4 above answer the user; the shadow line records what the constrained LLM
+router WOULD have done. Zero latency cost (post-turn task), sampled
+(`PIPER_INVERSION_SHADOW_SAMPLE`), shadow failure logged and swallowed.
+Corpus-side instrument: `scripts/inversion_phase1_shadow_score.py` scores the
+router against `tests/fixtures/inversion_corpus_phase0.yaml` per category vs
+the Phase-0 full-chain baseline (first run:
+`inversion-phase1-shadow-score-2026-08-14.md`). The Phase-2 flip (per-category,
+queries first) is the reviewed commit that relaxes the boundary test — until
+then this observer changes NO routing behavior.
+
 ## The vocabularies (where action names live)
 
 1. **Prompt vocabulary** — action names the classifier prompt suggests (`services/prompts.py`, ~17).
