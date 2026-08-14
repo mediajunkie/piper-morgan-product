@@ -76,19 +76,21 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-12 STOP (22:02)
+## Active state — 2026-08-13 STOP (22:08)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/12/2026-08-12-1249-pa-code-log.md` — **8/12 DAY-CLOSED**, verified strict.
-  8/11 was retroactively closed from this same log's START section (20h dormancy, see that file for the
-  full account).
+- **Session log**: `dev/2026/08/13/2026-08-13-0712-pa-code-log.md` — **8/13 DAY-CLOSED**, verified strict.
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
-- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create, per the skill's own rule — the
-  day's job was very likely still alive, not evidence it had died): `138cb509` deleted → job `c5bdf8cf`
-  created → `CronList` confirmed exactly one survives. 🔴 **First action any new session: `CronList`.**
-  Empty = not cycling.
+- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `194031b8` deleted → job
+  `462870da` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
+  `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
+- 🟡 **This header had gone one full day stale** (last updated 08-12 STOP, never refreshed during any of
+  08-13's five fires) — the mail/task-loop work was current all day via `pa-standing-items.md` and the
+  PM-Attention section above, but this identity/mechanics block itself lagged. Caught refreshing it now,
+  not by any check — worth a habit note: touch this block at STOP even on days where nothing else in it
+  changed, so "last updated" never silently drifts past the day it describes.
 
 🔔 **STEP 5b — HEARTBEAT: emit it IMMEDIATELY AFTER `date`, BEFORE the git fetch/merge, and WITHOUT
 `--if-quiet`** *(ordering fixed 2026-08-05: my heartbeat had five commands incl. fetch+merge in front of
