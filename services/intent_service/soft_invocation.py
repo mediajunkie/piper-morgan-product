@@ -530,6 +530,21 @@ class WorkflowOfferService:
         """Retrieve and clear a pending offer. Returns None if no offer pending."""
         return self._pending_offers.pop(self._offer_key(session_id), None)
 
+    def peek_pending_offer(
+        self, session_id: str, user_id: Optional[str] = None
+    ) -> Optional[Dict[str, Any]]:
+        """Read a pending offer WITHOUT clearing it (#1595 shadow snapshot).
+
+        Observer-only: the inversion shadow-check uses this for its
+        lightweight session snapshot. Production offer handling must keep
+        using ``get_and_clear_pending_offer`` — the pop IS the #1529
+        offer-binding semantic (off-intent abandons via the clear); a peek
+        must never replace it on the dispatch path. Store is session-keyed
+        (#846); ``user_id`` is accepted for signature parity with the
+        get/set pair.
+        """
+        return self._pending_offers.get(self._offer_key(session_id))
+
     def format_offer(self, offer: WorkflowOffer, base_response: str) -> str:
         """
         Append a soft offer to the base response with a natural transition.

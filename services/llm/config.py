@@ -18,6 +18,11 @@ class LLMModel(Enum):
     CLAUDE_OPUS = "claude-opus-4-8"
     CLAUDE_SONNET = "claude-sonnet-4-6"
 
+    # #1595 Phase 1: Haiku-class tier for the inversion routing call (Arch
+    # ruling 2026-08-09 ②: "Haiku-class + ENFORCED structured output").
+    # claude-haiku-4-5 is the cheapest current Anthropic model ($1/$5 per MTok).
+    CLAUDE_HAIKU = "claude-haiku-4-5"
+
     # OpenAI models
     GPT4 = "gpt-4o"
     GPT35 = "gpt-4o-mini"
@@ -48,14 +53,21 @@ PROVIDER_MODELS: Dict[str, Dict[str, LLMModel]] = {
     "anthropic": {
         "default": LLMModel.CLAUDE_SONNET,
         "heavy": LLMModel.CLAUDE_OPUS,
+        # "light" tier (#1595): cheapest/fastest model per provider — used by
+        # constrained classification-shaped calls (inversion routing). Providers
+        # without an explicit light entry fall back to "default" in
+        # resolve_model (provider_models.get(tier, provider_models["default"])).
+        "light": LLMModel.CLAUDE_HAIKU,
     },
     "openai": {
         "default": LLMModel.GPT4,
         "heavy": LLMModel.GPT4,
+        "light": LLMModel.GPT35,
     },
     "gemini": {
         "default": LLMModel.GEMINI_FLASH,
         "heavy": LLMModel.GEMINI_PRO,
+        "light": LLMModel.GEMINI_FLASH,
     },
 }
 
@@ -107,6 +119,17 @@ MODEL_CONFIGS: Dict[str, Dict[str, Any]] = {
         "model_tier": "default",
         "temperature": 0.2,
         "max_tokens": 800,
+    },
+    # #1595 Phase 1: the Inversion's constrained routing call — one Haiku-class
+    # call per turn whose output is CONSTRAINED to the registry-derived grammar
+    # (Arch ruling 2026-08-09). Low temperature for deterministic selection;
+    # output is a small JSON object (operation/args/confidence/rationale).
+    # Model tier is the configuration knob for the router's model (the app's
+    # standard model-selection path — change it here, not in the router).
+    "inversion_routing": {
+        "model_tier": "light",
+        "temperature": 0.1,
+        "max_tokens": 400,
     },
 }
 
