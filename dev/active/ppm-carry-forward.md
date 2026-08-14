@@ -1,11 +1,17 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-14 07:22 PT (START). Cron **`a9c68c57`** (re-armed this fire, was
-`829056ba`). 08-13's STOP fire was interrupted by a transient classifier outage mid-triage —
-heartbeat and final mail had already landed, only housekeeping was delayed. Repaired fully at
-this START (retroactive close, re-arm); see 08-14's log for the account. Nothing lost, nothing
-still open from it.
+**Last rewritten**: 2026-08-14 16:22 PT (WORK). Cron **`a9c68c57`**, unchanged.
+
+## 🔴 QUEUED — Agent 360 v0.4, HOST's cohort check-in (deadline ~2026-08-28)
+HOST fielded a 291-line cohort-wide questionnaire (`dev/active/agent-360-questionnaire-v0_4.md`),
+requesting answers within ~2 weeks of 2026-08-14 — **an externally-set window, not a self-invented
+deadline**, so deferring to a dedicated fire is legitimate quality-banking, not the bite-sizing
+antipattern. **Explicit trigger**: a WORK fire with room to answer it properly (10 sections + a
+PPM-specific section + plausibility check) rather than squeezed into another fire's tail. Not
+urgent today — HOST's own framing is "respond when you have something to say, not on a clock" —
+but don't let it silently slide past ~08-28. Read and understood; memo triaged to `read/`, task
+tracked here instead of left sitting in inbox.
 
 ## ✅ #1569/#1605 — CLOSED, joint PPM/CXO design, fully shipped and reviewed
 PM gave PPM+CXO the floor on #1569 (reminders-vs-todos framing) + #1605 (disambiguation copy).
