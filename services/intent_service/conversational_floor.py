@@ -659,6 +659,26 @@ class ConversationalFloor:
                     lines.append(f"    • {r}")
                 if count > 5:
                     lines.append(f"    • …and {count - 5} more")
+                # #1569 per-item vocabulary rule (CXO/PPM joint design):
+                # vocabulary is set by which context key an item arrived
+                # through — these arrived through the reminder key.
+                lines.append(
+                    "  - Vocabulary: each item above surfaced as a REMINDER — "
+                    "call it a 'reminder' (never a 'todo') for the rest of "
+                    "this conversation; do not reclassify it mid-thread."
+                )
+                if domain_context.get("pending_todos"):
+                    # Mixed-origin turn: render as two visually distinct
+                    # sections, never one flattened list.
+                    lines.append(
+                        "  - Your reply also has the user's todo list "
+                        "available (PENDING TODOS below): keep the two "
+                        "VISUALLY DISTINCT — the todo list first, then these "
+                        "reminders in their own separate block introduced "
+                        "'Also due:' — never merged into one list. An item "
+                        "appearing in both belongs in the 'Also due:' "
+                        "reminder block only, not twice."
+                    )
 
         # #1425 honesty: the reminder lookup FAILED — a promised reminder may
         # exist. Say we couldn't check; NEVER present this as "nothing due".
@@ -900,23 +920,41 @@ class ConversationalFloor:
         if "pending_todos" in domain_context:
             todos = domain_context["pending_todos"]
             if isinstance(todos, list) and todos:
+                # #1569 per-item vocabulary rule: these arrived through the
+                # pending-todos context key — they are 'todos'. The section
+                # header keeps them a DISTINCT section from any reminders
+                # above (mixed-origin turns render two sections, never one
+                # flattened list).
+                todo_count = domain_context.get("pending_todo_count", len(todos))
+                header = (
+                    f"- PENDING TODOS ({todo_count}) — from the user's todo "
+                    "list; call each one a 'todo'"
+                )
+                if domain_context.get("due_reminders"):
+                    header += (
+                        " (an item also listed under DUE REMINDERS above is "
+                        "a 'reminder' — see that block)"
+                    )
+                lines.append(header + ":")
+                # Items indent under the section header (#1569 sectioning);
+                # the "Pending todo" per-item shape is unchanged.
                 for t in todos:
                     text = t.get("text", "(untitled)") if isinstance(t, dict) else str(t)
                     if isinstance(t, dict):
                         proximity = t.get("deadline_proximity", "none")
                         due = t.get("due_date")
                         if proximity == "overdue":
-                            lines.append(f"- Pending todo (OVERDUE, was due {due}): {text}")
+                            lines.append(f"    • Pending todo (OVERDUE, was due {due}): {text}")
                         elif proximity == "due_today":
-                            lines.append(f"- Pending todo (due today): {text}")
+                            lines.append(f"    • Pending todo (due today): {text}")
                         elif proximity == "due_this_week":
-                            lines.append(f"- Pending todo (due {due}): {text}")
+                            lines.append(f"    • Pending todo (due {due}): {text}")
                         elif proximity == "later":
-                            lines.append(f"- Pending todo (due {due}): {text}")
+                            lines.append(f"    • Pending todo (due {due}): {text}")
                         else:
-                            lines.append(f"- Pending todo: {text}")
+                            lines.append(f"    • Pending todo: {text}")
                     else:
-                        lines.append(f"- Pending todo: {text}")
+                        lines.append(f"    • Pending todo: {text}")
 
         # #1573 (#1425 honesty): the pending-todos lookup FAILED — todos may
         # exist. Say we couldn't check; NEVER present this as "no todos".

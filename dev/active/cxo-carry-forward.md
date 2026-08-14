@@ -1,3 +1,24 @@
+# CXO carry-forward — rewritten 2026-08-14 07:2x PT
+
+**08-14, 07:17 START**: PPM signed off #1569/#1605 overnight (verified Lead's matrix claim personally,
+no objection) — that design thread is fully closed. Lead's build landed (`e9ef395a1`): ratified copy pinned
+verbatim, #1569's per-item render rule shipped in the same commit. **Reviewed the three flagged copy seams
+myself this morning** — all clean, no changes needed, said so explicitly rather than leaving them silently
+unconfirmed. **Answered the one remaining open design question** (should ALWAYS_ASK flush/re-verify a
+stored verb mapping?): no — a verified preference is a prior explicit answer, not an assumption, per
+#1510's own verified≠inferred line; but V2's *form* should shift to an actual question under ALWAYS_ASK
+while still leading with the stored value. Sent to Lead/PPM/PM, posted on #1605.
+
+**#1536/#1539**: still unchanged, ~2.5 days. `experience-across-surfaces.md`/Surface 3: still unchanged,
+~4 days, both genuinely with PM (four ✏️ items + naming call), not stalled on me — offered the delete
+already if PM prefers verbal. Not manufacturing urgency on any of these.
+
+**Nothing else owed by me right now.**
+
+---
+
+*(08-13 22:2x header below, left as the prior day's fuller record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-13 22:2x PT at STOP. Day closed; next fire 06:47 on 08-14, opening ~07:17.
 
 **Cron**: `fa499dae` (`47 6,9,12,15,18,21 * * *`) — confirmed present all six fires today, no rotation

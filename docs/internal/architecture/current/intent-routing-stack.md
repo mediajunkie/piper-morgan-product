@@ -82,8 +82,48 @@ FIRST and carries the update/comment/reminder/preference verb families, so every
 deterministic-surface phrasing (#1411/B3/#1560/#1327) stays an un-checked imperative.
 ⚠️ Known boundary: legacy `_handle_execution_intent` chain actions (todo family) have
 no declared effect and are OUTSIDE this gate — their consent rides their rail
-migration (#1605/#1569 lane); `capability_legibility.catalog_coverage()` states the
+migration (still pending; #1605 shipped handler-internal, below, without moving the
+todo family onto the rail); `capability_legibility.catalog_coverage()` states the
 denominator.
+
+**#1605 reminder-clear verb disambiguation (2026-08-14, CXO/PPM jointly-signed-off
+design)** — surface-internal to the EXECUTION lane, NOT a routing change (routing
+moratorium honored; no pre-classifier or prompt-pattern additions).
+`services/intent_service/reminder_clear.py`: a clear-family verb (clear / handle /
+take care of / reset) over the reminder/todo domain, with NO explicit
+complete/delete verb, is detected from the ORIGINAL MESSAGE inside the three
+already-claiming EXECUTION surfaces — the legacy `complete_todo` and `delete_todo`
+elif branches (the classifier's guess for the ambiguous utterance; candidate effect
+WRITE / DESTRUCTIVE respectively) and the #1333 unmapped else-branch (unmapped
+sibling emissions like `clear_reminders`, candidate effect DESTRUCTIVE — previously
+a FALSE capability denial, the #1605 transcript bug). The mechanism consumed is
+`consent_gate.decide_verb_interpretation` (effect-weighted #1510 read-back) + the
+#1510 verified-inference store (per-verb keys `reminder_clear_verb:{verb}`) + the
+#1190 `pending_action` carrier. Three ratified copy variants (pinned verbatim in
+`test_reminder_clear_verb_1605.py`): first-encounter ask (answer binds at the
+offer seam — kind `reminder_clear_verb_question`, handled kind-specifically BEFORE
+generic accept/decline, the verify_inference precedent); stored complete →
+auto-apply + disclosure-after with a ONE-TURN correction window (kind
+`reminder_clear_correction`, "I meant delete" → #1190-gated delete of the
+just-completed batch, stored default unchanged); stored delete → the REAL #1190
+confirm (`confirm_pending_action` → `clear_reminders_delete`) — a stored verb
+preference changes the MAPPING, never the consent tier, and a DESTRUCTIVE
+candidate reads back even under `trust_inferences` (pinned cell). An exception
+clause ("except …") is #1563's set-complement lane: variant-1-style clarification
+of the whole ask, nothing bound, nothing touched. Three new offer-only registry
+keys (`clarify_reminder_clear_verb` READ, `reminder_clear_correction` READ,
+`clear_reminders_delete` DESTRUCTIVE — all `action_triggered=False`, so the
+surface-3 destructive rail-scope denominator is unchanged). `_apply_soft_offer`
+now refuses to clobber a just-armed pending action (guarded on the
+`*_pending` intent_data flags — the one-slot #846 store is shared with soft
+offers). **#1569 render half** (same commit): the floor's
+`_format_domain_context` renders the two context families as visually distinct
+sections with per-origin vocabulary instructions — `due_reminders` (from
+`context:reminders:{user_id}`) says "reminder", `pending_todos` (from
+`context:pending_todos:{user_id}`) gets a `PENDING TODOS (N)` section header and
+says "todo"; mixed-origin turns instruct todo-list-first + a separate
+"Also due:" reminder block, an item in both origins appearing in the reminder
+block only. No new store, no schema change, no per-item data field.
 
 ## The vocabularies (where action names live)
 

@@ -1,33 +1,30 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-13 21:44 PT STOP fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-14 07:0x PT fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
-✅ **ARMED — job `45eae89f`, re-armed at 2026-08-13 STOP via delete-then-create** (was `6d5f873a`). Same expression `12 6,9,12,15,18,21 * * *`. `CronList`-verified exactly one job. Auto-expires ~2026-08-20.
+✅ **ARMED — job `45eae89f`.** Same expression `12 6,9,12,15,18,21 * * *`. Auto-expires ~2026-08-20.
 
-## The one thing to do first tomorrow
+## Values doc with HOST — first draft sent, awaiting HOST's substance check
 
-⭐ **Values doc with HOST — drafting is what's deferred, not the whole thread.** HOST delivered a genuine first pass tonight: three identity-defining commitments (structural no-cross-user-learning enforced by ADR-079's CI ratchet + the #1366 precedent; the user-visible ethics-audit read surface, ADR-063/PM-087; the hash-only audit-log design from Pattern-071), each tested against "would a fork dropping this quietly still look like us." Also caught a real landmine before I walked into it: **don't reach for "you control your data" as a strength claim** — account deletion doesn't exist, conversation deletion is soft-only (`docs/legal/data-retention-policy-DRAFT.md`). Replied tonight confirming the list and absorbing the caution — mail `131d95252`. **What's actually deferred**: producing the document's real prose, deliberately, because that deserves undivided attention, not the tail of a six-fire day. No deadline from PM either way.
+Wrote `docs/legal/values-DRAFT.md` ("What Piper Morgan Is For") this morning — the deliberately-deferred fresh-session item. HOST's three commitments, PM's ethos header, honest precedents, an explicit Open Questions section rather than deciding placement/voice/scope myself. Spot-checked HOST's citations before building on them; caught and fixed one precision error myself (Pattern-071's hash-only discipline was named during design ratification, not "corrected after shipping wrong" as my first draft implied). Sent to HOST for a substance check specifically — mail `7d65cdbc5`, commit `505818bd1`. **No reply yet.** Next move is HOST's; nothing to chase, no deadline either side.
 
-## pmorgan.tech register pass — status, still holding
+## pmorgan.tech register pass — still holding on tier 7
 
-Tiers 1–6 done. **Tier 6 surfaced 2 real content bugs** (broken install tutorial — wrong folder name + missing clone step; an Amber/Pard internal-infra warning leaked into a tester-facing file) — sent to Docs+CIO+PM, commit `b3417c12e`, **no reply yet as of STOP**. Next per Docs' order would be `api/` + `public/api-reference/`, then `testing/`+`releases/` last — **but check for their reply on the tier-6 bugs first**, don't restart tier 7 unprompted a second time in a row.
+Tiers 1–6 done. Tier 6's bug report (broken install tutorial, Amber/Pard internal-infra leak) sent yesterday, commit `b3417c12e` — **still no reply from Docs as of this fire**. Don't restart tier 7 unprompted a second fire in a row; check for their reply first.
 
 ## Filed/flagged, not fixed
 
-- **#1610**: ✅ CLOSED (PM decided addresses, Docs fixed all 4 docs).
-- **#1611**: `mac-dock-integration.md` architecture question, routed to Lead by Docs.
-- **~30 broken links** across tiers 3-6 — most already repointed by Docs; tier 5's 2 + tier 6's 1 sent, unconfirmed.
-- Systemic "Documentation Home → repo-root README" link pattern (64 files) — flagged, Docs already sweeping.
+- **#1610**: ✅ CLOSED.
+- **#1611**: routed to Lead by Docs.
+- **~30 broken links** across tiers 3-6 — most repointed by Docs; tier 5's 2 + tier 6's 1 sent, unconfirmed.
+- Systemic "Documentation Home → repo-root README" link pattern (64 files) — flagged, Docs sweeping.
 
-## Beat 22, "Alpha Launches" — ✅ fully closed, published + distributed
+## Closed since yesterday
 
-Live at `https://pipermorgan.ai/blog/alpha-launches/`, Medium cross-post done, calendar shows `distributed` (Docs actioned PM's direct calendar-update request — confirmed via git log, not touched by me, correctly out of scope per the 07-29 process change). Nothing left here.
-
-## LinkedIn cover-image automation — dead, documented
-
-Both automation paths (MCP file-upload, clipboard paste) confirmed dead by PM 08-12; manual upload is now the documented default, not a fallback. Added a one-line note to `content-publishing-run-of-show.md` Step 7 so future handoffs don't re-attempt or file a bug for it. Closed.
+- **Beat 22, "Alpha Launches"** — published + distributed (Medium done). Nothing left.
+- **LinkedIn cover-image automation** — documented as dead in `content-publishing-run-of-show.md` Step 7.
 
 ## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available
 
@@ -39,9 +36,9 @@ Both automation paths (MCP file-upload, clipboard paste) confirmed dead by PM 08
 
 ## Waiting on others
 
-- **Me, next fresh session** — actually drafting the values doc, once picked up deliberately.
-- **PM** — Beats 24–28 steer; voice-pass + art on Beat 23.
+- **HOST** — substance check on the values-doc draft.
+- **PM** — Beats 24–28 steer; voice-pass + art on Beat 23; eventually the values doc once HOST's pass lands.
 - **PPM** — BYOC listing copy v4 blocker.
 - **CXO/PM** — entity-model ratification.
 - **Dispatch** — syndication for the 4 posts above.
-- **Docs** — reply on tier-6 bugs (broken tutorial's missing Steps 9-10, the Amber/Pard warning's proper home); tier 7 priority confirmation.
+- **Docs** — reply on tier-6 bugs; tier 7 priority confirmation.

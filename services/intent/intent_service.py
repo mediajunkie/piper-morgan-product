@@ -320,6 +320,22 @@ class IntentService:
         if not result.success:
             return result
 
+        # #1605 (+ #1190/#1509 belt): a result that just ARMED a pending
+        # action in the session-scoped offer store (a destructive
+        # confirmation, consent check, verb-disambiguation question, or
+        # correction window) must never have that offer clobbered by a soft
+        # workflow offer — both live in the SAME one-slot store. The #1190
+        # gate returns directly to avoid this; results funneled through
+        # here carry a pending flag instead.
+        _pending_flags = (
+            "destructive_confirmation_pending",
+            "consent_check_pending",
+            "verb_disambiguation_pending",
+            "reminder_clear_correction_pending",
+        )
+        if result.intent_data and any(result.intent_data.get(f) for f in _pending_flags):
+            return result
+
         try:
             # Issue #820: Read current lens from conversation context
             # Classifier already extracts and stores lens during classify_multiple()
@@ -973,6 +989,34 @@ class IntentService:
                             message=_vi_meta["message"],
                             intent_data=_vi_meta["intent_data"],
                         )
+                # #1605: a pending reminder-clear turn (the variant-1 verb
+                # question's either/or answer, or the variant-2 correction
+                # window's "I meant delete") is handled kind-specifically
+                # BEFORE generic accept/decline — the answers aren't yes/no
+                # (same sanctioned handler-internal seam as the #1510 meta
+                # check above; routing moratorium honored).
+                elif _vi_payload.get("kind") in (
+                    "reminder_clear_verb_question",
+                    "reminder_clear_correction",
+                ):
+                    from services.intent_service import reminder_clear as _rc
+
+                    _rc_turn = await _rc.handle_reminder_clear_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _rc_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_rc_turn["message"],
+                            intent_data=_rc_turn["intent_data"],
+                            requires_clarification=_rc_turn.get(
+                                "requires_clarification", False
+                            ),
+                        )
                 response_type = detect_offer_response(message)
                 # #1190: a pending DESTRUCTIVE confirmation treats bare exit
                 # commands ("cancel", "stop", "forget it" — #888 ∪ #1529
@@ -1111,19 +1155,23 @@ class IntentService:
                     # #1509: an abandoned consent check logs under its own
                     # name — the off-intent tier semantics are identical
                     # (the pop already cancelled it; nothing can fire).
+                    # Kind-specific abandonment names (honest observability);
+                    # unknown kinds — including the #1190 destructive confirm,
+                    # which sets no kind of its own — log under the original
+                    # destructive_confirmation_abandoned name.
+                    _abandon_names = {
+                        "verify_inference": "verification_read_back_abandoned",
+                        "standup_interview_invitation": "standup_invitation_abandoned",
+                        "consent_check": "consent_check_abandoned",
+                        # #1605: an ignored clear-verb question / correction
+                        # window is dropped by the pop like every other offer.
+                        "reminder_clear_verb_question": "reminder_clear_question_abandoned",
+                        "reminder_clear_correction": "reminder_clear_correction_abandoned",
+                    }
                     self.logger.info(
-                        (
-                            "verification_read_back_abandoned"
-                            if _vi_payload.get("kind") == "verify_inference"
-                            else (
-                                "standup_invitation_abandoned"
-                                if _vi_payload.get("kind") == "standup_interview_invitation"
-                                else (
-                                    "consent_check_abandoned"
-                                    if _vi_payload.get("kind") == "consent_check"
-                                    else "destructive_confirmation_abandoned"
-                                )
-                            )
+                        _abandon_names.get(
+                            _vi_payload.get("kind"),
+                            "destructive_confirmation_abandoned",
                         ),
                         action=pending_offer["pending_action"].get("action"),
                         session_id=session_id,
@@ -7464,6 +7512,20 @@ class IntentService:
                     error="User not authenticated",
                     error_type="AuthenticationRequired",
                 )
+            # #1605: a clear-family verb ("clear/handle/take care of/reset"
+            # over the reminder/todo domain) is an AMBIGUOUS mapping the
+            # classifier happened to guess as complete — disambiguate via the
+            # three-variant flow before executing. Candidate effect WRITE
+            # (this branch's guess: complete_todo). Explicit completion
+            # phrasings return None and proceed unchanged.
+            from services.intent_service import reminder_clear as _rc
+            from services.shared_types import EffectClass as _EffectClass
+
+            _clear_result = await _rc.maybe_handle_clear_family(
+                self, intent, session_id, user_id, todo_user_id, _EffectClass.WRITE
+            )
+            if _clear_result is not None:
+                return _clear_result
             message = await self.todo_handlers.handle_complete_todo(
                 intent, session_id, user_id=todo_user_id
             )
@@ -7488,6 +7550,19 @@ class IntentService:
                     error="User not authenticated",
                     error_type="AuthenticationRequired",
                 )
+            # #1605: same disambiguation as the complete branch, candidate
+            # effect DESTRUCTIVE (this branch's guess: delete_todo) — so the
+            # ask fires in EVERY meta mode below the auto-apply bar (process
+            # steering never lowers a destructive ask). Explicit deletion
+            # phrasings ("delete todo 3") return None and proceed unchanged.
+            from services.intent_service import reminder_clear as _rc
+            from services.shared_types import EffectClass as _EffectClass
+
+            _clear_result = await _rc.maybe_handle_clear_family(
+                self, intent, session_id, user_id, todo_user_id, _EffectClass.DESTRUCTIVE
+            )
+            if _clear_result is not None:
+                return _clear_result
             message = await self.todo_handlers.handle_delete_todo(
                 intent, session_id, user_id=todo_user_id
             )
@@ -7509,6 +7584,45 @@ class IntentService:
             self.logger.info(
                 f"Unhandled EXECUTION action: {mapped_action} (original: {intent.action}) - checking contextual fallback"
             )
+
+            # #1605: an UNMAPPED clear-family sibling ("clear_reminders",
+            # "reset_todos", ...) previously landed on the honest-decline
+            # below — a false capability denial for a capability we HAVE
+            # (the exact transcript bug the joint design fixes). Detection
+            # is message-based, inside this already-claiming EXECUTION
+            # surface (routing moratorium honored — no pre-classifier
+            # change). Candidate effect DESTRUCTIVE: with no mapped action,
+            # delete is a live candidate, so the ask never auto-applies.
+            _clear_message = intent.original_message or (intent.context or {}).get(
+                "original_message", ""
+            )
+            from services.intent_service import reminder_clear as _rc
+
+            if _rc.detect_clear_family_ask(_clear_message) is not None:
+                _clear_user_id = _coerce_todo_principal(user_id)
+                if not _clear_user_id:
+                    return IntentProcessingResult(
+                        success=False,
+                        message="I need you to be logged in to manage todos. Please log in and try again.",
+                        intent_data={
+                            "category": intent.category.value,
+                            "action": intent.action,
+                        },
+                        error="User not authenticated",
+                        error_type="AuthenticationRequired",
+                    )
+                from services.shared_types import EffectClass as _EffectClass
+
+                _clear_result = await _rc.maybe_handle_clear_family(
+                    self,
+                    intent,
+                    session_id,
+                    user_id,
+                    _clear_user_id,
+                    _EffectClass.DESTRUCTIVE,
+                )
+                if _clear_result is not None:
+                    return _clear_result
 
             # Try specific contextual fallback first (#886 — these are genuinely
             # useful "I can't do X but I can do Y" responses)

@@ -13,6 +13,11 @@ from typing import Any, Dict, Optional
 
 import structlog
 
+from services.intent_service.reminder_clear import (
+    run_clarify_reminder_clear_verb_workflow,
+    run_clear_reminders_delete_workflow,
+    run_reminder_clear_correction_workflow,
+)
 from services.intent_service.workflow_dispatcher import (
     WorkflowEntry,
     get_registered_workflows,
@@ -1016,6 +1021,40 @@ def register_default_workflows() -> None:
             effect=EffectClass.WRITE,
             description="Start the #585 standup interview from an accepted invitation (#1591)",
             requires_context=["pending_action", "intent_service"],
+        ),
+        # #1605: reminder-clear verb disambiguation (CXO/PPM joint design,
+        # signed off 2026-08-13). Three offer-seam-only entries (all
+        # action_triggered=False — the classifier/rail can never emit them;
+        # the #1190/verify_inference pattern).
+        # effect: READ — a bare "yes" against the variant-1 either/or
+        # question re-asks and re-arms the offer; nothing is written on this
+        # path (the writes happen on an ANSWERED turn, handled kind-
+        # specifically at the offer seam).
+        "clarify_reminder_clear_verb": WorkflowEntry(
+            entry_point=run_clarify_reminder_clear_verb_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #1605 clear-verb either/or on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # effect: READ — a bare "yes" after the variant-2 disclosure points
+        # at the working correction phrase and re-arms the window; no write.
+        "reminder_clear_correction": WorkflowEntry(
+            entry_point=run_reminder_clear_correction_workflow,
+            effect=EffectClass.READ,
+            description="Hold the #1605 variant-2 correction window on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # effect: DESTRUCTIVE (explicit + defaultless per #1557) — deletes
+        # the todo rows resolved at offer time, by id, owner-scoped (#1532).
+        # Reachable ONLY via run_confirm_pending_action_workflow's re-dispatch
+        # of an explicitly-confirmed "yes" (the REAL #1190 gate) — the stored
+        # 'clear'=delete preference changes the MAPPING, never the consent
+        # tier (consent matrix: DESTRUCTIVE -> CONFIRM in every cell).
+        "clear_reminders_delete": WorkflowEntry(
+            entry_point=run_clear_reminders_delete_workflow,
+            effect=EffectClass.DESTRUCTIVE,
+            description="Execute a #1190-confirmed #1605 batch reminder/todo delete",
+            requires_context=["intent", "intent_service"],
         ),
         "update_document": document_update_entry,
         "edit_document": document_update_entry,
