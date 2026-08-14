@@ -14,9 +14,9 @@
 
 **Not just my tiers 1-6.** Discovered via git log (not a reply memo — Docs just did the work) that Docs took tiers 7+ themselves through a "FINAL batch" commit covering `api/`+`api-reference/`+`dev-tips/`+`testing/`+`releases/`+top-level, 42+ more files. **Both tier-6 findings closed**: the Amber/Pard billing-hazard warning I pulled from `llm-api-keys-setup.md` was relocated verbatim to `docs/internal/operations/github-and-tooling-gotchas.md` "with provenance" — exactly the right home, closing the one thing I couldn't resolve myself. The 7 more "Documentation Home" wrong-target links (my flagged 64-file pattern), ADR-038 repoints, and the stale `integrations/README` count were all fixed in the same sweep. Sent a thank-you/close-out — mail `de4defec4`.
 
-**One thing still genuinely open, not urgent**: `step-by-step-installation.md`'s Steps 9-10 (verify install + start server) are still missing — my fix pointed to `quick-reference.md`'s equivalent rather than guessing the real commands. Confirmed still true this fire. Docs' call on priority.
+**Steps 9-10 also now closed** (confirmed 15:36 fire): Docs restored them, sourced from `quick-reference.md`'s canonical commands, my interim pointer replaced. All 10 steps present and correctly numbered.
 
-**This whole thread is closed on my end.** No more tiers, no more holding, no open questions.
+**This whole thread is fully closed.** No more tiers, no open findings, nothing outstanding.
 
 ## Filed/flagged from the pass — final status
 
@@ -46,7 +46,7 @@
 - **PPM** — BYOC listing copy v4 blocker.
 - **CXO/PM** — entity-model ratification.
 - **Dispatch** — syndication for the 4 posts above.
-- **Docs** — Steps 9-10 in the install tutorial (not urgent); outcome of #1611 (routed to Lead).
+- **Docs/Lead** — outcome of #1611 (routed to Lead) — the only genuinely open thread left from the whole scrub.
 
 ## No current queue
 
