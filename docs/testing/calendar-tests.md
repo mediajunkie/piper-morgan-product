@@ -38,4 +38,4 @@ pytest tests/ -k "calendar" --cov=services.integrations.calendar
 
 ## Related Documentation
 - [Calendar Integration Guide](../integrations/calendar-integration-guide.md)
-- [ADR-038: Spatial Intelligence Patterns](../internal/architecture/current/adrs/adr-038-spatial-intelligence-patterns.md)
+- [ADR-038: Spatial Intelligence Patterns](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-038-spatial-intelligence-patterns.md)
