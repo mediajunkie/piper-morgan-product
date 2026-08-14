@@ -32,9 +32,23 @@ deliberately NOT bundling in scope-confirmation (that's #1563's dangling-offer b
 to paper over). Noted the cheap sequencing if #1569 ships first. **Awaiting PPM's read** — this is joint,
 not mine to decide alone.
 
+**08-13, 19:17 fire**: PPM audited the #1569/#1605 candidate — real, honest audit (checked code directly),
+found two genuine gaps: (1) my original rule was thread-scoped but origin is a per-item property (mixed
+reminder+todo listings are structurally possible via #1566); (2) "I'll remember for next time" had no
+revision path if the stored default is wrong for one instance. Lead also confirmed the #1605 mechanism
+(`decide_verb_interpretation`) is already built and waiting on final copy. **Resolved both gaps**: checked
+`context_assembler.py` directly rather than trusting Lead's tentative "origin isn't threaded" belief —
+origin already exists as separable data (distinct context keys), so the #1569 rule becomes per-item not
+per-thread, no data change needed. Gap 2 resolved via transparency, not a settings UI: every auto-applied
+default states itself aloud ("that's what 'clear' has meant for you — say so if you meant X this time"),
+which doubles as the same-turn correction path; no #1510-style durative marker needed since the question
+itself (not an unprompted statement) already makes durative scope explicit. **Sent full resolution + updated
+copy to PPM/Lead/PM/Arch/Exec, posted on both issues.** Awaiting PPM's confirm before Lead treats it as final.
+
 **Today in one line**: closed out 08-11; reviewed #1536's build, unstuck #1539; connected the ruled #1510
-fork to #1591 and endorsed two implementation calls; drafted the #1569/#1605 disambiguation design. **Real
-design output this fire, not just triage.** Next: re-check #1536/#1539/#1569/#1605 for response.
+fork to #1591 and endorsed two implementation calls; designed #1569/#1605, PPM audited it, resolved both
+gaps with code-verified answers. **Real, iterated design output this fire.** Next: re-check
+#1536/#1539/#1569/#1605 for response.
 
 ---
 
@@ -109,7 +123,7 @@ already the record for whoever implements it. **Thread closed.**
 | **Standup invitation (#1511 → #1591)** | ✅ Design settled (see above). #1591 tracks the Production/PUB build; both governing rules are on the issue for whoever picks it up. | Lead / whoever builds |
 | **#1510 fork** | ✅ **RULED 08-13, BUILT same day** (`836c5a188`, Lead) — `verified_inference.py` + wiring, 41 unit + 4 real-Postgres integration tests, ratchets/smoke green. Remaining: PM's live mode-flip retest. Not mine. | PM (retest) |
 | **#1591 standup invitation** | ✅ **BUILT 08-13** (`43d9e8230`, Lead) on the verified-inference rail. Every CXO/PPM spec pin has a named test. **Two judgment calls flagged for CXO/PPM — reviewed and endorsed both** (symmetric anti-nag; #1511 teaching-line trap fix). Remaining: PM's live retest + PPM's word on call 2's copy touch. Not mine further. | PM (retest), PPM (copy confirm) |
-| **#1569 + #1605** (reminders-are-todos framing + 'clear' disambiguation) | NEW 08-13. PM ruled the policy (ask, don't decree); UX shape jointly mine+PPM's. **Candidate posted 08-13** — see above. Awaiting PPM's read. | **me + PPM** |
+| **#1569 + #1605** (reminders-are-todos framing + 'clear' disambiguation) | Candidate → PPM audit (2 real gaps) → both resolved with code-verified answers (per-item origin exists today, no data change; revision path = state-it-aloud, not new UI). Final copy sent, **awaiting PPM's confirm**, then Lead builds (mechanism already exists, `decide_verb_interpretation`). | **PPM to confirm**, then Lead |
 | **#1386 criterion-2 sign-off** | OPEN, confirmed. Still **WITHHELD** — keyless suite skips and reports green. Committed to same-day sign-off once a keyed run exists. | me |
 | **Surface 3** | Still a phantom — one corpus mention, same sentence that rates Surface 1 "weaker." PPM's ask to PM: name it or strike it. **Now 5+ days open — was 4 at handoff time.** | PM / PPM |
 
