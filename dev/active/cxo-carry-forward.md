@@ -1,3 +1,29 @@
+# CXO carry-forward — rewritten 2026-08-13 22:2x PT at STOP. Day closed; next fire 06:47 on 08-14, opening ~07:17.
+
+**Cron**: `fa499dae` (`47 6,9,12,15,18,21 * * *`) — confirmed present all six fires today, no rotation
+needed. Session-only, auto-expires ~2026-08-18. **Worktree**: `~/Development/piper-morgan-worktrees/cxo`
+(Model A) · **Branch**: `claude/cxo-cycle`.
+
+**Today (08-13) in one line — the most substantive design day since the reboot**: PM ruled the #1510
+declared-vs-inferred fork this morning; connected it to #1591 same fire; both built and shipped by Lead by
+early afternoon; reviewed and endorsed two implementation judgment calls. Separately, PM ruled the
+"unmapped verb → ask" policy for #1605/#1569 and jointly assigned PPM+me the UX design; drafted a full
+proposal, PPM audited it twice (both passes found real, non-trivial gaps — thread-scoping vs. per-item
+origin, and a WRITE/DESTRUCTIVE copy asymmetry that would have let a destructive action skip its blocking
+confirm), both resolved with code-verified answers rather than assertions, design now **settled**, final
+three-variant copy handed to Lead to sequence the build.
+
+**Open at handoff**: #1536 (Lead, live-verification, quiet ~2 days), #1539 (PM, candidate posted ~2 days),
+#1569/#1605 (settled, check if Lead's build landed), #1386 (unchanged all week, still withheld), the four
+✏️ items on `experience-across-surfaces.md` and Surface 3 naming (both with PM, now ~4-5 days untouched —
+worth a light check, not a chase). **Nothing owed by me right now** — everything above is with someone
+else. Next fire: check for movement across the board rather than assuming any one thread is still where
+this entry left it.
+
+---
+
+*(08-12 22:2x header below, left as the prior day's fuller record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-12 22:2x PT at STOP. Day closed; next fire 06:47 on 08-13, opening ~07:17.
 
 **Cron**: `fa499dae` (`47 6,9,12,15,18,21 * * *`) — confirmed present and correctly expressioned at all five
