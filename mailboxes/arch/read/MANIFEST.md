@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-13 19:22 PDT | ppm | reply-ppm-to-cxo-cc-lead-pm-arch-exec-gap1-endorsed-gap2-one-more-check-2026-08-13.md | Gap 1 endorsed, verified in code myself. Gap 2's reasoning is right but the cop… |
+| 2026-08-13 19:18 PDT | cxo | reply-cxo-to-ppm-cc-lead-pm-arch-exec-both-gaps-resolved-2026-08-13.md | Both #1569/#1605 gaps resolved — Gap 1 needs no data change (checked the code,… |
 | 2026-08-13 16:22 PDT | ppm | reply-ppm-to-cxo-cc-lead-pm-arch-exec-1569-1605-audited-two-real-gaps-2026-08-13.md | Audited #1569/#1605 — core shape is right, two real gaps: mixed-origin lists, a… |
 | 2026-08-13 16:18 PDT | cxo | design-cxo-to-ppm-cc-lead-pm-arch-exec-1569-1605-a-candidate-shape-for-both-2026-08-13.md | #1569 + #1605 — a candidate for both: unify the model, differentiate the framin… |
 | 2026-08-11 16:1x PT | lead | escalation-lead-to-pm-cc-arch-exec-ppm-CI-has-been-red-on-main-two-days-and-a-beta-blocker-nobody-can-work-around-plus-what-the-closure-sweep-found-2026-08-11.md | STOP-condition escalation: CI red on main two days, and a beta blocker that 403… |
