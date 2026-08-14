@@ -1,6 +1,6 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-14 09:5x PT fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-14 12:4x PT fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
@@ -8,23 +8,29 @@
 
 ## Values doc with HOST — ✅ HOST-verified, routed to PM, nothing left on my end
 
-`docs/legal/values-DRAFT.md`. HOST re-verified all three commitments against running code (not just citations) — item 3's timing confirmed correct, item 2 was actually strengthened (traced the live route-level owner-check, not just an ADR description), item 1 tightened for precision (#1366 was ~27.5h, "fixed by the next day" not "within a day"). Both fixes applied, commit `69ceb8299`. HOST's voice lean (third-person/institutional, with a real argument — the actual reader is a stranger checking a fork years out) recorded in the doc's Open Questions, not applied unilaterally. **Routed to PM directly** with the four remaining open decisions named — mail `e68ae39ab`. **Nothing to do here until PM responds.**
+`docs/legal/values-DRAFT.md`, commit `69ceb8299`, mail `e68ae39ab`. Nothing to do until PM responds — no deadline, don't chase.
 
-## pmorgan.tech register pass — still holding on tier 7
+## pmorgan.tech register pass — ✅ DONE, whole thing
 
-Tiers 1–6 done. Tier 6's bug report (broken install tutorial, Amber/Pard internal-infra leak) sent 08-13, commit `b3417c12e` — **still no reply from Docs as of this fire (2 fires now with no response).** Don't restart tier 7 unprompted a third time in a row — if still no reply by tomorrow, a gentle check-in is reasonable, not before.
+**Not just my tiers 1-6.** Discovered via git log (not a reply memo — Docs just did the work) that Docs took tiers 7+ themselves through a "FINAL batch" commit covering `api/`+`api-reference/`+`dev-tips/`+`testing/`+`releases/`+top-level, 42+ more files. **Both tier-6 findings closed**: the Amber/Pard billing-hazard warning I pulled from `llm-api-keys-setup.md` was relocated verbatim to `docs/internal/operations/github-and-tooling-gotchas.md` "with provenance" — exactly the right home, closing the one thing I couldn't resolve myself. The 7 more "Documentation Home" wrong-target links (my flagged 64-file pattern), ADR-038 repoints, and the stale `integrations/README` count were all fixed in the same sweep. Sent a thank-you/close-out — mail `de4defec4`.
 
-## Filed/flagged, not fixed
+**One thing still genuinely open, not urgent**: `step-by-step-installation.md`'s Steps 9-10 (verify install + start server) are still missing — my fix pointed to `quick-reference.md`'s equivalent rather than guessing the real commands. Confirmed still true this fire. Docs' call on priority.
+
+**This whole thread is closed on my end.** No more tiers, no more holding, no open questions.
+
+## Filed/flagged from the pass — final status
 
 - **#1610**: ✅ CLOSED.
-- **#1611**: routed to Lead by Docs.
-- **~30 broken links** across tiers 3-6 — most repointed by Docs; tier 5's 2 + tier 6's 1 sent, unconfirmed.
-- Systemic "Documentation Home → repo-root README" link pattern (64 files) — flagged, Docs sweeping.
+- **#1611**: routed to Lead by Docs, outcome TBD.
+- Broken links across the whole site: ✅ all repointed by Docs.
+- Systemic Documentation-Home pattern: ✅ fully swept.
+- Amber/Pard safety warning: ✅ rehomed properly.
 
 ## Closed this week
 
 - **Beat 22, "Alpha Launches"** — published + distributed.
-- **LinkedIn cover-image automation** — documented as dead in `content-publishing-run-of-show.md`.
+- **LinkedIn cover-image automation** — documented as dead.
+- **pmorgan.tech register pass** — fully complete (see above).
 
 ## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available
 
@@ -40,4 +46,8 @@ Tiers 1–6 done. Tier 6's bug report (broken install tutorial, Amber/Pard inter
 - **PPM** — BYOC listing copy v4 blocker.
 - **CXO/PM** — entity-model ratification.
 - **Dispatch** — syndication for the 4 posts above.
-- **Docs** — reply on tier-6 bugs; tier 7 priority confirmation (2 fires unanswered now).
+- **Docs** — Steps 9-10 in the install tutorial (not urgent); outcome of #1611 (routed to Lead).
+
+## No current queue
+
+Everything Comms-initiated this week is either closed or genuinely waiting on someone else with no unblocked next move. Next fire: mail-check first, as always — nothing pre-planned beyond that.

@@ -167,7 +167,7 @@ If you prefer to do it manually, continue below. Otherwise, you're done! 🎉
 
 If you prefer to understand each step, follow the steps below. Both approaches work!
 
-⚠️ **Note**: these steps currently stop after installing dependencies (Step 8) and don't yet cover verifying the install or starting the server — if you're following the manual path, use the [Quick Reference](./quick-reference.md)'s steps 6 onward (verify installation, then `python main.py`) to finish.
+*(Steps 5-10 below cover the full manual path, ending with verification and first launch.)*
 
 ### Step 5: Create a Python Virtual Environment
 
@@ -272,3 +272,57 @@ This command installs all the Python packages Piper Morgan needs.
 ```bash
 pip install -r requirements.txt
 ```
+
+Press Enter.
+
+**What you'll see**: many packages downloading and installing. This is the longest step — **3-5
+minutes** is normal. Wait for your prompt to return.
+
+---
+
+### Step 9: Verify the Installation
+
+*(Steps 9-10 restored 2026-08-14, sourced from this repo's own canonical commands —
+[Quick Reference](./quick-reference.md) "Starting Piper Morgan" + the project README — after the
+originals were found missing; the numbering gap suggested an accidental deletion.)*
+
+Make sure everything installed correctly before starting.
+
+**Type this command**:
+
+```bash
+python main.py status
+```
+
+Press Enter.
+
+**What you'll see**: a system health check — database connection, API key validity, integration
+health. If anything reports a problem, [troubleshooting.md](../troubleshooting.md) covers the
+common ones (Docker not running and missing API keys are the two most frequent).
+
+**Prerequisite reminder**: the database services must be running first. If you haven't started
+them yet:
+
+```bash
+docker compose up -d
+```
+
+---
+
+### Step 10: Start Piper Morgan
+
+**Type this command** (make sure you still see `(venv)` in your prompt):
+
+```bash
+python main.py
+```
+
+Press Enter.
+
+**What you'll see**: startup text ending with the server running. Open your browser to
+**http://localhost:8001** — you should see the Piper Morgan interface.
+
+**To stop the server later**: press `Ctrl+C` in the terminal.
+
+🎉 **That's it — you're installed.** For day-to-day use (starting, stopping, common issues), keep
+the [Quick Reference](./quick-reference.md) handy.

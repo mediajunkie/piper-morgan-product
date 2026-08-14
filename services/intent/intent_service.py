@@ -732,6 +732,30 @@ class IntentService:
             except Exception:
                 pass  # Best-effort — don't block response delivery
 
+        # #1595 Phase 1: standing async shadow-check (SHADOW-ONLY observer;
+        # flag PIPER_INVERSION_SHADOW, default OFF). Fire-and-forget AFTER the
+        # turn completed — never blocks or fails the response. The production
+        # decision label rides the existing #1518 observability shape; the
+        # router's own decision is logged inside the task and consumed by
+        # NOTHING here (no-execution boundary — this module never imports the
+        # router module or its decision type; enforced by
+        # TestInversionShadowNoExecutionBoundary).
+        try:
+            from services.intent_service.inversion_shadow import (
+                maybe_schedule_shadow_check,
+            )
+
+            maybe_schedule_shadow_check(
+                message,
+                self._resolve_turn_intent_label(getattr(result, "intent_data", None)),
+                session_id=effective_session_id,
+                user_id=effective_user_id,
+                llm_service=getattr(self.intent_classifier, "_llm", None),
+                offer_service=self.workflow_offer_service,
+            )
+        except Exception:  # silent-ok: observer scheduling must never break a turn; the task logs its own failures (shadow_route_check_failed)
+            pass
+
         return result
 
     async def _maybe_autoexecute_automation_patterns(

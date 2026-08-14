@@ -1,0 +1,225 @@
+name: Skill Candidates Review Reminder
+
+on:
+  schedule:
+    # Runs every Tuesday at 9:00 AM Pacific (4:12 PM UTC); the job itself skips
+    # non-first Tuesdays (see the runtime day-of-month<=7 guard below).
+    #
+    # WHY A WEEKLY CRON GATED AT RUNTIME, NOT "0 16 1-7 * 2": POSIX/GitHub Actions cron
+    # ORs day-of-month and day-of-week whenever BOTH are restricted (neither is "*").
+    # "1-7 * 2" would mean "day 1-7 of ANY weekday, OR any Tuesday" -- it would fire every
+    # day 1-7 regardless of weekday, not just the first Tuesday. This exact bug shipped in
+    # monthly-housekeeping-audit.yml and fired 3 days running (2026-08-02/03/04) before it
+    # was caught -- this workflow is written to avoid it from the start, not rediscover it.
+    #
+    # Minute offset (12, not 0) is deliberate: weekly-docs-audit.yml moved off :00 after a
+    # 2026-08-03 finding that GitHub Actions' top-of-the-hour scheduling congestion can
+    # silently drop a run. Each Monday/Tuesday 9am-Pacific workflow uses a different minute
+    # so they don't all compete for the same congested slot.
+    - cron: "12 16 * * 2"
+  workflow_dispatch: # Allows manual trigger for testing or ad-hoc checks
+
+permissions:
+  issues: write
+  contents: write
+
+# Cadence: Monthly, 1st Tuesday. Ratified PM 2026-07-08 ("yes monthly seems right");
+# slot confirmed 2026-07-09 (CIO/HOST) specifically as 1st Tuesday to offset from every
+# other Monday-anchored audit (Doc Audit weekly + monthly, Role Health, Pattern Sweep).
+# See docs/internal/operations/staggered-audit-calendar-2026.md.
+#
+# Instrument owner: docs/internal/operations/skill-candidates-review.md (Exec maintains
+# the doc between reviews; PM disposes at review time).
+
+jobs:
+  check-and-create-issue:
+    runs-on: ubuntu-latest
+    name: Create Skill Candidates Review Issue (if scheduled)
+
+    steps:
+      - name: Check if first Tuesday of month
+        id: check-day
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Cron fires every Tuesday (see the `on.schedule` comment for why day-of-month
+            // can't be restricted in the cron expression itself). Only the FIRST Tuesday of
+            // the month should actually create an issue; skip scheduled runs on later
+            // Tuesdays. Manual workflow_dispatch always proceeds, for testing/backfill.
+            const today = new Date();
+            const isManualTrigger = context.eventName === 'workflow_dispatch';
+
+            if (context.eventName === 'schedule' && today.getDate() > 7) {
+              console.log(`Not the first Tuesday of the month (day ${today.getDate()}); skipping.`);
+              return false;
+            }
+
+            console.log(`Today: ${today.toISOString().split('T')[0]}`);
+            console.log(`Is manual trigger: ${isManualTrigger}`);
+            return true;
+
+      - name: Check for existing issue
+        if: steps.check-day.outputs.result == 'true'
+        id: check-existing
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // ⚠️ Same corrected pattern as role-health-check.yml (2026-08-07 fix): a lookback
+            // window measured against the cadence itself has a boundary condition -- the prior
+            // cycle's issue can land close enough to the cutoff that scheduler jitter alone
+            // decides whether the next cycle gets suppressed. role-health-check.yml's original
+            // form did exactly this and silently dropped a whole cycle (#1178 case).
+            //
+            // The intent is "don't stack a second reminder while one is still outstanding."
+            // That is exactly `state: open`, with NO date window -- which has no boundary
+            // condition at all. An OPEN check suppresses (correctly, it IS the reminder); a
+            // CLOSED one never does. Do not reintroduce a date-window lookback here.
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'process,skill-candidates-review',
+              per_page: 100
+            });
+
+            const existingIssue = issues.data.find(issue =>
+              issue.title.includes('SKILL-CANDIDATES-REVIEW')
+            );
+
+            if (existingIssue) {
+              console.log(`Skill candidates review issue already exists: #${existingIssue.number}`);
+              return existingIssue.number;
+            }
+
+            return null;
+
+      - name: Create skill candidates review issue
+        id: create-issue
+        if: steps.check-day.outputs.result == 'true' && steps.check-existing.outputs.result == 'null'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const today = new Date().toISOString().split('T')[0];
+            const now = new Date();
+            const yearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
+            const body = '# Skill Candidates Review: ' + yearMonth + '\n\n' +
+              '**Generated**: ' + today + '\n' +
+              '**Cadence**: Monthly (1st Tuesday) — ratified PM 2026-07-08 ("yes monthly seems right"); slot confirmed 2026-07-09 (CIO/HOST)\n' +
+              '**Owner**: PM + Exec (CIO/HOST triage input per the doc)\n' +
+              '**Canonical doc**: `docs/internal/operations/skill-candidates-review.md`\n\n' +
+              '> ⏰ **Owner: Exec (Chief of Staff)** — this recurring review is Exec\'s to maintain between cycles; PM disposes at review time. It auto-assigns to PM only because agents have no GitHub login, and GitHub issues do not notify agents (mail is the cross-agent signal layer). **So this does not reach Exec automatically — Exec\'s duty cycle polls for open issues carrying this review\'s marker each cycle.** PM: you can disregard the assignment; Exec picks it up and prepares the candidate table below for your disposition.\n\n' +
+              '---\n\n' +
+              '## Purpose\n\n' +
+              'A recurring, lightweight PM+Exec review of what deserves to become a skill, what should fold into an existing one, and — just as deliberately — what should *not* be built. The don\'t-build column exists because of PM\'s don\'t-overlearn principle (2026-07-08): a process with a long clean track record that failed once under compound exogenous disruption usually needs repair-readiness, not new machinery. Full rationale: `docs/internal/operations/skill-candidates-review.md`.\n\n' +
+              '---\n\n' +
+              '## Pre-Review Checklist (Exec, between cycles)\n\n' +
+              '- [ ] Update `docs/internal/operations/skill-candidates-review.md` "Current candidates" table with anything new since the last cycle\n' +
+              '- [ ] Pull this cycle\'s signal feeds (below) and add any new candidates to the doc before this review\n\n' +
+              '---\n\n' +
+              '## Signal feeds (all already being collected — no new collection needed)\n\n' +
+              '- [ ] **Memory-eval "wanted but not found" buckets** — every role writes this at session wrap (per #974). A recurring "wanted but not found" across roles is a skill candidate by definition.\n' +
+              '- [ ] **Incident docs** (`docs/internal/operations/*-2026-*.md`) — each one ends with a fix-disposition that is often a skillify-or-not question.\n' +
+              '- [ ] **Omnibus "Session Learnings"** — Docs already surfaces repeated improvised procedures.\n' +
+              '- [ ] **Exec\'s synthesis vantage** — repeated ad-hoc patterns visible across role logs during weekly Ship work.\n\n' +
+              '---\n\n' +
+              '## Candidates for this cycle\n\n' +
+              'Every candidate gets exactly one disposition, with reason recorded (so we don\'t re-litigate).\n\n' +
+              '| Candidate | Origin | Exec\'s lean | Disposition (BUILD / FOLD / DON\'T-BUILD) | Reason |\n' +
+              '|---|---|---|---|---|\n' +
+              '| | | | | |\n\n' +
+              '**Disposition key**:\n' +
+              '- **BUILD** — new skill warranted\n' +
+              '- **FOLD** — belongs inside an existing skill/procedure; name which\n' +
+              '- **DON\'T-BUILD** — explicitly declined, with the reason and (where useful) an escalation trigger that would reopen it\n\n' +
+              '**Taxonomy to apply at BUILD time** (PM, 2026-07-08): generally-usable vs. role-tailored, and who owns it vs. who can run it cold (bus-factor). Set the skill\'s frontmatter `scope:` field deliberately, not by default.\n\n' +
+              '---\n\n' +
+              '## Review log entry (append to skill-candidates-review.md\'s "Review log" section after this review)\n\n' +
+              '```\n' +
+              '### ' + today + '\n' +
+              '- Candidates reviewed: N\n' +
+              '- Dispositions: BUILD x, FOLD x, DON\'T-BUILD x\n' +
+              '- Notes:\n' +
+              '```\n\n' +
+              '---\n\n' +
+              '## Post-Review Checklist\n\n' +
+              '- [ ] All candidates disposed with reason recorded\n' +
+              '- [ ] `docs/internal/operations/skill-candidates-review.md` "Review log" section updated with this cycle\'s outcomes\n' +
+              '- [ ] `docs/internal/operations/skill-candidates-review.md` "Current candidates" table updated for next cycle (disposed rows cleared or marked)\n' +
+              '- [ ] **Update staggered audit calendar** (`docs/internal/operations/staggered-audit-calendar-2026.md`):\n' +
+              '  - Update "Tracking Dashboard" — Skill-Candidates Review row\n' +
+              '  - Set "Last Completed" to today\n' +
+              '  - Set "Next Due" to the 1st Tuesday of next month\n\n' +
+              '---\n\n' +
+              '**Schedule**: Monthly, 1st Tuesday, per `docs/internal/operations/staggered-audit-calendar-2026.md`\n\n' +
+              'Generated with [Claude Code](https://claude.ai/code)';
+
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'SKILL-CANDIDATES-REVIEW: ' + yearMonth,
+              body: body,
+              labels: ['process', 'skill-candidates-review'],
+              assignees: ['mediajunkie']
+            });
+
+            console.log('Created skill candidates review issue #' + issue.data.number);
+            return issue.data.number;
+
+      - name: Notify Exec via mailbox
+        id: notify-exec
+        if: steps.check-day.outputs.result == 'true' && steps.check-existing.outputs.result == 'null' && steps.create-issue.outputs.result != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueNumber = ${{ steps.create-issue.outputs.result }};
+            const today = new Date().toISOString().split('T')[0];
+            const memoPath = `mailboxes/exec/inbox/memo-ghactions-to-exec-skill-candidates-review-${today}.md`;
+
+            const memoContent = [
+              '---',
+              'from: GitHub Actions (skill-candidates-review-check.yml)',
+              'to: Exec (Chief of Staff)',
+              `date: ${today}`,
+              `subject: Skill Candidates Review auto-issue #${issueNumber} — prep candidates for PM disposition`,
+              '---',
+              '',
+              `A new Skill Candidates Review issue has been auto-generated: **#${issueNumber}**`,
+              '',
+              'Update `docs/internal/operations/skill-candidates-review.md` with this cycle\'s candidates (pull the four signal feeds), copy them into the issue\'s candidate table, and bring it to PM for disposition (~20 min, per the doc).',
+              '',
+              '**Refs**: `docs/internal/operations/skill-candidates-review.md`, `docs/internal/operations/staggered-audit-calendar-2026.md`',
+              '',
+              '_Auto-generated by .github/workflows/skill-candidates-review-check.yml_'
+            ].join('\n');
+
+            const contentBase64 = Buffer.from(memoContent).toString('base64');
+
+            try {
+              await github.rest.repos.createOrUpdateFileContents({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                path: memoPath,
+                message: `mail(ghactions): skill-candidates-review #${issueNumber} — notify Exec`,
+                content: contentBase64,
+                committer: { name: 'GitHub Actions', email: 'actions@github.com' },
+                author: { name: 'GitHub Actions', email: 'actions@github.com' }
+              });
+              console.log(`Exec mailbox notification filed: ${memoPath}`);
+            } catch (e) {
+              console.error(`Failed to file Exec mailbox notification: ${e.message}`);
+            }
+
+      - name: Post completion summary
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const isScheduledDay = ${{ steps.check-day.outputs.result }};
+            if (isScheduledDay) {
+              console.log('✅ Skill candidates review workflow completed');
+              console.log('Check GitHub issues for the SKILL-CANDIDATES-REVIEW issue');
+            } else {
+              console.log('ℹ️ Not the first Tuesday of the month - no action taken');
+              console.log('Skill candidates reviews run monthly (1st Tuesday) per staggered-audit-calendar-2026.md');
+            }

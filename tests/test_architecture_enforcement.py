@@ -2046,3 +2046,82 @@ class TestWorkflowEffectDeclaration:
             f"needs_confirm); never re-infer from names (Arch ruling "
             f"2026-08-09)."
         )
+
+
+class TestInversionShadowNoExecutionBoundary:
+    """#1595 Phase 1 — the SHADOW-ONLY property, enforced structurally.
+
+    The inversion router's decision must be un-consumable by dispatch: no
+    production code path may execute (or even see) a ``RoutingDecision``.
+    Enforcement is an import boundary — the ONLY production module allowed to
+    reference ``inversion_router`` / ``RoutingDecision`` is the async shadow
+    observer ``services/intent_service/inversion_shadow.py`` (whose coroutine
+    returns None and whose only side effect is a log line). The dispatch layer
+    (``services/intent/intent_service.py``) may reference ONLY the observer's
+    scheduler.
+
+    Phase 2 (per-category flip) will deliberately relax this test — that
+    relaxation is the reviewable act of wiring the router into dispatch.
+    """
+
+    ROUTER_TOKENS_RE = re.compile(r"\binversion_router\b|\bRoutingDecision\b")
+    ALLOWED_REFERRERS = {
+        os.path.normpath("services/intent_service/inversion_router.py"),
+        os.path.normpath("services/intent_service/inversion_shadow.py"),
+    }
+
+    def _referrers(self):
+        files_scanned = 0
+        referrers = []
+        for root in ("services", "web"):
+            for path in glob.glob(f"{root}/**/*.py", recursive=True):
+                files_scanned += 1
+                with open(path, encoding="utf-8") as fh:
+                    content = fh.read()
+                if self.ROUTER_TOKENS_RE.search(content):
+                    referrers.append(os.path.normpath(path))
+        return referrers, files_scanned
+
+    def test_only_the_shadow_observer_may_import_the_router(self):
+        referrers, files_scanned = self._referrers()
+        # Vacuity guards (m-44): the scan measured something, and the boundary
+        # protects a module that actually exists and is actually consumed.
+        assert files_scanned >= 100, (
+            f"boundary scan walked only {files_scanned} files — detection broken"
+        )
+        assert (
+            os.path.normpath("services/intent_service/inversion_router.py") in referrers
+        ), "inversion_router.py missing — the boundary would be vacuously green"
+        assert (
+            os.path.normpath("services/intent_service/inversion_shadow.py") in referrers
+        ), (
+            "inversion_shadow.py no longer references the router — the shadow "
+            "lane is dead, and this boundary test is guarding nothing (m-44)"
+        )
+        offenders = sorted(set(referrers) - self.ALLOWED_REFERRERS)
+        assert not offenders, (
+            f"Production code outside the shadow observer references the "
+            f"inversion router: {offenders}. Phase 1 is SHADOW-ONLY — routes "
+            f"are logged, never executed (#1595; Arch ratification 2026-08-09). "
+            f"If this is the deliberate Phase-2 flip, relax ALLOWED_REFERRERS "
+            f"in the same reviewed commit that wires the dispatch."
+        )
+
+    def test_dispatch_layer_sees_scheduler_only(self):
+        """intent_service.py calls the fire-and-forget scheduler and must be
+        blind to the decision type: no router import, no awaiting the task."""
+        path = os.path.normpath("services/intent/intent_service.py")
+        with open(path, encoding="utf-8") as fh:
+            content = fh.read()
+        assert "maybe_schedule_shadow_check" in content, (
+            "the standing shadow-check hook is gone from process_intent — "
+            "the continuous falsifiability property (#1595 point 3) is dead"
+        )
+        assert not self.ROUTER_TOKENS_RE.search(content), (
+            "intent_service.py references inversion_router/RoutingDecision — "
+            "the dispatch layer must consume NOTHING from the router in Phase 1"
+        )
+        assert "await maybe_schedule_shadow_check" not in content, (
+            "the shadow check must be fire-and-forget — awaiting it puts the "
+            "router's latency on the user's turn"
+        )
