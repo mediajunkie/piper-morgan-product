@@ -892,10 +892,10 @@ Based on benchmark results from `scripts/benchmarks/`:
 ## See Also
 
 - **[Plugin Development Guide](../../../guides/plugin-development-guide.md)** - Step-by-step tutorial
-- **[Pattern-031: Plugin Wrapper](../../../internal/architecture/current/patterns/pattern-031-plugin-wrapper.md)** - Architecture pattern
-- **[ADR-034: Plugin Architecture](../../../internal/architecture/current/adrs/adr-034-plugin-architecture.md)** - Implementation record
+- **[Pattern-031: Plugin Wrapper](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/patterns/pattern-031-plugin-wrapper.md)** - Architecture pattern
+- **[ADR-034: Plugin Architecture](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-034-plugin-architecture.md)** - Implementation record
 - **[Plugin Quick Reference](../../../guides/plugin-quick-reference.md)** - Cheat sheet
-- **[Demo Plugin](../../../services/integrations/demo/)** - Example implementation
+- **[Demo Plugin](https://github.com/mediajunkie/piper-morgan-product/tree/main/services/integrations/demo)** - Example implementation
 
 ---
 

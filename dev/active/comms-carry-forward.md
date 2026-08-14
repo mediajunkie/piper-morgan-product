@@ -1,18 +1,18 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-14 07:0x PT fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-14 09:5x PT fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
 ✅ **ARMED — job `45eae89f`.** Same expression `12 6,9,12,15,18,21 * * *`. Auto-expires ~2026-08-20.
 
-## Values doc with HOST — first draft sent, awaiting HOST's substance check
+## Values doc with HOST — ✅ HOST-verified, routed to PM, nothing left on my end
 
-Wrote `docs/legal/values-DRAFT.md` ("What Piper Morgan Is For") this morning — the deliberately-deferred fresh-session item. HOST's three commitments, PM's ethos header, honest precedents, an explicit Open Questions section rather than deciding placement/voice/scope myself. Spot-checked HOST's citations before building on them; caught and fixed one precision error myself (Pattern-071's hash-only discipline was named during design ratification, not "corrected after shipping wrong" as my first draft implied). Sent to HOST for a substance check specifically — mail `7d65cdbc5`, commit `505818bd1`. **No reply yet.** Next move is HOST's; nothing to chase, no deadline either side.
+`docs/legal/values-DRAFT.md`. HOST re-verified all three commitments against running code (not just citations) — item 3's timing confirmed correct, item 2 was actually strengthened (traced the live route-level owner-check, not just an ADR description), item 1 tightened for precision (#1366 was ~27.5h, "fixed by the next day" not "within a day"). Both fixes applied, commit `69ceb8299`. HOST's voice lean (third-person/institutional, with a real argument — the actual reader is a stranger checking a fork years out) recorded in the doc's Open Questions, not applied unilaterally. **Routed to PM directly** with the four remaining open decisions named — mail `e68ae39ab`. **Nothing to do here until PM responds.**
 
 ## pmorgan.tech register pass — still holding on tier 7
 
-Tiers 1–6 done. Tier 6's bug report (broken install tutorial, Amber/Pard internal-infra leak) sent yesterday, commit `b3417c12e` — **still no reply from Docs as of this fire**. Don't restart tier 7 unprompted a second fire in a row; check for their reply first.
+Tiers 1–6 done. Tier 6's bug report (broken install tutorial, Amber/Pard internal-infra leak) sent 08-13, commit `b3417c12e` — **still no reply from Docs as of this fire (2 fires now with no response).** Don't restart tier 7 unprompted a third time in a row — if still no reply by tomorrow, a gentle check-in is reasonable, not before.
 
 ## Filed/flagged, not fixed
 
@@ -21,10 +21,10 @@ Tiers 1–6 done. Tier 6's bug report (broken install tutorial, Amber/Pard inter
 - **~30 broken links** across tiers 3-6 — most repointed by Docs; tier 5's 2 + tier 6's 1 sent, unconfirmed.
 - Systemic "Documentation Home → repo-root README" link pattern (64 files) — flagged, Docs sweeping.
 
-## Closed since yesterday
+## Closed this week
 
-- **Beat 22, "Alpha Launches"** — published + distributed (Medium done). Nothing left.
-- **LinkedIn cover-image automation** — documented as dead in `content-publishing-run-of-show.md` Step 7.
+- **Beat 22, "Alpha Launches"** — published + distributed.
+- **LinkedIn cover-image automation** — documented as dead in `content-publishing-run-of-show.md`.
 
 ## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available
 
@@ -36,9 +36,8 @@ Tiers 1–6 done. Tier 6's bug report (broken install tutorial, Amber/Pard inter
 
 ## Waiting on others
 
-- **HOST** — substance check on the values-doc draft.
-- **PM** — Beats 24–28 steer; voice-pass + art on Beat 23; eventually the values doc once HOST's pass lands.
+- **PM** — values doc's 4 open decisions; Beats 24–28 steer; voice-pass + art on Beat 23.
 - **PPM** — BYOC listing copy v4 blocker.
 - **CXO/PM** — entity-model ratification.
 - **Dispatch** — syndication for the 4 posts above.
-- **Docs** — reply on tier-6 bugs; tier 7 priority confirmation.
+- **Docs** — reply on tier-6 bugs; tier 7 priority confirmation (2 fires unanswered now).
