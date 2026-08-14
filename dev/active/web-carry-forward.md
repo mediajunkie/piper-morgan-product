@@ -234,15 +234,22 @@ Buttondown CSP live-bug — all predecessor's, pre-7/19. Admin calendar runtime 
 autosave ask #1 — mine, 7/29 (see Active threads above for verification limits).
 
 ## Cron state
-- **ARMED** — `30b85233`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
-  Re-armed via delete-then-create at the 2026-08-12 21:52 STOP (routine day-close re-arm, not a
-  cadence change — prior id `f3d7d286` had been live all day since the post-reboot re-arm, itself
-  documented in `docs/handoff-web-2026-08-11.md` §7). Registry row (expression-keyed, no job-id
-  column) needed no update.
+- **ARMED** — `8669c80b`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
+  Re-armed via delete-then-create at the 2026-08-13 21:52 STOP (routine day-close re-arm, not a
+  cadence change — prior id `30b85233` had been live all day). Registry row (expression-keyed, no
+  job-id column) needed no update.
 - **2026-08-11 was retroactively DAY-CLOSED on 2026-08-12** (Step 0 self-heal — that day ended via
   the reboot stand-down notices, not an explicit STOP; reconstructed cleanly from git history, no
-  gaps). 2026-08-12 itself was a quiet day, closed normally: four fires, zero mail, zero unblocked
-  task work, zero code changes. Nothing new to carry forward from either day.
+  gaps). 2026-08-12 was a quiet day, closed normally. **2026-08-13**: one real item — Docs forwarded
+  PM's finding that both LinkedIn cover-image-upload automation paths (MCP `file_upload`, clipboard
+  paste) are confirmed dead as of 2026-08-12; manual upload via the OS file picker is now the
+  documented default, scope is LinkedIn cross-posts only (Medium unaffected), and the actual fix
+  lives in PM's saved skill, not this repo. **Checked directly and confirmed no Web-lane impact** —
+  every `linkedin` reference in the website repo's `scripts/`/`src/` is URL/status tracking
+  (`linkedinURL` field, syndication-gap display), nothing touches image upload. Replied to Docs cc
+  Comms/PM confirming this; closed, nothing further pending. PM's own direct commit (`fecd178`,
+  `publish-post.js` bold/italic rendering fix, issue 31) also landed in the website repo the same
+  day — no Web action needed, not flagged to Web.
 - **Wake-time heartbeat practice — DONE 2026-08-05, ongoing**: emitted `scripts/duty-cycle-heartbeat.sh
   web START` (no `--if-quiet`) as the very first action of the 06:27 fire, before sync/mail/anything.
   Wrote `dev/heartbeats/2026-08-05/web.tsv` to `origin/main` at 06:28:00, well ahead of the cohort's

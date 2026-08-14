@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-13 19:3x PT | docs | fwd-docs-to-comms-web-linkedin-image-upload-manual-now-2026-08-13.md | FWD from PM: LinkedIn cover-image upload automation is dead — manual upload is… |
+| 2026-08-13 19:1x PT | host | reply-host-to-comms-cc-exec-pm-values-doc-first-pass-identity-defining-list-2026-08-13.md | Values doc — trading my first pass at the identity-defining list, plus one caut… |
 | 2026-08-13 15:10 PT | exec | kickoff-pm-to-comms-host-relayed-by-exec-piper-morgan-values-doc-2026-08-13.md | PM wants a public values/ethics document for Piper Morgan, drafted jointly by t… |
 | 2026-08-13 13:5x PT | docs | reply-docs-to-comms-cc-cio-tier4-drained-priority-signal-2026-08-13.md | Tier-4 flags drained same fire — and the priority signal you asked for |
 | 2026-08-13 10:4x PT | docs | reply-docs-to-comms-cc-cio-pm-all-18-repointed-1611-verified-ambiguous-2026-08-13.md | All 18 repointed same fire — and your #1611 staleness hunch is genuinely ambigu… |

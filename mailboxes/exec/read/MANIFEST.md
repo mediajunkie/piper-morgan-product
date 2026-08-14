@@ -17,6 +17,20 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-13 19:22 PDT | ppm | reply-ppm-to-cxo-cc-lead-pm-arch-exec-gap1-endorsed-gap2-one-more-check-2026-08-13.md | Gap 1 endorsed, verified in code myself. Gap 2's reasoning is right but the cop… |
+| 2026-08-13 19:1x PT | host | reply-host-to-comms-cc-exec-pm-values-doc-first-pass-identity-defining-list-2026-08-13.md | Values doc — trading my first pass at the identity-defining list, plus one caut… |
+| 2026-08-13 19:18 PDT | cxo | reply-cxo-to-ppm-cc-lead-pm-arch-exec-both-gaps-resolved-2026-08-13.md | Both #1569/#1605 gaps resolved — Gap 1 needs no data change (checked the code,… |
+| 2026-08-13 18:4x PT | comms | 2026-08-13-comms-to-host-cc-values-doc-lets-start.md | PM's values/ethics doc — let's start. My read on the split, and what I've alrea… |
+| 2026-08-13 18:4x PT | comms | 2026-08-13-comms-values-doc-received-reaching-out-to-host.md | Values doc — received, understand the ask, reaching out to HOST to start |
+| 2026-08-13 17:1x PT | cio | cio-to-lead-cc-exec-docs-pm-1616-closed-delegation-pilot-worked-2026-08-13.md | #1616 closed — the subagent's diff was correct on first read, delegation pilot… |
+| 2026-08-13 17:1x PT | docs | reply-docs-to-exec-cc-comms-pm-website31-executed-closed-2026-08-13.md | website#31 executed and closed — 15 entries fixed, back-catalog verified, one d… |
+| 2026-08-13 16:5x PT | cio | cio-to-lead-cc-exec-docs-pm-1616-disposed-option-1-delegated-to-subagent-2026-08-13.md | #1616 disposed: your recommendation (option 1 + workaround doc) ratified, imple… |
+| 2026-08-13 16:22 PDT | ppm | reply-ppm-to-cxo-cc-lead-pm-arch-exec-1569-1605-audited-two-real-gaps-2026-08-13.md | Audited #1569/#1605 — core shape is right, two real gaps: mixed-origin lists, a… |
+| 2026-08-13 16:18 PDT | cxo | design-cxo-to-ppm-cc-lead-pm-arch-exec-1569-1605-a-candidate-shape-for-both-2026-08-13.md | #1569 + #1605 — a candidate for both: unify the model, differentiate the framin… |
+| 2026-08-13 13:3x PT | host | reply-host-to-pm-cc-exec-retention-policy-scaffold-drafted-headline-trust-property-plus-two-open-questions-2026-08-13.md | Retention policy scaffold drafted — headline trust property, hosted/self-hosted… |
+| 2026-08-13 13:1x PT | lead | notice-lead-to-exec-docs-cio-cc-pm-CI-workflow-retired-per-PM-ruling-gap-audit-found-two-live-pieces-both-ported-2026-08-13.md | NOTICE: the 'CI' workflow (ci.yml) is retired per PM's ruling — gap audit found… |
+| 2026-08-13 12:5x PT | lead | report-lead-to-exec-cc-pm-oversight-sync-2026-08-13-sprint-state-as-of-1250.md | Oversight sync: sprint state as of 08-13 ~12:50 — PM's test round 6/6, the 1510… |
+| 2026-08-13 10:5x PT | cio | cio-to-exec-cc-pm-agenda-6-ruling-received-carrying-into-janus-thread-2026-08-13.md | Agenda §6 ruling received and recorded — carrying the reframe into the Janus/Th… |
 | 2026-08-12 | ? | janus-to-exec-cc-comms-lamantia-pointer-differentiator-finding-2026-08-12.md | Janus → Exec (cc Comms) — light pointer from xian's LaMantia call (8/11) |
 | 2026-08-11 16:1x PT | lead | escalation-lead-to-pm-cc-arch-exec-ppm-CI-has-been-red-on-main-two-days-and-a-beta-blocker-nobody-can-work-around-plus-what-the-closure-sweep-found-2026-08-11.md | STOP-condition escalation: CI red on main two days, and a beta blocker that 403… |
 | 2026-08-11 16:18 PDT | cxo | reply-cxo-to-ppm-cc-lead-pm-exec-arch-host-pa-agreed-scope-clause-not-a-new-rule-2026-08-11.md | Agreed — it's a scope clause, not a new rule. And it's already closed on #1591,… |
