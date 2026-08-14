@@ -104,6 +104,10 @@ class StandupConversationManager:
         StandupConversationState.REFINING: [
             StandupConversationState.GENERATING,  # Re-generate with new preferences
             StandupConversationState.FINALIZING,
+            # #1617: the final confirmation completes the flow directly — the
+            # FINALIZING tail state claimed turns while ignoring their content
+            # (PM live 2026-08-13). Also the completion-tail release target.
+            StandupConversationState.COMPLETE,
             StandupConversationState.ABANDONED,
             StandupConversationState.SUSPENDED,  # Escape command or timeout
         ],

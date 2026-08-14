@@ -280,6 +280,7 @@ class IntentService:
         trust_stage: Optional[TrustStage] = None,
         user_id: Optional[str] = None,
         formality_baseline: Optional[float] = None,
+        off_topic_prefix: Optional[str] = None,
     ) -> "IntentProcessingResult":
         """
         Issue #767: Check for soft invocation opportunity and append offer.
@@ -294,10 +295,28 @@ class IntentService:
             current_turn: Current conversation turn number
             trust_stage: User's resolved trust stage (Issue #826).
                 None falls back to BUILDING for backward compatibility.
+            off_topic_prefix: #899/#1617 — honest pause/release copy from a
+                guided-process escape on THIS turn. Found while pinning #1617's
+                transcript: the end-of-method prefix prepend (#899) never ran
+                for any of the early handler returns that funnel through here
+                (the rail dispatch among them), so the flow silently vanished
+                with no acknowledgment. Applied here so every funneled return
+                carries it; the end-of-method prepend still covers the
+                fall-through path.
 
         Returns:
             Modified result with offer appended, or original result unchanged
         """
+        if off_topic_prefix and result.message:
+            result = IntentProcessingResult(
+                success=result.success,
+                message=f"{off_topic_prefix}\n\n{result.message}",
+                intent_data=result.intent_data,
+                workflow_id=result.workflow_id,
+                requires_clarification=result.requires_clarification,
+                suggestions=result.suggestions,
+                preferences=result.preferences,
+            )
         if not result.success:
             return result
 
@@ -1413,6 +1432,7 @@ class IntentService:
                         trust_stage=resolved_trust_stage,
                         user_id=user_id,
                         formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                     )
                 except Exception as e:
                     # Graceful fallback: process primary intent only
@@ -1656,6 +1676,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # Issue #286: Handle canonical intents (PORTFOLIO, EXECUTION, STATUS, etc.)
@@ -1695,6 +1716,7 @@ class IntentService:
                         trust_stage=resolved_trust_stage,
                         user_id=user_id,
                         formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                     )
 
                 # Issue #595: Add greeting prefix if multi-intent with greeting detected
@@ -1782,6 +1804,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # Issue #883 + #1094: workflows are no longer pre-created. Handlers
@@ -1944,6 +1967,7 @@ class IntentService:
                         trust_stage=resolved_trust_stage,
                         user_id=user_id,
                         formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                     )
 
             # Handle QUERY intents with domain services
@@ -1960,6 +1984,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # GREAT-4D Phase 1: Handle EXECUTION intents with domain services
@@ -1975,6 +2000,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # GREAT-4D Phase 2: Handle ANALYSIS intents with domain services
@@ -1990,6 +2016,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # GREAT-4D Phase 4: Handle SYNTHESIS intents
@@ -2005,6 +2032,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # GREAT-4D Phase 5: Handle STRATEGY intents
@@ -2020,6 +2048,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # GREAT-4D Phase 6: Handle LEARNING intents
@@ -2035,6 +2064,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # GREAT-4D Phase 7: Handle UNKNOWN intents via conversational floor (#907)
@@ -2057,6 +2087,7 @@ class IntentService:
                     trust_stage=resolved_trust_stage,
                     user_id=user_id,
                     formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
                 )
 
             # Fallback for truly unhandled categories (should never reach here)

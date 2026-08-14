@@ -259,26 +259,29 @@ class TestHandleTurnRefining:
         return await handler.manager.get_conversation(conv.id)
 
     @pytest.mark.asyncio
-    async def test_looks_good_finalizes(self, handler, refining_conversation):
-        """'Looks good' moves to finalizing."""
+    async def test_looks_good_completes(self, handler, refining_conversation):
+        """#1617: 'Looks good' COMPLETES the flow directly — the FINALIZING
+        tail turn (whose answer was never read) claimed real commands in
+        PM's 2026-08-13 live session and is gone."""
         response = await handler.handle_turn(refining_conversation, "looks good")
 
-        assert response.state == StandupConversationState.FINALIZING
+        assert response.state == StandupConversationState.COMPLETE
         assert response.standup_content is not None
+        assert response.requires_input is False
 
     @pytest.mark.asyncio
-    async def test_perfect_finalizes(self, handler, refining_conversation):
-        """'Perfect' moves to finalizing."""
+    async def test_perfect_completes(self, handler, refining_conversation):
+        """'Perfect' completes the flow (#1617)."""
         response = await handler.handle_turn(refining_conversation, "perfect!")
 
-        assert response.state == StandupConversationState.FINALIZING
+        assert response.state == StandupConversationState.COMPLETE
 
     @pytest.mark.asyncio
-    async def test_thanks_finalizes(self, handler, refining_conversation):
-        """'Thanks' moves to finalizing."""
+    async def test_thanks_completes(self, handler, refining_conversation):
+        """'Thanks' completes the flow (#1617)."""
         response = await handler.handle_turn(refining_conversation, "thanks")
 
-        assert response.state == StandupConversationState.FINALIZING
+        assert response.state == StandupConversationState.COMPLETE
 
     @pytest.mark.asyncio
     async def test_add_blocker_updates_content(self, handler, refining_conversation):
@@ -516,14 +519,10 @@ class TestFullConversationFlow:
         response = await handler.handle_turn(conv, "quick")
         assert response.state == StandupConversationState.REFINING
 
-        # Accept
+        # Accept — #1617: the final confirmation completes the flow in ONE
+        # turn (no FINALIZING tail turn to claim the next command).
         conv = await handler.manager.get_conversation(conv.id)
         response = await handler.handle_turn(conv, "looks good")
-        assert response.state == StandupConversationState.FINALIZING
-
-        # Finalize
-        conv = await handler.manager.get_conversation(conv.id)
-        response = await handler.handle_turn(conv, "ok")
         assert response.state == StandupConversationState.COMPLETE
         assert response.requires_input is False
 
@@ -564,14 +563,9 @@ class TestFullConversationFlow:
         assert response.state == StandupConversationState.REFINING
         assert "waiting for review" in response.standup_content
 
-        # Accept
+        # Accept — #1617: the confirmation completes the flow in one turn.
         conv = await handler.manager.get_conversation(conv.id)
         response = await handler.handle_turn(conv, "perfect")
-        assert response.state == StandupConversationState.FINALIZING
-
-        # Complete
-        conv = await handler.manager.get_conversation(conv.id)
-        response = await handler.handle_turn(conv, "done")
         assert response.state == StandupConversationState.COMPLETE
 
     @pytest.mark.asyncio

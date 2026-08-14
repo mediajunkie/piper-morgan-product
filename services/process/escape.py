@@ -37,6 +37,25 @@ Three signal kinds, most-specific first:
 Scope note (routing-fix moratorium, Lead 2026-08-08): this is context-carrying
 seam work — the check only ever runs while a guided flow holds (or is about to
 claim) the turn. It adds NO pre-classifier patterns and dies with the rebuild.
+
+**#1617 — the completion tail (PM live 2026-08-13 3:29–3:30 PM)**: after the
+standup interview's final summary, the flow's tail states ('share this or
+save your preferences?' / 'anything else?') kept claiming turns — "change the
+status of issue #108 to Done" was consumed TWICE as a tail response (the
+REFINING acceptance substring matched the word "Done"). The instructive
+asymmetry in the same transcript: the working-mode declaration ("do things
+directly from now on") DID escape — because its deterministic detector
+(collaboration_gate.detect_mode_declaration) runs at the very top of
+process_intent, ABOVE the guided-process claim. The generalization here is
+that same property granted through THIS seam rather than a new pre-claim
+special case: in a completion tail, a turn that one of the codebase's
+deterministic full-confidence cross-domain detectors claims (currently the
+#1411 Stage-0 explicit-issue-update detector, DELEGATED — never a copied
+pattern) is off_intent, and the registry RELEASES the delivered flow
+(terminal, no resume nag) instead of suspending it. Tail-only on purpose:
+mid-gathering, "I need to change the status of issue #108 to Done" is a
+legitimate standup answer; after the summary has been delivered it can only
+be a command.
 """
 
 from __future__ import annotations
@@ -239,10 +258,39 @@ def _residual_after(message: str, start: int, end: int) -> Optional[str]:
     return residual if len(residual) >= 3 else None
 
 
-def check_escape(message: str, process_type: ProcessType) -> Optional[EscapeSignal]:
+def _detect_tail_cross_domain_action(message: str) -> Optional[str]:
+    """#1617: deterministic cross-domain detection for COMPLETION-TAIL turns,
+    DELEGATED to the existing detectors (never a parallel pattern copy — the
+    #1555 rule). Currently: the #1411 Stage-0 explicit-issue-update detector
+    ("change the status of issue #108 to Done"). Returns a match label for
+    logging, or None. Guarded: a detector import/failure must never trap the
+    user in the flow (same posture as the registry's escape wrapper)."""
+    try:
+        from services.intent_service.classifier import _detect_explicit_issue_update
+
+        issue_number = _detect_explicit_issue_update(message)
+    except Exception as e:  # pragma: no cover - defensive import guard
+        logger.warning("tail_cross_domain_detection_failed", error=str(e))
+        return None
+    if issue_number is not None:
+        return f"explicit_issue_update:#{issue_number}"
+    return None
+
+
+def check_escape(
+    message: str,
+    process_type: ProcessType,
+    in_completion_tail: bool = False,
+) -> Optional[EscapeSignal]:
     """Run the three escape checks, most-specific first.
 
     Returns None when the message should proceed to the flow's handler.
+
+    ``in_completion_tail`` (#1617): the flow has already delivered its result
+    and is in a post-summary tail state — the off_intent tier additionally
+    consults the deterministic cross-domain detectors (see
+    :func:`_detect_tail_cross_domain_action`), because in a tail state an
+    off-tail-shaped turn can only be a command the user wants answered.
     """
     if not message or not message.strip():
         return None
@@ -267,6 +315,12 @@ def check_escape(message: str, process_type: ProcessType) -> Optional[EscapeSign
         m = pattern.search(stripped)
         if m:
             return EscapeSignal(kind="off_intent", matched=m.group(0))
+
+    # 3b. #1617 tail-only: deterministic detectors' turf is off_intent here.
+    if in_completion_tail:
+        matched = _detect_tail_cross_domain_action(stripped)
+        if matched is not None:
+            return EscapeSignal(kind="off_intent", matched=matched)
 
     return None
 
@@ -297,3 +351,15 @@ def format_refusal_prefix(process_type: ProcessType) -> str:
     """Honest prefix prepended when a refusal carries residual content that
     normal intent processing goes on to answer."""
     return _REFUSAL_PREFIX.get(process_type, "Okay — I've ended that.")
+
+
+_RELEASE_PREFIX: Dict[ProcessType, str] = {
+    ProcessType.STANDUP: "(Your standup's all set — on to your request.)",
+    ProcessType.ONBOARDING: "(Onboarding's wrapped — on to your request.)",
+}
+
+
+def format_release_prefix(process_type: ProcessType) -> str:
+    """#1617: honest prefix when a COMPLETED flow releases at an off-tail
+    turn — the flow's work stands, and normal processing answers the turn."""
+    return _RELEASE_PREFIX.get(process_type, "(That's wrapped up — on to your request.)")
