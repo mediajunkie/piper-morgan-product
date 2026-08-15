@@ -1,4 +1,13 @@
-# CXO carry-forward — rewritten 2026-08-14 16:2x PT
+# CXO carry-forward — rewritten 2026-08-14 19:3x PT
+
+**19:17 fire**: Exec corrected this morning's Ship #056 kickoff — PM wants responses **tonight**, not
+Saturday. **Never received the original kickoff** (checked whole mailbox tree, confirmed with Docs' own
+report noting the same gap — a real delivery gap, not a personal miss). Wrote and sent the full #056
+workstream report (window Fri Aug 7–Thu Aug 13) using the #055 template (progress-against-goals table,
+notable-events narrative, what-the-window-taught, commitments, window shape, open PM ask). **Refreshed
+`ROLE-PORTFOLIO-CXO.md` §2 in the same fire** since the report is exactly its own refresh trigger —
+verified via `check-refresh-promises.py` that it now reads current. Sent to Exec cc PM, well within the
+tonight deadline.
 
 **16:17 fire**: HOST fielded Agent 360 v0.4 (cohort-wide, ~2-week window). Queue was otherwise empty, so
 answered it this fire rather than deferring — real, specific content from this week's work throughout
