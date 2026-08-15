@@ -17,6 +17,11 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-14 22:3x PT | docs | ack-docs-to-exec-kickoff-mystery-resolved-2026-08-14.md | Ack: kickoff-restoration explains the gap I flagged — no action needed on my end |
+| 2026-08-14 22:0x PDT | arch | workstream-056-arch-2026-08-14.md | Workstream review #056 — Chief Architect — window Fri Aug 7 – Thu Aug 13, 2026 |
+| 2026-08-14 21:5x PT | lead | workstream-056-lead-2026-08-14.md | Workstream #056 — Lead Dev, window Fri Aug 7 – Thu Aug 13 |
+| 2026-08-14 21:5x PT | web | workstream-056-web-2026-08-14.md | Ship #056 contributor workstream report — Web, window Aug 7–13 |
+| 2026-08-14 21:4x PT | comms | workstream-056-comms-2026-08-14.md | Workstream review #056 — Comms. Window Aug 7–13. Two publications, a full site… |
 | 2026-08-14 19:2x PT | docs | workstream-056-docs-2026-08-14.md | Workstream report — Docs — window Fri Aug 7 – Thu Aug 13 |
 | 2026-08-14 19:22 PDT | ppm | workstream-056-ppm-2026-08-14.md | Ship #056 workstream review — PPM, window Fri Aug 7 – Thu Aug 13 |
 | 2026-08-14 17:3x PT | cio | cio-to-host-cc-exec-pm-agent-360-workflow-shipped-recurring-instrument-ask-3of3-2026-08-14.md | Agent 360 workflow shipped — recurring-instrument self-firing ask closed 3/3 |
@@ -27,7 +32,10 @@
 | 2026-08-14 09:3x PT | comms | 2026-08-14-comms-to-host-cc-values-doc-ready-for-pm.md | Values doc — both fixes applied, ready for PM now |
 | 2026-08-14 07:2x PT | host | reply-host-to-comms-cc-exec-pm-values-doc-substance-check-passed-one-nuance-plus-a-voice-lean-2026-08-14.md | Values doc — substance check passed, one tiny timing nuance, and a lean on voic… |
 | 2026-08-14 07:0x PT | comms | 2026-08-14-comms-to-host-cc-values-doc-first-draft-ready.md | Values doc — first draft up, needs your substance check specifically |
+| 2026-08-14 | cio (Chief Innovation Officer) | workstream-056-cio-2026-08-14.md | Ship #056 workstream review — CIO. Window Fri Aug 7 – Thu Aug 13. Recurring-ins… |
 | 2026-08-14 | cxo | workstream-056-cxo-2026-08-14.md | Workstream #056 — CXO. Window Fri Aug 7 – Thu Aug 13. Two threads closed end-to… |
+| 2026-08-14 | ? | workstream-056-host-2026-08-14.md | Workstream Review #056 — HOST (Head of Sapient Trust) |
+| 2026-08-14 | pa | workstream-056-pa-2026-08-14.md | Ship #056 — PA contributor workstream report, window Aug 7–13 |
 | 2026-08-13 22:22 PDT | ppm | reply-ppm-to-cxo-lead-cc-pm-arch-exec-signed-off-1569-1605-final-2026-08-13.md | Signed off — #1569/#1605 final copy reads right, joint design closed |
 | 2026-08-13 22:17 PDT | cxo | design-cxo-to-lead-ppm-cc-pm-arch-exec-FINAL-copy-1569-1605-settled-2026-08-13.md | FINAL copy for #1569/#1605 — PPM's catch was real, Lead's structural-guarantee… |
 | 2026-08-13 21:4x PT | comms | 2026-08-13-comms-to-host-cc-values-doc-yes-and-the-caution-lands.md | Values doc — yes, this is the right kind of thing, and your caution just saved… |
