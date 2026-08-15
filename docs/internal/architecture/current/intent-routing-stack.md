@@ -55,6 +55,22 @@ Related fix, same commit: the #899 off-topic/release prefix used to be
 silently dropped by every early handler return — it now rides
 `_apply_soft_offer` (the 12-site funnel).
 
+**#1623 mid-gathering hold (2026-08-15), the same seam's inverse guarantee**:
+an ACTIVE gathering flow HOLDS its turns. The thief was never a surface in
+this chain — measured, every content-dependent surface at/above the process
+claim passes PM's stolen answers — it was `StandupProcessAdapter.check_active`'s
+LAZY #888 15-minute timeout: with no background reaper it fires inside the
+NEXT turn's processing, which mid-gathering is by construction the answer to
+the open question, so >15 min of think-time silently auto-suspended the flow
+and dropped the answer to the LLM classifier (files-family denial ate PM's
+plans answer; the temporal surface ate the blocker answer). The timeout
+auto-suspend is now gated to the completion tail (REFINING/FINALIZING);
+mid-gathering the flow holds regardless of think-time, and the deliberate
+exits remain the #888/#1529 escape tiers, #899 off-topic, and the #1510
+mode-declaration surface (which escapes the turn without touching the flow).
+Regression: `tests/unit/services/process/test_midgather_hold_1623.py` (PM's
+two verbatim turns e2e, stale-clock, explosive LLM).
+
 **#1509 unified consent gate (2026-08-13)** — `services/intent_service/consent_gate.py`
 generalizes #1190 + #1510 into ONE decision (`decide_consent(effect, framing, mode)`;
 the named boundary condition lives in that module's docstring, per #1509 AC-1). At the
