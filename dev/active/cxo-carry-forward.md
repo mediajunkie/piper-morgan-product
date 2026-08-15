@@ -1,3 +1,25 @@
+# CXO carry-forward — rewritten 2026-08-15 16:3x PT
+
+**16:17 fire — three items, all handled**:
+1. **PPM agreed** on the outwardness axis (independently stress-tested my scope boundary against
+   `close_issue`, held). Settled, Lead builds. No action from me.
+2. **First-contact criterion ratified** — PM's condition was joint sign-off on the *merged document*
+   specifically. Read it fully, gave real sign-off. **Caught a numbering error in Exec's justification**:
+   my 08-12 review was of item 2 (only-Piper-could) in this doc's numbering, cited as "item 3" — item 3 is
+   the fabrication/citation gate, which I'd never reviewed until this fire. Corrected in the mail and
+   **directly in the doc's own status line**.
+3. **Radar pinned-reminders review** (#1625, PM-ruled, merged, not yet deployed) — read the actual shipped
+   code (template CSS/JS, `ReminderEntitySource`, the radar route) rather than reviewing from description.
+   Two concrete recommended changes (wrong color token — primary blue instead of the warning-amber token;
+   no count in the section heading) + two flagged-not-blocking questions (no cap on pinned accumulation;
+   pinned cards intentionally not clickable, ties to my own #1605 work from yesterday). Sent to Lead.
+
+#1536/#1539 still unchanged. **Nothing else owed by me right now.**
+
+---
+
+*(08-15 13:2x header below, left as this morning's fuller record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-15 13:2x PT
 
 **13:17 fire**: PM ruled (leaning YES) on the #1509 outwardness-consent-axis question, conditional on
