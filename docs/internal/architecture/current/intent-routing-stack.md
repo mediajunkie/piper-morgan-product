@@ -134,7 +134,11 @@ same utterance goes through the CONSTRAINED inversion routing call
 (`services/intent_service/inversion_router.route` — one Haiku-class LLM call,
 task type `inversion_routing`, output validated against a grammar of canonical
 operations DERIVED FROM THE REGISTRY AT CALL TIME: rail entries collapsed by
-shared-entry alias identity + `ACTION_REGISTRY`-only canonicals + NONE/CLARIFY;
+shared-entry alias identity + `ACTION_REGISTRY`-only canonicals + NONE/CLARIFY,
+with catalog descriptions from registry metadata — rail `entry.description`
+for rail operations, `ACTION_DESCRIPTIONS` in `action_registry.py` for
+registry-only canonicals (Phase 1b Family-1 enrichment, metadata-only: nothing
+dispatches on it), honest disposition fallback when an entry has none;
 strict JSON + one repair retry + honest REFUSED, never a guessed route), and a
 structured line (`shadow_route_agreement` / `shadow_route_disagreement`,
 registry-alias-aware comparison against the #1518 production label) becomes

@@ -187,10 +187,15 @@ def derive_routing_grammar() -> RoutingGrammar:
        either direction) — PA's rule: no synonymous options in the catalog.
 
     Descriptions are registry metadata (rail ``entry.description`` with
-    internal issue markers stripped; ``ACTION_EXAMPLES`` examples attached
-    where present) — never hand-written here.
+    internal issue markers stripped; ``ACTION_DESCRIPTIONS`` for
+    registry-only canonicals, with the honest disposition fallback when an
+    entry has none; ``ACTION_EXAMPLES`` examples attached where present) —
+    never hand-written here (#1595 Phase 1b Family-1 enrichment: the fix for
+    a grammar-description gap is richer REGISTRY metadata, this function
+    only derives).
     """
     from services.intent_service.action_registry import (
+        ACTION_DESCRIPTIONS,
         ACTION_EXAMPLES,
         ACTION_REGISTRY,
     )
@@ -247,10 +252,15 @@ def derive_routing_grammar() -> RoutingGrammar:
         ):
             continue
         example = ACTION_EXAMPLES.get((category, action))
+        description = ACTION_DESCRIPTIONS.get((category, action))
         ops.append(
             RoutingOperation(
                 name=action,
-                description=f"{category.lower()} action ({disposition.value}-handled)",
+                # Enriched registry metadata where present (#1595 Phase 1b);
+                # otherwise the honest fallback — the catalog says only what
+                # the registry actually records, never an invented claim.
+                description=description
+                or f"{category.lower()} action ({disposition.value}-handled)",
                 example=example,
                 aliases=(),
                 source="action_registry",
