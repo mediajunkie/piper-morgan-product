@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: 'A museum registrar calmly stops a translucent AI restorer from painting a blank framed canvas, while holding a catalog sheet that falsely shows the artwork as finished.'
 caption: ''
 ---
 
