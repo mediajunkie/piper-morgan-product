@@ -1,6 +1,6 @@
 # HOST carry-forward
 
-**Written**: 2026-08-13 22:0x PDT (STOP fire, day 20 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-14 22:0x PDT (STOP fire, day 21 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -121,9 +121,11 @@
 
 ## Cron
 
-Current job **`4894dc35`** (chain … `d0a0a5eb → 9d57a06f → 4894dc35`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-13 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`04ceaeeb`** (chain … `9d57a06f → 4894dc35 → 04ceaeeb`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-14 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## New this window (08-13) — two substantive threads, both open with others
+## Open threads, as of 08-14 STOP
 
-- **Retention/learning-scope policy scaffold** (`docs/legal/data-retention-policy-DRAFT.md`) — PM's ask via Exec, drafted and sent for review. Awaiting PM. Don't re-draft; if it comes up again, it's PM's to react to.
-- **Values/ethics document** (open-source protection, joint with Comms) — first-pass identity-defining list sent (no-cross-user-learning/ADR-079, audit-transparency read surface/ADR-063, hash-only audit discipline/Pattern-071). Comms confirmed the list and the framing test ("would a fork quietly drop this while looking identical from outside"), deferred prose-drafting to a fresh session. **Not owed further by HOST right now** — Comms is picking up drafting; HOST can keep adding to the substance list if more surfaces, per Comms's explicit invite, but nothing pending.
+- **Retention/learning-scope policy scaffold** (`docs/legal/data-retention-policy-DRAFT.md`) — PM's ask via Exec, drafted and sent for review 08-13. Still awaiting PM. Don't re-draft.
+- **Values/ethics document** (`docs/legal/values-DRAFT.md`, open-source protection, joint with Comms) — substance-checked twice (first-pass list 08-13, drafted-and-verified 08-14). Comms applied both fixes, verified by diffing the actual commit rather than trusting the summary. **Now with PM** — four open decisions in the doc's own "Open Questions" (placement, license/NOTICE relationship, fourth commitment, voice — HOST's lean recorded, PM's call). Not owed further unless PM asks.
+- **Agent 360 v0.4** — cadence ratified (6 weeks, derived from real history) and fielded same-day 08-14 to all 11 roles. 6/11 responses already in same-day; **hold synthesis for the ~2-week window, don't jump on partial responses.** CIO's self-firing workflow for future rounds shipped and independently verified (`4f13dca9b`) — unverified until its first real trigger 2026-09-25, check back then.
+- **Ship #056 workstream review** — filed 08-14 evening per PM's same-day corrected deadline (moved up from Sat 08-15). Nothing further owed unless PM has questions.
