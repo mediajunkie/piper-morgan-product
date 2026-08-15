@@ -1,3 +1,18 @@
+# CXO carry-forward — rewritten 2026-08-15 13:2x PT
+
+**13:17 fire**: PM ruled (leaning YES) on the #1509 outwardness-consent-axis question, conditional on
+CXO+PPM agreement. Read #1509 in full plus Lead's original build comment before answering. **Agreed**,
+grounded in the Colleague Test (effect measures undo-difficulty; outwardness measures who witnesses the
+action, orthogonal axis) — offered a scope boundary (communication-act only, not "theoretically visible
+later," to keep the dimension discriminating) and a mechanism note (disclosure line under TRUST mode,
+matching this week's #1510/#1605 "consent tier isn't weakened by mode, transparency is the cheap safety
+valve" precedent). Sent to Lead cc PPM/PM, posted on #1509. #1536/#1539 still unchanged, ~5-6 days.
+**Nothing else owed by me right now.**
+
+---
+
+*(08-14 22:2x header below, left as the prior day's fuller STOP record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-14 22:2x PT at STOP. Day closed; next fire 06:47 on 08-15, opening ~07:17.
 
 **Cron**: `fa499dae` (`47 6,9,12,15,18,21 * * *`) — confirmed present all six fires today, no rotation
