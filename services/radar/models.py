@@ -17,6 +17,7 @@ class EntityType(str, Enum):
     WORK_ITEM = "Work item"
     PERSON = "Person"
     DOCUMENT = "Document"
+    REMINDER = "Reminder"  # #1625: due reminders, pinned at the top of Radar
 
 
 class Provenance(str, Enum):
@@ -39,6 +40,10 @@ class RadarEntity:
     meta: str = ""  # short context line ("last activity … · 5 turns")
     attention: float = 0.0  # ordering signal; higher = more attention (sorts first)
     ref: str | None = None  # link/target id
+    # #1625 (PM ruling): pinned entities lock to the TOP of the Radar, above
+    # the attention ordering — the persistent surface owns persistence for
+    # due reminders while conversation mentions them once.
+    pinned: bool = False
 
 
 @dataclass(frozen=True)

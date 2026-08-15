@@ -857,3 +857,48 @@ class TestExceptionClauseAnswerBinding:
         )
         assert "'clear' means mark done" in result.message
         assert todo_boundary["completed"] == []  # set never guessed
+
+
+class TestNamedTargetNarrowing:
+    """PM live 2026-08-15: `clear the "test the safe clarfication" reminder`
+    marked ALL FOUR done. A named target now narrows to the single match or
+    clarifies — never the whole set."""
+
+    pytestmark = pytest.mark.asyncio
+
+    async def test_pm_quoted_single_target_acts_on_one(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = "e2e-1605-named"
+        _seed_verb_default(pref_store, "complete")
+        msg = 'clear the "Review the PR" reminder'
+        _stub_classification(monkeypatch, live_service, msg, "complete_todo")
+        todo_boundary["allow_complete"] = True
+        result = await live_service.process_intent(message=msg, session_id=sid, user_id=_USER)
+        assert len(todo_boundary["completed"]) == 1  # ONE, not the set
+        assert "Review the PR" in result.message
+
+    async def test_unmatched_named_target_clarifies_never_bulk(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = "e2e-1605-named2"
+        _seed_verb_default(pref_store, "complete")
+        msg = 'clear the "nonexistent thing" reminder'
+        _stub_classification(monkeypatch, live_service, msg, "complete_todo")
+        todo_boundary["allow_complete"] = True
+        result = await live_service.process_intent(message=msg, session_id=sid, user_id=_USER)
+        assert todo_boundary["completed"] == []  # NOTHING acted on
+        assert "couldn't confidently match" in result.message
+        assert result.intent_data.get("named_target_unmatched") is True
+
+    async def test_named_target_with_stored_delete_confirms_count_of_one(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = "e2e-1605-named3"
+        _seed_verb_default(pref_store, "delete")
+        msg = 'clear the "Review the PR" reminder'
+        _stub_classification(monkeypatch, live_service, msg, "delete_todo")
+        result = await live_service.process_intent(message=msg, session_id=sid, user_id=_USER)
+        # V3's ratified singular grammar: N=1 renders "delete this reminder?"
+        assert "delete this reminder? (yes/no)" in result.message
+        assert todo_boundary["deleted"] == []  # still gated pre-confirm

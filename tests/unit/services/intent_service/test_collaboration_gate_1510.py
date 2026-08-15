@@ -233,13 +233,48 @@ class TestGateSemantics:
         loader.assert_not_awaited()
 
     async def test_imperative_passes_without_touching_storage(self):
+        """PRIVATE-write pin (updated for the #1509 outwardness axis,
+        2026-08-15): an imperative on a PRIVATE write still passes with no
+        storage read. The action here is update_issue, not create_issue —
+        the create family is OUTWARD now, and an OUTWARD imperative reads
+        the mode preference (the trust-mode disclosure hangs on it); its
+        pin is the companion test below."""
         loader = AsyncMock()
+        with patch(f"{GATE}._load_preferences", new=loader):
+            assert (
+                await gate_holds("update_issue", "change the title of issue #9 to Foo", "u-1")
+                is False
+            )
+        loader.assert_not_awaited()
+
+    async def test_outward_imperative_reads_mode_but_still_never_holds(self):
+        """#1509 outwardness axis: an imperative on an OUTWARD write
+        (create family) now consults the declared mode — that read decides
+        the DISCLOSURE, never the gate: the imperative still passes in both
+        modes (the gate confiscates ambiguity, never imperatives), and a
+        storage failure degrades to today's plain pass, never to a hold."""
+        loader = AsyncMock(return_value={})
         with patch(f"{GATE}._load_preferences", new=loader):
             assert (
                 await gate_holds("create_issue", "create an issue about login bugs", "u-1")
                 is False
             )
-        loader.assert_not_awaited()
+        loader.assert_awaited_once()
+        # Declared execute mode: still passes (disclosure is the rail's job).
+        with patch(
+            f"{GATE}._load_preferences",
+            new=AsyncMock(return_value={WORKING_MODE_PREF_KEY: "execute"}),
+        ):
+            assert (
+                await gate_holds("create_issue", "create an issue about login bugs", "u-1")
+                is False
+            )
+        # Fail-safe direction: storage error -> plain pass, never a hold.
+        with patch(f"{GATE}._load_preferences", new=AsyncMock(side_effect=RuntimeError("db down"))):
+            assert (
+                await gate_holds("create_issue", "create an issue about login bugs", "u-1")
+                is False
+            )
 
     async def test_ambiguous_holds_under_default_mode(self):
         with patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})):

@@ -126,3 +126,51 @@ async def test_conversation_source_dormant_for_old_activity():
 
 async def test_conversation_source_empty_list():
     assert await ConversationEntitySource(_FakeHistory([])).fetch("u1") == []
+
+
+# --- #1625: due reminders — pinned Reminder entities locked at the top ---
+
+
+class _FakeReminderProvider:
+    def __init__(self, texts):
+        self._texts = texts
+
+    async def list_due(self, user_id):
+        return self._texts
+
+
+async def test_feed_pinned_entities_lock_above_attention_order():
+    """#1625 PM ruling: pinned (due-reminder) cards sort ABOVE the attention
+    ordering, however hot the unpinned cards are."""
+    from services.radar import ReminderEntitySource
+
+    pinned_src = ReminderEntitySource(_FakeReminderProvider(["call the vendor"]))
+    feed = RadarFeed([_FakeSource([_obs("hot item", 999.0)]), pinned_src])
+    view = await feed.assemble("u1")
+    assert view.state == "populated"
+    assert [e.title for e in view.entities] == ["call the vendor", "hot item"]
+    assert view.entities[0].pinned is True
+    assert view.entities[1].pinned is False
+
+
+async def test_reminder_source_maps_due_texts_as_pinned_observed():
+    from services.radar import ReminderEntitySource
+
+    entities = await ReminderEntitySource(
+        _FakeReminderProvider(["submit the report", "call the vendor"])
+    ).fetch("u1")
+    assert [e.title for e in entities] == ["submit the report", "call the vendor"]
+    for e in entities:
+        assert e.entity_type == EntityType.REMINDER
+        assert e.provenance == Provenance.OBSERVED  # real user reminders, no fabrication
+        assert e.lifecycle_state == "due"
+        assert e.pinned is True
+
+
+async def test_reminder_source_empty_and_failed_lookup_yield_no_cards():
+    """A None from the provider (failed lookup) renders NO card — conversational
+    #1425 honesty owns failure disclosure; Radar never fabricates."""
+    from services.radar import ReminderEntitySource
+
+    assert await ReminderEntitySource(_FakeReminderProvider([])).fetch("u1") == []
+    assert await ReminderEntitySource(_FakeReminderProvider(None)).fetch("u1") == []

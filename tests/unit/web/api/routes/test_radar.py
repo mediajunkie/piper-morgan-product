@@ -162,3 +162,51 @@ class TestWorkItemAssigneeFilter:
             new=AsyncMock(return_value={"github_username": "dbhandle"}),
         ):
             assert await read_user_github_handle(uuid4()) == "dbhandle"
+
+
+# --- #1625: due reminders pinned at the top of the Radar route ---
+
+
+def test_reminder_source_registered_in_feed():
+    """#1625: the live feed wires a ReminderEntitySource (Radar-only — the
+    standup's shared build_entity_sources wiring is deliberately untouched)."""
+    from services.radar import ReminderEntitySource
+    from services.radar.feed_factory import build_entity_sources
+
+    feed = _build_feed(_FakeHistoryService([]))
+    assert any(isinstance(s, ReminderEntitySource) for s in feed._sources)
+    shared = build_entity_sources(_FakeHistoryService([]))
+    assert not any(isinstance(s, ReminderEntitySource) for s in shared)
+
+
+async def test_radar_pins_due_reminders_at_top():
+    """Due reminders render pinned above even the hottest unpinned entity,
+    and the response carries the pinned flag for the JS pinned section."""
+    now = datetime.now(timezone.utc)
+    svc = _FakeHistoryService([_summary("c1", "hot chat", now)])
+    with patch(
+        "services.radar.feed_factory.DueReminderProvider.list_due",
+        new=AsyncMock(return_value=["submit the report"]),
+    ):
+        view = await get_radar(current_user=_USER, service=svc)
+    assert view.state == "populated"
+    top = view.entities[0]
+    assert top.title == "submit the report"
+    assert top.entity_type == "Reminder"
+    assert top.pinned is True
+    assert view.entities[1].title == "hot chat"
+    assert view.entities[1].pinned is False
+
+
+async def test_radar_reminder_provider_failure_never_blanks_feed():
+    """A reminder-lookup failure degrades to no reminder cards (per-source
+    isolation + provider [] contract) — the rest of the Radar still renders."""
+    now = datetime.now(timezone.utc)
+    svc = _FakeHistoryService([_summary("c1", "chat", now)])
+    with patch(
+        "services.intent_service.todo_handlers.TodoIntentHandlers.get_due_reminders",
+        new=AsyncMock(side_effect=RuntimeError("db down")),
+    ):
+        view = await get_radar(current_user=_USER, service=svc)
+    assert view.state == "populated"
+    assert [e.title for e in view.entities] == ["chat"]

@@ -307,6 +307,12 @@
   .radar-card--clickable { cursor: pointer; transition: border-color 0.15s ease; }
   .radar-card--clickable:hover { border-color: var(--color-primary, #2077b2); }
   .radar-card--clickable:focus-visible { outline: var(--focus-outline); outline-offset: 1px; }
+  /* #1625 — pinned due-reminders section, locked at the TOP of the Radar (PM ruling:
+     the persistent surface owns reminder persistence; conversation mentions once).
+     Placement/skin gets a CXO pass post-merge. */
+  .radar-pinned { margin: 0 0 var(--space-md, 16px); padding-bottom: var(--space-dense, 6px); border-bottom: 1px solid var(--color-neutral-light-gray-4, #e0e0e0); }
+  .radar-pinned-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted, #687a7c); margin: 0 0 var(--space-dense, 6px); }
+  .radar-card--pinned { border-color: var(--color-primary, #2077b2); }
   .radar-empty { font-size: 0.84rem; line-height: 1.5; padding: var(--space-md, 16px); }
   .radar-empty-title { font-weight: 600; margin: 0 0 6px; color: var(--color-text, #1f2933); }
   .radar-empty-sub { margin: 0; color: var(--color-text-muted, #687a7c); }
@@ -757,7 +763,8 @@
      */
     function renderRadarCard(entity) {
       const card = document.createElement('article');
-      card.className = 'radar-card' + (entity.provenance === 'example' ? ' radar-card--example' : '');
+      card.className = 'radar-card' + (entity.provenance === 'example' ? ' radar-card--example' : '')
+        + (entity.pinned ? ' radar-card--pinned' : '');  // #1625 pinned due reminders
       card.setAttribute('role', 'listitem');
       // #1090 swap: make the card navigable (the History list was click-to-resume;
       // the Radar feed replaces it, so each card must open its referent). Routing by
@@ -866,7 +873,24 @@
         content.appendChild(none);
         return;
       }
-      matches.forEach(e => content.appendChild(renderRadarCard(e)));
+      // #1625 — pinned section: due reminders LOCK to the top of the Radar
+      // (PM ruling: the persistent surface owns persistence; conversation
+      // mentions them once). The server already orders pinned-first; the
+      // labeled section makes the lock visible. CXO placement pass post-merge.
+      const pinned = matches.filter(e => e.pinned);
+      const unpinned = matches.filter(e => !e.pinned);
+      if (pinned.length) {
+        const section = document.createElement('section');
+        section.className = 'radar-pinned';
+        section.setAttribute('aria-label', 'Due reminders — pinned');
+        const heading = document.createElement('div');
+        heading.className = 'radar-pinned-title';
+        heading.textContent = '📌 Due reminders';
+        section.appendChild(heading);
+        pinned.forEach(e => section.appendChild(renderRadarCard(e)));
+        content.appendChild(section);
+      }
+      unpinned.forEach(e => content.appendChild(renderRadarCard(e)));
     }
 
     /**

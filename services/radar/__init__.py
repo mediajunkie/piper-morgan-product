@@ -7,6 +7,7 @@ from .sources import (
     DocumentEntitySource,
     EntitySource,
     PlaceEntitySource,
+    ReminderEntitySource,
     WorkItemEntitySource,
 )
 
@@ -21,4 +22,5 @@ __all__ = [
     "DocumentEntitySource",
     "WorkItemEntitySource",
     "PlaceEntitySource",
+    "ReminderEntitySource",
 ]

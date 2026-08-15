@@ -181,6 +181,7 @@ class ClearAsk:
     verb: str  # family label ("clear", "handle", "take care of", "reset")
     noun: str  # "reminder" | "todo" — the user's own vocabulary (#1569)
     has_exception: bool  # exception clause present (fall back, never guess)
+    named_target: Optional[str] = None  # quoted/'the X reminder' single-target ask
 
 
 def detect_clear_family_ask(message: Optional[str]) -> Optional[ClearAsk]:
@@ -209,7 +210,35 @@ def detect_clear_family_ask(message: Optional[str]) -> Optional[ClearAsk]:
                 # rule's item-in-both-blocks case, #1569).
                 noun="reminder" if has_reminder else "todo",
                 has_exception=bool(_EXCEPTION_RE.search(text)),
+                named_target=_extract_named_target(text),
             )
+    return None
+
+
+# PM live 2026-08-15: `clear the "test the safe clarfication" reminder` acted
+# on ALL FOUR reminders — the batch resolver had no concept of a named single
+# target, so a specific ask executed against everything (with a stored DELETE
+# default this would have been unconfirmed bulk destruction had V3 not
+# counted). A named target narrows the set to the match, or CLARIFIES on
+# no/ambiguous match — never falls back to the whole set.
+_QUOTED_TARGET_RE = re.compile(r"[\"\u201c']([^\"\u201d']{2,80})[\"\u201d']")
+_THE_X_TARGET_RE = re.compile(
+    r"\bthe\s+(.{2,60}?)\s+(?:reminder|todo)\b", re.IGNORECASE
+)
+
+
+def _extract_named_target(text: str) -> Optional[str]:
+    m = _QUOTED_TARGET_RE.search(text)
+    if m:
+        return m.group(1).strip()
+    m = _THE_X_TARGET_RE.search(text)
+    if m:
+        candidate = m.group(1).strip().strip("\"'\u201c\u201d")
+        # articles/pronouns alone are not names ("clear the last reminder"
+        # stays a batch-family question, not a match attempt)
+        if candidate.lower() in {"", "first", "last", "next", "that", "this", "one"}:
+            return None
+        return candidate
     return None
 
 
@@ -494,6 +523,31 @@ async def maybe_handle_clear_family(
     todo_service = intent_service.todo_handlers.todo_service
     try:
         targets = await _resolve_targets(todo_service, todo_user_id, ask.noun)
+        if ask.named_target:
+            wanted = ask.named_target.lower()
+            matches = [t for t in targets if wanted in (t.text or "").lower()]
+            if len(matches) == 1:
+                targets = matches
+            else:
+                # no match or ambiguous — CLARIFY, never the whole set
+                names = ", ".join(f"'{t.text}'" for t in targets[:6])
+                logger.info(
+                    "reminder_clear_named_target_unmatched",
+                    wanted=ask.named_target,
+                    candidates=len(matches),
+                    session_id=session_id,
+                )
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        f"I couldn't confidently match '{ask.named_target}' to exactly one "
+                        f"{ask.noun}"
+                        + (f" — you have: {names}." if names else " — you don't have any right now.")
+                        + " Tell me which one you mean and I'll act on just that."
+                    ),
+                    intent_data={**base_intent_data, "named_target_unmatched": True},
+                    requires_clarification=True,
+                )
     except Exception as e:  # silent-ok: logged at error w/ exc_info; a source failure must read as trouble-loading (#1425), never fall through to a guessed mapping
         logger.error(
             "reminder_clear_target_resolution_failed",

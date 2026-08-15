@@ -91,11 +91,37 @@ async def test_workitem_url_fallback_untitled_and_empty():
             )
         ).fetch("u")
     )[0]
-    assert e.title == "(untitled work item)"
+    # #1622: the untitled fallback carries the issue number so the item stays
+    # findable on the surface (not just in meta).
+    assert e.title == "(untitled work item #5)"
     assert e.ref == "https://x/5"
     assert "#5" in e.meta
     # empty provider → no entities (honest empty, not a fabricated card)
     assert await WorkItemEntitySource(_FakeWorkItems([])).fetch("u") == []
+
+
+async def test_workitem_degenerate_title_renders_placeholder_not_verbatim_1622():
+    """#1622: a degenerate title — the literal ``{`` of a JSON-fragment issue title
+    (mediajunkie/test-piper-morgan #100 et al.), whitespace, a single glyph, or pure
+    punctuation — must NEVER surface verbatim (PM's Watch list rendered
+    ``'"{"' hasn't moved in 380 days``). Placeholder-with-id, not skip: the item is a
+    real observed entity; dropping it would fabricate an all-clear."""
+    rows = [
+        _issue(number=100, title="{"),  # the reported artifact
+        _issue(number=101, title="   "),  # whitespace-only
+        _issue(number=102, title="[](){}...:;"),  # pure punctuation
+        _issue(number=103, title="X"),  # single glyph
+    ]
+    entities = await WorkItemEntitySource(_FakeWorkItems(rows)).fetch("u")
+    assert [e.title for e in entities] == [
+        "(untitled work item #100)",
+        "(untitled work item #101)",
+        "(untitled work item #102)",
+        "(untitled work item #103)",
+    ]
+    # a short-but-real title survives untouched
+    ok = (await WorkItemEntitySource(_FakeWorkItems([_issue(title="v2")])).fetch("u"))[0]
+    assert ok.title == "v2"
 
 
 # --- multi-source compose (Conversation + WorkItem, attention-first) ---
