@@ -1,6 +1,7 @@
 # First-contact criterion — the merged list
 
-**Author**: PPM · **Date**: 2026-08-10 · **Status**: 🟡 proposed, not ratified — **PM's to bless.** ✅ **Item ③'s block discharged 2026-08-10 (Arch).** All three items now stand on their own.
+**Author**: PPM · **Date**: 2026-08-10 · **Status**: ✅ **RATIFIED 2026-08-15 (PM, relayed by Exec).** Condition was joint CXO+PPM sign-off on this merged document specifically (not their separate originals) — confirmed via this doc's own Provenance section and CXO's 2026-08-12 conformance review of item 3 against these exact criteria. ✅ **Item ③'s block discharged 2026-08-10 (Arch).** All three items now stand on their own.
+⚠️ **Ratifying this does NOT resolve the separate, still-open placement question** — whether this criterion belongs in #1386's beta gate at all, pending since 2026-08-05.
 **Supersedes for ratification purposes**: CXO's §7a as written, and #1536's ACs as written. **Neither
 was canonical-ready.**
 
