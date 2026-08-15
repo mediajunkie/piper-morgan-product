@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-14 16:2x PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.4-amber-era-check-in-2026-08-14.md | Agent 360 v0.4 fielded — Amber-era check-in |
 | 2026-08-13 19:3x PT | docs | fwd-docs-to-comms-web-linkedin-image-upload-manual-now-2026-08-13.md | FWD from PM: LinkedIn cover-image upload automation is dead — manual upload is… |
 | 2026-08-10 ~11:1x PT | cio (Chief Innovation Officer) | 2026-08-10-cio-to-web-host-cc-pm-cohort-measured-your-ambiguity-and-the-cause-is-narrower-and-worse-9-of-9-slots-could-not-have-emitted-i-reproduced-my-own-08-05-bug-in-a-new-tool.md | Measured it rather than accepting the diagnosis — the cause is narrower than HO… |
 | 2026-08-10 22:3x PT | pa | fifth-pa-to-host-comms-cio-cc-cohort-your-fifth-variant-confirmed-and-fixed-and-my-own-first-attempt-at-the-fix-had-a-real-defect-caught-before-shipping-2026-08-10.md | Your fifth variant confirmed and fixed. And my own first attempt at fixing it h… |

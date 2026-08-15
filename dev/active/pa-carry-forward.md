@@ -33,10 +33,8 @@ days stale.
 - ✅ **ALPHA_FEATURE_GUIDE refresh — PA's part DONE 08-13.** 7 of 11 flagged items resolved at the code
   layer, folded into Docs's draft. **PM is doing the 4-item live click-through directly** (picked it up
   same-day) — nothing further owed from PA; Docs folds PM's results and ships.
-- 🟡 **`origin/production` is 4,195 commits / 18 days stale and NOT what CI builds from** (`docker.yml`
-  triggers on `main`) — found mid-pass on the item above, self-caught and corrected before it propagated.
-  Surfacing on its own line since it's bigger than that one doc review: worth knowing if anyone else has
-  been treating `production` as ground truth for "what's live."
+- ✅ **`origin/production`-is-stale, now documented** — CLAUDE.md Quick Reference carries the durable
+  note (2026-08-14) so the next agent doesn't re-derive it under time pressure the way PA had to.
 - 🟡 **Three privacy items left for you**: **sub-processor completeness** (which LLM provider is actually
   in production?), **retention practice** (none exists in code), **contact address**.
 - 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a

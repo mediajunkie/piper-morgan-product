@@ -163,6 +163,8 @@ alembic upgrade head
 > ```
 > Diagnosed 2026-06-04 (Lead Dev) after it masqueraded as a canonical-retest "rate limit" across multiple restarts. The fix is launch-environment only — no code change. (Future-proofing tracked in #1152: multi-LLM / local-model fallback.)
 
+> ⚠️ **`origin/production` is NOT what's deployed — don't cite it as "what's live."** Found 2026-08-13 (PA) mid-verification-task: `origin/production` was **4,195 commits / 18 days stale** relative to `origin/main` at the time, predating even the security-relevant #1481 Slack hold. `.github/workflows/docker.yml`'s build trigger is `push: branches: [main]`, not `production` — the branch looks abandoned, not a deploy source. **For "what does the app actually do right now," check `origin/main`** (or, better, whatever the live host's actual running commit is if you can determine it — branch staleness and deployed-artifact staleness are two different numbers; see the 2026-08-06 "2,269 commits behind" incident where the branch measure and the artifact measure differed by two orders of magnitude). If you're about to cite any named ref as ground truth for "current" or "live," check what it actually is first — don't trust the name.
+
 **Critical Paths**:
 - Entry point: `main.py` (not web/app.py)
 - Domain models: `services/domain/models.py`

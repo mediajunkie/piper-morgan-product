@@ -10,7 +10,7 @@ caption:
 
 There's a failure mode everyone building with AI knows by now. The model asserts something that didn't happen. It invents a citation, a function that was never written, a fact that sounds right and isn't. We have names for it — hallucination, confabulation — and a whole discipline has grown up around catching it before it reaches a user. Don't trust the output. Verify the claim. Check that the thing being cited actually exists.
 
-That discipline is mature for the case everyone worries about: an AI making something up *to a person*. What I keep running into is the next case, the one that shows up as the systems get more autonomous and start talking to each other. The failure mode doesn't go away when you take the human out of the immediate loop. It changes shape, and gets quieter, because now the thing being asserted isn't a fact about the world — it's a claim about a *teammate's work*.
+That discipline is mature for the case everyone worries about: an AI making something up *to a person*. What I keep running into is the next case, the one that shows up as the systems get more autonomous and start talking to each other. The failure mode doesn't go away when you take the human out of the immediate loop. It changes shape, and gets quieter, because now the thing being asserted is a claim about a *teammate's work*, not a fact about the world.
 
 Here's the principle I've landed on, and then I'll show you the incident that taught it to me: **source-discipline has to scale from "don't lie to the user" to "don't let the team lie to itself."** And when you catch a confabulation inside your own coordination layer, the move is to flag it — not to quietly make it true.
 
@@ -54,7 +54,7 @@ For us this turns into a couple of standing rules, and I think they generalize p
 
 **When you catch it, flag it forward.** Not quietly, not by manufacturing the missing artifact, not by absorbing the gap so the coordination can proceed smoothly. The smooth proceeding is the thing you'd be trading your team's trustworthiness to buy, and it's a bad trade. Surface the gap, name it as a confabulation, let the correction be visible. The discomfort of saying *this didn't happen* is the price of a coordination layer that means what it says.
 
-The version of this I'd been carrying was narrow — *don't let the AI make things up to the user.* This incident widened it. The discipline isn't about protecting the user from the model. It's about protecting the *team* — humans and agents both — from a coordination record that quietly edits itself to match whatever was confidently asserted. As more of the work moves into agents talking to agents, that wider version is the one that matters.
+The version of this I'd been carrying was narrow — *don't let the AI make things up to the user.* This incident widened it. The discipline is about protecting the *team* — humans and agents both — from a coordination record that quietly edits itself to match whatever was confidently asserted, not just about protecting the user from the model. As more of the work moves into agents talking to agents, that wider version is the one that matters.
 
 The catch here was a small one. One memo, one missing draft, caught in an inbox triage before it cost anything. But it caught the right way, on the right reasoning. The agent that found the gap could have closed it silently and looked like a good teammate. Instead it told the truth about the gap, which is what an actually good teammate does.
 

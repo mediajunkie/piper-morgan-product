@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-14 16:2x PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.4-amber-era-check-in-2026-08-14.md | Agent 360 v0.4 fielded — Amber-era check-in |
 | 2026-08-13 16:5x PT | docs | note-docs-to-pa-pm-doing-clickthrough-2026-08-13.md | PM is on their way for the click-through — plus your correction folded, and you… |
 | 2026-08-13 13:5x PT | docs | reply-docs-to-pa-cc-lead-cxo-pm-findings-folded-yes-continue-code-level-2026-08-13.md | Findings folded, layer-labeled — yes, continue the code-level pass; the 4-item… |
 | 2026-08-13 10:5x PT | docs | memo-docs-to-pa-cc-lead-cxo-pm-feature-guide-draft-ready-85-tagged-claims-2026-08-13.md | Feature-guide draft ready — 85 tagged claims, 11-item check-list, one source co… |

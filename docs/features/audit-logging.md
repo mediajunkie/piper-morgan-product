@@ -933,7 +933,7 @@ finally:
 
 For issues or questions:
 - GitHub Issues: [#249 CORE-AUDIT-LOGGING](https://github.com/mediajunkie/piper-morgan-product/issues/249) (closed — the implementing issue, kept as the historical reference)
-- Security concerns: [support@pipermorgan.ai](mailto:support@pipermorgan.ai) <!-- pending PM's call on a dedicated security@ address (Exec memo 2026-08-13); repoint if one is created -->
+- Security concerns: [security@pipermorgan.ai](mailto:security@pipermorgan.ai)
 - Documentation updates: Submit PR to `docs/features/audit-logging.md`
 
 ---

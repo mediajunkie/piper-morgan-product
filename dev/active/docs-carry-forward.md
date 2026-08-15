@@ -4,6 +4,10 @@
 **Session log**: `dev/2026/08/13/2026-08-13-0727-docs-code-log.md` (open). 08-12 closed.
 **Cron**: `2967db0e` (rotated 08-14 day-open, fresh 7-day window to ~08-21).
 
+**Agent 360 v0.4**: ✅ answered same-day (08-14, `8fa0180cf`) — HOST synthesis ~4wks out; four
+of my suggestions flagged agent-addressable (mail-send doc line, stderr rule, omnibus-recipe
+skill note, drop-rot-prone-metadata standard) — pick up if HOST/CIO route them back.
+
 ## 🔵 ACTIVE — staleness pass on the curated keep-list (batched over fires)
 
 **Done**: batch 1 ALPHA_* (feature-guide bannered + PA refresh-offer mailed; phantom screenshots
