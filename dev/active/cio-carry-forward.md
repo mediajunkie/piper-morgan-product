@@ -1,7 +1,7 @@
-# CIO carry-forward — rewritten 2026-08-14 (17:3x WORK)
+# CIO carry-forward — rewritten 2026-08-14 (22:37 STOP)
 
-**Cron**: `b2807f51` · `7 10,16,22` LEAN · re-armed 2026-08-12 22:37 STOP (delete-then-create) ·
-**auto-expires ~2026-08-19**.
+**Cron**: `d1218e82` · `7 10,16,22` LEAN · re-armed 2026-08-14 22:37 STOP (delete-then-create) ·
+**auto-expires ~2026-08-21**.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
@@ -45,6 +45,10 @@ letting "not yet" become the default.
 
 ## ✅ Closed recently (08-11 → 08-14)
 
+- **Ship #056 workstream review filed** (08-14 evening, same-day per PM's mid-evening correction
+  moving the deadline up from Saturday) — full §0-§4 review of the Aug 7-13 window, read from my
+  own seven session logs directly. Named what I got wrong plainly (the reversed reboot-cron
+  reasoning, the two retroactive-close incidents) rather than only listing wins.
 - **Agenda §6 answered and applied three times** — see above. Recurring-instrument ask closed 3/3.
 - **#1616 closed** — mailbox filename-length lint.
 - **Agent 360 v0.4 fielded and answered in full** — substantive response covering this week's two
