@@ -1,6 +1,10 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-13 07:5x PDT (Fire 1 — alpha + guides staleness batches done)
+**Updated**: 2026-08-14 22:3x PDT (DAY-CLOSED — 6 fires, clean sign-off)
+**Session log**: `dev/2026/08/14/2026-08-14-0727-docs-code-log.md` (closed). 08-13 closed
+retroactively same day.
+**Cron**: `2967db0e`, fresh window to ~08-21 (rotated 08-14 day-open, 4 days ahead of prior expiry).
+
 **Session log**: `dev/2026/08/13/2026-08-13-0727-docs-code-log.md` (open). 08-12 closed.
 **Cron**: `2967db0e` (rotated 08-14 day-open, fresh 7-day window to ~08-21).
 

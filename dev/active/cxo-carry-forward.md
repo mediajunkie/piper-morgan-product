@@ -1,3 +1,27 @@
+# CXO carry-forward — rewritten 2026-08-14 22:2x PT at STOP. Day closed; next fire 06:47 on 08-15, opening ~07:17.
+
+**Cron**: `fa499dae` (`47 6,9,12,15,18,21 * * *`) — confirmed present all six fires today, no rotation
+needed. Session-only, auto-expires ~2026-08-18 — **watch for this; getting close.** **Worktree**:
+`~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`.
+
+**Today (08-14) in one line**: #1569/#1605 fully closed (copy seams reviewed, ALWAYS_ASK question answered,
+PPM confirmed). Agent 360 v0.4 answered in full with real evidence from the week, catching and fixing a
+stale freeze-watchdog registry row along the way. Ship #056 workstream report written and sent under a
+same-evening deadline compression — the missing original kickoff turned out to be a real mail-send
+accident (Exec's own follow-up call deleted it 22 seconds after sending), resolved this evening, confirming
+my earlier "delivery gap, not a personal miss" read. `ROLE-PORTFOLIO-CXO.md` §2 refreshed in the same fire
+since the report was its own trigger. Report spot-checked clean against the 08-13 omnibus.
+
+**Open at handoff**: #1536 (Lead, live-verification, ~4 days quiet — worth a light mention if it crosses a
+week), #1539 (PM, candidate posted), #1605's tiny remaining V2-under-ALWAYS_ASK phrasing (Lead, not
+urgent), #1386 (unchanged, still withheld), four ✏️ items on `experience-across-surfaces.md` + Surface 3
+naming (both with PM, over a week now, flagged again in tonight's report). **Nothing owed by me right now**
+— everything above is with someone else or is a small build item not mine to build.
+
+---
+
+*(08-14 19:3x header below, left as this evening's fuller record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-14 19:3x PT
 
 **19:17 fire**: Exec corrected this morning's Ship #056 kickoff — PM wants responses **tonight**, not
