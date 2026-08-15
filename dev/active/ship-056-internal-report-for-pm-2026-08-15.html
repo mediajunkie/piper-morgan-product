@@ -56,9 +56,10 @@
   .tag.adv{background:color-mix(in srgb,var(--adv) 14%,transparent);color:var(--adv)}
   .tag.held{background:color-mix(in srgb,var(--held) 16%,transparent);color:var(--held)}
   .tag.slip{background:color-mix(in srgb,var(--slip) 13%,transparent);color:var(--slip)}
-  ol.asks{margin:0;padding-left:0;list-style:none;counter-reset:a;display:flex;flex-direction:column;gap:.7rem}
-  ol.asks li{display:grid;grid-template-columns:1.7rem 1fr;gap:.6rem;align-items:baseline;counter-increment:a}
-  ol.asks li::before{content:counter(a);font:600 .85rem/1.5 var(--data);color:var(--accent)}
+  ol.asks{margin:0;padding-left:0;list-style:none;counter-reset:a;display:flex;flex-direction:column;gap:.7rem;width:100%}
+  ol.asks li{display:flex;flex-direction:row;align-items:baseline;gap:.6rem;counter-increment:a;width:100%}
+  ol.asks li::before{content:counter(a);font:600 .85rem/1.5 var(--data);color:var(--accent);flex:0 0 auto}
+  ol.asks li>span{flex:1 1 auto;min-width:0}
   ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.45rem}
   ul.plain li::marker{color:var(--ink-soft)}
   code{font:.88em/1.4 var(--data);background:var(--accent-soft);padding:.1rem .3rem;border-radius:2px}
@@ -80,7 +81,7 @@
       <div class="stat"><dt>Reports in</dt><dd>10 of 10</dd></div>
       <div class="stat"><dt>Deployed</dt><dd>v41 → v52</dd></div>
       <div class="stat"><dt>MVP not done</dt><dd>48 (24 In Review)</dd></div>
-      <div class="stat"><dt>Published</dt><dd>3 in-window</dd></div>
+      <div class="stat"><dt>Published</dt><dd>6 in-window</dd></div>
       <div class="stat"><dt>Portfolio lines slipped</dt><dd>3</dd></div>
     </dl>
 
@@ -126,7 +127,7 @@
           <tr>
             <td><strong>Communications</strong></td>
             <td><span class="tag adv">7 adv</span></td>
-            <td>Three publications in-window, zero slots missed — its own report counted "Alpha Launches" (Aug 13) as just outside the window; Aug 13 is the window's last day, so it's in (caught synthesizing this report, not by Comms). Also the window's largest single piece of work by file count — a full visitor-facing register pass across the newly-scoped public docs site with Docs, which turned up a manual-install tutorial missing its <code>git clone</code> step entirely. Reports four more instrument-measured-the-wrong-thing catches, three of them its own, continuing directly from the same finding in #055's report two weeks running.</td>
+            <td><strong>Six publications actually landed in-window, not the three this report first cited.</strong> Comms' own report counted only pieces it personally ran the full publish action for (2, plus "Alpha Launches" miscounted as outside the window). It omitted two real ones published by others while the team was capacity- or quota-constrained: "Drained on Paper" (Docs pinch-hit) and "The Write-Path Chase" (Janus/DinP pinch-hit) — caught by PM, verified against the calendar. Worth Comms tightening going forward: a workstream review needs publications-in-the-window, not publications-I-personally-published. Substantively strong otherwise: the window's largest single piece of work by file count was a full visitor-facing register pass across the newly-scoped public docs site with Docs, which turned up a manual-install tutorial missing its <code>git clone</code> step entirely. Reports four more instrument-measured-the-wrong-thing catches, three of them its own, continuing directly from the same finding in #055's report two weeks running.</td>
           </tr>
         </tbody>
       </table>
@@ -152,15 +153,15 @@
     <h2>What needs you — nine items</h2>
     <div class="card">
       <ol class="asks">
-        <li><strong>Bless the merged first-contact criterion.</strong> Not §7a as originally written, not #1536's own acceptance criteria as written — the merged document is the actual artifact (PPM). Code is shipped; this is the last gate before the live-user test can even be scheduled.</li>
-        <li><strong>Name Surface 1 in the 1.0 five, or strike Surface 3.</strong> Carried a second window now — Surface 3 has exactly one corpus mention and no name, doc, ADR, or build lane (PPM/CXO). No urgency attached; beta isn't gated on it, but it's aging.</li>
-        <li><strong>The values document — four small decisions.</strong> Where it lives publicly, its relationship to the LICENSE/NOTICE text, whether a fourth commitment belongs, and voice (HOST leans third-person; Comms deliberately didn't apply that lean without your word). Ready for your read now, no deadline (Comms + HOST).</li>
-        <li><strong>The retention-policy scaffold.</strong> Drafted, spot-verified against the running code before HOST wrote a word of it. Two open questions inside it, both left genuinely open rather than pre-decided: a default retention limit (HOST agrees with your no-limit lean, for an independent reason), and whether to offer user-facing retention settings.</li>
-        <li><strong>Memory-index packing.</strong> About a week queued now — CIO's own words: no clean way to tell "queued" from "forgotten" without risking a nag. Headroom is stable at 13 lines, not shrinking further, so there's no new urgency, just an aging ask.</li>
-        <li><strong>The spatial-intelligence cold-island decision.</strong> PM-gated since July 30, unresolved through this window too (Arch, checked live rather than assumed). Arch's own slice has been complete the whole time — this is purely waiting on you.</li>
-        <li><strong>The audit nobody owns.</strong> HOST's repeated ask, now twice running: does anyone own checking the rest of your verbatim beta conditions against the open MVP issues? One of several conditions is covered; the rest aren't, and nobody's assigned.</li>
-        <li><strong>Short-period cron experiment — yes or no.</strong> The only way to actually decompose the ~30-minute dispatch latency the fleet has been measuring for two weeks; costs CIO roughly three extra fires. Not started without your word.</li>
-        <li><strong>One correction to carry into your own picture</strong>, not a decision: PA's report lists three privacy-policy blockers as still open (sub-processor completeness, retention practice, contact address) — that's stale. All three were resolved directly with you on Aug 13, inside this same window (privacy policy corrected to name Anthropic accurately, retention ground-truth written in, five docs' worth of contact-email placeholders fixed). Only the plugin manifest's <code>license</code> field is still genuinely open.</li>
+        <li><span><strong>✅ RESOLVED 2026-08-15 — Bless the merged first-contact criterion.</strong> Ratified in-conversation; both CXO and PPM confirmed as joint authors of the merged doc before ratifying, not assumed. Doc updated, <code>decisions.log</code> entry filed.</span></li>
+        <li><span><strong>Name Surface 1 in the 1.0 five, or strike Surface 3.</strong> Carried a second window now — Surface 3 has exactly one corpus mention and no name, doc, ADR, or build lane (PPM/CXO). No urgency attached; beta isn't gated on it, but it's aging.</span></li>
+        <li><span><strong>The values document — four small decisions.</strong> Where it lives publicly, its relationship to the LICENSE/NOTICE text, whether a fourth commitment belongs, and voice (HOST leans third-person; Comms deliberately didn't apply that lean without your word). Ready for your read now, no deadline (Comms + HOST).</span></li>
+        <li><span><strong>The retention-policy scaffold.</strong> Drafted, spot-verified against the running code before HOST wrote a word of it. Two open questions inside it, both left genuinely open rather than pre-decided: a default retention limit (HOST agrees with your no-limit lean, for an independent reason), and whether to offer user-facing retention settings.</span></li>
+        <li><span><strong>Memory-index packing.</strong> About a week queued now — CIO's own words: no clean way to tell "queued" from "forgotten" without risking a nag. Headroom is stable at 13 lines, not shrinking further, so there's no new urgency, just an aging ask.</span></li>
+        <li><span><strong>The spatial-intelligence cold-island decision.</strong> PM-gated since July 30, unresolved through this window too (Arch, checked live rather than assumed). Arch's own slice has been complete the whole time — this is purely waiting on you.</span></li>
+        <li><span><strong>✅ RESOLVED 2026-08-15 — The audit nobody owns.</strong> Lead owns checking your remaining beta conditions against open MVP issues, as part of the sprint's final gate, plus an independent subagent cross-check of Lead's results. Ownership assigned; the checks themselves aren't built yet.</span></li>
+        <li><span><strong>Short-period cron experiment — yes or no.</strong> The only way to actually decompose the ~30-minute dispatch latency the fleet has been measuring for two weeks; costs CIO roughly three extra fires. Not started without your word.</span></li>
+        <li><span><strong>One correction to carry into your own picture</strong>, not a decision: PA's report lists three privacy-policy blockers as still open (sub-processor completeness, retention practice, contact address) — that's stale. All three were resolved directly with you on Aug 13, inside this same window (privacy policy corrected to name Anthropic accurately, retention ground-truth written in, five docs' worth of contact-email placeholders fixed). Only the plugin manifest's <code>license</code> field is still genuinely open.</span></li>
       </ol>
     </div>
   </section>
