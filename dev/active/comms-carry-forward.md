@@ -1,36 +1,29 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-14 12:4x PT fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-14 18:4x PT fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
 ✅ **ARMED — job `45eae89f`.** Same expression `12 6,9,12,15,18,21 * * *`. Auto-expires ~2026-08-20.
 
+## Agent 360 v0.4 — ✅ SUBMITTED same-day, nothing left
+
+Full response across all 10 sections + role-specific + plausibility check, `mailboxes/comms/sent/agent-360-response-comms-2026-08-14.md`, mail `ede692dfc`. Drew on this week's actual incidents rather than generic answers. Caught and fixed two real errors in my own draft by checking rather than trusting estimates (a "30+" mail-send count that was actually 18; a misattributed fire citation) before sending — worth remembering next time I'm tempted to round a number instead of running the count. HOST's synthesis target is ~4 weeks out; nothing more for me to do until then unless HOST has a follow-up question.
+
 ## Values doc with HOST — ✅ HOST-verified, routed to PM, nothing left on my end
 
-`docs/legal/values-DRAFT.md`, commit `69ceb8299`, mail `e68ae39ab`. Nothing to do until PM responds — no deadline, don't chase.
+`docs/legal/values-DRAFT.md`, commit `69ceb8299`, mail `e68ae39ab`. No deadline, don't chase.
 
-## pmorgan.tech register pass — ✅ DONE, whole thing
+## pmorgan.tech register pass — ✅ FULLY DONE, including the last loose end
 
-**Not just my tiers 1-6.** Discovered via git log (not a reply memo — Docs just did the work) that Docs took tiers 7+ themselves through a "FINAL batch" commit covering `api/`+`api-reference/`+`dev-tips/`+`testing/`+`releases/`+top-level, 42+ more files. **Both tier-6 findings closed**: the Amber/Pard billing-hazard warning I pulled from `llm-api-keys-setup.md` was relocated verbatim to `docs/internal/operations/github-and-tooling-gotchas.md` "with provenance" — exactly the right home, closing the one thing I couldn't resolve myself. The 7 more "Documentation Home" wrong-target links (my flagged 64-file pattern), ADR-038 repoints, and the stale `integrations/README` count were all fixed in the same sweep. Sent a thank-you/close-out — mail `de4defec4`.
-
-**Steps 9-10 also now closed** (confirmed 15:36 fire): Docs restored them, sourced from `quick-reference.md`'s canonical commands, my interim pointer replaced. All 10 steps present and correctly numbered.
-
-**This whole thread is fully closed.** No more tiers, no open findings, nothing outstanding.
-
-## Filed/flagged from the pass — final status
-
-- **#1610**: ✅ CLOSED.
-- **#1611**: routed to Lead by Docs, outcome TBD.
-- Broken links across the whole site: ✅ all repointed by Docs.
-- Systemic Documentation-Home pattern: ✅ fully swept.
-- Amber/Pard safety warning: ✅ rehomed properly.
+Whole thread closed as of this afternoon (Steps 9-10 restored by Docs). Nothing outstanding.
 
 ## Closed this week
 
 - **Beat 22, "Alpha Launches"** — published + distributed.
 - **LinkedIn cover-image automation** — documented as dead.
-- **pmorgan.tech register pass** — fully complete (see above).
+- **pmorgan.tech register pass** — fully complete, all findings resolved (#1610 closed; #1611 routed to Lead; all broken links repointed; Amber warning rehomed; Steps 9-10 restored).
+- **Agent 360 v0.4** — submitted.
 
 ## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available
 
@@ -43,11 +36,12 @@
 ## Waiting on others
 
 - **PM** — values doc's 4 open decisions; Beats 24–28 steer; voice-pass + art on Beat 23.
+- **HOST** — Agent 360 synthesis, ~4 weeks out, no action needed from me in the meantime.
 - **PPM** — BYOC listing copy v4 blocker.
 - **CXO/PM** — entity-model ratification.
 - **Dispatch** — syndication for the 4 posts above.
-- **Docs/Lead** — outcome of #1611 (routed to Lead) — the only genuinely open thread left from the whole scrub.
+- **Lead** — outcome of #1611 (routed by Docs).
 
 ## No current queue
 
-Everything Comms-initiated this week is either closed or genuinely waiting on someone else with no unblocked next move. Next fire: mail-check first, as always — nothing pre-planned beyond that.
+Everything Comms-initiated is closed or genuinely waiting on someone else with no unblocked next move. Next fire: mail-check first, as always.
