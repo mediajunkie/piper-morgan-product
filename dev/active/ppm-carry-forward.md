@@ -1,8 +1,22 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-15 06:55 PT (START). Cron **`db18971e`** (re-armed this fire, was
-`099b080f`).
+**Last rewritten**: 2026-08-15 13:22 PT (WORK). Cron **`db18971e`**, unchanged.
+
+## ✅ #1509 OUTWARDNESS AXIS — AGREED 2026-08-15, real product judgment applied, not a rubber-stamp
+PM leaned YES on making "outward" (writes/sends visible to someone other than the user) its own
+consent dimension, distinct from effect, conditional on CXO + PPM agreeing. **Read #1509 in full
+myself before answering** (I filed it 08-07) — the original scope language already named
+outwardness as part of the gate's trigger condition, so this formalizes something implicit since
+07-31 rather than inventing new scope. **Stress-tested CXO's proposed boundary** ("outward" = a
+communication act, not "data others could theoretically see") against `close_issue` — technically
+not a communication act but highly visible to a team watching a board. **Held**: `close_issue` is
+already DESTRUCTIVE (#1190) for exactly that visibility reason, so the case I tried to use to
+widen the boundary is already covered by the *other* axis — confirms the two-axis design is
+exhaustive-by-composition, not leaky. **One scope note sent explicitly**: this doesn't reopen
+#1509's milestone (already MVP, base gate already shipped `d137b8218`) — incremental refinement,
+not new scope. Sent: `mailboxes/lead/inbox/reply-ppm-to-lead-cxo-cc-pm-outwardness-axis-AGREE-
+2026-08-15.md`.
 
 ## ✅ AGENT 360 v0.4 — SENT 2026-08-15, well ahead of HOST's ~08-28 window
 Dedicated pass, not squeezed into another fire's tail (the legitimate-deferral trigger this was
