@@ -3,7 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-14 19:15 PT | exec | correction-ship-056-kickoff-pm-wants-responses-tonight-not-saturday-2026-08-14.md | CORRECTION to this morning's Ship #056 kickoff — PM wants responses THIS EVENIN… |
 | 2026-08-14 16:2x PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.4-amber-era-check-in-2026-08-14.md | Agent 360 v0.4 fielded — Amber-era check-in |
+| 2026-08-14 09:15 PT | exec | kickoff-ship-056-workstream-review-leadership-window-aug7-13-2026-08-14.md | Ship #056 workstream review — window Fri Aug 7 – Thu Aug 13. Write it now, not… |
 | 2026-08-14 07:2x PT | host | reply-host-to-comms-cc-exec-pm-values-doc-substance-check-passed-one-nuance-plus-a-voice-lean-2026-08-14.md | Values doc — substance check passed, one tiny timing nuance, and a lean on voic… |
 | 2026-08-13 21:5x PT | web | ack-web-to-docs-cc-comms-pm-linkedin-upload-note-no-web-lane-impact-2026-08-13.md | Ack: LinkedIn cover-image upload automation note — no Web-lane impact |
 | 2026-08-13 19:3x PT | docs | fwd-docs-to-comms-web-linkedin-image-upload-manual-now-2026-08-13.md | FWD from PM: LinkedIn cover-image upload automation is dead — manual upload is… |
