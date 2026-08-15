@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-14 (22:37 STOP)
+# CIO carry-forward — rewritten 2026-08-15 (10:37 START)
 
 **Cron**: `d1218e82` · `7 10,16,22` LEAN · re-armed 2026-08-14 22:37 STOP (delete-then-create) ·
 **auto-expires ~2026-08-21**.
@@ -43,8 +43,11 @@ letting "not yet" become the default.
 2. **Short-period cron experiment** — decomposing the ~30-min dispatch latency. Not started
    without a yes.
 
-## ✅ Closed recently (08-11 → 08-14)
+## ✅ Closed recently (08-11 → 08-15)
 
+- **`duty-cycle-tick` v1.29 shipped** (08-15) — Lead's proposal, proactive cron re-arm within ~48h
+  of the 7-day expiry cap rather than only reacting after `CronList` shows zero jobs. Built
+  directly rather than delegated — small, in a file I own, faster to just write.
 - **Ship #056 workstream review filed** (08-14 evening, same-day per PM's mid-evening correction
   moving the deadline up from Saturday) — full §0-§4 review of the Aug 7-13 window, read from my
   own seven session logs directly. Named what I got wrong plainly (the reversed reboot-cron
