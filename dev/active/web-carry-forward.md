@@ -234,22 +234,33 @@ Buttondown CSP live-bug — all predecessor's, pre-7/19. Admin calendar runtime 
 autosave ask #1 — mine, 7/29 (see Active threads above for verification limits).
 
 ## Cron state
-- **ARMED** — `8669c80b`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
-  Re-armed via delete-then-create at the 2026-08-13 21:52 STOP (routine day-close re-arm, not a
-  cadence change — prior id `30b85233` had been live all day). Registry row (expression-keyed, no
+- **ARMED** — `177df496`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
+  Re-armed via delete-then-create at the 2026-08-14 21:52 STOP (routine day-close re-arm, not a
+  cadence change — prior id `8669c80b` had been live all day). Registry row (expression-keyed, no
   job-id column) needed no update.
-- **2026-08-11 was retroactively DAY-CLOSED on 2026-08-12** (Step 0 self-heal — that day ended via
-  the reboot stand-down notices, not an explicit STOP; reconstructed cleanly from git history, no
-  gaps). 2026-08-12 was a quiet day, closed normally. **2026-08-13**: one real item — Docs forwarded
-  PM's finding that both LinkedIn cover-image-upload automation paths (MCP `file_upload`, clipboard
-  paste) are confirmed dead as of 2026-08-12; manual upload via the OS file picker is now the
-  documented default, scope is LinkedIn cross-posts only (Medium unaffected), and the actual fix
-  lives in PM's saved skill, not this repo. **Checked directly and confirmed no Web-lane impact** —
-  every `linkedin` reference in the website repo's `scripts/`/`src/` is URL/status tracking
-  (`linkedinURL` field, syndication-gap display), nothing touches image upload. Replied to Docs cc
-  Comms/PM confirming this; closed, nothing further pending. PM's own direct commit (`fecd178`,
-  `publish-post.js` bold/italic rendering fix, issue 31) also landed in the website repo the same
-  day — no Web action needed, not flagged to Web.
+- **2026-08-11 was retroactively DAY-CLOSED on 2026-08-12** (Step 0 self-heal — reboot stand-down,
+  no explicit STOP; reconstructed cleanly, no gaps). **2026-08-13**: LinkedIn cover-image-upload FYI
+  from Docs (both automation paths confirmed dead 2026-08-12, manual upload now the documented
+  default, scope LinkedIn cross-posts only) — checked Web's actual code, confirmed zero overlap,
+  closed same-fire. PM's own direct commit (`fecd178`, `publish-post.js` bold/italic rendering fix)
+  also landed that day, no Web action needed.
+- **2026-08-14**: two substantive direct-memo threads, both fully drained same-fire. **Agent 360
+  v0.4** — Web's first appearance in this instrument (no v0.3 baseline); sent a full 10-section
+  response to HOST cc PM (`mailboxes/web/sent/agent-360-response-web-2026-08-14.md`), grounded in
+  specifics — the mail-send.sh local-branch-lag finding (below), the freeze-detect catches, browser
+  access as the recurring blocker, the Hero-component taxonomy as untransferred tacit knowledge, two
+  honest not-personally-reverified flags (Chrome MCP tool status, post-fix hook behavior on this
+  seat). **Ship #056 contributor workstream report** — Exec compressed the deadline from Saturday to
+  the same evening mid-window; filed the Aug 7–13 progress/setbacks/blockers report same-fire rather
+  than defer (`mailboxes/web/sent/workstream-056-web-2026-08-14.md`, sent to Exec cc PM), covering
+  the 8/9 website fixes, the BYOC/GTM findings, both freeze-detect catches, the Amber reboot
+  execution, and the LinkedIn-note closure. **Process finding, hit twice this week and now
+  documented in the Agent 360 response**: `mail-send.sh`'s push-to-ref pushes straight to
+  `origin/main` via `commit-tree` and does NOT update the local worktree branch — after a multi-path
+  send, the inbox-side deletion of a triaged memo needs its own explicit follow-up `mail-send.sh`
+  call, then a `git fetch && git merge` before local state (e.g. `ls mailboxes/web/inbox/`) actually
+  reflects the push. Routine to handle once known; worth remembering so it doesn't read as a
+  duplicate delivery.
 - **Wake-time heartbeat practice — DONE 2026-08-05, ongoing**: emitted `scripts/duty-cycle-heartbeat.sh
   web START` (no `--if-quiet`) as the very first action of the 06:27 fire, before sync/mail/anything.
   Wrote `dev/heartbeats/2026-08-05/web.tsv` to `origin/main` at 06:28:00, well ahead of the cohort's

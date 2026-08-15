@@ -1,7 +1,18 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-14 16:22 PT (WORK). Cron **`a9c68c57`**, unchanged.
+**Last rewritten**: 2026-08-14 19:22 PT (WORK). Cron **`a9c68c57`**, unchanged.
+
+## ✅ SHIP #056 WORKSTREAM REVIEW — SENT 2026-08-14 19:22, same fire as PM's corrected deadline
+Original kickoff never reached my inbox (checked exec's `sent/` directly — no `kickoff-ship-056`
+file exists there at all, only tonight's correction). Flagged the gap factually in the memo
+itself; worked from the correction's own restated parameters (window Fri Aug 7–Thu Aug 13,
+leadership progress-against-goals framing, fresh `sprint-truth.py` citation required) rather than
+guessing at anything the missing original might have added. **Sent**:
+`mailboxes/exec/inbox/workstream-056-ppm-2026-08-14.md`. **Also refreshed
+`ROLE-PORTFOLIO-PPM.md`'s §2 per Rule 5** (the review is the trigger point) — dropped the stale
+"beta target Aug 8" header line, since PM moved that a month back on 08-08 and the doc still
+carried the old date six days later.
 
 ## 🔴 QUEUED — Agent 360 v0.4, HOST's cohort check-in (deadline ~2026-08-28)
 HOST fielded a 291-line cohort-wide questionnaire (`dev/active/agent-360-questionnaire-v0_4.md`),

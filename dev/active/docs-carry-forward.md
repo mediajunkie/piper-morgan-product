@@ -4,6 +4,14 @@
 **Session log**: `dev/2026/08/13/2026-08-13-0727-docs-code-log.md` (open). 08-12 closed.
 **Cron**: `2967db0e` (rotated 08-14 day-open, fresh 7-day window to ~08-21).
 
+## ✅ RESOLVED 2026-08-14 (PM-engaged 18:11 + Fire 5) — session recovery, 3 PM decisions, Ship #056 report
+
+PM reconnected post-outage; security@ applied, stale docker branch deleted, #1584/#1585 status
+checked live (both open with genuine residuals, correctly not chased). Ship #056 workstream
+report sent for the Aug 7-13 window — flagged a real cross-cohort delivery gap (no original
+kickoff reached ANY of the 10 addressed mailboxes, only tonight's correction) rather than
+silently absorbing it. **Awaiting PM**: only the feature-guide click-through remains open.
+
 **Agent 360 v0.4**: ✅ answered same-day (08-14, `8fa0180cf`) — HOST synthesis ~4wks out; four
 of my suggestions flagged agent-addressable (mail-send doc line, stderr rule, omnibus-recipe
 skill note, drop-rot-prone-metadata standard) — pick up if HOST/CIO route them back.

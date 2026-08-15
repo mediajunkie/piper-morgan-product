@@ -3,8 +3,8 @@ type: role-portfolio
 role: CXO (Chief Experience Officer)
 status: v0.1
 self-authored-by: CXO
-last_updated: 2026-08-04
-refreshed: 2026-08-04 (section 2 + §5 mechanism correction; sections 1/3/4 re-read and left as accurate)
+last_updated: 2026-08-14
+refreshed: 2026-08-14 (section 2 refreshed per workstream #056; sections 1/3/4 re-read and left as accurate)
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-CXO.md
 refresh_discipline: "sections 2 and 4 on each workstream review; sections 1 and 3 on role-scope drift — NOW CHECKED, see refresh_trigger_glob and §5"
@@ -30,20 +30,23 @@ Two things flow from this:
 
 ---
 
-## 2. Current goals & priorities — August 2026 (pre-beta, target 2026-08-08)
-<!-- Rule 2: medium-pace, per sprint. Rule 4: each has direction + status + forward indicator. Rule 5: refreshed each workstream review — see the correction in §5; this refresh was NOT triggered by a review, it was triggered by reading §5. -->
+## 2. Current goals & priorities — August 2026
 
-| Priority | What I'm advancing | Status (Aug 4) | How we'll know it's moving |
+<!-- Rule 2: medium-pace, per sprint. Rule 4: each has direction + status + forward indicator. Rule 5: refreshed each workstream review. This refresh IS a review-triggered refresh — #056, window Aug 7-13. -->
+
+| Priority | What I'm advancing | Status (Aug 14, per Ship #056) | How we'll know it's moving |
 |---|---|---|---|
-| **First contact on the plugin surface** | The user's own work appears in the first exchange, unprompted — the fix all four Jake lenses converged on, re-expressed for a surface we don't render | Spec at v0.4 (`dev/active/design-spec-first-contact-plugin-surface-2026-07-31.md`); PDR-006 ratified 07-31; **pre-registered read says only 1 of 4 funnel outcomes makes this the right bet** | Funnel counts land; the first-contact gate criterion is added and fails today |
-| **Recomposition rubric branch (#1463)** | A Layer-B rubric for tool output a client LLM recomposes — four dimensions: sufficiency · preservation · prominence · fidelity | Branch OPEN; Probe A closed — **refusals require a failure-shaped payload** (6/6); ⚠️ **deployed-host retest is a GATE before booking the capability** — ⭐ **blocker restated 08-08: it is UNBUILT, not undeployed.** `services/mcp/server/` (the location PDR-005 mechanism 2 names) is absent from **both** `main` and the deployed artifact; verified via `fly ssh` + `git ls-tree`. **The gate waits on #1462, not on a hostname** | Retest against a live `mcp.pipermorgan.ai` passes |
-| **Honesty of user-facing claims** | The interface must not manufacture a belief | ✅ **CLOSED 08-07 — verified in the RUNNING SYSTEM, not inferred.** v30 deployed 08-07 08:04 PDT; read off the machine via `fly ssh console`: `home_false=0`, `insights_false=0`, honest replacement present, credential true-claim present, #1484 gate present. *(Merged 08-04, deployed 08-07 — for two days I called it "shipped" while three false claims rendered to users; the object was also wrong twice, branch vs artifact.)* ⚠️ Two of the six mapped surfaces are still absent from the artifact — do not count this as six; the honest replacement returns zero occurrences there. The credential-delete **inversion is also intact** on production — still no claim on the one deletion that IS irreversible. Latent `dialog.js` defaults still proposed. | Zero false permanence claims **in the DEPLOYED ARTIFACT** — ✅ **MET 08-07, verified by reading the running container.** Two prior wordings were wrong about the object: "any reachable surface" checked against `main` (reachable by nobody), then `origin/production` (a branch, not what runs). |
-| **#1466 Slack link flow** | Link-flow UX + copy; the decline is the load-bearing string | Spec v0.2 — corrected after Arch caught my shortcut removing a proof-of-control | Lead ships; decline carries a path, not an instruction |
-| **#1386 beta-gate experience criteria** | The gate must be able to both pass and fail for what users actually report | Criterion-2 sign-off **withheld** (keyless suite skips and reports green); first-contact criterion proposed | A keyed run exists → same-day sign-off, as committed |
-| **#1174 proactive presence** | Discovery only — the delivery capability is unscheduled | Re-scoped 08-01; carries the prior question *what does "earned" mean when the denominator doesn't exist on our primary surface?* | Discovery runs with HOST; nothing built pre-beta |
-| **Floor-quality + ethics-decline watch** | Standing — on **shipped behaviour**, not on issue progress | 🔴 **The issue numbers were stale and I hadn't checked**: **#950 closed 2026-04-16, #992 closed 2026-04-30.** I carried them as an active watch and flagged it "unattested" without noticing the objects had closed three months ago. ✅ **Partial attestation 08-05**: `ENABLE_ETHICS_ENFORCEMENT` defaults to **false** (`intent_service.py:1016`) and is set `true` in `fly.toml [env]` (the deployed app) and `docker-compose.yml`. ⚠️ **LAYER: I verified the CONFIG, not the running app** — a deploy can lag the file. | A keyed run against the deployed host, or a decline observed on a live surface — not a config read |
+| **First contact on the plugin surface (#1536)** | The user's own work appears in the first exchange, unprompted | ✅ **Built and merged 08-10** (`43d2a4fce`); **conformance-reviewed 08-12** against the §7a gate criteria — item 3 (only-Piper-could) confirmed met. ⚠️ **Not fully closed**: live user-verification flagged by Lead as "next cut," still not run as of 08-14 — four days, real Pattern-045 instance. | The live-verification pass actually runs and is reported, either result |
+| **#1539 FTUX-PURPOSE (demand-side twin of #1536)** | Make legible *which* uncertainty a reply reduced, not just that one did | ✅ **Unstuck 08-12** — candidate articulation posted, tied to a concrete gap found in #1536's shipped copy. With PM. | PM rules on the candidate |
+| **Recomposition rubric branch (#1463)** | A Layer-B rubric for tool output a client LLM recomposes | **Held, same dependency, unchanged since 08-04.** Waits on #1462 (unbuilt MCP server epic), not a hostname. | Retest against a live `mcp.pipermorgan.ai` passes |
+| **Honesty of user-facing claims** | The interface must not manufacture a belief | ✅ **CLOSED 08-07**, verified in the running system. No new drift observed through 08-13. | Holds until the next audit finds otherwise |
+| **#1466 Slack link flow** | Link-flow UX + copy; the decline is the load-bearing string | **Held — PM's socket-path hold stands, unchanged since 08-06.** No movement 08-07–08-13. | Lead ships when the hold lifts |
+| **#1386 beta-gate experience criteria** | The gate must be able to both pass and fail for what users actually report | **Held — criterion-2 sign-off still withheld.** No keyed run has appeared through 08-13; checked repeatedly. | A keyed run exists → same-day sign-off, as committed |
+| **#1174 proactive presence** | Discovery only — the delivery capability is unscheduled | **Held by design, unchanged.** | Discovery runs with HOST; nothing built pre-beta |
+| **The "unmapped verb → ask" design lane (#1569/#1605)** | UX shape for disambiguation when a user's verb has no confident mapping onto a stateful operation | ✅ **NEW this window, closed end-to-end**: candidate → PPM's two-round audit (real gaps both times) → resolved → built (`e9ef395a1`) → PPM signed off 08-13/08-14. | Deploys with the next cut; PM's live retest closes it fully |
+| **Floor-quality + ethics-decline watch** | Standing — on shipped behaviour, not issue progress | 🔴 **Still not performed this window either** — named again in Ship #056 rather than silently re-carried. Second window running unattested. | A keyed run against the deployed host, or a decline observed on a live surface |
 
-**Deliberately not on this list**: the D2 design-system portfolio (#1286/#1290/#1284/#1269), which has not moved in three Ship windows. **Flagged to PM in Ship #054 §6 as a decision to make rather than a drift to continue** — it is still a drift.
+**Deliberately not on this list**: the D2 design-system portfolio (#1286/#1290/#1284/#1269) — unmoved for a fifth Ship window, flagged three times now. Still a drift, not a decision.
 
 ### Beta milestone (June 2026, retained for the record)
 - **D1 closed**: #1236 (Radar consolidation) + #1280 (dark rail shell) both passed PM beta UAT — "total win for beta" (June 19). Places→RadarEntity as `work_item` live; insights-OUT; clean chat center; dark rail conversation-first.

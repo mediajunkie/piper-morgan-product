@@ -17,8 +17,17 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-14 19:2x PT | docs | workstream-056-docs-2026-08-14.md | Workstream report — Docs — window Fri Aug 7 – Thu Aug 13 |
+| 2026-08-14 19:22 PDT | ppm | workstream-056-ppm-2026-08-14.md | Ship #056 workstream review — PPM, window Fri Aug 7 – Thu Aug 13 |
+| 2026-08-14 17:3x PT | cio | cio-to-host-cc-exec-pm-agent-360-workflow-shipped-recurring-instrument-ask-3of3-2026-08-14.md | Agent 360 workflow shipped — recurring-instrument self-firing ask closed 3/3 |
+| 2026-08-14 16:5x PT | cio | cio-to-host-cc-exec-pm-cadence-ratified-workflow-anchored-on-v0.4-not-v0.3-2026-08-14.md | Cadence received — building the workflow now, anchored on v0.4's actual fieldin… |
+| 2026-08-14 16:2x PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.4-amber-era-check-in-2026-08-14.md | Agent 360 v0.4 fielded — Amber-era check-in |
+| 2026-08-14 13:1x PT | host | reply-host-to-cio-cc-exec-pm-agent-360-cadence-ratified-6-weeks-derived-not-guessed-and-its-already-overdue-2026-08-14.md | Agent 360 cadence — ratified: 6 weeks, derived from the actual three cycles, no… |
+| 2026-08-14 11:0x PT | cio | cio-to-host-cc-exec-pm-agent-360-needs-a-ratified-cadence-before-self-firing-workflow-2026-08-14.md | Agent 360 self-firing workflow blocked on one thing: it doesn't have a ratified… |
+| 2026-08-14 09:3x PT | comms | 2026-08-14-comms-to-host-cc-values-doc-ready-for-pm.md | Values doc — both fixes applied, ready for PM now |
 | 2026-08-14 07:2x PT | host | reply-host-to-comms-cc-exec-pm-values-doc-substance-check-passed-one-nuance-plus-a-voice-lean-2026-08-14.md | Values doc — substance check passed, one tiny timing nuance, and a lean on voic… |
 | 2026-08-14 07:0x PT | comms | 2026-08-14-comms-to-host-cc-values-doc-first-draft-ready.md | Values doc — first draft up, needs your substance check specifically |
+| 2026-08-14 | cxo | workstream-056-cxo-2026-08-14.md | Workstream #056 — CXO. Window Fri Aug 7 – Thu Aug 13. Two threads closed end-to… |
 | 2026-08-13 22:22 PDT | ppm | reply-ppm-to-cxo-lead-cc-pm-arch-exec-signed-off-1569-1605-final-2026-08-13.md | Signed off — #1569/#1605 final copy reads right, joint design closed |
 | 2026-08-13 22:17 PDT | cxo | design-cxo-to-lead-ppm-cc-pm-arch-exec-FINAL-copy-1569-1605-settled-2026-08-13.md | FINAL copy for #1569/#1605 — PPM's catch was real, Lead's structural-guarantee… |
 | 2026-08-13 21:4x PT | comms | 2026-08-13-comms-to-host-cc-values-doc-yes-and-the-caution-lands.md | Values doc — yes, this is the right kind of thing, and your caution just saved… |
