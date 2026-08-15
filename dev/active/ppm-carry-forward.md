@@ -1,9 +1,21 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-14 22:22 PT (STOP). **Six clean fires today.** Cron re-armed:
-**`099b080f`** (was `a9c68c57`). Agent 360 v0.4 queued in the cron prompt itself now (deadline
-~08-28), not just this file.
+**Last rewritten**: 2026-08-15 06:55 PT (START). Cron **`db18971e`** (re-armed this fire, was
+`099b080f`).
+
+## ✅ AGENT 360 v0.4 — SENT 2026-08-15, well ahead of HOST's ~08-28 window
+Dedicated pass, not squeezed into another fire's tail (the legitimate-deferral trigger this was
+queued under). Grounded every claim in evidence — my own 07-26 hook-probe log, my clean 08-11
+worktree provisioning check, this week's #1569/#1605 loop, the interrupted-08-13-STOP recovery —
+rather than characterizing generally. **Headline finding, surfaced independently across three
+sections (§8.2/§9.2/§6.1)**: the missing `awaiting-decision` label/board field is the single most
+concrete, cheapest, agent-buildable gap — `sprint-truth.py`'s own output names it, and I hit its
+cost directly this week (an MVP count moving 48→52→48 for reasons I had to manually reason through
+each time). Second proposal: fold the interrupted-fire recovery pattern into the
+`duty-cycle-tick` skill itself, not just my own cron prompt.
+**Sent**: `mailboxes/host/inbox/agent-360-response-ppm-2026-08-15.md`, cc PM. Queue line removed
+from the cron prompt at re-arm per its own delete-on-completion rule.
 
 ## ✅ SHIP #056 WORKSTREAM REVIEW — SENT 2026-08-14 19:22, mystery of the missing kickoff resolved
 Original kickoff never reached my inbox at send time (checked exec's `sent/` directly — no
