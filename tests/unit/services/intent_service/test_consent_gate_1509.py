@@ -49,7 +49,7 @@ from services.intent_service.verified_inference import (
     VerificationDecision,
     VerificationMetaMode,
 )
-from services.shared_types import EffectClass, IntentCategory
+from services.shared_types import EffectClass, IntentCategory, Outwardness
 
 _USER = "3f7b8a52-1509-4b00-9e00-000000001509"
 
@@ -72,72 +72,129 @@ class _ExplosiveLLM:
 
 
 class TestConsentDecisionMatrix:
-    """decide_consent across the FULL matrix: 3 effects x 3 framings x
-    2 modes = 18 cells; all 18 asserted below (m-44: this parametrize IS the
-    denominator — if a framing, mode, or effect value is added, the
-    completeness test underneath fails until the matrix here grows)."""
+    """decide_consent across the FULL matrix: 2 outwardness x 3 effects x
+    3 framings x 2 modes = 36 cells; all 36 asserted below (m-44: this
+    parametrize IS the denominator — if an outwardness, framing, mode, or
+    effect value is added, the completeness test underneath fails until the
+    matrix here grows). The PRIVATE half is the pre-axis 18-cell matrix,
+    cell-for-cell unchanged (the #1509 outwardness ratification's
+    "PRIVATE behavior fully unchanged" regression pin)."""
 
     CELLS = [
-        # (effect, framing, mode, expected)
+        # (outwardness, effect, framing, mode, expected)
+        # ── PRIVATE half: today's 18 cells, unchanged ─────────────────────
         # READ: never consent territory — 6 cells, all PROCEED.
-        (EffectClass.READ, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
-        (EffectClass.READ, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
-        (EffectClass.READ, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
-        (EffectClass.READ, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
-        (EffectClass.READ, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
-        (EffectClass.READ, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
+        (Outwardness.PRIVATE, EffectClass.READ, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
+        (Outwardness.PRIVATE, EffectClass.READ, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
+        (Outwardness.PRIVATE, EffectClass.READ, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
+        (Outwardness.PRIVATE, EffectClass.READ, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
+        (Outwardness.PRIVATE, EffectClass.READ, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
+        (Outwardness.PRIVATE, EffectClass.READ, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
         # WRITE: compose always collaborates (executing a request for drafting
         # HELP is the Jake failure), execute framing IS consent, ambiguity is
         # decided by the declared mode — 6 cells.
-        (EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.COLLABORATE),
-        (EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.COLLABORATE),
-        (EffectClass.WRITE, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
-        (EffectClass.WRITE, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
-        (EffectClass.WRITE, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.COLLABORATE),
-        (EffectClass.WRITE, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
+        (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.COLLABORATE),
+        (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.COLLABORATE),
+        (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
+        (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
+        (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.COLLABORATE),
+        (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
         # DESTRUCTIVE: CONFIRM in every cell — framing and mode never weaken
         # the #1190 tier (execute-mode users still confirm) — 6 cells.
-        (EffectClass.DESTRUCTIVE, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
-        (EffectClass.DESTRUCTIVE, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
-        (EffectClass.DESTRUCTIVE, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
-        (EffectClass.DESTRUCTIVE, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
-        (EffectClass.DESTRUCTIVE, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
-        (EffectClass.DESTRUCTIVE, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
+        (Outwardness.PRIVATE, EffectClass.DESTRUCTIVE, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
+        (Outwardness.PRIVATE, EffectClass.DESTRUCTIVE, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
+        (Outwardness.PRIVATE, EffectClass.DESTRUCTIVE, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
+        (Outwardness.PRIVATE, EffectClass.DESTRUCTIVE, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
+        (Outwardness.PRIVATE, EffectClass.DESTRUCTIVE, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
+        (Outwardness.PRIVATE, EffectClass.DESTRUCTIVE, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
+        # ── OUTWARD half (#1509 axis, ratified 2026-08-15) ────────────────
+        # READ: PROCEED — an outward READ is unrepresentable by the scope
+        # boundary (a communication act writes by definition); the cells
+        # exist because the type space contains them — 6 cells.
+        (Outwardness.OUTWARD, EffectClass.READ, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
+        (Outwardness.OUTWARD, EffectClass.READ, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
+        (Outwardness.OUTWARD, EffectClass.READ, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
+        (Outwardness.OUTWARD, EffectClass.READ, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
+        (Outwardness.OUTWARD, EffectClass.READ, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
+        (Outwardness.OUTWARD, EffectClass.READ, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
+        # WRITE: collaborate/ambiguous cells check exactly as today; wherever
+        # the DECLARED trust mode proceeds, it proceeds WITH the disclosure
+        # (CXO's mechanism ruling: say it out loud, never a second
+        # DESTRUCTIVE, never a silent pass) — 6 cells.
+        (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.COLLABORATE),
+        (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.COLLABORATE),
+        (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
+        (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED_WITH_DISCLOSURE),
+        (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.COLLABORATE),
+        (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED_WITH_DISCLOSURE),
+        # DESTRUCTIVE: CONFIRM in every cell — outwardness never substitutes
+        # for, weakens, or doubles the #1190 tier — 6 cells.
+        (Outwardness.OUTWARD, EffectClass.DESTRUCTIVE, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
+        (Outwardness.OUTWARD, EffectClass.DESTRUCTIVE, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
+        (Outwardness.OUTWARD, EffectClass.DESTRUCTIVE, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
+        (Outwardness.OUTWARD, EffectClass.DESTRUCTIVE, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
+        (Outwardness.OUTWARD, EffectClass.DESTRUCTIVE, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
+        (Outwardness.OUTWARD, EffectClass.DESTRUCTIVE, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
     ]
 
-    @pytest.mark.parametrize("effect,framing,mode,expected", CELLS)
-    def test_cell(self, effect, framing, mode, expected):
-        assert cg.decide_consent(effect, framing, mode) is expected
+    @pytest.mark.parametrize("outwardness,effect,framing,mode,expected", CELLS)
+    def test_cell(self, outwardness, effect, framing, mode, expected):
+        assert (
+            cg.decide_consent(effect, framing, mode, outwardness=outwardness)
+            is expected
+        )
 
     def test_matrix_is_complete(self):
         """The denominator guard: the CELLS table covers the whole space.
-        A new EffectClass tier, framing verdict, or WorkingMode fails here
-        until its cells are ruled and added."""
+        A new Outwardness value, EffectClass tier, framing verdict, or
+        WorkingMode fails here until its cells are ruled and added."""
         framings = {FRAMING_COMPOSE, FRAMING_EXECUTE, FRAMING_AMBIGUOUS}
-        covered = {(e, f, m) for e, f, m, _ in self.CELLS}
+        covered = {(o, e, f, m) for o, e, f, m, _ in self.CELLS}
         full = {
-            (e, f, m)
+            (o, e, f, m)
+            for o in Outwardness
             for e in EffectClass
             for f in framings
             for m in WorkingMode
         }
         assert covered == full, (
             f"matrix drift: {len(covered)}/{len(full)} cells covered — "
-            "every new tier/framing/mode value needs its cells ruled here"
+            "every new axis/tier/framing/mode value needs its cells ruled here"
         )
 
-    def test_only_one_cell_family_consults_the_mode(self):
-        """The 'mode-tied, not per-verb' property: for every cell OUTSIDE
-        WRITE x AMBIGUOUS, the two modes agree — the declared mode decides
-        exactly the ambiguous-write cell."""
-        framings = {FRAMING_COMPOSE, FRAMING_EXECUTE, FRAMING_AMBIGUOUS}
+    def test_private_default_reproduces_the_private_column(self):
+        """The defaulted parameter IS the PRIVATE column: calling without
+        outwardness (every pre-axis caller) answers identically to passing
+        PRIVATE explicitly — the regression pin that makes the default safe."""
+        framings = (FRAMING_COMPOSE, FRAMING_EXECUTE, FRAMING_AMBIGUOUS)
         for e in EffectClass:
             for f in framings:
-                if e == EffectClass.WRITE and f == FRAMING_AMBIGUOUS:
-                    continue
-                assert cg.decide_consent(e, f, WorkingMode.COLLABORATE) is cg.decide_consent(
-                    e, f, WorkingMode.EXECUTE
-                )
+                for m in WorkingMode:
+                    assert cg.decide_consent(e, f, m) is cg.decide_consent(
+                        e, f, m, outwardness=Outwardness.PRIVATE
+                    )
+
+    def test_mode_consulting_cells_are_exactly_the_ruled_three(self):
+        """The 'mode-tied, not per-verb' property, extended for the axis:
+        the cells where the two modes disagree are EXACTLY (1) PRIVATE
+        WRITE x AMBIGUOUS (the original graduation cell), (2) OUTWARD
+        WRITE x AMBIGUOUS, and (3) OUTWARD WRITE x EXECUTE framing (the
+        disclosure hangs on the declared mode). Everywhere else the modes
+        agree."""
+        framings = (FRAMING_COMPOSE, FRAMING_EXECUTE, FRAMING_AMBIGUOUS)
+        disagreeing = {
+            (o, e, f)
+            for o in Outwardness
+            for e in EffectClass
+            for f in framings
+            if cg.decide_consent(e, f, WorkingMode.COLLABORATE, outwardness=o)
+            is not cg.decide_consent(e, f, WorkingMode.EXECUTE, outwardness=o)
+        }
+        assert disagreeing == {
+            (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_AMBIGUOUS),
+            (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_AMBIGUOUS),
+            (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_EXECUTE),
+        }
 
 
 # ---------------------------------------------------------------------------
@@ -164,7 +221,7 @@ class TestEffectDerivedBoundary:
         function changes gate_holds' answer."""
         calls = {}
 
-        def _poisoned(effect, framing, mode):
+        def _poisoned(effect, framing, mode, outwardness=Outwardness.PRIVATE):
             calls["hit"] = (effect, framing)
             return cg.ConsentDecision.PROCEED  # inverted verdict on purpose
 
@@ -201,6 +258,173 @@ class TestEffectDerivedBoundary:
                 "new_github_issue",
             }
         )
+
+
+# ---------------------------------------------------------------------------
+# 2b. The outwardness axis (#1509, ratified PM + CXO + PPM 2026-08-15)
+# ---------------------------------------------------------------------------
+
+
+def _unique_action_entries():
+    from services.intent_service.workflow_dispatcher import get_action_workflows
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()
+    return get_action_workflows()
+
+
+class TestOutwardnessAxis:
+    """The second consent dimension: who else witnesses the action —
+    membership pins (the CXO scope boundary applied to the live registry),
+    lookup contract, and the doctrine properties the ratification made
+    binding."""
+
+    # CXO's scope boundary, applied: OUTWARD = the action IS a communication
+    # act (files an issue, posts a comment — content lands in front of others
+    # as a direct, immediate consequence). Conservative start per the
+    # ratification: sends (Slack/email) would join here when such rail
+    # actions exist (#1481 Slack hold is separate and stays).
+    EXPECTED_OUTWARD_KEYS = {
+        # create family (the Jake-incident action class):
+        "create_issue",
+        "create_github_issue",
+        "create_item",
+        "create_ticket",
+        "make_github_issue",
+        "new_github_issue",
+        # comment family:
+        "comment_issue",
+        "add_comment",
+        "comment_issue_query",
+    }
+
+    def test_outward_membership_is_exactly_the_communication_acts(self):
+        """The whole-registry pin (m-44 denominator: EVERY action-triggered
+        key classified, not a sample): the OUTWARD set is exactly the filed-
+        issue + posted-comment families. A key drifting in here means the
+        broad reading ("touches data someone could later see") is creeping —
+        the reading CXO ruled out because it stops the dimension
+        discriminating."""
+        workflows = _unique_action_entries()
+        outward = {
+            key
+            for key, entry in workflows.items()
+            if entry.outwardness == Outwardness.OUTWARD
+        }
+        assert outward == self.EXPECTED_OUTWARD_KEYS
+        # Denominator: the classification covered a real registry.
+        assert len(workflows) >= 30
+
+    def test_shared_state_writes_stay_private(self):
+        """CXO's named non-examples, pinned: editing repo content, todos/
+        reminders, own-preference writes are PRIVATE — nobody is being
+        handed something right now."""
+        workflows = _unique_action_entries()
+        for key in ("update_issue", "update_document", "create_reminder", "set_default_repo"):
+            assert workflows[key].outwardness == Outwardness.PRIVATE, key
+
+    def test_ppm_boundary_case_close_reopen_destructive_and_private(self):
+        """PPM's stress-tested boundary case, SETTLED — do not re-litigate:
+        close/reopen stay DESTRUCTIVE (#1190 blast-radius) and are NOT
+        reclassified OUTWARD; the effect axis already covers them. The two
+        axes are jointly exhaustive over reasons for care, not redundant
+        nets over the same actions."""
+        workflows = _unique_action_entries()
+        for key in ("close_issue", "reopen_issue"):
+            assert workflows[key].effect == EffectClass.DESTRUCTIVE, key
+            assert workflows[key].outwardness == Outwardness.PRIVATE, key
+
+    def test_outwardness_lookup_reads_the_declared_registry_value(self):
+        assert cg.outwardness_for_action("comment_issue") == Outwardness.OUTWARD
+        assert cg.outwardness_for_action("create_ticket") == Outwardness.OUTWARD
+        assert cg.outwardness_for_action("update_issue") == Outwardness.PRIVATE
+        assert cg.outwardness_for_action("close_issue") == Outwardness.PRIVATE
+        assert cg.outwardness_for_action("no_such_action") is None
+        assert cg.outwardness_for_action(None) is None
+        assert cg.outwardness_for_action("") is None
+
+    # ── Doctrine (standing, inviolable — the ratification restated them) ──
+
+    _STRENGTH = {
+        cg.ConsentDecision.PROCEED: 0,
+        cg.ConsentDecision.PROCEED_WITH_DISCLOSURE: 1,
+        cg.ConsentDecision.COLLABORATE: 2,
+        cg.ConsentDecision.CONFIRM: 3,
+    }
+
+    def test_doctrine_outward_is_never_weaker_than_private(self):
+        """Across ALL 18 (effect, framing, mode) cells: the OUTWARD verdict
+        is at least as careful as the PRIVATE verdict — the axis only ever
+        ADDS care (disclosure), never removes any."""
+        framings = (FRAMING_COMPOSE, FRAMING_EXECUTE, FRAMING_AMBIGUOUS)
+        for e in EffectClass:
+            for f in framings:
+                for m in WorkingMode:
+                    private = cg.decide_consent(e, f, m, outwardness=Outwardness.PRIVATE)
+                    outward = cg.decide_consent(e, f, m, outwardness=Outwardness.OUTWARD)
+                    assert self._STRENGTH[outward] >= self._STRENGTH[private], (
+                        e, f, m, private, outward,
+                    )
+
+    def test_doctrine_destructive_confirms_in_every_outwardness_cell(self):
+        """DESTRUCTIVE always confirms — outwardness (like framing and mode)
+        never weakens the #1190 tier, and never doubles it either (the
+        verdict is CONFIRM, not some outward-flavored second gate)."""
+        framings = (FRAMING_COMPOSE, FRAMING_EXECUTE, FRAMING_AMBIGUOUS)
+        for o in Outwardness:
+            for f in framings:
+                for m in WorkingMode:
+                    assert (
+                        cg.decide_consent(EffectClass.DESTRUCTIVE, f, m, outwardness=o)
+                        is cg.ConsentDecision.CONFIRM
+                    )
+
+    def test_doctrine_no_mode_weakens_a_confirm_or_compose_tier(self):
+        """Consent tier is never weakened by mode: any cell that CONFIRMs
+        under the default mode CONFIRMs under the declared trust mode, and
+        compose-framed writes COLLABORATE in both modes, in both outwardness
+        columns (the declared mode graduates only the ruled ambiguity/
+        disclosure cells, pinned exhaustively in the matrix class)."""
+        framings = (FRAMING_COMPOSE, FRAMING_EXECUTE, FRAMING_AMBIGUOUS)
+        for o in Outwardness:
+            for e in EffectClass:
+                for f in framings:
+                    default_mode = cg.decide_consent(e, f, WorkingMode.COLLABORATE, outwardness=o)
+                    trust_mode = cg.decide_consent(e, f, WorkingMode.EXECUTE, outwardness=o)
+                    if default_mode is cg.ConsentDecision.CONFIRM:
+                        assert trust_mode is cg.ConsentDecision.CONFIRM, (o, e, f)
+            assert (
+                cg.decide_consent(EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.EXECUTE, outwardness=o)
+                is cg.ConsentDecision.COLLABORATE
+            )
+
+    # ── The disclosure line (what + to whom) ──────────────────────────────
+
+    def test_disclosure_line_states_what_and_to_whom(self):
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="comment_issue",
+            confidence=0.85,
+            original_message="issue #5 could use a note that the fix shipped",
+            context={"original_message": "issue #5 could use a note that the fix shipped"},
+        )
+        line = cg.build_outward_disclosure(intent)
+        assert "I'm about to comment issue #5" in line  # the WHAT
+        assert "in front of other people" in line  # the TO WHOM
+        assert "(yes/no)" not in line  # a disclosure, never a gate
+
+    def test_disclosure_line_renders_repo_when_context_carries_one(self):
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="comment_issue",
+            confidence=0.85,
+            original_message="issue #5 could use a note that the fix shipped",
+            context={
+                "original_message": "issue #5 could use a note that the fix shipped",
+                "repository": "octo/widgets",
+            },
+        )
+        assert "comment issue #5 in octo/widgets" in cg.build_outward_disclosure(intent)
 
 
 # ---------------------------------------------------------------------------
@@ -631,3 +855,202 @@ class TestEndToEndConsentCheck:
         assert "(yes/no)" in result.message
         stored = _pending_offers(live_service).get(sid)
         assert stored["workflow_type"] == CONFIRM_PENDING_ACTION_WORKFLOW
+
+
+# ---------------------------------------------------------------------------
+# 7. End-to-end — the outwardness axis at the rail (#1509, 2026-08-15)
+# ---------------------------------------------------------------------------
+
+# An outward request with AMBIGUOUS framing: not verb-initial imperative, no
+# compose marker — the cell the declared mode decides, on a communication act.
+AMBIGUOUS_COMMENT = "issue #5 could use a note that the fix shipped"
+IMPERATIVE_COMMENT = "comment on issue #5 saying the fix shipped"
+DISCLOSURE_MARKER = "Saying it out loud before I act"
+
+
+def _comment_intent(message=AMBIGUOUS_COMMENT):
+    return Intent(
+        category=IntentCategory.QUERY,
+        action="comment_issue",
+        confidence=0.9,
+        original_message=message,
+        context={"original_message": message},
+    )
+
+
+class TestEndToEndOutwardness:
+    pytestmark = pytest.mark.asyncio
+
+    async def test_outward_ambiguous_under_trust_mode_executes_with_disclosure(
+        self, live_service, mem_prefs
+    ):
+        """THE headline cell (OUTWARD x WRITE x ambiguous x declared trust
+        mode): the comment posts THIS turn — no hold, no yes/no — and the
+        reply leads with the disclosure line stating what and to whom, ahead
+        of the handler's own result. (Classifier stubbed: ambiguous-framed
+        emissions only arise from the LLM lane, per the class-6 convention.)"""
+        from services.intent.intent_service import IntentProcessingResult
+
+        mem_prefs[_USER][WORKING_MODE_PREF_KEY] = "execute"
+        sid = "e2e-1509-outward-trust"
+        _stub_classifier(live_service, _comment_intent())
+        handler = AsyncMock(
+            return_value=IntentProcessingResult(
+                success=True, message="Comment added to issue #5.", intent_data={}
+            )
+        )
+        live_service._handle_comment_issue_query = handler
+
+        result = await live_service.process_intent(
+            message=AMBIGUOUS_COMMENT, session_id=sid, user_id=_USER
+        )
+        handler.assert_awaited_once()
+        assert _pending_offers(live_service).get(sid) is None
+        assert result.message.startswith(DISCLOSURE_MARKER)
+        assert "I'm about to comment issue #5" in result.message
+        assert "in front of other people" in result.message
+        # The handler's own result still follows the disclosure.
+        assert "Comment added to issue #5." in result.message
+        # Transcript legibility flags (#1509 AC-5).
+        assert result.intent_data.get("consent_disclosure") is True
+        assert result.intent_data.get("consent_outwardness") == "outward"
+
+    async def test_outward_ambiguous_under_default_mode_same_ask_as_today(
+        self, live_service, mem_prefs
+    ):
+        """OUTWARD x WRITE x ambiguous x collaborate mode: exactly today's
+        consent check — held turn, yes/no question, pending offer in the
+        #846 store, handler untouched. The axis added a disclosure to trust
+        mode; it changed NOTHING about the default mode's ask."""
+        sid = "e2e-1509-outward-default"
+        _stub_classifier(live_service, _comment_intent())
+
+        async def _explosive_handler(*a, **k):
+            raise AssertionError("outward ambiguous write must hold under default mode")
+
+        live_service._handle_comment_issue_query = _explosive_handler
+
+        result = await live_service.process_intent(
+            message=AMBIGUOUS_COMMENT, session_id=sid, user_id=_USER
+        )
+        assert result.intent_data.get("consent_check_pending") is True
+        assert "(yes/no)" in result.message
+        assert DISCLOSURE_MARKER not in result.message
+        stored = _pending_offers(live_service).get(sid)
+        assert stored is not None
+        assert stored["workflow_type"] == CONFIRM_PENDING_ACTION_WORKFLOW
+        assert stored["pending_action"]["action"] == "comment_issue"
+
+    async def test_outward_imperative_under_trust_mode_discloses(
+        self, live_service, mem_prefs
+    ):
+        """OUTWARD x WRITE x execute framing x declared trust mode: proceeds
+        (the imperative is consent — nothing is held) WITH the disclosure —
+        CXO's 'under a declared TRUST mode, it still states what it's about
+        to do and to whom' covers every outward write proceeding in trust
+        mode; disclosure is not confirmation, so nothing re-confirms."""
+        from services.intent.intent_service import IntentProcessingResult
+
+        mem_prefs[_USER][WORKING_MODE_PREF_KEY] = "execute"
+        sid = "e2e-1509-outward-imp-trust"
+        _stub_classifier(live_service, _comment_intent(IMPERATIVE_COMMENT))
+        handler = AsyncMock(
+            return_value=IntentProcessingResult(
+                success=True, message="Comment added to issue #5.", intent_data={}
+            )
+        )
+        live_service._handle_comment_issue_query = handler
+
+        result = await live_service.process_intent(
+            message=IMPERATIVE_COMMENT, session_id=sid, user_id=_USER
+        )
+        handler.assert_awaited_once()
+        assert _pending_offers(live_service).get(sid) is None
+        assert DISCLOSURE_MARKER in result.message
+        assert result.intent_data.get("consent_disclosure") is True
+
+    async def test_outward_imperative_under_default_mode_executes_plain(
+        self, live_service, mem_prefs
+    ):
+        """OUTWARD x WRITE x execute framing x collaborate mode: same as
+        today — the imperative executes with no check AND no disclosure (the
+        user themselves said the act out loud this turn; the disclosure
+        discipline attaches to the declared trust mode)."""
+        from services.intent.intent_service import IntentProcessingResult
+
+        sid = "e2e-1509-outward-imp-default"
+        _stub_classifier(live_service, _comment_intent(IMPERATIVE_COMMENT))
+        handler = AsyncMock(
+            return_value=IntentProcessingResult(
+                success=True, message="Comment added to issue #5.", intent_data={}
+            )
+        )
+        live_service._handle_comment_issue_query = handler
+
+        result = await live_service.process_intent(
+            message=IMPERATIVE_COMMENT, session_id=sid, user_id=_USER
+        )
+        handler.assert_awaited_once()
+        assert _pending_offers(live_service).get(sid) is None
+        assert DISCLOSURE_MARKER not in result.message
+        assert result.intent_data.get("consent_disclosure") is None
+
+    async def test_private_write_under_trust_mode_never_discloses(
+        self, live_service, mem_prefs
+    ):
+        """PRIVATE regression pin: the same trust-mode ambiguous cell on a
+        PRIVATE write (update_issue — repo-content editing, CXO's named
+        non-example) proceeds exactly as before the axis: no check, no
+        disclosure, no flags."""
+        from services.intent.intent_service import IntentProcessingResult
+
+        mem_prefs[_USER][WORKING_MODE_PREF_KEY] = "execute"
+        sid = "e2e-1509-private-trust"
+        _stub_classifier(live_service, _update_intent())
+        handler = AsyncMock(
+            return_value=IntentProcessingResult(
+                success=True, message="Updated issue #108", intent_data={}
+            )
+        )
+        live_service._handle_update_issue = handler
+        result = await live_service.process_intent(
+            message=AMBIGUOUS_UPDATE, session_id=sid, user_id=_USER
+        )
+        handler.assert_awaited_once()
+        assert DISCLOSURE_MARKER not in result.message
+        assert result.intent_data.get("consent_disclosure") is None
+        assert result.intent_data.get("consent_outwardness") is None
+
+    async def test_decline_memory_never_lowers_the_gate(
+        self, live_service, mem_prefs
+    ):
+        """Standing doctrine, restated by the ratification: declining a
+        consent check never suppresses the NEXT check — the identical
+        outward-ambiguous request is checked again in full (consent is
+        per-action-instance; decline memory suppresses preference re-asks,
+        never safety gates)."""
+        sid = "e2e-1509-decline-rearm"
+        _stub_classifier(live_service, _comment_intent())
+
+        async def _explosive_handler(*a, **k):
+            raise AssertionError("declined-then-repeated request must never execute unchecked")
+
+        live_service._handle_comment_issue_query = _explosive_handler
+
+        first = await live_service.process_intent(
+            message=AMBIGUOUS_COMMENT, session_id=sid, user_id=_USER
+        )
+        assert first.intent_data.get("consent_check_pending") is True
+        declined = await live_service.process_intent(
+            message="no", session_id=sid, user_id=_USER
+        )
+        assert "Nothing has been changed" in declined.message
+        assert _pending_offers(live_service).get(sid) is None
+        # The identical request again: checked again, not remembered-declined
+        # into silence, and NOT executed.
+        _stub_classifier(live_service, _comment_intent())
+        second = await live_service.process_intent(
+            message=AMBIGUOUS_COMMENT, session_id=sid, user_id=_USER
+        )
+        assert second.intent_data.get("consent_check_pending") is True
+        assert _pending_offers(live_service).get(sid) is not None

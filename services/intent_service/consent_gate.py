@@ -20,6 +20,24 @@ inferred per call site):
     - READ effect -> PROCEED, always. Reads are not consent territory
       (PM 2026-08-13, effect-weighting: "wrong list != lost data").
 
+    THE OUTWARDNESS AXIS (#1509, ratified PM + CXO + PPM 2026-08-15) — a
+    SECOND dimension, orthogonal to effect: effect measures how hard the data
+    state is to undo; outwardness measures who else witnesses the action.
+    Scope boundary (CXO's ruling, declared on ``shared_types.Outwardness``,
+    never inferred per call site): OUTWARD = the action IS a communication
+    act (a comment, a message, a filed issue) — NOT "touches data someone
+    could theoretically later see". Consequence in this matrix (CXO's
+    mechanism ruling): outward-WRITE is neither a second DESTRUCTIVE
+    ("always confirm") nor a silent pass-with-logging. Under
+    collaborate/ambiguous cells it checks exactly as today; wherever a
+    DECLARED trust mode (WorkingMode.EXECUTE) lets an outward WRITE proceed,
+    it proceeds WITH a disclosure line — Piper states what it's about to do
+    and to whom BEFORE doing it (the #1605 variant-two "say it out loud"
+    pattern), a transparency add-on, never a yes/no gate. DESTRUCTIVE stays
+    CONFIRM in every outwardness cell (close/reopen stay DESTRUCTIVE and
+    PRIVATE — PPM's settled boundary case; the axes are jointly exhaustive
+    over reasons for care, not redundant nets over the same actions).
+
 This module generalizes — it does not parallel — the two prior gates:
 
 - #1190 (``destructive_confirm.py``) built CONFIRM for the DESTRUCTIVE tier.
@@ -73,7 +91,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Dict, Optional
 
-from services.shared_types import EffectClass
+from services.shared_types import EffectClass, Outwardness
 
 logger = logging.getLogger(__name__)
 
@@ -88,6 +106,12 @@ class ConsentDecision(str, Enum):
     """What the consent boundary requires before this action may execute."""
 
     PROCEED = "proceed"  # framing/mode/effect carry consent — execute now
+    # #1509 outwardness: execute now, but the reply STATES what is being done
+    # and to whom before the handler's own result — a disclosure line, never
+    # a yes/no gate (CXO's mechanism ruling; the #1605 variant-two pattern).
+    # Strictly MORE transparent than PROCEED, strictly LESS blocking than
+    # COLLABORATE — a fourth verdict, not a modifier on the others.
+    PROCEED_WITH_DISCLOSURE = "proceed_with_disclosure"
     COLLABORATE = "collaborate"  # engage the user first (draft/check turn)
     CONFIRM = "confirm"  # explicit yes/no required (#1190 destructive tier)
 
@@ -96,25 +120,74 @@ def decide_consent(
     effect: EffectClass,
     framing: str,
     mode: "WorkingMode",  # noqa: F821 — collaboration_gate.WorkingMode (import cycle)
+    outwardness: Outwardness = Outwardness.PRIVATE,
 ) -> ConsentDecision:
     """THE consent decision — one function, consulted by every gate path.
 
-    Full matrix (denominator: 3 effects x 3 framings x 2 modes = 18 cells,
-    every cell asserted in test_consent_gate_1509.TestConsentDecisionMatrix):
+    Full matrix (denominator: 2 outwardness x 3 effects x 3 framings x
+    2 modes = 36 cells, every cell asserted in
+    test_consent_gate_1509.TestConsentDecisionMatrix):
 
-    ==========  =========  ===========  ============
-    effect      framing    COLLABORATE  EXECUTE mode
-    ==========  =========  ===========  ============
-    READ        compose    PROCEED      PROCEED
-    READ        execute    PROCEED      PROCEED
-    READ        ambiguous  PROCEED      PROCEED
-    WRITE       compose    COLLABORATE  COLLABORATE
-    WRITE       execute    PROCEED      PROCEED
-    WRITE       ambiguous  COLLABORATE  PROCEED
-    DESTRUCTIVE compose    CONFIRM      CONFIRM
-    DESTRUCTIVE execute    CONFIRM      CONFIRM
-    DESTRUCTIVE ambiguous  CONFIRM      CONFIRM
-    ==========  =========  ===========  ============
+    ==========  ==========  =========  ===========  ==============
+    outwardness effect      framing    COLLABORATE  EXECUTE mode
+    ==========  ==========  =========  ===========  ==============
+    PRIVATE     READ        compose    PROCEED      PROCEED
+    PRIVATE     READ        execute    PROCEED      PROCEED
+    PRIVATE     READ        ambiguous  PROCEED      PROCEED
+    PRIVATE     WRITE       compose    COLLABORATE  COLLABORATE
+    PRIVATE     WRITE       execute    PROCEED      PROCEED
+    PRIVATE     WRITE       ambiguous  COLLABORATE  PROCEED
+    PRIVATE     DESTRUCTIVE compose    CONFIRM      CONFIRM
+    PRIVATE     DESTRUCTIVE execute    CONFIRM      CONFIRM
+    PRIVATE     DESTRUCTIVE ambiguous  CONFIRM      CONFIRM
+    OUTWARD     READ        compose    PROCEED      PROCEED
+    OUTWARD     READ        execute    PROCEED      PROCEED
+    OUTWARD     READ        ambiguous  PROCEED      PROCEED
+    OUTWARD     WRITE       compose    COLLABORATE  COLLABORATE
+    OUTWARD     WRITE       execute    PROCEED      PROCEED_W_DISC
+    OUTWARD     WRITE       ambiguous  COLLABORATE  PROCEED_W_DISC
+    OUTWARD     DESTRUCTIVE compose    CONFIRM      CONFIRM
+    OUTWARD     DESTRUCTIVE execute    CONFIRM      CONFIRM
+    OUTWARD     DESTRUCTIVE ambiguous  CONFIRM      CONFIRM
+    ==========  ==========  =========  ===========  ==============
+
+    The PRIVATE half IS the pre-axis 18-cell matrix, unchanged — PRIVATE is
+    today's semantics, which is why the parameter may default to it (the
+    default can never weaken a cell; see WorkflowEntry.outwardness).
+
+    The OUTWARD half differs from PRIVATE in exactly two cells, both under
+    the DECLARED trust mode (WorkingMode.EXECUTE), and in both the decision
+    gets STRICTLY MORE careful, never less (the doctrine tests pin this):
+    wherever trust mode lets an outward WRITE proceed, Piper still states
+    what it's about to do and to whom BEFORE doing it (CXO's mechanism
+    ruling: a disclosure line, not a yes/no gate — Jake's incident class
+    keeps real protection, an ambiguous outward request under the default
+    mode still asks, without making a trusted user re-confirm every GitHub
+    comment forever).
+
+    Cell-level rationale for the OUTWARD half:
+    - OUTWARD x READ: PROCEED — a communication act creates or sends
+      content, which is a write by definition, so an OUTWARD READ is
+      unrepresentable by the scope boundary; the cells exist because the
+      type space contains them, and they rule the safe thing.
+    - OUTWARD x WRITE x compose: COLLABORATE both modes — same as PRIVATE
+      (executing a request for drafting HELP is the Jake failure, #1510).
+    - OUTWARD x WRITE x execute x COLLABORATE mode: PROCEED, no disclosure —
+      same as today. The imperative IS the consent, and the user themselves
+      said the action out loud this turn; the disclosure discipline attaches
+      to the DECLARED trust mode, where actions can also fire on ambiguity.
+    - OUTWARD x WRITE x execute x EXECUTE mode: PROCEED_WITH_DISCLOSURE —
+      CXO's "under a declared TRUST mode, it still states what it's about
+      to do and to whom before doing it" is unqualified over outward writes
+      proceeding in trust mode; disclosure is not confirmation, so this
+      re-confirms nothing.
+    - OUTWARD x WRITE x ambiguous x EXECUTE mode: PROCEED_WITH_DISCLOSURE —
+      the headline cell: the declared trust mode still proceeds (the
+      graduation the user asked for, unrevoked), but the outward act is
+      said out loud first.
+    - OUTWARD x DESTRUCTIVE: CONFIRM in every cell — outwardness never
+      substitutes for, weakens, or doubles the #1190 tier (a second
+      "always confirm" would be DESTRUCTIVE by another name — CXO).
 
     Why DESTRUCTIVE never weakens: #1190's PM ruling is blast-radius
     protection — an execute-mode user still confirms destructive actions
@@ -125,8 +198,11 @@ def decide_consent(
     Why WRITE+compose collaborates even in execute mode: executing a request
     for drafting HELP is the Jake failure again (#1510).
 
-    Only the WRITE x AMBIGUOUS cell consults the declared mode — that is the
-    "tied to the declared mode, not hardcoded per-verb" requirement.
+    Mode-consultation property (updated for the axis): PRIVATE consults the
+    declared mode in exactly the WRITE x AMBIGUOUS cell (unchanged); OUTWARD
+    WRITE additionally consults it on execute framing (the disclosure hangs
+    on whether trust mode is declared). Every other cell is mode-invariant —
+    asserted in tests.
     """
     from services.intent_service.collaboration_gate import (
         FRAMING_COMPOSE,
@@ -142,12 +218,18 @@ def decide_consent(
     if framing == FRAMING_COMPOSE:
         return ConsentDecision.COLLABORATE
     if framing == FRAMING_EXECUTE:
+        if (
+            outwardness == Outwardness.OUTWARD
+            and mode is WorkingMode.EXECUTE
+        ):
+            return ConsentDecision.PROCEED_WITH_DISCLOSURE
         return ConsentDecision.PROCEED
-    return (
-        ConsentDecision.PROCEED
-        if mode is WorkingMode.EXECUTE
-        else ConsentDecision.COLLABORATE
-    )
+    # AMBIGUOUS framing — the declared mode decides.
+    if mode is WorkingMode.EXECUTE:
+        if outwardness == Outwardness.OUTWARD:
+            return ConsentDecision.PROCEED_WITH_DISCLOSURE
+        return ConsentDecision.PROCEED
+    return ConsentDecision.COLLABORATE
 
 
 def effect_for_action(action: Optional[str]) -> Optional[EffectClass]:
@@ -167,30 +249,60 @@ def effect_for_action(action: Optional[str]) -> Optional[EffectClass]:
     return entry.effect if entry is not None else None
 
 
+def outwardness_for_action(action: Optional[str]) -> Optional[Outwardness]:
+    """The action's DECLARED outwardness, from the workflow registry — the
+    #1509 axis rides with the effect declaration (WorkflowEntry.outwardness);
+    consumers look it up, never infer it from names (the effect_for_action
+    contract, extended). None for unregistered/off-rail actions."""
+    if not action:
+        return None
+    from services.intent_service.workflow_dispatcher import get_action_workflows
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()  # idempotent; no-op when already registered
+    entry = get_action_workflows().get(action)
+    return entry.outwardness if entry is not None else None
+
+
 async def evaluate_consent(
     effect: EffectClass,
     message: Optional[str],
     user_id: Optional[str],
+    outwardness: Outwardness = Outwardness.PRIVATE,
 ) -> ConsentDecision:
     """The async wrapper the seams call: framing from the message, declared
-    mode loaded ONLY for the one cell that consults it (WRITE x AMBIGUOUS) —
-    READ/DESTRUCTIVE and explicitly-framed turns never touch storage
-    (preserves #1190's no-DB-touch property on destructive turns and
-    #1510's on explicitly-framed create turns).
+    mode loaded ONLY for the cells that consult it — WRITE x AMBIGUOUS
+    (unchanged), plus OUTWARD WRITE x EXECUTE framing (#1509 axis: the
+    disclosure hangs on whether a trust mode is declared).
+    READ/DESTRUCTIVE turns never touch storage (preserves #1190's
+    no-DB-touch property on destructive turns), and PRIVATE
+    explicitly-framed turns still never touch storage. Honest scope change:
+    the #1510 no-DB-touch note this docstring used to make about
+    "explicitly-framed create turns" no longer holds — the create family is
+    OUTWARD, so an outward imperative now reads the mode preference. That is
+    the cost of knowing whether to say the act out loud, and it is one
+    fail-safe preference read (get_working_mode degrades to collaborate-mode
+    semantics on storage error, which for an execute-framed WRITE is plain
+    PROCEED — an error can drop the disclosure, never the action's gate).
     """
     from services.intent_service.collaboration_gate import (
         FRAMING_AMBIGUOUS,
+        FRAMING_EXECUTE,
         WorkingMode,
         classify_framing,
         get_working_mode,
     )
 
     framing = classify_framing(message)
-    if effect == EffectClass.WRITE and framing == FRAMING_AMBIGUOUS:
+    consults_mode = effect == EffectClass.WRITE and (
+        framing == FRAMING_AMBIGUOUS
+        or (outwardness == Outwardness.OUTWARD and framing == FRAMING_EXECUTE)
+    )
+    if consults_mode:
         mode = await get_working_mode(user_id)
     else:
         mode = WorkingMode.COLLABORATE  # unread by decide_consent for these cells
-    return decide_consent(effect, framing, mode)
+    return decide_consent(effect, framing, mode, outwardness=outwardness)
 
 
 # ---------------------------------------------------------------------------
@@ -277,6 +389,38 @@ def build_consent_check_offer(intent, effect: EffectClass) -> ConsentCheckOffer:
                 f"Okay — I won't {summary}. Nothing has been changed."
             ),
         },
+    )
+
+
+# ---------------------------------------------------------------------------
+# #1509 outwardness axis — the TRUST-mode disclosure line (say it out loud)
+# ---------------------------------------------------------------------------
+
+
+def build_outward_disclosure(intent) -> str:
+    """The disclosure line for an OUTWARD WRITE proceeding under a declared
+    trust mode (PROCEED_WITH_DISCLOSURE) — states WHAT is about to happen and
+    TO WHOM, in the transcript, ahead of the handler's own result.
+
+    NOT a gate (CXO's mechanism ruling): nothing is held, nothing asks yes/no
+    — the same "say it out loud" pattern as #1605's stored-default variant-2
+    disclosure. The summary reuses ``_summary_for`` (the #1190 phrasing
+    convention — same plain words, same cheap issue-number parse; never a new
+    read), and the repository renders only when the classified intent's
+    context already carries one — this builder never performs a lookup to
+    decorate a transparency line.
+
+    ⚠️ COPY SEAM: Lead-drafted mechanism copy. CXO owns the voice of this
+    surface; adjust wording here (one place), not at call sites.
+    """
+    summary = _summary_for(intent)
+    repository = None
+    if intent.context:
+        repository = intent.context.get("repository") or intent.context.get("repo")
+    where = f" in {repository}" if repository else ""
+    return (
+        f"Saying it out loud before I act: I'm about to {summary}{where} — "
+        "that lands in front of other people, not just the two of us."
     )
 
 

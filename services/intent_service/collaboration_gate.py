@@ -329,13 +329,22 @@ async def gate_holds(action: Optional[str], message: Optional[str], user_id: Opt
         ConsentDecision,
         effect_for_action,
         evaluate_consent,
+        outwardness_for_action,
     )
-    from services.shared_types import EffectClass
+    from services.shared_types import EffectClass, Outwardness
 
     effect = effect_for_action(action)
     if effect is None or effect < EffectClass.WRITE:
         return False
-    return (await evaluate_consent(effect, message, user_id)) is ConsentDecision.COLLABORATE
+    # #1509 outwardness axis: pass the DECLARED outwardness so this
+    # projection consults the same 36-cell matrix as the rail (COLLABORATE
+    # cells are outwardness-invariant today, but the decision stays whole —
+    # no second, narrower matrix hiding in a delegating caller).
+    outwardness = outwardness_for_action(action) or Outwardness.PRIVATE
+    verdict = await evaluate_consent(
+        effect, message, user_id, outwardness=outwardness
+    )
+    return verdict is ConsentDecision.COLLABORATE
 
 
 # ---------------------------------------------------------------------------

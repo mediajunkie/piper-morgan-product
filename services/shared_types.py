@@ -378,6 +378,50 @@ class EffectClass(IntEnum):
     DESTRUCTIVE = 3  # A write whose effect destroys state (subset of write)
 
 
+class Outwardness(IntEnum):
+    """
+    WHO ELSE WITNESSES the action — the #1509 outwardness axis (ratified
+    PM + CXO + PPM, 2026-08-15).
+
+    ORTHOGONAL to EffectClass, deliberately a second dimension and not a new
+    effect tier: effect measures how hard the data state is to undo;
+    outwardness measures who else witnesses the action, and when. An outward
+    act has already happened *socially* the moment it is visible, independent
+    of whether the underlying write can be deleted (CXO: the ticket Jake
+    didn't ask for was a plain WRITE — the reason it could hold a release was
+    that his teammates would see it).
+
+    THE SCOPE BOUNDARY (CXO's ruling — stated HERE at the declaration site,
+    never inferred per call site):
+
+        OUTWARD means the action IS a communication act — it creates or
+        sends content that lands in front of someone else as a direct,
+        immediate consequence (a comment, a message, a filed issue).
+
+        OUTWARD does NOT mean "touches data another person could
+        theoretically later see". Completing a shared todo, editing an
+        issue's title, appending to a doc in a repo teammates can read —
+        those are still PRIVATE writes in this sense; nobody is being
+        handed something right now. If this axis drifts to the broad
+        reading, most WRITEs in a collaborative product become OUTWARD
+        and the dimension stops discriminating.
+
+    Boundary case, settled — do not re-litigate (PPM 2026-08-15):
+    close_issue / reopen_issue stay EffectClass.DESTRUCTIVE (#1190) and are
+    NOT reclassified OUTWARD — no content is created or sent, and the effect
+    axis already covers their board-wide visibility. The two axes are jointly
+    exhaustive over *reasons for care*, not redundant nets over the same
+    actions.
+
+    ORDERED like EffectClass (PRIVATE < OUTWARD) so consumers can compare;
+    the consent consequence lives in ``consent_gate.decide_consent`` (the
+    one decision function), never re-derived here or at call sites.
+    """
+
+    PRIVATE = 1  # Nobody else is handed anything by the action itself
+    OUTWARD = 2  # The action IS a communication act — content lands in front of others now
+
+
 class TrustStage(IntEnum):
     """
     Trust stages governing Piper's proactivity level.
