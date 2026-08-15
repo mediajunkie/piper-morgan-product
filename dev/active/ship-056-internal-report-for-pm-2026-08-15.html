@@ -1,0 +1,196 @@
+<title>Weekly Report #056 — Internal</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --card:#FFFFFF; --ink:#1A1A17; --ink-soft:#5E5E55;
+    --rule:#E1E0DA; --accent:#5A5233; --accent-soft:#F0EEE4;
+    --adv:#3E6B45; --held:#8A6116; --slip:#A33F2B;
+    --shadow:0 1px 2px rgba(26,26,23,.05), 0 10px 28px -14px rgba(26,26,23,.16);
+    --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --data:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--ink-soft:#A0A093;
+    --rule:#33332B;--accent:#C9BE8E;--accent-soft:#26261E;
+    --adv:#79B885;--held:#D5A44B;--slip:#E38672;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="dark"]{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--ink-soft:#A0A093;
+    --rule:#33332B;--accent:#C9BE8E;--accent-soft:#26261E;
+    --adv:#79B885;--held:#D5A44B;--slip:#E38672;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{--ground:#F7F7F5;--card:#FFFFFF;--ink:#1A1A17;--ink-soft:#5E5E55;
+    --rule:#E1E0DA;--accent:#5A5233;--accent-soft:#F0EEE4;
+    --adv:#3E6B45;--held:#8A6116;--slip:#A33F2B;
+    --shadow:0 1px 2px rgba(26,26,23,.05),0 10px 28px -14px rgba(26,26,23,.16);}
+
+  body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:62rem;margin:0 auto;padding:3rem 1.25rem 5rem;display:flex;flex-direction:column;gap:2.5rem}
+  header{display:flex;flex-direction:column;gap:.5rem;border-bottom:3px double var(--rule);padding-bottom:1.5rem}
+  .stamp{font:500 .7rem/1 var(--data);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  h1{font:400 2.5rem/1.1 var(--display);margin:0;text-wrap:balance;letter-spacing:-.015em}
+  .standfirst{color:var(--ink-soft);max-width:52ch;margin:0;font-size:1.05rem}
+  h2{font:600 .72rem/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+     margin:0;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+  section{display:flex;flex-direction:column;gap:.8rem}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:1rem 1.2rem;
+        box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.5rem}
+  .card h3{margin:0;font:600 1.02rem/1.35 var(--body);text-wrap:balance}
+  .card.hero{border-left:5px solid var(--accent);padding:1.5rem 1.6rem}
+  .card.hero h3{font:400 1.55rem/1.2 var(--display)}
+  .card>p{margin:0}
+  .note{color:var(--ink-soft);font-size:.93rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:.5rem}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:.6rem .8rem;
+        display:flex;flex-direction:column;gap:.15rem}
+  .stat dt{font:500 .66rem/1.2 var(--data);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .stat dd{margin:0;font:600 1.15rem/1.15 var(--body);font-variant-numeric:tabular-nums}
+  .tablewrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:.93rem}
+  th{text-align:left;font:600 .68rem/1.3 var(--data);letter-spacing:.07em;text-transform:uppercase;
+     color:var(--ink-soft);padding:.5rem .6rem;border-bottom:1px solid var(--rule);white-space:nowrap}
+  td{padding:.6rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tag{font:600 .66rem/1 var(--data);letter-spacing:.06em;text-transform:uppercase;padding:.28rem .4rem;
+       border-radius:2px;white-space:nowrap;display:inline-block}
+  .tag.adv{background:color-mix(in srgb,var(--adv) 14%,transparent);color:var(--adv)}
+  .tag.held{background:color-mix(in srgb,var(--held) 16%,transparent);color:var(--held)}
+  .tag.slip{background:color-mix(in srgb,var(--slip) 13%,transparent);color:var(--slip)}
+  ol.asks{margin:0;padding-left:0;list-style:none;counter-reset:a;display:flex;flex-direction:column;gap:.7rem}
+  ol.asks li{display:grid;grid-template-columns:1.7rem 1fr;gap:.6rem;align-items:baseline;counter-increment:a}
+  ol.asks li::before{content:counter(a);font:600 .85rem/1.5 var(--data);color:var(--accent)}
+  ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.45rem}
+  ul.plain li::marker{color:var(--ink-soft)}
+  code{font:.88em/1.4 var(--data);background:var(--accent-soft);padding:.1rem .3rem;border-radius:2px}
+  blockquote{margin:.2rem 0;padding-left:.9rem;border-left:2px solid var(--rule);color:var(--ink-soft);font-style:italic}
+  footer{border-top:1px solid var(--rule);padding-top:1rem;color:var(--ink-soft);font-size:.85rem}
+  @media (max-width:34rem){h1{font-size:1.95rem}.wrap{padding-top:2rem}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="stamp">Internal weekly report · for xian only · Ship #056 substrate</p>
+    <h1>Week of August 7 – 13</h1>
+    <p class="standfirst">The week the sprint told the truth about itself, twice — once about how much beta work remained, once about how the count was being measured — and both times the response was structural, not defensive. Ten reports, second cycle of the contributor tier, and one honest mistake of my own along the way.</p>
+  </header>
+
+  <section>
+    <h2>Dashboard</h2>
+    <dl class="grid">
+      <div class="stat"><dt>Reports in</dt><dd>10 of 10</dd></div>
+      <div class="stat"><dt>Deployed</dt><dd>v41 → v52</dd></div>
+      <div class="stat"><dt>MVP not done</dt><dd>48 (24 In Review)</dd></div>
+      <div class="stat"><dt>Published</dt><dd>3 in-window</dd></div>
+      <div class="stat"><dt>Portfolio lines slipped</dt><dd>3</dd></div>
+    </dl>
+
+    <div class="card hero">
+      <h3>Friday's live test told us we had more work than anyone had reported. By Thursday, the fastest ruling-to-shipped-code loop of the project's life had run twice.</h3>
+      <p>Your own live testing Friday (Aug 8) surfaced structurally more unfinished work than the team's own reporting had shown — the beta date moved back a month, and you called for fundamentals-first. Everything the team built the rest of the window is downstream of taking that seriously rather than defending the prior estimate. Lead called a moratorium on piecemeal routing patches; Arch ratified the Understanding-Layer Inversion as the structural rebuild in its place — a real rearchitecture, not another patch — and it shipped its first working evidence (93 of 93 valid routes) by Friday.</p>
+      <p class="note"><strong>And then Thursday showed what the new discipline can do at speed:</strong> your ruling on the declared-vs-inferred trust fork (#1510, relayed by me at 08:01) became a shared verification mechanism by noon, a consent gate built on it by late afternoon, and two live consumers you personally tested and closed the same evening — same-day, ruling to shipped, verified code. That's the fastest turnaround the team has recorded.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Progress against goals — the six leadership lanes</h2>
+    <div class="card">
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Lane</th><th>Verdict</th><th>The line that matters</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Architecture</strong></td>
+            <td><span class="tag adv">4 adv</span></td>
+            <td>Ratified the Inversion rebuild and named the moment the sprint's own denominator broke twice in one week — a brand-new counting tool found to have a bug within an hour of shipping, then a second blind spot hours later. Owns a real incident too: a merge of theirs silently deleted 22 files across a week-old bug, root-caused to a hook's own printed remediation text pointing the wrong direction.</td>
+          </tr>
+          <tr>
+            <td><strong>Innovation</strong></td>
+            <td><span class="tag adv">6 adv</span></td>
+            <td>Closed all three recurring-instrument asks 3-for-3, and put its own new mandate (protect a property, don't just patch instances) into practice three times in the same week it was granted — including once by correctly <em>declining</em> to delegate a task whose scope wasn't actually settled yet.</td>
+          </tr>
+          <tr>
+            <td><strong>Experience</strong></td>
+            <td><span class="tag adv">2 adv</span> <span class="tag held">5 held</span> <span class="tag slip">2 slip</span></td>
+            <td>Two real closes (the honesty-of-claims fix verified against the deployed artifact, the plugin first-contact criterion built and shipped) against a live-verification gap it names plainly: the criterion has been "done" in code for four days and nobody has run the live-user test yet. Its two slipped lines — an ethics-decline watch, and a design-system portfolio now five windows unmoved — are named again rather than quietly re-carried.</td>
+          </tr>
+          <tr>
+            <td><strong>Product</strong></td>
+            <td><span class="tag adv">5 adv</span></td>
+            <td>Closed the #1510 fork's product half same-day, closed the #1569/#1605 verb-ambiguity design arc end-to-end with real code-verified catches along the way, and ran a fresh <code>sprint-truth.py</code> at time of every citation rather than carrying a number forward — the discipline the whole week's denominator crisis was arguing for, already in practice.</td>
+          </tr>
+          <tr>
+            <td><strong>Trust</strong></td>
+            <td><span class="tag adv">3 adv</span> <span class="tag held">2 held</span></td>
+            <td>The Amber reboot mid-week (Aug 11) was the real test of the whole stand-down/resume design under an actual host reboot, not a drill — it worked end to end. Found its own trust-mechanism tooling had two real bugs this window, both caught by the mechanisms themselves. Still names the one thing it's asked for twice running: does anyone own checking the remaining beta conditions against open issues?</td>
+          </tr>
+          <tr>
+            <td><strong>Communications</strong></td>
+            <td><span class="tag adv">7 adv</span></td>
+            <td>Three publications in-window, zero slots missed — its own report counted "Alpha Launches" (Aug 13) as just outside the window; Aug 13 is the window's last day, so it's in (caught synthesizing this report, not by Comms). Also the window's largest single piece of work by file count — a full visitor-facing register pass across the newly-scoped public docs site with Docs, which turned up a manual-install tutorial missing its <code>git clone</code> step entirely. Reports four more instrument-measured-the-wrong-thing catches, three of them its own, continuing directly from the same finding in #055's report two weeks running.</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The contributor tier — second cycle</h2>
+    <div class="card">
+      <p><strong>All four filed same-evening under a compressed deadline, no drop in quality from the first cycle.</strong></p>
+      <ul class="plain">
+        <li><strong>Development</strong> — the week's engine: nine deploy cuts Fri–Sun alone, the #1510 arc built same-day across three consumers, and a closure-sweep finding worth keeping in view — an "open issue" count it steers by was itself overstated, 16 apparently-closeable issues surviving verification down to 9 real ones.</li>
+        <li><strong>Documentation</strong> — closed the pmorgan.tech site curation and a Ship-rendering bug that had been live since Ship #039, catching two Ships whose on-disk drafts had silently drifted from live edits before a regeneration would have reverted real editorial work.</li>
+        <li><strong>Product assistant</strong> — found a real safety-relevant type bug in its own prior spec before anyone built against it, and caught itself citing a stale branch as "what's live" mid-verification — corrected the record and documented the trap so the next agent doesn't repeat it.</li>
+        <li><strong>Web</strong> — three real fixes shipped and verified end-to-end, plus a second Amber reboot handled cleanly. Its most-repeated line, twice now: no browser exists on this host, which blocks all visual-confirmation work structurally, not for lack of effort.</li>
+      </ul>
+      <p class="note"><strong>My read, unchanged from #055:</strong> keep it. Two of the four surfaced defects this window that a leadership-only cycle wouldn't have seen at all.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What needs you — nine items</h2>
+    <div class="card">
+      <ol class="asks">
+        <li><strong>Bless the merged first-contact criterion.</strong> Not §7a as originally written, not #1536's own acceptance criteria as written — the merged document is the actual artifact (PPM). Code is shipped; this is the last gate before the live-user test can even be scheduled.</li>
+        <li><strong>Name Surface 1 in the 1.0 five, or strike Surface 3.</strong> Carried a second window now — Surface 3 has exactly one corpus mention and no name, doc, ADR, or build lane (PPM/CXO). No urgency attached; beta isn't gated on it, but it's aging.</li>
+        <li><strong>The values document — four small decisions.</strong> Where it lives publicly, its relationship to the LICENSE/NOTICE text, whether a fourth commitment belongs, and voice (HOST leans third-person; Comms deliberately didn't apply that lean without your word). Ready for your read now, no deadline (Comms + HOST).</li>
+        <li><strong>The retention-policy scaffold.</strong> Drafted, spot-verified against the running code before HOST wrote a word of it. Two open questions inside it, both left genuinely open rather than pre-decided: a default retention limit (HOST agrees with your no-limit lean, for an independent reason), and whether to offer user-facing retention settings.</li>
+        <li><strong>Memory-index packing.</strong> About a week queued now — CIO's own words: no clean way to tell "queued" from "forgotten" without risking a nag. Headroom is stable at 13 lines, not shrinking further, so there's no new urgency, just an aging ask.</li>
+        <li><strong>The spatial-intelligence cold-island decision.</strong> PM-gated since July 30, unresolved through this window too (Arch, checked live rather than assumed). Arch's own slice has been complete the whole time — this is purely waiting on you.</li>
+        <li><strong>The audit nobody owns.</strong> HOST's repeated ask, now twice running: does anyone own checking the rest of your verbatim beta conditions against the open MVP issues? One of several conditions is covered; the rest aren't, and nobody's assigned.</li>
+        <li><strong>Short-period cron experiment — yes or no.</strong> The only way to actually decompose the ~30-minute dispatch latency the fleet has been measuring for two weeks; costs CIO roughly three extra fires. Not started without your word.</li>
+        <li><strong>One correction to carry into your own picture</strong>, not a decision: PA's report lists three privacy-policy blockers as still open (sub-processor completeness, retention practice, contact address) — that's stale. All three were resolved directly with you on Aug 13, inside this same window (privacy policy corrected to name Anthropic accurately, retention ground-truth written in, five docs' worth of contact-email placeholders fixed). Only the plugin manifest's <code>license</code> field is still genuinely open.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h2>The pattern across all ten reports</h2>
+    <div class="card hero">
+      <h3>Every lane, without exception, reported catching a claim by checking the actual source instead of trusting a summary — including its own summaries.</h3>
+      <p>This isn't one instrument's finding this week; it's the throughline of the entire report set. The evidence is unusually direct because every report volunteers its own instance:</p>
+      <ul class="plain">
+        <li>Product audited a design proposal against the actual shipped code twice and found two real gaps neither author had seen — including one where a correct pattern (disclose-after for a low-stakes action) had been silently generalized to a case where it would have let a destructive action skip its required confirmation.</li>
+        <li>Communications traced a "six releases" claim in its own prior Ship review back to the actual deploy record and found it was one release, not six — caught by tracing the artifact, not by re-reading the prose.</li>
+        <li>The product assistant caught itself mid-verification citing a branch that was 18 days stale as "what's live," corrected the record, and wrote the trap into the project's own standing documentation so it can't recur unnoticed.</li>
+        <li>Trust found two real bugs in the tooling it built specifically to catch this class of error — in its own documents — by running its own checker rather than assuming a prior fix had held.</li>
+        <li>Architecture's own incident this window is the sharpest instance: a merge deleted 22 files because a remediation step was followed in the wrong direction, missed because the check that would have caught it measured presence, not direction.</li>
+      </ul>
+      <p class="note"><strong>What I'd put in front of you:</strong> the sprint's own denominator broke twice this week — once in a brand-new tool, once in board data — and both times the fix that landed was structural (a script, a checker, a re-derivation) rather than someone simply being more careful next time. That's the same shape as #054's "clear is not a measurement" and #055's "shipped is a layer word," landing a third time in a row. I'd read that as the team having actually internalized it rather than merely having named it well.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>My own accounting</h2>
+    <div class="card">
+      <p><strong>Friday evening, after you moved the deadline up, my own second mail-send call deleted the kickoff I'd sent 22 seconds earlier — an operational mistake, not a delivery delay.</strong> Three roles (CXO, Docs, PPM) correctly flagged never having seen the original kickoff. I traced it rather than guessed: the first send fully succeeded; a second call of mine, meant as an unrelated follow-up, re-passed the same already-sent paths and recorded them as deletions relative to the new tip. Fixed by recreating the content and resending, this time verifying on <code>origin/main</code> before touching the paths again rather than repeating the mistake a second time. Reported to you in full the same evening, not smoothed into "there was a brief delivery delay."</p>
+      <p class="note">The retroactive angle worth naming: the day's session log never got its normal close, because the conversation with you ran past the fire boundary. Reconstructed and closed properly this morning per the project's own self-heal discipline — the same discipline this report's "pattern across all ten" section describes everyone else using.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Sources:</strong> all ten workstream reports read in full; the window's seven omnibus logs; live verification of the deploy history, the MVP count (re-run fresh this morning, not cited from any single report), and every issue state cited above. Where a role marked something unattested or unverified, I carried it as such rather than resolving it myself.</p>
+    <p>Canonical copy: <code>dev/active/ship-056-internal-report-for-pm-2026-08-15.html</code></p>
+  </footer>
+</div>
