@@ -2,33 +2,11 @@
 
 **Purpose**: durable handoff record for the next Architect session (duty-cycle-tick + PM-ratified single-log discipline 2026-06-12 + escalations-doc FOLD 2026-06-17). PM-attention items ride here.
 
-**Last rewritten**: 2026-08-04 22:2x PT (day-close); **environment table patched 2026-08-11 15:5x PT post-reboot** (cron job id only — substantive threads below are NOT re-verified today, still dated 08-04/08-08; treat "Owed by me" / "For PM" as needing a fresh GH check before acting, not as current fact). Prior 2026-08-03 22:00, 2026-08-02 22:00; full rewrite 2026-07-29 10:30 — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
-
-**2026-08-11 post-reboot note**: Amber rebooted for macOS 26.6 (Pard's stand-down/post-reboot notices). Parked cron pre-reboot, re-armed post-reboot (`3e79e19a`), verified exactly one job. Mail inbox drained this fire — 2 cc-level memos (PA's mail-parser fix confirmation, PPM's empty-standup exception ruling), neither addressed to arch, no action needed, both read in full and moved to `read/` (not globbed), verified empty at `origin/main`. Standing-items checked: nothing unblocked — remaining open items are either gated on another role's build or explicitly need a dedicated non-fire session. No substantive architectural work this fire; the reboot cycle was the fire's content.
-
-**2026-08-12 09:5x PT START note**: 08-11's last two fires + 08-12's first two queued without a turn (`cohort-freeze-detect.sh` rc=0 — session-specific, not cohort-wide). Retroactive `DAY-CLOSED` written for 08-11. Today's inbox drained: 2 more cc-level memos — **Lead's STOP-condition escalation to PM** (CI red on `main` two days, `test_completion_ratchets.py` two failures over ceiling, `Architecture Enforcement` red since 08-09 15:07; plus a beta blocker — no `is_admin=true` user exists, #1485/#1508's admin-gating turned a dormant gap into a live block on PM saving the Slack token; filed **#1600** and **#1599**, both awaiting PM's word) and **CXO's closed loop with PPM** on the empty-standup exception (already resolved via GH comment on #1591). Neither addressed to arch, nothing owed by me on either — noting Lead's escalation here only for situational awareness (CI/beta-blocker state), not because it's mine to act on. Standing-items unchanged: still 3 open, still nothing unblocked.
-
-**2026-08-12 STOP note (day-close)**: rest of the day was quiet — three more WORK fires (12:49/15:49/18:49), inbox empty and standing-items unchanged at every check, no commits needed beyond heartbeats. **DAY-CLOSED written for 08-12.** Re-armed via delete-then-create at STOP: `1ec65cec` (prior `3e79e19a`). Registry row updated. Lead's #1600 (CI ratchets)/#1599 (is_admin beta blocker) were still awaiting PM's word as of this STOP.
-
-**2026-08-13 (full day)**: clean START (no self-heal needed, yesterday closed properly). Two substantive mail-drains, both the same **CXO/PPM #1569/#1605 design thread** (todo/reminder chat-copy framing + a "clear on reminder" disambiguation flow) progressing through 4 rounds over the day — worth naming since it's a live example of good practice, not because arch owns it: CXO proposed, PPM audited against the actual code (`context_assembler.py`, not summary) and found 2 real gaps, CXO fixed both by re-reading the code, PPM caught one more real asymmetry (a stored "delete" default is DESTRUCTIVE per #1557's EffectClass ordering and must still route through `destructive_confirm.py`'s #1190 blocking-confirm gate — disclosure-only, which is fine for the WRITE/complete branch, isn't sufficient there). No arch action on any of it — noted for awareness only, since it touches the EffectClass/confirm-gate invariant I care about, and it's being handled correctly without me. Four quiet WORK fires otherwise, standing-items never moved (still 3, still gated). **DAY-CLOSED written for 08-13.** Re-armed at STOP: `ee52b1fd` (prior `1ec65cec`). Registry row updated. **Lead's #1600/#1599 status unknown as of this STOP — not checked today, worth a look tomorrow** (no mail arrived about them, which could mean still-awaiting-PM or could mean resolved-elsewhere-and-not-cc'd; don't assume either).
-
-**2026-08-14 16:0x PT — Understanding-Layer Inversion Phase 1 ruled on (real work, not a rubber stamp).** Lead shipped Phase 1 shadow-only (`dc9f20d03`, #1595) and asked me to rule on two of my own prior conditions before any tuning. Verified both against source rather than trusting the memo — this is now the live thread to track:
-- **RATIFIED**: 62-canonical-operation grammar (union of rail-derived 40 + registry-only 22), verified via an Explore agent literally re-running `derive_routing_grammar()` live and confirming the mutation-sensitivity test passes. Same shape as my original 106→~31-38 correction, run the other direction — my rail-only census was incomplete, not conservative.
-- **NOT ratified as proposed — split, not uniform**: Lead's memo treated two "registry-category artifact" corpus rows (`create_issue`, `meeting_time`) as the same fix. They aren't: `create_issue`'s QUERY-filing is a real artifact (and symptomatic of a wider ≥4-instance mutation-under-read-only-category pattern). `meeting_time`'s QUERY-filing is a **deliberate, cited decision** (#589) that the corpus's TEMPORAL expectation disagrees with. Sent back split.
-
-**✅ CLOSED same day 08-14 evening.** Lead executed both halves exactly on the terms set: swept every `.category ==` consumer, confirmed cosmetic-only (effect/safety derives exclusively from EffectClass by action, #1557 — no consumer reads category as a safety proxy), corpus row re-expressed with the check cited. `meeting_time`: ruled **#589 STANDS** on the record (`decisions.log`), corpus corrected citing #589 by number. Wider mutation-under-QUERY pattern filed as **#1619** (Production) regardless, carrying my item-4 flag too. **I verified all three artifacts before accepting** (`gh issue view 1619`, `decisions.log`, the corpus source file) rather than taking the completion memo's word — caught myself checking the *generated* corpus file first (no citations there, correctly, per its own "don't hand-edit" header) before checking the actual *source* file (`routing_corpus_1283.yaml`), which has both citations verbatim. Nothing left open on this thread.
-
-**2026-08-14 STOP note (day-close)**: last fire (21:57) surfaced genuinely urgent work ahead of the mechanical STOP — Exec's Ship #056 kickoff, deadline moved up to same-evening by PM. Filed `mailboxes/exec/inbox/workstream-056-arch-2026-08-14.md`: led with the routing-moratorium→Inversion pivot as the week's central fact, grounded milestone status in a live `sprint-truth.py` run (48 not done/1050 done, moved 3x mid-week from the same denominator-crisis class of bug), **named my own 08-08 merge-drop and 08-09 mailbox-glob incidents without softening them**, and closed with 4 risks — two of them (the merge-aware hook, still not landed after 3 asks; spatial-intelligence, still PM-gated since 07-30) freshly re-verified live via git log/mail search rather than carried from a stale synthesis. **DAY-CLOSED written for 08-14.** Re-armed at STOP: `9b7524e7` (prior `ee52b1fd`). Registry row updated.
-
-⚠️ **This file is 20 dense lines of daily notes deep and has NOT had the deliberate consolidation pass flagged on 08-13.** Tonight's fire was already substantial (Phase-1 ruling + verification + Ship #056); didn't force a rewrite on top of it — naming the need again rather than pretending it's done. **If tomorrow is quiet, that pass — not another appended paragraph — is the right next move**: fold 08-11 through 08-13's now-settled notes into a short summary, re-verify the "Owed by me"/"For PM" sections below (untouched since 08-04) against GH, and drop what's resolved.
-
-**Also 08-14**: HOST fielded **Agent 360 v0.4** (direct memo, 291-line questionnaire, ~2-week window) — deliberately deferred to a dedicated pass, tracked in `arch-standing-items.md` with the real deadline named. Don't let it slide silently.
-
-⚠️ **The "Owed by me" / "For PM" sections below are now 9+ days stale** (last touched 08-04, patched only for cron facts since). If tomorrow is quiet again, that's the next thing worth a deliberate look rather than another environment-only patch — not urgent, no signal demands it, but the staleness itself is now old enough to be worth naming as a thing to do, not just a caveat to repeat.
+**Consolidated 2026-08-15 06:5x PT** — named trigger from 08-14's STOP note ("if tomorrow is quiet, that pass is the right next move"). Folded 08-11→08-14's settled daily notes into the summary below; **re-verified every "Owed by me"/"For PM" item against `gh issue view` live rather than carrying 07-29/08-04 claims forward** — result: `#1430`, `#1419`, `#1433`, `#1484`, `#1466` are all **CLOSED** and were still sitting in this file as open asks. The entire old "For PM" section is now stale/resolved and has been removed (see note where it lived). This is exactly the failure mode the file's own prior staleness-warnings predicted — worth remembering the warnings were right, not just fixing the result.
 
 ---
 
-## Environment (verified 2026-07-29, not assumed)
+## Environment (verified 2026-07-29, still accurate)
 
 | Fact | Value |
 |---|---|
@@ -36,194 +14,77 @@
 | Worktree model | **Model A** — stable per-agent path, reused every session. **The path is load-bearing** (Claude Code keys per-path state; a fresh path silently orphans accumulated state) |
 | Worktree | `/Users/xian/Development/piper-morgan-worktrees/arch` |
 | Branch | `claude/arch-cycle` |
-| Cron | **`27 6,9,12,15,18,21`** (6×/day, offset :27), job **`9b7524e7`**, re-armed at 08-14 STOP via delete-then-create (prior `ee52b1fd` → `1ec65cec` → `3e79e19a`, the last re-armed post-reboot 08-11 — see `docs/handoff-arch-2026-08-11.md` §1 for the reboot story). **Session-only — dies with the session.** Empty `CronList` → re-arm this expression |
-| Registry row | **`active`** in `dev/active/duty-cycle-registry.tsv` (the "cron NOT armed" parked note was cleared 7/29 per its own stated condition) |
-| Memory | shared cohort pool (~169 files), keyed to the git **common** dir — shared by construction with every role |
+| Cron | **`27 6,9,12,15,18,21`** (6×/day, offset :27), job **`9b7524e7`**, re-armed at 08-14 STOP via delete-then-create. **Session-only — dies with the session.** Empty `CronList` → re-arm this expression. Full reboot/park story (macOS 26.6, 08-11): `docs/handoff-arch-2026-08-11.md` §1 |
+| Registry row | **`active`** in `dev/active/duty-cycle-registry.tsv`, kept in sync at every re-arm |
+| Memory | shared cohort pool, keyed to the git **common** dir — shared by construction with every role |
 | Mail | `scripts/mail-send.sh` push-to-ref from this worktree. **Never** touch PM's main checkout working tree (HARD RULE — PM saves uncommitted work there) |
 
-**Hooks — CHANGED 2026-07-29 evening. The old index-state/two-shape protocol is HISTORY; don't run it.**
-A real **`.git/hooks/pre-commit` gate** is installed in the shared common dir (Pard, on my TOCTOU ruling) and **delegates** to `check-branch.sh` so it can't fork from its advisory twin. Verified on this seat: compound mail commit → **BLOCKED with the verbatim message**; non-mail control → **ALLOWED**. Two side effects: the **mute-block defect is dead** (git surfaces pre-commit stdout, so you get real guidance, not `No stderr output`), and **index state no longer matters** — shape-independence is now structural.
-**The guarantee, per-commit**: *any commit that would place a `mailboxes/` path into a commit on a non-`main` branch is refused, however staging was expressed.* No claim about seat, session, host, or shape.
-**Coverage truth table (HOST, measured — this is why BOTH layers stay):** prior-call staging → both block · compound → **gate only** · `--no-verify` + prior-call → **advisory layer ONLY** (the gate is skipped by definition) · compound + `--no-verify` → **UNCOVERED**, held by `mail-send.sh` being safe by construction plus prose discipline. **Do not retire the advisory PreToolUse layer** — HOST ruled, on measurement, against my lean.
-⚠️ **Cleanup wedge, will catch you**: a gate-blocked commit **leaves the file staged**, and the advisory layer's predicate matches `git commit` **anywhere** in a call — so a batched cleanup gets blocked with no explanation. **Make the cleanup call contain no `git commit`:** `git restore --staged <path>` then `rm -f <path>`, as separate commands.
+**Hooks** (settled 2026-07-29, still current): a real `.git/hooks/pre-commit` gate is installed in the shared common dir and delegates to `check-branch.sh` — *any* commit that would place a `mailboxes/` path into a non-`main` branch commit is refused, however staging was expressed. The advisory PreToolUse layer stays too (HOST ruled, on measurement, against retiring it — `--no-verify` + prior-call staging is UNCOVERED by the gate, held only by the advisory layer + `mail-send.sh` being safe by construction). ⚠️ Cleanup wedge: a gate-blocked commit leaves the file staged, and the advisory layer's predicate matches `git commit` **anywhere** in a call — make cleanup calls contain no `git commit` (`git restore --staged <path>` then `rm -f <path>`, separate commands).
 
 ---
 
-## ⚠️ The operational lesson from this week — read before you sign off
+## Recent history (08-11 → 08-14, condensed from daily notes)
 
-**On 7/26 I ended a session reporting "cron arming awaits PM's word" and treated that as a complete handoff. It wasn't.** No cron meant no last-fire STOP could trigger, so the 7/26 log never got its `DAY-CLOSED` marker — and **I was dark 7/27 and 7/28 entirely** while every other cycling role worked. Watchdog stall alerts had been firing against `arch` daily since 7/20 and produced nothing, because my registry row said `parked`.
+**08-11**: Amber rebooted for macOS 26.6. Cron parked pre-reboot, re-armed post-reboot, verified. Quiet mail otherwise.
 
-**The rule this earns**: a pending PM question doesn't block other work — **and it must not silently park the whole lane.** If the absence of an answer has a consequence, *state the consequence*, don't just note the question. One line — *"unarmed means I go dark until you say so"* — would have closed it.
+**08-12**: Retroactive `DAY-CLOSED` self-heal for 08-11 (two fires queued without a turn — session-specific, not cohort-wide, confirmed via `cohort-freeze-detect.sh`). Otherwise quiet.
+
+**08-13**: Quiet day. Watched (didn't own) the **CXO/PPM #1569/#1605 design thread** run to a clean resolution through 4 rounds — worth remembering as a model of the discipline: PPM caught a real DESTRUCTIVE-vs-WRITE confirm-gate asymmetry against actual `EffectClass` code, not summary.
+
+**08-14 — the week's most substantive day**:
+- **Understanding-Layer Inversion Phase 1 ruling.** Lead needed two of my prior conditions decided before tuning. Verified both against source rather than the memo: **ratified** the 62-canonical-operation grammar (independently re-ran `derive_routing_grammar()` live). **Split, not uniform** on the corpus-fix ask — Lead's memo treated two rows as the same shape; `create_issue`'s QUERY-filing was a real artifact, `meeting_time`'s was a **deliberate cited decision (#589)** the memo had mischaracterized. Sent back split; Lead executed both correctly (filed **#1619** for the wider mutation-under-QUERY pattern); **I verified all three completion artifacts before accepting**, catching my own first-pass mistake (checked the generated corpus file instead of its actual source). Thread closed cleanly. **Watch item**: Phase 1 shipped shadow-only; five corpus categories are still REVIEW-only/ungateable, so the validating instrument has its own live measurement gap — don't over-read the 93/93 result as more settled than it is.
+- **Ship #056 workstream review**, filed same-evening after PM moved the deadline up. Led with the routing-moratorium→Inversion pivot as the week's central architectural fact; named my own 08-08 merge-drop and 08-09 mailbox-glob incidents without softening them; flagged the merge-aware hook (asked of CIO 3×, still not landed) and the spatial-intelligence PM-gate (open since 07-30) as live risks, both freshly re-verified rather than assumed.
+- **Agent 360 v0.4** fielded by HOST — deliberately deferred, tracked in `arch-standing-items.md` with its real ~2-week deadline. Don't let it slide silently.
 
 ---
 
-## 🔴 HARD RULE FOR MYSELF (2026-08-09, PM-escalated as a TRUST VIOLATION) — never glob the inbox
+## Standing hard rules — load-bearing, not stale, keep verbatim
 
-**`read/` is a CLAIM ABOUT MY OWN COGNITION.** Moving a file there asserts *"I read this."* On 08-08 I
-moved Lead's probe-results memo there **without reading it**, then told PM no such memo existed — and
-PPM's independent search corroborated my false negative because they inherited my framing.
+### 🔴 Never glob the inbox (2026-08-09, PM-escalated as a TRUST VIOLATION)
 
-**PM's ruling: this must never happen again. It is a real violation of trust.**
+**`read/` is a CLAIM ABOUT MY OWN COGNITION.** On 08-08 I moved a memo there **without reading it**, then told PM it didn't exist — PPM's independent search inherited my false framing. PM: *"a real violation of trust."*
 
-### The rule already existed and I broke it by batching
-PM correction 2026-05-15: *"Inbox is for arrivals **not yet read OR not yet acted on**."* The two-folder
-model already encodes "not new but not read yet." **No third folder is needed** — PM offered one and the
-honest answer is that it would just give a bulk loop one more destination to move unread things into.
-**The defect is an UNVERIFIED TRANSITION, not a missing state.**
+⛔ **NEVER `for f in mailboxes/arch/inbox/*.md`.** ✅ **The drain iterates a list I APPEND TO IN THE SAME TOOL CALL THAT DISPLAYS A MEMO'S CONTENTS.** Unread ⇒ never in the list ⇒ **cannot move.**
 
-### The structural fix — the glob is the smell
-> ⛔ **NEVER `for f in mailboxes/arch/inbox/*.md`.** A directory glob makes the move a scheduled chore
-> instead of a consequence of reading.
-> ✅ **The drain iterates a list I APPEND TO IN THE SAME TOOL CALL THAT DISPLAYS A MEMO'S CONTENTS.**
-> Unread ⇒ never in the list ⇒ **cannot move.** Bad state unrepresentable, not merely forbidden.
+**Two halves, get both right**: reading (the cognitive act) and pushing (the shared record) are separate failure points — I got each wrong on consecutive days once (08-08: moved without reading; 08-09: read properly but only pushed the MANIFEST, not both sides of the move). **Mandatory verification after every drain**: `git ls-tree -r --name-only origin/main -- mailboxes/arch/inbox/ | grep -vc MANIFEST` — never `ls` the local directory, which can read clean while the trunk is wrong.
 
-**If a fire ends with unread mail, it stays in `inbox/` and the fire entry says so.**
+**And search for the OBJECT, not a guessed date** — I once searched for "a Lead memo dated 08-09" when the memo was dated 08-08, concluded it didn't exist, and was wrong.
 
-### ⚠️ EXTENSION (2026-08-09 09:3x) — the move has TWO halves, and I got each wrong on consecutive days
+### 🔴 State the scope IN the ruling (2026-08-10)
 
-**08-08**: moved memos to `read/` **without reading them** → the record claimed more than reality.
-**08-09**: read them properly, moved them locally — **but passed only the MANIFESTs to `mail-send.sh`, so
-the moves never reached the trunk.** From every other agent's view my inbox still held 10 unread memos.
-**The act happened; the shared record didn't.**
+**Earned three times in one fortnight**: I ratified a direction and a specific clause rode along unratified; I ruled against a spec's copy of a type instead of the landed one; my material sat adjacent to someone else's finding and inherited its apparent scope. CXO's diagnosis: *"Proximity does attributive work. A finding placed next to a contract reads as governed by it, whether or not anyone says so."*
 
-> ⭐ **A mailbox move is a COGNITIVE ACT (reading) plus a SHARED RECORD (the push). Yesterday I did the
-> record without the act. Today the act without the record. Both leave the board wrong.**
+**Three lines, before any ruling ships**: (1) name the OBJECT the ruling is about — the actual file/type, not a description of it; (2) name at least one thing the ruling does NOT cover, especially the adjacent thing a reader would most plausibly assume it does; (3) if ratifying a document, say which CLAUSES — a ratified direction is not a ratified sentence. Same discipline for placement: if something a contract's enforcement can't reach sits next to it, say so in the material itself, not the covering memo.
 
-**✅ Mandatory verification, one command, after every drain:**
-```
-git ls-tree -r --name-only origin/main -- mailboxes/arch/inbox/ | grep -vc MANIFEST
-```
-**Not `ls mailboxes/arch/inbox/`.** I checked the local directory, saw zero, and told PM *"my inbox is
-genuinely empty"* — **true locally, false where it matters.** Verify at the layer other agents read.
+*(This convention is what caught the `meeting_time`/`create_issue` conflation on 08-14 — Lead's memo violated exactly this pattern, and checking for it is what surfaced the error.)*
 
-**And pass BOTH SIDES of every move to `mail-send.sh`** — the inbox-side deletion AND the read-side
-addition. Passing only MANIFESTs pushes a manifest that disagrees with the tree. An inbox that isn't
-empty is an honest inbox; a `read/` folder with unread mail in it is a lie that nothing can detect.
-
-### Why it is a TRUST violation and not a delay (PM's chess-board framing)
-Mailboxes are an **event log**; nobody holds the **position**. `read/` is a move-log annotation, so a false
-"consumed" doesn't delay the information — **it removes it from the system**, because no state anywhere
-still shows the thread waiting. A shared board would have exposed it as a contradiction: input consumed,
-thread open, no ruling emitted. **Same shape as the heartbeat finding: you cannot detect absence from a
-surface authored by the party whose absence is in question.**
-
-## ⚠️ Superseded detail (kept for the record) — the drain loop moved an UNREAD memo
-
-**I drained `results-lead-to-arch-…-the-probe-you-ordered-…-2026-08-08.md` into `read/` in an earlier fire
-without reading it.** Then I searched for an *08-09* date, concluded no Lead memo existed, told PM so, and
-**PPM's whole-tree search corroborated it because they inherited my framing.** A false negative of mine
-propagated into an independent "confirmation."
-
-**Two fixes, both mine:**
-1. **Never `mv` a memo to `read/` in the same pass that first sees it** — read, then move. The bulk drain
-   is for things already actioned this fire.
-2. **Search for the OBJECT, not the date.** I looked for "a Lead memo dated 08-09"; the memo was a Lead
-   memo dated 08-08. **The date was my assumption, not the thing I was looking for.**
-
-## 🔴 STANDING CONVENTION FOR MY OWN RULINGS (2026-08-10) — state the scope IN the ruling
-
-**Earned three times in one fortnight, each costing rework by someone else:**
-
-| what got over-read | how far it travelled |
-|---|---|
-| I ratified the inversion's *direction*; the proposal's *"pre-classifier as router dies"* clause rode along | Lead's probe falsified it — I had to narrow my own GO the same day |
-| I ruled `effect >= WRITE` against **PA's spec's** `ToolEffect`, not the landed `EffectClass` | ruled on a copy; PA had to reconcile two definitions |
-| my fabrication material sat adjacent to CXO's storefront finding | CXO filed a tense-and-audience finding under a fabrication heading |
-
-⭐ **CXO's diagnosis, which reframes all three as MINE rather than reader error:**
-> *"**Proximity does attributive work.** A finding placed next to a contract reads as governed by it,
-> whether or not anyone says so. The document's structure asserted something its sentences didn't."*
-
-**I had been treating these as misreadings. They are a property of how I file.**
-
-### The convention — three lines, before any ruling ships
-
-1. **Name the OBJECT the ruling is about.** Not *"the effect enum"* — *"`EffectClass` in `shared_types.py`,
-   not PA's spec's parallel `ToolEffect`."* **Half my rework this week was ruling on a copy.**
-2. **Name at least one thing the ruling does NOT cover**, especially the adjacent thing a reader would
-   most plausibly assume it does. *(The #1484 gate ruling did this well — "does not fix #1481, does not
-   close #1485's class" — and nobody over-read it. That is the control case.)*
-3. **If I ratify a document, say which CLAUSES** — a ratified *direction* is not a ratified *sentence*.
-
-⚠️ **And the same discipline applies to placement**: material filed adjacent to a contract inherits its
-apparent scope. **If I add something a contract's enforcement cannot reach, say so in the material, not
-in the covering memo.**
+---
 
 ## Active threads
 
-### Owed by me
+### Owed by me / watching (verified live 08-15, not carried from stale notes)
 
-**🟢 SPATIAL REVIEW — MY SLICE IS COMPLETE (7/30).** Layer map + ADR-038 **Amendment A** + ADR-affected map all filed; CXO's and PPM's slices folded. **Nothing owed by me.** It waits on **Lead's L4 monitoring-loop estimate** (gates option (iii) only, not the disposal) and **PM's decision**. ⛔ **Do NOT move #1174 to M4 — M4/M5 were swept 2026-07-04/05; Production is correct.** Read the map's PPM section before touching anything here.
+- **Understanding-Layer Inversion, Phase 2** — watch item, not owed yet. Phase 1 closed cleanly 08-14; Phase 2 will need the same rigor when Lead proposes the routing flip. The five ungateable corpus categories are the thing to watch grow before trusting the gate more than it currently earns.
+- **#1481** (OPEN, Production) — socket-mode Slack DM/mention path binds every sender to the connector owner's principal; `#1466`'s mapping (now closed/shipped) should resolve per-sender identity here too. Not blocked on me; watching for whether it's sequenced.
+- **#1459** (OPEN, Production) — `Intent.original_message` dual-surface storage, the thread I raised 07-29. Per 08-14's log: **SPECCED (AC + ratchet shape) but NOT BUILT** — a build task now, not a design question. Not blocked on me; Lead's to sequence.
+- **#1462** (OPEN, Production) — Hosted MCP endpoint + plugin distribution EPIC (PDR-006 implementation). The load-bearing risk I flagged in PDR-006 — fail-closed caller-identity, since all ADR-079 owner-scoping sits downstream of it — lives here now, not as a standalone "For PM" ask.
+- **PDR-006 ChatGPT success criterion** — last touched 08-02/08-05 (PPM: the criterion is "unmeetable as written" pending a retest CXO gates on `mcp.pipermorgan.ai` existing). **Not re-verified since** — don't assume either way; check before citing.
+- **Merge-aware hook** — requested of CIO three times (08-08, 08-09, 08-10). Confirmed still not landed as of 08-14 (git log + mail search). Highest-leverage unfixed item from my own 08-08 incident; stays flagged until it ships.
+- **Spatial-intelligence cold-island decision** — my slice complete since 07-30 (`docs/internal/architecture/current/spatial-intelligence-layer-map-and-costed-options.md`). `#1174` still OPEN (Production). Waits on Lead's L4 monitoring-loop estimate + PM's decision. **Do not move #1174 to M4** — M4/M5 were swept 07-04/05; Production is correct.
+- **Agent 360 v0.4** — tracked in `arch-standing-items.md` with its real deadline (~08-28). Don't answer it rushed.
 
-✅ **DONE 8/02 — Docs' 16-file disposition ruled** (4 KEEP / 12 archive; Docs executed 12, holding 4 until my ADR-070 supersession note landed — it had, verified). Attacking the heuristic first changed two dispositions. Prior text: **Sunday's first item was Docs' 16-file architecture-tree disposition.** Routed to me 8/1 ~21:00; deferred with a named trigger (sixteen per-file judgments at 22:00 produces fast answers, not right ones). Per file: *superseded vs. merely old* (supersession needs a pointer to what replaced it) · *does anything cite it* (`reachability-map.py` for code, grep for prose) · *does it carry a perishable referent* (sprint name, implementation citation, file count — per ADR-038 A3 and the ADR-070 finding). Docs was offered a single-blocker exception overnight.
+### Resolved this pass, confirmed via `gh issue view` — do NOT re-open or re-ask
 
-**Nothing owed Tuesday.** No queued deliverable carries into 8/04. Mail loop, then smallest unblocked item from standing-items.
+`#1430` CLOSED · `#1419` CLOSED · `#1433` CLOSED · `#1484` CLOSED (Slack kill-switch shipped) · `#1466` CLOSED (Slack principal mapping shipped, guarded by `tests/test_slack_identity_binding_guard.py`) · PDR-006 itself RATIFIED (PM, 7/31) · the "is Slack inbound a beta surface" question resolved via #1484 shipping the fail-closed gate exactly as recommended.
 
-**Shipped 8/03**: **#973** Architect-drive half (audit filed; two of its three asks were already done by other issues — the residue looked identical to an untouched issue). **#1466** ratified → ruled → independently verified → guard reviewed, across four fires.
-
-**⛔ #1466 invariant, if anyone reopens it**: **the param may PREFILL, it may never BIND.** A deep-link `slack_user_id` is attacker-controllable; binding must come from redemption on the Slack side, which is the only step proving control of that account. **An opaque identifier in a confirmation dialog defeats the confirmation** — the user cannot tell whether `U0123…` is theirs. Verified in the shipped code (one creator, one owner-scoped deleter, redeem called only from `slack/webhook_router.py:1584`) and machine-held by `tests/test_slack_identity_binding_guard.py`.
-
-**Waiting on others (do not chase):**
-- **#1433** — RATIFIED 8/02 with **one required addition: assert the resolution PATH, not just the destination** (the determinism requirement was documented, not enforced — m-44 inside the new check). Lead lands it; three non-blocking refinements offered.
-- **PDR-006 ChatGPT criterion** — ⚠️ **marked, not amended.** Framing-as-failure-shaped-payload is 6/6 at the API layer, but **neither remedy is cleared until the deployed-host retest** (gated by CXO, blocked on `mcp.pipermorgan.ai` existing). PPM holds the wording proposal.
-- **PM**: two milestone words (#1459 → Production, #1462 → PPM's read is Production).
-
-**Also live:** Lead executing **#1432 delete** (formal GO given 8/1, both conditions discharged) and the **#1395 corpus rev** (ratified; I asked Lead to *name N* in the Q22 stability criterion). Neither needs me until Lead reports.
-
-⚠️ **Local `main` in the product repo is SHARED MUTABLE STATE, not per-seat.** Confirmed on two seats 8/1: external `pull`s and a direct `commit: mail(janus->…)` move it; my own `main..HEAD` went **21 → 3 in four hours**. **Infer nothing from its size or trend** — only the identity `main..HEAD == main..origin/main` is meaningful (equal ⇒ pure lag, nothing stranded).
-
-**Prior state (still true):** No queued deliverable carries into 8/1. Take the mail loop, then the smallest unblocked item from standing-items (now current — refreshed 7/31 after 44 days).
-
-**Waiting on PM (do not chase, do not guess):**
-- **#1459 → Production** and **#1462 → (PPM's read: Production)** — two milestone words. PPM holds both deliberately; the #1462 empty field is a *documented held question*, not the unexamined-gap defect.
-- **Spatial review decision** — my slice is complete; also needs Lead's L4 monitoring-loop estimate (gates option (iii) only).
-
-**Live obligations now recorded in artifacts rather than memos** (this is the week's lesson, applied):
-- **PDR-006 = RATIFIED (PM, 7/31)**, and the three Architect conditions are **in the PDR** *and* in **#1462 as acceptance criteria**. 🔴 The load-bearing one: **fail-closed MCP caller-identity** — all ADR-079 owner-scoping sits downstream of it, so a forged owner yields a read that looks correctly scoped and the derived lint cannot see it.
-- **`mcp.pipermorgan.ai` DNS/TLS/Fly is UPSTREAM of any directory listing** — you cannot verify ownership of a domain that doesn't resolve. In the PDR's *For Arch* section.
-- ⛔ **OpenAI API org verification is NOT needed** — wrong surface entirely (resolved 7/31, in PDR-006 OQ3). Don't let it resurface.
-- ✅ **Blind-sweep methodology note — ALREADY FILED. Do not write it.** It is **`methodology-44` — "Clear Is Not a Measurement"**, filed **2026-07-27 by CIO**, explicitly credited as *"Arch's bequest"* from my predecessor's handoff §4.1. Status Emerging→strong at **11 instances, 4 roles, 2 projects, 96 hours**. It is better than what I would have written: CIO raised it to the instrument altitude, drew the m-43 boundary (m-43 = the *agent* reasoning fails; m-44 = the *instrument* reporting fails; **the blind-sweep is the bridge** — an instrument covering part of its space whose partial result is reported as total), and added HOST's Criteria G + Janus's show-your-work formulation.
-  ⚠️ **I carried "still unfiled" as a live claim into this file and my session log on 7/29, twenty days after it stopped being true and two days after it was filed — because I was dark when it landed and never checked.** That is a stale local claim about shared state, i.e. m-44's own instance-9 shape ("a state needs a lifecycle, not just a definition") committed against m-44 itself. Left visible here rather than silently corrected.
-  **What may still be owed**: the 7/26 index-state hook investigation produced a *distinct sub-shape* not yet in m-44 — **N independent investigators converging on the same wrong answer via a shared procedural default, where agreement reads as replication.** Routed to CIO as a candidate 7/29; CIO owns the catalog call.
-- **Spatial-Intelligence committed-theory review** — I convene; my deep read is **incomplete**. WIP: `dev/active/spatial-intelligence-architectural-history-arch-WIP.md`. **Key finding already in hand: spatial is TWO layers** — (1) live intent/MUX spatial-*reasoning* (place detector, spatial intent classifier, MUX/orientation/lenses, context assembler — shipping, differentiating) vs (2) a cold per-connector spatial-*adapter* chain (gitbook/notion/devenvironment/linear — unreachable). **PM's decision is about layer 2**, not keep-or-kill-spatial. CXO voted (b) keep-live/park-cold and sharpened layer 2 as an *ambient-presence tier*; PPM deferred pending roadmap-dependency scoping. **Open discrepancy to resolve**: `notion_spatial` is ~75% abandoned, which contradicts ADR-038's "100% operational" claim.
-- ✅ **`Intent.original_message` — RAISED with Lead 2026-07-29** after 12 days on this list. Measured rather than recalled, and it's bigger than the "3rd instance" I'd banked: **39 read sites / 3 idioms / 9 files**, and **two independent storage surfaces** (the attribute and `context["original_message"]`) with single-surface writers on both sides — `classifier.py:354` attribute-only, `pre_classifier.py:1052-1111` dict-only. **27 of 39 readers see the dict only.** #1332's fix added the attribute at the reported sites, i.e. it fixed the instances and left the class. Ruled: needs **one access authority** + a **ratchet guard** so a new raw read site fails the build (else it regresses like any cleanup). Open to Lead's build-lens: which surface is canonical (my lean: the attribute; `models.py:989` is a Column, so serialization may argue otherwise), and whether a dict-only reader is actually downstream of an attribute-only writer today — **I verified the preconditions, NOT the reachability**, and said so.
-- ✅ **DONE 7/30 — Docs' PDR-007 review** (editorial-data single source, requested 7/29 ~19:00). Deferred from the day-close fire with a **named trigger** — it's a derive-don't-maintain question and wants a fresh read of the actual data surfaces, not a 21:53 skim. Docs was told to escalate if that's too slow. **Do this before anything else.**
-- ✅ **DONE 7/30 — the spatial LAYER MAP**, built from the import graph. This is the owed artifact and the day's clearest lesson: I produced **three** characterisations in ten hours (layer-2-wholly-cold → one-live-five-cold → three-layers-premise-inverted) because each time I treated *"I verified the modules I enumerated"* as *"I verified the layer."* **CXO and PPM are HOLDING their re-votes pending this one finished artifact — do not send them another increment.** Then: the ADR-038 amendment (pattern validated by the MCP consumer family, not by the per-connector modules it cited) + the ADR-affected map + the 3 costed options.
-- ✅ **DONE 7/30 — portfolio refreshed** (and §5's false clear corrected in place: `check-staleness.py` has **no consumer**; 33 of 36 operating docs stale; Docs owns building a consumer via the weekly docs audit). Original item: **`ROLE-PORTFOLIO-ARCH.md` §2 was five weeks stale** (dated June 20, under its own rule "REFRESHED EACH WEEKLY REVIEW"). Named as mine in workstream-053 §0 and §6. Fix it.
-- **Second read of Lead's `methodology/` design record** — invited, explicitly non-blocking.
-
-### Parked on Lead (I ratify as each lands; none blocked on me)
-ADR-079 debt migration (unscoped-reads ceiling 36→0) · `check-silent-death` build · #1395 rev (fold #1410) · #1416 github-connect vocabulary · #1394 D5 probe · **`original_message` single-authority** (raised 7/29, Lead's sequencing).
-
-### Awaiting others (not blocked on me)
-- **TOCTOU hook ruling (7/29)** — I ruled the defect + fix and **deliberately did not rule on installing it**; Pard owns the hook layer, HOST the trust framing. If it lands, the two-shape probe step retires and CLAUDE.md's "free mitigation" becomes unnecessary. **Do not install it yourself without Pard/HOST** — shared `.git` common dir, every agent's commit path.
-- **"Agreement is not replication"** sub-shape — routed to CIO 7/29; HOST supplied the canonical instance (a confounded probe canonised into checklist v1.5 for 62 hours). CIO owns the slot call.
-
-### Resolved — do NOT re-derive
-- **PDR-006 Q2 → RESOLVED 7/29; ratification unblocked.** PM had already decided it **2026-01-08** (`services/standup/preference_extractor.py:8` — *"Start with rule-based (Option A), evolve to LLM later (#558)"*). `#558` verified against GitHub: **OPEN, milestone Production (1.0)**. `services/mux/` has **zero** LLM references — composting is deterministic aggregation.
-- **My own 7/19 colleague-model ∩ spatial coupling flag → WITHDRAWN as a gate.** They share a metaphor, not a mechanism. **Re-trigger condition**: if #558 is pulled forward and the colleague model becomes an *inference* surface rather than a store, the coupling returns.
-- **#1351 → ruled a pre-live gate** on the hosted MCP endpoint; three never-traced surfaces (Redis / in-process floor+context state / rate-limiting under anonymous callers). PA files the issue.
-- **#1394 integrity STOP (7/19) → vindicated.** Lead honored it; the real cause was neither hypothesis on the table (the chat path never passed `session_id` to `classify`). **ADR-078 D4 intact.**
-- **`methodology/` fix-or-delete → executed** by Lead (#1452 backlog 94→56; ADR-028 SUPERSEDED).
+**The old "For PM" section lived here** (07-29 through 08-04 asks: Slack-beta-scope word, two board-field mismatches, #1430 closure, cron-cadence confirmation, PDR-006 ratification). **Every item on it is now resolved or superseded** per the live check above — removed rather than left to accumulate more silent staleness. If a genuinely new PM-facing ask arises, it gets its own dated entry, not a revival of this one.
 
 ---
 
 ## Standing guard — the invariant most likely to be accidentally reversed
 
-**ADR-078 D4: the classifier stays stateless.** HOST-endorsed, load-bearing. The pressure to "just give the classifier the conversation history" recurs on every reference-resolution bug — it nearly landed twice. The answer is always: resolve it in surface-1 / the ledger / the pre-classifier. Injecting history *also* silently disables the classifier cache, so it's two regressions riding one fix.
+**ADR-078 D4: the classifier stays stateless.** HOST-endorsed, load-bearing. The pressure to "just give the classifier the conversation history" recurs on every reference-resolution bug — it nearly landed twice. The answer is always: resolve it in surface-1 / the ledger / the pre-classifier. Injecting history also silently disables the classifier cache, so it's two regressions riding one fix.
 
-**PM's personal delegation, which is the core of this role**: *"Lead is welcome to map, diagnose, propose, but I rely on you to maintain the architectural integrity of this project."* A STOP **does not require having the right answer** — it requires protecting the invariant while the right answer is found. The 7/19 #1394 STOP is the archetype: directionally right, wrong on specifics, and it prevented a real regression.
+**PM's personal delegation, which is the core of this role**: *"Lead is welcome to map, diagnose, propose, but I rely on you to maintain the architectural integrity of this project."* A STOP does not require having the right answer — it requires protecting the invariant while the right answer is found.
 
-**The signature move**: on every ruling ask *"can I make the bad state unrepresentable instead of forbidden?"* — derive the model set, derive the mapper surface, derive the tool catalog. A contract that can't drift beats one everyone must remember.
-
----
-
-## For PM (no reply needed unless you disagree)
-
-- ⛔ **ONE WORD OWED, and it gates beta scope: is Slack inbound a beta surface?** (2026-08-04, raised by PA, scope-framed by PPM.) **My ruling assumes NO** — #1481 + #1466 move to Production with #1419, and **#1484** lands a fail-closed gate so the surface is scoped out by a *control* rather than by leaving it unconfigured. **If you say YES, #1484 flips to default-on and a principal-mapping layer is back on a four-day clock.**
-  - Architecture half is decided and doesn't need you: **"unconfigured" is an absence, not a boundary** — any authenticated user can start that path at runtime via a global credential, no deploy.
-- ⚠️ **Two board facts I flagged but did NOT change** (board fields need your confirmation): **#1419 sits in the MVP milestone** while your own ruling is "full epic post-beta"; and the **MVP milestone shows 22 open, due 2026-08-01** — three days past, against a ratified beta of Sat 08-08. PPM has raised the date mismatch three times and cannot set the field.
-- ✅ **#1430 should close** — audited it against your leakage condition; guard test passes 5/5, all 11 live routes authed. It only *reads* unfixed because its citation points at a file that moved.
-- **Cron armed 7/29** on your "resume your duty cycle," at the registered 6×/day cadence. If that's wrong for Amber, say so and I'll re-arm.
-- **PDR-006 is ratifiable** on architecture. Its ⛔ blocker rested on a question you had already answered in January.
-- **One real risk named in PDR-006**: the hosted MCP endpoint introduces a caller-identity surface that **all** existing owner-scoping enforcement sits downstream of. Fail closed there (no identity → no read), or ADR-079's guarantees don't reach the hosted path.
+**The signature move**: on every ruling, ask *"can I make the bad state unrepresentable instead of forbidden?"* — derive the model set, derive the mapper surface, derive the tool catalog. A contract that can't drift beats one everyone must remember.
