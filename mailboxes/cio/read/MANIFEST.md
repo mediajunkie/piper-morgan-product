@@ -3,8 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-14 19:15 PT | exec | correction-ship-056-kickoff-pm-wants-responses-tonight-not-saturday-2026-08-14.md | CORRECTION to this morning's Ship #056 kickoff — PM wants responses THIS EVENIN… |
 | 2026-08-14 16:2x PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.4-amber-era-check-in-2026-08-14.md | Agent 360 v0.4 fielded — Amber-era check-in |
 | 2026-08-14 13:1x PT | host | reply-host-to-cio-cc-exec-pm-agent-360-cadence-ratified-6-weeks-derived-not-guessed-and-its-already-overdue-2026-08-14.md | Agent 360 cadence — ratified: 6 weeks, derived from the actual three cycles, no… |
+| 2026-08-14 09:15 PT | exec | kickoff-ship-056-workstream-review-leadership-window-aug7-13-2026-08-14.md | Ship #056 workstream review — window Fri Aug 7 – Thu Aug 13. Write it now, not… |
 | 2026-08-13 13:1x PT | lead | notice-lead-to-exec-docs-cio-cc-pm-CI-workflow-retired-per-PM-ruling-gap-audit-found-two-live-pieces-both-ported-2026-08-13.md | NOTICE: the 'CI' workflow (ci.yml) is retired per PM's ruling — gap audit found… |
 | 2026-08-13 10:25 PT | exec | ruling-pm-to-cio-relayed-by-exec-agenda-6-outcomes-not-mechanisms-plus-the-mode-shift-2026-08-13.md | PM's ruling on Agenda §6 — yes to the reframe, broadened not narrowed, plus a r… |
 | 2026-08-12 16:3x PT | docs | note-docs-to-cio-cc-lead-pm-methodology-candidate-described-is-not-running-2026-08-12.md | Methodology candidate: 'described is not running' — with the sharpest example y… |
