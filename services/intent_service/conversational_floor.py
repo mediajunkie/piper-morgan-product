@@ -86,6 +86,31 @@ def strip_scaffolding_artifacts(text: str) -> Tuple[str, int]:
     return clean, n
 
 
+# #1571 (PM live 2026-08-15): the floor fabricated "Filed! … #[issue number]"
+# — a LITERAL template slot in user-facing copy. The literal exists nowhere in
+# our prompts or copy (grepped repo-wide); the model improvised a slot shape
+# because it was claiming a create it never performed and had no number to
+# show. The #1331 prompt prohibition demonstrably did not hold, so this is the
+# structural guarantee for the CLASS: a hash-bracket slot (`#[anything]`) is
+# machinery grammar by construction — a real reference is `#123` — and is
+# unrenderable in user copy. The slot is replaced with deterministic honesty
+# derived from the one ground truth we have at this seam: no tool result
+# exists, so no number is confirmed. (Real success copy comes from the rail
+# handlers, which derive it from the actual tool result.)
+_PLACEHOLDER_SLOT_RE = re.compile(r"#\[[^\[\]\n]{1,60}\]")
+_PLACEHOLDER_SLOT_REPLACEMENT = (
+    "(number unconfirmed — I don't have a tool result showing this actually happened)"
+)
+
+
+def strip_placeholder_slots(text: str) -> Tuple[str, int]:
+    """Replace unfilled template slots (`#[issue number]`) in floor output
+    with an honest no-confirmation marker. Returns (clean_text, slots)."""
+    if not text:
+        return text, 0
+    return _PLACEHOLDER_SLOT_RE.subn(_PLACEHOLDER_SLOT_REPLACEMENT, text)
+
+
 # ---- Floor System Prompt ----
 
 # FLOOR_SYSTEM_PROMPT_ADDENDUM v2 — evolved 2026-04-16 per #950
@@ -1199,6 +1224,19 @@ class ConversationalFloor:
                 logger.warning(
                     "floor_scaffolding_stripped",
                     blocks=scaffolding_stripped,
+                    session_id=ctx.session_id,
+                    user_id=ctx.user_id,
+                    intent_category=ctx.intent_category,
+                )
+            # #1571: unfilled template slots ("#[issue number]") are a
+            # fabricated-success tell — replaced with deterministic honesty
+            # at the same single seam. Logged loudly: each hit is a live
+            # fabrication the #1331 prompt rule failed to prevent.
+            message, placeholder_slots = strip_placeholder_slots(message)
+            if placeholder_slots:
+                logger.warning(
+                    "floor_placeholder_slot_stripped",
+                    slots=placeholder_slots,
                     session_id=ctx.session_id,
                     user_id=ctx.user_id,
                     intent_category=ctx.intent_category,

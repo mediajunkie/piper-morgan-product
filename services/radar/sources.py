@@ -48,6 +48,23 @@ def _get(summary: Any, key: str, default: Any = None) -> Any:
     )
 
 
+def _display_title(value: Any, fallback: str) -> str:
+    """Backing-store title → safe display title; ``fallback`` when degenerate (#1622).
+
+    A degenerate title — empty, whitespace-only, a single glyph, or pure
+    punctuation (e.g. the literal ``{`` of a JSON-fragment issue title) — is
+    garbage-in that must not render as signal: PM's standup Watch list showed
+    ``'"{"' hasn't moved in 380 days``. Callers pass a fallback that carries the
+    item's identifier where one exists (e.g. ``(untitled work item #100)``) so
+    the item stays findable/fixable rather than silently dropped — these are
+    real observed entities; hiding them would fabricate an all-clear.
+    """
+    text = str(value).strip() if value is not None else ""
+    if len(text) <= 1 or not any(ch.isalnum() for ch in text):
+        return fallback
+    return text
+
+
 class ConversationEntitySource:
     """Maps #1021 conversation summaries → Conversation RadarEntities.
 
@@ -75,7 +92,7 @@ class ConversationEntitySource:
             entities.append(
                 RadarEntity(
                     entity_type=EntityType.CONVERSATION,
-                    title=_get(s, "title") or "(untitled)",
+                    title=_display_title(_get(s, "title"), "(untitled)"),
                     lifecycle_state=_derive_conversation_lifecycle(attention),
                     provenance=Provenance.OBSERVED,
                     meta=" · ".join(meta_bits),
@@ -128,7 +145,7 @@ class DocumentEntitySource:
             entities.append(
                 RadarEntity(
                     entity_type=EntityType.DOCUMENT,
-                    title=_get(r, "title") or "(untitled document)",
+                    title=_display_title(_get(r, "title"), "(untitled document)"),
                     lifecycle_state=_derive_document_lifecycle(attention),
                     provenance=Provenance.OBSERVED,
                     meta=" · ".join(meta_bits),
@@ -219,10 +236,15 @@ class WorkItemEntitySource:
                     if referent
                     else "blocked — cause not named; open the issue for details"
                 )
+            # #1622: the fallback carries the issue number so a degenerate-titled
+            # item (e.g. a literal "{") stays findable on the surface, not just in meta.
+            untitled = (
+                f"(untitled work item #{number})" if number is not None else "(untitled work item)"
+            )
             entities.append(
                 RadarEntity(
                     entity_type=EntityType.WORK_ITEM,
-                    title=_get(r, "title") or "(untitled work item)",
+                    title=_display_title(_get(r, "title"), untitled),
                     lifecycle_state=lifecycle,
                     provenance=Provenance.OBSERVED,
                     meta=" · ".join(meta_bits),
@@ -257,7 +279,7 @@ class PlaceEntitySource:
             entities.append(
                 RadarEntity(
                     entity_type=EntityType.WORK_ITEM,
-                    title=_get(r, "name") or "(unnamed place)",
+                    title=_display_title(_get(r, "name"), "(unnamed place)"),
                     lifecycle_state="active",  # CXO: Places render with a fixed active/neutral lifecycle
                     provenance=Provenance.OBSERVED,
                     meta=_get(r, "summary") or "",

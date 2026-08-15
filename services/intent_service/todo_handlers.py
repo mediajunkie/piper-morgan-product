@@ -262,7 +262,12 @@ class TodoIntentHandlers:
             # Format confirmation with time
             time_display = time_label
             if reminder_dt:
-                time_display = reminder_dt.strftime("%A, %B %-d at %-I:%M %p")
+                # PM live 2026-08-15: this rendered a UTC instant with no
+                # label ("Saturday at 11:42 PM" for a 4:42 PM PT save) — the
+                # #1542/#1589 unlabeled-clock-face shape. Until #1572 supplies
+                # the user's real tz, every clock face we print is UTC and
+                # must SAY so (the reminders list already does).
+                time_display = reminder_dt.strftime("%A, %B %-d at %-I:%M %p UTC")
 
             # #1562: labels from the bare-clock branch start with "at"
             # ("at 5pm") — strip a LEADING "at" so the copy never reads

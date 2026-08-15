@@ -605,10 +605,17 @@ class TestEndToEndConsentCheck:
         assert result.intent_data.get("collaboration_gate") is True
         assert result.requires_clarification is True
         assert "login timeout on mobile" in result.message
-        # Draft surface, not the generic check — and nothing pending: the
-        # follow-up imperative routes as its own explicitly-framed turn.
+        # Draft surface, not the generic consent check.
         assert result.intent_data.get("consent_check_pending") is None
-        assert _pending_offers(live_service).get(sid) is None
+        # #1571 (updated pin): the draft turn now ARMS the drafted-issue
+        # binding — "file it as is" next turn files THIS draft. The property
+        # this line used to pin ("the follow-up imperative routes as its own
+        # explicitly-framed turn") still holds: an explicit imperative is
+        # off-intent to the binding, and the pop abandons it before the turn
+        # routes normally (pinned in test_drafted_issue_1571.py).
+        stored = _pending_offers(live_service).get(sid)
+        assert stored is not None
+        assert stored["pending_action"]["kind"] == "drafted_issue"
 
     async def test_destructive_confirm_tier_unchanged_through_unified_gate(
         self, live_service, mem_prefs

@@ -146,6 +146,38 @@ class TestStandupAssemblerWatch:
         assert by["open-stale"].meta == "hasn't moved in 5 days"  # NOW-5d
         assert by["blocked-now"].meta == ""  # lifecycle says "blocked"; no fabricated age
 
+    async def test_degenerate_title_never_surfaces_verbatim_in_watch_1622(self):
+        """#1622 regression, end-to-end from the raw issue dict: an open GitHub issue
+        literally titled ``{`` (a JSON-fragment parse artifact, 380 days stale) rendered
+        as ``'"{"' hasn't moved in 380 days`` on PM's Watch list. The source's title
+        guard must surface it as an id-carrying placeholder, never the bare glyph."""
+        from datetime import datetime, timezone
+
+        from services.radar.sources import WorkItemEntitySource
+
+        stale_iso = datetime.fromtimestamp(NOW - 380 * D, tz=timezone.utc).isoformat()
+
+        class _FakeProvider:
+            async def list_for_user(self, user_id):
+                return [
+                    {
+                        "number": 100,
+                        "title": "{",
+                        "state": "open",
+                        "updated_at": stale_iso,
+                        "uri": "https://github.com/o/r/issues/100",
+                        "labels": [],
+                    }
+                ]
+
+        source = WorkItemEntitySource(_FakeProvider())
+        summary = await StandupAssembler([source], now_epoch=NOW).assemble("u1")
+        assert [it.display for it in summary.watch] == ["(untitled work item #100)"]
+        assert summary.watch[0].meta == "hasn't moved in 380 days"
+        prose = summary.to_prose()
+        assert '"{"' not in prose  # the reported garbage line can never re-render
+        assert '"(untitled work item #100)" hasn\'t moved in 380 days.' in prose
+
 
 class TestStandupAssemblerOrderingAndResilience:
     async def test_within_slot_attention_first(self):

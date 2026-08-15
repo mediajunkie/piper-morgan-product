@@ -181,6 +181,7 @@ class ClearAsk:
     verb: str  # family label ("clear", "handle", "take care of", "reset")
     noun: str  # "reminder" | "todo" — the user's own vocabulary (#1569)
     has_exception: bool  # exception clause present (fall back, never guess)
+    named_target: Optional[str] = None  # quoted/'the X reminder' single-target ask
 
 
 def detect_clear_family_ask(message: Optional[str]) -> Optional[ClearAsk]:
@@ -209,7 +210,35 @@ def detect_clear_family_ask(message: Optional[str]) -> Optional[ClearAsk]:
                 # rule's item-in-both-blocks case, #1569).
                 noun="reminder" if has_reminder else "todo",
                 has_exception=bool(_EXCEPTION_RE.search(text)),
+                named_target=_extract_named_target(text),
             )
+    return None
+
+
+# PM live 2026-08-15: `clear the "test the safe clarfication" reminder` acted
+# on ALL FOUR reminders — the batch resolver had no concept of a named single
+# target, so a specific ask executed against everything (with a stored DELETE
+# default this would have been unconfirmed bulk destruction had V3 not
+# counted). A named target narrows the set to the match, or CLARIFIES on
+# no/ambiguous match — never falls back to the whole set.
+_QUOTED_TARGET_RE = re.compile(r"[\"\u201c']([^\"\u201d']{2,80})[\"\u201d']")
+_THE_X_TARGET_RE = re.compile(
+    r"\bthe\s+(.{2,60}?)\s+(?:reminder|todo)\b", re.IGNORECASE
+)
+
+
+def _extract_named_target(text: str) -> Optional[str]:
+    m = _QUOTED_TARGET_RE.search(text)
+    if m:
+        return m.group(1).strip()
+    m = _THE_X_TARGET_RE.search(text)
+    if m:
+        candidate = m.group(1).strip().strip("\"'\u201c\u201d")
+        # articles/pronouns alone are not names ("clear the last reminder"
+        # stays a batch-family question, not a match attempt)
+        if candidate.lower() in {"", "first", "last", "next", "that", "this", "one"}:
+            return None
+        return candidate
     return None
 
 
@@ -453,14 +482,26 @@ async def maybe_handle_clear_family(
     }
 
     # ── Exception clause: #1563's set-complement lane — clarify the whole
-    #    ask (variant-1-style), never guess the set. No store, no offer, no
-    #    write; the user's restated ask re-enters normally next turn.
+    #    ask (variant-1-style), never guess the set. No write; PM live-found
+    #    (2026-08-15) that the original no-offer version asked the verb
+    #    question and then had nowhere to land the bare answer it INVITED
+    #    ("delete" fell to the floor's canned denial). The offer is armed
+    #    with NO TARGETS: the answer stores the verb (the question promises
+    #    "I'll remember"), and the reply re-asks for the explicit list —
+    #    still never acting on a guessed set.
     if ask.has_exception:
         logger.info(
             "reminder_clear_exception_clause_fallback",
             verb=ask.verb,
             noun=ask.noun,
             session_id=session_id,
+        )
+        offer = _verb_question_offer(
+            principal, ask.verb, ask.noun, [], [], original_message
+        )
+        offer["pending_action"]["exception_no_targets"] = True
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id, offer, user_id=user_id
         )
         message = (
             f"{variant_one_question(ask.verb, ask.noun)}\n\n"
@@ -482,6 +523,31 @@ async def maybe_handle_clear_family(
     todo_service = intent_service.todo_handlers.todo_service
     try:
         targets = await _resolve_targets(todo_service, todo_user_id, ask.noun)
+        if ask.named_target:
+            wanted = ask.named_target.lower()
+            matches = [t for t in targets if wanted in (t.text or "").lower()]
+            if len(matches) == 1:
+                targets = matches
+            else:
+                # no match or ambiguous — CLARIFY, never the whole set
+                names = ", ".join(f"'{t.text}'" for t in targets[:6])
+                logger.info(
+                    "reminder_clear_named_target_unmatched",
+                    wanted=ask.named_target,
+                    candidates=len(matches),
+                    session_id=session_id,
+                )
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        f"I couldn't confidently match '{ask.named_target}' to exactly one "
+                        f"{ask.noun}"
+                        + (f" — you have: {names}." if names else " — you don't have any right now.")
+                        + " Tell me which one you mean and I'll act on just that."
+                    ),
+                    intent_data={**base_intent_data, "named_target_unmatched": True},
+                    requires_clarification=True,
+                )
     except Exception as e:  # silent-ok: logged at error w/ exc_info; a source failure must read as trouble-loading (#1425), never fall through to a guessed mapping
         logger.error(
             "reminder_clear_target_resolution_failed",
@@ -809,6 +875,50 @@ async def _handle_verb_answer_turn(
     wants_complete = bool(_COMPLETE_ANSWER_RE.search(message))
     if wants_delete and wants_complete:
         return None  # contradictory — fall to generic handling (likely off-intent)
+
+    # ── Exception-clause answers (PM live 2026-08-15): the verb STORES (the
+    #    question promised "I'll remember"), but there are NO bound targets —
+    #    the exception made the set unresolved, so nothing executes and no
+    #    V3 confirm arms. The reply confirms the stored verb and re-asks for
+    #    the explicit list. Never guess the set.
+    if payload.get("exception_no_targets"):
+        value = None
+        if wants_delete:
+            value = VALUE_DELETE
+        elif wants_complete:
+            value = VALUE_COMPLETE
+        if value is None:
+            return None  # not a verb answer — generic handling
+        persisted = await store_verified_inference(
+            principal, key, value, source=SOURCE_USER_VERIFIED, confidence=VERB_CONFIDENCE
+        )
+        logger.info(
+            "reminder_clear_exception_verb_stored",
+            value=value,
+            persisted=persisted,
+            session_id=session_id,
+        )
+        verb_meaning = "delete" if value == VALUE_DELETE else "mark done"
+        msg = (
+            f"Got it — '{verb}' means {verb_meaning}, and I'll remember that. "
+            f"Now tell me exactly which {_plural(noun, 2)} to include "
+            f"(your exception noted), and I'll act on just those."
+        )
+        if not persisted:
+            msg += (
+                "\n\n(Heads up: I couldn't save that preference just now, "
+                "so I may ask again in a future session.)"
+            )
+        return {
+            "message": msg,
+            "intent_data": {
+                "category": "execution",
+                "action": CLARIFY_CLEAR_VERB_WORKFLOW,
+                "verb_default_stored": value,
+                "exception_list_pending": True,
+            },
+            "requires_clarification": True,
+        }
 
     # ── ALWAYS_ASK leading-question answers (CXO/PPM 2026-08-14): the stored
     #    default is a prior explicit answer — NEVER flipped here. "like

@@ -54,8 +54,10 @@ PENDING-ACTION RECORD SHAPE (the generic deferred-action carrier, Part 3):
 The carrier is deliberately action-agnostic: ``pending_action`` can hold ANY
 deferred rail action + its params — acceptance always re-dispatches
 ``action`` with ``intent`` through the workflow registry. #1571's
-drafted-issue binding is the named next consumer (see the TODO at
-:func:`build_confirmation_offer`'s extension point).
+drafted-issue binding SHIPPED as the second consumer (2026-08-15):
+``services/intent_service/drafted_issue.py`` builds its own record (kind
+``drafted_issue``) and delegates acceptance to the same
+``run_confirm_pending_action_workflow`` mirror.
 """
 
 from __future__ import annotations
@@ -171,10 +173,12 @@ def build_confirmation_offer(intent: Intent) -> Optional[ConfirmationOffer]:
         # Generic carrier: a future destructive rail action lands here with a
         # generic (but honest) question. Refine per-action summaries as
         # consumers arrive.
-        # #1571 tracks the named next consumer of the pending_action
-        # carrier (drafted-issue binding): it will store the drafted params
-        # (action="create_issue" + the draft) here and phrase the question
-        # from the draft, not from a re-parse of the message.
+        # #1571 SHIPPED (2026-08-15): the drafted-issue binding is the
+        # carrier's second consumer — it builds its own record in
+        # services/intent_service/drafted_issue.py (kind "drafted_issue",
+        # armed at the #1510 collaborate turn, accepted via the same
+        # run_confirm_pending_action_workflow mirror), not through this
+        # builder, which stays destructive-classification-only.
         summary = action.replace("_", " ")
         question = f"Are you sure you want me to {summary}? (yes/no)"
 
