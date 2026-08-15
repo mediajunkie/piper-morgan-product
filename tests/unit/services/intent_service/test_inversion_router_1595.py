@@ -134,6 +134,77 @@ class TestGrammarDerivation:
             WORKFLOW_REGISTRY.pop(alias, None)
         assert key not in derive_routing_grammar().names()
 
+    def test_registry_descriptions_enrich_the_grammar(self):
+        """#1595 Phase 1b (Family 1): ACTION_DESCRIPTIONS is the derivation
+        SOURCE for registry-only canonicals — the enriched text must appear
+        verbatim in the grammar and in the prompt catalog the model sees.
+        The two Family-1 targets carry the specific claims the shadow run
+        showed the router was never told."""
+        grammar = derive_routing_grammar()
+        by_name = {op.name: op for op in grammar.operations}
+        # manage_portfolio must say it covers archive/restore/list of projects
+        mp = by_name["manage_portfolio"].description
+        for word in ("archive", "restore", "list"):
+            assert word in mp.lower(), f"manage_portfolio description lacks {word!r}"
+        # get_contextual_guidance must say it's the how-do-I / connect-my-
+        # integrations destination
+        gcg = by_name["get_contextual_guidance"].description
+        assert "connect" in gcg.lower()
+        assert "how-do-i" in gcg.lower().replace(" ", "-") or "how-do-I" in gcg
+        # the enrichment flows into the prompt catalog
+        prompt = build_routing_prompt("hello", grammar)
+        assert mp in prompt
+        assert gcg in prompt
+
+    def test_all_registry_only_operations_are_described(self):
+        """Coverage ratchet: no registry-derived operation still carries the
+        uninformative '<category> action (<disposition>-handled)' fallback —
+        a new ACTION_REGISTRY entry without an ACTION_DESCRIPTIONS line fails
+        here rather than silently shipping an undescribed catalog line."""
+        grammar = derive_routing_grammar()
+        undescribed = [
+            op.name
+            for op in grammar.operations
+            if op.source == "action_registry" and "-handled)" in op.description
+        ]
+        assert undescribed == [], (
+            f"registry-only operations lacking an ACTION_DESCRIPTIONS entry: "
+            f"{undescribed} — add a one-liner grounded in the handler's own "
+            "code (never an invented capability claim)"
+        )
+
+    def test_registry_entry_without_description_gets_honest_fallback(self):
+        """An ACTION_REGISTRY entry with NO ACTION_DESCRIPTIONS line derives
+        the honest disposition fallback — the catalog never invents."""
+        from services.intent_service.action_registry import (
+            ACTION_REGISTRY,
+            ActionDisposition,
+        )
+
+        key = ("QUERY", "test_inversion_undescribed_probe_op")
+        assert key not in ACTION_REGISTRY
+        try:
+            ACTION_REGISTRY[key] = ActionDisposition.FLOOR
+            grammar = derive_routing_grammar()
+            by_name = {op.name: op for op in grammar.operations}
+            probe = by_name["test_inversion_undescribed_probe_op"]
+            assert probe.description == "query action (floor-handled)"
+        finally:
+            ACTION_REGISTRY.pop(key, None)
+        assert "test_inversion_undescribed_probe_op" not in derive_routing_grammar().names()
+
+    def test_action_descriptions_keys_are_registry_keys(self):
+        """No orphan metadata: every ACTION_DESCRIPTIONS key must be a live
+        ACTION_REGISTRY key (a description for a nonexistent operation is
+        drift waiting to mislead the next derivation change)."""
+        from services.intent_service.action_registry import (
+            ACTION_DESCRIPTIONS,
+            ACTION_REGISTRY,
+        )
+
+        orphans = [k for k in ACTION_DESCRIPTIONS if k not in ACTION_REGISTRY]
+        assert orphans == []
+
     def test_offer_only_entries_are_not_operations(self):
         """action_triggered=False entries (confirm_pending_action &c.) are
         offer-seam plumbing, not selectable operations."""

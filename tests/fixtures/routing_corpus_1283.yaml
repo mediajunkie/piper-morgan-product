@@ -35,7 +35,10 @@ corpus:
   - phrase: "what's on my calendar today?"
     expected: action:meeting_time   # run-1: registry-canonical, rail-dispatched (draft said category:TEMPORAL)
   - phrase: "when is my next meeting?"
-    expected: category:TEMPORAL
+    expected: action:meeting_time   # 2026-08-14 Arch-gated ruling: #589 STANDS (calendar lookups are
+                                    # QUERY-category reads by cited decision, pre_classifier.py:382-386);
+                                    # this row's category:TEMPORAL predated #589 and was never updated.
+                                    # Corrected citing #589 BY NUMBER, not as an anonymous artifact.
   - phrase: "what am I working on?"
     expected: category:STATUS
   - phrase: "what should I focus on today?"
@@ -49,7 +52,12 @@ corpus:
   - phrase: "how do I create a ticket?"
     expected: category:GUIDANCE
   - phrase: "create a ticket for the login bug"
-    expected: category:EXECUTION
+    expected: action:create_issue   # 2026-08-14 re-expressed per Arch's gated check: category is
+                                    # confirmed COSMETIC-ONLY downstream (routing/gather/presentation;
+                                    # effect+safety derive exclusively from EffectClass by action, #1557
+                                    # — verified by sweep, no consumer reads IntentCategory as an
+                                    # effect proxy). The four-mutations-under-QUERY registry pattern is
+                                    # tracked separately regardless (see the follow-up issue).
   - phrase: "analyze the file I uploaded"
     expected: action:analyze_data
   - phrase: "summarize the document"

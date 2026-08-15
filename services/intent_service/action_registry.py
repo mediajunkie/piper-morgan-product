@@ -209,6 +209,116 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
 }
 
 
+# Routing descriptions for registry-only canonical operations (#1595 Phase 1b,
+# Family-1 enrichment — Arch's registry-derived condition: the inversion
+# router's grammar derives descriptions FROM registry metadata, never
+# hand-written in the router). METADATA ONLY — nothing dispatches on this
+# table; it changes what the constrained router's catalog SAYS about an
+# operation, never what any handler does.
+#
+# Discipline (#1571/#1604): every line below describes what the HANDLER
+# actually does, from its own code/docstring — never an invented capability
+# claim. Evidence is cited per entry. Rail-registered operations don't need
+# entries here (their WorkflowEntry.description already feeds the grammar);
+# this table covers the ACTION_REGISTRY-only canonicals whose derived line was
+# previously the uninformative "<category> action (<disposition>-handled)".
+ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
+    # canonical_handlers._handle_conversation_query; pre_classifier
+    # GREETING/FAREWELL/THANKS_PATTERNS (#1416 pleasantry-only precondition).
+    ("CONVERSATION", "greeting"): (
+        "Respond to a greeting when the message is only a pleasantry"
+    ),
+    ("CONVERSATION", "farewell"): (
+        "Respond to a goodbye when the message is only a pleasantry"
+    ),
+    ("CONVERSATION", "thanks"): (
+        "Acknowledge thanks when the message is only an expression of gratitude"
+    ),
+    # pre_classifier IDENTITY_PATTERNS ("who are you?", "what's your role?").
+    ("IDENTITY", "get_identity"): (
+        "Answer who-are-you / what-is-your-role questions about the assistant"
+    ),
+    # pre_classifier DISCOVERY_PATTERNS ("what can you do?").
+    ("DISCOVERY", "get_capabilities"): (
+        "Answer what-can-you-do questions with the assistant's capability overview"
+    ),
+    # pre_classifier TRUST_PATTERNS ("how do you handle my data?").
+    ("TRUST", "explain_trust"): (
+        "Explain how the assistant handles the user's data and privacy"
+    ),
+    # pre_classifier MEMORY_PATTERNS ("what do you remember about me?").
+    ("MEMORY", "get_memory"): (
+        "Answer what-do-you-remember questions about stored user context"
+    ),
+    # #1030 INSIGHT-PULL: floor + InsightRepository enrichment (registry note above).
+    ("MEMORY", "pull_insights"): (
+        "Answer what-have-you-learned questions from accumulated insights "
+        "about the user's patterns and work style"
+    ),
+    # canonical_handlers._handle_temporal_query ("what time is it?").
+    ("TEMPORAL", "get_current_time"): "Answer current time and date questions",
+    # canonical_handlers._handle_status_query / _handle_status_report.
+    ("STATUS", "get_project_status"): (
+        "Answer project status questions (how a project is going, status reports)"
+    ),
+    # #1117 COMPLETION_HISTORY; floor answers history honestly (#925).
+    ("STATUS", "check_completion_status"): (
+        "Answer completion-history questions (when past work was completed)"
+    ),
+    # canonical_handlers._handle_priority_query ("what should I work on first?").
+    ("PRIORITY", "get_top_priority"): (
+        "Answer what-should-I-work-on-first / top-priority questions"
+    ),
+    # canonical_handlers._handle_guidance_query: focus guidance PLUS
+    # _detect_setup_request routing — set up / configure / connect for
+    # integrations (github, slack, calendar, notion), projects, and
+    # getting-started (#498, #814, #1547 _format_integration_setup_guidance).
+    ("GUIDANCE", "get_contextual_guidance"): (
+        "Contextual guidance: what to focus on, how-do-I and getting-started "
+        "questions, and requests to set up, configure, or connect integrations "
+        "(GitHub, Slack, calendar, Notion) or projects — the destination for "
+        "connect-my-integration requests"
+    ),
+    # canonical_handlers._handle_portfolio_query (#675 PortfolioService wiring:
+    # ARCHIVE/DELETE/RESTORE_PATTERNS + search/list/list_archived/add branches).
+    ("PORTFOLIO", "manage_portfolio"): (
+        "Manage the user's project portfolio: archive, restore, delete, "
+        "search, add, and list projects (including archived-project listing)"
+    ),
+    # canonical_handlers._handle_repo_management (#862: link/unlink/list
+    # repos for projects via RepositoryRepository).
+    ("PORTFOLIO", "manage_repos"): (
+        "Link, unlink, or list GitHub repositories for the user's projects"
+    ),
+    # canonical_handlers._handle_provenance_query (#1030 R4: turn_provenance
+    # lookup → colleague-prose citation).
+    ("PROVENANCE", "explain_suggestion"): (
+        "Explain why the assistant made a prior suggestion (provenance of a "
+        "recommendation)"
+    ),
+    # #1256: FLOOR drafts the prose for an outbound stakeholder update.
+    ("QUERY", "write_stakeholder_update"): (
+        "Draft an outbound stakeholder update on current progress for a named "
+        "audience"
+    ),
+    # pre_classifier FEATURE_INFO_PATTERNS ("tell me more about the GitHub
+    # integration"); FLOOR-handled.
+    ("QUERY", "get_feature_info"): (
+        "Provide details about a specific Piper feature or integration"
+    ),
+    # todo_handlers.handle_complete_todo / handle_create_todo /
+    # handle_delete_todo (mapper-path cohort, Arch memo 2026-07-16 §A).
+    ("EXECUTION", "complete_todo"): "Mark an existing todo as done",
+    ("EXECUTION", "create_todo"): "Add a new todo to the user's list",
+    ("EXECUTION", "delete_todo"): "Delete an existing todo from the user's list",
+    # pre_classifier ANALYSIS_PATTERNS ("what's blocking the milestone?");
+    # FLOOR-handled.
+    ("ANALYSIS", "analyze_blockers"): (
+        "Analyze what is blocking a milestone or project"
+    ),
+}
+
+
 def get_disposition(category: str, action: str) -> ActionDisposition:
     """
     Look up the disposition for a (category, action) pair.

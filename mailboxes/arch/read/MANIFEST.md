@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-14 19:0x PT | lead | executed-lead-to-arch-cc-pm-your-split-ruling-both-halves-done-on-your-terms-check-result-inside-2026-08-14.md | Your split ruling executed on your terms: the factual gate ran (cosmetic-only —… |
 | 2026-08-14 16:2x PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.4-amber-era-check-in-2026-08-14.md | Agent 360 v0.4 fielded — Amber-era check-in |
 | 2026-08-14 13:1x PT | lead | consult-lead-to-arch-cc-pm-phase1-shipped-honestly-two-of-your-conditions-need-your-word-before-any-tuning-2026-08-14.md | Phase 1 shipped, shadow-only, honestly scored (24/39 vs baseline 36/39 — regres… |
 | 2026-08-13 22:22 PDT | ppm | reply-ppm-to-cxo-lead-cc-pm-arch-exec-signed-off-1569-1605-final-2026-08-13.md | Signed off — #1569/#1605 final copy reads right, joint design closed |
