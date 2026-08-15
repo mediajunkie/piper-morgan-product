@@ -1,29 +1,34 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-14 18:4x PT fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-14 21:45 PT STOP fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
-✅ **ARMED — job `45eae89f`.** Same expression `12 6,9,12,15,18,21 * * *`. Auto-expires ~2026-08-20.
+✅ **ARMED — job `b27bc234`, re-armed at 2026-08-14 STOP via delete-then-create** (was `45eae89f`). Same expression `12 6,9,12,15,18,21 * * *`. `CronList`-verified exactly one job. Auto-expires ~2026-08-21.
 
-## Agent 360 v0.4 — ✅ SUBMITTED same-day, nothing left
+## The one thing to check first tomorrow
 
-Full response across all 10 sections + role-specific + plausibility check, `mailboxes/comms/sent/agent-360-response-comms-2026-08-14.md`, mail `ede692dfc`. Drew on this week's actual incidents rather than generic answers. Caught and fixed two real errors in my own draft by checking rather than trusting estimates (a "30+" mail-send count that was actually 18; a misattributed fire citation) before sending — worth remembering next time I'm tempted to round a number instead of running the count. HOST's synthesis target is ~4 weeks out; nothing more for me to do until then unless HOST has a follow-up question.
+⭐ **"Confabulating a Peer's Unfinished Work" (Aug 15, today by the time this is read).** PM re-engaged tonight and asked for it; pre-pass done (fact-checked against the primary source, footer verified, 2 style fixes) — content is solid, but as of this STOP, PM had not yet started their voice pass or added art (frontmatter was still empty when last checked ~19:0x PT tonight). **Check whether PM made progress overnight before assuming it needs anything further from me.**
 
-## Values doc with HOST — ✅ HOST-verified, routed to PM, nothing left on my end
+## Ship #056 workstream review — ✅ SENT on the corrected same-evening deadline
 
-`docs/legal/values-DRAFT.md`, commit `69ceb8299`, mail `e68ae39ab`. No deadline, don't chase.
+PM moved the deadline up mid-evening (Exec's correction memo, tonight not Saturday) — this was the last fire of the day, so writing it took priority over day-close itself. Full review across all 7 days of the window, `mailboxes/comms/sent/workstream-056-comms-2026-08-14.md`, mail `8007df2db`. Named two new lines the portfolio doc doesn't have yet (the site register-pass, the values doc) rather than forcing them into old categories. **`ROLE-PORTFOLIO-COMMS.md` is now confirmed 10 days stale — worth a refresh pass at some point, not urgent tonight.**
 
-## pmorgan.tech register pass — ✅ FULLY DONE, including the last loose end
+## Agent 360 v0.4 — ✅ submitted, nothing left until HOST's synthesis (~4 weeks out)
 
-Whole thread closed as of this afternoon (Steps 9-10 restored by Docs). Nothing outstanding.
+## Values doc with HOST — ✅ routed to PM, nothing left on my end, no deadline
 
-## Closed this week
+## pmorgan.tech register pass — ✅ fully done
 
-- **Beat 22, "Alpha Launches"** — published + distributed.
-- **LinkedIn cover-image automation** — documented as dead.
-- **pmorgan.tech register pass** — fully complete, all findings resolved (#1610 closed; #1611 routed to Lead; all broken links repointed; Amber warning rehomed; Steps 9-10 restored).
-- **Agent 360 v0.4** — submitted.
+## Closed this week (full list)
+
+- Beat 22 "Alpha Launches" — published + distributed.
+- LinkedIn cover-image automation — documented as dead.
+- pmorgan.tech register pass — fully complete.
+- Agent 360 v0.4 — submitted.
+- Values doc first draft — HOST-verified, routed to PM.
+- Ship #056 workstream review — sent on the corrected deadline.
+- "Confabulating a Peer's Unfinished Work" — pre-passed, handed to PM live tonight.
 
 ## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available
 
@@ -35,13 +40,9 @@ Whole thread closed as of this afternoon (Steps 9-10 restored by Docs). Nothing 
 
 ## Waiting on others
 
-- **PM** — values doc's 4 open decisions; Beats 24–28 steer; voice-pass + art on Beat 23.
-- **HOST** — Agent 360 synthesis, ~4 weeks out, no action needed from me in the meantime.
+- **PM** — tomorrow's post (voice pass + art); values doc's 4 open decisions; Beats 24–28 steer; voice-pass + art on Beat 23.
+- **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **PPM** — BYOC listing copy v4 blocker.
 - **CXO/PM** — entity-model ratification.
 - **Dispatch** — syndication for the 4 posts above.
 - **Lead** — outcome of #1611 (routed by Docs).
-
-## No current queue
-
-Everything Comms-initiated is closed or genuinely waiting on someone else with no unblocked next move. Next fire: mail-check first, as always.
