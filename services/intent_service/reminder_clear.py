@@ -453,14 +453,26 @@ async def maybe_handle_clear_family(
     }
 
     # ── Exception clause: #1563's set-complement lane — clarify the whole
-    #    ask (variant-1-style), never guess the set. No store, no offer, no
-    #    write; the user's restated ask re-enters normally next turn.
+    #    ask (variant-1-style), never guess the set. No write; PM live-found
+    #    (2026-08-15) that the original no-offer version asked the verb
+    #    question and then had nowhere to land the bare answer it INVITED
+    #    ("delete" fell to the floor's canned denial). The offer is armed
+    #    with NO TARGETS: the answer stores the verb (the question promises
+    #    "I'll remember"), and the reply re-asks for the explicit list —
+    #    still never acting on a guessed set.
     if ask.has_exception:
         logger.info(
             "reminder_clear_exception_clause_fallback",
             verb=ask.verb,
             noun=ask.noun,
             session_id=session_id,
+        )
+        offer = _verb_question_offer(
+            principal, ask.verb, ask.noun, [], [], original_message
+        )
+        offer["pending_action"]["exception_no_targets"] = True
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id, offer, user_id=user_id
         )
         message = (
             f"{variant_one_question(ask.verb, ask.noun)}\n\n"
@@ -809,6 +821,50 @@ async def _handle_verb_answer_turn(
     wants_complete = bool(_COMPLETE_ANSWER_RE.search(message))
     if wants_delete and wants_complete:
         return None  # contradictory — fall to generic handling (likely off-intent)
+
+    # ── Exception-clause answers (PM live 2026-08-15): the verb STORES (the
+    #    question promised "I'll remember"), but there are NO bound targets —
+    #    the exception made the set unresolved, so nothing executes and no
+    #    V3 confirm arms. The reply confirms the stored verb and re-asks for
+    #    the explicit list. Never guess the set.
+    if payload.get("exception_no_targets"):
+        value = None
+        if wants_delete:
+            value = VALUE_DELETE
+        elif wants_complete:
+            value = VALUE_COMPLETE
+        if value is None:
+            return None  # not a verb answer — generic handling
+        persisted = await store_verified_inference(
+            principal, key, value, source=SOURCE_USER_VERIFIED, confidence=VERB_CONFIDENCE
+        )
+        logger.info(
+            "reminder_clear_exception_verb_stored",
+            value=value,
+            persisted=persisted,
+            session_id=session_id,
+        )
+        verb_meaning = "delete" if value == VALUE_DELETE else "mark done"
+        msg = (
+            f"Got it — '{verb}' means {verb_meaning}, and I'll remember that. "
+            f"Now tell me exactly which {_plural(noun, 2)} to include "
+            f"(your exception noted), and I'll act on just those."
+        )
+        if not persisted:
+            msg += (
+                "\n\n(Heads up: I couldn't save that preference just now, "
+                "so I may ask again in a future session.)"
+            )
+        return {
+            "message": msg,
+            "intent_data": {
+                "category": "execution",
+                "action": CLARIFY_CLEAR_VERB_WORKFLOW,
+                "verb_default_stored": value,
+                "exception_list_pending": True,
+            },
+            "requires_clarification": True,
+        }
 
     # ── ALWAYS_ASK leading-question answers (CXO/PPM 2026-08-14): the stored
     #    default is a prior explicit answer — NEVER flipped here. "like

@@ -627,7 +627,13 @@ class TestExceptionClauseFallback:
         )
         assert variant_one_question() in result.message
         assert result.intent_data.get("exception_clause_fallback") is True
-        assert _pending_offers(live_service).get(sid) is None  # nothing bound
+        # 2026-08-15 contract change (PM live find): the offer IS bound now —
+        # with NO targets — so the bare verb answer the question invites has
+        # somewhere to land (it was falling to the floor's canned denial).
+        bound = _pending_offers(live_service).get(sid)
+        assert bound is not None
+        assert bound["pending_action"]["exception_no_targets"] is True
+        assert bound["pending_action"]["clear_target_ids"] == []  # set never resolved
         assert todo_boundary["completed"] == [] and todo_boundary["deleted"] == []
 
     async def test_exception_beats_stored_delete_default(
@@ -798,3 +804,56 @@ class TestAlwaysAskLeadingQuestion:
             message="clear my reminders", session_id=sid, user_id=_USER
         )
         assert result.message.startswith(variant_two_disclosure())
+
+
+class TestExceptionClauseAnswerBinding:
+    """PM live 2026-08-15 (v53): the exception fallback asked the verb
+    question, then the bare 'delete' answer fell to the floor's canned
+    denial — the question invited an answer it had nowhere to land. The
+    offer now arms with NO targets: the verb stores, nothing executes,
+    the explicit list is re-requested."""
+
+    pytestmark = pytest.mark.asyncio
+
+    async def test_pm_sequence_delete_answer_stores_and_asks_for_list(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = "e2e-1605-exc"
+        _stub_classification(
+            monkeypatch, live_service,
+            'clear all reminders except "make sure this reminder isn\'t cleared"',
+            "delete_todo",
+        )
+        first = await live_service.process_intent(
+            message='clear all reminders except "make sure this reminder isn\'t cleared"',
+            session_id=sid, user_id=_USER,
+        )
+        assert "carved out an exception" in first.message
+        result = await live_service.process_intent(
+            message="delete", session_id=sid, user_id=_USER
+        )
+        # the PM-hit failure was the canned denial; pin its absence
+        assert "can't do that from chat" not in result.message
+        assert "'clear' means delete" in result.message
+        assert "exactly which" in result.message
+        # verb stored; NOTHING deleted (set was never resolved)
+        assert pref_store["verified_inferences"][rc.inference_key("clear")]["value"] == "delete"
+        assert todo_boundary["deleted"] == []
+        assert result.intent_data.get("exception_list_pending") is True
+
+    async def test_exception_complete_answer_same_shape(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = "e2e-1605-exc2"
+        _stub_classification(
+            monkeypatch, live_service,
+            "clear my reminders except the PR one", "complete_todo",
+        )
+        await live_service.process_intent(
+            message="clear my reminders except the PR one", session_id=sid, user_id=_USER
+        )
+        result = await live_service.process_intent(
+            message="mark them done", session_id=sid, user_id=_USER
+        )
+        assert "'clear' means mark done" in result.message
+        assert todo_boundary["completed"] == []  # set never guessed
