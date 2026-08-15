@@ -3,8 +3,8 @@ type: role-portfolio
 role: PPM (Principal Product Manager)
 status: v0.1 — main-cohort wave
 self-authored-by: PPM
-last_updated: 2026-08-01
-refreshed: 2026-08-01
+last_updated: 2026-08-14
+refreshed: 2026-08-14
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-PPM.md
 refresh_discipline: "section 2 updated as part of each weekly workstream review — can't write the Ship/workstream without restating priorities + status, so the review keeps this current by construction (Rule 5)"
@@ -28,14 +28,15 @@ The why: PM can't synthesize every cross-role lens in real time. PPM exists so t
 
 ---
 
-## 2. Current goals & priorities — August 2026 (Beta Blockers sprint; beta target Aug 8)
+## 2. Current goals & priorities — August 2026 (Beta Blockers sprint; beta date is PM's to set)
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has direction + current status + how we'll know it's moving. Rule 5: refreshed at each weekly workstream review. -->
 
 > **Sprint context**: **Beta Blockers is the live pre-beta sprint** and the **MVP milestone IS the
 > beta gate** — beta ships when `beta-blockers.md` closes, not on a date. **M4/M5 no longer exist**
-> (swept 2026-07-04/05 into Beta Blockers or Production). The prior version of this section was
-> dated *June 19* and headed *"D1 + M4 sprint"* — six weeks stale against this doc's own Rule-5
-> refresh discipline. Refreshed 2026-08-01.
+> (swept 2026-07-04/05 into Beta Blockers or Production). ⚠️ **The prior version of this line named
+> "beta target Aug 8" — PM moved beta back a month on 2026-08-08** ("we clearly have a lot more
+> work still to do than anyone ever reported to me"); do not carry a specific date here, it has
+> been wrong twice now. Refreshed 2026-08-14 per Rule 5, filed with Ship #056's workstream review.
 
 | Priority | What I'm advancing | Status (Aug 1) | How we'll know it's moving |
 |---|---|---|---|
