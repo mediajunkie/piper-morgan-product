@@ -22,7 +22,7 @@ corpus:
     probe_verdict: "AGREE"
   - phrase: "when is my next meeting?"
     category: TEMPORAL
-    expected: category:TEMPORAL
+    expected: action:meeting_time
     source: "corpus-1283"
   - phrase: "what am I working on?"
     category: STATUS
@@ -52,7 +52,7 @@ corpus:
     source: "corpus-1283"
   - phrase: "create a ticket for the login bug"
     category: EXECUTION
-    expected: category:EXECUTION
+    expected: action:create_issue
     source: "corpus-1283"
   - phrase: "analyze the file I uploaded"
     category: QUERY
