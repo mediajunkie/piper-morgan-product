@@ -699,6 +699,36 @@ class ProcessRegistry:
 
         return ProcessCheckResult.not_handled()
 
+    async def any_active(
+        self,
+        user_id: Optional[str],
+        session_id: Optional[str],
+    ) -> bool:
+        """#1625: is ANY guided process active for this session?
+
+        Read-only probe for surfaces that must stay quiet mid-flow (the
+        due-reminder mention gate: no reminder block inside an active
+        gathering/interview exchange). Unlike check_active_processes it
+        takes no message and never claims, suspends, or escapes anything —
+        it only asks each handler's check_active (which may apply its own
+        lazy housekeeping, e.g. the standup tail-timeout auto-suspend — the
+        same thing the next claim check would have done). A handler error
+        counts as not-active for that handler (same continue-on-error
+        posture as the claim path).
+        """
+        for handler in self._handlers:
+            try:
+                if await handler.check_active(user_id, session_id):
+                    return True
+            except Exception as e:
+                logger.warning(
+                    "Error probing guided process activity",
+                    process_type=handler.process_type.value,
+                    error=str(e),
+                )
+                continue
+        return False
+
     @property
     def registered_types(self) -> List[ProcessType]:
         """List of currently registered process types."""

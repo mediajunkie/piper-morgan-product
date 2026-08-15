@@ -255,6 +255,38 @@ class WorkItemEntitySource:
         return entities
 
 
+class ReminderEntitySource:
+    """Maps the user's DUE reminders → pinned Reminder RadarEntities (#1625).
+
+    PM's ruling (v53, 2026-08-15): the persistent surface owns persistence —
+    due reminders lock to the top of Radar (``pinned=True`` sorts above the
+    attention ordering in RadarFeed) while conversation mentions them once
+    per session (the context_assembler mention gate). All due reminders are
+    OBSERVED — they are things the user really asked to be reminded of, and
+    the provider only yields due-now/overdue items (no fabrication).
+    """
+
+    def __init__(self, reminder_provider: Any):
+        # reminder_provider: object exposing `async list_due(user_id) -> list[str]`
+        # (the due reminders' surfaced texts; None on lookup failure — treated
+        # as empty here, the conversational #1425 honesty path owns disclosure).
+        self._provider = reminder_provider
+
+    async def fetch(self, user_id: str) -> list[RadarEntity]:
+        texts = await self._provider.list_due(user_id)
+        return [
+            RadarEntity(
+                entity_type=EntityType.REMINDER,
+                title=str(text),
+                lifecycle_state="due",
+                provenance=Provenance.OBSERVED,
+                meta="due now — pinned until cleared",
+                pinned=True,
+            )
+            for text in texts or []
+        ]
+
+
 class PlaceEntitySource:
     """Maps the user's Places (#684 "what I'm seeing" — connected external surfaces like
     GitHub issue-tracking + Calendar) → WorkItem RadarEntities.

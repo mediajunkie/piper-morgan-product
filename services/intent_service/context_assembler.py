@@ -104,6 +104,40 @@ _RECENT_ACTIVITY_CAP = 10
 _PRIORITY_LABELS = ("priority: critical", "priority: urgent", "priority: high")
 _HIGH_PRIORITY_ISSUES_CAP = 5
 
+# #1625: per-session mentioned-set for due reminders. PM's ruling (v53 live,
+# 2026-08-15): mention due reminders ONCE per conversation, then stay quiet —
+# the Radar pin owns persistence. Keyed on reminder IDENTITY (the surfaced
+# text), NOT a boolean, so "once" cannot become "never": a genuinely NEW
+# reminder coming due mid-session is still mentioned once even after earlier
+# ones were. Same lifetime class as the rail's session memory
+# (verified_inference._SESSION_DECLINES): transient per-process conversational
+# state, session-keyed, NEVER persisted as a preference. Capped so long-lived
+# processes don't grow it unboundedly; eviction is oldest-session-first (dict
+# insertion order).
+_SESSION_REMINDER_MENTIONS: Dict[str, set] = {}
+_SESSION_REMINDER_MENTIONS_MAX_SESSIONS = 2048
+
+
+def _unmentioned_reminders(session_id: Optional[str], reminders: List[str]) -> List[str]:
+    """#1625: the due reminders this session has NOT yet been told about."""
+    if not session_id:
+        return list(reminders)
+    mentioned = _SESSION_REMINDER_MENTIONS.get(str(session_id), set())
+    return [r for r in reminders if r not in mentioned]
+
+
+def _mark_reminders_mentioned(session_id: Optional[str], reminders: List[str]) -> None:
+    """#1625: record that this session's floor turn carried these reminders."""
+    if not session_id or not reminders:
+        return
+    sid = str(session_id)
+    if (
+        sid not in _SESSION_REMINDER_MENTIONS
+        and len(_SESSION_REMINDER_MENTIONS) >= _SESSION_REMINDER_MENTIONS_MAX_SESSIONS
+    ):
+        _SESSION_REMINDER_MENTIONS.pop(next(iter(_SESSION_REMINDER_MENTIONS)))
+    _SESSION_REMINDER_MENTIONS.setdefault(sid, set()).update(reminders)
+
 
 def _compute_deadline_proximity(due_date: Optional[datetime]) -> str:
     """
@@ -362,6 +396,14 @@ class ContextAssembler:
         # never "none due".
         try:
             reminder_ctx = await self._gather_reminder_context(user_id)
+            # #1625: gate the conversational mention AFTER the #984 cache (the
+            # cached slice is per-user; the mention gate is per-session — gating
+            # inside the cached compute would leak one session's quiet into
+            # another's first mention).
+            if reminder_ctx and reminder_ctx.get("due_reminders"):
+                reminder_ctx = await self._gate_due_reminder_mentions(
+                    reminder_ctx, user_id, session_id
+                )
             if reminder_ctx:
                 context.update(reminder_ctx)
                 self._attribute_provenance(list(reminder_ctx.keys()), user_id=user_id)
@@ -1012,6 +1054,61 @@ class ContextAssembler:
             ttl_seconds=_TTL_REMINDERS,
             compute_fn=lambda: self._compute_reminder_context(user_id),
         )
+
+    async def _gate_due_reminder_mentions(
+        self,
+        reminder_ctx: Dict[str, Any],
+        user_id: Optional[str],
+        session_id: Optional[str],
+    ) -> Dict[str, Any]:
+        """#1625: gate the CONVERSATIONAL mention of due reminders.
+
+        PM's ruling (v53, 2026-08-15 — "reminders are a bit relentless"):
+        mention due reminders once per conversation, then stay quiet; the
+        Radar pin (ReminderEntitySource) owns persistence. Two gates, in
+        order:
+
+        1. **Active guided flow** (the standup interview mid-question shape
+           from PM's transcript): drop the due-reminder keys entirely and do
+           NOT mark them mentioned — the user hasn't been told, so the first
+           floor turn after the flow ends mentions them. `source_failed`
+           passes through untouched (#1425 honesty is not a nag block; it
+           only speaks if reminders come up).
+        2. **Mentioned-set filter**: only reminders this session hasn't been
+           told about are included, and those are marked mentioned. The set
+           keys on reminder identity, so a NEW reminder coming due
+           mid-session is still surfaced once ("once" must not become
+           "never").
+
+        No session_id → no per-session gating possible; #1566 behavior is
+        preserved unchanged (same opt-out shape as the floor's push-gating).
+        Always returns a NEW dict — the input may be the #984 cache's shared
+        reference and must not be mutated.
+        """
+        gated = dict(reminder_ctx)
+        rems = gated.get("due_reminders") or []
+
+        # Gate 1: never inside an active gathering/interview exchange.
+        try:
+            from services.process import get_process_registry
+
+            if await get_process_registry().any_active(user_id, session_id):
+                gated.pop("due_reminders", None)
+                gated.pop("reminder_count", None)
+                return gated
+        except Exception as e:  # silent-ok: probe failure fails OPEN (reminders surface; the mention gate is a quieting layer, never a reason to break the #1566 surfacing promise)
+            logger.warning("reminder_mention_gate_probe_error", error=str(e))
+
+        # Gate 2: only not-yet-mentioned reminders, marked as they go out.
+        fresh = _unmentioned_reminders(session_id, rems)
+        if not fresh:
+            gated.pop("due_reminders", None)
+            gated.pop("reminder_count", None)
+            return gated
+        _mark_reminders_mentioned(session_id, fresh)
+        gated["due_reminders"] = fresh
+        gated["reminder_count"] = len(fresh)
+        return gated
 
     async def _compute_reminder_context(self, user_id: str) -> Dict[str, Any]:
         """Compute reminder context (uncached) for cache miss."""

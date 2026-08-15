@@ -188,6 +188,27 @@ class PlaceProvider:
             return []
 
 
+class DueReminderProvider:
+    """Resolves the user's due-now/overdue reminders (#1625) — the same
+    ``TodoIntentHandlers.get_due_reminders`` read the conversational surfacing
+    rider (#1566) consumes, so Radar and conversation can never disagree about
+    what is due. Returns [] on any failure or a non-UUID principal (graceful —
+    a reminder hiccup never blanks Radar; conversational #1425 honesty owns
+    failure disclosure)."""
+
+    async def list_due(self, user_id: str) -> list[str]:
+        try:
+            from uuid import UUID
+
+            from services.intent_service.todo_handlers import TodoIntentHandlers
+
+            due = await TodoIntentHandlers().get_due_reminders(UUID(user_id))
+            return due or []
+        except Exception as e:  # never let a reminder hiccup blank Radar
+            logger.warning("radar_reminder_source_failed", error=str(e))
+            return []
+
+
 def build_entity_sources(user_history_service: UserHistoryService) -> list[EntitySource]:
     """The live Radar entity sources — Conversations (#1021) + Documents (#1238) +
     WorkItems (#1239) + Places (#1236, the retired home "what I'm seeing" module). The
