@@ -344,23 +344,38 @@ async def gate_holds(action: Optional[str], message: Optional[str], user_id: Opt
 
 
 def build_collaboration_response(
-    subject: Optional[str] = None, repository: Optional[str] = None
+    subject: Optional[str] = None,
+    repository: Optional[str] = None,
+    draft_bound: bool = False,
 ) -> str:
     """The collaborate-first reply for a gated issue-write: draft + ask.
 
     Proposes a starting draft grounded in what was extractable from the
     request and asks the user to shape it — it never announces a write.
+
+    ``draft_bound`` (#1571): the caller armed the drafted-issue pending
+    binding, so "file it as is" now actually routes — teach THAT phrase.
+    Never teach it unbound (#1571's original defect was teaching a phrase
+    that didn't route).
     """
     if subject:
         where = f" in **{repository}**" if repository else ""
+        if draft_bound:
+            execute_line = (
+                'If this draft works as-is, say "file it as is" and I\'ll '
+                "create it right now. "
+            )
+        else:
+            execute_line = (
+                'When it looks right, say something like "create this issue '
+                f'in owner/repo about {subject}" and I\'ll file it. '
+            )
         return (
             "Happy to shape this with you before anything gets filed. "
             f"Here's a draft to start from{where}:\n\n"
             f"**Title**: {subject}\n\n"
             "What should the body say — the problem, steps to reproduce, "
-            "impact? Tell me what to add or change, and when it looks right, "
-            'say something like "create this issue in owner/repo about '
-            f'{subject}" and I\'ll file it. '
+            f"impact? Tell me what to add or change. {execute_line}"
             "(If you'd rather I just file things directly, say "
             '"just do things directly from now on" and I will.)'
         )

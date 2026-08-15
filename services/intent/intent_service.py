@@ -332,6 +332,7 @@ class IntentService:
             "consent_check_pending",
             "verb_disambiguation_pending",
             "reminder_clear_correction_pending",
+            "drafted_issue_pending",  # #1571: the bound draft must survive this turn
         )
         if result.intent_data and any(result.intent_data.get(f) for f in _pending_flags):
             return result
@@ -1038,6 +1039,35 @@ class IntentService:
                             message=_rc_turn["message"],
                             intent_data=_rc_turn["intent_data"],
                             requires_clarification=_rc_turn.get(
+                                "requires_clarification", False
+                            ),
+                        )
+                # #1571: a pending DRAFTED ISSUE is confirmed by the file
+                # phrases the draft copy teaches ("file it", "file it as is")
+                # — shapes the generic accept detector doesn't know — and its
+                # acceptance path owns failure honestly (a create that didn't
+                # verifiably happen RE-ARMS the draft; retry never loses it).
+                # Handled kind-specifically BEFORE generic accept/decline
+                # (same sanctioned seam as the #1510/#1605 checks above).
+                # Returning None falls through: declines/bare exits drop the
+                # draft honestly via decline_message; off-intent abandons per
+                # the carrier's rules.
+                elif _vi_payload.get("kind") == "drafted_issue":
+                    from services.intent_service import drafted_issue as _di
+
+                    _di_turn = await _di.handle_drafted_issue_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _di_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_di_turn["message"],
+                            intent_data=_di_turn["intent_data"],
+                            requires_clarification=_di_turn.get(
                                 "requires_clarification", False
                             ),
                         )
@@ -7966,26 +7996,63 @@ class IntentService:
             (intent.context or {}).get("original_message") or ""
         )
         _gate_user = user_id or _principal_from_intent(intent)
-        if await _collab_gate.gate_holds(intent.action, _gate_message, _gate_user):
+        # #1571: a confirmed drafted-issue acceptance carries the
+        # destructive_confirmed marker (#1190's CONFIRMED_CONTEXT_KEY) — the
+        # explicit "file it" turn already gave consent, so the gate never
+        # re-asks (the double-confirm friction PM hit live 2026-08-15).
+        from services.intent_service.destructive_confirm import (
+            CONFIRMED_CONTEXT_KEY as _confirmed_key,
+        )
+
+        _already_confirmed = bool((intent.context or {}).get(_confirmed_key))
+        if not _already_confirmed and await _collab_gate.gate_holds(
+            intent.action, _gate_message, _gate_user
+        ):
             _gate_slots = self._slotfill_issue_request(_gate_message)
+            _gate_subject = (intent.context or {}).get("title") or _gate_slots.get(
+                "title"
+            )
+            _gate_repo = (intent.context or {}).get("repository") or _gate_slots.get(
+                "repository"
+            )
             self.logger.info(
                 "collaboration_gate_held",
                 action=intent.action,
                 framing=_collab_gate.classify_framing(_gate_message),
                 user_id=_gate_user,
             )
+            # #1571: bind the rendered draft as a pending action (kind
+            # drafted_issue) so "file it (as is)" next turn IS the
+            # confirmation and files THIS draft through the real rail —
+            # no re-classification, no second ask, no lost draft. Armed
+            # only when a subject exists (no subject = no draft yet; the
+            # copy below asks for one). The drafted_issue_pending flag is
+            # the _apply_soft_offer clobber guard (#1605 belt).
+            _draft_bound = False
+            if _gate_subject and session_id:
+                from services.intent_service import drafted_issue as _di
+
+                self.workflow_offer_service.set_pending_offer(
+                    session_id,
+                    _di.build_drafted_issue_offer(
+                        intent, subject=_gate_subject, repository=_gate_repo
+                    ),
+                    user_id=_gate_user,
+                )
+                _draft_bound = True
             return IntentProcessingResult(
                 success=True,
                 message=_collab_gate.build_collaboration_response(
-                    subject=(intent.context or {}).get("title") or _gate_slots.get("title"),
-                    repository=(intent.context or {}).get("repository")
-                    or _gate_slots.get("repository"),
+                    subject=_gate_subject,
+                    repository=_gate_repo,
+                    draft_bound=_draft_bound,
                 ),
                 intent_data={
                     "category": intent.category.value,
                     "action": intent.action,
                     "confidence": intent.confidence,
                     "collaboration_gate": True,
+                    "drafted_issue_pending": _draft_bound,
                 },
                 workflow_id=workflow_id,
                 requires_clarification=True,

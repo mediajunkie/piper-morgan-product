@@ -311,7 +311,31 @@ class StandupProcessAdapter:
         Check if there's an active standup conversation.
 
         Issue #888: Enumerate non-active states explicitly. SUSPENDED is not active.
-        Also checks timeout: sessions inactive > 15min auto-suspend.
+        Also checks timeout: sessions inactive > 15min auto-suspend — but ONLY in
+        the completion tail since #1623 (see below).
+
+        #1623 (PM live 2026-08-15, mid-gathering theft): the timeout here is
+        evaluated LAZILY — there is no background reaper, so it fires INSIDE the
+        processing of the user's next turn. Mid-gathering, that next turn is by
+        construction the ANSWER to the flow's open question ("What's planned for
+        today?" → PM's plans answer). The old unconditional timeout silently
+        auto-suspended the flow and let that answer fall through to the LLM
+        classifier, where an unrelated surface claimed it (PM's plans answer ate
+        a files-family canned denial; the blockers answer got the temporal
+        surface). Measured: every content-dependent surface above the process
+        claim passes these turns; this lazy ejection was the only thief.
+
+        The rule now: a MID-GATHERING flow (open question pending) HOLDS its
+        turns regardless of think-time — the user leaves via the #888/#1529
+        escape tiers or #899 off-topic, which run every turn and are the
+        deliberate exceptions. The timeout auto-suspend applies only in the
+        completion tail (REFINING/FINALIZING), where the work is delivered and
+        going idle should stop claiming the session (#1617 releases off-tail
+        turns there anyway). Trade-off, flagged for review: a mid-gathering flow
+        abandoned in a still-open session no longer times out — its turns are
+        claimable until an escape/off-topic tier fires. Scoping limits the blast
+        radius: the conversation is keyed to its session, so a fresh session
+        never meets the stale flow.
         """
         from services.shared_types import StandupConversationState
 
@@ -329,9 +353,15 @@ class StandupProcessAdapter:
         if conversation.state in NON_ACTIVE_STATES:
             return False
 
-        # Issue #888: Timeout auto-suspend — standup 15min per PPM direction
+        # Issue #888 timeout auto-suspend, #1623-gated to the completion tail:
+        # mid-gathering, an elapsed clock must never eject the in-flight answer.
+        in_tail = conversation.state in (
+            StandupConversationState.REFINING,
+            StandupConversationState.FINALIZING,
+        )
         if (
-            hasattr(conversation, "updated_at")
+            in_tail
+            and hasattr(conversation, "updated_at")
             and conversation.updated_at
             and isinstance(conversation.updated_at, datetime)
         ):
