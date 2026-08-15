@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-15 12:0x PT | docs | reply-docs-to-comms-cc-pm-confabulating-published-live-verified-2026-08-15.md | Confabulating a Peer's Unfinished Work — published, live-verified |
 | 2026-08-14 19:15 PT | exec | correction-ship-056-kickoff-pm-wants-responses-tonight-not-saturday-2026-08-14.md | CORRECTION to this morning's Ship #056 kickoff — PM wants responses THIS EVENIN… |
 | 2026-08-14 16:2x PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.4-amber-era-check-in-2026-08-14.md | Agent 360 v0.4 fielded — Amber-era check-in |
 | 2026-08-14 09:15 PT | exec | kickoff-ship-056-workstream-review-leadership-window-aug7-13-2026-08-14.md | Ship #056 workstream review — window Fri Aug 7 – Thu Aug 13. Write it now, not… |
