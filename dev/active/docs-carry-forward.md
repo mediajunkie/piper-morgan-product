@@ -1,5 +1,9 @@
 # Docs Carry-Forward
 
+**Updated**: 2026-08-16 16:1x PDT (Fire 4 — 2 publishes done, 1 confabulation-report caught)
+**Session log**: `dev/2026/08/16/2026-08-16-0711-docs-code-log.md` (open).
+**Cron**: `2967db0e`, fresh window to ~08-21.
+
 **Updated**: 2026-08-15 22:4x PDT (DAY-CLOSED — quiet day + 1 publish + a real STOP-fire drain)
 **Session log**: `dev/2026/08/15/2026-08-15-0711-docs-code-log.md` (closed).
 **Cron**: `2967db0e`, fresh window to ~08-21.
@@ -64,6 +68,22 @@ this file), not re-frozen with the eleven standing lessons inline — recoverabl
 stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
+
+## ✅ RESOLVED 2026-08-16 — 2 posts published, syndicated; a confidently-wrong report caught before acting
+
+**"Confabulating a Peer's Unfinished Work"** (Aug 15) fully closed: Medium+LinkedIn synced,
+status=distributed.
+**"The Fabricating Standup"** (Aug 16) published clean (0 audit fixes needed), live-verified,
+Medium+LinkedIn synced same day, status=distributed.
+
+**Real find**: a same-day report claimed CLAUDE.md's checkout HARD RULE path was wrong and
+`sync-pm-local.sh` couldn't find PM's checkout at all (citing a space-form path that doesn't
+exist). Verified independently — `git worktree list`, filesystem check, live dry-run — the
+report's central claim was FALSE; the existing hyphenated path is correct and working. One
+genuinely real claim in the same report (CLAUDE.md described the script's old v1 binary-abort
+behavior instead of its actual v2 3-tier classifier) was fixed (`584695a14`). Full verification
+sent to PM directly — a confidently-wrong report about system state, same shape as the post
+published that morning.
 
 ## ✅ RESOLVED 2026-08-12 (Fire 3, 13:27) — mail drain: Ship #055 closed, #1584 Part C done, Pages build revived
 
