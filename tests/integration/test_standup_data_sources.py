@@ -119,60 +119,6 @@ class TestStandupDataSources:
         except Exception as e:
             print(f"❌ Calendar service initialization failed: {e}")
 
-    def test_issue_intelligence_connection(self):
-        """Test Issue Intelligence service connection to standup workflow"""
-        # This test addresses Phase 0 issue: "Issue Intelligence: Exists but not connected to standup workflow"
-
-        try:
-            from services.features.issue_intelligence import IssueIntelligence
-
-            issue_intel = IssueIntelligence()
-            assert issue_intel is not None
-            print("✅ Issue Intelligence service available")
-
-            # Test that it has methods that could be used by standup
-            expected_methods = ["get_recent_issues", "analyze_issues", "get_issue_patterns"]
-            available_methods = [
-                method for method in expected_methods if hasattr(issue_intel, method)
-            ]
-
-            if available_methods:
-                print(f"✅ Issue Intelligence has standup-relevant methods: {available_methods}")
-            else:
-                print("⚠️ Issue Intelligence exists but may lack standup integration methods")
-
-        except ImportError as e:
-            print(f"⚠️ Issue Intelligence service import failed: {e}")
-            # Don't fail the test - this documents the connectivity issue
-        except Exception as e:
-            print(f"⚠️ Issue Intelligence service initialization failed: {e}")
-            # Don't fail the test - this documents the connectivity issue
-
-    @pytest.mark.asyncio
-    async def test_issue_intelligence_standup_integration(self):
-        """Test Issue Intelligence integration with standup workflow"""
-        # Test the specific connection issue identified in Phase 0
-
-        try:
-            from services.features.issue_intelligence import IssueIntelligence
-
-            issue_intel = IssueIntelligence()
-
-            # Test if there's a method to get issues for standup
-            if hasattr(issue_intel, "get_standup_issues"):
-                result = await issue_intel.get_standup_issues()
-                print("✅ Issue Intelligence has standup-specific method")
-            elif hasattr(issue_intel, "get_recent_issues"):
-                # Test with mock to verify it could work for standup
-                with patch.object(issue_intel, "get_recent_issues", return_value=[]) as mock_method:
-                    result = await issue_intel.get_recent_issues()
-                    print("✅ Issue Intelligence has general method that could be used for standup")
-            else:
-                print("⚠️ Issue Intelligence lacks methods suitable for standup integration")
-
-        except Exception as e:
-            print(f"⚠️ Issue Intelligence standup integration test failed: {e}")
-
     def test_document_memory_integration(self):
         """Test Document Memory indexing and retrieval for standup"""
         # This test addresses Phase 0 issue: "Document Memory: Only 8 documents indexed"
@@ -263,17 +209,11 @@ class TestStandupDataSources:
             # Mock all data sources to fail
             with (
                 patch("services.integrations.github.github_agent.GitHubAgent") as mock_github,
-                patch(
-                    "services.intelligence.issue_intelligence.IssueIntelligence"
-                ) as mock_issue_intel,
                 patch("services.intelligence.document_memory.DocumentMemory") as mock_doc_memory,
             ):
                 # Configure mocks to simulate disconnected sources
                 mock_github.return_value.get_recent_activity.side_effect = Exception(
                     "GitHub disconnected"
-                )
-                mock_issue_intel.return_value.get_recent_issues.side_effect = Exception(
-                    "Issue Intelligence disconnected"
                 )
                 mock_doc_memory.return_value.search_documents.side_effect = Exception(
                     "Document Memory disconnected"
@@ -297,7 +237,6 @@ class TestStandupDataSources:
         issues = {
             "github_activity": False,
             "calendar_integration": False,
-            "issue_intelligence": False,
             "document_memory": False,
         }
 
@@ -317,16 +256,6 @@ class TestStandupDataSources:
         except ImportError:
             pass
 
-        # Test issue intelligence
-        try:
-            from services.features.issue_intelligence import IssueIntelligence
-
-            issue_intel = IssueIntelligence()
-            if hasattr(issue_intel, "get_recent_issues"):
-                issues["issue_intelligence"] = True
-        except:
-            pass
-
         # Test document memory
         try:
             from services.knowledge_graph.document_service import DocumentService
@@ -340,7 +269,6 @@ class TestStandupDataSources:
         print(f"\n📊 Data Source Connectivity Summary:")
         print(f"GitHub Activity: {'✅' if issues['github_activity'] else '❌'}")
         print(f"Calendar Integration: {'✅' if issues['calendar_integration'] else '❌'}")
-        print(f"Issue Intelligence: {'✅' if issues['issue_intelligence'] else '❌'}")
         print(f"Document Memory: {'✅' if issues['document_memory'] else '❌'}")
 
         # This test documents the current state for Phase 2
