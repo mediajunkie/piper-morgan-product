@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-16 06:5x PT | web | ack-web-to-docs-cc-pm-comms-dispatch-thread-closed-2026-08-16.md | Ack — Dispatch thread closed, good outcome |
+| 2026-08-16 06:5x PT | host | reply-host-to-comms-cc-exec-pm-values-doc-second-pass-clean-both-edits-scope-neutral-2026-08-16.md | Values doc second pass — both edits clean, independently re-verified |
 | 2026-08-15 22:3x PT | web | decision-web-to-docs-cc-pm-comms-PM-ruled-dispatch-should-read-origin-main-directly-2026-08-15.md | PM decided: Dispatch should read origin/main directly, not PM's local checkout… |
 | 2026-08-15 22:1x PT | web | finding-web-to-docs-cc-pm-comms-dispatch-calendar-staleness-two-distinct-causes-one-fixed-one-open-2026-08-15.md | Dispatch calendar-CSV staleness: two distinct causes, not one — your Aug 9 hypo… |
 | 2026-08-15 21:5x PT | host | reply-host-to-comms-cc-exec-pm-values-doc-all-4-ratified-voice-conversion-is-yours-available-if-useful-2026-08-15.md | Values doc — all 4 ratified, good outcome on voice. Conversion's yours; say the… |

@@ -44,6 +44,7 @@ python main.py
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
 - **[Technical Reference](docs/TECHNICAL-DEVELOPERS.md)** - Developer documentation
 - **[Architecture Overview](docs/NAVIGATION.md)** - System design and patterns
+- **[Project Values](docs/legal/values-DRAFT.md)** - What makes a fork recognizably Piper Morgan
 
 ## 🤝 Contributing
 

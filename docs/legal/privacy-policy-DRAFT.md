@@ -195,10 +195,22 @@ Questions, deletion requests, or privacy concerns: **privacy@pipermorgan.ai**
 
 ### Reviewer checklist before publishing
 
-- [ ] Resolve every 🔍 marker — each is an unverified claim, not a wording choice
-- [ ] Confirm the sub-processor list is complete and name the production LLM provider(s)
-- [ ] State the true deletion/export capability, including "not yet available, email us"
-- [ ] State a retention practice that matches reality
-- [ ] Supply a contact email
-- [ ] PM review — this is a legal commitment, not documentation
-- [ ] Publish at a stable HTTPS URL and reference it in both directory submissions
+**Updated 2026-08-16 (Exec)** — PA found this checklist hadn't been kept in sync with the body-text
+fixes below it (five items resolved in prose over the past two weeks, checklist still showed all
+seven open). Re-verified against the current body directly before checking anything, not assumed.
+
+- [x] Resolve every 🔍 marker — none remain live in the body (checked via grep; the two hits above
+      are the header's own meta-reference to the concept, not live markers)
+- [x] Confirm the sub-processor list is complete and name the production LLM provider(s) — ✅
+      RESOLVED 2026-08-13, Anthropic-only in production, verified against code
+- [x] State the true deletion/export capability, including "not yet available, email us" — ✅
+      ANSWERED FROM THE CODE 2026-08-03, soft-delete-only disclosed accurately
+- [x] State a retention practice that matches reality — ✅ RATIFIED 2026-08-15, retain-all-by-default
+- [x] Supply a contact email — **privacy@pipermorgan.ai**, present above
+- [ ] PM review — this is a legal commitment, not documentation. **Still open** — the five items
+      above are individually verified/ratified, but PM has not yet done a final end-to-end read of
+      this document as a whole for publication.
+- [ ] Publish at a stable HTTPS URL and reference it in both directory submissions. **Still open** —
+      `https://pipermorgan.ai/privacy` returns HTTP 200 but PA's investigation (2026-08-13) could not
+      confirm whether real policy text renders client-side (no browser access on that seat); this
+      draft has not been confirmed as what's actually live there.

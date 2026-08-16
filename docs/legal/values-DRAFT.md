@@ -129,8 +129,9 @@ three things are still true when you run it — not the license or the codebase 
    from the first-person/third-person ruling above, and stays; institutional documents routinely
    address "you" while never speaking as "I/we."
 
-**Status**: voice conversion done. Two items from the ratified decisions are outstanding and not
-Comms' to silently resolve: the NOTICE file (decision 2) exists and correctly points here; the
-**README link (decision 1) does not yet exist** — checked `README.md` directly, no reference found.
-Flagging rather than adding it myself, since README ownership isn't clearly Comms' lane. Once that's
-placed, this is ready to leave DRAFT status.
+**Status**: voice conversion done (Comms, independently re-verified by HOST's second pass,
+`0676b7b37`). **README link (decision 1) added** — `README.md`'s Documentation section now links
+here (Exec, 2026-08-16, after Comms and HOST both flagged the gap with no clear owner). NOTICE
+(decision 2) already pointed here. All four ratified decisions are now fully executed, not just
+ruled. Remaining before this leaves DRAFT status: PM's own final read of the converted prose —
+not blocked on anyone else.
