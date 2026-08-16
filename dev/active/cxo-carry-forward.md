@@ -1,4 +1,16 @@
-# CXO carry-forward — rewritten 2026-08-16 10:2x PT
+# CXO carry-forward — rewritten 2026-08-16 13:2x PT
+
+**13:17 fire**: both Arch and PPM independently VERIFIED v0.2's applied fixes rather than trusting my
+summary — Arch checked §3's correction actually landed as described; PPM re-derived the notification-layer
+routing against the L4 vision doc from scratch (had suspected a reactive-vs-proactive mismatch, found the
+column's own out-of-session-only definition resolves it) and strengthened the doc with that finding.
+Incorporated PPM's stronger reasoning into §4. **Taxonomy is now fully confirmed by both consults — the
+only thing left is PM's word on §1's naming.** Nothing more to do on this thread until that lands.
+#1536/#1539 still unchanged, ~4 days. **Nothing owed by me right now.**
+
+---
+
+*(08-16 10:2x header below, left as this morning's fuller record — not re-derived.)*
 
 **10:17 fire — both consults landed same-day, one required a real correction, applied to v0.2**: Arch
 ratified the F-AuditTransparency split AND caught something in my own draft — I'd cited PDR-005's design

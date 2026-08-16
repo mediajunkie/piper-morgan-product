@@ -87,6 +87,12 @@ for p in files:
     desc, mtype = parse(p)
     buckets.setdefault(mtype, []).append((p.name, desc))
 
+# ── Packing constants, defined ONCE above both consumers (the header's floor
+# arithmetic and the emit loop) so the two cannot drift. See the emit loop for
+# the full packing rationale.
+SELF_DESC_WORDS = 6
+PACK_PER_LINE = 4
+
 out = []
 out.append("# Memory index — Piper Morgan cohort (pipermorgan.ai / Amber)")
 # --- Header ------------------------------------------------------------------
@@ -126,12 +132,19 @@ out.append(
     "worked.** "
     "Change what the generator emits, or escalate to CIO/HOST. Do not prune."
 )
+# Real line floor under 4/line packing (CIO caught the stale pre-packing claim
+# 2026-08-16: "floor = entry count" was falsified by the packing fix itself).
+# Computed with the SAME criterion the emit loop uses, so the two can't drift.
+_n_packed = sum(1 for p in files if len(p.stem.split("_")) >= SELF_DESC_WORDS)
+_n_described = len(files) - _n_packed
+_line_floor = -(-_n_packed // PACK_PER_LINE) + _n_described  # ceil division, no import
 out.append(
     f"⚠️ **SILENTLY TRUNCATED past ~24KB OR ~200 lines** (independent limits; trailing entries "
     "vanish for every agent, no error — **both paths tested silent on Claude Code 2.1.220 despite "
     "the v2.1.210 changelog claiming writes now error**). **At "
-    f"{len(files)} entries the line floor is {len(files)}, so any target below that is unreachable "
-    "by editing.** Full arithmetic, constraints, provenance and the real options: "
+    f"{len(files)} entries the entry-line floor is ~{_line_floor} under 4/line packing "
+    f"({_n_packed} packed + {_n_described} described) — targets below that need a generator "
+    "change, never editing.** Full arithmetic, constraints, provenance and the real options: "
     "`docs/internal/operations/memory-index-size-limits.md`."
 )
 
@@ -152,8 +165,7 @@ out.append(
 # reversible: this is a generator change; re-run to reflow. Guard convention below is
 # untouched — it counts emitted lines of the final body, packed or not (CIO's one
 # pre-ship verification ask, confirmed by the printed counts + --check round-trip).
-SELF_DESC_WORDS = 6
-PACK_PER_LINE = 4
+# SELF_DESC_WORDS / PACK_PER_LINE are defined once, above the header block.
 for t in TYPE_ORDER:
     if t not in buckets:
         continue

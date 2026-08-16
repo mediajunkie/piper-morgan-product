@@ -1,7 +1,23 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-16 09:53 PT (WORK). Cron **`046720e1`**, unchanged.
+**Last rewritten**: 2026-08-16 12:53 PT (WORK). Cron **`046720e1`**, unchanged.
+
+## ✅ SURFACES TAXONOMY v0.2 — my consult applied, extended correctly, and confirmed 2026-08-16
+**Update to the entry below**: Arch found a real m-49 ("Described Is Not Running") defect in
+CXO's v0.1 — the platform-axis "receipts" cited design prose, not code that actually exists; CXO
+accepted fully, fixed §3. **My general rule got applied MORE broadly than I stated it** — CXO
+correctly extended "any cell gated by an already-ratified hold" to the already-*ratified*
+F-History/F-FirstRun chat-host variants too (a PDR-005-ratified design intent doesn't override an
+active platform hold on actual shippability). That's the rule working as intended, not drift.
+**Checked the one routing I hadn't pre-verified rather than trusting it**: CXO routed the
+notification-layer cell to #1174 instead of ruling on it directly. Read #1174's own vision doc —
+confirmed the routing is sound for a reason worth stating: the "notification layer" column only
+ever applies to the out-of-session case (an in-session failure is just a normal chat reply,
+already covered elsewhere), which makes it a genuine subset of #1174's proactive-notification
+scope, not a category mismatch. Sent confirmation with that reasoning rather than silent
+agreement. **v0.2 status: both consults landed, only PM's word on §1 naming remains before full
+ratification.**
 
 ## ✅ SURFACES TAXONOMY v0.1 DRAFT — PPM's MVP consult answered 2026-08-16
 CXO's draft landed (`docs/internal/design/surfaces-taxonomy-2026-08-16.md`), the item flagged

@@ -531,7 +531,6 @@ Enhanced conversational context, MCP deployment, pattern validation.
                     {
                         "github": True,
                         "calendar": True,
-                        "issue_intelligence": True,
                         "document_memory": True,
                     },
                 ),
@@ -591,7 +590,6 @@ Enhanced conversational context, MCP deployment, pattern validation.
             "integrations": {
                 "github": True,
                 "calendar": True,
-                "issue_intelligence": True,
                 "document_memory": True,
             },
             "user_identity": {
