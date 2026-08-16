@@ -1,14 +1,14 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # The Fabricating Standup
 
 *June 18, 2026*
 
-Piper's morning standup had been hollow for a while and everybody knew it. Ask it what happened yesterday and it told you "no recent GitHub activity detected." Ask it what's on the plate today and you got a hardcoded fallback list, the same handful of generic priorities regardless of what was actually going on. It even reported a "time saved" number that nobody was tracking. It looked like a feature. It was a shell.
+The morning standup feature an agent vibe-coded for Piper Morgan last summer had been hollow for a while and everybody knew it. Ask it what happened yesterday and it told you "no recent GitHub activity detected." Ask it what's on the plate today and you got a hardcoded fallback list, the same handful of generic priorities regardless of what was actually going on. It even reported a "time saved" number that nobody was tracking. It looked like a feature. It was a shell.
 
 So my lead developer agent and two of my other leads — one who owns the product's connected-data model, one who owns the user experience — spent the morning redesigning it properly. The standup, they decided, should be a *consumer* of the same live entity data every other part of the product already draws on, not a separate pipeline making its own guesses. Derive it, don't maintain it. If the underlying data got better, the standup would get better for free. They built the pieces in careful, tested order — the shared data access, the domain model, the yesterday/today/watch categorization, a calendar pull, a plain-language rendering. Every piece passed its tests. By early afternoon the engine was done and wired up.
 
