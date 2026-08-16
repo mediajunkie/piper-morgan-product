@@ -65,11 +65,11 @@ user-owned data skips that filter. A fork can delete that check in one commit �
 why it's named here. Removing it would turn a private engineering decision into a visible, citable
 break from what Piper Morgan is.
 
-We've gotten this wrong once. A configuration file briefly leaked one user's project context and
-default settings to every other user on a shared instance. It was found, fixed by the next day, and
-the automated check that now guards against that class of bug exists *because* it happened. We're
-naming the incident here on purpose — a system that only ever claims things went right is making a
-weaker promise than one that shows you what it does when something goes wrong.
+Piper Morgan has gotten this wrong once. A configuration file briefly leaked one user's project
+context and default settings to every other user on a shared instance. It was found, fixed by the
+next day, and the automated check that now guards against that class of bug exists *because* it
+happened. This document names the incident on purpose — a system that only ever claims things went
+right is making a weaker promise than one that shows you what it does when something goes wrong.
 
 ### 2. When Piper reasons about an ethical boundary, you can see that reasoning — not just trust that it happened
 
@@ -102,22 +102,35 @@ three things are still true when you run it — not the license or the codebase 
 
 ---
 
-## Open questions / not yet resolved
+## Decisions — RATIFIED 2026-08-15 (PM, in conversation with Exec)
 
-- **Placement**: where does this live publicly? Candidate: alongside the privacy policy, linked
-  from the README and the license itself. Not decided.
-- **Relationship to the license text**: should Apache 2.0's own preamble or a NOTICE file point
-  here? Legal question, not drafted here.
-- **A fourth commitment?** HOST's list was a first pass, explicitly open to more. The retention
-  question (§3/§4 of the retention scaffold) may eventually produce a values-relevant statement of
-  its own once PM decides it — deliberately not anticipated here.
-- **Voice — PM's decision, both a lean and a counter-lean on record**: drafted in PM's own
-  first-person voice, consistent with the blog. HOST leans third-person/institutional instead, for
-  a reason specific to this document's job: it sits next to a license file and gets checked by
-  strangers evaluating a fork, possibly years out, with no context on PM as a person — first-person
-  voice works when the reader already trusts the speaker, and this document's whole purpose is to
-  work for a reader who doesn't yet. Not drafted in that voice here; noted as HOST's lean for PM to
-  weigh, not applied unilaterally.
+1. **Placement — CONFIRMED.** Lives in `docs/legal/` alongside the privacy policy; linked from the
+   README and the license itself.
+2. **Relationship to the license text — RESOLVED.** A NOTICE file at the repo root (Apache 2.0
+   §4(d)'s standard mechanism for exactly this — attribution/pointers that travel with the code
+   without altering the license's own legal text) carries one sentence pointing here. LICENSE
+   itself is not touched.
+3. **A fourth commitment — NOT ADDED, deliberately.** HOST's own screening test (would a fork
+   dropping this quietly still look like Piper Morgan?) is the right filter, and manufacturing a
+   fourth to round out the number risks diluting it with something less sharply fork-detectable.
+   Ships at three. The retention-scope commitment remains the named future candidate, once the
+   retention scaffold's own open questions resolve — not a gap today.
+4. **Voice — THIRD-PERSON/INSTITUTIONAL, per HOST's lean.** PM's ruling: *"important distinction,
+   well drawn."* The reasoning that carried it: this document's actual reader is a stranger
+   evaluating a fork, possibly years out, with no prior relationship to PM — the one register on
+   the site where institutional third-person carries more weight than personal first-person warmth,
+   unlike the blog/Ship/insights where first-person works because the reader already follows PM's
+   voice by choice. **✅ CONVERTED 2026-08-15 (Comms).** Only two first-person instances existed in
+   the shipped prose ("We've gotten this wrong once" / "We're naming the incident here on purpose,"
+   §1's incident paragraph) — both rewritten to institutional third-person ("Piper Morgan has gotten
+   this wrong once" / "This document names the incident on purpose"), matching the self-referential
+   pattern the doc already uses elsewhere ("This document names those things..."). The second-person
+   "you" address to the reader (a fork-evaluator) is unchanged throughout — that's a different axis
+   from the first-person/third-person ruling above, and stays; institutional documents routinely
+   address "you" while never speaking as "I/we."
 
-**Next step**: PM. Substance is HOST-checked; the open decisions above (placement, license
-relationship, a possible fourth commitment, voice) are PM's to make.
+**Status**: voice conversion done. Two items from the ratified decisions are outstanding and not
+Comms' to silently resolve: the NOTICE file (decision 2) exists and correctly points here; the
+**README link (decision 1) does not yet exist** — checked `README.md` directly, no reference found.
+Flagging rather than adding it myself, since README ownership isn't clearly Comms' lane. Once that's
+placed, this is ready to leave DRAFT status.

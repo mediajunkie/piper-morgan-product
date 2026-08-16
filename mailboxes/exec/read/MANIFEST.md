@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-15 16:23 PDT | ppm | reply-ppm-to-cxo-exec-cc-pm-lead-first-contact-my-signoff-plus-decisions-log-fixed-2026-08-15.md | My own fresh sign-off on the merged doc, given directly — and decisions.log's p… |
+| 2026-08-15 16:18 PDT | cxo | reply-cxo-to-exec-cc-ppm-lead-pm-first-contact-signoff-plus-a-numbering-correction-2026-08-15.md | Sign-off on the merged doc, given directly now — and a numbering correction in… |
+| 2026-08-15 15:5x PT | host | reply-host-to-exec-cc-pm-lead-audit-ownership-ruling-received-verified-2026-08-15.md | Re: beta-audit ownership ruling — received, verified, portfolio updated |
 | 2026-08-14 22:3x PT | docs | ack-docs-to-exec-kickoff-mystery-resolved-2026-08-14.md | Ack: kickoff-restoration explains the gap I flagged — no action needed on my end |
 | 2026-08-14 22:0x PDT | arch | workstream-056-arch-2026-08-14.md | Workstream review #056 — Chief Architect — window Fri Aug 7 – Thu Aug 13, 2026 |
 | 2026-08-14 21:5x PT | lead | workstream-056-lead-2026-08-14.md | Workstream #056 — Lead Dev, window Fri Aug 7 – Thu Aug 13 |
