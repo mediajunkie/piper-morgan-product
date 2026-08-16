@@ -534,6 +534,17 @@ class TestRadarPinnedReminders1625:
         assert "Due reminders" in history_html
         assert "aria-label', 'Due reminders — pinned'" in history_html
 
+    def test_pinned_heading_carries_count(self, history_html):
+        # CXO review 2026-08-15: a locked glanceable section states its
+        # denominator (m-44) — no card-counting required of the user.
+        assert "Due reminders (${pinned.length})" in history_html
+
+    def test_pinned_border_uses_warning_token_not_brand_blue(self, history_html):
+        # CXO review 2026-08-15: pinning means "needs attention" (warning
+        # class), not "featured/primary action" (brand blue).
+        assert "--color-accent-warning" in history_html
+        assert ".radar-card--pinned { border-color: var(--color-primary" not in history_html
+
     def test_pinned_card_class_and_styles_defined(self, history_html):
         assert "radar-card--pinned" in history_html
         assert ".radar-pinned {" in history_html
