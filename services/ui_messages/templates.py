@@ -30,8 +30,11 @@ INTENT_BASED_TEMPLATES = {
     ("analysis", "analyze_document"): "Here's my analysis of {filename}:",
     ("analysis", "analyze_file"): "Here's my analysis:",
     # SYNTHESIS intents
-    ("synthesis", "summarize_document"): "Here's my summary of {filename}:",
-    ("synthesis", "summarize_file"): "Here's my summary:",
+    # #1624: the ("synthesis", "summarize_document") / ("synthesis",
+    # "summarize_file") rows were DELETED — they templated a #290 chat flow
+    # that never fired (the dispatch shipped only in a guidance doc, 2025-11);
+    # the real chat summarize (workflow rail, 2026-08) renders its own message.
+    # History: summarize-intent-forensics-2026-08-15.md, "vestige pair".
     ("synthesis", "generate_report"): "Here's the generated report:",
     # EXECUTION intents
     (

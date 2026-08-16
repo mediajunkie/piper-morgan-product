@@ -58,6 +58,7 @@ _ACTION_CATEGORY = {
     "explain_trust": "TRUST",
     "get_memory": "MEMORY",
     "write_stakeholder_update": "SYNTHESIS",
+    "summarize_document": "SYNTHESIS",  # #1624: uploaded-document summarize rail entry
     "greeting": "CONVERSATION",
     "farewell": "CONVERSATION",
     "thanks": "CONVERSATION",

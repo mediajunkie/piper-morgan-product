@@ -61,7 +61,13 @@ corpus:
   - phrase: "analyze the file I uploaded"
     expected: action:analyze_data
   - phrase: "summarize the document"
-    expected: category:SYNTHESIS
+    expected: action:summarize_document   # 2026-08-16 re-expressed per #1624: uploaded-document
+                                          # summarize now rail-dispatches (registry canonical
+                                          # SYNTHESIS/summarize_document, verb-shim target) to the
+                                          # same DocumentAnalyzer path as the REST endpoint. The old
+                                          # category:SYNTHESIS expectation described the pre-wiring
+                                          # floor fall-through (forensics 2026-08-15: that floor had
+                                          # no document content — 15 months of never-worked).
   - phrase: "what time is it?"
     expected: category:TEMPORAL
   - phrase: "show my open issues"

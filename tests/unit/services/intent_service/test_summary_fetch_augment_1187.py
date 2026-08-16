@@ -1,9 +1,11 @@
 """#1187 fetch-augmentation core — `_fetch_summary_source_content` dispatcher.
 
 For a `summarize` request whose source the floor can't reach (github_issue /
-commit_range), this fetches the source content (reusing the dormant _handle_summarize
-helpers) so the floor can render the summary from it. text/conversation are
-floor-direct (None); document is deferred (None); fetch failures degrade to None.
+commit_range), this fetches the source content (via the _fetch_issue_content /
+_fetch_commit_content helpers) so the floor can render the summary from it.
+text/conversation are floor-direct (None); document is rail-handled upstream
+since #1624 (a stray document emission landing here still degrades to None);
+fetch failures degrade to None.
 
 The floor-injection wiring (domain_context + _format_domain_context render branch +
 prompt guidance) is a separate, UAT-sensitive step — these tests guard the pure
@@ -67,7 +69,10 @@ class TestFetchSummarySourceContent1187:
         assert await intent_service._fetch_summary_source_content(_intent("conversation")) is None
 
     @pytest.mark.asyncio
-    async def test_document_source_deferred_returns_none(self, intent_service):
+    async def test_document_source_rail_handled_returns_none(self, intent_service):
+        # #1624: document summarize dispatches on the pre-floor rail; a stray
+        # document emission that reaches this dispatcher anyway fetches nothing
+        # (honest floor degrade, never fabrication).
         assert await intent_service._fetch_summary_source_content(_intent("document")) is None
 
     @pytest.mark.asyncio

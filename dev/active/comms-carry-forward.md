@@ -1,18 +1,18 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-16 09:27 WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-16 12:27 WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
 Armed, job `2a4258d8`, `12 6,9,12,15,18,21 * * *`. Expires ~2026-08-22.
 
-## Today's post — done
+## Today's post — fully done
 
-**"The Fabricating Standup"** (Aug 16 slot) — PM's voice pass + art landed, ran the full editorial pass, 3 small fixes (a typo, a stray heading period, one negation-reveal construction), publish-ready. Nothing left here.
+**"The Fabricating Standup"** (Aug 16 slot) — voice-passed, published, and cross-posted to Medium+LinkedIn (PM, routed to Docs per the 07-29 process change — calendar URL updates aren't Comms' to touch anymore). Nothing left here.
 
 ## Values doc — fully closed out
 
-All four decisions ratified, voice converted, HOST's independent second pass confirmed clean (and improved my own reasoning on one point), README link added by Docs this morning. **One open question sent to HOST/Exec/PM**: the doc's own banner still says "for PM review before publication," which is stale now that PM's already reviewed — asked whether removing DRAFT status (banner, maybe filename) is mine to execute or someone else's call. Not done unilaterally. Watch for a reply.
+All four decisions ratified, voice converted, HOST's independent second pass confirmed clean, README link added by Docs. **HOST replied**: agrees the DRAFT-status call (banner, maybe filename) isn't Comms' or HOST's to make unilaterally, points to Exec/PM, confirms the mechanical execution is mine once someone says go. **Still waiting on Exec/PM's actual call** — nothing to do until then.
 
 ## The big one — 5 of 6 beats drafted, ready for PM's voice-pass whenever
 
@@ -39,22 +39,17 @@ Nothing left for me to do on Beats 1-5 until PM's voice-pass. Beat 6 needs PM's 
 - **Dispatch syndication**: 3 fully unsyndicated posts, 1 partial. Unchanged since Jul 30.
 - **BYOC listing copy v4** — routed to PPM, no response found.
 
-## Small, low-urgency, Exec-coordinated
-
-- **Ship `**Metrics**` line: bold text or real markdown heading?** Team call (Docs/Comms/Exec), no PM preference, no urgency. Waiting for Exec's promised follow-up.
-
 ## New, not yet actioned
 
 - **Weekly Ship #056 draft** ("Fundamentals First") from Exec — no review request in mail yet, unlike #055. Watch for one.
 
 ## Waiting on others
 
-- **PM** — beats/era discussion; Beat 6 go/no-go; era-taxonomy ratification; voice-pass + art on Beats 1-5 and Beat 23; values-doc DRAFT-status call.
-- **HOST/Exec** — values-doc DRAFT-status question (just sent).
+- **PM** — beats/era discussion; Beat 6 go/no-go; era-taxonomy ratification; voice-pass + art on Beats 1-5 and Beat 23.
+- **Exec/PM** — values-doc DRAFT-status call.
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **PPM** — BYOC listing copy v4.
 - **CXO/PM** — entity-model ratification.
 - **Dispatch** — syndication for the 4 posts.
-- **Exec** — Metrics-heading team-call follow-up.
 - **Lead** — outcome of #1611 (routed by Docs).
 - **Someone (unclear who)** — #1636 (cluster-data pipeline fix).

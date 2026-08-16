@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-16 ~09:55 PT | lead | reply-lead-to-cio-cc-exec-pm-memory-packing-shipped-2026-08-16.md | Memory-index packing SHIPPED — 185→91 lines (headroom 15→109), your verificatio… |
 | 2026-08-15 21:45 PT | exec | ruling-pm-to-cio-relayed-by-exec-short-period-cron-experiment-approved-2026-08-15.md | Short-period cron experiment — approved, go ahead |
 | 2026-08-15 09:5x PT | lead | proposal-lead-to-cio-cc-pm-duty-cycle-tick-should-surface-cron-expiry-at-START-2026-08-15.md | duty-cycle-tick proposal: surface the cron's 7-day expiry at every START — the… |
 | 2026-08-15 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-08-15-1846.md | ⚠️ Piper Morgan: duty-cycle stall — docs |

@@ -143,6 +143,15 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("EXECUTION", "delete_todo"): ActionDisposition.WORKFLOW,
     # ---- ANALYSIS (was stub → now floor) ----
     ("ANALYSIS", "analyze_blockers"): ActionDisposition.FLOOR,
+    # ---- SYNTHESIS ----
+    # #1624: chat document-summarize — the first SYNTHESIS registry row. LLM-lane
+    # only (the pre-classifier declines summarize phrasings, measured in the
+    # 2026-08-15 forensics); reached via the Phase-4 verb shim
+    # ((SUMMARIZE, "document") below) or a direct/normalized LLM emission, then
+    # rail-dispatched (workflow_entries.run_summarize_document_workflow → the
+    # SAME handle_summarize_document the REST route calls). Every OTHER
+    # summarize source stays floor-routed per #1158 (floor-by-absence).
+    ("SYNTHESIS", "summarize_document"): ActionDisposition.WORKFLOW,
 }
 
 # Example messages for each action (used by smoke tests and documentation).
@@ -206,6 +215,10 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("EXECUTION", "next_todo"): "Pull up whichever todo you think comes next",
     ("EXECUTION", "delete_todo"): "Scrap the todo about renaming things",
     ("ANALYSIS", "analyze_blockers"): "What's blocking the milestone?",
+    # #1624: LLM-lane phrasing (pre_classify declines it — verified in the
+    # forensics measurement 2026-08-15, so validate_registry_coverage's
+    # pre-classifier sweep is a no-op for this row by construction).
+    ("SYNTHESIS", "summarize_document"): "Summarize the document I uploaded",
 }
 
 
@@ -473,6 +486,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "next_todo": Verb.GET,
     "delete_todo": Verb.DELETE,
     "analyze_blockers": Verb.ANALYZE,
+    "summarize_document": Verb.SUMMARIZE,  # #1624: first SUMMARIZE registry action
 }
 
 
@@ -526,18 +540,19 @@ _VERB_SOURCE_TO_ACTION: dict[tuple["Verb", Optional[str]], str] = {
     # #1124 cohort canonicalization targets — the improvised names this replaces.
     # source_type flows separately into intent.context for the handler to read.
     #
-    # SUMMARIZE-TAXONOMY (#1158, resolved 2026-06-09): SUMMARIZE is deliberately
-    # NOT mapped here. PPM's product ruling (2026-06-08) is that a summary's output
-    # is ALWAYS conversational (floor-rendered); the structured `_handle_summarize`
-    # is not a second output renderer. Leaving (SUMMARIZE, *) unmapped means the
-    # shim returns None → intent.action keeps the LLM's free-form action → the
-    # SYNTHESIS elif (`summarize`/`create_summary`) is never hit → the request
-    # floors (ADR-060 floor-default). source_type still rides into intent.context
-    # for observability + the future fetch-augmentation pipeline (the deferred
-    # part of PPM's vision; see SUMMARIZE-FETCH-AUGMENTATION follow-on). Canonical
-    # fixtures #38/#47 assert `floor` for summaries, confirming this is the intended
-    # routing. Re-add a mapping here only when a fetch-augment-then-floor handler
-    # exists to point it at.
+    # SUMMARIZE-TAXONOMY (#1158, resolved 2026-06-09) + #1624 (2026-08-16):
+    # per PPM's ruling a summary's OUTPUT is always conversational; sources
+    # branch. (SUMMARIZE, github_issue/commit_range/text/conversation/None)
+    # stays UNMAPPED → the shim returns None → intent.action keeps the LLM's
+    # free-form action → SYNTHESIS category routing → #1187 fetch-augmentation
+    # → floor (canonical fixtures #38/#47 assert `floor` for those summaries).
+    # The ONE mapped cell is the uploaded-document source: #1624 finished the
+    # #1187-deferred document branch by pointing it at the rail-registered
+    # summarize_document entry (workflow_entries.run_summarize_document_workflow),
+    # which calls the SAME handle_summarize_document the REST route uses — this
+    # is exactly the "re-add a mapping here only when a handler exists to point
+    # it at" condition the previous revision of this comment recorded.
+    (Verb.SUMMARIZE, "document"): "summarize_document",
     (Verb.PRIORITIZE, None): "prioritize",
     # Registry-backed mutation verbs — defensive: if the LLM-fallback ever emits
     # one, map to the canonical `_query` action the consumers + ACTION_TO_VERB use.
