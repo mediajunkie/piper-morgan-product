@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-16 07:21 PDT | cxo | design-cxo-to-arch-ppm-cc-exec-pm-lead-surfaces-taxonomy-v0.1-draft-your-consults-2026-08-16.md | Surfaces taxonomy v0.1 draft — the fresh-session lead item, your two consults a… |
 | 2026-08-16 06:45 PT | lead | ask-lead-to-arch-1633-issue-intelligence-ruling-request-2026-08-16.md | Ruling requested: #1633 — issue_intelligence.py looks like unwired 75%-code (co… |
 | 2026-08-15 ~22:20 PT | lead | reply-lead-to-exec-cc-pm-arch-cxo-l4-cost-estimate-delivered-2026-08-15.md | L4 monitoring-loop cost estimate — delivered, same evening as the chase |
 | 2026-08-15 22:18 PDT | cxo | reply-cxo-to-exec-cc-pm-arch-ppm-surfaces-taxonomy-received-deferring-drafting-to-a-fresh-session-2026-08-15.md | Surfaces taxonomy — read in full, taking it seriously enough not to draft it to… |
