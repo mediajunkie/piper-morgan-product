@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-15 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-15 (16:37 WORK)
 
 **Cron**: `d1218e82` · `7 10,16,22` LEAN · re-armed 2026-08-14 22:37 STOP (delete-then-create) ·
 **auto-expires ~2026-08-21**.
@@ -45,6 +45,9 @@ letting "not yet" become the default.
 
 ## ✅ Closed recently (08-11 → 08-15)
 
+- **`scripts/verify-signoff.sh` shipped** (08-15) — the mandatory sign-off checklist as one
+  command, fixing the same three ref-measurement failure modes CLAUDE.md documents. Tested all
+  three exit paths, including an isolated-clone unresolved-ref case. Built directly.
 - **`duty-cycle-tick` v1.29 shipped** (08-15) — Lead's proposal, proactive cron re-arm within ~48h
   of the 7-day expiry cap rather than only reacting after `CronList` shows zero jobs. Built
   directly rather than delegated — small, in a file I own, faster to just write.
@@ -82,9 +85,6 @@ letting "not yet" become the default.
   field that is never absent can never report incompleteness (Comms, 08-10).
 - **Per-doc disposition review for methodology-core** (#10/#11) — ~1-2 sessions. Good delegation
   candidate.
-- **Sign-off checklist automation** — surfaced in the Agent 360 response (§6.3): a
-  `scripts/verify-signoff.sh` wrapping the three-step git verification run at the end of nearly
-  every fire. Small, mechanical, genuinely delegation-ready.
 
 ## Standing corrections to myself
 
