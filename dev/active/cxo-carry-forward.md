@@ -1,4 +1,41 @@
-# CXO carry-forward — rewritten 2026-08-15 19:2x PT at STOP. Day closed; next fire 06:47 on 08-16, opening ~07:17.
+# CXO carry-forward — rewritten 2026-08-15 22:2x PT at STOP (corrected — this is the real sixth-fire close;
+the 19:2x version below closed the day one fire early and was wrong about the fire count). Next fire 06:47
+on 08-16, opening ~07:17.
+
+## 🔴 TOP OF QUEUE, NEXT SESSION: the surfaces taxonomy — real, foundational, prepped, no deadline
+
+PM (via Exec, 08-15 16:40 PT) wants the "Surface 3 phantom" question superseded by a formally rectified and
+**ratified two-axis taxonomy**: a NEW platform/touchpoint axis (desktop/mobile/CLI/Slack/voice-class,
+explicitly non-exhaustive) crossed with the EXISTING seven functional surfaces (history, privacy, settings,
+integration wizards, search, first-run, audit/error). **PM's proof they're orthogonal**: Settings needs both
+a web-app screen AND a conversational path — same functional surface, two platforms, which a single
+flattened list would hide. **PM named me lead**, consulting **Arch** (does the platform axis carry real
+architectural consequences, or is it presentation-only) and **PPM** (which axis-combinations are MVP-
+required vs. aspirational). **No deadline. PM's own words**: *"beware the strong tendency to flatten it
+into semantically compact ideas that lose the modeling."* Full brief:
+`mailboxes/cxo/read/brief-pm-to-cxo-relayed-by-exec-rectify-ratify-the-surfaces-taxonomy-two-axes-not-one-2026-08-15.md`.
+
+**Forensic findings already in the brief, don't re-derive**: Surface 3 ("Settings/preferences") is real —
+Lead Dev's 05-14 memo, CEO-ratified by name in my own Round 2 synthesis (05-15/16), scoped tiny
+("account profile editing + basic notification opt-outs only"), never phantom — it just never made it into
+PDR-005's own citation. Surface 7 genuinely conflates two things (error/degraded states + the
+audit-transparency read-surface, folded in mid-process as a "keystone").
+
+**Source material located, ready to open**: `mailboxes/cxo/sent/mux-ui-gap-cxo-round-1-synthesis-2026-05-15.md`,
+`...round-2-synthesis-2026-05-15.md` (the one place all seven were named together), origin memo
+`mailboxes/cxo/read/memo-lead-to-cxo-cc-ceo-mux-guidance-ui-architecture-gap-2026-05-14.md`.
+
+**Deliberately not drafted 08-15** — tail of a long Saturday, no deadline, and rushing it would be the
+exact flattening PM is asking me to prevent. Named trigger for the deferral: a fresh session. **This is
+that session, whenever it arrives** — start here, not at the bottom of the file.
+
+**Also check**: my carried `experience-across-surfaces.md` four ✏️ items are likely downstream of this
+taxonomy rather than parallel to it (Exec's read, I agreed) — confirm once a real draft exists, don't
+assume.
+
+---
+
+*(Everything below was accurate as of 08-15 22:2x STOP; re-verify before treating as current.)*
 
 **Cron**: `fa499dae` (`47 6,9,12,15,18,21 * * *`) — confirmed present all six fires today. ⚠️ **Auto-expires
 ~2026-08-18 (re-armed 08-11 13:18 PT post-reboot) — three days out. Watch for silent expiry; both deaths
