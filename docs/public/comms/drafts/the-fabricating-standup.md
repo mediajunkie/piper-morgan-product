@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: 'A puzzled diner receives a towering stack of fancy pancakes from a confident AI waiter while his simple breakfast waits unused in the real kitchen.'
 caption: ''
 ---
 
