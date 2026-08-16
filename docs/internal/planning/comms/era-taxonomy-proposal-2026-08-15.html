@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Era Taxonomy — Proposal for Apr–Aug 2026</title>
+<style>
+  :root{--fg:#1a1a1a;--mut:#666;--line:#e2e2e2;--accent:#7a3e00;--warn:#b3261e;--ok:#1b5e20;--bg:#fff;--card:#fafafa}
+  @media (prefers-color-scheme:dark){:root{--fg:#e8e8e8;--mut:#a0a0a0;--line:#333;--accent:#ffb870;--warn:#ff8a80;--ok:#81c784;--bg:#141414;--card:#1d1d1d}}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1.25rem 4rem;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--fg);background:var(--bg)}
+  .wrap{max-width:780px;margin:0 auto}
+  h1{font-size:1.6rem;line-height:1.2;margin:0 0 .25rem}
+  .sub{color:var(--mut);margin:0 0 2rem;font-size:.95rem}
+  h2{font-size:1.1rem;margin:2.25rem 0 .75rem;padding-bottom:.35rem;border-bottom:2px solid var(--line)}
+  .era{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:6px;padding:1rem 1.15rem;margin:0 0 1rem}
+  .era h3{margin:0 0 .2rem;font-size:1.05rem}
+  .slot{color:var(--mut);font-size:.85rem;margin:0 0 .6rem;font-variant-numeric:tabular-nums}
+  code{background:var(--card);padding:.1rem .3rem;border-radius:3px;font-size:.85em;display:block;white-space:pre-wrap;margin:.6rem 0;padding:.7rem .8rem;line-height:1.5}
+  code.inline{display:inline;padding:.1rem .3rem;white-space:normal}
+  p{margin:.5rem 0}
+  ul{margin:.5rem 0 .5rem 1.2rem;padding:0}li{margin:.4rem 0}
+  .note{color:var(--mut);font-size:.9rem;font-style:italic}
+  .warn{color:var(--warn);font-weight:600}
+  .ok{color:var(--ok);font-weight:600}
+  .ask{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1rem 1.1rem;margin:.9rem 0}
+  .tablewrap{overflow-x:auto;margin:.5rem 0}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}
+  th,td{text-align:left;padding:.4rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--mut);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.03em}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>Era taxonomy — proposal for Apr–Aug 2026</h1>
+<p class="sub">Prepared by Comms, dispatched research agent, night of 15 Aug 2026 · <strong>proposal, not a decision — needs your ratification</strong></p>
+
+<h2>The numbers, corrected</h2>
+<p>The 94-posts figure I quoted yesterday was already stale. <code class="inline">blog-metadata.csv</code> itself stops at Aug 11 — three more posts are live and verified on the site that never made it into that file (Ship #055, "Alpha Launches," "Confabulating a Peer's Unfinished Work"). <strong>Correct count: 97 posts, 2026-04-01 through today, still with zero era assigned.</strong></p>
+<p class="note">Separately, and worse: of all 370 posts site-wide, only <strong>9</strong> have a <code class="inline">cluster</code> value matching any of the 5 <em>existing</em> eras — 191 are empty, 170 carry stale pre-migration slugs. The Eras browse feature is very likely rendering near-empty buckets even for the eras that already exist, not just missing April onward. <strong>Filed as <a href="https://github.com/mediajunkie/piper-morgan-product/issues/1636">#1636</a></strong> — a data-pipeline fix, not an era-naming question, so kept separate from this proposal.</p>
+
+<h2>The always-on-host hypothesis — confirmed, and there's a second event in the same window</h2>
+<p>My 8 Aug seam argument (the move to Amber, late July) checked out against the omnibus logs, precisely dated: cutover began 2026-07-25, completed 2026-07-29 (11/11 roles), and it's named directly in Weekly Ship #053 as "the team's move to more durable infrastructure."</p>
+<p>But the research surfaced something I didn't have: <strong>the hosted alpha launch is arguably the stronger, more reader-legible event in the same stretch.</strong> A formal beta-readiness gate passed July 12, caught 8 real defects same-day, and at 12:26pm PT that Sunday, the first 11 outside testers got invited — real external users, for the first time. It's narrated directly in "Alpha Launches" (published Aug 13, fact-checked verbatim against primary logs).</p>
+<p>Both events point at the same underlying thesis — the team built continuity and verification mechanisms robust enough to trust with an outage <em>and</em> with strangers — and the posts narrating both land in the same publication cluster (Aug 1–15). That argues for two eras, not one.</p>
+
+<h2>Proposed: two new eras</h2>
+
+<div class="era">
+<h3>Era 6 — The Mechanism</h3>
+<p class="slot">2026-04-01 → 2026-07-31 · 86 posts</p>
+<code>{
+  slug: 'the-mechanism',
+  name: 'Era 6: The Mechanism',
+  shortName: 'The Mechanism',
+  description: 'Rules become architecture: duty-cycle autonomy, the connector
+    rebuild, production catches up to development',
+  startDate: '2026-04-01',
+  endDate: '2026-07-31',
+  theme: 'Autonomous duty-cycle operation scales cohort-wide, RECONNECT
+    rebuilds the connector substrate, first production deploy since March,
+    contracts (ADRs, portfolios) replace memory as the team's primary
+    discipline',
+}</code>
+</div>
+
+<div class="era">
+<h3>Era 7 — The Alpha</h3>
+<p class="slot">2026-08-01 → present (open-ended) · 11 posts so far</p>
+<code>{
+  slug: 'the-alpha',
+  name: 'Era 7: The Alpha',
+  shortName: 'The Alpha',
+  description: 'Durable infrastructure lands, hosted alpha opens to outside
+    testers, verification culture hardens',
+  startDate: '2026-08-01',
+  endDate: null,  // open
+  theme: 'The team moves to always-on infrastructure, the beta-readiness gate
+    proves itself against real defects, first external testers admitted,
+    beta target extended for quality',
+}</code>
+<p class="note">Confidence: high. Independently corroborated by ops logs, a Ship post naming the infra move directly, and a narrative post literally titled "Alpha Launches" landing in the same window.</p>
+</div>
+
+<h2>Considered and rejected: splitting April–July further</h2>
+<p>April–July is 86 posts — longer than any existing era. The research checked whether it should split again (candidate hinges: cohort-wide autonomous cron authorized Jun 2, first prod deploy since March ~Jun 6-7, an account re-migration wave ~Jun 12-14, RECONNECT's rebuild starting ~Jun 20) and <strong>rejected it</strong>: none of these is a single, legible before/after moment the way the alpha-gate Sunday or the Amber cutover are — they're gradual and overlapping. Post-count doesn't force it either (42/44 split, no clear volume argument). If you want finer grain later, June is the most defensible secondary hinge, but it's an arguable cut, not a clearly-real one on current evidence.</p>
+
+<h2>What I need from you</h2>
+<div class="ask">
+<ul>
+<li><strong>Ratify or revise the two-era split</strong> — the boundary, the names, the descriptions are all proposals. Era-naming isn't mine to freelance.</li>
+<li><strong>Era 7 is open-ended</strong> (no end date) since it's still running — worth deciding whether that's how you want it represented in the schema, or whether it should get a placeholder end date that gets revised later.</li>
+<li><strong>#1636 (the cluster-data bug) is filed and waiting</strong> — not asking you to fix it, just flagging it exists and is bigger than the era-naming question.</li>
+</ul>
+</div>
+
+<p class="note" style="margin-top:2rem">Research trail: dispatched background agent, 15 Aug 2026, read against <code class="inline">blog-metadata.csv</code>, <code class="inline">editorial-calendar.csv</code>, 12 omnibus logs (Jul 21–Aug 8), and 11 published post files for verification. Full agent output logged in the 15 Aug session log.</p>
+
+</div></body></html>
