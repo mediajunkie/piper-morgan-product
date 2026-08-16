@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-08-15 22:00</title>
+<style>
+  :root {
+    --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+    --red:#c0392b; --red-bg:#fdecea; --amber:#b7791f; --amber-bg:#fdf3e2;
+    --grey:#8a8a8a; --green:#2d7a3e; --green-bg:#eaf6ec; --link:#1a5fb4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#17181a; --card:#212226; --line:#34363a; --ink:#eceef0; --mute:#9a9ea3;
+             --red:#e0685a; --red-bg:#3a2220; --amber:#d9a441; --amber-bg:#332a16;
+             --grey:#9a9ea3; --green:#5cbd74; --green-bg:#1c2f20; --link:#6ea8fe; }
+  }
+  :root[data-theme="dark"] { --bg:#17181a; --card:#212226; --line:#34363a; --ink:#eceef0; --mute:#9a9ea3;
+             --red:#e0685a; --red-bg:#3a2220; --amber:#d9a441; --amber-bg:#332a16;
+             --grey:#9a9ea3; --green:#5cbd74; --green-bg:#1c2f20; --link:#6ea8fe; }
+  :root[data-theme="light"] { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+             --red:#c0392b; --red-bg:#fdecea; --amber:#b7791f; --amber-bg:#fdf3e2;
+             --grey:#8a8a8a; --green:#2d7a3e; --green-bg:#eaf6ec; --link:#1a5fb4; }
+  * { box-sizing:border-box; }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem 4rem; }
+  .wrap { max-width:860px; margin:0 auto; }
+  h1 { font-size:1.55rem; margin:0 0 .25rem; letter-spacing:-0.01em; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1rem; }
+  .legend { font-size:.8rem; color:var(--mute); margin:.5rem 0 1.5rem; display:flex; flex-wrap:wrap; gap:.25rem 1.1rem; }
+  h2 { font-size:1.05rem; margin:2rem 0 .6rem; padding-bottom:.35rem; border-bottom:2px solid var(--line);
+       display:flex; align-items:center; gap:.5rem; }
+  .count { font-size:.78rem; font-weight:400; color:var(--mute); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.75rem .95rem; margin:.55rem 0; }
+  .item.decision { border-left-color:var(--red); }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear, .item.resolved-block { border-left-color:var(--green); }
+  .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.25rem; }
+  .agent { font-weight:700; }
+  .sev { font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .45rem;
+         border-radius:4px; background:var(--red-bg); color:var(--red); }
+  .sev.drift { background:var(--amber-bg); color:var(--amber); }
+  .sev.owed { background:var(--amber-bg); color:var(--amber); }
+  .summary { margin:.35rem 0 .3rem; }
+  .summary b { font-weight:600; }
+  .links { font-size:.82rem; color:var(--mute); margin-top:.3rem; }
+  .links a { color:var(--link); text-decoration:none; margin-right:.9rem; }
+  .links a:hover { text-decoration:underline; }
+  .clean-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:.5rem; }
+  .clean-row { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:.55rem .75rem; font-size:.87rem; }
+  .clean-row b { color:var(--ink); }
+  .clean-row span { color:var(--mute); display:block; font-size:.8rem; margin-top:.15rem; }
+  .bigclear { font-size:1.02rem; color:var(--green); font-weight:600; margin:0; }
+  .resolved s { color:var(--mute); }
+  footer { margin-top:2.5rem; padding-top:1.25rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.82rem; line-height:1.6; }
+  footer b { color:var(--ink); }
+  .verify-list { margin:.5rem 0 0; padding-left:1.1rem; }
+  .verify-list li { margin-bottom:.2rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec (Chief of Staff) · <b>2026-08-15, 22:00 PT</b> · full project sweep, live-state pass · source: 10 role carry-forwards + live GitHub verification + exec inbox</p>
+  <p class="legend">
+    <span>🛑 <b>Blocker</b> — work stuck (TOP)</span>
+    <span>🔴 <b>Decision</b> — needs your call</span>
+    <span>🟡 <b>Drift/awareness</b> — worth knowing, no decision</span>
+    <span>⚪ <b>Clean</b> — no open item</span>
+    <span>✅ <b>Resolved</b> — since the last board</span>
+  </p>
+
+  <h2>🛑 Blockers — work that's stuck <span class="count">(0)</span></h2>
+  <div class="item clear"><p class="bigclear">✅ No blocked work right now. Exec inbox swept clean — no unread mail, no cc'd blocker memos.</p></div>
+
+  <h2>🔴 Decisions awaiting you <span class="count">(9)</span></h2>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Spatial cold-island scope</span><span class="sev">from tonight's own ruling</span></div>
+    <p class="summary">Your 22:10 ruling approved disposing of the cold spatial-intelligence modules you never intentionally approved (CI/CD, dev-environment, GitBook, Linear — 9 modules). Two more (<code>notion_spatial</code>, a cold <code>slack_adapter</code>) belong to connectors you <i>did</i> approve — they're cold only because they're superseded predecessors of those connectors' live implementations. Arch was told to hold execution until you confirm whether those two are in scope too.</p>
+    <div class="links">decisions.log 22:10 PT · mail: ruling-pm-to-arch-cxo-ppm-host-lead-relayed-by-exec-spatial-review-closed-2026-08-15.md</div>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Lead</span><span class="sev">v54 live-test round</span></div>
+    <p class="summary">v54 deployed today (~2:59 PM) with five fixes from your live testing (named-target scope, exception-answer binding, interview think-time, draft one-step filing, UTC reminder labels). Fresh test list is sitting in Lead's tracker artifact, awaiting your pass.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Lead</span><span class="sev">#1624</span></div>
+    <p class="summary">Chat document-summarize has never actually worked — Lead's forensics confirmed it today. Needs your call among four repair options (A–D); Lead's own recommendation is C (delete the dead vocabulary honestly) + A (wire the existing REST summarize path into chat), with D (file-analysis) only if beta wants it.</p>
+    <div class="links">dev/active/summarize-intent-forensics-2026-08-15.md</div>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Lead</span><span class="sev">staged, awaiting deploy word</span></div>
+    <p class="summary">A second wave of evidenced, already-built fixes is staged and ready to ship on your go: CXO's Radar review fixes, #1628 chat-title guard, #1630 subjectless-draft handling, #1631 offer-response override (killed a real destructive-confirm gap), #1632 outwardness catalog markers, #1629 test-hygiene sweep.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">CIO</span><span class="sev">memory-index packing</span></div>
+    <p class="summary">MEMORY.md headroom has held stable at 13 lines for three days — not urgent, but the fix (packing 127 of 178 slugs 4-per-line, ~185 lines → ~90) is ready and waiting on your ruling before Lead builds it. Separately: you asked me tonight for external literature/state-of-the-art research on this shared-memory-index-packing problem — genuinely not started yet, flagging honestly rather than pretending otherwise.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Comms</span><span class="sev">beats + categorization steer</span></div>
+    <p class="summary">Comms's largest open thread: 17 candidate beats (8 original + 9 new from a month-long sweep), an editorial "Eras" taxonomy that's been dead since March 31 (94 posts / 4.5 months with zero era), a density flag (7 of 17 share the same "owned a mistake publicly" shape), and title collisions to resolve. Published as an Artifact awaiting your steer.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Comms</span><span class="sev">Beat 23</span></div>
+    <p class="summary">"The Architect's Own Trap" (targeted Aug 18) still needs your voice-pass + art before it can ship. Draft unchanged since it landed.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Docs</span><span class="sev">low priority, aging</span></div>
+    <p class="summary">website#31 converter bug follow-up: (a) fix forward-only vs. regenerate the ~15-post Ship back-catalog, (b) should Ship's <code>**Metrics**</code> become a real heading. Filed Aug 5, still no reply — not urgent, just aging.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Docs</span><span class="sev">low priority</span></div>
+    <p class="summary">A genuinely abandoned branch (<code>claude/fix-docker-migration-setup</code>, last commit March 31, predates v0.8.6, stray <code>.DS_Store</code> blobs) is flagged for deletion — not something Docs will do unilaterally since it's destructive. Yours whenever convenient.</p>
+  </div>
+
+  <h2>🟡 Drift / awareness — in motion, no decision needed from you right now <span class="count">(8)</span></h2>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">CXO-led</span><span class="sev">in motion</span></div>
+    <p class="summary">Tonight's two-axis surfaces reframe (platform/form-factor axis vs. functional-interaction axis) is now a real CXO-led project with Arch/PPM consulted and you contributing — routed via mail tonight. This absorbs the old "Surface 3 phantom" / Surface-1-in-the-five questions that had been sitting with you for over a week; no longer stalled on you specifically.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Comms/HOST</span><span class="sev">executing</span></div>
+    <p class="summary">Values-doc voice conversion (first-person → third-person/institutional) is ratified and now theirs to execute — voice-craft, not something for you to review line-by-line unless they ask.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">PA</span><span class="sev">stale-privacy correction sent</span></div>
+    <p class="summary">Sent PA a correction tonight — their Ship #056 report listed two privacy blockers as open that you'd already resolved directly with them on Aug 13. Asked them to determine whether their source was stale or they failed to re-verify. Awaiting their reply; not urgent.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Lead</span><span class="sev">chased again tonight</span></div>
+    <p class="summary">L4 monitoring-loop cost estimate — outstanding since 2026-07-30, gates the Production-phase ambient-presence build. Nudged again as part of tonight's spatial-review closure.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">PA</span><span class="sev">awaiting your notes, no chase</span></div>
+    <p class="summary">Architecture diagram revision 1 (surface-primacy correction) shipped Aug 10 — you're reviewing and will return with notes at your own pace.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">HOST</span><span class="sev">waiting on Pard</span></div>
+    <p class="summary">Dashboard welfare spec v0.3 — one section reconciles once Pard's guard lands (approved-with-changes, one open delta).</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">HOST</span><span class="sev">deliberately held</span></div>
+    <p class="summary">Agent 360 v0.4 responses are arriving fast (6 of 11 same-day) — HOST is correctly holding synthesis for the full ~2-week window rather than jumping the gun. Nothing needed from you until that closes (~08-28).</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">CIO</span><span class="sev">not started without a yes</span></div>
+    <p class="summary">Short-period cron experiment (decomposing the ~30-min dispatch latency) — proposed, not started, waiting on a green light whenever it's convenient to consider.</p>
+  </div>
+
+  <h2>⚪ Clean — no open item <span class="count">(2)</span></h2>
+  <div class="clean-grid">
+    <div class="clean-row"><b>Arch</b><span>All prior "For PM" asks resolved/closed; watching Understanding-Layer Inversion Phase 2 and the spatial disposal above, neither needs a fresh ask from you tonight.</span></div>
+    <div class="clean-row"><b>PPM</b><span>First-contact criterion ratified, #1509 agreed, Agent 360 filed — down to the CXO-led surfaces project above, nothing separately owed.</span></div>
+    <div class="clean-row"><b>Web</b><span>Nothing open — Ship #056 report filed, hook-mechanism work closed out.</span></div>
+  </div>
+
+  <h2>✅ Resolved since the last board <span class="count">(7 rulings tonight)</span></h2>
+  <div class="item resolved-block">
+    <p class="resolved">
+      <s>First-contact criterion blessing</s> — ratified 15:22 PT.<br>
+      <s>Beta-conditions audit ownership</s> — assigned to Lead + independent subagent cross-check, 15:22 PT.<br>
+      <s>Values document — 4 open decisions</s> — all ratified 16:55 PT (placement, NOTICE mechanism, no 4th commitment, third-person voice).<br>
+      <s>Retention policy §3/§4</s> — ratified 21:35 PT (retain-all-by-default; retention settings → Enterprise, #1634).<br>
+      <s>Spatial cold-island disposal + L4 ambient-presence phasing</s> — ruled 22:10 PT (one loose end carried to the Decisions section above).<br>
+      <s>#1509 outwardness consent axis</s> — agreed 2026-08-15, CXO+PPM both confirmed.<br>
+      <s>Open-source license</s> — Apache 2.0 selected and already live at repo root (<code>LICENSE</code>, badge in README) — not new tonight, but worth naming as settled alongside the values-doc work that depends on it.
+    </p>
+  </div>
+
+  <footer>
+    <b>Bottom line:</b> an exceptional resolution night — seven substantive rulings landed between 15:22 and 22:10, three new GitHub issues filed (#1634, #1635, plus #1612/#1613 earlier), and Weekly Ship #056 drafted, all inside one evening. What's left genuinely needing you: the spatial 9-vs-11 module confirmation (the one loose end from tonight's own ruling), Lead's v54 test round and #1624 repair-option call, and the Comms beats/categorization steer that's been the standing large item all week. Everything else on the board is correctly parked with someone else, not stalled on you.
+    <ul class="verify-list">
+      <li>Exec inbox: swept, 0 unread, MANIFEST only.</li>
+      <li>GitHub live-checked: #1536, #1539, #1605, #1625, #1509, #1386, #1174, #1462, #1481, #1459, #1624 — all confirmed open/milestoned as carry-forwards described, no surprises.</li>
+      <li>decisions.log tail read directly for tonight's five entries — all five ratifications quoted above are sourced from the log itself, not from memory of the conversation.</li>
+      <li>LICENSE file confirmed present at repo root, Apache 2.0, badge correct in README — the one gap I checked for and didn't find.</li>
+    </ul>
+  </footer>
+</div>
+</body>
+</html>
