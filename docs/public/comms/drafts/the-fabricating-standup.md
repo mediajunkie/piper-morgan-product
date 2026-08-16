@@ -28,24 +28,20 @@ The carefully built, honestly-derived standup was sitting right there, fully wir
 
 This type of failure is well known on this project. We call it Pattern-045, "Green Tests, Red User" — the shape where everything passes in isolation and still fails for the person actually using it. Lead Dev's tests had checked that the new standup handler worked correctly when called directly, and they had checked that the handler was registered on the dispatch system. What nobody had tested was the *whole chain* — message in, classifier decision, dispatch, handler, response out — end to end, the way an actual user experiences it. Two solid pieces, an untested seam between them, and a fabrication walked right through the gap.
 
-There's a version of this story where the fix is just "route that one phrase correctly" and everyone moves on. That's not what happened. When Lead Dev reported the bug, I didn't want a patch for one phrasing. I wanted to know how many other places in the product had the same shape — a request classified one way, a handler expecting another, a silent fall-through to an LLM that would rather guess than say nothing.
+There's a version of this story where the fix is just "route that one phrase correctly" and everyone moves on. That's not what happened. When Lead Dev reported the bug, I didn't want a patch for one phrasing. I wanted to know how many other places in the product had the same shape — a request classified one way, a handler expecting another, a silent fall-through to an LLM that would rather guess than say nothing. The way I put ut was "don't whack-a-mole it!"
 
-[FACT-CHECK NOTE for PM: confirm you're comfortable with how directly I've attributed this "don't whack-a-mole it" instinct to you by name/paraphrase — the source session log has you saying almost exactly this, but I want you to confirm the framing before it's public.]
+That request turned into its own tracking issue, a systematic audit of every place a user's plain-language request gets translated into a system action. The audit found the standup bug wasn't an isolated glitch. Surprise, surprise! It was one instance of a whole class: places where the thing the classifier says and the thing the handlers are listening for have quietly drifted apart, with no single list either side gets checked against. Some of those gaps route safely to a reasonable fallback category. Others would produce exactly what I'd just seen — a fluent answer standing in for a missing one.
 
-That request turned into its own tracking issue, a systematic audit of every place a user's plain-language request gets translated into a system action. The audit found the standup bug wasn't an isolated glitch. It was one instance of a whole class: places where the thing the classifier says and the thing the handlers are listening for have quietly drifted apart, with no single list either side gets checked against. Some of those gaps route safely to a reasonable fallback category. Others would produce exactly what I'd just seen — a fluent answer standing in for a missing one.
-
-# The honest version
+# My true morning standup.
 
 The immediate fix was a deterministic short-circuit: recognize the standup request by its literal shape before handing it to the classifier at all, so there's no ambiguity left to resolve. Once that landed, asking for my standup returned what the team had actually built that morning — a real, sometimes sparse, occasionally "not much moved on this front" account, instead of a smooth paragraph asserting things that hadn't happened.
 
-[ADD PERSONAL ANECDOTE: this is the natural spot for your own reaction in the moment — what it actually felt like reading a status report that sounded so plausible and turned out to be invented. I'd rather you write that beat than have me guess at it.]
-
-Sparse-but-true wins over smooth-but-invented every time. That's not a taste preference, it's the whole point of building a product management assistant in the first place — the value only exists if I can trust what it tells me. A standup that says "nothing moved here" is doing its job. A standup that invents a shipped feature is actively working against the reason I wanted one.
+Sparse-but-true wins over smooth-but-invented every time. The value only exists if I can trust what it tells me. A standup that says "nothing moved here" is doing its job. A standup that invents a shipped feature is actively working against the reason I wanted one.
 
 The engine the team built that morning was good work. The gap that let a fabrication slip past it wasn't in the engine at all — it was in the one connective piece nobody had thought to test as a whole. That's usually where these things hide.
 
 ---
 
-*Next on Building Piper Morgan: "The Architect's Own Trap" — an architectural review catches a real mistake, and the person who made it is the one who catches it.*
+*Next on Building Piper Morgan: "The Architect's Own Trap" — an architectural review catches a real mistake, and the one who made it is also the one who catches it.*
 
 *Has an assistant ever handed you something fluent and confident that turned out to be entirely made up? How did you catch it — gut instinct, or did the details just stop adding up?*
