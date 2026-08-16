@@ -365,7 +365,11 @@ def build_collaboration_response(
     ``draft_bound`` (#1571): the caller armed the drafted-issue pending
     binding, so "file it as is" now actually routes — teach THAT phrase.
     Never teach it unbound (#1571's original defect was teaching a phrase
-    that didn't route).
+    that didn't route). A SUBJECTLESS ask arms a minimal carrier too
+    (#1630 — so the "What's it about?" answer binds instead of routing
+    through the greedy chain), but its copy still teaches no file phrase:
+    the draft has no content yet, and the bind reply teaches it once it
+    does.
     """
     if subject:
         where = f" in **{repository}**" if repository else ""

@@ -16,6 +16,7 @@ from uuid import UUID
 from services.domain.models import Intent
 from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.shared_types import IntentCategory
+from services.utils.text_sanitation import display_title
 
 
 @dataclass
@@ -203,7 +204,11 @@ class IssueIntelligenceCanonicalQueryEngine:
                 enhanced_message += "\n\n**Recent GitHub Activity:**"
                 for issue in recent_issues[:2]:  # Top 2 issues
                     state_emoji = "🔴" if issue.get("state") == "open" else "✅"
-                    enhanced_message += f"\n{state_emoji} #{issue['number']}: {issue['title']}"
+                    # #1628: degenerate GitHub titles never render verbatim
+                    title = display_title(
+                        issue.get("title"), f"(untitled issue #{issue['number']})"
+                    )
+                    enhanced_message += f"\n{state_emoji} #{issue['number']}: {title}"
 
                 open_count = issue_intelligence.get("open_issues_count", 0)
                 if open_count > 0:

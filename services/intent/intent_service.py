@@ -58,6 +58,7 @@ from services.personality.personality_profile import PersonalityProfile
 from services.process import ProcessCheckResult, ProcessType, get_process_registry
 from services.repositories.user_trust_profile_repository import UserTrustProfileRepository
 from services.shared_types import IntentCategory, TrustStage
+from services.utils.text_sanitation import display_title
 from services.slot_filling.slot_filling_adapter import SlotFillingProcessAdapter
 from services.slot_filling.slot_template import MEETING_TEMPLATE
 from services.trust.trust_computation_service import TrustComputationService
@@ -4284,10 +4285,13 @@ class IntentService:
                 lines = [f"**Shipped This Week** ({len(recent_closed)} items):\n"]
                 for item in recent_closed:
                     number = item.get("number", "?")
-                    title = item.get("title", "Untitled")
-                    url = item.get("html_url", "")
                     is_pr = bool(item.get("pull_request"))
                     item_type = "PR" if is_pr else "Issue"
+                    # #1628: degenerate GitHub titles (the literal "{" class) never render verbatim
+                    title = display_title(
+                        item.get("title"), f"(untitled {item_type} #{number})"
+                    )
+                    url = item.get("html_url", "")
                     lines.append(f"- {item_type} #{number}: {title}")
                     if url:
                         lines.append(f"  {url}")
@@ -4438,7 +4442,8 @@ class IntentService:
                 lines = [f"**Stale PRs** ({len(stale_prs)} found):\n"]
                 for pr in stale_prs:
                     number = pr.get("number", "?")
-                    title = pr.get("title", "Untitled")
+                    # #1628: degenerate GitHub titles never render verbatim
+                    title = display_title(pr.get("title"), f"(untitled PR #{number})")
                     url = pr.get("html_url", "")
                     age_days = pr.get("age_days", 0)
                     lines.append(f"- PR #{number} ({age_days} days old): {title}")
@@ -4600,7 +4605,8 @@ class IntentService:
             # strings (the normalized native get_github_issue_direct shape + the #1327 connector
             # parser) — tolerate both so neither path crashes (was dict-only → crashed on the
             # normalized string shape).
-            title = issue.get("title", "Untitled")
+            # #1628: degenerate GitHub titles never render verbatim
+            title = display_title(issue.get("title"), f"(untitled issue #{issue_number})")
             state = issue.get("state", "unknown")
             labels = issue.get("labels", [])
             label_names = (
@@ -4815,7 +4821,8 @@ class IntentService:
                     if len(matches) == 1:
                         score, issue = matches[0]
                         num = issue.get("number")
-                        title = issue.get("title", "")
+                        # #1628: degenerate GitHub titles never render verbatim
+                        title = display_title(issue.get("title"), f"(untitled issue #{num})")
                         return IntentProcessingResult(
                             success=False,
                             message=f"Did you mean issue #{num}: {title}? Say 'close issue #{num}' to confirm.",
@@ -4832,7 +4839,11 @@ class IntentService:
                     elif len(matches) > 1:
                         lines = ["I found a few issues that might match:"]
                         for _score, issue in matches[:5]:
-                            lines.append(f"- #{issue.get('number')}: {issue.get('title', '')}")
+                            # #1628: degenerate GitHub titles never render verbatim
+                            _t = display_title(
+                                issue.get("title"), f"(untitled issue #{issue.get('number')})"
+                            )
+                            lines.append(f"- #{issue.get('number')}: {_t}")
                         lines.append("\nWhich one would you like to close?")
                         return IntentProcessingResult(
                             success=False,
@@ -4883,7 +4894,10 @@ class IntentService:
                 # (Issue #1042: router resolves repo internally)
                 try:
                     issue_details = await github_router.get_issue(issue_number)
-                    title = issue_details.get("title", f"Issue #{issue_number}")
+                    # #1628: degenerate GitHub titles never render verbatim
+                    title = display_title(
+                        issue_details.get("title"), f"(untitled issue #{issue_number})"
+                    )
                     state = issue_details.get("state", "unknown")
 
                     if state == "closed":
@@ -4929,7 +4943,10 @@ class IntentService:
             updated_issue = await github_router.update_issue(issue_number, state="closed")
 
             # Get issue title for success message
-            title = updated_issue.get("title", f"Issue #{issue_number}")
+            # #1628: degenerate GitHub titles never render verbatim
+            title = display_title(
+                updated_issue.get("title"), f"(untitled issue #{issue_number})"
+            )
             url = updated_issue.get("html_url", "")
 
             message_lines = [
@@ -5030,7 +5047,8 @@ class IntentService:
                     if len(matches) == 1:
                         score, issue = matches[0]
                         num = issue.get("number")
-                        title = issue.get("title", "")
+                        # #1628: degenerate GitHub titles never render verbatim
+                        title = display_title(issue.get("title"), f"(untitled issue #{num})")
                         return IntentProcessingResult(
                             success=False,
                             message=f"Did you mean issue #{num}: {title}? Say 'reopen issue #{num}' to confirm.",
@@ -5047,7 +5065,11 @@ class IntentService:
                     elif len(matches) > 1:
                         lines = ["I found a few issues that might match:"]
                         for _score, issue in matches[:5]:
-                            lines.append(f"- #{issue.get('number')}: {issue.get('title', '')}")
+                            # #1628: degenerate GitHub titles never render verbatim
+                            _t = display_title(
+                                issue.get("title"), f"(untitled issue #{issue.get('number')})"
+                            )
+                            lines.append(f"- #{issue.get('number')}: {_t}")
                         lines.append("\nWhich one would you like to reopen?")
                         return IntentProcessingResult(
                             success=False,
@@ -5093,7 +5115,10 @@ class IntentService:
                 # (Issue #1042: router resolves repo internally)
                 try:
                     issue_details = await github_router.get_issue(issue_number)
-                    title = issue_details.get("title", f"Issue #{issue_number}")
+                    # #1628: degenerate GitHub titles never render verbatim
+                    title = display_title(
+                        issue_details.get("title"), f"(untitled issue #{issue_number})"
+                    )
                     state = issue_details.get("state", "unknown")
 
                     if state == "open":
@@ -5137,7 +5162,10 @@ class IntentService:
             updated_issue = await github_router.update_issue(issue_number, state="open")
 
             # Get issue title for success message
-            title = updated_issue.get("title", f"Issue #{issue_number}")
+            # #1628: degenerate GitHub titles never render verbatim
+            title = display_title(
+                updated_issue.get("title"), f"(untitled issue #{issue_number})"
+            )
             url = updated_issue.get("html_url", "")
 
             message_lines = [
@@ -5433,8 +5461,9 @@ class IntentService:
                 )
                 message += "\n\nHere are the most recent:"
                 for issue in issues[:5]:
-                    title = issue.get("title", "Untitled")
                     number = issue.get("number", "?")
+                    # #1628: degenerate GitHub titles never render verbatim
+                    title = display_title(issue.get("title"), f"(untitled issue #{number})")
                     labels = ", ".join(
                         label.get("name", "") for label in issue.get("labels", [])
                     )
@@ -5733,8 +5762,9 @@ class IntentService:
                 message = f"You have **{pr_count} open PR{'s' if pr_count != 1 else ''}**."
                 message += "\n\nHere are the most recent:"
                 for pr in prs[:5]:
-                    title = pr.get("title", "Untitled")
                     number = pr.get("number", "?")
+                    # #1628: degenerate GitHub titles never render verbatim
+                    title = display_title(pr.get("title"), f"(untitled PR #{number})")
                     url = pr.get("html_url", "")
                     message += f"\n- **#{number}**: {title}"
                     if url:
@@ -5800,7 +5830,8 @@ class IntentService:
                     )
                     message += "\n\nUpcoming:"
                     for m in sorted_ms[:5]:
-                        title = m.get("title", "Untitled")
+                        # #1628: degenerate GitHub titles never render verbatim
+                        title = display_title(m.get("title"), "(untitled milestone)")
                         due_raw = m.get("due_on")
                         due = due_raw.split("T")[0] if due_raw else "no due date"
                         open_count = m.get("open_issues", 0)
@@ -8056,12 +8087,18 @@ class IntentService:
             # #1571: bind the rendered draft as a pending action (kind
             # drafted_issue) so "file it (as is)" next turn IS the
             # confirmation and files THIS draft through the real rail —
-            # no re-classification, no second ask, no lost draft. Armed
-            # only when a subject exists (no subject = no draft yet; the
-            # copy below asks for one). The drafted_issue_pending flag is
-            # the _apply_soft_offer clobber guard (#1605 belt).
+            # no re-classification, no second ask, no lost draft. The
+            # drafted_issue_pending flag is the _apply_soft_offer clobber
+            # guard (#1605 belt).
+            # #1630: armed with subject=None too — a subjectless ask
+            # ("help me write a ticket") used to arm nothing, so the answer
+            # to "What's it about?" was a bare prose turn stealable by the
+            # greedy chain (the exact #1627 theft, one turn earlier). The
+            # minimal subjectless carrier puts the #1627 hold over that
+            # first answer; the first bound prose names the draft
+            # (drafted_issue.derive_subject_from_prose) and seeds its body.
             _draft_bound = False
-            if _gate_subject and session_id:
+            if session_id:
                 from services.intent_service import drafted_issue as _di
 
                 self.workflow_offer_service.set_pending_offer(

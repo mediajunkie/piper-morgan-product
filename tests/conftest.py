@@ -720,6 +720,15 @@ async def delete_test_user_fully(session, user_id: str) -> None:
         # delete) silently no-oped. ::text on the COLUMN side works for either
         # column type, so this survives the #1252-P7 uuid cutover too.
         "DELETE FROM session_activity WHERE owner_id::text = :u",
+        # #1629 audit: four varchar-keyed, FK-less tables were absent from this
+        # cascade entirely — rows there outlive their user silently (138
+        # orphaned standup_conversations found from ~69 past test users, dev DB
+        # 2026-08-15). ::text-on-column form throughout, same cutover-safety
+        # rationale as session_activity above.
+        "DELETE FROM standup_conversations WHERE user_id::text = :u OR owner_id::text = :u",
+        "DELETE FROM conversational_memory_entries WHERE user_id::text = :u OR owner_id::text = :u",
+        "DELETE FROM insights WHERE user_id::text = :u OR owner_id::text = :u",
+        "DELETE FROM artifacts WHERE owner_id::text = :u",
         "DELETE FROM token_blacklist WHERE user_id = CAST(:u AS uuid)",
         "DELETE FROM password_reset_tokens WHERE user_id = :u",
         "DELETE FROM user_api_keys WHERE user_id = :u",

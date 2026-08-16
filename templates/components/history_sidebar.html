@@ -312,7 +312,9 @@
      Placement/skin gets a CXO pass post-merge. */
   .radar-pinned { margin: 0 0 var(--space-md, 16px); padding-bottom: var(--space-dense, 6px); border-bottom: 1px solid var(--color-neutral-light-gray-4, #e0e0e0); }
   .radar-pinned-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted, #687a7c); margin: 0 0 var(--space-dense, 6px); }
-  .radar-card--pinned { border-color: var(--color-primary, #2077b2); }
+  /* warning-class token, not brand blue: a due reminder is an attention
+     signal, not a featured/primary action (CXO review 2026-08-15) */
+  .radar-card--pinned { border-color: var(--color-accent-warning, #8a6d00); }
   .radar-empty { font-size: 0.84rem; line-height: 1.5; padding: var(--space-md, 16px); }
   .radar-empty-title { font-weight: 600; margin: 0 0 6px; color: var(--color-text, #1f2933); }
   .radar-empty-sub { margin: 0; color: var(--color-text-muted, #687a7c); }
@@ -885,7 +887,7 @@
         section.setAttribute('aria-label', 'Due reminders — pinned');
         const heading = document.createElement('div');
         heading.className = 'radar-pinned-title';
-        heading.textContent = '📌 Due reminders';
+        heading.textContent = `📌 Due reminders (${pinned.length})`;
         section.appendChild(heading);
         pinned.forEach(e => section.appendChild(renderRadarCard(e)));
         content.appendChild(section);
