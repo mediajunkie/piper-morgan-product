@@ -108,8 +108,10 @@ out.append("# Memory index — Piper Morgan cohort (pipermorgan.ai / Amber)")
 # our hooks — HOST verified 2026-07-30). This header is the ONLY counterweight that
 # reaches an agent in the same breath as the pressure. Do not trim it for headroom.
 out.append(
-    f"**{len(files)} memories on disk.** One line per entry; `<slug>` IS the filename — "
-    "open `<slug>.md` here. Generated from the actual directory listing, never from a prior index."
+    f"**{len(files)} memories on disk.** `<slug>` IS the filename — open `<slug>.md` here. "
+    "Entries whose slug already says what they hold are PACKED several per line (slug-only, "
+    "` · `-separated); only terse slugs carry a description line. Generated from the actual "
+    "directory listing, never from a prior index."
 )
 out.append(
     "🛑 **NEVER DELETE A MEMORY TO MAKE THIS FILE FIT.** This index is a **generated artifact**; "
@@ -140,13 +142,29 @@ out.append(
 # Removing them: 194 -> 183 lines, headroom 6 -> 17. Zero cost to recall, fully reversible (regenerate).
 # This does NOT change the slope -- one entry is still one line, and the floor is still the entry count.
 # It buys weeks, not a solution. The structural options are in memory-index-size-limits.md.
+# ── 4/line PACKING for self-describing slugs (CIO design, PM-approved 2026-08-15;
+# built by Lead 2026-08-16). The binding limit is LINES and one-entry-per-line makes
+# the floor equal the entry count — unreachable headroom by text edits alone. A slug
+# with >= SELF_DESC_WORDS underscore-words already states its content (e.g.
+# feedback_verify_timestamps_never_guess), so its description adds bytes but little
+# recall value: pack those slug-only at PACK_PER_LINE per line. Terse slugs (user_xian,
+# feedback_editing_voice) genuinely need their description line — keep it. Fully
+# reversible: this is a generator change; re-run to reflow. Guard convention below is
+# untouched — it counts emitted lines of the final body, packed or not (CIO's one
+# pre-ship verification ask, confirmed by the printed counts + --check round-trip).
+SELF_DESC_WORDS = 6
+PACK_PER_LINE = 4
 for t in TYPE_ORDER:
     if t not in buckets:
         continue
     rows = sorted(buckets[t])
     out.append(f"## {TYPE_HEADING[t]} ({len(rows)})")
-    for name, desc in rows:
+    described = [(n, d) for n, d in rows if len(n[:-3].split("_")) < SELF_DESC_WORDS]
+    packed = [n[:-3] for n, _ in rows if len(n[:-3].split("_")) >= SELF_DESC_WORDS]
+    for name, desc in described:
         out.append(f"- {name[:-3]} — {desc}")
+    for i in range(0, len(packed), PACK_PER_LINE):
+        out.append("- " + " · ".join(packed[i : i + PACK_PER_LINE]))
 
 body = "\n".join(out)
 
