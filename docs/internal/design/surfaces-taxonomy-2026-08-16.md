@@ -1,7 +1,7 @@
 ---
 type: design-taxonomy
 role: CXO (Chief Experience Officer), lead
-status: v0.1 — DRAFT, seeking Arch (architectural consequences) + PPM (MVP-vs-aspirational) input before ratification
+status: v0.2 — Arch + PPM consults landed 2026-08-16 (both real reads, one finding required correction — see §3). F-AuditTransparency split RATIFIED (Arch). §4 cross-matrix resolved (PPM). Awaiting PM's word on §1's naming per §5 before final ratification.
 authored: 2026-08-16
 authored_by: CXO
 co_owner: xian (ceo) — per PM's 2026-08-15 brief, "PM will contribute directly as needed and wants to see the result"
@@ -101,11 +101,13 @@ Envelope Read Surface"* — with its own routes (`/api/v1/transparency/*`), its 
 presentation-and-voice work, not a distinct backend surface with its own auth model. **An ADR that exists
 only for half of a "surface" is itself evidence the surface was never really one thing.**
 
-**✏️ Proposing, not deciding**: split F-Errors into **F-Errors** (general degraded/failure states —
+**✅ RATIFIED 2026-08-16 (Arch)**: split F-Errors into **F-Errors** (general degraded/failure states —
 presentation + voice, no dedicated backend surface) and **F-AuditTransparency** (the ADR-063 read-surface —
-has its own routes, auth, and architectural commitments). This is Arch's call as much as mine, since it's
-Arch's original "keystone" framing being revisited and ADR-063 is Arch's document — flagging for that
-consult explicitly (§5).
+has its own routes, auth, and architectural commitments). Arch verified ADR-063 directly (own routes in
+`services/api/transparency.py`, own module `services/ethics/audit_transparency.py`, own auth model) and
+confirmed the split rather than deferring to the original framing: *"This was my own original 'keystone'
+framing under-differentiating two things that don't share a mechanism — good catch, and I should have
+drawn this line the first time."*
 
 ---
 
@@ -148,12 +150,34 @@ scattered rather than organized under one axis name:
   needs a 'welcome back' variant."* **These are literally F-History × platform and F-FirstRun × platform
   cells in the cross-matrix this document formalizes** — decided in May, never labeled as what they are.
 
-**What this means for the ratification**: formalizing Axis 2 does not introduce new architectural surface
-area. It names an axis PDR-005 was already reasoning about cell-by-cell, so that the next "does surface X
-need to work on platform Y" question is answered by looking at one table instead of re-deriving it from
-five scattered qualifier paragraphs. **This is the flattening PM warned about, already having happened
-once (as implicit scattering rather than explicit collapse) — the fix is the same either way: name the
-axis, stop re-deriving it from memory each time.**
+**⚠️ CORRECTED 2026-08-16 (Arch) — the paragraph above overstated what the receipts prove, and this
+correction matters more than the finding it corrects.** Arch dispatched an actual code check before
+answering rather than taking the PDR-005 quotes at face value: **the capability-claim layer and
+client-identifier template dispatch cited above do not exist in code** — zero references anywhere in
+`services/` for `capability_claim`, `capability_map`, `host_aware`, `client_identifier`, or
+`adapter_template`. PDR-005 itself explains why (line ~178): it commits to **one** template at 1.0
+(MCP/Claude Desktop) — Slack is post-1.0/demand-gated, so there has been nothing to dispatch *between* yet.
+
+**The receipts are real, accurately quoted PM/Arch design commitments — they are not evidence the mechanism
+runs.** This document's first draft cited the prose as if citing it settled the question, which is the
+exact shape of CIO's methodology-49 ("Described Is Not Running"), filed this same week from an unrelated
+incident. Caught in review, not shipped uncorrected — but worth being explicit that it needed catching.
+
+**What IS built, and it's genuinely informative**: `services/commands/registry.py`'s
+`CommandDefinition.interfaces: Dict[CommandInterface, InterfaceConfig]` already has the right *shape* for
+"one functional thing, multiple simultaneous platform implementations" — exactly this document's Settings
+example. But it's narrower than this taxonomy (slash-command-style actions only; no Notification-layer or
+Mobile axis at all), and — the sharper point — `CommandCategory.SETTINGS` is a **declared, unused** enum
+value. The worked example in §0/§4 maps onto an empty registry slot with the right type and no registration.
+
+**Corrected conclusion**: formalizing Axis 2 does not require *new conceptual* architecture — PDR-005 was
+genuinely already reasoning about this dimension, and that part of the argument stands. But it is not free
+of architectural consequence: **the platform axis is decided, not enforced.** Extending
+`CommandRegistry`/`CommandInterface` (or an equivalent) to actually cover the full functional-surface ×
+platform space is real, unstarted work, not already-built infrastructure missing only a name. Today there
+is no automated check for "every MVP-required cell has a real code path" outside slash-commands. Whoever
+scopes the ✏️-marked cross-matrix cells below should read them as *decided intent*, not *verified
+capability*.
 
 ---
 
@@ -167,33 +191,55 @@ guessing at answers.
 
 | Functional surface | Web | Chat host (Slack-class) | CLI | Notification layer |
 |---|---|---|---|---|
-| **F-History** | Primary — the #1021 archive UI | Cross-client variant: "what I learned about you across all hosts" (PDR-005, ratified) | Unscoped — ✏️ open | N/A |
-| **F-Settings** | Primary (minimum-slice, ratified) | ✏️ **Exactly PM's example** — a conversational settings path, unscoped mechanically, needed per the brief | ✏️ open | N/A |
-| **F-FirstRun** | Primary — full MUX doc | "Welcome back" variant (PDR-005, ratified) | ✏️ open | N/A |
-| **F-Errors** | Primary — full MUX doc, ethics-invariant | Ethics decisions invariant; voice register may adapt ~5% (PDR-005, ratified) | ✏️ open | ✏️ open — does a failure ever warrant a push notification? |
-| **F-AuditTransparency** (proposed, §2b) | ADR-063 routes, user-facing | ✏️ open — does a Slack user have any path to their audit log today? | N/A (no user-facing route surface) | N/A |
+| **F-History** | Primary — the #1021 archive UI | Cross-client variant, ratified (PDR-005); **deferred for MVP** — #1481's Slack hold | Deferred for MVP — CLI's non-primary role | N/A |
+| **F-Settings** | Primary (minimum-slice, ratified) | **Deferred for MVP** — #1481's Slack hold, not a fresh judgment (see caution below) | Deferred for MVP — CLI's non-primary role | N/A |
+| **F-FirstRun** | Primary — full MUX doc | "Welcome back" variant, ratified (PDR-005); **deferred for MVP** — #1481's Slack hold | Deferred for MVP — CLI's non-primary role | N/A |
+| **F-Errors** | Primary — full MUX doc, ethics-invariant | Ethics decisions invariant; voice register may adapt ~5% (ratified — NOT gated by #1481, this is about voice register once Slack inbound exists, not whether it exists) | Deferred for MVP — CLI's non-primary role | **Routed to #1174**, not decided here — see note below |
+| **F-AuditTransparency** (§2b, ratified) | ADR-063 routes, user-facing | Deferred for MVP — #1481's Slack hold | N/A (no user-facing route surface) | N/A |
 | **F-Integrations** | Primary — full MUX doc, 3 wizards | N/A — you don't OAuth-connect a service from inside Slack | N/A | N/A |
 
-**Reading the ✏️ marks**: these aren't gaps in this document — they're the actual open questions the
-ratification needs answers to, which is the entire reason PPM is being consulted (§5). An empty cell that
-looks decided would be worse than a marked-open one.
+**✅ Resolved 2026-08-16 (PPM consult)**: all seven originally-✏️ cells are aspirational-and-fine-to-defer
+for MVP — six for a shared *structural* reason, not seven independent guesses:
+
+- **The general rule** (PPM's, worth keeping as the durable rule rather than re-litigating per cell): *any
+  cross-matrix cell gated by an already-ratified hold inherits that hold's status automatically.* Four of
+  the chat-host cells above inherit **#1481's ratified hold** (Arch, 08-04, `decisions.log`: *"Slack inbound
+  is not a beta surface... moves to Production with #1419"*) directly — they don't need their own
+  MVP-vs-aspirational judgment because the platform itself isn't in scope yet. If #1481 clears, re-evaluate
+  those cells as a batch at that point, not before.
+- **The four CLI cells** defer for a different shared reason: CLI is *maintained* (nobody's deprecating it)
+  but isn't a primary onboarding/discovery surface for beta, consistent with PDR-006's primarily-MCP
+  decision. "Maintained" implies "doesn't regress," not "gets every functional surface built out by launch."
+
+**⚠️ A caution worth stating outright, since the document itself invites the mistake**: §0 and §3 use
+F-Settings × Chat-host as the **illustrative example of why the two axes are orthogonal** (Settings needing
+both a web screen and a conversational path). That is PM using the pairing to prove a *conceptual* point —
+it is not a signal that this specific cell is required scope. The table above correctly defers it per
+#1481; don't let "it was PM's own example" quietly launder into "PM wants this built now." (PPM's catch,
+2026-08-16 — flagged as exactly the kind of inference that looks harmless and isn't.)
+
+**F-Errors × Notification layer, resolved by routing rather than ruling**: this isn't actually a new open
+question — it's a special case of **#1174**'s own discovery scope (when + how Piper proactively notifies),
+which just approved a phased plan (08-15) whose core principle is that any Piper notice must fill a genuine
+gap or provide a synthesized briefing, never duplicate an existing notification source. Whether a failure
+ever clears that bar is #1174's question to answer, not a separate ad hoc call inside this taxonomy — this
+cell defers to that thread rather than staying open indefinitely or getting decided twice.
 
 ---
 
-## 5. Open questions — explicitly routed, per PM's brief
+## 5. Open questions
 
-**For Arch** — does the platform axis carry real architectural consequences beyond what PDR-005 already
-encodes (§3's receipts), or is everything beyond those already-decided cells presentation-layer only? And
-specifically: does F-AuditTransparency deserve to split out of F-Errors as its own named functional surface
-(§2b), given it already has its own ADR and no shared mechanism with general error states?
+**✅ Arch, answered 2026-08-16**: F-AuditTransparency split ratified (§2b). Platform axis carries real
+architectural consequence — it's decided, not enforced; `CommandRegistry`/`CommandInterface` extension is
+real unstarted work (§3's correction).
 
-**For PPM** — of the ✏️-marked cells in §4, which are MVP-required versus aspirational-and-fine-to-defer?
-None of them are decided in this draft; deciding them is explicitly not mine to do alone.
+**✅ PPM, answered 2026-08-16**: all seven originally-open cross-matrix cells resolved to defer-for-MVP,
+with a general rule for future cells gated by an already-ratified hold (§4).
 
-**For PM** — per the brief's own framing, contributing directly as needed. The one thing I'd ask
-explicitly: does the renamed Axis-1 table (§1) read right, or does "MUX/UI surface" deserve different
-language now that it's paired with a second axis? Naming is cheap to get input on now and expensive to
-revise after downstream docs cite it.
+**Still open — for PM**: does the renamed Axis-1 table (§1) read right, or does "MUX/UI surface" deserve
+different language now that it's paired with a second axis? Naming is cheap to get input on now and
+expensive to revise after downstream docs cite it. This is the one thing standing between v0.2 and a fully
+ratified v1.0.
 
 ---
 
@@ -220,10 +266,10 @@ applied to itself.
 
 - **Does not re-decide any Round 2 CEO ratification** (F-Integrations pick, F-Privacy granularity,
   F-FirstRun framing, F-History reconciliation approach) — those stand as ratified.
-- **Does not commit to the F-Errors/F-AuditTransparency split** — proposed, routed to Arch, not decided
-  here.
+- **Does not build the platform axis's enforcement mechanism** — the axis is decided; extending
+  `CommandRegistry`/`CommandInterface` to cover it is real, unscoped follow-up work (§3).
 - **Does not fill every cross-matrix cell** — deliberately illustrative, per PM's own anti-obsessive-
-  coverage caution.
+  coverage caution. The cells it does fill are resolved (§4); it doesn't claim completeness beyond them.
 - **Does not rewrite PDR-005** — names a small citation fix (§2a) for PDR-005 to make once this ratifies;
   does not touch PDR-005's actual decisions.
 - **Does not reconcile `experience-across-surfaces.md`'s coarser platform table** — flagged as downstream
