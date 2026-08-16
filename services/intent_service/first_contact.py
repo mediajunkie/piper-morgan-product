@@ -50,6 +50,7 @@ from typing import Any, Dict, List, Optional
 import structlog
 
 from services.utils.datetime_utils import ensure_utc, utc_now
+from services.utils.text_sanitation import display_title
 
 logger = structlog.get_logger()
 
@@ -274,7 +275,9 @@ def render_first_contact_block(payload: Optional[Dict[str, Any]]) -> str:
         kind = "PR" if it.get("type") == "pr" else "issue"
         recency = it.get("recency") or ""
         recency_part = f", {recency}" if recency else ""
-        lines.append(f'- #{it.get("number")} "{it.get("title")}" ({kind}{recency_part})')
+        # #1628: degenerate GitHub titles (the literal "{" class) never render verbatim
+        title = display_title(it.get("title"), f"(untitled {kind} #{it.get('number')})")
+        lines.append(f'- #{it.get("number")} "{title}" ({kind}{recency_part})')
     lines.append("")
     lines.append("Want me to dig into any of these?")
     return "\n".join(lines)

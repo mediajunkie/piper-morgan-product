@@ -25,6 +25,7 @@ from services.domain.models import Intent, IntentCategory
 from services.plugins import get_plugin_registry
 from services.shared_types import IntentCategory as IntentCategoryEnum
 from services.user_context_service import user_context_service
+from services.utils.text_sanitation import display_title
 
 logger = structlog.get_logger()
 
@@ -645,8 +646,11 @@ class CanonicalHandlers:
                 issues_preview = metadata.get("issues_preview", [])
                 if issues_preview and spatial_pattern != "EMBEDDED":
                     for issue in issues_preview[: 5 if spatial_pattern == "GRANULAR" else 3]:
-                        title = issue.get("title", "Untitled")[:60]
                         number = issue.get("number", "?")
+                        # #1628: degenerate GitHub titles never render verbatim
+                        title = display_title(
+                            issue.get("title"), f"(untitled issue #{number})"
+                        )[:60]
                         lines.append(f"  - #{number}: {title}")
 
             repo = metadata.get("repository", "")
@@ -834,8 +838,11 @@ class CanonicalHandlers:
                     if issues_preview:
                         details.append("  - Recent issues:")
                         for issue in issues_preview[:3]:
-                            title = issue.get("title", "Untitled")[:50]
                             number = issue.get("number", "?")
+                            # #1628: degenerate GitHub titles never render verbatim
+                            title = display_title(
+                                issue.get("title"), f"(untitled issue #{number})"
+                            )[:50]
                             details.append(f"    - #{number}: {title}")
                 if repo:
                     details.append(f"  - Repository: {repo}")
@@ -992,8 +999,11 @@ class CanonicalHandlers:
                 if issues_preview:
                     lines.append("   - Recent issues:")
                     for issue in issues_preview[:3]:
-                        title = issue.get("title", "Untitled")[:50]
                         number = issue.get("number", "?")
+                        # #1628: degenerate GitHub titles never render verbatim
+                        title = display_title(
+                            issue.get("title"), f"(untitled issue #{number})"
+                        )[:50]
                         lines.append(f"     - #{number}: {title}")
 
             # Last activity
@@ -1187,7 +1197,8 @@ class CanonicalHandlers:
             details.append("\n\n**GitHub High-Priority Issues:**")
             for issue in high_priority_issues[:5]:
                 number = issue.get("number", "?")
-                title = issue.get("title", "Untitled")
+                # #1628: degenerate GitHub titles never render verbatim
+                title = display_title(issue.get("title"), f"(untitled issue #{number})")
                 labels = ", ".join(issue.get("labels", []))
                 details.append(f"  - #{number}: {title}")
                 if labels:
@@ -1261,7 +1272,8 @@ class CanonicalHandlers:
             message.append("\n\n**Urgent GitHub Issues:**")
             for issue in high_priority_issues[:3]:  # Top 3 in standard view
                 number = issue.get("number", "?")
-                title = issue.get("title", "Untitled")
+                # #1628: degenerate GitHub titles never render verbatim
+                title = display_title(issue.get("title"), f"(untitled issue #{number})")
                 message.append(f"- #{number}: {title}")
 
         if user_context.organization:
@@ -1835,7 +1847,8 @@ class CanonicalHandlers:
             details.append(f"**Urgent Items ({urgent_count})**:")
             for issue in high_priority_issues[:3]:
                 number = issue.get("number", "?")
-                title = issue.get("title", "Untitled")
+                # #1628: degenerate GitHub titles never render verbatim
+                title = display_title(issue.get("title"), f"(untitled issue #{number})")
                 details.append(f"  - #{number}: {title}")
             details.append("")
 
