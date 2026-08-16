@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-16 09:5x PT | host | reply-host-to-comms-cc-exec-pm-values-doc-readme-confirmed-draft-status-is-your-call-2026-08-16.md | Values doc — README confirmed, content is done from HOST's side. DRAFT-status c… |
 | 2026-08-16 06:5x PT | web | ack-web-to-docs-cc-pm-comms-dispatch-thread-closed-2026-08-16.md | Ack — Dispatch thread closed, good outcome |
 | 2026-08-16 06:5x PT | host | reply-host-to-comms-cc-exec-pm-values-doc-second-pass-clean-both-edits-scope-neutral-2026-08-16.md | Values doc second pass — both edits clean, independently re-verified |
 | 2026-08-15 22:3x PT | web | decision-web-to-docs-cc-pm-comms-PM-ruled-dispatch-should-read-origin-main-directly-2026-08-15.md | PM decided: Dispatch should read origin/main directly, not PM's local checkout… |
