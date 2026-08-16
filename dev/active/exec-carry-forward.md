@@ -1,48 +1,64 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-13 ~21:15 PT — day-close (STOP). Extraordinary day: Ship #055 confirmed
-distributed, attention rollup refreshed + published as an Artifact, 9 decisions walked one at a
-time with PM, license adopted (Apache 2.0), 3 issues filed, 2 cross-role collaborations launched
-and already producing real output same day.
-**Session log today**: `dev/2026/08/13/2026-08-13-0710-exec-code-log.md` (`DAY-CLOSED: 2026-08-13`)
+**Last updated**: 2026-08-16 ~09:2x PT (WORK fire, mail loop drained).
+**Session log today**: `dev/2026/08/16/2026-08-16-0902-exec-code-log.md`
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
-**Cron**: re-armed below via delete-then-create, verify exactly one. Session-only; 7-day expiry.
-**Account note**: designinproduct account, per PM's 8/12 login (own piper account resets Thu 8/14
-per Lead's 8/12 note — check whether PM has switched back).
+**Cron**: `21f85c91`, `32 8,20 * * *` — confirmed exactly one job at START, no re-arm needed.
 
-## Thursday-into-Friday queue — IN ORDER
+## Where things stand after last night's extraordinary close (08-15, 15:22–22:2x PT)
 
-1. **Watch for PM's confirmation on the LICENSE copyright-holder line** ("Copyright 2026 Piper
-   Morgan" — flagged, not confirmed; matched the one weak prior signal found in the repo).
-2. **Values doc** (Comms+HOST, kicked off 8/13 evening) — already has a real first-pass
-   identity-defining list from HOST. No deadline, no chase needed; watch for a PM-facing question
-   if one surfaces.
-3. **Retention policy scaffold** (`docs/legal/data-retention-policy-DRAFT.md`, HOST-drafted 8/13)
-   — awaiting PM's react/bless. Two open questions HOST left genuinely open: default retention
-   limit (HOST agrees with PM's no-limit lean, gave an independent reason) and user-facing
-   retention settings (explicitly undecided).
-4. **#1510's remaining consumer wiring**: #1591 standup preference capture in flight (Lead, 8/13
-   evening), #1509 queued behind it. PM's own live mode-flip test on #1510 itself still open per
-   Lead's oversight sync.
-5. **#1569/#1605 design thread** (CXO/PPM, todo-vs-reminder framing + delete-confirmation gate) —
-   converged well without exec action needed; watch for hand-off to Lead once finalized.
-6. **PM-attention items carried from the rollup, still open** (re-verify live before citing):
-   CIO's short-period cron experiment (needs a yes), Comms' narrative-beats steer (queue dry after
-   Aug 18), CXO's `experience-across-surfaces.md` 4 small wording calls, Docs-tree flattening
-   go/no-go, Docs' audit-logging.md boilerplate memo (sent 8/13, awaiting Docs' pass).
-7. **Ship #056 kickoffs** — window Aug 7–13 closed today; Friday 8/14 is the normal kickoff day.
-   Check whether this week's Friday-early omnibus + kickoff cadence needs anything special given
-   how much happened today.
+Twelve decisions ratified in one evening — full record in `decisions.log`. Follow-through from all of
+them landed this morning's drain:
 
-## Standing context
+- **Spatial cold-island**: scope confirmed at all 11 modules (PM, 08-15 late). Arch acked twice
+  (closure + all-11); execution not yet claimed by anyone (Lead offered `delete-module-safely`
+  covers it if it lands on them). **Watch for who actually executes** — nobody has yet as of this
+  fire.
+- **#1624**: C+A approved for build, D deferred to Production milestone (not PUB sprint) if/when
+  scoped. Relayed to Lead; no reply yet on build status.
+- **Memory-index headroom fix**: approved "for now." CIO handed the design to Lead
+  (`cio-to-lead...2026-08-15.md`) with one verification note (packed lines must still satisfy the
+  generator's `n_lines` guard convention) and an explicit ask-before-shipping given the blast radius
+  (cohort-shared, non-version-controlled file). **Not yet built** as of this fire.
+- **website#31 + abandoned branch**: both were ALREADY done (Aug 13/14) before last night's ruling —
+  Docs confirmed with dates/commits. Metrics-heading question settled as "let the shipped convention
+  stand" (Docs' rec, no objection window needed further). Nothing further owed by me on this thread.
+- **Values doc**: voice conversion done (Comms), independently re-verified twice (HOST's own second
+  pass + a third check when HOST re-pulled the commit directly). **README link gap** — flagged by
+  both Comms and HOST with no clear owner — **fixed this morning** (added to README's Documentation
+  section, `f1fb323a4`). All four ratified decisions now fully executed, not just ruled. Only PM's
+  own final read stands between this and leaving DRAFT status.
+- **Privacy-policy checklist**: PA's honest self-correction (never re-verified a carried-forward
+  claim across 5 fires, including the day the fix landed) surfaced that the doc's own reviewer
+  checklist hadn't been kept in sync with 5 already-resolved items. **Fixed this morning**
+  (`f1fb323a4`) — checked the 5 real ones, left PM-review and stable-URL-publish open.
+- **L4 monitoring-loop cost estimate**: delivered by Lead same-evening as the chase (three-week-open
+  item discharged). Two real numbers: run cost is not a decision factor (~$0.60-1.20/user/month at
+  the batched-briefing shape, which is also PM's own no-duplicate-notifications design); build is
+  4-5 days, clears the bar for a Production sprint unit but doesn't argue for jumping #1174's
+  discovery queue. **Flagged for PM's morning read** — this closes the last dependency named in the
+  spatial-review ruling.
+- **CXO's surfaces-taxonomy**: deferred to a fresh session last night (named trigger, not the
+  antipattern — explicitly correct per the flywheel's own quality-banking exception), then delivered
+  this morning: full v0.1 draft at `docs/internal/design/surfaces-taxonomy-2026-08-16.md`, consults
+  routed to Arch (§5, architectural consequences + the F-AuditTransparency split question) and PPM
+  (§5, MVP-vs-aspirational weighting on the cross-matrix). **In flight, not mine to action** — watch
+  for Arch/PPM's responses.
+- **CIO's short-period cron experiment**: approved and run same-night (three one-shot crons at
+  +5/+10/+15 min, measuring dispatch-jitter structure below the documented 15-min saturation floor).
+  **Results not yet reported** as of this fire — check CIO's carry-forward or inbox on the next pass.
 
-- **License**: Apache 2.0, LICENSE + README badge shipped (`a4547d7c4`). Real protection against
-  an "evil Piper" fork is trademark (PM+Themis, separate track) + the values doc, not the license
-  itself — no OSS license can restrict use-based-on-values without ceasing to be open source.
-- **#1612** (multi-LLM-provider support) — Production milestone + PUB sprint, filed 8/13. Real
-  driver: privacy-policy accuracy (today only Anthropic is live in production) plus PM's own
-  before-public-beta requirement.
-- **#1613** (dead cross-user-pooling code landmine) — low urgency, tracked not acted on.
-- **Ship #055 published Aug 12**: distributed status confirmed. Next Ship #056 pubDate: Wed 8/19.
-- **Beta ~Sep 9** (moved back a month 8/8). MVP open count per Lead's 8/13 oversight sync: ~44 and
-  moving (re-verify live before citing further — don't trust this number past today).
+## Mail this fire (09:02 START)
+
+7 direct (all read in full, 3 got substantive replies — PA, Docs, Lead; 4 were pure acks/informational
+needing no reply — 2× Arch spatial acks, CIO cron-experiment notice, CXO's deferral notice), 5 cc
+(skimmed, no asks of Exec: CIO→Lead memory-fix handoff, CXO's taxonomy draft to Arch/PPM, Comms/HOST's
+values-doc voice-check exchange ×3). Inbox drained to 0, both MANIFESTs regenerated and pushed.
+
+## Nothing currently blocked on me
+
+No `exec-standing-items.md` exists (PM-attention items ride this file per the 6/17 escalations fold).
+Queue is genuinely empty this fire — everything above is either fully closed or correctly sitting
+with another role/PM. Next substantive trigger: PM re-engaging (retest results, Comms beats
+conversation, Ship #056 edit), or any of the "not yet" items above landing (spatial execution, memory
+fix build, cron-experiment results, Arch/PPM's taxonomy consults).
