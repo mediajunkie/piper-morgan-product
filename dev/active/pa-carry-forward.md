@@ -35,8 +35,13 @@ days stale.
   same-day) — nothing further owed from PA; Docs folds PM's results and ships.
 - ✅ **`origin/production`-is-stale, now documented** — CLAUDE.md Quick Reference carries the durable
   note (2026-08-14) so the next agent doesn't re-derive it under time pressure the way PA had to.
-- 🟡 **Three privacy items left for you**: **sub-processor completeness** (which LLM provider is actually
-  in production?), **retention practice** (none exists in code), **contact address**.
+- ✅ **Two of three privacy items were RESOLVED 2026-08-13 (`a75166499`, PM directly)** — sub-processor
+  section corrected to name Anthropic-only (replacing the prior three-way hedge), retention ground truth
+  written in (no retention logic exists anywhere; a real policy is separately being drafted by HOST as a
+  values call), contact address fixed (#1610 closed). ⚠️ **This line sat unrefreshed in my own
+  carry-forward for 2+ days past the fix** — caught only when Exec corrected my 08-14 Ship #056 report,
+  which had copied the stale claim forward without re-checking. Root cause + what changes:
+  `mailboxes/pa/sent/reply-pa-to-exec-cc-pm-...-2026-08-15.md`.
 - 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a
   claim, not metadata.
 - 🟢 **Architecture diagram — REVISION 1 SHIPPED 08-10**, direct conversation with PM. Corrected the
@@ -204,7 +209,11 @@ proves you read it, not that you read what it does.
 3. **#1458** — pre-live cross-caller state isolation; blocks multi-tenant serving. Not started; belongs
    with the implementation epic. PPM: don't let epic optimism compress it — the failure is silent and
    cross-tenant.
-4. 🟡 **Privacy draft (`docs/legal/privacy-policy-DRAFT.md`)** — 3 🔍 markers left, all PM's (above).
+4. ✅ **Privacy draft (`docs/legal/privacy-policy-DRAFT.md`)** — sub-processor/retention/contact
+   content fixed 08-13 (see PM Attention above). ⚠️ **The file's own checklist (lines 198-204) was never
+   updated to match** — items 199/201/202 read unchecked despite the body text being fixed; items
+   200/203/204 (deletion/export capability, PM review, stable-URL publish) look genuinely still open.
+   Not mine to edit unilaterally; flagged to Exec/PM in the 08-15 correction reply rather than fixed here.
    ⛔ **Corrected 8/4**: it had asserted provider-side OAuth revoke for **GitHub**, which is false. Do not
    restore the aggregate sentence; the per-connector table is the honest form.
 5. **Architecture-diagram discussion** — PM-requested, awaiting a time. `pa-standing-items.md` #2.
