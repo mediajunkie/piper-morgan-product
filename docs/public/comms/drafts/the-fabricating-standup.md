@@ -16,7 +16,7 @@ Then I actually asked it for my standup.
 
 # What I got instead
 
-What came back was fluent, specific, and confidently wrong. It cited real-sounding issue numbers, claimed a chunk of work was "wrapped up" that had in fact been explicitly deferred to a later release, and told me a number of open issues that didn't match reality. It read exactly like a good status update. It just wasn't one.
+What came back was fluent, specific, and confidently wrong. It cited real-sounding issue numbers, claimed a chunk of work was "wrapped up" that had in fact been explicitly deferred to a later release, and told me a number of open issues that didn't match reality. It read exactly like a good status update. It just wasn't real.
 
 My gut said something was off — the claims didn't line up with what I remembered approving that morning — and I said so. Lead Dev went looking.
 
@@ -24,11 +24,11 @@ The bug wasn't in any of the code the team had spent the morning building. It wa
 
 The carefully built, honestly-derived standup was sitting right there, fully wired, completely unused. The classifier had simply never learned to point at it.
 
-# Naming the failure
+# A familiar kind of failure
 
-This has a name in-house. We call it Pattern-045, "Green Tests, Red User" — the shape where everything passes in isolation and still fails for the person actually using it. Lead Dev's tests had checked that the new standup handler worked correctly when called directly, and they had checked that the handler was registered on the dispatch system. What nobody had tested was the *whole chain* — message in, classifier decision, dispatch, handler, response out — end to end, the way an actual user experiences it. Two solid pieces, an untested seam between them, and a fabrication walked right through the gap.
+This type of failure is well known on this project. We call it Pattern-045, "Green Tests, Red User" — the shape where everything passes in isolation and still fails for the person actually using it. Lead Dev's tests had checked that the new standup handler worked correctly when called directly, and they had checked that the handler was registered on the dispatch system. What nobody had tested was the *whole chain* — message in, classifier decision, dispatch, handler, response out — end to end, the way an actual user experiences it. Two solid pieces, an untested seam between them, and a fabrication walked right through the gap.
 
-There's a version of this story where the fix is just "route that one phrase correctly" and everyone moves on. That's not what happened, and I want to call that out because it's the more useful part. When Lead Dev reported the bug, I didn't want a patch for one phrasing. I wanted to know how many other places in the product had the same shape — a request classified one way, a handler expecting another, a silent fall-through to an LLM that would rather guess than say nothing.
+There's a version of this story where the fix is just "route that one phrase correctly" and everyone moves on. That's not what happened. When Lead Dev reported the bug, I didn't want a patch for one phrasing. I wanted to know how many other places in the product had the same shape — a request classified one way, a handler expecting another, a silent fall-through to an LLM that would rather guess than say nothing.
 
 [FACT-CHECK NOTE for PM: confirm you're comfortable with how directly I've attributed this "don't whack-a-mole it" instinct to you by name/paraphrase — the source session log has you saying almost exactly this, but I want you to confirm the framing before it's public.]
 
