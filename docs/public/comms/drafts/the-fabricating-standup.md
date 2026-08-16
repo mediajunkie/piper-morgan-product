@@ -1,7 +1,7 @@
 ---
-image: ''
+image: 'the-fabricating-standup-wrong-order.png'
 alt: 'A puzzled diner receives a towering stack of fancy pancakes from a confident AI waiter while his simple breakfast waits unused in the real kitchen.'
-caption: ''
+caption: '"But I ordered eggs!"'
 ---
 
 # The Fabricating Standup
