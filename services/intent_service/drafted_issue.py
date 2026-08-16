@@ -115,14 +115,17 @@ def detect_file_command(message: Optional[str]) -> Optional[Dict[str, Any]]:
 
 # --- #1627: mid-compose prose binding --------------------------------------
 
-# A turn at/above this length (or any multi-line turn) is prose regardless of
-# how it opens. Body answers often LEAD with an imperative-looking verb ("Add
-# a guard so that deleting a project…") or a politeness word the unanchored
-# accept row would claim ("Please note that…"); commands are short and
-# single-line — nobody types 200 characters of "close issue #108". The floor
-# is deliberately above every taught command phrase and below PM's live
-# stolen answer by a wide margin.
-_PROSE_LENGTH_FLOOR = 160
+# A turn at/above soft_invocation.PROSE_LENGTH_FLOOR (or any multi-line
+# turn) is prose regardless of how it opens. Body answers often LEAD with an
+# imperative-looking verb ("Add a guard so that deleting a project…") or a
+# politeness word the unanchored accept row would claim ("Please note
+# that…"); commands are short and single-line — nobody types 200 characters
+# of "close issue #108". The floor is deliberately above every taught
+# command phrase and below PM's live stolen answer by a wide margin.
+# #1631 lifted this shape check into soft_invocation (``is_prose_reply``,
+# consulted by ``detect_offer_response`` itself) so EVERY armed offer kind
+# gets it; ``is_body_prose_answer`` below imports the shared helper — one
+# threshold, no drift.
 
 # Anchored-imperative supplement: verb families the shared collaborate-gate
 # execute check (collaboration_gate._EXECUTE_RE) deliberately omits — reads
@@ -174,13 +177,22 @@ def is_body_prose_answer(message: Optional[str]) -> bool:
 
     if detect_bare_exit(text):
         return False  # "cancel" / "stop" / "forget it" → honest decline
-    if "\n" in text or len(text) >= _PROSE_LENGTH_FLOOR:
+    from services.intent_service.soft_invocation import (
+        detect_offer_response,
+        is_prose_reply,
+    )
+
+    if is_prose_reply(text):
         # Checked BEFORE the accept/decline consult on purpose: the
         # unanchored accept/decline rows ("^please\s", "\bnot today\b")
         # match into long prose and would file or drop a half-shaped draft
-        # off a substring of the body answer.
+        # off a substring of the body answer. (#1631 taught
+        # detect_offer_response the same shape override, but this check must
+        # stay FIRST here and cannot be delegated: prose means BIND to the
+        # draft — without it a long "Add a guard…" answer would fall through
+        # to the anchored-imperative checks below and route away as a
+        # command.)
         return True
-    from services.intent_service.soft_invocation import detect_offer_response
 
     if detect_offer_response(text) is not None:
         return False  # short accept/decline — the generic seam's business

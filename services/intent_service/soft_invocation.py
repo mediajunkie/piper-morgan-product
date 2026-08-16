@@ -254,6 +254,29 @@ def _compile_patterns() -> List[Tuple[List[re.Pattern], str, Dict[str, str], Dic
 
 _SOFT_TRIGGER_PATTERNS = _compile_patterns()
 
+# --- #1631: prose-shape override ---
+
+# A turn at/above this length (or any multi-line turn) is free-text prose
+# regardless of how it opens — never an offer response. The unanchored
+# accept/decline rows below ("^(?:yes|yeah|sure|please|go ahead),?\s",
+# "\bnot today\b") match into long prose, so without a shape check a long
+# reply to ANY armed offer — consent check, destructive confirm,
+# verification read-back, soft workflow offer — could accept or decline it
+# off a substring ("Please note that we should not delete this yet, not
+# today anyway, because…"). Genuine accepts/declines are short and
+# single-line; the floor sits well above every taught confirm phrase and
+# well below real composed prose. First shipped for the drafted_issue kind
+# in #1627 (drafted_issue.is_body_prose_answer), lifted here for every kind
+# by #1631 — one seam, one threshold, no drift.
+PROSE_LENGTH_FLOOR = 160
+
+
+def is_prose_reply(message: str) -> bool:
+    """#1631 — True when a turn is prose by shape: multi-line, or at/above
+    ``PROSE_LENGTH_FLOOR`` characters. Callers pass stripped text."""
+    return "\n" in message or len(message) >= PROSE_LENGTH_FLOOR
+
+
 # Accept/decline detection patterns
 ACCEPT_PATTERNS = [
     re.compile(p, re.IGNORECASE)
@@ -395,12 +418,26 @@ class SoftInvocationDetector:
         )
 
 
-def detect_offer_response(message: str) -> Optional[str]:
+def detect_offer_response(
+    message: str, *, prose_override: bool = True
+) -> Optional[str]:
     """
     Detect if a message is accepting or declining a previous offer.
 
+    #1631: a multi-line or >= PROSE_LENGTH_FLOOR-character turn is prose by
+    shape and returns None BEFORE any pattern consult — the unanchored
+    accept/decline rows would otherwise claim a substring of a long
+    free-text reply and fire (or drop) whatever offer is armed. Each kind's
+    existing off-intent rule then handles the turn honestly.
+
     Args:
         message: User's response message
+        prose_override: When True (default), multi-line or long turns are
+            never offer responses. Pass False ONLY where a long turn can
+            legitimately carry the response — sole opt-out today is
+            verified_inference's meta-feedback seam, where a decline caught
+            inside prose is the conservative direction (it prevents a
+            store, nothing fires).
 
     Returns:
         "accept" if accepting, "decline" if declining, None if neither
@@ -409,6 +446,9 @@ def detect_offer_response(message: str) -> Optional[str]:
         return None
 
     clean = message.strip()
+
+    if prose_override and is_prose_reply(clean):
+        return None
 
     for pattern in ACCEPT_PATTERNS:
         if pattern.search(clean):

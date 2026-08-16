@@ -23,11 +23,13 @@ import pytest
 from services.intent_service.soft_invocation import (
     EXCHANGE_WINDOW_SIZE,
     MAX_OFFERS_PER_WINDOW,
+    PROSE_LENGTH_FLOOR,
     OfferWindow,
     SoftInvocationDetector,
     WorkflowOffer,
     WorkflowOfferService,
     detect_offer_response,
+    is_prose_reply,
 )
 from services.trust.proactivity_gate import ProactivityGate, TrustStage
 
@@ -504,6 +506,77 @@ class TestAcceptDeclineDetection:
 
     def test_empty(self):
         assert detect_offer_response("") is None
+
+
+class TestProseOverride1631:
+    """#1631 — a multi-line or >= PROSE_LENGTH_FLOOR-character turn is prose
+    by shape, never an offer response. The unanchored accept/decline rows
+    ("^please\\s", "\\bnot today\\b") must not claim a substring of a long
+    free-text reply to whatever offer is armed."""
+
+    _ACCEPT_GREED_PROSE = (
+        "Please note that we should not delete this yet, not today anyway, "
+        "because the migration is still running and three boards reference "
+        "this item while it stays open — let's revisit after the cutover."
+    )
+    _DECLINE_GREED_PROSE = (
+        "The rollout still has two unresolved dependencies, so not today for "
+        "the cutover — we need the backup verified and the DNS change window "
+        "approved before anything irreversible happens on this environment."
+    )
+
+    def test_fixture_prose_is_actually_long_single_line(self):
+        # Guard the fixtures themselves: each must trip the length floor
+        # (not the multi-line branch) or the tests below prove nothing.
+        for prose in (self._ACCEPT_GREED_PROSE, self._DECLINE_GREED_PROSE):
+            assert len(prose) >= PROSE_LENGTH_FLOOR
+            assert "\n" not in prose
+
+    def test_long_prose_opening_please_is_not_an_accept(self):
+        assert detect_offer_response(self._ACCEPT_GREED_PROSE) is None
+
+    def test_long_prose_containing_not_today_is_not_a_decline(self):
+        assert detect_offer_response(self._DECLINE_GREED_PROSE) is None
+
+    def test_multiline_turn_is_not_an_offer_response(self):
+        assert (
+            detect_offer_response("Yes, here is the plan:\n- step one\n- step two")
+            is None
+        )
+
+    def test_short_accepts_unchanged(self):
+        for message in ("Yes", "Yes please", "Sure, go ahead", "Please do", "Okay"):
+            assert detect_offer_response(message) == "accept", message
+
+    def test_short_declines_unchanged(self):
+        for message in ("No", "No thanks", "Not now", "Not today", "Maybe later"):
+            assert detect_offer_response(message) == "decline", message
+
+    def test_just_below_floor_single_line_still_matches(self):
+        message = "Yes, go ahead — " + "x" * (PROSE_LENGTH_FLOOR - 20)
+        clean = message.strip()
+        assert len(clean) < PROSE_LENGTH_FLOOR
+        assert detect_offer_response(message) == "accept"
+
+    def test_trailing_newline_does_not_count_as_multiline(self):
+        assert detect_offer_response("Yes please\n") == "accept"
+
+    def test_prose_override_opt_out_preserves_decline_in_prose(self):
+        # Sole opt-out consumer: verified_inference's meta-feedback seam,
+        # where a decline caught in prose only prevents a store.
+        prose = (
+            "No, that particular inference is wrong and should not be stored "
+            "anywhere — and honestly, stop asking me every time about these "
+            "details; I'd rather you trust your inferences going forward."
+        )
+        assert len(prose) >= PROSE_LENGTH_FLOOR
+        assert detect_offer_response(prose) is None
+        assert detect_offer_response(prose, prose_override=False) == "decline"
+
+    def test_is_prose_reply_shape(self):
+        assert is_prose_reply("a\nb") is True
+        assert is_prose_reply("x" * PROSE_LENGTH_FLOOR) is True
+        assert is_prose_reply("x" * (PROSE_LENGTH_FLOOR - 1)) is False
 
 
 # --- WorkflowOfferService Tests ---
