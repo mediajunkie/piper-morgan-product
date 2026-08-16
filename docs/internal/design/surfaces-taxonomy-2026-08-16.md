@@ -1,7 +1,7 @@
 ---
 type: design-taxonomy
 role: CXO (Chief Experience Officer), lead
-status: v0.2 — Arch + PPM consults landed 2026-08-16 (both real reads, one finding required correction — see §3). F-AuditTransparency split RATIFIED (Arch). §4 cross-matrix resolved (PPM). Awaiting PM's word on §1's naming per §5 before final ratification.
+status: v0.2, CONFIRMED by both Arch and PPM 2026-08-16 (each independently verified v0.2's applied fixes rather than trusting the summary — Arch checked §3's correction landed as described; PPM re-derived the notification-layer routing against the L4 vision doc and found it holds for a structural reason, now stated in §4). F-AuditTransparency split RATIFIED (Arch). §4 cross-matrix resolved (PPM). The only thing standing between v0.2 and full ratification is PM's word on §1's naming, per §5.
 authored: 2026-08-16
 authored_by: CXO
 co_owner: xian (ceo) — per PM's 2026-08-15 brief, "PM will contribute directly as needed and wants to see the result"
@@ -224,6 +224,15 @@ which just approved a phased plan (08-15) whose core principle is that any Piper
 gap or provide a synthesized briefing, never duplicate an existing notification source. Whether a failure
 ever clears that bar is #1174's question to answer, not a separate ad hoc call inside this taxonomy — this
 cell defers to that thread rather than staying open indefinitely or getting decided twice.
+
+**✅ Verified 2026-08-16 (PPM)**: this isn't a loose analogy — the routing follows from the column's own
+definition. The **Notification layer** column only ever applies when the user isn't in an active session:
+a failure during a live turn is just a normal reply, already covered by F-Errors × Web/Chat's primary
+cells, with no notification-layer question at all. Anything that actually reaches this column is, by
+construction, the out-of-session case — which is exactly and only #1174's domain. PPM checked this against
+`ambient-presence-l4-vision-2026-08-15.md` directly rather than accepting the routing at face value, having
+first suspected a reactive-vs-proactive category mismatch and then finding the column's own scope resolves
+it.
 
 ---
 
