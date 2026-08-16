@@ -7,15 +7,17 @@
 
 ---
 
-## ⏳ Dispatch-latency experiment IN FLIGHT — check on next fire
+## ✅ Dispatch-latency experiment CONCLUDED (22:57) — real finding, not the one it went looking for
 
-**Three one-shot crons scheduled 22:42/22:47/22:52 tonight** (separate from the LEAN cron above —
-do not confuse). Each logs scheduled-vs-actual arrival time to
-`dev/active/cron-dispatch-latency-experiment-2026-08-15.md`; the third also computes the spread
-and writes a short conclusion. **If this carry-forward is being read before ~22:55 PT on 08-15,
-the experiment may still be running — check `CronList` and the log file before assuming it's done.**
-If it's past that and the log file shows all three entries, the experiment concluded and a report
-should already have gone to PM in chat; if not, that's a dropped thread worth picking up.
+Full record: `dev/active/cron-dispatch-latency-experiment-2026-08-15.md`. Three one-shot fires
+landed **+3s, +3s, +4s** off schedule — near-deterministic, nothing like the ~30-min gap the
+recurring LEAN cron shows all week. **The finding: the ~30-min latency is NOT generic scheduler
+jitter** (which the tool's own docs cap at 15 min for recurring jobs, and one-shots off :00/:30 get
+no adjustment at all — both predict near-zero for jobs shaped like these three, which is what
+happened). Something specific to **recurring jobs**, or **this cron's minute-of-hour**, or
+**REPL-idle timing at the recurring slot**, produces the gap. Doesn't resolve *which* — that needs
+a follow-up comparing a *recurring* short-period cron against a one-shot at the same target minute.
+Not started; named as the natural next step, not run tonight.
 
 ## ⭐ Operating-mode shift (ruled 2026-08-13) — three data points, all closed, still holding
 
