@@ -1,3 +1,27 @@
+# CXO carry-forward — rewritten 2026-08-15 19:2x PT at STOP. Day closed; next fire 06:47 on 08-16, opening ~07:17.
+
+**Cron**: `fa499dae` (`47 6,9,12,15,18,21 * * *`) — confirmed present all six fires today. ⚠️ **Auto-expires
+~2026-08-18 (re-armed 08-11 13:18 PT post-reboot) — three days out. Watch for silent expiry; both deaths
+(session-end, 7-day cap) emit nothing.** **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A)
+· **Branch**: `claude/cxo-cycle`.
+
+**Today (08-15) in one line**: agreed on #1509's outwardness consent axis (real reasoning, a scope
+boundary, a mechanism note); PPM independently stress-tested and confirmed. Caught a real "one name, two
+objects" citation error in the first-contact criterion's ratification — fixed in mail, the doc's status
+line, and (PPM caught what I missed) `decisions.log`'s entry too. Reviewed #1625's shipped Radar
+pinned-reminders code and sent two concrete fixes (wrong color token, missing count) plus two flagged
+questions. Lighter day than 08-13/08-14 but every substantive fire found something real.
+
+**Open at handoff**: #1536 (Lead, ~6 days quiet, already flagged in Ship #056 — don't re-flag), #1539 (PM),
+#1605's tiny remaining phrasing (Lead), #1625/Radar (Lead, no urgency), #1509 (agreed both sides, Lead
+builds), #1386 (unchanged), four ✏️ items on `experience-across-surfaces.md` + Surface 3 (PM, over a week).
+**The cron expiry is the one thing needing active attention over the next three days** — everything else is
+correctly parked with someone else.
+
+---
+
+*(08-15 16:3x header below, left as this afternoon's fuller record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-15 16:3x PT
 
 **16:17 fire — three items, all handled**:
