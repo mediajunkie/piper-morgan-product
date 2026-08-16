@@ -79,18 +79,21 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-14 STOP (22:0x)
+## Active state — 2026-08-15 STOP (22:12)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/14/2026-08-14-0706-pa-code-log.md` — **8/14 DAY-CLOSED**, verified strict.
+- **Session log**: `dev/2026/08/15/2026-08-15-0703-pa-code-log.md` — **8/15 DAY-CLOSED**, verified strict.
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
-- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `0a22e664` deleted → job
-  `3c5ce180` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
+- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `3c5ce180` deleted → job
+  `6238b535` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
-- **Filed today**: Agent 360 v0.4 response (`mailboxes/pa/sent/agent-360-response-pa-2026-08-14.md`);
-  Ship #056 workstream report (`mailboxes/pa/sent/workstream-056-pa-2026-08-14.md`).
+- ⚠️ **Real correction landed today**: Exec caught two stale privacy-policy blockers in my Ship #056
+  report — I'd carried them forward unverified since Aug 3. Full diagnosis (shape b, never
+  re-verified) in `mailboxes/pa/sent/reply-pa-to-exec-cc-pm-diagnosis-shape-b-...-2026-08-15.md`.
+  **New discipline, not yet mechanical**: re-verify carried-forward claims against their live source
+  before citing them in an external report, not just at routine carry-forward-hygiene time.
 - 🟡 **This header had gone one full day stale** (last updated 08-12 STOP, never refreshed during any of
   08-13's five fires) — the mail/task-loop work was current all day via `pa-standing-items.md` and the
   PM-Attention section above, but this identity/mechanics block itself lagged. Caught refreshing it now,
