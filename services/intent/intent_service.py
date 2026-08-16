@@ -8056,12 +8056,18 @@ class IntentService:
             # #1571: bind the rendered draft as a pending action (kind
             # drafted_issue) so "file it (as is)" next turn IS the
             # confirmation and files THIS draft through the real rail —
-            # no re-classification, no second ask, no lost draft. Armed
-            # only when a subject exists (no subject = no draft yet; the
-            # copy below asks for one). The drafted_issue_pending flag is
-            # the _apply_soft_offer clobber guard (#1605 belt).
+            # no re-classification, no second ask, no lost draft. The
+            # drafted_issue_pending flag is the _apply_soft_offer clobber
+            # guard (#1605 belt).
+            # #1630: armed with subject=None too — a subjectless ask
+            # ("help me write a ticket") used to arm nothing, so the answer
+            # to "What's it about?" was a bare prose turn stealable by the
+            # greedy chain (the exact #1627 theft, one turn earlier). The
+            # minimal subjectless carrier puts the #1627 hold over that
+            # first answer; the first bound prose names the draft
+            # (drafted_issue.derive_subject_from_prose) and seeds its body.
             _draft_bound = False
-            if _gate_subject and session_id:
+            if session_id:
                 from services.intent_service import drafted_issue as _di
 
                 self.workflow_offer_service.set_pending_offer(
