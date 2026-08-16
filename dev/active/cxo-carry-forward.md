@@ -1,6 +1,18 @@
-# CXO carry-forward — rewritten 2026-08-15 22:2x PT at STOP (corrected — this is the real sixth-fire close;
-the 19:2x version below closed the day one fire early and was wrong about the fire count). Next fire 06:47
-on 08-16, opening ~07:17.
+# CXO carry-forward — rewritten 2026-08-16 07:2x PT
+
+**07:17 fire — the named fresh-session trigger, delivered**: wrote the full surfaces-taxonomy v0.1 draft
+(`docs/internal/design/surfaces-taxonomy-2026-08-16.md`). Both axes named; Settings' phantom status
+resolved (real, CEO-ratified, just never re-cited); Errors' two-things-folded problem given a grounded
+split proposal (ADR-063 already exists for half of it); the platform axis shown to already be operational
+in PDR-005 (5 scattered qualifier passages, cited directly) rather than asserted as new. Open questions
+routed to Arch and PPM explicitly, not decided alone. Sent, posted a pointer on #1090 (still open, not
+closed — naming layer, not a rescoping). **Awaiting Arch/PPM's reads, no deadline.**
+
+**#1536/#1539 still unchanged.** Nothing else owed by me right now.
+
+---
+
+*(08-15 22:2x header below, left as last night's fuller close record — not re-derived.)*
 
 ## 🔴 TOP OF QUEUE, NEXT SESSION: the surfaces taxonomy — real, foundational, prepped, no deadline
 
