@@ -74,5 +74,7 @@ class RadarFeed:
             return RadarView(state="empty", entities=[_example_entity()])
 
         # Attention-first: most-active / recently-changed at top, entity types mixed.
-        observed.sort(key=lambda e: e.attention, reverse=True)
+        # #1625: pinned entities (due reminders) lock ABOVE the attention ordering —
+        # PM's ruling gives the persistent surface ownership of reminder persistence.
+        observed.sort(key=lambda e: (not e.pinned, -e.attention))
         return RadarView(state="populated", entities=observed)

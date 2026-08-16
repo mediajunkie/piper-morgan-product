@@ -30,11 +30,29 @@ The fix binds the draft the moment the #1510 collaborate gate renders it:
   offer; normal processing answers the new message). Declines/bare exits
   drop the draft with honest copy via the generic decline path.
 
-Deliberately NOT built (flagged for Lead): multi-turn draft refinement. A
-refinement turn ("add steps to reproduce…") is off-intent to the one-slot
-carrier and abandons the binding — carrying an evolving floor-composed draft
-across turns needs a durable draft store and is a different design (the
-routing-moratorium/corpus half of #1571 lives there too).
+#1627 (2026-08-15, round 2): while the draft's open question ("What should
+the body say…?") is on the table, a PROSE ANSWER binds to the draft — it is
+consumed at this seam (which runs above the whole 4-surface routing chain)
+and never reaches any classification surface. The live theft: PM's long
+body answer contained "delete …" and "(a destructive action)", and surface
+1's greedy portfolio pattern (#1527 family, ``\\bdelete\\s+…(.+)``) claimed
+the turn — "I couldn't find a project called '(a destructive action)…'" —
+losing the composed body. The draft flow is floor-composed prose, not a
+registered gathering process, so the #1623 mid-interview hold could not
+cover it; this is the draft flow's own hold. It is NOT a turn lock:
+file/accept phrases still file, declines and bare exits still drop the
+draft honestly, and clearly-imperative asks still route normally
+(abandoning the draft — the carrier's documented off-intent rule). See
+``is_body_prose_answer`` for the discrimination and its stated limits.
+
+Deliberately NOT built (flagged for Lead): instruction-shaped draft
+refinement ("make the title snappier", "add a labels section"). #1627 binds
+prose CONTENT (appended to the body verbatim); it does not interpret
+editing instructions — an anchored-imperative refinement ask still abandons
+the binding. Interpreting edits over an evolving floor-composed draft needs
+a durable draft store and is a different design (the
+routing-moratorium/corpus half of #1571 lives there too; durable fix is
+Inversion Phase 2 context-carrying).
 """
 
 from __future__ import annotations
@@ -81,6 +99,89 @@ def detect_file_command(message: Optional[str]) -> Optional[Dict[str, Any]]:
     return {"repo": m.group("repo")}
 
 
+# --- #1627: mid-compose prose binding --------------------------------------
+
+# A turn at/above this length (or any multi-line turn) is prose regardless of
+# how it opens. Body answers often LEAD with an imperative-looking verb ("Add
+# a guard so that deleting a project…") or a politeness word the unanchored
+# accept row would claim ("Please note that…"); commands are short and
+# single-line — nobody types 200 characters of "close issue #108". The floor
+# is deliberately above every taught command phrase and below PM's live
+# stolen answer by a wide margin.
+_PROSE_LENGTH_FLOOR = 160
+
+# Anchored-imperative supplement: verb families the shared collaborate-gate
+# execute check (collaboration_gate._EXECUTE_RE) deliberately omits — reads
+# and destructives are consented elsewhere, so that regex never needed them.
+# Mid-compose they are exactly the "clearly imperative unrelated ask" that
+# must keep routing normally ("close issue #108", "list my reminders",
+# "delete my reminders" — the #1527 phrase itself, as a command). Prefix
+# structure mirrors _EXECUTE_RE's (politeness/address, go-ahead, can-you).
+_COMMAND_SUPPLEMENT_RE = re.compile(
+    r"^\s*"
+    r"(?:(?:please|hey|hi|ok(?:ay)?|piper)[,!\s]+)*"
+    r"(?:go\s+ahead\s+and\s+)?"
+    r"(?:(?:can|could|would|will)\s+you\s+(?:please\s+)?)?"
+    r"(?:close|reopen|delete|remove|archive|restore|cancel|stop"
+    r"|list|show|search|find|fetch|get|check|tell|give)\b",
+    re.IGNORECASE,
+)
+
+
+def is_body_prose_answer(message: Optional[str]) -> bool:
+    """#1627 — with a drafted issue armed and its body question open, is this
+    turn a prose ANSWER (bind to the draft) rather than a deliberate exit or
+    an explicit command (fall through to the generic flow / normal routing)?
+
+    Deterministic, and deliberately biased toward binding: a mis-bound
+    command is recoverable (the draft re-arms, nothing files, the copy shows
+    exactly what was captured), while a mis-routed body answer loses the
+    composed prose to whichever greedy surface claims it — the live #1627
+    failure. Known limits, stated honestly:
+
+    - A SHORT turn that opens with an imperative verb from either anchored
+      check ("add steps to reproduce") reads as a command and abandons the
+      draft — instruction-shaped refinement is deliberately not built (see
+      module docstring).
+    - A question mid-compose ("what would make a good body?") is not an
+      anchored imperative, so it BINDS as body text rather than being
+      answered. Visible and recoverable; the alternative (routing it)
+      silently abandons the draft.
+    - A LONG turn that is genuinely a new imperative ask binds as prose —
+      the length override is what protects body answers that open with
+      "Please…"/"Add…", and it cannot tell those apart from a 200-character
+      command. Interim guard; the durable fix is Inversion Phase 2
+      context-carrying.
+    """
+    text = (message or "").strip()
+    if not text:
+        return False
+    from services.intent_service.destructive_confirm import detect_bare_exit
+
+    if detect_bare_exit(text):
+        return False  # "cancel" / "stop" / "forget it" → honest decline
+    if "\n" in text or len(text) >= _PROSE_LENGTH_FLOOR:
+        # Checked BEFORE the accept/decline consult on purpose: the
+        # unanchored accept/decline rows ("^please\s", "\bnot today\b")
+        # match into long prose and would file or drop a half-shaped draft
+        # off a substring of the body answer.
+        return True
+    from services.intent_service.soft_invocation import detect_offer_response
+
+    if detect_offer_response(text) is not None:
+        return False  # short accept/decline — the generic seam's business
+    from services.intent_service.collaboration_gate import (
+        FRAMING_EXECUTE,
+        classify_framing,
+    )
+
+    if classify_framing(text) == FRAMING_EXECUTE:
+        return False  # anchored imperative (create/update/remind families)
+    if _COMMAND_SUPPLEMENT_RE.match(text):
+        return False  # anchored imperative (close/read/destructive families)
+    return True
+
+
 def build_drafted_issue_offer(
     intent: Intent,
     subject: str,
@@ -123,6 +224,76 @@ def _retained_intent_data(pending_action: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+def _bind_body_prose(
+    pending_offer: Dict[str, Any],
+    pending_action: Dict[str, Any],
+    prose: str,
+    *,
+    session_id: str,
+    user_id: Optional[str],
+    intent_service: Any,
+) -> Dict[str, Any]:
+    """#1627 — append a prose answer to the bound draft's body, re-arm the
+    SAME offer, and show the draft honestly. Consuming the turn here is the
+    hold: no classification surface ever sees the prose."""
+    draft = pending_action.setdefault("draft", {})
+    existing = (draft.get("body") or "").strip()
+    body = f"{existing}\n\n{prose.strip()}" if existing else prose.strip()
+    draft["body"] = body
+
+    # The filing path reads intent.context["description"] first
+    # (_handle_create_issue's description precedence), so the bound body is
+    # what actually lands in the created issue — a binding that didn't file
+    # would be the #1571 original defect (teaching a phrase with nothing
+    # behind it) wearing a new hat.
+    intent = pending_action.get("intent")
+    if intent is not None:
+        intent.context = dict(intent.context or {})
+        intent.context["description"] = body
+
+    rearmed = True
+    try:
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id, pending_offer, user_id=user_id
+        )
+    except Exception as e:  # silent-ok: #1627 — a store failure must not crash the compose turn; logged ERROR, and the copy below never claims a bound draft that isn't there
+        logger.error("drafted_issue_body_bind_rearm_failed", error=str(e))
+        rearmed = False
+
+    logger.info(
+        "drafted_issue_body_prose_bound",
+        session_id=session_id,
+        body_chars=len(body),
+        rearmed=rearmed,
+    )
+
+    if not rearmed:
+        return {
+            "message": (
+                "I've got what you wrote, but I couldn't keep the draft "
+                "bound — nothing was filed. Ask me to draft the issue "
+                "again and we'll rebuild it, including what you just said."
+            ),
+            "intent_data": _retained_intent_data(pending_action),
+        }
+
+    title = draft.get("title") or "(untitled)"
+    intent_data = _retained_intent_data(pending_action)
+    intent_data["drafted_issue_body_bound"] = True
+    return {
+        "message": (
+            "Added to the draft — nothing is filed yet. Here's where it "
+            "stands:\n\n"
+            f"**Title**: {title}\n\n"
+            f"**Body**:\n{body}\n\n"
+            "Keep going if there's more to add. When it's ready, say "
+            '"file it as is" — or "no" to set the draft aside.'
+        ),
+        "intent_data": intent_data,
+        "requires_clarification": True,
+    }
+
+
 async def handle_drafted_issue_turn(
     pending_offer: Dict[str, Any],
     message: str,
@@ -144,8 +315,26 @@ async def handle_drafted_issue_turn(
 
     pending_action = pending_offer.get("pending_action") or {}
     file_cmd = detect_file_command(message)
-    if file_cmd is None and detect_offer_response(message) != "accept":
-        return None  # decline / bare-exit / off-intent → generic flow
+    if file_cmd is None:
+        # #1627: a prose turn that answers the draft's open question BINDS
+        # to the draft. Checked BEFORE the generic accept consult so the
+        # unanchored accept rows ("^please\s", "^yes,?\s") can't file a
+        # half-shaped draft off the front of a long body answer, and
+        # returned BEFORE the off-intent fall-through so no classification
+        # surface (surface 1's greedy portfolio pattern was the live thief)
+        # ever sees body prose. Deliberate exits and explicit commands fall
+        # through exactly as before — the hold is not a turn lock.
+        if is_body_prose_answer(message):
+            return _bind_body_prose(
+                pending_offer,
+                pending_action,
+                message,
+                session_id=session_id,
+                user_id=user_id,
+                intent_service=intent_service,
+            )
+        if detect_offer_response(message) != "accept":
+            return None  # decline / bare-exit / explicit command → generic flow
 
     intent = pending_action.get("intent")
     if intent is None:

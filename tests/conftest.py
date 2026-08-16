@@ -712,7 +712,14 @@ async def delete_test_user_fully(session, user_id: str) -> None:
     for stmt in (
         "DELETE FROM conversation_turns WHERE conversation_id IN (SELECT id FROM conversations WHERE user_id = :u)",
         "DELETE FROM conversations WHERE user_id = :u",
-        "DELETE FROM session_activity WHERE owner_id = CAST(:u AS uuid)",
+        # #1621: session_activity.owner_id is VARCHAR in the real DB (the model
+        # declares UUID — #1603-class model/DB drift). The old CAST(:u AS uuid)
+        # comparison raised "operator does not exist: character varying = uuid",
+        # which ABORTED the transaction — and with per-statement exceptions
+        # swallowed below, every later statement (including the final users
+        # delete) silently no-oped. ::text on the COLUMN side works for either
+        # column type, so this survives the #1252-P7 uuid cutover too.
+        "DELETE FROM session_activity WHERE owner_id::text = :u",
         "DELETE FROM token_blacklist WHERE user_id = CAST(:u AS uuid)",
         "DELETE FROM password_reset_tokens WHERE user_id = :u",
         "DELETE FROM user_api_keys WHERE user_id = :u",
@@ -745,12 +752,20 @@ async def delete_test_user_fully(session, user_id: str) -> None:
     ):
         try:
             await session.execute(_text(stmt), uid)
+            # #1621: commit PER STATEMENT. One failed statement aborts the
+            # asyncpg transaction; under the old single-commit shape that
+            # poisoned every subsequent statement (all swallowed below), so a
+            # single type-cast miss silently skipped the ENTIRE rest of the
+            # cascade — users included. Found live 2026-08-15 by the #1621
+            # count-verified cleanup on its first run.
+            await session.commit()
         except Exception:
             # a table absent in this schema build or a type-cast miss must not
-            # strand the rest of the cascade; the final users delete surfaces
-            # any REAL leftover-FK problem loudly
-            pass
-    await session.commit()
+            # strand the rest of the cascade (rollback clears the aborted-txn
+            # state so the next statement actually runs); callers who need
+            # PROOF of cleanup must count afterward — tests/live/conftest.py
+            # does exactly that
+            await session.rollback()
 
 
 @pytest.fixture(autouse=True)

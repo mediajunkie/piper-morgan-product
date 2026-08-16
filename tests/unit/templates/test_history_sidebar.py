@@ -516,3 +516,25 @@ class TestRadarSurface:
     def test_radar_search_empty_result_message(self, history_html):
         """A search with no matches reads honestly (not the new-user empty-state)."""
         assert "Nothing on your Radar matches your search." in history_html
+
+
+class TestRadarPinnedReminders1625:
+    """#1625 — due reminders render in a pinned section locked at the top of Radar
+    (PM ruling: the persistent surface owns persistence; conversation mentions once)."""
+
+    def test_pinned_section_rendered_before_unpinned_cards(self, history_html):
+        assert "const pinned = matches.filter(e => e.pinned);" in history_html
+        assert "const unpinned = matches.filter(e => !e.pinned);" in history_html
+        # The pinned section is appended before the unpinned card loop.
+        assert history_html.index("section.className = 'radar-pinned'") < history_html.index(
+            "unpinned.forEach(e => content.appendChild(renderRadarCard(e)));"
+        )
+
+    def test_pinned_section_is_labeled(self, history_html):
+        assert "Due reminders" in history_html
+        assert "aria-label', 'Due reminders — pinned'" in history_html
+
+    def test_pinned_card_class_and_styles_defined(self, history_html):
+        assert "radar-card--pinned" in history_html
+        assert ".radar-pinned {" in history_html
+        assert ".radar-pinned-title {" in history_html

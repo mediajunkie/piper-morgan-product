@@ -1960,8 +1960,14 @@ class IntentService:
                     from services.intent_service import consent_gate as _consent
 
                     _consent_user = user_id or _principal_from_intent(intent)
+                    # #1509 outwardness axis: the entry's declared
+                    # outwardness rides with its declared effect into the
+                    # ONE decision function (never inferred here).
                     _consent_verdict = await _consent.evaluate_consent(
-                        _rail_entry.effect, message, _consent_user
+                        _rail_entry.effect,
+                        message,
+                        _consent_user,
+                        outwardness=_rail_entry.outwardness,
                     )
                 else:
                     _consent_verdict = None
@@ -2058,6 +2064,32 @@ class IntentService:
                     },
                 )
                 if dispatched is not None:
+                    # ── #1509 outwardness disclosure (TRUST-mode, held ─────
+                    # nothing): an OUTWARD WRITE proceeding under a declared
+                    # trust mode SAYS what it did and to whom — the
+                    # disclosure line leads the reply so the transcript
+                    # states the act before the handler's own result (CXO's
+                    # mechanism ruling: a disclosure, never a yes/no gate;
+                    # the #1605 variant-two "say it out loud" pattern).
+                    if _consent_verdict is not None and (
+                        _consent_verdict
+                        is _consent.ConsentDecision.PROCEED_WITH_DISCLOSURE
+                    ):
+                        dispatched.message = (
+                            f"{_consent.build_outward_disclosure(intent)}\n\n"
+                            f"{dispatched.message}"
+                        )
+                        if dispatched.intent_data is None:
+                            dispatched.intent_data = {}
+                        # Transcript legibility (#1509 AC-5): the flags say a
+                        # disclosure happened and why (the axis value).
+                        dispatched.intent_data["consent_disclosure"] = True
+                        dispatched.intent_data["consent_outwardness"] = "outward"
+                        self.logger.info(
+                            "consent_disclosure_rendered",
+                            action=intent.action,
+                            session_id=session_id,
+                        )
                     dispatched.suggestions = all_suggestions
                     # Issue #248: Attach preference detection results
                     dispatched.preferences = preferences

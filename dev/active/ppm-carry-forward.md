@@ -1,7 +1,25 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-15 13:22 PT (WORK). Cron **`db18971e`**, unchanged.
+**Last rewritten**: 2026-08-15 16:23 PT (WORK). Cron **`db18971e`**, unchanged. **Heartbeat push
+race this fire** — two rounds of fetch+merge+push needed to land the WORK heartbeat against
+concurrent cross-role activity; nothing lost, worth knowing this can happen on a busy Saturday.
+
+## ✅ FIRST-CONTACT CRITERION RATIFIED 2026-08-15 — the LAST of the three original handoff items
+PM ratified `docs/internal/product/first-contact-criterion-merged-2026-08-10.md` as canonical,
+condition: joint CXO+PPM sign-off on the merged doc specifically. **CXO caught a real provenance
+error** in the ratification memo (it credited CXO's 08-12 review with covering item 3; that review
+actually covered item 2 — a numbering coincidence between this doc and the original #1536 build,
+the "one name, two objects" pattern again) and gave a genuine fresh sign-off rather than letting
+the wrong citation stand. **I did the same**: re-read the whole document fresh (not resting on
+having authored it) before giving my own explicit sign-off. **Found and fixed the one thing CXO's
+fix didn't reach**: `decisions.log`'s entry still carried the uncorrected provenance claim — the
+doc's own status line was fixed but the durable cross-session record wasn't. Appended a correction
+(16:23 PT, append-only convention, not editing the original) with both the fix and my sign-off on
+record. **Placement in #1386's beta gate remains separately open** since 08-05, untouched by this.
+**Two of the three original `docs/handoff-ppm-2026-08-11.md` §2 items are now resolved**:
+criterion blessed (today), #1510 fork ruled (08-13). **Surface 1/3 is the one remaining
+genuinely-open item** — still PM's, unchanged since 08-10.
 
 ## ✅ #1509 OUTWARDNESS AXIS — AGREED 2026-08-15, real product judgment applied, not a rubber-stamp
 PM leaned YES on making "outward" (writes/sends visible to someone other than the user) its own

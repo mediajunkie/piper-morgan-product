@@ -23,7 +23,7 @@ from services.intent_service.workflow_dispatcher import (
     get_registered_workflows,
     register_workflow,
 )
-from services.shared_types import EffectClass
+from services.shared_types import EffectClass, Outwardness
 
 logger = structlog.get_logger(__name__)
 
@@ -767,9 +767,12 @@ def register_default_workflows() -> None:
     # effect: WRITE — _handle_update_document_notion appends content to a Notion
     # page (notion_router.append_blocks, intent_service.py ~L3409). Recoverable
     # (page history), so WRITE not DESTRUCTIVE.
+    # outwardness: PRIVATE (#1509 axis) — appending to a doc teammates can
+    # read is CXO's named non-example: nobody is handed anything right now.
     document_update_entry = WorkflowEntry(
         entry_point=run_update_document_workflow,
         effect=EffectClass.WRITE,
+        outwardness=Outwardness.PRIVATE,
         description="Document update via slot-filling (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -798,9 +801,16 @@ def register_default_workflows() -> None:
     # (the 2026-07 auto-close incident closed a live Beta Blocker from a
     # commit message). needs_confirm derives True → the #1190 confirmation
     # gate defers execution to an explicit yes/no turn.
+    # outwardness: PRIVATE (#1509 axis) — PPM's stress-tested boundary case,
+    # SETTLED 2026-08-15, do not re-litigate: a close creates/sends no
+    # content, so it is not a communication act; its board-wide visibility is
+    # exactly what the DESTRUCTIVE effect tier (#1190 blast-radius ruling)
+    # already covers. The two axes are jointly exhaustive over reasons for
+    # care, not redundant nets over the same actions.
     close_issue_entry = WorkflowEntry(
         entry_point=run_close_issue_workflow,
         effect=EffectClass.DESTRUCTIVE,
+        outwardness=Outwardness.PRIVATE,
         description="Close-issue query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -822,6 +832,11 @@ def register_default_workflows() -> None:
             "_handle_update_issue", pass_session_id=True, pass_user_id=True
         ),
         effect=EffectClass.WRITE,
+        # outwardness: PRIVATE (#1509 axis) — editing an issue's
+        # title/body/labels is repo-content editing (CXO's named
+        # non-example family): no content lands in front of anyone as a
+        # direct, immediate consequence.
+        outwardness=Outwardness.PRIVATE,
         description="Update-issue via action dispatch (#1411)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -836,6 +851,11 @@ def register_default_workflows() -> None:
             "_handle_create_issue", pass_session_id=True, pass_user_id=True
         ),
         effect=EffectClass.WRITE,
+        # outwardness: OUTWARD (#1509 axis) — filing an issue IS a
+        # communication act: it lands in front of the team (boards, watchers,
+        # notifications) as a direct, immediate consequence. This is the
+        # Jake-incident action class — the reason the axis exists.
+        outwardness=Outwardness.OUTWARD,
         description="Create-issue via action dispatch (#1412)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -847,18 +867,27 @@ def register_default_workflows() -> None:
     # every open-state surface — sprint boards, counts, portfolio reviews —
     # in one stroke); recoverability was the old WRITE rationale and is
     # retired. needs_confirm derives True → #1190 confirmation gate.
+    # outwardness: PRIVATE (#1509 axis) — same settled boundary case as
+    # close above (PPM 2026-08-15): not a communication act; the effect
+    # axis already covers its visibility.
     reopen_issue_entry = WorkflowEntry(
         entry_point=run_reopen_issue_workflow,
         effect=EffectClass.DESTRUCTIVE,
+        outwardness=Outwardness.PRIVATE,
         description="Reopen-issue query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
     )
     # effect: WRITE — _handle_comment_issue_query calls
     # github_router.add_comment(issue_number, comment_body) (~L4597). Additive.
+    # outwardness: OUTWARD (#1509 axis) — posting a comment is the axis's
+    # defining communication act: content lands in front of everyone
+    # watching the issue as a direct, immediate consequence, however easy
+    # the underlying write is to delete.
     comment_issue_entry = WorkflowEntry(
         entry_point=run_comment_issue_workflow,
         effect=EffectClass.WRITE,
+        outwardness=Outwardness.OUTWARD,
         description="Comment-issue query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -898,9 +927,12 @@ def register_default_workflows() -> None:
     # effect: WRITE — _handle_set_default_repo persists the preference to the
     # DB: ConnectorConfigService(session).set_default_repo(user_id, full_name)
     # (~L4847). Overwritable, so WRITE not DESTRUCTIVE.
+    # outwardness: PRIVATE (#1509 axis) — writes the user's OWN preference
+    # row; nobody else witnesses anything.
     set_default_repo_entry = WorkflowEntry(
         entry_point=_make_query_dispatch_entry_point("_handle_set_default_repo"),
         effect=EffectClass.WRITE,
+        outwardness=Outwardness.PRIVATE,
         description="Set-default-repo via action dispatch (#1327)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -921,9 +953,12 @@ def register_default_workflows() -> None:
     # effect: WRITE — handle_create_reminder persists a reminder row via
     # todo_service.create_todo (todo_handlers.py ~L229). Additive + recoverable
     # (a todo row the user can delete), so WRITE not DESTRUCTIVE.
+    # outwardness: PRIVATE (#1509 axis) — a reminder/todo row is the ratified
+    # example of a private write (the user's own list; no communication act).
     create_reminder_entry = WorkflowEntry(
         entry_point=run_todo_query_workflow,
         effect=EffectClass.WRITE,
+        outwardness=Outwardness.PRIVATE,
         description="Create-reminder via action dispatch (#1560)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -988,9 +1023,15 @@ def register_default_workflows() -> None:
         # It is not itself consent/confirm-gated: the gate lives at the rail
         # seam, which this entry is structurally excluded from, and the
         # consent/confirmation turn HAS already happened when this dispatches.
+        # outwardness: PRIVATE (#1509 axis) — a carrier, not an action: the
+        # deferred action's OWN entry carries its outwardness, and the
+        # consent/disclosure turn has already happened at the rail seam when
+        # this dispatches (structurally excluded from the rail, like its
+        # effect note above).
         "confirm_pending_action": WorkflowEntry(
             entry_point=run_confirm_pending_action_workflow,
             effect=EffectClass.DESTRUCTIVE,
+            outwardness=Outwardness.PRIVATE,
             description="Execute a confirmed pending destructive action (#1190)",
             requires_context=["pending_action", "intent_service"],
         ),
@@ -1001,9 +1042,12 @@ def register_default_workflows() -> None:
         # #1557/Arch 2026-08-09) — acceptance writes the verified value into
         # users.preferences JSONB (the set_default_repo precedent: a durable
         # per-user preference write, mutating but not destructive).
+        # outwardness: PRIVATE (#1509 axis) — writes the user's own
+        # verified-inference store; no communication act.
         "verify_inference": WorkflowEntry(
             entry_point=run_verify_inference_workflow,
             effect=EffectClass.WRITE,
+            outwardness=Outwardness.PRIVATE,
             description="Store a user-verified inference (#1510 read-back acceptance)",
             requires_context=["pending_action"],
         ),
@@ -1016,9 +1060,12 @@ def register_default_workflows() -> None:
         # StandupConversationHandler.start_conversation → manager
         # .create_conversation → repo.add — a durable conversation row is
         # created; mutating, not destructive).
+        # outwardness: PRIVATE (#1509 axis) — creates the user's own
+        # conversation row; nothing lands in front of anyone else.
         "standup_interview": WorkflowEntry(
             entry_point=run_standup_interview_workflow,
             effect=EffectClass.WRITE,
+            outwardness=Outwardness.PRIVATE,
             description="Start the #585 standup interview from an accepted invitation (#1591)",
             requires_context=["pending_action", "intent_service"],
         ),
@@ -1050,9 +1097,12 @@ def register_default_workflows() -> None:
         # of an explicitly-confirmed "yes" (the REAL #1190 gate) — the stored
         # 'clear'=delete preference changes the MAPPING, never the consent
         # tier (consent matrix: DESTRUCTIVE -> CONFIRM in every cell).
+        # outwardness: PRIVATE (#1509 axis) — deletes the user's own
+        # reminder/task rows; no communication act.
         "clear_reminders_delete": WorkflowEntry(
             entry_point=run_clear_reminders_delete_workflow,
             effect=EffectClass.DESTRUCTIVE,
+            outwardness=Outwardness.PRIVATE,
             description="Execute a #1190-confirmed #1605 batch reminder/todo delete",
             requires_context=["intent", "intent_service"],
         ),

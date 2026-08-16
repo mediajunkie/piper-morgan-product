@@ -18,7 +18,7 @@ from typing import Any, Callable, Coroutine, Dict, Optional
 
 import structlog
 
-from services.shared_types import EffectClass
+from services.shared_types import EffectClass, Outwardness
 
 logger = structlog.get_logger(__name__)
 
@@ -55,6 +55,22 @@ class WorkflowEntry:
 
     entry_point: Callable[..., Coroutine[Any, Any, Any]]
     effect: EffectClass
+    # #1509 outwardness axis (ratified PM+CXO+PPM 2026-08-15): who else
+    # witnesses the action — orthogonal to effect, declared HERE so the two
+    # ride together (one declaration site, per the effect precedent). The
+    # scope boundary lives on the Outwardness enum (shared_types.py): OUTWARD
+    # = the action IS a communication act, nothing broader.
+    #
+    # DEFAULTED (unlike effect — a deliberate, flagged asymmetry): the
+    # default direction is safe in the consent-tier sense. PRIVATE reproduces
+    # today's behavior exactly — a mis-defaulted PRIVATE on a future outward
+    # action can never skip a gate or weaken a tier (the WRITE consent check
+    # and the DESTRUCTIVE confirm are outwardness-independent); the only loss
+    # is the TRUST-mode disclosure line, a transparency add-on. Every entry
+    # whose effect is WRITE-or-above still declares outwardness EXPLICITLY
+    # with evidence (see workflow_entries.py) — the default exists for READ
+    # entries, where outwardness cannot alter any consent cell.
+    outwardness: Outwardness = Outwardness.PRIVATE
     resume_point: Optional[Callable[..., Coroutine[Any, Any, Any]]] = None
     requires_context: list[str] = field(default_factory=list)
     description: str = ""
