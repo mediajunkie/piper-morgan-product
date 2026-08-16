@@ -1,7 +1,24 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-15 22:22 PT (STOP). Cron re-armed at STOP (see Cron section).
+**Last rewritten**: 2026-08-16 09:53 PT (WORK). Cron **`046720e1`**, unchanged.
+
+## ✅ SURFACES TAXONOMY v0.1 DRAFT — PPM's MVP consult answered 2026-08-16
+CXO's draft landed (`docs/internal/design/surfaces-taxonomy-2026-08-16.md`), the item flagged
+below to watch for. Read in full, answered the specific consult: **of §4's 7 ✏️-marked cells, all
+seven read aspirational-for-MVP** — 3 chat-host/Slack cells deferred by **#1481's still-open,
+still-ratified hold** (checked fresh: Arch's 08-04 ruling, no comment since — "Slack inbound is
+not a beta surface"), 4 CLI cells deferred because CLI is maintained-not-primary under PDR-006's
+MCP-plus-thin-web-UI decision. **Caught one inference trap the doc itself didn't flag**: §0/§3 use
+F-Settings×Chat-host as the *illustrative example* proving the two axes are orthogonal — that's
+PM using it to make a conceptual point, not signaling it as required MVP scope. Named the
+distinction explicitly so it doesn't quietly launder into "PM wants this built." **Offered a
+general rule instead of seven one-off calls**: any cell gated by an already-ratified hold
+inherits that hold's status automatically, re-evaluate as a batch if/when #1481 clears, rather
+than needing a PPM re-consult per cell. One cell (F-Errors × Notification layer — does a failure
+ever warrant a push?) nudged toward a considered *no* rather than staying open indefinitely, since
+that's a different kind of undecided than "not built yet." Sent, cc Arch/Exec/PM/Lead. Not
+blocking ratification — everything answered was "defer."
 
 ## 🔴 SURFACE 3 WAS NEVER A PHANTOM — I was wrong, and the fix is bigger than name-or-strike
 ⚠️ **Correcting my own carried claim below (line ~345, "Surface 3 is a PHANTOM")** — PM asked for
