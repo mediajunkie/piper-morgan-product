@@ -45,6 +45,20 @@ draft honestly, and clearly-imperative asks still route normally
 (abandoning the draft — the carrier's documented off-intent rule). See
 ``is_body_prose_answer`` for the discrimination and its stated limits.
 
+#1630 (2026-08-15, the unarmed face of the same theft): "help me write a
+ticket" with NO extractable subject used to arm nothing (no subject = no
+draft yet), so the user's answer to "What's it about?" was a bare prose
+turn — the exact #1627 steal shape, one turn earlier in the flow, with
+nothing holding it above the greedy chain. The collaborate turn now arms a
+minimal SUBJECTLESS carrier (``build_drafted_issue_offer`` with
+``subject=None``) so the #1627 hold covers the first answer too: the FIRST
+bound prose names the draft (``derive_subject_from_prose`` → title, and
+``intent.context["title"]`` so the create rail files it — the subjectless
+original message slot-fills nothing) and seeds the body per the existing
+append semantics. Same discriminator, same seam, same exits — the
+subjectless copy still teaches no file phrase until the draft has content
+(#1571's never-teach-unbound rule).
+
 Deliberately NOT built (flagged for Lead): instruction-shaped draft
 refinement ("make the title snappier", "add a labels section"). #1627 binds
 prose CONTENT (appended to the body verbatim); it does not interpret
@@ -101,14 +115,17 @@ def detect_file_command(message: Optional[str]) -> Optional[Dict[str, Any]]:
 
 # --- #1627: mid-compose prose binding --------------------------------------
 
-# A turn at/above this length (or any multi-line turn) is prose regardless of
-# how it opens. Body answers often LEAD with an imperative-looking verb ("Add
-# a guard so that deleting a project…") or a politeness word the unanchored
-# accept row would claim ("Please note that…"); commands are short and
-# single-line — nobody types 200 characters of "close issue #108". The floor
-# is deliberately above every taught command phrase and below PM's live
-# stolen answer by a wide margin.
-_PROSE_LENGTH_FLOOR = 160
+# A turn at/above soft_invocation.PROSE_LENGTH_FLOOR (or any multi-line
+# turn) is prose regardless of how it opens. Body answers often LEAD with an
+# imperative-looking verb ("Add a guard so that deleting a project…") or a
+# politeness word the unanchored accept row would claim ("Please note
+# that…"); commands are short and single-line — nobody types 200 characters
+# of "close issue #108". The floor is deliberately above every taught
+# command phrase and below PM's live stolen answer by a wide margin.
+# #1631 lifted this shape check into soft_invocation (``is_prose_reply``,
+# consulted by ``detect_offer_response`` itself) so EVERY armed offer kind
+# gets it; ``is_body_prose_answer`` below imports the shared helper — one
+# threshold, no drift.
 
 # Anchored-imperative supplement: verb families the shared collaborate-gate
 # execute check (collaboration_gate._EXECUTE_RE) deliberately omits — reads
@@ -160,13 +177,22 @@ def is_body_prose_answer(message: Optional[str]) -> bool:
 
     if detect_bare_exit(text):
         return False  # "cancel" / "stop" / "forget it" → honest decline
-    if "\n" in text or len(text) >= _PROSE_LENGTH_FLOOR:
+    from services.intent_service.soft_invocation import (
+        detect_offer_response,
+        is_prose_reply,
+    )
+
+    if is_prose_reply(text):
         # Checked BEFORE the accept/decline consult on purpose: the
         # unanchored accept/decline rows ("^please\s", "\bnot today\b")
         # match into long prose and would file or drop a half-shaped draft
-        # off a substring of the body answer.
+        # off a substring of the body answer. (#1631 taught
+        # detect_offer_response the same shape override, but this check must
+        # stay FIRST here and cannot be delegated: prose means BIND to the
+        # draft — without it a long "Add a guard…" answer would fall through
+        # to the anchored-imperative checks below and route away as a
+        # command.)
         return True
-    from services.intent_service.soft_invocation import detect_offer_response
 
     if detect_offer_response(text) is not None:
         return False  # short accept/decline — the generic seam's business
@@ -182,16 +208,61 @@ def is_body_prose_answer(message: Optional[str]) -> bool:
     return True
 
 
+# #1630: a derived title is a HEADLINE, not the whole answer — cap it where
+# GitHub titles stay scannable and let the body carry the prose verbatim.
+_TITLE_MAX_CHARS = 80
+
+# First sentence of a line: everything up to the first terminal punctuation
+# mark followed by whitespace (or end). Deterministic-good-enough — an
+# abbreviation period mid-sentence shortens the title, never loses prose
+# (the body always carries the full answer).
+_FIRST_SENTENCE_RE = re.compile(r"(.+?[.!?])(?:\s|$)")
+
+
+def derive_subject_from_prose(prose: str) -> str:
+    """#1630 — name a subjectless draft from its first bound prose answer.
+
+    The subjectless ask ("help me write a ticket") slot-fills no title, so
+    the first thing the user says ABOUT the issue is the best available
+    subject: first non-empty line, trimmed to its first sentence, capped at
+    a word boundary. The full prose still lands in the body verbatim — the
+    title is a headline over it, and the user can keep shaping both before
+    anything files.
+    """
+    first_line = next(
+        (ln.strip() for ln in prose.strip().splitlines() if ln.strip()), ""
+    )
+    m = _FIRST_SENTENCE_RE.match(first_line)
+    candidate = (m.group(1) if m else first_line).strip()
+    candidate = candidate.strip("\"'‘’“”").rstrip(" .!?,;:")
+    if len(candidate) > _TITLE_MAX_CHARS:
+        cut = candidate[:_TITLE_MAX_CHARS].rsplit(" ", 1)[0].rstrip(" ,;:—-")
+        candidate = f"{cut}…"
+    return candidate
+
+
+def _draft_summary(subject: Optional[str], repository: Optional[str]) -> str:
+    """The carrier's one-line summary (what the generic confirm copy names)."""
+    summary = (
+        f'file the drafted issue "{subject}"' if subject else "file the drafted issue"
+    )
+    if repository:
+        summary += f" in {repository}"
+    return summary
+
+
 def build_drafted_issue_offer(
     intent: Intent,
-    subject: str,
+    subject: Optional[str],
     repository: Optional[str] = None,
 ) -> Dict[str, Any]:
     """The #846 pending-offer record binding a rendered draft (the generic
-    deferred-action carrier shape documented in ``destructive_confirm.py``)."""
-    summary = f'file the drafted issue "{subject}"'
-    if repository:
-        summary += f" in {repository}"
+    deferred-action carrier shape documented in ``destructive_confirm.py``).
+
+    ``subject=None`` (#1630) arms the minimal SUBJECTLESS carrier: the ask
+    had no extractable subject, so the draft has no title yet — the first
+    bound prose answer names it (see ``_bind_body_prose``)."""
+    summary = _draft_summary(subject, repository)
     return {
         "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
         "pending_action": {
@@ -237,6 +308,18 @@ def _bind_body_prose(
     SAME offer, and show the draft honestly. Consuming the turn here is the
     hold: no classification surface ever sees the prose."""
     draft = pending_action.setdefault("draft", {})
+    # #1630: a SUBJECTLESS draft (armed at the "help me write a ticket" ask,
+    # no extractable subject) is NAMED by its first bound answer — the prose
+    # becomes both the subject (headline) and the body seed.
+    titled_now = False
+    if not (draft.get("title") or "").strip():
+        derived = derive_subject_from_prose(prose)
+        if derived:
+            draft["title"] = derived
+            pending_action["summary"] = _draft_summary(
+                derived, draft.get("repository")
+            )
+            titled_now = True
     existing = (draft.get("body") or "").strip()
     body = f"{existing}\n\n{prose.strip()}" if existing else prose.strip()
     draft["body"] = body
@@ -250,6 +333,13 @@ def _bind_body_prose(
     if intent is not None:
         intent.context = dict(intent.context or {})
         intent.context["description"] = body
+        if titled_now:
+            # #1630: the subjectless original message slot-fills no title at
+            # the create rail (no "about X" to extract) — the derived title
+            # must ride the intent's own context or "file it" would hit the
+            # #1490 what-should-it-be-about re-ask, losing the one-confirm
+            # promise the draft copy teaches.
+            intent.context["title"] = draft["title"]
 
     rearmed = True
     try:
@@ -280,10 +370,18 @@ def _bind_body_prose(
     title = draft.get("title") or "(untitled)"
     intent_data = _retained_intent_data(pending_action)
     intent_data["drafted_issue_body_bound"] = True
+    lead = (
+        # #1630: the first answer on a subjectless draft STARTED it — say
+        # so, and show the derived title for shaping.
+        "Got it — I've started the draft from that. Nothing is filed yet. "
+        "Here's where it stands:\n\n"
+        if titled_now
+        else "Added to the draft — nothing is filed yet. Here's where it "
+        "stands:\n\n"
+    )
     return {
         "message": (
-            "Added to the draft — nothing is filed yet. Here's where it "
-            "stands:\n\n"
+            f"{lead}"
             f"**Title**: {title}\n\n"
             f"**Body**:\n{body}\n\n"
             "Keep going if there's more to add. When it's ready, say "

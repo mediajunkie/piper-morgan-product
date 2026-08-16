@@ -2986,7 +2986,9 @@ class TestProjectSpecificQuery:
         )
 
         # Assert
-        assert "#999: Untitled" in result
+        # #1628: missing/degenerate titles render as an id-carrying placeholder
+        # (shared display_title guard), not the bare "Untitled" default.
+        assert "#999: (untitled issue #999)" in result
 
     def test_format_without_user_context_organization(self, canonical_handlers):
         """Test format without organization in user context."""

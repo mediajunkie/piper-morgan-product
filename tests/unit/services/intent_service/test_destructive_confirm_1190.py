@@ -22,7 +22,7 @@ from unittest.mock import AsyncMock
 import pytest
 
 from services.domain.models import Intent
-from services.intent.intent_service import IntentService
+from services.intent.intent_service import IntentProcessingError, IntentService
 from services.intent_service.classifier import IntentClassifier
 from services.intent_service.destructive_confirm import (
     CONFIRM_PENDING_ACTION_WORKFLOW,
@@ -413,6 +413,59 @@ class TestEndToEndConfirmationTurn:
             message="yes", session_id=sid, user_id=_USER
         )
         update_mock.assert_awaited_once_with(109, state="closed")
+
+    async def test_long_prose_reply_neither_fires_nor_declines_1631(
+        self, live_service, monkeypatch
+    ):
+        """#1631: a long free-text reply to an armed destructive confirm must
+        not be claimed by the greedy accept row ("Please …" prefix) or the
+        unanchored decline row ("not today" substring). RED pre-fix: the
+        accept-greed prose ACCEPTED the confirm and update_issue fired; the
+        decline-greed prose returned the honest-cancel copy. GREEN: prose is
+        the off-intent tier — the pop cancels the pending action, nothing
+        fires, and the turn falls through to normal processing (here the
+        explosive LLM boundary, proving no offer seam claimed it)."""
+        cases = (
+            (
+                "accept-greed",
+                "Please note that we should not close this yet, not today "
+                "anyway, because the migration is still running and three "
+                "boards reference this issue while it stays open — let's "
+                "revisit once the cutover is verified and announced.",
+            ),
+            (
+                "decline-greed",
+                "The migration is still running so I would rather we leave "
+                "it alone, not today at least — three boards reference this "
+                "issue and closing it would break them; we can revisit after "
+                "the cutover is verified and announced to the team.",
+            ),
+        )
+        for label, prose in cases:
+            assert len(prose) >= 160 and "\n" not in prose, label
+            update_mock = _explosive_router(monkeypatch, allow_update=True)
+            sid = f"e2e-1631-{label}"
+            await live_service.process_intent(
+                message="close issue #108", session_id=sid, user_id=_USER
+            )
+            try:
+                result = await live_service.process_intent(
+                    message=prose, session_id=sid, user_id=_USER
+                )
+                # However the prose turn resolves downstream, it must not be
+                # the decline copy — declining was never what the user said.
+                assert "won't close issue #108" not in result.message, label
+            except IntentProcessingError as exc:
+                # Off-intent fell through to normal classification and hit
+                # the explosive LLM boundary (which the classifier wraps as
+                # INTENT_CLASSIFICATION_FAILED) — exactly the point: neither
+                # accept nor decline claimed the turn at the offer seam.
+                assert (
+                    "LLM boundary touched" in str(exc)
+                    or "INTENT_CLASSIFICATION_FAILED" in str(exc)
+                ), (label, str(exc))
+            update_mock.assert_not_awaited()  # the write never fired
+            assert _pending_offers(live_service).get(sid) is None  # popped
 
     async def test_reopen_defers_then_fires_open_state(
         self, live_service, monkeypatch

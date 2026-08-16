@@ -505,7 +505,15 @@ async def handle_verification_turn_meta(
     if meta is VerificationMetaMode.TRUST_INFERENCES:
         from services.intent_service.soft_invocation import detect_offer_response
 
-        declines_current = detect_offer_response(message) == "decline"
+        # #1631 opt-out (prose_override=False): meta feedback legitimately
+        # arrives as long prose ("no, that's wrong — and stop asking me every
+        # time, because…"), and a decline caught inside it is the
+        # conservative direction here — it only prevents a store, nothing
+        # fires. The default override would silently store the current
+        # inference despite the "no".
+        declines_current = (
+            detect_offer_response(message, prose_override=False) == "decline"
+        )
         if not declines_current and key is not None:
             stored_current = await store_verified_inference(
                 effective_user,

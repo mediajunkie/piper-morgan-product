@@ -11,6 +11,10 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any, Protocol, runtime_checkable
 
+# #1628: the #1622 degenerate-title guard now lives in a shared util so chat-side
+# listing surfaces apply the same rule; behavior here is identical.
+from services.utils.text_sanitation import display_title as _display_title
+
 from .models import EntityType, Provenance, RadarEntity
 
 
@@ -46,23 +50,6 @@ def _get(summary: Any, key: str, default: Any = None) -> Any:
     return (
         summary.get(key, default) if isinstance(summary, dict) else getattr(summary, key, default)
     )
-
-
-def _display_title(value: Any, fallback: str) -> str:
-    """Backing-store title → safe display title; ``fallback`` when degenerate (#1622).
-
-    A degenerate title — empty, whitespace-only, a single glyph, or pure
-    punctuation (e.g. the literal ``{`` of a JSON-fragment issue title) — is
-    garbage-in that must not render as signal: PM's standup Watch list showed
-    ``'"{"' hasn't moved in 380 days``. Callers pass a fallback that carries the
-    item's identifier where one exists (e.g. ``(untitled work item #100)``) so
-    the item stays findable/fixable rather than silently dropped — these are
-    real observed entities; hiding them would fabricate an all-clear.
-    """
-    text = str(value).strip() if value is not None else ""
-    if len(text) <= 1 or not any(ch.isalnum() for ch in text):
-        return fallback
-    return text
 
 
 class ConversationEntitySource:

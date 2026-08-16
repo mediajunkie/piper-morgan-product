@@ -102,22 +102,26 @@ three things are still true when you run it — not the license or the codebase 
 
 ---
 
-## Open questions / not yet resolved
+## Decisions — RATIFIED 2026-08-15 (PM, in conversation with Exec)
 
-- **Placement**: where does this live publicly? Candidate: alongside the privacy policy, linked
-  from the README and the license itself. Not decided.
-- **Relationship to the license text**: should Apache 2.0's own preamble or a NOTICE file point
-  here? Legal question, not drafted here.
-- **A fourth commitment?** HOST's list was a first pass, explicitly open to more. The retention
-  question (§3/§4 of the retention scaffold) may eventually produce a values-relevant statement of
-  its own once PM decides it — deliberately not anticipated here.
-- **Voice — PM's decision, both a lean and a counter-lean on record**: drafted in PM's own
-  first-person voice, consistent with the blog. HOST leans third-person/institutional instead, for
-  a reason specific to this document's job: it sits next to a license file and gets checked by
-  strangers evaluating a fork, possibly years out, with no context on PM as a person — first-person
-  voice works when the reader already trusts the speaker, and this document's whole purpose is to
-  work for a reader who doesn't yet. Not drafted in that voice here; noted as HOST's lean for PM to
-  weigh, not applied unilaterally.
+1. **Placement — CONFIRMED.** Lives in `docs/legal/` alongside the privacy policy; linked from the
+   README and the license itself.
+2. **Relationship to the license text — RESOLVED.** A NOTICE file at the repo root (Apache 2.0
+   §4(d)'s standard mechanism for exactly this — attribution/pointers that travel with the code
+   without altering the license's own legal text) carries one sentence pointing here. LICENSE
+   itself is not touched.
+3. **A fourth commitment — NOT ADDED, deliberately.** HOST's own screening test (would a fork
+   dropping this quietly still look like Piper Morgan?) is the right filter, and manufacturing a
+   fourth to round out the number risks diluting it with something less sharply fork-detectable.
+   Ships at three. The retention-scope commitment remains the named future candidate, once the
+   retention scaffold's own open questions resolve — not a gap today.
+4. **Voice — THIRD-PERSON/INSTITUTIONAL, per HOST's lean.** PM's ruling: *"important distinction,
+   well drawn."* The reasoning that carried it: this document's actual reader is a stranger
+   evaluating a fork, possibly years out, with no prior relationship to PM — the one register on
+   the site where institutional third-person carries more weight than personal first-person warmth,
+   unlike the blog/Ship/insights where first-person works because the reader already follows PM's
+   voice by choice. **Still drafted in first person below — Comms/HOST to execute the conversion**;
+   this is a voice-craft task, not a mechanical find-replace, and belongs with whoever drafted it.
 
-**Next step**: PM. Substance is HOST-checked; the open decisions above (placement, license
-relationship, a possible fourth commitment, voice) are PM's to make.
+**Next step**: Comms + HOST convert the prose to third-person per the ratified decision above, then
+this scaffold is ready to leave DRAFT status.

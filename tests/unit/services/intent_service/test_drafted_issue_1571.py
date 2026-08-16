@@ -209,10 +209,16 @@ class TestCollaborateTurnArmsBinding:
         # The copy teaches the phrase that NOW ROUTES — never the unbound lie.
         assert "file it as is" in result.message
 
-    async def test_no_subject_draft_does_not_arm(self, svc):
-        """No extractable subject = no draft yet — nothing to bind, and the
-        copy must not teach 'file it as is' (that would be #1571's original
-        defect again: teaching a phrase with nothing behind it)."""
+    async def test_no_subject_draft_arms_subjectless_but_teaches_no_file_phrase(
+        self, svc
+    ):
+        """PIN FLIPPED BY #1630 (this test used to assert no-subject = no
+        arm). A subjectless ask now arms the minimal SUBJECTLESS carrier so
+        the #1627 hold covers the "What's it about?" answer — the unarmed
+        opening was the exact theft shape, one turn earlier. What #1571
+        still requires: the copy must not teach 'file it as is' while the
+        draft has no content (teaching a phrase with nothing behind it was
+        #1571's original defect)."""
         sid = "sess-1571-nosubj"
         intent = _compose_intent("help me write a ticket")
         with (
@@ -222,9 +228,12 @@ class TestCollaborateTurnArmsBinding:
             patch(f"{ROUTER}.create_issue", new=AsyncMock()),
         ):
             result = await svc._handle_create_issue(intent, "wf-1", sid, user_id=_USER)
-        assert result.intent_data.get("drafted_issue_pending") is False
-        assert _pending_offers(svc) == {}
+        assert result.intent_data.get("drafted_issue_pending") is True
+        stored = next(iter(_pending_offers(svc).values()))
+        assert stored["pending_action"]["kind"] == DRAFTED_ISSUE_KIND
+        assert stored["pending_action"]["draft"].get("title") is None
         assert "file it as is" not in result.message
+        assert "What's it about?" in result.message
 
     async def test_confirmed_redispatch_skips_the_gate(self, svc):
         """The acceptance re-dispatch carries CONFIRMED_CONTEXT_KEY — the

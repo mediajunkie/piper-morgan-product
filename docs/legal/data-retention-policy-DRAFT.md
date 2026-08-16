@@ -1,6 +1,8 @@
 # Data Retention & Learning-Scope Policy — Piper Morgan (scaffold)
 
-> ⚠️ **DRAFT SCAFFOLD — for PM review and blessing, not publication.**
+> ✅ **§3 and §4 RATIFIED 2026-08-15** — retain all by default (no auto-expiry), user-facing
+> retention settings scoped to the Enterprise milestone (#1634), not MVP. Still a scaffold for
+> §1/§2's exact wording before publication as the live privacy-policy text.
 > **Origin**: PM asked Exec for a retention policy draft (2026-08-13), named it HOST's remit (trust/
 > safety, not product or design), and gave four framing points to build from — see `mailboxes/host/
 > read/brief-exec-to-host-cc-pm-draft-a-retention-policy-your-remit-per-pm-2026-08-13.md` for the full
@@ -89,7 +91,14 @@ governed by whatever policies they set for their own deployment. The published p
 plainly rather than silently scope everything to the hosted case and let a self-hosted reader assume
 it applies to them too.
 
-## 3. Open question — should there be a default limit on retention? (PM's lean stated; HOST's read given, not just recorded)
+## 3. RATIFIED 2026-08-15 (PM) — no default retention limit; retain all by default
+
+**Decision: retain all data by default, no automatic expiry.** PM agreed with HOST's independent
+reasoning (below), not just the stated lean. This is now the policy, not an open question.
+
+<details><summary>HOST's original reasoning (kept for the record)</summary>
+
+## Open question — should there be a default limit on retention? (PM's lean stated; HOST's read given, not just recorded)
 
 **PM's lean, stated but genuinely open**: no default retention limit. Exec's brief asked HOST to
 actually weigh this rather than just record the lean as the answer, so:
@@ -108,7 +117,16 @@ is: **no default expiry, because the default should match the product's core pro
 user-facing control over their own retention (§4), because indefinite-by-default should not mean
 indefinite-with-no-say.**
 
-## 4. Open question — should Piper Morgan offer user-facing retention settings? (genuinely undecided, left open)
+</details>
+
+## 4. RATIFIED 2026-08-15 (PM) — retention settings on the roadmap, Enterprise milestone
+
+**Decision: yes, eventually — scoped to the Enterprise milestone, not MVP.** Filed as #1634. Real
+new product work (no such control exists in the code today), not a policy-wording change.
+
+<details><summary>Original framing (kept for the record)</summary>
+
+## Open question — should Piper Morgan offer user-facing retention settings? (genuinely undecided, left open)
 
 Undecided per PM's framing, and this scaffold leaves it open rather than pre-deciding it. Worth naming
 the connection to §3 explicitly: **if the answer to §3 is "no default limit," the case for §4 becomes
@@ -117,6 +135,8 @@ story if it can point to a way for a user to set their own limit. Today, no such
 code (verified: no retention-preference field or endpoint anywhere in `web/api/routes/` or
 `services/database/`) — so if PM decides yes on §4, that is new product work, not a policy-wording
 change over existing capability.
+
+</details>
 
 ## 5. What HOST verified (spot-check, not a full re-audit)
 

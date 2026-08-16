@@ -11,6 +11,10 @@ THE DERIVATION CHAIN (nothing here is hand-written per capability — the
     workflow registry (WorkflowEntry.effect, declared per #1557)
         -> decide_consent (consent_gate.py — THE one decision function)
             -> per-effect behavior lines (what happens on an ambiguous ask)
+    workflow registry (WorkflowEntry.outwardness, declared per #1509)
+        -> per-entry outward marker (#1632: which actions land in front of
+           other people — OUTWARD entries only; absence means private, a
+           convention stated ONCE in :data:`OUTWARDNESS_CONVENTION`)
     chat_pointers ledger (POINTER rows, resolution-VERIFIED by the #1433
     reachability ratchet on every build)
         -> example asks (real, routable phrasings — never a taught phrase
@@ -45,7 +49,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
-from services.shared_types import EffectClass
+from services.shared_types import EffectClass, Outwardness
 
 # Per-EFFECT phrases (3 tiers, keyed by the enum — a tier vocabulary, not a
 # per-capability hand list; a new tier value fails loudly in describe_effect).
@@ -56,12 +60,43 @@ _EFFECT_PHRASES: Dict[EffectClass, str] = {
     EffectClass.DESTRUCTIVE: "changes or removes existing work",
 }
 
+# Per-OUTWARDNESS marker (#1632, same tier-vocabulary shape). Only OUTWARD
+# carries copy: private is the unmarked default, stated once in
+# OUTWARDNESS_CONVENTION rather than repeated as noise on every private
+# entry. Explicit None row keeps the defaultless property — a new
+# Outwardness value fails loudly in describe_outwardness until it gets a
+# row here in the same commit.
+# ⚠️ COPY SEAM: CXO owns voice; adjust here, one place.
+_OUTWARDNESS_PHRASES: Dict[Outwardness, Optional[str]] = {
+    Outwardness.PRIVATE: None,  # unmarked BY CONVENTION — see OUTWARDNESS_CONVENTION
+    Outwardness.OUTWARD: (
+        "posts where your team can see it — visible to others the moment it happens"
+    ),
+}
+
+# The one-time legend for the absence-means-private convention: consumers
+# rendering the catalog state this ONCE (preamble/legend position), never
+# per entry. ⚠️ COPY SEAM: CXO owns voice; adjust here, one place.
+OUTWARDNESS_CONVENTION = (
+    "Unless an action says otherwise, what I do stays between us — "
+    "only the marked ones land in front of other people."
+)
+
 
 def describe_effect(effect: EffectClass) -> str:
     """User-register phrase for what an effect tier does in the world.
     Raises KeyError on an unknown tier — a new EffectClass value must get a
     phrase in the same commit (defaultless on purpose, the #1557 property)."""
     return _EFFECT_PHRASES[effect]
+
+
+def describe_outwardness(outwardness: Outwardness) -> Optional[str]:
+    """User-register marker for who else witnesses the action (#1632), or
+    None for the unmarked private default (the convention
+    OUTWARDNESS_CONVENTION states once). Raises KeyError on an unknown tier —
+    a new Outwardness value must get an explicit row in the same commit
+    (defaultless on purpose, the #1557 property)."""
+    return _OUTWARDNESS_PHRASES[outwardness]
 
 
 def consent_behavior_line(effect: EffectClass) -> str:
@@ -91,6 +126,8 @@ class CapabilityDescription:
     effect: EffectClass
     effect_phrase: str  # describe_effect(effect)
     consent_line: str  # consent_behavior_line(effect)
+    outwardness: Outwardness  # who else witnesses it (#1509 axis, from the entry)
+    outward_phrase: Optional[str]  # describe_outwardness(outwardness); None = private
     example_ask: Optional[str]  # a POINTER utterance that routes here, if one exists
 
 
@@ -140,6 +177,8 @@ def capability_catalog() -> List[CapabilityDescription]:
             effect=entry.effect,
             effect_phrase=describe_effect(entry.effect),
             consent_line=consent_behavior_line(entry.effect),
+            outwardness=entry.outwardness,
+            outward_phrase=describe_outwardness(entry.outwardness),
             example_ask=examples.get(key),
         )
         for key, entry in _unique_rail_entries()

@@ -26,7 +26,7 @@ from services.intent_service.workflow_dispatcher import (
     wired_chat_actions,
 )
 from services.intent_service.workflow_entries import register_default_workflows
-from services.shared_types import EffectClass
+from services.shared_types import EffectClass, Outwardness
 
 
 class TestEffectPhrases:
@@ -102,6 +102,79 @@ class TestCatalogDerivation:
     def test_known_pointer_backed_capability_carries_its_ask(self):
         by_action = {d.action: d for d in legibility.capability_catalog()}
         assert by_action["list_reminders_query"].example_ask == "what reminders do I have?"
+
+
+class TestOutwardMarker:
+    """#1632: the catalog states outwardness per action, derived from the
+    registry's #1509 axis. Marker on OUTWARD entries ONLY — absence IS the
+    private convention, stated once (OUTWARDNESS_CONVENTION), never repeated
+    as per-entry noise. No action name is hardcoded anywhere in the chain."""
+
+    def test_marked_actions_are_exactly_the_outward_registry_entries(self):
+        """The AC property, derived not listed: catalog marks an action iff
+        its registry entry declares OUTWARD."""
+        register_default_workflows()
+        expected = {
+            key
+            for key, entry in legibility._unique_rail_entries()
+            if entry.outwardness is Outwardness.OUTWARD
+        }
+        marked = {d.action for d in legibility.capability_catalog() if d.outward_phrase}
+        assert marked == expected
+        assert marked, "the OUTWARD tier is populated today (issue/comment families)"
+
+    def test_private_entries_carry_no_marker(self):
+        """PRIVATE gains no extra noise — None, not a 'stays private' line."""
+        catalog = legibility.capability_catalog()
+        private = [d for d in catalog if d.outwardness is Outwardness.PRIVATE]
+        assert private, "private-tier entries exist to assert against"
+        for entry in private:
+            assert entry.outward_phrase is None
+
+    def test_marker_is_derived_not_stored(self):
+        for entry in legibility.capability_catalog():
+            assert entry.outward_phrase == legibility.describe_outwardness(
+                entry.outwardness
+            )
+
+    def test_every_outwardness_tier_has_an_explicit_row(self):
+        """Denominator: all len(Outwardness) tiers covered — a new tier fails
+        here (and in describe_outwardness's KeyError) until it gets a row."""
+        for tier in Outwardness:
+            legibility.describe_outwardness(tier)  # KeyError = missing row
+
+    def test_marker_speaks_user_register_not_enum_names(self):
+        phrase = legibility.describe_outwardness(Outwardness.OUTWARD)
+        assert phrase
+        assert "OUTWARD" not in phrase and "PRIVATE" not in phrase
+        assert "see it" in phrase
+
+    def test_registry_flip_flows_through_with_zero_catalog_edits(self, monkeypatch):
+        """The AC's drift-proof: flip one PRIVATE registry entry to OUTWARD
+        (fixture-only, monkeypatch-restored) and the catalog marks it with no
+        change to this module — proof the marker is registry-derived."""
+        register_default_workflows()
+        key, entry = next(
+            (k, e)
+            for k, e in legibility._unique_rail_entries()
+            if e.outwardness is Outwardness.PRIVATE
+        )
+        marked_before = {
+            d.action for d in legibility.capability_catalog() if d.outward_phrase
+        }
+        assert key not in marked_before
+        monkeypatch.setattr(entry, "outwardness", Outwardness.OUTWARD)
+        marked_after = {
+            d.action for d in legibility.capability_catalog() if d.outward_phrase
+        }
+        assert key in marked_after
+        assert marked_after == marked_before | {key}
+
+    def test_convention_is_stated_once_in_user_register(self):
+        """The legend consumers render once: plain language, no enum names."""
+        legend = legibility.OUTWARDNESS_CONVENTION
+        assert "other people" in legend
+        assert "OUTWARD" not in legend and "PRIVATE" not in legend
 
 
 class TestCoverageDenominator:
