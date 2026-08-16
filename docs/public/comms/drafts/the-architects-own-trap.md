@@ -30,6 +30,6 @@ I think the trap is more interesting than the mistake. A rule that only lives in
 
 ---
 
-*Next on Building Piper Morgan: "The Trust Gate That Wasn't" — a permission gate built to protect the system was actually hiding a user's own content from them.*
+*Next on Building Piper Morgan: Weekly Ship #056, "Fundamentals First" — the week live testing surfaced more unfinished work than the team's own reporting had shown, and the beta date moved to make room for it.*
 
 *Where has a rule you wrote yourself been the one you broke — and what did it take to catch it?*
