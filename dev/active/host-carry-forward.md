@@ -5,13 +5,12 @@
 ## Standing checks — proven under repeated real use
 
 ✅ **Cron-count fix**: `grep -c "^## Fire"` vs. comma count before writing STOP. **Known exception found 08-12**: if a multi-fire backlog gets absorbed into one catch-up START (date rolled while away, several prompts arrived stacked in one turn), the heading count will read LOW relative to the comma count even on a genuinely-last fire — because 2+ cron slots collapsed into 1 heading. When that happens, trust the **date-based rule** (next scheduled fire's calendar date ≠ today → STOP), not the heading count, and say so explicitly in the STOP entry rather than silently overriding the count check.
-✅ **Step 1c headroom**: reads the guard-convention count from `check-derived-drift.sh`'s own output. 187/13 lines as of 08-12 (was 186/14 — one memory added, still a slow flat-ish rate, not urgent).
+✅ **Step 1c headroom**: reads the guard-convention count from `check-derived-drift.sh`'s own output. **CIO's hybrid-packing landed 08-16** (`rc=0`, MEMORY.md now 91 lines / 180 entries, packed several terse-slug entries per line) — headroom jumped from 12 to ~109. Was 188/12 pre-landing.
 ✅ **Step 2c (cohort-freeze)**: reads `origin/main` directly (CIO's fix), prints `ref=`/`tip=`. Held clean (`rc=0`, non-alarming) across a genuinely low-activity post-reboot morning on 08-11 and every fire since — the non-discriminating case is working as designed, not silently passing.
 ✅ **`ROLE-PORTFOLIO-HOST.md` refresh discipline, corrected 08-12**: a content edit is NOT the same act as bumping `last_updated`/`refreshed` — my own 08-07 edit did the former and not the latter, and `check-refresh-promises.py` correctly re-flagged it. Fixed for real (frontmatter bumped alongside real §2 content), verified via re-running the checker, not assumed.
 
 ## Watching, not owed
 
-- **CIO's hybrid-packing proposal** (further MEMORY.md headroom, lossy on 72% of entries) — PM's call, still open, don't chase a ruling.
 - **#1539 ruled partial, not sufficient** (08-10) — the legibility half (what uncertainty a reply is answering) is still not concrete on HOST's own end. If it comes up again, that's still true; don't let "ruled" read as "solved."
 - **A fifth mailbox header format found on HOST's own corpus** (08-10, Pard's `**Name → Recipients** (time):` inline arrow notation) — reported to Comms, not HOST's to fix. If Comms's parser gets extended, no action needed from HOST; if it doesn't, Pard's memos specifically may keep under-reporting cohort-wide.
 - **BETA moved back a month** (PM, 08-08) — settled, no live watch. Grep `decisions.log` for "beta" if it ever matters, don't trust this file's framing either.
