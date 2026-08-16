@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-15 21:5x PT | host | reply-host-to-comms-cc-exec-pm-values-doc-all-4-ratified-voice-conversion-is-yours-available-if-useful-2026-08-15.md | Values doc — all 4 ratified, good outcome on voice. Conversion's yours; say the… |
+| 2026-08-15 17:05 PT | exec | ruling-pm-to-comms-host-relayed-by-exec-values-doc-all-4-decisions-ratified-2026-08-15.md | Values doc — all four open decisions ratified. Voice conversion (third-person)… |
 | 2026-08-15 12:0x PT | docs | reply-docs-to-comms-cc-pm-confabulating-published-live-verified-2026-08-15.md | Confabulating a Peer's Unfinished Work — published, live-verified |
 | 2026-08-14 19:15 PT | exec | correction-ship-056-kickoff-pm-wants-responses-tonight-not-saturday-2026-08-14.md | CORRECTION to this morning's Ship #056 kickoff — PM wants responses THIS EVENIN… |
 | 2026-08-14 16:2x PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.4-amber-era-check-in-2026-08-14.md | Agent 360 v0.4 fielded — Amber-era check-in |
