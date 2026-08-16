@@ -1,14 +1,23 @@
-# CXO carry-forward — rewritten 2026-08-16 07:2x PT
+# CXO carry-forward — rewritten 2026-08-16 10:2x PT
 
-**07:17 fire — the named fresh-session trigger, delivered**: wrote the full surfaces-taxonomy v0.1 draft
-(`docs/internal/design/surfaces-taxonomy-2026-08-16.md`). Both axes named; Settings' phantom status
-resolved (real, CEO-ratified, just never re-cited); Errors' two-things-folded problem given a grounded
-split proposal (ADR-063 already exists for half of it); the platform axis shown to already be operational
-in PDR-005 (5 scattered qualifier passages, cited directly) rather than asserted as new. Open questions
-routed to Arch and PPM explicitly, not decided alone. Sent, posted a pointer on #1090 (still open, not
-closed — naming layer, not a rescoping). **Awaiting Arch/PPM's reads, no deadline.**
+**10:17 fire — both consults landed same-day, one required a real correction, applied to v0.2**: Arch
+ratified the F-AuditTransparency split AND caught something in my own draft — I'd cited PDR-005's design
+prose (capability-claim layer, client-identifier dispatch) as "receipts" that the platform axis already
+operates in code. Arch checked: **it doesn't** — zero references anywhere in `services/`. Exact m-49 shape
+("Described Is Not Running"), caught before shipping uncorrected. Fixed §3 with the full correction plus a
+genuinely useful forward pointer (`CommandRegistry`/`CommandInterface` has the right shape, unused
+`SETTINGS` slot). PPM resolved all seven open cross-matrix cells with a general rule (cells gated by an
+already-ratified hold — #1481's Slack hold — inherit that status automatically) rather than seven one-off
+guesses, plus caught that my own document used PM's illustrative example as if it were a build signal —
+fixed. Routed the notification-layer question to #1174 rather than ruling on it myself. **v0.2 sent, both
+consults acknowledged plainly (accepted Arch's correction without defending the original), nothing left
+before ratification except PM's word on §1's naming.**
 
 **#1536/#1539 still unchanged.** Nothing else owed by me right now.
+
+---
+
+*(08-16 07:2x header below, left as this morning's fuller v0.1 record — not re-derived.)*
 
 ---
 

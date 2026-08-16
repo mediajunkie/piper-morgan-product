@@ -183,7 +183,7 @@ File Context Instructions:
 - Common file-related intents:
   - "analyze the file" → ANALYSIS with file_id in context
   - "create ticket from that document" → EXECUTION with file_id
-  - "summarize what I uploaded" → SYNTHESIS with file_id
+  - "summarize what I uploaded" → SYNTHESIS, verb "summarize", source_type "document"
   - "what's in the csv" → QUERY with file_id
 
 Spatial Context Instructions:
@@ -219,7 +219,7 @@ Return a JSON object with:
 {{
     "category": "identity|temporal|status|priority|guidance|execution|analysis|synthesis|strategy|learning|query|conversation|unknown",
     "verb": "one canonical verb from the list below, or null if none fits",
-    "source_type": "what the verb acts on when applicable (github_issue, commit_range, text), else null",
+    "source_type": "what the verb acts on when applicable (github_issue, commit_range, text, conversation, document), else null",
     "action": "specific_action_name",
     "confidence": 0.0-1.0,
     "reasoning": "brief explanation of classification",
@@ -251,7 +251,8 @@ names are allowlisted there. Don't add examples with invented action names.)
 ## Workflow Category Examples:
 - "create a ticket for the login bug" → {{"category": "execution", "action": "create_ticket", "confidence": 0.9}}
 - "analyze the file I uploaded" → {{"category": "analysis", "action": "analyze_data", "confidence": 0.8}}
-- "summarize the document" → {{"category": "synthesis", "action": "generate_summary", "confidence": 0.85}}
+- "summarize the document" → {{"category": "synthesis", "verb": "summarize", "source_type": "document", "action": "summarize_document", "confidence": 0.85}}
+- "summarize github issue #123" → {{"category": "synthesis", "verb": "summarize", "source_type": "github_issue", "action": "generate_summary", "confidence": 0.85}}
 - "list all projects" → {{"category": "query", "action": "manage_portfolio", "confidence": 0.95}}
 - "show me stale pull requests" → {{"category": "query", "action": "stale_prs_query", "confidence": 0.9}}
 - "hi there" → {{"category": "conversation", "action": "greeting", "confidence": 0.9}}
