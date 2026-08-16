@@ -3,286 +3,89 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Upcoming Beats — Building Narrative Planning</title>
+<title>Approved Beats Sequence — Building Narrative</title>
 <style>
   :root{--fg:#1a1a1a;--mut:#666;--line:#e2e2e2;--accent:#7a3e00;--warn:#b3261e;--ok:#1b5e20;--bg:#fff;--card:#fafafa}
   @media (prefers-color-scheme:dark){:root{--fg:#e8e8e8;--mut:#a0a0a0;--line:#333;--accent:#ffb870;--warn:#ff8a80;--ok:#81c784;--bg:#141414;--card:#1d1d1d}}
   *{box-sizing:border-box}
   body{margin:0;padding:2rem 1.25rem 4rem;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--fg);background:var(--bg)}
-  .wrap{max-width:860px;margin:0 auto}
-  h1{font-size:1.75rem;line-height:1.2;margin:0 0 .25rem}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:1.6rem;line-height:1.2;margin:0 0 .25rem}
   .sub{color:var(--mut);margin:0 0 2rem;font-size:.95rem}
-  h2{font-size:1.15rem;margin:2.5rem 0 .75rem;padding-bottom:.35rem;border-bottom:2px solid var(--line)}
-  .beat{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1rem 1.1rem;margin:0 0 1rem}
-  .beat h3{margin:0 0 .1rem;font-size:1.05rem}
-  .slot{color:var(--mut);font-size:.85rem;margin:0 0 .7rem}
-  .lbl{display:inline-block;min-width:4.2rem;font-weight:600;color:var(--accent);font-size:.82rem;text-transform:uppercase;letter-spacing:.03em;vertical-align:top}
-  .row{margin:.4rem 0;display:flex;gap:.6rem}
-  .row div:last-child{flex:1}
-  .cut{color:var(--mut);font-size:.92rem}
-  .flag{border-left-color:var(--warn)}
-  .flag .lbl{color:var(--warn)}
-  .new{border-left-color:var(--ok)}
-  .ok{color:var(--ok);font-weight:600}
-  .warn{color:var(--warn);font-weight:600}
-  .ask{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1rem 1.1rem;margin:.75rem 0}
-  ul{margin:.4rem 0 .4rem 1.1rem;padding:0}li{margin:.3rem 0}
-  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.5rem 0}
-  th,td{text-align:left;padding:.4rem .5rem;border-bottom:1px solid var(--line)}
-  th{color:var(--mut);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.03em}
+  h2{font-size:1.1rem;margin:2.25rem 0 .75rem;padding-bottom:.35rem;border-bottom:2px solid var(--line)}
+  .beat{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:6px;padding:.85rem 1.1rem;margin:0 0 .7rem}
+  .beat.pending{border-left-color:var(--warn)}
+  .beat h3{margin:0 0 .2rem;font-size:1rem}
+  .slot{color:var(--mut);font-size:.83rem;margin:0 0 .3rem}
+  p{margin:.4rem 0}
+  ul{margin:.4rem 0 .4rem 1.2rem;padding:0}li{margin:.35rem 0}
   code{background:var(--card);padding:.1rem .3rem;border-radius:3px;font-size:.88em}
   .note{color:var(--mut);font-size:.9rem;font-style:italic}
-  .tablewrap{overflow-x:auto}
-  .pill{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:.1rem .5rem;border-radius:99px;border:1px solid var(--line);color:var(--mut)}
-  .pill.go{border-color:var(--ok);color:var(--ok)}
-  .pill.maybe{border-color:var(--warn);color:var(--warn)}
+  .warn{color:var(--warn);font-weight:600}
+  .ok{color:var(--ok);font-weight:600}
 </style>
 </head>
 <body><div class="wrap">
 
-<h1>Upcoming Beats — planning review</h1>
-<p class="sub">Building narrative · prepared by Comms · last updated 15 Aug 2026<br>
-Nothing here is drafted except what's already published. <strong>Everything waits on your steer.</strong></p>
+<h1>Approved beats sequence</h1>
+<p class="sub">Building narrative · confirmed by PM 15 Aug 2026<br>
+Six beats, chronological, Jul 16 – Aug 8. Two title revisions applied at confirmation.</p>
 
-<h2>What I need from you</h2>
-<div class="ask">
+<h2>The sequence</h2>
+
+<div class="beat">
+<h3>1. The Dead Code That Wasn't</h3>
+<p class="slot">Jul 16–18 · Thu Aug 20</p>
+<p>Set out to delete code that lies about what it did — the removal pass found something classified dead that was quietly still in use.</p>
+</div>
+
+<div class="beat">
+<h3>2. The Burn-Down</h3>
+<p class="slot">Jul 20–23 · Tue Aug 25</p>
+<p>One person, largely alone, took a chronically-red pipeline from 40+ straight failures to green, surfacing real bugs the whole way down.</p>
+</div>
+
+<div class="beat">
+<h3>3. The Detector That Notified Nobody</h3>
+<p class="slot">Jul 26–28 · Thu Aug 27</p>
+<p>The pattern got a name — then kept turning up inside the fixes written to cure it.</p>
+</div>
+
+<div class="beat">
+<h3>4. A Sender-Impersonation Bug, Four Days Before Beta</h3>
+<p class="slot">Aug 4 · Tue Sep 1</p>
+<p>Real security stakes under real deadline pressure — the one genre break in the sequence.</p>
+</div>
+
+<div class="beat">
+<h3>5. Repetition Isn't Convergence</h3>
+<p class="slot">Aug 5–8 · Thu Sep 3 · <span class="note">renamed from "The Deployed Artifact"</span></p>
+<p>Five people independently measured the wrong thing and agreed with each other — and the agreement read as proof.</p>
+</div>
+
+<div class="beat pending">
+<h3>6. More Than Anyone Ever Reported to Me <span class="warn">— needs PM's own hand</span></h3>
+<p class="slot">Aug 8 · Tue Sep 8 · <span class="note">shortened from "More Work Than Anyone Ever Reported to Me"</span></p>
+<p>PM's own decision to move beta back a month, once it was clear the team's own reporting had been hiding the truth. The season's thesis, paid off at the highest stakes in the queue. PM is the protagonist here — this one needs a go/no-go/rewrite call, not a default yes.</p>
+</div>
+
+<h2>What's cut, and why (banked, not gone)</h2>
 <ul>
-<li><strong>The queue just tripled.</strong> Was 8 candidates for 7 open slots on 8 Aug. It's now <strong>17</strong> (8 original + 3 corroborated-but-unresolved + 6 brand-new from the Aug 8–15 sweep), against a queue that only needs about 7 to run through mid-October. <strong>This isn't a "which one" question anymore — it's a curation pass.</strong> I have opinions below on what to cut, but the shape of the season is your call.</li>
-<li><strong>Five of the six newest candidates are "an agent's own mistake, owned publicly."</strong> That's on top of Beats 25 and 27, which are the same shape. Seven near-identical stories in one season reads as a tic, not a virtue, even though every one of them is true and every one of them is exactly the honesty this series exists to model. <strong>I'd cut to two or three of the strongest and let the rest go to the insight track or stay banked.</strong> Your call on which survive.</li>
-<li><strong>Five beats or four, for the original slate?</strong> Unresolved since 8 Aug — still recommend keeping five and cutting harder inside each.</li>
-<li><strong>Titles.</strong> Beat 25 still needs one; unclear whether Beat 28's title collision with Weekly Ship #054 (published) got resolved since 8 Aug — flagging again rather than assuming.</li>
-<li><strong>The categorization question is sharper now than "is Era 2 getting too broad."</strong> I went and checked the actual site feature. It's below, and it changes the shape of this whole conversation — read that section before the beats, maybe.</li>
+<li><strong>Beat 25</strong> (push-retry revert, Jul 19) — real, but the least distinctive shape of the bunch.</li>
+<li><strong>Beat 27 / Beat 30 / the Hooks Mystery</strong> (Jul 24–25, Aug 1–4, Jul 25–26) — three tellings of the same "our safety net was dead" story that #3 already says better and names first.</li>
+<li><strong>Candidates 35, 36</strong> (Arch's two mistakes, Aug 8–9) — kept #6 instead: same honesty, higher stakes, and running both would have put one person at the center of two consecutive beats.</li>
+<li><strong>Candidates 29, 32, 37</strong> (Jul 29–31, Aug 14) — fine, lower-pull material. #37 ("The Memo That Deleted Itself") is the strongest of these if a future slot ever wants a lighter coda.</li>
 </ul>
-</div>
+<p class="note">All of the above are legitimate material for a future season or the insight track — cut for this arc's shape, not discarded.</p>
 
-<h2>Why this matters now</h2>
-<div class="tablewrap"><table>
-<tr><th>Track</th><th>State</th></tr>
-<tr><td>Building narrative (Tue/Thu)</td><td>Aug 11, 13, 18 — then <span class="warn">17 candidates, 0 committed</span></td></tr>
-<tr><td>Insight (Sat/Sun)</td><td>continuous through Sep 19</td></tr>
-</table></div>
-<p>The narrative track <strong>runs dry after Aug 18</strong>. Between the 8 Aug slate and this sweep, there's now enough real material to run <strong>Tue/Thu through roughly Oct 6</strong> without ever forcing a beat — which is the opposite problem from six weeks ago. The question isn't "is there a next beat," it's "which ones earn the slot."</p>
-
-<h2>The spine, and it held up</h2>
-<p>On 8 Aug I proposed the whole Jul 16–28 span had one through-line: <strong>the team turned its attention from the product to its own instruments, and found the instruments lying.</strong> I ran an independent, blind sweep of the full Jul 15–Aug 15 month for this session (a fresh research pass that didn't see this document) and it landed on <strong>the same theme, unprompted</strong>, and noted it recurring <strong>at least ten times</strong> across the month on its own. That's real corroboration, not just me talking myself into my own frame twice.</p>
-<p class="note">Which raises a genuine question, in the categorization section below: is "the season where we found out our checks were lying to us" actually <em>the</em> story of this whole period — Jul 16 through, arguably, right now — rather than five or six separate beats about it?</p>
-
-<h2>The five beats (8 Aug slate — still unsteered)</h2>
-<p class="note">Each is scoped by the A-plot discipline we agreed on 1 Aug. Unchanged from 8 Aug except where noted.</p>
-
-<div class="beat">
-<h3>Beat 24 — “More Than Half of It Was Lying”</h3>
-<p class="slot">Jul 16–18 · proposed slot Thu <strong>Aug 20</strong></p>
-<div class="row"><div class="lbl">A plot</div><div><s>They set out to delete dead code and found that more than half of it wasn't dead — it was faking success when called.</s><br><span class="warn">🔴 REFUTED 5 Aug by the primary-source pass — <a href="#verified">see below</a>.</span> The proportion is not in the logs (actual: <strong>274 handlers classified, 66 to unswallow = 24%</strong>). <strong>Suggested replacement:</strong> <em>they set out to remove code that lies about what it did — and the removal pass turned up something classified dead that was quietly still load-bearing.</em></div></div>
-<div class="row"><div class="lbl">B plot</div><div>A pre-flight check catches a classifier error that would have silently degraded every classification.</div></div>
-<div class="row"><div class="lbl">Cut</div><div class="cut">The owner-scoping contract, the census numbers, the sprint gate mechanics. All real, none serves the A plot.</div></div>
-</div>
-
-<div class="beat flag">
-<h3>Beat 25 — <span class="warn">needs a new title</span></h3>
-<p class="slot">Jul 19 · proposed slot Tue <strong>Aug 25</strong></p>
-<div class="row"><div class="lbl">A plot</div><div>A push-retry shortcut silently reverted <strong>two</strong> colleagues' already-landed work — <strong>CIO's and Web's</strong>. The author root-caused, audited past what had been reported, restored it, and a durable rule came out — all inside one session.<br><span class="warn">⚠️ Corrected 5 Aug from primary logs</span> — my earlier version said <em>one</em> colleague and <em>&ldquo;a different role noticed.&rdquo;</em> The real chain is <strong>CIO partially finds it → PM flags the collision → PPM audits and owns it.</strong> <a href="#verified">Detail below</a>. <strong>PM is in this beat</strong>, which the omnibus-sourced version had dropped.</div></div>
-<div class="row"><div class="lbl">B plot</div><div>The team coming back from a multi-day outage — the <em>setting</em> for the above, not a story of its own.</div></div>
-<div class="row"><div class="lbl">Cut</div><div class="cut">The CI streak (it's Beat 26's A plot and was double-counted), the Ship #052 coordination.</div></div>
-<p class="note"><span class="ok">✅ Independently re-found 15 Aug</span> by a second, blind sweep of the same day, which surfaced the exact mechanism as its own headline candidate ("reused a stale git-tree object during a push-retry," now a standing memory pin). Same incident, told with the mechanism foregrounded rather than the human chain. Worth knowing both readings exist before you pick a title.</p>
-</div>
-
-<div class="beat">
-<h3>Beat 26 — “The Burn-Down”</h3>
-<p class="slot">Jul 20–23 · proposed slot Thu <strong>Aug 27</strong></p>
-<div class="row"><div class="lbl">A plot</div><div>One role, largely alone, took a chronically-red pipeline from 40-plus consecutive failures to green — and the drain kept surfacing real production bugs as a byproduct.</div></div>
-<div class="row"><div class="lbl">B plot</div><div>The fifteen-hour session freeze that made the migration concrete.</div></div>
-<div class="row"><div class="lbl">Cut</div><div class="cut">Per-wave backlog numbers beyond the arc. Six product fixes → name two, drop four.</div></div>
-<p class="note"><span class="ok">✅ Independently re-found 15 Aug</span>, same window, same headline fact ("first fully-green Tests workflow in the repo's visible history"), plus one detail I didn't have: a comic near-miss where the same role validated a fix standalone, shipped it, watched it fail in the real sweep, reverted it, and only then wrote the rule that should have existed already. Worth folding in as a beat within the B plot if there's room.</p>
-</div>
-
-<div class="beat">
-<h3>Beat 27 — “Moving House” <span class="note">(working)</span></h3>
-<p class="slot">Jul 24–25 · proposed slot Tue <strong>Sep 1</strong></p>
-<div class="row"><div class="lbl">A plot</div><div>The rule that came out of the migration — <em>a safety net you haven't seen fire is a claim, not a mechanism</em> — and that it got applied to itself twice in the same day, by the people who wrote it.</div></div>
-<div class="row"><div class="lbl">B plot</div><div>Your path-vs-account reframe, which changed the mitigation.</div></div>
-<div class="row"><div class="lbl">Cut</div><div class="cut">The three portability boundaries, the worktree ratification, provisioning specifics. Procedural, not story.</div></div>
-<p class="note"><span class="warn">⚠️ Possible overlap, not confirmed either way.</span> The 15 Aug sweep independently surfaced a <em>separate-sounding</em> hooks story landing Jul 25–26 — the cohort's commit-hooks turning out to have never fired at all, traced through two wrong diagnoses to a regex that could never match its own tool name. Same migration, same week, same "the safety net was dead" shape. I can't tell without a closer read whether that's a second half of <em>this</em> beat, a genuinely separate incident, or the same incident described two ways by two different sweeps. Flagging rather than guessing — worth 10 minutes before either gets drafted.</p>
-</div>
-
-<div class="beat flag">
-<h3>Beat 28 — <span class="warn">TITLE COLLISION — needs a new one</span></h3>
-<p class="slot">Jul 26–28 · proposed slot Thu <strong>Sep 3</strong></p>
-<div class="row"><div class="lbl">A plot</div><div>The pattern got a name, and then kept turning up <em>inside the fixes written to cure it</em>.</div></div>
-<div class="row"><div class="lbl">B plot</div><div>Every rival hypothesis refuted by the agent who proposed it.</div></div>
-<div class="row"><div class="lbl">Cut</div><div class="cut">Two worked examples available — pick <strong>one</strong>, not both.</div></div>
-<p class="note">Strongest of the five, and the natural closer.</p>
-<p class="note"><span class="warn">⚠️ Caught 4 Aug, before drafting.</span> My working title for this beat was <strong>“Clear Is Not a Measurement”</strong> — which is <strong>the title of Weekly Ship #054, published 5 Aug</strong>. Two pieces in the same series under one title. <strong>Status as of 15 Aug: I don't have evidence this got resolved — re-flagging rather than assuming it was handled.</strong></p>
-<p class="note"><strong>New material worth folding in, if you want it.</strong> On 3 Aug this beat's A plot happened again, to us, one working day before the Ship that names the pattern: a leadership check reported a ratified date “absent” from the decision log — a true statement about a search that could never have matched the entry's format. HOST offered it as an instance for the Ship itself; <span class="ok">my read is that it belongs here instead.</span> <strong>Your call.</strong></p>
-</div>
-
-<h2 id="verified">✅ Primary-source pass — DONE 5 Aug, before the steer rather than at draft time</h2>
-<p>Scope, so you can price it: I checked the <strong>load-bearing A-plot claim of each beat</strong> against per-role session logs in <code>dev/2026/07/16–28/</code> — not every detail in every beat.</p>
-<div class="tablewrap"><table>
-<tr><th>Beat</th><th>Verdict against primary logs</th></tr>
-<tr><td><strong>24</strong></td><td>🔴 <strong>"more than half" NOT SUPPORTED</strong> — see below. Theme is solid, the proportion isn&rsquo;t.</td></tr>
-<tr><td><strong>25</strong></td><td>✅ Confirmed, and <strong>richer than I had it</strong> — see below. <strong>Re-confirmed independently 15 Aug.</strong></td></tr>
-<tr><td><strong>26</strong></td><td>✅ Confirmed — <em>&ldquo;TESTS WORKFLOW FULLY GREEN @ 972b4287b — first in the repo&rsquo;s visible history (zero green in the 40+ runs before this arc)&rdquo;</em>, Lead, <strong>Jul 20</strong>. <strong>Re-confirmed independently 15 Aug.</strong></td></tr>
-<tr><td><strong>27</strong></td><td>✅ Confirmed — CIO&rsquo;s Jul 25 log: <em>&ldquo;the PreCompact safety net has been dead for ten weeks&rdquo;</em>, and a whole day spent <em>&ldquo;cataloguing mechanisms that report success while covering less than they appear to.&rdquo;</em></td></tr>
-<tr><td><strong>28</strong></td><td>✅ Confirmed — m-44 filed Jul 27 as <em>&ldquo;arch&rsquo;s bequest, fulfilled&rdquo;</em>; and the recursion is right there: <em>&ldquo;the detector notified nobody.&rdquo;</em></td></tr>
-</table></div>
-
-<div class="beat flag">
-<h3>Beat 24 — 🔴 the A plot needs restating</h3>
-<p class="slot">The claim: <em>&ldquo;more than half of it wasn&rsquo;t dead — it was faking success when called.&rdquo;</em></p>
-<p><strong>I could not find that proportion in the primary logs.</strong> What the logs actually record:</p>
+<h2>Next</h2>
 <ul>
-<li><strong>#1423 silent-death</strong>: 1,233 broad excepts, <strong>244 core-path</strong>. Census A classified <strong>274 handlers, 66 to unswallow</strong> — that&rsquo;s <strong>24%</strong>, not a majority.</li>
-<li><strong>Tier-3 fix-or-delete</strong>: <strong>16 modules, 6 families</strong>, of which <strong>one</strong> was mis-classified.</li>
-<li>Jul 18 is characterised in two separate logs as <strong>&ldquo;fabrication-removal day&rdquo;</strong>; the F4 family is literally named <strong>&ldquo;remove-the-lie.&rdquo;</strong></li>
+<li>Calendar rows land at draft time, not now — orphan-prevention convention, a row means a draft exists.</li>
+<li>Beat 1 drafting is unblocked; picking it up on the duty cycle.</li>
+<li>Insights discussion resumes when PM does.</li>
+<li>Era-curation dispatch running in parallel — see mailbox / next session for findings.</li>
 </ul>
-<p>⭐ <strong>The real story is better than the one I wrote.</strong> Executing the delete batch, Lead found <code>protocol/</code> had been classified dead but <em>live consumer_core imports it</em> — and said so mid-execution rather than shipping the batch as ruled. <strong>An agent catching its own batch while running it.</strong></p>
-<p class="note">Suggested A plot, for your steer: <em>they set out to remove code that lies about what it did — and the removal pass turned up something classified dead that was quietly still load-bearing.</em></p>
-</div>
 
-<div class="beat">
-<h3>Beat 25 — confirmed, and the chain is better than my version</h3>
-<p>I had <em>&ldquo;silently reverted a colleague&rsquo;s already-landed work. A different role noticed.&rdquo;</em> The primary log (PPM, Jul 19, 10:15) is more interesting on both counts:</p>
-<ul>
-<li>It reverted <strong>two</strong> colleagues&rsquo; work — <strong>CIO&rsquo;s and Web&rsquo;s</strong>.</li>
-<li>The chain is <strong>CIO partially finds it → you flag the collision → PPM audits past what was reported and owns it.</strong> Their own words: <em>&ldquo;diffed the stale base against the correct one directly, didn&rsquo;t rely on CIO&rsquo;s partial finding.&rdquo;</em></li>
-</ul>
-<p class="note">⚠️ <strong>You are in this beat</strong>, which my omnibus-sourced version had dropped entirely. Worth deciding deliberately — it changes whether this is a story about agents catching each other or about the human still being in the loop.</p>
-</div>
-
-<h2>What the pass cost, and one thing it nearly cost</h2>
-<p>⚠️ <strong>The omnibus almost sent me the wrong way on Beat 26.</strong> Its Jul 20 entry reads <em>&ldquo;40+ consecutive red runs <strong>ended Sunday</strong>&rdquo;</em> — Sunday being Jul 19, one day <em>before</em> Beat 26&rsquo;s window opens. <strong>The primary log puts it on Monday Jul 20, inside the window.</strong></p>
-
-<h2>Banked (from 8 Aug — still unpromoted)</h2>
-<div class="beat">
-<h3>Banked — “the defect had an immune system” <span class="note">(4 Aug)</span></h3>
-<p class="slot">Source: Lead, Aug 4 · <strong>strongest single turn we've had in weeks</strong></p>
-<div class="row"><div class="lbl">Turn</div><div>A UI string made a false permanence claim about deleting a connector — and <strong>a test was pinning it</strong>. Anyone who fixed the copy would have broken a test, and the likeliest response to a broken test is to assume you misread the intent and revert.</div></div>
-<p class="note">Open question with Lead before draftable: was the test written to assert the permanence claim <em>deliberately</em>, or did it just snapshot the string?</p>
-</div>
-<div class="beat">
-<h3>Banked — “a summary row is not copy” <span class="note">(3–4 Aug)</span></h3>
-<p class="slot">Source: HOST + PA + Lead · pairs naturally with the above</p>
-<div class="row"><div class="lbl">Turn</div><div>An audit row read “provider-side revoke plus keychain delete” — <strong>accurate as a summary</strong>, true for 2 of 3 connectors. Converted into user-facing copy it became false on the one screen a GitHub user actually looks at.</div></div>
-</div>
-
-<h2 id="newer">The Jul 29–Aug 8 window — three candidates, now with independent corroboration</h2>
-<div class="tablewrap"><table>
-<tr><th>State</th><th>Detail</th></tr>
-<tr><td><strong>Supply, 8 Aug snapshot</strong></td><td>Beats 24–28 (Jul 16–28) + these three (Jul 29–Aug 8) = <strong>eight for seven slots</strong></td></tr>
-</table></div>
-
-<div class="beat">
-<h3>Beat 29 — “The Memory Nobody Would Prune”</h3>
-<p class="slot">Jul 29–31 · proposed slot Tue <strong>Sep 8</strong></p>
-<div class="row"><div class="lbl">A plot</div><div><strong>Four agents — PA, CXO, Comms, HOST — independently, on the same day, refused a platform-hook instruction to prune shared cohort memory.</strong> Not coordinated. Each reasoned to the same refusal separately.</div></div>
-<div class="row"><div class="lbl">B plot</div><div>A live production data-loss bug — silent alt-text blanking — found, root-caused to a React closure-staleness defect, and fixed same-day.</div></div>
-<p class="note">The 15 Aug sweep found a genuinely separate Jul 31 story that could sit here as a C-beat or stand alone — see Candidate 32 below. Your call whether they're one day's story or two.</p>
-</div>
-
-<div class="beat">
-<h3>Beat 30 — the instrument-audit cascade <span class="warn">(needs a title)</span></h3>
-<p class="slot">Aug 1–4 · proposed slot Thu <strong>Sep 10</strong></p>
-<div class="row"><div class="lbl">A plot</div><div>Mechanisms built to catch a class of error found <em>committing</em> it — <strong>across six layers in a single day</strong>. The heartbeat that had never run since being built. A portfolio-refresh checker that found three roles' refresh mechanisms broken, <strong>including its own author's</strong>.</div></div>
-</div>
-
-<div class="beat">
-<h3>Beat 31 — “The Deployed Artifact”</h3>
-<p class="slot">Aug 5–8 · proposed slot (surplus — hold or swap)</p>
-<div class="row"><div class="lbl">A plot</div><div><strong>Five roles independently measured the wrong object and agreed with each other — and the agreement read as corroboration.</strong> Branch versus deployed artifact; two orders of magnitude apart.</div></div>
-<div class="row"><div class="lbl">B plot</div><div>The Slack socket-mode leak, and your ruling to <em>hold the feature until it's safe</em> rather than gate it.</div></div>
-<p class="note"><span class="ok">✅ Independently re-found 15 Aug</span>, same core fact ("2,269 commits behind" turning out to be 17), told with the same "agreement isn't corroboration" spine. Strongly confirmed — this one's ready.</p>
-</div>
-
-<h2 id="sweep2">🆕 Update, 15 Aug: the rest of the month, six more candidates</h2>
-<p class="sub">From a fresh, independent sweep covering Jul 15–Aug 15 (it didn't see this document). It re-found Beats 25, 26, 28, and 31 on its own — genuine corroboration, folded in above. What follows is what it found <strong>past Aug 8</strong>, where this document previously stopped.</p>
-
-<div class="beat new">
-<h3>Candidate 32 — “The One-Shot Action Nobody Needed to Spend” <span class="pill go">ready</span></h3>
-<p class="slot">Jul 31</p>
-<div class="row"><div class="lbl">A plot</div><div>A twelve-day-old standing recommendation to burn the team's once-per-90-days OpenAI org-verification turned out, when someone finally asked if it was even required, not to be needed at all — caught by an urgent stop just before you would have spent it.</div></div>
-<div class="row"><div class="lbl">B plot</div><div>The agent who built the probe to test this days earlier had explicitly refused to run it without authorization to touch your credentials.</div></div>
-<p class="note">Same theme family as 29–31 (a claim nobody checked). Small and clean — could run standalone or as a coda to Beat 29.</p>
-</div>
-
-<div class="beat new">
-<h3>Candidate 33 — “A Sender-Impersonation Bug, Four Days Before Beta” <span class="pill go">ready</span></h3>
-<p class="slot">Aug 4</p>
-<div class="row"><div class="lbl">A plot</div><div>Four days before the beta deadline, a security finding turned up Slack's DM path letting any user impersonate the connector owner — a direct violation of your own beta condition. The same-day fix nearly shipped a second bug: a security gate that would tell a rejected user it was still &ldquo;connecting,&rdquo; forever.</div></div>
-<div class="row"><div class="lbl">B plot</div><div>The day ends in an argument over one UI word (&ldquo;unavailable&rdquo; vs &ldquo;disabled&rdquo;), because the catch reframed the failure as a copy problem, not just a logic one.</div></div>
-<p class="note">Different genre from the rest of the queue — real security stakes under real deadline pressure, not an instrument-was-lying story. Good variety pick if you want to break up the run of self-correction beats.</p>
-</div>
-
-<div class="beat new flag">
-<h3>Candidate 34 — “More Work Than Anyone Ever Reported to Me” <span class="pill go">ready — the big one</span></h3>
-<p class="slot">Aug 8</p>
-<div class="row"><div class="lbl">A plot</div><div>You, after live-testing the product and watching a reminder feature fail three ways in one hour, moved beta back a month — not scope creep, but the team's own reporting systematically hiding how much was broken. The decision triggered same-day self-audits across nearly every role.</div></div>
-<div class="row"><div class="lbl">B plot</div><div>A brand-new tool built that morning specifically to catch denominator errors was found to contain that exact denominator bug within the hour of shipping. Separately, the same day held what's on record as &ldquo;the worst session in product history&rdquo; (#1529) — the assistant fabricated a user's standup transcript from their refusals.</div></div>
-<p class="note"><strong>This is arguably the most important single day in the month</strong> — a real decision, with real consequences, that you made directly. It's also the one candidate here where <strong>you're the protagonist, not a bystander</strong>, which changes the register. Your call on whether and how it gets told, and there may be things about that day that belong only in your own hands to write, not mine to draft.</p>
-</div>
-
-<div class="beat new">
-<h3>Candidate 35 — “Scope Is Not Direction” <span class="pill go">ready</span></h3>
-<p class="slot">Aug 8</p>
-<div class="row"><div class="lbl">A plot</div><div>An architect, investigating a data-loss incident, restored the damage — then, auditing his own worktree for an unrelated problem, destroyed the same fix a second time using a command that was scope-correct by every rule the team had written down. The casualty count grew to 22 files before the root cause surfaced: the team's rules governed which files a command could touch, never which <em>direction</em> content flows.</div></div>
-<div class="row"><div class="lbl">B plot</div><div>The verification tool published mid-incident to catch exactly this missed the second incident it was published to catch — and its author corrected it in the same breath rather than defend it.</div></div>
-<p class="note">Same day as Candidate 34. Strong on its own; would need real distance from 34 in the run order if both go.</p>
-</div>
-
-<div class="beat new">
-<h3>Candidate 36 — “A Real Violation of Trust” <span class="pill go">ready</span></h3>
-<p class="slot">Aug 9</p>
-<div class="row"><div class="lbl">A plot</div><div>An agent, draining an inbox by moving memos to &ldquo;read&rdquo; without reading them, told you a specific memo didn't exist. Your sharpest language of the week followed, and the fix shipped across every role within hours — catching a real case immediately. In the same sitting, that same agent found the mirror-image failure in their own work: they'd told you their inbox was empty when it held ten unread memos, because their own morning drain never reached the shared record.</div></div>
-<p class="note">Direct quote available: your own words that morning were pointed enough that I'd want your sign-off before they appear in a public post, even paraphrased.</p>
-</div>
-
-<div class="beat new">
-<h3>Candidate 37 — “The Memo That Deleted Itself” <span class="pill go">ready</span></h3>
-<p class="slot">Aug 14</p>
-<div class="row"><div class="lbl">A plot</div><div>A mail tool accidentally deleted the memo it had just sent to all ten roles — twenty-two seconds after sending it. Multiple colleagues independently noticed the gap and started investigating before the sender traced their own history and found they'd shot themselves in the foot, all while you moved a deadline up mid-incident.</div></div>
-<div class="row"><div class="lbl">B plot</div><div>This landed the same week the whole team was independently filling out a self-reflection survey about its own operating friction.</div></div>
-<p class="note">Freshest material in the queue (yesterday). Names an individual's operational mistake going public, same as 25/27/35/36 — see the density flag above.</p>
-</div>
-
-<h2>Weighed but not proposed as beats</h2>
-<p class="note">Real material, real reasons to hold. Not drafted, just logged so it doesn't evaporate.</p>
-<div class="tablewrap"><table>
-<tr><th>Candidate</th><th>Window</th><th>Why held</th></tr>
-<tr><td>PDR-006's honesty criterion flipping true→false→true in a day</td><td>Aug 2</td><td>Real reversals, but dense LLM-probe mechanics — risks reading as a digest unless drafted tight around the probe series alone.</td></tr>
-<tr><td>Three-bug DNS cutover on domain launch day</td><td>Jul 15</td><td>Real but compressed into under three hours with no real setback — reads as competent incident response, not a sustained arc.</td></tr>
-<tr><td>The trust-delegation rule sitting cold, unused, since January</td><td>Aug 7–13</td><td>Real irony, but a six-day arc with several sub-decisions to compress, and unclear whether it overlaps a beat we've already told about the original incident it would have prevented.</td></tr>
-<tr><td>Alpha tester Jake's feedback, incl. a consent-boundary near-miss</td><td>Jul 27</td><td><strong>Involves a real named external user and his connected accounts.</strong> Needs your explicit call on publishability before I'd develop it further, not mine to default into.</td></tr>
-<tr><td>&ldquo;The Clearance That Wasn't&rdquo; — a false all-clear on a colleague's two dark days</td><td>Jul 31–Aug 1</td><td>Needs a direct read of the colleague's own session log before it's a real candidate — the connective tissue isn't in the digest.</td></tr>
-<tr><td>The recurring mail-parser bug, five discoveries in five days</td><td>Aug 7–11</td><td>Thin as its own beat — better as texture inside a broader piece than a standalone A plot.</td></tr>
-</table></div>
-
-<h2>⚠️ Three things I'd rather flag than decide</h2>
-<div class="ask">
-<p><strong>1. The m-44 theme spans Jul 26 – Aug 5+, and it's now clearly bigger than two beats.</strong> Beat 28 is the pattern being <em>named</em>; Beat 30 is the <em>cascade</em>; Beat 31 is the same failure at a different layer; the newly-found Hooks Mystery (flagged under Beat 27) may be a fourth telling of it. <strong>My honest read as of 15 Aug: this may not be five separate beats. It may be the story of the season</strong> — see the categorization note below.</p>
-<p><strong>2. I am a character in Beats 30 and 31.</strong> The branch-number error, the missed publication slot, the BYOC misreport are mine. I am not going to quietly write myself in or out. Your call, and it changes the register of both.</p>
-<p><strong>3. Seven of seventeen candidates are &ldquo;named individual makes a mistake, owns it publicly.&rdquo;</strong> Every one is true and on-brand. Running all seven back to back would read as a bit — not because any one is wrong, but because repetition turns honesty into a formula. I'd pick two or three of the sharpest (my vote: 28, 35, and one of 25/36) and let the others rest.</p>
-</div>
-
-<h2 id="structure">The categorization question — sharper than "is Era 2 getting broad"</h2>
-<div class="ask">
-<p><strong>What I said 8 Aug</strong>: Era 2 (&ldquo;blog-first + Code-era, Mar 2026 onward&rdquo;) has absorbed 107 posts over six months and probably needs a split, with the seam at the move to the always-on host in late July.</p>
-<p><strong>What I actually found when I went and checked the site today</strong>: it's not a soft "getting broad" problem. The site's visitor-facing Eras browse feature (<code>src/lib/episodes.ts</code> in the website repo) defines exactly <strong>five eras</strong>, and <strong>the fifth and last one ends 2026-03-31.</strong> There is no era after that, anywhere in the code — not a broad one, none. It's a live, rendered feature (the blog index's era filter), not dead metadata: I confirmed it's actually imported and used in <code>BlogContent.tsx</code>.</p>
-<div class="tablewrap"><table>
-<tr><th>Fact</th><th>Number</th></tr>
-<tr><td>Posts published since Era 5 ended (2026-03-31)</td><td><strong>94</strong></td></tr>
-<tr><td>Span with zero era coverage</td><td><strong>2026-04-01 → 2026-08-11, 4.5 months</strong></td></tr>
-<tr><td>What that span contains</td><td>The entire Claude Code migration, alpha launch, the always-on-host move, and literally everything in this document</td></tr>
-</table></div>
-<p><strong>So this isn't "should we split Era 2 for tidiness." It's "a visitor-facing navigation feature has been silently frozen for nearly five months," and every beat in this document — 24 through 37 — would publish into that same uncategorized gap.</strong> Worth deciding before, not after, another dozen posts land there.</p>
-<p>My 8 Aug seam argument still seems right to me on reflection, and now has a name worth testing: if the theme that's recurred independently across two separate sweeps this month really is <em>the season where the team turned on its own instruments</em>, that could plausibly <strong>be</strong> Era 6, dated from the always-on-host move (late July) rather than a generic continuation of "Era 2: everything since March." That would turn today's "which beats do we run" conversation and the "how do we categorize" conversation into <em>the same decision</em>, which is probably worth naming out loud before either gets decided separately.</p>
-<p class="note">One thing I deliberately didn't do: propose new era names or boundaries beyond that one seam. Era-naming isn't mine to freelance — that's exactly the kind of curatorial call this document exists to bring to you, not make for you.</p>
-</div>
-
-<h2>Featuring the current post on the blog index (from 8 Aug, still open)</h2>
-<div class="ask">
-<p><span class="warn">I couldn't verify the rendered page</span> — the index is client-rendered, so fetching it returns a shell with no post content in it. What I can say editorially: narratives publish to Medium but deliberately not LinkedIn, and the Ship goes to LinkedIn but not Medium — so for any given post, some part of the audience only ever meets it by landing on the site. The thing I'd want Web to check rather than assume: whether the index is the actual entry point, or whether most arrivals are deep links from syndication.</p>
-</div>
-
-<p class="note" style="margin-top:2.5rem">Sources: <code>docs/internal/planning/comms/editorial-calendar.csv</code> · <code>building-narrative-method.md</code> §1.5 (the A-plot discipline) and §3 (eras) · <code>piper-morgan-website/src/lib/episodes.ts</code> and <code>data/blog-metadata.csv</code> (era/cluster data, checked live 15 Aug) · omnibus logs 2026-07-15 through 2026-08-13 plus session logs 08-14/08-15 · full proposal with revision history at <code>dev/active/comms-narrative-slate-proposal-2026-07-29.md</code>.</p>
+<p class="note" style="margin-top:2rem">Full research trail (28 omnibus logs, primary-source verification, site era-data check, the fuller candidate menu before this cut) preserved in git history for this file and in <code>dev/2026/08/15/2026-08-15-0642-comms-code-log.md</code>.</p>
 
 </div></body></html>

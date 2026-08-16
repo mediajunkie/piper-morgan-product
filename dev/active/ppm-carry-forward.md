@@ -1,9 +1,44 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-15 16:23 PT (WORK). Cron **`db18971e`**, unchanged. **Heartbeat push
-race this fire** — two rounds of fetch+merge+push needed to land the WORK heartbeat against
-concurrent cross-role activity; nothing lost, worth knowing this can happen on a busy Saturday.
+**Last rewritten**: 2026-08-15 22:22 PT (STOP). Cron re-armed at STOP (see Cron section).
+
+## 🔴 SURFACE 3 WAS NEVER A PHANTOM — I was wrong, and the fix is bigger than name-or-strike
+⚠️ **Correcting my own carried claim below (line ~345, "Surface 3 is a PHANTOM")** — PM asked for
+a forensic git-history dive rather than accepting either CXO's or my read, and it found Surface 3
+is real: **"Settings/preferences,"** originating in Lead's 2026-05-14 memo, CEO-ratified by name in
+CXO's Round 2 synthesis (05-15/16), deliberately scoped tiny (account profile + notification
+opt-outs) — which is exactly why it never got its own MUX doc and later read as absent. **My
+whole-corpus grep found one mention because I was searching for a *name*, not tracing *origin*** —
+the ratified seven-name table never made it into PDR-005 itself. Worth sitting with: a
+"not found" from a real search is still a claim about search *method*, not about existence.
+
+**PM's actual ask is bigger than mine was**: 'surface' was doing two jobs — a **platform/touchpoint
+axis** (desktop/mobile/CLI/Slack/voice, explicitly non-exhaustive) and the **existing seven** as a
+separate **functional axis** (history, privacy, settings, integration, search, first-run,
+audit/error — "a catalog of ways Piper communicates or interacts," not a place). PM's own proof
+they're orthogonal: Settings needs BOTH a web-app screen AND a conversational path — the same
+functional surface on two platforms, which a flattened single list would hide. **PM: "beware the
+strong tendency to flatten [MUX] into semantically compact ideas that lose the modeling."**
+CXO leads the rectify+ratify pass (PM's own lane per the standing rule), consulting **Arch**
+(architectural consequences per touchpoint) and **PPM** (which axis-combinations are MVP-required
+vs. aspirational). **CXO deferred drafting to a fresh session tonight** — explicit named trigger
+(late in a long Saturday, exactly the flattening risk PM warned against), no deadline, legitimate
+quality-banking not the antipattern. **Nothing for PPM to do yet** — CXO brings a draft to
+consult against; watch for it. Full brief:
+`mailboxes/ppm/inbox/read/brief-pm-to-cxo-relayed-by-exec-rectify-ratify-the-surfaces-taxonomy-
+two-axes-not-one-2026-08-15.md`.
+
+## ✅ SPATIAL DISPOSITION CLOSED 2026-08-15 — a long-carried item, resolved
+Cold-island disposal: **all 11 modules** approved for removal (9 clean, 2 more added after PM's
+"ok to also remove any superseded predecessors") — "retained as prior art" means commit-hash
+citation in the disposal record, files actually deleted, must stay *findable* for future
+re-investigation. **Ambient presence (L4)**: phased, not all-or-nothing — MVP gets a false-door
+placeholder (**#1635**, filed), Beta stays discovery-only (**#1174**, already correctly scoped,
+no change needed), Production needs Lead's still-outstanding monitoring-loop cost estimate (open
+since 07-30). Full vision: `docs/internal/product/ambient-presence-l4-vision-2026-08-15.md`.
+**My old carried note below ("Spatial disposition... CXO owns the re-scope") is now stale** —
+closed, not owed.
 
 ## ✅ FIRST-CONTACT CRITERION RATIFIED 2026-08-15 — the LAST of the three original handoff items
 PM ratified `docs/internal/product/first-contact-criterion-merged-2026-08-10.md` as canonical,
@@ -18,8 +53,9 @@ doc's own status line was fixed but the durable cross-session record wasn't. App
 (16:23 PT, append-only convention, not editing the original) with both the fix and my sign-off on
 record. **Placement in #1386's beta gate remains separately open** since 08-05, untouched by this.
 **Two of the three original `docs/handoff-ppm-2026-08-11.md` §2 items are now resolved**:
-criterion blessed (today), #1510 fork ruled (08-13). **Surface 1/3 is the one remaining
-genuinely-open item** — still PM's, unchanged since 08-10.
+criterion blessed (today), #1510 fork ruled (08-13). ⚠️ **Surface 1/3's "name-or-strike" framing
+is SUPERSEDED as of tonight** — see the taxonomy section above; it's now a real two-axis
+rectify-and-ratify project with CXO leading, not a small open question waiting on PM.
 
 ## ✅ #1509 OUTWARDNESS AXIS — AGREED 2026-08-15, real product judgment applied, not a rubber-stamp
 PM leaned YES on making "outward" (writes/sends visible to someone other than the user) its own
@@ -342,7 +378,12 @@ CXO ran PDR-005's own test on what exists: **criterion 1 MET strongly** (`feed.p
   **Surfaces 1, 2, 4, 6, 7.** (2.1 = 1+7, 2.2 = 2+4, 2.3 = 6.) Scope inferable from schedule,
   asserted nowhere. **Surface 1 already has a lane marked "Unblocked NOW"** — so it is scheduled for
   1.0 and CXO's flattening risk did not land in the schedule; only the *justification* was stale.
-- 🔴 **Surface 3 is a PHANTOM.** Whole-corpus grep: **one** MUX-roster mention, `PDR-005:84` — the
+- ⛔ **WITHDRAWN 2026-08-15 — "Surface 3 is a PHANTOM" was WRONG.** PM ordered a forensic git-history
+  dive (not another docs grep) and found Surface 3 is real ("Settings/preferences," Lead's 05-14
+  memo, CEO-ratified 05-15/16, deliberately scoped tiny — which is *why* it read as absent). **My
+  error**: I searched for a *name* and concluded non-existence; the right method traces *origin*.
+  See the taxonomy section at the top of this file — kept here rather than deleted, as the record
+  of the mistake, not the current state. 🔴 **Surface 3 is a PHANTOM.** Whole-corpus grep: **one** MUX-roster mention, `PDR-005:84` — the
   very sentence pairing it with Surface 1. **No name, no doc, no ADR, no build lane** (Surface 2 has
   90 mentions + its own design doc). ⚠️ **And "Surface 3" collides**: in the *insight-delivery*
   numbering it means push-insights (#1032), so a grep lands on a confidently wrong referent.
@@ -387,6 +428,9 @@ content — if any of those threads turn out to still be open, that's a finding,
 **The three in `docs/handoff-ppm-2026-08-11.md` §2 were the open-for-PM baseline. Status as of
 08-13 10:22**: **#1510 fork RULED 08-13** (see top of this file) — down to **two remaining**:
 criterion blessing, Surface 1/3. Neither has moved since 08-10 as of this fire.
+⚠️ **Superseded by 08-15 — this whole snapshot is historical.** Criterion ratified 08-15; Surface
+1/3's framing itself superseded 08-15 (see top of file). All three original items are now either
+resolved or reframed into larger tracked work. Do not read this paragraph as current state.
 
 ## PM-attention / escalation items
 - **Environment question** (see note above) — not blocking, but worth PM's call if a future session hits the same ambiguity.

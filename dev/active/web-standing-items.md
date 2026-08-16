@@ -4,7 +4,7 @@
 
 **Owner**: Unicorn Web Designer (Web) — pipermorgan.ai (`piper-morgan-website` repo)
 **Created**: 2026-05-29 at v0.7 worktree-cycle adoption prep
-**Last refresh**: 2026-07-31 (Amber/Opus 5 session)
+**Last refresh**: 2026-08-15 (Amber/Opus 5 session) — PM answered both open publishing-tooling questions directly
 
 ⚠️ **This file sat unread for the first six days of my Amber session** (7/26–7/31) — I'd
 been checking `web-carry-forward.md` at every fire but never this file, which the skill
@@ -84,22 +84,17 @@ rather than guessing):
   API runtime involved) and is live + PM-praised. Same superseded-plan pattern
   as the old #998 FastAPI entry corrected above. Nothing left to build here;
   this line is now just historical.
-- [ ] **CLI B trial-run** — `scripts/publish-cli.js` still exists (`npm run
-  publish`, last touched 2026-05-18), so the tool itself hasn't rotted — but
-  whether PM has actually end-to-end-tested it since is genuinely unknown to
-  Web; no session record either way. **Question for PM**: has this been
-  trialed? Still worth doing, or superseded by compose for your actual workflow?
-  *(Still open as of 2026-07-31 — also tracked in `web-carry-forward.md`,
-  which is the surface I've actually been checking each fire; this is the
-  same open question, not a second one.)*
-- [ ] **`--mode=archive` scope** — the referenced Docs 5/18 memo no longer
-  exists in any live mailbox (only found in abandoned worktrees, 2 months old
-  — may have been triaged/decided elsewhere since). **Question for PM**: is
-  this still wanted, or has the need passed?
-  *(Still open as of 2026-07-31 — same cross-reference as above.)*
+- [x→ANSWERED 2026-08-15] ~~**CLI B trial-run**~~ — PM: fairly well superseded
+  by compose, except possibly as scripts Docs uses internally as part of the
+  publishing process (PM wasn't fully certain of that detail). Not closing the
+  door on `scripts/publish-cli.js` entirely — worth checking with Docs whether
+  they lean on any of it — but no further action needed from Web; the open
+  question that had been sitting since 2026-07-19 is resolved.
+- [x→ANSWERED 2026-08-15] ~~**`--mode=archive` scope**~~ — PM: the need has
+  passed. Closed, no further action.
 
 ## Blocked items
-- `--mode=archive` scope — awaits PM decision (see above; may be moot).
+None currently open.
 
 ## Recently completed (rolling, ~14 days)
 
