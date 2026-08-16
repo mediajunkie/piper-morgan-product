@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-07
+# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-15
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `104cb687`, ARMED, session-only, re-armed 2026-08-04 — see caveat below) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `e359e759` as of the 2026-08-15 21:46 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 ## ⚠️ Environment facts worth re-verifying each fire, not assuming
 
@@ -10,6 +10,42 @@
 - **Local env has no `GITHUB_DRAFT_TOKEN` / `ADMIN_PASSWORD_HASH` / `ADMIN_SESSION_SECRET`** — can exercise failure/fallback branches locally but not the real success path for anything touching the compose API or the live GitHub-backed calendar read. Vercel has these; first real click-through after a deploy is the actual test.
 
 ## Active threads
+
+### NEW — feature the most recent blog post above the fold, before the grid (PM design ask, 2026-08-15 evening, not yet scoped or built)
+PM looked at `pipermorgan.ai/blog` live (screenshot) after the compact-hero fix and had a further,
+distinct design idea: rather than the generic marketing hero taking the above-the-fold space, feature
+the actual most-recent post there, before the "Building-in-Public Updates" grid starts. Not a
+complaint about the compact fix itself — a new direction on top of it. **Not scoped or built yet** —
+needs real design thought (what does a "featured post" treatment look like: title + excerpt + image?
+does the generic hero copy go away entirely on `/blog` or shrink further alongside it?) and, as ever,
+no browser on this host to iterate visually — expect this to need PM's eyes at each real step, not
+just a final check. Next session: scope this properly before touching `Hero.tsx`/`blog/page.tsx`
+again, don't guess at the shape from one screenshot alone.
+
+### PM live check-in, 2026-08-15 evening — four items resolved/advanced
+PM reconnected via remote control after a network outage, answered the two long-standing standing
+questions directly (CLI B: fairly well superseded by compose, possibly still used by Docs internally
+— worth a check with Docs, not confirmed; `--mode=archive`: need has passed) — both closed in
+`web-standing-items.md`. Asked how to view the blog-hero fix — pointed to `pipermorgan.ai/blog`
+directly; PM's own live look at that page is what produced the above-the-fold idea recorded just
+above. **PM also directly decided the open Dispatch question from the finding below**: Dispatch
+should read `origin/main` directly, not PM's local checkout — PM often goes to Dispatch within
+minutes of Docs publishing, faster than any bounded-lag sync could keep up with. Relayed to Docs as a
+decision, not a question, cc PM/Comms
+(`mailboxes/web/sent/decision-web-to-docs-cc-pm-comms-PM-ruled-dispatch-should-read-origin-main-
+directly-2026-08-15.md`).
+
+PM closed the evening with unprompted positive feedback on the compose/editing tooling — specifically
+that it eases editing and illustrating posts without depending on PM managing the repo well or risking
+edits landing on stale drafts. Worth remembering as validation that the design direction (GitHub-API-
+backed, always-current reads, no local-checkout dependency) is the right one — the exact same
+principle PM just applied to the Dispatch decision above.
+
+**Long-term idea filed, explicitly not urgent**: PM wants to eventually publish blog posts natively
+to the Buttondown newsletter (currently unused — one subscriber, nothing ever sent), with possible
+subscriber choice between blog/Ship and narrative/insights — PM noted Buttondown may not support that
+granularity without multiple separate newsletters, needs more thought. PM explicitly said not tonight's
+work; noting here so it's not lost, no action pending.
 
 ### Ship #055 contributor workstream report — FILED 2026-08-07
 First-time ask (PM's idea, explicitly an experiment): contributor roles (lead, docs, pa, web) now
@@ -234,33 +270,23 @@ Buttondown CSP live-bug — all predecessor's, pre-7/19. Admin calendar runtime 
 autosave ask #1 — mine, 7/29 (see Active threads above for verification limits).
 
 ## Cron state
-- **ARMED** — `177df496`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
-  Re-armed via delete-then-create at the 2026-08-14 21:52 STOP (routine day-close re-arm, not a
-  cadence change — prior id `8669c80b` had been live all day). Registry row (expression-keyed, no
+- **ARMED** — `e359e759`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
+  Re-armed via delete-then-create at the 2026-08-15 21:46 STOP (routine day-close re-arm, not a
+  cadence change — prior id `177df496` had been live all day). Registry row (expression-keyed, no
   job-id column) needed no update.
-- **2026-08-11 was retroactively DAY-CLOSED on 2026-08-12** (Step 0 self-heal — reboot stand-down,
-  no explicit STOP; reconstructed cleanly, no gaps). **2026-08-13**: LinkedIn cover-image-upload FYI
-  from Docs (both automation paths confirmed dead 2026-08-12, manual upload now the documented
-  default, scope LinkedIn cross-posts only) — checked Web's actual code, confirmed zero overlap,
-  closed same-fire. PM's own direct commit (`fecd178`, `publish-post.js` bold/italic rendering fix)
-  also landed that day, no Web action needed.
-- **2026-08-14**: two substantive direct-memo threads, both fully drained same-fire. **Agent 360
-  v0.4** — Web's first appearance in this instrument (no v0.3 baseline); sent a full 10-section
-  response to HOST cc PM (`mailboxes/web/sent/agent-360-response-web-2026-08-14.md`), grounded in
-  specifics — the mail-send.sh local-branch-lag finding (below), the freeze-detect catches, browser
-  access as the recurring blocker, the Hero-component taxonomy as untransferred tacit knowledge, two
-  honest not-personally-reverified flags (Chrome MCP tool status, post-fix hook behavior on this
-  seat). **Ship #056 contributor workstream report** — Exec compressed the deadline from Saturday to
-  the same evening mid-window; filed the Aug 7–13 progress/setbacks/blockers report same-fire rather
-  than defer (`mailboxes/web/sent/workstream-056-web-2026-08-14.md`, sent to Exec cc PM), covering
-  the 8/9 website fixes, the BYOC/GTM findings, both freeze-detect catches, the Amber reboot
-  execution, and the LinkedIn-note closure. **Process finding, hit twice this week and now
-  documented in the Agent 360 response**: `mail-send.sh`'s push-to-ref pushes straight to
-  `origin/main` via `commit-tree` and does NOT update the local worktree branch — after a multi-path
-  send, the inbox-side deletion of a triaged memo needs its own explicit follow-up `mail-send.sh`
-  call, then a `git fetch && git merge` before local state (e.g. `ls mailboxes/web/inbox/`) actually
-  reflects the push. Routine to handle once known; worth remembering so it doesn't read as a
-  duplicate delivery.
+- **2026-08-13/14 recap** (full detail in those dated session logs, not repeated here): LinkedIn
+  cover-image-upload FYI checked and closed (no Web-lane impact); Agent 360 v0.4's first Web-specific
+  response sent to HOST cc PM (`mailboxes/web/sent/agent-360-response-web-2026-08-14.md`) — includes
+  a real process finding, `mail-send.sh`'s push-to-ref does NOT update the local worktree branch, so
+  a multi-path send's inbox-side deletion needs its own follow-up call + a `git fetch && git merge`
+  before local state reflects the push (hit twice, now routine to handle); Ship #056 contributor
+  workstream report filed to Exec cc PM covering Aug 7–13.
+- **2026-08-15**: quiet fire-wise (six fires, zero mail, zero code changes), but PM reconnected via
+  remote control mid-afternoon after a network outage and asked directly what was held. Answered with
+  the two standing PM-gated questions (CLI B trial status, `--mode=archive` scope) and the still-
+  unconfirmed blog-hero visual fix, named explicitly rather than left to sit under "no rush." A
+  scheduled fire landed mid-conversation (12:30) — handled inline per the cron-stays-armed-through-
+  PM-conversation rule, then returned to PM. No new PM response on any of the three items yet.
 - **Wake-time heartbeat practice — DONE 2026-08-05, ongoing**: emitted `scripts/duty-cycle-heartbeat.sh
   web START` (no `--if-quiet`) as the very first action of the 06:27 fire, before sync/mail/anything.
   Wrote `dev/heartbeats/2026-08-05/web.tsv` to `origin/main` at 06:28:00, well ahead of the cohort's
