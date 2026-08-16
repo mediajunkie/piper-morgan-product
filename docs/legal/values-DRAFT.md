@@ -65,11 +65,11 @@ user-owned data skips that filter. A fork can delete that check in one commit �
 why it's named here. Removing it would turn a private engineering decision into a visible, citable
 break from what Piper Morgan is.
 
-We've gotten this wrong once. A configuration file briefly leaked one user's project context and
-default settings to every other user on a shared instance. It was found, fixed by the next day, and
-the automated check that now guards against that class of bug exists *because* it happened. We're
-naming the incident here on purpose — a system that only ever claims things went right is making a
-weaker promise than one that shows you what it does when something goes wrong.
+Piper Morgan has gotten this wrong once. A configuration file briefly leaked one user's project
+context and default settings to every other user on a shared instance. It was found, fixed by the
+next day, and the automated check that now guards against that class of bug exists *because* it
+happened. This document names the incident on purpose — a system that only ever claims things went
+right is making a weaker promise than one that shows you what it does when something goes wrong.
 
 ### 2. When Piper reasons about an ethical boundary, you can see that reasoning — not just trust that it happened
 
@@ -120,8 +120,17 @@ three things are still true when you run it — not the license or the codebase 
    evaluating a fork, possibly years out, with no prior relationship to PM — the one register on
    the site where institutional third-person carries more weight than personal first-person warmth,
    unlike the blog/Ship/insights where first-person works because the reader already follows PM's
-   voice by choice. **Still drafted in first person below — Comms/HOST to execute the conversion**;
-   this is a voice-craft task, not a mechanical find-replace, and belongs with whoever drafted it.
+   voice by choice. **✅ CONVERTED 2026-08-15 (Comms).** Only two first-person instances existed in
+   the shipped prose ("We've gotten this wrong once" / "We're naming the incident here on purpose,"
+   §1's incident paragraph) — both rewritten to institutional third-person ("Piper Morgan has gotten
+   this wrong once" / "This document names the incident on purpose"), matching the self-referential
+   pattern the doc already uses elsewhere ("This document names those things..."). The second-person
+   "you" address to the reader (a fork-evaluator) is unchanged throughout — that's a different axis
+   from the first-person/third-person ruling above, and stays; institutional documents routinely
+   address "you" while never speaking as "I/we."
 
-**Next step**: Comms + HOST convert the prose to third-person per the ratified decision above, then
-this scaffold is ready to leave DRAFT status.
+**Status**: voice conversion done. Two items from the ratified decisions are outstanding and not
+Comms' to silently resolve: the NOTICE file (decision 2) exists and correctly points here; the
+**README link (decision 1) does not yet exist** — checked `README.md` directly, no reference found.
+Flagging rather than adding it myself, since README ownership isn't clearly Comms' lane. Once that's
+placed, this is ready to leave DRAFT status.
