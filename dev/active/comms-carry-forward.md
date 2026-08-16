@@ -1,14 +1,20 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-16 06:46 START fire, after fully draining the approved beats sequence. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-16 09:27 WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
 Armed, job `2a4258d8`, `12 6,9,12,15,18,21 * * *`. Expires ~2026-08-22.
 
-## The big one — 5 of 6 beats drafted, ready for PM's voice-pass whenever
+## Today's post — done
 
-The whole approved sequence is now drafted except Beat 6, which stays gated on purpose:
+**"The Fabricating Standup"** (Aug 16 slot) — PM's voice pass + art landed, ran the full editorial pass, 3 small fixes (a typo, a stray heading period, one negation-reveal construction), publish-ready. Nothing left here.
+
+## Values doc — fully closed out
+
+All four decisions ratified, voice converted, HOST's independent second pass confirmed clean (and improved my own reasoning on one point), README link added by Docs this morning. **One open question sent to HOST/Exec/PM**: the doc's own banner still says "for PM review before publication," which is stale now that PM's already reviewed — asked whether removing DRAFT status (banner, maybe filename) is mine to execute or someone else's call. Not done unilaterally. Watch for a reply.
+
+## The big one — 5 of 6 beats drafted, ready for PM's voice-pass whenever
 
 | # | Title | Slot | Draft |
 |---|---|---|---|
@@ -19,27 +25,23 @@ The whole approved sequence is now drafted except Beat 6, which stays gated on p
 | 5 | Repetition Isn't Convergence | Sep 3 | `docs/public/comms/drafts/repetition-isnt-convergence.md` |
 | 6 | More Than Anyone Ever Reported to Me | Sep 8 | **not drafted — PM's own go/no-go call, PM is the protagonist** |
 
-Every beat was fact-checked directly against primary logs (not reused from the 5-Aug/15-Aug planning-doc passes without re-verification), calendar rows added same-commit as each draft, pubDates set to match the approved slots, mechanical checks clean. Three real errors caught and fixed while drafting, not after: a mischaracterization of PA's actual role (verified against ROSTER.md), a voice-consistency slip (wrote Comms' own actions in first person, which in this register means PM), and two footer teases that were only accurate once a later beat's own row existed — checked against the live calendar each time, not assumed.
+Nothing left for me to do on Beats 1-5 until PM's voice-pass. Beat 6 needs PM's explicit steer before it gets drafted at all.
 
-**Nothing left for me to do on Beats 1-5 until PM's voice-pass.** Beat 6 needs PM's explicit steer before it gets drafted at all.
+## Also open
 
-## Also from last night, still open
-
-1. **Era-taxonomy proposal** — two new eras proposed, `docs/internal/planning/comms/era-taxonomy-proposal-2026-08-15.html`. Needs PM's ratification.
+1. **Era-taxonomy proposal** — two new eras proposed, `docs/internal/planning/comms/era-taxonomy-proposal-2026-08-15.html`. Needs PM's ratification. Unchanged since last night.
 2. **#1636 filed** (site's cluster data broken for 361/370 posts) — exists, awaiting an owner.
 
-## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available
+## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available (re-checked 09:27)
 
-- **HOST's second-pass reply on the values-doc voice conversion** — sent last night, response not yet in hand.
-- **Beat 23** ("The Architect's Own Trap") needs PM's voice-pass + art (footer fixed this morning, draft itself unchanged).
+- **Beat 23** ("The Architect's Own Trap") needs PM's voice-pass + art.
 - **CXO's §3 entity-model line** in `docs/internal/design/experience-across-surfaces.md` — flagged 3×, still pending.
 - **Dispatch syndication**: 3 fully unsyndicated posts, 1 partial. Unchanged since Jul 30.
 - **BYOC listing copy v4** — routed to PPM, no response found.
-- **Values doc README link** (decision 1) — flagged in the doc itself, not obviously Comms' lane.
 
 ## Small, low-urgency, Exec-coordinated
 
-- **Ship `**Metrics**` line: bold text or real markdown heading?** Team call (Docs/Comms/Exec), no PM preference, no urgency. Waiting for Exec's promised follow-up rather than jumping in unprompted.
+- **Ship `**Metrics**` line: bold text or real markdown heading?** Team call (Docs/Comms/Exec), no PM preference, no urgency. Waiting for Exec's promised follow-up.
 
 ## New, not yet actioned
 
@@ -47,11 +49,12 @@ Every beat was fact-checked directly against primary logs (not reused from the 5
 
 ## Waiting on others
 
-- **PM** — beats/era discussion; Beat 6 go/no-go; era-taxonomy ratification; voice-pass + art on Beats 1-5 and Beat 23.
-- **HOST** — values-doc second-pass reply (imminent); Agent 360 synthesis, ~4 weeks out.
+- **PM** — beats/era discussion; Beat 6 go/no-go; era-taxonomy ratification; voice-pass + art on Beats 1-5 and Beat 23; values-doc DRAFT-status call.
+- **HOST/Exec** — values-doc DRAFT-status question (just sent).
+- **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **PPM** — BYOC listing copy v4.
 - **CXO/PM** — entity-model ratification.
 - **Dispatch** — syndication for the 4 posts.
 - **Exec** — Metrics-heading team-call follow-up.
 - **Lead** — outcome of #1611 (routed by Docs).
-- **Someone (unclear who)** — values-doc README link; #1636 (cluster-data pipeline fix).
+- **Someone (unclear who)** — #1636 (cluster-data pipeline fix).
