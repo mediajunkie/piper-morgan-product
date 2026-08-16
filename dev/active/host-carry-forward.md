@@ -1,6 +1,6 @@
 # HOST carry-forward
 
-**Written**: 2026-08-14 22:0x PDT (STOP fire, day 21 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-15 21:5x PDT (STOP fire, day 22 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -121,11 +121,12 @@
 
 ## Cron
 
-Current job **`04ceaeeb`** (chain … `9d57a06f → 4894dc35 → 04ceaeeb`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-14 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`0718e262`** (chain … `4894dc35 → 04ceaeeb → 0718e262`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-15 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 08-14 STOP
+## Open threads, as of 08-15 STOP
 
-- **Retention/learning-scope policy scaffold** (`docs/legal/data-retention-policy-DRAFT.md`) — PM's ask via Exec, drafted and sent for review 08-13. Still awaiting PM. Don't re-draft.
-- **Values/ethics document** (`docs/legal/values-DRAFT.md`, open-source protection, joint with Comms) — substance-checked twice (first-pass list 08-13, drafted-and-verified 08-14). Comms applied both fixes, verified by diffing the actual commit rather than trusting the summary. **Now with PM** — four open decisions in the doc's own "Open Questions" (placement, license/NOTICE relationship, fourth commitment, voice — HOST's lean recorded, PM's call). Not owed further unless PM asks.
-- **Agent 360 v0.4** — cadence ratified (6 weeks, derived from real history) and fielded same-day 08-14 to all 11 roles. 6/11 responses already in same-day; **hold synthesis for the ~2-week window, don't jump on partial responses.** CIO's self-firing workflow for future rounds shipped and independently verified (`4f13dca9b`) — unverified until its first real trigger 2026-09-25, check back then.
-- **Ship #056 workstream review** — filed 08-14 evening per PM's same-day corrected deadline (moved up from Sat 08-15). Nothing further owed unless PM has questions.
+- **Retention/learning-scope policy** — ✅ **RATIFIED 08-15.** §3 retain-all-by-default (PM agreed with HOST's own reasoning, not just the lean), §4 user-facing settings scoped to Enterprise milestone (#1634), not MVP. Doc, `decisions.log`, privacy-policy draft all updated by Exec. Closed, nothing further owed.
+- **Values/ethics document** (`docs/legal/values-DRAFT.md`) — ✅ **All four open questions ratified 08-15**: placement (`docs/legal/`), NOTICE file for license relationship, no fourth commitment, voice = third-person (HOST's lean, PM: *"important distinction, well drawn"*). **One real action item outstanding, Comms's lane not HOST's**: convert drafted prose from first-person to third-person — voice-craft, not mechanical. HOST offered a post-conversion substance-accuracy pass if wanted; not proactively doing the conversion. Watch for Comms's next memo, don't chase.
+- **Agent 360 v0.4** — cadence ratified + fielded 08-14. **8/11 responses in as of 08-15** (cio, comms, cxo, docs, pa, web, lead, ppm). Still hold synthesis for the ~2-week window (through ~08-28) — 8/11 is strong but not the full picture; arch, exec, and one more still owed. CIO's self-firing workflow unverified until its first real trigger 2026-09-25.
+- **Audit-nobody-owns** — ✅ **CLOSED by PM ruling 08-15.** Lead owns the beta-conditions audit as part of the sprint's final gate, plus an independent subagent cross-check. Verified against `decisions.log:1690` directly. Portfolio row renamed and retitled; retires fully once the audit + cross-check actually run — watch for that, don't re-raise ownership.
+- **Ship #056 workstream review** — filed 08-14 evening per PM's same-day corrected deadline. Closed, nothing further owed.
