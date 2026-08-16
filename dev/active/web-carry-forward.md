@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-07
+# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-15
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `104cb687`, ARMED, session-only, re-armed 2026-08-04 — see caveat below) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `e359e759` as of the 2026-08-15 21:46 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 ## ⚠️ Environment facts worth re-verifying each fire, not assuming
 
@@ -10,6 +10,36 @@
 - **Local env has no `GITHUB_DRAFT_TOKEN` / `ADMIN_PASSWORD_HASH` / `ADMIN_SESSION_SECRET`** — can exercise failure/fallback branches locally but not the real success path for anything touching the compose API or the live GitHub-backed calendar read. Vercel has these; first real click-through after a deploy is the actual test.
 
 ## Active threads
+
+### PM live check-in, 2026-08-15 evening — three items resolved/advanced, one long-term idea filed
+PM reconnected via remote control after a network outage, answered the two long-standing standing
+questions directly (CLI B: fairly well superseded by compose, possibly still used by Docs internally
+— worth a check with Docs, not confirmed; `--mode=archive`: need has passed) — both closed in
+`web-standing-items.md`. Asked how to view the blog-hero fix — pointed to `pipermorgan.ai/blog`
+directly (compact hero should show post titles without scrolling).
+
+**Real investigative work, not just a status answer**: PM raised that Dispatch still seems to hit
+calendar-CSV staleness on cross-posts, relayed via Docs originally. Traced it properly rather than
+assume my 2026-08-09 fix covers it — **it doesn't**. Found two genuinely distinct mechanisms had been
+folded into one thread: my fix addressed Web's own `/admin/calendar`/`/admin/publish-queue` pages and
+`copy-editorial-calendar.js`, which Dispatch never reads through at all. The actual mechanism Dispatch
+hits (Docs root-caused 2026-08-01, in `~/Development/dispatch/mail/`) is that Dispatch reads from PM's
+**local** `~/Development/piper-morgan-product` checkout, which only syncs via `sync-pm-local.sh` at
+"natural idle points" — that script had its own real bug (hard-coded laptop path, silently no-opping
+on every Amber seat since the migration) fixed 2026-07-26. **Checked live tonight**: the local
+checkout is ~15 commits behind `origin/main` right now (normal), but its reflog shows repeated
+hourly-ish fast-forward pulls from various agents' duty cycles all day — the mechanism is working, the
+residual gap is a bounded ~hour-ish window, not indefinite drift. Wrote this up and sent to Docs cc
+PM/Comms (`mailboxes/web/sent/finding-web-to-docs-cc-pm-comms-dispatch-calendar-staleness-two-
+distinct-causes-one-fixed-one-open-2026-08-15.md`) — the open decision (is the bounded lag acceptable,
+or should Dispatch read `origin/main` directly via API instead) is Docs' call, not mine, since Docs
+owns the actual Dispatch relationship.
+
+**Long-term idea filed, explicitly not urgent**: PM wants to eventually publish blog posts natively
+to the Buttondown newsletter (currently unused — one subscriber, nothing ever sent), with possible
+subscriber choice between blog/Ship and narrative/insights — PM noted Buttondown may not support that
+granularity without multiple separate newsletters, needs more thought. PM explicitly said not tonight's
+work; noting here so it's not lost, no action pending.
 
 ### Ship #055 contributor workstream report — FILED 2026-08-07
 First-time ask (PM's idea, explicitly an experiment): contributor roles (lead, docs, pa, web) now
