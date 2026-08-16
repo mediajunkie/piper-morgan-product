@@ -1,39 +1,45 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-16 06:26 START fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-16 06:46 START fire, after fully draining the approved beats sequence. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
 Armed, job `2a4258d8`, `12 6,9,12,15,18,21 * * *`. Expires ~2026-08-22.
 
-## The one thing to check first — PM's own conversation, not this duty cycle
+## The big one — 5 of 6 beats drafted, ready for PM's voice-pass whenever
 
-⭐ **PM said "we can discuss the findings when we resume tomorrow" (i.e. today)** — this is a live-conversation thread, not something duty-cycle fires should try to push forward alone:
+The whole approved sequence is now drafted except Beat 6, which stays gated on purpose:
 
-1. **Beats sequence — APPROVED.** PM confirmed 6 beats with two title revisions. Decision record + Artifact both updated last night. **Beat 1 is now drafted** (see below) — the remaining open piece is Beat 6's go/no-go/rewrite call, which is explicitly PM's alone (PM is the protagonist).
-2. **Era-taxonomy proposal — ready for review.** Two new eras proposed ("The Mechanism" Apr–Jul, "The Alpha" Aug–present), full writeup at `docs/internal/planning/comms/era-taxonomy-proposal-2026-08-15.html`. Needs PM's ratification.
-3. **#1636 filed** (site's cluster data broken for 361/370 posts, not just the April-onward gap) — exists, awaiting an owner, no PM action needed for it to exist.
+| # | Title | Slot | Draft |
+|---|---|---|---|
+| 1 | The Dead Code That Wasn't | Aug 20 | `docs/public/comms/drafts/the-dead-code-that-wasnt.md` |
+| 2 | The Burn-Down | Aug 25 | `docs/public/comms/drafts/the-burn-down.md` |
+| 3 | The Detector That Notified Nobody | Aug 27 | `docs/public/comms/drafts/the-detector-that-notified-nobody.md` |
+| 4 | A Sender-Impersonation Bug, Four Days Before Beta | Sep 1 | `docs/public/comms/drafts/a-sender-impersonation-bug-four-days-before-beta.md` |
+| 5 | Repetition Isn't Convergence | Sep 3 | `docs/public/comms/drafts/repetition-isnt-convergence.md` |
+| 6 | More Than Anyone Ever Reported to Me | Sep 8 | **not drafted — PM's own go/no-go call, PM is the protagonist** |
 
-## This morning (Aug 16 START) — done
+Every beat was fact-checked directly against primary logs (not reused from the 5-Aug/15-Aug planning-doc passes without re-verification), calendar rows added same-commit as each draft, pubDates set to match the approved slots, mechanical checks clean. Three real errors caught and fixed while drafting, not after: a mischaracterization of PA's actual role (verified against ROSTER.md), a voice-consistency slip (wrote Comms' own actions in first person, which in this register means PM), and two footer teases that were only accurate once a later beat's own row existed — checked against the live calendar each time, not assumed.
 
-- **Reconciliation fix**: "15 Sessions, Fast Recovery" (Nov 2025 piece) had a stale draftPath + wrong status despite being confirmed published by PM's own commit. Fixed, verified, reconciliation clean.
-- **Beat 1 drafted end-to-end**: "The Dead Code That Wasn't" — fact-checked directly against primary Jul 16-18 logs (not reused from the planning-doc pass without re-verification), calendar row added same commit, mechanical checks clean, 757 words. **Needs PM voice-pass + art.**
-- **Beat 23 footer-chain fix**: now correctly teases Ship #056 (Aug 19) instead of skipping to Trust Gate (Aug 22), since Beat 1 now sits between them on the calendar.
-- Mailbox triaged (3 ccs, all Docs/Web/Exec-owned matters — Dispatch calendar-staleness diagnosis, website#31 answers, a small Ship-formatting style call Exec is coordinating that includes Comms — noted below, not urgent).
+**Nothing left for me to do on Beats 1-5 until PM's voice-pass.** Beat 6 needs PM's explicit steer before it gets drafted at all.
+
+## Also from last night, still open
+
+1. **Era-taxonomy proposal** — two new eras proposed, `docs/internal/planning/comms/era-taxonomy-proposal-2026-08-15.html`. Needs PM's ratification.
+2. **#1636 filed** (site's cluster data broken for 361/370 posts) — exists, awaiting an owner.
 
 ## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available
 
 - **HOST's second-pass reply on the values-doc voice conversion** — sent last night, response not yet in hand.
-- **Beat 23** now needs PM's voice-pass + art (draft itself unchanged, only its footer was touched this morning).
-- **Beat 1** needs PM's voice-pass + art (new today).
+- **Beat 23** ("The Architect's Own Trap") needs PM's voice-pass + art (footer fixed this morning, draft itself unchanged).
 - **CXO's §3 entity-model line** in `docs/internal/design/experience-across-surfaces.md` — flagged 3×, still pending.
-- **Dispatch syndication**: 3 fully unsyndicated posts, 1 partial. Unchanged since Jul 30 — though last night's Web/Docs thread on Dispatch's *calendar-read* staleness (a different mechanism) may be worth a mention if PM asks about Dispatch friction generally.
+- **Dispatch syndication**: 3 fully unsyndicated posts, 1 partial. Unchanged since Jul 30.
 - **BYOC listing copy v4** — routed to PPM, no response found.
 - **Values doc README link** (decision 1) — flagged in the doc itself, not obviously Comms' lane.
 
 ## Small, low-urgency, Exec-coordinated
 
-- **Ship `**Metrics**` line: bold text or real markdown heading?** PM ruled it's a team call (Docs/Comms/Exec), no PM preference, no urgency. Exec said "I'll follow up with Comms" — waiting for that rather than jumping in unprompted, but have a quick lean ready (heading, for scan-ability/template consistency) if asked directly.
+- **Ship `**Metrics**` line: bold text or real markdown heading?** Team call (Docs/Comms/Exec), no PM preference, no urgency. Waiting for Exec's promised follow-up rather than jumping in unprompted.
 
 ## New, not yet actioned
 
@@ -41,7 +47,7 @@ Armed, job `2a4258d8`, `12 6,9,12,15,18,21 * * *`. Expires ~2026-08-22.
 
 ## Waiting on others
 
-- **PM** — beats/era discussion; Beat 6 go/no-go; era-taxonomy ratification; Beat 1 + Beat 23 voice-pass + art.
+- **PM** — beats/era discussion; Beat 6 go/no-go; era-taxonomy ratification; voice-pass + art on Beats 1-5 and Beat 23.
 - **HOST** — values-doc second-pass reply (imminent); Agent 360 synthesis, ~4 weeks out.
 - **PPM** — BYOC listing copy v4.
 - **CXO/PM** — entity-model ratification.
