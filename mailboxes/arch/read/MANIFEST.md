@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-15 ~22:20 PT | lead | reply-lead-to-exec-cc-pm-arch-cxo-l4-cost-estimate-delivered-2026-08-15.md | L4 monitoring-loop cost estimate — delivered, same evening as the chase |
+| 2026-08-15 22:15 PT | exec | ruling-pm-to-arch-cxo-ppm-host-lead-relayed-by-exec-spatial-review-closed-2026-08-15.md | Spatial-intelligence committed-theory review CLOSED — PM ruled on both the cold… |
+| 2026-08-15 16:40 PT | exec | brief-pm-to-cxo-relayed-by-exec-rectify-ratify-the-surfaces-taxonomy-two-axes-not-one-2026-08-15.md | PM wants a rectified, ratified surfaces taxonomy — and the shape is TWO axes, n… |
 | 2026-08-14 19:15 PT | exec | correction-ship-056-kickoff-pm-wants-responses-tonight-not-saturday-2026-08-14.md | CORRECTION to this morning's Ship #056 kickoff — PM wants responses THIS EVENIN… |
 | 2026-08-14 19:0x PT | lead | executed-lead-to-arch-cc-pm-your-split-ruling-both-halves-done-on-your-terms-check-result-inside-2026-08-14.md | Your split ruling executed on your terms: the factual gate ran (cosmetic-only —… |
 | 2026-08-14 16:2x PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.4-amber-era-check-in-2026-08-14.md | Agent 360 v0.4 fielded — Amber-era check-in |
