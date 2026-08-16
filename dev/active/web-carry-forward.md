@@ -11,29 +11,35 @@
 
 ## Active threads
 
-### PM live check-in, 2026-08-15 evening — three items resolved/advanced, one long-term idea filed
+### NEW — feature the most recent blog post above the fold, before the grid (PM design ask, 2026-08-15 evening, not yet scoped or built)
+PM looked at `pipermorgan.ai/blog` live (screenshot) after the compact-hero fix and had a further,
+distinct design idea: rather than the generic marketing hero taking the above-the-fold space, feature
+the actual most-recent post there, before the "Building-in-Public Updates" grid starts. Not a
+complaint about the compact fix itself — a new direction on top of it. **Not scoped or built yet** —
+needs real design thought (what does a "featured post" treatment look like: title + excerpt + image?
+does the generic hero copy go away entirely on `/blog` or shrink further alongside it?) and, as ever,
+no browser on this host to iterate visually — expect this to need PM's eyes at each real step, not
+just a final check. Next session: scope this properly before touching `Hero.tsx`/`blog/page.tsx`
+again, don't guess at the shape from one screenshot alone.
+
+### PM live check-in, 2026-08-15 evening — four items resolved/advanced
 PM reconnected via remote control after a network outage, answered the two long-standing standing
 questions directly (CLI B: fairly well superseded by compose, possibly still used by Docs internally
 — worth a check with Docs, not confirmed; `--mode=archive`: need has passed) — both closed in
 `web-standing-items.md`. Asked how to view the blog-hero fix — pointed to `pipermorgan.ai/blog`
-directly (compact hero should show post titles without scrolling).
+directly; PM's own live look at that page is what produced the above-the-fold idea recorded just
+above. **PM also directly decided the open Dispatch question from the finding below**: Dispatch
+should read `origin/main` directly, not PM's local checkout — PM often goes to Dispatch within
+minutes of Docs publishing, faster than any bounded-lag sync could keep up with. Relayed to Docs as a
+decision, not a question, cc PM/Comms
+(`mailboxes/web/sent/decision-web-to-docs-cc-pm-comms-PM-ruled-dispatch-should-read-origin-main-
+directly-2026-08-15.md`).
 
-**Real investigative work, not just a status answer**: PM raised that Dispatch still seems to hit
-calendar-CSV staleness on cross-posts, relayed via Docs originally. Traced it properly rather than
-assume my 2026-08-09 fix covers it — **it doesn't**. Found two genuinely distinct mechanisms had been
-folded into one thread: my fix addressed Web's own `/admin/calendar`/`/admin/publish-queue` pages and
-`copy-editorial-calendar.js`, which Dispatch never reads through at all. The actual mechanism Dispatch
-hits (Docs root-caused 2026-08-01, in `~/Development/dispatch/mail/`) is that Dispatch reads from PM's
-**local** `~/Development/piper-morgan-product` checkout, which only syncs via `sync-pm-local.sh` at
-"natural idle points" — that script had its own real bug (hard-coded laptop path, silently no-opping
-on every Amber seat since the migration) fixed 2026-07-26. **Checked live tonight**: the local
-checkout is ~15 commits behind `origin/main` right now (normal), but its reflog shows repeated
-hourly-ish fast-forward pulls from various agents' duty cycles all day — the mechanism is working, the
-residual gap is a bounded ~hour-ish window, not indefinite drift. Wrote this up and sent to Docs cc
-PM/Comms (`mailboxes/web/sent/finding-web-to-docs-cc-pm-comms-dispatch-calendar-staleness-two-
-distinct-causes-one-fixed-one-open-2026-08-15.md`) — the open decision (is the bounded lag acceptable,
-or should Dispatch read `origin/main` directly via API instead) is Docs' call, not mine, since Docs
-owns the actual Dispatch relationship.
+PM closed the evening with unprompted positive feedback on the compose/editing tooling — specifically
+that it eases editing and illustrating posts without depending on PM managing the repo well or risking
+edits landing on stale drafts. Worth remembering as validation that the design direction (GitHub-API-
+backed, always-current reads, no local-checkout dependency) is the right one — the exact same
+principle PM just applied to the Dispatch decision above.
 
 **Long-term idea filed, explicitly not urgent**: PM wants to eventually publish blog posts natively
 to the Buttondown newsletter (currently unused — one subscriber, nothing ever sent), with possible
