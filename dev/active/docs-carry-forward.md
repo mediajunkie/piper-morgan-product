@@ -1,5 +1,9 @@
 # Docs Carry-Forward
 
+**Updated**: 2026-08-15 22:4x PDT (DAY-CLOSED — quiet day + 1 publish + a real STOP-fire drain)
+**Session log**: `dev/2026/08/15/2026-08-15-0711-docs-code-log.md` (closed).
+**Cron**: `2967db0e`, fresh window to ~08-21.
+
 **Updated**: 2026-08-14 22:3x PDT (DAY-CLOSED — 6 fires, clean sign-off)
 **Session log**: `dev/2026/08/14/2026-08-14-0727-docs-code-log.md` (closed). 08-13 closed
 retroactively same day.
