@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-15 21:42 PT | exec | correction-pm-to-pa-relayed-by-exec-stale-privacy-blockers-in-workstream-056-2026-08-15.md | Correction to your Ship #056 report — 2 of 3 privacy-policy blockers were alrea… |
 | 2026-08-14 19:15 PT | exec | correction-ship-056-kickoff-pm-wants-responses-tonight-not-saturday-2026-08-14.md | CORRECTION to this morning's Ship #056 kickoff — PM wants responses THIS EVENIN… |
 | 2026-08-14 16:2x PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.4-amber-era-check-in-2026-08-14.md | Agent 360 v0.4 fielded — Amber-era check-in |
 | 2026-08-14 09:15 PT | exec | kickoff-ship-056-contributor-portfolio-report-window-aug7-13-2026-08-14.md | Ship #056 contributor workstream report — window Fri Aug 7 – Thu Aug 13. Write… |
