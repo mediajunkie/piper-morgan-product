@@ -9325,17 +9325,18 @@ class IntentService:
         # #1124: `generate_content` / `create_content` MIGRATED to the action-dispatch
         # rail (generate_content_entry in workflow_entries.py); `_handle_generate_content`
         # reused unchanged. The `summarize` / `create_summary` dispatch was DELETED:
-        # per #1158 (SUMMARIZE-TAXONOMY) summaries always floor — the verb shim no longer
-        # produces the legacy `summarize` action, and removing this branch floors it even
-        # if a free-form `summarize` action is ever emitted directly. All synthesis
-        # actions without a rail entry route to the conversational floor (the safe default).
+        # per #1158 (SUMMARIZE-TAXONOMY) summaries always floor. Since #1624 the ONE
+        # exception is the uploaded-document source: `summarize_document` (verb-shim /
+        # normalization target) dispatches on the pre-floor rail and never reaches
+        # this category handler. All other synthesis actions without a rail entry
+        # route to the conversational floor (the safe default).
         #
         # #1187 fetch-augmentation: for a `summarize` request whose source the floor
         # can't reach (github_issue / commit_range), fetch the content first and inject
         # it via domain_context so the floor summarizes the SOURCE — not just
         # acknowledge it can't reach it. `_fetch_summary_source_content` returns None
-        # for floor-direct (text/conversation) / deferred (document) / fetch-failure, so
-        # this is a cheap no-op for every non-summarize-of-source synthesis intent.
+        # for floor-direct (text/conversation) / rail-handled (document) / fetch-failure,
+        # so this is a cheap no-op for every non-summarize-of-source synthesis intent.
         summary_dc = None
         fetched = await self._fetch_summary_source_content(intent, workflow_id)
         if fetched:
@@ -10632,153 +10633,6 @@ Add any relevant context or background information.
 Add any additional information here.
 """
 
-    async def _handle_summarize(self, intent: Intent, workflow_id: str) -> IntentProcessingResult:
-        """
-        Handle summarization requests — DORMANT (off the dispatch path post-#1158).
-
-        SUMMARIZE-TAXONOMY (#1158, resolved 2026-06-09): per PPM's product ruling, a
-        summary's output is ALWAYS conversational (floor-rendered). The canonical
-        `summarize` verb is therefore deliberately NOT shimmed to the `summarize`
-        action (see `_VERB_SOURCE_TO_ACTION` in action_registry.py), so this handler
-        is no longer reached — summary requests fall through the SYNTHESIS elif to the
-        conversational floor. This method is retained (not deleted) because its
-        fetch helpers (`_fetch_issue_content` / `_fetch_commit_content`) are the
-        seed for the deferred fetch-augmentation pipeline (SUMMARIZE-FETCH-AUGMENTATION
-        follow-on): fetch source content the floor can't reach, then hand to the floor
-        to render. There is no second (structured) output renderer to build.
-
-        Fetch capability of THIS handler (narrower than the classifier's source_type
-        vocabulary, which is {text, conversation, github_issue, commit_range, document}):
-            - 'github_issue': Summarize GitHub issue and comments
-            - 'commit_range': Summarize commits from a time period
-            - 'text': Summarize provided text content
-        ('conversation' is floor-direct; 'document' retrieval is part of the deferred
-        fetch-augmentation work.)
-        """
-        try:
-            # 1. VALIDATION
-            source_type = intent.context.get("source_type")
-
-            if not source_type:
-                return IntentProcessingResult(
-                    success=False,
-                    message="Cannot summarize: source type not specified. Please specify 'github_issue', 'commit_range', or 'text'.",
-                    intent_data={
-                        "category": intent.category.value,
-                        "action": intent.action,
-                    },
-                    workflow_id=workflow_id,
-                    requires_clarification=True,
-                    clarification_type="source_type_required",
-                )
-
-            # Validate source_type
-            valid_sources = ["github_issue", "commit_range", "text"]
-            if source_type not in valid_sources:
-                return IntentProcessingResult(
-                    success=False,
-                    message=f"Unknown source type '{source_type}'. Supported types: {', '.join(valid_sources)}",
-                    intent_data={
-                        "category": intent.category.value,
-                        "action": intent.action,
-                        "requested_source_type": source_type,
-                    },
-                    workflow_id=workflow_id,
-                    error=f"Unknown source type: {source_type}",
-                    error_type="ValidationError",
-                )
-
-            # 2. FETCH CONTENT based on source_type
-            try:
-                if source_type == "github_issue":
-                    content, source_metadata = await self._fetch_issue_content(intent.context)
-                elif source_type == "commit_range":
-                    content, source_metadata = await self._fetch_commit_content(
-                        intent.context, workflow_id
-                    )
-                elif source_type == "text":
-                    content, source_metadata = self._extract_text_content(intent.context)
-
-                # Check for empty content
-                if not content or len(content.strip()) < 50:
-                    return IntentProcessingResult(
-                        success=False,
-                        message=f"Content too short to summarize (< 50 characters). Please provide more content.",
-                        intent_data={
-                            "category": intent.category.value,
-                            "action": intent.action,
-                            "source_type": source_type,
-                        },
-                        workflow_id=workflow_id,
-                        error="Content too short",
-                        error_type="ValidationError",
-                    )
-
-            except ValueError as e:
-                # Parameter validation errors
-                return self._make_error_result(
-                    intent=intent,
-                    workflow_id=workflow_id,
-                    error=e,
-                    context="creating that summary",
-                    error_type="ValidationError",
-                )
-
-            # 3. SUMMARIZE with LLM
-            length = intent.context.get("length", "moderate")
-
-            doc_summary = await self._summarize_with_llm(
-                content=content, source_type=source_type, length=length, **source_metadata
-            )
-
-            # 4. FORMAT summary
-            format_type = intent.context.get("format", "bullet_points")
-            formatted_summary = self._format_summary(doc_summary, format_type)
-
-            # 5. CALCULATE metrics
-            original_length = len(content)
-            summary_length = len(formatted_summary)
-            compression_ratio = summary_length / original_length if original_length > 0 else 0.0
-
-            # 6. BUILD response
-            return IntentProcessingResult(
-                success=True,
-                message=f"Summarized {source_type} successfully ({original_length} → {summary_length} chars, {compression_ratio:.1%} compression)",
-                intent_data={
-                    "category": intent.category.value,
-                    "action": intent.action,
-                    "confidence": intent.confidence,
-                    # Summary content
-                    "summary": formatted_summary,
-                    "summary_format": format_type,
-                    "summary_length": summary_length,
-                    # Metrics
-                    "original_length": original_length,
-                    "compression_ratio": compression_ratio,
-                    # Structured data
-                    "title": doc_summary.title,
-                    "document_type": doc_summary.document_type,
-                    "key_findings": doc_summary.key_findings,
-                    # Source info
-                    "source_type": source_type,
-                    "source_metadata": source_metadata,
-                    # Timing
-                    "summarized_at": datetime.now().isoformat(),
-                },
-                workflow_id=workflow_id,
-                requires_clarification=False,
-            )
-
-        except Exception as e:
-            self.logger.error(f"Failed to summarize: {e}", exc_info=True)
-            return self._make_error_result(
-                intent=intent,
-                workflow_id=workflow_id,
-                error=e,
-                context="creating that summary",
-                error_type="SynthesisError",
-            )
-
     async def _fetch_summary_source_content(
         self, intent: Intent, workflow_id: Optional[str] = None
     ) -> Optional[Tuple[str, Dict[str, Any]]]:
@@ -10786,11 +10640,17 @@ Add any additional information here.
         floor can't reach (github_issue / commit_range), fetch the source content so
         the floor can render the summary from it. Returns `(content, metadata)` or
         `None` when there is nothing to fetch (text / conversation are floor-direct;
-        document retrieval is a deferred path).
+        UPLOADED-document summarize never reaches this dispatcher at all since
+        #1624 — the `summarize_document` action rail-dispatches pre-floor to
+        `workflow_entries.run_summarize_document_workflow`, the same
+        DocumentAnalyzer path the REST endpoint uses).
 
-        Reuses the `_handle_summarize` fetch helpers (`_fetch_issue_content` does its
-        own #1187 Gap-1 issue-number extraction from the raw message, since the
-        classifier tags source_type but does not slot the number). This is the
+        Uses the `_fetch_issue_content` / `_fetch_commit_content` helpers
+        (`_fetch_issue_content` does its own #1187 Gap-1 issue-number extraction
+        from the raw message, since the classifier tags source_type but does not
+        slot the number). The dormant `_handle_summarize` wrapper that originally
+        seeded those helpers was deleted in #1624 (dead since #1158's
+        output-always-floors ruling; recoverable at `2d8ccc5ac`). This is the
         *fetch* half of #1158's "output always floor, source branches" ruling; the
         floor-injection + rendering is wired separately (see the #1187 wiring
         design). Pure dispatcher: no LLM, no formatting, no side effects.
@@ -10827,7 +10687,11 @@ Add any additional information here.
             if source_type == "commit_range":
                 return await self._fetch_commit_content(context, workflow_id)
             # text / conversation → the floor already has it (floor-direct).
-            # document → deferred (Notion/uploaded-file retrieval); not yet wired.
+            # document → handled UPSTREAM since #1624: the summarize_document
+            # action dispatches on the pre-floor rail (run_summarize_document_
+            # workflow). A source_type=document emission that still lands here
+            # (paraphrase action the rail doesn't key) floors without content —
+            # honest degrade, never fabrication.
             return None
         except Exception as e:
             # Fetch failure is graceful: return None → the floor degrades to the
@@ -11101,198 +10965,6 @@ Add any additional information here.
             metadata["categories"] = category_counts
 
         return content, metadata
-
-    def _extract_text_content(self, context: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
-        """
-        Extract and validate text content for summarization.
-
-        Args:
-            context: Intent context containing content text
-
-        Returns:
-            Tuple of (content_string, metadata_dict)
-        """
-        # Extract content
-        content = context.get("content")
-        if not content:
-            raise ValueError("content is required for text summarization")
-
-        if not isinstance(content, str):
-            raise ValueError("content must be a string")
-
-        # Validate minimum length
-        if len(content.strip()) < 50:
-            raise ValueError("content is too short to summarize (minimum 50 characters)")
-
-        # Truncate if too long (with warning)
-        MAX_LENGTH = 10000
-        if len(content) > MAX_LENGTH:
-            self.logger.warning(
-                f"Content exceeds maximum length ({len(content)} > {MAX_LENGTH}), truncating"
-            )
-            content = content[:MAX_LENGTH]
-
-        # Extract optional params
-        title = context.get("title", "Document")
-        document_type = context.get("document_type", "Text")
-
-        # Build formatted content
-        formatted_content = f"""# Text Summary Request
-
-**Title**: {title}
-**Document Type**: {document_type}
-**Length**: {len(content)} characters
-
-## Content
-
-{content}"""
-
-        # Build metadata
-        metadata = {
-            "title": title,
-            "document_type": document_type,
-            "original_length": len(content),
-            "provided_by": "user",
-        }
-
-        return formatted_content, metadata
-
-    async def _summarize_with_llm(
-        self, content: str, source_type: str, length: str = "moderate", **kwargs
-    ):
-        """
-        Summarize content using LLM with structured JSON output.
-
-        Args:
-            content: Formatted content to summarize
-            source_type: Type of source
-            length: Desired summary length
-            **kwargs: Additional metadata
-
-        Returns:
-            DocumentSummary object with structured summary
-        """
-        # Initialize LLM client if needed (for test mocking)
-        if not hasattr(self, "llm_client") or self.llm_client is None:
-            from services.llm.clients import LLMClient
-
-            self.llm_client = LLMClient()
-
-        # Build length guidance
-        length_guidance = {
-            "brief": "Provide 2-3 key points only.",
-            "moderate": "Provide 5-7 key points covering main topics.",
-            "detailed": "Provide 10+ key points with comprehensive coverage.",
-        }.get(length, "Provide 5-7 key points covering main topics.")
-
-        # Build source-specific guidance
-        source_guidance = {
-            "github_issue": "Focus on the issue description, key discussion points, and proposed solutions.",
-            "commit_range": "Focus on categorizing changes by type (features, fixes, chores) and identifying key contributors.",
-            "text": "Focus on extracting the main themes and important details.",
-        }.get(source_type, "Focus on the key themes and important details.")
-
-        # Truncate content to avoid token limits (like TextAnalyzer does)
-        truncated_content = content[:3000]
-
-        # Build prompt
-        prompt = f"""Please summarize the following content.
-
-{source_guidance}
-{length_guidance}
-
-Return a JSON object with this exact structure:
-{{
-    "title": "Brief title for the summary",
-    "document_type": "{source_type}",
-    "key_findings": ["Finding 1", "Finding 2", "Finding 3", ...],
-    "sections": []
-}}
-
-Content to summarize:
-
-{truncated_content}"""
-
-        # Call LLM with JSON mode
-        try:
-            json_response = await self.llm_client.complete(
-                task_type="summarize", prompt=prompt, response_format={"type": "json_object"}
-            )
-
-            # Parse JSON response
-            summary_data = json.loads(json_response)
-
-            # Create DocumentSummary-like object
-            from services.analysis.summary_parser import DocumentSummary
-
-            doc_summary = DocumentSummary(
-                title=summary_data.get("title", "Summary"),
-                document_type=summary_data.get("document_type", source_type),
-                key_findings=summary_data.get("key_findings", []),
-                sections=summary_data.get("sections", []),
-            )
-
-            return doc_summary
-
-        except Exception as e:
-            self.logger.error(f"LLM summarization failed: {e}", exc_info=True)
-            raise Exception(f"Failed to generate summary: {str(e)}")
-
-    def _format_summary(self, doc_summary, format_type: str = "bullet_points") -> str:
-        """
-        Format DocumentSummary into requested output format.
-
-        Args:
-            doc_summary: Structured summary from LLM
-            format_type: Output format (bullet_points, paragraph, executive_summary)
-
-        Returns:
-            Formatted summary string
-        """
-        if format_type == "paragraph":
-            # Convert to narrative paragraph
-            sentences = []
-            sentences.append(f"This document discusses {doc_summary.title}.")
-            sentences.extend(doc_summary.key_findings)
-            return " ".join(sentences)
-
-        elif format_type == "executive_summary":
-            # Build executive summary structure
-            parts = [
-                f"# Executive Summary: {doc_summary.title}\n",
-                f"## Overview\n",
-            ]
-
-            if doc_summary.key_findings:
-                parts.append(doc_summary.key_findings[0])
-                parts.append("\n## Key Points\n")
-                for finding in doc_summary.key_findings[1:]:
-                    parts.append(f"- {finding}")
-
-            if doc_summary.sections:
-                parts.append("\n## Details\n")
-                for section in doc_summary.sections:
-                    if isinstance(section, dict):
-                        title = section.get("title", "")
-                        points = section.get("points", [])
-                        parts.append(f"### {title}\n")
-                        for point in points:
-                            parts.append(f"- {point}")
-
-            return "\n".join(parts)
-
-        else:
-            # Default to bullet_points - use to_markdown if available
-            if hasattr(doc_summary, "to_markdown"):
-                return doc_summary.to_markdown()
-            else:
-                # Fallback: build markdown manually
-                parts = [f"## Summary: {doc_summary.title}\n"]
-                if doc_summary.key_findings:
-                    parts.append("### Key Findings\n")
-                    for finding in doc_summary.key_findings:
-                        parts.append(f"- {finding}")
-                return "\n".join(parts)
 
     def _categorize_commits(self, commits: List[str]) -> Dict[str, List[str]]:
         """

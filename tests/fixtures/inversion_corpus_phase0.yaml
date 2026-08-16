@@ -60,7 +60,7 @@ corpus:
     source: "corpus-1283"
   - phrase: "summarize the document"
     category: SYNTHESIS
-    expected: category:SYNTHESIS
+    expected: action:summarize_document
     source: "corpus-1283"
   - phrase: "what time is it?"
     category: TEMPORAL

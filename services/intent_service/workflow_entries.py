@@ -679,6 +679,186 @@ async def run_archived_projects_query_workflow(
     )
 
 
+async def run_summarize_document_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1624: chat summarize of an UPLOADED document via the action-dispatch rail.
+
+    Fifteen months of history behind this entry (full archaeology:
+    docs/internal/operations/summarize-intent-forensics-2026-08-15.md): the #290
+    summarizer shipped REST-only in 2025-11 (its chat dispatch existed only in a
+    guidance doc), the file-reference resolver lost its only live caller when
+    main.py was gutted (2025-10-01), and #1187 closed with its `document` branch
+    deferred and untracked. This entry is the repair PM ruled on 2026-08-15:
+    chat reaches the SAME code path the working REST endpoint uses —
+    `document_handlers.handle_summarize_document` (the function
+    `POST /api/v1/documents/{file_id}/summarize` calls at
+    web/api/routes/documents.py:198) — no parallel summarize implementation.
+
+    Resolution: the orphaned-but-intact `FileResolver` (un-orphaned here; its
+    repository has been owner-scoped since #1312 — the `session_id` parameter
+    name is legacy, the value flowing through is owner_id) binds "the document"
+    to the user's uploaded file with recency/type/name scoring + ambiguity
+    detection.
+
+    Honesty contract (the 2025 acknowledgment-theater lesson IS this issue's
+    origin story):
+      - github-issue / commit-range shaped requests return None → the rail
+        falls through to SYNTHESIS category routing → the working #1187
+        fetch-augment floor path (this guard matters because classifier.py's
+        action normalization maps a bare `summarize` emission to
+        `summarize_document` regardless of source).
+      - no resolvable upload → a DETERMINISTIC honest reply (never a
+        fabricated summary, never a floor improvisation).
+      - ambiguity → ask which file, listing the candidates.
+
+    The user's LLM key is already bound at the chat request boundary
+    (web/api/routes/intent.py `request_api_key`), the same binding the REST
+    route does per-request — DocumentAnalyzer sees the same credential either
+    way.
+    """
+    import re as _re
+
+    # Lazy import: intent_service must not be imported at module level (circular).
+    from services.intent.intent_service import IntentProcessingResult
+
+    ctx = context or {}
+    intent = ctx.get("intent")
+    intent_context = dict(getattr(intent, "context", None) or {})
+    message = (
+        (getattr(intent, "original_message", "") or "")
+        or intent_context.get("original_message", "")
+        or ""
+    )
+    msg_lower = message.lower()
+
+    def _result(text, *, success=True, clarify=False, reason=None, extra=None):
+        payload = {"reason": reason} if reason else {}
+        if extra:
+            payload.update(extra)
+        return IntentProcessingResult(
+            success=success,
+            message=text,
+            intent_data={
+                "category": "synthesis",
+                "action": "summarize_document",
+                "context": payload,
+            },
+            workflow_id=None,
+            requires_clarification=clarify,
+        )
+
+    # ── Guard: not actually an uploaded-document summarize ────────────────
+    # source_type is the classifier's own slot; the message heuristic mirrors
+    # _fetch_summary_source_content's issue-shape inference so both layers
+    # agree on who owns the request.
+    source_type = intent_context.get("source_type")
+    if source_type in ("github_issue", "commit_range"):
+        return None  # rail fall-through → #1187 fetch-augment floor path
+    if source_type in (None, "", "document"):
+        if ("issue" in msg_lower and _re.search(r"#?\d+", msg_lower)) or (
+            "commit" in msg_lower
+        ):
+            return None  # issue/commit summarize that mis-landed here
+
+    if not user_id:
+        return _result(
+            "I can summarize a document you've uploaded, but I need to know who "
+            "you are first — try signing in.",
+            reason="no_user_id",
+        )
+
+    # ── Resolve "the document" → file_id (owner-scoped) ───────────────────
+    try:
+        from types import SimpleNamespace
+
+        from services.database.session_factory import AsyncSessionFactory
+        from services.file_context.exceptions import AmbiguousFileReferenceError
+        from services.file_context.file_resolver import FileResolver
+        from services.repositories.file_repository import FileRepository
+
+        # FileResolver reads intent.action + intent.context["original_message"];
+        # hand it a detached view so intent.context is never mutated (the
+        # process_intent convention).
+        resolver_view = SimpleNamespace(
+            action="summarize_document",
+            context={"original_message": message},
+        )
+
+        try:
+            async with AsyncSessionFactory.session_scope() as session:
+                resolver = FileResolver(FileRepository(session))
+                file_id, resolution_confidence = await resolver.resolve_file_reference(
+                    resolver_view, user_id
+                )
+        except AmbiguousFileReferenceError as e:
+            candidates = "\n".join(f"- {f.filename}" for f in e.files)
+            return _result(
+                "You've uploaded a few files and I'm not sure which one you "
+                f"mean — which should I summarize?\n{candidates}",
+                clarify=True,
+                reason="ambiguous_file_reference",
+                extra={"candidates": [f.filename for f in e.files]},
+            )
+
+        if not file_id:
+            # Honest degrade — never fabricate a summary of a document that
+            # isn't there, never hand the turn to floor improvisation.
+            return _result(
+                "I don't see any uploaded documents I can summarize. Upload "
+                "the file on the Files page and ask me again — or paste the "
+                "text into the chat and I'll summarize that directly.",
+                reason="no_uploaded_documents",
+            )
+
+        # ── Summarize via the SAME path the REST endpoint uses ────────────
+        from services.intent_service.document_handlers import (
+            handle_summarize_document,
+        )
+
+        summary_format = "bullet"
+        if "detail" in msg_lower:
+            summary_format = "detailed"
+        elif "paragraph" in msg_lower or "prose" in msg_lower:
+            summary_format = "paragraph"
+
+        try:
+            summarized = await handle_summarize_document(
+                file_id=file_id, format=summary_format, user_id=user_id
+            )
+        except FileNotFoundError:
+            return _result(
+                "I found a reference to an uploaded file but couldn't access "
+                "its content anymore — it may have been removed. Try "
+                "re-uploading it.",
+                success=False,
+                reason="file_content_missing",
+            )
+
+        return _result(
+            f"Here's my summary of {summarized['filename']}:\n\n"
+            f"{summarized['summary']}",
+            extra={
+                "file_id": summarized["file_id"],
+                "filename": summarized["filename"],
+                "summary_format": summarized["format"],
+                "resolution_confidence": resolution_confidence,
+            },
+        )
+    except Exception as e:  # silent-ok: error-logged with context and returns success=False — honest degrade, never fake success (#1425)
+        logger.error(
+            "summarize_document_workflow_failed", error=str(e), user_id=user_id
+        )
+        return _result(
+            "I had trouble reading that document just now. You can try again "
+            "in a moment.",
+            success=False,
+            reason="summarize_failed",
+        )
+
+
 # handler_attr → classifier aliases (mirror the migrated elif branches exactly).
 _READ_QUERY_COHORT: dict[str, list[str]] = {
     "_handle_shipped_this_week": [
@@ -977,6 +1157,31 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # #1624: chat summarize of an uploaded document — the #1187-deferred
+    # `document` branch, finished by pointing chat at the SAME code path the
+    # REST endpoint uses (document_handlers.handle_summarize_document →
+    # DocumentAnalyzer). See run_summarize_document_workflow's docstring for
+    # the 15-month forensics trace + the honesty contract.
+    # effect: READ — owner-scoped SELECT of the uploaded-file row + a
+    # read-only DocumentAnalyzer.analyze over its stored bytes; no row is
+    # written anywhere on the path (document_handlers.py:67-110, 179-224).
+    # outwardness: PRIVATE (#1509 axis) — a summary rendered back to the
+    # asking user in their own chat; no communication act, nobody else
+    # witnesses it (declared explicitly even though READ defaults PRIVATE,
+    # per the #1624 build directive).
+    summarize_document_entry = WorkflowEntry(
+        entry_point=run_summarize_document_workflow,
+        effect=EffectClass.READ,
+        outwardness=Outwardness.PRIVATE,
+        description=(
+            "Summarize a document the user uploaded (resolves 'the document' "
+            "to their file, then the same DocumentAnalyzer path as the REST "
+            "summarize endpoint)"
+        ),
+        requires_context=["intent"],
+        action_triggered=True,
+    )
+
     # RECONNECT #1327 build #2: conversational "what's my default repo" — the read
     # counterpart. Same 2-arg (intent, workflow_id) factory + action-dispatch rail.
     # effect: READ — _handle_get_default_repo reads the same preference key the
@@ -1158,6 +1363,14 @@ def register_default_workflows() -> None:
         "show_archived_projects": archived_projects_entry,
         "archived_projects_query": archived_projects_entry,
         "list_archived": archived_projects_entry,
+        # #1624: uploaded-document summarize — canonical key first (it is the
+        # registry canonical, the verb-shim target, AND classifier.py's
+        # action-normalization target for bare `summarize` emissions), then
+        # mode-4 defense aliases for LLM paraphrase emissions.
+        "summarize_document": summarize_document_entry,
+        "summarize_file": summarize_document_entry,
+        "summarize_upload": summarize_document_entry,
+        "summarize_uploaded_file": summarize_document_entry,
     }
 
     # #1124 step 3 cohort 2: GitHub read-query cohort — one shared entry point per
