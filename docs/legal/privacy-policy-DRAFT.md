@@ -156,17 +156,12 @@ That is exactly the *"converts a gap into a misrepresentation"* risk this draft 
 have shipped it as a question to PM rather than an answer, which would have put the burden of a code
 audit on the person least placed to do it.
 
-🔍 **Retention — ground truth confirmed 2026-08-13, policy still to be drafted.** No retention or
-expiry logic exists anywhere in the code for conversation or message data — verified across
-`services/database/`, `services/domain/`, and the product's own background-job scheduler
-(`services/scheduler/`, plain asyncio). The **only** automated data-cleanup job in the product is
-`EthicsAuditCleanupJob` (`web/startup.py:451-452`, `retention_days=90`), and it purges just the
-`ethics_audit_log` table — decision metadata, not conversations. Combined with the soft-delete-only
-finding above and the absence of any account-deletion path: **today, conversation and message data is
-retained indefinitely, with no automatic expiry and no way for a user to fully remove it themselves.**
-A real retention policy still needs to be drafted — PM-directed, not code-derived, since it's a values
-call about what the practice *should* be, not just a description of what exists. Do not state a period
-we don't enforce.
+✅ **Retention — RATIFIED 2026-08-15.** Piper Morgan retains conversation and message data
+indefinitely by default, with no automatic expiry — a deliberate choice, not a gap: persistence is
+what lets Piper behave like a continuing colleague rather than a fresh assistant each session, and
+a default auto-expiry would work against that promise. User-facing retention controls (letting you
+set your own limit) are on the roadmap for the Enterprise tier (#1634), not available today. Full
+reasoning and verification: `docs/legal/data-retention-policy-DRAFT.md` §3/§4.
 
 ## Alpha and beta software
 
