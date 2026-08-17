@@ -8,7 +8,7 @@
 | ---------------------- | ---------------------------------------------------------------------- | ------------------------------------ |
 | **Quick Start**        | [METHODOLOGY.md](../../../briefing/METHODOLOGY.md)                     | Operational "How We Work" guide      |
 | **Deep Reference**     | This directory (methodology-core/)                                     | Comprehensive numbered methodologies |
-| **Implementation**     | [/methodology/](../../../../methodology/)                              | Python code and live implementation  |
+| **Implementation**     | *retired 2026-07-26 — see [design record](../../architecture/current/design-record-methodology-as-code-2025.md)* | The `methodology/` Python package was deleted (zero-importer, Arch fix-or-delete ruling, ADR-028 superseded); this is the preserved record of the thinking |
 | **Learning/Training**  | [case-studies/](../case-studies/) | Case studies and real project examples  |
 | **Testing Procedures** | [testing/](../testing/)                                                | Implementation and testing guides    |
 
@@ -34,7 +34,7 @@
 
 - **📋 Methodology**: [methodology-00-EXCELLENCE-FLYWHEEL.md](methodology-00-EXCELLENCE-FLYWHEEL.md) _(core framework)_
 - **⚡ Quick Guide**: [METHODOLOGY.md#excellence-flywheel](../../../briefing/METHODOLOGY.md#excellence-flywheel) _(operational overview)_
-- **🐍 Implementation**: [/methodology/](../../../../methodology/) _(Python code)_
+- **🐍 Implementation**: *retired 2026-07-26 — see [design record](../../architecture/current/design-record-methodology-as-code-2025.md)* _(the Python package was deleted; case-studies/ and the methodology docs themselves are the live implementation now)_
 
 ### Testing & Verification
 
@@ -62,7 +62,7 @@
 - **Coordinate multiple agents** → [methodology-02-AGENT-COORDINATION.md](methodology-02-AGENT-COORDINATION.md)
 - **Understand testing approach** → [methodology-15-TESTING-VALIDATION.md](methodology-15-TESTING-VALIDATION.md)
 - **See real examples** → [case-studies/](../case-studies/)
-- **Implement in code** → [/methodology/](../../../../methodology/)
+- **Understand the retired code-as-methodology approach** → [design record](../../architecture/current/design-record-methodology-as-code-2025.md) _(the package itself was deleted 2026-07-26)_
 - **Learn from case studies** → [Pattern-061](../../architecture/current/patterns/pattern-061-human-ai-collaboration-referee.md)
 
 ## Complete Methodology Catalog
