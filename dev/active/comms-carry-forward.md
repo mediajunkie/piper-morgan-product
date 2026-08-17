@@ -24,7 +24,7 @@ Re-armed at this STOP via delete-then-create — see below for new job ID. Expre
 - **Values doc** — needs PM's integrated read (Exec flagging directly).
 - **Beat 23** ("The Architect's Own Trap") — needs PM's voice-pass + art.
 - **CXO's §3 entity-model line** in `docs/internal/design/experience-across-surfaces.md` — flagged 3×, still pending, unchanged in weeks.
-- **Dispatch syndication**: 3 fully unsyndicated posts, 1 partial. Unchanged since Jul 30 — worth a fresh look if it's still stalled by end of week.
+- **Dispatch syndication**: 3 posts genuinely missing their required cross-post ("The Package and the First Bite" Jul 9, "Drained on Paper" Aug 7, "Verify at the User Path, Not the Data Layer" Aug 8 — re-verified against the live calendar 08-17, not assumed from the old count). **Mechanism clarified this fire**: Dispatch isn't autonomous — it only checks its mail drop (`~/Development/dispatch/mail/`) when PM starts a Dispatch session (`~/Development/dispatch/PROTOCOLS.md`). My two prior memos (Aug 9, Aug 10) are both still un-acknowledged, meaning no Dispatch session has run since Aug 10 — not that Dispatch is ignoring them. My Aug 10 memo already said "no urgency, nothing's broken, posts are all live," which is still true. Not sending another memo — nothing to add, and it would just be a third unread file. This is genuinely gated on PM starting a Dispatch session, not on Comms or Dispatch doing anything differently.
 - **BYOC listing copy v4** — routed to PPM, no response found.
 
 ## New, not yet actioned
