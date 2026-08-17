@@ -1,5 +1,9 @@
 # Docs Carry-Forward
 
+**Updated**: 2026-08-17 13:xx PDT (Fire 2 — Weekly Docs Audit #1643 worked comprehensively)
+**Session log**: `dev/2026/08/17/2026-08-17-0711-docs-code-log.md` (open).
+**Cron**: `2967db0e`, fresh window to ~08-21.
+
 **Updated**: 2026-08-16 22:3x PDT (DAY-CLOSED — 2 publishes, 1 confabulation-report caught, clean sign-off)
 **Session log**: `dev/2026/08/16/2026-08-16-0711-docs-code-log.md` (closed).
 **Cron**: `2967db0e`, fresh window to ~08-21.
@@ -72,6 +76,18 @@ this file), not re-frozen with the eleven standing lessons inline — recoverabl
 stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
+
+## ✅ RESOLVED 2026-08-17 — Weekly Docs Audit #1643 CLOSED + 3-day omnibus backfill COMPLETE
+
+Comprehensive audit (7 sub-checks tracked to completion), 7 real fixes committed+pushed, #1644
+filed for residuals, closing comment + close landed after a GitHub API outage window recovered.
+**Omnibus chain independently verified continuous 07-27 through 08-16, zero gaps** (21 files,
+47 activity-log rows added across the 3 backfilled days, no CSV race — sequential dispatch held).
+**Real findings needing others, unresolved**: BRIEFING-CURRENT-STATE 22-day engineering staleness
+(Lead Dev); last_verified cluster from 07-30 still 87% unrefreshed 3 weeks later (cohort-wide, no
+single owner — worth a memory pin or a direct ask if it's still stale at next Monday's audit);
+universal-list-architecture-guide.md duplicate (Lead Dev); roadmap.md date discrepancy (PPM, in
+#1644).
 
 ## ✅ RESOLVED 2026-08-16 — 2 posts published, syndicated; a confidently-wrong report caught before acting
 
