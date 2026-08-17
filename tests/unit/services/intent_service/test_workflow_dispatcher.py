@@ -399,8 +399,9 @@ class TestChangesQueryWorkflowEntry:
 
 class TestIssueMutationWorkflowEntries1124:
     """#1124 Phase 4 step 3: the CLOSE/REOPEN/COMMENT issue-mutation cohort
-    action-dispatch entry points (dispatch migration — handlers reused unchanged,
-    called as (intent, workflow_id), no session_id)."""
+    action-dispatch entry points (dispatch migration — handlers reused
+    unchanged, called as (intent, workflow_id); #1567 threads session_id
+    into CLOSE so its repo-question ask can bind)."""
 
     @pytest.mark.asyncio
     async def test_close_invokes_handler_and_returns_result(self):
@@ -418,7 +419,10 @@ class TestIssueMutationWorkflowEntries1124:
         )
 
         assert result is sentinel
-        mock_service._handle_close_issue_query.assert_awaited_once_with(mock_intent, "wf-c")
+        # #1567: session_id rides so the handler's repo-question ask can bind.
+        mock_service._handle_close_issue_query.assert_awaited_once_with(
+            mock_intent, "wf-c", session_id="sess-c"
+        )
 
     @pytest.mark.asyncio
     async def test_reopen_invokes_handler_and_returns_result(self):

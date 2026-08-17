@@ -334,6 +334,11 @@ class IntentService:
             "verb_disambiguation_pending",
             "reminder_clear_correction_pending",
             "drafted_issue_pending",  # #1571: the bound draft must survive this turn
+            "issue_repo_question_pending",  # #1567: the armed repo question
+            # #1567 (belt gap found in passing): the #1411 unmapped-status
+            # ask armed the same one-slot store without carrying a listed
+            # flag — a soft offer could clobber it.
+            "unmapped_field_clarification_pending",
         )
         if result.intent_data and any(result.intent_data.get(f) for f in _pending_flags):
             return result
@@ -1072,6 +1077,36 @@ class IntentService:
                                 "requires_clarification", False
                             ),
                         )
+                # #1567: a pending REPO QUESTION binds the answer that names
+                # the repository — bare owner/name, bare repo name (resolved
+                # against the user's actual repos), natural phrasings ("in
+                # the test-Piper-Morgan repository"), and same-operation
+                # re-statements — and re-dispatches the ORIGINAL intent.
+                # Handled kind-specifically BEFORE generic accept/decline
+                # (same sanctioned seam as the checks above). Returning None
+                # falls through: bare "yes" → generic accept (the confirm
+                # re-dispatch re-asks), "no"/bare exit → honest decline,
+                # unrelated commands → abandoned via the pop and routed
+                # normally (the #1631 discrimination at the generic seam).
+                elif _vi_payload.get("kind") == "issue_repo_question":
+                    from services.intent_service import repo_clarification as _rq
+
+                    _rq_turn = await _rq.handle_repo_question_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _rq_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_rq_turn["message"],
+                            intent_data=_rq_turn["intent_data"],
+                            requires_clarification=_rq_turn.get(
+                                "requires_clarification", False
+                            ),
+                        )
                 response_type = detect_offer_response(message)
                 # #1190: a pending DESTRUCTIVE confirmation treats bare exit
                 # commands ("cancel", "stop", "forget it" — #888 ∪ #1529
@@ -1222,6 +1257,9 @@ class IntentService:
                         # window is dropped by the pop like every other offer.
                         "reminder_clear_verb_question": "reminder_clear_question_abandoned",
                         "reminder_clear_correction": "reminder_clear_correction_abandoned",
+                        # #1567: an ignored repo question is dropped by the
+                        # pop like every other offer; the new turn routes.
+                        "issue_repo_question": "issue_repo_question_abandoned",
                     }
                     self.logger.info(
                         _abandon_names.get(
@@ -4758,7 +4796,7 @@ class IntentService:
         return scored
 
     async def _handle_close_issue_query(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """
         Handle "Close issue #X" query.
@@ -4766,10 +4804,18 @@ class IntentService:
         Issue #519: Canonical Query #45 - GitHub Issue Operations
         Closes a specific GitHub issue.
         Issue #902: Fuzzy match by description when no issue number given.
+        Issue #1567: honors an explicitly-named repository (owner/name or the
+        natural "in the X repository" phrasing, resolved against the user's
+        repos) instead of silently closing in the default repo; when no repo
+        resolves at all, ARMS the repo-question carrier (session permitting)
+        instead of dead-ending in a generic error. ``session_id`` is threaded
+        (rail: run_close_issue_workflow) solely so that ask can bind via the
+        #846 pending-offer store.
 
         Args:
             intent: The classified intent
             workflow_id: Current workflow ID
+            session_id: Chat session (None outside a bindable session)
 
         Returns:
             IntentProcessingResult with confirmation or error
@@ -4876,6 +4922,66 @@ class IntentService:
 
             issue_number = int(match.group(1))
 
+            # #1567: an explicitly-named repository (owner/name or the natural
+            # "in the X repository" phrasing) is honored — a close aimed at a
+            # named repo must never land in the default. Bare names resolve
+            # against the user's actual repos; a named-but-unresolvable repo
+            # ASKS (or refuses honestly with no session). When nothing is
+            # named, the router's internal resolution (explicit → default →
+            # env → #1590 recovery) stays exactly as before.
+            _slots = self._slotfill_issue_request(original_message)
+            _close_repo = (
+                intent.context.get("repository")
+                or intent.context.get("repo")
+                or _slots.get("repository")
+            )
+            if not _close_repo:
+                from services.intent_service.repo_clarification import (
+                    extract_natural_repo_name,
+                    resolve_repo_name,
+                )
+
+                _named = extract_natural_repo_name(original_message)
+                if _named:
+                    if "/" in _named:
+                        _close_repo = _named
+                    else:
+                        _res = await resolve_repo_name(_user_id, _named)
+                        if _res.status == "resolved":
+                            _close_repo = _res.full_name
+                        else:
+                            ask = await self._ask_for_repository(
+                                intent,
+                                issue_number,
+                                session_id,
+                                _user_id,
+                                asked_name=_named,
+                                resolution=_res,
+                            )
+                            if ask is not None:
+                                return ask
+                            return IntentProcessingResult(
+                                success=False,
+                                message=(
+                                    f"Cannot close issue #{issue_number}: I "
+                                    f"couldn't match '{_named}' to one of "
+                                    "your repositories. Tell me the "
+                                    "repository (owner/name) and I'll close "
+                                    "it."
+                                ),
+                                intent_data={
+                                    "category": intent.category.value,
+                                    "action": intent.action,
+                                },
+                                workflow_id=workflow_id,
+                                requires_clarification=True,
+                                clarification_type="repository_required",
+                            )
+            _repo_kwargs = {}
+            if _close_repo and "/" in _close_repo:
+                _cr_owner, _cr_name = _close_repo.split("/", 1)
+                _repo_kwargs = {"owner": _cr_owner, "repo_name": _cr_name}
+
             # Issue #902: Check if this is a confirmed close (user already saw
             # the issue and confirmed). Pattern: "yes, close #123" or "confirm close #123"
             # #1190: the rail confirmation gate defers execution to an explicit
@@ -4893,7 +4999,9 @@ class IntentService:
                 # First request: fetch issue details and ask for confirmation
                 # (Issue #1042: router resolves repo internally)
                 try:
-                    issue_details = await github_router.get_issue(issue_number)
+                    issue_details = await github_router.get_issue(
+                        issue_number, **_repo_kwargs
+                    )
                     # #1628: degenerate GitHub titles never render verbatim
                     title = display_title(
                         issue_details.get("title"), f"(untitled issue #{issue_number})"
@@ -4939,8 +5047,39 @@ class IntentService:
                     # Fall through to close without preview if fetch fails
 
             # Confirmed close (or fallback if fetch failed)
-            # (Issue #1042: router resolves repo internally)
-            updated_issue = await github_router.update_issue(issue_number, state="closed")
+            # (Issue #1042: router resolves repo internally when no explicit
+            # repo was named; #1567 threads a named repo through.)
+            try:
+                updated_issue = await github_router.update_issue(
+                    issue_number, state="closed", **_repo_kwargs
+                )
+            except RuntimeError as _rt_err:
+                if "no repo could be resolved" not in str(_rt_err):
+                    raise
+                # #1567: the repository-not-specified dead-end becomes a
+                # bindable question (session permitting) instead of the
+                # generic "closing that issue" error.
+                ask = await self._ask_for_repository(
+                    intent, issue_number, session_id, _user_id
+                )
+                if ask is not None:
+                    return ask
+                return IntentProcessingResult(
+                    success=False,
+                    message=(
+                        f"Cannot close issue #{issue_number}: repository not "
+                        "specified and no default repo is set. Tell me the "
+                        "repository (owner/name), or say 'set my default "
+                        "repo to owner/name' and I'll use that from then on."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=True,
+                    clarification_type="repository_required",
+                )
 
             # Get issue title for success message
             # #1628: degenerate GitHub titles never render verbatim
@@ -7970,7 +8109,17 @@ class IntentService:
                 _re.IGNORECASE,
             )
             if m:
-                _t = m.group(1).strip().strip("\"'\u2018\u2019\u201c\u201d").rstrip(" .!?,;:")
+                _t = m.group(1).strip()
+                # #1567: a trailing repo-routing clause ("in owner/repo" /
+                # "in the test-piper-morgan repository") is routing, not
+                # title, not subject: same treatment the about-form below gives
+                # the owner/name shape.
+                from services.intent_service.repo_clarification import (
+                    strip_trailing_repo_clause,
+                )
+
+                _t = strip_trailing_repo_clause(_t)
+                _t = _t.strip().strip("\"'\u2018\u2019\u201c\u201d").rstrip(" .!?,;:")
                 if _t:
                     out["title"] = _t
         if "title" not in out:
@@ -7989,13 +8138,13 @@ class IntentService:
             )
             if m:
                 _t = m.group(1).strip()
-                # a trailing "in owner/repo" clause is repo routing, not subject
-                _t = _re.sub(
-                    r"\s+in\s+(?:https?://)?(?:github\.com/)?"
-                    r"[A-Za-z0-9._-]+/[A-Za-z0-9._-]+(?:\.git)?\s*$",
-                    "",
-                    _t,
+                # a trailing "in owner/repo" / "in the X repository" clause is
+                # repo routing, not subject (#1567: natural form added).
+                from services.intent_service.repo_clarification import (
+                    strip_trailing_repo_clause,
                 )
+
+                _t = strip_trailing_repo_clause(_t)
                 _t = _t.strip().strip("\"'\u2018\u2019\u201c\u201d").rstrip(" .!?,;:")
                 if _t:
                     out["title"] = _t
@@ -8429,6 +8578,98 @@ class IntentService:
             return None
         return resolved.full_name
 
+    async def _ask_for_repository(
+        self,
+        intent: Intent,
+        issue_number: int,
+        session_id: Optional[str],
+        user_id: Optional[str],
+        *,
+        asked_name: Optional[str] = None,
+        resolution=None,
+    ) -> Optional[IntentProcessingResult]:
+        """#1567: ARM the repo-question carrier and return the ask, or None
+        when there is no session to bind the answer to (callers fall through
+        to the honest refusal — never a dangling question, the same guard as
+        ``_offer_status_close_clarification``).
+
+        ``asked_name``/``resolution`` carry a bare repo name the USER phrased
+        that failed to resolve — the copy then says exactly what was checked
+        (m-43), and if a default repo exists the ask becomes the closed
+        "say 'yes' to use your default, owner/name" form (#1411 default-repo
+        integration). The offer rides the #1190 action-agnostic carrier
+        (kind ``issue_repo_question``): the next turn's repo answer binds at
+        the pop seam and re-dispatches the ORIGINAL intent; bare "yes" on the
+        open form re-dispatches too — landing back here, which re-asks
+        (self-re-arming)."""
+        if not session_id:
+            return None
+        from services.intent_service.repo_clarification import (
+            build_repo_question_offer,
+            open_repo_question,
+            repo_resolution_question,
+        )
+
+        default_repo = None
+        if asked_name:
+            # Offer the default as the closed-question fallback ONLY when the
+            # user's own named repo failed to resolve (a plain missing-repo
+            # ask means default resolution already failed — nothing to offer).
+            try:
+                from services.integrations.github.repo_resolver import (
+                    get_user_default_repo,
+                )
+
+                default_repo = (
+                    await get_user_default_repo(UUID(str(user_id)))
+                    if user_id
+                    else None
+                )
+            except Exception as e:  # silent-ok: the default is optional ask sugar; the open form works without it
+                self.logger.debug(
+                    "repo_question_default_lookup_failed", error=str(e)
+                )
+                default_repo = None
+
+        if asked_name and resolution is not None:
+            question = repo_resolution_question(
+                asked_name, resolution, default_repo
+            )
+        else:
+            question = open_repo_question(issue_number)
+
+        offer = build_repo_question_offer(
+            intent,
+            issue_number,
+            str(user_id) if user_id else None,
+            asked_name=asked_name,
+            default_repo=default_repo,
+        )
+        self.workflow_offer_service.set_pending_offer(
+            session_id, offer, user_id=user_id
+        )
+        self.logger.info(
+            "issue_repo_question_offered",
+            issue_number=issue_number,
+            action=intent.action,
+            asked_name=asked_name,
+            has_default=bool(default_repo),
+            session_id=session_id,
+        )
+        return IntentProcessingResult(
+            success=True,
+            message=question,
+            intent_data={
+                "category": intent.category.value,
+                "action": intent.action,
+                "confidence": intent.confidence,
+                "issue_repo_question_pending": True,
+                "issue_number": issue_number,
+            },
+            workflow_id=None,
+            requires_clarification=True,
+        )
+
     def _offer_status_close_clarification(
         self,
         intent: Intent,
@@ -8634,6 +8875,59 @@ class IntentService:
                 )
 
             if not repository:
+                # #1567: natural repo phrasing in the ORIGINAL ask ("in the
+                # test-Piper-Morgan repository" — PM's literal transcript
+                # turn) short-circuits the question entirely. A bare name
+                # resolves against the user's actual repos; a NAMED repo that
+                # doesn't resolve ASKS — it is never silently second-guessed
+                # by the default (the wrong-repo write is the worse failure).
+                from services.intent_service.repo_clarification import (
+                    extract_natural_repo_name,
+                    resolve_repo_name,
+                )
+
+                _named = extract_natural_repo_name(
+                    intent.original_message
+                    or intent.context.get("original_message")
+                    or ""
+                )
+                if _named:
+                    if "/" in _named:
+                        repository = _named
+                    else:
+                        _res = await resolve_repo_name(_user_id, _named)
+                        if _res.status == "resolved":
+                            repository = _res.full_name
+                        else:
+                            ask = await self._ask_for_repository(
+                                intent,
+                                issue_number,
+                                session_id,
+                                _user_id,
+                                asked_name=_named,
+                                resolution=_res,
+                            )
+                            if ask is not None:
+                                return ask
+                            return IntentProcessingResult(
+                                success=False,
+                                message=(
+                                    f"Cannot update issue: I couldn't match "
+                                    f"'{_named}' to one of your repositories. "
+                                    "Tell me the repository (owner/name), or "
+                                    "say 'set my default repo to owner/name' "
+                                    "and I'll use that from then on."
+                                ),
+                                intent_data={
+                                    "category": intent.category.value,
+                                    "action": intent.action,
+                                },
+                                workflow_id=workflow_id,
+                                requires_clarification=True,
+                                clarification_type="repository_required",
+                            )
+
+            if not repository:
                 # #1411 (PM live 2026-08-13): consult the user's default repo
                 # BEFORE erroring — PM said "in my default repository" and
                 # still got the refusal because this path never called the
@@ -8641,6 +8935,14 @@ class IntentService:
                 repository = await self._resolve_default_repository(_user_id)
 
             if not repository:
+                # #1567: with a session to bind to, the refusal is no longer
+                # a dead-end — ARM the repo-question carrier so the next
+                # turn's answer slot-fills and the operation proceeds.
+                ask = await self._ask_for_repository(
+                    intent, issue_number, session_id, _user_id
+                )
+                if ask is not None:
+                    return ask
                 return IntentProcessingResult(
                     success=False,
                     message=(
