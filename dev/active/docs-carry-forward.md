@@ -1,5 +1,9 @@
 # Docs Carry-Forward
 
+**Updated**: 2026-08-16 22:3x PDT (DAY-CLOSED — 2 publishes, 1 confabulation-report caught, clean sign-off)
+**Session log**: `dev/2026/08/16/2026-08-16-0711-docs-code-log.md` (closed).
+**Cron**: `2967db0e`, fresh window to ~08-21.
+
 **Updated**: 2026-08-16 16:1x PDT (Fire 4 — 2 publishes done, 1 confabulation-report caught)
 **Session log**: `dev/2026/08/16/2026-08-16-0711-docs-code-log.md` (open).
 **Cron**: `2967db0e`, fresh window to ~08-21.
