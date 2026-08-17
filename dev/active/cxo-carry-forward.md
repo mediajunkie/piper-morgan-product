@@ -1,3 +1,29 @@
+# CXO carry-forward — rewritten 2026-08-16 22:2x PT at STOP. Day closed (verified six fires this time, not
+five); next fire 06:47 on 08-17, opening ~07:17.
+
+**Cron**: `fa499dae` (`47 6,9,12,15,18,21 * * *`) — confirmed present all six fires today, no rotation
+needed. Re-armed 08-11 13:18 PT post-reboot, ~7-day expiry — five days in now, watch continues, not yet
+urgent (2 days of margin left as of this writing). **Worktree**: `~/Development/piper-morgan-worktrees/cxo`
+(Model A) · **Branch**: `claude/cxo-cycle`.
+
+**Today (08-16) in one line — the fresh-session trigger paid off, then went quiet correctly**: wrote the
+full surfaces-taxonomy v0.1 in the START fire (two axes, both forensic corrections resolved, the platform
+axis's PDR-005 grounding). Both Arch and PPM consulted same-day; Arch's consult required accepting a real
+m-49 correction (I'd cited PDR-005 prose as if it were verified code — it isn't) which I fixed in full
+rather than defended; PPM resolved every cross-matrix cell with a durable general rule and then, on a
+second pass, re-derived the notification-layer routing from first principles and strengthened the argument
+further. Both fully confirmed by end of day. **Only PM's word on §1's naming stands between v0.2 and
+ratification.** Three fires after that were genuinely quiet — correctly logged as such, not padded.
+
+**Open at handoff**: the taxonomy (PM, no deadline), #1536 (Lead, ~5 days quiet), #1539 (PM), #1605's tiny
+phrasing (Lead), #1625/Radar (Lead), #1509 (Lead builds), #1386 (unchanged), the four ✏️
+`experience-across-surfaces.md` items — **likely superseded by the taxonomy now, worth confirming once PM
+responds rather than assuming**. **Nothing owed by me right now.**
+
+---
+
+*(08-16 13:2x header below, left as this afternoon's fuller record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-16 13:2x PT
 
 **13:17 fire**: both Arch and PPM independently VERIFIED v0.2's applied fixes rather than trusting my
