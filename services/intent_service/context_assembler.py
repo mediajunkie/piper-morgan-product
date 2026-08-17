@@ -910,6 +910,13 @@ class ContextAssembler:
             pending_data = await self._get_pending_todos_cached(user_id, limit=5)
             if pending_data and "pending_todos" in pending_data:
                 context["pending_todos"] = pending_data["pending_todos"]
+                # #1544: carry the row-derived count (m-44) — and an empty list
+                # here is VERIFIED-empty (the read ran), which the floor renders
+                # as an account-level "no pending todos" fact, never a
+                # conversation-scoped absence hedge.
+                context["pending_todo_count"] = pending_data.get(
+                    "pending_todo_count", len(pending_data["pending_todos"])
+                )
             elif pending_data and pending_data.get("pending_todos_source_failed"):
                 # #1573 (#1425): propagate the failure flag — never fake-empty.
                 context["pending_todos_source_failed"] = True
@@ -1197,7 +1204,12 @@ class ContextAssembler:
             todo_svc = TodoManagementService()
             pending = await todo_svc.list_todos(user_id=UUID(user_id), include_completed=False)
             if not pending:
-                return None
+                # #1544: zero pending todos is a FACT — the owner-scoped read
+                # succeeded and found no rows. Returning None here made
+                # verified-empty indistinguishable from never-gathered, so the
+                # floor had no basis to say "your list is empty" and improvised
+                # conversation-scoped hedges instead (PM live 2026-08-09).
+                return {"pending_todos": [], "pending_todo_count": 0}
             return {
                 "pending_todos": [_todo_to_dict(t) for t in pending[:10]],
                 "pending_todo_count": len(pending),

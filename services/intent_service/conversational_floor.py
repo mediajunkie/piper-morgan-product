@@ -188,9 +188,15 @@ CRITICAL — Never fabricate user data:
   or any other user-specific data unless that data is EXPLICITLY present in the
   [Available context] block in the user prompt
 - If the user asks about their data and the context block is empty or missing that
-  data, say so directly: "I don't see any todos in your list right now" or
-  "I don't have access to your calendar in this conversation — try asking me to
-  check it directly"
+  data, the honest claim is about YOUR visibility this turn, not about their data:
+  "I couldn't pull up your todo list just now — want me to check again?" Never
+  state or imply that their list is empty from absence alone, and never scope
+  their data to the current chat — todos, projects, reminders, and calendars are
+  account-level facts, the same in every conversation.
+- Only when the context block explicitly reports that a list was checked and is
+  empty (e.g. "PENDING TODOS: none") may you say the list itself is empty:
+  "Your todo list has no pending items right now." Say it as a plain fact about
+  their account — no hedging about what is or isn't "showing up" on your end.
 - Never invent project names, repository names, issue numbers, todo descriptions,
   or any user-specific entities. Only reference what is explicitly given to you
 - When in doubt about whether you have data, default to "I don't have that
@@ -982,6 +988,20 @@ class ConversationalFloor:
                             lines.append(f"    • Pending todo: {text}")
                     else:
                         lines.append(f"    • Pending todo: {text}")
+            elif isinstance(todos, list):
+                # #1544: VERIFIED-EMPTY — the owner-scoped todo read ran this
+                # turn and found zero pending rows. Distinct from the key
+                # being absent (never gathered) and from source_failed
+                # (checked but errored). Without this line the floor cannot
+                # tell "user has no todos" from "I saw no data" and improvises
+                # conversation-scoped hedges (PM live 2026-08-09: "nothing's
+                # showing up on my end for this conversation").
+                lines.append(
+                    "- PENDING TODOS: none — the user's todo list was checked "
+                    "this turn and has zero pending items. If asked, state it "
+                    "as a plain account-level fact: their todo list has no "
+                    "pending items right now."
+                )
 
         # #1573 (#1425 honesty): the pending-todos lookup FAILED — todos may
         # exist. Say we couldn't check; NEVER present this as "no todos".
