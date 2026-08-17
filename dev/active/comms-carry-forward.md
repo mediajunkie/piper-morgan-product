@@ -1,55 +1,42 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-16 12:27 WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-16 21:42 PT STOP fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
-Armed, job `2a4258d8`, `12 6,9,12,15,18,21 * * *`. Expires ~2026-08-22.
+Re-armed at this STOP via delete-then-create — see below for new job ID. Expression `12 6,9,12,15,18,21 * * *` unchanged.
 
-## Today's post — fully done
+## Today (Aug 16) — closed out, full detail in the session log
 
-**"The Fabricating Standup"** (Aug 16 slot) — voice-passed, published, and cross-posted to Medium+LinkedIn (PM, routed to Docs per the 07-29 process change — calendar URL updates aren't Comms' to touch anymore). Nothing left here.
+- **"The Fabricating Standup"** — voice-passed, editorial pass done (3 small fixes), published, cross-posted to Medium+LinkedIn. Fully done.
+- **Values doc** — end to end done except one thing: **PM's own integrated read of the full converted document, which Exec is flagging to PM directly.** Banner now accurate (updated tonight per Exec's ruling). Nothing left for Comms here — don't chase it, Exec owns the flag to PM.
+- **5 of 6 approved beats drafted** (1-5), each fact-checked against primary logs, calendar rows added, mechanical checks clean. Beat 6 deliberately not drafted — PM's own go/no-go, PM is the protagonist.
+- **Era-taxonomy proposal** delivered last night — still awaiting PM's ratification, unchanged all day today.
 
-## Values doc — fully closed out
+## The one thing to check first tomorrow
 
-All four decisions ratified, voice converted, HOST's independent second pass confirmed clean, README link added by Docs. **HOST replied**: agrees the DRAFT-status call (banner, maybe filename) isn't Comms' or HOST's to make unilaterally, points to Exec/PM, confirms the mechanical execution is mine once someone says go. **Still waiting on Exec/PM's actual call** — nothing to do until then.
+⭐ **Nothing urgent is pending Comms action** — today was a quiet day of other people's follow-through landing (Docs closed the README link and the cross-post URLs, Exec ruled on the banner). The two big open threads (beats sequence, era proposal) are both fully delivered and waiting on PM's attention, not on more work from me. Check whether PM engaged with either overnight before assuming anything more is needed.
 
-## The big one — 5 of 6 beats drafted, ready for PM's voice-pass whenever
+## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available (re-checked 21:42, all unchanged)
 
-| # | Title | Slot | Draft |
-|---|---|---|---|
-| 1 | The Dead Code That Wasn't | Aug 20 | `docs/public/comms/drafts/the-dead-code-that-wasnt.md` |
-| 2 | The Burn-Down | Aug 25 | `docs/public/comms/drafts/the-burn-down.md` |
-| 3 | The Detector That Notified Nobody | Aug 27 | `docs/public/comms/drafts/the-detector-that-notified-nobody.md` |
-| 4 | A Sender-Impersonation Bug, Four Days Before Beta | Sep 1 | `docs/public/comms/drafts/a-sender-impersonation-bug-four-days-before-beta.md` |
-| 5 | Repetition Isn't Convergence | Sep 3 | `docs/public/comms/drafts/repetition-isnt-convergence.md` |
-| 6 | More Than Anyone Ever Reported to Me | Sep 8 | **not drafted — PM's own go/no-go call, PM is the protagonist** |
-
-Nothing left for me to do on Beats 1-5 until PM's voice-pass. Beat 6 needs PM's explicit steer before it gets drafted at all.
-
-## Also open
-
-1. **Era-taxonomy proposal** — two new eras proposed, `docs/internal/planning/comms/era-taxonomy-proposal-2026-08-15.html`. Needs PM's ratification. Unchanged since last night.
-2. **#1636 filed** (site's cluster data broken for 361/370 posts) — exists, awaiting an owner.
-
-## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available (re-checked 09:27)
-
-- **Beat 23** ("The Architect's Own Trap") needs PM's voice-pass + art.
-- **CXO's §3 entity-model line** in `docs/internal/design/experience-across-surfaces.md` — flagged 3×, still pending.
-- **Dispatch syndication**: 3 fully unsyndicated posts, 1 partial. Unchanged since Jul 30.
+- **Beats 1-5** — drafted, need PM's voice-pass + art. **Beat 6** — needs PM's go/no-go before drafting.
+- **Era-taxonomy proposal** — two new eras proposed, needs PM's ratification.
+- **Values doc** — needs PM's integrated read (Exec flagging directly).
+- **Beat 23** ("The Architect's Own Trap") — needs PM's voice-pass + art.
+- **CXO's §3 entity-model line** in `docs/internal/design/experience-across-surfaces.md` — flagged 3×, still pending, unchanged in weeks.
+- **Dispatch syndication**: 3 fully unsyndicated posts, 1 partial. Unchanged since Jul 30 — worth a fresh look if it's still stalled by end of week.
 - **BYOC listing copy v4** — routed to PPM, no response found.
 
 ## New, not yet actioned
 
-- **Weekly Ship #056 draft** ("Fundamentals First") from Exec — no review request in mail yet, unlike #055. Watch for one.
+- **Weekly Ship #056 draft** ("Fundamentals First") from Exec — still no review request in mail, unlike #055. Watch for one.
 
 ## Waiting on others
 
-- **PM** — beats/era discussion; Beat 6 go/no-go; era-taxonomy ratification; voice-pass + art on Beats 1-5 and Beat 23.
-- **Exec/PM** — values-doc DRAFT-status call.
+- **PM** — beats/era ratification; Beat 6 go/no-go; voice-pass + art on Beats 1-5 and Beat 23; values-doc integrated read.
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **PPM** — BYOC listing copy v4.
 - **CXO/PM** — entity-model ratification.
 - **Dispatch** — syndication for the 4 posts.
 - **Lead** — outcome of #1611 (routed by Docs).
-- **Someone (unclear who)** — #1636 (cluster-data pipeline fix).
+- **Someone (unclear who)** — #1636 (cluster-data pipeline fix, filed 08-15, still unowned).
