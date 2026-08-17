@@ -1,6 +1,6 @@
 # HOST carry-forward
 
-**Written**: 2026-08-15 21:5x PDT (STOP fire, day 22 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-16 21:4x PDT (STOP fire, day 23 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -120,12 +120,13 @@
 
 ## Cron
 
-Current job **`0718e262`** (chain … `4894dc35 → 04ceaeeb → 0718e262`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-15 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`28c14f5b`** (chain … `04ceaeeb → 0718e262 → 28c14f5b`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-16 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 08-15 STOP
+## Open threads, as of 08-16 STOP
 
-- **Retention/learning-scope policy** — ✅ **RATIFIED 08-15.** §3 retain-all-by-default (PM agreed with HOST's own reasoning, not just the lean), §4 user-facing settings scoped to Enterprise milestone (#1634), not MVP. Doc, `decisions.log`, privacy-policy draft all updated by Exec. Closed, nothing further owed.
-- **Values/ethics document** (`docs/legal/values-DRAFT.md`) — ✅ **DONE from HOST's side, fully closed.** All four decisions ratified, voice converted and independently double-checked, README link landed 08-16 (Docs, `f1fb323a4`, verified). Only remaining question is whether/when to lift DRAFT status — routed to Exec/PM as their call, not HOST's; mechanical execution is Comms's once someone says go. **Nothing further owed by HOST on this thread, watch only.**
-- **Agent 360 v0.4** — cadence ratified + fielded 08-14. **8/11 responses in as of 08-15** (cio, comms, cxo, docs, pa, web, lead, ppm). Still hold synthesis for the ~2-week window (through ~08-28) — 8/11 is strong but not the full picture; arch, exec, and one more still owed. CIO's self-firing workflow unverified until its first real trigger 2026-09-25.
-- **Audit-nobody-owns** — ✅ **CLOSED by PM ruling 08-15.** Lead owns the beta-conditions audit as part of the sprint's final gate, plus an independent subagent cross-check. Verified against `decisions.log:1690` directly. Portfolio row renamed and retitled; retires fully once the audit + cross-check actually run — watch for that, don't re-raise ownership.
+- **Retention/learning-scope policy** — ✅ RATIFIED 08-15, closed, nothing further owed.
+- **Values/ethics document** — ✅ Fully closed from HOST's side (08-16). DRAFT-status lift is Exec/PM's call, watch only.
+- **Agent 360 v0.4** — cadence ratified + fielded 08-14 to **10 roles** (not 11 — HOST doesn't field to itself; corrected a denominator error carried in this file). **8/10 responses in as of 08-16** (cio, comms, cxo, docs, pa, web, lead, ppm) — missing arch, exec. Still hold synthesis for the ~2-week window (through ~08-28). CIO's self-firing workflow unverified until its first real trigger 2026-09-25.
+- **Audit-nobody-owns** — ✅ CLOSED by PM ruling 08-15, Lead owns it. Retires fully once the audit + cross-check actually run — watch, don't re-raise.
+- **MEMORY.md headroom** — ✅ RESOLVED 08-16. CIO's hybrid-packing landed (188→91 lines, same 180 entries). `check-derived-drift.sh` genuinely clean for the first time in weeks.
 - **Ship #056 workstream review** — filed 08-14 evening per PM's same-day corrected deadline. Closed, nothing further owed.
