@@ -8,7 +8,7 @@
 | ---------------------- | ---------------------------------------------------------------------- | ------------------------------------ |
 | **Quick Start**        | [METHODOLOGY.md](../../../briefing/METHODOLOGY.md)                     | Operational "How We Work" guide      |
 | **Deep Reference**     | This directory (methodology-core/)                                     | Comprehensive numbered methodologies |
-| **Implementation**     | [/methodology/](../../../../methodology/)                              | Python code and live implementation  |
+| **Implementation**     | *retired 2026-07-26 — see [design record](../../architecture/current/design-record-methodology-as-code-2025.md)* | The `methodology/` Python package was deleted (zero-importer, Arch fix-or-delete ruling, ADR-028 superseded); this is the preserved record of the thinking |
 | **Learning/Training**  | [case-studies/](../case-studies/) | Case studies and real project examples  |
 | **Testing Procedures** | [testing/](../testing/)                                                | Implementation and testing guides    |
 
@@ -34,7 +34,7 @@
 
 - **📋 Methodology**: [methodology-00-EXCELLENCE-FLYWHEEL.md](methodology-00-EXCELLENCE-FLYWHEEL.md) _(core framework)_
 - **⚡ Quick Guide**: [METHODOLOGY.md#excellence-flywheel](../../../briefing/METHODOLOGY.md#excellence-flywheel) _(operational overview)_
-- **🐍 Implementation**: [/methodology/](../../../../methodology/) _(Python code)_
+- **🐍 Implementation**: *retired 2026-07-26 — see [design record](../../architecture/current/design-record-methodology-as-code-2025.md)* _(the Python package was deleted; case-studies/ and the methodology docs themselves are the live implementation now)_
 
 ### Testing & Verification
 
@@ -62,7 +62,7 @@
 - **Coordinate multiple agents** → [methodology-02-AGENT-COORDINATION.md](methodology-02-AGENT-COORDINATION.md)
 - **Understand testing approach** → [methodology-15-TESTING-VALIDATION.md](methodology-15-TESTING-VALIDATION.md)
 - **See real examples** → [case-studies/](../case-studies/)
-- **Implement in code** → [/methodology/](../../../../methodology/)
+- **Understand the retired code-as-methodology approach** → [design record](../../architecture/current/design-record-methodology-as-code-2025.md) _(the package itself was deleted 2026-07-26)_
 - **Learn from case studies** → [Pattern-061](../../architecture/current/patterns/pattern-061-human-ai-collaboration-referee.md)
 
 ## Complete Methodology Catalog
@@ -129,9 +129,12 @@
 - [45-AGREEMENT-IS-NOT-REPLICATION.md](methodology-45-AGREEMENT-IS-NOT-REPLICATION.md) - Agreement Is Not Replication — shared procedure manufactures false consensus; independent agreement isn't independent verification if they share a confound. Filed 2026-07-29 by CIO, proposed by Arch (four-seat evidence table). Emerging, unusually clean evidence.
 - [46-PROMOTION-IS-A-RE-VERIFICATION-EVENT.md](methodology-46-PROMOTION-IS-A-RE-VERIFICATION-EVENT.md) - Promotion Is a Re-Verification Event — the durable copy needs a named source; promoting a finding into a canonical doc is itself a verification-bearing act. Filed 2026-07-30 (CXO draft), mechanism landed 2026-07-31 (HOST). Emerging — limb 2 has a shipped mechanism, limb 1 remains vigilance.
 - [47-SECOND-ORDER-CLAIMS-NEED-FIRST-ORDER-RIGOR.md](methodology-47-SECOND-ORDER-CLAIMS-NEED-FIRST-ORDER-RIGOR.md) - Second-Order Claims Need First-Order Rigor — a claim about a claim (a summary, a status report, a rollup) needs the same verification discipline as the original. Filed 2026-08-07 (CIO). Proven (two distinct instances, measured cost).
+- [48-A-PROXY-COUNT-IS-NOT-THE-QUANTITY.md](methodology-48-A-PROXY-COUNT-IS-NOT-THE-QUANTITY.md) - A Proxy Count Is Not The Quantity (and at selection time it propagates) — a count derived from a proxy signal gets treated as the true quantity, and the error compounds at selection time. Filed 2026-08-10 (CIO), found by PPM and CXO independently. Proven (two independent instances, opposite directions).
+- [49-DESCRIBED-IS-NOT-RUNNING.md](methodology-49-DESCRIBED-IS-NOT-RUNNING.md) - Described Is Not Running — a mechanism's documentation, config, or even its own passing description is not the mechanism; only observing it fire is. Filed 2026-08-12 (CIO), canonical instance found by Janus. Emerging (one canonical instance plus three corroborating; watching for independent cross-project recurrence).
 
 ---
 
-**Last Updated**: August 10, 2026 (Docs — added methodology-43 through -47, missing from this catalog since filing; found during weekly-docs-audit #1583's NAVIGATION.md↔INDEX.md cross-check)
+**Last Updated**: August 17, 2026 (Docs — added methodology-48 through -49, missing from this catalog since filing; same gap pattern as the Aug 10 fix below, found again during weekly-docs-audit #1643. Two independent subagent audits converged on this same finding.)
+**Prior**: August 10, 2026 (Docs — added methodology-43 through -47, missing from this catalog since filing; found during weekly-docs-audit #1583's NAVIGATION.md↔INDEX.md cross-check)
 **Maintained By**: Methodology Team
 **Questions?** Check [METHODOLOGY.md](../../../briefing/METHODOLOGY.md) or create a GitHub issue

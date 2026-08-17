@@ -4,14 +4,14 @@
 
 This directory contains Architecture Decision Records (ADRs) that document significant architectural decisions, their context, rationale, and consequences.
 
-**Total ADRs**: 74 records (000-073)
+**Total ADRs**: numbered 000–079, with two never-filed/retired gaps at 067–068 (see individual files for the current count — a static number here goes stale between audits; verify via `ls docs/internal/architecture/current/adrs/adr-*.md | wc -l` minus `adr-index.md` and `adr-field-mapping-report.md`, the catalog's two non-numbered meta-files)
 
 ## Recent ADRs
 
 - **[ADR-073: No Destructive Git in PM Main Checkout](adr-073-no-destructive-git-in-pm-main-checkout.md)** (Jun 2026) - Prohibition on destructive git in PM's main checkout (pm-work-safety)
 - **[ADR-072: Skill-Routing Architecture](adr-072-skill-routing-architecture.md)** (Jun 2026) - Procedural skills as routing targets (ACCEPTED)
-- **[ADR-071: Connector Registration Pattern](adr-071-connector-registration-pattern.md)** (Jun 2026) - Connector registration and configuration patterns
-- **[ADR-070: MCP Connector Architecture](adr-070-mcp-connector-architecture.md)** (Jun 2026) - MCP server integration as first-class connectors
+- **[ADR-071: User-Auth Anchoring Pattern for Content Stores](adr-071-user-auth-anchoring-pattern.md)** (Jun 2026) - Content-store ownership anchored to a canonical `owner_id`, principal resolved from the auth boundary — companion to ADR-058 at the content altitude *(entry corrected 2026-08-17, weekly-docs-audit #1643: the old title "Connector Registration Pattern" pointed at a filename that never existed on disk, and doesn't match ADR-071's actual content — this is what the file at that number actually contains, not a renamed version of the old description)*
+- **[ADR-070: MCP-Consumer Connector Architecture](adr-070-mcp-consumer-connector-architecture.md)** (Jun 2026) - MCP server integration as first-class connectors *(filename corrected 2026-08-17 — genuine rename, same topic)*
 - **[ADR-060: Floor-First Routing](adr-060-floor-first-routing.md)** (Mar 2026) - Invert routing: floor handles everything, handlers prove specificity
 - **[ADR-059: Workflow Dispatcher & Offer Consolidation](adr-059-workflow-dispatcher-offer-consolidation.md)** (Mar 2026) - Unified dispatch replacing per-handler workflow management
 - **[ADR-058: Multi-Tenancy Isolation](adr-058-multi-tenancy-isolation.md)** (Mar 2026) - User data isolation patterns
@@ -62,7 +62,7 @@ When auditing the catalog for staleness or relevance:
 - **Don't retire ADRs based on zero code citations alone.** Check whether they're Archival (work landed, no further reference needed), Internalized (followed implicitly), or Decision-load-bearing (referenced in conversations, not code).
 - **Do retire ADRs that are Genuinely Decorative.** These are the candidates for explicit deprecation or supersession.
 
-This framework also applies to the [Pattern Index](../patterns/README.md) and the [PDR catalog](../../product/pdr/) — same code-vs-discussion-vs-internalized distinction.
+This framework also applies to the [Pattern Index](../patterns/README.md) and the [PDR catalog](../../../product/pdr/) — same code-vs-discussion-vs-internalized distinction.
 
 ## Navigation
 

@@ -34,6 +34,10 @@
 - [Communications](briefing/BRIEFING-ESSENTIAL-COMMS.md) - 2.5K tokens
 - [Documentation](briefing/BRIEFING-ESSENTIAL-DOCS.md) - 2.5K tokens
 - [Coding Agent](briefing/BRIEFING-ESSENTIAL-AGENT.md) - 2K tokens
+- [Web (Unicorn Web Designer)](briefing/BRIEFING-ESSENTIAL-WEB.md)
+- [Exploratory Testing Agent (ETA)](briefing/BRIEFING-ESSENTIAL-ETA.md) — *dormant, last session March 2026*
+
+*(Web and ETA added 2026-08-17, weekly-docs-audit #1643 — both were missing from this list despite Web being active since ~06-2026 and ETA appearing correctly in ROSTER.md and CLAUDE.md's role table.)*
 
 ### Progressive Loading
 
@@ -211,7 +215,7 @@ Post-embedded downloadable files (skill zips, templates, etc.) live in the **web
 │   ├── in-progress/          # Active development
 │   ├── pending-review/       # Files needing review
 │   └── ready-for-integration/ # Completed work
-├── methodology-core/         # 48 development methodologies (see INDEX.md)
+├── methodology-core/         # development methodologies (see INDEX.md for the current roster)
 ├── tools/                    # Development tools and guides
 └── planning/                 # Current planning cycles
 ```

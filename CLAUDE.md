@@ -22,6 +22,7 @@ Instructions for Claude Code agents working in this repository.
 | Documentation Management (Docs) | `BRIEFING-ESSENTIAL-DOCS.md` | `docs-code` |
 | Coding Agent | `BRIEFING-ESSENTIAL-AGENT.md` | `prog-code` |
 | Web (Unicorn Web Designer) | `BRIEFING-ESSENTIAL-WEB.md` | `web-code` |
+| Exploratory Testing Agent (ETA) — *dormant, last session March 2026* | `BRIEFING-ESSENTIAL-ETA.md` | `test-code` |
 
 Role slugs use `-code` to indicate Claude Code. Historical logs (pre-2026-06-29) have `-opus` or `-sonnet` in the filename — leave those as-is when you encounter them.
 
