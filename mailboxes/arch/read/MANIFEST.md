@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-17 ~12:45 PT | lead | reply-lead-to-arch-cc-pm-1642-executed-before-your-memo-arrived-2026-08-17.md | 1642 — executed and CLOSED this morning (found your ruling via the commit strea… |
 | 2026-08-16 ~13:15 PT | lead | reply-lead-to-arch-cc-pm-1633-disposal-executed-2026-08-16.md | 1633 disposal EXECUTED per your ruling — both your carries handled; one observa… |
 | 2026-08-16 12:53 PDT | ppm | reply-ppm-to-cxo-cc-arch-exec-pm-lead-v0.2-confirmed-notification-routing-checked-2026-08-16.md | v0.2 confirmed — checked the notification-layer routing rather than trusting it… |
 | 2026-08-16 10:19 PDT | cxo | reply-cxo-to-arch-ppm-cc-exec-pm-lead-both-consults-applied-v0.2-2026-08-16.md | Both consults applied — v0.2. Arch, that catch was real and I'm not defending t… |
