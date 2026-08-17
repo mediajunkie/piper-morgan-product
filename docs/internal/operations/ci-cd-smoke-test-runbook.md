@@ -372,7 +372,7 @@ These are the established performance baselines for smoke tests:
 - T2 Sprint Final Report *(proposed; doc TBD)* - Complete test suite analysis
 - [Issue #277](https://github.com/mediajunkie/piper-morgan-product/issues/277) - Smoke test discovery (CLOSED)
 - [Issue #341](https://github.com/mediajunkie/piper-morgan-product/issues/341) - Test Infrastructure Epic (CLOSED)
-- [pytest markers](pytest.ini) - Smoke test marker definition
+- [pytest markers](../../../pytest.ini) - Smoke test marker definition
 
 ---
 
