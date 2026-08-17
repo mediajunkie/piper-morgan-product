@@ -15,6 +15,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from services.consciousness.validation import validate_mvc
+from services.utils.datetime_utils import utc_now
 
 
 def format_greeting_conscious(
@@ -331,9 +332,21 @@ def _format_free_block(
     is on. Event-derived boundaries already carry the calendar's offset;
     server-derived ones need a timezone we can NAME, and are otherwise omitted.
     The general per-user timezone answer is #1572, not this.
+
+    Tense rule (#1615): a window that has already finished is never cited in
+    present tense — PM's 12:42 retest greeting said "you have some focus time
+    between 9:30 am and 10:00 am", a real block honestly read but long over.
+    Unlike the day-part question, this is NOT #1572-gated: every block that
+    reaches rendering passed ``_parse_iso`` (naive values rejected), so
+    "finished?" is an absolute-instant comparison against ``utc_now()`` — no
+    user clock face involved (m-43: elapsed-ness and clock-face rendering are
+    different layers). A still-open block is preferred over an elapsed one;
+    with only elapsed blocks on offer, the first renders in past tense.
     """
     if not free_blocks:
         return None
+    now = utc_now()
+    elapsed_fallback: Optional[str] = None
 
     tz = None
     if user_timezone:
@@ -368,8 +381,15 @@ def _format_free_block(
             continue
 
         if start and end:
-            return f"I noticed you have some focus time between {start} and {end}"
-    return None
+            if end_dt > now:
+                return f"I noticed you have some focus time between {start} and {end}"
+            if elapsed_fallback is None:
+                # Window already finished at render time: past tense, and keep
+                # looking — a later still-open block is worth more than this.
+                elapsed_fallback = (
+                    f"I noticed you had some focus time between {start} and {end}"
+                )
+    return elapsed_fallback
 
 
 def _parse_iso(time_str: str) -> Optional[datetime]:
