@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-16 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-16 (16:37 WORK)
 
 **Cron**: `ba1e4618` · `7 10,16,22` LEAN · re-armed 2026-08-15 22:37 STOP (delete-then-create) ·
 **auto-expires ~2026-08-22**.
@@ -7,15 +7,15 @@
 
 ---
 
-## ⏸ Awaiting Lead: one stale-claim fix in the memory-index generator
+## ✅ Memory-index thread fully closed (08-08 proposed → 08-16 shipped, defect found, fixed, verified)
 
-**Memory-index packing shipped clean (Lead, 08-16 overnight)** — 185→91 lines, headroom 15→109,
-verified independently (drift check clean, export file confirmed, packed lines spot-checked).
-**One real defect found in review**: `scripts/rebuild-memory-index.py` line ~133 still asserts
-*"the line floor is {len(files)}"* — true pre-packing, **false now that packing exists** (real
-floor with today's 131/49 split is `ceil(131/4)+49 = 82`, not 180). Flagged to Lead, not fixed
-unilaterally (their fresh commit, they said flag-and-they'd-take-it same-day). **Check back that
-it landed** — this carry-forward should stop mentioning it once it does.
+**Packing shipped clean 08-16 morning** (185→91 lines, headroom 15→109). Review caught a real
+defect (a stale "line floor = entry count" claim the packing fix itself falsified). **Lead fixed
+same-day**: hoisted the packing constants to a single definition site, header now computes the
+floor dynamically (`ceil(packed/4)+described`) instead of asserting a second, driftable number.
+Re-verified independently — the live header matches hand computation, the source is genuinely a
+computation not a hardcoded match. **Two independent verification passes, two different days, each
+catching what the prior self-report didn't surface. Closed, nothing further owed here.**
 
 ## ✅ Dispatch-latency experiment CONCLUDED (08-15, 22:57) — for reference
 
