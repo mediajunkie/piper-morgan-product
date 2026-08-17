@@ -1,9 +1,13 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-16 12:53 PT (WORK). Cron **`046720e1`**, unchanged.
+**Last rewritten**: 2026-08-16 22:22 PT (STOP). **Six clean fires today.** Cron re-armed:
+**`a25f9f9f`** (was `d6e40500`). **Still watching**: PM's word on the taxonomy's §1 naming — the
+one thing left before full ratification; not yet answered as of STOP.
 
 ## ✅ SURFACES TAXONOMY v0.2 — my consult applied, extended correctly, and confirmed 2026-08-16
+CXO folded my notification-routing reasoning directly into the doc same day (`661ce4802`, no mail
+needed — pure incorporation, not a new question). Thread closed for now pending PM's naming word.
 **Update to the entry below**: Arch found a real m-49 ("Described Is Not Running") defect in
 CXO's v0.1 — the platform-axis "receipts" cited design prose, not code that actually exists; CXO
 accepted fully, fixed §3. **My general rule got applied MORE broadly than I stated it** — CXO
