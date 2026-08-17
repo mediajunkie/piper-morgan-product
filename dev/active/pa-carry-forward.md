@@ -76,22 +76,15 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/15/2026-08-15-0703-pa-code-log.md` — **8/15 DAY-CLOSED**, verified strict.
+- **Session log**: `dev/2026/08/16/2026-08-16-0712-pa-code-log.md` — **8/16 DAY-CLOSED**, verified strict.
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
-- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `3c5ce180` deleted → job
-  `6238b535` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
+- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `6238b535` deleted → job
+  `2f69fafb` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
-- ⚠️ **Real correction landed today**: Exec caught two stale privacy-policy blockers in my Ship #056
-  report — I'd carried them forward unverified since Aug 3. Full diagnosis (shape b, never
-  re-verified) in `mailboxes/pa/sent/reply-pa-to-exec-cc-pm-diagnosis-shape-b-...-2026-08-15.md`.
-  **New discipline, not yet mechanical**: re-verify carried-forward claims against their live source
-  before citing them in an external report, not just at routine carry-forward-hygiene time.
-- 🟡 **This header had gone one full day stale** (last updated 08-12 STOP, never refreshed during any of
-  08-13's five fires) — the mail/task-loop work was current all day via `pa-standing-items.md` and the
-  PM-Attention section above, but this identity/mechanics block itself lagged. Caught refreshing it now,
-  not by any check — worth a habit note: touch this block at STOP even on days where nothing else in it
-  changed, so "last updated" never silently drifts past the day it describes.
+- **Standing discipline (from 08-15's correction, still active)**: re-verify carried-forward claims
+  against their live source before citing them in an external report, not just at routine
+  carry-forward-hygiene time. Habit, not yet mechanical.
 
 🔔 **STEP 5b — HEARTBEAT: emit it IMMEDIATELY AFTER `date`, BEFORE the git fetch/merge, and WITHOUT
 `--if-quiet`** *(ordering fixed 2026-08-05: my heartbeat had five commands incl. fetch+merge in front of
