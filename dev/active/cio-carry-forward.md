@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-16 (22:37 STOP)
+# CIO carry-forward — rewritten 2026-08-17 (10:37 START)
 
 **Cron**: `7cd5a4d0` · `7 10,16,22` LEAN · re-armed 2026-08-16 22:37 STOP (delete-then-create) ·
 **auto-expires ~2026-08-23**.
@@ -17,8 +17,12 @@ directly (`duty-cycle-tick` v1.29, `verify-signoff.sh`), and a fifth shape prove
 work**, twice in one day on the memory-index thread (see below), catching a real defect both times
 the report alone didn't surface.
 
-**Connects to the in-flight Janus/Themis thread** (08-12 reply): still not reopened. Six real data
-points behind it now, not theory — worth actually doing rather than continuing to defer.
+**Janus/Themis thread REOPENED 08-17** — sent a substantive follow-up with a week of real evidence
+rather than more theory (`~/Development/designinproduct/docs/mail/`, commit `b276b39`). Sharper
+conclusion than 08-12, not a reversal: directing is portable; the *judgment* that makes directing
+land correctly (what to delegate, when it's ready, how to verify it) is still rooted in operational
+embeddedness. Named an honest gap — the curation-offload mechanism proposed 08-12 has never
+actually been tried. **Awaiting Janus/Themis's response.**
 
 ## ✅ Memory-index thread fully closed (08-08 → 08-16)
 
