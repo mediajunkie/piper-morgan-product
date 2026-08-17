@@ -175,15 +175,37 @@ class TestDefaultRepoResolution:
         result = await _handler_turn(service, PM_STATUS_DONE_DEFAULT_REPO)
         assert "repository not specified" not in result.message
 
-    async def test_resolution_failure_error_teaches_the_conversational_fix(
+    async def test_resolution_failure_with_session_asks_instead_of_refusing(
         self, service
     ):
-        """The refusal fires ONLY when resolution also fails — and then it
-        teaches 'set my default repo to owner/name' (#1327, a phrase that
-        routes deterministically; #1571: never teach a phrase that doesn't)."""
+        """#1567: with a session to bind the answer to, resolution failure is
+        no longer a dead-end refusal — the handler ARMS the repo-question
+        carrier and asks which repository (the answer slot-fills next turn)."""
         result = await _handler_turn(
-            service, PM_STATUS_DONE, resolver=_resolver_unresolved()
+            service, PM_STATUS_DONE, sid="sess-repo-ask", resolver=_resolver_unresolved()
         )
+        assert result.success is True
+        assert result.requires_clarification is True
+        assert "Which repository is issue #108 in?" in result.message
+        offer = _pending(service, "sess-repo-ask")
+        assert offer is not None
+        assert offer["pending_action"]["kind"] == "issue_repo_question"
+
+    async def test_resolution_failure_without_session_teaches_the_conversational_fix(
+        self, service
+    ):
+        """With NO session there is nothing to bind an answer to, so the
+        honest refusal stands — and it teaches 'set my default repo to
+        owner/name' (#1327, a phrase that routes deterministically; #1571:
+        never teach a phrase that doesn't)."""
+        with (
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            _resolver_unresolved(),
+        ):
+            result = await service._handle_update_issue(
+                _update_intent(PM_STATUS_DONE), "wf-1411", user_id=_USER
+            )
         assert result.success is False
         assert result.clarification_type == "repository_required"
         assert "set my default repo to" in result.message

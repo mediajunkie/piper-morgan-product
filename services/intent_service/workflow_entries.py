@@ -174,7 +174,10 @@ async def run_close_issue_workflow(
     user_id: Optional[str] = None,
     context: Optional[Dict[str, Any]] = None,
 ) -> Any:
-    """Action-dispatch entry point for close-issue queries (#1124 step 3, CLOSE)."""
+    """Action-dispatch entry point for close-issue queries (#1124 step 3, CLOSE).
+
+    #1567: ``session_id`` is threaded (keyword) so the handler's
+    repository-question ask can bind via the #846 pending-offer store."""
     ctx = context or {}
     intent_service = ctx.get("intent_service")
     intent = ctx.get("intent")
@@ -186,7 +189,9 @@ async def run_close_issue_workflow(
             has_intent=intent is not None,
         )
         return None
-    return await intent_service._handle_close_issue_query(intent, workflow_id)
+    return await intent_service._handle_close_issue_query(
+        intent, workflow_id, session_id=session_id
+    )
 
 
 async def run_reopen_issue_workflow(

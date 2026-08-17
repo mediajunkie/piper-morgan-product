@@ -657,7 +657,10 @@ class TestCloseIssueRouting:
                 },
             )
 
-            mock_handler.assert_called_once_with(intent, mock_workflow.id)
+            # #1567: session_id rides so the repo-question ask can bind.
+            mock_handler.assert_called_once_with(
+                intent, mock_workflow.id, session_id="test-session"
+            )
 
     @pytest.mark.asyncio
     async def test_routes_close_issue_variant(self, intent_service, mock_workflow):

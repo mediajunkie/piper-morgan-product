@@ -192,7 +192,7 @@ class TestConfirmEntryPoint:
         def __init__(self):
             self.calls = []
 
-        async def _handle_close_issue_query(self, intent, workflow_id):
+        async def _handle_close_issue_query(self, intent, workflow_id, session_id=None):
             self.calls.append((intent, workflow_id))
             result = AsyncMock()
             result.message = "Closed issue #108: Test"

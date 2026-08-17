@@ -238,6 +238,30 @@ class TurnDriver:
         """Authenticated GET against the live server (e.g. /api/v1/auth/me)."""
         return self._client.get(path, **kwargs)
 
+    def raw_turn(
+        self, message: str, session_id: str, timeout: float = 60.0
+    ) -> httpx.Response:
+        """POST one message to /api/v1/intent and return the RAW response —
+        no status/degradation policing. For tests whose SUBJECT is an HTTP
+        refusal (e.g. the #1532 ownership 404): the assertion belongs in the
+        test, where the expected refusal is explicit. Does NOT record
+        session_id for cleanup — pass ids you provisioned deliberately."""
+        transcript = os.environ.get("PIPER_LIVE_TRANSCRIPT") == "1"
+        if transcript:
+            print(
+                f"\n>>> POST {self._client.base_url}/api/v1/intent "
+                f"(user={self.user.username}, session={session_id}) [raw]\n"
+                f">>> {{'message': {message!r}, 'session_id': {session_id!r}}}"
+            )
+        resp = self._client.post(
+            "/api/v1/intent",
+            json={"message": message, "session_id": session_id},
+            timeout=timeout,
+        )
+        if transcript:
+            print(f"<<< HTTP {resp.status_code}\n<<< {resp.text}")
+        return resp
+
 
 def _tail(path: Path, lines: int = 40) -> str:
     try:
@@ -399,6 +423,21 @@ async def _fk_leftovers(session, user_id: str) -> List[str]:
     if count:
         leftovers.append(f"conversations.user_id/owner_id: {count} rows (FK-less)")
 
+    # standup_conversations is varchar-keyed and FK-less (#1629 audit found 138
+    # orphans from exactly this gap); the #1597 standup-hijack replay creates
+    # rows here, so the verification must see them if the cascade ever regresses.
+    count = (
+        await session.execute(
+            text(
+                "SELECT COUNT(*) FROM standup_conversations "
+                "WHERE user_id::text = :uid OR owner_id::text = :uid"
+            ),
+            {"uid": user_id},
+        )
+    ).scalar()
+    if count:
+        leftovers.append(f"standup_conversations.user_id/owner_id: {count} rows (FK-less)")
+
     return leftovers
 
 
@@ -421,14 +460,10 @@ async def _session_leftovers(session, session_ids: List[str]) -> List[str]:
     return leftovers
 
 
-@pytest.fixture
-async def live_user(live_server, live_db_session):
-    """A throwaway user with a REAL password hash (PasswordService bcrypt),
-    created directly in the DB; FK-ordered cleanup VERIFIED BY COUNT after.
-
-    Yields a LiveUser. Credentials are generated, never guessed, never reused:
-    no secret is needed to run this harness.
-    """
+async def _provision_live_user(live_db_session) -> LiveUser:
+    """Create a throwaway user with a REAL password hash (PasswordService
+    bcrypt) directly in the DB. Credentials are generated, never guessed,
+    never reused: no secret is needed to run this harness."""
     from services.auth.password_service import PasswordService
 
     user_id = str(uuid.uuid4())
@@ -455,66 +490,105 @@ async def live_user(live_server, live_db_session):
         },
     )
     await live_db_session.commit()
+    return LiveUser(user_id=user_id, username=username, password=password)
 
-    user = LiveUser(user_id=user_id, username=username, password=password)
+
+@pytest.fixture
+async def live_user(live_server, live_db_session):
+    """A throwaway user; FK-ordered cleanup VERIFIED BY COUNT after."""
+    user = await _provision_live_user(live_db_session)
     try:
         yield user
     finally:
-        # FK-ordered cascade (curated, shared with the e2e layer)...
-        from tests.conftest import delete_test_user_fully
+        await _teardown_live_user_verified(live_db_session, user)
 
-        await delete_test_user_fully(live_db_session, user_id)
-        # conversation_turns/links for this run's sessions are covered by the
-        # cascade's conversations subquery only BEFORE conversations delete;
-        # sweep by recorded session ids for anything the cascade ordering missed.
-        for table in ("conversation_turns", "conversation_links"):
-            if user.session_ids:
-                await live_db_session.execute(
-                    text(f'DELETE FROM "{table}" WHERE conversation_id = ANY(:ids)'),  # noqa: S608
-                    {"ids": user.session_ids},
-                )
-        await live_db_session.commit()
 
-        # ...then the part that makes the cleanup TRUE rather than claimed:
-        # count what's left. The 08-13 cleanup printed "cleaned" twice while
-        # deleting nothing; a count is the only exit condition honored here.
-        remaining_user = (
+async def _teardown_live_user_verified(live_db_session, user: LiveUser) -> None:
+    """FK-ordered cascade, then count-verified proof the cleanup happened."""
+    # FK-ordered cascade (curated, shared with the e2e layer)...
+    from tests.conftest import delete_test_user_fully
+
+    await delete_test_user_fully(live_db_session, user.user_id)
+    # conversation_turns/links for this run's sessions are covered by the
+    # cascade's conversations subquery only BEFORE conversations delete;
+    # sweep by recorded session ids for anything the cascade ordering missed.
+    for table in ("conversation_turns", "conversation_links"):
+        if user.session_ids:
             await live_db_session.execute(
-                text("SELECT COUNT(*) FROM users WHERE id = CAST(:uid AS uuid)"),
-                {"uid": user_id},
+                text(f'DELETE FROM "{table}" WHERE conversation_id = ANY(:ids)'),  # noqa: S608
+                {"ids": user.session_ids},
             )
-        ).scalar()
-        leftovers = await _fk_leftovers(live_db_session, user_id)
-        leftovers += await _session_leftovers(live_db_session, user.session_ids)
-        if remaining_user:
-            leftovers.append(f"users.id: {remaining_user} row (the user itself)")
-        if leftovers:
-            raise RuntimeError(
-                f"Cleanup VERIFICATION FAILED for throwaway user {username} "
-                f"({user_id}) — rows remain:\n  " + "\n  ".join(leftovers)
-            )
+    await live_db_session.commit()
+
+    # ...then the part that makes the cleanup TRUE rather than claimed:
+    # count what's left. The 08-13 cleanup printed "cleaned" twice while
+    # deleting nothing; a count is the only exit condition honored here.
+    remaining_user = (
+        await live_db_session.execute(
+            text("SELECT COUNT(*) FROM users WHERE id = CAST(:uid AS uuid)"),
+            {"uid": user.user_id},
+        )
+    ).scalar()
+    leftovers = await _fk_leftovers(live_db_session, user.user_id)
+    leftovers += await _session_leftovers(live_db_session, user.session_ids)
+    if remaining_user:
+        leftovers.append(f"users.id: {remaining_user} row (the user itself)")
+    if leftovers:
+        raise RuntimeError(
+            f"Cleanup VERIFICATION FAILED for throwaway user {user.username} "
+            f"({user.user_id}) — rows remain:\n  " + "\n  ".join(leftovers)
+        )
+
+
+@pytest.fixture
+async def live_user_b(live_server, live_db_session):
+    """A SECOND, independent throwaway user — for cross-account checks
+    (#1532: two accounts exchanging a session UUID). Same provisioning and
+    count-verified cleanup as live_user."""
+    user = await _provision_live_user(live_db_session)
+    try:
+        yield user
+    finally:
+        await _teardown_live_user_verified(live_db_session, user)
+
+
+def _login_driver(live_server, user: LiveUser) -> tuple[httpx.Client, "TurnDriver"]:
+    """Log a throwaway user in through the REAL login endpoint; return the
+    client (caller closes) and a TurnDriver carrying the real auth cookies."""
+    client = httpx.Client(base_url=live_server.base_url, timeout=30.0)
+    resp = client.post(
+        "/api/v1/auth/login",
+        data={"username": user.username, "password": user.password},
+    )
+    assert resp.status_code == 200, (
+        f"Programmatic login failed (HTTP {resp.status_code}): {resp.text[:500]}"
+    )
+    body = resp.json()
+    assert body.get("token"), "Login returned 200 but no token in body"
+    assert client.cookies.get("auth_token"), (
+        "Login returned 200 but set no auth_token cookie — cookie-auth "
+        "turns would silently run anonymous (the layer this harness exists "
+        "to verify)"
+    )
+    return client, TurnDriver(client, user)
 
 
 @pytest.fixture
 async def turn_driver(live_server, live_user):
     """Log the throwaway user in through the REAL login endpoint and yield a
     TurnDriver whose cookie jar carries the real auth cookies."""
-    client = httpx.Client(base_url=live_server.base_url, timeout=30.0)
+    client, driver = _login_driver(live_server, live_user)
     try:
-        resp = client.post(
-            "/api/v1/auth/login",
-            data={"username": live_user.username, "password": live_user.password},
-        )
-        assert resp.status_code == 200, (
-            f"Programmatic login failed (HTTP {resp.status_code}): {resp.text[:500]}"
-        )
-        body = resp.json()
-        assert body.get("token"), "Login returned 200 but no token in body"
-        assert client.cookies.get("auth_token"), (
-            "Login returned 200 but set no auth_token cookie — cookie-auth "
-            "turns would silently run anonymous (the layer this harness exists "
-            "to verify)"
-        )
-        yield TurnDriver(client, live_user)
+        yield driver
+    finally:
+        client.close()
+
+
+@pytest.fixture
+async def turn_driver_b(live_server, live_user_b):
+    """TurnDriver for the second account (#1532 cross-account checks)."""
+    client, driver = _login_driver(live_server, live_user_b)
+    try:
+        yield driver
     finally:
         client.close()
