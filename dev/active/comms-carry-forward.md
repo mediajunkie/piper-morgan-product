@@ -10,9 +10,11 @@ Re-armed at this STOP via delete-then-create — see below for new job ID. Expre
 
 Mail empty at every fire. No PM engagement on any open thread all day. The one substantive work: clarified the Dispatch-syndication mechanism (it's session-triggered, not autonomous — see below) and re-verified the actual current gap against the live calendar rather than trusting an old figure.
 
-## The one thing to check first tomorrow
+## The one thing to check first — mid-update from this morning's START fire
 
-⭐ **Two full days now with no PM engagement on the beats sequence or the era-taxonomy proposal** (both delivered the night of Aug 15). Not urgent — nothing is broken, everything's just waiting — but worth naming plainly rather than letting the "check whether PM engaged" line become a stale ritual. If a third day passes with no movement, that's worth a light, non-pushy mention rather than continued silent re-checking.
+⭐ **PM's voice pass on Beat 23 landed live at ~06:3x this morning** (`85a9c364d`, admin UI) — today is Beat 23's own scheduled pubDate (Aug 18). Frontmatter (image/alt/caption) still empty as of that check — **art not added yet**. Hold the full editorial pass until both land, matching the established pattern. Check frontmatter first before assuming nothing's changed.
+
+The beats sequence and era-taxonomy proposal are still untouched (3 full days now, delivered the night of Aug 15) — not urgent, everything's just waiting, but worth a light mention if PM engages today rather than continued silent re-checking.
 
 ## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available (re-checked 21:42, all unchanged for 2 days)
 
