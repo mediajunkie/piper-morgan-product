@@ -59,6 +59,23 @@ append semantics. Same discriminator, same seam, same exits — the
 subjectless copy still teaches no file phrase until the draft has content
 (#1571's never-teach-unbound rule).
 
+#1649 (2026-08-18, teach-then-ignore): PM gave BOTH slots explicitly —
+'open a new issue, with the subject "issue body test" and description "…"'
+— and still got "What's it about?", then a truncated prose-derived title:
+no extraction knew the subject/description marker words, so the gate armed
+a subjectless carrier and the stated slots were discarded. The fix is at
+the arm seam: ``_slotfill_issue_request`` now extracts quoted (and
+anchored-unquoted) subject/title/called/named and description/body forms
+from the ORIGINAL ask; the gate mirrors them into ``intent.context`` and
+seeds them into the carrier (``build_drafted_issue_offer(body=…)``). Both
+slots given → the shaped draft presents ready for "file it as is", no
+question. One slot given → ask only for the gap; a body-only draft's first
+bound prose is the TITLE answer (named, not appended — see
+``_bind_body_prose``). No explicit slots → the #1630 derive-from-prose
+path, unchanged. Extraction is deterministic and anchored to the stated
+marker words — loose nouns are never scavenged into a title (a wrong
+confident title is worse than the question).
+
 Deliberately NOT built (flagged for Lead): instruction-shaped draft
 refinement ("make the title snappier", "add a labels section"). #1627 binds
 prose CONTENT (appended to the body verbatim); it does not interpret
@@ -255,14 +272,25 @@ def build_drafted_issue_offer(
     intent: Intent,
     subject: Optional[str],
     repository: Optional[str] = None,
+    body: Optional[str] = None,
 ) -> Dict[str, Any]:
     """The #846 pending-offer record binding a rendered draft (the generic
     deferred-action carrier shape documented in ``destructive_confirm.py``).
 
     ``subject=None`` (#1630) arms the minimal SUBJECTLESS carrier: the ask
     had no extractable subject, so the draft has no title yet — the first
-    bound prose answer names it (see ``_bind_body_prose``)."""
+    bound prose answer names it (see ``_bind_body_prose``).
+
+    ``body`` (#1649) seeds an explicitly-STATED description (`…and
+    description "Y"`) into the draft at arm time — the caller mirrors it
+    into ``intent.context["description"]`` so "file it as is" files it.
+    The key is present only when given, preserving the minimal-carrier
+    shape #1630 pins; later prose binds append to it per the existing
+    semantics."""
     summary = _draft_summary(subject, repository)
+    draft: Dict[str, Any] = {"title": subject, "repository": repository}
+    if body:
+        draft["body"] = body
     return {
         "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
         "pending_action": {
@@ -270,7 +298,7 @@ def build_drafted_issue_offer(
             "action": intent.action,
             "intent": intent,
             "summary": summary,
-            "draft": {"title": subject, "repository": repository},
+            "draft": draft,
         },
         "decline_message": (
             "Okay — I've set that draft aside. Nothing was filed. "
@@ -321,7 +349,16 @@ def _bind_body_prose(
             )
             titled_now = True
     existing = (draft.get("body") or "").strip()
-    body = f"{existing}\n\n{prose.strip()}" if existing else prose.strip()
+    # #1649: a draft armed with an explicit description but NO subject asked
+    # only for the title — so the first bound prose on a body-carrying,
+    # untitled draft IS the title answer. Naming the draft consumes it;
+    # appending it to the given description would duplicate the headline
+    # into the body.
+    title_answer = titled_now and bool(existing)
+    if title_answer:
+        body = existing
+    else:
+        body = f"{existing}\n\n{prose.strip()}" if existing else prose.strip()
     draft["body"] = body
 
     # The filing path reads intent.context["description"] first
@@ -370,15 +407,25 @@ def _bind_body_prose(
     title = draft.get("title") or "(untitled)"
     intent_data = _retained_intent_data(pending_action)
     intent_data["drafted_issue_body_bound"] = True
-    lead = (
+    if title_answer:
+        # #1649: the answer titled a draft whose body was explicitly given
+        # up front — say what happened (titled, not appended).
+        lead = (
+            "Got it — that's the title. Nothing is filed yet. "
+            "Here's where it stands:\n\n"
+        )
+    elif titled_now:
         # #1630: the first answer on a subjectless draft STARTED it — say
         # so, and show the derived title for shaping.
-        "Got it — I've started the draft from that. Nothing is filed yet. "
-        "Here's where it stands:\n\n"
-        if titled_now
-        else "Added to the draft — nothing is filed yet. Here's where it "
-        "stands:\n\n"
-    )
+        lead = (
+            "Got it — I've started the draft from that. Nothing is filed yet. "
+            "Here's where it stands:\n\n"
+        )
+    else:
+        lead = (
+            "Added to the draft — nothing is filed yet. Here's where it "
+            "stands:\n\n"
+        )
     return {
         "message": (
             f"{lead}"
@@ -431,7 +478,52 @@ async def handle_drafted_issue_turn(
                 user_id=user_id,
                 intent_service=intent_service,
             )
-        if detect_offer_response(message) != "accept":
+        from services.intent_service.soft_invocation import (
+            detect_confirm_response,
+        )
+
+        if detect_confirm_response(message) != "accept":
+            # #1650: filing is a CONFIRM — only an anchored, crisp,
+            # full-message affirmative (or a taught file phrase, handled
+            # above) fires the create. A short turn the greedy generic rows
+            # would claim ("please hold on a sec", "sure, whatever you
+            # think") is a NEAR-ACCEPT: it must neither file (the aside
+            # wasn't a yes) nor fall to off-intent (the pop would drop
+            # composed work). Re-arm and re-ask — a confirm that neither
+            # confirms nor declines re-asks.
+            if detect_offer_response(message) == "accept":
+                rearmed = True
+                try:
+                    intent_service.workflow_offer_service.set_pending_offer(
+                        session_id, pending_offer, user_id=user_id
+                    )
+                except Exception as e:  # silent-ok: #1650 — a store failure must not crash the re-ask turn; logged ERROR, and the copy below stays honest about whether the draft is still bound
+                    logger.error(
+                        "drafted_issue_rearm_failed", error=str(e)
+                    )
+                    rearmed = False
+                logger.info(
+                    "drafted_issue_near_accept_reasked",
+                    session_id=session_id,
+                    rearmed=rearmed,
+                )
+                if rearmed:
+                    msg = (
+                        "Just to be safe I haven't filed anything — I only "
+                        "file on a clear go-ahead. Say \"file it as is\" to "
+                        "file this draft, or \"no\" to set it aside."
+                    )
+                else:
+                    msg = (
+                        "I haven't filed anything, but I couldn't keep the "
+                        "draft bound either — ask me to draft the issue "
+                        "again and we'll rebuild it."
+                    )
+                return {
+                    "message": msg,
+                    "intent_data": _retained_intent_data(pending_action),
+                    "requires_clarification": True,
+                }
             return None  # decline / bare-exit / explicit command → generic flow
 
     intent = pending_action.get("intent")

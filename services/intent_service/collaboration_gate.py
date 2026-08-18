@@ -356,11 +356,15 @@ def build_collaboration_response(
     subject: Optional[str] = None,
     repository: Optional[str] = None,
     draft_bound: bool = False,
+    body: Optional[str] = None,
 ) -> str:
     """The collaborate-first reply for a gated issue-write: draft + ask.
 
     Proposes a starting draft grounded in what was extractable from the
-    request and asks the user to shape it — it never announces a write.
+    request and asks ONLY for what is genuinely missing — it never announces
+    a write, and it never re-asks for a slot the request explicitly gave
+    (#1649: PM stated subject AND description in quotes and still got
+    "What's it about?" — teach-then-ignore).
 
     ``draft_bound`` (#1571): the caller armed the drafted-issue pending
     binding, so "file it as is" now actually routes — teach THAT phrase.
@@ -370,9 +374,34 @@ def build_collaboration_response(
     through the greedy chain), but its copy still teaches no file phrase:
     the draft has no content yet, and the bind reply teaches it once it
     does.
+
+    ``body`` (#1649): an explicitly-stated description. With BOTH slots
+    given the draft is fully shaped — present it (the #1627 bind-reply echo
+    shape) ready to file, no question asked. With only the body given, ask
+    only for the missing title.
     """
+    where = f" in **{repository}**" if repository else ""
+    if subject and body:
+        if draft_bound:
+            execute_line = (
+                'If it looks right, say "file it as is" and I\'ll '
+                "create it right now. "
+            )
+        else:
+            execute_line = (
+                'When it looks right, say something like "create this issue '
+                f'in owner/repo about {subject}" and I\'ll file it. '
+            )
+        return (
+            "Here's the draft from what you gave me — nothing is filed "
+            f"yet{where}:\n\n"
+            f"**Title**: {subject}\n\n"
+            f"**Body**:\n{body}\n\n"
+            f"Tell me what to add or change. {execute_line}"
+            "(If you'd rather I just file things directly, say "
+            '"just do things directly from now on" and I will.)'
+        )
     if subject:
-        where = f" in **{repository}**" if repository else ""
         if draft_bound:
             execute_line = (
                 'If this draft works as-is, say "file it as is" and I\'ll '
@@ -389,6 +418,20 @@ def build_collaboration_response(
             f"**Title**: {subject}\n\n"
             "What should the body say — the problem, steps to reproduce, "
             f"impact? Tell me what to add or change. {execute_line}"
+            "(If you'd rather I just file things directly, say "
+            '"just do things directly from now on" and I will.)'
+        )
+    if body:
+        # #1649 partial: description given, title missing — ask ONLY for the
+        # title. No file phrase yet (#1571's never-teach-unbound rule: the
+        # draft isn't file-ready without a title); the bind reply teaches it
+        # once the answer names the draft.
+        return (
+            "Happy to shape this with you before anything gets filed. "
+            f"I've got the description — here's the draft so far{where}:\n\n"
+            f"**Body**:\n{body}\n\n"
+            "What should the title be? A short headline is plenty — give me "
+            "one and the draft is ready to file. "
             "(If you'd rather I just file things directly, say "
             '"just do things directly from now on" and I will.)'
         )
