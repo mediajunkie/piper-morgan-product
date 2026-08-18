@@ -87,6 +87,108 @@ _STOPWORDS = frozenset(
 _FUZZY_MATCH_THRESHOLD = 0.3
 
 
+# --- #1648: the reminder time-clarify carrier -------------------------------
+#
+# Instance 2 of the #1648 fabrication incident: handle_create_reminder's
+# honest time-clarify ask ("When should I remind you?") returned a bare
+# question with NOTHING armed — so the answer turn ("at 3pm") had nothing to
+# bind to, traversed the whole routing chain as an orphan, and landed on the
+# floor, which roleplayed the save ("Reminder set for 3pm today", no 📅
+# line, no row). The fix is the #1190/#846 deferred-action carrier shape the
+# drafted-issue flow uses: the clarify ask ARMS a pending offer (kind
+# ``reminder_time_question``) binding the task text; the next turn's time
+# answer is consumed at the offer seam — before any classification surface —
+# and the REAL save runs (the 📅 confirmation is composed from the actual
+# row write, never improvised). A turn that answers with no parseable time
+# RE-ASKS honestly and RE-ARMS; a full reminder restatement or an unrelated
+# command abandons via the pop and routes normally, per the carrier's rules.
+
+REMINDER_TIME_QUESTION_KIND = "reminder_time_question"
+
+# Generic-accept landing (a bare "yes" doesn't answer "when?") — registered
+# action_triggered=False in workflow_entries, the #1605 clarify precedent.
+CLARIFY_REMINDER_TIME_WORKFLOW = "clarify_reminder_time"
+
+# A full reminder restatement ("remind me to X at 3pm") carries its own task
+# AND time — it must route normally (the pre-classifier claims it
+# deterministically) so the full handler re-extracts both, rather than this
+# seam saving the OLD task text under the new time. Mirrors
+# PreClassifier.REMINDER_PATTERNS.
+_REMINDER_RESTATEMENT_RE = re.compile(
+    r"\b(?:remind\s+me\s+(?:to|about)\b|set\s+(?:a\s+)?reminder\b|"
+    r"create\s+(?:a\s+)?reminder\b|don'?t\s+let\s+me\s+forget\b|"
+    r"need\s+to\s+remember\s+to\b)",
+    re.IGNORECASE,
+)
+
+_TIME_SIGNAL_RE = None  # compiled lazily — needs TodoIntentHandlers._TIME_EXPR
+
+
+def _has_time_signal(message: str) -> bool:
+    """Does the turn carry any time expression parse_reminder_time could
+    bind? Uses the class's _TIME_EXPR (kept mirrored with the parser) plus
+    the bare day words the parser handles honestly ("today" → ask-shaped
+    when unbindable, never a silent default). Without this gate, an
+    arbitrary answer would fall into the parser's tomorrow-morning DEFAULT
+    and save a time the user never said (#1490's silent-default class)."""
+    global _TIME_SIGNAL_RE
+    if _TIME_SIGNAL_RE is None:
+        _TIME_SIGNAL_RE = re.compile(
+            rf"(?:{TodoIntentHandlers._TIME_EXPR})|\btoday\b|\btonight\b",
+            re.IGNORECASE,
+        )
+    return bool(_TIME_SIGNAL_RE.search(message))
+
+
+def _reminder_saved_message(text: str, reminder_dt, time_label: str) -> str:
+    """The one true save confirmation (📅 line included) — composed only
+    beside an actual row write. Factored from handle_create_reminder so the
+    #1648 time-answer seam and the primary path share one copy source."""
+    time_display = time_label
+    if reminder_dt:
+        # PM live 2026-08-15: this rendered a UTC instant with no label
+        # ("Saturday at 11:42 PM" for a 4:42 PM PT save) — the #1542/#1589
+        # unlabeled-clock-face shape. Until #1572 supplies the user's real
+        # tz, every clock face we print is UTC and must SAY so (the
+        # reminders list already does).
+        time_display = reminder_dt.strftime("%A, %B %-d at %-I:%M %p UTC")
+
+    # #1562: labels from the bare-clock branch start with "at" ("at 5pm") —
+    # strip a LEADING "at" so the copy never reads "(scheduled for at 5pm)".
+    # Same doublet family as #1490's "tomorrow at at 3pm".
+    schedule_label = re.sub(r"^at\s+", "", time_label)
+
+    # Issue #1096 slice 2 (Pattern-073 discipline): verification-bounded
+    # phrasing — surfaced "in conversation", the mechanism we actually have.
+    # #1569: reminders ARE todos in storage (unified model, PM-ratified) —
+    # the closing sentence TEACHES that relationship.
+    return (
+        f"Reminder saved: **{text}** "
+        f"(scheduled for {schedule_label}).\n\n"
+        f"📅 {time_display}\n\n"
+        f"It lives with your todos (you'll see it on the Todos page) "
+        f"and I'll surface it in conversation once it's due."
+    )
+
+
+def build_reminder_time_offer(task_text: str, user_id) -> dict:
+    """The #846 pending-offer record arming the time question (the generic
+    deferred-action carrier shape documented in destructive_confirm.py)."""
+    return {
+        "workflow_type": CLARIFY_REMINDER_TIME_WORKFLOW,
+        "pending_action": {
+            "kind": REMINDER_TIME_QUESTION_KIND,
+            "action": "create_reminder",
+            "task_text": task_text,
+            "user_id": str(user_id) if user_id else None,
+            "summary": f'set a reminder for "{task_text}"',
+        },
+        "decline_message": (
+            "Okay — I haven't set that reminder. Nothing was saved."
+        ),
+    }
+
+
 class TodoIntentHandlers:
     """
     Chat integration for todo operations.
@@ -189,12 +291,46 @@ class TodoIntentHandlers:
             logger.error("Todo creation failed", error=str(e), user_id=user_id, exc_info=True)
             return "I had trouble saving that todo — it may be a temporary issue. You can try again, or rephrase with 'add todo: [your task]'."
 
-    async def handle_create_reminder(self, intent: Intent, session_id: str, user_id: UUID) -> str:
+    def _arm_time_question(
+        self, intent_service, session_id: str, user_id, task_text: str
+    ) -> None:
+        """#1648: arm the reminder time-clarify carrier beside the honest
+        ask, so the answer turn binds at the offer seam instead of orphaning
+        into the routing chain (where the floor roleplayed the save live).
+        Best-effort: a store failure is logged and the ask still goes out —
+        the copy never claims anything was armed."""
+        if intent_service is None or not session_id:
+            return
+        try:
+            intent_service.workflow_offer_service.set_pending_offer(
+                session_id,
+                build_reminder_time_offer(task_text, user_id),
+                user_id=str(user_id) if user_id else None,
+            )
+        except Exception as e:  # silent-ok: #1648 — arming is additive; the honest ask must go out regardless; logged ERROR
+            logger.error(
+                "reminder_time_question_arm_failed",
+                error=str(e),
+                session_id=session_id,
+            )
+
+    async def handle_create_reminder(
+        self,
+        intent: Intent,
+        session_id: str,
+        user_id: UUID,
+        intent_service=None,
+    ) -> str:
         """
         Issue #903: Handle "remind me to X" — creates a time-annotated todo.
 
         Extracts the reminder text and time from the message, creates a todo
         with reminder_date set, and confirms with the parsed time.
+
+        #1648: ``intent_service`` (optional, back-compat default None) lets
+        the time-clarify asks arm the ``reminder_time_question`` carrier so
+        the answer turn binds at the offer seam. Callers without it still
+        get the honest ask — just without the binding.
         """
         from services.intent_service.temporal_utils import (
             PAST_TODAY_PREFIX,
@@ -222,6 +358,10 @@ class TodoIntentHandlers:
         # (RESTORED 2026-08-08: reverted by the arch-seat merge-drop incident,
         # d99b3d068/d5ae5484f — second casualty after the audit doc.)
         if reminder_dt is None:
+            # #1648: BOTH honest asks arm the time-question carrier — the
+            # answer turn ("at 3pm") must bind at the offer seam, never
+            # orphan into the routing chain.
+            self._arm_time_question(intent_service, session_id, user_id, text)
             # #1562: explicit "today" + a clock time that has already passed
             # on the server clock — honest ask, never a silent roll to
             # tomorrow. (The server's clock is not the user's until
@@ -259,40 +399,10 @@ class TodoIntentHandlers:
                 user_id=user_id,
             )
 
-            # Format confirmation with time
-            time_display = time_label
-            if reminder_dt:
-                # PM live 2026-08-15: this rendered a UTC instant with no
-                # label ("Saturday at 11:42 PM" for a 4:42 PM PT save) — the
-                # #1542/#1589 unlabeled-clock-face shape. Until #1572 supplies
-                # the user's real tz, every clock face we print is UTC and
-                # must SAY so (the reminders list already does).
-                time_display = reminder_dt.strftime("%A, %B %-d at %-I:%M %p UTC")
-
-            # #1562: labels from the bare-clock branch start with "at"
-            # ("at 5pm") — strip a LEADING "at" so the copy never reads
-            # "(scheduled for at 5pm)". Same doublet family as #1490's
-            # "tomorrow at at 3pm".
-            schedule_label = re.sub(r"^at\s+", "", time_label)
-
-            # Issue #1096 slice 2 (Pattern-073 discipline): verification-bounded
-            # phrasing. The reminder is surfaced via context_assembler on
-            # floor-bound turns (not push-notified) — since #1566 that's ANY
-            # conversational turn, not just greetings, but action commands
-            # (e.g. "add todo: x") still don't surface it. So: "in
-            # conversation", the mechanism we actually have.
-            # #1569: reminders ARE todos in storage (unified model,
-            # PM-ratified) — the closing sentence TEACHES that relationship
-            # (lives with your todos, visible on the Todos page) instead of
-            # leaving the user to meet it as a surprise on /todos. The
-            # passive-surfacing clause stays inside it, same mechanism claim.
-            return (
-                f"Reminder saved: **{text}** "
-                f"(scheduled for {schedule_label}).\n\n"
-                f"📅 {time_display}\n\n"
-                f"It lives with your todos (you'll see it on the Todos page) "
-                f"and I'll surface it in conversation once it's due."
-            )
+            # Format confirmation with time (#1648: factored to module level
+            # so the time-answer seam shares the ONE real save confirmation —
+            # per-line rationale comments live on _reminder_saved_message).
+            return _reminder_saved_message(text, reminder_dt, time_label)
 
         except Exception as e:
             logger.error(
@@ -782,3 +892,257 @@ class TodoIntentHandlers:
                 "show everything",
             ]
         )
+
+
+# --- #1648: the reminder time-question turn handler -------------------------
+
+
+def _rearm_time_question(
+    intent_service, session_id, user_id, pending_offer
+) -> bool:
+    """Re-arm the SAME offer (the pop already consumed it; a re-ask turn must
+    re-store it or the next answer has nothing to bind to). Returns False on
+    a store failure so the copy never claims a binding that isn't there."""
+    try:
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id, pending_offer, user_id=user_id
+        )
+        return True
+    except Exception as e:  # silent-ok: #1648 — a store failure must not crash the turn; logged ERROR, and callers keep the user-facing copy honest
+        logger.error("reminder_time_question_rearm_failed", error=str(e))
+        return False
+
+
+def _time_reask(
+    task_text: str,
+    detail: str,
+    rearmed: bool,
+) -> dict:
+    """The honest re-ask shape: nothing saved, here's why, here's what works."""
+    if rearmed:
+        tail = (
+            "Tell me when (for example: 'at 3pm tomorrow' or 'in 2 hours'), "
+            "or say 'no' to drop it."
+        )
+    else:
+        tail = (
+            "I couldn't keep the reminder bound either — ask me again "
+            "('remind me to … at …') and I'll set it fresh."
+        )
+    return {
+        "message": (
+            f"Nothing has been saved yet for **{task_text}** — {detail} {tail}"
+        ),
+        "intent_data": {
+            "category": "execution",
+            "action": "create_reminder",
+            "reminder_time_question_pending": rearmed,
+            "reminder_time_reasked": True,
+        },
+        "requires_clarification": True,
+    }
+
+
+async def handle_reminder_time_turn(
+    pending_offer: dict,
+    message: str,
+    *,
+    session_id: str,
+    user_id,
+    intent_service,
+) -> Optional[dict]:
+    """#1648 — kind-specific turn handling for a pending reminder time
+    question, run at the offer seam BEFORE any classification surface (the
+    #1605/#1571 sanctioned handler-internal seam; the pop already happened).
+
+    Returns a ``{"message", "intent_data", ...}`` dict when this turn is
+    consumed here; ``None`` falls through to the generic offer flow
+    (declines and bare exits drop honestly via ``decline_message``; full
+    reminder restatements and unrelated commands abandon via the pop and
+    route normally — the pre-classifier claims restatements
+    deterministically, so the full handler re-extracts task AND time).
+
+    The save path is the REAL one: a row write via TodoManagementService,
+    confirmed with the same 📅 copy the primary path composes — never an
+    improvised confirmation (the floor roleplayed exactly that, live).
+    """
+    from services.intent_service.destructive_confirm import detect_bare_exit
+    from services.intent_service.drafted_issue import is_command_shaped
+    from services.intent_service.soft_invocation import detect_offer_response
+    from services.intent_service.temporal_utils import (
+        PAST_TODAY_PREFIX,
+        parse_reminder_time,
+    )
+
+    payload = pending_offer.get("pending_action") or {}
+    task_text = (payload.get("task_text") or "").strip()
+    text = (message or "").strip()
+    if not task_text or not text:
+        if not task_text:
+            logger.error(
+                "reminder_time_question_missing_task", session_id=session_id
+            )
+        return None
+
+    # Principal binding (the #1605 discipline): the offer belongs to the user
+    # who asked — a different principal's turn must not save under it.
+    offer_user = payload.get("user_id")
+    if offer_user and user_id and str(user_id) != str(offer_user):
+        logger.warning(
+            "reminder_time_question_principal_mismatch",
+            offer_user=offer_user,
+            turn_user=str(user_id),
+        )
+        return {
+            "message": "Let's hold off on that — nothing has been saved.",
+            "intent_data": {
+                "category": "execution",
+                "action": "create_reminder",
+                "principal_mismatch": True,
+            },
+        }
+
+    if detect_bare_exit(text):
+        return None  # generic flow → honest decline via decline_message
+    resp = detect_offer_response(text)
+    if resp == "decline":
+        return None  # same honest decline path
+
+    if _REMINDER_RESTATEMENT_RE.search(text):
+        # A full restatement carries its own task and time — abandon via the
+        # pop and let it route normally (deterministic pre-classifier claim).
+        logger.info(
+            "reminder_time_question_restatement_released", session_id=session_id
+        )
+        return None
+
+    if _has_time_signal(text):
+        reminder_dt, time_label = parse_reminder_time(text)
+        if reminder_dt is None:
+            rearmed = _rearm_time_question(
+                intent_service, session_id, user_id, pending_offer
+            )
+            if time_label.startswith(PAST_TODAY_PREFIX):
+                passed_time = time_label[len(PAST_TODAY_PREFIX) :]
+                detail = (
+                    f"{passed_time} today has already passed on my clock. "
+                    f"Did you mean tomorrow?"
+                )
+            else:
+                detail = f'I couldn\'t work out the time from "{time_label}".'
+            logger.info(
+                "reminder_time_question_unbindable_reasked",
+                session_id=session_id,
+                rearmed=rearmed,
+            )
+            return _time_reask(task_text, detail, rearmed)
+
+        # The REAL save — the same write the primary path performs.
+        principal = user_id or offer_user
+        try:
+            user_uuid = UUID(str(principal))
+        except (ValueError, TypeError):
+            return {
+                "message": (
+                    "I need you to be logged in to set reminders. "
+                    "Nothing has been saved."
+                ),
+                "intent_data": {
+                    "category": "execution",
+                    "action": "create_reminder",
+                    "error_type": "AuthenticationRequired",
+                },
+            }
+        try:
+            todo = await intent_service.todo_handlers.todo_service.create_todo(
+                user_id=user_uuid,
+                text=task_text,
+                priority="medium",
+                reminder_date=reminder_dt,
+                due_date=reminder_dt,
+            )
+        except Exception as e:  # silent-ok: #1648 — a failed write must surface as an HONEST failure (never a crash, never a success claim); logged ERROR + traceback
+            logger.error(
+                "reminder_time_question_save_failed",
+                error=str(e),
+                session_id=session_id,
+                exc_info=True,
+            )
+            rearmed = _rearm_time_question(
+                intent_service, session_id, user_id, pending_offer
+            )
+            return _time_reask(
+                task_text,
+                "I had trouble saving it just now.",
+                rearmed,
+            )
+
+        logger.info(
+            "reminder_time_question_saved",
+            todo_id=str(todo.id),
+            reminder_date=str(reminder_dt),
+            time_label=time_label,
+            session_id=session_id,
+        )
+        return {
+            "message": _reminder_saved_message(task_text, reminder_dt, time_label),
+            "intent_data": {
+                "category": "execution",
+                "action": "create_reminder",
+                "confidence": 1.0,
+                "reminder_saved": True,
+            },
+        }
+
+    # No time signal in the turn.
+    if resp != "accept" and is_command_shaped(text):
+        # An unrelated command abandons via the pop and routes normally —
+        # the carrier's documented off-intent rule.
+        return None
+
+    # A bare "yes" doesn't answer "when?", and anything else unrecognized
+    # gets the honest re-ask — never a silent abandon into the routing chain
+    # mid-flow (#1648 direction 2).
+    rearmed = _rearm_time_question(intent_service, session_id, user_id, pending_offer)
+    logger.info(
+        "reminder_time_question_reasked",
+        session_id=session_id,
+        rearmed=rearmed,
+    )
+    return _time_reask(
+        task_text,
+        "I still need a time for it.",
+        rearmed,
+    )
+
+
+async def run_clarify_reminder_time_workflow(
+    session_id: str,
+    user_id=None,
+    context=None,
+):
+    """Generic-accept landing for the time question (defense in depth — the
+    kind-specific seam claims accepts itself, but a registered landing means
+    a stray generic accept can never fall into _handle_unknown_intent and
+    reach the floor): re-ask and re-arm. effect: READ (nothing written; the
+    real write happens on an ANSWERED turn at the offer seam)."""
+    ctx = context or {}
+    payload = ctx.get("pending_action") or {}
+    intent_service = ctx.get("intent_service")
+    if payload.get("kind") != REMINDER_TIME_QUESTION_KIND or intent_service is None:
+        logger.error(
+            "clarify_reminder_time_missing_or_foreign_payload",
+            kind=payload.get("kind"),
+            has_intent_service=intent_service is not None,
+        )
+        return None
+    task_text = (payload.get("task_text") or "").strip() or "that"
+    offer = {
+        "workflow_type": CLARIFY_REMINDER_TIME_WORKFLOW,
+        "pending_action": dict(payload),
+        "decline_message": (
+            "Okay — I haven't set that reminder. Nothing was saved."
+        ),
+    }
+    rearmed = _rearm_time_question(intent_service, session_id, user_id, offer)
+    return _time_reask(task_text, "I still need a time for it.", rearmed)

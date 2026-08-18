@@ -67,6 +67,30 @@ the binding. Interpreting edits over an evolving floor-composed draft needs
 a durable draft store and is a different design (the
 routing-moratorium/corpus half of #1571 lives there too; durable fix is
 Inversion Phase 2 context-carrying).
+
+#1648 (PM live 2026-08-18, round 4 — the fabrication face): PM said "file
+as is thanks" with the draft armed. The detector missed the variant (the
+verb had no object: "file **as is**", not "file **it** as is"), the turn
+read as an anchored EXECUTE imperative, fell through this seam as
+off-intent, reached the LLM classifier, and the FLOOR then roleplayed the
+entire filing across four turns ("Filed in test-piper-morgan. The issue is
+in there now." — zero writes, no issue number, verified against GitHub).
+Two fixes here, one at the prompt (see conversational_floor's action-claims
+contract):
+
+- ``_FILE_COMMAND_RE`` broadened: the draft-referring object is optional
+  when an "as is" tail carries the reference; trailing pleasantries
+  ("thanks", "thank you", "please") and short affirmative lead-ins ("yes,
+  go ahead and file it") are absorbed. Still anchored full-message — a NEW
+  ask ("file an issue about X") or "file" inside prose never matches (the
+  #1631 lesson runs the other way here).
+- The honest near-miss fallback: a turn that is file/submit-shaped ABOUT
+  this draft but matches neither the file command, prose, accept/decline,
+  nor exit RE-ASKS honestly and RE-ARMS — never a silent abandon into the
+  routing chain mid-compose (where the floor is the surface most likely to
+  claim it, and the floor cannot file anything). Genuinely-new file asks
+  (a subject of their own: "file a bug about X") and every other command
+  family still abandon and route normally per the carrier's rules.
 """
 
 from __future__ import annotations
@@ -86,18 +110,25 @@ logger = structlog.get_logger(__name__)
 DRAFTED_ISSUE_KIND = "drafted_issue"
 
 # Full-message file commands (the phrases PM was TAUGHT and the phrases PM
-# actually typed). Conservative: verb + a draft-referring object, optional
-# "as is" tail, optional politeness, optional "in owner/repo" (the original
-# #1571 incident phrase — with a draft pending it is unambiguous and the
-# named repo overrides the draft's). Anchored full-message so a NEW ask
-# ("file an issue about X") never reads as accepting the old draft.
+# actually typed). Conservative: verb + a draft-referring object OR an
+# "as is" tail (either carries the reference — #1648: PM's live "file as is
+# thanks" had the tail but no object), optional politeness lead-in and
+# trailing pleasantries, optional "in owner/repo" (the original #1571
+# incident phrase — with a draft pending it is unambiguous and the named
+# repo overrides the draft's). Anchored full-message so a NEW ask ("file an
+# issue about X") never reads as accepting the old draft, and "file" inside
+# prose never matches (#1631's lesson, run the other way).
 _FILE_COMMAND_RE = re.compile(
-    r"^(?:please\s+)?(?:go\s+ahead\s+(?:and\s+)?)?"
-    r"(?:file|create|submit|open)\s+"
-    r"(?:it|this|that|the\s+(?:issue|ticket|draft))"
-    r"(?:\s+as[\s\-]is)?"
+    r"^(?:(?:please|yes|yeah|yep|sure|ok(?:ay)?)[,!\s]+)*"
+    r"(?:go\s+ahead\s+(?:and\s+)?)?(?:just\s+)?"
+    r"(?:file|create|submit|open)"
+    r"(?:"
+    r"\s+(?:it|this|that|the\s+(?:issue|ticket|draft))(?:\s+as[\s\-]is)?"
+    r"|\s+as[\s\-]is"
+    r")"
     r"(?:\s+in\s+(?P<repo>[\w.\-]+/[\w.\-]+))?"
-    r"(?:\s*,?\s*please)?\s*[.!]*$",
+    r"(?:[\s,!.]*(?:please|thanks|thank\s+you|thx|ty|cheers))*"
+    r"\s*[.!]*$",
     re.IGNORECASE,
 )
 
@@ -143,6 +174,63 @@ _COMMAND_SUPPLEMENT_RE = re.compile(
     r"|list|show|search|find|fetch|get|check|tell|give)\b",
     re.IGNORECASE,
 )
+
+
+def is_command_shaped(message: Optional[str]) -> bool:
+    """#1648 — shared anchored-imperative read for armed-carrier seams: is
+    this turn a command by shape (the collaborate-gate execute families, or
+    the close/read/destructive supplement above)? Command-shaped turns are
+    the carrier's documented off-intent exit — they abandon the binding and
+    route normally. Factored out so the reminder-side carriers apply the
+    SAME discrimination (one shape read, no drift)."""
+    text = (message or "").strip()
+    if not text:
+        return False
+    from services.intent_service.collaboration_gate import (
+        FRAMING_EXECUTE,
+        classify_framing,
+    )
+
+    if classify_framing(text) == FRAMING_EXECUTE:
+        return True
+    return bool(_COMMAND_SUPPLEMENT_RE.match(text))
+
+
+# #1648: file/submit-headed near-misses. With a draft armed, a short
+# imperative headed by the file family is ABOUT this draft unless it carries
+# its own subject (a new ask). "file"/"submit" have no other deterministic
+# meaning in the product, so a variant the anchored command regex doesn't
+# know ("file the sucker", "file that thing now") would otherwise abandon
+# silently into the routing chain — where the most likely claimant is the
+# floor, which cannot file anything (the #1648 roleplay incident). create/
+# open stay OUT of the near-miss head: "create a project…", "open the
+# settings page" are genuine other asks.
+_NEAR_MISS_FILE_RE = re.compile(
+    r"^\s*(?:(?:please|yes|yeah|yep|sure|ok(?:ay)?|hey|hi|piper)[,!\s]+)*"
+    r"(?:go\s+ahead\s+(?:and\s+)?)?(?:just\s+)?"
+    r"(?:file|submit)\b",
+    re.IGNORECASE,
+)
+
+# A file-family turn that names its OWN subject is a NEW ask, not a
+# near-miss for this draft ("file an issue about X", "file a bug for the
+# login timeout") — it abandons and routes normally, exactly as before.
+_NEW_ASK_MARKER_RE = re.compile(
+    r"\b(?:an?\s+(?:new\s+)?(?:issue|ticket|bug|story|task)\b|about\b|for\s+the\b)",
+    re.IGNORECASE,
+)
+
+
+def is_file_near_miss(message: Optional[str]) -> bool:
+    """#1648 — True when a turn is file/submit-shaped about the armed draft
+    but didn't parse as a full file command: re-ask honestly, never abandon
+    silently. False for new asks carrying their own subject."""
+    text = (message or "").strip()
+    if not text:
+        return False
+    if not _NEAR_MISS_FILE_RE.match(text):
+        return False
+    return not _NEW_ASK_MARKER_RE.search(text)
 
 
 def is_body_prose_answer(message: Optional[str]) -> bool:
@@ -196,15 +284,12 @@ def is_body_prose_answer(message: Optional[str]) -> bool:
 
     if detect_offer_response(text) is not None:
         return False  # short accept/decline — the generic seam's business
-    from services.intent_service.collaboration_gate import (
-        FRAMING_EXECUTE,
-        classify_framing,
-    )
-
-    if classify_framing(text) == FRAMING_EXECUTE:
-        return False  # anchored imperative (create/update/remind families)
-    if _COMMAND_SUPPLEMENT_RE.match(text):
-        return False  # anchored imperative (close/read/destructive families)
+    if is_command_shaped(text):
+        # anchored imperative (create/update/remind families via the
+        # collaborate-gate execute check; close/read/destructive families
+        # via the supplement) — #1648 factored both into is_command_shaped,
+        # same checks in the same order.
+        return False
     return True
 
 
@@ -283,6 +368,70 @@ _DRAFT_RETAINED_LINE = (
     "Your draft is still here — say \"file it\" to try again, "
     "or \"no\" to drop it."
 )
+
+
+def _reask_near_miss(
+    pending_offer: Dict[str, Any],
+    pending_action: Dict[str, Any],
+    *,
+    session_id: str,
+    user_id: Optional[str],
+    intent_service: Any,
+) -> Dict[str, Any]:
+    """#1648 — a file-shaped turn the detector didn't parse: say honestly
+    that nothing was filed, name the moves that work, and RE-ARM the same
+    offer. Never a silent abandon into the routing chain mid-compose."""
+    rearmed = True
+    try:
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id, pending_offer, user_id=user_id
+        )
+    except Exception as e:  # silent-ok: #1648 — a store failure must not crash the turn; logged ERROR, and the copy below never claims a retained draft that isn't there
+        logger.error("drafted_issue_near_miss_rearm_failed", error=str(e))
+        rearmed = False
+
+    logger.info(
+        "drafted_issue_file_near_miss_reasked",
+        session_id=session_id,
+        rearmed=rearmed,
+    )
+
+    if not rearmed:
+        return {
+            "message": (
+                "I didn't catch that as a file-it command, and I couldn't "
+                "keep the draft bound either — nothing was filed. Ask me to "
+                "draft the issue again and we'll rebuild it."
+            ),
+            "intent_data": _retained_intent_data(pending_action),
+        }
+
+    draft = pending_action.get("draft") or {}
+    has_content = bool(
+        (draft.get("title") or "").strip() or (draft.get("body") or "").strip()
+    )
+    # #1571's never-teach-unbound rule: only teach the file phrase when the
+    # draft actually has content behind it.
+    if has_content:
+        moves = (
+            'Say "file it as is" to file it, keep adding content, '
+            'or say "no" to set the draft aside.'
+        )
+    else:
+        moves = (
+            "Tell me what the issue should be about first — "
+            'or say "no" to set the draft aside.'
+        )
+    intent_data = _retained_intent_data(pending_action)
+    intent_data["drafted_issue_reasked"] = True
+    return {
+        "message": (
+            "I didn't catch that as a file-it command or more content for "
+            f"the draft — nothing has been filed. {moves}"
+        ),
+        "intent_data": intent_data,
+        "requires_clarification": True,
+    }
 
 
 def _retained_intent_data(pending_action: Dict[str, Any]) -> Dict[str, Any]:
@@ -432,6 +581,22 @@ async def handle_drafted_issue_turn(
                 intent_service=intent_service,
             )
         if detect_offer_response(message) != "accept":
+            # #1648: a file/submit-shaped near-miss ("file the sucker",
+            # variants the anchored command regex doesn't know) is ABOUT
+            # this draft — re-ask honestly and re-arm, never a silent
+            # abandon into the routing chain (where the floor roleplayed
+            # the filing live). Declines, bare exits, and every other
+            # command family keep falling through exactly as before.
+            if detect_offer_response(message) is None and is_file_near_miss(
+                message
+            ):
+                return _reask_near_miss(
+                    pending_offer,
+                    pending_action,
+                    session_id=session_id,
+                    user_id=user_id,
+                    intent_service=intent_service,
+                )
             return None  # decline / bare-exit / explicit command → generic flow
 
     intent = pending_action.get("intent")
