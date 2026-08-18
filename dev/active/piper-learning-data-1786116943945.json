@@ -1,0 +1,173 @@
+{
+  "user_id": "6dabe91c-f060-455e-ba14-9ec7d20855cc",
+  "export_timestamp": "2026-08-07T15:35:43.933200+00:00",
+  "settings": {
+    "learning_enabled": true,
+    "configured": false
+  },
+  "patterns": [
+    {
+      "id": "f13d3699-8508-4662-ad88-0c0f4238410e",
+      "pattern_type": "time_based",
+      "pattern_data": {
+        "action_type": "temporal",
+        "context": {
+          "intent": "get_current_time",
+          "message": "Meeting today at noon pacific with our Aspen mentor, Roby Chatterji, ongoing work to provide cyberse"
+        },
+        "timestamp": "2026-08-07T15:34:57.119876+00:00"
+      },
+      "confidence": 0.5,
+      "usage_count": 1,
+      "success_count": 0,
+      "failure_count": 0,
+      "enabled": true,
+      "created_at": "2026-08-07T15:34:57.122941+00:00"
+    },
+    {
+      "id": "19919559-cd35-401c-94af-71a877694541",
+      "pattern_type": "user_workflow",
+      "pattern_data": {
+        "action_type": "learning",
+        "context": {
+          "intent": "learn_context",
+          "message": "CoVa stands for Commonwealth of Virginia and they are a pro bono client of my business Design in Pro"
+        },
+        "timestamp": "2026-08-07T15:33:22.519362+00:00"
+      },
+      "confidence": 0.5,
+      "usage_count": 1,
+      "success_count": 0,
+      "failure_count": 0,
+      "enabled": true,
+      "created_at": "2026-08-07T15:33:22.522152+00:00"
+    },
+    {
+      "id": "742fccd7-ee6e-47c9-bc14-e267661deee5",
+      "pattern_type": "user_workflow",
+      "pattern_data": {
+        "action_type": "portfolio",
+        "context": {
+          "intent": "manage_portfolio",
+          "message": "Archive my Test project, please."
+        },
+        "timestamp": "2026-08-07T15:30:28.063936+00:00"
+      },
+      "confidence": 0.5,
+      "usage_count": 4,
+      "success_count": 0,
+      "failure_count": 0,
+      "enabled": true,
+      "created_at": "2026-08-07T15:30:28.067317+00:00"
+    },
+    {
+      "id": "5bbd7e25-870f-48d6-b8e6-0a76599c2b81",
+      "pattern_type": "user_workflow",
+      "pattern_data": {
+        "action_type": "discovery",
+        "context": {
+          "intent": "get_capabilities",
+          "message": "What can you do?"
+        },
+        "timestamp": "2026-08-07T15:28:37.870376+00:00"
+      },
+      "confidence": 0.5,
+      "usage_count": 1,
+      "success_count": 0,
+      "failure_count": 0,
+      "enabled": true,
+      "created_at": "2026-08-07T15:28:37.874790+00:00"
+    },
+    {
+      "id": "51dd3b60-619c-49fe-94de-e09bc3e7fd30",
+      "pattern_type": "context_based",
+      "pattern_data": {
+        "action_type": "query",
+        "context": {
+          "intent": "check_integration_status",
+          "message": "I think my github is connected already, can you check?"
+        },
+        "timestamp": "2026-08-02T15:28:15.432446+00:00"
+      },
+      "confidence": 0.5,
+      "usage_count": 2,
+      "success_count": 0,
+      "failure_count": 0,
+      "enabled": true,
+      "created_at": "2026-08-02T15:28:15.436884+00:00"
+    },
+    {
+      "id": "c39fed00-8dd6-43cb-a9c0-abf9f1187e0d",
+      "pattern_type": "command_sequence",
+      "pattern_data": {
+        "action_type": "execution",
+        "context": {
+          "intent": "connect_integration",
+          "message": "can we connect my github?"
+        },
+        "timestamp": "2026-07-16T20:00:03.674654+00:00"
+      },
+      "confidence": 0.5,
+      "usage_count": 5,
+      "success_count": 0,
+      "failure_count": 0,
+      "enabled": true,
+      "created_at": "2026-07-16T20:00:03.681111+00:00"
+    },
+    {
+      "id": "6418f05f-8899-45de-b8cc-fe788f361009",
+      "pattern_type": "preference",
+      "pattern_data": {
+        "action_type": "conversation",
+        "context": {
+          "intent": "greeting",
+          "message": "Hi, I just got access to this and am excited to try it. How do I address you?"
+        },
+        "timestamp": "2026-07-16T19:59:17.577522+00:00"
+      },
+      "confidence": 0.5,
+      "usage_count": 4,
+      "success_count": 0,
+      "failure_count": 0,
+      "enabled": true,
+      "created_at": "2026-07-16T19:59:17.597854+00:00"
+    },
+    {
+      "id": "2d08e196-e350-4eec-bd41-02d595fe73a6",
+      "pattern_type": "preference",
+      "pattern_data": {
+        "action_type": "conversation",
+        "context": {
+          "intent": "greeting",
+          "message": "Hi, I just got access to this and am excited to try it. How do I address you?"
+        },
+        "timestamp": "2026-07-16T19:41:16.052266+00:00"
+      },
+      "confidence": 0.5,
+      "usage_count": 1,
+      "success_count": 0,
+      "failure_count": 0,
+      "enabled": true,
+      "created_at": "2026-07-16T19:41:16.274913+00:00"
+    },
+    {
+      "id": "ebfc34ae-87b1-4d01-8b6a-d77c22970b2e",
+      "pattern_type": "preference",
+      "pattern_data": {
+        "action_type": "conversation",
+        "context": {
+          "intent": "greeting",
+          "message": "Hi, I just got access to this and am excited to try it. How do I address you?"
+        },
+        "timestamp": "2026-07-14T18:43:03.179507+00:00"
+      },
+      "confidence": 0.5,
+      "usage_count": 1,
+      "success_count": 0,
+      "failure_count": 0,
+      "enabled": true,
+      "created_at": "2026-07-14T18:43:03.201682+00:00"
+    }
+  ],
+  "pattern_count": 9
+}
