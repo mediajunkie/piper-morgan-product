@@ -97,7 +97,10 @@ EXEMPT_HEALTH_PATHS: List[str] = [
 # the API endpoints, which live under /api/v1/auth and /api/v1/setup
 # respectively per #1013 Apr 28).
 EXEMPT_AUTH_AND_SETUP_PATHS: List[str] = [
-    "/login",  # Issue #393: login UI template
+    # "/login" moved to OPTIONAL_AUTH_UI_PATHS 2026-08-18 (#1640): full exemption
+    # skipped cookie parsing, so login_page's already-authenticated next-bounce
+    # (one of the four #1480 fix surfaces) could never fire — the same failure
+    # shape "/" had under #1399's first cut. /login still never REQUIRES auth.
     "/reset-password",  # #441/#1261: reset UI page (pre-login by definition)
     "/setup",  # Issue #390: setup-wizard UI template
     "/api/v1/auth/login",
@@ -153,6 +156,22 @@ EXEMPT_SETUP_READONLY_STATUS_PATHS: List[str] = [
     "/api/v1/settings/integrations/slack/app-credentials/status",
     "/api/v1/settings/integrations/calendar/app-credentials/status",
 ]
+
+# UI paths that are OPTIONAL-auth via an explicit dispatch branch, NOT via the
+# exclude list. The middleware never BLOCKS these (missing/invalid cookie falls
+# through as anonymous — no 401, no redirect), but it DOES parse a valid auth
+# cookie and populate request.state.user_id so the route can branch on it.
+#   "/"      — #1399: home shows the app when logged in; the smart redirect
+#              handles fresh visitors. Full exemption broke this once ("pulse
+#              and stay", 2026-07-12).
+#   "/login" — #1640: login_page's already-authenticated next-bounce (#1480)
+#              was structurally unreachable while /login sat in exclude_paths:
+#              dispatch early-returned without parsing the cookie, so
+#              request.state.user_id was never set and an authenticated
+#              GET /login?next=… showed the form instead of bouncing (found
+#              live by the #1597 run).
+# Exact-match on purpose (contrast _should_exclude_path's startswith).
+OPTIONAL_AUTH_UI_PATHS = ("/", "/login")
 
 # The flat list AuthMiddleware compares against, assembled from category
 # constants above. This keeps the constructor signature unchanged.
@@ -254,19 +273,18 @@ class AuthMiddleware(BaseHTTPMiddleware):
         Returns:
             HTTP response
         """
-        # Skip authentication for excluded paths
-        if self._should_exclude_path(request.url.path):
-            return await call_next(request)
-
-        # "/" is OPTIONAL-auth (not exempt): populate user_id when a valid
-        # cookie is present so the home route (#419/#390) shows the
-        # authenticated app; fall through with no user_id (never 401) for
-        # fresh visitors so the route's smart redirect sends them to /login.
-        # Full exemption (the 2026-07-12 #1399 first cut) skipped token
-        # extraction entirely, so a logged-in user's cookie was never read →
-        # home redirected them back to /login → "pulse and stay" (found live
-        # by PM's Scenario A login, same evening).
-        if request.url.path == "/":
+        # OPTIONAL-auth UI paths ("/" per #1399, "/login" per #1640 — see
+        # OPTIONAL_AUTH_UI_PATHS for the histories): populate user_id when a
+        # valid cookie is present ("/" shows the authenticated app; /login
+        # bounces to the sanitized `next` target per #1480); fall through with
+        # no user_id (never 401, never redirect) for fresh visitors and for
+        # invalid/expired cookies. Full exemption skipped token extraction
+        # entirely, which made both routes' authenticated branches dead code —
+        # "/" in the 2026-07-12 "pulse and stay" incident, /login in the
+        # 2026-08-16 #1597 live finding. Checked BEFORE the exclude list on
+        # purpose: re-adding one of these to exclude_paths must not silently
+        # re-kill its cookie parse (#1640's exact regression shape).
+        if request.url.path in OPTIONAL_AUTH_UI_PATHS:
             token = self._extract_token(request)
             if token:
                 try:
@@ -276,7 +294,13 @@ class AuthMiddleware(BaseHTTPMiddleware):
                         request.state.user_id = claims.user_id
                         request.state.scopes = claims.scopes
                 except Exception:
-                    pass  # invalid/expired cookie on "/" → treat as anonymous
+                    # invalid/expired cookie on an optional-auth path →
+                    # treat as anonymous (show the form / smart redirect)
+                    pass
+            return await call_next(request)
+
+        # Skip authentication for excluded paths
+        if self._should_exclude_path(request.url.path):
             return await call_next(request)
 
         # Extract and validate JWT token
