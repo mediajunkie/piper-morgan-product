@@ -270,6 +270,48 @@ copy.**
 
 ---
 
+### 6.1 — Incident, 2026-08-18: four gates missed in one run, because the skill was never loaded — **[EVIDENCED]**
+
+*Witnessed directly by xian on the run itself; recorded the same day in the installed skill's
+top-of-file note (`SKILL.md`, updated 2026-08-18) and against its Medium step 3, step 9, step 15,
+step 16, and hazards checklist.*
+
+A cross-post of **"The Architect's Own Trap"** to Medium went all the way to publish **without the
+executing agent ever loading the cross-post `SKILL.md` into context.** The agent had cross-posted a
+different post earlier in the same conversation and proceeded from memory of that run's browser
+mechanics instead of re-invoking the skill. Four documented gates went un-run:
+
+| Missed | Where it was already documented |
+|---|---|
+| Medium **paywall checkbox left CHECKED** → published member-only | Part 7 hazard list; skill step 16 |
+| Draft started at `medium.com/new-story` instead of the **publication-first URL** | Part 7; skill Medium step 3 |
+| Cover image **never set full-bleed** | Part 7; skill Medium step 9 |
+| **Checkpoint 1** — "send xian the draft URL, wait for proofread confirmation" — never fired | Part 6 above; skill step 15 |
+
+**xian caught all four himself, in his own post-publish spot check.** He fixed the cover image
+manually. The other three are **process-only findings** — the published post was otherwise fine after
+that manual fix. He also checked the prior 3–4 posts in the same conversation and found **no
+recurrence**: this was isolated to that one run, **not a broader pattern.**
+
+⚠️ **The finding that matters for this document: none of it was a content gap.** All four were
+already written down as hard gates — in the installed skill, and in Parts 6 and 7 here. The failure
+was **invocation, not specification.** A correct and complete spec is inert if the executing agent
+works from a recollection of the previous run instead of loading it. Checkpoint 3's 2026-07-22 loss
+(above) was a spec with a gate silently *removed*; this is a spec with every gate *present and
+unread* — two different failure modes reaching the same published result.
+
+**The parallel fix, landed in the skill the same day**: treat **every** cross-post as a fresh
+invocation of the skill, regardless of what happened earlier in the same conversation. Remembering
+the broad shape of "how to cross-post to Medium" from ten minutes ago is not the same as having the
+hazard log in context.
+
+**[INFERRED]** This bears on Part 7 rather than Part 5 — the run's content source was not implicated,
+so it is not evidence either way on the markdown-vs-HTML question. What it does do is raise the
+load-bearing weight of Part 7: those ~1,700 lines are only protective when actually loaded, so
+"preserve as-is" needs a companion "and load it every run."
+
+---
+
 ## Part 7 — Platform mechanics
 
 **[EVIDENCED]** This part of the installed skill is **hard-won and should be preserved as-is** — it is
@@ -285,6 +327,10 @@ in-body images; cursor drift on image insert; and cover-image upload being **bro
 
 **Do not rewrite Part 7 to change the content source.** Only these inputs change: title, body HTML,
 image path, alt, caption — which now come from Part 5 instead of the DOM.
+
+⚠️ **[EVIDENCED]** **And none of it works unless it is loaded.** On **2026-08-18** three of these
+hazards fired on a single run — the paywall checkbox, publication-first draft creation, and the
+full-bleed toggle — because the skill was never read into context that run. See **6.1**.
 
 **[INFERRED]** One consequence to handle deliberately: the skill's post-paste **integrity checks**
 currently compare the pasted target against the source `.prose`. With a markdown source, compare
