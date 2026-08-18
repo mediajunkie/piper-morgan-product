@@ -339,6 +339,9 @@ class IntentService:
             # ask armed the same one-slot store without carrying a listed
             # flag — a soft offer could clobber it.
             "unmapped_field_clarification_pending",
+            # #1651: the standup's bound overdue-todo offer must survive
+            # this turn (armed on the rail-dispatched get_standup path).
+            "standup_todo_offer_pending",
         )
         if result.intent_data and any(result.intent_data.get(f) for f in _pending_flags):
             return result
@@ -1260,6 +1263,9 @@ class IntentService:
                         # #1567: an ignored repo question is dropped by the
                         # pop like every other offer; the new turn routes.
                         "issue_repo_question": "issue_repo_question_abandoned",
+                        # #1651: an ignored standup todo offer is dropped by
+                        # the pop; nothing completes, the todo stays.
+                        "standup_todo_offer": "standup_todo_offer_abandoned",
                     }
                     self.logger.info(
                         _abandon_names.get(
@@ -3227,6 +3233,14 @@ class IntentService:
           follows the rail's auto-apply semantics.
         Both asks bind via the EXISTING #846 pending-offer carrier (#1529 ordering —
         offer beats resume-check — holds by construction; no second offer mechanism).
+
+        #1651 (offer-context-loss fix): when the user has an OVERDUE todo, the
+        non-empty report's closing copy offers to mark the single strongest
+        (most overdue) one done, with the todo's id BOUND into the same #846
+        carrier (``services/intent_service/standup_todo_offer.py``) — so
+        acceptance ("yes" / "Yes mark the overdue todo done.") completes THAT
+        todo by id, never by title-matching the user's phrasing. When it arms,
+        the #1591 mode asks stay quiet for the turn (one-slot store, one ask).
         """
         from services.intent_service import standup_preferences as sp
         from services.intent_service import verified_inference as vi
@@ -3397,6 +3411,56 @@ class IntentService:
             # the read-back (low-confidence inferred preference) or the
             # invitation — never both, and never before the complete report.
             trailing = "Want the guided version instead? Say 'my standup interview'."
+
+            # ── #1651: closing offer on a SPECIFIC referent binds its id ──
+            # PM live 2026-08-18: the standup offered "mark that overdue todo
+            # done?", PM accepted verbatim, and the acceptance fell to
+            # complete_todo's title matching ('overdue' as a title → not
+            # found). When the user has an overdue todo, the closing copy now
+            # offers the action WITH the todo's id bound into the #846
+            # pending-offer carrier (the reminder-clear/drafted-issue idiom):
+            # acceptance dispatches STANDUP_COMPLETE_TODO_WORKFLOW on the
+            # BOUND id; decline drops honestly; off-intent abandons via the
+            # pop (#1631 prose discrimination inherited at the generic seam).
+            # One-slot store discipline: when this arms, the #1591 mode asks
+            # below stay quiet this turn (a bound action on the user's own
+            # data outranks a mode nudge that honestly repeats later); the
+            # single strongest referent is bound — never an unbound "that
+            # one". Failure isolation: a todo-read hiccup never blanks the
+            # standup (the assembler's per-source rule) and arms nothing.
+            standup_todo_offer_armed = False
+            if session_id and user_id:
+                try:
+                    from services.intent_service import standup_todo_offer as sto
+
+                    _overdue = await sto.find_overdue_todos(
+                        self.todo_handlers.todo_service, user_id
+                    )
+                    if _overdue:
+                        _todo_offer = sto.build_overdue_todo_offer(
+                            user_id,
+                            session_id,
+                            _overdue[0],
+                            more_overdue=len(_overdue) - 1,
+                        )
+                        if _todo_offer is not None:
+                            self.workflow_offer_service.set_pending_offer(
+                                session_id, _todo_offer.offer, user_id=user_id
+                            )
+                            trailing = _todo_offer.question
+                            standup_todo_offer_armed = True
+                            self.logger.info(
+                                "standup_todo_offer_armed",
+                                todo_id=_todo_offer.offer["pending_action"][
+                                    "todo_id"
+                                ],
+                                overdue_count=len(_overdue),
+                                session_id=session_id,
+                            )
+                except Exception as e:  # silent-ok: logged; the standup renders complete without the offer — a todo hiccup must never blank or block the report (#1425 honesty owns the todo surfaces' own failure disclosure)
+                    self.logger.warning(
+                        "standup_todo_offer_failed", error=str(e), user_id=user_id
+                    )
             # #1591 anti-nag, symmetric: a "no" to EITHER standup ask (the
             # invitation or the mode read-back) quiets BOTH for the session —
             # a user who just declined does not get a different question on
@@ -3408,7 +3472,16 @@ class IntentService:
             declined_any_ask = vi.was_declined(
                 session_id, sp.INVITE_DECLINE_KEY
             ) or vi.was_declined(session_id, sp.STANDUP_MODE_KEY)
-            if session_id and user_id and stored_mode is None and not declined_any_ask:
+            if (
+                session_id
+                and user_id
+                and stored_mode is None
+                and not declined_any_ask
+                # #1651: the one-slot #846 store already holds the bound
+                # offer this turn — the mode asks return on a later
+                # report (the invitation is recurring by design, CXO).
+                and not standup_todo_offer_armed
+            ):
                 asked = False
                 signal = sp.infer_mode_signal(user_id)
                 if signal is not None:
@@ -3463,18 +3536,25 @@ class IntentService:
                         )
                         trailing = sp.INVITE_AFTER_REPORT
 
+            _intent_data = {
+                "category": intent.category.value,
+                "action": intent.action,
+                "confidence": intent.confidence,
+                "context": {"standup_data": summary.to_dict()},
+            }
+            if standup_todo_offer_armed:
+                # #1651: the rail path funnels through _apply_soft_offer,
+                # which shares the one-slot #846 store — the flag tells it
+                # not to clobber the just-armed bound offer.
+                _intent_data["standup_todo_offer_pending"] = True
             return IntentProcessingResult(
                 success=True,
                 # CXO property 1 pinned in the string shape itself: the
                 # complete report prose renders first; the single trailing
-                # ask (teaching line / invitation / read-back) comes after.
+                # ask (teaching line / invitation / read-back / the #1651
+                # bound offer) comes after.
                 message=f"Good morning! {summary.to_prose()}\n\n{trailing}",
-                intent_data={
-                    "category": intent.category.value,
-                    "action": intent.action,
-                    "confidence": intent.confidence,
-                    "context": {"standup_data": summary.to_dict()},
-                },
+                intent_data=_intent_data,
                 workflow_id=workflow_id,
                 requires_clarification=False,
                 clarification_type=None,
