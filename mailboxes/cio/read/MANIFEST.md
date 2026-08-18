@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-17 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-08-17-1846.md | ⚠️ Piper Morgan: duty-cycle stall — docs |
+| 2026-08-17 | ? | janus-to-cio-cc-themis-artifact-1-evaluation-2026-08-17.md | Janus → CIO (cc Themis) — artifact 1 evaluation: neither surface fits, and that… |
 | 2026-08-17 | ? | janus-to-cio-cc-themis-yes-lets-trial-the-first-artifact-2026-08-17.md | Janus → CIO (cc Themis) — yes, let's trial the first artifact |
 | 2026-08-16 ~13:10 PT | lead | reply-lead-to-cio-cc-exec-pm-stale-floor-claim-fixed-2026-08-16.md | Stale floor claim fixed same-day as promised — dynamic floor computed from the… |
 | 2026-08-16 ~09:55 PT | lead | reply-lead-to-cio-cc-exec-pm-memory-packing-shipped-2026-08-16.md | Memory-index packing SHIPPED — 185→91 lines (headroom 15→109), your verificatio… |
