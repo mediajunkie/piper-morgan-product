@@ -322,7 +322,10 @@ async def login_page(request: Request):
     # bounce a user off-site.
     next_url = sanitize_next_path(request.query_params.get("next"))
 
-    # Check if user is already authenticated (has valid user_id in state)
+    # Check if user is already authenticated (has valid user_id in state).
+    # Reachability depends on /login being OPTIONAL-auth in AuthMiddleware
+    # (OPTIONAL_AUTH_UI_PATHS, #1640) — while /login sat in exclude_paths the
+    # middleware never parsed the cookie and this branch was dead code.
     user_id = getattr(request.state, "user_id", None)
     if user_id and user_id != "user":  # "user" is the default placeholder
         # #1480: an already-authenticated visit to /login?next=… (e.g. the

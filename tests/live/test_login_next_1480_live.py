@@ -74,24 +74,17 @@ class TestLoginNextLive:
         )
         print(f"\n#1480 live evidence (middleware half) — Location: {location}")
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason=(
-            "#1597 LIVE FINDING (2026-08-16): the login_page already-"
-            "authenticated bounce (one of the four #1480 fix surfaces) is "
-            "DEAD on the live path. /login is in AuthMiddleware's "
-            "exclude_paths, so the middleware early-returns without parsing "
-            "the auth cookie; request.state.user_id is never set on /login "
-            "requests, ui.py's `if user_id` branch can never fire, and an "
-            "authenticated GET /login?next=… returns 200 (the login form) "
-            "instead of 302. The #1480 unit tests pass because they mock "
-            "request.state.user_id directly. strict xfail: when the bounce "
-            "is fixed this XPASSes and forces marker removal."
-        ),
-    )
     def test_authenticated_login_visit_honors_next(self, turn_driver):
         """Already-authenticated GET /login?next=<deep link> → 302 to the
-        deep link, not '/'. (The login_page half of the fix.)"""
+        deep link, not '/'. (The login_page half of the fix.)
+
+        History: strict-xfail 2026-08-16 → fixed by #1640 (2026-08-18).
+        The #1597 live run found this bounce structurally DEAD: /login sat
+        in AuthMiddleware's exclude_paths, so the cookie was never parsed
+        and request.state.user_id was never set. #1640 made /login
+        OPTIONAL-auth (OPTIONAL_AUTH_UI_PATHS, same mechanism as "/"
+        per #1399); the xfail flipped XPASS and the marker came off per
+        its own instruction."""
         resp = turn_driver.get(
             f"/login?next={quote(DEEP_LINK, safe='')}",
             headers={"accept": "text/html"},
@@ -111,8 +104,9 @@ class TestLoginNextLive:
     def test_open_redirect_guard_live(self, turn_driver):
         """The guard, on the real server: an absolute-URL next must fall back
         to '/', never bounce off-site. Only observable through the
-        already-authenticated bounce — which is currently dead (see the
-        strict-xfail above), so this SKIPS rather than fake-passing (m-44)."""
+        already-authenticated bounce (live since #1640); the probe-skip
+        stays as a regression guard — if the bounce ever goes dead again
+        this SKIPS loudly rather than fake-passing (m-44)."""
         probe = turn_driver.get(
             f"/login?next={quote(DEEP_LINK, safe='')}",
             headers={"accept": "text/html"},
@@ -120,11 +114,12 @@ class TestLoginNextLive:
         )
         if probe.status_code != 302:
             pytest.skip(
-                "UNMEASURABLE LIVE: the authenticated /login bounce never "
-                f"fires (got HTTP {probe.status_code} for a benign next), so "
-                "no server-side redirect exists through which to observe the "
-                "open-redirect guard. Re-enable when the bounce finding is "
-                "fixed. (sanitize_next_path itself remains unit-covered.)"
+                "UNMEASURABLE LIVE: the authenticated /login bounce did not "
+                f"fire (got HTTP {probe.status_code} for a benign next) — a "
+                "REGRESSION of #1640, which made the bounce reachable. No "
+                "server-side redirect exists through which to observe the "
+                "open-redirect guard. (sanitize_next_path itself remains "
+                "unit-covered.)"
             )
         for evil in ("https://evil.example/x", "//evil.example/x", "/\\evil"):
             resp = turn_driver.get(
