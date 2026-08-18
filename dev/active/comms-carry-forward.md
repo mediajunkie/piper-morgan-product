@@ -1,30 +1,27 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-16 21:42 PT STOP fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-17 21:42 PT STOP fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
 Re-armed at this STOP via delete-then-create — see below for new job ID. Expression `12 6,9,12,15,18,21 * * *` unchanged.
 
-## Today (Aug 16) — closed out, full detail in the session log
+## Today (Aug 17) — a genuinely quiet day, full detail in the session log
 
-- **"The Fabricating Standup"** — voice-passed, editorial pass done (3 small fixes), published, cross-posted to Medium+LinkedIn. Fully done.
-- **Values doc** — end to end done except one thing: **PM's own integrated read of the full converted document, which Exec is flagging to PM directly.** Banner now accurate (updated tonight per Exec's ruling). Nothing left for Comms here — don't chase it, Exec owns the flag to PM.
-- **5 of 6 approved beats drafted** (1-5), each fact-checked against primary logs, calendar rows added, mechanical checks clean. Beat 6 deliberately not drafted — PM's own go/no-go, PM is the protagonist.
-- **Era-taxonomy proposal** delivered last night — still awaiting PM's ratification, unchanged all day today.
+Mail empty at every fire. No PM engagement on any open thread all day. The one substantive work: clarified the Dispatch-syndication mechanism (it's session-triggered, not autonomous — see below) and re-verified the actual current gap against the live calendar rather than trusting an old figure.
 
 ## The one thing to check first tomorrow
 
-⭐ **Nothing urgent is pending Comms action** — today was a quiet day of other people's follow-through landing (Docs closed the README link and the cross-post URLs, Exec ruled on the banner). The two big open threads (beats sequence, era proposal) are both fully delivered and waiting on PM's attention, not on more work from me. Check whether PM engaged with either overnight before assuming anything more is needed.
+⭐ **Two full days now with no PM engagement on the beats sequence or the era-taxonomy proposal** (both delivered the night of Aug 15). Not urgent — nothing is broken, everything's just waiting — but worth naming plainly rather than letting the "check whether PM engaged" line become a stale ritual. If a third day passes with no movement, that's worth a light, non-pushy mention rather than continued silent re-checking.
 
-## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available (re-checked 21:42, all unchanged)
+## Open items, all PM/CXO/PPM/Dispatch-gated — no Comms-side move available (re-checked 21:42, all unchanged for 2 days)
 
 - **Beats 1-5** — drafted, need PM's voice-pass + art. **Beat 6** — needs PM's go/no-go before drafting.
 - **Era-taxonomy proposal** — two new eras proposed, needs PM's ratification.
-- **Values doc** — needs PM's integrated read (Exec flagging directly).
+- **Values doc** — needs PM's integrated read (Exec flagging directly, not mine to chase).
 - **Beat 23** ("The Architect's Own Trap") — needs PM's voice-pass + art.
 - **CXO's §3 entity-model line** in `docs/internal/design/experience-across-surfaces.md` — flagged 3×, still pending, unchanged in weeks.
-- **Dispatch syndication**: 3 posts genuinely missing their required cross-post ("The Package and the First Bite" Jul 9, "Drained on Paper" Aug 7, "Verify at the User Path, Not the Data Layer" Aug 8 — re-verified against the live calendar 08-17, not assumed from the old count). **Mechanism clarified this fire**: Dispatch isn't autonomous — it only checks its mail drop (`~/Development/dispatch/mail/`) when PM starts a Dispatch session (`~/Development/dispatch/PROTOCOLS.md`). My two prior memos (Aug 9, Aug 10) are both still un-acknowledged, meaning no Dispatch session has run since Aug 10 — not that Dispatch is ignoring them. My Aug 10 memo already said "no urgency, nothing's broken, posts are all live," which is still true. Not sending another memo — nothing to add, and it would just be a third unread file. This is genuinely gated on PM starting a Dispatch session, not on Comms or Dispatch doing anything differently.
+- **Dispatch syndication**: 3 posts genuinely missing their required cross-post ("The Package and the First Bite" Jul 9, "Drained on Paper" Aug 7, "Verify at the User Path, Not the Data Layer" Aug 8). Gated on PM starting a Dispatch session (it only polls its mail drop then, per `~/Development/dispatch/PROTOCOLS.md`) — my two prior memos (Aug 9, Aug 10) are still un-acknowledged because no session has run, not because they were ignored. No new memo needed; nothing's changed since the Aug 10 one, which already said "no urgency."
 - **BYOC listing copy v4** — routed to PPM, no response found.
 
 ## New, not yet actioned
@@ -33,10 +30,9 @@ Re-armed at this STOP via delete-then-create — see below for new job ID. Expre
 
 ## Waiting on others
 
-- **PM** — beats/era ratification; Beat 6 go/no-go; voice-pass + art on Beats 1-5 and Beat 23; values-doc integrated read.
+- **PM** — beats/era ratification; Beat 6 go/no-go; voice-pass + art on Beats 1-5 and Beat 23; values-doc integrated read; starting a Dispatch session.
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **PPM** — BYOC listing copy v4.
 - **CXO/PM** — entity-model ratification.
-- **Dispatch** — syndication for the 4 posts.
 - **Lead** — outcome of #1611 (routed by Docs).
 - **Someone (unclear who)** — #1636 (cluster-data pipeline fix, filed 08-15, still unowned).
