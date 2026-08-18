@@ -1257,7 +1257,12 @@ class ContextAssembler:
             all_todos = await todo_svc.list_todos(user_id=UUID(user_id), include_completed=True)
             completed = [t for t in all_todos if getattr(t, "completed", False)]
             if not completed:
-                return None
+                # #1639 (fix shape proven by #1544): zero completed todos is a
+                # FACT — the owner-scoped read succeeded and found no completed
+                # rows. Returning None here made verified-empty structurally
+                # indistinguishable from never-gathered, so the floor could
+                # never state "nothing completed" as an account-level fact.
+                return {"completed_todos": [], "completed_todo_count": 0}
             return {
                 "completed_todos": [
                     {"text": t.text, "completed_at": str(getattr(t, "completed_at", ""))}
@@ -1281,7 +1286,14 @@ class ContextAssembler:
         )
         if not cached or "projects" not in cached:
             return None
-        return {"projects": cached["projects"][:limit]}
+        result: Dict[str, Any] = {"projects": cached["projects"][:limit]}
+        # #1639: pass the verified-empty zero count through. Only the empty
+        # case carries a count from _compute_projects — the populated query is
+        # LIMIT-capped, so len(rows) there is a truncated slice, not a total
+        # (m-44: never present a truncated count as the denominator).
+        if "project_count" in cached:
+            result["project_count"] = cached["project_count"]
+        return result
 
     async def _compute_projects(self, user_id: str) -> Optional[Dict[str, Any]]:
         """Compute project list (uncached) for cache miss. Stores up to 5."""
@@ -1300,7 +1312,14 @@ class ContextAssembler:
                 )
                 rows = result.fetchall()
                 if not rows:
-                    return None
+                    # #1639 (fix shape proven by #1544): zero projects is a
+                    # FACT — the owner-scoped read succeeded and found no
+                    # rows, so the zero is exact (no LIMIT truncation at 0).
+                    # Returning None here made verified-empty structurally
+                    # indistinguishable from never-gathered, letting the floor
+                    # reproduce the conversation-scoped hedge on the projects
+                    # lane of #1570's transcript.
+                    return {"projects": [], "project_count": 0}
                 return {
                     "projects": [
                         {
