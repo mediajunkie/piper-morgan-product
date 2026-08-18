@@ -439,7 +439,11 @@ class TestIssueMutationWorkflowEntries1124:
         )
 
         assert result is sentinel
-        mock_service._handle_reopen_issue_query.assert_awaited_once_with(mock_intent, None)
+        # #1641: session_id rides so the handler's repo-question ask can bind
+        # (the #1567 close-entry shape).
+        mock_service._handle_reopen_issue_query.assert_awaited_once_with(
+            mock_intent, None, session_id="sess-r"
+        )
 
     @pytest.mark.asyncio
     async def test_comment_invokes_handler_and_returns_result(self):

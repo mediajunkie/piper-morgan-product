@@ -194,7 +194,8 @@ CRITICAL — Never fabricate user data:
   their data to the current chat — todos, projects, reminders, and calendars are
   account-level facts, the same in every conversation.
 - Only when the context block explicitly reports that a list was checked and is
-  empty (e.g. "PENDING TODOS: none") may you say the list itself is empty:
+  empty (e.g. "PENDING TODOS: none", "PROJECTS: none", or "COMPLETED TODOS:
+  none") may you say the list itself is empty:
   "Your todo list has no pending items right now." Say it as a plain fact about
   their account — no hedging about what is or isn't "showing up" on your end.
 - Never invent project names, repository names, issue numbers, todo descriptions,
@@ -898,12 +899,25 @@ class ConversationalFloor:
                             lines.append(f'- Project "{name}": {issues} open issues')
                         else:
                             lines.append(f'- Project "{name}": tracked')
-            elif isinstance(proj, list):
+            elif isinstance(proj, list) and proj:
                 for item in proj:
                     # #1530: ContextAssembler emits {"name": ...} dicts — render
                     # the plain name, not the dict repr the LLM used to see.
                     name = item.get("name", "unknown") if isinstance(item, dict) else item
                     lines.append(f'- Project "{name}": tracked')
+            elif isinstance(proj, list):
+                # #1639 (fix shape proven by #1544): VERIFIED-EMPTY — the
+                # owner-scoped projects read ran this turn and found zero
+                # rows. Distinct from the key being absent (never gathered).
+                # Without this line the floor cannot tell "user has no
+                # projects" from "I saw no data" and improvises
+                # conversation-scoped hedges over the gap.
+                lines.append(
+                    "- PROJECTS: none — the user's project list was checked "
+                    "this turn and has zero projects. If asked, state it as "
+                    "a plain account-level fact: they have no projects "
+                    "tracked right now."
+                )
 
         # #1530 (m-44): state the row-derived count explicitly so the LLM never
         # counts a truncated display slice and presents it as the total.
@@ -911,7 +925,12 @@ class ConversationalFloor:
             total = domain_context["project_count"]
             proj_list = domain_context.get("projects")
             shown = len(proj_list) if isinstance(proj_list, list) else None
-            if shown is not None and total > shown:
+            if total == 0 and shown == 0:
+                # #1639: verified-empty already rendered as its own
+                # "PROJECTS: none" line above — a bare "count: 0" beside it
+                # adds nothing and dilutes the checked-this-turn framing.
+                pass
+            elif shown is not None and total > shown:
                 lines.append(
                     f"- Active project count: {total} (only the first {shown} are listed above)"
                 )
@@ -1015,10 +1034,26 @@ class ConversationalFloor:
         if "completed_todos" in domain_context:
             completed = domain_context["completed_todos"]
             if isinstance(completed, list) and completed:
-                lines.append(f"- Recently completed todos ({len(completed)}):")
+                # #1639 (m-44): state the row-derived count, never the length
+                # of the truncated display slice.
+                completed_total = domain_context.get("completed_todo_count", len(completed))
+                lines.append(f"- Recently completed todos ({completed_total}):")
                 for t in completed[:5]:
                     if isinstance(t, dict):
                         lines.append(f"    • {t.get('text', '(untitled)')}")
+            elif isinstance(completed, list):
+                # #1639 (fix shape proven by #1544): VERIFIED-EMPTY — the
+                # owner-scoped todo read ran this turn and found zero
+                # completed rows. Distinct from the key being absent (never
+                # gathered). Without this line the floor cannot tell "user
+                # has completed nothing" from "I saw no data" and improvises
+                # conversation-scoped hedges over the gap.
+                lines.append(
+                    "- COMPLETED TODOS: none — the user's todo list was "
+                    "checked this turn and has zero completed items. If "
+                    "asked, state it as a plain account-level fact: they "
+                    "have no completed todos right now."
+                )
 
         # #983: Surface blocked items (open GitHub issues labeled
         # `status: blocked`) for "what's blocked?" / "what's waiting on

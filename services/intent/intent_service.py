@@ -5125,16 +5125,24 @@ class IntentService:
             )
 
     async def _handle_reopen_issue_query(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """
         Handle "Reopen issue #X" query.
 
         Issue #902: Mirror of close issue handler with state="open".
+        Issue #1641: the #1567 shape, mirrored from the close handler —
+        honors an explicitly-named repository (owner/name or the natural
+        "in the X repository" phrasing, resolved against the user's repos);
+        when no repo resolves at all, ARMS the repo-question carrier
+        (session permitting) instead of dead-ending. ``session_id`` is
+        threaded (rail: run_reopen_issue_workflow) solely so that ask can
+        bind via the #846 pending-offer store.
 
         Args:
             intent: The classified intent
             workflow_id: Current workflow ID
+            session_id: Chat session (None outside a bindable session)
 
         Returns:
             IntentProcessingResult with confirmation or error
@@ -5241,6 +5249,66 @@ class IntentService:
 
             issue_number = int(match.group(1))
 
+            # #1641 (the #1567 close-handler shape): an explicitly-named
+            # repository (owner/name or the natural "in the X repository"
+            # phrasing) is honored — a reopen aimed at a named repo must
+            # never land in the default. Bare names resolve against the
+            # user's actual repos; a named-but-unresolvable repo ASKS (or
+            # refuses honestly with no session). When nothing is named, the
+            # router's internal resolution stays exactly as before.
+            _slots = self._slotfill_issue_request(original_message)
+            _reopen_repo = (
+                intent.context.get("repository")
+                or intent.context.get("repo")
+                or _slots.get("repository")
+            )
+            if not _reopen_repo:
+                from services.intent_service.repo_clarification import (
+                    extract_natural_repo_name,
+                    resolve_repo_name,
+                )
+
+                _named = extract_natural_repo_name(original_message)
+                if _named:
+                    if "/" in _named:
+                        _reopen_repo = _named
+                    else:
+                        _res = await resolve_repo_name(_user_id, _named)
+                        if _res.status == "resolved":
+                            _reopen_repo = _res.full_name
+                        else:
+                            ask = await self._ask_for_repository(
+                                intent,
+                                issue_number,
+                                session_id,
+                                _user_id,
+                                asked_name=_named,
+                                resolution=_res,
+                            )
+                            if ask is not None:
+                                return ask
+                            return IntentProcessingResult(
+                                success=False,
+                                message=(
+                                    f"Cannot reopen issue #{issue_number}: I "
+                                    f"couldn't match '{_named}' to one of "
+                                    "your repositories. Tell me the "
+                                    "repository (owner/name) and I'll reopen "
+                                    "it."
+                                ),
+                                intent_data={
+                                    "category": intent.category.value,
+                                    "action": intent.action,
+                                },
+                                workflow_id=workflow_id,
+                                requires_clarification=True,
+                                clarification_type="repository_required",
+                            )
+            _repo_kwargs = {}
+            if _reopen_repo and "/" in _reopen_repo:
+                _rr_owner, _rr_name = _reopen_repo.split("/", 1)
+                _repo_kwargs = {"owner": _rr_owner, "repo_name": _rr_name}
+
             # Issue #902: Confirmation UX (mirrors close handler)
             # #1190: honor the rail confirmation gate's marker (see close handler).
             confirmed = bool(intent.context.get("destructive_confirmed")) or bool(
@@ -5251,9 +5319,12 @@ class IntentService:
             )
 
             if not confirmed:
-                # (Issue #1042: router resolves repo internally)
+                # (Issue #1042: router resolves repo internally when no
+                # explicit repo was named; #1641 threads a named repo through.)
                 try:
-                    issue_details = await github_router.get_issue(issue_number)
+                    issue_details = await github_router.get_issue(
+                        issue_number, **_repo_kwargs
+                    )
                     # #1628: degenerate GitHub titles never render verbatim
                     title = display_title(
                         issue_details.get("title"), f"(untitled issue #{issue_number})"
@@ -5297,8 +5368,40 @@ class IntentService:
                     )
 
             # Confirmed reopen (or fallback if fetch failed)
-            # (Issue #1042: router resolves repo internally)
-            updated_issue = await github_router.update_issue(issue_number, state="open")
+            # (Issue #1042: router resolves repo internally when no explicit
+            # repo was named; #1641 threads a named repo through.)
+            try:
+                updated_issue = await github_router.update_issue(
+                    issue_number, state="open", **_repo_kwargs
+                )
+            except RuntimeError as _rt_err:
+                if "no repo could be resolved" not in str(_rt_err):
+                    raise
+                # #1641 (the #1567 close-handler shape): the
+                # repository-not-specified dead-end becomes a bindable
+                # question (session permitting) instead of the generic
+                # "reopening that issue" error.
+                ask = await self._ask_for_repository(
+                    intent, issue_number, session_id, _user_id
+                )
+                if ask is not None:
+                    return ask
+                return IntentProcessingResult(
+                    success=False,
+                    message=(
+                        f"Cannot reopen issue #{issue_number}: repository not "
+                        "specified and no default repo is set. Tell me the "
+                        "repository (owner/name), or say 'set my default "
+                        "repo to owner/name' and I'll use that from then on."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=True,
+                    clarification_type="repository_required",
+                )
 
             # Get issue title for success message
             # #1628: degenerate GitHub titles never render verbatim
@@ -5348,10 +5451,17 @@ class IntentService:
 
         Issue #519: Canonical Query #59 - GitHub Issue Operations
         Adds a comment to a specific GitHub issue.
+        Issue #1641: the #1567 shape — honors an explicitly-named repository
+        (owner/name or the natural "in the X repository" phrasing, resolved
+        against the user's repos, scanned with the comment text scrubbed out
+        so body prose never reads as routing); when no repo resolves at all,
+        ARMS the repo-question carrier (session permitting) instead of
+        dead-ending. ``session_id`` was already threaded (#1122).
 
         Args:
             intent: The classified intent
             workflow_id: Current workflow ID
+            session_id: Chat session (None outside a bindable session)
 
         Returns:
             IntentProcessingResult with confirmation or error
@@ -5462,8 +5572,100 @@ class IntentService:
                     requires_clarification=True,
                 )
 
-            # Add the comment (Issue #1042: router resolves repo internally)
-            comment_result = await github_router.add_comment(issue_number, comment_body)
+            # #1641 (the #1567 shape): an explicitly-named repository is
+            # honored — a comment aimed at a named repo must never land in
+            # the default. The repo scan runs over the message with the
+            # extracted comment text scrubbed out (best-effort): "comment on
+            # #12 saying we should track this in the config repository" must
+            # not read its BODY as repo routing.
+            _scan_message = original_message
+            if comment_body and comment_body in _scan_message:
+                _scan_message = _scan_message.replace(comment_body, " ")
+            _comment_repo = (
+                intent.context.get("repository")
+                or intent.context.get("repo")
+                or self._slotfill_issue_request(_scan_message).get("repository")
+            )
+            if not _comment_repo:
+                from services.intent_service.repo_clarification import (
+                    extract_natural_repo_name,
+                    resolve_repo_name,
+                )
+
+                _named = extract_natural_repo_name(_scan_message)
+                if _named:
+                    if "/" in _named:
+                        _comment_repo = _named
+                    else:
+                        _res = await resolve_repo_name(_user_id, _named)
+                        if _res.status == "resolved":
+                            _comment_repo = _res.full_name
+                        else:
+                            ask = await self._ask_for_repository(
+                                intent,
+                                issue_number,
+                                session_id,
+                                _user_id,
+                                asked_name=_named,
+                                resolution=_res,
+                            )
+                            if ask is not None:
+                                return ask
+                            return IntentProcessingResult(
+                                success=False,
+                                message=(
+                                    f"Cannot comment on issue "
+                                    f"#{issue_number}: I couldn't match "
+                                    f"'{_named}' to one of your "
+                                    "repositories. Tell me the repository "
+                                    "(owner/name) and I'll post it."
+                                ),
+                                intent_data={
+                                    "category": intent.category.value,
+                                    "action": intent.action,
+                                },
+                                workflow_id=workflow_id,
+                                requires_clarification=True,
+                                clarification_type="repository_required",
+                            )
+            _repo_kwargs = {}
+            if _comment_repo and "/" in _comment_repo:
+                _cm_owner, _cm_name = _comment_repo.split("/", 1)
+                _repo_kwargs = {"owner": _cm_owner, "repo_name": _cm_name}
+
+            # Add the comment (Issue #1042: router resolves repo internally
+            # when no explicit repo was named; #1641 threads a named repo
+            # through, and the no-repo dead-end becomes a bindable question).
+            try:
+                comment_result = await github_router.add_comment(
+                    issue_number, comment_body, **_repo_kwargs
+                )
+            except RuntimeError as _rt_err:
+                if "no repo could be resolved" not in str(_rt_err):
+                    raise
+                ask = await self._ask_for_repository(
+                    intent, issue_number, session_id, _user_id
+                )
+                if ask is not None:
+                    return ask
+                # No session to bind to → the pre-#1641 honest #1159 copy.
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        "I can add that comment, but I couldn't tell which repository "
+                        "the issue is in. Tell me the repo (for example, "
+                        '"comment on owner/repo#123 saying ...") or set a default '
+                        "repository, and I'll post it."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=True,
+                    clarification_type="repository_required",
+                )
 
             # Format confirmation message
             comment_preview = comment_body[:50] + "..." if len(comment_body) > 50 else comment_body
@@ -8350,6 +8552,61 @@ class IntentService:
                 or slots.get("repository")
             )
 
+            # #1641: natural "in the X repository" phrasing — the SAME
+            # extraction the #1567 answers use — now resolves on the create
+            # path too (owner/name keeps working via the slot-fill above).
+            # A user-NAMED repo that doesn't resolve ASKS (session
+            # permitting, via the #1567 carrier) or refuses honestly — it is
+            # never silently second-guessed by the default (the wrong-repo
+            # write is the worse failure).
+            if not repository:
+                from services.intent_service.repo_clarification import (
+                    extract_natural_repo_name,
+                    resolve_repo_name,
+                )
+
+                _named = extract_natural_repo_name(
+                    intent.original_message
+                    or intent.context.get("original_message")
+                    or ""
+                )
+                if _named:
+                    if "/" in _named:
+                        repository = _named
+                    else:
+                        _res = await resolve_repo_name(_user_id, _named)
+                        if _res.status == "resolved":
+                            repository = _res.full_name
+                        else:
+                            ask = await self._ask_for_repository(
+                                intent,
+                                None,
+                                session_id,
+                                _user_id,
+                                asked_name=_named,
+                                resolution=_res,
+                                operation="create the issue",
+                            )
+                            if ask is not None:
+                                return ask
+                            return IntentProcessingResult(
+                                success=True,
+                                message=(
+                                    f"I couldn't match '{_named}' to one of "
+                                    "your repositories, so I haven't created "
+                                    "the issue. Tell me the repository "
+                                    "(owner/name) and I'll create it there."
+                                ),
+                                intent_data={
+                                    "category": intent.category.value,
+                                    "action": intent.action,
+                                    "confidence": intent.confidence,
+                                },
+                                workflow_id=workflow_id,
+                                requires_clarification=True,
+                                clarification_type="repository_required",
+                            )
+
             # Issue #494: Fall back to default repository from config
             # #1366 Component A: default_repository must come from the per-user,
             # DB-backed ConnectorConfigService, not the single unscoped file — on a
@@ -8578,15 +8835,100 @@ class IntentService:
             return None
         return resolved.full_name
 
+    async def _resolve_analysis_repository(
+        self,
+        intent: Intent,
+        workflow_id: Optional[str],
+        session_id: Optional[str],
+        *,
+        operation: str,
+        refusal_message: str,
+    ) -> tuple[Optional[str], Optional[IntentProcessingResult]]:
+        """#1641: the ANALYSIS handlers' repository consult — the #1567 shape
+        applied to the three 'repository not specified' dead-ends
+        (analyze_commits / generate_report / analyze_data).
+
+        Order: explicit context repo → owner/name slot-fill from the message
+        → natural "in the X repository" phrasing (a user-NAMED repo that
+        doesn't resolve ASKS, never silently falls to the default — same
+        direction as the write handlers) → the #1411 default-repo consult
+        (``_resolve_default_repository``, the resolve_repo rail) → ARM the
+        repo-question carrier (session permitting; the answer re-dispatches
+        the ORIGINAL intent through the rail, landing back in the SAME
+        analysis handler) → the pre-#1641 honest refusal when there is no
+        session to bind to.
+
+        Returns ``(repository, None)`` when a repo resolved, or
+        ``(None, result)`` when the caller should return ``result`` (the ask
+        or the honest refusal).
+        """
+        repository = intent.context.get("repository") or intent.context.get("repo")
+        if repository:
+            return repository, None
+
+        _user_id = _principal_from_intent(intent)
+        message = (
+            intent.original_message or intent.context.get("original_message") or ""
+        )
+        repository = self._slotfill_issue_request(message).get("repository")
+        if repository:
+            return repository, None
+
+        def _refusal() -> IntentProcessingResult:
+            return IntentProcessingResult(
+                success=False,
+                message=refusal_message,
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=True,
+                clarification_type="repository_required",
+            )
+
+        from services.intent_service.repo_clarification import (
+            extract_natural_repo_name,
+            resolve_repo_name,
+        )
+
+        named = extract_natural_repo_name(message)
+        if named:
+            if "/" in named:
+                return named, None
+            res = await resolve_repo_name(_user_id, named)
+            if res.status == "resolved":
+                return res.full_name, None
+            ask = await self._ask_for_repository(
+                intent,
+                None,
+                session_id,
+                _user_id,
+                asked_name=named,
+                resolution=res,
+                operation=operation,
+            )
+            return None, (ask if ask is not None else _refusal())
+
+        repository = await self._resolve_default_repository(_user_id)
+        if repository:
+            return repository, None
+
+        ask = await self._ask_for_repository(
+            intent, None, session_id, _user_id, operation=operation
+        )
+        return None, (ask if ask is not None else _refusal())
+
     async def _ask_for_repository(
         self,
         intent: Intent,
-        issue_number: int,
+        issue_number: Optional[int],
         session_id: Optional[str],
         user_id: Optional[str],
         *,
         asked_name: Optional[str] = None,
         resolution=None,
+        operation: Optional[str] = None,
     ) -> Optional[IntentProcessingResult]:
         """#1567: ARM the repo-question carrier and return the ask, or None
         when there is no session to bind the answer to (callers fall through
@@ -8601,7 +8943,10 @@ class IntentService:
         (kind ``issue_repo_question``): the next turn's repo answer binds at
         the pop seam and re-dispatches the ORIGINAL intent; bare "yes" on the
         open form re-dispatches too — landing back here, which re-asks
-        (self-re-arming)."""
+        (self-re-arming).
+
+        #1641: ``issue_number=None`` + ``operation`` ("analyze commits") is
+        the non-issue-anchored form for the ANALYSIS/create carriers."""
         if not session_id:
             return None
         from services.intent_service.repo_clarification import (
@@ -8636,7 +8981,7 @@ class IntentService:
                 asked_name, resolution, default_repo
             )
         else:
-            question = open_repo_question(issue_number)
+            question = open_repo_question(issue_number, operation)
 
         offer = build_repo_question_offer(
             intent,
@@ -8644,6 +8989,7 @@ class IntentService:
             str(user_id) if user_id else None,
             asked_name=asked_name,
             default_repo=default_repo,
+            operation=operation,
         )
         self.workflow_offer_service.set_pending_offer(
             session_id, offer, user_id=user_id
@@ -9063,7 +9409,7 @@ class IntentService:
         return await self._handle_unknown_intent(intent, None, session_id)
 
     async def _handle_analyze_commits(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """
         Handle commit analysis requests.
@@ -9071,26 +9417,28 @@ class IntentService:
         Analyzes Git commits from specified repository and timeframe.
 
         GREAT-4D Phase 2: First ANALYSIS handler - FULLY IMPLEMENTED
+        Issue #1641: the 'repository not specified' dead-end consults the
+        message + the #1411 default repo, then ARMS the repo-question
+        carrier (session permitting — ``session_id`` threaded via the rail);
+        the old refusal survives only without a session.
         """
         try:
             from services.domain.github_domain_service import GitHubDomainService
 
-            # Extract and validate parameters
-            repository = intent.context.get("repository")
-
-            # Validate required parameters
-            if not repository:
-                return IntentProcessingResult(
-                    success=False,
-                    message="Cannot analyze commits: repository not specified. Please specify which repository.",
-                    intent_data={
-                        "category": intent.category.value,
-                        "action": intent.action,
-                    },
-                    workflow_id=workflow_id,
-                    requires_clarification=True,
-                    clarification_type="repository_required",
-                )
+            # Extract and validate parameters (#1641: shared consult chain —
+            # context → slot-fill → natural phrasing → default → the ask).
+            repository, _early = await self._resolve_analysis_repository(
+                intent,
+                workflow_id,
+                session_id,
+                operation="analyze commits",
+                refusal_message=(
+                    "Cannot analyze commits: repository not specified. "
+                    "Please specify which repository."
+                ),
+            )
+            if _early is not None:
+                return _early
 
             # Get timeframe parameters
             days = intent.context.get("days", 7)  # Default to 7 days
@@ -9159,7 +9507,7 @@ class IntentService:
             )
 
     async def _handle_generate_report(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """
         Handle report generation requests.
@@ -9167,27 +9515,29 @@ class IntentService:
         Generates markdown reports based on repository activity data.
 
         GREAT-4D Phase 2B: Second ANALYSIS handler - FULLY IMPLEMENTED
+        Issue #1641: the 'repository not specified' dead-end consults the
+        message + the #1411 default repo, then ARMS the repo-question
+        carrier (session permitting — ``session_id`` threaded via the rail);
+        the old refusal survives only without a session.
         """
         try:
             from services.domain.github_domain_service import GitHubDomainService
 
-            # Extract and validate parameters
-            repository = intent.context.get("repository")
+            # Extract and validate parameters (#1641: shared consult chain —
+            # context → slot-fill → natural phrasing → default → the ask).
+            repository, _early = await self._resolve_analysis_repository(
+                intent,
+                workflow_id,
+                session_id,
+                operation="generate the report",
+                refusal_message=(
+                    "Cannot generate report: repository not specified. "
+                    "Please specify which repository."
+                ),
+            )
+            if _early is not None:
+                return _early
             report_type = intent.context.get("report_type", "commit_analysis")
-
-            # Validate required parameters
-            if not repository:
-                return IntentProcessingResult(
-                    success=False,
-                    message="Cannot generate report: repository not specified. Please specify which repository.",
-                    intent_data={
-                        "category": intent.category.value,
-                        "action": intent.action,
-                    },
-                    workflow_id=workflow_id,
-                    requires_clarification=True,
-                    clarification_type="repository_required",
-                )
 
             # Get timeframe parameters
             days = intent.context.get("days", 7)  # Default to 7 days
@@ -9293,7 +9643,7 @@ class IntentService:
         return report
 
     async def _handle_analyze_data(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """
         Handle general data analysis requests.
@@ -9302,27 +9652,29 @@ class IntentService:
         Supports: repository_metrics, activity_trends, contributor_stats
 
         GREAT-4D Phase 2C: Third ANALYSIS handler - FULLY IMPLEMENTED
+        Issue #1641: the 'repository not specified' dead-end consults the
+        message + the #1411 default repo, then ARMS the repo-question
+        carrier (session permitting — ``session_id`` threaded via the rail);
+        the old refusal survives only without a session.
         """
         try:
             from services.domain.github_domain_service import GitHubDomainService
 
-            # Extract and validate parameters
-            repository = intent.context.get("repository")
+            # Extract and validate parameters (#1641: shared consult chain —
+            # context → slot-fill → natural phrasing → default → the ask).
+            repository, _early = await self._resolve_analysis_repository(
+                intent,
+                workflow_id,
+                session_id,
+                operation="analyze the data",
+                refusal_message=(
+                    "Cannot analyze data: repository not specified. "
+                    "Please specify which repository."
+                ),
+            )
+            if _early is not None:
+                return _early
             data_type = intent.context.get("data_type", "repository_metrics")
-
-            # Validate required parameters
-            if not repository:
-                return IntentProcessingResult(
-                    success=False,
-                    message="Cannot analyze data: repository not specified. Please specify which repository.",
-                    intent_data={
-                        "category": intent.category.value,
-                        "action": intent.action,
-                    },
-                    workflow_id=workflow_id,
-                    requires_clarification=True,
-                    clarification_type="repository_required",
-                )
 
             # Validate data_type
             supported_types = ["repository_metrics", "activity_trends", "contributor_stats"]
