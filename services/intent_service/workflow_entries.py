@@ -18,6 +18,9 @@ from services.intent_service.reminder_clear import (
     run_clear_reminders_delete_workflow,
     run_reminder_clear_correction_workflow,
 )
+from services.intent_service.standup_todo_offer import (
+    run_standup_complete_todo_workflow,
+)
 from services.intent_service.todo_handlers import (
     run_clarify_reminder_time_workflow,
 )
@@ -1287,6 +1290,25 @@ def register_default_workflows() -> None:
             effect=EffectClass.WRITE,
             outwardness=Outwardness.PRIVATE,
             description="Start the #585 standup interview from an accepted invitation (#1591)",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #1651: accepted standup closing offer → complete the BOUND
+        # overdue todo. Offer-acceptance ONLY (action_triggered=False — the
+        # classifier/rail can never emit it; an accidental action collision
+        # must not fire a deferred write). effect: WRITE (explicit +
+        # defaultless per #1557, classified by READING the handler:
+        # TodoManagementService.complete_todo flips the row's completed flag —
+        # mutating, recoverable, not destructive; the #1605 batch-complete
+        # precedent). The acceptance turn dispatches on the todo id BOUND at
+        # offer time — never a re-parse of the user's phrasing (the #1651
+        # failure mode was title-matching 'overdue').
+        # outwardness: PRIVATE (#1509 axis) — completes the user's own todo
+        # row; no communication act.
+        "standup_complete_todo": WorkflowEntry(
+            entry_point=run_standup_complete_todo_workflow,
+            effect=EffectClass.WRITE,
+            outwardness=Outwardness.PRIVATE,
+            description="Complete the bound overdue todo from an accepted standup offer (#1651)",
             requires_context=["pending_action", "intent_service"],
         ),
         # #1605: reminder-clear verb disambiguation (CXO/PPM joint design,

@@ -343,6 +343,9 @@ class IntentService:
             # find it — a clobbered binding re-creates the orphaned-"at 3pm"
             # floor-roleplay incident).
             "reminder_time_question_pending",
+            # #1651: the standup's bound overdue-todo offer must survive
+            # this turn (armed on the rail-dispatched get_standup path).
+            "standup_todo_offer_pending",
         )
         if result.intent_data and any(result.intent_data.get(f) for f in _pending_flags):
             return result
@@ -1296,6 +1299,9 @@ class IntentService:
                         # #1648: a released reminder time question (full
                         # restatement or unrelated command) routes normally.
                         "reminder_time_question": "reminder_time_question_abandoned",
+                        # #1651: an ignored standup todo offer is dropped by
+                        # the pop; nothing completes, the todo stays.
+                        "standup_todo_offer": "standup_todo_offer_abandoned",
                     }
                     self.logger.info(
                         _abandon_names.get(
@@ -3263,6 +3269,14 @@ class IntentService:
           follows the rail's auto-apply semantics.
         Both asks bind via the EXISTING #846 pending-offer carrier (#1529 ordering —
         offer beats resume-check — holds by construction; no second offer mechanism).
+
+        #1651 (offer-context-loss fix): when the user has an OVERDUE todo, the
+        non-empty report's closing copy offers to mark the single strongest
+        (most overdue) one done, with the todo's id BOUND into the same #846
+        carrier (``services/intent_service/standup_todo_offer.py``) — so
+        acceptance ("yes" / "Yes mark the overdue todo done.") completes THAT
+        todo by id, never by title-matching the user's phrasing. When it arms,
+        the #1591 mode asks stay quiet for the turn (one-slot store, one ask).
         """
         from services.intent_service import standup_preferences as sp
         from services.intent_service import verified_inference as vi
@@ -3433,6 +3447,56 @@ class IntentService:
             # the read-back (low-confidence inferred preference) or the
             # invitation — never both, and never before the complete report.
             trailing = "Want the guided version instead? Say 'my standup interview'."
+
+            # ── #1651: closing offer on a SPECIFIC referent binds its id ──
+            # PM live 2026-08-18: the standup offered "mark that overdue todo
+            # done?", PM accepted verbatim, and the acceptance fell to
+            # complete_todo's title matching ('overdue' as a title → not
+            # found). When the user has an overdue todo, the closing copy now
+            # offers the action WITH the todo's id bound into the #846
+            # pending-offer carrier (the reminder-clear/drafted-issue idiom):
+            # acceptance dispatches STANDUP_COMPLETE_TODO_WORKFLOW on the
+            # BOUND id; decline drops honestly; off-intent abandons via the
+            # pop (#1631 prose discrimination inherited at the generic seam).
+            # One-slot store discipline: when this arms, the #1591 mode asks
+            # below stay quiet this turn (a bound action on the user's own
+            # data outranks a mode nudge that honestly repeats later); the
+            # single strongest referent is bound — never an unbound "that
+            # one". Failure isolation: a todo-read hiccup never blanks the
+            # standup (the assembler's per-source rule) and arms nothing.
+            standup_todo_offer_armed = False
+            if session_id and user_id:
+                try:
+                    from services.intent_service import standup_todo_offer as sto
+
+                    _overdue = await sto.find_overdue_todos(
+                        self.todo_handlers.todo_service, user_id
+                    )
+                    if _overdue:
+                        _todo_offer = sto.build_overdue_todo_offer(
+                            user_id,
+                            session_id,
+                            _overdue[0],
+                            more_overdue=len(_overdue) - 1,
+                        )
+                        if _todo_offer is not None:
+                            self.workflow_offer_service.set_pending_offer(
+                                session_id, _todo_offer.offer, user_id=user_id
+                            )
+                            trailing = _todo_offer.question
+                            standup_todo_offer_armed = True
+                            self.logger.info(
+                                "standup_todo_offer_armed",
+                                todo_id=_todo_offer.offer["pending_action"][
+                                    "todo_id"
+                                ],
+                                overdue_count=len(_overdue),
+                                session_id=session_id,
+                            )
+                except Exception as e:  # silent-ok: logged; the standup renders complete without the offer — a todo hiccup must never blank or block the report (#1425 honesty owns the todo surfaces' own failure disclosure)
+                    self.logger.warning(
+                        "standup_todo_offer_failed", error=str(e), user_id=user_id
+                    )
             # #1591 anti-nag, symmetric: a "no" to EITHER standup ask (the
             # invitation or the mode read-back) quiets BOTH for the session —
             # a user who just declined does not get a different question on
@@ -3444,7 +3508,16 @@ class IntentService:
             declined_any_ask = vi.was_declined(
                 session_id, sp.INVITE_DECLINE_KEY
             ) or vi.was_declined(session_id, sp.STANDUP_MODE_KEY)
-            if session_id and user_id and stored_mode is None and not declined_any_ask:
+            if (
+                session_id
+                and user_id
+                and stored_mode is None
+                and not declined_any_ask
+                # #1651: the one-slot #846 store already holds the bound
+                # offer this turn — the mode asks return on a later
+                # report (the invitation is recurring by design, CXO).
+                and not standup_todo_offer_armed
+            ):
                 asked = False
                 signal = sp.infer_mode_signal(user_id)
                 if signal is not None:
@@ -3499,18 +3572,25 @@ class IntentService:
                         )
                         trailing = sp.INVITE_AFTER_REPORT
 
+            _intent_data = {
+                "category": intent.category.value,
+                "action": intent.action,
+                "confidence": intent.confidence,
+                "context": {"standup_data": summary.to_dict()},
+            }
+            if standup_todo_offer_armed:
+                # #1651: the rail path funnels through _apply_soft_offer,
+                # which shares the one-slot #846 store — the flag tells it
+                # not to clobber the just-armed bound offer.
+                _intent_data["standup_todo_offer_pending"] = True
             return IntentProcessingResult(
                 success=True,
                 # CXO property 1 pinned in the string shape itself: the
                 # complete report prose renders first; the single trailing
-                # ask (teaching line / invitation / read-back) comes after.
+                # ask (teaching line / invitation / read-back / the #1651
+                # bound offer) comes after.
                 message=f"Good morning! {summary.to_prose()}\n\n{trailing}",
-                intent_data={
-                    "category": intent.category.value,
-                    "action": intent.action,
-                    "confidence": intent.confidence,
-                    "context": {"standup_data": summary.to_dict()},
-                },
+                intent_data=_intent_data,
                 workflow_id=workflow_id,
                 requires_clarification=False,
                 clarification_type=None,
@@ -8331,10 +8411,46 @@ class IntentService:
             )
         if m:
             out["repository"] = m.group(1).removesuffix(".git")
+        # #1649: paired-quote alternation \u2014 each quote style closes with its
+        # own mate, so an apostrophe INSIDE a double-quoted span ("the issue's
+        # body") can't truncate the capture the way the older shared
+        # open/close class does. Group helper picks whichever pair matched.
+        _qspan = (
+            "(?:\"([^\"]+)\""
+            "|\u201c([^\u201d]+)\u201d"
+            "|'([^']+)'"
+            "|\u2018([^\u2019]+)\u2019)"
+        )
+
+        def _qcap(match) -> str:
+            return next((g for g in match.groups() if g is not None), "")
+
+        # #1649: True when the title came from the DERIVED about-form rather
+        # than an explicit marker word (titled/subject/title/called/named/
+        # colon/to-form). The bare unquoted description form below is only
+        # unambiguous in a marker-dictated ask.
+        _title_from_about = False
+
         # titled "..." / title "..." / titled '...'
         m = _re.search(r"\btitled?\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
         if m:
             out["title"] = m.group(1)
+        if "title" not in out:
+            # #1649 live find (2026-08-18): PM's exact form \u2014 `open a new
+            # issue, with the subject "issue body test" and description "\u2026"`
+            # \u2014 carried "subject", a marker word NO extraction knew, so the
+            # gate asked "What's it about?" with the answer already in hand
+            # (teach-then-ignore). A quoted span introduced by subject/
+            # title/called/named IS the title, verbatim. Anchored to the
+            # marker word \u2014 never a loose quoted string on its own.
+            m = _re.search(
+                r"\b(?:subject|title|called|named)\b\s*"
+                r"(?:(?:of|is|being)\s+|[:,]\s*)?" + _qspan,
+                message,
+                _re.IGNORECASE,
+            )
+            if m:
+                out["title"] = _qcap(m)
         if "title" not in out:
             # #1386-B2 live find (2026-07-12): the natural colon-introduced form —
             # `create an issue [in owner/repo]: 'Title here'` — carried no
@@ -8385,6 +8501,35 @@ class IntentService:
                 if _t:
                     out["title"] = _t
         if "title" not in out:
+            # #1649: the UNQUOTED equivalent of the subject form — `open an
+            # issue with the subject login flakiness [and description …]`.
+            # Anchored to the explicit marker chain (issue/ticket wording,
+            # then with/whose/using + subject/title) so loose nouns are
+            # never scavenged — a wrong confident title is worse than the
+            # question. Bounded by a following description/body marker, a
+            # newline, or end of message.
+            m = _re.search(
+                r"\b(?:issue|ticket|bug)\b[^\n]*?"
+                r"\b(?:with|whose|using)\s+(?:the\s+|a\s+)?(?:subject|title)\s+"
+                r"(?:(?:of|is|being)\s+)?(.+?)"
+                r"(?=\s*,?\s*(?:and|with)\s+(?:the\s+|a\s+)?"
+                r"(?:description|body)\b|\s*(?:\n|$))",
+                message,
+                _re.IGNORECASE,
+            )
+            if m:
+                _t = m.group(1).strip()
+                # a trailing "in owner/repo" / "in the X repository" clause
+                # is repo routing, not subject (#1567).
+                from services.intent_service.repo_clarification import (
+                    strip_trailing_repo_clause,
+                )
+
+                _t = strip_trailing_repo_clause(_t)
+                _t = _t.strip().strip("\"'‘’“”").rstrip(" .!?,;:")
+                if _t:
+                    out["title"] = _t
+        if "title" not in out:
             # #1543: the "about X" form -- `create an issue [in owner/repo]
             # about X`. Verify-first finding (2026-08-09): this extraction
             # NEVER existed -- git -S/-G over this function's whole history
@@ -8393,8 +8538,19 @@ class IntentService:
             # exactly this phrasing ('create an issue in owner/repo about
             # testing.'). Live result: the raw command, truncated, shipped as
             # the title (#108: "Issue: create an issue in mediajunkie/test-pi...").
+            # #1649: bounded by a following `and/with (the) description/body`
+            # marker — `…about the login and the description is "…"` titles
+            # "the login", not the whole tail (the description clause is the
+            # body's, extracted below). The boundary only fires when the
+            # marker is followed by a filler word, colon, or quote — i.e.
+            # when it is actually GIVING a description — so a noun phrase
+            # ("…about the title and description fields being swapped")
+            # keeps the whole tail as the title, exactly as before.
             m = _re.search(
-                r"\b(?:issue|ticket|bug)\b[^\n]*?\babout\s+(.+)$",
+                r"\b(?:issue|ticket|bug)\b[^\n]*?\babout\s+(.+?)"
+                r"(?=\s*,?\s*(?:and|with)\s+(?:the\s+|a\s+)?"
+                r"(?:description|body)\s*(?:(?:of|is|being|saying)\b"
+                r"|[:\"“'‘])|\s*$)",
                 message,
                 _re.IGNORECASE,
             )
@@ -8410,10 +8566,46 @@ class IntentService:
                 _t = _t.strip().strip("\"'\u2018\u2019\u201c\u201d").rstrip(" .!?,;:")
                 if _t:
                     out["title"] = _t
-        # with body "..." / body '...'
-        m = _re.search(r"\bbody\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
+                    _title_from_about = True
+        # with body "..." / body '...' \u2014 #1649: `description "\u2026"` added (PM's
+        # live form), plus the of/is/colon fillers and the paired-quote
+        # alternation so an apostrophe inside the quoted description
+        # survives the capture.
+        m = _re.search(
+            r"\b(?:body|description)\b\s*"
+            r"(?:(?:of|is|being|saying)\s+|[:,]\s*)?" + _qspan,
+            message,
+            _re.IGNORECASE,
+        )
         if m:
-            out["body"] = m.group(1)
+            _b = _qcap(m)
+            if _b:
+                out["body"] = _b
+        if "body" not in out:
+            # #1649: the UNQUOTED equivalent \u2014 `\u2026and (the) description users
+            # can't log in reliably` (to end of message). Anchored to the
+            # explicit marker (with/and/whose + description/body). BARE
+            # content after the marker (no filler word/colon) is only
+            # unambiguous in a marker-DICTATED ask (an explicit subject/
+            # titled marker earlier in the message); otherwise a noun phrase
+            # like "\u2026with the description field bug" would scavenge "field
+            # bug" as the body. Unmarked asks require the filler/colon \u2014
+            # `\u2026and the description is X` \u2014 to count as slot-giving.
+            _marker_dictated = "title" in out and not _title_from_about
+            # No comma in the filler set: "…title and description, both
+            # broken" must not read the comma as slot-giving.
+            _filler = r"(?:(?:of|is|being|saying)\s+|:\s*)"
+            m = _re.search(
+                r"\b(?:with|and|whose)\s+(?:the\s+|a\s+)?(?:description|body)\b"
+                r"\s*" + (_filler + "?" if _marker_dictated else _filler)
+                + r"\s*(.+)$",
+                message,
+                _re.IGNORECASE | _re.DOTALL,
+            )
+            if m:
+                _b = m.group(1).strip().strip("\"'\u2018\u2019\u201c\u201d").strip()
+                if _b:
+                    out["body"] = _b
         return out
 
     def _unverified_write_result(self, e, intent, workflow_id):
@@ -8486,6 +8678,14 @@ class IntentService:
             _gate_subject = (intent.context or {}).get("title") or _gate_slots.get(
                 "title"
             )
+            # #1649: an explicitly-stated description (`…and description
+            # "Y"` / `with the body "Y"`) is a GIVEN slot with the same
+            # standing as the subject — the gate must never re-ask for what
+            # the ask already said (PM live 2026-08-18: both slots given in
+            # quotes, still got "What's it about?").
+            _gate_body = (intent.context or {}).get("description") or _gate_slots.get(
+                "body"
+            )
             _gate_repo = (intent.context or {}).get("repository") or _gate_slots.get(
                 "repository"
             )
@@ -8494,7 +8694,20 @@ class IntentService:
                 action=intent.action,
                 framing=_collab_gate.classify_framing(_gate_message),
                 user_id=_gate_user,
+                subject_given=bool(_gate_subject),
+                body_given=bool(_gate_body),
             )
+            # #1649: mirror the given slots onto the filing intent NOW (the
+            # _bind_body_prose mirroring, one turn earlier): "file it as is"
+            # re-dispatches THIS intent through the create rail, where
+            # context wins the title/description precedence chains — so the
+            # STATED subject and description are what actually file.
+            if _gate_subject or _gate_body:
+                intent.context = dict(intent.context or {})
+                if _gate_subject:
+                    intent.context["title"] = _gate_subject
+                if _gate_body:
+                    intent.context["description"] = _gate_body
             # #1571: bind the rendered draft as a pending action (kind
             # drafted_issue) so "file it (as is)" next turn IS the
             # confirmation and files THIS draft through the real rail —
@@ -8515,7 +8728,10 @@ class IntentService:
                 self.workflow_offer_service.set_pending_offer(
                     session_id,
                     _di.build_drafted_issue_offer(
-                        intent, subject=_gate_subject, repository=_gate_repo
+                        intent,
+                        subject=_gate_subject,
+                        repository=_gate_repo,
+                        body=_gate_body,
                     ),
                     user_id=_gate_user,
                 )
@@ -8526,6 +8742,7 @@ class IntentService:
                     subject=_gate_subject,
                     repository=_gate_repo,
                     draft_bound=_draft_bound,
+                    body=_gate_body,
                 ),
                 intent_data={
                     "category": intent.category.value,
