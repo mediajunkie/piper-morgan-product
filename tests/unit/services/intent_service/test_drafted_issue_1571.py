@@ -427,6 +427,49 @@ class TestPmTranscriptEndToEnd:
         assert "Nothing was filed" in r.message
         assert _pending_offers(svc) == {}
 
+    async def test_near_accept_reasks_never_files_never_drops_1650(self, svc):
+        """#1650 — filing is a CONFIRM: a short turn the greedy generic
+        accept rows would claim ('please hold on a sec') is not a crisp
+        full-message affirmative. It must neither file (the aside wasn't a
+        yes) nor abandon (the draft is composed work): re-ask, draft still
+        armed, and the copy teaches the phrase that routes. A follow-up
+        crisp 'yes' still files."""
+        near_accept = "please hold on a sec"
+        from services.intent_service.soft_invocation import detect_offer_response
+
+        assert detect_offer_response(near_accept) == "accept"  # the hazard
+        sid = "e2e-1650-nearaccept"
+        await _arm_draft(svc, sid)
+        with (
+            patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})),
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
+        ):
+            r = await svc.process_intent(
+                message=near_accept, session_id=sid, user_id=_USER
+            )
+        w.assert_not_awaited()  # nothing filed
+        assert "file it as is" in r.message  # the re-ask teaches the phrase
+        stored = next(iter(_pending_offers(svc).values()))
+        assert stored["pending_action"]["kind"] == DRAFTED_ISSUE_KIND  # re-armed
+        # A crisp yes on the next turn still files the retained draft.
+        created = {
+            "number": 481,
+            "title": "login timeout on mobile",
+            "html_url": "https://github.com/acme/widgets/issues/481",
+        }
+        with (
+            patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})),
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w2,
+            patch(f"{RESOLVER}", new=AsyncMock(return_value="acme/widgets")),
+        ):
+            r2 = await svc.process_intent(message="yes", session_id=sid, user_id=_USER)
+        w2.assert_awaited_once()
+        assert "#481" in r2.message
+
     async def test_repo_override_in_file_command(self, svc):
         """'file it in owner/repo' — the original incident phrase — files the
         bound draft in the NAMED repo (no default-repo resolution needed)."""

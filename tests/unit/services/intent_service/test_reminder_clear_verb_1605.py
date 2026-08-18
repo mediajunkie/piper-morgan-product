@@ -506,6 +506,49 @@ class TestEndToEndVariantTwo:
         record = pref_store["verified_inferences"][rc.inference_key("clear")]
         assert record["value"] == "complete"
 
+    async def test_pm_aside_against_armed_delete_confirm_never_fires_1650(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        """#1650 — THE live incident, pinned verbatim. With the
+        delete-instead confirm armed ('delete these N reminders instead?
+        (yes/no)'), PM typed an ASIDE — one line, ~95 chars, under the
+        #1631 floor — and the greedy '^please\\s' accept row fired the
+        delete. GREEN: the confirm carrier takes the strict detector; the
+        aside is neither accept nor decline, the pop drops the armed
+        action (its documented off-intent rule — nothing can fire it),
+        and the turn processes normally. The explosive delete boundary
+        (allow_delete stays False) proves nothing fired."""
+        aside = (
+            "please note that I'll need to figure out later why you "
+            "thought I wanted you to delete a project."
+        )
+        assert len(aside) < 160 and "\n" not in aside  # under the #1631 floor
+        sid = "e2e-1650-v2-aside"
+        _seed_verb_default(pref_store, "complete")
+        _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
+        todo_boundary["allow_complete"] = True
+        await live_service.process_intent(
+            message="clear my reminders", session_id=sid, user_id=_USER
+        )
+        correction = await live_service.process_intent(
+            message="I meant delete", session_id=sid, user_id=_USER
+        )
+        assert "(yes/no)" in correction.message  # the armed delete confirm
+        result = await live_service.process_intent(
+            message=aside, session_id=sid, user_id=_USER
+        )
+        # Nothing was deleted (the explosive boundary would have raised),
+        # and the reply is neither the delete result nor the decline copy —
+        # declining wasn't what PM said either.
+        assert todo_boundary["deleted"] == []
+        assert "Deleted" not in result.message
+        assert "won't delete" not in result.message
+        # The armed delete confirm is gone — a later crisp "yes" can never
+        # fire the popped action.
+        stored = _pending_offers(live_service).get(sid)
+        if stored is not None:
+            assert stored["pending_action"].get("action") != rc.CLEAR_DELETE_WORKFLOW
+
 
 class TestEndToEndVariantThree:
     pytestmark = pytest.mark.asyncio
