@@ -806,7 +806,16 @@ async def run_summarize_document_workflow(
 
         try:
             async with AsyncSessionFactory.session_scope() as session:
-                resolver = FileResolver(FileRepository(session))
+                # #1657: candidates must be the SAME set the Files listing
+                # shows — uploads ∪ the owner's generated artifacts (#355:
+                # /files is a view over both). Resolver-side owner scoping is
+                # unchanged; the artifact repo query is owner-scoped too.
+                from services.database.repositories import ArtifactRepository
+
+                resolver = FileResolver(
+                    FileRepository(session),
+                    artifact_repository=ArtifactRepository(session),
+                )
                 file_id, resolution_confidence = await resolver.resolve_file_reference(
                     resolver_view, user_id
                 )

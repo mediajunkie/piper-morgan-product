@@ -64,6 +64,20 @@ async def _get_uploaded_file(
     return result.scalar_one_or_none()
 
 
+async def _get_owned_artifact(file_id: str, user_id: str, session: AsyncSession):
+    """Owner-scoped artifact fetch (#1657).
+
+    The /files view is uploads ∪ generated artifacts (#355), so an id resolved
+    from "the user's documents" may be an artifact. Scoping matches
+    _get_uploaded_file exactly: owner only, no admin bypass here — a
+    cross-owner id returns None and the caller raises FileNotFoundError, same
+    as an unowned upload.
+    """
+    from services.database.repositories import ArtifactRepository
+
+    return await ArtifactRepository(session).get_by_id(file_id, owner_id=user_id)
+
+
 async def handle_analyze_document(file_id: str, user_id: str) -> Dict:
     """
     Test 19: Analyze uploaded document.
@@ -87,6 +101,25 @@ async def handle_analyze_document(file_id: str, user_id: str) -> Dict:
         file_record = await _get_uploaded_file(file_id, user_id, session)
 
         if not file_record:
+            # #1657: not an upload — maybe the user's saved artifact (the
+            # /files view's other half). Owner-scoped; content lives in the
+            # artifacts row, so it goes through the analyzer's text path.
+            artifact = await _get_owned_artifact(file_id, user_id, session)
+            if artifact is not None:
+                from services.file_context.artifact_view import artifact_filename
+
+                analysis_result = await _doc_analyzer.analyze_text(
+                    artifact.content or "", source_id=artifact.id
+                )
+                return {
+                    "file_id": artifact.id,
+                    "filename": artifact_filename(
+                        (artifact.payload or {}).get("title"), artifact.id
+                    ),
+                    "summary": analysis_result.summary if analysis_result.summary else "",
+                    "key_findings": analysis_result.key_findings or [],
+                    "analyzed_at": analysis_result.generated_at.isoformat(),
+                }
             raise FileNotFoundError(
                 f"Document {file_id} not found or access denied for user {user_id}"
             )
