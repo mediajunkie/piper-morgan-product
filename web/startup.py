@@ -89,6 +89,29 @@ class ConfigValidationPhase:
             app.state.config_validation = {"error": str(e)}
 
 
+class UploadStorageProbePhase:
+    """#1656: verify the RUNNING PROCESS can write UPLOAD_DIR, at boot.
+
+    Uploads were broken on Fly for a month (root-owned /data mount vs the
+    non-root app user) and the only signal was a per-request 500. This phase
+    turns that condition into one loud startup line. Non-fatal: the rest of
+    the app is healthy even when uploads are not, and the honest per-request
+    500 still covers the runtime path.
+    """
+
+    @staticmethod
+    async def startup(app) -> None:
+        from services.file_context.storage import check_upload_base_writable
+
+        ok, message = check_upload_base_writable()
+        app.state.upload_dir_writable = ok
+        if ok:
+            print(f"✅ Upload storage: {message}")
+        else:
+            print(f"🔴 Upload storage: {message}")
+            logger.error("upload_dir_not_writable", detail=message)
+
+
 class SchemaValidationPhase:
     """Issue #484: Schema validation at startup
 
@@ -634,6 +657,7 @@ class StartupManager:
         self.phases = [
             ServiceContainerPhase,
             ConfigValidationPhase,
+            UploadStorageProbePhase,  # #1656: loud boot signal when UPLOAD_DIR is unwritable
             SchemaValidationPhase,  # Issue #484: Validate models match DB schema
             ServiceRetrievalPhase,
             WebComponentsInitializationPhase,

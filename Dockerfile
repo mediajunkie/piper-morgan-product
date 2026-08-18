@@ -92,7 +92,14 @@ ENV PYTHONPATH=/app:$PYTHONPATH
 # Create non-root user for security
 RUN groupadd -r piper && useradd -r -g piper piper
 RUN chown -R piper:piper /app
-USER piper
+
+# #1656: NO `USER piper` here — the entrypoint starts as root so it can prepare
+# the Fly volume mount (root-owned /data) for the app user, then drops to piper
+# via setpriv before exec'ing the app. With the old `USER piper` directive the
+# app user could never mkdir under /data and EVERY upload 500'd.
+RUN cp /app/deploy/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh && \
+    chmod 755 /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 # Expose port for main application
 EXPOSE 8001
@@ -101,5 +108,7 @@ EXPOSE 8001
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
     CMD python -c "import requests; requests.get('http://localhost:8001/health', timeout=5)" || exit 1
 
-# Run version verification on startup, then start application
-CMD ["/bin/bash", "-c", "/usr/local/bin/verify-python-version.sh && python main.py"]
+# Run version verification on startup, then start application.
+# `exec` so python replaces the bash shim (signals reach the app; the
+# entrypoint's setpriv-exec chain stays unbroken).
+CMD ["/bin/bash", "-c", "/usr/local/bin/verify-python-version.sh && exec python main.py"]

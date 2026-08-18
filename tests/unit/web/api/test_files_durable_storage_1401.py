@@ -73,7 +73,12 @@ async def file_owner():
                 "created_at, updated_at, role, is_alpha) "
                 "VALUES (:id, :u, :e, true, true, :now, :now, 'user', true)"
             ),
-            {"id": uid, "u": f"f1401_{uid[:8]}", "e": f"f1401_{uid[:8]}@test.example.com", "now": now},
+            {
+                "id": uid,
+                "u": f"f1401_{uid[:8]}",
+                "e": f"f1401_{uid[:8]}@test.example.com",
+                "now": now,
+            },
         )
         await s.commit()
     try:
@@ -130,11 +135,74 @@ class TestDownloadFile:
     async def test_missing_blob_is_honest_410(self, file_owner):
         """#1401 read-side AC: row survived, bytes didn't — say so plainly."""
         factory, uid = file_owner
-        fid = await _insert_file_row(
-            factory, uid, "uploads/ghost/20260701_gone.txt", "gone.txt"
-        )
+        fid = await _insert_file_row(factory, uid, "uploads/ghost/20260701_gone.txt", "gone.txt")
         request = SimpleNamespace(state=SimpleNamespace(user_id=uid, is_admin=False))
         with pytest.raises(HTTPException) as exc:
             await download_file(fid, request=request)
         assert exc.value.status_code == 410
         assert "upload it again" in exc.value.detail
+
+
+class TestUploadStorageFailureHonest1656:
+    """#1656: on Fly, the root-owned /data mount made the upload route's own
+    mkdir raise EACCES for the non-root app user — every upload 500'd, and
+    the mkdir living OUTSIDE the storage try made the error the generic
+    'Failed to upload file' instead of the honest storage failure. These pin:
+    (a) an unwritable upload base surfaces as the HONEST storage 500, and
+    (b) the boot-time probe detects the condition the same way the route
+    hits it."""
+
+    @pytest.mark.asyncio
+    async def test_unwritable_upload_base_is_honest_storage_500(self, tmp_path):
+        if hasattr(os, "geteuid") and os.geteuid() == 0:
+            pytest.skip("running as root — chmod 555 cannot deny writes")
+        import io
+
+        from starlette.datastructures import Headers, UploadFile
+
+        from web.api.routes.files import upload_file
+
+        denied = tmp_path / "rootonly"
+        denied.mkdir()
+        denied.chmod(0o555)  # the Fly condition: parent exists, not writable
+        try:
+            upload = UploadFile(
+                file=io.BytesIO(b"# hello\n"),
+                filename="doc.md",
+                headers=Headers({"content-type": "text/markdown"}),
+            )
+            claims = SimpleNamespace(sub=str(uuid4()))
+            with patch.dict(os.environ, {"UPLOAD_DIR": str(denied / "uploads")}):
+                with pytest.raises(HTTPException) as exc:
+                    await upload_file(file=upload, current_user=claims)
+            assert exc.value.status_code == 500
+            assert exc.value.detail == "Failed to save file to storage"
+        finally:
+            denied.chmod(0o755)
+
+    def test_probe_reports_writable_base(self, tmp_path):
+        from services.file_context.storage import check_upload_base_writable
+
+        base = tmp_path / "vol" / "uploads"  # doesn't exist yet — probe creates
+        with patch.dict(os.environ, {"UPLOAD_DIR": str(base)}):
+            ok, message = check_upload_base_writable()
+        assert ok is True
+        assert str(base) in message
+        assert list(base.iterdir()) == []  # probe file removed
+
+    def test_probe_reports_unwritable_base_loudly(self, tmp_path):
+        if hasattr(os, "geteuid") and os.geteuid() == 0:
+            pytest.skip("running as root — chmod 555 cannot deny writes")
+        from services.file_context.storage import check_upload_base_writable
+
+        denied = tmp_path / "rootonly"
+        denied.mkdir()
+        denied.chmod(0o555)
+        try:
+            with patch.dict(os.environ, {"UPLOAD_DIR": str(denied / "uploads")}):
+                ok, message = check_upload_base_writable()
+            assert ok is False
+            assert "NOT WRITABLE" in message
+            assert "every file upload will fail" in message
+        finally:
+            denied.chmod(0o755)
