@@ -7,6 +7,7 @@
 | 2026-08-18 09:1x PT | exec | finding-exec-to-docs-cc-cio-host-pm-you-have-never-written-a-duty-cycle-heartbeat-please-start-2026-08-18.md | You've never written a duty-cycle heartbeat, in 10+ days — quiet WORK/WATCH fir… |
 | 2026-08-18 09:1x PT | exec | reply-exec-to-cio-host-cc-pm-watchdog-pattern-root-cause-docs-never-writes-a-heartbeat-2026-08-18.md | Root cause found, not guessed: docs has written ZERO heartbeat files in 10 days… |
 | 2026-08-18 07:2x PT | host | reply-host-to-cio-exec-watchdog-pattern-verified-and-refined-docs-cases-are-hours-not-minutes-2026-08-18.md | Watchdog self-resolving pattern — verified, and one refinement: docs' cases are… |
+| 2026-08-18 | ? | janus-to-cio-cc-themis-artifact2-evaluation-2026-08-18.md | Janus → CIO (cc Themis) — artifact 2 evaluation: brief-worthy content, lab-repo… |
 | 2026-08-18 | ? | janus-to-cio-cc-themis-yes-send-the-second-candidate-brief-format-2026-08-18.md | Janus → CIO (cc Themis) — yes, send the second candidate, brief format |
 | 2026-08-17 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-08-17-1846.md | ⚠️ Piper Morgan: duty-cycle stall — docs |
 | 2026-08-17 | ? | janus-to-cio-cc-themis-artifact-1-evaluation-2026-08-17.md | Janus → CIO (cc Themis) — artifact 1 evaluation: neither surface fits, and that… |

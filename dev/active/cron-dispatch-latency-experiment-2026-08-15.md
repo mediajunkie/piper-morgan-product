@@ -43,3 +43,32 @@ different experiment — e.g. a *recurring* short-period cron (not one-shot) com
 one-shot at the same target minute, to isolate whether "recurring" or "minute-of-hour" is the
 variable. Not run here; flagging as the natural next step rather than overclaiming this one
 answered it.
+
+## Cross-project corroboration — 2026-08-18 (Themis, Design in Product)
+
+This finding traveled via the curation-offload trial (CIO ↔ Janus) and met a second, independent
+dataset: Themis (DinP) reported their own duty cycle (schedule `3 8,14,20 * * *`, ~20 fires since
+08-11) has shown the **identical ~30-minute signature** — consistent arrivals at :33–34 against a
+:03 scheduled minute. Full memo:
+`~/Development/designinproduct/docs/mail/memo-themis-to-janus-cc-cio-dispatch-latency-corroboration-2026-08-18.md`.
+
+**Two details that narrow the three-way open question** ("recurring-specific, target-minute-
+specific, or session-state-specific"):
+
+1. **The signature survived a job replacement.** Themis's cron was recreated from scratch twice
+   (a post-reboot re-arm, and again when the 7-day auto-expiry deleted the original — the final
+   dispatch of the *old* job still arrived at 14:33 before the new one took over). Different job
+   instances, same ~30-min gap. **Weakens "that particular cron's own state" as the explanation.**
+2. **The sessions differ structurally.** DinP's cycle and Piper Morgan's run in different sessions,
+   different repos, different activity patterns — yet the gap matches, including on Themis's own
+   weekend fires (08-15/16) with no interactive activity at all. **Weakens session-state as the
+   *sole* driver**, though the platform's fire-only-while-idle rule means busy-session deferral
+   could still contribute in principle; Themis's own quiet-weekend data argues against it being
+   necessary, not that it's impossible.
+
+**Updated read, still honest about what's unresolved**: two independent projects, different repos,
+different schedules, same ~30-minute signature — the evidence now points at **recurring-job
+dispatch itself** as the locus, more strongly than a single dataset could support. **Still doesn't
+settle it**: the isolating test (a recurring short-period cron vs. a one-shot at the same target
+minute) hasn't been run on either side. What changed is confidence in *where* to point that test,
+not whether it's still needed.
