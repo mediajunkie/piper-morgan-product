@@ -49,6 +49,7 @@ from services.intent_service.pre_classifier import MultiIntentResult
 from services.intent_service.soft_invocation import (
     SoftInvocationDetector,
     WorkflowOfferService,
+    detect_confirm_response,
     detect_offer_response,
 )
 from services.intent_service.todo_handlers import TodoIntentHandlers
@@ -1110,7 +1111,29 @@ class IntentService:
                                 "requires_clarification", False
                             ),
                         )
-                response_type = detect_offer_response(message)
+                # #1650: CONFIRM kinds — every offer dispatching the #1190
+                # pending-action carrier (destructive close/reopen confirms,
+                # consent checks, reminder-clear delete confirms, and the
+                # kind-specific residues of drafted-issue / repo-question
+                # turns) — take the STRICT detector: accept only anchored,
+                # crisp, full-message affirmatives. The greedy generic rows
+                # ("^please\s" etc.) claimed PM's one-line ~95-char aside as
+                # a YES under the #1631 floor and fired an armed delete.
+                # Non-crisp, non-decline turns fall to each kind's documented
+                # off-intent rule below (the pop already cancelled the
+                # action; normal processing answers the turn). Generic
+                # (non-confirm) offers keep #1631 behavior unchanged.
+                from services.intent_service.destructive_confirm import (
+                    CONFIRM_PENDING_ACTION_WORKFLOW,
+                )
+
+                if (
+                    pending_offer.get("workflow_type")
+                    == CONFIRM_PENDING_ACTION_WORKFLOW
+                ):
+                    response_type = detect_confirm_response(message)
+                else:
+                    response_type = detect_offer_response(message)
                 # #1190: a pending DESTRUCTIVE confirmation treats bare exit
                 # commands ("cancel", "stop", "forget it" — #888 ∪ #1529
                 # sets) as an honest decline, not as a message that silently

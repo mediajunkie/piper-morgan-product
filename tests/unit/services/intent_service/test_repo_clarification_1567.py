@@ -365,6 +365,97 @@ class TestOriginalAskNaturalPhrasing:
         offer = _pending(service, "sess-default-offer")
         assert offer["pending_action"]["default_repo"] == "mediajunkie/piper-thing"
 
+    async def _arm_closed_default_question(self, service, sid):
+        """Arm the closed default question ('say yes to use your default') —
+        with an updatable field on the held intent so a bound 'yes' has a
+        real write to fire."""
+        ask = (
+            "change the title of issue 108 to Testing in the "
+            "test-Piper-Morgan repository"
+        )
+        with (
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(
+                f"{RESOLVER}.get_user_default_repo",
+                new=AsyncMock(return_value="mediajunkie/piper-thing"),
+            ),
+            patch(
+                f"{REPO_CLAR}.resolve_repo_name",
+                new=AsyncMock(return_value=RepoNameResolution(status="not_found")),
+            ),
+        ):
+            await service._handle_update_issue(
+                _update_intent(ask),
+                "wf-1567",
+                session_id=sid,
+                user_id=_USER,
+            )
+        assert _pending(service, sid) is not None
+
+    async def test_crisp_yes_binds_the_default_and_fires(self, service):
+        """The closed question's 'yes' (a crisp full-message affirmative)
+        binds the default repo and the held update proceeds — unchanged by
+        #1650."""
+        sid = "sess-default-yes"
+        await self._arm_closed_default_question(service, sid)
+        updated = {
+            "number": 108,
+            "title": "Testing",
+            "state": "open",
+            "html_url": "https://github.com/mediajunkie/piper-thing/issues/108",
+        }
+        with (
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{ROUTER}.update_issue", new=AsyncMock(return_value=updated)) as w,
+        ):
+            result = await service.process_intent(
+                message="yes", session_id=sid, user_id=_USER
+            )
+        assert w.await_count == 1
+        assert w.await_args.kwargs["owner"] == "mediajunkie"
+        assert "Updated issue #108" in result.message
+
+    async def test_pseudo_accept_aside_never_binds_the_default_1650(self, service):
+        """#1650 — binding the default FIRES the held write, so it is a
+        CONFIRM: a one-line ~95-char aside wearing the greedy '^please\\s'
+        accept prefix (under the #1631 floor) must not bind it. The
+        documented off-intent rule applies: the pop drops the question and
+        the turn routes normally (here the explosive LLM boundary — proof
+        no offer seam claimed it)."""
+        from services.intent.intent_service import IntentProcessingError
+
+        aside = (
+            "please note that I'll need to figure out later why you "
+            "thought I wanted you to delete a project."
+        )
+        assert len(aside) < 160 and "\n" not in aside
+        sid = "sess-default-aside"
+        await self._arm_closed_default_question(service, sid)
+        explosive_write = patch(
+            f"{ROUTER}.update_issue",
+            new=AsyncMock(
+                side_effect=AssertionError("aside bound the default and fired")
+            ),
+        )
+        with (
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            explosive_write,
+        ):
+            try:
+                result = await service.process_intent(
+                    message=aside, session_id=sid, user_id=_USER
+                )
+                assert "Updated issue" not in result.message
+            except IntentProcessingError as exc:
+                assert (
+                    "LLM boundary touched" in str(exc)
+                    or "INTENT_CLASSIFICATION_FAILED" in str(exc)
+                ), str(exc)
+        assert _pending(service, sid) is None  # dropped via the pop
+
     async def test_unavailable_copy_never_claims_a_search(self, service):
         """m-43: 'couldn't check your repositories' — not 'couldn't find'."""
         with (

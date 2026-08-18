@@ -478,7 +478,52 @@ async def handle_drafted_issue_turn(
                 user_id=user_id,
                 intent_service=intent_service,
             )
-        if detect_offer_response(message) != "accept":
+        from services.intent_service.soft_invocation import (
+            detect_confirm_response,
+        )
+
+        if detect_confirm_response(message) != "accept":
+            # #1650: filing is a CONFIRM — only an anchored, crisp,
+            # full-message affirmative (or a taught file phrase, handled
+            # above) fires the create. A short turn the greedy generic rows
+            # would claim ("please hold on a sec", "sure, whatever you
+            # think") is a NEAR-ACCEPT: it must neither file (the aside
+            # wasn't a yes) nor fall to off-intent (the pop would drop
+            # composed work). Re-arm and re-ask — a confirm that neither
+            # confirms nor declines re-asks.
+            if detect_offer_response(message) == "accept":
+                rearmed = True
+                try:
+                    intent_service.workflow_offer_service.set_pending_offer(
+                        session_id, pending_offer, user_id=user_id
+                    )
+                except Exception as e:  # silent-ok: #1650 — a store failure must not crash the re-ask turn; logged ERROR, and the copy below stays honest about whether the draft is still bound
+                    logger.error(
+                        "drafted_issue_rearm_failed", error=str(e)
+                    )
+                    rearmed = False
+                logger.info(
+                    "drafted_issue_near_accept_reasked",
+                    session_id=session_id,
+                    rearmed=rearmed,
+                )
+                if rearmed:
+                    msg = (
+                        "Just to be safe I haven't filed anything — I only "
+                        "file on a clear go-ahead. Say \"file it as is\" to "
+                        "file this draft, or \"no\" to set it aside."
+                    )
+                else:
+                    msg = (
+                        "I haven't filed anything, but I couldn't keep the "
+                        "draft bound either — ask me to draft the issue "
+                        "again and we'll rebuild it."
+                    )
+                return {
+                    "message": msg,
+                    "intent_data": _retained_intent_data(pending_action),
+                    "requires_clarification": True,
+                }
             return None  # decline / bare-exit / explicit command → generic flow
 
     intent = pending_action.get("intent")

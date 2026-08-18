@@ -299,6 +299,70 @@ DECLINE_PATTERNS = [
 ]
 
 
+# --- #1650: CONFIRM-tier accept vocabulary (stricter than generic offers) ---
+
+# A CONFIRM (the #1190 destructive-confirm tier: close/reopen confirmations,
+# consent checks, reminder-clear delete confirms, drafted-issue file
+# confirms) fires a held action on "accept" — so "probably an accept" is not
+# good enough. #1631's prose floor (160 chars / multi-line) is the wrong
+# instrument for turns this short: PM's live aside ("please note that I'll
+# need to figure out later why you thought I wanted you to delete a
+# project." — one line, ~95 chars) sailed under the floor and fired a delete
+# off the greedy "^please\s" accept row. CONFIRM kinds therefore accept ONLY
+# anchored, crisp, FULL-MESSAGE affirmatives: every word in the turn must be
+# affirmative vocabulary (register kept from ACCEPT_PATTERNS row 1, plus
+# "y"/"confirm" per #1650). Everything else returns None so each kind's
+# documented off-intent rule applies (#1190: the pop already cancelled the
+# action — nothing can fire — and normal processing answers the turn).
+_CONFIRM_ACCEPT_WORD = (
+    r"(?:yes|yeah|yep|yup|y|sure|ok(?:ay)?|please|confirm(?:ed)?|proceed|"
+    r"go\s+ahead|do\s+it|let'?s\s+do\s+it|sounds\s+good|sounds\s+great|"
+    r"that\s+would\s+be\s+great|please\s+do)"
+)
+# Separator between affirmative words; allows the "and" connector so
+# "go ahead and do it" stays crisp.
+_CONFIRM_ACCEPT_SEP = r"[,!\s]+(?:and[,!\s]+)?"
+CONFIRM_ACCEPT_RE = re.compile(
+    rf"^{_CONFIRM_ACCEPT_WORD}"
+    rf"(?:{_CONFIRM_ACCEPT_SEP}{_CONFIRM_ACCEPT_WORD}){{0,2}}"
+    rf"(?:{_CONFIRM_ACCEPT_SEP}(?:thanks|thank\s+you))?"
+    rf"[\s.!]*$",
+    re.IGNORECASE,
+)
+
+
+def detect_confirm_response(message: str) -> Optional[str]:
+    """#1650 — strict accept/decline detection for CONFIRM kinds.
+
+    Accept ONLY when the whole (stripped) message is a crisp anchored
+    affirmative ("yes" / "y" / "yes please" / "yep" / "do it" / "confirm" /
+    "go ahead" / short combinations thereof). The decline set is unchanged
+    from :func:`detect_offer_response` — declines were never the greedy
+    hazard, and a decline only cancels.
+
+    Returns "accept", "decline", or None. None means the confirm's
+    documented off-intent rule applies — for the #1190 tier the pop already
+    cancelled the pending action (nothing can fire it) and normal processing
+    answers the turn; kinds that document a re-ask re-ask.
+    """
+    if not message:
+        return None
+
+    clean = message.strip()
+
+    if is_prose_reply(clean):
+        return None
+
+    if CONFIRM_ACCEPT_RE.match(clean):
+        return "accept"
+
+    for pattern in DECLINE_PATTERNS:
+        if pattern.search(clean):
+            return "decline"
+
+    return None
+
+
 # --- Lens ↔ Workflow Affinity (#822) ---
 
 # When the user's active conversational lens aligns with the detected
