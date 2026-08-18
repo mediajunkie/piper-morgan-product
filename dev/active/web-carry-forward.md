@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-16
+# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-17
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `1ccf706a` as of the 2026-08-16 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `f1dc32fc` as of the 2026-08-17 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 ## ⚠️ Environment facts worth re-verifying each fire, not assuming
 
@@ -270,10 +270,14 @@ Buttondown CSP live-bug — all predecessor's, pre-7/19. Admin calendar runtime 
 autosave ask #1 — mine, 7/29 (see Active threads above for verification limits).
 
 ## Cron state
-- **ARMED** — `1ccf706a`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
-  Re-armed via delete-then-create at the 2026-08-16 21:52 STOP (routine day-close re-arm, not a
-  cadence change — prior id `e359e759` had been live all day). Registry row (expression-keyed, no
+- **ARMED** — `f1dc32fc`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
+  Re-armed via delete-then-create at the 2026-08-17 21:52 STOP (routine day-close re-arm, not a
+  cadence change — prior id `1ccf706a` had been live all day). Registry row (expression-keyed, no
   job-id column) needed no update.
+- **2026-08-17**: entirely quiet day — six fires, zero mail, zero unblocked task work, zero code
+  changes. The two design items from 2026-08-15 (above-the-fold hero, Buttondown newsletter) remain
+  unscoped, now three days carried — correctly not chased since neither has a deadline and both need
+  real PM-facing design work, not a quiet-fire drain.
 - **2026-08-16**: Dispatch calendar-read thread genuinely closed — Docs confirmed Dispatch has no
   repo footprint at all (Cowork concierge agent, not code), fixed by pointing the signal file it
   reads from at the raw GitHub URL for `origin/main` (zero-lag, not just the bounded ~hour window).
