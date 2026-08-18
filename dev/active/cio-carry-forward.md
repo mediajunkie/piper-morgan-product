@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-17 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-17 (16:37 WORK)
 
 **Cron**: `7cd5a4d0` · `7 10,16,22` LEAN · re-armed 2026-08-16 22:37 STOP (delete-then-create) ·
 **auto-expires ~2026-08-23**.
@@ -17,12 +17,15 @@ directly (`duty-cycle-tick` v1.29, `verify-signoff.sh`), and a fifth shape prove
 work**, twice in one day on the memory-index thread (see below), catching a real defect both times
 the report alone didn't surface.
 
-**Janus/Themis thread REOPENED 08-17** — sent a substantive follow-up with a week of real evidence
-rather than more theory (`~/Development/designinproduct/docs/mail/`, commit `b276b39`). Sharper
-conclusion than 08-12, not a reversal: directing is portable; the *judgment* that makes directing
-land correctly (what to delegate, when it's ready, how to verify it) is still rooted in operational
-embeddedness. Named an honest gap — the curation-offload mechanism proposed 08-12 has never
-actually been tried. **Awaiting Janus/Themis's response.**
+**Janus/Themis thread — reopened, tested, now genuinely running.** 08-17 morning: sent a
+substantive follow-up with a week of real evidence (sharper conclusion than 08-12: directing is
+portable, the *judgment* behind it isn't). 08-17 afternoon: Janus agreed and accepted the trial —
+asked me to pick the strongest methodology-corpus artifact and send it. **Picked methodology-44**
+("Clear Is Not a Measurement") deliberately — the one entry already proven to generalize, not just
+claiming to (one of its 11 instances is a Design in Product finding; its core rule is credited to a
+Janus phrasing). Curated (stripped PM-specific context, kept two representative instances, led with
+rule+corollaries) and sent, commit `49670d6`. **Awaiting Janus's read on how it landed against
+their brief/wiki question** — that answer is the actual trial result, not the sending.
 
 ## ✅ Memory-index thread fully closed (08-08 → 08-16)
 
