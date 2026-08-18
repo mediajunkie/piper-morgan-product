@@ -659,7 +659,16 @@ async def handle_repo_question_turn(
     if ref is None:
         # "yes" against the closed default question binds the default; the
         # open question's "yes" falls to the generic accept (self-re-ask).
-        if resp == "accept" and default_repo:
+        # #1650: binding the default FIRES the held update — a CONFIRM — so
+        # only a crisp, full-message affirmative binds it. A greedy-row
+        # pseudo-accept ("please note that…" under the #1631 floor) falls
+        # through to None → the generic seam's off-intent rule (the pop
+        # drops the question; the new turn routes normally).
+        from services.intent_service.soft_invocation import (
+            detect_confirm_response,
+        )
+
+        if detect_confirm_response(text) == "accept" and default_repo:
             return await _bind_and_dispatch(
                 pending_offer,
                 payload,

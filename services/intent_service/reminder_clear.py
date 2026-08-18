@@ -758,6 +758,23 @@ _NEGATED_DELETE_RE = re.compile(
     r"\b(?:don'?t|do\s+not|never)\b[^.!?]{0,20}\bdelete\b", re.IGNORECASE
 )
 
+# #1650: the correction window's claim must be a crisp correction phrase —
+# the delete verb anchored at the head of a short, single-line turn, after
+# at most a correction lead-in ("no,", "wait,", "actually", "I meant…").
+# The old unanchored \bdelete\b claimed ASIDES that merely mention deleting:
+# PM's live "please note that I'll need to figure out later why you thought
+# I wanted you to delete a project." (one line, ~95 chars — under the #1631
+# floor) reads as "I meant delete" to a substring match, and the claim arms
+# a live delete confirm. A false claim here is one crisp "yes" from data
+# loss, so the pattern is deliberately narrow; a missed correction phrase
+# just falls to off-intent, where the user can re-ask in full words.
+_CORRECTION_CLAIM_RE = re.compile(
+    r"^(?:(?:no|yes|yeah|yep|wait|hold\s+on|actually|oops|oh|sorry|hmm)[,!\s]+)*"
+    r"(?:i\s+(?:actually\s+)?(?:meant|want(?:ed)?\s+(?:you\s+to\s+)?)\s*)?"
+    r"(?:please\s+)?(?:delete|remove|get\s+rid\s+of)\b",
+    re.IGNORECASE,
+)
+
 
 def _principal_mismatch(payload: Dict[str, Any], user_id: Optional[str]) -> bool:
     """#1532: the store and the todos are the USER's. If the turn's principal
@@ -1096,8 +1113,18 @@ async def _handle_correction_turn(
 ) -> Optional[Dict[str, Any]]:
     """"I meant delete" on the turn after a variant-2 auto-apply: route the
     just-completed batch to a #1190-gated delete. Does NOT flip the stored
-    default (ratified copy: "this time"). Anything else falls through."""
-    if not _DELETE_ANSWER_RE.search(message) or _NEGATED_DELETE_RE.search(message):
+    default (ratified copy: "this time"). Anything else falls through.
+
+    #1650: the claim is ANCHORED and non-prose — a turn that merely mentions
+    deleting mid-sentence (PM's live aside) is not a correction and falls
+    through to the off-intent tier (the pop drops the window; the new turn
+    routes normally)."""
+    text = (message or "").strip()
+    from services.intent_service.soft_invocation import is_prose_reply
+
+    if is_prose_reply(text):
+        return None  # multi-line / long prose never claims the correction
+    if not _CORRECTION_CLAIM_RE.match(text) or _NEGATED_DELETE_RE.search(text):
         return None
     if _principal_mismatch(payload, user_id):
         logger.warning(
