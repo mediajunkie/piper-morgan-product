@@ -47,9 +47,9 @@
 </style>
 <main>
   <h1>MVP sprint — fundamentals to polish</h1>
-  <p class="sub">Tue Aug 18 ~10:45 AM · <b>v58 LIVE</b> (v57 + this morning's three lanes) · one round covers everything · check-offs persist in your browser</p>
+  <p class="sub">Tue Aug 18 ~5:15 PM · <b>v59 LIVE</b> — the full answer to this morning's round · check-offs persist in your browser</p>
 
-  <div class="banner"><b>v58 LIVE — deployed at 10:45 on your ask, so this ONE round covers everything.</b> Since the plan was written: #1641 the repo question now works on comment/reopen/analysis/create too · #1639 honest "checked, zero" for projects + completed todos · #1640 login deep-link bounce fixed and verified live (infra — nothing for you to test). Everything else unchanged: <b>#1624 document-summarize (the 15-month first) is the headline item</b>, then the repo conversation, honest todos, and the v56/v54 waves below. 15 items, ~22 minutes, newest first.</div>
+  <div class="banner"><b>v59 LIVE — everything your 11am round caught, fixed and shipped same day.</b> #1648 <b>the fabrications are dead</b>: "file as is thanks" now files for real (or honestly re-asks — never roleplay), and the "at 3pm" answer performs a REAL save with the 📅 receipt. Root cause worth knowing: both fake confirmations were copies of our own prompt's example sentences. · #1649 explicit subject/description used verbatim · #1650 confirms need a crisp yes (your "please note…" aside is the regression test) · #1651 standup's mark-done offer completes the actual todo. <b>Upload repair (#1656) + the summarize wrong-empty (#1657) are in flight</b> — quick adds below when they land.</div>
 
   <div class="dash" style="display:flex;flex-direction:column;gap:.5rem;background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1rem 1.3rem;margin-bottom:0">
     <div style="display:grid;grid-template-columns:10.5rem 1fr 15rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--fund)">1 · Fundamentals</span><div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:35%;background:var(--done)"></span><span style="width:15%;background:var(--infra)"></span><span style="width:25%;background:var(--fund)"></span><span style="width:25%;background:var(--pol)"></span></div><span style="font-size:.74rem;color:var(--soft);text-align:right">Inversion IN SPRINT · Phases 0+1 SHIPPED (shadow live) · Phase 2 = Lead's next big build · #1423 at 200</span></div>
@@ -72,6 +72,12 @@
   <section class="v">
     <h2>✅ Your live test list (all against v58)</h2>
     <ul class="checks" id="testlist">
+      <li><input type="checkbox" id="t-nofab1"><label for="t-nofab1"><b>v59 · no phantom filings (#1648)</b> <span class="why">draft a ticket → "file as is thanks" → REAL issue with a REAL #number (or an honest re-ask) — never "Filed!" theater. Repo question comes BEFORE any filing claim.</span></label></li>
+      <li><input type="checkbox" id="t-nofab2"><label for="t-nofab2"><b>v59 · no phantom reminders (#1648)</b> <span class="why">"remind me to X today" → time question → "at 3pm" → REAL save with the 📅 line. Then "what are my reminders?" SHOWS it.</span></label></li>
+      <li><input type="checkbox" id="t-slots"><label for="t-slots"><b>v59 · your subject is used (#1649)</b> <span class="why">"open a new issue with the subject \"issue body test\" and description \"…\"" → draft arms with EXACTLY that title, no "what's it about?".</span></label></li>
+      <li><input type="checkbox" id="t-crisp2"><label for="t-crisp2"><b>v59 · asides can't confirm (#1650)</b> <span class="why">armed yes/no → "please note that…" aside → nothing fires, re-asks. Crisp "yes" works.</span></label></li>
+      <li><input type="checkbox" id="t-standref"><label for="t-standref"><b>v59 · standup offer works (#1651)</b> <span class="why">standup with an overdue todo → accept its mark-done offer → the actual todo completes.</span></label></li>
+
       <li><input type="checkbox" id="t-repoall"><label for="t-repoall"><b>v58 · repo question everywhere (#1641)</b> <span class="why">"add a comment to issue #108" or "reopen #108" WITHOUT naming a repo → one question → answer naturally → proceeds. Comment body text mentioning a repo never gets misread as routing.</span></label></li>
       <li><input type="checkbox" id="t-zeroproj"><label for="t-zeroproj"><b>v58 · honest zero everywhere (#1639)</b> <span class="why">"what projects do I have?" style asks: real ones listed; none → "checked, zero" as a plain account-level fact — never "for this conversation".</span></label></li>
 
