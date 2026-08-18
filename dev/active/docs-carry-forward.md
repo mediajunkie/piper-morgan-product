@@ -1,5 +1,9 @@
 # Docs Carry-Forward
 
+**Updated**: 2026-08-17 22:3x PDT (DAY-CLOSED — Weekly Docs Audit + 3-day omnibus backfill, clean sign-off)
+**Session log**: `dev/2026/08/17/2026-08-17-0711-docs-code-log.md` (closed).
+**Cron**: `2967db0e`, fresh window to ~08-21 — rotate before then.
+
 **Updated**: 2026-08-17 13:xx PDT (Fire 2 — Weekly Docs Audit #1643 worked comprehensively)
 **Session log**: `dev/2026/08/17/2026-08-17-0711-docs-code-log.md` (open).
 **Cron**: `2967db0e`, fresh window to ~08-21.

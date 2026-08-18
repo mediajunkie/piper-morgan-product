@@ -34,6 +34,6 @@ PM's 12-item v56 test plan UNTESTED as of this write — verdicts drive next loo
 5. Post-beta idea recorded: synonym-learning from correction (store-on-verify → routing vocab)
 
 ## Standing
-- Cron 48c8f160 `17 6,9,12,15,18,21 * * *`, expires ~8/22, rotate ~8/20
+- Cron 28fef16b `17 6,9,12,15,18,21 * * *` (rotated 8/18, verbatim prompt), expires ~8/25, rotate ~8/23
 - CLAUDE.md keychain-absent block STALE (3x flagged; needs CLAUDE.md authority)
 - Routing moratorium holds: no new pre-classifier patterns; handler/rail fixes sanctioned
