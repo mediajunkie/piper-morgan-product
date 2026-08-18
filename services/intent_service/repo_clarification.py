@@ -58,6 +58,13 @@ Known limits, stated honestly: a single bare token that is not a repo
 ("banana") re-arms with the honest not-found copy rather than routing —
 with a repo question armed, a one-word turn is far more likely a repo
 answer than a new intent, and the miss is recoverable (nothing writes).
+
+#1641 (2026-08-18): the carrier now also serves the reopen/comment handlers
+and the three ANALYSIS repository dead-ends (analyze_commits /
+generate_report / analyze_data), plus natural-phrasing extraction on the
+create path. The ANALYSIS/create asks have no issue number — the offer's
+``issue_number=None`` + ``operation`` form carries the copy, and the pop
+seam's different-issue-number guard is skipped for them.
 """
 
 from __future__ import annotations
@@ -167,6 +174,14 @@ _IMPERATIVE_VERBS = frozenset(
 _UPDATE_FAMILY = frozenset({"change", "update", "rename", "edit", "modify", "set"})
 _CLOSE_FAMILY = frozenset({"close"})
 _REOPEN_FAMILY = frozenset({"reopen"})
+# #1641: the newly-wired carriers' families. Comment restatements lead with
+# "comment"/"add"; report/create restatements lead with make-verbs; the
+# analyze verbs aren't in _IMPERATIVE_VERBS at all (they can't be blocked),
+# listed for documentation/symmetry.
+_COMMENT_FAMILY = frozenset({"comment", "add", "reply"})
+_REPORT_FAMILY = frozenset({"generate", "create", "make", "write"})
+_ANALYZE_FAMILY = frozenset({"analyze", "analyse", "evaluate"})
+_CREATE_FAMILY = frozenset({"create", "file", "open", "make", "write", "draft", "add"})
 
 # Trailing repo-routing clause a slot-filled TITLE must never swallow:
 # `... to Testing in the test-piper-morgan repository` / `... in owner/repo`.
@@ -183,12 +198,25 @@ _TRAILING_REPO_CLAUSE_RE = re.compile(
 
 
 def restatement_verbs_for(action: Optional[str]) -> Tuple[str, ...]:
-    """The pending operation's own verb family (re-statements bind)."""
+    """The pending operation's own verb family (re-statements bind).
+
+    #1641 ordering notes: "close"/"reopen" first (unambiguous); "comment"
+    before the create family ("add_comment" must read as comment, not add);
+    "report" before "create" ("create_report" is the report cohort's alias,
+    not an issue-create)."""
     a = (action or "").lower()
     if "close" in a:
         return tuple(_CLOSE_FAMILY)
     if "reopen" in a:
         return tuple(_REOPEN_FAMILY)
+    if "comment" in a:
+        return tuple(_COMMENT_FAMILY)
+    if "report" in a:
+        return tuple(_REPORT_FAMILY)
+    if "analyze" in a or "analyse" in a or "metrics" in a or "evaluate" in a:
+        return tuple(_ANALYZE_FAMILY)
+    if "create" in a or "ticket" in a:
+        return tuple(_CREATE_FAMILY)
     return tuple(_UPDATE_FAMILY)
 
 
@@ -339,9 +367,20 @@ async def resolve_repo_name(
 # ── Question copy (one home; the honest per-status variants) ─────────────────
 
 
-def open_repo_question(issue_number: int) -> str:
+def open_repo_question(
+    issue_number: Optional[int], operation: Optional[str] = None
+) -> str:
+    """#1641: ``issue_number=None`` is the non-issue-anchored form (the
+    ANALYSIS/create carriers have no issue to name); ``operation`` is the
+    human phrase for what's pending ("analyze commits")."""
+    if issue_number is not None:
+        head = f"Which repository is issue #{issue_number} in?"
+    elif operation:
+        head = f"Which repository should I use to {operation}?"
+    else:
+        head = "Which repository should I use?"
     return (
-        f"Which repository is issue #{issue_number} in? Give me the "
+        f"{head} Give me the "
         f"owner/name (like octocat/hello-world) — or just the repo name "
         f"and I'll find it among your repositories."
     )
@@ -373,10 +412,22 @@ def repo_resolution_question(
     return base
 
 
-def repo_question_decline_message(issue_number: int) -> str:
+def repo_question_decline_message(
+    issue_number: Optional[int], operation: Optional[str] = None
+) -> str:
+    if issue_number is not None:
+        return (
+            f"Okay — I haven't touched issue #{issue_number}. Name the "
+            f"repository (owner/name) if you want to pick this back up."
+        )
+    if operation:
+        return (
+            f"Okay — I've left that alone. Name the repository (owner/name) "
+            f"if you want me to {operation} later."
+        )
     return (
-        f"Okay — I haven't touched issue #{issue_number}. Name the "
-        f"repository (owner/name) if you want to pick this back up."
+        "Okay — I've left that alone. Name the repository (owner/name) "
+        "if you want to pick this back up."
     )
 
 
@@ -385,30 +436,40 @@ def repo_question_decline_message(issue_number: int) -> str:
 
 def build_repo_question_offer(
     intent: Any,
-    issue_number: int,
+    issue_number: Optional[int],
     principal: Optional[str],
     *,
     asked_name: Optional[str] = None,
     default_repo: Optional[str] = None,
+    operation: Optional[str] = None,
 ) -> Dict[str, Any]:
     """The #846 pending-offer record binding the ORIGINAL Intent while the
     repository slot fills. workflow_type is the #1190 confirm carrier, so a
     bare "yes" against the open question re-dispatches the original handler
-    — which re-asks (self-re-arming; no separate re-ask workflow)."""
+    — which re-asks (self-re-arming; no separate re-ask workflow).
+
+    #1641: ``issue_number=None`` + ``operation`` is the non-issue-anchored
+    form (ANALYSIS/create) — the pop seam's different-issue-number guard is
+    skipped for it, and the copy names the operation instead of an issue."""
+    if issue_number is not None:
+        summary = f"{intent.action} for issue #{issue_number}"
+    else:
+        summary = operation or intent.action
     return {
         "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
         "pending_action": {
             "kind": REPO_QUESTION_KIND,
             "action": intent.action,
             "intent": intent,
-            "summary": f"{intent.action} for issue #{issue_number}",
+            "summary": summary,
             "user_id": principal,
             "issue_number": issue_number,
             "asked_name": asked_name,
             "default_repo": default_repo,
+            "operation": operation,
             "restatement_verbs": list(restatement_verbs_for(intent.action)),
         },
-        "decline_message": repo_question_decline_message(issue_number),
+        "decline_message": repo_question_decline_message(issue_number, operation),
     }
 
 
