@@ -199,7 +199,11 @@ async def run_reopen_issue_workflow(
     user_id: Optional[str] = None,
     context: Optional[Dict[str, Any]] = None,
 ) -> Any:
-    """Action-dispatch entry point for reopen-issue queries (#1124 step 3, REOPEN)."""
+    """Action-dispatch entry point for reopen-issue queries (#1124 step 3, REOPEN).
+
+    #1641 (the #1567 close-entry shape): ``session_id`` is threaded (keyword)
+    so the handler's repository-question ask can bind via the #846
+    pending-offer store."""
     ctx = context or {}
     intent_service = ctx.get("intent_service")
     intent = ctx.get("intent")
@@ -211,7 +215,9 @@ async def run_reopen_issue_workflow(
             has_intent=intent is not None,
         )
         return None
-    return await intent_service._handle_reopen_issue_query(intent, workflow_id)
+    return await intent_service._handle_reopen_issue_query(
+        intent, workflow_id, session_id=session_id
+    )
 
 
 async def run_confirm_pending_action_workflow(
@@ -919,11 +925,12 @@ _CALENDAR_QUERY_COHORT: dict[str, list[str]] = {
 }
 
 
-# #1124 analysis cohort — the 2-arg `(intent, workflow_id)` ANALYSIS-category
-# handlers (analyze_commits / generate_report / analyze_data), reused unchanged via
-# the standard factory. NOT included: analyze_document (the if-head) — it is 3-arg
-# (session_id) + Notion-coupled, deferred to its own bite. Aliases mirror the
-# migrated elif branches exactly.
+# #1124 analysis cohort — the ANALYSIS-category handlers (analyze_commits /
+# generate_report / analyze_data) via the standard factory. #1641: 3-arg since
+# the repo-question wiring — ``session_id`` threads (pass_session_id) so the
+# 'repository not specified' ask can bind via the #846 pending-offer store.
+# NOT included: analyze_document (the if-head) — Notion-coupled, deferred to
+# its own bite. Aliases mirror the migrated elif branches exactly.
 _ANALYSIS_QUERY_COHORT: dict[str, list[str]] = {
     "_handle_analyze_commits": ["analyze_commits", "analyze_code"],
     "_handle_generate_report": ["generate_report", "create_report"],
@@ -1412,14 +1419,17 @@ def register_default_workflows() -> None:
         for alias in aliases:
             _default_entries[alias] = entry
 
-    # #1124 analysis cohort — 2-arg (intent, workflow_id), standard factory.
+    # #1124 analysis cohort — standard factory; #1641: session_id threaded
+    # (pass_session_id) so the repository ask can bind (see cohort comment).
     # effect: READ for all three analysis handlers — analyze_commits and
     # analyze_data read repo activity/metrics; generate_report (despite the
     # name) reads recent activity and returns the formatted report as the
     # response message, writing nowhere (verified per-handler 2026-08-09).
     for handler_attr, aliases in _ANALYSIS_QUERY_COHORT.items():
         entry = WorkflowEntry(
-            entry_point=_make_query_dispatch_entry_point(handler_attr),
+            entry_point=_make_query_dispatch_entry_point(
+                handler_attr, pass_session_id=True
+            ),
             effect=EffectClass.READ,
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],
