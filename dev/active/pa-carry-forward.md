@@ -72,16 +72,20 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-15 STOP (22:12)
+## Active state — 2026-08-17 STOP (22:12)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/16/2026-08-16-0712-pa-code-log.md` — **8/16 DAY-CLOSED**, verified strict.
+- **Session log**: `dev/2026/08/17/2026-08-17-0658-pa-code-log.md` — **8/17 DAY-CLOSED**, verified strict.
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
-- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `6238b535` deleted → job
-  `2f69fafb` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
+- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `2f69fafb` deleted → job
+  `449bae4c` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
+- ⚠️ **08-17's STOP commit/push was interrupted mid-procedure** (cron re-arm done, record-keeping not
+  yet committed when the next fire arrived) — completed retroactively at the start of this fire, same
+  turn, before starting 08-18. Nothing was lost; the session log's local content was already correct,
+  just unpushed.
 - **Standing discipline (from 08-15's correction, still active)**: re-verify carried-forward claims
   against their live source before citing them in an external report, not just at routine
   carry-forward-hygiene time. Habit, not yet mechanical.
