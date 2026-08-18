@@ -1,5 +1,12 @@
 # Docs Carry-Forward
 
+**Updated**: 2026-08-18 10:1x PDT (Fire 2 — heartbeat gap found+fixed, publish syndicated)
+**Session log**: `dev/2026/08/18/2026-08-18-0706-docs-code-log.md` (open).
+**Cron**: `2967db0e`, fresh window to ~08-21 — rotate before then.
+**⚠️ NEW STANDING PRACTICE (2026-08-18)**: run `scripts/duty-cycle-heartbeat.sh docs {phase}
+--if-quiet` at the end of EVERY fire, including quiet ones — 9-day gap found+fixed this fire
+(Exec finding, HOST-verified). Do not let this lapse again.
+
 **Updated**: 2026-08-17 22:3x PDT (DAY-CLOSED — Weekly Docs Audit + 3-day omnibus backfill, clean sign-off)
 **Session log**: `dev/2026/08/17/2026-08-17-0711-docs-code-log.md` (closed).
 **Cron**: `2967db0e`, fresh window to ~08-21 — rotate before then.
