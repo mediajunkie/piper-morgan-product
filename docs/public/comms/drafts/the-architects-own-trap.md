@@ -1,7 +1,7 @@
 ---
 image: 'the-architects-own-trap-fourth-stair.png'
 alt: 'Two translucent AI architects compare a three-staircase building model as one reveals the full-sized fourth staircase behind it.'
-caption: ''
+caption: '"According to my model, that fourth staircase does not exist!"'
 ---
 
 # The Architect's Own Trap
