@@ -1,21 +1,19 @@
+# CXO carry-forward — rewritten 2026-08-18 07:2x PT
+
+**07:17 START — the flagged cron priority, handled**: `fa499dae` was ~6 hours from its 7-day auto-expiry
+(would've landed ~13:18 PT today). Rotated proactively rather than waiting for a silent death: `CronDelete
+fa499dae` → `CronCreate` same expression → `CronList` confirmed exactly one job. **New job id: `c84a440a`,
+expiry pushed to ~08-25.** No gap, no missed fire.
+
+**Board check**: mailbox empty, #1536/#1539 unchanged (#1536 now 8 days since merge), taxonomy doc
+unchanged since 08-16 13:19 — still with PM, not chased. **Nothing owed by me right now.**
+
+---
+
+*(08-17 22:2x header below, left as yesterday's fuller STOP record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-17 22:2x PT at STOP. Day closed (six quiet-but-verified fires);
 next fire 06:47 on 08-18, opening ~07:17.
-
-⚠️ **CRON EXPIRY IS NOW THE #1 PRIORITY AT NEXT START.** `fa499dae`, re-armed 08-11 13:18 PT, ~7-day
-auto-expiry lands **~08-18 13:18 PT — tomorrow afternoon.** `CronList` at 07:17 START will still show it
-armed; the risk is the ~12:47-13:47 window. **Consider re-arming proactively at START rather than waiting
-for it to die silently mid-day** — both death modes (session-end, 7-day cap) emit nothing, and a fire that
-finds zero jobs mid-afternoon has already lost hours. If re-arming early, record the old→new job-id
-transition in the handoff/log the way 08-11's actual reboot recovery did.
-
-**Today (08-17) was fully quiet** — six fires, all checked-and-clean, nothing moved on any tracked thread.
-The surfaces taxonomy (08-16's real work) is still with PM, no response yet — not chased, per standing
-discipline. #1536 crossed one week since merge with no live-verification; noted, not re-flagged (already
-in Ship #056).
-
-**Open at handoff**: taxonomy (PM), #1536 (Lead, 1 week quiet), #1539 (PM), #1605/#1625/#1509 (Lead, no
-urgency), #1386 (unchanged), four ✏️ `experience-across-surfaces.md` items (likely superseded by taxonomy).
-**Nothing owed by me right now except the cron watch above.**
 
 ---
 
