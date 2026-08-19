@@ -41,7 +41,16 @@ PENDING-ACTION RECORD SHAPE (the generic deferred-action carrier, Part 3):
 
     {
         "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+        "question": str,   # #1665: the ALREADY-RENDERED ask the user saw this
+                           # turn — stored verbatim at arm time (never
+                           # re-rendered later) so the SessionSnapshot's
+                           # pending_offer_question can never drift from what
+                           # was actually said. Optional on the shape; every
+                           # arm site populates it.
         "pending_action": {
+            "kind": str,       # offer family (#1664: confirm-ness derives from
+                               # this — see offer_is_confirm below); this
+                               # module's records carry DESTRUCTIVE_CONFIRM_KIND
             "action": str,     # rail key to dispatch on "yes" (e.g. "close_issue")
             "intent": Intent,  # ORIGINAL classified Intent — resolved params
                                # (issue number, repo context, principal) intact
@@ -77,6 +86,95 @@ logger = structlog.get_logger(__name__)
 # offer-acceptance seam dispatches it.
 CONFIRM_PENDING_ACTION_WORKFLOW = "confirm_pending_action"
 
+# #1664: the destructive-confirmation records this module builds now carry a
+# kind of their own (they were the one kindless #846 producer), so confirm-ness
+# can be derived from the offer KIND instead of the carrier workflow_type —
+# repo clarification rides the same carrier with a non-yes/no open question,
+# and deriving from the carrier mislabeled it "(yes/no confirm)".
+DESTRUCTIVE_CONFIRM_KIND = "destructive_action_confirmation"
+
+# ---------------------------------------------------------------------------
+# #1664 — is_confirm derives from the offer KIND, in ONE place.
+#
+# The #1650 confirm-kind table (soft_invocation's CONFIRM-tier comment +
+# intent_service's offer-seam enumeration): the offer kinds whose OPEN
+# QUESTION is a yes/no — an accept FIRES a held action, so they ride the
+# strict detect_confirm_response detector. Exactly this set:
+#
+#   - destructive close/reopen confirms ..... DESTRUCTIVE_CONFIRM_KIND (here)
+#   - reminder-clear delete confirms ........ reminder_clear.CLEAR_DELETE_CONFIRMATION_KIND
+#   - consent checks ........................ consent_gate.CONSENT_CHECK_KIND
+#   - unmapped-status-value close confirm ... intent_service._offer_status_close_clarification
+#         (a destructive close confirm by another name — its copy is literally
+#         "...? (yes/no)" and "yes" dispatches close_issue)
+#   - drafted-issue FILE confirm ............ drafted_issue.DRAFTED_ISSUE_KIND,
+#         but ONLY in the ready-to-file state (title AND body present) — the
+#         mid-compose states' open question is "what's it about?"/"what should
+#         the body say?", which is NOT a yes/no
+#   - closed-default repo bind .............. repo_clarification.REPO_QUESTION_KIND,
+#         but ONLY with a default on offer (payload["default_repo"]) — a crisp
+#         "yes" then binds the default and FIRES the held operation; the OPEN
+#         repo question ("Which repository...?") is NOT a yes/no (issue 1664's
+#         literal defect)
+#
+# The kind strings are literals here (their home modules import THIS module,
+# so importing theirs back would be circular); the #1664 tests pin each
+# literal against its source constant so drift fails loudly.
+_CONFIRM_KINDS = frozenset(
+    {
+        DESTRUCTIVE_CONFIRM_KIND,
+        "reminder_clear_delete_confirmation",  # reminder_clear.CLEAR_DELETE_CONFIRMATION_KIND
+        "consent_check",  # consent_gate.CONSENT_CHECK_KIND
+        "unmapped_field_value_clarification",  # intent_service._offer_status_close_clarification
+    }
+)
+
+_DRAFTED_ISSUE_KIND = "drafted_issue"  # drafted_issue.DRAFTED_ISSUE_KIND
+_REPO_QUESTION_KIND = "issue_repo_question"  # repo_clarification.REPO_QUESTION_KIND
+
+
+def offer_is_confirm(offer: Optional[Dict[str, Any]]) -> bool:
+    """#1664 — is the pending offer's open question a yes/no confirm?
+
+    Derived from the offer KIND per the #1650 confirm-kind table (enumerated
+    above), never from the carrier workflow_type: repo clarification rides
+    CONFIRM_PENDING_ACTION_WORKFLOW with an open "Which repository...?" ask,
+    so carrier-derived confirm-ness lied to the router about what kind of
+    answer is expected. The two state-dependent rows (drafted-issue file
+    confirm, closed-default repo bind) read the payload fields that define
+    the state; everything else is a set membership.
+
+    One deliberate fallback: a carrier record with NO kind at all reads as a
+    confirm — the only kindless #846 producer was ever this module's own
+    destructive-confirmation builder (which now stamps its kind), so a stale
+    in-flight record still renders honestly instead of losing its confirm
+    marker.
+    """
+    if not offer:
+        return False
+    pending = offer.get("pending_action") or {}
+    kind = pending.get("kind")
+    if kind in _CONFIRM_KINDS:
+        return True
+    if kind == _DRAFTED_ISSUE_KIND:
+        # File confirm only when the draft is fully shaped: with title AND
+        # body present the open ask is 'say "file it as is"' — a yes/no.
+        # Mid-compose (either slot empty) the open ask is the compose
+        # question, and a crisp "yes" is re-asked, not fired blind.
+        draft = pending.get("draft") or {}
+        return bool(
+            (draft.get("title") or "").strip() and (draft.get("body") or "").strip()
+        )
+    if kind == _REPO_QUESTION_KIND:
+        # Closed-default bind only: with a default on offer, a crisp "yes"
+        # binds it and fires the held operation (#1650). The open form's
+        # "yes" merely re-asks — not a confirm.
+        return bool(pending.get("default_repo"))
+    return (
+        kind is None
+        and offer.get("workflow_type") == CONFIRM_PENDING_ACTION_WORKFLOW
+    )
+
 # Context marker the confirm entry point sets before re-dispatching, so the
 # close/reopen handlers' own in-message confirmation (#902's "yes, close
 # #123" regex) recognizes the rail confirmation and executes in ONE turn
@@ -92,6 +190,29 @@ CONFIRMED_CONTEXT_KEY = "destructive_confirmed"
 # path, this pass-through must be removed in the same commit.
 _CLOSE_FAMILY = frozenset({"close_issue", "close_issue_query"})
 _REOPEN_FAMILY = frozenset({"reopen_issue", "reopen_issue_query"})
+
+# #1666: the delete-todo rail family — the canonical action plus the
+# ActionMapper raw-emission aliases (remove_todo / cancel_todo → delete_todo)
+# that the classifier can emit and workflow_entries registers on the same
+# WorkflowEntry. This family's confirm is built by the ASYNC builder below
+# (build_todo_delete_confirmation), never by build_confirmation_offer: the
+# target is POSITIONAL ("todo 3" is a list index, not an id), so the only
+# honest "confirm WHAT, not just WHICH" ask requires the same owner-scoped
+# list read the handler itself performs — done once here, one turn earlier,
+# with the resolved row BOUND into the intent so the confirmed yes deletes
+# exactly what was named in the ask.
+_DELETE_TODO_FAMILY = frozenset({"delete_todo", "remove_todo", "cancel_todo"})
+
+# Context key for the gate-time resolution (see build_todo_delete_confirmation):
+# {"todo_id": str, "text": str, "number": str}. handle_delete_todo honors it
+# ONLY together with CONFIRMED_CONTEXT_KEY — an unconfirmed intent never
+# carries a usable binding.
+RESOLVED_TODO_CONTEXT_KEY = "delete_todo_resolved"
+
+
+def is_delete_todo_action(action: Optional[str]) -> bool:
+    """True when ``action`` is a delete-todo rail key (#1666 family)."""
+    return action in _DELETE_TODO_FAMILY
 
 # Bare full-message exits that cancel a pending confirmation honestly —
 # the #888 registry set ∪ the #1529 additions, applied at the offer seam.
@@ -186,7 +307,11 @@ def build_confirmation_offer(intent: Intent) -> Optional[ConfirmationOffer]:
         question=question,
         offer={
             "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+            # #1665: the rendered ask rides the record — same string the
+            # caller returns as the turn's message (built once, above).
+            "question": question,
             "pending_action": {
+                "kind": DESTRUCTIVE_CONFIRM_KIND,
                 "action": action,
                 "intent": intent,
                 "summary": summary,
@@ -195,4 +320,133 @@ def build_confirmation_offer(intent: Intent) -> Optional[ConfirmationOffer]:
                 f"Okay — I won't {summary}. Nothing has been changed."
             ),
         },
+    )
+
+
+# ---------------------------------------------------------------------------
+# #1666 — the delete-todo confirm builder (async: positional target needs the
+# owner-scoped list read to say WHAT would be deleted).
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class TodoDeleteGate:
+    """Outcome of :func:`build_todo_delete_confirmation` — exactly one leg set.
+
+    - ``offer``: arm this confirmation (the resolvable destructive shape).
+    - ``passthrough``: dispatch to the rail entry point unconfirmed — used
+      ONLY for the verified read-only / non-owning shapes (see builder body).
+    - ``error_message``: the todo lookup itself failed — return this honest
+      no-op turn directly. Never pass a possibly-deleting turn through
+      unverified, and never arm a number-only confirm (#1666 AC: the user
+      confirms WHAT, not just WHICH).
+    """
+
+    offer: Optional[ConfirmationOffer] = None
+    passthrough: bool = False
+    error_message: Optional[str] = None
+
+
+async def build_todo_delete_confirmation(
+    intent: Intent,
+    todo_handlers: Any,
+    todo_user_id: Any,
+) -> TodoDeleteGate:
+    """Build the #1190 confirmation for a delete-todo rail intent (#1666).
+
+    Passthrough legs — each verified read-only or non-deleting at the rail
+    entry point (mirror of the _CLOSE_FAMILY invariant; if any of these paths
+    ever deletes, its passthrough must be removed in the same commit):
+
+    - **clear-family shape** (#1605 boundary, pinned both ways): an ambiguous
+      clear/handle/reset utterance the classifier guessed as delete_todo
+      belongs to ``reminder_clear.maybe_handle_clear_family``'s three-variant
+      flow, which the rail entry point runs FIRST — this gate never steals
+      those shapes, and reminder_clear's own delete confirms stay #1190-gated
+      inside that flow. Conversely, explicit imperatives ("delete todo 3")
+      are ``None`` to ``detect_clear_family_ask`` by its _EXPLICIT_VERB_RE,
+      so this gate owns them — the boundary holds in both directions.
+    - **no principal**: the entry point returns the auth-required decline.
+    - **no parseable todo number**: handle_delete_todo returns the
+      "Which todo should I remove?" clarification (its only no-number path).
+    - **number out of range / non-numeric**: handle_delete_todo returns the
+      "couldn't find todo #N" / "doesn't look like a number" copy.
+    """
+    # Lazy import: reminder_clear imports THIS module (kind constants), so a
+    # module-level import back would be circular.
+    from services.intent_service.reminder_clear import detect_clear_family_ask
+
+    message = ""
+    if intent.context:
+        message = intent.context.get("original_message", "") or ""
+    if not message:
+        message = intent.original_message or ""
+
+    if detect_clear_family_ask(message) is not None:
+        return TodoDeleteGate(passthrough=True)
+
+    if todo_user_id is None:
+        return TodoDeleteGate(passthrough=True)
+
+    todo_number = todo_handlers._extract_todo_id(message)
+    if todo_number is None:
+        return TodoDeleteGate(passthrough=True)
+
+    try:
+        todos = await todo_handlers.todo_service.list_todos(
+            user_id=todo_user_id, include_completed=False
+        )
+    except Exception as e:  # silent-ok: error-logged; returns an honest no-op turn, never an ungated delete or a number-only confirm
+        logger.error(
+            "todo_delete_confirm_lookup_failed",
+            error=str(e),
+            action=intent.action,
+        )
+        return TodoDeleteGate(
+            error_message=(
+                "I couldn't look up your todos just now, so I haven't "
+                "deleted anything. Try again in a moment."
+            )
+        )
+
+    try:
+        idx = int(todo_number) - 1
+    except ValueError:
+        return TodoDeleteGate(passthrough=True)
+    if idx < 0 or idx >= len(todos):
+        return TodoDeleteGate(passthrough=True)
+
+    todo = todos[idx]
+    # Bind WHAT, not just WHICH (#1666 AC): stash the row resolved AT ASK
+    # TIME so the confirmed yes deletes exactly the todo named in the ask,
+    # even if the list shifts between the ask and the yes. Copy-on-write —
+    # never mutate a context dict the caller may share (#1190 idiom).
+    intent.context = dict(intent.context or {})
+    intent.context[RESOLVED_TODO_CONTEXT_KEY] = {
+        "todo_id": todo.id,
+        "text": todo.text,
+        "number": str(todo_number),
+    }
+
+    summary = f'delete todo {todo_number}: "{todo.text}"'
+    question = f'Delete todo {todo_number}: "{todo.text}"? (yes/no)'
+    return TodoDeleteGate(
+        offer=ConfirmationOffer(
+            question=question,
+            offer={
+                "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+                # #1665: the rendered ask rides the record — the same string
+                # the caller returns as the turn's message (built once, above).
+                "question": question,
+                "pending_action": {
+                    "kind": DESTRUCTIVE_CONFIRM_KIND,
+                    "action": intent.action,
+                    "intent": intent,
+                    "summary": summary,
+                },
+                "decline_message": (
+                    f"Okay — I won't {summary}. Nothing has been changed."
+                ),
+            },
+        )
     )

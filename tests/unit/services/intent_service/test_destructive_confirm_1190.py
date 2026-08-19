@@ -38,6 +38,9 @@ from services.shared_types import EffectClass, IntentCategory
 
 CLOSE_ALIASES = ("close_issue", "close_issue_query")
 REOPEN_ALIASES = ("reopen_issue", "reopen_issue_query")
+# #1666: delete_todo joined the destructive tier (its own ruling — the
+# consent-gate coverage gap Arch found; suite: test_delete_todo_confirm_1666).
+DELETE_TODO_ALIASES = ("delete_todo", "remove_todo", "cancel_todo")
 
 _USER = "3f7b8a52-1190-4b00-9e00-000000001190"  # valid UUID: survives principal parsing
 
@@ -98,20 +101,25 @@ class TestDestructiveEnumFlips1190:
             assert wf[alias].needs_consent is True  # destructive ⊂ write
 
     def test_destructive_tier_scope_with_denominator(self):
-        """m-44: state the denominator. Exactly the close/reopen pair (2
-        entries, 4 alias keys) is DESTRUCTIVE on the action rail today — this
-        is the honest update of the previous zero-DESTRUCTIVE registry state,
-        not a deletion of it. If a new action legitimately joins the tier,
-        update this set in the same commit that flips its entry."""
+        """m-44: state the denominator. Exactly close/reopen (2 entries,
+        4 alias keys — PM ruling 2026-08-10) plus delete_todo (1 entry,
+        3 alias keys — #1666: the consent-gate coverage gap; deletion is
+        unrecoverable, so DESTRUCTIVE needs no blast-radius reframing) is
+        DESTRUCTIVE on the action rail today. If a new action legitimately
+        joins the tier, update this set in the same commit that flips its
+        entry."""
         register_default_workflows()
         wf = get_action_workflows()
         destructive_keys = {
             key for key, entry in wf.items() if entry.effect == EffectClass.DESTRUCTIVE
         }
-        assert destructive_keys == set(CLOSE_ALIASES) | set(REOPEN_ALIASES), (
+        assert destructive_keys == (
+            set(CLOSE_ALIASES) | set(REOPEN_ALIASES) | set(DELETE_TODO_ALIASES)
+        ), (
             f"Destructive rail keys drifted: {sorted(destructive_keys)}. "
-            "PM ruled exactly close/reopen destructive on 2026-08-10; a new "
-            "destructive entry needs its own ruling + this set updated."
+            "The tier is exactly close/reopen (PM ruling 2026-08-10) + the "
+            "delete_todo family (#1666); a new destructive entry needs its "
+            "own ruling + this set updated."
         )
 
 

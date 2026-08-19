@@ -265,7 +265,9 @@ INVITE_DECLINE_MESSAGE = (
 
 
 def build_interview_invitation(
-    user_id: Optional[str], session_id: Optional[str]
+    user_id: Optional[str],
+    session_id: Optional[str],
+    question: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
     """Build the invitation's pending-offer record (the #846/#1190 carrier —
     the SAME store the rail's read-back binds through, so the #1529 ordering
@@ -278,6 +280,12 @@ def build_interview_invitation(
     - already declined this session → not re-asked (CXO property 2; the rail's
       session decline memory, consulted here exactly as build_read_back_offer
       consults it for read-backs).
+
+    ``question`` (#1665): the ALREADY-RENDERED invitation copy the caller is
+    about to surface (INVITE_EMPTY_LEAD or INVITE_AFTER_REPORT — the caller
+    knows which lead it renders; this builder doesn't). Stored verbatim on
+    the record so the SessionSnapshot's pending_offer_question matches what
+    the user saw.
     """
     if not session_id or not user_id:
         return None
@@ -285,6 +293,7 @@ def build_interview_invitation(
         return None
     return {
         "workflow_type": STANDUP_INTERVIEW_WORKFLOW,
+        "question": question,
         "pending_action": {
             "kind": INVITE_KIND,
             # "action" keeps the #1190 carrier's field contract (the

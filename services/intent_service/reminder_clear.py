@@ -111,7 +111,8 @@ def variant_one_question(verb: str = "clear", noun: str = "reminder") -> str:
 
 def variant_two_disclosure(verb: str = "clear") -> str:
     """Variant 2 — stored default = complete (WRITE): auto-apply,
-    disclosure-after, no block."""
+    disclosure-after, no block. The closing sentence is CORRECTION_WINDOW_ASK
+    (defined below) — the same string stored on the correction offer (#1665)."""
     return (
         f"Marking these done — that's what '{verb}' has meant for you. "
         f"Say so if you meant delete this time."
@@ -133,6 +134,12 @@ def variant_three_question(count: int, verb: str = "clear", noun: str = "reminde
     the grammatical singular (seam note: same sentence, singular referent)."""
     target = f"these {count} {noun}s" if count != 1 else f"this {noun}"
     return f"You've set '{verb}' to mean delete — delete {target}? (yes/no)"
+
+
+# #1665: the correction window's standing invitation — ONE constant, embedded
+# in both variant-2 surfaces (ratified disclosure + meta-auto glue) and stored
+# on the correction offer as its open question (same string, no drift).
+CORRECTION_WINDOW_ASK = "Say so if you meant delete this time."
 
 
 # ---------------------------------------------------------------------------
@@ -322,11 +329,16 @@ def _delete_confirmation_offer(
     texts: List[str],
     original_message: str,
     kind: str = CLEAR_DELETE_CONFIRMATION_KIND,
+    question: Optional[str] = None,
 ) -> Dict[str, Any]:
     """A #1190 pending_action offer whose "yes" dispatches the batch delete
     through CONFIRM_PENDING_ACTION_WORKFLOW -> CLEAR_DELETE_WORKFLOW. The
     target ids are resolved at OFFER time so the question's N is exactly
-    what a "yes" deletes — no drift between the ask and the act."""
+    what a "yes" deletes — no drift between the ask and the act.
+
+    ``question`` (#1665): the ALREADY-RENDERED confirm ask the caller returns
+    this turn (variant_three_question output, or the correction-claimed
+    form) — stored verbatim, never re-rendered."""
     from services.domain.models import Intent
     from services.intent_service.destructive_confirm import (
         CONFIRM_PENDING_ACTION_WORKFLOW,
@@ -351,6 +363,7 @@ def _delete_confirmation_offer(
     summary = f"delete {n} {_plural(noun, n)}"
     return {
         "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+        "question": question,
         "pending_action": {
             "kind": kind,
             "action": CLEAR_DELETE_WORKFLOW,
@@ -371,14 +384,21 @@ def _verb_question_offer(
     ids: List[str],
     texts: List[str],
     original_message: str,
+    question: Optional[str] = None,
 ) -> Dict[str, Any]:
     """The variant-1 pending offer. Its answer is either/or ("mark it done" /
     "delete it"), handled kind-specifically at the offer seam BEFORE generic
     accept/decline (the verify_inference precedent). A bare affirmative falls
     to the generic accept path, which dispatches CLARIFY_CLEAR_VERB_WORKFLOW —
-    an entry that re-asks and re-arms this same offer."""
+    an entry that re-asks and re-arms this same offer.
+
+    ``question`` (#1665): the ALREADY-RENDERED either/or ask the caller
+    returns this turn (variant one, or the ALWAYS_ASK leading form) — stored
+    verbatim, never re-rendered. NOT a yes/no: the verb question is pinned
+    OUTSIDE the #1664 confirm-kind set."""
     return {
         "workflow_type": CLARIFY_CLEAR_VERB_WORKFLOW,
+        "question": question,
         "pending_action": {
             "kind": CLEAR_VERB_QUESTION_KIND,
             "action": CLARIFY_CLEAR_VERB_WORKFLOW,
@@ -409,9 +429,15 @@ def _correction_offer(
     """The one-turn correction window after a variant-2 auto-apply ("Say so
     if you meant delete this time"). A correction phrase next turn routes to
     a #1190-gated delete of the just-completed items; anything else abandons
-    it via the pop (the #1529 off-intent tier)."""
+    it via the pop (the #1529 off-intent tier).
+
+    #1665: the stored question is CORRECTION_WINDOW_ASK — the exact standing
+    invitation both variant-2 surfaces render. Not a yes/no (the expected
+    answer is a correction phrase), so the kind stays OUTSIDE the #1664
+    confirm set."""
     return {
         "workflow_type": CLEAR_CORRECTION_WORKFLOW,
+        "question": CORRECTION_WINDOW_ASK,
         "pending_action": {
             "kind": CLEAR_CORRECTION_KIND,
             "action": CLEAR_CORRECTION_WORKFLOW,
@@ -496,15 +522,17 @@ async def maybe_handle_clear_family(
             noun=ask.noun,
             session_id=session_id,
         )
+        question = variant_one_question(ask.verb, ask.noun)
         offer = _verb_question_offer(
-            principal, ask.verb, ask.noun, [], [], original_message
+            principal, ask.verb, ask.noun, [], [], original_message,
+            question=question,  # #1665: rendered once, stored + said
         )
         offer["pending_action"]["exception_no_targets"] = True
         intent_service.workflow_offer_service.set_pending_offer(
             session_id, offer, user_id=user_id
         )
         message = (
-            f"{variant_one_question(ask.verb, ask.noun)}\n\n"
+            f"{question}\n\n"
             f"Also — you carved out an exception, and I don't want to guess "
             f"which {_plural(ask.noun, 2)} you mean. Once you answer, tell me "
             f"exactly which ones to include and I'll act on just those."
@@ -591,8 +619,10 @@ async def maybe_handle_clear_family(
         )
 
         if await get_meta_mode(principal) is _VMM.ALWAYS_ASK:
+            question = variant_two_always_ask_question()
             offer = _verb_question_offer(
-                principal, ask.verb, ask.noun, ids, texts, original_message
+                principal, ask.verb, ask.noun, ids, texts, original_message,
+                question=question,  # #1665: rendered once, stored + said
             )
             offer["pending_action"]["stored_default_leading"] = VALUE_COMPLETE
             intent_service.workflow_offer_service.set_pending_offer(
@@ -606,7 +636,7 @@ async def maybe_handle_clear_family(
             )
             return IntentProcessingResult(
                 success=True,
-                message=variant_two_always_ask_question(),
+                message=question,
                 intent_data={
                     **base_intent_data,
                     "verb_default_leading": VALUE_COMPLETE,
@@ -646,10 +676,12 @@ async def maybe_handle_clear_family(
     #    routes through the REAL #1190 confirm gate. Blocks in every meta
     #    mode (consent matrix: DESTRUCTIVE -> CONFIRM in every cell).
     if stored_value == VALUE_DELETE:
+        question = variant_three_question(len(ids), ask.verb, ask.noun)
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
             _delete_confirmation_offer(
-                principal, ask.verb, ask.noun, ids, texts, original_message
+                principal, ask.verb, ask.noun, ids, texts, original_message,
+                question=question,  # #1665: rendered once, stored + said
             ),
             user_id=user_id,
         )
@@ -661,7 +693,7 @@ async def maybe_handle_clear_family(
         )
         return IntentProcessingResult(
             success=True,
-            message=variant_three_question(len(ids), ask.verb, ask.noun),
+            message=question,
             intent_data={
                 **base_intent_data,
                 "action": CLEAR_DELETE_WORKFLOW,
@@ -724,9 +756,13 @@ async def maybe_handle_clear_family(
         return None
 
     # ── Variant 1: first encounter — ask, bind the answer via the offer seam.
+    question = variant_one_question(ask.verb, ask.noun)
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
-        _verb_question_offer(principal, ask.verb, ask.noun, ids, texts, original_message),
+        _verb_question_offer(
+            principal, ask.verb, ask.noun, ids, texts, original_message,
+            question=question,  # #1665: rendered once, stored + said
+        ),
         user_id=user_id,
     )
     logger.info(
@@ -738,7 +774,7 @@ async def maybe_handle_clear_family(
     )
     return IntentProcessingResult(
         success=True,
-        message=variant_one_question(ask.verb, ask.noun),
+        message=question,
         intent_data={**base_intent_data, "verb_disambiguation_pending": True},
         requires_clarification=True,
     )
@@ -858,7 +894,14 @@ async def _handle_verb_answer_turn(
     meta = detect_meta_feedback(message)
     if meta is not None:
         meta_persisted = await set_meta_mode(principal, meta)
-        _rearm_verb_question(intent_service, session_id, user_id, payload)
+        # #1665: the re-armed record's open question is this turn's re-ask.
+        reask = (
+            "For this one I still need the call, since delete isn't "
+            "something I'll guess at: mark these done, or delete them?"
+        )
+        _rearm_verb_question(
+            intent_service, session_id, user_id, payload, question=reask
+        )
         if meta is VerificationMetaMode.TRUST_INFERENCES:
             lead = "Understood — I'll stop checking my inferences with you."
         else:
@@ -866,10 +909,7 @@ async def _handle_verb_answer_turn(
                 "Understood — I won't act on my own inferences without "
                 "checking with you first."
             )
-        msg = (
-            f"{lead} For this one I still need the call, since delete isn't "
-            f"something I'll guess at: mark these done, or delete them?"
-        )
+        msg = f"{lead} {reask}"
         if not meta_persisted:
             msg += (
                 "\n\n(Heads up: I couldn't save that preference just now, "
@@ -952,10 +992,12 @@ async def _handle_verb_answer_turn(
     #    delete → the V3 confirm for THIS batch only, stored default intact.
     if payload.get("stored_default_leading") == VALUE_COMPLETE:
         if wants_delete or _DIFFERENT_ANSWER_RE.search(message):
+            question = variant_three_question(len(ids), verb, noun)
             intent_service.workflow_offer_service.set_pending_offer(
                 session_id,
                 _delete_confirmation_offer(
-                    principal, verb, noun, ids, texts, original_message
+                    principal, verb, noun, ids, texts, original_message,
+                    question=question,  # #1665: rendered once, stored + said
                 ),
                 user_id=user_id,
             )
@@ -966,7 +1008,7 @@ async def _handle_verb_answer_turn(
             return {
                 # ⚠️ COPY SEAM (glue): the parenthetical is Lead-drafted.
                 "message": (
-                    f"{variant_three_question(len(ids), verb, noun)}\n"
+                    f"{question}\n"
                     f"(Your usual '{verb}' stays mark-done — this is just "
                     f"for this batch.)"
                 ),
@@ -1019,9 +1061,13 @@ async def _handle_verb_answer_turn(
         persisted = await store_verified_inference(
             principal, key, VALUE_DELETE, source=SOURCE_USER_VERIFIED, confidence=VERB_CONFIDENCE
         )
+        question = variant_three_question(len(ids), verb, noun)
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
-            _delete_confirmation_offer(principal, verb, noun, ids, texts, original_message),
+            _delete_confirmation_offer(
+                principal, verb, noun, ids, texts, original_message,
+                question=question,  # #1665: rendered once, stored + said
+            ),
             user_id=user_id,
         )
         logger.info(
@@ -1030,7 +1076,7 @@ async def _handle_verb_answer_turn(
             persisted=persisted,
             session_id=session_id,
         )
-        msg = variant_three_question(len(ids), verb, noun)
+        msg = question
         if not persisted:
             msg += (
                 "\n\n(Heads up: I couldn't save that preference just now, "
@@ -1147,6 +1193,8 @@ async def _handle_correction_turn(
     ids = payload.get("clear_target_ids") or []
     texts = payload.get("clear_target_texts") or []
     n = len(ids)
+    target = f"these {n} {_plural(noun, n)}" if n != 1 else f"this {noun}"
+    question = f"Got it — delete {target} instead? (yes/no)"
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         _delete_confirmation_offer(
@@ -1156,15 +1204,15 @@ async def _handle_correction_turn(
             ids,
             texts,
             payload.get("original_message") or "",
+            question=question,  # #1665: rendered once, stored + said
         ),
         user_id=user_id,
     )
     logger.info(
         "reminder_clear_correction_claimed", count=n, session_id=session_id
     )
-    target = f"these {n} {_plural(noun, n)}" if n != 1 else f"this {noun}"
     return {
-        "message": f"Got it — delete {target} instead? (yes/no)",
+        "message": question,
         "intent_data": {
             "category": "execution",
             "action": CLEAR_DELETE_WORKFLOW,
@@ -1208,15 +1256,19 @@ def _reask_verb_question_if_unrecognized(
         return None
     if is_command_shaped(text):
         return None
-    _rearm_verb_question(intent_service, session_id, user_id, payload)
     noun = payload.get("clear_noun") or "reminder"
+    # #1665: the re-armed record's open question is this turn's re-ask copy.
+    reask = f"For these {_plural(noun, 2)}: mark them done, or delete them?"
+    _rearm_verb_question(
+        intent_service, session_id, user_id, payload, question=reask
+    )
     logger.info(
         "reminder_clear_verb_unrecognized_reasked", session_id=session_id
     )
     return {
         "message": (
             f"I didn't catch that as an answer — nothing has been changed. "
-            f"For these {_plural(noun, 2)}: mark them done, or delete them?"
+            f"{reask}"
         ),
         "intent_data": {
             "category": "execution",
@@ -1228,14 +1280,19 @@ def _reask_verb_question_if_unrecognized(
     }
 
 
-def _rearm_verb_question(intent_service, session_id, user_id, payload) -> None:
+def _rearm_verb_question(
+    intent_service, session_id, user_id, payload, question: Optional[str] = None
+) -> None:
     """Re-arm the variant-1 offer with its original payload (the pop already
     consumed it; a re-ask turn must re-store it or the next answer has
-    nothing to bind to)."""
+    nothing to bind to). ``question`` (#1665): the re-ask copy this turn
+    renders — stored verbatim so the record's open question tracks what was
+    actually said."""
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         {
             "workflow_type": CLARIFY_CLEAR_VERB_WORKFLOW,
+            "question": question,
             "pending_action": dict(payload),
             "decline_message": (
                 f"Okay — I haven't touched your "
@@ -1271,13 +1328,17 @@ async def run_clarify_reminder_clear_verb_workflow(
             has_intent_service=intent_service is not None,
         )
         return None
-    _rearm_verb_question(intent_service, session_id, user_id, payload)
     noun = payload.get("clear_noun") or "reminder"
+    # #1665: the re-armed record's open question is this turn's re-ask copy.
+    question = (
+        f"Just so I get it right — for these {_plural(noun, 2)}: "
+        f"mark them done, or delete them?"
+    )
+    _rearm_verb_question(
+        intent_service, session_id, user_id, payload, question=question
+    )
     return {
-        "message": (
-            f"Just so I get it right — for these {_plural(noun, 2)}: "
-            f"mark them done, or delete them?"
-        ),
+        "message": question,
         "intent_data": {
             "category": "execution",
             "action": CLARIFY_CLEAR_VERB_WORKFLOW,
@@ -1304,20 +1365,21 @@ async def run_reminder_clear_correction_workflow(
             has_intent_service=intent_service is not None,
         )
         return None
+    # #1665: this re-arm turn's own re-ask copy (not CORRECTION_WINDOW_ASK —
+    # the bare-yes turn renders the working phrase, so store THAT).
+    reask = "If you meant delete, say 'I meant delete' and I'll take care of it."
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         {
             "workflow_type": CLEAR_CORRECTION_WORKFLOW,
+            "question": reask,
             "pending_action": dict(payload),
             "decline_message": "Good — they stay marked done.",
         },
         user_id=user_id,
     )
     return {
-        "message": (
-            "They're marked done. If you meant delete, say 'I meant delete' "
-            "and I'll take care of it."
-        ),
+        "message": f"They're marked done. {reask}",
         "intent_data": {
             "category": "execution",
             "action": CLEAR_CORRECTION_WORKFLOW,

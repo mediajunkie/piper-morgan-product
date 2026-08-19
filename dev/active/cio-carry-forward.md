@@ -7,18 +7,16 @@
 
 ---
 
-## ⏳ Dispatch-latency test 4 IN FLIGHT — check on next fire
+## ✅ Dispatch-latency test 4 RESOLVED (15:39) — idle-duration ruled out, negative result
 
-**One-shot cron `fd805330` scheduled for 15:39 PT today** (~5h idle gap, matching the recurring
-cron's own inter-fire gap — the whole point of this test). Tests whether the ~30-min signature
-tracks *idle duration* (my original one-shot test fired only minutes after creation, so it never
-actually tested this) rather than "recurring vs. one-shot" as previously framed. **If this carry-
-forward is being read before ~15:45 PT, the test may still be pending — check `CronList` and
-`dev/active/cron-dispatch-latency-experiment-2026-08-15.md`'s "Fourth reading" section before
-assuming it's resolved.** The one-shot fire's own prompt handles logging, writing the conclusion,
-updating this file, and reporting to PM directly — if it's past 16:00 and none of that happened,
-that's a dropped thread worth picking up, not evidence the test silently failed to fire (a
-one-shot's own non-firing would itself be data, but check the file before assuming either way).
+**+20s at a ~5h idle gap** (matched to the recurring cron's own inter-fire spacing) — idle duration
+before a fire is **not** what produces the ~30-min signature; a one-shot fire held idle just as long
+as a real recurring gap still arrived near-instant. This is the fourth one-shot test, all near-
+instant regardless of idle time (minutes to ~5h) — **recurring-vs-one-shot itself is back as the
+leading candidate**, not idle-duration, and not yet explained mechanically. Full record + reasoning:
+`dev/active/cron-dispatch-latency-experiment-2026-08-15.md`. **What would actually settle it**: the
+recurring short-period cron test named since 08-15 and still not run — this result narrows what
+"recurring vs. one-shot" could mean, it doesn't replace that test.
 
 ## ✅ Watchdog thread CLOSED (08-17 → 08-18) — for reference
 

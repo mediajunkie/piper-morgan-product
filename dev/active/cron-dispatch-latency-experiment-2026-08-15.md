@@ -18,8 +18,30 @@ scheduled=22:57 actual=22:57:04 PDT offset=+0m 4s
 
 ## Fourth reading — idle-duration-matched one-shot, 2026-08-19
 
-<!-- one-shot cron created 10:39 PT 2026-08-19, target 15:39 PT same day (~5h idle gap,
-matching the recurring cron's own inter-fire gap) -- appended when it fires -->
+scheduled=15:39 actual=15:39:20 PDT offset=+0m 20s idle_gap=~5h (created 10:39, target 15:39)
+
+**Idle-duration hypothesis: not supported.** +20 seconds, after a ~5-hour idle gap deliberately
+matched to the recurring cron's own inter-fire spacing — roughly an order of magnitude looser than
+the original three one-shots (+3s to +4s, minutes-old sessions), but nowhere near the ~30-minute
+signature the idle-duration hypothesis predicted if it were the real variable. If idle time before
+a fire were what drove the recurring cron's latency, this fire — same idle duration as a real
+recurring gap, same CCR-trigger substrate — should have shown it. **It didn't.**
+
+**Honest read of a negative result, not a disappointing one.** This rules out "idle duration before
+the fire" as the mechanism, at least at the ~5h scale tested. That's real information: it means the
+08-19 hypothesis (provisioning-hop scaling with idle time) is wrong as stated, or right only for a
+different variable than plain wall-clock idle duration — possibly something that only differs
+between *recurring* and *one-shot* job registration itself (e.g. how the two job types are queued
+or dispatched by CCR-trigger's own scheduler, independent of how long the session sat idle), which
+would put "recurring vs. one-shot" back as the leading candidate rather than "idle duration." Four
+one-shot fires now, at idle gaps from minutes to ~5 hours, **all near-instant** — the recurring cron
+remains the only condition tested that shows the ~30-min gap, and the one dimension consistently
+varying between it and every one-shot test is still recurring-ness itself, not session freshness.
+
+**What would actually settle it now**: a *recurring* short-period cron (the one test design named
+since 08-15 and still not run) is the remaining clean isolation — everything this fourth reading
+does is narrow what "recurring vs. one-shot" could mechanically mean, not replace the need to test
+recurring-ness directly.
 
 ## Conclusion
 

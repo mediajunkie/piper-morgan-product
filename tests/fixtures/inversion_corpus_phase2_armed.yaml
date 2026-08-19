@@ -191,11 +191,11 @@ corpus:
     category: QUERY
     expected: route:NONE
     source: "PM live (#1567 repo clarification dead-end; dev/2026/08/16/2026-08-16-2251-prog-code-log.md)"
-    notes: "ANSWERS the armed repo question. is_confirm=true is FAITHFUL to live assembly: the repo question rides CONFIRM_PENDING_ACTION_WORKFLOW (repo_clarification.py:459) so snapshot_assembly marks it confirm — rendering wrinkle flagged in the gate doc"
+    notes: "ANSWERS the armed repo question. is_confirm=false since issue 1664: live assembly now derives confirm-ness from the offer KIND (destructive_confirm.offer_is_confirm), and the OPEN repo question is not a yes/no — the 2.1 gate ran this row with is_confirm=true (then faithful to the workflow_type-derived live assembly; wrinkle flagged in the gate doc), so a rerun's condition differs here by design"
     fixture:
       pending_offer_kind: issue_repo_question
       pending_offer_question: "Which repository should I use? Give me the owner/name (like octocat/hello-world) — or just the repo name and I'll find it among your repositories."
-      pending_offer_is_confirm: true
+      pending_offer_is_confirm: false
   - phrase: "in the test-Piper-Morgan repository"
     pair: repo-question-answer
     condition: control

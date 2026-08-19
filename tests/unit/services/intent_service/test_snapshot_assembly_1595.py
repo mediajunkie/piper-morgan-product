@@ -183,20 +183,46 @@ class TestPerFieldAssembly:
 
     async def test_armed_drafted_issue_offer(self, sm, mem_prefs, svc):
         """Armed drafted-issue offer → kind + is_confirm + draft fields ride
-        the ONE peek. question is None: today's arm sites store no rendered
-        ask (documented in snapshot_assembly's docstring)."""
+        the ONE peek. #1665: the arm site stores its rendered ask and the
+        snapshot carries it. #1664: a mid-compose draft (body still open) is
+        NOT a yes/no confirm — its open question is the body ask."""
+        from services.intent_service.collaboration_gate import draft_open_question
+
+        question = draft_open_question("Fix the login flow", None)
         offer = build_drafted_issue_offer(
-            _intent(), "Fix the login flow", "mediajunkie/test-piper-morgan"
+            _intent(),
+            "Fix the login flow",
+            "mediajunkie/test-piper-morgan",
+            question=question,
         )
         svc.workflow_offer_service.set_pending_offer(_SESSION, offer, user_id=_USER)
 
         snap = await assemble_session_snapshot(_SESSION, _USER, svc)
         assert snap.pending_offer_kind == "drafted_issue"
-        assert snap.pending_offer_is_confirm is True  # rides the #1190 carrier
-        assert snap.pending_offer_question is None
+        assert snap.pending_offer_is_confirm is False  # open body ask ≠ yes/no
+        assert snap.pending_offer_question == question
         assert snap.draft_in_compose is True
         assert snap.draft_title == "Fix the login flow"
         assert snap.field_errors == ()
+
+    async def test_ready_to_file_draft_is_confirm(self, sm, mem_prefs, svc):
+        """#1664: with BOTH slots shaped the draft's open ask IS the file
+        confirm — the one drafted-issue state in the #1650 confirm set."""
+        from services.intent_service.collaboration_gate import draft_open_question
+
+        question = draft_open_question("Fix the login flow", "Steps: …")
+        offer = build_drafted_issue_offer(
+            _intent(),
+            "Fix the login flow",
+            "mediajunkie/test-piper-morgan",
+            body="Steps: …",
+            question=question,
+        )
+        svc.workflow_offer_service.set_pending_offer(_SESSION, offer, user_id=_USER)
+
+        snap = await assemble_session_snapshot(_SESSION, _USER, svc)
+        assert snap.pending_offer_is_confirm is True
+        assert snap.pending_offer_question == question
 
     async def test_untitled_draft_has_none_title(self, sm, mem_prefs, svc):
         """#1630 subjectless arm: draft_in_compose True, draft_title None."""
@@ -208,8 +234,10 @@ class TestPerFieldAssembly:
         assert snap.draft_title is None
 
     async def test_armed_confirm_is_confirm_true(self, sm, mem_prefs, svc):
-        """The #1650 distinction: a destructive confirm (the #1190 carrier
-        WITHOUT a kind key) → is_confirm True, kind None, no draft."""
+        """The #1650 distinction: a legacy destructive confirm (the #1190
+        carrier WITHOUT a kind key — the documented #1664 fallback: the only
+        kindless producer ever was the destructive builder) → is_confirm
+        True, kind None, no draft."""
         offer = {
             "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
             "pending_action": {

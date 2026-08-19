@@ -600,6 +600,82 @@ async def run_todo_query_workflow(
     return await intent_service._handle_execution_intent(intent, None, session_id, user_id)
 
 
+async def run_delete_todo_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1666: delete_todo via the action-dispatch rail (DESTRUCTIVE, #1190-gated).
+
+    Carries the removed ``elif mapped_action == "delete_todo"`` branch's exact
+    body: principal coercion (#1466), the #1605 clear-family seam with
+    candidate effect DESTRUCTIVE (ambiguous "clear my reminders" shapes get
+    the three-variant flow — this seam keeps FIRST CLAIM on them because the
+    rail's confirm gate passes clear-family shapes through untouched, see
+    ``destructive_confirm.build_todo_delete_confirmation``), then the real
+    ``todo_handlers.handle_delete_todo``.
+
+    Consent lives UPSTREAM at the rail (#1190): an explicit "delete todo 3"
+    only reaches this entry point via ``run_confirm_pending_action_workflow``
+    after a crisp confirmed yes (the gate armed the ask on the classified
+    turn), or on one of the gate's verified read-only passthrough legs
+    (no principal / no number / out of range — every one returns
+    clarification copy, never a delete).
+    """
+    from services.intent.intent_service import (
+        IntentProcessingResult,
+        _coerce_todo_principal,
+    )
+    from services.intent_service import reminder_clear as _rc
+    from services.shared_types import EffectClass as _EffectClass
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "delete_todo_workflow_missing_context",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+
+    category = intent.category.value if intent.category else "execution"
+    todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
+    if not todo_user_id:
+        return IntentProcessingResult(
+            success=False,
+            message="I need you to be logged in to delete todos. Please log in and try again.",
+            intent_data={"category": category, "action": intent.action},
+            error="User not authenticated",
+            error_type="AuthenticationRequired",
+        )
+
+    # #1605: clear-family disambiguation, candidate effect DESTRUCTIVE — the
+    # ask fires in EVERY meta mode below the auto-apply bar (process steering
+    # never lowers a destructive ask). Explicit deletion phrasings
+    # ("delete todo 3") return None and proceed unchanged.
+    _clear_result = await _rc.maybe_handle_clear_family(
+        intent_service, intent, session_id, user_id, todo_user_id, _EffectClass.DESTRUCTIVE
+    )
+    if _clear_result is not None:
+        return _clear_result
+
+    message = await intent_service.todo_handlers.handle_delete_todo(
+        intent, session_id, user_id=todo_user_id
+    )
+    # Issue #748: Don't return workflow_id for synchronous operations
+    return IntentProcessingResult(
+        success=True,
+        message=message,
+        intent_data={
+            "category": category,
+            "action": intent.action,
+            "confidence": intent.confidence,
+        },
+    )
+
+
 async def run_archived_projects_query_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -1171,6 +1247,34 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # #1666: delete_todo onto the rail — the consent-gate coverage gap Arch
+    # found during the #1663 investigation. Unregistered, delete_todo never
+    # reached the #1124 rail check, fell to the legacy elif chain, and
+    # DELETED IMMEDIATELY with no confirm — while its DESTRUCTIVE tier was
+    # implicitly assumed enforced (#1663's own worked example). The elif is
+    # REMOVED in the same commit (migration completion, #1411 precedent) —
+    # this entry point carries its exact body (run_delete_todo_workflow:
+    # principal coercion, the #1605 clear-family seam, handle_delete_todo).
+    # effect: DESTRUCTIVE — todo_handlers.handle_delete_todo calls
+    # todo_service.delete_todo: the row is GONE, no recovery path, and the
+    # blast radius is the user's own data destroyed on a misparse (the
+    # position-based "todo N" resolution makes silent wrong-target deletion
+    # a real failure mode — exactly what confirming WHAT protects against).
+    # needs_confirm derives True → the #1190 gate arms at the rail via the
+    # ASYNC delete-todo builder (destructive_confirm.build_todo_delete_
+    # confirmation), which binds the real todo text into the ask.
+    # outwardness: PRIVATE (#1509 axis) — the user's own todo list; deleting
+    # a row is not a communication act (same settled boundary reasoning as
+    # close/reopen: the effect axis already covers everything worth fearing).
+    delete_todo_entry = WorkflowEntry(
+        entry_point=run_delete_todo_workflow,
+        effect=EffectClass.DESTRUCTIVE,
+        outwardness=Outwardness.PRIVATE,
+        description="Delete-todo via action dispatch (#1666)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
     # #1570: archived-projects LIST query (the #1560 pattern). Self-contained
     # entry point (needs only user_id — no intent/intent_service context), so
     # requires_context stays empty. See run_archived_projects_query_workflow's
@@ -1411,6 +1515,13 @@ def register_default_workflows() -> None:
         "create_reminder": create_reminder_entry,
         "set_reminder": create_reminder_entry,
         "add_reminder": create_reminder_entry,
+        # #1666: delete_todo + its ActionMapper raw-emission aliases
+        # (remove_todo / cancel_todo → delete_todo, #284). Canonical key
+        # first: wired_chat_actions() names each unique entry by its
+        # first-registered key.
+        "delete_todo": delete_todo_entry,
+        "remove_todo": delete_todo_entry,
+        "cancel_todo": delete_todo_entry,
         # RECONNECT #1327 gap 1: set-default-repo (QUERY category, pre-classifier action).
         "set_default_repo": set_default_repo_entry,
         # RECONNECT #1327 build #2: get-default-repo (read counterpart).
