@@ -35,8 +35,12 @@ the armed-state cases (the current router's principal loss class). Honest per-ca
 1. READ/query categories with zero armed-state interaction (status, listings, identity) — lowest
    risk, highest volume.
 2. READ categories with referents (issue detail, analyses) — exercises snapshot referents.
-3. TEMPORAL/reminder parsing LAST among queries (the #1572 clock work may land meanwhile).
-4. WRITE categories last, confirmation-gated exactly as today — decide_consent unchanged; the
+3. SYNTHESIS flip includes GRAMMAR REPRESENTATION for issue/commit summarize shapes (PA's
+   08-18 crack, verified 08-19: document-summarize entered the grammar with #1624; the
+   issue/commit shapes still ride the floor with no operation — a day-one BYOC gap in PM's
+   named parity area if left).
+4. TEMPORAL/reminder parsing LAST among queries (the #1572 clock work may land meanwhile).
+5. WRITE categories last, confirmation-gated exactly as today — decide_consent unchanged; the
    inversion proposes, the consent gate disposes. DESTRUCTIVE flips only after a full green week.
 Each flip: per-category flag, shadow-vs-live disagreement telemetry to corpus, one-command revert.
 
