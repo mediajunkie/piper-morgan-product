@@ -35,7 +35,9 @@ dead PAT rather than confabulate):
   - update_issue / update_ticket → `_handle_update_issue`
   - generate_report            → ANALYSIS cohort `_handle_generate_report`
   - close_issue / reopen_issue / comment_issue → #1124 WorkflowEntries
-  - complete_todo / create_todo / create_reminder / delete_todo → todo_handlers
+  - complete_todo / create_todo / create_reminder → todo_handlers (elif chain)
+  - delete_todo → todo_handlers via its #1666 rail WorkflowEntry (DESTRUCTIVE,
+    #1190-gated; the elif was removed with the migration)
 """
 
 import re

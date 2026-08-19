@@ -59,3 +59,29 @@ Each flip: per-category flag, shadow-vs-live disagreement telemetry to corpus, o
 Everything in 2.0–2.2 builds the artifact BYOC would expose: the grammar is the tool inventory;
 the SessionSnapshot is the tool-context contract; the consent gate is the differentiator. If the
 PA conversation chooses BYOC, Phase 2's work re-targets, none of it discards.
+
+## 2.2 CONTRACT ADDENDUM (post-#1663 ruling, Arch 2026-08-19 — binding)
+
+**Emission convention: (b), ratified.** On an armed turn the router may emit the armed flow's
+completing operation; the POP SEAM consumes flow-matching emissions as VALIDATED HINTS (binding
+the answer via the flow's own answer-handler) — never fresh-dispatched. Non-matching emission on
+an armed turn → the seam's existing re-ask. Structural, not conventional: the bad state
+(fresh-dispatch off a fragment) stays unrepresentable because pop-before-classify-before-dispatch
+is code-verified (intent_service.py:1024, Arch-checked).
+
+**Arch's required condition**: before wiring ANY flow's completing-operation binding, confirm
+PER FLOW that the arm-time question is adequate confirmation for the operation's EffectClass.
+Never transitively assumed. DESTRUCTIVE-completing flows keep their explicit confirm INSIDE the
+binding (the answer routes to the handler, the handler still confirms). #1666 is the cautionary
+precedent: delete_todo currently has NO gate — do not build its binding until #1666 lands.
+
+**Flip-1 scope (buildable now)**: zero-armed-state READ categories only (status/listing/identity
+class) — live routing call behind a per-category flag set that is DEFAULT-EMPTY (nothing flips
+without an explicit config change; revert = unset), legacy fallback on REFUSED or sub-threshold
+confidence, disagreement telemetry to the corpus either way. The seam-consumption amendment is
+NOT needed for flip-1 (no armed turns in scope) — it builds with the first armed-capable flip.
+
+**Corpus re-expression**: the armed rows' expectations restate per the flow-matching reading
+(expected = the armed flow's operation family, with the aside still expecting NONE) — done as
+part of the seam-amendment build, with the 2.1 doc left as the historical record of the
+convention question.
