@@ -1,0 +1,205 @@
+# Inversion Phase-2.1 ARMED-STATE corpus extension (#1595) — HAND-AUTHORED.
+#
+# Why a separate file (not rows in inversion_corpus_phase0.yaml):
+#   (a) the phase0 file is GENERATED and its builder dedupes by phrase key —
+#       each armed row here has a same-text stateless CONTROL twin, which the
+#       builder would silently merge;
+#   (b) scripts/inversion_phase1_shadow_score.py compares per-category match
+#       counts against a frozen PHASE0_BASELINE dict — adding asserted rows
+#       to phase0 categories would silently shift every denominator and
+#       corrupt rerun comparability;
+#   (c) Phase 2.1's instruction: preserve every existing row untouched.
+#
+# Row format (superset of the phase0 format):
+#   pair:      links an armed row to its stateless control twin (same phrase)
+#   condition: armed | control
+#   expected:  action:<canonical> | category:<NAME> | route:NONE |
+#              route:CLARIFY | REVIEW
+#     route:NONE — the correct ROUTING decision is the NONE sentinel: the
+#     turn answers the armed flow's open question (or is prose no catalog
+#     operation covers), so no fresh operation may claim it. Per the
+#     SessionSnapshot contract's serialized RULE: "a turn that plausibly
+#     ANSWERS the open question routes to that flow's handler, not to a
+#     fresh operation." The flow's handler is the offer seam, not a catalog
+#     entry — the router's honest emission is NONE.
+#   fixture:   optional; keys are EXACTLY SessionSnapshot field names
+#     (services/intent_service/session_snapshot.py). The runner constructs
+#     the real dataclass — SessionSnapshot(**fixture) — and serializes via
+#     serialize_for_prompt(); an unknown key fails loudly at load time.
+#
+# HONESTY NOTE on pending_offer_question (m-43): live assembly
+# (snapshot_assembly.py) currently yields question=None for most kinds —
+# arm sites store `summary`, not their rendered ask (see the assembly module
+# docstring). The fixtures below carry the ask copy the user ACTUALLY SAW in
+# each incident (quoted from the arm site's own question-copy functions), so
+# this run measures the contract as designed for Phase 2.2 threading —
+# where arm sites carry their rendered ask. The gate doc states this gap.
+#
+# Every phrase below is a live-incident verbatim (source cited per row);
+# nothing is invented.
+corpus:
+  # ── pair 1: reminder-clear verb question (#1605, PM live 2026-08-15 v53) ──
+  # The exception-clause fallback asked "mark done or delete?"; PM's bare
+  # answer "delete" fell past the seam to the floor's canned denial
+  # (pinned: test_reminder_clear_verb_1605.py TestExceptionClauseAnswerBinding).
+  - phrase: "delete"
+    pair: verb-question
+    condition: armed
+    category: TEMPORAL
+    expected: route:NONE
+    source: "PM live 2026-08-15 v53 (#1605 exception-clause fallback; test_reminder_clear_verb_1605.py)"
+    notes: "bare verb ANSWERS the armed either/or question; a fresh delete operation is the theft"
+    fixture:
+      pending_offer_kind: reminder_clear_verb_question
+      pending_offer_question: "Before I touch these — when you say 'clear' on a reminder, do you want me to mark it done, or delete it? I'll remember for next time."
+      pending_offer_is_confirm: false
+  - phrase: "delete"
+    pair: verb-question
+    condition: control
+    category: TEMPORAL
+    expected: REVIEW
+    source: "control twin of the #1605 v53 armed row (same text, no fixture)"
+    notes: "stateless bare verb has no single right route; the router's answer is recorded as data"
+
+  # ── pair 2: delete-confirm armed, PM types an ASIDE (#1650, PM live 08-18) ──
+  # With 'Got it — delete the reminder instead? (yes/no)' armed, PM's aside
+  # was accepted as a confirm off the '^please\s' accept row and the delete
+  # FIRED. The router must route the words, not the flow's expectation:
+  # the aside is neither an answer nor a catalog operation.
+  - phrase: "please note that I'll need to figure out later why you thought I wanted you to delete a project."
+    pair: confirm-aside
+    condition: armed
+    category: TEMPORAL
+    expected: route:NONE
+    source: "PM live 2026-08-18 (#1650 aside accepted a delete confirm; ~95 chars under the #1631 floor)"
+    notes: "risk both ways: 'delete a project' baits manage_portfolio; the armed confirm baits treating it as an answer"
+    fixture:
+      pending_offer_kind: reminder_clear_delete_confirmation
+      pending_offer_question: "Got it — delete the reminder instead? (yes/no)"
+      pending_offer_is_confirm: true
+  - phrase: "please note that I'll need to figure out later why you thought I wanted you to delete a project."
+    pair: confirm-aside
+    condition: control
+    category: TEMPORAL
+    expected: route:NONE
+    source: "control twin of the #1650 armed row (same text, no fixture)"
+    notes: "stateless it is still prose no catalog operation covers; asserted NONE both ways — this pair tests robustness, not delta"
+
+  # ── pair 3: draft armed, file-command variant (#1648 instance 1, 08-18) ──
+  # Draft armed on the #1571 carrier; PM said 'file as is thanks'; the
+  # file-command detector missed the variant, the turn routed away, and the
+  # floor roleplayed a phantom filing across four turns (zero writes).
+  - phrase: "file as is thanks"
+    pair: draft-file-command
+    condition: armed
+    category: EXECUTION
+    expected: route:NONE
+    source: "PM live 2026-08-18 (#1648 instance 1 — phantom 'Filed in test-piper-morgan'; zero writes verified)"
+    notes: "the command addresses the ARMED draft (its flow files it); a fresh create_issue would file nothing the carrier holds. Draft title untitled: the incident record does not carry the draft's title (#1630 subjectless arm renders '(untitled)')"
+    fixture:
+      pending_offer_kind: drafted_issue
+      pending_offer_question: "What should the body say? Give me the prose and I'll draft it — or say 'file it as is'."
+      pending_offer_is_confirm: false
+      draft_in_compose: true
+  - phrase: "file as is thanks"
+    pair: draft-file-command
+    condition: control
+    category: EXECUTION
+    expected: REVIEW
+    source: "control twin of the #1648 instance-1 armed row (same text, no fixture)"
+    notes: "stateless 'file as is thanks' has no referent; the router's answer is recorded as data"
+
+  # ── pair 4: draft body question open, prose answer (#1627, PM live 08-15) ──
+  # Verbatim PM_BODY_PROSE pinned in test_drafted_issue_body_steal_1627.py:
+  # the greedy portfolio pattern claimed it ("I couldn't find a project
+  # called '(a destructive action)…'") and the composed body was lost.
+  - phrase: "The problem: deleting a project (a destructive action) happens immediately — if you delete the wrong one there's no confirmation step, no undo, and no summary of what will be lost. The body should ask for a confirmation dialog before any deletion, and suggest archiving as the safer default."
+    pair: draft-body-prose
+    condition: armed
+    category: EXECUTION
+    expected: route:NONE
+    source: "PM live 2026-08-15 round 2 (#1627; PM_BODY_PROSE pinned in test_drafted_issue_body_steal_1627.py)"
+    notes: "prose ANSWERS the draft's open body question; 'delete the wrong one' baits the #1527 pattern family"
+    fixture:
+      pending_offer_kind: drafted_issue
+      pending_offer_question: "What should the body say? Give me a sentence or two and I'll draft it."
+      pending_offer_is_confirm: false
+      draft_in_compose: true
+      draft_title: "the project deletion flow"
+  - phrase: "The problem: deleting a project (a destructive action) happens immediately — if you delete the wrong one there's no confirmation step, no undo, and no summary of what will be lost. The body should ask for a confirmation dialog before any deletion, and suggest archiving as the safer default."
+    pair: draft-body-prose
+    condition: control
+    category: EXECUTION
+    expected: REVIEW
+    source: "control twin of the #1627 armed row (same text, no fixture)"
+    notes: "stateless, issue-shaped prose could defensibly route create_issue or NONE; recorded as data"
+
+  # ── pair 5: reminder time question armed, bare time answer (#1648 inst. 2) ──
+  # After the honest time-clarify ask, PM answered 'at 3pm'; the turn fell to
+  # the floor which soft-offered and then FABRICATED 'Reminder set for 3pm
+  # today.' (no row saved; verified by PM's 11:50 list turn).
+  - phrase: "at 3pm"
+    pair: reminder-time-answer
+    condition: armed
+    category: TEMPORAL
+    expected: route:NONE
+    source: "PM live 2026-08-18 (#1648 instance 2 — phantom reminder after the time-clarify exchange)"
+    notes: "the fragment ANSWERS the armed time question (whose flow holds the task text); a fresh create_reminder would lose the task"
+    fixture:
+      pending_offer_kind: reminder_time_question
+      pending_offer_question: "I caught the task — but couldn't work out the time. When should I remind you? (For example: 'at 3pm tomorrow' or 'in 2 hours'.)"
+      pending_offer_is_confirm: false
+  - phrase: "at 3pm"
+    pair: reminder-time-answer
+    condition: control
+    category: TEMPORAL
+    expected: REVIEW
+    source: "control twin of the #1648 instance-2 armed row (same text, no fixture)"
+    notes: "stateless bare time fragment has no right answer; recorded as data"
+
+  # ── pair 6: standup's own todo offer armed, acceptance turn (#1651, 08-18) ──
+  # The standup's closing copy offered to mark the overdue todo done; PM's
+  # acceptance re-stated the offer's own words and handle_complete_todo's
+  # extraction failed on 'overdue' ("I couldn't find a todo matching
+  # 'overdue'") — teach-then-deny.
+  - phrase: "Yes mark the overdue todo done."
+    pair: standup-todo-offer
+    condition: armed
+    category: EXECUTION
+    expected: route:NONE
+    source: "PM live 2026-08-18 (#1651 — the standup could not consume its own offer; todo_handlers.py:568)"
+    notes: "acceptance of the ARMED offer (which binds the todo id); a fresh complete_todo re-extracts 'overdue' and fails"
+    fixture:
+      pending_offer_kind: standup_todo_offer
+      pending_offer_question: "Also: your todo \"check in with the lead developer\" is overdue. Want me to mark \"check in with the lead developer\" done? (yes/no)"
+      pending_offer_is_confirm: false
+  - phrase: "Yes mark the overdue todo done."
+    pair: standup-todo-offer
+    condition: control
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "control twin of the #1651 armed row (same text, no fixture)"
+    notes: "stateless this IS a completion command at the routing layer (#1651's failure was extraction, one layer down — m-43); the sharpest delta pair: same words, different correct route by armed state"
+
+  # ── pair 7: repo question armed, natural-phrasing answer (#1567, 08-16) ──
+  # The 'repository not specified' refusal armed the repo question; PM's
+  # natural answer 'in the test-Piper-Morgan repository' was never extracted
+  # and the flow dead-ended.
+  - phrase: "in the test-Piper-Morgan repository"
+    pair: repo-question-answer
+    condition: armed
+    category: QUERY
+    expected: route:NONE
+    source: "PM live (#1567 repo clarification dead-end; dev/2026/08/16/2026-08-16-2251-prog-code-log.md)"
+    notes: "ANSWERS the armed repo question. is_confirm=true is FAITHFUL to live assembly: the repo question rides CONFIRM_PENDING_ACTION_WORKFLOW (repo_clarification.py:459) so snapshot_assembly marks it confirm — rendering wrinkle flagged in the gate doc"
+    fixture:
+      pending_offer_kind: issue_repo_question
+      pending_offer_question: "Which repository should I use? Give me the owner/name (like octocat/hello-world) — or just the repo name and I'll find it among your repositories."
+      pending_offer_is_confirm: true
+  - phrase: "in the test-Piper-Morgan repository"
+    pair: repo-question-answer
+    condition: control
+    category: QUERY
+    expected: REVIEW
+    source: "control twin of the #1567 armed row (same text, no fixture)"
+    notes: "stateless prepositional fragment has no right answer; recorded as data"

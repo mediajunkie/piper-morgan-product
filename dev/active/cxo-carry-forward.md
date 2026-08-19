@@ -1,3 +1,19 @@
+# CXO carry-forward — rewritten 2026-08-19 07:2x PT
+
+**07:17 START — checked thoroughly whether the FTUX conversation happened; it hasn't yet.** Searched
+mailbox, `decisions.log`, and every mail file modified since the strategic brief landed — only my own prep
+memo and its distribution exist. **Not chasing** — PM sets the pace per Lead's own brief. Prep
+(`reply-cxo-to-lead-cc-pm-ftux-prep-my-read-before-the-conversation-2026-08-18.md`) is sent and ready
+whenever it happens: platform-dependent reframe of chat-first vs. structured-first via the surfaces
+taxonomy, #1625's upcoming-reminders question connected concretely.
+
+**Board check**: #1536/#1539/#1625/taxonomy doc all unchanged. **Nothing owed by me right now** — still
+watching for the conversation to happen, not manufacturing action while it's pending.
+
+---
+
+*(08-18 22:2x header below, left as last night's fuller STOP record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-18 22:2x PT at STOP. Day closed; next fire 06:47 on 08-19, opening
 ~07:17.
 
