@@ -18,9 +18,17 @@ _Rewritten 2026-08-16 ~15:45 PT._
 - Memory-index packing + CIO-caught floor-claim fix (agent-facing, no user surface)
 PM's 12-item v56 test plan UNTESTED as of this write — verdicts drive next loop.
 
-## Next wave (in order)
-1. **Inversion Phase 2 (SessionSnapshot threading) — MINE, PM confirmed 8/15 ("hold the reins").**
-   Fresh-session start, not tail-of-marathon.
+## Next wave (in order) — REORDERED by PM's 8/18 fundamentals-first ruling
+1. **INVERSION PHASE 2 IS NOW THE PRIMARY LANE** — PM 8/18: "hard to test some features with so
+   much brittleness in the interpretation of intent layer… work on those fundamentals and clear
+   them before fine tuning issue creation and file summarization." The banked trigger has arrived.
+   Phase 2 = SessionSnapshot threading (armed carriers/active flows/recent referents visible to
+   the constrained routing call — kills turn-theft + orphaned-answer classes structurally), then
+   Phase 3 cutover gated on the corpus (which now holds every live deposit from PM's rounds).
+   Feature fine-tuning PAUSED except broken-infrastructure repairs (#1656 upload, #1657 resolver).
+1b. **File-lane repairs run parallel as agent lanes** (infrastructure, not fine-tuning): #1656
+   upload broken (CRITICAL, no live coverage existed), #1657 resolver wrong-empty on a real old
+   row. #1658 parity umbrella routed to PPM, queued behind Inversion per the same ruling.
 2. **Beta-conditions audit — PM RULING via Exec 8/15 (decisions.log 15:22)**: I own checking PM's
    verbatim beta conditions against open MVP issues at the sprint's FINAL GATE, plus an independent
    subagent cross-check (second perspective, not rubber stamp). Not urgent until gate approaches.

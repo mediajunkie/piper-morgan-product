@@ -22,11 +22,28 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-class FileResolver:
-    """Intelligent file reference resolution"""
+# Filename-shaped tokens a user types to name a specific document
+# ("summarize artifact-8b029c94.md", "summarize q3-roadmap.pdf"). Extension
+# list is deliberately conservative — only types the product actually stores
+# or projects (#1657).
+_FILENAME_TOKEN_RE = re.compile(
+    r"(?<![\w.-])[\w-]+\.(?:pdf|docx?|txt|md|markdown|csv|tsv|xlsx?|pptx?|json)(?![\w.-])",
+    re.IGNORECASE,
+)
 
-    def __init__(self, file_repository: FileRepository):
+
+class FileResolver:
+    """Intelligent file reference resolution
+
+    #1657: resolution candidates are the SAME set the Files listing shows —
+    uploaded_files ∪ the owner's generated artifacts (#355: /files is a view
+    over both). Pass an ArtifactRepository to include artifacts; without one
+    the resolver is uploads-only (legacy callers/tests unchanged).
+    """
+
+    def __init__(self, file_repository: FileRepository, artifact_repository=None):
         self.repo = file_repository
+        self.artifact_repo = artifact_repository
 
         # File type preferences for different intent actions
         self.file_type_preferences = {
@@ -79,14 +96,31 @@ class FileResolver:
         if is_temporal_reference:
             # For temporal references, search across sessions (but scoped to this user)
             files = await self.repo.get_recent_files_all_sessions(session_id, days=7)
-            if not files:
-                return None, 0.0
+            files = files + await self._artifact_candidates(session_id, days=7)
         else:
             # Get all files for the current session
             files = await self.repo.get_files_for_session(session_id, limit=20)
+            files = files + await self._artifact_candidates(session_id)
 
-            if not files:
-                return None, 0.0
+        if not files:
+            return None, 0.0
+
+        # EXPLICIT FILENAME (#1657): the user typed a stored filename verbatim
+        # ("summarize artifact-8b029c94.md"). An exact, unique match wins
+        # outright — never routed through fuzzy scoring, where a hash-shaped
+        # name loses to recency/type noise. And if the message names a
+        # filename-shaped token that matches NO candidate, answer honestly
+        # (None) instead of summarizing the best-scoring OTHER document.
+        exact_matches = [
+            f for f in files if f.filename and self._filename_in_message(f.filename, original_message)
+        ]
+        if len(exact_matches) == 1:
+            return exact_matches[0].id, 0.98
+        if len(exact_matches) > 1:
+            raise AmbiguousFileReferenceError(exact_matches[:3], [0.98] * min(len(exact_matches), 3))
+        if _FILENAME_TOKEN_RE.search(original_message):
+            # A specific filename was named and nothing the user owns bears it.
+            return None, 0.0
 
         # SPECIAL CASE: If only one file in session and explicit reference
         # ("the file", "that file", "file I uploaded"), use it with high confidence
@@ -129,6 +163,43 @@ class FileResolver:
 
         # Return result with confidence
         return best_file.id, best_score
+
+    async def _artifact_candidates(self, owner_id: str, days: Optional[int] = None):
+        """The owner's generated artifacts, projected into UploadedFile shape (#1657).
+
+        Same owner-scoped set the /files listing shows (files.py #355 block:
+        list_for_owner(owner, source_type="generated")) — never widened. With
+        ``days``, mirrors the temporal path's recency cutoff.
+        """
+        if self.artifact_repo is None:
+            return []
+        from services.file_context.artifact_view import artifact_as_file_view
+
+        try:
+            artifacts = await self.artifact_repo.list_for_owner(
+                owner_id, source_type="generated", limit=20
+            )
+        except Exception as e:
+            # The listing degrades the same way (files.py: artifacts = []) —
+            # an artifact-store hiccup must not take uploads resolution down.
+            logger.error(f"Artifact candidate fetch failed for {owner_id}: {e}")
+            return []
+        views = [artifact_as_file_view(a) for a in artifacts]
+        if days is not None:
+            from services.utils.datetime_utils import ensure_utc, utc_now
+
+            cutoff = utc_now() - timedelta(days=days)
+            views = [
+                v for v in views if v.upload_time and ensure_utc(v.upload_time) > cutoff
+            ]
+        return views
+
+    @staticmethod
+    def _filename_in_message(filename: str, message: str) -> bool:
+        """True when the stored filename appears verbatim in the message,
+        bounded so 'report.pdf' never matches inside 'old-report.pdf' (#1657)."""
+        pattern = r"(?<![\w.-])" + re.escape(filename.lower()) + r"(?![\w.-])"
+        return re.search(pattern, message.lower()) is not None
 
     def _calculate_score(self, file: UploadedFile, intent: Intent) -> float:
         """Multi-factor scoring algorithm with optional content relevance"""

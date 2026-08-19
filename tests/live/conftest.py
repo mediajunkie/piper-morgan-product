@@ -238,9 +238,17 @@ class TurnDriver:
         """Authenticated GET against the live server (e.g. /api/v1/auth/me)."""
         return self._client.get(path, **kwargs)
 
-    def raw_turn(
-        self, message: str, session_id: str, timeout: float = 60.0
-    ) -> httpx.Response:
+    def post(self, path: str, **kwargs) -> httpx.Response:
+        """Authenticated POST against the live server — RAW response, no
+        policing. For non-intent endpoints (e.g. multipart file upload,
+        #1656); assertions belong in the test."""
+        return self._client.post(path, **kwargs)
+
+    def delete(self, path: str, **kwargs) -> httpx.Response:
+        """Authenticated DELETE against the live server (raw response)."""
+        return self._client.delete(path, **kwargs)
+
+    def raw_turn(self, message: str, session_id: str, timeout: float = 60.0) -> httpx.Response:
         """POST one message to /api/v1/intent and return the RAW response —
         no status/degradation policing. For tests whose SUBJECT is an HTTP
         refusal (e.g. the #1532 ownership 404): the assertion belongs in the
@@ -560,9 +568,9 @@ def _login_driver(live_server, user: LiveUser) -> tuple[httpx.Client, "TurnDrive
         "/api/v1/auth/login",
         data={"username": user.username, "password": user.password},
     )
-    assert resp.status_code == 200, (
-        f"Programmatic login failed (HTTP {resp.status_code}): {resp.text[:500]}"
-    )
+    assert (
+        resp.status_code == 200
+    ), f"Programmatic login failed (HTTP {resp.status_code}): {resp.text[:500]}"
     body = resp.json()
     assert body.get("token"), "Login returned 200 but no token in body"
     assert client.cookies.get("auth_token"), (

@@ -1,3 +1,34 @@
+# CXO carry-forward — rewritten 2026-08-18 19:2x PT
+
+**19:17 fire — real prep work for an imminent PM conversation**: Lead briefed me ahead of PM coming
+directly to discuss *"should FTUX even be a chat?"* — PM's discouraged after four live test rounds this
+week kept finding interpretation-layer brittleness (10/15 chat tests passing, 5 misses all
+first-impression-lethal). Read Lead's full strategic brief (`conversational-layer-strategic-brief-2026-08-
+18.md`) before forming a position.
+
+**My read, sent as prep not a ruling**: the "chat-first vs. structured-first" question is a false binary —
+it's platform-dependent, and my own surfaces taxonomy (confirmed v0.2 this week) is the instrument that
+shows why. On Web, structured-first is buildable and lower-risk (Radar/Files lead; matches F-FirstRun's
+original May scoping as a templated, non-LLM-touch surface). On chat hosts, there's no separate structured
+landing to lead with — #1536's first-contact rail (deterministic, minimal-interpretation first turn) IS the
+structured-first equivalent for that platform, already built. Same principle, two platform-native
+instantiations, not competing options.
+
+**Checked #1625 rather than assuming it was still where I'd left the Radar review**: found PM live-tested
+08-18 and was surprised by an empty pinned section (correct per the due-only ruling, but a real design
+signal) — expected to see upcoming reminders somewhere. Connected this directly to the FTUX question: if
+Web goes structured-first, an incomplete-feeling Radar on a new user's first visit undermines the whole
+"Piper already knows your stuff" thesis. Posted a lean (show upcoming reminders as ordinary unpinned
+entries) on the issue, not decided unilaterally.
+
+**Sent the full prep to Lead cc PM**, explicit that it's ready-for-the-conversation, not a substitute for
+it. #1536/#1539 still unchanged. **Watching for the actual PM conversation to happen — that's the live
+thread now, more than any single tracked issue.**
+
+---
+
+*(08-18 07:2x header below, left as this morning's fuller record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-18 07:2x PT
 
 **07:17 START — the flagged cron priority, handled**: `fa499dae` was ~6 hours from its 7-day auto-expiry

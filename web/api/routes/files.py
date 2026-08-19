@@ -127,19 +127,23 @@ async def upload_file(
                 detail=f"Unsupported file extension: {file_path.suffix}. Allowed extensions: {', '.join(ALLOWED_EXTENSIONS)}",
             )
 
-        # 6. Create user-isolated directory
-        upload_dir = get_upload_base() / current_user.sub
-        upload_dir.mkdir(parents=True, exist_ok=True)
-
         # 7. Generate unique file ID and safe filename
         file_id = str(uuid.uuid4())
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        safe_filename = f"{timestamp}_{file_id}_{file.filename}"
-        safe_file_path = upload_dir / safe_filename
 
-        # 8. Save file to disk — through the #1306 encrypt seam (this route
-        # previously bypassed save_file_to_storage with a raw open/write).
+        # 6+8. Create user-isolated directory and save to disk — through the
+        # #1306 encrypt seam (this route previously bypassed
+        # save_file_to_storage with a raw open/write). The mkdir lives INSIDE
+        # this try (#1656): on Fly, a root-owned /data mount made the mkdir
+        # itself raise EACCES for the app user, and with the mkdir outside
+        # this block that surfaced as the generic "Failed to upload file"
+        # instead of the honest storage error. Any OSError from here is one
+        # failure domain: storage is broken.
         try:
+            upload_dir = get_upload_base() / current_user.sub
+            upload_dir.mkdir(parents=True, exist_ok=True)
+            safe_filename = f"{timestamp}_{file_id}_{file.filename}"
+            safe_file_path = upload_dir / safe_filename
             write_file_to_storage(safe_file_path, file_content)
 
             logger.info(
@@ -150,13 +154,14 @@ async def upload_file(
                 path=str(safe_file_path),
                 size=file_size,
             )
-        except IOError as e:
+        except OSError as e:
             logger.error(
                 "file_save_failed",
                 user_id=current_user.sub,
                 file_id=file_id,
                 filename=file.filename,
                 error=str(e),
+                exc_info=True,  # #1656: the traceback names the failing path
             )
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -623,9 +628,7 @@ async def download_file(
             return Response(
                 content=raw,
                 media_type=file.file_type or "application/octet-stream",
-                headers={
-                    "Content-Disposition": f'attachment; filename="{file.filename}"'
-                },
+                headers={"Content-Disposition": f'attachment; filename="{file.filename}"'},
             )
 
     except HTTPException:
@@ -825,7 +828,9 @@ async def download_bulk(
                         if not p.exists():
                             skipped += 1
                             continue
-                        zf.writestr(_dedupe(file.filename or fid), read_file_from_storage(p))  # #1306
+                        zf.writestr(
+                            _dedupe(file.filename or fid), read_file_from_storage(p)
+                        )  # #1306
                         added += 1
                 except Exception as e:  # one bad item must not kill the zip
                     logger.warning("bulk_download_item_skipped", item_id=fid, error=str(e))
