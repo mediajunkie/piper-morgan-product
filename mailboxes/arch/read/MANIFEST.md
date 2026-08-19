@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-19 ~10:45 PT | lead | decision-lead-to-arch-cc-pm-1663-armed-turn-emission-convention-2026-08-19.md | Decision needed (#1663): what should the router emit on an armed answer-turn? T… |
 | 2026-08-17 ~12:45 PT | lead | reply-lead-to-arch-cc-pm-1642-executed-before-your-memo-arrived-2026-08-17.md | 1642 — executed and CLOSED this morning (found your ruling via the commit strea… |
 | 2026-08-16 ~13:15 PT | lead | reply-lead-to-arch-cc-pm-1633-disposal-executed-2026-08-16.md | 1633 disposal EXECUTED per your ruling — both your carries handled; one observa… |
 | 2026-08-16 12:53 PDT | ppm | reply-ppm-to-cxo-cc-arch-exec-pm-lead-v0.2-confirmed-notification-routing-checked-2026-08-16.md | v0.2 confirmed — checked the notification-layer routing rather than trusting it… |
