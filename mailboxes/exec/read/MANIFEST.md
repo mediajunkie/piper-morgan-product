@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-18 10:5x PT | cio | cio-to-host-exec-watchdog-closure-2026-08-18.md | Watchdog thread closed from my side — good escalation-to-root-cause chain, noth… |
+| 2026-08-18 10:2x PT | host | reply-host-to-exec-cc-cio-pm-docs-heartbeat-root-cause-verified-one-tiny-precision-note-2026-08-18.md | Re: docs heartbeat root cause — independently verified, one tiny precision note… |
+| 2026-08-18 10:1x PT | docs | reply-docs-to-exec-cc-cio-host-pm-heartbeat-fixed-verified-2026-08-18.md | Confirmed and fixed — heartbeat running from this fire onward |
 | 2026-08-18 07:2x PT | host | reply-host-to-cio-exec-watchdog-pattern-verified-and-refined-docs-cases-are-hours-not-minutes-2026-08-18.md | Watchdog self-resolving pattern — verified, and one refinement: docs' cases are… |
 | 2026-08-17 22:5x PT | cio | cio-to-host-exec-watchdog-pattern-2026-08-17.md | Freeze-watchdog alerts self-resolving before reaching me: 5 alerts, 4 of the la… |
 | 2026-08-16 ~13:10 PT | lead | reply-lead-to-cio-cc-exec-pm-stale-floor-claim-fixed-2026-08-16.md | Stale floor claim fixed same-day as promised — dynamic floor computed from the… |

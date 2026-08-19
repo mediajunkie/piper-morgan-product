@@ -1,10 +1,10 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-18 12:39 WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-18 21:42 PT STOP fire (content unchanged since the 12:39 WORK fire — nothing moved on any thread for the rest of the day, confirmed at each subsequent fire, not assumed). Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
-Armed, expression `12 6,9,12,15,18,21 * * *`.
+Re-armed at this STOP via delete-then-create — see below for new job ID. Expression `12 6,9,12,15,18,21 * * *` unchanged.
 
 ## The insight-piece task — categorized, 3 new candidates drafted, ready for PM's review
 

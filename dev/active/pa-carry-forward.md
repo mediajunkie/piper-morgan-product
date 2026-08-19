@@ -30,26 +30,21 @@ days stale.
   item above is the same root cause. If live UI verification becomes a recurring PA ask, worth deciding
   whether to provision a browser on this seat or route that class of work elsewhere (PM's own browser, a
   different agent seat, or a dedicated QA pass) — code-level inspection is a real but weaker substitute.
-- ✅ **ALPHA_FEATURE_GUIDE refresh — PA's part DONE 08-13.** 7 of 11 flagged items resolved at the code
-  layer, folded into Docs's draft. **PM is doing the 4-item live click-through directly** (picked it up
-  same-day) — nothing further owed from PA; Docs folds PM's results and ships.
-- ✅ **`origin/production`-is-stale, now documented** — CLAUDE.md Quick Reference carries the durable
-  note (2026-08-14) so the next agent doesn't re-derive it under time pressure the way PA had to.
 - 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a
   claim, not metadata.
-- 🟢 **Architecture diagram — REVISION 1 SHIPPED 08-10**, direct conversation with PM. Corrected the
-  surface-primacy error (08-01 diagram wrongly said web was "largely deleted"/"no first screen we own" —
-  contradicts PM's own 08-08 correction; flagged as a plausible SOURCE of the withdrawn "which surface
-  survives" sort key, not asserted as proven). Artifact:
-  https://claude.ai/code/artifact/3cfc6edf-6757-415e-8487-955d496548c5 · source
-  `dev/active/pdr-006-architecture-2026-08-10-rev1.html` (08-01 original untouched — cited across this
-  week's mail archive). **PM is reviewing and will return with notes — pace is PM's, don't chase.**
-  ⭐ **Open question PM raised, unresolved, mine to keep live**: when a user's own LLM client already has
-  an independent MCP connector to a service Piper also connects to, does it matter which one supplies the
-  data? **My answer (given, not yet re-confirmed by PM): yes** — (1) only data through Piper's own server
-  composts into the colleague model, (2) only Piper's connectors sit inside the identity/consent boundary,
-  (3) two tools for one job is the alias-collision problem across providers. **No existing doc addresses
-  this** (checked PDR-006 + ADR-070; ADR-070's BYOC is the opposite direction — Piper as client).
+- 🔴 **BYOC/conversational-layer strategic conversation — LIVE, PM said "tonight" (08-18), discouraged
+  tone, hoping for clarity.** Lead's brief: `docs/internal/product/conversational-layer-strategic-brief-
+  2026-08-18.md`. PA's full reply (positions + a real crack found in the "grammar = MCP tool inventory"
+  convergence — summarize has zero representation in the 62-op grammar, lives in a separate regressed
+  floor path, which also directly explains part of PM's prototype-parity complaint) is in
+  `mailboxes/pa/sent/reply-pa-to-lead-cc-pm-byoc-prep-crack-found-plus-positions-2026-08-18.md`. **This
+  is the same underlying topic as the 08-10 architecture-diagram connector-overlap question** — PA's
+  answer there (yes, it matters which connector supplies data — identity/consent boundary, colleague-
+  model composting, alias-collision) is directly load-bearing for tonight's "which surfaces stay
+  first-party" question. Diagram itself: revision 1 shipped 08-10, artifact
+  https://claude.ai/code/artifact/3cfc6edf-6757-415e-8487-955d496548c5, PM still reviewing at their own
+  pace. **Ready for the live conversation whenever PM has it — not chasing, but this is the active
+  thread right now, not background.**
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
