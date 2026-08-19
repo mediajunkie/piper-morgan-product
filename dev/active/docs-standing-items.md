@@ -1,74 +1,96 @@
 # Docs Standing Items (Task List per v0.6 Duty Cycle)
 
-**Purpose**: durable task list per v0.6 Duty Cycle architecture (reframed standing-items = task list, per Architectural Decision 1).
+**Purpose**: durable task list per v0.6 Duty Cycle architecture (reframed standing-items = task
+list, per Architectural Decision 1). This is the slow-moving durable list — for fast-moving
+session-to-session state, read `dev/active/docs-carry-forward.md` first; it's the higher-fidelity
+source and is rewritten every substantive fire.
 
 **Owner**: Documentation Management (Docs)
-**Last refresh**: 2026-05-27 12:05 PT — initial creation at v0.6 cycle adoption
+**Last refresh**: 2026-08-19 13:0x PT — full rewrite. The prior version (unrefreshed since
+2026-05-27, with checkbox items dated through 06-15) had gone stale to the point of being
+misleading: 6 of its cited GitHub issues (#1058, #974, #972, #1127, #1128, #1206) are all
+CLOSED (verified live via `gh issue view` this fire), and 2 of its 4 "Watch surfaces" items
+(Comms process-tightening, Web publish-post.js bugs) are long since resolved by other means
+this week (website#31 closed 2026-08-13). Kept only what's still genuinely open, verified live.
 
 ---
 
 ## Active items
 
-### Critical-docs YAML-frontmatter upgrade (PM-directed 2026-05-28; systematic plan, supervised subagents)
+### Critical-docs YAML-frontmatter upgrade (PM-directed 2026-05-28; still genuinely incomplete)
 
-PM directive: upgrade critical docs to proper YAML frontmatter; I prompt + supervise + validate subagents. **Validated pattern** (briefing pilot, commit `b40876b87`): subagent prepends frontmatter extracting existing metadata (type/title/valid_from/last_updated from body or git first-commit date), body untouched; I validate via `git diff --numstat` (must show 0 deletions) + spot-check + confirm all start with `---`.
+PM directive: upgrade critical docs to proper YAML frontmatter; Docs prompts + supervises +
+validates subagents. **Validated pattern** (briefing pilot, `b40876b87`): subagent prepends
+frontmatter extracting existing metadata, body untouched; validate via `git diff --numstat`
+(0 deletions) + spot-check + confirm `---` start.
 
-Schema: `type:` (briefing|methodology|adr|pattern|memory) + `title:` (from H1) + `valid_from:` + class-specific (number/status for adr/pattern/methodology; last_updated for briefing/methodology). `valid_from` ties to #972 temporal-validity.
+Schema: `type:` (briefing|methodology|adr|pattern|memory) + `title:` + `valid_from:` +
+class-specific fields (number/status for adr/pattern/methodology; last_updated for
+briefing/methodology).
 
-- [x] **Briefing (17)** — DONE, validated, committed `b40876b87`
-- [ ] **ADRs (69)** — uniform header (# ADR-NNN: Title + Status/date); add type/number/title/status/date/valid_from. Supervised subagent + validate.
-- [ ] **Patterns (80)** — # Pattern-NNN: Name + Status (emerging/proven); add type/number/name/status/valid_from.
-- [ ] **Methodology (52)** — # Methodology NN: Title + Last-updated line; add type/number/title/valid_from/last_updated.
-- [ ] **.serena/memories (29)** — plain markdown, varied; add type: memory + title + valid_from (git date). Lower priority (Serena tool memory, not the #972 institutional-memory target).
+- [x] **Briefing (17)** — DONE, `b40876b87`.
+- [ ] **ADRs (~78)** — spot-checked live this fire: still plain `# ADR-NNN: Title` headers, no
+  frontmatter block. Genuinely not started beyond the pilot.
+- [ ] **Patterns (~80)** — spot-checked live this fire: still `# Pattern-NNN: Name` + `## Status`,
+  no frontmatter. Genuinely not started.
+- [ ] **Methodology (~52)** — not verified this fire; assume not started absent evidence.
+- [ ] **.serena/memories (~29)** — lower priority (Serena tool memory, not the institutional-
+  memory target the directive was really aimed at).
 
-Each remaining class = one supervised work-block (cron Task Loop or PM-engaged). Same validation gate.
+Dormant since the briefing pilot (2.5+ months, no further progress logged). Worth a direct check
+with PM on whether this is still wanted at this priority, rather than continuing to carry it
+silently — flag at next PM engagement rather than resume unprompted.
 
-**Watch**: confirm no line-1 parser breaks from added frontmatter. BRIEFING-CURRENT-STATE freshness hook reads the body "Last Updated" line (still present) → unaffected. Verify ADR/pattern index generators + any tooling that greps line-1 `# ` before scaling.
+### Cycle / daily ops (recurring, still current)
 
-### Lane work
+- [ ] **Daily merge-keeper sweep** — Docs-owned; catches stranded session logs / unmerged
+  feature-branch work within 24h. Per Sign-Off Discipline.
+- [ ] **MANIFEST regen across mailboxes** — after mail-discipline operations;
+  `scripts/regenerate-mailbox-manifests.py --role docs`.
+- [ ] **Omnibus log cadence** — daily synthesis for prior day, `create-omnibus` skill. **Note**:
+  the cadence slipped twice this week (3-day gap 08-14/15/16, then a 2-day gap 08-17/18 — both
+  found and closed same-week, not by external flag). Verify 08-19 gets its omnibus on 08-20
+  without a third gap; if it slips again that's a pattern worth naming, not just re-fixing.
 
-- [x] **#1058 Template hygiene** — CLOSED 2026-06-15. Delivered via #1206: agent-prompt-template v10.4 + gameplan-template v9.5 (four-tier model reframe) + v9.6 (stale A.2 worktree block trim). Arch-ratified.
-- [ ] **#974 MEM-EVAL pilot data collection** — runs from May 26 wrap onward. Aggregate ≥3 sessions per role, target ~early June for first evaluation. Tracker doc: `docs/internal/operations/memory-eval-pilot.md`.
-- [ ] **#972 MEM-TEMPORAL field-spec work** — Spec at **v0.4** (`docs/internal/operations/memory-frontmatter-temporal-fields-spec.md`, `c9dea12c8` 2026-06-15). Schema: `valid_from`+`last_verified` (expected) + `valid_until`+`superseded_by` (optional). Janus alignment incorporated. **P2 remaining**: (a) session-log-instructions disposition (PM ratification needed — recommend drop by point-in-time logic), (b) briefings `last_verified` stamp (as-touched, not bulk), (c) ADRs/patterns/methodology opportunistic YAML upgrade (ongoing), (d) `valid_until` vs `ended` pending PM bridge to Daedalus; (e) close issue once (a) resolves.
+## Watch surfaces (things owned by others, checked periodically — don't re-derive, don't re-chase)
 
-### Cycle / daily ops
-
-- [ ] **Daily merge-keeper sweep** — Docs-owned discipline catching stranded session logs and unmerged feature-branch work within 24h. Per Sign-Off Discipline.
-- [ ] **MANIFEST regen across mailboxes** — typically after mail-discipline operations; script `scripts/regenerate-mailbox-manifests.py`.
-- [ ] **Omnibus log cadence** — daily synthesis for prior day per `create-omnibus` skill.
-
-### Watch surfaces
-
-- [ ] **Comms process-tightening proposal** — outstanding from Sun May 24 + Mon May 25 memos on orphan drafts. Comms cadence.
-- [ ] **Web publish-post.js bugs** — 2 memos filed: Tue 17:50 (edit-pass mirror bug) + today (inline-image conversion gap). Web cadence.
-- [ ] **HOST trust-lens input on memory-eval pilot** — at HOST cadence after pilot data accumulates (~early June).
-- [ ] **Pattern README catalog refresh (#1127)** — filed today; Lead Dev + Architect lane.
-- [ ] **Roadmap refresh (#1128)** — filed today; PPM lane.
-- [ ] **GitHub Actions operational refactor** — Lead Dev primary; memo filed today (Architect + CIO CCs).
+- [ ] **`last_verified: "2026-06-19"` bulk-stamp cluster** — flagged 2026-07-30 (Arch/CIO), still
+  87% unrefreshed as of the 2026-08-17 Weekly Docs Audit (#1643). Cohort-wide, no single owner.
+  Check again at next Monday audit; escalate by name if still stale then.
+- [ ] **BRIEFING-CURRENT-STATE engineering/CI/backlog staleness** — 22 days stale under a 5-day
+  banner, found 2026-08-17 (#1643). Lead Dev's lane, flagged, not chased.
+- [ ] **`universal-list-architecture-guide.md` duplicate** — two paths, diverged content, Sept
+  2025 reorg artifact. Lead Dev's lane, flagged 2026-08-17.
+- [ ] **#1644** — 56 residual broken links + roadmap.md date discrepancy (PPM). Filed 2026-08-17
+  from the #1643 audit. Open, unowned action beyond the original filing.
+- [ ] **Feature-guide 4-item PM click-through** — PA's code-level verification is done; 4 items
+  need a live browser PM doesn't have on their Amber seat's normal path. PM said they'd take it
+  directly (2026-08-16); status of completion unconfirmed as of this refresh — surface at next
+  PM engagement, don't chase.
 
 ## Blocked items
 
-(none currently — #972 unblocked yesterday)
+(none currently)
 
-## Recently completed (rolling, ~7 days)
+## Recently completed (rolling, ~7 days — see session logs / omnibus for full detail)
 
-- Jun 15 — **#1206 all 3 items closed**: gameplan-template v9.5/v9.6 + agent-prompt-template v10.4 (four-tier model + A.2 trim); Arch-ratified
-- Jun 15 — **#972 MEM-TEMPORAL spec v0.4** shipped (`c9dea12c8`); field-names reconciled with CIO schema
-- Jun 15 — **Layer C pre-commit hook** (`pre-commit-reconcile-drafts.sh`, `fd6003a9d`); warn-first per Comms go-signal
-- Jun 15 — **June 14 omnibus** (HIGH-COMPLEXITY: COORDINATION, 14 sessions, `c5104bf8d`)
-- Jun 15 — cleanup-dev-active: ~200+ → 57 files in dev/active/
-- Jun 15 — duty-cycle-tick v1.9: pre-staging discipline added to Step 6
+- 2026-08-19 — **Weekly Ship #056 "Fundamentals First"** published, live-verified, 2 real defects
+  caught+fixed, 5 load-bearing claims fact-checked against primary logs, Exec notified.
+- 2026-08-19 — **Omnibus backfill, 08-17 + 08-18** (2-day gap found+closed same-day, 27 session
+  logs synthesized, 27 activity-log rows appended, 2 genuine cross-role discrepancies preserved).
+- 2026-08-17 — **Weekly Docs Audit #1643 CLOSED** — 7 real fixes, 2 systemic findings surfaced
+  (not swept under the rug), #1644 filed for residuals.
+- 2026-08-17 — **Omnibus backfill, 08-14/15/16** (3-day gap found+closed, chain verified
+  continuous 07-27→08-16).
+- 2026-08-18 — **9-day duty-cycle-heartbeat gap found+fixed** (Exec found, HOST verified, Docs
+  fixed same-fire, now a standing per-fire practice).
+- 2026-08-13 through 08-16 — 4 blog posts published end-to-end (Alpha Launches, Confabulating a
+  Peer's Unfinished Work, The Fabricating Standup, The Architect's Own Trap), zero rendering
+  defects; website#31 publish-post.js rendering bug found, fixed, back-applied to 15 historical
+  Ships.
 
 ---
 
-*This file is task-list-as-standing-items per v0.6 architectural decision 1. Append/edit during cycle fires; durable across sessions; never deleted.*
-
-### Agent 360 v0.3 response (HOST-requested 2026-06-03; backstop ~June 10)
-
-Post-migration benchmark questionnaire. Respond via markdown memo to `mailboxes/host/inbox/agent-360-response-docs-2026-06-0X.md`.
-- Questionnaire: `dev/active/agent-360-questionnaire-v0_3.md` (read Instructions first).
-- Docs has NO v0.2 baseline (Docs/Lead/PA didn't field v0.2) → answer §7 from observed Code-era experience; skip prediction-comparison prompts.
-- Answer the Docs-specific §8 section + §10 duty-cycle adopter block. Friction + tacit-knowledge answers valued over satisfaction.
-- Time Lord: June 10 backstop, not pacing — fold into a cycle fire when it fits.
-
-  **✅ DONE 2026-06-03**: Agent 360 v0.3 response filed to HOST (cc PM) — `mailboxes/host/inbox/agent-360-response-docs-2026-06-03.md` (main `c286d5330`). Answered §1-2/5-10 + Docs §8 + adopter §10; friction + tacit-knowledge focus. Ahead of the June 10 backstop.
+*This file is task-list-as-standing-items per v0.6 architectural decision 1. Append/edit during
+cycle fires; durable across sessions; never deleted — refresh instead of letting it drift, per
+the 2026-08-19 rewrite that prompted this note.*

@@ -16,6 +16,11 @@ scheduled=22:47 actual=22:47:03 PDT offset=+0m 3s
 scheduled=22:52 actual=22:52:03 PDT offset=+0m 3s
 scheduled=22:57 actual=22:57:04 PDT offset=+0m 4s
 
+## Fourth reading — idle-duration-matched one-shot, 2026-08-19
+
+<!-- one-shot cron created 10:39 PT 2026-08-19, target 15:39 PT same day (~5h idle gap,
+matching the recurring cron's own inter-fire gap) -- appended when it fires -->
+
 ## Conclusion
 
 **Offsets**: +3s, +3s, +4s. **Mean**: ~3.3s. **Spread**: 1s (max 4s − min 3s).
@@ -103,3 +108,30 @@ alone pointed the wrong way. **Still not proven**: three data points, not a cont
 designed isolation. The actual isolating test (recurring short-period cron vs. one-shot, ideally
 run once on CCR-trigger substrate and once off it) still hasn't happened — now with a much sharper
 idea of which substrate difference to hold constant and which to vary.
+
+## A confound in my OWN 08-15 test, found 2026-08-19 re-reading the design against Janus's mechanism
+
+Janus's 08-19 explainer of CCR-trigger's mechanics (provisioning a sandboxed session per fire,
+possibly queuing behind tenant load) prompted a re-read of my own original design, and it has a
+confound I hadn't caught: **the three one-shot test fires were scheduled 5-15 minutes after
+creation, from a session that was actively mid-fire (STOP work in progress).** If CCR-trigger's
+latency comes from re-provisioning a session after it's gone idle for a while — not from
+"recurring" as such — then my one-shot test never actually tested the cold-start case at all. It
+tested "one-shot, fired minutes after creation from a warm/recently-active session" against
+"recurring, fired after hours of idle time" — two things differing in *both* recurring-ness *and*
+idle-duration, not one variable in isolation.
+
+**This reconciles Janus's provisioning-hop hypothesis with my own within-project data**, which the
+three-project comparison alone couldn't do: if provisioning-hop scales with idle duration rather
+than being a fixed recurring-job tax, a one-shot fire scheduled hours out (long idle gap, same as
+my recurring cron's inter-fire gap) should show the ~30-min signature too, and a one-shot fired
+minutes after creation (short idle gap) shouldn't — exactly the asymmetry already in my own data,
+previously misread as "recurring vs. one-shot" when it may actually be "idle-duration vs. not."
+
+**Test launched, not yet resolved**: a fourth one-shot cron, scheduled ~5 hours out (2026-08-19,
+matching the idle-gap magnitude between my own recurring fires) rather than minutes out. If it
+arrives near-instant like the original three, idle-duration is ruled out and recurring-vs-one-shot
+regains ground. If it arrives with the ~30-min signature, that's evidence for idle-duration/cold-
+start over "recurring" as the actual variable — and would mean Janus's proposed control (recurring
+CCR-trigger vs. one-shot CCR-trigger) needs an idle-duration-matched one-shot, not just any
+one-shot, to be a clean comparison.

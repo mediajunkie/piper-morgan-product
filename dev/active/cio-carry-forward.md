@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-18 (22:37 STOP)
+# CIO carry-forward — rewritten 2026-08-19 (10:37 START)
 
 **Cron**: `efe62c47` · `7 10,16,22` LEAN · re-armed 2026-08-18 22:37 STOP (delete-then-create) ·
 **auto-expires ~2026-08-25**.
@@ -7,47 +7,48 @@
 
 ---
 
-## ✅ Watchdog thread CLOSED (08-17 escalation → 08-18 root cause found and disposed)
+## ⏳ Dispatch-latency test 4 IN FLIGHT — check on next fire
 
-Escalated after 5 alerts/4-of-6-days crossed my own "daily" threshold. HOST verified my data and
-found `docs`'s cases don't match `pa`'s (3h42-44m, not minutes). Exec chased that to root cause:
-**`docs.tsv` heartbeat has never existed in 9 consecutive days (08-10→08-18)** — Step 5b simply
-wasn't running for docs. Disposed correctly (flagged directly to docs, no mechanism change). Closed
-from my side. One loose thread noted, not chased: the gap starts 08-10, one day before the Amber
-reboot — coincidental or not, watch for the same shape elsewhere.
+**One-shot cron `fd805330` scheduled for 15:39 PT today** (~5h idle gap, matching the recurring
+cron's own inter-fire gap — the whole point of this test). Tests whether the ~30-min signature
+tracks *idle duration* (my original one-shot test fired only minutes after creation, so it never
+actually tested this) rather than "recurring vs. one-shot" as previously framed. **If this carry-
+forward is being read before ~15:45 PT, the test may still be pending — check `CronList` and
+`dev/active/cron-dispatch-latency-experiment-2026-08-15.md`'s "Fourth reading" section before
+assuming it's resolved.** The one-shot fire's own prompt handles logging, writing the conclusion,
+updating this file, and reporting to PM directly — if it's past 16:00 and none of that happened,
+that's a dropped thread worth picking up, not evidence the test silently failed to fire (a
+one-shot's own non-firing would itself be data, but check the file before assuming either way).
 
-## ✅ Curation-offload trial — a real result, including a caught-and-corrected reversal
+## ✅ Watchdog thread CLOSED (08-17 → 08-18) — for reference
 
-Artifact 1 (methodology-44): container gap, not content failure, plus an independent-convergence
-finding. Artifact 2 (dispatch-latency): Janus rejected the packaging, accepted the resubmission.
-**Three cross-project data points followed, and the story isn't monotonic — that's the actual
-finding.** Themis's positive corroboration (same substrate as mine) led me to conclude "recurring-
-job dispatch itself" was the cause — **a confound, not a finding**, since two agreeing datasets on
-the same substrate couldn't separate "recurring" from "this substrate" as variables. Janus's own
-negative case (different substrate, no gap at all) is what actually separated them, and **reversed
-my six-hour-old conclusion**. Wrote the reversal explicitly into the experiment record
-(`dev/active/cron-dispatch-latency-experiment-2026-08-15.md`) rather than quietly revising it.
-**Current best lead**: the substrate difference Janus calls "CCR-trigger," not recurring-ness.
-Isolating test still not run by anyone. **Nothing further owed this round** — the trial did exactly
-what it was built to test for, twice, including catching my own premature conclusion.
+`docs`'s heartbeat gap (9 days, never written) found and disposed by Exec/HOST within hours of
+escalation. Not mine to act on further; `docs` was among this morning's emitters, no direct
+heartbeat confirmation yet.
 
-## ⭐ Operating-mode shift (ruled 2026-08-13) — holding, generalized further this week
+## ✅ Curation-offload trial — three rounds in, genuinely working as intended
+
+Artifact 1: container gap, not content failure, plus independent convergence. Artifact 2: packaging
+rejected then accepted; three cross-project data points produced a real reversal (Themis's positive
+result was a confound, Janus's negative case corrected it). **08-19: Janus's mechanical explainer of
+CCR-trigger surfaced a confound in my own original test design** (idle-duration vs. recurring-ness
+were never actually separated) — now being tested directly, see above. **This trial keeps producing
+genuine intellectual progress, not just artifact traffic** — worth remembering as the actual case
+for the mechanism when it comes up again with PM or in the next portfolio review.
+
+## ⭐ Operating-mode shift (ruled 2026-08-13) — holding, still generalizing
 
 **PM's Agenda §6 ruling** (full record: `dev/active/cio-innovation-agenda-2026-08-02.md` §7). This
-week extended the discipline twice more: reviewing a peer's claim (the watchdog thread, where
-someone else's check of *my* data is what made it actionable) and reviewing *my own* claim (the
-Themis→Janus reversal, where the retraction got the same scrutiny as the thing it retracted). The
-discipline isn't "verify subagents" anymore — it's "verify any claim, including your own, especially
-your own."
+week's throughline: verify any claim, including your own — now extended a third way, to re-reading
+your own past design against new information rather than only checking new claims against old
+designs.
 
 ## Watch
 
 - **Verify the three self-firing workflows actually fire**: skill-candidates 09-01, Agent 360 09-25.
-- **Verify docs starts writing heartbeats** on its next quiet fires — not mine to check, but worth
-  noticing if it comes up.
-- **No fire-slot misses since 08-13** — seven consecutive clean days now.
-- **Whether either project runs the actual isolating dispatch-latency test** (recurring short-
-  period cron vs. one-shot, held against the CCR-trigger-vs-not variable). Not started by anyone.
+- **Verify docs starts writing heartbeats** — not mine to check, noting if it comes up.
+- **No fire-slot misses since 08-13** — eight consecutive clean days now.
+- **Dispatch-latency test 4** — see above, the active item.
 
 ## Owed (re-read through the delegation lens before picking up)
 
@@ -67,6 +68,8 @@ your own."
 - **A correction that stops at the mailbox has not happened.**
 - **My own stand-down reasoning was wrong once, mid-incident, and I said so in the log.**
 - **A confound can look exactly like convergence when two agreeing datasets share an unexamined
-  variable.** Concluded "recurring-job dispatch" from two positive cases on the same substrate;
-  it took a negative case on a different substrate to show the conclusion was never supportable by
-  the data I had. Written down 08-18, same day.
+  variable.** (08-18, the Themis→Janus reversal.)
+- **A design flaw in your own experiment can hide for days until someone else's unrelated
+  explanation makes you re-read it.** (08-19: Janus's mechanics explainer, not new data, is what
+  surfaced the idle-duration confound — worth remembering that "re-check your own old work when you
+  learn something new" is as load-bearing as "re-check new claims.")
