@@ -20,7 +20,7 @@ By Thursday the new discipline showed what it could do at speed. A trust ruling 
 
 **Board visibility came back, and this time the count is real.** The minimum-valuable-product (MVP) milestone — the beta-readiness gate by the team's own rule — reopened for real tracking after three weeks blocked, and the largest bucket in it is work awaiting review, not work unstarted. Review capacity, not build capacity, is the actual constraint right now.
 
-**The plugin surface's first-contact fix shipped and got audited.** #1536 went from spec to merged code (2,510 tests green), then a second reviewer independently confirmed the shipped behavior against the gate's own bar rather than trusting the build. The Jake alpha-feedback conversion — the item every one of four independent review lenses converged on — closed out completely this window, nine items filed, zero left unfiled.
+**The plugin surface's first-contact fix shipped and got audited.** The alpha-tester coldstart fix went from spec to merged code (2,510 tests green), then a second reviewer independently confirmed the shipped behavior against the gate's own bar rather than trusting the build. The Jake alpha-feedback conversion — the item every one of four independent review lenses converged on — closed out completely this window, nine items filed, zero left unfiled.
 
 **A cross-user data leak in Slack was found, chased, and held rather than shipped.** The product assistant found that Slack's direct-message path bound every sender's identity to whoever owned the connection. The chief architect role (Arch) ruled the proposed scope-out unsound — reachable at runtime, not just at setup — and a fail-closed gate was built the same night. The founder then made the harder call directly: the feature is held from every release until it's genuinely safe, with the rest of the connector work moved earlier in the schedule instead.
 
@@ -91,7 +91,7 @@ The Understanding-Layer Inversion moves past its first working evidence into har
 
 **Example from this week**: a script built to stop the team from over-reporting sprint completeness — because of exactly that pattern the week before — had its own denominator bug, found within an hour of shipping. A second blind spot in the same measurement (issues invisible to every count) surfaced hours later. Both were closed the same day, by re-deriving the count from source rather than trusting the tool's own first answer.
 
-**Why it matters**: this is the third week running this cohort has named a version of the same shape — a check reporting confidence it hasn't earned. What's different this week is the response time: the gap between building a fix and finding the fix needed its own fix collapsed to hours, not days.
+**Why it matters**: this is the third week running this team has named a version of the same shape — a check reporting confidence it hasn't earned. What's different this week is the response time: the gap between building a fix and finding the fix needed its own fix collapsed to hours, not days.
 
 **Application beyond this week**: a new checker is a hypothesis about where errors hide, not a guarantee against them — run it against a case you already know the answer to before trusting its silence on cases you don't.
 
