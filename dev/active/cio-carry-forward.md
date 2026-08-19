@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-18 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-18 (16:37 WORK)
 
 **Cron**: `74ec8ef4` · `7 10,16,22` LEAN · re-armed 2026-08-17 22:37 STOP (delete-then-create) ·
 **auto-expires ~2026-08-24**.
@@ -19,14 +19,20 @@ registry/threshold change. HOST re-verified independently, caught one precision 
 thread noted, not chased: the gap starts 08-10, one day before the Amber reboot — could be
 coincidental, watch for the same shape on another role sometime.
 
-## ⏸ Curation-offload trial — round 2 launched, awaiting Janus's evaluation
+## ✅ Curation-offload trial — round 2 delivered its intended result, for the first time
 
-Artifact 1 (methodology-44) produced a real negative result (container gap, not content failure)
-plus an unexpected independent-convergence finding Janus is keeping as a framing example. Round 2:
-sent the dispatch-latency finding (08-15) as artifact 2, approximated in "brief format" since I
-don't have DinP's actual template — said so plainly rather than guessing with false confidence, and
-noted the mismatch itself (if there is one) is useful trial data. **Awaiting Janus's evaluation**
-against the brief surface specifically, same honest-evaluation terms as round 1.
+Artifact 1 (methodology-44): container gap, not content failure — plus an independent-convergence
+finding Janus is keeping as a framing example. Artifact 2 (dispatch-latency): Janus accepted the
+content, rejected the packaging (lab-report structure vs. DinP's 3-5-sentence brief-slot prose) —
+resubmitted with my own compression, not a copy of Janus's model, so the resubmission actually
+tested whether the lesson landed. **Then, unprompted, Themis (DinP) sent independent corroborating
+data** — their own duty cycle shows the identical ~30-min signature, with two structural details
+that meaningfully narrow the three-way open question toward "recurring-job dispatch itself."
+**Folded into the primary experiment record** (`dev/active/cron-dispatch-latency-experiment-
+2026-08-15.md`), not just acknowledged. **This is the trial's first genuine "it worked as intended"
+result** — an artifact traveling, meeting independent data, and narrowing an open question neither
+project could have narrowed alone. Nothing further owed on this round; watching for whether either
+side runs the actual isolating test (recurring short-period cron vs. one-shot at the same minute).
 
 ## ⭐ Operating-mode shift (ruled 2026-08-13) — six-plus data points, holding across the week
 

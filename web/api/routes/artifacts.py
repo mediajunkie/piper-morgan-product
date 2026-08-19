@@ -10,7 +10,6 @@ The /files browser surfaces these by projecting Artifact → UploadedFile throug
 (#355 slice 2). Artifact is the system-of-record; /files is a view.
 """
 
-import re
 from typing import Optional
 
 import structlog
@@ -136,10 +135,17 @@ async def list_artifacts(
 
 
 def _artifact_filename(title: Optional[str], artifact_id: str) -> str:
-    """A safe .md filename for a saved artifact (title slug, else the id)."""
-    base = (title or "").strip() or f"artifact-{artifact_id[:8]}"
-    slug = re.sub(r"[^A-Za-z0-9._-]+", "-", base).strip("-")[:60] or "artifact"
-    return slug if slug.endswith(".md") else f"{slug}.md"
+    """A safe .md filename for a saved artifact (title slug, else the id).
+
+    #1657: the projection moved to services/file_context/artifact_view.py so
+    the chat summarize rail's FileResolver shares the EXACT filename the /files
+    listing displays (the listing and the resolver disagreeing on what the
+    user's documents are called is the wrong-empty this fixed). This wrapper
+    stays for the existing route-layer importers (files.py, this module).
+    """
+    from services.file_context.artifact_view import artifact_filename
+
+    return artifact_filename(title, artifact_id)
 
 
 # #1184 — export formats. Content is stored once (markdown); format is a

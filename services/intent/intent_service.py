@@ -340,6 +340,10 @@ class IntentService:
             # ask armed the same one-slot store without carrying a listed
             # flag — a soft offer could clobber it.
             "unmapped_field_clarification_pending",
+            # #1648: the armed reminder time question (the answer turn must
+            # find it — a clobbered binding re-creates the orphaned-"at 3pm"
+            # floor-roleplay incident).
+            "reminder_time_question_pending",
             # #1651: the standup's bound overdue-todo offer must survive
             # this turn (armed on the rail-dispatched get_standup path).
             "standup_todo_offer_pending",
@@ -1081,6 +1085,35 @@ class IntentService:
                                 "requires_clarification", False
                             ),
                         )
+                # #1648: a pending REMINDER TIME QUESTION (armed by the
+                # create-reminder handler's honest time-clarify ask) binds
+                # the answer that names a time ("at 3pm") and performs the
+                # REAL save — before any classification surface can see the
+                # turn. The live incident: the un-armed answer orphaned into
+                # the chain, reached the floor, and the floor roleplayed
+                # "Reminder set" with no row and no 📅 line. Returning None
+                # falls through: declines/bare exits drop honestly via
+                # decline_message; full restatements and unrelated commands
+                # abandon via the pop and route normally.
+                elif _vi_payload.get("kind") == "reminder_time_question":
+                    from services.intent_service import todo_handlers as _th
+
+                    _rt_turn = await _th.handle_reminder_time_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _rt_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_rt_turn["message"],
+                            intent_data=_rt_turn["intent_data"],
+                            requires_clarification=_rt_turn.get(
+                                "requires_clarification", False
+                            ),
+                        )
                 # #1567: a pending REPO QUESTION binds the answer that names
                 # the repository — bare owner/name, bare repo name (resolved
                 # against the user's actual repos), natural phrasings ("in
@@ -1286,6 +1319,9 @@ class IntentService:
                         # #1567: an ignored repo question is dropped by the
                         # pop like every other offer; the new turn routes.
                         "issue_repo_question": "issue_repo_question_abandoned",
+                        # #1648: a released reminder time question (full
+                        # restatement or unrelated command) routes normally.
+                        "reminder_time_question": "reminder_time_question_abandoned",
                         # #1651: an ignored standup todo offer is dropped by
                         # the pop; nothing completes, the todo stays.
                         "standup_todo_offer": "standup_todo_offer_abandoned",
@@ -8002,16 +8038,40 @@ class IntentService:
                     error_type="AuthenticationRequired",
                 )
             message = await self.todo_handlers.handle_create_reminder(
-                intent, session_id, user_id=todo_user_id
+                intent,
+                session_id,
+                user_id=todo_user_id,
+                # #1648: lets the time-clarify ask arm the
+                # reminder_time_question carrier, so the answer turn binds
+                # at the offer seam instead of orphaning to the floor.
+                intent_service=self,
             )
+            # #1648: if the clarify ask just armed the time question, the
+            # result must carry the pending flag — _apply_soft_offer shares
+            # the one-slot #846 store and would otherwise clobber the
+            # binding with a soft workflow offer (the #1605 belt).
+            _rt_intent_data = {
+                "category": intent.category.value,
+                "action": intent.action,
+                "confidence": intent.confidence,
+            }
+            try:
+                _rt_peek = self.workflow_offer_service.peek_pending_offer(session_id)
+                if (
+                    _rt_peek
+                    and (_rt_peek.get("pending_action") or {}).get("kind")
+                    == "reminder_time_question"
+                ):
+                    _rt_intent_data["reminder_time_question_pending"] = True
+            except Exception:  # silent-ok: flag derivation only — the reply itself is already composed
+                pass
             return IntentProcessingResult(
                 success=True,
                 message=message,
-                intent_data={
-                    "category": intent.category.value,
-                    "action": intent.action,
-                    "confidence": intent.confidence,
-                },
+                intent_data=_rt_intent_data,
+                requires_clarification=_rt_intent_data.get(
+                    "reminder_time_question_pending", False
+                ),
             )
 
         elif mapped_action == "list_todos":

@@ -50,6 +50,33 @@ def get_upload_base() -> Path:
     return Path(os.getenv("UPLOAD_DIR", "uploads"))
 
 
+def check_upload_base_writable() -> tuple[bool, str]:
+    """Boot-time writability probe of the upload base (#1656).
+
+    Uploads rotted silently for a month because nothing ever verified the
+    RUNNING PROCESS could write UPLOAD_DIR: the Fly volume mounts root-owned
+    at /data while the app runs as a non-root user, so every upload's mkdir
+    raised EACCES — and the only signal was a per-request 500 nobody was
+    watching for. This probe does at boot exactly what the upload route does
+    per-request (mkdir the base, write a file, remove it), as the SAME OS
+    user, so a broken mount is one loud startup line instead of a rotting
+    surface. Returns (ok, human-readable message); never raises.
+    """
+    base = get_upload_base()
+    probe = base / f".writability-probe-{os.getpid()}"
+    try:
+        base.mkdir(parents=True, exist_ok=True)
+        probe.write_bytes(b"ok")
+        probe.unlink()
+        return True, f"upload dir writable: {base}"
+    except OSError as e:
+        return False, (
+            f"UPLOAD DIR NOT WRITABLE: {base} ({e}) — every file upload will "
+            "fail with HTTP 500 until this is fixed (#1656: check mount "
+            "ownership vs the app user)"
+        )
+
+
 def write_file_to_storage(file_path: Union[str, Path], content: bytes) -> None:
     """THE uploaded-file byte-write seam (#1306): encrypt-then-write.
 
@@ -84,9 +111,7 @@ def read_file_from_storage(storage_path: Union[str, Path]) -> bytes:
         return data  # legacy plaintext (pre-backfill file)
     svc = FieldEncryptionService.from_env()
     if svc is None:
-        raise DecryptionError(
-            "encrypted uploaded file present but ENCRYPTION_MASTER_KEY is unset"
-        )
+        raise DecryptionError("encrypted uploaded file present but ENCRYPTION_MASTER_KEY is unset")
     return svc.decrypt_bytes(data[len(_MARKER_BYTES) :], _FILE_CONTEXT)
 
 

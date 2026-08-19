@@ -891,7 +891,12 @@ async def _handle_verb_answer_turn(
     )
     wants_complete = bool(_COMPLETE_ANSWER_RE.search(message))
     if wants_delete and wants_complete:
-        return None  # contradictory — fall to generic handling (likely off-intent)
+        # contradictory — command-shaped forms ("delete the completed ones")
+        # fall through and route normally; a genuinely garbled answer gets
+        # the #1648 honest re-ask instead of a silent abandon.
+        return _reask_verb_question_if_unrecognized(
+            payload, message, session_id, user_id, intent_service
+        )
 
     # ── Exception-clause answers (PM live 2026-08-15): the verb STORES (the
     #    question promised "I'll remember"), but there are NO bound targets —
@@ -905,7 +910,11 @@ async def _handle_verb_answer_turn(
         elif wants_complete:
             value = VALUE_COMPLETE
         if value is None:
-            return None  # not a verb answer — generic handling
+            # not a verb answer — #1648: unrecognized non-command turns
+            # re-ask + re-arm; accepts/declines/exits/commands fall through.
+            return _reask_verb_question_if_unrecognized(
+                payload, message, session_id, user_id, intent_service
+            )
         persisted = await store_verified_inference(
             principal, key, value, source=SOURCE_USER_VERIFIED, confidence=VERB_CONFIDENCE
         )
@@ -1000,7 +1009,11 @@ async def _handle_verb_answer_turn(
                     "verb_default_applied": VALUE_COMPLETE,
                 },
             }
-        return None  # not an answer — generic handling
+        # not an answer — #1648: unrecognized non-command turns re-ask +
+        # re-arm; accepts/declines/exits/commands keep their handling.
+        return _reask_verb_question_if_unrecognized(
+            payload, message, session_id, user_id, intent_service
+        )
 
     if wants_delete:
         persisted = await store_verified_inference(
@@ -1082,7 +1095,13 @@ async def _handle_verb_answer_turn(
             },
         }
 
-    return None  # not an answer — generic accept/decline/off-intent handling
+    # not an answer — #1648: unrecognized non-command turns re-ask + re-arm
+    # (the silent-abandon audit found the same gap here as in the drafted-
+    # issue carrier); accepts/declines/exits fall to the generic flow and
+    # command-shaped turns abandon via the pop, exactly as before.
+    return _reask_verb_question_if_unrecognized(
+        payload, message, session_id, user_id, intent_service
+    )
 
 
 async def _handle_correction_turn(
@@ -1151,6 +1170,59 @@ async def _handle_correction_turn(
             "action": CLEAR_DELETE_WORKFLOW,
             "destructive_confirmation_pending": True,
             "correction_of": VALUE_COMPLETE,
+        },
+        "requires_clarification": True,
+    }
+
+
+def _reask_verb_question_if_unrecognized(
+    payload: Dict[str, Any],
+    message: str,
+    session_id: Optional[str],
+    user_id: Optional[str],
+    intent_service,
+) -> Optional[Dict[str, Any]]:
+    """#1648 audit (the drafted-issue silent-abandon, checked on the reminder
+    side — it existed here too): an armed either/or question whose turn is
+    neither a verb answer, meta-feedback, an accept/decline/bare-exit, nor a
+    command-shaped new ask ("the first one", "whichever is safer") used to
+    return None and silently abandon into the routing chain mid-flow — where
+    the floor is the likeliest claimant and cannot clear anything. Such a
+    turn now RE-ASKS honestly and RE-ARMS.
+
+    Returns the re-ask dict, or None when the turn should keep its existing
+    handling: accepts/declines/exits fall to the generic flow (bare "yes" →
+    the registered re-ask workflow; "no"/exit → the honest decline), and
+    command-shaped turns abandon via the pop and route normally (the
+    carrier's documented off-intent rule)."""
+    from services.intent_service.destructive_confirm import detect_bare_exit
+    from services.intent_service.drafted_issue import is_command_shaped
+    from services.intent_service.soft_invocation import detect_offer_response
+
+    text = (message or "").strip()
+    if not text:
+        return None
+    if detect_bare_exit(text):
+        return None
+    if detect_offer_response(text) is not None:
+        return None
+    if is_command_shaped(text):
+        return None
+    _rearm_verb_question(intent_service, session_id, user_id, payload)
+    noun = payload.get("clear_noun") or "reminder"
+    logger.info(
+        "reminder_clear_verb_unrecognized_reasked", session_id=session_id
+    )
+    return {
+        "message": (
+            f"I didn't catch that as an answer — nothing has been changed. "
+            f"For these {_plural(noun, 2)}: mark them done, or delete them?"
+        ),
+        "intent_data": {
+            "category": "execution",
+            "action": CLARIFY_CLEAR_VERB_WORKFLOW,
+            "verb_disambiguation_pending": True,
+            "verb_question_reasked": True,
         },
         "requires_clarification": True,
     }

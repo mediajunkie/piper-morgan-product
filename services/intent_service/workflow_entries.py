@@ -21,6 +21,9 @@ from services.intent_service.reminder_clear import (
 from services.intent_service.standup_todo_offer import (
     run_standup_complete_todo_workflow,
 )
+from services.intent_service.todo_handlers import (
+    run_clarify_reminder_time_workflow,
+)
 from services.intent_service.workflow_dispatcher import (
     WorkflowEntry,
     get_registered_workflows,
@@ -803,7 +806,16 @@ async def run_summarize_document_workflow(
 
         try:
             async with AsyncSessionFactory.session_scope() as session:
-                resolver = FileResolver(FileRepository(session))
+                # #1657: candidates must be the SAME set the Files listing
+                # shows — uploads ∪ the owner's generated artifacts (#355:
+                # /files is a view over both). Resolver-side owner scoping is
+                # unchanged; the artifact repo query is owner-scoped too.
+                from services.database.repositories import ArtifactRepository
+
+                resolver = FileResolver(
+                    FileRepository(session),
+                    artifact_repository=ArtifactRepository(session),
+                )
                 file_id, resolution_confidence = await resolver.resolve_file_reference(
                     resolver_view, user_id
                 )
@@ -1344,6 +1356,19 @@ def register_default_workflows() -> None:
             outwardness=Outwardness.PRIVATE,
             description="Execute a #1190-confirmed #1605 batch reminder/todo delete",
             requires_context=["intent", "intent_service"],
+        ),
+        # #1648: offer-seam-only landing for the reminder time question (the
+        # carrier armed by handle_create_reminder's honest time-clarify ask).
+        # effect: READ — a bare "yes" against "when should I remind you?"
+        # re-asks and re-arms; the REAL write happens on an ANSWERED turn,
+        # handled kind-specifically at the offer seam
+        # (todo_handlers.handle_reminder_time_turn). action_triggered=False:
+        # the classifier/rail can never emit it (the #1605 clarify precedent).
+        "clarify_reminder_time": WorkflowEntry(
+            entry_point=run_clarify_reminder_time_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #1648 reminder time question on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
         ),
         "update_document": document_update_entry,
         "edit_document": document_update_entry,
