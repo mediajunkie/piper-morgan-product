@@ -157,10 +157,14 @@ def build_overdue_todo_offer(
         return None
     text = getattr(todo, "text", "") or "(untitled)"
     summary = f'mark the overdue todo "{text}" done'
+    question = offer_question(todo, more_overdue)
     return OverdueTodoOffer(
-        question=offer_question(todo, more_overdue),
+        question=question,
         offer={
             "workflow_type": STANDUP_COMPLETE_TODO_WORKFLOW,
+            # #1665: the rendered ask rides the record — the SAME string the
+            # standup renders as its trailing line (built once, above).
+            "question": question,
             "pending_action": {
                 "kind": STANDUP_TODO_OFFER_KIND,
                 # "action" keeps the #1190 carrier's field contract (the

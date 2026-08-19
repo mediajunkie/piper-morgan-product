@@ -41,7 +41,16 @@ PENDING-ACTION RECORD SHAPE (the generic deferred-action carrier, Part 3):
 
     {
         "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+        "question": str,   # #1665: the ALREADY-RENDERED ask the user saw this
+                           # turn — stored verbatim at arm time (never
+                           # re-rendered later) so the SessionSnapshot's
+                           # pending_offer_question can never drift from what
+                           # was actually said. Optional on the shape; every
+                           # arm site populates it.
         "pending_action": {
+            "kind": str,       # offer family (#1664: confirm-ness derives from
+                               # this — see offer_is_confirm below); this
+                               # module's records carry DESTRUCTIVE_CONFIRM_KIND
             "action": str,     # rail key to dispatch on "yes" (e.g. "close_issue")
             "intent": Intent,  # ORIGINAL classified Intent — resolved params
                                # (issue number, repo context, principal) intact
@@ -76,6 +85,95 @@ logger = structlog.get_logger(__name__)
 # action_triggered=False: the classifier can never emit it; only the
 # offer-acceptance seam dispatches it.
 CONFIRM_PENDING_ACTION_WORKFLOW = "confirm_pending_action"
+
+# #1664: the destructive-confirmation records this module builds now carry a
+# kind of their own (they were the one kindless #846 producer), so confirm-ness
+# can be derived from the offer KIND instead of the carrier workflow_type —
+# repo clarification rides the same carrier with a non-yes/no open question,
+# and deriving from the carrier mislabeled it "(yes/no confirm)".
+DESTRUCTIVE_CONFIRM_KIND = "destructive_action_confirmation"
+
+# ---------------------------------------------------------------------------
+# #1664 — is_confirm derives from the offer KIND, in ONE place.
+#
+# The #1650 confirm-kind table (soft_invocation's CONFIRM-tier comment +
+# intent_service's offer-seam enumeration): the offer kinds whose OPEN
+# QUESTION is a yes/no — an accept FIRES a held action, so they ride the
+# strict detect_confirm_response detector. Exactly this set:
+#
+#   - destructive close/reopen confirms ..... DESTRUCTIVE_CONFIRM_KIND (here)
+#   - reminder-clear delete confirms ........ reminder_clear.CLEAR_DELETE_CONFIRMATION_KIND
+#   - consent checks ........................ consent_gate.CONSENT_CHECK_KIND
+#   - unmapped-status-value close confirm ... intent_service._offer_status_close_clarification
+#         (a destructive close confirm by another name — its copy is literally
+#         "...? (yes/no)" and "yes" dispatches close_issue)
+#   - drafted-issue FILE confirm ............ drafted_issue.DRAFTED_ISSUE_KIND,
+#         but ONLY in the ready-to-file state (title AND body present) — the
+#         mid-compose states' open question is "what's it about?"/"what should
+#         the body say?", which is NOT a yes/no
+#   - closed-default repo bind .............. repo_clarification.REPO_QUESTION_KIND,
+#         but ONLY with a default on offer (payload["default_repo"]) — a crisp
+#         "yes" then binds the default and FIRES the held operation; the OPEN
+#         repo question ("Which repository...?") is NOT a yes/no (issue 1664's
+#         literal defect)
+#
+# The kind strings are literals here (their home modules import THIS module,
+# so importing theirs back would be circular); the #1664 tests pin each
+# literal against its source constant so drift fails loudly.
+_CONFIRM_KINDS = frozenset(
+    {
+        DESTRUCTIVE_CONFIRM_KIND,
+        "reminder_clear_delete_confirmation",  # reminder_clear.CLEAR_DELETE_CONFIRMATION_KIND
+        "consent_check",  # consent_gate.CONSENT_CHECK_KIND
+        "unmapped_field_value_clarification",  # intent_service._offer_status_close_clarification
+    }
+)
+
+_DRAFTED_ISSUE_KIND = "drafted_issue"  # drafted_issue.DRAFTED_ISSUE_KIND
+_REPO_QUESTION_KIND = "issue_repo_question"  # repo_clarification.REPO_QUESTION_KIND
+
+
+def offer_is_confirm(offer: Optional[Dict[str, Any]]) -> bool:
+    """#1664 — is the pending offer's open question a yes/no confirm?
+
+    Derived from the offer KIND per the #1650 confirm-kind table (enumerated
+    above), never from the carrier workflow_type: repo clarification rides
+    CONFIRM_PENDING_ACTION_WORKFLOW with an open "Which repository...?" ask,
+    so carrier-derived confirm-ness lied to the router about what kind of
+    answer is expected. The two state-dependent rows (drafted-issue file
+    confirm, closed-default repo bind) read the payload fields that define
+    the state; everything else is a set membership.
+
+    One deliberate fallback: a carrier record with NO kind at all reads as a
+    confirm — the only kindless #846 producer was ever this module's own
+    destructive-confirmation builder (which now stamps its kind), so a stale
+    in-flight record still renders honestly instead of losing its confirm
+    marker.
+    """
+    if not offer:
+        return False
+    pending = offer.get("pending_action") or {}
+    kind = pending.get("kind")
+    if kind in _CONFIRM_KINDS:
+        return True
+    if kind == _DRAFTED_ISSUE_KIND:
+        # File confirm only when the draft is fully shaped: with title AND
+        # body present the open ask is 'say "file it as is"' — a yes/no.
+        # Mid-compose (either slot empty) the open ask is the compose
+        # question, and a crisp "yes" is re-asked, not fired blind.
+        draft = pending.get("draft") or {}
+        return bool(
+            (draft.get("title") or "").strip() and (draft.get("body") or "").strip()
+        )
+    if kind == _REPO_QUESTION_KIND:
+        # Closed-default bind only: with a default on offer, a crisp "yes"
+        # binds it and fires the held operation (#1650). The open form's
+        # "yes" merely re-asks — not a confirm.
+        return bool(pending.get("default_repo"))
+    return (
+        kind is None
+        and offer.get("workflow_type") == CONFIRM_PENDING_ACTION_WORKFLOW
+    )
 
 # Context marker the confirm entry point sets before re-dispatching, so the
 # close/reopen handlers' own in-message confirmation (#902's "yes, close
@@ -186,7 +284,11 @@ def build_confirmation_offer(intent: Intent) -> Optional[ConfirmationOffer]:
         question=question,
         offer={
             "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+            # #1665: the rendered ask rides the record — same string the
+            # caller returns as the turn's message (built once, above).
+            "question": question,
             "pending_action": {
+                "kind": DESTRUCTIVE_CONFIRM_KIND,
                 "action": action,
                 "intent": intent,
                 "summary": summary,

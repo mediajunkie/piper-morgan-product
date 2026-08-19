@@ -442,6 +442,7 @@ def build_repo_question_offer(
     asked_name: Optional[str] = None,
     default_repo: Optional[str] = None,
     operation: Optional[str] = None,
+    question: Optional[str] = None,
 ) -> Dict[str, Any]:
     """The #846 pending-offer record binding the ORIGINAL Intent while the
     repository slot fills. workflow_type is the #1190 confirm carrier, so a
@@ -450,13 +451,20 @@ def build_repo_question_offer(
 
     #1641: ``issue_number=None`` + ``operation`` is the non-issue-anchored
     form (ANALYSIS/create) — the pop seam's different-issue-number guard is
-    skipped for it, and the copy names the operation instead of an issue."""
+    skipped for it, and the copy names the operation instead of an issue.
+
+    ``question`` (#1665): the ALREADY-RENDERED ask the caller returns this
+    turn (open_repo_question / repo_resolution_question output — the caller
+    picked which form). Stored verbatim so the SessionSnapshot never drifts
+    from what the user saw; the re-arm seams update it when the re-ask copy
+    changes."""
     if issue_number is not None:
         summary = f"{intent.action} for issue #{issue_number}"
     else:
         summary = operation or intent.action
     return {
         "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+        "question": question,
         "pending_action": {
             "kind": REPO_QUESTION_KIND,
             "action": intent.action,
@@ -560,12 +568,12 @@ async def _bind_and_dispatch(
         result = None
 
     if result is None:
+        # #1665: the re-armed record's open question is this turn's retry ask
+        # (set BEFORE the store so what's stored is what's said).
+        retry_ask = "Say the repository again (or 'no' to drop it) and I'll retry."
+        pending_offer["question"] = retry_ask
         rearmed = _rearm(intent_service, session_id, user_id, pending_offer)
-        tail = (
-            "Say the repository again (or 'no' to drop it) and I'll retry."
-            if rearmed
-            else "Please give me the full request again."
-        )
+        tail = retry_ask if rearmed else "Please give me the full request again."
         logger.info(
             "repo_question_dispatch_failed",
             session_id=session_id,
@@ -716,9 +724,11 @@ async def handle_repo_question_turn(
         )
 
     # Honest non-acting statuses: re-arm the SAME offer and say exactly what
-    # was (and wasn't) checked.
-    rearmed = _rearm(intent_service, session_id, user_id, pending_offer)
+    # was (and wasn't) checked. #1665: the re-ask copy is computed FIRST and
+    # stored on the record as its open question — store what is said.
     copy = repo_resolution_question(ref, resolution, default_repo)
+    pending_offer["question"] = copy
+    rearmed = _rearm(intent_service, session_id, user_id, pending_offer)
     if not rearmed:
         copy += " (I couldn't keep the question pending — please give me the full request again.)"
     logger.info(

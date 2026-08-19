@@ -31,12 +31,20 @@ Every read here honors the contract's five items; the load-bearing ones:
   "nothing stored" without a ``field_errors`` entry — the wrapper here
   still catches anything that raises through it.
 
-``pending_offer_question`` is the offer's rendered ask IF the record
-stores one (``offer["question"]`` / ``pending_action["question"]``) —
-today's arm sites store ``summary`` (an action phrase, not the ask) and no
-question copy, so this field is typically None until an arm site starts
-carrying its rendered ask. None is honest; ``serialize_for_prompt``
-already renders the explicit "(question text unavailable)" marker.
+``pending_offer_question`` is the offer's rendered ask
+(``offer["question"]`` / ``pending_action["question"]``). Since issue 1665
+every #846 arm site stores the ALREADY-RENDERED copy it just said to the
+user (and the re-arm seams update it as the open question changes state),
+so this field is populated in the normal case; None remains honest for a
+record that predates its arm site's question or a third-party offer, and
+``serialize_for_prompt`` renders the explicit "(question text unavailable)"
+marker for it.
+
+``pending_offer_is_confirm`` derives from the offer KIND via
+``destructive_confirm.offer_is_confirm`` — the #1650 confirm-kind table in
+ONE place (issue 1664: repo clarification rides the confirm carrier's
+workflow_type with a non-yes/no open question, so carrier-derived
+confirm-ness mislabeled it "(yes/no confirm)").
 """
 
 from __future__ import annotations
@@ -90,19 +98,20 @@ async def assemble_session_snapshot(
             )
         if offer:
             from services.intent_service.destructive_confirm import (
-                CONFIRM_PENDING_ACTION_WORKFLOW,
+                offer_is_confirm,
             )
             from services.intent_service.drafted_issue import DRAFTED_ISSUE_KIND
 
             pending_action = offer.get("pending_action") or {}
             pending_offer_kind = pending_action.get("kind") or None
-            # The rendered ask, IF the arm site stored one (see module docstring).
+            # The rendered ask the arm site stored (#1665; see module docstring).
             question = offer.get("question") or pending_action.get("question")
             pending_offer_question = question if isinstance(question, str) else None
-            # The #1650 distinction: strict-confirm kinds ride the carrier type.
-            pending_offer_is_confirm = (
-                offer.get("workflow_type") == CONFIRM_PENDING_ACTION_WORKFLOW
-            )
+            # #1664: confirm-ness derives from the offer KIND (the #1650
+            # confirm-kind table, one home in destructive_confirm) — never
+            # from the carrier workflow_type, which the open repo question
+            # also rides.
+            pending_offer_is_confirm = offer_is_confirm(offer)
             if pending_offer_kind == DRAFTED_ISSUE_KIND:
                 # The draft rides pending_action["draft"] (#1571 carrier;
                 # title None while untitled — the #1630 subjectless arm).

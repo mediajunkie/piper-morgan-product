@@ -375,6 +375,11 @@ def build_consent_check_offer(intent, effect: EffectClass) -> ConsentCheckOffer:
         question=question,
         offer={
             "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+            # #1665: the rendered ask rides the record — same string the rail
+            # seam returns as the turn's message (built once, above), so the
+            # SessionSnapshot's pending_offer_question never drifts from what
+            # the user saw.
+            "question": question,
             "pending_action": {
                 # "kind" lets the offer seam log an abandoned consent check
                 # under its own name (honest observability); the acceptance

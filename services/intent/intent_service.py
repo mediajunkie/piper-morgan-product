@@ -3446,7 +3446,11 @@ class IntentService:
                 # Symmetric anti-nag (see the non-empty branch): a declined
                 # mode read-back quiets the empty-lead invitation too.
                 invite = (
-                    sp.build_interview_invitation(user_id, session_id)
+                    # #1665: the empty branch renders INVITE_EMPTY_LEAD — the
+                    # builder stores that exact copy as the offer's question.
+                    sp.build_interview_invitation(
+                        user_id, session_id, question=sp.INVITE_EMPTY_LEAD
+                    )
                     if stored_mode is None
                     and not vi.was_declined(session_id, sp.STANDUP_MODE_KEY)
                     else None
@@ -3608,7 +3612,11 @@ class IntentService:
                         # Confidently-report user: don't nag with the invitation.
                         asked = True
                 if not asked:
-                    invite = sp.build_interview_invitation(user_id, session_id)
+                    # #1665: this branch renders INVITE_AFTER_REPORT as the
+                    # trailing ask — store that exact copy on the record.
+                    invite = sp.build_interview_invitation(
+                        user_id, session_id, question=sp.INVITE_AFTER_REPORT
+                    )
                     if invite is not None:  # None = declined this session / unarmable
                         self.workflow_offer_service.set_pending_offer(
                             session_id, invite, user_id=user_id
@@ -8775,6 +8783,13 @@ class IntentService:
                         subject=_gate_subject,
                         repository=_gate_repo,
                         body=_gate_body,
+                        # #1665: the per-state open ask, from the SAME
+                        # function build_collaboration_response embeds below
+                        # (draft_bound=True — the offer only arms with a
+                        # session) — stored verbatim, never re-rendered.
+                        question=_collab_gate.draft_open_question(
+                            _gate_subject, _gate_body, draft_bound=True
+                        ),
                     ),
                     user_id=_gate_user,
                 )
@@ -9310,6 +9325,9 @@ class IntentService:
             asked_name=asked_name,
             default_repo=default_repo,
             operation=operation,
+            # #1665: the exact ask rendered below — open or closed-default
+            # form, whichever this turn chose — stored verbatim.
+            question=question,
         )
         self.workflow_offer_service.set_pending_offer(
             session_id, offer, user_id=user_id
@@ -9405,6 +9423,9 @@ class IntentService:
             session_id,
             {
                 "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+                # #1665: the rendered ask rides the record — the same string
+                # returned as this turn's message (built once, above).
+                "question": question,
                 "pending_action": {
                     # ``kind`` distinguishes this ask from a #1190 destructive
                     # confirmation / #1509 consent check in the seam's logs;

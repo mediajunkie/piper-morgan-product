@@ -374,6 +374,46 @@ async def gate_holds(action: Optional[str], message: Optional[str], user_id: Opt
 # ---------------------------------------------------------------------------
 
 
+def draft_open_question(
+    subject: Optional[str] = None,
+    body: Optional[str] = None,
+    draft_bound: bool = True,
+) -> str:
+    """#1665: the drafted-issue turn's OPEN QUESTION, per state — the exact
+    substring ``build_collaboration_response`` embeds, factored out so the
+    arm site can store the SAME rendered copy on the pending-offer record
+    (store what was said, never re-render — one source, no drift).
+
+    States mirror the response builder's branches:
+    - both slots given → the draft is ready; the open ask is the file
+      confirm (``draft_bound=False`` keeps the unbound teach phrasing);
+    - subject only → the body ask;
+    - body only → the title ask (#1649 partial);
+    - neither → "What's it about?" (#1630 subjectless arm).
+    """
+    if subject and body:
+        if draft_bound:
+            return (
+                'If it looks right, say "file it as is" and I\'ll '
+                "create it right now."
+            )
+        return (
+            'When it looks right, say something like "create this issue '
+            f'in owner/repo about {subject}" and I\'ll file it.'
+        )
+    if subject:
+        return "What should the body say — the problem, steps to reproduce, impact?"
+    if body:
+        return (
+            "What should the title be? A short headline is plenty — give me "
+            "one and the draft is ready to file."
+        )
+    return (
+        "What's it about? A sentence on the problem is plenty — we can shape "
+        "the title and details together from there."
+    )
+
+
 def build_collaboration_response(
     subject: Optional[str] = None,
     repository: Optional[str] = None,
@@ -403,23 +443,17 @@ def build_collaboration_response(
     only for the missing title.
     """
     where = f" in **{repository}**" if repository else ""
+    # #1665: the open ask embeds via draft_open_question — the SAME function
+    # the arm site stores on the pending-offer record, so the stored copy is
+    # a verbatim substring of this message by construction.
     if subject and body:
-        if draft_bound:
-            execute_line = (
-                'If it looks right, say "file it as is" and I\'ll '
-                "create it right now. "
-            )
-        else:
-            execute_line = (
-                'When it looks right, say something like "create this issue '
-                f'in owner/repo about {subject}" and I\'ll file it. '
-            )
         return (
             "Here's the draft from what you gave me — nothing is filed "
             f"yet{where}:\n\n"
             f"**Title**: {subject}\n\n"
             f"**Body**:\n{body}\n\n"
-            f"Tell me what to add or change. {execute_line}"
+            "Tell me what to add or change. "
+            f"{draft_open_question(subject, body, draft_bound)} "
             "(If you'd rather I just file things directly, say "
             '"just do things directly from now on" and I will.)'
         )
@@ -438,8 +472,8 @@ def build_collaboration_response(
             "Happy to shape this with you before anything gets filed. "
             f"Here's a draft to start from{where}:\n\n"
             f"**Title**: {subject}\n\n"
-            "What should the body say — the problem, steps to reproduce, "
-            f"impact? Tell me what to add or change. {execute_line}"
+            f"{draft_open_question(subject, None)} "
+            f"Tell me what to add or change. {execute_line}"
             "(If you'd rather I just file things directly, say "
             '"just do things directly from now on" and I will.)'
         )
@@ -452,15 +486,13 @@ def build_collaboration_response(
             "Happy to shape this with you before anything gets filed. "
             f"I've got the description — here's the draft so far{where}:\n\n"
             f"**Body**:\n{body}\n\n"
-            "What should the title be? A short headline is plenty — give me "
-            "one and the draft is ready to file. "
+            f"{draft_open_question(None, body)} "
             "(If you'd rather I just file things directly, say "
             '"just do things directly from now on" and I will.)'
         )
     return (
         "Happy to work on this ticket with you before anything gets filed. "
-        "What's it about? A sentence on the problem is plenty — we can shape "
-        "the title and details together from there. "
+        f"{draft_open_question(None, None)} "
         "(If you'd rather I just file things directly, say "
         '"just do things directly from now on" and I will.)'
     )

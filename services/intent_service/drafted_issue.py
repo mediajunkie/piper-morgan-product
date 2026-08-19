@@ -358,6 +358,7 @@ def build_drafted_issue_offer(
     subject: Optional[str],
     repository: Optional[str] = None,
     body: Optional[str] = None,
+    question: Optional[str] = None,
 ) -> Dict[str, Any]:
     """The #846 pending-offer record binding a rendered draft (the generic
     deferred-action carrier shape documented in ``destructive_confirm.py``).
@@ -371,13 +372,20 @@ def build_drafted_issue_offer(
     into ``intent.context["description"]`` so "file it as is" files it.
     The key is present only when given, preserving the minimal-carrier
     shape #1630 pins; later prose binds append to it per the existing
-    semantics."""
+    semantics.
+
+    ``question`` (#1665): the ALREADY-RENDERED open ask the caller is about
+    to surface (``collaboration_gate.draft_open_question`` — the same
+    function the response copy embeds, so the stored string is a verbatim
+    substring of what the user saw). Stored, never re-rendered; the re-arm
+    seams below update it as the draft's open question changes state."""
     summary = _draft_summary(subject, repository)
     draft: Dict[str, Any] = {"title": subject, "repository": repository}
     if body:
         draft["body"] = body
     return {
         "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+        "question": question,
         "pending_action": {
             "kind": DRAFTED_ISSUE_KIND,
             "action": intent.action,
@@ -397,6 +405,18 @@ _DRAFT_RETAINED_LINE = (
     "or \"no\" to drop it."
 )
 
+# #1665: the open ask after a prose bind — one constant, embedded in the bind
+# reply AND stored on the re-armed record (same string, no drift).
+_POST_BIND_ASK = (
+    "Keep going if there's more to add. When it's ready, say "
+    '"file it as is" — or "no" to set the draft aside.'
+)
+
+# #1665: the open ask on the #1650 near-accept re-ask turn.
+_NEAR_ACCEPT_ASK = (
+    'Say "file it as is" to file this draft, or "no" to set it aside.'
+)
+
 
 def _reask_near_miss(
     pending_offer: Dict[str, Any],
@@ -409,6 +429,26 @@ def _reask_near_miss(
     """#1648 — a file-shaped turn the detector didn't parse: say honestly
     that nothing was filed, name the moves that work, and RE-ARM the same
     offer. Never a silent abandon into the routing chain mid-compose."""
+    draft = pending_action.get("draft") or {}
+    has_content = bool(
+        (draft.get("title") or "").strip() or (draft.get("body") or "").strip()
+    )
+    # #1571's never-teach-unbound rule: only teach the file phrase when the
+    # draft actually has content behind it.
+    if has_content:
+        moves = (
+            'Say "file it as is" to file it, keep adding content, '
+            'or say "no" to set the draft aside.'
+        )
+    else:
+        moves = (
+            "Tell me what the issue should be about first — "
+            'or say "no" to set the draft aside.'
+        )
+
+    # #1665: the re-armed record's open question is this turn's re-ask copy
+    # (set BEFORE the store so what's stored is what's said).
+    pending_offer["question"] = moves
     rearmed = True
     try:
         intent_service.workflow_offer_service.set_pending_offer(
@@ -433,23 +473,6 @@ def _reask_near_miss(
             ),
             "intent_data": _retained_intent_data(pending_action),
         }
-
-    draft = pending_action.get("draft") or {}
-    has_content = bool(
-        (draft.get("title") or "").strip() or (draft.get("body") or "").strip()
-    )
-    # #1571's never-teach-unbound rule: only teach the file phrase when the
-    # draft actually has content behind it.
-    if has_content:
-        moves = (
-            'Say "file it as is" to file it, keep adding content, '
-            'or say "no" to set the draft aside.'
-        )
-    else:
-        moves = (
-            "Tell me what the issue should be about first — "
-            'or say "no" to set the draft aside.'
-        )
     intent_data = _retained_intent_data(pending_action)
     intent_data["drafted_issue_reasked"] = True
     return {
@@ -527,6 +550,9 @@ def _bind_body_prose(
             # promise the draft copy teaches.
             intent.context["title"] = draft["title"]
 
+    # #1665: after a bind the draft's open question is the keep-going/file
+    # ask — update the record BEFORE the store (what's stored is what's said).
+    pending_offer["question"] = _POST_BIND_ASK
     rearmed = True
     try:
         intent_service.workflow_offer_service.set_pending_offer(
@@ -580,8 +606,7 @@ def _bind_body_prose(
             f"{lead}"
             f"**Title**: {title}\n\n"
             f"**Body**:\n{body}\n\n"
-            "Keep going if there's more to add. When it's ready, say "
-            '"file it as is" — or "no" to set the draft aside.'
+            f"{_POST_BIND_ASK}"
         ),
         "intent_data": intent_data,
         "requires_clarification": True,
@@ -641,6 +666,8 @@ async def handle_drafted_issue_turn(
             # composed work). Re-arm and re-ask — a confirm that neither
             # confirms nor declines re-asks.
             if detect_offer_response(message) == "accept":
+                # #1665: this re-ask turn's open question (stored pre-store).
+                pending_offer["question"] = _NEAR_ACCEPT_ASK
                 rearmed = True
                 try:
                     intent_service.workflow_offer_service.set_pending_offer(
@@ -659,8 +686,7 @@ async def handle_drafted_issue_turn(
                 if rearmed:
                     msg = (
                         "Just to be safe I haven't filed anything — I only "
-                        "file on a clear go-ahead. Say \"file it as is\" to "
-                        "file this draft, or \"no\" to set it aside."
+                        f"file on a clear go-ahead. {_NEAR_ACCEPT_ASK}"
                     )
                 else:
                     msg = (
@@ -728,6 +754,9 @@ async def handle_drafted_issue_turn(
         False when the store write itself failed, so the copy never claims a
         retained draft that isn't there."""
         try:
+            # #1665: the retained draft's open question is the retained line
+            # (the reply's own copy — stored pre-store, never re-rendered).
+            pending_offer["question"] = _DRAFT_RETAINED_LINE
             intent_service.workflow_offer_service.set_pending_offer(
                 session_id, pending_offer, user_id=user_id
             )

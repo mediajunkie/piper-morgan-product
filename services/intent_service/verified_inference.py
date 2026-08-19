@@ -336,6 +336,10 @@ def build_read_back_offer(
         question=question,
         offer={
             "workflow_type": VERIFY_INFERENCE_WORKFLOW,
+            # #1665: the rendered ask rides the record — same string the
+            # consumer surfaces as the turn's trailing question (built once,
+            # above), so the SessionSnapshot never drifts from what was said.
+            "question": question,
             "pending_action": {
                 "kind": VERIFY_INFERENCE_KIND,
                 # "action" keeps the #1190 carrier's field contract (the

@@ -207,6 +207,22 @@ field naming, and the golden serialization string). Phase 2.2 (threading the
 snapshot into the LIVE constrained routing call, pre-classification state) is
 a separate reviewed flip; the floor and handlers must never read routing
 context from the snapshot (one-direction dependency, per the contract).
+**Phase 2.2 prerequisites landed 2026-08-19 (issues 1665 + 1664, gate-doc
+caveats)**: (a) every #846 arm site now stores its ALREADY-RENDERED ask on
+the offer record (`offer["question"]` — the exact copy the user saw that
+turn; re-arm seams update it as the open question changes state), so the
+live snapshot's `pending_offer_question` matches the Phase-2.1 fixtures'
+strength instead of serializing "(question text unavailable)"; and (b)
+`pending_offer_is_confirm` derives from the offer KIND via
+`destructive_confirm.offer_is_confirm` — the #1650 confirm-kind table in ONE
+place (destructive confirms now kind-stamped `destructive_action_confirmation`,
+reminder-clear delete confirms, consent checks, the unmapped-status close
+confirm, the drafted-issue ready-to-file state, the closed-default repo
+bind) — never from the carrier `workflow_type`, which the OPEN repo question
+also rides (the 1664 defect: a which-repo ask rendered "(yes/no confirm)").
+The verb question and open repo question are pinned NOT-confirm. Regression:
+`tests/unit/services/intent_service/test_rendered_ask_1665.py` (per-arm-site
+stored-copy-equals-said pins + the kind-table pins).
 
 ## The vocabularies (where action names live)
 
