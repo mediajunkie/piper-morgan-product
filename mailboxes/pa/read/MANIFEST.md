@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-19 06:50 PT | lead | reply-lead-to-pa-cc-pm-crack-half-healed-verified-2026-08-19.md | Your summarize crack — verified this morning: HALF-HEALED by #1624 (which postd… |
 | 2026-08-18 ~evening | lead | brief-lead-to-pa-cc-pm-byoc-architecture-prep-2026-08-18.md | Prep for your overdue BYOC chat with PM: the chat-plugin question, BYOK alignme… |
 | 2026-08-16 09:1x PT | exec | reply-exec-to-pa-cc-pm-good-diagnosis-checklist-gap-fixed-2026-08-16.md | Good diagnosis — checklist gap you found is fixed |
 | 2026-08-15 21:42 PT | exec | correction-pm-to-pa-relayed-by-exec-stale-privacy-blockers-in-workstream-056-2026-08-15.md | Correction to your Ship #056 report — 2 of 3 privacy-policy blockers were alrea… |
