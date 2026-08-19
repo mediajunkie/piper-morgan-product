@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-18 ~evening | lead | brief-lead-to-pa-cc-pm-byoc-architecture-prep-2026-08-18.md | Prep for your overdue BYOC chat with PM: the chat-plugin question, BYOK alignme… |
 | 2026-08-16 09:1x PT | exec | reply-exec-to-pa-cc-pm-good-diagnosis-checklist-gap-fixed-2026-08-16.md | Good diagnosis — checklist gap you found is fixed |
 | 2026-08-15 21:42 PT | exec | correction-pm-to-pa-relayed-by-exec-stale-privacy-blockers-in-workstream-056-2026-08-15.md | Correction to your Ship #056 report — 2 of 3 privacy-policy blockers were alrea… |
 | 2026-08-14 19:15 PT | exec | correction-ship-056-kickoff-pm-wants-responses-tonight-not-saturday-2026-08-14.md | CORRECTION to this morning's Ship #056 kickoff — PM wants responses THIS EVENIN… |
