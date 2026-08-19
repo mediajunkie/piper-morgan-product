@@ -731,19 +731,28 @@ class TestUnmappedSiblingClaim:
 class TestExplicitVerbsUnaffected:
     pytestmark = pytest.mark.asyncio
 
-    async def test_explicit_delete_passes_through(
+    async def test_explicit_delete_gets_1190_confirm_not_variant_one(
         self, live_service, monkeypatch, pref_store, todo_boundary
     ):
-        """'delete todo 1' is an imperative, not an ambiguity — the flow
-        returns None and the existing handler path runs unchanged."""
+        """'delete todo 1' is an imperative, not an ambiguity — the clear
+        flow never claims it (boundary direction 2). Since #1666 the
+        imperative is #1190-gated at the rail: turn 1 is the title-bound
+        confirm ask (nothing deleted), the crisp yes deletes. Full contract:
+        test_delete_todo_confirm_1666.py."""
         sid = "e2e-1605-explicit"
         _stub_classification(monkeypatch, live_service, "delete todo 1", "delete_todo")
-        todo_boundary["allow_delete"] = True
         result = await live_service.process_intent(
             message="delete todo 1", session_id=sid, user_id=_USER
         )
         assert variant_one_question() not in result.message
+        assert result.message == 'Delete todo 1: "Review the PR"? (yes/no)'
+        assert todo_boundary["deleted"] == []  # gated, not immediate (#1666)
+        todo_boundary["allow_delete"] = True
+        confirmed = await live_service.process_intent(
+            message="yes", session_id=sid, user_id=_USER
+        )
         assert len(todo_boundary["deleted"]) == 1  # the handler's own path ran
+        assert variant_one_question() not in confirmed.message
 
 
 class TestEmptyTargets:

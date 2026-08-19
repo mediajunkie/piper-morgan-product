@@ -2100,9 +2100,41 @@ class IntentService:
                 ):
                     from services.intent_service.destructive_confirm import (
                         build_confirmation_offer,
+                        build_todo_delete_confirmation,
+                        is_delete_todo_action,
                     )
 
-                    _confirmation = build_confirmation_offer(intent)
+                    if is_delete_todo_action(intent.action):
+                        # #1666: delete_todo's target is POSITIONAL, so the
+                        # honest "Delete todo N: \"text\"?" ask needs the same
+                        # owner-scoped list read the handler would do anyway —
+                        # done once here, one turn earlier, binding WHAT gets
+                        # deleted (never a number-only confirm). Clear-family
+                        # shapes pass through (offer=None) so the #1605 seam
+                        # in the rail entry point keeps first claim on them.
+                        _todo_gate = await build_todo_delete_confirmation(
+                            intent,
+                            self.todo_handlers,
+                            _coerce_todo_principal(_consent_user),
+                        )
+                        if _todo_gate.error_message is not None:
+                            # Lookup failed: an unconfirmed destructive write
+                            # must never fire, and a number-only confirm is
+                            # forbidden — honest no-op turn, nothing armed.
+                            return IntentProcessingResult(
+                                success=False,
+                                message=_todo_gate.error_message,
+                                intent_data={
+                                    "category": intent.category.value,
+                                    "action": intent.action,
+                                    "confidence": intent.confidence,
+                                },
+                                error="todo lookup failed at the #1190 confirm gate",
+                                error_type="TodoDeleteConfirmLookupError",
+                            )
+                        _confirmation = _todo_gate.offer
+                    else:
+                        _confirmation = build_confirmation_offer(intent)
                     if _confirmation is not None:
                         self.workflow_offer_service.set_pending_offer(
                             session_id, _confirmation.offer, user_id=user_id
@@ -2129,7 +2161,11 @@ class IntentService:
                             preferences=preferences,
                         )
                     # None → verified read-only clarification shape (no
-                    # parseable target); the handler asks "which issue?".
+                    # parseable target; the handler asks "which issue?" /
+                    # "which todo?") — or, for the #1666 delete-todo family,
+                    # a clear-family shape whose three-variant flow the rail
+                    # entry point's #1605 seam owns (its delete leg is
+                    # #1190-gated inside that flow, never ungated).
                 elif _consent_verdict is not None and (
                     _consent_verdict is _consent.ConsentDecision.COLLABORATE
                 ):
@@ -8189,42 +8225,15 @@ class IntentService:
                 },
             )
 
-        elif mapped_action == "delete_todo":
-            todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
-            if not todo_user_id:
-                return IntentProcessingResult(
-                    success=False,
-                    message="I need you to be logged in to delete todos. Please log in and try again.",
-                    intent_data={"category": intent.category.value, "action": intent.action},
-                    error="User not authenticated",
-                    error_type="AuthenticationRequired",
-                )
-            # #1605: same disambiguation as the complete branch, candidate
-            # effect DESTRUCTIVE (this branch's guess: delete_todo) — so the
-            # ask fires in EVERY meta mode below the auto-apply bar (process
-            # steering never lowers a destructive ask). Explicit deletion
-            # phrasings ("delete todo 3") return None and proceed unchanged.
-            from services.intent_service import reminder_clear as _rc
-            from services.shared_types import EffectClass as _EffectClass
-
-            _clear_result = await _rc.maybe_handle_clear_family(
-                self, intent, session_id, user_id, todo_user_id, _EffectClass.DESTRUCTIVE
-            )
-            if _clear_result is not None:
-                return _clear_result
-            message = await self.todo_handlers.handle_delete_todo(
-                intent, session_id, user_id=todo_user_id
-            )
-            # Issue #748: Don't return workflow_id for synchronous operations
-            return IntentProcessingResult(
-                success=True,
-                message=message,
-                intent_data={
-                    "category": intent.category.value,
-                    "action": intent.action,
-                    "confidence": intent.confidence,
-                },
-            )
+        # #1666: the delete_todo elif is REMOVED (migration completion — the
+        # rail is the single dispatch surface). delete_todo / remove_todo /
+        # cancel_todo are WorkflowEntry keys (effect=DESTRUCTIVE → the #1190
+        # confirm gate arms at the rail, which this ungated branch never
+        # reached); run_delete_todo_workflow carries the branch's exact body,
+        # including the #1605 clear-family seam with candidate effect
+        # DESTRUCTIVE. A delete_todo emission can only land here now via a
+        # rail wiring gap (entry-point None return), where the else-branch's
+        # honest decline is the safe non-deleting default.
 
         else:
             # Issue #489: Graceful degradation for unhandled EXECUTION actions

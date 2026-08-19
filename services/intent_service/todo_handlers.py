@@ -723,6 +723,37 @@ class TodoIntentHandlers:
 
     async def handle_delete_todo(self, intent: Intent, session_id: str, user_id: UUID) -> str:
         """Handle: "delete todo 3" or "remove todo about meeting"""
+        # #1666: a rail-confirmed delete carries the todo resolved AT ASK TIME
+        # (destructive_confirm.build_todo_delete_confirmation stashed it before
+        # the #1190 gate asked 'Delete todo N: "text"?'). Delete exactly what
+        # the user confirmed — never a positional re-resolve of "todo N"
+        # against a list that may have shifted between the ask and the yes.
+        # Honored ONLY together with the confirmed marker: an unconfirmed
+        # intent never carries a usable binding.
+        from services.intent_service.destructive_confirm import (
+            CONFIRMED_CONTEXT_KEY,
+            RESOLVED_TODO_CONTEXT_KEY,
+        )
+
+        _ctx = intent.context or {}
+        _resolved = _ctx.get(RESOLVED_TODO_CONTEXT_KEY)
+        if _resolved and _ctx.get(CONFIRMED_CONTEXT_KEY):
+            try:
+                deleted = await self.todo_service.delete_todo(
+                    todo_id=UUID(_resolved["todo_id"]), user_id=user_id
+                )
+            except Exception as e:
+                logger.error(
+                    "Todo deletion failed", error=str(e), user_id=user_id, exc_info=True
+                )
+                return "I had trouble removing that todo. You can try again with 'delete todo [number]', or say 'show my todos' to verify the list."
+            if deleted:
+                logger.info(
+                    "Todo deleted", todo_id=str(_resolved["todo_id"]), user_id=user_id
+                )
+                return format_todo_deleted_conscious(_resolved["text"])
+            return "I couldn't delete that todo. It might have already been removed."
+
         # Note: original_message may be in intent.original_message OR intent.context["original_message"]
         # depending on how the Intent was created (Issue #744)
         original_message = intent.original_message or intent.context.get("original_message", "")

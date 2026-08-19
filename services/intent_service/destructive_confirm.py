@@ -191,6 +191,29 @@ CONFIRMED_CONTEXT_KEY = "destructive_confirmed"
 _CLOSE_FAMILY = frozenset({"close_issue", "close_issue_query"})
 _REOPEN_FAMILY = frozenset({"reopen_issue", "reopen_issue_query"})
 
+# #1666: the delete-todo rail family — the canonical action plus the
+# ActionMapper raw-emission aliases (remove_todo / cancel_todo → delete_todo)
+# that the classifier can emit and workflow_entries registers on the same
+# WorkflowEntry. This family's confirm is built by the ASYNC builder below
+# (build_todo_delete_confirmation), never by build_confirmation_offer: the
+# target is POSITIONAL ("todo 3" is a list index, not an id), so the only
+# honest "confirm WHAT, not just WHICH" ask requires the same owner-scoped
+# list read the handler itself performs — done once here, one turn earlier,
+# with the resolved row BOUND into the intent so the confirmed yes deletes
+# exactly what was named in the ask.
+_DELETE_TODO_FAMILY = frozenset({"delete_todo", "remove_todo", "cancel_todo"})
+
+# Context key for the gate-time resolution (see build_todo_delete_confirmation):
+# {"todo_id": str, "text": str, "number": str}. handle_delete_todo honors it
+# ONLY together with CONFIRMED_CONTEXT_KEY — an unconfirmed intent never
+# carries a usable binding.
+RESOLVED_TODO_CONTEXT_KEY = "delete_todo_resolved"
+
+
+def is_delete_todo_action(action: Optional[str]) -> bool:
+    """True when ``action`` is a delete-todo rail key (#1666 family)."""
+    return action in _DELETE_TODO_FAMILY
+
 # Bare full-message exits that cancel a pending confirmation honestly —
 # the #888 registry set ∪ the #1529 additions, applied at the offer seam.
 # (detect_offer_response's DECLINE_PATTERNS already catch "no"/"nope"/
@@ -297,4 +320,133 @@ def build_confirmation_offer(intent: Intent) -> Optional[ConfirmationOffer]:
                 f"Okay — I won't {summary}. Nothing has been changed."
             ),
         },
+    )
+
+
+# ---------------------------------------------------------------------------
+# #1666 — the delete-todo confirm builder (async: positional target needs the
+# owner-scoped list read to say WHAT would be deleted).
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class TodoDeleteGate:
+    """Outcome of :func:`build_todo_delete_confirmation` — exactly one leg set.
+
+    - ``offer``: arm this confirmation (the resolvable destructive shape).
+    - ``passthrough``: dispatch to the rail entry point unconfirmed — used
+      ONLY for the verified read-only / non-owning shapes (see builder body).
+    - ``error_message``: the todo lookup itself failed — return this honest
+      no-op turn directly. Never pass a possibly-deleting turn through
+      unverified, and never arm a number-only confirm (#1666 AC: the user
+      confirms WHAT, not just WHICH).
+    """
+
+    offer: Optional[ConfirmationOffer] = None
+    passthrough: bool = False
+    error_message: Optional[str] = None
+
+
+async def build_todo_delete_confirmation(
+    intent: Intent,
+    todo_handlers: Any,
+    todo_user_id: Any,
+) -> TodoDeleteGate:
+    """Build the #1190 confirmation for a delete-todo rail intent (#1666).
+
+    Passthrough legs — each verified read-only or non-deleting at the rail
+    entry point (mirror of the _CLOSE_FAMILY invariant; if any of these paths
+    ever deletes, its passthrough must be removed in the same commit):
+
+    - **clear-family shape** (#1605 boundary, pinned both ways): an ambiguous
+      clear/handle/reset utterance the classifier guessed as delete_todo
+      belongs to ``reminder_clear.maybe_handle_clear_family``'s three-variant
+      flow, which the rail entry point runs FIRST — this gate never steals
+      those shapes, and reminder_clear's own delete confirms stay #1190-gated
+      inside that flow. Conversely, explicit imperatives ("delete todo 3")
+      are ``None`` to ``detect_clear_family_ask`` by its _EXPLICIT_VERB_RE,
+      so this gate owns them — the boundary holds in both directions.
+    - **no principal**: the entry point returns the auth-required decline.
+    - **no parseable todo number**: handle_delete_todo returns the
+      "Which todo should I remove?" clarification (its only no-number path).
+    - **number out of range / non-numeric**: handle_delete_todo returns the
+      "couldn't find todo #N" / "doesn't look like a number" copy.
+    """
+    # Lazy import: reminder_clear imports THIS module (kind constants), so a
+    # module-level import back would be circular.
+    from services.intent_service.reminder_clear import detect_clear_family_ask
+
+    message = ""
+    if intent.context:
+        message = intent.context.get("original_message", "") or ""
+    if not message:
+        message = intent.original_message or ""
+
+    if detect_clear_family_ask(message) is not None:
+        return TodoDeleteGate(passthrough=True)
+
+    if todo_user_id is None:
+        return TodoDeleteGate(passthrough=True)
+
+    todo_number = todo_handlers._extract_todo_id(message)
+    if todo_number is None:
+        return TodoDeleteGate(passthrough=True)
+
+    try:
+        todos = await todo_handlers.todo_service.list_todos(
+            user_id=todo_user_id, include_completed=False
+        )
+    except Exception as e:  # silent-ok: error-logged; returns an honest no-op turn, never an ungated delete or a number-only confirm
+        logger.error(
+            "todo_delete_confirm_lookup_failed",
+            error=str(e),
+            action=intent.action,
+        )
+        return TodoDeleteGate(
+            error_message=(
+                "I couldn't look up your todos just now, so I haven't "
+                "deleted anything. Try again in a moment."
+            )
+        )
+
+    try:
+        idx = int(todo_number) - 1
+    except ValueError:
+        return TodoDeleteGate(passthrough=True)
+    if idx < 0 or idx >= len(todos):
+        return TodoDeleteGate(passthrough=True)
+
+    todo = todos[idx]
+    # Bind WHAT, not just WHICH (#1666 AC): stash the row resolved AT ASK
+    # TIME so the confirmed yes deletes exactly the todo named in the ask,
+    # even if the list shifts between the ask and the yes. Copy-on-write —
+    # never mutate a context dict the caller may share (#1190 idiom).
+    intent.context = dict(intent.context or {})
+    intent.context[RESOLVED_TODO_CONTEXT_KEY] = {
+        "todo_id": todo.id,
+        "text": todo.text,
+        "number": str(todo_number),
+    }
+
+    summary = f'delete todo {todo_number}: "{todo.text}"'
+    question = f'Delete todo {todo_number}: "{todo.text}"? (yes/no)'
+    return TodoDeleteGate(
+        offer=ConfirmationOffer(
+            question=question,
+            offer={
+                "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+                # #1665: the rendered ask rides the record — the same string
+                # the caller returns as the turn's message (built once, above).
+                "question": question,
+                "pending_action": {
+                    "kind": DESTRUCTIVE_CONFIRM_KIND,
+                    "action": intent.action,
+                    "intent": intent,
+                    "summary": summary,
+                },
+                "decline_message": (
+                    f"Okay — I won't {summary}. Nothing has been changed."
+                ),
+            },
+        )
     )
