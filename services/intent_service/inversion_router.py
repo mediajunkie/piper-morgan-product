@@ -118,9 +118,20 @@ class SessionSnapshot:
     pending_offer_summary: Optional[str] = None
     active_flow: Optional[str] = None
     entity_names: Tuple[str, ...] = ()
+    # #1595 Phase 2.0: the serialized session_snapshot.SessionSnapshot block
+    # (serialize_for_prompt output — bounded, deterministic, golden-pinned).
+    # When present it IS the session-state content; the shadow caller no
+    # longer duplicates it into the legacy fields above (those remain for
+    # the pre-2.0 peek path and batch scorers).
+    state_block: Optional[str] = None
 
     def is_empty(self) -> bool:
-        return not (self.pending_offer_summary or self.active_flow or self.entity_names)
+        return not (
+            self.pending_offer_summary
+            or self.active_flow
+            or self.entity_names
+            or self.state_block
+        )
 
 
 @dataclass(frozen=True)
@@ -316,6 +327,10 @@ def build_routing_prompt(
     if session_state is not None and not session_state.is_empty():
         lines.append("")
         lines.append("Session state:")
+        if session_state.state_block:
+            # #1595 Phase 2.0: the contract-serialized snapshot, verbatim —
+            # already bounded (≤ MAX_SERIALIZED_CHARS) and golden-pinned.
+            lines.append(session_state.state_block)
         if session_state.pending_offer_summary:
             lines.append(f"- pending offer: {session_state.pending_offer_summary}")
         if session_state.active_flow:

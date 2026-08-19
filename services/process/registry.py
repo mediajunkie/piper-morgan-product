@@ -729,6 +729,48 @@ class ProcessRegistry:
                 continue
         return False
 
+    async def first_active_type(
+        self,
+        user_id: Optional[str],
+        session_id: Optional[str],
+    ) -> Optional[str]:
+        """#1595: WHICH guided process is active for this session, if any.
+
+        ``any_active``'s loop returning the type instead of a bool — the
+        SessionSnapshot assembly needs "standup", not just "something".
+        Same probe (``check_active``), same continue-on-error posture (a
+        handler error counts as not-active for that handler), same registry
+        order (first active handler wins, matching the claim order in
+        ``check_active_processes``).
+
+        Accepted side effect, documented rather than pretended away
+        (#1651 lane): ``check_active`` is not strictly read-only — it
+        applies each handler's lazy timeout housekeeping. Concretely: the
+        standup adapter auto-suspends a completion-tail conversation idle
+        > STANDUP_TIMEOUT_MINUTES (``services/process/adapters.py``,
+        StandupProcessAdapter.check_active, the #1623-gated tail-timeout
+        block), and the onboarding adapter auto-suspends a session idle
+        > ONBOARDING_TIMEOUT_MINUTES (OnboardingProcessAdapter.check_active,
+        the #888 timeout block). Both are CONVERGENT housekeeping the next
+        claim check would have applied identically — after one probe the
+        world is in the state every subsequent probe observes, so the
+        snapshot's idempotence pin (assemble twice → identical world)
+        holds. There is no timeout-free probe variant to call instead;
+        adding one would fork the activity definition (#1555).
+        """
+        for handler in self._handlers:
+            try:
+                if await handler.check_active(user_id, session_id):
+                    return handler.process_type.value
+            except Exception as e:
+                logger.warning(
+                    "Error probing guided process activity",
+                    process_type=handler.process_type.value,
+                    error=str(e),
+                )
+                continue
+        return None
+
     @property
     def registered_types(self) -> List[ProcessType]:
         """List of currently registered process types."""
