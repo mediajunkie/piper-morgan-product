@@ -32,19 +32,20 @@ days stale.
   different agent seat, or a dedicated QA pass) — code-level inspection is a real but weaker substitute.
 - 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a
   claim, not metadata.
-- 🔴 **BYOC/conversational-layer strategic conversation — LIVE, PM said "tonight" (08-18), discouraged
-  tone, hoping for clarity.** Lead's brief: `docs/internal/product/conversational-layer-strategic-brief-
-  2026-08-18.md`. PA's full reply (positions + a real crack found in the "grammar = MCP tool inventory"
-  convergence — summarize has zero representation in the 62-op grammar, lives in a separate regressed
-  floor path, which also directly explains part of PM's prototype-parity complaint) is in
-  `mailboxes/pa/sent/reply-pa-to-lead-cc-pm-byoc-prep-crack-found-plus-positions-2026-08-18.md`. **This
-  is the same underlying topic as the 08-10 architecture-diagram connector-overlap question** — PA's
-  answer there (yes, it matters which connector supplies data — identity/consent boundary, colleague-
-  model composting, alias-collision) is directly load-bearing for tonight's "which surfaces stay
-  first-party" question. Diagram itself: revision 1 shipped 08-10, artifact
-  https://claude.ai/code/artifact/3cfc6edf-6757-415e-8487-955d496548c5, PM still reviewing at their own
-  pace. **Ready for the live conversation whenever PM has it — not chasing, but this is the active
-  thread right now, not background.**
+- 🔴 **BYOC/conversational-layer strategic conversation — prep sent, PM conversation status unknown.**
+  Lead's brief: `docs/internal/product/conversational-layer-strategic-brief-2026-08-18.md`. PA's full
+  positions in `mailboxes/pa/sent/reply-pa-to-lead-cc-pm-byoc-prep-crack-found-plus-positions-2026-08-18.md`.
+  ⚠️ **The "summarize crack" finding was HALF-HEALED, caught by Lead's independent live-verification
+  08-19 morning**: PA's source (08-15 forensics + 08-14 shadow-score, cross-verified two ways) both
+  predated #1624 (merged 08-16 evening), which added `summarize_document` to the grammar. Document
+  summarize now works; **issue/commit summarize genuinely still has no grammar operation — that half
+  survived and Lead adopted it as Phase 2 scope same-morning.** Good outcome of the adversarial-check
+  pattern: not "PA was wrong," not "PA was static-right" — a real gap, correctly sized down and made
+  actionable. This is the same underlying topic as the 08-10 architecture-diagram connector-overlap
+  question — PA's answer there is still load-bearing for "which surfaces stay first-party." Diagram:
+  revision 1 shipped 08-10, artifact https://claude.ai/code/artifact/3cfc6edf-6757-415e-8487-955d496548c5,
+  PM still reviewing at their own pace. **Whether/when PM's own live conversation with Lead happened is
+  unknown from this seat — not chasing.**
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
@@ -80,9 +81,10 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - **Standing discipline (from 08-15's correction, still active)**: re-verify carried-forward claims
   against their live source before citing them in an external report, not just at routine
   carry-forward-hygiene time. Habit, not yet mechanical.
-- **Live thread, PM's pace**: BYOC/conversational-layer conversation with PM — PA's full prep + positions
-  sent to Lead cc PM 08-18 evening (see PM Attention above). No response yet as of this STOP; not
-  chasing, the conversation may not have happened yet.
+- **Live thread, PM's pace**: BYOC/conversational-layer — see PM Attention above for the current state
+  (Lead independently verified PA's summarize finding 08-19 morning, half-healed by a fix that
+  postdated PA's sources, residual half real and adopted as Phase 2 scope). Whether PM's own
+  conversation with Lead has happened yet is unknown from this seat; not chasing.
 
 🔔 **STEP 5b — HEARTBEAT: emit it IMMEDIATELY AFTER `date`, BEFORE the git fetch/merge, and WITHOUT
 `--if-quiet`** *(ordering fixed 2026-08-05: my heartbeat had five commands incl. fetch+merge in front of
