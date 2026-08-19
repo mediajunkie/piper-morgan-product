@@ -1,5 +1,11 @@
 # Docs Carry-Forward
 
+**Updated**: 2026-08-18 22:2x PDT (DAY-CLOSED — publish + heartbeat fix + 3 confirming quiet fires)
+**Session log**: `dev/2026/08/18/2026-08-18-0706-docs-code-log.md` (closed).
+**Cron**: `2967db0e`, fresh window to ~08-21 — rotate before then.
+**Heartbeat discipline**: confirmed working end-to-end today (WORK write, 3x correct self-suppress,
+STOP write) — keep running it every fire.
+
 **Updated**: 2026-08-18 10:1x PDT (Fire 2 — heartbeat gap found+fixed, publish syndicated)
 **Session log**: `dev/2026/08/18/2026-08-18-0706-docs-code-log.md` (open).
 **Cron**: `2967db0e`, fresh window to ~08-21 — rotate before then.
