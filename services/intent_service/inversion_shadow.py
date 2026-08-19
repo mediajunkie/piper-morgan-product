@@ -40,6 +40,11 @@ from typing import Any, Optional
 
 import structlog
 
+from services.intent_service.session_snapshot import (
+    SessionSnapshot as StateSnapshot,
+)
+from services.intent_service.session_snapshot import serialize_for_prompt
+
 logger = structlog.get_logger(__name__)
 
 _TRUTHY = {"1", "true", "on", "yes"}
@@ -73,6 +78,7 @@ def maybe_schedule_shadow_check(
     user_id: Optional[str] = None,
     llm_service: Any = None,
     offer_service: Any = None,
+    snapshot: Optional[StateSnapshot] = None,
 ) -> Optional[asyncio.Task]:
     """Fire-and-forget a shadow route of ``message`` after a completed turn.
 
@@ -85,8 +91,15 @@ def maybe_schedule_shadow_check(
     existing observability (``_resolve_turn_intent_label`` — the #1518
     ``"category:action"`` / bare-``"category"`` shape). ``offer_service`` is
     the intent service's ``WorkflowOfferService`` for the lightweight
-    post-turn snapshot peek (owner-scoped; see ``SessionSnapshot`` for the
-    Phase-2 threading this deliberately does not do yet).
+    post-turn snapshot peek.
+
+    ``snapshot`` (#1595 Phase 2.0) is the assembled contract
+    ``session_snapshot.SessionSnapshot`` from the call site; when provided,
+    its ``serialize_for_prompt`` block becomes the shadow call's session
+    state and the legacy ad-hoc offer peek is skipped (the snapshot's own
+    peek already covered it, with more fields). When None the pre-2.0 peek
+    path runs unchanged. Shadow-only either way — the snapshot changes what
+    the OBSERVER sees, never what production routing does.
     """
     if not shadow_enabled() or not message:
         return None
@@ -101,6 +114,7 @@ def maybe_schedule_shadow_check(
                 user_id=user_id,
                 llm_service=llm_service,
                 offer_service=offer_service,
+                snapshot=snapshot,
             )
         )
     except RuntimeError:
@@ -120,17 +134,31 @@ async def _shadow_check(
     user_id: Optional[str],
     llm_service: Any,
     offer_service: Any,
+    snapshot: Optional[StateSnapshot] = None,
 ) -> None:
     """The shadow route + comparison. Cannot raise; silent-ok on failure."""
     try:
         from services.intent_service.inversion_router import (
-            SessionSnapshot,
+            SessionSnapshot as RouterSnapshot,
+        )
+        from services.intent_service.inversion_router import (
             derive_routing_grammar,
             route,
         )
 
-        snapshot: Optional[SessionSnapshot] = None
-        if offer_service is not None and session_id:
+        session_state: Optional[RouterSnapshot] = None
+        if snapshot is not None:
+            # #1595 Phase 2.0: the assembled contract snapshot, serialized
+            # via the golden-pinned renderer, IS the session-state block.
+            try:
+                block = serialize_for_prompt(snapshot)
+            except Exception as e:  # silent-ok: a serialization failure (cap breach) degrades to no-session-state for THIS shadow call, logged loudly — never fails the task
+                logger.error("shadow_snapshot_serialize_failed", error=str(e))
+                block = ""
+            if block:
+                session_state = RouterSnapshot(state_block=block)
+        elif offer_service is not None and session_id:
+            # Pre-2.0 fallback peek (no assembled snapshot passed).
             try:
                 # #1532: owner-scoped, read-only peek — never pops the store.
                 pending = offer_service.peek_pending_offer(session_id, user_id=user_id)
@@ -141,12 +169,12 @@ async def _shadow_check(
                 summary = pending.get("workflow_type", "offer")
                 if kind:
                     summary = f"{summary} ({kind})"
-                snapshot = SessionSnapshot(pending_offer_summary=summary)
+                session_state = RouterSnapshot(pending_offer_summary=summary)
 
         grammar = derive_routing_grammar()
         decision = await route(
             message,
-            snapshot,
+            session_state,
             llm_service=llm_service,
             grammar=grammar,
             user_id=user_id,
@@ -175,6 +203,11 @@ async def _shadow_check(
             session_id=session_id,
             user_id=user_id,
             sample_rate=_sample_rate(),
+            # m-44: a snapshot whose reads failed open must be VISIBLE in the
+            # corpus line, or a dead store read scores as "empty session".
+            snapshot_field_errors=(
+                list(snapshot.field_errors) if snapshot and snapshot.field_errors else None
+            ),
         )
         if _log_full_utterance():
             fields["utterance"] = message

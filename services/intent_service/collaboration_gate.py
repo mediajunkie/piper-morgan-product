@@ -293,6 +293,28 @@ async def get_working_mode(user_id: Optional[str]) -> WorkingMode:
         return WorkingMode.COLLABORATE
 
 
+async def read_declared_working_mode(user_id: Optional[str]) -> Optional[str]:
+    """#1595 snapshot read: the mode the user actually DECLARED, or None.
+
+    Unlike :func:`get_working_mode`, this does NOT default to collaborate —
+    the SessionSnapshot must distinguish "declared collaborate" from "never
+    declared" (a fabricated declaration would be routing context that was
+    never said; contract item 3 forbids fabricated values). An unset key or
+    an unrecognized stored value reads as None. A storage error RAISES —
+    the one caller is the fail-open snapshot assembly, which maps the raise
+    to None + a ``field_errors`` entry; swallowing here would erase that
+    distinction. Gate decisions must keep using ``get_working_mode`` (its
+    collaborate-first error direction is load-bearing THERE).
+    """
+    if not user_id:
+        return None
+    raw = (await _load_preferences(str(user_id))).get(WORKING_MODE_PREF_KEY)
+    try:
+        return WorkingMode(raw).value
+    except (ValueError, TypeError):
+        return None
+
+
 async def set_working_mode(user_id: Optional[str], mode: WorkingMode) -> bool:
     """Persist a declared working mode. False = not persisted (be honest about it)."""
     if not user_id:

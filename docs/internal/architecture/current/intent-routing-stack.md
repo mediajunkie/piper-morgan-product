@@ -174,6 +174,40 @@ the Phase-0 full-chain baseline (first run:
 queries first) is the reviewed commit that relaxes the boundary test — until
 then this observer changes NO routing behavior.
 
+**#1595 Phase 2.0 SessionSnapshot (2026-08-19) — the conversational state the
+router has never seen, shadow-fed first.** Two sibling modules:
+`services/intent_service/session_snapshot.py` (the Lead-authored CONTRACT —
+frozen dataclass, `serialize_for_prompt` with a golden-pinned deterministic
+rendering, ≤1800-char cap; five contract items in its docstring: read-only,
+<10ms, fail-open per field, bounded serialization, no user prose beyond
+labeled slots) and `services/intent_service/snapshot_assembly.py`
+(`assemble_session_snapshot(session_id, user_id, intent_service)` — populates
+every field from the REAL stores, never raises, never writes). The reads:
+`WorkflowOfferService.peek_pending_offer` (the #846 one-slot store, observer
+peek — the production pop seam is untouched), `ProcessRegistry.first_active_type`
+(`any_active`'s loop returning WHICH type; the lazy-timeout housekeeping in
+the adapters is an accepted convergent side effect, documented on the method),
+the #1394 ledger head via `services/intent_service/session_activity_read.py`
+(the query extracted to ONE shared home — `classifier._resolve_issue_referent`
+now calls the same `list_session_activities`/`issue_head` instead of its two
+inline copies), `collaboration_gate.read_declared_working_mode` (the DECLARED
+#1510 mode or None — deliberately NOT `get_working_mode`, whose collaborate
+default would fabricate a declaration), and the #1605 per-verb default via
+`get_verified_inference(user_id, inference_key("clear"))`. The four awaited
+reads run gathered (measured 2.4ms median / 2.7ms p90 on real Postgres).
+Wiring is SHADOW-ONLY: `process_intent`'s existing post-turn call site
+assembles the snapshot iff `shadow_enabled()` and passes it to
+`maybe_schedule_shadow_check(snapshot=...)`; the shadow task serializes it
+via `serialize_for_prompt` into the routing prompt's `Session state:` block
+(the router-side `SessionSnapshot.state_block` field). Live routing is
+byte-identical with the flag on/off (pinned in
+`tests/unit/services/intent_service/test_snapshot_assembly_1595.py`, which
+also pins idempotence — assemble twice, the offer still pops — fail-open
+field naming, and the golden serialization string). Phase 2.2 (threading the
+snapshot into the LIVE constrained routing call, pre-classification state) is
+a separate reviewed flip; the floor and handlers must never read routing
+context from the snapshot (one-direction dependency, per the contract).
+
 ## The vocabularies (where action names live)
 
 1. **Prompt vocabulary** — action names the classifier prompt suggests (`services/prompts.py`, ~17).

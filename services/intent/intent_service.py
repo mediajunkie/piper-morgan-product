@@ -758,7 +758,26 @@ class IntentService:
         try:
             from services.intent_service.inversion_shadow import (
                 maybe_schedule_shadow_check,
+                shadow_enabled,
             )
+
+            # #1595 Phase 2.0: assemble the contract SessionSnapshot for the
+            # shadow call's context block. Gated on the shadow flag so the
+            # default-OFF path pays zero assembly cost; fail-open by contract
+            # (assemble_session_snapshot never raises) and read-only by
+            # contract item 1 (peek, never pop — this runs POST-turn, so the
+            # state it sees is the world the NEXT turn's router would see).
+            # Shadow-only: the snapshot feeds the observer, never live routing
+            # (that is Phase 2.2, behind its own reviewed flip).
+            snapshot = None
+            if shadow_enabled():
+                from services.intent_service.snapshot_assembly import (
+                    assemble_session_snapshot,
+                )
+
+                snapshot = await assemble_session_snapshot(
+                    effective_session_id, effective_user_id, self
+                )
 
             maybe_schedule_shadow_check(
                 message,
@@ -767,6 +786,7 @@ class IntentService:
                 user_id=effective_user_id,
                 llm_service=getattr(self.intent_classifier, "_llm", None),
                 offer_service=self.workflow_offer_service,
+                snapshot=snapshot,
             )
         except Exception:  # silent-ok: observer scheduling must never break a turn; the task logs its own failures (shadow_route_check_failed)
             pass
