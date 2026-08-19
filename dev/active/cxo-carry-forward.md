@@ -1,3 +1,26 @@
+# CXO carry-forward — rewritten 2026-08-18 22:2x PT at STOP. Day closed; next fire 06:47 on 08-19, opening
+~07:17.
+
+## 🔴 FIRST THING TO CHECK AT NEXT START: has the FTUX conversation with PM happened?
+
+Lead flagged it as imminent this evening (08-18 ~19:00). Prep sent (`reply-cxo-to-lead-cc-pm-ftux-prep-my-
+read-before-the-conversation-2026-08-18.md`) — platform-dependent reframe of chat-first vs. structured-
+first, using the surfaces taxonomy; #1625's upcoming-reminders question connected concretely. **As of
+08-18 22:17 STOP, no sign the conversation has happened yet** — could be live elsewhere and just not
+visible in mail/GH, or genuinely hasn't started. Check for any trace (mail, GH comments, decisions.log)
+before assuming either way.
+
+**Cron**: `c84a440a` (`47 6,9,12,15,18,21 * * *`) — confirmed present all six fires today, healthy on a
+fresh ~7-day window (expires ~08-25, no active watch needed for several days). **Worktree**:
+`~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`.
+
+**Today (08-18) in one line**: proactive cron rotation at START (the flagged priority, handled cleanly),
+three quiet fires, then real design prep for the FTUX conversation late in the day. #1536/#1539 unchanged.
+
+---
+
+*(08-18 19:2x header below, left as this evening's fuller record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-18 19:2x PT
 
 **19:17 fire — real prep work for an imminent PM conversation**: Lead briefed me ahead of PM coming

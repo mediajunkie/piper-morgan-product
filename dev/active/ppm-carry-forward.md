@@ -1,10 +1,10 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-17 22:22 PT (STOP). **Six clean fires today, five of them quiet** —
-first fully quiet day since the Amber reboot (no design threads, no mail). Cron re-armed:
-**`6c61d8b9`** (was `a25f9f9f`). **Still watching**: PM's word on the taxonomy's §1 naming — the
-one thing left before full ratification; unchanged for two full days now.
+**Last rewritten**: 2026-08-18 22:22 PT (STOP). **Six clean fires, second fully quiet day in a
+row.** Cron re-armed: **`28f255ae`** (was `6c61d8b9`). **Still watching**: PM's word on the
+taxonomy's §1 naming — the one thing left before full ratification; unchanged for three full days
+now, still within PM's own explicit no-deadline framing, not escalating.
 
 ## ✅ SURFACES TAXONOMY v0.2 — my consult applied, extended correctly, and confirmed 2026-08-16
 CXO folded my notification-routing reasoning directly into the doc same day (`661ce4802`, no mail

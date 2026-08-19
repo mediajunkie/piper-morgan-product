@@ -270,16 +270,14 @@ class IntentClassifier:
                 # Opportunistic owner-scoped ledger read: bind the repository
                 # iff this session's creation ledger holds the SAME issue
                 # number (mirrors the ledgered emit below). Never cross-binds.
-                from services.database.repositories import SessionActivityRepository
-                from services.database.session_factory import AsyncSessionFactory
+                # (#1595: the query itself lives in session_activity_read —
+                # shared with the snapshot assembly, never a copied branch.)
+                from services.intent_service.session_activity_read import (
+                    list_session_activities,
+                )
 
                 try:
-                    async with AsyncSessionFactory.session_scope() as session:
-                        activities = await SessionActivityRepository(
-                            session
-                        ).list_for_session(
-                            owner_id=str(user_id), conversation_id=str(session_id)
-                        )
+                    activities = await list_session_activities(user_id, session_id)
                 except Exception as e:  # silent-ok: ledger read failure falls through to the normal (non-Stage-0) path, logged; an empty ledger binds nothing rather than binding wrongly
                     logger.warning("b3_ledger_read_failed", error=str(e))
                     activities = []
@@ -317,35 +315,29 @@ class IntentClassifier:
             return None  # D1a: no owner-scoped read possible → don't resolve
         if not _detect_issue_referent(message):
             return None  # N2 / not a follow-up referent
-        # Owner-scoped ledger read (B4's reader) — most recent creation this session.
-        from services.database.repositories import SessionActivityRepository
-        from services.database.session_factory import AsyncSessionFactory
+        # Owner-scoped ledger read (B4's reader) — most recent creation this
+        # session. Query + head parse live in session_activity_read (#1595:
+        # shared with the snapshot assembly, never a copied branch — #1555).
+        from services.intent_service.session_activity_read import (
+            issue_head,
+            list_session_activities,
+        )
 
         try:
-            async with AsyncSessionFactory.session_scope() as session:
-                activities = await SessionActivityRepository(session).list_for_session(
-                    owner_id=str(user_id), conversation_id=str(session_id)
-                )
+            activities = await list_session_activities(user_id, session_id)
         except Exception as e:
             logger.warning("b3_ledger_read_failed", error=str(e))
             return None  # degrade to pass-through, never block classification
-        # N1: nothing created this session → don't fabricate a target.
-        latest_issue = next(
-            (a for a in activities if a.action_type == "issue_created"), None
-        )
-        if latest_issue is None:
+        # N1 (inside issue_head): nothing created this session, or a malformed
+        # target_ref → don't fabricate a target.
+        head = issue_head(activities)
+        if head is None:
             return None
-        # target_ref is "owner/repo#107" — split into the fields the handler reads.
-        ref = latest_issue.target_ref or ""
-        if "#" not in ref:
-            return None
-        repository, _, num = ref.rpartition("#")
-        if not repository or not num.isdigit():
-            return None
+        repository, num = head
         logger.info(
             "b3_referent_resolved",
             session_id=session_id,
-            resolved_ref=ref,
+            resolved_ref=f"{repository}#{num}",
             action="update_issue",
         )
         return Intent(
