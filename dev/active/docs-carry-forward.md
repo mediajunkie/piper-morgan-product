@@ -1,5 +1,40 @@
 # Docs Carry-Forward
 
+**Updated**: 2026-08-19 ~10:5x PDT (Fire 2 — Ship #056 published + Exec notified + real 2-day
+omnibus gap found+closed)
+**Session log**: `dev/2026/08/19/2026-08-19-0711-docs-code-log.md` (open).
+**Cron**: `09681b21`, fresh 7-day window to ~08-26 (rotated twice today: 08-14's `2967db0e` hit the
+48h-proactive-expiry rule → `c707c6a0`; then deleted for the omnibus-backfill drain and re-armed
+at idle → `09681b21`. Registry row current, both transitions logged with reasons.)
+
+**Ship #056 "Fundamentals First"**: PM said "ready for proofreading" while the calendar note still
+read "Awaiting PM fact-check + voice pass" with no git evidence of an edit pass — treated PM's
+live statement as authoritative, ran a first-read audit myself rather than either blindly trusting
+or second-guessing. Found + fixed 2 real defects (bare `#1536` in narrative prose — 0/6 precedent
+Ships cite a real GH issue this way; one "cohort"), fact-checked 5 load-bearing claims against
+primary session logs (all accurate — issues-closed=53 exact match, #1536 merge+test-count,
+CI-dark-workflows count, v41 deploy tag, #1510 three-consumers-same-day). Published, live-content-
+verified (served HTML, not just source), calendar reconciled, draft archived. PM then asked me to
+confirm the local markdown matches (did — diffed archived draft against the actual published
+`blog-content.json` entry) and to notify Exec (sent, `02b5c5a16`, framed as future-Ship guidance
+not a complaint). **PM taking LinkedIn syndication directly** — no calendar action from me until
+the URL lands; don't chase.
+
+**Real gap found+closed this fire**: omnibus logs were missing for 08-17 AND 08-18 (27 session
+logs, 27 activity-log rows unsynthesized) — this is owed daily-cadence Docs work, not something
+flagged to someone else. Closed via 2 sequential subagent dispatches (day-by-day, avoiding the
+CSV-write race the earlier 3-day backfill was careful about). Both ran the full create-omnibus
+skill for real (methodology-20 read fresh, Step 2.5/2.6 cross-reference gates actually run) and
+each preserved a genuine cross-role discrepancy rather than silently resolving it (Exec's #1633
+dating slip on 08-17; Web's mis-attributed cross-post catch on 08-18). Omnibus chain is now
+continuous 07-27 through 08-18 — **verify 08-19 gets one tomorrow rather than let a 3rd gap
+accrue**; this is now the second time in a week the cadence has slipped (08-14/15/16, then
+08-17/18) — worth naming as a pattern if a third instance shows up, not yet worth an escalation.
+
+**Watch, low-priority**: this carry-forward file itself has grown very large (many weeks of
+stacked entries, some clearly historical/resolved). Not blocking anything, but a pruning pass
+would make it faster to read at fire-start. Not doing it this fire — flagging for a quieter one.
+
 **Updated**: 2026-08-18 22:2x PDT (DAY-CLOSED — publish + heartbeat fix + 3 confirming quiet fires)
 **Session log**: `dev/2026/08/18/2026-08-18-0706-docs-code-log.md` (closed).
 **Cron**: `2967db0e`, fresh window to ~08-21 — rotate before then.
