@@ -39,7 +39,7 @@ _Strategic threads PM flagged to revisit — not operational/owed items; no near
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **PDR-006 architecture diagram — live thread with PM** | 2026-07-26, revision 1 shipped 2026-08-10 | **Current state lives in `pa-carry-forward.md` PM Attention section, not here** — it's rewritten every substantive fire (revision 1 artifact URL, the open connector-overlap question, PM's review status). This row exists only so the Task List doesn't look empty on a thread that's actually the most active one PA owns; don't duplicate the detail in both places. |
+| 1 | **Architecture/BYOC — live thread with PM** | 2026-07-26, converged with the BYOC strategic conversation 2026-08-18 | **Current state lives in `pa-carry-forward.md` PM Attention section, not here** — it's rewritten every substantive fire. The 08-10 architecture-diagram connector-overlap question and 08-18's BYOC conversation are the same underlying topic; carry-forward tracks both together now. This row exists only so the Task List doesn't look empty on the thread that's actually the most active one PA owns; don't duplicate the detail in both places. |
 
 ### Pending external action
 
