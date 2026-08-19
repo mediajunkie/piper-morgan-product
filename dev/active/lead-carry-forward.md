@@ -1,5 +1,5 @@
 # Lead carry-forward
-_Rewritten 2026-08-16 ~15:45 PT._
+_Rewritten 2026-08-19 ~12:40 PT (Phase 2 mid-flight)._
 
 ## Deploy state
 - **v54 LIVE** (Sat 8/15 ~2:59 PM PT): named-target scope fix (PM's #1626) · exception-answer binding ·
@@ -12,35 +12,25 @@ _Rewritten 2026-08-16 ~15:45 PT._
   REST summarize into chat); D only if beta wants file-analysis. Forensics doc: summarize-intent-forensics-2026-08-15.md
 - PPM formal word on #1591 teaching-line changes (informal AGREE already in)
 
-## STAGED CUT awaiting PM's deploy word (v56 = both Saturday waves; this is SUNDAY's batch)
-- #1624 chat document-summarize C+A (reaches the REST function literally; 15-month gap closed)
-- #1633 issue_intelligence DISPOSED (Arch ruling; prior art 5d27a2a70)
-- Memory-index packing + CIO-caught floor-claim fix (agent-facing, no user surface)
-PM's 12-item v56 test plan UNTESTED as of this write — verdicts drive next loop.
+## PHASE 2 STATE (the primary lane, PM's 8/18 fundamentals-first ruling)
+- 2.0 SessionSnapshot: MERGED (contract Lead-authored; assembly reviewed; shadow-only, 2.4ms)
+- 2.1 gate: MERGED + RUN — context-free 34/39 (baseline held); armed-state 6/7 read-right but
+  emission convention unsettled → #1663 DECISION WITH ARCH (my rec: (b) seam-consumes-hints).
+  Model identity verified matched (haiku fallback both instruments).
+- 2.2 BLOCKED on the 1663 ruling; prerequisites in flight: #1665+#1664 lane running (arm sites
+  store rendered ask; is_confirm by kind per the 1650 table)
+- Everything through v60 is DEPLOYED (fabrications dead, file path repaired, mount verified)
 
-## Next wave (in order) — REORDERED by PM's 8/18 fundamentals-first ruling
-1. **INVERSION PHASE 2 IS NOW THE PRIMARY LANE** — PM 8/18: "hard to test some features with so
-   much brittleness in the interpretation of intent layer… work on those fundamentals and clear
-   them before fine tuning issue creation and file summarization." The banked trigger has arrived.
-   Phase 2 = SessionSnapshot threading (armed carriers/active flows/recent referents visible to
-   the constrained routing call — kills turn-theft + orphaned-answer classes structurally), then
-   Phase 3 cutover gated on the corpus (which now holds every live deposit from PM's rounds).
-   Feature fine-tuning PAUSED except broken-infrastructure repairs (#1656 upload, #1657 resolver).
-1b. **File-lane repairs run parallel as agent lanes** (infrastructure, not fine-tuning): #1656
-   upload broken (CRITICAL, no live coverage existed), #1657 resolver wrong-empty on a real old
-   row. #1658 parity umbrella routed to PPM, queued behind Inversion per the same ruling.
-2. **Beta-conditions audit — PM RULING via Exec 8/15 (decisions.log 15:22)**: I own checking PM's
-   verbatim beta conditions against open MVP issues at the sprint's FINAL GATE, plus an independent
-   subagent cross-check (second perspective, not rubber stamp). Not urgent until gate approaches.
-2b. **L4 estimate DELIVERED 8/15 (was the 07-30 open item)** — production-phase scoping unblocked
-   once #1174 discovery lands. Cold-island disposal HELD on PM's 9-vs-11 word (commit-hash framing).
-3. Open residue: #1629 drift-direction (ride #1257) · #1637 tests/intent standing-red +
-   cross-suite pollution · #1638 TemplateRenderer fix-or-delete + FileResolver naming (Arch) ·
-   detect_mode_declaration prose hazard (on #1631) · print-theater integration file (flagged to
-   Arch in 1633 reply)
-4. Colon-form parse stays moratorium-parked (Inversion corpus) · #1572 tz after Phase 2
-5. Post-beta idea recorded: synonym-learning from correction (store-on-verify → routing vocab)
+## Awaiting
+- Arch: #1663 ruling (2.2's first flip waits)
+- PM: v59/v60 test verdicts when they surface; the CXO + PA chats (preps delivered, both
+  replied, PA's crack verified half-healed); MVP triage pass queued AFTER those chats
+- PM idea parked: #1658 prototype-parity umbrella with PPM
 
+## Next when unblocked
+1. 2.2 first flip (zero-armed-state READ categories) once 1663 rules
+2. MVP triage cut with PPM post-chats
+3. Beta-conditions audit at the final gate (PM ruling, mine + subagent cross-check)
 ## Standing
 - Cron 28fef16b `17 6,9,12,15,18,21 * * *` (rotated 8/18, verbatim prompt), expires ~8/25, rotate ~8/23
 - CLAUDE.md keychain-absent block STALE (3x flagged; needs CLAUDE.md authority)
