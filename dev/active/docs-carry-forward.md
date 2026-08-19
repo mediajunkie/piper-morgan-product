@@ -1,5 +1,14 @@
 # Docs Carry-Forward
 
+**Updated**: 2026-08-19 13:0x PDT (Fire 3 — quiet mail/task loop, docs-standing-items.md refreshed)
+**Session log**: `dev/2026/08/19/2026-08-19-0711-docs-code-log.md` (open).
+**Cron**: `09681b21`, unchanged this fire, healthy through ~08-26.
+**docs-standing-items.md**: full rewrite this fire — was stale since 2026-05-27 (6 cited GH
+issues already closed, verified live). Now reflects actual current state; only 2 genuinely-open
+items carried forward (the dormant frontmatter-upgrade project, flagged for a PM check rather
+than silent resumption; the recurring cycle-ops list). See the file itself, not this note, for
+current content.
+
 **Updated**: 2026-08-19 ~10:5x PDT (Fire 2 — Ship #056 published + Exec notified + real 2-day
 omnibus gap found+closed)
 **Session log**: `dev/2026/08/19/2026-08-19-0711-docs-code-log.md` (open).
