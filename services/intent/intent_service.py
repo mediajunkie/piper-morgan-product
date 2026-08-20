@@ -1603,118 +1603,158 @@ class IntentService:
                     self.logger.error(f"Knowledge Graph enhancement failed: {e}", exc_info=True)
                     conversation_context = {}
 
-            # Issue #595: Multi-intent classification
-            # Use classify_multiple to detect all intents in message
-            self.logger.info(f"Processing intent: {message}")
-            # Issue #852: Pass contextual continuation hint to classifier
-            classification_context = (
-                {"contextual_continuation_hint": contextual_continuation_hint}
-                if contextual_continuation_hint
-                else None
-            )
-            # #1394/B3: session_id is the Stage-0 ledger-scoping key (ADR-078 D2) —
-            # its own kwarg, never in context (context injects into the LLM prompt
-            # and disables the classifier cache; session_id must do neither).
-            multi_result = await self.intent_classifier.classify_multiple(
-                message, context=classification_context, user_id=user_id,
-                session_id=session_id,
-            )
-
-            # Issue #764: Multi-substantive intent orchestration
-            # Count substantive (non-conversational) intents
-            substantive_count = sum(
-                1 for i in multi_result.intents if i.category != IntentCategory.CONVERSATION
-            )
-
-            if multi_result.is_multi_intent and substantive_count >= 2:
-                # Issue #764: Route to orchestrator for multi-substantive intents
-                self.logger.info(
-                    "multi_intent_orchestrating",
-                    intent_count=len(multi_result.intents),
-                    substantive_count=substantive_count,
-                    has_greeting=multi_result.has_greeting,
+            # ── #1595 Phase 2.2 flip-1: LIVE inversion routing consult ──────
+            # Behind PIPER_INVERSION_LIVE_CATEGORIES (DEFAULT-EMPTY: unset ⇒
+            # the consult returns None with zero work and this turn is
+            # byte-identical to the pre-flip chain). For an UNARMED turn whose
+            # constrained-call emission is an in-set, declared-READ rail
+            # operation at/above the confidence threshold, the consult returns
+            # a fully-formed Intent and the classifier consult below is
+            # REPLACED for this turn — the intent flows into the SAME action
+            # rail this function always ran (the router chooses the key; the
+            # rail does what it always did; no new dispatch site). Every other
+            # outcome — armed turn (pending offer popped this turn, bound
+            # contextual offer, or snapshot-armed state), REFUSED,
+            # sub-threshold, off-set category, non-rail or non-READ operation,
+            # transport error — falls through to the legacy chain UNCHANGED,
+            # logged (inversion_live_decision). This layer stays blind to the
+            # router's decision type: it sees Intent-or-None from the ONE
+            # sanctioned consult module (services/intent_service/
+            # inversion_live.py — the named allowlist entry in
+            # TestInversionShadowNoExecutionBoundary).
+            intent = None
+            try:
+                from services.intent_service.inversion_live import (
+                    consult_inversion_live,
                 )
-                try:
-                    plan = self.intent_orchestrator.create_plan(multi_result)
-                    orchestrated = await self.intent_orchestrator.execute_plan(
-                        plan, session_id, user_id
+
+                intent = await consult_inversion_live(
+                    message,
+                    session_id=session_id,
+                    user_id=user_id,
+                    intent_service=self,
+                    turn_had_pending_offer=pending_offer is not None,
+                    turn_bound_contextual_offer=contextual_offer_bound,
+                )
+            except Exception as e:  # silent-ok: LOGGED loudly right here — an inversion consult failure must never break the turn; the legacy chain below answers it (#1423 discipline)
+                self.logger.error(
+                    "inversion_live_consult_failed", error=str(e), exc_info=True
+                )
+                intent = None
+
+            if intent is None:
+                # Issue #595: Multi-intent classification
+                # Use classify_multiple to detect all intents in message
+                self.logger.info(f"Processing intent: {message}")
+                # Issue #852: Pass contextual continuation hint to classifier
+                classification_context = (
+                    {"contextual_continuation_hint": contextual_continuation_hint}
+                    if contextual_continuation_hint
+                    else None
+                )
+                # #1394/B3: session_id is the Stage-0 ledger-scoping key (ADR-078 D2) —
+                # its own kwarg, never in context (context injects into the LLM prompt
+                # and disables the classifier cache; session_id must do neither).
+                multi_result = await self.intent_classifier.classify_multiple(
+                    message, context=classification_context, user_id=user_id,
+                    session_id=session_id,
+                )
+
+                # Issue #764: Multi-substantive intent orchestration
+                # Count substantive (non-conversational) intents
+                substantive_count = sum(
+                    1 for i in multi_result.intents if i.category != IntentCategory.CONVERSATION
+                )
+
+                if multi_result.is_multi_intent and substantive_count >= 2:
+                    # Issue #764: Route to orchestrator for multi-substantive intents
+                    self.logger.info(
+                        "multi_intent_orchestrating",
+                        intent_count=len(multi_result.intents),
+                        substantive_count=substantive_count,
+                        has_greeting=multi_result.has_greeting,
                     )
-                    orchestrated_result = IntentProcessingResult(
-                        success=len(orchestrated.successful_results) > 0,
-                        message=orchestrated.aggregated_message,
-                        intent_data=orchestrated.primary_intent_data,
-                        multi_intent_greeting=orchestrated.greeting_prefix,
-                        multi_intent_orchestrated=True,
-                        secondary_intents=[
-                            {"category": r.intent.category.value, "action": r.intent.action}
-                            for r in orchestrated.results[1:]
-                        ],
+                    try:
+                        plan = self.intent_orchestrator.create_plan(multi_result)
+                        orchestrated = await self.intent_orchestrator.execute_plan(
+                            plan, session_id, user_id
+                        )
+                        orchestrated_result = IntentProcessingResult(
+                            success=len(orchestrated.successful_results) > 0,
+                            message=orchestrated.aggregated_message,
+                            intent_data=orchestrated.primary_intent_data,
+                            multi_intent_greeting=orchestrated.greeting_prefix,
+                            multi_intent_orchestrated=True,
+                            secondary_intents=[
+                                {"category": r.intent.category.value, "action": r.intent.action}
+                                for r in orchestrated.results[1:]
+                            ],
+                        )
+                        # Issue #819: Apply soft invocation to orchestrated responses
+                        return self._apply_soft_offer(
+                            orchestrated_result,
+                            message,
+                            session_id,
+                            trust_stage=resolved_trust_stage,
+                            user_id=user_id,
+                            formality_baseline=formality_baseline,
+                        off_topic_prefix=off_topic_prefix,
+                        )
+                    except Exception as e:
+                        # Graceful fallback: process primary intent only
+                        self.logger.warning(
+                            "multi_intent_orchestration_failed",
+                            error=str(e),
+                            fallback="primary_only",
+                        )
+                        intent = multi_result.primary_intent
+                        if intent is None:
+                            intent = await self.intent_classifier.classify(
+                            message, user_id=user_id, session_id=session_id
+                        )
+
+                elif (
+                    multi_result.is_multi_intent
+                    and multi_result.has_greeting
+                    and multi_result.has_substantive_intent
+                ):
+                    # Issue #595: Handle greeting + single substantive intent
+                    self.logger.info(
+                        "multi_intent_handling",
+                        intent_count=len(multi_result.intents),
+                        has_greeting=True,
+                        primary_category=(
+                            multi_result.primary_intent.category.value
+                            if multi_result.primary_intent
+                            else None
+                        ),
                     )
-                    # Issue #819: Apply soft invocation to orchestrated responses
-                    return self._apply_soft_offer(
-                        orchestrated_result,
-                        message,
-                        session_id,
-                        trust_stage=resolved_trust_stage,
-                        user_id=user_id,
-                        formality_baseline=formality_baseline,
-                    off_topic_prefix=off_topic_prefix,
-                    )
-                except Exception as e:
-                    # Graceful fallback: process primary intent only
-                    self.logger.warning(
-                        "multi_intent_orchestration_failed",
-                        error=str(e),
-                        fallback="primary_only",
-                    )
+                    # Use primary intent (substantive) for main processing
+                    # The greeting will be handled via multi_intent context
                     intent = multi_result.primary_intent
                     if intent is None:
+                        # has_substantive_intent implies a primary in practice, but
+                        # nothing enforces it — same fallback as the sibling branch
+                        # rather than an unguarded attribute access (mypy [union-attr])
                         intent = await self.intent_classifier.classify(
-                        message, user_id=user_id, session_id=session_id
-                    )
-
-            elif (
-                multi_result.is_multi_intent
-                and multi_result.has_greeting
-                and multi_result.has_substantive_intent
-            ):
-                # Issue #595: Handle greeting + single substantive intent
-                self.logger.info(
-                    "multi_intent_handling",
-                    intent_count=len(multi_result.intents),
-                    has_greeting=True,
-                    primary_category=(
-                        multi_result.primary_intent.category.value
-                        if multi_result.primary_intent
-                        else None
-                    ),
-                )
-                # Use primary intent (substantive) for main processing
-                # The greeting will be handled via multi_intent context
-                intent = multi_result.primary_intent
-                if intent is None:
-                    # has_substantive_intent implies a primary in practice, but
-                    # nothing enforces it — same fallback as the sibling branch
-                    # rather than an unguarded attribute access (mypy [union-attr])
-                    intent = await self.intent_classifier.classify(
-                        message, user_id=user_id, session_id=session_id
-                    )
-                # Mark that we detected a greeting so response can include acknowledgment
-                if intent.context is None:
-                    intent.context = {}
-                intent.context["multi_intent_greeting"] = True
-                intent.context["secondary_intents"] = [
-                    {"category": i.category.value, "action": i.action}
-                    for i in multi_result.secondary_intents
-                ]
-            else:
-                # Single intent or all-conversational - use primary
-                intent = multi_result.primary_intent
-                if intent is None:
-                    # No intents detected - fall back to standard classification
-                    intent = await self.intent_classifier.classify(
-                        message, user_id=user_id, session_id=session_id
-                    )
+                            message, user_id=user_id, session_id=session_id
+                        )
+                    # Mark that we detected a greeting so response can include acknowledgment
+                    if intent.context is None:
+                        intent.context = {}
+                    intent.context["multi_intent_greeting"] = True
+                    intent.context["secondary_intents"] = [
+                        {"category": i.category.value, "action": i.action}
+                        for i in multi_result.secondary_intents
+                    ]
+                else:
+                    # Single intent or all-conversational - use primary
+                    intent = multi_result.primary_intent
+                    if intent is None:
+                        # No intents detected - fall back to standard classification
+                        intent = await self.intent_classifier.classify(
+                            message, user_id=user_id, session_id=session_id
+                        )
 
             self.logger.info(f"Intent classified as: {intent.category} - {intent.action}")
 
