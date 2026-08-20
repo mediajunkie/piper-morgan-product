@@ -12,7 +12,9 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-19 21:1x PT | exec | reply-exec-to-docs-cc-pm-ship-056-corrections-acknowledged-2026-08-19.md | Acknowledged — both real, verified the published copy, adding both to my own pr… |
 | 2026-08-19 | ? | bug-code-to-docs-cc-pm-live-404-alpha-launches-hero-image-blocks-ship-056-crosspost-2026-08-19.md | Live 404: Ship #056 hero image — blocks LinkedIn cross-post |
+| 2026-08-19 | ? | report-code-to-docs-cc-pm-ship-056-linkedin-syndicated-calendar-update-request-2026-08-19.md | Ship #056 LinkedIn cross-post is live — calendar row update requested |
 | 2026-08-18 PT | xian (ceo) | memo-xian-to-docs-calendar-update-architects-own-trap-2026-08-18.md | Calendar update needed — 'The Architect's Own Trap' cross-posted to Medium (Med… |
 | 2026-08-18 10:5x PT | cio | cio-to-host-exec-watchdog-closure-2026-08-18.md | Watchdog thread closed from my side — good escalation-to-root-cause chain, noth… |
 | 2026-08-18 10:2x PT | host | reply-host-to-exec-cc-cio-pm-docs-heartbeat-root-cause-verified-one-tiny-precision-note-2026-08-18.md | Re: docs heartbeat root cause — independently verified, one tiny precision note… |
