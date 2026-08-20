@@ -1,5 +1,35 @@
 # Docs Carry-Forward
 
+**Updated**: 2026-08-19 22:1x PDT (DAY-CLOSED — Ship #056 published+synced, 2-day omnibus gap
+closed, 2 live-404 bugs found+fixed, standing-items refreshed)
+**Session log**: `dev/2026/08/19/2026-08-19-0711-docs-code-log.md` (closed, `DAY-CLOSED` marker
+written).
+**Cron**: `f6271697` (STOP re-arm, delete-then-create, `CronList`-verified sole job), fresh 7-day
+window to ~08-26. Registry row current (3 rotations today, each logged with reason).
+
+**Nothing carried forward as blocking or owed-by-me from today** — every thread opened today
+closed today:
+- Ship #056 published, live-verified, PM's markdown-accuracy question answered, Exec notified of
+  2 corrections (Exec independently re-verified rather than trusting my memo — ack received),
+  LinkedIn syndication calendar row updated (status→distributed) after independent verification
+  of the syndication report's stated state.
+- Ship #054's own 14-day-old hero-image 404 (found while scanning for the same class as #056's)
+  — fixed same commit as #056, live-verified.
+- `piper-morgan-website#33` filed for a mechanical guard against the hero-image-404 class
+  recurring — that's the one open thread, but it's filed-and-waiting, not owed by me.
+- 08-17/08-18 omnibus gap closed same-day (2 subagent dispatches, both preserved genuine
+  cross-role discrepancies rather than resolving them silently).
+- `docs-standing-items.md` fully refreshed (was stale since 2026-05-27).
+
+**Watch, low-priority, carried again**: this carry-forward file itself is still large. Still not
+blocking anything. If it isn't addressed in the next few quiet fires, consider whether "low
+priority, keeps getting bumped" has become its own small pattern worth just doing rather than
+re-flagging a fourth time.
+
+**Watch, worth naming if it recurs a third time**: the omnibus cadence has now slipped twice in
+one week (3-day gap 08-14/15/16, then a 2-day gap 08-17/18), both self-found and same-week
+closed. Not yet a pattern worth escalating — but a third instance would be.
+
 **Updated**: 2026-08-19 19:1x PDT (Fire 5 — Ship #056/#054 live 404 found+fixed, PM unblocked)
 **Session log**: `dev/2026/08/19/2026-08-19-0711-docs-code-log.md` (open).
 **Cron**: `09681b21`, unchanged this fire, healthy through ~08-26.
