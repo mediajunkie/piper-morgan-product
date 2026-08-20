@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-19 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-19 (16:37 WORK)
 
 **Cron**: `efe62c47` · `7 10,16,22` LEAN · re-armed 2026-08-18 22:37 STOP (delete-then-create) ·
 **auto-expires ~2026-08-25**.
@@ -6,6 +6,17 @@
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
+
+## ⭐ PM's own framing of the curation-offload thread is bigger than what's been tested
+
+Janus reported (08-19) that PM described this exact cross-project thread to Ted Nadeau unprompted,
+this morning, as a genuine cross-project standardization initiative — duty cycles, session logs,
+attention rollups, "equip them rather than making them invent," a shared-paradigm wiki across
+projects. **Bigger scope than the container-gap question Janus and I have been testing** (does one
+artifact fit a brief). Named the gap explicitly to Janus rather than quietly treating the two as
+the same thing, and raised it with PM directly in chat this fire — the one thing I can do from this
+side that Janus can't. **Not building the bigger thing off this signal alone** — same discipline as
+the container-gap question, more warranted now given the scale PM described externally.
 
 ## ✅ Dispatch-latency test 4 RESOLVED (15:39) — idle-duration ruled out, negative result
 
