@@ -1,16 +1,16 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # The Dead Code That Wasn't
 
 *July 16–18, 2026*
 
-My team spent three days that week deleting code that lies. Not code with bugs. Code that runs, returns a plausible answer, and never tells you the answer was fake.
+My agent team spent three days that week deleting code that produces lies. The code runs, returns a plausible answer, and never tells you the answer was fake.
 
-We'd found a lot of it. A file-search feature that could quietly serve simulated results instead of real ones. A security check that failed silently instead of blocking. A recovery routine that claimed to recover and did nothing at all. My chief architect agent (Arch) and my lead developer agent (Lead Dev) had spent the prior week building instruments to find this class of problem systematically — a census of every place in the codebase where a failure gets swallowed instead of surfaced. The tally: 1,233 broad exception handlers, 244 of them sitting on paths real users touch. Of those, 274 got individually classified. 66 needed to stop swallowing and start telling the truth.
+We'd found a lot of this. A file-search feature that could quietly serve simulated results instead of real ones. A security check that failed silently instead of blocking. A recovery routine that claimed to recover and did nothing at all. My chief architect agent (Arch) and my lead developer agent (Lead Dev) had spent the prior week building instruments to find this class of problem systematically — a census of every place in the codebase where a failure gets swallowed instead of surfaced. The tally: 1,233 broad exception handlers, 244 of them sitting on paths real users touch. Of those, 274 got individually classified. 66 needed to stop swallowing and start telling the truth.
 
 One family of fixes got its own name: remove-the-lie. A recovery routine that claimed success while doing nothing became an honest no-op. A security check that failed silently became a loud, unmissable error. The whole batch — sixteen modules across six families — went to Arch for a ruling before anyone touched a line: fabrication-removal, not simple cleanup, so treat it like the thing it actually was.
 
