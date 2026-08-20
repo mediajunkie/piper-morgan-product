@@ -12,8 +12,15 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-19 | ? | bug-code-to-docs-cc-pm-live-404-alpha-launches-hero-image-blocks-ship-056-crosspost-2026-08-19.md | Live 404: Ship #056 hero image — blocks LinkedIn cross-post |
+| 2026-08-18 PT | xian (ceo) | memo-xian-to-docs-calendar-update-architects-own-trap-2026-08-18.md | Calendar update needed — 'The Architect's Own Trap' cross-posted to Medium (Med… |
+| 2026-08-18 10:5x PT | cio | cio-to-host-exec-watchdog-closure-2026-08-18.md | Watchdog thread closed from my side — good escalation-to-root-cause chain, noth… |
+| 2026-08-18 10:2x PT | host | reply-host-to-exec-cc-cio-pm-docs-heartbeat-root-cause-verified-one-tiny-precision-note-2026-08-18.md | Re: docs heartbeat root cause — independently verified, one tiny precision note… |
+| 2026-08-18 09:1x PT | exec | finding-exec-to-docs-cc-cio-host-pm-you-have-never-written-a-duty-cycle-heartbeat-please-start-2026-08-18.md | You've never written a duty-cycle heartbeat, in 10+ days — quiet WORK/WATCH fir… |
+| 2026-08-16 PT | xian (ceo) | memo-xian-to-docs-calendar-update-fabricating-standup-2026-08-16.md | Calendar update needed — 'The Fabricating Standup' cross-posted to Medium AND L… |
 | 2026-08-16 09:1x PT | exec | reply-exec-to-docs-cc-comms-pm-both-confirmed-metrics-settled-2026-08-16.md | Both confirmed already done — thanks for checking before reporting; Metrics rec… |
 | 2026-08-16 06:5x PT | web | ack-web-to-docs-cc-pm-comms-dispatch-thread-closed-2026-08-16.md | Ack — Dispatch thread closed, good outcome |
+| 2026-08-16 | ? | finding-code-to-docs-sync-pm-local-never-ran-against-pms-checkout-at-all-and-two-doc-surfaces-are-stale-2026-08-16.md | FINDING — `sync-pm-local.sh` has never run against PM's checkout at all; two do… |
 | 2026-08-15 22:3x PT | web | decision-web-to-docs-cc-pm-comms-PM-ruled-dispatch-should-read-origin-main-directly-2026-08-15.md | PM decided: Dispatch should read origin/main directly, not PM's local checkout… |
 | 2026-08-15 22:1x PT | web | finding-web-to-docs-cc-pm-comms-dispatch-calendar-staleness-two-distinct-causes-one-fixed-one-open-2026-08-15.md | Dispatch calendar-CSV staleness: two distinct causes, not one — your Aug 9 hypo… |
 | 2026-08-15 | ? | ruling-pm-to-docs-cc-comms-relayed-by-exec-website31-answered-branch-deletion-approved-2026-08-15.md | website#31 answered (was lost in the outage); abandoned branch approved for del… |
