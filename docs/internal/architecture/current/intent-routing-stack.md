@@ -211,6 +211,58 @@ field naming, and the golden serialization string). Phase 2.2 (threading the
 snapshot into the LIVE constrained routing call, pre-classification state) is
 a separate reviewed flip; the floor and handlers must never read routing
 context from the snapshot (one-direction dependency, per the contract).
+**#1595 Phase 2.2 flip-1 (2026-08-19) — the LIVE inversion consult, per-category
+and DEFAULT-EMPTY.** A new consult seam in `_process_intent_internal` sits AFTER
+every deterministic pre-classification surface (the #846 pop seam, contextual
+offer binding, the guided-process claim, resume check, /standup + standup-query
+deterministic routes, ethics) and IMMEDIATELY BEFORE the `classify_multiple`
+block. When `PIPER_INVERSION_LIVE_CATEGORIES` is set (comma-separated
+ACTION_REGISTRY category names; **unset/empty = the consult returns None with
+zero work — routing byte-identical to the pre-flip chain; revert = unset**),
+an UNARMED turn runs ONE constrained routing call
+(`services/intent_service/inversion_live.py::consult_inversion_live`, the sole
+sanctioned live consumer of the router — named-allowlist amendment in
+`TestInversionShadowNoExecutionBoundary`). The consult returns a fully-formed
+`Intent` ONLY when ALL of: decision outcome is `operation`; the operation's
+registry category (alias-resolved via the registry-derived grammar) ∈ the live
+set; confidence ≥ `PIPER_INVERSION_LIVE_MIN_CONFIDENCE` (default 0.8); AND the
+operation is a rail key whose declared effect is `EffectClass.READ` (load-bearing,
+not belt: ACTION_REGISTRY files `create_issue` WRITE and `close_issue`
+DESTRUCTIVE under QUERY — a write can never flip via this seam regardless of
+config). That Intent then flows into the SAME surface-3 rail dispatch a
+classified intent uses — the router chooses the key; the rail, consent gates,
+and handlers are untouched (no new dispatch site; the #1124 ratchet is
+unchanged at 0). EVERY other outcome — armed turn (offer popped this turn,
+bound contextual offer, or snapshot-armed: pending offer / active process /
+draft-in-compose — flip-1 scope is ZERO-armed-state per the #1663 addendum;
+the seam-consumption amendment builds with the first armed-capable flip),
+REFUSED, transport error, NONE/CLARIFY, sub-threshold, off-set category,
+non-rail or non-READ operation — falls through to the legacy chain below
+UNCHANGED, each with its own reason on the ONE structured
+`inversion_live_decision` telemetry line (route, operation, category,
+confidence, threshold, snapshot presence + field errors, utterance sha).
+Flip-1's disagreement telemetry compares against the DETERMINISTIC legacy
+counterfactual only — `PreClassifier.pre_classify` (surface 1), no second LLM
+call; a phrase surface 1 wouldn't claim compares as incomparable (None) and
+the standing post-turn shadow observer remains the deep comparison. The
+router call carries the PRE-classification Phase-2.0 SessionSnapshot
+(assembled at the consult, serialized via the golden-pinned renderer) — the
+threading Phase 2.0's shadow wiring deferred. An inversion failure of any
+shape never breaks the turn: `route()` returns honest REFUSED/error decisions,
+and the call site belt-catches with a loud `inversion_live_consult_failed`
+error log before running the legacy chain. Pins:
+`tests/unit/services/intent_service/test_inversion_live_1595.py`
+(default-empty zero-work + e2e, same-handler-result e2e with the classifier
+consult explosive, armed guards incl. armed+in-set-category e2e, all
+fallthrough reasons incl. the WRITE-in-QUERY pin, error-path e2e,
+divergence telemetry). Coverage note: rail READ ops with no ACTION_REGISTRY
+category (`show_standup`, `list_projects`, the analysis family) are outside
+the category flag's addressable space and fall through with reason
+`no_registry_category`; registry-only canonicals (`get_identity`,
+`get_project_status`) fall through `not_rail_dispatchable` — flipping the
+IDENTITY/STATUS classes live needs rail registrations or a reviewed
+disposition-aware extension, tracked as flip-2 prep.
+
 **Phase 2.2 prerequisites landed 2026-08-19 (issues 1665 + 1664, gate-doc
 caveats)**: (a) every #846 arm site now stores its ALREADY-RENDERED ask on
 the offer record (`offer["question"]` — the exact copy the user saw that

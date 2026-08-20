@@ -2062,12 +2062,32 @@ class TestInversionShadowNoExecutionBoundary:
 
     Phase 2 (per-category flip) will deliberately relax this test — that
     relaxation is the reviewable act of wiring the router into dispatch.
+
+    ⚠️ RELAXED ONCE, 2026-08-19 (#1595 Phase 2.2 flip-1 — the reviewed act
+    this docstring promised): ``services/intent_service/inversion_live.py``
+    joins the allowlist as the ONE live-consult module. Named file, never a
+    pattern — every future consumer is its own reviewed amendment. The
+    boundary's core property survives intact: the dispatch layer
+    (``services/intent/intent_service.py``) still may not reference the
+    router or its decision type — it consumes ``consult_inversion_live``,
+    which returns a plain ``Intent`` (or None) that flows into the SAME
+    action rail a classified intent uses. The decision type remains
+    un-importable from dispatch code; what changed is that exactly one
+    module may now translate a decision into an Intent, behind the
+    DEFAULT-EMPTY ``PIPER_INVERSION_LIVE_CATEGORIES`` flag set with a
+    declared-READ rail-entry guard (see inversion_live.py's docstring for
+    the four dispatch conditions).
     """
 
     ROUTER_TOKENS_RE = re.compile(r"\binversion_router\b|\bRoutingDecision\b")
     ALLOWED_REFERRERS = {
         os.path.normpath("services/intent_service/inversion_router.py"),
         os.path.normpath("services/intent_service/inversion_shadow.py"),
+        # #1595 Phase 2.2 flip-1 (2026-08-19): the sanctioned live-routing
+        # consult — the single production module allowed to consume a
+        # RoutingDecision and re-express it as an Intent for the existing
+        # rail. Kept to EXACTLY one named module; do not widen by pattern.
+        os.path.normpath("services/intent_service/inversion_live.py"),
     }
 
     def _referrers(self):
@@ -2098,6 +2118,14 @@ class TestInversionShadowNoExecutionBoundary:
             "inversion_shadow.py no longer references the router — the shadow "
             "lane is dead, and this boundary test is guarding nothing (m-44)"
         )
+        assert (
+            os.path.normpath("services/intent_service/inversion_live.py") in referrers
+        ), (
+            "inversion_live.py no longer references the router — the Phase 2.2 "
+            "live-consult lane is dead while its allowlist entry survives; "
+            "either the flip was removed (then shrink ALLOWED_REFERRERS in the "
+            "same commit) or the consult broke silently (m-44)"
+        )
         offenders = sorted(set(referrers) - self.ALLOWED_REFERRERS)
         assert not offenders, (
             f"Production code outside the shadow observer references the "
@@ -2108,8 +2136,11 @@ class TestInversionShadowNoExecutionBoundary:
         )
 
     def test_dispatch_layer_sees_scheduler_only(self):
-        """intent_service.py calls the fire-and-forget scheduler and must be
-        blind to the decision type: no router import, no awaiting the task."""
+        """intent_service.py calls the fire-and-forget scheduler (shadow) and
+        the live consult (flip-1) and must be blind to the decision type: no
+        router import, no awaiting the shadow task. Unchanged by the Phase-2.2
+        relaxation — the consult module returns Intent-or-None, so the
+        dispatch layer still never sees a RoutingDecision."""
         path = os.path.normpath("services/intent/intent_service.py")
         with open(path, encoding="utf-8") as fh:
             content = fh.read()
@@ -2117,9 +2148,16 @@ class TestInversionShadowNoExecutionBoundary:
             "the standing shadow-check hook is gone from process_intent — "
             "the continuous falsifiability property (#1595 point 3) is dead"
         )
+        assert "consult_inversion_live" in content, (
+            "the #1595 Phase 2.2 flip-1 consult is gone from process_intent — "
+            "the live lane's allowlist entry is guarding nothing (m-44); "
+            "remove services/intent_service/inversion_live.py from "
+            "ALLOWED_REFERRERS in the same commit if the flip was withdrawn"
+        )
         assert not self.ROUTER_TOKENS_RE.search(content), (
             "intent_service.py references inversion_router/RoutingDecision — "
-            "the dispatch layer must consume NOTHING from the router in Phase 1"
+            "the dispatch layer must consume NOTHING from the router directly; "
+            "only inversion_live.py may translate decisions into Intents"
         )
         assert "await maybe_schedule_shadow_check" not in content, (
             "the shadow check must be fire-and-forget — awaiting it puts the "
