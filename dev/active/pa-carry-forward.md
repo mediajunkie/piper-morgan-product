@@ -68,23 +68,22 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-18 STOP (22:12)
+## Active state — 2026-08-19 STOP (21:55)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/18/2026-08-18-0706-pa-code-log.md` — **8/18 DAY-CLOSED**, verified strict.
+- **Session log**: `dev/2026/08/19/2026-08-19-0646-pa-code-log.md` — **8/19 DAY-CLOSED**, verified strict.
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
-- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `537f9eb2` deleted → job
-  `0c9ab07d` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
+- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `0c9ab07d` deleted → job
+  `eff386f0` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
 - **Standing discipline (from 08-15's correction, still active)**: re-verify carried-forward claims
   against their live source before citing them in an external report, not just at routine
   carry-forward-hygiene time. Habit, not yet mechanical.
-- **Live thread, PM's pace**: BYOC/conversational-layer — see PM Attention above for the current state
-  (Lead independently verified PA's summarize finding 08-19 morning, half-healed by a fix that
-  postdated PA's sources, residual half real and adopted as Phase 2 scope). Whether PM's own
-  conversation with Lead has happened yet is unknown from this seat; not chasing.
+- **Live thread, PM's pace**: BYOC/conversational-layer — see PM Attention above (Lead's Phase 2.2
+  scaffold, carrying the residual summarize gap, moved through the merge stream today). Whether PM's
+  own conversation with Lead has happened yet is still unknown from this seat; not chasing.
 
 🔔 **STEP 5b — HEARTBEAT: emit it IMMEDIATELY AFTER `date`, BEFORE the git fetch/merge, and WITHOUT
 `--if-quiet`** *(ordering fixed 2026-08-05: my heartbeat had five commands incl. fetch+merge in front of
