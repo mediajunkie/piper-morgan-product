@@ -1,7 +1,7 @@
-# CIO carry-forward — rewritten 2026-08-19 (16:37 WORK)
+# CIO carry-forward — rewritten 2026-08-19 (22:37 STOP)
 
-**Cron**: `efe62c47` · `7 10,16,22` LEAN · re-armed 2026-08-18 22:37 STOP (delete-then-create) ·
-**auto-expires ~2026-08-25**.
+**Cron**: `7f6bb205` · `7 10,16,22` LEAN · re-armed 2026-08-19 22:37 STOP (delete-then-create) ·
+**auto-expires ~2026-08-26**.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
@@ -10,54 +10,47 @@
 ## ⭐ PM's own framing of the curation-offload thread is bigger than what's been tested
 
 Janus reported (08-19) that PM described this exact cross-project thread to Ted Nadeau unprompted,
-this morning, as a genuine cross-project standardization initiative — duty cycles, session logs,
-attention rollups, "equip them rather than making them invent," a shared-paradigm wiki across
-projects. **Bigger scope than the container-gap question Janus and I have been testing** (does one
-artifact fit a brief). Named the gap explicitly to Janus rather than quietly treating the two as
-the same thing, and raised it with PM directly in chat this fire — the one thing I can do from this
-side that Janus can't. **Not building the bigger thing off this signal alone** — same discipline as
-the container-gap question, more warranted now given the scale PM described externally.
+as a genuine cross-project standardization initiative — duty cycles, session logs, attention
+rollups, "equip them rather than making them invent," a shared-paradigm wiki across projects.
+**Bigger scope than the container-gap question Janus and I have been testing** (does one artifact
+fit a brief). Named the gap to Janus, raised it with PM directly in chat. **Not building the bigger
+thing off this signal alone.** No PM response yet as of this STOP — genuinely open, not a task.
 
-## ✅ Dispatch-latency test 4 RESOLVED (15:39) — idle-duration ruled out, negative result
+## ✅ Dispatch-latency test 4 RESOLVED — idle-duration ruled out, recurring-vs-one-shot still open
 
-**+20s at a ~5h idle gap** (matched to the recurring cron's own inter-fire spacing) — idle duration
-before a fire is **not** what produces the ~30-min signature; a one-shot fire held idle just as long
-as a real recurring gap still arrived near-instant. This is the fourth one-shot test, all near-
-instant regardless of idle time (minutes to ~5h) — **recurring-vs-one-shot itself is back as the
-leading candidate**, not idle-duration, and not yet explained mechanically. Full record + reasoning:
-`dev/active/cron-dispatch-latency-experiment-2026-08-15.md`. **What would actually settle it**: the
-recurring short-period cron test named since 08-15 and still not run — this result narrows what
-"recurring vs. one-shot" could mean, it doesn't replace that test.
+**+20s at a ~5h idle gap** (matched to the recurring cron's own inter-fire spacing). Idle duration
+before a fire is not what produces the ~30-min signature. Four one-shot tests now, all near-instant
+regardless of idle time. **Recurring-vs-one-shot remains the leading unexplained variable.** What
+would actually settle it: the recurring short-period cron test named since 08-15, still not run.
+Full record: `dev/active/cron-dispatch-latency-experiment-2026-08-15.md`.
 
 ## ✅ Watchdog thread CLOSED (08-17 → 08-18) — for reference
 
-`docs`'s heartbeat gap (9 days, never written) found and disposed by Exec/HOST within hours of
-escalation. Not mine to act on further; `docs` was among this morning's emitters, no direct
-heartbeat confirmation yet.
+`docs`'s heartbeat gap (9 days, never written) found and disposed by Exec/HOST. Not mine to act on
+further.
 
-## ✅ Curation-offload trial — three rounds in, genuinely working as intended
+## ✅ Curation-offload trial — four rounds in, genuinely productive, not just artifact traffic
 
-Artifact 1: container gap, not content failure, plus independent convergence. Artifact 2: packaging
-rejected then accepted; three cross-project data points produced a real reversal (Themis's positive
-result was a confound, Janus's negative case corrected it). **08-19: Janus's mechanical explainer of
-CCR-trigger surfaced a confound in my own original test design** (idle-duration vs. recurring-ness
-were never actually separated) — now being tested directly, see above. **This trial keeps producing
-genuine intellectual progress, not just artifact traffic** — worth remembering as the actual case
-for the mechanism when it comes up again with PM or in the next portfolio review.
+Container gap found (not content failure) → independent convergence found → a real reversal caught
+and corrected same-day (Themis's confound, Janus's negative case) → a confound in my *own* original
+experiment surfaced by Janus's unrelated mechanical explainer, tested directly, resolved. **Every
+round produced something neither project could have reached alone.** Worth remembering as the case
+for the mechanism the next time it needs defending, not just narrated as a string of memos.
 
 ## ⭐ Operating-mode shift (ruled 2026-08-13) — holding, still generalizing
 
 **PM's Agenda §6 ruling** (full record: `dev/active/cio-innovation-agenda-2026-08-02.md` §7). This
-week's throughline: verify any claim, including your own — now extended a third way, to re-reading
-your own past design against new information rather than only checking new claims against old
-designs.
+week's throughline, now fully stated: verify any claim — a subagent's, a peer's, your own past
+design — and let someone else's unrelated input be the trigger to re-check your own old work, not
+just new claims against old designs.
 
 ## Watch
 
+- **PM's response on the bigger-scope question** — raised 08-19, no reply yet, genuinely open.
 - **Verify the three self-firing workflows actually fire**: skill-candidates 09-01, Agent 360 09-25.
 - **Verify docs starts writing heartbeats** — not mine to check, noting if it comes up.
-- **No fire-slot misses since 08-13** — eight consecutive clean days now.
-- **Dispatch-latency test 4** — see above, the active item.
+- **No fire-slot misses since 08-13** — nine consecutive clean days now.
+- **Whether either project runs the recurring short-period isolating test** for dispatch latency.
 
 ## Owed (re-read through the delegation lens before picking up)
 
@@ -80,5 +73,4 @@ designs.
   variable.** (08-18, the Themis→Janus reversal.)
 - **A design flaw in your own experiment can hide for days until someone else's unrelated
   explanation makes you re-read it.** (08-19: Janus's mechanics explainer, not new data, is what
-  surfaced the idle-duration confound — worth remembering that "re-check your own old work when you
-  learn something new" is as load-bearing as "re-check new claims.")
+  surfaced the idle-duration confound.)

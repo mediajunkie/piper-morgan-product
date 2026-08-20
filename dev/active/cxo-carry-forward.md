@@ -1,3 +1,21 @@
+# CXO carry-forward — rewritten 2026-08-19 22:2x PT at STOP. Day closed (fully quiet, six checked fires);
+next fire 06:47 on 08-20, opening ~07:17.
+
+**Cron**: `c84a440a` (`47 6,9,12,15,18,21 * * *`) — confirmed present all six fires, healthy, expires
+~08-25, no watch needed. **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**:
+`claude/cxo-cycle`.
+
+**Today (08-19) was fully quiet** — zero movement on any tracked thread across all six fires. The FTUX
+conversation still hasn't visibly happened, now two days since prep was sent
+(`reply-cxo-to-lead-cc-pm-ftux-prep-my-read-before-the-conversation-2026-08-18.md`) — check at next START,
+still not worth chasing. Taxonomy doc, #1536, #1539, #1625 all unchanged since 08-16-18.
+
+**Nothing owed by me right now.**
+
+---
+
+*(08-19 07:2x header below, left as this morning's fuller record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-19 07:2x PT
 
 **07:17 START — checked thoroughly whether the FTUX conversation happened; it hasn't yet.** Searched

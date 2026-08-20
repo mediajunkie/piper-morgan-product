@@ -1,6 +1,12 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-19 21:42 PT STOP fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Updated at the 2026-08-20 06:52 PT START fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+
+## 2026-08-20 START — quiet fire, one item resolved
+
+- **Ship #056's LinkedIn-URL calendar gap (flagged last night as "observed, not actioned") is now resolved** — Docs picked it up overnight (`5f12abcb3`, `15d183b5c`); verified directly against the calendar row, not just the commit message: `status=distributed`, `liPubDate=2026-08-19`, `linkedinURL` populated.
+- **Today's scheduled slot**: Beat 1 "The Dead Code That Wasn't" (pubDate today, Aug 20) — still `status=drafted`, awaiting PM's voice-pass + art. No new engagement.
+- Mail inbox empty (0 memos). No overnight movement on any standing PM-gated thread — see list below, unchanged.
 
 ## Cron
 
