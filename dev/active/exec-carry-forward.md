@@ -1,9 +1,10 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-19 ~21:2x PT — day-close (STOP).
-**Session log today**: `dev/2026/08/19/2026-08-19-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-19`)
+**Last updated**: 2026-08-20 ~09:0x PT — START, quiet fire (inbox empty). Content below unchanged
+from last night's STOP — still accurate, re-verified via sync, not re-derived.
+**Session log today**: `dev/2026/08/20/2026-08-20-0902-exec-code-log.md`
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
-**Cron**: re-armed below via delete-then-create, verify exactly one.
+**Cron**: `ebe778e2`, `32 8,20 * * *` — confirmed exactly one job at START, no re-arm needed.
 
 ## Two items genuinely awaiting PM — surface at next engagement, don't chase
 
