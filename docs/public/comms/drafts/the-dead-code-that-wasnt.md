@@ -1,6 +1,6 @@
 ---
 image: 'the-dead-code-that-wasnt-live-wood.png'
-alt: 'A ephemeral arborist pauses before sawing a dead-looking limb after a human supervisor has noticed a leafy branch growing from its hidden side'
+alt: 'An ephemeral arborist pauses before sawing a dead-looking limb after a human supervisor has noticed a leafy branch growing from its hidden side'
 caption: '"Don''t cut the live wood!"'
 ---
 
