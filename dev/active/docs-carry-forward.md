@@ -1,8 +1,23 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-19 13:0x PDT (Fire 3 — quiet mail/task loop, docs-standing-items.md refreshed)
+**Updated**: 2026-08-19 19:1x PDT (Fire 5 — Ship #056/#054 live 404 found+fixed, PM unblocked)
 **Session log**: `dev/2026/08/19/2026-08-19-0711-docs-code-log.md` (open).
 **Cron**: `09681b21`, unchanged this fire, healthy through ~08-26.
+
+**Ship #056 + #054 hero-image 404**: a general-purpose session flagged a blocking 404 on Ship
+#056's LinkedIn cross-post (hero teaser pointed at a pre-conversion source filename, never
+deployed — `publish-post.js` actually ships `${slug}.webp`). Independently re-verified before
+acting (live HTTP + git history, exact match). Scanned the whole corpus myself rather than trust
+the report's stated count — found the identical defect on **Ship #054, live-broken since
+2026-08-05, 14 days uncaught**. Fixed both (website `8801bfb`), live-verified end to end (asset
+200 + served page HTML confirms the fix, not just the commit), calendar rows noted
+(`793b1065c`). Filed `piper-morgan-website#33` for a mechanical guard against the class recurring.
+Replied to PM confirming the cross-post is clear to proceed (`10f4e12e6`). **No further action
+needed from me** — PM owns the actual LinkedIn post.
+
+**Watch, low-priority (carried from Fire 3)**: this carry-forward file itself has grown large —
+flagging again since it wasn't acted on; still not blocking anything, still deferred to a quieter
+fire.
 **docs-standing-items.md**: full rewrite this fire — was stale since 2026-05-27 (6 cited GH
 issues already closed, verified live). Now reflects actual current state; only 2 genuinely-open
 items carried forward (the dormant frontmatter-upgrade project, flagged for a PM check rather
