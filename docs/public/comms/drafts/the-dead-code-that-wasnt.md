@@ -1,7 +1,7 @@
 ---
 image: ''
 alt: ''
-caption: ''
+caption: '"Don''t cut the live wood!"'
 ---
 
 # The Dead Code That Wasn't
