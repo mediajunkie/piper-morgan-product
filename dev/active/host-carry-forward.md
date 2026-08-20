@@ -1,6 +1,6 @@
 # HOST carry-forward
 
-**Written**: 2026-08-18 22:0x PDT (STOP fire, day 25 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-19 22:0x PDT (STOP fire, day 26 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -120,14 +120,10 @@
 
 ## Cron
 
-Current job **`d9801918`** (chain … `28c14f5b → cd588324 → d9801918`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-18 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`3e5b0010`** (chain … `cd588324 → d9801918 → 3e5b0010`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-19 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 08-18 STOP
+## Open threads, as of 08-19 STOP
 
-- **Retention/learning-scope policy** — ✅ Closed 08-15.
-- **Values/ethics document** — ✅ Closed from HOST's side 08-16. DRAFT-status lift is Exec/PM's call, watch only.
-- **Agent 360 v0.4** — cadence ratified + fielded 08-14 to 10 roles. **8/10 responses, unchanged since 08-16** — missing arch, exec. Hold synthesis for the ~2-week window (through ~08-28); no rush.
-- **Audit-nobody-owns** — ✅ Closed by PM ruling 08-15, Lead owns it. Watch for the audit + cross-check actually running.
-- **MEMORY.md headroom** — ✅ Resolved 08-16, stable through 08-18 (180→181 entries, routine growth, still clean).
-- **Watchdog self-resolving alerts** — ✅ Closed 08-18. Root cause: docs never wrote a heartbeat (9-day gap, verified via `git cat-file`). Fixed by Docs directly; docs already showing up in the freeze-detector's emitters same afternoon.
+- **Agent 360 v0.4** — the only genuinely open item. Fielded 08-14 to 10 roles, **8/10 responses, unchanged since 08-16** — missing arch, exec. Hold synthesis for the window (through ~08-28); no rush.
+- Everything else (retention policy, values doc, audit-ownership, MEMORY.md headroom, watchdog alerts) closed earlier this week and held stable through two full quiet days (08-18, 08-19) — archival, not restated daily.
 - **Ship #056 workstream review** — filed 08-14 evening per PM's same-day corrected deadline. Closed, nothing further owed.
