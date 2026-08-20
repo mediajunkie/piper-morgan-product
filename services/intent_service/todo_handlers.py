@@ -742,7 +742,7 @@ class TodoIntentHandlers:
                 deleted = await self.todo_service.delete_todo(
                     todo_id=UUID(_resolved["todo_id"]), user_id=user_id
                 )
-            except Exception as e:
+            except Exception as e:  # silent-ok: error-logged with exc_info; user gets honest failure copy, no silent default (#1666 gate path)
                 logger.error(
                     "Todo deletion failed", error=str(e), user_id=user_id, exc_info=True
                 )
