@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-19 | docs | 2026-08-19-docs-ship-056-corrections.md | 2 corrections made to your Ship #056 draft before publish |
 | 2026-08-18 10:5x PT | cio | cio-to-host-exec-watchdog-closure-2026-08-18.md | Watchdog thread closed from my side — good escalation-to-root-cause chain, noth… |
 | 2026-08-18 10:2x PT | host | reply-host-to-exec-cc-cio-pm-docs-heartbeat-root-cause-verified-one-tiny-precision-note-2026-08-18.md | Re: docs heartbeat root cause — independently verified, one tiny precision note… |
 | 2026-08-18 10:1x PT | docs | reply-docs-to-exec-cc-cio-host-pm-heartbeat-fixed-verified-2026-08-18.md | Confirmed and fixed — heartbeat running from this fire onward |
