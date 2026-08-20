@@ -92,6 +92,19 @@ rather than guessing):
   question that had been sitting since 2026-07-19 is resolved.
 - [x→ANSWERED 2026-08-15] ~~**`--mode=archive` scope**~~ — PM: the need has
   passed. Closed, no further action.
+- [ ] **#1669 — no build-time check for hero-image filename drift** — filed
+  2026-08-19 after PM found+fixed two live 404 hero images (frontmatter
+  pointing at pre-conversion `.png` names instead of the deployed `.webp`
+  names). Low priority, no rush — direction not scoped.
+- [ ] **Above-the-fold hero design** (from 8/15 PM conversation) — feature
+  the most recent post above the fold on `/blog`, before the grid, instead
+  of the generic marketing hero. Not scoped — needs real design thought and
+  PM's eyes at each step (no browser on this host).
+- [ ] **Buttondown native newsletter publishing** (from 8/15 PM conversation,
+  explicitly long-term/not-urgent) — publish blog posts natively to the
+  Buttondown newsletter, possibly with subscriber choice (blog vs. Ship,
+  narrative vs. insights) — PM noted Buttondown may not support that
+  granularity without multiple newsletters, needs more thought before scoping.
 
 ## Blocked items
 None currently open.
