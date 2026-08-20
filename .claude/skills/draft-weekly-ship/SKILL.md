@@ -237,6 +237,13 @@ Verify before declaring done:
 - [ ] **No semicolons** in published prose (search the draft; should be zero)
 - [ ] **No "load-bearing"** in public-prose sections (internal docbase keeps it; Ships tilt to "critical" / "central")
 - [ ] **No "CoS"** anywhere (use "Exec" or "the Chief")
+- [ ] **No "cohort"** in prose — internal jargon; use "team" (added 2026-08-19 after Docs caught a
+      live instance in #056's draft; not previously named in this checklist)
+- [ ] **No bare GitHub issue numbers** (`#1536`) in narrative prose — reserved for Ship
+      self-references only (previous/next-issue footer links). Name the underlying thing instead
+      ("the alpha-tester coldstart fix," not "#1536"). Precedent: 0 of the published Ships before
+      #056 do this; Docs caught and fixed a live instance in #056's draft, first time this rule was
+      stated explicitly rather than existing only as unbroken precedent (added 2026-08-19)
 - [ ] Parenthetical gloss on first use of internal role names (e.g., "the product-management role (Piper Alpha)")
 - [ ] Temporal-relationship language preferred over absolute-date stamps when the relationship is the point
 - [ ] Affirmative direct preferred over disclaim-then-affirmative
