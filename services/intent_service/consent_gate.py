@@ -424,8 +424,8 @@ def build_outward_disclosure(intent) -> str:
         repository = intent.context.get("repository") or intent.context.get("repo")
     where = f" in {repository}" if repository else ""
     return (
-        f"Saying it out loud before I act: I'm about to {summary}{where} — "
-        "that lands in front of other people, not just the two of us."
+        f"Heads up — I'm about to {summary}{where}. "
+        "That's visible to other people, not just us."
     )
 
 

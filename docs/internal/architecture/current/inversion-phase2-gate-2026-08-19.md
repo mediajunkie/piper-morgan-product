@@ -307,3 +307,33 @@ Until re-ruled, **the armed-state gate is NOT passed as scored.**
   (repo clarification rides the confirm carrier's workflow_type).
 - **issue 1665** — arm sites don't store their rendered ask; live snapshots carry
   question=None, strictly weaker than this run's gated condition (Phase 2.2 prerequisite).
+
+---
+
+## Addendum — not-live telemetry bucket rename (#1670, 2026-08-21)
+
+**This is the single mapping note for the corpus migration.** After the #1667
+widening, the not-live check consults every naming surface — operation name,
+canonical alias, `flip_group`, registry category — but the flip-1 bucket names
+still described only the category surface. #1667 retained them deliberately
+(flip-1's pins are byte-for-byte; existing corpus/telemetry rows carry the old
+names); #1670 is the sanctioned rename. Historical runs and dated session logs
+keep the old strings; interpret them via this table.
+
+| old (flip-1, pre-2026-08-21) | new (#1670) | the fact both assert | the fact that differs |
+|---|---|---|---|
+| `category_not_live` | `not_live_categorized` | no naming surface put the op in the live set (`live_match=None`) | an ACTION_REGISTRY category existed |
+| `no_registry_category` | `not_live_uncategorized` | no naming surface put the op in the live set (`live_match=None`) | no ACTION_REGISTRY category existed at all |
+
+Naming rationale: the shared `not_live_` prefix names the check's actual
+outcome without enumerating surfaces, so a fourth naming surface leaves both
+names true, and a prefix query aggregates the family; the suffix carries the
+one fact on which the buckets differ. (`no_flip_surface`-style names were
+rejected as false — every op always has at least the op-name surface.) The
+precise per-turn account remains on the log line itself: `live_match=None`
+plus `flip_group`, `category`, and `live_categories`.
+
+Emission site: `services/intent_service/inversion_live.py` (single site).
+Pins updated same-commit: `test_inversion_live_1595.py`,
+`test_inversion_flip_groups_1667.py`. No corpus fixture, gate script, or
+other repo surface carried the old strings (repo-wide grep, 2026-08-21).

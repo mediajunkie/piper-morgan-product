@@ -1,12 +1,12 @@
-# What Piper Morgan Is For — Piper Morgan (scaffold)
+# What Piper Morgan Is For — Piper Morgan
 
-> ⚠️ **DRAFT SCAFFOLD — content complete and independently verified. All four open decisions
-> ratified by PM (`decisions.log`, 2026-08-15 16:55 PT); voice converted to third-person/
-> institutional and double-verified (HOST's substance check, HOST's second voice-conversion pass,
-> README linked). Holding DRAFT status on one remaining step: PM reading the full converted
-> document end to end as one continuous piece, which hasn't happened yet — only individual
-> decisions and individual edits have been reviewed in isolation so far. Nothing outstanding is
-> wrong; this is the one check left before formal publication.**
+> ✅ **APPROVED 2026-08-21 — DRAFT status lifted.** PM, in conversation: *"the values doc changes
+> sound fine to me."* All four decisions ratified 2026-08-15 (`decisions.log`); voice converted to
+> third-person/institutional and independently double-verified (HOST's substance check, HOST's
+> second voice-conversion pass, README linked). This is PM's own final sign-off — given directly,
+> not via a line-by-line continuous read, which is PM's call to make about what "final" requires.
+> Mechanical cleanup (this banner) done by Exec; if the `-DRAFT` filename/publication step needs
+> further action, that's Comms' to execute per HOST's 08-16 routing.
 > **HOST re-verified all three commitments against source** (not just that the citations resolve):
 > confirmed item 3's timing is accurate as written; found item 2 was actually slightly underselling
 > what's true (route-level owner enforcement, not just an ADR description — tightened); flagged one

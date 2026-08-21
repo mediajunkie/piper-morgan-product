@@ -1,440 +1,63 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-20 22:3x PDT (DAY-CLOSED — Dead Code published+synced, frontmatter-image
-defect root-caused and fixed at the actual source)
-**Session log**: `dev/2026/08/20/2026-08-20-0727-docs-code-log.md` (closed, `DAY-CLOSED` marker
-written).
-**Cron**: `67b8f23f` (STOP re-arm, delete-then-create, `CronList`-verified sole job), fresh 7-day
-window to ~08-27. Registry row current.
-
-**Nothing carried forward as blocking**: "The Dead Code That Wasn't" published, fact-checked,
-live-verified, syndicated to Medium. PM's Ship #056 illustration question answered directly
-(re-verified fresh, not repeated from last night's memo).
-
-**The day's real finding**: what looked like a spreading "3rd instance" of yesterday's hero-image
-bug turned out to be a 100%-structural pattern (81/81 published posts' frontmatter `image:` value
-is a pre-conversion source name, never a deployed asset — by design) with exactly one real misuse
-site: the `draft-weekly-ship` skill's Step 4c told drafters to pull that value verbatim into a
-public URL. **Fixed at that instruction** (`b4838696d`), not just patched at the two symptom
-posts — image URL now derives from slug, alt/caption still pull verbatim (never the problem).
-`website#33` reframed to the correct remaining scope (publish-time link-check, not an
-81-file frontmatter audit). PM holds the corrected account.
-
-**Two self-caught mechanical defects today, both worth carrying as watch-for-next-time**:
-1. Don't copy a frontmatter caption's YAML-escaped apostrophe (`''`) straight into the CSV
-   field — that escaping is YAML-only; the CSV/rendered form wants a plain `'`. Caught by
-   checking convention against other rows before committing.
-2. The compound `git add <new-path> <old-path>` archive-rename pattern keeps aborting when the
-   `<old-path>` no longer exists post-`git mv` (hit 2 days running now, both times caught via
-   `git status` immediately after, never landed wrong). Worth just dropping the old-path from
-   the `git add` list on future archive commits — `git mv` already stages both sides of the
-   rename; re-adding the destination is redundant and the source is the one that 404s the add.
-
-**Watch, low-priority, carried again**: this carry-forward file is still large. Deferred again —
-if it survives a third carry-forward without being addressed, just do it rather than flag a 4th
-time.
-
-**Watch, worth naming if it recurs a third time (unchanged from 08-19)**: the omnibus cadence has
-slipped twice in one week, both self-found and same-week closed. 08-19's omnibus is due tomorrow
-(08-21) — not yet checked this cycle.
-
-**Updated**: 2026-08-19 22:1x PDT (DAY-CLOSED — Ship #056 published+synced, 2-day omnibus gap
-closed, 2 live-404 bugs found+fixed, standing-items refreshed)
-**Session log**: `dev/2026/08/19/2026-08-19-0711-docs-code-log.md` (closed, `DAY-CLOSED` marker
-written).
-**Cron**: `f6271697` (STOP re-arm, delete-then-create, `CronList`-verified sole job), fresh 7-day
-window to ~08-26. Registry row current (3 rotations today, each logged with reason).
-
-**Nothing carried forward as blocking or owed-by-me from today** — every thread opened today
-closed today:
-- Ship #056 published, live-verified, PM's markdown-accuracy question answered, Exec notified of
-  2 corrections (Exec independently re-verified rather than trusting my memo — ack received),
-  LinkedIn syndication calendar row updated (status→distributed) after independent verification
-  of the syndication report's stated state.
-- Ship #054's own 14-day-old hero-image 404 (found while scanning for the same class as #056's)
-  — fixed same commit as #056, live-verified.
-- `piper-morgan-website#33` filed for a mechanical guard against the hero-image-404 class
-  recurring — that's the one open thread, but it's filed-and-waiting, not owed by me.
-- 08-17/08-18 omnibus gap closed same-day (2 subagent dispatches, both preserved genuine
-  cross-role discrepancies rather than resolving them silently).
-- `docs-standing-items.md` fully refreshed (was stale since 2026-05-27).
-
-**Watch, low-priority, carried again**: this carry-forward file itself is still large. Still not
-blocking anything. If it isn't addressed in the next few quiet fires, consider whether "low
-priority, keeps getting bumped" has become its own small pattern worth just doing rather than
-re-flagging a fourth time.
-
-**Watch, worth naming if it recurs a third time**: the omnibus cadence has now slipped twice in
-one week (3-day gap 08-14/15/16, then a 2-day gap 08-17/18), both self-found and same-week
-closed. Not yet a pattern worth escalating — but a third instance would be.
-
-**Updated**: 2026-08-19 19:1x PDT (Fire 5 — Ship #056/#054 live 404 found+fixed, PM unblocked)
-**Session log**: `dev/2026/08/19/2026-08-19-0711-docs-code-log.md` (open).
-**Cron**: `09681b21`, unchanged this fire, healthy through ~08-26.
-
-**Ship #056 + #054 hero-image 404**: a general-purpose session flagged a blocking 404 on Ship
-#056's LinkedIn cross-post (hero teaser pointed at a pre-conversion source filename, never
-deployed — `publish-post.js` actually ships `${slug}.webp`). Independently re-verified before
-acting (live HTTP + git history, exact match). Scanned the whole corpus myself rather than trust
-the report's stated count — found the identical defect on **Ship #054, live-broken since
-2026-08-05, 14 days uncaught**. Fixed both (website `8801bfb`), live-verified end to end (asset
-200 + served page HTML confirms the fix, not just the commit), calendar rows noted
-(`793b1065c`). Filed `piper-morgan-website#33` for a mechanical guard against the class recurring.
-Replied to PM confirming the cross-post is clear to proceed (`10f4e12e6`). **No further action
-needed from me** — PM owns the actual LinkedIn post.
-
-**Watch, low-priority (carried from Fire 3)**: this carry-forward file itself has grown large —
-flagging again since it wasn't acted on; still not blocking anything, still deferred to a quieter
-fire.
-**docs-standing-items.md**: full rewrite this fire — was stale since 2026-05-27 (6 cited GH
-issues already closed, verified live). Now reflects actual current state; only 2 genuinely-open
-items carried forward (the dormant frontmatter-upgrade project, flagged for a PM check rather
-than silent resumption; the recurring cycle-ops list). See the file itself, not this note, for
-current content.
-
-**Updated**: 2026-08-19 ~10:5x PDT (Fire 2 — Ship #056 published + Exec notified + real 2-day
-omnibus gap found+closed)
-**Session log**: `dev/2026/08/19/2026-08-19-0711-docs-code-log.md` (open).
-**Cron**: `09681b21`, fresh 7-day window to ~08-26 (rotated twice today: 08-14's `2967db0e` hit the
-48h-proactive-expiry rule → `c707c6a0`; then deleted for the omnibus-backfill drain and re-armed
-at idle → `09681b21`. Registry row current, both transitions logged with reasons.)
-
-**Ship #056 "Fundamentals First"**: PM said "ready for proofreading" while the calendar note still
-read "Awaiting PM fact-check + voice pass" with no git evidence of an edit pass — treated PM's
-live statement as authoritative, ran a first-read audit myself rather than either blindly trusting
-or second-guessing. Found + fixed 2 real defects (bare `#1536` in narrative prose — 0/6 precedent
-Ships cite a real GH issue this way; one "cohort"), fact-checked 5 load-bearing claims against
-primary session logs (all accurate — issues-closed=53 exact match, #1536 merge+test-count,
-CI-dark-workflows count, v41 deploy tag, #1510 three-consumers-same-day). Published, live-content-
-verified (served HTML, not just source), calendar reconciled, draft archived. PM then asked me to
-confirm the local markdown matches (did — diffed archived draft against the actual published
-`blog-content.json` entry) and to notify Exec (sent, `02b5c5a16`, framed as future-Ship guidance
-not a complaint). **PM taking LinkedIn syndication directly** — no calendar action from me until
-the URL lands; don't chase.
-
-**Real gap found+closed this fire**: omnibus logs were missing for 08-17 AND 08-18 (27 session
-logs, 27 activity-log rows unsynthesized) — this is owed daily-cadence Docs work, not something
-flagged to someone else. Closed via 2 sequential subagent dispatches (day-by-day, avoiding the
-CSV-write race the earlier 3-day backfill was careful about). Both ran the full create-omnibus
-skill for real (methodology-20 read fresh, Step 2.5/2.6 cross-reference gates actually run) and
-each preserved a genuine cross-role discrepancy rather than silently resolving it (Exec's #1633
-dating slip on 08-17; Web's mis-attributed cross-post catch on 08-18). Omnibus chain is now
-continuous 07-27 through 08-18 — **verify 08-19 gets one tomorrow rather than let a 3rd gap
-accrue**; this is now the second time in a week the cadence has slipped (08-14/15/16, then
-08-17/18) — worth naming as a pattern if a third instance shows up, not yet worth an escalation.
-
-**Watch, low-priority**: this carry-forward file itself has grown very large (many weeks of
-stacked entries, some clearly historical/resolved). Not blocking anything, but a pruning pass
-would make it faster to read at fire-start. Not doing it this fire — flagging for a quieter one.
-
-**Updated**: 2026-08-18 22:2x PDT (DAY-CLOSED — publish + heartbeat fix + 3 confirming quiet fires)
-**Session log**: `dev/2026/08/18/2026-08-18-0706-docs-code-log.md` (closed).
-**Cron**: `2967db0e`, fresh window to ~08-21 — rotate before then.
-**Heartbeat discipline**: confirmed working end-to-end today (WORK write, 3x correct self-suppress,
-STOP write) — keep running it every fire.
-
-**Updated**: 2026-08-18 10:1x PDT (Fire 2 — heartbeat gap found+fixed, publish syndicated)
-**Session log**: `dev/2026/08/18/2026-08-18-0706-docs-code-log.md` (open).
-**Cron**: `2967db0e`, fresh window to ~08-21 — rotate before then.
-**⚠️ NEW STANDING PRACTICE (2026-08-18)**: run `scripts/duty-cycle-heartbeat.sh docs {phase}
---if-quiet` at the end of EVERY fire, including quiet ones — 9-day gap found+fixed this fire
-(Exec finding, HOST-verified). Do not let this lapse again.
-
-**Updated**: 2026-08-17 22:3x PDT (DAY-CLOSED — Weekly Docs Audit + 3-day omnibus backfill, clean sign-off)
-**Session log**: `dev/2026/08/17/2026-08-17-0711-docs-code-log.md` (closed).
-**Cron**: `2967db0e`, fresh window to ~08-21 — rotate before then.
-
-**Updated**: 2026-08-17 13:xx PDT (Fire 2 — Weekly Docs Audit #1643 worked comprehensively)
-**Session log**: `dev/2026/08/17/2026-08-17-0711-docs-code-log.md` (open).
-**Cron**: `2967db0e`, fresh window to ~08-21.
-
-**Updated**: 2026-08-16 22:3x PDT (DAY-CLOSED — 2 publishes, 1 confabulation-report caught, clean sign-off)
-**Session log**: `dev/2026/08/16/2026-08-16-0711-docs-code-log.md` (closed).
-**Cron**: `2967db0e`, fresh window to ~08-21.
-
-**Updated**: 2026-08-16 16:1x PDT (Fire 4 — 2 publishes done, 1 confabulation-report caught)
-**Session log**: `dev/2026/08/16/2026-08-16-0711-docs-code-log.md` (open).
-**Cron**: `2967db0e`, fresh window to ~08-21.
-
-**Updated**: 2026-08-15 22:4x PDT (DAY-CLOSED — quiet day + 1 publish + a real STOP-fire drain)
-**Session log**: `dev/2026/08/15/2026-08-15-0711-docs-code-log.md` (closed).
-**Cron**: `2967db0e`, fresh window to ~08-21.
-
-**Updated**: 2026-08-14 22:3x PDT (DAY-CLOSED — 6 fires, clean sign-off)
-**Session log**: `dev/2026/08/14/2026-08-14-0727-docs-code-log.md` (closed). 08-13 closed
-retroactively same day.
-**Cron**: `2967db0e`, fresh window to ~08-21 (rotated 08-14 day-open, 4 days ahead of prior expiry).
-
-**Session log**: `dev/2026/08/13/2026-08-13-0727-docs-code-log.md` (open). 08-12 closed.
-**Cron**: `2967db0e` (rotated 08-14 day-open, fresh 7-day window to ~08-21).
-
-## ✅ RESOLVED 2026-08-14 (PM-engaged 18:11 + Fire 5) — session recovery, 3 PM decisions, Ship #056 report
-
-PM reconnected post-outage; security@ applied, stale docker branch deleted, #1584/#1585 status
-checked live (both open with genuine residuals, correctly not chased). Ship #056 workstream
-report sent for the Aug 7-13 window — flagged a real cross-cohort delivery gap (no original
-kickoff reached ANY of the 10 addressed mailboxes, only tonight's correction) rather than
-silently absorbing it. **Awaiting PM**: only the feature-guide click-through remains open.
-
-**Agent 360 v0.4**: ✅ answered same-day (08-14, `8fa0180cf`) — HOST synthesis ~4wks out; four
-of my suggestions flagged agent-addressable (mail-send doc line, stderr rule, omnibus-recipe
-skill note, drop-rot-prone-metadata standard) — pick up if HOST/CIO route them back.
-
-## 🔵 ACTIVE — staleness pass on the curated keep-list (batched over fires)
-
-**Done**: batch 1 ALPHA_* (feature-guide bannered + PA refresh-offer mailed; phantom screenshots
-found-and-commented; rest clean) · batch 2 guides/+getting-started (2 fixes, 3 false positives
-checked, legacy-* archives → site-excluded, flag-not-silent).
-**🔵 Feature guide**: PA's verification went CODE-LEVEL (no browser on their seat — premise
-caught and corrected honestly). 4 findings folded into the draft layer-labeled (`03540e35b`);
-GitHub OAuth question RESOLVED. PA continuing code-level on the rest; **4 items need a browser —
-queued as a ~5-min PM click-through**. Ship/hold call if PM's pass doesn't come: PM's, but a
-code-level-grounded refresh already beats the v0.8.6 doc. Live guide stays bannered.
-**Awaiting PM** (surface at next engagement, don't chase): the 4-item click-through · security@
-vs support@ for audit-logging.md · stale docker branch deletion. (#1610 RESOLVED by Exec;
-#1611 with Lead; #1616 = memo filenames break Windows clones — my filenames now shorter.) Also awaiting: Lead's attestation on #1611 (8081 two-process — live path or
-fossil; evidence posted); PM's address for #1610 (legal placeholder ×3 files, next rollup).
-**✅ STALENESS PASS COMPLETE (08-14 fire 2)** — all 6 batches done, final batch 0-defect;
-testing/ passed CIO's condition with evidence; proposal doc carries the completion record. (installation/setup/troubleshooting had Comms's tier-6 + my earlier fixes; features/
-integrations/configuration done in fire-4 sweep; api/api-reference/dev-tips done 08-14 fire 1,
-cleanest batch yet: 1 defect.)
-**Publish**: "Alpha Launches" LIVE 08-13 + Medium cross-post recorded (status=distributed;
-building theme = Medium-only, no LinkedIn leg — complete). **website#31**: ✅ EXECUTED + CLOSED same day (regex fixed w/ control tests, 15 entries
-fixed — 2 by surgery after catching draft↔live divergence on #043/#047; independently
-re-verified; template convention updated; evidence to Exec). Watch item: draft↔live divergence
-class at 2 instances — third instance ⇒ propose a write-back mechanism.
-**PM click-through**: PM taking it (confirmed in chat) — fold results into draft on arrival.
-**Comms**: register pass DONE (their confirmation 08-14); steps 9-10 restored by Docs; scrub fully closed. (was: tiers 1-6 done, continuing api/+api-reference; their installation steps-9-10 gap needs
-whoever next does a live install. **Omnibus 08-13**: ✅ DONE (149 lines, `a963a8a18`+`9411abf45`, chain continuous). **Omnibus 08-12**: ✅ DONE (137 lines, HC:COORDINATION, `8373746de`+`3786e5dd8`, spot-verified). Omnibus chain now continuous through 08-12.
-**Comms register pass**: started (their `9f6ab1732` touched 2 ALPHA docs) — parallel, different
-dimensions, agreed.
-
-**Worktrees**: product `~/Development/piper-morgan-worktrees/docs` @ `claude/docs-cycle` · website
-`~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
-**Cron**: `e47bd40c` (re-armed 2026-08-11 13:16 PDT post-reboot, replaces `bf577e17` which was
-deliberately CronDelete'd ahead of the reboot per Pard's second stand-down notice). Same schedule
-`57 6,9,12,15,18,21 * * *`. Prompt rewritten thin (constants + pointer to `duty-cycle-tick` skill +
-this file), not re-frozen with the eleven standing lessons inline — recoverable verbatim from
-`dev/active/duty-cycle-registry.tsv`'s STOP-chain history if ever needed. Registry row: `active:`.
-**Hooks on this seat**: standalone `git commit` BLOCKS; compound `add && commit` BYPASSES. Mitigation:
-stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
-**Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
-staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
-
-## ✅ RESOLVED 2026-08-17 — Weekly Docs Audit #1643 CLOSED + 3-day omnibus backfill COMPLETE
-
-Comprehensive audit (7 sub-checks tracked to completion), 7 real fixes committed+pushed, #1644
-filed for residuals, closing comment + close landed after a GitHub API outage window recovered.
-**Omnibus chain independently verified continuous 07-27 through 08-16, zero gaps** (21 files,
-47 activity-log rows added across the 3 backfilled days, no CSV race — sequential dispatch held).
-**Real findings needing others, unresolved**: BRIEFING-CURRENT-STATE 22-day engineering staleness
-(Lead Dev); last_verified cluster from 07-30 still 87% unrefreshed 3 weeks later (cohort-wide, no
-single owner — worth a memory pin or a direct ask if it's still stale at next Monday's audit);
-universal-list-architecture-guide.md duplicate (Lead Dev); roadmap.md date discrepancy (PPM, in
-#1644).
-
-## ✅ RESOLVED 2026-08-16 — 2 posts published, syndicated; a confidently-wrong report caught before acting
-
-**"Confabulating a Peer's Unfinished Work"** (Aug 15) fully closed: Medium+LinkedIn synced,
-status=distributed.
-**"The Fabricating Standup"** (Aug 16) published clean (0 audit fixes needed), live-verified,
-Medium+LinkedIn synced same day, status=distributed.
-
-**Real find**: a same-day report claimed CLAUDE.md's checkout HARD RULE path was wrong and
-`sync-pm-local.sh` couldn't find PM's checkout at all (citing a space-form path that doesn't
-exist). Verified independently — `git worktree list`, filesystem check, live dry-run — the
-report's central claim was FALSE; the existing hyphenated path is correct and working. One
-genuinely real claim in the same report (CLAUDE.md described the script's old v1 binary-abort
-behavior instead of its actual v2 3-tier classifier) was fixed (`584695a14`). Full verification
-sent to PM directly — a confidently-wrong report about system state, same shape as the post
-published that morning.
-
-## ✅ RESOLVED 2026-08-12 (Fire 3, 13:27) — mail drain: Ship #055 closed, #1584 Part C done, Pages build revived
-
-Comms closed the Ship #055 thread (independent live-verify, clean). CIO completed #1584 Part C +
-retired cohort-agent-status.md — spot-verified in-tree, completion comment posted to #1584. Janus
-root-caused and fixed the docs Pages build (dead since ~May 31 — literal `{% extends %}` in
-BRIEFING-CURRENT-STATE.md's own bug documentation; Liquid parses tags inside code spans); Docs
-verified 3 consecutive green runs at tip, replied to Janus, and fed the silent-red family
-(#1600 + Pages build + #1593) to Lead's parked postmortem question with the two-detector-shapes
-factoring.
-
-## 🔵 ACTIVE (PM-approved 2026-08-12) — pmorgan.tech scrub, 3 phases
-
-The parked scoping question got PM's green light same day ("good plan. please get it started").
-Proposal committed (`docs/internal/operations/docs-site-scoping-proposal-2026-08-12.md`), README
-scrubbed (`a8431b4d6`), CIO ratification requested (memo `8fbf8e761`, cc Comms).
-
-**✅ SCOPE RATIFIED + APPLIED (Fire 5, 08-12 evening)**: CIO ratified (user-guide.md → EXCLUDE,
-testing/ keep-with-file-discretion, dev-tips/ keep). `_config.yml` applied: 13 corpus surfaces +
-user-guide.md + NAVIGATION.md (post-ratification, self-declared internal-audience, flagged not
-silent) excluded; site title added. NAVIGATION count-rot stripped (11 stale counts). CONTRIBUTING
-two-surfaces guard-rail added. Comms handoff sent (register-pass surface final; dev-tips/ first).
-methodology-49 "Described Is Not Running" filed by CIO from my routed candidate, verified.
-**✅ VERIFIED COMPLETE (20:2x)**: build green, all spot-URLs correct (kept 200 / excluded 404 /
-title "Piper Morgan Documentation"). Verification found + fixed 2 real defects same evening: the
-`reference`→`references/` exclude prefix collision (trailing slash now load-bearing, commented)
-and CONTRIBUTING's pre-existing never-rendered gap (special-filename plugin behavior, frontmatter
-added). The curation is live end to end.
-**Remaining scrub queue**: per-surface staleness+link pass on the final keep-list (~160 pages,
-batched over fires; CIO's testing/ file-level-discretion condition applies during this pass);
-Comms register pass (their cadence); #1608 is Lead/CIO's lane. (#1593 FIXED by Lead 08-12,
-ratchet verified live.)
-
-## ✅ RESOLVED 2026-08-12 (PM-engaged, 11:06–) — Ship #055 published + 5-day omnibus backlog cleared
-
-**Ship #055** live at /shipping-news/weekly-ship-055-shipped-is-a-layer-word (website `536d5a1`,
-product `6283b4d00`). Template audit: 1 fix (PA/Comms gloss). Dry-run caught a real publish-post.js
-rendering defect (bold-open + italic-close paragraph → literal stray asterisks; same root regex as
-website#31, sharper manifestation) — fixed at source, full diagnosis posted to website#31.
-Live-content-verified. Comms memo sent (`d24eea418`). **Syndication (Medium/LinkedIn) remains PM's
-manual step** — status will need `published`→`distributed` + URLs when PM cross-posts.
-
-**Omnibus backlog 08-07→08-11 cleared** — one day per subagent sequentially per PM's "manageable
-bits" direction, full skill+methodology compliance each day, all pushed (10 commits, see session
-log table). Activity log +95 rows. Two preserved-not-resolved items from the 08-11 synthesis worth
-eventual attention: (1) Exec's post-reboot cron re-arm was unconfirmed as of the 08-11 record
-(Pard's memo named Exec the last unaccounted seat; Exec has 08-12 commits so likely fine now);
-(2) a Web/HOST/PA vs. Arch discrepancy about whether the pre-reboot cron "survived" (Arch's
-`uptime` check says the host hadn't rebooted yet) — preserved in the omnibus per
-name-the-divergence.
-
-## ✅ RESOLVED 2026-08-12 (Fire 1) — Write-Path-Chase pinch-hit follow-up + Lead's stale-docs reply
-
-Janus's three flagged follow-ups from the 08-11 pinch-hit publish: 2 were already done same evening
-by others; the stale "STILL BLOCKING PUBLISH" calendar notes text was still open — fixed
-(`e15de4089`). Filed a real bug Janus hit (`--pub-date` silent UTC default, same shape as the fixed
-`--work-date` bug) as **piper-morgan-website#32**. Replied to Janus at the correct cross-repo
-channel (`designinproduct/docs/mail/`, `52f8811`) — caught and corrected a near-miss where I almost
-wrote to this repo's known-dead-letter `mailboxes/janus/` instead.
-
-Lead Dev's reply closes both stale-doc mail flags from #1585 (`ROLE-PORTFOLIO-LEAD-DEV.md`,
-`environment-status.md`) — both audit rows now resolved, no further Docs action.
-
-**🟡 Awaiting PM, low priority**: `claude/fix-docker-migration-setup` — merge-keeper sweep flagged
-it (escalation: stray `.DS_Store` blobs). Confirmed genuinely abandoned (last commit 2026-03-31,
-predates v0.8.6). Not mine to delete unilaterally (destructive). Recommend deletion when PM has a
-moment; not urgent.
-
-**✅ RESOLVED**: mail-triage subagent read all 163 cc-only backlog memos in full — zero needed
-direct Docs action. Bulk-filed to `read/` in 19 batches; inbox at 0 unread. Along the way, fixed 2
-genuinely-open (not fabricated-closed) session logs the triage surfaced: 07-23 and 07-25 both now
-carry honest retroactive `DAY-CLOSED` markers (`756de0498`).
-
-## ✅ RESOLVED 2026-08-11 (Fire 1) — docs-tree flattening plan drafted, awaiting PM's go/no-go
-
-Plan written: `docs/internal/operations/docs-tree-flattening-plan-2026-08-11.md` (`0bca3ca8c`).
-One high-confidence candidate (`docs/internal/planning/roadmap/CORE/`, 9 subdirs/76 files, every
-filename already fully encodes its epic — nesting is 100% redundant). 3 categories explicitly
-ruled out with reasons (adrs/patterns sound as-is; legacy-guides carry real info, already fixed;
-image archive deep-by-design). **Not executed** — a document only, per PM's stated wariness.
-
-**Bigger finding along the way, filed separately as #1593**: `.github/workflows/link-checker.yml`
-correctly detects broken links (verified against a pre-#1584-fix run's own log) but the workflow
-always reports success regardless — very likely the actual reason ~240 broken links accumulated
-silently. This matters more than the flattening plan itself; flagged as such in the plan doc.
-
-**Awaiting PM**: go/no-go on executing the one recommended flatten (`roadmap/CORE/`).
-
-## ✅ RESOLVED 2026-08-10/11 (PM-directed, overnight) — #1584 and #1585 worked through
-
-**#1584** (broken links): ~240 → 34 residual, ~155 fixed across 25 files, 5 commits
-(`a0fd56987`, `253b46855`, `003185bea`, `8596e4518`, plus the citation fix earlier). Residual is
-mostly non-issues (PM-034 dead links needing someone with project history, computer:// artifacts,
-intentional template placeholders) or genuinely-missing content with no findable successor. Part C
-(methodology-19 numbering drift) mailed to CIO, stays open — his lane. Progress comment posted, issue
-left open for the residual.
-
-**#1585** (stale docs + duplicates): Part A — 5 role/infra-owned docs got honest staleness banners
-(not fabricated rewrites) + direct mail to each owner (PA, Exec, Lead Dev, CIO); 3 more independently
-verified with real evidence (issue #172 confirmed closed, a fix confirmed already-shipped in
-`status_checker.py`, a frozen-not-stale clarification); 1 finding self-corrected as out-of-scope
-(`docs/refactor/` is a completed project's artifact trail, not meant to stay current — worth stating
-plainly, not quietly fixing). Part B — 3 of 6 duplicate clusters reconciled with clear supersession
-evidence (`33c945eb7`), 3 left flagged as genuinely ambiguous. Progress comment posted, issue left open.
-
-**Full trace**: tonight's session log entry (`dev/2026/08/10/...`, "PM engaged 19:11-06:56").
-
-## ✅ RESOLVED 2026-08-10 — `planning/current/` Finding 1, 12 days deferred, trigger arrived
-
-Re-derived per-file staleness, confirmed `vision.md` is genuinely current (6+ live referrers) and
-stays put; the other 7 files moved to `planning/historical/`. Per-file split, not the originally-
-proposed blanket rename. `c3c1a7afc`.
-
-## ✅ RESOLVED 2026-08-10 — Weekly Docs Audit #1583, CLOSED
-
-First fully-worked weekly audit, first confirmed real fire of the nudged cron. All 8 sections
-genuine. Filed #1584/#1585 as the checklist's own "create issue for complex cases" step, not a
-deferral.
-
-## 🟡 AWAITING PM — write up the line-count methodology proposal, or hold?
-
-Asked 08-07, still no answer as of 08-10 STOP (4 days now). Not chasing — genuine external
-dependency, correct to hold.
-
-## Mail-loop scan — `scripts/scan-inbox.py` (Comms, 08-07), case-insensitive filter
+**Updated**: 2026-08-21 ~08:0x PDT (Fire 1/START — Friday omnibus backfill, full carry-forward
+prune)
+**Session log**: `dev/2026/08/21/2026-08-21-0727-docs-code-log.md` (open).
+**Cron**: `74a93223` (Rule-1 re-arm at idle, `CronList`-verified sole job), fresh 7-day window to
+~08-28. Registry row current.
+
+**Pruned this fire** (was 440 lines, deferred twice, doing it now rather than a 3rd defer): the
+prior version accumulated ~6 weeks of stacked per-fire entries and fully-resolved historical
+sections dating to 2026-08-10. All of that is preserved verbatim in dated session logs and
+omnibus logs — nothing is lost by dropping it here. This file's actual job (per the
+`duty-cycle-tick` skill) is ephemeral session state, not a permanent archive.
+
+**Nothing carried forward as blocking.** Yesterday (08-20) closed clean; today's opening fire
+closed a 2-day omnibus gap (08-19/08-20) via the Friday catch-up trigger — see today's session
+log for detail. Live-checked all scattered "awaiting" items from the old file before dropping
+them; only two remain genuinely open (below), the rest were either resolved (website#31 closed,
+#1593 closed) or were routine audit-tracker issues, not real backlog.
+
+## Awaiting PM (genuine, not urgent, don't chase)
+
+- **Docs-tree flattening plan go/no-go** — plan posted 2026-08-11
+  (`docs/internal/operations/docs-tree-flattening-plan-2026-08-11.md`), one recommended flatten
+  (`roadmap/CORE/`), still no PM decision.
+- **MIT license badge, no LICENSE file** — found 2026-08-10 (#1583), root README displays an MIT
+  badge with zero LICENSE-file hits repo-wide. Needs PM's call: add LICENSE vs. adjust badge.
+
+## Awaiting others (check periodically, don't re-derive)
+
+- **#1584** (broken links, ~34 residual after the big 08-10/11 pass) — CIO's Part C
+  (methodology-19 numbering drift) still open, his lane.
+- **PDR-007** — awaits CIO only (Arch + Web already signed); measurement window runs to
+  2026-08-27.
+
+## Owed by me — unblocked
+
+- **#1486** (Monthly Housekeeping Audit, next due ~09-01) — routine cadence, not urgent yet.
+- **pmorgan.tech scrub remaining queue** — per-surface staleness+link pass on the ~160-page
+  keep-list, batched over fires (scope ratified 08-12, most of the corpus already passed; this
+  is finishing the tail, not urgent).
+
+## Day-of-week duty triggers — CHECK EVERY START
+
+- **Every Monday**: Weekly Docs Audit.
+- **First Monday of month**: Monthly Housekeeping Audit (#1486, next ~09-01).
+- **Every Friday, EARLY**: omnibus logs Fri–Thu (the designed weekly catch-up — worked as intended
+  today, closing a 2-day gap cleanly; not evidence of a failing daily cadence).
+- **First Tuesday**: Skill-Candidates Review — not mine (PM+Exec+CIO).
+- **Not mine otherwise**: Role Health Check (4-weekly, HOST).
+
+## Mail-loop scan
 
 ```bash
 python3 scripts/scan-inbox.py mailboxes/docs/inbox | grep -iE "to:\s*docs\b|to:.*,\s*docs\b"
 ```
 Run every fire, not just START.
 
-## Day-of-week duty triggers — CHECK EVERY START
-
-- **Every Monday**: Weekly Docs Audit — verify it fired. Next: 08-17.
-- **First Monday of month**: Monthly Housekeeping Audit — next due ~09-01.
-- **Every Friday, EARLY**: omnibus logs Fri–Thu.
-- **Today, Tuesday 08-11**: Skill-Candidates Review (1st Tuesday) — **not mine**, PM+Exec+CIO.
-- **Not mine otherwise**: Role Health Check (4-weekly, HOST).
-
 ---
 
-## Awaiting PM specifically
-
-- **website#31, converter double-`<em>` bug** — filed 08-05, 0 comments, not urgent: (a) fix
-  forward-only vs. regenerate the ~15-post Ship back-catalog, (b) should Ship `**Metrics**` become a
-  real `###` header.
-- **MIT license badge, no LICENSE file** (found 08-10, #1583) — root README.md displays MIT badge,
-  zero LICENSE-file hits repo-wide all of history. Needs PM's call: add LICENSE vs. adjust badge.
-
-## Awaiting others — check, don't re-derive
-
-- **PDR-007 awaits CIO ONLY** — Arch ✅ Web ✅. Measurement window runs to 2026-08-27.
-- **CIO's day-of-week duty-check proposal reply** — sent 08-04, no reply, not urgent.
-- **#1584 Part C, #1475, #1486** — all OPEN, unchanged, not urgent.
-- **#1593** (link-checker.yml never fails despite detecting real breaks, filed 08-11) — not
-  mine to fix (CI/workflow ownership), not urgent, but worth a periodic check whether it's
-  picked up since it explains a real recurring-defect mechanism.
-- **4 mail flags sent 08-11 06:50-06:56** (PA/Exec/Lead Dev/CIO re: their stale docs + CIO re:
-  #1584 Part C) — no reply expected soon, not urgent, just don't re-flag redundantly.
-- **Docs-tree flattening plan go/no-go** — plan posted, awaiting PM's decision on executing the
-  one recommended flatten (`roadmap/CORE/`). Not chasing.
-
-## Owed by me — unblocked, priority order
-
-1. **#1486's actual checklist** — not urgent.
-2. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
-3. **`docs-standing-items.md` stale** — low priority.
-
-## Standing lessons (carried, still live — 11 items in the cron prompt; not restating all here)
-
-**No new durable process gap surfaced 08-10/11** that isn't already covered by the existing 11 —
-tonight's self-corrections (pattern-count false-positive, baseline-test-status over-scope) are
-instances of "verify before reporting," already standing lesson 4/9 territory, not a new category.
-
-**Verify before fixing scales, not just for small cases.** 155 link fixes tonight — the two
-self-corrections along the way (not the absence of errors) are the actual evidence the discipline
-held under volume, not just in isolated small checks.
-
-## Watch items (not owed to me, but adjacent)
-
-- **Syndication gap, 3 posts** — filed with Dispatch, nothing for me until URLs land.
-- **Puppeteer extraction cause** — Pard's lane.
-- **`pre-commit-broad-staging-warn.sh` blocking despite advisory design** — documented, not escalated.
-- **Blog index is client-rendered, returns a shell** — Comms's finding, not mine unless it becomes one.
-
-## The one thing I most want to carry into the next fire
-
-**The docs-tree flattening plan is real, PM-requested work, sequenced explicitly after #1584/#1585
-— which are now done.** Start there. Today is also Tuesday (Skill-Candidates Review day, not mine) —
-no special trigger for Docs beyond the usual mail/gated-item loop.
+*Full pre-2026-08-21 history: prior versions of this file are in git log
+(`git log -p -- dev/active/docs-carry-forward.md`) if ever needed verbatim; the durable record
+lives in dated session logs and `docs/omnibus-logs/`.*

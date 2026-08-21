@@ -445,13 +445,17 @@ async def consult_inversion_live(
         )
 
         if live_match is None:
-            # Two RETAINED flip-1 bucket names (corpus continuity — the Phase-1
-            # telemetry rows compare against these). Both now mean "no naming
-            # surface put this op in the live set"; they still differ on the
-            # fact they assert, which is whether a registry category existed at
-            # all. The precise account is on the line itself: live_match=None
+            # No naming surface put this op in the live set. The shared
+            # not_live_ prefix asserts exactly that and enumerates no surfaces
+            # (a fourth surface leaves both names true); the suffix states the
+            # one fact that differs between the buckets — whether a registry
+            # category existed at all. Both buckets were renamed by #1670
+            # (2026-08-21; the #1667 widening made flip-1's names describe
+            # half the check). Old→new mapping note:
+            # docs/internal/architecture/current/inversion-phase2-gate-2026-08-19.md.
+            # The precise account is on the line itself: live_match=None
             # plus flip_group, category, and live_categories.
-            reason = "category_not_live" if category else "no_registry_category"
+            reason = "not_live_categorized" if category else "not_live_uncategorized"
         elif decision.confidence is None or decision.confidence < threshold:
             reason = "sub_threshold"
         elif entry is None:

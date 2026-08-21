@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-08-21 10:30</title>
+<style>
+  :root {
+    --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+    --red:#c0392b; --red-bg:#fdecea; --amber:#b7791f; --amber-bg:#fdf3e2;
+    --grey:#8a8a8a; --green:#2d7a3e; --green-bg:#eaf6ec; --link:#1a5fb4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#17181a; --card:#212226; --line:#34363a; --ink:#eceef0; --mute:#9a9ea3;
+             --red:#e0685a; --red-bg:#3a2220; --amber:#d9a441; --amber-bg:#332a16;
+             --grey:#9a9ea3; --green:#5cbd74; --green-bg:#1c2f20; --link:#6ea8fe; }
+  }
+  :root[data-theme="dark"] { --bg:#17181a; --card:#212226; --line:#34363a; --ink:#eceef0; --mute:#9a9ea3;
+             --red:#e0685a; --red-bg:#3a2220; --amber:#d9a441; --amber-bg:#332a16;
+             --grey:#9a9ea3; --green:#5cbd74; --green-bg:#1c2f20; --link:#6ea8fe; }
+  :root[data-theme="light"] { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+             --red:#c0392b; --red-bg:#fdecea; --amber:#b7791f; --amber-bg:#fdf3e2;
+             --grey:#8a8a8a; --green:#2d7a3e; --green-bg:#eaf6ec; --link:#1a5fb4; }
+  * { box-sizing:border-box; }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem 4rem; }
+  .wrap { max-width:880px; margin:0 auto; }
+  h1 { font-size:1.55rem; margin:0 0 .25rem; letter-spacing:-0.01em; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1rem; }
+  .legend { font-size:.8rem; color:var(--mute); margin:.5rem 0 1.5rem; display:flex; flex-wrap:wrap; gap:.25rem 1.1rem; }
+  h2 { font-size:1.05rem; margin:2rem 0 .6rem; padding-bottom:.35rem; border-bottom:2px solid var(--line);
+       display:flex; align-items:center; gap:.5rem; }
+  .count { font-size:.78rem; font-weight:400; color:var(--mute); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.75rem .95rem; margin:.55rem 0; }
+  .item.decision { border-left-color:var(--red); }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear, .item.resolved-block { border-left-color:var(--green); }
+  .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.25rem; }
+  .agent { font-weight:700; }
+  .sev { font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .45rem;
+         border-radius:4px; background:var(--red-bg); color:var(--red); }
+  .sev.drift { background:var(--amber-bg); color:var(--amber); }
+  .summary { margin:.35rem 0 .3rem; }
+  .summary b { font-weight:600; }
+  .summary code { background:var(--amber-bg); padding:.05rem .3rem; border-radius:3px; font-size:.9em; }
+  .links { font-size:.82rem; color:var(--mute); margin-top:.3rem; }
+  .links a { color:var(--link); text-decoration:none; margin-right:.9rem; }
+  .links a:hover { text-decoration:underline; }
+  .clean-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:.5rem; }
+  .clean-row { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:.55rem .75rem; font-size:.87rem; }
+  .clean-row b { color:var(--ink); }
+  .clean-row span { color:var(--mute); display:block; font-size:.8rem; margin-top:.15rem; }
+  .bigclear { font-size:1.02rem; color:var(--green); font-weight:600; margin:0; }
+  .resolved s { color:var(--mute); }
+  footer { margin-top:2.5rem; padding-top:1.25rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.82rem; line-height:1.6; }
+  footer b { color:var(--ink); }
+  .verify-list { margin:.5rem 0 0; padding-left:1.1rem; }
+  .verify-list li { margin-bottom:.2rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec (Chief of Staff) · <b>2026-08-21, 10:30 PT</b> · full project sweep, live-state pass, mid-conversation with PM · source: 10 role carry-forwards + live GitHub/file verification + exec inbox</p>
+  <p class="legend">
+    <span>🛑 <b>Blocker</b> — work stuck (TOP)</span>
+    <span>🔴 <b>Decision</b> — needs your call</span>
+    <span>🟡 <b>Drift/awareness</b> — worth knowing, no decision</span>
+    <span>⚪ <b>Clean</b> — no open item</span>
+    <span>✅ <b>Resolved</b> — since the last board, several live in this conversation</span>
+  </p>
+
+  <h2>🛑 Blockers — work that's stuck <span class="count">(0)</span></h2>
+  <div class="item clear"><p class="bigclear">✅ No blocked work right now. The one real blocker on the board this morning — Comms' era-taxonomy commit stuck in the website repo — you cleared it yourself minutes ago.</p></div>
+
+  <h2>🔴 Decisions awaiting you <span class="count">(9)</span></h2>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">CXO</span><span class="sev">good timing — you have CXO today</span></div>
+    <p class="summary">Surfaces-taxonomy v0.2 is fully drafted, and both Arch's and PPM's consults are independently confirmed — the doc's own words: <i>"the only thing standing between v0.2 and full ratification is PM's word on §1's naming."</i> The actual question: does the renamed Axis-1 table (F-History, F-Privacy, F-Settings, F-Integrations, F-Search, F-FirstRun, F-Errors) read right as-is, or does "MUX/UI surface" deserve different language now that it's paired with the new platform/touchpoint axis? Naming is cheap now, expensive after downstream docs cite it.</p>
+    <div class="links">docs/internal/design/surfaces-taxonomy-2026-08-16.md §5</div>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">PA</span><span class="sev">good timing — you have PA today</span></div>
+    <p class="summary">The BYOC/conversational-layer strategic conversation (should FTUX even be a chat?) — Lead sent a full strategic brief, PA sent full positions (including a self-corrected "summarize crack" finding, half-healed by a later fix), CXO sent prep. As of this morning nobody on the team can see whether the live conversation with you has actually happened yet — worth confirming today either way so three roles' prep doesn't sit stale.</p>
+    <div class="links">docs/internal/product/conversational-layer-strategic-brief-2026-08-18.md</div>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Lead</span><span class="sev">test verdicts</span></div>
+    <p class="summary">v59/v60 test verdicts awaited (upload + summarize repaired, fabrications dead, crisp confirms per Lead's tracker). Separately, Lead flagged this morning that PM's own model access hit a usage wall for ~10 hours on 08-20 with zero in-session signal — a real cohort-reliability gap, already routed to CIO for a fix (see Resolved-adjacent below), just flagging the underlying cause here too.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Comms</span><span class="sev">insight pool + Beats 2-6</span></div>
+    <p class="summary">Insight-pool review: 9 already-scheduled + 3 new candidates drafted from newest material, awaiting your pairing choices for upcoming weekend slots. Separately, Beats 2-6 need voice-pass + art, and Beat 6 specifically has an open "beta data"/"beta date" quote question blocking its voice-pass.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">CXO</span><span class="sev">low priority, aging</span></div>
+    <p class="summary">The four ✏️ items on <code>experience-across-surfaces.md</code> — likely superseded by the surfaces-taxonomy work above, but nobody's confirmed that yet. Worth a one-line ruling once the taxonomy's §1 naming lands: "superseded, archive" or "still separately live."</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Docs</span><span class="sev">low priority, long-standing</span></div>
+    <p class="summary">Docs-tree flattening plan (one recommended flatten, <code>roadmap/CORE/</code>) — posted 08-11, still no go/no-go. Low stakes, purely a documentation-hygiene call.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Web</span><span class="sev">design ask, not yet scoped</span></div>
+    <p class="summary">Your own idea from 08-15 — feature the most recent blog post above the fold on <code>/blog</code>, before the generic marketing hero. Not yet scoped or built; Web flagged it needs your eyes at each step since there's no browser on that seat to iterate visually.</p>
+  </div>
+
+  <h2>🟡 Drift / awareness — in motion, no decision needed from you right now <span class="count">(4)</span></h2>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">CIO / Lead</span><span class="sev">design accepted, building</span></div>
+    <p class="summary">The freeze-watchdog's silence threshold moves from a fixed hour count to missed-expected-fires, derived from each role's own cron cadence — directly addresses the 08-20 incident where a 10-hour blocked-model gap on Lead's seat produced zero alert. Design accepted this morning, CIO builds it, not urgent-today (target: before next Thursday's credit reset).</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">HOST</span><span class="sev">correctly holding</span></div>
+    <p class="summary">Agent 360 v0.4: 8 of 10 responses in, holding synthesis for the full window (~08-28) rather than jumping the gun. <b>Missing: Arch and Exec</b> — I still owe mine, noting honestly rather than letting it sit unflagged.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">CIO</span><span class="sev">none blocking, PM's answer whenever</span></div>
+    <p class="summary">Three small scope questions genuinely open, none urgent: the "chess-board" design pass (role-state vs. work-item-state, audience, cadence), whether the PM-deferred methodology-core disposition review should resume, and how big the Design-in-Product curation-trial scope actually is versus what's been tested so far.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Lead</span><span class="sev">healthy, in progress</span></div>
+    <p class="summary">Phase 2 (Understanding-Layer Inversion) flip-2 work landed clean this morning — #1668 and #1672 both merged and closed, real safety instrumentation added along the way. v60 live. No PM action needed, just visible momentum worth knowing about.</p>
+  </div>
+
+  <h2>⚪ Clean — no open item <span class="count">(3)</span></h2>
+  <div class="clean-grid">
+    <div class="clean-row"><b>Web</b><span>Genuinely quiet several days running — verified, not neglect. One unscoped design idea above.</span></div>
+    <div class="clean-row"><b>PPM</b><span>Fourth fully quiet day in a row, verified. Watching the same taxonomy naming call as CXO.</span></div>
+    <div class="clean-row"><b>Arch</b><span>Nothing new owed by PM; watching Phase 2.2 build against a contract it already ratified.</span></div>
+  </div>
+
+  <h2>✅ Resolved since the last board <span class="count">(6, several live in this conversation)</span></h2>
+  <div class="item resolved-block">
+    <p class="resolved">
+      <s>Values document — full and final approval</s> — you approved directly ("the values doc changes sound fine to me"), DRAFT status lifted, banner updated.<br>
+      <s>Era-taxonomy push blocker</s> — you pushed <code>dc49566</code> yourself minutes ago; live on the website repo now.<br>
+      <s>Freeze-watchdog cadence-relative threshold</s> — design accepted this morning, CIO building.<br>
+      <s>Ship #057 workstream kickoff</s> — self-initiated this morning (window Aug 14-20 closed, no kickoff existed yet); 2 of 10 reports already in.<br>
+      <s>Docs' stale "no LICENSE file" item</s> — corrected; Apache 2.0 LICENSE has existed for weeks, Docs' carry-forward just hadn't caught up.<br>
+      <s>Ship #056 draft-quality gaps</s> — Docs caught two real mistakes before publish last week; both now permanent checks in the draft-weekly-ship skill.
+    </p>
+  </div>
+
+  <footer>
+    <b>Bottom line:</b> the board moved twice while you were reading it this morning — the era-taxonomy blocker and the values-doc approval both closed live in this conversation. What's left genuinely needing you: the taxonomy naming call and the BYOC conversation outcome, both timed well against the CXO/PA conversations you already have queued for today; a handful of lower-stakes Comms/Docs/Web items with no urgency attached. Three roles are in clean multi-day quiet streaks — verified as genuine, not drift.
+    <ul class="verify-list">
+      <li>All 10 role carry-forwards read fresh this morning, most rewritten today or yesterday.</li>
+      <li>GitHub live-checked: #1536, #1539, #1625, #1481, #1174, #1624 — all confirmed open/milestoned as carry-forwards described.</li>
+      <li>LICENSE/README checked directly — Docs' carry-forward was stale, corrected.</li>
+      <li>Era-taxonomy commit verified on origin/main via `git ls-remote` + GitHub API after your push, not assumed from the terminal output alone.</li>
+      <li>My own Agent 360 v0.4 gap found by checking HOST's "8/10, missing arch and exec" claim directly rather than passing it through unverified.</li>
+    </ul>
+  </footer>
+</div>
+</body>
+</html>
