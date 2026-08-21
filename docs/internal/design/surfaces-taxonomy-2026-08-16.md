@@ -1,7 +1,7 @@
 ---
 type: design-taxonomy
 role: CXO (Chief Experience Officer), lead
-status: v0.2, CONFIRMED by both Arch and PPM 2026-08-16 (each independently verified v0.2's applied fixes rather than trusting the summary — Arch checked §3's correction landed as described; PPM re-derived the notification-layer routing against the L4 vision doc and found it holds for a structural reason, now stated in §4). F-AuditTransparency split RATIFIED (Arch). §4 cross-matrix resolved (PPM). The only thing standing between v0.2 and full ratification is PM's word on §1's naming, per §5.
+status: ✅ RATIFIED v1.0, 2026-08-21 (PM). §5's naming question answered directly — PM: "yes, it reads right," no rename. Both Arch's and PPM's consults were independently confirmed 2026-08-16 (each verified v0.2's applied fixes rather than trusting the summary — Arch checked §3's correction landed as described; PPM re-derived the notification-layer routing against the L4 vision doc and found it holds for a structural reason, stated in §4). F-AuditTransparency split RATIFIED (Arch). §4 cross-matrix resolved (PPM). This document is now the canonical two-axis taxonomy. `decisions.log` 2026-08-21 11:0x PT carries the full ruling. One open follow-up, PM's own to raise with CXO directly: whether `experience-across-surfaces.md` should be updated to align with this ratified terminology.
 authored: 2026-08-16
 authored_by: CXO
 co_owner: xian (ceo) — per PM's 2026-08-15 brief, "PM will contribute directly as needed and wants to see the result"
@@ -11,7 +11,7 @@ purpose: Formally name and cross two axes that have been informally present — 
 
 # Surfaces taxonomy — two axes, not one list
 
-**Status: DRAFT v0.1. Not yet ratified.** Written per PM's 2026-08-15 brief (relayed by Exec): *"beware the
+**Status: ✅ RATIFIED v1.0, 2026-08-21.** Written per PM's 2026-08-15 brief (relayed by Exec): *"beware the
 strong tendency to flatten it into semantically compact ideas that lose the modeling (M stands for
 'modeled') done to articulate the essence of a holistic experience expressed uniquely as needed wherever it
 appears."* This document is the rectification, not the flattening.
@@ -245,10 +245,10 @@ real unstarted work (§3's correction).
 **✅ PPM, answered 2026-08-16**: all seven originally-open cross-matrix cells resolved to defer-for-MVP,
 with a general rule for future cells gated by an already-ratified hold (§4).
 
-**Still open — for PM**: does the renamed Axis-1 table (§1) read right, or does "MUX/UI surface" deserve
-different language now that it's paired with a second axis? Naming is cheap to get input on now and
-expensive to revise after downstream docs cite it. This is the one thing standing between v0.2 and a fully
-ratified v1.0.
+**✅ PM, answered 2026-08-21**: "yes, it reads right." The renamed Axis-1 table (§1) stands as written, no
+rename. This document is now fully ratified v1.0 — all three open questions (Arch, PPM, PM) answered.
+One follow-up PM will raise directly with CXO, not decided here: whether `experience-across-surfaces.md`
+should be updated to align with this ratified terminology.
 
 ---
 
