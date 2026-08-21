@@ -1,6 +1,22 @@
 # Comms carry-forward
 
-*Updated at the 2026-08-20 06:52 PT START fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Updated at the 2026-08-20 18:42 PT WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+
+## Era-taxonomy execution — DONE, blocked only on PM's push
+
+PM ratified the Aug 15 era-taxonomy proposal today and asked me to execute it. Fully done and verified in `/Users/xian/Development/piper-morgan-website-worktrees/comms` (a new worktree I created — the website repo had none for comms), commit `dc49566` on `claude/comms-cycle`:
+
+- Added Era 6 "The Mechanism" (Apr 1–Jul 31, 86 posts) and Era 7 "The Alpha" (Aug 1–present, open-ended) to `src/lib/episodes.ts`
+- Assigned `cluster` by pubDate in `data/blog-metadata.csv` + synced to `medium-posts.json` (86 mechanism + 15 alpha — grew from the original 8+3 estimate since the 3 posts missing on Aug 15 have since published normally)
+- Found + fixed a real pre-existing bug along the way: era date ranges rendered one day early (UTC-midnight-in-Pacific-build). Fixed at the 3 sites this feature touches; filed **website#34** for the other 7 site-wide call sites with the same pattern (deliberately not swept — separate, larger fix)
+- Also fixed stale hardcoded "5 eras... May 2025 - March 2026" hero/metadata copy on the episodes page, now computed from `ERAS.length` so it won't go stale again
+- Verified via full `next build` + direct HTML inspection: Era 7 shows "15 posts", "Aug 1 - Present"
+
+**Blocked**: pushing to the website repo's `origin/main` was denied by the permission classifier (I don't normally push there — only the product repo). Gave PM the exact command (`cd .../piper-morgan-website-worktrees/comms && git push origin HEAD:main`) at end of last turn. **As of this fire (18:42), still not pushed** — `dc49566` is local-only, 1 commit ahead of origin/main. Nothing further for me to do here; checking each fire whether it landed.
+
+## Beat 1 "The Dead Code That Wasn't" — fully published + archived
+
+Published and archived by Docs sometime after the 15:42 fire (calendar row updated, `blogURL`/`canonicalSite`/`altText`/`caption` filled, images archived, draft moved to `published/`). Closed thread, nothing further needed.
 
 ## 2026-08-20 START — quiet fire, one item resolved
 
