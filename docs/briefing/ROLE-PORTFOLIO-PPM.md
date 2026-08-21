@@ -3,8 +3,8 @@ type: role-portfolio
 role: PPM (Principal Product Manager)
 status: v0.1 — main-cohort wave
 self-authored-by: PPM
-last_updated: 2026-08-14
-refreshed: 2026-08-14
+last_updated: 2026-08-21
+refreshed: 2026-08-21
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-PPM.md
 refresh_discipline: "section 2 updated as part of each weekly workstream review — can't write the Ship/workstream without restating priorities + status, so the review keeps this current by construction (Rule 5)"
@@ -36,17 +36,20 @@ The why: PM can't synthesize every cross-role lens in real time. PPM exists so t
 > (swept 2026-07-04/05 into Beta Blockers or Production). ⚠️ **The prior version of this line named
 > "beta target Aug 8" — PM moved beta back a month on 2026-08-08** ("we clearly have a lot more
 > work still to do than anyone ever reported to me"); do not carry a specific date here, it has
-> been wrong twice now. Refreshed 2026-08-14 per Rule 5, filed with Ship #056's workstream review.
+> been wrong twice now. Refreshed 2026-08-21 per Rule 5, filed with Ship #057's workstream review —
+> this pass rewrote the table itself, not just this header note (the 08-14 refresh only touched the
+> header and let the table drift a week stale; not repeating that).
 
-| Priority | What I'm advancing | Status (Aug 1) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Aug 21) | How we'll know it's moving |
 |---|---|---|---|
-| **#1386 beta gate** | The shape-level gate for beta: does "done" mean the right thing was built | **Window re-scoped 7/31** — Scenario B only; **criterion 2 deferred** (canonical suite skips keyless → would report green without measuring). **Two PM-side unblocks**: key provisioning, rousing Lead | A *keyed* canonical run exists; CXO + PPM sign off on the issue scoped to what was measured |
-| **PDR-006 → epic #1462** | The hosted-MCP + plugin distribution pivot, from ratified decision to tracked build | **RATIFIED 7/31; epic filed** with Arch's three conditions in the body. **Milestone unset — PM-gated** | PM sets the milestone; Phase 0 (recomposition probe + tool-naming A/B) starts build-independently |
-| **First-contact criterion** | The one new beta criterion that can actually fail for what our alpha tester reported | Proposed on #1386 + #1462; **CXO's spec v0.2 specifies the experience** (7a gate / 7b conformance split, adopted from my catch) | One canonical wording (CXO's §7a), pointed at from both artifacts — PM's call |
-| **Jake FTUX conversion** | Four-lens review → tracked work | Synthesis with PM for a **PM+CXO decision** (six yes/no items). **Conversion triggers on the decision, not the synthesis** | Decision lands on §4 → I file the issues same day against the decided bucket structure |
-| **Spatial disposition** | Product-value + beta/production scoping of the committed theory | ✅ **Converged on (b)** with Arch + CXO, independently. L4/#1174 found **promised at 1.0 with zero implementation**; CXO owns the re-scope | ADR-013 updated as scope-clarification; #1174 re-scoped to discovery |
-| **Roadmap / briefing currency** | Keep the planning surfaces honest | Briefing refreshed 8/1 (was 6 days stale, **zero mentions of PDR-006**); `sprint-board-structure.md` + `roadmap.md:68` corrected 7/30 | ✅ **CLOSED 2026-08-06** — denominator established and drained: **5** live refs, of which **3 were correct as written** (the roadmap's own triage record, the briefing line instructing readers, a narrative about a stale artifact) and 2 real, both fixed. **Scoping first is what made it cheap** |
-| **Board visibility** | Sprint/milestone state readable at all | ✅ **UNBLOCKED — verified 2026-08-07.** Token now carries `project` scope; `gh project list` returns. **Used it immediately: 21 issues open in the MVP milestone**, i.e. the beta-gate count, uncountable since 7/16. ⚠️ The list is *growing* from PM's live beta-account testing (#1488–#1492), not only shrinking from closes | Re-count at each gate review; don't let this line go stale again — it sat 🔴 after the fix landed |
+| **#1386 beta gate** | The shape-level gate for beta: does "done" mean the right thing was built | Criterion 2 remains deferred; **placement question** (does the first-contact criterion belong in this gate at all) **open since 08-05**, untouched since | PM decides placement; a keyed canonical run would close criterion 2 |
+| **PDR-006 → epic #1462** | The hosted-MCP + plugin distribution pivot, from ratified decision to tracked build | Milestone answered 08-07 (Product/PUB sprint). No further PPM-visible movement | Watching, not driving — Lead/Arch's build lane now |
+| **First-contact criterion** | The one new beta criterion that can actually fail for what our alpha tester reported | ✅ **RATIFIED 2026-08-15** — `docs/internal/product/first-contact-criterion-merged-2026-08-10.md` is canonical, joint CXO+PPM sign-off given fresh (not inherited), a provenance error in `decisions.log` found and corrected. **Closed.** | Closed — only the separate #1386-placement question remains |
+| **Jake FTUX conversion** | Four-lens review → tracked work | ✅ **Complete 2026-08-09** — #1536–#1540 filed, zero rows unfiled, PM ruled placement 08-10 | Closed |
+| **Spatial disposition** | Product-value + beta/production scoping of the committed theory | ✅ **CLOSED 2026-08-15** — cold-island disposal (all 11 modules, retained as prior art) + ambient presence (L4) phased plan (MVP false-door #1635, Beta discovery-only #1174, Production pending Lead's cost estimate) | Closed |
+| **Surfaces taxonomy** *(new priority, emerged 08-16)* | Rectify 'surface' into two orthogonal axes (functional MUX surfaces + platform/touchpoint) after my own "Surface 3 is a phantom" claim was found wrong | CXO-led v0.2, both Arch's and my consults applied and confirmed. **Unchanged 7 days** — only PM's word on §1 naming remains before ratification | Watching, not chasing, per PM's own no-deadline framing |
+| **Roadmap / briefing currency** | Keep the planning surfaces honest | ✅ Closed 2026-08-06, held since | Watch for new drift |
+| **Board visibility** | Sprint/milestone state readable at all | ✅ Unblocked 2026-08-07; superseded by weekly `sprint-truth.py` runs | Re-run at every citation, not just gate reviews — now the actual practice |
 
 ---
 
