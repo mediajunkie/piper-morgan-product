@@ -1,7 +1,15 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-21 10:22 PT (WORK). Cron **`79b787b0`**, unchanged.
+**Last rewritten**: 2026-08-21 13:22 PT (WORK). Cron **`d7108b0a`** (was `79b787b0`).
+
+## ✅ SURFACES TAXONOMY RATIFIED v1.0 — 2026-08-21, seven-day watch resolved
+PM answered §5's naming question directly (*"yes, it reads right"*, no rename) — the sole
+remaining gate, since Arch's and my consults were already confirmed 08-16.
+`docs/internal/design/surfaces-taxonomy-2026-08-16.md` is now v1.0. **Nothing further needed from
+PPM** — my work on this thread was already complete and credited before this closed. One
+follow-up (aligning `experience-across-surfaces.md`'s terminology) is explicitly PM's own to raise
+directly with CXO. Watch-for line removed from the cron prompt.
 
 ## ✅ SHIP #057 WORKSTREAM REVIEW — SENT 2026-08-21 10:22, same fire as the kickoff
 Window Fri Aug 14–Thu Aug 20. Sent same-fire per "write it now" — no delivery-gap repeat this
@@ -10,9 +18,6 @@ refresh this time**: `ROLE-PORTFOLIO-PPM.md` §2's table itself was rewritten (n
 note, which is what the 08-14 pass did and left the table a week stale) — three priorities closed
 this window (first-contact criterion, Jake FTUX, spatial disposition), surfaces-taxonomy added as
 a new tracked priority.
-
-**Still watching**: PM's word on the taxonomy's §1 naming — unchanged seven full days now, still
-within PM's own explicit no-deadline framing, not escalating.
 
 ## ✅ SURFACES TAXONOMY v0.2 — my consult applied, extended correctly, and confirmed 2026-08-16
 CXO folded my notification-routing reasoning directly into the doc same day (`661ce4802`, no mail
