@@ -3,8 +3,8 @@ type: role-portfolio
 role: CXO (Chief Experience Officer)
 status: v0.1
 self-authored-by: CXO
-last_updated: 2026-08-14
-refreshed: 2026-08-14 (section 2 refreshed per workstream #056; sections 1/3/4 re-read and left as accurate)
+last_updated: 2026-08-21
+refreshed: 2026-08-21 (section 2 refreshed per workstream #057; sections 1/3/4 re-read and left as accurate)
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-CXO.md
 refresh_discipline: "sections 2 and 4 on each workstream review; sections 1 and 3 on role-scope drift — NOW CHECKED, see refresh_trigger_glob and §5"
@@ -32,21 +32,24 @@ Two things flow from this:
 
 ## 2. Current goals & priorities — August 2026
 
-<!-- Rule 2: medium-pace, per sprint. Rule 4: each has direction + status + forward indicator. Rule 5: refreshed each workstream review. This refresh IS a review-triggered refresh — #056, window Aug 7-13. -->
+<!-- Rule 2: medium-pace, per sprint. Rule 4: each has direction + status + forward indicator. Rule 5: refreshed each workstream review. This refresh IS a review-triggered refresh — #057, window Aug 14-20. -->
 
-| Priority | What I'm advancing | Status (Aug 14, per Ship #056) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Aug 21, per Ship #057) | How we'll know it's moving |
 |---|---|---|---|
-| **First contact on the plugin surface (#1536)** | The user's own work appears in the first exchange, unprompted | ✅ **Built and merged 08-10** (`43d2a4fce`); **conformance-reviewed 08-12** against the §7a gate criteria — item 3 (only-Piper-could) confirmed met. ⚠️ **Not fully closed**: live user-verification flagged by Lead as "next cut," still not run as of 08-14 — four days, real Pattern-045 instance. | The live-verification pass actually runs and is reported, either result |
-| **#1539 FTUX-PURPOSE (demand-side twin of #1536)** | Make legible *which* uncertainty a reply reduced, not just that one did | ✅ **Unstuck 08-12** — candidate articulation posted, tied to a concrete gap found in #1536's shipped copy. With PM. | PM rules on the candidate |
-| **Recomposition rubric branch (#1463)** | A Layer-B rubric for tool output a client LLM recomposes | **Held, same dependency, unchanged since 08-04.** Waits on #1462 (unbuilt MCP server epic), not a hostname. | Retest against a live `mcp.pipermorgan.ai` passes |
-| **Honesty of user-facing claims** | The interface must not manufacture a belief | ✅ **CLOSED 08-07**, verified in the running system. No new drift observed through 08-13. | Holds until the next audit finds otherwise |
-| **#1466 Slack link flow** | Link-flow UX + copy; the decline is the load-bearing string | **Held — PM's socket-path hold stands, unchanged since 08-06.** No movement 08-07–08-13. | Lead ships when the hold lifts |
-| **#1386 beta-gate experience criteria** | The gate must be able to both pass and fail for what users actually report | **Held — criterion-2 sign-off still withheld.** No keyed run has appeared through 08-13; checked repeatedly. | A keyed run exists → same-day sign-off, as committed |
-| **#1174 proactive presence** | Discovery only — the delivery capability is unscheduled | **Held by design, unchanged.** | Discovery runs with HOST; nothing built pre-beta |
-| **The "unmapped verb → ask" design lane (#1569/#1605)** | UX shape for disambiguation when a user's verb has no confident mapping onto a stateful operation | ✅ **NEW this window, closed end-to-end**: candidate → PPM's two-round audit (real gaps both times) → resolved → built (`e9ef395a1`) → PPM signed off 08-13/08-14. | Deploys with the next cut; PM's live retest closes it fully |
-| **Floor-quality + ethics-decline watch** | Standing — on shipped behaviour, not issue progress | 🔴 **Still not performed this window either** — named again in Ship #056 rather than silently re-carried. Second window running unattested. | A keyed run against the deployed host, or a decline observed on a live surface |
+| **First contact on the plugin surface (#1536)** | The user's own work appears in the first exchange, unprompted | **HELD, aging.** Live-verification still not run — now over a week since flagged as "next cut." Real Pattern-045 instance. | The live-verification pass actually runs and is reported, either result |
+| **#1539 FTUX-PURPOSE** | Make legible *which* uncertainty a reply reduced | **HELD, with PM, unchanged.** | PM rules on the candidate |
+| **Recomposition rubric branch (#1463)** | A Layer-B rubric for tool output a client LLM recomposes | **Held, same dependency, unchanged.** Waits on #1462. | Retest against a live `mcp.pipermorgan.ai` passes |
+| **Honesty of user-facing claims** | The interface must not manufacture a belief | ✅ **CLOSED 08-07**, holds, no new drift. | Holds until the next audit finds otherwise |
+| **#1466 Slack link flow** | Link-flow UX + copy | ✅ **CLOSED — corrected this refresh.** Actually closed 2026-08-08 (full live E2E proof) on PM's pause-and-close directive; this line incorrectly read "held" for two refreshes running. Fixed now. | — |
+| **#1386 beta-gate experience criteria** | The gate must be able to both pass and fail for what users actually report | **Held — criterion-2 sign-off still withheld.** No keyed run has appeared. | A keyed run exists → same-day sign-off, as committed |
+| **#1174 proactive presence** | Discovery only | **Held by design.** PM confirmed correctly scoped when closing the spatial committed-theory review 08-15. | Discovery runs with HOST; nothing built pre-beta |
+| **The "unmapped verb → ask" lane (#1569/#1605)** | UX shape for disambiguation when a verb has no confident mapping | ✅ **CLOSED END TO END.** Design → build → **PM live-verified in production 08-17** (real counts, no contradiction). Full lifecycle in one window. | Closed |
+| **#1509 outwardness consent axis** | A second consent dimension for actions visible to someone other than the user | ✅ **Shipped, ratified PM+CXO+PPM 08-15.** Disclosure copy defect caught and fixed 08-21 (accidentally auto-closed the issue via a commit-message slip — reopened same-fire, explained). Staged for next deploy. | PM's live retest, plus deploy |
+| **Surfaces taxonomy** | Formal two-axis model (functional surface × platform), superseding "Surface 3 phantom" | ✅ **v0.2, fully confirmed by Arch + PPM.** One real correction accepted and fixed (m-49 shape — cited design prose as verified code). Ratification pending only PM's word on §1 naming. | PM rules on naming |
+| **FTUX strategy conversation** | "Should FTUX even be a chat?" — platform-dependent reframe delivered | ⏸️ **Prep sent 08-18, conversation itself still pending** as of this refresh — checked broadly, not just my inbox. Not chased. | PM has the conversation |
+| **Floor-quality + ethics-decline watch** | Standing — on shipped behaviour, not issue progress | 🔴 **Still not performed — third window running unattested.** | A keyed run against the deployed host, or a decline observed on a live surface |
 
-**Deliberately not on this list**: the D2 design-system portfolio (#1286/#1290/#1284/#1269) — unmoved for a fifth Ship window, flagged three times now. Still a drift, not a decision.
+**Deliberately not on this list**: the D2 design-system portfolio (#1286/#1290/#1284/#1269) — unmoved for a sixth Ship window, flagged four times now. Still a drift, not a decision.
 
 ### Beta milestone (June 2026, retained for the record)
 - **D1 closed**: #1236 (Radar consolidation) + #1280 (dark rail shell) both passed PM beta UAT — "total win for beta" (June 19). Places→RadarEntity as `work_item` live; insights-OUT; clean chat center; dark rail conversation-first.
