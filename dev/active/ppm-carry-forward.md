@@ -1,9 +1,9 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-19 22:22 PT (STOP). **Six clean fires, third fully quiet day in a
-row.** Cron re-armed: **`114aa856`** (was `28f255ae`). **Still watching**: PM's word on the
-taxonomy's §1 naming — the one thing left before full ratification; unchanged for five full days
+**Last rewritten**: 2026-08-20 22:10 PT (STOP). **Six clean fires, fourth fully quiet day in a
+row.** Cron re-armed: **`79b787b0`** (was `114aa856`). **Still watching**: PM's word on the
+taxonomy's §1 naming — the one thing left before full ratification; unchanged for six full days
 now, still within PM's own explicit no-deadline framing, not escalating.
 
 ## ✅ SURFACES TAXONOMY v0.2 — my consult applied, extended correctly, and confirmed 2026-08-16

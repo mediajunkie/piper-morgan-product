@@ -1,17 +1,42 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-20 ~17:0x PDT (Fire 2 — Ship #056 illustration confirmed to PM + "The Dead
-Code That Wasn't" published)
-**Session log**: `dev/2026/08/20/2026-08-20-0727-docs-code-log.md` (open).
-**Cron**: `f6271697`, unchanged today, healthy through ~08-26.
+**Updated**: 2026-08-20 22:3x PDT (DAY-CLOSED — Dead Code published+synced, frontmatter-image
+defect root-caused and fixed at the actual source)
+**Session log**: `dev/2026/08/20/2026-08-20-0727-docs-code-log.md` (closed, `DAY-CLOSED` marker
+written).
+**Cron**: `67b8f23f` (STOP re-arm, delete-then-create, `CronList`-verified sole job), fresh 7-day
+window to ~08-27. Registry row current.
 
-**Nothing carried forward as blocking**: PM's illustration question answered directly (memo was
-sitting unread in their inbox, re-verified fresh rather than repeating last night's claim);
-today's post published, fact-checked, live-verified. One real self-caught defect worth noting for
-future publishes: **don't copy a frontmatter caption's YAML-escaped apostrophe (`''`) straight
-into the CSV field** — that escaping is YAML-only, and the CSV/rendered form wants a plain `'`.
-Caught this time by checking convention against other rows before committing; worth adding to the
-publish-workflow checklist if it recurs.
+**Nothing carried forward as blocking**: "The Dead Code That Wasn't" published, fact-checked,
+live-verified, syndicated to Medium. PM's Ship #056 illustration question answered directly
+(re-verified fresh, not repeated from last night's memo).
+
+**The day's real finding**: what looked like a spreading "3rd instance" of yesterday's hero-image
+bug turned out to be a 100%-structural pattern (81/81 published posts' frontmatter `image:` value
+is a pre-conversion source name, never a deployed asset — by design) with exactly one real misuse
+site: the `draft-weekly-ship` skill's Step 4c told drafters to pull that value verbatim into a
+public URL. **Fixed at that instruction** (`b4838696d`), not just patched at the two symptom
+posts — image URL now derives from slug, alt/caption still pull verbatim (never the problem).
+`website#33` reframed to the correct remaining scope (publish-time link-check, not an
+81-file frontmatter audit). PM holds the corrected account.
+
+**Two self-caught mechanical defects today, both worth carrying as watch-for-next-time**:
+1. Don't copy a frontmatter caption's YAML-escaped apostrophe (`''`) straight into the CSV
+   field — that escaping is YAML-only; the CSV/rendered form wants a plain `'`. Caught by
+   checking convention against other rows before committing.
+2. The compound `git add <new-path> <old-path>` archive-rename pattern keeps aborting when the
+   `<old-path>` no longer exists post-`git mv` (hit 2 days running now, both times caught via
+   `git status` immediately after, never landed wrong). Worth just dropping the old-path from
+   the `git add` list on future archive commits — `git mv` already stages both sides of the
+   rename; re-adding the destination is redundant and the source is the one that 404s the add.
+
+**Watch, low-priority, carried again**: this carry-forward file is still large. Deferred again —
+if it survives a third carry-forward without being addressed, just do it rather than flag a 4th
+time.
+
+**Watch, worth naming if it recurs a third time (unchanged from 08-19)**: the omnibus cadence has
+slipped twice in one week, both self-found and same-week closed. 08-19's omnibus is due tomorrow
+(08-21) — not yet checked this cycle.
 
 **Updated**: 2026-08-19 22:1x PDT (DAY-CLOSED — Ship #056 published+synced, 2-day omnibus gap
 closed, 2 live-404 bugs found+fixed, standing-items refreshed)

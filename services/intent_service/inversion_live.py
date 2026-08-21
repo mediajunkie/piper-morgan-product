@@ -76,6 +76,15 @@ Scope (the #1663 contract addendum, Arch 2026-08-19, binding):
   WARNING and falls through — an inversion error must never break the turn
   (#1423 discipline; the call site in intent_service.py adds its own
   belt-catch around this whole function).
+- **Routing provenance for the post-turn observer** (#1668) — the consult
+  publishes its own decision to a per-turn ``ContextVar``
+  (:class:`LiveRouteProvenance`, read via
+  :func:`consume_live_route_provenance`). The dispatch layer takes it and
+  passes it EXPLICITLY to ``maybe_schedule_shadow_check``, which uses it to
+  pick the observer's mode: an inversion-routed turn gets the LEGACY
+  COUNTERFACTUAL (what the old chain would have done — the flip's signal),
+  a legacy-routed turn gets the unchanged router shadow. Nothing downstream
+  routes on this record; it is telemetry provenance only.
 
 Config resolution mirrors ``inversion_shadow.shadow_enabled()``: plain env
 reads at CALL time, never import time — flipping a category live or reverting
@@ -91,6 +100,8 @@ from __future__ import annotations
 
 import hashlib
 import os
+from contextvars import ContextVar
+from dataclasses import dataclass
 from typing import Any, Dict, Optional, Tuple
 
 import structlog
@@ -110,6 +121,57 @@ DEFAULT_MIN_CONFIDENCE = 0.8
 
 LIVE_CATEGORIES_ENV = "PIPER_INVERSION_LIVE_CATEGORIES"
 MIN_CONFIDENCE_ENV = "PIPER_INVERSION_LIVE_MIN_CONFIDENCE"
+
+
+# ── #1668: the turn's routing PROVENANCE, published by the consult itself ────
+#
+# The post-turn shadow observer needs to know HOW this turn was routed so it
+# can pick its mode (re-route vs legacy counterfactual). That fact is known in
+# exactly one place — the consult that decided it — and re-deriving it anywhere
+# else would be a guess. So the consult records its own result here and the
+# dispatch layer hands the record to the observer EXPLICITLY (a kwarg on
+# ``maybe_schedule_shadow_check``); the observer never reaches back for it.
+#
+# ContextVar (not an attribute on the service) because a turn is a Task: each
+# request runs in its own asyncio Task with its own copied Context, so two
+# concurrent turns cannot see each other's provenance. Within one turn,
+# ``process_intent`` and ``_process_intent_internal`` are the same Task, so the
+# value set by the consult is visible to the shadow call site after the await.
+@dataclass(frozen=True)
+class LiveRouteProvenance:
+    """How ONE turn was routed, as recorded by :func:`consult_inversion_live`.
+
+    ``routed_live`` False (or a ``None`` record) means the legacy chain
+    answered the turn — armed skip, fall-through, or the consult never ran.
+    """
+
+    routed_live: bool
+    operation: Optional[str] = None
+    canonical: Optional[str] = None
+    category: Optional[str] = None
+    live_match: Optional[str] = None
+    confidence: Optional[float] = None
+    reason: Optional[str] = None
+    snapshot_present: bool = False
+
+
+_LIVE_ROUTE: ContextVar[Optional[LiveRouteProvenance]] = ContextVar(
+    "piper_inversion_live_route", default=None
+)
+
+
+def consume_live_route_provenance() -> Optional[LiveRouteProvenance]:
+    """Take (and clear) this turn's routing provenance.
+
+    One-shot by design: the record belongs to the turn that produced it, so a
+    reader who takes it leaves nothing behind for the next turn to misread.
+    ``consult_inversion_live`` also clears on entry, so a turn that never
+    reaches a decision cannot inherit a stale record either.
+    """
+    record = _LIVE_ROUTE.get()
+    if record is not None:
+        _LIVE_ROUTE.set(None)
+    return record
 
 
 def live_categories() -> frozenset[str]:
@@ -271,6 +333,14 @@ async def consult_inversion_live(
     claimed this turn's affirmative; the continuation hint belongs to the
     classifier path.
     """
+    # #1668: clear this turn's provenance slot FIRST, on every path including
+    # the default-empty one. A ContextVar assignment is not "work" in the
+    # pinned sense (no snapshot assembly, no grammar derivation, no LLM call,
+    # no log line — the DEFAULT-EMPTY test asserts exactly those four), and
+    # clearing here is what makes a stale record structurally impossible when
+    # two turns share one Task (tests, scripts, batch callers).
+    _LIVE_ROUTE.set(None)
+
     cats = live_categories()
     if not cats or not message:
         # DEFAULT-EMPTY pin: zero work, zero logs — byte-identical routing.
@@ -434,6 +504,23 @@ async def consult_inversion_live(
         legacy_preclassifier=legacy_label,
         legacy_divergence=divergence,
         loud=(decision.outcome == "error"),
+    )
+
+    # #1668: publish the decision as this turn's routing provenance, from the
+    # consult's OWN result — the post-turn shadow observer branches on it to
+    # choose re-route vs legacy-counterfactual mode. Recorded for BOTH outcomes
+    # so "legacy, and here is the gate that held" is on the record too.
+    _LIVE_ROUTE.set(
+        LiveRouteProvenance(
+            routed_live=dispatch,
+            operation=op,
+            canonical=canonical,
+            category=category,
+            live_match=live_match,
+            confidence=decision.confidence,
+            reason=reason,
+            snapshot_present=bool(block),
+        )
     )
     if not dispatch:
         return None

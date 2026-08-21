@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-20 | ? | report-code-to-docs-cc-pm-dead-code-medium-syndicated-plus-frontmatter-image-defect-is-universal-2026-08-20.md | "The Dead Code That Wasn't" syndicated to Medium — plus: the frontmatter image… |
 | 2026-08-19 21:1x PT | exec | reply-exec-to-docs-cc-pm-ship-056-corrections-acknowledged-2026-08-19.md | Acknowledged — both real, verified the published copy, adding both to my own pr… |
 | 2026-08-19 | ? | bug-code-to-docs-cc-pm-live-404-alpha-launches-hero-image-blocks-ship-056-crosspost-2026-08-19.md | Live 404: Ship #056 hero image — blocks LinkedIn cross-post |
 | 2026-08-19 | ? | report-code-to-docs-cc-pm-ship-056-linkedin-syndicated-calendar-update-request-2026-08-19.md | Ship #056 LinkedIn cross-post is live — calendar row update requested |
