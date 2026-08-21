@@ -1,38 +1,17 @@
 # What Piper Morgan Is For — Piper Morgan
 
-> ✅ **APPROVED 2026-08-21 — DRAFT status lifted.** PM, in conversation: *"the values doc changes
-> sound fine to me."* All four decisions ratified 2026-08-15 (`decisions.log`); voice converted to
-> third-person/institutional and independently double-verified (HOST's substance check, HOST's
-> second voice-conversion pass, README linked). This is PM's own final sign-off — given directly,
-> not via a line-by-line continuous read, which is PM's call to make about what "final" requires.
-> Mechanical cleanup (this banner) done by Exec; if the `-DRAFT` filename/publication step needs
-> further action, that's Comms' to execute per HOST's 08-16 routing.
-> **HOST re-verified all three commitments against source** (not just that the citations resolve):
-> confirmed item 3's timing is accurate as written; found item 2 was actually slightly underselling
-> what's true (route-level owner enforcement, not just an ADR description — tightened); flagged one
-> precision nuance on item 1 (`#1366` was ~27.5 hours, not "within a day" — tightened to "by the
-> next day," which is exactly accurate rather than approximately accurate). Full exchange:
-> `mailboxes/comms/read/reply-host-to-comms-cc-exec-pm-values-doc-substance-check-passed-one-nuance-
-> plus-a-voice-lean-2026-08-14.md`. One open decision below (Voice) has a HOST lean recorded, not a
-> ruling.
-> **Origin**: PM decided to open-source Piper Morgan under Apache 2.0 (patent grant + trademark
-> carve-out, paired with a separate trademark process PM is running with Themis) and asked HOST +
-> Comms to draft this jointly, no deadline, no fixed shape. Full context: `mailboxes/host/read/
-> kickoff-pm-to-comms-host-relayed-by-exec-piper-morgan-values-doc-2026-08-13.md`.
-> **The actual mechanism this document serves**: no open-source license — copyleft included — can
-> restrict *how* a fork is used without ceasing to be open source (checked against the Open Source
-> and Free Software definitions — the Hippocratic License was considered and ruled out for the same
-> reason). The protection here is reputational, not legal: a fork that quietly drops what's below
-> stops being able to credibly claim it's still Piper Morgan, even though it remains technically
-> forkable in code. Paired with the trademark, that's the actual boundary.
-> **The three commitments below are HOST's first pass** (`mailboxes/comms/read/reply-host-to-
-> comms-cc-exec-pm-values-doc-first-pass-identity-defining-list-2026-08-13.md`), each screened
-> against one test: *would a fork dropping this quietly still look like Piper Morgan from the
-> outside?* Real properties that don't pass that test (real, but not fork-detectable) were
-> deliberately left out — this is not a list of everything good about the architecture.
-> **Deliberately silent on data retention duration** — that's a separate, still-open PM decision
-> (`docs/legal/data-retention-policy-DRAFT.md` §3/§4). What's below is the *scope* commitment
-> (Piper doesn't learn across users), which doesn't depend on how the retention question resolves.
+> **Adopted 2026-08-21.** Piper Morgan is open source under Apache 2.0. No open-source license —
+> copyleft included — can restrict *how* a fork is used without ceasing to be open source. The
+> protection here is reputational, not legal: a fork that quietly drops what's below stops being
+> able to credibly claim it's still Piper Morgan, even though it remains technically forkable in
+> code. Paired with a separate trademark process, that's the actual boundary. Referenced from the
+> repo's NOTICE file per Apache 2.0 §4(d).
+> **Deliberately silent on data retention duration** — that's a separate, still-open policy question
+> (`docs/legal/data-retention-policy-DRAFT.md`). What's below is the *scope* commitment (Piper
+> doesn't learn across users), which doesn't depend on how the retention question resolves.
+>
+> *Full drafting and ratification history: `decisions.log` (2026-08-15, 2026-08-21) and the
+> `values-doc` mail threads in `mailboxes/comms/` and `mailboxes/host/`.*
 
 ---
 
@@ -105,39 +84,3 @@ Fork it. Rebuild it. Take out the parts that don't serve what you're building �
 source is for. But if you take out any of the three things above, say so. Call your version
 something else, or say plainly what changed. What makes something Piper Morgan is whether these
 three things are still true when you run it — not the license or the codebase alone.
-
----
-
-## Decisions — RATIFIED 2026-08-15 (PM, in conversation with Exec)
-
-1. **Placement — CONFIRMED.** Lives in `docs/legal/` alongside the privacy policy; linked from the
-   README and the license itself.
-2. **Relationship to the license text — RESOLVED.** A NOTICE file at the repo root (Apache 2.0
-   §4(d)'s standard mechanism for exactly this — attribution/pointers that travel with the code
-   without altering the license's own legal text) carries one sentence pointing here. LICENSE
-   itself is not touched.
-3. **A fourth commitment — NOT ADDED, deliberately.** HOST's own screening test (would a fork
-   dropping this quietly still look like Piper Morgan?) is the right filter, and manufacturing a
-   fourth to round out the number risks diluting it with something less sharply fork-detectable.
-   Ships at three. The retention-scope commitment remains the named future candidate, once the
-   retention scaffold's own open questions resolve — not a gap today.
-4. **Voice — THIRD-PERSON/INSTITUTIONAL, per HOST's lean.** PM's ruling: *"important distinction,
-   well drawn."* The reasoning that carried it: this document's actual reader is a stranger
-   evaluating a fork, possibly years out, with no prior relationship to PM — the one register on
-   the site where institutional third-person carries more weight than personal first-person warmth,
-   unlike the blog/Ship/insights where first-person works because the reader already follows PM's
-   voice by choice. **✅ CONVERTED 2026-08-15 (Comms).** Only two first-person instances existed in
-   the shipped prose ("We've gotten this wrong once" / "We're naming the incident here on purpose,"
-   §1's incident paragraph) — both rewritten to institutional third-person ("Piper Morgan has gotten
-   this wrong once" / "This document names the incident on purpose"), matching the self-referential
-   pattern the doc already uses elsewhere ("This document names those things..."). The second-person
-   "you" address to the reader (a fork-evaluator) is unchanged throughout — that's a different axis
-   from the first-person/third-person ruling above, and stays; institutional documents routinely
-   address "you" while never speaking as "I/we."
-
-**Status**: voice conversion done (Comms, independently re-verified by HOST's second pass,
-`0676b7b37`). **README link (decision 1) added** — `README.md`'s Documentation section now links
-here (Exec, 2026-08-16, after Comms and HOST both flagged the gap with no clear owner). NOTICE
-(decision 2) already pointed here. All four ratified decisions are now fully executed, not just
-ruled. Remaining before this leaves DRAFT status: PM's own final read of the converted prose —
-not blocked on anyone else.
