@@ -29,6 +29,26 @@ XIAN_USER_ID = UUID("3f4593ae-5bc9-468d-b08d-8c4c02a5b963")
 
 
 # ============================================================================
+# Collection ignores that an invocation flag CANNOT drop (#1671, 2026-08-20)
+# ============================================================================
+# pytest.ini's `addopts` carries --ignore lines for archived/vendored trees,
+# but `-o addopts=...` REPLACES that value wholesale — so any one-off run that
+# overrides addopts (our own scripts/run-sweep.sh does, in unit and full modes)
+# silently re-collects tests/archive and reports ~24 failures that read as a
+# regression. Found 2026-08-20 during #1667: a false RED in the instrument we
+# use to verify everything else.
+#
+# `collect_ignore_glob` is honored by conftest collection itself, so it holds
+# regardless of what addopts an invocation sets. The addopts lines stay (they
+# still short-circuit collection earlier and faster); this is the floor under
+# them, not a replacement — belt kept, suspenders added.
+collect_ignore_glob = [
+    "archive/*",
+    "*/archive/*",
+]
+
+
+# ============================================================================
 # Load API keys from macOS Keychain for LLM tests (#742)
 # ============================================================================
 def pytest_configure(config):
