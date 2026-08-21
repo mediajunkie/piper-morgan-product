@@ -88,10 +88,15 @@ convention question.
 
 ## FLIP-UNIT DESIGN DECISION (#1667, Lead, 2026-08-20 — measured, not assumed)
 
-**The measurement that forced this**: 70 of 93 rail READ keys have NO ACTION_REGISTRY category.
-The flag set keyed on registry categories therefore addresses **23 of 93** READ operations —
-flip-1's mechanism can't express most of wave-1's intended scope. #1667 called this "a few ops";
-it is three quarters of them.
+**The measurement that forced this**: most rail READ keys are unreachable by a category flag.
+⚠️ **My original figure here was 23 of 93 addressable, and it was measured against the wrong
+mapping** — the #1667 build's audit caught it (2026-08-20): 23/93 counts ACTION_REGISTRY's own
+action names only, but `inversion_live._category_by_operation` ALSO back-maps through
+`grammar.alias_to_canonical`, so the number governing LIVE behavior is **33 of 93 addressable,
+60 unaddressable**. The conclusion is unchanged (a category flag still can't reach ~2/3 of READ
+ops, and #1667's "a few ops" was off by an order of magnitude) — but the corrected figure is the
+one to quote. Kept visible rather than silently overwritten: a decision doc that edits its own
+evidence without saying so is the shape we keep catching elsewhere.
 
 **Rejected — (a) register 70 ops into ACTION_REGISTRY**: that registry exists for canonical
 action vocabulary, not routing policy. Bulk-registering ops to make a flag work bends a
