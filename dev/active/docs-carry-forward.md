@@ -1,5 +1,18 @@
 # Docs Carry-Forward
 
+**Updated**: 2026-08-20 ~17:0x PDT (Fire 2 — Ship #056 illustration confirmed to PM + "The Dead
+Code That Wasn't" published)
+**Session log**: `dev/2026/08/20/2026-08-20-0727-docs-code-log.md` (open).
+**Cron**: `f6271697`, unchanged today, healthy through ~08-26.
+
+**Nothing carried forward as blocking**: PM's illustration question answered directly (memo was
+sitting unread in their inbox, re-verified fresh rather than repeating last night's claim);
+today's post published, fact-checked, live-verified. One real self-caught defect worth noting for
+future publishes: **don't copy a frontmatter caption's YAML-escaped apostrophe (`''`) straight
+into the CSV field** — that escaping is YAML-only, and the CSV/rendered form wants a plain `'`.
+Caught this time by checking convention against other rows before committing; worth adding to the
+publish-workflow checklist if it recurs.
+
 **Updated**: 2026-08-19 22:1x PDT (DAY-CLOSED — Ship #056 published+synced, 2-day omnibus gap
 closed, 2 live-404 bugs found+fixed, standing-items refreshed)
 **Session log**: `dev/2026/08/19/2026-08-19-0711-docs-code-log.md` (closed, `DAY-CLOSED` marker

@@ -446,6 +446,144 @@ def build_report(
     return "\n".join(lines) + "\n"
 
 
+# ---------------------------------------------------------------------------
+# --audit: the flip-unit COVERAGE report (#1667). No LLM, no corpus, no async.
+#
+# Why it lives here rather than in a new script: this is the Phase-2 flip
+# lane's tooling. The gate answers "does the router pick the right operation";
+# --audit answers "which operations can a flag even name" — the question #1667
+# was filed about, and the one that must be answered BEFORE a wave flips. It
+# is a sibling of --dry: a no-LLM mode that validates the flip's inputs.
+# ---------------------------------------------------------------------------
+
+
+def flip_coverage_audit() -> str:
+    """The flip-unit coverage table, with denominators and the FULL unassigned
+    list (m-44: an unassigned op that appears nowhere in the output is
+    indistinguishable from one that doesn't exist).
+
+    m-43, the layer this measures: the RAIL REGISTRY as constructed in this
+    process (``register_default_workflows`` → ``get_action_workflows``), plus
+    ACTION_REGISTRY categories via the derived routing grammar. It says what a
+    flag CAN address. It says nothing about what live routing did, whether the
+    flag is set anywhere, or whether a handler behaves.
+    """
+    from services.intent_service.action_registry import ACTION_REGISTRY
+    from services.intent_service.inversion_live import _category_by_operation
+    from services.intent_service.inversion_router import derive_routing_grammar
+    from services.intent_service.workflow_dispatcher import (
+        FLIP_GROUPS,
+        get_action_workflows,
+    )
+    from services.intent_service.workflow_entries import register_default_workflows
+    from services.shared_types import EffectClass
+
+    register_default_workflows()  # idempotent
+    rail = get_action_workflows()
+    cat_of = _category_by_operation(derive_routing_grammar())
+
+    entries = {id(e) for e in rail.values()}
+    read_keys = sorted(k for k, e in rail.items() if e.effect == EffectClass.READ)
+    other_keys = sorted(k for k, e in rail.items() if e.effect != EffectClass.READ)
+    read_entries = {id(e) for e in rail.values() if e.effect == EffectClass.READ}
+
+    by_group: Dict[Optional[str], List[str]] = defaultdict(list)
+    for k in read_keys:
+        by_group[rail[k].flip_group].append(k)
+    ungrouped = sorted(by_group.get(None, []))
+    no_category = [k for k in read_keys if cat_of.get(k) is None]
+    # The SECOND category measurement (see the note in the report): direct
+    # ACTION_REGISTRY action names only, without the grammar's canonical
+    # back-mapping. This is the mapping #1667's "23 of 93" was measured with.
+    direct: Dict[str, str] = {}
+    for (cat, action), _spec in ACTION_REGISTRY.items():
+        direct.setdefault(action, cat)
+    direct_category = [k for k in read_keys if k in direct]
+
+    # The invariant, RE-MEASURED here rather than asserted: a non-READ entry
+    # cannot carry a group (WorkflowEntry.__post_init__). If this ever prints
+    # non-empty, the construction guard has been bypassed and no wave should
+    # flip until that is understood.
+    violations = sorted(k for k in other_keys if rail[k].flip_group is not None)
+
+    n_read = len(read_keys)
+    L: List[str] = []
+    L.append(f"#1667 inversion flip-unit coverage audit — {datetime.now(timezone.utc):%Y-%m-%d %H:%M UTC}")
+    L.append("layer measured (m-43): the rail registry in THIS process "
+             "(register_default_workflows → get_action_workflows) + "
+             "ACTION_REGISTRY categories via the derived grammar.")
+    L.append("It reports what a flag CAN address — not what routing did, and "
+             "not whether any flag is set.")
+    L.append("")
+    L.append("DENOMINATORS")
+    L.append(f"  rail operation keys (action_triggered) : {len(rail):3d}  "
+             f"({len(entries)} unique entries)")
+    L.append(f"    READ effect (flippable at all)       : {n_read:3d}  "
+             f"({len(read_entries)} entries)")
+    L.append(f"    non-READ (never flippable, any flag) : {len(other_keys):3d}  "
+             f"({len(entries) - len(read_entries)} entries)")
+    L.append("")
+    L.append(f"READ KEYS BY FLIP GROUP  (denominator: {n_read} READ keys)")
+    for group in sorted(FLIP_GROUPS):
+        keys = sorted(by_group.get(group, []))
+        L.append(f"  {group:<16} {len(keys):3d}/{n_read}   {', '.join(keys) or '(none)'}")
+    L.append(f"  {'UNGROUPED':<16} {len(ungrouped):3d}/{n_read}")
+    grouped = n_read - len(ungrouped)
+    L.append(f"  {'—— grouped':<16} {grouped:3d}/{n_read}  "
+             f"({100.0 * grouped / n_read:.0f}% of READ keys addressable by a wave)")
+    L.append("")
+    L.append(f"UNASSIGNED — the {len(ungrouped)} READ keys NO WAVE CAN FLIP, by name")
+    L.append("  (this list is the point of the audit; 'unassigned' is never a "
+             "silent remainder)")
+    orphans = [k for k in ungrouped if cat_of.get(k) is None]
+    swept = sorted((cat_of[k], k) for k in ungrouped if cat_of.get(k))
+    L.append(f"  a. no group AND no registry category — reachable ONLY by naming "
+             f"the operation itself: {len(orphans)}")
+    for k in sorted(orphans):
+        L.append(f"       {k}")
+    L.append(f"  b. no group BUT carries a registry category — ⚠️ STILL SWEPT IN "
+             f"when that category is named: {len(swept)}")
+    for cat, k in swept:
+        L.append(f"       {k:<28} (category {cat})")
+    L.append("")
+    L.append("FLIP-1 COVERAGE, FOR COMPARISON (the #1667 measurement, re-run)")
+    L.append(f"  READ keys a CATEGORY flag can address      : "
+             f"{n_read - len(no_category):3d}/{n_read}   "
+             "(alias-resolved — the mapping inversion_live actually uses)")
+    L.append(f"  READ keys with NO registry category        : {len(no_category):3d}/{n_read}"
+             "   ← unaddressable by ANY category-only flag")
+    L.append(f"  same count by DIRECT registry action only  : "
+             f"{len(direct_category):3d}/{n_read} addressable "
+             f"({n_read - len(direct_category)} not)")
+    L.append("  ⚠️ Two measurements, both correct, of different mappings. The "
+             "#1667 decision cites 23/93 addressable (70 unaddressable); that "
+             "is the DIRECT count — ACTION_REGISTRY's own action names only. "
+             "inversion_live._category_by_operation ALSO back-maps each action "
+             "through grammar.alias_to_canonical, so the number that governs "
+             "live behavior is the first line above. The decision's conclusion "
+             "is unaffected (most READ ops are still unreachable by category); "
+             "its figure is measured against a mapping the live path doesn't "
+             "use. Measured 2026-08-20 during the #1667 build.")
+    L.append("")
+    L.append("READ-ONLY INVARIANT (re-measured, not assumed)")
+    if violations:
+        L.append(f"  🔴 {len(violations)} non-READ keys carry a flip_group: "
+                 f"{', '.join(violations)}")
+        L.append("     WorkflowEntry.__post_init__ should make this impossible. "
+                 "Do not flip anything until this is explained.")
+    else:
+        L.append(f"  ✅ 0 of {len(other_keys)} non-READ keys carry a flip_group "
+                 "(enforced at construction, WorkflowEntry.__post_init__)")
+    L.append("")
+    L.append("HOW TO FLIP  (PIPER_INVERSION_LIVE_CATEGORIES accepts all three)")
+    L.append("  a wave      : PIPER_INVERSION_LIVE_CATEGORIES=read_status")
+    L.append("  one op      : PIPER_INVERSION_LIVE_CATEGORIES=show_standup")
+    L.append("  a category  : PIPER_INVERSION_LIVE_CATEGORIES=QUERY   (flip-1's "
+             "unit; sweeps the b-list above)")
+    L.append("  revert      : unset it. Default-empty = fully dark.")
+    return "\n".join(L) + "\n"
+
+
 async def run(dry: bool, out: Optional[Path]) -> int:
     from services.intent_service.inversion_router import derive_routing_grammar
 
@@ -523,6 +661,16 @@ async def run(dry: bool, out: Optional[Path]) -> int:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry", action="store_true", help="validate fixtures, no LLM")
+    ap.add_argument(
+        "--audit",
+        action="store_true",
+        help="print the #1667 flip-unit coverage table (no LLM, no corpus)",
+    )
     ap.add_argument("--out", type=Path, default=None)
     args = ap.parse_args()
+    if args.audit:
+        # Handled before run(): the audit touches no corpus, no fixtures and
+        # no event loop — it is a registry read.
+        print(flip_coverage_audit(), end="")
+        sys.exit(0)
     sys.exit(asyncio.run(run(args.dry, args.out)))

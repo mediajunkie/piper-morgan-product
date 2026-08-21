@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-20 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-20 (16:37 WORK)
 
 **Cron**: `7f6bb205` · `7 10,16,22` LEAN · re-armed 2026-08-19 22:37 STOP (delete-then-create) ·
 **auto-expires ~2026-08-26**.
@@ -6,6 +6,20 @@
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
+
+## 🔴 NEW — lead stall alert, live and unresolved as of 16:37
+
+Watchdog flagged lead STALE 14h at 12:46 (last real activity 08-19 21:47 day-close). Live-verified at
+16:37: still no lead commit/session-log/heartbeat today — genuinely stale, not self-resolved, ~19h
+since last activity. Comms independently saw the same alert 15:42 and correctly deferred to CIO's
+lane. Cron object likely survives (per the watchdog's own framing) — this needs a session prod/resume,
+which is PM's action, not CIO's. Surfacing directly in chat this fire.
+
+## ⭐ Methodology-core disposition review — flagged as PM-deferred, not resumed unilaterally
+
+Checked the Owed item against its origin before touching it: **PM explicitly deferred this Apr 27**
+(not merely neglected). A PM deferral doesn't expire on its own. Raising it as a "still want this
+parked, or time to revisit" question rather than launching the 1-2 session audit uninvited.
 
 ## ⭐ NEW — chess-board design pass done, question raised to PM this fire
 

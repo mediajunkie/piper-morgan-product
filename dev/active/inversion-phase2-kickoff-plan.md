@@ -85,3 +85,39 @@ NOT needed for flip-1 (no armed turns in scope) — it builds with the first arm
 (expected = the armed flow's operation family, with the aside still expecting NONE) — done as
 part of the seam-amendment build, with the 2.1 doc left as the historical record of the
 convention question.
+
+## FLIP-UNIT DESIGN DECISION (#1667, Lead, 2026-08-20 — measured, not assumed)
+
+**The measurement that forced this**: most rail READ keys are unreachable by a category flag.
+⚠️ **My original figure here was 23 of 93 addressable, and it was measured against the wrong
+mapping** — the #1667 build's audit caught it (2026-08-20): 23/93 counts ACTION_REGISTRY's own
+action names only, but `inversion_live._category_by_operation` ALSO back-maps through
+`grammar.alias_to_canonical`, so the number governing LIVE behavior is **33 of 93 addressable,
+60 unaddressable**. The conclusion is unchanged (a category flag still can't reach ~2/3 of READ
+ops, and #1667's "a few ops" was off by an order of magnitude) — but the corrected figure is the
+one to quote. Kept visible rather than silently overwritten: a decision doc that edits its own
+evidence without saying so is the shape we keep catching elsewhere.
+
+**Rejected — (a) register 70 ops into ACTION_REGISTRY**: that registry exists for canonical
+action vocabulary, not routing policy. Bulk-registering ops to make a flag work bends a
+subsystem to a purpose it doesn't hold, and its invariants (canonical/alias discipline, the
+#1433 reachability ledger) would absorb 70 rows of pressure for a reason unrelated to them.
+
+**DECIDED — (b) the flip unit is declared ON THE RAIL ENTRY, and the flag accepts either.**
+`WorkflowEntry` gains `flip_group: Optional[str]` — declared exactly where `effect` and
+`outwardness` already live, per the #1509 precedent (declare on the entry; derive everything
+else). `PIPER_INVERSION_LIVE_CATEGORIES` (name kept; semantics widen, documented) accepts
+**group names OR individual operation names** — so a surgical one-op flip needs no group, and a
+wave flips by naming its group. Registry categories remain valid inputs where they exist (no
+regression to flip-1's pins).
+
+**Why this is the honest shape**: the thing being flipped is *routing for an operation*, and the
+operation's identity lives on the rail. A flip unit derived from a different subsystem's
+taxonomy was a borrowed proxy — it worked for 23 ops and silently covered nothing for 70. The
+same m-44 shape as everything else this month: the mechanism reported coverage it didn't have.
+
+**Groups for wave 1** (assigned by risk, not convenience): `read_status` (status/listing/
+identity — zero armed-state interaction), `read_referent` (issue/PR detail, analyses — exercises
+snapshot referents), `read_synthesis` (summarize family incl. PA's issue/commit gap when built).
+Ops not in a group are unaddressable BY DESIGN until someone assigns one — a deliberate opt-in,
+and `--audit` output must list them so "unassigned" is never invisible.
