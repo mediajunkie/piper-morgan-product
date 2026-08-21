@@ -174,14 +174,20 @@ with open('docs/internal/planning/comms/editorial-calendar.csv') as f:
 
 **Always follow the published-pieces list with one hero image**, sourced from one of the window's **Tuesday/Thursday narrative posts specifically** — the category that publishes to Medium only, not directly to LinkedIn (`publishing-cadence.md`'s slot map). Not any illustration from the window; not an insight post's image (those already go to LinkedIn on their own). If the window has two narrative posts, either is fine — pick the one with the stronger illustration or the one most relevant to the Ship's theme. If it has one, use that one. If it has zero, say so explicitly in the draft rather than omitting the element silently or substituting an insight-post image.
 
-Pull the image URL, alt text, and caption **verbatim from that post's own YAML frontmatter** (`docs/public/comms/drafts/published/{slug}.md`) — same discipline as everywhere else in this skill: no paraphrasing, no inventing. Link the image to the post on pipermorgan.ai. Format:
+Pull **alt text and caption verbatim** from that post's own YAML frontmatter (`docs/public/comms/drafts/published/{slug}.md`) — same discipline as everywhere else in this skill: no paraphrasing, no inventing.
+
+⚠️ **The image URL is the one field NOT pulled verbatim from frontmatter — derive it instead.** The frontmatter `image:` value (e.g. `alpha-launches-before-opening.png`) is the **pre-conversion source filename** fed to `publish-post.js --image` at draft time; it is never the deployed asset name and 404s if used directly (confirmed: 0 of 81 published posts' frontmatter `image:` values match a real file in `public/assets/blog-images/` — the field's whole job is upstream of deployment, not a pointer to it). The deployed name is always `https://pipermorgan.ai/assets/blog-images/{slug}.webp`, where `{slug}` is the post's own slug (check `blogURL`/`blogPath` on its calendar row, or the filename it published as). Build the `<img>` src from that, never from the frontmatter string.
+
+This is a live-404 defect class, not a hypothetical: it broke Ship #054's and Ship #056's hero teasers exactly this way (found + fixed 2026-08-19/20, `piper-morgan-website#33`). **Verify the constructed URL resolves with a live HTTP check before shipping the draft** — don't trust the derivation alone.
+
+Link the image to the post on pipermorgan.ai. Format:
 
 ```
-![alt text](image URL)
+![alt text]({slug}.webp URL — NOT the frontmatter image: value)
 *"caption, quotation marks preserved"*
 ```
 
-(PM, Ship #053 review, 2026-07-29 — codified as a standing requirement in `weekly-ship-template-v4.2.md` and the process guide. Supersedes v1.5's softer "can be followed by" wording below.)
+(PM, Ship #053 review, 2026-07-29 — codified as a standing requirement in `weekly-ship-template-v4.2.md` and the process guide. Supersedes v1.5's softer "can be followed by" wording below. Image-URL derivation rule added 2026-08-20 after the Ship #054/#056 live-404 incidents — the original wording said "pull the image URL... verbatim," which is what caused both breakages.)
 
 ### Step 5: Draft using the template structure
 
