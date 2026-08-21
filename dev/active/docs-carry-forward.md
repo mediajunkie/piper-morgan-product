@@ -15,16 +15,19 @@ omnibus logs — nothing is lost by dropping it here. This file's actual job (pe
 **Nothing carried forward as blocking.** Yesterday (08-20) closed clean; today's opening fire
 closed a 2-day omnibus gap (08-19/08-20) via the Friday catch-up trigger — see today's session
 log for detail. Live-checked all scattered "awaiting" items from the old file before dropping
-them; only two remain genuinely open (below), the rest were either resolved (website#31 closed,
-#1593 closed) or were routine audit-tracker issues, not real backlog.
+them; only one remains genuinely open (below) as of the fire that first pruned this file — the
+other one I'd carried forward that same fire (the MIT-badge item) turned out to be stale itself
+(Exec caught it 10:2x same morning: the repo shipped an Apache 2.0 LICENSE + updated badge on
+08-15, and I hadn't independently re-verified before carrying it forward — a real miss in the
+prune, not just an old item surviving). Everything else was either resolved (website#31 closed,
+#1593 closed) or a routine audit-tracker issue, not real backlog.
 
 ## Awaiting PM (genuine, not urgent, don't chase)
 
 - **Docs-tree flattening plan go/no-go** — plan posted 2026-08-11
   (`docs/internal/operations/docs-tree-flattening-plan-2026-08-11.md`), one recommended flatten
-  (`roadmap/CORE/`), still no PM decision.
-- **MIT license badge, no LICENSE file** — found 2026-08-10 (#1583), root README displays an MIT
-  badge with zero LICENSE-file hits repo-wide. Needs PM's call: add LICENSE vs. adjust badge.
+  (`roadmap/CORE/`), still no PM decision. Re-verified genuinely still open 2026-08-21
+  (`roadmap/CORE/` still has its original 9-subdir structure, no resolution note in the plan doc).
 
 ## Awaiting others (check periodically, don't re-derive)
 

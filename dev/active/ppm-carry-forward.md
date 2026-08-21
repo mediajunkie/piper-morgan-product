@@ -1,10 +1,18 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-20 22:10 PT (STOP). **Six clean fires, fourth fully quiet day in a
-row.** Cron re-armed: **`79b787b0`** (was `114aa856`). **Still watching**: PM's word on the
-taxonomy's §1 naming — the one thing left before full ratification; unchanged for six full days
-now, still within PM's own explicit no-deadline framing, not escalating.
+**Last rewritten**: 2026-08-21 10:22 PT (WORK). Cron **`79b787b0`**, unchanged.
+
+## ✅ SHIP #057 WORKSTREAM REVIEW — SENT 2026-08-21 10:22, same fire as the kickoff
+Window Fri Aug 14–Thu Aug 20. Sent same-fire per "write it now" — no delivery-gap repeat this
+time. Sent: `mailboxes/exec/inbox/workstream-057-ppm-2026-08-21.md`. **Also did the proper Rule-5
+refresh this time**: `ROLE-PORTFOLIO-PPM.md` §2's table itself was rewritten (not just the header
+note, which is what the 08-14 pass did and left the table a week stale) — three priorities closed
+this window (first-contact criterion, Jake FTUX, spatial disposition), surfaces-taxonomy added as
+a new tracked priority.
+
+**Still watching**: PM's word on the taxonomy's §1 naming — unchanged seven full days now, still
+within PM's own explicit no-deadline framing, not escalating.
 
 ## ✅ SURFACES TAXONOMY v0.2 — my consult applied, extended correctly, and confirmed 2026-08-16
 CXO folded my notification-routing reasoning directly into the doc same day (`661ce4802`, no mail
