@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-19
+# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-20
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `ca74dfe9` as of the 2026-08-19 21:26 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `cb7a8f40` as of the 2026-08-20 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 ## ⚠️ Environment facts worth re-verifying each fire, not assuming
 
@@ -270,20 +270,23 @@ Buttondown CSP live-bug — all predecessor's, pre-7/19. Admin calendar runtime 
 autosave ask #1 — mine, 7/29 (see Active threads above for verification limits).
 
 ## Cron state
-- **ARMED** — `ca74dfe9`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
-  Re-armed via delete-then-create at the 2026-08-19 21:26 STOP (routine day-close re-arm, not a
-  cadence change — prior id `03fd1e52` had been live all day). Registry row (expression-keyed, no
+- **ARMED** — `cb7a8f40`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
+  Re-armed via delete-then-create at the 2026-08-20 21:52 STOP (routine day-close re-arm, not a
+  cadence change — prior id `ca74dfe9` had been live all day). Registry row (expression-keyed, no
   job-id column) needed no update.
-- **2026-08-19**: quiet for Web's own action — six fires, zero mail, zero unblocked task work, zero
-  code changes by Web — but PM published Weekly Ship #056 and independently caught + fixed a real
-  live-404 bug in Web's own publishing pipeline: two hero images (Ship #056, #054) pointed at
-  pre-conversion `.png` frontmatter filenames instead of the deployed `.webp` names `publish-post.js`
-  actually produces (`8801bfb`, website repo). #054's had been broken since 2026-08-05, uncaught for
-  two weeks — already fixed and independently re-verified (live HTTP + full-corpus scan), nothing
-  further owed from Web, but worth noting as a real gap: nothing in Web's own tooling would have
-  caught this class of mismatch (source-filename vs. deployed-filename drift) on its own. The two
-  design items from 2026-08-15 (above-the-fold hero, Buttondown newsletter) remain unscoped, now six
-  days carried — still correctly not chased.
+- **2026-08-20**: quiet for Web's own action — zero mail, zero unblocked task work, zero code
+  changes by Web — but real cross-role activity in the website repo worth tracking: **Comms did
+  substantial direct work there** (PM-ratified era-taxonomy execution — Era 6/7 added to
+  `src/lib/episodes.ts`, `blog-metadata.csv` reassigned, a real UTC-midnight-in-Pacific-build date
+  bug found and partially fixed) in a new worktree they created at
+  `piper-morgan-website-worktrees/comms`. Filed `website#34` for 7 other site-wide call sites with
+  the same date bug, deliberately not swept in the same change — **unassigned, may eventually land
+  in Web's queue but hasn't yet**. Comms' commit `dc49566` is still local-only as of tonight's STOP,
+  blocked on PM's push (permission classifier denies Comms pushing to that repo) — verified directly
+  (no remote branch contains it), not Web's to unblock. Also noted an unrelated freeze-watchdog
+  alert for `lead` passing through (cio's lane per Comms' own log, consistent read). Standing items
+  (#1669, above-the-fold hero, Buttondown newsletter) remain unscoped, now a full week carried for
+  the oldest — still correctly not chased, none have deadlines.
 - **2026-08-18**: quiet for Web specifically — six fires, zero mail, zero unblocked task work, zero
   code changes — with one due-diligence check: a same-day cross-post incident ("The Architect's Own
   Trap" published with 4 gates missed because the cross-post `SKILL.md` was never loaded into the
