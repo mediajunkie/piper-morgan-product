@@ -992,6 +992,31 @@ _READ_QUERY_COHORT: dict[str, list[str]] = {
 }
 
 
+# #1667 flip groups for the read-query cohort — handler_attr → wave-1 group
+# (see FLIP_GROUPS in workflow_dispatcher.py). Declared as its own map rather
+# than folded into the alias dict so the alias lists stay untouched; a handler
+# absent from this map is UNGROUPED, which is the safe direction (unaddressable
+# by any wave flip, listed by name in `--audit`).
+_READ_QUERY_FLIP_GROUPS: dict[str, str] = {
+    # Listing/status reads: the answer is a list or a state summary, no
+    # referent to resolve and no temporal expression to parse. shipped_this_week
+    # and stale_prs carry a FIXED window (this week / the staleness threshold),
+    # not a user-supplied time expression — they are listings, not temporal ops.
+    "_handle_shipped_this_week": "read_status",
+    "_handle_stale_prs": "read_status",
+    "_handle_list_issues_query": "read_status",
+    "_handle_list_prs_query": "read_status",
+    "_handle_list_milestones_query": "read_status",
+    "_handle_list_releases_query": "read_status",
+    "_handle_list_labels_query": "read_status",
+    "_handle_list_branches_query": "read_status",
+    # The paradigm read_referent case (kickoff §2.2 wave 2's own example):
+    # "show me issue 108" resolves a specific issue — exactly the class the
+    # SessionSnapshot's recent-referent fields exist to serve.
+    "_handle_review_issue_query": "read_referent",
+}
+
+
 # #1124 cohort: calendar query cohort (meeting_time is the directed cohort-1 target;
 # recurring_meetings + week_calendar are same-signature siblings in the same elif
 # block, folded in for a clean QUERY-category block — mirrors the read-query cohort
@@ -1071,6 +1096,12 @@ def register_default_workflows() -> None:
         description="What-changed-since query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        # flip_group (#1667): NONE — deliberately held out of wave 1 despite
+        # reading like a listing. "What changed SINCE X" parses a user-supplied
+        # time expression (_parse_time_expression, days-as-int, called out in
+        # this entry point's own docstring as a bounded-but-real temporal
+        # parser), and the kickoff puts the temporal class LAST among queries
+        # (§2.2 item 4). Same hold as the calendar cohort below.
     )
 
     # #1124 Phase 4 step 3: issue-mutation cohort (CLOSE / REOPEN / COMMENT verbs).
@@ -1189,6 +1220,13 @@ def register_default_workflows() -> None:
         description="Prioritization via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        # flip_group (#1667): NONE — deliberately ungrouped. It ranks in memory
+        # and writes nothing (see the effect note), so it is flip-SAFE; it is
+        # simply not one of wave 1's three classes. The relevant risk is not
+        # damage but MIS-SELECTION: `prioritize` is the ruling's own example of
+        # a name that sounds like a bulk write, and a router that reaches for it
+        # on an ambiguous "sort out my backlog" turn should be observed in the
+        # shadow lane before a wave sweeps it in.
     )
 
     # #1124: content generation — synthesis-category handler, 2-arg, reused unchanged.
@@ -1202,6 +1240,14 @@ def register_default_workflows() -> None:
         description="Content generation via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        # flip_group (#1667): NONE — BORDERLINE, considered for read_synthesis
+        # and deliberately excluded. It generates prose (status report / README
+        # section / issue template) and writes nothing, so it looks like a
+        # summarize sibling — but the wave-1 synthesis class is the SUMMARIZE
+        # family specifically (PM's named parity area, per kickoff §2.2 item 3),
+        # and admitting a generation op would quietly redefine the group as
+        # "anything whose output is prose". Held for a reviewed synthesis-wave
+        # extension, alongside PA's issue/commit summarize gap.
     )
 
     # RECONNECT #1327 gap 1: conversational "set my default repo to owner/name".
@@ -1286,6 +1332,10 @@ def register_default_workflows() -> None:
         effect=EffectClass.READ,
         description="Archived-projects list query via action dispatch (#1570)",
         action_triggered=True,
+        # flip_group (#1667): read_status — an owner-scoped listing, and one of
+        # the ops #1667 names as having no ACTION_REGISTRY category (so before
+        # this field it was unaddressable by every possible flag value).
+        flip_group="read_status",
     )
 
     # #1624: chat summarize of an uploaded document — the #1187-deferred
@@ -1311,6 +1361,14 @@ def register_default_workflows() -> None:
         ),
         requires_context=["intent"],
         action_triggered=True,
+        # flip_group (#1667): read_synthesis — THE summarize family, and
+        # currently its only member. PA's issue/commit summarize shapes (the
+        # 08-18 crack: they still ride the floor with no operation) join this
+        # group when they are built, which is exactly the kickoff's §2.2 item 3.
+        # The group deliberately stays the summarize family and nothing else:
+        # generate_content / strategic_planning also emit prose and are NOT
+        # here, because "generates prose" is not the property being flipped.
+        flip_group="read_synthesis",
     )
 
     # RECONNECT #1327 build #2: conversational "what's my default repo" — the read
@@ -1323,6 +1381,12 @@ def register_default_workflows() -> None:
         description="Get-default-repo via action dispatch (#1327)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        # flip_group (#1667): read_status — the IDENTITY half of the wave-1
+        # class ("what's my default repo?"): reading back the user's own stored
+        # setting. Its WRITE counterpart (set_default_repo, right above) can
+        # never carry a group — __post_init__ rejects it — which is the pairing
+        # that makes the READ-only invariant concrete rather than nominal.
+        flip_group="read_status",
     )
 
     # #1333 (Arch-ruled 2026-06-30): the former per-action unwired-write registration
@@ -1551,6 +1615,10 @@ def register_default_workflows() -> None:
     # fetches GitHub data via the router and formats it; none contains a
     # mutating call (verified per-handler 2026-08-09). A handler that starts
     # writing must move OUT of this cohort and declare its own effect.
+    # flip_group (#1667): per-handler, from _READ_QUERY_FLIP_GROUPS above —
+    # eight listings in read_status, review_issue in read_referent. A handler
+    # this cohort gains later with no entry in that map registers UNGROUPED
+    # (safe direction: no wave flip can address it; `--audit` names it).
     for handler_attr, aliases in _READ_QUERY_COHORT.items():
         entry = WorkflowEntry(
             entry_point=_make_query_dispatch_entry_point(handler_attr),
@@ -1558,6 +1626,7 @@ def register_default_workflows() -> None:
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,
+            flip_group=_READ_QUERY_FLIP_GROUPS.get(handler_attr),
         )
         for alias in aliases:
             _default_entries[alias] = entry
@@ -1566,6 +1635,13 @@ def register_default_workflows() -> None:
     # effect: READ for all three calendar handlers — meeting_time /
     # recurring_meetings / week_calendar each analyze the user's calendar and
     # answer; no event creation or modification (verified per-handler 2026-08-09).
+    # flip_group (#1667): NONE — deliberately held out of wave 1. Every calendar
+    # op answers over a TIME WINDOW ("this week", "how much time", "recurring"),
+    # and the kickoff's flip order puts the temporal class LAST among queries
+    # (§2.2 item 4, pending the #1572 clock work). Read-safety is not the
+    # question here; window-selection correctness is, and that is the temporal
+    # wave's question. Ungrouped ⇒ no wave flip can address them; `--audit`
+    # lists all nine keys by name.
     for handler_attr, aliases in _CALENDAR_QUERY_COHORT.items():
         entry = WorkflowEntry(
             entry_point=_make_user_scoped_query_dispatch_entry_point(handler_attr),
@@ -1583,6 +1659,11 @@ def register_default_workflows() -> None:
     # analyze_data read repo activity/metrics; generate_report (despite the
     # name) reads recent activity and returns the formatted report as the
     # response message, writing nowhere (verified per-handler 2026-08-09).
+    # flip_group (#1667): read_referent for all three — this IS the analysis
+    # family the kickoff names for wave 2, and the referent is real rather than
+    # nominal: #1641 threads session_id through this cohort precisely so the
+    # "which repository?" ask can bind. Flipping these is what exercises the
+    # snapshot's referent fields against handlers that need one.
     for handler_attr, aliases in _ANALYSIS_QUERY_COHORT.items():
         entry = WorkflowEntry(
             entry_point=_make_query_dispatch_entry_point(
@@ -1592,6 +1673,7 @@ def register_default_workflows() -> None:
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,
+            flip_group="read_referent",
         )
         for alias in aliases:
             _default_entries[alias] = entry
@@ -1600,17 +1682,22 @@ def register_default_workflows() -> None:
     # handlers, reused unchanged, with per-handler arity threaded via the factory
     # flags (session_id and/or user_id). `todos` is special — it delegates to the
     # EXECUTION handler via run_todo_query_workflow. Aliases mirror the elif branches.
-    def _qentry(entry_point, description, effect):
+    def _qentry(entry_point, description, effect, flip_group=None):
         # `effect` is deliberately REQUIRED here too (no default): the helper
         # must not become the defaulted back door around WorkflowEntry's
         # defaultless field (Arch ruling 2026-08-09) — every call site below
         # declares what its handler does in the world, with evidence.
+        # `flip_group` (#1667) mirrors WorkflowEntry's own default: optional,
+        # None = unaddressable by any wave flip (the safe direction). Every
+        # call site below states its assignment — or its non-assignment — with
+        # the reasoning in the comment beside it.
         return WorkflowEntry(
             entry_point=entry_point,
             effect=effect,
             description=f"{description} (#1124)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,
+            flip_group=flip_group,
         )
 
     _query_cohort: list[tuple[WorkflowEntry, list[str]]] = [
@@ -1620,6 +1707,9 @@ def register_default_workflows() -> None:
                 "local-git-status via action dispatch",
                 # effect: READ — runs read-only local git status inspection.
                 EffectClass.READ,
+                # flip_group: read_status — "what's my local git status" is the
+                # literal status class; no referent, no time expression.
+                "read_status",
             ),
             ["local_git_status_query", "local_git_status"],
         ),
@@ -1631,6 +1721,15 @@ def register_default_workflows() -> None:
                 "search-documents (Notion) via action dispatch",
                 # effect: READ — Notion search only; no page mutation calls.
                 EffectClass.READ,
+                # flip_group: read_status — BORDERLINE, called listing. A search
+                # returns a LIST of hits for a query string; it resolves no
+                # referent (nothing is "the document" yet) and parses no time
+                # expression, so it sits in the zero-armed-state listing class
+                # rather than read_referent. The one wave-1 op whose data source
+                # is a connector rather than GitHub/local state; if the Notion
+                # connector's absence turns out to change the failure shape, this
+                # is the assignment to revisit first.
+                "read_status",
             ),
             ["search_documents", "find_documents", "search_notion"],
         ),
@@ -1642,6 +1741,14 @@ def register_default_workflows() -> None:
                 "productivity query via action dispatch",
                 # effect: READ — aggregates activity metrics; no writes.
                 EffectClass.READ,
+                # flip_group: read_referent — BORDERLINE. It reads like a status
+                # query ("how productive was I this week?") but it is built as an
+                # ANALYSIS: same _make_query_dispatch_entry_point(pass_session_id)
+                # shape as the analysis cohort, same repo-scoped aggregation, and
+                # the live LLM's own paraphrase for it is `analyze_productivity`.
+                # Grouped with the analyses it behaves like, not the listings it
+                # sounds like.
+                "read_referent",
             ),
             # #1283 probe (2026-07-08): the registry CANONICAL was missing from its
             # own handler's alias list (mode-2), and the live LLM emitted
@@ -1663,6 +1770,12 @@ def register_default_workflows() -> None:
                 "session-activity recall (#1394 / ADR-078 B4) via action dispatch",
                 # effect: READ — recalls what this session created; pure read.
                 EffectClass.READ,
+                # flip_group: read_status — BORDERLINE, and the call turns on a
+                # direction: this op READS OUT the session ledger the snapshot's
+                # referent fields are built FROM. It consumes no referent of its
+                # own ("what did we create this session?" names nothing), so it
+                # is a listing of session state, not a referent resolution.
+                "read_status",
             ),
             ["session_activity_query", "what_did_we_create", "session_recall"],
         ),
@@ -1679,6 +1792,15 @@ def register_default_workflows() -> None:
                 # the #1511 interview-token branch starts the existing guided
                 # capture flow (same effect the /standup command already has).
                 EffectClass.READ,
+                # flip_group: read_status — the status op #1667 names first in
+                # its own title. ⚠️ Note for the flip operator, not a reason to
+                # withhold the group: the #1511 interview-token branch inside
+                # this handler can START a guided capture. That is handler
+                # behavior identical on both routing paths (the rail dispatches
+                # the same key either way), and the consult never runs on an
+                # ARMED turn at all — but it is why this op deserves live
+                # telemetry attention before the rest of read_status.
+                "read_status",
             ),
             ["show_standup", "get_standup"],
         ),
@@ -1688,6 +1810,9 @@ def register_default_workflows() -> None:
                 "projects query via action dispatch",
                 # effect: READ — lists the user's projects; no writes.
                 EffectClass.READ,
+                # flip_group: read_status — a plain owner-scoped listing; the
+                # second op named in #1667's coverage gap.
+                "read_status",
             ),
             ["list_projects", "show_projects"],
         ),
@@ -1699,6 +1824,10 @@ def register_default_workflows() -> None:
                 "attention query via action dispatch",
                 # effect: READ — surfaces items needing attention; pure read.
                 EffectClass.READ,
+                # flip_group: read_status — "what needs my attention?" is a
+                # state summary over the user's own items; no referent, no
+                # user-supplied window.
+                "read_status",
             ),
             ["attention_query", "needs_attention", "what_needs_attention", "attention_items"],
         ),
@@ -1714,6 +1843,13 @@ def register_default_workflows() -> None:
                 # from these rail keys; if a write alias is ever added here,
                 # it needs its own entry with its own effect.
                 EffectClass.READ,
+                # flip_group: read_status — todo LIST/next reads. The same
+                # caveat the effect note carries applies doubly here: a write
+                # alias added to this entry would be both a mis-declared effect
+                # AND a flippable write, which __post_init__ would then reject
+                # at construction. The group is safe exactly as long as the
+                # effect declaration is honest.
+                "read_status",
             ),
             ["list_todos_query", "list_completed_todos", "next_todo_query"],
         ),
@@ -1731,6 +1867,14 @@ def register_default_workflows() -> None:
                 "reminder list query via action dispatch (#1521)",
                 # effect: READ — owner-scoped reminder/todo read; no writes.
                 EffectClass.READ,
+                # flip_group: read_status — BORDERLINE against the kickoff's
+                # "TEMPORAL/reminder parsing LAST" ordering (§2.2 item 4). That
+                # ordering is about PARSING a time expression, which this op
+                # does not do: it is an owner-scoped list read with no time
+                # argument. It is also already flippable today via its registry
+                # category (QUERY), so the group adds no reachability it didn't
+                # have — it only lets a wave name it deliberately.
+                "read_status",
             ),
             ["list_reminders_query", "list_reminders", "show_reminders", "get_reminders"],
         ),
@@ -1753,6 +1897,13 @@ def register_default_workflows() -> None:
                 # effect: READ — fetches and analyzes a Notion document; unlike
                 # its update sibling, it never calls append_blocks/update_page.
                 EffectClass.READ,
+                # flip_group: read_referent — BORDERLINE against read_synthesis
+                # (its output is generated prose about a document). Grouped by
+                # what it must RESOLVE, not what it emits: "analyze that doc"
+                # only means anything once a specific Notion page is bound, and
+                # that binding is the referent machinery. read_synthesis stays
+                # exactly the summarize family the decision named.
+                "read_referent",
             ),
             ["analyze_document", "analyze_file"],
         ),
@@ -1764,6 +1915,12 @@ def register_default_workflows() -> None:
                 # builds an in-memory plan dict (_create_issue_resolution_plan)
                 # and returns it as the message; nothing is persisted.
                 EffectClass.READ,
+                # flip_group: NONE — deliberately ungrouped. Planning is not one
+                # of wave 1's three classes (status/listing/identity, referent+
+                # analysis, summarize), and stretching a group's definition to
+                # absorb it would make the group name stop meaning what it says.
+                # Reachable for a one-op experiment by naming `strategic_planning`
+                # in the flag; no wave sweeps it in.
             ),
             ["strategic_planning", "create_plan"],
         ),
@@ -1775,6 +1932,11 @@ def register_default_workflows() -> None:
                 # historical data and computes patterns in memory
                 # (_learn_*_patterns are pure); no pattern store is written.
                 EffectClass.READ,
+                # flip_group: NONE — deliberately ungrouped, same reasoning as
+                # strategic_planning above: the LEARNING class is not a wave-1
+                # class. (It is an "analysis" only in the loose sense; grouping
+                # it read_referent would put an op with no referent into the
+                # group whose whole purpose is exercising referent resolution.)
             ),
             ["learn_pattern", "detect_pattern"],
         ),

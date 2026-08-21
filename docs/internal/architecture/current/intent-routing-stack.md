@@ -255,13 +255,64 @@ error log before running the legacy chain. Pins:
 (default-empty zero-work + e2e, same-handler-result e2e with the classifier
 consult explosive, armed guards incl. armed+in-set-category e2e, all
 fallthrough reasons incl. the WRITE-in-QUERY pin, error-path e2e,
-divergence telemetry). Coverage note: rail READ ops with no ACTION_REGISTRY
-category (`show_standup`, `list_projects`, the analysis family) are outside
-the category flag's addressable space and fall through with reason
-`no_registry_category`; registry-only canonicals (`get_identity`,
-`get_project_status`) fall through `not_rail_dispatchable` — flipping the
-IDENTITY/STATUS classes live needs rail registrations or a reviewed
-disposition-aware extension, tracked as flip-2 prep.
+divergence telemetry). Coverage note (flip-1 as shipped; **superseded by
+#1667 below** — kept because the telemetry buckets it names are unchanged):
+rail READ ops with no ACTION_REGISTRY category (`show_standup`,
+`list_projects`, the analysis family) were outside the category flag's
+addressable space and fall through with reason `no_registry_category`;
+registry-only canonicals (`get_identity`, `get_project_status`) fall through
+`not_rail_dispatchable`.
+
+**#1667 flip UNIT on the rail entry (2026-08-20) — the flag widens, the four
+dispatch conditions do not.** Flip-1's flag keyed on ACTION_REGISTRY
+categories, and the measurement that forced this change is that the category
+addressed **33 of 93** rail READ keys — 60 had no registry category at all, so
+most of wave 1 was not expressible in the flag meant to express it. (The #1667
+issue and the kickoff decision cite **23 of 93**; that is the same fact counted
+against ACTION_REGISTRY's *direct* action names, while `inversion_live.
+_category_by_operation` also back-maps through `grammar.alias_to_canonical`.
+Both numbers are printed side by side in `--audit` so nobody has to reconcile
+them from memory. The conclusion is identical either way.) The rejected fix was
+bulk-registering 70 ops into ACTION_REGISTRY — that registry holds canonical
+action vocabulary, not routing policy. **The flip unit is now declared on the
+rail entry**: `WorkflowEntry.flip_group: Optional[str]`, beside `effect` and
+`outwardness` (the #1509 precedent — declare on the entry, derive everything
+else), each assignment carrying its reasoning in the comment above it.
+Wave-1 groups: **`read_status`** (status/listing/identity — zero armed state,
+no referent, no time expression), **`read_referent`** (issue/PR detail + the
+analysis family — the #1641 repo ask makes the referent real), **`read_synthesis`**
+(the summarize family only; PA's issue/commit shapes join it when built).
+`PIPER_INVERSION_LIVE_CATEGORIES` **keeps its name** and now accepts **a group
+name, an individual operation name, or a registry category** — a wave flips by
+naming its group, a surgical experiment by naming one op, and every flip-1
+deploy string keeps its exact meaning. Default-empty still means fully dark
+(zero work, no log line). The four dispatch conditions are UNCHANGED — this
+widened *what can be named*, never what happens once named: the armed-turn
+guard, the confidence threshold, and the declared-READ rail-entry guard all
+hold as before. **A non-READ entry carrying a `flip_group` is now
+unconstructible** (`WorkflowEntry.__post_init__` raises, as it does for an
+unknown group name), so the group surface cannot introduce a write even in
+principle; the runtime effect check remains the belt and the only guard for the
+category and operation-name surfaces. Two honesty properties worth knowing
+before flipping: the decision line logs **`live_match`** (`operation`/`group`/
+`category`/`None`) and `flip_group`, so a live route traces back to the flag
+token that caused it, plus `unrecognized_flag_tokens` so a typo'd wave name is
+loud rather than a silent no-op; and **"ungrouped" does not mean "unreachable"**
+— an ungrouped op that carries a registry category is still swept in when that
+category is named (`week_calendar` under QUERY, pinned). Ops with no group are
+unaddressable by any WAVE, by design, until someone assigns one; the deliberate
+wave-1 holds are the temporal class (`changes_query` + the calendar cohort —
+kickoff §2.2 puts temporal last), and `strategic_planning` / `learn_pattern` /
+`prioritize` / `generate_content` (not one of wave 1's three classes; grouping
+them would redefine the group names). `scripts/inversion_phase2_gate.py --audit`
+(no LLM, a registry read) prints the coverage table with denominators, lists
+every unassigned op BY NAME split into "reachable only by naming the op" vs
+"still swept by its category", and re-measures the READ-only invariant rather
+than asserting it. Pins: `tests/unit/services/intent_service/
+test_inversion_flip_groups_1667.py` (unconstructible non-READ group, closed
+group vocabulary, each of the three naming surfaces live e2e, ungrouped-op
+never dispatches while its group-mates are live, single-op flip does not sweep
+its group, default-empty dark, audit lists the unassigned).
 
 **Phase 2.2 prerequisites landed 2026-08-19 (issues 1665 + 1664, gate-doc
 caveats)**: (a) every #846 arm site now stores its ALREADY-RENDERED ask on
