@@ -410,7 +410,7 @@ class TestOutwardnessAxis:
         )
         line = cg.build_outward_disclosure(intent)
         assert "I'm about to comment issue #5" in line  # the WHAT
-        assert "in front of other people" in line  # the TO WHOM
+        assert "visible to other people" in line  # the TO WHOM (#1509 copy, CXO-revised 2026-08-21)
         assert "(yes/no)" not in line  # a disclosure, never a gate
 
     def test_disclosure_line_renders_repo_when_context_carries_one(self):
@@ -908,7 +908,7 @@ class TestEndToEndOutwardness:
         assert _pending_offers(live_service).get(sid) is None
         assert result.message.startswith(DISCLOSURE_MARKER)
         assert "I'm about to comment issue #5" in result.message
-        assert "in front of other people" in result.message
+        assert "visible to other people" in result.message  # CXO-revised copy, 2026-08-21
         # The handler's own result still follows the disclosure.
         assert "Comment added to issue #5." in result.message
         # Transcript legibility flags (#1509 AC-5).
