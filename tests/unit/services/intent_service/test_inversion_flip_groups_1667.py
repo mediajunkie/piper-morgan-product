@@ -501,7 +501,7 @@ class TestLiveConsultSurfaces:
         assert out is None
         assert f["live_match"] is None
         assert f["flip_group"] is None
-        assert f["reason"] == "no_registry_category"
+        assert f["reason"] == "not_live_uncategorized"  # renamed #1670
 
     async def test_ungrouped_op_with_a_category_is_still_swept_by_that_category(
         self, sm, mem_prefs, svc, monkeypatch, log_rec

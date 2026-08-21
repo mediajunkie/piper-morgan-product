@@ -865,7 +865,7 @@ class TestEndToEndConsentCheck:
 # compose marker — the cell the declared mode decides, on a communication act.
 AMBIGUOUS_COMMENT = "issue #5 could use a note that the fix shipped"
 IMPERATIVE_COMMENT = "comment on issue #5 saying the fix shipped"
-DISCLOSURE_MARKER = "Saying it out loud before I act"
+DISCLOSURE_MARKER = "Heads up — I'm about to"
 
 
 def _comment_intent(message=AMBIGUOUS_COMMENT):

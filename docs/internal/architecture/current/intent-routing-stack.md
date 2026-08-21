@@ -259,11 +259,13 @@ error log before running the legacy chain. Pins:
 consult explosive, armed guards incl. armed+in-set-category e2e, all
 fallthrough reasons incl. the WRITE-in-QUERY pin, error-path e2e,
 divergence telemetry). Coverage note (flip-1 as shipped; **superseded by
-#1667 below** — kept because the telemetry buckets it names are unchanged):
-rail READ ops with no ACTION_REGISTRY category (`show_standup`,
-`list_projects`, the analysis family) were outside the category flag's
-addressable space and fall through with reason `no_registry_category`;
-registry-only canonicals (`get_identity`, `get_project_status`) fall through
+#1667 below** — kept for the fall-through structure it records; the not-live
+bucket names were renamed by #1670, mapping note in
+`inversion-phase2-gate-2026-08-19.md`): rail READ ops with no ACTION_REGISTRY
+category (`show_standup`, `list_projects`, the analysis family) were outside
+the category flag's addressable space and fall through with reason
+`not_live_uncategorized` (carried a different name pre-#1670); registry-only
+canonicals (`get_identity`, `get_project_status`) fall through
 `not_rail_dispatchable`.
 
 **#1667 flip UNIT on the rail entry (2026-08-20) — the flag widens, the four

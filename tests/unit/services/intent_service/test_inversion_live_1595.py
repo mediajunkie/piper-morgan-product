@@ -580,11 +580,14 @@ class TestFallthroughReasons:
         )
         assert isinstance(out, Intent) and f["route"] == "inversion"
 
-    async def test_category_not_live(self, sm, mem_prefs, svc, monkeypatch, log_rec):
+    async def test_not_live_categorized(self, sm, mem_prefs, svc, monkeypatch, log_rec):
+        """Bucket renamed from its flip-1 name by the #1670 corpus migration
+        (the sanctioned change to this byte-for-byte pin; old→new mapping
+        note in inversion-phase2-gate-2026-08-19.md)."""
         out, _, [(_, f)] = await self._consult(
             svc, monkeypatch, log_rec, _decision(), cats="STATUS"
         )
-        assert out is None and f["reason"] == "category_not_live"
+        assert out is None and f["reason"] == "not_live_categorized"
         assert f["category"] == "QUERY"
 
     async def test_registry_only_operation_not_rail_dispatchable(
@@ -612,16 +615,19 @@ class TestFallthroughReasons:
         )
         assert out is None and f["reason"] == "not_read_effect"
 
-    async def test_no_registry_category_falls_through(
+    async def test_not_live_uncategorized_falls_through(
         self, sm, mem_prefs, svc, monkeypatch, log_rec
     ):
         """A rail READ op with no ACTION_REGISTRY category (show_standup) is
         outside the category flag's addressable space — honest legacy, with
-        the gap visible in telemetry (the coverage note in the report)."""
+        the gap visible in telemetry (the coverage note in the report).
+        Bucket renamed from its flip-1 name by the #1670 corpus migration
+        (the sanctioned change to this byte-for-byte pin; old→new mapping
+        note in inversion-phase2-gate-2026-08-19.md)."""
         out, _, [(_, f)] = await self._consult(
             svc, monkeypatch, log_rec, _decision(operation="show_standup")
         )
-        assert out is None and f["reason"] == "no_registry_category"
+        assert out is None and f["reason"] == "not_live_uncategorized"
 
 
 # ---------------------------------------------------------------------------
