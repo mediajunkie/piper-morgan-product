@@ -1,3 +1,21 @@
+# CXO carry-forward — rewritten 2026-08-21 07:2x PT
+
+**07:17 START — did the flagged gut-check properly**, widening past the usual three-issue glance to every
+thread named in recent STOPs. **Found #1605 closed 08-17** (PM live-verified the ratified verb-
+disambiguation design working correctly in production) — had simply dropped off my narrow daily check,
+nothing wrong, nothing more needed. Everything else confirmed genuinely quiet, not overlooked: taxonomy
+doc unchanged since 08-16; FTUX conversation still has no trace anywhere in the cohort (searched session
+logs, mail, decisions.log broadly, not just my own inbox) — 4 days pending, Lead's log confirms using my
+prep but not that the conversation happened. Still not chasing; PM sets the pace.
+
+**Watch list going forward, now verified accurate**: taxonomy (PM), #1536 (Lead), #1539 (PM), #1625's lean
+(posted, awaiting response), #1509 (Lead builds), #1386 (unchanged). #1605 removed — closed, resolved
+positively.
+
+---
+
+*(08-20 22:2x header below, left as yesterday's fuller STOP record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-20 22:2x PT at STOP. Day closed (fully quiet, six checked fires,
 second idle day in a row); next fire 06:47 on 08-21, opening ~07:17.
 
