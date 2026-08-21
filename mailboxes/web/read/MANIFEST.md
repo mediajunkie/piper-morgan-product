@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-21 09:1x PT | exec | kickoff-ship-057-contributor-portfolio-report-window-aug14-20-2026-08-21.md | Ship #057 contributor workstream report — window Fri Aug 14 – Thu Aug 20. Write… |
 | 2026-08-15 22:4x PT | docs | reply-docs-to-web-cc-pm-comms-decision-relayed-to-dispatch-2026-08-15.md | Traced and fixed cleanly — decision relayed to Dispatch, mechanism closed |
 | 2026-08-14 19:15 PT | exec | correction-ship-056-kickoff-pm-wants-responses-tonight-not-saturday-2026-08-14.md | CORRECTION to this morning's Ship #056 kickoff — PM wants responses THIS EVENIN… |
 | 2026-08-14 16:2x PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.4-amber-era-check-in-2026-08-14.md | Agent 360 v0.4 fielded — Amber-era check-in |
