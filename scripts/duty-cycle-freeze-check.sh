@@ -135,14 +135,24 @@ cycling_now() {
 # current hour, and flag at ~1.5x that gap + 1h grace. Daytime = dense fires → small gap → tight threshold;
 # overnight = one big gap → wide threshold. Self-adjusts per role from its own cron; no manual day/night
 # columns. Falls back to the registry flat $thr if the cron hour-list can't be parsed.
-# args: now_hour, cron_expr ("MIN HOURS …"), fallback_thr → echoes the effective threshold (hours).
+#
+# v0.9 (2026-08-21, CIO) — Lead/Exec asked (PM-directed, after lead's 08-20 usage-wall incident) for
+# the threshold to read as "N missed expected fires" rather than a bare hour count, since that's the
+# more intuitive framing for a role tuning its own cadence. The formula already WAS this — the
+# multiplier below is exactly 2 missed-fire-gaps + 1h grace, not a new number — so this only makes
+# that framing explicit in the output instead of changing the math (the 2x+1 constant has its own
+# incident history above; do not retune it without re-reading that). Now echoes a SECOND field: the
+# missed-fire count on the cron-derived path, or the literal "fallback" when the flat $thr was used
+# instead (a fallback threshold isn't fire-count-derived at all, and the caller must not label it as
+# "N missed fires" when it wasn't computed that way).
+# args: now_hour, cron_expr ("MIN HOURS …"), fallback_thr → echoes "threshold_hours fires_label".
 expected_threshold() {
   # All logic runs in awk BEGIN, so inputs come via -v (NOT $0 — $0 is empty in BEGIN).
   awk -v cron="$2" -v nh="$1" -v fb="$3" 'BEGIN {
-      if (split(cron, parts, " ") < 2) { print fb; exit }    # cron = "MIN HOURS …"; need the HOURS field
+      if (split(cron, parts, " ") < 2) { print fb" fallback"; exit }  # cron="MIN HOURS …"; need HOURS
       n = split(parts[2], h, ",")
-      if (n < 2) { print fb; exit }                          # single-fire / unparseable → fallback
-      for (i=1;i<=n;i++) if (h[i] !~ /^[0-9]+$/) { print fb; exit }
+      if (n < 2) { print fb" fallback"; exit }               # single-fire / unparseable → fallback
+      for (i=1;i<=n;i++) if (h[i] !~ /^[0-9]+$/) { print fb" fallback"; exit }
       for (i=1;i<=n;i++) h[i] = h[i] + 0; nh = nh + 0         # numeric coercion (else awk string-compares "10"<"5")
       for (i=1;i<=n;i++) for (j=i+1;j<=n;j++) if (h[j]<h[i]) { t=h[i]; h[i]=h[j]; h[j]=t }
       prev=""; nxt=""
@@ -169,7 +179,7 @@ expected_threshold() {
       # ⚠️ Still does NOT fix low-frequency roles: exec fires 2x/day, so this yields 25h. Widening
       # cannot reconcile detect-fast with tolerate-quiet; the structural fix is the per-fire heartbeat
       # (HOST approved 07-28), which makes liveness independent of whether work happened.
-      print int(gap*2) + 1
+      print (int(gap*2) + 1)" 2"   # "2" = missed-fire count baked into the 2x multiplier above
   }'
 }
 
@@ -298,8 +308,13 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
   (( hour < ws || hour >= we )) && continue           # outside this role's waking/alerting window
   cycling_now "$role" "$ff" || continue               # not-should-be-cycling now → skip
   if a=$(age_of "$role"); then
-    thr_eff=$(expected_threshold "$hour" "$cron" "$thr")    # v0.4 wake-window-aware (falls back to flat $thr)
-    (( a >= thr_eff )) && echo "STALE $role ${a}h (dyn-threshold ${thr_eff}h wake-window-aware; cron '$cron')"
+    read -r thr_eff fires_label <<< "$(expected_threshold "$hour" "$cron" "$thr")"  # v0.4/v0.9
+    if [ "$fires_label" = "fallback" ]; then
+      fires_note="flat fallback, not fire-count-derived"
+    else
+      fires_note="~${fires_label} missed fires"
+    fi
+    (( a >= thr_eff )) && echo "STALE $role ${a}h (dyn-threshold ${thr_eff}h wake-window-aware, ${fires_note}; cron '$cron')"
   else
     echo "STALE $role NO-HEARTBEAT (should be cycling but no recent (${role}) commit or session-log update)"
   fi
