@@ -22,6 +22,23 @@ Scope (the #1663 contract addendum, Arch 2026-08-19, binding):
   (no snapshot assembly, no grammar derivation, no LLM call, no log line):
   routing is byte-identical to the pre-flip chain. Revert = unset. Nothing
   in code names a live category.
+- **THREE NAMING SURFACES, one flag** (#1667, Lead decision 2026-08-20 —
+  env var name KEPT, semantics widened). A token in the flag set may name:
+  a **flip group** (``read_status`` / ``read_referent`` / ``read_synthesis``
+  — declared on the rail entry, ``WorkflowEntry.flip_group``; this is how a
+  WAVE flips), an **individual operation** (``show_standup`` — a surgical
+  one-op flip that needs no group), or an **ACTION_REGISTRY category**
+  (``QUERY`` — flip-1's original unit, still valid wherever it exists).
+  Matching is case-insensitive and the three vocabularies are disjoint in
+  practice (categories are single uppercase words, operations and groups are
+  snake_case; an operation named e.g. ``query`` would be the collision to
+  watch, and none exists). Why the widening: registry categories addressed
+  **23 of 93** rail READ operations — 70 had no category at all, so the
+  wave-1 scope was not expressible in the flag that was supposed to express
+  it. The flip unit now lives where the operation's identity lives.
+  ⚠️ An operation with NO group is not thereby safe: if it carries a
+  registry category, naming that CATEGORY still sweeps it in. ``--audit``
+  states this per-op rather than implying "ungrouped ⇒ unreachable".
 - **The rail does what it always did** — a dispatchable decision becomes an
   ``Intent`` that flows into the SAME #1124 action-dispatch rail the
   classifier feeds (``if intent.action in get_action_workflows()``). No new
@@ -29,16 +46,23 @@ Scope (the #1663 contract addendum, Arch 2026-08-19, binding):
   the key. Dispatch requires ALL of:
     1. the decision outcome is ``operation`` (REFUSED / error / NONE /
        CLARIFY all fall through to legacy, logged);
-    2. the operation's ACTION_REGISTRY category (alias-resolved via the
-       registry-derived grammar — the Phase-1 scorer's ``_op_category_map``
-       idiom) is in the live set;
+    2. the operation is NAMED LIVE by one of the three surfaces above — its
+       own name (or its canonical alias), its rail entry's ``flip_group``,
+       or its ACTION_REGISTRY category (alias-resolved via the registry-
+       derived grammar — the Phase-1 scorer's ``_op_category_map`` idiom).
+       The matching surface is logged as ``live_match`` so telemetry says
+       WHICH one held, never just that something did;
     3. ``confidence >= PIPER_INVERSION_LIVE_MIN_CONFIDENCE`` (default 0.8);
     4. the operation is a rail key (``get_action_workflows``) whose declared
        effect is ``EffectClass.READ``. This guard is LOAD-BEARING, not belt:
        ACTION_REGISTRY files ``create_issue`` (WRITE) and ``close_issue``
        (DESTRUCTIVE) under QUERY, so a category flag alone cannot be a READ
        guarantee. A write can never flip via this module regardless of
-       configuration.
+       configuration. (#1667 adds a SECOND, structural guarantee upstream of
+       it: a non-READ entry cannot even be constructed with a ``flip_group``
+       — ``WorkflowEntry.__post_init__`` raises — so the group surface can
+       never introduce a write. This condition remains the belt, and remains
+       the only guard for the category and operation-name surfaces.)
 - **Honesty + telemetry** — every consult that reaches the router logs ONE
   structured ``inversion_live_decision`` line: route chosen, reason when
   legacy, operation/category/confidence/threshold, snapshot presence and
@@ -89,13 +113,73 @@ MIN_CONFIDENCE_ENV = "PIPER_INVERSION_LIVE_MIN_CONFIDENCE"
 
 
 def live_categories() -> frozenset[str]:
-    """The per-category flip set — comma-separated registry category names
-    (e.g. ``"QUERY"`` or ``"QUERY,STATUS"``), case-insensitive.
+    """The flip set — comma-separated names, case-insensitive, normalized to
+    upper case.
+
+    Each token may name a **flip group** (``read_status``), an **individual
+    operation** (``show_standup``), or an **ACTION_REGISTRY category**
+    (``QUERY``) — see the module docstring's three-surface note (#1667). The
+    env var name and this function's name are KEPT from flip-1 (the semantics
+    widened, not the switch), so every existing deploy string keeps working
+    byte-for-byte.
 
     DEFAULT-EMPTY: unset/empty means the flip is fully off and the consult
     does zero work. Read at call time (the shadow-flag idiom)."""
     raw = os.environ.get(LIVE_CATEGORIES_ENV, "")
     return frozenset(t.strip().upper() for t in raw.split(",") if t.strip())
+
+
+def resolve_live_match(
+    *,
+    operation: Optional[str],
+    canonical: Optional[str],
+    flip_group: Optional[str],
+    category: Optional[str],
+    cats: frozenset[str],
+) -> Optional[str]:
+    """Which naming surface (if any) puts this operation in the live set.
+
+    Returns ``"operation"`` / ``"group"`` / ``"category"`` / ``None``.
+
+    The order is REPORTING precedence, not policy: any single match makes the
+    operation live, so the checks cannot conflict — the order only decides
+    which surface gets NAMED in telemetry when more than one matches, most
+    specific first. (m-43: a flip that says "live" without saying by what is
+    a flip nobody can revert precisely.)
+    """
+    for name in (operation, canonical):
+        if name and name.upper() in cats:
+            return "operation"
+    if flip_group and flip_group.upper() in cats:
+        return "group"
+    if category and category.upper() in cats:
+        return "category"
+    return None
+
+
+def unrecognized_flag_tokens(cats: frozenset[str], grammar: Any) -> list[str]:
+    """Flag tokens that name NOTHING — not a known group, not a rail key or
+    grammar alias, not an ACTION_REGISTRY category.
+
+    A typo'd token is otherwise perfectly silent: the wave simply doesn't
+    flip, and the telemetry line looks like a normal fall-through. Computed
+    only on a consult that is already logging (so the default-empty
+    zero-work pin is untouched) and reported on the decision line.
+    """
+    from services.intent_service.action_registry import ACTION_REGISTRY
+    from services.intent_service.workflow_dispatcher import (
+        FLIP_GROUPS,
+        get_action_workflows,
+    )
+
+    known = {g.upper() for g in FLIP_GROUPS}
+    known |= {k.upper() for k in get_action_workflows()}
+    aliases = getattr(grammar, "alias_to_canonical", {}) or {}
+    known |= {a.upper() for a in aliases}
+    known |= {c.upper() for c in aliases.values()}
+    known |= {n.upper() for n in grammar.names()}
+    known |= {c.upper() for (c, _a) in ACTION_REGISTRY}
+    return sorted(t for t in cats if t not in known)
 
 
 def live_min_confidence() -> float:
@@ -263,33 +347,65 @@ async def consult_inversion_live(
     op = decision.operation
     reason: Optional[str] = None
     category: Optional[str] = None
+    canonical: Optional[str] = None
+    flip_group: Optional[str] = None
+    live_match: Optional[str] = None
     intent_category: Optional[IntentCategory] = None
 
     if decision.outcome != "operation" or not op:
         reason = f"router_{decision.outcome}"  # router_none/clarify/refused/error
     else:
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+
+        canonical = grammar.alias_to_canonical.get(op, op)
         category = _category_by_operation(grammar).get(op)
-        if category is None:
-            reason = "no_registry_category"
-        elif category.upper() not in cats:
-            reason = "category_not_live"
+        # The rail entry is fetched HERE (before the threshold check, where
+        # flip-1 fetched it) because the group lives on it. Reason ORDER is
+        # unchanged — not-live still precedes sub_threshold, which still
+        # precedes not_rail_dispatchable — so every flip-1 telemetry bucket
+        # keeps its exact meaning; only the lookup moved.
+        entry = get_action_workflows().get(op)
+        flip_group = entry.flip_group if entry is not None else None
+        live_match = resolve_live_match(
+            operation=op,
+            canonical=canonical,
+            flip_group=flip_group,
+            category=category,
+            cats=cats,
+        )
+
+        if live_match is None:
+            # Two RETAINED flip-1 bucket names (corpus continuity — the Phase-1
+            # telemetry rows compare against these). Both now mean "no naming
+            # surface put this op in the live set"; they still differ on the
+            # fact they assert, which is whether a registry category existed at
+            # all. The precise account is on the line itself: live_match=None
+            # plus flip_group, category, and live_categories.
+            reason = "category_not_live" if category else "no_registry_category"
         elif decision.confidence is None or decision.confidence < threshold:
             reason = "sub_threshold"
+        elif entry is None:
+            reason = "not_rail_dispatchable"
+        elif entry.effect != EffectClass.READ:
+            reason = "not_read_effect"
+        elif category:
+            try:
+                intent_category = IntentCategory[category.upper()]
+            except KeyError:
+                reason = "unknown_category_enum"
         else:
-            from services.intent_service.workflow_dispatcher import (
-                get_action_workflows,
-            )
-
-            entry = get_action_workflows().get(op)
-            if entry is None:
-                reason = "not_rail_dispatchable"
-            elif entry.effect != EffectClass.READ:
-                reason = "not_read_effect"
-            else:
-                try:
-                    intent_category = IntentCategory[category.upper()]
-                except KeyError:
-                    reason = "unknown_category_enum"
+            # Flipped by GROUP or by OPERATION NAME, with no ACTION_REGISTRY
+            # category to carry (70 of 93 rail READ ops are in this state —
+            # the #1667 measurement). The rail dispatches on intent.action
+            # BEFORE category routing (#1124), so this value chooses no
+            # handler; it is the Intent's shape-required field and the
+            # fall-through target if the rail ever returns None. QUERY is the
+            # honest value rather than a guess: the effect guard two lines up
+            # has already established this operation is declared READ, and
+            # QUERY is IntentCategory's read-only-retrieval member
+            # ("CQRS-lite", shared_types.py). It asserts nothing about the
+            # registry, which is exactly the point — there is no registry row.
+            intent_category = IntentCategory.QUERY
 
     dispatch = reason is None
     _log_decision(
@@ -299,8 +415,15 @@ async def consult_inversion_live(
         route="inversion" if dispatch else "legacy",
         reason=reason,
         operation=op,
-        canonical=grammar.alias_to_canonical.get(op, op) if op else None,
+        canonical=canonical,
         category=category,
+        # #1667: WHICH naming surface made this live (or None), and the group
+        # the rail declares for it. Without these, "route=inversion" can't be
+        # traced back to the flag token that caused it — and an operator
+        # reverting a bad wave would be guessing which token to remove.
+        flip_group=flip_group,
+        live_match=live_match,
+        unrecognized_flag_tokens=unrecognized_flag_tokens(cats, grammar) or None,
         confidence=decision.confidence,
         threshold=threshold,
         outcome=decision.outcome,

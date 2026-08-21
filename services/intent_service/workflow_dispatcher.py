@@ -23,6 +23,38 @@ from services.shared_types import EffectClass, Outwardness
 logger = structlog.get_logger(__name__)
 
 
+# ─── #1667 flip groups — the inversion flip UNIT (Lead decision 2026-08-20) ──
+# The measurement that forced this: 70 of 93 rail READ keys have NO
+# ACTION_REGISTRY category, so a flip flag keyed on registry categories
+# addressed 23 of 93 READ operations and silently covered nothing for the rest.
+# The thing being flipped is *routing for an operation*, and the operation's
+# identity lives HERE, on the rail — so the flip unit is declared here too
+# (the #1509 precedent: declare on the entry, derive everything else).
+#
+# The vocabulary is CLOSED and validated at construction (see
+# WorkflowEntry.__post_init__). A typo'd group would otherwise be doubly
+# silent: the op becomes unaddressable by any wave AND the flag token that
+# names the intended group matches nothing. Adding a wave-2 group means
+# editing this set — the deliberate opt-in the decision asked for.
+#
+#   read_status    — status / listing / identity reads. The zero-armed-state
+#                    class: the answer needs no referent resolution and no
+#                    temporal-expression parsing. Lowest risk, highest volume.
+#   read_referent  — reads that resolve a referent (an issue/PR/document/repo
+#                    the user named or implied), plus the analysis family.
+#                    This is the group that exercises the snapshot's recent-
+#                    referent fields.
+#   read_synthesis — the summarize/generate family: output is generated prose
+#                    over source material, nothing is written anywhere.
+#
+# Ops with NO group are unaddressable by any WAVE flip, by design, until
+# someone assigns one. `scripts/inversion_phase2_gate.py --audit` lists them
+# by name with denominators so "unassigned" is never a silent remainder.
+FLIP_GROUPS: frozenset[str] = frozenset(
+    {"read_status", "read_referent", "read_synthesis"}
+)
+
+
 @dataclass
 class WorkflowEntry:
     """
@@ -51,6 +83,15 @@ class WorkflowEntry:
             addition to / instead of offer-acceptance. Offer-only workflows (e.g.
             ``meeting``) leave this False so the action-dispatch rail never picks
             them up by an accidental key/action collision.
+        flip_group: #1667 inversion flip unit — which wave this operation flips
+            with (see FLIP_GROUPS above). DEFAULTS TO None and that default is
+            the safe direction: an ungrouped op is unaddressable by any wave
+            flip, so a forgotten assignment can only ever under-flip. READ-ONLY
+            BY CONSTRUCTION — a non-READ entry carrying a flip_group raises at
+            construction (__post_init__), so the "a write flipped live" state is
+            unrepresentable rather than merely guarded. Declared beside effect
+            and outwardness, with each assignment's reasoning in the comment
+            above it (workflow_entries.py), per the #1509 precedent.
     """
 
     entry_point: Callable[..., Coroutine[Any, Any, Any]]
@@ -75,6 +116,45 @@ class WorkflowEntry:
     requires_context: list[str] = field(default_factory=list)
     description: str = ""
     action_triggered: bool = False
+    # #1667 flip unit (Lead decision 2026-08-20): the wave this operation
+    # flips with, or None = not addressable by any wave flip. Vocabulary +
+    # rationale in the FLIP_GROUPS block above; the READ-only invariant is
+    # enforced in __post_init__ below, not by convention.
+    flip_group: Optional[str] = None
+
+    def __post_init__(self) -> None:
+        """Reject an unrepresentable flip declaration LOUDLY, at construction.
+
+        Two rejections, both at the earliest possible moment (import of
+        ``workflow_entries``, i.e. app startup and every test that registers
+        the rail) so a bad declaration can never reach a live consult:
+
+        1. **Unknown group name** — a typo would be doubly silent (the op is
+           unaddressable AND the flag token names nothing).
+        2. **Non-READ entry with a flip_group** — the inversion flip is
+           READ-only by contract (#1663 addendum). ``inversion_live`` also
+           checks ``entry.effect`` at dispatch time; that check is the belt,
+           THIS is the structural guarantee: a WRITE/DESTRUCTIVE entry
+           carrying a group cannot be constructed, so no configuration of any
+           flag can produce a flipped write.
+        """
+        if self.flip_group is None:
+            return
+        if self.flip_group not in FLIP_GROUPS:
+            raise ValueError(
+                f"Unknown flip_group {self.flip_group!r} (#1667). Known groups: "
+                f"{sorted(FLIP_GROUPS)}. Add a new wave's group to FLIP_GROUPS "
+                f"deliberately — a typo here silently unaddresses the operation."
+            )
+        if self.effect != EffectClass.READ:
+            raise ValueError(
+                f"flip_group {self.flip_group!r} declared on a "
+                f"{self.effect.name} entry ({self.description or 'unnamed'}) — "
+                f"#1667/#1663: the inversion flip is READ-only. A write must "
+                f"never be flippable by any flag configuration; remove the "
+                f"flip_group, or re-classify the effect if the handler truly "
+                f"only reads."
+            )
 
     # ── Derivations (Arch ruling 2026-08-09): one declaration, four ─────────
     # predicates. Each consumer reads ITS property; none re-derives effect
