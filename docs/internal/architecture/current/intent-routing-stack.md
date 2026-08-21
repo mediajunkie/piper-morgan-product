@@ -171,6 +171,9 @@ enforces that only `inversion_shadow.py` may reference the router, and that
 0–4 above answer the user; the shadow line records what the constrained LLM
 router WOULD have done. Zero latency cost (post-turn task), sampled
 (`PIPER_INVERSION_SHADOW_SAMPLE`), shadow failure logged and swallowed.
+⚠️ **Since #1668 (2026-08-21) this observer has TWO modes** — the description
+above is the LEGACY-ROUTED one, unchanged. On a turn the live inversion routed,
+it runs the legacy counterfactual instead; see the #1668 block below.
 Corpus-side instrument: `scripts/inversion_phase1_shadow_score.py` scores the
 router against `tests/fixtures/inversion_corpus_phase0.yaml` per category vs
 the Phase-0 full-chain baseline (first run:
@@ -313,6 +316,54 @@ test_inversion_flip_groups_1667.py` (unconstructible non-READ group, closed
 group vocabulary, each of the three naming surfaces live e2e, ungrouped-op
 never dispatches while its group-mates are live, single-op flip does not sweep
 its group, default-empty dark, audit lists the unassigned).
+
+**#1668 the shadow observer's SECOND mode — the legacy counterfactual
+(2026-08-21).** With both flags on, a turn routed LIVE by the inversion that
+was also sampled by the shadow used to have its utterance re-routed through the
+SAME constrained router: a redundant Haiku-class call whose only finding was
+self-agreement. That call is repurposed, not deleted. **Branch:**
+`inversion_shadow.maybe_schedule_shadow_check` now takes `live_route`, this
+turn's routing provenance, and picks the mode from it — `routed_live` True →
+`_legacy_counterfactual_check`; anything else (no provenance, `routed_live`
+False) → `_shadow_check`, **byte-identical to before** (the existing shadow
+pins pass unchanged). The provenance is **published by the consult itself**
+(`inversion_live.LiveRouteProvenance` in a per-turn `ContextVar`, taken via
+`consume_live_route_provenance()` inside `process_intent`'s existing
+`shadow_enabled()` gate and passed to the observer as a kwarg) — nothing
+re-derives how a turn was routed, and the record is one-shot plus cleared at
+every consult entry, so it cannot leak into a later turn sharing the Task.
+**What the counterfactual measures, and what it does not (m-43).** It runs the
+legacy chain's legs in the legacy chain's order, short-circuiting the way that
+chain short-circuits: `multi_intent_rules`
+(`PreClassifier.detect_multiple_intents`) → `pre_classifier`
+(`PreClassifier.pre_classify`) → `llm_classifier`
+(`IntentClassifier.classify`, reached ONLY when both deterministic legs
+decline). The LLM leg is called **unscoped** (no `user_id` / `session_id` /
+`context`) and **uncached** (`use_cache=False`), so a post-turn observer
+performs no owner-scoped ledger read and can never write the production
+classifier cache. The legs that therefore do NOT run are named on every line in
+`legacy_legs_not_run` — B3 referent resolution, the classifier cache,
+the ADR-075 D4 identity-scoped system prompt, #278 graph context, #248
+preference hooks — beside `legacy_legs_run` (what actually executed) and the
+`layer_note`: *this line reports the unscoped, uncached, single-intent legacy
+route, not the full production `classify_multiple` call.* **Cost never grows**:
+the counterfactual REPLACES the re-route rather than joining it, and spends
+**0** LLM calls when a deterministic leg claims, **1** when both decline —
+never more than the single router call it replaced, and strictly fewer on
+deterministically-claimed turns. **Telemetry** is a distinct event family so a
+counterfactual row can never be mistaken for a router-shadow row:
+`shadow_legacy_counterfactual_agreement` / `_disagreement` / `_incomparable`,
+carrying `mode`, the live route + `live_match` + `live_confidence`, the legacy
+label + which leg decided it, per-leg errors, `legacy_llm_calls`, snapshot
+presence + field errors, and alias-resolved `agreement`. Absence of a legacy
+answer scores **incomparable, never disagreement** (m-44). Every leg is
+individually error-caught: a broken leg degrades the line and is recorded in
+`legacy_leg_errors`, never failing the (already-completed) turn. Default-OFF is
+untouched — shadow flag off ⇒ no task, no provenance read, nothing. Pins:
+`tests/unit/services/intent_service/test_inversion_counterfactual_1668.py`
+(mode branching with the router explosive on the counterfactual path, leg
+honesty, the ≤1-call cost ceiling, agree/disagree/incomparable, exploding legs,
+provenance one-shot + stale-clear + publish-on-dispatch-and-fall-through).
 
 **Phase 2.2 prerequisites landed 2026-08-19 (issues 1665 + 1664, gate-doc
 caveats)**: (a) every #846 arm site now stores its ALREADY-RENDERED ask on

@@ -755,6 +755,15 @@ class IntentService:
         # NOTHING here (no-execution boundary — this module never imports the
         # router module or its decision type; enforced by
         # TestInversionShadowNoExecutionBoundary).
+        #
+        # #1668: the observer now has TWO modes, chosen by how THIS turn was
+        # routed. Legacy-routed → the router shadow, unchanged. Inversion-routed
+        # (the Phase 2.2 live consult chose the rail key) → the LEGACY
+        # COUNTERFACTUAL: re-running the router there would only score its own
+        # self-agreement, so the observer computes what the legacy chain would
+        # have done instead. Cost is unchanged — the counterfactual REPLACES the
+        # router call and short-circuits on the deterministic legs, so it makes
+        # at most the one LLM call the re-route was already making.
         try:
             from services.intent_service.inversion_shadow import (
                 maybe_schedule_shadow_check,
@@ -770,6 +779,7 @@ class IntentService:
             # Shadow-only: the snapshot feeds the observer, never live routing
             # (that is Phase 2.2, behind its own reviewed flip).
             snapshot = None
+            live_route = None
             if shadow_enabled():
                 from services.intent_service.snapshot_assembly import (
                     assemble_session_snapshot,
@@ -779,6 +789,20 @@ class IntentService:
                     effective_session_id, effective_user_id, self
                 )
 
+                # #1668: this turn's routing provenance, taken from the live
+                # consult's OWN record (inversion_live publishes it; nothing
+                # here re-derives it) and handed to the observer EXPLICITLY.
+                # It selects the observer's mode: an inversion-routed turn gets
+                # the LEGACY COUNTERFACTUAL (what the old chain would have done
+                # — the flip wave's signal) instead of a router re-route whose
+                # only finding would be self-agreement. Read inside the
+                # shadow_enabled() gate so the default-OFF path stays untouched.
+                from services.intent_service.inversion_live import (
+                    consume_live_route_provenance,
+                )
+
+                live_route = consume_live_route_provenance()
+
             maybe_schedule_shadow_check(
                 message,
                 self._resolve_turn_intent_label(getattr(result, "intent_data", None)),
@@ -787,6 +811,11 @@ class IntentService:
                 llm_service=getattr(self.intent_classifier, "_llm", None),
                 offer_service=self.workflow_offer_service,
                 snapshot=snapshot,
+                live_route=live_route,
+                # Counterfactual-only: the LLM leg's classifier. Unused on the
+                # router-shadow path, and unused even here unless BOTH
+                # deterministic legs decline.
+                classifier=self.intent_classifier,
             )
         except Exception:  # silent-ok: observer scheduling must never break a turn; the task logs its own failures (shadow_route_check_failed)
             pass

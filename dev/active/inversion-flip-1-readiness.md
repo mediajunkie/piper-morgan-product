@@ -49,11 +49,15 @@ is env-driven rather than a config file or a database row.
 
 ## Honest gaps before flipping (both known, neither blocking a READ flip)
 
-- **#1668**: with both flags on, the sampled shadow re-routes an already-inversion-routed turn —
-  a redundant call, and self-agreement isn't signal. **Design lean (Lead, recorded 2026-08-20):
-  don't just skip it — REPURPOSE it, so on inversion-routed turns the shadow computes what the
-  LEGACY chain would have done. That converts a wasted call into the flip's own safety
-  instrument.** Deserves a fresh session; banked deliberately, trigger = tomorrow's fires.
+- ~~**#1668**~~ **CLOSED-PENDING-REVIEW 2026-08-21 — the repurpose shipped.** On an
+  inversion-routed turn the sampled shadow now computes the LEGACY counterfactual instead of
+  re-routing (`shadow_legacy_counterfactual_*` events; legacy-routed turns keep the router
+  shadow byte-identically). Cost did not grow: the counterfactual replaces the re-route and
+  short-circuits on the deterministic legs, so it spends 0 LLM calls when the pre-classifier or
+  multi-intent rules claim and 1 when they don't — never more than the call it replaced. The
+  line names which legs ran and which were skipped (m-43); the counterfactual is the unscoped,
+  uncached, single-intent legacy route, not the full `classify_multiple`. **This is now watch
+  item 2's real instrument**: during a flip, disagreement rows are the corpus artifact.
 - **#1670**: the not-live telemetry bucket names predate the flip-group widening, so a rejected
   turn's logged reason can under-describe why. Cosmetic for reading logs, real for corpus
   analysis; a corpus migration.
