@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-22 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-22 (16:37 WORK)
 
 **Cron**: `7f6bb205` · `7 10,16,22` LEAN · **auto-expires ~2026-08-26** — approaching the 48h
 proactive-rotation window; check next fire.
@@ -16,6 +16,15 @@ this turn" rule, commit `c174afdb1`), declined the PreToolUse freshness gate and
 enforcement with reasoning, and deferred `verify-fire.sh` to Pard's mediajunkie pilot rather than
 duplicating. Full reasoning: `docs/internal/architecture/decisions/decisions.log` (08-22 10:38 PT).
 Replied to Exec (cc PM, Pard). No further action needed unless someone pushes back.
+
+## ✅ Welfare-criteria tracker was stale — corrected (08-22, commit `efae5da0e`)
+
+Standing-items #14 said "full implementation not yet started" since Jul 3; six weeks of
+freeze-watchdog + cohort-attention-rollup work had actually satisfied most of it (Q2/Q3, C1-C3,
+F3, B/B-bis) without anyone re-checking the tracker line. Verified criterion-by-criterion against
+the spec and shipped code, corrected the row, flagged to HOST as co-owner. Genuinely remaining:
+Criterion E (consequential-action instrumentation, awaiting HOST's UX read since 7/4) and F2
+(cross-pair thread staleness, unscoped). Nothing further needed from CIO right now.
 
 ## Four items now genuinely awaiting PM — none blocking other work
 
