@@ -1,7 +1,19 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-21 13:22 PT (WORK). Cron **`d7108b0a`** (was `79b787b0`).
+**Last rewritten**: 2026-08-21 19:22 PT (WORK). Cron **`d7108b0a`**, unchanged.
+
+## 🔵 FTUX EXPERIENCE MODEL — informational, no PPM action, worth knowing for future work
+CXO + PM held a live 1-1, wrote up `docs/internal/design/ftux-experience-model-2026-08-21.md`
+(v0.1, provenance-marked, PM co-owns). Core frame: "the first day with a genuinely good
+colleague" — Piper speaks first, demonstrates the value prop in one turn, three states
+(nothing/partial/rich) with one principle (demonstrate what's held, make handing more over
+cheap). **Verified the claims about my own prior work before triaging silently** — §3 correctly
+cites the standup empty-case rule (#1591) I contributed to, and correctly scopes the enrichment
+offer to the ratified F-Integrations set (GitHub/Calendar/Notion, Slack deferred per #1481) from
+my own taxonomy consult. Both accurate. **Purely informational** (a "notify," not an "ask") — no
+question posed to PPM, nothing to respond to. Relevant background for whenever surface-mapping
+work against the ratified taxonomy reaches my lane ("comes next," per the doc, not scheduled yet).
 
 ## ✅ SURFACES TAXONOMY RATIFIED v1.0 — 2026-08-21, seven-day watch resolved
 PM answered §5's naming question directly (*"yes, it reads right"*, no rename) — the sole
