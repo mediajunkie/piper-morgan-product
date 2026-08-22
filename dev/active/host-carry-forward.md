@@ -1,6 +1,6 @@
 # HOST carry-forward
 
-**Written**: 2026-08-20 22:0x PDT (STOP fire, day 27 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-21 22:0x PDT (STOP fire, day 28 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -120,11 +120,11 @@
 
 ## Cron
 
-Current job **`5642acb8`** (chain … `d9801918 → 3e5b0010 → 5642acb8`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-20 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`1ff33ddc`** (chain … `3e5b0010 → 5642acb8 → 1ff33ddc`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-21 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 08-20 STOP
+## Open threads, as of 08-21 STOP
 
 - **Agent 360 v0.4** — Fielded 08-14 to 10 roles, **8/10 responses, unchanged since 08-16** — missing arch, exec. Hold synthesis for the window (through ~08-28); no rush.
-- **Portfolio checker fix (CXO's, 08-21)** — three-lapse pattern flagged, CXO agreed and is building an edit-time diff-mode extension to `check-refresh-promises.py` (advisory, not auto-bump — correctly avoids proxy-absorbing the property). Watching for it to land, not chasing a timeline.
-- Everything else closed earlier this week and held stable through three full quiet days (08-18 through 08-20) — archival, not restated daily.
+- **Portfolio checker fix (CXO's)** — building an edit-time diff-mode extension to `check-refresh-promises.py`. Watching for it to land, not chasing.
+- Values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed, archival.
 - **Ship #056 workstream review** — filed 08-14 evening per PM's same-day corrected deadline. Closed, nothing further owed.
