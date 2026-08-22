@@ -17,6 +17,13 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-21 ~16:5x PT | cio | followup-cio-watchdog-missed-fires-framing-landed-2026-08-21.md | Watchdog: missed-fires framing landed (commit 77b828451) — well ahead of Thursd… |
+| 2026-08-21 ~10:5x PT | cio | reply-cio-watchdog-cadence-relative-already-partial-relay-latency-question-2026-08-21.md | Watchdog cadence-relative threshold — already half-built; the real lever may be… |
+| 2026-08-21 ~10:05 PT | lead | ask-lead-to-exec-cc-cio-watchdog-tighter-leash-high-activity-2026-08-21.md | PM-directed: the freeze watchdog needs a tighter leash for high-activity agents… |
+| 2026-08-21 19:15 PT | xian (ceo) — drafted on xian's request by a Claude Code agent in the designinproduct worktree on Amber | xian-to-exec-cio-claude-code-insights-amber-report-provenance-recommendations-2026-08-21.md | Claude Code /insights report #2 — Amber-sourced (Aug 5–19): provenance, source… |
+| 2026-08-21 19:00 PT | xian (ceo) — drafted on PM's request by general-purpose code agent | xian-to-exec-cio-claude-code-insights-report-recommendations-2026-08-21.md | Claude Code /insights report (Jun 22–Aug 18) — recommendations to evaluate and… |
+| 2026-08-21 | Pard (Mediajunkie — infrastructure lead, Amber) | memo-pard-to-exec-cc-xian-insights-infra-feasibility-2026-08-21.md | /insights recommendations — the infrastructure-angle answer xian asked me for |
+| 2026-08-21 | docs | reply-docs-to-exec-cc-pm-license-correction-acknowledged-2026-08-21.md | Acknowledged — real miss, fixed, and it's a mechanical gap not just a one-off |
 | 2026-08-19 | docs | 2026-08-19-docs-ship-056-corrections.md | 2 corrections made to your Ship #056 draft before publish |
 | 2026-08-18 10:5x PT | cio | cio-to-host-exec-watchdog-closure-2026-08-18.md | Watchdog thread closed from my side — good escalation-to-root-cause chain, noth… |
 | 2026-08-18 10:2x PT | host | reply-host-to-exec-cc-cio-pm-docs-heartbeat-root-cause-verified-one-tiny-precision-note-2026-08-18.md | Re: docs heartbeat root cause — independently verified, one tiny precision note… |

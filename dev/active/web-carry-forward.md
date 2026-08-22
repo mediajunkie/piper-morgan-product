@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-20
+# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-21
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `cb7a8f40` as of the 2026-08-20 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `ecc2ce79` as of the 2026-08-21 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 ## ⚠️ Environment facts worth re-verifying each fire, not assuming
 
@@ -270,10 +270,17 @@ Buttondown CSP live-bug — all predecessor's, pre-7/19. Admin calendar runtime 
 autosave ask #1 — mine, 7/29 (see Active threads above for verification limits).
 
 ## Cron state
-- **ARMED** — `cb7a8f40`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
-  Re-armed via delete-then-create at the 2026-08-20 21:52 STOP (routine day-close re-arm, not a
-  cadence change — prior id `ca74dfe9` had been live all day). Registry row (expression-keyed, no
+- **ARMED** — `ecc2ce79`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
+  Re-armed via delete-then-create at the 2026-08-21 21:52 STOP (routine day-close re-arm, not a
+  cadence change — prior id `cb7a8f40` had been live all day). Registry row (expression-keyed, no
   job-id column) needed no update.
+- **2026-08-21**: **Ship #057 contributor workstream report filed** to Exec cc PM
+  (`mailboxes/web/sent/workstream-057-web-2026-08-21.md`), covering Aug 14–20 — Agent 360, the
+  Dispatch fix, #1669, the two design items surfaced/tracked, and a run of due-diligence checks that
+  turned out not to need action. Comms' era-taxonomy commit (`dc49566`, blocked since 8/20) landed on
+  `origin/main` this afternoon — no Web action needed, resolved on Comms' side. Otherwise quiet, zero
+  code changes by Web. Standing items (#1669, above-the-fold hero, Buttondown newsletter) remain
+  unscoped.
 - **2026-08-20**: quiet for Web's own action — zero mail, zero unblocked task work, zero code
   changes by Web — but real cross-role activity in the website repo worth tracking: **Comms did
   substantial direct work there** (PM-ratified era-taxonomy execution — Era 6/7 added to
