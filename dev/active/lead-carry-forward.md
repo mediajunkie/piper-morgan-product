@@ -26,8 +26,10 @@ _Rewritten 2026-08-19 ~21:50 PT (Phase 2.2 scaffold complete, dark)._
   tracker current) · deploy word for the staged post-v60 pile (1649-1651 shipped in v59... v60 was
   last; staged since: 1665/1664/1666 + Phase 2 dark scaffold — all invisible-until-flagged or
   agent-facing except the delete confirm, which PM will naturally hit)
-- The CXO + PA chats (preps + replies delivered; PA crack verified half-healed) → then MVP triage
-  cut with PPM
+- CXO CHAT DONE (8/21): FTUX model aligned + written (ftux-experience-model-2026-08-21.md) — no
+  gate changes, no Lead builds scheduled; surface mapping next; 'Radar never empty' likely
+  resolves #1625's design question (noted on the issue). PA/BYOC chat is NEXT (PM closing that
+  loop; my brief + CXO's model are its named inputs) → then MVP triage cut with PPM
 - 1658 parity umbrella (PPM scoping)
 
 ## Standing
