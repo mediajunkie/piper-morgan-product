@@ -70,6 +70,7 @@ from services.intent_service.standup_todo_offer import (
 )
 from services.intent_service.todo_handlers import (
     _TIME_REASK_TAIL,
+    REMINDER_TASK_QUESTION_KIND,
     REMINDER_TIME_QUESTION_KIND,
     TodoIntentHandlers,
     build_reminder_time_offer,
@@ -758,6 +759,7 @@ class TestKindLiteralDriftPins:
         assert rc.CLEAR_VERB_QUESTION_KIND not in dc._CONFIRM_KINDS
         assert rc.CLEAR_CORRECTION_KIND not in dc._CONFIRM_KINDS
         assert REMINDER_TIME_QUESTION_KIND not in dc._CONFIRM_KINDS
+        assert REMINDER_TASK_QUESTION_KIND not in dc._CONFIRM_KINDS  # #1654
         assert STANDUP_TODO_OFFER_KIND not in dc._CONFIRM_KINDS
         assert INVITE_KIND not in dc._CONFIRM_KINDS
         assert VERIFY_INFERENCE_KIND not in dc._CONFIRM_KINDS
