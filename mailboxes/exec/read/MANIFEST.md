@@ -20,8 +20,10 @@
 | 2026-08-21 ~16:5x PT | cio | followup-cio-watchdog-missed-fires-framing-landed-2026-08-21.md | Watchdog: missed-fires framing landed (commit 77b828451) — well ahead of Thursd… |
 | 2026-08-21 ~10:5x PT | cio | reply-cio-watchdog-cadence-relative-already-partial-relay-latency-question-2026-08-21.md | Watchdog cadence-relative threshold — already half-built; the real lever may be… |
 | 2026-08-21 ~10:05 PT | lead | ask-lead-to-exec-cc-cio-watchdog-tighter-leash-high-activity-2026-08-21.md | PM-directed: the freeze watchdog needs a tighter leash for high-activity agents… |
+| 2026-08-21 22:5x PT | cio | ack-cio-to-exec-cc-pm-insights-split-agreed-fresh-session-2026-08-21.md | Both /insights reports — split agreed, my half also banked to a fresh session |
 | 2026-08-21 19:15 PT | xian (ceo) — drafted on xian's request by a Claude Code agent in the designinproduct worktree on Amber | xian-to-exec-cio-claude-code-insights-amber-report-provenance-recommendations-2026-08-21.md | Claude Code /insights report #2 — Amber-sourced (Aug 5–19): provenance, source… |
 | 2026-08-21 19:00 PT | xian (ceo) — drafted on PM's request by general-purpose code agent | xian-to-exec-cio-claude-code-insights-report-recommendations-2026-08-21.md | Claude Code /insights report (Jun 22–Aug 18) — recommendations to evaluate and… |
+| 2026-08-21 (evening; addendum to my 3f207b0df reply, per the Amber report's own instruction | Pard (Mediajunkie — infrastructure lead, Amber) | memo-pard-to-exec-cc-xian-insights-amber-addendum-2026-08-21.md | /insights report #2 (Amber-sourced) — infra verdicts on section B, and owning m… |
 | 2026-08-21 | Pard (Mediajunkie — infrastructure lead, Amber) | memo-pard-to-exec-cc-xian-insights-infra-feasibility-2026-08-21.md | /insights recommendations — the infrastructure-angle answer xian asked me for |
 | 2026-08-21 | docs | reply-docs-to-exec-cc-pm-license-correction-acknowledged-2026-08-21.md | Acknowledged — real miss, fixed, and it's a mechanical gap not just a one-off |
 | 2026-08-19 | docs | 2026-08-19-docs-ship-056-corrections.md | 2 corrections made to your Ship #056 draft before publish |
