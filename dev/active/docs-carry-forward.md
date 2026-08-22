@@ -1,19 +1,30 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-21 22:3x PDT (DAY-CLOSED — quiet day after a substantive morning: Friday
-omnibus backfill, carry-forward pruned, a real self-caught miss fixed, Ship #057 report sent)
-**Session log**: `dev/2026/08/21/2026-08-21-0727-docs-code-log.md` (closed, `DAY-CLOSED` marker
-written).
-**Cron**: `4111b9b3` (STOP re-arm, delete-then-create, `CronList`-verified sole job), fresh 7-day
-window to ~08-28. Registry row current.
+**Updated**: 2026-08-22 ~10:3x PDT (Fire 2 — Trust Gate published + 2 PM process questions
+answered with primary-source evidence)
+**Session log**: `dev/2026/08/22/2026-08-22-0720-docs-code-log.md` (open).
+**Cron**: `4111b9b3`, unchanged today, healthy through ~08-28.
 
-**Nothing carried forward as blocking.** Omnibus chain continuous through 08-20. This file was
-pruned this morning (440→~65 lines, old content preserved in git log + dated session/omnibus
-logs) — keeping it lean going forward rather than letting it re-accumulate. One standing
-discipline note from today, worth keeping live rather than folding into history: **every
-carried-forward item needs the same live-verification every time it's carried, whether or not it
-has a GitHub issue behind it** — the items without issues are exactly the ones that go stale
-silently (found the hard way today when Exec caught a resolved item I'd just re-carried).
+**Nothing carried forward as blocking.** "The Trust Gate That Wasn't" published, fact-checked
+(ADR-072 D5 verbatim match incl. its ratification date matching the draft's dateline), live-
+verified, syndicated status set. Caught and fixed my own repeat of Wednesday's doubled-apostrophe
+defect before committing — same class, this time typed from habit rather than copied from
+frontmatter. Applied the archive-commit fix noted 2 days ago (drop old paths from `git add` after
+`git mv`) — landed clean in one shot for the first time this week.
+
+**PM asked whether the omnibus was current when their Friday weekly review with Exec started, and
+whether the Monday audit happened.** Both confirmed with primary-source evidence (Exec's 08-21 log
+for the review timing — 6:38 PM, well after my morning backfill; `gh issue view 1643` for the
+audit). Offered to proactively flag omnibus status before a review starts rather than answer
+after the fact — no action taken yet, just offered; pick up if PM takes me up on it.
+
+**Watch, low-priority (recurring theme)**: this carry-forward file was pruned Friday and is still
+lean. Keep it that way — write fresh entries, don't let old detail accumulate past what's still
+actionable.
+
+**Standing discipline, still live**: every carried-forward item needs the same live-verification
+every time it's carried, whether or not it has a GitHub issue behind it — the items without issues
+are exactly the ones that go stale silently (Exec caught one 08-21).
 
 ## Awaiting PM (genuine, not urgent, don't chase)
 
@@ -41,7 +52,7 @@ silently (found the hard way today when Exec caught a resolved item I'd just re-
 - **Every Monday**: Weekly Docs Audit.
 - **First Monday of month**: Monthly Housekeeping Audit (#1486, next ~09-01).
 - **Every Friday, EARLY**: omnibus logs Fri–Thu (the designed weekly catch-up — worked as intended
-  today, closing a 2-day gap cleanly; not evidence of a failing daily cadence).
+  08-21, closing a 2-day gap cleanly; not evidence of a failing daily cadence).
 - **First Tuesday**: Skill-Candidates Review — not mine (PM+Exec+CIO).
 - **Not mine otherwise**: Role Health Check (4-weekly, HOST).
 
