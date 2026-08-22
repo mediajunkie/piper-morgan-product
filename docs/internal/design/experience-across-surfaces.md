@@ -66,8 +66,9 @@ in documents nobody opens while making a decision.** This one is meant to be sho
 
 ## 3. What the one experience is
 
-✏️ **CXO's formulation, pending PM** — offered because the invariant needs a positive statement, not only
-a prohibition:
+✅ **RATIFIED 2026-08-21 (PM, live 1-1)** — *"your 3 is good, aligns well."* PM aligned it explicitly with
+the public website promise, 📌 *"Piper holds the threads so you can focus on the decision"* — the two are
+the same claim at two registers (internal model-language vs. outward promise-language). The formulation:
 
 > **Piper knows your work as things, not as text — and meets you wherever you already are, in the idiom of
 > that place.**
@@ -134,15 +135,23 @@ safety/audit-affordance).
 this feel like a reasonable thing a thoughtful colleague would say or do?* — **asked identically of a card,
 a Slack message, a notification, and a tool result.**
 
-✏️ **A surface-specific corollary, pending PM**: *a person who uses Piper in two places should recognise it
-as the same colleague.* **Consistency of character, not of layout.**
+✅ **A surface-specific corollary, RATIFIED 2026-08-21 (PM: "6 is exactly right")**: *a person who uses
+Piper in two places should recognise it as the same colleague.* **Consistency of character, not of layout.**
 
-## 7. Open
+## 7. Open — three of four resolved 2026-08-21
 
-- **Is Surface 1 (the history sidebar — Radar's rendering) in the 1.0 five?** The schedule says yes; the
-  written justification is a June-5 rating of a history list, **two weeks older than Radar**. With PM.
-- **Surface 3** — name or strike. With PM, via PPM.
-- **Whether §3's formulation and §4's "must not" column are right.** ✏️ Mine, pending PM.
+- ✅ **Is Surface 1 (the history sidebar — Radar's rendering) in the 1.0 five?** ANSWERED by the ratified
+  surfaces taxonomy (`surfaces-taxonomy-2026-08-16.md` v1.0, PM-ratified 2026-08-21): **F-History is in
+  the 1.0 set** ("Yes, after sidebar reconciliation," per the Round-2 CEO ratification the taxonomy
+  re-grounds).
+- ✅ **Surface 3** — resolved by the same taxonomy: **F-Settings, real and CEO-ratified since May**, never a
+  phantom; the "phantom" read came from PDR-005's citation gap, now named and fixed-by-pointer.
+- ✅ **§3's formulation and §6's corollary** — both RATIFIED 2026-08-21 (PM, live 1-1); see the sections.
+- ✏️ **The one remaining unratified item: §4's "must not be asked to" column** — still CXO's reading,
+  pending PM. (Also: §4's platform rows use a deliberately coarser grain than the ratified taxonomy's
+  Axis 2 — per §6 of that doc, this is acceptable if stated, and it is now stated: this doc is about *felt
+  experience*, the taxonomy about build/architecture scoping; prefer the taxonomy's platform names in any
+  new work.)
 
 ---
 
