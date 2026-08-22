@@ -22,6 +22,7 @@ from services.intent_service.standup_todo_offer import (
     run_standup_complete_todo_workflow,
 )
 from services.intent_service.todo_handlers import (
+    run_clarify_reminder_task_workflow,
     run_clarify_reminder_time_workflow,
 )
 from services.intent_service.workflow_dispatcher import (
@@ -1536,6 +1537,20 @@ def register_default_workflows() -> None:
             entry_point=run_clarify_reminder_time_workflow,
             effect=EffectClass.READ,
             description="Re-ask the #1648 reminder time question on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #1654: offer-seam-only landing for the reminder TASK question (the
+        # carrier armed by handle_create_reminder's honest no-task clarify —
+        # #1648's class one question earlier). effect: READ — a bare "yes"
+        # against "what should I remind you about?" re-asks and re-arms; the
+        # REAL write happens on an ANSWERED turn, handled kind-specifically
+        # at the offer seam (todo_handlers.handle_reminder_task_turn).
+        # action_triggered=False: the classifier/rail can never emit it (the
+        # #1605/#1648 clarify precedent).
+        "clarify_reminder_task": WorkflowEntry(
+            entry_point=run_clarify_reminder_task_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #1654 reminder task question on a bare affirmative",
             requires_context=["pending_action", "intent_service"],
         ),
         "update_document": document_update_entry,

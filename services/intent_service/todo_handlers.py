@@ -140,6 +140,44 @@ def _has_time_signal(message: str) -> bool:
     return bool(_TIME_SIGNAL_RE.search(message))
 
 
+def _strip_trailing_time_expressions(text: str) -> str:
+    """Shed trailing punctuation and time expressions so the saved todo text
+    is clean ("buy milk at 3pm tomorrow." → "buy milk"). Loop until stable:
+    the tail sheds ".", then "at 3pm", then "tomorrow" (#1490). Factored
+    from _extract_reminder_text so the #1654 task-answer seam and the
+    primary extraction share one strip."""
+    while text:
+        stripped = text.rstrip(".,!?;: ").strip()
+        stripped = re.sub(
+            rf"\s+{TodoIntentHandlers._TIME_EXPR}\s*$",
+            "",
+            stripped,
+            flags=re.IGNORECASE,
+        ).strip()
+        if stripped == text:
+            break
+        text = stripped
+    return text
+
+
+_PURE_TIME_RE = None  # compiled lazily — needs TodoIntentHandlers._TIME_EXPR
+
+
+def _is_pure_time_expression(text: str) -> bool:
+    """Is the WHOLE text just time expressions ("at 3pm", "tomorrow at 9")?
+    #1654: a pure-time answer to the TASK question means the task is still
+    missing — it must re-ask, never save the time expression AS the task.
+    (The trailing strip can't catch it: a time at the very start of the
+    string has no preceding whitespace for the tail regex to anchor on.)"""
+    global _PURE_TIME_RE
+    if _PURE_TIME_RE is None:
+        unit = rf"(?:{TodoIntentHandlers._TIME_EXPR}|today|tonight)"
+        _PURE_TIME_RE = re.compile(
+            rf"\s*{unit}(?:[\s,]+{unit})*[\s.!?]*", re.IGNORECASE
+        )
+    return bool(_PURE_TIME_RE.fullmatch(text))
+
+
 def _reminder_saved_message(text: str, reminder_dt, time_label: str) -> str:
     """The one true save confirmation (📅 line included) — composed only
     beside an actual row write. Factored from handle_create_reminder so the
@@ -169,6 +207,63 @@ def _reminder_saved_message(text: str, reminder_dt, time_label: str) -> str:
         f"It lives with your todos (you'll see it on the Todos page) "
         f"and I'll surface it in conversation once it's due."
     )
+
+
+# --- #1654: the reminder task-clarify carrier -------------------------------
+#
+# #1648's class, one question earlier: handle_create_reminder's OTHER honest
+# ask — the no-task clarify ("I didn't catch what you'd like to be reminded
+# about", the one PM hit twice on 08-18 via the colon-form parse misses) —
+# armed nothing, so its answer (a bare task phrase) orphaned into the routing
+# chain. Same carrier treatment, task-question kind: the ask ARMS a pending
+# offer holding the ORIGINAL message; the next turn's answer binds as the
+# TASK. Then either the time is already known from the original message
+# (rare — e.g. "remind me at 3pm", where a time parsed but the task didn't)
+# and the REAL save runs, or the flow chains into the EXISTING #1648 time
+# question. The colon-form PARSE miss itself stays #1606/corpus — this
+# carrier only guarantees the ask, once fired, holds its answer.
+
+REMINDER_TASK_QUESTION_KIND = "reminder_task_question"
+
+# Generic-accept landing (a bare "yes" doesn't answer "what?") — registered
+# action_triggered=False in workflow_entries (the #1605/#1648 clarify
+# precedent).
+CLARIFY_REMINDER_TASK_WORKFLOW = "clarify_reminder_task"
+
+# #1665: ONE render of the time ask, shared by the primary time-clarify
+# branch (#1648) and the #1654 chain arm — stored on the armed record
+# verbatim, embedded in the reply, never re-rendered.
+_TIME_ASK = (
+    "When should I remind you? "
+    "(For example: 'at 3pm tomorrow' or 'in 2 hours'.)"
+)
+
+
+def build_reminder_task_offer(
+    original_message: str, user_id, question=None
+) -> dict:
+    """The #846 pending-offer record arming the task question (#1654).
+
+    Carries the ORIGINAL message — strings only, so the payload snapshots
+    cleanly — letting the answer turn recover a time the user already gave
+    ("remind me at 3pm"); the time is re-parsed at answer time, never
+    serialized. ``question`` (#1665): the ALREADY-RENDERED ask the caller
+    returns this turn — stored verbatim, never re-rendered. An open
+    question, NOT a yes/no (pinned outside the #1664 confirm-kind set)."""
+    return {
+        "workflow_type": CLARIFY_REMINDER_TASK_WORKFLOW,
+        "question": question,
+        "pending_action": {
+            "kind": REMINDER_TASK_QUESTION_KIND,
+            "action": "create_reminder",
+            "original_message": original_message,
+            "user_id": str(user_id) if user_id else None,
+            "summary": "set a reminder",
+        },
+        "decline_message": (
+            "Okay — I haven't set a reminder. Nothing was saved."
+        ),
+    }
 
 
 def build_reminder_time_offer(task_text: str, user_id, question=None) -> dict:
@@ -322,6 +417,34 @@ class TodoIntentHandlers:
                 session_id=session_id,
             )
 
+    def _arm_task_question(
+        self, intent_service, session_id: str, user_id, original_message: str,
+        question: Optional[str] = None,
+    ) -> None:
+        """#1654: arm the reminder task-clarify carrier beside the honest
+        no-task ask (the #1648 shape, one question earlier), so the answer
+        turn binds at the offer seam instead of orphaning into the routing
+        chain. Best-effort: a store failure is logged and the ask still goes
+        out — the copy never claims anything was armed. ``question``
+        (#1665): the rendered ask the caller is about to return, stored on
+        the record."""
+        if intent_service is None or not session_id:
+            return
+        try:
+            intent_service.workflow_offer_service.set_pending_offer(
+                session_id,
+                build_reminder_task_offer(
+                    original_message, user_id, question=question
+                ),
+                user_id=str(user_id) if user_id else None,
+            )
+        except Exception as e:  # silent-ok: #1654 — arming is additive; the honest ask must go out regardless; logged ERROR
+            logger.error(
+                "reminder_task_question_arm_failed",
+                error=str(e),
+                session_id=session_id,
+            )
+
     async def handle_create_reminder(
         self,
         intent: Intent,
@@ -350,11 +473,23 @@ class TodoIntentHandlers:
         # Extract reminder text (strip "remind me to/about", "set a reminder to", etc.)
         text = self._extract_reminder_text(original_message)
         if not text:
-            return (
+            # #1654: the no-task clarify is #1648's class one question
+            # earlier — it must ARM the task-question carrier so the answer
+            # (a bare task phrase) binds at the offer seam, never orphans
+            # into the routing chain (PM hit this twice on 08-18 via the
+            # colon-form parse misses; the parse miss itself stays #1606).
+            # #1665: rendered ONCE, stored on the armed record, returned.
+            ask = (
                 "I didn't catch what you'd like to be reminded about. "
-                "Try: 'remind me to review PRs tomorrow' or "
-                "'remind me to check in with the team in 2 hours'."
+                "Tell me the task (for example: 'review the beta notes'), "
+                "or give me the whole thing — 'remind me to check in with "
+                "the team in 2 hours'."
             )
+            self._arm_task_question(
+                intent_service, session_id, user_id, original_message,
+                question=ask,
+            )
+            return ask
 
         # Parse time from message
         reminder_dt, time_label = parse_reminder_time(original_message)
@@ -390,10 +525,7 @@ class TodoIntentHandlers:
                     f"I caught the task — **{text}** — but {passed_time} today "
                     f"has already passed on my clock. {ask}"
                 )
-            ask = (
-                "When should I remind you? "
-                "(For example: 'at 3pm tomorrow' or 'in 2 hours'.)"
-            )
+            ask = _TIME_ASK  # #1665: one render, shared with the #1654 chain
             self._arm_time_question(
                 intent_service, session_id, user_id, text, question=ask
             )
@@ -495,21 +627,10 @@ class TodoIntentHandlers:
         for pattern in patterns:
             match = re.search(pattern, message_lower)
             if match:
-                text = match.group(1).strip()
                 # Strip trailing punctuation and time expressions so the todo
-                # text is clean. Loop until stable: "review PRs tomorrow at
-                # 3pm." sheds ".", then "at 3pm", then "tomorrow" (#1490).
-                while text:
-                    stripped = text.rstrip(".,!?;: ").strip()
-                    stripped = re.sub(
-                        rf"\s+{time_expr}\s*$",
-                        "",
-                        stripped,
-                        flags=re.IGNORECASE,
-                    ).strip()
-                    if stripped == text:
-                        break
-                    text = stripped
+                # text is clean (#1490; shared with the #1654 task-answer
+                # seam via the module-level helper).
+                text = _strip_trailing_time_expressions(match.group(1).strip())
                 if text:
                     return text
 
@@ -1206,3 +1327,361 @@ async def run_clarify_reminder_time_workflow(
     }
     rearmed = _rearm_time_question(intent_service, session_id, user_id, offer)
     return _time_reask(task_text, "I still need a time for it.", rearmed)
+
+
+# --- #1654: the reminder task-question turn handler --------------------------
+
+
+# #1665: the re-ask turns' open question — one constant, embedded in the
+# re-ask reply AND stored on the re-armed record (same string, no drift).
+_TASK_REASK_TAIL = (
+    "Tell me what the reminder should say (for example: "
+    "'review the beta notes'), or say 'no' to drop it."
+)
+
+
+def _rearm_task_question(
+    intent_service, session_id, user_id, pending_offer
+) -> bool:
+    """Re-arm the SAME offer (the pop already consumed it; a re-ask turn must
+    re-store it or the next answer has nothing to bind to). Returns False on
+    a store failure so the copy never claims a binding that isn't there.
+    #1665: the re-armed record's open question becomes the re-ask tail every
+    re-ask turn renders (set BEFORE the store — what's stored is what's said)."""
+    try:
+        pending_offer["question"] = _TASK_REASK_TAIL
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id, pending_offer, user_id=user_id
+        )
+        return True
+    except Exception as e:  # silent-ok: #1654 — a store failure must not crash the turn; logged ERROR, and callers keep the user-facing copy honest
+        logger.error("reminder_task_question_rearm_failed", error=str(e))
+        return False
+
+
+def _task_reask(detail: str, rearmed: bool) -> dict:
+    """The honest re-ask shape: nothing saved, here's why, here's what works."""
+    if rearmed:
+        tail = _TASK_REASK_TAIL
+    else:
+        tail = (
+            "I couldn't keep the question open either — ask me again "
+            "('remind me to … at …') and I'll set it fresh."
+        )
+    return {
+        "message": f"No reminder has been saved yet — {detail} {tail}",
+        "intent_data": {
+            "category": "execution",
+            "action": "create_reminder",
+            "reminder_task_question_pending": rearmed,
+            "reminder_task_reasked": True,
+        },
+        "requires_clarification": True,
+    }
+
+
+def _chain_time_question(
+    intent_service, session_id, user_id, task_text: str, detail: str = ""
+) -> dict:
+    """#1654 → #1648 chaining: the task just bound but no usable time exists
+    — arm the EXISTING time-question carrier (the same record the primary
+    time-clarify branch arms) and ask. The two-question recovery: task
+    answer here, time answer at handle_reminder_time_turn, REAL save there.
+    #1665: _TIME_ASK is rendered once, stored on the armed record, and
+    embedded verbatim in the reply."""
+    armed = True
+    try:
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id,
+            build_reminder_time_offer(task_text, user_id, question=_TIME_ASK),
+            user_id=str(user_id) if user_id else None,
+        )
+    except Exception as e:  # silent-ok: #1654 — a chain-arm failure must surface as the honest fallback tail below, never a crash; logged ERROR
+        logger.error(
+            "reminder_task_chain_arm_failed", error=str(e), session_id=session_id
+        )
+        armed = False
+    if armed:
+        tail = _TIME_ASK
+    else:
+        tail = (
+            "I couldn't keep the question open, though — ask me again "
+            f"('remind me to {task_text} at …') and I'll set it."
+        )
+    prefix = f"Got it — **{task_text}**. "
+    if detail:
+        prefix += f"{detail} "
+    return {
+        "message": prefix + tail,
+        "intent_data": {
+            "category": "execution",
+            "action": "create_reminder",
+            "reminder_task_bound": True,
+            "reminder_time_question_pending": armed,
+        },
+        "requires_clarification": True,
+    }
+
+
+async def handle_reminder_task_turn(
+    pending_offer: dict,
+    message: str,
+    *,
+    session_id: str,
+    user_id,
+    intent_service,
+) -> Optional[dict]:
+    """#1654 — kind-specific turn handling for a pending reminder TASK
+    question (the no-task clarify's carrier), run at the offer seam BEFORE
+    any classification surface (the #1605/#1648 sanctioned handler-internal
+    seam; the pop already happened).
+
+    Returns a ``{"message", "intent_data", ...}`` dict when this turn is
+    consumed here; ``None`` falls through to the generic offer flow
+    (declines and bare exits drop honestly via ``decline_message``; full
+    reminder restatements and pre-classifier-claimed commands abandon via
+    the pop and route normally).
+
+    Off-intent discrimination deviates from #1648's ``is_command_shaped``
+    DELIBERATELY: the task-answer space is arbitrary imperative phrases, and
+    the shared shape-read's verb heads (check/get/set/find/…) claim
+    legitimate task answers — "check in with the team" is this ask's own
+    example copy. The discriminator here is the pre-classifier's
+    DETERMINISTIC claim instead (probed 2026-08-22: it claims every product
+    command tried — "close issue #108", "list my reminders", "show my
+    todos", "what reminders do I have?" — and NO bare task phrase). Same
+    release-and-route-normally principle, at the granularity this answer
+    space needs. A command-ish turn the pre-classifier can't claim would
+    route to the LLM lane if released — exactly the orphan shape #1654
+    fixes — so it binds as a task instead (visible, declinable,
+    recoverable).
+
+    A bound task with no bindable time CHAINS into the EXISTING #1648 time
+    question; a time already known (from the original message — rare — or
+    given in the answer itself) saves for REAL: the same row write and 📅
+    copy the primary path composes, never an improvised confirmation.
+    """
+    from services.intent_service.destructive_confirm import detect_bare_exit
+    from services.intent_service.soft_invocation import detect_offer_response
+    from services.intent_service.temporal_utils import parse_reminder_time
+
+    payload = pending_offer.get("pending_action") or {}
+    original_message = (payload.get("original_message") or "").strip()
+    text = (message or "").strip()
+    if not text:
+        return None
+
+    # Principal binding (the #1605 discipline): the offer belongs to the user
+    # who asked — a different principal's turn must not save under it.
+    offer_user = payload.get("user_id")
+    if offer_user and user_id and str(user_id) != str(offer_user):
+        logger.warning(
+            "reminder_task_question_principal_mismatch",
+            offer_user=offer_user,
+            turn_user=str(user_id),
+        )
+        return {
+            "message": "Let's hold off on that — nothing has been saved.",
+            "intent_data": {
+                "category": "execution",
+                "action": "create_reminder",
+                "principal_mismatch": True,
+            },
+        }
+
+    if detect_bare_exit(text):
+        return None  # generic flow → honest decline via decline_message
+    resp = detect_offer_response(text)
+    if resp == "decline":
+        return None  # same honest decline path
+
+    if _REMINDER_RESTATEMENT_RE.search(text):
+        # A full restatement carries its own task (and possibly time) —
+        # abandon via the pop and let it route normally (deterministic
+        # pre-classifier claim; the full handler re-extracts both).
+        logger.info(
+            "reminder_task_question_restatement_released", session_id=session_id
+        )
+        return None
+
+    if resp == "accept":
+        # A bare "yes" (or an accept-led turn) doesn't name a task — the
+        # honest re-ask, never a silent abandon (#1648 direction 2).
+        rearmed = _rearm_task_question(
+            intent_service, session_id, user_id, pending_offer
+        )
+        logger.info(
+            "reminder_task_question_reasked",
+            session_id=session_id,
+            rearmed=rearmed,
+        )
+        return _task_reask("I still need to know what it's for.", rearmed)
+
+    # Off-intent: a turn the pre-classifier claims deterministically is
+    # another product command — release it (routes normally; the question is
+    # abandoned per the carrier's rules). See the docstring for why this is
+    # NOT is_command_shaped.
+    from services.intent_service.pre_classifier import PreClassifier
+
+    claimed = PreClassifier.pre_classify(text)
+    if claimed is not None:
+        logger.info(
+            "reminder_task_question_command_released",
+            session_id=session_id,
+            claimed_action=claimed.action,
+        )
+        return None
+
+    # The turn IS the task. Answers often echo the ask's phrasing — strip a
+    # leading "to "/"about " ("to buy milk" → "buy milk") — and may carry
+    # their own time ("buy milk at 3pm tomorrow"), which is shed from the
+    # saved text exactly as the primary extraction sheds it.
+    task_text = re.sub(r"^(?:to|about)\s+", "", text, flags=re.IGNORECASE)
+
+    if _is_pure_time_expression(task_text):
+        # A pure-time answer to the TASK question ("at 3pm"): the task is
+        # still missing — re-ask, never save a time expression AS the task.
+        # Checked BEFORE the trailing strip: stripping a time-only answer
+        # leaves a preposition residue ("at") that would bind as the task.
+        rearmed = _rearm_task_question(
+            intent_service, session_id, user_id, pending_offer
+        )
+        return _task_reask(
+            "that reads as a time, and I still need the task itself.", rearmed
+        )
+
+    answer_has_time = _has_time_signal(text)
+    answer_dt = None
+    answer_label = ""
+    if answer_has_time:
+        answer_dt, answer_label = parse_reminder_time(text)
+    task_text = _strip_trailing_time_expressions(task_text)
+
+    if not task_text or _is_pure_time_expression(task_text):
+        # Belt for residues the pre-strip check can't see.
+        rearmed = _rearm_task_question(
+            intent_service, session_id, user_id, pending_offer
+        )
+        return _task_reask(
+            "that reads as a time, and I still need the task itself.", rearmed
+        )
+
+    # Time resolution: the answer's own time wins (freshest), then the
+    # original message's (#1654's "already known (rare)" case) — each only
+    # when an explicit signal is present (#1490 invariant: never the
+    # parser's silent tomorrow-morning default). Explicit-but-unbindable
+    # chains with an honest echo; no signal anywhere chains with the plain
+    # ask.
+    if answer_has_time:
+        if answer_dt is None:
+            return _chain_time_question(
+                intent_service,
+                session_id,
+                user_id,
+                task_text,
+                detail=f'I couldn\'t work out the time from "{answer_label}".',
+            )
+        reminder_dt, time_label = answer_dt, answer_label
+    elif original_message and _has_time_signal(original_message):
+        orig_dt, orig_label = parse_reminder_time(original_message)
+        if orig_dt is None:
+            return _chain_time_question(
+                intent_service,
+                session_id,
+                user_id,
+                task_text,
+                detail=f'I couldn\'t work out the time from "{orig_label}".',
+            )
+        reminder_dt, time_label = orig_dt, orig_label
+    else:
+        return _chain_time_question(intent_service, session_id, user_id, task_text)
+
+    # The REAL save — the same write the primary path performs.
+    principal = user_id or offer_user
+    try:
+        user_uuid = UUID(str(principal))
+    except (ValueError, TypeError):
+        return {
+            "message": (
+                "I need you to be logged in to set reminders. "
+                "Nothing has been saved."
+            ),
+            "intent_data": {
+                "category": "execution",
+                "action": "create_reminder",
+                "error_type": "AuthenticationRequired",
+            },
+        }
+    try:
+        todo = await intent_service.todo_handlers.todo_service.create_todo(
+            user_id=user_uuid,
+            text=task_text,
+            priority="medium",
+            reminder_date=reminder_dt,
+            due_date=reminder_dt,
+        )
+    except Exception as e:  # silent-ok: #1654 — a failed write must surface as an HONEST failure (never a crash, never a success claim); logged ERROR + traceback
+        logger.error(
+            "reminder_task_question_save_failed",
+            error=str(e),
+            session_id=session_id,
+            exc_info=True,
+        )
+        # Both task and time are known here — hold the flow at the #1648
+        # time question (task stays bound), so the retry is one short
+        # answer away instead of restarting the whole two-question flow.
+        rearmed = _rearm_time_question(
+            intent_service,
+            session_id,
+            user_id,
+            build_reminder_time_offer(task_text, user_id),
+        )
+        return _time_reask(task_text, "I had trouble saving it just now.", rearmed)
+
+    logger.info(
+        "reminder_task_question_saved",
+        todo_id=str(todo.id),
+        reminder_date=str(reminder_dt),
+        time_label=time_label,
+        session_id=session_id,
+    )
+    return {
+        "message": _reminder_saved_message(task_text, reminder_dt, time_label),
+        "intent_data": {
+            "category": "execution",
+            "action": "create_reminder",
+            "confidence": 1.0,
+            "reminder_saved": True,
+        },
+    }
+
+
+async def run_clarify_reminder_task_workflow(
+    session_id: str,
+    user_id=None,
+    context=None,
+):
+    """Generic-accept landing for the task question (defense in depth — the
+    kind-specific seam claims accepts itself, but a registered landing means
+    a stray generic accept can never fall into _handle_unknown_intent and
+    reach the floor): re-ask and re-arm. effect: READ (nothing written; the
+    real write happens on an ANSWERED turn at the offer seam)."""
+    ctx = context or {}
+    payload = ctx.get("pending_action") or {}
+    intent_service = ctx.get("intent_service")
+    if payload.get("kind") != REMINDER_TASK_QUESTION_KIND or intent_service is None:
+        logger.error(
+            "clarify_reminder_task_missing_or_foreign_payload",
+            kind=payload.get("kind"),
+            has_intent_service=intent_service is not None,
+        )
+        return None
+    offer = {
+        "workflow_type": CLARIFY_REMINDER_TASK_WORKFLOW,
+        "pending_action": dict(payload),
+        "decline_message": (
+            "Okay — I haven't set a reminder. Nothing was saved."
+        ),
+    }
+    rearmed = _rearm_task_question(intent_service, session_id, user_id, offer)
+    return _task_reask("I still need to know what it's for.", rearmed)
