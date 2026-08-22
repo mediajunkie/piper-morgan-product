@@ -488,3 +488,8 @@ corpus:
     category: EXECUTION
     expected: REVIEW
     source: "PM live 2026-08-12 (#1603 session; multi-ordinal completion has no handler shape)"
+  - phrase: "Create a doc from this conversation"
+    category: SYNTHESIS
+    expected: REVIEW
+    source: "issue-1674 (canonical Q36 mode-4 drift, Run 14 2026-08-21: rail key create_content reachable by NO deterministic surface)"
+    notes: "History: floored at Run 11 (then-expected floor); routed action Run 15 + 08-01 baseline -> 1395-rev flipped expectation to action on those 2 observations; Run 14 floors again (synthesis) — an oscillator like Q22, no intervening routing-code change explains the flip-back. No surface ever claimed it: pre-classifier None, no prompt example teaches create_content, no verb-shim CREATE cell, no rail aliases, normalize_action has no create_ prefix. Inversion router 2026-08-22: route NONE @0.85 (no catalog op handles it) — defensible, since _handle_generate_content requires content_type in {status_report, readme_section, issue_template} and the asked capability (conversation->document export) exists nowhere; the historic action-routing was name-similarity and ended in a content_type clarification. REVIEW = is NONE/clarify the right destination, or should a real conversation-export op exist?"
