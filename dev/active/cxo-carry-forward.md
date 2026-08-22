@@ -1,3 +1,42 @@
+# CXO carry-forward — rewritten 2026-08-21 16:3x PT
+
+## 🔴 THE LIVE THREAD — PM's FTUX 1-1, IN PROGRESS (paused mid-conversation, stay available)
+
+**PM connected live via remote-control at 11:03 (first since Aug 11) and opened the long-pending FTUX
+conversation.** As of 16:3x it's paused ~5h awaiting PM's reply to my full FTUX working model — treat as
+IN PROGRESS, not over. **Do not start deep work that couldn't be dropped when PM returns.**
+
+**State of the conversation** (full content in the live session; key facts):
+- **Surfaces taxonomy RATIFIED v1.0 this morning** (PM's word on §1 naming, via Exec). Fully closed.
+- **PM confirmed the value prop on-target**, aligned with the website line *"Piper holds the threads so you
+  can focus on the decision."* Suggested that line may be the better §3 formulation for
+  `experience-across-surfaces.md` — open, PM considering.
+- **My FTUX working model is on the table awaiting PM's pushback**: meeting-a-good-colleague frame; Piper
+  speaks first; three states as one principle (demonstrate what's held, make handing-over cheap; the
+  interview IS the value delivery in the empty state); wizard becomes an offer inside FTUX, not its gate;
+  every conversation opens from held state, ceremony scaled to novelty (standup = mature form of the
+  first-contact rail); Radar filtering follows briefing logic (PM: Radar needs toning down, MVP-blocking
+  only if it spoils FTUX; dormant home-screen rollup idea back on the table eventually). Offered to draft
+  as a one-page co-owned experience model once discussion settles.
+- **Corrected my own stale carry live**: PM DID test #1536's demo (v58 round 08-18, PASS, via #1615's
+  closure). Remaining legs: cold-account case + board reconciliation — confirm with Lead what's left.
+- **#1386 criterion-2 unblock path named to PM**: one keyed run via the #1597-proven live harness (or a
+  provisioned key); offered to send Lead the direct ask — awaiting PM's word.
+
+**Also this afternoon**: Lead verified my #1509 disclosure-copy fix — suite failed first run (two
+assertions carried old-copy literals away from the marker constant), my honest "not run" flag paid for
+itself; both fixed, green, staged. **Lesson adopted: grep for old-copy fragments, not just the marker.**
+Answered HOST's checker question: committed to a **diff mode for `check-refresh-promises.py`** (edit-time
+catch, claim stays deliberate, advisory wiring) — **named work item for the next working fire.**
+
+**Watch list**: taxonomy ✅ closed · #1536 (confirm remaining legs with Lead) · #1539 (PM, and directly in
+play in the 1-1 — the value-prop sentence) · #1625's lean (in play in the 1-1 — Radar toning) · #1509
+(staged, rides next cut) · #1386 (unblock path offered to PM).
+
+---
+
+*(07:2x header below, left as this morning's record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-21 07:2x PT
 
 **07:17 START — did the flagged gut-check properly**, widening past the usual three-issue glance to every

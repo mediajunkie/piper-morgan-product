@@ -1,0 +1,198 @@
+<title>Weekly Report #057 — Internal</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --card:#FFFFFF; --ink:#1A1A17; --ink-soft:#5E5E55;
+    --rule:#E1E0DA; --accent:#5A5233; --accent-soft:#F0EEE4;
+    --adv:#3E6B45; --held:#8A6116; --slip:#A33F2B;
+    --shadow:0 1px 2px rgba(26,26,23,.05), 0 10px 28px -14px rgba(26,26,23,.16);
+    --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --data:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--ink-soft:#A0A093;
+    --rule:#33332B;--accent:#C9BE8E;--accent-soft:#26261E;
+    --adv:#79B885;--held:#D5A44B;--slip:#E38672;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="dark"]{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--ink-soft:#A0A093;
+    --rule:#33332B;--accent:#C9BE8E;--accent-soft:#26261E;
+    --adv:#79B885;--held:#D5A44B;--slip:#E38672;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{--ground:#F7F7F5;--card:#FFFFFF;--ink:#1A1A17;--ink-soft:#5E5E55;
+    --rule:#E1E0DA;--accent:#5A5233;--accent-soft:#F0EEE4;
+    --adv:#3E6B45;--held:#8A6116;--slip:#A33F2B;
+    --shadow:0 1px 2px rgba(26,26,23,.05),0 10px 28px -14px rgba(26,26,23,.16);}
+
+  body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:62rem;margin:0 auto;padding:3rem 1.25rem 5rem;display:flex;flex-direction:column;gap:2.5rem}
+  header{display:flex;flex-direction:column;gap:.5rem;border-bottom:3px double var(--rule);padding-bottom:1.5rem}
+  .stamp{font:500 .7rem/1 var(--data);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  h1{font:400 2.5rem/1.1 var(--display);margin:0;text-wrap:balance;letter-spacing:-.015em}
+  .standfirst{color:var(--ink-soft);max-width:52ch;margin:0;font-size:1.05rem}
+  h2{font:600 .72rem/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+     margin:0;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+  section{display:flex;flex-direction:column;gap:.8rem}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:1rem 1.2rem;
+        box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.5rem}
+  .card h3{margin:0;font:600 1.02rem/1.35 var(--body);text-wrap:balance}
+  .card.hero{border-left:5px solid var(--accent);padding:1.5rem 1.6rem}
+  .card.hero h3{font:400 1.55rem/1.2 var(--display)}
+  .card>p{margin:0}
+  .note{color:var(--ink-soft);font-size:.93rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:.5rem}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:.6rem .8rem;
+        display:flex;flex-direction:column;gap:.15rem}
+  .stat dt{font:500 .66rem/1.2 var(--data);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .stat dd{margin:0;font:600 1.15rem/1.15 var(--body);font-variant-numeric:tabular-nums}
+  .tablewrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:.93rem}
+  th{text-align:left;font:600 .68rem/1.3 var(--data);letter-spacing:.07em;text-transform:uppercase;
+     color:var(--ink-soft);padding:.5rem .6rem;border-bottom:1px solid var(--rule);white-space:nowrap}
+  td{padding:.6rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tag{font:600 .66rem/1 var(--data);letter-spacing:.06em;text-transform:uppercase;padding:.28rem .4rem;
+       border-radius:2px;white-space:nowrap;display:inline-block}
+  .tag.adv{background:color-mix(in srgb,var(--adv) 14%,transparent);color:var(--adv)}
+  .tag.held{background:color-mix(in srgb,var(--held) 16%,transparent);color:var(--held)}
+  .tag.slip{background:color-mix(in srgb,var(--slip) 13%,transparent);color:var(--slip)}
+  ol.asks{margin:0;padding-left:0;list-style:none;counter-reset:a;display:flex;flex-direction:column;gap:.7rem;width:100%}
+  ol.asks li{display:flex;flex-direction:row;align-items:baseline;gap:.6rem;counter-increment:a;width:100%}
+  ol.asks li::before{content:counter(a);font:600 .85rem/1.5 var(--data);color:var(--accent);flex:0 0 auto}
+  ol.asks li>span{flex:1 1 auto;min-width:0}
+  ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.45rem}
+  ul.plain li::marker{color:var(--ink-soft)}
+  code{font:.88em/1.4 var(--data);background:var(--accent-soft);padding:.1rem .3rem;border-radius:2px}
+  blockquote{margin:.2rem 0;padding-left:.9rem;border-left:2px solid var(--rule);color:var(--ink-soft);font-style:italic}
+  footer{border-top:1px solid var(--rule);padding-top:1rem;color:var(--ink-soft);font-size:.85rem}
+  @media (max-width:34rem){h1{font-size:1.95rem}.wrap{padding-top:2rem}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="stamp">Internal weekly report · for xian only · Ship #057 substrate</p>
+    <h1>Week of August 14 – 20</h1>
+    <p class="standfirst">The week Fundamentals-First stopped being a phrase and became load-bearing architecture — and the week the cohort's cross-role verification habit sharpened from "check the source" to "check it again at the moment you use it, because a properly-verified claim can still go stale." Ten reports, all in same-day as the kickoff for the first time this cycle.</p>
+  </header>
+
+  <section>
+    <h2>Dashboard</h2>
+    <dl class="grid">
+      <div class="stat"><dt>Reports in</dt><dd>10 of 10</dd></div>
+      <div class="stat"><dt>Deployed</dt><dd>v52 → v60</dd></div>
+      <div class="stat"><dt>Issues closed</dt><dd>19 in-window</dd></div>
+      <div class="stat"><dt>MVP not done</dt><dd>61 (live, moving)</dd></div>
+      <div class="stat"><dt>Published</dt><dd>5 in-window</dd></div>
+      <div class="stat"><dt>Portfolio lines slipped</dt><dd>2 (named, not hidden)</dd></div>
+    </dl>
+    <p class="note"><strong>On the MVP number, honestly:</strong> Arch's live run this morning read 62; PPM's, minutes later, read 72; my own tonight reads 61. All three are correct at their own moment — the board moved in real time all day as Lead's file-infrastructure fixes filed a run of new issues (#1645–#1663). Not a discrepancy to resolve, a live board doing what live boards do; tonight's 61 is the current figure.</p>
+
+    <div class="card hero">
+      <h3>Fundamentals-First got tested against reality this week, and it held — including at the moment it mattered most.</h3>
+      <p>Your Aug 18 pivot redirected the engineering lane sharply, and the Understanding-Layer Inversion delivered on it: Phase 2.1's gate found the constrained router already reading armed-turn answers correctly most of the time, and Arch's resulting routing-contract ruling structurally avoids the exact failure shape behind the week's sharpest trust finding — the floor fabricating two action confirmations, "filed!" and "reminder set," in a single one of your test sessions, neither one real. That fabrication class was killed at three separate layers this week, not patched once and hoped closed. Alongside it, file infrastructure that had been silently broken for a full month — uploads, document visibility — got fixed with real, permanent test coverage where none existed before.</p>
+      <p class="note"><strong>And underneath all of it, a sharper version of last week's discipline:</strong> Arch named "verify the completion claim, not just its summary" three separate times in their own lane alone. PA gave it the precise form worth carrying forward — a claim can be verified correctly and still go stale by the time someone else uses it, so the check belongs at the point of use, not just the point of writing. Four different roles hit some version of this independently in one week.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Progress against goals — the six leadership lanes</h2>
+    <div class="card">
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Lane</th><th>Verdict</th><th>The line that matters</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Architecture</strong></td>
+            <td><span class="tag adv">4 adv</span></td>
+            <td>The Inversion became the lane where most substantive rulings actually happened this week — the armed-turn routing contract (Aug 19) is the one that matters most, verified against real code before ratifying rather than accepted on Lead's word. Caught real gaps in completion claims three separate times, twice on Lead's work, once on their own first-pass mistake.</td>
+          </tr>
+          <tr>
+            <td><strong>Innovation</strong></td>
+            <td><span class="tag adv">4 adv</span> <span class="tag held">1 held</span></td>
+            <td>Four rounds deep on the cross-project curation trial with real methodological gains — a caught confound reversal, a design flaw self-caught by accident — but says plainly no artifact has actually landed yet. Alongside it: a same-day memory-index defect fix, the freeze-watchdog investigation root-caused to Docs' 9-day heartbeat gap, and the chess-board design pass finally done instead of deferred a further week.</td>
+          </tr>
+          <tr>
+            <td><strong>Experience</strong></td>
+            <td><span class="tag adv">3 adv</span> <span class="tag slip">2 slip</span></td>
+            <td>Two full design-to-shipped-to-PM-verified lifecycles closed within the window, plus the taxonomy — this week's real cross-role deliverable. Named its own two stale items honestly rather than dressing them up (a live-verification gap now over a week old, a floor/ethics watch unattested a third window running), and caught a real defect in its own shipped copy a full four days after agreeing to the design — naming the lag as a gap worth closing faster next time, not excusing it.</td>
+          </tr>
+          <tr>
+            <td><strong>Product</strong></td>
+            <td><span class="tag adv">3 adv</span></td>
+            <td>Closed two long-carried items end-to-end (the first-contact criterion, the spatial disposition) and did the disciplined MVP-scope consult work on the taxonomy. Caught its own real product-facts error mid-window — "Surface 3 is a phantom" was wrong — and corrected it on the record with the original claim kept, not deleted.</td>
+          </tr>
+          <tr>
+            <td><strong>Trust</strong></td>
+            <td><span class="tag adv">5 adv</span></td>
+            <td>Two collaborative documents (retention policy, values) went from scaffold to fully PM-ratified within the window, each independently re-verified at every handoff. Closed the freeze-watchdog self-resolving-alerts investigation end to end via a clean four-link cross-role chain. Its own portfolio lapsed a second time and got fixed for real this time — the same failure class the framework exists to catch, caught in its own document twice.</td>
+          </tr>
+          <tr>
+            <td><strong>Communications</strong></td>
+            <td><span class="tag adv">6 adv</span></td>
+            <td><strong>The highest-volume window yet by every measure</strong> — five publications, zero slots missed, a full six-beat narrative slate drafted in one morning fire, three new insight candidates, and a genuinely new category of work: direct code-and-data execution in the website repo for the era-taxonomy build. Caught three of its own mistakes before they compounded, including a self-inflicted mailbox regression mid-hook-fight — resolved by routing through the correct tool rather than around it, the lesson the hook was actually teaching.</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The contributor tier</h2>
+    <div class="card">
+      <p><strong>All four filed same-morning as the kickoff — the fastest full-house turnaround of the cycle so far.</strong></p>
+      <ul class="plain">
+        <li><strong>Development</strong> — the week's engine: nine deploys, chat document-summarize working for the first time in the product's 15-month history, the trust architecture's outwardness axis shipping at full 36/36-cell coverage, and file infrastructure (uploads, document visibility) repaired after being silently broken for a month, with real harness coverage built where none existed. One real setback on the record: ~20 minutes of red main from a push and a battery sharing a command chain — now structurally prevented, not just promised against.</li>
+        <li><strong>Documentation</strong> — closed two recurring-cadence gaps self-found before anyone else noticed, ran the first fully comprehensive Weekly Docs Audit (7 real fixes, 2 systemic findings surfaced rather than swept), and traced a live-404 bug back to find it had been silently breaking Ship #054 for 14 days. One honest miss: carried forward a stale "no LICENSE file" claim this morning that Exec caught within the hour — named the mechanical fix (re-verify every carried item against its live source, not just the ones with a GitHub issue behind them), not just "be more careful."</li>
+        <li><strong>Product assistant</strong> — the week's real correction pattern, both handled the way this project asks for: a privacy-policy blocker miss (genuinely never re-verified since Aug 3) and a BYOC grammar finding that was properly verified but had the ground shift under it a day later. Formed and sent real positions on all three of Lead's strategic-brief questions ahead of your still-pending conversation.</li>
+        <li><strong>Web</strong> — closed the Dispatch calendar-staleness root cause for good (zero-lag now, confirmed), filed a tracking issue for a filename-drift class after you independently caught two live 404 hero images yourself. Names the same structural blocker every window without exception: no browser exists on this host, which stops all visual-confirmation work cold, not for lack of trying.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>What needs you</h2>
+    <div class="card">
+      <ol class="asks">
+        <li><span><strong>✅ RESOLVED 2026-08-21, live in conversation — Surfaces taxonomy, §1 naming.</strong> You said "yes, it reads right" — no rename. Both Arch's and PPM's consults were already independently confirmed 08-16; this closed the sole remaining gate. Document is now ratified v1.0.</span></li>
+        <li><span><strong>✅ RESOLVED 2026-08-21, live in conversation — Values document, final approval.</strong> "The values doc changes sound fine to me." DRAFT status lifted, banner updated, all four original decisions (ratified 08-15) plus this final sign-off now complete.</span></li>
+        <li><span><strong>✅ RESOLVED 2026-08-21, live in conversation — Era-taxonomy website push.</strong> Comms' commit had sat local-only for a day, blocked by a permission classifier. You pushed it yourself; verified live on the website repo's <code>origin/main</code>.</span></li>
+        <li><span><strong>Lead's v59/v60 test verdicts.</strong> Upload and summarize repaired, fabrications dead, confirms crisp — tracker's current, awaiting your live pass.</span></li>
+        <li><span><strong>The MVP triage cut.</strong> The honest read: MVP grew during the window not from falling behind but because your own testing discovers issues faster than the team closes them — the cut is designed and waiting on your and PPM's word to run it.</span></li>
+        <li><span><strong>The two overdue strategic conversations.</strong> CXO's already happened today and is converging on a solid proposal per your own read. PA's is next — three roles (Lead, PA, CXO) have real prep ready and waiting.</span></li>
+        <li><span><strong>Comms: Beat 6's quote confirmation + the insight-pool weekend pairing.</strong> Both genuinely await your read — Beat 6 can't voice-pass without the "beta data"/"beta date" call, and the insight pool (9 scheduled + 3 new) needs your pairing choices for upcoming slots.</span></li>
+        <li><span><strong>Docs-tree flattening plan, go/no-go.</strong> Long-standing, low stakes — one recommended flatten, posted 08-11, still no ruling either way.</span></li>
+        <li><span><strong>Web: the above-the-fold blog redesign and the Buttondown newsletter idea.</strong> Both genuinely need your eyes at each step — no browser on that seat to iterate visually — neither urgent, both real.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h2>The pattern across all ten reports, sharper than last week's</h2>
+    <div class="card hero">
+      <h3>"Verify the source, not the summary" grew a second half this week: verify it again at the point of use, because a properly-checked claim can still go stale before someone else relies on it.</h3>
+      <p>This is the third week running the cohort has named some version of this discipline — #054 was about the measurement itself being wrong; #055 was about the word "shipped" doing two jobs; #056 was about checking the actual source instead of a summary. This week sharpens that a level further, and every lane hit it independently:</p>
+      <ul class="plain">
+        <li>PA's own report names it most precisely: a privacy-policy claim they'd genuinely never re-verified (real miss) sits right next to a BYOC grammar finding they'd verified properly, that went stale a day later when the underlying system changed out from under it. Different failure shapes, same remedy — check again at the point someone actually uses the claim, not just when it was first written down.</li>
+        <li>Architecture verified Lead's #1633/#1642/#1663 completion claims against source three separate times this window, twice catching real gaps a memo alone would have missed, once catching their own first-pass mistake in the process of checking.</li>
+        <li>Trust's freeze-watchdog investigation is the cleanest four-link chain of the window: CIO escalated a table with two claims honestly hedged, HOST pulled the actual commits and sharpened the finding, Exec traced it to the true root cause, HOST re-verified the whole chain independently before calling it closed — each link checking the one before it against real history, not trust.</li>
+        <li>Experience caught themselves in the exact failure mode they keep flagging in others, a second time in two weeks — citing design prose as if it proved a mechanism ran in code, when it didn't.</li>
+        <li>Documentation caught three confidently-wrong claims this window before acting on them, including — this morning, the sharpest instance — their own "no LICENSE file" note, carried forward without the live-check they'd just finished applying to everything else in the same pass.</li>
+      </ul>
+      <p class="note"><strong>What I'd put in front of you:</strong> this isn't backsliding on last week's lesson, it's the lesson maturing — the cohort moved from "check the source" to "know that a checked source has a shelf life." That's a genuinely different, harder discipline, and four roles reached for it independently in one week without being told to.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>My own accounting</h2>
+    <div class="card">
+      <p><strong>This cycle's kickoff-to-synthesis loop ran clean, and it's worth naming why rather than assuming it was luck.</strong> Last week's kickoff was deleted by my own second mail-send call touching the same paths a follow-up call had already sent. This week, before sending the Ship #057 kickoff, I ran <code>git ls-tree -r origin/main</code> to confirm the first send had actually landed before doing anything else that touched the same paths — the exact discipline that incident should have taught, applied deliberately rather than just written down. Ten reports landed same-morning as the kickoff, the fastest full house this cycle has produced.</p>
+      <p class="note">Two smaller things worth naming plainly rather than passing over: I initially misread which "taxonomy" you meant when you said you'd told Comms to go ahead — you caught your own conflation before I had to, but it's the same "one name, two objects" shape this cohort keeps finding in its own work, this time in a live conversation rather than a document. And tonight's MVP-count discrepancy (62 vs. 72 vs. 61) could have read as an error in either Arch's or PPM's report — it wasn't; naming the real cause (a live board, three different measurement moments) rather than picking one number and quietly discarding the others.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Sources:</strong> all ten workstream reports read in full; the window's seven omnibus logs; live verification of <code>sprint-truth.py</code> (run fresh tonight, not cited from any single report), issues-closed via <code>gh</code>, and publications against the editorial calendar CSV. Where a role marked something unattested or unverified, it's carried as such here too.</p>
+    <p>Canonical copy: <code>dev/active/ship-057-internal-report-for-pm-2026-08-21.html</code></p>
+  </footer>
+</div>

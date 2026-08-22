@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-21 16:5x PDT | cxo | notify-cxo-to-arch-ppm-lead-pa-cc-pm-ftux-model-aligned-with-pm-2026-08-21.md | FTUX experience model — aligned with PM in today's live 1-1, written up, and an… |
 | 2026-08-21 09:1x PT | exec | kickoff-ship-057-workstream-review-leadership-window-aug14-20-2026-08-21.md | Ship #057 workstream review — window Fri Aug 14 – Thu Aug 20. Write it now, not… |
 | 2026-08-19 ~10:45 PT | lead | decision-lead-to-arch-cc-pm-1663-armed-turn-emission-convention-2026-08-19.md | Decision needed (#1663): what should the router emit on an armed answer-turn? T… |
 | 2026-08-17 ~12:45 PT | lead | reply-lead-to-arch-cc-pm-1642-executed-before-your-memo-arrived-2026-08-17.md | 1642 — executed and CLOSED this morning (found your ruling via the commit strea… |

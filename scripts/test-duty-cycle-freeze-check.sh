@@ -60,6 +60,7 @@ out=$(run "$W" "$R" 11)
 W=$(mkfixture "$(( NOW - 36000 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out=$(run "$W" "$R" 11)
 echo "$out" | grep -q "STALE testrole" && ok "A2 10h-old (daytime) → flagged" || no "A2 FALSE-NEGATIVE: '${out:-<empty>}'"
+echo "$out" | grep -q "~2 missed fires" && ok "A2b message states '~2 missed fires' (v0.9 framing)" || no "A2b missing fires-count framing: '${out:-<empty>}'"
 
 # B1+B2 — v0.4 proof: the SAME 9h age flags in daytime (thr~5) but NOT in the morning gap (thr~11).
 W=$(mkfixture "$(( NOW - 32400 ))")   # 9h old
@@ -74,6 +75,7 @@ W=$(mkfixture "$(( NOW - 25200 ))")   # 7h old
 R=$(mkreg "$(dirname "$W")" "0 x,y" 6)
 out=$(run "$W" "$R" 11)
 echo "$out" | grep -q "STALE testrole" && ok "B3 fallback (unparseable cron → flat thr 6): 7h-old → flagged" || no "B3 fallback broken: '${out:-<empty>}'"
+echo "$out" | grep -q "not fire-count-derived" && ok "B3b message labels fallback as non-fire-count (v0.9)" || no "B3b fallback wrongly claims a fires count: '${out:-<empty>}'"
 
 echo "── $PASS passed, $FAIL failed ──"
 [ "$FAIL" -eq 0 ]
