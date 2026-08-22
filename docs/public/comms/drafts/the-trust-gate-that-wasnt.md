@@ -1,14 +1,16 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # The Trust Gate That Wasn't
 
 *June 17, 2026*
 
-Piper has a trust system. As you use it more, it earns the standing to do more on its own — offer suggestions before you ask, surface things proactively, take a little more initiative. Four stages: New, Building, Established, Trusted. It's a sensible idea. Don't let a brand-new AI assistant start acting forward with someone who just met it.
+Piper Morgan has to earn your trust. Why should you trust Piper before you have any reason to? As you use it more, it earns the standing to do more on its own — offer suggestions before you ask, surface things proactively, take a little more initiative. Right now Piper's trust gradient has four stages: New, Building, Established, Trusted.
+
+At its heart, it tells Piper "don't do certain things without asking first, until you've earned enough trust."
 
 Then one day I went looking for my own saved lists and couldn't find them.
 
