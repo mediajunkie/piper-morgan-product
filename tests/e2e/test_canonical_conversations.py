@@ -117,7 +117,12 @@ CANONICAL_QUERIES = [
     # Documents (4)
     (36, "Create a doc from this conversation", "Documents", "action", "1395-rev"),
     (37, "Compare these two documents", "Documents", "floor", "M2"),
-    (38, "Synthesize these sources into a summary", "Documents", "floor", "M2"),
+    # Q38 expectation updated 2026-08-21: #1624 (chat summarize, shipped 08-16) added the
+    # bare-`summarize` normalization -> summarize_document rail; this phrasing now routes
+    # CANONICAL to the rail's honest no-upload answer instead of the #1187 floor path.
+    # That is the DESIGNED behavior, not drift — the rail answers honestly when no
+    # document resolves. Pre-1624 expectation was "floor" (Run 11 era).
+    (38, "Synthesize these sources into a summary", "Documents", "canonical", "M2"),
     (
         40,
         "Update the project roadmap document",

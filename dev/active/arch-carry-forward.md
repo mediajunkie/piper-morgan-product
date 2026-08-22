@@ -87,6 +87,8 @@
 
 **ADR-078 D4: the classifier stays stateless.** HOST-endorsed, load-bearing. The pressure to "just give the classifier the conversation history" recurs on every reference-resolution bug — it nearly landed twice. The answer is always: resolve it in surface-1 / the ledger / the pre-classifier. Injecting history also silently disables the classifier cache, so it's two regressions riding one fix.
 
+⚠️ **New pressure point to watch, 2026-08-21**: PM's "held-state parity" principle (**#1673**, audit-scoped, can-wait) — equip Piper with the same durable-state discipline the cohort proves on itself (carry-forward, session logs). Real and worth doing, but if read as "thread more state into the classifier," it's the same D4 violation in new clothes. Attached the boundary to the issue directly: the right shape is async/reconstructive (carry-forward-like, or #1510's `SessionSnapshot` — assembled before the call, consulted by a seam) not live-in-context. Watch when the audit actually starts.
+
 **PM's personal delegation, which is the core of this role**: *"Lead is welcome to map, diagnose, propose, but I rely on you to maintain the architectural integrity of this project."* A STOP does not require having the right answer — it requires protecting the invariant while the right answer is found.
 
 **The signature move**: on every ruling, ask *"can I make the bad state unrepresentable instead of forbidden?"* — derive the model set, derive the mapper surface, derive the tool catalog. A contract that can't drift beats one everyone must remember.
