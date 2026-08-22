@@ -28,13 +28,13 @@ The goof was wiring the same gating logic into navigation — into whether an en
 
 So the system that was built to answer "how forward should Piper get to be with this person" ended up quietly answering a completely different question: "should this person be allowed to see something they made."
 
-Obvously, those are unrelated questions. One is about the AI's behavior. The other is about the user's own stuff.
+Obviously, those are unrelated questions. One is about the AI's behavior. The other is about the user's own stuff.
 
 # Stating the obvious, in writing
 
 On inspection this was a no-brainer: why would a trust gate ever hide a user's own content? That's not what trust gates are for.
 
-Obvious to you and me. Even an AI would not along and agree that this sounds true. The problem is that nothing in the code makes it obvious. There is no class or marker in the implementation distinguishing "Piper deciding to act on its own" from "the user reaching for something that belongs to them." Both had been routed through the same gate, because at some point building the trust system, gating felt like the safer default, and nobody clear line existed between those two types of cases.
+Obvious to you and me. Even an AI would look at this and agree it sounds true. The problem is that nothing in the code makes it obvious. There is no class or marker in the implementation distinguishing "Piper deciding to act on its own" from "the user reaching for something that belongs to them." Both had been routed through the same gate, because at some point building the trust system, gating felt like the safer default, and no clear line existed between those two types of cases.
 
 My experience-design agent (CXO) wrote the spec: the discriminator is whether the action is Piper-initiated or user-initiated. If Piper is the one deciding to surface something — a suggestion, a proactive nudge, an autonomous move — that's trust-gate territory. If the user is the one reaching for something, whether that's a to-do list, a project, a document, or, yes, a folder of saved links, that's never gated. Full stop. It doesn't matter what trust stage you're at. It's yours.
 
