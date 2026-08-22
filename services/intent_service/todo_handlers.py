@@ -631,7 +631,15 @@ class TodoIntentHandlers:
                 # text is clean (#1490; shared with the #1654 task-answer
                 # seam via the module-level helper).
                 text = _strip_trailing_time_expressions(match.group(1).strip())
-                if text:
+                # #1679: "set a reminder for tomorrow at 3pm" matches the
+                # generic 'for'-form with group(1)="tomorrow at 3pm"; the
+                # trailing strip sheds "at 3pm" but a LEADING time word has no
+                # preceding whitespace to anchor on, leaving the residue
+                # "tomorrow" — which then saved as a reminder literally titled
+                # "tomorrow". A pure-time residue is NO task: return None so
+                # the #1654 task-clarify carrier asks, instead of saving a
+                # time expression as the thing to be reminded of.
+                if text and not _is_pure_time_expression(text):
                     return text
 
         return None
