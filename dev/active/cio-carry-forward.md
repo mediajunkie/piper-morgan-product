@@ -1,55 +1,53 @@
-# CIO carry-forward — rewritten 2026-08-21 (16:37 WORK)
+# CIO carry-forward — rewritten 2026-08-21 (22:37 STOP)
 
-**Cron**: `7f6bb205` · `7 10,16,22` LEAN · **auto-expires ~2026-08-26** (no rotation yet — not within
-48h of expiry).
+**Cron**: `7f6bb205` · `7 10,16,22` LEAN · **auto-expires ~2026-08-26** (no rotation this STOP — not
+yet within the 48h proactive-rotation window).
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## ✅ Watchdog missed-fires framing — LANDED (16:37, commit `77b828451`)
+## ⭐⭐ NEW, TOP PRIORITY — two `/insights` reports, judgment work banked to a fresh session
 
-Small half of this morning's design is done. `duty-cycle-freeze-check.sh` v0.9: STALE alerts now
-state `~N missed fires` alongside the hour count, derived from the existing `2×gap+1` cron formula
-(no threshold-tightness change — deliberately avoided touching the multiplier, which has its own
-false-positive incident history). Fallback thresholds labeled distinctly, not given a fabricated
-count. 2 new regression tests, 7/7 passing. Confirmed to Exec/Lead/PM by mail.
-**Relay-latency question from this morning is still separately open** — not answered by this build,
-said so explicitly in the follow-up.
+PM sent two full Claude Code `/insights` reports tonight (laptop: Jun22-Aug18 sample; Amber:
+Aug5-19 sample) with substantial cross-project methodology recommendations. Read both in full this
+STOP fire. **Split agreed with Exec**: Exec owns the consolidated adopt/reject table + cross-repo
+rollout; CIO owns (1) whether the condensed "verify before claiming" mechanical form belongs above
+CLAUDE.md's existing m-43/m-44 prose, and (2) build-or-not calls on `/verify` skill, a
+PreToolUse freshness gate, lane-ownership mapping, and `verify-fire.sh`.
 
-## ⭐ Still open — relay-latency question (raised 08-21 AM)
+**Deliberately banked the actual judgment work to a fresh session — named trigger, not a punt**:
+this was my 3rd fire of the day and the question needs a real line-by-line read of current
+CLAUDE.md against both reports, not a tired end-of-day impression. Exec modeled the identical
+restraint in the same thread first. **Next session: read both reports section by section against
+the live CLAUDE.md, come back with specific adopt/reject/already-covered calls, not a general
+impression.**
+Full reports: `mailboxes/cio/read/xian-to-exec-cio-claude-code-insights-*-2026-08-21.md` (two files).
 
-The alert that flagged lead's 08-20 stall sat in my own inbox ~4h before reaching PM in chat, because
-Belt 2's relay rides my own duty-cycle cadence rather than anything faster. Asked Exec/Lead/PM whether
-this is worth solving separately or an accepted trade-off. No reply yet.
+## ✅ Infra event (18:46 alert) — RESOLVED, explains the last 3 fires' thin readings
 
-## ⭐ NEW — Ship #057 workstream review filed
+arch/pa/web/docs all went stale simultaneously (~8h, classic machine-asleep signature). Live-verified
+at 22:37: all four had already resumed (two fully day-closed). **This explains the thin-emission
+pattern flagged at the 08-20 22:37 and 08-21 16:37 fires** — one bounded event, not a decline.
+Watch item retired.
 
-Window Fri Aug 14 – Thu Aug 20. Honest §4: the curation-offload trial with Design in Product
-dominated the week's hours and produced real methodology gains (a caught reversal, a self-found
-confound, a root-caused watchdog pattern) but no landed deliverable in DinP's brief yet — said so
-plainly rather than letting process read as more finished than the output. Filed to
-`mailboxes/exec/inbox/workstream-057-cio-2026-08-21.md`.
+## ✅ Watchdog missed-fires framing — LANDED (08-21, commit `77b828451`)
 
-## Three items now genuinely awaiting PM — none blocking other work
+`duty-cycle-freeze-check.sh` v0.9: STALE alerts state `~N missed fires`, derived from the existing
+formula, no threshold-tightness change. 7/7 tests passing. Confirmed to Exec/Lead/PM.
 
-1. **Chess-board design pass** (raised 08-20) — `dev/active/chess-board-design-pass-cio-2026-08-20.md`.
-   Three scope questions: role-state or work-item-state; agents-too or PM-only; per-fire or on-demand.
-2. **Methodology-core disposition review** (raised 08-20) — PM explicitly deferred this Apr 27; asking
-   whether it's still parked or worth resuming, not restarting unilaterally.
-3. **Curation-trial bigger scope** (raised 08-19) — PM described the DinP thread to Ted Nadeau in
-   bigger terms than what's been tested. Still open.
+## Four items now genuinely awaiting PM — none blocking other work
 
-## ✅ Lead stall (08-20) — RESOLVED, root cause now known
-
-Was a model-access usage-wall block (~06:31→16:40), not a session/cron issue. PM fixed it manually.
-Generated the watchdog-threshold thread above. No further action on the stall itself.
+1. **Chess-board scope** (raised 08-20) — `dev/active/chess-board-design-pass-cio-2026-08-20.md`.
+2. **Methodology-core disposition review** (raised 08-20) — PM explicitly deferred this Apr 27.
+3. **Curation-trial bigger scope** (raised 08-19) — DinP thread vs. PM's bigger Ted-Nadeau framing.
+4. **Watchdog relay-latency question** (raised 08-21 AM) — alert sat in CIO's inbox ~4h before
+   reaching PM; is that worth fixing separately or an accepted trade-off.
 
 ## ✅ Dispatch-latency test 4 RESOLVED (08-19) — idle-duration ruled out
 
-Recurring-vs-one-shot remains the leading unexplained variable for the ~30-min recurring-cron
-signature. The actual isolating test still not run by anyone.
-Full record: `dev/active/cron-dispatch-latency-experiment-2026-08-15.md`.
+Recurring-vs-one-shot remains the leading unexplained variable. Isolating test still not run by
+anyone. Full record: `dev/active/cron-dispatch-latency-experiment-2026-08-15.md`.
 
 ## ⭐ Operating-mode shift (ruled 2026-08-13) — holding, still generalizing
 
@@ -58,8 +56,8 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 
 ## Watch
 
-- **PM's response on all three open questions above, plus the relay-latency question** — none
-  blocking, all genuinely open.
+- **The `/insights` judgment work** — top priority for next session, see above.
+- **PM's response on the four open questions above** — none blocking, all genuinely open.
 - **Verify the three self-firing workflows actually fire**: skill-candidates 09-01, Agent 360 09-25.
 - **Whether either project runs the recurring short-period isolating test** for dispatch latency.
 
@@ -77,11 +75,11 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
   variable.** (08-18, the Themis→Janus reversal.)
 - **A design flaw in your own experiment can hide for days until someone else's unrelated
   explanation makes you re-read it.** (08-19.)
-- **"Still owed" with no named trigger is a deferral, not quality-banking.** (08-20: did the
-  chess-board design pass rather than carrying it another day.)
+- **"Still owed" with no named trigger is a deferral, not quality-banking.** (08-20.)
 - **A deferred item and a neglected item look identical from the outside — check which one it is
-  before resuming something unilaterally.** (08-20: methodology-core review was PM-deferred, asked
-  instead of launched.)
-- **Read the actual mechanism before accepting a design brief's framing of the gap.** (08-21: the
-  watchdog ask assumed the threshold wasn't cadence-relative; it already was. The real gap the brief
-  didn't name — relay latency — only showed up from reading the code, not from the incident report.)
+  before resuming something unilaterally.** (08-20.)
+- **Read the actual mechanism before accepting a design brief's framing of the gap.** (08-21 AM:
+  the watchdog ask assumed the threshold wasn't cadence-relative; it already was.)
+- **A same-day, explicitly-named deferral (banking the insights judgment work) is a different animal
+  from a weeks-old undecided one (the chess-board idea before 08-20) — don't let the general
+  "drain it all" instinct override a genuinely fresh, well-reasoned "not tonight."** (08-21 STOP.)
