@@ -1,26 +1,19 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-21 ~08:0x PDT (Fire 1/START — Friday omnibus backfill, full carry-forward
-prune)
-**Session log**: `dev/2026/08/21/2026-08-21-0727-docs-code-log.md` (open).
-**Cron**: `74a93223` (Rule-1 re-arm at idle, `CronList`-verified sole job), fresh 7-day window to
-~08-28. Registry row current.
+**Updated**: 2026-08-21 22:3x PDT (DAY-CLOSED — quiet day after a substantive morning: Friday
+omnibus backfill, carry-forward pruned, a real self-caught miss fixed, Ship #057 report sent)
+**Session log**: `dev/2026/08/21/2026-08-21-0727-docs-code-log.md` (closed, `DAY-CLOSED` marker
+written).
+**Cron**: `4111b9b3` (STOP re-arm, delete-then-create, `CronList`-verified sole job), fresh 7-day
+window to ~08-28. Registry row current.
 
-**Pruned this fire** (was 440 lines, deferred twice, doing it now rather than a 3rd defer): the
-prior version accumulated ~6 weeks of stacked per-fire entries and fully-resolved historical
-sections dating to 2026-08-10. All of that is preserved verbatim in dated session logs and
-omnibus logs — nothing is lost by dropping it here. This file's actual job (per the
-`duty-cycle-tick` skill) is ephemeral session state, not a permanent archive.
-
-**Nothing carried forward as blocking.** Yesterday (08-20) closed clean; today's opening fire
-closed a 2-day omnibus gap (08-19/08-20) via the Friday catch-up trigger — see today's session
-log for detail. Live-checked all scattered "awaiting" items from the old file before dropping
-them; only one remains genuinely open (below) as of the fire that first pruned this file — the
-other one I'd carried forward that same fire (the MIT-badge item) turned out to be stale itself
-(Exec caught it 10:2x same morning: the repo shipped an Apache 2.0 LICENSE + updated badge on
-08-15, and I hadn't independently re-verified before carrying it forward — a real miss in the
-prune, not just an old item surviving). Everything else was either resolved (website#31 closed,
-#1593 closed) or a routine audit-tracker issue, not real backlog.
+**Nothing carried forward as blocking.** Omnibus chain continuous through 08-20. This file was
+pruned this morning (440→~65 lines, old content preserved in git log + dated session/omnibus
+logs) — keeping it lean going forward rather than letting it re-accumulate. One standing
+discipline note from today, worth keeping live rather than folding into history: **every
+carried-forward item needs the same live-verification every time it's carried, whether or not it
+has a GitHub issue behind it** — the items without issues are exactly the ones that go stale
+silently (found the hard way today when Exec caught a resolved item I'd just re-carried).
 
 ## Awaiting PM (genuine, not urgent, don't chase)
 

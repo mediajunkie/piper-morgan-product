@@ -1,10 +1,42 @@
-# CXO carry-forward — rewritten 2026-08-21 16:3x PT
+# CXO carry-forward — rewritten 2026-08-21 22:3x PT at STOP. Day closed; next fire 06:47 on 08-22, opening
+~07:17. **The biggest CXO day since the reboot — read this header fully before assuming any prior state.**
 
-## 🔴 THE LIVE THREAD — PM's FTUX 1-1, IN PROGRESS (paused mid-conversation, stay available)
+## What closed TODAY (all verified, all on origin/main)
 
-**PM connected live via remote-control at 11:03 (first since Aug 11) and opened the long-pending FTUX
-conversation.** As of 16:3x it's paused ~5h awaiting PM's reply to my full FTUX working model — treat as
-IN PROGRESS, not over. **Do not start deep work that couldn't be dropped when PM returns.**
+1. **Surfaces taxonomy RATIFIED v1.0** (PM's word on naming, morning). Fully closed.
+2. **The FTUX 1-1 happened and CONCLUDED ALIGNED** (PM live via remote-control, 11:03–~18:0x). Outcome
+   doc: **`docs/internal/design/ftux-experience-model-2026-08-21.md`** v0.1 (PM co-owns; captures the
+   meeting-a-good-colleague frame, Piper-speaks-first + the BYOC greeting variant, three-states-one-
+   principle, wizard-as-offer-inside-FTUX, ceremony-scaled-to-novelty, Radar briefing logic, held-state
+   parity). **Notification sent to Arch/PPM/Lead/PA cc PM** — all three of Arch/HOST/PA closed their loops
+   same evening (PA integrating it ahead of PM's BYOC conversation with them).
+3. **§3 + §6 of `experience-across-surfaces.md` RATIFIED live** and applied to the doc; Surface-1/Surface-3
+   questions closed via the taxonomy. **The ONE remaining ✏️ there: §4's "must not be asked to" column** —
+   clarified to PM cell-by-cell on request, awaiting approve/adjust/strike. Last open item from the 1-1.
+4. **#1386 criterion-2 SIGNED OFF** (same-day commitment honored): Lead ran keyed canonical Run 14 tonight
+   (98.4% routing, 100% quality, ZERO skips, three failures honestly triaged → #1674/#1675). Verified at
+   three layers (memo/issue/CSV) before signing. **My "seats lack keys" claim was STALE** — keys were
+   provisioned since the July record I kept citing; correction accepted on the issue. *Verification notes
+   have expiry dates.*
+5. **#1673 filed** (held-state parity audit, PM's principle, can-wait) — Arch already attached the
+   ADR-078-D4 boundary to it (verified on-issue).
+6. **#1509's disclosure copy fixed** (mine), verified by Lead (my honest not-run flag caught two old-copy
+   literals), staged. **#1509 itself reopened after my commit-message slip auto-closed it** — owned,
+   explained on-issue. Ship #057 filed; portfolio refreshed (also fixed stale #1466 row).
+
+## Open going into 08-22
+
+- **§4's column** — with PM, the single remaining 1-1 item.
+- **Surface-mapping of the FTUX model** — the named next phase (model first, then map — PM's framing);
+  waits on nothing but bandwidth and possibly PM's BYOC conversation with PA landing first.
+- **The checker diff-mode build** (HOST's 3-lapse data; design committed in mail) — **named work item for
+  the next working fire**; HOST watching, not chasing.
+- **#1536** — confirm remaining legs with Lead (cold-account case + board reconciliation) now that PM's
+  v58 PASS is on record. **#1539** — the value-prop candidate is effectively CONFIRMED by PM in the 1-1
+  ("on-target, aligns with the website line") — worth closing the loop on the issue itself next fire.
+- Watch: #1625's lean (in the model now via Radar-briefing-logic), #1674/#1675 (Lead's, from Run 14).
+
+**Cron**: `c84a440a`, healthy, expires ~08-25 (rotation watch from ~08-24).
 
 **State of the conversation** (full content in the live session; key facts):
 - **Surfaces taxonomy RATIFIED v1.0 this morning** (PM's word on §1 naming, via Exec). Fully closed.
