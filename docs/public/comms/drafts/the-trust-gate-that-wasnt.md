@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: 'At a coat check, a puzzled customer presents the claim ticket for her visible purple coat while a well-meaning translucent attendant keeps her behind a velvet rope.'
 caption: '"I already trusted you with them!"'
 ---
 
