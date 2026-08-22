@@ -344,6 +344,9 @@ class IntentService:
             # find it — a clobbered binding re-creates the orphaned-"at 3pm"
             # floor-roleplay incident).
             "reminder_time_question_pending",
+            # #1654: the armed reminder TASK question (the no-task clarify's
+            # carrier — same clobber risk, one question earlier).
+            "reminder_task_question_pending",
             # #1651: the standup's bound overdue-todo offer must survive
             # this turn (armed on the rail-dispatched get_standup path).
             "standup_todo_offer_pending",
@@ -1160,6 +1163,34 @@ class IntentService:
                             message=_rt_turn["message"],
                             intent_data=_rt_turn["intent_data"],
                             requires_clarification=_rt_turn.get(
+                                "requires_clarification", False
+                            ),
+                        )
+                # #1654: a pending REMINDER TASK QUESTION (armed by the
+                # create-reminder handler's honest no-task clarify — #1648's
+                # class, one question earlier; PM hit it twice on 08-18)
+                # binds the answer as the TASK: either the time is already
+                # known (rare) and the REAL save runs, or the flow chains
+                # into the EXISTING #1648 time question above. Returning
+                # None falls through: declines/bare exits drop honestly via
+                # decline_message; full restatements and pre-classifier-
+                # claimed commands abandon via the pop and route normally.
+                elif _vi_payload.get("kind") == "reminder_task_question":
+                    from services.intent_service import todo_handlers as _th
+
+                    _rtask_turn = await _th.handle_reminder_task_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _rtask_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_rtask_turn["message"],
+                            intent_data=_rtask_turn["intent_data"],
+                            requires_clarification=_rtask_turn.get(
                                 "requires_clarification", False
                             ),
                         )
@@ -8190,20 +8221,26 @@ class IntentService:
             }
             try:
                 _rt_peek = self.workflow_offer_service.peek_pending_offer(session_id)
-                if (
-                    _rt_peek
-                    and (_rt_peek.get("pending_action") or {}).get("kind")
-                    == "reminder_time_question"
-                ):
+                _rt_kind = (
+                    (_rt_peek.get("pending_action") or {}).get("kind")
+                    if _rt_peek
+                    else None
+                )
+                if _rt_kind == "reminder_time_question":
                     _rt_intent_data["reminder_time_question_pending"] = True
+                # #1654: the no-task clarify arms the TASK question on this
+                # same path — it needs the same clobber protection.
+                elif _rt_kind == "reminder_task_question":
+                    _rt_intent_data["reminder_task_question_pending"] = True
             except Exception:  # silent-ok: flag derivation only — the reply itself is already composed
                 pass
             return IntentProcessingResult(
                 success=True,
                 message=message,
                 intent_data=_rt_intent_data,
-                requires_clarification=_rt_intent_data.get(
-                    "reminder_time_question_pending", False
+                requires_clarification=(
+                    _rt_intent_data.get("reminder_time_question_pending", False)
+                    or _rt_intent_data.get("reminder_task_question_pending", False)
                 ),
             )
 

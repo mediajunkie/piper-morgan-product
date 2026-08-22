@@ -32,7 +32,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 from unittest.mock import AsyncMock, patch
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import httpx
 import pytest
@@ -270,11 +270,17 @@ async def e2e_client():
 
 
 @pytest_asyncio.fixture(scope="module")
-async def e2e_auth_headers(e2e_client):
+async def e2e_auth_state(e2e_client):
     """#1165: module-scoped — one shared canonical test user (created + cleaned
     once). Per-query isolation comes from send_canonical_query's unique
     session_id, so the shared app's conversation registry doesn't bleed across
-    queries; canonical queries are single-turn so a shared user is fine."""
+    queries; canonical queries are single-turn so a shared user is fine.
+
+    #1675: yields BOTH the httpx auth kwargs and the authenticated user's id —
+    the ground-truth tier seeds rows AS this principal through the service
+    layer, so it needs the id, not just the cookie. (Kept out of
+    e2e_auth_headers because send_canonical_query does kwargs.update(auth) —
+    any non-httpx key there would break every call.)"""
     from services.auth.password_service import PasswordService
 
     user_id = str(uuid4())
@@ -305,7 +311,7 @@ async def e2e_auth_headers(e2e_client):
         "/api/v1/auth/login", data={"username": username, "password": password}
     )
     assert login.status_code == 200, f"canonical login failed: {login.text}"
-    yield {"cookies": login.cookies}
+    yield {"auth": {"cookies": login.cookies}, "user_id": user_id}
 
     # Cleanup — the app creates dependent rows (personalization_contexts etc.)
     # mid-test; the hand-rolled FK order rotted as tables were added (#1452).
@@ -316,6 +322,13 @@ async def e2e_auth_headers(e2e_client):
         await delete_test_user_fully(s, user_id)
         await s.commit()
     await engine.dispose()
+
+
+@pytest_asyncio.fixture(scope="module")
+async def e2e_auth_headers(e2e_auth_state):
+    """#1165: httpx auth kwargs only — the shape send_canonical_query splats.
+    Derived from e2e_auth_state (#1675) so both fixtures share the one user."""
+    return e2e_auth_state["auth"]
 
 
 # ---------------------------------------------------------------------------
@@ -702,10 +715,35 @@ class TestCanonicalMultiTurn:
 # handler echoes verbatim) — NO LLM judge, so it sidesteps the stateless-judge
 # problem (#1131: the judge can't verify user data) AND runs every PR for free.
 #
-# First slice = todos (cleanly user-scoped + seedable via the real add-todo
-# action; the canon_e2e fixture cleans them up). Extending to other data types
-# (issues, milestones, calendar) is follow-on P1 work — same pattern, new marker.
+# First slice = todos (cleanly user-scoped + seeded through the real service
+# write path under the authenticated principal — see seed_ground_truth_todo;
+# the e2e_auth_state fixture's user-delete cascade cleans them up). Extending
+# to other data types (issues, milestones, calendar) is follow-on P1 work —
+# same pattern, new marker.
 # ---------------------------------------------------------------------------
+
+
+async def seed_ground_truth_todo(user_id: str, text: str):
+    """#1675: seed the ground-truth todo through the REAL write path
+    (TodoManagementService.create_todo — the exact call handle_create_todo
+    makes, same session/commit/cache-invalidation behavior) under the
+    AUTHENTICATED principal — NOT via a chat turn.
+
+    Why not 'Add a todo: <marker>' over HTTP (the original design): that shape
+    has no pre-classifier claim, so the SEED rode the live LLM classifier, and
+    the ticket-shaped marker (P1GT-<hex> reads like an issue key) drew
+    create_ticket ~1/3 of sampled classifications → 'GitHub isn't connected'
+    → no row written → the subsequent list read was HONESTLY empty. That is
+    what Run 14 (2026-08-21) recorded as a wrong-empty on both sibling tests
+    (#1675): a harness artifact — production was never wrong; the read rail
+    (list_todos_query) is pre-classifier-claimed and owner-scoped correctly.
+    A ground-truth premise must be deterministic; the LLM-routed seed wasn't.
+    """
+    from services.todo.todo_management_service import TodoManagementService
+
+    todo = await TodoManagementService().create_todo(user_id=UUID(user_id), text=text)
+    assert todo is not None and todo.id, "#1675: ground-truth seed failed to persist"
+    return todo
 
 
 class TestCanonicalGroundTruth:
@@ -722,23 +760,24 @@ class TestCanonicalGroundTruth:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_show_todos_reflects_seeded_todo(self, e2e_client, e2e_auth_headers):
-        """Seed a uniquely-marked todo (real add-todo action), then assert
-        'show my todos' returns it — i.e. real user data flows through, not a
-        generic/empty/stale answer. The marker is echoed verbatim by the handler
-        (verified live), so a plain substring assertion is robust + judge-free."""
+    async def test_show_todos_reflects_seeded_todo(
+        self, e2e_client, e2e_auth_headers, e2e_auth_state
+    ):
+        """Seed a uniquely-marked todo (real service write path, authenticated
+        principal — #1675), then assert 'show my todos' returns it — i.e. real
+        user data flows through, not a generic/empty/stale answer. The marker is
+        echoed verbatim by the handler (verified live), so a plain substring
+        assertion is robust + judge-free.
+
+        #1675: the seed used to be a chat turn ('Add a todo: <marker>') — an
+        LLM-routed shape that stochastically drew create_ticket, voiding the
+        premise (see seed_ground_truth_todo). Chat-based add-todo ROUTING is
+        real product surface but is not this tier's subject; it needs its own
+        deterministic claim or routing-tier coverage (discovered-work issue
+        filed from #1675)."""
         marker = f"P1GT-{uuid4().hex[:10]}"
 
-        add = await send_canonical_query(
-            e2e_client, f"Add a todo: {marker}", "p1gt-add", e2e_auth_headers
-        )
-        # Seed must actually execute (route to the create action), else the
-        # ground-truth premise is void.
-        add_action = (add.get("intent") or {}).get("action") or ""
-        assert "todo" in add_action and ("create" in add_action or "add" in add_action), (
-            f"#1213 P1: add-todo did not route to a create action (got {add_action!r}); "
-            f"response: {(add.get('message') or '')[:200]}"
-        )
+        await seed_ground_truth_todo(e2e_auth_state["user_id"], marker)
 
         show = await send_canonical_query(
             e2e_client, "Show my todos", "p1gt-show", e2e_auth_headers
@@ -755,17 +794,20 @@ class TestCanonicalGroundTruth:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_completed_todo_drops_from_active_list(self, e2e_client, e2e_auth_headers):
-        """#1213 P1/P5 — ground-truth LIFECYCLE: add a marked todo, confirm it's
+    async def test_completed_todo_drops_from_active_list(
+        self, e2e_client, e2e_auth_headers, e2e_auth_state
+    ):
+        """#1213 P1/P5 — ground-truth LIFECYCLE: seed a marked todo (real
+        service write path, authenticated principal — #1675), confirm it's
         listed, complete it, then assert 'show my todos' no longer lists it as
         active. Catches a 'complete didn't actually complete' wiring bug — where
         the action routes + responds fine but the state change never lands. The
-        marker is unique, so other accumulated todos don't affect the assertion."""
+        marker is unique, so other accumulated todos don't affect the assertion.
+        The complete + show turns stay REAL chat turns — both shapes are
+        pre-classifier-claimed (deterministic), unlike the retired add turn."""
         marker = f"P1GT-life-{uuid4().hex[:10]}"
 
-        await send_canonical_query(
-            e2e_client, f"Add a todo: {marker}", "p1gt-life-add", e2e_auth_headers
-        )
+        await seed_ground_truth_todo(e2e_auth_state["user_id"], marker)
         show1 = await send_canonical_query(
             e2e_client, "Show my todos", "p1gt-life-show1", e2e_auth_headers
         )
