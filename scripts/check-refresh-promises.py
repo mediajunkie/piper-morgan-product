@@ -34,9 +34,31 @@ A document opts in by declaring in its YAML frontmatter:
 
 The trigger's date comes from an ISO date in its FILENAME (not mtime — mtime is
 destroyed by checkout, rebase, and worktree provisioning, so it would report noise).
+
+DIFF MODE (--diff [REF], added 2026-08-22 — HOST's three-for-three lapse data)
+------------------------------------------------------------------------------
+The audit mode above catches lapses AFTER the fact; HOST's portfolio lapsed three
+consecutive times the same way (content edited, frontmatter bump forgotten), each
+caught at the next audit and none prevented. A manual habit with a 0% success rate
+across three tries is not a habit. And auto-bump is the wrong fix — it would turn
+last_updated from a CLAIM ("this content was refreshed") into an artifact of touching
+the file, and the audit mode would then verify something meaningless.
+
+So --diff moves the CATCH to edit time while keeping the CLAIM deliberate: for every
+changed promise-carrying document in `git diff [REF]` (default HEAD: staged + unstaged),
+if content lines changed but the last_updated line did not, warn — in the same session,
+at the moment the claim goes stale, instead of at whoever's next audit. The inverse
+(last_updated bumped with no content change) is noted too: a content-free bump is the
+opposite failure, the one auto-bump would have institutionalized.
+
+Denominator honesty (m-44): a run that finds no changed promise-carrying documents says
+so — "nothing to check" is not a pass over the population. Exit 1 only on
+content-changed-without-bump. Wireable as an advisory hook; advisory-not-control per the
+standing Amber hooks doctrine.
 """
 import glob
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -114,6 +136,62 @@ def frontmatter(path):
             k, _, v = line.partition(":")
             out[k.strip()] = v.strip().strip('"').strip("'")
     return out
+
+
+_LAST_UPDATED_LINE = re.compile(r"^[+-]last_updated:")
+
+
+def diff_mode(ref):
+    """Edit-time check: changed promise-carrying docs must move content and
+    last_updated together. Reads git only; never writes; exit 1 only on
+    content-changed-without-bump."""
+    out = subprocess.run(
+        ["git", "diff", "--name-only", ref], capture_output=True, text=True, cwd=ROOT
+    )
+    if out.returncode != 0:
+        print(f"✗ git diff --name-only {ref} failed — this check DID NOT RUN; not a pass")
+        print(out.stderr.strip())
+        return 1
+    changed_md = [l.strip() for l in out.stdout.splitlines() if l.strip().endswith(".md")]
+
+    print(f"── refresh-promise DIFF check (vs {ref}) ────────────────────────────────────")
+    fail = 0
+    examined = 0
+    for rel in changed_md:
+        path = ROOT / rel
+        if not path.exists():
+            continue  # deleted in this diff; a deletion is not a stale claim
+        if not any(k in frontmatter(path) for k in PROMISE_KEYS):
+            continue
+        examined += 1
+        d = subprocess.run(
+            ["git", "diff", ref, "--", rel], capture_output=True, text=True, cwd=ROOT
+        ).stdout
+        changes = [
+            l for l in d.splitlines()
+            if (l.startswith("+") or l.startswith("-"))
+            and not l.startswith(("+++", "---"))
+        ]
+        bumped = any(_LAST_UPDATED_LINE.match(l) for l in changes)
+        content = any(not _LAST_UPDATED_LINE.match(l) for l in changes)
+        if content and not bumped:
+            fail = 1
+            print(f"  ✗ {rel} — CONTENT CHANGED, last_updated NOT bumped in the same change.")
+            print(f"    This is the claim going stale at the moment it goes stale. Bump it now,")
+            print(f"    deliberately — or state why this change isn't a refresh.")
+        elif bumped and not content:
+            print(f"  ⚠️  {rel} — last_updated bumped with NO content change. A content-free bump")
+            print(f"    is the opposite failure (the one auto-bump would institutionalize). Fine")
+            print(f"    only if deliberate.")
+        elif bumped and content:
+            print(f"  ✓ {rel} — content and last_updated moved together.")
+    print()
+    if examined == 0:
+        print("no changed promise-carrying documents in this diff — NOTHING TO CHECK.")
+        print("(That is an empty denominator, not a pass over the population.)")
+    else:
+        print(f"examined: {examined} changed promise-carrying document(s).")
+    return fail
 
 
 def main():
@@ -220,4 +298,6 @@ def main():
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "--diff":
+        sys.exit(diff_mode(sys.argv[2] if len(sys.argv) > 2 else "HEAD"))
     sys.exit(main())
