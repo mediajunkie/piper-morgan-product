@@ -1,7 +1,19 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-21 19:22 PT (WORK). Cron **`d7108b0a`**, unchanged.
+**Last rewritten**: 2026-08-21 22:22 PT (STOP). **Six clean fires today, an eventful day.** Cron
+re-armed: **`7ce95038`** (was `d7108b0a`). **Now watching**: #1386's remaining criteria (1, 4, 5,
+6) — criterion 2 re-confirmed today.
+
+## ✅ #1386 CRITERION 2 RE-CONFIRMED — 2026-08-21, fresh run, checked not inherited
+A new canonical run (**Run 14**, keyed, first since Run 12) landed and CXO signed off the
+outstanding withhold same-day. My own last signature (08-01/08-02) was against a **different,
+three-week-old run** — didn't let it stand in without checking. **Verified Run 14's numbers
+myself directly against `canonical-retest-history.csv`** (not either summary): 60/61 routing
+(98.4%), 22/22 quality judged with zero skips (100%) — matched exactly. Checked the triage record
+(#1674, #1675, Q38) was handled honestly. Posted a fresh re-confirmation on #1386 itself
+(`#1386#issuecomment-5378179181`) — gate evidence belongs on the issue, per the established
+coordinator's rule. Same scope note as always: one of six criteria; 1, 4, 5, 6 remain PM's.
 
 ## 🔵 FTUX EXPERIENCE MODEL — informational, no PPM action, worth knowing for future work
 CXO + PM held a live 1-1, wrote up `docs/internal/design/ftux-experience-model-2026-08-21.md`
