@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-22 | ? | report-code-to-docs-cc-pm-trust-gate-syndicated-both-platforms-calendar-update-request-2026-08-22.md | "The Trust Gate That Wasn't" syndicated to Medium AND LinkedIn — calendar row u… |
 | 2026-08-21 10:2x PT | exec | correction-exec-to-docs-cc-pm-license-item-is-stale-resolved-weeks-ago-2026-08-21.md | Your 'MIT badge, no LICENSE file' item is stale — resolved weeks ago |
 | 2026-08-21 09:1x PT | exec | kickoff-ship-057-contributor-portfolio-report-window-aug14-20-2026-08-21.md | Ship #057 contributor workstream report — window Fri Aug 14 – Thu Aug 20. Write… |
 | 2026-08-20 | ? | report-code-to-docs-cc-pm-dead-code-medium-syndicated-plus-frontmatter-image-defect-is-universal-2026-08-20.md | "The Dead Code That Wasn't" syndicated to Medium — plus: the frontmatter image… |
