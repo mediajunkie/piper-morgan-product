@@ -170,7 +170,8 @@ $(printf '  - %s\n' $SUBSTANTIVE_PATHS | head -10)
 Pick one:
   (a) commit + push these changes now (clearest signal to next session)
   (b) note them in your session log so resume context knows they exist
-  (c) accept rediscovery cost and proceed with /compact
+  (c) confirm these files are safe on local disk and will survive compaction
+      — proceed with /compact (accepts rediscovery cost, not loss)
 
 This reminder has been logged to dev/active/session-end-warnings.log
 for the Docs merge-keeper sweep.

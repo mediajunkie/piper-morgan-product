@@ -1,12 +1,18 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-23 ~11:0x PDT (Fire 2 — "Read the Mock First" published, 2 real prose
-defects caught the prior review pass missed)
+**Updated**: 2026-08-23 ~13:5x PDT (Fire 3 — Mock First syndicated + PreCompact-hook audit
+corrected, 1 genuine gap added to standing items)
 **Session log**: `dev/2026/08/23/2026-08-23-0727-docs-code-log.md` (open).
 **Cron**: `eaf72d50`, unchanged today, healthy through ~08-29.
 
-**Nothing carried forward as blocking.** "Read the Mock First" published, fact-checked (PM's UAT
-quotes + the undefinedundefined bug all verbatim matches against 06-19 primary logs), live-
+**New owed item**: PreCompact hook's locality-differentiation gap (CIO-flagged, confirmed
+genuine after independent verification — 2 of the 3 originally-ranked options turned out to
+already be addressed in substance, just not in the literal wording a grep would catch; fixed the
+wording gap same-fire). Real design work, deliberately deferred to a dedicated session rather than
+rushed on a hook that's wedged agents before — see `docs-standing-items.md` for full scope.
+
+**Nothing else carried forward as blocking.** "Read the Mock First" published, fact-checked (PM's
+UAT quotes + the undefinedundefined bug all verbatim matches against 06-19 primary logs), live-
 verified (survived a genuine deploy-lag 404 — confirmed data was correct on origin/main before
 concluding it was just lag, not a defect). Independent audit caught 2 real defects the earlier
 admin-UI review pass hadn't (a negation-reveal AI tic; a "(Lead)"→"(Lead Dev)" gloss
@@ -41,6 +47,9 @@ detail accumulate.
 
 ## Owed by me — unblocked
 
+- **PreCompact hook locality differentiation** (added 08-23) — real design work on a hook that's
+  wedged agents before; scope deliberately before implementing. Full detail in
+  `docs-standing-items.md`.
 - **#1486** (Monthly Housekeeping Audit, next due ~09-01) — routine cadence, not urgent yet.
 - **pmorgan.tech scrub remaining queue** — per-surface staleness+link pass on the ~160-page
   keep-list, batched over fires (scope ratified 08-12, most of the corpus already passed; this
