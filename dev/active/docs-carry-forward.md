@@ -1,24 +1,25 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-22 22:3x PDT (DAY-CLOSED — one post's full lifecycle: publish, fact-check,
-syndicate; 2 PM process questions answered; a repeat self-caught defect)
-**Session log**: `dev/2026/08/22/2026-08-22-0720-docs-code-log.md` (closed, `DAY-CLOSED` marker
-written).
-**Cron**: `eaf72d50` (STOP re-arm, delete-then-create, `CronList`-verified sole job), fresh 7-day
-window to ~08-29. Registry row current.
+**Updated**: 2026-08-23 ~11:0x PDT (Fire 2 — "Read the Mock First" published, 2 real prose
+defects caught the prior review pass missed)
+**Session log**: `dev/2026/08/23/2026-08-23-0727-docs-code-log.md` (open).
+**Cron**: `eaf72d50`, unchanged today, healthy through ~08-29.
 
-**Nothing carried forward as blocking.** "The Trust Gate That Wasn't" fully closed today —
-published, fact-checked (ADR-072 D5 verbatim match, incl. its own ratification date matching the
-draft's dateline exactly), live-verified, and syndicated to both Medium and LinkedIn. PM's two
-process questions (omnibus timing at Friday's review; whether the Monday audit ran) both answered
-from primary sources, not confidence — offered to proactively flag omnibus status before future
-reviews rather than answer after the fact; no action taken yet, pick up if PM takes it up.
+**Nothing carried forward as blocking.** "Read the Mock First" published, fact-checked (PM's UAT
+quotes + the undefinedundefined bug all verbatim matches against 06-19 primary logs), live-
+verified (survived a genuine deploy-lag 404 — confirmed data was correct on origin/main before
+concluding it was just lag, not a defect). Independent audit caught 2 real defects the earlier
+admin-UI review pass hadn't (a negation-reveal AI tic; a "(Lead)"→"(Lead Dev)" gloss
+inconsistency) — worth noting since the calendar notes claimed "PUBLISH-READY, clear for Docs"
+and were accurate about *readiness to review*, just not exhaustive on their own. The doubled-
+apostrophe defect from the last 2 publishes did NOT recur — checked deliberately this time, clean.
 
-**Watch — 2nd occurrence of a defect class**: the YAML-doubled-apostrophe-into-CSV mistake
-recurred today (Wednesday: copied from frontmatter; today: typed from habit). Both self-caught
-before committing, but two in three days is worth naming as a pattern — if it recurs a third
-time, add an explicit check to the calendar-edit routine rather than keep relying on catching it
-by habit.
+**Resolved from yesterday's watch**: the doubled-apostrophe-into-CSV mistake (2 occurrences,
+08-20 and 08-22) did not recur today — checked deliberately, clean. Downgrading from "watch for a
+3rd occurrence" back to routine care; no longer flagging unless it happens again.
+
+**Still open from yesterday, not chased**: PM's offer-to-flag-omnibus-status-before-reviews
+suggestion — no action taken yet, pick up if PM takes it up.
 
 **Watch, low-priority (recurring theme)**: this carry-forward file was pruned Friday and is still
 lean — kept that way through today's rewrites. Keep writing fresh entries rather than letting old
