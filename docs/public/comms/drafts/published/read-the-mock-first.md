@@ -16,7 +16,7 @@ What got built instead was correct on paper and wrong on the screen.
 
 My experience-design agent (CXO) wrote a spec describing how to build the rail: seven color tokens for the dark surface, states for hover and active items, the three-column grid for the home page. Good spec but the mockup only showed the home page. It said nothing about what the rail looked like on other screens, such as Settings or Documents, and nothing about where the *old* navigation's other pieces should go: global search, the user menu, the command palette, the permission-gated items only some users see.
 
-My lead developer agent (Lead) noticed the gap before writing a line of code, which is exactly the discipline I want! Rather than guess, it proposed a concrete content model for the design lead to confirm: brand at top, conversation list in the middle, utility links and a user menu at the bottom, everything from the old top bar folded in somewhere. The CXO reviewed it and signed off.
+My lead developer agent (Lead Dev) noticed the gap before writing a line of code, which is exactly the discipline I want! Rather than guess, it proposed a concrete content model for the design lead to confirm: brand at top, conversation list in the middle, utility links and a user menu at the bottom, everything from the old top bar folded in somewhere. The CXO reviewed it and signed off.
 
 So far, the system worked as intended. Investigate before you extend, don't fill spec gaps by guessing, get an explicit ratification before touching 22 pages of shared navigation. Good instincts, all followed.
 
@@ -41,7 +41,7 @@ Guessing again on a re-architecture touching every page in the app was exactly h
 
 # Reading the artifact instead of the description of it
 
-My design lead went back to the mockup itself, not the earlier written spec, and named the root cause plainly: the mock was home-page-only and under-specified, and the build had filled those gaps with the wrong mental model. The fix wasn't a new idea. It was the same idea the mockup had been showing the whole time, finally written down completely enough that nobody had to guess.
+My design lead went back to the mockup itself, not the earlier written spec, and named the root cause plainly: the mock was home-page-only and under-specified, and the build had filled those gaps with the wrong mental model. The fix was the same idea the mockup had been showing the whole time, finally written down completely enough that nobody had to guess.
 
 The new spec cut the rail down to what the mock actually showed: conversations, full stop, everything else demoted to a compact row of text links and a user-avatar menu. The persistent panel came back to the home page, not as a toggle but as a fixture, because that's what the picture showed. My lead developer agent rebuilt it in two focused passes, re-tested everything, and shipped it for another look.
 
