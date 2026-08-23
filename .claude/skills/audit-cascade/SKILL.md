@@ -2,7 +2,7 @@
 name: audit-cascade
 description: Perform systematic audit-and-correct between phases of multi-step work. Use when PM says "audit cascade", before transitioning from issue to gameplan, gameplan to agent prompts, or prompts to execution. Catches drift before it accumulates.
 scope: cross-role
-version: 1.0
+version: 1.1
 created: 2026-01-23
 ---
 
@@ -35,6 +35,17 @@ Write Issue → AUDIT → Write Gameplan → AUDIT → Write Prompts → AUDIT �
 ---
 
 ## Procedure
+
+### Step 0 (preamble): Confirm your worktree
+
+Audit-cascade work is substantive by definition (Phase 0 audit + gameplan + audit + execute + audit),
+so the standing worktree-default applies. On Amber (Model A): confirm you're in your stable per-agent
+worktree (`~/Development/piper-morgan-worktrees/{role}`), not the shared checkout. On Desktop
+(Model B): confirm the session's ephemeral auto-worktree is active. Skip only if the audit work is
+short enough to qualify as an exception (single-file Phase 0 audit + immediate disposition, no
+implementation).
+
+*(Added 2026-08-23, closing a ~3-month-old disposition — `mailboxes/cio/sent/memo-cio-to-host-cc-ppm-docs-arch-ceo-audit-cascade-worktree-preamble-disposition-2026-05-15.md`. Original wording assumed the pre-Amber ephemeral-worktree-per-session model; reworded here for Model A's stable-worktree-reuse reality rather than landing three-month-stale text unchecked against current architecture.)*
 
 ### Step 1: Identify the Phase
 
