@@ -6,34 +6,25 @@ _Rewritten 2026-08-19 ~21:50 PT (Phase 2.2 scaffold complete, dark)._
   #1623 interview think-time · #1571 draft one-step filing · UTC labels on reminder saves.
   All of today's live-test finds shipped same-day. PM has the fresh test list in the tracker artifact.
 
-## Awaiting PM
-- v54 test round (list in tracker: scope / exception / draft / interview-hold / UTC label)
-- **#1624 summarize repair options A–D** — my rec: C (delete dead vocab honestly) + A (wire the existing
-  REST summarize into chat); D only if beta wants file-analysis. Forensics doc: summarize-intent-forensics-2026-08-15.md
-- PPM formal word on #1591 teaching-line changes (informal AGREE already in)
+## Awaiting
+- PM: the PA/BYOC chat outcome (CXO's FTUX model + my brief are its inputs) → then the MVP
+  triage cut with PPM · v62 test round (7-item plan; the flip's first traffic) · two 5-minute
+  decisions offered: #1598 (admin routes bless-or-gate) + #1635 (false-door shape) · #1677 triage
+  lean (todo-create misroute = #1488's mechanism; my lean: classifier-prompt example add)
+- CXO: #1386 criterion-2 sign-off (keyed Run 14 evidence delivered 8/21)
+- CIO: watchdog cadence-relative build (design accepted 8/21)
 
-## PHASE 2 STATE (primary lane)
-- 2.0 ✅ · 2.1 ✅ (gate run, instruments matched) · #1663 RULED (b) w/ Arch's adequacy condition
-- prerequisites ✅ (#1664/#1665 closed) · #1666 delete gate ✅ CLOSED (title-bound confirm)
-- FLIP-1 ✅ MERGED DARK: inversion live-capable behind PIPER_INVERSION_LIVE_CATEGORIES
-  (default-EMPTY; four-condition dispatch incl. the load-bearing READ guard; armed turns guarded)
-- NEXT: #1667 flip-2 coverage prep (rail entries for registry-only canonicals — FRESH-SESSION
-  work, banked 8/19 21:50, trigger: tomorrow's fires) → then first category flip = config change
-  ON PM'S WORD · #1668 shadow skip-guard (small, next shadow touch)
-
-## Awaiting PM
-- v59/v60 test verdicts (upload + summarize repaired; fabrications dead; crisp confirms —
-  tracker current) · deploy word for the staged post-v60 pile (1649-1651 shipped in v59... v60 was
-  last; staged since: 1665/1664/1666 + Phase 2 dark scaffold — all invisible-until-flagged or
-  agent-facing except the delete confirm, which PM will naturally hit)
-- CXO CHAT DONE (8/21): FTUX model aligned + written (ftux-experience-model-2026-08-21.md) — no
-  gate changes, no Lead builds scheduled; surface mapping next; 'Radar never empty' likely
-  resolves #1625's design question (noted on the issue). PA/BYOC chat is NEXT (PM closing that
-  loop; my brief + CXO's model are its named inputs) → then MVP triage cut with PPM
-- 1658 parity umbrella (PPM scoping)
+## Recently landed (8/22, all pushed)
+- CLOSED: 1536 (FTUX-coldstart, both legs) · 1655 (prompt sweep, 12 seeds + guard) · 1674
+  (corpus-only) · 1675 (production never wrong; Run 14 → 0 real GT failures) · 1679 (pure-time
+  titles) · #1488 mystery SOLVED (stochastic draw)
+- FILED: 1676 (provider column) · 1677 (todo-create claim, gate-analyzed) · 1678 (PIPER.md
+  dormant — never reaches the prompt) · plus 1654 In Review (two-question recovery)
+- Lesson recorded: concurrent lanes share one git index in a shared worktree → back to isolated
+  worktrees for parallel work
 
 ## Standing
-- Cron 28fef16b `17 6,9,12,15,18,21 * * *`, expires ~8/25, rotate ~8/23
-- Supersession gate ACTIVE (day 2: zero interpretation-layer patches; all lanes sanctioned-side)
-- Push discipline: batteries and push NEVER share a command chain (8/19 red-main lesson)
-- Beta-conditions audit at final gate (mine + subagent cross-check, PM ruling 8/15)
+- Cron 80ca164e `17 6,9,12,15,18,21 * * *` (rotated 8/22), expires ~8/29, rotate ~8/27
+- Flip wave 1 LIVE and unexercised (0 events — honest); watch on PM's first listing turns
+- Supersession gate ACTIVE · push-after-reading discipline ACTIVE
+- Beta-conditions audit at final gate (mine + subagent cross-check)

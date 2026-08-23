@@ -176,7 +176,7 @@ This is the sharpest form of the day's general lesson, and it belongs in the ren
 ## TBD / not yet designed
 
 - **F2 cross-document reference detection** — requires new rollup capability. Scope with Exec when extending the cohort-attention rollup for F2.
-- **E panel UX for coverage indicator** — CIO to flag HOST for sync pass before E panel ships.
+- ✅ **E panel UX for coverage indicator — RULED 2026-08-22 (HOST).** Hybrid, mapped onto this section's own headline/drill-in split: **headline** = visually distinct state (color/icon, not plain text) while coverage is partial, satisfying Criterion D's non-ignorability bar; **drill-in** = full field-by-field specificity ("instrumented: X, Y; not yet: Z"). A plain parenthetical was rejected outright as the exact "easy to skim past" failure D exists to prevent. Full reasoning: `mailboxes/cio/read/reply-host-to-cio-cc-pm-criterion-e-coverage-indicator-ux-ruling-2026-08-22.md`. **Open sub-item**: "adoption is sufficient" (rollout trigger below) still needs a numeric definition before it ships — flagged, not yet set.
 - **Rollout sequencing for E instrumentation** — external-message + credits-spent first (BYOC-tied); CIO + PA to coordinate timing with BYOC phase-2.
 - **2×/3× multiplier validation** — the freshness thresholds are proposals; validate against actual cycle data before locking.
 
