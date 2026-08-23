@@ -30,7 +30,8 @@ Then I actually used it.
 
 I typed something close to: “flaw in the approach, no global nav, does not resemble the mock.” Two problems stacked on each other:
 
-1. The persistent third column, the entity panel meant to sit right of the chat on the home page, wasn't there. 2. And the rail itself, meant to be spare and conversation-first, had turned into a line of links: search, settings, admin tools, everything the old top bar used to hold, all crammed into the footer because that's what the ratified content model called for.
+1. The persistent third column, the entity panel meant to sit right of the chat on the home page, wasn't there.
+2. The rail itself, meant to be spare and conversation-first, had turned into a line of links: search, settings, admin tools, everything the old top bar used to hold, all crammed into the footer because that's what the ratified content model called for.
 
 The written spec was followed. The content model got ratified. The tests passed. And the result still didn't look like the picture I'd approved weeks earlier, because the picture was never fully translated into the words.
 
@@ -54,12 +55,12 @@ I don't think the lesson is that anyone should have caught this earlier by readi
 
 The mockup needed to stay in the picture as a reference, right up until the last page shipped. Words earn their keep for the parts a picture can't show: states, breakpoints, exact values. But when the picture exists, checking the build against the picture beats checking it against a description of the picture, however carefully written.
 
-Every UX designer has had a version of this experience when asked to review an implementation of their design. It's rare that it matches exactly what was intended even if it's pixel-perfect wagainst a mock.
+Every UX designer has had a version of this experience when asked to review an implementation of their design. It's rare that it matches exactly what was intended even if it's pixel-perfect against a mock.
 
 The rebuild took a morning, not a sprint, because most of what got built the first time, the tokens, the component structure, the test harness, survived the correction intact. We wasted one build cycle, sure, and on my end that flash of "wait, this isn't what I pictured" was a letdown, but it was exactly that astringent sting of disappointment that provided the final details needed to polish the design of the experience up to my standards and expectations.
 
 ---
 
-*Next on Building Piper Morgan: "The Orphan Migration" — four database tables with no migration ever written for their creation, and the structural test that caught the whole class of bug at once.*
+*Next on Building Piper Morgan: "The Burn-Down" — a chronically-red test suite goes fully green for the first time in its recorded history, and survives an honest same-day-caught revert along the way.*
 
 *Have you ever built carefully to a written spec and still ended up somewhere the original picture never intended? What tipped you off, and how far along were you when it did?*
