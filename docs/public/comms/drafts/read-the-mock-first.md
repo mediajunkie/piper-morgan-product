@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: 'A human design lead studies a spare room model while an AI designer holds the matching plan beside a finished room crowded with inherited furniture.'
 caption: ''
 ---
 
