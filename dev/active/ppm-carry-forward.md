@@ -1,9 +1,9 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-21 22:22 PT (STOP). **Six clean fires today, an eventful day.** Cron
-re-armed: **`7ce95038`** (was `d7108b0a`). **Now watching**: #1386's remaining criteria (1, 4, 5,
-6) — criterion 2 re-confirmed today.
+**Last rewritten**: 2026-08-22 22:22 PT (STOP). **Six clean fires, calm day after a busy Friday.**
+Cron re-armed: **`05104aa5`** (was `7ce95038`). **Still watching**: #1386's remaining criteria
+(1, 4, 5, 6) — no movement since criterion 2's re-confirmation on 08-21.
 
 ## ✅ #1386 CRITERION 2 RE-CONFIRMED — 2026-08-21, fresh run, checked not inherited
 A new canonical run (**Run 14**, keyed, first since Run 12) landed and CXO signed off the

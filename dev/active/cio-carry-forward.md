@@ -1,30 +1,24 @@
-# CIO carry-forward — rewritten 2026-08-22 (16:37 WORK)
+# CIO carry-forward — rewritten 2026-08-22 (22:37 STOP)
 
-**Cron**: `7f6bb205` · `7 10,16,22` LEAN · **auto-expires ~2026-08-26** — approaching the 48h
-proactive-rotation window; check next fire.
+**Cron**: `7f6bb205` · `7 10,16,22` LEAN · **auto-expires ~2026-08-26** — getting close to the 48h
+proactive-rotation window; check at next fire, likely rotate within the next 1-2 fires.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## ✅ /insights judgment work — DONE, this was the named trigger
+## ✅ Criterion E — RULED, FILED, ROUTED (08-22, issue #1680)
 
-Read both cross-project `/insights` reports against the live CLAUDE.md line by line this morning
-(the fresh session named at last night's STOP). Landed one real CLAUDE.md edit (extended
-"Never guess at facts" to cover files/history/counts + added the "say unverified if not checked
-this turn" rule, commit `c174afdb1`), declined the PreToolUse freshness gate and lanes.yaml
-enforcement with reasoning, and deferred `verify-fire.sh` to Pard's mediajunkie pilot rather than
-duplicating. Full reasoning: `docs/internal/architecture/decisions/decisions.log` (08-22 10:38 PT).
-Replied to Exec (cc PM, Pard). No further action needed unless someone pushes back.
+HOST's UX ruling landed (7 weeks late, owned plainly): hybrid headline/drill-in split, visually-
+distinct partial-coverage marker, "sufficient adoption" flagged as needing a real number not prose.
+Filed as GitHub issue #1680 same-fire rather than let it sit in mail again — routed to Lead
+(domain-model + dashboard code, not CIO's design lane). CIO's part (spec + UX ruling) is done.
 
-## ✅ Welfare-criteria tracker was stale — corrected (08-22, commit `efae5da0e`)
+## ✅ Welfare-criteria tracker correction (08-22, commit `efae5da0e`)
 
-Standing-items #14 said "full implementation not yet started" since Jul 3; six weeks of
-freeze-watchdog + cohort-attention-rollup work had actually satisfied most of it (Q2/Q3, C1-C3,
-F3, B/B-bis) without anyone re-checking the tracker line. Verified criterion-by-criterion against
-the spec and shipped code, corrected the row, flagged to HOST as co-owner. Genuinely remaining:
-Criterion E (consequential-action instrumentation, awaiting HOST's UX read since 7/4) and F2
-(cross-pair thread staleness, unscoped). Nothing further needed from CIO right now.
+Standing-items #14 said "not yet started" since Jul 3; six weeks of freeze-watchdog +
+cohort-attention-rollup work had actually satisfied most of it. Corrected, flagged to HOST — this
+is what surfaced the Criterion E thread above.
 
 ## Four items now genuinely awaiting PM — none blocking other work
 
@@ -34,13 +28,15 @@ Criterion E (consequential-action instrumentation, awaiting HOST's UX read since
 4. **Watchdog relay-latency question** (raised 08-21 AM) — alert sat in CIO's inbox ~4h before
    reaching PM; is that worth fixing separately or an accepted trade-off.
 
+## ✅ /insights judgment work — DONE (08-22, commit `c174afdb1`)
+
+CLAUDE.md's "never guess at facts" extended to files/history/counts + "unverified" labeling rule.
+Freshness gate and lanes.yaml declined with reasoning; `verify-fire.sh` deferred to Pard's pilot.
+Full reasoning: `decisions.log` 08-22 10:38 PT entry.
+
 ## ✅ Watchdog missed-fires framing — LANDED (08-21, commit `77b828451`)
 
-STALE alerts now state `~N missed fires`. 7/7 tests passing. Confirmed to Exec/Lead/PM.
-
-## ✅ Infra event (08-21 18:46) — RESOLVED
-
-arch/pa/web/docs all self-resolved same evening. Explained the prior two fires' thin readings.
+STALE alerts now state `~N missed fires`. 7/7 tests passing.
 
 ## ✅ Dispatch-latency test 4 RESOLVED (08-19) — idle-duration ruled out
 
@@ -50,13 +46,14 @@ anyone. Full record: `dev/active/cron-dispatch-latency-experiment-2026-08-15.md`
 ## ⭐ Operating-mode shift (ruled 2026-08-13) — holding, still generalizing
 
 **PM's Agenda §6 ruling** (full record: `dev/active/cio-innovation-agenda-2026-08-02.md` §7).
-Client/general-contractor: spec outcomes, delegate, independently verify before landing.
+Client/general-contractor: spec outcomes, delegate, independently verify before landing. Proven
+again today — Criterion E routed to Lead rather than hand-implemented at fire's end.
 
 ## Watch
 
-- **Cron approaching expiry** (~08-26) — check proactive rotation window at next fire (v1.29's
-  ~48h-before-expiry rule).
+- **Cron approaching expiry (~08-26)** — check proactive rotation at next fire; likely due soon.
 - **PM's response on the four open questions above** — none blocking, all genuinely open.
+- **#1680 progress** — filed and routed, not CIO's to build; check in occasionally.
 - **Verify the three self-firing workflows actually fire**: skill-candidates 09-01, Agent 360 09-25.
 - **Whether either project runs the recurring short-period isolating test** for dispatch latency.
 
@@ -70,14 +67,14 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 
 ## Standing corrections to myself
 
-- **A confound can look exactly like convergence when two agreeing datasets share an unexamined
-  variable.** (08-18, the Themis→Janus reversal.)
-- **A design flaw in your own experiment can hide for days until someone else's unrelated
-  explanation makes you re-read it.** (08-19.)
 - **"Still owed" with no named trigger is a deferral, not quality-banking.** (08-20.)
 - **A deferred item and a neglected item look identical from the outside — check which one it is
   before resuming something unilaterally.** (08-20.)
 - **Read the actual mechanism before accepting a design brief's framing of the gap.** (08-21 AM.)
 - **A same-day, explicitly-named deferral is a different animal from a weeks-old undecided one —
-  and the proof it worked is that the trigger arrived and the work actually got done, not deferred
-  again.** (08-21 STOP → 08-22 START: named the fresh session, then used it.)
+  and the proof it worked is that the trigger arrived and the work actually got done.** (08-21→22.)
+- **A tracker line is a claim about the world, not the world itself — six weeks of real work can
+  quietly outdate a status nobody re-checks.** (08-22 16:37: the welfare-criteria "not started" line.)
+- **A good ruling that lands in mail and stays in mail hasn't actually closed anything — turn it into
+  something trackable (an issue, a routing decision) in the same fire it arrives, not later.**
+  (08-22 22:37: Criterion E's 7-week mail-only life is exactly the failure this avoided.)

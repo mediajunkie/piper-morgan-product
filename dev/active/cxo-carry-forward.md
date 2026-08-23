@@ -1,3 +1,42 @@
+# CXO carry-forward — rewritten 2026-08-22 22:3x PT at STOP. Day closed; next fire 06:47 on 08-23, opening
+~07:17.
+
+⚠️ **CRON ROTATION WATCH ACTIVE**: `c84a440a` expires ~08-25 (7-day cap from the 08-18 rotation).
+**Rotate proactively at the 08-24 START** (delete-then-create, verify exactly one job, record old→new id) —
+same play as 08-18's clean rotation; don't wait for the silent death.
+
+## What closed on 08-22 (a five-for-five Saturday)
+
+1. **#1536 CLOSED by Lead** — the cold-account leg was covered by the no-connector canary pins; Lead
+   re-ran the full suite same day before closing. **The four-week Jake first-contact arc is complete.**
+2. **#1539's purpose-line strings SHIPPED same evening** ("what I'm already keeping track of… you don't
+   need to hold this list — I've got it") — the handed-back grep-old-fragments lesson caught the pins in
+   the #1615 suite AND a floor-directive echo of the old framing. AC-2 met at next deploy; **close follows
+   PM's next live round (AC-3's falsifier)** — watch for that, then Lead closes.
+3. **The checker diff mode BUILT + behaviorally verified + independently verified by HOST** (their own
+   probe method, not mine). HOST runs it by hand for a real cycle; their honest report decides hook
+   wiring. My listen, not my chase.
+4. **#1674/#1675 closed** (Lead, same-day fixes of Run-14's findings).
+5. **#1539 loop-closed on-issue** with PM's 1-1 confirmation (the morning's first act).
+
+## Open going into 08-23
+
+- **§4's "must not be asked to" column** — with PM, the single remaining 1-1 item (five cells,
+  approve/adjust/strike; clarified to PM 08-21 evening).
+- **FTUX surface-mapping** — mine, the named next phase. **Named trigger: a fresh session, ideally after
+  PM's BYOC conversation with PA lands** (its outcome shapes the chat-host column; the Web half doesn't
+  strictly depend on it, but mapping once with full inputs beats mapping twice).
+- **#1539 close** — after PM's next live round exercises the shipped purpose line.
+- Watch quietly: HOST's by-hand checker cycle; the taxonomy's PDR-005 citation fix (named in the ratified
+  doc §2a as post-ratification mechanical work — unclaimed, small, could be mine or Docs').
+
+**Cron**: `c84a440a` (rotation watch above). **Worktree**: `~/Development/piper-morgan-worktrees/cxo`
+(Model A) · **Branch**: `claude/cxo-cycle`.
+
+---
+
+*(08-21 22:3x header below, left as the prior day's fuller record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-21 22:3x PT at STOP. Day closed; next fire 06:47 on 08-22, opening
 ~07:17. **The biggest CXO day since the reboot — read this header fully before assuming any prior state.**
 
