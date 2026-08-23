@@ -1,7 +1,7 @@
 ---
-image: ''
+image: 'read-the-mock-first-chatgpt-image-aug-23-2026-at-09-52-02-am.png'
 alt: 'A human design lead studies a spare room model while an AI designer holds the matching plan beside a finished room crowded with inherited furniture.'
-caption: ''
+caption: '"What is wrong with this picture?"'
 ---
 
 # Read the Mock First
