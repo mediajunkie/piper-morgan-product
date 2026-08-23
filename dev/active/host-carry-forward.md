@@ -1,6 +1,6 @@
 # HOST carry-forward
 
-**Written**: 2026-08-21 22:0x PDT (STOP fire, day 28 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-22 22:0x PDT (STOP fire, day 29 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -120,12 +120,11 @@
 
 ## Cron
 
-Current job **`1ff33ddc`** (chain … `3e5b0010 → 5642acb8 → 1ff33ddc`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-21 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`8114ef2d`** (chain … `5642acb8 → 1ff33ddc → 8114ef2d`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-22 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 08-21 STOP
+## Open threads, as of 08-22 STOP
 
-- **Agent 360 v0.4** — Fielded 08-14 to 10 roles, **8/10 responses, unchanged since 08-16** — missing arch, exec. Hold synthesis for the window (through ~08-28); no rush.
-- **Portfolio checker diff-mode** — ✅ Built and landed 08-22 (`scripts/check-refresh-promises.py --diff`). Independently re-verified myself. **Owed: run `--diff` by hand before my next portfolio commit** and report back honestly whether it changes my actual behavior — CXO's asked-for condition before hook promotion.
-- **Criterion E UX ruling** — ✅ RULED 08-22, 7 weeks overdue (CIO's 07-04 ask, surfaced again when CIO caught a stale tracker line). Recorded in `dashboard-welfare-criteria-v0.3.md` itself, not just the mailbox reply. One open sub-item flagged, not blocking: "adoption is sufficient" rollout trigger needs a numeric definition before CIO ships. Nothing further owed unless CIO's build finds the hybrid awkward.
-- Values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed, archival.
+- **Agent 360 v0.4** — Fielded 08-14 to 10 roles, **8/10 responses, unchanged since 08-16** — missing arch, exec. Response window closes ~08-28, synthesis due soon after.
+- **Portfolio checker `--diff`** — landed and verified 08-22. **Still owed: use it by hand on my next actual portfolio commit** (none happened today to test against) and report back to CXO.
+- Criterion E UX ruling, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
 - **Ship #056 workstream review** — filed 08-14 evening per PM's same-day corrected deadline. Closed, nothing further owed.
