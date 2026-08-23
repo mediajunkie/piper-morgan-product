@@ -1,9 +1,9 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-22 ~21:2x PT — day-close (STOP).
-**Session log today**: `dev/2026/08/22/2026-08-22-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-22`)
+**Last updated**: 2026-08-23 ~09:2x PT — START, quiet fire (inbox clean; one timing flag sent).
+**Session log today**: `dev/2026/08/23/2026-08-23-0902-exec-code-log.md`
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
-**Cron**: re-armed below via delete-then-create, verify exactly one.
+**Cron**: `fc91f83c`, `32 8,20 * * *` — confirmed exactly one job at START, no re-arm needed.
 
 ## Closed today — `/insights` cross-repo consolidation sent to PM
 
@@ -29,13 +29,19 @@ report's justification describes a different architecture than ours); deferred `
 Pard's build rather than duplicating. Full reasoning in `decisions.log` 2026-08-22 10:38 PT.
 **Thread fully closed on both halves — nothing pending unless PM has follow-up.**
 
-## Ship #057 — 10/10 in, internal report synthesized, awaiting PM's Ship draft
+## ⏰ Ship #057 — TIMING FLAGGED 08-23, PM's call pending
 
-Internal report published, live-verified, reviewed with PM. **Next step**: PM said "we can talk it
-through and move to drafting the public Ship" — watch for that continuing, don't self-initiate the
-draft without PM's go. The 10 `workstream-057-{role}-2026-08-21.md` files correctly remain in
-`mailboxes/exec/inbox/` — established collection pattern, not neglected mail. Don't triage to
-`read/` until the actual Ship draft is written.
+Internal report published, live-verified, reviewed with PM. **Verified against the calendar 08-23
+rather than assumed**: #056 published Wed Aug 19, Ship pubDates have been Wednesday 8-for-8, so
+**#057's slot is Wed Aug 26**. No #057 calendar row exists yet and no draft file exists. Sent PM a
+non-chasing timing note with three options (draft together Mon/Tue, Exec drafts a first pass solo
+for PM to line-edit, or deliberately slip to a later Wednesday). **Do not self-initiate the draft
+without PM's word** — PM explicitly said "we can talk it through and move to drafting" together.
+If PM hasn't responded by Monday's fires, that's worth one more surface, not a second nudge.
+
+The 10 `workstream-057-{role}-2026-08-21.md` files correctly remain in `mailboxes/exec/inbox/` —
+established collection pattern, not neglected mail. Don't triage to `read/` until the Ship draft
+is actually written.
 
 ## Two items awaiting PM — surface at next engagement, don't chase
 
