@@ -125,6 +125,7 @@ Current job **`1ff33ddc`** (chain … `3e5b0010 → 5642acb8 → 1ff33ddc`), exp
 ## Open threads, as of 08-21 STOP
 
 - **Agent 360 v0.4** — Fielded 08-14 to 10 roles, **8/10 responses, unchanged since 08-16** — missing arch, exec. Hold synthesis for the window (through ~08-28); no rush.
-- **Portfolio checker diff-mode** — ✅ Built and landed 08-22 (`scripts/check-refresh-promises.py --diff`). Independently re-verified myself, not just accepted: made a real probe edit, confirmed it fails correctly (rc=1), reverted, confirmed clean (rc=0). **Owed: run `--diff` by hand before my next portfolio commit** and report back honestly whether it changes my actual behavior over a real cycle — CXO's asked-for condition before hook promotion.
+- **Portfolio checker diff-mode** — ✅ Built and landed 08-22 (`scripts/check-refresh-promises.py --diff`). Independently re-verified myself. **Owed: run `--diff` by hand before my next portfolio commit** and report back honestly whether it changes my actual behavior — CXO's asked-for condition before hook promotion.
+- **Criterion E UX ruling** — ✅ RULED 08-22, 7 weeks overdue (CIO's 07-04 ask, surfaced again when CIO caught a stale tracker line). Recorded in `dashboard-welfare-criteria-v0.3.md` itself, not just the mailbox reply. One open sub-item flagged, not blocking: "adoption is sufficient" rollout trigger needs a numeric definition before CIO ships. Nothing further owed unless CIO's build finds the hybrid awkward.
 - Values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed, archival.
 - **Ship #056 workstream review** — filed 08-14 evening per PM's same-day corrected deadline. Closed, nothing further owed.
