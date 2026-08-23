@@ -58,13 +58,13 @@ class TestRenderedBlockIsMarkdownList:
         """The input→output pin: known items produce this exact markdown."""
         block = render_first_contact_block(DEMO_PAYLOAD)
         assert block == (
-            "Here's what I can already see in acme/rocket — the GitHub repo "
+            "Here's what I'm already keeping track of in acme/rocket — the GitHub repo "
             "you've connected: 12 open items, most recently active:\n"
             "\n"
             '- #123 "Fix the login flow" (issue, updated today)\n'
             '- #456 "Add CSV export" (PR, updated 3 days ago)\n'
             "\n"
-            "Want me to dig into any of these?"
+            "You don't need to hold this list — I've got it. Want to dig into any of these?"
         )
 
     def test_no_bullet_glyphs_anywhere(self):
@@ -91,7 +91,7 @@ class TestRenderedBlockIsMarkdownList:
             "no paragraph break before the list — marked will render a run-on"
         )
         # And the closing question must not glue onto the last list item.
-        assert re.search(r"\n\nWant me to dig", block)
+        assert re.search(r"\n\nYou don't need to hold this list", block)  # #1539 purpose line, CXO 08-22
 
     def test_single_item_uses_singular_noun_and_still_lists(self):
         payload = {
