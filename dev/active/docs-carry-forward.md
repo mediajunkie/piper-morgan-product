@@ -1,32 +1,28 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-22 ~16:3x PDT (Fire 3 — Trust Gate fully syndicated, Medium+LinkedIn)
-**Session log**: `dev/2026/08/22/2026-08-22-0720-docs-code-log.md` (open).
-**Cron**: `4111b9b3`, unchanged today, healthy through ~08-28.
+**Updated**: 2026-08-22 22:3x PDT (DAY-CLOSED — one post's full lifecycle: publish, fact-check,
+syndicate; 2 PM process questions answered; a repeat self-caught defect)
+**Session log**: `dev/2026/08/22/2026-08-22-0720-docs-code-log.md` (closed, `DAY-CLOSED` marker
+written).
+**Cron**: `eaf72d50` (STOP re-arm, delete-then-create, `CronList`-verified sole job), fresh 7-day
+window to ~08-29. Registry row current.
 
-**Nothing carried forward as blocking.** "The Trust Gate That Wasn't" fully closed out today:
-published, fact-checked (ADR-072 D5 verbatim match incl. its ratification date matching the
-draft's dateline), live-verified, and now syndicated to both Medium and LinkedIn
-(status→distributed). A syndication report's FYI on the frontmatter-image naming mismatch was
-correctly self-flagged as the already-fixed 08-20 pattern holding, not a new instance — no action
-needed, confirmed. Earlier today, caught and fixed my own repeat of Wednesday's doubled-apostrophe
-defect before committing — same class, this time typed from habit rather than copied from
-frontmatter. Applied the archive-commit fix noted 2 days ago (drop old paths from `git add` after
-`git mv`) — landed clean in one shot for the first time this week.
+**Nothing carried forward as blocking.** "The Trust Gate That Wasn't" fully closed today —
+published, fact-checked (ADR-072 D5 verbatim match, incl. its own ratification date matching the
+draft's dateline exactly), live-verified, and syndicated to both Medium and LinkedIn. PM's two
+process questions (omnibus timing at Friday's review; whether the Monday audit ran) both answered
+from primary sources, not confidence — offered to proactively flag omnibus status before future
+reviews rather than answer after the fact; no action taken yet, pick up if PM takes it up.
 
-**PM asked whether the omnibus was current when their Friday weekly review with Exec started, and
-whether the Monday audit happened.** Both confirmed with primary-source evidence (Exec's 08-21 log
-for the review timing — 6:38 PM, well after my morning backfill; `gh issue view 1643` for the
-audit). Offered to proactively flag omnibus status before a review starts rather than answer
-after the fact — no action taken yet, just offered; pick up if PM takes me up on it.
+**Watch — 2nd occurrence of a defect class**: the YAML-doubled-apostrophe-into-CSV mistake
+recurred today (Wednesday: copied from frontmatter; today: typed from habit). Both self-caught
+before committing, but two in three days is worth naming as a pattern — if it recurs a third
+time, add an explicit check to the calendar-edit routine rather than keep relying on catching it
+by habit.
 
 **Watch, low-priority (recurring theme)**: this carry-forward file was pruned Friday and is still
-lean. Keep it that way — write fresh entries, don't let old detail accumulate past what's still
-actionable.
-
-**Standing discipline, still live**: every carried-forward item needs the same live-verification
-every time it's carried, whether or not it has a GitHub issue behind it — the items without issues
-are exactly the ones that go stale silently (Exec caught one 08-21).
+lean — kept that way through today's rewrites. Keep writing fresh entries rather than letting old
+detail accumulate.
 
 ## Awaiting PM (genuine, not urgent, don't chase)
 
