@@ -473,3 +473,41 @@ class TestReminderTaskOfferWiring:
         assert stored is not None
         assert stored["question"] == message
         assert stored["pending_action"]["kind"] == REMINDER_TASK_QUESTION_KIND
+
+
+class TestPureTimeResidue1679:
+    """#1679 — a pure-time extraction residue is NO task, never a title.
+
+    'set a reminder for tomorrow at 3pm' matched the generic 'for'-form with
+    group(1)='tomorrow at 3pm'; the trailing strip shed 'at 3pm' and the
+    leading residue 'tomorrow' saved as a reminder literally titled
+    'tomorrow' (live deterministic behavior, pre-classifier-claimed). Now the
+    residue is recognized as pure time → extraction returns None → the #1654
+    task-clarify carrier asks for the task.
+    """
+
+    def _handlers(self):
+        from services.intent_service.todo_handlers import TodoIntentHandlers
+
+        return TodoIntentHandlers.__new__(TodoIntentHandlers)
+
+    def test_pure_time_residue_returns_none(self):
+        h = self._handlers()
+        assert h._extract_reminder_text("set a reminder for tomorrow at 3pm") is None
+        assert h._extract_reminder_text("remind me about tomorrow") is None
+
+    def test_real_tasks_still_extract(self):
+        h = self._handlers()
+        assert h._extract_reminder_text("remind me to buy milk tomorrow at 3pm") == "buy milk"
+        assert (
+            h._extract_reminder_text("set a reminder to call the vendor")
+            == "call the vendor"
+        )
+
+    def test_task_containing_a_time_word_survives(self):
+        # 'tomorrow' inside a real task is not a pure-time residue.
+        h = self._handlers()
+        assert (
+            h._extract_reminder_text("remind me to prep tomorrow's agenda")
+            == "prep tomorrow's agenda"
+        )

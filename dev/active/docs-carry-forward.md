@@ -1,13 +1,15 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-22 ~10:3x PDT (Fire 2 — Trust Gate published + 2 PM process questions
-answered with primary-source evidence)
+**Updated**: 2026-08-22 ~16:3x PDT (Fire 3 — Trust Gate fully syndicated, Medium+LinkedIn)
 **Session log**: `dev/2026/08/22/2026-08-22-0720-docs-code-log.md` (open).
 **Cron**: `4111b9b3`, unchanged today, healthy through ~08-28.
 
-**Nothing carried forward as blocking.** "The Trust Gate That Wasn't" published, fact-checked
-(ADR-072 D5 verbatim match incl. its ratification date matching the draft's dateline), live-
-verified, syndicated status set. Caught and fixed my own repeat of Wednesday's doubled-apostrophe
+**Nothing carried forward as blocking.** "The Trust Gate That Wasn't" fully closed out today:
+published, fact-checked (ADR-072 D5 verbatim match incl. its ratification date matching the
+draft's dateline), live-verified, and now syndicated to both Medium and LinkedIn
+(status→distributed). A syndication report's FYI on the frontmatter-image naming mismatch was
+correctly self-flagged as the already-fixed 08-20 pattern holding, not a new instance — no action
+needed, confirmed. Earlier today, caught and fixed my own repeat of Wednesday's doubled-apostrophe
 defect before committing — same class, this time typed from habit rather than copied from
 frontmatter. Applied the archive-commit fix noted 2 days ago (drop old paths from `git add` after
 `git mv`) — landed clean in one shot for the first time this week.
