@@ -17,6 +17,20 @@ this week (website#31 closed 2026-08-13). Kept only what's still genuinely open,
 
 ## Active items
 
+### PreCompact hook — locality differentiation (owed since May, CIO re-flagged 2026-08-23)
+
+`.claude/hooks/precompact-signoff-warning.sh` — I'm the named owner (per the May 10 second-incident
+memo). Of the 3 proposed refinement options, 2 are addressed (severity tiering, shipped May 10;
+"safe to compact" self-serve path, was already substantively present via SOFT tier's option (c),
+reworded 2026-08-23 to match the proposal's exact language — `298fd4f89`). **Option 1 (locality
+differentiation) is the genuine remaining gap** — described as highest-leverage, lowest-effort at
+the time, but requires real design: reliably detecting "local persistent Model-A worktree" vs.
+"remote/sandbox/ephemeral session" isn't obviously solvable with an available signal (no confirmed
+env var or session metadata to key off yet). Touches a hook that wedged 4 agents (PPM, Lead Dev,
+CXO, CIO) in the May 10-17 incidents — needs proper behavioral testing before shipping any
+control-flow change, not a same-fire patch. Scope the detection mechanism first, then implement +
+watch it fire before trusting it, per CLAUDE.md's hook-verification discipline.
+
 ### Critical-docs YAML-frontmatter upgrade (PM-directed 2026-05-28; still genuinely incomplete)
 
 PM directive: upgrade critical docs to proper YAML frontmatter; Docs prompts + supervises +
