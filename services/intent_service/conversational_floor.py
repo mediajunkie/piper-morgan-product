@@ -780,8 +780,14 @@ class ConversationalFloor:
                     "- FIRST EXCHANGE, CONNECTOR DEMONSTRATION: this is the "
                     "user's first message of this conversation and their "
                     f"GitHub repo {repo} is connected. Open your reply by "
-                    "briefly showing what you can already see there — "
-                    "unprompted, before anything else — naming the repo "
+                    # purpose framing per issue 1539 (CXO strings, 08-22):
+                    # reassurance, not capability display. No issue numbers in
+                    # the prompt string itself — the entity-subset guard
+                    # correctly rejects numbers that aren't payload entities.
+                    "briefly showing what you're already keeping track of "
+                    "there — the point is reassurance (you hold the threads "
+                    "so they don't have to), not capability display — "
+                    "unprompted, before anything else, naming the repo "
                     "inside the same sentence as the claim (it is the one "
                     f"repo you looked at). {open_count} open items; the most "
                     "recently active:"

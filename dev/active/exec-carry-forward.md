@@ -1,9 +1,9 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-22 ~09:4x PT (START/WORK, mail loop drained, `/insights` consolidation sent).
-**Session log today**: `dev/2026/08/22/2026-08-22-0902-exec-code-log.md`
+**Last updated**: 2026-08-22 ~21:2x PT — day-close (STOP).
+**Session log today**: `dev/2026/08/22/2026-08-22-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-22`)
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
-**Cron**: `df38fcf6`, `32 8,20 * * *` — confirmed exactly one job at START, no re-arm needed.
+**Cron**: re-armed below via delete-then-create, verify exactly one.
 
 ## Closed today — `/insights` cross-repo consolidation sent to PM
 
@@ -17,7 +17,17 @@ laptop item about a quoted-verbatim-output hook carve-out isn't clearly applicab
 methodology judgment (mechanical-form-vs-prose, build-or-not on the newer tooling ideas) stays
 banked to their own fresh session per the agreed split — not blocking this reply.
 Sent: `mailboxes/xian (ceo)/inbox/reply-exec-to-pm-cc-cio-insights-consolidated-adopt-reject-
-2026-08-22.md`. **Nothing further pending on this thread** unless PM or CIO has follow-up.
+2026-08-22.md`.
+
+**CIO closed their half same day** (evening): landed one CLAUDE.md extension — the "Never guess at
+facts" section's scope widened to cover file contents/repo-history/counts, plus the behavioral
+trigger both reports asked for (say "unverified" rather than letting an earlier check silently
+stand in). Verified it landed as described (CLAUDE.md:240-243), not taken on report. Declined the
+freshness gate (risk already covered by Step 2b's fetch+merge; spending hook-trust on an unverified
+gate against a covered risk is the wrong call after our own 07-25/26 lesson) and lanes.yaml (the
+report's justification describes a different architecture than ours); deferred `verify-fire.sh` to
+Pard's build rather than duplicating. Full reasoning in `decisions.log` 2026-08-22 10:38 PT.
+**Thread fully closed on both halves — nothing pending unless PM has follow-up.**
 
 ## Ship #057 — 10/10 in, internal report synthesized, awaiting PM's Ship draft
 

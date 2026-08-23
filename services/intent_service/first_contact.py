@@ -266,9 +266,15 @@ def render_first_contact_block(payload: Optional[Dict[str, Any]]) -> str:
     # sentence in PM's 08-13 retest. Emit real markdown list syntax instead:
     # a blank line before/after the list and "- " items, which marked breaks
     # into <ul><li> rows.
+    # #1539 purpose line (CXO final strings, 2026-08-22; PM confirmed the
+    # articulation 08-21): the demo's WORDS carry the reassurance value prop
+    # ("holds the threads"), not just capability ("look what I can see").
+    # Honesty check done CXO-side: "keeping track of" is a true claim about
+    # connected data — the gather re-reads real state; nothing persistent is
+    # claimed that isn't.
     lines = [
-        f"Here's what I can already see in {repo} — the GitHub repo you've "
-        f"connected: {open_count} {noun}, most recently active:",
+        f"Here's what I'm already keeping track of in {repo} — the GitHub "
+        f"repo you've connected: {open_count} {noun}, most recently active:",
         "",
     ]
     for it in items:
@@ -279,7 +285,7 @@ def render_first_contact_block(payload: Optional[Dict[str, Any]]) -> str:
         title = display_title(it.get("title"), f"(untitled {kind} #{it.get('number')})")
         lines.append(f'- #{it.get("number")} "{title}" ({kind}{recency_part})')
     lines.append("")
-    lines.append("Want me to dig into any of these?")
+    lines.append("You don't need to hold this list — I've got it. Want to dig into any of these?")
     return "\n".join(lines)
 
 
