@@ -124,7 +124,8 @@ Current job **`8114ef2d`** (chain … `5642acb8 → 1ff33ddc → 8114ef2d`), exp
 
 ## Open threads, as of 08-22 STOP
 
-- **Agent 360 v0.4** — Fielded 08-14 to 10 roles, **8/10 responses, unchanged since 08-16** — missing arch, exec. Response window closes ~08-28, synthesis due soon after.
+- **Agent 360 v0.4** — Fielded 08-14 to 10 roles, **9/10 responses as of 08-23** (arch landed) — missing only exec. Response window closes ~08-28, synthesis due soon after.
+- **Criterion E** — ✅ Fully closed 08-22/23: ruling given, filed as #1680 by CIO, routed to Lead, recorded in `decisions.log` (a real gap HOST caught and closed — CIO's issue text pointed there and it wasn't). Nothing further owed.
 - **Portfolio checker `--diff`** — landed and verified 08-22. **Still owed: use it by hand on my next actual portfolio commit** (none happened today to test against) and report back to CXO.
 - Criterion E UX ruling, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
 - **Ship #056 workstream review** — filed 08-14 evening per PM's same-day corrected deadline. Closed, nothing further owed.
