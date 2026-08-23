@@ -54,7 +54,7 @@ I don't think the lesson is that anyone should have caught this earlier by readi
 
 The mockup needed to stay in the picture as a reference, right up until the last page shipped. Words earn their keep for the parts a picture can't show: states, breakpoints, exact values. But when the picture exists, checking the build against the picture beats checking it against a description of the picture, however carefully written.
 
-Every UX designer has had a version of this experience when asked to review an implementation of their design. It's rare that it matches exactly what was intended even if it's pixel-perfect against a mock.
+Every UX designer has had a version of this experience when asked to review an implementation of their design. It's rare that it matches exactly what was intended even if it's pixel-perfect wagainst a mock.
 
 The rebuild took a morning, not a sprint, because most of what got built the first time, the tokens, the component structure, the test harness, survived the correction intact. We wasted one build cycle, sure, and on my end that flash of "wait, this isn't what I pictured" was a letdown, but it was exactly that astringent sting of disappointment that provided the final details needed to polish the design of the experience up to my standards and expectations.
 
