@@ -1,7 +1,25 @@
+# CXO carry-forward — rewritten 2026-08-24 07:3x PT
+
+✅ **CRON ROTATED as flagged**: `c84a440a` → **`cd9b3ddc`** at the 08-24 START (delete-then-create,
+CronList-verified exactly one job), expiry pushed to ~08-31. Registry row updated. **Next rotation watch:
+from ~08-30.**
+
+**08-23 was fully quiet** (five checked fires; its 21:47 tick queued overnight and stacked with Monday's
+06:47 — one wake, 08-23's close written at it, recorded not backfilled).
+
+**Open going into the week** (unchanged): §4's column (PM) · FTUX surface-mapping (mine — fresh session,
+ideally post-BYOC-conversation) · #1539 close (PM's next live round exercises the shipped purpose line) ·
+HOST's by-hand checker cycle (their report) · the taxonomy's PDR-005 citation fix (small, unclaimed).
+
+---
+
+*(08-22 22:3x header below, left as the weekend's fuller record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-22 22:3x PT at STOP. Day closed; next fire 06:47 on 08-23, opening
 ~07:17.
 
-⚠️ **CRON ROTATION WATCH ACTIVE**: `c84a440a` expires ~08-25 (7-day cap from the 08-18 rotation).
+⚠️ **CRON ROTATION WATCH ACTIVE**: `c84a440a` expires ~08-25 (7-day cap from the 08-18 rotation). *(DONE
+08-24 — see header above.)*
 **Rotate proactively at the 08-24 START** (delete-then-create, verify exactly one job, record old→new id) —
 same play as 08-18's clean rotation; don't wait for the silent death.
 
