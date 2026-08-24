@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-23 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-23 (16:37 WORK)
 
 **Cron**: `7f6bb205` · `7 10,16,22` LEAN · **auto-expires ~2026-08-26** — ~3.5 days out, not yet
 within the 48h proactive-rotation window; check next fire.
@@ -18,13 +18,21 @@ unbuilt ~3 months. Nudged HOST (Sparker/Holder, migration-experience confer — 
 Docs (PreCompact hook shipped only its lowest-ranked refinement option). Full detail: today's session
 log + `dev/active/cio-standing-items.md` itself.
 
-## Five items now genuinely awaiting others — none blocking CIO's own work
+## ✅ Both HOST/Docs nudges resolved same-day (08-23)
 
-1. **Chess-board scope** (raised 08-20, PM) — `dev/active/chess-board-design-pass-cio-2026-08-20.md`.
-2. **Methodology-core disposition review** (raised 08-20, PM) — PM explicitly deferred Apr 27.
-3. **Curation-trial bigger scope** (raised 08-19, PM) — DinP thread vs. bigger Ted-Nadeau framing.
-4. **Watchdog relay-latency question** (raised 08-21, PM) — alert sat in CIO's inbox ~4h before PM.
-5. **Sparker/Holder + migration-confer nudges** (raised 08-23, HOST) — two ~4mo-stalled items, light.
+Sparker/Holder — HOST declined (PM's original words framed it optional; 4mo non-reuse is the
+evidence). Migration-experience confer — HOST ruled moot (overtaken by the Amber migration + Agent
+360's cadence). PreCompact hook — Docs caught my own grep produced a false negative (Option 3 was
+present in substance, different wording); corrected count 2-of-3 addressed, Option 1 (locality
+differentiation) genuinely open and now Docs's scoped, unblocked work. Tracker updated same-fire;
+acks sent, one explicitly crediting Docs's catch of my own imprecision.
+
+## Four items now genuinely awaiting PM — none blocking other work
+
+1. **Chess-board scope** (raised 08-20) — `dev/active/chess-board-design-pass-cio-2026-08-20.md`.
+2. **Methodology-core disposition review** (raised 08-20) — PM explicitly deferred Apr 27.
+3. **Curation-trial bigger scope** (raised 08-19) — DinP thread vs. bigger Ted-Nadeau framing.
+4. **Watchdog relay-latency question** (raised 08-21) — alert sat in CIO's inbox ~4h before PM.
 
 ## ✅ Criterion E — RULED, FILED, ROUTED (08-22, issue #1680)
 
@@ -54,7 +62,6 @@ today — delegated the tracker-verification legwork, did the synthesis and judg
 
 - **Cron approaching expiry (~08-26)** — check proactive rotation at next fire.
 - **PM's response on the four open questions above** — none blocking, all genuinely open.
-- **HOST's response on the two nudges, Docs's on the PreCompact gap** — light, not blocking.
 - **Verify the three self-firing workflows actually fire**: skill-candidates 09-01, Agent 360 09-25.
 - **Whether either project runs the recurring short-period isolating test** for dispatch latency.
 
@@ -81,3 +88,8 @@ today — delegated the tracker-verification legwork, did the synthesis and judg
   verify, don't assume, and use delegation for the legwork when the scope is large.** (08-23: the
   ~40-day-overdue full audit, ~30 items checked, most resolved-and-forgotten rather than genuinely
   stalled — but the two that WERE genuinely stalled needed a direct nudge, not just quiet correction.)
+- **My own verification can produce the exact false-negative I'm auditing for.** A literal-string
+  grep found "not built" where the substance existed under different wording. Docs caught it same-day
+  — the fix isn't just accepting the correction, it's noticing that "I verified against the actual
+  code" doesn't make a finding immune to this, and staying open to being corrected on a thing I'd
+  just spent a fire being rigorous about. (08-23 16:37.)
