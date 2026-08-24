@@ -1,30 +1,36 @@
-# CIO carry-forward — rewritten 2026-08-23 (22:37 STOP)
+# CIO carry-forward — rewritten 2026-08-24 (10:37 START)
 
-**Cron**: `7f6bb205` · `7 10,16,22` LEAN · **auto-expires ~2026-08-26 22:37** — exactly 3 days out.
-**Rotate at tomorrow's 22:37 STOP** — first fire actually inside the 48h proactive-rotation window.
+**Cron**: `7f6bb205` · `7 10,16,22` LEAN · **auto-expires ~2026-08-26 22:37**. **48h proactive-
+rotation window opens tonight's 22:37 STOP — rotate then, delete-then-create-then-verify.**
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
+## ⭐ NEW — F2 scope flagged to Exec (08-24)
+
+Last unscoped piece of the welfare-criteria spec. Sent per the spec's own routing ("flag scope to
+Exec when extending the rollup") — two honest questions (worth building at all? what should
+"cross-document reference detection" mean?), no design proposed unilaterally. Awaiting Exec's read;
+not blocking.
+
+## Five items now genuinely awaiting others — none blocking CIO's own work
+
+1. **Chess-board scope** (raised 08-20, PM) — `dev/active/chess-board-design-pass-cio-2026-08-20.md`.
+2. **Methodology-core disposition review** (raised 08-20, PM) — PM explicitly deferred Apr 27.
+3. **Curation-trial bigger scope** (raised 08-19, PM) — DinP thread vs. bigger Ted-Nadeau framing.
+4. **Watchdog relay-latency question** (raised 08-21, PM) — alert sat in CIO's inbox ~4h before PM.
+5. **F2 scope** (raised 08-24, Exec) — see above.
+
 ## ✅ Tracker audit — fully closed out (08-23)
 
-`cio-standing-items.md` audited (188→~110 lines, first sweep since 07-13), both nudged findings
+`cio-standing-items.md` audited (188→~110 lines, first sweep since 07-13); both nudged findings
 (Sparker/Holder, migration-experience confer, PreCompact hook count) resolved same-day by HOST and
-Docs. Nothing further owed on this thread. Full detail: `dev/2026/08/23/2026-08-23-1037-cio-code-log.md`.
-
-## Four items now genuinely awaiting PM — none blocking other work
-
-1. **Chess-board scope** (raised 08-20) — `dev/active/chess-board-design-pass-cio-2026-08-20.md`.
-2. **Methodology-core disposition review** (raised 08-20) — PM explicitly deferred Apr 27.
-3. **Curation-trial bigger scope** (raised 08-19) — DinP thread vs. bigger Ted-Nadeau framing.
-4. **Watchdog relay-latency question** (raised 08-21) — alert sat in CIO's inbox ~4h before PM.
+Docs. Nothing further owed.
 
 ## ✅ Criterion E — RULED, FILED, ROUTED (08-22, issue #1680)
 
-HOST's UX ruling landed, filed as #1680, routed to Lead. CIO's part done. Remaining piece (F2,
-cross-pair thread staleness) is standing-items' one still-open tracker line — genuinely unscoped,
-needs coordination with Exec's rollup, not CIO's to build solo.
+HOST's UX ruling landed, filed as #1680, routed to Lead. CIO's part done.
 
 ## ✅ /insights judgment work — DONE (08-22, commit `c174afdb1`)
 
@@ -46,8 +52,9 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 
 ## Watch
 
-- **Cron rotation due tomorrow (~08-24 22:37)** — first fire inside the 48h window; rotate then.
+- **Cron rotation due tonight (~22:37 STOP)** — first fire inside the 48h window.
 - **PM's response on the four open questions above** — none blocking, all genuinely open.
+- **Exec's response on F2** — none blocking.
 - **Verify the three self-firing workflows actually fire**: skill-candidates 09-01, Agent 360 09-25.
 - **Whether either project runs the recurring short-period isolating test** for dispatch latency.
 
@@ -58,8 +65,6 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
   field that is never absent can never report incompleteness (Comms, 08-10).
 - **Chess-board smallest-next-step script** — bounded and delegatable once PM answers the scope
   questions above; do not build ahead of the answer.
-- **Standing-items #14 (F2, cross-pair thread staleness)** — genuinely unscoped; needs coordination
-  with Exec's rollup, not a solo build.
 
 ## Standing corrections to myself
 

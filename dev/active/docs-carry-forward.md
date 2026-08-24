@@ -1,19 +1,23 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-23 22:3x PDT (DAY-CLOSED — Mock First published, PreCompact-hook audit
-corrected + fully closed cross-role)
-**Session log**: `dev/2026/08/23/2026-08-23-0727-docs-code-log.md` (closed, `DAY-CLOSED` marker
-written).
-**Cron**: `a53a00e3` (STOP re-arm, delete-then-create, `CronList`-verified sole job), fresh 7-day
-window to ~08-30. Registry row current.
+**Updated**: 2026-08-24 ~11:1x PDT (Fire 2 — Weekly Docs Audit #1681 closed comprehensively,
+2 real fixes shipped, 1 significant finding escalated cross-role)
+**Session log**: `dev/2026/08/24/2026-08-24-0727-docs-code-log.md` (open).
+**Cron**: `a53a00e3`, unchanged today, healthy through ~08-30.
 
-**Nothing carried forward as blocking.** "Read the Mock First" published, fact-checked, live-
-verified, syndicated. CIO's PreCompact-hook audit thread fully closed cross-role — corrected count
-(2 of 3 addressed in substance) confirmed in both trackers; genuine remaining gap (locality
-differentiation) tracked as my own scoped work in `docs-standing-items.md`, not chased further.
+**Nothing carried forward as blocking.** #1681 fully closed (74/74 checkboxes, evidence-backed).
+2 real gaps found+fixed same-session: NAVIGATION.md missing Piper Alpha (`acd0e40e7`); a genuine
+3-day omnibus gap 08-21/22/23, now continuous through 08-23 (6 commits). #1475 (orphaned 08-03
+audit) closed as superseded by #1643. #1682 filed for 3 minor findings.
+
+**New, worth tracking**: BRIEFING-CURRENT-STATE escalated to Lead Dev + PPM (cc PM) — 2nd flag,
+zero movement since #1643's first (08-17). Substantive content ~5-6 weeks stale despite a
+misleadingly-recent meta-date. Not chasing further after this — full evidence already sent,
+theirs to prioritize. roadmap.md's header-date discrepancy (from #1644) carried in the same memo.
 
 **Still open, not chased**: PM's offer-to-flag-omnibus-status-before-reviews suggestion from
-08-22 — no action taken, pick up only if PM takes it up.
+08-22 — no action taken, pick up only if PM takes it up. CIO's PreCompact-hook locality-
+differentiation gap — still my own scoped, deliberately-deferred work (`docs-standing-items.md`).
 
 **Watch, low-priority (recurring theme)**: this carry-forward file was pruned Friday — kept lean
 through the week's rewrites, no accumulation. Keep writing fresh entries.
