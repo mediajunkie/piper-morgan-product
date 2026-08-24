@@ -1,34 +1,22 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-23 ~19:3x PDT (Fire 4 — CIO's ack closed the PreCompact-hook thread cleanly)
-**Session log**: `dev/2026/08/23/2026-08-23-0727-docs-code-log.md` (open).
-**Cron**: `eaf72d50`, unchanged today, healthy through ~08-29.
+**Updated**: 2026-08-23 22:3x PDT (DAY-CLOSED — Mock First published, PreCompact-hook audit
+corrected + fully closed cross-role)
+**Session log**: `dev/2026/08/23/2026-08-23-0727-docs-code-log.md` (closed, `DAY-CLOSED` marker
+written).
+**Cron**: `a53a00e3` (STOP re-arm, delete-then-create, `CronList`-verified sole job), fresh 7-day
+window to ~08-30. Registry row current.
 
-**PreCompact-hook thread fully closed**: CIO acknowledged the wording-gap correction plainly
-("my own finding was imprecise... exactly the kind of false negative the audit was supposed to be
-catching"), confirmed the 2-of-3-in-substance count in their own tracker, agreed Option 1 stays my
-scoped work. **Owed item still stands** (locality differentiation — see `docs-standing-items.md`),
-just no longer an open cross-role thread.
+**Nothing carried forward as blocking.** "Read the Mock First" published, fact-checked, live-
+verified, syndicated. CIO's PreCompact-hook audit thread fully closed cross-role — corrected count
+(2 of 3 addressed in substance) confirmed in both trackers; genuine remaining gap (locality
+differentiation) tracked as my own scoped work in `docs-standing-items.md`, not chased further.
 
-**Nothing else carried forward as blocking.** "Read the Mock First" published, fact-checked (PM's
-UAT quotes + the undefinedundefined bug all verbatim matches against 06-19 primary logs), live-
-verified (survived a genuine deploy-lag 404 — confirmed data was correct on origin/main before
-concluding it was just lag, not a defect). Independent audit caught 2 real defects the earlier
-admin-UI review pass hadn't (a negation-reveal AI tic; a "(Lead)"→"(Lead Dev)" gloss
-inconsistency) — worth noting since the calendar notes claimed "PUBLISH-READY, clear for Docs"
-and were accurate about *readiness to review*, just not exhaustive on their own. The doubled-
-apostrophe defect from the last 2 publishes did NOT recur — checked deliberately this time, clean.
+**Still open, not chased**: PM's offer-to-flag-omnibus-status-before-reviews suggestion from
+08-22 — no action taken, pick up only if PM takes it up.
 
-**Resolved from yesterday's watch**: the doubled-apostrophe-into-CSV mistake (2 occurrences,
-08-20 and 08-22) did not recur today — checked deliberately, clean. Downgrading from "watch for a
-3rd occurrence" back to routine care; no longer flagging unless it happens again.
-
-**Still open from yesterday, not chased**: PM's offer-to-flag-omnibus-status-before-reviews
-suggestion — no action taken yet, pick up if PM takes it up.
-
-**Watch, low-priority (recurring theme)**: this carry-forward file was pruned Friday and is still
-lean — kept that way through today's rewrites. Keep writing fresh entries rather than letting old
-detail accumulate.
+**Watch, low-priority (recurring theme)**: this carry-forward file was pruned Friday — kept lean
+through the week's rewrites, no accumulation. Keep writing fresh entries.
 
 ## Awaiting PM (genuine, not urgent, don't chase)
 
