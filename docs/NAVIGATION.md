@@ -25,6 +25,7 @@
 ### Essential Briefings (Start Here)
 
 - [Lead Developer](briefing/BRIEFING-ESSENTIAL-LEAD-DEV.md) - 2.5K tokens
+- [Piper Alpha (PA)](briefing/BRIEFING-piper-alpha.md)
 - [Chief Architect](briefing/BRIEFING-ESSENTIAL-ARCHITECT.md) - 2.5K tokens
 - [Chief of Staff](briefing/BRIEFING-ESSENTIAL-CHIEF-STAFF.md) - 2.5K tokens
 - [CXO](briefing/BRIEFING-ESSENTIAL-CXO.md) - 2.5K tokens
@@ -37,7 +38,7 @@
 - [Web (Unicorn Web Designer)](briefing/BRIEFING-ESSENTIAL-WEB.md)
 - [Exploratory Testing Agent (ETA)](briefing/BRIEFING-ESSENTIAL-ETA.md) — *dormant, last session March 2026*
 
-*(Web and ETA added 2026-08-17, weekly-docs-audit #1643 — both were missing from this list despite Web being active since ~06-2026 and ETA appearing correctly in ROSTER.md and CLAUDE.md's role table.)*
+*(Web and ETA added 2026-08-17, weekly-docs-audit #1643 — both were missing from this list despite Web being active since ~06-2026 and ETA appearing correctly in ROSTER.md and CLAUDE.md's role table. Piper Alpha added 2026-08-24, weekly-docs-audit #1681 — PA was missing from this list despite being active since 2026-03-30 and appearing correctly in ROSTER.md and CLAUDE.md's role table; the 2026-08-17 pass checked for newer roles but didn't re-verify the full roster against this list, so the pre-existing PA gap survived that audit.)*
 
 ### Progressive Loading
 
