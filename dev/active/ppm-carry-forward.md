@@ -1,9 +1,43 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-23 21:58 PT (STOP). **Six clean fires, quiet Sunday, no mail all day.**
-Cron re-armed: **`2b19db6b`** (was `05104aa5`). **Still watching**: #1386's remaining criteria
-(1, 4, 5, 6) — no movement since criterion 2's re-confirmation on 08-21.
+**Last rewritten**: 2026-08-24 13:14 PT (WORK). Cron job unchanged: **`2b19db6b`** (armed since
+08-23 21:58). **Still watching**: #1386's remaining criteria (1, 4, 5, 6) — no movement since
+criterion 2's re-confirmation on 08-21.
+
+## ✅ BRIEFING + ROADMAP STALENESS — ACTIONED 2026-08-24, both closed same-fire
+Docs sent a **second** staleness flag (`2026-08-24-docs-briefing-current-state-still-stale-second-
+flag.md`, first was #1643 08-17, zero movement in between) naming two PPM-lane gaps: (1)
+`BRIEFING-CURRENT-STATE.md`'s Current Position/Focus reading ~5-6 weeks stale in substance despite
+a misleadingly-recent "Last Updated: August 12" banner (that touch was CIO-lane-only, explicitly
+not re-attesting Position/Focus); (2) `roadmap.md`'s header still reading "July 16, 2026" (#1644,
+unresolved since 08-17). Acted on both same-fire per CLAUDE.md's standing instruction — no PM ask
+needed, no waiting for Docs/CIO to own it.
+
+**BRIEFING-CURRENT-STATE.md**: appended (didn't rewrite) a STATUS BANNER paragraph, a new
+Last-Updated chain entry, a corrected Inchworm Position beta-date line (the old "beta target: July
+4, 2026" line was stale twice over — no fixed date exists since PM moved beta back a month
+08-08 without setting a new one), and a new "August 15–24" Recent Progress section covering
+first-contact criterion ratified 8/15, #1510 fork ruled, spatial disposition closed, surfaces
+taxonomy v1.0 ratified 8/21, FTUX model landed 8/21, #1386 criterion 2 re-confirmed 8/21, and the
+current `sprint-truth.py` count cited verbatim. **Scoped decision**: followed the file's real
+established append-only pattern rather than the `update-current-state` skill's idealized
+clean-rewrite/trim template — the file has accreted "UPDATE date (Role attest)" clauses since
+March without ever getting a clean rewrite or the Recent Progress trim the skill specifies; fixing
+that structural debt is a separate, larger undertaking than one WORK fire. Touched only PPM-lane
+content — Lead's engineering/CI/deploy sections untouched.
+
+**roadmap.md** (#1644): confirmed via `git log` the file's most recent real touch was my own
+narrow 08-06 fix (`25fdfd322`), not a fold — explaining the stale date. Chose an honest, scoped
+fix over a full v19 historical re-fold: bumped title v18.7 → v18.8, annotated the existing Date
+line as current-only-through-July-16, added a v18.8 changelog entry naming what's changed since
+(beta walkback, first-contact criterion, surfaces taxonomy, FTUX model) and pointing readers at
+`sprint-truth.py` + the refreshed briefing for live counts. **A full v19 fold is still owed** —
+tracked as the open half of #1644, not done here.
+
+**Committed + pushed**: `2a75d74eb` (both docs) → verified 0 ahead/0 behind `origin/main`.
+Mailbox triage: memo moved to `read/` via `mail-send.sh` (`bac92034f`, verified landed, local
+fast-forwarded clean).
 
 ## ✅ #1386 CRITERION 2 RE-CONFIRMED — 2026-08-21, fresh run, checked not inherited
 A new canonical run (**Run 14**, keyed, first since Run 12) landed and CXO signed off the
