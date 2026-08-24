@@ -1,15 +1,14 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-23 ~13:5x PDT (Fire 3 — Mock First syndicated + PreCompact-hook audit
-corrected, 1 genuine gap added to standing items)
+**Updated**: 2026-08-23 ~19:3x PDT (Fire 4 — CIO's ack closed the PreCompact-hook thread cleanly)
 **Session log**: `dev/2026/08/23/2026-08-23-0727-docs-code-log.md` (open).
 **Cron**: `eaf72d50`, unchanged today, healthy through ~08-29.
 
-**New owed item**: PreCompact hook's locality-differentiation gap (CIO-flagged, confirmed
-genuine after independent verification — 2 of the 3 originally-ranked options turned out to
-already be addressed in substance, just not in the literal wording a grep would catch; fixed the
-wording gap same-fire). Real design work, deliberately deferred to a dedicated session rather than
-rushed on a hook that's wedged agents before — see `docs-standing-items.md` for full scope.
+**PreCompact-hook thread fully closed**: CIO acknowledged the wording-gap correction plainly
+("my own finding was imprecise... exactly the kind of false negative the audit was supposed to be
+catching"), confirmed the 2-of-3-in-substance count in their own tracker, agreed Option 1 stays my
+scoped work. **Owed item still stands** (locality differentiation — see `docs-standing-items.md`),
+just no longer an open cross-role thread.
 
 **Nothing else carried forward as blocking.** "Read the Mock First" published, fact-checked (PM's
 UAT quotes + the undefinedundefined bug all verbatim matches against 06-19 primary logs), live-
