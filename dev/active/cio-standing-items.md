@@ -42,7 +42,7 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 | 7c | **Docs sign-off `git status` inventory pattern** — methodology-corpus candidate | May 10 | Needs HOST + Docs concurrence on framing; never pursued. Low priority. |
 | 7d | **Metadata-cleanup ticket** — pattern Status-field vocabulary contamination | May 9 | Cosmetic; low-priority Docs work; never filed as an actual issue. |
 | 7e | **Anti-pattern P-16 candidate** ("Cross-Agent Residue Accumulation in Shared Working Tree") | May 10 | Queued for a Pattern Sweep anti-pattern index update that hasn't happened since. |
-| 14 | **Dashboard welfare-criteria v0.3 — F2 (cross-pair thread staleness)** | Jul 3, reverified Aug 22 | The one remaining unscoped piece after the 08-22 re-audit and Criterion E's resolution (#1680). Spec itself flags this as new work requiring cross-document reference detection, not yet scoped to Exec. |
+| 14 | **Dashboard welfare-criteria v0.3 — F2 (cross-pair thread staleness)** | Jul 3, reverified Aug 22, flagged to Exec Aug 24 | Scope flagged to Exec per the spec's own routing — worth-building question + implementation-shape question, not a design proposed unilaterally. Awaiting Exec's read. |
 
 ### Resolved, verified, closing out (evidence only — full detail in git history)
 
