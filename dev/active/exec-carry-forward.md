@@ -1,9 +1,9 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-23 ~09:2x PT — START, quiet fire (inbox clean; one timing flag sent).
-**Session log today**: `dev/2026/08/23/2026-08-23-0902-exec-code-log.md`
+**Last updated**: 2026-08-23 ~21:2x PT — day-close (STOP). Quiet Sunday, no mail either fire.
+**Session log today**: `dev/2026/08/23/2026-08-23-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-23`)
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
-**Cron**: `fc91f83c`, `32 8,20 * * *` — confirmed exactly one job at START, no re-arm needed.
+**Cron**: re-armed below via delete-then-create, verify exactly one.
 
 ## Closed today — `/insights` cross-repo consolidation sent to PM
 
@@ -37,7 +37,10 @@ rather than assumed**: #056 published Wed Aug 19, Ship pubDates have been Wednes
 non-chasing timing note with three options (draft together Mon/Tue, Exec drafts a first pass solo
 for PM to line-edit, or deliberately slip to a later Wednesday). **Do not self-initiate the draft
 without PM's word** — PM explicitly said "we can talk it through and move to drafting" together.
-If PM hasn't responded by Monday's fires, that's worth one more surface, not a second nudge.
+**Re-checked at 08-23 STOP**: still no draft, no calendar row, no PM response — correctly held
+rather than re-flagged the same day (PM hasn't had a working day to answer on a three-day runway).
+**Monday 08-24's fires are the right moment for one more surface if it's still open** — one, framed
+as a real timing question, not a repeat of the same note.
 
 The 10 `workstream-057-{role}-2026-08-21.md` files correctly remain in `mailboxes/exec/inbox/` —
 established collection pattern, not neglected mail. Don't triage to `read/` until the Ship draft
