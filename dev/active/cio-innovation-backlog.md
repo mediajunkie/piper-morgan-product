@@ -57,11 +57,11 @@ Surface column indicates where the innovation lives if Captured (or where it wou
 | # | Innovation | Origin | Adoption Surface | Capture Status |
 |---|---|---|---|---|
 | 24 | "Singleton → pair → many" epistemology | PM coining Apr 23 (CIO migration session) | Visible in Apr 22-26 migration analysis (HOST→CIO+Comms→CXO+PPM+Arch) | **Pending capture**: candidate methodology-core entry or operating-norm note. Used 4+ times in 5 days. Worth formalizing. |
-| 25 | "Spark vs. holder" routing principle | PM coining Apr 26 (CIO cadence-comms split conversation) | Operating across multiple coordination hops | **Pending capture**: HOST/CIO discussion in flight (Apr 27 cadence-split-ack memo); HOST holds the call on which surface to land it (CLAUDE.md altitude vs. methodology-core). |
+| 25 | "Spark vs. holder" routing principle | PM coining Apr 26 (CIO cadence-comms split conversation) | Operating across multiple coordination hops | **Closed 2026-08-23 (HOST ruling)**: declined, not captured. PM's own framing left naming it optional from the start; four months without organic reuse or a cited friction incident is itself the evidence it doesn't clear the bar. Stays tacit — see `cio-standing-items.md`'s resolved section for the full ruling. |
 | 26 | Decreasing-review-volume signal across migrations | Exec observation across 5 migrations (HOST 5+1 → CIO 4 → Comms 3+1 → CXO 2 → PPM 3) | Visible in Apr 22-26 migration tracking | **Pending capture**: candidate metric for migration-quality dashboard or methodology-25 successor. Six-data-point trend (one per migration); exec migration is the seventh. |
 | 27 | Audit-shape vs. build-quality diagnostic question | PPM Apr 26 (Phase E #1002 finding context) | Used in #1002 + #1003 scoping discussions | **Pending capture**: diagnostic phrase candidate for methodology corpus or as Pattern-062 supplementary diagnostic. |
 | 28 | Verdict-convergence-as-dangerous-signal diagnostic | CIO Apr 26 + CXO Apr 26 | Pattern-063 + methodology-24 reference it | **Captured** in methodology-24 references; **Pending broader application** to other diagnostic surfaces (floor-quality monitoring, ADR review per Architect Apr 26 note). |
-| 29 | "What would have to be true for these to be wrong in the same direction?" | Cross-converged from CIO + CXO + Architect (Apr 26-27) | Adopted in ADR review process per Architect Apr 26 | **Pending capture**: candidate for inclusion in methodology-core diagnostic-question section (none exists yet — could be a methodology-27 entry on diagnostic frames). |
+| 29 | "What would have to be true for these to be wrong in the same direction?" | Cross-converged from CIO + CXO + Architect (Apr 26-27) | Adopted in ADR review process per Architect Apr 26 | **Pending capture, but related work landed since (checked 08-25)**: `methodology-45-AGREEMENT-IS-NOT-REPLICATION.md` (filed Jul 29 by CIO) addresses the same underlying failure shape — convergent agreement from independent agents reading as false evidence when a shared confound is present. Not a literal capture of this specific April diagnostic-question phrasing, so not marking Captured outright, but any future formalization of #29 should cross-reference m-45 rather than treat it as a fresh gap. |
 | 30 | Stop-condition discipline (Lead Dev Apr 25) | Lead Dev pre-Phase E run | `feedback_*` memory; one-time application caught wrong-server gate run | **Pending capture**: methodology-core entry candidate ("Stop-conditions are cheaper than retractions" per Apr 25 omnibus learning). |
 | 31 | Methodology validates itself within hours (Code-era maturity signal) | Step 2.5 gate first-use Apr 23 (16hr after Apr 22 commit) | Discussed in Ship #040 narrative | **Pending capture**: candidate observation note in methodology-25 as fix-to-validation-latency property of Code-era cadence. Possibly reusable in future audits. |
 | 32 | "Methodology over role identity" (CXO Apr 25 + PPM Apr 25 retiring instances) | CXO closing: *"The Colleague Test is more important than the CXO role"* | Articulated in Apr 25 omnibus | **Pending capture**: candidate for methodology-core entry or as continuation of Pattern-065's institutional-knowledge framing. |
@@ -146,4 +146,16 @@ The 30-min number was right for the reconstruction-from-existing-memos task. The
 *Backlog reconstructed: April 27, 2026*
 *Author: CIO (Code instance)*
 *Source basis: M1 audit §3 + audit §9 + Ships #036-#039 narratives + HOST/PPM/CXO/Architect workstream-040 memos + Apr 17-27 omnibus logs + recent methodology-core/pattern catalog filings*
-*Next sweep: at M2 sprint gate closure (audit trigger) or session-start opportunity, whichever comes first*
+
+**Partial check 2026-08-25** (last real content edit was ~May 11 per `git log`; this file's own
+"next sweep at M2 gate closure" trigger fired and went unactioned months ago — same staleness shape
+`cio-standing-items.md` had before its 08-23 audit). Spot-checked the "Pending capture" items (24-32)
+against the current methodology-core corpus rather than assuming the tier is still accurate: #25
+closed per HOST's 08-23 ruling (updated above); #29 has related-but-not-identical work since (m-45,
+noted above); #28 was already correctly marked Captured; #24, #26, #27, #30-32 checked and still
+appear genuinely uncaptured (methodology-16's "STOP Conditions" superficially keyword-matches #30
+but predates it by nearly a year — a different, older document, not a capture). **Not a full audit**
+— unlike the standing-items sweep, this was a targeted check of specific claims rather than a
+comprehensive re-verification of every row (Captured tier, Emerging tier, and the Watch List below
+weren't checked this pass). A genuine full sweep is still owed if this file's own cadence is to mean
+anything.
