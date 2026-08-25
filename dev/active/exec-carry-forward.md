@@ -1,10 +1,15 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-24 ~21:2x PT — day-close (STOP). Ship #057 drafted; two substantive
-memos answered.
-**Session log today**: `dev/2026/08/24/2026-08-24-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-24`)
+**Last updated**: 2026-08-25 ~09:1x PT — START, quiet fire (one ack drained, nothing owed).
+**Session log today**: `dev/2026/08/25/2026-08-25-0902-exec-code-log.md`
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
-**Cron**: re-armed below via delete-then-create, verify exactly one.
+**Cron**: `418ff20f`, `32 8,20 * * *` — confirmed exactly one job at START, no re-arm needed.
+
+⏰ **Ship #057 publishes TOMORROW (Wed Aug 26)** and is still `drafted`, unchanged since I wrote it
+08-24 — PM's fact-check + voice pass hasn't happened yet. Verified at the 08-25 START, not assumed.
+**Not a chase today**: PM has a full day, and the note asking for the pass went out 08-24 with the
+draft. **If it's still untouched at tomorrow morning's fire, that's the moment to surface it once**
+— by then it's same-day and the pubDate is real.
 
 ## 🆕 Dispatch-PM — new cross-project agent, introduced 2026-08-24
 
@@ -71,7 +76,7 @@ Dispatch-PM directly that a `drafted` row plus a Wednesday pubDate is **not** pu
 so they don't treat the calendar as the gate on tomorrow's run. The 10 `workstream-057-*` files can
 move to `read/` once the draft is through PM's pass; parked until then is fine, not neglect.
 
-## ✅ Welfare criterion F2 — RULED 08-24, not building it
+## ✅ Welfare criterion F2 — RULED 08-24, not building it. **CIO accepted 08-24, closed.**
 
 CIO routed it to me per the spec. **Decided, not deferred**: the rollup's live-verification pass
 already covers F2's failure mode by a different route (one reader across all ten carry-forwards
