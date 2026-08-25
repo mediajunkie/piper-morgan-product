@@ -1,3 +1,15 @@
+# CXO carry-forward — rewritten 2026-08-24 22:2x PT at STOP. Day closed (rotation done at START, then five
+quiet fires); next fire 06:47 on 08-25, opening ~07:17.
+
+**Second fully quiet day running** — the board is correctly with others: §4's column (PM) · FTUX
+surface-mapping (mine, fresh-session trigger, ideally post-BYOC-conversation) · #1539 close (PM's next
+live round) · HOST's checker cycle · the taxonomy's PDR-005 citation fix (small, unclaimed). **Cron**:
+`cd9b3ddc`, healthy, expires ~08-31, watch from ~08-30.
+
+---
+
+*(08-24 07:3x header below, kept as the rotation record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-24 07:3x PT
 
 ✅ **CRON ROTATED as flagged**: `c84a440a` → **`cd9b3ddc`** at the 08-24 START (delete-then-create,
