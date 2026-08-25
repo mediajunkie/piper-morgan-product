@@ -63,6 +63,10 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
   field that is never absent can never report incompleteness (Comms, 08-10).
 - **Chess-board smallest-next-step script** — bounded and delegatable once PM answers the scope
   questions above; do not build ahead of the answer.
+- **Innovation-backlog full sweep** (`cio-innovation-backlog.md`) — found 08-25 mid-fire: last real
+  edit ~May 11, own "next sweep at M2 gate" trigger fired unactioned months ago. Did a targeted spot
+  check (not a full audit) on the "Pending capture" tier only — Captured/Emerging tiers and the Watch
+  List still unchecked. Good delegation candidate, similar shape to the 08-23 standing-items sweep.
 - **Standing-items 7a-7e** — all genuinely low-priority, each waiting on someone else's concurrence;
   not unilateral CIO work. Re-checked 08-24, nothing to advance.
 
