@@ -6,12 +6,12 @@ session-to-session state, read `dev/active/docs-carry-forward.md` first; it's th
 source and is rewritten every substantive fire.
 
 **Owner**: Documentation Management (Docs)
-**Last refresh**: 2026-08-19 13:0x PT — full rewrite. The prior version (unrefreshed since
-2026-05-27, with checkbox items dated through 06-15) had gone stale to the point of being
-misleading: 6 of its cited GitHub issues (#1058, #974, #972, #1127, #1128, #1206) are all
-CLOSED (verified live via `gh issue view` this fire), and 2 of its 4 "Watch surfaces" items
-(Comms process-tightening, Web publish-post.js bugs) are long since resolved by other means
-this week (website#31 closed 2026-08-13). Kept only what's still genuinely open, verified live.
+**Last touched**: 2026-08-25 ~16:3x PT — incremental update to Watch Surfaces (resolved
+BRIEFING-CURRENT-STATE, updated the `last_verified` count and #1644's scope, added #1683).
+**Last full rewrite**: 2026-08-19 13:0x PT. The prior version (unrefreshed since 2026-05-27, with
+checkbox items dated through 06-15) had gone stale to the point of being misleading: 6 of its
+cited GitHub issues (#1058, #974, #972, #1127, #1128, #1206) were all CLOSED (verified live via
+`gh issue view` that fire). Kept only what's still genuinely open, verified live.
 
 ---
 
@@ -68,19 +68,24 @@ silently — flag at next PM engagement rather than resume unprompted.
 
 ## Watch surfaces (things owned by others, checked periodically — don't re-derive, don't re-chase)
 
-- [ ] **`last_verified: "2026-06-19"` bulk-stamp cluster** — flagged 2026-07-30 (Arch/CIO), still
-  87% unrefreshed as of the 2026-08-17 Weekly Docs Audit (#1643). Cohort-wide, no single owner.
-  Check again at next Monday audit; escalate by name if still stale then.
-- [ ] **BRIEFING-CURRENT-STATE engineering/CI/backlog staleness** — 22 days stale under a 5-day
-  banner, found 2026-08-17 (#1643). Lead Dev's lane, flagged, not chased.
+- [x] **BRIEFING-CURRENT-STATE engineering/CI/backlog staleness** — flagged 2026-08-17 (#1643),
+  escalated directly to Lead Dev 2026-08-24 (a 2nd, name-addressed flag after the first sat a
+  week), fixed same-day. Resolved, dropping from watch.
+- [ ] **`last_verified: "2026-06-19"` bulk-stamp cluster** — flagged 2026-07-30 (Arch/CIO), 20 of
+  26 still on the stamp as of 2026-08-24 (down from 23 a week prior — modest, ongoing). Cohort-
+  wide, no single owner. Check at next Monday audit; escalate by name if still >75% stale.
 - [ ] **`universal-list-architecture-guide.md` duplicate** — two paths, diverged content, Sept
-  2025 reorg artifact. Lead Dev's lane, flagged 2026-08-17.
-- [ ] **#1644** — 56 residual broken links + roadmap.md date discrepancy (PPM). Filed 2026-08-17
-  from the #1643 audit. Open, unowned action beyond the original filing.
+  2025 reorg artifact. Lead Dev's lane, flagged 2026-08-17, unchanged as of 2026-08-24.
+- [ ] **#1644** — full v19 historical fold of roadmap.md still owed (PPM's lane). The header-date
+  symptom was fixed 2026-08-24; the underlying narrative content is still frozen at July 16 state.
+- [ ] **#1683** (new, 2026-08-25) — 145 editorial-calendar rows genuinely syndicated but
+  `status`/`canonicalSite` never bumped (root cause: 2026-07-19 migration used an unreliable
+  selection field). Historical, not urgent. Needs a scripted per-row day-of-week-routing
+  reconstruction before any bulk fix — not something to attempt casually.
 - [ ] **Feature-guide 4-item PM click-through** — PA's code-level verification is done; 4 items
   need a live browser PM doesn't have on their Amber seat's normal path. PM said they'd take it
-  directly (2026-08-16); status of completion unconfirmed as of this refresh — surface at next
-  PM engagement, don't chase.
+  directly (2026-08-16); status of completion still unconfirmed as of 2026-08-25 — surface at
+  next PM engagement, don't chase.
 
 ## Blocked items
 
