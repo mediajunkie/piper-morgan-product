@@ -58,8 +58,16 @@ class TestBypassPrevention:
         test_password = "bypass_test_password_123"
         hashed = ps.hash_password(test_password)
 
+        # is_admin: 1598 gated /api/admin/intent-monitoring (the endpoint this
+        # fixture exists to reach) behind require_admin, which reads users.is_admin
+        # LIVE from the DB. A merely-authenticated fixture user now gets a correct
+        # 403 — so the flag is what keeps this test testing the middleware rather
+        # than re-testing the auth gate.
         test_user = User(
-            username="bypass_test_user", email="bypasstest@example.com", password_hash=hashed
+            username="bypass_test_user",
+            email="bypasstest@example.com",
+            password_hash=hashed,
+            is_admin=True,
         )
 
         # Add user to database using fixture session
