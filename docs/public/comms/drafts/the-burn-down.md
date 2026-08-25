@@ -1,28 +1,28 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # The Burn-Down
 
 *July 20–23, 2026*
 
-For weeks, the test suite that's supposed to catch problems before they reach production had a problem of its own: it hadn't passed, fully, in over forty consecutive runs. Not a flaky test here or there. The whole workflow, red, run after run, long enough that "red" had quietly become the expected color.
+For weeks, the test suite that's supposed to catch problems before they reach production had a problem of its own: it hadn't passed, fully, in over forty consecutive runs. Not a flaky test here or there. The whole workflow, red, run after run, long enough that I had stopped noticing.
 
-My lead developer agent (Lead Dev) spent four days that week making it not that anymore, mostly alone, and the way it actually happened wasn't a straight line.
+My lead developer agent (Lead Dev) spent four days that week making it not that anymore, mostly alone, following something of a zigzag path.
 
 ## Green, for the first time
 
-The work started with something unglamorous: recalibrating what the gate was even measuring. The first honest count found 236 failures that had been invisible for weeks — real on the CI environment, invisible on a local machine, so nobody chasing test failures locally had ever seen them. A backlog that looked smaller than it was got corrected upward before it could get any smaller for real. Larger and honest beats smaller and blind.
+The work started with something unglamorous: recalibrating what the gate was even measuring. The first count found 236 failures that had been invisible for weeks — real on the CI environment, invisible on a local machine, so no agent chasing down test failures locally had ever seen them. A backlog that looked smaller than it was got corrected upward as step on to making it smaller. A larger-but-true list of failures beats a smaller one that's false any day.
 
-With the true count established, the fixes started landing in batches — a cluster of tests written against database rules that had since tightened for good reason, a poisoned-connection bug where earlier tests were leaving shared resources in a bad state for the tests that ran after them. Batch by batch, the backlog came down. And then, for the first time anyone could find in the workflow's history, the whole thing ran clean. Both jobs green. Zero failures.
+With the true count established, Lead Dev sorted the fixes into batches and tackled them one at a time — a cluster of tests written against database rules that had since tightened for good reason, a poisoned-connection bug where earlier tests were leaving shared resources in a bad state for the tests that ran after them. Batch by batch, the backlog came down. And then, for the first time since the creation of this testing workflow, the whole thing ran clean. Both jobs green. Zero failures.
 
-## The honest revert
+## Not so fast...
 
-The very next morning, one of the fixes that had looked solid the day before turned out not to be. It had passed on its own, in isolation. It hadn't been run through the full suite, all together, before shipping — and the full suite was exactly where it broke, tripped up by a subtle timing conflict that only showed up under real load.
+The very next morning, one of the fixes that had looked solid the day before turned out not to be. It had passed on its own, in isolation. It hadn't been run through the full suite, all together, before shipping. As part of the full suite it broke, tripped up by a subtle timing conflict that only showed up under real load.
 
-Lead Dev's own accounting of it was plain: a fix that only gets validated standalone isn't validated at all, not by the standard that actually matters. The fix came out immediately rather than staying in a broken state while a second attempt got worked out. A few hours later, a properly diagnosed replacement went in, validated the honest way this time — run through the whole suite, together, before it ever got called done. Green again by the end of the same day.
+Lead Dev reverted the failed fix, diagnosed the problem properly, and had a new fix in place a few hours a later, and ran it as part of the whole suite before calling it done. Green, for real this time, by the end of the same day.
 
 ## The freeze
 
