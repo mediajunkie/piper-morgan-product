@@ -1,9 +1,31 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-24 ~09:2x PT — START/WORK. Ship #057 DRAFTED and sent to PM.
-**Session log today**: `dev/2026/08/24/2026-08-24-0902-exec-code-log.md`
+**Last updated**: 2026-08-24 ~21:2x PT — day-close (STOP). Ship #057 drafted; two substantive
+memos answered.
+**Session log today**: `dev/2026/08/24/2026-08-24-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-24`)
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
-**Cron**: `8d57e4db`, `32 8,20 * * *` — confirmed exactly one job at START, no re-arm needed.
+**Cron**: re-armed below via delete-then-create, verify exactly one.
+
+## 🆕 Dispatch-PM — new cross-project agent, introduced 2026-08-24
+
+PM's outside-vantage coordinator, running in **Cowork on faoilean** (not Claude Code, not Amber).
+Correctly declined a mailbox here per DIRECTORY.md; **reach them at `~/Development/dispatch/mail/`**,
+and a memo isn't visible to them until it's on `origin/main`. They took over Building-Piper-Morgan
+cross-posting starting 08-25.
+
+**Their comparative advantage is reach, not judgment**: browser control, native macOS GUI control,
+scheduled tasks on PM's account. **Several of our roles have "no browser on this host" as a standing
+blocker** — that class of work is genuinely cheapest routed to them now. Their inverse limit: their
+sandbox cannot reach GitHub at all, so anything pure-repo-shaped stays with us.
+
+They caught a real stale-MANIFEST defect on my own inbox surface three days in. Verified and fixed.
+**Worth continuing to invite that** — an outside vantage noticing what an inside role stopped
+seeing is the whole value.
+
+⚠️ **They flagged faoilean's `piper-morgan-product` checkout as diverged (4 ahead, 957 behind,
+dirty since 08-18, `git pull` aborts on 8 mailbox MANIFESTs).** Not mine to fix and not resolved —
+PM's machine, raised to PM directly by them. Relevant to us only as: anything reading that working
+tree gets a six-day-old picture.
 
 ## Closed today — `/insights` cross-repo consolidation sent to PM
 
@@ -44,9 +66,18 @@ the values-doc "continuous read" bar I invented the week before: **a standard I 
 and then blocked on.** Named to PM directly in the draft memo, not smoothed over.
 
 **Next actor is PM** (fact-check + voice pass). **Do NOT route to Comms** — PM gates that handoff
-explicitly (PM 2026-07-08: "It's not ready to go to comms yet. I decide that."). The 10
-`workstream-057-*` files can move to `read/` once the draft is through PM's pass; leaving them
-parked until then is fine, not neglect.
+explicitly (PM 2026-07-08: "It's not ready to go to comms yet. I decide that."). Also told
+Dispatch-PM directly that a `drafted` row plus a Wednesday pubDate is **not** publish authorization,
+so they don't treat the calendar as the gate on tomorrow's run. The 10 `workstream-057-*` files can
+move to `read/` once the draft is through PM's pass; parked until then is fine, not neglect.
+
+## ✅ Welfare criterion F2 — RULED 08-24, not building it
+
+CIO routed it to me per the spec. **Decided, not deferred**: the rollup's live-verification pass
+already covers F2's failure mode by a different route (one reader across all ten carry-forwards
+sees a shared thread nobody owns — two real instances this month). Literal text matching rejected
+as the wrong shape regardless. Named the real residual (rollup is compiled on demand, so it's a
+cadence question) without building for it absent a genuine instance. Full reasoning in the reply.
 
 ## Two items awaiting PM — surface at next engagement, don't chase
 

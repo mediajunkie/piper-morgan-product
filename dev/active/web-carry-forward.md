@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-23
+# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-24
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `da61f0df` as of the 2026-08-23 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `a3cb39bb` as of the 2026-08-24 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 ## ⚠️ Environment facts worth re-verifying each fire, not assuming
 
@@ -270,13 +270,13 @@ Buttondown CSP live-bug — all predecessor's, pre-7/19. Admin calendar runtime 
 autosave ask #1 — mine, 7/29 (see Active threads above for verification limits).
 
 ## Cron state
-- **ARMED** — `da61f0df`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
-  Re-armed via delete-then-create at the 2026-08-23 21:52 STOP (routine day-close re-arm, not a
-  cadence change — prior id `cb206215` had been live all day). Registry row (expression-keyed, no
+- **ARMED** — `a3cb39bb`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
+  Re-armed via delete-then-create at the 2026-08-24 21:52 STOP (routine day-close re-arm, not a
+  cadence change — prior id `da61f0df` had been live all day). Registry row (expression-keyed, no
   job-id column) needed no update.
-- **2026-08-23**: entirely quiet day — six fires, zero mail, zero unblocked task work, zero code
-  changes. A natural comedown after the `website#34` investigation-and-fix the prior day. Standing
-  items (#1669, above-the-fold hero, Buttondown newsletter) remain unscoped.
+- **2026-08-23/24**: two consecutive entirely quiet days — twelve fires total, zero mail, zero
+  unblocked task work, zero code changes across both. Standing items (#1669, above-the-fold hero,
+  Buttondown newsletter) remain unscoped, aging but correctly not chased — none have deadlines.
 - **2026-08-22**: **`website#34` investigated, fixed, and closed** — 7 flagged call sites for a
   UTC-midnight-in-Pacific-build date-rendering bug (Comms found it, filed it unassigned, sent a
   direct heads-up). Checked each site individually per the issue's own caution rather than
