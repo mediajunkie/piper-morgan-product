@@ -1,20 +1,21 @@
-# CIO carry-forward — rewritten 2026-08-24 (22:37 STOP)
+# CIO carry-forward — rewritten 2026-08-25 (10:37 START)
 
-**Cron**: `f5a0d090` · `7 10,16,22` LEAN · re-armed 2026-08-24 22:37 STOP (delete-then-create,
-first rotation actually performed inside the 48h proactive window rather than waiting for the 7-day
-cap) · **auto-expires ~2026-08-31 22:37**.
+**Cron**: `f5a0d090` · `7 10,16,22` LEAN · armed 2026-08-24 22:37 · **auto-expires ~2026-08-31
+22:37**, well outside the 48h rotation window.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## ✅ Welfare-criteria spec — fully disposed end to end (08-24)
+## ⭐ NEW — found a second stale tracker while fixing the first (08-25)
 
-F2 (the last open piece) ruled by Exec: not building it — the rollup's live-state pass already
-achieves the goal by reading all ten carry-forwards directly (two real 08-instances cited: BYOC,
-taxonomy naming), and text-matching would be the wrong shape anyway. The whole spec (Jul 3,
-HOST-authored) is now closed: every criterion done, ruled, or explicitly declined with real
-reasoning, none left in limbo.
+`cio-innovation-backlog.md`: last real edit ~May 11, own "next sweep at M2 gate" trigger fired
+unactioned. Targeted spot check (not a full audit, deliberately scoped smaller than Friday's sweep)
+of the "Pending capture" tier: #25 (Sparker/Holder) was flatly wrong — fixed to reflect HOST's
+08-23 ruling. #29 has related-but-not-identical work since (methodology-45, cross-referenced rather
+than overclaimed as a match). #30 was a false-positive keyword match (methodology-16 predates it by
+a year). Rest of the checked tier held up. Full genuine sweep (Captured/Emerging tiers, Watch List)
+still owed — see below, good delegation candidate.
 
 ## Four items now genuinely awaiting PM — none blocking other work
 
@@ -23,10 +24,14 @@ reasoning, none left in limbo.
 3. **Curation-trial bigger scope** (raised 08-19) — DinP thread vs. bigger Ted-Nadeau framing.
 4. **Watchdog relay-latency question** (raised 08-21) — alert sat in CIO's inbox ~4h before PM.
 
+## ✅ Welfare-criteria spec — fully disposed end to end (08-24)
+
+Every criterion done, ruled, or explicitly declined with real reasoning (F2's decline by Exec was
+the last piece). None left in limbo.
+
 ## ✅ Tracker audit — fully closed out (08-23)
 
-`cio-standing-items.md` audited (188→~110 lines, first sweep since 07-13); all findings resolved
-(HOST on Sparker/Holder + migration-confer, Docs on PreCompact hook count, Exec on F2).
+`cio-standing-items.md` audited (188→~110 lines, first sweep since 07-13); all findings resolved.
 
 ## ✅ Criterion E — RULED, FILED, ROUTED (08-22, issue #1680)
 
@@ -63,12 +68,10 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
   field that is never absent can never report incompleteness (Comms, 08-10).
 - **Chess-board smallest-next-step script** — bounded and delegatable once PM answers the scope
   questions above; do not build ahead of the answer.
-- **Innovation-backlog full sweep** (`cio-innovation-backlog.md`) — found 08-25 mid-fire: last real
-  edit ~May 11, own "next sweep at M2 gate" trigger fired unactioned months ago. Did a targeted spot
-  check (not a full audit) on the "Pending capture" tier only — Captured/Emerging tiers and the Watch
-  List still unchecked. Good delegation candidate, similar shape to the 08-23 standing-items sweep.
+- **Innovation-backlog full sweep** (`cio-innovation-backlog.md`) — Captured/Emerging tiers + Watch
+  List still unchecked after today's targeted pass. Good delegation candidate.
 - **Standing-items 7a-7e** — all genuinely low-priority, each waiting on someone else's concurrence;
-  not unilateral CIO work. Re-checked 08-24, nothing to advance.
+  not unilateral CIO work.
 
 ## Standing corrections to myself
 
@@ -79,7 +82,11 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 - **A good ruling that lands in mail and stays in mail hasn't actually closed anything — turn it into
   something trackable in the same fire it arrives.** (08-22 22:37.)
 - **A tracker line is a claim about the world, not the world itself — this applies at scale, not just
-  to single items.** (08-23: the ~40-day-overdue full audit.)
+  to single items, and not just to one tracker.** (08-23 → 08-25: two trackers found stale by the
+  same discipline, applied to a different file each time.)
 - **My own verification can produce the exact false-negative I'm auditing for.** (08-23 16:37,
   Docs's catch.)
 - **A quiet fire honestly reported beats a fire padded with manufactured work.** (08-24 16:37.)
+- **A found staleness doesn't require a full audit every time — scope the check to what's actually in
+  question, and name honestly what was and wasn't covered.** (08-25: targeted spot check, not a
+  redundant re-run of Friday's full sweep, on a different file with a smaller confirmed problem.)
