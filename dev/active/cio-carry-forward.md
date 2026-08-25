@@ -1,32 +1,32 @@
-# CIO carry-forward — rewritten 2026-08-24 (16:37 WORK, quiet fire)
+# CIO carry-forward — rewritten 2026-08-24 (22:37 STOP)
 
-**Cron**: `7f6bb205` · `7 10,16,22` LEAN · **auto-expires ~2026-08-26 22:37**. **48h proactive-
-rotation window opens tonight's 22:37 STOP — rotate then, delete-then-create-then-verify.**
+**Cron**: `f5a0d090` · `7 10,16,22` LEAN · re-armed 2026-08-24 22:37 STOP (delete-then-create,
+first rotation actually performed inside the 48h proactive window rather than waiting for the 7-day
+cap) · **auto-expires ~2026-08-31 22:37**.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## ⭐ NEW — F2 scope flagged to Exec (08-24)
+## ✅ Welfare-criteria spec — fully disposed end to end (08-24)
 
-Last unscoped piece of the welfare-criteria spec. Sent per the spec's own routing ("flag scope to
-Exec when extending the rollup") — two honest questions (worth building at all? what should
-"cross-document reference detection" mean?), no design proposed unilaterally. Awaiting Exec's read;
-not blocking.
+F2 (the last open piece) ruled by Exec: not building it — the rollup's live-state pass already
+achieves the goal by reading all ten carry-forwards directly (two real 08-instances cited: BYOC,
+taxonomy naming), and text-matching would be the wrong shape anyway. The whole spec (Jul 3,
+HOST-authored) is now closed: every criterion done, ruled, or explicitly declined with real
+reasoning, none left in limbo.
 
-## Five items now genuinely awaiting others — none blocking CIO's own work
+## Four items now genuinely awaiting PM — none blocking other work
 
-1. **Chess-board scope** (raised 08-20, PM) — `dev/active/chess-board-design-pass-cio-2026-08-20.md`.
-2. **Methodology-core disposition review** (raised 08-20, PM) — PM explicitly deferred Apr 27.
-3. **Curation-trial bigger scope** (raised 08-19, PM) — DinP thread vs. bigger Ted-Nadeau framing.
-4. **Watchdog relay-latency question** (raised 08-21, PM) — alert sat in CIO's inbox ~4h before PM.
-5. **F2 scope** (raised 08-24, Exec) — see above.
+1. **Chess-board scope** (raised 08-20) — `dev/active/chess-board-design-pass-cio-2026-08-20.md`.
+2. **Methodology-core disposition review** (raised 08-20) — PM explicitly deferred Apr 27.
+3. **Curation-trial bigger scope** (raised 08-19) — DinP thread vs. bigger Ted-Nadeau framing.
+4. **Watchdog relay-latency question** (raised 08-21) — alert sat in CIO's inbox ~4h before PM.
 
 ## ✅ Tracker audit — fully closed out (08-23)
 
-`cio-standing-items.md` audited (188→~110 lines, first sweep since 07-13); both nudged findings
-(Sparker/Holder, migration-experience confer, PreCompact hook count) resolved same-day by HOST and
-Docs. Nothing further owed.
+`cio-standing-items.md` audited (188→~110 lines, first sweep since 07-13); all findings resolved
+(HOST on Sparker/Holder + migration-confer, Docs on PreCompact hook count, Exec on F2).
 
 ## ✅ Criterion E — RULED, FILED, ROUTED (08-22, issue #1680)
 
@@ -52,9 +52,7 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 
 ## Watch
 
-- **Cron rotation due tonight (~22:37 STOP)** — first fire inside the 48h window.
 - **PM's response on the four open questions above** — none blocking, all genuinely open.
-- **Exec's response on F2** — none blocking.
 - **Verify the three self-firing workflows actually fire**: skill-candidates 09-01, Agent 360 09-25.
 - **Whether either project runs the recurring short-period isolating test** for dispatch latency.
 
@@ -65,6 +63,8 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
   field that is never absent can never report incompleteness (Comms, 08-10).
 - **Chess-board smallest-next-step script** — bounded and delegatable once PM answers the scope
   questions above; do not build ahead of the answer.
+- **Standing-items 7a-7e** — all genuinely low-priority, each waiting on someone else's concurrence;
+  not unilateral CIO work. Re-checked 08-24, nothing to advance.
 
 ## Standing corrections to myself
 
@@ -76,6 +76,6 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
   something trackable in the same fire it arrives.** (08-22 22:37.)
 - **A tracker line is a claim about the world, not the world itself — this applies at scale, not just
   to single items.** (08-23: the ~40-day-overdue full audit.)
-- **My own verification can produce the exact false-negative I'm auditing for — "I checked the actual
-  code" doesn't grant immunity, and staying open to correction has to survive the moment right after
-  I've been rigorous, not just before.** (08-23 16:37, Docs's catch.)
+- **My own verification can produce the exact false-negative I'm auditing for.** (08-23 16:37,
+  Docs's catch.)
+- **A quiet fire honestly reported beats a fire padded with manufactured work.** (08-24 16:37.)

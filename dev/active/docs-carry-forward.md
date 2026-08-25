@@ -1,35 +1,28 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-24 ~19:3x PDT (Fire 4 — #1644's roadmap.md half already fixed by PPM before
-I'd recorded it as open; corrected)
-**Session log**: `dev/2026/08/24/2026-08-24-0727-docs-code-log.md` (open).
-**Cron**: `a53a00e3`, unchanged today, healthy through ~08-30.
+**Updated**: 2026-08-24 22:3x PDT (DAY-CLOSED — #1681 Weekly Docs Audit closed comprehensively;
+BRIEFING-CURRENT-STATE + #1644 both escalated and resolved same-day)
+**Session log**: `dev/2026/08/24/2026-08-24-0727-docs-code-log.md` (closed, `DAY-CLOSED` marker
+written).
+**Cron**: `f230a43e` (STOP re-arm, delete-then-create, `CronList`-verified sole job), fresh 7-day
+window to ~08-31. Registry row current.
 
-**BRIEFING-CURRENT-STATE thread fully resolved** (Fire 3): Lead Dev refreshed STATUS BANNER's
-Current Position + Focus same-day with full engineering attestation, history retained not
-deleted — verified independently, matches exactly as described. **Process insight kept live**:
-"any agent who notices refreshes it" failed silently for a week because the flag never landed in
-a specific inbox; direct-mail-to-visibility-holder is the fix, proven three times this week now
-(this thread, CIO's PreCompact-hook thread 08-23, and PPM's #1644 correction below).
+**Nothing carried forward as blocking.** Today's throughline: 3 separate instances of the same
+shape (a stale claim persisting only because the right party never got a direct signal),
+each resolved by naming the specific owner instead of a broadcast or a vague re-flag —
+BRIEFING-CURRENT-STATE (Lead Dev, same-day fix), #1644's roadmap.md half (PPM, already fixed
+before I'd recorded it), and my own carry-forward briefly restating something as open past when
+it stopped being true (caught by PPM, corrected same-fire). #1681 fully closed with 2 real fixes
+(NAVIGATION.md Piper Alpha entry; a 3-day omnibus gap backfilled). #1475 closed as superseded.
+#1682 filed for 3 minor residual findings. #1644 stays open — symptom fixed, full v19 fold still
+owed.
 
-**#1644's roadmap.md half: fixed, PPM (`2a75d74eb`, 13:14 PT) — my own carry-forward was stale
-about this, corrected by PPM's direct memo.** Verified before recording: header bumped v18.7→
-v18.8, honest stale-flag annotation, changelog pointing at live sources. **Issue stays open** —
-symptom fixed, the real owed work (full v19 historical fold + 56 residual broken links) isn't.
-Progress comment posted to #1644 itself, not left in mail only.
-
-**Nothing else carried forward as blocking.** #1681 (Weekly Docs Audit) fully closed (74/74
-checkboxes, evidence-backed). 2 real gaps found+fixed same-session: NAVIGATION.md missing Piper
-Alpha (`acd0e40e7`); a genuine 3-day omnibus gap 08-21/22/23, now continuous through 08-23 (6
-commits). #1475 (orphaned 08-03 audit) closed as superseded by #1643. #1682 filed for 3 minor
-findings.
-
-**Still open, not chased**: PM's offer-to-flag-omnibus-status-before-reviews suggestion from
-08-22 — no action taken, pick up only if PM takes it up. CIO's PreCompact-hook locality-
-differentiation gap — still my own scoped, deliberately-deferred work (`docs-standing-items.md`).
+**Standing insight, worth applying going forward, not just noting once**: when flagging staleness
+or drift to someone else, address the specific role with the actual visibility — a broadcast or a
+generic audit-issue note can sit unactioned for a week even when everyone agrees it matters.
 
 **Watch, low-priority (recurring theme)**: this carry-forward file was pruned Friday — kept lean
-through the week's rewrites, no accumulation. Keep writing fresh entries.
+all week. Keep writing fresh entries.
 
 ## Awaiting PM (genuine, not urgent, don't chase)
 
