@@ -1,9 +1,22 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-24 13:14 PT (WORK). Cron job unchanged: **`2b19db6b`** (armed since
-08-23 21:58). **Still watching**: #1386's remaining criteria (1, 4, 5, 6) — no movement since
-criterion 2's re-confirmation on 08-21.
+**Last rewritten**: 2026-08-24 22:22 PT (STOP). Cron re-armed: **`7f295e5e`** (was `2b19db6b`),
+delete-then-create, `CronList`-verified exactly one job. **Still watching**: #1386's remaining
+criteria (1, 4, 5, 6) — no movement since criterion 2's re-confirmation on 08-21 (last comment on
+the issue 08-22).
+
+## ✅ #1644 (roadmap.md) — MAIL THREAD CLOSED CLEANLY, 2026-08-24 evening
+Docs' 08-24 confirmation memo (re: Lead's BRIEFING-CURRENT-STATE.md engineering-lane refresh)
+said #1644 "stays open on Docs' tracker until it moves" — but I'd already fixed it that morning
+(13:14 PT, `2a75d74eb`, see below), hours before either memo existed. Sent a correction citing the
+commit hash and scope. Docs verified independently, posted a progress comment on #1644 itself
+(left open on the correct framing: header symptom fixed, the genuinely-owed full v19 historical
+fold isn't), and acknowledged the catch. **Clean close — nothing further owed on this thread.**
+Worth noting only as one more instance of the day's actual theme: a tracker/status line going
+stale relative to real state is the default failure mode, not the exception, and it hit three
+different roles' trackers in one day (BRIEFING's own banner, then Docs' #1644 tracking) before
+anyone else's action corrected it, not new vigilance.
 
 ## ✅ BRIEFING + ROADMAP STALENESS — ACTIONED 2026-08-24, both closed same-fire
 Docs sent a **second** staleness flag (`2026-08-24-docs-briefing-current-state-still-stale-second-
@@ -569,19 +582,22 @@ resolved or reframed into larger tracked work. Do not read this paragraph as cur
 
 ## Cron
 
-**ARMED** — job **`829056ba`** (re-armed at 08-12 22:22 STOP; delete-then-create,
-`CronList`-verified exactly one). Prior job `71dc6b7c` (re-armed 08-11 13:18 post-reboot) retired
-cleanly at a normal STOP — no gap, no incident. Prompt gained a cleanup at this re-arm: dropped
-the POST-REBOOT NOTE line since that event is fully closed and re-litigating it six times a day
-was becoming the exact stale-context clutter the "no standing owed item" rule warns about. Prompt
-still carries the standing lines: **PROXIES** (*safe when the remainder is ROUTED, dangerous when
-merely IMPLIED — say "gateable fraction", never "shadow"*) and **MAIL-SEND CAN FAIL SILENTLY**
-(*a transient fetch failure leaves the memo unsent with no other signal; read the tail, verify it
-landed*).
+⚠️ **This section had gone stale since 08-12 — superseded by newer job ids in the header/registry
+for two weeks without being corrected here.** Fixed 2026-08-24, matching the lesson of the day's
+main work: a status line doesn't update itself just because newer, truer ones exist elsewhere in
+the same file.
 
-**Five clean days running now** (08-08/09/10, the 08-11 reboot day handled cleanly via
-park→re-arm→retroactive-close, 08-12 six-for-six). ⚠️ **Session-only + 7-day auto-expiry, both
-silent** — `829056ba` expires ~2026-08-19 if not re-armed sooner.
+**ARMED** — job **`7f295e5e`** (re-armed at 08-24 22:22 STOP; delete-then-create, `CronList`-
+verified exactly one). Prior job `2b19db6b` (armed 08-23 21:58) retired cleanly at a normal STOP —
+no gap, no incident. Prompt unchanged at this re-arm — no new standing owed items to add, none to
+drop. Still carries: **NO STANDING OWED WORK ITEM** header, **DATES** (don't carry a beta date),
+**MILESTONE SEQUENCE** (MVP → Production → Fast Follow), **SURFACES** (web UI isn't going away),
+**COUNTS** (`sprint-truth.py` verbatim), **AUDIT BIAS**, **GENERAL CONTRACTS**, **PROXIES**
+("gateable fraction" not "shadow"), **MAIL-SEND CAN FAIL SILENTLY**, **TOOL OUTAGES**, **HEARTBEAT
+PUSH RACES**, and the **WATCH FOR #1386** line (criteria 1/4/5/6, unchanged since 08-21/22).
+
+⚠️ **Session-only + 7-day auto-expiry, both silent** — `7f295e5e` expires ~2026-08-31 if not
+re-armed sooner (re-armed every STOP in practice, so this is a backstop, not the expected path).
 
 ---
 
