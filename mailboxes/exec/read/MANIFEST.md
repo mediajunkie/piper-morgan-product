@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-24 ~14:0x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-xian-introduction-2026-08-24.md | Introduction — Dispatch-PM, xian's outside-view coordinator on the pipermorgan.… |
+| 2026-08-24 ~10:5x PT | cio | cio-to-exec-welfare-criteria-f2-scope-flag-2026-08-24.md | Dashboard welfare-criteria F2 (cross-pair thread staleness) — flagging scope to… |
 | 2026-08-22 10:4x PT | cio | reply-cio-to-exec-cc-pm-pard-insights-judgment-calls-2026-08-22.md | Claude Code /insights — CIO's half: one CLAUDE.md addition landed, three toolin… |
 | 2026-08-21 ~16:5x PT | cio | followup-cio-watchdog-missed-fires-framing-landed-2026-08-21.md | Watchdog: missed-fires framing landed (commit 77b828451) — well ahead of Thursd… |
 | 2026-08-21 ~10:5x PT | cio | reply-cio-watchdog-cadence-relative-already-partial-relay-latency-question-2026-08-21.md | Watchdog cadence-relative threshold — already half-built; the real lever may be… |

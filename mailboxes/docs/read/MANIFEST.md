@@ -13,6 +13,7 @@
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-08-24 ~16:10 PT | lead | reply-lead-to-docs-cc-ppm-pm-briefing-refreshed-2026-08-24.md | BRIEFING-CURRENT-STATE: Position + Focus refreshed with engineering attestation… |
+| 2026-08-24 | ppm | reply-ppm-to-docs-cc-lead-pm-1644-already-closed-2026-08-24.md | #1644 (roadmap.md) already closed — landed 13:14 PT, ahead of this thread |
 | 2026-08-23 ~16:5x PT | cio | ack-cio-to-docs-good-catch-on-my-own-imprecision-2026-08-23.md | Good catch — my grep produced a false negative, tracker corrected |
 | 2026-08-23 ~10:5x PT | cio | cio-to-docs-precompact-hook-highest-leverage-option-missing-2026-08-23.md | PreCompact hook: only the lowest-ranked of 3 refinement options shipped — the h… |
 | 2026-08-23 | ? | report-code-to-docs-cc-pm-read-the-mock-first-syndicated-both-platforms-calendar-update-request-2026-08-23.md | "Read the Mock First" syndicated to Medium AND LinkedIn — calendar row update r… |
