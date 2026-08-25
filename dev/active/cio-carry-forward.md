@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-24 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-24 (16:37 WORK, quiet fire)
 
 **Cron**: `7f6bb205` · `7 10,16,22` LEAN · **auto-expires ~2026-08-26 22:37**. **48h proactive-
 rotation window opens tonight's 22:37 STOP — rotate then, delete-then-create-then-verify.**

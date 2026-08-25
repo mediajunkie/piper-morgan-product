@@ -1,19 +1,25 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-24 ~11:1x PDT (Fire 2 — Weekly Docs Audit #1681 closed comprehensively,
-2 real fixes shipped, 1 significant finding escalated cross-role)
+**Updated**: 2026-08-24 ~16:3x PDT (Fire 3 — BRIEFING-CURRENT-STATE fully refreshed by Lead Dev,
+same-day, verified and confirmed — the escalation thread is closed)
 **Session log**: `dev/2026/08/24/2026-08-24-0727-docs-code-log.md` (open).
 **Cron**: `a53a00e3`, unchanged today, healthy through ~08-30.
 
-**Nothing carried forward as blocking.** #1681 fully closed (74/74 checkboxes, evidence-backed).
-2 real gaps found+fixed same-session: NAVIGATION.md missing Piper Alpha (`acd0e40e7`); a genuine
-3-day omnibus gap 08-21/22/23, now continuous through 08-23 (6 commits). #1475 (orphaned 08-03
-audit) closed as superseded by #1643. #1682 filed for 3 minor findings.
+**BRIEFING-CURRENT-STATE thread fully resolved**: Lead Dev refreshed STATUS BANNER's Current
+Position + Focus same-day with full engineering attestation, history retained not deleted —
+verified independently before accepting, matches exactly as described. **Real process insight
+worth keeping**: "any agent who notices refreshes it" failed silently for a week because the flag
+never landed in a specific inbox; direct-mail-to-visibility-holder is the fix, now proven twice
+this week (this thread + CIO's PreCompact-hook thread on 08-23). Applying going forward.
 
-**New, worth tracking**: BRIEFING-CURRENT-STATE escalated to Lead Dev + PPM (cc PM) — 2nd flag,
-zero movement since #1643's first (08-17). Substantive content ~5-6 weeks stale despite a
-misleadingly-recent meta-date. Not chasing further after this — full evidence already sent,
-theirs to prioritize. roadmap.md's header-date discrepancy (from #1644) carried in the same memo.
+**Nothing else carried forward as blocking.** #1681 (Weekly Docs Audit) fully closed (74/74
+checkboxes, evidence-backed). 2 real gaps found+fixed same-session: NAVIGATION.md missing Piper
+Alpha (`acd0e40e7`); a genuine 3-day omnibus gap 08-21/22/23, now continuous through 08-23 (6
+commits). #1475 (orphaned 08-03 audit) closed as superseded by #1643. #1682 filed for 3 minor
+findings.
+
+**roadmap.md header-date item (#1644) still open**: PPM's lane per Lead's note, not chasing —
+theirs to prioritize.
 
 **Still open, not chased**: PM's offer-to-flag-omnibus-status-before-reviews suggestion from
 08-22 — no action taken, pick up only if PM takes it up. CIO's PreCompact-hook locality-
