@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'the-burn-down-blank-marquee.png'
+alt: 'A (translucent) AI electrician tests a fully illuminated theater marquee at dusk while a delighted manager looks on, with trays of replaced bulbs and a single-bulb tester nearby.'
+caption: '"At least all the lights are working now!"'
 ---
 
 
