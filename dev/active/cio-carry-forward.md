@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-25 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-25 (16:37 WORK)
 
 **Cron**: `f5a0d090` · `7 10,16,22` LEAN · armed 2026-08-24 22:37 · **auto-expires ~2026-08-31
 22:37**, well outside the 48h rotation window.
@@ -7,15 +7,15 @@
 
 ---
 
-## ⭐ NEW — found a second stale tracker while fixing the first (08-25)
+## ⭐⭐ NEW — Pattern-069 promoted to Proven, evidence found mid-sweep (08-25)
 
-`cio-innovation-backlog.md`: last real edit ~May 11, own "next sweep at M2 gate" trigger fired
-unactioned. Targeted spot check (not a full audit, deliberately scoped smaller than Friday's sweep)
-of the "Pending capture" tier: #25 (Sparker/Holder) was flatly wrong — fixed to reflect HOST's
-08-23 ruling. #29 has related-but-not-identical work since (methodology-45, cross-referenced rather
-than overclaimed as a match). #30 was a false-positive keyword match (methodology-16 predates it by
-a year). Rest of the checked tier held up. Full genuine sweep (Captured/Emerging tiers, Watch List)
-still owed — see below, good delegation candidate.
+Its own 2-week promotion window (from May 11) lapsed unchecked for 3 months. Finished today's
+innovation-backlog sweep and found the cross-mechanism recurrence evidence was already in hand: the
+freeze-watchdog self-resolving-alert pattern (08-17 escalation) is an independent mechanism showing
+the identical shape. Promoted in the pattern file + `patterns/README.md`, notified HOST. Commit
+`68eca1701`. Full innovation-backlog Emerging/Reclassified/Watch-List sweep also complete — six of
+ten Emerging rows were stale (duplicates, lapsed triggers, superseded proposals), only the Captured
+tier remains unchecked (lower risk).
 
 ## Four items now genuinely awaiting PM — none blocking other work
 
@@ -26,8 +26,7 @@ still owed — see below, good delegation candidate.
 
 ## ✅ Welfare-criteria spec — fully disposed end to end (08-24)
 
-Every criterion done, ruled, or explicitly declined with real reasoning (F2's decline by Exec was
-the last piece). None left in limbo.
+Every criterion done, ruled, or explicitly declined with real reasoning.
 
 ## ✅ Tracker audit — fully closed out (08-23)
 
@@ -58,6 +57,7 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 ## Watch
 
 - **PM's response on the four open questions above** — none blocking, all genuinely open.
+- **HOST's response on the Pattern-069 promotion** — light, not blocking.
 - **Verify the three self-firing workflows actually fire**: skill-candidates 09-01, Agent 360 09-25.
 - **Whether either project runs the recurring short-period isolating test** for dispatch latency.
 
@@ -68,8 +68,9 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
   field that is never absent can never report incompleteness (Comms, 08-10).
 - **Chess-board smallest-next-step script** — bounded and delegatable once PM answers the scope
   questions above; do not build ahead of the answer.
-- **Innovation-backlog full sweep** (`cio-innovation-backlog.md`) — Captured/Emerging tiers + Watch
-  List still unchecked after today's targeted pass. Good delegation candidate.
+- **Innovation-backlog Captured tier** (rows 1-23) — the one part of the file not checked in today's
+  sweep. Low risk (captured artifacts don't drift the way trigger-bound statuses do) but not
+  verified.
 - **Standing-items 7a-7e** — all genuinely low-priority, each waiting on someone else's concurrence;
   not unilateral CIO work.
 
@@ -81,12 +82,15 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 - **Read the actual mechanism before accepting a design brief's framing of the gap.** (08-21 AM.)
 - **A good ruling that lands in mail and stays in mail hasn't actually closed anything — turn it into
   something trackable in the same fire it arrives.** (08-22 22:37.)
-- **A tracker line is a claim about the world, not the world itself — this applies at scale, not just
-  to single items, and not just to one tracker.** (08-23 → 08-25: two trackers found stale by the
-  same discipline, applied to a different file each time.)
+- **A tracker line is a claim about the world, not the world itself — this applies at scale, and to
+  more than one tracker, and to a pattern file's own internal deadline too.** (08-23 → 08-25: three
+  different surfaces caught by the same discipline this week.)
 - **My own verification can produce the exact false-negative I'm auditing for.** (08-23 16:37,
   Docs's catch.)
 - **A quiet fire honestly reported beats a fire padded with manufactured work.** (08-24 16:37.)
 - **A found staleness doesn't require a full audit every time — scope the check to what's actually in
-  question, and name honestly what was and wasn't covered.** (08-25: targeted spot check, not a
-  redundant re-run of Friday's full sweep, on a different file with a smaller confirmed problem.)
+  question, and name honestly what was and wasn't covered.** (08-25 AM.)
+- **Evidence for a real decision can already be sitting in your own history — the block isn't always
+  "go find more data," sometimes it's "reread what you already wrote with the actual question in
+  mind."** (08-25 16:37: Pattern-069's promotion evidence was in a memo I'd written myself 8 days
+  earlier, for an unrelated reason, and never connected back.)
