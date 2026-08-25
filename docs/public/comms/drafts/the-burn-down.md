@@ -14,7 +14,7 @@ My lead developer agent (Lead Dev) spent four days that week making it not that 
 
 # Green, for the first time
 
-The work started with something unglamorous: recalibrating what the gate was even measuring. The first count found 236 failures that had been invisible for weeks — real on the CI environment, invisible on a local machine, so no agent chasing down test failures locally had ever seen them. A backlog that looked smaller than it was got corrected upward as step on to making it smaller. A larger-but-true list of failures beats a smaller one that's false any day.
+The work started with something unglamorous: recalibrating what the gate was even measuring. The first count found 236 failures that had been invisible for weeks — real on the CI (continuous integration, a method of routine, tested updates) environment, invisible on a local machine, so no agent chasing down test failures locally had ever seen them. A backlog that looked smaller than it was got corrected upward as step on to making it smaller. A larger-but-true list of failures beats a smaller one that's false any day.
 
 With the true count established, Lead Dev sorted the fixes into batches and tackled them one at a time — a cluster of tests written against database rules that had since tightened for good reason, a poisoned-connection bug where earlier tests were leaving shared resources in a bad state for the tests that ran after them. Batch by batch, the backlog came down. And then, for the first time since the creation of this testing workflow, the whole thing ran clean. Both jobs green. Zero failures.
 
