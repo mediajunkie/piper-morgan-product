@@ -1,13 +1,18 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-24 22:3x PDT (DAY-CLOSED — #1681 Weekly Docs Audit closed comprehensively;
-BRIEFING-CURRENT-STATE + #1644 both escalated and resolved same-day)
-**Session log**: `dev/2026/08/24/2026-08-24-0727-docs-code-log.md` (closed, `DAY-CLOSED` marker
-written).
-**Cron**: `f230a43e` (STOP re-arm, delete-then-create, `CronList`-verified sole job), fresh 7-day
-window to ~08-31. Registry row current.
+**Updated**: 2026-08-25 ~10:3x PDT (Fire 2 — "The Burn-Down" published, fact-checked, live-
+verified, 1 self-caught defect fixed)
+**Session log**: `dev/2026/08/25/2026-08-25-0727-docs-code-log.md` (open).
+**Cron**: `f230a43e`, unchanged today, healthy through ~08-31.
 
-**Nothing carried forward as blocking.** Today's throughline: 3 separate instances of the same
+**Nothing carried forward as blocking.** "The Burn-Down" published — fixed 1 real defect
+(trailing whitespace on a list item) the prior admin-UI pass hadn't caught, 14/14 template checks
+otherwise clean, fact-checked against primary Lead Dev logs (07-20 through 07-23, all exact
+matches: 40+ red runs, 236 CI-only failures, the honest same-day revert, the 15-hour freeze,
+634→105), live-verified (survived a genuine deploy-lag 404, confirmed data correct on
+origin/main first). Doubled-apostrophe defect class checked deliberately again — still clean.
+
+**Yesterday's throughline (08-24), for reference**: 3 separate instances of the same
 shape (a stale claim persisting only because the right party never got a direct signal),
 each resolved by naming the specific owner instead of a broadcast or a vague re-flag —
 BRIEFING-CURRENT-STATE (Lead Dev, same-day fix), #1644's roadmap.md half (PPM, already fixed

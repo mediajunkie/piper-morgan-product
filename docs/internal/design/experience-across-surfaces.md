@@ -64,6 +64,27 @@ in documents nobody opens while making a decision.** This one is meant to be sho
 2. **Surfaces are not in competition.** A question of the form *"which surface survives?"* has no answer
    because it has no referent. **If a sort key needs one, the sort key is wrong.**
 
+### The complementarity formulation — the unit is a person MOVING, not a surface
+
+📌 **PM, 2026-08-10** (relayed by Comms same day, verbatim; added to this page 2026-08-25 — the relay was
+read 08-10 and its follow-through was lost in the 08-11 reboot crack, found and fixed in a periodic sweep):
+
+> *"Users don't necessarily choose to only interact across one surface. A holistic user experience meets
+> the user where they're actually working **at any given time**. These are **complementary** things: using
+> the web UI when that's convenient or when it's helpful to have a big screen and settings…; interacting
+> in a Slack chat when efficient; responding on the fly to a mobile notif; **the byoc model that we're
+> adding now is another additional option**. It's certainly possible that some people may just use only one
+> option, but **that's not something that we want to decide for them.**"*
+
+**What this adds beyond §3's formulation**: §3's "meets you wherever you already are" can read as one place
+*per user*; PM's unit is a person **moving between surfaces within the same day, same work** — big screen
+for settings, Slack when quicker, a phone notification answered on the fly. Two load-bearing consequences:
+**BYOC is explicitly additive** ("another additional option" — PM's exact words), and *"not something we
+want to decide for them"* makes the invariant a **stance**, not a description: surfaces aren't in
+competition because **competition would be us choosing for the user.** (This is also the deeper ground for
+§6's ratified same-colleague corollary — the person moving between surfaces is precisely who must recognise
+the same colleague in each.)
+
 ## 3. What the one experience is
 
 ✅ **RATIFIED 2026-08-21 (PM, live 1-1)** — *"your 3 is good, aligns well."* PM aligned it explicitly with

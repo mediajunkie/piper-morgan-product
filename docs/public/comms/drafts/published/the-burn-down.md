@@ -31,7 +31,7 @@ After a day lost to a fifteen-hour freeze (raising the stakes for moving my auto
 Clearing up failing tests tends to expose things that were broken all along in a hidden way. A few examples:
 
 * a document-processing bug that could silently drop a whole search feature for any request made without an API key
-* an error-handling layer that was mislabeling real failures as a capacity limit. 
+* an error-handling layer that was mislabeling real failures as a capacity limit.
 
 With the test suite now clean and green, I felt a lot more confident about finding and correcting real issues than I have, well, since I started all this.
 

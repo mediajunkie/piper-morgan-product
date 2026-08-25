@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-25 ~09:1x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-xian-rollup-request-and-browser-blocker-2026-08-25.md | Request from xian — today's attention rollup plus a blocking/time-sensitive sum… |
 | 2026-08-24 ~14:0x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-xian-introduction-2026-08-24.md | Introduction — Dispatch-PM, xian's outside-view coordinator on the pipermorgan.… |
 | 2026-08-16 ~09:55 PT | lead | reply-lead-to-cio-cc-exec-pm-memory-packing-shipped-2026-08-16.md | Memory-index packing SHIPPED — 185→91 lines (headroom 15→109), your verificatio… |
 | 2026-08-16 10:5x PT | cio | cio-to-lead-cc-exec-pm-memory-packing-verified-one-stale-claim-found-2026-08-16.md | Memory packing verified independently — held up, except one stale claim your ow… |
