@@ -156,6 +156,41 @@ git -C "$T/wtG" fetch -q origin
 onmain "$T/wtG" mailboxes/cxo/inbox/memo-g-ok.md && ok "the send itself still succeeded" || no "the send failed — should have succeeded despite reconcile issue"
 echo "$out" | grep -q "mailboxes/lead/read/memo-existing-g.md" && ok "warning named the specific blocked path" || no "warning did not name the blocked path"
 
+echo "── T9: Lead's 08-26 guard — half-pushed inbox->read move warns loudly ──"
+# The exact incident: a read/ copy is pushed while its inbox/ sibling is left on origin/main,
+# not part of this send. Seed a real inbox/ original, then push only its read/ sibling.
+clone wtH
+mkdir -p "$T/wtH/mailboxes/lead/inbox"
+printf 'original, staying on main\n' > "$T/wtH/mailboxes/lead/inbox/memo-h.md"
+git -C "$T/wtH" add mailboxes/lead/inbox/memo-h.md
+git -C "$T/wtH" commit -qm "seed the stranded inbox original for T9" >/dev/null 2>&1
+git -C "$T/wtH" push -q origin HEAD:main
+mkdir -p "$T/wtH/mailboxes/lead/read"
+printf 'original, staying on main\n' > "$T/wtH/mailboxes/lead/read/memo-h.md"   # read/ half only — inbox/ half NOT passed
+out=$(PIPER_REPO="$T/wtH" bash "$V3" "mail(h): T9 half-pushed move" mailboxes/lead/read/memo-h.md 2>&1)
+git -C "$T/wtH" fetch -q origin
+onmain "$T/wtH" mailboxes/lead/read/memo-h.md && ok "the read/ half still landed" || no "the read/ half missing"
+onmain "$T/wtH" mailboxes/lead/inbox/memo-h.md && ok "inbox/ half correctly still stranded on origin/main (reproduces the incident)" || no "inbox/ half unexpectedly gone"
+echo "$out" | grep -q "mailboxes/lead/inbox/memo-h.md is STILL on" && ok "WARNING named the stranded inbox/ sibling" || no "warning did not fire for the stranded sibling"
+echo "$out" | grep -q "pass both paths" && ok "warning told the caller what to do" || no "warning missing the fix instruction"
+
+echo "── T10: Lead's 08-26 guard — passing both halves together produces no warning ──"
+clone wtI
+mkdir -p "$T/wtI/mailboxes/lead/inbox"
+printf 'original\n' > "$T/wtI/mailboxes/lead/inbox/memo-i.md"
+git -C "$T/wtI" add mailboxes/lead/inbox/memo-i.md
+git -C "$T/wtI" commit -qm "seed the inbox original for T10" >/dev/null 2>&1
+git -C "$T/wtI" push -q origin HEAD:main
+mkdir -p "$T/wtI/mailboxes/lead/read"
+printf 'original\n' > "$T/wtI/mailboxes/lead/read/memo-i.md"
+rm -f "$T/wtI/mailboxes/lead/inbox/memo-i.md"   # both halves of the move, both passed below
+out=$(PIPER_REPO="$T/wtI" bash "$V3" "mail(i): T10 complete move" \
+    mailboxes/lead/read/memo-i.md mailboxes/lead/inbox/memo-i.md 2>&1)
+git -C "$T/wtI" fetch -q origin
+onmain "$T/wtI" mailboxes/lead/read/memo-i.md && ok "the read/ half landed" || no "the read/ half missing"
+gone   "$T/wtI" mailboxes/lead/inbox/memo-i.md && ok "the inbox/ half correctly removed" || no "the inbox/ half not removed"
+echo "$out" | grep -q "is STILL on" && no "false-positive warning fired on a complete move" || ok "no warning on a correctly-complete move"
+
 echo ""
 echo "════════ RESULT: $PASS passed, $FAIL failed ════════"
 [ "$FAIL" = 0 ] && exit 0 || exit 1
