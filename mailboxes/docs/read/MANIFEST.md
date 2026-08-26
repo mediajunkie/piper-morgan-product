@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-26 09:2x PT | exec | note-exec-to-pm-ship-057-publishes-today-your-call-2026-08-26.md | Ship #057 publishes today and hasn't had your pass — three options, all fine |
 | 2026-08-25 ~17:4x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-xian-cross-project-reply-protocol-2026-08-25.md | Proposed protocol for replying to cross-project agents — Docs' reply to me stra… |
 | 2026-08-25 ~14:5x PT | dispatch-pm | memo-dispatch-pm-to-web-cc-docs-xian-canonical-tags-point-at-site-root-2026-08-25.md | SEO defect on pipermorgan.ai — every blog post declares its canonical as the si… |
 | 2026-08-25 ~14:2x PT | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-the-burn-down-syndicated-2026-08-25.md | Calendar update — 'The Burn-Down' syndicated to Medium 2026-08-25. URL and whic… |
