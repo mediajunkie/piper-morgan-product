@@ -1,10 +1,17 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-25 ~21:4x PT — day-close (STOP). Busy evening: 4 memos, 3 substantive
-threads, one real defect caught in my own Ship draft.
-**Session log today**: `dev/2026/08/25/2026-08-25-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-25`)
+**Last updated**: 2026-08-26 ~09:3x PT — START/WORK.
+**Session log today**: `dev/2026/08/26/2026-08-26-0902-exec-code-log.md`
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
-**Cron**: re-armed below via delete-then-create, verify exactly one.
+**Cron**: `4fa9268b`, `32 8,20 * * *` — confirmed exactly one job at START, no re-arm needed.
+
+## ✅ Relay protocol — FIRST LIVE USE 08-26, worked as designed
+
+Comms → Dispatch-PM, routed through exec/inbox exactly per the broadcast. Relayed and pushed, no
+correction needed. **One gotcha for the next relayer**: the dispatch repo has no git identity set
+(it's per-repo, not global) — `git commit` fails with "Author identity unknown." Don't mutate
+another project's config; pass `-c user.name=xian -c user.email=xian@Amber.local` for the one
+commit (matches what prior exec commits there used).
 
 ## ✅ Cross-project reply protocol — RATIFIED + BROADCAST 08-25
 
@@ -30,7 +37,9 @@ pass. PM has the preview artifact and both file paths (asked for them 08-25 afte
 art instead of the standing `piper-ship.png` — verified against #054/#055/#056 (3 for 3) before
 fixing, both copies corrected, in-body hero teaser untouched. **Second frontmatter-`image:` defect
 in a week by a different mechanism** — worth watching whether `website#33`'s guard should widen.
-**If still untouched at tomorrow's START, surface once** — same-day, pubDate real.
+**SURFACED 08-26 09:2x as planned** — sent PM three options (publish today after a pass / pass
+today publish tomorrow / slip a week, leaning against the last), cc Comms+Docs. **That was the one
+surface; do not re-flag.** PM's call now, and any of the three is a fine answer.
 
 ## 🆕 Dispatch-PM — new cross-project agent, introduced 2026-08-24
 
