@@ -18,13 +18,13 @@ The team adopted a sharper version of a discipline. The rule used to be "check t
 
 **"Summarize document" finally wired up again.** Fifteen months after building a prototype of this capability, it finally gets wired into chat. Alongside it, file uploads got repaired after being silently broken for a month.
 
-**The consent architecture completed an arc.** Actions that are visible to someone other than you now carry their own consent dimension, distinct from how hard they are to undo — the two axes together cover cases neither catches alone. Confirmations got crisper at the same time: a passing mention inside a longer sentence can no longer trigger a deletion.
+**The consent architecture settles.** Actions that are visible to someone other than you now carry their own consent dimension, distinct from how hard they are to undo — supporting the two dimensions together cover cases neither catches alone. At the same time, a passing mention inside a longer sentence can no longer trigger a deletion without confirmation.
 
-**The design taxonomy that had been implicit since May got named and ratified.** Two axes, not one list: what kind of interaction moment something is (history, settings, first run, errors) crossed with where it physically arrives (browser, terminal, chat host, notification). The proof they're genuinely separate is that settings needs both a screen and a conversational path — a single flat list has no way to represent that without quietly picking one and forgetting the other exists.
+**A design taxonomy that had been implicit since May got identified and ratified.** Two axes, not one list: what kind of interaction moment something is (history, settings, first run, errors) crossed with where it physically arrives (browser, terminal, chat host, notification).
 
 ## ⚙️ Engineering & architecture
 
-**The week's sharpest finding was the assistant claiming work it never did.** Two fabricated confirmations in a single test session — a "filed!" with no issue behind it, a "reminder set" with no saved record. The root cause is worth stating plainly: the example reply strings inside the system's own guidance had become live replies. The fix landed at three separate layers rather than patching the one visible instance.
+**Piper claimed work it never did (in testing).** Two fabricated confirmations in a single test session — a "filed!" with no issue behind it, a "reminder set" with no saved record. The root cause: the example reply strings inside the system's own guidance had become live replies! The fix required changes to three three separate layers when it would have been easy to just patch the one visible instance.
 
 **The structural rebuild reached its most consequential decision.** The routing work found that the constrained router already reads answers to questions the system itself asked, correctly, most of the time — with arguments extracted. The scoring contract expected it to stand down instead. Ratifying the router's correct signal rather than discarding it structurally forecloses the same failure shape behind the fabrication above, which is not a coincidence: an unreliable stand-down signal degrades into exactly that.
 
