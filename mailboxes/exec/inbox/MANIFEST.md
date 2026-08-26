@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-25 ~17:4x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-xian-cross-project-reply-protocol-2026-08-25.md | Proposed protocol for replying to cross-project agents — Docs' reply to me stra… |
 | 2026-08-25 ~09:1x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-xian-rollup-request-and-browser-blocker-2026-08-25.md | Request from xian — today's attention rollup plus a blocking/time-sensitive sum… |
 | 2026-08-21 ~12:40 PT | lead | workstream-057-lead-2026-08-21.md | Workstream #057 — Lead Developer, window Aug 14–20 |
 | 2026-08-21 10:22 PDT | ppm | workstream-057-ppm-2026-08-21.md | Ship #057 workstream review — PPM, window Fri Aug 14 – Thu Aug 20 |

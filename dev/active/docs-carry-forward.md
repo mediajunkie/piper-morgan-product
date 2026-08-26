@@ -1,26 +1,32 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-25 ~10:3x PDT (Fire 2 — "The Burn-Down" published, fact-checked, live-
-verified, 1 self-caught defect fixed)
+**Updated**: 2026-08-25 ~16:3x PDT (Fire 4 — Dispatch-PM's first report, a real 145-row calendar
+data-quality finding filed, Ship #057's hero image tracked)
 **Session log**: `dev/2026/08/25/2026-08-25-0727-docs-code-log.md` (open).
 **Cron**: `f230a43e`, unchanged today, healthy through ~08-31.
 
-**Nothing carried forward as blocking.** "The Burn-Down" published — fixed 1 real defect
-(trailing whitespace on a list item) the prior admin-UI pass hadn't caught, 14/14 template checks
-otherwise clean, fact-checked against primary Lead Dev logs (07-20 through 07-23, all exact
-matches: 40+ red runs, 236 CI-only failures, the honest same-day revert, the 15-hour freeze,
-634→105), live-verified (survived a genuine deploy-lag 404, confirmed data correct on
-origin/main first). Doubled-apostrophe defect class checked deliberately again — still clean.
+**New collaborator**: Dispatch-PM (xian's new coordinator agent, since 08-22) made first contact
+today, reaching me via `~/Development/dispatch/mail/` (a separate filesystem mailbox, not the
+repo's standard `mailboxes/` tree). Replied there directly, not through `mail-send.sh`.
 
-**Yesterday's throughline (08-24), for reference**: 3 separate instances of the same
-shape (a stale claim persisting only because the right party never got a direct signal),
-each resolved by naming the specific owner instead of a broadcast or a vague re-flag —
-BRIEFING-CURRENT-STATE (Lead Dev, same-day fix), #1644's roadmap.md half (PPM, already fixed
-before I'd recorded it), and my own carry-forward briefly restating something as open past when
-it stopped being true (caught by PPM, corrected same-fire). #1681 fully closed with 2 real fixes
-(NAVIGATION.md Piper Alpha entry; a 3-day omnibus gap backfilled). #1475 closed as superseded.
-#1682 filed for 3 minor residual findings. #1644 stays open — symptom fixed, full v19 fold still
-owed.
+**New tracked item**: **#1683** — 145 editorial-calendar rows genuinely syndicated but
+`status`/`canonicalSite` never bumped (traced to the 2026-07-19 migration using `canonicalSite`
+as an unreliable selection filter). Historical, not urgent, not bulk-fixed (needs per-row
+day-of-week routing reconstruction to verify safely) — full analysis + recommendation in the
+issue.
+
+**Watch item**: Ship #057's frontmatter still carries the wrong hero image (an un-replaced
+"Architect's Own Trap" carry-over) as of this fire — correctly routed to Exec/PM by Comms and
+Dispatch-PM already, not my call to pick art, not re-flagging. Relevant since it affects
+tomorrow's (Wed) Ship publish.
+
+**Resolved, no action needed**: a real SEO defect (every blog post canonicalizing to the site
+root) was found and fixed same-day by Web (`website#36`) before I finished reading the thread —
+independently spot-verified the fix live rather than trust the confirmation.
+
+**08-24 residuals still open**: #1644 (roadmap.md full v19 fold, PPM's lane) and #1682 (3 minor
+findings from #1681) — neither urgent, not re-detailing here, see prior day's log for full
+context if needed.
 
 **Standing insight, worth applying going forward, not just noting once**: when flagging staleness
 or drift to someone else, address the specific role with the actual visibility — a broadcast or a
