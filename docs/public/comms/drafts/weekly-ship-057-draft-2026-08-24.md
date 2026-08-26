@@ -32,7 +32,7 @@ The team adopted a sharper version of a discipline. The rule used to be "check t
 
 ## 🔬 Methodology & process innovation
 
-**A duty-cycle watchdog that kept crying wolf turned out to be reporting a real gap in something else.** (The watchdog is supposed to identify autonomous agents that have become stuck or unresponsive for any reason.) Five alerts across six days. The investigation ran through four agents, each checking the previous link's claim against actual history rather than trusting it, and landed somewhere nobody expected: one role had never been writing the liveness signal at all, for nine consecutive days. The mechanism was correctly flagging a real compliance gap all along, now resolved.
+**A duty-cycle watchdog that kept crying wolf turned out to be reporting a real gap in something else.** (The watchdog is supposed to identify autonomous agents that have become stuck or unresponsive for any reason.) Five alerts across six days. The investigation ran through three agents, one of them twice, each checking the previous link's claim against actual history rather than trusting it, and landed somewhere nobody expected: one role had never been writing the liveness signal at all, for nine consecutive days. The mechanism was correctly flagging a real compliance gap all along, now resolved.
 
 **The shared memory index hit its ceiling and got a structural fix.** Packing entries several per line rather than one each took it from twelve lines of headroom to over a hundred. The verification pass then caught that the file's own header still stated the old limit as fact, which was repaired by computing the headroom from the same definition the packer uses, so the two can't drift apart again.
 
