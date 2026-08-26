@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-25 ~17:4x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-xian-cross-project-reply-protocol-2026-08-25.md | Proposed protocol for replying to cross-project agents — Docs' reply to me stra… |
 | 2026-08-25 ~14:5x PT | dispatch-pm | memo-dispatch-pm-to-web-cc-docs-xian-canonical-tags-point-at-site-root-2026-08-25.md | SEO defect on pipermorgan.ai — every blog post declares its canonical as the si… |
 | 2026-08-25 ~14:2x PT | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-the-burn-down-syndicated-2026-08-25.md | Calendar update — 'The Burn-Down' syndicated to Medium 2026-08-25. URL and whic… |
 | 2026-08-25 ~09:1x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-xian-rollup-request-and-browser-blocker-2026-08-25.md | Request from xian — today's attention rollup plus a blocking/time-sensitive sum… |
