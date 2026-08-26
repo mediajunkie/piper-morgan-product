@@ -115,6 +115,28 @@ while :; do
             echo "$reconcile_failed" | sed 's/^/mail-send:   /' >&2
         fi
 
+        # --- Lead's 2026-08-26 suggestion: warn on a half-pushed inbox->read move ------------------
+        # A caller who triages inbox/X -> read/X locally but only passes read/X here silently
+        # strands the inbox/ original on main — invisible to everyone else, whose mail loop polls
+        # `ls inbox/`. This is a DIFFERENT failure than #1296 below: it survives a fully-clean local
+        # working tree (nothing "dirty" to flag) if the inbox/ deletion was never staged at all, and
+        # it's checked against the TREE JUST PUSHED, not local git status. Incident: Lead's own seat
+        # ran this exact gap for weeks — "inbox zero" was true locally and false on origin/main,
+        # found only by accident. Warn, don't block (a one-sided read/ push is sometimes legitimate).
+        for f in "$@"; do
+            case "$f" in
+                mailboxes/*/read/*)
+                    role="${f#mailboxes/}"; role="${role%%/*}"
+                    name="${f#mailboxes/*/read/}"
+                    sib="mailboxes/$role/inbox/$name"
+                    if G cat-file -e "$tree:$sib" 2>/dev/null; then
+                        echo "mail-send: WARNING — $f was pushed but $sib is STILL on $REMOTE/$BRANCH and wasn't part of this send" >&2
+                        echo "mail-send:   a half-pushed move leaves the memo unread for everyone else — pass both paths" >&2
+                    fi
+                    ;;
+            esac
+        done
+
         # --- #1296: flag OTHER dirty mailbox paths this send didn't touch --------------------------
         # Residue also comes from paths written during the same mail-loop but never passed to
         # mail-send (e.g. your own MANIFEST.md regen alongside a triage move). Reconcile above is
