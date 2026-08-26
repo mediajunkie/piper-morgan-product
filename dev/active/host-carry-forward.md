@@ -1,6 +1,6 @@
 # HOST carry-forward
 
-**Written**: 2026-08-24 22:0x PDT (STOP fire, day 31 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-25 22:0x PDT (STOP fire, day 32 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -120,15 +120,17 @@
 
 ## Cron
 
-Current job **`82f6b0fa`** (chain … `8114ef2d → e2c37052 → 82f6b0fa`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-24 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`26deaf24`** (chain … `e2c37052 → 82f6b0fa → 26deaf24`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-25 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 08-24 STOP
+## Open threads, as of 08-25 STOP
 
-- **Agent 360 v0.4** — Fielded 08-14 to 10 roles, **9/10 responses as of 08-23**, unchanged 08-24 — missing only exec. Response window closes ~08-28, synthesis due soon after. Don't chase early, hold synthesis for the window close.
+- **Agent 360 v0.4** — Fielded 08-14 to 10 roles, **9/10 responses as of 08-23**, unchanged through 08-25 — missing only exec. Response window closes ~08-28, synthesis due soon after. Don't chase early, hold synthesis for the window close.
 - **Criterion E** — ✅ Fully closed 08-22/23: ruling given, filed as #1680 by CIO, routed to Lead, recorded in `decisions.log`. Nothing further owed.
 - **Two April carryovers (Sparker/Holder naming, migration-experience confer)** — ✅ Both disposed 08-23, CIO acknowledged same day, tracker closed on both ends. Archival — don't resurrect either.
-- **Portfolio checker `--diff`** — landed and verified 08-22. **Still owed: use it by hand on my next actual portfolio commit** — two full days now (08-23, 08-24) with no portfolio commit to test it against; this is genuinely idle-waiting, not neglect. Report back to CXO whenever it finally fires.
+- **Portfolio checker `--diff`** — landed and verified 08-22. **Still owed: use it by hand on my next actual portfolio commit** — three full days now (08-23 through 08-25) with no portfolio commit to test it against; genuinely idle-waiting, not neglect. Report back to CXO whenever it finally fires.
 - Criterion E UX ruling, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
 - **Ship #056 workstream review** — filed 08-14 evening per PM's same-day corrected deadline. Closed, nothing further owed.
-- **BRIEFING-CURRENT-STATE.md flagged STALE (11 days, last 2026-08-12)** by SessionStart hook — still stale as of 08-24 evening, unchanged from yesterday's note. Not HOST's lane to refresh unprompted; still flagging in case it's relevant to whoever picks it up.
-- **2026-08-24 was the first fully quiet day in the recent stretch** — all six fires clean, nothing owed in, nothing new arrived. Noted only as a baseline contrast to 08-22/08-23 (both substantive), not itself an open thread.
+- **BRIEFING-CURRENT-STATE.md flagged STALE (11 days, last 2026-08-12)** by SessionStart hook — still stale as of 08-25 evening, unchanged from prior notes. Not HOST's lane to refresh unprompted; still flagging in case it's relevant to whoever picks it up.
+- **Pattern-069 promoted to Proven, 08-25** (CIO) — verified directly against the pattern file, acked. Archival, nothing further owed from HOST.
+- **Cross-project reply protocol ratified, 08-25** (Exec broadcast) — cohort-wide procedure: replies to Dispatch-PM/Janus/Pard/Klatch route via `mailboxes/exec/inbox/` with the real recipient in `to:`, Exec relays. No HOST-specific action, but worth knowing if a cross-project reply is ever needed.
+- **Heartbeat push-race, 08-25 Fire 1** — the heartbeat script's own push failed once on a non-fast-forward race at the shared 07:07 cohort-wide morning wake. Correctly failed loud per its own design; retry (fetch/merge/push) resolved it cleanly. Not a recurring pattern yet (happened once in 32 days) — noting in case it recurs and becomes worth raising with CIO as a contention issue at the shared wake slot.
