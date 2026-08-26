@@ -70,26 +70,48 @@ Surface column indicates where the innovation lives if Captured (or where it wou
 
 ### Emerging — Monitoring Through Trial Application
 
-| # | Innovation | Status | Trigger to Promote |
+**Full sweep of this tier + Reclassified + Watch List executed 2026-08-25** (delegated verification,
+synthesized here). Six of ten rows were stale — see disposition notes; only #46 was accurate as
+stated.
+
+| # | Innovation | Status | Disposition (Aug 25) |
 |---|---|---|---|
-| 33 | Pattern-063 (Parallel-Authoring Drift) | Filed Emerging Apr 27 | One cycle of trial application in Phase F+ scoring |
-| 34 | Pattern-065 (Continuity Memo Before the Seam) | Filed Emerging Apr 27 | One more migration cycle (exec migration is the natural validation event) |
-| 35 | Cross-pollination routing memos (PA practice) | Audit §3.4 candidate; CIO predecessor recommended monitor through M2 | Sustained PA usage + adoption by other agents |
-| 36 | Klatch AAXT scaffolded probing methodology | External innovation; PM-relevant per audit S3 | Lead Dev #927-930 scoping triggers CIO-mediated walkthrough |
-| 37 | Six-failure-mode taxonomy (Klatch Argus) | Cross-pollination input; could map onto PM's #929 scoring rubric | Same as #36 |
-| 38 | Branch-discipline rule set (CXO proposal Apr 26) | 5 rules circulating; PA hosts aggregation; PPM owns synthesis | Aggregation lands; methodology entry (or CLAUDE.md update) follows |
-| 39 | SessionStop hook for branch discipline (Lead Dev Apr 26 reply) | Feasibility confirmed; can prototype same-day if greenlit | Branch-discipline aggregation completion |
-| 40 | Per-sender-segment MANIFEST files (Lead Dev Apr 26) | Conflict-free MANIFEST coordination proposal | Branch-discipline aggregation completion |
-| 46 | **Pattern-068 (Silent State Mutation in Shared Working Tree)** | Filed Emerging May 11 by CIO with PM ratification | Promotion to Proven contingent on naming holding through ~2 more sub-instance recurrences across named children, OR a single new-shape child instance fitting the parent. Parent subsumes anti-pattern P-13 (branch-drift) + P-15 (branch-collision) + P-16 (residue-accumulation) + P-17 (path-fragmentation, new same session). |
-| 47 | **Pattern-069 (Coarse Triggers Causing False-Positive Triage Cost)** | Filed Emerging May 11 by CIO with PM directive ("close the loop") | Promotion to Proven contingent on cross-mechanism recurrence within two weeks — a different hook/gate/validator producing the same shape. PreCompact-hook-only recurrence does not promote (evidence about the one hook, not the pattern class). |
+| 46 | **Pattern-068 (Silent State Mutation in Shared Working Tree)** | Filed Emerging May 11 by CIO with PM ratification | **Still accurate.** `pattern-068-*.md` confirmed still Emerging, promotion criterion unchanged. No action. |
+| 47 | **Pattern-069 (Coarse Triggers Causing False-Positive Triage Cost)** | ~~Filed Emerging May 11~~ | **PROMOTED to Proven, today.** Original 2-week promotion window (~May 25) lapsed unchecked for 3 months — found during this sweep, same shape as everything else in it. Real cross-mechanism recurrence evidence was sitting in hand the whole time: the freeze-watchdog's self-resolving-alert pattern (5 alerts, 4-of-6 days, 100% self-resolved before triage — `dev/active/cio-to-host-exec-watchdog-pattern-2026-08-17.md`) is a genuinely independent mechanism (liveness detection, zero code relationship to the PreCompact hook) producing the identical shape. Promoted in `pattern-069-*.md` + `patterns/README.md`, citing this evidence. |
+
+**Resolved/promoted, already correct elsewhere (dropped as duplicates):**
+- #33 (Pattern-063) and #34 (Pattern-065) — both already shown Promoted-to-Proven-May-8 in this
+  file's own **Captured** tier (#3, #5). These Emerging-tier rows were orphaned duplicates never
+  removed at promotion time — the file was self-contradicting. Removed.
+
+**Trigger fired, lapsed without action — naming honestly, not resurrecting:**
+- #36 (Klatch AAXT scaffolded probing) and #37 (six-failure-mode taxonomy, same trigger) — Lead
+  Dev's #927-930 all closed mid-April; no CIO-mediated walkthrough was ever recorded. Same finding
+  as the 08-23 standing-items audit. Not worth resurrecting 4+ months later.
+
+**Superseded by a different mechanism than the one proposed:**
+- #35 (cross-pollination routing memos, PA practice) — never formalized as originally described
+  (no methodology-core/skill/CLAUDE.md entry for "PA-hosted routing memos"), but the underlying need
+  is served by `docs/briefs/cross-pollination/current.md`, which is actively maintained (dated today)
+  and does the job better than the row's original proposal would have.
+- #38 (branch-discipline rule set, CXO Apr 26) — **the aggregation landed 3 days later**,
+  `docs/internal/operations/branch-worktree-mailbox-discipline.md` (v1.0, published Apr 29), still
+  the canonical doc cross-referenced from CLAUDE.md today. Genuinely resolved, just never marked.
+- #39 (SessionStop hook for branch discipline) — never built as scoped (no SessionStop-named hook
+  exists). The aggregation's actual enforcement mechanism turned out to be `check-branch.sh`
+  (PreToolUse) — a different hook type entirely, built later, superseding this specific proposal.
+- #40 (per-sender-segment MANIFEST files) — never built as scoped (MANIFESTs are still flat, not
+  segmented). Superseded by `mail-send.sh` v3's push-to-ref + self-reconciliation (since #1259,
+  06-19), which solves the same conflict-free-coordination problem structurally rather than via
+  per-sender segmentation.
 
 ### Reclassified — Routed to Non-Methodology Surface
 
 | # | Innovation | Reclassified To | Date | Rationale |
 |---|---|---|---|---|
 | 41 | "Bring Your Own Chat" (BYOC) distribution philosophy | Vision V2.2/V2.3 + roadmap | Apr 17 (audit §3.1) | Product distribution strategy, not methodology pattern |
-| 42 | Differentiator stack as sprint organizing principle | Roadmap v15.0 | Apr 17 (audit §3.2) | Planning decision, not methodology pattern |
-| 43 | Floor fabrication guardrail | Floor system prompt + #960-962 | Apr 17 (audit §3.6) | Defense-in-depth product feature, not methodology |
+| 42 | Differentiator stack as sprint organizing principle | Roadmap v15.0 | Apr 17 (audit §3.2) | Planning decision, not methodology pattern — **v15.0 is now historical** (live roadmap is v18.8); accurate for what it described at the time, dated phrasing only, not a real error. |
+| 43 | Floor fabrication guardrail | Floor system prompt + #960-962 | Apr 17 (audit §3.6) | Defense-in-depth product feature, not methodology — **confirmed** (#960-962 all closed). |
 
 ### Closed — Considered and Rejected
 
@@ -101,15 +123,25 @@ Surface column indicates where the innovation lives if Captured (or where it wou
 
 ## Standing CIO Watch List (Cross-Pollination Feed)
 
-External innovations from sibling DinP projects worth tracking, even if not active for PM today:
+**Superseded wholesale by `docs/briefs/cross-pollination/current.md` (checked 08-25)** — that brief
+is actively maintained (dated to today, sourced from live commit logs across Klatch/OpenLaws/other
+DinP projects, with per-issue "Sources Read" sections), a substantially higher-fidelity artifact than
+this static list ever was. The 7 bullets below are last-touched ~April 2026 with no update mechanism;
+several (Klatch AAXT/MAXT, six-failure-mode taxonomy) are already superseded by the current brief's
+live tracking. **Kept below for historical reference only — treat `current.md` as the real surface
+going forward, not this list.**
 
-- **Klatch AAXT/MAXT framework** — automated probing + manual qualitative; structural-vs-use distinction directly applicable to PM's testing track
-- **Klatch six-failure-mode taxonomy** (Correct/Reconstructed/Confabulated/Absent/Phantom/Subliminal) — vocabulary candidate for PM's #929 rubric
-- **Klatch scaffolded probing implementation** — auxiliary-LLM-generated context-aware probes; PM's #927-930 carry-over
-- **OpenLaws coffee-spill handoff pattern** — anticipatory continuity-memo origination; informed Pattern-065
-- **DinP five-layer context model (RFC-001)** — shared vocabulary across all DinP projects; CIO endorsement Apr 1
-- **Klatch DECISIONS.md practice** — adopted Apr 18 as cross-project practice
-- **Argus AuditBench review insights** — "tools that surface evidence in isolation often fail to improve agent performance"; relevant to floor-quality monitoring
+- ~~Klatch AAXT/MAXT framework~~ — superseded by cross-pollination brief
+- ~~Klatch six-failure-mode taxonomy~~ — superseded by cross-pollination brief
+- ~~Klatch scaffolded probing implementation~~ — superseded by cross-pollination brief (and its own
+  trigger, #927-930, closed months ago with no walkthrough — see Emerging-tier disposition above)
+- OpenLaws coffee-spill handoff pattern — anticipatory continuity-memo origination; informed
+  Pattern-065 (historical note, Pattern-065 is now Proven)
+- DinP five-layer context model (RFC-001) — shared vocabulary across all DinP projects; CIO
+  endorsement Apr 1
+- Klatch DECISIONS.md practice — adopted Apr 18 as cross-project practice
+- Argus AuditBench review insights — "tools that surface evidence in isolation often fail to improve
+  agent performance"; relevant to floor-quality monitoring
 
 ---
 
@@ -147,15 +179,16 @@ The 30-min number was right for the reconstruction-from-existing-memos task. The
 *Author: CIO (Code instance)*
 *Source basis: M1 audit §3 + audit §9 + Ships #036-#039 narratives + HOST/PPM/CXO/Architect workstream-040 memos + Apr 17-27 omnibus logs + recent methodology-core/pattern catalog filings*
 
-**Partial check 2026-08-25** (last real content edit was ~May 11 per `git log`; this file's own
-"next sweep at M2 gate closure" trigger fired and went unactioned months ago — same staleness shape
-`cio-standing-items.md` had before its 08-23 audit). Spot-checked the "Pending capture" items (24-32)
-against the current methodology-core corpus rather than assuming the tier is still accurate: #25
-closed per HOST's 08-23 ruling (updated above); #29 has related-but-not-identical work since (m-45,
-noted above); #28 was already correctly marked Captured; #24, #26, #27, #30-32 checked and still
-appear genuinely uncaptured (methodology-16's "STOP Conditions" superficially keyword-matches #30
-but predates it by nearly a year — a different, older document, not a capture). **Not a full audit**
-— unlike the standing-items sweep, this was a targeted check of specific claims rather than a
-comprehensive re-verification of every row (Captured tier, Emerging tier, and the Watch List below
-weren't checked this pass). A genuine full sweep is still owed if this file's own cadence is to mean
-anything.
+**2026-08-25, two passes, both same day.** Morning (10:37): targeted spot-check of the "Pending
+capture" items (24-32) against the current methodology-core corpus — #25 closed per HOST's 08-23
+ruling, #29 cross-referenced to related-but-not-identical work since (m-45), #28 already correctly
+marked Captured, #24/#26/#27/#30-32 checked and genuinely still uncaptured (methodology-16's "STOP
+Conditions" superficially keyword-matched #30 but predates it by nearly a year — false positive,
+not a capture). Afternoon (16:37): full sweep of the Emerging tier + Reclassified + Watch List
+(delegated verification) — six of ten Emerging rows were stale (two orphaned duplicates already
+resolved elsewhere in this same file; three trigger-fired-and-lapsed; three superseded by a
+different mechanism than proposed), one promoted to Proven on evidence found in hand
+(Pattern-069), the Watch List superseded wholesale by `docs/briefs/cross-pollination/current.md`.
+**Only the Captured tier (rows 1-23) remains genuinely unchecked** — lower risk, since once
+something is filed as a canonical artifact it doesn't drift the way a "pending"/"trigger-bound"
+status does, but not verified this pass either.

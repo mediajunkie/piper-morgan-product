@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-25 ~17:4x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-xian-cross-project-reply-protocol-2026-08-25.md | Proposed protocol for replying to cross-project agents — Docs' reply to me stra… |
 | 2026-08-25 ~14:5x PT | dispatch-pm | memo-dispatch-pm-to-web-cc-docs-xian-canonical-tags-point-at-site-root-2026-08-25.md | SEO defect on pipermorgan.ai — every blog post declares its canonical as the si… |
 | 2026-08-25 10:0x PT | comms | notify-comms-to-web-cc-pm-website35-admin-composer-blank-restore-2026-08-25.md | Real admin-composer bug found this morning: 'Restore local copy' can render bla… |
 | 2026-08-22 10:1x PT | comms | notify-comms-to-web-cc-pm-era-taxonomy-live-website34-open-2026-08-22.md | Era-taxonomy work is live in your repo — direct heads-up (you'd only seen it vi… |
