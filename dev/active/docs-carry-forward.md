@@ -1,22 +1,28 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-25 ~19:3x PDT (Fire 5 — a month-long cross-project mail delivery gap in my
-own practice found and fixed: 7 stranded memos delivered, a false claim in Dispatch-PM's report
-corrected, Comms flagged on their own 2 stranded files)
-**Session log**: `dev/2026/08/25/2026-08-25-0727-docs-code-log.md` (open).
-**Cron**: `f230a43e`, unchanged today, healthy through ~08-31.
+**Updated**: 2026-08-25 ~22:4x PDT (STOP — DAY-CLOSED, cron re-armed `f230a43e`→`b8037424`)
+**Session log**: `dev/2026/08/25/2026-08-25-0727-docs-code-log.md` — closed, `DAY-CLOSED` marker
+written.
+**Cron**: `b8037424`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-01.
 
-**New collaborator, correction on Fire 4's note**: Dispatch-PM (xian's new coordinator agent,
-since 08-22) made first contact today via `~/Development/dispatch/mail/` (a separate filesystem
-mailbox, not the repo's standard `mailboxes/` tree). Fire 4's reply there did NOT actually reach
-them — writing a file in that repo is not delivery; nothing forces the commit+push the way
-`mail-send.sh` does in this repo. **Discovered this fire, fixed same-fire**: found 6 more of my
-own memos with the identical defect back to 2026-07-29, delivered all 7 in one commit
-(`f098707` in the `dispatch` repo), and sent Dispatch-PM a correction memo naming the false
-"reached me" claim and the root cause (`40c8769`, verified landed this time). **Going forward in
-that repo: write, then explicitly `git add`+commit+push+verify — never assume a write alone is
-delivery.** Also flagged 2 of Comms' own stranded files there to them directly (not fixed on
-their behalf) via standard mailbox (`bd81b9b46`).
+**Cross-project mail — the day's real lesson, now durable in two places**: a write to
+`~/Development/dispatch/` (or any sibling repo) is NOT delivery until explicitly committed and
+pushed — unlike this repo's `mailboxes/`, nothing forces that step. Discovered this fire when a
+Dispatch-PM claim that my reply "reached them" turned out false; found and delivered 7 of my own
+memos stranded back to 2026-07-29 (`f098707`), corrected the false claim (`40c8769`), and flagged
+2 of Comms' own stranded files to them (they self-resolved same day via the new protocol below).
+**Now durable**: PM directed a cohort-wide fix same day — Exec ratified a reply protocol (reply
+with the real recipient in `to:`, cc `exec`, deliver via ordinary `mail-send.sh` to `exec/inbox/`,
+Exec relays) with a twice-daily Dispatch-PM sweep as backstop. Closed 3 routed DIRECTORY.md gaps
+same-fire: documented the protocol, added `pard` to the Active mailboxes table, reconciled
+`janus`/`dispatch-dinp` as confirmed-live exceptions rather than leaving them undocumented
+(`b4ead9548`). **Going forward: use the relay protocol for cross-project replies by default; if
+writing directly to a sibling repo, sync first and verify the push landed before treating it as
+sent.**
+
+**08-24 omnibus gap found+closed same-fire**: no omnibus existed for a substantive 11-session day
+(3 genuine cross-role coordination threads). Backfilled (`a80921763`, HIGH-COMPLEXITY, 321 lines)
++ activity-log reconciliation (`71dd411c2`, 2140→2151 rows). Chain now continuous through 08-24.
 
 **New tracked item**: **#1683** — 145 editorial-calendar rows genuinely syndicated but
 `status`/`canonicalSite` never bumped (traced to the 2026-07-19 migration using `canonicalSite`
@@ -24,25 +30,17 @@ as an unreliable selection filter). Historical, not urgent, not bulk-fixed (need
 day-of-week routing reconstruction to verify safely) — full analysis + recommendation in the
 issue.
 
-**Watch item**: Ship #057's frontmatter still carries the wrong hero image (an un-replaced
-"Architect's Own Trap" carry-over) as of this fire — correctly routed to Exec/PM by Comms and
-Dispatch-PM already, not my call to pick art, not re-flagging. Relevant since it affects
-tomorrow's (Wed) Ship publish.
-
-**Resolved, no action needed**: a real SEO defect (every blog post canonicalizing to the site
-root) was found and fixed same-day by Web (`website#36`) before I finished reading the thread —
-independently spot-verified the fix live rather than trust the confirmation.
+**Watch item**: Ship #057's hero image was fixed by Comms/Exec same-day per mail seen at Fire 6 —
+resolving this watch item, dropping from the list.
 
 **08-24 residuals still open**: #1644 (roadmap.md full v19 fold, PPM's lane) and #1682 (3 minor
-findings from #1681) — neither urgent, not re-detailing here, see prior day's log for full
+findings from #1681) — neither urgent, not re-detailing here, see 08-24's omnibus for full
 context if needed.
 
 **Standing insight, worth applying going forward, not just noting once**: when flagging staleness
 or drift to someone else, address the specific role with the actual visibility — a broadcast or a
-generic audit-issue note can sit unactioned for a week even when everyone agrees it matters.
-
-**Watch, low-priority (recurring theme)**: this carry-forward file was pruned Friday — kept lean
-all week. Keep writing fresh entries.
+generic audit-issue note can sit unactioned for a week even when everyone agrees it matters. Proven
+three separate times across the cohort on 08-24 alone (see that day's omnibus).
 
 ## Awaiting PM (genuine, not urgent, don't chase)
 
