@@ -1,46 +1,26 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-25 ~22:4x PDT (STOP — DAY-CLOSED, cron re-armed `f230a43e`→`b8037424`)
-**Session log**: `dev/2026/08/25/2026-08-25-0727-docs-code-log.md` — closed, `DAY-CLOSED` marker
-written.
+**Updated**: 2026-08-26 ~10:3x PDT (Fire 2 — Ship #057 status noted, PM-gated)
+**Session log**: `dev/2026/08/26/2026-08-26-0727-docs-code-log.md` (open).
 **Cron**: `b8037424`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-01.
 
-**Cross-project mail — the day's real lesson, now durable in two places**: a write to
-`~/Development/dispatch/` (or any sibling repo) is NOT delivery until explicitly committed and
-pushed — unlike this repo's `mailboxes/`, nothing forces that step. Discovered this fire when a
-Dispatch-PM claim that my reply "reached them" turned out false; found and delivered 7 of my own
-memos stranded back to 2026-07-29 (`f098707`), corrected the false claim (`40c8769`), and flagged
-2 of Comms' own stranded files to them (they self-resolved same day via the new protocol below).
-**Now durable**: PM directed a cohort-wide fix same day — Exec ratified a reply protocol (reply
-with the real recipient in `to:`, cc `exec`, deliver via ordinary `mail-send.sh` to `exec/inbox/`,
-Exec relays) with a twice-daily Dispatch-PM sweep as backstop. Closed 3 routed DIRECTORY.md gaps
-same-fire: documented the protocol, added `pard` to the Active mailboxes table, reconciled
-`janus`/`dispatch-dinp` as confirmed-live exceptions rather than leaving them undocumented
-(`b4ead9548`). **Going forward: use the relay protocol for cross-project replies by default; if
-writing directly to a sibling repo, sync first and verify the push landed before treating it as
-sent.**
+**Watch item, new**: **Ship #057's pubDate is today (Wed 08-26)** but PM's fact-check/voice pass
+hasn't happened yet — draft still `drafted`, untouched since Exec's Monday-night hero-image fix.
+Exec surfaced 3 options to PM directly (pass+publish today / pass-today-publish-tomorrow / slip a
+week), no push toward one. **Not my call, not chasing** — Comms and Docs only act once PM clears a
+pass, per the established handoff. Watch for a publish-ready signal later today; if the day ends
+with no PM decision, that's worth a light note at STOP, not before.
 
-**08-24 omnibus gap found+closed same-fire**: no omnibus existed for a substantive 11-session day
-(3 genuine cross-role coordination threads). Backfilled (`a80921763`, HIGH-COMPLEXITY, 321 lines)
-+ activity-log reconciliation (`71dd411c2`, 2140→2151 rows). Chain now continuous through 08-24.
+**Standing practice, now durable (from 08-25)**: cross-project replies go via the ratified relay
+protocol — real recipient in `to:`, cc `exec`, deliver via ordinary `mail-send.sh` to
+`exec/inbox/`, Exec relays; a twice-daily Dispatch-PM sweep is the backstop. If writing directly to
+a sibling repo instead, sync first and verify the push landed before treating it as sent — a local
+write there is not delivery. Full context: 08-25's session log + `mailboxes/DIRECTORY.md`.
 
-**New tracked item**: **#1683** — 145 editorial-calendar rows genuinely syndicated but
-`status`/`canonicalSite` never bumped (traced to the 2026-07-19 migration using `canonicalSite`
-as an unreliable selection filter). Historical, not urgent, not bulk-fixed (needs per-row
-day-of-week routing reconstruction to verify safely) — full analysis + recommendation in the
-issue.
-
-**Watch item**: Ship #057's hero image was fixed by Comms/Exec same-day per mail seen at Fire 6 —
-resolving this watch item, dropping from the list.
-
-**08-24 residuals still open**: #1644 (roadmap.md full v19 fold, PPM's lane) and #1682 (3 minor
-findings from #1681) — neither urgent, not re-detailing here, see 08-24's omnibus for full
-context if needed.
-
-**Standing insight, worth applying going forward, not just noting once**: when flagging staleness
-or drift to someone else, address the specific role with the actual visibility — a broadcast or a
-generic audit-issue note can sit unactioned for a week even when everyone agrees it matters. Proven
-three separate times across the cohort on 08-24 alone (see that day's omnibus).
+**#1683** (145 editorial-calendar rows genuinely syndicated but `status`/`canonicalSite` never
+bumped) and **#1644** (roadmap.md full v19 fold, PPM's lane) and **#1682** (3 minor findings) all
+still open, none urgent — see their issues / 08-24's omnibus for full context, not re-detailing
+here each day.
 
 ## Awaiting PM (genuine, not urgent, don't chase)
 

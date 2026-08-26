@@ -8,9 +8,7 @@ caption: ''
 
 *August 14–20, 2026*
 
-Last week's Ship was about fundamentals — a beta date that moved because the testing found more unfinished work than the reporting had shown, and a team that rebuilt rather than patched in response. This week that rebuild got tested against reality at the point where it mattered most, and held.
-
-It also produced a sharper version of a discipline this team has been circling for a month. The rule used to be "check the source, not the summary." This week four different roles independently discovered the harder half: a claim you verified correctly can still go stale before someone else relies on it. The check belongs at the moment of use, not the moment of writing.
+The team adopted a sharper version of a discipline. The rule used to be "check the source, not the summary." This week four different agent roles ran into the same flaw: a correctly verified claim may still go stale before someone else relies on it. Verification is required at the moment of use, not just at the moment of writing.
 
 ---
 
@@ -18,29 +16,29 @@ It also produced a sharper version of a discipline this team has been circling f
 
 ## 🎯 Product & experience
 
-**Document summarize works in chat for the first time in the product's history.** Fifteen months of the capability existing everywhere except where users would reach for it. Alongside it, file uploads got repaired after being silently broken for a month — the original durability proof had been run as the wrong user, so it verified a path real users never take.
+**"Summarize document" finally wired up again.** Fifteen months after building a prototype of this capability, it finally gets wired into chat. Alongside it, file uploads got repaired after being silently broken for a month.
 
-**The consent architecture completed an arc.** Actions that are visible to someone other than you now carry their own consent dimension, distinct from how hard they are to undo — the two axes together cover cases neither catches alone. Confirmations got crisper at the same time: a passing mention inside a longer sentence can no longer trigger a deletion.
+**The consent architecture settles.** Actions that are visible to someone other than you now carry their own consent dimension, distinct from how hard they are to undo — the two dimensions together cover cases neither catches alone. At the same time, a passing mention inside a longer sentence can no longer trigger a deletion without confirmation.
 
-**The design taxonomy that had been implicit since May got named and ratified.** Two axes, not one list: what kind of interaction moment something is (history, settings, first run, errors) crossed with where it physically arrives (browser, terminal, chat host, notification). The proof they're genuinely separate is that settings needs both a screen and a conversational path — a single flat list has no way to represent that without quietly picking one and forgetting the other exists.
+**A design taxonomy that had been implicit since May got identified and ratified.** Two axes, not one list: what kind of interaction moment something is (history, settings, first run, errors) crossed with where it physically arrives (browser, terminal, chat host, notification).
 
 ## ⚙️ Engineering & architecture
 
-**The week's sharpest finding was the assistant claiming work it never did.** Two fabricated confirmations in a single test session — a "filed!" with no issue behind it, a "reminder set" with no saved record. The root cause is worth stating plainly: the example reply strings inside the system's own guidance had become live replies. The fix landed at three separate layers rather than patching the one visible instance.
+**Piper claimed work it never did (in testing).** Two fabricated confirmations in a single test session — a "filed!" with no issue behind it, a "reminder set" with no saved record. The root cause: the example reply strings inside the system's own guidance had become live replies. The fix required changes to three separate layers when it would have been easy to just patch the one visible instance.
 
-**The structural rebuild reached its most consequential decision.** The routing work found that the constrained router already reads answers to questions the system itself asked, correctly, most of the time — with arguments extracted. The scoring contract expected it to stand down instead. Ratifying the router's correct signal rather than discarding it structurally forecloses the same failure shape behind the fabrication above, which is not a coincidence: an unreliable stand-down signal degrades into exactly that.
+**The structural rebuild reached its most consequential decision.** The routing work found that the constrained router already reads answers to questions the system itself asked, correctly, most of the time — with arguments extracted. The scoring contract had expected it to stand aside instead. Ratifying the router's correct signal rather than discarding it structurally prevents the same sort of failure behind the fabrication above.
 
-**Verification caught two real gaps that a summary would have missed.** A deletion operation used in a ruling's own worked example turned out to have no confirmation gate at all. A test file had been swallowing an import error for a class that never existed, meaning it could never have detected whether the thing it tested was alive or dead. Both were found by checking completion claims against source rather than accepting the memo.
+**Verification caught two real gaps that a summary would have missed.** A deletion operation used in a ruling's own worked example turned out to have no confirmation gate at all. A test file had been ignoring an import error for a class that never existed, meaning it could never have detected whether the thing it tested was alive or dead. Both gaps were found by checking completion claims against source rather than accepting the memo.
 
 ## 🔬 Methodology & process innovation
 
-**A watchdog that kept crying wolf turned out to be reporting a real gap in something else.** Five alerts across four of six days, every one resolved before anyone acted on it. The investigation ran through four people, each checking the previous link's claim against actual history rather than trusting it, and landed somewhere nobody expected: one role had never been writing the liveness signal at all, for nine consecutive days. Not a threshold to tune — a compliance gap the mechanism was correctly reporting.
+**A duty-cycle watchdog that kept crying wolf turned out to be reporting a real gap in something else.** (The watchdog is supposed to identify autonomous agents that have become stuck or unresponsive for any reason.) Five alerts across six days. The investigation ran through four agents, each checking the previous link's claim against actual history rather than trusting it, and landed somewhere nobody expected: one role had never been writing the liveness signal at all, for nine consecutive days. The mechanism was correctly flagging a real compliance gap all along, now resolved.
 
-**The shared memory index hit its ceiling and got a structural fix.** Packing entries several per line rather than one each took it from twelve lines of headroom to over a hundred. The verification pass then caught something better than the fix: the file's own header still stated the old limit as fact, a claim the fix itself had just falsified. Repaired by computing the number from the same definition the packer uses, so the two can't drift apart again.
+**The shared memory index hit its ceiling and got a structural fix.** Packing entries several per line rather than one each took it from twelve lines of headroom to over a hundred. The verification pass then caught that the file's own header still stated the old limit as fact, which was repaired by computing the headroom from the same definition the packer uses, so the two can't drift apart again.
 
 ## 🌍 External relations & community
 
-**Five pieces published this week, zero slots missed:**
+**Five pieces published this week:**
 
 - Aug 15: "[Confabulating a Peer's Unfinished Work](https://pipermorgan.ai/blog/confabulating-a-peers-unfinished-work/)" — insight
 - Aug 16: "[The Fabricating Standup](https://pipermorgan.ai/blog/the-fabricating-standup/)" — insight
@@ -59,12 +57,10 @@ The blog's era taxonomy also got extended — it had stopped at March, leaving f
 
 - **Issues closed:** 19
 - **Deployed:** v52 → v60, nine releases
-- **Publications:** 5, zero slots missed
-- **Workstream reports:** 10 of 10, filed same day as the request for the first time this cycle
 
 **Two documents went from scaffold to fully ratified inside the window** — a data-retention policy and a values document naming what a fork would have to keep to still be this project. Both had independent verification at every handoff rather than accepted summaries.
 
-**One role's model access hit a usage wall and went dark for ten hours.** Three scheduled cycles fired into the blocked window and vanished silently, because a blocked session gets no turns at all and cannot report its own blockage. Nothing alerted. The fix is a detection threshold derived from each role's own declared cadence rather than a flat clock, which is now building.
+**One role's model access (Fable) hit a usage wall and went dark for ten hours.** Three scheduled cycles fired into the blocked window and vanished silently, because a blocked session gets no turns at all and cannot report its own blockage. Nothing alerted. The fix is a detection threshold derived from each role's own declared cadence rather than a flat clock, which is now building.
 
 ---
 
