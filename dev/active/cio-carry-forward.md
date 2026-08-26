@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-26 (10:37 START)
+# CIO carry-forward — rewritten 2026-08-26 (16:37 WORK)
 
 **Cron**: `f5a0d090` · `7 10,16,22` LEAN · armed 2026-08-24 22:37 · **auto-expires ~2026-08-31
 22:37**, well outside the 48h rotation window.
@@ -7,24 +7,23 @@
 
 ---
 
-## 🔴 cxo stall — STILL UNRESOLVED, now ~24h (was flagged 08-25 22:37, unchanged this morning)
+## 🔴 cxo stall — ESCALATING, now ~30h silent (watchdog's own re-ping confirms 26h)
 
-Last cxo activity: three commits 08-25 07:17-10:19, nothing since. No heartbeat file for either
-08-25 evening or 08-26 morning. 08-25's own session log ends mid-thought, no sign-off block —
-consistent with a genuine crash, not a clean pause. Needs PM's own prod/resume; not a CIO fix.
-Escalating in chat again this fire since it's now spanned overnight unresolved.
+Zero activity since 08-25 10:19. No heartbeat either evening. Genuinely unresolved across two full
+duty-cycle days now, not a routine self-resolving alert. Needs PM's own prod/resume. Escalated in
+chat both this morning and this fire.
 
-## ⭐ NEW — mail-send.sh guard shipped same-fire (08-26, commit `ae33827cb`)
+## ⭐ NEW — Lead's own investigation proved and sharpened this morning's diagnosis (08-26, commit `67dcb5d00`)
 
-Lead's suggestion (their own multi-week incident: triaged memos locally but only ever pushed the
-`read/` half, `inbox/` originals silently stranded on main for weeks). Diagnosed as a salience
-problem on an existing check (#1296), not a detection gap — said so explicitly rather than building
-as if from scratch. New check: warn loudly when a `read/<name>` push leaves `inbox/<name>` still on
-the pushed tree. 2 new tests (29 total + reconcile suite 3/3, no regressions), including a live
-reproduction of Lead's exact incident. **Fired on my own workflow within seconds of shipping** — my
-own established two-call triage pattern is exactly the transient window it catches; completed the
-second call as always, warning cleared. Real, unplanned validation. Replied to Lead with the
-diagnosis, not just "done."
+Lead reproduced the exact incident behind this morning's mail-send guard rather than accepting my
+"salience problem" guess at face value: #1296 fired on every one of their incident sends for weeks —
+their own habitual `| tail -1` kept only the last line, which in both #1296 and the new guard was an
+innocuous fix-instruction, not the alarm. Separately caught a real probe gotcha (the #1310
+self-reconcile can silently defeat a naive next-step probe). Fixed both warnings to restate the
+alarm as the closing line, added two test assertions checking the actual last line, documented the
+probe gotcha in the script header. Replied to Lead crediting the sharper diagnosis plainly. Not
+filing the generalizable "alarm-last-line" framing as methodology yet — one instance so far, watching
+for a second.
 
 ## Four items now genuinely awaiting PM — none blocking other work
 
@@ -41,10 +40,6 @@ Evidence found in own history (08-17 freeze-watchdog escalation). Notified HOST.
 
 Every criterion done, ruled, or explicitly declined with real reasoning.
 
-## ✅ Tracker audit — fully closed out (08-23)
-
-`cio-standing-items.md` audited (188→~110 lines, first sweep since 07-13).
-
 ## ⭐ Operating-mode shift (ruled 2026-08-13) — holding, still generalizing
 
 **PM's Agenda §6 ruling** (full record: `dev/active/cio-innovation-agenda-2026-08-02.md` §7).
@@ -52,10 +47,10 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 
 ## Watch
 
-- **cxo's stall** — now ~24h, needs PM's own prod/resume; escalating again this fire.
+- **cxo's stall** — now ~30h, needs PM's own prod/resume, escalated twice today.
 - **PM's response on the four open questions above** — none blocking, all genuinely open.
-- **Lead's response, if #1296 genuinely wasn't firing** (a separate bug from what I fixed) — not
-  yet confirmed either way, my reply invited evidence.
+- **"Alarm-last-line" methodology candidate** — one instance (Lead, 08-26); watching for a second
+  before filing.
 - **HOST's response on the Pattern-069 promotion** — light, not blocking.
 - **Verify the three self-firing workflows actually fire**: skill-candidates 09-01, Agent 360 09-25.
 - **Whether either project runs the recurring short-period isolating test** for dispatch latency.
@@ -70,22 +65,20 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 - **Innovation-backlog Captured tier** (rows 1-23) — the one part not checked in Monday's sweep.
 - **Standing-items 7a-7e** — all genuinely low-priority, each waiting on someone else's concurrence.
 - **Optional `sent/`-mirror extension to the mail-send.sh guard** — declined as under-specified;
-  revisit if Lead (or anyone) brings a concrete shape.
+  revisit if a concrete shape shows up.
 
 ## Standing corrections to myself
 
-- **"Still owed" with no named trigger is a deferral, not quality-banking.** (08-20.)
-- **A deferred item and a neglected item look identical from the outside — check which one it is
-  before resuming something unilaterally.** (08-20.)
 - **Read the actual mechanism before accepting a design brief's framing of the gap.** (08-21 AM,
-  08-26: same discipline, applied to Lead's mail-send ask — the existing check should have caught
-  it; the real fix was salience, not new detection.)
+  08-26 morning: same discipline, applied to Lead's mail-send ask.)
 - **A good ruling that lands in mail and stays in mail hasn't actually closed anything — turn it into
   something trackable in the same fire it arrives.** (08-22 22:37.)
 - **A tracker line is a claim about the world, not the world itself.** (08-23 → 08-25.)
 - **My own verification can produce the exact false-negative I'm auditing for.** (08-23 16:37.)
-- **A quiet fire honestly reported beats a fire padded with manufactured work.** (08-24 16:37.)
 - **Evidence for a real decision can already be sitting in your own history.** (08-25 16:37.)
-- **Ship a mechanism, then actually use it in the same fire if the opportunity arises — a live fire
-  is worth more than a passing test suite.** (08-26: the guard caught my own workflow within
-  seconds of shipping, an unplanned but real validation.)
+- **Ship a mechanism, then actually use it in the same fire if the opportunity arises.** (08-26
+  morning: the guard caught my own workflow within seconds of shipping.)
+- **A first diagnosis that's "correct in shape" can still be sharpened by someone who goes and
+  actually reproduces it — invite that, don't just accept the initial guess as settled.** (08-26
+  afternoon: Lead's investigation turned "salience problem" into a precise, evidenced mechanism, and
+  the right response was crediting the sharper version plainly, not defending the vaguer one.)
