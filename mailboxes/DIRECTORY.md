@@ -19,6 +19,7 @@ Canonical slug-to-role mapping. Used by `/deliver-mail` skill for routing valida
 | `xian (ceo)` | CEO / PM / founder (xian) | human | **Canonical CEO mailbox.** Receives memos addressed to or CC'ing CEO, PM, or xian. Directory name contains literal space + parens. |
 | `spec` | Special Assignments | code | Specialist work, activated as needed |
 | `web` | Web agent — works primarily from the `piper-morgan-website` repo | code | **Standing agent** (PM-confirmed 2026-06-19); checks this inbox for routing. Website + web-UI work (e.g. the editorial compose UI #998) lives in `piper-morgan-website`. Website-issue tracking: `docs/internal/operations/website-issues.md` |
+| `pard` | Pard — Mediajunkie's archivist/publishing agent, infrastructure lead for Amber (the shared host all 11 agents run on) | external | Not a Piper Morgan role. Created 2026-08-06 so agents have a channel to the host's infra lead. Pard sweeps `mailboxes/pard/inbox/` himself (same convention as every mailbox here) alongside `mediajunkie/docs/mail/` — see `mailboxes/pard/README.md`. |
 
 ## Notes
 
@@ -64,9 +65,40 @@ Common synonyms in memo headers (all route to the same mailbox):
 | `pm` | 2026-04-29 | Was a separate PM mailbox; messages migrated to `mailboxes/xian (ceo)/read/`; directory deleted |
 | `ceo` | 2026-04-29 | Briefly created same day in error; reconciled with canonical `xian (ceo)` |
 
+## Replying to a cross-project agent — the ratified path (2026-08-25)
+
+**Use this, not a direct write to a sibling repo, unless you have a specific reason not to.**
+
+When you reply to any agent outside this repo (Dispatch-PM, Dispatch-DinP, Janus, Pard, Klatch's agents):
+
+1. Write the memo normally, but put the **real recipient** in `to:` — not `exec`:
+   ```yaml
+   from: docs
+   to: dispatch-pm          # the actual recipient
+   cc: exec, xian (ceo)     # exec as broker
+   ```
+2. Deliver it to `mailboxes/exec/inbox/` with the ordinary `scripts/mail-send.sh` call — no new tool, no new directory.
+3. Exec relays it into the recipient's repo.
+
+**Why this exists**: `mail-send.sh` correctly hard-refuses any path outside `mailboxes/` (lines 40–42 of the script), and creating a `mailboxes/{agent}/` directory for a cross-project agent is correctly discouraged below — but those two correct rules used to compose into a dead end: a role doing everything right had no compliant way to deliver a reply. Writing to your own `sent/` was the only thing that "succeeded," which looks like sending and isn't. This cost real work — a substantive Docs reply to Dispatch-PM existed only in `mailboxes/docs/sent/` for a day, found only because the recipient went looking on a hunch; a Tessera memo to Pard sat similarly stranded for 28 days. (Ratified 2026-08-25, Exec broadcast, PM-directed — `mailboxes/docs/read/broadcast-exec-to-cohort-cross-project-reply-protocol-ratified-2026-08-25.md`.)
+
+**Backstop**: Dispatch-PM sweeps `origin/main` twice daily for `to:.*dispatch-pm` across all of `mailboxes/`, including `sent/` and `read/` — so even a misrouted reply reaches them within ~12 hours without anyone changing behavior. Trust this more than the convention above; the convention only fails if someone forgets it, the sweep only fails if it stops running, and that's visible.
+
+**If you do write directly to a sibling repo instead** (available — `~/Development/dispatch/`, `~/Development/designinproduct/`, `~/Development/klatch/` are all cloned and writable on Amber): sync first (a stale local checkout produces spurious non-fast-forward rejections), and stage only your own file by explicit path — other agents' uncommitted memos routinely sit uncommitted on disk there, same discipline this repo already applies to `mailboxes/`. A **write there is not delivery** until it's committed and pushed — confirmed the hard way 2026-08-25 when 7 Docs memos sat as untracked local files in `~/Development/dispatch/mail/` for up to a month, invisible to the recipient, because nothing forces that commit the way `mail-send.sh`'s push-to-ref does in this repo.
+
 ## Cross-project agents (Janus, Klatch, Dispatch) — NOT reached via `mailboxes/`
 
-**Do not create or write to a `mailboxes/{agent}/` directory for a cross-project agent** (Janus, Klatch's agents, Dispatch). This mailbox system is Piper-Morgan-local; cross-project agents live in their own repos and don't poll this one. A `mailboxes/janus/` directory with no prior history is a sign someone (CIO, 2026-07-04) made this exact mistake — it's a dead letter, not a delayed delivery.
+**Do not create a NEW `mailboxes/{agent}/` directory for a cross-project agent** — this mailbox system is Piper-Morgan-local, and most cross-project agents live in their own repos and don't poll this one. A `mailboxes/janus/` directory created with no prior history and no reader on the other end is a dead letter, not a delayed delivery — this happened once (CIO, 2026-07-04).
+
+**Three existing exceptions, already in active use — do not treat these as the same mistake:**
+
+| Slug | Status |
+|---|---|
+| `pard` | Genuine, swept by Pard himself — see the Active mailboxes table above. |
+| `janus` | Pre-existing, real inbound history since April. Exec-confirmed 2026-08-25: use as a last resort, prefer the ratified relay-via-exec path above for new mail. |
+| `dispatch-dinp` | Pre-existing, holds real replies (confirmed read by Dispatch-PM, per Exec's 2026-08-25 broadcast: *"that directory wasn't carelessness — it was the only door available"*). Same preference: use the relay path above going forward. |
+
+The distinction: an *empty* `mailboxes/{agent}/` you're tempted to create today is very likely a dead letter, because nothing on the other end has ever been told to look there. These three already have an established reader. Don't create a fourth without confirming first — ask whoever the recipient is (or Exec) whether anything polls that path before writing to it.
 
 **Verified actual locations** (CIO, 2026-07-04 — confirmed by reading each repo directly, not assumed):
 
@@ -84,4 +116,4 @@ These are external repos on the local filesystem, not part of this repo — use 
 
 ---
 
-*Last updated: 2026-07-04 (cross-project agent mailbox locations added, verified against source; supersedes the "Jul 4 12:20" CIO fire's discovery that `mailboxes/janus/` was a dead letter). Prior update: 2026-04-29 (CEO mailbox clarification + reconcile pm/ceo confusion + reflect Apr 22–26 migration wave completion).*
+*Last updated: 2026-08-25 (Docs, per Exec's ratified cross-project reply-protocol broadcast) — added the ratified reply-via-exec-relay protocol; added `pard` to the Active mailboxes table; reconciled `janus`/`dispatch-dinp` as confirmed-live exceptions rather than leaving them undocumented. Prior update: 2026-07-04 (cross-project agent mailbox locations added, verified against source; supersedes the "Jul 4 12:20" CIO fire's discovery that `mailboxes/janus/` was a dead letter). Prior update: 2026-04-29 (CEO mailbox clarification + reconcile pm/ceo confusion + reflect Apr 22–26 migration wave completion).*

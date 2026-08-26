@@ -601,6 +601,73 @@ async def run_todo_query_workflow(
     return await intent_service._handle_execution_intent(intent, None, session_id, user_id)
 
 
+async def run_create_todo_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1685: create_todo via the action-dispatch rail (WRITE, consent-evaluated).
+
+    Carries the removed ``elif mapped_action == "create_todo"`` branch's exact
+    body: principal coercion (#1466) with its auth-failure result, then the
+    real ``todo_handlers.handle_create_todo``. No seam sits between them —
+    unlike the delete side, the create elif had no #1605 clear-family branch
+    (the clear family is a deletion vocabulary), so this is the whole body.
+
+    Consent lives UPSTREAM at the rail (#1509), and that is the entire point
+    of the registration: WRITE derives ``needs_consent``, so
+    ``consent_gate.evaluate_consent`` now EVALUATES a create-todo turn where
+    previously nothing did. It is evaluation, not new ceremony — the matrix's
+    PRIVATE x WRITE x execute cell is PROCEED, and every natural create
+    phrasing ("add a todo to …", "create a todo …") is verb-initial
+    imperative, which ``classify_framing`` reads as EXECUTE. The turn still
+    creates in one step. An AMBIGUOUS-framed create emission is held for a
+    consent check exactly as the already-registered create_reminder sibling
+    (#1560) is — the ratified #1510/#1509 behavior for ambiguity, not a
+    create-todo-specific gate.
+    """
+    from services.intent.intent_service import (
+        IntentProcessingResult,
+        _coerce_todo_principal,
+    )
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "create_todo_workflow_missing_context",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+
+    category = intent.category.value if intent.category else "execution"
+    todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
+    if not todo_user_id:
+        return IntentProcessingResult(
+            success=False,
+            message="I need you to be logged in to manage todos. Please log in and try again.",
+            intent_data={"category": category, "action": intent.action},
+            error="User not authenticated",
+            error_type="AuthenticationRequired",
+        )
+
+    message = await intent_service.todo_handlers.handle_create_todo(
+        intent, session_id, user_id=todo_user_id
+    )
+    # Issue #748: Don't return workflow_id for synchronous operations
+    return IntentProcessingResult(
+        success=True,
+        message=message,
+        intent_data={
+            "category": category,
+            "action": intent.action,
+            "confidence": intent.confidence,
+        },
+    )
+
+
 async def run_delete_todo_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -1294,6 +1361,41 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # #1685: create_todo onto the rail — #1666's exact gap on the CREATE side,
+    # found by Arch (2026-08-25) while checking a claim rather than trusting
+    # it. create_todo was absent from this dict entirely, so
+    # `intent.action in _action_workflows` was FALSE at the #1124 rail check:
+    # it fell to the legacy `elif mapped_action == "create_todo"` and reached
+    # todo_handlers.handle_create_todo, which makes ZERO consent_gate calls.
+    # That is not "a WRITE the matrix correctly waves through" — it is
+    # UNREGISTERED: not covered because nothing evaluated it. The elif is
+    # REMOVED in the same commit (migration completion, #1411/#1666
+    # precedent); run_create_todo_workflow carries its exact body.
+    # effect: WRITE — handle_create_todo persists a row via
+    # todo_service.create_todo (todo_handlers.py ~L368). Additive and
+    # recoverable (the user can delete the todo they just made), so WRITE,
+    # never DESTRUCTIVE — the same derivation the create_reminder sibling
+    # (#1560) carries for the same call into the same service.
+    # outwardness: PRIVATE (#1509 axis) — a todo row on the user's own list;
+    # no communication act, nobody else witnesses it (the ratified worked
+    # example of a private write).
+    # Consequence, stated so it is never inferred: needs_consent derives True
+    # (WRITE >= WRITE), so the gate now RUNS on create turns. It does not add
+    # ceremony to them — PRIVATE x WRITE x execute framing is PROCEED, and
+    # "add/create a todo …" is verb-initial imperative, which
+    # classify_framing reads as EXECUTE. Evaluation, not ask.
+    # #1677 note: this registration is also the prerequisite for the
+    # individually-flipped-WRITE option there — flip-1 selects which ROUTER
+    # feeds this rail, and an unregistered op never reaches the rail at all.
+    create_todo_entry = WorkflowEntry(
+        entry_point=run_create_todo_workflow,
+        effect=EffectClass.WRITE,
+        outwardness=Outwardness.PRIVATE,
+        description="Create-todo via action dispatch (#1685)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
     # #1666: delete_todo onto the rail — the consent-gate coverage gap Arch
     # found during the #1663 investigation. Unregistered, delete_todo never
     # reached the #1124 rail check, fell to the legacy elif chain, and
@@ -1594,6 +1696,14 @@ def register_default_workflows() -> None:
         "create_reminder": create_reminder_entry,
         "set_reminder": create_reminder_entry,
         "add_reminder": create_reminder_entry,
+        # #1685: create_todo + its ActionMapper raw-emission aliases
+        # (add_todo / new_todo → create_todo, #284). Enumerated from
+        # ACTION_MAPPING, not assumed to mirror the delete family's shape.
+        # Canonical key first: wired_chat_actions() names each unique entry
+        # by its first-registered key.
+        "create_todo": create_todo_entry,
+        "add_todo": create_todo_entry,
+        "new_todo": create_todo_entry,
         # #1666: delete_todo + its ActionMapper raw-emission aliases
         # (remove_todo / cancel_todo → delete_todo, #284). Canonical key
         # first: wired_chat_actions() names each unique entry by its
