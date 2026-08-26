@@ -24,7 +24,7 @@ _Rewritten 2026-08-19 ~21:50 PT (Phase 2.2 scaffold complete, dark)._
   worktrees for parallel work
 
 ## Standing
-- Cron 80ca164e `17 6,9,12,15,18,21 * * *` (rotated 8/22), expires ~8/29, rotate ~8/27
+- Cron 3aca3cab `17 6,9,12,15,18,21 * * *` (rotated 8/26), expires ~9/2, rotate ~8/31
 - Flip wave 1 LIVE and unexercised (0 events — honest); watch on PM's first listing turns
 - Supersession gate ACTIVE · push-after-reading discipline ACTIVE
 - Beta-conditions audit at final gate (mine + subagent cross-check)
