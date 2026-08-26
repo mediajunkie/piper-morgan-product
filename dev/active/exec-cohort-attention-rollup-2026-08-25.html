@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-08-25</title>
+<style>
+  :root {
+    --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+    --red:#c0392b; --red-bg:#fdecea; --amber:#b7791f; --amber-bg:#fdf3e2;
+    --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#17181a; --card:#212226; --line:#34363a; --ink:#eceef0; --mute:#9a9ea3;
+             --red:#e0685a; --red-bg:#3a2220; --amber:#d9a441; --amber-bg:#332a16;
+             --grey:#9a9ea3; --green:#5cbd74; --link:#6ea8fe; }
+  }
+  :root[data-theme="dark"] { --bg:#17181a; --card:#212226; --line:#34363a; --ink:#eceef0; --mute:#9a9ea3;
+             --red:#e0685a; --red-bg:#3a2220; --amber:#d9a441; --amber-bg:#332a16;
+             --grey:#9a9ea3; --green:#5cbd74; --link:#6ea8fe; }
+  :root[data-theme="light"] { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+             --red:#c0392b; --red-bg:#fdecea; --amber:#b7791f; --amber-bg:#fdf3e2;
+             --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  * { box-sizing:border-box; }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem 4rem; }
+  .wrap { max-width:880px; margin:0 auto; }
+  h1 { font-size:1.55rem; margin:0 0 .25rem; letter-spacing:-0.01em; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.25rem; }
+  h2 { font-size:1.05rem; margin:2rem 0 .6rem; padding-bottom:.35rem; border-bottom:2px solid var(--line);
+       display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
+  .count { font-size:.78rem; font-weight:400; color:var(--mute); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.75rem .95rem; margin:.55rem 0; }
+  .item.urgent { border-left-color:var(--red); }
+  .item.decision { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.25rem; }
+  .agent { font-weight:700; }
+  .sev { font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .45rem;
+         border-radius:4px; background:var(--red-bg); color:var(--red); }
+  .sev.decision { background:var(--amber-bg); color:var(--amber); }
+  .summary { margin:.35rem 0 .3rem; }
+  .summary code { background:var(--amber-bg); padding:.05rem .3rem; border-radius:3px; font-size:.9em; }
+  .clean-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:.5rem; }
+  .clean-row { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:.55rem .75rem; font-size:.87rem; }
+  .clean-row b { color:var(--ink); }
+  .clean-row span { color:var(--mute); display:block; font-size:.8rem; margin-top:.15rem; }
+  .bigclear { font-size:1.02rem; color:var(--green); font-weight:600; margin:0; }
+  footer { margin-top:2.5rem; padding-top:1.25rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.82rem; line-height:1.6; }
+  footer b { color:var(--ink); }
+  ul.v { margin:.5rem 0 0; padding-left:1.1rem; }
+  ul.v li { margin-bottom:.2rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec · <b>2026-08-25, 21:15 PT</b> · live-state pass · reorientation edition, weighted to what you're blocking after two days offline</p>
+
+  <h2>⏰ Time-sensitive — next 24 hours <span class="count">(2)</span></h2>
+
+  <div class="item urgent">
+    <div class="top"><span class="agent">Ship #057</span><span class="sev">publishes tomorrow</span></div>
+    <p class="summary"><b>Needs your fact-check + voice pass today or early tomorrow.</b> Draft written Sunday, unchanged since — Wednesday Aug 26 is the slot by the 8-for-8 cadence. Preview: <a href="https://claude.ai/code/artifact/65795b88-53a3-45b9-8ba7-1e0a99d12998">artifact</a> · edit at <code>docs/public/comms/drafts/weekly-ship-057-draft-2026-08-24.md</code>. If it slips, slipping deliberately is a fine answer — silence is the one that costs.</p>
+    <p class="summary"><b>One defect found and fixed tonight</b>: Comms caught that I'd put a narrative post's art in the Ship's frontmatter instead of the standing <code>piper-ship.png</code>. Verified against #054/#055/#056 (3 for 3), fixed in both copies. My error, caught by them.</p>
+  </div>
+
+  <div class="item urgent">
+    <div class="top"><span class="agent">Comms / Dispatch-PM</span><span class="sev">today's post unfinished</span></div>
+    <p class="summary">"The Burn-Down" was Tuesday's slot and you've said the draft isn't finished. Dispatch-PM is standing down on it correctly — treating a <code>drafted</code> row as not-authorization, exactly right. Nothing moves until you say so.</p>
+  </div>
+
+  <h2>🔴 Blocking others — your decision is the gate <span class="count">(8)</span></h2>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Lead / PA</span><span class="sev">unblocks a chain</span></div>
+    <p class="summary"><b>The BYOC / conversational-layer conversation with Piper Alpha</b> — you named this yourself as today's hope. It's the biggest single unblock on the board: Lead's own note says the PA chat outcome gates <b>the MVP triage cut with PPM</b>, which in turn is the answer to the growing open count. Three roles hold prep for it (Lead's strategic brief, PA's positions, CXO's FTUX experience model from your 1-1).</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Lead</span><span class="sev">v62 test round</span></div>
+    <p class="summary">Seven-item test plan waiting, and it covers <b>the Inversion flip's first live traffic</b> — currently live but unexercised, zero events recorded. Lead is explicit that's honest rather than reassuring: nobody has watched it carry a real turn yet.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Lead</span><span class="sev">two five-minute calls</span></div>
+    <p class="summary"><b>#1635</b> — the ambient-presence false-door shape (what the MVP placeholder actually looks like). <b>#1677</b> — Lead has a triage lean ready (todo-create misroute; their read is a classifier-prompt example add) and wants your nod. <i>Note: Lead's list also names #1598, which is already CLOSED — checked live, their note is one item stale.</i></p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Comms</span><span class="sev">7 days, reconfirmed twice</span></div>
+    <p class="summary"><b>The insight-pool pairing review.</b> Nine scheduled + three new candidates drafted from recent material, waiting on your pick for upcoming weekend slots. You've reconfirmed twice (Aug 22, Aug 23) that it's on your list — flagging because it's now the longest-standing item genuinely gated on you, not because it's urgent.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">CXO</span><span class="sev">two items</span></div>
+    <p class="summary"><b>§4's column</b> in the surfaces work, and <b>#1539's close</b> — the latter needs your next live round to exercise the shipped purpose line, so it's paired naturally with the v62 test pass rather than separate.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">PA</span><span class="sev">now unblockable — see below</span></div>
+    <p class="summary"><b>The privacy-policy render check</b> — <code>/privacy</code> returns 200 but only 29 characters of server-rendered text, and PA has no browser to see whether a real policy renders client-side. It matters because directory review may fetch without JS. <b>This no longer needs your ten seconds</b> — Dispatch-PM has browser control and can settle it. I'm routing it to them rather than leaving it on your plate.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">PA</span><span class="sev">small, real</span></div>
+    <p class="summary"><b>Plugin manifest <code>license</code> field</b> — still <code>"TBD — PM decision"</code>. The repo is public but public isn't licensed, and naming one we haven't chosen would be a claim rather than metadata. Now arguably answerable: Apache 2.0 shipped Aug 15.</p>
+  </div>
+
+  <h2>🟡 Structural, needs your ratification not your labor <span class="count">(1)</span></h2>
+  <div class="item decision">
+    <div class="top"><span class="agent">Dispatch-PM / cohort</span><span class="sev">you directed this</span></div>
+    <p class="summary"><b>Cross-project reply protocol.</b> Real gap, measured not guessed: <code>mail-send.sh</code> hard-refuses any path outside <code>mailboxes/</code>, and DIRECTORY.md correctly forbids creating a mailbox for a cross-project agent — so a role following both rules <b>has no compliant way to reply at all</b>. A Docs reply stranded today because of it; a Tessera memo sat uncommitted 28 days for the same shape. I'm ratifying Dispatch-PM's proposal and reading the cohort in tonight — <b>no decision needed from you</b>, just flagging that it's handled.</p>
+  </div>
+
+  <h2>⚪ Correctly parked — no action from you <span class="count">(4)</span></h2>
+  <div class="clean-grid">
+    <div class="clean-row"><b>Arch</b><span>Inversion Phase 2.2 contract ruled; watching the build, nothing owed by you.</span></div>
+    <div class="clean-row"><b>CIO</b><span>Watchdog cadence build in progress; welfare-criteria spec fully disposed end to end.</span></div>
+    <div class="clean-row"><b>HOST</b><span>Agent 360 synthesis holding for its window (~Aug 28), correctly not jumping early.</span></div>
+    <div class="clean-row"><b>Docs / Web / PPM</b><span>All active, nothing gated on you specifically.</span></div>
+  </div>
+
+  <h2>✅ Closed since you went offline <span class="count">(Sat–Tue)</span></h2>
+  <div class="item clear">
+    <p class="summary">
+      <b>#1536 FTUX-coldstart CLOSED</b> (both legs, Lead, Aug 22) — the long-running first-contact item.<br>
+      <b>#1655 prompt sweep CLOSED</b> — the fabrication class's systematic fix, 12 seeds plus a guard.<br>
+      <b>#1488 mystery SOLVED</b> — traced to a stochastic draw, not a structural defect.<br>
+      <b>Welfare criterion F2</b> — ruled (not building it), CIO accepted, spec fully disposed.<br>
+      <b>Ship #057 drafted</b> — window Aug 14–20, all verification done, awaiting only your pass.<br>
+      <b>Inversion flip wave 1 LIVE</b> — first category routes through the new path.
+    </p>
+  </div>
+
+  <footer>
+    <b>Bottom line for reorientation:</b> one thing is genuinely urgent (Ship #057's pass, publishes tomorrow) and one thing unblocks a chain (the PA/BYOC conversation → MVP triage cut). Everything else can wait comfortably. The cohort ran clean through your two days off — six substantive closures, no stalls, and two roles caught real defects in my own work rather than routing around them.
+    <ul class="v">
+      <li>All 11 carry-forwards read fresh; four rewritten today.</li>
+      <li>Live-verified: <code>sprint-truth.py</code> (MVP 62 not done / 1074 done, flat since Friday), #1598/#1635/#1539 state via <code>gh</code>, Ship #057's calendar row and draft state.</li>
+      <li>Caught one stale claim while compiling: Lead's awaiting-list names #1598, closed since. Corrected here rather than passed through.</li>
+    </ul>
+  </footer>
+</div>
+</body>
+</html>
