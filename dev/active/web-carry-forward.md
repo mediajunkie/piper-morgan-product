@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-24
+# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-25
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `a3cb39bb` as of the 2026-08-24 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `f5dcb913` as of the 2026-08-25 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 ## ⚠️ Environment facts worth re-verifying each fire, not assuming
 
@@ -270,10 +270,33 @@ Buttondown CSP live-bug — all predecessor's, pre-7/19. Admin calendar runtime 
 autosave ask #1 — mine, 7/29 (see Active threads above for verification limits).
 
 ## Cron state
-- **ARMED** — `a3cb39bb`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
-  Re-armed via delete-then-create at the 2026-08-24 21:52 STOP (routine day-close re-arm, not a
-  cadence change — prior id `da61f0df` had been live all day). Registry row (expression-keyed, no
+- **ARMED** — `f5dcb913`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
+  Re-armed via delete-then-create at the 2026-08-25 21:52 STOP (routine day-close re-arm, not a
+  cadence change — prior id `a3cb39bb` had been live all day). Registry row (expression-keyed, no
   job-id column) needed no update.
+- **2026-08-25 — the most substantive day this whole session**: two real bugs found and fixed, plus
+  a cross-project infrastructure thread. **`website#35`**: PM hit a near-miss data-loss bug in the
+  compose editor (clicking "Restore local copy" rendered blank). Found and fixed a genuine
+  structural defect (`ComposeApp` rendered `<ComposeEdit slug={slug} />` with no `key`, so React
+  reused the instance across drafts instead of remounting — a slug switch could leak the previous
+  draft's state into the new slug's localStorage entry). Fixed (`8edfc11`, website repo). **Left the
+  issue open** — honestly could not confirm from git alone that this is *the* mechanism behind PM's
+  specific incident, since none of the app's own in-UI navigation allows a direct slug-to-slug
+  switch (only browser back/forward could trigger it) — asked PM directly rather than overclaim.
+  **`website#36`**: a high-priority SEO directive from PM (relayed by new coordinator Dispatch-PM)
+  — every blog post and Weekly Ship canonicalized to the site root instead of itself, breaking the
+  Medium-syndication authority chain. Root-caused (missing `alternates.canonical`/`openGraph.url`
+  in the per-post templates), fixed 8 files (`60366f7`) — the 3 flagged pages plus 5 more found via
+  a systematic per-page check (methodology, blog/episodes, try, try/alpha, try/beta). Verified
+  against actual built HTML: 381 total post pages, 0 remaining with the wrong canonical. Filed and
+  closed with full evidence.
+  **Cross-project protocol**: Dispatch-PM found `mail-send.sh`'s scope guard structurally blocks
+  replying to any cross-project agent outside `mailboxes/`, stranding a real Docs reply. I happened
+  to hold the one open fact (`~/Development/dispatch/` is cloned/writable on Amber — I'd used it
+  directly for the website#36 reply) and surfaced it proactively to Exec's brokering thread rather
+  than wait to be asked. Exec ratified a cohort-wide protocol by day's end, correctly citing my
+  contribution. Standing items (#1669, above-the-fold hero, Buttondown newsletter) remain
+  correctly untouched — today's real work was all genuinely unblocked and higher priority.
 - **2026-08-23/24**: two consecutive entirely quiet days — twelve fires total, zero mail, zero
   unblocked task work, zero code changes across both. Standing items (#1669, above-the-fold hero,
   Buttondown newsletter) remain unscoped, aging but correctly not chased — none have deadlines.

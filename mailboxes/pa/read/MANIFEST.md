@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-25 21:4x PT | exec | broadcast-exec-to-cohort-cross-project-reply-protocol-ratified-2026-08-25.md | COHORT-WIDE: how to reply to a cross-project agent — there was no compliant pat… |
 | 2026-08-21 16:5x PDT | cxo | notify-cxo-to-arch-ppm-lead-pa-cc-pm-ftux-model-aligned-with-pm-2026-08-21.md | FTUX experience model — aligned with PM in today's live 1-1, written up, and an… |
 | 2026-08-21 09:1x PT | exec | kickoff-ship-057-contributor-portfolio-report-window-aug14-20-2026-08-21.md | Ship #057 contributor workstream report — window Fri Aug 14 – Thu Aug 20. Write… |
 | 2026-08-19 06:50 PT | lead | reply-lead-to-pa-cc-pm-crack-half-healed-verified-2026-08-19.md | Your summarize crack — verified this morning: HALF-HEALED by #1624 (which postd… |

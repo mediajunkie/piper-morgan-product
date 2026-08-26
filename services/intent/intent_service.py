@@ -8160,31 +8160,21 @@ class IntentService:
 
         # Issue #285: Todo operations routing
         # Issue #744: Convert user_id string to UUID for multi-tenancy support
-        elif mapped_action == "create_todo":
-            todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
-            if not todo_user_id:
-                return IntentProcessingResult(
-                    success=False,
-                    message="I need you to be logged in to manage todos. Please log in and try again.",
-                    intent_data={"category": intent.category.value, "action": intent.action},
-                    workflow_id=workflow_id,
-                    error="User not authenticated",
-                    error_type="AuthenticationRequired",
-                )
-            message = await self.todo_handlers.handle_create_todo(
-                intent, session_id, user_id=todo_user_id
-            )
-            # Issue #748: Don't return workflow_id for synchronous operations
-            # The frontend polls workflow_id, but todo ops are already complete
-            return IntentProcessingResult(
-                success=True,
-                message=message,
-                intent_data={
-                    "category": intent.category.value,
-                    "action": intent.action,
-                    "confidence": intent.confidence,
-                },
-            )
+        #
+        # #1685: the legacy create_todo elif branch is REMOVED (the token is
+        # deliberately not written here in the `mapped_action ==` form — the
+        # #1411/#1666 elif-token derivations read this file with a regex that
+        # cannot tell comment from code, so a quoted token in prose would read
+        # as a live dispatch site).
+        # Dispatch is rail-only (workflow_entries.py registers create_todo +
+        # add_todo/new_todo pre-floor, effect=WRITE). It was #1666's gap on
+        # the create side: unregistered, so `intent.action in _action_workflows`
+        # was false and the turn reached handle_create_todo without
+        # consent_gate ever being consulted. Keeping the elif as a "backstop"
+        # would reintroduce the #1411 hazard — it is reachable only when rail
+        # dispatch returns None, i.e. the handler RAISED, making the backstop
+        # a silent retry of a failed write. That edge falls to the #1333
+        # honest-decline else-branch below.
 
         # Issue #903: Reminder creation
         elif mapped_action == "create_reminder":
