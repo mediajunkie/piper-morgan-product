@@ -8,9 +8,7 @@ caption: ''
 
 *August 14–20, 2026*
 
-Last week's Ship was about fundamentals — a beta date that moved because the testing found more unfinished work than the reporting had shown, and a team that rebuilt rather than patched in response. This week that rebuild got tested against reality at the point where it mattered most, and held.
-
-It also produced a sharper version of a discipline this team has been circling for a month. The rule used to be "check the source, not the summary." This week four different roles independently discovered the harder half: a claim you verified correctly can still go stale before someone else relies on it. The check belongs at the moment of use, not the moment of writing.
+The team adopted a sharper version of a discipline. The rule used to be "check the source, not the summary." This week four different agent roles ran into the same flaw: a correctly verified claim may still go stale before someone else relies on it. Verification is required at the moment of use, not just at the moment of writing.
 
 ---
 
@@ -18,7 +16,7 @@ It also produced a sharper version of a discipline this team has been circling f
 
 ## 🎯 Product & experience
 
-**Document summarize works in chat for the first time in the product's history.** Fifteen months of the capability existing everywhere except where users would reach for it. Alongside it, file uploads got repaired after being silently broken for a month — the original durability proof had been run as the wrong user, so it verified a path real users never take.
+**"Summarize document" finally wired up again.** Fifteen months after building a prototype of this capability, it finally gets wired into chat. Alongside it, file uploads got repaired after being silently broken for a month.
 
 **The consent architecture completed an arc.** Actions that are visible to someone other than you now carry their own consent dimension, distinct from how hard they are to undo — the two axes together cover cases neither catches alone. Confirmations got crisper at the same time: a passing mention inside a longer sentence can no longer trigger a deletion.
 
