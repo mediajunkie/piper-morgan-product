@@ -38,7 +38,7 @@ The team adopted a sharper version of a discipline. The rule used to be "check t
 
 ## 🌍 External relations & community
 
-**Five pieces published this week, zero slots missed:**
+**Five pieces published this week:**
 
 - Aug 15: "[Confabulating a Peer's Unfinished Work](https://pipermorgan.ai/blog/confabulating-a-peers-unfinished-work/)" — insight
 - Aug 16: "[The Fabricating Standup](https://pipermorgan.ai/blog/the-fabricating-standup/)" — insight
@@ -50,7 +50,6 @@ The team adopted a sharper version of a discipline. The rule used to be "check t
 *"According to my model, that fourth staircase does not exist!"*
 
 
-
 The blog's era taxonomy also got extended — it had stopped at March, leaving four and a half months of posts unclassified. Two new eras now cover them, and a real date-rendering bug surfaced during the work: era ranges displayed a day early because a date parsed as UTC midnight formats as the previous day in a Pacific-time build.
 
 ## 📊 Governance & operations
@@ -59,12 +58,10 @@ The blog's era taxonomy also got extended — it had stopped at March, leaving f
 
 - **Issues closed:** 19
 - **Deployed:** v52 → v60, nine releases
-- **Publications:** 5, zero slots missed
-- **Workstream reports:** 10 of 10, filed same day as the request for the first time this cycle
 
 **Two documents went from scaffold to fully ratified inside the window** — a data-retention policy and a values document naming what a fork would have to keep to still be this project. Both had independent verification at every handoff rather than accepted summaries.
 
-**One role's model access hit a usage wall and went dark for ten hours.** Three scheduled cycles fired into the blocked window and vanished silently, because a blocked session gets no turns at all and cannot report its own blockage. Nothing alerted. The fix is a detection threshold derived from each role's own declared cadence rather than a flat clock, which is now building.
+**One role's model access (Fable) hit a usage wall and went dark for ten hours.** Three scheduled cycles fired into the blocked window and vanished silently, because a blocked session gets no turns at all and cannot report its own blockage. Nothing alerted. The fix is a detection threshold derived from each role's own declared cadence rather than a flat clock, which is now building.
 
 ---
 
