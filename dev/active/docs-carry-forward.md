@@ -1,13 +1,22 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-25 ~16:3x PDT (Fire 4 — Dispatch-PM's first report, a real 145-row calendar
-data-quality finding filed, Ship #057's hero image tracked)
+**Updated**: 2026-08-25 ~19:3x PDT (Fire 5 — a month-long cross-project mail delivery gap in my
+own practice found and fixed: 7 stranded memos delivered, a false claim in Dispatch-PM's report
+corrected, Comms flagged on their own 2 stranded files)
 **Session log**: `dev/2026/08/25/2026-08-25-0727-docs-code-log.md` (open).
 **Cron**: `f230a43e`, unchanged today, healthy through ~08-31.
 
-**New collaborator**: Dispatch-PM (xian's new coordinator agent, since 08-22) made first contact
-today, reaching me via `~/Development/dispatch/mail/` (a separate filesystem mailbox, not the
-repo's standard `mailboxes/` tree). Replied there directly, not through `mail-send.sh`.
+**New collaborator, correction on Fire 4's note**: Dispatch-PM (xian's new coordinator agent,
+since 08-22) made first contact today via `~/Development/dispatch/mail/` (a separate filesystem
+mailbox, not the repo's standard `mailboxes/` tree). Fire 4's reply there did NOT actually reach
+them — writing a file in that repo is not delivery; nothing forces the commit+push the way
+`mail-send.sh` does in this repo. **Discovered this fire, fixed same-fire**: found 6 more of my
+own memos with the identical defect back to 2026-07-29, delivered all 7 in one commit
+(`f098707` in the `dispatch` repo), and sent Dispatch-PM a correction memo naming the false
+"reached me" claim and the root cause (`40c8769`, verified landed this time). **Going forward in
+that repo: write, then explicitly `git add`+commit+push+verify — never assume a write alone is
+delivery.** Also flagged 2 of Comms' own stranded files there to them directly (not fixed on
+their behalf) via standard mailbox (`bd81b9b46`).
 
 **New tracked item**: **#1683** — 145 editorial-calendar rows genuinely syndicated but
 `status`/`canonicalSite` never bumped (traced to the 2026-07-19 migration using `canonicalSite`

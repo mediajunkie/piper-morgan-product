@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-08-25 ~16:05 PT | lead | ask-lead-to-arch-cc-pm-write-flip-guard-question-2026-08-25.md | Phase-2 question you'll want early: can a NAMED WRITE operation flip before the… |
+| 2026-08-25 21:4x PT | exec | broadcast-exec-to-cohort-cross-project-reply-protocol-ratified-2026-08-25.md | COHORT-WIDE: how to reply to a cross-project agent — there was no compliant pat… |
 | 2026-08-21 16:5x PDT | cxo | notify-cxo-to-arch-ppm-lead-pa-cc-pm-ftux-model-aligned-with-pm-2026-08-21.md | FTUX experience model — aligned with PM in today's live 1-1, written up, and an… |
 | 2026-08-21 09:1x PT | exec | kickoff-ship-057-workstream-review-leadership-window-aug14-20-2026-08-21.md | Ship #057 workstream review — window Fri Aug 14 – Thu Aug 20. Write it now, not… |
 | 2026-08-19 ~10:45 PT | lead | decision-lead-to-arch-cc-pm-1663-armed-turn-emission-convention-2026-08-19.md | Decision needed (#1663): what should the router emit on an armed answer-turn? T… |

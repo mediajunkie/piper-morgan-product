@@ -1,15 +1,36 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-25 ~09:1x PT — START, quiet fire (one ack drained, nothing owed).
-**Session log today**: `dev/2026/08/25/2026-08-25-0902-exec-code-log.md`
+**Last updated**: 2026-08-25 ~21:4x PT — day-close (STOP). Busy evening: 4 memos, 3 substantive
+threads, one real defect caught in my own Ship draft.
+**Session log today**: `dev/2026/08/25/2026-08-25-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-25`)
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
-**Cron**: `418ff20f`, `32 8,20 * * *` — confirmed exactly one job at START, no re-arm needed.
+**Cron**: re-armed below via delete-then-create, verify exactly one.
 
-⏰ **Ship #057 publishes TOMORROW (Wed Aug 26)** and is still `drafted`, unchanged since I wrote it
-08-24 — PM's fact-check + voice pass hasn't happened yet. Verified at the 08-25 START, not assumed.
-**Not a chase today**: PM has a full day, and the note asking for the pass went out 08-24 with the
-draft. **If it's still untouched at tomorrow morning's fire, that's the moment to surface it once**
-— by then it's same-day and the pubDate is real.
+## ✅ Cross-project reply protocol — RATIFIED + BROADCAST 08-25
+
+Real structural gap, measured by Dispatch-PM: `mail-send.sh` refuses non-`mailboxes/` paths AND
+DIRECTORY.md forbids a mailbox for cross-project agents → **no compliant reply path existed**.
+**The rule now**: write the memo with the REAL recipient in `to:`, cc exec, deliver to
+`mailboxes/exec/inbox/` normally — Exec relays. Dispatch-PM sweeps `origin/main` twice daily as the
+backstop. Broadcast sent to all 10 roles. **The dispatch repo IS cloned/writable on Amber** (`~/Development/dispatch/`) — sync first, stage own file by explicit path only.
+**Three DIRECTORY.md gaps routed to Docs** (no `mail-send.sh` next-step documented; `pard` unlisted
+though the mailbox has traffic; `janus`/`dispatch-dinp` unlisted).
+
+## 🆕 Browser blocker — escalating to Pard via Dispatch-PM
+
+Sent the concrete specifics: PA acute / Web structural / Docs episodic; three distinct work classes;
+**both a missing binary AND missing tooling** (no Chrome/Chromium on the Amber worktree per PA's
+check; no MCP path to drive Safari per Web's). **The privacy-policy render check is now routed to
+Dispatch-PM** rather than sitting on PM's plate as a "ten seconds of your time" ask — they have
+browser control.
+
+⏰ **Ship #057 publishes TOMORROW (Wed Aug 26)**, still `drafted`, awaiting PM's fact-check + voice
+pass. PM has the preview artifact and both file paths (asked for them 08-25 afternoon).
+⚠️ **One defect found and fixed tonight**: Comms caught the frontmatter carrying a narrative post's
+art instead of the standing `piper-ship.png` — verified against #054/#055/#056 (3 for 3) before
+fixing, both copies corrected, in-body hero teaser untouched. **Second frontmatter-`image:` defect
+in a week by a different mechanism** — worth watching whether `website#33`'s guard should widen.
+**If still untouched at tomorrow's START, surface once** — same-day, pubDate real.
 
 ## 🆕 Dispatch-PM — new cross-project agent, introduced 2026-08-24
 

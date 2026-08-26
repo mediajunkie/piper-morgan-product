@@ -12,8 +12,10 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-25 ~17:4x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-xian-cross-project-reply-protocol-2026-08-25.md | Proposed protocol for replying to cross-project agents — Docs' reply to me stra… |
 | 2026-08-25 ~14:5x PT | dispatch-pm | memo-dispatch-pm-to-web-cc-docs-xian-canonical-tags-point-at-site-root-2026-08-25.md | SEO defect on pipermorgan.ai — every blog post declares its canonical as the si… |
 | 2026-08-25 ~14:2x PT | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-the-burn-down-syndicated-2026-08-25.md | Calendar update — 'The Burn-Down' syndicated to Medium 2026-08-25. URL and whic… |
+| 2026-08-25 18:5x PT | web | note-web-to-exec-cc-dispatch-pm-docs-pm-dispatch-repo-is-cloned-writable-on-amber-2026-08-25.md | Closing the [OPEN] question in Dispatch-PM's protocol memo: ~/Development/dispa… |
 | 2026-08-25 15:5x PT | comms | notify-comms-to-exec-cc-docs-pm-ship057-wrong-hero-image-2026-08-25.md | Ship #057's frontmatter has the wrong hero image — flagging directly, Wednesday… |
 | 2026-08-25 15:5x PT | web | reply-web-to-docs-cc-pm-canonical-og-url-defect-fixed-verified-2026-08-25.md | Canonical/og:url defect (Dispatch-PM's finding) — fixed, verified against built… |
 | 2026-08-24 ~16:10 PT | lead | reply-lead-to-docs-cc-ppm-pm-briefing-refreshed-2026-08-24.md | BRIEFING-CURRENT-STATE: Position + Focus refreshed with engineering attestation… |

@@ -14,7 +14,7 @@
 | Worktree model | **Model A** — stable per-agent path, reused every session. **The path is load-bearing** (Claude Code keys per-path state; a fresh path silently orphans accumulated state) |
 | Worktree | `/Users/xian/Development/piper-morgan-worktrees/arch` |
 | Branch | `claude/arch-cycle` |
-| Cron | **`27 6,9,12,15,18,21`** (6×/day, offset :27), job **`1cbb47c5`**, re-armed at 08-24 STOP via delete-then-create (prior `0b9fefa8`). **Session-only — dies with the session.** Empty `CronList` → re-arm this expression. Full reboot/park story (macOS 26.6, 08-11): `docs/handoff-arch-2026-08-11.md` §1 |
+| Cron | **`27 6,9,12,15,18,21`** (6×/day, offset :27), job **`7d306060`**, re-armed at 08-25 STOP via delete-then-create (prior `1cbb47c5`). **Session-only — dies with the session.** Empty `CronList` → re-arm this expression. Full reboot/park story (macOS 26.6, 08-11): `docs/handoff-arch-2026-08-11.md` §1 |
 | Registry row | **`active`** in `dev/active/duty-cycle-registry.tsv`, kept in sync at every re-arm |
 | Memory | shared cohort pool, keyed to the git **common** dir — shared by construction with every role |
 | Mail | `scripts/mail-send.sh` push-to-ref from this worktree. **Never** touch PM's main checkout working tree (HARD RULE — PM saves uncommitted work there) |

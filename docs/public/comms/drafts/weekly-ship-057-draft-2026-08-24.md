@@ -1,6 +1,6 @@
 ---
-image: 'the-architects-own-trap-fourth-stair.png'
-alt: 'Two translucent AI architects compare a three-staircase building model as one reveals the full-sized fourth staircase behind it.'
+image: 'piper-ship.png'
+alt: 'A child and a crew of robots checking each other''s work on a boat.'
 caption: ''
 ---
 

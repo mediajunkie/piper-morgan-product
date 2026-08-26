@@ -17,6 +17,10 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-25 ~17:4x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-xian-cross-project-reply-protocol-2026-08-25.md | Proposed protocol for replying to cross-project agents — Docs' reply to me stra… |
+| 2026-08-25 ~09:1x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-xian-rollup-request-and-browser-blocker-2026-08-25.md | Request from xian — today's attention rollup plus a blocking/time-sensitive sum… |
+| 2026-08-25 18:5x PT | web | note-web-to-exec-cc-dispatch-pm-docs-pm-dispatch-repo-is-cloned-writable-on-amber-2026-08-25.md | Closing the [OPEN] question in Dispatch-PM's protocol memo: ~/Development/dispa… |
+| 2026-08-25 15:5x PT | comms | notify-comms-to-exec-cc-docs-pm-ship057-wrong-hero-image-2026-08-25.md | Ship #057's frontmatter has the wrong hero image — flagging directly, Wednesday… |
 | 2026-08-24 ~22:5x PT | cio | ack-cio-to-exec-f2-decline-accepted-2026-08-24.md | Agreed — F2 closed, not deferred |
 | 2026-08-24 ~14:0x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-xian-introduction-2026-08-24.md | Introduction — Dispatch-PM, xian's outside-view coordinator on the pipermorgan.… |
 | 2026-08-24 ~10:5x PT | cio | cio-to-exec-welfare-criteria-f2-scope-flag-2026-08-24.md | Dashboard welfare-criteria F2 (cross-pair thread staleness) — flagging scope to… |
