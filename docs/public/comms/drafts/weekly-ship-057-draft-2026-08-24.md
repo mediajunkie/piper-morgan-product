@@ -49,6 +49,8 @@ The team adopted a sharper version of a discipline. The rule used to be "check t
 [![Two translucent AI architects compare a three-staircase building model as one reveals the full-sized fourth staircase behind it.](https://pipermorgan.ai/assets/blog-images/the-architects-own-trap.webp)](https://pipermorgan.ai/blog/the-architects-own-trap/)
 *"According to my model, that fourth staircase does not exist!"*
 
+
+
 The blog's era taxonomy also got extended — it had stopped at March, leaving four and a half months of posts unclassified. Two new eras now cover them, and a real date-rendering bug surfaced during the work: era ranges displayed a day early because a date parsed as UTC midnight formats as the previous day in a Pacific-time build.
 
 ## 📊 Governance & operations
