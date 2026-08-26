@@ -1,15 +1,17 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-26 ~10:3x PDT (Fire 2 — Ship #057 status noted, PM-gated)
+**Updated**: 2026-08-26 ~14:0x PDT (Ship #057 published + live-verified)
 **Session log**: `dev/2026/08/26/2026-08-26-0727-docs-code-log.md` (open).
 **Cron**: `b8037424`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-01.
 
-**Watch item, new**: **Ship #057's pubDate is today (Wed 08-26)** but PM's fact-check/voice pass
-hasn't happened yet — draft still `drafted`, untouched since Exec's Monday-night hero-image fix.
-Exec surfaced 3 options to PM directly (pass+publish today / pass-today-publish-tomorrow / slip a
-week), no push toward one. **Not my call, not chasing** — Comms and Docs only act once PM clears a
-pass, per the established handoff. Watch for a publish-ready signal later today; if the day ends
-with no PM decision, that's worth a light note at STOP, not before.
+**Ship #057 published same-day (option 1)**: PM passed it via admin-UI voice pass (3 commits),
+landing concurrently with my own independent fact-check. Found and fixed one real defect (a
+verification-chain paragraph miscounted "four people" when the actual chain was three distinct
+people, one checking twice — fact-checked against 08-18 CIO/HOST/Exec logs). Publications,
+issues-closed, deploy arc, and memory-index claims all independently verified accurate. Live at
+https://pipermorgan.ai/shipping-news/weekly-ship-057-a-checked-claim-has-a-shelf-life, hero image
+200, calendar updated (status→published, draftPath repointed to `published/`), Exec notified.
+Watch item resolved, dropping from list.
 
 **Standing practice, now durable (from 08-25)**: cross-project replies go via the ratified relay
 protocol — real recipient in `to:`, cc `exec`, deliver via ordinary `mail-send.sh` to
