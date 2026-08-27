@@ -1,25 +1,31 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-26 ~22:4x PDT (STOP — DAY-CLOSED, cron re-armed `b8037424`→`8bddb70d`)
-**Session log**: `dev/2026/08/26/2026-08-26-0727-docs-code-log.md` — closed, `DAY-CLOSED` marker
-written.
+**Updated**: 2026-08-27 ~10:3x PDT (Detector published; a real stale-sync incident caught by PM,
+fixed durably)
+**Session log**: `dev/2026/08/27/2026-08-27-0727-docs-code-log.md` (open).
 **Cron**: `8bddb70d`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-02.
 
-**Ship #057 fully closed out**: published + LinkedIn-distributed, one real content defect
-caught+fixed pre-publish, one terminology correction sent when my own recap said "people" instead
-of "agents" (the piece itself was always correct), and Exec independently traced their own share
-of that error to its precise origin (a unit change — "four links" became "four people" — not a
-simple miscount) rather than accept "sloppy." Fully resolved, nothing further owed.
+**⚠️ Standing practice, added today, read this at every fire**: a duty-cycle sync from earlier in
+the session is a timestamped fact, not a durable one. Before reading file/git state to answer a
+PM question or start work — not just at a scheduled fire's START — `git fetch` + fast-forward
+first if meaningful time has passed. Caught the hard way today: audited a draft against a 33-
+commit-stale checkout, reported a false blocker (missing art that had actually already been
+added), PM caught it by asking "are you synced with origin main?" Fixed durably in
+`CLAUDE.md`'s "Never guess at facts" section (`60ad50267`), not just noted here.
 
-**`update-calendar` skill fixed** (`5ec3111ca`): its own Common Updates section contradicted its
-Field Reference definition of `canonicalSite`, instructing agents to set it at blog-first publish
-rather than at syndication. Very plausibly the same mechanism behind #1683's 145-row undercount.
-Fixed so new rows stop entering the inconsistency; historical rows still #1683's separate scoped
-remediation (comment posted on the issue with the full trace).
+**"The Detector That Notified Nobody" published**: https://pipermorgan.ai/blog/the-detector-that-notified-nobody
+— re-synced, independently re-verified the load-bearing facts against the 07-27 omnibus (all
+matched), confirmed Comms' own parallel review-and-fix pass with PM had already resolved the one
+flagged claim. Live-verified, Comms notified. Fully closed.
 
-**Watch, low-priority**: flagged a `mail-send.sh` false-positive to CIO same-day as their new
-half-pushed-move warning shipped (`b3589e38f`) — content already matched `origin/main`, not a real
-strand. Not urgent, just their call whether it's worth a content-equality check.
+**Omnibus chain now continuous through 08-26** — a genuine 2-day gap found and closed via two
+sequential subagent dispatches. **Found and closed a real orphaned duplicate**: #1684/#1685 both
+filed independently for the identical `create_todo` consent-gate finding — closed #1684 as
+duplicate. #1462/#829 milestone conflict flag turned out already resolved by PPM before I checked.
+
+**Ship #057, #1683/update-calendar skill fix, and the mail-send.sh false-positive report all
+fully closed out as of 08-26's STOP** — see 08-26's session log or its now-completed omnibus for
+full detail, not re-detailing here.
 
 **Standing practice, durable (from 08-25)**: cross-project replies go via the ratified relay
 protocol — real recipient in `to:`, cc `exec`, deliver via ordinary `mail-send.sh` to

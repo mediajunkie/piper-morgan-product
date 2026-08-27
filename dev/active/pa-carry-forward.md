@@ -66,18 +66,21 @@ days stale.
     breadth-of-scope. One live instance found (#1572, timezone capture coupled to the disabled Slack
     path). #1522 (PM's existing false-trails/dead-code audit) is a related-but-distinct failure mode
     (accidental leftover complexity vs. PM's "deliberate premature breadth") — kept separate, not merged.
-  - **Owed, executed 08-27 (self-initiated, unblocked + PM-approved, drained per standing duty-cycle
-    discipline rather than left idle)**: (1) ✅ **#829/#1462 PPM reconciliation** — memo sent
-    `mailboxes/ppm/inbox/pa-to-ppm-829-vs-1462-same-milestone-different-architectures-2026-08-27.md`
-    (cc: Arch, Lead), laying out the conflict and proposing close-#829-as-superseded vs. re-scope,
-    explicitly leaving the call to PPM. (2) ✅ **Diagram content fixes** — `dev/active/pdr-006-
-    architecture-2026-08-10-rev1.html`: dropped the "what was wrong before" zombie-language section,
-    replaced with current-truth-only surface table + a pointer to the new `decisions.log` entry
-    ("SURFACE-PRIMACY CORRECTION, ARCHIVED FOR THE RECORD", appended 08-27); updated ChatGPT's
-    capability chip to the verified Agent Plugins 1.0.0 standard (skills + mcp, no longer "manual").
-    Republished to the same artifact URL. Picked **🏗️** as its favicon — no prior favicon was recorded
-    anywhere I could find, so this is a fresh choice, not a confirmed match to whatever it displayed
-    before; keep it stable from here.
+  - **Owed, FULLY RESOLVED 08-27**: (1) ✅ **#829/#1462 PPM reconciliation** — memo sent 08-27
+    proposing close-as-superseded or re-scope, left the call to PPM. **PPM closed #829 same-day**
+    (`mailboxes/pa/read/reply-ppm-to-pa-cc-arch-lead-pm-829-closed-superseded-2026-08-27.md`) —
+    independently verified against PDR-006's own text (#829's `pip install`/`npx` local-server shape
+    is the model PDR-006 explicitly rejected under "Continue with MCPB"), and found a second signal
+    I'd missed: #829's parent epic #828 is milestoned Fast Follow while #829 itself sat in
+    Production — a child outranking its own parent's milestone, consistent with the same stale-
+    tracking read. No replacement issue filed speculatively; PPM sees no current on-record case for
+    local self-hosting. Nothing further owed here. (2) ✅ **Diagram content fixes** —
+    `dev/active/pdr-006-architecture-2026-08-10-rev1.html`: dropped the "what was wrong before"
+    zombie-language section, replaced with a current-truth-only surface table + pointer to the new
+    `decisions.log` entry ("SURFACE-PRIMACY CORRECTION, ARCHIVED FOR THE RECORD", appended 08-27);
+    updated ChatGPT's capability chip to the verified Agent Plugins 1.0.0 standard (skills + mcp, no
+    longer "manual"). Republished to the same artifact URL, favicon 🏗️ (no prior favicon was recorded
+    anywhere I could find, so this is a fresh pick — keep it stable from here).
   - **Still owed**: (3) Diagram rev2 encoding the whole 08-26 conversation — do this AFTER the
     connector count is decided, not before, so it isn't stale on arrival. (4) The connector count
     itself needs PM's explicit final call — I gave a POV, not a decision.
