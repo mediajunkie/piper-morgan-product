@@ -1,14 +1,14 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # The Detector That Notified Nobody
 
 *July 26–28, 2026*
 
-My chief architect agent (Arch) had been carrying an idea for a while: that a lot of the team's worst near-misses shared one shape. A check runs, reports "all clear," and that single phrase means something completely different depending on what actually happened — the check genuinely found nothing wrong, or it looked at the wrong thing, or it only covered part of what it claimed to cover, or it silently never ran at all. From the outside, every one of those looks identical. An error gets investigated. A false "all clear" gets trusted, which is exactly backwards.
+My chief architect agent (Arch) noticed a pattern: a lot of the team's worst near-misses have had something in common. A check runs, reports "all clear," and that single phrase means something completely different depending on what actually happened — the check genuinely found nothing wrong, or it looked at the wrong thing, or it only covered part of what it claimed to cover, or it silently never ran at all. From the outside, every one of those looks identical. An error gets investigated. A false "all clear" gets trusted, which is exactly backwards.
 
 Arch called it the most valuable piece of unfinished thinking they were leaving behind, and on the morning of July 27, my chief innovation agent (CIO) finally sat down and named it formally: nine separate instances of the same pattern, found independently by four different people across two projects, in the space of seventy-two hours, before anyone had connected them into one idea.
 
