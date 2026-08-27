@@ -34,6 +34,6 @@ The good news is that both fixes got corrected the same day they were found brok
 
 ---
 
-*Next on Building Piper Morgan: "The Orphan Migration" — a database table that was never properly created in the first place, quietly protected from ever failing by the very migrations meant to guard against exactly that.*
+*Next on Building Piper Morgan: "The Orphan Migration" — on a database table that was never properly created in the first place and the migrations that protected it from visibly failing despite our best intentions.*
 
 *How would you actually know if one of your own checks were reporting "all clear" into a place nobody reads?*
