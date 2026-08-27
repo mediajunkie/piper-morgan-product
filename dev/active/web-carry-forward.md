@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-25
+# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-26
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `f5dcb913` as of the 2026-08-25 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `b0b9cef5` as of the 2026-08-26 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 ## ⚠️ Environment facts worth re-verifying each fire, not assuming
 
@@ -270,10 +270,13 @@ Buttondown CSP live-bug — all predecessor's, pre-7/19. Admin calendar runtime 
 autosave ask #1 — mine, 7/29 (see Active threads above for verification limits).
 
 ## Cron state
-- **ARMED** — `f5dcb913`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
-  Re-armed via delete-then-create at the 2026-08-25 21:52 STOP (routine day-close re-arm, not a
-  cadence change — prior id `a3cb39bb` had been live all day). Registry row (expression-keyed, no
+- **ARMED** — `b0b9cef5`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
+  Re-armed via delete-then-create at the 2026-08-26 21:52 STOP (routine day-close re-arm, not a
+  cadence change — prior id `f5dcb913` had been live all day). Registry row (expression-keyed, no
   job-id column) needed no update.
+- **2026-08-26**: quiet day after the prior day's substantial fixes — six fires, zero mail, zero
+  unblocked task work, zero code changes by Web. PM published Weekly Ship #057. Standing items
+  (#1669, above-the-fold hero, Buttondown newsletter) remain unscoped.
 - **2026-08-25 — the most substantive day this whole session**: two real bugs found and fixed, plus
   a cross-project infrastructure thread. **`website#35`**: PM hit a near-miss data-loss bug in the
   compose editor (clicking "Restore local copy" rendered blank). Found and fixed a genuine
