@@ -1,18 +1,27 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-27 ~07:5x PDT (Fire 1 — 2-day omnibus gap found+closed, duplicate issue
-#1684 cleaned up)
+**Updated**: 2026-08-27 ~10:3x PDT (Detector published; a real stale-sync incident caught by PM,
+fixed durably)
 **Session log**: `dev/2026/08/27/2026-08-27-0727-docs-code-log.md` (open).
 **Cron**: `8bddb70d`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-02.
 
-**Omnibus chain now continuous through 08-26** — a genuine 2-day gap (08-25, 08-26; 12+10 session
-logs) found at this morning's START and closed via two sequential subagent dispatches (avoiding
-the shared-CSV write race, matching the 08-24 precedent). Both ran the full skill for real, not a
-shortcut synthesis. **Found and closed a real orphaned duplicate**: #1684/#1685 both filed
-independently for the identical `create_todo` consent-gate finding — #1685 shipped same-day
-(08-25), #1684 sat open as an orphan; closed as duplicate. A second flagged finding (#1462 vs #829
-milestone conflict) turned out already resolved by PPM this morning before I even checked — no
-action needed.
+**⚠️ Standing practice, added today, read this at every fire**: a duty-cycle sync from earlier in
+the session is a timestamped fact, not a durable one. Before reading file/git state to answer a
+PM question or start work — not just at a scheduled fire's START — `git fetch` + fast-forward
+first if meaningful time has passed. Caught the hard way today: audited a draft against a 33-
+commit-stale checkout, reported a false blocker (missing art that had actually already been
+added), PM caught it by asking "are you synced with origin main?" Fixed durably in
+`CLAUDE.md`'s "Never guess at facts" section (`60ad50267`), not just noted here.
+
+**"The Detector That Notified Nobody" published**: https://pipermorgan.ai/blog/the-detector-that-notified-nobody
+— re-synced, independently re-verified the load-bearing facts against the 07-27 omnibus (all
+matched), confirmed Comms' own parallel review-and-fix pass with PM had already resolved the one
+flagged claim. Live-verified, Comms notified. Fully closed.
+
+**Omnibus chain now continuous through 08-26** — a genuine 2-day gap found and closed via two
+sequential subagent dispatches. **Found and closed a real orphaned duplicate**: #1684/#1685 both
+filed independently for the identical `create_todo` consent-gate finding — closed #1684 as
+duplicate. #1462/#829 milestone conflict flag turned out already resolved by PPM before I checked.
 
 **Ship #057, #1683/update-calendar skill fix, and the mail-send.sh false-positive report all
 fully closed out as of 08-26's STOP** — see 08-26's session log or its now-completed omnibus for
