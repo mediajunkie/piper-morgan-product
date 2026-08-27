@@ -142,8 +142,10 @@
       </div>
       <div class="node">
         <span class="name">ChatGPT</span>
-        <span class="detail">User pastes the MCP URL and adds skills manually. We are a URL they point at.</span>
-        <span class="caps"><i class="cap on">mcp</i><i class="cap">skills (manual)</i></span>
+        <span class="detail">Agent Plugins 1.0.0 (shipped 2026-08-06 — Amazon, Anysphere, Microsoft, OpenAI,
+        Vercel) bundles skills + MCP under one manifest. No longer a manual URL-paste; same transport
+        family (stdio + Streamable HTTP) we already target.</span>
+        <span class="caps"><i class="cap on">skills</i><i class="cap on">mcp</i><i class="cap off">hooks</i></span>
       </div>
     </div>
 
@@ -188,39 +190,25 @@
 </section>
 
 <section id="surfaces">
-  <h2>What was wrong in the July/August-1 diagram — and why it mattered beyond this document</h2>
-  <div class="prose">
-    <p>The 08-01 revision said the web client was <em>"largely deleted by the pivot"</em> and that under
-    this model <em>"there is no first screen we own."</em> <strong>That was wrong, not simplified</strong>
-    — and PM has since named the general shape of the error directly:</p>
-    <blockquote class="note" style="font-style:italic">"The fundamental idea of the modeled user experience
-    is that it is not specific to any one surface. It's a holistic user experience, which is expressed on
-    each surface as appropriate… I have never said that we are abandoning any one of those services."
-    <span style="display:block;font-style:normal;margin-top:.3rem;color:var(--ink)">— PM, 2026-08-08, quoted
-    in <code>docs/internal/design/experience-across-surfaces.md</code></span></blockquote>
-  </div>
+  <h2>Surfaces are expressions of one experience, not separate products</h2>
   <div class="scroll">
     <table>
-      <thead><tr><th>08-01 diagram said</th><th>Corrected</th></tr></thead>
+      <thead><tr><th>Surface</th><th>What it actually is</th></tr></thead>
       <tbody>
-        <tr><td>Web client <strong>largely deleted</strong>; <strong>no first screen we own</strong>.</td>
-            <td>Web wasn't deleted. Per PDR-005 it was never the <strong>primary distribution
-            channel</strong> — a sequencing decision, not an existence claim. Its actual job:
-            conversations · radar · settings — the one surface where <em>the shape of what's moving</em>
-            is visible at all. <span class="tag pm">PM's own words</span></td></tr>
-        <tr><td><em>(unstated)</em> — the diagram implied "MCP-plugin" described the whole product.</td>
-            <td><strong>It described one surface's route in.</strong> Chat hosts get skills + MCP; Slack
-            is a channel bot, not a second web UI; phone is notifications only; CLI is still maintained.
-            Same knowledge, different expression per surface — never a different product.</td></tr>
+        <tr><td>Web</td><td>Not our primary distribution channel (PDR-005 — a sequencing decision, not an
+            existence claim). Its job: conversations · radar · settings — the one surface where <em>the
+            shape of what's moving</em> is visible at all.</td></tr>
+        <tr><td>Chat hosts (Claude, ChatGPT)</td><td>Get skills + MCP — one surface's route in, not a
+            description of the whole product.</td></tr>
+        <tr><td>Slack</td><td>A channel bot, not a second web UI.</td></tr>
+        <tr><td>Phone</td><td>Notifications only.</td></tr>
+        <tr><td>CLI</td><td>Still maintained.</td></tr>
       </tbody>
     </table>
   </div>
-  <p class="note risk">Why this is worth more than a wording fix: PPM independently built a fix-list sort
-  key on <em>"which surface survives PDR-006,"</em> PM ratified it in good faith, and it was withdrawn
-  three days later as a false question with no referent. <strong>This diagram is a plausible source of
-  that framing</strong> — it's the artifact that first drew "no first screen we own" as settled fact, nine
-  days before the correction. Flagging rather than assuming no connection, since I can't rule it out and
-  the cost of the wrong framing was real cohort time.</p>
+  <p class="note">Same underlying knowledge, different expression per surface — never a different product.
+  Correction history and provenance: <code>decisions.log</code>, 2026-08-27 entry "SURFACE-PRIMACY
+  CORRECTION, ARCHIVED FOR THE RECORD."</p>
 </section>
 
 <section>

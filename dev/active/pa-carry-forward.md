@@ -66,17 +66,21 @@ days stale.
     breadth-of-scope. One live instance found (#1572, timezone capture coupled to the disabled Slack
     path). #1522 (PM's existing false-trails/dead-code audit) is a related-but-distinct failure mode
     (accidental leftover complexity vs. PM's "deliberate premature breadth") — kept separate, not merged.
-  - **Owed, not yet executed** (approved by PM, action pending): (1) #829/#1462 roadmap reconciliation
-    with PPM — #829 is a stale pre-PDR-006 self-hosted-packaging issue that reads as a duplicate of
-    epic #1462's hosted-MCP scope but describes a different architecture; propose closing #829 with a
-    pointer to #1462 unless PPM's read differs. (2) Diagram rewrite — drop the "what was wrong before"
-    zombie-language section (PM's standing docs principle: state current truth, put history in
-    `decisions.log`), and update ChatGPT's capability row against the verified Agent Plugins 1.0.0
-    standard (Aug 6, 2026 — Amazon/Anysphere/Microsoft/OpenAI/Vercel, bundles Skills+MCP under one
-    manifest; ChatGPT/Codex support stdio + Streamable HTTP transports). (3) Diagram rev2 encoding
-    today's whole conversation — do this AFTER the connector count is decided, not before, so it isn't
-    stale on arrival. (4) The connector count itself needs PM's explicit final call — I gave a POV, not
-    a decision.
+  - **Owed, executed 08-27 (self-initiated, unblocked + PM-approved, drained per standing duty-cycle
+    discipline rather than left idle)**: (1) ✅ **#829/#1462 PPM reconciliation** — memo sent
+    `mailboxes/ppm/inbox/pa-to-ppm-829-vs-1462-same-milestone-different-architectures-2026-08-27.md`
+    (cc: Arch, Lead), laying out the conflict and proposing close-#829-as-superseded vs. re-scope,
+    explicitly leaving the call to PPM. (2) ✅ **Diagram content fixes** — `dev/active/pdr-006-
+    architecture-2026-08-10-rev1.html`: dropped the "what was wrong before" zombie-language section,
+    replaced with current-truth-only surface table + a pointer to the new `decisions.log` entry
+    ("SURFACE-PRIMACY CORRECTION, ARCHIVED FOR THE RECORD", appended 08-27); updated ChatGPT's
+    capability chip to the verified Agent Plugins 1.0.0 standard (skills + mcp, no longer "manual").
+    Republished to the same artifact URL. Picked **🏗️** as its favicon — no prior favicon was recorded
+    anywhere I could find, so this is a fresh choice, not a confirmed match to whatever it displayed
+    before; keep it stable from here.
+  - **Still owed**: (3) Diagram rev2 encoding the whole 08-26 conversation — do this AFTER the
+    connector count is decided, not before, so it isn't stale on arrival. (4) The connector count
+    itself needs PM's explicit final call — I gave a POV, not a decision.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
