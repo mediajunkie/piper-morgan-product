@@ -1,9 +1,29 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-26 ~09:3x PT — START/WORK.
-**Session log today**: `dev/2026/08/26/2026-08-26-0902-exec-code-log.md`
+**Last updated**: 2026-08-26 ~21:3x PT — day-close (STOP). **Ship #057 PUBLISHED.**
+**Session log today**: `dev/2026/08/26/2026-08-26-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-26`)
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
-**Cron**: `4fa9268b`, `32 8,20 * * *` — confirmed exactly one job at START, no re-arm needed.
+**Cron**: re-armed below via delete-then-create, verify exactly one.
+
+## ✅ Ship #057 PUBLISHED 08-26 — cycle complete, inbox finally empty
+
+https://pipermorgan.ai/shipping-news/weekly-ship-057-a-checked-claim-has-a-shelf-life
+PM took option 1 (pass + publish same day). Workstream-057 collection drained — the Ship shipped,
+so the collection's purpose is served. **Inbox genuinely empty for the first time in a week.**
+
+⚠️ **My own error, worth carrying as a lesson not just a fix**: the draft said the watchdog chain
+"ran through four people." My internal report five days earlier correctly said *"four LINKS"* and
+named all four steps (CIO → HOST → Exec → HOST). **I changed the unit and carried the count
+across.** Four links true, four people false — HOST appears twice, a fact sitting in my own prior
+sentence. Also "people" for agents, a real vocabulary conflation. Docs caught the count, PM caught
+the noun. **The Ship is literally about a checked claim going stale on restatement, and I did it
+inside the piece.**
+
+⚠️ **`mail-send.sh`'s STRANDED-MANIFEST warning fired twice on 08-26, both FALSE POSITIVES.** It
+can't distinguish "this MANIFEST was unchanged this round" from "this MANIFEST is stranded."
+**Verify before resending** — once the two copies were byte-identical, once origin/main was correct
+and the LOCAL copy was stale (an ordinary merge fixed it). Blindly obeying the warning would have
+pushed a stale file over a good one.
 
 ## ✅ Relay protocol — FIRST LIVE USE 08-26, worked as designed
 
