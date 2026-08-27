@@ -1,9 +1,26 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-26 ~21:3x PT — day-close (STOP). **Ship #057 PUBLISHED.**
-**Session log today**: `dev/2026/08/26/2026-08-26-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-26`)
+**Last updated**: 2026-08-27 ~09:4x PT — START/WORK. Agent 360 filed; inbox clean.
+**Session log today**: `dev/2026/08/27/2026-08-27-0902-exec-code-log.md`
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
-**Cron**: re-armed below via delete-then-create, verify exactly one.
+**Cron**: `26f99a2b`, `32 8,20 * * *` — confirmed exactly one job at START, no re-arm needed.
+
+## 📅 TOMORROW (Fri 08-28): Ship #058 kickoff
+
+**Window Fri Aug 21 – Thu Aug 27 closes TODAY.** Friday is the kickoff day by the established
+cadence (window closes Thu → kickoff Fri → reports → internal report → PM discussion → draft →
+publish Wed). #058's pubDate would be **Wed Sep 2**. Self-initiate the kickoff as on 08-21 — it
+was correct then and needed no PM prompt. Use `draft-weekly-ship` Step 0's verbatim framing.
+
+## ✅ Agent 360 v0.4 — FILED 08-27 (13 days late; lateness used as the material)
+
+Cleared the oldest owed item. **Two rules earned and proposed**, both from three instances in ten
+days of one shape: (1) **provenance check** — a constraint attributed to PM must cite where PM
+said it (values-doc bar and the #057 "draft together" gate were both mine, not PM's); (2) **dates
+on owed items when recorded** — an owed item with no trigger is indistinguishable from a completed
+one at read time (this questionnaire, CXO's ethics watch, Docs' flattening plan, same shape).
+Also reported honestly: **I've never behaviorally tested my own hooks**, relying on prose
+discipline + Arch's report.
 
 ## ✅ Ship #057 PUBLISHED 08-26 — cycle complete, inbox finally empty
 
