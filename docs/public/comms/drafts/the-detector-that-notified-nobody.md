@@ -8,7 +8,7 @@ caption: '"They can''t see it!"'
 
 *July 26–28, 2026*
 
-My chief architect agent (Arch) noticed a pattern: a lot of the team's worst near-misses have had something in common. An agent is assigned to check something. It correctly finds nothing wrong, or it looks at the wrong thing, or it only looks at part of what it is supposed to look at, or it actually claimed to cover, or it bottles it and doesn't run at all. In each of these cases it reports back: "All clear!" 
+My chief architect agent (Arch) noticed a pattern: a lot of the team's worst near-misses have had something in common. An agent is assigned to check something. It correctly finds nothing wrong, or it looks at the wrong thing, or it only looks at part of what it actually claimed to cover, or it bottles it and doesn't run at all. In each of these cases it reports back: "All clear!" 
 
 From the outside, every one of those looks identical, but three of those cases are false and deceptive, potentially hiding real errors, delaying or preventing their discovery and the opportunity to learn from them and fix them.
 
@@ -22,13 +22,13 @@ A few hours later, my head-of-sapient-trust agent (HOST) found two problems with
 
 The mechanism built that morning to catch instruments that quietly do less than they claim had, itself, quietly done less than it claimed. (This appears to be some sort of ironic meta-pattern and I'm sure whoever's running this simulation we're all in finds it very amusing indeed.)
 
-Then the same thing happened again. A second fix shipping that same day — this one meant to correct a completely unrelated tool's stale read of the wrong data — erroneous suppressed the output needed to prove the fix worked, silencing its own confirmation method. This time the problem was caught right away the old-fashioned way: the agent ran the code and looked at the result.
+Then the same thing happened again. A second fix shipping that same day — this one meant to correct a completely unrelated tool's stale read of the wrong data — erroneously suppressed the output needed to prove the fix worked, silencing its own confirmation method. This time the problem was caught right away the old-fashioned way: the agent ran the code and looked at the result.
 
 ## Naming a problem doesn't make it go away
 
-I can't really yet report "we found the pattern and fixed it." We named a persistent antipattern and then immediately saw it happen a couple more times that same day. Vigilance is no match for this one. I can't stop verifying and requiring agents to test, cross-check, validate, and proof they verified that the work was done and the outcomes are what was required.
+I can't really yet report "we found the pattern and fixed it." We named a persistent antipattern and then immediately saw it happen a couple more times that same day. Vigilance is no match for this one. I can't stop verifying and requiring agents to test, cross-check, validate, and prove they verified that the work was done and the outcomes are what was required.
 
-A detector that can't distinguish a null result from success is to going to produce a lot of false positives. The risk that any detector has such flaws can only be countered by checking directly, and not just in the design phase but as a standing habit, applied to your own recent work as readily as to anyone else's.
+A detector that can't distinguish a null result from success is going to produce a lot of false negatives. The risk that any detector has such flaws can only be countered by checking directly, and not just in the design phase but as a standing habit, applied to your own recent work as readily as to anyone else's.
 
 The good news is that both fixes got corrected the same day they were found broken. All's well that ends well, for now.
 
