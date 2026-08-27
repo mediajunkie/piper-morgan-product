@@ -1,22 +1,24 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-27 ~10:3x PDT (Detector published; a real stale-sync incident caught by PM,
-fixed durably)
+**Updated**: 2026-08-27 ~13:5x PDT (Fire 3 — Detector's Medium leg, a real heading-level defect
+found and fixed on 2 live posts)
 **Session log**: `dev/2026/08/27/2026-08-27-0727-docs-code-log.md` (open).
 **Cron**: `8bddb70d`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-02.
 
 **⚠️ Standing practice, added today, read this at every fire**: a duty-cycle sync from earlier in
 the session is a timestamped fact, not a durable one. Before reading file/git state to answer a
 PM question or start work — not just at a scheduled fire's START — `git fetch` + fast-forward
-first if meaningful time has passed. Caught the hard way today: audited a draft against a 33-
-commit-stale checkout, reported a false blocker (missing art that had actually already been
-added), PM caught it by asking "are you synced with origin main?" Fixed durably in
-`CLAUDE.md`'s "Never guess at facts" section (`60ad50267`), not just noted here.
+first if meaningful time has passed. Fixed durably in `CLAUDE.md`'s "Never guess at facts" section
+(`60ad50267`). Applied it every fire since without incident.
 
-**"The Detector That Notified Nobody" published**: https://pipermorgan.ai/blog/the-detector-that-notified-nobody
-— re-synced, independently re-verified the load-bearing facts against the 07-27 omnibus (all
-matched), confirmed Comms' own parallel review-and-fix pass with PM had already resolved the one
-flagged claim. Live-verified, Comms notified. Fully closed.
+**"The Detector That Notified Nobody" fully closed out**: published, Medium-distributed
+(`mediumURL` set; could not independently HTTP-verify — Medium blocks both curl and WebFetch —
+noted honestly rather than fabricate a check), and a real heading-level defect found by
+Dispatch-PM (subheads rendered `<h2>` instead of the site's real `<h1>` convention) fixed on both
+this post and **The Dead Code That Wasn't** (also affected, live-wrong for a week uncaught) —
+source markdown and live `blog-content.json` both fixed, deploy polled, live-verified on both
+pages. https://pipermorgan.ai/blog/the-detector-that-notified-nobody ·
+https://pipermorgan.ai/blog/the-dead-code-that-wasnt
 
 **Omnibus chain now continuous through 08-26** — a genuine 2-day gap found and closed via two
 sequential subagent dispatches. **Found and closed a real orphaned duplicate**: #1684/#1685 both
