@@ -133,6 +133,7 @@ out=$(PIPER_REPO="$T/wtF" bash "$V3" "mail(f): T7 forgot my own manifest regen" 
 git -C "$T/wtF" fetch -q origin
 onmain "$T/wtF" mailboxes/cxo/inbox/memo-f.md && ok "the passed memo still landed" || no "the passed memo missing"
 echo "$out" | grep -q "mailboxes/cio/inbox/MANIFEST.md" && ok "NOTE named the unpassed dirty path" || no "NOTE did not name the unpassed path"
+echo "$out" | tail -1 | grep -q "left behind" && ok "alarm survives truncation to the last line (Lead 2026-08-26 fix)" || no "last line is not the alarm — truncation-safety regressed"
 [ -f "$T/wtF/mailboxes/cio/inbox/MANIFEST.md" ] && [ "$(cat "$T/wtF/mailboxes/cio/inbox/MANIFEST.md")" = "regenerated manifest, forgotten from the send" ] \
     && ok "unpassed path left untouched on disk (detection only, no mutation)" || no "unpassed path was mutated — should never happen"
 onmain "$T/wtF" mailboxes/cio/inbox/MANIFEST.md && no "unpassed path leaked onto origin/main — should never happen" || ok "unpassed path correctly absent from origin/main"
@@ -173,6 +174,7 @@ onmain "$T/wtH" mailboxes/lead/read/memo-h.md && ok "the read/ half still landed
 onmain "$T/wtH" mailboxes/lead/inbox/memo-h.md && ok "inbox/ half correctly still stranded on origin/main (reproduces the incident)" || no "inbox/ half unexpectedly gone"
 echo "$out" | grep -q "mailboxes/lead/inbox/memo-h.md is STILL on" && ok "WARNING named the stranded inbox/ sibling" || no "warning did not fire for the stranded sibling"
 echo "$out" | grep -q "pass both paths" && ok "warning told the caller what to do" || no "warning missing the fix instruction"
+echo "$out" | tail -1 | grep -q "STRANDED" && ok "alarm survives truncation to the last line (Lead 2026-08-26 fix)" || no "last line is not the alarm — truncation-safety regressed"
 
 echo "── T10: Lead's 08-26 guard — passing both halves together produces no warning ──"
 clone wtI

@@ -26,6 +26,14 @@
 #
 # Env overrides (mainly for testing): PIPER_REPO (repo dir; default = current worktree toplevel),
 #   PIPER_MAIL_REMOTE (default origin), PIPER_MAIL_BRANCH (default main).
+#
+# ⚠️ Probing this script by hand? Fetch + merge origin/main before staging your next fixture.
+# The #1310 self-reconcile (below) removes just-sent paths from YOUR worktree right after a
+# successful push — so if your probe's next step tries to `mv`/edit that same path without first
+# syncing, the operation silently no-ops (file's already gone) and your "test" passes having
+# tested nothing. Lead hit this 2026-08-26 verifying the inbox/read guard: the run reported success
+# while the actual push it meant to test never happened. Caught only by reading stdout, not the
+# exit code — same shape as the hook-probe confounds in CLAUDE.md, met here in the wild.
 set -uo pipefail
 
 REPO="${PIPER_REPO:-$(git rev-parse --show-toplevel 2>/dev/null)}"
@@ -130,8 +138,15 @@ while :; do
                     name="${f#mailboxes/*/read/}"
                     sib="mailboxes/$role/inbox/$name"
                     if G cat-file -e "$tree:$sib" 2>/dev/null; then
+                        # Alarm restated as the LAST line, not just the first (Lead 2026-08-26,
+                        # with reproduced evidence): a habitual `| tail -1` on this script's output
+                        # is what let the original incident hide for weeks — the last line of the
+                        # ORIGINAL ordering was the innocuous fix instruction, not the alarm. Any
+                        # tail-truncated consumer (a human skimming, a pipe, a log preview) now sees
+                        # the alarm regardless of where it stops reading.
                         echo "mail-send: WARNING — $f was pushed but $sib is STILL on $REMOTE/$BRANCH and wasn't part of this send" >&2
                         echo "mail-send:   a half-pushed move leaves the memo unread for everyone else — pass both paths" >&2
+                        echo "mail-send: ⚠️  $sib STRANDED on $REMOTE/$BRANCH — resend it" >&2
                     fi
                     ;;
             esac
@@ -152,9 +167,16 @@ while :; do
             [ "$skip" -eq 0 ] && other_dirty="${other_dirty}${p}"$'\n'
         done <<< "$(G status --porcelain -- mailboxes 2>/dev/null)"
         if [ -n "$other_dirty" ]; then
+            # Alarm restated as the LAST line here too (Lead 2026-08-26): this exact NOTE fired on
+            # every one of Lead's incident sends for weeks and was never seen, because the original
+            # last line was a parenthetical suggestion, not an alarm — a `| tail -1` habit read that
+            # single innocuous line as "nothing to worry about." Root-caused with reproduced evidence,
+            # not assumed. Ending on the count + a visible marker survives truncation to any tail.
+            n_dirty=$(printf '%s\n' "$other_dirty" | grep -c .)
             echo "mail-send: NOTE — other mailbox path(s) have uncommitted changes this send didn't include:" >&2
             echo "$other_dirty" | sed 's/^/mail-send:   /' >&2
             echo "mail-send:   if they belong to this mail-loop (e.g. a MANIFEST regen), send them in a follow-up mail-send call" >&2
+            echo "mail-send: ⚠️  ${n_dirty} mailbox path(s) left behind — see above" >&2
         fi
         # ----------------------------------------------------------------------------------------
         exit 0
