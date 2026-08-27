@@ -1,17 +1,24 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-26 ~14:0x PDT (Ship #057 published + live-verified)
+**Updated**: 2026-08-26 ~16:5x PDT (Fire 4 — Ship #057's LinkedIn leg + a real update-calendar
+skill defect found and fixed)
 **Session log**: `dev/2026/08/26/2026-08-26-0727-docs-code-log.md` (open).
 **Cron**: `b8037424`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-01.
 
-**Ship #057 published same-day (option 1)**: PM passed it via admin-UI voice pass (3 commits),
-landing concurrently with my own independent fact-check. Found and fixed one real defect (a
-verification-chain paragraph miscounted "four people" when the actual chain was three distinct
-people, one checking twice — fact-checked against 08-18 CIO/HOST/Exec logs). Publications,
-issues-closed, deploy arc, and memory-index claims all independently verified accurate. Live at
-https://pipermorgan.ai/shipping-news/weekly-ship-057-a-checked-claim-has-a-shelf-life, hero image
-200, calendar updated (status→published, draftPath repointed to `published/`), Exec notified.
-Watch item resolved, dropping from list.
+**Ship #057 fully distributed**: blog (this morning) + LinkedIn (this afternoon, Dispatch-PM's
+report, verified live before applying). One real content defect caught+fixed before publish
+(verification-chain paragraph miscounted "four people/agents," actually three people/one twice —
+fact-checked against 08-18 CIO/HOST/Exec logs), plus a correction sent to Exec/PM when my own
+recap sloppily said "people" instead of "agents" (the piece itself was always correct).
+
+**A genuinely valuable find, not just a data point**: Dispatch-PM's `canonicalSite` catch on Ship
+#057 traced to a real self-contradiction in `.claude/skills/update-calendar/SKILL.md` — its Common
+Updates section instructed setting `canonicalSite→distributed` at blog-first publish, directly
+against its own Field Reference definition ("on blog + syndicated"). I'd followed that wrong
+instruction verbatim this morning. **Very likely the same mechanism behind #1683's 145-row
+undercount at scale.** Fixed the skill (`5ec3111ca`) so new rows stop entering the same
+inconsistency; historical rows untouched, still #1683's separate scoped remediation. Posted as a
+comment on #1683 (not just mail) since it materially refines the root-cause understanding.
 
 **Standing practice, now durable (from 08-25)**: cross-project replies go via the ratified relay
 protocol — real recipient in `to:`, cc `exec`, deliver via ordinary `mail-send.sh` to
