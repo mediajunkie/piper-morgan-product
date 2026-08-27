@@ -171,7 +171,9 @@
           <span class="sub">required field, no default — added since the July draft</span></div>
         <div class="chip"><b>Resources</b>reads: profile, preferences, composted insight</div>
         <div class="chip"><b>Tools</b>writes: mutating <code>update_*</code> calls</div>
-        <div class="chip"><b>Connectors</b>GitHub · Notion · Slack · Calendar</div>
+        <div class="chip"><b>Connectors</b>GitHub (mostly real MCP) · Notion &amp; Slack (contract
+          shim over bespoke REST, no MCP underneath) · Calendar (same shim shape)
+          <span class="sub">verified 2026-08-27 — see "Connector shims vs. real MCP" below</span></div>
       </div>
     </div>
 
@@ -261,6 +263,53 @@
     <p>A live consumer family — CORE-MCP-MIGRATION #198 — precedents <em>nothing</em> about the server
     side, which is where the identity risk above actually lives.</p>
   </div>
+</section>
+
+<section id="byoc-sequencing">
+  <h2>Where BYOC sits in the sequence</h2>
+  <div class="prose">
+    <p>PM's ruling, 2026-08-26: BYOC is <strong>one track that forks into two destinations once the
+    shared foundation is done</strong> — not a parallel, beta-primary effort competing with it. This
+    page's own gap note above (<code>services/mcp/server/</code> doesn't exist yet) is what makes that
+    concrete: hosted-MCP delivery is sequenced <em>after</em> the shared grammar work, not literally
+    alongside it. Condition attached: BYOC roadmap placement stays coordinated with PPM so board state
+    doesn't drift — done 2026-08-27 for the one concrete instance found (#829, a stale pre-PDR-006
+    self-hosted-packaging issue, closed as superseded by this epic, #1462).</p>
+  </div>
+</section>
+
+<section id="connector-shims">
+  <h2>Connector shims vs. real MCP — a distinction the "Connectors" chip above was hiding</h2>
+  <div class="prose">
+    <p>GitHub, Slack, and Notion each now ship an <strong>official, vendor-hosted remote MCP
+    server</strong> — <code>api.githubcopilot.com/mcp/</code>, <code>mcp.slack.com/mcp</code> (GA
+    2026-02-17), <code>mcp.notion.com/mcp</code>. Checked directly against Piper's own
+    <code>services/mcp/consumer/</code> adapters rather than assumed from the chip label above:</p>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Connector</th><th>What's actually underneath</th></tr></thead>
+      <tbody>
+        <tr><td>GitHub</td><td>Mostly the real thing — 8 live <code>call_tool()</code> sites over a
+            real MCP transport. Talks to a <strong>self-hosted</strong> instance of the OSS
+            <code>github-mcp-server</code>, not GitHub's now-official hosted endpoint — a config-level
+            simplification candidate (ADR-070's own server-ref resolver already supports repointing
+            it), flagged to Lead/Arch, not decided here.</td></tr>
+        <tr><td>Slack, Notion</td><td><strong>Zero</strong> real MCP tool calls in either adapter
+            (grep-verified). Both are connector-<em>contract</em> shims (#1232/ADR-070 D5
+            <code>connect/status/resolve/degrade</code>) wrapping fully bespoke REST code
+            underneath. The shim's presence can read as "this connector is on the current
+            architecture" when only the outer contract is.</td></tr>
+        <tr><td>Calendar</td><td>Same shim shape as Slack/Notion (1 live call site, rest legacy).</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note risk">Live, not yet closed: Slack's milestone placement is under direct discussion with
+  PM as of 2026-08-27 — PA's recommendation is Fast Follow (weakest architecture fit of the four, and
+  already excluded from CXO's ratified FTUX set), not yet PM's final call. Full reasoning and the
+  "no optional complexity" standing-lens proposal this finding fed:
+  <code>docs/internal/product/no-optional-complexity-standing-lens-proposal-2026-08-27.md</code> and
+  <code>decisions.log</code>.</p>
 </section>
 
 <section>

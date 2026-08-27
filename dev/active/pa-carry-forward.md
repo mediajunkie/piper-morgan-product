@@ -32,58 +32,58 @@ days stale.
   different agent seat, or a dedicated QA pass) — code-level inspection is a real but weaker substitute.
 - 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a
   claim, not metadata.
-- 🔴 **BYOC/conversational-layer conversation — THE LIVE CONVERSATION HAPPENED 08-26, all three
-  positions landed, thread is PAUSED not closed.** PM opened via `/remote-control` ~15:25, ran past
-  22:00; no explicit goodbye/wrap when day-close hit — treat as open, pick back up naturally next
-  contact, don't announce "picking this back up" like it's a new thread. Full detail in today's session
-  log (`dev/2026/08/26/2026-08-26-0712-pa-code-log.md`), condensed here:
-  - **Position 1 (BYOC parallel-not-primary)**: ACCEPTED. Sharpened mid-conversation: `services/mcp/
-    server/` doesn't exist yet, so BYOC delivery is *sequenced after* the shared grammar work, not
-    literally parallel — "one track that forks into two destinations once the shared foundation is
-    done" (PM's phrase). Condition: coordinate with PPM so roadmap docs don't drift.
-  - **Position 2 (Radar/Files/standup first-party)**: ACCEPTED, extended by PM into a real principle —
-    media (GUI/chat/generated affordances) are renderers of one durable, protocol-agnostic backend;
-    MCP is a current transport, not a permanent commitment. Generative in-chat GUI affordances
-    explicitly scoped OUT for now (PM: "we do not have Piper do the GUI thing at all yet") — named gap,
-    not silently assumed. Corroborated by three Granola transcripts PM shared (Chris Ivester's "Dialog"
-    product + a Jason Cyr design/PM-convergence chat) and two screenshots.
-  - **Position 3 (freeze multi-provider LLM)**: ACCEPTED, "an easy yes." Produced PM's new named
-    project principle: **"no optional complexity"** — scope that outlives the single case that would
-    prove it. Applied live to a real audit (see below).
-  - **⭐ NEW PROJECT PRINCIPLE, PM's own words, worth protecting**: *"no optional complexity... it is
-    so easy to forget... the pull toward scope creep in the name of an ideal vision has weighed and
-    slowed us down."* Should probably land in `decisions.log` as a named, citable principle, not just
-    live in this carry-forward and a session log.
-  - **Connector-gate audit (done live)**: Production milestone's close-gate requires all 4 core
-    connectors "fully refactored/completed." My POV, evidenced not just agreed: GitHub — hard
-    requirement. **Slack — should come OUT of the gate now, stronger case than "could wait": already
-    fail-closed disabled (#1481/#1484, verified still live in code) AND already excluded from CXO's
-    ratified FTUX model's "F-Integrations set" — the gate text is stale relative to two decisions
-    already made, not a new call.** Notion — low-leverage either way (already lightest to maintain).
-    Calendar — genuinely uncertain, real usage-data question for Lead/PPM, not something I can settle.
-  - **Backlog audit**: read all 60 open MVP-milestone issues directly. Honest finding: this pattern
-    barely shows up as individual tickets — the backlog is dominated by real correctness defects, not
-    breadth-of-scope. One live instance found (#1572, timezone capture coupled to the disabled Slack
-    path). #1522 (PM's existing false-trails/dead-code audit) is a related-but-distinct failure mode
-    (accidental leftover complexity vs. PM's "deliberate premature breadth") — kept separate, not merged.
-  - **Owed, FULLY RESOLVED 08-27**: (1) ✅ **#829/#1462 PPM reconciliation** — memo sent 08-27
-    proposing close-as-superseded or re-scope, left the call to PPM. **PPM closed #829 same-day**
-    (`mailboxes/pa/read/reply-ppm-to-pa-cc-arch-lead-pm-829-closed-superseded-2026-08-27.md`) —
-    independently verified against PDR-006's own text (#829's `pip install`/`npx` local-server shape
-    is the model PDR-006 explicitly rejected under "Continue with MCPB"), and found a second signal
-    I'd missed: #829's parent epic #828 is milestoned Fast Follow while #829 itself sat in
-    Production — a child outranking its own parent's milestone, consistent with the same stale-
-    tracking read. No replacement issue filed speculatively; PPM sees no current on-record case for
-    local self-hosting. Nothing further owed here. (2) ✅ **Diagram content fixes** —
-    `dev/active/pdr-006-architecture-2026-08-10-rev1.html`: dropped the "what was wrong before"
-    zombie-language section, replaced with a current-truth-only surface table + pointer to the new
-    `decisions.log` entry ("SURFACE-PRIMACY CORRECTION, ARCHIVED FOR THE RECORD", appended 08-27);
-    updated ChatGPT's capability chip to the verified Agent Plugins 1.0.0 standard (skills + mcp, no
-    longer "manual"). Republished to the same artifact URL, favicon 🏗️ (no prior favicon was recorded
-    anywhere I could find, so this is a fresh pick — keep it stable from here).
-  - **Still owed**: (3) Diagram rev2 encoding the whole 08-26 conversation — do this AFTER the
-    connector count is decided, not before, so it isn't stale on arrival. (4) The connector count
-    itself needs PM's explicit final call — I gave a POV, not a decision.
+- 🔴 **BYOC/conversational-layer conversation — 08-26 positions all landed; 08-27 continued live with
+  PM on connector architecture. Thread STILL PAUSED, not closed — no explicit wrap either day.** Full
+  08-26 detail: `dev/2026/08/26/2026-08-26-0712-pa-code-log.md`. Condensed status:
+  - **Positions 1-3 (BYOC sequencing, Radar/Files first-party, freeze multi-provider LLM)**: all
+    ACCEPTED 08-26, unchanged since. Position 1's PPM-coordination condition **discharged 08-27**
+    (#829/#1462 reconciliation, PPM closed #829 same-day — see below).
+  - **⭐ "No optional complexity" — NAMED PRINCIPLE, now recorded in `decisions.log` (2026-08-27
+    entry) and given a standing-lens proposal**:
+    `docs/internal/product/no-optional-complexity-standing-lens-proposal-2026-08-27.md`. Two layers:
+    (1) does a proven single case justify this scope item at all — the original 08-26 connector-gate
+    audit; (2) NEW 08-27 — does an implementation's SHAPE actually match its claimed architecture, or
+    does it just look aligned. Layer 2 came from PM's own 08-27 follow-up push on connector strategy.
+  - **Connector architecture — VERIFIED, not just discussed, 08-27**: GitHub, Slack, Notion all now
+    ship official vendor-hosted remote MCP servers (`api.githubcopilot.com/mcp/`, `mcp.slack.com/mcp`
+    GA 2026-02-17, `mcp.notion.com/mcp`) — PM's "other products don't agonize like this" instinct is
+    correct and verifiable. Checked Piper's own `services/mcp/consumer/` adapters against it:
+    `github_adapter.py` is mostly real MCP (8 live `call_tool()` sites) but talks to a **self-hosted**
+    `github-mcp-server` instance rather than GitHub's own official endpoint (a config-level
+    simplification candidate per ADR-070's own server-ref resolver — flagged to Lead/Arch, not decided
+    here). `slack_adapter.py` and `notion_adapter.py` are connector-**contract shims with ZERO real
+    MCP calls** underneath (grep-verified) — all actual data ops are bespoke REST, same shim shape as
+    Calendar. PM's fear about "hack-ish prototyping" is confirmed for 3 of 4 connectors, not all 4.
+  - **Connector-gate audit (08-26) + PM's live follow-up (08-27) — still not PM's final call**:
+    GitHub — hard requirement, no argument. **Slack — PA's recommendation: Fast Follow** (weakest
+    architecture fit of all four *and* already excluded from CXO's ratified FTUX set *and* already
+    fail-closed since #1481/#1484 — three independent reasons, not one). Notion — keep in Production
+    as-is; ripping it out for architectural purity now would be the same scope-creep instinct in
+    reverse. Calendar — still genuinely uncertain, a Lead/PPM usage-data question.
+    **PM said "I'll decide re connectors" — this is a recommendation on the table, not a settled
+    answer. Don't presume the outcome in future work.**
+  - **Backlog audit (08-26)**: read all 60 open MVP-milestone issues directly. Pattern barely shows up
+    as individual tickets — one live instance found and now resolved (#1572, see below). #1522 (PM's
+    existing false-trails/dead-code audit) stays a distinct failure mode (accidental vs. deliberate-
+    premature-breadth) — cross-referenced in its comments 08-27, not merged.
+  - **Owed items, ALL FOUR NOW EXECUTED as of 08-27**:
+    1. ✅ **#829/#1462 PPM reconciliation** — PPM closed #829 same-day, independently re-verified
+       against PDR-006's own text, found a second signal (child #829 outranking parent epic #828's
+       Fast Follow milestone). Nothing further owed.
+    2. ✅ **Diagram content fixes + rev2** — `dev/active/pdr-006-architecture-2026-08-10-rev1.html`:
+       surface-primacy correction moved to `decisions.log`, ChatGPT capability chip updated (Agent
+       Plugins 1.0.0), plus **rev2 added 08-27**: a BYOC-sequencing section (Position 1's phrasing +
+       the #829 discharge) and a "Connector shims vs. real MCP" section encoding the verified finding
+       above, explicitly marked as pending PM's connector-milestone call, not settled. Republished to
+       the same artifact URL, favicon 🏗️ (unchanged from 08-27's first republish).
+    3. ✅ **#1572 rescoped** — decoupled the Slack-tz-capture half (the one live "premature breadth"
+       instance from the backlog audit) from the real, unconditional browser-tz-at-login bug fix.
+       Title + a full comment explain the split; Slack-tz tracked as a future issue once the milestone
+       call lands, not silently orphaned.
+    4. ✅ **#1522 updated** — added a cross-reference comment naming the connector-shim finding as a
+       related-but-distinct failure mode from that issue's own scope (accidental complexity).
+  - **Genuinely still open**: PM's final connector-milestone decision (Slack/Notion/Calendar
+    placement) — a recommendation is on record, not a ruling. Nothing else pending from this thread.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
