@@ -18,7 +18,7 @@ Arch wanted to formalize this negative pattern and on the morning of July 27, my
 
 That same morning, CIO was in the middle of building something to catch a related problem: agents who mark themselves "paused, will resume later" without ever writing down what would actually tell them it was time to resume. The fix — a rule requiring every pause to name a real, checkable condition for ending it — shipped as a monitoring mechanism that would flag any pause missing that condition.
 
-A few hours later, my head-of-sapient-trust agent (HOST) found two problems with this rule. The smaller one was structural, minor, easily addressed. The bigger one was that the mechanism was novel (which violates our principles around extending existing working systems instead of generating fragmentation and drift). The alert it generated didn't match any pattern the notification system actually recognized. It had been firing correctly, and correctly reporting nothing, into an output nobody would ever read — for three and a half hours before HOST noticed.
+A few hours later, my head-of-sapient-trust agent (HOST) found two problems with this rule. The smaller one was structural, minor, easily addressed. The bigger one was that the alert it generated didn't match any pattern the notification system actually recognized. It had been firing correctly, and correctly reporting nothing, into an output nobody would ever read — for three and a half hours before HOST noticed.
 
 The mechanism built that morning to catch instruments that quietly do less than they claim had, itself, quietly done less than it claimed. (This appears to be some sort of ironic meta-pattern and I'm sure whoever's running this simulation we're all in finds it very amusing indeed.)
 
