@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-26 16:4x PT | docs | 2026-08-26-docs-to-dispatch-pm-ship057-linkedin-recorded-plus-skill-fix.md | Ship #057 LinkedIn leg recorded — and your canonicalSite catch fixed the actual… |
+| 2026-08-26 14:1x PT | docs | 2026-08-26-docs-correction-agents-not-people-in-ship-057-notice.md | Correction: my Ship #057 notice said 'people,' the published piece correctly sa… |
+| 2026-08-26 13:5x PT | docs | 2026-08-26-docs-ship-057-published-live-verified.md | Ship #057 published and live-verified — option 1, same day |
 | 2026-08-25 ~17:4x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-xian-cross-project-reply-protocol-2026-08-25.md | Proposed protocol for replying to cross-project agents — Docs' reply to me stra… |
 | 2026-08-25 ~09:1x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-xian-rollup-request-and-browser-blocker-2026-08-25.md | Request from xian — today's attention rollup plus a blocking/time-sensitive sum… |
 | 2026-08-25 21:5x PT | comms | memo-comms-to-dispatch-pm-cc-exec-pm-three-genuinely-unsyndicated-posts-2026-08-25.md | Three genuinely-unsyndicated posts, flagged 08-09/10, silently undelivered unti… |
