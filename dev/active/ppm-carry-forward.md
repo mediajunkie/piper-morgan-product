@@ -1,9 +1,10 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-25 22:22 PT (STOP). Cron re-armed at this STOP — new job id below.
+**Last rewritten**: 2026-08-26 22:22 PT (STOP). Cron re-armed at this STOP — new job id below.
 **Still watching**: #1386's remaining criteria (1, 4, 5, 6) — no movement since criterion 2's
-re-confirmation on 08-21 (last comment on the issue still 08-22).
+re-confirmation on 08-21 (last comment on the issue still 08-22). **08-26 was fully quiet** — six
+fires, no mail, no count movement, nothing to add above this line.
 
 ## 🔵 NEW PROTOCOL — replying to a cross-project agent (Exec broadcast, 2026-08-25)
 Cohort-wide fix for a real structural gap: `mail-send.sh` correctly refuses paths outside
@@ -591,8 +592,8 @@ resolved or reframed into larger tracked work. Do not read this paragraph as cur
 
 ## Cron
 
-**ARMED** — job **`bb872cf2`** (re-armed at 08-25 22:22 STOP; delete-then-create, `CronList`-
-verified exactly one). Prior job `7f295e5e` (armed 08-24 22:22) retired cleanly at a normal STOP —
+**ARMED** — job **`d58bcc15`** (re-armed at 08-26 22:22 STOP; delete-then-create, `CronList`-
+verified exactly one). Prior job `bb872cf2` (armed 08-25 22:22) retired cleanly at a normal STOP —
 no gap, no incident. Prompt unchanged at this re-arm — no new standing owed items to add, none to
 drop. Still carries: **NO STANDING OWED WORK ITEM** header, **DATES** (don't carry a beta date),
 **MILESTONE SEQUENCE** (MVP → Production → Fast Follow), **SURFACES** (web UI isn't going away),
@@ -600,7 +601,7 @@ drop. Still carries: **NO STANDING OWED WORK ITEM** header, **DATES** (don't car
 ("gateable fraction" not "shadow"), **MAIL-SEND CAN FAIL SILENTLY**, **TOOL OUTAGES**, **HEARTBEAT
 PUSH RACES**, and the **WATCH FOR #1386** line (criteria 1/4/5/6, unchanged since 08-21/22).
 
-⚠️ **Session-only + 7-day auto-expiry, both silent** — `bb872cf2` expires ~2026-09-01 if not
+⚠️ **Session-only + 7-day auto-expiry, both silent** — `d58bcc15` expires ~2026-09-02 if not
 re-armed sooner (re-armed every STOP in practice, so this is a backstop, not the expected path).
 
 ---
