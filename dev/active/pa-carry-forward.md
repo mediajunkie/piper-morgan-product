@@ -32,20 +32,55 @@ days stale.
   different agent seat, or a dedicated QA pass) — code-level inspection is a real but weaker substitute.
 - 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a
   claim, not metadata.
-- 🔴 **BYOC/conversational-layer conversation — TWO inputs now held, PM conversation status still
-  unknown.** Two named-by-PM inputs: (1) Lead's `conversational-layer-strategic-brief-2026-08-18.md` —
-  PA's positions + the summarize-crack finding (half-healed by #1624, residual issue/commit-summarize
-  gap real and adopted as Phase 2 scope 08-19 — settled, no further action) in
-  `mailboxes/pa/sent/reply-pa-to-lead-cc-pm-byoc-prep-crack-found-plus-positions-2026-08-18.md`.
-  (2) CXO's `docs/internal/design/ftux-experience-model-2026-08-21.md` (from PM's live 1-1 with CXO
-  today) — sharpens position 1 (BYOC's turn-taking constraint: on a host-controlled surface Piper can't
-  open, needs a real "responding to greeting" variant, not just packaging overhead) and clarifies
-  position on connector-overlap (§3's "which connector to offer" is a different axis from PA's 08-10
-  "who mediates once connected" — compatible, not competing). PA's integration reply:
-  `mailboxes/pa/sent/reply-pa-to-cxo-cc-arch-ppm-lead-pm-ftux-model-sharpens-byoc-positions-2026-08-21.md`.
-  Architecture diagram (revision 1, 08-10) still the visual artifact underneath all of this — PM still
-  reviewing at their own pace. **Whether/when PM's own live conversation with Lead/PA happens is
-  unknown from this seat — not chasing, but both inputs are now genuinely held and ready.**
+- 🔴 **BYOC/conversational-layer conversation — THE LIVE CONVERSATION HAPPENED 08-26, all three
+  positions landed, thread is PAUSED not closed.** PM opened via `/remote-control` ~15:25, ran past
+  22:00; no explicit goodbye/wrap when day-close hit — treat as open, pick back up naturally next
+  contact, don't announce "picking this back up" like it's a new thread. Full detail in today's session
+  log (`dev/2026/08/26/2026-08-26-0712-pa-code-log.md`), condensed here:
+  - **Position 1 (BYOC parallel-not-primary)**: ACCEPTED. Sharpened mid-conversation: `services/mcp/
+    server/` doesn't exist yet, so BYOC delivery is *sequenced after* the shared grammar work, not
+    literally parallel — "one track that forks into two destinations once the shared foundation is
+    done" (PM's phrase). Condition: coordinate with PPM so roadmap docs don't drift.
+  - **Position 2 (Radar/Files/standup first-party)**: ACCEPTED, extended by PM into a real principle —
+    media (GUI/chat/generated affordances) are renderers of one durable, protocol-agnostic backend;
+    MCP is a current transport, not a permanent commitment. Generative in-chat GUI affordances
+    explicitly scoped OUT for now (PM: "we do not have Piper do the GUI thing at all yet") — named gap,
+    not silently assumed. Corroborated by three Granola transcripts PM shared (Chris Ivester's "Dialog"
+    product + a Jason Cyr design/PM-convergence chat) and two screenshots.
+  - **Position 3 (freeze multi-provider LLM)**: ACCEPTED, "an easy yes." Produced PM's new named
+    project principle: **"no optional complexity"** — scope that outlives the single case that would
+    prove it. Applied live to a real audit (see below).
+  - **⭐ NEW PROJECT PRINCIPLE, PM's own words, worth protecting**: *"no optional complexity... it is
+    so easy to forget... the pull toward scope creep in the name of an ideal vision has weighed and
+    slowed us down."* Should probably land in `decisions.log` as a named, citable principle, not just
+    live in this carry-forward and a session log.
+  - **Connector-gate audit (done live)**: Production milestone's close-gate requires all 4 core
+    connectors "fully refactored/completed." My POV, evidenced not just agreed: GitHub — hard
+    requirement. **Slack — should come OUT of the gate now, stronger case than "could wait": already
+    fail-closed disabled (#1481/#1484, verified still live in code) AND already excluded from CXO's
+    ratified FTUX model's "F-Integrations set" — the gate text is stale relative to two decisions
+    already made, not a new call.** Notion — low-leverage either way (already lightest to maintain).
+    Calendar — genuinely uncertain, real usage-data question for Lead/PPM, not something I can settle.
+  - **Backlog audit**: read all 60 open MVP-milestone issues directly. Honest finding: this pattern
+    barely shows up as individual tickets — the backlog is dominated by real correctness defects, not
+    breadth-of-scope. One live instance found (#1572, timezone capture coupled to the disabled Slack
+    path). #1522 (PM's existing false-trails/dead-code audit) is a related-but-distinct failure mode
+    (accidental leftover complexity vs. PM's "deliberate premature breadth") — kept separate, not merged.
+  - **Owed, executed 08-27 (self-initiated, unblocked + PM-approved, drained per standing duty-cycle
+    discipline rather than left idle)**: (1) ✅ **#829/#1462 PPM reconciliation** — memo sent
+    `mailboxes/ppm/inbox/pa-to-ppm-829-vs-1462-same-milestone-different-architectures-2026-08-27.md`
+    (cc: Arch, Lead), laying out the conflict and proposing close-#829-as-superseded vs. re-scope,
+    explicitly leaving the call to PPM. (2) ✅ **Diagram content fixes** — `dev/active/pdr-006-
+    architecture-2026-08-10-rev1.html`: dropped the "what was wrong before" zombie-language section,
+    replaced with current-truth-only surface table + a pointer to the new `decisions.log` entry
+    ("SURFACE-PRIMACY CORRECTION, ARCHIVED FOR THE RECORD", appended 08-27); updated ChatGPT's
+    capability chip to the verified Agent Plugins 1.0.0 standard (skills + mcp, no longer "manual").
+    Republished to the same artifact URL. Picked **🏗️** as its favicon — no prior favicon was recorded
+    anywhere I could find, so this is a fresh choice, not a confirmed match to whatever it displayed
+    before; keep it stable from here.
+  - **Still owed**: (3) Diagram rev2 encoding the whole 08-26 conversation — do this AFTER the
+    connector count is decided, not before, so it isn't stale on arrival. (4) The connector count
+    itself needs PM's explicit final call — I gave a POV, not a decision.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
@@ -68,24 +103,25 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-25 STOP (22:12)
+## Active state — 2026-08-26 STOP (22:12)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/25/2026-08-25-0706-pa-code-log.md` — **8/25 DAY-CLOSED**, verified strict.
+- **Session log**: `dev/2026/08/26/2026-08-26-0712-pa-code-log.md` — **8/26 DAY-CLOSED**, verified strict.
+  Contains the full write-up of today's live BYOC conversation with PM — read that log, not just this
+  carry-forward, if picking this thread back up cold.
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure.
-  Updated today with the cross-project reply protocol (Exec's 08-25 broadcast) — haven't needed it
-  yet, but the trap (writing only to your own `sent/`, which looks like sending and isn't) is worth
-  knowing before hitting it.
-- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `451f32d4` deleted → job
-  `a567c235` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
+- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `a567c235` deleted → job
+  `07bfdd69` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
 - **Standing discipline (from 08-15's correction, still active)**: re-verify carried-forward claims
   against their live source before citing them in an external report, not just at routine
   carry-forward-hygiene time. Habit, not yet mechanical.
-- **Live thread, PM's pace**: BYOC/conversational-layer — two inputs now held (Lead's brief + CXO's
-  FTUX model). See PM Attention above; not chasing.
+- **Live thread, PM's pace, PAUSED NOT CLOSED**: the BYOC conversation happened today, ran past
+  22:00 with no explicit wrap. See PM Attention above for the full state — all three positions landed,
+  four concrete follow-ups owed (PPM reconciliation, diagram content fixes, diagram rev2, PM's
+  connector-count call). Pick back up naturally, don't treat the overnight gap as the thread having ended.
 
 🔔 **STEP 5b — HEARTBEAT: emit it IMMEDIATELY AFTER `date`, BEFORE the git fetch/merge, and WITHOUT
 `--if-quiet`** *(ordering fixed 2026-08-05: my heartbeat had five commands incl. fetch+merge in front of

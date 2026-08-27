@@ -1,35 +1,33 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-26 ~16:5x PDT (Fire 4 — Ship #057's LinkedIn leg + a real update-calendar
-skill defect found and fixed)
-**Session log**: `dev/2026/08/26/2026-08-26-0727-docs-code-log.md` (open).
-**Cron**: `b8037424`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-01.
+**Updated**: 2026-08-26 ~22:4x PDT (STOP — DAY-CLOSED, cron re-armed `b8037424`→`8bddb70d`)
+**Session log**: `dev/2026/08/26/2026-08-26-0727-docs-code-log.md` — closed, `DAY-CLOSED` marker
+written.
+**Cron**: `8bddb70d`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-02.
 
-**Ship #057 fully distributed**: blog (this morning) + LinkedIn (this afternoon, Dispatch-PM's
-report, verified live before applying). One real content defect caught+fixed before publish
-(verification-chain paragraph miscounted "four people/agents," actually three people/one twice —
-fact-checked against 08-18 CIO/HOST/Exec logs), plus a correction sent to Exec/PM when my own
-recap sloppily said "people" instead of "agents" (the piece itself was always correct).
+**Ship #057 fully closed out**: published + LinkedIn-distributed, one real content defect
+caught+fixed pre-publish, one terminology correction sent when my own recap said "people" instead
+of "agents" (the piece itself was always correct), and Exec independently traced their own share
+of that error to its precise origin (a unit change — "four links" became "four people" — not a
+simple miscount) rather than accept "sloppy." Fully resolved, nothing further owed.
 
-**A genuinely valuable find, not just a data point**: Dispatch-PM's `canonicalSite` catch on Ship
-#057 traced to a real self-contradiction in `.claude/skills/update-calendar/SKILL.md` — its Common
-Updates section instructed setting `canonicalSite→distributed` at blog-first publish, directly
-against its own Field Reference definition ("on blog + syndicated"). I'd followed that wrong
-instruction verbatim this morning. **Very likely the same mechanism behind #1683's 145-row
-undercount at scale.** Fixed the skill (`5ec3111ca`) so new rows stop entering the same
-inconsistency; historical rows untouched, still #1683's separate scoped remediation. Posted as a
-comment on #1683 (not just mail) since it materially refines the root-cause understanding.
+**`update-calendar` skill fixed** (`5ec3111ca`): its own Common Updates section contradicted its
+Field Reference definition of `canonicalSite`, instructing agents to set it at blog-first publish
+rather than at syndication. Very plausibly the same mechanism behind #1683's 145-row undercount.
+Fixed so new rows stop entering the inconsistency; historical rows still #1683's separate scoped
+remediation (comment posted on the issue with the full trace).
 
-**Standing practice, now durable (from 08-25)**: cross-project replies go via the ratified relay
+**Watch, low-priority**: flagged a `mail-send.sh` false-positive to CIO same-day as their new
+half-pushed-move warning shipped (`b3589e38f`) — content already matched `origin/main`, not a real
+strand. Not urgent, just their call whether it's worth a content-equality check.
+
+**Standing practice, durable (from 08-25)**: cross-project replies go via the ratified relay
 protocol — real recipient in `to:`, cc `exec`, deliver via ordinary `mail-send.sh` to
 `exec/inbox/`, Exec relays; a twice-daily Dispatch-PM sweep is the backstop. If writing directly to
-a sibling repo instead, sync first and verify the push landed before treating it as sent — a local
-write there is not delivery. Full context: 08-25's session log + `mailboxes/DIRECTORY.md`.
+a sibling repo instead, sync first and verify the push landed before treating it as sent.
 
-**#1683** (145 editorial-calendar rows genuinely syndicated but `status`/`canonicalSite` never
-bumped) and **#1644** (roadmap.md full v19 fold, PPM's lane) and **#1682** (3 minor findings) all
-still open, none urgent — see their issues / 08-24's omnibus for full context, not re-detailing
-here each day.
+**#1683**, **#1644** (roadmap.md full v19 fold, PPM's lane), **#1682** (3 minor findings) all
+still open, none urgent — see their issues for full context, not re-detailing here each day.
 
 ## Awaiting PM (genuine, not urgent, don't chase)
 

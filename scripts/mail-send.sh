@@ -137,7 +137,15 @@ while :; do
                     role="${f#mailboxes/}"; role="${role%%/*}"
                     name="${f#mailboxes/*/read/}"
                     sib="mailboxes/$role/inbox/$name"
-                    if G cat-file -e "$tree:$sib" 2>/dev/null; then
+                    # Docs 2026-08-26 false-positive, same-day report with evidence: checking only
+                    # "does sib exist in $tree" can't distinguish "caller forgot to pass sib" (real
+                    # strand) from "caller DID pass sib, but its content already matched origin/main
+                    # so write-tree produced no delta for that path" (nothing wrong — the tree looks
+                    # unchanged either way). Fix: only warn if sib was NOT itself one of "$@" — if the
+                    # caller explicitly named it, they handled it, whether or not it changed the tree.
+                    sib_passed=0
+                    for g in "$@"; do [ "$g" = "$sib" ] && sib_passed=1 && break; done
+                    if [ "$sib_passed" -eq 0 ] && G cat-file -e "$tree:$sib" 2>/dev/null; then
                         # Alarm restated as the LAST line, not just the first (Lead 2026-08-26,
                         # with reproduced evidence): a habitual `| tail -1` on this script's output
                         # is what let the original incident hide for weeks — the last line of the

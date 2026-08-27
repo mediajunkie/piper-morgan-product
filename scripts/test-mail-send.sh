@@ -193,6 +193,25 @@ onmain "$T/wtI" mailboxes/lead/read/memo-i.md && ok "the read/ half landed" || n
 gone   "$T/wtI" mailboxes/lead/inbox/memo-i.md && ok "the inbox/ half correctly removed" || no "the inbox/ half not removed"
 echo "$out" | grep -q "is STILL on" && no "false-positive warning fired on a complete move" || ok "no warning on a correctly-complete move"
 
+echo "── T11: Docs's 08-26 false-positive — inbox/ path passed but content unchanged (no tree delta) ──"
+# Docs's exact shape: both read/ and inbox/ MANIFEST paths are passed, but inbox/MANIFEST.md's
+# local content already matches what's on origin/main, so write-tree produces no delta for that
+# path — the tree looks identical to "never touched" even though the caller explicitly named it.
+clone wtJ
+mkdir -p "$T/wtJ/mailboxes/docs/inbox" "$T/wtJ/mailboxes/docs/read"
+printf 'manifest content\n' > "$T/wtJ/mailboxes/docs/inbox/MANIFEST.md"
+git -C "$T/wtJ" add mailboxes/docs/inbox/MANIFEST.md
+git -C "$T/wtJ" commit -qm "seed docs MANIFEST for T11" >/dev/null 2>&1
+git -C "$T/wtJ" push -q origin HEAD:main
+printf 'triage source memo\n' > "$T/wtJ/mailboxes/docs/inbox/memo-j.md"
+mv "$T/wtJ/mailboxes/docs/inbox/memo-j.md" "$T/wtJ/mailboxes/docs/read/memo-j.md"
+printf 'manifest content\n' > "$T/wtJ/mailboxes/docs/inbox/MANIFEST.md"   # re-write, SAME content as origin
+out=$(PIPER_REPO="$T/wtJ" bash "$V3" "mail(j): T11 manifest already matches origin" \
+    mailboxes/docs/read/memo-j.md mailboxes/docs/inbox/MANIFEST.md 2>&1)
+git -C "$T/wtJ" fetch -q origin
+onmain "$T/wtJ" mailboxes/docs/read/memo-j.md && ok "the read/ memo landed" || no "the read/ memo missing"
+echo "$out" | grep -q "STRANDED" && no "false positive: warned even though inbox/MANIFEST.md was explicitly passed" || ok "no false-positive warning when the sibling path was explicitly passed, even with no tree delta"
+
 echo ""
 echo "════════ RESULT: $PASS passed, $FAIL failed ════════"
 [ "$FAIL" = 0 ] && exit 0 || exit 1
