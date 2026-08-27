@@ -1,4 +1,4 @@
-# CIO carry-forward — rewritten 2026-08-26 (22:37 STOP)
+# CIO carry-forward — rewritten 2026-08-27 (10:37 START)
 
 **Cron**: `f5a0d090` · `7 10,16,22` LEAN · armed 2026-08-24 22:37 · **auto-expires ~2026-08-31
 22:37**, well outside the 48h rotation window.
@@ -7,22 +7,18 @@
 
 ---
 
-## 🔴 cxo stall — now ~36h, confirmed SEPARATE from tonight's routine infra blip
+## 🔴🔴 cxo stall — now ~48h, no sign of a deliberate stand-down, escalated four times
 
-Zero activity since 08-25 10:19. Tonight's 18:46 infra-event alert also flagged arch and pa, but
-both resumed and fully day-closed within hours — the familiar self-resolving shape. **cxo did not**
-— its stall predates that event by over a day and continued straight through it. This is a genuine,
-individual, persistent outage, not part of an ordinary machine-sleep event. Needs PM's own
-prod/resume. Escalated three times today (10:37, 16:37, 22:37).
+Zero activity since 08-25 10:19. Checked the registry row directly this morning for any indication
+this is intentional (a deliberately-parked role) rather than a genuine crash — found none; row
+reads "active," cron healthy through ~08-31. This is a two-full-day unexplained outage with no
+visible response yet to yesterday's three escalations. Leading with this in every chat report until
+resolved.
 
-## ✅ mail-send.sh guard — shipped, corrected twice, both same-day (08-26)
+## ✅ mail-send.sh guard — shipped and corrected twice, both same-day (08-26)
 
-Built this morning (Lead's incident). Afternoon: Lead's own investigation proved my "salience"
-guess sharper — presentation (habitual `| tail -1`) defeated a working check, not detection; fixed
-by restating the alarm as the closing line of both warnings (commit `67dcb5d00`). Tonight: Docs
-found a genuine false positive (sibling path passed but content already matched origin, no tree
-delta) — fixed by checking whether the sibling was passed at all, not just whether it's in the tree
-(commit `626316ad1`). 33 tests total on the script now. Both correction cycles same-day as found.
+Built for Lead's incident, then fixed twice same-day (alarm-ordering per Lead's investigation;
+false-positive per Docs's report). 33 tests total. Quiet since — no third issue found overnight.
 
 ## Four items now genuinely awaiting PM — none blocking other work
 
@@ -42,11 +38,11 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 
 ## Watch
 
-- **cxo's stall** — now ~36h, needs PM's own prod/resume, escalated three times today.
+- **cxo's stall** — now ~48h, the lead item in every report until resolved.
 - **PM's response on the four open questions above** — none blocking, all genuinely open.
 - **"Alarm-last-line" methodology candidate** — one instance (Lead, 08-26); watching for a second.
-- **mail-send.sh guard** — two corrections landed same-day; watch for a third before assuming it's
-  fully settled, given the pattern of the day.
+- **mail-send.sh guard** — two corrections landed 08-26; quiet since, watch for a third before
+  assuming fully settled.
 - **HOST's response on the Pattern-069 promotion** — light, not blocking.
 - **Verify the three self-firing workflows actually fire**: skill-candidates 09-01, Agent 360 09-25.
 
@@ -64,14 +60,11 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 
 ## Standing corrections to myself
 
-- **A tracker line is a claim about the world, not the world itself.** (08-23 → 08-25.)
-- **Evidence for a real decision can already be sitting in your own history.** (08-25 16:37.)
 - **A first diagnosis that's "correct in shape" can still be sharpened by someone who actually
-  reproduces it — credit the sharper version plainly, don't defend the vaguer one.** (08-26
-  afternoon, Lead.)
-- **A same-day mechanism needs real usage before it's trustworthy, not just passing its own
-  author's tests — two independent people finding two different real flaws in one day is a signal
-  about the ship, not about the reporters.** (08-26 evening, Docs.)
-- **When multiple roles are flagged together in one infra alert, verify each individually before
-  assuming they share a cause — a genuine persistent stall can sit inside an otherwise-routine
-  self-resolving blip and needs to be pulled out, not lumped in.** (08-26 22:37: cxo vs. arch/pa.)
+  reproduces it.** (08-26 afternoon.)
+- **A same-day mechanism needs real usage before it's trustworthy.** (08-26 evening.)
+- **When multiple roles are flagged together in one infra alert, verify each individually — a
+  genuine persistent stall can sit inside an otherwise-routine self-resolving blip.** (08-26 22:37.)
+- **An escalation that isn't resolved doesn't get quieter with repetition — if anything, lead with
+  it more plainly as it ages, not less, so persistence doesn't read as declining urgency.** (08-27:
+  cxo at 48h is the same fact stated for the fourth time, not old news.)
