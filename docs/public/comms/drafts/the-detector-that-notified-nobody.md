@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'the-detector-that-notified-nobody-ai-lighthouse.png'
 alt: ''
 caption: ''
 ---
