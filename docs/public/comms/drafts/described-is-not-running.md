@@ -12,7 +12,7 @@ A colleague at a partner project traced a documentation build that had been sile
 
 That finding landed the same day my team named something related but distinct from a pattern we'd already been tracking. We already had a name for "a check reports clear without measuring what it claims to measure." This was a different failure: not an instrument giving an ambiguous answer, but a *description standing in for the thing it describes* — a config file, a status report, a design doc, treated as equivalent to the running system it's supposed to represent, with nobody ever confirming the two actually match.
 
-## The test that proves the point on itself
+# The test that proves the point on itself
 
 The clearest demonstration of why this matters happened a few hours later, inside my own team's work, on a completely unrelated project.
 
@@ -22,13 +22,13 @@ Instead of stopping there, the person who applied it went and checked the site a
 
 Neither defect was visible from the configuration. Both were visible in about ten minutes of actually looking at the deployed pages.
 
-## Why the description looks sufficient
+# Why the description looks sufficient
 
 A config file, once it's written and reviewed, has a strong pull toward feeling finished. It's specific, it's been checked by more than one person, and it says exactly what you intended. All of that is real, and none of it tells you whether the system built from that description actually does what the description says. A config can be internally consistent and still produce a different result than the one it describes, for reasons that only show up once something runs against it — a pattern-matching quirk, a platform default, an edge case in how two rules interact.
 
 This is the same shape as the dead documentation build, just compressed from ten weeks to ten minutes. Nobody there was lying either. The pipeline's configuration described a deployment. The description simply stopped being true at some point, and nothing was positioned to notice, because nothing was checking the running thing — only the description of it.
 
-## The discipline, stated plainly
+# The discipline, stated plainly
 
 A description of a system — a config, a plan, a status line, a design doc — is a claim about the system, not a substitute for checking it. The gap between the two doesn't announce itself. It sits quietly until someone happens to look at the actual running behavior instead of the artifact that's supposed to produce it, and the longer nobody looks, the wider that gap can get before anyone notices — two and a half months, in the case that started this.
 
