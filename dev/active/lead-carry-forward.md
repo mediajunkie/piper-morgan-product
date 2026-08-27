@@ -7,8 +7,11 @@ _Rewritten 2026-08-19 ~21:50 PT (Phase 2.2 scaffold complete, dark)._
   All of today's live-test finds shipped same-day. PM has the fresh test list in the tracker artifact.
 
 ## Awaiting
-- PM: the PA/BYOC chat outcome (CXO's FTUX model + my brief are its inputs) → then the MVP
-  triage cut with PPM · v62 test round (7-item plan; the flip's first traffic) · two 5-minute
+- ✅ BOTH STRATEGIC GATES CLEARED: CXO/FTUX 8/21 (model written) + **PA/BYOC 8/26 — PM accepted
+  Position 1** (BYOC forks off the shared foundation once built; NOT beta-primary; PM's condition:
+  PA coordinates with PPM on roadmap coherence). Learned 8/27 from a cc thread, not directly.
+- MVP TRIAGE CUT: proposal sent to PPM 8/27 (my half = engineering read per item; their half =
+  sprint/milestone call; PM rules the assembled cut in one sitting). Awaiting PPM's go-ahead · v62 test round (7-item plan; the flip's first traffic) · two 5-minute
   decisions offered: #1598 (admin routes bless-or-gate) + #1635 (false-door shape) · #1677 triage
   lean (todo-create misroute = #1488's mechanism; my lean: classifier-prompt example add)
 - CXO: #1386 criterion-2 sign-off (keyed Run 14 evidence delivered 8/21)
