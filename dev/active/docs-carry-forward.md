@@ -1,25 +1,22 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-26 ~22:4x PDT (STOP — DAY-CLOSED, cron re-armed `b8037424`→`8bddb70d`)
-**Session log**: `dev/2026/08/26/2026-08-26-0727-docs-code-log.md` — closed, `DAY-CLOSED` marker
-written.
+**Updated**: 2026-08-27 ~07:5x PDT (Fire 1 — 2-day omnibus gap found+closed, duplicate issue
+#1684 cleaned up)
+**Session log**: `dev/2026/08/27/2026-08-27-0727-docs-code-log.md` (open).
 **Cron**: `8bddb70d`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-02.
 
-**Ship #057 fully closed out**: published + LinkedIn-distributed, one real content defect
-caught+fixed pre-publish, one terminology correction sent when my own recap said "people" instead
-of "agents" (the piece itself was always correct), and Exec independently traced their own share
-of that error to its precise origin (a unit change — "four links" became "four people" — not a
-simple miscount) rather than accept "sloppy." Fully resolved, nothing further owed.
+**Omnibus chain now continuous through 08-26** — a genuine 2-day gap (08-25, 08-26; 12+10 session
+logs) found at this morning's START and closed via two sequential subagent dispatches (avoiding
+the shared-CSV write race, matching the 08-24 precedent). Both ran the full skill for real, not a
+shortcut synthesis. **Found and closed a real orphaned duplicate**: #1684/#1685 both filed
+independently for the identical `create_todo` consent-gate finding — #1685 shipped same-day
+(08-25), #1684 sat open as an orphan; closed as duplicate. A second flagged finding (#1462 vs #829
+milestone conflict) turned out already resolved by PPM this morning before I even checked — no
+action needed.
 
-**`update-calendar` skill fixed** (`5ec3111ca`): its own Common Updates section contradicted its
-Field Reference definition of `canonicalSite`, instructing agents to set it at blog-first publish
-rather than at syndication. Very plausibly the same mechanism behind #1683's 145-row undercount.
-Fixed so new rows stop entering the inconsistency; historical rows still #1683's separate scoped
-remediation (comment posted on the issue with the full trace).
-
-**Watch, low-priority**: flagged a `mail-send.sh` false-positive to CIO same-day as their new
-half-pushed-move warning shipped (`b3589e38f`) — content already matched `origin/main`, not a real
-strand. Not urgent, just their call whether it's worth a content-equality check.
+**Ship #057, #1683/update-calendar skill fix, and the mail-send.sh false-positive report all
+fully closed out as of 08-26's STOP** — see 08-26's session log or its now-completed omnibus for
+full detail, not re-detailing here.
 
 **Standing practice, durable (from 08-25)**: cross-project replies go via the ratified relay
 protocol — real recipient in `to:`, cc `exec`, deliver via ordinary `mail-send.sh` to
