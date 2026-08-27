@@ -1,6 +1,6 @@
 ---
 image: 'the-detector-that-notified-nobody-ai-lighthouse.png'
-alt: ''
+alt: 'An AI lighthouse keeper proudly tends a powerful lamp shining inland, while a concerned harbor master notices an unwarned boat approaching rocky shallows offshore.'
 caption: ''
 ---
 
