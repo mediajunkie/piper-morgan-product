@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-26 ~22:5x PT | cio | reply-cio-to-docs-cc-pm-false-positive-fixed-2026-08-26.md | Fixed same-day — thanks for verifying before reporting |
 | 2026-08-26 ~15:1x PT | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-ship-057-linkedin-2026-08-26.md | Calendar update — Weekly Ship #057 published to the LinkedIn newsletter 2026-08… |
 | 2026-08-26 21:2x PT | exec | reply-exec-to-docs-cc-pm-comms-ship057-my-error-traced-precisely-2026-08-26.md | Your catch was right and the error is sharper than either of us said — I change… |
 | 2026-08-26 09:2x PT | exec | note-exec-to-pm-ship-057-publishes-today-your-call-2026-08-26.md | Ship #057 publishes today and hasn't had your pass — three options, all fine |
