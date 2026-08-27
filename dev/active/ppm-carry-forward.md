@@ -1,10 +1,35 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-26 22:22 PT (STOP). Cron re-armed at this STOP — new job id below.
-**Still watching**: #1386's remaining criteria (1, 4, 5, 6) — no movement since criterion 2's
-re-confirmation on 08-21 (last comment on the issue still 08-22). **08-26 was fully quiet** — six
-fires, no mail, no count movement, nothing to add above this line.
+**Last rewritten**: 2026-08-27 13:24 PT (WORK). **Still watching**: #1386's remaining criteria (1,
+4, 5, 6) — no movement since criterion 2's re-confirmation on 08-21 (last comment still 08-22).
+
+## 🟢 ACTIVE — MVP TRIAGE CUT, PM's #3 priority, in progress with Lead (started 2026-08-27)
+**The thread**: PM sanctioned (08-18 strategic brief, Lead's) a post-gate MVP triage pass —
+milestone has hovered 50→71→61 over two weeks despite ~35 closures, not drift but real findings
+that don't converge by grinding. PM's own 08-25 4-item priority list (confirmed in Lead's log, not
+just Lead's memo to me) names this **item 3**: *"prepare with PPM this week, PM rules in one
+sitting, Docs/Exec briefed same pass."* Both gating conversations resolved: FTUX (CXO, 08-21) and
+BYOC Position 1 (PA, 08-26 — the core list was deliberately designed to survive either BYOC
+answer, so this doesn't reopen anything, just confirms the list stands).
+
+**Split, PM-endorsed shape** (same pattern as the briefing refresh): **Lead** delivers an
+engineering read per open MVP item (built/verified/staged, what it blocks, core-list touch or
+not) as an evidence-linked table. **I** make the sprint/milestone call per item (MVP-keep / PUB /
+post-beta-with-known-issue) plus roadmap coherence. **PM** rules on the assembled cut once.
+
+**Status 08-27 13:24**: accepted the split, sent Lead the go-ahead + a fresh `sprint-truth.py`
+denominator (`61 not done`) for the cover page, cc PM+Exec (`6572428ba`). **Waiting on Lead's
+table** — no further gate needed from my side once it arrives. **The §3 "no matter what" core
+list** (from `docs/internal/product/conversational-layer-strategic-brief-2026-08-18.md`): (1)
+consent/trust architecture, (2) honesty discipline, (3) PM-operation grammar (the 62 ops), (4)
+working-state model + Radar, (5) synthesis direction (standup/briefings/ambient L4). Explicitly
+NOT core: NL parser, floor's prose improvisation, chat container itself, per-phrasing patches. Use
+this list directly when the table lands — don't re-derive it.
+
+**Next action when Lead's table arrives**: work through each MVP item against the core list, make
+the MVP-keep/PUB/post-beta call, write it up for PM's one-sitting review. This is real, sizeable
+work (61 items) — likely spans more than one fire once it starts.
 
 ## 🔵 NEW PROTOCOL — replying to a cross-project agent (Exec broadcast, 2026-08-25)
 Cohort-wide fix for a real structural gap: `mail-send.sh` correctly refuses paths outside
