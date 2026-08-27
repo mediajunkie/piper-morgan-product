@@ -82,8 +82,21 @@ days stale.
        call lands, not silently orphaned.
     4. ✅ **#1522 updated** — added a cross-reference comment naming the connector-shim finding as a
        related-but-distinct failure mode from that issue's own scope (accidental complexity).
-  - **Genuinely still open**: PM's final connector-milestone decision (Slack/Notion/Calendar
-    placement) — a recommendation is on record, not a ruling. Nothing else pending from this thread.
+  - **RATIFIED 2026-08-27 (same day, later in the conversation): "I approve your recommendations."**
+    Slack → Fast Follow, confirmed. Executed immediately, not left as a ruling sitting in chat:
+    Production milestone (#9) description updated (three connectors: GitHub/Calendar/Notion); epic
+    #1440 retitled + commented with full rationale; five Slack-specific Production issues moved to
+    Fast Follow (#1364, #1481, #1500, #1503, #1497); #1514 (spans all four connectors) left in
+    Production with a scope note rather than moved wholesale; #1572's Slack-tz half filed as new
+    issue **#1686** (Fast Follow) now that the milestone call is final. **Loop-in memo sent to PPM,
+    CXO, Arch (cc PM)** per PM's direct ask —
+    `mailboxes/pa/sent/pa-to-ppm-cxo-arch-cc-pm-slack-descoped-connector-architecture-2026-08-27.md`
+    — one open question per recipient (PPM: roadmap coherence, same shape as #829; CXO: pure
+    confirmation against their already-ratified FTUX exclusion; Arch: the GitHub self-hosted-vs-
+    vendor-hosted `github-mcp-server` config question, flagged not decided).
+  - **Thread status**: PM signaled next topic is "the BYOC skunkworks project itself, next steps" —
+    a new phase of this conversation, not yet started. Nothing else pending from the connector
+    question specifically; watch for PPM/CXO/Arch replies to the loop-in memo.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
