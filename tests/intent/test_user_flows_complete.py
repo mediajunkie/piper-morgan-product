@@ -148,9 +148,9 @@ class TestMiddlewareEnforcement:
             # following "/"'s login redirect renders a template, which needs
             # the full app lifespan the bare TestClient doesn't run.
             response = client.get(path, follow_redirects=False)
-            assert response.status_code in expected_codes, (
-                f"{path} should be accessible, got {response.status_code}: {response.text[:200]}"
-            )
+            assert (
+                response.status_code in expected_codes
+            ), f"{path} should be accessible, got {response.status_code}: {response.text[:200]}"
 
 
 class TestPersonalityIntegration:

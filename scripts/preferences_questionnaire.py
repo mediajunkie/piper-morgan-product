@@ -14,6 +14,7 @@ import sys
 from datetime import datetime
 from typing import Dict, List
 
+
 def _ensure_venv_when_run_directly() -> None:
     """Re-exec inside ./venv when this script is RUN outside it (CLI affordance).
 

@@ -465,10 +465,11 @@ class AuditTransparency:
         """Get transparency system statistics. Now async because total
         + recent counts come from DB queries (Issue #1018 Phase 2)."""
         try:
+            from sqlalchemy import func, select
+
+            from services.database.models import EthicsAuditLogDB
             from services.database.repositories import EthicsAuditRepository
             from services.database.session_factory import AsyncSessionFactory
-            from sqlalchemy import func, select
-            from services.database.models import EthicsAuditLogDB
 
             async with AsyncSessionFactory.session_scope() as session:
                 repo = EthicsAuditRepository(session)

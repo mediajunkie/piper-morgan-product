@@ -486,9 +486,7 @@ class TestComingSoonPlaceholder1635:
 
     def test_example_provenance_maps_to_dashed_card_class(self, history_html):
         """The renderer branch the placeholder relies on for visual distinctness."""
-        assert (
-            "entity.provenance === 'example' ? ' radar-card--example'" in history_html
-        )
+        assert "entity.provenance === 'example' ? ' radar-card--example'" in history_html
         assert ".radar-card--example { border-style: dashed;" in history_html
 
     def test_no_template_hardcodes_the_placeholder(self, history_html):

@@ -39,9 +39,7 @@ class _CaptureSession:
 def _enum_binds(query):
     """All bound literals in the WHERE clause that are raw enum members."""
     binds = [
-        el.value
-        for el in visitors.iterate(query.whereclause)
-        if isinstance(el, BindParameter)
+        el.value for el in visitors.iterate(query.whereclause) if isinstance(el, BindParameter)
     ]
     return [v for v in binds if isinstance(v, (TodoStatus, TodoPriority))]
 
@@ -82,9 +80,7 @@ async def test_get_todos_by_owner_filters_still_bind_str():
     session = _CaptureSession()
     repo = TodoRepository(session)
 
-    await repo.get_todos_by_owner(
-        "user-1", status=TodoStatus.PENDING, priority=TodoPriority.HIGH
-    )
+    await repo.get_todos_by_owner("user-1", status=TodoStatus.PENDING, priority=TodoPriority.HIGH)
 
     assert len(session.queries) == 1
     assert _enum_binds(session.queries[0]) == []

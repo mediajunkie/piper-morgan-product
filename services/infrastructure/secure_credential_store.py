@@ -63,9 +63,7 @@ class EncryptedDBCredentialStore:
                     # (connect/settings-time), so every op opens and truly
                     # closes its connection — no idle sync connection parked
                     # against Postgres for the process lifetime.
-                    self._engine = create_engine(
-                        get_sync_migration_url(), poolclass=NullPool
-                    )
+                    self._engine = create_engine(get_sync_migration_url(), poolclass=NullPool)
         return self._engine
 
     def store(self, name: str, value: str) -> None:

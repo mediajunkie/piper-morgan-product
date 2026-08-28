@@ -302,12 +302,21 @@ class TestContextAssembler:
         # #1547: integrations come from the canonical IntegrationStatusService
         # (user-scoped, binding-first), not the constant-false plugin registry.
         with patch(
-            "services.integrations.integration_status_service."
-            "IntegrationStatusService.get_all",
+            "services.integrations.integration_status_service." "IntegrationStatusService.get_all",
             new=AsyncMock(
                 return_value={
-                    "github": {"configured": True, "via": "env", "healthy": None, "last_check": None},
-                    "slack": {"configured": False, "via": None, "healthy": None, "last_check": None},
+                    "github": {
+                        "configured": True,
+                        "via": "env",
+                        "healthy": None,
+                        "last_check": None,
+                    },
+                    "slack": {
+                        "configured": False,
+                        "via": None,
+                        "healthy": None,
+                        "last_check": None,
+                    },
                 }
             ),
         ):

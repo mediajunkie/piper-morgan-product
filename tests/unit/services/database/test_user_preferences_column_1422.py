@@ -86,16 +86,15 @@ async def db_user_with_prefs():
 
 
 async def test_preferences_round_trip_through_orm(db_user_with_prefs):
-    from services.database.models import User
     from sqlalchemy import select
+
+    from services.database.models import User
 
     engine = create_async_engine(_DB_URL, echo=False)
     async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
     try:
         async with async_session() as s:
-            user = (
-                await s.execute(select(User).where(User.id == db_user_with_prefs))
-            ).scalar_one()
+            user = (await s.execute(select(User).where(User.id == db_user_with_prefs))).scalar_one()
             assert user.preferences["communication_style"] == "concise"
             # The onboarding writer's exact idiom (intent_service.py ~:2455)
             prefs = dict(user.preferences or {})
@@ -103,9 +102,7 @@ async def test_preferences_round_trip_through_orm(db_user_with_prefs):
             user.preferences = prefs
             await s.commit()
         async with async_session() as s:
-            user = (
-                await s.execute(select(User).where(User.id == db_user_with_prefs))
-            ).scalar_one()
+            user = (await s.execute(select(User).where(User.id == db_user_with_prefs))).scalar_one()
             assert user.preferences["feedback_level"] == "detailed"
     finally:
         await engine.dispose()

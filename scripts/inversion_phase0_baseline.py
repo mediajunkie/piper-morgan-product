@@ -165,7 +165,9 @@ async def run(full: bool, out: Path | None) -> None:
 
     lines.append("## Per-category (denominators stated — m-44)")
     lines.append("")
-    lines.append("| category | rows | s1-claimed | asserted-expected | match | REVIEW (open questions) |")
+    lines.append(
+        "| category | rows | s1-claimed | asserted-expected | match | REVIEW (open questions) |"
+    )
     lines.append("|---|---|---|---|---|---|")
     tot = {"n": 0, "review": 0, "asserted": 0, "match": 0, "claimed": 0}
     for cat in sorted(per_cat, key=lambda c: -per_cat[c]["n"]):
@@ -213,8 +215,10 @@ async def run(full: bool, out: Path | None) -> None:
         out.write_text(text)
         print(f"wrote {out}")
     # console summary
-    print(f"{mode}: {tot['n']} rows · s1 claimed {tot['claimed']} · "
-          f"asserted {tot['asserted']} · matched {tot['match']} · REVIEW {tot['review']}")
+    print(
+        f"{mode}: {tot['n']} rows · s1 claimed {tot['claimed']} · "
+        f"asserted {tot['asserted']} · matched {tot['match']} · REVIEW {tot['review']}"
+    )
 
 
 if __name__ == "__main__":

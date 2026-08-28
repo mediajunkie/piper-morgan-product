@@ -173,9 +173,7 @@ _NUMBER_WORDS = {
 # NON-capturing, longest-first (so "seven" can't pre-empt "seventeen"):
 # todo_handlers embeds this inside slot patterns that rely on group(1)
 # indexing, so introducing a capturing group here would silently break them.
-DURATION_NUMBER_SRC = (
-    r"(?:\d+|" + "|".join(sorted(_NUMBER_WORDS, key=len, reverse=True)) + r")"
-)
+DURATION_NUMBER_SRC = r"(?:\d+|" + "|".join(sorted(_NUMBER_WORDS, key=len, reverse=True)) + r")"
 
 _DURATION_RE = re.compile(
     rf"\bin\s+(?P<amount>{DURATION_NUMBER_SRC})\s+"
@@ -307,9 +305,7 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
             # — explicit clock time on the OTHER side of "tomorrow". Pre-fix
             # this fell through to the 9am morning default (prod row saved at
             # 09:00 with copy "tomorrow morning").
-            dt = tomorrow.replace(
-                hour=clock[0], minute=clock[1], second=0, microsecond=0
-            )
+            dt = tomorrow.replace(hour=clock[0], minute=clock[1], second=0, microsecond=0)
             return (dt, f"tomorrow at {clock[2]}")
         if "afternoon" in message_lower:
             dt = tomorrow.replace(hour=14, minute=0, second=0, microsecond=0)

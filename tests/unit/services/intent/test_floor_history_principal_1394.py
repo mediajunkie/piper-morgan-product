@@ -91,9 +91,10 @@ def _intent(category, action, message, user_id=None):
 def _assert_history_reaches_floor(captured):
     assert captured, "floor was never reached"
     history = captured[-1].conversation_history
-    assert {"role": "user", "content": PRIOR_USER_MSG} in history, (
-        f"prior turn missing from floor history: {history!r}"
-    )
+    assert {
+        "role": "user",
+        "content": PRIOR_USER_MSG,
+    } in history, f"prior turn missing from floor history: {history!r}"
     assert {"role": "assistant", "content": PRIOR_ASSISTANT_MSG} in history
     # and the prompt the LLM would actually see carries it (m-43: right layer)
     prompt = cf.ConversationalFloor()._build_prompt(captured[-1])
@@ -118,9 +119,7 @@ class TestQueryFallthroughHistory:
         clear_context(session_id, user_id)
 
     @pytest.mark.asyncio
-    async def test_floor_continuation_flags_land_on_authenticated_context(
-        self, captured_floor
-    ):
+    async def test_floor_continuation_flags_land_on_authenticated_context(self, captured_floor):
         """The #913 floor tag must land on the SAME context the outer seam
         reads next turn — the authenticated one, not anonymous."""
         session_id, user_id = _fresh_ids()
@@ -166,9 +165,7 @@ class TestCategoryFallthroughHistory:
         clear_context(session_id, user_id)
 
     @pytest.mark.asyncio
-    async def test_unknown_intent_recovers_principal_from_intent_context(
-        self, captured_floor
-    ):
+    async def test_unknown_intent_recovers_principal_from_intent_context(self, captured_floor):
         """Direct guard on the shared floor entry: user_id param absent but the
         principal stamped on the intent → history still reaches the floor."""
         session_id, user_id = _fresh_ids()
@@ -183,9 +180,7 @@ class TestCategoryFallthroughHistory:
         clear_context(session_id, user_id)
 
     @pytest.mark.asyncio
-    async def test_no_principal_anywhere_still_works_with_empty_history(
-        self, captured_floor
-    ):
+    async def test_no_principal_anywhere_still_works_with_empty_history(self, captured_floor):
         """Genuinely anonymous call (no param, no stamp): unchanged behavior —
         floor responds, history is whatever the anonymous context holds."""
         session_id, _ = _fresh_ids()

@@ -99,9 +99,7 @@ _UNGROUPED_OP = "strategic_planning"
 async def sm(monkeypatch):
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
     async with engine.begin() as conn:
-        await conn.run_sync(
-            lambda c: SessionActivityDB.__table__.create(c, checkfirst=True)
-        )
+        await conn.run_sync(lambda c: SessionActivityDB.__table__.create(c, checkfirst=True))
     maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
     @contextlib.asynccontextmanager
@@ -143,9 +141,7 @@ def _rail_registered():
 
 @pytest.fixture
 def svc():
-    return SimpleNamespace(
-        workflow_offer_service=WorkflowOfferService(), intent_classifier=None
-    )
+    return SimpleNamespace(workflow_offer_service=WorkflowOfferService(), intent_classifier=None)
 
 
 class _LogRecorder:
@@ -164,9 +160,7 @@ class _LogRecorder:
         raise AttributeError(name)
 
     def decisions(self):
-        return [
-            (lvl, f) for lvl, ev, f in self.events if ev == "inversion_live_decision"
-        ]
+        return [(lvl, f) for lvl, ev, f in self.events if ev == "inversion_live_decision"]
 
 
 @pytest.fixture
@@ -214,9 +208,7 @@ def _decision(operation=_STATUS_OP, confidence=0.9):
 async def _consult(svc, monkeypatch, log_rec, *, cats, operation, confidence=0.9):
     monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", cats)
     calls = _stub_route(monkeypatch, _decision(operation, confidence))
-    out = await consult_inversion_live(
-        _MSG, session_id=_SESSION, user_id=_USER, intent_service=svc
-    )
+    out = await consult_inversion_live(_MSG, session_id=_SESSION, user_id=_USER, intent_service=svc)
     return out, calls, log_rec.decisions()
 
 
@@ -261,9 +253,7 @@ class TestFlipGroupDeclaration:
         assert "read_status" in str(exc.value)  # lists the known vocabulary
 
     def test_wave_1_vocabulary(self):
-        assert FLIP_GROUPS == frozenset(
-            {"read_status", "read_referent", "read_synthesis"}
-        )
+        assert FLIP_GROUPS == frozenset({"read_status", "read_referent", "read_synthesis"})
 
     def test_every_grouped_rail_entry_is_read(self):
         """The invariant re-measured over the REAL registry, not just the
@@ -296,8 +286,14 @@ class TestFlipGroupDeclaration:
         for op in ("summarize_document", "summarize_file"):
             assert rail[op].flip_group == "read_synthesis", op
         # Deliberately ungrouped (see the entry comments for each reason).
-        for op in ("strategic_planning", "learn_pattern", "prioritize",
-                   "generate_content", "changes_query", "week_calendar"):
+        for op in (
+            "strategic_planning",
+            "learn_pattern",
+            "prioritize",
+            "generate_content",
+            "changes_query",
+            "week_calendar",
+        ):
             assert rail[op].flip_group is None, op
 
     def test_aliases_inherit_their_entrys_group(self):
@@ -318,12 +314,8 @@ class TestFlagResolution:
         assert live_categories() == frozenset()
 
     def test_group_and_op_tokens_normalize_like_categories(self, monkeypatch):
-        monkeypatch.setenv(
-            "PIPER_INVERSION_LIVE_CATEGORIES", " read_status , show_standup ,QUERY,"
-        )
-        assert live_categories() == frozenset(
-            {"READ_STATUS", "SHOW_STANDUP", "QUERY"}
-        )
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", " read_status , show_standup ,QUERY,")
+        assert live_categories() == frozenset({"READ_STATUS", "SHOW_STANDUP", "QUERY"})
 
     def test_match_by_group(self):
         assert (
@@ -516,9 +508,7 @@ class TestLiveConsultSurfaces:
         assert isinstance(out, Intent)
         assert f["live_match"] == "category" and f["flip_group"] is None
 
-    async def test_write_never_flips_by_any_surface(
-        self, sm, mem_prefs, svc, monkeypatch, log_rec
-    ):
+    async def test_write_never_flips_by_any_surface(self, sm, mem_prefs, svc, monkeypatch, log_rec):
         """Belt, restated for the widened flag: naming a WRITE op directly —
         the most explicit request possible — still cannot flip it."""
         out, _, [(_, f)] = await _consult(
@@ -541,9 +531,7 @@ class TestLiveConsultSurfaces:
         )
         assert out is None and f["reason"] == "sub_threshold"
 
-    async def test_default_empty_still_byte_identically_dark(
-        self, monkeypatch, svc, log_rec
-    ):
+    async def test_default_empty_still_byte_identically_dark(self, monkeypatch, svc, log_rec):
         """Unchanged by the widening: unset ⇒ zero work, not even a log line.
         (Explosive snapshot AND explosive router — the group lookup must not
         have introduced work before the flag check.)"""
@@ -570,17 +558,13 @@ class TestLiveConsultSurfaces:
 
         monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_status")
         calls = _stub_route(monkeypatch, _decision(_STATUS_OP, 0.9))
-        service = IntentService(
-            intent_classifier=IntentClassifier(llm_service=_ExplosiveLLM())
-        )
+        service = IntentService(intent_classifier=IntentClassifier(llm_service=_ExplosiveLLM()))
 
         async def _boom(*a, **k):
             raise AssertionError("classify_multiple consulted — the flip must replace it")
 
         monkeypatch.setattr(service.intent_classifier, "classify_multiple", _boom)
-        result = await service.process_intent(
-            message=_MSG, session_id=_SESSION, user_id=_USER
-        )
+        result = await service.process_intent(message=_MSG, session_id=_SESSION, user_id=_USER)
         assert len(calls) == 1
         assert result.success is True
         assert result.intent_data["action"] == _STATUS_OP
@@ -602,9 +586,7 @@ class TestFlipCoverageAudit:
         the reader is expected to subtract."""
         rail = get_action_workflows()
         unassigned = [
-            k
-            for k, e in rail.items()
-            if e.effect == EffectClass.READ and e.flip_group is None
+            k for k, e in rail.items() if e.effect == EffectClass.READ and e.flip_group is None
         ]
         assert unassigned, "fixture sanity: some READ ops are ungrouped"
         for op in unassigned:
@@ -614,9 +596,7 @@ class TestFlipCoverageAudit:
         rail = get_action_workflows()
         n_read = sum(1 for e in rail.values() if e.effect == EffectClass.READ)
         n_ungrouped = sum(
-            1
-            for e in rail.values()
-            if e.effect == EffectClass.READ and e.flip_group is None
+            1 for e in rail.values() if e.effect == EffectClass.READ and e.flip_group is None
         )
         assert f"{n_ungrouped:3d}/{n_read}" in report
         assert f"rail operation keys (action_triggered) : {len(rail):3d}" in report

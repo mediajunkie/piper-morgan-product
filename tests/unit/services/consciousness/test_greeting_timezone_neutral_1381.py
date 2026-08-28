@@ -50,7 +50,5 @@ class TestKnownTimezoneKeepsDayPart:
             "services.consciousness.conversation_consciousness._current_time_of_day",
             return_value="morning",
         ):
-            opening = format_greeting_conscious(
-                user_timezone="America/Los_Angeles"
-            ).split("\n")[0]
+            opening = format_greeting_conscious(user_timezone="America/Los_Angeles").split("\n")[0]
         assert "Good morning" in opening

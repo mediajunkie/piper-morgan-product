@@ -236,9 +236,7 @@ class ConversationManager:
 
         try:
             # Last 5 turns for performance
-            recent_turns = await self.get_recent_turns(
-                conversation_id, limit=5, user_id=user_id
-            )
+            recent_turns = await self.get_recent_turns(conversation_id, limit=5, user_id=user_id)
             if not recent_turns:
                 return message, []
 

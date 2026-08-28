@@ -25,7 +25,6 @@ from uuid import uuid4
 
 import pytest
 
-
 SKILL_MODULE = "services.integrations.mcp.skills.standup_workflow_skill"
 
 

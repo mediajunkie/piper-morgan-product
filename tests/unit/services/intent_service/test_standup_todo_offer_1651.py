@@ -50,8 +50,7 @@ class _ExplosiveLLM:
 
     def __getattr__(self, name):
         raise AssertionError(
-            f"LLM boundary touched ({name}) — #1651 turns must resolve "
-            "deterministically"
+            f"LLM boundary touched ({name}) — #1651 turns must resolve " "deterministically"
         )
 
 
@@ -114,9 +113,7 @@ async def _standup_turn(service, sid, message="give me my standup"):
         "services.standup.assembler.build_user_standup_summary",
         new=AsyncMock(return_value=_summary()),
     ):
-        return await service.process_intent(
-            message=message, session_id=sid, user_id=_USER
-        )
+        return await service.process_intent(message=message, session_id=sid, user_id=_USER)
 
 
 # ---------------------------------------------------------------------------
@@ -188,9 +185,7 @@ class TestOfferBuilder:
         from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
 
         register_default_workflows()
-        assert WORKFLOW_REGISTRY[STANDUP_COMPLETE_TODO_WORKFLOW].effect == (
-            EffectClass.WRITE
-        )
+        assert WORKFLOW_REGISTRY[STANDUP_COMPLETE_TODO_WORKFLOW].effect == (EffectClass.WRITE)
 
 
 # ---------------------------------------------------------------------------
@@ -253,16 +248,17 @@ class TestAcceptanceEntryPoint:
 
     async def test_foreign_or_missing_payload_never_fires(self):
         stub, fake = self._service_stub([])
-        assert await run_standup_complete_todo_workflow(
-            session_id="s", context={}
-        ) is None
-        assert await run_standup_complete_todo_workflow(
-            session_id="s",
-            context={
-                "pending_action": {"kind": "drafted_issue"},
-                "intent_service": stub,
-            },
-        ) is None
+        assert await run_standup_complete_todo_workflow(session_id="s", context={}) is None
+        assert (
+            await run_standup_complete_todo_workflow(
+                session_id="s",
+                context={
+                    "pending_action": {"kind": "drafted_issue"},
+                    "intent_service": stub,
+                },
+            )
+            is None
+        )
         assert fake.completed_calls == []
 
 
@@ -291,9 +287,7 @@ class TestEndToEndStandupOfferTurns:
         assert stored["workflow_type"] == STANDUP_COMPLETE_TODO_WORKFLOW
         assert stored["pending_action"]["todo_id"] == str(todo.id)
 
-    async def test_pm_verbatim_acceptance_completes_the_bound_todo(
-        self, live_service
-    ):
+    async def test_pm_verbatim_acceptance_completes_the_bound_todo(self, live_service):
         """Turn 2, PM's exact words: 'Yes mark the overdue todo done.' —
         the bound todo completes; no title matching runs (the todo's title
         contains no word from the acceptance phrase)."""
@@ -325,9 +319,7 @@ class TestEndToEndStandupOfferTurns:
         fake = _wire_todos(live_service, [todo])
         sid = "e2e-1651-yes"
         await _standup_turn(live_service, sid)
-        result = await live_service.process_intent(
-            message="yes", session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert fake.completed_calls == [(str(todo.id), _USER)]
         assert "pay the invoice" in result.message
 
@@ -336,9 +328,7 @@ class TestEndToEndStandupOfferTurns:
         fake = _wire_todos(live_service, [todo])
         sid = "e2e-1651-no"
         await _standup_turn(live_service, sid)
-        result = await live_service.process_intent(
-            message="no", session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message="no", session_id=sid, user_id=_USER)
         assert fake.completed_calls == []
         assert todo.completed is False
         assert '"pay the invoice" stays on your list' in result.message
@@ -359,9 +349,7 @@ class TestEndToEndStandupOfferTurns:
             assert stored["workflow_type"] != STANDUP_COMPLETE_TODO_WORKFLOW
         assert "overdue" not in result.message
 
-    async def test_most_overdue_bound_when_multiple_and_count_stated(
-        self, live_service
-    ):
+    async def test_most_overdue_bound_when_multiple_and_count_stated(self, live_service):
         """Never an unbound 'that todo': with several overdue, the single
         strongest (most overdue) is bound and the copy enumerates."""
         older = _todo("book flights", days_overdue=9)
@@ -408,8 +396,8 @@ class TestEndToEndStandupOfferTurns:
         # it, so it heads for the classifier — stub the LLM lane out by
         # patching classify_multiple (the turn's routing is not under test;
         # what is pinned: nothing fires, the offer is gone).
-        from services.intent_service.pre_classifier import MultiIntentResult
         from services.domain.models import Intent
+        from services.intent_service.pre_classifier import MultiIntentResult
         from services.shared_types import IntentCategory
 
         fallback = Intent(
@@ -423,23 +411,15 @@ class TestEndToEndStandupOfferTurns:
             live_service.intent_classifier,
             "classify_multiple",
             new=AsyncMock(
-                return_value=MultiIntentResult(
-                    intents=[fallback], original_message=prose
-                )
+                return_value=MultiIntentResult(intents=[fallback], original_message=prose)
             ),
         ):
             with patch.object(
                 live_service,
                 "_handle_unknown_intent",
-                new=AsyncMock(
-                    return_value=MagicMock(
-                        success=True, message="ok", intent_data={}
-                    )
-                ),
+                new=AsyncMock(return_value=MagicMock(success=True, message="ok", intent_data={})),
             ):
-                await live_service.process_intent(
-                    message=prose, session_id=sid, user_id=_USER
-                )
+                await live_service.process_intent(message=prose, session_id=sid, user_id=_USER)
         assert fake.completed_calls == []
         assert todo.completed is False
         assert _pending_offers(live_service).get(sid) is None  # popped, gone

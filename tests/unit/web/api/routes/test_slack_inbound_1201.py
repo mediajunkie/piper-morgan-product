@@ -22,7 +22,6 @@ pytestmark = pytest.mark.asyncio
 _USER = MagicMock(sub="owner-1")
 
 
-
 @pytest.fixture(autouse=True)
 def _inbound_enabled(monkeypatch):
     """#1484 (2026-08-04): these tests exercise the ENABLED pathway — the
@@ -36,6 +35,7 @@ def _request(runner=None):
 
 
 # ---- save_slack_app_token ----
+
 
 async def test_rejects_non_xapp_token():
     with pytest.raises(HTTPException) as exc:
@@ -83,11 +83,14 @@ async def test_save_reports_connecting_when_runner_not_yet_connected():
 
 # ---- get_slack_inbound_status: 3-state ----
 
+
 async def test_status_not_enabled_without_token():
     keychain = MagicMock()
     keychain.get_api_key.return_value = None
     with (
-        patch.dict("os.environ", {"PIPER_SLACK_INBOUND_ENABLED": "true"}, clear=True),  # 1484 gate open; these test the enabled pathway
+        patch.dict(
+            "os.environ", {"PIPER_SLACK_INBOUND_ENABLED": "true"}, clear=True
+        ),  # 1484 gate open; these test the enabled pathway
         patch("services.infrastructure.keychain_service.KeychainService", return_value=keychain),
     ):
         resp = await get_slack_inbound_status(_request(), current_user=_USER)
@@ -99,7 +102,9 @@ async def test_status_listening_when_token_and_runner_connected():
     keychain = MagicMock()
     keychain.get_api_key.return_value = "xapp-1-ABC"
     with (
-        patch.dict("os.environ", {"PIPER_SLACK_INBOUND_ENABLED": "true"}, clear=True),  # 1484 gate open; these test the enabled pathway
+        patch.dict(
+            "os.environ", {"PIPER_SLACK_INBOUND_ENABLED": "true"}, clear=True
+        ),  # 1484 gate open; these test the enabled pathway
         patch("services.infrastructure.keychain_service.KeychainService", return_value=keychain),
     ):
         resp = await get_slack_inbound_status(
@@ -113,7 +118,9 @@ async def test_status_connecting_when_token_but_runner_absent_or_down():
     keychain = MagicMock()
     keychain.get_api_key.return_value = "xapp-1-ABC"
     with (
-        patch.dict("os.environ", {"PIPER_SLACK_INBOUND_ENABLED": "true"}, clear=True),  # 1484 gate open; these test the enabled pathway
+        patch.dict(
+            "os.environ", {"PIPER_SLACK_INBOUND_ENABLED": "true"}, clear=True
+        ),  # 1484 gate open; these test the enabled pathway
         patch("services.infrastructure.keychain_service.KeychainService", return_value=keychain),
     ):
         # runner absent

@@ -48,9 +48,7 @@ RESOLVER = "services.integrations.github.repo_resolver"
 
 # PM's verbatim transcript sentences (2026-08-13 3:30–3:33 PM).
 PM_STATUS_DONE = "change the status of issue #108 to Done"
-PM_STATUS_DONE_DEFAULT_REPO = (
-    "change the status of issue #108 to Done in my default repository"
-)
+PM_STATUS_DONE_DEFAULT_REPO = "change the status of issue #108 to Done in my default repository"
 
 _USER = "3f7b8a52-1411-4b00-9e00-000000001411"  # valid UUID (resolve_repo takes UUIDs)
 
@@ -70,17 +68,13 @@ class _FakeResolved:
 
 
 def _resolver_ok():
-    return patch(
-        f"{RESOLVER}.resolve_repo", new=AsyncMock(return_value=_FakeResolved())
-    )
+    return patch(f"{RESOLVER}.resolve_repo", new=AsyncMock(return_value=_FakeResolved()))
 
 
 def _resolver_unresolved():
     from services.integrations.github.repo_resolver import UnresolvedRepoError
 
-    return patch(
-        f"{RESOLVER}.resolve_repo", new=AsyncMock(side_effect=UnresolvedRepoError())
-    )
+    return patch(f"{RESOLVER}.resolve_repo", new=AsyncMock(side_effect=UnresolvedRepoError()))
 
 
 @pytest.fixture
@@ -131,16 +125,11 @@ class TestUnmappedStatusValueDetection:
 
     def test_trailing_repo_clause_is_not_part_of_the_value(self):
         """PM's 'in my default repository' phrasing — the value is 'Done'."""
-        assert (
-            IntentService._detect_unmapped_status_value(PM_STATUS_DONE_DEFAULT_REPO)
-            == "Done"
-        )
+        assert IntentService._detect_unmapped_status_value(PM_STATUS_DONE_DEFAULT_REPO) == "Done"
 
     def test_non_status_updates_do_not_extract(self):
         assert (
-            IntentService._detect_unmapped_status_value(
-                "change the title of issue #108 to Testing"
-            )
+            IntentService._detect_unmapped_status_value("change the title of issue #108 to Testing")
             is None
         )
 
@@ -175,9 +164,7 @@ class TestDefaultRepoResolution:
         result = await _handler_turn(service, PM_STATUS_DONE_DEFAULT_REPO)
         assert "repository not specified" not in result.message
 
-    async def test_resolution_failure_with_session_asks_instead_of_refusing(
-        self, service
-    ):
+    async def test_resolution_failure_with_session_asks_instead_of_refusing(self, service):
         """#1567: with a session to bind the answer to, resolution failure is
         no longer a dead-end refusal — the handler ARMS the repo-question
         carrier and asks which repository (the answer slot-fills next turn)."""
@@ -191,9 +178,7 @@ class TestDefaultRepoResolution:
         assert offer is not None
         assert offer["pending_action"]["kind"] == "issue_repo_question"
 
-    async def test_resolution_failure_without_session_teaches_the_conversational_fix(
-        self, service
-    ):
+    async def test_resolution_failure_without_session_teaches_the_conversational_fix(self, service):
         """With NO session there is nothing to bind an answer to, so the
         honest refusal stands — and it teaches 'set my default repo to
         owner/name' (#1327, a phrase that routes deterministically; #1571:
@@ -337,9 +322,7 @@ class TestEndToEndThroughRealProcessIntent:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.update_issue", new=AsyncMock(return_value=closed)) as w,
         ):
-            result = await service.process_intent(
-                message="yes", session_id=sid, user_id=_USER
-            )
+            result = await service.process_intent(message="yes", session_id=sid, user_id=_USER)
         w.assert_awaited_once_with(108, state="closed")
         assert "Closed issue #108" in result.message
         assert _pending(service, sid) is None
@@ -356,8 +339,6 @@ class TestEndToEndThroughRealProcessIntent:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             explosive_router,
         ):
-            result = await service.process_intent(
-                message="no", session_id=sid, user_id=_USER
-            )
+            result = await service.process_intent(message="no", session_id=sid, user_id=_USER)
         assert "I haven't changed issue #108" in result.message
         assert _pending(service, sid) is None

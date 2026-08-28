@@ -158,9 +158,7 @@ class TestStillOpenBlockPreferred:
             "duration_minutes": 45,
             "type": "between_meetings",
         }
-        message = format_greeting_conscious(
-            calendar_summary=_summary([earlier, _ELAPSED_BLOCK])
-        )
+        message = format_greeting_conscious(calendar_summary=_summary([earlier, _ELAPSED_BLOCK]))
         lowered = message.lower()
         assert "you had some focus time between 8:00 am and 8:45 am" in lowered, message
         assert "you have some focus time" not in lowered, message

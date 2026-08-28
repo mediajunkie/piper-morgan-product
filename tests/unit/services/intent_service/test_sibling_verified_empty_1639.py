@@ -144,9 +144,7 @@ class TestCompletedTodosRendererThreeStates:
         assert "Recently completed todos (12):" in out
 
     def test_verified_empty_renders_checked_fact(self):
-        out = self.floor._format_domain_context(
-            {"completed_todos": [], "completed_todo_count": 0}
-        )
+        out = self.floor._format_domain_context({"completed_todos": [], "completed_todo_count": 0})
         assert "COMPLETED TODOS: none" in out
         assert "checked" in out
         assert "account-level" in out
@@ -301,26 +299,29 @@ class TestTemporalGatherCarriesVerifiedEmpty:
     @pytest.mark.asyncio
     async def test_temporal_gather_carries_both_lanes_verified_empty(self):
         assembler = ContextAssembler()
-        with patch.object(
-            assembler, "_gather_calendar_context", new=AsyncMock(return_value={})
-        ), patch.object(
-            assembler, "_get_pending_todos_cached", new=AsyncMock(return_value=None)
-        ), patch.object(
-            assembler,
-            "_get_completed_todos_cached",
-            new=AsyncMock(return_value={"completed_todos": [], "completed_todo_count": 0}),
-        ), patch.object(
-            assembler,
-            "_get_projects_cached",
-            new=AsyncMock(return_value={"projects": [], "project_count": 0}),
-        ), patch.object(
-            assembler,
-            "_gather_active_milestones_context",
-            new=AsyncMock(return_value={}),
-        ), patch.object(
-            assembler,
-            "_gather_recent_activity_context",
-            new=AsyncMock(return_value={}),
+        with (
+            patch.object(assembler, "_gather_calendar_context", new=AsyncMock(return_value={})),
+            patch.object(assembler, "_get_pending_todos_cached", new=AsyncMock(return_value=None)),
+            patch.object(
+                assembler,
+                "_get_completed_todos_cached",
+                new=AsyncMock(return_value={"completed_todos": [], "completed_todo_count": 0}),
+            ),
+            patch.object(
+                assembler,
+                "_get_projects_cached",
+                new=AsyncMock(return_value={"projects": [], "project_count": 0}),
+            ),
+            patch.object(
+                assembler,
+                "_gather_active_milestones_context",
+                new=AsyncMock(return_value={}),
+            ),
+            patch.object(
+                assembler,
+                "_gather_recent_activity_context",
+                new=AsyncMock(return_value={}),
+            ),
         ):
             ctx = await assembler._gather_temporal_context(user_id="u-1639")
 

@@ -36,16 +36,15 @@ def _db_engine_or_skip():
 class TestSchemaReconciled:
     def test_autogenerate_diff_is_empty(self):
         """alembic autogenerate against the migrated DB proposes NOTHING."""
-        from alembic.autogenerate import compare_metadata
-        from alembic.migration import MigrationContext
-        from alembic.runtime.environment import EnvironmentContext
-        from alembic.script import ScriptDirectory
-        from alembic.config import Config
-
         # the app's full metadata — MUST mirror alembic/env.py's import set
         # exactly (every module registering tables on the shared Base):
         import services.database.models  # noqa: F401
         import services.persistence.models  # noqa: F401
+        from alembic.autogenerate import compare_metadata
+        from alembic.config import Config
+        from alembic.migration import MigrationContext
+        from alembic.runtime.environment import EnvironmentContext
+        from alembic.script import ScriptDirectory
         from services.database.connection import Base
 
         engine = _db_engine_or_skip()
@@ -57,9 +56,7 @@ class TestSchemaReconciled:
         with engine.connect() as conn:
             current = MigrationContext.configure(conn).get_current_revision()
             if current != head:
-                pytest.skip(
-                    f"DB at {current}, head is {head} — run `alembic upgrade head` first"
-                )
+                pytest.skip(f"DB at {current}, head is {head} — run `alembic upgrade head` first")
 
             mc = MigrationContext.configure(
                 conn,

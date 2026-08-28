@@ -82,18 +82,14 @@ class TestFullValueThroughRealPostgres:
         # Raw read: ciphertext at rest (a marker-prefixed JSON string).
         raw_ctx, raw_topics = (
             await db_session.execute(
-                text(
-                    "SELECT context::text, topics::text FROM conversations WHERE id = :id"
-                ),
+                text("SELECT context::text, topics::text FROM conversations WHERE id = :id"),
                 {"id": cid},
             )
         ).one()
         assert MARKER in raw_ctx and "secret plans" not in raw_ctx
         assert MARKER in raw_topics and "alpha" not in raw_topics
 
-        await db_session.execute(
-            text("DELETE FROM conversations WHERE id = :id"), {"id": cid}
-        )
+        await db_session.execute(text("DELETE FROM conversations WHERE id = :id"), {"id": cid})
         await db_session.execute(text("DELETE FROM users WHERE id = :id"), {"id": uid})
         await db_session.commit()
 

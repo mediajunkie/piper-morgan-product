@@ -18,8 +18,9 @@ Contract pinned here:
   "oauth_binding" regardless of PAT/env state.
 """
 
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
 
 from services.integrations import integration_status_service as iss_mod
 from services.integrations.integration_status_service import (
@@ -66,12 +67,13 @@ class TestKnownSet:
     @pytest.mark.asyncio
     async def test_get_all_covers_exactly_the_known_set(self, service, monkeypatch):
         _clear_integration_env(monkeypatch)
-        with patch.object(
-            iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)
-        ), patch.object(
-            iss_mod,
-            "get_config_status",
-            new=AsyncMock(return_value=("not_configured", None)),
+        with (
+            patch.object(iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)),
+            patch.object(
+                iss_mod,
+                "get_config_status",
+                new=AsyncMock(return_value=("not_configured", None)),
+            ),
         ):
             statuses = await service.get_all("u1")
         assert set(statuses.keys()) == set(KNOWN_INTEGRATIONS)
@@ -95,18 +97,17 @@ class TestGitHubBindingFirst:
     async def test_keychain_pat_is_configured_via_keychain(self, service, monkeypatch):
         """#1513 hoisted: user-scoped keychain PAT, no env, no binding."""
         _clear_integration_env(monkeypatch)
-        with patch.object(
-            iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)
-        ), patch(
-            "services.infrastructure.keychain_service.KeychainService",
-            return_value=_keychain_with("ghp_stored"),
-        ) as kc_cls:
+        with (
+            patch.object(iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)),
+            patch(
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=_keychain_with("ghp_stored"),
+            ) as kc_cls,
+        ):
             status = await service.get_status("u1", "github")
         assert status["configured"] is True
         assert status["via"] == "keychain"
-        kc_cls.return_value.get_api_key.assert_called_once_with(
-            "github_token", username="u1"
-        )
+        kc_cls.return_value.get_api_key.assert_called_once_with("github_token", username="u1")
 
     @pytest.mark.asyncio
     async def test_env_token_is_configured_via_env(self, service, monkeypatch):
@@ -120,11 +121,12 @@ class TestGitHubBindingFirst:
     @pytest.mark.asyncio
     async def test_nothing_anywhere_is_not_configured(self, service, monkeypatch):
         _clear_integration_env(monkeypatch)
-        with patch.object(
-            iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)
-        ), patch(
-            "services.infrastructure.keychain_service.KeychainService",
-            return_value=_keychain_with(None),
+        with (
+            patch.object(iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)),
+            patch(
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=_keychain_with(None),
+            ),
         ):
             status = await service.get_status("u1", "github")
         assert status == {
@@ -154,9 +156,7 @@ class TestNonGitHubVias:
             status = await service.get_status("u1", "slack")
         assert status["configured"] is True
         assert status["via"] == "keychain"
-        kc_cls.return_value.get_api_key.assert_called_once_with(
-            "slack_bot", username="u1"
-        )
+        kc_cls.return_value.get_api_key.assert_called_once_with("slack_bot", username="u1")
 
     @pytest.mark.asyncio
     async def test_calendar_user_scoped_keychain_via(self, service, monkeypatch):

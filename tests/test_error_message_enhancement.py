@@ -265,9 +265,7 @@ class TestIntegrationErrorScenarios:
 
     def test_database_connection_error_handling(self, test_client, failing_intent_service):
         """Service failures degrade gracefully: HTTP 200 + friendly message."""
-        failing_intent_service.process_intent.side_effect = Exception(
-            "Database connection failed"
-        )
+        failing_intent_service.process_intent.side_effect = Exception("Database connection failed")
 
         response = test_client.post("/api/v1/intent", json={"message": "test"})
 
@@ -281,9 +279,7 @@ class TestIntegrationErrorScenarios:
         """Integration auth failures degrade to guidance, not a 5xx."""
         failing_intent_service.process_intent.side_effect = GitHubAuthFailedError()
 
-        response = test_client.post(
-            "/api/v1/intent", json={"message": "create GitHub issue"}
-        )
+        response = test_client.post("/api/v1/intent", json={"message": "create GitHub issue"})
 
         assert response.status_code == 200
         data = response.json()
@@ -306,9 +302,7 @@ class TestIntegrationErrorScenarios:
 
     def test_rate_limiting_error_handling(self, test_client, failing_intent_service):
         """Upstream rate-limit errors degrade without leaking internals."""
-        failing_intent_service.process_intent.side_effect = Exception(
-            "Rate limit exceeded"
-        )
+        failing_intent_service.process_intent.side_effect = Exception("Rate limit exceeded")
 
         response = test_client.post("/api/v1/intent", json={"message": "test"})
 

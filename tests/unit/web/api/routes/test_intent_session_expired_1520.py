@@ -32,9 +32,7 @@ def _mock_request(message="hello", header_key=None, auth_expired=False):
     req.json = AsyncMock(return_value={"message": message, "session_id": "s1"})
     req.headers = MagicMock()
     req.headers.get = MagicMock(
-        side_effect=lambda k, default=None: (
-            header_key if k == "X-User-Api-Key" else default
-        )
+        side_effect=lambda k, default=None: (header_key if k == "X-User-Api-Key" else default)
     )
     req.cookies = {}
     # Real attribute semantics for request.state — a bare MagicMock would make

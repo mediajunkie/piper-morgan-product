@@ -210,9 +210,7 @@ class TestCLIStandupErrorHandling:
         """Test error handling during standup execution"""
         with patch("cli.commands.standup.StandupWorkflowSkill") as mock_skill_cls:
             mock_skill_instance = MagicMock()
-            mock_skill_instance.execute = AsyncMock(
-                side_effect=Exception("Standup skill failed")
-            )
+            mock_skill_instance.execute = AsyncMock(side_effect=Exception("Standup skill failed"))
             mock_skill_cls.return_value = mock_skill_instance
 
             standup = StandupCommand()

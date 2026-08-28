@@ -31,9 +31,7 @@ _NUDGES = {
     DegradationReason.STALE_TOKEN: (
         "Your {c} connection needs re-authorizing — reconnect it in Settings and I'll pick back up."
     ),
-    DegradationReason.UNREACHABLE: (
-        "I can't reach {c} right now — try again in a moment."
-    ),
+    DegradationReason.UNREACHABLE: ("I can't reach {c} right now — try again in a moment."),
     # #1398/ADR-070-A A4: a deployment config problem, NOT a user connect action —
     # honest that it's on our side, and never leaks the missing config detail.
     # (CXO voice-pass pending — flagged at build.)

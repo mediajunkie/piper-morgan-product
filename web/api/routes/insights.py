@@ -30,7 +30,6 @@ from services.database.repositories import InsightRepository
 from services.database.session_factory import AsyncSessionFactory
 from services.mux.insight_topic_mapper import derive_topic_from_tags
 
-
 router = APIRouter(prefix="/api/v1/insights", tags=["insights"])
 logger = structlog.get_logger(__name__)
 
@@ -102,9 +101,7 @@ async def list_insights(
     try:
         async with AsyncSessionFactory.session_scope() as session:
             repo = InsightRepository(session)
-            insights, skipped_count = await repo.list_for_user_with_skips(
-                user_id=current_user.sub
-            )
+            insights, skipped_count = await repo.list_for_user_with_skips(user_id=current_user.sub)
         payload = [_insight_to_payload(i) for i in insights]
         logger.info(
             "insights_listed",

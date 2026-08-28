@@ -21,10 +21,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from services.analysis.document_analyzer import DocumentAnalyzer
-from services.file_context.storage import read_file_from_storage  # #1306: the single byte-read seam
 from services.database.connection import db
 from services.database.models import UploadedFileDB
 from services.database.session_factory import AsyncSessionFactory
+from services.file_context.storage import read_file_from_storage  # #1306: the single byte-read seam
 from services.knowledge_graph.document_service import get_document_service
 from services.llm.clients import llm_client
 

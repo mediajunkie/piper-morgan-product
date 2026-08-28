@@ -101,9 +101,9 @@ class TestInvertedOrderTimeParsing1490:
         dt, label = parse_reminder_time("remind me at 9:41 today to check the deploy")
         assert dt is not None
         assert (dt.hour, dt.minute) == (9, 41)
-        assert dt.date() == datetime(2026, 8, 10).date(), (
-            f"explicit 'today' bound {dt.date()} — never a silent next-day roll (#1562)"
-        )
+        assert (
+            dt.date() == datetime(2026, 8, 10).date()
+        ), f"explicit 'today' bound {dt.date()} — never a silent next-day roll (#1562)"
         assert "9:41" in label
 
     def test_today_at_941(self, monkeypatch):
@@ -117,9 +117,10 @@ class TestInvertedOrderTimeParsing1490:
     def test_at_noon_tomorrow(self):
         dt, label = parse_reminder_time("remind me at noon tomorrow to review the PR")
         assert dt is not None
-        assert (dt.hour, dt.minute) == (12, 0), (
-            f"explicit noon dropped — got {dt.hour:02d}:{dt.minute:02d} (label {label!r})"
-        )
+        assert (dt.hour, dt.minute) == (
+            12,
+            0,
+        ), f"explicit noon dropped — got {dt.hour:02d}:{dt.minute:02d} (label {label!r})"
         assert dt.date() == _tomorrow_local().date()
         assert "noon" in label
 
@@ -213,9 +214,9 @@ class TestExplicitClockTimeInvariant1490:
         # matrix late in the day must not flip those rows.
         _freeze_parser_now(monkeypatch, datetime(2026, 8, 10, 8, 0))
         dt, label = parse_reminder_time(message)
-        assert dt is not None, (
-            f"explicit clock time in {message!r} parsed to None (label {label!r})"
-        )
+        assert (
+            dt is not None
+        ), f"explicit clock time in {message!r} parsed to None (label {label!r})"
         assert (dt.hour, dt.minute) == (hour, minute), (
             f"explicit clock time in {message!r} not carried: expected "
             f"{hour:02d}:{minute:02d}, got {dt.hour:02d}:{dt.minute:02d} "
@@ -241,9 +242,9 @@ class TestExplicitClockTimeInvariant1490:
         before = datetime.now().astimezone()
         dt, label = parse_reminder_time(message)
         after = datetime.now().astimezone()
-        assert dt is not None, (
-            f"explicit word-form duration in {message!r} parsed to None (label {label!r})"
-        )
+        assert (
+            dt is not None
+        ), f"explicit word-form duration in {message!r} parsed to None (label {label!r})"
         assert before + delta <= dt <= after + delta, (
             f"explicit word-form duration in {message!r} not carried: expected "
             f"now+{delta}, got {dt} (label {label!r}) — a silent default "
@@ -332,9 +333,9 @@ class TestExplicitClockTimeInvariant1490:
             "the exact prod failure (row saved at 09:00)"
         )
         assert mock_create.call_args.kwargs.get("text") == "review the pr"
-        assert "morning" not in result.lower(), (
-            f"confirmation copy claims a morning default: {result!r}"
-        )
+        assert (
+            "morning" not in result.lower()
+        ), f"confirmation copy claims a morning default: {result!r}"
         assert "3:00 pm" in result.lower() or "3pm" in result.lower()
         assert not re.search(r"\b(\w+)\s+\1\b", result.lower())
 
@@ -391,8 +392,7 @@ class TestTodayExplicitDayWord1562:
         assert dt is not None, f"today-form parsed to None (label {label!r})"
         assert (dt.hour, dt.minute) == (9, 41)
         assert dt.date() == datetime(2026, 8, 10).date(), (
-            f"explicit 'today' bound {dt.date()} — the silent tomorrow-roll "
-            "PM hit live (#1562)"
+            f"explicit 'today' bound {dt.date()} — the silent tomorrow-roll " "PM hit live (#1562)"
         )
         assert label == "today at 9:41am"
 
@@ -424,9 +424,7 @@ class TestTodayExplicitDayWord1562:
         "wall_clock",
         [datetime(2026, 8, 10, 7, 16), datetime(2026, 8, 10, 14, 16)],
     )
-    def test_invariant_explicit_today_never_yields_next_day(
-        self, monkeypatch, message, wall_clock
-    ):
+    def test_invariant_explicit_today_never_yields_next_day(self, monkeypatch, message, wall_clock):
         """THE #1562 INVARIANT: explicit 'today' never yields a next-day date
         without clarification — whatever the server clock says."""
         from services.intent_service.temporal_utils import PAST_TODAY_PREFIX
@@ -440,8 +438,7 @@ class TestTodayExplicitDayWord1562:
             )
         else:
             assert label.startswith(PAST_TODAY_PREFIX), (
-                f"{message!r} returned None without the past-today ask shape "
-                f"(label {label!r})"
+                f"{message!r} returned None without the past-today ask shape " f"(label {label!r})"
             )
 
     def test_bare_clock_no_day_word_keeps_roll_forward(self, monkeypatch):
@@ -540,9 +537,9 @@ class TestTodayExplicitDayWord1562:
         saved = mock_create.call_args.kwargs.get("reminder_date")
         assert saved is not None
         assert (saved.hour, saved.minute) == (9, 41)
-        assert saved.date() == datetime(2026, 8, 10).date(), (
-            f"saved {saved} — 'today' must save TODAY, not tomorrow (#1562)"
-        )
+        assert (
+            saved.date() == datetime(2026, 8, 10).date()
+        ), f"saved {saved} — 'today' must save TODAY, not tomorrow (#1562)"
         assert "for at " not in result, f"'(scheduled for at ...)' doublet: {result!r}"
         assert "today at 9:41am" in result
 

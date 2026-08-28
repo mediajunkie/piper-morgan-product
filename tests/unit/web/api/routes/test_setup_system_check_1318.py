@@ -6,8 +6,9 @@ all read from environment variables so they work correctly on the hosted Droplet
 addresses) and in local dev (localhost defaults).
 """
 
+from unittest.mock import AsyncMock, MagicMock, patch
+
 import pytest
-from unittest.mock import AsyncMock, patch, MagicMock
 
 
 class TestCheckDatabase:
@@ -82,9 +83,7 @@ class TestCheckChromadb:
             import os as _os
 
             env_clean = {
-                k: v
-                for k, v in _os.environ.items()
-                if k not in ("CHROMA_HOST", "CHROMA_PORT")
+                k: v for k, v in _os.environ.items() if k not in ("CHROMA_HOST", "CHROMA_PORT")
             }
             env_clean.update({"CHROMADB_HOST": "my-chromadb", "CHROMADB_PORT": "9000"})
             with patch.dict("os.environ", env_clean, clear=True):
@@ -101,8 +100,7 @@ class TestCheckChromadb:
                 env_without = {
                     k: v
                     for k, v in __import__("os").environ.items()
-                    if k
-                    not in ("CHROMADB_HOST", "CHROMADB_PORT", "CHROMA_HOST", "CHROMA_PORT")
+                    if k not in ("CHROMADB_HOST", "CHROMADB_PORT", "CHROMA_HOST", "CHROMA_PORT")
                 }
                 with patch.dict("os.environ", env_without, clear=True):
                     from web.api.routes.setup import check_chromadb
@@ -118,8 +116,7 @@ class TestCheckChromadb:
                 env_without = {
                     k: v
                     for k, v in __import__("os").environ.items()
-                    if k
-                    not in ("CHROMADB_HOST", "CHROMADB_PORT", "CHROMA_HOST", "CHROMA_PORT")
+                    if k not in ("CHROMADB_HOST", "CHROMADB_PORT", "CHROMA_HOST", "CHROMA_PORT")
                 }
                 with patch.dict("os.environ", env_without, clear=True):
                     from web.api.routes.setup import check_chromadb

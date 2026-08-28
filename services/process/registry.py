@@ -462,9 +462,7 @@ class ProcessRegistry:
                 format_release_prefix,
             )
 
-            signal = check_escape(
-                message, handler.process_type, in_completion_tail=in_tail
-            )
+            signal = check_escape(message, handler.process_type, in_completion_tail=in_tail)
         except Exception as e:
             logger.warning(
                 "Escape check failed, message proceeds to flow handler",

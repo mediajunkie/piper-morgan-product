@@ -424,9 +424,7 @@ class TestBranchEnteredInterviewEscape:
         from services.process.registry import ProcessRegistry
 
         manager, handler = real_interview_components
-        await self._enter_via_branch(
-            intent_service, (manager, handler), "sess-esc-2", "user-esc-2"
-        )
+        await self._enter_via_branch(intent_service, (manager, handler), "sess-esc-2", "user-esc-2")
         adapter = StandupProcessAdapter()
         adapter._manager, adapter._handler = manager, handler
         registry = ProcessRegistry()

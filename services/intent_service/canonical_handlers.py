@@ -648,9 +648,9 @@ class CanonicalHandlers:
                     for issue in issues_preview[: 5 if spatial_pattern == "GRANULAR" else 3]:
                         number = issue.get("number", "?")
                         # #1628: degenerate GitHub titles never render verbatim
-                        title = display_title(
-                            issue.get("title"), f"(untitled issue #{number})"
-                        )[:60]
+                        title = display_title(issue.get("title"), f"(untitled issue #{number})")[
+                            :60
+                        ]
                         lines.append(f"  - #{number}: {title}")
 
             repo = metadata.get("repository", "")
@@ -750,9 +750,7 @@ class CanonicalHandlers:
         specific_project = self._detect_project_specific_query(intent, projects)
         if specific_project:
             # Fetch metadata for just this project
-            project_metadata = await self._get_project_metadata(
-                [specific_project], user_id=user_id
-            )
+            project_metadata = await self._get_project_metadata([specific_project], user_id=user_id)
             metadata = project_metadata.get(specific_project, {})
             message = self._format_project_specific_status(
                 specific_project, metadata, user_context, spatial_pattern
@@ -1001,9 +999,9 @@ class CanonicalHandlers:
                     for issue in issues_preview[:3]:
                         number = issue.get("number", "?")
                         # #1628: degenerate GitHub titles never render verbatim
-                        title = display_title(
-                            issue.get("title"), f"(untitled issue #{number})"
-                        )[:50]
+                        title = display_title(issue.get("title"), f"(untitled issue #{number})")[
+                            :50
+                        ]
                         lines.append(f"     - #{number}: {title}")
 
             # Last activity
@@ -1651,7 +1649,9 @@ class CanonicalHandlers:
                 logger.warning(f"Could not get priority issues (source failed): {e}")
                 return {"has_github": True, "high_priority_issues": [], "source_failed": True}
 
-        except Exception as e:  # silent-ok: failure surfaces as honest "couldn't check" via source_failed (#1425)
+        except (
+            Exception
+        ) as e:  # silent-ok: failure surfaces as honest "couldn't check" via source_failed (#1425)
             logger.warning(f"Priority metadata unavailable (source failed): {e}")
             return {"source_failed": True}
 
@@ -2233,9 +2233,7 @@ Would you like me to explain more about how Piper uses project context, or are y
         except Exception as e:  # silent-ok: #1423 — guidance still renders without live status, but the failure is now WARN-logged with traceback (was debug) AND the message honestly says the status check failed instead of silently omitting connection state
             status_check_failed = True
             DISPLAY_NAMES = {}
-            logger.warning(
-                f"Could not check integration status: {e}", exc_info=True
-            )
+            logger.warning(f"Could not check integration status: {e}", exc_info=True)
 
         configured = [i["name"] for i in integrations_status if i.get("configured")]
         not_configured = [i["name"] for i in integrations_status if not i.get("configured")]
@@ -2761,7 +2759,9 @@ What would you like to set up first?"""
                     for todo in db_todos
                 ]
         except Exception as e:  # silent-ok: None sentinel -> formatters render honest "couldn't check", never "no completed tasks" (#1425)
-            logger.warning(f"Could not fetch completed todos for retrospective (source failed): {e}")
+            logger.warning(
+                f"Could not fetch completed todos for retrospective (source failed): {e}"
+            )
             return None
 
     def _format_retrospective_embedded(
@@ -4237,7 +4237,7 @@ What would you like to set up first?"""
                         )
                         if len(projects) > 5:
                             response += f"\n\n...and {len(projects) - 5} more."
-                        response += "\n\nSay \"restore <name>\" to bring one back."
+                        response += '\n\nSay "restore <name>" to bring one back.'
                     else:
                         response = "You don't have any archived projects."
                     return {

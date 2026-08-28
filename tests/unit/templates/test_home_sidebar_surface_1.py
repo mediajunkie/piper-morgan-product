@@ -29,9 +29,7 @@ TEMPLATES = Path(__file__).resolve().parents[3] / "templates"
 @pytest.fixture
 def rendered() -> str:
     env = Environment(loader=FileSystemLoader(str(TEMPLATES)), autoescape=True)
-    return env.get_template("home.html").render(
-        trust_stage=1, show_radar=True, user_name="tester"
-    )
+    return env.get_template("home.html").render(trust_stage=1, show_radar=True, user_name="tester")
 
 
 @pytest.fixture

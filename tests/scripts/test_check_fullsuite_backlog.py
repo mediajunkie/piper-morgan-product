@@ -28,9 +28,7 @@ def _run(tmp_path, output_text, backlog_text):
         f"sys.argv = ['chk', {str(out)!r}]\n"
         "sys.exit(m.main())\n"
     )
-    return subprocess.run(
-        [sys.executable, "-c", code], capture_output=True, text=True, cwd=REPO
-    )
+    return subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, cwd=REPO)
 
 
 SUMMARY = "2 failed, 10 passed in 3.21s"
@@ -98,8 +96,11 @@ class TestFullsuiteBacklogGate:
         as new when failing — oscillation can't red the gate. Still debt: the
         burn-down move for flaky is de-flaking, then retagging."""
         backlog = "tests/a.py::test_timing\tflaky\n"
-        passing = _run(tmp_path, "1 failed, 9 passed in 2s\nFAILED tests/z.py::test_other\n",
-                       backlog + "tests/z.py::test_other\tfixture\n")
+        passing = _run(
+            tmp_path,
+            "1 failed, 9 passed in 2s\nFAILED tests/z.py::test_other\n",
+            backlog + "tests/z.py::test_other\tfixture\n",
+        )
         assert passing.returncode == 0, passing.stdout + passing.stderr
         failing = _run(tmp_path, f"FAILED tests/a.py::test_timing\n{SUMMARY}\n", backlog)
         assert failing.returncode == 0, failing.stdout + failing.stderr

@@ -204,13 +204,11 @@ async def assemble_session_snapshot(
     async def _none() -> None:
         return None
 
-    active_process_type, head, declared_working_mode, stored_clear_verb = (
-        await asyncio.gather(
-            _probe_process(),
-            _read_ledger_head() if (user_id and session_id) else _none(),
-            _read_mode() if user_id else _none(),
-            _read_clear_verb() if user_id else _none(),
-        )
+    active_process_type, head, declared_working_mode, stored_clear_verb = await asyncio.gather(
+        _probe_process(),
+        _read_ledger_head() if (user_id and session_id) else _none(),
+        _read_mode() if user_id else _none(),
+        _read_clear_verb() if user_id else _none(),
     )
 
     recent_issue_number: Optional[int] = None

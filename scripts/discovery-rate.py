@@ -35,10 +35,15 @@ def fetch_issues(since: datetime) -> list:
     issues, page = [], 1
     while True:
         out = subprocess.run(
-            ["gh", "api",
-             f"repos/{REPO}/issues?state=all&since={since.strftime('%Y-%m-%dT%H:%M:%SZ')}"
-             f"&per_page=100&page={page}&sort=created&direction=desc"],
-            capture_output=True, text=True, check=True,
+            [
+                "gh",
+                "api",
+                f"repos/{REPO}/issues?state=all&since={since.strftime('%Y-%m-%dT%H:%M:%SZ')}"
+                f"&per_page=100&page={page}&sort=created&direction=desc",
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
         ).stdout
         batch = [i for i in json.loads(out) if "pull_request" not in i]
         issues.extend(batch)
@@ -46,8 +51,9 @@ def fetch_issues(since: datetime) -> list:
             break
         page += 1
     # `since` filters by UPDATE time; re-filter by creation time (the honest field)
-    return [i for i in issues
-            if datetime.fromisoformat(i["created_at"].replace("Z", "+00:00")) >= since]
+    return [
+        i for i in issues if datetime.fromisoformat(i["created_at"].replace("Z", "+00:00")) >= since
+    ]
 
 
 CLASS_RE = re.compile(r"^\s*Class:\s*(.+?)\s*$", re.MULTILINE | re.IGNORECASE)
@@ -81,8 +87,10 @@ def main() -> None:
         per_week[week_idx] += 1
 
     print(f"DISCOVERY RATE — new issues created per trailing week ({REPO})")
-    print(f"denominator: {len(issues)} issues (PRs excluded) created since "
-          f"{since.date()} ({weeks}w window), source: GitHub created_at via REST")
+    print(
+        f"denominator: {len(issues)} issues (PRs excluded) created since "
+        f"{since.date()} ({weeks}w window), source: GitHub created_at via REST"
+    )
     print()
     for w in range(weeks - 1, -1, -1):
         start = (now - timedelta(weeks=w + 1)).date()
@@ -104,8 +112,10 @@ def main() -> None:
     tagged = {i["number"]: issue_class(i) for i in issues if issue_class(i)}
     print()
     print("NEW-CLASS RATE — of this week's findings, how many are already-named classes?")
-    print(f"coverage: {len(tagged)} of {len(issues)} issues carry a `Class:` tag "
-          f"({100 * len(tagged) // max(len(issues), 1)}%)")
+    print(
+        f"coverage: {len(tagged)} of {len(issues)} issues carry a `Class:` tag "
+        f"({100 * len(tagged) // max(len(issues), 1)}%)"
+    )
     if not tagged:
         print("  NOT MEASURED — no issue in the window carries a `Class:` tag.")
         print("  This is a coverage gap, NOT a finding of zero new classes.")
@@ -137,12 +147,13 @@ def main() -> None:
         new_here = sorted(c for c, wk in first_seen.items() if wk == w)
         label = "this week →" if w == 0 else f"{start}..{end}"
         if not tagged_per_week[w]:
-            print(f"  {label:>24}    – NOT MEASURED "
-                  f"(0 of {per_week[w]} issues tagged)")
+            print(f"  {label:>24}    – NOT MEASURED " f"(0 of {per_week[w]} issues tagged)")
             continue
         cov = f"[{tagged_per_week[w]}/{per_week[w]} tagged]"
-        print(f"  {label:>24}  {len(new_here):3d} new {cov:>16}  "
-              f"{', '.join(new_here) if new_here else '(all previously named)'}")
+        print(
+            f"  {label:>24}  {len(new_here):3d} new {cov:>16}  "
+            f"{', '.join(new_here) if new_here else '(all previously named)'}"
+        )
     print()
     print("read: falling NEW-CLASS count = convergence (we keep finding the same")
     print("families). Falling RAW count alone proves nothing — it reads the same")

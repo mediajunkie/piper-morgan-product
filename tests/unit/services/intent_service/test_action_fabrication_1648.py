@@ -174,9 +174,7 @@ async def _arm_draft(svc, sid):
         patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
         patch(f"{ROUTER}.create_issue", new=AsyncMock()),
     ):
-        return await svc._handle_create_issue(
-            _compose_intent(), "wf-1", sid, user_id=_USER
-        )
+        return await svc._handle_create_issue(_compose_intent(), "wf-1", sid, user_id=_USER)
 
 
 class TestPhantomTicketEndToEnd:
@@ -242,9 +240,7 @@ class TestPhantomTicketEndToEnd:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()),
         ):
-            await svc.process_intent(
-                message="file the sucker", session_id=sid, user_id=_USER
-            )
+            await svc.process_intent(message="file the sucker", session_id=sid, user_id=_USER)
         created = {"number": 9, "html_url": "https://x/9", "title": "t"}
         with (
             patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})),
@@ -253,9 +249,7 @@ class TestPhantomTicketEndToEnd:
             patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
             patch(RESOLVER, new=AsyncMock(return_value="acme/widgets")),
         ):
-            r2 = await svc.process_intent(
-                message="file it", session_id=sid, user_id=_USER
-            )
+            r2 = await svc.process_intent(message="file it", session_id=sid, user_id=_USER)
         w.assert_awaited_once()
         assert "#9" in r2.message
         assert _pending_offers(svc) == {}
@@ -272,9 +266,7 @@ class TestPhantomTicketEndToEnd:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
         ):
-            r = await svc.process_intent(
-                message="close issue #108", session_id=sid, user_id=_USER
-            )
+            r = await svc.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         w.assert_not_awaited()
         assert "(yes/no)" in r.message
         stored = next(iter(_pending_offers(svc).values()))
@@ -290,9 +282,7 @@ def _mock_todo_service(svc):
     """Swap the real DB-backed TodoManagementService for a mock that records
     the write. The seam under test is routing/binding, not persistence."""
     mock = MagicMock()
-    mock.create_todo = AsyncMock(
-        return_value=SimpleNamespace(id=uuid4(), text="whatever")
-    )
+    mock.create_todo = AsyncMock(return_value=SimpleNamespace(id=uuid4(), text="whatever"))
     svc.todo_handlers.todo_service = mock
     return mock
 
@@ -328,9 +318,7 @@ class TestPhantomReminderEndToEnd:
         mock = _mock_todo_service(svc)
         await self._ask_with_unbindable_time(svc, sid)
 
-        r2 = await svc.process_intent(
-            message="at 3pm tomorrow", session_id=sid, user_id=_USER
-        )
+        r2 = await svc.process_intent(message="at 3pm tomorrow", session_id=sid, user_id=_USER)
         mock.create_todo.assert_awaited_once()
         kwargs = mock.create_todo.await_args.kwargs
         assert kwargs["text"] == "review the beta notes"
@@ -346,9 +334,7 @@ class TestPhantomReminderEndToEnd:
         sid = "e2e-1648-save-bare"
         mock = _mock_todo_service(svc)
         await self._ask_with_unbindable_time(svc, sid)
-        r2 = await svc.process_intent(
-            message=PM_TIME_ANSWER, session_id=sid, user_id=_USER
-        )
+        r2 = await svc.process_intent(message=PM_TIME_ANSWER, session_id=sid, user_id=_USER)
         mock.create_todo.assert_awaited_once()
         assert mock.create_todo.await_args.kwargs["reminder_date"].hour == 15
         assert "Reminder saved" in r2.message
@@ -361,9 +347,7 @@ class TestPhantomReminderEndToEnd:
         sid = "e2e-1648-reask"
         mock = _mock_todo_service(svc)
         await self._ask_with_unbindable_time(svc, sid)
-        r2 = await svc.process_intent(
-            message="hmm whatever works", session_id=sid, user_id=_USER
-        )
+        r2 = await svc.process_intent(message="hmm whatever works", session_id=sid, user_id=_USER)
         mock.create_todo.assert_not_awaited()
         assert "Nothing has been saved" in r2.message
         assert r2.intent_data.get("reminder_time_reasked") is True
@@ -376,9 +360,7 @@ class TestPhantomReminderEndToEnd:
         sid = "e2e-1648-unbindable"
         mock = _mock_todo_service(svc)
         await self._ask_with_unbindable_time(svc, sid)
-        r2 = await svc.process_intent(
-            message="at 25:99", session_id=sid, user_id=_USER
-        )
+        r2 = await svc.process_intent(message="at 25:99", session_id=sid, user_id=_USER)
         mock.create_todo.assert_not_awaited()
         assert "Nothing has been saved" in r2.message
         stored = next(iter(_pending_offers(svc).values()))

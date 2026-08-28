@@ -29,12 +29,13 @@ async def test_github_health_healthy_when_oauth_bound():
 @pytest.mark.asyncio
 async def test_github_health_falls_through_when_not_oauth_bound():
     """No OAuth binding → the legacy native config path still governs (here: not_configured)."""
-    with patch.object(
-        integrations, "_github_oauth_bound", new=AsyncMock(return_value=False)
-    ), patch.object(
-        integrations,
-        "_get_integration_config_status",
-        new=AsyncMock(return_value="not_configured"),
+    with (
+        patch.object(integrations, "_github_oauth_bound", new=AsyncMock(return_value=False)),
+        patch.object(
+            integrations,
+            "_get_integration_config_status",
+            new=AsyncMock(return_value="not_configured"),
+        ),
     ):
         status = await integrations._check_integration_health("github", _META, user_id="u1")
     assert status.status == "not_configured"
@@ -44,10 +45,13 @@ async def test_github_health_falls_through_when_not_oauth_bound():
 async def test_non_github_integration_unaffected_by_oauth_shortcircuit():
     """The OAuth short-circuit is GitHub-only — other integrations keep native behavior."""
     bound = AsyncMock(return_value=True)
-    with patch.object(integrations, "_github_oauth_bound", new=bound), patch.object(
-        integrations,
-        "_get_integration_config_status",
-        new=AsyncMock(return_value="not_configured"),
+    with (
+        patch.object(integrations, "_github_oauth_bound", new=bound),
+        patch.object(
+            integrations,
+            "_get_integration_config_status",
+            new=AsyncMock(return_value="not_configured"),
+        ),
     ):
         status = await integrations._check_integration_health(
             "slack", {"display_name": "Slack"}, user_id="u1"

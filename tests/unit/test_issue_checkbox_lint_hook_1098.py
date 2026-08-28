@@ -23,7 +23,6 @@ from textwrap import dedent
 
 import pytest
 
-
 HOOK_PATH = Path(".claude/hooks/issue-checkbox-lint.sh")
 
 

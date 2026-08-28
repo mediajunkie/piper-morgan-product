@@ -94,7 +94,9 @@ class WorkItemProvider:
             router = GitHubIntegrationRouter()
             try:
                 await router.initialize(user_id=user_id)
-                handle = await read_user_github_handle(user_id)  # WS-1 P4: now async (DB-backed read)
+                handle = await read_user_github_handle(
+                    user_id
+                )  # WS-1 P4: now async (DB-backed read)
                 issues = await router.get_open_issues(limit=100 if handle else WORKITEM_FETCH)
                 return filter_issues_by_assignee(issues, handle)[:WORKITEM_FETCH]
             finally:

@@ -94,17 +94,13 @@ def _update_intent(message: str) -> Intent:
 def _resolver_unresolved():
     from services.integrations.github.repo_resolver import UnresolvedRepoError
 
-    return patch(
-        f"{RESOLVER}.resolve_repo", new=AsyncMock(side_effect=UnresolvedRepoError())
-    )
+    return patch(f"{RESOLVER}.resolve_repo", new=AsyncMock(side_effect=UnresolvedRepoError()))
 
 
 def _repos_result(*full_names):
     return MagicMock(
         degradation=None,
-        repositories=[
-            {"name": fn.split("/", 1)[1], "full_name": fn} for fn in full_names
-        ],
+        repositories=[{"name": fn.split("/", 1)[1], "full_name": fn} for fn in full_names],
     )
 
 
@@ -182,24 +178,17 @@ class TestRepoAnswerExtraction:
         reinterpreted as a repo name."""
         assert extract_repo_answer("test-piper-morgan", allow_bare_token=False) is None
         # …but the explicit shapes still extract.
-        assert (
-            extract_repo_answer(PM_NATURAL_ANSWER, allow_bare_token=False)
-            == "test-Piper-Morgan"
-        )
+        assert extract_repo_answer(PM_NATURAL_ANSWER, allow_bare_token=False) == "test-Piper-Morgan"
 
 
 class TestTitleNeverSwallowsRoutingClause:
     def test_natural_clause_stripped(self):
         assert (
-            strip_trailing_repo_clause("Testing in the test-piper-morgan repository")
-            == "Testing"
+            strip_trailing_repo_clause("Testing in the test-piper-morgan repository") == "Testing"
         )
 
     def test_owner_name_clause_stripped(self):
-        assert (
-            strip_trailing_repo_clause("Testing in mediajunkie/test-piper-morgan")
-            == "Testing"
-        )
+        assert strip_trailing_repo_clause("Testing in mediajunkie/test-piper-morgan") == "Testing"
 
     def test_plain_prose_tail_kept(self):
         """'in Chrome' is title content — no slash, no repository noun."""
@@ -234,7 +223,7 @@ class TestResolveRepoName:
         adapter_cls.assert_not_called()
 
     async def test_case_insensitive_match_among_user_repos(self):
-        with (_no_default(), _adapter_with(_FULL, "mediajunkie/other")):
+        with _no_default(), _adapter_with(_FULL, "mediajunkie/other"):
             res = await resolve_repo_name(_USER, "test-Piper-Morgan")
         assert res.status == "resolved"
         assert res.full_name == _FULL
@@ -249,7 +238,7 @@ class TestResolveRepoName:
         assert set(res.candidates) == {"mediajunkie/tools", "someoneelse/tools"}
 
     async def test_not_found_when_searched_and_absent(self):
-        with (_no_default(), _adapter_with(_FULL)):
+        with _no_default(), _adapter_with(_FULL):
             res = await resolve_repo_name(_USER, "banana")
         assert res.status == "not_found"
 
@@ -259,7 +248,7 @@ class TestResolveRepoName:
         instance.search_user_repositories = AsyncMock(
             return_value=MagicMock(degradation=object(), repositories=None)
         )
-        with (_no_default(), patch(f"{ADAPTER}", return_value=instance)):
+        with _no_default(), patch(f"{ADAPTER}", return_value=instance):
             res = await resolve_repo_name(_USER, "test-piper-morgan")
         assert res.status == "unavailable"
 
@@ -289,9 +278,7 @@ class TestOriginalAskNaturalPhrasing:
             patch(f"{ROUTER}.update_issue", new=AsyncMock(return_value=updated)) as w,
             patch(
                 f"{REPO_CLAR}.resolve_repo_name",
-                new=AsyncMock(
-                    return_value=RepoNameResolution(status="resolved", full_name=_FULL)
-                ),
+                new=AsyncMock(return_value=RepoNameResolution(status="resolved", full_name=_FULL)),
             ) as resolver,
         ):
             result = await service._handle_update_issue(
@@ -369,10 +356,7 @@ class TestOriginalAskNaturalPhrasing:
         """Arm the closed default question ('say yes to use your default') —
         with an updatable field on the held intent so a bound 'yes' has a
         real write to fire."""
-        ask = (
-            "change the title of issue 108 to Testing in the "
-            "test-Piper-Morgan repository"
-        )
+        ask = "change the title of issue 108 to Testing in the " "test-Piper-Morgan repository"
         with (
             patch(f"{ROUTER}.initialize", new=AsyncMock()),
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
@@ -410,9 +394,7 @@ class TestOriginalAskNaturalPhrasing:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.update_issue", new=AsyncMock(return_value=updated)) as w,
         ):
-            result = await service.process_intent(
-                message="yes", session_id=sid, user_id=_USER
-            )
+            result = await service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert w.await_count == 1
         assert w.await_args.kwargs["owner"] == "mediajunkie"
         assert "Updated issue #108" in result.message
@@ -435,9 +417,7 @@ class TestOriginalAskNaturalPhrasing:
         await self._arm_closed_default_question(service, sid)
         explosive_write = patch(
             f"{ROUTER}.update_issue",
-            new=AsyncMock(
-                side_effect=AssertionError("aside bound the default and fired")
-            ),
+            new=AsyncMock(side_effect=AssertionError("aside bound the default and fired")),
         )
         with (
             patch(f"{ROUTER}.initialize", new=AsyncMock()),
@@ -445,14 +425,11 @@ class TestOriginalAskNaturalPhrasing:
             explosive_write,
         ):
             try:
-                result = await service.process_intent(
-                    message=aside, session_id=sid, user_id=_USER
-                )
+                result = await service.process_intent(message=aside, session_id=sid, user_id=_USER)
                 assert "Updated issue" not in result.message
             except IntentProcessingError as exc:
-                assert (
-                    "LLM boundary touched" in str(exc)
-                    or "INTENT_CLASSIFICATION_FAILED" in str(exc)
+                assert "LLM boundary touched" in str(exc) or "INTENT_CLASSIFICATION_FAILED" in str(
+                    exc
                 ), str(exc)
         assert _pending(service, sid) is None  # dropped via the pop
 
@@ -493,9 +470,7 @@ class TestPinnedTranscript:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             _resolver_unresolved(),
         ):
-            return await service.process_intent(
-                message=ASK_NO_REPO, session_id=sid, user_id=_USER
-            )
+            return await service.process_intent(message=ASK_NO_REPO, session_id=sid, user_id=_USER)
 
     def _answer_patches(self, updated=None):
         updated = updated or {
@@ -556,9 +531,7 @@ class TestPinnedTranscript:
         await self._ask_turn(service, sid)
         p = self._answer_patches()
         with p[0], p[1], p[2] as w, p[3], p[4]:
-            result = await service.process_intent(
-                message=_FULL, session_id=sid, user_id=_USER
-            )
+            result = await service.process_intent(message=_FULL, session_id=sid, user_id=_USER)
         assert w.await_count == 1
         assert w.await_args.kwargs["owner"] == "mediajunkie"
         assert "Updated issue #108" in result.message
@@ -607,9 +580,7 @@ class TestPinnedTranscript:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             _resolver_unresolved(),
         ):
-            result = await service.process_intent(
-                message="yes", session_id=sid, user_id=_USER
-            )
+            result = await service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert "Which repository is issue #108 in?" in result.message
         assert _pending(service, sid) is not None
 
@@ -625,9 +596,7 @@ class TestPinnedTranscript:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             explosive_write,
         ):
-            result = await service.process_intent(
-                message="no", session_id=sid, user_id=_USER
-            )
+            result = await service.process_intent(message="no", session_id=sid, user_id=_USER)
         assert "I haven't touched issue #108" in result.message
         assert _pending(service, sid) is None
 
@@ -675,15 +644,11 @@ class TestClosePathRepoClarification:
             patch(f"{ROUTER}.update_issue", new=AsyncMock(return_value=closed)) as w,
             patch(
                 f"{REPO_CLAR}.resolve_repo_name",
-                new=AsyncMock(
-                    return_value=RepoNameResolution(status="resolved", full_name=_FULL)
-                ),
+                new=AsyncMock(return_value=RepoNameResolution(status="resolved", full_name=_FULL)),
             ),
         ):
             result = await service._handle_close_issue_query(
-                self._close_intent(
-                    "close issue #108 in the test-Piper-Morgan repository"
-                ),
+                self._close_intent("close issue #108 in the test-Piper-Morgan repository"),
                 "wf-close",
                 session_id="sess-close-named",
             )

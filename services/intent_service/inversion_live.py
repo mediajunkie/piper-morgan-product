@@ -302,9 +302,7 @@ def _log_full_utterance() -> bool:
     # The SAME operator knob the shadow observer reads
     # (PIPER_INVERSION_LOG_UTTERANCE, default on) — one privacy switch for
     # both inversion telemetry surfaces. The sha256 is always logged.
-    return (
-        os.environ.get("PIPER_INVERSION_LOG_UTTERANCE", "1").strip().lower() in _TRUTHY
-    )
+    return os.environ.get("PIPER_INVERSION_LOG_UTTERANCE", "1").strip().lower() in _TRUTHY
 
 
 def _category_by_operation(grammar: Any) -> Dict[str, str]:
@@ -410,11 +408,7 @@ async def consult_inversion_live(
     from services.intent_service.snapshot_assembly import assemble_session_snapshot
 
     snapshot = await assemble_session_snapshot(session_id, user_id, intent_service)
-    if (
-        snapshot.pending_offer_kind
-        or snapshot.active_process_type
-        or snapshot.draft_in_compose
-    ):
+    if snapshot.pending_offer_kind or snapshot.active_process_type or snapshot.draft_in_compose:
         _log_decision(
             message,
             session_id=session_id,
@@ -444,16 +438,12 @@ async def consult_inversion_live(
     decision = await route(
         message,
         RouterSnapshot(state_block=block) if block else None,
-        llm_service=getattr(
-            getattr(intent_service, "intent_classifier", None), "_llm", None
-        ),
+        llm_service=getattr(getattr(intent_service, "intent_classifier", None), "_llm", None),
         grammar=grammar,
         user_id=user_id,
     )
 
-    legacy_label, divergence = _legacy_preclassifier_comparison(
-        message, decision, grammar
-    )
+    legacy_label, divergence = _legacy_preclassifier_comparison(message, decision, grammar)
 
     # ── The dispatch decision, one condition at a time (each reason is a
     # distinct telemetry bucket — the corpus needs to see WHICH gate held).

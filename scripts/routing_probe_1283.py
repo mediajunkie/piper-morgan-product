@@ -81,7 +81,8 @@ async def run_probe(out_path: Path | None) -> int:
                 want = expected.split(":", 1)[1]
                 if action == want:
                     verdict = (
-                        "PASS" if want in reachable
+                        "PASS"
+                        if want in reachable
                         else "FAIL(mode-2: canonical reachable through NO surface)"
                     )
                     if want in reachable and not on_rail:
@@ -102,8 +103,12 @@ async def run_probe(out_path: Path | None) -> int:
                     verdict = "PASS(note: action-rail dispatch precedes)"
             else:  # REVIEW
                 verdict = "REVIEW"
-            rows.append((phrase, expected, action, category, round(intent.confidence, 2), on_rail, verdict))
-            print(f"[{i}/{len(corpus)}] {verdict:<40} {phrase!r} -> action={action!r} category={category}")
+            rows.append(
+                (phrase, expected, action, category, round(intent.confidence, 2), on_rail, verdict)
+            )
+            print(
+                f"[{i}/{len(corpus)}] {verdict:<40} {phrase!r} -> action={action!r} category={category}"
+            )
         except Exception as e:  # a crash on one row shouldn't kill the run
             rows.append((phrase, expected, "<ERROR>", type(e).__name__, 0.0, False, f"ERROR: {e}"))
             print(f"[{i}/{len(corpus)}] ERROR {phrase!r}: {e}")
@@ -125,7 +130,9 @@ async def run_probe(out_path: Path | None) -> int:
             "|---|---|---|---|---|---|---|",
         ]
         for p, e, a, c, conf, r, v in rows:
-            lines.append(f"| {p} | `{e}` | `{a or '—'}` | {c} | {conf} | {'✓' if r else '✗'} | {v} |")
+            lines.append(
+                f"| {p} | `{e}` | `{a or '—'}` | {c} | {conf} | {'✓' if r else '✗'} | {v} |"
+            )
         out_path.write_text("\n".join(lines) + "\n")
         print(f"report -> {out_path}")
 

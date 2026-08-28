@@ -55,7 +55,9 @@ class TestWorkflowRegistry:
         with pytest.raises(ValueError, match="already registered"):
             register_workflow(
                 "dupe",
-                WorkflowEntry(entry_point=AsyncMock(), effect=EffectClass.READ, description="Second"),
+                WorkflowEntry(
+                    entry_point=AsyncMock(), effect=EffectClass.READ, description="Second"
+                ),
             )
 
     def test_get_registered_workflows(self):

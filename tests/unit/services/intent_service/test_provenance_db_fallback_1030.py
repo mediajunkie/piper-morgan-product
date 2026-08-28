@@ -15,10 +15,10 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+from services.domain.models import Intent
 from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.intent_service.conversation_context import ConversationContext
 from services.shared_types import IntentCategory
-from services.domain.models import Intent
 
 
 def _mk_intent():

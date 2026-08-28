@@ -32,7 +32,6 @@ from services.database.models import User, UserAPIKey
 from services.database.session_factory import AsyncSessionFactory
 from services.security.user_api_key_service import UserAPIKeyService
 
-
 # ============================================================================
 # FIXTURES
 # ============================================================================

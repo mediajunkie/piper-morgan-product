@@ -115,9 +115,7 @@ _MSG = DEFECT_SHAPES[0]
 async def sm(monkeypatch):
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
     async with engine.begin() as conn:
-        await conn.run_sync(
-            lambda c: SessionActivityDB.__table__.create(c, checkfirst=True)
-        )
+        await conn.run_sync(lambda c: SessionActivityDB.__table__.create(c, checkfirst=True))
     maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
     @contextlib.asynccontextmanager
@@ -159,9 +157,7 @@ def _rail_registered():
 
 @pytest.fixture
 def svc():
-    return SimpleNamespace(
-        workflow_offer_service=WorkflowOfferService(), intent_classifier=None
-    )
+    return SimpleNamespace(workflow_offer_service=WorkflowOfferService(), intent_classifier=None)
 
 
 @pytest.fixture
@@ -196,9 +192,7 @@ class _LogRecorder:
         raise AttributeError(name)
 
     def decisions(self):
-        return [
-            (lvl, f) for lvl, ev, f in self.events if ev == "inversion_live_decision"
-        ]
+        return [(lvl, f) for lvl, ev, f in self.events if ev == "inversion_live_decision"]
 
 
 @pytest.fixture
@@ -240,13 +234,10 @@ def _explosive_snapshot(monkeypatch):
 
 
 def _decision(operation, confidence=0.9):
-    return RoutingDecision(
-        outcome="operation", operation=operation, confidence=confidence
-    )
+    return RoutingDecision(outcome="operation", operation=operation, confidence=confidence)
 
 
-async def _consult(svc, monkeypatch, log_rec, *, cats, operation, message=_MSG,
-                   confidence=0.9):
+async def _consult(svc, monkeypatch, log_rec, *, cats, operation, message=_MSG, confidence=0.9):
     monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", cats)
     calls = _stub_route(monkeypatch, _decision(operation, confidence))
     out = await consult_inversion_live(
@@ -271,9 +262,7 @@ class TestAllowlistConstant:
     def test_the_three_conditions_are_written_beside_the_constant(self):
         """The comment is the mechanism (nothing else forces the verification),
         so its absence is a defect. Checked by content, not by line number."""
-        src = Path("services/intent_service/workflow_dispatcher.py").read_text(
-            encoding="utf-8"
-        )
+        src = Path("services/intent_service/workflow_dispatcher.py").read_text(encoding="utf-8")
         block = src.split("FLIP_WRITE_ALLOWLIST: frozenset")[0]
         for phrase in (
             "CONFIRMED REGISTERED",
@@ -350,9 +339,7 @@ class TestConstructorGuard:
         """The denominator, stated (m-43): ONE entry object on the whole rail
         claims an allowlist name. If this grows, it grew in review."""
         wf = get_action_workflows()
-        declared = {
-            k for k, e in wf.items() if e.flip_write_allowlist_key is not None
-        }
+        declared = {k for k, e in wf.items() if e.flip_write_allowlist_key is not None}
         assert declared == {"create_todo", "add_todo", "new_todo"}, (
             "the create_todo alias family shares ONE entry object; anything "
             "else here is a second allowlisted operation"
@@ -422,7 +409,11 @@ class TestDispatchGuard:
         self, sm, mem_prefs, svc, monkeypatch, log_rec
     ):
         out, _, [(_, f)] = await _consult(
-            svc, monkeypatch, log_rec, cats="create_todo", operation="create_todo",
+            svc,
+            monkeypatch,
+            log_rec,
+            cats="create_todo",
+            operation="create_todo",
             confidence=0.5,
         )
         assert out is None and f["reason"] == "sub_threshold"
@@ -438,9 +429,7 @@ class TestDispatchGuard:
         assert out is None
         assert f["live_match"] is None and f["reason"] == "not_live_categorized"
 
-    async def test_default_empty_is_still_byte_identically_dark(
-        self, monkeypatch, svc, log_rec
-    ):
+    async def test_default_empty_is_still_byte_identically_dark(self, monkeypatch, svc, log_rec):
         """Unchanged by the write flip: unset ⇒ zero work, not even a log line.
         Explosive snapshot AND explosive router — the allowlist lookup must not
         have introduced work before the flag check."""
@@ -470,9 +459,7 @@ class TestFlippedTurnReachesTheRail:
 
         monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "create_todo")
         calls = _stub_route(monkeypatch, _decision("create_todo", 0.95))
-        service = IntentService(
-            intent_classifier=IntentClassifier(llm_service=_ExplosiveLLM())
-        )
+        service = IntentService(intent_classifier=IntentClassifier(llm_service=_ExplosiveLLM()))
 
         async def _boom(*a, **k):
             raise AssertionError(
@@ -491,7 +478,8 @@ class TestFlippedTurnReachesTheRail:
         monkeypatch.setattr(consent_gate, "evaluate_consent", _spy)
 
         result = await service.process_intent(
-            message=message, session_id=f"{_SESSION}-{abs(hash(message))}",
+            message=message,
+            session_id=f"{_SESSION}-{abs(hash(message))}",
             user_id=_USER,
         )
         return result, calls
@@ -555,8 +543,12 @@ class TestDefectShapesRouteToCreateTodo:
         self, sm, mem_prefs, svc, monkeypatch, log_rec, message
     ):
         out, _, [(_, f)] = await _consult(
-            svc, monkeypatch, log_rec, cats="create_todo",
-            operation="create_todo", message=message,
+            svc,
+            monkeypatch,
+            log_rec,
+            cats="create_todo",
+            operation="create_todo",
+            message=message,
         )
         assert isinstance(out, Intent)
         assert out.action == "create_todo"

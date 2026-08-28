@@ -71,7 +71,9 @@ async def _main() -> None:
             counts[encrypt_file_in_place(Path(storage_path), encryptor)] += 1
     finally:
         await engine.dispose()
-    print(f"uploaded files: {counts['encrypted']} encrypted, {counts['already']} already, {counts['missing']} missing-on-disk")
+    print(
+        f"uploaded files: {counts['encrypted']} encrypted, {counts['already']} already, {counts['missing']} missing-on-disk"
+    )
 
 
 if __name__ == "__main__":

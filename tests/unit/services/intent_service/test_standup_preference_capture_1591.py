@@ -274,9 +274,7 @@ class TestPpmEmptyExceptionInvitationFirst:
         (invitation first)."""
         with_data = await _report_turn(service, "sess-disc-a")
         empty = await _report_turn(service, "sess-disc-b", empty=True)
-        assert with_data.message.index(PROSE) < with_data.message.index(
-            sp.INVITE_AFTER_REPORT
-        )
+        assert with_data.message.index(PROSE) < with_data.message.index(sp.INVITE_AFTER_REPORT)
         assert empty.message == sp.INVITE_EMPTY_LEAD  # the ask leads
 
     async def test_empty_records_no_mode_choice_and_infers_nothing(self, service):
@@ -515,9 +513,7 @@ class TestStoredPreferenceHonored:
 class TestAutoApplySemantics:
     pytestmark = pytest.mark.asyncio
 
-    async def test_sustained_repetition_auto_applies_without_read_back(
-        self, service, mem_prefs
-    ):
+    async def test_sustained_repetition_auto_applies_without_read_back(self, service, mem_prefs):
         """5 report choices → confidence 0.95 ≥ AUTO_APPLY_THRESHOLD → the
         rail says apply, don't ask: no read-back, no invitation nag, and
         (DEFAULT meta mode) NO store write — only VERIFIED values are stored,
@@ -617,9 +613,7 @@ class TestStandupInterviewWorkflowEntry:
             run_standup_interview_workflow,
         )
 
-        assert (
-            await run_standup_interview_workflow(session_id="s", context={}) is None
-        )
+        assert await run_standup_interview_workflow(session_id="s", context={}) is None
         fake_service = MagicMock()
         fake_service._start_standup_conversation = AsyncMock()
         assert (

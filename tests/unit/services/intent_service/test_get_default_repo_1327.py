@@ -67,12 +67,12 @@ class TestPreClassifierGetDefaultRepoPatterns:
     def test_get_default_repo_patterns_classify(self, message):
         result = PreClassifier.pre_classify(message)
         assert result is not None, f"{message!r} did not pre-classify"
-        assert result.category == IntentCategory.QUERY, (
-            f"{message!r} -> {result.category} (expected QUERY)"
-        )
-        assert result.action == "get_default_repo", (
-            f"{message!r} -> action {result.action!r} (expected get_default_repo)"
-        )
+        assert (
+            result.category == IntentCategory.QUERY
+        ), f"{message!r} -> {result.category} (expected QUERY)"
+        assert (
+            result.action == "get_default_repo"
+        ), f"{message!r} -> action {result.action!r} (expected get_default_repo)"
         # The handler reads the principal from context — original_message preserved verbatim.
         assert result.context.get("original_message") == message
 
@@ -93,9 +93,9 @@ class TestPreClassifierGetDefaultRepoPatterns:
         NOT to the new get_default_repo (the two flows must stay disjoint)."""
         result = PreClassifier.pre_classify(message)
         assert result is not None, f"{message!r} stopped pre-classifying"
-        assert result.action == "set_default_repo", (
-            f"{message!r} -> {result.action!r} (set-default flow was hijacked)"
-        )
+        assert (
+            result.action == "set_default_repo"
+        ), f"{message!r} -> {result.action!r} (set-default flow was hijacked)"
 
     @pytest.mark.parametrize(
         "message",
@@ -138,12 +138,15 @@ class TestGetDefaultRepoHandler:
             return_value="mediajunkie/piper-morgan-product"
         )
 
-        with patch(
-            "services.connectors.config_service.ConnectorConfigService",
-            return_value=mock_config_service,
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory.session_scope"
-        ) as mock_scope:
+        with (
+            patch(
+                "services.connectors.config_service.ConnectorConfigService",
+                return_value=mock_config_service,
+            ),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope"
+            ) as mock_scope,
+        ):
             mock_scope.return_value.__aenter__ = AsyncMock(return_value=MagicMock())
             mock_scope.return_value.__aexit__ = AsyncMock(return_value=False)
 
@@ -174,12 +177,15 @@ class TestGetDefaultRepoHandler:
         mock_config_service = MagicMock()
         mock_config_service.get_default_repo = AsyncMock(return_value=None)
 
-        with patch(
-            "services.connectors.config_service.ConnectorConfigService",
-            return_value=mock_config_service,
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory.session_scope"
-        ) as mock_scope:
+        with (
+            patch(
+                "services.connectors.config_service.ConnectorConfigService",
+                return_value=mock_config_service,
+            ),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope"
+            ) as mock_scope,
+        ):
             mock_scope.return_value.__aenter__ = AsyncMock(return_value=MagicMock())
             mock_scope.return_value.__aexit__ = AsyncMock(return_value=False)
 
@@ -209,14 +215,18 @@ class TestGetDefaultRepoHandler:
         mock_config_service = MagicMock()
         mock_config_service.get_default_repo = AsyncMock(return_value="owner/name")
 
-        with patch(
-            "services.connectors.config_service.ConnectorConfigService",
-            return_value=mock_config_service,
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory.session_scope"
-        ) as mock_scope, patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
-        ) as MockRouter:
+        with (
+            patch(
+                "services.connectors.config_service.ConnectorConfigService",
+                return_value=mock_config_service,
+            ),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope"
+            ) as mock_scope,
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+            ) as MockRouter,
+        ):
             mock_scope.return_value.__aenter__ = AsyncMock(return_value=MagicMock())
             mock_scope.return_value.__aexit__ = AsyncMock(return_value=False)
 
@@ -254,9 +264,7 @@ class TestGetDefaultRepoDispatch:
 
         register_default_workflows()
 
-        fake_result = IntentProcessingResult(
-            success=True, message="ok", intent_data={}
-        )
+        fake_result = IntentProcessingResult(success=True, message="ok", intent_data={})
         mock_service = MagicMock()
         mock_service._handle_get_default_repo = AsyncMock(return_value=fake_result)
 
@@ -299,9 +307,7 @@ class TestActionRegistryConsistency:
         )
 
         assert ("QUERY", "get_default_repo") in ACTION_REGISTRY
-        assert (
-            ACTION_REGISTRY[("QUERY", "get_default_repo")] == ActionDisposition.WORKFLOW
-        )
+        assert ACTION_REGISTRY[("QUERY", "get_default_repo")] == ActionDisposition.WORKFLOW
 
     def test_example_present_and_classifies(self):
         from services.intent_service.action_registry import ACTION_EXAMPLES

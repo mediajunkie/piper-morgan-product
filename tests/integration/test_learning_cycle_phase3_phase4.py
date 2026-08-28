@@ -113,6 +113,7 @@ async def clean_test_patterns():
         # Delete test patterns before test
         await session.execute(delete(LearnedPattern).where(LearnedPattern.user_id == TEST_USER_ID))
         from sqlalchemy import text as _text
+
         await session.execute(
             _text("DELETE FROM learning_settings WHERE user_id = :u"), {"u": str(TEST_USER_ID)}
         )
@@ -124,6 +125,7 @@ async def clean_test_patterns():
         # Delete test patterns after test
         await session.execute(delete(LearnedPattern).where(LearnedPattern.user_id == TEST_USER_ID))
         from sqlalchemy import text as _text
+
         await session.execute(
             _text("DELETE FROM learning_settings WHERE user_id = :u"), {"u": str(TEST_USER_ID)}
         )
@@ -266,7 +268,9 @@ class TestLearningCyclePhase3:
 
             # Accept multiplies by 1.1, capped at 1.0
             assert pattern.confidence > 0.6
-            assert pattern.success_count >= 3  # 2 earned outcomes + accept-feedback path (route may record an additional outcome internally)
+            assert (
+                pattern.success_count >= 3
+            )  # 2 earned outcomes + accept-feedback path (route may record an additional outcome internally)
 
         # Step 5: Submit negative feedback (reject) to test decrease
         feedback = PatternFeedback(action="reject", feedback_text="Not useful")
@@ -359,7 +363,8 @@ class TestLearningCyclePhase3:
         # Get suggestions with default threshold (0.7)
         async with AsyncSessionFactory.session_scope_fresh() as _sess:
             suggestions = await learning_handler.get_suggestions(
-                user_id=TEST_USER_ID, context={"category": "EXECUTION"},
+                user_id=TEST_USER_ID,
+                context={"category": "EXECUTION"},
                 session=_sess,
             )
 
@@ -389,7 +394,8 @@ class TestLearningCyclePhase3:
         # Get suggestions again
         async with AsyncSessionFactory.session_scope_fresh() as _sess:
             suggestions = await learning_handler.get_suggestions(
-                user_id=TEST_USER_ID, context={"category": "EXECUTION"},
+                user_id=TEST_USER_ID,
+                context={"category": "EXECUTION"},
                 session=_sess,
             )
 
@@ -592,7 +598,8 @@ class TestLearningCyclePerformance:
 
         async with AsyncSessionFactory.session_scope_fresh() as _sess:
             suggestions = await learning_handler.get_suggestions(
-                user_id=TEST_USER_ID, context={"category": "EXECUTION"},
+                user_id=TEST_USER_ID,
+                context={"category": "EXECUTION"},
                 session=_sess,
             )
 
@@ -634,23 +641,24 @@ class TestLearningCyclePerformance:
 
         # Warm up
         async with AsyncSessionFactory.session_scope_fresh() as _sess:
-            await learning_handler.get_automation_patterns(user_id=TEST_USER_ID, context={}, session=_sess)
+            await learning_handler.get_automation_patterns(
+                user_id=TEST_USER_ID, context={}, session=_sess
+            )
 
         # Measure performance
         start = time.perf_counter()
 
         async with AsyncSessionFactory.session_scope_fresh() as _sess:
             patterns = await learning_handler.get_automation_patterns(
-                user_id=TEST_USER_ID, context={"intent": "EXECUTION"},
+                user_id=TEST_USER_ID,
+                context={"intent": "EXECUTION"},
                 session=_sess,
             )
 
         elapsed_ms = (time.perf_counter() - start) * 1000
 
         # Should complete in <500ms
-        assert (
-            elapsed_ms < 500.0
-        ), f"get_automation_patterns took {elapsed_ms:.2f}ms (>500ms bound)"
+        assert elapsed_ms < 500.0, f"get_automation_patterns took {elapsed_ms:.2f}ms (>500ms bound)"
         assert patterns is not None
 
 
@@ -721,7 +729,8 @@ class TestLearningSettings:
         # Get suggestions
         async with AsyncSessionFactory.session_scope_fresh() as _sess:
             suggestions = await learning_handler.get_suggestions(
-                user_id=TEST_USER_ID, context={},
+                user_id=TEST_USER_ID,
+                context={},
                 session=_sess,
             )
 
@@ -732,7 +741,8 @@ class TestLearningSettings:
         # Get automation patterns
         async with AsyncSessionFactory.session_scope_fresh() as _sess:
             automation = await learning_handler.get_automation_patterns(
-                user_id=TEST_USER_ID, context={},
+                user_id=TEST_USER_ID,
+                context={},
                 session=_sess,
             )
 

@@ -12,6 +12,7 @@ Create Date: 2026-07-15
 """
 
 import sqlalchemy as sa
+
 from alembic import op
 
 revision = "j1394ledger"

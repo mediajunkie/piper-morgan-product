@@ -57,8 +57,7 @@ class _ExplosiveLLM:
 
     def __getattr__(self, name):
         raise AssertionError(
-            f"LLM boundary touched ({name}) — #1650 turns must resolve "
-            "deterministically"
+            f"LLM boundary touched ({name}) — #1650 turns must resolve " "deterministically"
         )
 
 
@@ -216,9 +215,7 @@ class TestCorrectionClaimAnchoring:
 
         class _ExplosiveOfferService:
             def set_pending_offer(self, *a, **k):
-                raise AssertionError(
-                    "correction window armed a confirm off the aside"
-                )
+                raise AssertionError("correction window armed a confirm off the aside")
 
         class _Svc:
             workflow_offer_service = _ExplosiveOfferService()
@@ -301,9 +298,7 @@ def _pending_offers(service):
 class TestDestructiveConfirmCrispEndToEnd:
     pytestmark = pytest.mark.asyncio
 
-    async def test_pm_aside_never_fires_the_armed_confirm(
-        self, live_service, monkeypatch
-    ):
+    async def test_pm_aside_never_fires_the_armed_confirm(self, live_service, monkeypatch):
         """THE acceptance pin: PM's exact aside against an armed close
         confirm. RED pre-fix: the greedy "^please\\s" row read it as YES and
         update_issue fired. GREEN: neither accept nor decline claims it —
@@ -312,9 +307,7 @@ class TestDestructiveConfirmCrispEndToEnd:
         here the explosive LLM boundary, proving no offer seam claimed it)."""
         update_mock = _explosive_router(monkeypatch, allow_update=True)
         sid = "e2e-1650-aside"
-        await live_service.process_intent(
-            message="close issue #108", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         try:
             result = await live_service.process_intent(
                 message=PM_ASIDE, session_id=sid, user_id=_USER
@@ -323,9 +316,8 @@ class TestDestructiveConfirmCrispEndToEnd:
             # copy — declining was not what PM said either.
             assert "won't close issue #108" not in result.message
         except IntentProcessingError as exc:
-            assert (
-                "LLM boundary touched" in str(exc)
-                or "INTENT_CLASSIFICATION_FAILED" in str(exc)
+            assert "LLM boundary touched" in str(exc) or "INTENT_CLASSIFICATION_FAILED" in str(
+                exc
             ), str(exc)
         update_mock.assert_not_awaited()  # nothing fired
         assert _pending_offers(live_service).get(sid) is None  # popped
@@ -333,14 +325,10 @@ class TestDestructiveConfirmCrispEndToEnd:
     @pytest.mark.parametrize(
         "affirmative", ["yes", "yes please", "go ahead", "do it", "confirm", "y"]
     )
-    async def test_crisp_yes_forms_still_fire(
-        self, live_service, monkeypatch, affirmative
-    ):
+    async def test_crisp_yes_forms_still_fire(self, live_service, monkeypatch, affirmative):
         _explosive_router(monkeypatch, allow_update=False)
         sid = f"e2e-1650-yes-{affirmative.replace(' ', '-')}"
-        await live_service.process_intent(
-            message="close issue #108", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         update_mock = _explosive_router(monkeypatch, allow_update=True)
         result = await live_service.process_intent(
             message=affirmative, session_id=sid, user_id=_USER
@@ -349,23 +337,15 @@ class TestDestructiveConfirmCrispEndToEnd:
         assert "Closed issue #108" in result.message
 
     @pytest.mark.parametrize("negative", ["no", "no thanks", "cancel"])
-    async def test_crisp_no_forms_still_cancel(
-        self, live_service, monkeypatch, negative
-    ):
+    async def test_crisp_no_forms_still_cancel(self, live_service, monkeypatch, negative):
         _explosive_router(monkeypatch, allow_update=False)
         sid = f"e2e-1650-no-{negative.replace(' ', '-')}"
-        await live_service.process_intent(
-            message="close issue #108", session_id=sid, user_id=_USER
-        )
-        result = await live_service.process_intent(
-            message=negative, session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
+        result = await live_service.process_intent(message=negative, session_id=sid, user_id=_USER)
         assert "won't close issue #108" in result.message
         assert _pending_offers(live_service).get(sid) is None
 
-    async def test_short_near_accept_neither_fires_nor_declines(
-        self, live_service, monkeypatch
-    ):
+    async def test_short_near_accept_neither_fires_nor_declines(self, live_service, monkeypatch):
         """A short single-line turn the generic rows would claim ("sure,
         whatever you think") — well under the #1631 floor, so only the
         #1650 crisp rule protects it."""
@@ -373,18 +353,15 @@ class TestDestructiveConfirmCrispEndToEnd:
         assert detect_offer_response(near_accept) == "accept"
         update_mock = _explosive_router(monkeypatch, allow_update=True)
         sid = "e2e-1650-nearaccept"
-        await live_service.process_intent(
-            message="close issue #108", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         try:
             result = await live_service.process_intent(
                 message=near_accept, session_id=sid, user_id=_USER
             )
             assert "won't close issue #108" not in result.message
         except IntentProcessingError as exc:
-            assert (
-                "LLM boundary touched" in str(exc)
-                or "INTENT_CLASSIFICATION_FAILED" in str(exc)
+            assert "LLM boundary touched" in str(exc) or "INTENT_CLASSIFICATION_FAILED" in str(
+                exc
             ), str(exc)
         update_mock.assert_not_awaited()
         assert _pending_offers(live_service).get(sid) is None

@@ -77,8 +77,7 @@ class _ExplosiveLLM:
 
     def __getattr__(self, name):
         raise AssertionError(
-            f"LLM boundary touched ({name}) — #1685 turns must resolve "
-            "deterministically"
+            f"LLM boundary touched ({name}) — #1685 turns must resolve " "deterministically"
         )
 
 
@@ -115,9 +114,7 @@ def _pending_offers(service):
     return service.workflow_offer_service._pending_offers
 
 
-def _stub_classification(
-    monkeypatch, service, message, action, category=IntentCategory.EXECUTION
-):
+def _stub_classification(monkeypatch, service, message, action, category=IntentCategory.EXECUTION):
     """Deterministic classification for the classified turn (the #1666 idiom).
     Stated per m-43: create_todo has NO deterministic emitting surface, so the
     (action, framing) pair can only come from the LLM lane in production."""
@@ -151,9 +148,7 @@ def todo_boundary(monkeypatch):
     state = {"created": []}
 
     async def _create(self, user_id, text, priority="medium", **kwargs):
-        row = SimpleNamespace(
-            id=uuid4(), text=text, priority=priority, user_id=user_id
-        )
+        row = SimpleNamespace(id=uuid4(), text=text, priority=priority, user_id=user_id)
         state["created"].append(row)
         return row
 
@@ -267,9 +262,7 @@ class TestConsentGateIsConsulted:
 
         sid = "e2e-1685-consulted"
         _stub_classification(monkeypatch, live_service, IMPERATIVE_CREATE, "create_todo")
-        await live_service.process_intent(
-            message=IMPERATIVE_CREATE, session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message=IMPERATIVE_CREATE, session_id=sid, user_id=_USER)
 
         assert len(calls) == 1, (
             "consent_gate.evaluate_consent was not consulted for a create_todo "
@@ -282,9 +275,7 @@ class TestConsentGateIsConsulted:
         assert str(principal) == _USER
 
     @pytest.mark.parametrize("alias", CREATE_TODO_ALIASES)
-    async def test_every_alias_is_evaluated(
-        self, live_service, monkeypatch, todo_boundary, alias
-    ):
+    async def test_every_alias_is_evaluated(self, live_service, monkeypatch, todo_boundary, alias):
         """A raw mapper alias must reach the gate too — an alias registered on
         the mapper but not the rail is the same gap wearing another name."""
         calls = []
@@ -297,9 +288,7 @@ class TestConsentGateIsConsulted:
         monkeypatch.setattr(consent_gate, "evaluate_consent", _spy)
         sid = f"e2e-1685-alias-{alias}"
         _stub_classification(monkeypatch, live_service, IMPERATIVE_CREATE, alias)
-        await live_service.process_intent(
-            message=IMPERATIVE_CREATE, session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message=IMPERATIVE_CREATE, session_id=sid, user_id=_USER)
         assert calls == [EffectClass.WRITE], f"{alias} skipped the consent gate"
 
     async def test_verdict_on_an_imperative_create_is_proceed(self):
@@ -365,16 +354,12 @@ class TestNoNewCeremony:
     ):
         sid = f"e2e-1685-phrasing-{expected.replace(' ', '-')}"
         _stub_classification(monkeypatch, live_service, message, "create_todo")
-        result = await live_service.process_intent(
-            message=message, session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message=message, session_id=sid, user_id=_USER)
         assert [row.text for row in todo_boundary["created"]] == [expected]
         assert _pending_offers(live_service).get(sid) is None
         assert "(yes/no)" not in result.message
 
-    async def test_category_independence(
-        self, live_service, monkeypatch, todo_boundary
-    ):
+    async def test_category_independence(self, live_service, monkeypatch, todo_boundary):
         """The rail dispatches by action BEFORE category routing (#1560
         rationale) — a create_todo emission under a non-EXECUTION category now
         writes the row instead of flooring into an improvised denial."""
@@ -445,20 +430,14 @@ class TestAmbiguousFramingFollowsTheRatifiedMatrix:
     ):
         sid = "e2e-1685-ambiguous-yes"
         _stub_classification(monkeypatch, live_service, AMBIGUOUS_CREATE, "create_todo")
-        await live_service.process_intent(
-            message=AMBIGUOUS_CREATE, session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message=AMBIGUOUS_CREATE, session_id=sid, user_id=_USER)
         assert todo_boundary["created"] == []
 
         async def _explosive(msg, context=None, user_id=None, session_id=None):
             raise AssertionError("'yes' was re-classified")
 
-        monkeypatch.setattr(
-            live_service.intent_classifier, "classify_multiple", _explosive
-        )
-        result = await live_service.process_intent(
-            message="yes", session_id=sid, user_id=_USER
-        )
+        monkeypatch.setattr(live_service.intent_classifier, "classify_multiple", _explosive)
+        result = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert [row.text for row in todo_boundary["created"]] == ["buy milk"]
         assert "I've added that to your list." in result.message
         assert _pending_offers(live_service).get(sid) is None
@@ -488,9 +467,7 @@ def _mock_reminder_todo_service(svc):
     """The #1654 fixture: swap the DB-backed service for a recording mock.
     The seam under test is claim-ownership, not persistence."""
     mock = MagicMock()
-    mock.create_todo = AsyncMock(
-        return_value=SimpleNamespace(id=uuid4(), text="whatever")
-    )
+    mock.create_todo = AsyncMock(return_value=SimpleNamespace(id=uuid4(), text="whatever"))
     mock.list_todos = AsyncMock(return_value=[])
     svc.todo_handlers.todo_service = mock
     return mock
@@ -526,9 +503,7 @@ class TestReminderBoundaryBothWays:
         stored = next(iter(_pending_offers(live_service).values()))
         assert stored["pending_action"]["kind"] == REMINDER_TASK_QUESTION_KIND
 
-    async def test_bare_task_answer_still_binds_to_the_reminder_carrier(
-        self, live_service
-    ):
+    async def test_bare_task_answer_still_binds_to_the_reminder_carrier(self, live_service):
         """Direction 1b — the load-bearing one. 'buy milk' is a bare task
         phrase that a classifier would happily read as create_todo; the
         carrier must still win it at the offer seam (which runs BEFORE
@@ -542,9 +517,7 @@ class TestReminderBoundaryBothWays:
             await live_service.process_intent(
                 message="set a reminder: check the oven", session_id=sid, user_id=_USER
             )
-        r2 = await live_service.process_intent(
-            message="buy milk", session_id=sid, user_id=_USER
-        )
+        r2 = await live_service.process_intent(message="buy milk", session_id=sid, user_id=_USER)
         mock.create_todo.assert_not_awaited()  # no time yet — the reminder flow, not a todo write
         assert "**buy milk**" in r2.message
         stored = next(iter(_pending_offers(live_service).values()))
@@ -562,9 +535,7 @@ class TestReminderBoundaryBothWays:
             await live_service.process_intent(
                 message="set a reminder: check the oven", session_id=sid, user_id=_USER
             )
-        await live_service.process_intent(
-            message="buy milk", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="buy milk", session_id=sid, user_id=_USER)
         r3 = await live_service.process_intent(
             message="at 3pm tomorrow", session_id=sid, user_id=_USER
         )

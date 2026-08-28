@@ -23,7 +23,10 @@ class TestAgendaPrincipalThreading:
         scope.__aenter__ = AsyncMock(return_value=MagicMock())
         scope.__aexit__ = AsyncMock(return_value=False)
         with (
-            patch("services.database.session_factory.AsyncSessionFactory.session_scope", return_value=scope),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope",
+                return_value=scope,
+            ),
             patch("services.repositories.todo_repository.TodoRepository", return_value=repo),
         ):
             await CanonicalHandlers()._get_todays_todos(user_id=uid)

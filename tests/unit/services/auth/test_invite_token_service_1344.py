@@ -22,7 +22,9 @@ from services.database.models import InviteToken, User
 
 def _make_user() -> User:
     suffix = uuid.uuid4().hex[:8]
-    return User(id=uuid.uuid4(), username=f"u_{suffix}", email=f"{suffix}@test.invalid", is_alpha=True)
+    return User(
+        id=uuid.uuid4(), username=f"u_{suffix}", email=f"{suffix}@test.invalid", is_alpha=True
+    )
 
 
 # ---- generation ----

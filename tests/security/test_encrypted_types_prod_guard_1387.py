@@ -49,17 +49,12 @@ class TestProdFatal:
 class TestDevFallbackPreserved:
     def test_dev_keyless_write_still_passes_through(self, monkeypatch):
         _keyless(monkeypatch, "development")
-        assert (
-            EncryptedString(context="t.c").process_bind_param("v", dialect=None) == "v"
-        )
+        assert EncryptedString(context="t.c").process_bind_param("v", dialect=None) == "v"
 
     def test_no_env_at_all_keeps_fallback(self, monkeypatch):
         """Unset environment (plain local runs) is NOT treated as production."""
         _keyless(monkeypatch, None)
-        assert (
-            EncryptedJSON(context="t.c").process_bind_param({"a": 1}, dialect=None)
-            == {"a": 1}
-        )
+        assert EncryptedJSON(context="t.c").process_bind_param({"a": 1}, dialect=None) == {"a": 1}
 
 
 class TestWithKeyUnaffected:

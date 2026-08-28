@@ -61,21 +61,21 @@ def test_chip_is_keyed_off_reminder_date_not_title_text(rendered):
     """The identity signal is the threaded payload field — a todo titled
     'reminder to buy milk' must NOT grow a chip."""
     body = _render_fn(rendered)
-    assert re.search(r"todo\.reminder_date\s*\?[^:]*reminder-chip", body, re.DOTALL), (
-        "chip is not conditional on todo.reminder_date"
-    )
-    assert "todo.text.includes" not in body and "todo.text.match" not in body, (
-        "reminder identity must never be inferred from title text"
-    )
+    assert re.search(
+        r"todo\.reminder_date\s*\?[^:]*reminder-chip", body, re.DOTALL
+    ), "chip is not conditional on todo.reminder_date"
+    assert (
+        "todo.text.includes" not in body and "todo.text.match" not in body
+    ), "reminder identity must never be inferred from title text"
 
 
 def test_chip_reuses_the_priority_chip_pattern(rendered):
     """Same chip pattern as #1568's priority chip: shared .priority-chip base
     class for the shape, a .reminder-chip modifier for the identity color."""
     body = _render_fn(rendered)
-    assert re.search(r'class="priority-chip reminder-chip"', body), (
-        "reminder chip does not reuse the .priority-chip base pattern"
-    )
+    assert re.search(
+        r'class="priority-chip reminder-chip"', body
+    ), "reminder chip does not reuse the .priority-chip base pattern"
     assert ".reminder-chip" in rendered, "no CSS rule for the reminder chip"
 
 
@@ -86,8 +86,7 @@ def test_chip_label_is_static_no_user_data_interpolated(rendered):
     m = re.search(r"`(<span class=\"priority-chip reminder-chip\">[^`]*)`", body)
     assert m, "reminder chip literal not found"
     assert "${" not in m.group(1), (
-        "reminder chip interpolates dynamic data — it is pinned as a "
-        "static composed fragment"
+        "reminder chip interpolates dynamic data — it is pinned as a " "static composed fragment"
     )
 
 
@@ -97,26 +96,23 @@ def test_chip_label_is_static_no_user_data_interpolated(rendered):
 def test_reminders_cluster_under_their_own_heading(rendered):
     body = _render_fn(rendered)
     assert "Reminders</h2>" in body, (
-        "no 'Reminders' group heading — reminder rows stay interleaved with "
-        "plain todos"
+        "no 'Reminders' group heading — reminder rows stay interleaved with " "plain todos"
     )
-    assert re.search(r"todos\.filter\(\s*t\s*=>\s*t\.reminder_date\s*\)", body), (
-        "no client-side reminder grouping keyed off reminder_date"
-    )
-    assert re.search(r"todos\.filter\(\s*t\s*=>\s*!t\.reminder_date\s*\)", body), (
-        "plain todos are not separated from reminder rows"
-    )
+    assert re.search(
+        r"todos\.filter\(\s*t\s*=>\s*t\.reminder_date\s*\)", body
+    ), "no client-side reminder grouping keyed off reminder_date"
+    assert re.search(
+        r"todos\.filter\(\s*t\s*=>\s*!t\.reminder_date\s*\)", body
+    ), "plain todos are not separated from reminder rows"
 
 
 def test_empty_reminder_group_renders_nothing(rendered):
     """No reminders -> no heading: the section is gated on the group having
     rows (a heading over nothing is clutter, not identity)."""
     body = _render_fn(rendered)
-    assert re.search(
-        r"reminderTodos\.length\s*===\s*0\s*\?\s*''", body
-    ) or re.search(r"reminderTodos\.length\s*\?", body), (
-        "the Reminders section is not gated on the group being non-empty"
-    )
+    assert re.search(r"reminderTodos\.length\s*===\s*0\s*\?\s*''", body) or re.search(
+        r"reminderTodos\.length\s*\?", body
+    ), "the Reminders section is not gated on the group being non-empty"
 
 
 def test_group_note_teaches_the_unified_model_on_the_page_too(rendered):
@@ -124,9 +120,9 @@ def test_group_note_teaches_the_unified_model_on_the_page_too(rendered):
     group carries a one-line note on where reminders live and how they
     surface."""
     body = _render_fn(rendered)
-    assert "Reminders live with your todos" in body, (
-        "no on-page explanation of the reminders-are-todos relationship"
-    )
+    assert (
+        "Reminders live with your todos" in body
+    ), "no on-page explanation of the reminders-are-todos relationship"
 
 
 # --- canary: same-day #1568/#1578 work stays intact ---------------------------

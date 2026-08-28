@@ -31,7 +31,14 @@ from services.intent_service.unwired_writes import (
 # Mirrors test_unwired_write_honest_degrade_1331 — the hinted copy must keep
 # the same honesty properties as the base decline.
 _FABRICATED_SUCCESS_MARKERS = [
-    "✓", "✅", "created", "added", "done!", "successfully", "i've created", "i have created",
+    "✓",
+    "✅",
+    "created",
+    "added",
+    "done!",
+    "successfully",
+    "i've created",
+    "i have created",
 ]
 _HONEST_DECLINE_MARKERS = ["can't", "cannot", "can not", "not yet", "yet"]
 
@@ -64,9 +71,7 @@ class TestIssueLikeFilesFamilyHint:
         # false-affirmation dual of the #1426 false-denial class).
         import services.intent_service.workflow_dispatcher as wd
 
-        monkeypatch.setattr(
-            wd, "wired_chat_actions", lambda: ["create_todo", "list_todos"]
-        )
+        monkeypatch.setattr(wd, "wired_chat_actions", lambda: ["create_todo", "list_todos"])
         msg = get_unwired_write_decline("file_issue", original_message=_INCIDENT_MESSAGE)
         assert "create an issue" not in msg.lower()
         assert msg.startswith(GENERIC_UNWIRED_WRITE_DECLINE)
@@ -114,10 +119,7 @@ class TestHintScopeIsNarrow:
 
     def test_backward_compatible_single_arg_call(self):
         # The pre-#1571 call shape (action only) must behave exactly as before.
-        assert (
-            get_unwired_write_decline("archive_repository")
-            == GENERIC_UNWIRED_WRITE_DECLINE
-        )
+        assert get_unwired_write_decline("archive_repository") == GENERIC_UNWIRED_WRITE_DECLINE
         assert (
             get_unwired_write_decline("create_milestone")
             == UNWIRED_WRITE_DECLINES["create_milestone"]

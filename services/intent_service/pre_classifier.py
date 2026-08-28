@@ -1751,13 +1751,9 @@ class PreClassifier:
         identical precedence — the same shared-helper shape as
         _integration_connect_match (#1471).
         """
-        if PreClassifier._matches_patterns(
-            clean_message, PreClassifier.REMINDER_QUERY_BLOCKERS
-        ):
+        if PreClassifier._matches_patterns(clean_message, PreClassifier.REMINDER_QUERY_BLOCKERS):
             return False
-        return PreClassifier._matches_patterns(
-            clean_message, PreClassifier.REMINDER_QUERY_PATTERNS
-        )
+        return PreClassifier._matches_patterns(clean_message, PreClassifier.REMINDER_QUERY_PATTERNS)
 
     @staticmethod
     def _integration_connect_match(clean_message: str):

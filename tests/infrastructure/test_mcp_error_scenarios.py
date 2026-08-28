@@ -29,7 +29,6 @@ class TestMCPErrorScenarios:
 
     """Comprehensive error scenario testing for MCP integration"""
 
-
     @pytest.mark.asyncio
     async def test_mcp_client_timeout_handling(self):
         """Test MCP client timeout handling"""
@@ -169,7 +168,6 @@ class TestMCPErrorScenarios:
                 assert isinstance(score, float), "Should return float score even with MCP failure"
                 assert 0.0 <= score <= 1.0, "Score should be between 0 and 1"
 
-
     @pytest.mark.asyncio
     async def test_mcp_resource_corruption_handling(self):
         """Test handling of corrupted or invalid MCP resources"""
@@ -223,7 +221,6 @@ class TestMCPErrorScenarios:
 
 class TestMCPErrorPerformance:
     """Test performance characteristics under error conditions"""
-
 
     @pytest.mark.asyncio
     async def test_fallback_response_time(self):

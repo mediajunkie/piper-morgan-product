@@ -33,7 +33,12 @@ async def _seed_user(prefix: str = "todo") -> str:
                 "created_at, updated_at, role, is_alpha) "
                 "VALUES (:id, :u, :e, true, true, :now, :now, 'user', true)"
             ),
-            {"id": uid, "u": f"{prefix}_{uid[:8]}", "e": f"{prefix}_{uid[:8]}@test.example.com", "now": now},
+            {
+                "id": uid,
+                "u": f"{prefix}_{uid[:8]}",
+                "e": f"{prefix}_{uid[:8]}@test.example.com",
+                "now": now,
+            },
         )
         await s.commit()
     return uid

@@ -45,7 +45,6 @@ JWT_DECODE_OPTIONS = {
 }
 
 
-
 @pytest.fixture
 def test_client():
     """Module-level client (#1452): TestProtocolPortability + TestFederationReadiness

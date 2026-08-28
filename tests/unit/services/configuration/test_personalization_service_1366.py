@@ -39,9 +39,7 @@ class TestResolveSystemPrompt:
     async def test_none_user_id_serves_file_directly(self, service, mock_session):
         """No resolved principal (ambient/legacy/local-dev call) — D3: the file
         is the single-tenant/local-dev default, no regression."""
-        with patch(
-            "services.configuration.piper_config_loader.piper_config_loader"
-        ) as mock_loader:
+        with patch("services.configuration.piper_config_loader.piper_config_loader") as mock_loader:
             mock_loader.get_system_prompt.return_value = "PM's file-based prompt"
 
             result = await service.resolve_system_prompt(None, mock_session)
@@ -52,12 +50,13 @@ class TestResolveSystemPrompt:
     async def test_pm_principal_serves_file_directly(self, service, mock_session):
         """PM's own resolved principal — D3 no-regression, never the scoped
         store or neutral default for PM's own requests."""
-        with patch(
-            "services.configuration.personalization_service._resolve_pm_owner_id_safe",
-            new=AsyncMock(return_value=_PM_ID),
-        ), patch(
-            "services.configuration.piper_config_loader.piper_config_loader"
-        ) as mock_loader:
+        with (
+            patch(
+                "services.configuration.personalization_service._resolve_pm_owner_id_safe",
+                new=AsyncMock(return_value=_PM_ID),
+            ),
+            patch("services.configuration.piper_config_loader.piper_config_loader") as mock_loader,
+        ):
             mock_loader.get_system_prompt.return_value = "PM's file-based prompt"
 
             result = await service.resolve_system_prompt(str(_PM_ID), mock_session)
@@ -70,14 +69,16 @@ class TestResolveSystemPrompt:
         mock_row = MagicMock()
         mock_row.context = {"User Context": "this user's own content"}
 
-        with patch(
-            "services.configuration.personalization_service._resolve_pm_owner_id_safe",
-            new=AsyncMock(return_value=_PM_ID),
-        ), patch(
-            "services.configuration.personalization_service.PersonalizationContextRepository"
-        ) as MockRepo, patch(
-            "services.configuration.piper_config_loader.piper_config_loader"
-        ) as mock_loader:
+        with (
+            patch(
+                "services.configuration.personalization_service._resolve_pm_owner_id_safe",
+                new=AsyncMock(return_value=_PM_ID),
+            ),
+            patch(
+                "services.configuration.personalization_service.PersonalizationContextRepository"
+            ) as MockRepo,
+            patch("services.configuration.piper_config_loader.piper_config_loader") as mock_loader,
+        ):
             MockRepo.return_value.get_or_seed_default = AsyncMock(return_value=mock_row)
             mock_loader._format_system_prompt.return_value = "formatted: this user's content"
 
@@ -93,14 +94,16 @@ class TestResolveSystemPrompt:
     async def test_db_failure_degrades_to_file_not_raise(self, service, mock_session):
         """Any failure resolving the scoped store must degrade to the
         pre-Component-B file behavior — never raise, never silently empty."""
-        with patch(
-            "services.configuration.personalization_service._resolve_pm_owner_id_safe",
-            new=AsyncMock(return_value=_PM_ID),
-        ), patch(
-            "services.configuration.personalization_service.PersonalizationContextRepository"
-        ) as MockRepo, patch(
-            "services.configuration.piper_config_loader.piper_config_loader"
-        ) as mock_loader:
+        with (
+            patch(
+                "services.configuration.personalization_service._resolve_pm_owner_id_safe",
+                new=AsyncMock(return_value=_PM_ID),
+            ),
+            patch(
+                "services.configuration.personalization_service.PersonalizationContextRepository"
+            ) as MockRepo,
+            patch("services.configuration.piper_config_loader.piper_config_loader") as mock_loader,
+        ):
             MockRepo.return_value.get_or_seed_default = AsyncMock(
                 side_effect=RuntimeError("db down")
             )
@@ -111,9 +114,7 @@ class TestResolveSystemPrompt:
             assert result == "fallback file prompt"
 
     async def test_malformed_user_id_treated_as_no_principal(self, service, mock_session):
-        with patch(
-            "services.configuration.piper_config_loader.piper_config_loader"
-        ) as mock_loader:
+        with patch("services.configuration.piper_config_loader.piper_config_loader") as mock_loader:
             mock_loader.get_system_prompt.return_value = "fallback file prompt"
 
             result = await service.resolve_system_prompt("not-a-uuid", mock_session)
@@ -126,15 +127,14 @@ class TestMaybeConsumeFirstResponseNotice:
         assert await service.maybe_consume_first_response_notice(None) is None
 
     async def test_pm_never_gets_notice(self, service):
-        with patch(
-            "services.database.session_factory.AsyncSessionFactory"
-        ) as MockFactory, patch(
-            "services.configuration.personalization_service._resolve_pm_owner_id_safe",
-            new=AsyncMock(return_value=_PM_ID),
+        with (
+            patch("services.database.session_factory.AsyncSessionFactory") as MockFactory,
+            patch(
+                "services.configuration.personalization_service._resolve_pm_owner_id_safe",
+                new=AsyncMock(return_value=_PM_ID),
+            ),
         ):
-            MockFactory.session_scope.return_value.__aenter__ = AsyncMock(
-                return_value=MagicMock()
-            )
+            MockFactory.session_scope.return_value.__aenter__ = AsyncMock(return_value=MagicMock())
             MockFactory.session_scope.return_value.__aexit__ = AsyncMock(return_value=False)
 
             result = await service.maybe_consume_first_response_notice(str(_PM_ID))
@@ -144,17 +144,17 @@ class TestMaybeConsumeFirstResponseNotice:
     async def test_seeded_and_unseen_returns_notice_and_marks_seen(self, service):
         mock_row = MagicMock(is_seeded_default=True, has_seen_personalization_notice=False)
 
-        with patch(
-            "services.database.session_factory.AsyncSessionFactory"
-        ) as MockFactory, patch(
-            "services.configuration.personalization_service._resolve_pm_owner_id_safe",
-            new=AsyncMock(return_value=_PM_ID),
-        ), patch(
-            "services.configuration.personalization_service.PersonalizationContextRepository"
-        ) as MockRepo:
-            MockFactory.session_scope.return_value.__aenter__ = AsyncMock(
-                return_value=MagicMock()
-            )
+        with (
+            patch("services.database.session_factory.AsyncSessionFactory") as MockFactory,
+            patch(
+                "services.configuration.personalization_service._resolve_pm_owner_id_safe",
+                new=AsyncMock(return_value=_PM_ID),
+            ),
+            patch(
+                "services.configuration.personalization_service.PersonalizationContextRepository"
+            ) as MockRepo,
+        ):
+            MockFactory.session_scope.return_value.__aenter__ = AsyncMock(return_value=MagicMock())
             MockFactory.session_scope.return_value.__aexit__ = AsyncMock(return_value=False)
             mock_repo_instance = MockRepo.return_value
             mock_repo_instance.get_or_seed_default = AsyncMock(return_value=mock_row)
@@ -168,17 +168,17 @@ class TestMaybeConsumeFirstResponseNotice:
     async def test_already_seen_returns_none(self, service):
         mock_row = MagicMock(is_seeded_default=True, has_seen_personalization_notice=True)
 
-        with patch(
-            "services.database.session_factory.AsyncSessionFactory"
-        ) as MockFactory, patch(
-            "services.configuration.personalization_service._resolve_pm_owner_id_safe",
-            new=AsyncMock(return_value=_PM_ID),
-        ), patch(
-            "services.configuration.personalization_service.PersonalizationContextRepository"
-        ) as MockRepo:
-            MockFactory.session_scope.return_value.__aenter__ = AsyncMock(
-                return_value=MagicMock()
-            )
+        with (
+            patch("services.database.session_factory.AsyncSessionFactory") as MockFactory,
+            patch(
+                "services.configuration.personalization_service._resolve_pm_owner_id_safe",
+                new=AsyncMock(return_value=_PM_ID),
+            ),
+            patch(
+                "services.configuration.personalization_service.PersonalizationContextRepository"
+            ) as MockRepo,
+        ):
+            MockFactory.session_scope.return_value.__aenter__ = AsyncMock(return_value=MagicMock())
             MockFactory.session_scope.return_value.__aexit__ = AsyncMock(return_value=False)
             MockRepo.return_value.get_or_seed_default = AsyncMock(return_value=mock_row)
 
@@ -191,17 +191,17 @@ class TestMaybeConsumeFirstResponseNotice:
         never gets the notice, regardless of has_seen_personalization_notice."""
         mock_row = MagicMock(is_seeded_default=False, has_seen_personalization_notice=False)
 
-        with patch(
-            "services.database.session_factory.AsyncSessionFactory"
-        ) as MockFactory, patch(
-            "services.configuration.personalization_service._resolve_pm_owner_id_safe",
-            new=AsyncMock(return_value=_PM_ID),
-        ), patch(
-            "services.configuration.personalization_service.PersonalizationContextRepository"
-        ) as MockRepo:
-            MockFactory.session_scope.return_value.__aenter__ = AsyncMock(
-                return_value=MagicMock()
-            )
+        with (
+            patch("services.database.session_factory.AsyncSessionFactory") as MockFactory,
+            patch(
+                "services.configuration.personalization_service._resolve_pm_owner_id_safe",
+                new=AsyncMock(return_value=_PM_ID),
+            ),
+            patch(
+                "services.configuration.personalization_service.PersonalizationContextRepository"
+            ) as MockRepo,
+        ):
+            MockFactory.session_scope.return_value.__aenter__ = AsyncMock(return_value=MagicMock())
             MockFactory.session_scope.return_value.__aexit__ = AsyncMock(return_value=False)
             MockRepo.return_value.get_or_seed_default = AsyncMock(return_value=mock_row)
 
@@ -210,9 +210,7 @@ class TestMaybeConsumeFirstResponseNotice:
             assert result is None
 
     async def test_failure_degrades_to_none_not_raise(self, service):
-        with patch(
-            "services.database.session_factory.AsyncSessionFactory"
-        ) as MockFactory:
+        with patch("services.database.session_factory.AsyncSessionFactory") as MockFactory:
             MockFactory.session_scope.side_effect = RuntimeError("db down")
 
             result = await service.maybe_consume_first_response_notice(_OTHER_USER_ID)

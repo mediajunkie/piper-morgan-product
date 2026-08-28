@@ -81,17 +81,13 @@ def _pending(service, sid):
 def _resolver_unresolved():
     from services.integrations.github.repo_resolver import UnresolvedRepoError
 
-    return patch(
-        f"{RESOLVER}.resolve_repo", new=AsyncMock(side_effect=UnresolvedRepoError())
-    )
+    return patch(f"{RESOLVER}.resolve_repo", new=AsyncMock(side_effect=UnresolvedRepoError()))
 
 
 def _repos_result(*full_names):
     return MagicMock(
         degradation=None,
-        repositories=[
-            {"name": fn.split("/", 1)[1], "full_name": fn} for fn in full_names
-        ],
+        repositories=[{"name": fn.split("/", 1)[1], "full_name": fn} for fn in full_names],
     )
 
 
@@ -159,9 +155,7 @@ class TestCarrierGeneralizationUnits:
 
     def test_offer_without_issue_number_skips_issue_summary(self):
         intent = _intent("analyze_commits", "analyze commits", IntentCategory.ANALYSIS)
-        offer = build_repo_question_offer(
-            intent, None, _USER, operation="analyze commits"
-        )
+        offer = build_repo_question_offer(intent, None, _USER, operation="analyze commits")
         payload = offer["pending_action"]
         assert payload["kind"] == REPO_QUESTION_KIND
         assert payload["issue_number"] is None
@@ -208,9 +202,7 @@ class TestReopenRepoWiring:
             _resolved_name(),
         ):
             result = await service._handle_reopen_issue_query(
-                self._reopen_intent(
-                    "reopen issue #108 in the test-Piper-Morgan repository"
-                ),
+                self._reopen_intent("reopen issue #108 in the test-Piper-Morgan repository"),
                 "wf-reopen",
                 session_id="sess-reopen-named",
             )
@@ -285,9 +277,7 @@ class TestReopenRepoWiring:
         confirm → 'yes' → the handler hits the no-repo dead-end and ARMS the
         repo question → the natural answer binds and the reopen proceeds."""
         sid = "t-reopen-e2e"
-        no_repo = RuntimeError(
-            "Cannot update GitHub issue #108: no repo could be resolved."
-        )
+        no_repo = RuntimeError("Cannot update GitHub issue #108: no repo could be resolved.")
         with (
             patch(f"{ROUTER}.initialize", new=AsyncMock()),
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
@@ -303,9 +293,7 @@ class TestReopenRepoWiring:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.update_issue", new=AsyncMock(side_effect=no_repo)),
         ):
-            r2 = await service.process_intent(
-                message="yes", session_id=sid, user_id=_USER
-            )
+            r2 = await service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert "Which repository is issue #108 in?" in r2.message
         offer = _pending(service, sid)
         assert offer is not None
@@ -324,9 +312,7 @@ class TestReopenRepoWiring:
             _no_default(),
             _adapter_with(_FULL),
         ):
-            r3 = await service.process_intent(
-                message=NATURAL_ANSWER, session_id=sid, user_id=_USER
-            )
+            r3 = await service.process_intent(message=NATURAL_ANSWER, session_id=sid, user_id=_USER)
         assert w.await_count == 1
         assert w.await_args.kwargs["owner"] == "mediajunkie"
         assert w.await_args.kwargs["repo_name"] == "test-piper-morgan"
@@ -480,9 +466,7 @@ class TestCommentRepoWiring:
             patch(f"{ROUTER}.add_comment", new=AsyncMock(return_value=posted)) as w,
             _slots_patch(),
         ):
-            r2 = await service.process_intent(
-                message=_FULL, session_id=sid, user_id=_USER
-            )
+            r2 = await service.process_intent(message=_FULL, session_id=sid, user_id=_USER)
         assert w.await_count == 1
         assert w.await_args.kwargs["owner"] == "mediajunkie"
         assert w.await_args.kwargs["repo_name"] == "test-piper-morgan"
@@ -508,8 +492,9 @@ class TestAnalysisRepoWiring:
             patch(f"{RESOLVER}.resolve_repo", new=AsyncMock(return_value=default)) as rr,
         ):
             result = await service._handle_analyze_commits(
-                _intent("analyze_commits", "analyze commits from the last week",
-                        IntentCategory.ANALYSIS),
+                _intent(
+                    "analyze_commits", "analyze commits from the last week", IntentCategory.ANALYSIS
+                ),
                 "wf-ana",
             )
         assert result.success is True
@@ -523,7 +508,7 @@ class TestAnalysisRepoWiring:
             f"{RESOLVER}.resolve_repo",
             new=AsyncMock(side_effect=AssertionError("default must not be consulted")),
         )
-        with (_gh_domain(), explosive_default, _resolved_name()):
+        with _gh_domain(), explosive_default, _resolved_name():
             result = await service._handle_analyze_commits(
                 _intent(
                     "analyze_commits",
@@ -538,8 +523,9 @@ class TestAnalysisRepoWiring:
     async def test_no_repo_arms_the_operation_question(self, service):
         with _resolver_unresolved():
             result = await service._handle_analyze_commits(
-                _intent("analyze_commits", "analyze commits from the last week",
-                        IntentCategory.ANALYSIS),
+                _intent(
+                    "analyze_commits", "analyze commits from the last week", IntentCategory.ANALYSIS
+                ),
                 "wf-ana",
                 session_id="sess-ana-ask",
             )
@@ -554,14 +540,14 @@ class TestAnalysisRepoWiring:
     async def test_no_repo_without_session_keeps_the_old_refusal(self, service):
         with _resolver_unresolved():
             result = await service._handle_analyze_commits(
-                _intent("analyze_commits", "analyze commits from the last week",
-                        IntentCategory.ANALYSIS),
+                _intent(
+                    "analyze_commits", "analyze commits from the last week", IntentCategory.ANALYSIS
+                ),
                 "wf-ana",
             )
         assert result.success is False
         assert result.message == (
-            "Cannot analyze commits: repository not specified. "
-            "Please specify which repository."
+            "Cannot analyze commits: repository not specified. " "Please specify which repository."
         )
         assert result.clarification_type == "repository_required"
 
@@ -577,32 +563,26 @@ class TestAnalysisRepoWiring:
         assert "Which repository" in ask.message
         assert _pending(service, sid) is not None
 
-        with (_gh_domain(), _no_default(), _adapter_with(_FULL)):
+        with _gh_domain(), _no_default(), _adapter_with(_FULL):
             result = await service.process_intent(
                 message=NATURAL_ANSWER, session_id=sid, user_id=_USER
             )
         assert _pending(service, sid) is None
         return result
 
-    async def test_analyze_commits_arm_answer_lands_back_in_the_same_handler(
-        self, service
-    ):
+    async def test_analyze_commits_arm_answer_lands_back_in_the_same_handler(self, service):
         result = await self._arm_and_answer(
             service, "_handle_analyze_commits", "analyze_commits", "t-ana-commits"
         )
         assert f"No commits found in {_FULL}" in result.message
 
-    async def test_generate_report_arm_answer_lands_back_in_the_same_handler(
-        self, service
-    ):
+    async def test_generate_report_arm_answer_lands_back_in_the_same_handler(self, service):
         result = await self._arm_and_answer(
             service, "_handle_generate_report", "generate_report", "t-ana-report"
         )
         assert f"Generated commit_analysis report for {_FULL}" in result.message
 
-    async def test_analyze_data_arm_answer_lands_back_in_the_same_handler(
-        self, service
-    ):
+    async def test_analyze_data_arm_answer_lands_back_in_the_same_handler(self, service):
         result = await self._arm_and_answer(
             service, "_handle_analyze_data", "analyze_data", "t-ana-data"
         )
@@ -612,8 +592,7 @@ class TestAnalysisRepoWiring:
         sid = "t-ana-decline"
         with _resolver_unresolved():
             await service._handle_analyze_commits(
-                _intent("analyze_commits", "analyze recent commits",
-                        IntentCategory.ANALYSIS),
+                _intent("analyze_commits", "analyze recent commits", IntentCategory.ANALYSIS),
                 "wf-ana",
                 session_id=sid,
             )
@@ -621,9 +600,7 @@ class TestAnalysisRepoWiring:
             GH_DOMAIN, side_effect=AssertionError("declined ask must not analyze")
         )
         with explosive_activity:
-            result = await service.process_intent(
-                message="no", session_id=sid, user_id=_USER
-            )
+            result = await service.process_intent(message="no", session_id=sid, user_id=_USER)
         assert "Name the repository" in result.message
         assert "#" not in result.message  # no phantom issue number
         assert _pending(service, sid) is None
@@ -651,9 +628,7 @@ def _gate_open():
 class TestCreateNaturalPhrasing:
     pytestmark = pytest.mark.asyncio
 
-    CREATE_MSG = (
-        "create an issue in the test-Piper-Morgan repository about flaky login tests"
-    )
+    CREATE_MSG = "create an issue in the test-Piper-Morgan repository about flaky login tests"
 
     def _create_intent(self, message):
         return _intent("create_issue", message)
@@ -705,9 +680,7 @@ class TestCreateNaturalPhrasing:
             explosive_resolution,
         ):
             result = await service._handle_create_issue(
-                self._create_intent(
-                    f"create an issue in {_FULL} about flaky login tests"
-                ),
+                self._create_intent(f"create an issue in {_FULL} about flaky login tests"),
                 "wf-create",
                 "sess-create-owner",
                 user_id=_USER,
@@ -796,9 +769,7 @@ class TestCreateNaturalPhrasing:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
         ):
-            result = await service.process_intent(
-                message=_FULL, session_id=sid, user_id=_USER
-            )
+            result = await service.process_intent(message=_FULL, session_id=sid, user_id=_USER)
         assert w.await_count == 1
         assert w.await_args.kwargs["owner"] == "mediajunkie"
         assert w.await_args.kwargs["repo_name"] == "test-piper-morgan"

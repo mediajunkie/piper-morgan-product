@@ -797,9 +797,7 @@ async def run_archived_projects_query_workflow(
             portfolio_service = PortfolioService(project_repo)
             projects = await portfolio_service.list_archived_projects(user_id=user_id)
     except Exception as e:  # silent-ok: error-logged with context and returns success=False — honest degrade, never fake-empty (#1425)
-        logger.error(
-            "archived_projects_query_failed", error=str(e), user_id=user_id
-        )
+        logger.error("archived_projects_query_failed", error=str(e), user_id=user_id)
         return IntentProcessingResult(
             success=False,
             message=(
@@ -919,9 +917,7 @@ async def run_summarize_document_workflow(
     if source_type in ("github_issue", "commit_range"):
         return None  # rail fall-through → #1187 fetch-augment floor path
     if source_type in (None, "", "document"):
-        if ("issue" in msg_lower and _re.search(r"#?\d+", msg_lower)) or (
-            "commit" in msg_lower
-        ):
+        if ("issue" in msg_lower and _re.search(r"#?\d+", msg_lower)) or ("commit" in msg_lower):
             return None  # issue/commit summarize that mis-landed here
 
     if not user_id:
@@ -1010,8 +1006,7 @@ async def run_summarize_document_workflow(
             )
 
         return _result(
-            f"Here's my summary of {summarized['filename']}:\n\n"
-            f"{summarized['summary']}",
+            f"Here's my summary of {summarized['filename']}:\n\n" f"{summarized['summary']}",
             extra={
                 "file_id": summarized["file_id"],
                 "filename": summarized["filename"],
@@ -1020,12 +1015,9 @@ async def run_summarize_document_workflow(
             },
         )
     except Exception as e:  # silent-ok: error-logged with context and returns success=False — honest degrade, never fake success (#1425)
-        logger.error(
-            "summarize_document_workflow_failed", error=str(e), user_id=user_id
-        )
+        logger.error("summarize_document_workflow_failed", error=str(e), user_id=user_id)
         return _result(
-            "I had trouble reading that document just now. You can try again "
-            "in a moment.",
+            "I had trouble reading that document just now. You can try again " "in a moment.",
             success=False,
             reason="summarize_failed",
         )
@@ -1815,9 +1807,7 @@ def register_default_workflows() -> None:
     # snapshot's referent fields against handlers that need one.
     for handler_attr, aliases in _ANALYSIS_QUERY_COHORT.items():
         entry = WorkflowEntry(
-            entry_point=_make_query_dispatch_entry_point(
-                handler_attr, pass_session_id=True
-            ),
+            entry_point=_make_query_dispatch_entry_point(handler_attr, pass_session_id=True),
             effect=EffectClass.READ,
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],

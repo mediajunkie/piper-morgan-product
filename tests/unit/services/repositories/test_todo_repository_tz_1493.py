@@ -30,9 +30,9 @@ def _assert_aware_utc(value, label):
         f"{label} is NAIVE — the #1493 class: naive local time written to a "
         f"timestamptz column drifts by the server's UTC offset"
     )
-    assert value.utcoffset() == timezone.utc.utcoffset(None), (
-        f"{label} is aware but not UTC (offset {value.utcoffset()})"
-    )
+    assert value.utcoffset() == timezone.utc.utcoffset(
+        None
+    ), f"{label} is aware but not UTC (offset {value.utcoffset()})"
 
 
 class _CaptureSession:
@@ -149,9 +149,9 @@ class TestNoNaiveDatetimeNowInTodoLayer1493:
                 if self._is_bare_now(node) and id(node) not in sanctioned:
                     violations.append(f"{rel}:{node.lineno}")
 
-        assert files_checked == len(self.FILES) == 5, (
-            f"guard checked {files_checked} files, expected 5 (denominator)"
-        )
+        assert (
+            files_checked == len(self.FILES) == 5
+        ), f"guard checked {files_checked} files, expected 5 (denominator)"
         assert not violations, (
             f"bare naive-local datetime.now() in the todo layer (#1493) — use "
             f"services.utils.datetime_utils.utc_now() (or an aware local time "

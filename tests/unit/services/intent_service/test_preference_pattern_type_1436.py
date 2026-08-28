@@ -32,7 +32,9 @@ def _confirmation():
 
 
 async def test_confirmed_preference_reaches_learning_loop_with_real_enum_member():
-    handler = PreferenceDetectionHandler.__new__(PreferenceDetectionHandler)  # method under test is self-contained
+    handler = PreferenceDetectionHandler.__new__(
+        PreferenceDetectionHandler
+    )  # method under test is self-contained
     handler.learning_loop = SimpleNamespace(
         _apply_user_preference_pattern=AsyncMock(return_value={"success": True})
     )

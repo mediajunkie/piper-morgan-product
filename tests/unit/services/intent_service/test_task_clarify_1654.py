@@ -81,9 +81,7 @@ def _mock_todo_service(svc):
     """Swap the real DB-backed TodoManagementService for a mock that records
     the write. The seam under test is binding/chaining, not persistence."""
     mock = MagicMock()
-    mock.create_todo = AsyncMock(
-        return_value=SimpleNamespace(id=uuid4(), text="whatever")
-    )
+    mock.create_todo = AsyncMock(return_value=SimpleNamespace(id=uuid4(), text="whatever"))
     mock.list_todos = AsyncMock(return_value=[])
     svc.todo_handlers.todo_service = mock
     return mock
@@ -93,9 +91,7 @@ async def _fire_no_task_ask(svc, sid, message=NO_TASK_NO_TIME):
     """Turn 1: a deterministically-claimed reminder ask whose task can't be
     extracted — the honest no-task clarify, now arming the carrier."""
     with patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})):
-        return await svc.process_intent(
-            message=message, session_id=sid, user_id=_USER
-        )
+        return await svc.process_intent(message=message, session_id=sid, user_id=_USER)
 
 
 # ---------------------------------------------------------------------------
@@ -148,9 +144,7 @@ class TestNoTaskClarifyEndToEnd:
         await _fire_no_task_ask(svc, sid)
         await svc.process_intent(message="buy milk", session_id=sid, user_id=_USER)
 
-        r3 = await svc.process_intent(
-            message="at 3pm tomorrow", session_id=sid, user_id=_USER
-        )
+        r3 = await svc.process_intent(message="at 3pm tomorrow", session_id=sid, user_id=_USER)
         mock.create_todo.assert_awaited_once()
         kwargs = mock.create_todo.await_args.kwargs
         assert kwargs["text"] == "buy milk"
@@ -188,9 +182,7 @@ class TestNoTaskClarifyEndToEnd:
         r1 = await _fire_no_task_ask(svc, sid, message=NO_TASK_TIME_KNOWN)
         assert "I didn't catch what you'd like to be reminded about" in r1.message
 
-        r2 = await svc.process_intent(
-            message="check the oven", session_id=sid, user_id=_USER
-        )
+        r2 = await svc.process_intent(message="check the oven", session_id=sid, user_id=_USER)
         mock.create_todo.assert_awaited_once()
         kwargs = mock.create_todo.await_args.kwargs
         assert kwargs["text"] == "check the oven"
@@ -206,11 +198,9 @@ class TestNoTaskClarifyEndToEnd:
         sid = "e2e-1654-unbindable-orig"
         mock = _mock_todo_service(svc)
         await _fire_no_task_ask(svc, sid, message=NO_TASK_TIME_UNBINDABLE)
-        r2 = await svc.process_intent(
-            message="check the oven", session_id=sid, user_id=_USER
-        )
+        r2 = await svc.process_intent(message="check the oven", session_id=sid, user_id=_USER)
         mock.create_todo.assert_not_awaited()
-        assert '25:99' in r2.message
+        assert "25:99" in r2.message
         assert _TIME_ASK in r2.message
         stored = next(iter(_pending_offers(svc).values()))
         assert stored["pending_action"]["kind"] == REMINDER_TIME_QUESTION_KIND
@@ -241,16 +231,12 @@ class TestNoTaskClarifyEndToEnd:
         sid = "e2e-1654-offintent"
         mock = _mock_todo_service(svc)
         await _fire_no_task_ask(svc, sid)
-        r2 = await svc.process_intent(
-            message="list my reminders", session_id=sid, user_id=_USER
-        )
+        r2 = await svc.process_intent(message="list my reminders", session_id=sid, user_id=_USER)
         mock.create_todo.assert_not_awaited()
         assert "there are none right now" in r2.message
         # The task question is gone — abandoned, not re-armed.
         for stored in _pending_offers(svc).values():
-            assert (
-                stored["pending_action"].get("kind") != REMINDER_TASK_QUESTION_KIND
-            )
+            assert stored["pending_action"].get("kind") != REMINDER_TASK_QUESTION_KIND
 
     async def test_decline_drops_honestly(self, svc):
         sid = "e2e-1654-decline"
@@ -424,9 +410,7 @@ class TestReminderTaskOfferWiring:
         assert pa["user_id"] == _USER
         assert "Nothing was saved" in offer["decline_message"]
         # Strings only — the payload must snapshot cleanly (no datetimes).
-        assert all(
-            v is None or isinstance(v, str) for v in pa.values()
-        ), pa
+        assert all(v is None or isinstance(v, str) for v in pa.values()), pa
 
     def test_clarify_workflow_registered_offer_seam_only(self):
         register_default_workflows()
@@ -499,10 +483,7 @@ class TestPureTimeResidue1679:
     def test_real_tasks_still_extract(self):
         h = self._handlers()
         assert h._extract_reminder_text("remind me to buy milk tomorrow at 3pm") == "buy milk"
-        assert (
-            h._extract_reminder_text("set a reminder to call the vendor")
-            == "call the vendor"
-        )
+        assert h._extract_reminder_text("set a reminder to call the vendor") == "call the vendor"
 
     def test_task_containing_a_time_word_survives(self):
         # 'tomorrow' inside a real task is not a pure-time residue.

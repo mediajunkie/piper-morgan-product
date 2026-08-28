@@ -16,7 +16,6 @@ from services.mux.insight_topic_mapper import (
     derive_topic_from_tags,
 )
 
-
 # Direct mapping tests ---------------------------------------------------
 
 

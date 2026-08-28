@@ -59,9 +59,7 @@ class TestConsentLineDerivation:
         ],
     )
     def test_line_matches_the_gates_verdict(self, effect, decision, fragment):
-        assert (
-            decide_consent(effect, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE) is decision
-        )
+        assert decide_consent(effect, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE) is decision
         assert fragment in legibility.consent_behavior_line(effect)
 
 
@@ -133,9 +131,7 @@ class TestOutwardMarker:
 
     def test_marker_is_derived_not_stored(self):
         for entry in legibility.capability_catalog():
-            assert entry.outward_phrase == legibility.describe_outwardness(
-                entry.outwardness
-            )
+            assert entry.outward_phrase == legibility.describe_outwardness(entry.outwardness)
 
     def test_every_outwardness_tier_has_an_explicit_row(self):
         """Denominator: all len(Outwardness) tiers covered — a new tier fails
@@ -159,14 +155,10 @@ class TestOutwardMarker:
             for k, e in legibility._unique_rail_entries()
             if e.outwardness is Outwardness.PRIVATE
         )
-        marked_before = {
-            d.action for d in legibility.capability_catalog() if d.outward_phrase
-        }
+        marked_before = {d.action for d in legibility.capability_catalog() if d.outward_phrase}
         assert key not in marked_before
         monkeypatch.setattr(entry, "outwardness", Outwardness.OUTWARD)
-        marked_after = {
-            d.action for d in legibility.capability_catalog() if d.outward_phrase
-        }
+        marked_after = {d.action for d in legibility.capability_catalog() if d.outward_phrase}
         assert key in marked_after
         assert marked_after == marked_before | {key}
 

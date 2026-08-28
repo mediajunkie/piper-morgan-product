@@ -222,9 +222,7 @@ def infer_mode_signal(user_id: Optional[str]) -> Optional[Tuple[str, float]]:
     interview = tally.get(MODE_INTERVIEW, 0)
     if report == interview:
         return None
-    mode, count = (
-        (MODE_REPORT, report) if report > interview else (MODE_INTERVIEW, interview)
-    )
+    mode, count = (MODE_REPORT, report) if report > interview else (MODE_INTERVIEW, interview)
     if count < _MIN_CHOICES_FOR_SIGNAL:
         return None
     confidence = min(_SIGNAL_BASE + _SIGNAL_STEP * (count - 1), _SIGNAL_CAP)

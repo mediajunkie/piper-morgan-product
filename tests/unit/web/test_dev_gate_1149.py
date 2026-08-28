@@ -13,7 +13,6 @@ from fastapi.testclient import TestClient
 
 from web.dev_gate import is_production, require_dev_environment
 
-
 # --- the gate logic ---
 
 

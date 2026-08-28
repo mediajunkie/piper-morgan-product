@@ -30,13 +30,13 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 from services.domain.models import Intent
-from services.shared_types import EffectClass, IntentCategory
 from services.intent_service.workflow_dispatcher import (
     dispatch_workflow,
     get_action_workflows,
     wired_chat_actions,
 )
 from services.intent_service.workflow_entries import register_default_workflows
+from services.shared_types import EffectClass, IntentCategory
 
 _ALIASES = [
     "list_archived_projects",

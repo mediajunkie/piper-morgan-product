@@ -721,7 +721,6 @@ class PersonalizationContext(Base, TimestampMixin):
         Index("ix_personalization_contexts_owner_id", "owner_id", unique=True),
     )
 
-
     id = Column(CrossDialectUUID(), primary_key=True, default=uuid.uuid4)
     # Owner = the resolved principal (ADR-071 D2). NOT NULL: this config must
     # belong to someone — there is no global/PM-domain variant of this table.
@@ -742,9 +741,7 @@ class PersonalizationContext(Base, TimestampMixin):
     # customized by the user (ADR-075 OQ-3 / HOST's "real seeded record, not
     # implicit empty fall-through" requirement). Flipped to False on any
     # explicit write.
-    is_seeded_default = Column(
-        Boolean, nullable=False, default=True, server_default=text("true")
-    )
+    is_seeded_default = Column(Boolean, nullable=False, default=True, server_default=text("true"))
     # ADR-075 OQ-3 (CXO UX direction): has the first-response personalization
     # notice already been shown to this principal? Distinct from
     # `is_seeded_default` on purpose — the notice is one-time regardless of
@@ -1723,7 +1720,9 @@ class ConversationTurnDB(Base):
     intent = Column(String, nullable=True)
     # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
     # #1305: PII-bearing (extracted entities) — whole-value encrypted.
-    entities = Column(EncryptedJSON(context="conversation_turns.entities"), nullable=False, default=[])
+    entities = Column(
+        EncryptedJSON(context="conversation_turns.entities"), nullable=False, default=[]
+    )
     references = Column(
         EncryptedJSON(context="conversation_turns.references"), nullable=False, default={}
     )  # #1305
@@ -1828,9 +1827,7 @@ class ConversationLinkDB(Base):
         comment="For multi-type links per ADR-050",
     )
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
-    created_by = Column(
-        String, nullable=True, comment="User or system that created the link"
-    )
+    created_by = Column(String, nullable=True, comment="User or system that created the link")
 
     __table_args__ = (
         ForeignKeyConstraint(
@@ -1893,15 +1890,11 @@ class SessionActivityDB(Base):
     turn_id = Column(
         String, nullable=True, comment="Which turn created it (soft ref conversation_turns.id)"
     )
-    action_type = Column(
-        String, nullable=False, comment="'issue_created' | 'doc_created' | ..."
-    )
+    action_type = Column(String, nullable=False, comment="'issue_created' | 'doc_created' | ...")
     target_ref = Column(
         String, nullable=False, comment="External pointer, e.g. 'owner/repo#107' — NOT content"
     )
-    target_title = Column(
-        String, nullable=True, comment="Human title for antecedent display (B3)"
-    )
+    target_title = Column(String, nullable=True, comment="Human title for antecedent display (B3)")
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
 
     __table_args__ = (
@@ -2541,7 +2534,11 @@ class PersonalityProfileModel(Base, TimestampMixin):
         Index("idx_personality_profiles_technical", "technical_depth"),
     )
 
-    def to_domain(self) -> "PersonalityProfile":  # #1436: was "domain.PersonalityProfile" — not in services.domain.models
+    def to_domain(
+        self,
+    ) -> (
+        "PersonalityProfile"
+    ):  # #1436: was "domain.PersonalityProfile" — not in services.domain.models
         """Convert to domain model"""
         # Import here to avoid circular imports
         from services.personality.personality_profile import (
@@ -2568,7 +2565,9 @@ class PersonalityProfileModel(Base, TimestampMixin):
 
     @classmethod
     def from_domain(
-        cls, profile: "PersonalityProfile", user_id: uuid.UUID  # #1436: same dangling-module fix as to_domain
+        cls,
+        profile: "PersonalityProfile",
+        user_id: uuid.UUID,  # #1436: same dangling-module fix as to_domain
     ) -> "PersonalityProfileModel":
         """Create from domain model"""
         import uuid
@@ -2600,7 +2599,9 @@ class TokenBlacklist(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
 
     # Token identification
-    token_id = Column(String(255), nullable=False)  # unique via idx_token_blacklist_token_id (#1312)
+    token_id = Column(
+        String(255), nullable=False
+    )  # unique via idx_token_blacklist_token_id (#1312)
     # Issue #291 - FK constraint restored (was temporarily removed for alpha)
     user_id = Column(
         postgresql.UUID(as_uuid=True),
@@ -2610,7 +2611,9 @@ class TokenBlacklist(Base):
 
     # Blacklist metadata
     reason = Column(String(50), nullable=False)  # logout, security, admin
-    expires_at = Column(DateTime(timezone=True), nullable=False)  # idx_token_blacklist_expires (#1312)
+    expires_at = Column(
+        DateTime(timezone=True), nullable=False
+    )  # idx_token_blacklist_expires (#1312)
     created_at = Column(
         DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc)
     )

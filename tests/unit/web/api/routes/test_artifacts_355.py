@@ -11,6 +11,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+from services.domain.models import Artifact, ArtifactSourceType
+from services.mux.lifecycle import LifecycleState
 from web.api.routes import artifacts as artifacts_route
 from web.api.routes.artifacts import (
     RenameArtifactRequest,
@@ -22,8 +24,6 @@ from web.api.routes.artifacts import (
     rename_artifact,
     save_artifact,
 )
-from services.domain.models import Artifact, ArtifactSourceType
-from services.mux.lifecycle import LifecycleState
 
 _USER = SimpleNamespace(sub="user-355")
 

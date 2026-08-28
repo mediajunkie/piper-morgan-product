@@ -44,20 +44,16 @@ class TestCanonicalPhrasingRule:
 
     def test_manifest_forbids_inventing_magic_phrases(self):
         block = _norm(capability_manifest_block())
-        assert "never invent" in block, (
-            "manifest must carry the #1571 no-magic-phrases rule"
-        )
-        assert "magic phrase" in block, (
-            "manifest must name the failure mode: an invented magic phrase"
-        )
+        assert "never invent" in block, "manifest must carry the #1571 no-magic-phrases rule"
+        assert (
+            "magic phrase" in block
+        ), "manifest must name the failure mode: an invented magic phrase"
 
     def test_manifest_names_the_incident_shape(self):
         # The concrete anti-example keeps the rule grounded: "file it" is the
         # phrase the floor actually taught in the #1571 incident.
         block = _norm(capability_manifest_block())
-        assert "file it" in block, (
-            "manifest must carry the concrete #1571 anti-example ('file it')"
-        )
+        assert "file it" in block, "manifest must carry the concrete #1571 anti-example ('file it')"
 
     def test_manifest_requires_plain_language_recommendations(self):
         # The positive half: recommended asks must be plain one-line requests
@@ -71,9 +67,9 @@ class TestCanonicalPhrasingRule:
         # list remains the sole carrier of capability names.
         static_prose = capability_manifest_block.__wrapped_static__
         for token in wired_chat_actions():
-            assert token not in static_prose, (
-                f"hand-written capability name '{token}' in static manifest prose"
-            )
+            assert (
+                token not in static_prose
+            ), f"hand-written capability name '{token}' in static manifest prose"
 
 
 class TestRuleRidesTheAssembledPrompt:

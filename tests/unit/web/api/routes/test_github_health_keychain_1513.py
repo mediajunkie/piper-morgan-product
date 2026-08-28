@@ -5,8 +5,9 @@ siblings. With #1507 removing the restart-volatile env write, the user-scoped
 keychain check is the ONLY correct source for PAT-connected users.
 """
 
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from web.api.routes.integrations import _get_integration_config_status
 
@@ -31,9 +32,7 @@ class TestGitHubConfigStatusReadsKeychain:
             status = await _get_integration_config_status("github", user_id="user-1")
         assert status == "configured"
         # and it asked for the USER-SCOPED key, the one the save route writes
-        kc_cls.return_value.get_api_key.assert_called_once_with(
-            "github_token", username="user-1"
-        )
+        kc_cls.return_value.get_api_key.assert_called_once_with("github_token", username="user-1")
 
     @pytest.mark.asyncio
     async def test_no_env_no_keychain_is_not_configured(self, monkeypatch):
@@ -51,9 +50,7 @@ class TestGitHubConfigStatusReadsKeychain:
         """No user_id → no user-scoped lookup to make (env-only path preserved)."""
         monkeypatch.delenv("GITHUB_TOKEN", raising=False)
         monkeypatch.delenv("GITHUB_ACCESS_TOKEN", raising=False)
-        with patch(
-            "services.infrastructure.keychain_service.KeychainService"
-        ) as kc_cls:
+        with patch("services.infrastructure.keychain_service.KeychainService") as kc_cls:
             status = await _get_integration_config_status("github", user_id=None)
         assert status == "not_configured"
         kc_cls.assert_not_called()

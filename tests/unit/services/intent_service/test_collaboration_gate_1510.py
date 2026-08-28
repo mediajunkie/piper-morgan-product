@@ -129,8 +129,7 @@ class TestModeDeclarationDetection:
 
     def test_dont_ask_going_forward_declares_execute(self):
         assert (
-            detect_mode_declaration("going forward, don't ask — just do it")
-            is WorkingMode.EXECUTE
+            detect_mode_declaration("going forward, don't ask — just do it") is WorkingMode.EXECUTE
         )
 
     def test_ask_me_first_reverts_to_collaborate(self):
@@ -191,9 +190,7 @@ class TestWorkingModeStorage:
 
     async def test_storage_error_fails_safe_to_collaborate(self):
         # Fail-safe direction matters: an error must never escalate to execute.
-        with patch(
-            f"{GATE}._load_preferences", new=AsyncMock(side_effect=RuntimeError("db down"))
-        ):
+        with patch(f"{GATE}._load_preferences", new=AsyncMock(side_effect=RuntimeError("db down"))):
             assert await get_working_mode("u-1") is WorkingMode.COLLABORATE
 
     async def test_anonymous_user_gets_collaborate(self):
@@ -209,9 +206,7 @@ class TestWorkingModeStorage:
         assert await set_working_mode(None, WorkingMode.EXECUTE) is False
 
     async def test_set_storage_error_reports_not_persisted(self):
-        with patch(
-            f"{GATE}._save_preference", new=AsyncMock(side_effect=RuntimeError("db down"))
-        ):
+        with patch(f"{GATE}._save_preference", new=AsyncMock(side_effect=RuntimeError("db down"))):
             assert await set_working_mode("u-1", WorkingMode.EXECUTE) is False
 
 
@@ -256,8 +251,7 @@ class TestGateSemantics:
         loader = AsyncMock(return_value={})
         with patch(f"{GATE}._load_preferences", new=loader):
             assert (
-                await gate_holds("create_issue", "create an issue about login bugs", "u-1")
-                is False
+                await gate_holds("create_issue", "create an issue about login bugs", "u-1") is False
             )
         loader.assert_awaited_once()
         # Declared execute mode: still passes (disclosure is the rail's job).
@@ -266,19 +260,20 @@ class TestGateSemantics:
             new=AsyncMock(return_value={WORKING_MODE_PREF_KEY: "execute"}),
         ):
             assert (
-                await gate_holds("create_issue", "create an issue about login bugs", "u-1")
-                is False
+                await gate_holds("create_issue", "create an issue about login bugs", "u-1") is False
             )
         # Fail-safe direction: storage error -> plain pass, never a hold.
         with patch(f"{GATE}._load_preferences", new=AsyncMock(side_effect=RuntimeError("db down"))):
             assert (
-                await gate_holds("create_issue", "create an issue about login bugs", "u-1")
-                is False
+                await gate_holds("create_issue", "create an issue about login bugs", "u-1") is False
             )
 
     async def test_ambiguous_holds_under_default_mode(self):
         with patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})):
-            assert await gate_holds("create_ticket", "I need a ticket for the login bug", "u-1") is True
+            assert (
+                await gate_holds("create_ticket", "I need a ticket for the login bug", "u-1")
+                is True
+            )
 
     async def test_ambiguous_passes_under_declared_execute_mode(self):
         with patch(

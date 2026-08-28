@@ -32,7 +32,6 @@ from services.knowledge.knowledge_graph_service import (
 )
 from services.shared_types import NodeType
 
-
 # -------------------------------------------------------------------
 # Fixtures
 # -------------------------------------------------------------------

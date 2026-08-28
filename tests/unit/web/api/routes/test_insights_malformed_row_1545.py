@@ -93,9 +93,9 @@ async def test_malformed_row_is_skipped_good_rows_survive():
     repo = _repo_with_rows([good, _malformed_row()])
 
     insights, skipped = await repo.list_for_user_with_skips("alpha")
-    assert [i.id for i in insights] == [good.id], (
-        "good rows must survive a sibling row's deserialization failure"
-    )
+    assert [i.id for i in insights] == [
+        good.id
+    ], "good rows must survive a sibling row's deserialization failure"
     assert skipped == 1
 
 

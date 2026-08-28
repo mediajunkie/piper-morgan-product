@@ -26,7 +26,7 @@ def read_pyproject_version() -> str:
     text = (ROOT / "pyproject.toml").read_text()
     match = re.search(r'^version\s*=\s*"([^"]+)"', text, re.MULTILINE)
     if not match:
-        raise SystemExit("Could not find a version = \"...\" line in pyproject.toml")
+        raise SystemExit('Could not find a version = "..." line in pyproject.toml')
     return match.group(1)
 
 

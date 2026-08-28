@@ -229,10 +229,14 @@ class TestGatherFirstContactDemo:
         """Gate item 1's source: the gather returns the repo + real items."""
         from services.intent_service.first_contact import gather_first_contact_demo
 
-        with _status_service(True), patch(
-            "services.integrations.github.repo_resolver.resolve_repo",
-            AsyncMock(return_value=_resolved_repo()),
-        ), _router_returning(GITHUB_ISSUES):
+        with (
+            _status_service(True),
+            patch(
+                "services.integrations.github.repo_resolver.resolve_repo",
+                AsyncMock(return_value=_resolved_repo()),
+            ),
+            _router_returning(GITHUB_ISSUES),
+        ):
             result = await gather_first_contact_demo(str(uuid4()), cache=_PassthroughCache())
 
         demo = result.get("first_contact_demo")
@@ -251,10 +255,14 @@ class TestGatherFirstContactDemo:
         """#1425: a failed read flags source_failed — never a fabricated demo."""
         from services.intent_service.first_contact import gather_first_contact_demo
 
-        with _status_service(True), patch(
-            "services.integrations.github.repo_resolver.resolve_repo",
-            AsyncMock(return_value=_resolved_repo()),
-        ), _router_returning([], raise_on_read=True):
+        with (
+            _status_service(True),
+            patch(
+                "services.integrations.github.repo_resolver.resolve_repo",
+                AsyncMock(return_value=_resolved_repo()),
+            ),
+            _router_returning([], raise_on_read=True),
+        ):
             result = await gather_first_contact_demo(str(uuid4()), cache=_PassthroughCache())
 
         assert result == {"first_contact_source_failed": True}
@@ -267,9 +275,12 @@ class TestGatherFirstContactDemo:
         from services.integrations.github.repo_resolver import UnresolvedRepoError
         from services.intent_service.first_contact import gather_first_contact_demo
 
-        with _status_service(True), patch(
-            "services.integrations.github.repo_resolver.resolve_repo",
-            AsyncMock(side_effect=UnresolvedRepoError("no repo")),
+        with (
+            _status_service(True),
+            patch(
+                "services.integrations.github.repo_resolver.resolve_repo",
+                AsyncMock(side_effect=UnresolvedRepoError("no repo")),
+            ),
         ):
             result = await gather_first_contact_demo(str(uuid4()), cache=_PassthroughCache())
         assert result == {}
@@ -281,10 +292,14 @@ class TestGatherFirstContactDemo:
         unverified stored-state claim (m-44). No demo; behavior unchanged."""
         from services.intent_service.first_contact import gather_first_contact_demo
 
-        with _status_service(True), patch(
-            "services.integrations.github.repo_resolver.resolve_repo",
-            AsyncMock(return_value=_resolved_repo()),
-        ), _router_returning([]):
+        with (
+            _status_service(True),
+            patch(
+                "services.integrations.github.repo_resolver.resolve_repo",
+                AsyncMock(return_value=_resolved_repo()),
+            ),
+            _router_returning([]),
+        ):
             result = await gather_first_contact_demo(str(uuid4()), cache=_PassthroughCache())
         assert result == {}
 
@@ -364,8 +379,7 @@ class TestAssemblerFirstContactRail:
             "CONVERSATION", session_id, user_id, {"first_contact_demo": DEMO_PAYLOAD}
         )
         assert context.get("first_contact_demo") == DEMO_PAYLOAD, (
-            f"first-contact demo missing from cold-turn context "
-            f"(keys: {list(context.keys())})"
+            f"first-contact demo missing from cold-turn context " f"(keys: {list(context.keys())})"
         )
         gather_mock.assert_awaited_once()
         # #1030 R4: the key is provenance-attributed like every gathered key
@@ -513,12 +527,14 @@ class TestCanonicalGreetingFirstContact:
 
         import services.intent_service.first_contact as fc
 
-        with patch.object(
-            handler, "_check_suspended_session_reentry", AsyncMock(return_value=None)
-        ), patch.object(
-            handler, "_get_calendar_summary", AsyncMock(return_value=None)
-        ), patch.object(
-            fc, "gather_first_contact_demo", AsyncMock(return_value={"first_contact_demo": DEMO_PAYLOAD})
+        with (
+            patch.object(handler, "_check_suspended_session_reentry", AsyncMock(return_value=None)),
+            patch.object(handler, "_get_calendar_summary", AsyncMock(return_value=None)),
+            patch.object(
+                fc,
+                "gather_first_contact_demo",
+                AsyncMock(return_value={"first_contact_demo": DEMO_PAYLOAD}),
+            ),
         ):
             result = await handler._respond_to_greeting(
                 _greeting_intent(user_id), session_id, user_id=user_id
@@ -541,13 +557,15 @@ class TestCanonicalGreetingFirstContact:
 
         import services.intent_service.first_contact as fc
 
-        with patch.object(
-            handler, "_check_suspended_session_reentry", AsyncMock(return_value=None)
-        ), patch.object(
-            handler, "_get_calendar_summary", AsyncMock(return_value=None)
-        ), patch.object(
-            fc, "gather_first_contact_demo", AsyncMock(return_value={"first_contact_demo": DEMO_PAYLOAD})
-        ) as gather_mock:
+        with (
+            patch.object(handler, "_check_suspended_session_reentry", AsyncMock(return_value=None)),
+            patch.object(handler, "_get_calendar_summary", AsyncMock(return_value=None)),
+            patch.object(
+                fc,
+                "gather_first_contact_demo",
+                AsyncMock(return_value={"first_contact_demo": DEMO_PAYLOAD}),
+            ) as gather_mock,
+        ):
             result = await handler._respond_to_greeting(
                 _greeting_intent(user_id), session_id, user_id=user_id
             )
@@ -567,12 +585,10 @@ class TestCanonicalGreetingFirstContact:
 
         import services.intent_service.first_contact as fc
 
-        with patch.object(
-            handler, "_check_suspended_session_reentry", AsyncMock(return_value=None)
-        ), patch.object(
-            handler, "_get_calendar_summary", AsyncMock(return_value=None)
-        ), patch.object(
-            fc, "gather_first_contact_demo", AsyncMock(return_value={})
+        with (
+            patch.object(handler, "_check_suspended_session_reentry", AsyncMock(return_value=None)),
+            patch.object(handler, "_get_calendar_summary", AsyncMock(return_value=None)),
+            patch.object(fc, "gather_first_contact_demo", AsyncMock(return_value={})),
         ):
             result = await handler._respond_to_greeting(
                 _greeting_intent(user_id), session_id, user_id=user_id
@@ -594,13 +610,14 @@ class TestCanonicalGreetingFirstContact:
 
         import services.intent_service.first_contact as fc
 
-        with patch.object(
-            handler, "_check_suspended_session_reentry", AsyncMock(return_value=None)
-        ), patch.object(
-            handler, "_get_calendar_summary", AsyncMock(return_value=None)
-        ), patch.object(
-            fc, "gather_first_contact_demo",
-            AsyncMock(return_value={"first_contact_source_failed": True}),
+        with (
+            patch.object(handler, "_check_suspended_session_reentry", AsyncMock(return_value=None)),
+            patch.object(handler, "_get_calendar_summary", AsyncMock(return_value=None)),
+            patch.object(
+                fc,
+                "gather_first_contact_demo",
+                AsyncMock(return_value={"first_contact_source_failed": True}),
+            ),
         ):
             result = await handler._respond_to_greeting(
                 _greeting_intent(user_id), session_id, user_id=user_id

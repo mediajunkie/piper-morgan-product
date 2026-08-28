@@ -318,7 +318,6 @@ async def require_setup_incomplete() -> None:
 
 
 @router.get("/status", response_model=SetupStatusResponse)
-
 async def get_setup_status():
     """
     Check if setup has been completed.
@@ -419,7 +418,11 @@ async def ensure_database_migrated() -> bool:
         return False
 
 
-@router.post("/check-system", response_model=SystemCheckResponse, dependencies=[Depends(require_setup_incomplete)])
+@router.post(
+    "/check-system",
+    response_model=SystemCheckResponse,
+    dependencies=[Depends(require_setup_incomplete)],
+)
 async def check_system():
     """
     Check system requirements and service availability.
@@ -788,7 +791,11 @@ class SlackCredentialsResponse(BaseModel):
     message: str
 
 
-@router.post("/slack-credentials", response_model=SlackCredentialsResponse, dependencies=[Depends(require_setup_incomplete)])
+@router.post(
+    "/slack-credentials",
+    response_model=SlackCredentialsResponse,
+    dependencies=[Depends(require_setup_incomplete)],
+)
 async def save_slack_credentials_setup(credentials: SlackCredentialsRequest):
     """
     Save Slack app credentials during setup wizard.
@@ -942,7 +949,11 @@ async def create_user(req: CreateUserRequest):
             )
 
 
-@router.post("/complete", response_model=SetupCompleteResponse, dependencies=[Depends(require_setup_incomplete)])
+@router.post(
+    "/complete",
+    response_model=SetupCompleteResponse,
+    dependencies=[Depends(require_setup_incomplete)],
+)
 async def complete_setup(req: SetupCompleteRequest):
     """
     Finalize setup by storing API keys and marking user as setup complete.
@@ -1153,7 +1164,11 @@ class SetupProjectResponse(BaseModel):
     message: str = ""
 
 
-@router.post("/projects", response_model=SetupProjectResponse, dependencies=[Depends(require_setup_incomplete)])
+@router.post(
+    "/projects",
+    response_model=SetupProjectResponse,
+    dependencies=[Depends(require_setup_incomplete)],
+)
 async def create_setup_project(req: SetupProjectRequest):
     """
     Create a project (and optionally link a GitHub repo) during setup wizard.

@@ -134,6 +134,7 @@ class TestGitHubMCPRouterIntegration:
             # Spatial should still work
             assert router.spatial_github is not None, "Spatial should work as fallback"
 
+
 class TestGitHubMCPFeatureFlags:
     """Test GitHub MCP feature flag behavior."""
 

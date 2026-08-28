@@ -329,9 +329,7 @@ def build_read_back_offer(
         return None
     if was_declined(session_id, key):
         return None
-    question = (
-        f"Before I rely on it — I've inferred {description}. Did I get that right? (yes/no)"
-    )
+    question = f"Before I rely on it — I've inferred {description}. Did I get that right? (yes/no)"
     return ReadBackOffer(
         question=question,
         offer={
@@ -429,7 +427,7 @@ def _meta_confirmation_message(
             msg += f" I'll go with {description}."
         else:
             msg += f" I've dropped {description} for now."
-        msg += ' (Say "don\'t make assumptions" any time and I\'ll go back to checking first.)'
+        msg += " (Say \"don't make assumptions\" any time and I'll go back to checking first.)"
     else:
         msg = (
             "Understood — I won't act on my own inferences without checking with you first, "
@@ -491,9 +489,7 @@ async def handle_verification_turn_meta(
         )
         mark_declined(session_id, key)
         return {
-            "message": (
-                f"Got it — I won't assume {description}, and nothing has been stored."
-            ),
+            "message": (f"Got it — I won't assume {description}, and nothing has been stored."),
             "intent_data": {
                 "category": "execution",
                 "action": VERIFY_INFERENCE_WORKFLOW,
@@ -515,9 +511,7 @@ async def handle_verification_turn_meta(
         # conservative direction here — it only prevents a store, nothing
         # fires. The default override would silently store the current
         # inference despite the "no".
-        declines_current = (
-            detect_offer_response(message, prose_override=False) == "decline"
-        )
+        declines_current = detect_offer_response(message, prose_override=False) == "decline"
         if not declines_current and key is not None:
             stored_current = await store_verified_inference(
                 effective_user,

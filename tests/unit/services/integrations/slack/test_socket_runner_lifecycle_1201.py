@@ -51,8 +51,11 @@ async def test_start_sets_connected_then_stop_clears():
 
 # ---- restart_socket_runner (runtime lifecycle on app.state) ----
 
+
 def _app(intent_service=object(), existing=None):
-    return SimpleNamespace(state=SimpleNamespace(intent_service=intent_service, slack_socket_runner=existing))
+    return SimpleNamespace(
+        state=SimpleNamespace(intent_service=intent_service, slack_socket_runner=existing)
+    )
 
 
 async def test_restart_builds_starts_and_stores():
@@ -67,9 +70,11 @@ async def test_restart_builds_starts_and_stores():
 
 
 async def test_restart_stops_existing_first():
-    existing = MagicMock(); existing.stop = AsyncMock()
+    existing = MagicMock()
+    existing.stop = AsyncMock()
     app = _app(existing=existing)
-    new_runner = MagicMock(); new_runner.start = AsyncMock()
+    new_runner = MagicMock()
+    new_runner.start = AsyncMock()
     with patch.object(smr, "build_runner", AsyncMock(return_value=new_runner)):
         await restart_socket_runner(app)
     existing.stop.assert_awaited_once()
@@ -77,7 +82,8 @@ async def test_restart_stops_existing_first():
 
 
 async def test_restart_none_when_not_configured_clears_runner():
-    existing = MagicMock(); existing.stop = AsyncMock()
+    existing = MagicMock()
+    existing.stop = AsyncMock()
     app = _app(existing=existing)
     with patch.object(smr, "build_runner", AsyncMock(return_value=None)):
         got = await restart_socket_runner(app)
@@ -95,7 +101,8 @@ async def test_restart_none_when_no_intent_service():
 
 async def test_restart_keeps_runner_on_start_failure_for_connecting_state():
     app = _app()
-    flaky = MagicMock(); flaky.start = AsyncMock(side_effect=RuntimeError("connect boom"))
+    flaky = MagicMock()
+    flaky.start = AsyncMock(side_effect=RuntimeError("connect boom"))
     with patch.object(smr, "build_runner", AsyncMock(return_value=flaky)):
         got = await restart_socket_runner(app)
     # runner is kept (not connected) so status can show 'connecting/unavailable'

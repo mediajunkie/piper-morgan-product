@@ -539,10 +539,7 @@ class TestProseOverride1631:
         assert detect_offer_response(self._DECLINE_GREED_PROSE) is None
 
     def test_multiline_turn_is_not_an_offer_response(self):
-        assert (
-            detect_offer_response("Yes, here is the plan:\n- step one\n- step two")
-            is None
-        )
+        assert detect_offer_response("Yes, here is the plan:\n- step one\n- step two") is None
 
     def test_short_accepts_unchanged(self):
         for message in ("Yes", "Yes please", "Sure, go ahead", "Please do", "Okay"):

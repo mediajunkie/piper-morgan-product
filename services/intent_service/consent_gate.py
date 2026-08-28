@@ -227,10 +227,7 @@ def decide_consent(
     if framing == FRAMING_COMPOSE:
         return ConsentDecision.COLLABORATE
     if framing == FRAMING_EXECUTE:
-        if (
-            outwardness == Outwardness.OUTWARD
-            and mode is WorkingMode.EXECUTE
-        ):
+        if outwardness == Outwardness.OUTWARD and mode is WorkingMode.EXECUTE:
             return ConsentDecision.PROCEED_WITH_DISCLOSURE
         return ConsentDecision.PROCEED
     # AMBIGUOUS framing — the declared mode decides.
@@ -399,9 +396,7 @@ def build_consent_check_offer(intent, effect: EffectClass) -> ConsentCheckOffer:
                 "intent": intent,
                 "summary": summary,
             },
-            "decline_message": (
-                f"Okay — I won't {summary}. Nothing has been changed."
-            ),
+            "decline_message": (f"Okay — I won't {summary}. Nothing has been changed."),
         },
     )
 
@@ -433,8 +428,7 @@ def build_outward_disclosure(intent) -> str:
         repository = intent.context.get("repository") or intent.context.get("repo")
     where = f" in {repository}" if repository else ""
     return (
-        f"Heads up — I'm about to {summary}{where}. "
-        "That's visible to other people, not just us."
+        f"Heads up — I'm about to {summary}{where}. " "That's visible to other people, not just us."
     )
 
 
@@ -485,10 +479,7 @@ def decide_verb_interpretation(
     base = decide(confidence, mode)
     if base is VerificationDecision.DISCARD:
         return base
-    if (
-        candidate_effect == EffectClass.READ
-        and mode is not VerificationMetaMode.ALWAYS_ASK
-    ):
+    if candidate_effect == EffectClass.READ and mode is not VerificationMetaMode.ALWAYS_ASK:
         return VerificationDecision.AUTO_APPLY
     if candidate_effect == EffectClass.DESTRUCTIVE and is_low_confidence(confidence):
         return VerificationDecision.READ_BACK

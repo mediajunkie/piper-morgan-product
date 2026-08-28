@@ -254,9 +254,7 @@ def _build_calendar_narrative(
             load_assessment = "and it looks like you have a clear day ahead - nice!"
     elif total_meetings >= 4:
         # A nonzero count is self-evidencing: rows came back, so they exist.
-        load_assessment = (
-            f"and it looks like you have a packed day with {total_meetings} meetings"
-        )
+        load_assessment = f"and it looks like you have a packed day with {total_meetings} meetings"
     else:
         meeting_word = "meeting" if total_meetings == 1 else "meetings"
         load_assessment = f"and see you have {total_meetings} {meeting_word} today"
@@ -371,8 +369,9 @@ def _format_free_block(
             continue
 
         if block_type in _EVENT_DERIVED_BLOCK_TYPES:
-            start, end = _format_time(block.get("start_time", "")), _format_time(
-                block.get("end_time", "")
+            start, end = (
+                _format_time(block.get("start_time", "")),
+                _format_time(block.get("end_time", "")),
             )
         elif tz is not None:
             # Unknown/server-derived, but we can name a zone → convert + label.
@@ -386,9 +385,7 @@ def _format_free_block(
             if elapsed_fallback is None:
                 # Window already finished at render time: past tense, and keep
                 # looking — a later still-open block is worth more than this.
-                elapsed_fallback = (
-                    f"I noticed you had some focus time between {start} and {end}"
-                )
+                elapsed_fallback = f"I noticed you had some focus time between {start} and {end}"
     return elapsed_fallback
 
 

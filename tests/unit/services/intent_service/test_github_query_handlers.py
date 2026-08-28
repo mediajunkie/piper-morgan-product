@@ -1548,9 +1548,7 @@ class TestListPRsResults:
         ):
             result = await intent_service._handle_list_prs_query(intent, "test-workflow-id")
 
-        assert result.success is False, (
-            "PR-listing failure must not report success=True (#1524)"
-        )
+        assert result.success is False, "PR-listing failure must not report success=True (#1524)"
         assert "wasn't able to fetch" in result.message
         assert result.error_type == "list_prs_error"
         assert "Connection failed" in (result.error or "")

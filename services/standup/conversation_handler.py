@@ -539,9 +539,7 @@ class StandupConversationHandler:
             # A confirmed flow releases entirely; COMPLETE is terminal, so
             # the registry stops claiming and normal intent processing owns
             # the next turn.
-            await self.manager.transition_state(
-                conversation.id, StandupConversationState.COMPLETE
-            )
+            await self.manager.transition_state(conversation.id, StandupConversationState.COMPLETE)
             return ConversationResponse(
                 message=(
                     f"Great! Here's your final standup:\n\n{conversation.current_standup}\n\n"

@@ -20,7 +20,6 @@ import pytest
 from services.actions.commands.github_issue_command import GithubIssueCommand
 from services.api.errors import GitHubAuthFailedError, GitHubRateLimitError
 
-
 # -------------------------------------------------------------------
 # Helpers
 # -------------------------------------------------------------------

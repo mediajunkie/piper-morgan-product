@@ -194,9 +194,10 @@ class TestGitHubSpatialIntelligence:
         # env state / a real user_id, neither of which this call provides.
         from services.integrations.github.repo_resolver import ResolvedRepo
 
-        with patch.object(github_spatial.mcp_adapter, "_call_github_api") as mock_api, patch(
-            "services.integrations.github.repo_resolver.resolve_repo"
-        ) as mock_resolve:
+        with (
+            patch.object(github_spatial.mcp_adapter, "_call_github_api") as mock_api,
+            patch("services.integrations.github.repo_resolver.resolve_repo") as mock_resolve,
+        ):
             mock_api.return_value = {"number": 156}
             mock_resolve.return_value = ResolvedRepo(
                 owner="mediajunkie", name="piper-morgan-product", source="explicit"

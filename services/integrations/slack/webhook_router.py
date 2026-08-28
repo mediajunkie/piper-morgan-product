@@ -1635,9 +1635,7 @@ class SlackWebhookRouter:
                 user_id=principal, include_completed=True
             )
             now = datetime.now(timezone.utc)
-            cutoff = (now - timedelta(days=1)).replace(
-                hour=0, minute=0, second=0, microsecond=0
-            )
+            cutoff = (now - timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
             completed = []
             for todo in todos:
                 if not getattr(todo, "completed", False):
@@ -1698,9 +1696,7 @@ class SlackWebhookRouter:
             urgent = [t for t in todos if _priority(t) == "urgent"]
             high = [t for t in todos if _priority(t) == "high"]
             already = {id(t) for t in urgent + high}
-            due = [
-                t for t in todos if id(t) not in already and _due_today_or_overdue(t)
-            ]
+            due = [t for t in todos if id(t) not in already and _due_today_or_overdue(t)]
             return [t.text for t in urgent + high + due]
         except Exception as e:
             logger.warning(f"/standup today-priorities lookup failed: {e}")

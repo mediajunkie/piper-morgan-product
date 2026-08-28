@@ -137,9 +137,7 @@ class TestListLabelsHandler:
             result = await intent_service._handle_list_labels_query(
                 _make_label_intent(), workflow_id="wf-1"
             )
-        assert result.success is False, (
-            "label-listing failure must not report success=True (#1524)"
-        )
+        assert result.success is False, "label-listing failure must not report success=True (#1524)"
         assert "wasn't able to fetch" in result.message
         assert result.error_type == "list_labels_error"
         assert "boom" in (result.error or "")
@@ -256,9 +254,9 @@ class TestListBranchesHandler:
             result = await intent_service._handle_list_branches_query(
                 _make_branch_intent(), workflow_id="wf-1"
             )
-        assert result.success is False, (
-            "branch-listing failure must not report success=True (#1524)"
-        )
+        assert (
+            result.success is False
+        ), "branch-listing failure must not report success=True (#1524)"
         assert "wasn't able to fetch" in result.message
         assert result.error_type == "list_branches_error"
         assert "boom" in (result.error or "")

@@ -17,9 +17,9 @@ from services.ethics.semantic_boundary_detector import SemanticDetectorOutput
 from tests.ethics.probe_set.probe_definitions import (
     ALL_PROBES,
     FALSE_POSITIVE_PROBES,
+    VIOLATION_PROBES,
     AcceptedShape,
     Probe,
-    VIOLATION_PROBES,
     probe_by_id,
     probes_by_category,
 )
@@ -29,7 +29,6 @@ from tests.ethics.probe_set.probe_runner import (
     run_probe_set,
     summarize_results,
 )
-
 
 # ----- Test fixtures -----
 

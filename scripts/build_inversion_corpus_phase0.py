@@ -150,7 +150,7 @@ HAND_ROWS = [
         "source": "issue-1505 (multi-intent path drops the connect ask; resolves to greeting only)",
     },
     {
-        "phrase": "please clear the reminders except for \"Review the PR\" - also, are you able to set my default repo for me conversationally?",
+        "phrase": 'please clear the reminders except for "Review the PR" - also, are you able to set my default repo for me conversationally?',
         "category": "TEMPORAL",
         "expected": "REVIEW",
         "source": "issue-1606 (PM live 2026-08-12: request 1 dropped; request 2 — a question — parsed as a malformed set-command)",

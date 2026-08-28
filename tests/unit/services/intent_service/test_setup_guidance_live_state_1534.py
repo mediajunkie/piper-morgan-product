@@ -68,9 +68,7 @@ async def session():
     create — the full metadata has PG-only types; mirrors #1229's setup)."""
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
     async with engine.begin() as conn:
-        await conn.run_sync(
-            lambda c: ConnectorBinding.__table__.create(c, checkfirst=True)
-        )
+        await conn.run_sync(lambda c: ConnectorBinding.__table__.create(c, checkfirst=True))
     SessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
     async with SessionLocal() as s:
         yield s
@@ -92,9 +90,7 @@ def _live_state_environment(monkeypatch, session):
     keychain.get_api_key.return_value = None
 
     return (
-        patch.object(
-            AsyncSessionFactory, "session_scope", new=lambda: _yield_session(session)
-        ),
+        patch.object(AsyncSessionFactory, "session_scope", new=lambda: _yield_session(session)),
         patch.object(
             AsyncSessionFactory,
             "session_scope_fresh",
@@ -124,9 +120,7 @@ class TestGuidanceReadsRealBindingState:
 
         p1, p2, p3, p4 = _live_state_environment(monkeypatch, session)
         with p1, p2, p3, p4:
-            result = await CanonicalHandlers()._format_integration_setup_guidance(
-                user_id=_USER
-            )
+            result = await CanonicalHandlers()._format_integration_setup_guidance(user_id=_USER)
 
         message = result["message"]
         assert "✅ **Connected:**" in message
@@ -147,9 +141,7 @@ class TestGuidanceReadsRealBindingState:
         connected — a real negative measurement, not the failure disclaimer."""
         p1, p2, p3, p4 = _live_state_environment(monkeypatch, session)
         with p1, p2, p3, p4:
-            result = await CanonicalHandlers()._format_integration_setup_guidance(
-                user_id=_USER
-            )
+            result = await CanonicalHandlers()._format_integration_setup_guidance(user_id=_USER)
 
         message = result["message"]
         assert result["intent"]["context"]["configured_integrations"] == []
@@ -167,9 +159,7 @@ class TestGuidanceReadsRealBindingState:
 
         p1, p2, p3, p4 = _live_state_environment(monkeypatch, session)
         with p1, p2, p3, p4:
-            result = await CanonicalHandlers()._format_integration_setup_guidance(
-                user_id=_USER
-            )
+            result = await CanonicalHandlers()._format_integration_setup_guidance(user_id=_USER)
 
         assert "demo" not in result["message"].lower()
         assert "demo" not in result["intent"]["context"]["configured_integrations"]

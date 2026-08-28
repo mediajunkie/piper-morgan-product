@@ -87,9 +87,7 @@ class TestRendererVerifiedEmpty:
         self.floor = ConversationalFloor(llm_client=MagicMock())
 
     def test_verified_empty_renders_checked_fact(self):
-        out = self.floor._format_domain_context(
-            {"pending_todos": [], "pending_todo_count": 0}
-        )
+        out = self.floor._format_domain_context({"pending_todos": [], "pending_todo_count": 0})
         assert "PENDING TODOS: none" in out
         assert "checked" in out
         # The account-level instruction, never a conversation-scoped hedge.
@@ -173,32 +171,35 @@ class TestAssemblerVerifiedEmpty:
         (the #960 else-branch) — verified-empty must reach the floor context
         from there, count included."""
         assembler = ContextAssembler()
-        with patch.object(
-            assembler, "_gather_calendar_context", new=AsyncMock(return_value={})
-        ), patch.object(
-            assembler, "_get_user_context_cached", new=AsyncMock(return_value=None)
-        ), patch.object(
-            assembler,
-            "_get_pending_todos_cached",
-            new=AsyncMock(return_value={"pending_todos": [], "pending_todo_count": 0}),
-        ), patch.object(
-            assembler,
-            "_gather_blocked_items_context",
-            new=AsyncMock(return_value={}),
-        ), patch.object(
-            assembler,
-            "_gather_active_milestones_context",
-            new=AsyncMock(return_value={}),
-        ), patch.object(
-            assembler,
-            "_gather_recent_activity_context",
-            new=AsyncMock(return_value={}),
-        ), patch.object(
-            assembler,
-            "_gather_high_priority_issues_context",
-            new=AsyncMock(return_value={}),
-        ), patch(
-            "services.integrations.integration_status_service.IntegrationStatusService"
+        with (
+            patch.object(assembler, "_gather_calendar_context", new=AsyncMock(return_value={})),
+            patch.object(assembler, "_get_user_context_cached", new=AsyncMock(return_value=None)),
+            patch.object(
+                assembler,
+                "_get_pending_todos_cached",
+                new=AsyncMock(return_value={"pending_todos": [], "pending_todo_count": 0}),
+            ),
+            patch.object(
+                assembler,
+                "_gather_blocked_items_context",
+                new=AsyncMock(return_value={}),
+            ),
+            patch.object(
+                assembler,
+                "_gather_active_milestones_context",
+                new=AsyncMock(return_value={}),
+            ),
+            patch.object(
+                assembler,
+                "_gather_recent_activity_context",
+                new=AsyncMock(return_value={}),
+            ),
+            patch.object(
+                assembler,
+                "_gather_high_priority_issues_context",
+                new=AsyncMock(return_value={}),
+            ),
+            patch("services.integrations.integration_status_service.IntegrationStatusService"),
         ):
             ctx = await assembler._gather_status_priority_context(user_id="u-1544")
 
@@ -215,9 +216,7 @@ class TestTranscriptShapeEndToEndAtTheDeterministicLayer:
 
     def test_verified_empty_block_contains_no_transcript_phrases(self):
         floor = ConversationalFloor(llm_client=MagicMock())
-        out = floor._format_domain_context(
-            {"pending_todos": [], "pending_todo_count": 0}
-        )
+        out = floor._format_domain_context({"pending_todos": [], "pending_todo_count": 0})
         for phrase in ("for this conversation", "on my end", "I don't see any todos"):
             assert phrase not in out, phrase
 

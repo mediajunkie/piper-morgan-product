@@ -37,7 +37,6 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import List, Optional, Tuple
 
-
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_AGE_HOURS = 24
 DEFAULT_MAX_BLOB_SIZE = 1_000_000  # 1MB

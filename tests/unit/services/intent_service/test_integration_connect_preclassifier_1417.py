@@ -69,8 +69,7 @@ def test_repo_phrasings_never_hijacked(message):
     intent = _classify(message)
     if intent is not None:
         assert not (
-            intent.action == "get_contextual_guidance"
-            and intent.context.get("setup_target")
+            intent.action == "get_contextual_guidance" and intent.context.get("setup_target")
         ), f"repo-lane message hijacked into integration setup: {message!r}"
 
 
@@ -144,9 +143,9 @@ def test_connect_calendar_multi_intent_path_1471():
     the #1471 misroute lived here even after pre_classify was fixed."""
     result = PreClassifier.detect_multiple_intents("connect my calendar")
     resolved = [(i.category, i.action) for i in result.intents]
-    assert resolved == [(IntentCategory.GUIDANCE, "get_contextual_guidance")], (
-        f"multi-intent path resolved {resolved} (#1471)"
-    )
+    assert resolved == [
+        (IntentCategory.GUIDANCE, "get_contextual_guidance")
+    ], f"multi-intent path resolved {resolved} (#1471)"
     intent = result.intents[0]
     assert intent.original_message == "connect my calendar"  # #1460 field
     assert intent.context.get("setup_target") == "calendar"
@@ -202,8 +201,7 @@ def test_calendar_event_writes_stay_out_of_connect_lane_1471(message):
     intent = _classify(message)
     if intent is not None:
         assert not (
-            intent.action == "get_contextual_guidance"
-            and intent.context.get("setup_target")
+            intent.action == "get_contextual_guidance" and intent.context.get("setup_target")
         ), f"event-write ask hijacked into integration setup: {message!r}"
 
 

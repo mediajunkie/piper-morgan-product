@@ -691,9 +691,7 @@ def _1452_nullpool_engine():
 async def _1452_session_scope_nullpool(_1452_nullpool_engine, monkeypatch):
     from services.database.session_factory import AsyncSessionFactory as _ASF
 
-    maker = async_sessionmaker(
-        _1452_nullpool_engine, class_=AsyncSession, expire_on_commit=False
-    )
+    maker = async_sessionmaker(_1452_nullpool_engine, class_=AsyncSession, expire_on_commit=False)
 
     @_1452_acm
     async def _scope():

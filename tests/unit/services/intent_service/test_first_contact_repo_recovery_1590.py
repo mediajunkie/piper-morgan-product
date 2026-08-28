@@ -102,18 +102,18 @@ async def test_demo_appears_after_read_time_repo_recovery():
         ]
     )
 
-    with patch(
-        "services.connectors.config_service.ConnectorConfigService",
-        side_effect=lambda _s: _StatefulConfigService(store),
-    ), patch(
-        "services.database.session_factory.AsyncSessionFactory.session_scope",
-        side_effect=lambda *a, **k: _Ctx(),
-    ), patch(
-        _STATUS_FC, return_value=status
-    ), patch(
-        _ADAPTER, return_value=adapter
-    ), patch(
-        _ROUTER, return_value=router
+    with (
+        patch(
+            "services.connectors.config_service.ConnectorConfigService",
+            side_effect=lambda _s: _StatefulConfigService(store),
+        ),
+        patch(
+            "services.database.session_factory.AsyncSessionFactory.session_scope",
+            side_effect=lambda *a, **k: _Ctx(),
+        ),
+        patch(_STATUS_FC, return_value=status),
+        patch(_ADAPTER, return_value=adapter),
+        patch(_ROUTER, return_value=router),
     ):
         result = await gather_first_contact_demo(user_id, cache=_PassthroughCache())
 
@@ -136,20 +136,19 @@ async def test_zero_repo_user_still_gets_no_demo_and_no_scope_question():
     status = MagicMock()
     status.is_configured = AsyncMock(return_value=True)
     adapter = MagicMock()
-    adapter.search_user_repositories = AsyncMock(
-        return_value=GitHubReposResult(repositories=[])
-    )
+    adapter.search_user_repositories = AsyncMock(return_value=GitHubReposResult(repositories=[]))
 
-    with patch(
-        "services.connectors.config_service.ConnectorConfigService",
-        side_effect=lambda _s: _StatefulConfigService(store),
-    ), patch(
-        "services.database.session_factory.AsyncSessionFactory.session_scope",
-        side_effect=lambda *a, **k: _Ctx(),
-    ), patch(
-        _STATUS_FC, return_value=status
-    ), patch(
-        _ADAPTER, return_value=adapter
+    with (
+        patch(
+            "services.connectors.config_service.ConnectorConfigService",
+            side_effect=lambda _s: _StatefulConfigService(store),
+        ),
+        patch(
+            "services.database.session_factory.AsyncSessionFactory.session_scope",
+            side_effect=lambda *a, **k: _Ctx(),
+        ),
+        patch(_STATUS_FC, return_value=status),
+        patch(_ADAPTER, return_value=adapter),
     ):
         result = await gather_first_contact_demo(user_id, cache=_PassthroughCache())
 

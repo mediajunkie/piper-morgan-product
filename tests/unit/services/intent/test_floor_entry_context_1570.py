@@ -76,9 +76,7 @@ def gather_spy(monkeypatch):
     and record every call's (category, user_id)."""
     calls = []
 
-    async def fake_gather(
-        self, intent_category, user_id=None, session_id=None, intent_action=None
-    ):
+    async def fake_gather(self, intent_category, user_id=None, session_id=None, intent_action=None):
         calls.append({"category": intent_category, "user_id": user_id})
         return {"pending_todos": list(PENDING_TODOS), "pending_todo_count": 2}
 
@@ -94,9 +92,7 @@ class TestUnknownIntentFloorEntryGathersContext:
     supplied none — under a NON-None principal (PM's authenticated shape)."""
 
     @pytest.mark.asyncio
-    async def test_pending_todos_reach_floor_for_generic_query(
-        self, captured_floor, gather_spy
-    ):
+    async def test_pending_todos_reach_floor_for_generic_query(self, captured_floor, gather_spy):
         """PM's sentence shape: unrailed QUERY emission → generic → floor.
         RED before #1570: domain_context arrived as None (no gather ever ran)."""
         session_id, user_id = str(uuid4()), str(uuid4())
@@ -121,17 +117,13 @@ class TestUnknownIntentFloorEntryGathersContext:
         clear_context(session_id, user_id)
 
     @pytest.mark.asyncio
-    async def test_offer_fallback_floor_entry_gathers_too(
-        self, captured_floor, gather_spy
-    ):
+    async def test_offer_fallback_floor_entry_gathers_too(self, captured_floor, gather_spy):
         """The bound-offer acceptance fallback (#1570 projects lane) is a
         direct `_handle_unknown_intent` call with an UNKNOWN-category intent
         and an explicit user_id — it must gather as well."""
         session_id, user_id = str(uuid4()), str(uuid4())
         intent = _intent(IntentCategory.UNKNOWN, "status_check", "yes please", user_id)
-        result = await _svc()._handle_unknown_intent(
-            intent, None, session_id, user_id=user_id
-        )
+        result = await _svc()._handle_unknown_intent(intent, None, session_id, user_id=user_id)
 
         assert result.success
         ctx = captured_floor[-1]
@@ -140,9 +132,7 @@ class TestUnknownIntentFloorEntryGathersContext:
         clear_context(session_id, user_id)
 
     @pytest.mark.asyncio
-    async def test_provenance_threads_alongside_gathered_context(
-        self, captured_floor, gather_spy
-    ):
+    async def test_provenance_threads_alongside_gathered_context(self, captured_floor, gather_spy):
         """#1030 R4 parity with _handle_floor_with_context: when this entry
         gathers, the provenance map rides with it."""
         session_id, user_id = str(uuid4()), str(uuid4())
@@ -187,9 +177,7 @@ class TestGatherFailureNeverKillsTheFloor:
         )
         session_id, user_id = str(uuid4()), str(uuid4())
         intent = _intent(IntentCategory.UNKNOWN, "unknown", "hello?", user_id)
-        result = await _svc()._handle_unknown_intent(
-            intent, None, session_id, user_id=user_id
-        )
+        result = await _svc()._handle_unknown_intent(intent, None, session_id, user_id=user_id)
         assert result.success, "a gather failure must never take down the floor reply"
         assert captured_floor[-1].domain_context is None
         clear_context(session_id, user_id)

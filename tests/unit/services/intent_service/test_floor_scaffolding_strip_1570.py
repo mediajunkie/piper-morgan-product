@@ -93,7 +93,9 @@ class TestStripScaffoldingArtifacts:
         assert "[" not in clean
 
     def test_scaffolding_only_response_falls_back_nonempty(self):
-        clean, n = strip_scaffolding_artifacts("[Available context: no todo data returned this turn]")
+        clean, n = strip_scaffolding_artifacts(
+            "[Available context: no todo data returned this turn]"
+        )
         assert n == 1
         assert clean.strip(), "a fully-scaffolding response must not become empty user copy"
         assert "[Available context" not in clean

@@ -25,7 +25,6 @@ from tests.ethics.probe_set.redirect_hint_assertions import (
     find_refusal_templates,
 )
 
-
 # ----- Rule 1: input substring leak detection -----
 
 

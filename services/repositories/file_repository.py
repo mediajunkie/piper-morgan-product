@@ -208,7 +208,6 @@ class FileRepository(BaseRepository):
         )
         return filename_matches[:limit]
 
-
     async def search_files_with_content_all_sessions(
         self, query: str, owner_id: str, days: int = 30, limit: int = 10
     ) -> List[UploadedFile]:
@@ -240,4 +239,3 @@ class FileRepository(BaseRepository):
             "simulation-only — returning filename matches (honest degrade, #1436)"
         )
         return filename_matches[:limit]
-

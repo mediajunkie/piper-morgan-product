@@ -134,6 +134,7 @@ INTEGRATION_REGISTRY = {
     },
 }
 
+
 def _get_health_monitor() -> IntegrationHealthMonitor:
     """The shared health monitor singleton.
 

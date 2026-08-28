@@ -91,7 +91,8 @@ class TestConversationManagerIntegration:
         engine can't interleave with the event loop at all — immune by
         construction. Deletes every row created under TEST_USER_ID."""
         yield
-        from sqlalchemy import create_engine, text as _text
+        from sqlalchemy import create_engine
+        from sqlalchemy import text as _text
 
         eng = create_engine(
             "postgresql+psycopg2://piper:dev_changeme_in_production@localhost:5433/piper_morgan"

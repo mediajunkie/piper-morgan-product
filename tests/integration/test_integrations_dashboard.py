@@ -15,6 +15,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+
 def _fake_claims():
     """#1452: the dashboard routes grew `current_user: JWTClaims =
     Depends(get_current_user)` after these direct-call tests were written —

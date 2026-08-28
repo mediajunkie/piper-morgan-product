@@ -109,9 +109,7 @@ def test_leaf_split_default_encrypts_a_NEW_unanticipated_key():
     must land encrypted BY DEFAULT — nobody updates any list. This is the
     injected-drift proof: 'ssn' was never anticipated anywhere."""
     col = _leaf_col()
-    stored = col.process_bind_param(
-        {"action_type": "x", "ssn": "000-00-0000"}, None
-    )
+    stored = col.process_bind_param({"action_type": "x", "ssn": "000-00-0000"}, None)
     assert "ssn" not in stored  # not a plaintext leaf
     assert "000-00-0000" not in str(stored)  # value nowhere in the stored shape
     assert stored["_enc"].startswith(MARKER)

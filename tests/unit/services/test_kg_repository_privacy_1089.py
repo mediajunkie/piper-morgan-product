@@ -27,7 +27,6 @@ from services.domain.models import KnowledgeNode
 from services.ethics.privacy_types import FilterReason, PrivacyFilterRejectedError
 from services.shared_types import NodeType
 
-
 # -------------------------------------------------------------------
 # Fixtures / helpers
 # -------------------------------------------------------------------

@@ -87,11 +87,13 @@ class TestRenderedBlockIsMarkdownList:
         contract, exercised by the frontend, not simulated here."""
         block = render_first_contact_block(DEMO_PAYLOAD)
         first_item = block.index("- #")
-        assert "\n\n" in block[:first_item], (
-            "no paragraph break before the list — marked will render a run-on"
-        )
+        assert (
+            "\n\n" in block[:first_item]
+        ), "no paragraph break before the list — marked will render a run-on"
         # And the closing question must not glue onto the last list item.
-        assert re.search(r"\n\nYou don't need to hold this list", block)  # #1539 purpose line, CXO 08-22
+        assert re.search(
+            r"\n\nYou don't need to hold this list", block
+        )  # #1539 purpose line, CXO 08-22
 
     def test_single_item_uses_singular_noun_and_still_lists(self):
         payload = {
@@ -115,17 +117,13 @@ class TestFloorDirectiveAsksForAList:
         this layer) must tell the model to present the items as a bullet
         list, one per line — otherwise it mirrors the prompt's inline shape
         into the same run-on."""
-        block = ConversationalFloor()._format_domain_context(
-            {"first_contact_demo": DEMO_PAYLOAD}
-        )
+        block = ConversationalFloor()._format_domain_context({"first_contact_demo": DEMO_PAYLOAD})
         assert "bullet list" in block.lower()
         assert "one item per line" in block.lower()
 
     def test_directive_and_entities_still_present(self):
         """The #1536 guarantees this rides on are untouched."""
-        block = ConversationalFloor()._format_domain_context(
-            {"first_contact_demo": DEMO_PAYLOAD}
-        )
+        block = ConversationalFloor()._format_domain_context({"first_contact_demo": DEMO_PAYLOAD})
         assert "acme/rocket" in block
         assert "#123" in block and "#456" in block
         assert "ONLY" in block

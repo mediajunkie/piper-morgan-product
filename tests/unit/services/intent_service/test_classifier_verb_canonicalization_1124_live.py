@@ -33,12 +33,14 @@ def _llm_json(**over):
 
 
 async def _classify(clf, llm_response, message="summarize issue 42"):
-    with patch.object(clf, "_llm", create=True), \
-         patch(
-             "services.configuration.personalization_service.personalization_service"
-             ".resolve_system_prompt_standalone",
-             new=AsyncMock(return_value="sys"),
-         ):
+    with (
+        patch.object(clf, "_llm", create=True),
+        patch(
+            "services.configuration.personalization_service.personalization_service"
+            ".resolve_system_prompt_standalone",
+            new=AsyncMock(return_value="sys"),
+        ),
+    ):
         clf._llm = AsyncMock()
         clf._llm.complete = AsyncMock(return_value=llm_response)
         intent, reasoning = await clf._classify_with_reasoning(message)
@@ -55,14 +57,19 @@ class TestVerbCanonicalizationLive:
             Verb,
             verb_sourcetype_to_legacy_action,
         )
-        mapped = [(v, verb_sourcetype_to_legacy_action(v, None)) for v in Verb
-                  if verb_sourcetype_to_legacy_action(v, None)]
+
+        mapped = [
+            (v, verb_sourcetype_to_legacy_action(v, None))
+            for v in Verb
+            if verb_sourcetype_to_legacy_action(v, None)
+        ]
         assert mapped, "precondition: shim table must map at least one verb"
         verb, expected = mapped[0]
         intent = await _classify(
             _clf(),
-            _llm_json(verb=verb.value, source_type="github_issue",
-                      action="improvised_free_form_name"),
+            _llm_json(
+                verb=verb.value, source_type="github_issue", action="improvised_free_form_name"
+            ),
         )
         assert intent.action == expected
         assert intent.context["source_type"] == "github_issue"
@@ -96,6 +103,7 @@ class TestVerbCanonicalizationLive:
             Verb,
             verb_sourcetype_to_legacy_action,
         )
+
         unmapped = [v for v in Verb if verb_sourcetype_to_legacy_action(v, None) is None]
         if not unmapped:
             pytest.skip("every Verb currently maps; fallback covered by invalid-verb test")

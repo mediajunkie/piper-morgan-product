@@ -37,7 +37,6 @@ from services.intent_service.inversion_live import (
 )
 from services.shared_types import IntentCategory
 
-
 # ---------------------------------------------------------------------------
 # Doubles
 # ---------------------------------------------------------------------------
@@ -165,13 +164,9 @@ class TestModeBranching:
         from services.intent_service.inversion_router import RoutingDecision
 
         async def _scripted(utterance, snapshot=None, **kw):
-            return RoutingDecision(
-                outcome="operation", operation="create_reminder", confidence=0.9
-            )
+            return RoutingDecision(outcome="operation", operation="create_reminder", confidence=0.9)
 
-        monkeypatch.setattr(
-            "services.intent_service.inversion_router.route", _scripted
-        )
+        monkeypatch.setattr("services.intent_service.inversion_router.route", _scripted)
         task = inversion_shadow.maybe_schedule_shadow_check(
             "remind me at 9am",
             "execution:set_reminder",
@@ -181,18 +176,14 @@ class TestModeBranching:
         await task
         assert log_rec.events == ["shadow_route_agreement"]
 
-    async def test_no_provenance_at_all_keeps_router_shadow(
-        self, shadow_on, log_rec, monkeypatch
-    ):
+    async def test_no_provenance_at_all_keeps_router_shadow(self, shadow_on, log_rec, monkeypatch):
         """The pre-#1668 call shape (no live_route kwarg) is unchanged."""
         from services.intent_service.inversion_router import RoutingDecision
 
         async def _scripted(utterance, snapshot=None, **kw):
             return RoutingDecision(outcome="operation", operation="list_issues")
 
-        monkeypatch.setattr(
-            "services.intent_service.inversion_router.route", _scripted
-        )
+        monkeypatch.setattr("services.intent_service.inversion_router.route", _scripted)
         task = inversion_shadow.maybe_schedule_shadow_check(
             "show my prs", "query:list_prs_query", session_id="s1"
         )
@@ -265,9 +256,7 @@ class TestLegsAndCost:
         _msg, kwargs = classifier.calls[0]
         assert kwargs == {"use_cache": False}
 
-    async def test_line_names_the_layer_it_measured(
-        self, shadow_on, log_rec, explosive_router
-    ):
+    async def test_line_names_the_layer_it_measured(self, shadow_on, log_rec, explosive_router):
         task = inversion_shadow.maybe_schedule_shadow_check(
             "show my issues",
             "query:list_issues",
@@ -313,9 +302,7 @@ class TestLegsAndCost:
 
 
 class TestAgreementScoring:
-    async def test_disagreement_is_its_own_event(
-        self, shadow_on, log_rec, explosive_router
-    ):
+    async def test_disagreement_is_its_own_event(self, shadow_on, log_rec, explosive_router):
         classifier = _ClassifierDouble(action="search_documents")
         task = inversion_shadow.maybe_schedule_shadow_check(
             "zzq unclaimable phrase for every deterministic surface",
@@ -330,9 +317,7 @@ class TestAgreementScoring:
         assert fields["live_route"] == "list_issues"
         assert fields["legacy_action"] == "search_documents"
 
-    async def test_alias_resolution_scores_as_agreement(
-        self, shadow_on, log_rec, explosive_router
-    ):
+    async def test_alias_resolution_scores_as_agreement(self, shadow_on, log_rec, explosive_router):
         """set_reminder IS create_reminder — exact-name comparison would
         under-credit (the Phase-0 scoring correction)."""
         from services.intent_service.inversion_router import derive_routing_grammar
@@ -408,9 +393,7 @@ class TestCounterfactualSafety:
         def _boom(message):
             raise RuntimeError("pre-classifier exploded")
 
-        monkeypatch.setattr(
-            PreClassifier, "detect_multiple_intents", staticmethod(_boom)
-        )
+        monkeypatch.setattr(PreClassifier, "detect_multiple_intents", staticmethod(_boom))
         monkeypatch.setattr(PreClassifier, "pre_classify", staticmethod(_boom))
         task = inversion_shadow.maybe_schedule_shadow_check(
             "show my issues",
@@ -426,9 +409,7 @@ class TestCounterfactualSafety:
             "pre_classifier",
         }
 
-    async def test_sampled_out_creates_no_counterfactual_task(
-        self, monkeypatch, log_rec
-    ):
+    async def test_sampled_out_creates_no_counterfactual_task(self, monkeypatch, log_rec):
         monkeypatch.setenv("PIPER_INVERSION_SHADOW", "1")
         monkeypatch.setenv("PIPER_INVERSION_SHADOW_SAMPLE", "0.0")
         task = inversion_shadow.maybe_schedule_shadow_check(
@@ -473,11 +454,7 @@ class TestRoutingProvenance:
         from services.intent_service.workflow_dispatcher import get_action_workflows
 
         op = next(
-            (
-                name
-                for name, entry in get_action_workflows().items()
-                if entry.flip_group
-            ),
+            (name for name, entry in get_action_workflows().items() if entry.flip_group),
             None,
         )
         if op is None:

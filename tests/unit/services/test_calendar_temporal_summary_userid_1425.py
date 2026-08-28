@@ -43,9 +43,7 @@ async def test_explicit_user_id_still_wins():
 
     await router.get_temporal_summary(user_id="user-explicit")
 
-    router.spatial_calendar.get_temporal_summary.assert_awaited_once_with(
-        user_id="user-explicit"
-    )
+    router.spatial_calendar.get_temporal_summary.assert_awaited_once_with(user_id="user-explicit")
 
 
 @pytest.mark.asyncio

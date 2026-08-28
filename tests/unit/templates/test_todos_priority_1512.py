@@ -54,15 +54,13 @@ def test_add_form_has_a_priority_select(rendered):
 
 def test_priority_select_offers_the_real_enum_values(rendered):
     """Options must be the TodoPriority .value strings — not guessed labels."""
-    m = re.search(
-        r'<select id="new-todo-priority".*?</select>', rendered, re.DOTALL
-    )
+    m = re.search(r'<select id="new-todo-priority".*?</select>', rendered, re.DOTALL)
     assert m, "priority select not found in Add form"
     select = m.group(0)
     for p in TodoPriority:
-        assert f'value="{p.value}"' in select, (
-            f"priority select is missing the real enum value '{p.value}'"
-        )
+        assert (
+            f'value="{p.value}"' in select
+        ), f"priority select is missing the real enum value '{p.value}'"
     # No invented values beyond the enum
     offered = set(re.findall(r'value="([^"]+)"', select))
     assert offered == {p.value for p in TodoPriority}
@@ -70,13 +68,11 @@ def test_priority_select_offers_the_real_enum_values(rendered):
 
 def test_priority_select_defaults_to_medium(rendered):
     """The API/DB default is 'medium'; the form should say so, not imply blank."""
-    m = re.search(
-        r'<select id="new-todo-priority".*?</select>', rendered, re.DOTALL
-    )
+    m = re.search(r'<select id="new-todo-priority".*?</select>', rendered, re.DOTALL)
     assert m
-    assert re.search(r'value="medium"[^>]*selected', m.group(0)), (
-        "medium is the server-side default and should be preselected"
-    )
+    assert re.search(
+        r'value="medium"[^>]*selected', m.group(0)
+    ), "medium is the server-side default and should be preselected"
 
 
 def test_create_js_threads_priority_into_the_request(rendered):
@@ -105,10 +101,9 @@ def test_todo_without_due_date_shows_an_affordance_not_nothing(rendered):
     """Rows must render an always-visible due-date slot: 'No due date' when
     unset, instead of silently omitting the line."""
     assert "No due date" in rendered, (
-        "no visible affordance for todos without a due date — #1512 "
-        "readability half"
+        "no visible affordance for todos without a due date — #1512 " "readability half"
     )
     # The empty-string branch (render nothing when unset) must be gone
-    assert not re.search(r"todo\.due_date\s*\?[^:]+:\s*''", rendered), (
-        "due-date render still collapses to '' when unset"
-    )
+    assert not re.search(
+        r"todo\.due_date\s*\?[^:]+:\s*''", rendered
+    ), "due-date render still collapses to '' when unset"

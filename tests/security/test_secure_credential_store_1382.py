@@ -132,10 +132,7 @@ class TestEncryptedDBStoreRoundTrip:
                 {"n": a},
             ).scalar()
             c.execute(
-                text(
-                    "INSERT INTO secure_credentials (name, encrypted_value) "
-                    "VALUES (:n, :v)"
-                ),
+                text("INSERT INTO secure_credentials (name, encrypted_value) " "VALUES (:n, :v)"),
                 {"n": b, "v": ct},
             )
         with pytest.raises(Exception):

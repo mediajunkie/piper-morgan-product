@@ -174,9 +174,9 @@ class TestListMilestonesHandler:
             result = await intent_service._handle_list_milestones_query(
                 _make_intent(), workflow_id="wf-1"
             )
-        assert result.success is False, (
-            "milestone-listing failure must not report success=True (#1524)"
-        )
+        assert (
+            result.success is False
+        ), "milestone-listing failure must not report success=True (#1524)"
         assert "wasn't able to fetch" in result.message
         assert result.error_type == "list_milestones_error"
         assert "router boom" in (result.error or "")
@@ -293,9 +293,9 @@ class TestListReleasesHandler:
             result = await intent_service._handle_list_releases_query(
                 _make_release_intent(), workflow_id="wf-1"
             )
-        assert result.success is False, (
-            "release-listing failure must not report success=True (#1524)"
-        )
+        assert (
+            result.success is False
+        ), "release-listing failure must not report success=True (#1524)"
         assert "wasn't able to fetch" in result.message
         assert result.error_type == "list_releases_error"
         assert "router boom" in (result.error or "")

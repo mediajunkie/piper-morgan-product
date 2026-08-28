@@ -19,11 +19,11 @@ from services.mux.composting_models import ExtractedLearning, Pattern
 from services.mux.composting_pipeline import SurfaceableInsight
 from services.mux.push_mode import (
     EXPLAIN_AFFORDANCE_TEXT,
-    FramedPushPayload,
     MUTE_AFFORDANCE_TEXT,
-    PushContext,
     SESSION_MUTE_PATTERNS,
     TRUST_STAGE_PUSH_MIN,
+    FramedPushPayload,
+    PushContext,
     format_push_for_chat,
     get_min_confidence,
     get_min_interval_minutes,
@@ -36,7 +36,6 @@ from services.mux.push_mode import (
     maybe_push,
     score_context_relevance,
 )
-
 
 pytestmark_async = pytest.mark.asyncio
 

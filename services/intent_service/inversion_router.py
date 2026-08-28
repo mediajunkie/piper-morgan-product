@@ -127,10 +127,7 @@ class SessionSnapshot:
 
     def is_empty(self) -> bool:
         return not (
-            self.pending_offer_summary
-            or self.active_flow
-            or self.entity_names
-            or self.state_block
+            self.pending_offer_summary or self.active_flow or self.entity_names or self.state_block
         )
 
 
@@ -440,9 +437,7 @@ async def route(
             )
         except Exception as e:  # silent-ok: returned as an explicit ERROR decision + warning log — an honest recorded failure, never a faked route (#1595 scorer discipline)
             # ERROR is recorded, never faked into a route (scorer discipline).
-            logger.warning(
-                "inversion_route_llm_error", error=str(e), llm_calls=llm_calls
-            )
+            logger.warning("inversion_route_llm_error", error=str(e), llm_calls=llm_calls)
             return RoutingDecision(
                 outcome="error",
                 llm_calls=llm_calls,
@@ -456,7 +451,9 @@ async def route(
             outcome = (
                 "none"
                 if operation == NONE_ROUTE
-                else "clarify" if operation == CLARIFY_ROUTE else "operation"
+                else "clarify"
+                if operation == CLARIFY_ROUTE
+                else "operation"
             )
             return RoutingDecision(
                 outcome=outcome,
@@ -472,9 +469,7 @@ async def route(
 
     # Both attempts failed validation → REFUSED, recorded honestly. Never a
     # guessed route: a wrong confident route is worse than an honest refusal.
-    logger.warning(
-        "inversion_route_refused", reason=last_error, llm_calls=llm_calls
-    )
+    logger.warning("inversion_route_refused", reason=last_error, llm_calls=llm_calls)
     return RoutingDecision(
         outcome="refused",
         llm_calls=llm_calls,

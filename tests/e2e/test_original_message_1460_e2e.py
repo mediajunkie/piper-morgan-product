@@ -130,9 +130,9 @@ async def test_setup_request_reaches_setup_flow(e2e_client, e2e_auth_headers):
     data = await _post_intent(e2e_client, SETUP_MESSAGE, e2e_auth_headers)
 
     intent = data.get("intent", {}) or {}
-    assert intent.get("floor_hit") is not True, (
-        f"setup request was floor-routed (the pre-#1460 mis-route): {intent}"
-    )
+    assert (
+        intent.get("floor_hit") is not True
+    ), f"setup request was floor-routed (the pre-#1460 mis-route): {intent}"
     assert intent.get("action") == "provide_setup_guidance", (
         "setup request did not reach the #814 setup flow "
         f"(action={intent.get('action')!r}, category={intent.get('category')!r}); "
@@ -144,9 +144,7 @@ async def test_setup_request_reaches_setup_flow(e2e_client, e2e_auth_headers):
 
 @pytest.mark.e2e
 @pytest.mark.asyncio
-async def test_multi_intent_schedule_turn_reaches_agenda_aggregation(
-    e2e_client, e2e_auth_headers
-):
+async def test_multi_intent_schedule_turn_reaches_agenda_aggregation(e2e_client, e2e_auth_headers):
     """#1460 AC-2: multi-intent schedule turn hits agenda aggregation (orchestrator)."""
     data = await _post_intent(e2e_client, AGENDA_MULTI_INTENT_MESSAGE, e2e_auth_headers)
 
@@ -159,6 +157,6 @@ async def test_multi_intent_schedule_turn_reaches_agenda_aggregation(
         f"message head: {str(data.get('message'))[:120]!r}"
     )
     message = data.get("message") or ""
-    assert "agenda" in message.lower() or "Today is" not in message, (
-        f"agenda aggregation produced a bare date template: {message[:160]!r}"
-    )
+    assert (
+        "agenda" in message.lower() or "Today is" not in message
+    ), f"agenda aggregation produced a bare date template: {message[:160]!r}"

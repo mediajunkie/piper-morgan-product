@@ -56,6 +56,7 @@ async def user_registry(db_session):
         await delete_test_user_fully(db_session, uid)
     await db_session.commit()
 
+
 # ============================================================================
 # Test 1: Full Auth Lifecycle (30 minutes)
 # ============================================================================

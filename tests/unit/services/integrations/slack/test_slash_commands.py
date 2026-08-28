@@ -176,9 +176,7 @@ class TestStandupCommand:
         Issue #1429: uses a resolvable (UUID) principal so the empty copy is
         honest — we actually looked and found nothing.
         """
-        with patch(
-            "services.todo.todo_management_service.TodoManagementService"
-        ) as mock_svc:
+        with patch("services.todo.todo_management_service.TodoManagementService") as mock_svc:
             mock_svc.return_value.list_todos = AsyncMock(return_value=[])
             result = await router._handle_standup_command(str(uuid4()), "C456")
         # Should still return valid structure with defaults
@@ -227,9 +225,7 @@ class TestStandupDataWiring1429:
             _todo("Old chore", completed=True, completed_at=now - timedelta(days=5)),
             _todo("Still pending", completed=False),
         ]
-        with patch(
-            "services.todo.todo_management_service.TodoManagementService"
-        ) as mock_svc:
+        with patch("services.todo.todo_management_service.TodoManagementService") as mock_svc:
             mock_svc.return_value.list_todos = AsyncMock(return_value=todos)
             result = await router._handle_standup_command(str(uuid4()), "C456")
 
@@ -250,9 +246,7 @@ class TestStandupDataWiring1429:
             _todo("Review design doc", priority="high"),
             _todo("Medium thing", priority="medium"),
         ]
-        with patch(
-            "services.todo.todo_management_service.TodoManagementService"
-        ) as mock_svc:
+        with patch("services.todo.todo_management_service.TodoManagementService") as mock_svc:
             mock_svc.return_value.list_todos = AsyncMock(return_value=todos)
             result = await router._handle_standup_command(str(uuid4()), "C456")
 
@@ -269,9 +263,7 @@ class TestStandupDataWiring1429:
         """A raw Slack workspace ID ("U…") has no todo principal — the sections
         must say so honestly, never claim "No completed items recorded" when we
         did not look."""
-        with patch(
-            "services.todo.todo_management_service.TodoManagementService"
-        ) as mock_svc:
+        with patch("services.todo.todo_management_service.TodoManagementService") as mock_svc:
             mock_svc.return_value.list_todos = AsyncMock(return_value=[])
             result = await router._handle_standup_command("U123ABC", "C456")
             # We never looked, so the todo service must not have been queried
@@ -291,9 +283,7 @@ class TestStandupDataWiring1429:
     async def test_lookup_failure_says_couldnt_check_not_empty_claim(self, router):
         """A failed lookup renders "couldn't check" copy (#1425 shape), never
         the affirmative-false "No completed items recorded"."""
-        with patch(
-            "services.todo.todo_management_service.TodoManagementService"
-        ) as mock_svc:
+        with patch("services.todo.todo_management_service.TodoManagementService") as mock_svc:
             mock_svc.return_value.list_todos = AsyncMock(side_effect=Exception("db down"))
             result = await router._handle_standup_command(str(uuid4()), "C456")
 
@@ -318,9 +308,7 @@ class TestStandupDataWiring1429:
             _todo("Due next week", priority="medium", due_date=now + timedelta(days=7)),
             _todo("Fix prod bug", priority="urgent"),
         ]
-        with patch(
-            "services.todo.todo_management_service.TodoManagementService"
-        ) as mock_svc:
+        with patch("services.todo.todo_management_service.TodoManagementService") as mock_svc:
             mock_svc.return_value.list_todos = AsyncMock(return_value=todos)
             result = await router._handle_standup_command(str(uuid4()), "C456")
 
@@ -337,9 +325,7 @@ class TestStandupDataWiring1429:
         """An urgent todo that is ALSO due today renders once, not twice."""
         now = datetime.now(timezone.utc)
         todos = [_todo("Urgent and due", priority="urgent", due_date=now)]
-        with patch(
-            "services.todo.todo_management_service.TodoManagementService"
-        ) as mock_svc:
+        with patch("services.todo.todo_management_service.TodoManagementService") as mock_svc:
             mock_svc.return_value.list_todos = AsyncMock(return_value=todos)
             result = await router._handle_standup_command(str(uuid4()), "C456")
         assert result.get("text", "").count("Urgent and due") == 1
@@ -348,9 +334,7 @@ class TestStandupDataWiring1429:
     async def test_blockers_section_still_ratified_empty(self, router):
         """#692: _get_blockers stays a ratified [] — Blockers renders "None"."""
         assert await router._get_blockers() == []
-        with patch(
-            "services.todo.todo_management_service.TodoManagementService"
-        ) as mock_svc:
+        with patch("services.todo.todo_management_service.TodoManagementService") as mock_svc:
             mock_svc.return_value.list_todos = AsyncMock(return_value=[])
             result = await router._handle_standup_command(str(uuid4()), "C456")
         assert "*Blockers:*" in result.get("text", "")

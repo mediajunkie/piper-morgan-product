@@ -23,7 +23,6 @@ from services.intent_service.session_snapshot import (  # noqa: E402
     SessionSnapshot,
 )
 
-
 # ── the shipped armed corpus ─────────────────────────────────────────────────
 
 
@@ -90,9 +89,9 @@ class TestShippedArmedCorpus:
 
         phrases = {r["phrase"] for r in p0.load_corpus()}
         for r in gate.load_armed_corpus():
-            assert r["phrase"] not in phrases, (
-                f"armed-extension phrase collides with a phase0 row: {r['phrase']!r}"
-            )
+            assert (
+                r["phrase"] not in phrases
+            ), f"armed-extension phrase collides with a phase0 row: {r['phrase']!r}"
 
 
 # ── loader validation (tmp corpora) ──────────────────────────────────────────
@@ -130,15 +129,13 @@ class TestLoaderValidation:
         assert rows[0]["_state_block"].startswith("OPEN QUESTION")
 
     def test_unknown_fixture_key_fails_loudly(self, tmp_path):
-        bad = _VALID_ROW.replace(
-            "pending_offer_kind:", "pending_offer_kindx:"
-        )
+        bad = _VALID_ROW.replace("pending_offer_kind:", "pending_offer_kindx:")
         with pytest.raises(ValueError, match="not on SessionSnapshot"):
             gate.load_armed_corpus(_write(tmp_path, bad))
 
     def test_armed_without_fixture_fails(self, tmp_path):
         bad = _VALID_ROW.replace(
-            '    fixture:\n      pending_offer_kind: reminder_clear_verb_question\n'
+            "    fixture:\n      pending_offer_kind: reminder_clear_verb_question\n"
             '      pending_offer_question: "done or delete?"\n',
             "",
         )
@@ -151,15 +148,15 @@ class TestLoaderValidation:
             gate.load_armed_corpus(_write(tmp_path, bad))
 
     def test_missing_control_twin_fails(self, tmp_path):
-        bad = _VALID_ROW.split("  - phrase")[0] + "  - phrase" + (
-            _VALID_ROW.split("  - phrase")[1]
-        )
+        bad = _VALID_ROW.split("  - phrase")[0] + "  - phrase" + (_VALID_ROW.split("  - phrase")[1])
         with pytest.raises(ValueError, match="exactly one armed \\+ one control"):
             gate.load_armed_corpus(_write(tmp_path, bad))
 
     def test_twin_phrase_mismatch_fails(self, tmp_path):
-        bad = _VALID_ROW.replace('phrase: "delete"\n    pair: p1\n    condition: control',
-                                 'phrase: "remove"\n    pair: p1\n    condition: control')
+        bad = _VALID_ROW.replace(
+            'phrase: "delete"\n    pair: p1\n    condition: control',
+            'phrase: "remove"\n    pair: p1\n    condition: control',
+        )
         with pytest.raises(ValueError, match="phrases differ"):
             gate.load_armed_corpus(_write(tmp_path, bad))
 
@@ -192,9 +189,7 @@ class TestArmedMatches:
         return p1._op_category_map()
 
     def test_route_none_sentinel(self, op_categories):
-        ok, note = gate.armed_matches(
-            "route:NONE", RoutingDecision(outcome="none"), op_categories
-        )
+        ok, note = gate.armed_matches("route:NONE", RoutingDecision(outcome="none"), op_categories)
         assert ok and note == ""
         ok, note = gate.armed_matches(
             "route:NONE",

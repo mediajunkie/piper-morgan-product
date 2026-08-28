@@ -31,7 +31,6 @@ from services.features.morning_standup import (
     StandupResult,
 )
 
-
 # =============================================================================
 # StandupItem dataclass behavior
 # =============================================================================

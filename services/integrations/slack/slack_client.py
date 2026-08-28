@@ -361,9 +361,7 @@ class SlackClient:
         (xoxp-) instead of the bot token — used to discover the user's handle for
         search.messages."""
         self.logger.info("SLACK_PIPELINE: Testing Slack authentication...")
-        response = await self._make_request(
-            "GET", "auth.test", use_user_token=use_user_token
-        )
+        response = await self._make_request("GET", "auth.test", use_user_token=use_user_token)
 
         if response.success:
             auth_data = response.data

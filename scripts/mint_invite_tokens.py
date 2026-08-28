@@ -61,7 +61,9 @@ def main():
     for token in tokens:
         print(token)
     if not args.apply:
-        print("DRY-RUN complete — no writes. Re-run with --apply to insert these into invite_tokens.")
+        print(
+            "DRY-RUN complete — no writes. Re-run with --apply to insert these into invite_tokens."
+        )
     else:
         print(f"Inserted {len(tokens)} token(s). Hand these to HOST for the roster.")
 

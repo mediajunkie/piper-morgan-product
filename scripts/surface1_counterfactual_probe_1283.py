@@ -278,9 +278,7 @@ def build_utterance_set():
         else:
             m = (primary.category.value, primary.action)
             entry["multi"] = (
-                "same"
-                if m == (entry["claim_cat"], entry["claim_action"])
-                else f"{m[0]}/{m[1]}"
+                "same" if m == (entry["claim_cat"], entry["claim_action"]) else f"{m[0]}/{m[1]}"
             )
     return rows, excluded
 
@@ -426,11 +424,7 @@ async def run(dry_run: bool, out_path: Path) -> int:
         "claimed with the expected (category, action).",
         f"- **{len(excluded)} POINTER rows excluded** (utterance resolves via "
         "surfaces 3/4, not surface 1)."
-        + (
-            " Excluded: " + "; ".join(f"`{k}` ({u!r})" for k, u in excluded)
-            if excluded
-            else ""
-        ),
+        + (" Excluded: " + "; ".join(f"`{k}` ({u!r})" for k, u in excluded) if excluded else ""),
         "- **Scope caveat**: ONE representative per pre-classifier pattern "
         "group/sub-action — not the infinite pattern space. A group's verdict "
         "generalizes only as far as its representative does.",
@@ -438,8 +432,7 @@ async def run(dry_run: bool, out_path: Path) -> int:
         f"## Result: **{agree} AGREE / {disagree} DISAGREE / {variant} "
         f"VARIANT / {errors} ERROR** of {len(rows)}",
         "",
-        f"Cost: {llm_calls} LLM classification calls (one per utterance, no "
-        "retries).",
+        f"Cost: {llm_calls} LLM classification calls (one per utterance, no " "retries).",
         "",
         "| # | utterance | surface-1 claim | multi-path claim | LLM verdict "
         "(cat/action @conf) | verdict |",

@@ -21,12 +21,12 @@ import pytest_asyncio
 aiosqlite = pytest.importorskip("aiosqlite")
 
 from mcp.server.fastmcp import FastMCP  # noqa: E402
+from mcp.shared.memory import create_connected_server_and_client_session  # noqa: E402
 from sqlalchemy.ext.asyncio import (  # noqa: E402
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
-from mcp.shared.memory import create_connected_server_and_client_session  # noqa: E402
 
 from services.connectors.binding_repository import ConnectorBindingRepository  # noqa: E402
 from services.database.models import ConnectorBinding  # noqa: E402
@@ -82,16 +82,27 @@ def _writable_fixture(adapter, *, break_readback=False, comment_without_id=False
     # old dialect and kept the tests green. The fixture drifting from the
     # pinned image's contract is the failure mode this comment guards.
     @server.tool(name="issue_write")
-    def issue_write(method: str, owner: str, repo: str, title: str = None,
-                    body: str = None, issue_number: int = None,
-                    state: str = None, labels: list = None,
-                    assignees: list = None) -> str:
+    def issue_write(
+        method: str,
+        owner: str,
+        repo: str,
+        title: str = None,
+        body: str = None,
+        issue_number: int = None,
+        state: str = None,
+        labels: list = None,
+        assignees: list = None,
+    ) -> str:
         if method == "create":
             counter["n"] += 1
             n = counter["n"]
-            issues[n] = {"number": n, "title": title, "body": body or "",
-                         "state": "open",
-                         "html_url": f"https://github.com/{owner}/{repo}/issues/{n}"}
+            issues[n] = {
+                "number": n,
+                "title": title,
+                "body": body or "",
+                "state": "open",
+                "html_url": f"https://github.com/{owner}/{repo}/issues/{n}",
+            }
             return json.dumps(issues[n])
         if method == "update":
             it = issues.get(issue_number, {"number": issue_number, "html_url": ""})
@@ -123,8 +134,14 @@ def _writable_fixture(adapter, *, break_readback=False, comment_without_id=False
             # or every apostrophe'd title reads as a verify mismatch.
             import html as _html
 
-            it = {k: (_html.escape(v, quote=False) if isinstance(v, str) and k in ("title", "body") else v)
-                  for k, v in it.items()}
+            it = {
+                k: (
+                    _html.escape(v, quote=False)
+                    if isinstance(v, str) and k in ("title", "body")
+                    else v
+                )
+                for k, v in it.items()
+            }
         return json.dumps(it if it else {})
 
     @contextlib.asynccontextmanager
@@ -157,17 +174,13 @@ class TestVerifiedCreate:
         await _seed_bound(sm)
         adapter = GitHubMCPSpatialAdapter()
         _writable_fixture(adapter, break_readback=True)
-        wr = await adapter.create_issue_connector(
-            _ALPHA, owner="o", repo="r", title="t", body="b"
-        )
+        wr = await adapter.create_issue_connector(_ALPHA, owner="o", repo="r", title="t", body="b")
         assert wr.verified is False and wr.attempted is True
 
     async def test_no_binding_never_fires_attempted_false(self, sm):
         adapter = GitHubMCPSpatialAdapter()
         _writable_fixture(adapter)
-        wr = await adapter.create_issue_connector(
-            _ALPHA, owner="o", repo="r", title="t", body="b"
-        )
+        wr = await adapter.create_issue_connector(_ALPHA, owner="o", repo="r", title="t", body="b")
         assert wr.attempted is False  # the ONLY safe-native-fallback state
         assert wr.degradation.reason is DegradationReason.CONNECT_REQUIRED
 
@@ -175,9 +188,7 @@ class TestVerifiedCreate:
         await _seed_bound(sm)
         adapter = GitHubMCPSpatialAdapter()
         _writable_fixture(adapter, raises=True)
-        wr = await adapter.create_issue_connector(
-            _ALPHA, owner="o", repo="r", title="t", body="b"
-        )
+        wr = await adapter.create_issue_connector(_ALPHA, owner="o", repo="r", title="t", body="b")
         assert wr.attempted is True  # may have landed — double-write forbidden
         assert wr.degradation.reason is DegradationReason.UNREACHABLE
 
@@ -190,8 +201,11 @@ class TestEntityEscapedReadback:
         adapter = GitHubMCPSpatialAdapter()
         _writable_fixture(adapter)
         wr = await adapter.create_issue_connector(
-            _ALPHA, owner="o", repo="r",
-            title="Let's add search & filters", body="it's needed",
+            _ALPHA,
+            owner="o",
+            repo="r",
+            title="Let's add search & filters",
+            body="it's needed",
         )
         assert wr.verified is True
 
@@ -256,8 +270,13 @@ class TestRouterCutoverMatrix:
     async def test_verified_returns_connector_raw_no_native_call(self):
         from services.mcp.consumer.github_adapter import GitHubWriteResult
 
-        wr = GitHubWriteResult(verified=True, attempted=True, issue_number=5,
-                               url="u", raw={"number": 5, "via": "connector"})
+        wr = GitHubWriteResult(
+            verified=True,
+            attempted=True,
+            issue_number=5,
+            url="u",
+            raw={"number": 5, "via": "connector"},
+        )
         r, native = self._router_with(wr)
         out = await r.create_issue("t", "b", owner="o", repo_name="r")
         assert out == {"number": 5, "via": "connector"}

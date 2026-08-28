@@ -124,26 +124,66 @@ _ANSWER_LEAD_IN_RE = re.compile(
     r"\s*[.!?]*$",
     re.IGNORECASE,
 )
-_ANSWER_QUOTED_RE = re.compile(
-    r"^[\"'‘“]([A-Za-z0-9][A-Za-z0-9._/-]{0,99})[\"'’”]\s*[.!?]*$"
-)
-_ANSWER_BARE_TOKEN_RE = re.compile(
-    r"^([A-Za-z0-9][A-Za-z0-9._-]{1,99})\s*[.!?]*$"
-)
+_ANSWER_QUOTED_RE = re.compile(r"^[\"'‘“]([A-Za-z0-9][A-Za-z0-9._/-]{0,99})[\"'’”]\s*[.!?]*$")
+_ANSWER_BARE_TOKEN_RE = re.compile(r"^([A-Za-z0-9][A-Za-z0-9._-]{1,99})\s*[.!?]*$")
 
 # Words that can occupy the name slot without naming a repo. "default" is
 # load-bearing: "in my default repository" must fall to the #1411 resolver,
 # never read as a repo literally named "default".
 _STOP_NAMES = frozenset(
     {
-        "default", "same", "that", "this", "it", "current", "usual", "my",
-        "your", "our", "the", "a", "an", "any", "some", "which", "what",
-        "one", "right", "wrong", "other", "another", "new", "github", "git",
-        "main", "first", "last", "own", "correct",
+        "default",
+        "same",
+        "that",
+        "this",
+        "it",
+        "current",
+        "usual",
+        "my",
+        "your",
+        "our",
+        "the",
+        "a",
+        "an",
+        "any",
+        "some",
+        "which",
+        "what",
+        "one",
+        "right",
+        "wrong",
+        "other",
+        "another",
+        "new",
+        "github",
+        "git",
+        "main",
+        "first",
+        "last",
+        "own",
+        "correct",
         # bare-token non-answers that must fall to the generic seam
-        "yes", "yeah", "yep", "no", "nope", "ok", "okay", "sure", "thanks",
-        "thank", "hmm", "hi", "hello", "help", "why", "how", "huh", "please",
-        "cancel", "stop", "nevermind",
+        "yes",
+        "yeah",
+        "yep",
+        "no",
+        "nope",
+        "ok",
+        "okay",
+        "sure",
+        "thanks",
+        "thank",
+        "hmm",
+        "hi",
+        "hello",
+        "help",
+        "why",
+        "how",
+        "huh",
+        "please",
+        "cancel",
+        "stop",
+        "nevermind",
     }
 )
 
@@ -161,11 +201,41 @@ _LEAD_VERB_RE = re.compile(
 )
 _IMPERATIVE_VERBS = frozenset(
     {
-        "close", "reopen", "delete", "remove", "archive", "restore", "cancel",
-        "stop", "list", "show", "search", "find", "fetch", "get", "check",
-        "tell", "give", "create", "file", "open", "add", "update", "change",
-        "rename", "edit", "modify", "set", "make", "write", "draft",
-        "comment", "assign", "label", "remind", "summarize",
+        "close",
+        "reopen",
+        "delete",
+        "remove",
+        "archive",
+        "restore",
+        "cancel",
+        "stop",
+        "list",
+        "show",
+        "search",
+        "find",
+        "fetch",
+        "get",
+        "check",
+        "tell",
+        "give",
+        "create",
+        "file",
+        "open",
+        "add",
+        "update",
+        "change",
+        "rename",
+        "edit",
+        "modify",
+        "set",
+        "make",
+        "write",
+        "draft",
+        "comment",
+        "assign",
+        "label",
+        "remind",
+        "summarize",
     }
 )
 
@@ -255,9 +325,7 @@ def extract_natural_repo_name(message: Optional[str]) -> Optional[str]:
     return None
 
 
-def extract_repo_answer(
-    message: str, *, allow_bare_token: bool = True
-) -> Optional[str]:
+def extract_repo_answer(message: str, *, allow_bare_token: bool = True) -> Optional[str]:
     """Extract the repo reference from an ANSWER turn to the repo question.
 
     Accepts owner/name (bare or URL), the natural phrasings, quoted names,
@@ -306,9 +374,7 @@ class RepoNameResolution:
     candidates: List[str] = field(default_factory=list)
 
 
-async def resolve_repo_name(
-    user_id: Optional[str], name: str
-) -> RepoNameResolution:
+async def resolve_repo_name(user_id: Optional[str], name: str) -> RepoNameResolution:
     """Resolve a bare repo name ("test-Piper-Morgan") to ``owner/name``.
 
     Case-insensitive. Default-repo name match first (no network — the #1042
@@ -350,8 +416,7 @@ async def resolve_repo_name(
             {
                 str(full_name)
                 for r in (result.repositories or [])
-                if (r.get("name") or "").lower() == wanted
-                and (full_name := r.get("full_name"))
+                if (r.get("name") or "").lower() == wanted and (full_name := r.get("full_name"))
             }
         )
     except Exception as e:  # silent-ok: fail-safe DIRECTION — an unreadable repo list must degrade to the honest ask, never guess a WRITE target
@@ -368,9 +433,7 @@ async def resolve_repo_name(
 # ── Question copy (one home; the honest per-status variants) ─────────────────
 
 
-def open_repo_question(
-    issue_number: Optional[int], operation: Optional[str] = None
-) -> str:
+def open_repo_question(issue_number: Optional[int], operation: Optional[str] = None) -> str:
     """#1641: ``issue_number=None`` is the non-issue-anchored form (the
     ANALYSIS/create carriers have no issue to name); ``operation`` is the
     human phrase for what's pending ("analyze commits")."""
@@ -547,7 +610,9 @@ async def _bind_and_dispatch(
     if answer_text:
         try:
             slots = intent_service._slotfill_issue_request(answer_text)
-        except Exception:  # silent-ok: slot merge is best-effort sugar; the bound repo is the load-bearing part
+        except (
+            Exception
+        ):  # silent-ok: slot merge is best-effort sugar; the bound repo is the load-bearing part
             slots = {}
         for key in ("title", "body"):
             if slots.get(key):
@@ -640,9 +705,7 @@ async def handle_repo_question_turn(
             turn_user=user_id,
         )
         return {
-            "message": (
-                "Let's hold off on that — nothing has been changed or stored."
-            ),
+            "message": ("Let's hold off on that — nothing has been changed or stored."),
             "intent_data": {
                 "category": "execution",
                 "action": payload.get("action") or "update_issue",

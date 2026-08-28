@@ -52,29 +52,35 @@ class TestDetection:
     update verb AND issue-field word required (the N2 analog); a document noun
     anywhere declines (a stray '#4' in a doc-edit message is not an issue)."""
 
-    @pytest.mark.parametrize("msg,num", [
-        (PM_MSG, 108),
-        (PM_MSG_NO_HASH, 108),
-        # 2026-08-10 live miss: "status" is user-language for the issue-state
-        # field; it must be in the shared field vocabulary.
-        (PM_STATUS_MSG, 108),
-        (PM_STATUS_MSG_NO_HASH, 108),
-        ("set the status of #42 to done", 42),
-        ("update the labels on issue #77", 77),
-        ("set the state of #42 to closed", 42),
-        ("In acme/widgets, change the title of issue #107 to something new", 107),
-    ])
+    @pytest.mark.parametrize(
+        "msg,num",
+        [
+            (PM_MSG, 108),
+            (PM_MSG_NO_HASH, 108),
+            # 2026-08-10 live miss: "status" is user-language for the issue-state
+            # field; it must be in the shared field vocabulary.
+            (PM_STATUS_MSG, 108),
+            (PM_STATUS_MSG_NO_HASH, 108),
+            ("set the status of #42 to done", 42),
+            ("update the labels on issue #77", 77),
+            ("set the state of #42 to closed", 42),
+            ("In acme/widgets, change the title of issue #107 to something new", 107),
+        ],
+    )
     def test_explicit_updates_detected_with_number(self, msg, num):
         assert _detect_explicit_issue_update(msg) == num
 
-    @pytest.mark.parametrize("msg", [
-        "change the title of the design doc to #4",   # doc noun → doc edit, not issue
-        "change the title to Foo",                    # no explicit N → ledgered-referent path
-        "close issue #9",                             # not an update-field shape
-        "what does issue #12 say",                    # read, not update
-        "update the roadmap document with #12 items", # doc noun
-        "",
-    ])
+    @pytest.mark.parametrize(
+        "msg",
+        [
+            "change the title of the design doc to #4",  # doc noun → doc edit, not issue
+            "change the title to Foo",  # no explicit N → ledgered-referent path
+            "close issue #9",  # not an update-field shape
+            "what does issue #12 say",  # read, not update
+            "update the roadmap document with #12 items",  # doc noun
+            "",
+        ],
+    )
     def test_non_matches_pass_through(self, msg):
         assert _detect_explicit_issue_update(msg) is None
 
@@ -121,8 +127,11 @@ async def _seed_issue(maker, owner, conv, ref="mediajunkie/test-piper-morgan#108
 
     async with maker() as s:
         await SessionActivityRepository(s).record(
-            owner_id=owner, conversation_id=conv,
-            action_type="issue_created", target_ref=ref, target_title=title,
+            owner_id=owner,
+            conversation_id=conv,
+            action_type="issue_created",
+            target_ref=ref,
+            target_title=title,
         )
 
 
@@ -138,7 +147,7 @@ class TestResolverEmit:
         assert intent.action == "update_issue"
         assert intent.context["issue_number"] == 108
         assert "repository" not in intent.context  # unbound → handler slot-fills or asks
-        assert intent.original_message == PM_MSG   # raw preserved (#1332)
+        assert intent.original_message == PM_MSG  # raw preserved (#1332)
 
     async def test_ledger_binds_repository_when_this_session_created_it(self, sm):
         await _seed_issue(sm, _USER, _CONV, ref="mediajunkie/test-piper-morgan#108")
@@ -182,9 +191,7 @@ class TestOrderingAndWiring:
         explicit path must win over the surface-1 document claim."""
         await _seed_issue(sm, _USER, _CONV, ref="mediajunkie/test-piper-morgan#108")
         clf = IntentClassifier()
-        result = await clf.classify_multiple(
-            PM_MSG_NO_HASH, user_id=_USER, session_id=_CONV
-        )
+        result = await clf.classify_multiple(PM_MSG_NO_HASH, user_id=_USER, session_id=_CONV)
         assert result.intents, "B3 must emit — not fall to the document handler"
         assert result.intents[0].action == "update_issue"
         assert result.intents[0].action != "update_document_query"

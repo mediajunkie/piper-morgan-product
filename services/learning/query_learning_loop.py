@@ -488,6 +488,7 @@ class QueryLearningLoop:
             "error": "draft-experiment system removed (see design record, #1436)",
             "removed": True,
         }
+
     async def create_workflow_template_from_pattern(
         self, pattern_id: str, template_name: str
     ) -> Dict[str, Any]:

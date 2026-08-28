@@ -90,7 +90,10 @@ class TestBranchesHandler:
         degrade = GitHubRepoScopedResult(degradation=_connect_required())
         native_router = MagicMock()
         native_router.list_branches_via_mcp = AsyncMock(
-            return_value={"branches": [{"name": "main", "protected": True}], "default_branch": "main"}
+            return_value={
+                "branches": [{"name": "main", "protected": True}],
+                "default_branch": "main",
+            }
         )
         with patch(_BRANCHES, new=AsyncMock(return_value=degrade)):
             with patch(_NATIVE, return_value=native_router):
@@ -133,7 +136,12 @@ class TestReleasesHandler:
     @pytest.mark.asyncio
     async def test_uses_connector_when_bound(self, intent_service):
         items = [
-            {"tag_name": "v1.2.0", "name": "1.2.0", "prerelease": False, "published_at": "2026-06-01T0:0:0Z"},
+            {
+                "tag_name": "v1.2.0",
+                "name": "1.2.0",
+                "prerelease": False,
+                "published_at": "2026-06-01T0:0:0Z",
+            },
         ]
         result = GitHubRepoScopedResult(items=items, resolved_repo="octo/hello")
         with patch(_RELEASES, new=AsyncMock(return_value=result)):
@@ -150,7 +158,9 @@ class TestReleasesHandler:
         degrade = GitHubRepoScopedResult(degradation=_connect_required())
         native_router = MagicMock()
         native_router.list_releases_via_mcp = AsyncMock(
-            return_value=[{"tag_name": "v9.9.9", "name": "9", "prerelease": False, "published_at": None}]
+            return_value=[
+                {"tag_name": "v9.9.9", "name": "9", "prerelease": False, "published_at": None}
+            ]
         )
         with patch(_RELEASES, new=AsyncMock(return_value=degrade)):
             with patch(_NATIVE, return_value=native_router):
