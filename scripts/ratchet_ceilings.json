@@ -6,7 +6,7 @@
   "todo_markers": 71,
   "unscoped_repo_reads": 36,
   "mypy_arg_type": 390,
-  "mypy_assignment": 266,
+  "mypy_assignment": 262,
   "mypy_attr_defined": 245,
   "mypy_await_not_async": 16,
   "mypy_call_arg": 40,
@@ -25,8 +25,9 @@
   "mypy_return": 1,
   "mypy_return_value": 68,
   "mypy_truthy_function": 1,
+  "mypy_type_var": 0,
   "mypy_union_attr": 172,
   "mypy_valid_type": 14,
-  "mypy_var_annotated": 82,
+  "mypy_var_annotated": 81,
   "chat_invisible": 27
 }

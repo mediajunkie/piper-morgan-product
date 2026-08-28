@@ -348,9 +348,10 @@ async def resolve_repo_name(
             return RepoNameResolution(status="unavailable")
         matches = sorted(
             {
-                r.get("full_name")
+                str(full_name)
                 for r in (result.repositories or [])
-                if (r.get("name") or "").lower() == wanted and r.get("full_name")
+                if (r.get("name") or "").lower() == wanted
+                and (full_name := r.get("full_name"))
             }
         )
     except Exception as e:  # silent-ok: fail-safe DIRECTION — an unreadable repo list must degrade to the honest ask, never guess a WRITE target
@@ -557,15 +558,21 @@ async def _bind_and_dispatch(
     )
 
     result: Optional[Dict[str, Any]] = None
-    try:
-        result = await run_confirm_pending_action_workflow(
-            session_id=session_id,
-            user_id=user_id,
-            context={"pending_action": payload, "intent_service": intent_service},
-        )
-    except Exception as e:  # silent-ok: a raised dispatch must not crash the answer turn; logged ERROR + traceback, honest retained copy below
-        logger.error("repo_question_dispatch_raised", error=str(e), exc_info=True)
-        result = None
+    if session_id is None:
+        # Structurally unreachable — an armed repo question is session-keyed
+        # by construction (#846 store), so the answer turn always carries the
+        # session. Narrowed explicitly (mypy); falls to the honest retry path.
+        logger.error("repo_question_dispatch_no_session")
+    else:
+        try:
+            result = await run_confirm_pending_action_workflow(
+                session_id=session_id,
+                user_id=user_id,
+                context={"pending_action": payload, "intent_service": intent_service},
+            )
+        except Exception as e:  # silent-ok: a raised dispatch must not crash the answer turn; logged ERROR + traceback, honest retained copy below
+            logger.error("repo_question_dispatch_raised", error=str(e), exc_info=True)
+            result = None
 
     if result is None:
         # #1665: the re-armed record's open question is this turn's retry ask
@@ -712,7 +719,10 @@ async def handle_repo_question_turn(
 
     principal = str(user_id) if user_id else payload.get("user_id")
     resolution = await resolve_repo_name(principal, ref)
-    if resolution.status == "resolved":
+    # ``and full_name``: a "resolved" status always carries one (see
+    # resolve_repo_name) — the narrow is for mypy; the impossible
+    # resolved-without-a-name shape re-arms honestly below.
+    if resolution.status == "resolved" and resolution.full_name:
         return await _bind_and_dispatch(
             pending_offer,
             payload,

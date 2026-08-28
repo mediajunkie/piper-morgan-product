@@ -154,6 +154,10 @@ async def assemble_session_snapshot(
     async def _read_ledger_head():
         # The #1394 ledger head, owner-scoped (D1a: no principal → no read,
         # handled by the caller's gate below).
+        if not user_id or not session_id:
+            # The call site gates on both already; mirrored here because a
+            # closure can't carry that narrowing (D1a: unscoped read forbidden).
+            return None
         try:
             from services.intent_service.session_activity_read import (
                 issue_head,
