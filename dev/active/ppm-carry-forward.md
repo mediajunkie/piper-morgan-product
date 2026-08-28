@@ -1,36 +1,28 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-28 13:29 PT (WORK). **Still watching**: #1386's remaining criteria (1,
-4, 5, 6) — no movement on the issue itself since 08-22, but 4 and 5 now have real nudges out (see
-below) rather than sitting as a silent watch-line.
+**Last rewritten**: 2026-08-28 16:3x PT (WORK). **Still watching**: #1386's remaining criteria — 2,
+4, 5 now confirmed/closed (see below); 1 functionally satisfied but text-stale; **6 (PM sign-off)
+is the only one genuinely still open**, naturally last.
 
-## ✅ MVP TRIAGE CUT — SENT, awaiting PM's ruling, now fully resolved on the sender side (2026-08-28)
-**Full arc**: PM sanctioned this 08-18, named it priority 3 on 08-25, both gates (FTUX 08-21, BYOC
-Position 1 08-26) resolved, split accepted with Lead 08-27, his engineering read delivered 08-28
-morning (60 items, 6 groups). **I did the sprint/milestone call on every group, reading
-under-specified bodies directly rather than trusting group summaries** — moved several items
-against the group-level signal once read in full (3 of Group D touch the consent/honesty core; 2
-Group F items read as honesty-discipline violations; #1677/#1488 pulled out as a fix-approach
-question). **Corrected Lead's own "~10 items" headline down to 5** — said so plainly rather than
-let the flattering number stand.
+## ✅ MVP TRIAGE CUT — CLOSED, PM ruled, board mechanics complete (2026-08-28)
+**Full arc**: sanctioned 08-18, priority-3 08-25, split accepted 08-27, Lead's engineering read
+08-28 morning (60 items). I did the sprint/milestone call, moving several items against
+group-level signals once read in full, corrected Lead's "~10 items" headline down to 5. PM sanity-
+checked live (~11:00), caught that I'd named #1638 "blocked on Arch" without ever asking Arch —
+fixed same-session (ask sent, `857c87768`), plus routed #1386 criteria 4+5 nudges to Lead in the
+same commit.
 
-**Update same day**: #1677/#1488's fix-approach question resolved before PM even opened the
-document (PM approved option (d), built/merged) — verified independently (`gh issue view`, not
-taken on Lead's ack alone), updated the assembled doc, sent PM a heads-up. **Sitting is now: 5 move
-out of MVP (2 PUB, 3 post-beta), 1 blocked on Arch (#1638), zero fix-approach questions.**
-
-**PM sanity-checked the calls live** (real-time 1-1, ~11:00) and caught a real gap: #1638 was named
-"blocked on Arch" in the document but I'd never actually asked Arch. **Fixed same-session** — sent
-the #1638 ruling ask to Arch (cc Lead/PM, `857c87768`) and, separately, routed #1386 criteria 4+5
-nudges to Lead (same commit) since checking #1386 fresh for PM surfaced that Architecture
-Enforcement has been red since 08-23 (root cause: #1436's mypy ratchet drifting over its ceilings —
-directly relevant to my own "post-beta" call on #1436's larger cleanup) and criterion 5 needs a
-fresh deployed-artifact check nobody's run recently.
-
-**Document**: `dev/active/mvp-triage-cut-assembled-2026-08-28.md` (kept current in place, not a
-new file per update). **Nothing further needed from PPM on the cut itself** — watch for PM's
-ruling and for Arch's/Lead's replies on the two nudges, don't chase either.
+**PM ruled on all 5 same day** (~14:30, recorded as comments on each issue): #1658→PUB, #1661→PUB
+(+ Lead's own live-v63 carve-out check), #1662→post-beta (my original call confirmed — Lead's
+mid-sitting close+delete recommendation was proven wrong, correction recorded), #1647→post-beta,
+#1436 epic→post-beta (my split preserved). **Board mechanics done**: all 5 → Production milestone
+(standing disposition rule), #1658/#1661 → Sprint "PUB - Public Beta" via `assign-sprint-safely`.
+**Found a bigger gap doing it**: 4 of 5 issues were never on the board at all (not just missing a
+Sprint value) — added all four, Status → Product Backlog. Verified via `gh run list`/live reads
+throughout, not assumed from mutations succeeding silently. Replied to Lead (cc PM/Exec, `f74fe2555`).
+**Document**: `dev/active/mvp-triage-cut-assembled-2026-08-28.md`, marked ✅ CLOSED. **Nothing
+further owed on this thread.**
 
 **The §3 "no matter what" core list** (kept for reference — I used this same test again on the FTUX
 consult below): (1) consent/trust architecture, (2) honesty discipline, (3) PM-operation grammar
@@ -49,6 +41,24 @@ my own new issue** — checked immediately, fixed (`gh project item-add` + set S
 Backlog). Lead's technical question (one mechanism or two builds across Web/MCP) left open on the
 issue for him to answer. Replied to CXO cc Lead/PM/Arch/PA (`2615491e4`, verified landed). **Closed
 — nothing further needed from PPM** unless Lead's technical answer changes the scope.
+
+## ✅ #1386 CRITERIA 4+5 — BOTH CONFIRMED CLOSED SAME DAY (2026-08-28)
+Both nudges from earlier today landed. **Criterion 5**: checked directly on live v63 via `fly ssh
+console` — alembic at head, `ENCRYPTION_MASTER_KEY` present (autogen-diff not run in-container,
+noted honestly as partial evidence). **Criterion 4**: the mypy ratchet drift I found this morning
+is fixed, Architecture Enforcement green — **verified independently** (`gh run list`, not taken on
+the issue comment alone), last 2 runs both success. **Only criterion 6 (PM sign-off) remains open**
+on #1386 — 1's text is stale but functionally satisfied (#1332/#1278 both closed).
+
+**New finding, same check**: **#1687** — four OTHER CI workflows (Code Quality, Docker Build,
+Configuration Validation, Router Pattern Enforcement) silently red since ≥08-26, found while
+verifying #1436's fix. Same "trained-to-skim belt" class as Architecture Enforcement's own red
+window. Its body said "Milestone: MVP" but the actual field was unset — set it to match. **Lead is
+already actively working it** (saw their live commits removing a never-passable CI job mid-fire).
+⚠️ **Hit a genuine GitHub API rate limit mid-verification** (`API rate limit exceeded for user ID
+3227378`) — couldn't confirm the milestone-set or board-add landed before the limit hit. The edit
+command itself returned success before the limit, so likely landed, but **calling this unverified,
+not confirmed** — first check next fire, don't assume.
 
 ## 🔵 QUEUED — Ship #058 workstream review, legitimately deferred (not the antipattern)
 Exec kickoff, window Fri Aug 21–Thu Aug 27, due no later than Sat Aug 29 (real deadline, real
