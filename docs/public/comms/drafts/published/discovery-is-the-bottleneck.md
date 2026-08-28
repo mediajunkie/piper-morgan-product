@@ -12,7 +12,7 @@ Nineteen queries. Working. Tested. Deployed. And users couldn't find them.
 
 The missing link? Something I think of as "conversational glue": the ability to converse and extracting meaning. Greet, make small talk, and pick up on requests all in the same flow.
 
-## The implementation trap
+# The implementation trap
 
 It's easy to measure implementation. Issues closed, tests written, coverage percentages. These numbers go up. Progress feels real.
 
@@ -20,7 +20,7 @@ But implementation isn't the same as usefulness. A feature that works but can't 
 
 We'd fallen into the implementation trap. Every day brought more capability without improving the user experience, just increasing the confusion about what Piper could actually do.
 
-## What discovery means
+# What discovery means
 
 Discovery isn't documentation. Users don't read docs before asking questions. They ask questions and expect the system to understand.
 
@@ -30,7 +30,7 @@ Discovery is conversational glue—the ability for natural dialogue to reveal ca
 
 The 19 working queries were islands. Each one accessible if you knew exactly what to ask. No bridges between them. No paths from confusion to clarity.
 
-## The pivot
+# The pivot
 
 This realization changed the roadmap. More query handlers wouldn't help. We needed:
 
@@ -42,7 +42,7 @@ The technical work wasn't wasted. Those 19 queries were still foundation. But th
 
 This wasn't the first time we had discovered a missing layer in our foundation. When this happens I always stop building until I trust the architecture again.
 
-## The universal lesson
+# The universal lesson
 
 Every product team faces this eventually. You build features. You ship features. Usage doesn't match expectations.
 

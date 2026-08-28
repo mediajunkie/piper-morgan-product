@@ -20,7 +20,7 @@ That's when I started wondering, are we doing this backwards? Why is it so hard?
 
 This couldn't be the best way to do it.
 
-## Four diagnoses, zero anchoring
+# Four diagnoses, zero anchoring
 
 I could have told my team what I thought and watched them converge on whatever framing I offered up front. Instead, I took the CIO's advice from an earlier roundtable: independent parallel responses. No anchoring. Give each role the same question, let them think alone, compare the answers after.
 
@@ -40,7 +40,7 @@ Four roles. Four framings. One unanimous diagnosis.
 
 Part of me felt super dumb. I have been making this harder on myself. In another way, I felt relief. No wonder! We could free Piper from the robotic shackles we've tied it up in and let it be a normal chatbot with extra powers, not a taskbot with a conversation function.
 
-## Convergence in two hours
+# Convergence in two hours
 
 The PPM synthesized all four memos into a single document. The Architect reviewed it and confirmed: all architectural guidance accurately represented. The CXO approved without pushback. The CIO added one note about ethics constraints.
 
@@ -50,13 +50,13 @@ Here's what struck me: four people looked at the same problem with different len
 
 The governing principle that emerged: "Piper is always at least as good as a well-prompted LLM with context. Structured handlers make it better, not different."
 
-## From diagnosis to green light
+# From diagnosis to green light
 
 The Lead Developer had been working all day on other M1 issues — E2E test infrastructure, MUX discovery, todo completion. By evening, the floor implementation was greenlit.
 
 The Chief of Staff, tracking from the sidelines, called it: "Second unanimous convergence in two weeks." The team was getting good at this — independent assessment, parallel synthesis, rapid agreement. Not because they agreed reflexively, but because the evidence was unambiguous.
 
-## The irony
+# The irony
 
 The day before, we'd shipped eight carefully written contextual fallback messages. CXO-authored copy for when Piper couldn't help. Professional, human, kind rejection messages.
 
@@ -66,7 +66,7 @@ We'd been writing better rejection letters when we should have stopped rejecting
 
 I've learned not to beat myself up too much when a sudden insight makes me realize I've been spending my energy on the wrong thing. Sometimes you need to go through something the wrong way to really understand it.
 
-## What the PPM saw next
+# What the PPM saw next
 
 Late that evening, the PPM raised two strategic threads that went beyond the immediate fix.
 
