@@ -1,17 +1,21 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-28 ~07:5x PDT (Fire 1 — Ship #058 workstream report filed, 08-27 omnibus
-dispatched in background)
+**Updated**: 2026-08-28 ~08:5x PDT (Fire 1 — Ship #058 report filed, 08-27 omnibus done, a real
+scope gap in yesterday's heading-defect fix found and closed on 7 more live posts)
 **Session log**: `dev/2026/08/28/2026-08-28-0727-docs-code-log.md` (open).
 **Cron**: `8f5e9099`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-03.
 
-**Ship #058 report filed** (`3b4baaf34`) — window Aug 21-27: 5 posts published, 3 self-found
-cadence gaps closed, the cross-project mail-delivery discovery, 2 tooling root-cause fixes, PDR-007
-window closed. Setbacks named honestly (08-27 stale-sync incident, people-vs-agents correction,
-doubled-apostrophe recurrence). Full detail in the report itself, not re-duplicating here.
+**Ship #058 report filed** (`3b4baaf34`) — window Aug 21-27, full detail in the report itself.
 
-**08-27 omnibus dispatched to a background subagent** (Friday catch-up) — not yet returned as of
-this carry-forward write; check for its completion at the next fire if not already notified.
+**08-27 omnibus done** (`5d2996a6f` + `340054127`), chain now continuous through 08-27.
+
+**Heading-defect sweep completed**: yesterday's fix only covered the 2 explicitly-flagged
+"escaped" posts out of Dispatch-PM's original 11-item table. Went back and investigated the other
+9 properly instead of accepting "probably a no" on backfilling — 7 were genuinely still
+live-affected (confirmed via exact `<h2>` count match before touching anything), fixed both
+source and live layers, all 7 live-verified. 2 correctly excluded after investigation (one never
+actually live despite `status=published`; one renders via a legacy Medium-scrape import this
+pipeline doesn't touch). All 11 original rows now fully accounted for. Comms/Dispatch-PM notified.
 
 **⚠️ Standing practice, added 08-27, read this at every fire**: a duty-cycle sync from earlier in
 the session is a timestamped fact, not a durable one. Before reading file/git state to answer a
