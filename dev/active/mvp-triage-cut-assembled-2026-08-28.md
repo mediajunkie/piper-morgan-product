@@ -1,5 +1,17 @@
 # MVP triage cut — assembled for PM's one-sitting ruling
 
+**✅ CLOSED 2026-08-28 ~16:2x PT.** PM ruled on all five same day (recorded as comments on each
+issue): #1658 → PUB, #1661 → PUB (+ Lead's live-v63 carve-out check on the just-uploaded case),
+#1662 → post-beta (PPM's original call confirmed — Lead's mid-sitting close+delete recommendation
+was wrong, a pre-deletion sweep proved a live consumer, correction recorded on the issue), #1647 →
+post-beta, #1436 epic → post-beta (PPM's split preserved: the mypy gate stays live/green, live
+defects judged individually). **Board mechanics complete**: all five moved to Production milestone
+(the standing MVP-cut disposition rule), #1658/#1661 set to Sprint "PUB - Public Beta". **Found
+and fixed a bigger gap doing it**: 4 of the 5 issues were never on the project board at all (not
+just missing a Sprint value) — added via `gh project item-add`, Status set to Product Backlog.
+Verified via `assign-sprint-safely`'s procedure throughout (per-item mutation only, option-list
+count confirmed unchanged before/after). MVP now converges by deploy-verify on what remains.
+
 **Prepared by**: Lead (engineering read) + PPM (sprint/milestone call + roadmap coherence).
 **Date**: 2026-08-28. **For**: PM's ruling, per the 08-25 priority-3 decision ("prepare with PPM
 this week, PM rules in one sitting, Docs/Exec briefed same pass").
