@@ -1,9 +1,17 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-27 ~22:5x PDT (STOP — DAY-CLOSED, cron re-armed `8bddb70d`→`8f5e9099`)
-**Session log**: `dev/2026/08/27/2026-08-27-0727-docs-code-log.md` — closed, `DAY-CLOSED` marker
-written.
+**Updated**: 2026-08-28 ~07:5x PDT (Fire 1 — Ship #058 workstream report filed, 08-27 omnibus
+dispatched in background)
+**Session log**: `dev/2026/08/28/2026-08-28-0727-docs-code-log.md` (open).
 **Cron**: `8f5e9099`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-03.
+
+**Ship #058 report filed** (`3b4baaf34`) — window Aug 21-27: 5 posts published, 3 self-found
+cadence gaps closed, the cross-project mail-delivery discovery, 2 tooling root-cause fixes, PDR-007
+window closed. Setbacks named honestly (08-27 stale-sync incident, people-vs-agents correction,
+doubled-apostrophe recurrence). Full detail in the report itself, not re-duplicating here.
+
+**08-27 omnibus dispatched to a background subagent** (Friday catch-up) — not yet returned as of
+this carry-forward write; check for its completion at the next fire if not already notified.
 
 **⚠️ Standing practice, added 08-27, read this at every fire**: a duty-cycle sync from earlier in
 the session is a timestamped fact, not a durable one. Before reading file/git state to answer a
