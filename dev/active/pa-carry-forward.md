@@ -122,11 +122,15 @@ days stale.
     (current in-flight load is light, ready when PM is). Saved as standing memory
     (`project_byoc_pa_driving_and_shipping_small_things_preview`) so this doesn't get lost if the
     conversation gap widens before it starts.
-  - **Direct validation of the standing-lens proposal, 08-28**: CXO applied the "no-optional-
-    complexity" lens (named 08-26, credited explicitly as "PA's/PM's lens") as the FIRST move on FTUX
-    surface mapping, not a trim-after-the-fact — cut ~40 speculative cells to 2 live ones plus one
-    real gap. Consults addressed to Lead/PPM, not PA; no action needed, just a good outcome worth
-    having on record (`docs/internal/design/ftux-surface-mapping-2026-08-28.md`).
+  - **Direct validation of the standing-lens proposal, 08-28 — now twice in one day**: CXO applied the
+    "no-optional-complexity" lens (named 08-26, credited explicitly as "PA's/PM's lens") as the FIRST
+    move on FTUX surface mapping, not a trim-after-the-fact — cut ~40 speculative cells to 2 live ones
+    plus one real gap (`docs/internal/design/ftux-surface-mapping-2026-08-28.md`). PPM then answered
+    CXO's §5 consult using **the same core-list test from this week's MVP triage cut** — filed the
+    empty-state interview as its own MVP issue (#1688) on the reasoning that it's an honesty-discipline
+    extension of #1536's own AC3, not "differentiator work getting a pass by default." Both cc'd to
+    PA, no action needed — just a good outcome worth having on record: the lens is compounding across
+    roles, not a one-off.
   - **Thread status**: PM signaled next topic is "the BYOC skunkworks project itself, next steps" —
     a new phase of this conversation, not yet started. PPM and Arch still haven't replied to the
     Slack-descope loop-in memo as of 08-28 morning — nothing to chase. Otherwise nothing pending from
