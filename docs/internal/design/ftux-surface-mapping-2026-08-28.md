@@ -51,12 +51,14 @@ lead; chat is one register among several, not the front door.
 | **The enrichment offer** | Connector offer appears *after* the first thread is held, not as a gate before it — the wizard becomes an offer inside FTUX | **Unbuilt as sequencing.** The wizard exists and is currently the de facto FTUX (the thing the model displaces). |
 | **Radar never reads empty** | First interview populates it; #1625's upcoming-reminders lean and the #1635 false-door placement rules both bear here | **In flight** (#1625 lean posted; #1635 position delivered). |
 
-⚠️ **The one thing I'd flag as genuinely load-bearing and not yet decided**: whether Web's first-run landing
-is *the chat view with Piper having spoken first*, or *a distinct home/rollup view with chat as one door*.
-The model supports either; PM has called the home-screen idea "dormant, eventually." **Under the
-no-optional-complexity lens, the smaller move wins for now**: Piper speaks first *in the existing chat
-view*, with Radar visible — which requires no new view, and leaves the home-screen decision to be made when
-a real case demands it rather than as part of this mapping.
+✅ **RESOLVED 2026-08-28 (PM, in conversation)** — the one genuinely load-bearing open question in this
+mapping: whether Web's first-run landing is *the chat view with Piper having spoken first*, or *a distinct
+home/rollup view with chat as one door*. The model supports either; PM has called the home-screen idea
+"dormant, eventually." **Under the no-optional-complexity lens I took the smaller move**: Piper speaks
+first *in the existing chat view*, with Radar visible — no new view required, and the home-screen decision
+left for a real case rather than smuggled in as part of a mapping. 📌 **PM: *"I agree with the position
+that you took. I do not need to override it."*** So this is decided, not pending — build against the
+existing chat view.
 
 ## 2. F-FirstRun × Chat host (MCP) — largely built, and the rest is copy
 
@@ -108,9 +110,10 @@ is one mechanism with two presentations; you'd know better.
 **For PPM**: does §4's ordering fit the current milestone shape, and does the empty-state interview want an
 issue of its own or is it a scope-addition to something extant?
 
-**For PM** (not blocking): §1's flagged decision — first-run lands in the existing chat view (my
-lens-driven recommendation) vs. a distinct home view (the dormant idea). I've taken the smaller move as the
-default; say if that's wrong.
+✅ **For PM — ANSWERED 2026-08-28, same day**: §1's flagged decision (existing chat view vs. a distinct
+home view). PM endorsed the lens-driven smaller move and explicitly declined to override. **§1 updated in
+place; no longer open.** Recorded here because the ruling was given in live conversation — a decision that
+exists only in chat is one the next reader can't find.
 
 ---
 
