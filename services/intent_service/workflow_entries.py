@@ -933,18 +933,20 @@ async def run_summarize_document_workflow(
 
     # ── Resolve "the document" → file_id (owner-scoped) ───────────────────
     try:
-        from types import SimpleNamespace
-
         from services.database.session_factory import AsyncSessionFactory
+        from services.domain.models import Intent
         from services.file_context.exceptions import AmbiguousFileReferenceError
         from services.file_context.file_resolver import FileResolver
         from services.repositories.file_repository import FileRepository
+        from services.shared_types import IntentCategory
 
         # FileResolver reads intent.action + intent.context["original_message"];
-        # hand it a detached view so intent.context is never mutated (the
-        # process_intent convention).
-        resolver_view = SimpleNamespace(
+        # hand it a detached Intent (own context dict) so the turn's
+        # intent.context is never mutated (the process_intent convention).
+        resolver_view = Intent(
+            category=IntentCategory.SYNTHESIS,
             action="summarize_document",
+            original_message=message,
             context={"original_message": message},
         )
 

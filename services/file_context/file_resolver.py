@@ -190,7 +190,10 @@ class FileResolver:
 
             cutoff = utc_now() - timedelta(days=days)
             views = [
-                v for v in views if v.upload_time and ensure_utc(v.upload_time) > cutoff
+                v
+                for v in views
+                if (upload_utc := ensure_utc(v.upload_time)) is not None
+                and upload_utc > cutoff
             ]
         return views
 

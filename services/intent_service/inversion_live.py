@@ -585,6 +585,12 @@ async def consult_inversion_live(
     )
     if not dispatch:
         return None
+    if op is None or intent_category is None or decision.confidence is None:
+        # Structurally unreachable: each of these Nones sets a reason above,
+        # and dispatch is exactly reason-is-None. Narrowed explicitly (mypy)
+        # so the impossible state falls through to legacy rather than
+        # constructing a malformed Intent.
+        return None
 
     return Intent(
         category=intent_category,

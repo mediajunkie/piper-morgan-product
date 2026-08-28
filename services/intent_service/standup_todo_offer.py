@@ -96,11 +96,13 @@ async def find_overdue_todos(todo_service, user_id: Any) -> List[Any]:
     overdue = [
         t
         for t in todos
-        if getattr(t, "due_date", None) is not None
-        and not t.completed
-        and ensure_utc(t.due_date) < now
+        if not t.completed
+        and (due_utc := ensure_utc(getattr(t, "due_date", None))) is not None
+        and due_utc < now
     ]
-    overdue.sort(key=lambda t: ensure_utc(t.due_date))
+    # Every t in overdue has a due date (the filter above); ``or now`` is the
+    # mypy-visible spelling of that fact, never a reachable fallback.
+    overdue.sort(key=lambda t: ensure_utc(t.due_date) or now)
     return overdue
 
 

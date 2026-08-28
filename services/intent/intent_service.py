@@ -14,7 +14,7 @@ import os
 import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, TypedDict
 from uuid import UUID
 
 import structlog
@@ -64,6 +64,15 @@ from services.slot_filling.slot_filling_adapter import SlotFillingProcessAdapter
 from services.slot_filling.slot_template import MEETING_TEMPLATE
 from services.trust.trust_computation_service import TrustComputationService
 from services.ui_messages.user_friendly_errors import UserFriendlyErrorService
+
+
+class _RepoRouteKwargs(TypedDict, total=False):
+    """#1567/#1641: explicit owner/repo_name kwargs when the user NAMED a
+    repository; empty → the router resolves internally, with the exact #1042
+    call shape preserved (no owner/repo kwargs appear in the call)."""
+
+    owner: str
+    repo_name: str
 
 
 @dataclass
@@ -1408,7 +1417,7 @@ class IntentService:
                     }
                     self.logger.info(
                         _abandon_names.get(
-                            _vi_payload.get("kind"),
+                            _vi_payload.get("kind") or "",
                             "destructive_confirmation_abandoned",
                         ),
                         action=pending_offer["pending_action"].get("action"),
@@ -3552,6 +3561,7 @@ class IntentService:
         # re-inferred each time"): a hit skips inference entirely. Fail-safe
         # direction is the rail's (a storage error reads as "nothing stored").
         stored_mode = None
+        _stored: Optional[Dict[str, Any]] = None
         if user_id:
             _stored = await vi.get_verified_inference(user_id, sp.STANDUP_MODE_KEY)
             if _stored:
@@ -3561,7 +3571,9 @@ class IntentService:
                 "Stored standup-mode preference honored — dispatching interview (#1591)",
                 user_id=user_id,
                 session_id=session_id,
-                source=_stored.get("source"),
+                # stored_mode is set only from a truthy _stored; `or {}` is the
+                # mypy-visible spelling of that fact.
+                source=(_stored or {}).get("source"),
             )
             return await self._start_standup_conversation(user_id, session_id)
 
@@ -3584,14 +3596,18 @@ class IntentService:
                 invite = (
                     # #1665: the empty branch renders INVITE_EMPTY_LEAD — the
                     # builder stores that exact copy as the offer's question.
+                    # session_id required: an offer armed without a session
+                    # would key to nobody (#1532 class) — sessionless takes
+                    # the honest standalone empty statement below.
                     sp.build_interview_invitation(
                         user_id, session_id, question=sp.INVITE_EMPTY_LEAD
                     )
-                    if stored_mode is None
+                    if session_id
+                    and stored_mode is None
                     and not vi.was_declined(session_id, sp.STANDUP_MODE_KEY)
                     else None
                 )
-                if invite is not None:
+                if invite is not None and session_id:
                     self.workflow_offer_service.set_pending_offer(
                         session_id, invite, user_id=user_id
                     )
@@ -3886,7 +3902,11 @@ class IntentService:
         )
 
     async def _handle_generic_query(
-        self, intent: Intent, workflow_id: str, session_id: str = None, user_id: str = None
+        self,
+        intent: Intent,
+        workflow_id: str,
+        session_id: Optional[str] = None,
+        user_id: Optional[str] = None,
     ) -> IntentProcessingResult:
         """
         Handle generic QUERY intents that have no specialized handler.
@@ -5280,7 +5300,7 @@ class IntentService:
                                 requires_clarification=True,
                                 clarification_type="repository_required",
                             )
-            _repo_kwargs = {}
+            _repo_kwargs: _RepoRouteKwargs = {}
             if _close_repo and "/" in _close_repo:
                 _cr_owner, _cr_name = _close_repo.split("/", 1)
                 _repo_kwargs = {"owner": _cr_owner, "repo_name": _cr_name}
@@ -5607,7 +5627,7 @@ class IntentService:
                                 requires_clarification=True,
                                 clarification_type="repository_required",
                             )
-            _repo_kwargs = {}
+            _repo_kwargs: _RepoRouteKwargs = {}
             if _reopen_repo and "/" in _reopen_repo:
                 _rr_owner, _rr_name = _reopen_repo.split("/", 1)
                 _repo_kwargs = {"owner": _rr_owner, "repo_name": _rr_name}
@@ -5931,7 +5951,7 @@ class IntentService:
                                 requires_clarification=True,
                                 clarification_type="repository_required",
                             )
-            _repo_kwargs = {}
+            _repo_kwargs: _RepoRouteKwargs = {}
             if _comment_repo and "/" in _comment_repo:
                 _cm_owner, _cm_name = _comment_repo.split("/", 1)
                 _repo_kwargs = {"owner": _cm_owner, "repo_name": _cm_name}
@@ -8228,7 +8248,7 @@ class IntentService:
                 success=True,
                 message=message,
                 intent_data=_rt_intent_data,
-                requires_clarification=(
+                requires_clarification=bool(
                     _rt_intent_data.get("reminder_time_question_pending", False)
                     or _rt_intent_data.get("reminder_task_question_pending", False)
                 ),
@@ -9574,8 +9594,8 @@ class IntentService:
         self,
         intent: Intent,
         workflow_id: str,
-        session_id: str = None,
-        user_id: str = None,
+        session_id: Optional[str] = None,
+        user_id: Optional[str] = None,
     ) -> IntentProcessingResult:
         """
         Handle update_issue/update_ticket action.
@@ -9983,6 +10003,25 @@ class IntentService:
             )
             if _early is not None:
                 return _early
+            if repository is None:
+                # _resolve_analysis_repository's contract: (None, result) is
+                # the only None-repo shape, so this is structurally
+                # unreachable — narrowed explicitly (mypy) with the same
+                # honest refusal rather than a report for no repository.
+                return IntentProcessingResult(
+                    success=False,
+                    message=(
+                        "Cannot generate report: repository not specified. "
+                        "Please specify which repository."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=True,
+                    clarification_type="repository_required",
+                )
             report_type = intent.context.get("report_type", "commit_analysis")
 
             # Get timeframe parameters
@@ -10120,6 +10159,24 @@ class IntentService:
             )
             if _early is not None:
                 return _early
+            if repository is None:
+                # Same structural narrow as _handle_generate_report: the
+                # (None, result) contract makes this unreachable; the honest
+                # refusal stands in for the impossible shape.
+                return IntentProcessingResult(
+                    success=False,
+                    message=(
+                        "Cannot analyze data: repository not specified. "
+                        "Please specify which repository."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=True,
+                    clarification_type="repository_required",
+                )
             data_type = intent.context.get("data_type", "repository_metrics")
 
             # Validate data_type

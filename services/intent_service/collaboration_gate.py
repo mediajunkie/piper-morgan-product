@@ -187,7 +187,7 @@ def has_durative_marker(message: Optional[str]) -> bool:
     """Public read of the shared durative-marker vocabulary (#1591: the
     standup-mode declaration detector composes with THIS definition of
     "standing instruction" rather than growing a diverging copy — #1555)."""
-    return bool(message) and bool(_DURATIVE_RE.search(message))
+    return bool(message and _DURATIVE_RE.search(message))
 
 # Collaborate-mode declarations / reverts. Checked FIRST: negated execute
 # phrasings ("stop doing things directly…") contain execute-ish substrings.

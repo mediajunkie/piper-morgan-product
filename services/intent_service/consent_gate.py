@@ -89,9 +89,18 @@ import logging
 import re
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 from services.shared_types import EffectClass, Outwardness
+
+if TYPE_CHECKING:
+    # Type-only: the runtime imports stay local to the functions that need
+    # them (import cycle — see decide_consent / decide_verb_interpretation).
+    from services.intent_service.collaboration_gate import WorkingMode
+    from services.intent_service.verified_inference import (
+        VerificationDecision,
+        VerificationMetaMode,
+    )
 
 logger = logging.getLogger(__name__)
 
@@ -119,7 +128,7 @@ class ConsentDecision(str, Enum):
 def decide_consent(
     effect: EffectClass,
     framing: str,
-    mode: "WorkingMode",  # noqa: F821 — collaboration_gate.WorkingMode (import cycle)
+    mode: "WorkingMode",  # collaboration_gate.WorkingMode (TYPE_CHECKING import above)
     outwardness: Outwardness = Outwardness.PRIVATE,
 ) -> ConsentDecision:
     """THE consent decision — one function, consulted by every gate path.
@@ -438,8 +447,8 @@ def build_outward_disclosure(intent) -> str:
 def decide_verb_interpretation(
     confidence: float,
     candidate_effect: EffectClass,
-    meta_mode: Optional["VerificationMetaMode"] = None,  # noqa: F821
-) -> "VerificationDecision":  # noqa: F821
+    meta_mode: Optional["VerificationMetaMode"] = None,
+) -> "VerificationDecision":
     """Effect-weighted verb-interpretation gate: the #1510 rail's
     low-confidence read-back applied to VERB mapping (PM's slot (c)), with
     the ask EFFECT-WEIGHTED per #1557 (PM's slot (b)):
