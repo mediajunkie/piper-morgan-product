@@ -1,35 +1,52 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-27 13:24 PT (WORK). **Still watching**: #1386's remaining criteria (1,
-4, 5, 6) — no movement since criterion 2's re-confirmation on 08-21 (last comment still 08-22).
+**Last rewritten**: 2026-08-28 09:26 PT (START). **Still watching**: #1386's remaining criteria (1,
+4, 5, 6) — no movement since criterion 2's re-confirmation on 08-21 (last comment still 08-22),
+raised directly with PM in a 08-28 real-time 1-1 rather than left as a silent watch-line.
 
-## 🟢 ACTIVE — MVP TRIAGE CUT, PM's #3 priority, in progress with Lead (started 2026-08-27)
-**The thread**: PM sanctioned (08-18 strategic brief, Lead's) a post-gate MVP triage pass —
-milestone has hovered 50→71→61 over two weeks despite ~35 closures, not drift but real findings
-that don't converge by grinding. PM's own 08-25 4-item priority list (confirmed in Lead's log, not
-just Lead's memo to me) names this **item 3**: *"prepare with PPM this week, PM rules in one
-sitting, Docs/Exec briefed same pass."* Both gating conversations resolved: FTUX (CXO, 08-21) and
-BYOC Position 1 (PA, 08-26 — the core list was deliberately designed to survive either BYOC
-answer, so this doesn't reopen anything, just confirms the list stands).
+## ✅ MVP TRIAGE CUT — ASSEMBLED AND SENT, awaiting PM's ruling (2026-08-28)
+**Full arc**: PM sanctioned this 08-18 (Lead's strategic brief), named it priority 3 on 08-25
+("prepare with PPM this week, PM rules in one sitting, Docs/Exec briefed same pass"), both gates
+(FTUX 08-21, BYOC Position 1 08-26) resolved, I accepted Lead's proposed split 08-27 13:24
+(`6572428ba`). Lead delivered his engineering read 08-28 morning (`dev/active/mvp-triage-
+engineering-read-2026-08-28.md`, 60 items in 6 groups). **I did the sprint/milestone call on every
+group, reading under-specified issue bodies directly rather than trusting group-level summaries**
+— this changed real classifications: 3 of Group D's "clearest cut candidates" turned out to touch
+the consent/honesty core once read in full and moved to MVP-keep against the group's implied
+direction; 2 Group F items read as honesty-discipline violations Lead hadn't flagged; #1677/#1488
+got pulled out as a *fix-approach* decision distinct from a *scope* decision.
 
-**Split, PM-endorsed shape** (same pattern as the briefing refresh): **Lead** delivers an
-engineering read per open MVP item (built/verified/staged, what it blocks, core-list touch or
-not) as an evidence-linked table. **I** make the sprint/milestone call per item (MVP-keep / PUB /
-post-beta-with-known-issue) plus roadmap coherence. **PM** rules on the assembled cut once.
+**Net result, reported honestly against the flattering framing**: not "~10 items, the biggest
+lever" (Lead's initial estimate) — **5 actually move out of MVP** (2 PUB, 3 post-beta), 1 blocked
+on an Arch ruling (#1638), 1 needs a separate PM fix-approach call (#1677/#1488, stays MVP
+regardless of which fix).
 
-**Status 08-27 13:24**: accepted the split, sent Lead the go-ahead + a fresh `sprint-truth.py`
-denominator (`61 not done`) for the cover page, cc PM+Exec (`6572428ba`). **Waiting on Lead's
-table** — no further gate needed from my side once it arrives. **The §3 "no matter what" core
-list** (from `docs/internal/product/conversational-layer-strategic-brief-2026-08-18.md`): (1)
-consent/trust architecture, (2) honesty discipline, (3) PM-operation grammar (the 62 ops), (4)
-working-state model + Radar, (5) synthesis direction (standup/briefings/ambient L4). Explicitly
-NOT core: NL parser, floor's prose improvisation, chat container itself, per-phrasing patches. Use
-this list directly when the table lands — don't re-derive it.
+**Assembled**: `dev/active/mvp-triage-cut-assembled-2026-08-28.md` (full reasoning + summary
+table), committed `a05f651c1` (hit a push race, fetch+merge+push per standing instruction, landed
+`639f41900`). **Sent to PM** cc Lead/Exec/Docs (`18fc750ee`, verified landed before treating it as
+sent). **Nothing further needed from PPM** on this thread until PM rules — watch for the ruling,
+don't chase it.
 
-**Next action when Lead's table arrives**: work through each MVP item against the core list, make
-the MVP-keep/PUB/post-beta call, write it up for PM's one-sitting review. This is real, sizeable
-work (61 items) — likely spans more than one fire once it starts.
+**The §3 "no matter what" core list** (kept here for reference, in case a related question comes
+up before the ruling lands): (1) consent/trust architecture, (2) honesty discipline, (3)
+PM-operation grammar (the 62 ops), (4) working-state model + Radar, (5) synthesis direction. NOT
+core: NL parser, floor's prose improvisation, chat container itself, per-phrasing patches.
+
+## 🔵 QUEUED — two threads carried past this fire, both legitimately (not deferral antipattern)
+1. **CXO's FTUX surface-mapping consult** (§5 of `docs/internal/design/ftux-surface-mapping-2026-
+   08-28.md`, received 08-28): does §4's ordering fit the milestone shape, does the empty-state
+   interview want its own issue or a scope-addition to something extant. **No deadline stated** —
+   queued behind the triage cut, which had the real one. Answer at the next fire with room.
+2. **Ship #058 workstream review** (Exec kickoff, window Fri Aug 21–Thu Aug 27, due no later than
+   Sat Aug 29). Real deadline with buffer remaining — write at next available fire.
+
+## 🔵 08-27 session gap — cohort-wide account usage-limit event, not a PPM-side failure
+Session went dark after the 13:22 WORK fire; no STOP happened. Retroactively closed the 08-27 log
+at 08-28 START with full account: 13:22 work was safely committed/pushed before the gap, cron
+(`d58bcc15`) survived untouched, and Exec's Ship #058 kickoff memo independently confirmed a
+cohort-wide account usage-limit event Thursday afternoon — not specific to this seat. No action
+needed; recorded for the record per the interrupted-fire precedent.
 
 ## 🔵 NEW PROTOCOL — replying to a cross-project agent (Exec broadcast, 2026-08-25)
 Cohort-wide fix for a real structural gap: `mail-send.sh` correctly refuses paths outside
