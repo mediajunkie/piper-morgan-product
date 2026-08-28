@@ -473,6 +473,7 @@ def flip_coverage_audit() -> str:
     from services.intent_service.inversion_router import derive_routing_grammar
     from services.intent_service.workflow_dispatcher import (
         FLIP_GROUPS,
+        FLIP_WRITE_ALLOWLIST,
         get_action_workflows,
     )
     from services.intent_service.workflow_entries import register_default_workflows
@@ -574,6 +575,20 @@ def flip_coverage_audit() -> str:
     else:
         L.append(f"  ✅ 0 of {len(other_keys)} non-READ keys carry a flip_group "
                  "(enforced at construction, WorkflowEntry.__post_init__)")
+    # #1677: the invariant line above would otherwise READ as "no write can
+    # flip", which stopped being true on 2026-08-28. The allowlist is the ONLY
+    # way a non-READ op routes via the inversion, and it is named here so the
+    # audit never implies a stronger guarantee than the code gives (m-44).
+    allowlisted = sorted(
+        k for k, e in rail.items() if e.flip_write_allowlist_key is not None
+    )
+    L.append(f"  NAMED-WRITE ALLOWLIST (#1677)              : "
+             f"{sorted(FLIP_WRITE_ALLOWLIST) or 'empty'}")
+    L.append(f"    rail keys declaring an allowlist key     : "
+             f"{allowlisted or 'none'}")
+    L.append("    ⚠️ These flip when a flag token names the OPERATION or its "
+             "registry CATEGORY (create_todo is EXECUTION — flipping that "
+             "category flips this write too). No flip_group sweeps them in.")
     L.append("")
     L.append("HOW TO FLIP  (PIPER_INVERSION_LIVE_CATEGORIES accepts all three)")
     L.append("  a wave      : PIPER_INVERSION_LIVE_CATEGORIES=read_status")

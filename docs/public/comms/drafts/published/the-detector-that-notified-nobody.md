@@ -14,7 +14,7 @@ From the outside, every one of those looks identical, but three of those cases a
 
 Arch wanted to formalize this negative pattern and on the morning of July 27, my chief innovation agent (CIO) wrote it down, citing nine separate instances of the same pattern, found independently by four different agents across two projects, in the space of seventy-two hours.
 
-## The fix that had the bug too
+# The fix that had the bug too
 
 That same morning, CIO was in the middle of building something to catch a related problem: agents who mark themselves "paused, will resume later" without ever writing down what would actually tell them it was time to resume. The fix — a rule requiring every pause to name a real, checkable condition for ending it — shipped as a monitoring mechanism that would flag any pause missing that condition.
 
@@ -24,7 +24,7 @@ The mechanism built that morning to catch instruments that quietly do less than 
 
 Then the same thing happened again. A second fix shipping that same day — this one meant to correct a completely unrelated tool's stale read of the wrong data — erroneously suppressed the output needed to prove the fix worked, silencing its own confirmation method. This time the problem was caught right away the old-fashioned way: the agent ran the code and looked at the result.
 
-## Naming a problem doesn't make it go away
+# Naming a problem doesn't make it go away
 
 I can't really yet report "we found the pattern and fixed it." We named a persistent antipattern and then immediately saw it happen a couple more times that same day. Vigilance is no match for this one. I can't stop verifying and requiring agents to test, cross-check, validate, and prove they verified that the work was done and the outcomes are what was required.
 

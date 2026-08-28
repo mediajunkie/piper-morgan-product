@@ -1387,6 +1387,27 @@ def register_default_workflows() -> None:
     # #1677 note: this registration is also the prerequisite for the
     # individually-flipped-WRITE option there — flip-1 selects which ROUTER
     # feeds this rail, and an unregistered op never reaches the rail at all.
+    # #1677 (PM chose option (d), 2026-08-28): the FIRST and only named WRITE
+    # the inversion flip may route. Not a flip_group — no wave sweeps a write
+    # in; it flips only when a flag token names it (`create_todo`) or names
+    # its registry category (`EXECUTION`). Arch's three conditions were
+    # RE-RUN on 2026-08-28, not cited from the 08-25 ruling:
+    #   1. registered — get_action_workflows()["create_todo"] exists,
+    #      action_triggered=True (this entry, landed by #1685);
+    #   2. effect correct BY BEHAVIOR — todo_handlers.handle_create_todo
+    #      (~L350) calls todo_service.create_todo(user_id, text, priority),
+    #      which persists one row and deletes nothing: WRITE, not
+    #      DESTRUCTIVE, not READ. Read from the handler body, not this
+    #      docstring or #1685's;
+    #   3. reaches consent — needs_consent derives True (WRITE >= WRITE) and
+    #      intent_service.py's rail block awaits consent_gate.evaluate_consent
+    #      with THIS entry's effect + outwardness before dispatching
+    #      (asserted at that seam by test_create_todo_rail_1685.py's spy, and
+    #      re-asserted under the flip in test_inversion_write_allowlist_1677).
+    # Why the flip is the fix for #1677: the misroute is the LLM classifier
+    # drawing create_ticket for "add todo …" (1/3–2/3 of samples). The
+    # inversion's constrained router picks from the derived grammar instead,
+    # so the todo-create shape stops depending on that draw.
     create_todo_entry = WorkflowEntry(
         entry_point=run_create_todo_workflow,
         effect=EffectClass.WRITE,
@@ -1394,6 +1415,7 @@ def register_default_workflows() -> None:
         description="Create-todo via action dispatch (#1685)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        flip_write_allowlist_key="create_todo",
     )
 
     # #1666: delete_todo onto the rail — the consent-gate coverage gap Arch

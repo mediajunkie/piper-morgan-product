@@ -1,31 +1,43 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-27 ~10:3x PDT (Detector published; a real stale-sync incident caught by PM,
-fixed durably)
-**Session log**: `dev/2026/08/27/2026-08-27-0727-docs-code-log.md` (open).
-**Cron**: `8bddb70d`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-02.
+**Updated**: 2026-08-28 ~08:5x PDT (Fire 1 — Ship #058 report filed, 08-27 omnibus done, a real
+scope gap in yesterday's heading-defect fix found and closed on 7 more live posts)
+**Session log**: `dev/2026/08/28/2026-08-28-0727-docs-code-log.md` (open).
+**Cron**: `8f5e9099`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-03.
 
-**⚠️ Standing practice, added today, read this at every fire**: a duty-cycle sync from earlier in
+**Ship #058 report filed** (`3b4baaf34`) — window Aug 21-27, full detail in the report itself.
+
+**08-27 omnibus done** (`5d2996a6f` + `340054127`), chain now continuous through 08-27.
+
+**Heading-defect sweep completed**: yesterday's fix only covered the 2 explicitly-flagged
+"escaped" posts out of Dispatch-PM's original 11-item table. Went back and investigated the other
+9 properly instead of accepting "probably a no" on backfilling — 7 were genuinely still
+live-affected (confirmed via exact `<h2>` count match before touching anything), fixed both
+source and live layers, all 7 live-verified. 2 correctly excluded after investigation (one never
+actually live despite `status=published`; one renders via a legacy Medium-scrape import this
+pipeline doesn't touch). All 11 original rows now fully accounted for. Comms/Dispatch-PM notified.
+
+**⚠️ Standing practice, added 08-27, read this at every fire**: a duty-cycle sync from earlier in
 the session is a timestamped fact, not a durable one. Before reading file/git state to answer a
 PM question or start work — not just at a scheduled fire's START — `git fetch` + fast-forward
-first if meaningful time has passed. Caught the hard way today: audited a draft against a 33-
-commit-stale checkout, reported a false blocker (missing art that had actually already been
-added), PM caught it by asking "are you synced with origin main?" Fixed durably in
-`CLAUDE.md`'s "Never guess at facts" section (`60ad50267`), not just noted here.
+first if meaningful time has passed. Fixed durably in `CLAUDE.md`'s "Never guess at facts" section
+(`60ad50267`). Applied every fire since without incident.
 
-**"The Detector That Notified Nobody" published**: https://pipermorgan.ai/blog/the-detector-that-notified-nobody
-— re-synced, independently re-verified the load-bearing facts against the 07-27 omnibus (all
-matched), confirmed Comms' own parallel review-and-fix pass with PM had already resolved the one
-flagged claim. Live-verified, Comms notified. Fully closed.
+**PDR-007's own measurement window closed today**: ran the pre-registered instruments myself
+rather than let it expire unmeasured — all 3 criteria held (Class 1/2 zero, Class 3 exactly
+baseline, no growth over 4 weeks). Per the rule, **Option A is sufficient**. Recorded on the PDR
+(`8464c6f4a`), not self-ratified — CIO's outstanding boundary-question review is what's left,
+notified directly (`edf99b7a5`).
 
-**Omnibus chain now continuous through 08-26** — a genuine 2-day gap found and closed via two
-sequential subagent dispatches. **Found and closed a real orphaned duplicate**: #1684/#1685 both
-filed independently for the identical `create_todo` consent-gate finding — closed #1684 as
-duplicate. #1462/#829 milestone conflict flag turned out already resolved by PPM before I checked.
+**"The Detector That Notified Nobody" fully closed out**: published, Medium-distributed, and a
+real heading-level defect (found by Dispatch-PM) fixed on both this post and **The Dead Code That
+Wasn't** — source + live `blog-content.json` both fixed, live-verified.
+https://pipermorgan.ai/blog/the-detector-that-notified-nobody ·
+https://pipermorgan.ai/blog/the-dead-code-that-wasnt
 
-**Ship #057, #1683/update-calendar skill fix, and the mail-send.sh false-positive report all
-fully closed out as of 08-26's STOP** — see 08-26's session log or its now-completed omnibus for
-full detail, not re-detailing here.
+**Omnibus chain now continuous through 08-26** — a genuine 2-day gap found and closed. **Found and
+closed a real orphaned duplicate**: #1684/#1685 both filed for the identical `create_todo`
+consent-gate finding — closed #1684 as duplicate.
 
 **Standing practice, durable (from 08-25)**: cross-project replies go via the ratified relay
 protocol — real recipient in `to:`, cc `exec`, deliver via ordinary `mail-send.sh` to
@@ -46,8 +58,9 @@ still open, none urgent — see their issues for full context, not re-detailing 
 
 - **#1584** (broken links, ~34 residual after the big 08-10/11 pass) — CIO's Part C
   (methodology-19 numbering drift) still open, his lane.
-- **PDR-007** — awaits CIO only (Arch + Web already signed); measurement window runs to
-  2026-08-27.
+- **PDR-007** — measurement window closed 08-27, all 3 criteria held, Option A sufficient
+  (recorded on the PDR). Awaits CIO's boundary-question ruling to formally ratify (Arch + Web
+  already signed); not urgent, notified same-day.
 
 ## Owed by me — unblocked
 

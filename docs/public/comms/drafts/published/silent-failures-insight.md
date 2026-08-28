@@ -10,7 +10,7 @@ The Slack integration failed for months. Nobody noticed.
 
 Not because nobody used it. I got it working when I first set it up. I connected alpha test accounts. I connected my account, saw "Success," and assumed everything was working. When it failed to work, it failed, silently, over and over, while reporting success.
 
-## The graceful failure trap
+# The graceful failure trap
 
 Good error handling is supposed to prevent crashes. When something goes wrong, you catch the exception, handle it gracefully, and continue. Users don't see stack traces. The system doesn't fall over. Everything keeps running.
 
@@ -22,7 +22,7 @@ From the system's perspective, this was correct behavior. Null token? Don't cras
 
 From the user's perspective, this was invisible failure. They asked for something. They didn't get it. They had no way to know why.
 
-## The calendar had the same problem
+# The calendar had the same problem
 
 A different bug, same pattern. Calendar queries failed because credentials were stored under the wrong keychain key. When the system tried to authenticate, it got nothing back. Did it crash? No. Did it tell the user? No. It just didn't show calendar data.
 
@@ -30,7 +30,7 @@ Users saw an empty response where calendar information should have been. Maybe t
 
 Both bugs persisted for the same reason: the system was designed to be resilient, and resilience looked like silence.
 
-## When silence is the wrong choice
+# When silence is the wrong choice
 
 There's a design philosophy embedded in how we handle failures. The philosophy says: don't burden users with technical problems. Handle errors gracefully. Keep the experience smooth.
 
@@ -40,7 +40,7 @@ But authentication failures aren't cosmetic. When a user connects an integration
 
 The question isn't "should we handle errors gracefully?" The question is "what does graceful mean for this specific failure?"
 
-## A taxonomy of failures
+# A taxonomy of failures
 
 Not all failures deserve the same response:
 
@@ -54,7 +54,7 @@ Not all failures deserve the same response:
 
 The graceful failure trap happens when we treat broken contracts like transient failures. We catch the error, suppress it, and move on — leaving users in a state they didn't choose and can't diagnose.
 
-## The test suite had the same blind spot
+# The test suite had the same blind spot
 
 Our tests verified that error handling worked. They confirmed that null tokens didn't cause crashes. They checked that missing credentials were handled gracefully.
 
@@ -62,7 +62,7 @@ The tests passed. The handling was graceful. The feature was broken.
 
 We tested resilience without testing visibility. The system could survive failures, but users couldn't see them. From a technical perspective, excellent. From a user perspective, bewildering.
 
-## Loud failures as features
+# Loud failures as features
 
 There's a counterintuitive principle here: sometimes the most user-friendly thing a system can do is fail loudly.
 
@@ -72,7 +72,7 @@ These loud failures feel worse in the moment. An error message is more jarring t
 
 Silent failures feel smoother but leave users stranded. They don't know if the feature is broken, if they're using it wrong, or if there's nothing to show. They can't fix what they can't see.
 
-## The fix isn't just technical
+# The fix isn't just technical
 
 After finding the Slack and calendar bugs, we fixed the code. But the deeper fix was philosophical: we started asking different questions during design.
 
@@ -86,7 +86,7 @@ Silent failures are easy to write. They're often the default — catch exception
 
 But that work is the difference between a system that survives failures and a system that helps users through them.
 
-## The question to ask
+# The question to ask
 
 Next time you're writing error handling, ask: if this fails, what will the user experience?
 

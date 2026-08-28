@@ -246,7 +246,10 @@ set; confidence ≥ `PIPER_INVERSION_LIVE_MIN_CONFIDENCE` (default 0.8); AND the
 operation is a rail key whose declared effect is `EffectClass.READ` (load-bearing,
 not belt: ACTION_REGISTRY files `create_issue` WRITE and `close_issue`
 DESTRUCTIVE under QUERY — a write can never flip via this seam regardless of
-config). That Intent then flows into the SAME surface-3 rail dispatch a
+config; **amended 2026-08-28 by #1677 — read the named-WRITE allowlist entry
+below before relying on that last clause: an UNALLOWLISTED write can never
+flip, and the allowlist holds exactly one individually verified operation**).
+That Intent then flows into the SAME surface-3 rail dispatch a
 classified intent uses — the router chooses the key; the rail, consent gates,
 and handlers are untouched (no new dispatch site; the #1124 ratchet is
 unchanged at 0). EVERY other outcome — armed turn (offer popped this turn,
@@ -311,7 +314,9 @@ guard, the confidence threshold, and the declared-READ rail-entry guard all
 hold as before. **A non-READ entry carrying a `flip_group` is now
 unconstructible** (`WorkflowEntry.__post_init__` raises, as it does for an
 unknown group name), so the group surface cannot introduce a write even in
-principle; the runtime effect check remains the belt and the only guard for the
+principle (amended 2026-08-28 by #1677: unless it declares an allowlisted
+`flip_write_allowlist_key` — see that entry; no allowlisted op carries a
+group today, so no wave sweeps a write in); the runtime effect check remains the belt and the only guard for the
 category and operation-name surfaces. Two honesty properties worth knowing
 before flipping: the decision line logs **`live_match`** (`operation`/`group`/
 `category`/`None`) and `flip_group`, so a live route traces back to the flag
@@ -380,6 +385,59 @@ untouched — shadow flag off ⇒ no task, no provenance read, nothing. Pins:
 (mode branching with the router explosive on the counterfactual path, leg
 honesty, the ≤1-call cost ceiling, agree/disagree/incomparable, exploding legs,
 provenance one-shot + stale-clear + publish-on-dispatch-and-fall-through).
+
+**#1677 the first NAMED WRITE may flip — via an allowlist, not a relaxed
+effect check (2026-08-28, PM chose this over three classifier/pre-classifier
+options; mechanism ruled by Arch 2026-08-25).** The defect: "add todo …" has
+no deterministic pre-classifier claim, so every todo-create turn rides the LLM
+classifier, whose prompt teaches `create_ticket` by example and has no
+`create_todo` example — `add todo buy oat milk` drew `create_ticket` 2/3 and
+`Add a todo: P1GT-life-<hex>` 1/3 (measured 2026-08-22, cache off). The fix
+routes the shape through the successor system instead of patching surface 2.
+**The guard did NOT become `READ or WRITE`.** That check is what caught
+`create_issue` filed under `QUERY` in ACTION_REGISTRY, and relaxing the class
+would drop that protection for every future write at once. Instead both
+enforcement points now accept `EffectClass.READ` **or** an entry that declares
+a `flip_write_allowlist_key` present in `workflow_dispatcher.FLIP_WRITE_ALLOWLIST`
+(today: exactly `{"create_todo"}`) — the shared predicate is
+`workflow_dispatcher.flip_write_allowed`, consulted by *both*
+`WorkflowEntry.__post_init__` (structural) and `inversion_live.
+_effect_guard_passes` (runtime); they were changed in one commit because
+relaxing one and not the other leaves a gap between what is checked and what
+is enforced. The runtime half additionally requires the **routed operation
+name** to BE the declared key (or canonicalize to it): one entry object serves
+the whole `create_todo`/`add_todo`/`new_todo` alias family, so the declaration
+says "this entry was reviewed", not "this name was". **Every allowlist entry
+owes three verifications, re-run and not cited** (Arch): registered on the rail
+(`action_triggered`), declared `EffectClass` confirmed by *reading the
+handler's behavior* — `handle_create_todo` persists one row via
+`todo_service.create_todo` and deletes nothing ⇒ WRITE, never DESTRUCTIVE —
+and confirmed to reach `consent_gate.evaluate_consent` on the shared rail
+(`needs_consent` derives True; PRIVATE × WRITE × execute framing = PROCEED, so
+evaluation without ceremony). The conditions are written beside the constant,
+and a test asserts the comment still carries them. Two consequences worth
+knowing **before** the flag goes on: (1) `create_todo` carries **no
+`flip_group`** — no wave sweeps a write in — but it *does* carry registry
+category `EXECUTION`, so **flipping the `EXECUTION` category token flips this
+write too**; the allowlist bounds *which writes*, never *which surface*
+(pinned, and now printed by `--audit`, whose READ-only-invariant section would
+otherwise read as "no write can flip"). (2) An allowlisted write with **no**
+registry category takes legacy under a new `allowlisted_write_uncategorized`
+reason rather than the `IntentCategory.QUERY` fall-through, which would be a
+lie about a write in the Intent itself (no op is in that state today). Pins:
+`tests/unit/services/intent_service/test_inversion_write_allowlist_1677.py`
+(allowlist constant + its comment, unallowlisted WRITE/DESTRUCTIVE still
+unconstructible with a group and still refused at dispatch when named
+directly, allowlisted-but-unnamed stays legacy, category surface reaches it,
+sub-threshold still blocks, default-empty still byte-identically dark, the
+flipped turn reaches the same rail handler and writes the row with the consent
+gate spied, and the #1677 defect phrasings route to `create_todo`).
+⚠️ Layer honesty (m-43): those routing pins use a deterministic router fake, so
+they prove the *path*, not the *draw distribution* — the one non-faked
+structural fact is that `create_ticket` is not in the router's grammar at all
+(it canonicalizes to `create_issue`), so the classifier's specific failure
+output is unavailable to the constrained router. Real improvement is
+observable only live, in `inversion_live_decision` telemetry.
 
 **Phase 2.2 prerequisites landed 2026-08-19 (issues 1665 + 1664, gate-doc
 caveats)**: (a) every #846 arm site now stores its ALREADY-RENDERED ask on

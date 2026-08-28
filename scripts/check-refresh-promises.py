@@ -141,6 +141,13 @@ def frontmatter(path):
 _LAST_UPDATED_LINE = re.compile(r"^[+-]last_updated:")
 
 
+def _today():
+    """Local date as ISO. Used only to recognize the same-day-amendment case."""
+    import datetime
+
+    return datetime.date.today().isoformat()
+
+
 def diff_mode(ref):
     """Edit-time check: changed promise-carrying docs must move content and
     last_updated together. Reads git only; never writes; exit 1 only on
@@ -174,7 +181,16 @@ def diff_mode(ref):
         ]
         bumped = any(_LAST_UPDATED_LINE.match(l) for l in changes)
         content = any(not _LAST_UPDATED_LINE.match(l) for l in changes)
-        if content and not bumped:
+        # ⚠️ SAME-DAY AMENDMENT (fixed 2026-08-28, found by using the tool on a
+        # real second edit): last_updated may already carry TODAY's date from an
+        # earlier commit, in which case a further edit the same day is correctly
+        # current and must not bump again. Flagging it would be a false positive —
+        # and a checker that cries wolf on legitimate work trains people to skip
+        # it, which is exactly the failure this tool exists to prevent.
+        # The claim is "this content was refreshed on DATE"; if DATE is today,
+        # the claim is TRUE regardless of whether the line moved in this diff.
+        already_current_today = frontmatter(path).get("last_updated", "") == _today()
+        if content and not bumped and not already_current_today:
             fail = 1
             print(f"  ✗ {rel} — CONTENT CHANGED, last_updated NOT bumped in the same change.")
             print(f"    This is the claim going stale at the moment it goes stale. Bump it now,")

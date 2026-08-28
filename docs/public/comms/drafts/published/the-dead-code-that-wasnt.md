@@ -14,7 +14,7 @@ We'd found a lot of this. A file-search feature that could quietly serve simulat
 
 One family of fixes got its own name: remove-the-lie. A recovery routine that claimed success while doing nothing became an honest no-op. A security check that failed silently became a loud, unmissable error. The whole batch — sixteen modules across six families — went to Arch for a ruling before anyone touched a line: fabrication-removal, not simple cleanup, so treat it like the thing it actually was.
 
-## The catch
+# The catch
 
 Lead Dev started executing the ruling the next day, working through the families one at a time. Most of it was exactly what the census predicted: dead experiments, orphaned test scaffolding, a module nobody had constructed in months. Delete, verify, move on.
 
@@ -24,13 +24,13 @@ Lead Dev restored the module, reclassified it, and — because Arch's ruling had
 
 It's a small moment in a three-day sprint that touched a lot of code. But it's the moment that actually mattered: the same instinct that built a census to catch the codebase's lies almost missed one of its own, and caught it in time, because someone checked before committing rather than after.
 
-## The other catch, a day earlier
+# The other catch, a day earlier
 
 A different kind of check earned its keep the day before, in a different part of the system entirely. My team was cutting a release, and the pre-flight gate that runs before every deploy caught something real: a bare variable reference in the classification code, the kind of typo that only shows up when a specific code path actually executes. Left alone, it would have thrown an error on every primary classification, silently, and every message my system processes would have quietly fallen back to a lesser path — degraded, but never announcing that it was degraded.
 
 The gate caught it before it ever reached beta. Different failure, different day, same shape: something in the system was about to quietly do less than it claimed, and a check built to notice exactly that noticed it in time.
 
-## What actually held
+# What actually held
 
 The sweep missed an import style. The classifier had a typo nobody caught in review. What held wasn't that either mistake never happened — it's that the checks were built to catch failures like these, and that when one of the checks itself had a blind spot, someone was willing to say so before shipping rather than after.
 

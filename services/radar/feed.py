@@ -36,6 +36,32 @@ def _example_entity() -> RadarEntity:
     )
 
 
+def _coming_soon_entity() -> RadarEntity:
+    """#1635 ambient-presence false door — CXO's copy VERBATIM (design memo 2026-08-27),
+    per PM's Radar-card decision. Two binding rules, both structural here:
+
+    Rule 1 — never outranks real held state, never stands alone: appended AFTER the
+    attention sort (unconditionally last, never pinned, never attention-ordered) and
+    only in the populated branch — zero real entities → suppressed entirely (the
+    empty-state/FTUX path owns the empty moment; a placeholder faking fullness would
+    be display-side fabrication).
+
+    Rule 2 — copy claims the FUTURE, never the present: "not watching anything yet"
+    is load-bearing self-honesty against the fabrication class. EXAMPLE provenance
+    drives the existing dashed `radar-card--example` style in the JS renderers, so
+    the card is visually distinct from real held state. No ref → not clickable.
+    """
+    return RadarEntity(
+        entity_type=EntityType.COMING_SOON,
+        title="Piper will be able to watch for changes and bring you what matters",
+        lifecycle_state="preview",
+        provenance=Provenance.EXAMPLE,
+        meta="Coming soon — not watching anything yet. Briefings when something "
+        "needs you, not notification noise.",
+        attention=0.0,
+    )
+
+
 class RadarFeed:
     """Domain service: gather → filter (observed-only) → order (attention-first) → state."""
 
@@ -77,4 +103,7 @@ class RadarFeed:
         # #1625: pinned entities (due reminders) lock ABOVE the attention ordering —
         # PM's ruling gives the persistent surface ownership of reminder persistence.
         observed.sort(key=lambda e: (not e.pinned, -e.attention))
-        return RadarView(state="populated", entities=observed)
+        # #1635: ambient-presence coming-soon placeholder — appended after the sort so
+        # it is unconditionally LAST (below every real entity), and only on this branch
+        # (zero real entities → the empty state above renders, placeholder suppressed).
+        return RadarView(state="populated", entities=observed + [_coming_soon_entity()])
