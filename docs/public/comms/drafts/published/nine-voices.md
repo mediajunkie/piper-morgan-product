@@ -10,7 +10,7 @@ Thursday. I opened sessions with all nine active agent roles in this growing men
 
 This wasn't a reunion or anything. I had work for each of them to do.
 
-## Audit to implementation in one morning
+# Audit to implementation in one morning
 
 The Lead Developer started the day with a conversation continuity bug filed a few days earlier. You could say "Sure" after Piper offered to help with something and Piper would treat it as a brand new query. Affirmations and follow-ups were falling through the floor.
 
@@ -28,7 +28,7 @@ Audit cascade to shipped code - from an architectural decision record that didn'
 
 We're getting better at this, even if we're forever finding more problems to remediate.
 
-## The floor gets its ADR
+# The floor gets its ADR
 
 While the Lead Developer implemented the dispatcher, the Chief Architect created ADR-060: Floor-First Routing Architecture. This formalized the roundtable consensus from the previous Saturday — the unanimous "are we doing it backwards?" diagnosis — as a standalone architectural decision record.
 
@@ -38,7 +38,7 @@ The Architect also sent a memo to "Docs" with four specific editing assignments:
 
 Infrastructure from two days ago was paying off immediately. The briefings were accurate enough to update. The memo system was working well enough to route the request.
 
-## Nine questionnaires, nine responses
+# Nine questionnaires, nine responses
 
 Meanwhile HOST (whom we still called HoSR at the time) had been developing the Agent 360 questionnaire, an idea that had evolved from me asking them how continually improve how we work with agents. HOST proposed a structured feedback mechanism for every agent role, unfiltered by me. Questions about briefing quality, information access, handoff friction, role clarity, methodology gaps, tool limitations. Each role answers independently; HOST to synthesize the patterns.
 
@@ -50,13 +50,13 @@ Four agents cited PM-as-mailbot latency — waiting for me to relay messages bet
 
 360s are scary. If you're at all sensitive to criticism, even a mild frustration from an inanimate talk-box can make you feel defensive, but the results were so interesting and constructive.
 
-## Mailbox v3
+# Mailbox v3
 
 Docs built the new mail system the same day HOST's questionnaire identified the need for it because the friction was visible from both directions, and because I put my thumb on the scale.
 
 Mailbox v3: a directory per role, a delivery log, a manifest, a format guide, and a `/deliver-mail` skill that handles the mechanics while I handle the routing decisions. The first run processed 22 items and immediately caught a slug error — `cos` was the old abbreviation, `exec` was the current one. The validation layer proved itself on day one.
 
-## The pattern that keeps repeating
+# The pattern that keeps repeating
 
 Extension Without Integration. The Lead Developer identified six instances across the codebase — pre-classifier gaps, offer system gaps, competing acceptance detection, handler contract mismatches, capability awareness disconnects. Each feature developed against its own issue, its own acceptance criteria, its own tests. Each one passing. None of them tested together.
 
@@ -64,7 +64,7 @@ The fix for #922 was the dispatcher. But the meta-fix was recognizing the patter
 
 In principle, this isn't an AI-specific problem. It can  happen when any team builds features in parallel without integration testing. The multi-agent model just makes it more likely, because - unless you build your own custom scaffolding, the "team members" have no shared memory between sessions.
 
-## Nine voices sounding off
+# Nine voices sounding off
 
 By end of day: two ADRs formalized. One systemic pattern named and addressed. A full organizational feedback cycle completed. A mail system built and validated. 269 blog posts with complete metadata. A homepage redeployed. A build error diagnosed and fixed.
 

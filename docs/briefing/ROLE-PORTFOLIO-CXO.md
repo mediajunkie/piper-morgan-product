@@ -3,8 +3,8 @@ type: role-portfolio
 role: CXO (Chief Experience Officer)
 status: v0.1
 self-authored-by: CXO
-last_updated: 2026-08-21
-refreshed: 2026-08-21 (section 2 refreshed per workstream #057; sections 1/3/4 re-read and left as accurate)
+last_updated: 2026-08-28
+refreshed: 2026-08-28 (section 2 refreshed per workstream #058; sections 1/3/4 re-read and left as accurate)
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-CXO.md
 refresh_discipline: "sections 2 and 4 on each workstream review; sections 1 and 3 on role-scope drift — NOW CHECKED, see refresh_trigger_glob and §5"
@@ -32,24 +32,25 @@ Two things flow from this:
 
 ## 2. Current goals & priorities — August 2026
 
-<!-- Rule 2: medium-pace, per sprint. Rule 4: each has direction + status + forward indicator. Rule 5: refreshed each workstream review. This refresh IS a review-triggered refresh — #057, window Aug 14-20. -->
+<!-- Rule 2: medium-pace, per sprint. Rule 4: each has direction + status + forward indicator. Rule 5: refreshed each workstream review. This refresh IS a review-triggered refresh — #058, window Aug 21-27. -->
 
-| Priority | What I'm advancing | Status (Aug 21, per Ship #057) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Aug 28, per Ship #058) | How we'll know it's moving |
 |---|---|---|---|
-| **First contact on the plugin surface (#1536)** | The user's own work appears in the first exchange, unprompted | **HELD, aging.** Live-verification still not run — now over a week since flagged as "next cut." Real Pattern-045 instance. | The live-verification pass actually runs and is reported, either result |
-| **#1539 FTUX-PURPOSE** | Make legible *which* uncertainty a reply reduced | **HELD, with PM, unchanged.** | PM rules on the candidate |
-| **Recomposition rubric branch (#1463)** | A Layer-B rubric for tool output a client LLM recomposes | **Held, same dependency, unchanged.** Waits on #1462. | Retest against a live `mcp.pipermorgan.ai` passes |
-| **Honesty of user-facing claims** | The interface must not manufacture a belief | ✅ **CLOSED 08-07**, holds, no new drift. | Holds until the next audit finds otherwise |
-| **#1466 Slack link flow** | Link-flow UX + copy | ✅ **CLOSED — corrected this refresh.** Actually closed 2026-08-08 (full live E2E proof) on PM's pause-and-close directive; this line incorrectly read "held" for two refreshes running. Fixed now. | — |
-| **#1386 beta-gate experience criteria** | The gate must be able to both pass and fail for what users actually report | **Held — criterion-2 sign-off still withheld.** No keyed run has appeared. | A keyed run exists → same-day sign-off, as committed |
-| **#1174 proactive presence** | Discovery only | **Held by design.** PM confirmed correctly scoped when closing the spatial committed-theory review 08-15. | Discovery runs with HOST; nothing built pre-beta |
-| **The "unmapped verb → ask" lane (#1569/#1605)** | UX shape for disambiguation when a verb has no confident mapping | ✅ **CLOSED END TO END.** Design → build → **PM live-verified in production 08-17** (real counts, no contradiction). Full lifecycle in one window. | Closed |
-| **#1509 outwardness consent axis** | A second consent dimension for actions visible to someone other than the user | ✅ **Shipped, ratified PM+CXO+PPM 08-15.** Disclosure copy defect caught and fixed 08-21 (accidentally auto-closed the issue via a commit-message slip — reopened same-fire, explained). Staged for next deploy. | PM's live retest, plus deploy |
-| **Surfaces taxonomy** | Formal two-axis model (functional surface × platform), superseding "Surface 3 phantom" | ✅ **v0.2, fully confirmed by Arch + PPM.** One real correction accepted and fixed (m-49 shape — cited design prose as verified code). Ratification pending only PM's word on §1 naming. | PM rules on naming |
-| **FTUX strategy conversation** | "Should FTUX even be a chat?" — platform-dependent reframe delivered | ⏸️ **Prep sent 08-18, conversation itself still pending** as of this refresh — checked broadly, not just my inbox. Not chased. | PM has the conversation |
-| **Floor-quality + ethics-decline watch** | Standing — on shipped behaviour, not issue progress | 🔴 **Still not performed — third window running unattested.** | A keyed run against the deployed host, or a decline observed on a live surface |
+| **FTUX surface-mapping** | Map the ratified FTUX experience model onto surfaces, using the ratified taxonomy as the instrument | 🔴 **THE lead item — un-gated as of 08-27** (the BYOC/connector conversation landed via PA; Slack descope confirmed from my side). Claimed for the next clear-queue working fire. Inputs staged: the model, the taxonomy, PA's connector-architecture finding. | The mapping doc exists and is routed for consult |
+| **FTUX experience model** | The surface-agnostic model of meeting Piper | ✅ **ALIGNED + WRITTEN 08-21** (the 1-1) — `ftux-experience-model-2026-08-21.md`, PM co-owns. Held-state parity filed (#1673, Arch's boundary attached). | Surface-mapping consumes it (above) |
+| **Surfaces taxonomy** | Formal two-axis model | ✅ **RATIFIED v1.0 08-21.** Canonical. One small follow-up unclaimed: PDR-005's citation fix (§2a). | Done; citation fix when someone claims it |
+| **`experience-across-surfaces.md`** | The citable statement of the one experience | ✅ 3 of 4 ✏️ resolved (08-21) + PM's complementarity formulation added (08-25, honest late-provenance). ⏳ **§4's "must not be asked to" column with PM since 08-21** — gentle re-surface at next direct contact. | PM's approve/adjust/strike on the column |
+| **#1539 FTUX-PURPOSE** | The value-prop, articulated and reachable in-session | ✅ Articulation PM-confirmed (1-1); **purpose-line strings shipped 08-22**. ⏳ Close follows PM's next live round (AC-3's falsifier). | PM's live round; then Lead closes |
+| **First contact (#1536)** | The user's own work in the first exchange | ✅ **CLOSED 08-22** — the four-week Jake arc complete with full evidence chain. | Closed; successor work = surface-mapping |
+| **#1386 beta-gate experience criteria** | The gate must be able to both pass and fail | ✅ **Criterion-2 SIGNED OFF 08-21** (keyed Run 14, verified at three layers, same-day as committed). My scope on this gate is discharged. | — |
+| **#1509 outwardness axis** | Consent dimension for outward-visible actions | ✅ Shipped + copy fixed + Lead-verified in-window. Rides next deploy; PM's live retest closes. | PM's retest |
+| **Checker diff mode (NEW)** | Edit-time catch for content-without-bump on promise-carrying docs | ✅ Built + verified twice (mine negative-control-first; HOST's independent probe). ⏳ HOST's by-hand cycle decides hook wiring. | HOST's honest report after a real cycle |
+| **#1635 false-door** | The ambient-presence placeholder's shape | ✅ Position delivered 08-27 (Radar card + two build rules + final strings). Lead builds when sequenced. | Lead ships; PM reacts in testing |
+| **Recomposition rubric branch (#1463)** | Layer-B rubric for recomposed tool output | **Held, same dependency (#1462), unchanged.** | Retest against a live `mcp.pipermorgan.ai` |
+| **#1174 proactive presence** | Discovery only | **Held by design.** | Discovery runs with HOST |
+| **Floor-quality + ethics-decline watch** | Standing — on shipped behaviour | 🔴 **Fourth window unattested. Decision requested in Ship #058 §4: give it a real slot or retire it deliberately** — carrying it unattested is the worst of both. | PM/Exec decision on the line itself |
 
-**Deliberately not on this list**: the D2 design-system portfolio (#1286/#1290/#1284/#1269) — unmoved for a sixth Ship window, flagged four times now. Still a drift, not a decision.
+**Deliberately not on this list**: the D2 design-system portfolio (#1286/#1290/#1284/#1269) — unmoved for a seventh Ship window. Still a drift, not a decision.
 
 ### Beta milestone (June 2026, retained for the record)
 - **D1 closed**: #1236 (Radar consolidation) + #1280 (dark rail shell) both passed PM beta UAT — "total win for beta" (June 19). Places→RadarEntity as `work_item` live; insights-OUT; clean chat center; dark rail conversation-first.

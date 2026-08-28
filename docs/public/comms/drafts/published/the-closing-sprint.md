@@ -14,7 +14,7 @@ M1 had been organized into four tiers: architecture, quality, capabilities, and 
 
 The sprint had quadrupled in length during build and testing. It had led to a literal revolution in the architecture. Now it felt like we had finally rounded the corner.
 
-## Five sources of truth
+# Five sources of truth
 
 The Lead Developer's first audit Friday morning surfaced a problem we hadn't seen coming. Piper was telling users it could do things it couldn't actually do.
 
@@ -28,7 +28,7 @@ Five sources of truth became one. The Lead Developer filed and closed #923 the s
 
 It's hard enough to keep these critters honest without confusing them with mismatched and incorrect info!
 
-## The 75% pattern, four times in a row
+# The 75% pattern, four times in a row
 
 Saturday was Tier 3 capability day. Four issues. Each one followed the same pattern.
 
@@ -44,7 +44,7 @@ Four issues. Each one 75-95% complete before anyone touched them. The audit-firs
 
 I know some of the 75%-complete problem is endemic to LLM coding agents these days and some of it is a natural consequence of modularity in which you can't really finish till all the parts are wired up, and this always requires an additional pass. In some ways the unique part of doing this with AI is the frequent astonishment the agents appear to experience when they rediscover partially completed work.
 
-## The gate
+# The gate
 
 M1 needed a formal gate — a defined set of criteria that must pass before the sprint can close. Like M0's gate #779, but informed by everything we'd learned since.
 
@@ -54,7 +54,7 @@ They converged without coordinating. Both recommended fresh-account testing — 
 
 The gate grew from 5 smoke queries to 9. A Colleague Test score threshold of 7+. Canonical retest target of 85% or above. Capability registry verification. Offer system precedence check. Multi-turn integration test.
 
-## The experience philosophy
+# The experience philosophy
 
 While the Lead Developer closed capability gaps and the gate took shape, the PPM resolved a thread that had been carried for ten days. Product concept decisions for #717 — what IS a Product in Piper's domain model, how does it relate to Projects, what lifecycle states does it have.
 
@@ -64,7 +64,7 @@ The Session Belongs to the User. Offer-First Activation. Piper Coordinates Under
 
 These weren't aspirational statements. They were extracted from actual decisions — the workflow escape commands and timeout mechanisms that ensure the user's session is always theirs, the offer-first pattern that replaced the onboarding wizard's session capture, the context assembler's role in closing the gap between what participants think they know and what's actually true, and the floor-first guarantee that Piper is always at least as good as a well-prompted LLM with context. The philosophy was already in the code. The PDR just named it.
 
-## Where the sprint stands
+# Where the sprint stands
 
 By Sunday evening, M1 Tiers 1 through 3 were complete. The architecture was floor-first. The dispatcher was consolidating offers. The capability registry was gating promises. GitHub close/reopen, todo completion, reminders, and lazy workflow deferral were all shipped and tested. The gate was defined and independently reviewed.
 

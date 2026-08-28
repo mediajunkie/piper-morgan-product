@@ -94,9 +94,15 @@ days stale.
     — one open question per recipient (PPM: roadmap coherence, same shape as #829; CXO: pure
     confirmation against their already-ratified FTUX exclusion; Arch: the GitHub self-hosted-vs-
     vendor-hosted `github-mcp-server` config question, flagged not decided).
+  - **CXO replied 08-27 evening — confirmed, one nuance, no action needed**: Slack was already outside
+    the ratified F-Integrations set (GitHub/Calendar/Notion), so the gate catching up is convergence
+    not conflict. One thing worth keeping in mind, not an edit: the taxonomy's §4 rule ("re-evaluate
+    Slack cells as a batch if #1481 clears") still holds, but its trigger moved further out now that
+    #1481 is Fast Follow rather than Production. PPM and Arch haven't replied yet as of 08-28 morning —
+    nothing to chase.
   - **Thread status**: PM signaled next topic is "the BYOC skunkworks project itself, next steps" —
     a new phase of this conversation, not yet started. Nothing else pending from the connector
-    question specifically; watch for PPM/CXO/Arch replies to the loop-in memo.
+    question specifically.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
