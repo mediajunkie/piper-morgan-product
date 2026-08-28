@@ -1,19 +1,18 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-26 21:42 PT STOP fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten 2026-08-28 06:42 PT (start of a new-day fire, following a retroactive close of Aug 27 — cohort-wide stacked wake, not a personal stall). Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
-Re-armed at this STOP via delete-then-create — see below for new job ID. Expression `12 6,9,12,15,18,21 * * *` unchanged.
+`df4276bc`, expression `12 6,9,12,15,18,21 * * *`. Survived the Aug 27 gap intact — verified via `CronList` before anything else, no re-arm needed.
 
-## Closed today
+## Closed since last real update (Aug 26 STOP)
 
-- **Weekly Ship #057** — full cycle: reviewed (4 mechanical fixes), published, syndicated to LinkedIn (Ship theme routes LinkedIn-only). **Worth remembering, not just noting once**: Docs' independent fact-check caught a real substantive error neither Exec (who wrote it) nor I (who reviewed it) caught — "four agents" was actually four *links* in a verification chain, one person appearing twice. Exec traced their own error precisely afterward: verified correctly at one unit, silently restated at a different unit, never re-checked because it felt already-verified. The lesson applies to my own review discipline too — mechanical/prose checks aren't a substitute for re-verifying the specific factual claims against primary source, especially headcounts and similar easy-to-miscount details.
-- **`update-calendar` skill fixed** (Docs) — it had a real self-contradiction (told agents to set `canonicalSite→distributed` at blog-first publish, contradicting its own field definition), root cause of a 145-row undercount from a July migration and a same-day fresh instance on Ship #057 itself. Per the established column-ownership split this didn't touch my own recent writes, but worth remembering the corrected rule: `canonicalSite` only gets set at actual syndication time.
-- **Dispatch syndication memo relayed successfully** — yesterday's re-send to Dispatch-PM via the new cross-project relay protocol worked cleanly on first live use, confirmed by Exec's own log. Awaiting Dispatch-PM's action on the 3 posts + 1 partial still genuinely unsyndicated.
-- **website#35** — still open, still correctly pending PM's answer (did you navigate between two compose drafts via back/forward around 9:49 AM Tuesday, or go through the list? — this determines whether Web's fix is confirmed as *the* cause).
+- **"The Detector That Notified Nobody"** — full cycle: reviewed (4 fixes), one unverified claim fact-checked and flagged, PM confirmed it didn't apply so cut it, re-audited the whole piece for coherence, published, syndicated to Medium.
+- **A genuine heading-level defect, fully resolved end-to-end.** Dispatch-PM found published subheads rendering one level too deep (`##` authored where the site needs `#`). I confirmed it live, found the same defect in all 4 of my currently-drafted pieces (Beat 6 + 3 insight candidates — fixed before any could go live wrong), and root-caused it precisely: not a broken skill/template, just my own inconsistent application during the Aug 16-18 drafting window. Docs then closed the loop I couldn't close alone — fixed both already-published, already-live posts (Dead Code, Detector) at both the archived-source and actual-rendered-HTML layers, live-verified. I independently re-confirmed the live fix myself before writing this.
+- **Weekly Ship #057 + `update-calendar` skill fix** — both fully closed as of Aug 26 (see prior entries if detail is needed; not re-summarizing here to keep this lean).
 
-## The insight-piece task — still awaiting PM's review, unchanged for 9 days
+## The insight-piece task — still awaiting PM's review, unchanged for 10 days
 
 **3 new candidates drafted from newest material**, unscheduled:
 
@@ -27,15 +26,15 @@ PM reconfirmed in-conversation (Aug 22, 23) this is still on their list. **Next 
 
 ## Open items, all PM/PPM/Dispatch-PM/Web-gated — no Comms-side move available
 
-- **Beat 6's "beta data"/"beta date" quote question** — needs PM's confirmation before voice-pass. Unchanged for 8 days.
-- **Beats 2-6 + insight pool** — await PM's voice-pass/steer.
-- **Dispatch syndication** — with Dispatch-PM now, awaiting their action.
-- **website#35** — awaiting PM's navigation-sequence answer.
+- **Beat 6's "beta data"/"beta date" quote question** — needs PM's confirmation before voice-pass. Unchanged for 9 days.
+- **Beats 4-6 + insight pool** — await PM's voice-pass/steer. (Beats 1-3 now all published.)
+- **Dispatch syndication** — 3 posts + 1 partial, relayed successfully via the new protocol, still awaiting Dispatch-PM's action.
+- **website#35** — awaiting PM's navigation-sequence answer (did you navigate between two compose drafts via back/forward around 9:49 AM Tue Aug 25, or go through the list?).
 - **BYOC listing copy v4** — routed to PPM, no response found.
 
 ## Waiting on others
 
-- **PM** — insight-pool review + weekend pairing; voice-pass + art on Beats 2-6; the beta-data/date quote confirmation; the website#35 navigation question.
+- **PM** — insight-pool review + weekend pairing; voice-pass + art on Beats 4-6; the beta-data/date quote confirmation; the website#35 navigation question.
 - **Dispatch-PM** — the 4 syndication items.
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **PPM** — BYOC listing copy v4.
