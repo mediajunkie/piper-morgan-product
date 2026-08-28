@@ -1,9 +1,14 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-28 ~08:5x PDT (Fire 1 — Ship #058 report filed, 08-27 omnibus done, a real
-scope gap in yesterday's heading-defect fix found and closed on 7 more live posts)
+**Updated**: 2026-08-28 ~10:5x PDT (Fire 2 — cross-project brokering protocol ratified by PM;
+both DIRECTORY.md follow-up asks already satisfied since 08-25)
 **Session log**: `dev/2026/08/28/2026-08-28-0727-docs-code-log.md` (open).
 **Cron**: `8f5e9099`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-03.
+
+**Standing practice, now formally ratified by PM (was already how I'd been operating since
+08-25)**: the cross-project reply protocol — real recipient in `to:`, cc `exec`, deliver to
+`exec/inbox/`, Exec relays or points; Dispatch-PM's own sweep is the backstop. Nothing changes in
+practice; this closes the loop on informal-vs-ratified.
 
 **Ship #058 report filed** (`3b4baaf34`) — window Aug 21-27, full detail in the report itself.
 
