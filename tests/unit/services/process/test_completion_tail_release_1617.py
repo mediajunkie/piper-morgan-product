@@ -59,9 +59,7 @@ _SESSION = "sess-1617"
 
 class TestTailEscapeDetection:
     def test_pm_issue_command_is_off_intent_in_the_tail(self):
-        signal = check_escape(
-            PM_T2_ISSUE_COMMAND, ProcessType.STANDUP, in_completion_tail=True
-        )
+        signal = check_escape(PM_T2_ISSUE_COMMAND, ProcessType.STANDUP, in_completion_tail=True)
         assert signal is not None
         assert signal.kind == "off_intent"
         assert "explicit_issue_update:#108" in signal.matched
@@ -79,10 +77,7 @@ class TestTailEscapeDetection:
 
     def test_ordinary_tail_answers_still_reach_the_flow(self):
         """A genuine tail response is NOT claimed by the release path."""
-        assert (
-            check_escape("looks good", ProcessType.STANDUP, in_completion_tail=True)
-            is None
-        )
+        assert check_escape("looks good", ProcessType.STANDUP, in_completion_tail=True) is None
 
 
 # ---------------------------------------------------------------------------

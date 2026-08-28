@@ -18,8 +18,11 @@ from services.intent_service.canonical_handlers import CanonicalHandlers
 async def test_real_todos_reach_the_agenda_dicts():
     todos = [
         Todo(text="Review the Q3 roadmap", priority="high"),
-        Todo(text="Reply to Sam", priority="medium",
-             due_date=datetime(2026, 7, 18, 17, 0, tzinfo=timezone.utc)),
+        Todo(
+            text="Reply to Sam",
+            priority="medium",
+            due_date=datetime(2026, 7, 18, 17, 0, tzinfo=timezone.utc),
+        ),
     ]
     with patch(
         "services.repositories.todo_repository.TodoRepository.get_todos_by_owner",

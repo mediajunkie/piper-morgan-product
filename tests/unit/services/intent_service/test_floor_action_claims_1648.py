@@ -31,9 +31,7 @@ _NORM = re.sub(r"\s+", " ", FLOOR_SYSTEM_PROMPT_ADDENDUM).lower()
 
 def _action_claims_section() -> str:
     """The action-claims section (from its CRITICAL header to the next)."""
-    start = FLOOR_SYSTEM_PROMPT_ADDENDUM.index(
-        "CRITICAL — Never claim an action happened"
-    )
+    start = FLOOR_SYSTEM_PROMPT_ADDENDUM.index("CRITICAL — Never claim an action happened")
     end = FLOOR_SYSTEM_PROMPT_ADDENDUM.index("CRITICAL", start + 10)
     return FLOOR_SYSTEM_PROMPT_ADDENDUM[start:end]
 

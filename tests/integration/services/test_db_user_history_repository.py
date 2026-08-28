@@ -18,15 +18,14 @@ from datetime import datetime, timezone
 from uuid import uuid4
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
 
 from services.database.models import ConversationDB, ConversationTurnDB
 from services.database.repositories import (
     ConversationRepository,
     DBUserHistoryRepository,
 )
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
-
 from services.domain import models as domain
 from services.memory.user_history import UserHistoryService
 from services.shared_types import ConversationLifecycleState

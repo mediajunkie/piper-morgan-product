@@ -80,9 +80,7 @@ def test_escape_html_helper_covers_all_five_metacharacters(rendered):
 def test_escape_attr_helper_exists(rendered):
     """escapeAttr() — the attribute-context variant (delegates to escapeHtml;
     the name documents the call-site context, per #1578)."""
-    assert "function escapeAttr" in rendered, (
-        "escapeAttr() (attribute-context variant) is missing"
-    )
+    assert "function escapeAttr" in rendered, "escapeAttr() (attribute-context variant) is missing"
 
 
 # --- the headline hole: filename through the onclick JS-string context ---------
@@ -92,15 +90,13 @@ def test_rename_button_no_longer_passes_filename_through_onclick_js_string(rende
     """HTML-escaping cannot protect a JS string inside onclick (entities are
     decoded before the JS parses), so the filename must not cross that boundary
     at all — only the server-generated id does."""
-    assert not re.search(
-        r"renameArtifact\('\$\{[^}]*\}',\s*'\$\{[^}]*\}'\)", rendered
-    ), (
+    assert not re.search(r"renameArtifact\('\$\{[^}]*\}',\s*'\$\{[^}]*\}'\)", rendered), (
         "Rename button still passes a second (filename) argument through the "
         "onclick JS-string context — unprotectable by HTML escaping"
     )
-    assert "renameArtifact('${escapeAttr(file.file_id)}')" in rendered, (
-        "Rename button should pass only the escaped id"
-    )
+    assert (
+        "renameArtifact('${escapeAttr(file.file_id)}')" in rendered
+    ), "Rename button should pass only the escaped id"
     # and renameArtifact() resolves the filename from state instead
     body = _fn_body(rendered, "function renameArtifact")
     assert "window._allFiles" in body, (
@@ -125,11 +121,7 @@ def _assert_all_escaped(body, fn_name, allowed=()):
     allowed = set(allowed)
     for expr in _INNERMOST_INTERP.findall(body):
         expr = expr.strip()
-        ok = (
-            expr.startswith("escapeHtml(")
-            or expr.startswith("escapeAttr(")
-            or expr in allowed
-        )
+        ok = expr.startswith("escapeHtml(") or expr.startswith("escapeAttr(") or expr in allowed
         assert ok, (
             f"unescaped interpolation in {fn_name}(): ${{{expr}}} — every "
             "dynamic value in the render path goes through escapeHtml()/"
@@ -197,7 +189,7 @@ def test_every_interpolation_in_showPreviewModal_is_escaped_or_composed(rendered
         '<span class="tag-chip">${escapeHtml(t)}</span>',
         # preview modal: message + content + title all escaped
         "${escapeHtml(data.message || ",
-        '<pre class="file-preview-content">${escapeHtml(data.content || \'\')}</pre>',
+        "<pre class=\"file-preview-content\">${escapeHtml(data.content || '')}</pre>",
         '<h3 class="file-preview-title">${escapeHtml(title)}</h3>',
         # dialog form inputs (Dialog.show sets content via innerHTML —
         # dialog.js:84 — so value="" attributes need full attribute escaping;

@@ -10,10 +10,6 @@ import pytest
 
 from services.mux.composting_models import create_correction_learning, create_insight_learning
 from services.mux.composting_pipeline import InsightJournal, SurfaceableInsight
-
-# #1035: tests use FakeInsightJournal as a test double; production
-# InsightJournal is async + repository-backed.
-from tests.unit.services.mux._fake_insight_journal import FakeInsightJournal
 from services.mux.premonition import (
     SURFACING_FRAMES,
     InsightReadiness,
@@ -23,6 +19,10 @@ from services.mux.premonition import (
     score_relevance,
 )
 from services.shared_types import TrustStage
+
+# #1035: tests use FakeInsightJournal as a test double; production
+# InsightJournal is async + repository-backed.
+from tests.unit.services.mux._fake_insight_journal import FakeInsightJournal
 
 # =============================================================================
 # SurfacingContext Tests

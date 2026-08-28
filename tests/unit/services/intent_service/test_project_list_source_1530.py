@@ -29,9 +29,7 @@ from services.user_context_service import UserContext, UserContextService
 pytestmark = pytest.mark.asyncio
 
 
-EMPTY_CONFIG_PATCH = (
-    "services.configuration.piper_config_loader.piper_config_loader.load_config"
-)
+EMPTY_CONFIG_PATCH = "services.configuration.piper_config_loader.piper_config_loader.load_config"
 
 
 class TestChatReadsLiveProjectRows:
@@ -47,9 +45,7 @@ class TestChatReadsLiveProjectRows:
         user_id = uuid4()
 
         with patch(EMPTY_CONFIG_PATCH, return_value={}):
-            with patch.object(
-                svc, "_load_user_preferences_from_db", AsyncMock(return_value={})
-            ):
+            with patch.object(svc, "_load_user_preferences_from_db", AsyncMock(return_value={})):
                 db_load = AsyncMock(return_value=["Klatch", "One Job"])
                 with patch.object(svc, "_load_projects_from_db", db_load):
                     first = await svc.get_user_context("session-1", user_id)
@@ -76,9 +72,7 @@ class TestChatReadsLiveProjectRows:
         user_id = uuid4()
 
         with patch(EMPTY_CONFIG_PATCH, return_value={}):
-            with patch.object(
-                svc, "_load_user_preferences_from_db", AsyncMock(return_value={})
-            ):
+            with patch.object(svc, "_load_user_preferences_from_db", AsyncMock(return_value={})):
                 db_load = AsyncMock(return_value=["Klatch", "One Job", "CoVa"])
                 with patch.object(svc, "_load_projects_from_db", db_load):
                     first = await svc.get_user_context("session-1", user_id)
@@ -88,9 +82,7 @@ class TestChatReadsLiveProjectRows:
 
                     second = await svc.get_user_context("session-1", user_id)
 
-        assert second.projects == [], (
-            "Archived projects still reported from stale cache"
-        )
+        assert second.projects == [], "Archived projects still reported from stale cache"
 
 
 class TestCrossPrincipalGuard:
@@ -129,9 +121,7 @@ class TestCrossPrincipalGuard:
                 names = await svc._load_projects_from_db(user_id)
 
         assert names == ["Klatch", "One Job", "CoVa"]
-        repo_instance.list_active_projects.assert_awaited_once_with(
-            owner_id=str(user_id)
-        )
+        repo_instance.list_active_projects.assert_awaited_once_with(owner_id=str(user_id))
 
     async def test_two_owners_never_see_each_others_projects(self):
         """Owner A and owner B resolve to disjoint project lists — including on
@@ -147,12 +137,8 @@ class TestCrossPrincipalGuard:
             return list(rows[str(uid)])
 
         with patch(EMPTY_CONFIG_PATCH, return_value={}):
-            with patch.object(
-                svc, "_load_user_preferences_from_db", AsyncMock(return_value={})
-            ):
-                with patch.object(
-                    svc, "_load_projects_from_db", AsyncMock(side_effect=per_owner)
-                ):
+            with patch.object(svc, "_load_user_preferences_from_db", AsyncMock(return_value={})):
+                with patch.object(svc, "_load_projects_from_db", AsyncMock(side_effect=per_owner)):
                     ctx_a = await svc.get_user_context("session-a", owner_a)
                     ctx_b = await svc.get_user_context("session-b", owner_b)
                     # Second round hits the cache — refresh must stay scoped.
@@ -172,9 +158,7 @@ class TestChatAnswerMatchesRows:
 
         handlers = CanonicalHandlers()
         user_id = str(uuid4())
-        ctx = UserContext(
-            user_id=user_id, projects=["Klatch", "One Job", "CoVa"]
-        )
+        ctx = UserContext(user_id=user_id, projects=["Klatch", "One Job", "CoVa"])
 
         intent = Intent(
             category=IntentCategory.STATUS,
@@ -182,23 +166,17 @@ class TestChatAnswerMatchesRows:
             original_message="what are my projects?",
         )
 
-        with patch(
-            "services.intent_service.canonical_handlers.user_context_service"
-        ) as mock_svc:
+        with patch("services.intent_service.canonical_handlers.user_context_service") as mock_svc:
             mock_svc.get_user_context = AsyncMock(return_value=ctx)
-            with patch.object(
-                handlers, "_get_project_metadata", AsyncMock(return_value={})
-            ):
-                result = await handlers._handle_status_query(
-                    intent, "session-1", user_id=user_id
-                )
+            with patch.object(handlers, "_get_project_metadata", AsyncMock(return_value={})):
+                result = await handlers._handle_status_query(intent, "session-1", user_id=user_id)
 
         message = result["message"]
         for name in ("Klatch", "One Job", "CoVa"):
             assert name in message, f"Project {name} missing from chat answer"
-        assert "3 active projects" in message, (
-            "Stated count must be derived from the actual rows returned (m-44)"
-        )
+        assert (
+            "3 active projects" in message
+        ), "Stated count must be derived from the actual rows returned (m-44)"
         assert "2 active projects" not in message
 
 
@@ -212,16 +190,14 @@ class TestM44DenominatorInFloorContext:
         projects = [f"Project {i}" for i in range(12)]
         ctx = UserContext(user_id=str(uuid4()), projects=projects)
 
-        with patch(
-            "services.user_context_service.user_context_service"
-        ) as mock_svc:
+        with patch("services.user_context_service.user_context_service") as mock_svc:
             mock_svc.get_user_context = AsyncMock(return_value=ctx)
             result = await assembler._compute_user_context("test-user")
 
         assert len(result["projects"]) == 10  # display slice
-        assert result["project_count"] == 12, (
-            "The true denominator must ride with the truncated display list"
-        )
+        assert (
+            result["project_count"] == 12
+        ), "The true denominator must ride with the truncated display list"
 
     async def test_floor_renders_true_count_and_plain_names(self):
         from services.intent_service.conversational_floor import ConversationalFloor

@@ -94,7 +94,9 @@ def main() -> int:
         return 2
 
     cal = list(csv.DictReader(CALENDAR.open(newline="", encoding="utf-8")))
-    wm_rows = list(csv.DictReader((web_root / "data" / "blog-metadata.csv").open(newline="", encoding="utf-8")))
+    wm_rows = list(
+        csv.DictReader((web_root / "data" / "blog-metadata.csv").open(newline="", encoding="utf-8"))
+    )
     by_slug = {r["slug"]: r for r in wm_rows}
 
     matched = 0
@@ -134,22 +136,29 @@ def main() -> int:
     passes = class2 <= CRITERION["class2_max"] and class3 <= CRITERION["class3_max"]
 
     if args.json:
-        print(json.dumps({
-            "matched_rows": matched,
-            "class2_stale_draftpaths": class2,
-            "class3_disagreements": class3,
-            "criterion": CRITERION,
-            "meets_criterion_2_and_3": passes,
-            "note": "Class 1 is measured by validate-editorial-calendar.py exit status",
-            "disagreements": disagreements if args.verbose else [],
-        }, indent=2))
+        print(
+            json.dumps(
+                {
+                    "matched_rows": matched,
+                    "class2_stale_draftpaths": class2,
+                    "class3_disagreements": class3,
+                    "criterion": CRITERION,
+                    "meets_criterion_2_and_3": passes,
+                    "note": "Class 1 is measured by validate-editorial-calendar.py exit status",
+                    "disagreements": disagreements if args.verbose else [],
+                },
+                indent=2,
+            )
+        )
         return 0
 
     print(f"Editorial drift — PDR-007 measurement  (website root: {web_root})")
     print(f"  calendar rows matched to a website row : {matched}")
     print()
     print(f"  Class 2  stale draftPath values        : {class2:3}   (criterion: 0)")
-    print(f"  Class 3  field-level disagreements     : {class3:3}   (criterion: <= {CRITERION['class3_max']}, baseline 17)")
+    print(
+        f"  Class 3  field-level disagreements     : {class3:3}   (criterion: <= {CRITERION['class3_max']}, baseline 17)"
+    )
     print()
     if args.verbose and disagreements:
         for d in disagreements:

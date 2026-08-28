@@ -179,7 +179,9 @@ class TestPreClassifier:
             ]:
                 assert intent is not None and intent.action == "thanks"
             else:
-                assert intent is None, f"Expected None for '{pattern}' (#1416 pleasantry-only rule), got {intent}"
+                assert (
+                    intent is None
+                ), f"Expected None for '{pattern}' (#1416 pleasantry-only rule), got {intent}"
 
     @pytest.mark.smoke
     def test_case_insensitivity(self):

@@ -150,9 +150,7 @@ class TestDeriveSubjectFromProse:
         assert derive_subject_from_prose(prose) == "Safari SSO loop"
 
     def test_quotes_and_terminal_punctuation_are_stripped(self):
-        assert derive_subject_from_prose('"Flaky deploy checks!" ') == (
-            "Flaky deploy checks"
-        )
+        assert derive_subject_from_prose('"Flaky deploy checks!" ') == ("Flaky deploy checks")
 
 
 class TestSubjectlessOffer:
@@ -190,9 +188,7 @@ class TestSubjectlessOpeningEndToEnd:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
         ):
-            r = await svc.process_intent(
-                message=FIRST_ANSWER_PROSE, session_id=sid, user_id=_USER
-            )
+            r = await svc.process_intent(message=FIRST_ANSWER_PROSE, session_id=sid, user_id=_USER)
 
         # Nothing filed, nothing looked up (the pre-fix theft reply):
         w.assert_not_awaited()
@@ -229,9 +225,7 @@ class TestSubjectlessOpeningEndToEnd:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()),
         ):
-            await svc.process_intent(
-                message=FIRST_ANSWER_PROSE, session_id=sid, user_id=_USER
-            )
+            await svc.process_intent(message=FIRST_ANSWER_PROSE, session_id=sid, user_id=_USER)
 
         created = {"number": 630, "html_url": "https://x/630", "title": "t"}
         with (
@@ -241,9 +235,7 @@ class TestSubjectlessOpeningEndToEnd:
             patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
             patch(RESOLVER, new=AsyncMock(return_value="acme/widgets")),
         ):
-            r = await svc.process_intent(
-                message="file it as is", session_id=sid, user_id=_USER
-            )
+            r = await svc.process_intent(message="file it as is", session_id=sid, user_id=_USER)
 
         w.assert_awaited_once()
         _, kwargs = w.await_args
@@ -270,9 +262,7 @@ class TestSubjectlessOpeningEndToEnd:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()),
         ):
-            await svc.process_intent(
-                message=FIRST_ANSWER_PROSE, session_id=sid, user_id=_USER
-            )
+            await svc.process_intent(message=FIRST_ANSWER_PROSE, session_id=sid, user_id=_USER)
             r2 = await svc.process_intent(message=second, session_id=sid, user_id=_USER)
 
         assert "added to the draft" in r2.message.lower()
@@ -330,9 +320,7 @@ class TestSubjectlessOpeningEndToEnd:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
         ):
-            r = await svc.process_intent(
-                message="close issue #108", session_id=sid, user_id=_USER
-            )
+            r = await svc.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         w.assert_not_awaited()
         assert "(yes/no)" in r.message
         stored = next(iter(_pending_offers(svc).values()))

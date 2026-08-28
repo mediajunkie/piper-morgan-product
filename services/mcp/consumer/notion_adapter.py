@@ -56,7 +56,6 @@ logger = logging.getLogger(__name__)
 
 
 class NotionMCPAdapter(BaseSpatialAdapter):
-    
     """
     Notion MCP spatial adapter implementation.
 
@@ -965,7 +964,9 @@ class NotionMCPAdapter(BaseSpatialAdapter):
         binding row to query (D3/D5: health without a resource fetch or token)."""
         config_service = self.config_service or NotionConfigService()
         if config_service.is_configured(user_id):
-            return ConnectorStatus(state=ConnectorStatusState.BOUND, detail="Notion API key configured.")
+            return ConnectorStatus(
+                state=ConnectorStatusState.BOUND, detail="Notion API key configured."
+            )
         return ConnectorStatus(
             state=ConnectorStatusState.UNBOUND,
             detail="No Notion API key configured -- connect to continue.",

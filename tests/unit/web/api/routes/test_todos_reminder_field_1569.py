@@ -46,9 +46,7 @@ async def test_list_response_carries_reminder_date_for_reminder_rows():
     reminder_date; the list payload must carry it as aware ISO."""
     when = datetime(2026, 8, 11, 15, 0, tzinfo=timezone.utc)
     repo = SimpleNamespace(
-        get_todos_by_owner=AsyncMock(
-            return_value=[_stored_todo(reminder_date=when, due_date=when)]
-        )
+        get_todos_by_owner=AsyncMock(return_value=[_stored_todo(reminder_date=when, due_date=when)])
     )
     out = await list_todos(current_user=CLAIMS, todo_repo=repo)
     row = out["todos"][0]
@@ -64,9 +62,7 @@ async def test_plain_todos_carry_reminder_date_none():
     """A plain todo says so honestly: reminder_date present and null — the
     page's filter (t.reminder_date) must see falsy, not undefined-by-omission
     on some rows and a value on others."""
-    repo = SimpleNamespace(
-        get_todos_by_owner=AsyncMock(return_value=[_stored_todo()])
-    )
+    repo = SimpleNamespace(get_todos_by_owner=AsyncMock(return_value=[_stored_todo()]))
     out = await list_todos(current_user=CLAIMS, todo_repo=repo)
     row = out["todos"][0]
     assert "reminder_date" in row
@@ -77,9 +73,7 @@ async def test_due_dated_todo_without_reminder_is_not_marked():
     """The exact confusable case: due_date set, reminder_date not — must NOT
     read as a reminder."""
     due = datetime(2026, 8, 12, 0, 0, tzinfo=timezone.utc)
-    repo = SimpleNamespace(
-        get_todos_by_owner=AsyncMock(return_value=[_stored_todo(due_date=due)])
-    )
+    repo = SimpleNamespace(get_todos_by_owner=AsyncMock(return_value=[_stored_todo(due_date=due)]))
     out = await list_todos(current_user=CLAIMS, todo_repo=repo)
     row = out["todos"][0]
     assert row["due_date"] is not None

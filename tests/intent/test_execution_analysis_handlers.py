@@ -104,23 +104,29 @@ class TestExecutionHandlers:
         # #1220/#1382 (2026-07-09): the write now goes through the ROUTER
         # (connector-first, #1322-guarded) — mocks repointed from the legacy
         # GitHubDomainService to GitHubIntegrationRouter.
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter.initialize", new=AsyncMock()
-        ), patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter.is_available", new=AsyncMock(return_value=True)
-        ), patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter.create_issue",
-            new=AsyncMock(return_value={"number": 42, "title": "Test issue"}),
-        ) as mock_create, patch(
-            "services.integrations.github.repo_resolver.get_user_default_repo",
-            new_callable=AsyncMock,
-        ) as mock_get_default_repo, patch(
-            "services.configuration.piper_config_loader.piper_config_loader"
-        ) as mock_config_loader:
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter.initialize",
+                new=AsyncMock(),
+            ),
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter.is_available",
+                new=AsyncMock(return_value=True),
+            ),
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter.create_issue",
+                new=AsyncMock(return_value={"number": 42, "title": "Test issue"}),
+            ) as mock_create,
+            patch(
+                "services.integrations.github.repo_resolver.get_user_default_repo",
+                new_callable=AsyncMock,
+            ) as mock_get_default_repo,
+            patch(
+                "services.configuration.piper_config_loader.piper_config_loader"
+            ) as mock_config_loader,
+        ):
             mock_get_default_repo.return_value = "scoped-owner/scoped-repo"
-            mock_config_loader.load_github_config.return_value = MagicMock(
-                default_labels=None
-            )
+            mock_config_loader.load_github_config.return_value = MagicMock(default_labels=None)
 
             result = await intent_service._handle_create_issue(
                 intent, workflow_id="wf-1", session_id="test", user_id=user_id
@@ -264,9 +270,18 @@ class TestExecutionHandlers:
             )
 
     @pytest.mark.asyncio
-    @patch("services.integrations.github.github_integration_router.GitHubIntegrationRouter.update_issue", new_callable=AsyncMock)
-    @patch("services.integrations.github.github_integration_router.GitHubIntegrationRouter.is_available", new_callable=AsyncMock)
-    @patch("services.integrations.github.github_integration_router.GitHubIntegrationRouter.initialize", new_callable=AsyncMock)
+    @patch(
+        "services.integrations.github.github_integration_router.GitHubIntegrationRouter.update_issue",
+        new_callable=AsyncMock,
+    )
+    @patch(
+        "services.integrations.github.github_integration_router.GitHubIntegrationRouter.is_available",
+        new_callable=AsyncMock,
+    )
+    @patch(
+        "services.integrations.github.github_integration_router.GitHubIntegrationRouter.initialize",
+        new_callable=AsyncMock,
+    )
     async def test_update_issue_success_with_mock(
         self, _mock_init, mock_available, mock_update, intent_service
     ):

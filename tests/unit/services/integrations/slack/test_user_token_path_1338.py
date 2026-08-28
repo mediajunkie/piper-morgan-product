@@ -31,6 +31,7 @@ def _client(config: SlackConfig) -> SlackClient:
 
 # ---- Layer 1: config ----
 
+
 async def test_config_loads_user_token_from_keychain_1338():
     from services.integrations.slack.config_service import SlackConfigService
 
@@ -55,6 +56,7 @@ async def test_config_loads_user_token_from_keychain_1338():
 
 
 # ---- Layer 2: client ----
+
 
 async def test_make_request_honest_degrades_without_user_token_1338():
     client = _client(SlackConfig(bot_token="xoxb-bot", user_token=""))
@@ -94,12 +96,11 @@ async def test_test_auth_threads_use_user_token_1338():
 
 # ---- Layer 3: router ----
 
+
 async def test_router_search_messages_delegates_1338():
     router = SlackIntegrationRouter(config_service=MagicMock())
     mock_client = MagicMock()
-    mock_client.search_messages = AsyncMock(
-        return_value=SlackResponse(success=True, data={})
-    )
+    mock_client.search_messages = AsyncMock(return_value=SlackResponse(success=True, data={}))
     router._ensure_config_service = MagicMock()
     router._get_preferred_integration = MagicMock(return_value=(mock_client, False))
 
@@ -124,6 +125,7 @@ async def test_router_test_auth_passes_use_user_token_1338():
 
 
 # ---- Layer 4: assembler migration ----
+
 
 async def test_mentions_aggregator_uses_router_1338():
     from services.intent_service.context_assembler import ContextAssembler

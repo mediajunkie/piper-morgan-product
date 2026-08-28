@@ -116,8 +116,7 @@ class TestDecisionGate:
 
     def test_always_ask_mode_reads_back_even_high_confidence(self):
         assert (
-            vi.decide(0.95, vi.VerificationMetaMode.ALWAYS_ASK)
-            is vi.VerificationDecision.READ_BACK
+            vi.decide(0.95, vi.VerificationMetaMode.ALWAYS_ASK) is vi.VerificationDecision.READ_BACK
         )
 
     def test_is_low_confidence_resurrected_trigger(self):
@@ -221,7 +220,10 @@ class TestReadBackOffer:
         vi.mark_declined("sess-1", "standup_format")
         assert (
             vi.build_read_back_offer(
-                _USER, "standup_format", "brief", "that you want brief standups",
+                _USER,
+                "standup_format",
+                "brief",
+                "that you want brief standups",
                 session_id="sess-1",
             )
             is None
@@ -231,7 +233,10 @@ class TestReadBackOffer:
         vi.mark_declined("sess-1", "standup_format")
         assert (
             vi.build_read_back_offer(
-                _USER, "standup_format", "brief", "that you want brief standups",
+                _USER,
+                "standup_format",
+                "brief",
+                "that you want brief standups",
                 session_id="sess-2",
             )
             is not None
@@ -282,7 +287,8 @@ class TestVerifyInferenceEntryPoint:
             _USER, "standup_format", "brief", "that you want brief standups", confidence=0.6
         )
         await run_verify_inference_workflow(
-            session_id="s", user_id=_USER,
+            session_id="s",
+            user_id=_USER,
             context={"pending_action": offer.offer["pending_action"]},
         )
         record = await vi.get_verified_inference(_USER, "standup_format")
@@ -294,7 +300,8 @@ class TestVerifyInferenceEntryPoint:
             _USER, "standup_format", "brief", "that you want brief standups"
         )
         result = await run_verify_inference_workflow(
-            session_id="s", user_id=_USER,
+            session_id="s",
+            user_id=_USER,
             context={"pending_action": offer.offer["pending_action"]},
         )
         assert result["intent_data"]["persisted"] is False
@@ -309,7 +316,8 @@ class TestVerifyInferenceEntryPoint:
         other = "9f7b8a52-1532-4b00-9e00-000000001532"
         mem_prefs[other] = {}
         result = await run_verify_inference_workflow(
-            session_id="s", user_id=other,
+            session_id="s",
+            user_id=other,
             context={"pending_action": offer.offer["pending_action"]},
         )
         assert result["intent_data"].get("principal_mismatch") is True
@@ -338,8 +346,14 @@ def live_service():
     return IntentService(intent_classifier=clf)
 
 
-def _arm_read_back(service, sid, key="standup_format", value="brief",
-                   description="that you want brief standups", confidence=0.6):
+def _arm_read_back(
+    service,
+    sid,
+    key="standup_format",
+    value="brief",
+    description="that you want brief standups",
+    confidence=0.6,
+):
     """Simulate the consumer's move (the consumers themselves are #1591/#1509
     scope): build the read-back and store it in the EXISTING #846 pending-offer
     store, exactly as a consumer would."""
@@ -369,9 +383,7 @@ class TestEndToEndVerificationTurn:
         assert stored["source"] == vi.SOURCE_USER_VERIFIED
         assert _pending_offers(live_service).get(sid) is None  # consumed
 
-    async def test_no_discards_without_storing_and_without_reask(
-        self, live_service, mem_prefs
-    ):
+    async def test_no_discards_without_storing_and_without_reask(self, live_service, mem_prefs):
         """Required AC: declined → not stored, not re-asked same session."""
         sid = "e2e-1510-no"
         _arm_read_back(live_service, sid)
@@ -381,15 +393,16 @@ class TestEndToEndVerificationTurn:
         # The mechanism refuses to rebuild the same read-back this session:
         assert (
             vi.build_read_back_offer(
-                _USER, "standup_format", "brief", "that you want brief standups",
+                _USER,
+                "standup_format",
+                "brief",
+                "that you want brief standups",
                 session_id=sid,
             )
             is None
         )
 
-    async def test_stop_asking_me_every_time_full_meta_flow(
-        self, live_service, mem_prefs
-    ):
+    async def test_stop_asking_me_every_time_full_meta_flow(self, live_service, mem_prefs):
         """Required AC (verbatim scenario): meta-feedback on a verification
         turn → (a) the meta-preference is VISIBLE IN THE STORE under its own
         key, (b) subsequent low-confidence inferences auto-apply, (c) the
@@ -412,9 +425,7 @@ class TestEndToEndVerificationTurn:
         stored = mem_prefs[_USER][vi.VERIFIED_INFERENCES_PREF_KEY]["standup_format"]
         assert stored["source"] == vi.SOURCE_META_AUTO
 
-    async def test_no_stop_asking_declines_current_but_sets_meta(
-        self, live_service, mem_prefs
-    ):
+    async def test_no_stop_asking_declines_current_but_sets_meta(self, live_service, mem_prefs):
         """Co-occurrence: "no, stop asking me every time" = decline THIS
         inference AND steer the process — the two signals are handled as the
         two signals they are."""
@@ -427,9 +438,7 @@ class TestEndToEndVerificationTurn:
         assert vi.VERIFIED_INFERENCES_PREF_KEY not in mem_prefs[_USER]
         assert vi.was_declined(sid, "standup_format") is True
 
-    async def test_dont_make_assumptions_raises_the_gate(
-        self, live_service, mem_prefs
-    ):
+    async def test_dont_make_assumptions_raises_the_gate(self, live_service, mem_prefs):
         sid = "e2e-1510-meta-ask"
         _arm_read_back(live_service, sid)
         result = await live_service.process_intent(
@@ -446,9 +455,7 @@ class TestEndToEndVerificationTurn:
         session decline memo set)."""
         sid = "e2e-1510-cancel"
         _arm_read_back(live_service, sid)
-        result = await live_service.process_intent(
-            message="cancel", session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message="cancel", session_id=sid, user_id=_USER)
         assert "won't assume" in result.message
         assert vi.VERIFIED_INFERENCES_PREF_KEY not in mem_prefs[_USER]
         assert vi.was_declined(sid, "standup_format") is True

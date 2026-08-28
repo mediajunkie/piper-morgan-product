@@ -27,7 +27,6 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List, Optional
 
-
 # Legacy substring-list pattern words copied verbatim from
 # services/ethics/boundary_enforcer_refactored.py lines 121-156.
 # If those lists change, update this dict to match.

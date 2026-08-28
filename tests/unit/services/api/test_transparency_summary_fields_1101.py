@@ -18,7 +18,6 @@ This file verifies both fields are gone + the verifiable substitutes are present
 
 from pathlib import Path
 
-
 SOURCE_FILE = Path("services/api/transparency.py")
 
 

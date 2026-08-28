@@ -78,16 +78,18 @@ class TestGetSlackSettings:
     @pytest.mark.asyncio
     async def test_returns_configured_but_invalid_when_token_fails(self):
         """Should return configured=True, valid=False when token is invalid (stuck state)."""
-        from services.integrations.slack.slack_client import SlackError, SlackErrorType, SlackResponse
+        from services.integrations.slack.slack_client import (
+            SlackError,
+            SlackErrorType,
+            SlackResponse,
+        )
 
         mock_router = MagicMock()
         mock_router.test_auth = AsyncMock(
             return_value=SlackResponse(
                 success=False,
                 data={},
-                error=SlackError(
-                    type=SlackErrorType.AUTHENTICATION_ERROR, message="invalid_auth"
-                ),
+                error=SlackError(type=SlackErrorType.AUTHENTICATION_ERROR, message="invalid_auth"),
             )
         )
 

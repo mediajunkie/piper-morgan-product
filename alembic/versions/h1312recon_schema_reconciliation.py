@@ -45,14 +45,11 @@ def upgrade() -> None:
         "ON conversations (user_id, session_id)"
     )
     op.execute(
-        "CREATE INDEX IF NOT EXISTS idx_files_owner "
-        "ON uploaded_files (owner_id, upload_time)"
+        "CREATE INDEX IF NOT EXISTS idx_files_owner " "ON uploaded_files (owner_id, upload_time)"
     )
 
     # 5: the duplicate FK (keep the named CASCADE one the model declares)
-    op.execute(
-        "ALTER TABLE user_api_keys DROP CONSTRAINT IF EXISTS user_api_keys_user_id_fkey1"
-    )
+    op.execute("ALTER TABLE user_api_keys DROP CONSTRAINT IF EXISTS user_api_keys_user_id_fkey1")
 
 
 def downgrade() -> None:
@@ -64,7 +61,7 @@ def downgrade() -> None:
     op.execute("DROP INDEX IF EXISTS idx_conversations_user_session")
     op.execute(
         "CREATE INDEX IF NOT EXISTS idx_conversation_turns_references "
-        "ON conversation_turns USING gin (\"references\")"
+        'ON conversation_turns USING gin ("references")'
     )
     op.execute(
         "CREATE INDEX IF NOT EXISTS idx_conversation_turns_entities "

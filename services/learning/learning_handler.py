@@ -402,8 +402,7 @@ class LearningHandler:
                         # pattern (the dead-upsert facet of the dead learning loop).
                         # The action_type leaf is plaintext by design (EncryptedJSON
                         # leaf-split whitelist) so server-side matching is supported.
-                        LearnedPattern.pattern_data.op("->>")("action_type")
-                        == action_type,
+                        LearnedPattern.pattern_data.op("->>")("action_type") == action_type,
                         LearnedPattern.enabled == True,  # noqa: E712
                     )
                 )

@@ -23,7 +23,6 @@ from services.integrations.slack.notion_url_unfurler import (
     unfurl_notion_urls,
 )
 
-
 # ===== URL extraction =====
 
 

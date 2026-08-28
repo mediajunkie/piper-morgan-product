@@ -19,8 +19,8 @@ ADDITIVE: creates exactly one new table; touches nothing else.
 from typing import Sequence, Union
 
 import sqlalchemy as sa
-from alembic import op
 
+from alembic import op
 from services.database.models import CrossDialectUUID
 
 # revision identifiers, used by Alembic.
@@ -42,9 +42,7 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["user_id"], ["users.id"]),
         sa.PrimaryKeyConstraint("token"),
     )
-    op.create_index(
-        "ix_password_reset_tokens_user_id", "password_reset_tokens", ["user_id"]
-    )
+    op.create_index("ix_password_reset_tokens_user_id", "password_reset_tokens", ["user_id"])
 
 
 def downgrade() -> None:

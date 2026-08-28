@@ -221,8 +221,10 @@ class TestGrammarDerivation:
 class TestRouteEnforcement:
     async def test_valid_first_reply_routes_in_one_call(self):
         llm = ScriptedLLM(
-            ['{"operation": "create_reminder", "args": {"when": "9am"}, '
-             '"confidence": 0.92, "rationale": "reminder request"}']
+            [
+                '{"operation": "create_reminder", "args": {"when": "9am"}, '
+                '"confidence": 0.92, "rationale": "reminder request"}'
+            ]
         )
         d = await route("remind me at 9am", llm_service=llm)
         assert d.outcome == "operation"
@@ -311,9 +313,7 @@ class TestShadowScheduling:
             loop_touches.append("get_running_loop")
             raise AssertionError("flag-off path must never reach the event loop")
 
-        monkeypatch.setattr(
-            inversion_shadow.asyncio, "get_running_loop", _fail_if_touched
-        )
+        monkeypatch.setattr(inversion_shadow.asyncio, "get_running_loop", _fail_if_touched)
         task = inversion_shadow.maybe_schedule_shadow_check(
             "hello", "conversation:greeting", llm_service=ExplosiveLLM()
         )
@@ -327,9 +327,7 @@ class TestShadowScheduling:
         async def _exploding_route(*a, **k):
             raise RuntimeError("router exploded")
 
-        monkeypatch.setattr(
-            "services.intent_service.inversion_router.route", _exploding_route
-        )
+        monkeypatch.setattr("services.intent_service.inversion_router.route", _exploding_route)
         task = inversion_shadow.maybe_schedule_shadow_check(
             "hello", "conversation:greeting", session_id="s1", user_id="u1"
         )
@@ -354,13 +352,9 @@ class TestShadowScheduling:
         events = []
 
         async def _scripted_route(utterance, snapshot=None, **kw):
-            return RoutingDecision(
-                outcome="operation", operation="create_reminder", confidence=0.9
-            )
+            return RoutingDecision(outcome="operation", operation="create_reminder", confidence=0.9)
 
-        monkeypatch.setattr(
-            "services.intent_service.inversion_router.route", _scripted_route
-        )
+        monkeypatch.setattr("services.intent_service.inversion_router.route", _scripted_route)
         monkeypatch.setattr(
             inversion_shadow.logger,
             "info",
@@ -387,9 +381,7 @@ class TestShadowScheduling:
         async def _scripted_route(utterance, snapshot=None, **kw):
             return RoutingDecision(outcome="operation", operation="list_issues")
 
-        monkeypatch.setattr(
-            "services.intent_service.inversion_router.route", _scripted_route
-        )
+        monkeypatch.setattr("services.intent_service.inversion_router.route", _scripted_route)
         monkeypatch.setattr(
             inversion_shadow.logger,
             "info",
@@ -419,12 +411,19 @@ class TestShadowScorer:
     async def test_poisoned_row_records_error_never_fakes(self):
         scorer = _load_scorer()
         rows = [
-            {"phrase": "good row", "category": "QUERY",
-             "expected": "action:list_issues_query", "source": "t"},
-            {"phrase": "poisoned row", "category": "QUERY",
-             "expected": "action:list_prs_query", "source": "t"},
-            {"phrase": "review row", "category": "TRUST",
-             "expected": "REVIEW", "source": "t"},
+            {
+                "phrase": "good row",
+                "category": "QUERY",
+                "expected": "action:list_issues_query",
+                "source": "t",
+            },
+            {
+                "phrase": "poisoned row",
+                "category": "QUERY",
+                "expected": "action:list_prs_query",
+                "source": "t",
+            },
+            {"phrase": "review row", "category": "TRUST", "expected": "REVIEW", "source": "t"},
         ]
 
         async def router_fn(phrase):
@@ -447,8 +446,12 @@ class TestShadowScorer:
     async def test_category_expectation_scored_via_registry_category(self):
         scorer = _load_scorer()
         rows = [
-            {"phrase": "who am I?", "category": "IDENTITY",
-             "expected": "category:IDENTITY", "source": "t"},
+            {
+                "phrase": "who am I?",
+                "category": "IDENTITY",
+                "expected": "category:IDENTITY",
+                "source": "t",
+            },
         ]
 
         async def router_fn(phrase):
@@ -461,8 +464,12 @@ class TestShadowScorer:
     async def test_refused_scores_as_mismatch_annotated(self):
         scorer = _load_scorer()
         rows = [
-            {"phrase": "x", "category": "QUERY",
-             "expected": "action:list_issues_query", "source": "t"},
+            {
+                "phrase": "x",
+                "category": "QUERY",
+                "expected": "action:list_issues_query",
+                "source": "t",
+            },
         ]
 
         async def router_fn(phrase):

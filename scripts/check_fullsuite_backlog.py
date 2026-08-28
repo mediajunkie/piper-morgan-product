@@ -34,7 +34,9 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BACKLOG_FILE = REPO_ROOT / "scripts" / "known_failing_backlog.tsv"
 
-_SUMMARY = re.compile(r"^=*\s*(?:\d+ \w+, )*\d+ (?:passed|failed|error|errors|skipped|deselected|warnings?)")
+_SUMMARY = re.compile(
+    r"^=*\s*(?:\d+ \w+, )*\d+ (?:passed|failed|error|errors|skipped|deselected|warnings?)"
+)
 _RESULT_LINE = re.compile(r"^(FAILED|ERROR) (\S+)")
 _VALID_TAG = re.compile(r"^(fixture|triage|flaky|regression:#\d+)$")
 
@@ -93,9 +95,7 @@ def main() -> int:
     def covered_by_file_error(node: str) -> bool:
         return any(node.startswith(f + "::") for f in file_errors)
 
-    new_failures = sorted(
-        n for n in failed if n not in backlog and not covered_by_file_error(n)
-    )
+    new_failures = sorted(n for n in failed if n not in backlog and not covered_by_file_error(n))
     # file-level errors not covering any backlog entry are new rot too
     new_file_errors = sorted(
         f for f in file_errors if not any(n.startswith(f + "::") for n in backlog)

@@ -43,7 +43,6 @@ from services.intent_service.orchestrator import (
 from services.intent_service.pre_classifier import PreClassifier
 from services.shared_types import IntentCategory
 
-
 # ---------------------------------------------------------------------------
 # Reachability: the pre-classifier claims the utterance (surface 1),
 # so the fix site is the claiming handler — not a new pattern.
@@ -114,9 +113,7 @@ async def _run_portfolio(handler, message, archived_rows, active_rows):
     from services.database.session_factory import AsyncSessionFactory
     from services.onboarding.portfolio_service import PortfolioService
 
-    with patch.object(
-        AsyncSessionFactory, "session_scope", staticmethod(lambda: _FakeScope())
-    ):
+    with patch.object(AsyncSessionFactory, "session_scope", staticmethod(lambda: _FakeScope())):
         with patch.object(PortfolioService, "list_archived_projects", archived_mock):
             with patch.object(PortfolioService, "list_active_projects", active_mock):
                 result = await handler._handle_portfolio_query(
@@ -148,9 +145,9 @@ class TestArchivedListDispatch1431:
         active_mock.assert_not_awaited()
         msg = result["message"]
         assert "archived" in msg.lower()
-        assert "active projects" not in msg.lower(), (
-            "archived query answered with the ACTIVE list (PM fail 2026-08-09)"
-        )
+        assert (
+            "active projects" not in msg.lower()
+        ), "archived query answered with the ACTIVE list (PM fail 2026-08-09)"
         assert "Old Prototype" in msg
         assert "Sunset Initiative" in msg
 
@@ -210,9 +207,7 @@ class TestFailureNoteOwnLine1431:
         return Intent(category=category, action=action, confidence=1.0)
 
     def test_failure_note_not_merged_into_bullet(self, orchestrator):
-        bullet_list = (
-            "You have 3 active projects:\n\n- Klatch\n- CoVa\n- One Job"
-        )
+        bullet_list = "You have 3 active projects:\n\n- Klatch\n- CoVa\n- One Job"
         response = OrchestratedResponse(
             results=[
                 IntentExecutionResult(
@@ -236,9 +231,7 @@ class TestFailureNoteOwnLine1431:
             for line in msg.splitlines()
             if line.lstrip().startswith("-") and "wasn't able" in line
         ]
-        assert not offending_lines, (
-            f"failure note merged into a list bullet: {offending_lines!r}"
-        )
+        assert not offending_lines, f"failure note merged into a list bullet: {offending_lines!r}"
         # The last bullet survives intact as its own line.
         assert "- One Job" in msg.splitlines()
 

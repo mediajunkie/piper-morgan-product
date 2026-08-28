@@ -28,8 +28,7 @@ from sqlalchemy import create_engine, text  # noqa: E402
 from services.auth.password_reset_service import generate_reset_token  # noqa: E402
 
 _FIND_USER = text(
-    "SELECT id, username, email FROM users "
-    "WHERE username = :ident OR email = :ident"
+    "SELECT id, username, email FROM users " "WHERE username = :ident OR email = :ident"
 )
 _INSERT = text(
     "INSERT INTO password_reset_tokens (token, user_id, created_at, expires_at) "
@@ -61,7 +60,9 @@ def main():
     if len(rows) > 1:
         # username-equals-someone-else's-email collision: refuse rather than guess.
         listing = ", ".join(f"{r.username} <{r.email}>" for r in rows)
-        raise SystemExit(f"Identifier matches multiple accounts ({listing}) — use the exact username.")
+        raise SystemExit(
+            f"Identifier matches multiple accounts ({listing}) — use the exact username."
+        )
 
     user = rows[0]
     token = generate_reset_token()

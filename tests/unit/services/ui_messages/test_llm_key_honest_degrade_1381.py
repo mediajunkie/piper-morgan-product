@@ -20,7 +20,9 @@ import pytest
 from services.ui_messages.user_friendly_errors import make_error_user_friendly
 
 # The exact string seen in Fly logs during Scenario A.
-QUOTA_ERROR = "All configured LLM providers failed. Details: openai: Error code: 429 - insufficient_quota"
+QUOTA_ERROR = (
+    "All configured LLM providers failed. Details: openai: Error code: 429 - insufficient_quota"
+)
 
 
 class TestQuotaIsPermanentNotTransient:
@@ -57,7 +59,9 @@ class TestTransientStillTransient:
         """A provider connection blip is a real brief outage — it must NOT claim
         the user's key is bad (which would send them to fix a key that's fine)."""
         f = make_error_user_friendly(
-            RuntimeError("All configured LLM providers failed. Details: anthropic: Connection error")
+            RuntimeError(
+                "All configured LLM providers failed. Details: anthropic: Connection error"
+            )
         )
         assert f["category"] == "llm"
         assert "brief outage" in f["recovery"]

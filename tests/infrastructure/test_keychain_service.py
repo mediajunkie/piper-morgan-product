@@ -87,8 +87,7 @@ class TestKeychainService:
         # the keychain (first bit 2026-08-01 when the Amber keychain was
         # provisioned). The assertions below are about THIS test's env, so the
         # test must clear the vars it asserts absent, not assume a keyless seat.
-        env = {k: v for k, v in os.environ.items()
-               if k not in ("OPENAI_API_KEY", "GEMINI_API_KEY")}
+        env = {k: v for k, v in os.environ.items() if k not in ("OPENAI_API_KEY", "GEMINI_API_KEY")}
         env["ANTHROPIC_API_KEY"] = "env-key"
         with patch.dict("os.environ", env, clear=True):
             status = service.check_migration_status(["openai", "anthropic", "gemini"])

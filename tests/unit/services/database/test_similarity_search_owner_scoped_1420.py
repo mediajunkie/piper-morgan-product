@@ -102,7 +102,12 @@ async def two_tenants_with_nodes():
                     "created_at, updated_at, role, is_alpha) "
                     "VALUES (:id, :u, :e, true, true, :now, :now, 'user', true)"
                 ),
-                {"id": uid, "u": f"t1420_{uid[:8]}", "e": f"t1420_{uid[:8]}@test.example.com", "now": now},
+                {
+                    "id": uid,
+                    "u": f"t1420_{uid[:8]}",
+                    "e": f"t1420_{uid[:8]}@test.example.com",
+                    "now": now,
+                },
             )
             await s.execute(
                 text(
@@ -115,7 +120,8 @@ async def two_tenants_with_nodes():
                     "ntype": NodeType.CONCEPT.value,
                     "nid": f"node-{uid[:8]}",
                     "name": f"milk-note-{uid[:8]}",
-                    "meta": '{"semantic_content": "buy milk at the store", "todo_id": "%s"}' % uid[:8],
+                    "meta": '{"semantic_content": "buy milk at the store", "todo_id": "%s"}'
+                    % uid[:8],
                     "oid": uid,
                     "now": now,
                 },

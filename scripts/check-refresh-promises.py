@@ -56,6 +56,7 @@ so — "nothing to check" is not a pass over the population. Exit 1 only on
 content-changed-without-bump. Wireable as an advisory hook; advisory-not-control per the
 standing Amber hooks doctrine.
 """
+
 import glob
 import re
 import subprocess
@@ -175,9 +176,9 @@ def diff_mode(ref):
             ["git", "diff", ref, "--", rel], capture_output=True, text=True, cwd=ROOT
         ).stdout
         changes = [
-            l for l in d.splitlines()
-            if (l.startswith("+") or l.startswith("-"))
-            and not l.startswith(("+++", "---"))
+            l
+            for l in d.splitlines()
+            if (l.startswith("+") or l.startswith("-")) and not l.startswith(("+++", "---"))
         ]
         bumped = any(_LAST_UPDATED_LINE.match(l) for l in changes)
         content = any(not _LAST_UPDATED_LINE.match(l) for l in changes)
@@ -241,7 +242,9 @@ def main():
 
         if not pattern:
             if declared == "by-hand":
-                by_hand.append(f"{rel} — kept by hand, declared (last_updated {updated or 'absent'})")
+                by_hand.append(
+                    f"{rel} — kept by hand, declared (last_updated {updated or 'absent'})"
+                )
             else:
                 unverifiable.append(
                     f"{rel} — declares a refresh promise in prose, no refresh_trigger_glob and no "
@@ -263,16 +266,22 @@ def main():
         print()
         print(f"▸ {rel}")
         if not triggers:
-            print(f"  ⚠️  no trigger files match {pattern} — the promise names an event that leaves no trace")
+            print(
+                f"  ⚠️  no trigger files match {pattern} — the promise names an event that leaves no trace"
+            )
             fail = 1
             continue
         newest, newest_path = triggers[-1]
         later = [d for d, _ in triggers if d > updated]
         if later:
             fail = 1
-            print(f"  ✗ LAPSED — last_updated {updated}, but {len(later)} trigger(s) shipped after it")
+            print(
+                f"  ✗ LAPSED — last_updated {updated}, but {len(later)} trigger(s) shipped after it"
+            )
             print(f"    newest: {Path(newest_path).name} ({newest})")
-            print(f"    the promised refresh did not happen the last {len(later)} time(s) it was due")
+            print(
+                f"    the promised refresh did not happen the last {len(later)} time(s) it was due"
+            )
         else:
             print(f"  ✓ current — last_updated {updated} ≥ newest trigger {newest}")
 

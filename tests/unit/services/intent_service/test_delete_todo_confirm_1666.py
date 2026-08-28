@@ -71,8 +71,7 @@ class _ExplosiveLLM:
 
     def __getattr__(self, name):
         raise AssertionError(
-            f"LLM boundary touched ({name}) — #1666 turns must resolve "
-            "deterministically"
+            f"LLM boundary touched ({name}) — #1666 turns must resolve " "deterministically"
         )
 
 
@@ -106,9 +105,7 @@ def _stub_classification(monkeypatch, service, message, action, category=IntentC
             secondary_intents=[],
         )
 
-    monkeypatch.setattr(
-        service.intent_classifier, "classify_multiple", _classify_multiple
-    )
+    monkeypatch.setattr(service.intent_classifier, "classify_multiple", _classify_multiple)
     return intent
 
 
@@ -171,9 +168,9 @@ class TestDeleteTodoRailEntries:
         for alias in DELETE_TODO_ALIASES:
             assert alias in wf, f"{alias} missing from the action rail (#1666)"
             entry = wf[alias]
-            assert entry.effect == EffectClass.DESTRUCTIVE, (
-                f"{alias} must be DESTRUCTIVE — deletion is unrecoverable (#1666)"
-            )
+            assert (
+                entry.effect == EffectClass.DESTRUCTIVE
+            ), f"{alias} must be DESTRUCTIVE — deletion is unrecoverable (#1666)"
             assert entry.outwardness == Outwardness.PRIVATE
             assert entry.action_triggered is True
 
@@ -290,9 +287,7 @@ class TestConfirmBuilder:
         number the extractor could read."""
         handlers = _BuilderHandlers()
         for message in ("clear my reminders", "clear todo 1", "reset my todos"):
-            gate = await build_todo_delete_confirmation(
-                _delete_intent(message), handlers, _USER
-            )
+            gate = await build_todo_delete_confirmation(_delete_intent(message), handlers, _USER)
             assert gate.passthrough and gate.offer is None, message
 
     async def test_no_number_passes_through(self):
@@ -311,9 +306,7 @@ class TestConfirmBuilder:
 
     async def test_no_principal_passes_through(self):
         handlers = _BuilderHandlers()
-        gate = await build_todo_delete_confirmation(
-            _delete_intent("delete todo 1"), handlers, None
-        )
+        gate = await build_todo_delete_confirmation(_delete_intent("delete todo 1"), handlers, None)
         assert gate.passthrough and gate.offer is None
 
     async def test_lookup_failure_is_honest_noop_never_passthrough(self):
@@ -368,13 +361,9 @@ class TestEndToEndConfirmFlow:
         sid = "e2e-1666-yes"
         first_id = todo_boundary["todos"][0].id
         _stub_classification(monkeypatch, live_service, "delete todo 1", "delete_todo")
-        await live_service.process_intent(
-            message="delete todo 1", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="delete todo 1", session_id=sid, user_id=_USER)
         todo_boundary["allow_delete"] = True
-        result = await live_service.process_intent(
-            message="yes", session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert todo_boundary["deleted"] == [first_id]
         assert "Review the PR" in result.message
         assert _pending_offers(live_service).get(sid) is None
@@ -388,9 +377,7 @@ class TestEndToEndConfirmFlow:
         sid = "e2e-1666-shift"
         confirmed_id = todo_boundary["todos"][0].id
         _stub_classification(monkeypatch, live_service, "delete todo 1", "delete_todo")
-        await live_service.process_intent(
-            message="delete todo 1", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="delete todo 1", session_id=sid, user_id=_USER)
         interloper = Todo(
             id=str(uuid4()),
             text="Brand new urgent thing",
@@ -400,9 +387,7 @@ class TestEndToEndConfirmFlow:
         )
         todo_boundary["todos"].insert(0, interloper)
         todo_boundary["allow_delete"] = True
-        result = await live_service.process_intent(
-            message="yes", session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert todo_boundary["deleted"] == [confirmed_id]
         assert interloper.id not in todo_boundary["deleted"]
         assert "Review the PR" in result.message
@@ -413,12 +398,8 @@ class TestEndToEndConfirmFlow:
     ):
         sid = f"e2e-1666-no-{negative.replace(' ', '-')}"
         _stub_classification(monkeypatch, live_service, "delete todo 1", "delete_todo")
-        await live_service.process_intent(
-            message="delete todo 1", session_id=sid, user_id=_USER
-        )
-        result = await live_service.process_intent(
-            message=negative, session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="delete todo 1", session_id=sid, user_id=_USER)
+        result = await live_service.process_intent(message=negative, session_id=sid, user_id=_USER)
         assert 'won\'t delete todo 1: "Review the PR"' in result.message
         assert "Nothing has been changed" in result.message
         assert todo_boundary["deleted"] == []
@@ -434,9 +415,7 @@ class TestEndToEndConfirmFlow:
         boundary, proving no offer seam claimed it)."""
         sid = "e2e-1666-aside"
         _stub_classification(monkeypatch, live_service, "delete todo 1", "delete_todo")
-        await live_service.process_intent(
-            message="delete todo 1", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="delete todo 1", session_id=sid, user_id=_USER)
 
         async def _explosive_classify(msg, context=None, user_id=None, session_id=None):
             raise AssertionError("LLM boundary touched — aside fell to classification")
@@ -452,9 +431,8 @@ class TestEndToEndConfirmFlow:
             # declining is not what PM said either.
             assert "won't delete todo 1" not in result.message
         except IntentProcessingError as exc:
-            assert (
-                "LLM boundary touched" in str(exc)
-                or "INTENT_CLASSIFICATION_FAILED" in str(exc)
+            assert "LLM boundary touched" in str(exc) or "INTENT_CLASSIFICATION_FAILED" in str(
+                exc
             ), str(exc)
         assert todo_boundary["deleted"] == []  # nothing fired
         assert _pending_offers(live_service).get(sid) is None  # popped
@@ -474,9 +452,7 @@ class TestEndToEndConfirmFlow:
         await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert todo_boundary["deleted"] == [second_id]
 
-    async def test_category_independence(
-        self, live_service, monkeypatch, todo_boundary
-    ):
+    async def test_category_independence(self, live_service, monkeypatch, todo_boundary):
         """The rail dispatches by action BEFORE category routing (#1560
         rationale) — a delete_todo emission under a non-EXECUTION category
         still gets the gate, not the floor."""
@@ -502,9 +478,7 @@ class TestEndToEndReadOnlyLegs:
         self, live_service, monkeypatch, todo_boundary
     ):
         sid = "e2e-1666-nonum"
-        _stub_classification(
-            monkeypatch, live_service, "delete the meeting todo", "delete_todo"
-        )
+        _stub_classification(monkeypatch, live_service, "delete the meeting todo", "delete_todo")
         result = await live_service.process_intent(
             message="delete the meeting todo", session_id=sid, user_id=_USER
         )
@@ -557,9 +531,7 @@ class TestClearFamilyBoundaryBothWays:
         rail entry's clear-family seam runs the three-variant flow; the new
         gate never steals the shape with a 'Delete todo N' confirm."""
         sid = "e2e-1666-clear"
-        _stub_classification(
-            monkeypatch, live_service, "clear my reminders", "delete_todo"
-        )
+        _stub_classification(monkeypatch, live_service, "clear my reminders", "delete_todo")
         result = await live_service.process_intent(
             message="clear my reminders", session_id=sid, user_id=_USER
         )

@@ -15,13 +15,13 @@ from uuid import uuid4
 
 import pytest
 
+from services.domain.models import Intent
 from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.intent_service.conversation_context import (
     ConversationContext,
     ConversationTurn,
 )
 from services.shared_types import IntentCategory as IntentCategoryEnum
-from services.domain.models import Intent
 
 
 def _mk_intent(message="Why did you suggest that?"):

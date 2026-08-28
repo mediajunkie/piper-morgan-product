@@ -163,24 +163,20 @@ class TestBuilderCarriedAsks:
         assert "(yes/no)" in offer.question
 
     def test_read_back_offer_stores_its_question(self):
-        rb = build_read_back_offer(
-            _USER, "standup_mode", "report", "that you want brief standups"
-        )
+        rb = build_read_back_offer(_USER, "standup_mode", "report", "that you want brief standups")
         assert rb.offer["question"] == rb.question
         assert "Did I get that right? (yes/no)" in rb.question
 
     def test_standup_todo_offer_stores_its_question(self):
         built = build_overdue_todo_offer(_USER, _SESSION, _todo(), more_overdue=0)
         assert built.offer["question"] == built.question
-        assert 'Want me to mark that overdue todo done? (yes/no)' in built.question
+        assert "Want me to mark that overdue todo done? (yes/no)" in built.question
 
     def test_interview_invitation_stores_caller_rendered_lead(self):
         """The two invitation surfaces render DIFFERENT leads; the caller
         passes the one it renders (INVITE_EMPTY_LEAD / INVITE_AFTER_REPORT)."""
         empty = build_interview_invitation(_USER, _SESSION, question=INVITE_EMPTY_LEAD)
-        after = build_interview_invitation(
-            _USER, _SESSION, question=INVITE_AFTER_REPORT
-        )
+        after = build_interview_invitation(_USER, _SESSION, question=INVITE_AFTER_REPORT)
         assert empty["question"] == INVITE_EMPTY_LEAD
         assert after["question"] == INVITE_AFTER_REPORT
 
@@ -299,8 +295,7 @@ class TestDraftedIssueAsks:
         """The failure-retention re-arm stores _DRAFT_RETAINED_LINE — pin the
         constant's phrasing (the copy the retention replies embed)."""
         assert _DRAFT_RETAINED_LINE == (
-            'Your draft is still here — say "file it" to try again, '
-            'or "no" to drop it.'
+            'Your draft is still here — say "file it" to try again, ' 'or "no" to drop it.'
         )
 
 
@@ -457,13 +452,10 @@ class TestReminderTimeAsks:
         )
         stored_q = _stored(svc)["question"]
         assert stored_q == (
-            "When should I remind you? "
-            "(For example: 'at 3pm tomorrow' or 'in 2 hours'.)"
+            "When should I remind you? " "(For example: 'at 3pm tomorrow' or 'in 2 hours'.)"
         )
         assert stored_q in message
-        assert (
-            _stored(svc)["pending_action"]["kind"] == REMINDER_TIME_QUESTION_KIND
-        )
+        assert _stored(svc)["pending_action"]["kind"] == REMINDER_TIME_QUESTION_KIND
 
     async def test_reask_rearm_stores_the_reask_tail(self):
         svc = _fake_service()
@@ -530,9 +522,7 @@ def live_service():
     from services.intent.intent_service import IntentService
     from services.intent_service.classifier import IntentClassifier
 
-    return IntentService(
-        intent_classifier=IntentClassifier(llm_service=_ExplosiveLLM())
-    )
+    return IntentService(intent_classifier=IntentClassifier(llm_service=_ExplosiveLLM()))
 
 
 class TestIntentServiceArmSites:
@@ -548,9 +538,7 @@ class TestIntentServiceArmSites:
         assert stored["question"] == result.message == open_repo_question(108)
         assert offer_is_confirm(stored) is False  # AC pin: open repo question
 
-    async def test_closed_default_repo_arm_stores_what_it_says(
-        self, live_service, monkeypatch
-    ):
+    async def test_closed_default_repo_arm_stores_what_it_says(self, live_service, monkeypatch):
         from services.integrations.github import repo_resolver
         from services.intent_service.repo_clarification import (
             RepoNameResolution,
@@ -571,9 +559,7 @@ class TestIntentServiceArmSites:
             resolution=resolution,
         )
         assert result is not None
-        expected = repo_resolution_question(
-            "banana", resolution, "mediajunkie/test-piper-morgan"
-        )
+        expected = repo_resolution_question("banana", resolution, "mediajunkie/test-piper-morgan")
         stored = live_service.workflow_offer_service.peek_pending_offer(_SESSION)
         assert stored["question"] == result.message == expected
         assert "say 'yes' to use your default" in expected
@@ -590,14 +576,10 @@ class TestIntentServiceArmSites:
         assert result is not None
         stored = live_service.workflow_offer_service.peek_pending_offer(_SESSION)
         assert stored["question"] == result.message
-        assert result.message == (
-            "By 'Done' do you mean close issue #108? (yes/no)"
-        )
+        assert result.message == ("By 'Done' do you mean close issue #108? (yes/no)")
         assert offer_is_confirm(stored) is True
 
-    async def test_collaborate_arm_stores_the_per_state_ask(
-        self, live_service, mem_prefs
-    ):
+    async def test_collaborate_arm_stores_the_per_state_ask(self, live_service, mem_prefs):
         """The #1571/#1630 collaborate turn: the armed record's question is
         draft_open_question's output, verbatim inside the rendered reply."""
         result = await live_service._handle_create_issue(
@@ -639,9 +621,7 @@ class TestAssemblyPicksUpStoredAsk:
 
 class TestIsConfirmKindTable:
     def test_destructive_confirm_true(self):
-        offer = build_confirmation_offer(
-            _intent("close issue #108", "close_issue")
-        ).offer
+        offer = build_confirmation_offer(_intent("close issue #108", "close_issue")).offer
         assert offer_is_confirm(offer) is True
 
     def test_delete_confirm_true(self):
@@ -705,9 +685,7 @@ class TestIsConfirmKindTable:
         assert offer_is_confirm(offer) is False
 
     def test_correction_window_false(self):
-        offer = rc._correction_offer(
-            _USER, "clear", "reminder", [], [], "clear my reminders"
-        )
+        offer = rc._correction_offer(_USER, "clear", "reminder", [], [], "clear my reminders")
         assert offer_is_confirm(offer) is False
 
     def test_drafted_issue_mid_compose_false_ready_to_file_true(self):

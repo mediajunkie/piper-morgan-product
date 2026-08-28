@@ -77,8 +77,9 @@ def _intent(user_id):
     ctx = {"original_message": "what did we create this session"}
     if user_id is not None:
         ctx["user_id"] = user_id
-    return Intent(category=IntentCategory.QUERY, action="session_activity_query",
-                  confidence=1.0, context=ctx)
+    return Intent(
+        category=IntentCategory.QUERY, action="session_activity_query", confidence=1.0, context=ctx
+    )
 
 
 def _handler_self():
@@ -91,10 +92,13 @@ class TestHandler:
     async def test_lists_this_sessions_creations(self, sm):
         async with sm() as s:
             repo = SessionActivityRepository(s)
-            await repo.record(owner_id=_USER, conversation_id=_CONV,
-                              action_type="issue_created",
-                              target_ref="mediajunkie/test-piper-morgan#107",
-                              target_title="Fix the login bug")
+            await repo.record(
+                owner_id=_USER,
+                conversation_id=_CONV,
+                action_type="issue_created",
+                target_ref="mediajunkie/test-piper-morgan#107",
+                target_title="Fix the login bug",
+            )
         res = await IntentService._handle_session_activity_query(
             _handler_self(), _intent(_USER), "wf-1", _CONV
         )
@@ -122,8 +126,12 @@ class TestHandler:
         """Another user's creation in the same conversation is not recalled."""
         async with sm() as s:
             repo = SessionActivityRepository(s)
-            await repo.record(owner_id="other-user", conversation_id=_CONV,
-                              action_type="issue_created", target_ref="o/r#999")
+            await repo.record(
+                owner_id="other-user",
+                conversation_id=_CONV,
+                action_type="issue_created",
+                target_ref="o/r#999",
+            )
         res = await IntentService._handle_session_activity_query(
             _handler_self(), _intent(_USER), "wf-1", _CONV
         )

@@ -114,9 +114,7 @@ class TestDetection:
 
     def test_pm_transcript_phrasing_carries_exception(self):
         """PM's original #1605 transcript phrasing — the pinned case."""
-        ask = detect_clear_family_ask(
-            "please clear the reminders except for 'Review the PR'"
-        )
+        ask = detect_clear_family_ask("please clear the reminders except for 'Review the PR'")
         assert ask is not None
         assert ask.has_exception is True
 
@@ -219,8 +217,7 @@ class _ExplosiveLLM:
 
     def __getattr__(self, name):
         raise AssertionError(
-            f"LLM boundary touched ({name}) — #1605 turns must resolve "
-            "deterministically"
+            f"LLM boundary touched ({name}) — #1605 turns must resolve " "deterministically"
         )
 
 
@@ -255,9 +252,7 @@ def _stub_classification(monkeypatch, service, message, action, category=IntentC
             secondary_intents=[],
         )
 
-    monkeypatch.setattr(
-        service.intent_classifier, "classify_multiple", _classify_multiple
-    )
+    monkeypatch.setattr(service.intent_classifier, "classify_multiple", _classify_multiple)
     return intent
 
 
@@ -434,9 +429,7 @@ class TestEndToEndVariantOne:
         assert stored["workflow_type"] == CONFIRM_PENDING_ACTION_WORKFLOW
 
         todo_boundary["allow_delete"] = True
-        confirmed = await live_service.process_intent(
-            message="yes", session_id=sid, user_id=_USER
-        )
+        confirmed = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert len(todo_boundary["deleted"]) == 2
         assert "Deleted 2 reminders" in confirmed.message
 
@@ -448,9 +441,7 @@ class TestEndToEndVariantOne:
         await live_service.process_intent(
             message="clear my reminders", session_id=sid, user_id=_USER
         )
-        result = await live_service.process_intent(
-            message="no", session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message="no", session_id=sid, user_id=_USER)
         assert "haven't touched" in result.message
         assert "verified_inferences" not in pref_store  # nothing stored
         assert todo_boundary["completed"] == [] and todo_boundary["deleted"] == []
@@ -497,9 +488,7 @@ class TestEndToEndVariantTwo:
         assert "(yes/no)" in correction.message
         assert todo_boundary["deleted"] == []  # still gated
         todo_boundary["allow_delete"] = True
-        confirmed = await live_service.process_intent(
-            message="yes", session_id=sid, user_id=_USER
-        )
+        confirmed = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert len(todo_boundary["deleted"]) == 2
         assert "Deleted 2 reminders" in confirmed.message
         # This-time-only: the stored mapping did not flip.
@@ -534,9 +523,7 @@ class TestEndToEndVariantTwo:
             message="I meant delete", session_id=sid, user_id=_USER
         )
         assert "(yes/no)" in correction.message  # the armed delete confirm
-        result = await live_service.process_intent(
-            message=aside, session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message=aside, session_id=sid, user_id=_USER)
         # Nothing was deleted (the explosive boundary would have raised),
         # and the reply is neither the delete result nor the decline copy —
         # declining wasn't what PM said either.
@@ -573,9 +560,7 @@ class TestEndToEndVariantThree:
         assert todo_boundary["deleted"] == []
 
         todo_boundary["allow_delete"] = True
-        confirmed = await live_service.process_intent(
-            message="yes", session_id=sid, user_id=_USER
-        )
+        confirmed = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert len(todo_boundary["deleted"]) == 2
         assert "Deleted 2 reminders" in confirmed.message
         assert "Review the PR" in confirmed.message
@@ -589,9 +574,7 @@ class TestEndToEndVariantThree:
         await live_service.process_intent(
             message="clear my reminders", session_id=sid, user_id=_USER
         )
-        result = await live_service.process_intent(
-            message="no", session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message="no", session_id=sid, user_id=_USER)
         assert "won't delete" in result.message
         assert todo_boundary["deleted"] == []
         assert _pending_offers(live_service).get(sid) is None
@@ -665,9 +648,7 @@ class TestExceptionClauseFallback:
         sid = "e2e-1605-exception"
         message = "please clear the reminders except for 'Review the PR'"
         _stub_classification(monkeypatch, live_service, message, "complete_todo")
-        result = await live_service.process_intent(
-            message=message, session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message=message, session_id=sid, user_id=_USER)
         assert variant_one_question() in result.message
         assert result.intent_data.get("exception_clause_fallback") is True
         # 2026-08-15 contract change (PM live find): the offer IS bound now —
@@ -688,9 +669,7 @@ class TestExceptionClauseFallback:
         _seed_verb_default(pref_store, "delete")
         message = "please clear the reminders except for 'Review the PR'"
         _stub_classification(monkeypatch, live_service, message, "delete_todo")
-        result = await live_service.process_intent(
-            message=message, session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message=message, session_id=sid, user_id=_USER)
         assert "(yes/no)" not in result.message
         assert todo_boundary["deleted"] == []
 
@@ -719,9 +698,7 @@ class TestUnmappedSiblingClaim:
         """The #1333 honest-decline is untouched for genuinely unwired asks
         (no claim widening beyond the reminder/todo domain)."""
         sid = "e2e-1605-unwired"
-        _stub_classification(
-            monkeypatch, live_service, "compact the database", "compact_database"
-        )
+        _stub_classification(monkeypatch, live_service, "compact the database", "compact_database")
         result = await live_service.process_intent(
             message="compact the database", session_id=sid, user_id=_USER
         )
@@ -748,9 +725,7 @@ class TestExplicitVerbsUnaffected:
         assert result.message == 'Delete todo 1: "Review the PR"? (yes/no)'
         assert todo_boundary["deleted"] == []  # gated, not immediate (#1666)
         todo_boundary["allow_delete"] = True
-        confirmed = await live_service.process_intent(
-            message="yes", session_id=sid, user_id=_USER
-        )
+        confirmed = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert len(todo_boundary["deleted"]) == 1  # the handler's own path ran
         assert variant_one_question() not in confirmed.message
 
@@ -793,7 +768,8 @@ class TestAlwaysAskLeadingQuestion:
         sid = "e2e-1605-aa"
         _seed_verb_default(pref_store, "complete")
         pref_store["inference_verification_meta"] = {
-            "mode": "always_ask", "set_at": "2026-08-14T07:22:00+00:00",
+            "mode": "always_ask",
+            "set_at": "2026-08-14T07:22:00+00:00",
         }
         _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
         result = await live_service.process_intent(
@@ -809,7 +785,8 @@ class TestAlwaysAskLeadingQuestion:
         sid = "e2e-1605-aa-usual"
         _seed_verb_default(pref_store, "complete")
         pref_store["inference_verification_meta"] = {
-            "mode": "always_ask", "set_at": "2026-08-14T07:22:00+00:00",
+            "mode": "always_ask",
+            "set_at": "2026-08-14T07:22:00+00:00",
         }
         _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
         todo_boundary["allow_complete"] = True
@@ -830,7 +807,8 @@ class TestAlwaysAskLeadingQuestion:
         sid = "e2e-1605-aa-diff"
         _seed_verb_default(pref_store, "complete")
         pref_store["inference_verification_meta"] = {
-            "mode": "always_ask", "set_at": "2026-08-14T07:22:00+00:00",
+            "mode": "always_ask",
+            "set_at": "2026-08-14T07:22:00+00:00",
         }
         _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
         await live_service.process_intent(
@@ -872,18 +850,18 @@ class TestExceptionClauseAnswerBinding:
     ):
         sid = "e2e-1605-exc"
         _stub_classification(
-            monkeypatch, live_service,
+            monkeypatch,
+            live_service,
             'clear all reminders except "make sure this reminder isn\'t cleared"',
             "delete_todo",
         )
         first = await live_service.process_intent(
             message='clear all reminders except "make sure this reminder isn\'t cleared"',
-            session_id=sid, user_id=_USER,
+            session_id=sid,
+            user_id=_USER,
         )
         assert "carved out an exception" in first.message
-        result = await live_service.process_intent(
-            message="delete", session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message="delete", session_id=sid, user_id=_USER)
         # the PM-hit failure was the canned denial; pin its absence
         assert "can't do that from chat" not in result.message
         assert "'clear' means delete" in result.message
@@ -898,8 +876,10 @@ class TestExceptionClauseAnswerBinding:
     ):
         sid = "e2e-1605-exc2"
         _stub_classification(
-            monkeypatch, live_service,
-            "clear my reminders except the PR one", "complete_todo",
+            monkeypatch,
+            live_service,
+            "clear my reminders except the PR one",
+            "complete_todo",
         )
         await live_service.process_intent(
             message="clear my reminders except the PR one", session_id=sid, user_id=_USER

@@ -202,7 +202,7 @@ async def test_service_delete_project_confirmed(owner_with_projects):
 
 
 async def test_chat_archive_handler_returns_success_message(owner_with_projects, monkeypatch):
-    """"Archive my project X" through _handle_portfolio_query with the REAL repo.
+    """ "Archive my project X" through _handle_portfolio_query with the REAL repo.
 
     Before the fix this crashed in PortfolioService.archive_project and the
     handler's broad `except Exception` (#1423 shape) swallowed it into the

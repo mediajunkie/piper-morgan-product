@@ -213,9 +213,9 @@ async def test_multi_user_key_isolation(test_users, mock_keychain):
             mock_keychain.get_api_key.assert_any_call("openai", username=user_a.id)
             mock_keychain.get_api_key.assert_any_call("openai", username=user_b.id)
         else:
-            assert service._encryptor is not None, (
-                "keychain never consulted yet no encryptor — retrieval used an unknown path"
-            )
+            assert (
+                service._encryptor is not None
+            ), "keychain never consulted yet no encryptor — retrieval used an unknown path"
 
         # Cleanup
         await service.delete_user_key(session, user_a.id, "openai")
@@ -814,9 +814,7 @@ async def test_store_survives_keychain_failure_with_encryptor(test_users):
 
     user_a, _ = test_users
     enc = FieldEncryptionService(b"K" * 32)
-    service = UserAPIKeyService(
-        keychain_service=_RaisingKeychain(), field_encryption_service=enc
-    )
+    service = UserAPIKeyService(keychain_service=_RaisingKeychain(), field_encryption_service=enc)
     key_value = "sk-" + "b" * 48
 
     async with AsyncSessionFactory.session_scope_fresh() as session:

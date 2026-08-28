@@ -99,9 +99,7 @@ async def _pattern_count(user_id) -> int:
 
 
 def _route_map():
-    return {
-        (r.path, m) for r in learning.router.routes for m in getattr(r, "methods", set())
-    }
+    return {(r.path, m) for r in learning.router.routes for m in getattr(r, "methods", set())}
 
 
 async def test_controls_export_and_clear_routes_registered_1430():
@@ -150,9 +148,7 @@ async def test_export_ignores_client_supplied_user_id_on_the_wire_1430():
     app.dependency_overrides[get_current_user] = lambda: CLAIMS_A
 
     with TestClient(app) as client:
-        resp = client.get(
-            f"/api/v1/learning/controls/export?user_id={USER_B}&format=json"
-        )
+        resp = client.get(f"/api/v1/learning/controls/export?user_id={USER_B}&format=json")
 
     assert resp.status_code == 200
     body = resp.json()
@@ -177,9 +173,7 @@ async def test_clear_removes_only_authed_users_patterns_1430():
 
 
 async def test_clear_rejects_invalid_data_type_1430():
-    result = await learning.clear_learning_data(
-        data_type="everything", current_user=CLAIMS_A
-    )
+    result = await learning.clear_learning_data(data_type="everything", current_user=CLAIMS_A)
     # File idiom: error-response helpers return JSONResponse, not raise.
     assert getattr(result, "status_code", 200) == 422
 
@@ -205,9 +199,7 @@ async def test_settings_toggle_two_user_isolation_1430():
     # And the DB row A created is A's alone.
     async with AsyncSessionFactory.session_scope_fresh() as session:
         result = await session.execute(
-            select(LearningSettings).where(
-                and_(LearningSettings.user_id.in_([USER_A, USER_B]))
-            )
+            select(LearningSettings).where(and_(LearningSettings.user_id.in_([USER_A, USER_B])))
         )
         rows = result.scalars().all()
         assert [str(r.user_id) for r in rows] == [str(USER_A)]

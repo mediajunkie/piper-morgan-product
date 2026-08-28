@@ -14,9 +14,7 @@ from jinja2 import Environment, FileSystemLoader
 
 def _render() -> str:
     env = Environment(loader=FileSystemLoader("templates"))
-    return env.get_template("learning-dashboard.html").render(
-        request=None, user={"username": "t"}
-    )
+    return env.get_template("learning-dashboard.html").render(request=None, user={"username": "t"})
 
 
 class TestLearningDashboardNoPhantomUser:

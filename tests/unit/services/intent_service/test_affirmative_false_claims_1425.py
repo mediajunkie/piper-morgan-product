@@ -46,10 +46,12 @@ class TestPriorityMetadataSourceFailed:
 
     def test_populated_still_lists_issues(self):
         """The happy path is unchanged — real issues still render."""
-        out = self._render({
-            "has_github": True,
-            "high_priority_issues": [{"number": 107, "title": "Fix login", "labels": ["P0"]}],
-        })
+        out = self._render(
+            {
+                "has_github": True,
+                "high_priority_issues": [{"number": 107, "title": "Fix login", "labels": ["P0"]}],
+            }
+        )
         assert "#107" in out
         assert "couldn't check" not in out.lower()
         assert "No high-priority" not in out

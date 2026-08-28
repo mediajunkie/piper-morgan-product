@@ -23,7 +23,6 @@ import sqlalchemy as sa
 
 from alembic import op
 
-
 revision: str = "a1031softdelete"
 down_revision: Union[str, Sequence[str], None] = "a1035insights"
 branch_labels: Union[str, Sequence[str], None] = None

@@ -577,5 +577,3 @@ class TodoRepository(BaseRepository):
                 return perm.role.value
 
         return None
-
-

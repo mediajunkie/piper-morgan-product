@@ -12,10 +12,9 @@ Security Features:
 - Comprehensive error handling and logging
 """
 
+import os
 from dataclasses import dataclass
 from typing import Dict, List, Optional
-
-import os
 
 import keyring
 import structlog
@@ -228,9 +227,7 @@ class KeychainService:
                 if not found:
                     return False
             else:
-                keyring.delete_password(
-                    self.service_name, self._get_key_name(provider, username)
-                )
+                keyring.delete_password(self.service_name, self._get_key_name(provider, username))
             log_identifier = f"{username}/{provider}" if username else provider
             logger.info(f"Deleted API key for {log_identifier} from keychain")
             return True

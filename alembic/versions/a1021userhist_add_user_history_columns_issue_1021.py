@@ -33,7 +33,6 @@ from sqlalchemy.dialects import postgresql
 
 from alembic import op
 
-
 revision: str = "a1021userhist"
 down_revision: Union[str, Sequence[str], None] = "a935dropusage"
 branch_labels: Union[str, Sequence[str], None] = None

@@ -1498,9 +1498,7 @@ class ConversationRepository(BaseRepository):
                     "conversation_owner_mismatch_on_append",
                     conversation_id=str(conversation_id),
                     conversation_owner=str(existing.user_id),
-                    requesting_principal=(
-                        str(user_id) if user_id is not None else "anonymous"
-                    ),
+                    requesting_principal=(str(user_id) if user_id is not None else "anonymous"),
                 )
                 raise ConversationOwnershipError(
                     f"Conversation {conversation_id} belongs to a different "

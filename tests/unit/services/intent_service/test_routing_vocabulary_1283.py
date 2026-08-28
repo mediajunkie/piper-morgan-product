@@ -139,9 +139,7 @@ class TestRoutingVocabularyReachability:
 
     def test_corpus_action_expectations_exist_somewhere(self):
         corpus = yaml.safe_load(CORPUS.read_text())["corpus"]
-        known = (
-            {a for (_c, a) in ACTION_REGISTRY} | _rail() | _pre_classifier_surface()
-        )
+        known = {a for (_c, a) in ACTION_REGISTRY} | _rail() | _pre_classifier_surface()
         bad = [
             (row["phrase"], row["expected"])
             for row in corpus
@@ -188,9 +186,7 @@ class TestForwardGuardExecutionCohort:
         mapping = self._mapper()
         dispatched = self._elif_dispatched_tokens()
         assert dispatched, "elif-token derivation returned nothing — idiom changed, fix the regex"
-        uncovered = {
-            t for t in dispatched if t not in canon and mapping.get(t) not in canon
-        }
+        uncovered = {t for t in dispatched if t not in canon and mapping.get(t) not in canon}
         assert not uncovered, (
             f"EXECUTION elif dispatches tokens outside ACTION_REGISTRY: {sorted(uncovered)}. "
             "Register the canonical (category EXECUTION) + its Verb; the reachability "

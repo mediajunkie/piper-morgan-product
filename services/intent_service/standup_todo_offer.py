@@ -177,9 +177,7 @@ def build_overdue_todo_offer(
                 "todo_text": text,
                 "summary": summary,
             },
-            "decline_message": (
-                f'Okay — "{text}" stays on your list. Nothing has been changed.'
-            ),
+            "decline_message": (f'Okay — "{text}" stays on your list. Nothing has been changed.'),
         },
     )
 
@@ -251,9 +249,7 @@ async def run_standup_complete_todo_workflow(
     text = payload.get("todo_text") or "that todo"
     todo_service = intent_service.todo_handlers.todo_service
     try:
-        completed = await todo_service.complete_todo(
-            todo_id=todo_uuid, user_id=effective_user
-        )
+        completed = await todo_service.complete_todo(todo_id=todo_uuid, user_id=effective_user)
     except Exception as e:  # silent-ok: logged at error; the reply below states the honest non-completion instead of a fabricated confirmation (#1425)
         logger.error(
             "standup_todo_complete_failed",

@@ -91,19 +91,25 @@ def serialize_for_prompt(snap: SessionSnapshot) -> str:
     if snap.pending_offer_kind:
         q = _clip(snap.pending_offer_question, QUESTION_EXCERPT_CHARS)
         confirm = " (yes/no confirm)" if snap.pending_offer_is_confirm else ""
-        lines.append(f"OPEN QUESTION{confirm}: [{snap.pending_offer_kind}] {q or '(question text unavailable)'}")
+        lines.append(
+            f"OPEN QUESTION{confirm}: [{snap.pending_offer_kind}] {q or '(question text unavailable)'}"
+        )
         lines.append(
             "RULE: a turn that plausibly ANSWERS the open question routes to that "
             "flow's handler, not to a fresh operation. Explicit unrelated commands still route normally."
         )
     if snap.active_process_type:
-        lines.append(f"ACTIVE PROCESS: {snap.active_process_type} (mid-exchange; answers belong to it)")
+        lines.append(
+            f"ACTIVE PROCESS: {snap.active_process_type} (mid-exchange; answers belong to it)"
+        )
     if snap.draft_in_compose:
         t = _clip(snap.draft_title, TITLE_EXCERPT_CHARS)
         lines.append(f"DRAFT IN COMPOSE: {t or '(untitled)'} — prose likely extends the draft")
     if snap.recent_issue_number is not None:
         repo = f" in {snap.recent_issue_repo}" if snap.recent_issue_repo else ""
-        lines.append(f"RECENT ISSUE: #{snap.recent_issue_number}{repo} (bare 'it'/'that issue' likely refers here)")
+        lines.append(
+            f"RECENT ISSUE: #{snap.recent_issue_number}{repo} (bare 'it'/'that issue' likely refers here)"
+        )
     if snap.declared_working_mode:
         lines.append(f"DECLARED MODE: {snap.declared_working_mode}")
     if snap.stored_clear_verb:

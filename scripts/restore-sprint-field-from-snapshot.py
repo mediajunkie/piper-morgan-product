@@ -25,6 +25,7 @@ Usage:
   python3 scripts/restore-sprint-field-from-snapshot.py --snapshot PATH    # dry-run, specific file
   python3 scripts/restore-sprint-field-from-snapshot.py --apply           # actually restore
 """
+
 import argparse
 import glob
 import json
@@ -58,7 +59,9 @@ def run_gh_graphql(query, **variables):
 def find_latest_snapshot():
     files = sorted(glob.glob("dev/snapshots/project-board-*.tsv"))
     if not files:
-        raise SystemExit("No snapshot files found under dev/snapshots/. Run scripts/snapshot-project-board.sh first.")
+        raise SystemExit(
+            "No snapshot files found under dev/snapshots/. Run scripts/snapshot-project-board.sh first."
+        )
     return files[-1]
 
 
@@ -71,7 +74,13 @@ def load_snapshot(path):
             parts = line.rstrip("\n").split("\t")
             if len(parts) < 5:
                 continue
-            issue, state, milestone, sprint, title = parts[0], parts[1], parts[2], parts[3], "\t".join(parts[4:])
+            issue, state, milestone, sprint, title = (
+                parts[0],
+                parts[1],
+                parts[2],
+                parts[3],
+                "\t".join(parts[4:]),
+            )
             rows[issue] = (state, milestone, sprint or None, title)
     return rows
 
@@ -134,7 +143,8 @@ def pull_live_sprint_values():
 
 def pull_option_ids():
     """sprint option name -> option id, current live field state."""
-    query = """
+    query = (
+        """
     query {
       node(id: "%s") {
         ... on ProjectV2 {
@@ -143,16 +153,27 @@ def pull_option_ids():
           }
         }
       }
-    }""" % PROJECT_ID
+    }"""
+        % PROJECT_ID
+    )
     resp = run_gh_graphql(query)
     options = resp["data"]["node"]["field"]["options"]
     return {o["name"]: o["id"] for o in options}
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--snapshot", help="Path to a specific snapshot TSV (default: most recent in dev/snapshots/)")
-    parser.add_argument("--apply", action="store_true", help="Actually mutate. Without this flag, only reports what would change.")
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        "--snapshot",
+        help="Path to a specific snapshot TSV (default: most recent in dev/snapshots/)",
+    )
+    parser.add_argument(
+        "--apply",
+        action="store_true",
+        help="Actually mutate. Without this flag, only reports what would change.",
+    )
     args = parser.parse_args()
 
     snapshot_path = args.snapshot or find_latest_snapshot()
@@ -175,7 +196,9 @@ def main():
             drift.append((issue, item_id, live_sprint, sprint, title))
 
     if not drift:
-        print("\nNo drift found. Live board matches the snapshot for every issue that has a sprint value there.")
+        print(
+            "\nNo drift found. Live board matches the snapshot for every issue that has a sprint value there."
+        )
         return
 
     print(f"\n{len(drift)} issue(s) differ from the snapshot:")
@@ -183,7 +206,9 @@ def main():
         print(f"  #{issue}: live={live_sprint!r} -> snapshot={snap_sprint!r}  [{title[:60]}]")
 
     if not args.apply:
-        print(f"\nDRY RUN -- no changes made. Re-run with --apply to restore these {len(drift)} value(s).")
+        print(
+            f"\nDRY RUN -- no changes made. Re-run with --apply to restore these {len(drift)} value(s)."
+        )
         return
 
     print(f"\nApplying {len(drift)} restoration(s)...")
@@ -193,14 +218,29 @@ def main():
     for issue, item_id, live_sprint, snap_sprint, title in drift:
         opt_id = option_ids.get(snap_sprint)
         if opt_id is None:
-            print(f"  SKIP #{issue}: snapshot sprint {snap_sprint!r} has no matching live option (renamed/removed?)")
+            print(
+                f"  SKIP #{issue}: snapshot sprint {snap_sprint!r} has no matching live option (renamed/removed?)"
+            )
             skipped += 1
             continue
         result = subprocess.run(
-            ["gh", "api", "graphql", "-f", f"query={MUTATION}",
-             "-f", f"project={PROJECT_ID}", "-f", f"item={item_id}",
-             "-f", f"field={FIELD_ID}", "-f", f"value={opt_id}"],
-            capture_output=True, text=True,
+            [
+                "gh",
+                "api",
+                "graphql",
+                "-f",
+                f"query={MUTATION}",
+                "-f",
+                f"project={PROJECT_ID}",
+                "-f",
+                f"item={item_id}",
+                "-f",
+                f"field={FIELD_ID}",
+                "-f",
+                f"value={opt_id}",
+            ],
+            capture_output=True,
+            text=True,
         )
         if result.returncode == 0 and '"id"' in result.stdout:
             ok += 1
@@ -222,7 +262,9 @@ def main():
             if actual != expected:
                 mismatches.append((issue, expected, actual))
         if mismatches:
-            print(f"MISMATCH after apply ({len(mismatches)}) -- investigate before trusting this run:")
+            print(
+                f"MISMATCH after apply ({len(mismatches)}) -- investigate before trusting this run:"
+            )
             for issue, expected, actual in mismatches:
                 print(f"  #{issue}: expected {expected!r}, got {actual!r}")
             sys.exit(1)

@@ -99,9 +99,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 0
 
     if ns.summary:
-        print(
-            f"mailbox-filename-lint: {len(current)} path(s) over {MAX_PATH_LENGTH} chars"
-        )
+        print(f"mailbox-filename-lint: {len(current)} path(s) over {MAX_PATH_LENGTH} chars")
         return 1 if current else 0
 
     if ns.baseline:
@@ -138,9 +136,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     for path in sorted(current.elements()):
         print(f"{path}  ({len(path)} chars)")
     if current:
-        print(
-            f"\nmailbox-filename-lint: {len(current)} path(s) over {MAX_PATH_LENGTH} chars."
-        )
+        print(f"\nmailbox-filename-lint: {len(current)} path(s) over {MAX_PATH_LENGTH} chars.")
     return 1 if current else 0
 
 

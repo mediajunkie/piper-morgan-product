@@ -59,11 +59,11 @@ from services.personality.personality_profile import PersonalityProfile
 from services.process import ProcessCheckResult, ProcessType, get_process_registry
 from services.repositories.user_trust_profile_repository import UserTrustProfileRepository
 from services.shared_types import IntentCategory, TrustStage
-from services.utils.text_sanitation import display_title
 from services.slot_filling.slot_filling_adapter import SlotFillingProcessAdapter
 from services.slot_filling.slot_template import MEETING_TEMPLATE
 from services.trust.trust_computation_service import TrustComputationService
 from services.ui_messages.user_friendly_errors import UserFriendlyErrorService
+from services.utils.text_sanitation import display_title
 
 
 class _RepoRouteKwargs(TypedDict, total=False):
@@ -1015,9 +1015,7 @@ class IntentService:
 
                 _declared_mode = _collab_gate.detect_mode_declaration(message)
                 if _declared_mode is not None:
-                    _mode_persisted = await _collab_gate.set_working_mode(
-                        user_id, _declared_mode
-                    )
+                    _mode_persisted = await _collab_gate.set_working_mode(user_id, _declared_mode)
                     self.logger.info(
                         "working_mode_declared",
                         user_id=user_id,
@@ -1113,9 +1111,7 @@ class IntentService:
                             success=True,
                             message=_rc_turn["message"],
                             intent_data=_rc_turn["intent_data"],
-                            requires_clarification=_rc_turn.get(
-                                "requires_clarification", False
-                            ),
+                            requires_clarification=_rc_turn.get("requires_clarification", False),
                         )
                 # #1571: a pending DRAFTED ISSUE is confirmed by the file
                 # phrases the draft copy teaches ("file it", "file it as is")
@@ -1142,9 +1138,7 @@ class IntentService:
                             success=True,
                             message=_di_turn["message"],
                             intent_data=_di_turn["intent_data"],
-                            requires_clarification=_di_turn.get(
-                                "requires_clarification", False
-                            ),
+                            requires_clarification=_di_turn.get("requires_clarification", False),
                         )
                 # #1648: a pending REMINDER TIME QUESTION (armed by the
                 # create-reminder handler's honest time-clarify ask) binds
@@ -1171,9 +1165,7 @@ class IntentService:
                             success=True,
                             message=_rt_turn["message"],
                             intent_data=_rt_turn["intent_data"],
-                            requires_clarification=_rt_turn.get(
-                                "requires_clarification", False
-                            ),
+                            requires_clarification=_rt_turn.get("requires_clarification", False),
                         )
                 # #1654: a pending REMINDER TASK QUESTION (armed by the
                 # create-reminder handler's honest no-task clarify — #1648's
@@ -1199,9 +1191,7 @@ class IntentService:
                             success=True,
                             message=_rtask_turn["message"],
                             intent_data=_rtask_turn["intent_data"],
-                            requires_clarification=_rtask_turn.get(
-                                "requires_clarification", False
-                            ),
+                            requires_clarification=_rtask_turn.get("requires_clarification", False),
                         )
                 # #1567: a pending REPO QUESTION binds the answer that names
                 # the repository — bare owner/name, bare repo name (resolved
@@ -1229,9 +1219,7 @@ class IntentService:
                             success=True,
                             message=_rq_turn["message"],
                             intent_data=_rq_turn["intent_data"],
-                            requires_clarification=_rq_turn.get(
-                                "requires_clarification", False
-                            ),
+                            requires_clarification=_rq_turn.get("requires_clarification", False),
                         )
                 # #1650: CONFIRM kinds — every offer dispatching the #1190
                 # pending-action carrier (destructive close/reopen confirms,
@@ -1249,10 +1237,7 @@ class IntentService:
                     CONFIRM_PENDING_ACTION_WORKFLOW,
                 )
 
-                if (
-                    pending_offer.get("workflow_type")
-                    == CONFIRM_PENDING_ACTION_WORKFLOW
-                ):
+                if pending_offer.get("workflow_type") == CONFIRM_PENDING_ACTION_WORKFLOW:
                     response_type = detect_confirm_response(message)
                 else:
                     response_type = detect_offer_response(message)
@@ -1706,9 +1691,7 @@ class IntentService:
                     turn_bound_contextual_offer=contextual_offer_bound,
                 )
             except Exception as e:  # silent-ok: LOGGED loudly right here — an inversion consult failure must never break the turn; the legacy chain below answers it (#1423 discipline)
-                self.logger.error(
-                    "inversion_live_consult_failed", error=str(e), exc_info=True
-                )
+                self.logger.error("inversion_live_consult_failed", error=str(e), exc_info=True)
                 intent = None
 
             if intent is None:
@@ -1725,7 +1708,9 @@ class IntentService:
                 # its own kwarg, never in context (context injects into the LLM prompt
                 # and disables the classifier cache; session_id must do neither).
                 multi_result = await self.intent_classifier.classify_multiple(
-                    message, context=classification_context, user_id=user_id,
+                    message,
+                    context=classification_context,
+                    user_id=user_id,
                     session_id=session_id,
                 )
 
@@ -1767,7 +1752,7 @@ class IntentService:
                             trust_stage=resolved_trust_stage,
                             user_id=user_id,
                             formality_baseline=formality_baseline,
-                        off_topic_prefix=off_topic_prefix,
+                            off_topic_prefix=off_topic_prefix,
                         )
                     except Exception as e:
                         # Graceful fallback: process primary intent only
@@ -1779,8 +1764,8 @@ class IntentService:
                         intent = multi_result.primary_intent
                         if intent is None:
                             intent = await self.intent_classifier.classify(
-                            message, user_id=user_id, session_id=session_id
-                        )
+                                message, user_id=user_id, session_id=session_id
+                            )
 
                 elif (
                     multi_result.is_multi_intent
@@ -2051,7 +2036,7 @@ class IntentService:
                         trust_stage=resolved_trust_stage,
                         user_id=user_id,
                         formality_baseline=formality_baseline,
-                    off_topic_prefix=off_topic_prefix,
+                        off_topic_prefix=off_topic_prefix,
                     )
 
                 # Issue #595: Add greeting prefix if multi-intent with greeting detected
@@ -2293,9 +2278,7 @@ class IntentService:
                     )
 
                     if not _collab_gate.is_draft_collaboration_action(intent.action):
-                        _check = _consent.build_consent_check_offer(
-                            intent, _rail_entry.effect
-                        )
+                        _check = _consent.build_consent_check_offer(intent, _rail_entry.effect)
                         self.workflow_offer_service.set_pending_offer(
                             session_id, _check.offer, user_id=user_id
                         )
@@ -2341,8 +2324,7 @@ class IntentService:
                     # mechanism ruling: a disclosure, never a yes/no gate;
                     # the #1605 variant-two "say it out loud" pattern).
                     if _consent_verdict is not None and (
-                        _consent_verdict
-                        is _consent.ConsentDecision.PROCEED_WITH_DISCLOSURE
+                        _consent_verdict is _consent.ConsentDecision.PROCEED_WITH_DISCLOSURE
                     ):
                         dispatched.message = (
                             f"{_consent.build_outward_disclosure(intent)}\n\n"
@@ -2370,7 +2352,7 @@ class IntentService:
                         trust_stage=resolved_trust_stage,
                         user_id=user_id,
                         formality_baseline=formality_baseline,
-                    off_topic_prefix=off_topic_prefix,
+                        off_topic_prefix=off_topic_prefix,
                     )
 
             # Handle QUERY intents with domain services
@@ -3686,16 +3668,12 @@ class IntentService:
                             standup_todo_offer_armed = True
                             self.logger.info(
                                 "standup_todo_offer_armed",
-                                todo_id=_todo_offer.offer["pending_action"][
-                                    "todo_id"
-                                ],
+                                todo_id=_todo_offer.offer["pending_action"]["todo_id"],
                                 overdue_count=len(_overdue),
                                 session_id=session_id,
                             )
                 except Exception as e:  # silent-ok: logged; the standup renders complete without the offer — a todo hiccup must never blank or block the report (#1425 honesty owns the todo surfaces' own failure disclosure)
-                    self.logger.warning(
-                        "standup_todo_offer_failed", error=str(e), user_id=user_id
-                    )
+                    self.logger.warning("standup_todo_offer_failed", error=str(e), user_id=user_id)
             # #1591 anti-nag, symmetric: a "no" to EITHER standup ask (the
             # invitation or the mode read-back) quiets BOTH for the session —
             # a user who just declined does not get a different question on
@@ -3758,9 +3736,7 @@ class IntentService:
                                 user_id=user_id,
                                 confidence=confidence,
                             )
-                            return await self._start_standup_conversation(
-                                user_id, session_id
-                            )
+                            return await self._start_standup_conversation(user_id, session_id)
                         # Confidently-report user: don't nag with the invitation.
                         asked = True
                 if not asked:
@@ -4649,9 +4625,7 @@ class IntentService:
                     is_pr = bool(item.get("pull_request"))
                     item_type = "PR" if is_pr else "Issue"
                     # #1628: degenerate GitHub titles (the literal "{" class) never render verbatim
-                    title = display_title(
-                        item.get("title"), f"(untitled {item_type} #{number})"
-                    )
+                    title = display_title(item.get("title"), f"(untitled {item_type} #{number})")
                     url = item.get("html_url", "")
                     lines.append(f"- {item_type} #{number}: {title}")
                     if url:
@@ -4939,8 +4913,7 @@ class IntentService:
                     },
                     workflow_id=workflow_id,
                     requires_clarification=(
-                        connector_result.degradation.reason
-                        is DegradationReason.REPO_UNRESOLVED
+                        connector_result.degradation.reason is DegradationReason.REPO_UNRESOLVED
                     ),
                 )
 
@@ -5322,9 +5295,7 @@ class IntentService:
                 # First request: fetch issue details and ask for confirmation
                 # (Issue #1042: router resolves repo internally)
                 try:
-                    issue_details = await github_router.get_issue(
-                        issue_number, **_repo_kwargs
-                    )
+                    issue_details = await github_router.get_issue(issue_number, **_repo_kwargs)
                     # #1628: degenerate GitHub titles never render verbatim
                     title = display_title(
                         issue_details.get("title"), f"(untitled issue #{issue_number})"
@@ -5382,9 +5353,7 @@ class IntentService:
                 # #1567: the repository-not-specified dead-end becomes a
                 # bindable question (session permitting) instead of the
                 # generic "closing that issue" error.
-                ask = await self._ask_for_repository(
-                    intent, issue_number, session_id, _user_id
-                )
+                ask = await self._ask_for_repository(intent, issue_number, session_id, _user_id)
                 if ask is not None:
                     return ask
                 return IntentProcessingResult(
@@ -5406,9 +5375,7 @@ class IntentService:
 
             # Get issue title for success message
             # #1628: degenerate GitHub titles never render verbatim
-            title = display_title(
-                updated_issue.get("title"), f"(untitled issue #{issue_number})"
-            )
+            title = display_title(updated_issue.get("title"), f"(untitled issue #{issue_number})")
             url = updated_issue.get("html_url", "")
 
             message_lines = [
@@ -5645,9 +5612,7 @@ class IntentService:
                 # (Issue #1042: router resolves repo internally when no
                 # explicit repo was named; #1641 threads a named repo through.)
                 try:
-                    issue_details = await github_router.get_issue(
-                        issue_number, **_repo_kwargs
-                    )
+                    issue_details = await github_router.get_issue(issue_number, **_repo_kwargs)
                     # #1628: degenerate GitHub titles never render verbatim
                     title = display_title(
                         issue_details.get("title"), f"(untitled issue #{issue_number})"
@@ -5704,9 +5669,7 @@ class IntentService:
                 # repository-not-specified dead-end becomes a bindable
                 # question (session permitting) instead of the generic
                 # "reopening that issue" error.
-                ask = await self._ask_for_repository(
-                    intent, issue_number, session_id, _user_id
-                )
+                ask = await self._ask_for_repository(intent, issue_number, session_id, _user_id)
                 if ask is not None:
                     return ask
                 return IntentProcessingResult(
@@ -5728,9 +5691,7 @@ class IntentService:
 
             # Get issue title for success message
             # #1628: degenerate GitHub titles never render verbatim
-            title = display_title(
-                updated_issue.get("title"), f"(untitled issue #{issue_number})"
-            )
+            title = display_title(updated_issue.get("title"), f"(untitled issue #{issue_number})")
             url = updated_issue.get("html_url", "")
 
             message_lines = [
@@ -5966,9 +5927,7 @@ class IntentService:
             except RuntimeError as _rt_err:
                 if "no repo could be resolved" not in str(_rt_err):
                     raise
-                ask = await self._ask_for_repository(
-                    intent, issue_number, session_id, _user_id
-                )
+                ask = await self._ask_for_repository(intent, issue_number, session_id, _user_id)
                 if ask is not None:
                     return ask
                 # No session to bind to → the pre-#1641 honest #1159 copy.
@@ -6087,9 +6046,7 @@ class IntentService:
             if connector_result.issues is not None:
                 issues = connector_result.issues
                 total_count = (
-                    connector_result.total
-                    if connector_result.total is not None
-                    else len(issues)
+                    connector_result.total if connector_result.total is not None else len(issues)
                 )
             elif (
                 connector_result.degradation
@@ -6120,17 +6077,13 @@ class IntentService:
                 # total_count is the TRUE match count (search_issues total_count); `issues` is
                 # only a page (e.g. 30 of 179) — count by total_count, show a few recent (#1322).
                 _scope = f" in {_named_repo}" if _named_repo else ""
-                message = (
-                    f"You have **{total_count} open issue{'s' if total_count != 1 else ''}**{_scope}."
-                )
+                message = f"You have **{total_count} open issue{'s' if total_count != 1 else ''}**{_scope}."
                 message += "\n\nHere are the most recent:"
                 for issue in issues[:5]:
                     number = issue.get("number", "?")
                     # #1628: degenerate GitHub titles never render verbatim
                     title = display_title(issue.get("title"), f"(untitled issue #{number})")
-                    labels = ", ".join(
-                        label.get("name", "") for label in issue.get("labels", [])
-                    )
+                    labels = ", ".join(label.get("name", "") for label in issue.get("labels", []))
                     label_str = f" ({labels})" if labels else ""
                     message += f"\n- **#{number}**: {title}{label_str}"
 
@@ -6378,9 +6331,7 @@ class IntentService:
             if connector_result.issues is not None:
                 prs = connector_result.issues
                 pr_count = (
-                    connector_result.total
-                    if connector_result.total is not None
-                    else len(prs)
+                    connector_result.total if connector_result.total is not None else len(prs)
                 )
             elif (
                 connector_result.degradation
@@ -8231,18 +8182,16 @@ class IntentService:
             }
             try:
                 _rt_peek = self.workflow_offer_service.peek_pending_offer(session_id)
-                _rt_kind = (
-                    (_rt_peek.get("pending_action") or {}).get("kind")
-                    if _rt_peek
-                    else None
-                )
+                _rt_kind = (_rt_peek.get("pending_action") or {}).get("kind") if _rt_peek else None
                 if _rt_kind == "reminder_time_question":
                     _rt_intent_data["reminder_time_question_pending"] = True
                 # #1654: the no-task clarify arms the TASK question on this
                 # same path — it needs the same clobber protection.
                 elif _rt_kind == "reminder_task_question":
                     _rt_intent_data["reminder_task_question_pending"] = True
-            except Exception:  # silent-ok: flag derivation only — the reply itself is already composed
+            except (
+                Exception
+            ):  # silent-ok: flag derivation only — the reply itself is already composed
                 pass
             return IntentProcessingResult(
                 success=True,
@@ -8592,10 +8541,7 @@ class IntentService:
         # body") can't truncate the capture the way the older shared
         # open/close class does. Group helper picks whichever pair matched.
         _qspan = (
-            "(?:\"([^\"]+)\""
-            "|\u201c([^\u201d]+)\u201d"
-            "|'([^']+)'"
-            "|\u2018([^\u2019]+)\u2019)"
+            '(?:"([^"]+)"' "|\u201c([^\u201d]+)\u201d" "|'([^']+)'" "|\u2018([^\u2019]+)\u2019)"
         )
 
         def _qcap(match) -> str:
@@ -8748,8 +8694,7 @@ class IntentService:
         # alternation so an apostrophe inside the quoted description
         # survives the capture.
         m = _re.search(
-            r"\b(?:body|description)\b\s*"
-            r"(?:(?:of|is|being|saying)\s+|[:,]\s*)?" + _qspan,
+            r"\b(?:body|description)\b\s*" r"(?:(?:of|is|being|saying)\s+|[:,]\s*)?" + _qspan,
             message,
             _re.IGNORECASE,
         )
@@ -8773,8 +8718,7 @@ class IntentService:
             _filler = r"(?:(?:of|is|being|saying)\s+|:\s*)"
             m = _re.search(
                 r"\b(?:with|and|whose)\s+(?:the\s+|a\s+)?(?:description|body)\b"
-                r"\s*" + (_filler + "?" if _marker_dictated else _filler)
-                + r"\s*(.+)$",
+                r"\s*" + (_filler + "?" if _marker_dictated else _filler) + r"\s*(.+)$",
                 message,
                 _re.IGNORECASE | _re.DOTALL,
             )
@@ -8851,20 +8795,14 @@ class IntentService:
             intent.action, _gate_message, _gate_user
         ):
             _gate_slots = self._slotfill_issue_request(_gate_message)
-            _gate_subject = (intent.context or {}).get("title") or _gate_slots.get(
-                "title"
-            )
+            _gate_subject = (intent.context or {}).get("title") or _gate_slots.get("title")
             # #1649: an explicitly-stated description (`…and description
             # "Y"` / `with the body "Y"`) is a GIVEN slot with the same
             # standing as the subject — the gate must never re-ask for what
             # the ask already said (PM live 2026-08-18: both slots given in
             # quotes, still got "What's it about?").
-            _gate_body = (intent.context or {}).get("description") or _gate_slots.get(
-                "body"
-            )
-            _gate_repo = (intent.context or {}).get("repository") or _gate_slots.get(
-                "repository"
-            )
+            _gate_body = (intent.context or {}).get("description") or _gate_slots.get("body")
+            _gate_repo = (intent.context or {}).get("repository") or _gate_slots.get("repository")
             self.logger.info(
                 "collaboration_gate_held",
                 action=intent.action,
@@ -9002,9 +8940,7 @@ class IntentService:
             )
             title = title or slots.get("title")
             description = (
-                intent.context.get("description")
-                or slots.get("body")
-                or intent.original_message
+                intent.context.get("description") or slots.get("body") or intent.original_message
             )
             repository = (
                 intent.context.get("repository")
@@ -9026,9 +8962,7 @@ class IntentService:
                 )
 
                 _named = extract_natural_repo_name(
-                    intent.original_message
-                    or intent.context.get("original_message")
-                    or ""
+                    intent.original_message or intent.context.get("original_message") or ""
                 )
                 if _named:
                     if "/" in _named:
@@ -9327,9 +9261,7 @@ class IntentService:
             return repository, None
 
         _user_id = _principal_from_intent(intent)
-        message = (
-            intent.original_message or intent.context.get("original_message") or ""
-        )
+        message = intent.original_message or intent.context.get("original_message") or ""
         repository = self._slotfill_issue_request(message).get("repository")
         if repository:
             return repository, None
@@ -9425,21 +9357,15 @@ class IntentService:
                     get_user_default_repo,
                 )
 
-                default_repo = (
-                    await get_user_default_repo(UUID(str(user_id)))
-                    if user_id
-                    else None
-                )
-            except Exception as e:  # silent-ok: the default is optional ask sugar; the open form works without it
-                self.logger.debug(
-                    "repo_question_default_lookup_failed", error=str(e)
-                )
+                default_repo = await get_user_default_repo(UUID(str(user_id))) if user_id else None
+            except (
+                Exception
+            ) as e:  # silent-ok: the default is optional ask sugar; the open form works without it
+                self.logger.debug("repo_question_default_lookup_failed", error=str(e))
                 default_repo = None
 
         if asked_name and resolution is not None:
-            question = repo_resolution_question(
-                asked_name, resolution, default_repo
-            )
+            question = repo_resolution_question(asked_name, resolution, default_repo)
         else:
             question = open_repo_question(issue_number, operation)
 
@@ -9454,9 +9380,7 @@ class IntentService:
             # form, whichever this turn chose — stored verbatim.
             question=question,
         )
-        self.workflow_offer_service.set_pending_offer(
-            session_id, offer, user_id=user_id
-        )
+        self.workflow_offer_service.set_pending_offer(session_id, offer, user_id=user_id)
         self.logger.info(
             "issue_repo_question_offered",
             issue_number=issue_number,
@@ -9640,7 +9564,6 @@ class IntentService:
             )
 
         try:
-
             # Extract parameters from intent — deterministic slot-fill first
             # (2026-07-09; see _slotfill_issue_request: context arrives empty).
             slots = self._slotfill_issue_request(
@@ -9653,7 +9576,9 @@ class IntentService:
                 or slots.get("repository")
             )
             title = intent.context.get("title") or slots.get("title")
-            body = intent.context.get("body") or intent.context.get("description") or slots.get("body")
+            body = (
+                intent.context.get("body") or intent.context.get("description") or slots.get("body")
+            )
             state = intent.context.get("state")
             labels = intent.context.get("labels")
             assignees = intent.context.get("assignees")
@@ -9699,9 +9624,7 @@ class IntentService:
                 )
 
                 _named = extract_natural_repo_name(
-                    intent.original_message
-                    or intent.context.get("original_message")
-                    or ""
+                    intent.original_message or intent.context.get("original_message") or ""
                 )
                 if _named:
                     if "/" in _named:
@@ -9750,9 +9673,7 @@ class IntentService:
                 # #1567: with a session to bind to, the refusal is no longer
                 # a dead-end — ARM the repo-question carrier so the next
                 # turn's answer slot-fills and the operation proceeds.
-                ask = await self._ask_for_repository(
-                    intent, issue_number, session_id, _user_id
-                )
+                ask = await self._ask_for_repository(intent, issue_number, session_id, _user_id)
                 if ask is not None:
                     return ask
                 return IntentProcessingResult(
@@ -9778,9 +9699,7 @@ class IntentService:
                 # status value ("status → Done") ASKS instead of erroring.
                 clarify = self._offer_status_close_clarification(
                     intent,
-                    intent.original_message
-                    or intent.context.get("original_message")
-                    or "",
+                    intent.original_message or intent.context.get("original_message") or "",
                     issue_number,
                     session_id,
                     _user_id,
@@ -14215,9 +14134,7 @@ Add any additional information here.
         projects = user_context.projects if user_context else []
         if projects:
             try:
-                project_metadata = await handlers._get_project_metadata(
-                    projects, user_id=user_id
-                )
+                project_metadata = await handlers._get_project_metadata(projects, user_id=user_id)
                 if project_metadata:
                     context["projects"] = project_metadata
                 else:

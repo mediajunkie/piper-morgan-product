@@ -22,7 +22,16 @@ from services.shared_types import IntentCategory
 
 pytestmark = pytest.mark.asyncio
 
-_FABRICATED_SUCCESS = ["✓", "✅", "created", "added", "done!", "successfully", "i've", "i have created"]
+_FABRICATED_SUCCESS = [
+    "✓",
+    "✅",
+    "created",
+    "added",
+    "done!",
+    "successfully",
+    "i've",
+    "i have created",
+]
 _HONEST_DECLINE = ["can't", "cannot", "can not", "not yet", "yet"]
 
 
@@ -52,7 +61,9 @@ async def test_novel_unwired_action_declines_not_confabulates_1333(intent_servic
     assert result.success is True  # honest decline, not a 422 error
     msg = result.message.lower()
     assert any(m in msg for m in _HONEST_DECLINE), f"not an honest decline: {result.message!r}"
-    assert not any(m in msg for m in _FABRICATED_SUCCESS), f"confabulated success: {result.message!r}"
+    assert not any(
+        m in msg for m in _FABRICATED_SUCCESS
+    ), f"confabulated success: {result.message!r}"
     assert result.intent_data.get("unwired_action") is True
     assert result.workflow_id is None  # no handler ran
 
@@ -66,9 +77,7 @@ async def test_unwired_execution_never_routes_to_floor_1333(intent_service):
         context={"original_message": "archive my repo please"},
     )
 
-    with patch(
-        "services.intent_service.conversational_floor.ConversationalFloor"
-    ) as floor_cls:
+    with patch("services.intent_service.conversational_floor.ConversationalFloor") as floor_cls:
         result = await intent_service._handle_execution_intent(
             intent, workflow=None, session_id="s-1", user_id="u-1"
         )

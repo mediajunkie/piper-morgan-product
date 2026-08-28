@@ -161,7 +161,9 @@ def _compute_deadline_proximity(due_date: Optional[datetime]) -> str:
         return "none"
 
     due = ensure_utc(due_date)
-    if due is None:  # ensure_utc is None-in-None-out; guarded above, narrowed here for mypy and for honesty if the guard ever moves
+    if (
+        due is None
+    ):  # ensure_utc is None-in-None-out; guarded above, narrowed here for mypy and for honesty if the guard ever moves
         return "none"
     now = utc_now()
     if due < now:
@@ -1138,7 +1140,9 @@ class ContextAssembler:
                     "due_reminders": due_reminders,
                     "reminder_count": len(due_reminders),
                 }
-        except Exception as e:  # silent-ok: failure surfaces via source_failed flag, not an empty context (#1425)
+        except (
+            Exception
+        ) as e:  # silent-ok: failure surfaces via source_failed flag, not an empty context (#1425)
             logger.warning("context_assembler_reminder_error (source failed)", error=str(e))
             return {"source_failed": True}
 
@@ -2037,9 +2041,7 @@ class ContextAssembler:
                 return []
 
             # Step 2: search.messages for mentions of @<handle>, newest first.
-            search_resp = await slack.search_messages(
-                f"@{slack_handle}", user_id=user_id, count=20
-            )
+            search_resp = await slack.search_messages(f"@{slack_handle}", user_id=user_id, count=20)
             if not search_resp or not search_resp.success:
                 return []
             matches = ((search_resp.data or {}).get("messages") or {}).get("matches") or []

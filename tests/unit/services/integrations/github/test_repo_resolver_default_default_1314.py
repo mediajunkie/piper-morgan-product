@@ -94,9 +94,7 @@ class TestApplyDefaultDefaultIfUnset:
             mock_scope.return_value.__aenter__ = AsyncMock(return_value=MagicMock())
             mock_scope.return_value.__aexit__ = AsyncMock(return_value=False)
 
-            await apply_default_default_if_unset(
-                "user-1", [_repo("owner/candidate")]
-            )
+            await apply_default_default_if_unset("user-1", [_repo("owner/candidate")])
 
         mock_config_service.set_default_repo.assert_not_awaited()
 

@@ -471,7 +471,9 @@ class TestDocumentHandlerErrors:
             mock_router.is_configured.return_value = True
             mock_router.is_available.return_value = True  # #1383 gate
             mock_router.connect = AsyncMock(side_effect=Exception("API connection failed"))
-            mock_router.connect_for_user = AsyncMock(side_effect=Exception("API connection failed"))  # #1383
+            mock_router.connect_for_user = AsyncMock(
+                side_effect=Exception("API connection failed")
+            )  # #1383
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_search_documents_notion(

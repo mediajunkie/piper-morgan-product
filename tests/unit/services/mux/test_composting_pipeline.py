@@ -16,13 +16,13 @@ from services.mux.composting_models import (
     create_insight_learning,
 )
 from services.mux.composting_pipeline import CompostingPipeline, InsightJournal, SurfaceableInsight
+from services.mux.lifecycle import LifecycleState
 
 # #1035: InsightJournal is now repository-backed and async; tests use the
 # in-memory FakeInsightJournal as a test double for testing OTHER classes
 # (CompostingPipeline) without a DB. The InsightJournal contract itself is
 # verified by InsightRepository tests at test_insight_repository_1035.py.
 from tests.unit.services.mux._fake_insight_journal import FakeInsightJournal
-from services.mux.lifecycle import LifecycleState
 
 # =============================================================================
 # Test Fixtures

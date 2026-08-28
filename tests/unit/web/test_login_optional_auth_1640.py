@@ -144,8 +144,7 @@ class TestOpenRedirectGuardOnTheBounce:
         resp = client.get(f"/login?next={quote(evil, safe='')}", headers=HTML)
         assert resp.status_code == 302, resp.text[:300]
         assert resp.headers["location"] == "/", (
-            f"open redirect: next={evil!r} produced "
-            f"Location {resp.headers['location']!r}"
+            f"open redirect: next={evil!r} produced " f"Location {resp.headers['location']!r}"
         )
 
 

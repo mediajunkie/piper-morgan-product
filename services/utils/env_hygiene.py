@@ -52,9 +52,7 @@ def warn_if_prod_uses_dev_password() -> bool:
 
     # PIPER_ENVIRONMENT is canonical, ENVIRONMENT secondary — the same pair
     # (and read order) as services/auth/jwt_service.py's production guard.
-    env = (
-        os.environ.get("PIPER_ENVIRONMENT") or os.environ.get("ENVIRONMENT") or ""
-    ).lower()
+    env = (os.environ.get("PIPER_ENVIRONMENT") or os.environ.get("ENVIRONMENT") or "").lower()
     if env not in ("production", "prod"):
         return False
     password = os.environ.get("POSTGRES_PASSWORD", _DEV_DEFAULT_PASSWORD)

@@ -63,40 +63,34 @@ async def _saved_reminder_message(handlers, message: str) -> str:
 async def test_confirmation_teaches_that_the_reminder_lives_with_todos(handlers):
     """#1569 explanation-first: the message must say the reminder lives with
     the user's todos and names the Todos page as where to see it."""
-    result = await _saved_reminder_message(
-        handlers, "remind me tomorrow at 3pm to review the PR"
-    )
+    result = await _saved_reminder_message(handlers, "remind me tomorrow at 3pm to review the PR")
     assert "lives with your todos" in result, (
         "confirmation never teaches the unified reminders-are-todos model — "
         f"the user meets it as a surprise on /todos instead: {result!r}"
     )
-    assert "Todos page" in result, (
-        f"confirmation does not name WHERE the reminder is visible: {result!r}"
-    )
+    assert (
+        "Todos page" in result
+    ), f"confirmation does not name WHERE the reminder is visible: {result!r}"
 
 
 @pytest.mark.asyncio
 async def test_confirmation_still_describes_passive_surfacing(handlers):
     """The Pattern-073 mechanism claim (surfaced in conversation once due,
     never an active-push promise) must survive the new sentence."""
-    result = await _saved_reminder_message(
-        handlers, "remind me tomorrow at 3pm to review the PR"
-    )
-    assert "in conversation once it's due" in result, (
-        f"passive-surfacing mechanism claim went missing: {result!r}"
-    )
-    assert "I'll remind you to" not in result, (
-        "active-notification promise reintroduced (Pattern-073 regression)"
-    )
+    result = await _saved_reminder_message(handlers, "remind me tomorrow at 3pm to review the PR")
+    assert (
+        "in conversation once it's due" in result
+    ), f"passive-surfacing mechanism claim went missing: {result!r}"
+    assert (
+        "I'll remind you to" not in result
+    ), "active-notification promise reintroduced (Pattern-073 regression)"
 
 
 @pytest.mark.asyncio
 async def test_1562_copy_survives_intact(handlers):
     """Canary: the same-day #1562 rework (verifiable 'Reminder saved', the
     '(scheduled for ...)' label with its leading-'at' strip) stays intact."""
-    result = await _saved_reminder_message(
-        handlers, "remind me tomorrow at 3pm to review the PR"
-    )
+    result = await _saved_reminder_message(handlers, "remind me tomorrow at 3pm to review the PR")
     assert "Reminder saved" in result
     assert "(scheduled for " in result
     assert "for at " not in result, f"'(scheduled for at ...)' doublet: {result!r}"
@@ -106,9 +100,7 @@ async def test_1562_copy_survives_intact(handlers):
 async def test_new_sentence_introduces_no_doubled_tokens(handlers):
     """test_reminders.py pins a no-doubled-token property on this message;
     assert it here too so THIS file fails first if the new sentence breaks it."""
-    result = await _saved_reminder_message(
-        handlers, "remind me tomorrow at 3pm to review the PR"
-    )
-    assert not re.search(r"\b(\w+)\s+\1\b", result.lower()), (
-        f"Doubled token in confirmation copy: {result!r}"
-    )
+    result = await _saved_reminder_message(handlers, "remind me tomorrow at 3pm to review the PR")
+    assert not re.search(
+        r"\b(\w+)\s+\1\b", result.lower()
+    ), f"Doubled token in confirmation copy: {result!r}"

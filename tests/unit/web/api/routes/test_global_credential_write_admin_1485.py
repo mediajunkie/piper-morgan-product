@@ -61,6 +61,7 @@ def _client(user_id) -> TestClient:
 
 def _patch_is_admin():
     """Patch the DB read at its boundary: ADMIN_ID is admin, everyone else is not."""
+
     async def fake(user_id):
         return str(user_id) == str(ADMIN_ID)
 
@@ -156,9 +157,7 @@ def test_admin_with_flag_unset_still_409_before_write(monkeypatch):
 def test_non_admin_slack_app_credentials_refused_no_write():
     with (
         _patch_is_admin(),
-        patch(
-            "services.integrations.integration_config_service.IntegrationConfigService"
-        ) as ICS,
+        patch("services.integrations.integration_config_service.IntegrationConfigService") as ICS,
     ):
         resp = _client(NON_ADMIN_ID).post(
             "/api/v1/settings/integrations/slack/app-credentials",
@@ -171,9 +170,7 @@ def test_non_admin_slack_app_credentials_refused_no_write():
 def test_non_admin_calendar_app_credentials_refused_no_write():
     with (
         _patch_is_admin(),
-        patch(
-            "services.integrations.integration_config_service.IntegrationConfigService"
-        ) as ICS,
+        patch("services.integrations.integration_config_service.IntegrationConfigService") as ICS,
     ):
         resp = _client(NON_ADMIN_ID).post(
             "/api/v1/settings/integrations/calendar/app-credentials",
@@ -186,9 +183,7 @@ def test_non_admin_calendar_app_credentials_refused_no_write():
 def test_admin_slack_app_credentials_write_works():
     with (
         _patch_is_admin(),
-        patch(
-            "services.integrations.integration_config_service.IntegrationConfigService"
-        ) as ICS,
+        patch("services.integrations.integration_config_service.IntegrationConfigService") as ICS,
     ):
         resp = _client(ADMIN_ID).post(
             "/api/v1/settings/integrations/slack/app-credentials",

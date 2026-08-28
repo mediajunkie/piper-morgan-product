@@ -593,9 +593,7 @@ class SlackResponseHandler:
 
             # #1460: fallback key corrected — was context.get("message"), a key
             # nothing ever writes; the real dict surface is "original_message".
-            message = intent.original_message or (intent.context or {}).get(
-                "original_message", ""
-            )
+            message = intent.original_message or (intent.context or {}).get("original_message", "")
             if not message:
                 self.logger.warning(
                     f"No message available for intent {intent.action}; cannot dispatch"
@@ -626,9 +624,7 @@ class SlackResponseHandler:
                 )
                 return {
                     "type": "query_response",
-                    "content": unlinked_decline(
-                        build_link_deep_url(slack_user_id, slack_team_id)
-                    ),
+                    "content": unlinked_decline(build_link_deep_url(slack_user_id, slack_team_id)),
                     "intent": intent,
                 }
 
@@ -693,9 +689,7 @@ class SlackResponseHandler:
                 owner_id = await resolve_slack_principal(session, slack_user_id, slack_team_id)
             return str(owner_id) if owner_id else None
         except Exception as e:
-            self.logger.warning(
-                f"Slack principal resolution failed (fail-closed to None): {e}"
-            )
+            self.logger.warning(f"Slack principal resolution failed (fail-closed to None): {e}")
             return None
 
     @staticmethod
@@ -777,9 +771,9 @@ class SlackResponseHandler:
 
             # #1110: outbound credentials use the connector-owner's Piper
             # user_id (not the sender's Slack user_id).
-            message_params["user_id"] = slack_context.get(
-                "connector_user_id"
-            ) or slack_context.get("user_id")
+            message_params["user_id"] = slack_context.get("connector_user_id") or slack_context.get(
+                "user_id"
+            )
 
             # Send message via Slack client
             response = await self.slack_client.send_message(**message_params)

@@ -613,9 +613,7 @@ class ConversationalFloor:
                 from services.database.session_factory import AsyncSessionFactory
 
                 async with AsyncSessionFactory.session_scope() as session:
-                    base = await personalization_service.resolve_system_prompt(
-                        ctx.user_id, session
-                    )
+                    base = await personalization_service.resolve_system_prompt(ctx.user_id, session)
             except Exception:
                 base = "You are Piper Morgan, an AI product management assistant."
 
@@ -1238,13 +1236,11 @@ class ConversationalFloor:
                     if isinstance(i, dict) and i.get("status") != "active"
                 ]
                 lines.append(
-                    "- Connected integrations: "
-                    + (", ".join(connected) if connected else "none")
+                    "- Connected integrations: " + (", ".join(connected) if connected else "none")
                 )
                 if not_connected:
                     lines.append(
-                        "- Not connected (available in Settings): "
-                        + ", ".join(not_connected)
+                        "- Not connected (available in Settings): " + ", ".join(not_connected)
                     )
 
         if "trust_profile" in domain_context:

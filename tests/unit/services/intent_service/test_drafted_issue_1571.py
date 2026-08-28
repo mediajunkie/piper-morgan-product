@@ -209,9 +209,7 @@ class TestCollaborateTurnArmsBinding:
         # The copy teaches the phrase that NOW ROUTES — never the unbound lie.
         assert "file it as is" in result.message
 
-    async def test_no_subject_draft_arms_subjectless_but_teaches_no_file_phrase(
-        self, svc
-    ):
+    async def test_no_subject_draft_arms_subjectless_but_teaches_no_file_phrase(self, svc):
         """PIN FLIPPED BY #1630 (this test used to assert no-subject = no
         arm). A subjectless ask now arms the minimal SUBJECTLESS carrier so
         the #1627 hold covers the "What's it about?" answer — the unarmed
@@ -249,9 +247,7 @@ class TestCollaborateTurnArmsBinding:
             patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
             patch(RESOLVER, new=AsyncMock(return_value="acme/widgets")),
         ):
-            result = await svc._handle_create_issue(
-                intent, "wf-1", "sess-1571-conf", user_id=_USER
-            )
+            result = await svc._handle_create_issue(intent, "wf-1", "sess-1571-conf", user_id=_USER)
         w.assert_awaited_once()
         assert "#123" in result.message
 
@@ -276,9 +272,7 @@ async def _arm_draft(svc, sid):
 class TestPmTranscriptEndToEnd:
     pytestmark = pytest.mark.asyncio
 
-    async def test_file_it_as_is_files_in_one_confirmation_with_real_number(
-        self, svc
-    ):
+    async def test_file_it_as_is_files_in_one_confirmation_with_real_number(self, svc):
         """PM's sequence, fixed: draft → "Please file it as is" → the REAL
         create fires in ONE turn, and the success copy carries the ACTUAL
         issue number from the tool result — no second ask, no placeholder,
@@ -298,9 +292,7 @@ class TestPmTranscriptEndToEnd:
             patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
             patch(RESOLVER, new=AsyncMock(return_value="acme/widgets")),
         ):
-            result = await svc.process_intent(
-                message=PM_FILE_AS_IS, session_id=sid, user_id=_USER
-            )
+            result = await svc.process_intent(message=PM_FILE_AS_IS, session_id=sid, user_id=_USER)
 
         w.assert_awaited_once()  # ONE confirmation → the write fired
         # Success copy derives from the actual tool result:
@@ -326,9 +318,7 @@ class TestPmTranscriptEndToEnd:
             patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
             patch(RESOLVER, new=AsyncMock(return_value="acme/widgets")),
         ):
-            result = await svc.process_intent(
-                message="file it", session_id=sid, user_id=_USER
-            )
+            result = await svc.process_intent(message="file it", session_id=sid, user_id=_USER)
         w.assert_awaited_once()
         assert "#7" in result.message
 
@@ -349,9 +339,7 @@ class TestPmTranscriptEndToEnd:
             ),
             patch(RESOLVER, new=AsyncMock(return_value="acme/widgets")),
         ):
-            r1 = await svc.process_intent(
-                message=PM_FILE_AS_IS, session_id=sid, user_id=_USER
-            )
+            r1 = await svc.process_intent(message=PM_FILE_AS_IS, session_id=sid, user_id=_USER)
 
         # Honest: no fabricated success, no placeholder, and the draft LIVES.
         assert "#[" not in r1.message
@@ -372,9 +360,7 @@ class TestPmTranscriptEndToEnd:
             patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
             patch(RESOLVER, new=AsyncMock(return_value="acme/widgets")),
         ):
-            r2 = await svc.process_intent(
-                message="file it", session_id=sid, user_id=_USER
-            )
+            r2 = await svc.process_intent(message="file it", session_id=sid, user_id=_USER)
         w.assert_awaited_once()
         assert "#124" in r2.message
         assert _pending_offers(svc) == {}
@@ -389,9 +375,7 @@ class TestPmTranscriptEndToEnd:
             patch(f"{ROUTER}.initialize", new=AsyncMock()),
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=False)),
         ):
-            r = await svc.process_intent(
-                message=PM_FILE_AS_IS, session_id=sid, user_id=_USER
-            )
+            r = await svc.process_intent(message=PM_FILE_AS_IS, session_id=sid, user_id=_USER)
         assert r.intent_data.get("issue_number") is None
         assert r.intent_data.get("drafted_issue_retained") is True
         assert len(_pending_offers(svc)) == 1
@@ -410,9 +394,7 @@ class TestPmTranscriptEndToEnd:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
         ):
-            r = await svc.process_intent(
-                message="close issue #108", session_id=sid, user_id=_USER
-            )
+            r = await svc.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         w.assert_not_awaited()  # the draft did NOT file
         # The turn routed normally: the #1190 close confirmation claimed it.
         assert "(yes/no)" in r.message
@@ -446,9 +428,7 @@ class TestPmTranscriptEndToEnd:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
         ):
-            r = await svc.process_intent(
-                message=near_accept, session_id=sid, user_id=_USER
-            )
+            r = await svc.process_intent(message=near_accept, session_id=sid, user_id=_USER)
         w.assert_not_awaited()  # nothing filed
         assert "file it as is" in r.message  # the re-ask teaches the phrase
         stored = next(iter(_pending_offers(svc).values()))

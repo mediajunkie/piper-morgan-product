@@ -30,8 +30,7 @@ import sys
 from pathlib import Path
 
 MEMDIR = Path(
-    "/Users/xian/.claude-pm/projects/"
-    "-Users-xian-Development-piper-morgan-product/memory"
+    "/Users/xian/.claude-pm/projects/" "-Users-xian-Development-piper-morgan-product/memory"
 )
 
 TYPE_ORDER = ["user", "project", "feedback", "reference", "(untyped)"]
@@ -183,9 +182,9 @@ body = "\n".join(out)
 # ── TWO independent limits. Guarding one and reporting green is the exact failure
 # this script was written to fix, one dimension over. (PA, 2026-07-26: the byte
 # guard passed at 20.4KB while the file sat at 194 lines against a ~200 ceiling.)
-LIMIT = 24000          # bytes — silent read truncation
-LINE_LIMIT = 200       # lines — separate read ceiling, NOT implied by the byte count
-WARN_AT = 0.90         # surface pressure before it becomes a refusal
+LIMIT = 24000  # bytes — silent read truncation
+LINE_LIMIT = 200  # lines — separate read ceiling, NOT implied by the byte count
+WARN_AT = 0.90  # surface pressure before it becomes a refusal
 
 # LINE-COUNT CONVENTION — stated because two numbers for one file is how an
 # afternoon disappears, and this whole thread is already about a count that lies.
@@ -195,7 +194,7 @@ WARN_AT = 0.90         # surface pressure before it becomes a refusal
 # guard against SILENT truncation. Every number this script prints is labelled with
 # its convention so nobody has to rediscover the discrepancy. (Comms, 2026-07-31.)
 n_lines = body.count("\n") + 1
-n_lines_wc = len(body.splitlines())          # what `wc -l` reports
+n_lines_wc = len(body.splitlines())  # what `wc -l` reports
 # len(str) counts CHARACTERS. The limit is BYTES, and this file is full of multibyte
 # UTF-8 (⚠️ — × •). Measuring the wrong unit under-counted by ~800B (4%) and would have
 # permitted ~24,968 real bytes at a "24,000" limit — i.e. silent truncation, from the
@@ -226,13 +225,17 @@ if "--check" in sys.argv:
     target = MEMDIR / "MEMORY.md"
     current = target.read_text(encoding="utf-8") if target.exists() else ""
     if current == body:
-        print(f"✓ MEMORY.md matches its generator ({len(files)} entries, {n_bytes:,}B, "
-              f"{n_lines} lines [guard convention; `wc -l` reports {n_lines_wc}])")
+        print(
+            f"✓ MEMORY.md matches its generator ({len(files)} entries, {n_bytes:,}B, "
+            f"{n_lines} lines [guard convention; `wc -l` reports {n_lines_wc}])"
+        )
         raise SystemExit(0)
     cur_lines, new_lines = current.split("\n"), body.split("\n")
     print("⚠️  DRIFT: MEMORY.md does NOT match what rebuild-memory-index.py would emit.")
     print(f"   on disk: {len(cur_lines)} lines / {len(current.encode('utf-8')):,}B")
-    print(f"   generator would emit: {n_lines} lines [guard convention; `wc -l` {n_lines_wc}] / {n_bytes:,}B")
+    print(
+        f"   generator would emit: {n_lines} lines [guard convention; `wc -l` {n_lines_wc}] / {n_bytes:,}B"
+    )
     print("   The artifact is a BUILD OUTPUT. If someone hand-edited it, that edit is")
     print("   NOT durable — the next rebuild silently reverts it. Either fold the change")
     print("   into the generator, or re-run this script without --check to discard it.")
@@ -247,15 +250,19 @@ if "--check" in sys.argv:
     raise SystemExit(1)
 
 (MEMDIR / "MEMORY.md").write_text(body, encoding="utf-8")
-print(f"index rebuilt: {len(files)} entries, {n_bytes:,} bytes, {n_lines} lines "
-      f"[guard convention; `wc -l` reports {n_lines_wc}] "
-      f"({LIMIT-n_bytes:,}B / {LINE_LIMIT-n_lines} lines under the limits)")
+print(
+    f"index rebuilt: {len(files)} entries, {n_bytes:,} bytes, {n_lines} lines "
+    f"[guard convention; `wc -l` reports {n_lines_wc}] "
+    f"({LIMIT-n_bytes:,}B / {LINE_LIMIT-n_lines} lines under the limits)"
+)
 # Pressure warnings — a green write that is one entry from truncating is not a healthy signal.
 if n_bytes > LIMIT * WARN_AT:
     print(f"⚠️  BYTES at {100*n_bytes/LIMIT:.0f}% of limit")
 if n_lines > LINE_LIMIT * WARN_AT:
-    print(f"⚠️  LINES at {100*n_lines/LINE_LIMIT:.0f}% of limit ({LINE_LIMIT-n_lines} left). "
-          f"One entry = one line: this needs prune/merge or a format change, not shorter text.")
+    print(
+        f"⚠️  LINES at {100*n_lines/LINE_LIMIT:.0f}% of limit ({LINE_LIMIT-n_lines} left). "
+        f"One entry = one line: this needs prune/merge or a format change, not shorter text."
+    )
 for t in TYPE_ORDER:
     if t in buckets:
         print(f"  {t:12s} {len(buckets[t])}")

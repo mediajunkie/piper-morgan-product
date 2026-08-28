@@ -12,11 +12,11 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+from services.domain.models import Artifact, ArtifactSourceType
 from web.api.routes import artifacts as artifacts_route
 from web.api.routes import files as files_route
 from web.api.routes.artifacts import preview_artifact
 from web.api.routes.files import preview_file
-from services.domain.models import Artifact, ArtifactSourceType
 
 _USER = SimpleNamespace(sub="user-313")
 

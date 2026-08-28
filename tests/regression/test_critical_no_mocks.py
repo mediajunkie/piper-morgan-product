@@ -127,9 +127,7 @@ class TestCriticalEndpoints:
 
         manager = StartupManager(app)
         assert APIRouterMountingPhase in manager.phases
-        assert "web.api.routes.standup" in _inspect.getsource(
-            APIRouterMountingPhase.startup
-        )
+        assert "web.api.routes.standup" in _inspect.getsource(APIRouterMountingPhase.startup)
 
     def test_intent_endpoint_returns_valid_response(self):
         """Intent endpoint must process requests and return valid responses."""

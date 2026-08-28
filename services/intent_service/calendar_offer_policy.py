@@ -18,7 +18,6 @@ from typing import Optional
 
 from services.shared_types import TrustStage
 
-
 CALENDAR_SETTINGS_PATH = "/settings/integrations/calendar"
 
 # Per #790 Q1 disposition (PM 2026-05-03): "approved as drafted".

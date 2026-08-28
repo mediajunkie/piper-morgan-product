@@ -117,7 +117,7 @@ def _at_capacity_response(current: int, limit: int) -> JSONResponse:
 def _redis_unavailable_response() -> JSONResponse:
     """D4 fail-closed: a Redis outage denies rather than silently allowing
     unbounded access. Distinct message from the two above — this is "we
-    couldn't verify your capacity," not "you are over your limit.\""""
+    couldn't verify your capacity," not "you are over your limit.\" """
     return JSONResponse(
         status_code=503,
         content={
@@ -155,9 +155,7 @@ class UsageCapMiddleware(BaseHTTPMiddleware):
                 if count > RATE_LIMIT_PER_MINUTE:
                     ttl = await redis.ttl(rate_key)
                     retry_after = ttl if ttl and ttl > 0 else 60
-                    logger.warning(
-                        "usage_cap_rate_limited", principal=principal, count=count
-                    )
+                    logger.warning("usage_cap_rate_limited", principal=principal, count=count)
                     return _rate_limited_response(retry_after)
 
                 # --- Mechanism 2: concurrency cap (ZSET gauge, TTL-pruned) ---
@@ -178,9 +176,7 @@ class UsageCapMiddleware(BaseHTTPMiddleware):
                     await redis.zremrangebyscore(
                         CONCURRENCY_GAUGE_KEY, "-inf", now - CONCURRENT_SESSION_IDLE_SECONDS
                     )
-                    is_active = (
-                        await redis.zscore(CONCURRENCY_GAUGE_KEY, principal) is not None
-                    )
+                    is_active = await redis.zscore(CONCURRENCY_GAUGE_KEY, principal) is not None
                     if not is_active:
                         current_count = await redis.zcard(CONCURRENCY_GAUGE_KEY)
                         if current_count >= MAX_CONCURRENT_SESSIONS:
@@ -189,9 +185,7 @@ class UsageCapMiddleware(BaseHTTPMiddleware):
                                 principal=principal,
                                 current_count=current_count,
                             )
-                            return _at_capacity_response(
-                                current_count, MAX_CONCURRENT_SESSIONS
-                            )
+                            return _at_capacity_response(current_count, MAX_CONCURRENT_SESSIONS)
                     # Register/refresh this principal's last-active timestamp —
                     # whether newly admitted or already an active member.
                     await redis.zadd(CONCURRENCY_GAUGE_KEY, {principal: now})

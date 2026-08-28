@@ -20,7 +20,6 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Iterable, Optional
 
-
 # Default threshold in days. Override with PIPER_LIST_STALENESS_DAYS env var.
 DEFAULT_STALENESS_THRESHOLD_DAYS = 60
 

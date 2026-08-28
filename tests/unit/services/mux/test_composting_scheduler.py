@@ -13,10 +13,6 @@ import pytest
 from services.mux.compost_bin import CompostBin, CompostBinEntry
 from services.mux.composting_models import CompostingTrigger, create_insight_learning
 from services.mux.composting_pipeline import CompostingPipeline, InsightJournal
-
-# #1035: tests use FakeInsightJournal as a test double; production
-# InsightJournal is async + repository-backed.
-from tests.unit.services.mux._fake_insight_journal import FakeInsightJournal
 from services.mux.composting_scheduler import (
     COMPOSTING_FRAMES,
     CompostingRunResult,
@@ -24,6 +20,10 @@ from services.mux.composting_scheduler import (
     CompostingScheduler,
     frame_learning,
 )
+
+# #1035: tests use FakeInsightJournal as a test double; production
+# InsightJournal is async + repository-backed.
+from tests.unit.services.mux._fake_insight_journal import FakeInsightJournal
 
 # =============================================================================
 # CompostingSchedule Tests

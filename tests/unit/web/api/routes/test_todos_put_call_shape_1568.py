@@ -95,9 +95,7 @@ def test_pages_query_param_shape_reaches_the_real_repo_signature(client, repo):
     assert resp.status_code == 200
     # Domain model stores the title in `text`; the repo routes `text` to the
     # parent ItemDB table — the updates dict must speak the repo's field names.
-    repo.update_todo.assert_awaited_once_with(
-        "t1", {"text": "Renamed"}, owner_id="user-abc"
-    )
+    repo.update_todo.assert_awaited_once_with("t1", {"text": "Renamed"}, owner_id="user-abc")
     assert resp.json()["title"] == "Renamed"
 
 
@@ -111,9 +109,7 @@ def test_query_param_shape_survives_titles_needing_url_encoding(client, repo):
     resp = client.put("/api/v1/todos/t1", params={"title": tricky})
 
     assert resp.status_code == 200
-    repo.update_todo.assert_awaited_once_with(
-        "t1", {"text": tricky}, owner_id="user-abc"
-    )
+    repo.update_todo.assert_awaited_once_with("t1", {"text": tricky}, owner_id="user-abc")
 
 
 def test_json_body_title_is_silently_dropped_so_the_page_must_not_send_it(client, repo):
@@ -129,9 +125,7 @@ def test_json_body_title_is_silently_dropped_so_the_page_must_not_send_it(client
 
     assert resp.status_code == 200
     repo.update_todo.assert_awaited_once_with("t1", {}, owner_id="user-abc")
-    assert resp.json()["title"] == "Ship it", (
-        "title must be unchanged — the body was never read"
-    )
+    assert resp.json()["title"] == "Ship it", "title must be unchanged — the body was never read"
 
 
 def test_refused_update_surfaces_as_500_through_http_layer(client, repo):

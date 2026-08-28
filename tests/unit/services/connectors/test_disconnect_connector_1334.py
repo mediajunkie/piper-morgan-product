@@ -46,8 +46,14 @@ async def test_github_clears_credential_binding_and_grant_1330():
         patch("services.infrastructure.keychain_service.KeychainService", return_value=keychain),
         patch("services.integrations.github.config_service.GitHubConfigService"),
         patch("services.database.session_factory.AsyncSessionFactory", factory),
-        patch("services.connectors.binding_repository.ConnectorBindingRepository", return_value=binding_repo),
-        patch("services.mcp.consumer.connector_grant_store.ConnectorGrantStore", return_value=grant_store),
+        patch(
+            "services.connectors.binding_repository.ConnectorBindingRepository",
+            return_value=binding_repo,
+        ),
+        patch(
+            "services.mcp.consumer.connector_grant_store.ConnectorGrantStore",
+            return_value=grant_store,
+        ),
     ):
         await disconnect_connector(_U, "github")
 

@@ -193,7 +193,10 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "list_labels_query"): "List labels",
     ("QUERY", "list_branches_query"): "Show branches",
     ("QUERY", "update_document_query"): "Update the project roadmap document",
-    ("QUERY", "write_stakeholder_update"): "Write a short update for the CEO on where we are with alpha testing",
+    (
+        "QUERY",
+        "write_stakeholder_update",
+    ): "Write a short update for the CEO on where we are with alpha testing",
     ("QUERY", "changes_query"): "What changed since yesterday?",
     ("QUERY", "attention_query"): "What needs my attention?",
     ("QUERY", "local_git_status_query"): "What branch are we on?",
@@ -238,12 +241,8 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
 ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     # canonical_handlers._handle_conversation_query; pre_classifier
     # GREETING/FAREWELL/THANKS_PATTERNS (#1416 pleasantry-only precondition).
-    ("CONVERSATION", "greeting"): (
-        "Respond to a greeting when the message is only a pleasantry"
-    ),
-    ("CONVERSATION", "farewell"): (
-        "Respond to a goodbye when the message is only a pleasantry"
-    ),
+    ("CONVERSATION", "greeting"): ("Respond to a greeting when the message is only a pleasantry"),
+    ("CONVERSATION", "farewell"): ("Respond to a goodbye when the message is only a pleasantry"),
     ("CONVERSATION", "thanks"): (
         "Acknowledge thanks when the message is only an expression of gratitude"
     ),
@@ -256,13 +255,9 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
         "Answer what-can-you-do questions with the assistant's capability overview"
     ),
     # pre_classifier TRUST_PATTERNS ("how do you handle my data?").
-    ("TRUST", "explain_trust"): (
-        "Explain how the assistant handles the user's data and privacy"
-    ),
+    ("TRUST", "explain_trust"): ("Explain how the assistant handles the user's data and privacy"),
     # pre_classifier MEMORY_PATTERNS ("what do you remember about me?").
-    ("MEMORY", "get_memory"): (
-        "Answer what-do-you-remember questions about stored user context"
-    ),
+    ("MEMORY", "get_memory"): ("Answer what-do-you-remember questions about stored user context"),
     # #1030 INSIGHT-PULL: floor + InsightRepository enrichment (registry note above).
     ("MEMORY", "pull_insights"): (
         "Answer what-have-you-learned questions from accumulated insights "
@@ -306,13 +301,11 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     # canonical_handlers._handle_provenance_query (#1030 R4: turn_provenance
     # lookup → colleague-prose citation).
     ("PROVENANCE", "explain_suggestion"): (
-        "Explain why the assistant made a prior suggestion (provenance of a "
-        "recommendation)"
+        "Explain why the assistant made a prior suggestion (provenance of a " "recommendation)"
     ),
     # #1256: FLOOR drafts the prose for an outbound stakeholder update.
     ("QUERY", "write_stakeholder_update"): (
-        "Draft an outbound stakeholder update on current progress for a named "
-        "audience"
+        "Draft an outbound stakeholder update on current progress for a named " "audience"
     ),
     # pre_classifier FEATURE_INFO_PATTERNS ("tell me more about the GitHub
     # integration"); FLOOR-handled.
@@ -326,9 +319,7 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     ("EXECUTION", "delete_todo"): "Delete an existing todo from the user's list",
     # pre_classifier ANALYSIS_PATTERNS ("what's blocking the milestone?");
     # FLOOR-handled.
-    ("ANALYSIS", "analyze_blockers"): (
-        "Analyze what is blocking a milestone or project"
-    ),
+    ("ANALYSIS", "analyze_blockers"): ("Analyze what is blocking a milestone or project"),
 }
 
 

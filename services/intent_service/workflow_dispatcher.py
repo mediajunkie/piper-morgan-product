@@ -50,9 +50,7 @@ logger = structlog.get_logger(__name__)
 # Ops with NO group are unaddressable by any WAVE flip, by design, until
 # someone assigns one. `scripts/inversion_phase2_gate.py --audit` lists them
 # by name with denominators so "unassigned" is never a silent remainder.
-FLIP_GROUPS: frozenset[str] = frozenset(
-    {"read_status", "read_referent", "read_synthesis"}
-)
+FLIP_GROUPS: frozenset[str] = frozenset({"read_status", "read_referent", "read_synthesis"})
 
 
 # ─── #1677 named-WRITE flip allowlist (Arch ruling 2026-08-25; PM chose this ──
@@ -443,7 +441,7 @@ def normalize_action(action: str) -> str:
         return action
     for prefix in _NORMALIZE_PREFIXES:
         if action.startswith(prefix):
-            stripped = action[len(prefix):]
+            stripped = action[len(prefix) :]
             if stripped in workflows:
                 logger.info("action_normalized", emitted=action, rail_key=stripped)
                 return stripped

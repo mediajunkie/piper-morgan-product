@@ -18,13 +18,13 @@ from typing import Optional
 import pytest
 
 from services.ethics.output_filter import (
-    Action,
     CANNED_VIOLATION_RESPONSE,
+    REDACTED_TOKEN,
+    Action,
     FilterResult,
     OutputFilter,
     OutputFilterDecision,
     Profile,
-    REDACTED_TOKEN,
     Severity,
     profile_for,
 )
@@ -33,7 +33,6 @@ from services.ethics.output_filter_rules import (
     apply_pii_rules,
     apply_secret_rules,
 )
-
 
 # ============================================================================
 # Profile registry

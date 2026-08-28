@@ -27,8 +27,8 @@ from services.database.models import ConnectorBinding  # noqa: E402
 from services.mcp.consumer import github_adapter as gh_mod  # noqa: E402
 from services.mcp.consumer.connector import (  # noqa: E402
     Binding,
-    ConnectRequired,
     ConnectorStatusState,
+    ConnectRequired,
 )
 from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter  # noqa: E402
 

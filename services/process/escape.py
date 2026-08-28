@@ -253,7 +253,9 @@ def detect_flow_exit(message: str, process_type: ProcessType) -> bool:
 def _residual_after(message: str, start: int, end: int) -> Optional[str]:
     """Message content outside the matched clause, cleaned of connectives."""
     residual = (message[:start] + " " + message[end:]).strip()
-    residual = re.sub(r"^(?:[.,;:!?\s]|and\b|then\b|but\b|so\b)+", "", residual, flags=re.IGNORECASE)
+    residual = re.sub(
+        r"^(?:[.,;:!?\s]|and\b|then\b|but\b|so\b)+", "", residual, flags=re.IGNORECASE
+    )
     residual = residual.strip(" .,;:!?")
     return residual if len(residual) >= 3 else None
 

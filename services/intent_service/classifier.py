@@ -283,9 +283,7 @@ class IntentClassifier:
                     activities = []
                 for a in activities:
                     ref = a.target_ref or ""
-                    if a.action_type == "issue_created" and ref.endswith(
-                        f"#{explicit_num}"
-                    ):
+                    if a.action_type == "issue_created" and ref.endswith(f"#{explicit_num}"):
                         repository = ref.rpartition("#")[0] or None
                         break
             logger.info(
@@ -508,7 +506,9 @@ class IntentClassifier:
         classification_context = {
             "message": message,
             "timestamp": datetime.now().isoformat(),
-            "available_knowledge": self._assess_available_knowledge(context or {}),  # #1436: callee is dict-typed
+            "available_knowledge": self._assess_available_knowledge(
+                context or {}
+            ),  # #1436: callee is dict-typed
             "user_context": context or {},
             "has_file_reference": has_file_reference,
             "file_context": file_context,
@@ -1109,9 +1109,7 @@ class IntentClassifier:
                 personalization_service,
             )
 
-            system_prompt = await personalization_service.resolve_system_prompt_standalone(
-                user_id
-            )
+            system_prompt = await personalization_service.resolve_system_prompt_standalone(user_id)
 
             # Use your task-based routing with "intent_classification" task type
             # #988: pass response_format={"type": "json_object"} so Gemini
@@ -1140,10 +1138,10 @@ class IntentClassifier:
             # shim, canonicalize action to the legacy string consumers already
             # branch on; otherwise keep the free-form action (zero-regression
             # fallback). source_type rides into intent.context.
+            from services.intent_service.action_registry import Verb as _Verb
             from services.intent_service.action_registry import (
                 verb_sourcetype_to_legacy_action,
             )
-            from services.intent_service.action_registry import Verb as _Verb
 
             action = parsed["action"]
             source_type = parsed.get("source_type")

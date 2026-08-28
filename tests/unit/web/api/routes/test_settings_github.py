@@ -27,9 +27,7 @@ from web.api.routes.settings_integrations import (
 # (binding-first) BEFORE the token-resolution fallback. Direct-call tests pass
 # a claims stub; the legacy system-token cases mock the binding as absent so
 # they exercise the fallback they were written for.
-_STATUS_SVC = (
-    "services.integrations.integration_status_service.IntegrationStatusService"
-)
+_STATUS_SVC = "services.integrations.integration_status_service.IntegrationStatusService"
 
 
 def _claims(sub: str = "11111111-2222-3333-4444-555555555555"):
@@ -333,9 +331,7 @@ class TestDisconnectGitHub:
                 "services.integrations.github.config_service.GitHubConfigService",
                 return_value=mock_config_service,
             ),
-            patch(
-                "services.database.session_factory.AsyncSessionFactory", mock_factory
-            ),
+            patch("services.database.session_factory.AsyncSessionFactory", mock_factory),
             patch(
                 "services.connectors.binding_repository.ConnectorBindingRepository",
                 return_value=mock_binding_repo,
@@ -349,9 +345,7 @@ class TestDisconnectGitHub:
 
         assert result["success"] is True
         # binding marked UNBOUND (badge/health/reads all gate on status == BOUND)
-        mock_binding_repo.set_status.assert_awaited_once_with(
-            "test-user-123", "github", "unbound"
-        )
+        mock_binding_repo.set_status.assert_awaited_once_with("test-user-123", "github", "unbound")
         # #358 OAuth grant revoked
         mock_grant_store.delete.assert_awaited_once()
         gargs, _ = mock_grant_store.delete.call_args

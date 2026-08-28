@@ -17,9 +17,9 @@ migration is connector_configs-only. The drift is filed separately as discovered
 from typing import Sequence, Union
 
 import sqlalchemy as sa
-from alembic import op
 from sqlalchemy.dialects import postgresql
 
+from alembic import op
 from services.database.models import CrossDialectUUID
 
 # revision identifiers, used by Alembic.

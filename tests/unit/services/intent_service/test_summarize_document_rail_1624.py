@@ -102,20 +102,14 @@ class TestSummarizeDocumentWiring:
         assert wired_chat_actions().count("summarize_document") == 1
 
     def test_registry_canonical_exists_and_is_workflow(self):
-        assert (
-            ACTION_REGISTRY[("SYNTHESIS", "summarize_document")]
-            is ActionDisposition.WORKFLOW
-        )
+        assert ACTION_REGISTRY[("SYNTHESIS", "summarize_document")] is ActionDisposition.WORKFLOW
         assert get_verb("summarize_document") is Verb.SUMMARIZE
 
     def test_verb_shim_maps_document_and_only_document(self):
         """The one mapped SUMMARIZE cell is the uploaded-document source; every
         other source stays None → free-form action → SYNTHESIS → the #1187
         fetch-augment floor path (the #1158 ruling, unreversed)."""
-        assert (
-            verb_sourcetype_to_legacy_action(Verb.SUMMARIZE, "document")
-            == "summarize_document"
-        )
+        assert verb_sourcetype_to_legacy_action(Verb.SUMMARIZE, "document") == "summarize_document"
         for floor_source in ("github_issue", "commit_range", "text", "conversation", None):
             assert (
                 verb_sourcetype_to_legacy_action(Verb.SUMMARIZE, floor_source) is None
@@ -179,21 +173,15 @@ def _boundary_patches(resolve=("file-1624", 0.92), resolve_exc=None, analysis=No
     handle_summarize_document still runs (the same-path property under test)."""
     resolver_cls = MagicMock()
     if resolve_exc is not None:
-        resolver_cls.return_value.resolve_file_reference = AsyncMock(
-            side_effect=resolve_exc
-        )
+        resolver_cls.return_value.resolve_file_reference = AsyncMock(side_effect=resolve_exc)
     else:
-        resolver_cls.return_value.resolve_file_reference = AsyncMock(
-            return_value=resolve
-        )
+        resolver_cls.return_value.resolve_file_reference = AsyncMock(return_value=resolve)
     analyze = AsyncMock(
         return_value=analysis
         or {
             "file_id": "file-1624",
             "filename": "roadmap.pdf",
-            "summary": (
-                "The roadmap covers Q3. It has three phases. Risks are listed"
-            ),
+            "summary": ("The roadmap covers Q3. It has three phases. Risks are listed"),
             "key_findings": ["Phase gating", "Risk register"],
             "analyzed_at": "2026-08-16T00:00:00",
         }
@@ -222,8 +210,7 @@ class TestSummarizeDocumentDispatch:
         from web.api.routes import documents as rest_documents
 
         assert (
-            rest_documents.handle_summarize_document
-            is document_handlers.handle_summarize_document
+            rest_documents.handle_summarize_document is document_handlers.handle_summarize_document
         )
 
     @pytest.mark.asyncio
@@ -339,8 +326,7 @@ class _ExplosiveLLM:
 
     def __getattr__(self, name):
         raise AssertionError(
-            f"LLM boundary touched ({name}) — #1624 rail turns must resolve "
-            "deterministically"
+            f"LLM boundary touched ({name}) — #1624 rail turns must resolve " "deterministically"
         )
 
 
@@ -363,9 +349,7 @@ def _stub_classification(monkeypatch, service, message):
             secondary_intents=[],
         )
 
-    monkeypatch.setattr(
-        service.intent_classifier, "classify_multiple", _classify_multiple
-    )
+    monkeypatch.setattr(service.intent_classifier, "classify_multiple", _classify_multiple)
 
 
 class TestSummarizeDocumentEndToEnd:

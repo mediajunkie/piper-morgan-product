@@ -52,8 +52,7 @@ class _ExplosiveLLM:
 
     def __getattr__(self, name):
         raise AssertionError(
-            f"LLM boundary touched ({name}) — #1190 turns must resolve "
-            "deterministically"
+            f"LLM boundary touched ({name}) — #1190 turns must resolve " "deterministically"
         )
 
 
@@ -86,9 +85,9 @@ class TestDestructiveEnumFlips1190:
         register_default_workflows()
         wf = get_action_workflows()
         for alias in REOPEN_ALIASES:
-            assert wf[alias].effect == EffectClass.DESTRUCTIVE, (
-                f"{alias} must be DESTRUCTIVE (PM ruling 2026-08-10)"
-            )
+            assert (
+                wf[alias].effect == EffectClass.DESTRUCTIVE
+            ), f"{alias} must be DESTRUCTIVE (PM ruling 2026-08-10)"
 
     def test_destructive_entries_derive_needs_confirm(self):
         """The #1190 gate keys off needs_confirm — the flip must make the
@@ -148,14 +147,10 @@ class TestConfirmationOfferBuilder:
         titled = build_confirmation_offer(
             _close_intent(context={"issue_title": "Login button unresponsive"})
         )
-        assert titled.question == (
-            "Close issue #108 'Login button unresponsive'? (yes/no)"
-        )
+        assert titled.question == ("Close issue #108 'Login button unresponsive'? (yes/no)")
 
     def test_reopen_question(self):
-        intent = _close_intent(
-            message="reopen issue #42", action="reopen_issue_query"
-        )
+        intent = _close_intent(message="reopen issue #42", action="reopen_issue_query")
         offer = build_confirmation_offer(intent)
         assert offer.question == "Reopen issue #42? (yes/no)"
 
@@ -237,12 +232,13 @@ class TestConfirmEntryPoint:
 
     @pytest.mark.asyncio
     async def test_missing_context_returns_none_never_fires(self):
-        assert await run_confirm_pending_action_workflow(
-            session_id="s", context={}
-        ) is None
-        assert await run_confirm_pending_action_workflow(
-            session_id="s", context={"pending_action": {}, "intent_service": object()}
-        ) is None
+        assert await run_confirm_pending_action_workflow(session_id="s", context={}) is None
+        assert (
+            await run_confirm_pending_action_workflow(
+                session_id="s", context={"pending_action": {}, "intent_service": object()}
+            )
+            is None
+        )
 
     def test_confirm_workflow_is_not_rail_reachable(self):
         """action_triggered=False: a classifier emission can never fire the
@@ -329,9 +325,7 @@ class TestEndToEndConfirmationTurn:
         assert stored["workflow_type"] == CONFIRM_PENDING_ACTION_WORKFLOW
         assert stored["pending_action"]["action"] in CLOSE_ALIASES
 
-    async def test_yes_fires_the_write_with_original_params(
-        self, live_service, monkeypatch
-    ):
+    async def test_yes_fires_the_write_with_original_params(self, live_service, monkeypatch):
         """'yes' executes the stored action — original issue number, original
         handler path (github_router.update_issue(108, state='closed')) — and
         never re-classifies (explosive LLM carries the turn). The explosive
@@ -339,9 +333,7 @@ class TestEndToEndConfirmationTurn:
         re-ask #902's preview question."""
         _explosive_router(monkeypatch, allow_update=False)
         sid = "e2e-1190-yes"
-        await live_service.process_intent(
-            message="close issue #108", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         update_mock = _explosive_router(monkeypatch, allow_update=True)
 
         # #1529 ordering: the pending offer must claim the turn before the
@@ -352,46 +344,30 @@ class TestEndToEndConfirmationTurn:
                 "bind the affirmative first (#1529 ordering)"
             )
 
-        monkeypatch.setattr(
-            live_service, "_check_pending_resume_offer", _explosive_resume
-        )
+        monkeypatch.setattr(live_service, "_check_pending_resume_offer", _explosive_resume)
 
-        result = await live_service.process_intent(
-            message="yes", session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         update_mock.assert_awaited_once_with(108, state="closed")
         assert "Closed issue #108" in result.message
         assert _pending_offers(live_service).get(sid) is None  # consumed
 
-    async def test_no_cancels_honestly_and_nothing_fires(
-        self, live_service, monkeypatch
-    ):
+    async def test_no_cancels_honestly_and_nothing_fires(self, live_service, monkeypatch):
         _explosive_router(monkeypatch, allow_update=False)
         sid = "e2e-1190-no"
-        await live_service.process_intent(
-            message="close issue #108", session_id=sid, user_id=_USER
-        )
-        result = await live_service.process_intent(
-            message="no", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
+        result = await live_service.process_intent(message="no", session_id=sid, user_id=_USER)
         assert "won't close issue #108" in result.message
         assert "Nothing has been changed" in result.message
         assert _pending_offers(live_service).get(sid) is None
 
-    async def test_bare_cancel_declines_via_escape_tier(
-        self, live_service, monkeypatch
-    ):
+    async def test_bare_cancel_declines_via_escape_tier(self, live_service, monkeypatch):
         """#1529 exit tier at the offer seam: a bare 'cancel' (not in the
         soft-offer DECLINE_PATTERNS) still cancels honestly instead of
         silently dropping the offer."""
         _explosive_router(monkeypatch, allow_update=False)
         sid = "e2e-1190-cancel"
-        await live_service.process_intent(
-            message="close issue #108", session_id=sid, user_id=_USER
-        )
-        result = await live_service.process_intent(
-            message="cancel", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
+        result = await live_service.process_intent(message="cancel", session_id=sid, user_id=_USER)
         assert "won't close issue #108" in result.message
         assert _pending_offers(live_service).get(sid) is None
 
@@ -405,9 +381,7 @@ class TestEndToEndConfirmationTurn:
         later 'yes' fires 109, not 108."""
         _explosive_router(monkeypatch, allow_update=False)
         sid = "e2e-1190-offintent"
-        await live_service.process_intent(
-            message="close issue #108", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         result = await live_service.process_intent(
             message="close issue #109", session_id=sid, user_id=_USER
         )
@@ -417,9 +391,7 @@ class TestEndToEndConfirmationTurn:
         assert "#108" not in stored["pending_action"]["summary"]
 
         update_mock = _explosive_router(monkeypatch, allow_update=True)
-        await live_service.process_intent(
-            message="yes", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         update_mock.assert_awaited_once_with(109, state="closed")
 
     async def test_long_prose_reply_neither_fires_nor_declines_1631(
@@ -468,16 +440,13 @@ class TestEndToEndConfirmationTurn:
                 # the explosive LLM boundary (which the classifier wraps as
                 # INTENT_CLASSIFICATION_FAILED) — exactly the point: neither
                 # accept nor decline claimed the turn at the offer seam.
-                assert (
-                    "LLM boundary touched" in str(exc)
-                    or "INTENT_CLASSIFICATION_FAILED" in str(exc)
+                assert "LLM boundary touched" in str(exc) or "INTENT_CLASSIFICATION_FAILED" in str(
+                    exc
                 ), (label, str(exc))
             update_mock.assert_not_awaited()  # the write never fired
             assert _pending_offers(live_service).get(sid) is None  # popped
 
-    async def test_reopen_defers_then_fires_open_state(
-        self, live_service, monkeypatch
-    ):
+    async def test_reopen_defers_then_fires_open_state(self, live_service, monkeypatch):
         _explosive_router(monkeypatch, allow_update=False)
         sid = "e2e-1190-reopen"
         result = await live_service.process_intent(
@@ -485,7 +454,5 @@ class TestEndToEndConfirmationTurn:
         )
         assert "#42" in result.message and "(yes/no)" in result.message
         update_mock = _explosive_router(monkeypatch, allow_update=True)
-        await live_service.process_intent(
-            message="yes", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         update_mock.assert_awaited_once_with(42, state="open")

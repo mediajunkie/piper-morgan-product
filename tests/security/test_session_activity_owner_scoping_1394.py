@@ -69,12 +69,16 @@ class TestOwnerScopingD1a:
         async with sm() as s:
             repo = SessionActivityRepository(s)
             await repo.record(
-                owner_id=_USER_A, conversation_id=_CONV,
-                action_type="issue_created", target_ref="o/r#107",
+                owner_id=_USER_A,
+                conversation_id=_CONV,
+                action_type="issue_created",
+                target_ref="o/r#107",
             )
             await repo.record(
-                owner_id=_USER_B, conversation_id=_CONV,
-                action_type="issue_created", target_ref="o/r#999",
+                owner_id=_USER_B,
+                conversation_id=_CONV,
+                action_type="issue_created",
+                target_ref="o/r#999",
             )
         async with sm() as s:
             a_rows = await SessionActivityRepository(s).list_for_session(_USER_A, _CONV)
@@ -106,10 +110,18 @@ class TestRecall:
         """B4 recall reads the full set for the owner+session."""
         async with sm() as s:
             repo = SessionActivityRepository(s)
-            await repo.record(owner_id=_USER_A, conversation_id=_CONV,
-                              action_type="issue_created", target_ref="o/r#1")
-            await repo.record(owner_id=_USER_A, conversation_id=_CONV,
-                              action_type="doc_created", target_ref="doc-2")
+            await repo.record(
+                owner_id=_USER_A,
+                conversation_id=_CONV,
+                action_type="issue_created",
+                target_ref="o/r#1",
+            )
+            await repo.record(
+                owner_id=_USER_A,
+                conversation_id=_CONV,
+                action_type="doc_created",
+                target_ref="doc-2",
+            )
         async with sm() as s:
             rows = await SessionActivityRepository(s).list_for_session(_USER_A, _CONV)
         assert {r.target_ref for r in rows} == {"o/r#1", "doc-2"}

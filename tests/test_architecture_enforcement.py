@@ -750,9 +750,9 @@ class TestGitHubDefaultRepoScopingEnforcement:
 
         # Vacuity guard (Arch checker 2026-08-04): this scan DERIVES its input;
         # an empty derivation must fail loudly, never pass as "no violations".
-        assert len(service_files) >= 100, (
-            f"unscoped-read scan found only {len(service_files)} files — detection broken"
-        )
+        assert (
+            len(service_files) >= 100
+        ), f"unscoped-read scan found only {len(service_files)} files — detection broken"
         for file_path in service_files:
             if "__pycache__" in file_path:
                 continue
@@ -827,9 +827,9 @@ class TestPersonalizationScopingEnforcement:
 
         # Vacuity guard (Arch checker 2026-08-04): this scan DERIVES its input;
         # an empty derivation must fail loudly, never pass as "no violations".
-        assert len(service_files) >= 100, (
-            f"unscoped-read scan found only {len(service_files)} files — detection broken"
-        )
+        assert (
+            len(service_files) >= 100
+        ), f"unscoped-read scan found only {len(service_files)} files — detection broken"
         for file_path in service_files:
             if "__pycache__" in file_path:
                 continue
@@ -959,7 +959,6 @@ from services.intent_service.chat_pointers import (  # noqa: E402
     POINTER,
     UNTRACKED_BASELINE,
 )
-
 
 # _get_contextual_fallback denial rows — the curated bridge between the
 # denial STRINGS in services/intent/intent_service.py and the capability
@@ -1187,9 +1186,7 @@ class TestChatPointersReachabilityRatchet:
                     pointer_resolved.add(destination[1])
 
         dispatched = elif_tokens | rail
-        mapper_variants = {
-            k for k, v in ActionMapper.ACTION_MAPPING.items() if v in dispatched
-        }
+        mapper_variants = {k for k, v in ActionMapper.ACTION_MAPPING.items() if v in dispatched}
         return (
             pointer_resolved
             | {action for (_cat, action) in ACTION_REGISTRY}
@@ -1216,9 +1213,7 @@ class TestChatPointersReachabilityRatchet:
         # own). Exempt from surface derivation ONLY; a pin must be a POINTER
         # (a CHAT_INVISIBLE pin would assert nothing).
         pins = {k for k in ledgered if k.startswith("pin:")}
-        non_pointer_pins = sorted(
-            k for k in pins if not isinstance(CHAT_POINTERS[k], POINTER)
-        )
+        non_pointer_pins = sorted(k for k in pins if not isinstance(CHAT_POINTERS[k], POINTER))
         assert not non_pointer_pins, (
             f"pin: rows must be POINTERs (they exist to be resolution-tested): "
             f"{non_pointer_pins}"
@@ -1301,9 +1296,7 @@ class TestChatPointersReachabilityRatchet:
                     f"{sorted(self.DETERMINISTIC_RESOLVERS)} — a POINTER that "
                     f"only works via the LLM classifier fails at authoring time"
                 )
-        assert not failures, (
-            "POINTER resolution failures (#1433):\n  " + "\n  ".join(failures)
-        )
+        assert not failures, "POINTER resolution failures (#1433):\n  " + "\n  ".join(failures)
 
     def test_chat_invisible_ceiling(self):
         """Shrink-lock: the CHAT_INVISIBLE count is frozen in
@@ -1342,9 +1335,9 @@ class TestChatPointersReachabilityRatchet:
         reachable = self._reachable_actions()
         # Vacuity guard (Arch checker 2026-08-04): the reachable set is DERIVED;
         # empty means the derivation broke, not "nothing is reachable".
-        assert len(reachable) >= 20, (
-            f"reachable-actions derivation returned only {len(reachable)} — detection broken"
-        )
+        assert (
+            len(reachable) >= 20
+        ), f"reachable-actions derivation returned only {len(reachable)} — detection broken"
         stale = set(UNWIRED_WRITE_DECLINES) & reachable
         assert not stale, (
             f"UNWIRED_WRITE_DECLINES lists actions that are now REACHABLE: "
@@ -1365,14 +1358,10 @@ class TestChatPointersReachabilityRatchet:
             shipped → denial removed → remove the row + ledger surface);
         (c) no row's capability-action tokens may be reachable."""
         fragments = self._fallback_denial_fragments()
-        snippets = {
-            surface: row["snippet"] for surface, row in CONTEXTUAL_FALLBACK_DENIALS.items()
-        }
+        snippets = {surface: row["snippet"] for surface, row in CONTEXTUAL_FALLBACK_DENIALS.items()}
 
         uncovered = [
-            frag
-            for frag in fragments
-            if not any(snip in frag for snip in snippets.values())
+            frag for frag in fragments if not any(snip in frag for snip in snippets.values())
         ]
         assert not uncovered, (
             f"NEW capability denial(s) in _get_contextual_fallback with no "
@@ -1427,8 +1416,7 @@ class TestChatPointersReachabilityRatchet:
             "idiom likely changed; fix _fallback_denial_fragments()."
         )
         assert len(self._elif_tokens()) >= 5, (
-            "EXECUTION elif-token derivation collapsed — idiom changed; fix "
-            "_elif_tokens()."
+            "EXECUTION elif-token derivation collapsed — idiom changed; fix " "_elif_tokens()."
         )
 
 
@@ -1459,9 +1447,9 @@ class TestSingleDeclarativeBase:
                 src = open(path, encoding="utf-8", errors="ignore").read()
                 if re.search(r"^\s*Base\s*=\s*declarative_base\(\)", src, re.M):
                     offenders.append(rel)
-        assert files_scanned >= 100, (
-            f"Base-scan walked only {files_scanned} files — detection broken (vacuity guard)"
-        )
+        assert (
+            files_scanned >= 100
+        ), f"Base-scan walked only {files_scanned} files — detection broken (vacuity guard)"
         assert not offenders, (
             f"Second declarative Base created in: {offenders} — one Base per DB "
             "(Arch invariant, #1312). Register models on "
@@ -1710,9 +1698,9 @@ class TestPrincipalThreadingGuards1532:
         violations, reader_calls_seen, files_scanned = self._unthreaded_reader_sites()
 
         # Vacuity guards (m-44): prove the scan actually measured something.
-        assert files_scanned >= 100, (
-            f"principal-reader scan walked only {files_scanned} files — detection broken"
-        )
+        assert (
+            files_scanned >= 100
+        ), f"principal-reader scan walked only {files_scanned} files — detection broken"
         assert reader_calls_seen >= 15, (
             f"principal-reader scan matched only {reader_calls_seen} reader calls — "
             "detection broken (the tree has dozens)"
@@ -1751,18 +1739,16 @@ class TestPrincipalThreadingGuards1532:
                     if kw.arg != "owner_id":
                         continue
                     owner_kwargs_seen += 1
-                    idents = {
-                        n.id for n in ast.walk(kw.value) if isinstance(n, ast.Name)
-                    } | {n.attr for n in ast.walk(kw.value) if isinstance(n, ast.Attribute)}
-                    session_like = {
-                        i for i in idents if i == "session" or i.startswith("session_")
+                    idents = {n.id for n in ast.walk(kw.value) if isinstance(n, ast.Name)} | {
+                        n.attr for n in ast.walk(kw.value) if isinstance(n, ast.Attribute)
                     }
+                    session_like = {i for i in idents if i == "session" or i.startswith("session_")}
                     if session_like:
                         violations.append((rel, node.lineno, sorted(session_like)))
 
-        assert owner_kwargs_seen >= 10, (
-            f"owner_id scan matched only {owner_kwargs_seen} keyword sites — detection broken"
-        )
+        assert (
+            owner_kwargs_seen >= 10
+        ), f"owner_id scan matched only {owner_kwargs_seen} keyword sites — detection broken"
         assert not violations, (
             f"owner_id passed a session-derived value at: {violations} — a session id is "
             "NEVER an owner (F1, #1532 audit). Owners are principals (user_id); thread the "
@@ -1951,9 +1937,7 @@ class TestWorkflowEffectDeclaration:
 
         from services.intent_service.workflow_dispatcher import WorkflowEntry
 
-        effect_fields = [
-            f for f in dataclasses.fields(WorkflowEntry) if f.name == "effect"
-        ]
+        effect_fields = [f for f in dataclasses.fields(WorkflowEntry) if f.name == "effect"]
         assert len(effect_fields) == 1, (
             "WorkflowEntry must declare an `effect` field (Arch ruling "
             "2026-08-09 / PDR-006 condition 2)."
@@ -2005,8 +1989,7 @@ class TestWorkflowEffectDeclaration:
                 if not isinstance(getattr(entry, "effect", None), EffectClass)
             }
             assert not offenders, (
-                f"Registered workflows without a declared EffectClass effect: "
-                f"{offenders}"
+                f"Registered workflows without a declared EffectClass effect: " f"{offenders}"
             )
         finally:
             WORKFLOW_REGISTRY.clear()
@@ -2106,21 +2089,17 @@ class TestInversionShadowNoExecutionBoundary:
         referrers, files_scanned = self._referrers()
         # Vacuity guards (m-44): the scan measured something, and the boundary
         # protects a module that actually exists and is actually consumed.
-        assert files_scanned >= 100, (
-            f"boundary scan walked only {files_scanned} files — detection broken"
-        )
+        assert (
+            files_scanned >= 100
+        ), f"boundary scan walked only {files_scanned} files — detection broken"
         assert (
             os.path.normpath("services/intent_service/inversion_router.py") in referrers
         ), "inversion_router.py missing — the boundary would be vacuously green"
-        assert (
-            os.path.normpath("services/intent_service/inversion_shadow.py") in referrers
-        ), (
+        assert os.path.normpath("services/intent_service/inversion_shadow.py") in referrers, (
             "inversion_shadow.py no longer references the router — the shadow "
             "lane is dead, and this boundary test is guarding nothing (m-44)"
         )
-        assert (
-            os.path.normpath("services/intent_service/inversion_live.py") in referrers
-        ), (
+        assert os.path.normpath("services/intent_service/inversion_live.py") in referrers, (
             "inversion_live.py no longer references the router — the Phase 2.2 "
             "live-consult lane is dead while its allowlist entry survives; "
             "either the flip was removed (then shrink ALLOWED_REFERRERS in the "

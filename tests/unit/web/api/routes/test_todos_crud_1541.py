@@ -106,9 +106,7 @@ async def test_create_rejects_garbage_due_date_with_400():
 async def test_list_response_includes_due_date():
     """The template renders todo.due_date; the list payload must carry it."""
     due = datetime(2026, 8, 9, 23, 59, tzinfo=timezone.utc)
-    repo = SimpleNamespace(
-        get_todos_by_owner=AsyncMock(return_value=[_stored_todo(due_date=due)])
-    )
+    repo = SimpleNamespace(get_todos_by_owner=AsyncMock(return_value=[_stored_todo(due_date=due)]))
     out = await list_todos(current_user=CLAIMS, todo_repo=repo)
     assert out["todos"][0]["due_date"] is not None
     assert out["todos"][0]["due_date"].startswith("2026-08-09")

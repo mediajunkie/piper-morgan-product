@@ -75,17 +75,17 @@ class TestStandupHijackReplayLive:
         # Setup: a suspended standup in the durable repo (the dormant
         # flow-starter that hijacked PM's affirmative).
         body = turn_driver.turn("/standup", session_id=session_id)
-        assert "standup" in body.get("message", "").lower(), (
-            f"/standup did not start the interview: {body.get('message', '')[:300]!r}"
-        )
+        assert (
+            "standup" in body.get("message", "").lower()
+        ), f"/standup did not start the interview: {body.get('message', '')[:300]!r}"
         body = turn_driver.turn("cancel", session_id=session_id)
-        assert "paused" in body.get("message", "").lower(), (
-            f"#888 exact-match escape did not suspend: {body.get('message', '')[:300]!r}"
-        )
+        assert (
+            "paused" in body.get("message", "").lower()
+        ), f"#888 exact-match escape did not suspend: {body.get('message', '')[:300]!r}"
         states = await _standup_states(live_db_session, session_id)
-        assert any(s == "suspended" for s, _ in states), (
-            f"Setup failed: no suspended standup in DB for session (states={states!r})"
-        )
+        assert any(
+            s == "suspended" for s, _ in states
+        ), f"Setup failed: no suspended standup in DB for session (states={states!r})"
 
         # PM's transcript, verbatim: restore of a project that isn't found
         # mints the archived-projects offer...
@@ -93,12 +93,12 @@ class TestStandupHijackReplayLive:
         msg = body.get("message", "")
         # (The handler echoes the captured name lowercased — 'cova' —
         # observed live 2026-08-16; match case-insensitively.)
-        assert "couldn't find an archived project" in msg and "cova" in msg.lower(), (
-            f"'restore CoVa' did not take the deterministic not-found branch: {msg[:300]!r}"
-        )
-        assert "Would you like me to list your archived projects?" in msg, (
-            f"The contextual offer from PM's transcript was not made: {msg[:300]!r}"
-        )
+        assert (
+            "couldn't find an archived project" in msg and "cova" in msg.lower()
+        ), f"'restore CoVa' did not take the deterministic not-found branch: {msg[:300]!r}"
+        assert (
+            "Would you like me to list your archived projects?" in msg
+        ), f"The contextual offer from PM's transcript was not made: {msg[:300]!r}"
 
         # ...and THE hijacked line: "Yes please".
         body = turn_driver.turn(PM_YES_PLEASE, session_id=session_id)
@@ -118,9 +118,9 @@ class TestStandupHijackReplayLive:
 
         # And the suspended standup was not resurrected by the affirmative.
         states = await _standup_states(live_db_session, session_id)
-        assert all(s in ("suspended", "abandoned", "complete") for s, _ in states), (
-            f"'Yes please' reactivated the standup (states={states!r})"
-        )
+        assert all(
+            s in ("suspended", "abandoned", "complete") for s, _ in states
+        ), f"'Yes please' reactivated the standup (states={states!r})"
 
         print(f"\n#1529 live evidence (offer-binding) — 'Yes please' answered with: {msg[:200]!r}")
 
@@ -135,9 +135,7 @@ class TestStandupHijackReplayLive:
         assert "standup" in body.get("message", "").lower()
 
         # One legitimate answer first — mid-gathering, like PM's session.
-        body = turn_driver.turn(
-            "Worked on the live verification harness", session_id=session_id
-        )
+        body = turn_driver.turn("Worked on the live verification harness", session_id=session_id)
 
         # THE verbatim hostage line. allow_degraded: the residual
         # ("restore CoVa") flows to normal processing whose availability is
@@ -182,9 +180,7 @@ class TestStandupHijackReplayLive:
 
         print(f"\n#1529 live evidence (refusal) — refusal answered with: {msg[:200]!r}")
 
-    async def test_end_standup_ends_standup_not_todo_complete(
-        self, turn_driver, live_db_session
-    ):
+    async def test_end_standup_ends_standup_not_todo_complete(self, turn_driver, live_db_session):
         """Defect 3: 'end standup' mid-interview ends the standup — it must
         never reach a classifier and misroute to the todo-complete lane."""
         session_id = turn_driver.new_session()

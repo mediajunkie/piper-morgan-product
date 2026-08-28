@@ -1315,8 +1315,7 @@ class TestSetupGuidanceFormatting:
     async def test_integration_setup_guidance(self, canonical_handlers):
         """Integration setup guidance (#1547: async + canonical status service)."""
         with patch(
-            "services.integrations.integration_status_service."
-            "IntegrationStatusService.get_all",
+            "services.integrations.integration_status_service." "IntegrationStatusService.get_all",
             new=AsyncMock(return_value={}),
         ):
             result = await canonical_handlers._format_integration_setup_guidance(
@@ -3135,9 +3134,7 @@ class TestIntegrationTipLogic847:
             assert result is None
 
     @pytest.mark.asyncio
-    async def test_get_priority_metadata_uses_canonical_status_service(
-        self, canonical_handlers
-    ):
+    async def test_get_priority_metadata_uses_canonical_status_service(self, canonical_handlers):
         """_get_priority_metadata checks the canonical IntegrationStatusService
         (user-scoped, binding-first — #1547), not plugin.is_configured() (#784)
         and not the PAT-only GitHubConfigService (#847's fix, superseded)."""
@@ -3179,18 +3176,21 @@ class TestIntegrationTipLogic847:
 
         user_id = "12345678-1234-5678-1234-567812345678"
 
-        with patch(
-            "services.integrations.integration_status_service."
-            "IntegrationStatusService.is_configured",
-            new=AsyncMock(return_value=True),  # #1547: canonical gate
-        ), patch(
-            "services.domain.github_domain_service.GitHubDomainService"
-        ) as MockDomainService, patch(
-            "services.integrations.github.repo_resolver.get_user_default_repo",
-            new_callable=AsyncMock,
-        ) as mock_get_default_repo, patch(
-            "services.configuration.piper_config_loader.piper_config_loader"
-        ) as mock_config_loader:
+        with (
+            patch(
+                "services.integrations.integration_status_service."
+                "IntegrationStatusService.is_configured",
+                new=AsyncMock(return_value=True),  # #1547: canonical gate
+            ),
+            patch("services.domain.github_domain_service.GitHubDomainService") as MockDomainService,
+            patch(
+                "services.integrations.github.repo_resolver.get_user_default_repo",
+                new_callable=AsyncMock,
+            ) as mock_get_default_repo,
+            patch(
+                "services.configuration.piper_config_loader.piper_config_loader"
+            ) as mock_config_loader,
+        ):
             mock_domain = MagicMock()
             mock_domain.get_connection_status.return_value = {"connected": True}
             mock_domain.get_open_issues = AsyncMock(return_value=[])
@@ -3250,9 +3250,7 @@ class TestTemporalProjectDurationBugfix505:
             assert "message" in result
 
     @pytest.mark.asyncio
-    async def test_degrades_gracefully_when_user_context_service_fails(
-        self, canonical_handlers
-    ):
+    async def test_degrades_gracefully_when_user_context_service_fails(self, canonical_handlers):
         """The old bug crashed with AttributeError on every call. The fix must
         degrade to no-match (not re-raise) if the service itself fails, matching
         every other user-context call site's try/except in this file."""

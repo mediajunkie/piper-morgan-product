@@ -20,6 +20,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+from services.domain.models import Intent
 from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.intent_service.context_assembler import ContextAssembler
 from services.intent_service.conversation_context import ConversationContext
@@ -28,7 +29,6 @@ from services.intent_service.conversational_floor import (
     FloorContext,
 )
 from services.shared_types import IntentCategory
-from services.domain.models import Intent
 
 
 class _NoOpCache:
@@ -69,24 +69,27 @@ class TestProvenanceRoundtrip:
         # Turn 1: STATUS query — gathers context + floor responds
         # ============================================================
         assembler = ContextAssembler()
-        with patch.object(
-            assembler,
-            "_gather_status_priority_context",
-            AsyncMock(
-                return_value={
-                    "priorities": {"user_priorities": ["ship #1030"]},
-                    "blocked_items": [{"number": 1089, "title": "Sample"}],
-                }
+        with (
+            patch.object(
+                assembler,
+                "_gather_status_priority_context",
+                AsyncMock(
+                    return_value={
+                        "priorities": {"user_priorities": ["ship #1030"]},
+                        "blocked_items": [{"number": 1089, "title": "Sample"}],
+                    }
+                ),
             ),
-        ), patch.object(
-            assembler,
-            # #1566 made due-reminders ride EVERY category gather — added after
-            # this test was written, so real dev-DB reminder rows leaked a 3rd
-            # provenance key into a test that believed it had mocked its whole
-            # context. Mock it too: this test's subject is the provenance
-            # roundtrip, not the reminder rider.
-            "_gather_reminder_context",
-            AsyncMock(return_value={}),
+            patch.object(
+                assembler,
+                # #1566 made due-reminders ride EVERY category gather — added after
+                # this test was written, so real dev-DB reminder rows leaked a 3rd
+                # provenance key into a test that believed it had mocked its whole
+                # context. Mock it too: this test's subject is the provenance
+                # roundtrip, not the reminder rider.
+                "_gather_reminder_context",
+                AsyncMock(return_value={}),
+            ),
         ):
             domain_context = await assembler.gather_context(
                 intent_category="STATUS",

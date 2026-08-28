@@ -15,7 +15,9 @@ _NORM = re.sub(r"\s+", " ", FLOOR_SYSTEM_PROMPT_ADDENDUM).lower()
 
 def test_floor_forbids_unverified_action_success():
     p = _NORM
-    assert "verified it this turn" in p, "floor must require this-turn verification for action claims"
+    assert (
+        "verified it this turn" in p
+    ), "floor must require this-turn verification for action claims"
     assert (
         "past claim of success is not proof" in p
     ), "floor must distrust prior '✓' claims in history (the milestone-confabulation vector)"

@@ -156,7 +156,7 @@ async def test_service_find_project_by_name_include_archived(owner_with_archived
 async def test_chat_restore_by_name_returns_success_and_unarchives(
     owner_with_archived_project,
 ):
-    """"Restore project X" through _handle_portfolio_query with the REAL repo.
+    """ "Restore project X" through _handle_portfolio_query with the REAL repo.
 
     Before the fix this always hit the not-found branch ("I couldn't find an
     archived project called 'X'") because find_by_name could never return an

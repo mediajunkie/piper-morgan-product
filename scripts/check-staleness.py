@@ -22,7 +22,11 @@ Usage:
 Exit code is always 0 (warn-only). Prints a report; the EXPIRED/STALE list is your task queue.
 """
 
-import os, sys, glob, datetime, re
+import datetime
+import glob
+import os
+import re
+import sys
 
 REPO = os.environ.get("PIPER_REPO", os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 STALE_DAYS = int(os.environ.get("STALE_DAYS", "21"))

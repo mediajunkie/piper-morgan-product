@@ -4,6 +4,7 @@ Soft deletes must not claim permanence; the one hard delete says so honestly
 (fact-corrected: we destroy OUR copy; no provider-side revocation exists —
 verified against delete_user_key, which touches keychain+DB only).
 """
+
 import pytest
 
 # templates/home.html was in this set until #1522 step 1 (2026-08-08): its
@@ -21,9 +22,9 @@ SOFT_SURFACES = (
 def test_no_soft_delete_claims_permanence():
     for path in SOFT_SURFACES:
         src = open(path).read()
-        assert "cannot be undone" not in src, (
-            f"{path} still claims permanence on a SOFT delete (#1482)"
-        )
+        assert (
+            "cannot be undone" not in src
+        ), f"{path} still claims permanence on a SOFT delete (#1482)"
         assert "This cannot be undone" not in src
 
 
@@ -31,9 +32,9 @@ def test_no_soft_delete_claims_permanence():
 def test_soft_deletes_carry_the_honest_keeper_line():
     for path in SOFT_SURFACES:
         src = open(path).read()
-        assert "for a while" in src, (
-            f"{path} lost the honest retention line — the set ships together (#1482)"
-        )
+        assert (
+            "for a while" in src
+        ), f"{path} lost the honest retention line — the set ships together (#1482)"
 
 
 @pytest.mark.smoke

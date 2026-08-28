@@ -68,8 +68,6 @@ async def test_status_update_still_flows_through_the_alias_param():
         current_user=CLAIMS,
         todo_repo=repo,
     )
-    repo.update_todo.assert_awaited_once_with(
-        "t1", {"status": "completed"}, owner_id="user-abc"
-    )
+    repo.update_todo.assert_awaited_once_with("t1", {"status": "completed"}, owner_id="user-abc")
     assert out["status"] == "completed"
     assert out["id"] == "t1"

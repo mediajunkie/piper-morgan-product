@@ -283,13 +283,8 @@ class GitHubIntegrationRouter:
                 from services.mcp.consumer.connector import ConnectorStatusState
 
                 async with AsyncSessionFactory.session_scope() as session:
-                    binding = await ConnectorBindingRepository(session).get(
-                        self._user_id, "github"
-                    )
-                if (
-                    binding is not None
-                    and binding.status == ConnectorStatusState.BOUND.value
-                ):
+                    binding = await ConnectorBindingRepository(session).get(self._user_id, "github")
+                if binding is not None and binding.status == ConnectorStatusState.BOUND.value:
                     return True
             except Exception as e:  # binding check is additive — legacy still decides
                 logger.debug(f"is_available binding check failed: {e}")
@@ -355,8 +350,12 @@ class GitHubIntegrationRouter:
         # must NOT retry through another credential (double-write hazard).
         wr = await self._try_connector_write(
             "create_issue_connector",
-            owner=owner, repo=repo_name, title=title, body=body,
-            labels=labels, assignees=assignees,
+            owner=owner,
+            repo=repo_name,
+            title=title,
+            body=body,
+            labels=labels,
+            assignees=assignees,
         )
         if wr is not None:
             return wr
@@ -392,8 +391,14 @@ class GitHubIntegrationRouter:
         # #1220: connector-first, no-double-write fallback (see create_issue).
         wr = await self._try_connector_write(
             "update_issue_connector",
-            owner=owner, repo=repo_name, issue_number=issue_number,
-            title=title, body=body, state=state, labels=labels, assignees=assignees,
+            owner=owner,
+            repo=repo_name,
+            issue_number=issue_number,
+            title=title,
+            body=body,
+            state=state,
+            labels=labels,
+            assignees=assignees,
         )
         if wr is not None:
             return wr
@@ -426,7 +431,10 @@ class GitHubIntegrationRouter:
         # #1220: connector-first, no-double-write fallback (see create_issue).
         wr = await self._try_connector_write(
             "add_comment_connector",
-            owner=owner, repo=repo_name, issue_number=issue_number, comment=body,
+            owner=owner,
+            repo=repo_name,
+            issue_number=issue_number,
+            comment=body,
         )
         if wr is not None:
             return wr

@@ -229,9 +229,7 @@ def detect_clear_family_ask(message: Optional[str]) -> Optional[ClearAsk]:
 # counted). A named target narrows the set to the match, or CLARIFIES on
 # no/ambiguous match — never falls back to the whole set.
 _QUOTED_TARGET_RE = re.compile(r"[\"\u201c']([^\"\u201d']{2,80})[\"\u201d']")
-_THE_X_TARGET_RE = re.compile(
-    r"\bthe\s+(.{2,60}?)\s+(?:reminder|todo)\b", re.IGNORECASE
-)
+_THE_X_TARGET_RE = re.compile(r"\bthe\s+(.{2,60}?)\s+(?:reminder|todo)\b", re.IGNORECASE)
 
 
 def _extract_named_target(text: str) -> Optional[str]:
@@ -255,7 +253,9 @@ def _extract_named_target(text: str) -> Optional[str]:
 
 
 _DIFFERENT_ANSWER_RE = re.compile(r"\b(different|something else|not (this|that)|delete)\b", re.I)
-_USUAL_ANSWER_RE = re.compile(r"\b(yes|yeah|yep|sure|ok(ay)?|usual|as usual|like usual|done|please do)\b", re.I)
+_USUAL_ANSWER_RE = re.compile(
+    r"\b(yes|yeah|yep|sure|ok(ay)?|usual|as usual|like usual|done|please do)\b", re.I
+)
 
 
 def _plural(noun: str, n: int) -> str:
@@ -270,9 +270,7 @@ async def _resolve_targets(todo_service, user_uuid: UUID, noun: str) -> List[Any
     todos = await todo_service.list_todos(user_id=user_uuid, include_completed=False)
     if noun == "reminder":
         return [
-            t
-            for t in todos
-            if getattr(t, "reminder_date", None) is not None and not t.completed
+            t for t in todos if getattr(t, "reminder_date", None) is not None and not t.completed
         ]
     return [t for t in todos if not t.completed]
 
@@ -301,9 +299,7 @@ def _completion_summary(done: List[str], failed: int, noun: str) -> str:
     lines = [f"Marked {len(done)} {_plural(noun, len(done))} done:"]
     lines.extend(f"• {text}" for text in done)
     if failed:
-        lines.append(
-            f"({failed} couldn't be updated just now — say 'show my todos' to check.)"
-        )
+        lines.append(f"({failed} couldn't be updated just now — say 'show my todos' to check.)")
     return "\n".join(lines)
 
 
@@ -412,8 +408,7 @@ def _verb_question_offer(
             "summary": f"{verb} {len(ids)} {_plural(noun, len(ids))}",
         },
         "decline_message": (
-            f"Okay — I haven't touched your {_plural(noun, 2)}. "
-            f"Nothing has been changed."
+            f"Okay — I haven't touched your {_plural(noun, 2)}. " f"Nothing has been changed."
         ),
     }
 
@@ -487,9 +482,7 @@ async def maybe_handle_clear_family(
         store_verified_inference,
     )
 
-    original_message = intent.original_message or (intent.context or {}).get(
-        "original_message", ""
-    )
+    original_message = intent.original_message or (intent.context or {}).get("original_message", "")
     ask = detect_clear_family_ask(original_message)
     if ask is None:
         return None
@@ -524,13 +517,16 @@ async def maybe_handle_clear_family(
         )
         question = variant_one_question(ask.verb, ask.noun)
         offer = _verb_question_offer(
-            principal, ask.verb, ask.noun, [], [], original_message,
+            principal,
+            ask.verb,
+            ask.noun,
+            [],
+            [],
+            original_message,
             question=question,  # #1665: rendered once, stored + said
         )
         offer["pending_action"]["exception_no_targets"] = True
-        intent_service.workflow_offer_service.set_pending_offer(
-            session_id, offer, user_id=user_id
-        )
+        intent_service.workflow_offer_service.set_pending_offer(session_id, offer, user_id=user_id)
         message = (
             f"{question}\n\n"
             f"Also — you carved out an exception, and I don't want to guess "
@@ -570,7 +566,11 @@ async def maybe_handle_clear_family(
                     message=(
                         f"I couldn't confidently match '{ask.named_target}' to exactly one "
                         f"{ask.noun}"
-                        + (f" — you have: {names}." if names else " — you don't have any right now.")
+                        + (
+                            f" — you have: {names}."
+                            if names
+                            else " — you don't have any right now."
+                        )
                         + " Tell me which one you mean and I'll act on just that."
                     ),
                     intent_data={**base_intent_data, "named_target_unmatched": True},
@@ -621,7 +621,12 @@ async def maybe_handle_clear_family(
         if await get_meta_mode(principal) is _VMM.ALWAYS_ASK:
             question = variant_two_always_ask_question()
             offer = _verb_question_offer(
-                principal, ask.verb, ask.noun, ids, texts, original_message,
+                principal,
+                ask.verb,
+                ask.noun,
+                ids,
+                texts,
+                original_message,
                 question=question,  # #1665: rendered once, stored + said
             )
             offer["pending_action"]["stored_default_leading"] = VALUE_COMPLETE
@@ -680,7 +685,12 @@ async def maybe_handle_clear_family(
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
             _delete_confirmation_offer(
-                principal, ask.verb, ask.noun, ids, texts, original_message,
+                principal,
+                ask.verb,
+                ask.noun,
+                ids,
+                texts,
+                original_message,
                 question=question,  # #1665: rendered once, stored + said
             ),
             user_id=user_id,
@@ -760,7 +770,12 @@ async def maybe_handle_clear_family(
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         _verb_question_offer(
-            principal, ask.verb, ask.noun, ids, texts, original_message,
+            principal,
+            ask.verb,
+            ask.noun,
+            ids,
+            texts,
+            original_message,
             question=question,  # #1665: rendered once, stored + said
         ),
         user_id=user_id,
@@ -837,13 +852,9 @@ async def handle_reminder_clear_turn(
     payload = pending_offer.get("pending_action") or {}
     kind = payload.get("kind")
     if kind == CLEAR_VERB_QUESTION_KIND:
-        return await _handle_verb_answer_turn(
-            payload, message, session_id, user_id, intent_service
-        )
+        return await _handle_verb_answer_turn(payload, message, session_id, user_id, intent_service)
     if kind == CLEAR_CORRECTION_KIND:
-        return await _handle_correction_turn(
-            payload, message, session_id, user_id, intent_service
-        )
+        return await _handle_correction_turn(payload, message, session_id, user_id, intent_service)
     return None
 
 
@@ -856,12 +867,10 @@ async def _handle_verb_answer_turn(
 ) -> Optional[Dict[str, Any]]:
     from services.intent_service.verified_inference import (
         SOURCE_USER_VERIFIED,
+        VerificationMetaMode,
         detect_meta_feedback,
         set_meta_mode,
         store_verified_inference,
-    )
-    from services.intent_service.verified_inference import (
-        VerificationMetaMode,
     )
 
     verb = payload.get("clear_verb") or "clear"
@@ -899,15 +908,12 @@ async def _handle_verb_answer_turn(
             "For this one I still need the call, since delete isn't "
             "something I'll guess at: mark these done, or delete them?"
         )
-        _rearm_verb_question(
-            intent_service, session_id, user_id, payload, question=reask
-        )
+        _rearm_verb_question(intent_service, session_id, user_id, payload, question=reask)
         if meta is VerificationMetaMode.TRUST_INFERENCES:
             lead = "Understood — I'll stop checking my inferences with you."
         else:
             lead = (
-                "Understood — I won't act on my own inferences without "
-                "checking with you first."
+                "Understood — I won't act on my own inferences without " "checking with you first."
             )
         msg = f"{lead} {reask}"
         if not meta_persisted:
@@ -996,7 +1002,12 @@ async def _handle_verb_answer_turn(
             intent_service.workflow_offer_service.set_pending_offer(
                 session_id,
                 _delete_confirmation_offer(
-                    principal, verb, noun, ids, texts, original_message,
+                    principal,
+                    verb,
+                    noun,
+                    ids,
+                    texts,
+                    original_message,
                     question=question,  # #1665: rendered once, stored + said
                 ),
                 user_id=user_id,
@@ -1027,8 +1038,7 @@ async def _handle_verb_answer_turn(
             except (ValueError, TypeError):
                 return {
                     "message": (
-                        "I need you to be logged in to update todos. "
-                        "Nothing has been changed."
+                        "I need you to be logged in to update todos. " "Nothing has been changed."
                     ),
                     "intent_data": {
                         "category": "execution",
@@ -1065,7 +1075,12 @@ async def _handle_verb_answer_turn(
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
             _delete_confirmation_offer(
-                principal, verb, noun, ids, texts, original_message,
+                principal,
+                verb,
+                noun,
+                ids,
+                texts,
+                original_message,
                 question=question,  # #1665: rendered once, stored + said
             ),
             user_id=user_id,
@@ -1104,8 +1119,7 @@ async def _handle_verb_answer_turn(
         except (ValueError, TypeError):
             return {
                 "message": (
-                    "I need you to be logged in to update todos. "
-                    "Nothing has been changed."
+                    "I need you to be logged in to update todos. " "Nothing has been changed."
                 ),
                 "intent_data": {
                     "category": "execution",
@@ -1157,7 +1171,7 @@ async def _handle_correction_turn(
     user_id: Optional[str],
     intent_service,
 ) -> Optional[Dict[str, Any]]:
-    """"I meant delete" on the turn after a variant-2 auto-apply: route the
+    """ "I meant delete" on the turn after a variant-2 auto-apply: route the
     just-completed batch to a #1190-gated delete. Does NOT flip the stored
     default (ratified copy: "this time"). Anything else falls through.
 
@@ -1208,9 +1222,7 @@ async def _handle_correction_turn(
         ),
         user_id=user_id,
     )
-    logger.info(
-        "reminder_clear_correction_claimed", count=n, session_id=session_id
-    )
+    logger.info("reminder_clear_correction_claimed", count=n, session_id=session_id)
     return {
         "message": question,
         "intent_data": {
@@ -1259,17 +1271,10 @@ def _reask_verb_question_if_unrecognized(
     noun = payload.get("clear_noun") or "reminder"
     # #1665: the re-armed record's open question is this turn's re-ask copy.
     reask = f"For these {_plural(noun, 2)}: mark them done, or delete them?"
-    _rearm_verb_question(
-        intent_service, session_id, user_id, payload, question=reask
-    )
-    logger.info(
-        "reminder_clear_verb_unrecognized_reasked", session_id=session_id
-    )
+    _rearm_verb_question(intent_service, session_id, user_id, payload, question=reask)
+    logger.info("reminder_clear_verb_unrecognized_reasked", session_id=session_id)
     return {
-        "message": (
-            f"I didn't catch that as an answer — nothing has been changed. "
-            f"{reask}"
-        ),
+        "message": (f"I didn't catch that as an answer — nothing has been changed. " f"{reask}"),
         "intent_data": {
             "category": "execution",
             "action": CLARIFY_CLEAR_VERB_WORKFLOW,
@@ -1334,9 +1339,7 @@ async def run_clarify_reminder_clear_verb_workflow(
         f"Just so I get it right — for these {_plural(noun, 2)}: "
         f"mark them done, or delete them?"
     )
-    _rearm_verb_question(
-        intent_service, session_id, user_id, payload, question=question
-    )
+    _rearm_verb_question(intent_service, session_id, user_id, payload, question=question)
     return {
         "message": question,
         "intent_data": {
@@ -1433,10 +1436,7 @@ async def run_clear_reminders_delete_workflow(
         user_uuid = UUID(str(principal))
     except (ValueError, TypeError):
         return {
-            "message": (
-                "I need you to be logged in to delete todos. "
-                "Nothing has been deleted."
-            ),
+            "message": ("I need you to be logged in to delete todos. " "Nothing has been deleted."),
             "intent_data": {
                 "category": "execution",
                 "action": CLEAR_DELETE_WORKFLOW,

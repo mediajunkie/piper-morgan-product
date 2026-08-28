@@ -31,7 +31,6 @@ from services.ethics.semantic_boundary_detector import (
     classify_decision,
 )
 
-
 # ---------------------------------------------------------------------------
 # Mock LLM client
 # ---------------------------------------------------------------------------

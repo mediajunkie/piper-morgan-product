@@ -14,13 +14,6 @@ from typing import Any, Dict, List, Optional
 
 import aiohttp
 
-from services.integrations.mcp.token_counter import TokenCounter
-from services.integrations.spatial_adapter import (
-    BaseSpatialAdapter,
-    SpatialContext,
-    SpatialPosition,
-)
-
 from services.connectors.binding_repository import ConnectorBindingRepository
 from services.database.session_factory import AsyncSessionFactory
 from services.integrations.github.repo_resolver import (
@@ -28,12 +21,18 @@ from services.integrations.github.repo_resolver import (
     UnresolvedRepoError,
     resolve_repo,
 )
+from services.integrations.mcp.token_counter import TokenCounter
+from services.integrations.spatial_adapter import (
+    BaseSpatialAdapter,
+    SpatialContext,
+    SpatialPosition,
+)
 
 from .connector import (
     Binding,
-    ConnectRequired,
     ConnectorStatus,
     ConnectorStatusState,
+    ConnectRequired,
     ConnectResult,
     DegradationReason,
     DegradationResponse,
@@ -370,7 +369,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 "GitHub MCP search_repositories failed (server unreachable/unprovisioned)",
                 exc_info=True,
             )
-            return GitHubReposResult(degradation=await self.degrade(self._degrade_reason_for_exc(exc)))
+            return GitHubReposResult(
+                degradation=await self.degrade(self._degrade_reason_for_exc(exc))
+            )
         return GitHubReposResult(repositories=repos)
 
     @staticmethod
@@ -431,10 +432,10 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
     # compose image is now PINNED (docker-compose.yml) so `latest` can't
     # silently shift this contract again; bump the pin + these constants +
     # the test fixture together, deliberately.
-    _CREATE_ISSUE_TOOL = "issue_write"   # + {"method": "create"}
-    _UPDATE_ISSUE_TOOL = "issue_write"   # + {"method": "update"}
+    _CREATE_ISSUE_TOOL = "issue_write"  # + {"method": "create"}
+    _UPDATE_ISSUE_TOOL = "issue_write"  # + {"method": "update"}
     _ADD_COMMENT_TOOL = "add_issue_comment"  # unchanged by the consolidation
-    _GET_ISSUE_TOOL = "issue_read"       # + {"method": "get"}
+    _GET_ISSUE_TOOL = "issue_read"  # + {"method": "get"}
 
     @staticmethod
     def _parse_issue_payload(payload: Optional[str]) -> Optional[Dict[str, Any]]:
@@ -455,12 +456,15 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return None
         import html as _html
 
-        return {
-            k: (_html.unescape(v) if isinstance(v, str) else v) for k, v in data.items()
-        }
+        return {k: (_html.unescape(v) if isinstance(v, str) else v) for k, v in data.items()}
 
     async def _verified_write(
-        self, user_id: str, *, tool: str, args: Dict[str, Any], expect: Dict[str, Any],
+        self,
+        user_id: str,
+        *,
+        tool: str,
+        args: Dict[str, Any],
+        expect: Dict[str, Any],
         require_written_id: bool = False,
     ) -> "GitHubWriteResult":
         """The #1322 deterministic action-success guard, applied to one write.
@@ -542,12 +546,12 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
         for key, expected in expect.items():
             if _norm(readback.get(key)) != _norm(expected):
-                logger.warning(
-                    "github_write_readback_mismatch tool=%s field=%s", tool, key
-                )
+                logger.warning("github_write_readback_mismatch tool=%s field=%s", tool, key)
                 return GitHubWriteResult(
-                    verified=False, issue_number=int(number),
-                    url=readback.get("html_url"), raw=readback,
+                    verified=False,
+                    issue_number=int(number),
+                    url=readback.get("html_url"),
+                    raw=readback,
                 )
         return GitHubWriteResult(
             verified=True,
@@ -557,12 +561,23 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         )
 
     async def create_issue_connector(
-        self, user_id: str, *, owner: str, repo: str, title: str, body: str,
-        labels: Optional[List[str]] = None, assignees: Optional[List[str]] = None,
+        self,
+        user_id: str,
+        *,
+        owner: str,
+        repo: str,
+        title: str,
+        body: str,
+        labels: Optional[List[str]] = None,
+        assignees: Optional[List[str]] = None,
     ) -> "GitHubWriteResult":
         """Create an issue over the user's OAuth grant, read-back verified (#1220)."""
         args: Dict[str, Any] = {
-            "method": "create", "owner": owner, "repo": repo, "title": title, "body": body,
+            "method": "create",
+            "owner": owner,
+            "repo": repo,
+            "title": title,
+            "body": body,
         }
         if labels:
             args["labels"] = labels
@@ -573,14 +588,24 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         )
 
     async def update_issue_connector(
-        self, user_id: str, *, owner: str, repo: str, issue_number: int,
-        title: Optional[str] = None, body: Optional[str] = None,
-        state: Optional[str] = None, labels: Optional[List[str]] = None,
+        self,
+        user_id: str,
+        *,
+        owner: str,
+        repo: str,
+        issue_number: int,
+        title: Optional[str] = None,
+        body: Optional[str] = None,
+        state: Optional[str] = None,
+        labels: Optional[List[str]] = None,
         assignees: Optional[List[str]] = None,
     ) -> "GitHubWriteResult":
         """Update an issue over the user's OAuth grant, read-back verified (#1220)."""
         args: Dict[str, Any] = {
-            "method": "update", "owner": owner, "repo": repo, "issue_number": issue_number,
+            "method": "update",
+            "owner": owner,
+            "repo": repo,
+            "issue_number": issue_number,
         }
         expect: Dict[str, Any] = {}
         if title is not None:
@@ -611,7 +636,10 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         wrong-session/echo pathology. Both, or honest-uncertain."""
         args = {"owner": owner, "repo": repo, "issue_number": issue_number, "body": comment}
         return await self._verified_write(
-            user_id, tool=self._ADD_COMMENT_TOOL, args=args, expect={},
+            user_id,
+            tool=self._ADD_COMMENT_TOOL,
+            args=args,
+            expect={},
             require_written_id=True,
         )
 
@@ -760,7 +788,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.warning(
                 "GitHub MCP issue_read failed (server unreachable/unprovisioned)", exc_info=True
             )
-            return GitHubIssueResult(degradation=await self.degrade(self._degrade_reason_for_exc(exc)))
+            return GitHubIssueResult(
+                degradation=await self.degrade(self._degrade_reason_for_exc(exc))
+            )
         return GitHubIssueResult(item=item, resolved_repo=resolved.full_name)
 
     async def _repo_scoped_list_via_connector(
@@ -915,12 +945,8 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             "state": data.get("state"),
             "uri": data.get("html_url"),
             "html_url": data.get("html_url"),
-            "labels": [
-                lbl.get("name", "") if isinstance(lbl, dict) else lbl for lbl in labels
-            ],
-            "assignees": [
-                a.get("login", "") if isinstance(a, dict) else a for a in assignees
-            ],
+            "labels": [lbl.get("name", "") if isinstance(lbl, dict) else lbl for lbl in labels],
+            "assignees": [a.get("login", "") if isinstance(a, dict) else a for a in assignees],
             "milestone": (
                 data.get("milestone", {}).get("title")
                 if isinstance(data.get("milestone"), dict)

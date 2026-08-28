@@ -59,9 +59,9 @@ def test_reminder_query_routes_to_list_reminders(message):
         f"pre-classifier missed {message!r} — it falls to the LLM classifier, "
         f"which misroutes to the temporal lane (#1521 live failure)"
     )
-    assert intent.category == IntentCategory.QUERY, (
-        f"{message!r} routed to {intent.category}/{intent.action} (#1521)"
-    )
+    assert (
+        intent.category == IntentCategory.QUERY
+    ), f"{message!r} routed to {intent.category}/{intent.action} (#1521)"
     assert intent.action == "list_reminders_query"
 
 
@@ -70,9 +70,9 @@ def test_multi_intent_path_claims_reminder_query_1521():
     it must claim the query shape too, or the LLM classifier still sees it."""
     result = PreClassifier.detect_multiple_intents("what reminders do I have?")
     resolved = [(i.category, i.action) for i in result.intents]
-    assert resolved == [(IntentCategory.QUERY, "list_reminders_query")], (
-        f"multi-intent path resolved {resolved} (#1521)"
-    )
+    assert resolved == [
+        (IntentCategory.QUERY, "list_reminders_query")
+    ], f"multi-intent path resolved {resolved} (#1521)"
     # #1460 discipline: the field must be populated at construction.
     assert result.intents[0].original_message == "what reminders do I have?"
 
@@ -122,9 +122,9 @@ def test_creation_phrasings_stay_create_reminder(message):
 def test_write_verb_phrasings_never_claim_query_lane(message):
     intent = _classify(message)
     if intent is not None:
-        assert intent.action != "list_reminders_query", (
-            f"write ask hijacked into reminder listing: {message!r}"
-        )
+        assert (
+            intent.action != "list_reminders_query"
+        ), f"write ask hijacked into reminder listing: {message!r}"
 
 
 def test_multi_path_never_claims_creation_phrasing():

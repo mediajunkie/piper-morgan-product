@@ -24,19 +24,21 @@ from uuid import uuid4
 import pytest
 import pytest_asyncio
 
-
 # Skip the entire module if aiosqlite isn't available — tests use an
 # in-memory SQLite for DB-free repository unit testing. CI installs it;
 # local dev may not. The migration + production behavior is covered by
 # integration tests against PostgreSQL.
 aiosqlite = pytest.importorskip("aiosqlite")
 
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine  # noqa: E402
+from sqlalchemy.ext.asyncio import (  # noqa: E402
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from services.database.models import EthicsAuditLogDB  # noqa: E402
 from services.database.repositories import EthicsAuditRepository  # noqa: E402
 from services.ethics.audit_transparency import AuditLogEntry  # noqa: E402
-
 
 pytestmark = pytest.mark.asyncio
 

@@ -126,7 +126,7 @@ def main():
     # ⚠️ State the instrument's blindness in its own output, with the number, every run.
     # This app registers routers by STRING (web/app.py: register(app, "web.api.routes.places", ...)),
     # so static import-following cannot cross that boundary and misses most of the app.
-    pct = (100 * len(reachable) // max(len(known), 1))
+    pct = 100 * len(reachable) // max(len(known), 1)
     print(
         f"STATIC-REACH COVERAGE: {len(reachable)} of {len(known)} modules ({pct}%) are reachable by "
         f"following imports from the entrypoints."
@@ -148,7 +148,11 @@ def main():
             continue
         importers = sorted(rev.get(m, ()))
         # a module whose only importers are inside the target set is a closed island
-        outside = [i for i in importers if not any(i.startswith(module_name(t).rstrip(".")) for t in args.targets)]
+        outside = [
+            i
+            for i in importers
+            if not any(i.startswith(module_name(t).rstrip(".")) for t in args.targets)
+        ]
         # NEVER print "no" here. Static traversal cannot see string-registered routers, so
         # absence of a static path is INCONCLUSIVE. Rendering it as "no" is precisely the
         # m-44 defect (a clear emitted identically whether it measured or couldn't see).

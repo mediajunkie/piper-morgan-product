@@ -14,12 +14,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from services.database.models import ConversationTurnDB
 
 
-
 async def _seed_conversation(session, conv_id: str) -> None:
     """conversation_turns FKs to conversations (#840-era hardening) — turns need
     a real parent row (and the conversation a real user)."""
     import uuid as _uuid
-    from datetime import datetime, timezone as _tz
+    from datetime import datetime
+    from datetime import timezone as _tz
 
     from sqlalchemy import text as _text
 
@@ -40,6 +40,7 @@ async def _seed_conversation(session, conv_id: str) -> None:
         ),
         {"c": conv_id, "u": uid, "s": str(_uuid.uuid4()), "now": now},
     )
+
 
 class TestConversationIntentIndexes:
     """Test performance improvements from conversation intent indexes"""

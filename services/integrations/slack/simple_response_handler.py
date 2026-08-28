@@ -289,9 +289,7 @@ class SimpleSlackResponseHandler:
         try:
             # #1460: fallback key corrected — was context.get("message"), a key
             # nothing ever writes; the real dict surface is "original_message".
-            message = intent.original_message or (intent.context or {}).get(
-                "original_message", ""
-            )
+            message = intent.original_message or (intent.context or {}).get("original_message", "")
             if not message:
                 self.logger.warning(
                     f"No message available for intent {intent.action}; cannot dispatch"

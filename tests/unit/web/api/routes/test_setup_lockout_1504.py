@@ -10,9 +10,10 @@ directions: no-completed-user → allowed; completed-user → refused; DB failur
 refuse (503), never allow.
 """
 
+from unittest.mock import AsyncMock, patch
+
 import pytest
 from fastapi import HTTPException
-from unittest.mock import AsyncMock, patch
 
 from web.api.routes import setup as setup_routes
 from web.api.routes.setup import require_setup_incomplete
@@ -61,9 +62,7 @@ class TestLockoutWiring:
         """The wizard must still work on a fresh server — reads, validators,
         and the invite-gated create-user stay lockout-free."""
         deps = _route_dependency_map()
-        wrongly_gated = {
-            p for p in UNGATED_OK if p in deps and require_setup_incomplete in deps[p]
-        }
+        wrongly_gated = {p for p in UNGATED_OK if p in deps and require_setup_incomplete in deps[p]}
         assert not wrongly_gated, f"first-run routes unexpectedly locked: {wrongly_gated}"
 
     def test_denominator_every_route_classified(self):

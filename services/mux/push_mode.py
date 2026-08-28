@@ -35,7 +35,6 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import List, Optional, Tuple
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -117,7 +116,6 @@ async def is_eligible_by_trust(
         from services.shared_types import TrustStage
 
         if trust_service is None:
-            from services.trust.trust_computation_service import TrustComputationService
             from uuid import UUID
 
             # In real wiring, the route resolves a TrustComputationService
@@ -128,6 +126,7 @@ async def is_eligible_by_trust(
             from services.repositories.user_trust_profile_repository import (
                 UserTrustProfileRepository,
             )
+            from services.trust.trust_computation_service import TrustComputationService
 
             async with AsyncSessionFactory.session_scope() as session:
                 trust_repo = UserTrustProfileRepository(session)

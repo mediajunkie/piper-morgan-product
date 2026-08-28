@@ -46,7 +46,12 @@ async def two_tenants_with_archives():
                     "created_at, updated_at, role, is_alpha) "
                     "VALUES (:id, :u, :e, true, true, :now, :now, 'user', true)"
                 ),
-                {"id": uid, "u": f"t1431_{uid[:8]}", "e": f"t1431_{uid[:8]}@test.example.com", "now": now},
+                {
+                    "id": uid,
+                    "u": f"t1431_{uid[:8]}",
+                    "e": f"t1431_{uid[:8]}@test.example.com",
+                    "now": now,
+                },
             )
         for pname, oid, archived in (
             (a_active_name, a_id, False),
@@ -130,16 +135,10 @@ class _FakeProjectRepository:
         return project
 
     async def list_active_projects(self, owner_id=None):
-        return [
-            p for p in self._projects.values()
-            if not p.is_archived and p.owner_id == owner_id
-        ]
+        return [p for p in self._projects.values() if not p.is_archived and p.owner_id == owner_id]
 
     async def list_archived_projects(self, owner_id=None):
-        return [
-            p for p in self._projects.values()
-            if p.is_archived and p.owner_id == owner_id
-        ]
+        return [p for p in self._projects.values() if p.is_archived and p.owner_id == owner_id]
 
 
 async def test_service_archive_then_appears_in_archived_list():

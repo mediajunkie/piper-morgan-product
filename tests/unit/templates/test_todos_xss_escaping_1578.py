@@ -63,9 +63,9 @@ def test_escape_html_helper_exists_and_covers_the_metacharacters(rendered):
         ("'", "&#39;"),
     ]:
         assert entity in body, f"escapeHtml() does not escape {ch!r} -> {entity}"
-    assert "function escapeAttr" in rendered, (
-        "escapeAttr() (attribute-context variant, #1568) went missing"
-    )
+    assert (
+        "function escapeAttr" in rendered
+    ), "escapeAttr() (attribute-context variant, #1568) went missing"
 
 
 # --- the headline hole: todo.text ---------------------------------------------
@@ -81,9 +81,9 @@ def test_raw_todo_text_interpolation_is_gone_everywhere(rendered):
 
 
 def test_plain_title_row_escapes_todo_text(rendered):
-    assert "${escapeHtml(todo.text)}" in rendered, (
-        "the non-editing title branch does not escape todo.text"
-    )
+    assert (
+        "${escapeHtml(todo.text)}" in rendered
+    ), "the non-editing title branch does not escape todo.text"
 
 
 def test_share_button_no_longer_passes_title_through_onclick_js_string(rendered):
@@ -94,9 +94,9 @@ def test_share_button_no_longer_passes_title_through_onclick_js_string(rendered)
         "Share button still passes a second (text) argument through the "
         "onclick JS-string context — unprotectable by HTML escaping"
     )
-    assert "shareTodo('${escapeAttr(todo.id)}')" in rendered, (
-        "Share button should pass only the escaped id"
-    )
+    assert (
+        "shareTodo('${escapeAttr(todo.id)}')" in rendered
+    ), "Share button should pass only the escaped id"
     # and shareTodo() resolves the title from state instead
     body = _fn_body(rendered, "function shareTodo")
     assert "currentTodos" in body, (
@@ -126,11 +126,7 @@ def _assert_all_escaped(body, fn_name, allowed=()):
     allowed = set(allowed)
     for expr in _INNERMOST_INTERP.findall(body):
         expr = expr.strip()
-        ok = (
-            expr.startswith("escapeHtml(")
-            or expr.startswith("escapeAttr(")
-            or expr in allowed
-        )
+        ok = expr.startswith("escapeHtml(") or expr.startswith("escapeAttr(") or expr in allowed
         assert ok, (
             f"unescaped interpolation in {fn_name}(): ${{{expr}}} — every "
             "dynamic value in the render path goes through escapeHtml()/"
@@ -167,7 +163,7 @@ def test_every_interpolation_in_renderCurrentShares_is_escaped(rendered):
         # owner indicator (another user's self-chosen username)
         "${escapeHtml(todo.owner_username || todo.owner_id)}",
         # lifecycle: stage attr + phrase (attr and text uses)
-        '${escapeAttr(todo.lifecycle_state)}',
+        "${escapeAttr(todo.lifecycle_state)}",
         "${escapeAttr(phrase)}",
         "${escapeHtml(phrase)}",
         # priority chip: class attr + label text

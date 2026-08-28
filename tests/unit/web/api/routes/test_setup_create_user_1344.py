@@ -70,7 +70,9 @@ async def test_unknown_token_rejected_and_no_user_created(db_session):
         await create_user(_req("NOTAREALTOKEN0000000000", username=username))
 
     assert exc_info.value.status_code == 400
-    row = (await db_session.execute(select(User).where(User.username == username))).scalar_one_or_none()
+    row = (
+        await db_session.execute(select(User).where(User.username == username))
+    ).scalar_one_or_none()
     assert row is None  # #1344: no orphaned account on a rejected token
 
 
@@ -91,7 +93,9 @@ async def test_already_used_token_rejected_second_time(db_session, unused_token)
 
 
 @pytest.mark.asyncio
-async def test_concurrent_registrations_cannot_both_consume_the_same_token(db_session, unused_token):
+async def test_concurrent_registrations_cannot_both_consume_the_same_token(
+    db_session, unused_token
+):
     """The load-bearing property (Arch, 2026-07-03): a non-atomic check-then-burn lets two
     concurrent requests both pass validity before either burns the token (double-spend).
     Exactly one of these two simultaneous calls must succeed."""

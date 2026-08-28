@@ -72,8 +72,7 @@ class TestTodoFullStack:
         """
         # 1. Create todo
         todo = await service.create_todo(
-            owner_id=self.owner_id,
-            text="Integration test todo", list_id=list_id, priority="high"
+            owner_id=self.owner_id, text="Integration test todo", list_id=list_id, priority="high"
         )
 
         # Verify creation
@@ -120,11 +119,17 @@ class TestTodoFullStack:
         - TodoService inherits ItemService operations
         """
         # Create multiple todos
-        todo1 = await service.create_todo(owner_id=self.owner_id, text="First todo", list_id=list_id, priority="high")
+        todo1 = await service.create_todo(
+            owner_id=self.owner_id, text="First todo", list_id=list_id, priority="high"
+        )
 
-        todo2 = await service.create_todo(owner_id=self.owner_id, text="Second todo", list_id=list_id, priority="medium")
+        todo2 = await service.create_todo(
+            owner_id=self.owner_id, text="Second todo", list_id=list_id, priority="medium"
+        )
 
-        todo3 = await service.create_todo(owner_id=self.owner_id, text="Third todo", list_id=list_id, priority="low")
+        todo3 = await service.create_todo(
+            owner_id=self.owner_id, text="Third todo", list_id=list_id, priority="low"
+        )
 
         # Test reordering (generic operation)
         reordered = await service.reorder_items(
@@ -150,7 +155,9 @@ class TestTodoFullStack:
         - todo.title works (old way)
         - Both reference same value
         """
-        todo = await service.create_todo(owner_id=self.owner_id, text="Test backward compatibility", list_id=list_id)
+        todo = await service.create_todo(
+            owner_id=self.owner_id, text="Test backward compatibility", list_id=list_id
+        )
 
         # New way
         assert todo.text == "Test backward compatibility"
@@ -163,7 +170,9 @@ class TestTodoFullStack:
 
     async def test_priority_operations(self, service, list_id):
         """Test todo-specific priority operations."""
-        todo = await service.create_todo(owner_id=self.owner_id, text="Priority test", list_id=list_id, priority="low")
+        todo = await service.create_todo(
+            owner_id=self.owner_id, text="Priority test", list_id=list_id, priority="low"
+        )
 
         # Change priority
         updated = await service.set_priority(UUID(todo.id), "urgent")

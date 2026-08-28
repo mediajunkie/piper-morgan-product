@@ -26,17 +26,19 @@ from uuid import uuid4
 import pytest
 import pytest_asyncio
 
-
 # Skip module if aiosqlite missing (parallel to #1018 pattern).
 aiosqlite = pytest.importorskip("aiosqlite")
 
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine  # noqa: E402
+from sqlalchemy.ext.asyncio import (  # noqa: E402
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from services.database.models import InsightDB  # noqa: E402
 from services.database.repositories import InsightRepository  # noqa: E402
 from services.mux.composting_models import ExtractedLearning, Pattern  # noqa: E402
 from services.mux.composting_pipeline import SurfaceableInsight  # noqa: E402
-
 
 pytestmark = pytest.mark.asyncio
 

@@ -34,7 +34,6 @@ from tests.ethics.probe_set.redirect_hint_assertions import (
     assert_redirect_hint_shape_safe,
 )
 
-
 DiffType = str  # one of: category_mismatch, confidence_band_miss,
 # hint_shape_drift, unexpected_violation, unexpected_pass, hint_shape_violation
 

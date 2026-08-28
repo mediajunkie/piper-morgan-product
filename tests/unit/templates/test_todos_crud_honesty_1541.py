@@ -66,9 +66,7 @@ def test_delete_success_toast_is_gated_on_response_ok(rendered):
 
 
 def test_page_has_a_complete_control(rendered):
-    assert "completeTodo(" in rendered, (
-        "no complete-task control on the page — #1541 finding (1)"
-    )
+    assert "completeTodo(" in rendered, "no complete-task control on the page — #1541 finding (1)"
     assert "complete-btn" in rendered
 
 
@@ -82,9 +80,9 @@ def test_complete_calls_the_completion_route_and_checks_outcome(rendered):
     assert "response.ok" in body, "completeTodo() never checks the response"
     ok_pos = body.find("response.ok")
     toast_pos = body.find("ToastMessages.success('todo_completed')")
-    assert toast_pos != -1 and ok_pos < toast_pos, (
-        "completion success toast must be gated on response.ok"
-    )
+    assert (
+        toast_pos != -1 and ok_pos < toast_pos
+    ), "completion success toast must be gated on response.ok"
 
 
 def test_completed_todos_do_not_offer_the_complete_button(rendered):

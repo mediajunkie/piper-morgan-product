@@ -56,6 +56,11 @@ EXCLUDED_FILES = [
     # Adapter definition files - can self-reference
     "services/mcp/consumer/google_calendar_adapter.py",
     "services/integrations/mcp/notion_adapter.py",
+    # Canonical NotionMCPAdapter definition since the #1232 Connector port
+    # (5050ed024, 2026-07-04) — the old integrations/mcp path above is now a
+    # deprecated import alias to this module. The defining module must be able
+    # to self-reference (class statement, docstrings, log strings).
+    "services/mcp/consumer/notion_adapter.py",
     # Configuration/documentation files
     "services/infrastructure/config/feature_flags.py",
 ]

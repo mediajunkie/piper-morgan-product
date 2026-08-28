@@ -86,9 +86,7 @@ class TestGitHubTokenLifecycle849:
             ),
             patch(
                 "services.integrations.github.token_validator.verify_github_token",
-                new=AsyncMock(
-                    return_value={"authenticated": True, "username": "testuser"}
-                ),
+                new=AsyncMock(return_value={"authenticated": True, "username": "testuser"}),
             ),
             patch(
                 "services.infrastructure.keychain_service.KeychainService",

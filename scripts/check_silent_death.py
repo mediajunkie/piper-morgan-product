@@ -71,9 +71,19 @@ def _reraises(handler: ast.ExceptHandler) -> bool:
 
 
 def _annotated(handler: ast.ExceptHandler, source_lines: list[str]) -> bool:
-    """``# silent-ok: <reason>`` on the except line or the line directly above it."""
+    """``# silent-ok: <reason>`` anywhere in the except header, or the line above it.
+
+    The header spans from the ``except`` keyword through the line before the
+    handler body's first statement — ruff format may rewrap a long annotated
+    ``except Exception as e:  # silent-ok: ...`` into a multi-line header with
+    the comment on the closing line, and the annotation must survive that
+    (#1687: 5 annotated sites went uncounted after a repo-wide format).
+    Formatting-insensitive recognition only ADDS recognized annotations; an
+    unannotated swallow can never escape the count this way.
+    """
     idx = handler.lineno - 1
-    candidates = source_lines[max(0, idx - 1) : idx + 1]
+    header_end = max(handler.lineno, handler.body[0].lineno - 1) if handler.body else handler.lineno
+    candidates = source_lines[max(0, idx - 1) : header_end]
     return any(ANNOTATION in line for line in candidates)
 
 

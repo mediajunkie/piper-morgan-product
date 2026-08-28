@@ -230,9 +230,7 @@ class TestPmStolenTurnsNowHeld:
 
     async def test_pm_plans_answer_reaches_the_open_question(self, live_service):
         service, manager = live_service
-        conv = await _conversation(
-            manager, StandupConversationState.GATHERING_TODAY, stale=True
-        )
+        conv = await _conversation(manager, StandupConversationState.GATHERING_TODAY, stale=True)
 
         result = await service.process_intent(
             message=PM_PLANS_ANSWER, session_id=_SESSION, user_id=_USER
@@ -249,9 +247,7 @@ class TestPmStolenTurnsNowHeld:
 
     async def test_pm_blockers_answer_reaches_the_open_question(self, live_service):
         service, manager = live_service
-        conv = await _conversation(
-            manager, StandupConversationState.GATHERING_BLOCKERS, stale=True
-        )
+        conv = await _conversation(manager, StandupConversationState.GATHERING_BLOCKERS, stale=True)
 
         result = await service.process_intent(
             message=PM_BLOCKERS_ANSWER, session_id=_SESSION, user_id=_USER
@@ -304,20 +300,14 @@ class TestDeliberateEscapesSurviveTheHold:
 
     async def test_universal_escape_still_exits(self, live_service):
         service, manager = live_service
-        conv = await _conversation(
-            manager, StandupConversationState.GATHERING_TODAY, stale=True
-        )
-        result = await service.process_intent(
-            message="cancel", session_id=_SESSION, user_id=_USER
-        )
+        conv = await _conversation(manager, StandupConversationState.GATHERING_TODAY, stale=True)
+        result = await service.process_intent(message="cancel", session_id=_SESSION, user_id=_USER)
         assert conv.state == StandupConversationState.SUSPENDED
         assert "paused" in result.message.lower()
 
     async def test_1529_flow_exit_still_ends_the_flow(self, live_service):
         service, manager = live_service
-        conv = await _conversation(
-            manager, StandupConversationState.GATHERING_TODAY, stale=True
-        )
+        conv = await _conversation(manager, StandupConversationState.GATHERING_TODAY, stale=True)
         result = await service.process_intent(
             message="end standup", session_id=_SESSION, user_id=_USER
         )
@@ -330,9 +320,7 @@ class TestDeliberateEscapesSurviveTheHold:
         assertion stops at the pause: what answers the residual is the
         below-claim stack's business, not this seam's."""
         service, manager = live_service
-        conv = await _conversation(
-            manager, StandupConversationState.GATHERING_TODAY, stale=True
-        )
+        conv = await _conversation(manager, StandupConversationState.GATHERING_TODAY, stale=True)
         try:
             await service.process_intent(
                 message="remind me to review the cut tomorrow",
@@ -345,9 +333,7 @@ class TestDeliberateEscapesSurviveTheHold:
 
     async def test_899_off_topic_still_pauses_mid_gathering(self, live_service):
         service, manager = live_service
-        conv = await _conversation(
-            manager, StandupConversationState.GATHERING_TODAY, stale=True
-        )
+        conv = await _conversation(manager, StandupConversationState.GATHERING_TODAY, stale=True)
         # NOTE: "what's the weather today?" would NOT pause — the word
         # "today" matches a standup on-topic pattern (pre-existing #899
         # conservatism, unchanged here). "what time is it" is a clean
@@ -367,9 +353,7 @@ class TestDeliberateEscapesSurviveTheHold:
         the durative marker). Crucially it never touches the flow — the open
         question stays open for the next turn."""
         service, manager = live_service
-        conv = await _conversation(
-            manager, StandupConversationState.GATHERING_TODAY, stale=True
-        )
+        conv = await _conversation(manager, StandupConversationState.GATHERING_TODAY, stale=True)
         result = await service.process_intent(
             message="do things directly from now on", session_id=_SESSION, user_id=_USER
         )

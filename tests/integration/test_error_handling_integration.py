@@ -41,9 +41,7 @@ def test_low_confidence_intent_error(test_client, failing_intent_service):
         suggestions="try 'list projects'"
     )
 
-    response = test_client.post(
-        "/api/v1/intent", json={"message": "uhhh, i dunno, show me stuff?"}
-    )
+    response = test_client.post("/api/v1/intent", json={"message": "uhhh, i dunno, show me stuff?"})
 
     assert response.status_code == 200
     data = response.json()

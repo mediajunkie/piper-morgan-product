@@ -87,9 +87,9 @@ class TestWordDurationParsing1542:
     def test_word_duration_matrix(self, message, delta, unit_word):
         before, dt, label, after = _bounded_parse(message)
         assert dt is not None, f"{message!r} parsed to None (label {label!r})"
-        assert before + delta <= dt <= after + delta, (
-            f"{message!r}: expected now+{delta}, got {dt} (label {label!r})"
-        )
+        assert (
+            before + delta <= dt <= after + delta
+        ), f"{message!r}: expected now+{delta}, got {dt} (label {label!r})"
         assert unit_word in label
 
     def test_singular_label_for_one(self):
@@ -211,9 +211,9 @@ class TestWordDurationHandler1542:
             )
             after = datetime.now().astimezone()
 
-        assert "didn't catch" not in result, (
-            "duration-first ordering still fails task extraction entirely"
-        )
+        assert (
+            "didn't catch" not in result
+        ), "duration-first ordering still fails task extraction entirely"
         assert mock_create.called
         assert mock_create.call_args.kwargs.get("text") == "stretch"
         saved = mock_create.call_args.kwargs.get("reminder_date")
