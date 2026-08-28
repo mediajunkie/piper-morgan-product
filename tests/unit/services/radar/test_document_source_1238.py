@@ -116,7 +116,8 @@ async def test_document_source_untitled_fallback_and_empty():
 async def test_failing_source_does_not_blank_radar():
     view = await RadarFeed([_BoomSource(), _FakeSource([_obs("survivor", 5.0)])]).assemble("u1")
     assert view.state == "populated"
-    assert [e.title for e in view.entities] == ["survivor"]
+    # [:-1]: the populated view ends with the #1635 coming-soon placeholder
+    assert [e.title for e in view.entities[:-1]] == ["survivor"]
 
 
 async def test_all_sources_failing_falls_back_to_empty_example():

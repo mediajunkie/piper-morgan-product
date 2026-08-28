@@ -18,6 +18,9 @@ class EntityType(str, Enum):
     PERSON = "Person"
     DOCUMENT = "Document"
     REMINDER = "Reminder"  # #1625: due reminders, pinned at the top of Radar
+    # #1635: ambient-presence "coming soon" false door — the pill string is CXO's
+    # deliverable, verbatim. Never carried by a real (observed) entity.
+    COMING_SOON = "coming soon"
 
 
 class Provenance(str, Enum):

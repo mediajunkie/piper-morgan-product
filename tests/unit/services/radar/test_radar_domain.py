@@ -64,7 +64,9 @@ async def test_feed_populated_orders_attention_first():
     feed = RadarFeed([_FakeSource([_obs("low", 1.0), _obs("high", 9.0), _obs("mid", 5.0)])])
     view = await feed.assemble("u1")
     assert view.state == "populated"
-    assert [e.title for e in view.entities] == ["high", "mid", "low"]
+    # [:-1]: the populated view ends with the #1635 coming-soon placeholder (always last)
+    assert [e.title for e in view.entities[:-1]] == ["high", "mid", "low"]
+    assert view.entities[-1].entity_type == EntityType.COMING_SOON
 
 
 async def test_feed_filters_non_observed_from_default_view():
@@ -72,8 +74,9 @@ async def test_feed_filters_non_observed_from_default_view():
     feed = RadarFeed([_FakeSource([_obs("real", 1.0), seed])])
     view = await feed.assemble("u1")
     assert view.state == "populated"
-    assert [e.title for e in view.entities] == ["real"]
-    assert all(e.provenance == Provenance.OBSERVED for e in view.entities)
+    # [:-1]: skip the trailing #1635 placeholder (EXAMPLE provenance by design)
+    assert [e.title for e in view.entities[:-1]] == ["real"]
+    assert all(e.provenance == Provenance.OBSERVED for e in view.entities[:-1])
 
 
 async def test_feed_empty_when_no_observed_returns_one_example():
@@ -148,7 +151,8 @@ async def test_feed_pinned_entities_lock_above_attention_order():
     feed = RadarFeed([_FakeSource([_obs("hot item", 999.0)]), pinned_src])
     view = await feed.assemble("u1")
     assert view.state == "populated"
-    assert [e.title for e in view.entities] == ["call the vendor", "hot item"]
+    # [:-1]: the trailing #1635 placeholder sits below both (never pinned/ordered)
+    assert [e.title for e in view.entities[:-1]] == ["call the vendor", "hot item"]
     assert view.entities[0].pinned is True
     assert view.entities[1].pinned is False
 
