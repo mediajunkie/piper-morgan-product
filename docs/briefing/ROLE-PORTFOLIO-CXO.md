@@ -4,7 +4,7 @@ role: CXO (Chief Experience Officer)
 status: v0.1
 self-authored-by: CXO
 last_updated: 2026-08-28
-refreshed: 2026-08-28 (section 2 refreshed per workstream #058; sections 1/3/4 re-read and left as accurate)
+refreshed: 2026-08-28 (section 2 per workstream #058; sections 2+3 amended same day for PM's ratified floor/ethics-watch split — retire the floor-quality half, convert the voice half to triggered)
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-CXO.md
 refresh_discipline: "sections 2 and 4 on each workstream review; sections 1 and 3 on role-scope drift — NOW CHECKED, see refresh_trigger_glob and §5"
@@ -48,7 +48,7 @@ Two things flow from this:
 | **#1635 false-door** | The ambient-presence placeholder's shape | ✅ Position delivered 08-27 (Radar card + two build rules + final strings). Lead builds when sequenced. | Lead ships; PM reacts in testing |
 | **Recomposition rubric branch (#1463)** | Layer-B rubric for recomposed tool output | **Held, same dependency (#1462), unchanged.** | Retest against a live `mcp.pipermorgan.ai` |
 | **#1174 proactive presence** | Discovery only | **Held by design.** | Discovery runs with HOST |
-| **Floor-quality + ethics-decline watch** | Standing — on shipped behaviour | 🔴 **Fourth window unattested. Decision requested in Ship #058 §4: give it a real slot or retire it deliberately** — carrying it unattested is the worst of both. | PM/Exec decision on the line itself |
+| **Ethics-decline VOICE watch** (was: floor-quality + ethics-decline) | Whether a decline *sounds like* a thoughtful colleague declining, not a compliance wall — the half no automated scorer covers | ✅ **SPLIT RATIFIED 2026-08-28 (PM).** The **floor-quality half is RETIRED**, explicitly because the canonical retest suite now covers it (Run 14: quality judged 22/22 by a real LLM judge, zero skips) alongside the honesty contracts, verified-empty rule, and fabrication guards — retirement as a *coverage statement*, not a shrug. The **voice half is KEPT and converted from standing to TRIGGERED**: it fires on a deploy touching floor/decline copy, or a live decline observed. Method: the Colleague Test. Reporting: an honest denominator ("scored N declines observed"), never "all clear". | A trigger fires → a scored observation with its denominator, same-cycle |
 
 **Deliberately not on this list**: the D2 design-system portfolio (#1286/#1290/#1284/#1269) — unmoved for a seventh Ship window. Still a drift, not a decision.
 
@@ -60,7 +60,10 @@ Two things flow from this:
 
 - **Design spec authorship**: the binding written record of what gets built. Every significant surface has a spec before Lead builds; specs live in `dev/active/design-spec-*.md` and are committed to origin/main before build starts. No building from verbal descriptions.
 - **Design call coverage**: any PM or Lead question about UX intent gets a design call from CXO — same session, not deferred. CXO is the unblocking node for design decisions.
-- **Collegiality floor**: watch #950 (floor response quality) and #992 (ethics-decline voice). Flag any regression even when it's not on the sprint board.
+- **Collegiality floor — TRIGGERED, not standing (PM-ratified 2026-08-28).** ⚠️ This line previously read *"watch #950 (floor response quality) and #992 (ethics-decline voice), flag any regression"* — a standing intention that **never once ran in four Ship windows**, for three structural reasons worth keeping recorded: no trigger ("standing" = "whenever" = never), no method (it named no artifact and no failure shape), and no denominator (even a clean report would have been an "all clear" that meant nothing). Both issues closed in April; the build was never the question.
+  - **Floor-quality half: RETIRED**, because it is now genuinely covered — the canonical retest suite judges response quality with a real LLM judge (Run 14: 22/22, zero skips), plus the honesty contracts, `#1425` verified-empty, and the fabrication guards. A manual watch over a better instrument duplicates it and manufactures false assurance.
+  - **Ethics-decline VOICE half: KEPT, converted to TRIGGERED.** No automated suite scores *register* — whether a decline reads as a thoughtful colleague or a compliance wall is Colleague-Test territory, which is exactly CXO's and exactly not automatable. **Fires when**: a deploy touches floor or decline copy, or a live decline is observed in a test round. **Method**: the Colleague Test. **Reports**: a scored observation with its denominator stated ("N declines observed and scored"), never a bare all-clear.
+  - ⭐ **The generalizable lesson**, worth more than the line itself: *a standing responsibility with no trigger, no method, and no denominator is an intention wearing a commitment's costume.* It will lose every prioritization contest to work that names an artifact — as this one did, four times.
 - **Honest provenance**: don't spec capabilities that aren't built yet. Every CXO-authored claim is verifiable. (Standing lesson from the search-placeholder incident, 2026-06-18.)
 - **Memos returned same session**: incoming design questions from Lead/PPM/PA get CXO response in the same fire.
 
