@@ -62,15 +62,14 @@ a known-issue label — never a default of this triage pass.
 line, not item-by-item — they converge when the Inversion's own waves land, and the corpus items
 are deposits, not backlog.
 
-**`#1677` / `#1488` — pulled OUT of this bucket's blanket call.** I read both bodies directly
-rather than trusting the one-line summary: this is the live todo-create misroute (stochastic
-LLM-classifier routing, reproduces on PM's own beta account, blocks #1394 verification). It is
-core-list territory on its face — todo creation is one of the 62 PM-operation-grammar ops — so
-**MVP-keep is not in question.** What Lead's note ("four options on the table, PM's call") points
-at is a **separate, narrower decision**: which fix approach. That's an implementation-design
-question, not a scope-cut question, and bundling it into "the cut" would blur two different kinds
-of PM decision into one. **Recommend PM rules on the fix approach separately, on its own thread —
-not inside this sitting.**
+**`#1677` / `#1488` — UPDATE 08-28 10:2x, resolved, drops out of the sitting entirely.** This
+section originally pulled the pair out of the blanket call as "MVP-keep, but a separate fix-
+approach decision, not a scope decision — recommend PM rules on it separately." **That decision
+already happened between assembly and this update**: PM approved option (d) the same morning
+(allowlisted write flip, `FLIP_WRITE_ALLOWLIST = {"create_todo"}`), Arch's mechanism followed
+exactly, built and merged — verified directly on both issues (`gh issue view`), not taken from
+Lead's ack alone. **MVP-keep stands, zero open questions remain on this pair.** One fewer decision
+for PM's sitting than the original assembly implied.
 
 ## Group D — the six untouched-by-the-record items — SPLIT, not a uniform "clearest cut"
 
@@ -182,8 +181,7 @@ Cross-referenced this cut against the week's other live threads — nothing here
 | Verdict | Items | Count |
 |---|---|---|
 | **Not a cut decision** (staged/shipped, converges via deploy-verify) | Group A (12) + #1656/#1657/#1624 (3) | 15 |
-| **MVP-keep** (Group B + C-block + specific D/E/F items) | B (6) + C-block (6, excl. #1677/#1488) + D (#1653,#1652,#1613) + E (#1659,#1660) + F (#1423,#1637,#1645,#1646,#1676,#1678) | 25 |
-| **MVP-keep, but separate PM decision needed on fix approach** | #1677/#1488 | 2 |
+| **MVP-keep** (Group B + C-block + specific D/E/F items, incl. #1677/#1488 now fully resolved) | B (6) + C-block incl. #1677/#1488 (8) + D (#1653,#1652,#1613) + E (#1659,#1660) + F (#1423,#1637,#1645,#1646,#1676,#1678) | 27 |
 | **PUB** | #1658, #1661 | 2 |
 | **post-beta** | #1662, #1647, #1436 (gate itself; live defects TBD) | 3 |
 | **blocked** (awaiting Arch ruling) | #1638 | 1 |
@@ -192,11 +190,16 @@ Totals don't sum to exactly 61 — Group A's 12 + Group F's #1662 overlap, and t
 at top (60→61) accounts for the rest. Not reconciling to the digit; the classification is what
 matters for the ruling.
 
-**The actual convergence lever, corrected from Lead's headline**: not "~10 items" — **5 items
-move out of MVP** (#1658, #1661 → PUB; #1662, #1647, #1436's gate → post-beta), **1 is blocked on
-Arch** (#1638), and **1 needs a separate fix-approach decision, not a scope decision**
-(#1677/#1488). Smaller than the initial estimate, because reading the actual issue bodies moved
-several from "looks cuttable" to "touches the core" — reported here rather than the more
-convergence-flattering original number.
+**UPDATE 08-28 10:2x (Lead's ack + independently verified)**: #1677/#1488's fix-approach question
+is resolved — PM approved option (d) same morning, built and merged, verified directly on both
+issues rather than taken on Lead's word alone. **The sitting is now simpler than originally
+assembled: 5 items move out of MVP** (#1658, #1661 → PUB; #1662, #1647, #1436's gate →
+post-beta), **1 is blocked on Arch** (#1638), **zero fix-approach questions remain.** Lead has
+read this document and endorses it as-is, including the Group D corrections.
+
+**The actual convergence lever, corrected from Lead's original headline**: not "~10 items" — 5.
+Smaller than the initial estimate, because reading the actual issue bodies moved several from
+"looks cuttable" to "touches the core" — reported here rather than the more convergence-flattering
+original number.
 
 — PPM, 2026-08-28
