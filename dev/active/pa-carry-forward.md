@@ -100,9 +100,37 @@ days stale.
     Slack cells as a batch if #1481 clears") still holds, but its trigger moved further out now that
     #1481 is Fast Follow rather than Production. PPM and Arch haven't replied yet as of 08-28 morning —
     nothing to chase.
+  - **PM corrected the gap-cause 08-28 morning**: not "machine-asleep" (the watchdog's inference) —
+    "the entire team hit the weekly rate limit yesterday afternoon around 2:00pm... reset until
+    10:00pm... a known issue, a fairly good maxing out of available resources across the length of a
+    week." Fully accounts for PA's own gap; corrected in the 08-27/08-28 session logs; saved as
+    standing memory (`project_weekly_rate_limit_outage_pattern`) so future gap-diagnosis doesn't
+    re-derive this.
+  - **PM restated PA's role vs. Exec vs. PPM, 2026-08-28** (unprompted, "it's been a while since I
+    restated that"): PA is *"a close product apprentice focused on the product"* — hands-on product
+    thinking with PM directly, helping set the bar for what Piper should do and what makes Piper
+    *Piper*. Exec is the broad coordination/proxy surface; PPM holds actual product-management
+    decision authority (*"my agentic proxy leadership role in charge of the product lens"*). Overlap
+    is deliberate, not a bug — *"we use it well to triangulate and debate our way to good
+    solutions."* Saved as standing memory (`feedback_pa_role_vs_exec_vs_ppm`) since this kind of
+    clarification is easy to let drift again.
+  - **PM confirmed BYOC is explicitly PA's to drive** as it moves from skunkworks to primary roadmap.
+    Also previewed (NOT started) a next topic: shipping small, useful product pieces on a tighter
+    cycle, MVP-thinking applied harder, Skills as the precedent — motivated by PM's own *"I'm envious
+    of people who have been continuously shipping... building a ship in the bottle with almost no
+    users."* Explicitly PM's call when to start, not a deadline — PA gave an honest readiness read
+    (current in-flight load is light, ready when PM is). Saved as standing memory
+    (`project_byoc_pa_driving_and_shipping_small_things_preview`) so this doesn't get lost if the
+    conversation gap widens before it starts.
+  - **Direct validation of the standing-lens proposal, 08-28**: CXO applied the "no-optional-
+    complexity" lens (named 08-26, credited explicitly as "PA's/PM's lens") as the FIRST move on FTUX
+    surface mapping, not a trim-after-the-fact — cut ~40 speculative cells to 2 live ones plus one
+    real gap. Consults addressed to Lead/PPM, not PA; no action needed, just a good outcome worth
+    having on record (`docs/internal/design/ftux-surface-mapping-2026-08-28.md`).
   - **Thread status**: PM signaled next topic is "the BYOC skunkworks project itself, next steps" —
-    a new phase of this conversation, not yet started. Nothing else pending from the connector
-    question specifically.
+    a new phase of this conversation, not yet started. PPM and Arch still haven't replied to the
+    Slack-descope loop-in memo as of 08-28 morning — nothing to chase. Otherwise nothing pending from
+    the connector question specifically.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
