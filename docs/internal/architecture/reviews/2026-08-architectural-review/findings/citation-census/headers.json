@@ -1,0 +1,2039 @@
+{
+"methodology-05-AGENT-METHODOLOGY.md": {
+"title": "Agent Methodology for Piper Morgan",
+"status": "",
+"updated": "",
+"recent": "2025-09-21",
+"count": 1,
+"buckets": {
+"docs/internal": 1
+}
+},
+"methodology-12-ENHANCED-AUTONOMY.md": {
+"title": "Enhanced Autonomy Experiment Methodology Breakthrough",
+"status": "\u2705 COMPLETE - Breakthrough methodology validated",
+"updated": "Date: 2025-08-15",
+"recent": "2025-09-21",
+"count": 1,
+"buckets": {
+"docs/internal": 1
+}
+},
+"methodology-13-REQUIREMENTS-FRAMEWORK.md": {
+"title": "TDD and Domain Authority Requirements",
+"status": "",
+"updated": "",
+"recent": "2025-09-21",
+"count": 1,
+"buckets": {
+"docs/internal": 1
+}
+},
+"methodology-14-DOCUMENTATION-STANDARDS.md": {
+"title": "Documentation Creation Checklist",
+"status": "",
+"updated": "",
+"recent": "2025-09-21",
+"count": 1,
+"buckets": {
+"docs/internal": 1
+}
+},
+"README.md": {
+"title": "Pattern Index",
+"status": "",
+"updated": "",
+"recent": "2026-08-25",
+"count": 125,
+"buckets": {
+"skills": 1,
+"other": 3,
+"dev": 49,
+"docs/briefing": 2,
+"docs/internal": 5,
+"corpus:patterns": 1,
+"docs/other": 13,
+"knowledge": 7,
+"mailboxes": 44
+}
+},
+"methodology-04-ARCHITECTURAL-AGILITY.md": {
+"title": "Architectural Agility - Systematic Excellence in Technical Decision Making",
+"status": "",
+"updated": "",
+"recent": "2026-04-27",
+"count": 2,
+"buckets": {
+"docs/internal": 1,
+"corpus:methodology-core": 1
+}
+},
+"methodology-06-CORE-PATTERNS.md": {
+"title": "MANDATORY: Piper Morgan Development Methodology",
+"status": "",
+"updated": "",
+"recent": "2026-04-16",
+"count": 2,
+"buckets": {
+"dev": 1,
+"docs/internal": 1
+}
+},
+"METHODOLOGY-DISCOVERY-GUIDE.md": {
+"title": "Development Methodology Index",
+"status": "\u2705 **PRODUCTION READY** - Central Discovery Point Established",
+"updated": "Created: August 23, 2025",
+"recent": "2026-07-08",
+"count": 3,
+"buckets": {
+"dev": 1,
+"scripts": 2
+}
+},
+"enhanced-autonomy-continuity-protocols.md": {
+"title": "Enhanced Autonomy Continuity Protocols & Transition Success",
+"status": "\u2705 **SUCCESS** - Continuity protocols validated, transition ready",
+"updated": "Date: August 15, 2025",
+"recent": "2026-07-08",
+"count": 3,
+"buckets": {
+"dev": 3
+}
+},
+"MULTI_AGENT_QUICK_START.md": {
+"title": "Multi-Agent Coordinator Quick Start Guide",
+"status": "Ready for Production Use",
+"updated": "",
+"recent": "2026-05-15",
+"count": 4,
+"buckets": {
+"dev": 3,
+"corpus:methodology-core": 1
+}
+},
+"chat-protocols.md": {
+"title": "Chat Protocols and Session Management",
+"status": "",
+"updated": "",
+"recent": "2026-07-08",
+"count": 4,
+"buckets": {
+"dev": 2,
+"docs/internal": 1,
+"corpus:methodology-core": 1
+}
+},
+"enhanced-autonomy-experiment.md": {
+"title": "Enhanced Autonomy Experiment Methodology Breakthrough",
+"status": "\u2705 COMPLETE - Breakthrough methodology validated",
+"updated": "Date: 2025-08-15",
+"recent": "2026-07-08",
+"count": 4,
+"buckets": {
+"dev": 4
+}
+},
+"multi-agent-templates.md": {
+"title": "Multi-Agent Coordination Templates",
+"status": "",
+"updated": "",
+"recent": "2025-12-01",
+"count": 4,
+"buckets": {
+"dev": 3,
+"corpus:methodology-core": 1
+}
+},
+"working-method.md": {
+"title": "Working Method - Piper Morgan Development",
+"status": "",
+"updated": "",
+"recent": "2026-07-08",
+"count": 4,
+"buckets": {
+"docs/internal": 1,
+"dev": 3
+}
+},
+"methodology-09-MCP-SPATIAL.md": {
+"title": "MCP+Spatial Pattern Implementation Methodology",
+"status": "",
+"updated": "",
+"recent": "2026-06-11",
+"count": 5,
+"buckets": {
+"dev": 3,
+"docs/internal": 1,
+"corpus:methodology-core": 1
+}
+},
+"methodology-10-SYSTEMATIC-BREAKTHROUGHS.md": {
+"title": "Systematic Methodology Breakthroughs",
+"status": "",
+"updated": "Date: July 24, 2025",
+"recent": "2026-06-11",
+"count": 5,
+"buckets": {
+"dev": 3,
+"docs/internal": 1,
+"corpus:methodology-core": 1
+}
+},
+"methodology-16-STOP-CONDITIONS.md": {
+"title": "STOP Conditions for Agent Deployment",
+"status": "",
+"updated": "Date: September 4, 2025",
+"recent": "2026-08-25",
+"count": 5,
+"buckets": {
+"dev": 3,
+"docs/internal": 1,
+"corpus:methodology-core": 1
+}
+},
+"methodology-08-ISSUE-TRACKING.md": {
+"title": "Methodology 08: Issue Tracking Verification",
+"status": "\u2705 **PRODUCTION READY** - Systematic Protocol Established",
+"updated": "Created: August 23, 2025",
+"recent": "2026-06-11",
+"count": 6,
+"buckets": {
+"other": 1,
+"dev": 2,
+"docs/internal": 1,
+"corpus:methodology-core": 2
+}
+},
+"methodology-03-COMMON-FAILURES.md": {
+"title": "Common Failures That Break The Flywheel",
+"status": "",
+"updated": "",
+"recent": "2026-05-15",
+"count": 11,
+"buckets": {
+"dev": 2,
+"docs/internal": 2,
+"docs/other": 2,
+"mailboxes": 5
+}
+},
+"methodology-11-ORCHESTRATION-TESTING.md": {
+"title": "Orchestration Testing Methodology",
+"status": "",
+"updated": "",
+"recent": "2026-06-11",
+"count": 7,
+"buckets": {
+"dev": 4,
+"docs/internal": 1,
+"corpus:methodology-core": 1,
+"scripts": 1
+}
+},
+"methodology-18-CASCADE-PROTOCOL.md": {
+"title": "Methodology Cascade Protocol",
+"status": "",
+"updated": "Date: September 4, 2025",
+"recent": "2026-03-19",
+"count": 7,
+"buckets": {
+"dev": 1,
+"docs/internal": 1,
+"corpus:methodology-core": 1,
+"docs/other": 1,
+"knowledge": 2,
+"mailboxes": 1
+}
+},
+"methodology-21-CODE-HYGIENE-AUDIT.md": {
+"title": "Code Hygiene Audit Methodology",
+"status": "",
+"updated": "",
+"recent": "2025-12-01",
+"count": 7,
+"buckets": {
+"dev": 3,
+"docs/other": 4
+}
+},
+"claude-code-workflow.md": {
+"title": "Claude Code Workflow Documentation",
+"status": "",
+"updated": "",
+"recent": "2026-07-08",
+"count": 20,
+"buckets": {
+"dev": 5,
+"docs/internal": 1,
+"docs/other": 1,
+"mailboxes": 13
+}
+},
+"methodology-01-TDD-REQUIREMENTS.md": {
+"title": "TDD Requirements Methodology",
+"status": "",
+"updated": "",
+"recent": "2026-05-09",
+"count": 10,
+"buckets": {
+"dev": 7,
+"docs/internal": 2,
+"scripts": 1
+}
+},
+"HOW_TO_USE_MULTI_AGENT.md": {
+"title": "How to Use the Multi-Agent Coordinator",
+"status": "\u2705 Complete Operational Guide (engine-integration sections stale post-#1094; see banner)",
+"updated": "",
+"recent": "2026-06-12",
+"count": 25,
+"buckets": {
+"dev": 7,
+"skills": 1,
+"corpus:patterns": 1,
+"corpus:methodology-core": 1,
+"docs/internal": 1,
+"docs/other": 1,
+"mailboxes": 13
+}
+},
+"MULTI_AGENT_INTEGRATION_GUIDE.md": {
+"title": "Multi-Agent Coordinator Integration Guide",
+"status": "Integration Guide for Operational Deployment (engine-dispatch sections stale post-#1094; see banner)",
+"updated": "",
+"recent": "2026-08-11",
+"count": 27,
+"buckets": {
+"dev": 4,
+"docs/other": 4,
+"skills": 1,
+"corpus:patterns": 1,
+"corpus:methodology-core": 2,
+"docs/internal": 1,
+"mailboxes": 13,
+"scripts": 1
+}
+},
+"methodology-26-INDOOR-PLUMBING-SCOPE-FILTER.md": {
+"title": "Indoor Plumbing vs. Bathing Experience \u2014 Scope Filter",
+"status": "",
+"updated": "",
+"recent": "2026-08-25",
+"count": 31,
+"buckets": {
+"dev": 5,
+"docs/briefing": 1,
+"docs/internal": 4,
+"docs/other": 3,
+"mailboxes": 18
+}
+},
+"methodology-19-INTEGRATION-POINTS.md": {
+"title": "Methodology Integration Points",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 31,
+"buckets": {
+"dev": 5,
+"docs/briefing": 1,
+"docs/internal": 2,
+"corpus:methodology-core": 2,
+"docs/other": 1,
+"mailboxes": 19,
+"scripts": 1
+}
+},
+"methodology-48-A-PROXY-COUNT-IS-NOT-THE-QUANTITY.md": {
+"title": "methodology-48 \u2014 A Proxy Count Is Not The Quantity (and at selection time it propagates)",
+"status": "Proven (two independent instances, opposite directions, 2026-08-09\u219210)",
+"updated": "",
+"recent": "2026-08-29",
+"count": 55,
+"buckets": {
+"dev": 7,
+"docs/other": 5,
+"docs/internal": 1,
+"mailboxes": 40,
+"other": 1,
+"docs/briefing": 1
+}
+},
+"resource-map.md": {
+"title": "Piper Morgan Resource Map",
+"status": "",
+"updated": "Last Updated: Check file header for date",
+"recent": "2026-07-08",
+"count": 21,
+"buckets": {
+"dev": 14,
+"knowledge": 7
+}
+},
+"INDEX.md": {
+"title": "Methodology Documentation Index",
+"status": "",
+"updated": "",
+"recent": "2026-08-24",
+"count": 22,
+"buckets": {
+"docs/other": 4,
+"other": 1,
+"dev": 14,
+"docs/briefing": 1,
+"corpus:methodology-core": 1,
+"mailboxes": 1
+}
+},
+"methodology-02-AGENT-COORDINATION.md": {
+"title": "Agent Coordination Methodology",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 28,
+"buckets": {
+"dev": 12,
+"docs/briefing": 1,
+"docs/internal": 4,
+"corpus:methodology-core": 2,
+"docs/other": 1,
+"mailboxes": 8
+}
+},
+"methodology-15-TESTING-VALIDATION.md": {
+"title": "Testing Methodology Validation Summary - 2025-08-14",
+"status": "\u2705 **CONFIRMED WORKING",
+"updated": "",
+"recent": "2026-08-24",
+"count": 62,
+"buckets": {
+"dev": 9,
+"docs/briefing": 1,
+"docs/internal": 3,
+"corpus:methodology-core": 2,
+"docs/other": 1,
+"mailboxes": 46
+}
+},
+"methodology-47-SECOND-ORDER-CLAIMS-NEED-FIRST-ORDER-RIGOR.md": {
+"title": "methodology-47 \u2014 Second-Order Claims Need First-Order Rigor",
+"status": "Proven (two distinct instances, both with measured cost, 2026-08-05\u219207)",
+"updated": "",
+"recent": "2026-08-29",
+"count": 46,
+"buckets": {
+"dev": 6,
+"docs/other": 7,
+"corpus:methodology-core": 1,
+"docs/internal": 3,
+"mailboxes": 27,
+"other": 1,
+"docs/briefing": 1
+}
+},
+"methodology-17-CROSS-VALIDATION-PROTOCOL.md": {
+"title": "Cross-Validation Protocol",
+"status": "",
+"updated": "Date: September 4, 2025",
+"recent": "2026-08-24",
+"count": 72,
+"buckets": {
+"dev": 7,
+"docs/briefing": 1,
+"corpus:patterns": 1,
+"docs/internal": 3,
+"corpus:methodology-core": 4,
+"docs/other": 1,
+"mailboxes": 55
+}
+},
+"methodology-07-VERIFICATION-FIRST.md": {
+"title": "Verification-First Methodology",
+"status": "",
+"updated": "",
+"recent": "2026-08-24",
+"count": 69,
+"buckets": {
+"dev": 10,
+"docs/briefing": 1,
+"corpus:patterns": 1,
+"docs/internal": 4,
+"corpus:methodology-core": 3,
+"docs/other": 2,
+"knowledge": 2,
+"mailboxes": 46
+}
+},
+"methodology-23-M1-INNOVATIONS.md": {
+"title": "Methodology 23: M1-Era Methodology Innovations",
+"status": "",
+"updated": "",
+"recent": "2026-08-25",
+"count": 45,
+"buckets": {
+"dev": 8,
+"docs/briefing": 1,
+"corpus:methodology-core": 1,
+"docs/other": 16,
+"mailboxes": 19
+}
+},
+"methodology-33-SESSION-TYPE-DETERMINES-GIT-PERMISSION-SCOPE.md": {
+"title": "Session-Type Determines Git-Permission Scope",
+"status": "",
+"updated": "",
+"recent": "2026-08-24",
+"count": 116,
+"buckets": {
+"dev": 8,
+"docs/briefing": 1,
+"docs/other": 9,
+"corpus:methodology-core": 1,
+"docs/internal": 2,
+"mailboxes": 95
+}
+},
+"methodology-37-COVERAGE-AUDIT-GATE-FOR-REFACTOR-DELTAS.md": {
+"title": "Coverage-Audit Gate for Refactor Deltas",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 64,
+"buckets": {
+"dev": 14,
+"docs/briefing": 1,
+"corpus:methodology-core": 1,
+"docs/internal": 3,
+"docs/other": 3,
+"mailboxes": 42
+}
+},
+"methodology-28-PRE-FILING-SLOT-AVAILABILITY-CHECK.md": {
+"title": "Pre-Filing Slot-Availability Check",
+"status": "",
+"updated": "",
+"recent": "2026-08-27",
+"count": 86,
+"buckets": {
+"dev": 10,
+"docs/internal": 3,
+"corpus:methodology-core": 12,
+"docs/other": 2,
+"mailboxes": 59
+}
+},
+"methodology-49-DESCRIBED-IS-NOT-RUNNING.md": {
+"title": "methodology-49 \u2014 Described Is Not Running",
+"status": "Emerging (one canonical instance plus three corroborating; watching for independent",
+"updated": "",
+"recent": "2026-08-29",
+"count": 77,
+"buckets": {
+"dev": 18,
+"docs/other": 8,
+"docs/internal": 4,
+"mailboxes": 47
+}
+},
+"methodology-22-ROUNDTABLE-SYNTHESIS.md": {
+"title": "Methodology-22: Roundtable Synthesis",
+"status": "",
+"updated": "",
+"recent": "2026-08-25",
+"count": 61,
+"buckets": {
+"dev": 27,
+"docs/briefing": 1,
+"corpus:patterns": 1,
+"docs/other": 9,
+"mailboxes": 23
+}
+},
+"methodology-45-AGREEMENT-IS-NOT-REPLICATION.md": {
+"title": "Agreement Is Not Replication \u2014 Shared Procedure Manufactures False Consensus",
+"status": "Emerging, with unusually clean evidence \u2014 **four agents, one shared confound, five hours, all four wrong**, plus two corroborating instances from other roles the same week.",
+"updated": "",
+"recent": "2026-08-29",
+"count": 134,
+"buckets": {
+"dev": 22,
+"corpus:methodology-core": 3,
+"docs/internal": 1,
+"docs/other": 8,
+"mailboxes": 99,
+"docs/briefing": 1
+}
+},
+"methodology-42-REFLEXIVE-VERIFICATION-SELF-EXEMPTION-UNDER-PRESSURE.md": {
+"title": "Reflexive Verification \u2014 We Self-Exempt From Our Own Rigor Under Pressure",
+"status": "Emerging (5 cohort instances clear the methodology-29 formation threshold; Proven awaits evidence that naming it reduces recurrence)",
+"updated": "",
+"recent": "2026-08-29",
+"count": 101,
+"buckets": {
+"dev": 27,
+"corpus:methodology-core": 2,
+"docs/internal": 1,
+"docs/other": 3,
+"mailboxes": 66,
+"corpus:patterns": 1,
+"other": 1
+}
+},
+"methodology-46-PROMOTION-IS-A-RE-VERIFICATION-EVENT.md": {
+"title": "Promotion Is a Re-Verification Event \u2014 The Durable Copy Needs a Named Source",
+"status": "EMERGING.** Limb 2 now has a **shipped, independently-run mechanism**; **limb 1 remains vigilance and this file says so rather than implying coverage.** HOST's hold (*\"I don't want to file it as prose-only\"*) is **discharged**. Numbering and corpus placement remain CIO's.",
+"updated": "",
+"recent": "2026-08-29",
+"count": 269,
+"buckets": {
+"dev": 24,
+"docs/internal": 3,
+"docs/other": 5,
+"mailboxes": 233,
+"docs/briefing": 1,
+"corpus:methodology-core": 1,
+"scripts": 2
+}
+},
+"methodology-27-TYPE-2-DREAMING-ANXIETY-DREAMS.md": {
+"title": "Type 2 Dreaming (Anxiety Dreams) \u2014 Threat-Simulation Memory Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 137,
+"buckets": {
+"dev": 34,
+"docs/other": 8,
+"docs/internal": 4,
+"corpus:patterns": 1,
+"corpus:methodology-core": 1,
+"mailboxes": 89
+}
+},
+"methodology-32-POSTEL-FOR-MEMO-HEADERS.md": {
+"title": "Postel for Memo Headers",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 198,
+"buckets": {
+"dev": 22,
+"docs/briefing": 1,
+"docs/other": 9,
+"docs/internal": 6,
+"corpus:methodology-core": 4,
+"mailboxes": 156
+}
+},
+"methodology-25-WORKSTREAM-REVIEW-CADENCE.md": {
+"title": "Workstream Review Cadence",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 155,
+"buckets": {
+"skills": 1,
+"dev": 35,
+"docs/briefing": 3,
+"docs/other": 15,
+"docs/internal": 6,
+"corpus:patterns": 1,
+"mailboxes": 94
+}
+},
+"methodology-00-EXCELLENCE-FLYWHEEL.md": {
+"title": "The Excellence Flywheel \u2014 Methodology-00",
+"status": "v2.0 \u2014 Three-layer reformulation (Apr 26, 2026)",
+"updated": "",
+"recent": "2026-08-25",
+"count": 146,
+"buckets": {
+"dev": 32,
+"docs/briefing": 8,
+"docs/other": 8,
+"docs/internal": 12,
+"corpus:patterns": 2,
+"corpus:methodology-core": 4,
+"knowledge": 3,
+"mailboxes": 76,
+"scripts": 1
+}
+},
+"methodology-39-AUTONOMY-RELOCATES-THE-BOTTLENECK.md": {
+"title": "Autonomy Relocates the Bottleneck to the Convergence Point",
+"status": "Emerging (filed 2026-06-03; PM-ratification pending on framing). Credit: PM (framing) + PA (the mechanism \u2014 attention-dashboard v0.1).",
+"updated": "",
+"recent": "2026-08-29",
+"count": 123,
+"buckets": {
+"dev": 38,
+"docs/briefing": 1,
+"docs/other": 7,
+"corpus:methodology-core": 2,
+"docs/internal": 4,
+"mailboxes": 71
+}
+},
+"methodology-35-ASYMMETRIC-DISCIPLINE-CREATION-WITHOUT-PAIRED-CLEANUP.md": {
+"title": "Asymmetric Discipline \u2014 Operational Rules with Creation Without Paired Cleanup",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 173,
+"buckets": {
+"skills": 1,
+"dev": 50,
+"docs/briefing": 2,
+"docs/other": 11,
+"corpus:patterns": 1,
+"corpus:methodology-core": 4,
+"docs/internal": 5,
+"mailboxes": 99
+}
+},
+"methodology-38-PDR-ADR-TIER-SEPARATION.md": {
+"title": "Methodology-38: PDR/ADR Tier Separation \u2014 Decision-Rule Altitude vs Architectural-Implementation Altitude",
+"status": "v0.1 \u2014 **Emerging** (Architect-authored; CIO catalog confirmed 2026-06-03)",
+"updated": "Date: 2026-06-03 (cohort discipline matured Apr 27 \u2192 May 20, 2026)",
+"recent": "2026-08-29",
+"count": 208,
+"buckets": {
+"dev": 38,
+"docs/internal": 7,
+"corpus:methodology-core": 1,
+"docs/other": 5,
+"mailboxes": 156,
+"CLAUDE.md": 1
+}
+},
+"methodology-24-BRANCH-OR-ANCHOR.md": {
+"title": "Branch-or-Anchor Discipline",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 274,
+"buckets": {
+"dev": 43,
+"docs/briefing": 3,
+"docs/other": 20,
+"docs/internal": 12,
+"corpus:patterns": 2,
+"corpus:methodology-core": 3,
+"mailboxes": 191
+}
+},
+"methodology-29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION.md": {
+"title": "Pattern Formation via Successful Imitation",
+"status": "",
+"updated": "",
+"recent": "2026-08-24",
+"count": 389,
+"buckets": {
+"dev": 43,
+"docs/briefing": 1,
+"docs/other": 12,
+"docs/internal": 4,
+"corpus:patterns": 3,
+"corpus:methodology-core": 12,
+"mailboxes": 314
+}
+},
+"methodology-34-COHORT-DISCIPLINE-AS-MOAT.md": {
+"title": "Cohort-Discipline as Moat \u2014 Operating Norms the Platform Doesn't Productize",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 359,
+"buckets": {
+"dev": 86,
+"docs/briefing": 1,
+"docs/other": 8,
+"docs/internal": 4,
+"corpus:patterns": 1,
+"corpus:methodology-core": 4,
+"mailboxes": 255
+}
+},
+"methodology-20-OMNIBUS-SESSION-LOGS.md": {
+"title": "Methodology 20: Omnibus Session Log Creation",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 215,
+"buckets": {
+"skills": 1,
+"dev": 106,
+"docs/briefing": 1,
+"docs/other": 76,
+"docs/internal": 2,
+"corpus:methodology-core": 2,
+"mailboxes": 27
+}
+},
+"methodology-31-APPEND-ONLY-AUTONOMOUS-CYCLE-ARCHITECTURE.md": {
+"title": "Append-Only Autonomous-Cycle Architecture",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 410,
+"buckets": {
+"CLAUDE.md": 1,
+"dev": 111,
+"docs/briefing": 1,
+"docs/other": 13,
+"corpus:methodology-core": 8,
+"docs/internal": 4,
+"mailboxes": 269,
+"skills": 2,
+"other": 1
+}
+},
+"methodology-40-LAYER-THEN-MIGRATE.md": {
+"title": "Methodology-40: Layer-Then-Migrate \u2014 Decision Discipline for Retiring Legacy Abstractions Safely",
+"status": "v0.1 \u2014 **Emerging** (Architect-authored 2026-06-09; **CIO catalog confirmed 2026-06-09** \u2014 slot 40 allocated + indexed in INDEX.md; the m-38 precedent honored)",
+"updated": "Date: 2026-06-09 (cohort discipline matured 2026-06-06 \u2192 2026-06-08 across 8 instances)",
+"recent": "2026-08-29",
+"count": 354,
+"buckets": {
+"dev": 80,
+"docs/internal": 10,
+"corpus:methodology-core": 3,
+"mailboxes": 219,
+"other": 7,
+"docs/other": 8,
+"scripts": 1,
+"code": 26
+}
+},
+"gameplan-template.md": {
+"title": "Gameplan Template v9.3 - Complete Phase Documentation",
+"status": "",
+"updated": "Last Updated: January 10, 2026",
+"recent": "2026-08-24",
+"count": 251,
+"buckets": {
+"dev": 182,
+"docs/other": 8,
+"mailboxes": 34,
+"skills": 1,
+"corpus:patterns": 1,
+"docs/internal": 5,
+"corpus:methodology-core": 4,
+"knowledge": 14,
+"scripts": 2
+}
+},
+"methodology-43-NAME-THE-LAYER.md": {
+"title": "Name the Layer \u2014 We Verify the Proxy Nearest to Hand, Not the Claim",
+"status": "Emerging (5 instances in one day across 2 roles \u2014 clears the methodology-29 formation threshold; Proven awaits evidence that naming it reduces recurrence)",
+"updated": "",
+"recent": "2026-08-29",
+"count": 391,
+"buckets": {
+"CLAUDE.md": 1,
+"dev": 102,
+"corpus:methodology-core": 5,
+"docs/other": 13,
+"mailboxes": 182,
+"scripts": 7,
+"skills": 1,
+"docs/briefing": 2,
+"docs/internal": 16,
+"code": 61,
+"ARCHIVE": 1
+}
+},
+"methodology-41-MECHANISM-DISPLACES-UNREFERENCED-DISCIPLINE.md": {
+"title": "Mechanism Displaces Unreferenced Discipline",
+"status": "PROVEN** (2026-06-12 \u2014 the second structurally-different instance landed: the migration carry-forward variant-preservation trap; Architect concurred 3/3; PM ratified pending concur). Filed Emerging 2026-06-09; promotion gate (a structurally-different second instance) met in 3 days.",
+"updated": "",
+"recent": "2026-08-29",
+"count": 468,
+"buckets": {
+"skills": 2,
+"dev": 116,
+"docs/briefing": 3,
+"docs/internal": 14,
+"corpus:methodology-core": 5,
+"docs/other": 19,
+"mailboxes": 300,
+"corpus:patterns": 1,
+"other": 1,
+"scripts": 1,
+"code": 6
+}
+},
+"methodology-36-DERIVED-VIEWS-OVER-HAND-MAINTAINED-TRACKERS.md": {
+"title": "Mechanism Beats Vigilance \u2014 Promote Recurring Vigilance-Disciplines to Mechanisms",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 500,
+"buckets": {
+"dev": 114,
+"docs/other": 31,
+"docs/internal": 11,
+"corpus:patterns": 1,
+"corpus:methodology-core": 11,
+"mailboxes": 318,
+"scripts": 3,
+"skills": 1,
+"docs/briefing": 10
+}
+},
+"methodology-30-CONSUMER-TRACE-VERIFICATION.md": {
+"title": "Consumer-Trace Verification",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 647,
+"buckets": {
+"other": 1,
+"dev": 121,
+"docs/briefing": 1,
+"docs/other": 27,
+"docs/internal": 17,
+"corpus:patterns": 1,
+"corpus:methodology-core": 9,
+"mailboxes": 469,
+"code": 1
+}
+},
+"methodology-44-CLEAR-IS-NOT-A-MEASUREMENT.md": {
+"title": "\"Clear\" Is Not a Measurement \u2014 An Instrument Must Assert What It Looked At",
+"status": "Emerging \u2192 strong. **Eleven instances in 96 hours across four roles and two projects** *(count unaffected by the 2026-07-31 boundary ruling \u2014 see the three-routes section below, including a correction to how that ruling was first written here)*, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** \u2014 as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.",
+"updated": "",
+"recent": "2026-08-29",
+"count": 962,
+"buckets": {
+"skills": 2,
+"CLAUDE.md": 1,
+"dev": 140,
+"docs/other": 23,
+"corpus:methodology-core": 5,
+"docs/internal": 21,
+"mailboxes": 700,
+"scripts": 15,
+"other": 3,
+"docs/briefing": 3,
+"code": 49
+}
+},
+"pattern-019-llm-placeholder-instruction.md": {
+"title": "Pattern-019: LLM Placeholder Instruction Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-05-09",
+"count": 4,
+"buckets": {
+"dev": 3,
+"corpus:patterns": 1
+}
+},
+"proposals/pattern-family-index-proposal.md": {
+"title": "Proposal: Pattern Family Index Format",
+"status": "",
+"updated": "Date: February 5, 2026",
+"recent": "2026-02-05",
+"count": 4,
+"buckets": {
+"dev": 2,
+"docs/other": 1,
+"mailboxes": 1
+}
+},
+"pattern-015-internal-task-handler.md": {
+"title": "Pattern-015: Internal Task Handler Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-03-30",
+"count": 6,
+"buckets": {
+"dev": 4,
+"corpus:patterns": 2
+}
+},
+"pattern-016-repository-context-enrichment.md": {
+"title": "Pattern-016: Repository Context Enrichment Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-02-03",
+"count": 6,
+"buckets": {
+"dev": 4,
+"corpus:patterns": 1,
+"docs/internal": 1
+}
+},
+"pattern-058-ownership-graph-navigation.md": {
+"title": "Pattern-058: Ownership Graph Navigation",
+"status": "",
+"updated": "",
+"recent": "2026-06-12",
+"count": 6,
+"buckets": {
+"dev": 4,
+"docs/internal": 2
+}
+},
+"pattern-018-configuration-access.md": {
+"title": "Pattern-018: Configuration Access Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-05-09",
+"count": 7,
+"buckets": {
+"dev": 3,
+"corpus:patterns": 4
+}
+},
+"pattern-057-grammar-driven-classification.md": {
+"title": "Pattern-057: Grammar-Driven Classification",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 8,
+"buckets": {
+"dev": 4,
+"docs/internal": 3,
+"corpus:patterns": 1
+}
+},
+"pattern-023-query-layer-patterns.md": {
+"title": "Pattern-023: Query Layer Patterns",
+"status": "",
+"updated": "",
+"recent": "2026-05-09",
+"count": 9,
+"buckets": {
+"dev": 6,
+"corpus:patterns": 2,
+"docs/internal": 1
+}
+},
+"pattern-025-canonical-query-extension.md": {
+"title": "Pattern-025: Canonical Query Extension Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-05-09",
+"count": 9,
+"buckets": {
+"dev": 7,
+"corpus:patterns": 2
+}
+},
+"pattern-056-consciousness-attribute-layering.md": {
+"title": "Pattern-056: Consciousness Attribute Layering",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 9,
+"buckets": {
+"dev": 4,
+"docs/internal": 3,
+"corpus:patterns": 2
+}
+},
+"pattern-027-cli-integration.md": {
+"title": "Pattern-027: CLI Integration Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-06-11",
+"count": 20,
+"buckets": {
+"dev": 6,
+"docs/internal": 2,
+"docs/other": 1,
+"mailboxes": 11
+}
+},
+"pattern-013-session-management.md": {
+"title": "Pattern-013: Database Session Management Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 11,
+"buckets": {
+"dev": 6,
+"corpus:patterns": 5
+}
+},
+"pattern-022-mcp-spatial-intelligence-integration.md": {
+"title": "Pattern-022: MCP+Spatial Intelligence Integration Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-07-30",
+"count": 11,
+"buckets": {
+"dev": 6,
+"docs/internal": 1,
+"corpus:patterns": 3,
+"docs/other": 1
+}
+},
+"pattern-026-cross-feature-learning.md": {
+"title": "Pattern-026: Cross-Feature Learning Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-02-03",
+"count": 12,
+"buckets": {
+"dev": 10,
+"docs/internal": 2
+}
+},
+"pattern-055-multi-intent-decomposition.md": {
+"title": "Pattern-055: Multi-Intent Decomposition",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 22,
+"buckets": {
+"dev": 6,
+"docs/internal": 4,
+"corpus:patterns": 1,
+"mailboxes": 11
+}
+},
+"pattern-005-transaction-management.md": {
+"title": "Pattern-005: Transaction Management Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-05-09",
+"count": 13,
+"buckets": {
+"dev": 8,
+"corpus:patterns": 4,
+"docs/internal": 1
+}
+},
+"pattern-014-error-handling-api-contract.md": {
+"title": "Pattern-014: Error Handling Pattern (API Contract)",
+"status": "",
+"updated": "",
+"recent": "2026-02-03",
+"count": 13,
+"buckets": {
+"dev": 8,
+"corpus:patterns": 5
+}
+},
+"pattern-004-cqrs-lite.md": {
+"title": "Pattern-004: CQRS-lite Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-02-03",
+"count": 14,
+"buckets": {
+"dev": 8,
+"corpus:patterns": 6
+}
+},
+"PATTERN-FAMILIES.md": {
+"title": "Pattern Family Index",
+"status": "",
+"updated": "",
+"recent": "2026-08-24",
+"count": 16,
+"buckets": {
+"skills": 3,
+"dev": 7,
+"docs/other": 2,
+"corpus:patterns": 1,
+"mailboxes": 3
+}
+},
+"pattern-024-methodology-patterns.md": {
+"title": "Pattern-024: Methodology Patterns",
+"status": "",
+"updated": "",
+"recent": "2026-08-03",
+"count": 27,
+"buckets": {
+"dev": 10,
+"corpus:patterns": 1,
+"docs/internal": 3,
+"docs/other": 2,
+"mailboxes": 11
+}
+},
+"pattern-035-mcp-adapter-methods.md": {
+"title": "Pattern-035: MCP Integration Router with Adapter Methods",
+"status": "",
+"updated": "",
+"recent": "2026-07-29",
+"count": 17,
+"buckets": {
+"dev": 12,
+"docs/internal": 1,
+"corpus:methodology-core": 1,
+"docs/other": 2,
+"scripts": 1
+}
+},
+"pattern-003-factory.md": {
+"title": "Pattern-003: Factory Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-03-03",
+"count": 18,
+"buckets": {
+"dev": 8,
+"corpus:patterns": 9,
+"docs/internal": 1
+}
+},
+"pattern-009-github-issue-tracking.md": {
+"title": "Pattern-009: GitHub Issue Tracking Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 18,
+"buckets": {
+"dev": 12,
+"corpus:patterns": 5,
+"docs/internal": 1
+}
+},
+"grammar-application-patterns.md": {
+"title": "Grammar Application Patterns",
+"status": "",
+"updated": "Date: January 20, 2026",
+"recent": "2026-08-24",
+"count": 20,
+"buckets": {
+"dev": 15,
+"docs/other": 2,
+"docs/internal": 3
+}
+},
+"pattern-011-context-resolution.md": {
+"title": "Pattern-011: Context Resolution Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-05-09",
+"count": 20,
+"buckets": {
+"dev": 11,
+"corpus:patterns": 2,
+"docs/internal": 4,
+"mailboxes": 3
+}
+},
+"pattern-040-integration-swappability-guide.md": {
+"title": "Pattern-040: Integration Swappability Guide",
+"status": "",
+"updated": "",
+"recent": "2026-05-09",
+"count": 30,
+"buckets": {
+"dev": 12,
+"docs/internal": 5,
+"docs/other": 2,
+"mailboxes": 11
+}
+},
+"pattern-017-background-task-error-handling.md": {
+"title": "Pattern-017: Background Task Error Handling Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 21,
+"buckets": {
+"dev": 12,
+"corpus:patterns": 8,
+"docs/internal": 1
+}
+},
+"pattern-039-feature-prioritization-scorecard.md": {
+"title": "Pattern-039: Feature Prioritization Scorecard",
+"status": "",
+"updated": "",
+"recent": "2026-05-09",
+"count": 31,
+"buckets": {
+"dev": 15,
+"docs/internal": 3,
+"docs/other": 2,
+"mailboxes": 11
+}
+},
+"pattern-048-periodic-background-job.md": {
+"title": "Pattern-048: Periodic Background Job",
+"status": "Proven",
+"updated": "",
+"recent": "2026-08-18",
+"count": 31,
+"buckets": {
+"dev": 15,
+"docs/internal": 2,
+"docs/other": 1,
+"mailboxes": 11,
+"code": 2
+}
+},
+"pattern-033-notion-publishing.md": {
+"title": "Pattern-033: Notion Publishing",
+"status": "",
+"updated": "",
+"recent": "2026-08-13",
+"count": 22,
+"buckets": {
+"dev": 15,
+"docs/other": 2,
+"knowledge": 3,
+"mailboxes": 2
+}
+},
+"pattern-036-signal-convergence.md": {
+"title": "Pattern-036: Signal Convergence for Breakthrough Detection",
+"status": "Active",
+"updated": "Created: 2025-11-04",
+"recent": "2026-05-09",
+"count": 32,
+"buckets": {
+"dev": 17,
+"corpus:patterns": 3,
+"docs/internal": 1,
+"mailboxes": 11
+}
+},
+"pattern-037-cross-context-validation.md": {
+"title": "Pattern-037: Cross-Context Validation",
+"status": "Active",
+"updated": "Created: 2025-11-04",
+"recent": "2026-05-28",
+"count": 32,
+"buckets": {
+"dev": 14,
+"corpus:patterns": 6,
+"docs/internal": 1,
+"mailboxes": 11
+}
+},
+"pattern-043-defense-in-depth-prevention.md": {
+"title": "Pattern-043: Defense-in-Depth Prevention",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 32,
+"buckets": {
+"dev": 16,
+"corpus:patterns": 4,
+"docs/internal": 1,
+"mailboxes": 11
+}
+},
+"pattern-038-temporal-clustering.md": {
+"title": "Pattern-038: Temporal Clustering for Coordination Analysis",
+"status": "Active",
+"updated": "Created: 2025-11-04",
+"recent": "2026-05-09",
+"count": 33,
+"buckets": {
+"dev": 18,
+"corpus:patterns": 2,
+"docs/internal": 2,
+"mailboxes": 11
+}
+},
+"pattern-044-mcp-skill-testing.md": {
+"title": "MCP Skill Testing Pattern",
+"status": "Established",
+"updated": "Date: November 22, 2025",
+"recent": "2026-05-09",
+"count": 33,
+"buckets": {
+"dev": 15,
+"docs/internal": 2,
+"docs/other": 5,
+"mailboxes": 11
+}
+},
+"pattern-010-cross-validation-protocol.md": {
+"title": "Pattern-010: Cross-Validation Protocol Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-06-11",
+"count": 24,
+"buckets": {
+"dev": 14,
+"corpus:patterns": 8,
+"docs/internal": 2
+}
+},
+"pattern-030-plugin-interface.md": {
+"title": "Pattern-030: Plugin Interface",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 27,
+"buckets": {
+"dev": 21,
+"docs/internal": 2,
+"corpus:patterns": 2,
+"docs/other": 1,
+"knowledge": 1
+}
+},
+"pattern-002-service.md": {
+"title": "Pattern-002: Service Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 28,
+"buckets": {
+"dev": 10,
+"corpus:patterns": 16,
+"docs/internal": 2
+}
+},
+"pattern-041-systematic-fix-planning.md": {
+"title": "Pattern-041: Systematic Fix Planning",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 40,
+"buckets": {
+"dev": 15,
+"corpus:patterns": 4,
+"docs/internal": 3,
+"mailboxes": 18
+}
+},
+"pattern-020-spatial-metaphor-integration.md": {
+"title": "Pattern-020: Spatial Metaphor Integration Pattern (PM-074)",
+"status": "",
+"updated": "",
+"recent": "2026-02-03",
+"count": 29,
+"buckets": {
+"dev": 17,
+"docs/internal": 3,
+"docs/other": 9
+}
+},
+"pattern-061-human-ai-collaboration-referee.md": {
+"title": "Pattern-061: Human-AI Collaboration Referee",
+"status": "",
+"updated": "",
+"recent": "2026-08-17",
+"count": 34,
+"buckets": {
+"dev": 15,
+"docs/briefing": 1,
+"corpus:methodology-core": 2,
+"docs/internal": 1,
+"docs/other": 5,
+"mailboxes": 10
+}
+},
+"pattern-065-continuity-memo-before-the-seam.md": {
+"title": "Pattern-065: Continuity Memo Before the Seam",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 61,
+"buckets": {
+"dev": 14,
+"docs/briefing": 1,
+"docs/other": 4,
+"corpus:patterns": 1,
+"docs/internal": 4,
+"mailboxes": 37
+}
+},
+"pattern-021-development-session-management.md": {
+"title": "Pattern-021: Development Session Management Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-06-15",
+"count": 31,
+"buckets": {
+"dev": 19,
+"docs/briefing": 1,
+"corpus:patterns": 7,
+"docs/internal": 2,
+"docs/other": 2
+}
+},
+"pattern-028-intent-classification.md": {
+"title": "Pattern-028: Intent Classification",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 31,
+"buckets": {
+"dev": 22,
+"docs/internal": 2,
+"corpus:patterns": 5,
+"docs/other": 2
+}
+},
+"pattern-042-investigation-only-protocol.md": {
+"title": "Pattern-042: Investigation-Only Protocol",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 42,
+"buckets": {
+"dev": 18,
+"corpus:patterns": 6,
+"docs/internal": 3,
+"mailboxes": 15
+}
+},
+"pattern-000-template.md": {
+"title": "Pattern-000: Template for Pattern Documentation",
+"status": "",
+"updated": "",
+"recent": "2026-08-10",
+"count": 33,
+"buckets": {
+"dev": 23,
+"docs/other": 3,
+"knowledge": 3,
+"mailboxes": 3,
+"scripts": 1
+}
+},
+"pattern-001-repository.md": {
+"title": "Pattern-001: Repository Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-07-28",
+"count": 44,
+"buckets": {
+"dev": 18,
+"corpus:patterns": 10,
+"docs/internal": 2,
+"docs/other": 1,
+"mailboxes": 13
+}
+},
+"pattern-066-stacked-silent-failures.md": {
+"title": "Pattern-066: Stacked Silent Failures",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 84,
+"buckets": {
+"dev": 14,
+"docs/other": 6,
+"corpus:patterns": 3,
+"docs/internal": 4,
+"mailboxes": 57
+}
+},
+"PROTO-PATTERNS.md": {
+"title": "Proto-Pattern Tracking",
+"status": "",
+"updated": "",
+"recent": "2026-07-30",
+"count": 51,
+"buckets": {
+"dev": 20,
+"corpus:patterns": 2,
+"docs/internal": 3,
+"docs/other": 6,
+"mailboxes": 20
+}
+},
+"pattern-006-verification-first.md": {
+"title": "Pattern-006: Verification-First Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 38,
+"buckets": {
+"dev": 23,
+"corpus:patterns": 13,
+"docs/internal": 1,
+"mailboxes": 1
+}
+},
+"pattern-052-personality-bridge.md": {
+"title": "Pattern-052: Personality Bridge",
+"status": "Proven",
+"updated": "",
+"recent": "2026-08-24",
+"count": 40,
+"buckets": {
+"dev": 23,
+"docs/other": 2,
+"docs/internal": 6,
+"corpus:patterns": 6,
+"code": 3
+}
+},
+"pattern-051-parallel-place-gathering.md": {
+"title": "Pattern-051: Parallel Place Gathering",
+"status": "Proven",
+"updated": "",
+"recent": "2026-08-24",
+"count": 51,
+"buckets": {
+"dev": 22,
+"docs/other": 5,
+"docs/internal": 7,
+"corpus:patterns": 4,
+"mailboxes": 11,
+"code": 2
+}
+},
+"pattern-031-plugin-wrapper.md": {
+"title": "Plugin Wrapper Pattern",
+"status": "Active",
+"updated": "Last Updated: October 4, 2025",
+"recent": "2026-08-24",
+"count": 68,
+"buckets": {
+"dev": 26,
+"docs/other": 4,
+"docs/internal": 3,
+"corpus:patterns": 2,
+"mailboxes": 32,
+"code": 1
+}
+},
+"pattern-060-cascade-investigation.md": {
+"title": "Pattern-060: Cascade Investigation",
+"status": "",
+"updated": "",
+"recent": "2026-08-10",
+"count": 54,
+"buckets": {
+"dev": 24,
+"corpus:patterns": 2,
+"docs/internal": 2,
+"docs/other": 7,
+"mailboxes": 19
+}
+},
+"pattern-007-async-error-handling.md": {
+"title": "Pattern-007: Async Error Handling Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-08-28",
+"count": 45,
+"buckets": {
+"dev": 24,
+"docs/internal": 1,
+"corpus:patterns": 11,
+"docs/other": 4,
+"code": 5
+}
+},
+"pattern-053-warmth-calibration.md": {
+"title": "Pattern-053: Warmth Calibration",
+"status": "Proven",
+"updated": "",
+"recent": "2026-08-24",
+"count": 55,
+"buckets": {
+"dev": 26,
+"docs/other": 1,
+"docs/internal": 11,
+"corpus:patterns": 5,
+"mailboxes": 11,
+"code": 1
+}
+},
+"pattern-069-coarse-triggers-false-positive-triage-cost.md": {
+"title": "Pattern-069: Coarse Triggers Causing False-Positive Triage Cost",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 89,
+"buckets": {
+".claude-other": 1,
+"dev": 17,
+"docs/briefing": 1,
+"docs/other": 7,
+"corpus:methodology-core": 2,
+"docs/internal": 5,
+"mailboxes": 56
+}
+},
+"pattern-008-ddd-service-layer.md": {
+"title": "Pattern-008: DDD Service Layer Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 49,
+"buckets": {
+"dev": 35,
+"docs/internal": 1,
+"corpus:patterns": 9,
+"docs/other": 2,
+"mailboxes": 2
+}
+},
+"pattern-059-leadership-caucus.md": {
+"title": "Pattern-059: Leadership Caucus",
+"status": "",
+"updated": "",
+"recent": "2026-06-17",
+"count": 61,
+"buckets": {
+"dev": 23,
+"corpus:patterns": 3,
+"docs/internal": 2,
+"docs/other": 9,
+"mailboxes": 24
+}
+},
+"pattern-054-honest-failure.md": {
+"title": "Pattern-054: Honest Failure with Suggestion",
+"status": "Proven",
+"updated": "",
+"recent": "2026-08-24",
+"count": 62,
+"buckets": {
+"dev": 32,
+"docs/other": 3,
+"docs/internal": 9,
+"corpus:patterns": 5,
+"mailboxes": 11,
+"code": 2
+}
+},
+"pattern-032-intent-pattern-catalog.md": {
+"title": "Pattern-032: Intent Pattern Catalog",
+"status": "",
+"updated": "",
+"recent": "2026-08-13",
+"count": 53,
+"buckets": {
+"dev": 41,
+"docs/other": 3,
+"docs/internal": 5,
+"corpus:patterns": 2,
+"mailboxes": 2
+}
+},
+"pattern-074-visibility-loss-after-premature-retirement.md": {
+"title": "Pattern-074: Visibility Loss After Premature Retirement",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 78,
+"buckets": {
+".claude-other": 1,
+"dev": 27,
+"docs/other": 8,
+"corpus:methodology-core": 1,
+"docs/internal": 3,
+"mailboxes": 37,
+"scripts": 1
+}
+},
+"pattern-047-time-lord-alert.md": {
+"title": "Pattern-047: Time Lord Alert",
+"status": "Established",
+"updated": "",
+"recent": "2026-08-27",
+"count": 68,
+"buckets": {
+"skills": 1,
+"CLAUDE.md": 1,
+"dev": 37,
+"docs/agent-protocols": 2,
+"docs/briefing": 1,
+"docs/internal": 7,
+"corpus:patterns": 4,
+"docs/other": 4,
+"mailboxes": 11
+}
+},
+"pattern-050-context-dataclass-pair.md": {
+"title": "Pattern-050: Context Dataclass Pair",
+"status": "Proven",
+"updated": "",
+"recent": "2026-08-24",
+"count": 68,
+"buckets": {
+"dev": 38,
+"docs/other": 3,
+"docs/internal": 8,
+"corpus:patterns": 5,
+"mailboxes": 11,
+"code": 3
+}
+},
+"pattern-012-llm-adapter.md": {
+"title": "Pattern-012: LLM Adapter Pattern",
+"status": "",
+"updated": "",
+"recent": "2026-07-16",
+"count": 71,
+"buckets": {
+"dev": 40,
+"docs/other": 8,
+"corpus:patterns": 3,
+"docs/internal": 3,
+"other": 1,
+"mailboxes": 16
+}
+},
+"META-PATTERNS.md": {
+"title": "Meta-Patterns",
+"status": "Established",
+"updated": "Created: December 27, 2025 (Pattern Sweep 2.0)",
+"recent": "2026-06-17",
+"count": 69,
+"buckets": {
+"other": 2,
+"dev": 36,
+"docs/internal": 4,
+"corpus:patterns": 2,
+"docs/other": 11,
+"mailboxes": 13,
+"scripts": 1
+}
+},
+"pattern-029-multi-agent-coordination.md": {
+"title": "Pattern-029: Multi-Agent Coordination",
+"status": "",
+"updated": "",
+"recent": "2026-08-12",
+"count": 73,
+"buckets": {
+"dev": 31,
+"docs/briefing": 1,
+"docs/internal": 6,
+"corpus:patterns": 8,
+"corpus:methodology-core": 2,
+"docs/other": 4,
+"mailboxes": 21
+}
+},
+"pattern-071-audit-logs-as-attack-surface.md": {
+"title": "Pattern-071: Audit Logs as Attack Surface",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 158,
+"buckets": {
+"dev": 19,
+"docs/briefing": 1,
+"docs/internal": 9,
+"corpus:patterns": 1,
+"docs/other": 6,
+"mailboxes": 118,
+"code": 3,
+"other": 1
+}
+},
+"pattern-034-error-handling-standards.md": {
+"title": "Error Handling Standards",
+"status": "\u2705 Active",
+"updated": "",
+"recent": "2026-08-13",
+"count": 74,
+"buckets": {
+"dev": 49,
+"corpus:patterns": 1,
+"docs/internal": 2,
+"docs/other": 7,
+"mailboxes": 11,
+"code": 4
+}
+},
+"pattern-046-beads-completion-discipline.md": {
+"title": "Pattern-046: Beads Completion Discipline",
+"status": "Established",
+"updated": "",
+"recent": "2026-08-29",
+"count": 94,
+"buckets": {
+".claude-other": 1,
+"skills": 3,
+"other": 1,
+"CLAUDE.md": 1,
+"dev": 44,
+"docs/agent-protocols": 2,
+"docs/briefing": 1,
+"docs/internal": 8,
+"corpus:patterns": 8,
+"docs/other": 10,
+"mailboxes": 15
+}
+},
+"pattern-068-silent-state-mutation-shared-working-tree.md": {
+"title": "Pattern-068: Silent State Mutation in Shared Working Tree",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 242,
+"buckets": {
+".claude-other": 1,
+"dev": 36,
+"docs/other": 13,
+"docs/internal": 7,
+"corpus:patterns": 1,
+"corpus:methodology-core": 5,
+"mailboxes": 179
+}
+},
+"pattern-070-cleanup-job-with-cancellation-hygiene.md": {
+"title": "Pattern-070: Cleanup-Job-with-Cancellation-Hygiene",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 317,
+"buckets": {
+"dev": 44,
+"docs/other": 9,
+"docs/internal": 8,
+"corpus:patterns": 1,
+"corpus:methodology-core": 5,
+"mailboxes": 250
+}
+},
+"pattern-049-audit-cascade.md": {
+"title": "Pattern-049: Audit Cascade",
+"status": "",
+"updated": "",
+"recent": "2026-08-25",
+"count": 150,
+"buckets": {
+"skills": 3,
+"dev": 61,
+"docs/briefing": 1,
+"docs/internal": 4,
+"corpus:patterns": 9,
+"corpus:methodology-core": 1,
+"docs/other": 35,
+"knowledge": 1,
+"mailboxes": 35
+}
+},
+"pattern-067-issue-body-reality-mismatch.md": {
+"title": "Pattern-067: Issue-Body Reality Mismatch",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 285,
+"buckets": {
+"dev": 51,
+"docs/briefing": 1,
+"docs/other": 18,
+"corpus:patterns": 2,
+"corpus:methodology-core": 3,
+"docs/internal": 5,
+"mailboxes": 204,
+"code": 1
+}
+},
+"pattern-072-registries-that-grow-into-architectural-shapes.md": {
+"title": "Pattern-072: Registries that Grow into Architectural Shapes",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 274,
+"buckets": {
+"dev": 42,
+"docs/briefing": 2,
+"docs/other": 8,
+"docs/internal": 15,
+"corpus:patterns": 2,
+"corpus:methodology-core": 4,
+"mailboxes": 194,
+"code": 7
+}
+},
+"pattern-063-parallel-authoring-drift.md": {
+"title": "Pattern-063: Parallel-Authoring Drift",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 541,
+"buckets": {
+"dev": 83,
+"docs/briefing": 2,
+"docs/other": 27,
+"docs/internal": 12,
+"corpus:patterns": 5,
+"corpus:methodology-core": 4,
+"mailboxes": 407,
+"code": 1
+}
+},
+"pattern-064-extension-without-integration.md": {
+"title": "Pattern-064: Extension Without Integration",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 641,
+"buckets": {
+"skills": 1,
+"dev": 80,
+"docs/briefing": 3,
+"docs/other": 23,
+"docs/internal": 17,
+"corpus:patterns": 6,
+"corpus:methodology-core": 2,
+"mailboxes": 508,
+"code": 1
+}
+},
+"pattern-062-assembly-assumption.md": {
+"title": "Pattern-062: Assembly Assumption",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 454,
+"buckets": {
+"skills": 1,
+"other": 1,
+"dev": 144,
+"docs/briefing": 7,
+"docs/other": 56,
+"docs/internal": 10,
+"corpus:patterns": 6,
+"corpus:methodology-core": 4,
+"mailboxes": 225
+}
+},
+"pattern-045-green-tests-red-user.md": {
+"title": "Pattern-045: Green Tests, Red User",
+"status": "Established",
+"updated": "Date: December 25, 2025",
+"recent": "2026-08-29",
+"count": 615,
+"buckets": {
+"skills": 3,
+"other": 3,
+"CLAUDE.md": 1,
+"dev": 198,
+"docs/agent-protocols": 2,
+"docs/briefing": 5,
+"docs/other": 56,
+"docs/internal": 19,
+"corpus:patterns": 14,
+"corpus:methodology-core": 3,
+"mailboxes": 302,
+"code": 9
+}
+},
+"pattern-073-documentation-asserted-behavior-drift.md": {
+"title": "Pattern-073: Documentation-Asserted-Behavior Drift",
+"status": "",
+"updated": "",
+"recent": "2026-08-29",
+"count": 789,
+"buckets": {
+"dev": 165,
+"docs/briefing": 2,
+"docs/other": 34,
+"docs/internal": 17,
+"corpus:patterns": 1,
+"corpus:methodology-core": 9,
+"mailboxes": 528,
+"code": 32,
+"other": 1
+}
+}
+}
