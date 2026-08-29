@@ -1,9 +1,14 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-29 ~10:5x PDT (Fire 2 — 33h-gap thread: 2 of 3 dialog-hit seats now refute
-PM's mid-task hypothesis, holding the 08-28 omnibus's open-discrepancy note for CIO's data point)
+**Updated**: 2026-08-29 ~11:2x PDT ("The Orphan Migration" published, fact-checked clean,
+live-verified)
 **Session log**: `dev/2026/08/29/2026-08-29-0727-docs-code-log.md` (open).
 **Cron**: `5e2279de`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-04.
+
+**"The Orphan Migration" published**: https://pipermorgan.ai/blog/the-orphan-migration — every
+load-bearing technical claim independently fact-checked against the 06-17 Lead Dev log, all exact
+matches, no defects found. Live-verified (initial 404 was deploy lag, confirmed data was correct
+on `origin/main` first). Fully closed, nothing further owed.
 
 **Watch item: the 33h-gap discrepancy I preserved in the 08-28 omnibus is resolving in real time.**
 PM clarified Arch/CIO/HOST hit a blocking rate-limit dialog (no auto-resolve, explains the extra
