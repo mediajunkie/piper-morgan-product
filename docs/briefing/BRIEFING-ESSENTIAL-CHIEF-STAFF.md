@@ -239,7 +239,7 @@ Request additional detail for:
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 - **Open items tracker**: `dev/active/exec-open-items-tracker.md` (living document, updated every exec session)
 - **Roadmap**: `docs/internal/planning/roadmap/roadmap.md` (v15.0)
-- **Pattern catalog**: `docs/internal/architecture/current/patterns/`
+- **Pattern catalog**: `docs/internal/architecture/patterns/`
 - **Omnibus logs**: `docs/omnibus-logs/` (daily synthesis)
 - **Session logs**: `dev/YYYY/MM/DD/` (raw execution evidence)
 - **Mailbox discipline + per-memo commit-and-push**: `CLAUDE.md` "Mailbox Discipline" section

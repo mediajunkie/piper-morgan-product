@@ -183,7 +183,7 @@ labels: documentation, audit
 ### Checklist
 
 **🔗 Link Integrity (Priority)** - Added Feb 2026 per Ted Nadeau feedback
-- [ ] ADR link audit: Check all `docs/internal/architecture/current/adrs/adr-*.md` for broken internal refs
+- [ ] ADR link audit: Check all `docs/internal/architecture/adrs/adr-*.md` for broken internal refs
 - [ ] Pattern link audit: Check `pattern-*.md` for broken cross-references
 - [ ] Briefing link audit: Check `docs/briefing/*.md` and `knowledge/BRIEFING-*.md`
 - [ ] Document broken links found with file:line format

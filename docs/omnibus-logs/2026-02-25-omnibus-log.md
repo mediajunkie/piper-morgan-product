@@ -289,7 +289,7 @@ Updated `.claude/settings.json` and CLAUDE.md fallback docs.
 | Document | Purpose |
 |----------|---------|
 | `docs/omnibus-logs/2026-02-24-omnibus-log.md` | Omnibus #263 |
-| `docs/internal/architecture/current/patterns/pattern-061-human-ai-collaboration-referee.md` | Elevated pattern |
+| `docs/internal/architecture/patterns/pattern-061-human-ai-collaboration-referee.md` | Elevated pattern |
 | `docs/internal/development/case-studies/` | New location for case studies |
 | `docs/internal/archive/piper-education-2025/` | Archived piper-education content |
 | `weekly-ship-template-v4.1.md` | Template fix (PM to add to knowledge) |

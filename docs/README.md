@@ -60,8 +60,8 @@ LLM: Claude (Anthropic)
 ```
 
 **Key docs** (working corpus — on GitHub, not this site):
-- [Architecture Decision Records](https://github.com/mediajunkie/piper-morgan-product/tree/main/docs/internal/architecture/current/adrs) — every architectural decision with rationale
-- [Patterns catalog](https://github.com/mediajunkie/piper-morgan-product/tree/main/docs/internal/architecture/current/patterns) — reusable implementation patterns
+- [Architecture Decision Records](https://github.com/mediajunkie/piper-morgan-product/tree/main/docs/internal/architecture/adrs) — every architectural decision with rationale
+- [Patterns catalog](https://github.com/mediajunkie/piper-morgan-product/tree/main/docs/internal/architecture/patterns) — reusable implementation patterns
 - [BRIEFING-CURRENT-STATE.md](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/briefing/BRIEFING-CURRENT-STATE.md) — live sprint status (agents: read this first)
 
 ---
@@ -96,7 +96,7 @@ The working corpus lives in [the repository](https://github.com/mediajunkie/pipe
 | What | Where |
 |---|---|
 | Agent briefings + role assignments | `docs/briefing/` |
-| Architecture decisions (ADRs) | `docs/internal/architecture/current/adrs/` |
+| Architecture decisions (ADRs) | `docs/internal/architecture/adrs/` |
 | Product decisions (PDRs) | `docs/internal/product/pdr/` |
 | Methodology + process docs | `docs/internal/development/methodology-core/` |
 | Active session logs | `dev/YYYY/MM/DD/` |

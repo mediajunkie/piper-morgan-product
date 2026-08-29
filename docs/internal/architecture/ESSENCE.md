@@ -63,10 +63,12 @@ else.
 ## What it does today, on which surface (dated snapshot — 2026-08-29)
 
 - **Live surface**: the web-chat app (alpha, ~11 testers + PM), in **explicit maintenance mode**
-  as of 2026-08-29 — bugs fixed, nothing new built. It classifies intents (legacy chain, 100% of
-  traffic; Inversion flip staged and ratified), files/updates GitHub issues via a real MCP
-  consumer path, manages todos/reminders (consent-gated), generates the standup, ingests and
-  answers questions about documents, and holds the conversational floor with the honesty rails.
+  as of 2026-08-29 — bugs fixed, nothing new built. It classifies intents (legacy chain carries
+  observed traffic; flip-1 live for `read_status` since 08-21 via deployment secrets, unexercised
+  to date; full staged flip ratified and sequenced by Lead into PM's next watched round),
+  files/updates GitHub issues via a real MCP consumer path, manages todos/reminders
+  (consent-gated), generates the standup, ingests and answers questions about documents, and holds
+  the conversational floor with the honesty rails.
 - **Build surface**: the hosted MCP path (`mcp.pipermorgan.ai`, PDR-006) — where all new effort
   goes, in roughly the clean-room agent's increment order: cold-start reflection first.
 - **Connectors, honestly stated**: GitHub — real MCP, load-bearing. Calendar — live via Google SDK
@@ -91,7 +93,8 @@ Every module, doc, and capability in the repo is exactly one of these, with the 
 ## What Piper Morgan is NOT (the boundary, stated so it can't drift)
 
 Not an **agent harness** (that's a commodity knife-fight against the platform vendors' own
-products — the field's evidence and Dialog's lived experience both say so). Not a **destination
+products — both the field's evidence and the lived experience of solo builders currently in
+exactly that fight say so). Not a **destination
 UI** (the structurally doomed shape in the copilot category). Not a **platform or marketplace**
 (Era 2 bought that vision on unverified claims; July deleted its remains). Not **enterprise
 multi-tenant SaaS** — unless and until a Bet Memo with a named buyer says otherwise. The
@@ -101,7 +104,11 @@ scope-bet gate governs all *becoming*; this document governs all *being*.
 
 - The classifier stays stateless (ADR-078 D4); state resolves before or beside the call, never by
   injecting history.
-- Both routers feed one rail; consent evaluates the entry's EffectClass, never the router.
+- Every intent-understanding mechanism feeds one dispatch rail. Piper currently has two such
+  mechanisms on the chat path (the legacy LLM-classifier chain and its successor, the
+  constrained registry-backed router it is migrating to); whichever one interprets a request,
+  the same rail dispatches it and the same consent gate evaluates the operation's declared
+  effect class — so no routing change can ever loosen a safety check.
 - The LLM floor guarantee: at least as good as a well-prompted LLM with the user's context —
   handlers make it better, never different.
 - Derive, don't hand-maintain: registries, catalogs, prompts, and manifests are generated from

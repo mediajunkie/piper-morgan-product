@@ -328,7 +328,7 @@ For testing MCP integration and production readiness:
 - Read the [Architecture Documentation](../architecture/)
 - Review the [Excellence Flywheel Methodology](../development/methodology-core/)
 - Check out [Multi-Agent Coordinator Guide](../../../internal/architecture/current/multi-agent-coordinator-pm-guide.md)
-- Explore [Architecture Patterns](../../../internal/architecture/current/patterns/README.md) - 27 consolidated patterns
+- Explore [Architecture Patterns](../../../internal/architecture/patterns/README.md) - 27 consolidated patterns
 - Study [MCP Integration Patterns](../architecture/mcp-integration-patterns.md)
 - Review [API Reference](../../../internal/architecture/current/api-reference.md)
 

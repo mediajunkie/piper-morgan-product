@@ -103,8 +103,8 @@ For complete documentation structure, see: **docs/NAVIGATION.md**
 **Key Documents**:
 
 - `docs/briefing/BRIEFING-CURRENT-STATE.md` - Current sprint/version/position (check this first!)
-- `docs/internal/architecture/current/adrs/` - Architectural Decision Records
-- `docs/internal/architecture/current/patterns/` - Pattern Catalog
+- `docs/internal/architecture/adrs/` - Architectural Decision Records
+- `docs/internal/architecture/patterns/` - Pattern Catalog
 - `docs/internal/planning/roadmap/` - Current roadmap
 
 **Finding Things**:
@@ -114,7 +114,7 @@ For complete documentation structure, see: **docs/NAVIGATION.md**
 grep -r "ClassName" . --include="*.py"
 
 # Find patterns
-cat docs/internal/architecture/current/patterns/ | grep -A 10 "Pattern Name"
+cat docs/internal/architecture/patterns/ | grep -A 10 "Pattern Name"
 
 # Check what exists
 ls -la services/

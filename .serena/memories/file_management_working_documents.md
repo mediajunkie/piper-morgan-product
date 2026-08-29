@@ -40,8 +40,8 @@ The project's documentation archives represent the "conversational architecture"
 
 ### Completed/Archived Documents
 **Location**: Various permanent locations
-- `docs/internal/architecture/current/adrs/` - Architecture Decision Records
-- `docs/internal/architecture/current/patterns/` - Pattern documentation
+- `docs/internal/architecture/adrs/` - Architecture Decision Records
+- `docs/internal/architecture/patterns/` - Pattern documentation
 - `docs/internal/development/` - Methodology and process docs
 - Dated directories for historical reference
 

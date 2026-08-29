@@ -32,9 +32,9 @@ A 5-second shell command before filing prevents the entire failure class without
 
 ### Apply this rule when
 
-- Filing a new pattern entry into `docs/internal/architecture/current/patterns/`
+- Filing a new pattern entry into `docs/internal/architecture/patterns/`
 - Filing a new methodology-core entry into `docs/internal/development/methodology-core/`
-- Filing a new ADR into `docs/internal/architecture/current/adrs/`
+- Filing a new ADR into `docs/internal/architecture/adrs/`
 - Filing into an anti-pattern index slot
 - Reserving any sequentially-numbered slot in any shared catalog
 - Especially: when a PM directive accelerates the filing cadence (the May 11 case)
@@ -52,7 +52,7 @@ A 5-second shell command before filing prevents the entire failure class without
 For pattern catalog:
 
 ```bash
-ls docs/internal/architecture/current/patterns/pattern-NNN-*.md
+ls docs/internal/architecture/patterns/pattern-NNN-*.md
 ```
 
 For methodology-core:
@@ -64,7 +64,7 @@ ls docs/internal/development/methodology-core/methodology-NNN-*.md
 For ADRs:
 
 ```bash
-ls docs/internal/architecture/current/adrs/adr-NNN-*.md
+ls docs/internal/architecture/adrs/adr-NNN-*.md
 ```
 
 The check returns either (a) zero files (slot available — proceed) or (b) one or more files (slot taken — do not file).

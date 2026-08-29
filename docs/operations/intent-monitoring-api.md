@@ -612,7 +612,7 @@ async def intent_monitoring(token: str = Depends(verify_admin_token)):
 ## Related Documentation
 
 - [Intent System Architecture](../guides/execution-analysis-handlers.md)
-- [Intent Enforcement Middleware](../internal/architecture/current/adrs/adr-032-intent-classification-universal-entry.md)
+- [Intent Enforcement Middleware](../internal/architecture/adrs/adr-032-intent-classification-universal-entry.md)
 - [Operational Guide](./operational-guide.md)
 - [Rollback Plan](./intent-rollback-plan.md)
 

@@ -30,7 +30,7 @@ This guide shows HOW to transform. The philosophy explains WHY it matters.
 Before using this guide:
 - **READ FIRST**: [Consciousness Philosophy](../architecture/current/consciousness-philosophy.md) - The WHY
 - Read: [MUX Implementation Guide](mux-implementation-guide.md) - The HOW
-- Read: [Grammar Application Patterns](../architecture/current/patterns/grammar-application-patterns.md)
+- Read: [Grammar Application Patterns](../architecture/patterns/grammar-application-patterns.md)
 - Understand: The 3 substrates (Entity, Moment, Place) and 8 Lenses
 - Review: [Experience Tests](mux-experience-tests.md) - what to aim for
 
@@ -1158,7 +1158,7 @@ Before declaring transformation complete:
 - **Feature-Object Model Map**: `docs/internal/architecture/current/feature-object-model-map.md` - Per-feature mapping of Entities/Moments/Places with canonical queries
 - **MUX Implementation Guide**: `docs/internal/development/mux-implementation-guide.md`
 - **Experience Tests**: `docs/internal/development/mux-experience-tests.md`
-- **Grammar Application Patterns**: `docs/internal/architecture/current/patterns/grammar-application-patterns.md`
+- **Grammar Application Patterns**: `docs/internal/architecture/patterns/grammar-application-patterns.md`
 - **Grammar Compliance Audit**: `docs/internal/architecture/current/grammar-compliance-audit.md`
 - **Pattern-050**: Context Dataclass Pair
 - **Pattern-051**: Parallel Place Gathering

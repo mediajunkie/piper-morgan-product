@@ -38,7 +38,7 @@
 
 **Rationale**: M1 repeatedly showed that components passing unit tests independently could fail when wired together. The Assembly Assumption (assuming components compose correctly because they work individually) is the root cause. A dedicated wiring pass catches these failures before gate testing.
 
-**Where documented**: `docs/internal/architecture/current/patterns/pattern-062-assembly-assumption.md`
+**Where documented**: `docs/internal/architecture/patterns/pattern-062-assembly-assumption.md`
 
 ---
 
@@ -48,7 +48,7 @@
 
 **Methodology implication**: Capability handlers extend the conversational floor — they don't replace it. Any query that reaches Piper should get at minimum a thoughtful LLM response. This shifts the quality bar from "did we handle every query?" to "is the floor experience good enough?"
 
-**Where documented**: `docs/internal/architecture/current/adrs/adr-060.md`
+**Where documented**: `docs/internal/architecture/adrs/adr-060.md`
 
 ---
 

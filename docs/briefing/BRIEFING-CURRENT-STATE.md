@@ -649,8 +649,8 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 ## Key Documents
 
 **Roadmap**: `docs/internal/planning/roadmap/roadmap.md` (v16.0 adopted May 10 2026; supersedes v15.0)
-**Patterns**: `docs/internal/architecture/current/patterns/` (63 patterns)
-**ADRs**: `docs/internal/architecture/current/adrs/` (63 ADRs, newest: ADR-059, ADR-060)
+**Patterns**: `docs/internal/architecture/patterns/` (63 patterns)
+**ADRs**: `docs/internal/architecture/adrs/` (63 ADRs, newest: ADR-059, ADR-060)
 **PDRs**: `docs/internal/product/pdr/` (6 PDRs, newest: PDR-004 Experience Philosophy)
 **Skills**: `.claude/skills/` (9 skills)
 **Omnibus Logs**: `docs/omnibus-logs/` (continuous through Mar 28)

@@ -2,7 +2,7 @@
 
 **Last Updated**: April 11, 2026
 **Status**: Current (post-M1 floor inversion)
-**See also**: [Architecture Decision Record (ADR) 060: Floor-First Routing](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-060-floor-first-routing.md)
+**See also**: [Architecture Decision Record (ADR) 060: Floor-First Routing](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/adrs/adr-060-floor-first-routing.md)
 
 ---
 
@@ -200,7 +200,7 @@ return dict.
 | Floor context assembly | `services/intent_service/context_assembler.py` | `ContextAssembler.gather_context` |
 | Floor response generation | `services/intent_service/conversational_floor.py` | `ConversationalFloor.respond` |
 | Intent category enum (19 values) | `services/shared_types.py` | `IntentCategory` |
-| Routing principle | `docs/internal/architecture/current/adrs/adr-060-floor-first-routing.md` | — |
+| Routing principle | `docs/internal/architecture/adrs/adr-060-floor-first-routing.md` | — |
 
 ---
 

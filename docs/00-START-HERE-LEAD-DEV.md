@@ -20,7 +20,7 @@ Run these three queries to understand what exists RIGHT NOW:
 ```
 mcp__serena__find_symbol("IntentService", depth=1, include_body=false)
 mcp__serena__list_dir("services/integrations", recursive=false)
-mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)
+mcp__serena__list_dir("docs/internal/architecture/patterns", recursive=false)
 ```
 
 **What you'll learn:** Intent categories, active integrations, architecture patterns

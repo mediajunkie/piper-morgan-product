@@ -422,7 +422,7 @@ This MUX doc commits to user-experience shape for Surface 4. It does NOT commit 
   - UI substrate: `templates/integrations.html` (overview), `templates/settings_{github,calendar,notion,slack}.html` (per-integration), `templates/setup.html` (first-run wizard `#390`)
 - **#1075 route-prefix migration** (CLOSED May 16): Surface 4 callback URL stability dependency RESOLVED
 - **#1018 audit_transparency Phase 2**: integration connect/disconnect events captured in audit envelope
-- **ADR-051 RequestContext** (host_id flows through; #1015 Phase 4): `docs/internal/architecture/current/adrs/adr-051-request-context.md`
+- **ADR-051 RequestContext** (host_id flows through; #1015 Phase 4): `docs/internal/architecture/adrs/adr-051-request-context.md`
 - **Calendar-offer policy** (voice borrowing source for offer-first-with-stakes register; canonical surface): TBD path; per Comms Round 1
 
 ---

@@ -101,7 +101,7 @@ Docs agent completed the weekly audit:
 - 15 source files including protocols.py, situation.py, perception.py
 - 8 lens implementations in services/mux/lenses/
 - 17 test files in tests/unit/services/mux/
-- ADR-055: docs/internal/architecture/current/adrs/adr-055-object-model-implementation.md
+- ADR-055: docs/internal/architecture/adrs/adr-055-object-model-implementation.md
 
 ### Planning Artifacts (dev/2026/01/19/)
 - 7 template-compliant issue specs (mux-399-p*-compliant.md)

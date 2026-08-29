@@ -103,7 +103,7 @@ Both use 8-dimensional spatial metaphor, feature flag controlled.
 - **Architecture**: `docs/architecture/spatial-intelligence-patterns.md`
 - **Security**: `docs/architecture/webhook-security-design.md`
 - **Operations**: `docs/operations/operational-guide.md`
-- **ADRs**: `docs/internal/architecture/current/adrs/`
+- **ADRs**: `docs/internal/architecture/adrs/`
 
 ---
 

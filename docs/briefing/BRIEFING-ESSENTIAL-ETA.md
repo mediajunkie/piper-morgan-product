@@ -81,7 +81,7 @@ Request additional detail for:
 - **Testing methodology**: `docs/internal/development/methodology-core/` (20+ methodology files)
 - **Continuity quiz template**: Ask PM or check ETA session logs in `dev/`
 - **AX recommendations**: Check ETA session logs for recommendation documents
-- **Pattern catalog**: `docs/internal/architecture/current/patterns/`
+- **Pattern catalog**: `docs/internal/architecture/patterns/`
 - **Current sprint**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 
 ## Critical Rules
@@ -112,7 +112,7 @@ Request additional detail for:
 ## References
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
-- **Pattern catalog**: `docs/internal/architecture/current/patterns/`
+- **Pattern catalog**: `docs/internal/architecture/patterns/`
 - **Methodology core**: `docs/internal/development/methodology-core/`
 - **Session logs**: `dev/YYYY/MM/DD/` (ETA logs use `test` slug)
 - **Omnibus logs**: `docs/omnibus-logs/` (daily synthesis)

@@ -288,9 +288,9 @@ done
 
 ## Related Documentation
 
-- [Pattern-033: Notion Publishing](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/patterns/pattern-033-notion-publishing.md) - Architecture pattern
-- [ADR-026: Notion Client Migration](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-026-notion-client-migration.md) - Implementation decision
-- [ADR-027: Configuration Architecture](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-027-configuration-architecture-user-vs-system-separation.md) - User configuration
+- [Pattern-033: Notion Publishing](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/patterns/pattern-033-notion-publishing.md) - Architecture pattern
+- [ADR-026: Notion Client Migration](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/adrs/adr-026-notion-client-migration.md) - Implementation decision
+- [ADR-027: Configuration Architecture](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/adrs/adr-027-configuration-architecture-user-vs-system-separation.md) - User configuration
 
 ## See Also
 

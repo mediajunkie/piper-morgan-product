@@ -23,7 +23,7 @@
 - **Memory**: Conversational memory (DB), cross-session layers (ADR-054), learning/composting.
 - **Multi-tenancy**: ADR-058 in progress—user-scoped tokens, RequestContext enforcement, owner_id filtering.
 - **Deployment**: Single-process today; horizontal scaling unblocked by ADR-048 but not yet run multi-worker/Kubernetes.
-- **Docs**: 60+ ADRs in `docs/internal/architecture/current/adrs/`; PR/FAQ and “by analogy” in `docs/internal/design/`.
+- **Docs**: 60+ ADRs in `docs/internal/architecture/adrs/`; PR/FAQ and “by analogy” in `docs/internal/design/`.
 
 ---
 

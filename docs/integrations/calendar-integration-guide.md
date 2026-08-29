@@ -43,5 +43,5 @@ See [Calendar Tests Documentation](../testing/calendar-tests.md) for comprehensi
 See [Calendar Troubleshooting Guide](../troubleshooting/calendar-issues.md) for common issues.
 
 ## Related Documentation
-- [Architecture Decision Record (ADR) 038: Spatial Intelligence Patterns](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-038-spatial-intelligence-patterns.md)
+- [Architecture Decision Record (ADR) 038: Spatial Intelligence Patterns](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/adrs/adr-038-spatial-intelligence-patterns.md)
 - MCP Integration Guide *(proposed; doc TBD)*

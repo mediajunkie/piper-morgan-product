@@ -17,7 +17,7 @@ assignees: ''
 ## Scope
 
 **Analysis Period**: [Start Date] - [End Date]
-**Pattern Library**: `docs/internal/architecture/current/patterns/` (check count)
+**Pattern Library**: `docs/internal/architecture/patterns/` (check count)
 
 ---
 

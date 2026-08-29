@@ -121,6 +121,58 @@ this was a live-state pass and what was verified.
 > **No silent failures.** If you can't verify an item (no GitHub access, ambiguous referent), list it but
 > mark it "unverified" — don't present an unverified item as confirmed-open, and don't silently drop it.
 
+## Step 2b — 🔴 COMPLETENESS + AGING (PM DIRECTIVE 2026-08-29) — the board IS the flag, and age is a signal
+
+**PM's ruling, verbatim:**
+
+> *"I'd say for something to be truly flagged for my attention, it needs to be included in your
+> roll-up. If not addressed and sitting around for more than a day or so, it needs to be escalated as
+> something that is perhaps being overlooked and may need my attention more urgently than it seems."*
+
+Two separate requirements. Both are load-bearing and neither was in this skill before.
+
+### (a) The board is the flag — nothing counts as "flagged for PM" unless it is here
+
+A memo saying "flagging to PM," a commit message saying "flagging for confirmation," a `🟡` in
+someone's carry-forward — **none of these constitute flagging.** If it needs PM, it goes on this board.
+If it isn't on this board, PM has not been asked.
+
+**The incident that earned this** (2026-08-29): the Apache 2.0 adoption commit `a4547d7c4` set the
+copyright holder to "Piper Morgan" and said explicitly *"flagging to PM for confirmation, not
+asserting it as settled."* **It sat unconfirmed for 16 days.** It was never on this board, because it
+lived in a commit message and nothing swept commit messages. PM ruled on it in under ten seconds the
+moment it was surfaced — the delay was never PM's, it was the routing's.
+
+**So Step 1's source set is a floor, not a ceiling.** Carry-forwards + GitHub + blocker mail catch
+items whose authors knew to route them. They structurally miss items flagged *in passing* — inside a
+commit body, an issue comment, a design doc's own status line, a memo's closing paragraph. When you
+encounter one anywhere, **it belongs on the next board**, regardless of which surface it came from.
+
+### (b) Age is itself an escalation signal — carry a FIRST-SEEN date on every item
+
+**Every decision-bucket item carries the date it first appeared on a board.** Render it. An item is
+not just "open," it is "open for N days," and **N is the finding.**
+
+| Age | Treatment |
+|---|---|
+| ≤ 1 day | Normal — render in its bucket |
+| **> ~1 day, unaddressed** | ⚠️ **ESCALATE** — move it up, and say plainly that it may be *"being overlooked and may need attention more urgently than it seems"* |
+| Repeatedly re-rendered across many boards | State the count out loud. "Third board running" is information PM cannot reconstruct from a static snapshot. |
+
+⚠️ **The reasoning behind (b), which matters more than the threshold**: an item sitting untouched
+usually does **not** mean PM deprioritized it. Far more often it means **PM never understood what was
+actually being asked**, because the board's one-line framing under-described it. Two same-day proofs:
+the docs-tree flattening plan waited **18 days** and PM ruled instantly on learning it was a yes/no
+about *one directory* (*"Ah yes, the doc-tree! I requested this."*); and PM had to come back and ask
+what six separate board items actually **were**, because the board carried the *asks* and not the
+*substance*. **Age is therefore a signal about the BOARD's framing, not about PM's priorities** —
+when something ages, re-describe it before re-listing it.
+
+★ **This is PM's own trigger rule (`decisions.log` 2026-08-29, *"any ADR, any new methodology, any
+pattern documented has to be equipped with an actual trigger or it's academic"*) applied to this
+board.** A board entry with no aging mechanism is a document with no trigger: it renders, it is
+correct, and nothing fires. It just sits — which is precisely what 16 days and 18 days look like.
+
 ## Step 3 — Triage into buckets
 
 Sort every item into one of these, by what it asks of the PM (priority order — **blockers first, always at the top**):

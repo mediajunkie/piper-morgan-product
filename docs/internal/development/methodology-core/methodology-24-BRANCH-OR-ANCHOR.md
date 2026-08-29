@@ -124,7 +124,7 @@ The discipline is "anchor or branch, never silent." The hygiene tools are defens
 
 ## Related Patterns and Methodologies
 
-- **Pattern-063 (Parallel-Authoring Drift)**: The pattern this rule addresses. `docs/internal/architecture/current/patterns/pattern-063-parallel-authoring-drift.md`.
+- **Pattern-063 (Parallel-Authoring Drift)**: The pattern this rule addresses. `docs/internal/architecture/patterns/pattern-063-parallel-authoring-drift.md`.
 - **Pattern-062 (Assembly Assumption)**: The parent pattern. Pattern-063 is the specification-layer instance.
 - **Pattern-045 (Green Tests, Red User)**: Verdict-convergence-as-dangerous-signal cross-cuts here.
 - **Methodology-00 (Excellence Flywheel) Practice 5 ("Audit the Composition")**: The parent methodology principle.
@@ -149,7 +149,7 @@ This methodology entry stays in current state until one full cycle of trial appl
 
 ### Canonical Documents
 
-- **Pattern-063 catalog entry**: `docs/internal/architecture/current/patterns/pattern-063-parallel-authoring-drift.md`
+- **Pattern-063 catalog entry**: `docs/internal/architecture/patterns/pattern-063-parallel-authoring-drift.md`
 - **PPM reconciliation memo (Apr 26)**: `mailboxes/cio/read/memo-ppm-to-cxo-lead-cio-cc-pm-pa-arch-exec-rubric-c-axis-reconciliation-2026-04-26.md`
 - **CIO methodology framing memo (Apr 26)**: `mailboxes/cio/sent/memo-cio-to-ppm-cc-cxo-lead-pm-pa-arch-exec-rubric-drift-methodology-2026-04-26.md`
 - **CXO belt-and-suspenders concurrence (Apr 26)**: `mailboxes/cio/read/memo-cxo-to-cio-cc-ppm-lead-pm-pa-arch-exec-pattern-063-and-rule-embedding-2026-04-26.md`

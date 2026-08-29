@@ -288,7 +288,7 @@ print(f"Event at T{coords['territory']}:R{coords['room']}")
 **Cross-References**:
 - Service: SpatialService *(proposed; doc TBD)*
 - Repository: SpatialEventRepository *(proposed; doc TBD)*
-- ADR: [ADR-013 MCP Spatial Integration](../adrs/adr-013-mcp-spatial-integration-pattern.md)
+- ADR: [ADR-013 MCP Spatial Integration](../../adrs/adr-013-mcp-spatial-integration-pattern.md)
 
 ### SpatialObject
 **Purpose**: An object placed within the spatial metaphor system
@@ -367,7 +367,7 @@ coords = obj.get_spatial_coordinates()
 **Cross-References**:
 - Service: SpatialService *(proposed; doc TBD)*
 - Repository: SpatialObjectRepository *(proposed; doc TBD)*
-- ADR: [ADR-017 Spatial MCP](../adrs/adr-017-spatial-mcp.md)
+- ADR: [ADR-017 Spatial MCP](../../adrs/adr-017-spatial-mcp.md)
 
 ### SpatialContext
 **Purpose**: Context information for spatial metaphor navigation
@@ -479,7 +479,7 @@ print(f"Status: {humanization.humanized_action}")
 **Cross-References**:
 - Service: ActionHumanizationService *(proposed; doc TBD)*
 - Repository: ActionHumanizationRepository *(proposed; doc TBD)*
-- ADR: [ADR-004 Action Humanizer Integration](../adrs/adr-004-action-humanizer-integration.md)
+- ADR: [ADR-004 Action Humanizer Integration](../../adrs/adr-004-action-humanizer-integration.md)
 
 ---
 

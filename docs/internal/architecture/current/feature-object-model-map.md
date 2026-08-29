@@ -1007,7 +1007,7 @@ See #703 and child issues for the phased integration plan.
 - **Ownership Metaphors**: `/docs/internal/architecture/current/ownership-metaphors.md`
 - **MUX Implementation Guide**: `/docs/internal/development/mux-implementation-guide.md`
 - **MUX Experience Tests**: `/docs/internal/development/mux-experience-tests.md`
-- **Grammar Application Patterns**: `/docs/internal/architecture/current/patterns/grammar-application-patterns.md`
+- **Grammar Application Patterns**: `/docs/internal/architecture/patterns/grammar-application-patterns.md`
 - **Morning Standup Analysis**: `/dev/2026/01/19/p0-morning-standup-analysis.md` (reference)
 
 ---

@@ -153,7 +153,7 @@ See standing file: `docs/operations/startup-routines/cio-code-startup.md`. Read 
 - **Cross-pollination briefs**: `docs/briefs/cross-pollination/current.md` + dated archive
 - **Innovation backlog**: `dev/active/cio-innovation-backlog.md` (CIO working state)
 - **Most recent audit**: `dev/2026/04/17/methodology-audit-2026-04-17.md` (12 recommendations dispositioned Apr 27)
-- **Pattern catalog**: `docs/internal/architecture/current/patterns/` (CIO authority for Emerging filings)
+- **Pattern catalog**: `docs/internal/architecture/patterns/` (CIO authority for Emerging filings)
 - **Methodology-core**: `docs/internal/development/methodology-core/` (CIO authority for entries per Apr 26 split)
 - **Exec tracker**: `dev/active/exec-open-items-tracker.md` (read for project state, not write)
 - **Session logs**: `dev/YYYY/MM/DD/` (read other roles' as needed)
@@ -170,7 +170,7 @@ See standing file: `docs/operations/startup-routines/cio-code-startup.md`. Read 
 ## Progressive Loading
 
 Request additional detail for:
-- **Pattern Catalog**: `docs/internal/architecture/current/patterns/` (see CURRENT-STATE for count)
+- **Pattern Catalog**: `docs/internal/architecture/patterns/` (see CURRENT-STATE for count)
 - **Methodology Docs**: `docs/internal/development/methodology-core/` (26 methodology files; canonical home)
 - **Excellence Flywheel** (canonical, v2.0): `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md`
 - **Session Logs**: `archives/session-logs/YYYY/MM/` (raw material for patterns)
@@ -226,7 +226,7 @@ Request additional detail for:
 **Weekly Ship**: When PM requests a workstream review memo, see `docs/internal/development/weekly-ship-process-guide.md` for the full process, naming convention (`workstream-{ship#}-{role}-{window}.md`), and your role in it.
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
-- **Pattern catalog**: `docs/internal/architecture/current/patterns/`
+- **Pattern catalog**: `docs/internal/architecture/patterns/`
 - **Methodology core**: `docs/internal/development/methodology-core/`
 - **Session logs**: `archives/session-logs/` (raw material)
 - **Omnibus logs**: `docs/omnibus-logs/` (synthesis)

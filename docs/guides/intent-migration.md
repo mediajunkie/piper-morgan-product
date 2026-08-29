@@ -12,7 +12,7 @@ This guide helps teams migrate to Piper Morgan's intent classification system. T
 
 Before migrating to intent classification:
 - [ ] Understand the 13 intent categories (see Categories Reference *(proposed; doc TBD)*)
-- [ ] Review [Architecture Decision Record (ADR) 032](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-032-intent-classification-universal-entry.md)
+- [ ] Review [Architecture Decision Record (ADR) 032](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/adrs/adr-032-intent-classification-universal-entry.md)
 - [ ] Read [Intent Classification Guide](./intent-classification-guide.md)
 
 ## Migration Scenarios
@@ -62,8 +62,8 @@ elif intent.category == IntentCategory.NEW_CATEGORY:
 
 6. **Update documentation**:
    - Add to Categories Reference *(proposed; doc TBD)*
-   - Update [ADR-032](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-032-intent-classification-universal-entry.md)
-   - Update [Pattern-032](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/patterns/pattern-032-intent-pattern-catalog.md)
+   - Update [ADR-032](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/adrs/adr-032-intent-classification-universal-entry.md)
+   - Update [Pattern-032](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/patterns/pattern-032-intent-pattern-catalog.md)
 
 ### Scenario 2: Adding a New Handler to Existing Category
 
@@ -248,7 +248,7 @@ If you need to rollback intent changes, see [Rollback Plan](../operations/intent
 
 Questions about migration?
 - Check [Intent Classification Guide](./intent-classification-guide.md)
-- Review [ADR-032](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/adrs/adr-032-intent-classification-universal-entry.md)
+- Review [ADR-032](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/adrs/adr-032-intent-classification-universal-entry.md)
 - See test examples in `tests/intent/`
 
 ---

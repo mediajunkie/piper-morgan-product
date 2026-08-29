@@ -95,7 +95,7 @@ Both replace "an agent remembering to do the right thing" with "a structure that
 
 ### Why this is methodology-corpus, not Pattern catalog
 
-Pattern catalog entries describe **architectural / surface failure modes** (e.g., Pattern-074 visibility-loss-after-premature-retirement; Pattern-067 issue-body-reality-mismatch). They live in `docs/internal/architecture/current/patterns/`.
+Pattern catalog entries describe **architectural / surface failure modes** (e.g., Pattern-074 visibility-loss-after-premature-retirement; Pattern-067 issue-body-reality-mismatch). They live in `docs/internal/architecture/patterns/`.
 
 Derived Views Over Hand-Maintained Trackers is **a discipline-shape principle** — about how cohort tracking *should be authored* to avoid the trackers-go-stale failure mode. It belongs in the methodology corpus (discipline-of-rule-authoring) alongside methodology-35 (Asymmetric Discipline).
 

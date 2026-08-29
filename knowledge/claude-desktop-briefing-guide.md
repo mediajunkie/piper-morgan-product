@@ -24,7 +24,7 @@ mcp__serena__find_symbol("IntentService", depth=1, include_body=false)
 mcp__serena__list_dir("services/integrations", recursive=false)
 
 3. Pattern catalog:
-mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)
+mcp__serena__list_dir("docs/internal/architecture/patterns", recursive=false)
 ```
 
 **You'll get:**
@@ -108,7 +108,7 @@ slack, github, notion, calendar, demo, mcp, spatial
 
 **Query:**
 ```
-mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)
+mcp__serena__list_dir("docs/internal/architecture/patterns", recursive=false)
 ```
 
 **What you learn:**
@@ -165,7 +165,7 @@ Current integrations:
 Piper has 33 documented architecture patterns.
 Let me find the relevant one...
 
-mcp__serena__search_for_pattern("pattern.*plugin", relative_path="docs/internal/architecture/current/patterns")
+mcp__serena__search_for_pattern("pattern.*plugin", relative_path="docs/internal/architecture/patterns")
 ```
 
 ---
@@ -284,10 +284,10 @@ mcp__serena__find_symbol("IntentService", depth=1, include_body=false)
 mcp__serena__list_dir("services/integrations", recursive=false)
 
 # Pattern count
-mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)
+mcp__serena__list_dir("docs/internal/architecture/patterns", recursive=false)
 
 # Specific pattern search
-mcp__serena__search_for_pattern("pattern-name", relative_path="docs/internal/architecture/current/patterns")
+mcp__serena__search_for_pattern("pattern-name", relative_path="docs/internal/architecture/patterns")
 
 # Find plugin implementation
 mcp__serena__search_for_pattern("class.*Plugin", relative_path="services/plugins")

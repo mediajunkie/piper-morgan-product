@@ -107,7 +107,7 @@ Key achievements:
 
 Evidence found:
 - `services/ui_messages/action_humanizer.py` (complete rule-based system)
-- `docs/internal/architecture/current/adrs/adr-004-action-humanizer-integration.md`
+- `docs/internal/architecture/adrs/adr-004-action-humanizer-integration.md`
 - Tests: `tests/services/ui_messages/test_enhanced_action_humanizer.py`
 - Integration tests: `tests/integration/test_humanized_workflow_messages.py`
 

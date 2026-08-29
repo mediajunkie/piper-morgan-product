@@ -30,7 +30,7 @@ This file maps all documentation locations and purposes.
 This briefing captures foundational principles that have been stable since 2025. For the live methodology corpus, consult:
 
 - **`docs/internal/development/methodology-core/INDEX.md`** — canonical numbered methodologies (Methodology-20 Omnibus Session Logs, Methodology-23 close-issue-properly, Methodology-24 Branch-or-Anchor, Methodology-25 Workstream Review Cadence, and others)
-- **`docs/internal/architecture/current/patterns/`** — pattern catalog (75 patterns as of 2026-06-19, including the 062 family covering Assembly Assumption + the recently-Emerging 066/067/068/069 around stacked failures, issue-body reality, silent state mutation in shared working tree, and coarse-triggers-causing-false-positive-triage-cost)
+- **`docs/internal/architecture/patterns/`** — pattern catalog (75 patterns as of 2026-06-19, including the 062 family covering Assembly Assumption + the recently-Emerging 066/067/068/069 around stacked failures, issue-body reality, silent state mutation in shared working tree, and coarse-triggers-causing-false-positive-triage-cost)
 - **`docs/internal/architecture/current/anti-pattern-index.md`** — 51 indexed anti-patterns (P-01 through P-17)
 - **Excellence Flywheel v2.0** — reformulated 2026-04-17 (CIO M1 methodology audit) into three layers: Concept (the causal loop), Practices (5 currently: TDD/Verify-before-build/Audit-cascade/Branch-or-anchor/**Audit the composition** added 2026-04-17 from Pattern-062), Mnemonics (per-role compact recalls)
 
@@ -238,7 +238,7 @@ The goal is effective work, not perfect adherence to templates.
 ## Multi-Agent Coordination
 
 > **📋 Detailed Guide**: [methodology-02-AGENT-COORDINATION.md](../internal/development/methodology-core/methodology-02-AGENT-COORDINATION.md) - Comprehensive coordination methodology
-> **📚 Examples**: [Pattern-061: Human-AI Collaboration Referee](../internal/architecture/current/patterns/pattern-061-human-ai-collaboration-referee.md) - Real project case studies and implementation protocols
+> **📚 Examples**: [Pattern-061: Human-AI Collaboration Referee](../internal/architecture/patterns/pattern-061-human-ai-collaboration-referee.md) - Real project case studies and implementation protocols
 
 ### Agent Strengths
 

@@ -170,7 +170,7 @@ PM noted subagents did not create session logs. Root cause: agent prompts didn't
 - Various audit files
 
 ### Code Changes (~25 files)
-- `docs/internal/architecture/current/adrs/adr-058-multi-tenancy-isolation.md` (NEW)
+- `docs/internal/architecture/adrs/adr-058-multi-tenancy-isolation.md` (NEW)
 - `services/auth/auth_middleware.py` - RequestContext enforcement
 - `services/integrations/integration_config_service.py` (NEW)
 - `services/integrations/*/config_service.py` - user_id required (4 files)
