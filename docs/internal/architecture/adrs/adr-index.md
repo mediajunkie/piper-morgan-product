@@ -148,10 +148,10 @@ This index provides a complete catalog of all Architectural Decision Records (AD
 
 ## Related Documentation
 
-- [Architecture Overview](../architecture.md)
-- [Domain Models Index](../models/domain-models-index.md)
+- [Architecture Overview](../current/architecture.md)
+- [Domain Models Index](../current/models/domain-models-index.md)
 - [Pattern Catalog](../patterns/README.md)
-- [Technical Specifications](../technical-spec.md)
+- [Technical Specifications](../current/technical-spec.md)
 - [ADR-029: Domain Service Mediation Architecture](adr-029-domain-service-mediation-architecture.md) - Complete domain service mediation for external system access
 - [ADR-030: Configuration Service Centralization](adr-030-configuration-service-centralization.md) - Centralized configuration management through PortConfigurationService
 - [ADR-031: MVP Redefinition](adr-031-mvp-redefinition.md) - Core vs Feature MVP distinction for strategic development

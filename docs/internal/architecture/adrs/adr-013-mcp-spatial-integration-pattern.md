@@ -33,7 +33,7 @@ representation under PM's standing rule (meaning-representation is never removed
 
 **If you arrived here because you found cold or half-implemented `*_spatial` code and are inferring
 that this ADR's ambition failed — stop and read
-[`../spatial-intelligence-experience-thesis.md`](../spatial-intelligence-experience-thesis.md)
+[`../spatial-intelligence-experience-thesis.md`](../current/spatial-intelligence-experience-thesis.md)
 first.** That inference is available from this file alone, it is reasonable, and the
 experience-design lane's position is that it is wrong.
 
@@ -43,7 +43,7 @@ maturities, not one capability at partial completion.** The live spatial *reason
 changes"* — was **never begun anywhere**, and is not the cold adapters at a higher percentage.
 
 📍 **For the layer breakdown and every live/cold claim, go to
-[`../spatial-intelligence-layer-map-and-costed-options.md`](../spatial-intelligence-layer-map-and-costed-options.md)
+[`../spatial-intelligence-layer-map-and-costed-options.md`](../current/spatial-intelligence-layer-map-and-costed-options.md)
 — it is built from the import graph and is re-runnable. If it and this notice ever disagree, it is
 right.** *(This paragraph used to enumerate the layers itself. It was wrong twice in two days —
 "three capabilities," "cold for five others" — because it froze a measured fact into prose. Collapsed

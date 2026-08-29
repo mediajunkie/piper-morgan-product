@@ -147,7 +147,7 @@ def get_metadata(self) -> PluginMetadata:
     )
 ```
 
-See [Plugin Versioning Policy](../../../../guides/plugin-versioning-policy.md) for details on when to increment versions.
+See [Plugin Versioning Policy](../../../guides/plugin-versioning-policy.md) for details on when to increment versions.
 
 ## Migration Path
 
@@ -168,10 +168,10 @@ This migration is intentionally easy - the wrapper pattern supports it naturally
 
 ## References
 
-- [Plugin Interface Definition](../../../../../services/plugins/plugin_interface.py)
-- [Plugin Registry](../../../../../services/plugins/plugin_registry.py)
-- [Plugin Development Guide](../../../../guides/plugin-development-guide.md) - Practical tutorial
-- [Plugin System README](../../../../../services/plugins/README.md)
+- [Plugin Interface Definition](../../../../services/plugins/plugin_interface.py)
+- [Plugin Registry](../../../../services/plugins/plugin_registry.py)
+- [Plugin Development Guide](../../../guides/plugin-development-guide.md) - Practical tutorial
+- [Plugin System README](../../../../services/plugins/README.md)
 
 ---
 
