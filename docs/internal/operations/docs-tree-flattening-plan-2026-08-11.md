@@ -170,11 +170,46 @@ truth (sampled across dozens of ADRs: Accepted, Proposed, SUPERSEDED, all presen
 the directory layer adds a second, unmaintained encoding of the same fact, and it's already wrong
 at least once. A reader relying on the path gets actively misled, not just uninformed.
 
-**Recommendation, not executed**: fold `current/` out of the ADR/pattern paths (e.g.
-`docs/internal/architecture/adrs/`, not `.../current/adrs/`), with the Status line as the single
-source of truth for current-vs-superseded — matching how the documents already work in practice.
-**Deliberately not executed now** — this falls squarely inside PM's own timing constraint from the
-same conversation ("since ADRs, patterns, and methodology are all in review... not change them
-right now"), a different reason than this plan's original "wary of precipitous changes" caution
-but the same practical conclusion. Recorded here, evidence-backed and ready, so it doesn't need
-re-deriving once Arch's review concludes.
+**Recommendation, EXECUTED 2026-08-29**: fold `current/` out of the ADR/pattern paths — PM
+reviewed the evidence above and explicitly approved execution ("thanks for tracking down that path
+question... I'm comfortable approving the plan. Please go ahead and execute it at your earliest
+opportunity"), superseding this plan's own "deliberately not executed" hold from earlier the same
+day.
+
+**Scope, corrected before executing**: `current/` turned out to hold far more than `adrs/` +
+`patterns/` — ~55 standalone files and 6 more subdirectories (`apis/`, `database/`, `diagrams/`,
+`mcp/`, `memos/`, `models/`). Execution was scoped to **only** the two directories the evidence
+actually supported: `current/adrs/` (82 files) and `current/patterns/` (81 files, one more than
+the earlier `*.md` glob count — a `proposals/` subdirectory entry) moved via `git mv` to
+`docs/internal/architecture/adrs/` and `docs/internal/architecture/patterns/`. Everything else in
+`current/` is untouched — no evidence was gathered on whether it earns its depth, so the
+recommendation doesn't extend there.
+
+**Reference risk was categorically different from `roadmap/CORE/`'s zero**: 824 files repo-wide
+mentioned the old paths (334 in `dev/`, 343 in `mailboxes/` — both historical records, left exactly
+as written, since a session log or memo describing the path as it existed at the time is accurate,
+not stale). The **147 files in living documentation and tooling** — `docs/`, `.claude/skills/`,
+`CLAUDE.md`, `SETUP.md`, `FILE-PLACEMENT-GUIDE.md`, `.serena/memories/`, `config/`, `services/` —
+were all repaired: both markdown-link syntax and plain-text/backtick path mentions, since several
+of the latter (`CLAUDE.md`'s own routing table, `SETUP.md`) are operational instructions agents
+actively follow, not just prose.
+
+**Internal cross-references inside the moved directories also needed repair**: 26 relative links
+between ADRs/patterns and other `current/` siblings (spatial-intelligence docs, `architecture.md`,
+`models/`, `development/`, `product/pdr/`, `services/plugins/`) broke in both directions — some
+overshot (links to files that stayed in `current/`), some undershot (links now one level too deep
+after the fold). Resolved each link's true target and recomputed the correct relative path
+mechanically rather than guessing from dot-count. A further 75 links were found broken the same way
+in files that *stayed* in `current/` but referenced the moved directories (`anti-pattern-index.md`
+alone had 62) — these weren't part of the original 824/147 external-reference count because they
+used bare relative paths (`patterns/foo.md`, not `architecture/current/patterns/foo.md`) that the
+site-wide grep couldn't match on prose alone; found only by re-running the link checker after the
+move and reading what it reported.
+
+**Verified via `scripts/check_links.py`** (the tool whose false-clear bug this plan's own
+`roadmap/CORE/` execution found and fixed earlier the same day): 2,542 total links, **81 broken —
+identical to the pre-move baseline**, zero net breakage from the fold. Committed across 10 + 9
+batches (path-move, then link-repair) to stay under the broad-staging hook's ~20-file threshold,
+matching the discipline established for `roadmap/CORE/`. A scope-and-risk heads-up was sent to
+Exec/PM/Arch before execution began, once the true 824-file reference count was known to be larger
+than what "ready to act on" had implied when first reported.
