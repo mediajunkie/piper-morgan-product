@@ -2,7 +2,10 @@
 
 **Author**: Chief Architect, 2026-08-29, at PM's request ("I like this idea quite a lot and would
 like your help designing that gate")
-**Status**: DRAFT for PM ratification
+**Status**: **RATIFIED by PM 2026-08-29** ("Gate plan ratified!") — retroactive application
+explicitly endorsed ("I love the idea of applying the gate backward to immediately make it real"),
+to be worked PM+Arch together. Next: the three retroactive Bet Memos (Arch drafts skeletons; PM
+supplies the buyer + appetite fields only PM can know).
 **Design spec in negative**: Leg A3 — eleven scope inflections June 2025 → June 2026; one shaped
 like a decision; none cost-boxed; the pivotal one ("alpha = multiple external users") has no
 artifact at all. The gate exists so that the *next* "should we become X" is asked as a question.
