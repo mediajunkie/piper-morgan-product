@@ -115,6 +115,32 @@ roles already in the source set.
 **No unresolved contradictions found** beyond item #5 above, which is preserved as genuinely
 open per both CIO's and HOST's own honest framing, not resolved by either.
 
+> **⚠️ ADDENDUM (Docs, 2026-08-29) — item #5's mechanism is now resolved; the original entry above
+> is left unedited, this is a dated addition, not a rewrite.** PM directly clarified (relayed by
+> PA, 08-29): Arch, CIO, and HOST hit a **blocking rate-limit dialog** (hold-for-reset / use
+> overage / upgrade) — a human decision point with no auto-resolve, distinct from the silent
+> auto-reset that explains every other role's ~8h gap. That structural difference is why the extra
+> gap could run 21+ hours: it was bounded by whenever PM happened to see and answer three separate
+> dialogs, not by any fixed reset time. PM offered a hypothesis (correlates with being mid-task
+> when the limit hit vs. starting fresh after) explicitly flagged as uncertain. **All three
+> dialog-hit seats then checked their own commit/heartbeat records rather than recollection, and
+> all three refute the mid-task hypothesis identically**: each was idle between fires when the
+> limit took effect, and each seat's next action was *attempting to start a fresh fire*, not
+> resuming one in progress (Arch: idle since the completed 12:57 fire; HOST: idle since 13:02:23,
+> ~45-60min before PM's stated window; CIO: idle since the 10:37 START heartbeat, ~4h20m before).
+> Arch separately named an inversion hypothesis worth recording: the distinguishing variable might
+> be whether the harness *attempted a turn at all* during the window, not what the seat was doing
+> when the limit hit — a scheduled cron firing a fresh prompt counts as an attempted turn either
+> way. PA's own non-dialog data point (checked against their own heartbeat file: no dialog, no
+> partial turn, five queued prompts delivered as one batch the next morning) is consistent with
+> the inversion but doesn't discriminate it from a duller explanation (the scheduler simply held
+> all queued prompts and delivered them once the account recovered, independent of any individual
+> prompt's dialog-risk) — flagged as a real limit by both PA and CIO rather than overclaimed.
+> **Final scorecard**: 3 of 3 dialog-hit seats refute mid-task and confirm fresh-attempt; 1 of 1
+> non-dialog seat reports no attempted turn at all and cannot discriminate further between the two
+> remaining hypotheses. That is the actual denominator — not "resolved" beyond what these four
+> data points support.
+
 ## Chronological Timeline
 
 ### Phase 1: Recovering From the Freeze (6:38 AM – 7:47 AM)
@@ -423,7 +449,9 @@ open per both CIO's and HOST's own honest framing, not resolved by either.
   role's first act was a self-verified retroactive close of 08-27, none reporting lost work.
 - Three roles (Arch, CIO, HOST) stayed dark 21+ hours past the account-wide reset for reasons
   neither fully resolved — a genuine open asymmetry, named honestly rather than folded into the
-  account-limit explanation.
+  account-limit explanation. **Mechanism resolved 08-29** — see the dated addendum after Cross-Role
+  Mentions item #5: a blocking rate-limit dialog, not a silent auto-reset; PM's mid-task hypothesis
+  refuted 3-for-3 by the affected seats' own checked timing.
 - The MVP triage cut ran as a real multi-agent decision chain: Lead's engineering read →
   PPM's individually-verified corrections (not a rubber stamp) → PM's live one-sitting ruling →
   PPM's board-mechanics execution, with corrections flowing back to Lead mid-thread (the #1662
@@ -523,7 +551,11 @@ open per both CIO's and HOST's own honest framing, not resolved by either.
   command's exit status).
 - The day's one still-open cross-role discrepancy (Arch/CIO/HOST's extended dark window) is
   preserved rather than resolved in this omnibus, matching both roles' own choice not to
-  overclaim an explanation they didn't have evidence for.
+  overclaim an explanation they didn't have evidence for. **Resolved the next day (08-29) by a
+  4-role, record-checked investigation rather than assumption** — see the dated addendum after
+  Cross-Role Mentions item #5. Worth naming as its own lesson: an omnibus correctly preserving an
+  open discrepancy rather than guessing at it is what made the next day's real answer legible as
+  a resolution rather than just a new claim competing with an old one.
 
 <!-- Omnibus generated per methodology-20 and the create-omnibus skill. Format: HIGH-COMPLEXITY:
 COORDINATION. -->
