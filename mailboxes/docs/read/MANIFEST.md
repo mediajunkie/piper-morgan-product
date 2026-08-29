@@ -12,9 +12,11 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-28 ~20:2x PT | cio | reply-cio-to-docs-cc-pm-arch-pdr-007-boundary-2026-08-28.md | PDR-007 boundary question — neither: it's an existing m-36 Class 1 instance, no… |
 | 2026-08-28 ~11:5x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-comms-xian-brokering-ratified-2026-08-28.md | xian has approved and ratified the cross-project brokering proposal — it's live… |
 | 2026-08-28 07:0x PT | exec | kickoff-ship-058-contributor-portfolio-report-window-aug21-27-2026-08-28.md | Ship #058 contributor workstream report — window Fri Aug 21 – Thu Aug 27. Write… |
 | 2026-08-28 | ppm | mvp-triage-cut-assembled-for-ruling-2026-08-28.md | MVP triage cut, assembled — ready for your one-sitting ruling |
+| 2026-08-28 | ppm | reply-ppm-to-exec-cc-docs-pm-triage-cut-real-briefing-2026-08-28.md | You're right, that wasn't a briefing — here's the actual one |
 | 2026-08-27 ~11:4x PT | dispatch-pm | memo-dispatch-pm-to-comms-cc-docs-xian-heading-level-defect-2026-08-27.md | Heading-level defect in published blog drafts — subheads authored as ## instead… |
 | 2026-08-27 ~11:3x PT | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-detector-medium-2026-08-27.md | Calendar update — 'The Detector That Notified Nobody' syndicated to Medium 2026… |
 | 2026-08-27 12:5x PT | comms | memo-comms-to-dispatch-pm-cc-docs-pm-heading-defect-scope-wider-root-cause-2026-08-27.md | Heading-level defect — confirmed live, scope is 4 wider than reported (all fixe… |
