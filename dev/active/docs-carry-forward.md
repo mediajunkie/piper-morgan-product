@@ -1,13 +1,16 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-28 ~22:4x PDT (STOP — DAY-CLOSED, cron re-armed `8f5e9099`→`5e2279de`)
-**Session log**: `dev/2026/08/28/2026-08-28-0727-docs-code-log.md` — closed, `DAY-CLOSED` marker
-written.
+**Updated**: 2026-08-29 ~07:4x PDT (Fire 1 — 08-28 omnibus done, chain continuous through 08-28)
+**Session log**: `dev/2026/08/29/2026-08-29-0727-docs-code-log.md` (open).
 **Cron**: `5e2279de`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-04.
 
-**PDR-007 fully ratified today** — CIO's boundary ruling (neither m-44 nor a new methodology
-entry; already covered in spirit by m-36 Class 1) closed the last open piece. Arch, Web, CIO all
-signed off, no objection. Recorded on the PDR itself (`4ea7976d9`). Done, dropping from watch.
+**08-28 omnibus done** (`28eb629a8` + `6d9f590aa`), chain now continuous through 08-28.
+**Noted, not mine to chase**: Arch/CIO/HOST stayed dark 21+ hours past PM's stated account-wide
+freeze window while every other role recovered by dawn — both their own logs flag an unresolved
+second cause, neither explains it. Arch/CIO/HOST's own lane.
+
+**08-28's threads (PDR-007 ratified, heading-defect class fully closed, brokering protocol
+ratified) are all resolved** — see 08-28's session log for full detail, not re-detailing here.
 
 **Heading-defect class fully closed** (spanned 08-27→08-28): started as 2 posts, ended as 9 —
 checked the other 9 of Dispatch-PM's original 11 rather than accept "probably not worth it," found
