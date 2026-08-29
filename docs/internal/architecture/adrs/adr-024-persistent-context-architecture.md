@@ -82,7 +82,7 @@ class PreferenceAPI:
 - **Multi-Agent Coordinator**: Foundation for user preference coordination
 
 ## References
-- [Persistent Context Research](../../../development/active/pending-review/PERSISTENT_CONTEXT_RESEARCH.md)
+- [Persistent Context Research](../../development/active/pending-review/PERSISTENT_CONTEXT_RESEARCH.md)
 - User Preference Manager (see codebase)
 - Session Persistence (see codebase)
 - Preference API Endpoints (see codebase)
