@@ -140,6 +140,141 @@ class TestCreateHandlerHonestAsk:
         assert w.await_args.kwargs["title"] == "Explicit title"
 
 
+class TestRawCaptureKilledEverywhere:
+    """#1543 REWORK (PM live round 2026-08-29, v64): the raw-capture MOVED.
+
+    PM's verbatim 'create an issue about the login timeout in
+    test-piper-morgan' produced test-piper-morgan#111 with title
+    'the login timeout in test-piper-morgan' (the bare repo-routing phrase
+    leaked in — no slash, no "repository" word, so extraction-time
+    stripping could not know it was a repo) and body = the raw command
+    verbatim (the `or intent.original_message` description fallback).
+
+    Contract pinned here:
+    1. Once the routed repo is known, a trailing phrase NAMING it is
+       stripped from the title (named-resolved OR default-coinciding).
+    2. The body is NEVER the raw command: no described content → empty.
+    3. A trailing phrase naming anything else is honest content — kept.
+    """
+
+    pytestmark = pytest.mark.asyncio
+
+    PM_V64 = "create an issue about the login timeout in test-piper-morgan"
+    DEFAULT_REPO = "mediajunkie/test-piper-morgan"
+    RESOLVER = "services.integrations.github.repo_resolver.get_user_default_repo"
+    USER = "3f7b8a52-1543-4b00-9e00-000000001543"
+
+    async def _create(self, svc, message):
+        created = {"number": 111, "html_url": "https://x/111", "title": "t"}
+        intent = _create_intent(message)
+        with (
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
+            patch(self.RESOLVER, new=AsyncMock(return_value=self.DEFAULT_REPO)),
+        ):
+            result = await svc._handle_create_issue(intent, "wf-1", "sess-1", user_id=self.USER)
+        return result, w
+
+    async def test_pm_verbatim_v64_title_clean_body_empty(self, svc):
+        """PM's exact v64 command: the repo phrase is routing (it names the
+        routed repo), so the title is 'the login timeout' — and the body is
+        empty, never the command echoed back."""
+        result, w = await self._create(svc, self.PM_V64)
+        assert result.success
+        w.assert_awaited_once()
+        kwargs = w.await_args.kwargs
+        assert kwargs["title"] == "the login timeout"
+        assert kwargs["body"] == ""
+        assert self.PM_V64 not in kwargs["body"]
+        assert kwargs["owner"] == "mediajunkie"
+        assert kwargs["repo_name"] == "test-piper-morgan"
+
+    async def test_repo_phrase_mid_sentence_stays_clean(self, svc):
+        result, w = await self._create(
+            svc, "create an issue in test-piper-morgan about the login timeout"
+        )
+        kwargs = w.await_args.kwargs
+        assert kwargs["title"] == "the login timeout"
+        assert kwargs["body"] == ""
+
+    async def test_no_repo_phrase(self, svc):
+        result, w = await self._create(svc, "create an issue about the login timeout")
+        kwargs = w.await_args.kwargs
+        assert kwargs["title"] == "the login timeout"
+        assert kwargs["body"] == ""
+
+    async def test_actual_description_after_comma_lands_in_body(self, svc):
+        """Real described content IS the body — the raw-command ban never
+        swallows a description the user actually gave."""
+        result, w = await self._create(
+            svc,
+            "create an issue about the login timeout in test-piper-morgan, "
+            "and the description is sessions expire after 5 min",
+        )
+        kwargs = w.await_args.kwargs
+        assert kwargs["title"] == "the login timeout"
+        assert kwargs["body"] == "sessions expire after 5 min"
+
+    async def test_phrase_naming_a_non_repo_is_kept(self, svc):
+        """'in production' names no repo we route to — it is content, and
+        guessing it away would mangle honest titles."""
+        result, w = await self._create(svc, "create an issue about the login timeout in production")
+        kwargs = w.await_args.kwargs
+        assert kwargs["title"] == "the login timeout in production"
+        assert kwargs["body"] == ""
+
+    async def test_owner_qualified_trailing_phrase_also_stripped(self, svc):
+        result, w = await self._create(
+            svc,
+            "create an issue about the login timeout in mediajunkie/test-piper-morgan",
+        )
+        kwargs = w.await_args.kwargs
+        assert kwargs["title"] == "the login timeout"
+        assert kwargs["body"] == ""
+
+
+class TestStripRepoPhraseForHelper:
+    """The pure helper (SUPERSESSION note: extraction stays pure so it
+    lifts into the SessionSnapshot draft-state consumers)."""
+
+    def _strip(self):
+        from services.intent_service.repo_clarification import (
+            strip_repo_phrase_for,
+        )
+
+        return strip_repo_phrase_for
+
+    def test_bare_name_match_stripped(self):
+        assert (
+            self._strip()("the login timeout in test-piper-morgan", "mediajunkie/test-piper-morgan")
+            == "the login timeout"
+        )
+
+    def test_case_insensitive(self):
+        assert (
+            self._strip()("the login timeout in Test-Piper-Morgan", "mediajunkie/test-piper-morgan")
+            == "the login timeout"
+        )
+
+    def test_non_matching_name_untouched(self):
+        title = "the login timeout in production"
+        assert self._strip()(title, "mediajunkie/test-piper-morgan") == title
+
+    def test_phrase_only_title_never_emptied(self):
+        title = "in test-piper-morgan"
+        assert self._strip()(title, "mediajunkie/test-piper-morgan") == title
+
+    def test_no_repository_is_a_passthrough(self):
+        assert self._strip()("the login timeout", None) == "the login timeout"
+        assert self._strip()("the login timeout", "notaslashrepo") == ("the login timeout")
+
+    def test_mid_title_mention_is_not_stripped(self):
+        # Only a TRAILING clause is routing; a mid-title mention is content.
+        title = "the test-piper-morgan deploy fails on login"
+        assert self._strip()(title, "mediajunkie/test-piper-morgan") == title
+
+
 class TestUpdateHandlerEndToEnd:
     pytestmark = pytest.mark.asyncio
 

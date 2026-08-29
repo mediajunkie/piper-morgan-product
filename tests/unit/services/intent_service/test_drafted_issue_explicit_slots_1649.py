@@ -381,3 +381,184 @@ class TestExplicitSlotsEndToEnd:
             "title": None,
             "repository": None,
         }
+
+
+# ---------------------------------------------------------------------------
+# 4. v64 REWORK (PM live round 2026-08-29) — quoted slot values, never raw
+#    messages
+# ---------------------------------------------------------------------------
+
+# PM's exact first-turn phrasing (single straight quotes), plus the
+# smart-quote form a chat client auto-converts it into — the deployed
+# titled-pattern knew straight and curly-DOUBLE quotes but not
+# curly-single, which is the only mechanism that reproduces PM's observed
+# split (description captured, title dropped).
+PM_V64_ASK = "draft an issue titled 'Login timeout' with description 'sessions expire after 5 min'"
+PM_V64_ASK_CURLY = "draft an issue titled ‘Login timeout’ with description ‘sessions expire after 5 min’"
+PM_V64_ASK_DOUBLE = 'draft an issue titled "Login timeout" with description "sessions expire after 5 min"'
+# PM's exact correction turn — live, this ENTIRE sentence became the title.
+PM_V64_CORRECTION = "title should be 'Login timeout' as I indicated in my initial request"
+V64_TITLE = "Login timeout"
+V64_DESCRIPTION = "sessions expire after 5 min"
+# A body-only ask to reproduce the state PM was actually in when the
+# correction turn arrived (title missing, description given, title re-ask
+# open).
+V64_BODY_ONLY_ASK = "draft an issue with the description 'sessions expire after 5 min'"
+
+
+class TestV64FirstTurnExtraction:
+    """Slot extraction fills the title on the FIRST turn — every quote
+    style, including the smart quotes clients type on PM's behalf."""
+
+    def test_pm_exact_straight_single_quotes(self):
+        slots = _slotfill()(PM_V64_ASK)
+        assert slots.get("title") == V64_TITLE
+        assert slots.get("body") == V64_DESCRIPTION
+
+    def test_curly_single_quotes_regression(self):
+        slots = _slotfill()(PM_V64_ASK_CURLY)
+        assert slots.get("title") == V64_TITLE
+        assert slots.get("body") == V64_DESCRIPTION
+
+    def test_double_quotes(self):
+        slots = _slotfill()(PM_V64_ASK_DOUBLE)
+        assert slots.get("title") == V64_TITLE
+        assert slots.get("body") == V64_DESCRIPTION
+
+    def test_curly_double_quotes(self):
+        slots = _slotfill()("draft an issue titled “Login timeout” with description “sessions expire after 5 min”")
+        assert slots.get("title") == V64_TITLE
+        assert slots.get("body") == V64_DESCRIPTION
+
+
+class TestTitleAnswerExtraction:
+    """The pure slot-ANSWER extractor: a dictated/quoted value IS the
+    value; metacommentary never enters the slot; bare answers return None
+    (the derive path keeps handling them verbatim)."""
+
+    def _extract(self):
+        from services.intent_service.drafted_issue import extract_title_answer
+
+        return extract_title_answer
+
+    def test_pm_exact_correction_extracts_the_quoted_value(self):
+        assert self._extract()(PM_V64_CORRECTION) == V64_TITLE
+
+    def test_double_quoted_correction(self):
+        assert (
+            self._extract()('title should be "Login timeout" as I indicated in my initial request')
+            == V64_TITLE
+        )
+
+    def test_bare_quoted_answer_both_styles(self):
+        assert self._extract()("'Login timeout'") == V64_TITLE
+        assert self._extract()('"Login timeout"') == V64_TITLE
+        assert self._extract()("‘Login timeout’") == V64_TITLE
+        assert self._extract()("“Login timeout”") == V64_TITLE
+
+    def test_bare_unquoted_answer_is_none_for_the_derive_path(self):
+        assert self._extract()("Login timeout") is None
+
+    def test_unquoted_dictation_strips_metacommentary(self):
+        assert self._extract()("the title should be Login timeout as I indicated earlier") == V64_TITLE
+
+    def test_body_prose_with_incidental_quotes_is_never_stolen(self):
+        # A quoted span floating inside genuine body prose is content —
+        # extracting it would replay the #1627 theft in miniature.
+        assert self._extract()("Users see 'session expired' after login and lose work") is None
+
+    def test_prose_about_the_subject_is_not_a_dictation(self):
+        assert self._extract()("the subject is being spammed with retries") is None
+
+
+class TestV64EndToEnd:
+    """PM's two failing exchanges, pinned through the REAL process_intent
+    for the answer turns."""
+
+    pytestmark = pytest.mark.asyncio
+
+    async def test_pm_first_turn_fills_both_slots_no_reask(self, svc):
+        """Exchange 1 fixed: titled + quoted value fills the slot on the
+        FIRST turn — the shaped draft presents, nothing re-asks."""
+        for sid, ask in (
+            ("e2e-v64-arm-straight", PM_V64_ASK),
+            ("e2e-v64-arm-curly", PM_V64_ASK_CURLY),
+        ):
+            r = await _arm(svc, sid, ask)
+            assert "What should the title be?" not in r.message
+            assert "What's it about?" not in r.message
+            assert f"**Title**: {V64_TITLE}" in r.message
+            assert V64_DESCRIPTION in r.message
+            assert "file it as is" in r.message
+            pa = _pending_offers(svc)[sid]["pending_action"]
+            assert pa["draft"]["title"] == V64_TITLE
+            assert pa["draft"]["body"] == V64_DESCRIPTION
+
+    async def test_pm_correction_turn_titles_the_quoted_value_only(self, svc):
+        """Exchange 2 fixed: the correction turn's QUOTED value becomes the
+        title — the metacommentary sentence never does."""
+        sid = "e2e-v64-correction"
+        r0 = await _arm(svc, sid, V64_BODY_ONLY_ASK)
+        assert "What should the title be?" in r0.message
+
+        with (
+            patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})),
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
+        ):
+            r1 = await svc.process_intent(message=PM_V64_CORRECTION, session_id=sid, user_id=_USER)
+        w.assert_not_awaited()
+        assert "that's the title" in r1.message.lower()
+        pa = _pending_offers(svc)[sid]["pending_action"]
+        assert pa["draft"]["title"] == V64_TITLE
+        assert "as I indicated" not in pa["draft"]["title"]
+        # The stated description survives, unpolluted by the correction:
+        assert pa["draft"]["body"] == V64_DESCRIPTION
+        assert pa["intent"].context["title"] == V64_TITLE
+
+        created = {"number": 64, "html_url": "https://x/64", "title": "t"}
+        with (
+            patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})),
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
+            patch(RESOLVER, new=AsyncMock(return_value="acme/widgets")),
+        ):
+            r2 = await svc.process_intent(message="file it as is", session_id=sid, user_id=_USER)
+        w.assert_awaited_once()
+        _, kwargs = w.await_args
+        assert kwargs.get("title") == V64_TITLE
+        assert kwargs.get("body") == V64_DESCRIPTION
+
+    async def test_straight_bare_answer_still_titles_verbatim(self, svc):
+        """A bare unquoted answer keeps working exactly as before — the
+        extractor only overrides when something is explicitly dictated."""
+        sid = "e2e-v64-bare-answer"
+        await _arm(svc, sid, V64_BODY_ONLY_ASK)
+        with (
+            patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})),
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
+        ):
+            r = await svc.process_intent(message="Login timeout", session_id=sid, user_id=_USER)
+        w.assert_not_awaited()
+        pa = _pending_offers(svc)[sid]["pending_action"]
+        assert pa["draft"]["title"] == V64_TITLE
+        assert pa["draft"]["body"] == V64_DESCRIPTION
+
+    async def test_set_aside_path_stays_intact(self, svc):
+        """PM's 'no' worked live — pin it so the rework can't cost it."""
+        sid = "e2e-v64-set-aside"
+        await _arm(svc, sid, V64_BODY_ONLY_ASK)
+        with (
+            patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})),
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
+        ):
+            r = await svc.process_intent(message="no", session_id=sid, user_id=_USER)
+        w.assert_not_awaited()
+        assert "set that draft aside" in r.message
+        assert _pending_offers(svc) == {}
