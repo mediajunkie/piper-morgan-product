@@ -47,7 +47,7 @@
 </style>
 <main>
   <h1>MVP sprint — fundamentals to polish</h1>
-  <p class="sub">Fri Aug 28 ~8:45 AM · <b>v63 LIVE</b> — the week's staged pile + the security fix · Inversion still routing (read_status wave) · check-offs persist in your browser</p>
+  <p class="sub">Fri Aug 28 ~10 PM · <b>v64 LIVE</b> — flip machinery (dark) + Radar card + belt fixes — the week's staged pile + the security fix · Inversion still routing (read_status wave) · check-offs persist in your browser</p>
 
   <div class="banner"><b>v63 LIVE — a week's staged work shipped in one cut.</b> <b>#1598 security</b>: the admin metrics routes are gated, and the sweep found something worse and closed it — <code>/health/config</code> had been <b>world-readable with no token at all</b> (a prefix-match exemption silently widened past its intent). · <b>#1654</b> the reminder task question now HOLDS its answer (full two-question recovery) · <b>#1679</b> no more reminders titled "tomorrow" · <b>#1539</b> the first-contact demo now says what it means ("what I'm already keeping track of… you don't need to hold this list") · <b>#1685</b> create-todo is finally consent-evaluated. Test list below is ~8 items, newest first.</div>
 
@@ -72,6 +72,10 @@
   <section class="v">
     <h2>✅ Your live test list (all against v58)</h2>
     <ul class="checks" id="testlist">
+      <li><input type="checkbox" id="t-seq"><label for="t-seq"><b>SATURDAY ROUND — ORDER (PPM + Lead agreed)</b> <span class="why">1) SECURITY first: #1578/#1581 (XSS pins), #1501 (cross-tenant) — a false "looks fine" costs most here. 2) Then say "FLIP IT" and do the todo/reminder cluster — first live create_todo routes through the Inversion while you watch. 3) Then everything else below. One insertion of Lead's: the flip moment goes early, while attention is freshest.</span></label></li>
+      <li><input type="checkbox" id="t-radar64"><label for="t-radar64"><b>v64 · Radar card (#1635)</b> <span class="why">Dashboard → Radar: dashed "coming soon" card at the BOTTOM, below real entities; says "not watching anything yet"; absent entirely if your Radar is empty.</span></label></li>
+      <li><input type="checkbox" id="t-flip64"><label for="t-flip64"><b>v64 · the watched flip (#1677/#1488)</b> <span class="why">AFTER saying "flip it": "add todo buy oat milk" ×3 — every one should create a TODO (not a GitHub issue). This was the coin-flip misroute; if all three land as todos, Lead closes #1677+#1488 with your transcript as evidence.</span></label></li>
+
       <li><input type="checkbox" id="t-remrec"><label for="t-remrec"><b>v63 · reminder recovery (#1654)</b> <span class="why">"remind me" with no task → "what should I remind you about?" → answer with just the task → it CHAINS to the time question → answer → REAL save with 📅. The whole two-question path now holds together; previously the first answer orphaned.</span></label></li>
       <li><input type="checkbox" id="t-tomorrow"><label for="t-tomorrow"><b>v63 · no reminder titled "tomorrow" (#1679)</b> <span class="why">"set a reminder for tomorrow at 3pm" → asks WHAT to remind you about (previously saved a reminder literally titled "tomorrow").</span></label></li>
       <li><input type="checkbox" id="t-purpose"><label for="t-purpose"><b>v63 · the demo says what it means (#1539)</b> <span class="why">fresh conversation with GitHub connected → opens with "what I'm already keeping track of in [repo]…" and closes "You don't need to hold this list — I've got it."</span></label></li>

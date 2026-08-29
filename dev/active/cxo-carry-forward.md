@@ -1,3 +1,52 @@
+# CXO carry-forward — rewritten 2026-08-28 22:3x PT at STOP. Day closed; next fire 06:47 on 08-29,
+opening ~07:17.
+
+⚠️ **CRON ROTATION WATCH**: `cd9b3ddc` expires ~08-31. **Rotate proactively at the 08-30 START**
+(delete-then-create, verify exactly one job, record old→new id) — the 08-18 and 08-24 rotations are the
+worked precedent; don't wait for the silent death.
+
+## 🔴 TOP OF QUEUE, NEXT CLEAR-QUEUE FIRE: the trigger-time refresh check
+
+**HOST's 4th portfolio lapse (08-28) proved my diff-mode checker fixed the wrong half.** Their failure is
+*not* "edited content, forgot the bump" — it's the gap between the **trigger firing** (filing a workstream
+review) and the refresh beginning; two separate acts joined only by memory. **The fix belongs in
+`mail-send.sh`**: when a memo matches a role's declared `refresh_trigger_glob`, run the audit check and
+print it — so filing the review says, in the same breath, that the portfolio just went stale. The audit
+mode already computes this; nothing runs it at the moment that matters. **Not auto-bump** (that turns
+`last_updated` from a claim into an artifact of touching a file). ⚠️ **`mail-send.sh` is shared
+infrastructure on every role's critical path — this needs a careful pass, not a squeezed-in one.** Offered
+to CIO's lane too; if they've taken it, drop it.
+
+## What closed 2026-08-28 (the densest day of the cycle)
+
+- **Ship #058** written + sent; **portfolio §2 fully refreshed**.
+- **FTUX surface mapping delivered** (`ftux-surface-mapping-2026-08-28.md`) on PM's direct ask — lens
+  applied *first*, ~40 speculative cells → 2 live ones + the empty-state gap. **PPM filed the gap as #1688
+  (MVP, on the board)**; PM's §1 ruling (existing chat view, no new home view) landed in the doc and on the
+  issue — it had existed only in chat.
+- **Three PM ratifications executed into artifacts**: the floor/ethics split (retire floor-quality as a
+  *coverage statement*; ethics-decline VOICE half → triggered, with method + denominator); **§4's
+  "must not be asked to" column** — which was `experience-across-surfaces.md`'s **last** open item, so that
+  page is now fully ratified; **sync-before-mail** as a standing rule (CIO landed it as skill v1.30, my n=2
+  denominator carried forward honestly).
+- **Lead unblocked directly** on both "quiet" threads; they root-caused both (stale carry-forward row; an
+  opener that listed the inbox before merging) and fixed their opener.
+
+## Open at handoff
+
+- **The trigger-time check** (above) — mine, next clear-queue fire, unless CIO takes it.
+- **#1688** — Lead's one-mechanism-vs-two-builds call is the live question; PPM owns the board.
+- **#1635 build** — Lead's, queued behind an in-flight lane (real trigger, not "no rush").
+- **#1539 close** — after PM's next live round exercises the shipped purpose line.
+- **#1509** — rides the next deploy; PM's live retest closes it.
+- **Ethics-decline VOICE watch** — now TRIGGERED: fires on a deploy touching floor/decline copy, or a live
+  decline observed. Method: Colleague Test. Report with a denominator, never a bare all-clear.
+- Watch: the taxonomy's PDR-005 citation fix (small, unclaimed).
+
+---
+
+*(Prior header below — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-27 22:4x PT at the POST-FREEZE wake. Day closed; next fire 06:47
 on 08-28, opening ~07:17.
 

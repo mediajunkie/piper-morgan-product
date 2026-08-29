@@ -90,10 +90,23 @@ if [ "$MODE" = "--if-quiet" ]; then
   # reported NO MATCH *because it had matched*. Timing-dependent, so it passed when tested in
   # isolation and failed inside the script -- an intermittent false-negative in a guard, which is
   # the m-44 family exactly. Capture first, then test the string: no pipe, no race.
-  recent="$(git log origin/main --since="6 hours ago" --format=%s 2>/dev/null || true)"
+  #
+  # ⚠️ 2026-08-28 (Web found it, CIO fixed it): window shortened 6h -> 3h. Suppression CASCADES —
+  # a suppressed fire produces no new reference point, so consecutive quiet fires stack against the
+  # SAME stale commit timestamp until the window finally elapses. On the cohort's tightest cadence
+  # (3h, nine of eleven roles), a 6h window let TWO consecutive quiet fires suppress before a third
+  # fire finally wrote — worst case ~9h of true silence (three fire-intervals) against those roles'
+  # own 7h dynamic threshold, a false stale-alert on a role that never missed a beat (Web, 08-28:
+  # every fire ran on schedule; the freeze-watchdog's own alert matched the gap almost to the
+  # minute). 3h is the shortest inter-fire gap anywhere in the registry — at that window, AT MOST
+  # ONE quiet fire in a row can suppress (elapsed 3h is right at the boundary; the second consecutive
+  # quiet fire's elapsed 6h clears it and writes), bounding worst-case silence to ~2 fire-intervals,
+  # safely under any role's 2x-gap+1 dynamic threshold with real margin. Costs looser-cadence roles
+  # (cio, exec) some of the "free" suppression — cheap, since a heartbeat write is a few bytes.
+  recent="$(git log origin/main --since="3 hours ago" --format=%s 2>/dev/null || true)"
   case "$recent" in *"($ROLE)"*) hb_already=1;; *) hb_already=0;; esac
   if [ "$hb_already" = 1 ]; then
-    echo "heartbeat: $ROLE committed within 6h — that commit IS the heartbeat; nothing written (refinement a)"
+    echo "heartbeat: $ROLE committed within 3h — that commit IS the heartbeat; nothing written (refinement a)"
     exit 0
   fi
 fi

@@ -98,8 +98,13 @@ rather than guessing):
   names). Low priority, no rush — direction not scoped.
 - [ ] **Above-the-fold hero design** (from 8/15 PM conversation) — feature
   the most recent post above the fold on `/blog`, before the grid, instead
-  of the generic marketing hero. Not scoped — needs real design thought and
-  PM's eyes at each step (no browser on this host).
+  of the generic marketing hero. **UNBLOCKED 2026-08-28**: Web is now the
+  browser-automation pilot (headless Playwright, smoke-tested and confirmed
+  working same night). A screenshot already confirms the `compact` fix
+  (08-09) reduced padding but never addressed the real issue — full
+  marketing copy still leads. Real baseline exists now; pick up in the next
+  fire with actual design bandwidth, no deadline, report honestly on the
+  tool alongside the feature per Exec's ask.
 - [ ] **Buttondown native newsletter publishing** (from 8/15 PM conversation,
   explicitly long-term/not-urgent) — publish blog posts natively to the
   Buttondown newsletter, possibly with subscriber choice (blog vs. Ship,

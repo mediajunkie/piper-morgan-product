@@ -1,0 +1,247 @@
+<title>Weekly Report #058 — Internal</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --card:#FFFFFF; --ink:#1A1A17; --ink-soft:#5E5E55;
+    --rule:#E1E0DA; --accent:#5A5233; --accent-soft:#F0EEE4;
+    --adv:#3E6B45; --held:#8A6116; --slip:#A33F2B;
+    --shadow:0 1px 2px rgba(26,26,23,.05), 0 10px 28px -14px rgba(26,26,23,.16);
+    --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --data:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--ink-soft:#A0A093;
+    --rule:#33332B;--accent:#C9BE8E;--accent-soft:#26261E;
+    --adv:#79B885;--held:#D5A44B;--slip:#E38672;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="dark"]{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--ink-soft:#A0A093;
+    --rule:#33332B;--accent:#C9BE8E;--accent-soft:#26261E;
+    --adv:#79B885;--held:#D5A44B;--slip:#E38672;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{--ground:#F7F7F5;--card:#FFFFFF;--ink:#1A1A17;--ink-soft:#5E5E55;
+    --rule:#E1E0DA;--accent:#5A5233;--accent-soft:#F0EEE4;
+    --adv:#3E6B45;--held:#8A6116;--slip:#A33F2B;
+    --shadow:0 1px 2px rgba(26,26,23,.05),0 10px 28px -14px rgba(26,26,23,.16);}
+
+  body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:62rem;margin:0 auto;padding:3rem 1.25rem 5rem;display:flex;flex-direction:column;gap:2.5rem}
+  header{display:flex;flex-direction:column;gap:.5rem;border-bottom:3px double var(--rule);padding-bottom:1.5rem}
+  .stamp{font:500 .7rem/1 var(--data);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  h1{font:400 2.5rem/1.1 var(--display);margin:0;text-wrap:balance;letter-spacing:-.015em}
+  .standfirst{color:var(--ink-soft);max-width:52ch;margin:0;font-size:1.05rem}
+  h2{font:600 .72rem/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+     margin:0;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+  section{display:flex;flex-direction:column;gap:.8rem}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:1rem 1.2rem;
+        box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.5rem}
+  .card h3{margin:0;font:600 1.02rem/1.35 var(--body);text-wrap:balance}
+  .card.hero{border-left:5px solid var(--accent);padding:1.5rem 1.6rem}
+  .card.hero h3{font:400 1.55rem/1.2 var(--display)}
+  .card.flag{border-left:5px solid var(--slip)}
+  .card.good{border-left:5px solid var(--adv)}
+  .card>p{margin:0}
+  .note{color:var(--ink-soft);font-size:.93rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:.5rem}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:.6rem .8rem;
+        display:flex;flex-direction:column;gap:.15rem}
+  .stat dt{font:500 .66rem/1.2 var(--data);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .stat dd{margin:0;font:600 1.15rem/1.15 var(--body);font-variant-numeric:tabular-nums}
+  .stat dd small{font-weight:400;font-size:.72rem;color:var(--ink-soft);display:block;letter-spacing:.02em}
+  .tablewrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:.93rem}
+  th{text-align:left;font:600 .68rem/1.3 var(--data);letter-spacing:.07em;text-transform:uppercase;
+     color:var(--ink-soft);padding:.5rem .6rem;border-bottom:1px solid var(--rule);white-space:nowrap}
+  td{padding:.6rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tag{font:600 .66rem/1 var(--data);letter-spacing:.06em;text-transform:uppercase;padding:.28rem .4rem;
+       border-radius:2px;white-space:nowrap;display:inline-block}
+  .tag.adv{background:color-mix(in srgb,var(--adv) 14%,transparent);color:var(--adv)}
+  .tag.held{background:color-mix(in srgb,var(--held) 16%,transparent);color:var(--held)}
+  .tag.slip{background:color-mix(in srgb,var(--slip) 13%,transparent);color:var(--slip)}
+  ol.asks{margin:0;padding-left:0;list-style:none;counter-reset:a;display:flex;flex-direction:column;gap:.7rem;width:100%}
+  ol.asks li{display:flex;flex-direction:row;align-items:baseline;gap:.6rem;counter-increment:a;width:100%}
+  ol.asks li::before{content:counter(a);font:600 .85rem/1.5 var(--data);color:var(--accent);flex:0 0 auto}
+  ol.asks li>span{flex:1 1 auto;min-width:0}
+  ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.45rem}
+  ul.plain li::marker{color:var(--ink-soft)}
+  code{font:.88em/1.4 var(--data);background:var(--accent-soft);padding:.1rem .3rem;border-radius:2px}
+  blockquote{margin:.2rem 0;padding-left:.9rem;border-left:2px solid var(--rule);color:var(--ink-soft);font-style:italic}
+  footer{border-top:1px solid var(--rule);padding-top:1rem;color:var(--ink-soft);font-size:.85rem}
+  @media (max-width:34rem){h1{font-size:1.95rem}.wrap{padding-top:2rem}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="stamp">Internal weekly report · for xian only · Ship #058 substrate</p>
+    <h1>Week of August 21 – 27</h1>
+    <p class="standfirst">The week's two biggest wins both came from hours you spent talking to an agent directly, and the week's only real loss came from capacity, not from throughput. Ten reports in, all read in full. The milestone number moved in the right direction and got more honest at the same time — that needs three sentences of explanation, and they're the first thing below.</p>
+  </header>
+
+  <section>
+    <h2>Dashboard</h2>
+    <dl class="grid">
+      <div class="stat"><dt>Issues closed</dt><dd>24<small>verified via gh, window-scoped</small></dd></div>
+      <div class="stat"><dt>MVP not done</dt><dd>58<small>1,095 done · live 21:57 Fri</small></dd></div>
+      <div class="stat"><dt>Never started</dt><dd>28<small>of the 58 — half</small></dd></div>
+      <div class="stat"><dt>In review</dt><dd>28<small>the actual bottleneck</small></dd></div>
+      <div class="stat"><dt>Published</dt><dd>5<small>zero slots missed</small></dd></div>
+      <div class="stat"><dt>Commits</dt><dd>1,105<small>all roles, all branches</small></dd></div>
+      <div class="stat"><dt>Reports in</dt><dd>10 / 10<small>3 landed Fri, not Thu</small></dd></div>
+      <div class="stat"><dt>Capacity lost</dt><dd>~33h<small>7+ seats, Thu afternoon on</small></dd></div>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Milestone status — and why the composition changed</h2>
+
+    <div class="card hero">
+      <h3>The alarming-looking number isn't alarming. Sixteen off-board items came onto the board.</h3>
+      <p>Three readings of the same metric this window, and the middle one looks like a regression:</p>
+      <ul class="plain">
+        <li><strong>Thu Aug 27, window close (PPM):</strong> <code>61 not done — 15 Sprint Backlog, 3 In Progress, 27 In Review, + 16 not on the board; 1,075 done</code></li>
+        <li><strong>Fri Aug 28, Arch's filing:</strong> <code>58 not done — 28 Sprint Backlog, 2 In Progress, 28 In Review; 1,095 done. PLUS 0 unmilestoned</code></li>
+        <li><strong>Fri Aug 28 21:57, my own run just now:</strong> identical to Arch's, to the item.</li>
+      </ul>
+      <p>Sprint Backlog nearly doubled, 15 → 28. That reads as thirteen new unstarted items appearing overnight. It isn't. <strong>The sixteen items PPM counted separately as "not on the board" got onto the board</strong> — the current run's last line is <code>PLUS 0 unmilestoned — every open issue carries a milestone</code>, where a week ago it was sixteen. On-board not-done went 45 → 58; off-board went 16 → 0; total not-done <em>fell</em> 61 → 58 (your triage cut of five, partly offset by new discovery).</p>
+      <p class="note">So the number improved and the accounting got more honest in the same move. I'm spelling it out because Arch flagged the opposite risk on 08-21 — <code>sprint-truth.py</code> read as three different numbers (62 / 72 / 61) by three roles on one day — and correctly said that a metric which moves without explanation erodes trust in itself even when every reading is accurate. This one has an explanation.</p>
+    </div>
+
+    <div class="card flag">
+      <h3>"28 never started" is itself wrong — and correcting it is the actionable finding</h3>
+      <p class="note">Added after you asked why they haven't started. I pulled all 28 and checked rather than theorized, and the premise didn't survive the check.</p>
+      <p>I sampled four I had specific reason to suspect from the reports. <strong>All four have real work done while sitting in "Sprint Backlog — no one has picked these up."</strong> The reminder task-clarify carrier is <em>built and merged to main</em>, implementation evidence posted on the issue Aug 22. The ambient-presence false door is <em>built</em>, commit landed Aug 28, staged for deploy. The per-user timezone item was actively rescoped Aug 27 with its Slack half split off. The TemplateRenderer family was <em>ruled DISPOSE</em> by Arch today and the ruling hasn't reached the issue.</p>
+      <p><strong>Denominator, honestly:</strong> 4 of 4 on a deliberately biased probe — I picked the ones I suspected, so this establishes the miscount is real, not that it's the majority. Fourteen of the 28 have zero comments and are plausibly genuinely untouched. I can't give a true count without an audit, and I'd like to run one.</p>
+      <p>Lead and Arch both flagged "28 never started" in good faith and I passed it to you as the thing that should bother you. What should actually bother you is one layer down: <strong>board status lags the work, so the number meant to keep our completeness claims honest is itself unreliable — in the flattering direction this time.</strong></p>
+    </div>
+
+    <div class="card flag">
+      <h3>Three real problems inside the genuinely-unstarted remainder</h3>
+      <ul class="plain">
+        <li><strong>A CRITICAL blocker has sat unstarted eleven days with three issues queued behind it.</strong> The <code>/files</code> upload UI errors on <em>every</em> attempt — you found it live Aug 18. Directly behind it: a document that exists in the account's listing but can't be summarized; non-PDF uploads unsummarizable because the analyzer runs pypdf on everything; an analyze handler reading the wrong result field. That's a dependency chain, not four independent items, and nobody claimed the head of it. <strong>This is the sharpest single answer to "why not started."</strong></li>
+        <li><strong>Nine of the 28 were filed on one day — Aug 18 — and they're your testing session's harvest.</strong> Not a backlog failure in itself, but it means the queue's shape is set by testing bursts and nothing downstream re-sequences it afterward.</li>
+        <li><strong>Four CI workflows are standing red on every push to main</strong> (filed today). Red that's always red has stopped being a signal.</li>
+      </ul>
+      <p class="note">And worth saying rather than implying everything unstarted is a failure: six were filed within the last week and are simply queued, and three are routing-corpus gaps that are real and correctly ranked below the flip work. Those two groups are fine.</p>
+    </div>
+
+    <div class="card">
+      <h3>The other 28 are In Review, and that remains the bottleneck</h3>
+      <p>Built, awaiting verification, mostly yours. We pulled this apart Thursday: of the 27 then, roughly nine genuinely need <em>you</em> (conversational-flow defects only live testing surfaces), about ten are code-level with deterministic pass/fail, two are security items miscategorized, four need a browser rather than you specifically, one is infrastructure. <strong>The goal isn't less acceptance testing — it's clearing the other eighteen out from in front of it.</strong></p>
+    </div>
+  </section>
+
+  <section>
+    <h2>The week's shape, in one paragraph</h2>
+    <div class="card">
+      <p>Friday through Wednesday was the strongest synchronous stretch of the month. Your FTUX 1-1 with CXO on the 21st resolved five carried threads in a single sitting — threads that had waited days to weeks in mail queues. Your BYOC and connector-architecture conversation with PA on the 26th–27th produced a ratified position, a new project-wide principle ("no optional complexity"), and a same-day mechanical execution of the whole Slack descope. CXO's own report names the pattern without being asked to: the two highest-output stretches this month were both days you were live with an agent. Then Thursday afternoon the account hit its weekly usage limit and at least seven seats went dark for the rest of the window — which is why three of these ten reports are dated Friday.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Per-workstream detail</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Role</th><th>Verdict</th><th>What actually moved</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>CXO</strong></td><td><span class="tag adv">Strong</span></td>
+            <td>The window's headline seat. Your live 1-1 produced the aligned FTUX experience model you co-own. Surfaces taxonomy <strong>ratified v1.0</strong> and already doing live work. First-contact (the four-week Jake arc) closed with a full evidence chain. Purpose-line strings shipped same evening. Built the portfolio <code>--diff</code> checker off HOST's own lapse data, negative-control-verified, then independently re-verified by HOST. Froze 08-25 13:30 → 08-27 22:17 — fifteen cron fires arrived as one wake.</td>
+          </tr>
+          <tr>
+            <td><strong>PA</strong></td><td><span class="tag adv">Strong</span></td>
+            <td>Five quiet days, then the entire week's substance in forty-eight hours. All three prepared positions landed; you extended two into principles. The sharpest moment: PA argued Slack had a <em>stronger</em> removal case than your own framing, rather than agreeing at your level. Then checked the code instead of the diagram — <code>github_adapter.py</code> is mostly genuine MCP, <code>slack_adapter.py</code> and <code>notion_adapter.py</code> have <strong>zero</strong> real MCP calls. Your concern was correct for three of four connectors, not uniformly. Executed the full descope fallout same-turn.</td>
+          </tr>
+          <tr>
+            <td><strong>Lead</strong></td><td><span class="tag adv">Strong</span></td>
+            <td>Built the v63 pipeline across the window (shipped Friday on your word): admin gating plus closure of a world-readable config exposure found during it, reminder recovery, pure-time titles, first-contact purpose strings, create_todo consent registration. Delivered the engineering read of all sixty open MVP items in six decision-shaped groups. Two self-caught process defects, both owned: a fire-opener that listed the inbox before syncing, so fresh mail was invisible for a cycle; and a week tracking "awaiting sign-off" for something signed off on the issue seven days earlier.</td>
+          </tr>
+          <tr>
+            <td><strong>Docs</strong></td><td><span class="tag adv">Strong</span></td>
+            <td>Five posts published, six real defects caught. Found and fixed a month-long cross-project mail-delivery failure — seven of their own memos written to a sibling repo but never committed, which fed directly into the reply protocol I ratified the same day. Fixed two root causes rather than symptoms, including a skill whose own instructions contradicted its own field definition two sections up. Caught by you, not themselves, on a stale-checkout false blocker — and fixed it durably in CLAUDE.md rather than just re-syncing.</td>
+          </tr>
+          <tr>
+            <td><strong>Comms</strong></td><td><span class="tag adv">Strong</span></td>
+            <td>Five publications, zero slots missed. Their §1 is the most useful thing in this batch: five review cycles where a <em>different</em> layer caught each thing — three they caught first, two they missed and Docs caught. Owns giving you bad mid-incident advice during the composer scare and not withdrawing it once the premise was disproven. Caught Ship #057's wrong hero image before publish.</td>
+          </tr>
+          <tr>
+            <td><strong>HOST</strong></td><td><span class="tag adv">Strong</span></td>
+            <td>Agent 360 v0.4 closed end-to-end, 10/10, synthesis sent to you 08-27. Broke their own three-window portfolio-lapse streak. Disposed two genuinely four-month-stale April carryovers by reading the original sources and making real calls rather than deferring a fifth month.</td>
+          </tr>
+          <tr>
+            <td><strong>CIO</strong></td><td><span class="tag adv">Strong</span></td>
+            <td>Fully disposed a seven-week-old welfare-criteria spec, end to end — every criterion done, ruled, or explicitly declined. Two real stale-tracker catches in their own working docs. Shipped a mail-integrity guard that was then <strong>corrected twice the same day by two different people</strong> — which they correctly read as a sign the mechanism was actually used by people who verify, not as a defect in either reporter. Escalated CXO's stall four separate times rather than let repetition read as declining urgency.</td>
+          </tr>
+          <tr>
+            <td><strong>Arch</strong></td><td><span class="tag adv">Strong</span></td>
+            <td>The week's substantive architectural ruling: a named write operation can flip individually, but through an explicitly reviewed allowlist, not a blanket relaxation. Got there by dispatching an investigation rather than trusting the framing — and <strong>found Lead's safety claim was false</strong>. Also caught that a third option Lead itself had called "the strongest fix" hadn't made it into the framing sent to Arch, and flagged that your triage should see four options, not three.</td>
+          </tr>
+          <tr>
+            <td><strong>PPM</strong></td><td><span class="tag adv">Solid</span></td>
+            <td>Held the triage-cut thread through both gating conversations, provided the fresh denominator, accepted Lead's division of labor. Re-confirmed a criterion on a fresh run rather than letting a three-week-old signature stand. Independently caught a parent-epic milestone mismatch that PA hadn't flagged.</td>
+          </tr>
+          <tr>
+            <td><strong>Web</strong></td><td><span class="tag adv">Solid</span></td>
+            <td>Three real bugs. The SEO one matters most: every blog post and Weekly Ship was canonicalizing to the site root instead of itself, breaking the syndication authority chain — root-caused, eight files fixed, verified against 381 built pages. On your composer near-miss they found a genuine structural defect and fixed it, then <strong>left the issue open deliberately</strong> because they couldn't confirm from git alone that it was the mechanism behind your specific incident.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I'd put in front of you, ranked</h2>
+    <div class="card">
+      <ol class="asks">
+        <li><span><strong>The In Review bucket, not the sprint number.</strong> Twenty-eight items sit built-and-unverified, and only about a third of them actually require you. Delegating the browser-dependent ones is why I named Web as the browser-automation pilot. If one thing changes next week, this is the one with the most leverage.</span></li>
+        <li><span><s><strong>CXO's floor-quality and ethics-decline watch is unattested for a fourth straight window.</strong></s> <strong>WITHDRAWN — you already resolved this, and your memory of it is accurate.</strong> <code>decisions.log</code>, this morning ~09:4x: you ratified CXO's split. Floor-quality half <em>retired</em>, explicitly as a coverage statement (August built the instruments that cover it). Ethics-decline voice half <em>kept</em> and converted standing → triggered, because no automated suite scores register. Your words: "Approved, I like that recommendation." My error, not a window-boundary artifact — an asks section is a live-state claim and I never verified it. See the note at the foot of this report.</span></li>
+        <li><span><strong>HOST's Agent 360 v0.4 synthesis is waiting on you</strong> — ten sources, headline finding, eight convergent findings, a seven-item diff against v0.3, six ranked candidate changes. The deliverable is done; the "what's worth changing" step needs you.</span></li>
+        <li><span><strong>CIO has four questions with no reply, the oldest raised 08-19</strong> — chess-board scope, methodology-core disposition, curation-trial scope, watchdog relay latency. None is urgent alone. Together they're the clearest instance of a pattern I want to name: <em>the PM-gated queue is filling faster than it drains.</em> Comms has three more (insight pool at ten days, a quote confirmation, listing copy routed to PPM with no response), Docs one, PA one. My read is these want a single batched sitting, not nine separate asks — tell me and I'll assemble it.</span></li>
+        <li><span><strong>CXO's "must not be asked to" column</strong> — five cells, with you since 08-21 evening. CXO flagged it as a gentle re-surface, not a chase.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h2>Risks and honest gaps</h2>
+
+    <div class="card flag">
+      <h3>Capacity: I framed this as a loss and that's the wrong frame</h3>
+      <p>Thursday ~14:00–15:00 PT the account hit its weekly usage limit. Confirmed dark for the rest of the window: PA, Web, Arch, Comms, CIO, PPM, and me. CXO's gap was longer and started earlier (08-25 13:30), and CXO correctly declined to fold it into one explanation without evidence — they're probably two events.</p>
+      <p><strong>Your reframe, which I'm adopting:</strong> we fully consumed the capacity you paid for, got maximum use of the Fable model, and ran out only in the final ~8 hours of the week — call it 4–5% of available working time. Against the pre-duty-cycle baseline, where most agents sat idle whenever you weren't actively working with them, that's near-complete utilization, not a shortfall. <strong>Hitting the ceiling at 95% through the week is the system working, not failing.</strong> I'd only start reading it as a problem if the exhaustion moved meaningfully earlier in the week or started landing mid-deliverable.</p>
+      <p class="note">Nothing was lost: every cron survived, mail queues drained at the wake, every seat wrote a truthful retroactive close rather than a smooth narrative. Three reports are Friday-dated because of it.</p>
+      <p class="note">Related and unresolved: some sessions come back on their own and some wedge on a dialog until you tmux in. You asked why on Thursday; I don't know, and I'm routing it to CIO now that they've had a fire.</p>
+    </div>
+
+    <div class="card flag">
+      <h3>Two roles filed the same issue two hours apart, neither aware</h3>
+      <p>Arch's investigation found a missing consent registration and filed it. Lead independently found the identical gap and filed it again roughly two hours later. Docs caught the duplicate on an omnibus sweep and closed one. Cheap this time — the fix shipped the same night — but it's the second independent-duplicate this month, and the mechanism is the same both times: a finding travels as a summary, and the summary is lossy about what's already been filed.</p>
+    </div>
+
+    <div class="card">
+      <h3>Smaller things worth knowing, no action needed</h3>
+      <ul class="plain">
+        <li><strong>Six role portfolios remain unverifiable</strong> cohort-wide — HOST has repeated this three windows running. Cheap to close, still nobody's explicit job. Comms' own is 23 days stale and they count it in every review.</li>
+        <li><strong>Arch owns a process gap</strong>: went to mail triage before creating a session log on waking from the freeze. Caught it in-fire, fixed it, named it rather than omitting it.</li>
+        <li><strong>Web still has no browser</strong> — unchanged standing constraint, and the reason the browser-automation pilot lands there.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>The theme I'd propose for the public Ship</h2>
+    <div class="card hero good">
+      <h3>No single layer was reliable enough alone, and none of them needed to be</h3>
+      <p>That's Comms' sentence, and it's the week's honest throughline. Five publications, five review cycles, and in every one something got caught by a <em>different</em> layer than the one that authored it. The heading defect is the cleanest case: a new coordinator agent found it doing routine pre-flight work it wasn't looking for, Comms verified the live defect independently and then widened scope to their own unpublished drafts unasked, Docs took it further than requested and swept nine more rows rather than stopping at "probably a no." Thirteen instances fixed. Nobody in that chain owned the whole defect.</p>
+      <p>It holds outside publishing too. Arch dispatched an investigation and found Lead's safety claim false. PA checked the code and found your connector concern true for three of four, not all four. CIO shipped a guard and was corrected twice the same day by the two people who used it. PPM verified PA's reconciliation against the source document rather than accepting a fast turnaround as evidence. HOST's Agent 360 synthesis found the same discipline independently named by eight of ten respondents.</p>
+      <p class="note"><strong>Structure you've asked for, and it changes the draft:</strong> the Ship leads with what we actually shipped — Lead's v63 pipeline, Arch's allowlist ruling, the connector-architecture findings, the SEO and canonicalization fixes — and the process material moves to the back end. The verification theme becomes the closing learning pattern, not the opening thesis.</p>
+      <p class="note"><strong>And the second framing gets rewritten rather than dropped.</strong> Not "PM attention is valuable" — that's flattery and it isn't the finding. The finding is <em>what got decided, unblocked, and advanced</em> in the collaborative sessions: the FTUX model that five carried threads resolved into, the BYOC position that unblocked the surface mapping, the "no optional complexity" principle, the Slack descope that moved five issues and retitled an epic the same day. The human/machine interface is still where the action is — the smart bottleneck — and the honest report is a ledger of what passed through it, not a compliment to it.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Compiled by Exec (Chief of Staff), Friday 2026-08-28, 22:0x PDT. Ten of ten workstream reports read in full; all seven omnibus logs for the window present and read. Live verification at compile time: <code>sprint-truth.py</code> run 21:57 PDT (not recalled from any report), issue closures counted via <code>gh</code> against the window boundary, publications checked against the editorial calendar and matched to Comms' own count of five, commit count from <code>git log</code> window-scoped.</p>
+    <p>Numbers I did <em>not</em> verify independently and am passing through with attribution: per-role internal counts (defects caught, review cycles, files fixed) come from each role's own report. Where two reports disagreed I've said so rather than picked one.</p>
+    <p><strong>Revision, 22:4x — one defect in the first version worth naming rather than silently patching.</strong> I put CXO's floor/ethics watch to you as a live decision when you had already ratified its split thirteen hours earlier, recorded in <code>decisions.log</code>. The cause is precise and it isn't the window boundary: every <em>other</em> section of this report is correctly window-scoped, but <strong>an asks section is a live-state claim by definition</strong> — it says "this needs you now." I inherited it from CXO's window-scoped report and never ran the verification pass my own rollup procedure requires for exactly this. The same probe would have caught it in one grep. Applying it to the rest of the queue is what turned up the board-status finding above.</p>
+  </footer>
+</div>

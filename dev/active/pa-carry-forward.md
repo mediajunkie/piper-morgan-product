@@ -131,10 +131,23 @@ days stale.
     extension of #1536's own AC3, not "differentiator work getting a pass by default." Both cc'd to
     PA, no action needed — just a good outcome worth having on record: the lens is compounding across
     roles, not a one-off.
-  - **Thread status**: PM signaled next topic is "the BYOC skunkworks project itself, next steps" —
-    a new phase of this conversation, not yet started. PPM and Arch still haven't replied to the
-    Slack-descope loop-in memo as of 08-28 morning — nothing to chase. Otherwise nothing pending from
-    the connector question specifically.
+  - **Arch replied 08-28 evening — architecture read confirmed, thread now fully closed**: investigated
+    independently (checked the code AND looked up GitHub's actual hosted-endpoint contract) rather than
+    just accept PA's framing. Confirmed config-level per ADR-070 Amendment A's own design — no ADR
+    amendment, no resolver rewrite needed — and confirmed the tool-name coupling holds across a swap
+    (GitHub's hosted endpoint is built using the OSS `github-mcp-server` as a library, same tool
+    contract). **Two real, non-architectural gates found that PA's original flag hadn't surfaced**:
+    (1) GitHub's hosted endpoint requires the authenticating user hold a Copilot license — enforced at
+    GitHub's edge, not config-tunable, so a global default flip would silently fail for any user
+    without a seat; (2) whether Piper's stored OAuth grant scopes are valid against the hosted endpoint
+    is unverified — needs an empirical connect-and-call test, not just docs-reading. Net ruling:
+    architecturally sound, not yet a safe default flip; routed the actual rollout call to PPM (whether
+    it's worth pursuing given the licensing gate narrows who benefits) rather than deciding it
+    unilaterally. Not blocking anything. **PPM now owns that follow-on question, not PA.**
+  - **Thread status — genuinely fully resolved as of 08-28 evening**: all three loop-in recipients
+    (CXO, PPM, Arch) have now responded; every question raised in the 08-27 memo has a home. PM
+    signaled the next topic is "the BYOC skunkworks project itself, next steps" — a new phase, not yet
+    started, PM's timing to initiate.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
@@ -157,25 +170,27 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-26 STOP (22:12)
+## Active state — 2026-08-28 STOP (21:41)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/26/2026-08-26-0712-pa-code-log.md` — **8/26 DAY-CLOSED**, verified strict.
-  Contains the full write-up of today's live BYOC conversation with PM — read that log, not just this
-  carry-forward, if picking this thread back up cold.
+- **Session log**: `dev/2026/08/28/2026-08-28-0644-pa-code-log.md` — **8/28 DAY-CLOSED**, verified
+  strict. Also holds the retroactive 8/27 closure (cohort-wide weekly-usage-limit outage, no work
+  lost) at the top of the 8/27 log if picking that thread up cold.
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure.
-- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `a567c235` deleted → job
-  `07bfdd69` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
+- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `07bfdd69` deleted → job
+  `6a56583e` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
 - **Standing discipline (from 08-15's correction, still active)**: re-verify carried-forward claims
   against their live source before citing them in an external report, not just at routine
   carry-forward-hygiene time. Habit, not yet mechanical.
-- **Live thread, PM's pace, PAUSED NOT CLOSED**: the BYOC conversation happened today, ran past
-  22:00 with no explicit wrap. See PM Attention above for the full state — all three positions landed,
-  four concrete follow-ups owed (PPM reconciliation, diagram content fixes, diagram rev2, PM's
-  connector-count call). Pick back up naturally, don't treat the overnight gap as the thread having ended.
+- **BYOC/connector-architecture thread: GENUINELY FULLY RESOLVED as of tonight** — see PM Attention
+  above for the complete arc. All three loop-in recipients (CXO, PPM, Arch) have replied; Slack's
+  Fast Follow move is executed and confirmed from every angle (FTUX, roadmap, architecture). Nothing
+  owed, nothing to chase. The one live, unfinished thread is PM's own next topic — "the BYOC
+  skunkworks project itself, next steps" plus a preview of a shipping-small-things discussion — both
+  explicitly on PM's timing, not a deadline. Pick up naturally when PM re-engages; don't self-initiate.
 
 🔔 **STEP 5b — HEARTBEAT: emit it IMMEDIATELY AFTER `date`, BEFORE the git fetch/merge, and WITHOUT
 `--if-quiet`** *(ordering fixed 2026-08-05: my heartbeat had five commands incl. fetch+merge in front of
