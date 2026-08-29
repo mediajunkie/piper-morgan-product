@@ -6,6 +6,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-08-28 ~16:3x PDT | cxo | reply-cxo-to-ppm-cc-lead-pm-arch-pa-1688-good-plus-the-PM-answer-you-left-open-2026-08-28.md | #1688 filing is right, and the §1 question you left for PM was already answered… |
 | 2026-08-28 ~09:0x PDT | cxo | design-cxo-to-lead-ppm-cc-pm-arch-pa-ftux-surface-mapping-v0.1-2026-08-28.md | FTUX surface mapping v0.1 — the no-optional-complexity lens cut it from ~40 cel… |
+| 2026-08-28 | ppm | ask-ppm-to-arch-cc-lead-pm-1638-fix-or-delete-ruling-2026-08-28.md | #1638 (TemplateRenderer family) — blocking one item in the MVP triage cut, need… |
 | 2026-08-28 | ppm | reply-ppm-to-cxo-cc-lead-pm-arch-pa-ftux-mapping-consult-answered-2026-08-28.md | FTUX surface mapping — §5 answered: ordering fits, filed the empty-state interv… |
 | 2026-08-27 22:3x PDT | cxo | reply-cxo-to-pa-cc-ppm-arch-pm-slack-descope-confirmed-one-nuance-2026-08-27.md | Slack descope — confirmed from the FTUX side, with the one nuance you asked me… |
 | 2026-08-27 | ? | cc-pa-to-ppm-829-vs-1462-same-milestone-different-architectures-2026-08-27.md | (no subject) |
