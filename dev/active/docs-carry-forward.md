@@ -1,7 +1,7 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-29 ~14:0x PDT (crossposts recorded, 33h-gap closed, roadmap/CORE flattened,
-PM's taxonomy question answered with evidence)
+**Updated**: 2026-08-29 ~15:xx PDT (crossposts recorded, 33h-gap closed, roadmap/CORE flattened,
+current/ folded out of adrs+patterns paths — both flattening-plan candidates now executed)
 **Session log**: `dev/2026/08/29/2026-08-29-0727-docs-code-log.md` (open).
 **Cron**: `5e2279de`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-04.
 
@@ -17,11 +17,17 @@ zero broken links caused by the move. Found and fixed a real bug in `scripts/che
 along the way (hardcoded pre-worktree path made it silently check nothing — now genuinely
 working). Filed #1692 for one pre-existing broken-link pair the fixed checker surfaced.
 
-**PM's deeper taxonomy question answered with evidence, recommendation recorded not executed**:
-`internal/` earns its keep (774 vs 252 files, real audience split). `current/` does not — adr-028
-has sat SUPERSEDED-status inside `current/adrs/` for 33+ days, `archive/` holds unrelated docs, no
-ADR has ever moved on supersession. Fold-current-out recommendation written into the flattening
-plan doc, deliberately deferred — falls inside PM's own ADRs-in-review timing constraint.
+**`current/` folded out of the adrs/patterns paths — executed and verified, PM-approved**:
+`current/adrs/` (82 files) and `current/patterns/` (81 files) moved to
+`docs/internal/architecture/adrs/` and `.../patterns/`; everything else in `current/` (~55
+standalone files, 6 more subdirs) untouched — no evidence gathered on those, scope stayed to what
+was actually investigated. 824 files repo-wide referenced the old paths (334 `dev/`, 343
+`mailboxes/` — historical, left as-is; 147 living docs/tooling — all repaired, including plain-text
+mentions in `CLAUDE.md`/`SETUP.md`/skills, not just markdown links). 101 internal + re-discovered
+relative-path links fixed mechanically (resolve true target, recompute relative path). Verified:
+2,542 links, 81 broken — identical to the pre-move baseline, zero net breakage. Full record in
+`docs-tree-flattening-plan-2026-08-11.md`. Both of this plan's candidates are now executed; the
+plan itself is functionally complete (the "lower confidence" Comms pair was never mine to decide).
 
 **⚠️ Standing practice, added 08-27, read this at every fire**: a duty-cycle sync from earlier in
 the session is a timestamped fact, not a durable one. Before reading file/git state to answer a
@@ -31,13 +37,6 @@ first if meaningful time has passed. Fixed durably in `CLAUDE.md`'s "Never guess
 
 **#1683**, **#1644** (roadmap.md full v19 fold, PPM's lane), **#1682** (3 minor findings) all
 still open, none urgent — see their issues for full context, not re-detailing here each day.
-
-## Awaiting PM (genuine, not urgent, don't chase)
-
-- **Docs-tree flattening plan go/no-go** — plan posted 2026-08-11
-  (`docs/internal/operations/docs-tree-flattening-plan-2026-08-11.md`), one recommended flatten
-  (`roadmap/CORE/`), still no PM decision. Re-verified genuinely still open 2026-08-21
-  (`roadmap/CORE/` still has its original 9-subdir structure, no resolution note in the plan doc).
 
 ## Awaiting others (check periodically, don't re-derive)
 
