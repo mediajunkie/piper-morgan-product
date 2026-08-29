@@ -912,26 +912,45 @@ class TodoIntentHandlers:
             logger.error("Todo deletion failed", error=str(e), user_id=user_id, exc_info=True)
             return "I had trouble removing that todo. You can try again with 'delete todo [number]', or say 'show my todos' to verify the list."
 
+    # #1693: the create-todo command TOKEN — 'todo', 'to-do', or 'to do'.
+    # Accepted in the command position ONLY (the pattern lead-in), never by
+    # normalizing the whole message: a pre-extraction rewrite of 'to do' →
+    # 'todo' would corrupt captured task text ("add todo: remember to do
+    # laundry" must save "remember to do laundry", not "remember todo
+    # laundry").
+    _TODO_TOKEN = r"to[-\s]?do"
+    # #1693: separator between the token and the task text — colon
+    # (existing), dash/en-dash/em-dash ('new todo - water the plants'), or
+    # plain whitespace ('add todo buy oat milk', unchanged).
+    _TODO_SEP = r"(?:\s*[:\-–—]\s*|\s+)"
+
     def _extract_todo_text(self, message: str) -> str:
         """Extract todo text from 'add todo: TEXT' pattern.
 
         Issue #940 UAT Finding 5: Accept natural phrasing with articles
         ('Add a todo:', 'create a new todo:') not just rigid 'add todo:'.
+
+        Issue #1693 (PM live 8/29, v64): the routing delivered these to this
+        handler and the EXTRACTION dropped them — 'new todo - water the
+        plants' (dash separator, 'new' lead-in), 'add to-do: water the
+        plants' (the teach-copy's own suggested form plus a hyphen — teach-
+        then-deny in miniature), 'one more to-do - water the plants'. Fix is
+        extraction-only: hyphenated/spaced token + dash separators + the
+        new/another/one-more lead-ins. Task text is captured verbatim.
         """
-        # Try "add [a] [new] todo: TEXT" pattern
-        match = re.search(r"add\s+(?:a\s+)?(?:new\s+)?todo:?\s+(.+)", message, re.IGNORECASE)
-        if match:
-            return match.group(1).strip()
-
-        # Try "create [a] [new] todo: TEXT" pattern
-        match = re.search(r"create\s+(?:a\s+)?(?:new\s+)?todo:?\s+(.+)", message, re.IGNORECASE)
-        if match:
-            return match.group(1).strip()
-
-        # Try "todo: TEXT" pattern
-        match = re.search(r"^todo:?\s+(.+)", message, re.IGNORECASE)
-        if match:
-            return match.group(1).strip()
+        token, sep = self._TODO_TOKEN, self._TODO_SEP
+        patterns = [
+            # "add/create [a] [new|one more] todo: TEXT" (#940 + #1693)
+            rf"(?:add|create)\s+(?:a\s+)?(?:new\s+|one\s+more\s+)?{token}{sep}(.+)",
+            # "new todo - TEXT" / "another todo: TEXT" / "one more to-do - TEXT" (#1693)
+            rf"(?:new|another|one\s+more)\s+{token}{sep}(.+)",
+            # "todo: TEXT" at start of message
+            rf"^{token}{sep}(.+)",
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, message, re.IGNORECASE)
+            if match:
+                return match.group(1).strip()
 
         return ""
 
