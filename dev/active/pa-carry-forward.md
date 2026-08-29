@@ -21,15 +21,19 @@ fire; 08-08's Fundamentals-First ruling governs the moved-beta month's priority 
 days stale.
 
 - ⏱️ **TEN SECONDS: open `https://pipermorgan.ai/privacy` in a browser** and say whether a real policy
-  renders. URL returns **200**; **server-rendered text is 29 characters.** PA cannot execute JS, so this
-  is undecidable from an agent seat. Matters because Anthropic rejects *"missing or incomplete"* policies
+  renders. URL returns **200**; **server-rendered text is 29 characters.** Undecidable from this
+  session (see correction below); matters because Anthropic rejects *"missing or incomplete"* policies
   and review may fetch without JS.
-- 🟡 **PRECISE DIAGNOSIS 08-13: PA's seat has no browser at all, not just "can't execute JS"** — tried
-  `chrome-devtools` tooling for the Docs alpha-feature-guide verification ask below; no Chrome/Chromium
-  binary exists on this Amber worktree (`/Applications/`, `which chromium`, all absent). The privacy-policy
-  item above is the same root cause. If live UI verification becomes a recurring PA ask, worth deciding
-  whether to provision a browser on this seat or route that class of work elsewhere (PM's own browser, a
-  different agent seat, or a dedicated QA pass) — code-level inspection is a real but weaker substitute.
+- 🟢 **CORRECTED 08-29 — the 08-13 "no browser at all" diagnosis was wrong in a specific, now-understood
+  way, not just stale.** Exec found `.mcp.json`'s `chrome-devtools` server pointed at
+  `/Applications/Google Chrome.app/...`, which doesn't exist on Amber — that's a **misconfigured path**,
+  not an absent browser. A real, working Chrome (Playwright's Chrome for Testing) was on disk the whole
+  time; the tool just couldn't find it. Exec repointed the config. **Tested live rather than assumed
+  fixed**: my own session still fails with the exact old broken path in the error — the `.mcp.json` edit
+  is correct on disk but doesn't reach an already-running session's MCP subprocess. Reported to CIO/Exec
+  (`mailboxes/pa/sent/pa-to-cio-cc-exec-pm-chrome-devtools-fix-not-live-in-running-sessions-2026-08-29.md`)
+  so "still fails today" isn't misread as the fix not working. **Retest at next fresh session start** —
+  the privacy-policy check may finally be answerable, not permanently blocked as the old framing implied.
 - 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a
   claim, not metadata.
 - 🔴 **BYOC/conversational-layer conversation — 08-26 positions all landed; 08-27 continued live with

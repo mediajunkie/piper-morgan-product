@@ -181,11 +181,13 @@ This is Weekly Ship #[NUMBER]. Previous: [#[NUMBER-1] "[TITLE]"](URL).
 
 The "Shipped this week" section MUST use these 5 workstream categories in this order:
 
-1. **ðŸŽ¯ Product & experience** - Features, UX improvements, user-facing changes, mobile updates
-2. **âš™ï¸ Engineering & architecture** - Releases, bug fixes, technical infrastructure, ADRs, performance
+1. **âš™ï¸ Engineering & architecture** - Releases, bug fixes, technical infrastructure, ADRs, performance
+2. **ðŸŽ¯ Product & experience** - Features, UX improvements, user-facing changes, mobile updates
 3. **ðŸ”¬ Methodology & process innovation** - Patterns formalized, process improvements, methodology evolution
 4. **ðŸŒ External relations & community** - Publications, alpha tester comms, external meetings, content pipeline, hero image from a non-LinkedIn narrative post
 5. **ðŸ“Š Governance & operations** - Metrics table, leadership coordination, role health, operational notes
+
+**Order changed at Ship #058 (PM ratified 2026-08-29)**: Engineering & architecture now leads, Product & experience second. PM's reasoning: the original order was a deliberate signal that this project was not just shipping code, and it served that purpose; the current phase calls for re-emphasizing shipping. Phase-keyed, not permanent -- expect it to flip back when the emphasis does.
 
 **Why this matters**: Consistent structure enables week-over-week comparison and ensures no workstream gets accidentally dropped. If a workstream has no activity, include it with a brief "No significant changes" note rather than omitting it.
 
