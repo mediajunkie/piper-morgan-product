@@ -1,6 +1,6 @@
 # HOST carry-forward
 
-**Written**: 2026-08-28 19:5x PDT (mid-session, day 35 on Amber — 08-27 had a ~30.5h availability gap, retroactively closed this fire; not yet a STOP rewrite, more fires remain today) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-28 22:1x PDT (STOP fire, day 35 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -120,19 +120,18 @@
 
 ## Cron
 
-Current job **`478fbee3`** (chain … `82f6b0fa → 26deaf24 → 478fbee3`), expression **`37 6,9,12,15,18,21 * * *`** — armed at 08-26 STOP via delete-then-create, `CronList`-verified exactly one job before and after. **Survived the 08-27→28 ~30.5h availability gap intact — same job id throughout, never died, session just didn't get a turn** (see 08-27's log retroactive-close section + 08-28's Fire 1 for the full root-cause account: weekly rate-limit exhaustion + an apparent machine-asleep/backgrounded stretch, cohort-wide, cross-verified against PM/the automated watchdog/Web). No re-arm was needed or done. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`03b5a26d`** (chain … `26deaf24 → 478fbee3 → 03b5a26d`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-28 STOP via delete-then-create, `CronList`-verified exactly one job before and after. **The prior job (`478fbee3`) survived the 08-27→28 ~30.5h availability gap intact — same job id throughout, never died, session just didn't get a turn** (full root-cause account: weekly rate-limit exhaustion + an apparent machine-asleep/backgrounded stretch, cohort-wide, cross-verified against PM/the automated watchdog/Web — see 08-27's and 08-28's logs). Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 08-28 Fire 1 (mid-session, not a STOP)
+## Open threads, as of 08-28 STOP
 
 - **Agent 360 v0.4** — ✅ Synthesized 08-27, see item 0 above. Awaiting PM's review + the "what's worth changing" decision step.
 - **Ship #058 workstream review** — ✅ Filed 08-28 (kickoff landed 08-28 morning during the availability gap, actioned same evening once the session resumed). Nothing further owed.
 - **Portfolio's 4th lapse + `--diff` checker's first real test** — ✅ Both resolved 08-28, see the Standing Checks section above for the full account. Reported back to CXO (`381026511`). The recurrence question (auto-bump-on-any-edit?) is still open — not HOST's alone to decide, flagged to CXO/CIO.
+- **Heartbeat suppression-window fix, 08-28** (CIO, closing Web's earlier false-positive finding) — verified against CIO's own fix memo before triaging Web's confirmation: real cascading-suppression root cause, real fix (6h→3h window), real test suite, commit `9d92d8efa`. No HOST action needed, archival.
 - **Criterion E** — ✅ Fully closed 08-22/23: ruling given, filed as #1680 by CIO, routed to Lead, recorded in `decisions.log`. Nothing further owed.
 - **Two April carryovers (Sparker/Holder naming, migration-experience confer)** — ✅ Both disposed 08-23, CIO acknowledged same day, tracker closed on both ends. Archival — don't resurrect either.
 - Criterion E UX ruling, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
 - **BRIEFING-CURRENT-STATE.md flagged STALE (11 days, last 2026-08-12)** by SessionStart hook — unchanged status, still not HOST's lane to refresh unprompted.
 - **Pattern-069 promoted to Proven, 08-25** (CIO) — verified directly against the pattern file, acked. Archival.
 - **Cross-project reply protocol ratified, 08-25** (Exec broadcast) — cohort-wide procedure, no HOST-specific action, worth knowing if ever needed.
-- **MEMORY.md drift, 08-28** — routine (3 new memory files from other agents, not a stale hand-edit), regenerated clean same-fire. Lives outside the repo, nothing committed here. No action needed.
-- **Heartbeat push-race, 08-25 Fire 1** — was a one-off: zero recurrence across all six 08-26 fires' heartbeat writes. Confirms yesterday's read (contention artifact at the shared 07:07 wake, not a systemic issue). No action needed; downgrading this from "watch" to closed unless it recurs.
 - **08-26 was the second fully quiet day this week** (after 08-24) — all six fires clean, nothing owed in, nothing new arrived. Noted as a baseline pattern, not itself an open thread.
