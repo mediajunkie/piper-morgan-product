@@ -47,7 +47,7 @@
 </style>
 <main>
   <h1>MVP sprint — fundamentals to polish</h1>
-  <p class="sub">Fri Aug 28 ~10 PM · <b>v64 LIVE</b> — flip machinery (dark) + Radar card + belt fixes — the week's staged pile + the security fix · Inversion still routing (read_status wave) · check-offs persist in your browser</p>
+  <p class="sub">Sat Aug 29 ~1 PM · <b>v64 LIVE — INVERSION FLIPPED</b>: 4 READ groups + create_todo routing live, shadow sampling on (your ratified staged plan, compressed to one watched round) — the week's staged pile + the security fix · Inversion still routing (read_status wave) · check-offs persist in your browser</p>
 
   <div class="banner"><b>v63 LIVE — a week's staged work shipped in one cut.</b> <b>#1598 security</b>: the admin metrics routes are gated, and the sweep found something worse and closed it — <code>/health/config</code> had been <b>world-readable with no token at all</b> (a prefix-match exemption silently widened past its intent). · <b>#1654</b> the reminder task question now HOLDS its answer (full two-question recovery) · <b>#1679</b> no more reminders titled "tomorrow" · <b>#1539</b> the first-contact demo now says what it means ("what I'm already keeping track of… you don't need to hold this list") · <b>#1685</b> create-todo is finally consent-evaluated. Test list below is ~8 items, newest first.</div>
 
@@ -72,7 +72,7 @@
   <section class="v">
     <h2>✅ Your live test list (all against v58)</h2>
     <ul class="checks" id="testlist">
-      <li><input type="checkbox" id="t-seq"><label for="t-seq"><b>SATURDAY ROUND — ORDER (PPM + Lead agreed)</b> <span class="why">1) SECURITY first: #1578/#1581 (XSS pins), #1501 (cross-tenant) — a false "looks fine" costs most here. 2) Then say "FLIP IT" and do the todo/reminder cluster — first live create_todo routes through the Inversion while you watch. 3) Then everything else below. One insertion of Lead's: the flip moment goes early, while attention is freshest.</span></label></li>
+      <li><input type="checkbox" id="t-seq"><label for="t-seq"><b>SATURDAY ROUND — ORDER (PPM + Lead agreed)</b> <span class="why">FLIP IS EXECUTED — go straight to the TODO/REMINDER cluster (your list "(a)": #1488 flip test, #1648, #1623, #1649/#1650/#1651, #1617, #1631, #1570/#1571, #1542/#1543). Lead runs the deterministic set (#1431/#1472/#1493/#1501/#1545/#1548) in parallel — no PM needed. Web covers the browser items and reports to Lead. Security XSS pins moved to Web's browser lane.</span></label></li>
       <li><input type="checkbox" id="t-radar64"><label for="t-radar64"><b>v64 · Radar card (#1635)</b> <span class="why">Dashboard → Radar: dashed "coming soon" card at the BOTTOM, below real entities; says "not watching anything yet"; absent entirely if your Radar is empty.</span></label></li>
       <li><input type="checkbox" id="t-flip64"><label for="t-flip64"><b>v64 · the watched flip (#1677/#1488)</b> <span class="why">AFTER saying "flip it": "add todo buy oat milk" ×3 — every one should create a TODO (not a GitHub issue). This was the coin-flip misroute; if all three land as todos, Lead closes #1677+#1488 with your transcript as evidence.</span></label></li>
 
