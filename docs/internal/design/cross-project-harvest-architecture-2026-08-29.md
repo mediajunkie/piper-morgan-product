@@ -144,7 +144,7 @@ The generalization: **a document can be present, correct, current, and inert.** 
 project that actually gets used at the moment it is needed is trigger-shaped — the progressive-loading
 table, the skills, the session-start hook, `duty-cycle-tick`'s numbered steps.
 
-## 6. ⚠️ OPEN — the Tier-2 owner, and a charter discrepancy PM should resolve
+## 6. ✅ RESOLVED — the Tier-2 owner, and the charter discrepancy that surfaced getting there
 
 PM proposed (as a question, not a ruling): **Janus rolls up DxP-specific practices** — *"they oversee
 the site and are the general contractor, so to speak, even when Pard is building out"* — **and Themis
