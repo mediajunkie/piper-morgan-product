@@ -131,10 +131,23 @@ days stale.
     extension of #1536's own AC3, not "differentiator work getting a pass by default." Both cc'd to
     PA, no action needed — just a good outcome worth having on record: the lens is compounding across
     roles, not a one-off.
-  - **Thread status**: PM signaled next topic is "the BYOC skunkworks project itself, next steps" —
-    a new phase of this conversation, not yet started. PPM and Arch still haven't replied to the
-    Slack-descope loop-in memo as of 08-28 morning — nothing to chase. Otherwise nothing pending from
-    the connector question specifically.
+  - **Arch replied 08-28 evening — architecture read confirmed, thread now fully closed**: investigated
+    independently (checked the code AND looked up GitHub's actual hosted-endpoint contract) rather than
+    just accept PA's framing. Confirmed config-level per ADR-070 Amendment A's own design — no ADR
+    amendment, no resolver rewrite needed — and confirmed the tool-name coupling holds across a swap
+    (GitHub's hosted endpoint is built using the OSS `github-mcp-server` as a library, same tool
+    contract). **Two real, non-architectural gates found that PA's original flag hadn't surfaced**:
+    (1) GitHub's hosted endpoint requires the authenticating user hold a Copilot license — enforced at
+    GitHub's edge, not config-tunable, so a global default flip would silently fail for any user
+    without a seat; (2) whether Piper's stored OAuth grant scopes are valid against the hosted endpoint
+    is unverified — needs an empirical connect-and-call test, not just docs-reading. Net ruling:
+    architecturally sound, not yet a safe default flip; routed the actual rollout call to PPM (whether
+    it's worth pursuing given the licensing gate narrows who benefits) rather than deciding it
+    unilaterally. Not blocking anything. **PPM now owns that follow-on question, not PA.**
+  - **Thread status — genuinely fully resolved as of 08-28 evening**: all three loop-in recipients
+    (CXO, PPM, Arch) have now responded; every question raised in the 08-27 memo has a home. PM
+    signaled the next topic is "the BYOC skunkworks project itself, next steps" — a new phase, not yet
+    started, PM's timing to initiate.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
