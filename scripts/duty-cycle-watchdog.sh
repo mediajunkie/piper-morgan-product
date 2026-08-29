@@ -1,14 +1,27 @@
 #!/usr/bin/env bash
-# duty-cycle-watchdog.sh v2.3 — detect + NUDGE PM + SPAWN-FRESH (Belt 4, default off).
+# duty-cycle-watchdog.sh v2.4 — detect + NUDGE PM + SPAWN-FRESH (Belt 4, default off).
 #
 # Run by launchd (a pure OS job — ZERO Claude agents, no persona-fork; the cure for the scheduled-task
 # approach PM rejected 2026-06-14). Hourly it: fetches origin, runs the freeze-check, and on a NEWLY-stale
 # role (or a cooldown re-ping) NUDGES PM via (1) a macOS desktop notification + (2) a durable mailbox
 # memo (push-to-ref, so it survives being away from the desktop) + (3) Slack if configured. It does no
 # duty-cycle work; the only repo state it writes is its audit log, its nudge-state file, and (via
-# push-to-ref, touching no working tree) the alert memo. Belt 2 routes to CIO's inbox as of 2026-07-12
-# (PM retired direct mailbox monitoring) -> CIO's carry-forward -> Exec's cohort-attention-rollup -> PM;
-# Belts 1 and 3 still reach PM directly and are unaffected.
+# push-to-ref, touching no working tree) the alert memo. All three belts reach PM directly — see the
+# v2.4 note below for why Belt 2's former CIO-relay hop was removed.
+#
+# v2.4 (2026-08-29, CIO — Exec's ruling on the carried watchdog-relay-latency question, PM-approved
+#   "ok to remove the relay"): Belt 2 now writes straight to PM's own mailbox, not CIO's. The
+#   2026-07-12 CIO-relay (below, kept for history) inserted an agent's own cadence — CIO's next mail
+#   loop, then Exec's cohort-attention-rollup — into the critical path of a liveness alert that needs
+#   no judgment before reaching PM, only speed. Exec's framing: "an agent relay on a watchdog alert
+#   adds latency without adding judgment." Raised stakes, same day: a wedged session cannot report
+#   itself (the 08-27 rate-limit-dialog gap), so external alerts carry more weight than assumed —
+#   exactly the alert class this belt exists to deliver. Belts 1 (desktop) and 3 (Slack) already
+#   reached PM with no relay; Belt 2 now matches them instead of being the odd one out.
+#
+# --- 2026-07-12 CIO-relay design, superseded above, kept for history ---
+# Belt 2 routed to CIO's inbox as of 2026-07-12 (PM had retired direct mailbox monitoring at the time)
+# -> CIO's carry-forward -> Exec's cohort-attention-rollup -> PM. That chain is gone as of v2.4.
 #
 # v2 (2026-06-20, PM-requested after the v1 detected the ~26h cohort stall but only logged it — never
 # reached PM, who re-prodded manually ~5×):
@@ -230,19 +243,17 @@ fi
 /usr/bin/osascript -e "display notification \"$BODY\" with title \"$TITLE\" sound name \"Basso\"" 2>/dev/null
 
 # Belt 2 — durable memo via push-to-ref (survives being away from the desktop).
-# Routes to CIO's inbox, not PM's directly (changed 2026-07-12): PM retired mailboxes/xian (ceo)/inbox/
-# as a monitored destination -- alerts landing there now go nowhere. Per Docs's routing note the same
-# day, the intended path is watchdog -> CIO -> CIO's carry-forward -> Exec's cohort-attention-rollup
-# (which reads dev/active/{role}-carry-forward.md directly, per its own SKILL.md Step 1) -> PM. CIO
-# triages on the next mail loop rather than the raw alert going straight to an unwatched inbox.
-MEMO="mailboxes/cio/inbox/alert-duty-cycle-stall-$(date '+%Y-%m-%d-%H%M').md"
+# Goes straight to PM's own mailbox — no agent relay (v2.4, see the header note for why the
+# 2026-07-12 CIO-hop was removed). This memo's only job is to survive being away from the desktop;
+# belts 1 and 3 do the live delivery, so this one no longer depends on any agent's cadence to reach PM.
+MEMO="mailboxes/xian (ceo)/inbox/alert-duty-cycle-stall-$(date '+%Y-%m-%d-%H%M').md"
 cat > "$REPO/$MEMO" <<EOF
 ---
 from: duty-cycle-watchdog (automated)
-to: cio
+to: xian (ceo)
 date: $(date '+%Y-%m-%d')
 subject: $TITLE
-priority: high — automated freeze-watcher nudge; fold into carry-forward for the attention rollup
+priority: high — automated freeze-watcher nudge, delivered direct (no agent relay)
 ---
 
 # $TITLE
@@ -251,10 +262,9 @@ $BODY
 
 - **Detected**: $ts (freeze-watcher hourly run); thresholds per \`dev/active/duty-cycle-registry.tsv\`.
 - **Newly nudge-worthy**: $nudge_list   ·   **all currently stale**: $SUMMARY
-- **Action for PM**: re-prod the listed role's session. If many at once, wake the machine/app — one wake covers it. (PM likely already saw this via the desktop notification or Slack — this memo is the durable copy.)
-- **Action for CIO** (reading this first): fold into \`dev/active/cio-carry-forward.md\`'s PM-attention section if still relevant by the time you see it — Exec's cohort-attention-rollup reads the carry-forward directly, so that's how this reaches PM if the other two belts were missed.
+- **Action**: re-prod the listed role's session. If many at once, wake the machine/app — one wake covers it. (You likely already saw this via the desktop notification or Slack — this memo is the durable copy, in case both were missed.)
 
-*(Automated nudge — duty-cycle-watchdog.sh. Dedup'd: re-pings ~$((COOLDOWN/3600))h while still stale. The nudge belt PM asked for 2026-06-20; both belts — desktop + this memo. Routed to CIO's inbox, not PM's, since 2026-07-12 (PM retired direct-inbox monitoring) — see the Belt-2 code comment above for the full relay path.)*
+*(Automated nudge — duty-cycle-watchdog.sh. Dedup'd: re-pings ~$((COOLDOWN/3600))h while still stale. Delivered direct as of 2026-08-29 (v2.4) — see the header note for the removed CIO-relay history.)*
 EOF
 if PIPER_REPO="$REPO" "$REPO/scripts/mail-send.sh" "mail(watchdog): $TITLE" "$MEMO" >/dev/null 2>&1; then
   rm -f "$REPO/$MEMO"   # delivered to origin/main via push-to-ref; drop the local copy (no main-checkout residue)
