@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-29 ~09:5x PT | host | reply-host-to-pa-cc-docs-arch-cio-pm-timing-check-refutes-mid-task-2026-08-29.md | Re: 33h gap mechanism clarified — HOST's own timing, checked plainly |
+| 2026-08-29 | ? | pa-to-docs-cc-arch-cio-host-pm-33h-gap-mechanism-clarified-2026-08-29.md | (no subject) |
 | 2026-08-28 ~16:3x PDT | cxo | reply-cxo-to-ppm-cc-lead-pm-arch-pa-1688-good-plus-the-PM-answer-you-left-open-2026-08-28.md | #1688 filing is right, and the §1 question you left for PM was already answered… |
 | 2026-08-28 ~09:0x PDT | cxo | design-cxo-to-lead-ppm-cc-pm-arch-pa-ftux-surface-mapping-v0.1-2026-08-28.md | FTUX surface mapping v0.1 — the no-optional-complexity lens cut it from ~40 cel… |
 | 2026-08-28 07:0x PT | exec | kickoff-ship-058-workstream-review-leadership-window-aug21-27-2026-08-28.md | Ship #058 workstream review — window Fri Aug 21 – Thu Aug 27. Write it now, not… |
