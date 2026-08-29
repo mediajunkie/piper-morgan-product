@@ -88,5 +88,5 @@ curl http://localhost:8001/api/integrations/[name]/health
 
 - [Plugin Development Guide](plugin-development-guide.md) - Full tutorial
 - [Demo Plugin](../../services/integrations/demo/) - Complete example
-- [Pattern-031: Plugin Wrapper](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/patterns/pattern-031-plugin-wrapper.md) - Architecture
+- [Pattern-031: Plugin Wrapper](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/patterns/pattern-031-plugin-wrapper.md) - Architecture
 - [Versioning Policy](plugin-versioning-policy.md) - Version management

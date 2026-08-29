@@ -9,7 +9,7 @@
 
 This directory contains files that are added to the claude.ai project knowledge base but **do not belong elsewhere in the repository**.
 
-**Key principle**: If a file has a natural home in the repository (e.g., briefings belong in `docs/briefing/`, patterns belong in `docs/internal/architecture/current/patterns/`), it should live there — NOT here. When adding such files to web project knowledge, add them directly from their canonical location.
+**Key principle**: If a file has a natural home in the repository (e.g., briefings belong in `docs/briefing/`, patterns belong in `docs/internal/architecture/patterns/`), it should live there — NOT here. When adding such files to web project knowledge, add them directly from their canonical location.
 
 ---
 

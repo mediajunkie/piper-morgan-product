@@ -246,7 +246,7 @@ Common families:
 - **Grammar Application** (050-058): Feature development, UX work
 - **Multi-Agent Coordination** (029/059/010/021/037): Cross-domain decisions
 
-See [PATTERN-FAMILIES.md](../../../docs/internal/architecture/current/patterns/PATTERN-FAMILIES.md) for full family index.
+See [PATTERN-FAMILIES.md](../../../docs/internal/architecture/patterns/PATTERN-FAMILIES.md) for full family index.
 
 ---
 

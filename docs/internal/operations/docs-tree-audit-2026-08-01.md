@@ -13,8 +13,8 @@ should move**, and the reason is the whole point of doing an audit before a clea
 
 | category | count | verdict |
 |---|---|---|
-| `architecture/current/adrs/` | **82** | **durable by design.** A ratified ADR from 314 days ago is not stale, it is *settled*. Age is not a signal here. |
-| `architecture/current/patterns/` | **81** | same |
+| `architecture/adrs/` | **82** | **durable by design.** A ratified ADR from 314 days ago is not stale, it is *settled*. Age is not a signal here. |
+| `architecture/patterns/` | **81** | same |
 | `omnibus-logs/` | **429** | **historical record by construction.** Never a cleanup target. |
 | loose `.md` in `architecture/current/` | **56** | ← **the actual audit surface** |
 | `planning/current/` | **7** | ⚠️ **not uniformly stale — see Finding 1's 2026-08-02 correction** |

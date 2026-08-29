@@ -29,4 +29,4 @@ These protocols were extracted from CLAUDE.md on 2026-01-22 to reduce instructio
 
 - **Skills**: `.claude/skills/` - Formalized procedures with triggers
 - **Briefings**: `docs/briefing/` - Context loading (PROJECT.md, BRIEFING-CURRENT-STATE.md)
-- **Patterns**: `docs/internal/architecture/current/patterns/` - Architectural patterns
+- **Patterns**: `docs/internal/architecture/patterns/` - Architectural patterns

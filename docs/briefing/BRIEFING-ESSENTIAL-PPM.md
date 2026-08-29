@@ -211,7 +211,7 @@ Before producing anything, work this checklist:
 |-----------|-----|
 | Find/read documents | `Read`, `Grep`, `Glob` directly on filesystem (not project_knowledge_search) |
 | Send mail to other roles | Write directly to `mailboxes/[role]/inbox/` (not PM-mediated relay) |
-| Read PDRs/ADRs | Direct `Read` on `docs/internal/product/pdr/` and `docs/internal/architecture/current/adrs/`; cross-reference verification trivial |
+| Read PDRs/ADRs | Direct `Read` on `docs/internal/product/pdr/` and `docs/internal/architecture/adrs/`; cross-reference verification trivial |
 | Read GitHub issue body | `gh issue view {number}` |
 | Read canonical retest scores | Read `services/intent_service/canonical_retest_scorer/` outputs directly |
 | Read roadmap/vision | Direct `Read` on `docs/internal/planning/roadmap/roadmap.md` and `docs/internal/planning/current/vision.md`; verify version in header |
@@ -356,7 +356,7 @@ PA's Apr 16 Klatch-vocabulary retraction is the canonical example: PA initially 
 - **Canonical queries**: `canonical-queries-v2.md`
 - **UX foundations**: `piper-morgan-ux-foundations-and-open-questions.md`
 - **Team structure**: `team-structure.md`
-- **Pattern catalog**: `docs/internal/architecture/current/patterns/README.md`
+- **Pattern catalog**: `docs/internal/architecture/patterns/README.md`
 
 ---
 

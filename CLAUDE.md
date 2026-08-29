@@ -180,7 +180,7 @@ Cross-session decisions land in one of two formal surfaces, not just chat or you
 
 | Surface | Path | Use when |
 |---|---|---|
-| **ADR / PDR** | `docs/internal/architecture/current/adrs/` (or `pdrs/`) | Formal architectural or product decisions with lasting implications; structured format; reusable pattern; Architect-owned. m-38 (PDR/ADR Tier Separation) governs which tier. |
+| **ADR / PDR** | `docs/internal/architecture/adrs/` (or `pdrs/`) | Formal architectural or product decisions with lasting implications; structured format; reusable pattern; Architect-owned. m-38 (PDR/ADR Tier Separation) governs which tier. |
 | **decisions.log** | `docs/internal/architecture/decisions/decisions.log` | Lightweight in-session technical decisions that don't warrant a full ADR; append a timestamped line or short paragraph; no structure required; any agent can append. |
 
 Session logs are personal work tracking, not the cross-session record. If you make a decision that another agent will need to find next week, it goes in one of the two surfaces above.
@@ -343,8 +343,8 @@ Load detailed protocols only when needed:
 | Closing an issue | `docs/agent-protocols/issue-closure-protocol.md` |
 | Git workflow details | `docs/agent-protocols/git-workflow.md` |
 | Completion discipline | `docs/agent-protocols/completion-discipline.md` |
-| Architecture patterns | `docs/internal/architecture/current/patterns/` |
-| ADRs | `docs/internal/architecture/current/adrs/` |
+| Architecture patterns | `docs/internal/architecture/patterns/` |
+| ADRs | `docs/internal/architecture/adrs/` |
 | **Intent routing / LLM responses / action handlers** | `docs/internal/architecture/current/intent-routing-stack.md` — **MANDATORY before touching classification, dispatch, or chat-response behavior.** Routing is a 4-surface chain (pre-classifier → LLM classifier → action rail → category/floor-internal); working from a partial model of it produced 7 false findings in one audit (2026-07-08). If your change makes the doc stale, update it in the same commit. |
 | Live system state | Use Serena symbolic queries |
 | Terminology / acronyms | `knowledge/piper-morgan-glossary-v1.1.md` — **STOP and read this before writing any content that uses: Plugin, MCPB, MCP bundle, Connector, Extension, Skills, Cowork, Claude Desktop. These terms have precise distinct meanings and are frequently conflated.** |

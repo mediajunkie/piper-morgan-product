@@ -169,8 +169,8 @@ The principle is established. The alignment work is sequenced. The umbrella's jo
 ## Cross-references
 
 - #1016 epic + Phase 1 comments: https://github.com/mediajunkie/piper-morgan-product/issues/1016
-- ADR-061 (the principle): `docs/internal/architecture/current/adrs/adr-061-llm-touch-boundary-enforcement.md`
-- ADR-063 (READ-side): `docs/internal/architecture/current/adrs/adr-063-user-facing-audit-envelope-read-surface.md`
+- ADR-061 (the principle): `docs/internal/architecture/adrs/adr-061-llm-touch-boundary-enforcement.md`
+- ADR-063 (READ-side): `docs/internal/architecture/adrs/adr-063-user-facing-audit-envelope-read-surface.md`
 - #1089 (storage-layer alignment, in-flight): KG-privacy-filter
 - #1117 (llm_classifier Phase-4 instance): temporal-overgreedy → M3 with #1016
 - Pattern-064 (alive scaffolding — greeting_context was an instance)

@@ -31,7 +31,7 @@ This methodology entry formalizes that disposition.
 
 ### Why this is methodology-corpus, not Pattern catalog
 
-Pattern catalog entries describe **architectural failure modes** (e.g., Pattern-073 documentation-asserted-behavior-drift; Pattern-068 family silent-state-mutation). They live in `docs/internal/architecture/current/patterns/`.
+Pattern catalog entries describe **architectural failure modes** (e.g., Pattern-073 documentation-asserted-behavior-drift; Pattern-068 family silent-state-mutation). They live in `docs/internal/architecture/patterns/`.
 
 Asymmetric Discipline is **a discipline-shape failure mode** — about how operational rules are authored + maintained. It belongs in the methodology corpus (discipline-of-rule-authoring) rather than the pattern catalog (discipline-of-architecture).
 

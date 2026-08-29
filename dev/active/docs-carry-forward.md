@@ -1,23 +1,33 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-29 ~11:2x PDT ("The Orphan Migration" published, fact-checked clean,
-live-verified)
+**Updated**: 2026-08-29 ~15:xx PDT (crossposts recorded, 33h-gap closed, roadmap/CORE flattened,
+current/ folded out of adrs+patterns paths — both flattening-plan candidates now executed)
 **Session log**: `dev/2026/08/29/2026-08-29-0727-docs-code-log.md` (open).
 **Cron**: `5e2279de`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-04.
 
-**"The Orphan Migration" published**: https://pipermorgan.ai/blog/the-orphan-migration — every
-load-bearing technical claim independently fact-checked against the 06-17 Lead Dev log, all exact
-matches, no defects found. Live-verified (initial 404 was deploy lag, confirmed data was correct
-on `origin/main` first). Fully closed, nothing further owed.
+**"The Orphan Migration" fully closed**: published + dual-syndicated (Medium + LinkedIn),
+fact-checked clean, live-verified. https://pipermorgan.ai/blog/the-orphan-migration
 
-**Watch item: the 33h-gap discrepancy I preserved in the 08-28 omnibus is resolving in real time.**
-PM clarified Arch/CIO/HOST hit a blocking rate-limit dialog (no auto-resolve, explains the extra
-21+h). PM's mid-task hypothesis has now been refuted by 2 of the 3 dialog-hit seats' own
-record-checked timing (Arch, HOST — both idle when the limit hit, both resumed via a fresh fire
-attempt). Arch separately named an inversion hypothesis (the variable might be whether the harness
-attempted a turn at all, not what the seat was doing). **CIO's own data point is the one still
-missing** — once it lands, add a dated addendum to the 08-28 omnibus (not rewrite the original
-entry). Check for CIO's reply at next fire.
+**33h-gap thread closed**: CIO's data point completed the scorecard (3/3 dialog-hit seats refute
+mid-task, 1/1 non-dialog seat can't discriminate further). Dated addendum added to the 08-28
+omnibus, originals left unedited. Thread replied-to, closed.
+
+**`roadmap/CORE/` flatten executed and verified** (76 files, 9 subdirs → flat, PM-approved):
+zero broken links caused by the move. Found and fixed a real bug in `scripts/check_links.py`
+along the way (hardcoded pre-worktree path made it silently check nothing — now genuinely
+working). Filed #1692 for one pre-existing broken-link pair the fixed checker surfaced.
+
+**`current/` folded out of the adrs/patterns paths — executed and verified, PM-approved**:
+`current/adrs/` (82 files) and `current/patterns/` (81 files) moved to
+`docs/internal/architecture/adrs/` and `.../patterns/`; everything else in `current/` (~55
+standalone files, 6 more subdirs) untouched — no evidence gathered on those, scope stayed to what
+was actually investigated. 824 files repo-wide referenced the old paths (334 `dev/`, 343
+`mailboxes/` — historical, left as-is; 147 living docs/tooling — all repaired, including plain-text
+mentions in `CLAUDE.md`/`SETUP.md`/skills, not just markdown links). 101 internal + re-discovered
+relative-path links fixed mechanically (resolve true target, recompute relative path). Verified:
+2,542 links, 81 broken — identical to the pre-move baseline, zero net breakage. Full record in
+`docs-tree-flattening-plan-2026-08-11.md`. Both of this plan's candidates are now executed; the
+plan itself is functionally complete (the "lower confidence" Comms pair was never mine to decide).
 
 **⚠️ Standing practice, added 08-27, read this at every fire**: a duty-cycle sync from earlier in
 the session is a timestamped fact, not a durable one. Before reading file/git state to answer a
@@ -27,13 +37,6 @@ first if meaningful time has passed. Fixed durably in `CLAUDE.md`'s "Never guess
 
 **#1683**, **#1644** (roadmap.md full v19 fold, PPM's lane), **#1682** (3 minor findings) all
 still open, none urgent — see their issues for full context, not re-detailing here each day.
-
-## Awaiting PM (genuine, not urgent, don't chase)
-
-- **Docs-tree flattening plan go/no-go** — plan posted 2026-08-11
-  (`docs/internal/operations/docs-tree-flattening-plan-2026-08-11.md`), one recommended flatten
-  (`roadmap/CORE/`), still no PM decision. Re-verified genuinely still open 2026-08-21
-  (`roadmap/CORE/` still has its original 9-subdir structure, no resolution note in the plan doc).
 
 ## Awaiting others (check periodically, don't re-derive)
 

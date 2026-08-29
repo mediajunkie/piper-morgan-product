@@ -139,7 +139,7 @@ For agents who've been on the project a while, here's what's different from v1.0
 - **Concept origin**: July 2025 (`docs/blog/whipping-ai-chaos-toward-quality-with-the-excellence-flywheel.md`)
 - **CIO reformulation memo**: `mailboxes/docs/read/memo-cio-flywheel-audit-2026-04-16.md`
 - **Flywheel archaeology** (8 formulations across 9 months): `dev/active/excellence-flywheel-archaeology-2026-04-16.md`
-- **Pattern-062 (Assembly Assumption)**: `docs/internal/architecture/current/patterns/pattern-062-assembly-assumption.md`
+- **Pattern-062 (Assembly Assumption)**: `docs/internal/architecture/patterns/pattern-062-assembly-assumption.md`
 - **Colleague Test (operational v2.1)**: `docs/internal/testing/colleague-test-rubric.md`
 - **CLAUDE.md operational principles**: `CLAUDE.md` (root)
 - **Methodology index**: `docs/internal/development/methodology-core/INDEX.md`

@@ -147,9 +147,9 @@ Architecture and implementation details live elsewhere.
 | Document | Relationship |
 |----------|--------------|
 | [PDR-002: Conversational Glue](../../planning/conversational-glue/PDR-002-conversational-glue-v3.md) | Parent PDR defining Three-Layer Model |
-| [ADR-054: Cross-Session Memory](../../architecture/current/adrs/adr-054-cross-session-memory-architecture.md) | Technical architecture for memory persistence |
-| [ADR-053: Trust Computation](../../architecture/current/adrs/adr-053-trust-computation-architecture.md) | How trust levels are calculated |
-| [ADR-045: Object Model](../../architecture/current/adrs/adr-045-object-model.md) | Entity definitions (WorkItem, Feature, etc.) |
+| [ADR-054: Cross-Session Memory](../../architecture/adrs/adr-054-cross-session-memory-architecture.md) | Technical architecture for memory persistence |
+| [ADR-053: Trust Computation](../../architecture/adrs/adr-053-trust-computation-architecture.md) | How trust levels are calculated |
+| [ADR-045: Object Model](../../architecture/adrs/adr-045-object-model.md) | Entity definitions (WorkItem, Feature, etc.) |
 | [domain-models.md](../../architecture/current/models/domain-models.md) | Entity lifecycle states |
 | [2026-02-history-sidebar-design-archaeology.md](../../design/audits/2026-02-history-sidebar-design-archaeology.md) | Archaeological investigation that prompted this appendix |
 

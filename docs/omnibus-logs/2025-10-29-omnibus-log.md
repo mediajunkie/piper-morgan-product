@@ -299,7 +299,7 @@ Database check details: Multiple exceptions: [Errno 61] Connect call failed ('::
 4. `docs/internal/development/planning/plans/CORE-INTENT-QUALITY-layer4-gameplan.md`
 5. `docs/internal/development/active/in-progress/chief-of-staff-report-2025-09-19.md`
 6. `docs/omnibus-logs/2025-09-18-omnibus-log.md` (historical)
-7. `docs/internal/architecture/current/adrs/adr-035-inchworm-protocol.md`
+7. `docs/internal/architecture/adrs/adr-035-inchworm-protocol.md`
 
 #### Root Cause Identified
 Weekly documentation audit not catching code-reality divergence

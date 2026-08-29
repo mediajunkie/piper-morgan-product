@@ -8,7 +8,7 @@ The Piper plugin system enables integration plugins (Slack, Notion, GitHub, Cale
 **Enhanced**: October 3, 2025 (GREAT-3B)
 **Documented**: October 4, 2025 (GREAT-3C)
 
-For architectural details, see [Pattern-031: Plugin Wrapper](../../docs/internal/architecture/current/patterns/pattern-031-plugin-wrapper.md).
+For architectural details, see [Pattern-031: Plugin Wrapper](../../docs/internal/architecture/patterns/pattern-031-plugin-wrapper.md).
 
 ## GREAT-3B Enhancements
 
@@ -112,7 +112,7 @@ Piper Morgan uses a **two-file structure** for integrations:
 - Supports gradual migration if needed
 - Minimal coupling between layers
 
-See [Pattern-031: Plugin Wrapper](../../docs/internal/architecture/current/patterns/pattern-031-plugin-wrapper.md) for detailed explanation.
+See [Pattern-031: Plugin Wrapper](../../docs/internal/architecture/patterns/pattern-031-plugin-wrapper.md) for detailed explanation.
 
 ### Components
 

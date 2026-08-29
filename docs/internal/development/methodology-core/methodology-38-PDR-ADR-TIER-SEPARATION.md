@@ -101,7 +101,7 @@ This methodology promotes from v0.1 draft to Proven when:
 - **Pattern-072 (Registries that Grow into Architectural Shapes; Proven)** — sibling methodology-29 framework instance at the typed-catalog layer; methodology-38 is the same framework operating at the decision-vehicle-tier layer
 - **methodology-29 (Pattern Formation via Successful Imitation)** — the umbrella framework; methodology-38 is a successful-imitation instance at the tier-vehicle altitude
 - **methodology-34 (Cohort-Discipline as Moat)** — methodology-38 is an instance of the moat thesis operating: the cohort matured the discipline of routing foundational decisions to PDR tier and implementation-specifics to ADR tier between Apr 27 and May 20 without external authority dictating it; the discipline is cohort-distinctive moat material (CIO catalog-confirmation note 2026-06-03)
-- **ADR catalog at `docs/internal/architecture/current/adrs/`**: the implementation-altitude commitments
+- **ADR catalog at `docs/internal/architecture/adrs/`**: the implementation-altitude commitments
 - **PDR catalog at `docs/internal/pdrs/` (or current location)**: the decision-rule-altitude commitments
 
 ## What this methodology is NOT

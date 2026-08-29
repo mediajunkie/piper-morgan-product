@@ -170,8 +170,8 @@ await intent_service.handle_query(message, user_id)
 **Purpose**: Ensure router pattern used consistently
 
 **CI Workflow**: `architecture-enforcement.yml`
-**Pattern Catalog**: `docs/internal/architecture/current/patterns/`
-**ADRs**: `docs/internal/architecture/current/adrs/`
+**Pattern Catalog**: `docs/internal/architecture/patterns/`
+**ADRs**: `docs/internal/architecture/adrs/`
 
 **Enforced Patterns**:
 - Router pattern (ADR-025)
@@ -371,8 +371,8 @@ graph LR
 - **Performance Benchmarks**: See `scripts/benchmark_performance.py`
 - **Test Documentation**: See `docs/TESTING.md`
 - **CI/CD Setup**: See `.github/workflows/`
-- **Pattern Catalog**: See `docs/internal/architecture/current/patterns/`
-- **ADRs**: See `docs/internal/architecture/current/adrs/`
+- **Pattern Catalog**: See `docs/internal/architecture/patterns/`
+- **ADRs**: See `docs/internal/architecture/adrs/`
 - **GREAT-5 Completion**: See `dev/2025/10/07/CORE-GREAT-5-COMPLETE-100-PERCENT.md`
 
 ---

@@ -31,7 +31,7 @@ Each essential briefing includes references to load additional context only when
 
 ### Architecture Context
 - Request "Loading architecture details" → **ADR-038** (spatial patterns), **ADR-034** (plugins)
-- Patterns → **docs/internal/architecture/current/patterns/**
+- Patterns → **docs/internal/architecture/patterns/**
 
 ### Current Work
 - Request "Loading current work" → **GitHub issues #197-200**

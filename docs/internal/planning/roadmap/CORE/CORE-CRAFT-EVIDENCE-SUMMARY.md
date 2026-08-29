@@ -351,7 +351,7 @@ P99 Latency: <5ms
 
 **Serena Verification**:
 ```python
-# mcp__serena__list_dir("docs/internal/architecture/current/patterns")
+# mcp__serena__list_dir("docs/internal/architecture/patterns")
 Found 33 pattern files:
 - pattern-001-canonical-handler.md
 - pattern-002-intent-classification.md
@@ -361,10 +361,10 @@ Found 33 pattern files:
 
 **ADR Verification**:
 ```bash
-$ find docs/internal/architecture/current/adrs -name "adr-*.md" | wc -l
+$ find docs/internal/architecture/adrs -name "adr-*.md" | wc -l
 36
 
-$ ls docs/internal/architecture/current/adrs/ | head -10
+$ ls docs/internal/architecture/adrs/ | head -10
 adr-001-intent-first.md
 adr-002-plugin-architecture.md
 adr-003-session-management.md
@@ -379,8 +379,8 @@ adr-003-session-management.md
 
 **Evidence Files**:
 - `dev/2025/10/13/proof-8-great-4e-completion.md` (ADR audit)
-- `docs/internal/architecture/current/patterns/*.md` (33 files)
-- `docs/internal/architecture/current/adrs/*.md` (36 files)
+- `docs/internal/architecture/patterns/*.md` (33 files)
+- `docs/internal/architecture/adrs/*.md` (36 files)
 
 ---
 

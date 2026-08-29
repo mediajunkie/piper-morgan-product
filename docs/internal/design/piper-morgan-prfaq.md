@@ -56,7 +56,7 @@ A: Jira and similar tools are great at managing the *atoms* of work: issues, spr
 A: No. Piper is designed to show up where you are (Radar O’Reilly pattern): Slack, web app, and in the future email, IDE, meetings. Piper is not a destination you remember to open; Piper participates in the channels you already use.
 
 **Q: What integrations does Piper support?**  
-A: Currently: GitHub, Notion, Slack, Google Calendar (and compatible calendar providers). Additional backends (e.g., Jira, Linear) are in scope; the architecture supports swappable integrations. See [integrations](../../integrations/README.md) and [pattern-040 Integration Swappability](../architecture/current/patterns/pattern-040-integration-swappability-guide.md).
+A: Currently: GitHub, Notion, Slack, Google Calendar (and compatible calendar providers). Additional backends (e.g., Jira, Linear) are in scope; the architecture supports swappable integrations. See [integrations](../../integrations/README.md) and [pattern-040 Integration Swappability](../architecture/patterns/pattern-040-integration-swappability-guide.md).
 
 **Q: How does Piper use my data?**  
 A: Piper uses your connected integrations (e.g., GitHub, Notion) to provide context for conversations and to perform actions you request (e.g., create an issue). Data is used to serve you and is not used to train public models. See security and privacy documentation for your deployment.

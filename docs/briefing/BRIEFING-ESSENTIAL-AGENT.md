@@ -164,8 +164,8 @@ GitHub Updated: Issue #199 task 3 marked complete with evidence
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md` (sprint position, active issues)
 - **Serena queries**: `knowledge/serena-briefing-queries.md` (live system state)
 - **Implementation guides**: `knowledge/agent-prompt-template.md`
-- **Patterns**: `docs/internal/architecture/current/patterns/` (63 patterns)
-- **ADRs**: `docs/internal/architecture/current/adrs/` (61 decisions)
+- **Patterns**: `docs/internal/architecture/patterns/` (63 patterns)
+- **ADRs**: `docs/internal/architecture/adrs/` (61 decisions)
 - **Testing**: pytest configured in pytest.ini (no PYTHONPATH prefix needed)
 
 ---

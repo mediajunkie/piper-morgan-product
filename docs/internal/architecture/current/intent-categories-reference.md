@@ -20,7 +20,7 @@
 
 Piper Morgan's intent classification system recognizes **19 categories**
 (enum: `services/shared_types.py` → `IntentCategory`). After the M1
-floor-first routing inversion ([ADR-060](adrs/adr-060-floor-first-routing.md),
+floor-first routing inversion ([ADR-060](../adrs/adr-060-floor-first-routing.md),
 Issue #911), most query categories now route to the **conversational floor** —
 a context-assembled LLM response — rather than to canonical template handlers.
 
@@ -84,7 +84,7 @@ greeting, or a GUIDANCE setup request).
 
 `ANALYSIS`, `SYNTHESIS`, `STRATEGY`, `PLANNING`, `REVIEW`, `LEARNING`, `QUERY`
 fall through to the pre-existing workflow dispatcher path
-([ADR-059](adrs/adr-059-workflow-dispatcher-offer-consolidation.md)).
+([ADR-059](../adrs/adr-059-workflow-dispatcher-offer-consolidation.md)).
 
 ---
 
@@ -299,9 +299,9 @@ projects, issues, or meetings that did not exist.
 
 ## Related Documentation
 
-- [ADR-060: Floor-First Routing](adrs/adr-060-floor-first-routing.md) — the ADR
+- [ADR-060: Floor-First Routing](../adrs/adr-060-floor-first-routing.md) — the ADR
   behind #911; note the ADR itself has some staleness but the core principle stands
-- [ADR-059: Workflow Dispatcher](adrs/adr-059-workflow-dispatcher-offer-consolidation.md) — the
+- [ADR-059: Workflow Dispatcher](../adrs/adr-059-workflow-dispatcher-offer-consolidation.md) — the
   legacy path that workflow-routed categories still take
 - [architecture.md](architecture.md) — system-wide view
 - [llm-configuration.md](llm-configuration.md) — provider-agnostic LLM setup

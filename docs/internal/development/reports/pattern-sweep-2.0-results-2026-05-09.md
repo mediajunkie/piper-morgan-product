@@ -170,10 +170,10 @@ All four now Proven. Family table convention added to Pattern-062 Evolution sect
 | `dev/active/pattern-evolution-report.md` | Phase 2D evolution events + anti-pattern candidates + stale list | NEW |
 | `dev/active/pattern-meta-synthesis.md` | Phase 2E CIO meta-pattern synthesis | NEW |
 | `docs/internal/development/reports/pattern-sweep-2.0-results-2026-05-09.md` | Phase 4 final synthesis (this document) | NEW |
-| `docs/internal/architecture/current/patterns/pattern-066-stacked-silent-failures.md` | Pattern-066 Emerging filing | NEW |
+| `docs/internal/architecture/patterns/pattern-066-stacked-silent-failures.md` | Pattern-066 Emerging filing | NEW |
 | `docs/internal/architecture/current/anti-pattern-index.md` | 6 new entries + scan metadata + reverse index | UPDATED |
-| `docs/internal/architecture/current/patterns/README.md` | Total count updated 64 → 66 | UPDATED |
-| `docs/internal/architecture/current/patterns/pattern-024-methodology-patterns.md` | Status: Proven → Superseded | UPDATED |
+| `docs/internal/architecture/patterns/README.md` | Total count updated 64 → 66 | UPDATED |
+| `docs/internal/architecture/patterns/pattern-024-methodology-patterns.md` | Status: Proven → Superseded | UPDATED |
 
 ---
 

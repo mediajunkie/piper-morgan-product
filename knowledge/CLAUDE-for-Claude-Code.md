@@ -22,7 +22,7 @@ This approach reduces briefing token usage from 21% (39K tokens) to manageable l
 If you need additional context beyond your essential briefing, load these progressively:
 - **BRIEFING-CURRENT-STATE** - Current project position and status
 - **BRIEFING-METHODOLOGY** - How we work (Inchworm Protocol)
-- **Architecture docs** - docs/internal/architecture/current/patterns/
+- **Architecture docs** - docs/internal/architecture/patterns/
 - **ADRs** - For specific architectural decisions
 - **Navigation** - docs/NAVIGATION.md to find anything
 
@@ -57,8 +57,8 @@ config/PIPER.user.md        # User config (not YAML)
 
 **Documentation** (verified locations):
 ```
-docs/internal/architecture/current/adrs/     # ADRs (36+ exist!)
-docs/internal/architecture/current/patterns/ # Pattern catalog
+docs/internal/architecture/adrs/     # ADRs (36+ exist!)
+docs/internal/architecture/patterns/ # Pattern catalog
 docs/internal/architecture/current/models/   # Domain models
 docs/internal/development/methodology-core/  # Methodologies (if exists)
 docs/NAVIGATION.md                          # Find anything
@@ -73,7 +73,7 @@ Find session-log guidelines at
 grep -r "pattern" services/ --include="*.py"  # Does it exist?
 cat services/shared_types.py | grep "Enum"     # Enum already defined?
 cat services/config.py | grep "setting"        # Config exists?
-ls -la docs/internal/architecture/current/adrs/ # ADR about this?
+ls -la docs/internal/architecture/adrs/ # ADR about this?
 
 # Find existing patterns:
 grep -r "similar_functionality" . --include="*.py"

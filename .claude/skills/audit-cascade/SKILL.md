@@ -10,7 +10,7 @@ created: 2026-01-23
 
 Perform systematic audit-and-correct steps between phases of multi-step work, using templates as checklists.
 
-**Reference**: [Pattern-049: Audit Cascade](../../../docs/internal/architecture/current/patterns/pattern-049-audit-cascade.md)
+**Reference**: [Pattern-049: Audit Cascade](../../../docs/internal/architecture/patterns/pattern-049-audit-cascade.md)
 
 ## When to Use
 
@@ -171,14 +171,14 @@ This skill is part of the **Completion Theater Family** (045/046/047/049):
 
 These patterns form a reinforcing system. Audit cascade (049) is the operational mechanism that catches drift before it compounds. Apply the full family for multi-phase work.
 
-See [PATTERN-FAMILIES.md](../../../docs/internal/architecture/current/patterns/PATTERN-FAMILIES.md) for full family index.
+See [PATTERN-FAMILIES.md](../../../docs/internal/architecture/patterns/PATTERN-FAMILIES.md) for full family index.
 
 ---
 
 ## Related
 
-- [Pattern-049: Audit Cascade](../../../docs/internal/architecture/current/patterns/pattern-049-audit-cascade.md) - Full pattern documentation
-- [Pattern-046: Beads Completion Discipline](../../../docs/internal/architecture/current/patterns/pattern-046-beads-completion-discipline.md) - No expedience rationalization
+- [Pattern-049: Audit Cascade](../../../docs/internal/architecture/patterns/pattern-049-audit-cascade.md) - Full pattern documentation
+- [Pattern-046: Beads Completion Discipline](../../../docs/internal/architecture/patterns/pattern-046-beads-completion-discipline.md) - No expedience rationalization
 - [create-session-log](../create-session-log/SKILL.md) - Session documentation
 - [close-issue-properly](../close-issue-properly/SKILL.md) - Issue closure with evidence
 

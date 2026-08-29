@@ -46,7 +46,7 @@ Every memo must begin with:
 ## Body Guidelines
 
 - Lead with the ask or the information. Don't bury the point.
-- If referencing repo files, use full relative paths from project root (e.g., `docs/internal/architecture/current/adrs/adr-060-floor-first-routing.md`)
+- If referencing repo files, use full relative paths from project root (e.g., `docs/internal/architecture/adrs/adr-060-floor-first-routing.md`)
 - If the memo requires a response, say so explicitly: "Please respond to [slug] inbox"
 - Sign off with role name and date
 

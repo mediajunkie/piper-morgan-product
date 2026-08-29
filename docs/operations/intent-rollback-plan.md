@@ -259,7 +259,7 @@ git revert [recent-commit]
 
 - [Intent Classification Guide](../guides/intent-classification-guide.md)
 - [Migration Guide](../guides/intent-migration.md)
-- [ADR-032: Intent Universal Entry](../internal/architecture/current/adrs/adr-032-intent-classification-universal-entry.md)
+- [ADR-032: Intent Universal Entry](../internal/architecture/adrs/adr-032-intent-classification-universal-entry.md)
 - [Operational Guide](./operational-guide.md)
 
 ---
