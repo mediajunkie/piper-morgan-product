@@ -89,7 +89,7 @@ The discipline: protect time for cross-project protocol work + architectural val
 Request "Loading [topic] details" for:
 - **Full patterns** → ADR-038 (spatial), ADR-034 (plugins), ADR-032 (intent)
 - **Methodology** → BRIEFING-METHODOLOGY
-- **Design docs** → docs/internal/architecture/current/patterns/
+- **Design docs** → docs/internal/architecture/patterns/
 - **Current decisions** → See BRIEFING-CURRENT-STATE.md for active issues
 
 ## Architectural State
@@ -131,7 +131,7 @@ When auditing the ADR or Pattern catalogs for staleness or relevance: **zero cod
 - **Archival**: 0 citations, 0 active discussion, *and* the work landed (e.g., ADR-006 Async Sessions)
 - **Genuinely decorative**: 0 citations, 0 discussion, *and* the work didn't land or was silently superseded — these are retirement candidates
 
-Full framework: `docs/internal/architecture/current/adrs/README.md#how-to-read-this-catalog-citation-framework`. Same framework applies to patterns and PDRs.
+Full framework: `docs/internal/architecture/adrs/README.md#how-to-read-this-catalog-citation-framework`. Same framework applies to patterns and PDRs.
 
 ## Standing Design Principles
 1. **Backward Compatibility**: Zero breaking changes to existing routers
@@ -181,8 +181,8 @@ Product Relevance classifications:
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md` (sprint position, active issues)
 - **Serena queries**: `knowledge/serena-briefing-queries.md` (live system state)
-- **Pattern catalog**: `docs/internal/architecture/current/patterns/` (63 patterns)
-- **ADRs**: `docs/internal/architecture/current/adrs/` (61 decisions)
+- **Pattern catalog**: `docs/internal/architecture/patterns/` (63 patterns)
+- **ADRs**: `docs/internal/architecture/adrs/` (61 decisions)
 - **Navigation**: `docs/NAVIGATION.md` (find anything)
 
 ---

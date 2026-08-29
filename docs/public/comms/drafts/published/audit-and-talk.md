@@ -56,7 +56,7 @@ The audit's first major piece of work was a reformulation of the Excellence Flyw
 
 CIO also added a new practice, *audit the composition*. 
 
-It's the formalized version of [Pattern-062 (the Assembly Assumption)](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/patterns/pattern-062-assembly-assumption.md): individually-correct components composing into collectively-incomplete outcomes. The pattern had been operational for months. The audit promoted it from pattern to practice.
+It's the formalized version of [Pattern-062 (the Assembly Assumption)](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/patterns/pattern-062-assembly-assumption.md): individually-correct components composing into collectively-incomplete outcomes. The pattern had been operational for months. The audit promoted it from pattern to practice.
 
 # Architecture as practice
 

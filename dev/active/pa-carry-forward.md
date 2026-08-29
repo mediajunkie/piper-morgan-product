@@ -148,6 +148,13 @@ days stale.
     architecturally sound, not yet a safe default flip; routed the actual rollout call to PPM (whether
     it's worth pursuing given the licensing gate narrows who benefits) rather than deciding it
     unilaterally. Not blocking anything. **PPM now owns that follow-on question, not PA.**
+  - **PM ruled 08-29 — final answer, question fully closed**: *"nice catch. I don't want to limit it
+    to Copilot licensees if we don't have to."* Piper stays on self-hosted `github-mcp-server`; the
+    hosted-endpoint flip is rejected on the licensing gate alone, not a technical barrier — Arch's
+    "it's config-level and cheap if economics change" finding is explicitly preserved for a future
+    revisit, not discarded with the decision. Second-order effect: the OAuth-scope empirical test
+    (Arch's gate 2) comes off the critical path entirely, since it was only needed to de-risk a flip
+    that isn't happening. Nothing owed by PA, PPM, or Arch on this going forward.
   - **Thread status — genuinely fully resolved as of 08-28 evening**: all three loop-in recipients
     (CXO, PPM, Arch) have now responded; every question raised in the 08-27 memo has a home. PM
     signaled the next topic is "the BYOC skunkworks project itself, next steps" — a new phase, not yet

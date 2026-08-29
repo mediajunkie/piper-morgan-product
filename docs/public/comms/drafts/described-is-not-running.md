@@ -36,6 +36,6 @@ The fix isn't "review configs more carefully." Careful review is exactly what bo
 
 ---
 
-*Next on Building Piper Morgan: [FOOTER TBD — this piece isn't scheduled yet; fill in once PM assigns a slot, per the live calendar at that time, not guessed now]*
+*Next on Building Piper Morgan: more from inside the build — the next piece as the calendar takes shape. [Comms: this is now the last drafted post in the queue as of Aug 29 — re-verify and fill this tease once the next beat is scheduled.]*
 
 *Where in your own systems is a config, a doc, or a status line quietly standing in for a check you haven't actually run?*

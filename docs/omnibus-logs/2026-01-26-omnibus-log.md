@@ -56,7 +56,7 @@ The day's defining characteristic was **coordinated decision-making** across fou
 - `docs/omnibus-logs/2026-01-25-omnibus-log.md`
 - `dev/2026/01/26/689-weekly-docs-audit-findings.md`
 - `dev/2026/01/26/689-todo-audit-categorized.md`
-- `docs/internal/architecture/current/patterns/pattern-059-leadership-caucus.md`
+- `docs/internal/architecture/patterns/pattern-059-leadership-caucus.md`
 - `.claude/skills/discovered-work-capture/SKILL.md`
 - `CLAUDE.md` (simple triggers)
 

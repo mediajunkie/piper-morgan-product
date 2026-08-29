@@ -40,6 +40,6 @@ The claim didn't make it into the published post. What replaced it was a descrip
 
 ---
 
-*Next on Building Piper Morgan: [FOOTER TBD — this piece isn't scheduled yet; fill in once PM assigns a slot, per the live calendar at that time, not guessed now]*
+*Next on Building Piper Morgan: "Described Is Not Running" — a documentation build sat silently broken for two and a half months because nothing was checking whether the deploy actually happened, only whether it was configured to.*
 
 *Where in your own systems does "we have a record of it" quietly substitute for "we confirmed it happened"?*

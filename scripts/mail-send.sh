@@ -186,6 +186,21 @@ while :; do
             echo "mail-send:   if they belong to this mail-loop (e.g. a MANIFEST regen), send them in a follow-up mail-send call" >&2
             echo "mail-send: ⚠️  ${n_dirty} mailbox path(s) left behind — see above" >&2
         fi
+
+        # --- CXO/HOST's 2026-08-28 relocation: check refresh-trigger promises AT the trigger ------
+        # HOST's diff-checker (#1296-adjacent, shipped 08-26) caught "edited content, forgot to bump
+        # last_updated" — but it lapsed a 4th time anyway, because the real failure is upstream of
+        # any edit: nothing connects "I filed a workstream review" to "my portfolio doc promises to
+        # refresh on exactly that event." CXO's relocation: hook the check to the moment the trigger
+        # ARTIFACT is created, which is exactly a mail-send.sh call. PURE ADVISORY — this must never
+        # slow or fail a send that matches nothing (the overwhelming majority); silent on no-match,
+        # by design of check-refresh-promises.py's own --trigger-sent mode.
+        CHECKREF="$REPO/scripts/check-refresh-promises.py"
+        if [ -f "$CHECKREF" ]; then
+            for f in "$@"; do
+                python3 "$CHECKREF" --trigger-sent "$f" 2>/dev/null
+            done
+        fi
         # ----------------------------------------------------------------------------------------
         exit 0
     fi

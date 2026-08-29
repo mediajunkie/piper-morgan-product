@@ -67,9 +67,9 @@ Each essential briefing includes triggers for loading detailed documentation as 
 
 - **[Architecture Hub](internal/architecture/current/)** - Current architectural decisions
 - **[Domain Models](internal/architecture/current/models/)** - Hub-and-spoke model documentation
-- **[ADRs](internal/architecture/current/adrs/)** - Architectural Decision Records
-- **[Patterns](internal/architecture/current/patterns/)** - Established architectural patterns
-- **[Pattern Families](internal/architecture/current/patterns/PATTERN-FAMILIES.md)** - 8 pattern families index
+- **[ADRs](internal/architecture/adrs/)** - Architectural Decision Records
+- **[Patterns](internal/architecture/patterns/)** - Established architectural patterns
+- **[Pattern Families](internal/architecture/patterns/PATTERN-FAMILIES.md)** - 8 pattern families index
 - **[Five-Layer Context Mapping](internal/architecture/current/five-layer-context-mapping.md)** - How PM injects context at each layer (agent team + product), with gap analysis
 - **[Technical Evolution](internal/architecture/evolution/)** - Architecture development history
 - **[Canonical Queries](internal/architecture/current/canonical-queries.md)** - Reference list of canonical query types (IDENTITY, TEMPORAL, STATUS, PRIORITY, GUIDANCE)
@@ -87,12 +87,12 @@ Each essential briefing includes triggers for loading detailed documentation as 
 The MUX track establishes Piper's unified object model: **"Entities experience Moments in Places"**
 
 **Core Philosophy**:
-- **[ADR-045 Object Model](internal/architecture/current/adrs/adr-045-object-model.md)** - Canonical grammar definition (ACCEPTED)
+- **[ADR-045 Object Model](internal/architecture/adrs/adr-045-object-model.md)** - Canonical grammar definition (ACCEPTED)
 - **[Consciousness Philosophy](internal/architecture/current/consciousness-philosophy.md)** - WHY Piper has a soul (Five Pillars)
 - **[Ownership Metaphors](internal/architecture/current/ownership-metaphors.md)** - Mind/Senses/Understanding philosophy
 
 **Implementation Reference**:
-- **[ADR-055 Implementation](internal/architecture/current/adrs/adr-055-object-model-implementation.md)** - Technical implementation spec
+- **[ADR-055 Implementation](internal/architecture/adrs/adr-055-object-model-implementation.md)** - Technical implementation spec
 - **[Grammar Compliance Audit](internal/architecture/current/grammar-compliance-audit.md)** - 16 features assessed for compliance
 - **[Feature Object Model Map](internal/architecture/current/feature-object-model-map.md)** - Feature-to-grammar mappings with canonical queries
 
@@ -105,7 +105,7 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 - **[Consciousness Anti-Patterns](internal/architecture/current/consciousness-anti-patterns.md)** - Guidelines and anti-patterns (ADR-056)
 
 **Patterns** (in `patterns/`):
-- **[Grammar Application Patterns](internal/architecture/current/patterns/grammar-application-patterns.md)** - Index of 5 MUX patterns
+- **[Grammar Application Patterns](internal/architecture/patterns/grammar-application-patterns.md)** - Index of 5 MUX patterns
 - pattern-050: Context/Dataclass Pair
 - pattern-051: Parallel Place Gathering
 - pattern-052: Personality Bridge
@@ -235,7 +235,7 @@ Post-embedded downloadable files (skill zips, templates, etc.) live in the **web
 
 ## Architecture Patterns
 
-- [Pattern-031: Plugin Wrapper](internal/architecture/current/patterns/pattern-031-plugin-wrapper.md) - Adapter pattern for integration routers
+- [Pattern-031: Plugin Wrapper](internal/architecture/patterns/pattern-031-plugin-wrapper.md) - Adapter pattern for integration routers
 
 ## Developer Guides
 
@@ -323,8 +323,8 @@ Weekly/monthly session consolidations - 100+ consolidated logs for historical re
 
 #### ADRs & Decisions
 
-- **Active ADRs**: `docs/internal/architecture/current/adrs/` 
-- **Patterns**: `docs/internal/architecture/current/patterns/` 
+- **Active ADRs**: `docs/internal/architecture/adrs/` 
+- **Patterns**: `docs/internal/architecture/patterns/` 
 - **PDRs**: `docs/internal/product/pdr/` 
 
 ### 🎨 Assets (`assets/` and `docs/assets/`)
@@ -378,7 +378,7 @@ Weekly/monthly session consolidations - 100+ consolidated logs for historical re
 - **Code References**: `internal/architecture/current/models/`
 - **Processes**: `internal/development/methodology-core/`
 - **Images/Assets**: `assets/` with inventory in README
-- **ADRs**: `internal/architecture/current/adrs/` 
+- **ADRs**: `internal/architecture/adrs/` 
 
 ---
 
@@ -457,8 +457,8 @@ Weekly/monthly session consolidations - 100+ consolidated logs for historical re
 ### For Research & Analysis
 
 - **[Omnibus Logs](omnibus-logs/)** - Strategic insights and weekly summaries (100+ logs)
-- **[ADRs](internal/architecture/current/adrs/)** - Architectural decision records
-- **[Patterns Catalog](internal/architecture/current/patterns/)** - Implementation patterns
+- **[ADRs](internal/architecture/adrs/)** - Architectural decision records
+- **[Patterns Catalog](internal/architecture/patterns/)** - Implementation patterns
 - **[Session Logs](../dev/)** - Historical development sessions by date
 
 ---

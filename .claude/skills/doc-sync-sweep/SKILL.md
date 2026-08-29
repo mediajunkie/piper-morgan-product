@@ -64,7 +64,7 @@ For each change kind, the likely-affected doc surface(s):
 | Class/function deleted | `grep -rn "<name>" services/ web/ --include="*.py"` for remaining docstring/comment references; same on `docs/` |
 | Class/function renamed | Same as above; also check ADR/Pattern bodies that name the symbol |
 | API signature changed | `docs/internal/architecture/current/api-*.md`; route conventions doc; CLAUDE.md API Conventions section |
-| New pattern landed | `docs/internal/architecture/current/patterns/README.md` entry + the pattern body itself |
+| New pattern landed | `docs/internal/architecture/patterns/README.md` entry + the pattern body itself |
 | New ADR landed | ADR catalog README; cross-references from other ADRs |
 | Behavior change in empty-state branch | Templated canned-response strings in the same module (per #1064 investigation finding) |
 | Test deletions | Co-located tests in `services/<module>/tests/` (often missed in repo-level `tests/` cleanup) |

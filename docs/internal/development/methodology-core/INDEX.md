@@ -63,7 +63,7 @@
 - **Understand testing approach** → [methodology-15-TESTING-VALIDATION.md](methodology-15-TESTING-VALIDATION.md)
 - **See real examples** → [case-studies/](../case-studies/)
 - **Understand the retired code-as-methodology approach** → [design record](../../architecture/current/design-record-methodology-as-code-2025.md) _(the package itself was deleted 2026-07-26)_
-- **Learn from case studies** → [Pattern-061](../../architecture/current/patterns/pattern-061-human-ai-collaboration-referee.md)
+- **Learn from case studies** → [Pattern-061](../../architecture/patterns/pattern-061-human-ai-collaboration-referee.md)
 
 ## Complete Methodology Catalog
 

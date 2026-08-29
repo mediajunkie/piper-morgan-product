@@ -351,7 +351,7 @@ This MUX doc commits to user-experience shape for Surface 2. It does NOT commit 
   - API: `web/api/routes/user_history.py:152` (PATCH endpoint)
   - UI substrate: `templates/components/privacy_mode.html` (banner) + `templates/components/history_sidebar.html:316` (footer toggle) + `:330` (per-conversation icon)
   - Stub being replaced: `templates/privacy-settings.html` (Coming-Soon shell)
-- **ADR-054** (Cross-Session Memory Architecture; Composted Learning layers that privacy excludes): `docs/internal/architecture/current/adrs/adr-054-cross-session-memory-architecture.md`
+- **ADR-054** (Cross-Session Memory Architecture; Composted Learning layers that privacy excludes): `docs/internal/architecture/adrs/adr-054-cross-session-memory-architecture.md`
 - **#1018 audit_transparency Phase 2** (privacy state changes captured in audit envelope): tracking issue + #1018 commit history
 - **Calendar-offer policy** (voice borrowing source; offer-first-with-stakes register): TBD path; per Comms Round 1 framing
 

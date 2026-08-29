@@ -144,7 +144,7 @@ Exec's brief was already carefully verified with file/line citations, commit has
 — re-deriving all of it from scratch would have been redundant effort. HOST spot-checked the three
 claims this policy's headline property depends on, independently:
 
-- `docs/internal/architecture/current/adrs/adr-079-owner-scoping-integrity-contract.md` exists.
+- `docs/internal/architecture/adrs/adr-079-owner-scoping-integrity-contract.md` exists.
 - `scripts/check_unscoped_reads.py` exists and is invoked from `tests/test_completion_ratchets.py` (two
   call sites, one for unscoped-read count, one for repo-wide count) — confirming "CI-blocking" means
   "wired into the pytest suite as a ratchet test," not merely present in the repo unused.

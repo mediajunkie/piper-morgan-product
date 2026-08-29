@@ -232,7 +232,7 @@ Created 3 extraction scripts for pattern sweep:
 - `.claude/skills/create-session-log/SKILL.md`
 - `.claude/skills/check-mailbox/SKILL.md`
 - `.claude/skills/close-issue-properly/SKILL.md`
-- `docs/internal/architecture/current/patterns/README.md` (updated)
+- `docs/internal/architecture/patterns/README.md` (updated)
 
 **Scripts** (3):
 - `scripts/extract-session-lessons.sh`

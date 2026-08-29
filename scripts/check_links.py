@@ -12,6 +12,9 @@ def extract_links(text):
     return re.findall(link_pattern, text)
 
 
+REPO_ROOT = str(Path(__file__).resolve().parent.parent)
+
+
 def check_file_exists(source_file, link_path):
     """Check if a linked file exists, resolving relative paths"""
     source_dir = os.path.dirname(source_file)
@@ -28,7 +31,7 @@ def check_file_exists(source_file, link_path):
 
     if link_path.startswith("/"):
         # Absolute path from project root
-        full_path = os.path.join("/Users/xian/Development/piper-morgan", link_path.lstrip("/"))
+        full_path = os.path.join(REPO_ROOT, link_path.lstrip("/"))
     else:
         # Relative path from source file directory
         full_path = os.path.join(source_dir, link_path)
@@ -45,7 +48,7 @@ def check_file_exists(source_file, link_path):
 
 
 def main():
-    docs_dir = "/Users/xian/Development/piper-morgan/docs"
+    docs_dir = os.path.join(REPO_ROOT, "docs")
     broken_links = []
     total_links = 0
 
@@ -95,7 +98,7 @@ def main():
         by_file[source].append(link)
 
     for source_file, links in by_file.items():
-        relative_source = source_file.replace("/Users/xian/Development/piper-morgan/", "")
+        relative_source = source_file.replace(REPO_ROOT + "/", "")
         print(f"\n📁 {relative_source} ({len(links)} broken links)")
 
         for link in links:

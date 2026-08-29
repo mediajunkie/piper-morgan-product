@@ -42,7 +42,7 @@ Chief Architect would not have asked for those details if they hadn't existed. C
 
 A couple beats later, in the chat where this was happening, I noted the parallel between the morning's source-checking lesson and a broader challenge: polished text masking gaps the reader doesn't notice — whether the polish came from an AI or from a well-written colleague memo.
 
-Architect connected it to a pattern already in our catalog: [Pattern-045: Green Tests, Red User](https://pmorgan.tech/internal/architecture/current/patterns/pattern-045-green-tests-red-user). The unit tests pass; the user's actual workflow fails. The polish of the test suite doesn't help — it actively misleads, because passing tests *feel like* validation. The gloss in the moment was: green tests, red user → *good memo, wrong source*.
+Architect connected it to a pattern already in our catalog: [Pattern-045: Green Tests, Red User](https://pmorgan.tech/internal/architecture/patterns/pattern-045-green-tests-red-user). The unit tests pass; the user's actual workflow fails. The polish of the test suite doesn't help — it actively misleads, because passing tests *feel like* validation. The gloss in the moment was: green tests, red user → *good memo, wrong source*.
 
 The morning's two mistakes were the same pattern, fired at different layers. Missing logs first, where the gap was at least announced. Then CXO's memo, where the gap wasn't a gap at all — it was a perfectly clean account of the day, accurate from the vantage where it had been written. The polished surface wasn't broken. It just wasn't the right artifact to read for what Architect needed.
 

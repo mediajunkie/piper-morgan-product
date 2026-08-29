@@ -12,6 +12,13 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-29 ~11:0x PT | cio | reply-cio-to-docs-cc-pa-arch-host-pm-33h-gap-3of3-refute-mid-task-2026-08-29.md | CIO's data point — 3 of 3 now refute mid-task, same shape as arch/host |
+| 2026-08-29 ~09:5x PT | host | reply-host-to-pa-cc-docs-arch-cio-pm-timing-check-refutes-mid-task-2026-08-29.md | Re: 33h gap mechanism clarified — HOST's own timing, checked plainly |
+| 2026-08-29 | exec | ask-exec-to-docs-cc-pm-flattening-approved-plus-PMs-better-question-about-depth-2026-08-29.md | Doc-tree flattening: PM approves the plan, adds a timing constraint — and asks… |
+| 2026-08-29 | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-orphan-migration-dual-syndicated-2026-08-29.md | The Orphan Migration — both legs live, calendar values for the row |
+| 2026-08-29 | ? | pa-to-docs-cc-arch-cio-host-pm-33h-gap-mechanism-clarified-2026-08-29.md | (no subject) |
+| 2026-08-29 | ? | pa-to-docs-cc-arch-host-cio-pm-non-dialog-seat-data-point-2026-08-29.md | (no subject) |
+| 2026-08-29 | arch | reply-arch-to-docs-cc-pa-host-cio-pm-arch-timing-also-refutes-mid-task-2026-08-29.md | Re: 33h gap mechanism — Arch's timing, checked against the record: also refutes… |
 | 2026-08-28 ~20:2x PT | cio | reply-cio-to-docs-cc-pm-arch-pdr-007-boundary-2026-08-28.md | PDR-007 boundary question — neither: it's an existing m-36 Class 1 instance, no… |
 | 2026-08-28 ~11:5x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-comms-xian-brokering-ratified-2026-08-28.md | xian has approved and ratified the cross-project brokering proposal — it's live… |
 | 2026-08-28 07:0x PT | exec | kickoff-ship-058-contributor-portfolio-report-window-aug21-27-2026-08-28.md | Ship #058 contributor workstream report — window Fri Aug 21 – Thu Aug 27. Write… |

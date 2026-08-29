@@ -164,9 +164,9 @@ VISUAL-TIMELINE.md → "Phase 4: Sprint A2 Launch"
 - `docs/omnibus-logs/2025-10-15-omnibus-log.md`: Sprint A2 launch
 
 ### Architecture Documents
-- `docs/internal/architecture/current/adrs/adr-038-spatial-architecture-patterns.md`
-- `docs/internal/architecture/current/adrs/adr-043-canonical-handler-pattern.md`
-- `docs/internal/architecture/current/adrs/adr-027-configuration-validation.md`
+- `docs/internal/architecture/adrs/adr-038-spatial-architecture-patterns.md`
+- `docs/internal/architecture/adrs/adr-043-canonical-handler-pattern.md`
+- `docs/internal/architecture/adrs/adr-027-configuration-validation.md`
 
 ### Session Logs (Sampled)
 - `/dev/2025/09/27/2025-09-27-1342-prog-code-log.md`: Router analysis
@@ -257,8 +257,8 @@ VISUAL-TIMELINE.md → "Phase 4: Sprint A2 Launch"
 - `knowledge/roadmap-v12.2.md`: Current roadmap
 
 ### Methodology
-- `docs/internal/architecture/current/adrs/adr-035-inchworm-protocol.md`: Completion methodology
-- `docs/internal/architecture/current/patterns/pattern-045-green-tests-red-user.md`: Test philosophy
+- `docs/internal/architecture/adrs/adr-035-inchworm-protocol.md`: Completion methodology
+- `docs/internal/architecture/patterns/pattern-045-green-tests-red-user.md`: Test philosophy
 - `knowledge/gameplan-template.md`: Gameplan structure
 
 ### Session Coordination
@@ -294,7 +294,7 @@ A: EXECUTIVE-SUMMARY.md "Critical Decisions" section + RETROSPECTIVE.md "Critica
 For questions about Period 4 analysis:
 - Review the relevant section in documents above
 - Cross-reference omnibus logs in `docs/omnibus-logs/`
-- Check ADRs in `docs/internal/architecture/current/adrs/`
+- Check ADRs in `docs/internal/architecture/adrs/`
 - Trace issues through git log
 
 ---

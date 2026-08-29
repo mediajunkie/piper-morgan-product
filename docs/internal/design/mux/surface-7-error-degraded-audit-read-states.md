@@ -308,9 +308,9 @@ This MUX doc commits to user-experience shape for Surface 7. It does NOT commit 
 
 ## Cross-references
 
-- **ADR-063** (architectural companion): `docs/internal/architecture/current/adrs/adr-063-user-facing-audit-envelope-read-surface.md`
-- **ADR-061** (WRITE-side four-element principle): `docs/internal/architecture/current/adrs/adr-061-llm-touch-boundary-enforcement.md`
-- **Pattern-071** (Audit Logs as Attack Surface): `docs/internal/architecture/current/patterns/pattern-071-audit-logs-as-attack-surface.md`
+- **ADR-063** (architectural companion): `docs/internal/architecture/adrs/adr-063-user-facing-audit-envelope-read-surface.md`
+- **ADR-061** (WRITE-side four-element principle): `docs/internal/architecture/adrs/adr-061-llm-touch-boundary-enforcement.md`
+- **Pattern-071** (Audit Logs as Attack Surface): `docs/internal/architecture/patterns/pattern-071-audit-logs-as-attack-surface.md`
 - **MUX/UI Round 2 synthesis** (Surface 7 paired-deliverable shape; locked 6 decisions): `mailboxes/cxo/sent/mux-ui-gap-cxo-round-2-synthesis-2026-05-15.md`
 - **MUX/UI Round 2 CEO ratification**: `mailboxes/cxo/read/memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md`
 - **Empty-state voice guide** (voice anchor reference): `docs/internal/design/specs/empty-state-voice-guide-v1.md`

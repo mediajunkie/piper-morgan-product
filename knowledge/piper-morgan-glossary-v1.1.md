@@ -10,7 +10,7 @@
 ## Core Concepts
 
 ### ADR (Architecture Decision Record)
-A document capturing an important architectural decision including context, decision, and consequences. Numbered sequentially (ADR-001, ADR-002, etc.). Lives in `/docs/internal/architecture/current/adrs/`.
+A document capturing an important architectural decision including context, decision, and consequences. Numbered sequentially (ADR-001, ADR-002, etc.). Lives in `/docs/internal/architecture/adrs/`.
 
 ### Agent
 An AI instance with specific role, capabilities, and context. Examples: Chief Architect (strategic), Lead Developer (tactical), Code Agent (implementation).

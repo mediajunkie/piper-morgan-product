@@ -36,6 +36,6 @@ That's a small discipline to state and an easy one to skip under time pressure, 
 
 ---
 
-*Next on Building Piper Morgan: [FOOTER TBD — this piece isn't scheduled yet; fill in once PM assigns a slot, per the live calendar at that time, not guessed now]*
+*Next on Building Piper Morgan: "A Primary Log Can Be Wrong, Not Just Incomplete" — a session log that read as an airtight source turned out to be recording what someone believed happened, not proof that it did.*
 
 *The next time you ship a fix, would it survive the same scrutiny you gave the bug it's fixing?*

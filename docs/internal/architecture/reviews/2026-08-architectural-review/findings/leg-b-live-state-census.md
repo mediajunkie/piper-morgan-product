@@ -1,5 +1,18 @@
 # Leg B — Live-State Census (docs-blind, code only)
 
+> ⚠️ **DATED CORRECTION 2026-08-29 (Arch, from Lead's live probe — appended, original preserved
+> below)**: the claim "`PIPER_INVERSION_LIVE_CATEGORIES` … not set in fly.toml/docker-compose/
+> deploy/config — so dark unless exported on the live host" is **true of the config FILES and
+> false of the DEPLOYMENT**. Lead's ssh probe of the running v64 machine:
+> `PIPER_INVERSION_LIVE_CATEGORIES=read_status`, set 2026-08-21 via **fly secrets**, which no
+> config-file census can see. Flip-1 has been genuinely LIVE for `read_status` since 08-21 — and
+> genuinely unexercised (0-event telemetry is real traffic absence, independently re-verified by
+> Lead). `PIPER_INVERSION_SHADOW` confirmed OFF in prod. The census itself flagged this exact
+> limitation ("what's set in the live host's runtime env cannot be determined from code — flag
+> states below are as-checked-in") — but the synthesis and ESSENCE draft carried the flag-state
+> claim without the caveat, which is the m-43 lesson cutting both directions: the census named its
+> layer; its consumers dropped the naming. Corrected at all three surfaces same day.
+
 *Filed verbatim-condensed 2026-08-29. Researcher forbidden from reading architecture/briefing docs.
 Denominator: 584 non-test .py modules under services/ + web/ + main.py (491 excluding __init__),
 198,413 LOC; all 491 classified via transitive import closure from real entrypoints PLUS a runtime

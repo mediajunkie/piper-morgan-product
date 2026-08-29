@@ -888,11 +888,11 @@ Use this checklist before approving any PR that affects user-facing output, data
   - Lens usage (Temporal, Contextual, Causal, etc.)
   - PerceptionMode (NOTICING, REMEMBERING, ANTICIPATING)
 
-- **ADR-045: Object Model Vision**: `docs/internal/architecture/current/adrs/adr-045-object-model.md`
+- **ADR-045: Object Model Vision**: `docs/internal/architecture/adrs/adr-045-object-model.md`
   - Philosophical foundation of "Entities experience Moments in Places"
   - Why consciousness architecture matters
 
-- **ADR-055: Object Model Implementation**: `docs/internal/architecture/current/adrs/adr-055-object-model-implementation.md`
+- **ADR-055: Object Model Implementation**: `docs/internal/architecture/adrs/adr-055-object-model-implementation.md`
   - Technical implementation details
   - Protocol definitions and usage
 
@@ -908,7 +908,7 @@ Use this checklist before approving any PR that affects user-facing output, data
   - Reading order and practice exercises
   - Self-assessment criteria
 
-- **Grammar Application Patterns**: `docs/internal/architecture/current/patterns/grammar-application-patterns.md`
+- **Grammar Application Patterns**: `docs/internal/architecture/patterns/grammar-application-patterns.md`
   - 5 reusable patterns extracted from Morning Standup
   - Pattern-050: Context Dataclass Pair
   - Pattern-051: Parallel Place Gathering

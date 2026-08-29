@@ -22,7 +22,7 @@ that require side effects, database writes, or deterministic fast-path
 responses.
 
 **For current routing truth, see**:
-- [ADR-060: Floor-First Routing](current/adrs/adr-060-floor-first-routing.md) —
+- [ADR-060: Floor-First Routing](adrs/adr-060-floor-first-routing.md) —
   principle and rationale
 - [`docs/guides/canonical-handlers-architecture.md`](../../guides/canonical-handlers-architecture.md) —
   current canonical handler scope

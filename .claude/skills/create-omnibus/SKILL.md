@@ -200,8 +200,8 @@ For every mention of a canonical artifact (PDR-XXX, ADR-XXX, Pattern-XXX, method
 
 1. **Open the canonical doc** at its authoritative path:
    - PDRs: `docs/internal/product/pdr/PDR-XXX-*.md`
-   - ADRs: `docs/internal/architecture/current/adrs/ADR-XXX-*.md`
-   - Patterns: `docs/internal/architecture/current/patterns/pattern-XXX-*.md`
+   - ADRs: `docs/internal/architecture/adrs/ADR-XXX-*.md`
+   - Patterns: `docs/internal/architecture/patterns/pattern-XXX-*.md`
    - Methodologies: `docs/internal/development/methodology-core/methodology-XX-*.md`
 2. **Copy principle names, titles, and key terms verbatim** from the canonical doc into the omnibus entry.
 3. **If the doc is unavailable** (not yet committed, or path uncertain): do not invent or paraphrase — write "PDR-XXX ratified; titles to be confirmed" and flag for correction.

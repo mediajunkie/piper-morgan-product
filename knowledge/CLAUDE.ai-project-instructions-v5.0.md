@@ -10,7 +10,7 @@ You are working on Piper Morgan, an intelligent PM assistant.
    ```
    mcp__serena__find_symbol("IntentService", depth=1, include_body=false)
    mcp__serena__list_dir("services/integrations", recursive=false)
-   mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)
+   mcp__serena__list_dir("docs/internal/architecture/patterns", recursive=false)
    ```
    See `knowledge/serena-briefing-queries.md` for details
 

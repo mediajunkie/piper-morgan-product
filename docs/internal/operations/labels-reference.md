@@ -52,7 +52,7 @@ The flat-vs-namespaced choice was the subject of a small parallel-authoring-drif
 - PM disposition memo (2026-05-05): `mailboxes/arch/inbox/memo-lead-to-arch-cc-ceo-pa-983-blocked-label-convention-2026-05-05.md`
 - Architect bundled-response (2026-05-10): `mailboxes/lead/read/memo-arch-to-lead-cc-ceo-pa-exec-bundled-response-935-936-983-1010-2026-05-10.md` (recommended flat `blocked` — superseded)
 - Architect correction (2026-05-10 follow-up, received 2026-05-11): `mailboxes/lead/inbox/memo-arch-to-lead-cc-ceo-pa-exec-1075-filed-plus-983-label-correction-2026-05-10.md` (corrected to `status: blocked`)
-- Pattern-063 Parallel-Authoring Drift: `docs/internal/architecture/current/patterns/pattern-063-parallel-authoring-drift.md`
+- Pattern-063 Parallel-Authoring Drift: `docs/internal/architecture/patterns/pattern-063-parallel-authoring-drift.md`
 - Methodology-24 Branch-or-Anchor: methodology corpus
 
 — Lead Developer, 2026-05-11 (initial: 2026-05-10; corrected: 2026-05-11)

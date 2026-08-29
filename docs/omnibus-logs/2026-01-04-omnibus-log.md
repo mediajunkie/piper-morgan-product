@@ -31,7 +31,7 @@ Post-holiday operational reset with major strategic realignment day. Lead Develo
 
 **11:15 AM** - **Lead Developer** Phase 1 complete: DI helper + ADR created
 - Added `get_container()` to `web/api/dependencies.py`
-- Created [adr-048-service-container-lifecycle.md](docs/internal/architecture/current/adrs/adr-048-service-container-lifecycle.md)
+- Created [adr-048-service-container-lifecycle.md](docs/internal/architecture/adrs/adr-048-service-container-lifecycle.md)
 - 6 tests passing, dependency injection pattern formalized
 - Discovery: Pre-existing test failure in `test_todo_service.py` (owner_id UUID migration issue from #484)
 

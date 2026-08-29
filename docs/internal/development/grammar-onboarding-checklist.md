@@ -35,7 +35,7 @@ This checklist helps you get up to speed with applying "Entities experience Mome
   - Synthetic: Tracked confidence (must include reasoning provenance)
 
 ### 1. Understand the Vision
-- [ ] Read ADR-045: Object Model (`docs/internal/architecture/current/adrs/adr-045-object-model.md`)
+- [ ] Read ADR-045: Object Model (`docs/internal/architecture/adrs/adr-045-object-model.md`)
   - Core grammar: "Entities experience Moments in Places"
   - Three substrates: Entity, Moment, Place
   - Situation as frame (not a fourth substrate)
@@ -77,7 +77,7 @@ This checklist helps you get up to speed with applying "Entities experience Mome
   - Understand grammar tiers: Full Compliance / Partial / Flattened / Absent
   - Review transformation priorities
 
-- [ ] Read Application Patterns (`docs/internal/architecture/current/patterns/`)
+- [ ] Read Application Patterns (`docs/internal/architecture/patterns/`)
   - **Pattern-050: Context Dataclass Pair** - Input/output separation with `*Context` and `*Response` classes
   - **Pattern-051: Parallel Place Gathering** - Multi-source data collection with async concurrency
   - **Pattern-052: Personality Bridge** - Data to narrative transformation with experience language
@@ -286,12 +286,12 @@ Mark your progress:
 
 ## Related Documentation
 
-- **ADR-045**: Object Model (`docs/internal/architecture/current/adrs/adr-045-object-model.md`)
-- **ADR-055**: Implementation (`docs/internal/architecture/current/adrs/adr-055-object-model-implementation.md`)
+- **ADR-045**: Object Model (`docs/internal/architecture/adrs/adr-045-object-model.md`)
+- **ADR-055**: Implementation (`docs/internal/architecture/adrs/adr-055-object-model-implementation.md`)
 - **MUX Implementation Guide**: `docs/internal/development/mux-implementation-guide.md`
 - **Experience Tests**: `docs/internal/development/mux-experience-tests.md`
 - **Grammar Compliance Audit**: `docs/internal/architecture/current/grammar-compliance-audit.md`
-- **Application Patterns**: `docs/internal/architecture/current/patterns/pattern-050-054-*.md`
+- **Application Patterns**: `docs/internal/architecture/patterns/pattern-050-054-*.md`
 - **Transformation Guide**: `docs/internal/development/grammar-transformation-guide.md`
 - **Morning Standup** (Reference): `services/features/morning_standup.py`
 - **Anti-Flattening Tests**: `tests/unit/services/mux/test_anti_flattening.py`

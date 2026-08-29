@@ -212,13 +212,13 @@ PM fighting a sinus cold. Paused HOSR and CXO conversations. New item: Dan Heck 
 
 ### Pattern Infrastructure (Docs)
 - `docs/omnibus-logs/2026-02-04-omnibus-log.md` — Feb 4 omnibus
-- `docs/internal/architecture/current/patterns/pattern-060-cascade-investigation.md` — New pattern
-- `docs/internal/architecture/current/patterns/PROTO-PATTERNS.md` — New registry
-- `docs/internal/architecture/current/patterns/proposals/pattern-family-index-proposal.md` — Proposal
-- `docs/internal/architecture/current/patterns/PATTERN-FAMILIES.md` — New index
-- `docs/internal/architecture/current/patterns/README.md` — Updated
-- `docs/internal/architecture/current/patterns/pattern-029-multi-agent-coordination.md` — Updated
-- `docs/internal/architecture/current/patterns/pattern-059-leadership-caucus.md` — Updated
+- `docs/internal/architecture/patterns/pattern-060-cascade-investigation.md` — New pattern
+- `docs/internal/architecture/patterns/PROTO-PATTERNS.md` — New registry
+- `docs/internal/architecture/patterns/proposals/pattern-family-index-proposal.md` — Proposal
+- `docs/internal/architecture/patterns/PATTERN-FAMILIES.md` — New index
+- `docs/internal/architecture/patterns/README.md` — Updated
+- `docs/internal/architecture/patterns/pattern-029-multi-agent-coordination.md` — Updated
+- `docs/internal/architecture/patterns/pattern-059-leadership-caucus.md` — Updated
 
 ### Skills (Docs)
 - `.claude/skills/close-issue-properly/SKILL.md` — Family references

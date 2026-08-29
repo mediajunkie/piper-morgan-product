@@ -123,7 +123,7 @@
 - `web/app.py`: 2 cache endpoint bugs fixed
 - `scripts/benchmark_performance.py`: Performance benchmark suite created
 - `.github/workflows/test.yml`: Already excellent, verified
-- `docs/internal/architecture/current/adrs/adr-043-canonical-handler-pattern.md`: Created
+- `docs/internal/architecture/adrs/adr-043-canonical-handler-pattern.md`: Created
 
 ### Impact Measurement
 

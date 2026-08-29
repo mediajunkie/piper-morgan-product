@@ -280,7 +280,7 @@ Request additional detail for:
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 - **Colleague Test (operational v2.1)**: `docs/internal/testing/colleague-test-rubric.md`
 - **Colleague Test (conceptual)**: `docs/internal/development/colleague-test.md`
-- **Floor-first routing**: `docs/internal/architecture/current/adrs/adr-060.md`
+- **Floor-first routing**: `docs/internal/architecture/adrs/adr-060.md`
 - **Experience Philosophy**: `docs/internal/product/pdr/PDR-004-experience-philosophy.md`
 - **UX foundations**: `piper-morgan-ux-foundations-and-open-questions.md`
 - **Roadmap**: `docs/internal/planning/roadmap/roadmap.md`

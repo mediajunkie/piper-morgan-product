@@ -313,7 +313,7 @@ class SpatialEvent:
 ## MUX Consciousness Models
 
 **File**: `services/mux/consciousness.py`
-**Pattern**: [Pattern-056: Consciousness Attribute Layering](../patterns/pattern-056-consciousness-attribute-layering.md)
+**Pattern**: [Pattern-056: Consciousness Attribute Layering](../../patterns/pattern-056-consciousness-attribute-layering.md)
 **Tests**: 104 tests in `tests/unit/services/mux/test_consciousness.py`
 
 These models implement Piper's consciousness - the ability to have awareness, emotional states, and agency. They support the MUX grammar: "Entities experience Moments at Places."
@@ -473,7 +473,7 @@ class ConsciousnessExpression:
 ## MUX Ownership Models
 
 **File**: `services/mux/ownership.py`
-**Pattern**: [Pattern-058: Ownership Graph Navigation](../patterns/pattern-058-ownership-graph-navigation.md)
+**Pattern**: [Pattern-058: Ownership Graph Navigation](../../patterns/pattern-058-ownership-graph-navigation.md)
 **Tests**: 61 tests in `tests/unit/services/mux/test_ownership.py`
 
 These models track Piper's epistemological relationship to knowledge - what Piper creates (Mind), observes (Senses), and understands (Understanding).

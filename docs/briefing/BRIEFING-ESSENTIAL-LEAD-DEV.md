@@ -14,7 +14,7 @@ last_verified: "2026-06-19"
 > See `knowledge/serena-briefing-queries.md` for query patterns or run:
 > - Intent categories: `mcp__serena__find_symbol("IntentService", depth=1)`
 > - Active plugins: `mcp__serena__list_dir("services/integrations")`
-> - Pattern count: `mcp__serena__list_dir("docs/internal/architecture/current/patterns")`
+> - Pattern count: `mcp__serena__list_dir("docs/internal/architecture/patterns")`
 >
 > **This file focuses on your role, responsibilities, and methodology.**
 
@@ -137,8 +137,8 @@ When receiving work from subagent:
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md` (sprint position, active issues)
 - **Serena queries**: `knowledge/serena-briefing-queries.md` (live system state)
 - **Architecture**: `docs/NAVIGATION.md` (find anything)
-- **Patterns**: `docs/internal/architecture/current/patterns/` (63 patterns)
-- **ADRs**: `docs/internal/architecture/current/adrs/` (61 decisions)
+- **Patterns**: `docs/internal/architecture/patterns/` (63 patterns)
+- **ADRs**: `docs/internal/architecture/adrs/` (61 decisions)
 ---
 
 *Last Updated: March 10, 2026*

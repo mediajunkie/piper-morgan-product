@@ -87,7 +87,7 @@ active_plugins = [p for p in plugins if p not in ["__pycache__", "spatial"]]
 
 **Serena Query:**
 ```
-mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)
+mcp__serena__list_dir("docs/internal/architecture/patterns", recursive=false)
 ```
 
 **Returns:**
@@ -122,7 +122,7 @@ intent_data = mcp__serena__find_symbol("IntentService", depth=1, include_body=fa
 plugin_data = mcp__serena__list_dir("services/integrations", recursive=false)
 
 # 3. Patterns
-pattern_data = mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)
+pattern_data = mcp__serena__list_dir("docs/internal/architecture/patterns", recursive=false)
 
 # Generate briefing:
 briefing = f"""
@@ -166,7 +166,7 @@ Returns: All classes ending in "Plugin" (PiperPlugin interface implementations)
 
 ```
 # Read specific pattern file
-mcp__serena__search_for_pattern("^# ", relative_path="docs/internal/architecture/current/patterns/pattern-030-plugin-interface.md")
+mcp__serena__search_for_pattern("^# ", relative_path="docs/internal/architecture/patterns/pattern-030-plugin-interface.md")
 ```
 
 Returns: Pattern headings and structure

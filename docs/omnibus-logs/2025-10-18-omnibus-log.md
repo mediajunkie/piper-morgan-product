@@ -1011,7 +1011,7 @@ Response: [Specific, contextual, actionable answer]
 - Lines: +60
 
 **ADR Update** (10 minutes):
-- File: `docs/internal/architecture/current/adrs/adr-026-notion-client-migration.md`
+- File: `docs/internal/architecture/adrs/adr-026-notion-client-migration.md`
 - Added: "API Version 2025-09-03 Migration (Issue #165)" section
 - Content: Migration context, decision rationale, implementation, testing, lessons learned
 - Lines: +180

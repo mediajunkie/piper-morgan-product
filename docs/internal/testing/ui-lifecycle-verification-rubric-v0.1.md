@@ -85,6 +85,6 @@ CXO holds the lane on updating CT v2.3 §"How to Extend This Rubric" to cross-re
 - Canonical Query Test Matrix v3: `docs/internal/testing/canonical-query-test-matrix-v3.md`
 - M2d Gate: `docs/internal/planning/m2-structure.md` §M2d (and §M2d gate criteria — consolidated three-way concurrence)
 - Methodology-24 Branch-or-Anchor: (see methodology corpus)
-- Pattern-063 Parallel-Authoring Drift: `docs/internal/architecture/current/patterns/pattern-063-parallel-authoring-drift.md`
+- Pattern-063 Parallel-Authoring Drift: `docs/internal/architecture/patterns/pattern-063-parallel-authoring-drift.md`
 
 — Authored: PPM (proposed text), Lead Developer (landed); 2026-05-10
