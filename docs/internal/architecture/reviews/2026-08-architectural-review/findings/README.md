@@ -17,3 +17,4 @@ assessed in the synthesis, not here.
 | leg-c4-connector-layering-scan.md | C4 — backend-owned vs host-mediated evidence | LANDED 08-29 |
 | leg-c5-dialog-granola.md | C5 — Dialog primary-source comparable (from PM's Granola transcripts) | LANDED 08-29 |
 | leg-d-paper-rebuild.md | D — clean-room rebuild test, 24 unanswerable questions | LANDED 08-29 |
+| citation-census-summary.md (+ citation-census/ artifacts) | Mechanical citation census, methodology-core + patterns (disposition input) | LANDED 08-29 |
