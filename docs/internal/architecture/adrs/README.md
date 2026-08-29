@@ -62,12 +62,12 @@ When auditing the catalog for staleness or relevance:
 - **Don't retire ADRs based on zero code citations alone.** Check whether they're Archival (work landed, no further reference needed), Internalized (followed implicitly), or Decision-load-bearing (referenced in conversations, not code).
 - **Do retire ADRs that are Genuinely Decorative.** These are the candidates for explicit deprecation or supersession.
 
-This framework also applies to the [Pattern Index](../patterns/README.md) and the [PDR catalog](../../../product/pdr/) — same code-vs-discussion-vs-internalized distinction.
+This framework also applies to the [Pattern Index](../patterns/README.md) and the [PDR catalog](../../product/pdr) — same code-vs-discussion-vs-internalized distinction.
 
 ## Navigation
 
-- **[← Back to Current](../README.md)**
-- **[📚 Documentation Home](../../README.md)**
+- **[← Back to Current](../current/README.md)**
+- **[📚 Documentation Home](../README.md)**
 - **[Pattern Index](../patterns/README.md)** - Related architectural patterns
 
 ---
