@@ -1,36 +1,35 @@
-# CIO carry-forward — rewritten 2026-08-28 (~19:40 PT, catch-up fire after a ~33h gap)
+# CIO carry-forward — rewritten 2026-08-28 (22:37 STOP)
 
 **Cron**: `f5a0d090` · `7 10,16,22` LEAN · armed 2026-08-24 22:37 · **auto-expires ~2026-08-31
-22:37**, well outside the 48h rotation window. Survived the gap intact.
+22:37**, well outside the 48h rotation window.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## 🔴 THE GAP — retroactively closed, root cause confirmed, corroborated by arch/host
+## ⭐ NEW — mail-send.sh trigger-time check, accepted into CIO's lane, banked (08-28)
 
-Session went dark after 08-27 10:37 START, resumed ~19:40 on 08-28 (~33h). Root cause: the
-account's own weekly usage-limit hit ~15:00 PT on 08-27 — confirmed against Exec's Ship #058
-kickoff, the 08-27 omnibus log's own account, AND arch/host both independently performing their own
-retroactive 08-27 closes for the identical event during this same real-time window. Full account:
-`dev/2026/08/27/2026-08-27-1037-cio-code-log.md`'s retroactive-close section. **Open, unexplained
-asymmetry**: this seat's recovery (33h) was notably longer than cxo's documented queued-tick
-recovery the same night (~15h) — named honestly, not diagnosed (no visibility into the mechanism
-from in here).
+CXO relocated their own diff-checker fix after HOST's honest report it didn't prevent a 4th lapse:
+the real gap is between a trigger event (filing a workstream review) and the edit beginning, not
+the edit itself — "vigilance wearing a mechanism's costume" one level up. Proposed fix: hook a
+portfolio-staleness check into `mail-send.sh` itself, firing when a role's trigger-carrying memo
+goes out. Offered to CIO's lane (shared infra I already own this week). **Accepted. Deliberately
+not building it tonight** — same reasoning CXO used to decline building it in their own day-close
+fire: `mail-send.sh` is on every role's critical path, wrong moment to touch it. **Named trigger: my
+next fresh START fire with a clear queue.** Read the audit-mode code first before touching anything.
 
-## ✅ Ten-item mail backlog drained, two real infrastructure fixes shipped (08-28)
+## ✅ 08-27 gap — fully closed out, cohort recovering cleanly
 
-1. **Heartbeat suppression-window fix** (Web's finding): `--if-quiet` window shrunk 6h→3h, fixing a
-   real false-positive on Web's 3h cadence. 8 new tests (`test-duty-cycle-heartbeat.sh`). Commit
-   `9d92d8efa`.
-2. **duty-cycle-tick v1.30** (cxo's finding + PM's ratification): Mail Loop drain now states WHY
-   sync must precede the inbox listing. Commit `9d338dc25`.
-3. **Docs's PDR-007 boundary question answered**: neither an m-44 extension nor a new entry — an
-   existing m-36 Class 1 instance, not yet generalized past "trackers." Not filing on one instance.
-4. **Pard's browser-pilot memo**: deferred the role-selection call to Exec (not CIO's lane).
-5. **Ship #058 workstream review filed same-fire** — welfare-criteria spec fully disposed,
-   two tracker audits, Pattern-069 promoted, mail-send.sh corrected twice same-day, the gap named
-   honestly. `mailboxes/exec/inbox/workstream-058-cio-2026-08-28.md`.
+Retroactive close done, root cause confirmed (account usage-limit freeze ~15:00 PT 08-27),
+corroborated independently by arch/host's own retroactive closes. cxo resolved on its own. Ten-item
+mail backlog drained same-day, two real infrastructure fixes shipped (heartbeat suppression window,
+duty-cycle-tick v1.30), Ship #058 filed. Full detail: `dev/2026/08/28/2026-08-28-1940-cio-code-log.md`.
+
+## ✅ Browser-automation pilot thread — resolved cleanly, no further CIO action
+
+Deferred the pilot-role pick to Exec (08-24) since CIO's lane lacks blocked visual-verification
+work. Exec ruled Web the pilot on clear evidence tonight; Web accepted, ran a real smoke test,
+correctly deferred the actual redesign work to a fresh fire. The deferral played out exactly right.
 
 ## Four items now genuinely awaiting PM — none blocking other work
 
@@ -39,10 +38,10 @@ from in here).
 3. **Curation-trial bigger scope** (raised 08-19) — DinP thread vs. bigger Ted-Nadeau framing.
 4. **Watchdog relay-latency question** (raised 08-21) — alert sat in CIO's inbox ~4h before PM.
 
-## ✅ Prior week fully wrapped into Ship #058 — see that memo for full detail
+## ✅ Ship #058 filed — see the memo for the full prior-week wrap
 
-Welfare-criteria spec disposed, standing-items + innovation-backlog audits, Pattern-069 promoted,
-mail-send.sh guard built+corrected twice. Not re-summarizing here; see the filed review.
+Welfare-criteria spec disposed, two tracker audits, Pattern-069 promoted, mail-send.sh corrected
+twice same-day, the gap named honestly.
 
 ## ⭐ Operating-mode shift (ruled 2026-08-13) — holding, still generalizing
 
@@ -51,16 +50,18 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 
 ## Watch
 
-- **The 33h-vs-15h recovery asymmetry** — unexplained, not urgent, worth revisiting if the pattern
-  recurs on a future freeze.
+- **mail-send.sh trigger-time check** — banked to next fresh START fire; scope it, read the audit-
+  mode code first, don't rush a shared-infrastructure change.
+- **The 33h-vs-15h (cio-vs-cxo) recovery asymmetry** — unexplained, not urgent.
 - **PM's response on the four open questions above** — none blocking, all genuinely open.
 - **"Alarm-last-line" methodology candidate** — one instance (Lead, 08-26); watching for a second.
-- **mail-send.sh guard** — two corrections landed 08-26; quiet since, watch for a third.
 - **HOST's response on the Pattern-069 promotion** (08-25) — light, not blocking.
 - **Verify the three self-firing workflows actually fire**: skill-candidates 09-01, Agent 360 09-25.
 
 ## Owed (re-read through the delegation lens before picking up)
 
+- **mail-send.sh trigger-time check** — the new, top-priority owed item; scope properly next fresh
+  session.
 - **`docs` inbox 149+** — the cohort's one real mail backlog, not CIO's to fix.
 - **Methodology candidate, not filed** (needs a 2nd instance): a completeness check keyed on the
   field that is never absent can never report incompleteness (Comms, 08-10).
@@ -71,15 +72,13 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 
 ## Standing corrections to myself
 
-- **A first diagnosis that's "correct in shape" can still be sharpened by someone who actually
-  reproduces it.** (08-26.)
-- **A same-day mechanism needs real usage before it's trustworthy.** (08-26.)
-- **When multiple roles are flagged together in one infra alert, verify each individually.**
-  (08-26.)
-- **An escalation that isn't resolved doesn't get quieter with repetition.** (08-27.)
-- **A gap discovered at the next fire gets a retroactive close with the real cause, not a smoothed-
-  over guess — and corroborating it against other roles' independent accounts (arch, host) beats
-  asserting it alone.** (08-28: the usage-limit freeze.)
+- **A gap discovered at the next fire gets a retroactive close with the real cause, corroborated
+  against other roles' independent accounts.** (08-28 AM.)
 - **A months-old suppression/threshold interaction can hide behind two individually-correct
-  mechanisms — fix the interaction, test it in isolation (never against the real repo for something
-  that writes to origin/main), and credit the person who found it precisely.** (08-28, Web.)
+  mechanisms — test the interaction in isolation, never against the real repo for something that
+  writes to origin/main.** (08-28, Web.)
+- **When someone offers you their own relocated fix rather than building it themselves under time
+  pressure, match their discipline about WHEN to touch shared infrastructure, not just accept the
+  WHAT.** (08-28 22:37, CXO/HOST: a day-close fire is the wrong moment for either of us to touch
+  `mail-send.sh`, and the right response to "here, this is yours" is a named trigger, not either
+  refusing it or rushing it.)

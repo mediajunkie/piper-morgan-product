@@ -1,9 +1,42 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-28 16:3x PT (WORK). **Still watching**: #1386's remaining criteria — 2,
-4, 5 now confirmed/closed (see below); 1 functionally satisfied but text-stale; **6 (PM sign-off)
-is the only one genuinely still open**, naturally last.
+**Last rewritten**: 2026-08-28 22:2x PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
+sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## 🟡 THREE THREADS FROM THE TRIAGE CUT, STILL OPEN OVERNIGHT (2026-08-28 ~22:00)
+Not chasing any of these — all have named next steps, none are PPM's to unblock further tonight:
+- **#1638 — Arch ruled DISPOSE** (same shape as #1633/#1642/#1663/#1684, conclusive negative
+  search). The `delete-module-safely` sweep itself hasn't run — relayed to Lead, not urgent.
+- **#1677/#1488 — deliberately NOT closed by Lead**. Fix built/merged/deployed in v64, flag OFF, no
+  live-behavior evidence yet. Trigger: PM flips it at tomorrow's test round; clean routing closes
+  both same-session. This is completion discipline working, not a stall — don't nudge it early.
+- **#1522 — needs a fresh scan before delegation** (Lead's own lane will do it). The "3/9/5
+  families" framing is 10 days stale; at least one family already resolved by v62–64.
+
+**Test-sequencing**: Lead adopted my security-first read (#1578/#1581/#1501 first) with one
+insertion — todo/reminder cluster goes right after security, since that's where tomorrow's flip-on
+first live traffic lands and PM's attention will be freshest. Lead's artifact carries this, not
+mine — watch for it, don't re-derive.
+
+**#1689 filed/triaged tonight** (PM's actual correction of the earlier #1297 mix-up): genuinely new,
+found during #1687 — two native-dialog-gate violations of design-floor #1170. Milestoned MVP, on
+board, Sprint Backlog.
+
+**A real accountability gap, named by Exec and fixed, not defended**: cc'ing Exec/Docs on Lead/PM
+exchanges all day was not the same as the direct briefing PM's own 08-25 framing required. Answered
+properly once asked; saved `feedback_cc_is_not_briefing` since this is likely to recur. **Lesson for
+future fires**: when a directive names specific roles to brief, send them their own dedicated
+answer — don't let a cc trail stand in.
+
+**Sprint field correction — I was wrong earlier today**: PM decreed one sprint left in MVP some
+time back, so `Sprint = "Beta Blockers - Hard Gates Only"` on all open MVP issues is CORRECT, not
+stale. Retracting my earlier "56 stale sprint tags" framing — don't re-raise it as a finding.
+
+**Assignee/agent-field resolution**: PM confirmed — Assignees should always be the accountable
+human (PM or whoever else checks in code), never an agent; a new single-select field for "current
+agent owner" is the right shape, scoped to present-state only (commits are the historical record,
+not this field's job).
 
 ## ✅ MVP TRIAGE CUT — CLOSED, PM ruled, board mechanics complete (2026-08-28)
 **Full arc**: sanctioned 08-18, priority-3 08-25, split accepted 08-27, Lead's engineering read
@@ -660,16 +693,16 @@ resolved or reframed into larger tracked work. Do not read this paragraph as cur
 
 ## Cron
 
-**ARMED** — job **`d58bcc15`** (re-armed at 08-26 22:22 STOP; delete-then-create, `CronList`-
-verified exactly one). Prior job `bb872cf2` (armed 08-25 22:22) retired cleanly at a normal STOP —
-no gap, no incident. Prompt unchanged at this re-arm — no new standing owed items to add, none to
-drop. Still carries: **NO STANDING OWED WORK ITEM** header, **DATES** (don't carry a beta date),
-**MILESTONE SEQUENCE** (MVP → Production → Fast Follow), **SURFACES** (web UI isn't going away),
-**COUNTS** (`sprint-truth.py` verbatim), **AUDIT BIAS**, **GENERAL CONTRACTS**, **PROXIES**
-("gateable fraction" not "shadow"), **MAIL-SEND CAN FAIL SILENTLY**, **TOOL OUTAGES**, **HEARTBEAT
-PUSH RACES**, and the **WATCH FOR #1386** line (criteria 1/4/5/6, unchanged since 08-21/22).
+**ARMED** — job **`759b28c2`** (re-armed at 08-28 22:22 STOP; delete-then-create, `CronList`-
+verified exactly one). Prior job `d58bcc15` (armed 08-26 22:22) retired cleanly — no gap, no
+incident. **Updated the WATCH FOR line at this re-arm** (the only content change): now points at
+criterion 6 only (2/4/5 confirmed closed, 1 stale-but-satisfied), plus a passive notice-don't-chase
+on Lead's #1677/#1488 close and the #1638 delete-sweep landing overnight. Still carries: **NO
+STANDING OWED WORK ITEM** header, **DATES**, **MILESTONE SEQUENCE**, **SURFACES**, **COUNTS**,
+**AUDIT BIAS**, **GENERAL CONTRACTS**, **PROXIES**, **MAIL-SEND CAN FAIL SILENTLY**, **TOOL
+OUTAGES**, **HEARTBEAT PUSH RACES**.
 
-⚠️ **Session-only + 7-day auto-expiry, both silent** — `d58bcc15` expires ~2026-09-02 if not
+⚠️ **Session-only + 7-day auto-expiry, both silent** — `759b28c2` expires ~2026-09-04 if not
 re-armed sooner (re-armed every STOP in practice, so this is a backstop, not the expected path).
 
 ---

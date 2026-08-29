@@ -10,7 +10,24 @@ defects judged individually). **Board mechanics complete**: all five moved to Pr
 and fixed a bigger gap doing it**: 4 of the 5 issues were never on the project board at all (not
 just missing a Sprint value) — added via `gh project item-add`, Status set to Product Backlog.
 Verified via `assign-sprint-safely`'s procedure throughout (per-item mutation only, option-list
-count confirmed unchanged before/after). MVP now converges by deploy-verify on what remains.
+count confirmed unchanged before/after).
+
+**⚠️ NOT fully end-to-end closed as of 22:2x PT** — three real threads still open, named honestly
+rather than let the ✅ above read as final:
+- **#1638 RULED same night (Arch, 22:0x): DISPOSE**, same shape as #1633/#1642/#1663/#1684 — zero
+  production callers found across direct/dynamic/config-driven lookup, "fold into the cut as drops
+  out entirely." **Execution (the actual `delete-module-safely` sweep) not yet done** — routed to
+  Lead, not urgent tonight.
+- **#1677/#1488 deliberately NOT closed** (Lead, 22:0x) — fix is built/merged/deployed in v64 but
+  the flag is OFF; no live-behavior evidence yet. Named trigger: PM flips it at tomorrow's test
+  round, clean live routing closes both same-session with checkboxes annotated description-first.
+  This is completion discipline working correctly, not a stall.
+- **#1522 needs a fresh scan before delegation** (Lead, 22:0x) — the "3/9/5 families" framing is 10
+  days old and at least one named family was already resolved by v62–64 work. Lead's own lane will
+  re-scan with the issue as hypotheses to verify, not facts to execute — queued behind tomorrow's
+  test round.
+
+MVP converges by deploy-verify on what remains, plus these three threads closing in their own time.
 
 **Prepared by**: Lead (engineering read) + PPM (sprint/milestone call + roadmap coherence).
 **Date**: 2026-08-28. **For**: PM's ruling, per the 08-25 priority-3 decision ("prepare with PPM
