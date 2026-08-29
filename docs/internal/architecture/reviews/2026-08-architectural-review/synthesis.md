@@ -125,7 +125,10 @@ This is the tension I am obligated to surface rather than resolve alone.
 
 **B's headline**: as configured today, 100% of chat traffic rides the legacy routing chain through
 a 14,389-line file; the Inversion rail is fully built, reviewed, armed — and dark by default
-config. **A2's headline**: that legacy chain is the single largest incident generator in the
+config. *(Dated correction 2026-08-29, from Lead's live probe: "dark by config" was a
+config-file-layer claim; the deployment layer has `read_status` live via fly secrets since 08-21,
+genuinely unexercised — 0 events from real traffic absence. The observed-behavior claim stands;
+the mechanism claim is corrected. See the correction block atop leg-b-live-state-census.md.)* **A2's headline**: that legacy chain is the single largest incident generator in the
 project's history. **D's G2**: under the BYOC anchor, the four-surface routing stack *does not need
 to be rebuilt at all* — the host LLM does tool selection; our own Inversion program was already
 migrating toward "a constrained LLM call over a derived registry," which is architecturally the
