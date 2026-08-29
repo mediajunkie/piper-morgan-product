@@ -237,6 +237,16 @@ If ANY of these occur, STOP and escalate to PM immediately:
 ### Evidence Required
 Every claim needs proof. "Tests pass" requires terminal output. Issue closure requires implementation evidence.
 
+**"Verified how:" is a REQUIRED field on completion claims** *(added 2026-08-29 — Arch's Agent 360
+v0.4 proposal, PM-approved, HOST-routed; makes m-49 "described is not running" an artifact property
+instead of reviewer diligence)*. Any memo, issue closure, or report claiming work is complete
+carries an explicit `Verified how:` line stating three things: the **method** (the command/probe
+actually run this time, not a check remembered from earlier), the **layer it measured** (m-43 — a
+curl 200 is not a render test; a config file's presence is not a live hook), and the **denominator**
+(m-44 — what it covered out of what exists). A completion claim without the line is an unverified
+claim and should be read as one. Receivers: a memo missing it is grounds to bounce the claim back,
+not a formality to wave through.
+
 ### Never guess at facts you can look up or ask about
 Database role names, emails, usernames, account details, credentials, config values, file contents, repo/commit history, and counts — if you don't actually know it, look it up from config/source or ask, never guess-and-proceed. A confident wrong guess about a factual detail is worse than a pause to check, especially when it's the input to a diagnostic or a safety-relevant action: a guessed credential or role name that turns out wrong can manufacture a false alarm (e.g., a fabricated "data loss" scare from an invented database role name) that costs far more trust than the ten seconds it takes to verify first.
 
