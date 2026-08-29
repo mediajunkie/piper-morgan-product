@@ -201,7 +201,7 @@ See the philosophy document for detailed guidance.
 
 ### Grammar Application (#404)
 - **Grammar Compliance Audit**: `docs/internal/architecture/current/grammar-compliance-audit.md` - 39 features audited
-- **Application Patterns**: `docs/internal/architecture/current/patterns/pattern-050-054-*.md` - 5 patterns extracted from Morning Standup
+- **Application Patterns**: `docs/internal/architecture/patterns/pattern-050-054-*.md` - 5 patterns extracted from Morning Standup
   - Pattern-050: Context Dataclass Pair (input/output separation)
   - Pattern-051: Parallel Place Gathering (multi-source data collection)
   - Pattern-052: Personality Bridge (data to narrative transformation)

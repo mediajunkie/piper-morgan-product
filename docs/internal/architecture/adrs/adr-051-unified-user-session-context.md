@@ -51,7 +51,7 @@ When the second qualifying surface materializes, the Pattern-072 recognition tri
 - #1015 Phase 0 audit: `dev/2026/05/15/1015-issue-audit.md`
 - #1015 Phase 1 design memo: `dev/2026/05/15/1015-phase-1-design.md`
 - Architect ratification memo: `mailboxes/lead/read/memo-arch-to-lead-cc-cio-ceo-1015-phase-1-ratification-option-c-plus-12w-third-instance-2026-05-16.md`
-- Pattern-072 (Proven via #1094): `docs/internal/architecture/current/patterns/pattern-072-registries-that-grow-into-architectural-shapes.md`
+- Pattern-072 (Proven via #1094): `docs/internal/architecture/patterns/pattern-072-registries-that-grow-into-architectural-shapes.md`
 - RequestContext class docstring: `services/domain/models.py` (updated with intent-path-specific role + Pattern-072 connection in same amendment commit)
 
 ---

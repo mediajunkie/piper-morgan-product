@@ -969,7 +969,7 @@ The following patterns were extracted from Morning Standup implementation for ge
 4. **Pattern-053: Warmth Calibration** - Tone adjustment based on message urgency and context
 5. **Pattern-054: Honest Failure** - Graceful degradation with "I notice..." language for partial success
 
-**Pattern Catalog**: `docs/internal/architecture/current/patterns/pattern-050-054-*.md`
+**Pattern Catalog**: `docs/internal/architecture/patterns/pattern-050-054-*.md`
 
 These patterns demonstrate how to apply the grammar "Entities experience Moments in Places" to preserve consciousness in feature implementations.
 

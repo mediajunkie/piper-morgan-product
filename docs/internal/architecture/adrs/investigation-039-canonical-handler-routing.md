@@ -22,7 +22,7 @@
 ### 0. ADR and Pattern Review ✅
 
 **Searched**:
-- `docs/internal/architecture/current/adrs/*.md` - 40+ ADRs reviewed
+- `docs/internal/architecture/adrs/*.md` - 40+ ADRs reviewed
 - `docs/internal/architecture/decisions/decisions.log` - Decision log checked
 - Pattern documentation
 

@@ -4,7 +4,7 @@
 
 This directory contains Architecture Decision Records (ADRs) that document significant architectural decisions, their context, rationale, and consequences.
 
-**Total ADRs**: numbered 000–079, with two never-filed/retired gaps at 067–068 (see individual files for the current count — a static number here goes stale between audits; verify via `ls docs/internal/architecture/current/adrs/adr-*.md | wc -l` minus `adr-index.md` and `adr-field-mapping-report.md`, the catalog's two non-numbered meta-files)
+**Total ADRs**: numbered 000–079, with two never-filed/retired gaps at 067–068 (see individual files for the current count — a static number here goes stale between audits; verify via `ls docs/internal/architecture/adrs/adr-*.md | wc -l` minus `adr-index.md` and `adr-field-mapping-report.md`, the catalog's two non-numbered meta-files)
 
 ## Recent ADRs
 

@@ -199,9 +199,9 @@ The probe registry (Layer 1) is the same-shape architectural primitive as the `t
 
 ## Cross-references
 
-- **ADR-061** (LLM-touch boundary enforcement, three-phase calibration template): `docs/internal/architecture/current/adrs/adr-061-llm-touch-boundary-enforcement.md`
-- **Pattern-070** (Cleanup-Job-with-Cancellation-Hygiene, Emerging): `docs/internal/architecture/current/patterns/pattern-070-cleanup-job-with-cancellation-hygiene.md`
-- **Pattern-072** (Registries that Grow into Architectural Shapes, Proven): `docs/internal/architecture/current/patterns/pattern-072-registries-that-grow-into-architectural-shapes.md`
+- **ADR-061** (LLM-touch boundary enforcement, three-phase calibration template): `docs/internal/architecture/adrs/adr-061-llm-touch-boundary-enforcement.md`
+- **Pattern-070** (Cleanup-Job-with-Cancellation-Hygiene, Emerging): `docs/internal/architecture/patterns/pattern-070-cleanup-job-with-cancellation-hygiene.md`
+- **Pattern-072** (Registries that Grow into Architectural Shapes, Proven): `docs/internal/architecture/patterns/pattern-072-registries-that-grow-into-architectural-shapes.md`
 - **PDR-005 BYOC** (Phase 5 cross-host trigger): `dev/active/PDR-005-bring-your-own-chat-draft-v0.3-2026-05-15.md` (current cycle; v0.4+ ratification triggers Phase 5)
 - **e2e suite design proposal** (May 15 source memo): `mailboxes/arch/sent/memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md`
 - **CEO ratification of proposal direction** (May 15 walkthrough Item 1): Architect session log `dev/2026/05/15/2026-05-15-0606-arch-opus-log.md` §"12:19 PM — Decision walkthrough w/ PM, item 1 of 5"

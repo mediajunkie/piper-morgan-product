@@ -199,11 +199,11 @@ ADR-054 Layer 3 (User History) uses the same text-search shape this ADR generali
 
 ## Cross-references
 
-- **ADR-054** (Cross-Session Memory; Layer 3 User History as precedent): `docs/internal/architecture/current/adrs/adr-054-cross-session-memory-architecture.md`
-- **ADR-062** (Project-Scope E2E Suite; Pattern-072 registry-shape reuse): `docs/internal/architecture/current/adrs/adr-062-project-scope-e2e-suite.md`
-- **ADR-063** (Audit Envelope Read Surface; access control template): `docs/internal/architecture/current/adrs/adr-063-user-facing-audit-envelope-read-surface.md`
-- **Pattern-072** (Registries that Grow into Architectural Shapes, Proven): `docs/internal/architecture/current/patterns/pattern-072-registries-that-grow-into-architectural-shapes.md`
-- **Pattern-070** (Cleanup-Job-with-Cancellation-Hygiene, Emerging — async-batch freshness model uses Pattern-070 invariants): `docs/internal/architecture/current/patterns/pattern-070-cleanup-job-with-cancellation-hygiene.md`
+- **ADR-054** (Cross-Session Memory; Layer 3 User History as precedent): `docs/internal/architecture/adrs/adr-054-cross-session-memory-architecture.md`
+- **ADR-062** (Project-Scope E2E Suite; Pattern-072 registry-shape reuse): `docs/internal/architecture/adrs/adr-062-project-scope-e2e-suite.md`
+- **ADR-063** (Audit Envelope Read Surface; access control template): `docs/internal/architecture/adrs/adr-063-user-facing-audit-envelope-read-surface.md`
+- **Pattern-072** (Registries that Grow into Architectural Shapes, Proven): `docs/internal/architecture/patterns/pattern-072-registries-that-grow-into-architectural-shapes.md`
+- **Pattern-070** (Cleanup-Job-with-Cancellation-Hygiene, Emerging — async-batch freshness model uses Pattern-070 invariants): `docs/internal/architecture/patterns/pattern-070-cleanup-job-with-cancellation-hygiene.md`
 - **MUX/UI Round 2 synthesis** (Surface 5 deferral + pre-1.0 index ADR commitment): `mailboxes/{cohort}/inbox/mux-ui-gap-cxo-round-2-synthesis-2026-05-15.md`
 - **MUX/UI Round 2 CEO ratification**: `mailboxes/arch/sent/memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md`
 - **Existing search surfaces**:

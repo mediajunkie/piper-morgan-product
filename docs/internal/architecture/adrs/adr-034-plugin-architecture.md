@@ -243,7 +243,7 @@ If we need to move to "pure plugins" (all logic in plugin, no routers):
 
 ### Documentation
 - **Developer Guide**: `docs/guides/plugin-development-guide.md` (497 lines)
-- **Pattern Documentation**: `docs/internal/architecture/current/patterns/pattern-031-plugin-wrapper.md` (189 lines)
+- **Pattern Documentation**: `docs/internal/architecture/patterns/pattern-031-plugin-wrapper.md` (189 lines)
 - **Demo Plugin**: `services/integrations/demo/` (380 lines, complete template)
 - **Versioning Policy**: `docs/guides/plugin-versioning-policy.md` (202 lines)
 - **Quick Reference**: `docs/guides/plugin-quick-reference.md` (85 lines)
@@ -316,7 +316,7 @@ If we need to move to "pure plugins" (all logic in plugin, no routers):
 - **Developer documentation**:
   - API Reference: `docs/public/api-reference/api/plugin-api-reference.md` (902 lines verified)
   - Developer Guide: `docs/guides/plugin-development-guide.md` (523 lines verified)
-  - Pattern documentation: `docs/internal/architecture/current/patterns/pattern-031-plugin-wrapper.md`
+  - Pattern documentation: `docs/internal/architecture/patterns/pattern-031-plugin-wrapper.md`
 
 ### Verification Notes
 

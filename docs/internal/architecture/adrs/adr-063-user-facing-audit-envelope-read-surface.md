@@ -182,8 +182,8 @@ Per Round 2 synthesis, Surface 7 is "**Full MUX doc** + separate ADR-NN companio
 
 ## Cross-references
 
-- **ADR-061** (WRITE-side companion; four-element principle): `docs/internal/architecture/current/adrs/adr-061-llm-touch-boundary-enforcement.md`
-- **Pattern-071** (Audit Logs as Attack Surface, Emerging): `docs/internal/architecture/current/patterns/pattern-071-audit-logs-as-attack-surface.md`
+- **ADR-061** (WRITE-side companion; four-element principle): `docs/internal/architecture/adrs/adr-061-llm-touch-boundary-enforcement.md`
+- **Pattern-071** (Audit Logs as Attack Surface, Emerging): `docs/internal/architecture/patterns/pattern-071-audit-logs-as-attack-surface.md`
 - **MUX/UI Round 2 synthesis** (Surface 7 paired-deliverable shape): `mailboxes/{cohort}/inbox/mux-ui-gap-cxo-round-2-synthesis-2026-05-15.md`
 - **MUX/UI Round 2 CEO ratification** (this ADR triggered): `mailboxes/arch/sent/memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md`
 - **#1095 transparency auth gates** (Pattern-071 first fix; Lead Dev shipped 2026-05-16 AM): commit `0161f089` + close-out `cc22560d`

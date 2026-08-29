@@ -226,7 +226,7 @@ context_package_format:
 ## Context Package Format
 
 This plugin emits and accepts context packages per ADR-065
-(`docs/internal/architecture/current/adrs/adr-065-canonical-context-package-format.md`).
+(`docs/internal/architecture/adrs/adr-065-canonical-context-package-format.md`).
 The canonical schema is at `plugin/schemas/context-package-1.0.0.json`.
 See ADR-065 §Decision D2 for envelope/body/extensions structure.
 ```
