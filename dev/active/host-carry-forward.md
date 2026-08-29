@@ -1,13 +1,13 @@
 # HOST carry-forward
 
-**Written**: 2026-08-26 22:0x PDT (STOP fire, day 33 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-28 19:5x PDT (mid-session, day 35 on Amber — 08-27 had a ~30.5h availability gap, retroactively closed this fire; not yet a STOP rewrite, more fires remain today) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
 ✅ **Cron-count fix**: `grep -c "^## Fire"` vs. comma count before writing STOP. **Known exception found 08-12**: if a multi-fire backlog gets absorbed into one catch-up START (date rolled while away, several prompts arrived stacked in one turn), the heading count will read LOW relative to the comma count even on a genuinely-last fire — because 2+ cron slots collapsed into 1 heading. When that happens, trust the **date-based rule** (next scheduled fire's calendar date ≠ today → STOP), not the heading count, and say so explicitly in the STOP entry rather than silently overriding the count check.
 ✅ **Step 1c headroom**: reads the guard-convention count from `check-derived-drift.sh`'s own output. **CIO's hybrid-packing landed 08-16** (`rc=0`, MEMORY.md now 91 lines / 180 entries, packed several terse-slug entries per line) — headroom jumped from 12 to ~109. Was 188/12 pre-landing.
 ✅ **Step 2c (cohort-freeze)**: reads `origin/main` directly (CIO's fix), prints `ref=`/`tip=`. Held clean (`rc=0`, non-alarming) across a genuinely low-activity post-reboot morning on 08-11 and every fire since — the non-discriminating case is working as designed, not silently passing.
-✅ **`ROLE-PORTFOLIO-HOST.md` refresh discipline, corrected 08-12**: a content edit is NOT the same act as bumping `last_updated`/`refreshed` — my own 08-07 edit did the former and not the latter, and `check-refresh-promises.py` correctly re-flagged it. Fixed for real (frontmatter bumped alongside real §2 content), verified via re-running the checker, not assumed.
+🔴 **`ROLE-PORTFOLIO-HOST.md` refresh discipline — FOUR lapses now, most recent 08-28 (caught same-day against the Ship #058 trigger).** CXO's `--diff` checker (landed 08-22 in direct response to lapse #3) got its first real-commit exercise this lapse: ran `--diff HEAD` on the uncommitted fix, got a clean pass (`content and last_updated moved together`), committed (`871253850`), reported back to CXO honestly (`381026511`) — it tightens the *catch window*, it does not prevent the *recurrence*. Four manual catches in four tries; the "does this need auto-bump-on-any-edit" question is still open and getting harder to wave off as a fluke.
 
 ## Watching, not owed
 
@@ -120,18 +120,19 @@
 
 ## Cron
 
-Current job **`478fbee3`** (chain … `82f6b0fa → 26deaf24 → 478fbee3`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-26 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`478fbee3`** (chain … `82f6b0fa → 26deaf24 → 478fbee3`), expression **`37 6,9,12,15,18,21 * * *`** — armed at 08-26 STOP via delete-then-create, `CronList`-verified exactly one job before and after. **Survived the 08-27→28 ~30.5h availability gap intact — same job id throughout, never died, session just didn't get a turn** (see 08-27's log retroactive-close section + 08-28's Fire 1 for the full root-cause account: weekly rate-limit exhaustion + an apparent machine-asleep/backgrounded stretch, cohort-wide, cross-verified against PM/the automated watchdog/Web). No re-arm was needed or done. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 08-26 STOP
+## Open threads, as of 08-28 Fire 1 (mid-session, not a STOP)
 
 - **Agent 360 v0.4** — ✅ Synthesized 08-27, see item 0 above. Awaiting PM's review + the "what's worth changing" decision step.
+- **Ship #058 workstream review** — ✅ Filed 08-28 (kickoff landed 08-28 morning during the availability gap, actioned same evening once the session resumed). Nothing further owed.
+- **Portfolio's 4th lapse + `--diff` checker's first real test** — ✅ Both resolved 08-28, see the Standing Checks section above for the full account. Reported back to CXO (`381026511`). The recurrence question (auto-bump-on-any-edit?) is still open — not HOST's alone to decide, flagged to CXO/CIO.
 - **Criterion E** — ✅ Fully closed 08-22/23: ruling given, filed as #1680 by CIO, routed to Lead, recorded in `decisions.log`. Nothing further owed.
 - **Two April carryovers (Sparker/Holder naming, migration-experience confer)** — ✅ Both disposed 08-23, CIO acknowledged same day, tracker closed on both ends. Archival — don't resurrect either.
-- **Portfolio checker `--diff`** — landed and verified 08-22. **Still owed: use it by hand on my next actual portfolio commit** — four full days now (08-23 through 08-26) with no portfolio commit to test it against; genuinely idle-waiting, not neglect. Report back to CXO whenever it finally fires.
 - Criterion E UX ruling, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
-- **Ship #056 workstream review** — filed 08-14 evening per PM's same-day corrected deadline. Closed, nothing further owed.
-- **BRIEFING-CURRENT-STATE.md flagged STALE (11 days, last 2026-08-12)** by SessionStart hook — still stale as of 08-26 evening, unchanged from prior notes. Not HOST's lane to refresh unprompted; still flagging in case it's relevant to whoever picks it up.
-- **Pattern-069 promoted to Proven, 08-25** (CIO) — verified directly against the pattern file, acked. Archival, nothing further owed from HOST.
-- **Cross-project reply protocol ratified, 08-25** (Exec broadcast) — cohort-wide procedure: replies to Dispatch-PM/Janus/Pard/Klatch route via `mailboxes/exec/inbox/` with the real recipient in `to:`, Exec relays. No HOST-specific action, but worth knowing if a cross-project reply is ever needed.
+- **BRIEFING-CURRENT-STATE.md flagged STALE (11 days, last 2026-08-12)** by SessionStart hook — unchanged status, still not HOST's lane to refresh unprompted.
+- **Pattern-069 promoted to Proven, 08-25** (CIO) — verified directly against the pattern file, acked. Archival.
+- **Cross-project reply protocol ratified, 08-25** (Exec broadcast) — cohort-wide procedure, no HOST-specific action, worth knowing if ever needed.
+- **MEMORY.md drift, 08-28** — routine (3 new memory files from other agents, not a stale hand-edit), regenerated clean same-fire. Lives outside the repo, nothing committed here. No action needed.
 - **Heartbeat push-race, 08-25 Fire 1** — was a one-off: zero recurrence across all six 08-26 fires' heartbeat writes. Confirms yesterday's read (contention artifact at the shared 07:07 wake, not a systemic issue). No action needed; downgrading this from "watch" to closed unless it recurs.
 - **08-26 was the second fully quiet day this week** (after 08-24) — all six fires clean, nothing owed in, nothing new arrived. Noted as a baseline pattern, not itself an open thread.
