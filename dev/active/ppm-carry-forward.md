@@ -1,27 +1,39 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-28 22:2x PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-29 07:2x PT (START). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
 
-## 🟡 THREE THREADS FROM THE TRIAGE CUT, STILL OPEN OVERNIGHT (2026-08-28 ~22:00)
-Not chasing any of these — all have named next steps, none are PPM's to unblock further tonight:
-- **#1638 — Arch ruled DISPOSE** (same shape as #1633/#1642/#1663/#1684, conclusive negative
-  search). The `delete-module-safely` sweep itself hasn't run — relayed to Lead, not urgent.
-- **#1677/#1488 — deliberately NOT closed by Lead**. Fix built/merged/deployed in v64, flag OFF, no
-  live-behavior evidence yet. Trigger: PM flips it at tomorrow's test round; clean routing closes
-  both same-session. This is completion discipline working, not a stall — don't nudge it early.
+## 🔴 #1677 CLOSE-TIMING DISCREPANCY — asked Lead, awaiting their account (2026-08-29 07:2x)
+**#1638 closed clean** (06:47 PT, matches Arch's ruling + timing exactly, independent re-sweep
+evidenced — no concern).
+
+**#1677 does NOT match what Lead told me.** Close-event timestamp (computed precisely via Python
+datetime, not trusted from a suspicious first `date` shell attempt): **2026-08-28 19:39:18 PT** —
+over two hours *before* Lead's own memo to me (~22:00-22:24 PT) said *"not closing tonight,
+deliberately... IF they route clean I close both same-session with the live evidence."* The actual
+closing comment is the pre-existing build-evidence comment (23 tests, deterministic-router fakes),
+not new live-traffic evidence, and it says outright "real improvement is observable only live" —
+closed without its own stated trigger. **#1488 (the paired issue) is still OPEN**, so the pair is
+now split inconsistently.
+
+**Did not assume error** — sent Lead a factual, non-accusatory question (cc PM, `5e6344224`) laying
+out the exact timeline, asking for their account. Three honest possibilities, not pre-judging which:
+Lead reconsidered after strengthened test evidence; a different session/lane acted independently of
+Lead's stated plan; or a genuine premature close worth catching before PM's test round treats it as
+settled. **Watch for Lead's reply — don't nudge again, but don't let this go unanswered either if
+PM starts testing against it this morning.**
+
+## 🟡 REMAINING ITEMS FROM THE TRIAGE CUT (as of 08-28 22:00, superseded in part by the above)
 - **#1522 — needs a fresh scan before delegation** (Lead's own lane will do it). The "3/9/5
   families" framing is 10 days stale; at least one family already resolved by v62–64.
+- **#1689 filed/triaged 08-28 night**: genuinely new, found during #1687 — two native-dialog-gate
+  violations of design-floor #1170. Milestoned MVP, on board, Sprint Backlog.
 
 **Test-sequencing**: Lead adopted my security-first read (#1578/#1581/#1501 first) with one
 insertion — todo/reminder cluster goes right after security, since that's where tomorrow's flip-on
 first live traffic lands and PM's attention will be freshest. Lead's artifact carries this, not
 mine — watch for it, don't re-derive.
-
-**#1689 filed/triaged tonight** (PM's actual correction of the earlier #1297 mix-up): genuinely new,
-found during #1687 — two native-dialog-gate violations of design-floor #1170. Milestoned MVP, on
-board, Sprint Backlog.
 
 **A real accountability gap, named by Exec and fixed, not defended**: cc'ing Exec/Docs on Lead/PM
 exchanges all day was not the same as the direct briefing PM's own 08-25 framing required. Answered

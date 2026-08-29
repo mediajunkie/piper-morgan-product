@@ -1,0 +1,183 @@
+<title>Cohort Attention Rollup — Aug 29</title>
+<style>
+  :root{--ground:#F7F7F5;--card:#FFF;--ink:#1A1A17;--soft:#5E5E55;--rule:#E1E0DA;
+        --accent:#5A5233;--red:#A33F2B;--amber:#8A6116;--green:#3E6B45;--grey:#8A8A8A;
+        --shadow:0 1px 2px rgba(26,26,23,.05),0 10px 28px -14px rgba(26,26,23,.16);
+        --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+        --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+        --data:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;}
+  @media (prefers-color-scheme:dark){:root{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--soft:#A0A093;
+        --rule:#33332B;--accent:#C9BE8E;--red:#E38672;--amber:#D5A44B;--green:#79B885;--grey:#8A8A8A;
+        --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}}
+  :root[data-theme="dark"]{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--soft:#A0A093;
+        --rule:#33332B;--accent:#C9BE8E;--red:#E38672;--amber:#D5A44B;--green:#79B885;
+        --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{--ground:#F7F7F5;--card:#FFF;--ink:#1A1A17;--soft:#5E5E55;
+        --rule:#E1E0DA;--accent:#5A5233;--red:#A33F2B;--amber:#8A6116;--green:#3E6B45;
+        --shadow:0 1px 2px rgba(26,26,23,.05),0 10px 28px -14px rgba(26,26,23,.16);}
+  body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:60rem;margin:0 auto;padding:2.5rem 1.25rem 4rem;display:flex;flex-direction:column;gap:2rem}
+  header{border-bottom:3px double var(--rule);padding-bottom:1.2rem;display:flex;flex-direction:column;gap:.4rem}
+  .stamp{font:500 .7rem/1 var(--data);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  h1{font:400 2.2rem/1.1 var(--display);margin:0;letter-spacing:-.015em}
+  .sub{color:var(--soft);margin:0;font-size:.95rem;max-width:56ch}
+  h2{font:600 .72rem/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--soft);
+     margin:0;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+  section{display:flex;flex-direction:column;gap:.7rem}
+  .card{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--grey);
+        border-radius:2px;padding:.85rem 1.05rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.35rem}
+  .card.dec{border-left-color:var(--red)} .card.drift{border-left-color:var(--amber)}
+  .card.ok{border-left-color:var(--green)} .card.new{border-left-color:var(--accent)}
+  .card h3{margin:0;font:600 1rem/1.35 var(--body)}
+  .card p{margin:0}
+  .who{font:600 .66rem/1 var(--data);letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
+  .note{color:var(--soft);font-size:.9rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr));gap:.5rem}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:.55rem .75rem}
+  .stat dt{font:500 .64rem/1.2 var(--data);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+  .stat dd{margin:0;font:600 1.1rem/1.15 var(--body);font-variant-numeric:tabular-nums}
+  ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.4rem}
+  code{font:.88em/1.4 var(--data);background:color-mix(in srgb,var(--accent) 12%,transparent);padding:.1rem .3rem;border-radius:2px}
+  .clean{color:var(--soft);font-size:.92rem}
+  .clean b{color:var(--ink)}
+  footer{border-top:1px solid var(--rule);padding-top:1rem;color:var(--soft);font-size:.84rem}
+  @media(max-width:34rem){h1{font-size:1.8rem}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="stamp">Cohort attention rollup · compiled by Exec · Sat 2026-08-29 08:1x PDT</p>
+    <h1>What needs you</h1>
+    <p class="sub">Live-state pass. Liveness checked first per your directive, then every candidate re-verified against GitHub rather than trusted from the carry-forward that raised it.</p>
+  </header>
+
+  <section>
+    <h2>Liveness — checked before anything else</h2>
+    <div class="card ok">
+      <h3>11 of 11 registry rows examined. Zero stale.</h3>
+      <p><code>duty-cycle-freeze-check.sh</code> against <code>origin/main</code> tip <code>b069a3607</code>, 07:42 today. This is the per-role tool, not the cohort-level one that can't see an individual dark seat. <strong>Denominator stated: eleven of eleven.</strong></p>
+    </div>
+    <dl class="grid">
+      <div class="stat"><dt>Roles live</dt><dd>11 / 11</dd></div>
+      <div class="stat"><dt>Need you</dt><dd>7</dd></div>
+      <div class="stat"><dt>Awareness</dt><dd>4</dd></div>
+      <div class="stat"><dt>Clean</dt><dd>4</dd></div>
+    </dl>
+  </section>
+
+  <section>
+    <h2>🛑 Blocked — work stuck pending someone</h2>
+    <div class="card dec">
+      <p class="who">PPM → Lead, cc you · opened 07:2x today</p>
+      <h3>An issue was closed two hours before its owner said they weren't closing it</h3>
+      <p>PPM computed the close event at <strong>Aug 28, 19:39:18 PT</strong>. Lead's memo at ~22:00 said <em>"not closing tonight, deliberately… IF they route clean I close both same-session with the live evidence."</em> The closing comment is the pre-existing build-evidence one, which itself says real improvement is observable only live — so it closed without its own stated trigger. Its paired issue is still open, leaving the pair split inconsistently.</p>
+      <p class="note"><strong>Verified live just now: it is CLOSED, and the pair is OPEN.</strong> PPM handled this correctly — factual question to Lead, three honest explanations offered, no accusation, and explicitly not nudging again. <strong>Why it's in front of you:</strong> you plan to acceptance-test to-dos this morning, and this is exactly the issue you'd be testing against. If you test it and it works, the discrepancy is bookkeeping. If it doesn't, you'll have found why it mattered.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>🔴 Decisions awaiting you</h2>
+
+    <div class="card dec">
+      <p class="who">CIO · four items, oldest 10 days</p>
+      <h3>The four carried questions — two spelled out, two want the 1-1</h3>
+      <ul class="plain">
+        <li><strong>Chess-board scope.</strong> From your own line: <em>agents have a move log and no position.</em> CIO checked what already exists first — the rollup answers <em>what needs you</em>, the registry answers <em>who's alive</em>, and nothing answers <em>what is everyone working on.</em> No agent can ask "does what Arch is doing touch what I'm about to do" without opening Arch's file by hand. Proposal: a script composing all eleven carry-forwards into one readable file, derived from discipline already paid for. <strong>Your three answers needed:</strong> is "position" role-state or work-item-state; audience agents-too or you-only; what cadence. CIO is explicitly not building ahead of you.</li>
+        <li><strong>Watchdog relay latency.</strong> An alert sat in CIO's inbox ~4h before reaching you in chat. Fix the relay, or accept that mail-mediated alerts carry a fire-interval delay by design.</li>
+        <li><strong>Methodology-core disposition</strong> — you deferred this Apr 27. Still parked, or resume?</li>
+        <li><strong>Curation-trial scope</strong> — your own framing to Ted Nadeau suggests the Design-in-Product effort may be bigger than what's been tested.</li>
+      </ul>
+      <p class="note">The last two carry history I'd compress badly. Recommend taking all four to the CIO 1-1 with the first two already in your head.</p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">Comms · 11 days</p>
+      <h3>The insight pool needs your pass — 9 scheduled plus 3 new</h3>
+      <p>Three new candidates drafted from the newest material and unscheduled: <em>A Primary Log Can Be Wrong, Not Just Incomplete</em> · <em>Described Is Not Running</em> · <em>A Fix Needs the Same Rigor as the Claim It Fixes</em>. You reconfirmed on the 22nd and 23rd that this is still on your list. <strong>Next step is yours</strong>: review the combined pool and choose pairings for upcoming weekend slots. Comms has no move available without it.</p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">Comms · 10 days</p>
+      <h3>Beat 6's beta-data/beta-date quote needs your confirmation before voice-pass</h3>
+      <p>Small, blocking one piece. Also standing with no Comms-side move: the marketplace listing copy, routed to PPM with no response.</p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">HOST · sent Aug 27</p>
+      <h3>Agent 360 v0.4 synthesis — you've read it, the decision step is open</h3>
+      <p>You said last night it's good and there's a lot to think about. The remaining step is "what's worth changing" — six ranked candidate changes are in the memo. Not urgent, but HOST is idle-waiting on it and has named it their window's substantive deliverable three windows running.</p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">Docs · filed Aug 11, 18 days</p>
+      <h3>The docs-tree flattening plan needs a go or no-go</h3>
+      <p>Docs is correctly holding rather than chasing. Genuinely awaiting you.</p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">Piper Alpha · unchanged two reports running</p>
+      <h3>The plugin manifest's license field still reads "TBD — PM decision"</h3>
+      <p>Small and entirely yours. It gates a distribution artifact.</p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">Arch → PPM, flagged for your visibility</p>
+      <h3>Repointing the GitHub adapter is config-level, but two non-architectural gates remain</h3>
+      <p>Arch ruled the swap is configuration and the tool contract holds. Two things a URL flip alone doesn't clear: per-user license eligibility, and unverified authorization-grant compatibility. Routed to PPM as a product call rather than ruled unilaterally. Arch flagged it specifically so it doesn't drop while PPM's queue is full from the triage cut.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>🟡 Awareness — no decision needed</h2>
+
+    <div class="card new">
+      <p class="who">Web · shipped this morning</p>
+      <h3>The browser constraint is gone, and my advice to you last night was already behind</h3>
+      <p>I told you to run <code>brew install --cask google-chrome</code>. That's still true for the devtools integration, which is configured to a path that doesn't exist on this machine — and it's what Piper Alpha's seat needs for the privacy-policy check that has sat undecidable for weeks. <strong>But Web is already unblocked by a different route.</strong> You blessed headless Playwright via Pard, I assigned Web the pilot, and Web smoke-tested it the same night, then shipped a real fix this morning: the blog hero replaced with a previously-built-but-never-wired component, verified by screenshot against a local production build and compared to yesterday's baseline. Post grid now visible at 688px in an 800px viewport instead of barely peeking. <strong>First real design use of the tool, not a smoke test.</strong></p>
+    </div>
+
+    <div class="card drift">
+      <p class="who">Lead</p>
+      <h3>Lead's carry-forward is ten days stale and reads as current</h3>
+      <p>It states <code>v54 LIVE</code> as the deploy state. We're at v63. Its own "awaiting" list carries items closed a week ago — Lead caught one such instance themselves this week and named the lesson (<em>verify awaited items against the issue, not this file</em>), which is the right lesson and hasn't yet been applied to the file itself. Not blocking anything, but it's the one carry-forward I'd distrust if you read it directly, and it's an input to the chess-board proposal above.</p>
+    </div>
+
+    <div class="card drift">
+      <p class="who">Docs, unresolved</p>
+      <h3>Three roles stayed dark 21+ hours past the freeze window while everyone else recovered by dawn</h3>
+      <p>Arch, CIO and HOST. Both their own logs flag an unresolved second cause and neither explains it. This is the "why do some sessions wedge and others don't" question you raised Thursday — still unanswered, now with a sharper shape: it isn't random, the same three seats were involved, and the account-wide limit doesn't account for the extra day.</p>
+    </div>
+
+    <div class="card drift">
+      <p class="who">Exec, found while editing</p>
+      <h3>The canonical Weekly Ship template has corrupted emoji throughout</h3>
+      <p>Every workstream marker in <code>weekly-ship-template-v4.1.md</code> is double-encoded — the file was written once through a mis-decoding step. Harmless to the published Ship (drafts don't copy from it literally) but it means the template can't be pasted from. I preserved the encoding rather than silently rewriting the file. Worth a Docs pass, not worth blocking on.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>✅ Resolved since the last board</h2>
+    <div class="card ok">
+      <ul class="plain">
+        <li><s>CXO's floor-quality and ethics-decline watch</s> — <strong>you ratified the split</strong> Aug 28 morning. Floor-quality retired as a coverage statement, ethics-decline voice kept and converted standing → triggered.</li>
+        <li><s>CXO's "must not be asked to" column</s> — <strong>addressed.</strong></li>
+        <li><s>The TemplateRenderer disposal</s> — Arch ruled, PPM closed it clean at 06:47 today with independent re-sweep evidence.</li>
+        <li><s>The cross-project reply protocol</s> — ratified, broadcast, and already producing results: two of Comms' memos, undelivered for over two weeks by a structural gap, reached their recipient on first live use.</li>
+        <li><s>The heading-level defect</s> — all thirteen instances closed across three agents.</li>
+        <li><s>Browser-automation pilot assignment</s> — Web accepted, smoke-tested, and shipped from it inside 24 hours.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>⚪ Clean — no open item for you</h2>
+    <div class="card">
+      <p class="clean"><b>CXO</b> — three of your ratifications executed into artifacts yesterday; next deliverable claimed and un-gated. <b>PPM</b> — triage cut fully closed; the one open thread is the escalation at the top of this board. <b>Docs</b> — omnibus chain continuous through Aug 28, heading defect closed, only the flattening go/no-go outstanding. <b>Arch</b> — carry-forward clean as of last night, and now holding the architectural review you opened this morning, which supersedes everything else in that lane.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Bottom line:</strong> nothing is stuck on an agent — the one blocked item is waiting on Lead's account of a close-timing discrepancy, and it intersects your morning testing plan. Everything else in the decision column is you.</p>
+    <p><strong>Live-state pass.</strong> Liveness via <code>duty-cycle-freeze-check.sh</code> (11 rows, 0 stale). All eleven carry-forwards read directly, not summarized from memory. Issue states re-queried against GitHub at compile time rather than trusted from the file that raised them — which is how the close-timing item and the resolved column were confirmed. Website issues queried live. <strong>Not verified:</strong> the "three roles dark 21+ hours" second cause, which nobody has root-caused and I am reporting as open rather than explaining.</p>
+  </footer>
+</div>

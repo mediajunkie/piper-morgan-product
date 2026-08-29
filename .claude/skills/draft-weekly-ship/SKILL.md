@@ -198,11 +198,19 @@ Required sections in this order (per template v4.1):
 3. **Dateline**: `*{Month DD–DD, YYYY}*`
 4. **Opening**: 2–3 paragraphs capturing the theme or major milestone. Reference the previous Ship's theme for continuity if natural.
 5. **`# 🚀 Shipped this week`** with the 5 workstreams in this order:
+   - `## ⚙️ Engineering & architecture` ⬅ **FIRST as of #058** (PM ratified 2026-08-29)
    - `## 🎯 Product & experience`
-   - `## ⚙️ Engineering & architecture`
    - `## 🔬 Methodology & process innovation`
    - `## 🌍 External relations & community` (publication list, then the REQUIRED hero image per Step 4c)
    - `## 📊 Governance & operations` (includes metrics as a **bullet list**, never a table — PM 2026-07-08)
+
+   ⚠️ **Order changed at #058 — Engineering & architecture now leads.** PM, 2026-08-29: *"I did put
+   product & experience first a while back when I wanted to emphasize that we weren't just yoloing the
+   code but I do want to reemphasize shipping at this point so we can adjust the template."* The
+   original order was itself a deliberate signal (we are not just shipping code), and it did its job;
+   the new order carries the opposite emphasis for the current phase. **This is a phase-keyed choice,
+   not a permanent truth** — if the emphasis shifts back, expect this to flip again, and don't treat
+   either order as the "correct" one absent PM's current intent.
 6. **`# 🎯 Coming up next week`** — brief paragraph
 7. **`# 🚧 Blockers & asks`** — brief paragraph
 8. **`# 🔎 This week's learning pattern`** with name as `## {Noun-phrase pattern name}` and all 5 components:

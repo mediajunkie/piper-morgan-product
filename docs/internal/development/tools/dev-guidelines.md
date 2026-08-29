@@ -374,18 +374,6 @@ def test_file_repository():
     # Test should verify string input, not assume integer conversion
 ```
 
-#### **Template System Integration**
-```python
-# Template tests should verify context-aware messaging
-def test_template_resolution():
-    template = get_message_template(
-        intent_category="analysis",
-        intent_action="investigate_issue",
-        workflow_type=WorkflowType.GENERATE_REPORT
-    )
-    assert template == "Here's my analysis of the reported issue:"
-```
-
 #### **JSON-Mode LLM Testing Patterns**
 ```python
 # LLM services using JSON structured output (TextAnalyzer, etc.)

@@ -96,15 +96,17 @@ rather than guessing):
   2026-08-19 after PM found+fixed two live 404 hero images (frontmatter
   pointing at pre-conversion `.png` names instead of the deployed `.webp`
   names). Low priority, no rush — direction not scoped.
-- [ ] **Above-the-fold hero design** (from 8/15 PM conversation) — feature
-  the most recent post above the fold on `/blog`, before the grid, instead
-  of the generic marketing hero. **UNBLOCKED 2026-08-28**: Web is now the
-  browser-automation pilot (headless Playwright, smoke-tested and confirmed
-  working same night). A screenshot already confirms the `compact` fix
-  (08-09) reduced padding but never addressed the real issue — full
-  marketing copy still leads. Real baseline exists now; pick up in the next
-  fire with actual design bandwidth, no deadline, report honestly on the
-  tool alongside the feature per Exec's ask.
+- [x] **Above-the-fold hero design — SHIPPED 2026-08-29** (website `b21d89e`).
+  Replaced the generic marketing `<Hero>` on `/blog` with the pre-existing
+  (previously unwired) `organisms/FeaturedPost` component, extended with a
+  new `compact` prop, populated with the actual most recent post
+  (title/excerpt/image/dates via `sortByPubDate`). Verified with a real
+  Playwright screenshot against local prod build, compared directly to the
+  08-28 "before" baseline: post-grid section now visible at y=688 in an
+  800px viewport (was barely peeking in before). First real design use of
+  the browser-automation pilot tooling — genuinely unblocked this fix (the
+  visual claim couldn't have been confirmed on code-reading alone, which is
+  exactly how the 08-09 partial fix shipped without catching this).
 - [ ] **Buttondown native newsletter publishing** (from 8/15 PM conversation,
   explicitly long-term/not-urgent) — publish blog posts natively to the
   Buttondown newsletter, possibly with subscriber choice (blog vs. Ship,

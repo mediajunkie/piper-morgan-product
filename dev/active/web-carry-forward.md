@@ -18,32 +18,42 @@ the hero above `/blog/`'s content still leads with full marketing copy (headline
 paragraph, two CTAs), just with less space around it. This IS the above-the-fold redesign work,
 now with a real baseline instead of reasoning blind.
 
-**Next fire with real bandwidth (not urgent, no deadline per Exec)**: pick up the actual
-above-the-fold redesign using Playwright to iterate visually. Report honestly on the TOOL as I go
-(false starts, limits, whether it actually unblocks iteration or just moves the bottleneck) — per
-Exec's explicit ask, not just report feature success. Configuration is per-partition, my
-architectural choice (Playwright MCP entry vs. `npx playwright` conventions) — used the `npx`
-approach for tonight's smoke test, not yet decided as the permanent shape.
+**SHIPPED 2026-08-29** (website `b21d89e`): replaced `<Hero>` on `/blog` with the pre-existing,
+previously-unwired `organisms/FeaturedPost` component (extended with a new `compact` prop),
+populated with the actual most recent post. Verified with a real Playwright screenshot against a
+local prod build, directly compared to the 08-28 "before" baseline: post-grid section is now
+visible at y=688 in an 800px viewport, vs. barely peeking in before. Full diff and evidence in
+today's session log. This was the tool's first real design use, not just a smoke test — see
+"Tool report" below for what it did and didn't unblock.
+
+**Tool report (per Exec's ask)**: genuinely unblocked this fix. Without a real screenshot there
+was no way to confirm the visual claim — which is exactly how the 08-09 partial `compact` fix
+shipped without ever catching that the real problem (marketing copy above the fold) was still
+there. No false starts today (yesterday's smoke test already worked out the launch pattern:
+`next start` + `npx playwright` + screenshot + DOM position check). The one open thread:
+configuration is still ad-hoc (`npx playwright` invoked per-script) rather than a settled
+per-repo config — worth deciding a permanent shape eventually, not blocking anything now.
 
 ## ⚠️ Environment facts worth re-verifying each fire, not assuming
 
 - **Two worktrees, two repos**: `piper-morgan-worktrees/web` (cohort infra — mail/logs/`dev/`) on `claude/web-cycle`; `piper-morgan-website-worktrees/web` (actual Web lane) on `claude/web-cycle`. Confirm which one before every commit.
 - **`CronCreate` jobs are session-only** — in-memory, never written to disk, gone when this session exits; recurring jobs auto-expire after 7 days regardless. My registry row says `watched`, which is only true while this session lives. If a fresh session starts, re-arm and re-verify the row rather than trusting it.
-- **No Chrome on this host** — `mcp__chrome-devtools__new_page` fails, executable not found. No in-browser click-through testing available; verify via types/lint/build + targeted extracted-logic tests instead, and say so.
+- **`mcp__chrome-devtools__new_page` still fails** (no Chrome DevTools MCP executable), but this is
+  no longer "no browser on this host" — headless Playwright via `npx playwright` works fine
+  (smoke-tested 08-28, used for real design verification 08-29). Use Playwright directly, not the
+  Chrome DevTools MCP tools, until/unless that gap is separately closed.
 - **Local env has no `GITHUB_DRAFT_TOKEN` / `ADMIN_PASSWORD_HASH` / `ADMIN_SESSION_SECRET`** — can exercise failure/fallback branches locally but not the real success path for anything touching the compose API or the live GitHub-backed calendar read. Vercel has these; first real click-through after a deploy is the actual test.
 
 ## Active threads
 
-### NEW — feature the most recent blog post above the fold, before the grid (PM design ask, 2026-08-15 evening, not yet scoped or built)
-PM looked at `pipermorgan.ai/blog` live (screenshot) after the compact-hero fix and had a further,
-distinct design idea: rather than the generic marketing hero taking the above-the-fold space, feature
-the actual most-recent post there, before the "Building-in-Public Updates" grid starts. Not a
-complaint about the compact fix itself — a new direction on top of it. **Not scoped or built yet** —
-needs real design thought (what does a "featured post" treatment look like: title + excerpt + image?
-does the generic hero copy go away entirely on `/blog` or shrink further alongside it?) and, as ever,
-no browser on this host to iterate visually — expect this to need PM's eyes at each real step, not
-just a final check. Next session: scope this properly before touching `Hero.tsx`/`blog/page.tsx`
-again, don't guess at the shape from one screenshot alone.
+### RESOLVED 2026-08-29 — feature the most recent blog post above the fold, before the grid
+Was: PM design ask 2026-08-15, not yet scoped or built, expected to need PM's eyes at each step
+since there was no way to iterate visually. Overtaken by the 08-28 browser-automation pilot
+assignment: shipped 08-29 (website `b21d89e`) using the pre-existing `organisms/FeaturedPost`
+component + a real Playwright screenshot to verify the design before committing, rather than
+guessing from PM's one screenshot. See the MAJOR section above for full detail. PM hasn't seen the
+live result yet — worth a real eyeball pass next time PM is on `pipermorgan.ai/blog`, but not
+blocking; this can be treated as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ### PM live check-in, 2026-08-15 evening — four items resolved/advanced
 PM reconnected via remote control after a network outage, answered the two long-standing standing
