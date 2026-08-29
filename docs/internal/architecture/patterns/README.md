@@ -190,7 +190,7 @@ The **[Proto-Pattern Registry](PROTO-PATTERNS.md)** tracks emerging pattern cand
 
 ### Anti-Pattern Index
 
-The **[Anti-Pattern Index](../anti-pattern-index.md)** provides bidirectional navigation between patterns and their associated anti-patterns:
+The **[Anti-Pattern Index](../current/anti-pattern-index.md)** provides bidirectional navigation between patterns and their associated anti-patterns:
 
 - **43 anti-patterns** across 5 categories (Grammar, Testing, Architecture, Process, Integration)
 - Links from anti-patterns → patterns that address them
@@ -204,10 +204,10 @@ Use the anti-pattern index to:
 
 ## Navigation
 
-- **[Main Documentation](../README.md)** - Return to main docs
-- **[Anti-Pattern Index](../anti-pattern-index.md)** - Common pitfalls and traps
-- **[Architecture Overview](../architecture.md)** - System architecture documentation
-- **[Development Guides](../../../development/README.md)** - Developer resources
+- **[Main Documentation](../current/README.md)** - Return to main docs
+- **[Anti-Pattern Index](../current/anti-pattern-index.md)** - Common pitfalls and traps
+- **[Architecture Overview](../current/architecture.md)** - System architecture documentation
+- **[Development Guides](../../development/README.md)** - Developer resources
 
 ## Legacy References
 
