@@ -1,6 +1,29 @@
-# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-26
+# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-28
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `b0b9cef5` as of the 2026-08-26 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `a9631fd9` as of the 2026-08-28 21:52 STOP re-arm — see "Cron state" section further down for the current authoritative id, this header is a summary only) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+
+## ⭐ MAJOR: Web is now the browser-automation pilot (2026-08-28) — "no browser on this host" is no longer true
+
+PM blessed headless Playwright on Amber (via Pard/Exec); Exec assigned Web as the pilot role,
+citing the "no browser" constraint I've named more consistently than anyone else and the two
+real items sitting unscoped 13 days for exactly that reason. **Accepted and smoke-tested same
+night**: `npx playwright` works, Chromium is cached (`~/Library/Caches/ms-playwright/chromium-1234`),
+launched headless, navigated to the live site, got a real title/DOM measurement/screenshot — all on
+the first attempt. Full detail and evidence: `dev/2026/08/28/2026-08-28-0652-web-code-log.md`, STOP
+section.
+
+**First real finding from having actual visual capability**: the screenshot shows the `compact` hero
+fix (08-09) correctly reduced padding, but PM's original complaint was only partially addressed —
+the hero above `/blog/`'s content still leads with full marketing copy (headline, subheadline
+paragraph, two CTAs), just with less space around it. This IS the above-the-fold redesign work,
+now with a real baseline instead of reasoning blind.
+
+**Next fire with real bandwidth (not urgent, no deadline per Exec)**: pick up the actual
+above-the-fold redesign using Playwright to iterate visually. Report honestly on the TOOL as I go
+(false starts, limits, whether it actually unblocks iteration or just moves the bottleneck) — per
+Exec's explicit ask, not just report feature success. Configuration is per-partition, my
+architectural choice (Playwright MCP entry vs. `npx playwright` conventions) — used the `npx`
+approach for tonight's smoke test, not yet decided as the permanent shape.
 
 ## ⚠️ Environment facts worth re-verifying each fire, not assuming
 
@@ -270,10 +293,17 @@ Buttondown CSP live-bug — all predecessor's, pre-7/19. Admin calendar runtime 
 autosave ask #1 — mine, 7/29 (see Active threads above for verification limits).
 
 ## Cron state
-- **ARMED** — `b0b9cef5`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
-  Re-armed via delete-then-create at the 2026-08-26 21:52 STOP (routine day-close re-arm, not a
-  cadence change — prior id `f5dcb913` had been live all day). Registry row (expression-keyed, no
+- **ARMED** — `a9631fd9`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**.
+  Re-armed via delete-then-create at the 2026-08-28 21:52 STOP (routine day-close re-arm, not a
+  cadence change — prior id `b0b9cef5` had been live all day). Registry row (expression-keyed, no
   job-id column) needed no update.
+- **2026-08-27**: session went idle after the 12:52 fire due to the account's weekly usage limit
+  (cohort-wide, per Exec's own note) — retroactively closed 08-28 morning via Step-0 self-heal, no
+  gaps found.
+- **2026-08-28**: see the ⭐ MAJOR note at the top of this file — Web assigned browser-automation
+  pilot, smoke-tested same night, real finding surfaced. Also caught+reported a genuine
+  `duty-cycle-watchdog.sh` false positive naming Web falsely stale (self-suppression cascade
+  artifact, fixed same-day by CIO, confirmed live).
 - **2026-08-26**: quiet day after the prior day's substantial fixes — six fires, zero mail, zero
   unblocked task work, zero code changes by Web. PM published Weekly Ship #057. Standing items
   (#1669, above-the-fold hero, Buttondown newsletter) remain unscoped.
