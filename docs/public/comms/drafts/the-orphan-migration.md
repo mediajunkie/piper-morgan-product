@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'the-orphan-migration-missing-building.png'
+alt: 'A translucent AI surveyor and a city official compare a streetscape with a master plan, discovering that a large, established building occupies a conspicuously blank space on the official drawing.'
 caption: ''
 ---
 
