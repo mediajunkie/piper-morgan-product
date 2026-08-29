@@ -314,8 +314,8 @@ grep -r "similar_pattern" services/
 cat docs/patterns/README.md | grep -i "pattern"
 
 # 4. Check ADRs (38+ exist!)
-ls -la docs/internal/architecture/current/adrs/
-grep -r "topic" docs/internal/architecture/current/adrs/
+ls -la docs/internal/architecture/adrs/
+grep -r "topic" docs/internal/architecture/adrs/
 
 # 5. Check existing configuration
 cat config/PIPER.user.md  # User's actual configuration
