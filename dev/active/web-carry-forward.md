@@ -47,14 +47,38 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
   usage (hit and cleaned up 08-29, commit `7779a4d79`). Correct form:
   `scripts/duty-cycle-heartbeat.sh web work --if-quiet`.
 - **Local env has no `GITHUB_DRAFT_TOKEN` / `ADMIN_PASSWORD_HASH` / `ADMIN_SESSION_SECRET`** — can exercise failure/fallback branches locally but not the real success path for anything touching the compose API or the live GitHub-backed calendar read. Vercel has these; first real click-through after a deploy is the actual test.
+- **No login credentials for the Piper Morgan product app's shared dev server** (PID 67615, port
+  8001) — no self-serve `/register` (pruned per #1504), no documented test account. Anything
+  needing an authenticated view of the app (todos, settings, etc.) is blocked for Playwright
+  verification until either a test account or an isolated seeded instance gets provisioned. Pre-auth
+  flows (login redirects, public pages) are unaffected — those verify fine. Found 08-29 during the
+  In Review round; see Active threads above.
 
 ## Active threads
 
-None open right now — standing items (`web-standing-items.md`) are all either PM-gated (obs-pass
-joint walkthrough, site walkthrough) or genuinely unscoped/no-rush (#1669 hero-image filename
-drift, Buttondown native newsletter). Both predecessor's long-standing questions (CLI B trial
-status, `--mode=archive` scope) were answered by PM 2026-08-15 and closed in standing-items —
-no longer carried here.
+### OPEN — In Review browser-verification round, awaiting Lead's disposition (2026-08-29)
+Exec routed 4 app-layer In Review items (#1512, #1568, #1480, #1578/#1581 SECURITY) as a follow-on
+to the pilot — a real bottleneck (27-item In Review bucket, the "needs anyone with a browser" third
+of it), not make-work. Full report sent to Lead cc Exec/PM:
+`mailboxes/web/sent/report-web-to-lead-cc-exec-pm-four-In-Review-items-verified-with-one-credential-gap-2026-08-29.md`.
+
+**Result**: #1480 fully live-verified (real redirect chain + executed the actual deployed
+`safeNextUrl()` guard against 6 attack vectors) — closable. The other three are code-verified (and
+for the security pair, independently re-confirmed via the real jest suite, 18/18) but genuinely
+blocked on one shared constraint: **no test credentials exist for the running shared server, no
+self-serve signup**. Didn't invent an account or spin up isolated infra unilaterally against what's
+likely today's live PM-testing environment — flagged it as a finding rather than guessing past it.
+**Waiting on**: Lead's disposition on the security pair (per Exec's instruction, theirs to close,
+not mine), and whether test credentials / an isolated stack get provisioned for future rounds like
+this. Nothing further for Web until one of those lands.
+
+### CLOSED — predecessor's two long-standing questions
+Both (CLI B trial status, `--mode=archive` scope) were answered by PM 2026-08-15 and closed in
+`web-standing-items.md` — no longer carried here.
+
+Otherwise nothing open right now — standing items (`web-standing-items.md`) are all either
+PM-gated (obs-pass joint walkthrough, site walkthrough) or genuinely unscoped/no-rush (#1669
+hero-image filename drift, Buttondown native newsletter).
 
 ## Notes (mix of predecessor's + mine, marked)
 - *(predecessor, unverified by me)* Product-repo git: ALWAYS absolute `git -C` paths (cwd

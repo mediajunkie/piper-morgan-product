@@ -1,23 +1,27 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-29 ~11:2x PDT ("The Orphan Migration" published, fact-checked clean,
-live-verified)
+**Updated**: 2026-08-29 ~14:0x PDT (crossposts recorded, 33h-gap closed, roadmap/CORE flattened,
+PM's taxonomy question answered with evidence)
 **Session log**: `dev/2026/08/29/2026-08-29-0727-docs-code-log.md` (open).
 **Cron**: `5e2279de`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-04.
 
-**"The Orphan Migration" published**: https://pipermorgan.ai/blog/the-orphan-migration — every
-load-bearing technical claim independently fact-checked against the 06-17 Lead Dev log, all exact
-matches, no defects found. Live-verified (initial 404 was deploy lag, confirmed data was correct
-on `origin/main` first). Fully closed, nothing further owed.
+**"The Orphan Migration" fully closed**: published + dual-syndicated (Medium + LinkedIn),
+fact-checked clean, live-verified. https://pipermorgan.ai/blog/the-orphan-migration
 
-**Watch item: the 33h-gap discrepancy I preserved in the 08-28 omnibus is resolving in real time.**
-PM clarified Arch/CIO/HOST hit a blocking rate-limit dialog (no auto-resolve, explains the extra
-21+h). PM's mid-task hypothesis has now been refuted by 2 of the 3 dialog-hit seats' own
-record-checked timing (Arch, HOST — both idle when the limit hit, both resumed via a fresh fire
-attempt). Arch separately named an inversion hypothesis (the variable might be whether the harness
-attempted a turn at all, not what the seat was doing). **CIO's own data point is the one still
-missing** — once it lands, add a dated addendum to the 08-28 omnibus (not rewrite the original
-entry). Check for CIO's reply at next fire.
+**33h-gap thread closed**: CIO's data point completed the scorecard (3/3 dialog-hit seats refute
+mid-task, 1/1 non-dialog seat can't discriminate further). Dated addendum added to the 08-28
+omnibus, originals left unedited. Thread replied-to, closed.
+
+**`roadmap/CORE/` flatten executed and verified** (76 files, 9 subdirs → flat, PM-approved):
+zero broken links caused by the move. Found and fixed a real bug in `scripts/check_links.py`
+along the way (hardcoded pre-worktree path made it silently check nothing — now genuinely
+working). Filed #1692 for one pre-existing broken-link pair the fixed checker surfaced.
+
+**PM's deeper taxonomy question answered with evidence, recommendation recorded not executed**:
+`internal/` earns its keep (774 vs 252 files, real audience split). `current/` does not — adr-028
+has sat SUPERSEDED-status inside `current/adrs/` for 33+ days, `archive/` holds unrelated docs, no
+ADR has ever moved on supersession. Fold-current-out recommendation written into the flattening
+plan doc, deliberately deferred — falls inside PM's own ADRs-in-review timing constraint.
 
 **⚠️ Standing practice, added 08-27, read this at every fire**: a duty-cycle sync from earlier in
 the session is a timestamped fact, not a durable one. Before reading file/git state to answer a
