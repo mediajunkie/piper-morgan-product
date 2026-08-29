@@ -51,17 +51,31 @@ document.addEventListener('DOMContentLoaded', function() {
             loginButton.textContent = 'Logging in';
             hideError();
 
+            // #1572: capture the browser's IANA timezone so reminder times
+            // ("4pm today") parse and render on the USER'S clock, not the
+            // server's UTC. Best-effort — login proceeds without it.
+            let browserTimezone = '';
+            try {
+                browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+            } catch (tzError) {
+                browserTimezone = '';
+            }
+
             try {
                 // POST to login endpoint
+                const loginParams = new URLSearchParams({
+                    username: username,
+                    password: password
+                });
+                if (browserTimezone) {
+                    loginParams.set('browser_timezone', browserTimezone);
+                }
                 const response = await fetch('/api/v1/auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: new URLSearchParams({
-                        username: username,
-                        password: password
-                    }),
+                    body: loginParams,
                     credentials: 'include' // Include cookies
                 });
 

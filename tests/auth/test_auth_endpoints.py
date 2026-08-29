@@ -100,6 +100,78 @@ class TestAuthEndpoints:
                 await session.commit()
 
     @pytest.mark.asyncio
+    async def test_login_captures_browser_timezone(self, async_client):
+        """#1572: a valid browser_timezone posted with login lands in
+        users.preferences['timezone']; an invalid one is ignored WITHOUT
+        blocking login (fail-safe direction)."""
+        from sqlalchemy import delete as sql_delete
+        from sqlalchemy import select
+
+        from services.auth.password_service import PasswordService
+        from services.database.connection import db
+        from services.database.models import User
+
+        email = "tzlogintest@example.com"
+        async with await db.get_session() as session:
+            await session.execute(sql_delete(User).where(User.email == email))
+            await session.commit()
+
+        ps = PasswordService()
+        test_password = "test_login_password_123"
+        test_user = User(
+            username="tz_login_test_user", email=email, password_hash=ps.hash_password(test_password)
+        )
+
+        try:
+            async with await db.get_session() as session:
+                session.add(test_user)
+                await session.commit()
+
+            # Valid IANA tz → stored
+            response = await async_client.post(
+                "/api/v1/auth/login",
+                data={
+                    "username": "tz_login_test_user",
+                    "password": test_password,
+                    "browser_timezone": "America/Los_Angeles",
+                },
+            )
+            assert response.status_code == 200, f"Login should succeed: {response.text}"
+
+            async with await db.get_session() as session:
+                row = await session.execute(select(User.preferences).where(User.email == email))
+                prefs = row.scalar_one() or {}
+            assert prefs.get("timezone") == "America/Los_Angeles"
+
+            # Invalid tz → login still succeeds, stored value untouched
+            response = await async_client.post(
+                "/api/v1/auth/login",
+                data={
+                    "username": "tz_login_test_user",
+                    "password": test_password,
+                    "browser_timezone": "Not/AZone",
+                },
+            )
+            assert response.status_code == 200, "Invalid tz must never block login"
+
+            async with await db.get_session() as session:
+                row = await session.execute(select(User.preferences).where(User.email == email))
+                prefs = row.scalar_one() or {}
+            assert prefs.get("timezone") == "America/Los_Angeles"
+
+            # No tz field at all → unchanged (existing clients)
+            response = await async_client.post(
+                "/api/v1/auth/login",
+                data={"username": "tz_login_test_user", "password": test_password},
+            )
+            assert response.status_code == 200
+
+        finally:
+            async with await db.get_session() as session:
+                await session.execute(sql_delete(User).where(User.email == email))
+                await session.commit()
+
+    @pytest.mark.asyncio
     async def test_login_invalid_username(self, async_client):
         """
         Verify login fails for non-existent user.
