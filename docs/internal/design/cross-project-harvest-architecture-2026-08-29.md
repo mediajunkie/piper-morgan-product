@@ -1,7 +1,7 @@
 # Cross-project harvest architecture
 
-**Status**: 🟡 DESIGN — PM-directed, decided in conversation 2026-08-29. One open question (§6) that
-PM raised and that this document argues should be answered before anyone builds.
+**Status**: ✅ DESIGN COMPLETE — PM-directed and fully ruled in conversation 2026-08-29, including
+the Tier-2 ownership question (§6, resolved same session). Ready to hand to whoever builds the pilot.
 **Author**: Exec (Chief of Staff), from PM's design in conversation
 **Scope**: cross-project, not Piper-Morgan-local. Piper Morgan is one of the harvested projects.
 
@@ -53,7 +53,7 @@ A harvester per project, on a regular cadence, with input from other roles.
 | Piper Morgan | CIO |
 | Klatch | Calliope |
 | One Job | Coral |
-| Design in Product | *see §6 — PM proposed Janus* |
+| Design in Product | Janus (also owns Tier 2 — see §6) |
 
 ★ **Tier 1 is a NEW OUTPUT SURFACE ON EXISTING WORK, not a new standing obligation.** PM asked
 explicitly that this be stated rather than left implicit.
@@ -165,36 +165,62 @@ Read against those: **Janus is already chartered as the cross-pollination hub an
 sibling-project work** — which is Tier 2's job almost verbatim. And **Themis's lane is business and
 revenue judgment**, which is a different competency from judging practice efficacy.
 
-**The question that actually decides it** — and it is a good question independent of who answers it:
+**The question raised to decide it** was: *are the cross-project guidelines an internal practice
+corpus, or a business asset (consulting IP — promised, sold, productized)?*
 
-> **Are the cross-project guidelines an internal practice corpus, or a business asset?**
+### ✅ RESOLVED 2026-08-29 — it is neither, and the third answer splits cleanly
 
-- **Internal practice corpus** → Janus. It is cross-pollination, already the charter, and the judgment
-  required is about whether a practice works.
-- **Consulting IP — something promised, sold, or productized** → Themis. PM's own framing of Themis is
-  *"as Xian shifts into consulting mode,"* and a standard a client is told to expect is a business
-  commitment before it is a practice.
+PM: *"I don't expect to productize these things per se but to use them in my own practice if that
+makes sense."*
 
-It may legitimately become both over time, in which case the sequencing matters more than the
-assignment: it starts as one and is promoted.
+That is a third category, and it dissolves the conflict rather than picking a side. The guidelines
+are **not published output** (so not straightforwardly Janus's public-face lane) and **not a sold
+asset** (so the consulting-IP argument for Themis does not apply). They are **operating method that
+Xian personally applies in engagements.**
 
-Note also that DxP's own `CLAUDE.md` carries a **"lanes, not silos"** principle requiring explicit
-cross-references between these two. Whichever way this is ruled, the other should be named as a
-consulted party rather than excluded.
+**Which separates curation from application — and those are different jobs held by different roles:**
 
-**Nothing in §§1–5 depends on this answer.** The tiering, the bar, the outcome-framing, the
-upstream-push trigger, and the trigger requirement all hold regardless of who owns Tier 2.
+| Job | Owner | Why |
+|---|---|---|
+| **Curate** — run the harvest, hold the corpus, apply the recurrence bar, maintain outcome-framing | **Janus** | Already chartered as *cross-pollination hub* and *consumer of sibling-project work*. The judgment required is "does this practice hold up in another project," which is exactly a hub's judgment. No charter change needed. |
+| **Apply / advise** — how the standards show up in engagements, what the practice actually commits to | **Themis** | The practice is the business. Themis is *"strategist for Xian's business mix… as Xian shifts into consulting mode."* Using the corpus in delivery is business-practice judgment, not curation. |
+
+**This is why the original proposal felt inverted and also felt right.** PM was reaching for Themis
+because PM was thinking about *using* the standards. Using is not curating. Both roles were in the
+picture for real reasons; the reasons attached to different verbs.
+
+PM: *"Agreed that both roles would be looped in regardless of who owned it."* The split above makes
+that structural rather than a courtesy cc — consistent with DxP's own **"lanes, not silos"** principle
+requiring explicit cross-references between these two.
+
+### ⚠️ One consequence to carry forward: this design now has two audiences
+
+The stated goals are not identical, and they imply differently-shaped artifacts:
+
+1. *"prevent wasting time rediscovering the same patterns over and over again with each new project"* —
+   audience is **agent cohorts across projects**, who need the entry to **fire** at the right moment.
+2. *"use them in my own practice"* — audience is **one expert reader** who needs to **find** it.
+
+An expert skimmer tolerates far more terseness than an agent loading context does. The good news is
+that §4.4's trigger requirement serves the harder case and costs the easier one nothing: an entry
+with a stated trigger is findable by a human *and* fireable by an agent. **Write for the agent; the
+expert reader is covered by construction.** The inverse does not hold.
+
+**Nothing in §§1–5 depended on this answer.** The tiering, the bar, the outcome-framing, the
+upstream-push trigger, and the trigger requirement all held regardless — and still do.
 
 ## 7. What is decided vs. what is not
 
 | Decided (PM, 2026-08-29) | Open |
 |---|---|
-| Two tiers; Tier 1 per project | Tier-2 owner (§6) |
-| Tier 1 = new output surface on existing work, stated explicitly | Whether guidelines are internal practice or business asset (§6) |
-| Nomination bar = recurrence across projects | Pilot design specifics |
-| Standards are outcome-defined floors, locally overridable | Where the corpus physically lives |
-| Tier 2 fires on upstream nomination, not a pull cadence | Who does DxP's own Tier-1 harvest if Janus takes Tier 2 |
+| Two tiers; Tier 1 per project | Pilot design specifics |
+| **Tier 2 curation = Janus; application/advice = Themis** (§6) | Where the corpus physically lives |
+| Tier 1 = new output surface on existing work, stated explicitly | Cadence of Tier-1 harvests per project |
+| Nomination bar = recurrence across projects | — |
+| Standards are outcome-defined floors, locally overridable | — |
+| Tier 2 fires on upstream nomination, not a pull cadence | — |
 | Every corpus entry carries a trigger; existing entries retrofitted | — |
+| Write for the agent audience; the expert reader is covered by construction | — |
 
 ## 8. The scarce input, named
 
