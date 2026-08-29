@@ -1,12 +1,13 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-29 ~07:5x PDT (Fire 1 — 08-28 omnibus gap dispatched to background subagent)
+**Updated**: 2026-08-29 ~07:4x PDT (Fire 1 — 08-28 omnibus done, chain continuous through 08-28)
 **Session log**: `dev/2026/08/29/2026-08-29-0727-docs-code-log.md` (open).
 **Cron**: `5e2279de`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-04.
 
-**08-28 omnibus dispatched to a background subagent** (daily cadence, 15 session logs including 4
-prog subagent logs) — not yet returned as of this write; check for completion at next fire if not
-already notified.
+**08-28 omnibus done** (`28eb629a8` + `6d9f590aa`), chain now continuous through 08-28.
+**Noted, not mine to chase**: Arch/CIO/HOST stayed dark 21+ hours past PM's stated account-wide
+freeze window while every other role recovered by dawn — both their own logs flag an unresolved
+second cause, neither explains it. Arch/CIO/HOST's own lane.
 
 **08-28's threads (PDR-007 ratified, heading-defect class fully closed, brokering protocol
 ratified) are all resolved** — see 08-28's session log for full detail, not re-detailing here.
