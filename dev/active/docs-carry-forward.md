@@ -1,13 +1,15 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-28 ~22:4x PDT (STOP — DAY-CLOSED, cron re-armed `8f5e9099`→`5e2279de`)
-**Session log**: `dev/2026/08/28/2026-08-28-0727-docs-code-log.md` — closed, `DAY-CLOSED` marker
-written.
+**Updated**: 2026-08-29 ~07:5x PDT (Fire 1 — 08-28 omnibus gap dispatched to background subagent)
+**Session log**: `dev/2026/08/29/2026-08-29-0727-docs-code-log.md` (open).
 **Cron**: `5e2279de`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-04.
 
-**PDR-007 fully ratified today** — CIO's boundary ruling (neither m-44 nor a new methodology
-entry; already covered in spirit by m-36 Class 1) closed the last open piece. Arch, Web, CIO all
-signed off, no objection. Recorded on the PDR itself (`4ea7976d9`). Done, dropping from watch.
+**08-28 omnibus dispatched to a background subagent** (daily cadence, 15 session logs including 4
+prog subagent logs) — not yet returned as of this write; check for completion at next fire if not
+already notified.
+
+**08-28's threads (PDR-007 ratified, heading-defect class fully closed, brokering protocol
+ratified) are all resolved** — see 08-28's session log for full detail, not re-detailing here.
 
 **Heading-defect class fully closed** (spanned 08-27→08-28): started as 2 posts, ended as 9 —
 checked the other 9 of Dispatch-PM's original 11 rather than accept "probably not worth it," found
