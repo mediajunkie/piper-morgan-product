@@ -7,8 +7,10 @@
 - Model: Fable 5 (restored 8/28 08:36).
 
 ## The one PM-gated moment
-- **"Flip it"** — PM's named trigger at their test round: add create_todo to
-  PIPER_INVERSION_LIVE_CATEGORIES (currently read_status), watched. Then IF clean: close
+- **"Flip it"** — PM's named trigger, now executing ARCH'S RATIFIED STAGED PLAN in one watched
+  round: at "flip it" → SHADOW=sampled + four READ flip_groups (one secrets update); mid-round at
+  the todo cluster → create_todo (Stage 2, first live write, watched). Rollback = unset.
+  Verified 8/29: prod env DOES carry read_status (fly secrets; config-file census could not see it). Then IF clean: close
   #1677 + #1488 with PM's transcript, description-first (1677 reopened 8/29 after PPM's
   mail-commit subject auto-closed it — keyword gotcha, not a decision).
 - Round sequencing in the tracker artifact: security (1578/1581/1501) → flip + todo/reminder → rest.
