@@ -1,36 +1,29 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-29 ~07:4x PDT (Fire 1 — 08-28 omnibus done, chain continuous through 08-28)
+**Updated**: 2026-08-29 ~11:2x PDT ("The Orphan Migration" published, fact-checked clean,
+live-verified)
 **Session log**: `dev/2026/08/29/2026-08-29-0727-docs-code-log.md` (open).
 **Cron**: `5e2279de`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-04.
 
-**08-28 omnibus done** (`28eb629a8` + `6d9f590aa`), chain now continuous through 08-28.
-**Noted, not mine to chase**: Arch/CIO/HOST stayed dark 21+ hours past PM's stated account-wide
-freeze window while every other role recovered by dawn — both their own logs flag an unresolved
-second cause, neither explains it. Arch/CIO/HOST's own lane.
+**"The Orphan Migration" published**: https://pipermorgan.ai/blog/the-orphan-migration — every
+load-bearing technical claim independently fact-checked against the 06-17 Lead Dev log, all exact
+matches, no defects found. Live-verified (initial 404 was deploy lag, confirmed data was correct
+on `origin/main` first). Fully closed, nothing further owed.
 
-**08-28's threads (PDR-007 ratified, heading-defect class fully closed, brokering protocol
-ratified) are all resolved** — see 08-28's session log for full detail, not re-detailing here.
-
-**Heading-defect class fully closed** (spanned 08-27→08-28): started as 2 posts, ended as 9 —
-checked the other 9 of Dispatch-PM's original 11 rather than accept "probably not worth it," found
-7 more genuinely live-broken, fixed source + live layers on all, live-verified. 2 correctly
-excluded with stated reasons. All 11 rows now accounted for. Comms/Dispatch-PM notified. Done.
-
-**Cross-project reply protocol formally ratified by PM today** — was already how I'd been
-operating since 08-25; both DIRECTORY.md follow-up asks Dispatch-PM raised were already satisfied
-by my 08-25 edit, confirmed rather than assumed. Standing practice unchanged: real recipient in
-`to:`, cc `exec`, deliver to `exec/inbox/`, Exec relays or points; Dispatch-PM's own sweep is the
-backstop.
+**Watch item: the 33h-gap discrepancy I preserved in the 08-28 omnibus is resolving in real time.**
+PM clarified Arch/CIO/HOST hit a blocking rate-limit dialog (no auto-resolve, explains the extra
+21+h). PM's mid-task hypothesis has now been refuted by 2 of the 3 dialog-hit seats' own
+record-checked timing (Arch, HOST — both idle when the limit hit, both resumed via a fresh fire
+attempt). Arch separately named an inversion hypothesis (the variable might be whether the harness
+attempted a turn at all, not what the seat was doing). **CIO's own data point is the one still
+missing** — once it lands, add a dated addendum to the 08-28 omnibus (not rewrite the original
+entry). Check for CIO's reply at next fire.
 
 **⚠️ Standing practice, added 08-27, read this at every fire**: a duty-cycle sync from earlier in
 the session is a timestamped fact, not a durable one. Before reading file/git state to answer a
 PM question or start work — not just at a scheduled fire's START — `git fetch` + fast-forward
 first if meaningful time has passed. Fixed durably in `CLAUDE.md`'s "Never guess at facts" section
-(`60ad50267`). Applied every fire since without incident.
-
-**Ship #058 contributor report filed** (`3b4baaf34`) — window Aug 21-27, full detail in the
-report itself, not re-duplicating here.
+(`60ad50267`).
 
 **#1683**, **#1644** (roadmap.md full v19 fold, PPM's lane), **#1682** (3 minor findings) all
 still open, none urgent — see their issues for full context, not re-detailing here each day.

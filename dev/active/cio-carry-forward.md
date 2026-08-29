@@ -1,35 +1,38 @@
-# CIO carry-forward — rewritten 2026-08-28 (22:37 STOP)
+# CIO carry-forward — rewritten 2026-08-29 (10:37 START)
 
 **Cron**: `f5a0d090` · `7 10,16,22` LEAN · armed 2026-08-24 22:37 · **auto-expires ~2026-08-31
-22:37**, well outside the 48h rotation window.
+22:37**. 48h rotation window opens tonight's 22:37 STOP — rotate then.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## ⭐ NEW — mail-send.sh trigger-time check, accepted into CIO's lane, banked (08-28)
+## ✅ NEW — the 33h gap's actual root cause, confirmed (08-29)
 
-CXO relocated their own diff-checker fix after HOST's honest report it didn't prevent a 4th lapse:
-the real gap is between a trigger event (filing a workstream review) and the edit beginning, not
-the edit itself — "vigilance wearing a mechanism's costume" one level up. Proposed fix: hook a
-portfolio-staleness check into `mail-send.sh` itself, firing when a role's trigger-carrying memo
-goes out. Offered to CIO's lane (shared infra I already own this week). **Accepted. Deliberately
-not building it tonight** — same reasoning CXO used to decline building it in their own day-close
-fire: `mail-send.sh` is on every role's critical path, wrong moment to touch it. **Named trigger: my
-next fresh START fire with a clear queue.** Read the audit-mode code first before touching anything.
+PM directly answered it: Arch/CIO/HOST were stuck in a modal rate-limit dialog (hold/overage/
+upgrade), not a freeze — every liveness instrument I own is blind to this by construction (a stuck
+session can't write proof it's stuck). Named this boundary honestly rather than implying a fix.
+Routed the one real lever (a non-interactive setting that fails instead of prompts) to PM directly.
+3 of 3 dialog-hit seats now refute the mid-task hypothesis identically — confirmed with exact
+timestamps, closing the loop Docs was holding open for this data.
 
-## ✅ 08-27 gap — fully closed out, cohort recovering cleanly
+## ✅ NEW — mail-send.sh trigger-time refresh-promise check, shipped (08-29, commit `80be21100`)
 
-Retroactive close done, root cause confirmed (account usage-limit freeze ~15:00 PT 08-27),
-corroborated independently by arch/host's own retroactive closes. cxo resolved on its own. Ten-item
-mail backlog drained same-day, two real infrastructure fixes shipped (heartbeat suppression window,
-duty-cycle-tick v1.30), Ship #058 filed. Full detail: `dev/2026/08/28/2026-08-28-1940-cio-code-log.md`.
+The named trigger from 08-28 STOP, used today. CXO's relocation of HOST's 4th-lapse fix: check a
+portfolio doc's staleness at the moment its trigger artifact is SENT, not later. New
+`--trigger-sent` mode + wiring + 8 new tests, zero regressions on the 33+3 existing mail-send
+tests. HOST's next workstream review is now a live test of the real fix.
 
-## ✅ Browser-automation pilot thread — resolved cleanly, no further CIO action
+## ⭐ NEW — .mcp.json chrome-devtools durable fix, routed to Pard
 
-Deferred the pilot-role pick to Exec (08-24) since CIO's lane lacks blocked visual-verification
-work. Exec ruled Web the pilot on clear evidence tonight; Web accepted, ran a real smoke test,
-correctly deferred the actual redesign work to a fresh fire. The deferral played out exactly right.
+Exec's dead-path fix is live and working (PA-verified). Durable version (a stable symlink) needs a
+host-level write outside the repo — correctly blocked by the auto-mode classifier when I tried it
+myself. Routed the exact command to Pard; will update `.mcp.json` once the symlink exists.
+
+## ✅ Memory-index drift found and fixed (08-29, outside git tracking)
+
+Genuine, non-transient drift (94 vs 93 lines) — rebuilt via `rebuild-memory-index.py`, confirmed
+clean (186 entries, headroom 107). Lives in `~/.claude-pm/`, not the repo; nothing to commit.
 
 ## Four items now genuinely awaiting PM — none blocking other work
 
@@ -37,11 +40,7 @@ correctly deferred the actual redesign work to a fresh fire. The deferral played
 2. **Methodology-core disposition review** (raised 08-20) — PM explicitly deferred Apr 27.
 3. **Curation-trial bigger scope** (raised 08-19) — DinP thread vs. bigger Ted-Nadeau framing.
 4. **Watchdog relay-latency question** (raised 08-21) — alert sat in CIO's inbox ~4h before PM.
-
-## ✅ Ship #058 filed — see the memo for the full prior-week wrap
-
-Welfare-criteria spec disposed, two tracker audits, Pattern-069 promoted, mail-send.sh corrected
-twice same-day, the gap named honestly.
+5. **Non-interactive rate-limit setting** (raised 08-29) — see above, new.
 
 ## ⭐ Operating-mode shift (ruled 2026-08-13) — holding, still generalizing
 
@@ -50,18 +49,14 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
 
 ## Watch
 
-- **mail-send.sh trigger-time check** — banked to next fresh START fire; scope it, read the audit-
-  mode code first, don't rush a shared-infrastructure change.
-- **The 33h-vs-15h (cio-vs-cxo) recovery asymmetry** — unexplained, not urgent.
-- **PM's response on the four open questions above** — none blocking, all genuinely open.
+- **Cron rotation due tonight (~22:37 STOP)** — first fire inside the 48h window.
+- **Pard's response on the chrome symlink** — not blocking, .mcp.json stays untouched until then.
+- **HOST's next workstream review** — the real test of the trigger-time check.
+- **PM's response on the five open questions above** — none blocking, all genuinely open.
 - **"Alarm-last-line" methodology candidate** — one instance (Lead, 08-26); watching for a second.
-- **HOST's response on the Pattern-069 promotion** (08-25) — light, not blocking.
-- **Verify the three self-firing workflows actually fire**: skill-candidates 09-01, Agent 360 09-25.
 
 ## Owed (re-read through the delegation lens before picking up)
 
-- **mail-send.sh trigger-time check** — the new, top-priority owed item; scope properly next fresh
-  session.
 - **`docs` inbox 149+** — the cohort's one real mail backlog, not CIO's to fix.
 - **Methodology candidate, not filed** (needs a 2nd instance): a completeness check keyed on the
   field that is never absent can never report incompleteness (Comms, 08-10).
@@ -69,16 +64,23 @@ Client/general-contractor: spec outcomes, delegate, independently verify before 
   questions above; do not build ahead of the answer.
 - **Innovation-backlog Captured tier** (rows 1-23) — the one part not checked in the 08-25 sweep.
 - **Standing-items 7a-7e** — all genuinely low-priority, each waiting on someone else's concurrence.
+- **`.mcp.json` chrome-devtools symlink update** — waiting on Pard's host-level half.
 
 ## Standing corrections to myself
 
 - **A gap discovered at the next fire gets a retroactive close with the real cause, corroborated
-  against other roles' independent accounts.** (08-28 AM.)
-- **A months-old suppression/threshold interaction can hide behind two individually-correct
-  mechanisms — test the interaction in isolation, never against the real repo for something that
-  writes to origin/main.** (08-28, Web.)
-- **When someone offers you their own relocated fix rather than building it themselves under time
-  pressure, match their discipline about WHEN to touch shared infrastructure, not just accept the
-  WHAT.** (08-28 22:37, CXO/HOST: a day-close fire is the wrong moment for either of us to touch
-  `mail-send.sh`, and the right response to "here, this is yours" is a named trigger, not either
-  refusing it or rushing it.)
+  against other roles' independent accounts.** (08-28.)
+- **When someone offers you their own relocated fix, match their discipline about WHEN to touch
+  shared infrastructure, not just accept the WHAT — and then actually use the named trigger when
+  it arrives, don't let it become another deferral.** (08-28 → 08-29: banked, then built.)
+- **State the honest boundary of your own domain plainly rather than implying a fix you can't
+  deliver — "not fixable at the detection layer" is itself useful information, not a failure to
+  report.** (08-29: the rate-limit dialog's blindness to every liveness check I own.)
+- **When a write is correctly blocked as outside your authority, route the exact action to the
+  right owner rather than either forcing it through or dropping it.** (08-29: the chrome symlink,
+  routed to Pard with the precise command.)
+- **A "drift" reading can be transient (a concurrent write mid-check) or genuine (a real hand-edit)
+  — re-sync before concluding either way, and if it persists after a fresh sync, trust the
+  mechanism's own documented fix rather than escalating a routine resync.** (08-29: two memory-
+  index checks, one transient the night before, one genuine this morning — treated differently
+  because the check, not the assumption, told the difference.)

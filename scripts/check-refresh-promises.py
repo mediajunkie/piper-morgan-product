@@ -322,7 +322,68 @@ def main():
     return fail
 
 
+def trigger_sent_mode(sent_path):
+    """CXO's 2026-08-28 relocation, HOST's 4th-lapse report: --diff only catches a
+    lapse if someone remembers to EDIT the promise-carrying doc; all four real lapses
+    happened upstream of any edit, in the gap between the trigger event (filing a
+    workstream review) and remembering the doc exists at all. Nothing connects those
+    two acts but memory. This mode closes that specific gap: given a path that was
+    JUST SENT via mail-send.sh, check whether it matches any promise-carrying doc's
+    own refresh_trigger_glob, and if so, report right then whether that doc is
+    current — so the act of sending the trigger is what tells you your portfolio
+    just went stale, not a later habit of remembering to check.
+
+    PURE ADVISORY, by design and by necessity: this runs inside mail-send.sh, which
+    is on every role's critical path for every mail send. It must never fail the
+    send and must never slow down or alter a send that matches nothing (the
+    overwhelming majority). Silent on no-match; prints only when a trigger-carrying
+    doc actually matches the sent path. Reuses the exact same lapse logic as main()
+    (last_updated vs. newest trigger file) scoped to the one path that just moved,
+    not the whole SCAN_GLOBS population — a full re-scan on every mail send would be
+    both slower than necessary and would print noise for docs the send had nothing
+    to do with.
+    """
+    m = ISO.search(Path(sent_path).name)
+    if not m:
+        return 0  # no ISO date in the filename — can't be a trigger by this scheme
+    sent_date = m.group(0)
+
+    candidates = []
+    for g in SCAN_GLOBS:
+        candidates.extend(sorted(glob.glob(str(ROOT / g))))
+    candidates.extend(str(ROOT / e) for e in EXTRA)
+
+    matched_any = False
+    for c in candidates:
+        path = Path(c)
+        if not path.exists():
+            continue
+        fm = frontmatter(path)
+        pattern = fm.get("refresh_trigger_glob")
+        if not pattern:
+            continue
+        # Does the sent path fall inside this doc's declared trigger glob?
+        matches = {str(Path(p)) for p in glob.glob(str(ROOT / pattern))}
+        if str((ROOT / sent_path).resolve()) not in {str(Path(p).resolve()) for p in matches} \
+           and str(ROOT / sent_path) not in matches:
+            continue
+        matched_any = True
+        rel = str(path.relative_to(ROOT))
+        updated = fm.get("last_updated", "")
+        if not ISO.match(updated):
+            print(f"mail-send: refresh-trigger check — {rel} has a malformed last_updated ({updated!r}); cannot evaluate")
+            continue
+        if sent_date > updated:
+            print(f"mail-send: ⚠️  {rel}'s promise just LAPSED — this send ({sent_date}) postdates its last_updated ({updated})")
+            print(f"mail-send:   the trigger you just sent is exactly what {rel} declared it refreshes on — bump it now, while it's in front of you")
+        else:
+            print(f"mail-send: {rel} still current relative to this send ({sent_date} ≤ last_updated {updated})")
+    return 0  # advisory only — never a failure signal, matching the mail-send.sh contract this hooks into
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--diff":
         sys.exit(diff_mode(sys.argv[2] if len(sys.argv) > 2 else "HEAD"))
+    if len(sys.argv) > 2 and sys.argv[1] == "--trigger-sent":
+        sys.exit(trigger_sent_mode(sys.argv[2]))
     sys.exit(main())
