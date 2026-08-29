@@ -308,10 +308,10 @@ For deeper reference during podcast prep:
 
 | Topic | File |
 |-------|------|
-| Meta-patterns overview | `docs/internal/architecture/current/patterns/META-PATTERNS.md` |
-| The 75% trap | `docs/internal/architecture/current/patterns/pattern-045-green-tests-red-user.md` |
-| Completion discipline | `docs/internal/architecture/current/patterns/pattern-046-beads-completion-discipline.md` |
-| Audit cascade | `docs/internal/architecture/current/patterns/pattern-049-audit-cascade.md` |
+| Meta-patterns overview | `docs/internal/architecture/patterns/META-PATTERNS.md` |
+| The 75% trap | `docs/internal/architecture/patterns/pattern-045-green-tests-red-user.md` |
+| Completion discipline | `docs/internal/architecture/patterns/pattern-046-beads-completion-discipline.md` |
+| Audit cascade | `docs/internal/architecture/patterns/pattern-049-audit-cascade.md` |
 | 7-month timeline | `docs/internal/development/reports/pattern-sweep-2.0-retrospective-master-timeline.md` |
 
 ---

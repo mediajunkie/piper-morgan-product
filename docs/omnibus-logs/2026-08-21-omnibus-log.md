@@ -458,6 +458,6 @@ Supporting artifacts consulted (not separately sourced as timeline entries): `de
 workstream-057-cio-2026-08-21.md`, `dev/active/exec-cohort-attention-rollup-2026-08-21-1030.html`,
 `dev/active/ship-057-internal-report-for-pm-2026-08-21.html`,
 `docs/internal/design/ftux-experience-model-2026-08-21.md`, `docs/internal/design/
-surfaces-taxonomy-2026-08-16.md` (ratified v1.0 today), `docs/internal/architecture/current/adrs/
+surfaces-taxonomy-2026-08-16.md` (ratified v1.0 today), `docs/internal/architecture/adrs/
 adr-078-session-activity-ledger-and-pre-classifier-reference-resolution.md` (D4 boundary cited by
 Chief Architect).

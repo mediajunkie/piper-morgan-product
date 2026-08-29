@@ -300,10 +300,10 @@ lychee docs/changed-file.md
 **Internal Links**:
 ```markdown
 # Good - Relative from current location
-[Pattern Catalog](../internal/architecture/current/patterns/README.md)
+[Pattern Catalog](../internal/architecture/patterns/README.md)
 
 # Avoid - Absolute paths (fragile to repo moves)
-[Pattern Catalog](/docs/internal/architecture/current/patterns/README.md)
+[Pattern Catalog](/docs/internal/architecture/patterns/README.md)
 ```
 
 **External Links**:

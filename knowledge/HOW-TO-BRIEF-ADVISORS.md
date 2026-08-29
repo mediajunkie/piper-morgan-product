@@ -31,7 +31,7 @@ mcp__serena__find_symbol("IntentService", depth=1, include_body=false)
 mcp__serena__list_dir("services/integrations", recursive=false)
 
 3. Architecture patterns:
-mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)
+mcp__serena__list_dir("docs/internal/architecture/patterns", recursive=false)
 
 See knowledge/serena-briefing-queries.md for what these return.
 
@@ -80,7 +80,7 @@ Welcome! You don't have Serena MCP access, so I'll run the system state queries 
 
 mcp__serena__find_symbol("IntentService", depth=1, include_body=false)
 mcp__serena__list_dir("services/integrations", recursive=false)
-mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)
+mcp__serena__list_dir("docs/internal/architecture/patterns", recursive=false)
 
 [Then paste the condensed results to them:]
 
