@@ -330,8 +330,8 @@ FINAL: 99/99 checkmarks = 100% ✅
 - `tests/load/test_error_recovery.py`
 
 ### Documentation (GREAT-4E-2)
-- `docs/internal/architecture/current/adrs/adr-032-intent-classification-universal-entry.md` (updated)
-- `docs/internal/architecture/current/patterns/pattern-032-intent-pattern-catalog.md` (updated)
+- `docs/internal/architecture/adrs/adr-032-intent-classification-universal-entry.md` (updated)
+- `docs/internal/architecture/patterns/pattern-032-intent-pattern-catalog.md` (updated)
 - `docs/guides/intent-classification-guide.md` (updated)
 - `docs/guides/intent-migration.md` (created - 259 lines)
 - `docs/reference/intent-categories.md` (created - 288 lines)

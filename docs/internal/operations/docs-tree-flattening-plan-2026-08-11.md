@@ -29,8 +29,8 @@ updated** is the defect. Both classes produced real, shipped bugs this week:
   zero inbound references anywhere, clearly successive drafts nobody cleaned up after the
   epic closed. Reconciled in #1585 (`33c945eb7`).
 
-**Counter-evidence, equally important**: `docs/internal/architecture/current/adrs/` (4 levels,
-82 files) and `docs/internal/architecture/current/patterns/` (4 levels, 80 files) are just as deep
+**Counter-evidence, equally important**: `docs/internal/architecture/adrs/` (4 levels,
+82 files) and `docs/internal/architecture/patterns/` (4 levels, 80 files) are just as deep
 and just as large, and had **zero broken links** in today's full-tree audit (#1583/#1584). Depth
 by itself didn't hurt them. What's different: both use flat, sequentially-numbered filenames
 (`adr-NNN-*.md`, `pattern-NNN-*.md`) with minimal cross-directory relative-path traversal, and
@@ -80,7 +80,7 @@ discriminator above, but worth Comms confirming both are still referenced/needed
 
 ### Not flattening candidates — explicitly ruled out, with reasons
 
-- **`docs/internal/architecture/current/adrs/`, `.../patterns/`** — deep, large, zero defects.
+- **`docs/internal/architecture/adrs/`, `.../patterns/`** — deep, large, zero defects.
   Sequential numbering already does the job flattening would do elsewhere. Leave alone.
 - **`docs/public/user-guides/legacy-user-guides/`, `.../getting-started/legacy-getting-started/`**
   — the "legacy" grouping carries real information (distinguishing legacy from current guides).
@@ -146,7 +146,7 @@ subdirectories, zero broken links attributable to the move.
 ## PM's deeper question, answered with evidence — 2026-08-29
 
 PM asked (relayed by Exec) whether the taxonomy layers themselves — `internal/`, `current/` in
-paths like `.../architecture/current/adrs/` — earn their depth, a sharper cut than "which
+paths like `.../architecture/adrs/` — earn their depth, a sharper cut than "which
 directories should be flattened." Exec offered a read as input; investigated both with real data
 rather than react to the framing.
 
@@ -158,7 +158,7 @@ own test ("name a reader who makes a different choice because of it"): a public-
 an external contributor, or a search index all route differently based on this boundary. Keep it.
 
 **`current/` does not currently earn its keep, with concrete evidence, not just a hypothesis.**
-`docs/internal/architecture/current/adrs/` holds 82 files; its only structural sibling,
+`docs/internal/architecture/adrs/` holds 82 files; its only structural sibling,
 `docs/internal/architecture/archive/`, holds 12 completely unrelated old planning documents
 (entity-relationship diagrams, deployment guides) — **no ADR has ever actually been moved out of
 `current/` on supersession.** Meanwhile `adr-028-verification-pyramid.md` has carried

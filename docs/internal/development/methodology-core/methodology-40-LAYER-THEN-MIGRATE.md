@@ -155,7 +155,7 @@ The eight current instances are the foundation; promotion arrives when the metho
 - **Author**: Architect (ratification) ← Lead Dev (drafted amendment)
 - **Sub-shape**: trunk (layer + migrate) + lens-vs-flatten implicit (registry keys preserve verbatim via `_query` suffix during migration)
 - **Decision**: typed VERB enum layers over `(category, action) → ActionDisposition` registry; VERB is source-of-truth for verb dimension; registry retains disposition role; legacy `_query`-suffixed keys migrate progressively post-#1124 via owner-paced discrete commits
-- **Cross-ref**: `docs/internal/architecture/current/adrs/adr-060-floor-first-routing.md` "2026-06-06 Amendment"; `mailboxes/lead/read/memo-arch-to-lead-cc-ppm-cxo-pm-pa-1124-adr-060-amendment-ratified-layer-then-migrate-2026-06-06.md`
+- **Cross-ref**: `docs/internal/architecture/adrs/adr-060-floor-first-routing.md` "2026-06-06 Amendment"; `mailboxes/lead/read/memo-arch-to-lead-cc-ppm-cxo-pm-pa-1124-adr-060-amendment-ratified-layer-then-migrate-2026-06-06.md`
 
 ### Instance 2: ADR-060 Phase 3 enforce-floor folds into Phase 4 (2026-06-07 AM)
 
@@ -167,7 +167,7 @@ The eight current instances are the foundation; promotion arrives when the metho
 
 ### Instance 3: ADR-065 D3 capability primitive (2026-06-06 PM)
 
-- **Subsystem**: BYOC capability layer (`docs/internal/architecture/current/adrs/adr-065-canonical-context-package-format.md`)
+- **Subsystem**: BYOC capability layer (`docs/internal/architecture/adrs/adr-065-canonical-context-package-format.md`)
 - **Author**: Architect
 - **Sub-shape**: trunk (typed enum + slot inherits the verb-enum-vs-collapsed-name layer-then-migrate shape)
 - **Decision**: capability primitive is `verb` (typed enum) + `surface_type` (slot); NOT a verb-object collapsed string; same architectural primitive as ADR-060 amendment applied at the BYOC altitude; 7th Pattern-072 application
@@ -175,7 +175,7 @@ The eight current instances are the foundation; promotion arrives when the metho
 
 ### Instance 4: ADR-066 D1 per-host capability map (2026-06-07 AM)
 
-- **Subsystem**: BYOC packaging-layer abstraction (`docs/internal/architecture/current/adrs/adr-066-packaging-layer-abstraction.md`)
+- **Subsystem**: BYOC packaging-layer abstraction (`docs/internal/architecture/adrs/adr-066-packaging-layer-abstraction.md`)
 - **Author**: Architect
 - **Sub-shape**: trunk (registry shape organized per-host; layered over ADR-065 D3 primitives)
 - **Decision**: `config`-declared YAML map keyed on `surface_type`; verb-level granularity; per-host `conditions`; `unknown` surface defaults to claim-nothing; 8th Pattern-072 application

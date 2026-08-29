@@ -18,10 +18,10 @@ grep -r "pattern_name" services/ --include="*.py" -A 5 -B 5
 cat services/domain/models.py | grep "DomainConcept"
 
 # Check ADRs for architectural decisions
-find docs/internal/architecture/current/adrs -name "*relevant-adr*.md"
+find docs/internal/architecture/adrs -name "*relevant-adr*.md"
 
 # Check pattern library
-find docs/internal/architecture/current/patterns -name "*pattern*.md"
+find docs/internal/architecture/patterns -name "*pattern*.md"
 ```
 
 **Why**: Understanding existing patterns prevents reinventing solutions and ensures consistency.
@@ -89,7 +89,7 @@ cat services/domain/models.py | grep -A 10 "RelevantDomainConcept"
 grep -r "similar_functionality" services/ --include="*.py"
 
 # Check pattern library
-find docs/internal/architecture/current/patterns -name "*relevant-pattern*.md"
+find docs/internal/architecture/patterns -name "*relevant-pattern*.md"
 ```
 
 **Questions to Answer**:

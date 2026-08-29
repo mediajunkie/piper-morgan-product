@@ -27,7 +27,7 @@ GREAT-4E Phase 4 investigation revealed:
 - [x] Clarify dual-path architecture rationale
 - [x] Establish pattern for future simple query handlers
 
-**Evidence**: `docs/internal/architecture/current/adrs/adr-043-canonical-handler-pattern.md` (399 lines, Phase 0)
+**Evidence**: `docs/internal/architecture/adrs/adr-043-canonical-handler-pattern.md` (399 lines, Phase 0)
 
 ### 2. Add QUERY Fallback Handling ✅
 - [x] Map QUERY category to appropriate workflow/handler
@@ -67,7 +67,7 @@ GREAT-4E Phase 4 investigation revealed:
 
 ### Documentation & Architecture (2/2) ✅
 - [x] **ADR-043 created and approved** documenting canonical pattern
-  - **Evidence**: `docs/internal/architecture/current/adrs/adr-043-canonical-handler-pattern.md`
+  - **Evidence**: `docs/internal/architecture/adrs/adr-043-canonical-handler-pattern.md`
   - **Created**: Phase 0 (7:51-8:18 AM)
   - **Size**: 399 lines, 16,254 bytes
   - **Content**: Decision drivers, architecture diagram, performance metrics, decision criteria
@@ -180,7 +180,7 @@ pytest tests/intent/test_no_timeouts.py -v
 
 ### Check ADR Exists
 ```bash
-ls docs/internal/architecture/current/adrs/adr-043*
+ls docs/internal/architecture/adrs/adr-043*
 ```
 **Result**: `adr-043-canonical-handler-pattern.md` ✅
 
@@ -276,13 +276,13 @@ elif intent.category == IntentCategory.QUERY:
 1. `services/orchestration/workflow_factory.py` - QUERY fallback (58 lines)
 2. `tests/intent/test_user_flows_complete.py` - Fixed permissive test (1 line, Phase 4)
 3. `tests/intent/test_no_web_bypasses.py` - Fixed permissive test (2 lines, Phase 4)
-4. `docs/internal/architecture/current/patterns/pattern-032-intent-pattern-catalog.md` - Accuracy metrics (44 lines)
+4. `docs/internal/architecture/patterns/pattern-032-intent-pattern-catalog.md` - Accuracy metrics (44 lines)
 5. `docs/guides/intent-classification-guide.md` - Accuracy section (24 lines)
 6. `README.md` - Accuracy subsection (7 lines)
 7. `services/intent_service/prompts.py` - Enhanced classifier (Phase 2, Cursor)
 
 ### Files Created (6 files)
-1. `docs/internal/architecture/current/adrs/adr-043-canonical-handler-pattern.md` (399 lines, Phase 0)
+1. `docs/internal/architecture/adrs/adr-043-canonical-handler-pattern.md` (399 lines, Phase 0)
 2. `tests/intent/test_query_fallback.py` (156 lines, Phase 1)
 3. `tests/intent/test_no_timeouts.py` (Phase Z, Cursor)
 4. `tests/intent/test_classification_accuracy.py` (141 variants, Phase 3, Cursor)
@@ -405,7 +405,7 @@ elif intent.category == IntentCategory.QUERY:
 ## Evidence Links
 
 ### Primary Deliverables
-- **ADR-043**: `docs/internal/architecture/current/adrs/adr-043-canonical-handler-pattern.md`
+- **ADR-043**: `docs/internal/architecture/adrs/adr-043-canonical-handler-pattern.md`
 - **QUERY Fallback**: `services/orchestration/workflow_factory.py` + `tests/intent/test_query_fallback.py`
 - **Classifier Enhancement**: `services/intent_service/prompts.py` (Phase 2)
 - **Accuracy Tests**: `tests/intent/test_classification_accuracy.py` (Phase 3)

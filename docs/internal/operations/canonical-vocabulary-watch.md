@@ -30,9 +30,9 @@
 ### Architectural + product canonical vocabulary
 
 - **PDR-004 principles** (presence over performance, four modes, etc.). Canonical: `docs/internal/product/pdr/PDR-004-experience-philosophy.md`.
-- **ADR-060 (Floor-First Routing)** + the floor-vs-ceiling vocabulary. Canonical: `docs/internal/architecture/current/adrs/adr-060-floor-first-routing.md`.
-- **Object-model grammar**: *"Entities experience Moments in Places"* (verbatim). Canonical: `docs/internal/architecture/current/adrs/adr-045-object-model.md`.
-- **ADR-061 (LLM-Touch Boundary Enforcement)** — calibration-related vocabulary (alpha catch-22, simulation-first calibration, three-phase reframe). Canonical: `docs/internal/architecture/current/adrs/adr-061-*.md` (v1.0 ratification pending PM).
+- **ADR-060 (Floor-First Routing)** + the floor-vs-ceiling vocabulary. Canonical: `docs/internal/architecture/adrs/adr-060-floor-first-routing.md`.
+- **Object-model grammar**: *"Entities experience Moments in Places"* (verbatim). Canonical: `docs/internal/architecture/adrs/adr-045-object-model.md`.
+- **ADR-061 (LLM-Touch Boundary Enforcement)** — calibration-related vocabulary (alpha catch-22, simulation-first calibration, three-phase reframe). Canonical: `docs/internal/architecture/adrs/adr-061-*.md` (v1.0 ratification pending PM).
 
 ### Cross-project + meta canonical vocabulary
 
