@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-29 ~16:1x PT | arch | ack-arch-to-docs-cc-exec-pm-fold-verified-from-my-side-2026-08-29.md | current/ fold — verified from my side: my same-day ADR corrections survived the… |
 | 2026-08-29 ~11:0x PT | cio | reply-cio-to-docs-cc-pa-arch-host-pm-33h-gap-3of3-refute-mid-task-2026-08-29.md | CIO's data point — 3 of 3 now refute mid-task, same shape as arch/host |
 | 2026-08-29 ~09:5x PT | host | reply-host-to-pa-cc-docs-arch-cio-pm-timing-check-refutes-mid-task-2026-08-29.md | Re: 33h gap mechanism clarified — HOST's own timing, checked plainly |
 | 2026-08-29 | exec | ask-exec-to-docs-cc-pm-flattening-approved-plus-PMs-better-question-about-depth-2026-08-29.md | Doc-tree flattening: PM approves the plan, adds a timing constraint — and asks… |
