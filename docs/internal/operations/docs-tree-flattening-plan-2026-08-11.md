@@ -1,7 +1,12 @@
 # Docs Tree Flattening Plan — 2026-08-11
 
 **Author**: Docs
-**Status**: PROPOSAL — plan only, no execution yet, per PM's explicit "wary of precipitous changes"
+**Status**: ✅ **`roadmap/CORE/` flatten EXECUTED 2026-08-29** — PM approved 2026-08-29 after 18
+days on the attention board ("Ah yes, the doc-tree! I requested this... Overall the plan looks
+good and prudent"). PM added a timing constraint the same day: do not touch ADR/pattern/
+methodology paths while they're in active review (Arch's forensic history pass + the ratified
+trigger-retrofit requirement) — that constraint doesn't affect this plan's one executed candidate,
+`roadmap/CORE/`, which was never in that path space. See "Execution record" below.
 **Origin**: PM asked mid-#1584 (2026-08-10) whether to flatten parts of the docs tree, having just
 watched me fix off-by-one `../` bugs caused by directory depth. This document is the requested plan.
 
@@ -107,3 +112,69 @@ No action on `adrs/`, `patterns/`, the legacy-guides directories, or the image a
 renaming convention changes. No action beyond the `roadmap/CORE/` flatten without a further
 explicit go-ahead — this document is the plan PM asked for, not a standing authorization to keep
 restructuring the tree.
+
+## Execution record — 2026-08-29
+
+**#1593 confirmed already closed** (2026-08-12) — the link-checker CI gate genuinely fails on
+broken links (`exit 1`, verified by reading the workflow, not just trusting the closed status).
+Prerequisite satisfied.
+
+**76 files flattened** across all 9 sub-epic directories (ALPHA, AUTH, CRAFT, GREAT, KEYS, KNOW,
+PREF, USERS, UX) to `roadmap/CORE/*.md` directly. Zero cross-file link references existed into or
+across the subdirectories (checked both directions before moving anything). Committed in 6 batches
+(under the 20-file broad-staging-hook threshold — the plan's own stated constraint, which fired as
+designed on the first attempt at a single 77-file commit). Also fixed the `" (1)"` duplicate-sync
+artifact (`CORE-CRAFT-UPDATED (1).md` → `CORE-CRAFT-UPDATED.md`) and one pre-existing
+filename/directory mismatch found along the way (`CORE-AUTH-CONTAINER-issue.md` had been misfiled
+under `ALPHA/`, not `AUTH/`).
+
+**The mandated re-verification found a real, separate bug**: `scripts/check_links.py` (the check
+this plan named as the re-verification step) had a hardcoded pre-worktree absolute path
+(`/Users/xian/Development/piper-morgan/docs`) that doesn't exist on this host. `os.walk()` on a
+nonexistent directory silently iterates zero files, so the script had been reporting "0 links
+found, 0 broken" regardless of actual repo state — indistinguishable from a genuine clean pass.
+Fixed to derive the repo root from the script's own location (`e560cedab`); re-run found 2,542 real
+links, 81 pre-existing broken ones repo-wide, **none caused by this flatten** — the one broken pair
+found inside the flattened set (`CORE-ALPHA-LEARNING-BASIC.md`, 2 links to files that never
+existed anywhere reachable) was confirmed pre-existing via git's rename-detection (file content
+byte-identical, only path moved) and filed separately as #1692, since fixing it is a content
+decision, not a mechanical path fix.
+
+All 9 now-empty subdirectories removed. Final state: 76 files, one flat directory, zero
+subdirectories, zero broken links attributable to the move.
+
+## PM's deeper question, answered with evidence — 2026-08-29
+
+PM asked (relayed by Exec) whether the taxonomy layers themselves — `internal/`, `current/` in
+paths like `.../architecture/current/adrs/` — earn their depth, a sharper cut than "which
+directories should be flattened." Exec offered a read as input; investigated both with real data
+rather than react to the framing.
+
+**`internal/` earns its keep.** `docs/internal/` holds 774 markdown files; `docs/public/` plus a
+dozen other top-level directories (`accessibility/`, `api/`, `features/`, `guides/`,
+`installation/`, `integrations/`, `legal/`, `releases/`, `security/`, `setup/`, etc.) hold 252 —
+a real, substantial, genuinely-distinct public-facing corpus, not a hollow prefix. Applying Exec's
+own test ("name a reader who makes a different choice because of it"): a public-docs-site build,
+an external contributor, or a search index all route differently based on this boundary. Keep it.
+
+**`current/` does not currently earn its keep, with concrete evidence, not just a hypothesis.**
+`docs/internal/architecture/current/adrs/` holds 82 files; its only structural sibling,
+`docs/internal/architecture/archive/`, holds 12 completely unrelated old planning documents
+(entity-relationship diagrams, deployment guides) — **no ADR has ever actually been moved out of
+`current/` on supersession.** Meanwhile `adr-028-verification-pyramid.md` has carried
+`**Status**: SUPERSEDED` in its own frontmatter since 2026-07-26 (dated, ratified: the runtime
+package it specified was deleted as a dead island) while still sitting in `current/adrs/` — over a
+month of exactly the drift Exec predicted: *"if superseded ADRs are marked by status line rather
+than by path... one of the two will drift."* The Status line is the actual, trustworthy source of
+truth (sampled across dozens of ADRs: Accepted, Proposed, SUPERSEDED, all present and legible);
+the directory layer adds a second, unmaintained encoding of the same fact, and it's already wrong
+at least once. A reader relying on the path gets actively misled, not just uninformed.
+
+**Recommendation, not executed**: fold `current/` out of the ADR/pattern paths (e.g.
+`docs/internal/architecture/adrs/`, not `.../current/adrs/`), with the Status line as the single
+source of truth for current-vs-superseded — matching how the documents already work in practice.
+**Deliberately not executed now** — this falls squarely inside PM's own timing constraint from the
+same conversation ("since ADRs, patterns, and methodology are all in review... not change them
+right now"), a different reason than this plan's original "wary of precipitous changes" caution
+but the same practical conclusion. Recorded here, evidence-backed and ready, so it doesn't need
+re-deriving once Arch's review concludes.
