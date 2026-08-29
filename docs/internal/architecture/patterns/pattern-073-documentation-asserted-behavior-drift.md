@@ -241,9 +241,9 @@ Operational follow-up (not gating; on the now-Proven pattern):
 - Lead Dev 12w memo (edit-in-place fold of three instances): `mailboxes/lead/sent/memo-lead-to-cio-cc-arch-ceo-12w-second-instance-living-docs-describing-dead-code-2026-05-16.md`
 - Lead Dev Pattern-073 authoring ack: `mailboxes/lead/sent/memo-lead-to-cio-cc-arch-ceo-pattern-073-authoring-ack-2026-05-16.md`
 - `doc-sync-sweep` v0.1 skill (operational discipline): `.claude/skills/doc-sync-sweep/SKILL.md`
-- Pattern-064 (sibling): `docs/internal/architecture/current/patterns/pattern-064-alive-scaffolding-that-does-the-opposite.md`
+- Pattern-064 (sibling): `docs/internal/architecture/patterns/pattern-064-alive-scaffolding-that-does-the-opposite.md`
 - methodology-29 Pattern Formation via Successful Imitation (promotion-rationale framework): `docs/internal/development/methodology-core/methodology-29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION.md` — Pattern-073 is named in §"What it predicts" as the May 16-18 reference case validating all four predicted signals.
-- Pattern-046 (adjacent family): `docs/internal/architecture/current/patterns/pattern-046-completion-discipline.md`
+- Pattern-046 (adjacent family): `docs/internal/architecture/patterns/pattern-046-completion-discipline.md`
 - Methodology-29 (Pattern Formation via Successful Imitation): see methodology-core catalog
 - #1015 (Phase 2 closed 2026-05-16) — Instance 4 reference + verification example
 - #1064 (closed 2026-05-16) — investigation that surfaced Instance 3 + audit framing

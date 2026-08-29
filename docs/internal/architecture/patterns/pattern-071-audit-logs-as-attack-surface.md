@@ -190,7 +190,7 @@ Healthy signals:
 
 ## Cross-references
 
-- ADR-061 v1.1 amendment (`docs/internal/architecture/current/adrs/adr-061-llm-touch-boundary-enforcement.md`) — output-side companion architecture; §"Amendment 2026-05-15" memorializes the hash-only discipline
+- ADR-061 v1.1 amendment (`docs/internal/architecture/adrs/adr-061-llm-touch-boundary-enforcement.md`) — output-side companion architecture; §"Amendment 2026-05-15" memorializes the hash-only discipline
 - Lead Dev methodology memo to CIO 2026-05-15 (`mailboxes/cio/inbox/memo-lead-to-cio-cc-arch-1017-methodology-notes-2026-05-15.md`) — original candidate filing
 - CIO disposition 2026-05-15 (`mailboxes/lead/read/memo-cio-to-lead-cc-arch-ceo-1017-pattern-candidates-disposition-2026-05-15.md`) — slot allocation + Emerging status + sibling-of-064 framing
 - Architect Phase 1 ratification 2026-05-15 (`mailboxes/lead/read/memo-arch-to-lead-cc-cxo-ceo-1017-phase-1-ratification-2026-05-15.md`) — original observation: *"audit logs for content-filtering decisions must never store the filtered content; hashes and rule-IDs only"*

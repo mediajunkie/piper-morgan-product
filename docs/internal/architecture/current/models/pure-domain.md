@@ -448,7 +448,7 @@ decision = EthicalDecision(
 
 **Cross-References**:
 - Service: EthicsService *(proposed; doc TBD)*
-- ADR: [ADR-014 Attribution First](../adrs/adr-014-attribution-first.md)
+- ADR: [ADR-014 Attribution First](../../adrs/adr-014-attribution-first.md)
 
 ### BoundaryViolation
 **Purpose**: A detected boundary violation event
@@ -493,7 +493,7 @@ violation.resolution_action = "Updated service permissions, notified security te
 
 **Cross-References**:
 - Service: SafetyService *(proposed; doc TBD)*
-- ADR: [ADR-014 Attribution First](../adrs/adr-014-attribution-first.md)
+- ADR: [ADR-014 Attribution First](../../adrs/adr-014-attribution-first.md)
 
 ---
 

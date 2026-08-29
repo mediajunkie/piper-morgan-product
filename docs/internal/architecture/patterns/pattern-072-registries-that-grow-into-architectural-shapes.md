@@ -222,7 +222,7 @@ Healthy signals:
 - CIO disposition 2026-05-15 (`mailboxes/lead/read/memo-cio-to-lead-cc-arch-ceo-1017-pattern-candidates-disposition-2026-05-15.md`) — slot allocation + Emerging status + methodology-29-instance-applied-to-registries framing
 - Architect Phase 1 ratification 2026-05-15 (`mailboxes/lead/read/memo-arch-to-lead-cc-cxo-ceo-1017-phase-1-ratification-2026-05-15.md`) — original observation: *"the `task_type` registry is now operating as a load-bearing surface taxonomy"*
 - Architect e2e-suite design proposal 2026-05-15 (`mailboxes/lead/read/memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md`) — fourth-consumer candidate observation
-- ADR-061 v1.1 amendment (`docs/internal/architecture/current/adrs/adr-061-llm-touch-boundary-enforcement.md`) — reference implementation surface; §"Amendment 2026-05-15" → §"OutputFilter architecture / Profile dispatch via `task_type`"
+- ADR-061 v1.1 amendment (`docs/internal/architecture/adrs/adr-061-llm-touch-boundary-enforcement.md`) — reference implementation surface; §"Amendment 2026-05-15" → §"OutputFilter architecture / Profile dispatch via `task_type`"
 - #1004 (semantic boundary detector) — second meaningful consumer of `task_type`
 - #1017 (OUTPUT-CONTENT-FILTER) — third meaningful consumer; threshold trigger
 - Methodology-29 — parent methodology frame for bottom-up pattern formation

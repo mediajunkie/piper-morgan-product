@@ -99,7 +99,7 @@ validation_score = 3/3 = 1.00  # Fully validated!
 ```
 SemanticAnalyzer
 ├── _build_term_timeline()
-│   ├── Scan ADR files (docs/internal/architecture/current/adrs/)
+│   ├── Scan ADR files (docs/internal/architecture/adrs/)
 │   ├── Scan omnibus logs (docs/omnibus-logs/)
 │   ├── Scan code files (services/, web/)
 │   └── Scan session logs (dev/2025/)

@@ -143,6 +143,6 @@ Three or more independent cross-role instances would graduate the pattern to Pro
 - Memory pin (updated today): `feedback_addressing_hold_pattern_is_wrong_move_to_read_immediately.md`
 - Related methodology: `methodology-35-ASYMMETRIC-DISCIPLINE-CREATION-WITHOUT-PAIRED-CLEANUP.md`
 - Related methodology: `methodology-36-DERIVED-VIEWS-OVER-HAND-MAINTAINED-TRACKERS.md` (filed same session)
-- Pattern catalog discipline: `docs/internal/architecture/current/patterns/` slot allocation per pre-filing slot-availability check
+- Pattern catalog discipline: `docs/internal/architecture/patterns/` slot allocation per pre-filing slot-availability check
 
 — Pattern-074 filed by CIO, 2026-05-24
