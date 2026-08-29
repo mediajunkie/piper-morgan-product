@@ -41,9 +41,7 @@ DEEP_LINK = f"{DEEP_LINK_PATH}?{DEEP_LINK_QUERY}"
 
 @pytest.mark.live
 class TestLoginNextLive:
-    def test_unauthenticated_deep_link_visit_encodes_full_query_into_next(
-        self, live_server
-    ):
+    def test_unauthenticated_deep_link_visit_encodes_full_query_into_next(self, live_server):
         """Logged-out browser hits the deep link → 302 /login?next=<one
         encoded param carrying BOTH slack ids>."""
         with httpx.Client(base_url=live_server.base_url, timeout=15.0) as anon:
@@ -130,8 +128,7 @@ class TestLoginNextLive:
             assert resp.status_code == 302
             location = resp.headers.get("location", "")
             assert location == "/", (
-                f"Open-redirect guard FAILED LIVE for next={evil!r}: "
-                f"Location {location!r}"
+                f"Open-redirect guard FAILED LIVE for next={evil!r}: " f"Location {location!r}"
             )
 
     def test_browser_half_post_login_landing_UNRUNNABLE_here(self):

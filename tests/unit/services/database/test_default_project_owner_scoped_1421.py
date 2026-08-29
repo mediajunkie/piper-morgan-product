@@ -37,7 +37,12 @@ async def two_tenants_with_defaults():
                     "created_at, updated_at, role, is_alpha) "
                     "VALUES (:id, :u, :e, true, true, :now, :now, 'user', true)"
                 ),
-                {"id": uid, "u": f"t1421_{uid[:8]}", "e": f"t1421_{uid[:8]}@test.example.com", "now": now},
+                {
+                    "id": uid,
+                    "u": f"t1421_{uid[:8]}",
+                    "e": f"t1421_{uid[:8]}@test.example.com",
+                    "now": now,
+                },
             )
             await s.execute(
                 text(

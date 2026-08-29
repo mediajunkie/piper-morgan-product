@@ -23,7 +23,6 @@ import pytest
 from services.ethics.boundary_enforcer_refactored import BoundaryEnforcer, BoundaryType
 from services.ethics.semantic_boundary_detector import SemanticDetectorOutput
 
-
 # ---------------------------------------------------------------------------
 # Test helpers
 # ---------------------------------------------------------------------------

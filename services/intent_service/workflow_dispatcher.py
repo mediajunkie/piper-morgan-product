@@ -50,9 +50,71 @@ logger = structlog.get_logger(__name__)
 # Ops with NO group are unaddressable by any WAVE flip, by design, until
 # someone assigns one. `scripts/inversion_phase2_gate.py --audit` lists them
 # by name with denominators so "unassigned" is never a silent remainder.
-FLIP_GROUPS: frozenset[str] = frozenset(
-    {"read_status", "read_referent", "read_synthesis"}
-)
+FLIP_GROUPS: frozenset[str] = frozenset({"read_status", "read_referent", "read_synthesis"})
+
+
+# ─── #1677 named-WRITE flip allowlist (Arch ruling 2026-08-25; PM chose this ──
+# option 2026-08-28) — the ONE way a non-READ operation may route via the
+# inversion, and it is a NAMED LIST, never a class-wide relaxation.
+#
+# Why not just relax the guard to `READ or WRITE`: the effect guard caught
+# something real. ACTION_REGISTRY files `create_issue` under QUERY (a rail-
+# migration artifact, Arch's #1663 find), so a category flag alone is not a
+# READ guarantee — the guard reads the entry's TRUE EffectClass and refuses.
+# Relaxing the class removes that protection for every future write at once.
+# An allowlist keeps it for all of them and spends it on exactly the ops
+# someone has looked at.
+#
+# ⚠️ ADDING AN ENTRY IS NOT A CONFIG CHANGE. Every name below must have had
+# ALL THREE of Arch's conditions RE-RUN — not cited from a previous memo:
+#
+#   1. CONFIRMED REGISTERED on the #1124 action-dispatch rail
+#      (`get_action_workflows()[name]` exists, `action_triggered=True`).
+#      An unregistered op never reaches the rail at all, so "it's fine, the
+#      rail gates it" would be vacuous.
+#   2. CONFIRMED the declared EffectClass is CORRECT by READING THE HANDLER'S
+#      BEHAVIOR — never a docstring, a name, or a previous reviewer's claim.
+#      The whole point of the guard is catching an operation that LIES about
+#      its own class; an allowlist entry taken on trust re-opens that hole.
+#   3. CONFIRMED it reaches `consent_gate.evaluate_consent` on the shared
+#      rail (`entry.needs_consent` derives True and the rail's consent block
+#      actually evaluates it) — i.e. the write is COVERED, not merely
+#      uncontroversial. "Nothing evaluated it" and "something evaluated it
+#      and proceeded" are indistinguishable from a transcript (m-44); only
+#      the second one licenses a flip.
+#
+# Both enforcement points consult THIS constant — `flip_write_allowed()`
+# below is used by `WorkflowEntry.__post_init__` (structural) and by
+# `inversion_live`'s dispatch check (runtime). They move together on purpose:
+# relaxing one and not the other leaves a gap between what is checked and
+# what is enforced (Arch, verbatim).
+#
+#   create_todo — verified 2026-08-28 for #1677 (all three re-run, evidence in
+#                 the #1677 commit message and tests/…/test_inversion_write_
+#                 allowlist_1677.py). Registered by #1685 (WRITE, PRIVATE,
+#                 action_triggered); `todo_handlers.handle_create_todo`
+#                 persists one row via `todo_service.create_todo` and deletes
+#                 nothing → WRITE, never DESTRUCTIVE; `needs_consent` derives
+#                 True and the rail evaluates it (PRIVATE x WRITE x execute
+#                 framing = PROCEED, so evaluation without ceremony).
+FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset({"create_todo"})
+
+
+def flip_write_allowed(entry: "WorkflowEntry") -> bool:
+    """Is this entry's effect flip-eligible at all? (#1677)
+
+    READ — always, unchanged (flip-1's contract). Non-READ — only if the entry
+    DECLARES an allowlist key that is in ``FLIP_WRITE_ALLOWLIST``. The entry
+    declaring its own key is the reviewable act: the constructor cannot see
+    the registry key it will be filed under (one entry object serves a whole
+    alias family), so the name has to be said at the construction site, beside
+    ``effect``, where the #1509 precedent puts every other consent-relevant
+    declaration.
+    """
+    if entry.effect == EffectClass.READ:
+        return True
+    key = entry.flip_write_allowlist_key
+    return key is not None and key in FLIP_WRITE_ALLOWLIST
 
 
 @dataclass
@@ -87,11 +149,22 @@ class WorkflowEntry:
             with (see FLIP_GROUPS above). DEFAULTS TO None and that default is
             the safe direction: an ungrouped op is unaddressable by any wave
             flip, so a forgotten assignment can only ever under-flip. READ-ONLY
-            BY CONSTRUCTION — a non-READ entry carrying a flip_group raises at
-            construction (__post_init__), so the "a write flipped live" state is
-            unrepresentable rather than merely guarded. Declared beside effect
+            BY CONSTRUCTION, ONE NAMED EXCEPTION ASIDE — a non-READ entry
+            carrying a flip_group raises at construction (__post_init__)
+            unless it declares an allowlisted ``flip_write_allowlist_key``
+            (#1677), so "a write flipped live" stays unrepresentable except
+            for individually reviewed operations. Declared beside effect
             and outwardness, with each assignment's reasoning in the comment
             above it (workflow_entries.py), per the #1509 precedent.
+        flip_write_allowlist_key: #1677 named-WRITE flip. The name this entry
+            claims in ``FLIP_WRITE_ALLOWLIST`` (see that constant for the three
+            verification conditions every entry owes). None for every READ
+            entry — READ needs no exception — and None is the safe default: an
+            undeclared write cannot flip by any flag configuration. It is a
+            NAME, not a boolean, because the inversion's dispatch check also
+            requires the ROUTED operation name to be this key: one entry object
+            serves an alias family (create_todo/add_todo/new_todo), and the
+            declaration alone would not say which of those names was reviewed.
     """
 
     entry_point: Callable[..., Coroutine[Any, Any, Any]]
@@ -121,23 +194,44 @@ class WorkflowEntry:
     # rationale in the FLIP_GROUPS block above; the READ-only invariant is
     # enforced in __post_init__ below, not by convention.
     flip_group: Optional[str] = None
+    # #1677 named-WRITE flip allowlist key (Arch ruling 2026-08-25). See the
+    # FLIP_WRITE_ALLOWLIST block above; validated in __post_init__ below.
+    flip_write_allowlist_key: Optional[str] = None
 
     def __post_init__(self) -> None:
         """Reject an unrepresentable flip declaration LOUDLY, at construction.
 
-        Two rejections, both at the earliest possible moment (import of
+        Three rejections, all at the earliest possible moment (import of
         ``workflow_entries``, i.e. app startup and every test that registers
         the rail) so a bad declaration can never reach a live consult:
 
-        1. **Unknown group name** — a typo would be doubly silent (the op is
+        1. **Unknown allowlist key** (#1677) — a typo'd key fails SAFE at
+           dispatch (the write simply never flips) and is therefore silent;
+           raise instead, so a name that was meant to be reviewed can't sit
+           there looking reviewed while naming nothing. Checked before the
+           flip_group early-return: the key is meaningful on its own.
+        2. **Unknown group name** — a typo would be doubly silent (the op is
            unaddressable AND the flag token names nothing).
-        2. **Non-READ entry with a flip_group** — the inversion flip is
-           READ-only by contract (#1663 addendum). ``inversion_live`` also
-           checks ``entry.effect`` at dispatch time; that check is the belt,
-           THIS is the structural guarantee: a WRITE/DESTRUCTIVE entry
-           carrying a group cannot be constructed, so no configuration of any
-           flag can produce a flipped write.
+        3. **Non-READ entry with a flip_group and NO allowlisted key** — the
+           inversion flip is READ-only by contract (#1663 addendum) with the
+           one #1677 exception. ``inversion_live`` also checks the effect at
+           dispatch time; that check is the belt, THIS is the structural
+           guarantee: a WRITE/DESTRUCTIVE entry that nobody put on the
+           allowlist cannot be constructed with a group, so no configuration
+           of any flag can produce an unreviewed flipped write.
         """
+        if (
+            self.flip_write_allowlist_key is not None
+            and self.flip_write_allowlist_key not in FLIP_WRITE_ALLOWLIST
+        ):
+            raise ValueError(
+                f"Unknown flip_write_allowlist_key "
+                f"{self.flip_write_allowlist_key!r} (#1677) on "
+                f"{self.description or 'unnamed'}. Allowlisted: "
+                f"{sorted(FLIP_WRITE_ALLOWLIST)}. Adding a name to "
+                f"FLIP_WRITE_ALLOWLIST owes all three verification conditions "
+                f"in that constant's comment — it is not a config change."
+            )
         if self.flip_group is None:
             return
         if self.flip_group not in FLIP_GROUPS:
@@ -146,12 +240,17 @@ class WorkflowEntry:
                 f"{sorted(FLIP_GROUPS)}. Add a new wave's group to FLIP_GROUPS "
                 f"deliberately — a typo here silently unaddresses the operation."
             )
-        if self.effect != EffectClass.READ:
+        if not flip_write_allowed(self):
             raise ValueError(
                 f"flip_group {self.flip_group!r} declared on a "
                 f"{self.effect.name} entry ({self.description or 'unnamed'}) — "
-                f"#1667/#1663: the inversion flip is READ-only. A write must "
-                f"never be flippable by any flag configuration; remove the "
+                f"#1667/#1663: the inversion flip is READ-only, with the one "
+                f"#1677 exception of an individually verified named write. A "
+                f"write must never be flippable by any flag configuration "
+                f"unless it declares a flip_write_allowlist_key in "
+                f"FLIP_WRITE_ALLOWLIST ({sorted(FLIP_WRITE_ALLOWLIST)}) — and "
+                f"adding a name there owes all three verification conditions "
+                f"in that constant's comment. Otherwise: remove the "
                 f"flip_group, or re-classify the effect if the handler truly "
                 f"only reads."
             )
@@ -342,7 +441,7 @@ def normalize_action(action: str) -> str:
         return action
     for prefix in _NORMALIZE_PREFIXES:
         if action.startswith(prefix):
-            stripped = action[len(prefix):]
+            stripped = action[len(prefix) :]
             if stripped in workflows:
                 logger.info("action_normalized", emitted=action, rail_key=stripped)
                 return stripped

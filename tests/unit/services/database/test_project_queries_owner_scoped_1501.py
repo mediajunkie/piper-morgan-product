@@ -50,7 +50,12 @@ async def two_tenants_with_projects():
                     "created_at, updated_at, role, is_alpha) "
                     "VALUES (:id, :u, :e, true, true, :now, :now, 'user', true)"
                 ),
-                {"id": uid, "u": f"t1501_{uid[:8]}", "e": f"t1501_{uid[:8]}@test.example.com", "now": now},
+                {
+                    "id": uid,
+                    "u": f"t1501_{uid[:8]}",
+                    "e": f"t1501_{uid[:8]}@test.example.com",
+                    "now": now,
+                },
             )
             await s.execute(
                 text(
@@ -125,9 +130,7 @@ class _TripwireRepo:
     """Fails the test if the service touches the repository at all."""
 
     def __getattr__(self, name):
-        raise AssertionError(
-            f"fail-closed path must not reach the repository (attempted .{name})"
-        )
+        raise AssertionError(f"fail-closed path must not reach the repository (attempted .{name})")
 
 
 async def test_fail_closed_short_circuits_before_repository():

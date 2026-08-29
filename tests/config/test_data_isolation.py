@@ -91,10 +91,6 @@ class TestDataIsolation:
         for section in expected_sections:
             assert section in content, f"PIPER.md should document '{section}' generically"
 
-
-
-
-
     def test_piper_md_backup_exists(self):
         """
         Verify backup was created before modifications.

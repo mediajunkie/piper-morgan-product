@@ -41,9 +41,7 @@ _IDENT = re.compile(r"[A-Za-z0-9_$]*")
 
 def _home_html() -> str:
     env = Environment(loader=FileSystemLoader(str(TEMPLATES)), autoescape=True)
-    return env.get_template("home.html").render(
-        trust_stage=1, show_radar=True, user_name="tester"
-    )
+    return env.get_template("home.html").render(trust_stage=1, show_radar=True, user_name="tester")
 
 
 def _inline_scripts(html: str) -> list[str]:

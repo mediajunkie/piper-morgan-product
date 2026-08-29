@@ -75,9 +75,7 @@ class TestWorkItemProviderClosesRouter:
     #1547: the configured-gate is the canonical IntegrationStatusService
     (binding-first), patched here so these stay hermetic."""
 
-    _SVC = (
-        "services.integrations.integration_status_service.IntegrationStatusService"
-    )
+    _SVC = "services.integrations.integration_status_service.IntegrationStatusService"
 
     def _mock_router(self):
         router = MagicMock()
@@ -90,14 +88,16 @@ class TestWorkItemProviderClosesRouter:
         from services.radar.feed_factory import WorkItemProvider
 
         router = self._mock_router()
-        with patch(
-            f"{self._SVC}.is_configured", new=AsyncMock(return_value=True)
-        ), patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=router,
-        ), patch(
-            "services.integrations.github.repo_resolver.read_user_github_handle",
-            new=AsyncMock(return_value=None),
+        with (
+            patch(f"{self._SVC}.is_configured", new=AsyncMock(return_value=True)),
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=router,
+            ),
+            patch(
+                "services.integrations.github.repo_resolver.read_user_github_handle",
+                new=AsyncMock(return_value=None),
+            ),
         ):
             await WorkItemProvider().list_for_user("u1")
         router.close.assert_awaited_once()
@@ -107,14 +107,16 @@ class TestWorkItemProviderClosesRouter:
 
         router = self._mock_router()
         router.get_open_issues = AsyncMock(side_effect=RuntimeError("github down"))
-        with patch(
-            f"{self._SVC}.is_configured", new=AsyncMock(return_value=True)
-        ), patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=router,
-        ), patch(
-            "services.integrations.github.repo_resolver.read_user_github_handle",
-            new=AsyncMock(return_value=None),
+        with (
+            patch(f"{self._SVC}.is_configured", new=AsyncMock(return_value=True)),
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=router,
+            ),
+            patch(
+                "services.integrations.github.repo_resolver.read_user_github_handle",
+                new=AsyncMock(return_value=None),
+            ),
         ):
             result = await WorkItemProvider().list_for_user("u1")
         assert result == []  # graceful degradation preserved
@@ -126,11 +128,12 @@ class TestWorkItemProviderClosesRouter:
         from services.radar.feed_factory import WorkItemProvider
 
         router = self._mock_router()
-        with patch(
-            f"{self._SVC}.is_configured", new=AsyncMock(return_value=False)
-        ), patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=router,
+        with (
+            patch(f"{self._SVC}.is_configured", new=AsyncMock(return_value=False)),
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=router,
+            ),
         ):
             result = await WorkItemProvider().list_for_user("u1")
         assert result == []
@@ -149,12 +152,13 @@ class TestPlaceProviderClosesRouter:
         router.config_service.is_configured.return_value = False
         router.close = AsyncMock()
 
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=router,
-        ), patch(
-            "services.place.place_service.PlaceService"
-        ) as MockService:
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=router,
+            ),
+            patch("services.place.place_service.PlaceService") as MockService,
+        ):
             MockService.return_value.get_visible_places = AsyncMock(return_value=[])
             await PlaceProvider().list_for_user("11111111-1111-1111-1111-111111111111")
 

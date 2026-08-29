@@ -120,9 +120,7 @@ async def get_config_status(
                     from services.security.user_api_key_service import UserAPIKeyService
 
                     async with AsyncSessionFactory.session_scope_fresh() as session:
-                        if await UserAPIKeyService().retrieve_user_key(
-                            session, user_id, "notion"
-                        ):
+                        if await UserAPIKeyService().retrieve_user_key(session, user_id, "notion"):
                             return "configured", "user_secret_store"
                 except Exception:
                     pass
@@ -190,9 +188,7 @@ class IntegrationStatusService:
 
     KNOWN = KNOWN_INTEGRATIONS
 
-    async def get_status(
-        self, user_id: Optional[str], integration_id: str
-    ) -> Dict[str, Any]:
+    async def get_status(self, user_id: Optional[str], integration_id: str) -> Dict[str, Any]:
         if integration_id not in self.KNOWN:
             raise ValueError(
                 f"Unknown user-facing integration: {integration_id!r} "

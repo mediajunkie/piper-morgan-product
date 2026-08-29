@@ -74,9 +74,7 @@ class TestWiredChatActionsDerivation:
         # nothing the product honest-declines as unwired may be presented to
         # the floor as a capability it HAS (that would be the inverse lie).
         overlap = set(wired_chat_actions()) & set(UNWIRED_WRITE_DECLINES)
-        assert not overlap, (
-            f"manifest claims unwired capabilities: {sorted(overlap)}"
-        )
+        assert not overlap, f"manifest claims unwired capabilities: {sorted(overlap)}"
 
     def test_derivation_not_vacuous(self):
         # Vacuity guard (m-44): the set is DERIVED; a tiny result means the
@@ -109,9 +107,9 @@ class TestCapabilityManifestBlock:
         # design exists to avoid, and would go stale silently.
         static_prose = capability_manifest_block.__wrapped_static__
         for token in wired_chat_actions():
-            assert token not in static_prose, (
-                f"hand-written capability name '{token}' in static manifest prose"
-            )
+            assert (
+                token not in static_prose
+            ), f"hand-written capability name '{token}' in static manifest prose"
 
 
 class TestSystemPromptCarriesManifest:
@@ -152,9 +150,7 @@ class TestAntiRetraction:
 
     def test_floor_forbids_fabricated_retractions(self):
         p = _norm(FLOOR_SYSTEM_PROMPT_ADDENDUM)
-        assert "never retract" in p, (
-            "floor must carry the #1517 anti-retraction rule"
-        )
+        assert "never retract" in p, "floor must carry the #1517 anti-retraction rule"
         assert "fabricated retraction" in p, (
             "floor must name the failure mode: inventing that a prior "
             "confirmed action failed / was never saved"

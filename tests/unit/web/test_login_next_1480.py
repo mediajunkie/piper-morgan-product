@@ -65,9 +65,9 @@ class TestAuthJsPreservesNext:
 class TestChatJsExpiryRedirectsCarryNext:
     def test_no_bare_login_redirects_remain(self):
         js = _read(CHAT_JS)
-        assert 'window.location.href = "/login";' not in js, (
-            "#1520/#840 expiry redirect still drops the current page"
-        )
+        assert (
+            'window.location.href = "/login";' not in js
+        ), "#1520/#840 expiry redirect still drops the current page"
 
     def test_expiry_redirect_carries_current_location(self):
         js = _read(CHAT_JS)

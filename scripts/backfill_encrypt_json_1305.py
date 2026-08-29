@@ -101,9 +101,7 @@ async def backfill_full_value(conn, table, column, context, encryptor, batch=500
             value = json.loads(raw_json_text)
             token = MARKER + encryptor.encrypt(json.dumps(value, default=str), context)
             await conn.execute(
-                text(
-                    f'UPDATE {table} SET "{column}" = to_jsonb(CAST(:v AS text)) WHERE id = :id'
-                ),
+                text(f'UPDATE {table} SET "{column}" = to_jsonb(CAST(:v AS text)) WHERE id = :id'),
                 {"v": token, "id": rid},
             )
         await conn.commit()

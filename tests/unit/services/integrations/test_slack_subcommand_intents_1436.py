@@ -18,12 +18,24 @@ def _router():
 
 
 CASES = [
-    ("_handle_calendar_subcommand", "_handle_temporal_query",
-     IntentCategory.TEMPORAL, "get_current_time"),
-    ("_handle_status_subcommand", "_handle_status_query",
-     IntentCategory.STATUS, "get_project_status"),
-    ("_handle_priority_subcommand", "_handle_priority_query",
-     IntentCategory.PRIORITY, "get_top_priority"),
+    (
+        "_handle_calendar_subcommand",
+        "_handle_temporal_query",
+        IntentCategory.TEMPORAL,
+        "get_current_time",
+    ),
+    (
+        "_handle_status_subcommand",
+        "_handle_status_query",
+        IntentCategory.STATUS,
+        "get_project_status",
+    ),
+    (
+        "_handle_priority_subcommand",
+        "_handle_priority_query",
+        IntentCategory.PRIORITY,
+        "get_top_priority",
+    ),
 ]
 
 

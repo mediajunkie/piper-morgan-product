@@ -71,9 +71,7 @@ class TestUnestablishedEmptinessClaim:
     def test_clear_day_claim_allowed_when_read_established(self):
         """When the adapter attests the day was actually enumerated, the
         emptiness claim is honest and should still be made."""
-        message = format_greeting_conscious(
-            calendar_summary=_summary(events_read_established=True)
-        )
+        message = format_greeting_conscious(calendar_summary=_summary(events_read_established=True))
         assert "clear day" in message.lower(), message
 
     def test_meeting_count_claim_unaffected_when_nonzero(self):

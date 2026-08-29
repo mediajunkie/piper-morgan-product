@@ -17,8 +17,8 @@ ADDITIVE: creates exactly one new table; touches nothing else.
 from typing import Sequence, Union
 
 import sqlalchemy as sa
-from alembic import op
 
+from alembic import op
 from services.database.models import CrossDialectUUID
 
 # revision identifiers, used by Alembic.

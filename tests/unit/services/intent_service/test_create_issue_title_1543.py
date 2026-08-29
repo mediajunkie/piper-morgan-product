@@ -73,9 +73,7 @@ class TestAboutFormExtraction:
         assert slots["title"] == "flaky login tests"
 
     def test_quoted_titled_form_still_wins_over_about(self):
-        slots = _slotfill()(
-            'create an issue about performance titled "P1: slow dashboards"'
-        )
+        slots = _slotfill()('create an issue about performance titled "P1: slow dashboards"')
         assert slots["title"] == "P1: slow dashboards"
 
     def test_no_issue_word_no_about_capture(self):

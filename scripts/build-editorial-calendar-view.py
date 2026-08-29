@@ -10,7 +10,11 @@ Regenerate after calendar changes:  python3 scripts/build-editorial-calendar-vie
 Output: docs/internal/planning/comms/editorial-calendar-view.html
 """
 
-import csv, json, os, sys, datetime
+import csv
+import datetime
+import json
+import os
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CSV_PATH = os.path.join(ROOT, "docs/internal/planning/comms/editorial-calendar.csv")

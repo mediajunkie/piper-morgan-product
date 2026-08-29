@@ -43,13 +43,12 @@ from unittest.mock import AsyncMock
 import pytest
 
 from services.ethics.output_filter import (
-    Action,
     CANNED_VIOLATION_RESPONSE,
-    OutputFilter,
     REDACTED_TOKEN,
+    Action,
+    OutputFilter,
     Severity,
 )
-
 
 # ============================================================================
 # Probe definitions

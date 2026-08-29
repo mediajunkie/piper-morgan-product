@@ -468,6 +468,51 @@ class TestRadarSurface:
         """Refless cards (e.g. the empty-state example) are not made clickable."""
         assert "if (entity.ref) {" in history_html
 
+
+class TestComingSoonPlaceholder1635:
+    """#1635 — the ambient-presence coming-soon placeholder rides the EXISTING
+    render path: the server appends an EXAMPLE-provenance entity (last, populated
+    state only — see services/radar/feed.py + test_coming_soon_1635.py for the
+    placement/suppression/copy pins), and the JS renderer's provenance branch
+    gives it the dashed example style. These assert, through the actual template
+    surfaces, that that path exists — #1635 required NO template change, so what
+    must not drift is the machinery the placeholder depends on.
+
+    Layer note (m-43): a Jinja/file render doesn't execute JS — the class-mapping
+    branch is asserted as the render function's source, the way this file guards
+    every other renderRadarCard behavior. The card's copy is pinned at the layer
+    that produces it (the API), in test_coming_soon_1635.py.
+    """
+
+    def test_example_provenance_maps_to_dashed_card_class(self, history_html):
+        """The renderer branch the placeholder relies on for visual distinctness."""
+        assert "entity.provenance === 'example' ? ' radar-card--example'" in history_html
+        assert ".radar-card--example { border-style: dashed;" in history_html
+
+    def test_no_template_hardcodes_the_placeholder(self, history_html):
+        """The card is server-supplied data, not template copy — the template must
+        NOT carry the 1635 strings (server owns suppression; a hardcoded copy would
+        render even at zero entities, violating CXO Rule 1)."""
+        assert "Piper will be able to watch for changes" not in history_html
+        assert "not watching anything yet" not in history_html
+
+    def test_home_radar_aside_renders_the_feed_container(self):
+        """Real template.render() of home.html: the aside that fetches /api/v1/radar
+        (whose populated response now ends with the placeholder) actually renders."""
+        from jinja2 import Environment, FileSystemLoader
+
+        env = Environment(loader=FileSystemLoader("templates"), autoescape=True)
+        html = env.get_template("home.html").render(
+            trust_stage=1,
+            user={"username": "xian", "user_id": "u1", "is_admin": False},
+            show_radar=True,
+        )
+        assert 'id="home-radar-cards"' in html
+        assert "/api/v1/radar" in html  # the fetch that delivers the placeholder
+        assert "HS.renderRadarCard(e)" in html  # rendered via the shared card renderer
+        # and home.html carries no hardcoded 1635 copy either (server-side only)
+        assert "Piper will be able to watch for changes" not in html
+
     def test_radar_card_click_routes_by_entity_type(self, history_html):
         """Delegated click opens the referent: Conversation resumes the chat,
         Work item opens the issue, Document goes to the Documents page."""

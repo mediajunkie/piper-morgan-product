@@ -9,8 +9,8 @@ build if the class returns. Comment lines are exempt (explanatory references
 to the banned phrases are how the fixes are documented).
 """
 
-import os
 import glob
+import os
 
 # Substrings banned from NON-COMMENT source lines in services/ and web/.
 BANNED = [

@@ -96,11 +96,13 @@ async def find_overdue_todos(todo_service, user_id: Any) -> List[Any]:
     overdue = [
         t
         for t in todos
-        if getattr(t, "due_date", None) is not None
-        and not t.completed
-        and ensure_utc(t.due_date) < now
+        if not t.completed
+        and (due_utc := ensure_utc(getattr(t, "due_date", None))) is not None
+        and due_utc < now
     ]
-    overdue.sort(key=lambda t: ensure_utc(t.due_date))
+    # Every t in overdue has a due date (the filter above); ``or now`` is the
+    # mypy-visible spelling of that fact, never a reachable fallback.
+    overdue.sort(key=lambda t: ensure_utc(t.due_date) or now)
     return overdue
 
 
@@ -175,9 +177,7 @@ def build_overdue_todo_offer(
                 "todo_text": text,
                 "summary": summary,
             },
-            "decline_message": (
-                f'Okay — "{text}" stays on your list. Nothing has been changed.'
-            ),
+            "decline_message": (f'Okay — "{text}" stays on your list. Nothing has been changed.'),
         },
     )
 
@@ -249,9 +249,7 @@ async def run_standup_complete_todo_workflow(
     text = payload.get("todo_text") or "that todo"
     todo_service = intent_service.todo_handlers.todo_service
     try:
-        completed = await todo_service.complete_todo(
-            todo_id=todo_uuid, user_id=effective_user
-        )
+        completed = await todo_service.complete_todo(todo_id=todo_uuid, user_id=effective_user)
     except Exception as e:  # silent-ok: logged at error; the reply below states the honest non-completion instead of a fabricated confirmation (#1425)
         logger.error(
             "standup_todo_complete_failed",

@@ -30,6 +30,7 @@ USAGE
 Paste the output into any completeness claim. A claim without it is a claim without a
 denominator.
 """
+
 import argparse
 import json
 import subprocess
@@ -57,15 +58,27 @@ def fetch(limit=2000):
     board silently truncated at --limit 1200 produced a confident '27 of 28 closed' to PM
     that missed 8 open issues, including the sprint's own close-out gate).
     """
-    cmd = ["gh", "project", "item-list", PROJECT, "--owner", OWNER,
-           "--limit", str(limit), "--format", "json"]
+    cmd = [
+        "gh",
+        "project",
+        "item-list",
+        PROJECT,
+        "--owner",
+        OWNER,
+        "--limit",
+        str(limit),
+        "--format",
+        "json",
+    ]
     try:
         out = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
     except Exception as exc:  # pragma: no cover
         sys.exit(f"FAILED to query the board: {exc}\nThis check measured NOTHING.")
     if out.returncode != 0:
-        sys.exit(f"FAILED to query the board (rc={out.returncode}): {out.stderr.strip()}\n"
-                 "This check measured NOTHING — do not read its silence as a clear.")
+        sys.exit(
+            f"FAILED to query the board (rc={out.returncode}): {out.stderr.strip()}\n"
+            "This check measured NOTHING — do not read its silence as a clear."
+        )
     data = json.loads(out.stdout)
     items = data.get("items", [])
     if not items:
@@ -74,14 +87,18 @@ def fetch(limit=2000):
     # ---- query-github-board rule 1: the truncation reconciliation ----
     total = data.get("totalCount")
     if total is None:
-        sys.exit("Payload carries no totalCount — cannot prove the pull was complete. "
-                 "REFUSING to summarize. (query-github-board rule 1)")
+        sys.exit(
+            "Payload carries no totalCount — cannot prove the pull was complete. "
+            "REFUSING to summarize. (query-github-board rule 1)"
+        )
     if len(items) != total:
-        sys.exit(f"TRUNCATED PULL: fetched {len(items)} of {total}. "
-                 f"Raise --limit above {total} or paginate. "
-                 f"A truncated pull MAY NOT be summarized — this check measured a SUBSET "
-                 f"and would report it as the whole, which is the exact defect this script exists "
-                 f"to prevent. (query-github-board rule 1; incident 2026-07-18)")
+        sys.exit(
+            f"TRUNCATED PULL: fetched {len(items)} of {total}. "
+            f"Raise --limit above {total} or paginate. "
+            f"A truncated pull MAY NOT be summarized — this check measured a SUBSET "
+            f"and would report it as the whole, which is the exact defect this script exists "
+            f"to prevent. (query-github-board rule 1; incident 2026-07-18)"
+        )
     print(f"[pull complete: {len(items)}/{total} board items]")
     return items
 
@@ -95,8 +112,19 @@ def board_absent_issues(milestone):
     PM's ruling created a pipeline of exactly this shape, so this is the recurring case, not
     an edge case. Counting the board alone would under-report the sprint indefinitely.
     """
-    cmd = ["gh", "issue", "list", "--milestone", milestone, "--state", "open",
-           "--limit", "300", "--json", "number,title"]
+    cmd = [
+        "gh",
+        "issue",
+        "list",
+        "--milestone",
+        milestone,
+        "--state",
+        "open",
+        "--limit",
+        "300",
+        "--json",
+        "number,title",
+    ]
     try:
         out = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
         if out.returncode != 0:
@@ -115,8 +143,17 @@ def unmilestoned_open():
     named the consequence: "we clearly have a lot more work still to do than anyone ever
     reported to me." A milestone-scoped instrument cannot see this by construction.
     """
-    cmd = ["gh", "issue", "list", "--state", "open", "--limit", "400",
-           "--json", "number,milestone,labels"]
+    cmd = [
+        "gh",
+        "issue",
+        "list",
+        "--state",
+        "open",
+        "--limit",
+        "400",
+        "--json",
+        "number,milestone,labels",
+    ]
     try:
         out = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
         if out.returncode != 0:
@@ -148,7 +185,9 @@ def main():
     items = fetch()
     scoped = [i for i in items if milestone_of(i) == args.milestone]
     if not scoped:
-        sys.exit(f"No items found in milestone {args.milestone!r} — check the name before believing this.")
+        sys.exit(
+            f"No items found in milestone {args.milestone!r} — check the name before believing this."
+        )
 
     by_status = Counter(i.get("status") or "(no status set)" for i in scoped)
     done = by_status.get("Done", 0)
@@ -175,14 +214,20 @@ def main():
     else:
         missing = [i for i in issues if i["number"] not in on_board]
         if missing:
-            print(f"\n🔴 NOT ON THE BOARD — {len(missing)} open issue(s) carry this milestone "
-                  f"but are absent from the project, so the counts above EXCLUDE them:")
+            print(
+                f"\n🔴 NOT ON THE BOARD — {len(missing)} open issue(s) carry this milestone "
+                f"but are absent from the project, so the counts above EXCLUDE them:"
+            )
             for m in sorted(missing, key=lambda x: x["number"]):
                 print(f"     #{m['number']}  {m['title'][:62]}")
-            print("     Fix at the source: add them to the board (filing with --milestone does not).")
+            print(
+                "     Fix at the source: add them to the board (filing with --milestone does not)."
+            )
             total_open += len(missing)
         else:
-            print(f"\n[reconciled: {len(issues)} open issues by milestone, all present on the board]")
+            print(
+                f"\n[reconciled: {len(issues)} open issues by milestone, all present on the board]"
+            )
 
     # The sentence a reporter should copy, rather than composing their own.
     parts = ", ".join(f"{not_done[s]} {s}" for s in ordered)
@@ -197,20 +242,33 @@ def main():
     elif not un:
         print("PLUS 0 unmilestoned — every open issue carries a milestone.")
     else:
-        held = [i for i in un if any(l.get("name") == "awaiting-decision"
-                                     for l in (i.get("labels") or []))]
+        held = [
+            i
+            for i in un
+            if any(l.get("name") == "awaiting-decision" for l in (i.get("labels") or []))
+        ]
         if held:
-            print(f"PLUS {len(un)} open issue(s) carry NO milestone and are outside every gate count:")
-            print(f"       {len(held)} awaiting a decision (drained by ASKING) · "
-                  f"{len(un) - len(held)} not yet triaged (drained by LOOKING)")
+            print(
+                f"PLUS {len(un)} open issue(s) carry NO milestone and are outside every gate count:"
+            )
+            print(
+                f"       {len(held)} awaiting a decision (drained by ASKING) · "
+                f"{len(un) - len(held)} not yet triaged (drained by LOOKING)"
+            )
         else:
-            print(f"PLUS {len(un)} open issue(s) carry NO milestone and are outside every gate count.")
-            print("       ⚠️  NOT SPLIT: no `awaiting-decision` label exists, so a decision waiting "
-                  "on PM\n           is counted identically to work nobody has examined. "
-                  "Two populations, one number.")
+            print(
+                f"PLUS {len(un)} open issue(s) carry NO milestone and are outside every gate count."
+            )
+            print(
+                "       ⚠️  NOT SPLIT: no `awaiting-decision` label exists, so a decision waiting "
+                "on PM\n           is counted identically to work nobody has examined. "
+                "Two populations, one number."
+            )
     if not_done.get("Sprint Backlog"):
-        print(f"NOTE: {not_done['Sprint Backlog']} item(s) have NOT BEEN STARTED. "
-              f"Any 'complete' claim must exclude itself explicitly.")
+        print(
+            f"NOTE: {not_done['Sprint Backlog']} item(s) have NOT BEEN STARTED. "
+            f"Any 'complete' claim must exclude itself explicitly."
+        )
 
     if args.list:
         print("\n--- the not-Done work, itemized ---")

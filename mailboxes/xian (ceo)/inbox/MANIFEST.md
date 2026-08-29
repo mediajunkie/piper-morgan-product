@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-28 ~11:5x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-comms-xian-brokering-ratified-2026-08-28.md | xian has approved and ratified the cross-project brokering proposal — it's live… |
 | 2026-08-27 ~11:4x PT | dispatch-pm | memo-dispatch-pm-to-comms-cc-docs-xian-heading-level-defect-2026-08-27.md | Heading-level defect in published blog drafts — subheads authored as ## instead… |
 | 2026-08-27 ~11:3x PT | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-detector-medium-2026-08-27.md | Calendar update — 'The Detector That Notified Nobody' syndicated to Medium 2026… |
 | 2026-08-26 ~15:1x PT | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-ship-057-linkedin-2026-08-26.md | Calendar update — Weekly Ship #057 published to the LinkedIn newsletter 2026-08… |

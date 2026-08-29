@@ -59,8 +59,18 @@ _BRANCHES = json.dumps(
 )
 _RELEASES = json.dumps(
     [
-        {"tag_name": "v1.2.0", "name": "1.2.0", "prerelease": False, "published_at": "2026-06-01T0:0:0Z"},
-        {"tag_name": "v1.3.0-rc1", "name": "rc", "prerelease": True, "published_at": "2026-06-10T0:0:0Z"},
+        {
+            "tag_name": "v1.2.0",
+            "name": "1.2.0",
+            "prerelease": False,
+            "published_at": "2026-06-01T0:0:0Z",
+        },
+        {
+            "tag_name": "v1.3.0-rc1",
+            "name": "rc",
+            "prerelease": True,
+            "published_at": "2026-06-10T0:0:0Z",
+        },
     ]
 )
 _ISSUE = json.dumps(

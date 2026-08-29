@@ -27,7 +27,6 @@ class TestSchemaValidator:
         """Test extraction of fields from domain dataclasses"""
         # Mock a domain dataclass
         from dataclasses import dataclass
-
         from typing import Optional
 
         @dataclass
@@ -306,9 +305,7 @@ class TestSchemaValidator:
         }.items():
             setattr(fake, _name, _obj)
 
-        with _patch.dict(
-            "sys.modules", {"services.domain.models": fake}
-        ):
+        with _patch.dict("sys.modules", {"services.domain.models": fake}):
             validator.load_domain_models()
 
         # Verify domain models loaded
@@ -317,7 +314,6 @@ class TestSchemaValidator:
         assert "NotADataclass" not in validator.domain_models
         assert "FieldInfo" not in validator.domain_models
         assert "ModelComparison" not in validator.domain_models
-
 
     def test_load_database_models(self, validator):
         """Test loading database models (#1452: patch.dict on the real
@@ -351,9 +347,7 @@ class TestSchemaValidator:
         }.items():
             setattr(fake, _name, _obj)
 
-        with _patch.dict(
-            "sys.modules", {"services.database.models": fake}
-        ):
+        with _patch.dict("sys.modules", {"services.database.models": fake}):
             validator.load_database_models()
 
         # Verify database models loaded

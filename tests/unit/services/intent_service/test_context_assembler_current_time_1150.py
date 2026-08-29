@@ -22,12 +22,9 @@ import pytest
 from services.intent_service.context_assembler import _current_time_for_user
 
 _REPO_GET = (
-    "services.configuration.personalization_repository."
-    "PersonalizationContextRepository.get"
+    "services.configuration.personalization_repository." "PersonalizationContextRepository.get"
 )
-_FILE_CFG = (
-    "services.configuration.piper_config_loader.piper_config_loader.load_standup_config"
-)
+_FILE_CFG = "services.configuration.piper_config_loader.piper_config_loader.load_standup_config"
 
 
 class TestCurrentTimeForUser:

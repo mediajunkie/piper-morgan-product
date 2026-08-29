@@ -38,6 +38,7 @@ def _base_url() -> str:
     Slack rejects outright on prod)."""
     return os.getenv("PIPER_BASE_URL", "http://localhost:8001").rstrip("/")
 
+
 router = APIRouter(prefix="/api/v1/settings/integrations", tags=["settings-integrations"])
 
 
@@ -279,9 +280,7 @@ async def _load_prefs_db(owner_sub: str, connector: str) -> dict:
             if legacy:
                 await svc.set_config(owner_sub, connector, legacy)
                 await session.commit()
-                logger.info(
-                    "legacy_pref_file_migrated", connector=connector, user_id=owner_sub
-                )
+                logger.info("legacy_pref_file_migrated", connector=connector, user_id=owner_sub)
             return legacy
     except Exception as e:
         logger.warning("prefs_db_load_failed", connector=connector, error=str(e))
@@ -686,12 +685,15 @@ async def save_slack_app_token(
     Security: stored via KeychainService (the `_api_key`-suffix contract), never logged.
     """
     from services.infrastructure.keychain_service import KeychainService
-    from services.integrations.slack.socket_mode_runner import restart_socket_runner
 
     # #1484 + CXO refusal contract: gate BEFORE the keychain write so
     # "wasn't saved" is TRUE (the #1482 string-6 lesson). A refusal must be
     # shaped like a failure, never a 200 wearing a yellow badge.
-    from services.integrations.slack.socket_mode_runner import slack_inbound_enabled
+    from services.integrations.slack.socket_mode_runner import (
+        restart_socket_runner,
+        slack_inbound_enabled,
+    )
+
     if not slack_inbound_enabled():
         raise HTTPException(
             status_code=409,
@@ -747,6 +749,7 @@ async def get_slack_inbound_status(
     # is the entire content. Checked before token presence: a stored token must
     # not upgrade the state to 'connecting' (the retry-forever lie).
     from services.integrations.slack.socket_mode_runner import slack_inbound_enabled
+
     if not slack_inbound_enabled():
         return SlackInboundStatusResponse(connected=False, state="disabled")
 

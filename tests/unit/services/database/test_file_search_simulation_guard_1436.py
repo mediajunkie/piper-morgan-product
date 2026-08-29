@@ -38,7 +38,5 @@ async def test_all_sessions_variant_same_guard():
     with patch.object(
         FileRepository, "search_files_by_name_all_sessions", new=AsyncMock(return_value=sentinel)
     ):
-        out = await repo.search_files_with_content_all_sessions(
-            "owner-1", "roadmap", limit=10
-        )
+        out = await repo.search_files_with_content_all_sessions("owner-1", "roadmap", limit=10)
     assert out == sentinel

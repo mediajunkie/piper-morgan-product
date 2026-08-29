@@ -157,9 +157,7 @@ class TestYesPleaseBindsToPendingOffer:
         # The affirmative reached classification WITH the bound offer hint
         service.intent_classifier.classify_multiple.assert_called_once()
         _, kwargs = service.intent_classifier.classify_multiple.call_args
-        assert (
-            kwargs.get("context", {}).get("contextual_continuation_hint") == ARCHIVED_OFFER_HINT
-        )
+        assert kwargs.get("context", {}).get("contextual_continuation_hint") == ARCHIVED_OFFER_HINT
 
     @pytest.mark.asyncio
     async def test_bare_yes_with_no_pending_offer_does_not_resume(self, service):
@@ -277,12 +275,8 @@ class TestGreetingReentryRecordsOffer:
         mock_registry.check_suspended_processes = AsyncMock(return_value=_suspended_standup())
 
         handler = ConversationHandler()
-        with patch(
-            "services.process.registry.get_process_registry", return_value=mock_registry
-        ):
-            offer = await handler._check_suspended_session_reentry(
-                user_id, session_id=session_id
-            )
+        with patch("services.process.registry.get_process_registry", return_value=mock_registry):
+            offer = await handler._check_suspended_session_reentry(user_id, session_id=session_id)
 
         assert offer is not None
         assert offer["intent"]["action"] == "suspended_session_reentry"

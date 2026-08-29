@@ -60,9 +60,7 @@ class TestDisconnectNoEnvMutation:
                     "popitem",
                     "clear",
                 ) and is_os_environ(node.func.value):
-                    violations.append(
-                        f"line {node.lineno}: os.environ.{node.func.attr}(...)"
-                    )
+                    violations.append(f"line {node.lineno}: os.environ.{node.func.attr}(...)")
 
         assert not violations, (
             "process-wide env mutation in disconnect.py (#1558, #1507 class): "

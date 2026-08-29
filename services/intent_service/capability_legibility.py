@@ -47,9 +47,12 @@ migration (#1605/#1569 lane).
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Dict, List, Optional, Tuple
 
 from services.shared_types import EffectClass, Outwardness
+
+if TYPE_CHECKING:
+    from services.intent_service.workflow_dispatcher import WorkflowEntry
 
 # Per-EFFECT phrases (3 tiers, keyed by the enum — a tier vocabulary, not a
 # per-capability hand list; a new tier value fails loudly in describe_effect).
@@ -146,14 +149,14 @@ def _pointer_examples() -> Dict[str, str]:
     return examples
 
 
-def _unique_rail_entries() -> List[Tuple[str, object]]:
+def _unique_rail_entries() -> List[Tuple[str, "WorkflowEntry"]]:
     """(canonical_key, entry) per unique action-triggered registry entry —
     the same first-registered-key dedup wired_chat_actions uses (#1517)."""
     from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
     from services.intent_service.workflow_entries import register_default_workflows
 
     register_default_workflows()  # idempotent
-    unique: List[Tuple[str, object]] = []
+    unique: List[Tuple[str, "WorkflowEntry"]] = []
     seen: set = set()
     for key, entry in WORKFLOW_REGISTRY.items():
         if not entry.action_triggered:

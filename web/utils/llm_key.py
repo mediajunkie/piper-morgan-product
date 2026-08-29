@@ -29,9 +29,7 @@ from typing import Optional
 from services.llm.request_key import resolve_request_api_key
 
 
-async def resolve_user_llm_key(
-    header_key: Optional[str], user_id: Optional[str]
-) -> Optional[str]:
+async def resolve_user_llm_key(header_key: Optional[str], user_id: Optional[str]) -> Optional[str]:
     """Resolve the per-request Anthropic key for a user-facing route (header > stored > None).
 
     Args:

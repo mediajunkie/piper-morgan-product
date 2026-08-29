@@ -39,7 +39,6 @@ from services.mux.pull_mode import (
     respond_to_pull,
 )
 
-
 pytestmark_async = pytest.mark.asyncio
 
 

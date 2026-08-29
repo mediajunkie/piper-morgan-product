@@ -162,18 +162,14 @@ def offer_is_confirm(offer: Optional[Dict[str, Any]]) -> bool:
         # Mid-compose (either slot empty) the open ask is the compose
         # question, and a crisp "yes" is re-asked, not fired blind.
         draft = pending.get("draft") or {}
-        return bool(
-            (draft.get("title") or "").strip() and (draft.get("body") or "").strip()
-        )
+        return bool((draft.get("title") or "").strip() and (draft.get("body") or "").strip())
     if kind == _REPO_QUESTION_KIND:
         # Closed-default bind only: with a default on offer, a crisp "yes"
         # binds it and fires the held operation (#1650). The open form's
         # "yes" merely re-asks — not a confirm.
         return bool(pending.get("default_repo"))
-    return (
-        kind is None
-        and offer.get("workflow_type") == CONFIRM_PENDING_ACTION_WORKFLOW
-    )
+    return kind is None and offer.get("workflow_type") == CONFIRM_PENDING_ACTION_WORKFLOW
+
 
 # Context marker the confirm entry point sets before re-dispatching, so the
 # close/reopen handlers' own in-message confirmation (#902's "yes, close
@@ -213,6 +209,7 @@ RESOLVED_TODO_CONTEXT_KEY = "delete_todo_resolved"
 def is_delete_todo_action(action: Optional[str]) -> bool:
     """True when ``action`` is a delete-todo rail key (#1666 family)."""
     return action in _DELETE_TODO_FAMILY
+
 
 # Bare full-message exits that cancel a pending confirmation honestly —
 # the #888 registry set ∪ the #1529 additions, applied at the offer seam.
@@ -316,9 +313,7 @@ def build_confirmation_offer(intent: Intent) -> Optional[ConfirmationOffer]:
                 "intent": intent,
                 "summary": summary,
             },
-            "decline_message": (
-                f"Okay — I won't {summary}. Nothing has been changed."
-            ),
+            "decline_message": (f"Okay — I won't {summary}. Nothing has been changed."),
         },
     )
 
@@ -444,9 +439,7 @@ async def build_todo_delete_confirmation(
                     "intent": intent,
                     "summary": summary,
                 },
-                "decline_message": (
-                    f"Okay — I won't {summary}. Nothing has been changed."
-                ),
+                "decline_message": (f"Okay — I won't {summary}. Nothing has been changed."),
             },
         )
     )

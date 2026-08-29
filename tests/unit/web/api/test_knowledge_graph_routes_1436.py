@@ -51,9 +51,7 @@ async def test_create_node_calls_the_real_kwargs_api_with_enum():
 async def test_create_node_invalid_type_is_400_not_500():
     svc = SimpleNamespace(create_node=AsyncMock())
     with pytest.raises(HTTPException) as exc:
-        await create_node(
-            name="x", node_type="not_a_type", current_user=CLAIMS, kg_service=svc
-        )
+        await create_node(name="x", node_type="not_a_type", current_user=CLAIMS, kg_service=svc)
     assert exc.value.status_code == 400
     svc.create_node.assert_not_awaited()
 

@@ -55,9 +55,7 @@ LINKED_CONFIRMATION_SETTINGS = "Slack linked — {slack_handle} in {workspace}. 
 
 # --- §3c — unlink (states the consequence) ---
 
-UNLINK_CONFIRMATION = (
-    "Unlinked. Piper won't respond to you in {workspace} until you link again."
-)
+UNLINK_CONFIRMATION = "Unlinked. Piper won't respond to you in {workspace} until you link again."
 
 # --- Arch condition 2 — re-link of an already-linked identity: fail-closed,
 # named honestly, with the unlink-first path carried. Never a silent no-op,

@@ -17,7 +17,6 @@ import pytest
 
 from services.integrations.local_git import LocalGitInspector, LocalGitStatus
 
-
 # Inspector ---------------------------------------------------------------
 
 

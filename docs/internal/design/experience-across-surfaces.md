@@ -118,8 +118,17 @@ the same claim at two registers (internal model-language vs. outward promise-lan
 
 ## 4. Per surface
 
-📌 **The surfaces and their expressions are PM's, 2026-08-08**, restated in a table. ✏️ The *"must not be
-asked to"* column is CXO's reading, pending PM.
+📌 **The surfaces and their expressions are PM's, 2026-08-08**, restated in a table. ✅ **The *"must not be
+asked to"* column is RATIFIED 2026-08-28** — PM: *"the 'must not be asked to do' distinction is brilliant —
+approved."* All five cells stand as written.
+
+**What the column is for, now that it's citable**: each cell is a **negative-space commitment** —
+pre-answering a thing someone might reasonably ask a surface to do in a pinch. Two of the five restate
+already-ratified decisions (Web, Slack); three name real observed failure modes (chat-host rendering, phone
+composition, CLI death-by-neglect). **It adds no build surface** — which is why it survives the
+no-optional-complexity lens: it makes existing commitments citable rather than creating new scope. The Web
+cell has the track record: it is what would have prevented *"there is no web page"* and *"which surface
+survives"* from recurring.
 
 | Surface | The one experience, expressed here | Must not be asked to |
 |---|---|---|
@@ -159,7 +168,7 @@ a Slack message, a notification, and a tool result.**
 ✅ **A surface-specific corollary, RATIFIED 2026-08-21 (PM: "6 is exactly right")**: *a person who uses
 Piper in two places should recognise it as the same colleague.* **Consistency of character, not of layout.**
 
-## 7. Open — three of four resolved 2026-08-21
+## 7. Open — ✅ ALL FOUR RESOLVED (three 2026-08-21, the last 2026-08-28)
 
 - ✅ **Is Surface 1 (the history sidebar — Radar's rendering) in the 1.0 five?** ANSWERED by the ratified
   surfaces taxonomy (`surfaces-taxonomy-2026-08-16.md` v1.0, PM-ratified 2026-08-21): **F-History is in
@@ -168,13 +177,19 @@ Piper in two places should recognise it as the same colleague.* **Consistency of
 - ✅ **Surface 3** — resolved by the same taxonomy: **F-Settings, real and CEO-ratified since May**, never a
   phantom; the "phantom" read came from PDR-005's citation gap, now named and fixed-by-pointer.
 - ✅ **§3's formulation and §6's corollary** — both RATIFIED 2026-08-21 (PM, live 1-1); see the sections.
-- ✏️ **The one remaining unratified item: §4's "must not be asked to" column** — still CXO's reading,
-  pending PM. (Also: §4's platform rows use a deliberately coarser grain than the ratified taxonomy's
-  Axis 2 — per §6 of that doc, this is acceptable if stated, and it is now stated: this doc is about *felt
+- ✅ **§4's "must not be asked to" column — RATIFIED 2026-08-28** (PM: *"the 'must not be asked to do'
+  distinction is brilliant — approved"*). **This was the last open item on the page.** (Standing note, not
+  an open question: §4's platform rows use a deliberately coarser grain than the ratified taxonomy's
+  Axis 2 — per §6 of that doc this is acceptable *if stated*, and it is stated: this doc is about *felt
   experience*, the taxonomy about build/architecture scoping; prefer the taxonomy's platform names in any
   new work.)
 
+**Nothing on this page is now unratified.** Every claim is 📌 PM's words, 📄 a cited ratified decision, or
+✅ a CXO reading PM has since approved — which is what the page's own §0 convention was built to make
+checkable. If a future edit adds an unmarked claim, that is a defect in the edit, not a decision.
+
 ---
 
-*CXO v0.1, 2026-08-09. Written after the model was flattened three times in ten days. If you are about to
-write a decision that implies a surface is going away, this page is the thing to check first.*
+*CXO v0.1 2026-08-09 → fully ratified 2026-08-28. Written after the model was flattened three times in ten
+days. If you are about to write a decision that implies a surface is going away, this page is the thing to
+check first.*

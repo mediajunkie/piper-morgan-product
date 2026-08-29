@@ -576,7 +576,6 @@ async def get_cross_feature_service(
     return CrossFeatureKnowledgeService(knowledge_service, pattern_service, learning_loop)
 
 
-
 if __name__ == "__main__":
     # Test the cross-feature knowledge service
     async def test():

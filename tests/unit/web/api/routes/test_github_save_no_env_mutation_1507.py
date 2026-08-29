@@ -47,9 +47,7 @@ class TestGitHubSaveNoEnvMutation:
                 if node.func.attr in ("setdefault", "update", "pop") and is_os_environ(
                     node.func.value
                 ):
-                    violations.append(
-                        f"line {node.lineno}: os.environ.{node.func.attr}(...)"
-                    )
+                    violations.append(f"line {node.lineno}: os.environ.{node.func.attr}(...)")
 
         assert not violations, (
             "process-wide env mutation in settings_integrations.py (#1507 class): "

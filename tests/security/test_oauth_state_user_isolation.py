@@ -20,13 +20,12 @@ State Format:
 import base64
 import json
 import secrets
+from contextlib import asynccontextmanager, contextmanager
 from datetime import datetime, timedelta
 from typing import Any, Dict, Optional
 from unittest.mock import MagicMock, patch
 
 import pytest
-
-from contextlib import asynccontextmanager, contextmanager
 
 
 # ---------------------------------------------------------------------------

@@ -14,6 +14,7 @@ assertions, creator and deleter deliberately split (different risk profiles):
 
 Scope: services/ + web/ (product code). Tests/fixtures are exempt.
 """
+
 import ast
 import glob
 import re
@@ -59,9 +60,9 @@ def test_slack_identity_has_exactly_one_creator():
         f"SlackIdentity constructed outside {CREATOR_HOME}: {creators}. "
         "The redemption path is the ONLY sanctioned binding site (#1466/Arch)."
     )
-    assert creators[CREATOR_HOME] <= {"redeem_link_code"}, (
-        f"SlackIdentity constructed by unexpected function(s): {creators[CREATOR_HOME]}"
-    )
+    assert creators[CREATOR_HOME] <= {
+        "redeem_link_code"
+    }, f"SlackIdentity constructed by unexpected function(s): {creators[CREATOR_HOME]}"
 
 
 @pytest.mark.smoke

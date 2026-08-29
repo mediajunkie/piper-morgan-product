@@ -62,9 +62,7 @@ class DocumentIngester:
             self._collection = self.client.get_or_create_collection(
                 name="pm_knowledge",
                 embedding_function=self.embedding_function,
-                metadata={
-                    "description": "Product Management knowledge base with relationships"
-                },
+                metadata={"description": "Product Management knowledge base with relationships"},
             )
             logger.info(
                 f"Knowledge collection initialized with {self._collection.count()} documents"

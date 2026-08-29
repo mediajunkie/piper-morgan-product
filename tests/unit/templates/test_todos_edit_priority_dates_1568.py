@@ -72,9 +72,9 @@ def test_edit_renders_inline_input_with_save_and_cancel(rendered):
     assert re.search(r"save-edit-btn[^>]*>\s*Save", rendered), "no Save button"
     assert re.search(r"cancel-edit-btn[^>]*>\s*Cancel", rendered), "no Cancel button"
     # The input must be prefilled with the todo's current title
-    assert re.search(r'edit-title-input[^>]*value="\$\{', rendered), (
-        "edit input is not prefilled with the current title"
-    )
+    assert re.search(
+        r'edit-title-input[^>]*value="\$\{', rendered
+    ), "edit input is not prefilled with the current title"
 
 
 def test_edit_put_sends_title_as_query_param_matching_the_real_route(rendered):
@@ -101,41 +101,36 @@ def test_edit_failure_is_an_honest_error_toast(rendered):
     toast_pos = body.find("ToastMessages.success('todo_updated')")
     assert ok_pos != -1, "saveTodoTitle() never checks response.ok"
     assert toast_pos != -1, "saveTodoTitle() has no success toast"
-    assert ok_pos < toast_pos, (
-        "success toast fires before/without checking the response"
-    )
-    assert "ToastMessages.error('update_error'" in body, (
-        "no honest error toast when the API refuses the update"
-    )
+    assert ok_pos < toast_pos, "success toast fires before/without checking the response"
+    assert (
+        "ToastMessages.error('update_error'" in body
+    ), "no honest error toast when the API refuses the update"
 
 
 # --- priority chip -----------------------------------------------------------
 
 
 def test_row_renders_a_priority_chip(rendered):
-    assert "priority-chip" in rendered, (
-        "cards render Status + Due but never priority — #1568 finding (2)"
-    )
+    assert (
+        "priority-chip" in rendered
+    ), "cards render Status + Due but never priority — #1568 finding (2)"
     # The chip's modifier class must be driven by the todo's actual priority
-    assert re.search(r"priority-chip priority-\$\{", rendered), (
-        "priority chip class is not driven by todo.priority"
-    )
+    assert re.search(
+        r"priority-chip priority-\$\{", rendered
+    ), "priority chip class is not driven by todo.priority"
 
 
 def _css_rules(rendered):
     """selector-text -> declaration-text for every rule in the page styles."""
-    return {
-        sel.strip(): decl
-        for sel, decl in re.findall(r"([^{}]+)\{([^{}]*)\}", rendered)
-    }
+    return {sel.strip(): decl for sel, decl in re.findall(r"([^{}]+)\{([^{}]*)\}", rendered)}
 
 
 def test_priority_css_covers_every_real_enum_value(rendered):
     """The four classes must be the TodoPriority .value strings — not guessed."""
     for p in TodoPriority:
-        assert f".priority-{p.value}" in rendered, (
-            f"no chip styling for the real enum value '{p.value}'"
-        )
+        assert (
+            f".priority-{p.value}" in rendered
+        ), f"no chip styling for the real enum value '{p.value}'"
 
 
 def test_high_and_urgent_are_visually_distinct_from_low_and_medium(rendered):
@@ -152,12 +147,12 @@ def test_high_and_urgent_are_visually_distinct_from_low_and_medium(rendered):
     assert decl_for(".priority-medium") == low or ".priority-medium" in str(
         [s for s in rules if ".priority-low" in s]
     ), "low/medium should share the subtle treatment"
-    assert decl_for(".priority-high") != low, (
-        ".priority-high styled identically to low — not visually distinct"
-    )
-    assert decl_for(".priority-urgent") != low, (
-        ".priority-urgent styled identically to low — not visually distinct"
-    )
+    assert (
+        decl_for(".priority-high") != low
+    ), ".priority-high styled identically to low — not visually distinct"
+    assert (
+        decl_for(".priority-urgent") != low
+    ), ".priority-urgent styled identically to low — not visually distinct"
 
 
 # --- humanized due dates ------------------------------------------------------
@@ -168,18 +163,16 @@ def test_due_date_renders_through_the_local_formatter_not_raw_iso(rendered):
         "due date is not routed through a formatter — raw ISO reaches the user "
         "(#1568 finding (3))"
     )
-    assert not re.search(r"Due:\s*\$\{todo\.due_date\}", rendered), (
-        "row still interpolates the raw ISO string into 'Due:'"
-    )
+    assert not re.search(
+        r"Due:\s*\$\{todo\.due_date\}", rendered
+    ), "row still interpolates the raw ISO string into 'Due:'"
 
 
 def test_formatter_uses_browser_local_toLocale_rendering(rendered):
     """The audit-endorsed pattern: aware-ISO from the server, browser renders
     in the USER's timezone via toLocale*."""
     assert "toLocaleDateString" in rendered, "no browser-local date rendering"
-    assert "toLocaleTimeString" in rendered, (
-        "no browser-local time rendering for timed due dates"
-    )
+    assert "toLocaleTimeString" in rendered, "no browser-local time rendering for timed due dates"
 
 
 def test_midnight_utc_all_day_values_render_date_only(rendered):
@@ -189,9 +182,9 @@ def test_midnight_utc_all_day_values_render_date_only(rendered):
     m = re.search(r"function formatDueDate\(.*?\n  \}\n", rendered, re.DOTALL)
     assert m, "formatDueDate() not found in rendered page"
     body = m.group(0)
-    assert "getUTCHours() === 0" in body, (
-        "formatter never distinguishes midnight-UTC all-day values"
-    )
+    assert (
+        "getUTCHours() === 0" in body
+    ), "formatter never distinguishes midnight-UTC all-day values"
     assert "timeZone: 'UTC'" in body, (
         "all-day branch must read the calendar date in UTC — otherwise the "
         "picked day shifts for any user west of UTC"

@@ -30,8 +30,8 @@ from services.database.models import ConnectorBinding  # noqa: E402
 from services.mcp.consumer import google_calendar_adapter as cal_mod  # noqa: E402
 from services.mcp.consumer.connector import (  # noqa: E402
     Binding,
-    ConnectRequired,
     ConnectorStatusState,
+    ConnectRequired,
     DegradationReason,
     ResolveMiss,
     ResourceHandle,

@@ -519,9 +519,7 @@ class StandupProcessAdapter:
             )
         except Exception:
             try:
-                await manager.transition_state(
-                    conversation.id, StandupConversationState.ABANDONED
-                )
+                await manager.transition_state(conversation.id, StandupConversationState.ABANDONED)
             except Exception as e:
                 logger.warning(
                     "Error releasing standup conversation",

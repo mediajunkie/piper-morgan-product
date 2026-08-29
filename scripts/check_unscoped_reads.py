@@ -120,7 +120,9 @@ def derive_owner_models() -> dict[str, str]:
                         name = (
                             callee.id
                             if isinstance(callee, ast.Name)
-                            else callee.attr if isinstance(callee, ast.Attribute) else ""
+                            else callee.attr
+                            if isinstance(callee, ast.Attribute)
+                            else ""
                         )
                         if name in ("Column", "mapped_column"):
                             owner_col = True
@@ -160,9 +162,7 @@ def scan_credential_reads(path: Path) -> list[tuple[int, str]]:
             continue
         name = _call_name(node)
         if name in KEYCHAIN_METHODS:
-            has_principal_kwarg = any(
-                kw.arg in PRINCIPAL_KWARGS for kw in node.keywords if kw.arg
-            )
+            has_principal_kwarg = any(kw.arg in PRINCIPAL_KWARGS for kw in node.keywords if kw.arg)
             if len(node.args) <= KEYCHAIN_METHODS[name] and not has_principal_kwarg:
                 if not _annotated(node.lineno, lines):
                     hits.append((node.lineno, f"keychain.{name} (no principal)"))
@@ -232,9 +232,7 @@ def scan_repo_reads(path: Path, owner_models: set[str]) -> list[tuple[int, str]]
                 continue
             if _annotated(lineno, lines):
                 continue
-            hits.append(
-                (lineno, f"repo-read {model} (no owner predicate in {func.name})")
-            )
+            hits.append((lineno, f"repo-read {model} (no owner predicate in {func.name})"))
     return hits
 
 

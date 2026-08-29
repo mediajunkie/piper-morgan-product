@@ -350,9 +350,7 @@ async def run(dry_run: bool, out: Optional[Path]) -> int:
         f"operations (+NONE/CLARIFY), {n_aliases} aliases collapsed input-side"
     )
     exhibit_count = sum(
-        1
-        for r in rows
-        if any(tok in r.get("source", "") for tok in _EXHIBIT_SOURCE_TOKENS)
+        1 for r in rows if any(tok in r.get("source", "") for tok in _EXHIBIT_SOURCE_TOKENS)
     )
     print(f"exhibit-A selection: {exhibit_count} rows (expected 8) + demanded row present")
 

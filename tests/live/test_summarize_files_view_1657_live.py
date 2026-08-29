@@ -143,9 +143,7 @@ class TestSummarizeSeesTheFilesView1657:
         """THE #1657 repro: the account's only document is a year-old untitled
         artifact. The Files listing shows 'artifact-XXXXXXXX.md'; typing
         'summarize artifact-XXXXXXXX.md' must summarize it — not honest-empty."""
-        artifact_id = await _seed_aged_artifact(
-            live_db_session, turn_driver.user.user_id
-        )
+        artifact_id = await _seed_aged_artifact(live_db_session, turn_driver.user.user_id)
         filename = f"artifact-{artifact_id[:8]}.md"
 
         # The listing half of the divergence, measured live first: the /files
@@ -165,9 +163,9 @@ class TestSummarizeSeesTheFilesView1657:
             f"the summarize turn answered {msg[:200]!r} — the #1657 divergence "
             "is not fixed."
         )
-        assert f"Here's my summary of {filename}" in msg, (
-            f"Turn did not reach the summarize rail for {filename}: {msg[:300]!r}"
-        )
+        assert (
+            f"Here's my summary of {filename}" in msg
+        ), f"Turn did not reach the summarize rail for {filename}: {msg[:300]!r}"
         # A summary of THIS artifact, not boilerplate: the content is about a
         # beta launch; the summary must carry some of it.
         assert len(msg) > len(f"Here's my summary of {filename}:") + 20
@@ -182,19 +180,16 @@ class TestSummarizeSeesTheFilesView1657:
         pdf_path = tmp_dir / f"{uuid.uuid4()}.pdf"
         size = _make_text_pdf(pdf_path)
         try:
-            await _seed_aged_upload(
-                live_db_session, turn_driver.user.user_id, pdf_path, size
-            )
+            await _seed_aged_upload(live_db_session, turn_driver.user.user_id, pdf_path, size)
 
             body = turn_driver.turn("summarize q3-roadmap-2025.pdf")
             msg = body.get("message", "")
             assert _HONEST_EMPTY not in msg, (
-                "WRONG-EMPTY on an aged uploaded_files row: "
-                f"{msg[:200]!r}"
+                "WRONG-EMPTY on an aged uploaded_files row: " f"{msg[:200]!r}"
             )
-            assert "Here's my summary of q3-roadmap-2025.pdf" in msg, (
-                f"Turn did not summarize the aged upload: {msg[:300]!r}"
-            )
+            assert (
+                "Here's my summary of q3-roadmap-2025.pdf" in msg
+            ), f"Turn did not summarize the aged upload: {msg[:300]!r}"
             # The analyzer read the real bytes (legacy plaintext read-through):
             # a failed read produces the corrupted-PDF copy, which must not pass.
             assert "Unable to analyze PDF document" not in msg

@@ -28,7 +28,6 @@ from services.mux.anti_surveillance import (
     safe_surface,
 )
 
-
 # =============================================================================
 # Pattern coverage — each forbidden pattern fires
 # =============================================================================

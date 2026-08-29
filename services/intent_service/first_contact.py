@@ -94,7 +94,9 @@ def _humanize_recency(updated_at: Optional[str]) -> str:
         # GitHub returns Zulu time; fromisoformat needs +00:00 (#1573 pattern:
         # ensure_utc guards naive-vs-aware comparisons).
         parsed = ensure_utc(datetime.fromisoformat(str(updated_at).replace("Z", "+00:00")))
-        if parsed is None:  # ensure_utc is None-in-None-out; fromisoformat never returns None, narrowed for mypy
+        if (
+            parsed is None
+        ):  # ensure_utc is None-in-None-out; fromisoformat never returns None, narrowed for mypy
             return f"updated {str(updated_at)[:10]}"
         days = (utc_now() - parsed).days
         if days <= 0:
@@ -108,9 +110,7 @@ def _humanize_recency(updated_at: Optional[str]) -> str:
         return f"updated {str(updated_at)[:10]}"
 
 
-async def gather_first_contact_demo(
-    user_id: Optional[str], cache: Any = None
-) -> Dict[str, Any]:
+async def gather_first_contact_demo(user_id: Optional[str], cache: Any = None) -> Dict[str, Any]:
     """Gather the first-contact demonstration payload for this user.
 
     NOT newness-gated — the caller gates on ``is_first_exchange``. Returns:

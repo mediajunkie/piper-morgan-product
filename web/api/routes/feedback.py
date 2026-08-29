@@ -188,9 +188,7 @@ async def list_feedback(
         # domain field is `comment`.
         from uuid import UUID as _UUID
 
-        feedback_list = await feedback_service.list_feedback(
-            user_id=_UUID(str(current_user.sub))
-        )
+        feedback_list = await feedback_service.list_feedback(user_id=_UUID(str(current_user.sub)))
 
         logger.info(
             "feedback_listed",

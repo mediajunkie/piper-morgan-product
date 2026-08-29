@@ -26,7 +26,6 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # Filename pattern (both formats supported; model dropped from filenames 2026-06-29):

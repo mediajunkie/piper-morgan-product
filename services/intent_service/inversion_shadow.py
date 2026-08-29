@@ -371,15 +371,11 @@ async def _legacy_counterfactual_check(
         from services.intent_service.inversion_router import derive_routing_grammar
 
         canon = derive_routing_grammar().alias_to_canonical
-        live_op = getattr(live_route, "canonical", None) or getattr(
-            live_route, "operation", None
-        )
+        live_op = getattr(live_route, "canonical", None) or getattr(live_route, "operation", None)
         if not legacy_action or not live_op:
             agreement: Optional[bool] = None
         else:
-            agreement = canon.get(legacy_action, legacy_action) == canon.get(
-                live_op, live_op
-            )
+            agreement = canon.get(legacy_action, legacy_action) == canon.get(live_op, live_op)
 
         if agreement is True:
             event = "shadow_legacy_counterfactual_agreement"
@@ -400,9 +396,7 @@ async def _legacy_counterfactual_check(
             # What the legacy chain would have done, and by which leg.
             legacy_action=legacy_action,
             legacy_category=legacy_category,
-            legacy_label=(
-                f"{legacy_category}:{legacy_action}" if legacy_action else None
-            ),
+            legacy_label=(f"{legacy_category}:{legacy_action}" if legacy_action else None),
             legacy_decided_by=decided_by,
             # m-43: name the layer on the line itself, not only in the doc.
             legacy_legs_run=legs_run,
@@ -431,9 +425,7 @@ async def _legacy_counterfactual_check(
         )
 
 
-def _compare(
-    production_intent: Optional[str], decision: Any, grammar: Any
-) -> Optional[bool]:
+def _compare(production_intent: Optional[str], decision: Any, grammar: Any) -> Optional[bool]:
     """Registry-alias-aware agreement between production label and shadow route.
 
     Returns True/False for comparable pairs, None when no honest comparison

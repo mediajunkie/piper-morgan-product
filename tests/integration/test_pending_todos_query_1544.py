@@ -45,9 +45,7 @@ async def repro_user():
         await s.commit()
     yield uid
     async with AsyncSessionFactory.session_scope() as s:
-        await s.execute(
-            text("DELETE FROM todo_items WHERE owner_id = :u"), {"u": str(uid)}
-        )
+        await s.execute(text("DELETE FROM todo_items WHERE owner_id = :u"), {"u": str(uid)})
         await s.execute(
             text(
                 "DELETE FROM items WHERE id NOT IN (SELECT id FROM todo_items) "
@@ -82,9 +80,9 @@ async def test_users_todos_reach_the_floor_context_owner_scoped(repro_user):
     ctx = await _gather_as_the_floor_door_would(str(repro_user))
 
     todos = ctx.get("pending_todos")
-    assert isinstance(todos, list) and todos, (
-        f"user's todos missing from floor context; keys={sorted(ctx.keys())}"
-    )
+    assert (
+        isinstance(todos, list) and todos
+    ), f"user's todos missing from floor context; keys={sorted(ctx.keys())}"
     texts = {t.get("text") for t in todos}
     assert "repro-1544 review beta feedback" in texts
     assert "repro-1544 draft release notes" in texts
@@ -103,9 +101,9 @@ async def test_zero_todos_is_verified_empty_not_absence(repro_user):
     never a silent absence the model must hedge over."""
     ctx = await _gather_as_the_floor_door_would(str(repro_user))
 
-    assert ctx.get("pending_todos") == [], (
-        f"verified-empty must be present as []; keys={sorted(ctx.keys())}"
-    )
+    assert (
+        ctx.get("pending_todos") == []
+    ), f"verified-empty must be present as []; keys={sorted(ctx.keys())}"
     assert ctx.get("pending_todo_count") == 0
     assert "pending_todos_source_failed" not in ctx
 

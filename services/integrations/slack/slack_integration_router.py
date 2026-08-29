@@ -373,9 +373,7 @@ class SlackIntegrationRouter:
         if client:
             if is_legacy:
                 self._warn_deprecation_if_needed("search_messages", is_legacy)
-            return await client.search_messages(
-                query, count=count, sort=sort, sort_dir=sort_dir
-            )
+            return await client.search_messages(query, count=count, sort=sort, sort_dir=sort_dir)
         else:
             raise RuntimeError("No Slack integration available for search_messages")
 

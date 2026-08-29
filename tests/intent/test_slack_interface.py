@@ -18,7 +18,6 @@ from services.intent.intent_service import IntentService
 from services.intent_service.pre_classifier import MultiIntentResult
 
 
-
 def _wire_classifier(mock_classifier, intent):
     """Wire BOTH classifier methods the live path can await (#595: process_intent
     awaits classify_multiple; these mocks predated it and stubbed only classify,

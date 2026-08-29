@@ -134,9 +134,7 @@ class TestDetectorsReadBothSurfaces:
 
     def test_detectors_still_negative_on_unrelated_message(self, handlers):
         # Idiom B must not change gating for messages that shouldn't match.
-        intent = _dict_only_intent(
-            IntentCategory.TEMPORAL, "get_current_time", "What day is it?"
-        )
+        intent = _dict_only_intent(IntentCategory.TEMPORAL, "get_current_time", "What day is it?")
         assert handlers._detect_agenda_request(intent) is False
         assert handlers._detect_retrospective_request(intent) is False
         assert handlers._detect_last_activity_request(intent) is None
@@ -146,9 +144,7 @@ class TestDetectorsReadBothSurfaces:
 
     def test_detectors_safe_on_empty_intent(self, handlers):
         # Guard behavior preserved: no message on either surface → no match.
-        intent = Intent(
-            category=IntentCategory.TEMPORAL, action="get_current_time", context={}
-        )
+        intent = Intent(category=IntentCategory.TEMPORAL, action="get_current_time", context={})
         assert handlers._detect_agenda_request(intent) is False
         assert handlers._detect_setup_request(intent) is None
         assert handlers._detect_priority_recommendation_request(intent) is False

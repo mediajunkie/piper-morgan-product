@@ -331,9 +331,7 @@ def derive_subject_from_prose(prose: str) -> str:
     title is a headline over it, and the user can keep shaping both before
     anything files.
     """
-    first_line = next(
-        (ln.strip() for ln in prose.strip().splitlines() if ln.strip()), ""
-    )
+    first_line = next((ln.strip() for ln in prose.strip().splitlines() if ln.strip()), "")
     m = _FIRST_SENTENCE_RE.match(first_line)
     candidate = (m.group(1) if m else first_line).strip()
     candidate = candidate.strip("\"'‘’“”").rstrip(" .!?,;:")
@@ -345,9 +343,7 @@ def derive_subject_from_prose(prose: str) -> str:
 
 def _draft_summary(subject: Optional[str], repository: Optional[str]) -> str:
     """The carrier's one-line summary (what the generic confirm copy names)."""
-    summary = (
-        f'file the drafted issue "{subject}"' if subject else "file the drafted issue"
-    )
+    summary = f'file the drafted issue "{subject}"' if subject else "file the drafted issue"
     if repository:
         summary += f" in {repository}"
     return summary
@@ -401,8 +397,7 @@ def build_drafted_issue_offer(
 
 
 _DRAFT_RETAINED_LINE = (
-    "Your draft is still here — say \"file it\" to try again, "
-    "or \"no\" to drop it."
+    'Your draft is still here — say "file it" to try again, ' 'or "no" to drop it.'
 )
 
 # #1665: the open ask after a prose bind — one constant, embedded in the bind
@@ -413,9 +408,7 @@ _POST_BIND_ASK = (
 )
 
 # #1665: the open ask on the #1650 near-accept re-ask turn.
-_NEAR_ACCEPT_ASK = (
-    'Say "file it as is" to file this draft, or "no" to set it aside.'
-)
+_NEAR_ACCEPT_ASK = 'Say "file it as is" to file this draft, or "no" to set it aside.'
 
 
 def _reask_near_miss(
@@ -430,9 +423,7 @@ def _reask_near_miss(
     that nothing was filed, name the moves that work, and RE-ARM the same
     offer. Never a silent abandon into the routing chain mid-compose."""
     draft = pending_action.get("draft") or {}
-    has_content = bool(
-        (draft.get("title") or "").strip() or (draft.get("body") or "").strip()
-    )
+    has_content = bool((draft.get("title") or "").strip() or (draft.get("body") or "").strip())
     # #1571's never-teach-unbound rule: only teach the file phrase when the
     # draft actually has content behind it.
     if has_content:
@@ -442,8 +433,7 @@ def _reask_near_miss(
         )
     else:
         moves = (
-            "Tell me what the issue should be about first — "
-            'or say "no" to set the draft aside.'
+            "Tell me what the issue should be about first — " 'or say "no" to set the draft aside.'
         )
 
     # #1665: the re-armed record's open question is this turn's re-ask copy
@@ -516,9 +506,7 @@ def _bind_body_prose(
         derived = derive_subject_from_prose(prose)
         if derived:
             draft["title"] = derived
-            pending_action["summary"] = _draft_summary(
-                derived, draft.get("repository")
-            )
+            pending_action["summary"] = _draft_summary(derived, draft.get("repository"))
             titled_now = True
     existing = (draft.get("body") or "").strip()
     # #1649: a draft armed with an explicit description but NO subject asked
@@ -585,10 +573,7 @@ def _bind_body_prose(
     if title_answer:
         # #1649: the answer titled a draft whose body was explicitly given
         # up front — say what happened (titled, not appended).
-        lead = (
-            "Got it — that's the title. Nothing is filed yet. "
-            "Here's where it stands:\n\n"
-        )
+        lead = "Got it — that's the title. Nothing is filed yet. " "Here's where it stands:\n\n"
     elif titled_now:
         # #1630: the first answer on a subjectless draft STARTED it — say
         # so, and show the derived title for shaping.
@@ -597,16 +582,10 @@ def _bind_body_prose(
             "Here's where it stands:\n\n"
         )
     else:
-        lead = (
-            "Added to the draft — nothing is filed yet. Here's where it "
-            "stands:\n\n"
-        )
+        lead = "Added to the draft — nothing is filed yet. Here's where it " "stands:\n\n"
     return {
         "message": (
-            f"{lead}"
-            f"**Title**: {title}\n\n"
-            f"**Body**:\n{body}\n\n"
-            f"{_POST_BIND_ASK}"
+            f"{lead}" f"**Title**: {title}\n\n" f"**Body**:\n{body}\n\n" f"{_POST_BIND_ASK}"
         ),
         "intent_data": intent_data,
         "requires_clarification": True,
@@ -674,9 +653,7 @@ async def handle_drafted_issue_turn(
                         session_id, pending_offer, user_id=user_id
                     )
                 except Exception as e:  # silent-ok: #1650 — a store failure must not crash the re-ask turn; logged ERROR, and the copy below stays honest about whether the draft is still bound
-                    logger.error(
-                        "drafted_issue_rearm_failed", error=str(e)
-                    )
+                    logger.error("drafted_issue_rearm_failed", error=str(e))
                     rearmed = False
                 logger.info(
                     "drafted_issue_near_accept_reasked",
@@ -708,9 +685,7 @@ async def handle_drafted_issue_turn(
             # NO offer-response read at all). Declines, bare exits, and
             # every other command family keep falling through exactly as
             # before.
-            if detect_offer_response(message) is None and is_file_near_miss(
-                message
-            ):
+            if detect_offer_response(message) is None and is_file_near_miss(message):
                 return _reask_near_miss(
                     pending_offer,
                     pending_action,
@@ -766,14 +741,17 @@ async def handle_drafted_issue_turn(
             return False
 
     def _retained_line(rearmed: bool) -> str:
-        return _DRAFT_RETAINED_LINE if rearmed else (
-            "I couldn't keep the draft bound either — ask me again and "
-            "we'll re-draft it."
+        return (
+            _DRAFT_RETAINED_LINE
+            if rearmed
+            else ("I couldn't keep the draft bound either — ask me again and " "we'll re-draft it.")
         )
 
     if result is None:
         rearmed = _rearm()
-        logger.info("drafted_issue_create_failed_draft_retained", session_id=session_id, rearmed=rearmed)
+        logger.info(
+            "drafted_issue_create_failed_draft_retained", session_id=session_id, rearmed=rearmed
+        )
         return {
             "message": (
                 "I wasn't able to file that issue just now — nothing was "

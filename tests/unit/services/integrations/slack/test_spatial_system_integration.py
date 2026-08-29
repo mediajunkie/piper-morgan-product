@@ -7,6 +7,7 @@ that represents the core value proposition of PM-074 Slack Integration.
 """
 
 import json
+from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
 from pathlib import Path
 from unittest.mock import AsyncMock, Mock, patch
@@ -40,8 +41,6 @@ from services.integrations.slack.workspace_navigator import (
     TerritoryState,
     WorkspaceNavigator,
 )
-
-from contextlib import asynccontextmanager
 
 
 # Issue #1109: the Slack OAuth nonce store moved to Redis (multi-process safe),

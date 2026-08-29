@@ -48,7 +48,8 @@ LOGNAME = re.compile(r"^(\d{4}-\d{2}-\d{2})(?:-\d{4})?-([a-z]+)-code")
 def census():
     files = subprocess.run(
         ["git", "-C", str(REPO), "ls-files", "dev/2026"],
-        capture_output=True, text=True,
+        capture_output=True,
+        text=True,
     ).stdout.split("\n")
     forms = collections.Counter()
     example = {}
@@ -70,16 +71,25 @@ def census():
             # a narration of one is always indented, quoted, or mid-sentence. The
             # anchored `^` in every working predicate is exactly this test, so the
             # census has to report it as a dimension rather than blend the two.
-            at_col0 = "col0" if line == s and not line.startswith(("`", ">", "-", "*")) else "**indented/quoted**"
+            at_col0 = (
+                "col0"
+                if line == s and not line.startswith(("`", ">", "-", "*"))
+                else "**indented/quoted**"
+            )
             shape = (
-                "html-comment" if s.startswith("<!--")
-                else "md-heading" if s.startswith("#")
-                else "bold" if s.startswith("**")
+                "html-comment"
+                if s.startswith("<!--")
+                else "md-heading"
+                if s.startswith("#")
+                else "bold"
+                if s.startswith("**")
                 else "other"
             )
             sep = (
-                "colon" if re.match(r"^\S*\s*#*\s*\**\s*DAY-CLOSED\s*:", s)
-                else "em-dash" if "—" in s[:30]
+                "colon"
+                if re.match(r"^\S*\s*#*\s*\**\s*DAY-CLOSED\s*:", s)
+                else "em-dash"
+                if "—" in s[:30]
                 else "none"
             )
             dated = "dated" if re.search(r"\d{4}-\d{2}-\d{2}", s) else "**UNDATED**"
@@ -95,7 +105,12 @@ def render(forms, example):
     markers = sum(v for k, v in forms.items() if k[0] == "col0")
     mentions = total - markers
     undated = sum(v for k, v in forms.items() if k[0] == "col0" and k[3] == "**UNDATED**")
-    out = [BEGIN, "", "| position | form | separator | date | n | example |", "|---|---|---|---|---:|---|"]
+    out = [
+        BEGIN,
+        "",
+        "| position | form | separator | date | n | example |",
+        "|---|---|---|---|---:|---|",
+    ]
     for k, n in forms.most_common():
         out.append(f"| {k[0]} | `{k[1]}` | {k[2]} | {k[3]} | {n} | `{example[k]}` |")
     out += [
@@ -129,10 +144,13 @@ if not DOC.exists():
     raise SystemExit(1)
 doc = DOC.read_text(encoding="utf-8")
 if BEGIN not in doc or END not in doc:
-    print(f"⚠️  generated-block markers absent from {DOC.relative_to(REPO)} — "
-          "the check DID NOT RUN. Empty output is not 'clean'.")
+    print(
+        f"⚠️  generated-block markers absent from {DOC.relative_to(REPO)} — "
+        "the check DID NOT RUN. Empty output is not 'clean'."
+    )
     raise SystemExit(1)
-current = doc[doc.index(BEGIN): doc.index(END) + len(END)]
+current = doc[doc.index(BEGIN) : doc.index(END) + len(END)]
+
 
 # ── WHAT THIS GATES ON, AND WHY IT ISN'T EXACT MATCH ───────────────────────────
 # First real firing (2026-08-02, one day after shipping) was 413 -> 418 canonical:
@@ -155,6 +173,7 @@ def form_rows(text, markers_only=True):
         rows = {r for r in rows if r.startswith("col0|")}
     return rows
 
+
 # ── WHAT THE GATE FIRES ON, narrowed after its first real form-change ──────────
 # 2026-08-05: the gate fired on a NEW NARRATION form (indented/quoted | bold |
 # colon | dated) — someone wrote prose about DAY-CLOSED, which happens constantly
@@ -165,22 +184,32 @@ def form_rows(text, markers_only=True):
 #
 # So: GATE on the col0 (marker) form set. REPORT narration changes as informational.
 doc_forms, corpus_forms = form_rows(current), form_rows(block)
-doc_narr, corpus_narr = (form_rows(current, False) - doc_forms,
-                         form_rows(block, False) - corpus_forms)
+doc_narr, corpus_narr = (
+    form_rows(current, False) - doc_forms,
+    form_rows(block, False) - corpus_forms,
+)
 if doc_forms == corpus_forms:
     stale = current.strip() != block.strip()
-    print(f"✓ all {len(corpus_forms) - 1} marker forms accounted for "
-          f"({sum(forms.values())} lines matched)")
+    print(
+        f"✓ all {len(corpus_forms) - 1} marker forms accounted for "
+        f"({sum(forms.values())} lines matched)"
+    )
     if stale:
-        print("  ℹ counts in the doc are a snapshot and have moved since — expected with "
-              "ordinary log activity, NOT drift. Refresh at leisure: python3 scripts/day-closed-census.py")
+        print(
+            "  ℹ counts in the doc are a snapshot and have moved since — expected with "
+            "ordinary log activity, NOT drift. Refresh at leisure: python3 scripts/day-closed-census.py"
+        )
     if corpus_narr != doc_narr:
-        print(f"  ℹ narration shapes changed ({len(doc_narr)} → {len(corpus_narr)}). NOT gated: an "
-              "anchored predicate rejects every narration regardless of shape, so this changes no decision.")
+        print(
+            f"  ℹ narration shapes changed ({len(doc_narr)} → {len(corpus_narr)}). NOT gated: an "
+            "anchored predicate rejects every narration regardless of shape, so this changes no decision."
+        )
     raise SystemExit(0)
 
-print("⚠️  DRIFT: the SET OF MARKER FORMS has changed — a predicate built on the old set "
-      "may not handle the corpus.")
+print(
+    "⚠️  DRIFT: the SET OF MARKER FORMS has changed — a predicate built on the old set "
+    "may not handle the corpus."
+)
 for f in sorted(corpus_forms - doc_forms):
     print(f"   + NEW form in the corpus, not in the doc: {f}")
 for f in sorted(doc_forms - corpus_forms):

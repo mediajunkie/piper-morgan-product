@@ -90,12 +90,13 @@ class TestFreeBlockNonPositive:
         import datetime as _dt
 
         adapter = _adapter()
-        with patch.object(
-            adapter, "_fetch_todays_events", AsyncMock(return_value=([], True))
-        ), patch.object(
-            adapter,
-            "_now_server_local",
-            return_value=_dt.datetime(2026, 8, 10, 19, 9, tzinfo=_dt.timezone.utc),
+        with (
+            patch.object(adapter, "_fetch_todays_events", AsyncMock(return_value=([], True))),
+            patch.object(
+                adapter,
+                "_now_server_local",
+                return_value=_dt.datetime(2026, 8, 10, 19, 9, tzinfo=_dt.timezone.utc),
+            ),
         ):
             blocks = await adapter.get_free_time_blocks()
         assert blocks == []
@@ -108,12 +109,13 @@ class TestFreeBlockNonPositive:
         import datetime as _dt
 
         adapter = _adapter()
-        with patch.object(
-            adapter, "_fetch_todays_events", AsyncMock(return_value=([], True))
-        ), patch.object(
-            adapter,
-            "_now_server_local",
-            return_value=_dt.datetime(2026, 8, 11, 2, 9, tzinfo=_dt.timezone.utc),
+        with (
+            patch.object(adapter, "_fetch_todays_events", AsyncMock(return_value=([], True))),
+            patch.object(
+                adapter,
+                "_now_server_local",
+                return_value=_dt.datetime(2026, 8, 11, 2, 9, tzinfo=_dt.timezone.utc),
+            ),
         ):
             blocks = await adapter.get_free_time_blocks()
         assert len(blocks) == 1

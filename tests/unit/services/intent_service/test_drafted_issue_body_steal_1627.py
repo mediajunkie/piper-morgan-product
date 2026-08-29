@@ -180,9 +180,7 @@ class TestIsBodyProseAnswer:
 class TestStolenTurnRegression:
     pytestmark = pytest.mark.asyncio
 
-    async def test_pm_prose_binds_to_draft_nothing_filed_nothing_looked_up(
-        self, svc
-    ):
+    async def test_pm_prose_binds_to_draft_nothing_filed_nothing_looked_up(self, svc):
         """PM's exact transcript shape: draft armed → long prose body answer
         containing project-like/action-like substrings. The turn binds to
         the draft: no project lookup, no filing, no LLM (explosive), and the
@@ -196,9 +194,7 @@ class TestStolenTurnRegression:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
         ):
-            r = await svc.process_intent(
-                message=PM_BODY_PROSE, session_id=sid, user_id=_USER
-            )
+            r = await svc.process_intent(message=PM_BODY_PROSE, session_id=sid, user_id=_USER)
 
         # Nothing filed, nothing looked up:
         w.assert_not_awaited()
@@ -227,9 +223,7 @@ class TestStolenTurnRegression:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()),
         ):
-            await svc.process_intent(
-                message=PM_BODY_PROSE, session_id=sid, user_id=_USER
-            )
+            await svc.process_intent(message=PM_BODY_PROSE, session_id=sid, user_id=_USER)
 
         created = {"number": 456, "html_url": "https://x/456", "title": "t"}
         with (
@@ -239,9 +233,7 @@ class TestStolenTurnRegression:
             patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
             patch(RESOLVER, new=AsyncMock(return_value="acme/widgets")),
         ):
-            r = await svc.process_intent(
-                message="file it as is", session_id=sid, user_id=_USER
-            )
+            r = await svc.process_intent(message="file it as is", session_id=sid, user_id=_USER)
 
         w.assert_awaited_once()
         _, kwargs = w.await_args
@@ -265,15 +257,11 @@ class TestStolenTurnRegression:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()),
         ):
-            await svc.process_intent(
-                message=PM_BODY_PROSE, session_id=sid, user_id=_USER
-            )
+            await svc.process_intent(message=PM_BODY_PROSE, session_id=sid, user_id=_USER)
             await svc.process_intent(message=second, session_id=sid, user_id=_USER)
 
         stored = next(iter(_pending_offers(svc).values()))
-        assert stored["pending_action"]["draft"]["body"] == (
-            f"{PM_BODY_PROSE}\n\n{second}"
-        )
+        assert stored["pending_action"]["draft"]["body"] == (f"{PM_BODY_PROSE}\n\n{second}")
 
     async def test_cancel_mid_compose_drops_the_draft_honestly(self, svc):
         """Explicit commands still work mid-compose: "cancel" is the #1529
@@ -284,9 +272,7 @@ class TestStolenTurnRegression:
             patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
         ):
-            r = await svc.process_intent(
-                message="cancel", session_id=sid, user_id=_USER
-            )
+            r = await svc.process_intent(message="cancel", session_id=sid, user_id=_USER)
         w.assert_not_awaited()
         assert "Nothing was filed" in r.message
         assert _pending_offers(svc) == {}
@@ -304,9 +290,7 @@ class TestStolenTurnRegression:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
         ):
-            r = await svc.process_intent(
-                message="close issue #108", session_id=sid, user_id=_USER
-            )
+            r = await svc.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         w.assert_not_awaited()
         assert "(yes/no)" in r.message
         stored = next(iter(_pending_offers(svc).values()))

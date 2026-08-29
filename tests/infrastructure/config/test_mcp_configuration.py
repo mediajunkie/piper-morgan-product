@@ -396,7 +396,6 @@ class TestConfigurationServiceMissing:
 class TestConfigurationIntegration:
     """Integration tests for configuration with existing services."""
 
-
     def test_file_repository_uses_configuration_service(self):
         """Test that FileRepository uses centralized configuration."""
         # RED: This should fail until we integrate the services

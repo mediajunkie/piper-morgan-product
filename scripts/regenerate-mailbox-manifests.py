@@ -39,7 +39,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Iterable, List, Optional
 
-
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 MAILBOXES_ROOT = PROJECT_ROOT / "mailboxes"
 

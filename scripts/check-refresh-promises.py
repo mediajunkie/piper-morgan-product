@@ -56,6 +56,7 @@ so — "nothing to check" is not a pass over the population. Exit 1 only on
 content-changed-without-bump. Wireable as an advisory hook; advisory-not-control per the
 standing Amber hooks doctrine.
 """
+
 import glob
 import re
 import subprocess
@@ -141,6 +142,13 @@ def frontmatter(path):
 _LAST_UPDATED_LINE = re.compile(r"^[+-]last_updated:")
 
 
+def _today():
+    """Local date as ISO. Used only to recognize the same-day-amendment case."""
+    import datetime
+
+    return datetime.date.today().isoformat()
+
+
 def diff_mode(ref):
     """Edit-time check: changed promise-carrying docs must move content and
     last_updated together. Reads git only; never writes; exit 1 only on
@@ -168,13 +176,22 @@ def diff_mode(ref):
             ["git", "diff", ref, "--", rel], capture_output=True, text=True, cwd=ROOT
         ).stdout
         changes = [
-            l for l in d.splitlines()
-            if (l.startswith("+") or l.startswith("-"))
-            and not l.startswith(("+++", "---"))
+            l
+            for l in d.splitlines()
+            if (l.startswith("+") or l.startswith("-")) and not l.startswith(("+++", "---"))
         ]
         bumped = any(_LAST_UPDATED_LINE.match(l) for l in changes)
         content = any(not _LAST_UPDATED_LINE.match(l) for l in changes)
-        if content and not bumped:
+        # ⚠️ SAME-DAY AMENDMENT (fixed 2026-08-28, found by using the tool on a
+        # real second edit): last_updated may already carry TODAY's date from an
+        # earlier commit, in which case a further edit the same day is correctly
+        # current and must not bump again. Flagging it would be a false positive —
+        # and a checker that cries wolf on legitimate work trains people to skip
+        # it, which is exactly the failure this tool exists to prevent.
+        # The claim is "this content was refreshed on DATE"; if DATE is today,
+        # the claim is TRUE regardless of whether the line moved in this diff.
+        already_current_today = frontmatter(path).get("last_updated", "") == _today()
+        if content and not bumped and not already_current_today:
             fail = 1
             print(f"  ✗ {rel} — CONTENT CHANGED, last_updated NOT bumped in the same change.")
             print(f"    This is the claim going stale at the moment it goes stale. Bump it now,")
@@ -225,7 +242,9 @@ def main():
 
         if not pattern:
             if declared == "by-hand":
-                by_hand.append(f"{rel} — kept by hand, declared (last_updated {updated or 'absent'})")
+                by_hand.append(
+                    f"{rel} — kept by hand, declared (last_updated {updated or 'absent'})"
+                )
             else:
                 unverifiable.append(
                     f"{rel} — declares a refresh promise in prose, no refresh_trigger_glob and no "
@@ -247,16 +266,22 @@ def main():
         print()
         print(f"▸ {rel}")
         if not triggers:
-            print(f"  ⚠️  no trigger files match {pattern} — the promise names an event that leaves no trace")
+            print(
+                f"  ⚠️  no trigger files match {pattern} — the promise names an event that leaves no trace"
+            )
             fail = 1
             continue
         newest, newest_path = triggers[-1]
         later = [d for d, _ in triggers if d > updated]
         if later:
             fail = 1
-            print(f"  ✗ LAPSED — last_updated {updated}, but {len(later)} trigger(s) shipped after it")
+            print(
+                f"  ✗ LAPSED — last_updated {updated}, but {len(later)} trigger(s) shipped after it"
+            )
             print(f"    newest: {Path(newest_path).name} ({newest})")
-            print(f"    the promised refresh did not happen the last {len(later)} time(s) it was due")
+            print(
+                f"    the promised refresh did not happen the last {len(later)} time(s) it was due"
+            )
         else:
             print(f"  ✓ current — last_updated {updated} ≥ newest trigger {newest}")
 

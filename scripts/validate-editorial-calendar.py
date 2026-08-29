@@ -60,9 +60,24 @@ from pathlib import Path
 
 CALENDAR = Path("docs/internal/planning/comms/editorial-calendar.csv")
 EXPECTED_HEADER = [
-    "title", "theme", "status", "workDate", "endWorkDate", "pubDate",
-    "mediumURL", "liPubDate", "linkedinURL", "canonicalSite", "blogURL",
-    "blogPath", "cartoon", "chatDate", "draftPath", "notes", "altText", "caption",
+    "title",
+    "theme",
+    "status",
+    "workDate",
+    "endWorkDate",
+    "pubDate",
+    "mediumURL",
+    "liPubDate",
+    "linkedinURL",
+    "canonicalSite",
+    "blogURL",
+    "blogPath",
+    "cartoon",
+    "chatDate",
+    "draftPath",
+    "notes",
+    "altText",
+    "caption",
 ]
 EXPECTED_FIELDS = len(EXPECTED_HEADER)
 
@@ -83,8 +98,8 @@ CANONICAL_SITES = {"distributed"}
 # unrecognizable value is corruption. Only the second should block.
 LEGACY_THEMES = {"shipping news"}
 
-ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")     # workDate/endWorkDate/pubDate/liPubDate
-US_DATE = re.compile(r"^\d{1,2}/\d{1,2}/\d{4}$")   # chatDate uses M/D/YYYY — a real schema wart
+ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")  # workDate/endWorkDate/pubDate/liPubDate
+US_DATE = re.compile(r"^\d{1,2}/\d{1,2}/\d{4}$")  # chatDate uses M/D/YYYY — a real schema wart
 ISO_DATE_COLS = ("workDate", "endWorkDate", "pubDate", "liPubDate")
 URL_COLS = ("mediumURL", "linkedinURL", "blogURL")
 
@@ -165,7 +180,12 @@ def check_row(line_no: int, row: list[str], idx: dict) -> tuple[list[str], list[
     # Jun 1 - Jul 28), each one a Step-9-archival miss that made a resolved question
     # look like it was still open in PM's queue. WARNING, not error: this is a Step-9
     # housekeeping signal, not a data-integrity one — nothing is broken while it's true. ---
-    if val("status") in ("published", "distributed") and val("draftPath") and "/published/" not in val("draftPath") and "/superseded/" not in val("draftPath"):
+    if (
+        val("status") in ("published", "distributed")
+        and val("draftPath")
+        and "/published/" not in val("draftPath")
+        and "/superseded/" not in val("draftPath")
+    ):
         warnings.append(
             f"{tag}: status={val('status')!r} but draftPath doesn't point into drafts/published/ "
             f"— {val('draftPath')} (Step 9 archival likely missed)"

@@ -3,8 +3,8 @@ type: role-portfolio
 role: PPM (Principal Product Manager)
 status: v0.1 — main-cohort wave
 self-authored-by: PPM
-last_updated: 2026-08-21
-refreshed: 2026-08-21
+last_updated: 2026-08-28
+refreshed: 2026-08-28
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-PPM.md
 refresh_discipline: "section 2 updated as part of each weekly workstream review — can't write the Ship/workstream without restating priorities + status, so the review keeps this current by construction (Rule 5)"
@@ -31,25 +31,27 @@ The why: PM can't synthesize every cross-role lens in real time. PPM exists so t
 ## 2. Current goals & priorities — August 2026 (Beta Blockers sprint; beta date is PM's to set)
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has direction + current status + how we'll know it's moving. Rule 5: refreshed at each weekly workstream review. -->
 
-> **Sprint context**: **Beta Blockers is the live pre-beta sprint** and the **MVP milestone IS the
-> beta gate** — beta ships when `beta-blockers.md` closes, not on a date. **M4/M5 no longer exist**
-> (swept 2026-07-04/05 into Beta Blockers or Production). ⚠️ **The prior version of this line named
-> "beta target Aug 8" — PM moved beta back a month on 2026-08-08** ("we clearly have a lot more
-> work still to do than anyone ever reported to me"); do not carry a specific date here, it has
-> been wrong twice now. Refreshed 2026-08-21 per Rule 5, filed with Ship #057's workstream review —
-> this pass rewrote the table itself, not just this header note (the 08-14 refresh only touched the
-> header and let the table drift a week stale; not repeating that).
+> **Sprint context**: **the MVP milestone IS the beta gate** — beta ships when the milestone
+> converges, not on a date. **M4/M5 no longer exist** (swept 2026-07-04/05 into Beta Blockers or
+> Production); Beta Blockers itself has since folded into the same MVP-milestone-as-gate frame.
+> ⚠️ **Do not carry a specific beta date here** — PM moved beta back a month on 2026-08-08, it has
+> been wrong twice now. **Refreshed 2026-08-28 per Rule 5**, filed with Ship #058's workstream
+> review — this pass updates the table itself for everything since the 08-21 refresh, not just this
+> header note.
 
-| Priority | What I'm advancing | Status (Aug 21) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Aug 28) | How we'll know it's moving |
 |---|---|---|---|
-| **#1386 beta gate** | The shape-level gate for beta: does "done" mean the right thing was built | Criterion 2 remains deferred; **placement question** (does the first-contact criterion belong in this gate at all) **open since 08-05**, untouched since | PM decides placement; a keyed canonical run would close criterion 2 |
-| **PDR-006 → epic #1462** | The hosted-MCP + plugin distribution pivot, from ratified decision to tracked build | Milestone answered 08-07 (Product/PUB sprint). No further PPM-visible movement | Watching, not driving — Lead/Arch's build lane now |
-| **First-contact criterion** | The one new beta criterion that can actually fail for what our alpha tester reported | ✅ **RATIFIED 2026-08-15** — `docs/internal/product/first-contact-criterion-merged-2026-08-10.md` is canonical, joint CXO+PPM sign-off given fresh (not inherited), a provenance error in `decisions.log` found and corrected. **Closed.** | Closed — only the separate #1386-placement question remains |
-| **Jake FTUX conversion** | Four-lens review → tracked work | ✅ **Complete 2026-08-09** — #1536–#1540 filed, zero rows unfiled, PM ruled placement 08-10 | Closed |
-| **Spatial disposition** | Product-value + beta/production scoping of the committed theory | ✅ **CLOSED 2026-08-15** — cold-island disposal (all 11 modules, retained as prior art) + ambient presence (L4) phased plan (MVP false-door #1635, Beta discovery-only #1174, Production pending Lead's cost estimate) | Closed |
-| **Surfaces taxonomy** *(emerged 08-16)* | Rectify 'surface' into two orthogonal axes (functional MUX surfaces + platform/touchpoint) after my own "Surface 3 is a phantom" claim was found wrong | ✅ **RATIFIED v1.0, 2026-08-21** — PM answered §5's naming question directly ("yes, it reads right"), the sole remaining gate. `docs/internal/design/surfaces-taxonomy-2026-08-16.md` is canonical | Closed. One follow-up (aligning `experience-across-surfaces.md`) is PM's own to raise with CXO directly |
-| **Roadmap / briefing currency** | Keep the planning surfaces honest | ✅ Closed 2026-08-06, held since | Watch for new drift |
-| **Board visibility** | Sprint/milestone state readable at all | ✅ Unblocked 2026-08-07; superseded by weekly `sprint-truth.py` runs | Re-run at every citation, not just gate reviews — now the actual practice |
+| **MVP triage cut** *(new, PM's #3 priority 08-25)* | Convergence lever for a milestone that held steady on discovery pace, not drift — sprint/milestone call on all open MVP items against the "no matter what" core list | ✅ **CLOSED 2026-08-28** — PM ruled on all 5 items same day, board mechanics done (Production milestone, PUB sprint field). Corrected Lead's own "~10 items" headline down to the actual 5 | Closed. `dev/active/mvp-triage-cut-assembled-2026-08-28.md` is the record |
+| **#1386 beta gate** | The shape-level gate for beta: does "done" mean the right thing was built | Criterion 2 re-confirmed 08-21 (Run 14). Criteria 4 (CI stability) and 5 (deployed-artifact boundary integrity) both closed 08-28 after PPM nudges to Lead, verified independently. **Only criterion 1 (text-stale, functionally satisfied) and criterion 6 (PM's own sign-off) remain** | Watch for PM's sign-off — nothing further PPM-owned |
+| **#829/#1462 reconciliation** *(new, 08-27)* | PA flagged two Production issues sharing title words but opposite distribution architectures | ✅ **CLOSED 2026-08-27** — verified PA's read against PDR-006 directly, closed #829 as superseded, independently caught a parent-epic milestone mismatch PA hadn't flagged | Closed |
+| **FTUX surface-mapping consult** *(new, 08-28)* | CXO's mapping of the FTUX model onto real surfaces; PPM's call on scope coherence | ✅ **CLOSED 2026-08-28** — answered both §5 questions, filed #1688 (MVP) for the mapping's main finding, caught the issue absent from the board on filing and fixed it | Closed unless Lead's technical read changes scope |
+| **PDR-006 → epic #1462** | The hosted-MCP + plugin distribution pivot, from ratified decision to tracked build | No further PPM-visible movement this window beyond the #829 reconciliation above | Watching, not driving — Lead/Arch's build lane |
+| **First-contact criterion** | The one new beta criterion that can actually fail for what our alpha tester reported | ✅ **RATIFIED 2026-08-15**, closed, held since | Closed |
+| **Jake FTUX conversion** | Four-lens review → tracked work | ✅ **Complete 2026-08-09**, held since | Closed |
+| **Spatial disposition** | Product-value + beta/production scoping of the committed theory | ✅ **CLOSED 2026-08-15**, held since | Closed |
+| **Surfaces taxonomy** | Rectify 'surface' into two orthogonal axes | ✅ **RATIFIED v1.0, 2026-08-21**, held since | Closed |
+| **Roadmap / briefing currency** | Keep the planning surfaces honest | ✅ `roadmap.md` header + `BRIEFING-CURRENT-STATE.md` PPM-lane both refreshed 2026-08-24 | Watch for new drift |
+| **Board visibility** | Sprint/milestone state readable at all | ⚠️ **Recurring finding, not fully solved**: found 4+ board-presence/stale-status gaps this window alone (own #1688 filing, #1658/#1661/#1662/#1647 on the triage cut, #1677/#1488's stale Status) — `gh issue create --milestone` and general triage do not add items to the board by construction | Check board presence explicitly on every new filing, don't assume it |
 
 ---
 

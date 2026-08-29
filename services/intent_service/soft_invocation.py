@@ -482,9 +482,7 @@ class SoftInvocationDetector:
         )
 
 
-def detect_offer_response(
-    message: str, *, prose_override: bool = True
-) -> Optional[str]:
+def detect_offer_response(message: str, *, prose_override: bool = True) -> Optional[str]:
     """
     Detect if a message is accepting or declining a previous offer.
 

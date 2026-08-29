@@ -49,6 +49,45 @@ Widget discipline (from the read_me): CSS variables for every color (auto light/
 
 So the board now has **two surfaces, pick by the moment:** (1) inline `show_widget` — transient, in-chat, themed + interactive (good for a one-shot "show me the board"); (2) static `.html` in the worktree — persistent, glanceable in the preview pane (good for a standing surface PM keeps open). Same content, two deliveries.
 
+## Step 0 — LIVENESS FIRST: confirm every role is actually running (PM directive, 2026-08-28)
+
+**Before gathering anything, run:**
+
+```bash
+scripts/duty-cycle-freeze-check.sh
+```
+
+**This is the per-role staleness check, and it is NOT `cohort-freeze-detect.sh`.** The two have
+similar names and answer different questions — getting them confused is what produced the incident
+this step exists to prevent:
+
+| Tool | Question it answers | What it CANNOT tell you |
+|---|---|---|
+| `cohort-freeze-detect.sh` | Is the **cohort as a whole** frozen? | **Whether any individual role is dark.** Returns `rc=0` whenever *any* role is alive. |
+| `duty-cycle-freeze-check.sh` | Is **any individual role** stale, against its own registry cadence? | — this is the one you want |
+
+**The incident (2026-08-28)**: arch, cio and host sat dark ~30–33 hours, almost certainly wedged at
+a rate-limit dialog. Exec had run `cohort-freeze-detect.sh` at every fire — correctly returning
+`rc=0`, because two other roles were alive — and reported the week's workstream collection as "7 of
+10, three haven't filed yet." That framed **three dead sessions as slow correspondents.** PM asked
+whether anyone needed a nudge; the honest answer was that nobody was ignoring anything. Running the
+per-role tool printed all three instantly, with hours and missed-fire counts.
+
+**Why this belongs at Step 0 rather than anywhere later**: a blocked session gets zero turns and
+therefore cannot report its own blockage — liveness is only observable from outside. A rollup
+compiled without this check can report a role "clean" when it is simply absent, which is the m-44
+false-clear (an all-clear emitted identically whether the check measured and found nothing, or
+never ran against the right object).
+
+**What to do with the result:**
+- **Any STALE row** → surface it at the TOP of the board, above blockers. A dark role is not a
+  status item; it is work that has stopped and nobody has noticed.
+- **Distinguish dark from quiet in the write-up.** "Hasn't filed" implies a choice. "Not running"
+  is a different fact and needs a different response (waking the session, not nudging the agent).
+- **Never report a per-role clean based on the cohort tool.** State which tool you ran.
+
+---
+
 ## Step 1 — Gather the source set
 
 **The per-role `duty-cycle-escalations-{role}.md` docs are DEPRECATED (folded 2026-06-17, skill v1.13) — do NOT use them as a source; they're frozen/stale by definition now.** The canonical inputs post-fold:

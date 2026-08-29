@@ -797,9 +797,7 @@ async def run_archived_projects_query_workflow(
             portfolio_service = PortfolioService(project_repo)
             projects = await portfolio_service.list_archived_projects(user_id=user_id)
     except Exception as e:  # silent-ok: error-logged with context and returns success=False — honest degrade, never fake-empty (#1425)
-        logger.error(
-            "archived_projects_query_failed", error=str(e), user_id=user_id
-        )
+        logger.error("archived_projects_query_failed", error=str(e), user_id=user_id)
         return IntentProcessingResult(
             success=False,
             message=(
@@ -919,9 +917,7 @@ async def run_summarize_document_workflow(
     if source_type in ("github_issue", "commit_range"):
         return None  # rail fall-through → #1187 fetch-augment floor path
     if source_type in (None, "", "document"):
-        if ("issue" in msg_lower and _re.search(r"#?\d+", msg_lower)) or (
-            "commit" in msg_lower
-        ):
+        if ("issue" in msg_lower and _re.search(r"#?\d+", msg_lower)) or ("commit" in msg_lower):
             return None  # issue/commit summarize that mis-landed here
 
     if not user_id:
@@ -933,18 +929,20 @@ async def run_summarize_document_workflow(
 
     # ── Resolve "the document" → file_id (owner-scoped) ───────────────────
     try:
-        from types import SimpleNamespace
-
         from services.database.session_factory import AsyncSessionFactory
+        from services.domain.models import Intent
         from services.file_context.exceptions import AmbiguousFileReferenceError
         from services.file_context.file_resolver import FileResolver
         from services.repositories.file_repository import FileRepository
+        from services.shared_types import IntentCategory
 
         # FileResolver reads intent.action + intent.context["original_message"];
-        # hand it a detached view so intent.context is never mutated (the
-        # process_intent convention).
-        resolver_view = SimpleNamespace(
+        # hand it a detached Intent (own context dict) so the turn's
+        # intent.context is never mutated (the process_intent convention).
+        resolver_view = Intent(
+            category=IntentCategory.SYNTHESIS,
             action="summarize_document",
+            original_message=message,
             context={"original_message": message},
         )
 
@@ -1008,8 +1006,7 @@ async def run_summarize_document_workflow(
             )
 
         return _result(
-            f"Here's my summary of {summarized['filename']}:\n\n"
-            f"{summarized['summary']}",
+            f"Here's my summary of {summarized['filename']}:\n\n" f"{summarized['summary']}",
             extra={
                 "file_id": summarized["file_id"],
                 "filename": summarized["filename"],
@@ -1018,12 +1015,9 @@ async def run_summarize_document_workflow(
             },
         )
     except Exception as e:  # silent-ok: error-logged with context and returns success=False — honest degrade, never fake success (#1425)
-        logger.error(
-            "summarize_document_workflow_failed", error=str(e), user_id=user_id
-        )
+        logger.error("summarize_document_workflow_failed", error=str(e), user_id=user_id)
         return _result(
-            "I had trouble reading that document just now. You can try again "
-            "in a moment.",
+            "I had trouble reading that document just now. You can try again " "in a moment.",
             success=False,
             reason="summarize_failed",
         )
@@ -1387,6 +1381,27 @@ def register_default_workflows() -> None:
     # #1677 note: this registration is also the prerequisite for the
     # individually-flipped-WRITE option there — flip-1 selects which ROUTER
     # feeds this rail, and an unregistered op never reaches the rail at all.
+    # #1677 (PM chose option (d), 2026-08-28): the FIRST and only named WRITE
+    # the inversion flip may route. Not a flip_group — no wave sweeps a write
+    # in; it flips only when a flag token names it (`create_todo`) or names
+    # its registry category (`EXECUTION`). Arch's three conditions were
+    # RE-RUN on 2026-08-28, not cited from the 08-25 ruling:
+    #   1. registered — get_action_workflows()["create_todo"] exists,
+    #      action_triggered=True (this entry, landed by #1685);
+    #   2. effect correct BY BEHAVIOR — todo_handlers.handle_create_todo
+    #      (~L350) calls todo_service.create_todo(user_id, text, priority),
+    #      which persists one row and deletes nothing: WRITE, not
+    #      DESTRUCTIVE, not READ. Read from the handler body, not this
+    #      docstring or #1685's;
+    #   3. reaches consent — needs_consent derives True (WRITE >= WRITE) and
+    #      intent_service.py's rail block awaits consent_gate.evaluate_consent
+    #      with THIS entry's effect + outwardness before dispatching
+    #      (asserted at that seam by test_create_todo_rail_1685.py's spy, and
+    #      re-asserted under the flip in test_inversion_write_allowlist_1677).
+    # Why the flip is the fix for #1677: the misroute is the LLM classifier
+    # drawing create_ticket for "add todo …" (1/3–2/3 of samples). The
+    # inversion's constrained router picks from the derived grammar instead,
+    # so the todo-create shape stops depending on that draw.
     create_todo_entry = WorkflowEntry(
         entry_point=run_create_todo_workflow,
         effect=EffectClass.WRITE,
@@ -1394,6 +1409,7 @@ def register_default_workflows() -> None:
         description="Create-todo via action dispatch (#1685)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        flip_write_allowlist_key="create_todo",
     )
 
     # #1666: delete_todo onto the rail — the consent-gate coverage gap Arch
@@ -1791,9 +1807,7 @@ def register_default_workflows() -> None:
     # snapshot's referent fields against handlers that need one.
     for handler_attr, aliases in _ANALYSIS_QUERY_COHORT.items():
         entry = WorkflowEntry(
-            entry_point=_make_query_dispatch_entry_point(
-                handler_attr, pass_session_id=True
-            ),
+            entry_point=_make_query_dispatch_entry_point(handler_attr, pass_session_id=True),
             effect=EffectClass.READ,
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],

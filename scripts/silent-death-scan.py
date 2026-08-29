@@ -92,7 +92,9 @@ def _returns_plausible_default(handler):
             return (True, "bare `return`")
         if isinstance(v, ast.Constant):
             return (True, f"return {v.value!r}")
-        if isinstance(v, (ast.List, ast.Dict, ast.Tuple, ast.Set)) and not getattr(v, "elts", getattr(v, "keys", [1])):
+        if isinstance(v, (ast.List, ast.Dict, ast.Tuple, ast.Set)) and not getattr(
+            v, "elts", getattr(v, "keys", [1])
+        ):
             return (True, "return empty collection")
         if isinstance(v, ast.Call):
             fn = v.func
@@ -119,7 +121,8 @@ def scan_file(path):
         if hit:
             logs = any(
                 isinstance(n, ast.Call)
-                and getattr(getattr(n, "func", None), "attr", "") in ("warning", "error", "exception", "debug", "info")
+                and getattr(getattr(n, "func", None), "attr", "")
+                in ("warning", "error", "exception", "debug", "info")
                 for n in ast.walk(node)
             )
             out.append((node.lineno, why, logs))

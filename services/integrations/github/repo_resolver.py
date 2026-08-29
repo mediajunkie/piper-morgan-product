@@ -276,9 +276,7 @@ async def _attempt_default_repo_recovery(user_id: UUID) -> Optional[ResolvedRepo
         )
 
         if not await IntegrationStatusService().is_configured(key, "github"):
-            logger.info(
-                "default_repo_recovery_skipped user=%s reason=github_not_configured", key
-            )
+            logger.info("default_repo_recovery_skipped user=%s reason=github_not_configured", key)
             return None
     except Exception as e:
         logger.warning("default_repo_recovery_status_check_failed user=%s error=%s", key, e)
@@ -491,6 +489,4 @@ async def apply_default_default_if_unset(
 
         await config_service.set_default_repo(user_id, chosen)
         # #1436: stdlib logger — kwargs raised TypeError when this line ran
-        logger.info(
-            f"default_repo_auto_set user={user_id} repo={chosen} repo_count={len(repos)}"
-        )
+        logger.info(f"default_repo_auto_set user={user_id} repo={chosen} repo_count={len(repos)}")

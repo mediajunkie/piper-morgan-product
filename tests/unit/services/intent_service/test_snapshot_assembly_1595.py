@@ -77,9 +77,7 @@ async def sm(monkeypatch):
     """Real SessionActivityRepository over aiosqlite (the B3 #1394 idiom)."""
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
     async with engine.begin() as conn:
-        await conn.run_sync(
-            lambda c: SessionActivityDB.__table__.create(c, checkfirst=True)
-        )
+        await conn.run_sync(lambda c: SessionActivityDB.__table__.create(c, checkfirst=True))
     maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
     @contextlib.asynccontextmanager
@@ -288,9 +286,7 @@ class TestPerFieldAssembly:
         assert snap.active_process_type == ProcessType.STANDUP.value == "standup"
 
     async def test_inactive_process_not_reported(self, sm, mem_prefs, svc):
-        get_process_registry().register(
-            _StubProcess(ProcessType.STANDUP, is_active=False)
-        )
+        get_process_registry().register(_StubProcess(ProcessType.STANDUP, is_active=False))
         snap = await assemble_session_snapshot(_SESSION, _USER, svc)
         assert snap.active_process_type is None
 
@@ -305,9 +301,7 @@ class TestPerFieldAssembly:
         assert snap.recent_issue_number == 109
         assert snap.recent_issue_repo == "mediajunkie/test-piper-morgan"
 
-    async def test_no_principal_means_no_ledger_read_not_an_error(
-        self, sm, mem_prefs, svc
-    ):
+    async def test_no_principal_means_no_ledger_read_not_an_error(self, sm, mem_prefs, svc):
         """D1a: unscopeable ≠ failed — fields None, field_errors empty."""
         await _seed_issue(sm, _USER, _SESSION, "mediajunkie/test-piper-morgan#107")
         snap = await assemble_session_snapshot(_SESSION, None, svc)
@@ -365,16 +359,11 @@ class TestIdempotencePin:
         assert first.pending_offer_kind == "drafted_issue"
 
         # The peek never popped: the production pop still yields THE offer.
-        popped = svc.workflow_offer_service.get_and_clear_pending_offer(
-            _SESSION, user_id=_USER
-        )
+        popped = svc.workflow_offer_service.get_and_clear_pending_offer(_SESSION, user_id=_USER)
         assert popped is offer
         # ...and pops empty only now, through the pop — not through assembly.
         assert (
-            svc.workflow_offer_service.get_and_clear_pending_offer(
-                _SESSION, user_id=_USER
-            )
-            is None
+            svc.workflow_offer_service.get_and_clear_pending_offer(_SESSION, user_id=_USER) is None
         )
         # The process probe suspended nothing.
         assert await handler.check_active(_USER, _SESSION) is True
@@ -386,9 +375,7 @@ class TestIdempotencePin:
 
 
 class TestFailOpen:
-    async def test_one_store_raising_fails_open_and_is_named(
-        self, sm, mem_prefs, svc, monkeypatch
-    ):
+    async def test_one_store_raising_fails_open_and_is_named(self, sm, mem_prefs, svc, monkeypatch):
         """The process registry raises → active_process_type is None and
         field_errors names exactly it; every OTHER field still populates."""
         offer = build_drafted_issue_offer(_intent(), "Fix the login flow")
@@ -412,9 +399,7 @@ class TestFailOpen:
         assert snap.recent_issue_number == 107
         assert snap.declared_working_mode == "execute"
 
-    async def test_never_raises_even_with_broken_offer_service(
-        self, sm, mem_prefs
-    ):
+    async def test_never_raises_even_with_broken_offer_service(self, sm, mem_prefs):
         """A raising peek: the five offer/draft fields fail open together,
         named in dataclass declaration order (contract item 3's shape)."""
 
@@ -554,9 +539,7 @@ class TestShadowWiring:
         assert state is not None
         assert state.state_block == GOLDEN_SERIALIZED
         # ...and the composed shadow context (the routing prompt) carries it.
-        prompt = ir.build_routing_prompt(
-            "yes, file it", ir.derive_routing_grammar(), state
-        )
+        prompt = ir.build_routing_prompt("yes, file it", ir.derive_routing_grammar(), state)
         assert GOLDEN_SERIALIZED in prompt
         assert "Session state:" in prompt
 
@@ -576,13 +559,9 @@ class TestShadowWiring:
         await task
         state = calls[0].session_state
         assert state.state_block is None
-        assert state.pending_offer_summary == (
-            f"{CONFIRM_PENDING_ACTION_WORKFLOW} (drafted_issue)"
-        )
+        assert state.pending_offer_summary == (f"{CONFIRM_PENDING_ACTION_WORKFLOW} (drafted_issue)")
 
-    async def test_live_result_byte_identical_shadow_on_off(
-        self, sm, mem_prefs, monkeypatch
-    ):
+    async def test_live_result_byte_identical_shadow_on_off(self, sm, mem_prefs, monkeypatch):
         """SHADOW-ONLY PROOF: the same deterministic turn (armed confirm +
         'no' → decline copy, never the LLM) produces a byte-identical live
         result with the feature OFF and ON — while the ON run demonstrably
@@ -597,21 +576,15 @@ class TestShadowWiring:
                 "intent": _intent("close issue #108", "close_issue"),
                 "summary": "close issue #108",
             },
-            "decline_message": (
-                "Okay — I won't close issue #108. Nothing has been changed."
-            ),
+            "decline_message": ("Okay — I won't close issue #108. Nothing has been changed."),
         }
 
         async def _run_turn():
-            service = IntentService(
-                intent_classifier=IntentClassifier(llm_service=_ExplosiveLLM())
-            )
+            service = IntentService(intent_classifier=IntentClassifier(llm_service=_ExplosiveLLM()))
             service.workflow_offer_service.set_pending_offer(
                 _SESSION, dict(confirm_offer), user_id=_USER
             )
-            result = await service.process_intent(
-                message="no", session_id=_SESSION, user_id=_USER
-            )
+            result = await service.process_intent(message="no", session_id=_SESSION, user_id=_USER)
             await _drain_shadow_tasks()
             return result
 

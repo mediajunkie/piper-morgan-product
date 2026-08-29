@@ -76,9 +76,7 @@ class TestConnectForUser:
     @pytest.mark.asyncio
     async def test_user_token_threads_into_connect(self):
         r, _ = _router_with_config(api_key="secret_user_token")
-        with patch.object(
-            r, "connect", new=AsyncMock(return_value=True)
-        ) as connect:
+        with patch.object(r, "connect", new=AsyncMock(return_value=True)) as connect:
             assert await r.connect_for_user("user-1") is True
         connect.assert_awaited_once_with(integration_token="secret_user_token")
 
@@ -118,10 +116,10 @@ class TestSearchHandlerThreadsPrincipal:
     @pytest.mark.asyncio
     async def test_unavailable_user_gets_settings_guidance(self, svc):
         with patch(f"{ROUTER}.is_available", return_value=False) as gate:
-            result = await svc._handle_search_documents_notion(
-                _search_intent(), "wf-1", "sess-1"
-            )
-        assert "Settings → Integrations → Notion" in result.message  # 1604: the REAL route (the old string pinned a path that never existed)
+            result = await svc._handle_search_documents_notion(_search_intent(), "wf-1", "sess-1")
+        assert (
+            "Settings → Integrations → Notion" in result.message
+        )  # 1604: the REAL route (the old string pinned a path that never existed)
         gate.assert_called_once_with("694d8f4e-0000-0000-0000-000000000042")
 
     @pytest.mark.asyncio
@@ -131,8 +129,6 @@ class TestSearchHandlerThreadsPrincipal:
             patch(f"{ROUTER}.connect_for_user", new=AsyncMock(return_value=True)) as cfu,
             patch(f"{ROUTER}.search_notion", new=AsyncMock(return_value=[])),
         ):
-            result = await svc._handle_search_documents_notion(
-                _search_intent(), "wf-1", "sess-1"
-            )
+            result = await svc._handle_search_documents_notion(_search_intent(), "wf-1", "sess-1")
         assert result.success
         cfu.assert_awaited_once_with("694d8f4e-0000-0000-0000-000000000042")

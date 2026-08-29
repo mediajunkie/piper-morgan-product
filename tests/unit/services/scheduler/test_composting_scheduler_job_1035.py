@@ -26,7 +26,6 @@ from services.mux.composting_scheduler import CompostingSchedule, CompostingSche
 from services.scheduler.composting_scheduler_job import CompostingSchedulerJob
 from tests.unit.services.mux._fake_insight_journal import FakeInsightJournal
 
-
 pytestmark = pytest.mark.asyncio
 
 

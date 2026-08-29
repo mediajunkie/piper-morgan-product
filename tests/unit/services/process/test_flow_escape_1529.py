@@ -236,17 +236,13 @@ class TestRegistrySeamEscape:
         assert result.response_message == format_exit_message(ProcessType.STANDUP)
 
     @pytest.mark.asyncio
-    async def test_pm_refusal_exits_and_falls_through_to_answer(
-        self, registry_with_active_standup
-    ):
+    async def test_pm_refusal_exits_and_falls_through_to_answer(self, registry_with_active_standup):
         """PM verbatim: refusal + 'restore CoVa' → flow closed, turn falls
         through (handled=False) so intent processing answers the request,
         with the honest exit prefix attached."""
         registry, fake = registry_with_active_standup
 
-        result = await registry.check_active_processes(
-            "user-1", "sess-1", PM_REFUSAL_WITH_COMMAND
-        )
+        result = await registry.check_active_processes("user-1", "sess-1", PM_REFUSAL_WITH_COMMAND)
 
         assert result.handled is False  # normal processing answers "restore CoVa"
         assert result.escaped is True

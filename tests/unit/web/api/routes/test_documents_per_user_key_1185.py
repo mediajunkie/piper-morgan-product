@@ -33,6 +33,7 @@ def _mock_session_factory():
 
 # ---- resolve_user_llm_key (the shared resolver) ----
 
+
 async def test_resolves_stored_key_when_no_header():
     svc = MagicMock()
     svc.retrieve_user_key = AsyncMock(return_value="stored-key")
@@ -67,6 +68,7 @@ async def test_none_when_no_header_and_no_stored():
 
 
 # ---- /documents endpoint: rail bound during the call + reset after (SECURITY) ----
+
 
 async def test_analyze_binds_user_key_during_call_and_resets_after_1185():
     from web.api.routes import documents
@@ -105,10 +107,15 @@ async def test_no_cross_request_leak_between_users_1185():
         async def _spy(**kwargs):
             seen[tag] = get_request_api_key()
             return {"summary": "s", "key_findings": []}
+
         return _spy
 
-    user_a = MagicMock(); user_a.sub = "A"; user_a.user_id = "ua"
-    user_b = MagicMock(); user_b.sub = "B"; user_b.user_id = "ub"
+    user_a = MagicMock()
+    user_a.sub = "A"
+    user_a.user_id = "ua"
+    user_b = MagicMock()
+    user_b.sub = "B"
+    user_b.user_id = "ub"
 
     # User A → resolves "kA"
     with (

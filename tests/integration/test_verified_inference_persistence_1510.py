@@ -62,9 +62,7 @@ async def _raw_preferences(uid: str) -> dict:
     """Read the JSONB straight off the row — the store as it actually is,
     not as any wrapper reports it (m-43: name the layer)."""
     async with AsyncSessionFactory.session_scope_fresh() as s:
-        row = await s.execute(
-            _text("SELECT preferences FROM users WHERE id = :u"), {"u": uid}
-        )
+        row = await s.execute(_text("SELECT preferences FROM users WHERE id = :u"), {"u": uid})
         return row.scalar_one() or {}
 
 
@@ -79,8 +77,11 @@ async def test_store_and_read_verified_inference_round_trip(seeded_user_id):
     """Once verified, it's stored — not re-inferred each time: the write
     lands in the real JSONB and the second turn's read returns it."""
     ok = await vi.store_verified_inference(
-        seeded_user_id, "standup_format", "brief",
-        source=vi.SOURCE_USER_VERIFIED, confidence=0.6,
+        seeded_user_id,
+        "standup_format",
+        "brief",
+        source=vi.SOURCE_USER_VERIFIED,
+        confidence=0.6,
     )
     assert ok is True
 
@@ -110,7 +111,9 @@ async def test_meta_preference_lands_under_its_own_key(seeded_user_id):
 async def test_acceptance_entry_point_writes_the_real_row(seeded_user_id):
     """The 'yes'-turn entry point against the real store."""
     offer = vi.build_read_back_offer(
-        seeded_user_id, "default_repo", "mediajunkie/piper-morgan-product",
+        seeded_user_id,
+        "default_repo",
+        "mediajunkie/piper-morgan-product",
         "that mediajunkie/piper-morgan-product is your default repo",
         confidence=0.55,
     )

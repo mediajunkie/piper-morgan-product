@@ -3,6 +3,29 @@
 **Last updated**: 2026-08-27 ~09:4x PT — START/WORK. Agent 360 filed; inbox clean.
 **Session log today**: `dev/2026/08/27/2026-08-27-0902-exec-code-log.md`
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
+## 🔴 STEP ONE, EVERY FIRE — PM DIRECTIVE 2026-08-28: verify all roles are RUNNING first
+
+**Run `scripts/duty-cycle-freeze-check.sh` at the top of every fire, before mail, before anything.**
+
+⚠️ **This is NOT the check I had been running.** Two similarly-named tools, different questions:
+- `cohort-freeze-detect.sh` — *is the COHORT frozen?* Returns rc=0 whenever ANY role is alive.
+  This is what I ran at every START. **It is structurally incapable of reporting a dark role.**
+- `duty-cycle-freeze-check.sh` — *is any INDIVIDUAL role stale?* Prints per-role hours + missed
+  fires against each row's own cadence. **This is the one that answers PM's question.**
+
+**Earned 2026-08-28**: arch, cio and host sat dark ~30–33h (since 08-27, almost certainly stuck at
+a rate-limit dialog after Thursday's usage limit). I reported Ship #058 as "7 of 10, three haven't
+filed" — framing three dead sessions as slow correspondents. PM asked "does anyone need a nudge?"
+and the honest answer was that nobody was ignoring anything; three roles weren't running. The
+per-role tool printed all three instantly the moment I ran it.
+
+**Why it matters beyond the miss**: a blocked session gets zero turns and cannot report its own
+blockage (4th instance this month — Lead 08-20, CXO 08-25→27, my own 08-27, these three). Liveness
+has to be checked FROM OUTSIDE. That is the whole point and I was checking the wrong layer.
+
+**Also**: the attention rollup must lead with liveness. A board that says "9 clean" while three
+roles are dark is the exact m-44 false-clear this project keeps finding.
+
 **Cron**: `26f99a2b`, `32 8,20 * * *` — confirmed exactly one job at START, no re-arm needed.
 
 ## 📅 TOMORROW (Fri 08-28): Ship #058 kickoff

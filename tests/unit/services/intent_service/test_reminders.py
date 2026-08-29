@@ -188,9 +188,7 @@ class TestReminderTimeLabelNoDoubledTokens:
     def test_no_doubled_tokens_in_any_label(self, message):
         """No label may contain the same word twice in a row (e.g. 'at at')."""
         _, label = parse_reminder_time(message)
-        assert not re.search(
-            r"\b(\w+)\s+\1\b", label
-        ), f"Doubled token in label: {label!r}"
+        assert not re.search(r"\b(\w+)\s+\1\b", label), f"Doubled token in label: {label!r}"
 
 
 # ---------------------------------------------------------------------------
@@ -328,9 +326,9 @@ class TestReminderTextExtractionTimeFirst1490:
         assert mock_create.call_args.kwargs.get("reminder_date") is not None
         assert "didn't catch" not in result.lower()
         assert "review the pr" in result.lower()
-        assert not re.search(r"\b(\w+)\s+\1\b", result.lower()), (
-            f"Doubled token in confirmation copy: {result!r}"
-        )
+        assert not re.search(
+            r"\b(\w+)\s+\1\b", result.lower()
+        ), f"Doubled token in confirmation copy: {result!r}"
 
 
 # ---------------------------------------------------------------------------
@@ -544,9 +542,9 @@ class TestDueReminderTZGuard1491:
             context = await assembler.gather_context("CONVERSATION", user_id=str(uuid4()))
 
         assert context.get("source_failed") is not True
-        assert "due_reminders" in context, (
-            "due reminder must surface in conversation context (the #903 promise)"
-        )
+        assert (
+            "due_reminders" in context
+        ), "due reminder must surface in conversation context (the #903 promise)"
         assert "submit the report" in context["due_reminders"]
         assert "call the vendor" in context["due_reminders"]
         assert context["reminder_count"] == 2
@@ -568,9 +566,9 @@ class TestDueReminderTZGuard1491:
             result = await handler.get_due_reminders(uuid4())
 
         assert result is None  # sentinel preserved (#1425)
-        assert not mock_logger.warning.called, (
-            "failure must not be warning-swallowed (#1491/#1423) — log at error level"
-        )
+        assert (
+            not mock_logger.warning.called
+        ), "failure must not be warning-swallowed (#1491/#1423) — log at error level"
         assert mock_logger.error.called, "fetch failure must log at ERROR level (#1491)"
         _, kwargs = mock_logger.error.call_args
         assert "error" in kwargs

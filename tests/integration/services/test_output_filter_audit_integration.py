@@ -34,7 +34,6 @@ from services.ethics.output_filter import (
     Severity,
 )
 
-
 pytestmark = pytest.mark.integration
 
 

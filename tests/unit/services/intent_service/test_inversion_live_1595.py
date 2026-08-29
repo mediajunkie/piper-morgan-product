@@ -89,9 +89,7 @@ async def sm(monkeypatch):
     """Real SessionActivityRepository over aiosqlite (the B3 #1394 idiom)."""
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
     async with engine.begin() as conn:
-        await conn.run_sync(
-            lambda c: SessionActivityDB.__table__.create(c, checkfirst=True)
-        )
+        await conn.run_sync(lambda c: SessionActivityDB.__table__.create(c, checkfirst=True))
     maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
     @contextlib.asynccontextmanager
@@ -143,9 +141,7 @@ def _rail_registered():
 @pytest.fixture
 def svc():
     """The IntentService slice the CONSULT reads (snapshot peek + llm seam)."""
-    return SimpleNamespace(
-        workflow_offer_service=WorkflowOfferService(), intent_classifier=None
-    )
+    return SimpleNamespace(workflow_offer_service=WorkflowOfferService(), intent_classifier=None)
 
 
 class _LogRecorder:
@@ -164,9 +160,7 @@ class _LogRecorder:
         raise AttributeError(name)
 
     def decisions(self):
-        return [
-            (lvl, f) for lvl, ev, f in self.events if ev == "inversion_live_decision"
-        ]
+        return [(lvl, f) for lvl, ev, f in self.events if ev == "inversion_live_decision"]
 
 
 @pytest.fixture
@@ -290,9 +284,7 @@ class TestDefaultEmptyPin:
         real handler) with the router provably untouched."""
         _explosive_route(monkeypatch)
         service = _real_service()
-        result = await service.process_intent(
-            message=_MSG, session_id=_SESSION, user_id=_USER
-        )
+        result = await service.process_intent(message=_MSG, session_id=_SESSION, user_id=_USER)
         assert result.success is True
         assert result.message == _EMPTY_LEDGER_ANSWER
         assert result.intent_data["action"] == _OP
@@ -321,9 +313,7 @@ class TestLiveDispatch:
         assert out.context["inversion_live"] is True
         assert len(calls) == 1
 
-    async def test_in_category_turn_same_handler_result_e2e(
-        self, sm, mem_prefs, monkeypatch
-    ):
+    async def test_in_category_turn_same_handler_result_e2e(self, sm, mem_prefs, monkeypatch):
         """The AC pin: leg A = legacy chain (flag unset); leg B = flip live
         (flag=QUERY, router chooses the key, classifier consult REPLACED —
         classify_multiple explosive). Same rail, same handler, same answer."""
@@ -346,9 +336,7 @@ class TestLiveDispatch:
                 "classifier consult for an in-set dispatch"
             )
 
-        monkeypatch.setattr(
-            service_b.intent_classifier, "classify_multiple", _classifier_boom
-        )
+        monkeypatch.setattr(service_b.intent_classifier, "classify_multiple", _classifier_boom)
         result_b = await service_b.process_intent(
             message=_MSG, session_id=f"{_SESSION}-b", user_id=_USER
         )
@@ -386,9 +374,7 @@ class TestLiveDispatch:
 
 
 class TestArmedGuard:
-    async def test_popped_offer_skips_before_any_work(
-        self, svc, monkeypatch, log_rec
-    ):
+    async def test_popped_offer_skips_before_any_work(self, svc, monkeypatch, log_rec):
         """Guard part 1: the pop seam found an offer this turn — no snapshot,
         no router, reason logged."""
         monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "QUERY")
@@ -445,9 +431,7 @@ class TestArmedGuard:
         [(_, fields)] = log_rec.decisions()
         assert fields["reason"] == "armed_snapshot"
 
-    async def test_active_process_skips_router(
-        self, sm, mem_prefs, svc, monkeypatch, log_rec
-    ):
+    async def test_active_process_skips_router(self, sm, mem_prefs, svc, monkeypatch, log_rec):
         monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "QUERY")
         _explosive_route(monkeypatch)
 
@@ -478,9 +462,7 @@ class TestArmedGuard:
         [(_, fields)] = log_rec.decisions()
         assert fields["reason"] == "armed_snapshot"
 
-    async def test_armed_turn_in_set_category_takes_legacy_e2e(
-        self, sm, mem_prefs, monkeypatch
-    ):
+    async def test_armed_turn_in_set_category_takes_legacy_e2e(self, sm, mem_prefs, monkeypatch):
         """AC pin, e2e: an ARMED turn (pending destructive confirm) carrying
         an in-set-category command abandons via the pop and takes the LEGACY
         chain — the router is provably never consulted."""
@@ -508,9 +490,7 @@ class TestArmedGuard:
         )
         # The unrelated in-set command abandons the confirm via the pop and
         # must resolve through the LEGACY chain (pre-classifier → rail).
-        result = await service.process_intent(
-            message=_MSG, session_id=_SESSION, user_id=_USER
-        )
+        result = await service.process_intent(message=_MSG, session_id=_SESSION, user_id=_USER)
         assert result.success is True
         assert result.message == _EMPTY_LEDGER_ANSWER  # legacy handler answered
 
@@ -550,9 +530,7 @@ class TestFallthroughReasons:
         )
         assert out is None and f["reason"] == "router_refused"
 
-    async def test_router_error_pinned_and_loud(
-        self, sm, mem_prefs, svc, monkeypatch, log_rec
-    ):
+    async def test_router_error_pinned_and_loud(self, sm, mem_prefs, svc, monkeypatch, log_rec):
         """Transport error → legacy, logged at WARNING (loud, never silent)."""
         out, _, [(lvl, f)] = await self._consult(
             svc,
@@ -575,9 +553,7 @@ class TestFallthroughReasons:
         self, sm, mem_prefs, svc, monkeypatch, log_rec
     ):
         monkeypatch.setenv("PIPER_INVERSION_LIVE_MIN_CONFIDENCE", "0.5")
-        out, _, [(_, f)] = await self._consult(
-            svc, monkeypatch, log_rec, _decision(confidence=0.6)
-        )
+        out, _, [(_, f)] = await self._consult(svc, monkeypatch, log_rec, _decision(confidence=0.6))
         assert isinstance(out, Intent) and f["route"] == "inversion"
 
     async def test_not_live_categorized(self, sm, mem_prefs, svc, monkeypatch, log_rec):
@@ -636,9 +612,7 @@ class TestFallthroughReasons:
 
 
 class TestErrorPathNeverBreaksTurn:
-    async def test_raising_router_falls_to_legacy_e2e(
-        self, sm, mem_prefs, monkeypatch
-    ):
+    async def test_raising_router_falls_to_legacy_e2e(self, sm, mem_prefs, monkeypatch):
         from services.intent_service import inversion_router as ir
 
         monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "QUERY")
@@ -648,9 +622,7 @@ class TestErrorPathNeverBreaksTurn:
 
         monkeypatch.setattr(ir, "route", _transport_down)
         service = _real_service()
-        result = await service.process_intent(
-            message=_MSG, session_id=_SESSION, user_id=_USER
-        )
+        result = await service.process_intent(message=_MSG, session_id=_SESSION, user_id=_USER)
         assert result.success is True
         assert result.message == _EMPTY_LEDGER_ANSWER  # legacy chain answered
 

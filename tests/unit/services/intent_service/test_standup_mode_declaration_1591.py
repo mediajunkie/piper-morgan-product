@@ -119,9 +119,7 @@ def _summary(empty: bool = False):
 
 
 def _stored_mode(mem_prefs):
-    return (mem_prefs[_USER].get(vi.VERIFIED_INFERENCES_PREF_KEY) or {}).get(
-        sp.STANDUP_MODE_KEY
-    )
+    return (mem_prefs[_USER].get(vi.VERIFIED_INFERENCES_PREF_KEY) or {}).get(sp.STANDUP_MODE_KEY)
 
 
 # ---------------------------------------------------------------------------
@@ -134,15 +132,10 @@ class TestDeclarationDetection:
         assert sp.detect_standup_mode_declaration(PM_DECLARATION) == sp.MODE_INTERVIEW
 
     def test_taught_switch_back_declares_report(self):
-        assert (
-            sp.detect_standup_mode_declaration(TAUGHT_SWITCH_BACK) == sp.MODE_REPORT
-        )
+        assert sp.detect_standup_mode_declaration(TAUGHT_SWITCH_BACK) == sp.MODE_REPORT
 
     def test_routable_declaration_form_declares_interview(self):
-        assert (
-            sp.detect_standup_mode_declaration(ROUTABLE_DECLARATION)
-            == sp.MODE_INTERVIEW
-        )
+        assert sp.detect_standup_mode_declaration(ROUTABLE_DECLARATION) == sp.MODE_INTERVIEW
 
     def test_tokenless_phrasing_is_not_claimed(self):
         """'use the interview from now on' has no standup token — it is a
@@ -162,10 +155,7 @@ class TestDeclarationDetection:
         )
 
     def test_directionless_durative_standup_mention_is_no_declaration(self):
-        assert (
-            sp.detect_standup_mode_declaration("do my standup daily from now on")
-            is None
-        )
+        assert sp.detect_standup_mode_declaration("do my standup daily from now on") is None
 
     def test_working_mode_surface_does_not_steal_pm_phrasing(self):
         """The #1510 declaration surface runs ABOVE routing — it must return
@@ -194,9 +184,7 @@ class TestDeclarationAtHandlerSeam:
                 _standup_intent(message), "wf-1591", session_id=sid, user_id=user_id
             )
 
-    async def test_pm_declaration_stores_declared_value_and_confirms(
-        self, service, mem_prefs
-    ):
+    async def test_pm_declaration_stores_declared_value_and_confirms(self, service, mem_prefs):
         result = await self._turn(service, PM_DECLARATION)
         assert result.success is True
         assert result.message == sp.declaration_confirmation(sp.MODE_INTERVIEW, True)
@@ -216,9 +204,7 @@ class TestDeclarationAtHandlerSeam:
         service._start_standup_conversation.assert_not_called()
         assert "(yes/no)" not in result.message  # not a read-back
 
-    async def test_next_generic_ask_honors_the_declared_interview(
-        self, service, mem_prefs
-    ):
+    async def test_next_generic_ask_honors_the_declared_interview(self, service, mem_prefs):
         """PM's live expectation: after the declaration, the next standup ask
         goes straight to the interview — stored, not re-inferred."""
         await self._turn(service, PM_DECLARATION)
@@ -240,9 +226,7 @@ class TestDeclarationAtHandlerSeam:
         service._start_standup_conversation.assert_not_called()
         assert "Here's your derived standup." in report.message
 
-    async def test_anonymous_declaration_is_honest_not_fabricated(
-        self, service, mem_prefs
-    ):
+    async def test_anonymous_declaration_is_honest_not_fabricated(self, service, mem_prefs):
         """No signed-in user → no store to write. The reply says so instead
         of promising (the floor's fabricated promise is the bug this path
         replaces) — and teaches only phrases that route."""
@@ -275,13 +259,9 @@ class TestEndToEndRoutableDeclarations:
             "services.standup.assembler.build_user_standup_summary",
             new=AsyncMock(return_value=_summary()),
         ):
-            return await service.process_intent(
-                message=message, session_id=sid, user_id=_USER
-            )
+            return await service.process_intent(message=message, session_id=sid, user_id=_USER)
 
-    async def test_routable_declaration_deterministic_end_to_end(
-        self, service, mem_prefs
-    ):
+    async def test_routable_declaration_deterministic_end_to_end(self, service, mem_prefs):
         """A 'my standup'-cued declaration resolves with the LLM structurally
         unreachable: _is_standup_query claims it, the in-handler branch
         stores the declared interview default and confirms."""

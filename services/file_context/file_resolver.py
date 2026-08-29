@@ -112,12 +112,16 @@ class FileResolver:
         # filename-shaped token that matches NO candidate, answer honestly
         # (None) instead of summarizing the best-scoring OTHER document.
         exact_matches = [
-            f for f in files if f.filename and self._filename_in_message(f.filename, original_message)
+            f
+            for f in files
+            if f.filename and self._filename_in_message(f.filename, original_message)
         ]
         if len(exact_matches) == 1:
             return exact_matches[0].id, 0.98
         if len(exact_matches) > 1:
-            raise AmbiguousFileReferenceError(exact_matches[:3], [0.98] * min(len(exact_matches), 3))
+            raise AmbiguousFileReferenceError(
+                exact_matches[:3], [0.98] * min(len(exact_matches), 3)
+            )
         if _FILENAME_TOKEN_RE.search(original_message):
             # A specific filename was named and nothing the user owns bears it.
             return None, 0.0
@@ -190,7 +194,9 @@ class FileResolver:
 
             cutoff = utc_now() - timedelta(days=days)
             views = [
-                v for v in views if v.upload_time and ensure_utc(v.upload_time) > cutoff
+                v
+                for v in views
+                if (upload_utc := ensure_utc(v.upload_time)) is not None and upload_utc > cutoff
             ]
         return views
 

@@ -69,7 +69,9 @@ def _binop_operands(node):
     """For `A - B` return ('A','B'); else None. Used to spot bidirectional pairs."""
     if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Sub):
         l = getattr(node.left, "id", None) or getattr(getattr(node.left, "func", None), "id", None)
-        r = getattr(node.right, "id", None) or getattr(getattr(node.right, "func", None), "id", None)
+        r = getattr(node.right, "id", None) or getattr(
+            getattr(node.right, "func", None), "id", None
+        )
         if l and r:
             return (l, r)
     return None

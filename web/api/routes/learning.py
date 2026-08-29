@@ -1389,9 +1389,7 @@ async def export_learning_data(
 
 @router.delete("/controls/data/clear")
 async def clear_learning_data(
-    data_type: str = Query(
-        "all", description="Type of data to clear: all, patterns, settings"
-    ),
+    data_type: str = Query("all", description="Type of data to clear: all, patterns, settings"),
     current_user: JWTClaims = Depends(get_current_user),
 ) -> Dict[str, Any]:
     """
@@ -1419,9 +1417,7 @@ async def clear_learning_data(
         async with AsyncSessionFactory.session_scope() as session:
             if data_type in ("all", "patterns"):
                 deleted = await session.execute(
-                    sql_delete(LearnedPattern).where(
-                        LearnedPattern.user_id == current_user.user_id
-                    )
+                    sql_delete(LearnedPattern).where(LearnedPattern.user_id == current_user.user_id)
                 )
                 results["patterns_cleared"] = deleted.rowcount
 

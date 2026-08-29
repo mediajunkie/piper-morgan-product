@@ -376,10 +376,13 @@ class TestPendingTodosNaiveAwareFix1573:
         user_id = str(uuid4())
         assembler = ContextAssembler()
 
-        with patch(
-            "services.todo.todo_management_service.TodoManagementService",
-            return_value=mock_svc,
-        ), patch("services.intent_service.context_assembler.logger") as mock_logger:
+        with (
+            patch(
+                "services.todo.todo_management_service.TodoManagementService",
+                return_value=mock_svc,
+            ),
+            patch("services.intent_service.context_assembler.logger") as mock_logger,
+        ):
             result = await assembler._compute_pending_todos(user_id)
 
         assert result == {"source_failed": True}, "failure must flag, not fake-empty None"
@@ -414,32 +417,35 @@ class TestPendingTodosNaiveAwareFix1573:
         """_gather_status_priority_context must carry the failure flag into
         context, never drop it into fake-empty."""
         assembler = ContextAssembler()
-        with patch.object(
-            assembler, "_gather_calendar_context", new=AsyncMock(return_value={})
-        ), patch.object(
-            assembler, "_get_user_context_cached", new=AsyncMock(return_value=None)
-        ), patch.object(
-            assembler,
-            "_get_pending_todos_cached",
-            new=AsyncMock(return_value={"pending_todos_source_failed": True}),
-        ), patch.object(
-            assembler,
-            "_gather_blocked_items_context",
-            new=AsyncMock(return_value={}),
-        ), patch.object(
-            assembler,
-            "_gather_active_milestones_context",
-            new=AsyncMock(return_value={}),
-        ), patch.object(
-            assembler,
-            "_gather_recent_activity_context",
-            new=AsyncMock(return_value={}),
-        ), patch.object(
-            assembler,
-            "_gather_high_priority_issues_context",
-            new=AsyncMock(return_value={}),
-        ), patch(
-            "services.integrations.integration_status_service.IntegrationStatusService"
+        with (
+            patch.object(assembler, "_gather_calendar_context", new=AsyncMock(return_value={})),
+            patch.object(assembler, "_get_user_context_cached", new=AsyncMock(return_value=None)),
+            patch.object(
+                assembler,
+                "_get_pending_todos_cached",
+                new=AsyncMock(return_value={"pending_todos_source_failed": True}),
+            ),
+            patch.object(
+                assembler,
+                "_gather_blocked_items_context",
+                new=AsyncMock(return_value={}),
+            ),
+            patch.object(
+                assembler,
+                "_gather_active_milestones_context",
+                new=AsyncMock(return_value={}),
+            ),
+            patch.object(
+                assembler,
+                "_gather_recent_activity_context",
+                new=AsyncMock(return_value={}),
+            ),
+            patch.object(
+                assembler,
+                "_gather_high_priority_issues_context",
+                new=AsyncMock(return_value={}),
+            ),
+            patch("services.integrations.integration_status_service.IntegrationStatusService"),
         ):
             ctx = await assembler._gather_status_priority_context(user_id="u1")
 
@@ -1971,13 +1977,9 @@ class TestFetchSlackMentionsItems:
     async def test_returns_empty_when_no_user_token(self):
         """No user token → the router's user-token auth honest-degrades → [] silently."""
         # honest-degrade: test_auth(use_user_token=True) returns success=False
-        router_patch, router = self._patched_router(
-            auth=MagicMock(success=False, data={})
-        )
+        router_patch, router = self._patched_router(auth=MagicMock(success=False, data={}))
         assembler = ContextAssembler()
-        with router_patch, patch(
-            "services.integrations.slack.config_service.SlackConfigService"
-        ):
+        with router_patch, patch("services.integrations.slack.config_service.SlackConfigService"):
             result = await assembler._fetch_slack_mentions_items(user_id="u1")
 
         assert result == []
@@ -1986,13 +1988,9 @@ class TestFetchSlackMentionsItems:
     @pytest.mark.asyncio
     async def test_returns_empty_when_auth_test_not_ok(self):
         """If auth.test fails, skip the search call entirely."""
-        router_patch, router = self._patched_router(
-            auth=MagicMock(success=False, data={})
-        )
+        router_patch, router = self._patched_router(auth=MagicMock(success=False, data={}))
         assembler = ContextAssembler()
-        with router_patch, patch(
-            "services.integrations.slack.config_service.SlackConfigService"
-        ):
+        with router_patch, patch("services.integrations.slack.config_service.SlackConfigService"):
             result = await assembler._fetch_slack_mentions_items(user_id="u1")
 
         assert result == []
@@ -2022,9 +2020,7 @@ class TestFetchSlackMentionsItems:
             ),
         )
         assembler = ContextAssembler()
-        with router_patch, patch(
-            "services.integrations.slack.config_service.SlackConfigService"
-        ):
+        with router_patch, patch("services.integrations.slack.config_service.SlackConfigService"):
             result = await assembler._fetch_slack_mentions_items(user_id="u1")
 
         assert len(result) == 1
@@ -2067,9 +2063,7 @@ class TestFetchSlackMentionsItems:
             ),
         )
         assembler = ContextAssembler()
-        with router_patch, patch(
-            "services.integrations.slack.config_service.SlackConfigService"
-        ):
+        with router_patch, patch("services.integrations.slack.config_service.SlackConfigService"):
             result = await assembler._fetch_slack_mentions_items(user_id="u1")
 
         assert len(result) == 1
@@ -2081,9 +2075,7 @@ class TestFetchSlackMentionsItems:
         router_patch, router = self._patched_router(auth=MagicMock(success=True, data={}))
         router.test_auth = AsyncMock(side_effect=RuntimeError("boom"))
         assembler = ContextAssembler()
-        with router_patch, patch(
-            "services.integrations.slack.config_service.SlackConfigService"
-        ):
+        with router_patch, patch("services.integrations.slack.config_service.SlackConfigService"):
             result = await assembler._fetch_slack_mentions_items(user_id="u1")
 
         assert result == []
@@ -2112,9 +2104,7 @@ class TestFetchSlackMentionsItems:
             ),
         )
         assembler = ContextAssembler()
-        with router_patch, patch(
-            "services.integrations.slack.config_service.SlackConfigService"
-        ):
+        with router_patch, patch("services.integrations.slack.config_service.SlackConfigService"):
             result = await assembler._fetch_slack_mentions_items(user_id="u1")
 
         assert len(result) == 1

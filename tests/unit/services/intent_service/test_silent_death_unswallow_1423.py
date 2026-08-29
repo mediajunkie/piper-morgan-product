@@ -67,13 +67,11 @@ class TestStandupQueryHonestError:
             "services.standup.assembler.build_user_standup_summary",
             side_effect=RuntimeError("assembler exploded"),
         ):
-            result = await intent_service._handle_standup_query(
-                intent, "wf-1", user_id="user-123"
-            )
+            result = await intent_service._handle_standup_query(intent, "wf-1", user_id="user-123")
         assert isinstance(result, IntentProcessingResult)
-        assert result.success is False, (
-            "standup generation failure must not report success=True 'degraded'"
-        )
+        assert (
+            result.success is False
+        ), "standup generation failure must not report success=True 'degraded'"
         assert result.error is not None and "assembler exploded" in result.error
         assert result.error_type == "standup_generation_error"
         # Message is still conversational, not a stack trace.
@@ -209,9 +207,9 @@ class TestHydrationFailureIsLogged:
         mock_logger = MagicMock()
         with patch.object(cc, "logger", mock_logger):
             assert await hydrate_turns_from_db(ctx, manager, sid) is False
-        assert mock_logger.warning.called, (
-            "hydration failure was a ZERO-telemetry swallow — it must log now"
-        )
+        assert (
+            mock_logger.warning.called
+        ), "hydration failure was a ZERO-telemetry swallow — it must log now"
         clear_context(sid, uid)
 
 
@@ -255,9 +253,7 @@ class TestGuidedProcessCheckFailureIsError:
                 "user-123", "sess-1", "yes, three blockers"
             )
         assert result is None and prefix is None  # designed fallback preserved
-        assert mock_logger.error.called, (
-            "dropping a user out of a guided flow must be ops-visible"
-        )
+        assert mock_logger.error.called, "dropping a user out of a guided flow must be ops-visible"
 
 
 # ---------------------------------------------------------------------------
@@ -276,8 +272,7 @@ class TestIntegrationGuidanceHonestStatus:
         # #1547: the status source is the canonical IntegrationStatusService now;
         # the honesty contract is unchanged — a failed check is NAMED, not silent.
         with patch(
-            "services.integrations.integration_status_service."
-            "IntegrationStatusService.get_all",
+            "services.integrations.integration_status_service." "IntegrationStatusService.get_all",
             new=AsyncMock(side_effect=RuntimeError("status source down")),
         ):
             response = await handlers._format_integration_setup_guidance(user_id="u1")
@@ -292,17 +287,18 @@ class TestIntegrationGuidanceHonestStatus:
 class TestSlotFillingRegistrationFailureIsLogged:
     def test_init_survives_and_logs(self):
         mock_logger = MagicMock()
-        with patch("services.intent.intent_service.LearningHandler"), patch(
-            "services.intent.intent_service.ConversationKnowledgeGraphIntegration"
-        ), patch(
-            "services.intent.intent_service.get_process_registry",
-            side_effect=RuntimeError("registry gone"),
-        ), patch(
-            "services.intent.intent_service.structlog.get_logger",
-            return_value=mock_logger,
+        with (
+            patch("services.intent.intent_service.LearningHandler"),
+            patch("services.intent.intent_service.ConversationKnowledgeGraphIntegration"),
+            patch(
+                "services.intent.intent_service.get_process_registry",
+                side_effect=RuntimeError("registry gone"),
+            ),
+            patch(
+                "services.intent.intent_service.structlog.get_logger",
+                return_value=mock_logger,
+            ),
         ):
             service = IntentService()  # must not raise
         assert service is not None
-        assert mock_logger.error.called, (
-            "silent slot-filling loss must be visible in logs"
-        )
+        assert mock_logger.error.called, "silent slot-filling loss must be visible in logs"

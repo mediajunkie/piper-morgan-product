@@ -12,8 +12,8 @@ WRITE_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
 
 def _exempt_writable_routes():
     """Registered routes that are under an exempt prefix AND expose a write method."""
-    from web.app import app
     from services.auth.auth_middleware import DEFAULT_EXCLUDE_PATHS
+    from web.app import app
 
     out = []
     for r in app.routes:

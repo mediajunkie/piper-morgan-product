@@ -32,7 +32,6 @@ from services.intent_service.chat_pointers import (
     pointer_utterances,
 )
 
-
 # ---------------------------------------------------------------------------
 # Derivation: the answer's capability lines come from the ledger's POINTER rows
 # ---------------------------------------------------------------------------

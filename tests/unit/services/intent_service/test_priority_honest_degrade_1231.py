@@ -88,9 +88,12 @@ async def test_project_metadata_not_connected_reason(handlers):
 
 
 def test_degrade_nudge_helper_surfaces_on_reason_else_silent(handlers):
-    assert "connect" in handlers._degrade_nudge(
-        {"__degrade_reason__": DegradationReason.CONNECT_REQUIRED}
-    ).lower()
+    assert (
+        "connect"
+        in handlers._degrade_nudge(
+            {"__degrade_reason__": DegradationReason.CONNECT_REQUIRED}
+        ).lower()
+    )
     assert handlers._degrade_nudge({}) == ""
     assert handlers._degrade_nudge({"MyProj": {"has_github": True}}) == ""
 

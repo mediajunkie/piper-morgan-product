@@ -29,8 +29,7 @@ from services.shared_types import IntentCategory
 class _ExplosiveLLM:
     def __getattr__(self, name):
         raise AssertionError(
-            f"LLM boundary touched ({name}) — #1666 turns must resolve "
-            "deterministically"
+            f"LLM boundary touched ({name}) — #1666 turns must resolve " "deterministically"
         )
 
 
@@ -50,9 +49,7 @@ async def repro_user():
         await s.commit()
     yield uid
     async with AsyncSessionFactory.session_scope() as s:
-        await s.execute(
-            text("DELETE FROM todo_items WHERE owner_id = :u"), {"u": str(uid)}
-        )
+        await s.execute(text("DELETE FROM todo_items WHERE owner_id = :u"), {"u": str(uid)})
         # process_intent seeds an ADR-075 personalization row for a new user:
         await s.execute(
             text("DELETE FROM personalization_contexts WHERE owner_id = :u"),
@@ -95,9 +92,7 @@ def _stub_classification(monkeypatch, service, message, action):
             secondary_intents=[],
         )
 
-    monkeypatch.setattr(
-        service.intent_classifier, "classify_multiple", _classify_multiple
-    )
+    monkeypatch.setattr(service.intent_classifier, "classify_multiple", _classify_multiple)
 
 
 async def _active_texts(service, user_id):

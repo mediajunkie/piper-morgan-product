@@ -1,10 +1,78 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-26 22:22 PT (STOP). Cron re-armed at this STOP — new job id below.
-**Still watching**: #1386's remaining criteria (1, 4, 5, 6) — no movement since criterion 2's
-re-confirmation on 08-21 (last comment on the issue still 08-22). **08-26 was fully quiet** — six
-fires, no mail, no count movement, nothing to add above this line.
+**Last rewritten**: 2026-08-28 16:3x PT (WORK). **Still watching**: #1386's remaining criteria — 2,
+4, 5 now confirmed/closed (see below); 1 functionally satisfied but text-stale; **6 (PM sign-off)
+is the only one genuinely still open**, naturally last.
+
+## ✅ MVP TRIAGE CUT — CLOSED, PM ruled, board mechanics complete (2026-08-28)
+**Full arc**: sanctioned 08-18, priority-3 08-25, split accepted 08-27, Lead's engineering read
+08-28 morning (60 items). I did the sprint/milestone call, moving several items against
+group-level signals once read in full, corrected Lead's "~10 items" headline down to 5. PM sanity-
+checked live (~11:00), caught that I'd named #1638 "blocked on Arch" without ever asking Arch —
+fixed same-session (ask sent, `857c87768`), plus routed #1386 criteria 4+5 nudges to Lead in the
+same commit.
+
+**PM ruled on all 5 same day** (~14:30, recorded as comments on each issue): #1658→PUB, #1661→PUB
+(+ Lead's own live-v63 carve-out check), #1662→post-beta (my original call confirmed — Lead's
+mid-sitting close+delete recommendation was proven wrong, correction recorded), #1647→post-beta,
+#1436 epic→post-beta (my split preserved). **Board mechanics done**: all 5 → Production milestone
+(standing disposition rule), #1658/#1661 → Sprint "PUB - Public Beta" via `assign-sprint-safely`.
+**Found a bigger gap doing it**: 4 of 5 issues were never on the board at all (not just missing a
+Sprint value) — added all four, Status → Product Backlog. Verified via `gh run list`/live reads
+throughout, not assumed from mutations succeeding silently. Replied to Lead (cc PM/Exec, `f74fe2555`).
+**Document**: `dev/active/mvp-triage-cut-assembled-2026-08-28.md`, marked ✅ CLOSED. **Nothing
+further owed on this thread.**
+
+**The §3 "no matter what" core list** (kept for reference — I used this same test again on the FTUX
+consult below): (1) consent/trust architecture, (2) honesty discipline, (3) PM-operation grammar
+(the 62 ops), (4) working-state model + Radar, (5) synthesis direction. NOT core: NL parser,
+floor's prose improvisation, chat container itself, per-phrasing patches.
+
+## ✅ FTUX SURFACE-MAPPING CONSULT — ANSWERED, #1688 filed MVP (2026-08-28)
+CXO's mapping (`docs/internal/design/ftux-surface-mapping-2026-08-28.md`) applied the
+no-optional-complexity lens first, landing on one real gap: cold Web/MCP users meet a plain
+greeting instead of the FTUX model's value-delivering first question — the mapping's stated main
+finding. Answered §5: ordering fits the milestone shape (no conflict with the triage cut); the gap
+wants its own issue, not a scope-add to closed #1536. **Filed #1688** (MVP — extends already-shipped
+#1536, closes a real first-impression trust gap, ran the core-list test rather than granting
+differentiator work a free pass). **Caught `gh issue create --milestone` not adding to the board on
+my own new issue** — checked immediately, fixed (`gh project item-add` + set Status to Sprint
+Backlog). Lead's technical question (one mechanism or two builds across Web/MCP) left open on the
+issue for him to answer. Replied to CXO cc Lead/PM/Arch/PA (`2615491e4`, verified landed). **Closed
+— nothing further needed from PPM** unless Lead's technical answer changes the scope.
+
+## ✅ #1386 CRITERIA 4+5 — BOTH CONFIRMED CLOSED SAME DAY (2026-08-28)
+Both nudges from earlier today landed. **Criterion 5**: checked directly on live v63 via `fly ssh
+console` — alembic at head, `ENCRYPTION_MASTER_KEY` present (autogen-diff not run in-container,
+noted honestly as partial evidence). **Criterion 4**: the mypy ratchet drift I found this morning
+is fixed, Architecture Enforcement green — **verified independently** (`gh run list`, not taken on
+the issue comment alone), last 2 runs both success. **Only criterion 6 (PM sign-off) remains open**
+on #1386 — 1's text is stale but functionally satisfied (#1332/#1278 both closed).
+
+**New finding, same check**: **#1687** — four OTHER CI workflows (Code Quality, Docker Build,
+Configuration Validation, Router Pattern Enforcement) silently red since ≥08-26, found while
+verifying #1436's fix. Same "trained-to-skim belt" class as Architecture Enforcement's own red
+window. Its body said "Milestone: MVP" but the actual field was unset — set it to match. **Lead is
+already actively working it** (saw their live commits removing a never-passable CI job mid-fire).
+⚠️ **Hit a genuine GitHub API rate limit mid-verification** (`API rate limit exceeded for user ID
+3227378`) — couldn't confirm the milestone-set or board-add landed before the limit hit. The edit
+command itself returned success before the limit, so likely landed, but **calling this unverified,
+not confirmed** — first check next fire, don't assume.
+
+## 🔵 QUEUED — Ship #058 workstream review, legitimately deferred (not the antipattern)
+Exec kickoff, window Fri Aug 21–Thu Aug 27, due no later than Sat Aug 29 (real deadline, real
+buffer remaining). Deliberately not started 08-28 13:22 — that fire was already substantial
+(retroactive log accounting + triage-cut update + full FTUX consult with a new issue filed and
+board-fixed). A workstream review deserves a dedicated read of the window's omnibus logs, not a
+rushed tail-end pass — write it at the next fire with room, don't push to Saturday's deadline edge.
+
+## 🔵 08-27 session gap — cohort-wide account usage-limit event, not a PPM-side failure
+Session went dark after the 13:22 WORK fire; no STOP happened. Retroactively closed the 08-27 log
+at 08-28 START with full account: 13:22 work was safely committed/pushed before the gap, cron
+(`d58bcc15`) survived untouched, and Exec's Ship #058 kickoff memo independently confirmed a
+cohort-wide account usage-limit event Thursday afternoon — not specific to this seat. No action
+needed; recorded for the record per the interrupted-fire precedent.
 
 ## 🔵 NEW PROTOCOL — replying to a cross-project agent (Exec broadcast, 2026-08-25)
 Cohort-wide fix for a real structural gap: `mail-send.sh` correctly refuses paths outside

@@ -34,24 +34,30 @@ _USER = "owner-b3"
 class TestDetection:
     """Pure deterministic detection — the N2 guard lives here (field-word requirement)."""
 
-    @pytest.mark.parametrize("msg", [
-        "change the title to Foo",
-        "add a label to it",
-        "update the body",
-        "rename the title",
-        "set the description",
-    ])
+    @pytest.mark.parametrize(
+        "msg",
+        [
+            "change the title to Foo",
+            "add a label to it",
+            "update the body",
+            "rename the title",
+            "set the description",
+        ],
+    )
     def test_positive_referents_detected(self, msg):
         assert _detect_issue_referent(msg) is True
 
-    @pytest.mark.parametrize("msg", [
-        "the roadmap needs restructuring",   # N2: fresh topic, no field word
-        "change it to red",                  # pronoun but no field word → N2 safe
-        "what did we create this session",   # not an update
-        "create an issue about testing",     # creation, not update
-        "change the title of issue #107 to Foo",  # explicit # → nothing to resolve
-        "",
-    ])
+    @pytest.mark.parametrize(
+        "msg",
+        [
+            "the roadmap needs restructuring",  # N2: fresh topic, no field word
+            "change it to red",  # pronoun but no field word → N2 safe
+            "what did we create this session",  # not an update
+            "create an issue about testing",  # creation, not update
+            "change the title of issue #107 to Foo",  # explicit # → nothing to resolve
+            "",
+        ],
+    )
     def test_non_referents_pass_through(self, msg):
         assert _detect_issue_referent(msg) is False
 
@@ -75,11 +81,16 @@ async def sm(monkeypatch):
     await engine.dispose()
 
 
-async def _seed_issue(maker, owner, conv, ref="mediajunkie/test-piper-morgan#107", title="Fix login"):
+async def _seed_issue(
+    maker, owner, conv, ref="mediajunkie/test-piper-morgan#107", title="Fix login"
+):
     async with maker() as s:
         await SessionActivityRepository(s).record(
-            owner_id=owner, conversation_id=conv,
-            action_type="issue_created", target_ref=ref, target_title=title,
+            owner_id=owner,
+            conversation_id=conv,
+            action_type="issue_created",
+            target_ref=ref,
+            target_title=title,
         )
 
 
@@ -92,16 +103,14 @@ class TestResolveEmit:
             "change the title to Foo", _USER, _CONV
         )
         assert intent is not None
-        assert intent.action == "update_issue"                     # NOT create_issue (N3)
+        assert intent.action == "update_issue"  # NOT create_issue (N3)
         assert intent.context["repository"] == "mediajunkie/test-piper-morgan"
         assert intent.context["issue_number"] == 107
         assert intent.original_message == "change the title to Foo"  # raw preserved (#1332)
 
     async def test_p2_pronoun_resolves(self, sm):
         await _seed_issue(sm, _USER, _CONV)
-        intent = await IntentClassifier._resolve_issue_referent(
-            "add a label to it", _USER, _CONV
-        )
+        intent = await IntentClassifier._resolve_issue_referent("add a label to it", _USER, _CONV)
         assert intent is not None
         assert intent.action == "update_issue"
         assert intent.context["issue_number"] == 107
@@ -136,12 +145,14 @@ class TestGuards:
 
     async def test_d1a_no_principal_no_read(self, sm):
         """No user_id/session_id → no ledger read, no resolution."""
-        assert await IntentClassifier._resolve_issue_referent(
-            "change the title to Foo", None, _CONV
-        ) is None
-        assert await IntentClassifier._resolve_issue_referent(
-            "change the title to Foo", _USER, None
-        ) is None
+        assert (
+            await IntentClassifier._resolve_issue_referent("change the title to Foo", None, _CONV)
+            is None
+        )
+        assert (
+            await IntentClassifier._resolve_issue_referent("change the title to Foo", _USER, None)
+            is None
+        )
 
     async def test_d1a_owner_scoped(self, sm):
         """Another user's creation in the same conversation is not resolved."""
@@ -166,9 +177,7 @@ class TestLiveWiring:
         resolved intent — no LLM, no cache, no context dict involved."""
         await _seed_issue(sm, _USER, _CONV)
         clf = IntentClassifier()
-        intent = await clf.classify(
-            "change the title to Foo", user_id=_USER, session_id=_CONV
-        )
+        intent = await clf.classify("change the title to Foo", user_id=_USER, session_id=_CONV)
         assert intent.action == "update_issue"
         assert intent.context["issue_number"] == 107
 
@@ -182,9 +191,7 @@ class TestLiveWiring:
             "change the title to Foo",
             {"category": "EXECUTION", "action": "update_document", "confidence": 0.99},
         )
-        intent = await clf.classify(
-            "change the title to Foo", user_id=_USER, session_id=_CONV
-        )
+        intent = await clf.classify("change the title to Foo", user_id=_USER, session_id=_CONV)
         assert intent.action == "update_issue"  # B3 won; the stale cache did not
 
     async def test_classify_multiple_passes_session_id_through(self, sm):

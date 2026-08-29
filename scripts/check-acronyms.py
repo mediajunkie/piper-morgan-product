@@ -26,9 +26,9 @@ Usage:
 Exit 0 = no hard findings, 1 = at least one ⛔ FALSE-UNPACK (gate-able).
 """
 
+import os
 import re
 import sys
-import os
 
 GLOSSARY_DEFAULT = "knowledge/piper-morgan-glossary-v1.1.md"
 

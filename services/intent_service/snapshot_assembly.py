@@ -154,6 +154,10 @@ async def assemble_session_snapshot(
     async def _read_ledger_head():
         # The #1394 ledger head, owner-scoped (D1a: no principal → no read,
         # handled by the caller's gate below).
+        if not user_id or not session_id:
+            # The call site gates on both already; mirrored here because a
+            # closure can't carry that narrowing (D1a: unscoped read forbidden).
+            return None
         try:
             from services.intent_service.session_activity_read import (
                 issue_head,
@@ -200,13 +204,11 @@ async def assemble_session_snapshot(
     async def _none() -> None:
         return None
 
-    active_process_type, head, declared_working_mode, stored_clear_verb = (
-        await asyncio.gather(
-            _probe_process(),
-            _read_ledger_head() if (user_id and session_id) else _none(),
-            _read_mode() if user_id else _none(),
-            _read_clear_verb() if user_id else _none(),
-        )
+    active_process_type, head, declared_working_mode, stored_clear_verb = await asyncio.gather(
+        _probe_process(),
+        _read_ledger_head() if (user_id and session_id) else _none(),
+        _read_mode() if user_id else _none(),
+        _read_clear_verb() if user_id else _none(),
     )
 
     recent_issue_number: Optional[int] = None

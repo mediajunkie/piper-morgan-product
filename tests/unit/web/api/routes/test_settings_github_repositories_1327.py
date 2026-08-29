@@ -271,9 +271,7 @@ class TestPreferencesAreOAuthAgnostic:
             patch("aiohttp.ClientSession", side_effect=AssertionError("native PAT used")),
             patch(_ADAPTER, side_effect=AssertionError("connector used for prefs")),
         ):
-            result = await save_github_preferences(
-                preferences=preferences, current_user=mock_user
-            )
+            result = await save_github_preferences(preferences=preferences, current_user=mock_user)
 
         save_db.assert_awaited_once_with(
             "user-uuid-1",

@@ -28,7 +28,9 @@ class TestLogicalKeys:
     def test_unset_env_names_the_config(self, monkeypatch):
         """A4: the error points at the MISSING CONFIG, not a server outage."""
         monkeypatch.delenv("CALENDAR_MCP_SERVER_URL", raising=False)
-        with pytest.raises(ServerRefResolutionError, match="CALENDAR_MCP_SERVER_URL, which is unset"):
+        with pytest.raises(
+            ServerRefResolutionError, match="CALENDAR_MCP_SERVER_URL, which is unset"
+        ):
             resolve_server_ref("calendar")
 
     def test_unknown_key_lists_known_connectors(self):

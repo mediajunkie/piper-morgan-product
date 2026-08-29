@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any, Dict
 
 import pypdf
 
@@ -111,7 +112,7 @@ class DocumentAnalyzer(BaseAnalyzer):
         render, the same honest fallbacks) so both content sources produce the
         same summary shape.
         """
-        metadata = {"text": text}
+        metadata: Dict[str, Any] = {"text": text}
         if not text:
             summary = ""
             key_points = []

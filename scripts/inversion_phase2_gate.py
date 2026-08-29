@@ -127,9 +127,7 @@ def load_armed_corpus(path: Path = ARMED_CORPUS) -> List[Dict[str, Any]]:
                 raise ValueError(f"{where}: armed row requires a fixture")
             unknown = set(fixture) - valid_fields
             if unknown:
-                raise ValueError(
-                    f"{where}: fixture keys not on SessionSnapshot: {sorted(unknown)}"
-                )
+                raise ValueError(f"{where}: fixture keys not on SessionSnapshot: {sorted(unknown)}")
             snap = SessionSnapshot(**fixture)  # the REAL dataclass — loud on drift
             block = serialize_for_prompt(snap)  # loud on cap breach
             if not block:
@@ -151,9 +149,7 @@ def load_armed_corpus(path: Path = ARMED_CORPUS) -> List[Dict[str, Any]]:
     return rows
 
 
-def armed_matches(
-    expected: str, decision: Any, op_categories: Dict[str, str]
-) -> Tuple[bool, str]:
+def armed_matches(expected: str, decision: Any, op_categories: Dict[str, str]) -> Tuple[bool, str]:
     """Score one armed-family assertion; extends p1.router_matches with the
     route: sentinels. Returns (matched, annotation)."""
     if decision is None or getattr(decision, "outcome", "error") == "error":
@@ -180,8 +176,10 @@ async def _route_rows(
     state block (None → context-free). ERROR recorded, never faked."""
     from services.intent_service.inversion_router import (
         RoutingDecision,
-        SessionSnapshot as RouterSnapshot,
         route,
+    )
+    from services.intent_service.inversion_router import (
+        SessionSnapshot as RouterSnapshot,
     )
 
     decisions = []
@@ -190,9 +188,7 @@ async def _route_rows(
         if state_key and r.get(state_key):
             session_state = RouterSnapshot(state_block=r[state_key])
         try:
-            d = await route(
-                r["phrase"], session_state, llm_service=llm, grammar=grammar
-            )
+            d = await route(r["phrase"], session_state, llm_service=llm, grammar=grammar)
         except Exception as e:  # probe discipline: ERROR recorded, run continues
             d = RoutingDecision(outcome="error", error=f"{type(e).__name__}: {e}")
         decisions.append(d)
@@ -371,9 +367,7 @@ def build_report(
         ):
             rationale = (getattr(d, "rationale", "") or "").replace("|", "/")
             err = (getattr(d, "error", "") or "").replace("|", "/")[:80]
-            lines.append(
-                f"| {r['pair']} | {cond} | {_fmt_route(d)} | {rationale} | {err} |"
-            )
+            lines.append(f"| {r['pair']} | {cond} | {_fmt_route(d)} | {rationale} | {err} |")
 
     # ── Part 3: phase0 REVIEW + row detail (the question book, continued) ─
     lines += [
@@ -388,9 +382,7 @@ def build_report(
             continue
         r, d = rr["row"], rr["decision"]
         rationale = (getattr(d, "rationale", "") or "").replace("|", "/")[:60]
-        lines.append(
-            f"| {r['phrase'][:55]} | {r['category']} | {_fmt_route(d)} | {rationale} |"
-        )
+        lines.append(f"| {r['phrase'][:55]} | {r['category']} | {_fmt_route(d)} | {rationale} |")
     lines += [
         "",
         "## Row detail — phase0 asserted rows",
@@ -473,6 +465,7 @@ def flip_coverage_audit() -> str:
     from services.intent_service.inversion_router import derive_routing_grammar
     from services.intent_service.workflow_dispatcher import (
         FLIP_GROUPS,
+        FLIP_WRITE_ALLOWLIST,
         get_action_workflows,
     )
     from services.intent_service.workflow_entries import register_default_workflows
@@ -508,20 +501,31 @@ def flip_coverage_audit() -> str:
 
     n_read = len(read_keys)
     L: List[str] = []
-    L.append(f"#1667 inversion flip-unit coverage audit — {datetime.now(timezone.utc):%Y-%m-%d %H:%M UTC}")
-    L.append("layer measured (m-43): the rail registry in THIS process "
-             "(register_default_workflows → get_action_workflows) + "
-             "ACTION_REGISTRY categories via the derived grammar.")
-    L.append("It reports what a flag CAN address — not what routing did, and "
-             "not whether any flag is set.")
+    L.append(
+        f"#1667 inversion flip-unit coverage audit — {datetime.now(timezone.utc):%Y-%m-%d %H:%M UTC}"
+    )
+    L.append(
+        "layer measured (m-43): the rail registry in THIS process "
+        "(register_default_workflows → get_action_workflows) + "
+        "ACTION_REGISTRY categories via the derived grammar."
+    )
+    L.append(
+        "It reports what a flag CAN address — not what routing did, and "
+        "not whether any flag is set."
+    )
     L.append("")
     L.append("DENOMINATORS")
-    L.append(f"  rail operation keys (action_triggered) : {len(rail):3d}  "
-             f"({len(entries)} unique entries)")
-    L.append(f"    READ effect (flippable at all)       : {n_read:3d}  "
-             f"({len(read_entries)} entries)")
-    L.append(f"    non-READ (never flippable, any flag) : {len(other_keys):3d}  "
-             f"({len(entries) - len(read_entries)} entries)")
+    L.append(
+        f"  rail operation keys (action_triggered) : {len(rail):3d}  "
+        f"({len(entries)} unique entries)"
+    )
+    L.append(
+        f"    READ effect (flippable at all)       : {n_read:3d}  " f"({len(read_entries)} entries)"
+    )
+    L.append(
+        f"    non-READ (never flippable, any flag) : {len(other_keys):3d}  "
+        f"({len(entries) - len(read_entries)} entries)"
+    )
     L.append("")
     L.append(f"READ KEYS BY FLIP GROUP  (denominator: {n_read} READ keys)")
     for group in sorted(FLIP_GROUPS):
@@ -529,57 +533,92 @@ def flip_coverage_audit() -> str:
         L.append(f"  {group:<16} {len(keys):3d}/{n_read}   {', '.join(keys) or '(none)'}")
     L.append(f"  {'UNGROUPED':<16} {len(ungrouped):3d}/{n_read}")
     grouped = n_read - len(ungrouped)
-    L.append(f"  {'—— grouped':<16} {grouped:3d}/{n_read}  "
-             f"({100.0 * grouped / n_read:.0f}% of READ keys addressable by a wave)")
+    L.append(
+        f"  {'—— grouped':<16} {grouped:3d}/{n_read}  "
+        f"({100.0 * grouped / n_read:.0f}% of READ keys addressable by a wave)"
+    )
     L.append("")
     L.append(f"UNASSIGNED — the {len(ungrouped)} READ keys NO WAVE CAN FLIP, by name")
-    L.append("  (this list is the point of the audit; 'unassigned' is never a "
-             "silent remainder)")
+    L.append("  (this list is the point of the audit; 'unassigned' is never a " "silent remainder)")
     orphans = [k for k in ungrouped if cat_of.get(k) is None]
     swept = sorted((cat_of[k], k) for k in ungrouped if cat_of.get(k))
-    L.append(f"  a. no group AND no registry category — reachable ONLY by naming "
-             f"the operation itself: {len(orphans)}")
+    L.append(
+        f"  a. no group AND no registry category — reachable ONLY by naming "
+        f"the operation itself: {len(orphans)}"
+    )
     for k in sorted(orphans):
         L.append(f"       {k}")
-    L.append(f"  b. no group BUT carries a registry category — ⚠️ STILL SWEPT IN "
-             f"when that category is named: {len(swept)}")
+    L.append(
+        f"  b. no group BUT carries a registry category — ⚠️ STILL SWEPT IN "
+        f"when that category is named: {len(swept)}"
+    )
     for cat, k in swept:
         L.append(f"       {k:<28} (category {cat})")
     L.append("")
     L.append("FLIP-1 COVERAGE, FOR COMPARISON (the #1667 measurement, re-run)")
-    L.append(f"  READ keys a CATEGORY flag can address      : "
-             f"{n_read - len(no_category):3d}/{n_read}   "
-             "(alias-resolved — the mapping inversion_live actually uses)")
-    L.append(f"  READ keys with NO registry category        : {len(no_category):3d}/{n_read}"
-             "   ← unaddressable by ANY category-only flag")
-    L.append(f"  same count by DIRECT registry action only  : "
-             f"{len(direct_category):3d}/{n_read} addressable "
-             f"({n_read - len(direct_category)} not)")
-    L.append("  ⚠️ Two measurements, both correct, of different mappings. The "
-             "#1667 decision cites 23/93 addressable (70 unaddressable); that "
-             "is the DIRECT count — ACTION_REGISTRY's own action names only. "
-             "inversion_live._category_by_operation ALSO back-maps each action "
-             "through grammar.alias_to_canonical, so the number that governs "
-             "live behavior is the first line above. The decision's conclusion "
-             "is unaffected (most READ ops are still unreachable by category); "
-             "its figure is measured against a mapping the live path doesn't "
-             "use. Measured 2026-08-20 during the #1667 build.")
+    L.append(
+        f"  READ keys a CATEGORY flag can address      : "
+        f"{n_read - len(no_category):3d}/{n_read}   "
+        "(alias-resolved — the mapping inversion_live actually uses)"
+    )
+    L.append(
+        f"  READ keys with NO registry category        : {len(no_category):3d}/{n_read}"
+        "   ← unaddressable by ANY category-only flag"
+    )
+    L.append(
+        f"  same count by DIRECT registry action only  : "
+        f"{len(direct_category):3d}/{n_read} addressable "
+        f"({n_read - len(direct_category)} not)"
+    )
+    L.append(
+        "  ⚠️ Two measurements, both correct, of different mappings. The "
+        "#1667 decision cites 23/93 addressable (70 unaddressable); that "
+        "is the DIRECT count — ACTION_REGISTRY's own action names only. "
+        "inversion_live._category_by_operation ALSO back-maps each action "
+        "through grammar.alias_to_canonical, so the number that governs "
+        "live behavior is the first line above. The decision's conclusion "
+        "is unaffected (most READ ops are still unreachable by category); "
+        "its figure is measured against a mapping the live path doesn't "
+        "use. Measured 2026-08-20 during the #1667 build."
+    )
     L.append("")
     L.append("READ-ONLY INVARIANT (re-measured, not assumed)")
     if violations:
-        L.append(f"  🔴 {len(violations)} non-READ keys carry a flip_group: "
-                 f"{', '.join(violations)}")
-        L.append("     WorkflowEntry.__post_init__ should make this impossible. "
-                 "Do not flip anything until this is explained.")
+        L.append(
+            f"  🔴 {len(violations)} non-READ keys carry a flip_group: " f"{', '.join(violations)}"
+        )
+        L.append(
+            "     WorkflowEntry.__post_init__ should make this impossible. "
+            "Do not flip anything until this is explained."
+        )
     else:
-        L.append(f"  ✅ 0 of {len(other_keys)} non-READ keys carry a flip_group "
-                 "(enforced at construction, WorkflowEntry.__post_init__)")
+        L.append(
+            f"  ✅ 0 of {len(other_keys)} non-READ keys carry a flip_group "
+            "(enforced at construction, WorkflowEntry.__post_init__)"
+        )
+    # #1677: the invariant line above would otherwise READ as "no write can
+    # flip", which stopped being true on 2026-08-28. The allowlist is the ONLY
+    # way a non-READ op routes via the inversion, and it is named here so the
+    # audit never implies a stronger guarantee than the code gives (m-44).
+    allowlisted = sorted(k for k, e in rail.items() if e.flip_write_allowlist_key is not None)
+    L.append(
+        f"  NAMED-WRITE ALLOWLIST (#1677)              : "
+        f"{sorted(FLIP_WRITE_ALLOWLIST) or 'empty'}"
+    )
+    L.append(f"    rail keys declaring an allowlist key     : " f"{allowlisted or 'none'}")
+    L.append(
+        "    ⚠️ These flip when a flag token names the OPERATION or its "
+        "registry CATEGORY (create_todo is EXECUTION — flipping that "
+        "category flips this write too). No flip_group sweeps them in."
+    )
     L.append("")
     L.append("HOW TO FLIP  (PIPER_INVERSION_LIVE_CATEGORIES accepts all three)")
     L.append("  a wave      : PIPER_INVERSION_LIVE_CATEGORIES=read_status")
     L.append("  one op      : PIPER_INVERSION_LIVE_CATEGORIES=show_standup")
-    L.append("  a category  : PIPER_INVERSION_LIVE_CATEGORIES=QUERY   (flip-1's "
-             "unit; sweeps the b-list above)")
+    L.append(
+        "  a category  : PIPER_INVERSION_LIVE_CATEGORIES=QUERY   (flip-1's "
+        "unit; sweeps the b-list above)"
+    )
     L.append("  revert      : unset it. Default-empty = fully dark.")
     return "\n".join(L) + "\n"
 
@@ -608,8 +647,10 @@ async def run(dry: bool, out: Optional[Path]) -> int:
             if r["condition"] == "armed":
                 print(f"--- {r['pair']} state block ({len(r['_state_block'])} chars):")
                 print(r["_state_block"])
-        print("dry run complete: fixtures build the real dataclass, serialize "
-              "under the cap, pairs are twinned. No LLM calls made.")
+        print(
+            "dry run complete: fixtures build the real dataclass, serialize "
+            "under the cap, pairs are twinned. No LLM calls made."
+        )
         return 0
 
     from services.llm.clients import LLMClient

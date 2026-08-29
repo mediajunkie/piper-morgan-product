@@ -218,20 +218,25 @@ class TestHandlerArtifactBranch:
             key_findings=["Beta first"],
             generated_at=datetime(2026, 8, 18, 12, 0, 0),
         )
-        with patch(
-            "services.database.session_factory.AsyncSessionFactory.session_scope_fresh",
-            _fake_scope,
-        ), patch(
-            "services.intent_service.document_handlers._get_uploaded_file",
-            AsyncMock(return_value=None),
-        ), patch(
-            "services.intent_service.document_handlers._get_owned_artifact",
-            AsyncMock(return_value=artifact),
-        ) as owned, patch.object(
-            document_handlers._doc_analyzer,
-            "analyze_text",
-            AsyncMock(return_value=analysis),
-        ) as analyze_text:
+        with (
+            patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope_fresh",
+                _fake_scope,
+            ),
+            patch(
+                "services.intent_service.document_handlers._get_uploaded_file",
+                AsyncMock(return_value=None),
+            ),
+            patch(
+                "services.intent_service.document_handlers._get_owned_artifact",
+                AsyncMock(return_value=artifact),
+            ) as owned,
+            patch.object(
+                document_handlers._doc_analyzer,
+                "analyze_text",
+                AsyncMock(return_value=analysis),
+            ) as analyze_text,
+        ):
             result = await document_handlers.handle_summarize_document(
                 file_id=_ARTIFACT_ID, format="bullet", user_id=_OWNER
             )
@@ -253,15 +258,19 @@ class TestHandlerArtifactBranch:
         never widens ownership to make resolution pass."""
         from services.intent_service import document_handlers
 
-        with patch(
-            "services.database.session_factory.AsyncSessionFactory.session_scope_fresh",
-            _fake_scope,
-        ), patch(
-            "services.intent_service.document_handlers._get_uploaded_file",
-            AsyncMock(return_value=None),
-        ), patch(
-            "services.intent_service.document_handlers._get_owned_artifact",
-            AsyncMock(return_value=None),
+        with (
+            patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope_fresh",
+                _fake_scope,
+            ),
+            patch(
+                "services.intent_service.document_handlers._get_uploaded_file",
+                AsyncMock(return_value=None),
+            ),
+            patch(
+                "services.intent_service.document_handlers._get_owned_artifact",
+                AsyncMock(return_value=None),
+            ),
         ):
             with pytest.raises(FileNotFoundError):
                 await document_handlers.handle_analyze_document(
@@ -293,14 +302,13 @@ class TestRailWiring:
         )
 
         resolver_cls = MagicMock()
-        resolver_cls.return_value.resolve_file_reference = AsyncMock(
-            return_value=(None, 0.0)
-        )
-        with patch(
-            "services.database.session_factory.AsyncSessionFactory.session_scope",
-            _fake_scope,
-        ), patch(
-            "services.file_context.file_resolver.FileResolver", resolver_cls
+        resolver_cls.return_value.resolve_file_reference = AsyncMock(return_value=(None, 0.0))
+        with (
+            patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope",
+                _fake_scope,
+            ),
+            patch("services.file_context.file_resolver.FileResolver", resolver_cls),
         ):
             result = await run_summarize_document_workflow(
                 session_id="sess-1657",

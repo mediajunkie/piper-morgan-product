@@ -326,8 +326,7 @@ class TestIntegrationSetupContinuity:
         from unittest.mock import AsyncMock, patch
 
         with patch(
-            "services.integrations.integration_status_service."
-            "IntegrationStatusService.get_all",
+            "services.integrations.integration_status_service." "IntegrationStatusService.get_all",
             new=AsyncMock(return_value={}),
         ):
             result = await canonical_handlers._format_integration_setup_guidance(

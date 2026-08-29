@@ -162,9 +162,7 @@ class TestStandupResolution1466:
         )
 
         todos = [_todo("Ship the #1466 mapping", priority="urgent")]
-        with patch(
-            "services.todo.todo_management_service.TodoManagementService"
-        ) as mock_svc:
+        with patch("services.todo.todo_management_service.TodoManagementService") as mock_svc:
             mock_svc.return_value.list_todos = AsyncMock(return_value=todos)
             result = await router._process_slash_command(
                 {
@@ -197,17 +195,27 @@ class TestStandupResolution1466:
             code, _ = await mint_link_code(db_session, owner.id)
             await db_session.commit()
             await router._process_slash_command(
-                {"command": "/link", "text": code, "user_id": su, "channel_id": "C", "team_id": team}
+                {
+                    "command": "/link",
+                    "text": code,
+                    "user_id": su,
+                    "channel_id": "C",
+                    "team_id": team,
+                }
             )
 
         seen = {}
-        with patch(
-            "services.todo.todo_management_service.TodoManagementService"
-        ) as mock_svc:
+        with patch("services.todo.todo_management_service.TodoManagementService") as mock_svc:
             mock_svc.return_value.list_todos = AsyncMock(return_value=[])
             for team in (team_1, team_2):
                 await router._process_slash_command(
-                    {"command": "/standup", "text": "", "user_id": su, "channel_id": "C", "team_id": team}
+                    {
+                        "command": "/standup",
+                        "text": "",
+                        "user_id": su,
+                        "channel_id": "C",
+                        "team_id": team,
+                    }
                 )
                 seen[team] = mock_svc.return_value.list_todos.await_args.kwargs.get("user_id")
 
@@ -221,9 +229,7 @@ class TestStandupResolution1466:
         """#1429 regression + CXO §2: the not-linked copy stays, and the decline
         carries the one-click deep link with the caller's opaque Slack params."""
         su, st = _slack_user(), _slack_team()
-        with patch(
-            "services.todo.todo_management_service.TodoManagementService"
-        ) as mock_svc:
+        with patch("services.todo.todo_management_service.TodoManagementService") as mock_svc:
             mock_svc.return_value.list_todos = AsyncMock(return_value=[])
             result = await router._process_slash_command(
                 {"command": "/standup", "text": "", "user_id": su, "channel_id": "C", "team_id": st}

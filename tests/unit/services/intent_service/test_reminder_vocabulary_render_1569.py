@@ -51,9 +51,7 @@ class TestTodoVocabulary:
 
     def test_todo_count_uses_gathered_denominator_when_present(self):
         """m-44: the header's count is the gathered total, not the slice."""
-        out = _render(
-            {"pending_todos": [{"text": "review the PR"}], "pending_todo_count": 7}
-        )
+        out = _render({"pending_todos": [{"text": "review the PR"}], "pending_todo_count": 7})
         assert "PENDING TODOS (7)" in out
 
     def test_todo_items_render_indented_under_their_section(self):

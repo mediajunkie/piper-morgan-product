@@ -53,13 +53,9 @@ def upgrade() -> None:
             server_default=sa.text("now()"),
             nullable=False,
         ),
-        sa.UniqueConstraint(
-            "slack_user_id", "slack_team_id", name="uq_slack_identities_user_team"
-        ),
+        sa.UniqueConstraint("slack_user_id", "slack_team_id", name="uq_slack_identities_user_team"),
     )
-    op.create_index(
-        "ix_slack_identities_owner_id", "slack_identities", ["owner_id"]
-    )
+    op.create_index("ix_slack_identities_owner_id", "slack_identities", ["owner_id"])
 
     op.create_table(
         "slack_link_codes",

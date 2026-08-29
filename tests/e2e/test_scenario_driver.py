@@ -168,7 +168,9 @@ FRESH_TESTER_ONBOARDING = Scenario(
             "Hi, I just got access to this and am excited to try it. How do I address you?",
             asserts=[
                 Assertion("nonempty", nonempty, "greeting returned <10 chars"),
-                Assertion("no_error", no_error_fingerprint, "greeting turn hit an error fingerprint"),
+                Assertion(
+                    "no_error", no_error_fingerprint, "greeting turn hit an error fingerprint"
+                ),
                 Assertion(
                     "#1416 answers 'how do I address you?'",
                     answers_how_to_address,
@@ -222,7 +224,9 @@ async def drive_scenario(client, auth: dict, scenario: Scenario) -> list[TurnRes
         kwargs.update(auth)
         resp = await client.post("/api/v1/intent", **kwargs)
         http_ok = resp.status_code == 200
-        data = resp.json() if http_ok else {"message": f"HTTP {resp.status_code}: {resp.text[:200]}"}
+        data = (
+            resp.json() if http_ok else {"message": f"HTTP {resp.status_code}: {resp.text[:200]}"}
+        )
         failures = [a.name for a in turn.asserts if not _safe_check(a, data)]
         results.append(
             TurnResult(
@@ -471,13 +475,19 @@ async def _run_all_and_report() -> int:
             bait = f"ZebraAlphaSecret-{uuid4().hex[:6]}"
             async with _make_user(client, seed_default_project=bait) as (_a, _auth_a, ua):
                 async with _make_user(client) as (_b, auth_b, ub):
-                    print(f"  user A ({ua}) owns is_default project {bait!r}; user B ({ub}) has none")
+                    print(
+                        f"  user A ({ua}) owns is_default project {bait!r}; user B ({ub}) has none"
+                    )
                     leaked = False
                     for msg in ("What projects am I working on?", "What's my current project?"):
                         kwargs = {"json": {"message": msg, "session_id": str(uuid4())}}
                         kwargs.update(auth_b)
                         resp = await client.post("/api/v1/intent", **kwargs)
-                        body = (resp.json().get("message") or "") if resp.status_code == 200 else resp.text
+                        body = (
+                            (resp.json().get("message") or "")
+                            if resp.status_code == 200
+                            else resp.text
+                        )
                         hit = bait.lower() in body.lower()
                         leaked = leaked or hit
                         print(f"  {'LEAK' if hit else ' ok '}  B probe {msg[:48]!r}")

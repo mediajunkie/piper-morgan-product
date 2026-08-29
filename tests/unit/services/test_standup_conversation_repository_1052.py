@@ -30,7 +30,11 @@ import pytest_asyncio
 # Skip module if aiosqlite missing (parallel to #1018/#1035 pattern).
 aiosqlite = pytest.importorskip("aiosqlite")
 
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine  # noqa: E402
+from sqlalchemy.ext.asyncio import (  # noqa: E402
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from services.database.models import StandupConversationDB  # noqa: E402
 from services.database.repositories import StandupConversationRepository  # noqa: E402

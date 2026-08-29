@@ -22,9 +22,7 @@ TEMPLATES = Path(__file__).resolve().parents[3] / "templates"
 
 def _home_html() -> str:
     env = Environment(loader=FileSystemLoader(str(TEMPLATES)), autoescape=True)
-    return env.get_template("home.html").render(
-        trust_stage=1, show_radar=True, user_name="tester"
-    )
+    return env.get_template("home.html").render(trust_stage=1, show_radar=True, user_name="tester")
 
 
 def test_selection_latch_and_sequence_token_present():

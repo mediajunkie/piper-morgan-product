@@ -14,12 +14,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from services.database.models import AuditLog, ConversationDB, ConversationTurnDB, FeedbackDB, User
 
 
-
 async def _seed_conversation(session, conv_id: str) -> None:
     """conversation_turns FKs to conversations — turns need a real parent
     (and the conversation a real user). Mirrors the 532 file's helper."""
     import uuid as _uuid
-    from datetime import datetime, timezone as _tz
+    from datetime import datetime
+    from datetime import timezone as _tz
 
     from sqlalchemy import text as _text
 
@@ -40,6 +40,7 @@ async def _seed_conversation(session, conv_id: str) -> None:
         ),
         {"c": conv_id, "u": uid, "s": str(_uuid.uuid4()), "now": now},
     )
+
 
 class TestConversationIndexes:
     """Test performance improvements from conversation table indexes"""
@@ -89,7 +90,6 @@ class TestConversationIndexes:
     # (idx_conversation_turns_entities) was DELIBERATELY dropped by the
     # h1312recon schema-reconciliation migration — the test asserted schema
     # removed by design.
-
 
     # test_conversation_turns_references_gin_index PRUNED (#1452): the GIN index it pinned
     # (idx_conversation_turns_references) was DELIBERATELY dropped by the

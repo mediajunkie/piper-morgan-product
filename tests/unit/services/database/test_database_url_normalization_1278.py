@@ -42,10 +42,7 @@ class TestNormalize:
         )
 
     def test_already_canonical_urls_pass_through(self):
-        assert (
-            _normalize_pg_url("postgresql://u:p@h/db", driver="sync")
-            == "postgresql://u:p@h/db"
-        )
+        assert _normalize_pg_url("postgresql://u:p@h/db", driver="sync") == "postgresql://u:p@h/db"
         assert (
             _normalize_pg_url("postgresql+asyncpg://u:p@h/db", driver="async")
             == "postgresql+asyncpg://u:p@h/db"
@@ -76,10 +73,20 @@ class TestResolvers:
     def test_no_database_url_keeps_local_defaults(self):
         import os
 
-        env = {k: v for k, v in os.environ.items() if k not in (
-            "DATABASE_URL", "ALEMBIC_DATABASE_URL", "POSTGRES_USER",
-            "POSTGRES_PASSWORD", "POSTGRES_HOST", "POSTGRES_PORT", "POSTGRES_DB",
-        )}
+        env = {
+            k: v
+            for k, v in os.environ.items()
+            if k
+            not in (
+                "DATABASE_URL",
+                "ALEMBIC_DATABASE_URL",
+                "POSTGRES_USER",
+                "POSTGRES_PASSWORD",
+                "POSTGRES_HOST",
+                "POSTGRES_PORT",
+                "POSTGRES_DB",
+            )
+        }
         with patch.dict("os.environ", env, clear=True):
             assert _get_database_url() == (
                 "postgresql+asyncpg://piper:dev_changeme_in_production@localhost:5433/piper_morgan"

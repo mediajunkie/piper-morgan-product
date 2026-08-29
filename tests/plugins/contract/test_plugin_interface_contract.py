@@ -114,9 +114,9 @@ class TestPluginInterfaceContract:
         """
         status = plugin_instance.get_status()
         assert "configured" in status, "Status dict must include 'configured' field"
-        assert isinstance(status["configured"], (bool, type(None))), (
-            "Status 'configured' field must be boolean or None (user-scoped)"
-        )
+        assert isinstance(
+            status["configured"], (bool, type(None))
+        ), "Status 'configured' field must be boolean or None (user-scoped)"
         if status["configured"] is None:
             assert "configured_note" in status, (
                 "A None 'configured' must carry a 'configured_note' naming the "

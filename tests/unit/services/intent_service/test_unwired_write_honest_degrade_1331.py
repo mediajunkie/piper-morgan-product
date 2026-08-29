@@ -25,7 +25,14 @@ from services.intent_service.unwired_writes import (
 
 # Substrings that would indicate a CONFABULATED write-success (the #1331 failure mode).
 _FABRICATED_SUCCESS_MARKERS = [
-    "✓", "✅", "created", "added", "done!", "successfully", "i've created", "i have created",
+    "✓",
+    "✅",
+    "created",
+    "added",
+    "done!",
+    "successfully",
+    "i've created",
+    "i have created",
 ]
 # Substrings that indicate an HONEST decline.
 _HONEST_DECLINE_MARKERS = ["can't", "cannot", "can not", "not yet", "yet"]
@@ -44,9 +51,9 @@ class TestCuratedDeclineCopy:
     @pytest.mark.parametrize("action", sorted(UNWIRED_WRITE_DECLINES.keys()))
     def test_curated_copy_declines_without_confabulation(self, action):
         msg = get_unwired_write_decline(action).lower()
-        assert any(m in msg for m in _HONEST_DECLINE_MARKERS), (
-            f"{action}: not an honest decline: {msg!r}"
-        )
+        assert any(
+            m in msg for m in _HONEST_DECLINE_MARKERS
+        ), f"{action}: not an honest decline: {msg!r}"
         for marker in _FABRICATED_SUCCESS_MARKERS:
             assert marker not in msg, f"{action}: confabulated-success marker {marker!r}: {msg!r}"
 
@@ -64,6 +71,6 @@ class TestCuratedDeclineCopy:
         """Actions with real handlers must NOT be in the curated unwired-copy map
         (they behave honestly via their handlers; they're not unwired)."""
         for wired in ["create_issue", "create_ticket", "update_issue", "generate_report"]:
-            assert wired not in UNWIRED_WRITE_DECLINES, (
-                f"{wired} is WIRED — must not have unwired-decline copy"
-            )
+            assert (
+                wired not in UNWIRED_WRITE_DECLINES
+            ), f"{wired} is WIRED — must not have unwired-decline copy"

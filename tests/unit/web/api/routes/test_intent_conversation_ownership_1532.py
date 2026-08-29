@@ -78,9 +78,7 @@ def db_row(monkeypatch):
     cm.__aexit__ = AsyncMock(return_value=None)
     monkeypatch.setattr(sf.AsyncSessionFactory, "session_scope_fresh", lambda: cm)
     # keep the BYOC key-resolution seam out of the picture
-    monkeypatch.setattr(
-        intent_route, "resolve_request_api_key", AsyncMock(return_value="sk-test")
-    )
+    monkeypatch.setattr(intent_route, "resolve_request_api_key", AsyncMock(return_value="sk-test"))
     holder["session"] = session
     return holder
 

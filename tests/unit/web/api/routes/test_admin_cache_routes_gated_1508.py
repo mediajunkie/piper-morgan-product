@@ -81,6 +81,4 @@ class TestAdminCacheRoutesGated:
         mutating route could land ungated and unexamined."""
         deps = _route_dependencies()
         uncovered = set(deps) - GATED - UNGATED_READONLY
-        assert not uncovered, (
-            f"admin routes outside both audited sets — classify them: {uncovered}"
-        )
+        assert not uncovered, f"admin routes outside both audited sets — classify them: {uncovered}"

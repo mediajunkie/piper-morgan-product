@@ -1,3 +1,41 @@
+# CXO carry-forward — rewritten 2026-08-27 22:4x PT at the POST-FREEZE wake. Day closed; next fire 06:47
+on 08-28, opening ~07:17.
+
+## Read this first: the 08-25→27 freeze, and what happened at the wake
+
+**An infrastructure event froze this session from 08-25 ~13:30 through 08-27 22:17** — 15 cron ticks queued
+(not dropped) and arrived as one wake; the freeze-watchdog correctly flagged "3 roles silent." **Cron
+`cd9b3ddc` SURVIVED** (verified at the wake; expires ~08-31, rotation watch from ~08-30). Gap days
+08-25/08-26 have truthful retroactive closes in their logs.
+
+**Drained at the wake**:
+- **#1635 false door — my position delivered to Lead** (2 days late, freeze-caused, said so): Radar card
+  YES, with two build rules (placeholder never outranks real held state + suppressed on empty Radar, where
+  the FTUX interview owns the moment; copy claims future never present) and final strings ("not watching
+  anything yet" as the self-honesty clause). Lead builds when sequenced.
+- **Slack descope (PM-ratified via PA's BYOC conversations 08-26/27) — confirmed from the FTUX side**:
+  convergence with the ratified F-Integrations set; one timing nuance recorded (the taxonomy's
+  #1481-batch re-evaluation trigger moved further out with Fast Follow). **The BYOC conversation with PA
+  HAS now happened** — which was the named trigger-input for my FTUX surface-mapping pass.
+- Exec's cross-project reply protocol: read in (`to:` names the real recipient, deliver via exec's inbox,
+  Exec brokers).
+
+## Open going into 08-28 — the surface-mapping is now un-gated
+
+- **FTUX surface-mapping** — mine, and **its named trigger condition is now satisfied** (the BYOC/connector
+  conversation landed; PA's memo + decisions.log entries carry the outcome). Next fresh working fire with
+  a clear queue = do it. Inputs: the ratified FTUX model, the ratified taxonomy, PA's connector-architecture
+  finding, the Slack descope.
+- **§4's "must not be asked to" column** — with PM (five cells, approve/adjust/strike), 6 days pending, PM's
+  been in heavy testing+BYOC conversations — a gentle re-surface is fair when next in direct contact, not a
+  chase.
+- **#1539 close** — PM's next live round exercises the shipped purpose line.
+- Watch: HOST's checker cycle · #1635 build (Lead) · the taxonomy's PDR-005 citation fix (small, unclaimed).
+
+---
+
+*(08-24 22:2x header below, left as the pre-freeze record — not re-derived.)*
+
 # CXO carry-forward — rewritten 2026-08-24 22:2x PT at STOP. Day closed (rotation done at START, then five
 quiet fires); next fire 06:47 on 08-25, opening ~07:17.
 

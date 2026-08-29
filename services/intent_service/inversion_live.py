@@ -54,15 +54,27 @@ Scope (the #1663 contract addendum, Arch 2026-08-19, binding):
        WHICH one held, never just that something did;
     3. ``confidence >= PIPER_INVERSION_LIVE_MIN_CONFIDENCE`` (default 0.8);
     4. the operation is a rail key (``get_action_workflows``) whose declared
-       effect is ``EffectClass.READ``. This guard is LOAD-BEARING, not belt:
-       ACTION_REGISTRY files ``create_issue`` (WRITE) and ``close_issue``
-       (DESTRUCTIVE) under QUERY, so a category flag alone cannot be a READ
-       guarantee. A write can never flip via this module regardless of
-       configuration. (#1667 adds a SECOND, structural guarantee upstream of
-       it: a non-READ entry cannot even be constructed with a ``flip_group``
-       — ``WorkflowEntry.__post_init__`` raises — so the group surface can
-       never introduce a write. This condition remains the belt, and remains
-       the only guard for the category and operation-name surfaces.)
+       effect is ``EffectClass.READ`` — **or** which is an individually
+       verified NAMED WRITE on ``FLIP_WRITE_ALLOWLIST`` (#1677, Arch ruling
+       2026-08-25, PM-chosen 2026-08-28). This guard is LOAD-BEARING, not
+       belt: ACTION_REGISTRY files ``create_issue`` (WRITE) and
+       ``close_issue`` (DESTRUCTIVE) under QUERY, so a category flag alone
+       cannot be a READ guarantee. **An UNALLOWLISTED write can never flip
+       via this module regardless of configuration** — the allowlist is a
+       named list of reviewed operations, deliberately NOT a relaxation of
+       the class check, because the class check is what catches an operation
+       that lies about its own effect. (#1667 adds a SECOND, structural
+       guarantee upstream: a non-READ entry cannot be constructed with a
+       ``flip_group`` unless it declares an allowlisted key —
+       ``WorkflowEntry.__post_init__`` raises. Both points consult the same
+       constant and move together. This condition remains the belt, and
+       remains the only guard for the category and operation-name surfaces.)
+       ⚠️ Consequence worth stating rather than leaving to be discovered: an
+       allowlisted write is reachable by ANY of the three naming surfaces
+       that name it — ``create_todo`` carries registry category EXECUTION, so
+       flipping the CATEGORY token ``EXECUTION`` sweeps it in too, not only
+       the operation token. The allowlist bounds WHICH writes, never WHICH
+       surface.
 - **Honesty + telemetry** — every consult that reaches the router logs ONE
   structured ``inversion_live_decision`` line: route chosen, reason when
   legacy, operation/category/confidence/threshold, snapshot presence and
@@ -219,6 +231,38 @@ def resolve_live_match(
     return None
 
 
+def _effect_guard_passes(entry: Any, op: Optional[str], canonical: Optional[str]) -> bool:
+    """The dispatch-time half of the #1677 effect guard (the constructor guard
+    in ``WorkflowEntry.__post_init__`` is the structural half — they consult
+    the SAME ``FLIP_WRITE_ALLOWLIST`` and were changed in the same commit,
+    per Arch's ruling: relaxing one and not the other leaves a gap between
+    what is checked and what is enforced).
+
+    READ passes, unchanged — flip-1's contract. A non-READ entry passes ONLY
+    if BOTH hold:
+
+    - the entry DECLARES an allowlisted ``flip_write_allowlist_key``
+      (``flip_write_allowed``), i.e. someone ran Arch's three verification
+      conditions on it and wrote the name down; and
+    - the operation being routed on THIS turn IS that name (or resolves to it
+      canonically). One entry object serves an alias family — create_todo /
+      add_todo / new_todo share this object — so the declaration alone says
+      "this entry was reviewed", not "this name was". The reviewed name is
+      the one that flips.
+
+    Everything the guard caught before, it still catches: ``create_issue``
+    (WRITE, filed under QUERY in ACTION_REGISTRY) declares no key, so naming
+    it — or its category — still cannot flip it.
+    """
+    from services.intent_service.workflow_dispatcher import flip_write_allowed
+
+    if entry.effect == EffectClass.READ:
+        return True
+    if not flip_write_allowed(entry):
+        return False
+    return entry.flip_write_allowlist_key in {op, canonical}
+
+
 def unrecognized_flag_tokens(cats: frozenset[str], grammar: Any) -> list[str]:
     """Flag tokens that name NOTHING — not a known group, not a rail key or
     grammar alias, not an ACTION_REGISTRY category.
@@ -258,9 +302,7 @@ def _log_full_utterance() -> bool:
     # The SAME operator knob the shadow observer reads
     # (PIPER_INVERSION_LOG_UTTERANCE, default on) — one privacy switch for
     # both inversion telemetry surfaces. The sha256 is always logged.
-    return (
-        os.environ.get("PIPER_INVERSION_LOG_UTTERANCE", "1").strip().lower() in _TRUTHY
-    )
+    return os.environ.get("PIPER_INVERSION_LOG_UTTERANCE", "1").strip().lower() in _TRUTHY
 
 
 def _category_by_operation(grammar: Any) -> Dict[str, str]:
@@ -366,11 +408,7 @@ async def consult_inversion_live(
     from services.intent_service.snapshot_assembly import assemble_session_snapshot
 
     snapshot = await assemble_session_snapshot(session_id, user_id, intent_service)
-    if (
-        snapshot.pending_offer_kind
-        or snapshot.active_process_type
-        or snapshot.draft_in_compose
-    ):
+    if snapshot.pending_offer_kind or snapshot.active_process_type or snapshot.draft_in_compose:
         _log_decision(
             message,
             session_id=session_id,
@@ -400,16 +438,12 @@ async def consult_inversion_live(
     decision = await route(
         message,
         RouterSnapshot(state_block=block) if block else None,
-        llm_service=getattr(
-            getattr(intent_service, "intent_classifier", None), "_llm", None
-        ),
+        llm_service=getattr(getattr(intent_service, "intent_classifier", None), "_llm", None),
         grammar=grammar,
         user_id=user_id,
     )
 
-    legacy_label, divergence = _legacy_preclassifier_comparison(
-        message, decision, grammar
-    )
+    legacy_label, divergence = _legacy_preclassifier_comparison(message, decision, grammar)
 
     # ── The dispatch decision, one condition at a time (each reason is a
     # distinct telemetry bucket — the corpus needs to see WHICH gate held).
@@ -460,13 +494,24 @@ async def consult_inversion_live(
             reason = "sub_threshold"
         elif entry is None:
             reason = "not_rail_dispatchable"
-        elif entry.effect != EffectClass.READ:
+        elif not _effect_guard_passes(entry, op, canonical):
             reason = "not_read_effect"
         elif category:
             try:
                 intent_category = IntentCategory[category.upper()]
             except KeyError:
                 reason = "unknown_category_enum"
+        elif entry.effect != EffectClass.READ:
+            # An ALLOWLISTED WRITE that carries no ACTION_REGISTRY category
+            # (#1677). The QUERY fall-through below is only honest for a
+            # declared-READ operation — emitting IntentCategory.QUERY for a
+            # write would be a lie in the Intent itself, and the rail's
+            # category routing is the fall-through target if the action
+            # dispatch ever returns None. No allowlisted op is in this state
+            # today (create_todo is EXECUTION in the registry); this branch
+            # exists so that the day one is, it takes LEGACY rather than a
+            # fabricated category.
+            reason = "allowlisted_write_uncategorized"
         else:
             # Flipped by GROUP or by OPERATION NAME, with no ACTION_REGISTRY
             # category to carry (70 of 93 rail READ ops are in this state —
@@ -474,8 +519,10 @@ async def consult_inversion_live(
             # BEFORE category routing (#1124), so this value chooses no
             # handler; it is the Intent's shape-required field and the
             # fall-through target if the rail ever returns None. QUERY is the
-            # honest value rather than a guess: the effect guard two lines up
-            # has already established this operation is declared READ, and
+            # honest value rather than a guess: the branch DIRECTLY ABOVE has
+            # already established this operation is declared READ (#1677 put
+            # that fact one branch closer — an allowlisted WRITE with no
+            # registry category takes legacy there and never reaches here), and
             # QUERY is IntentCategory's read-only-retrieval member
             # ("CQRS-lite", shared_types.py). It asserts nothing about the
             # registry, which is exactly the point — there is no registry row.
@@ -527,6 +574,12 @@ async def consult_inversion_live(
         )
     )
     if not dispatch:
+        return None
+    if op is None or intent_category is None or decision.confidence is None:
+        # Structurally unreachable: each of these Nones sets a reason above,
+        # and dispatch is exactly reason-is-None. Narrowed explicitly (mypy)
+        # so the impossible state falls through to legacy rather than
+        # constructing a malformed Intent.
         return None
 
     return Intent(

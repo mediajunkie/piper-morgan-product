@@ -69,9 +69,7 @@ async def _raw_preferences(uid: str) -> dict:
     """Read the JSONB straight off the row (m-43: name the layer — this is
     the store as it actually is, not as any wrapper reports it)."""
     async with AsyncSessionFactory.session_scope_fresh() as s:
-        row = await s.execute(
-            _text("SELECT preferences FROM users WHERE id = :u"), {"u": uid}
-        )
+        row = await s.execute(_text("SELECT preferences FROM users WHERE id = :u"), {"u": uid})
         return row.scalar_one() or {}
 
 
@@ -126,9 +124,7 @@ async def _report_turn(service, sid, user_id, message="give me my standup"):
         )
 
 
-async def test_capture_loop_persists_and_second_run_reads_the_real_store(
-    service, seeded_user_id
-):
+async def test_capture_loop_persists_and_second_run_reads_the_real_store(service, seeded_user_id):
     """The whole #1591 capture loop against the real row: two report choices
     → the rail's read-back armed → acceptance persists standup_mode with
     user_verified provenance → the next run reads the STORE (no re-inference,
@@ -139,9 +135,7 @@ async def test_capture_loop_persists_and_second_run_reads_the_real_store(
     service.workflow_offer_service.get_and_clear_pending_offer(sid, user_id=seeded_user_id)
     await _report_turn(service, sid, seeded_user_id)
 
-    offer = service.workflow_offer_service.get_and_clear_pending_offer(
-        sid, user_id=seeded_user_id
-    )
+    offer = service.workflow_offer_service.get_and_clear_pending_offer(sid, user_id=seeded_user_id)
     assert offer is not None
     assert offer["workflow_type"] == vi.VERIFY_INFERENCE_WORKFLOW
     assert offer["pending_action"]["inference_key"] == sp.STANDUP_MODE_KEY

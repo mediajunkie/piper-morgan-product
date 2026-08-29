@@ -36,9 +36,7 @@ async def repro_user():
         await s.commit()
     yield uid
     async with AsyncSessionFactory.session_scope() as s:
-        await s.execute(
-            text("DELETE FROM todo_items WHERE owner_id = :u"), {"u": str(uid)}
-        )
+        await s.execute(text("DELETE FROM todo_items WHERE owner_id = :u"), {"u": str(uid)})
         await s.execute(
             text(
                 "DELETE FROM items WHERE id NOT IN (SELECT id FROM todo_items) "
@@ -62,9 +60,7 @@ def _intent(action: str, message: str) -> Intent:
 async def test_complete_todo_1_succeeds_via_real_repository(repro_user):
     """The exact shape PM ran three times: bare 'complete todo 1'."""
     th = TodoIntentHandlers()
-    created = await th.todo_service.create_todo(
-        text="repro-1603 stretch", user_id=repro_user
-    )
+    created = await th.todo_service.create_todo(text="repro-1603 stretch", user_id=repro_user)
     assert created is not None
 
     out = await th.handle_complete_todo(
@@ -76,9 +72,7 @@ async def test_complete_todo_1_succeeds_via_real_repository(repro_user):
     # The failure mode this pins: the broad catch rendering "I had trouble".
     assert "had trouble" not in out, out
     # And the positive claim must be true in the DB, not just in the prose:
-    todos = await th.todo_service.list_todos(
-        user_id=repro_user, include_completed=False
-    )
+    todos = await th.todo_service.list_todos(user_id=repro_user, include_completed=False)
     assert todos == [], "todo still active after a claimed completion"
 
 
@@ -88,15 +82,10 @@ async def test_uuid_typed_service_call_reaches_string_columns(repro_user):
     from uuid import UUID
 
     th = TodoIntentHandlers()
-    created = await th.todo_service.create_todo(
-        text="repro-1603 uuid-typed", user_id=repro_user
-    )
-    completed = await th.todo_service.complete_todo(
-        todo_id=UUID(created.id), user_id=repro_user
-    )
+    created = await th.todo_service.create_todo(text="repro-1603 uuid-typed", user_id=repro_user)
+    completed = await th.todo_service.complete_todo(todo_id=UUID(created.id), user_id=repro_user)
     assert completed is not None, (
-        "UUID-typed todo_id must reach the String columns "
-        "(repo normalizes at entry — #1603)"
+        "UUID-typed todo_id must reach the String columns " "(repo normalizes at entry — #1603)"
     )
     assert completed.completed is True
 
@@ -105,16 +94,12 @@ async def test_uuid_typed_service_call_reaches_string_columns(repro_user):
 async def test_delete_todo_chat_path(repro_user):
     """delete_todo shares the normalized entry point; pin it too."""
     th = TodoIntentHandlers()
-    await th.todo_service.create_todo(
-        text="repro-1603 deletable", user_id=repro_user
-    )
+    await th.todo_service.create_todo(text="repro-1603 deletable", user_id=repro_user)
     out = await th.handle_delete_todo(
         _intent("delete_todo", "delete todo 1"),
         session_id="s-1603",
         user_id=repro_user,
     )
     assert "trouble" not in out.lower(), out
-    todos = await th.todo_service.list_todos(
-        user_id=repro_user, include_completed=False
-    )
+    todos = await th.todo_service.list_todos(user_id=repro_user, include_completed=False)
     assert todos == []

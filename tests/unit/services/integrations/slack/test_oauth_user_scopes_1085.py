@@ -11,7 +11,6 @@ live Slack integration).
 
 from pathlib import Path
 
-
 SOURCE_FILE = Path("services/integrations/slack/oauth_handler.py")
 
 

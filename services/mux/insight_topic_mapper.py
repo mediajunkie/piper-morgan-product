@@ -25,7 +25,6 @@ from __future__ import annotations
 
 from typing import Iterable, Optional
 
-
 # Mapping: topic-id (matches templates/insights.html `data-topic="..."`)
 # → set of keyword fragments that, when present in any tag, map the
 # insight to that topic. Keywords are matched case-insensitively as

@@ -187,7 +187,8 @@ def has_durative_marker(message: Optional[str]) -> bool:
     """Public read of the shared durative-marker vocabulary (#1591: the
     standup-mode declaration detector composes with THIS definition of
     "standing instruction" rather than growing a diverging copy — #1555)."""
-    return bool(message) and bool(_DURATIVE_RE.search(message))
+    return bool(message and _DURATIVE_RE.search(message))
+
 
 # Collaborate-mode declarations / reverts. Checked FIRST: negated execute
 # phrasings ("stop doing things directly…") contain execute-ish substrings.
@@ -363,9 +364,7 @@ async def gate_holds(action: Optional[str], message: Optional[str], user_id: Opt
     # cells are outwardness-invariant today, but the decision stays whole —
     # no second, narrower matrix hiding in a delegating caller).
     outwardness = outwardness_for_action(action) or Outwardness.PRIVATE
-    verdict = await evaluate_consent(
-        effect, message, user_id, outwardness=outwardness
-    )
+    verdict = await evaluate_consent(effect, message, user_id, outwardness=outwardness)
     return verdict is ConsentDecision.COLLABORATE
 
 
@@ -393,13 +392,10 @@ def draft_open_question(
     """
     if subject and body:
         if draft_bound:
-            return (
-                'If it looks right, say "file it as is" and I\'ll '
-                "create it right now."
-            )
+            return 'If it looks right, say "file it as is" and I\'ll ' "create it right now."
         return (
             'When it looks right, say something like "create this issue '
-            f'in owner/repo about {subject}" and I\'ll file it.'
+            f"in owner/repo about {subject}\" and I'll file it."
         )
     if subject:
         return "What should the body say — the problem, steps to reproduce, impact?"
@@ -460,13 +456,12 @@ def build_collaboration_response(
     if subject:
         if draft_bound:
             execute_line = (
-                'If this draft works as-is, say "file it as is" and I\'ll '
-                "create it right now. "
+                'If this draft works as-is, say "file it as is" and I\'ll ' "create it right now. "
             )
         else:
             execute_line = (
                 'When it looks right, say something like "create this issue '
-                f'in owner/repo about {subject}" and I\'ll file it. '
+                f"in owner/repo about {subject}\" and I'll file it. "
             )
         return (
             "Happy to shape this with you before anything gets filed. "

@@ -84,65 +84,278 @@ class TestConsentDecisionMatrix:
         # (outwardness, effect, framing, mode, expected)
         # ── PRIVATE half: today's 18 cells, unchanged ─────────────────────
         # READ: never consent territory — 6 cells, all PROCEED.
-        (Outwardness.PRIVATE, EffectClass.READ, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
-        (Outwardness.PRIVATE, EffectClass.READ, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
-        (Outwardness.PRIVATE, EffectClass.READ, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
-        (Outwardness.PRIVATE, EffectClass.READ, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
-        (Outwardness.PRIVATE, EffectClass.READ, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
-        (Outwardness.PRIVATE, EffectClass.READ, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.READ,
+            FRAMING_COMPOSE,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.READ,
+            FRAMING_COMPOSE,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.READ,
+            FRAMING_EXECUTE,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.READ,
+            FRAMING_EXECUTE,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.READ,
+            FRAMING_AMBIGUOUS,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.READ,
+            FRAMING_AMBIGUOUS,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.PROCEED,
+        ),
         # WRITE: compose always collaborates (executing a request for drafting
         # HELP is the Jake failure), execute framing IS consent, ambiguity is
         # decided by the declared mode — 6 cells.
-        (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.COLLABORATE),
-        (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.COLLABORATE),
-        (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
-        (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
-        (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.COLLABORATE),
-        (Outwardness.PRIVATE, EffectClass.WRITE, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.WRITE,
+            FRAMING_COMPOSE,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.COLLABORATE,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.WRITE,
+            FRAMING_COMPOSE,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.COLLABORATE,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.WRITE,
+            FRAMING_EXECUTE,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.WRITE,
+            FRAMING_EXECUTE,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.WRITE,
+            FRAMING_AMBIGUOUS,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.COLLABORATE,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.WRITE,
+            FRAMING_AMBIGUOUS,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.PROCEED,
+        ),
         # DESTRUCTIVE: CONFIRM in every cell — framing and mode never weaken
         # the #1190 tier (execute-mode users still confirm) — 6 cells.
-        (Outwardness.PRIVATE, EffectClass.DESTRUCTIVE, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
-        (Outwardness.PRIVATE, EffectClass.DESTRUCTIVE, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
-        (Outwardness.PRIVATE, EffectClass.DESTRUCTIVE, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
-        (Outwardness.PRIVATE, EffectClass.DESTRUCTIVE, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
-        (Outwardness.PRIVATE, EffectClass.DESTRUCTIVE, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
-        (Outwardness.PRIVATE, EffectClass.DESTRUCTIVE, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.DESTRUCTIVE,
+            FRAMING_COMPOSE,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.CONFIRM,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.DESTRUCTIVE,
+            FRAMING_COMPOSE,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.CONFIRM,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.DESTRUCTIVE,
+            FRAMING_EXECUTE,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.CONFIRM,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.DESTRUCTIVE,
+            FRAMING_EXECUTE,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.CONFIRM,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.DESTRUCTIVE,
+            FRAMING_AMBIGUOUS,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.CONFIRM,
+        ),
+        (
+            Outwardness.PRIVATE,
+            EffectClass.DESTRUCTIVE,
+            FRAMING_AMBIGUOUS,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.CONFIRM,
+        ),
         # ── OUTWARD half (#1509 axis, ratified 2026-08-15) ────────────────
         # READ: PROCEED — an outward READ is unrepresentable by the scope
         # boundary (a communication act writes by definition); the cells
         # exist because the type space contains them — 6 cells.
-        (Outwardness.OUTWARD, EffectClass.READ, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
-        (Outwardness.OUTWARD, EffectClass.READ, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
-        (Outwardness.OUTWARD, EffectClass.READ, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
-        (Outwardness.OUTWARD, EffectClass.READ, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
-        (Outwardness.OUTWARD, EffectClass.READ, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
-        (Outwardness.OUTWARD, EffectClass.READ, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.READ,
+            FRAMING_COMPOSE,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.READ,
+            FRAMING_COMPOSE,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.READ,
+            FRAMING_EXECUTE,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.READ,
+            FRAMING_EXECUTE,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.READ,
+            FRAMING_AMBIGUOUS,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.READ,
+            FRAMING_AMBIGUOUS,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.PROCEED,
+        ),
         # WRITE: collaborate/ambiguous cells check exactly as today; wherever
         # the DECLARED trust mode proceeds, it proceeds WITH the disclosure
         # (CXO's mechanism ruling: say it out loud, never a second
         # DESTRUCTIVE, never a silent pass) — 6 cells.
-        (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.COLLABORATE),
-        (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.COLLABORATE),
-        (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.PROCEED),
-        (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED_WITH_DISCLOSURE),
-        (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.COLLABORATE),
-        (Outwardness.OUTWARD, EffectClass.WRITE, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.PROCEED_WITH_DISCLOSURE),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.WRITE,
+            FRAMING_COMPOSE,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.COLLABORATE,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.WRITE,
+            FRAMING_COMPOSE,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.COLLABORATE,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.WRITE,
+            FRAMING_EXECUTE,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.PROCEED,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.WRITE,
+            FRAMING_EXECUTE,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.PROCEED_WITH_DISCLOSURE,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.WRITE,
+            FRAMING_AMBIGUOUS,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.COLLABORATE,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.WRITE,
+            FRAMING_AMBIGUOUS,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.PROCEED_WITH_DISCLOSURE,
+        ),
         # DESTRUCTIVE: CONFIRM in every cell — outwardness never substitutes
         # for, weakens, or doubles the #1190 tier — 6 cells.
-        (Outwardness.OUTWARD, EffectClass.DESTRUCTIVE, FRAMING_COMPOSE, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
-        (Outwardness.OUTWARD, EffectClass.DESTRUCTIVE, FRAMING_COMPOSE, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
-        (Outwardness.OUTWARD, EffectClass.DESTRUCTIVE, FRAMING_EXECUTE, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
-        (Outwardness.OUTWARD, EffectClass.DESTRUCTIVE, FRAMING_EXECUTE, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
-        (Outwardness.OUTWARD, EffectClass.DESTRUCTIVE, FRAMING_AMBIGUOUS, WorkingMode.COLLABORATE, cg.ConsentDecision.CONFIRM),
-        (Outwardness.OUTWARD, EffectClass.DESTRUCTIVE, FRAMING_AMBIGUOUS, WorkingMode.EXECUTE, cg.ConsentDecision.CONFIRM),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.DESTRUCTIVE,
+            FRAMING_COMPOSE,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.CONFIRM,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.DESTRUCTIVE,
+            FRAMING_COMPOSE,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.CONFIRM,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.DESTRUCTIVE,
+            FRAMING_EXECUTE,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.CONFIRM,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.DESTRUCTIVE,
+            FRAMING_EXECUTE,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.CONFIRM,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.DESTRUCTIVE,
+            FRAMING_AMBIGUOUS,
+            WorkingMode.COLLABORATE,
+            cg.ConsentDecision.CONFIRM,
+        ),
+        (
+            Outwardness.OUTWARD,
+            EffectClass.DESTRUCTIVE,
+            FRAMING_AMBIGUOUS,
+            WorkingMode.EXECUTE,
+            cg.ConsentDecision.CONFIRM,
+        ),
     ]
 
     @pytest.mark.parametrize("outwardness,effect,framing,mode,expected", CELLS)
     def test_cell(self, outwardness, effect, framing, mode, expected):
-        assert (
-            cg.decide_consent(effect, framing, mode, outwardness=outwardness)
-            is expected
-        )
+        assert cg.decide_consent(effect, framing, mode, outwardness=outwardness) is expected
 
     def test_matrix_is_complete(self):
         """The denominator guard: the CELLS table covers the whole space.
@@ -307,9 +520,7 @@ class TestOutwardnessAxis:
         discriminating."""
         workflows = _unique_action_entries()
         outward = {
-            key
-            for key, entry in workflows.items()
-            if entry.outwardness == Outwardness.OUTWARD
+            key for key, entry in workflows.items() if entry.outwardness == Outwardness.OUTWARD
         }
         assert outward == self.EXPECTED_OUTWARD_KEYS
         # Denominator: the classification covered a real registry.
@@ -363,7 +574,11 @@ class TestOutwardnessAxis:
                     private = cg.decide_consent(e, f, m, outwardness=Outwardness.PRIVATE)
                     outward = cg.decide_consent(e, f, m, outwardness=Outwardness.OUTWARD)
                     assert self._STRENGTH[outward] >= self._STRENGTH[private], (
-                        e, f, m, private, outward,
+                        e,
+                        f,
+                        m,
+                        private,
+                        outward,
                     )
 
     def test_doctrine_destructive_confirms_in_every_outwardness_cell(self):
@@ -394,7 +609,9 @@ class TestOutwardnessAxis:
                     if default_mode is cg.ConsentDecision.CONFIRM:
                         assert trust_mode is cg.ConsentDecision.CONFIRM, (o, e, f)
             assert (
-                cg.decide_consent(EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.EXECUTE, outwardness=o)
+                cg.decide_consent(
+                    EffectClass.WRITE, FRAMING_COMPOSE, WorkingMode.EXECUTE, outwardness=o
+                )
                 is cg.ConsentDecision.COLLABORATE
             )
 
@@ -660,9 +877,7 @@ def _pending_offers(service):
 class TestEndToEndConsentCheck:
     pytestmark = pytest.mark.asyncio
 
-    async def test_ambiguous_write_is_held_with_a_legible_check(
-        self, live_service, mem_prefs
-    ):
+    async def test_ambiguous_write_is_held_with_a_legible_check(self, live_service, mem_prefs):
         """An ambiguous-framed WRITE rail action does NOT execute on the turn
         it was classified: the handler is explosive, one check question comes
         back, the pending action is stored in the EXISTING #846 store.
@@ -689,9 +904,7 @@ class TestEndToEndConsentCheck:
         assert stored["workflow_type"] == CONFIRM_PENDING_ACTION_WORKFLOW
         assert stored["pending_action"]["action"] == "update_issue"
 
-    async def test_yes_executes_the_original_intent_unreclassified(
-        self, live_service, mem_prefs
-    ):
+    async def test_yes_executes_the_original_intent_unreclassified(self, live_service, mem_prefs):
         from services.intent.intent_service import IntentProcessingResult
 
         sid = "e2e-1509-yes"
@@ -703,27 +916,21 @@ class TestEndToEndConsentCheck:
         )
         live_service._handle_update_issue = holder
 
-        await live_service.process_intent(
-            message=AMBIGUOUS_UPDATE, session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message=AMBIGUOUS_UPDATE, session_id=sid, user_id=_USER)
         holder.assert_not_awaited()
         # The "yes" turn must not re-classify (the stub would be consulted
         # again — make it explosive instead).
         live_service.intent_classifier.classify_multiple = AsyncMock(
             side_effect=AssertionError("'yes' was re-classified")
         )
-        result = await live_service.process_intent(
-            message="yes", session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         holder.assert_awaited_once()
         dispatched_intent = holder.await_args.args[0]
         assert dispatched_intent.original_message == AMBIGUOUS_UPDATE
         assert "Updated issue #108" in result.message
         assert _pending_offers(live_service).get(sid) is None
 
-    async def test_no_cancels_honestly_and_nothing_fires(
-        self, live_service, mem_prefs
-    ):
+    async def test_no_cancels_honestly_and_nothing_fires(self, live_service, mem_prefs):
         sid = "e2e-1509-no"
         _stub_classifier(live_service, _update_intent())
 
@@ -731,19 +938,13 @@ class TestEndToEndConsentCheck:
             raise AssertionError("declined consent must never execute")
 
         live_service._handle_update_issue = _explosive_handler
-        await live_service.process_intent(
-            message=AMBIGUOUS_UPDATE, session_id=sid, user_id=_USER
-        )
-        result = await live_service.process_intent(
-            message="no", session_id=sid, user_id=_USER
-        )
+        await live_service.process_intent(message=AMBIGUOUS_UPDATE, session_id=sid, user_id=_USER)
+        result = await live_service.process_intent(message="no", session_id=sid, user_id=_USER)
         assert "won't update issue #108" in result.message
         assert "Nothing has been changed" in result.message
         assert _pending_offers(live_service).get(sid) is None
 
-    async def test_execute_mode_user_proceeds_on_the_same_ambiguity(
-        self, live_service, mem_prefs
-    ):
+    async def test_execute_mode_user_proceeds_on_the_same_ambiguity(self, live_service, mem_prefs):
         """The declared working model decides the ambiguous cell: the same
         message from an execute-mode user dispatches directly (CXO decline
         property inverse: graduation is a declared setting, not friction)."""
@@ -823,9 +1024,7 @@ class TestEndToEndConsentCheck:
 
         monkeypatch.setattr(gh_mod, "GitHubIntegrationRouter", _ExplosiveRouter)
 
-        result = await live_service.process_intent(
-            message=JAKE, session_id=sid, user_id=_USER
-        )
+        result = await live_service.process_intent(message=JAKE, session_id=sid, user_id=_USER)
         assert result.intent_data.get("collaboration_gate") is True
         assert result.requires_clarification is True
         assert "login timeout on mobile" in result.message
@@ -941,9 +1140,7 @@ class TestEndToEndOutwardness:
         assert stored["workflow_type"] == CONFIRM_PENDING_ACTION_WORKFLOW
         assert stored["pending_action"]["action"] == "comment_issue"
 
-    async def test_outward_imperative_under_trust_mode_discloses(
-        self, live_service, mem_prefs
-    ):
+    async def test_outward_imperative_under_trust_mode_discloses(self, live_service, mem_prefs):
         """OUTWARD x WRITE x execute framing x declared trust mode: proceeds
         (the imperative is consent — nothing is held) WITH the disclosure —
         CXO's 'under a declared TRUST mode, it still states what it's about
@@ -995,9 +1192,7 @@ class TestEndToEndOutwardness:
         assert DISCLOSURE_MARKER not in result.message
         assert result.intent_data.get("consent_disclosure") is None
 
-    async def test_private_write_under_trust_mode_never_discloses(
-        self, live_service, mem_prefs
-    ):
+    async def test_private_write_under_trust_mode_never_discloses(self, live_service, mem_prefs):
         """PRIVATE regression pin: the same trust-mode ambiguous cell on a
         PRIVATE write (update_issue — repo-content editing, CXO's named
         non-example) proceeds exactly as before the axis: no check, no
@@ -1021,9 +1216,7 @@ class TestEndToEndOutwardness:
         assert result.intent_data.get("consent_disclosure") is None
         assert result.intent_data.get("consent_outwardness") is None
 
-    async def test_decline_memory_never_lowers_the_gate(
-        self, live_service, mem_prefs
-    ):
+    async def test_decline_memory_never_lowers_the_gate(self, live_service, mem_prefs):
         """Standing doctrine, restated by the ratification: declining a
         consent check never suppresses the NEXT check — the identical
         outward-ambiguous request is checked again in full (consent is
@@ -1041,9 +1234,7 @@ class TestEndToEndOutwardness:
             message=AMBIGUOUS_COMMENT, session_id=sid, user_id=_USER
         )
         assert first.intent_data.get("consent_check_pending") is True
-        declined = await live_service.process_intent(
-            message="no", session_id=sid, user_id=_USER
-        )
+        declined = await live_service.process_intent(message="no", session_id=sid, user_id=_USER)
         assert "Nothing has been changed" in declined.message
         assert _pending_offers(live_service).get(sid) is None
         # The identical request again: checked again, not remembered-declined

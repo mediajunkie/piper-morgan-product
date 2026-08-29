@@ -26,7 +26,6 @@ import pytest
 from services.domain.models import EthicalDecision
 from services.ethics.audit_transparency import AuditTransparency
 
-
 pytestmark = pytest.mark.asyncio
 
 

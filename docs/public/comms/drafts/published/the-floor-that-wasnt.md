@@ -18,7 +18,7 @@ I want to be honest here. I started worrying that maybe I've just wasted a lot o
 
 But I'm not a quitter, so I kept digging.
 
-## The routing was inverted
+# The routing was inverted
 
 I told the Lead Developer: "Investigate the architecture and docbase, write a report."
 
@@ -28,7 +28,7 @@ Every query hit a handler first. Most handlers had something to say — even if 
 
 Three stubs were literally labeled "implementation pending" — and they were catching real user queries and returning nothing useful instead of letting the floor handle them. The Lead Developer replaced all three with floor routing, removed a wrong todo fallback, and cleaned up a stale debug print. Small fixes, but each one had been silently eating queries.
 
-## Phase 1
+# Phase 1
 
 The first fix was scoped and shipped the same day. GUIDANCE intents — the broad category covering "help me think about this" queries — now route to the conversational floor with assembled context. A new context assembler gathers calendar events, projects, and priorities as structured facts and passes them to the LLM. Nineteen new tests. Merged to main.
 
@@ -40,7 +40,7 @@ The Lead Developer diagnosed both issues. PRIORITY was a separate classification
 
 The prompt was rewritten. The parroting stopped.
 
-## "Floor works" ≠ "users experience the floor"
+# "Floor works" ≠ "users experience the floor"
 
 This is the pattern that kept repeating. Mechanical correctness doesn't guarantee user experience. The floor passed every test. The routing worked as coded. The handlers returned responses. Everything was green.
 
@@ -48,7 +48,7 @@ And a real person typing a real question got template boilerplate six times out 
 
 As I review and edit this draft for publication today, I will admit I am feeling that trepidation that builds up before manual testing. I've got user acceptance testing scheduled with my CXO to see if the M1 sprint has landed and I'm kind of afraid to check.
 
-## The contract gap
+# The contract gap
 
 The next day brought more testing and a deeper diagnosis. The leadership team converged again — Architect, PPM, CXO — this time on the structural relationship between classification and handling.
 
@@ -64,7 +64,7 @@ The Lead Developer ran a Five Whys analysis that afternoon, exposing a systemic 
 
 Nine issues closed by end of day. The architecture was starting to face the right direction.
 
-## The lesson
+# The lesson
 
 Two days of testing. Two days of discovering that a system that "worked" — by every automated measure — didn't work at all for the person it was built for.
 

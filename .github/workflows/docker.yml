@@ -53,7 +53,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t piper-morgan -f ./services/orchestration/Dockerfile .
+          # Root Dockerfile is the deploy artifact (fly.toml: dockerfile = "Dockerfile").
+          # The old ./services/orchestration/Dockerfile path was deleted with the
+          # orchestration island (addb61c99, #1436 Tier-3 Family-2) — #1687.
+          docker build -t piper-morgan -f ./Dockerfile .
 
       - name: Verify Python version in container
         run: |

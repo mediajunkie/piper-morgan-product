@@ -59,8 +59,8 @@ EXPLICIT_DESCRIPTION = (
     "issue's body verbatim, instead of Piper asking what it's about."
 )
 EXPLICIT_ASK = (
-    f"let's open a new issue, with the subject \"{EXPLICIT_SUBJECT}\" "
-    f"and description \"{EXPLICIT_DESCRIPTION}\""
+    f'let\'s open a new issue, with the subject "{EXPLICIT_SUBJECT}" '
+    f'and description "{EXPLICIT_DESCRIPTION}"'
 )
 
 _USER = "3f7b8a52-1649-4b00-9e00-000000001649"
@@ -132,25 +132,23 @@ class TestExplicitSlotExtraction:
         assert "body" not in slots
 
     def test_quoted_title_called_and_named_forms(self):
-        assert _slotfill()('open an issue called "Login loop on Safari"')[
-            "title"
-        ] == "Login loop on Safari"
-        assert _slotfill()('file a ticket named "Retry storm"')["title"] == (
-            "Retry storm"
+        assert (
+            _slotfill()('open an issue called "Login loop on Safari"')["title"]
+            == "Login loop on Safari"
         )
+        assert _slotfill()('file a ticket named "Retry storm"')["title"] == ("Retry storm")
         assert _slotfill()('the title is "Retry storm"')["title"] == "Retry storm"
 
     def test_with_the_body_quoted_form(self):
         slots = _slotfill()(
-            'create an issue titled "Flaky deploys" with the body "CI fails one '
-            'run in five."'
+            'create an issue titled "Flaky deploys" with the body "CI fails one ' 'run in five."'
         )
         assert slots["title"] == "Flaky deploys"
         assert slots["body"] == "CI fails one run in five."
 
     def test_quoted_description_alone(self):
         slots = _slotfill()(
-            'let\'s open a new issue with the description "Repro: log in twice, '
+            "let's open a new issue with the description \"Repro: log in twice, "
             'watch the session drop."'
         )
         assert "title" not in slots
@@ -171,8 +169,7 @@ class TestExplicitSlotExtraction:
 
     def test_about_form_is_bounded_by_a_description_clause(self):
         slots = _slotfill()(
-            "create an issue about the login timeout and the description is "
-            "users cannot log in"
+            "create an issue about the login timeout and the description is " "users cannot log in"
         )
         assert slots["title"] == "the login timeout"
         assert slots["body"] == "users cannot log in"
@@ -192,9 +189,7 @@ class TestExplicitSlotExtraction:
         # "title and description" as a NOUN PHRASE (no filler/colon/quote
         # after the marker) is content, not slot-giving: the about-form
         # keeps the whole tail and no body is scavenged.
-        slots = _slotfill()(
-            "create an issue about the title and description fields being swapped"
-        )
+        slots = _slotfill()("create an issue about the title and description fields being swapped")
         assert slots["title"] == "the title and description fields being swapped"
         assert "body" not in slots
 
@@ -313,9 +308,7 @@ class TestExplicitSlotsEndToEnd:
             patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
             patch(RESOLVER, new=AsyncMock(return_value="acme/widgets")),
         ):
-            r = await svc.process_intent(
-                message="file it as is", session_id=sid, user_id=_USER
-            )
+            r = await svc.process_intent(message="file it as is", session_id=sid, user_id=_USER)
 
         w.assert_awaited_once()
         _, kwargs = w.await_args
@@ -339,7 +332,7 @@ class TestExplicitSlotsEndToEnd:
         description."""
         sid = "e2e-1649-body-only"
         ask = (
-            'let\'s open a new issue with the description "Repro: log in '
+            "let's open a new issue with the description \"Repro: log in "
             'twice, watch the session drop."'
         )
         r0 = await _arm(svc, sid, ask)
@@ -353,9 +346,7 @@ class TestExplicitSlotsEndToEnd:
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
         ):
-            r1 = await svc.process_intent(
-                message="issue body test", session_id=sid, user_id=_USER
-            )
+            r1 = await svc.process_intent(message="issue body test", session_id=sid, user_id=_USER)
         w.assert_not_awaited()
         assert "that's the title" in r1.message.lower()
         stored = next(iter(_pending_offers(svc).values()))
@@ -372,9 +363,7 @@ class TestExplicitSlotsEndToEnd:
             patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
             patch(RESOLVER, new=AsyncMock(return_value="acme/widgets")),
         ):
-            r2 = await svc.process_intent(
-                message="file it as is", session_id=sid, user_id=_USER
-            )
+            r2 = await svc.process_intent(message="file it as is", session_id=sid, user_id=_USER)
         w.assert_awaited_once()
         _, kwargs = w.await_args
         assert kwargs.get("title") == "issue body test"

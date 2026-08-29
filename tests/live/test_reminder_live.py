@@ -46,12 +46,12 @@ class TestReminderLive:
         )
         assert body.get("error") is None, f"Turn returned error: {body.get('error')}"
         message = body.get("message", "")
-        assert "Reminder saved" in message, (
-            f"Expected the #903 confirmation shape, got: {message[:300]!r}"
-        )
-        assert "ratchet suite" in message, (
-            f"Confirmation should echo the task text, got: {message[:300]!r}"
-        )
+        assert (
+            "Reminder saved" in message
+        ), f"Expected the #903 confirmation shape, got: {message[:300]!r}"
+        assert (
+            "ratchet suite" in message
+        ), f"Confirmation should echo the task text, got: {message[:300]!r}"
 
         # The claim "saved" must be TRUE at the persistence layer, not just in
         # the prose (m-44: the message is a claim; the row is the measurement).
@@ -98,9 +98,9 @@ class TestReminderLive:
                 {"uid": user.user_id},
             )
         ).scalar()
-        assert count_after == 1, (
-            f"Clarify turn must not persist a reminder; count went 1 → {count_after}"
-        )
+        assert (
+            count_after == 1
+        ), f"Clarify turn must not persist a reminder; count went 1 → {count_after}"
 
         # Both turns rode the same conversation; the server auto-created it
         # for this session (#731) and owns it to this user.
@@ -111,9 +111,9 @@ class TestReminderLive:
             )
         ).fetchone()
         assert conv is not None, "Conversation was not auto-created for the session"
-        assert conv[0] == user.user_id, (
-            f"Conversation owner mismatch: {conv[0]!r} != {user.user_id!r}"
-        )
+        assert (
+            conv[0] == user.user_id
+        ), f"Conversation owner mismatch: {conv[0]!r} != {user.user_id!r}"
 
     async def test_login_identity_live(self, turn_driver):
         """The cookie jar really authenticates: /api/v1/auth/me sees the
@@ -121,6 +121,6 @@ class TestReminderLive:
         resp = turn_driver.get("/api/v1/auth/me")
         assert resp.status_code == 200, f"auth/me failed: {resp.status_code} {resp.text[:300]}"
         body = resp.json()
-        assert body.get("username") == turn_driver.user.username, (
-            f"auth/me identity mismatch: {body!r}"
-        )
+        assert (
+            body.get("username") == turn_driver.user.username
+        ), f"auth/me identity mismatch: {body!r}"

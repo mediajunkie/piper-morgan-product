@@ -64,9 +64,7 @@ class TestResolveTurnIntentLabel:
 
     def test_category_and_action(self):
         assert (
-            IntentService._resolve_turn_intent_label(
-                {"category": "query", "action": "list_issues"}
-            )
+            IntentService._resolve_turn_intent_label({"category": "query", "action": "list_issues"})
             == "query:list_issues"
         )
 

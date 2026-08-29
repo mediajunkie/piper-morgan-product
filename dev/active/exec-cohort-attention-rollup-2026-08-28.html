@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-08-28</title>
+<style>
+  :root {
+    --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+    --red:#c0392b; --red-bg:#fdecea; --amber:#b7791f; --amber-bg:#fdf3e2;
+    --grey:#8a8a8a; --green:#2d7a3e; --green-bg:#eaf6ec; --link:#1a5fb4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#17181a; --card:#212226; --line:#34363a; --ink:#eceef0; --mute:#9a9ea3;
+             --red:#e0685a; --red-bg:#3a2220; --amber:#d9a441; --amber-bg:#332a16;
+             --grey:#9a9ea3; --green:#5cbd74; --green-bg:#1c2f20; --link:#6ea8fe; }
+  }
+  :root[data-theme="dark"] { --bg:#17181a; --card:#212226; --line:#34363a; --ink:#eceef0; --mute:#9a9ea3;
+             --red:#e0685a; --red-bg:#3a2220; --amber:#d9a441; --amber-bg:#332a16;
+             --grey:#9a9ea3; --green:#5cbd74; --green-bg:#1c2f20; --link:#6ea8fe; }
+  :root[data-theme="light"] { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+             --red:#c0392b; --red-bg:#fdecea; --amber:#b7791f; --amber-bg:#fdf3e2;
+             --grey:#8a8a8a; --green:#2d7a3e; --green-bg:#eaf6ec; --link:#1a5fb4; }
+  * { box-sizing:border-box; }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem 4rem; }
+  .wrap { max-width:880px; margin:0 auto; }
+  h1 { font-size:1.55rem; margin:0 0 .25rem; letter-spacing:-0.01em; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.25rem; }
+  h2 { font-size:1.05rem; margin:2rem 0 .6rem; padding-bottom:.35rem; border-bottom:2px solid var(--line);
+       display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
+  .count { font-size:.78rem; font-weight:400; color:var(--mute); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.75rem .95rem; margin:.55rem 0; }
+  .item.urgent { border-left-color:var(--red); }
+  .item.decision { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.25rem; }
+  .agent { font-weight:700; }
+  .sev { font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .45rem;
+         border-radius:4px; background:var(--red-bg); color:var(--red); }
+  .sev.decision { background:var(--amber-bg); color:var(--amber); }
+  .summary { margin:.35rem 0 .3rem; }
+  .summary code { background:var(--amber-bg); padding:.05rem .3rem; border-radius:3px; font-size:.9em; }
+  .clean-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:.5rem; }
+  .clean-row { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:.55rem .75rem; font-size:.87rem; }
+  .clean-row b { color:var(--ink); }
+  .clean-row span { color:var(--mute); display:block; font-size:.8rem; margin-top:.15rem; }
+  footer { margin-top:2.5rem; padding-top:1.25rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.82rem; line-height:1.6; }
+  footer b { color:var(--ink); }
+  ul.v { margin:.5rem 0 0; padding-left:1.1rem; }
+  ul.v li { margin-bottom:.25rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec · <b>2026-08-28, 07:15 PT</b> · live-state pass · first rollup since the two availability events</p>
+
+  <h2>🔴 The one thing worth your morning <span class="count">(1)</span></h2>
+
+  <div class="item urgent">
+    <div class="top"><span class="agent">MVP triage cut</span><span class="sev">assembling now — rules in one sitting</span></div>
+    <p class="summary"><b>Both gates cleared and the work is already half-delivered.</b> Your PA/BYOC conversation on 08-26 (Position 1 accepted — BYOC forks off the shared foundation once built, not beta-primary) was the last blocker. Lead proposed the cut to PPM the next day, PPM verified both gates independently before agreeing, and <b>Lead delivered their engineering half at ~07:15 this morning</b>: 60 open MVP items grouped into six decision-shaped buckets rather than 60 rows.</p>
+    <p class="summary"><b>What's left before it reaches you</b>: PPM's sprint/milestone call per bucket. Then you rule on the assembled cut in one sitting rather than 60 individual decisions — which is what you asked for on 08-25.</p>
+    <p class="summary"><b>Lead's headline for your sitting</b>: the biggest single lever is roughly ten items nobody is working and no beta tester's core experience depends on. That's where the cut buys convergence without touching the "no matter what" core.</p>
+    <p class="summary"><b>Worth knowing about the method, because Lead volunteered it</b>: their first instrument was wrong — a bad grep returned "60 of 60 not started," obviously false. They caught it by sanity-checking a known-merged issue <i>before</i> publishing, and recorded the near-miss in the document rather than shipping a clean-looking table. They also named two things they could not determine rather than inferring them.</p>
+  </div>
+
+  <h2>🟡 Genuinely waiting on you, none urgent <span class="count">(5)</span></h2>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Comms</span><span class="sev">10 days now</span></div>
+    <p class="summary"><b>The insight-pool pairing review</b> — nine scheduled plus three new candidates, waiting on your pick for weekend slots. This is now the longest-standing item gated on you. Not urgent, but it's been reconfirmed on your list twice and hasn't moved.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Lead</span><span class="sev">test round</span></div>
+    <p class="summary"><b>v62's 7-item test plan</b>, covering the Inversion flip's first live traffic. Still live and unexercised — zero events recorded, which Lead names as honest rather than reassuring.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Lead</span><span class="sev">two small calls</span></div>
+    <p class="summary"><b>#1635's false-door shape</b> — CXO delivered their position during the freeze recovery (Radar card yes, with two build rules and final copy). Lead builds once you nod. And <b>#1677's triage lean</b>, where Lead has a recommendation ready.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">CXO / PPM</span><span class="sev">quiet, aging</span></div>
+    <p class="summary"><b>#1539's close</b> needs your next live round to exercise the shipped purpose line — pairs naturally with the v62 pass. Separately <b>#1386's remaining criteria</b> (1, 4, 5, 6) have had no movement since 08-22.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Web</span><span class="sev">unscoped 13 days</span></div>
+    <p class="summary">The above-the-fold blog redesign and the Buttondown newsletter idea, both from 08-15. Both need your eyes at each step because that seat has no browser to iterate visually — which is now escalated to Pard.</p>
+  </div>
+
+  <h2>⚠️ Reliability — two distinct events in four days, neither self-signalable <span class="count">(worth your read)</span></h2>
+  <div class="item urgent">
+    <p class="summary"><b>These are two different failures and I'd rather not let them blur together:</b></p>
+    <ul class="v">
+      <li><b>An infrastructure freeze, 08-25 ~13:30 → 08-27 22:17</b>, hitting CXO and two other seats. Fifteen cron ticks queued rather than dropped and arrived as a single wake. The freeze-watchdog correctly flagged "3 roles silent" — the belt worked.</li>
+      <li><b>The weekly usage limit, Thursday afternoon</b>, which hit my seat and others. Cohort commits ran normally through ~15:00 then collapsed to near-zero. My own 20:32 STOP fire got zero turns; I wrote the retroactive close this morning.</li>
+    </ul>
+    <p class="summary"><b>The common shape, and it's the third instance this month</b>: a blocked session gets no turns, so it structurally cannot report its own blockage. Lead's 08-20 ten-hour outage was the first. CIO is already building the cadence-relative watchdog for exactly this.</p>
+    <p class="summary"><b>One new detection signal I noticed while reconstructing, that nothing currently reads</b>: my heartbeat file for Thursday has a START row and no STOP row. That asymmetry is precisely the fingerprint of a session killed mid-day, it's already being written, and no check looks at it. Handing it to CIO.</p>
+  </div>
+
+  <h2>✅ Closed since Tuesday's rollup <span class="count">(7)</span></h2>
+  <div class="item clear">
+    <p class="summary">
+      <b>Ship #057 published and distributed</b> (08-26) — you passed it same-day.<br>
+      <b>Your PA/BYOC conversation happened</b> (08-26) — Position 1 accepted, the last gate on the triage cut.<br>
+      <b>Slack descope ratified</b> via those same conversations; CXO confirmed convergence from the FTUX side.<br>
+      <b>A heading-level defect, found and fixed end-to-end</b> — Dispatch-PM caught published subheads rendering a level too deep, Comms confirmed live and found four more in unpublished drafts, Docs fixed both live posts at source and rendered-HTML layers. Nobody's own catch; three parties.<br>
+      <b>#1635 position delivered</b> by CXO during freeze recovery, two days late and said so.<br>
+      <b>Agent 360 v0.4 filed</b> (mine, 08-27) — 13 days late, one day inside the window.<br>
+      <b>Ship #058 kickoff sent this morning</b> — all 10 roles, window Aug 21–27, backstop Saturday.
+    </p>
+  </div>
+
+  <h2>⚪ Correctly parked <span class="count">(3)</span></h2>
+  <div class="clean-grid">
+    <div class="clean-row"><b>Arch</b><span>Inversion Phase 2.2 watching; nothing owed by you.</span></div>
+    <div class="clean-row"><b>CIO</b><span>Watchdog build in progress — now with a second and third incident to design against.</span></div>
+    <div class="clean-row"><b>HOST</b><span>Agent 360 synthesis; window closes today, 10/10 responses now in.</span></div>
+  </div>
+
+  <footer>
+    <b>Bottom line:</b> the triage cut is the morning's real item and it's moving without you until PPM's half lands — the sitting is probably today or tomorrow. Everything else on the board can wait comfortably. The week's genuine story is that two separate availability failures cost real hours and neither could announce itself, which is now three instances in a month and has a fix already being built.
+    <ul class="v">
+      <li>All 11 carry-forwards read fresh; six rewritten since Tuesday.</li>
+      <li>Live-verified: <code>sprint-truth.py</code> (MVP 61 not done / 1075 done — matches PPM's independently-run figure exactly), Ship #057's published state, the #058 kickoff's 14 delivered paths.</li>
+      <li>Separated the two availability events rather than reporting one blurred outage — they have different causes, different blast radii, and only one of them is the usage limit.</li>
+    </ul>
+  </footer>
+</div>
+</body>
+</html>

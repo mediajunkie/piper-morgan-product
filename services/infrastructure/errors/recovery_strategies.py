@@ -35,7 +35,9 @@ class MCPRecoveryStrategies:
         probe exists, honestly report NOT recovered; callers keep the breaker
         open (the safe state).
         """
-        logging.info(f"Circuit breaker recovery for {service_name}: no real probe wired — reporting not-recovered")
+        logging.info(
+            f"Circuit breaker recovery for {service_name}: no real probe wired — reporting not-recovered"
+        )
         return False
 
     @staticmethod

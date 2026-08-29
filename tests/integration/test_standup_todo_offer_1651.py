@@ -44,8 +44,7 @@ class _ExplosiveLLM:
 
     def __getattr__(self, name):
         raise AssertionError(
-            f"LLM boundary touched ({name}) — #1651 turns must resolve "
-            "deterministically"
+            f"LLM boundary touched ({name}) — #1651 turns must resolve " "deterministically"
         )
 
 
@@ -65,9 +64,7 @@ async def repro_user():
         await s.commit()
     yield uid
     async with AsyncSessionFactory.session_scope() as s:
-        await s.execute(
-            _text("DELETE FROM todo_items WHERE owner_id = :u"), {"u": str(uid)}
-        )
+        await s.execute(_text("DELETE FROM todo_items WHERE owner_id = :u"), {"u": str(uid)})
         await s.execute(
             _text(
                 "DELETE FROM items WHERE id NOT IN (SELECT id FROM todo_items) "
@@ -77,10 +74,7 @@ async def repro_user():
         # process_intent seeds a personalization row for the principal — it
         # references users and must go first (the #1472 teardown idiom).
         await s.execute(
-            _text(
-                "DELETE FROM personalization_contexts "
-                "WHERE owner_id = CAST(:u AS uuid)"
-            ),
+            _text("DELETE FROM personalization_contexts " "WHERE owner_id = CAST(:u AS uuid)"),
             {"u": str(uid)},
         )
         await s.execute(_text("DELETE FROM users WHERE id = :u"), {"u": uid})

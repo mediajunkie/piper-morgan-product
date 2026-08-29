@@ -6,6 +6,7 @@ table set from information_schema at runtime and fails the build until every
 such table is either handled in BOTH helpers or explicitly allowlisted with a
 reason. Join-by-existing: a new FK table cannot ship without a cleanup decision.
 """
+
 import re
 
 import pytest
@@ -20,8 +21,10 @@ PER_USER_ALLOWLIST = {
 
 
 def _conftest_source():
-    import tests.conftest as c
     import inspect
+
+    import tests.conftest as c
+
     return inspect.getsource(c)
 
 
@@ -29,9 +32,10 @@ def _conftest_source():
 @pytest.mark.smoke
 async def test_every_users_fk_table_is_covered_by_cleanup_helpers(db_session):
     rows = (
-        await db_session.execute(
-            text(
-                """
+        (
+            await db_session.execute(
+                text(
+                    """
                 SELECT DISTINCT tc.table_name
                 FROM information_schema.table_constraints tc
                 JOIN information_schema.constraint_column_usage ccu
@@ -39,9 +43,12 @@ async def test_every_users_fk_table_is_covered_by_cleanup_helpers(db_session):
                 WHERE tc.constraint_type = 'FOREIGN KEY'
                   AND ccu.table_name = 'users'
                 """
+                )
             )
         )
-    ).scalars().all()
+        .scalars()
+        .all()
+    )
     src = _conftest_source()
     missing = []
     for tbl in rows:

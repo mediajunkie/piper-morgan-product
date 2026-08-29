@@ -130,9 +130,7 @@ async def test_generate_stores_nonce_in_redis_with_ttl(handler, patched_redis):
 async def test_store_retrieve_roundtrips_state_data(handler, patched_redis):
     """The redirect_uri / scopes stored on /connect survive the round-trip and
     are recoverable by the verify path."""
-    await handler.generate_authorization_url(
-        user_id="u-2", redirect_uri="https://example.test/cb"
-    )
+    await handler.generate_authorization_url(user_id="u-2", redirect_uri="https://example.test/cb")
     # exactly one key stored
     (key,) = list(patched_redis.store.keys())
     stored = json.loads(patched_redis.store[key])
@@ -156,9 +154,7 @@ async def test_verify_missing_nonce_rejected(handler, patched_redis):
     TTL-expired) is rejected."""
     # Build a well-formed state but never store the nonce.
     state_data = {"user_id": "u-4", "nonce": "never-stored-nonce"}
-    state = (
-        base64.urlsafe_b64encode(json.dumps(state_data).encode()).decode().rstrip("=")
-    )
+    state = base64.urlsafe_b64encode(json.dumps(state_data).encode()).decode().rstrip("=")
     is_valid, user_id = await handler.verify_oauth_state(state)
     assert is_valid is False
     assert user_id is None
@@ -196,9 +192,7 @@ async def test_verify_user_id_tamper_rejected(handler, patched_redis):
     # Forge a state reusing the real nonce but a different user_id.
     nonce = _decode_state(state)["nonce"]
     forged = {"user_id": "attacker", "nonce": nonce}
-    forged_state = (
-        base64.urlsafe_b64encode(json.dumps(forged).encode()).decode().rstrip("=")
-    )
+    forged_state = base64.urlsafe_b64encode(json.dumps(forged).encode()).decode().rstrip("=")
     is_valid, user_id = await handler.verify_oauth_state(forged_state)
     assert is_valid is False
 
@@ -222,9 +216,10 @@ async def test_connect_to_callback_flow_validates_and_pops(handler, patched_redi
         "bot_user_id": "B1",
         "app_id": "A1",
     }
-    with patch.object(
-        handler, "_exchange_code_for_tokens", return_value=token_data
-    ), patch.object(handler, "_store_workspace_tokens", return_value=None):
+    with (
+        patch.object(handler, "_exchange_code_for_tokens", return_value=token_data),
+        patch.object(handler, "_store_workspace_tokens", return_value=None),
+    ):
         result = await handler.handle_oauth_callback(code="c", state=state)
 
     assert result["success"] is True
@@ -244,9 +239,7 @@ async def test_callback_error_path_pops_nonce(handler, patched_redis):
     _, state = await handler.generate_authorization_url(user_id="err-user")
     assert len(patched_redis.store) == 1
 
-    with patch.object(
-        handler, "_exchange_code_for_tokens", side_effect=RuntimeError("boom")
-    ):
+    with patch.object(handler, "_exchange_code_for_tokens", side_effect=RuntimeError("boom")):
         with pytest.raises(Exception):
             await handler.handle_oauth_callback(code="c", state=state)
 
@@ -273,6 +266,6 @@ async def test_get_oauth_status_counts_active_flows(handler, patched_redis):
 # ---------------------------------------------------------------------------
 def test_cleanup_expired_states_removed(handler):
     """Redis TTL auto-expires entries; the manual housekeeping method is removed."""
-    assert not hasattr(handler, "cleanup_expired_states"), (
-        "cleanup_expired_states should be removed — Redis TTL handles expiry"
-    )
+    assert not hasattr(
+        handler, "cleanup_expired_states"
+    ), "cleanup_expired_states should be removed — Redis TTL handles expiry"

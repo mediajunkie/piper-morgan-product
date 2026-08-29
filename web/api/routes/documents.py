@@ -269,9 +269,7 @@ async def compare_documents(
         # #1185: bind the caller's stored Anthropic key for this request.
         resolved_key = await resolve_user_llm_key(None, current_user.sub)
         with request_api_key(resolved_key):
-            result = await handle_compare_documents(
-                file_ids=file_ids, user_id=current_user.user_id
-            )
+            result = await handle_compare_documents(file_ids=file_ids, user_id=current_user.user_id)
         logger.info(
             "Documents compared",
             file_count=len(file_ids),

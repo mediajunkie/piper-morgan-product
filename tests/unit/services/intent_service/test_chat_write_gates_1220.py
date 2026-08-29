@@ -181,9 +181,11 @@ class TestIssueRequestSlotFill:
         return IntentService._slotfill_issue_request
 
     def test_the_live_sentence_extracts_fully(self):
-        msg = ('Please create an issue in mediajunkie/test-piper-morgan repo titled '
-               '"v0.8.10.3 first connector write" with body "created via the per-user '
-               'OAuth rail, verified by read-back"')
+        msg = (
+            "Please create an issue in mediajunkie/test-piper-morgan repo titled "
+            '"v0.8.10.3 first connector write" with body "created via the per-user '
+            'OAuth rail, verified by read-back"'
+        )
         slots = self._f()(msg)
         assert slots["repository"] == "mediajunkie/test-piper-morgan"
         assert slots["title"] == "v0.8.10.3 first connector write"

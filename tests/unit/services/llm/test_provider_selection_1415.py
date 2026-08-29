@@ -239,9 +239,7 @@ async def test_public_complete_threads_user_id_to_selection():
     cfg = _StubConfigService()
     client = _make_client(cfg)
 
-    with patch.object(
-        type(client), "_call_provider", new=AsyncMock(return_value="ok")
-    ):
+    with patch.object(type(client), "_call_provider", new=AsyncMock(return_value="ok")):
         await client.complete("conversation", "hi", user_id="user-a")
 
     assert cfg.seen_user_ids == ["user-a"]

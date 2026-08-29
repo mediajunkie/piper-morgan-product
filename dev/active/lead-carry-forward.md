@@ -14,7 +14,8 @@ _Rewritten 2026-08-19 ~21:50 PT (Phase 2.2 scaffold complete, dark)._
   sprint/milestone call; PM rules the assembled cut in one sitting). Awaiting PPM's go-ahead · v62 test round (7-item plan; the flip's first traffic) · two 5-minute
   decisions offered: #1598 (admin routes bless-or-gate) + #1635 (false-door shape) · #1677 triage
   lean (todo-create misroute = #1488's mechanism; my lean: classifier-prompt example add)
-- CXO: #1386 criterion-2 sign-off (keyed Run 14 evidence delivered 8/21)
+- ✅ #1386 criterion-2: SIGNED OFF 8/21 (issue comment 5378155010) — my 'awaiting' row was stale a week; corrected 8/28. Lesson: verify awaited items against the ISSUE, not this file.
+- ✅ #1635: CXO design pass delivered Thu 8/27 night (Radar card — suppress on empty Radar; future-claiming copy verbatim). BUILD QUEUED behind the 1677(d) lane (shared-worktree race trigger).
 - CIO: watchdog cadence-relative build (design accepted 8/21)
 
 ## Recently landed (8/22, all pushed)

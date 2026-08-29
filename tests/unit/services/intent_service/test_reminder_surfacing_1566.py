@@ -112,9 +112,9 @@ class TestReminderContextRidesEveryCategory1566:
         """#1425 honesty: a failed lookup (None sentinel) flags source_failed
         on every category, never a silent nothing."""
         context = await _gather(category, None)
-        assert context.get("source_failed") is True, (
-            f"failed reminder lookup left no source_failed flag on {category}"
-        )
+        assert (
+            context.get("source_failed") is True
+        ), f"failed reminder lookup left no source_failed flag on {category}"
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("category", ["STATUS", "CONVERSATION"])
@@ -131,11 +131,14 @@ class TestReminderContextRidesEveryCategory1566:
         for p in patchers:
             p.start()
         try:
-            with patch.object(
-                ContextAssembler,
-                "_gather_status_priority_context",
-                AsyncMock(side_effect=RuntimeError("github down")),
-            ), _mock_due(["submit the report"]):
+            with (
+                patch.object(
+                    ContextAssembler,
+                    "_gather_status_priority_context",
+                    AsyncMock(side_effect=RuntimeError("github down")),
+                ),
+                _mock_due(["submit the report"]),
+            ):
                 assembler = ContextAssembler()
                 context = await assembler.gather_context("STATUS", user_id=str(uuid4()))
         finally:
@@ -159,9 +162,9 @@ class TestFloorRendersDueReminders1566:
         out = self._render(
             {"due_reminders": ["check in with the Lead Developer"], "reminder_count": 1}
         )
-        assert "check in with the Lead Developer" in out, (
-            "due reminder text missing from the floor's context block"
-        )
+        assert (
+            "check in with the Lead Developer" in out
+        ), "due reminder text missing from the floor's context block"
         assert "DUE REMINDER" in out
 
     def test_due_reminders_render_alongside_status_keys(self):
