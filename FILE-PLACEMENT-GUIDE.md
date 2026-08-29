@@ -35,13 +35,13 @@
 - **Temporary test files** → `tests/` or `/tmp/`
 
 ### Documentation (Per NAVIGATION.md Structure)
-- **ADRs** → `docs/internal/architecture/current/adrs/`
+- **ADRs** → `docs/internal/architecture/adrs/`
 - **Planning docs** → `docs/internal/planning/current/`
 - **Session logs** → `dev/YYYY/MM/DD/` or `docs/internal/development/session-logs/`
 - **Omnibus logs** → `docs/omnibus-logs/`
 - **Methodology docs** → `docs/internal/development/methodology-core/`
 - **Decision logs** → `docs/internal/architecture/decisions/`
-- **Pattern docs** → `docs/internal/architecture/current/patterns/`
+- **Pattern docs** → `docs/internal/architecture/patterns/`
 
 ### Configuration & Credentials
 - **User config** → `config/` (PIPER.user.md, etc.)

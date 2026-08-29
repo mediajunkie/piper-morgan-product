@@ -153,7 +153,7 @@ This skill applies patterns from the **Completion Theater Family** (045/046/047/
 
 If issue closure involved bug investigation, also consider the **Investigation Family** (006/041-043/060).
 
-See [PATTERN-FAMILIES.md](../../../docs/internal/architecture/current/patterns/PATTERN-FAMILIES.md) for full family index.
+See [PATTERN-FAMILIES.md](../../../docs/internal/architecture/patterns/PATTERN-FAMILIES.md) for full family index.
 
 ---
 

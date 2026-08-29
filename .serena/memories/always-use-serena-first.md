@@ -39,7 +39,7 @@ Agent wasted significant tokens and nearly created a rogue parallel system by:
 1. Use Serena to map current structure
 2. Find existing related functionality
 3. Check domain models (services/domain/models.py)
-4. Review relevant patterns (docs/internal/architecture/current/patterns/)
+4. Review relevant patterns (docs/internal/architecture/patterns/)
 5. Check ADRs for architectural decisions
 
 **Phase 0**: Design integration

@@ -578,7 +578,7 @@ python main.py
 
 - **[Plugin Development Guide](guides/plugin-development-guide.md)** - Detailed plugin creation tutorial
 - **[Intent Classification Guide](guides/intent-classification-guide.md)** - Intent system deep dive
-- **[Architecture Decisions](internal/architecture/current/adrs/)** - Design rationale
+- **[Architecture Decisions](internal/architecture/adrs/)** - Design rationale
 - **[Domain Models Reference](internal/architecture/current/models/)** - Complete model documentation
 - **[CLAUDE.md](../CLAUDE.md)** - Agent development guidelines
 

@@ -257,7 +257,7 @@ alembic upgrade head
 **Ready to contribute!**
 
 - Check `docs/NAVIGATION.md` for project documentation
-- See `docs/internal/architecture/current/adrs/` for architectural decisions
+- See `docs/internal/architecture/adrs/` for architectural decisions
 - Review open issues in GitHub for tasks to work on
 
 ## Support
@@ -265,11 +265,11 @@ alembic upgrade head
 - **Issues**: Check GitHub issues for known problems
 - **Documentation**: See `docs/` directory
 - **Architecture**: See `docs/internal/architecture/current/`
-- **Patterns**: See `docs/internal/architecture/current/patterns/`
+- **Patterns**: See `docs/internal/architecture/patterns/`
 
 ## References
 
 - **Project Structure**: `docs/briefing/PROJECT.md`
 - **Contributing Guide**: Check repository for CONTRIBUTING.md
 - **Development Methodology**: `docs/internal/development/methodology-core/`
-- **Architecture Decisions**: `docs/internal/architecture/current/adrs/`
+- **Architecture Decisions**: `docs/internal/architecture/adrs/`
