@@ -176,7 +176,26 @@ def _is_pure_time_expression(text: str) -> bool:
     return bool(_PURE_TIME_RE.fullmatch(text))
 
 
-def _reminder_saved_message(text: str, reminder_dt, time_label: str) -> str:
+def _format_reminder_when(when, user_tz=None) -> str:
+    """#1572: the ONE reminder clock-face renderer (save confirmation + list).
+
+    With a stored user tz: the USER'S wall clock, labeled with the zone
+    abbreviation ("Saturday, August 29 at 4:00 PM PDT"). Without one: the
+    pre-#1572 face labeled "UTC", unchanged (fail-safe; never an unlabeled
+    face — #1535/#1589's rule)."""
+    from services.utils.user_timezone import resolve_zone
+
+    zone = resolve_zone(user_tz)
+    if zone is not None:
+        local = when.astimezone(zone)
+        # %Z can render empty for some zones; the IANA name is the honest
+        # fallback label ("America/Los_Angeles" beats an unlabeled face).
+        label = local.strftime("%Z") or user_tz
+        return local.strftime("%A, %B %-d at %-I:%M %p ") + label
+    return when.strftime("%A, %B %-d at %-I:%M %p UTC")
+
+
+def _reminder_saved_message(text: str, reminder_dt, time_label: str, user_tz=None) -> str:
     """The one true save confirmation (📅 line included) — composed only
     beside an actual row write. Factored from handle_create_reminder so the
     #1648 time-answer seam and the primary path share one copy source."""
@@ -184,10 +203,10 @@ def _reminder_saved_message(text: str, reminder_dt, time_label: str) -> str:
     if reminder_dt:
         # PM live 2026-08-15: this rendered a UTC instant with no label
         # ("Saturday at 11:42 PM" for a 4:42 PM PT save) — the #1542/#1589
-        # unlabeled-clock-face shape. Until #1572 supplies the user's real
-        # tz, every clock face we print is UTC and must SAY so (the
-        # reminders list already does).
-        time_display = reminder_dt.strftime("%A, %B %-d at %-I:%M %p UTC")
+        # unlabeled-clock-face shape. #1572: with a stored user tz the face
+        # is now the user's clock, labeled; without one it stays UTC and
+        # SAYS so (the reminders list uses the same renderer).
+        time_display = _format_reminder_when(reminder_dt, user_tz)
 
     # #1562: labels from the bare-clock branch start with "at" ("at 5pm") —
     # strip a LEADING "at" so the copy never reads "(scheduled for at 5pm)".
@@ -489,8 +508,13 @@ class TodoIntentHandlers:
             )
             return ask
 
-        # Parse time from message
-        reminder_dt, time_label = parse_reminder_time(original_message)
+        # Parse time from message — on the USER'S clock when a tz is stored
+        # (#1572; captured at login from the browser). None → the pre-#1572
+        # server anchor, unchanged.
+        from services.utils.user_timezone import get_user_timezone
+
+        user_tz = await get_user_timezone(user_id)
+        reminder_dt, time_label = parse_reminder_time(original_message, user_timezone=user_tz)
 
         # Issue #1490 invariant: parse_reminder_time returns None ONLY when
         # the message carried an explicit clock time it couldn't bind (e.g.
@@ -549,7 +573,7 @@ class TodoIntentHandlers:
             # Format confirmation with time (#1648: factored to module level
             # so the time-answer seam shares the ONE real save confirmation —
             # per-line rationale comments live on _reminder_saved_message).
-            return _reminder_saved_message(text, reminder_dt, time_label)
+            return _reminder_saved_message(text, reminder_dt, time_label, user_tz=user_tz)
 
         except Exception as e:
             logger.error(
@@ -686,8 +710,15 @@ class TodoIntentHandlers:
             due.sort(key=lambda pair: pair[0])
             upcoming.sort(key=lambda pair: pair[0])
 
+            # #1572: render each line on the user's clock when a tz is
+            # stored ("4:00 PM PDT"), else the labeled-UTC face unchanged
+            # (#1521's honest label). Due-ness math above stays UTC.
+            from services.utils.user_timezone import get_user_timezone
+
+            user_tz = await get_user_timezone(user_id)
+
             def _line(when, todo) -> str:
-                return f"- **{todo.text}** — {when.strftime('%A, %B %-d at %-I:%M %p')} UTC"
+                return f"- **{todo.text}** — {_format_reminder_when(when, user_tz)}"
 
             count = len(reminders)
             parts = [f"You have {count} reminder{'s' if count != 1 else ''} saved:"]
@@ -912,26 +943,45 @@ class TodoIntentHandlers:
             logger.error("Todo deletion failed", error=str(e), user_id=user_id, exc_info=True)
             return "I had trouble removing that todo. You can try again with 'delete todo [number]', or say 'show my todos' to verify the list."
 
+    # #1693: the create-todo command TOKEN — 'todo', 'to-do', or 'to do'.
+    # Accepted in the command position ONLY (the pattern lead-in), never by
+    # normalizing the whole message: a pre-extraction rewrite of 'to do' →
+    # 'todo' would corrupt captured task text ("add todo: remember to do
+    # laundry" must save "remember to do laundry", not "remember todo
+    # laundry").
+    _TODO_TOKEN = r"to[-\s]?do"
+    # #1693: separator between the token and the task text — colon
+    # (existing), dash/en-dash/em-dash ('new todo - water the plants'), or
+    # plain whitespace ('add todo buy oat milk', unchanged).
+    _TODO_SEP = r"(?:\s*[:\-–—]\s*|\s+)"
+
     def _extract_todo_text(self, message: str) -> str:
         """Extract todo text from 'add todo: TEXT' pattern.
 
         Issue #940 UAT Finding 5: Accept natural phrasing with articles
         ('Add a todo:', 'create a new todo:') not just rigid 'add todo:'.
+
+        Issue #1693 (PM live 8/29, v64): the routing delivered these to this
+        handler and the EXTRACTION dropped them — 'new todo - water the
+        plants' (dash separator, 'new' lead-in), 'add to-do: water the
+        plants' (the teach-copy's own suggested form plus a hyphen — teach-
+        then-deny in miniature), 'one more to-do - water the plants'. Fix is
+        extraction-only: hyphenated/spaced token + dash separators + the
+        new/another/one-more lead-ins. Task text is captured verbatim.
         """
-        # Try "add [a] [new] todo: TEXT" pattern
-        match = re.search(r"add\s+(?:a\s+)?(?:new\s+)?todo:?\s+(.+)", message, re.IGNORECASE)
-        if match:
-            return match.group(1).strip()
-
-        # Try "create [a] [new] todo: TEXT" pattern
-        match = re.search(r"create\s+(?:a\s+)?(?:new\s+)?todo:?\s+(.+)", message, re.IGNORECASE)
-        if match:
-            return match.group(1).strip()
-
-        # Try "todo: TEXT" pattern
-        match = re.search(r"^todo:?\s+(.+)", message, re.IGNORECASE)
-        if match:
-            return match.group(1).strip()
+        token, sep = self._TODO_TOKEN, self._TODO_SEP
+        patterns = [
+            # "add/create [a] [new|one more] todo: TEXT" (#940 + #1693)
+            rf"(?:add|create)\s+(?:a\s+)?(?:new\s+|one\s+more\s+)?{token}{sep}(.+)",
+            # "new todo - TEXT" / "another todo: TEXT" / "one more to-do - TEXT" (#1693)
+            rf"(?:new|another|one\s+more)\s+{token}{sep}(.+)",
+            # "todo: TEXT" at start of message
+            rf"^{token}{sep}(.+)",
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, message, re.IGNORECASE)
+            if match:
+                return match.group(1).strip()
 
         return ""
 
@@ -1187,7 +1237,12 @@ async def handle_reminder_time_turn(
         return None
 
     if _has_time_signal(text):
-        reminder_dt, time_label = parse_reminder_time(text)
+        # #1572: the answer's time binds on the USER'S clock when known —
+        # same anchor the primary path uses.
+        from services.utils.user_timezone import get_user_timezone
+
+        user_tz = await get_user_timezone(user_id or offer_user)
+        reminder_dt, time_label = parse_reminder_time(text, user_timezone=user_tz)
         if reminder_dt is None:
             rearmed = _rearm_time_question(intent_service, session_id, user_id, pending_offer)
             if time_label.startswith(PAST_TODAY_PREFIX):
@@ -1250,7 +1305,7 @@ async def handle_reminder_time_turn(
             session_id=session_id,
         )
         return {
-            "message": _reminder_saved_message(task_text, reminder_dt, time_label),
+            "message": _reminder_saved_message(task_text, reminder_dt, time_label, user_tz=user_tz),
             "intent_data": {
                 "category": "execution",
                 "action": "create_reminder",
@@ -1523,8 +1578,13 @@ async def handle_reminder_task_turn(
     answer_has_time = _has_time_signal(text)
     answer_dt = None
     answer_label = ""
+    # #1572: both parse candidates (the answer's own time and the original
+    # message's) bind on the USER'S clock when a tz is stored.
+    from services.utils.user_timezone import get_user_timezone
+
+    user_tz = await get_user_timezone(user_id or offer_user)
     if answer_has_time:
-        answer_dt, answer_label = parse_reminder_time(text)
+        answer_dt, answer_label = parse_reminder_time(text, user_timezone=user_tz)
     task_text = _strip_trailing_time_expressions(task_text)
 
     if not task_text or _is_pure_time_expression(task_text):
@@ -1549,7 +1609,7 @@ async def handle_reminder_task_turn(
             )
         reminder_dt, time_label = answer_dt, answer_label
     elif original_message and _has_time_signal(original_message):
-        orig_dt, orig_label = parse_reminder_time(original_message)
+        orig_dt, orig_label = parse_reminder_time(original_message, user_timezone=user_tz)
         if orig_dt is None:
             return _chain_time_question(
                 intent_service,
@@ -1609,7 +1669,7 @@ async def handle_reminder_task_turn(
         session_id=session_id,
     )
     return {
-        "message": _reminder_saved_message(task_text, reminder_dt, time_label),
+        "message": _reminder_saved_message(task_text, reminder_dt, time_label, user_tz=user_tz),
         "intent_data": {
             "category": "execution",
             "action": "create_reminder",

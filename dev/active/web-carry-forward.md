@@ -56,21 +56,21 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
-### OPEN — In Review browser-verification round, awaiting Lead's disposition (2026-08-29)
+### PARTIALLY CLOSED — In Review browser-verification round (2026-08-29)
 Exec routed 4 app-layer In Review items (#1512, #1568, #1480, #1578/#1581 SECURITY) as a follow-on
-to the pilot — a real bottleneck (27-item In Review bucket, the "needs anyone with a browser" third
-of it), not make-work. Full report sent to Lead cc Exec/PM:
-`mailboxes/web/sent/report-web-to-lead-cc-exec-pm-four-In-Review-items-verified-with-one-credential-gap-2026-08-29.md`.
+to the pilot. Full report: `mailboxes/web/sent/report-web-to-lead-cc-exec-pm-four-In-Review-items-verified-with-one-credential-gap-2026-08-29.md`.
 
-**Result**: #1480 fully live-verified (real redirect chain + executed the actual deployed
-`safeNextUrl()` guard against 6 attack vectors) — closable. The other three are code-verified (and
-for the security pair, independently re-confirmed via the real jest suite, 18/18) but genuinely
-blocked on one shared constraint: **no test credentials exist for the running shared server, no
-self-serve signup**. Didn't invent an account or spin up isolated infra unilaterally against what's
-likely today's live PM-testing environment — flagged it as a finding rather than guessing past it.
-**Waiting on**: Lead's disposition on the security pair (per Exec's instruction, theirs to close,
-not mine), and whether test credentials / an isolated stack get provisioned for future rounds like
-this. Nothing further for Web until one of those lands.
+**#1480 — CLOSED by Lead**, citing my verification directly. Lead specifically named two things as
+"house discipline done right": diffing the *served* JS byte-identical against source before trusting
+it, and executing the real extracted function body against attack vectors rather than reasoning
+about it — worth defaulting to both on any future live-JS check. Lead also confirmed I was right not
+to invent credentials or self-provision.
+
+**Credential gap — Lead's to fix, queued**: a dedicated browser-lane test account, provisioned
+through the real signup path (not DB-injected), handed to me out-of-band, "before your next
+verification batch." #1512/#1568/#1578/#1581 stay open pending that live-DOM pass — my code-level
+evidence is banked in the thread. **Nothing further for Web until the credential lands** — don't
+chase it.
 
 ### CLOSED — predecessor's two long-standing questions
 Both (CLI B trial status, `--mode=archive` scope) were answered by PM 2026-08-15 and closed in
