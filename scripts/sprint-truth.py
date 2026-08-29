@@ -160,13 +160,14 @@ def unmilestoned_open():
             return None
         return [i for i in json.loads(out.stdout) if i.get("milestone") is None]
 
-    # NOTE (PPM, 2026-08-09): "unmilestoned" is TWO populations with opposite remedies —
+    # NOTE (PPM, 2026-08-09; label shipped 2026-08-29 per Agent 360 v0.4 / HOST routing):
+    # "unmilestoned" is TWO populations with opposite remedies —
     # (a) deliberately held, awaiting a named decision, drained by ASKING; and
     # (b) never triaged, nobody has looked, drained by LOOKING.
     # Reporting them as one number conflates a question for PM with unexamined work.
-    # The split is NOT derivable from GitHub today: no label marks (a), and the six held
-    # issues carry no distinguishing metadata. The cheap fix is an `awaiting-decision`
-    # label; the code below is ready for it and reports honestly until it exists.
+    # The `awaiting-decision` label now exists and marks (a); apply it only to issues
+    # someone has actually examined and is holding for PM's call — NOT to freshly-filed,
+    # not-yet-triaged issues (that's population (b), the default state of a new filing).
     except Exception:
         return None
 
@@ -194,6 +195,21 @@ def main():
     not_done = {k: v for k, v in by_status.items() if k != "Done"}
     total_open = sum(not_done.values())
 
+    # awaiting-decision split, mirroring unmilestoned_open()'s logic: a status bucket
+    # (esp. "Sprint Backlog", the NOT-STARTED bucket) conflates "nobody has examined
+    # this" with "someone examined it and it's waiting on PM" unless we can tell them
+    # apart. The label exists now (added 2026-08-29, PPM/HOST Agent 360 v0.4); this is
+    # the milestone-scoped half of the fix — unmilestoned_open() already had its half.
+    # NOTE: gh project item-list returns labels as bare strings ("priority: high"),
+    # unlike gh issue list's {"name": "..."} objects (see unmilestoned_open() below) —
+    # two different endpoints, two different label shapes for the same field name.
+    awaiting_by_status = Counter()
+    for i in scoped:
+        if "awaiting-decision" in (i.get("labels") or []):
+            st = i.get("status") or "(no status set)"
+            if st != "Done":
+                awaiting_by_status[st] += 1
+
     print(f"MILESTONE: {args.milestone}   (project #{PROJECT}, queried live)")
     print(f"scanned {len(items)} board items; {len(scoped)} carry this milestone\n")
 
@@ -202,7 +218,9 @@ def main():
     ordered += [s for s in sorted(not_done) if s not in NOT_DONE_ORDER]
     for status in ordered:
         gloss = GLOSS.get(status, "")
-        print(f"  {not_done[status]:>4}  {status:<16} {gloss}")
+        awaiting = awaiting_by_status.get(status, 0)
+        suffix = f" ({awaiting} awaiting-decision)" if awaiting else ""
+        print(f"  {not_done[status]:>4}  {status:<16} {gloss}{suffix}")
     print(f"\n  {done:>4}  Done")
 
     # ---- second method: reconcile against the issue list (PPM, 2026-08-08) ----

@@ -1,5 +1,18 @@
-# CXO carry-forward — rewritten 2026-08-28 22:3x PT at STOP. Day closed; next fire 06:47 on 08-29,
-opening ~07:17.
+---
+last_updated: 2026-08-29
+currency_claim: per-stop
+max_age_days: 1
+---
+
+# CXO carry-forward — last rewritten 2026-08-29 (see frontmatter, which is the checkable claim; this
+line is prose and MUST NOT be trusted over it).
+
+⚠️ **Why this file now has frontmatter** (2026-08-29): its old header claimed *"rewritten 2026-08-28 at
+STOP"* while `git log` showed it modified 08-29 — a false currency claim, in the very file I was using to
+design the cohort-wide staleness check (`docs/internal/design/tracked-state-staleness-design-2026-08-29.md`).
+Prose headers drift because updating content and updating the header are two acts joined only by memory.
+The frontmatter above is machine-checkable; the prose is not. **Adopted here first so the design has a live
+reference implementation, not just a spec.**
 
 ⚠️ **CRON ROTATION WATCH**: `cd9b3ddc` expires ~08-31. **Rotate proactively at the 08-30 START**
 (delete-then-create, verify exactly one job, record old→new id) — the 08-18 and 08-24 rotations are the

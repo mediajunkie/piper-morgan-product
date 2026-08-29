@@ -1,8 +1,21 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-29 10:2x PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-29 16:3x PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+⚠️ **GitHub GraphQL quota hit 0/5000 this afternoon** (confirmed via `gh api graphql -f query='{
+rateLimit {...} }'`, resets ~17:14 PDT) — #1386 and a fresh `sprint-truth.py` unchecked since
+~16:30; re-verify at the next fire rather than trust the last-known numbers below indefinitely.
+
+## ✅ AWAITING-DECISION LABEL — SHIPPED (2026-08-29, Agent 360 v0.4 item PM approved)
+My own 08-15 proposal, routed to me by HOST today. Created the GitHub label (safe/additive), wired
+it into `sprint-truth.py`'s milestone-scoped NOT DONE breakdown (the unmilestoned half already
+existed from 08-09 — this was the missing half). Caught and fixed a real bug testing: `gh project
+item-list` returns labels as bare strings, `gh issue list` returns `{"name":...}` objects. Checked
+all 6 currently-unmilestoned issues for genuine candidates — none qualified (all freshly-filed,
+untriaged) — **deliberately left the label unapplied anywhere** rather than force a demo instance.
+Committed `ebc0aea1b` → `b83bd9b5c`, replied to HOST cc CXO/CIO/Arch/Exec/PM (`fec70441e`, verified
+landed). **Closed — nothing further owed.**
 
 ## ✅ #1677 CLOSE-TIMING DISCREPANCY — SOLVED, root cause was my own commit, not Lead's (2026-08-29)
 Resolved same morning I asked. **Root cause: my own `mail-send.sh` commit subject** — "ask(ppm):
