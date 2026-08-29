@@ -32,7 +32,7 @@ So the fix went at the *front* of the line instead, a new migration at the very 
 
 Verifying that took more than reading the migration file and nodding. The only test that proves anything here is building a database from nothing and watching what happens, not trusting the existing shared database, which already had the table and would happily lie to you about the bug being real. A first pass at the fix actually failed that exact test — a database type declaration that looked correct tried to create an enum type that already existed, and the throwaway test database caught the collision immediately. That's the kind of bug a from-scratch build finds in seconds and a shared, already-populated database never shows you.
 
-# The four the guard found on its own
+# The other four tables the guard found on its own
 
 Fixing `project_integrations` properly meant adding a structural check that could catch this entire *class* of problem automatically, going forward. The check is mechanical: scan every table the code's data models declare, scan every migration's "create table" calls, and flag any table on the first list but not the second. No judgment call, no relying on someone noticing.
 
@@ -40,11 +40,11 @@ The moment that check went live, before it had caught a single new bug, it found
 
 Those four went into a follow-up issue and got the same treatment the same day, one more migration, verified the same from-scratch way, no exceptions.
 
-`[CONSIDER: natural spot to name what it felt like watching the guard immediately pay for itself — you'd built a smoke detector expecting to test whether it worked, and it went off on the first real smoke before you'd finished mounting it. Feel free to replace or cut.]`
+This felt a tad like plugging in a smoke detector and having it go off immediately on real smoke before you'd finished mounting it!
 
 # What "orphan" actually means here
 
-I want to be precise about what was orphaned, because it's not quite what the phrase suggests. It wasn't that a migration existed and got disconnected from its table. The table existed, in the running system, in the code, in everyone's assumptions, with no migration ever having claimed it. An orphan in the sense of never having had a parent, not one cast out from one.
+The table did exist, in the running system, in the code, in everyone's assumptions. It was orphaned in the sense of undocumented in terms of migration. It's an "orphan" in the sense of never having had (as opposed to having lost) a parent.
 
 That distinction is why a scan was the right fix and a single patch wasn't. If a migration went missing, you'd look for the missing migration. When the thing missing is the *relationship*, this table matched to this migration, you don't find it by staring harder at any one file. You check every relationship at once, mechanically, and trust the check instead of trusting your own attention to catch it a second time. Don't ask a person to remember forever. Build the thing that checks so nobody has to.
 
