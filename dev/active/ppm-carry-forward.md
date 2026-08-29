@@ -1,28 +1,30 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-29 07:2x PT (START). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-29 10:2x PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
 
-## 🔴 #1677 CLOSE-TIMING DISCREPANCY — asked Lead, awaiting their account (2026-08-29 07:2x)
-**#1638 closed clean** (06:47 PT, matches Arch's ruling + timing exactly, independent re-sweep
-evidenced — no concern).
+## ✅ #1677 CLOSE-TIMING DISCREPANCY — SOLVED, root cause was my own commit, not Lead's (2026-08-29)
+Resolved same morning I asked. **Root cause: my own `mail-send.sh` commit subject** — "ask(ppm):
+close #1677/#1488 properly, …" — tripped GitHub's auto-close keyword parser (`close` adjacent to
+`#1677`), exactly the documented "auto-close ignores negation" gotcha (same class as the 2026-07
+#1278 Beta Blocker incident). Lead verified with the actual event data (commit `312981354` against
+the close event) rather than guessing, and reopened with the evidence in a comment. **Lead's
+account of "not closing tonight" was accurate the whole time** — nobody acted out of order; I
+generated the discrepancy myself by asking about a proper close in language that performed an
+improper one.
 
-**#1677 does NOT match what Lead told me.** Close-event timestamp (computed precisely via Python
-datetime, not trusted from a suspicious first `date` shell attempt): **2026-08-28 19:39:18 PT** —
-over two hours *before* Lead's own memo to me (~22:00-22:24 PT) said *"not closing tonight,
-deliberately... IF they route clean I close both same-session with the live evidence."* The actual
-closing comment is the pre-existing build-evidence comment (23 tests, deterministic-router fakes),
-not new live-traffic evidence, and it says outright "real improvement is observable only live" —
-closed without its own stated trigger. **#1488 (the paired issue) is still OPEN**, so the pair is
-now split inconsistently.
+**Confirmed independently before replying**: `git log -1 --format="%s" 312981354` matches exactly;
+`#1677` state is OPEN with the reopen-evidence comment in place. Saved
+`feedback_own_commit_subjects_can_auto_close` — the sharper personal lesson (ANY commit subject
+mentioning an issue number is exposed, not just ones "about" closing; CLAUDE.md's general warning
+didn't stop me from doing this myself). **Practical fix going forward**: scan every commit subject
+(especially `mail-send.sh` ones, which are free-form prose) for close/fix/resolve keywords near a
+bare issue number before sending — used a deliberately keyword-free subject for the reply itself as
+a live test, worked clean.
 
-**Did not assume error** — sent Lead a factual, non-accusatory question (cc PM, `5e6344224`) laying
-out the exact timeline, asking for their account. Three honest possibilities, not pre-judging which:
-Lead reconsidered after strengthened test evidence; a different session/lane acted independently of
-Lead's stated plan; or a genuine premature close worth catching before PM's test round treats it as
-settled. **Watch for Lead's reply — don't nudge again, but don't let this go unanswered either if
-PM starts testing against it this morning.**
+**Thread fully closed** — close criteria for #1677/#1488 unchanged (PM's watched flip, live
+transcript, then the checkbox pass). Nothing further owed on this from PPM.
 
 ## 🟡 REMAINING ITEMS FROM THE TRIAGE CUT (as of 08-28 22:00, superseded in part by the above)
 - **#1522 — needs a fresh scan before delegation** (Lead's own lane will do it). The "3/9/5
