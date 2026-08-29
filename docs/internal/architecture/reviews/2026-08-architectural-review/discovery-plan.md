@@ -1,8 +1,26 @@
 # Architectural Review 2026 — Discovery Plan
 
-**Version**: v0.1 (draft for PM refinement — not yet dispatched)
+**Version**: v0.2 (PM-approved 2026-08-29 with Exec refinement; DISPATCHED same day)
 **Authors**: Chief Architect, from PM+Arch kickoff conversation 2026-08-29
-**Status**: DRAFT — awaiting PM review before any agent is dispatched
+**Status**: ACTIVE — all four legs dispatched 2026-08-29 morning
+
+**v0.2 changes**: (1) Exec's refinement folded into Leg C — *"the same reasoning argues for at least
+one researcher who hasn't read our docs at all, only the comparables, so the external scan isn't
+shaped by our vocabulary."* Implemented as: ALL Leg C prompts written in industry-generic terms (no
+project vocabulary — no "spatial intelligence," no "BYOC," no "Inversion"), and C1 fully blind (no
+mention of our project's existence at all). (2) Leg D doc-set curation recorded below. (3) Candidate
+phase-5 deliverable noted: a bet-shaped scope gate (shape-up-style), per PM's own retrospective on
+the own-assistant→SaaS leap — governance artifact, decided at phase 5, flagged now so it doesn't
+silently drop.
+
+**Leg D curation record (2026-08-29)**: 25 files copied to an isolated directory the agent is
+pointed at with no repo access — PROJECT.md, glossary v1.1, PIPER.md, all PDRs (001–007, 101 +
+appendix + radar spec), and from `architecture/current/`: architecture, technical-spec,
+requirements, data-model, domain-services, intent-routing-stack, api-specification,
+web-routes-conventions, test-strategy, ethics-architecture, consciousness-philosophy.
+**Deliberately excluded: the ~80-ADR trail.** Rationale: ADRs are decision history, not system
+description; if the paper test fails on questions the ADRs would answer, that is itself the drift
+finding — decided things that never got absorbed into current-state docs.
 
 ---
 
