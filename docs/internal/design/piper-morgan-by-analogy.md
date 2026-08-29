@@ -2,7 +2,7 @@
 
 **Purpose**: Clarify how Piper Morgan relates to tools like Jira—same domain, different paradigm.  
 **Audience**: Stakeholders, architects, PMs.  
-**Companion**: [UX Foundations and Open Questions](mux/piper-morgan-ux-foundations-and-open-questions.md), [ADR-000 Meta-Platform](../architecture/current/adrs/adr-000-meta-platform.md)
+**Companion**: [UX Foundations and Open Questions](mux/piper-morgan-ux-foundations-and-open-questions.md), [ADR-000 Meta-Platform](../architecture/adrs/adr-000-meta-platform.md)
 
 ---
 
@@ -82,7 +82,7 @@ So Piper is "better" **where** we want: less "operate a tool," more "work with a
 ## References
 
 - **Colleague metaphor, Radar, what Piper is not**: [UX Foundations and Open Questions](mux/piper-morgan-ux-foundations-and-open-questions.md)
-- **Meta-platform (practitioner, demonstrator, enabler)**: [ADR-000 Meta-Platform](../architecture/current/adrs/adr-000-meta-platform.md)
+- **Meta-platform (practitioner, demonstrator, enabler)**: [ADR-000 Meta-Platform](../architecture/adrs/adr-000-meta-platform.md)
 - **Spatial intelligence and performance**: [Spatial Intelligence Competitive Advantage](../architecture/current/spatial-intelligence-competitive-advantage.md)
-- **Integration swappability (e.g. GitHub vs Jira backend)**: [Pattern-040 Integration Swappability](../architecture/current/patterns/pattern-040-integration-swappability-guide.md)
+- **Integration swappability (e.g. GitHub vs Jira backend)**: [Pattern-040 Integration Swappability](../architecture/patterns/pattern-040-integration-swappability-guide.md)
 - **Learning and preferences (e.g. "Not Jira, Linear")**: [Composting & Learning Architecture](../architecture/current/composting-learning-architecture.md)
