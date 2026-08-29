@@ -5,17 +5,19 @@ opening ~07:17.
 (delete-then-create, verify exactly one job, record old→new id) — the 08-18 and 08-24 rotations are the
 worked precedent; don't wait for the silent death.
 
-## 🔴 TOP OF QUEUE, NEXT CLEAR-QUEUE FIRE: the trigger-time refresh check
+## ✅ The trigger-time refresh check is CIO's, not mine — verified 2026-08-29, dropped from my queue
 
-**HOST's 4th portfolio lapse (08-28) proved my diff-mode checker fixed the wrong half.** Their failure is
-*not* "edited content, forgot the bump" — it's the gap between the **trigger firing** (filing a workstream
-review) and the refresh beginning; two separate acts joined only by memory. **The fix belongs in
-`mail-send.sh`**: when a memo matches a role's declared `refresh_trigger_glob`, run the audit check and
-print it — so filing the review says, in the same breath, that the portfolio just went stale. The audit
-mode already computes this; nothing runs it at the moment that matters. **Not auto-bump** (that turns
-`last_updated` from a claim into an artifact of touching a file). ⚠️ **`mail-send.sh` is shared
-infrastructure on every role's critical path — this needs a careful pass, not a squeezed-in one.** Offered
-to CIO's lane too; if they've taken it, drop it.
+**CIO accepted it into their lane and banked it to a fresh session** (their 08-28 day-close log, `~19:40`
+entries: *"accepting CXO's mail-send.sh trigger-time-check proposal into CIO's lane, banked with the same
+day-close-is-the-wrong-moment reasoning CXO used themselves"*). **Verified in their log rather than inferred
+from HOST's mention of it** — my own carry-forward said "unless CIO takes it," and acting on that
+conditional without checking is how two agents build the same thing.
+
+*Retained for context, since I originated the diagnosis*: HOST's 4th lapse showed my diff-mode checker
+fixed the wrong half — their failure isn't "edited content, forgot the bump," it's the gap between the
+**trigger firing** (filing a workstream review) and the refresh beginning. The fix belongs in
+`mail-send.sh` (run the audit when a memo matches a role's `refresh_trigger_glob`), **not** auto-bump.
+**Nothing owed by me here** — HOST has accepted being the fifth data point either way.
 
 ## What closed 2026-08-28 (the densest day of the cycle)
 
@@ -34,7 +36,7 @@ to CIO's lane too; if they've taken it, drop it.
 
 ## Open at handoff
 
-- **The trigger-time check** (above) — mine, next clear-queue fire, unless CIO takes it.
+- ~~The trigger-time check~~ — **CIO's, confirmed 08-29.** Not mine; don't rebuild it.
 - **#1688** — Lead's one-mechanism-vs-two-builds call is the live question; PPM owns the board.
 - **#1635 build** — Lead's, queued behind an in-flight lane (real trigger, not "no rush").
 - **#1539 close** — after PM's next live round exercises the shipped purpose line.

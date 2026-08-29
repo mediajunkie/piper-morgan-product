@@ -1,5 +1,10 @@
 # Comprehensive PM Manual Testing Guide - ResponsePersonalityEnhancer
 
+> **STALE (2026-08-29, #1638)**: the `TemplateRenderer` snippets below import
+> `services.ui_messages.templates`, deleted per Arch's DISPOSE ruling (zero production
+> callers). Those steps no longer run as written; the guide is retained as a historical
+> testing record.
+
 ## Overview
 This package provides step-by-step manual testing scenarios for validating the ResponsePersonalityEnhancer system before production deployment.
 

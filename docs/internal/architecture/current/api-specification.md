@@ -1020,43 +1020,12 @@ async def humanize(self, action: str, category: Optional[str] = None) -> str:
 - Handles articles (a/an) based on noun
 - Recognizes common abbreviations (github → GitHub, api → API)
 
-#### TemplateRenderer Service
+#### TemplateRenderer Service (REMOVED 2026-08-29, #1638)
 
-Generates user-facing messages using templates with humanized actions.
-
-- **Purpose**: Consistent message generation across the system
-- **Location**: `services/ui_messages/templates.py`
-- **Dependencies**: ActionHumanizer (optional)
-
-**Primary Method**:
-
-```python
-async def render_template(
-    self,
-    template: str,
-    intent_action: str,
-    intent_category: Optional[str] = None,
-    **kwargs
-) -> str:
-    """
-    Render template with humanized action and additional context.
-
-    Args:
-        template: Message template with placeholders
-        intent_action: Technical action string
-        intent_category: Optional category for context
-        **kwargs: Additional template variables
-
-    Returns:
-        Rendered message with humanized action
-    """
-```
-
-**Template Variables**:
-
-- `{action}` - Original technical action
-- `{human_action}` - Humanized action string
-- Standard kwargs passed through
+`services/ui_messages/templates.py` and `personality_templates.py` were deleted per Arch's
+2026-08-28 DISPOSE ruling: the `TemplateRenderer` family had zero production callers — its
+integration point was `main.py`'s pre-2025-10 chat handler, and the successor rendering path
+never picked it up. Recoverable from git history. `ActionHumanizer` (below) remains.
 
 #### Integration with Workflows
 
@@ -1075,15 +1044,15 @@ Workflow responses now include humanized acknowledgment messages:
 }
 ```
 
-**Message Generation Flow**:
+**Message Generation Flow** (historical — this flow ran through `main.py`'s pre-2025-10 chat
+handler and the now-removed TemplateRenderer; current rendering happens in the
+`IntentService`/workflow-dispatcher path):
 
 1. Workflow returns technical response
-2. Main.py retrieves appropriate template
-3. TemplateRenderer formats message with humanized action
-4. Response sent to user with natural language
+2. Response sent to user with natural language
 
 ## PM-039 Canonical Action for Document/File Search
 
 - All document/file search actions (find_documents, search_files, etc.) are normalized to 'search_documents'.
 - This unification ensures robust, maintainable, and unified handling of all search intents.
-- Supported patterns and typo tolerance are documented in tests/test_intent_coverage_pm039.py and docs/development/testing/ui-message-template-system-report.md.
+- Supported patterns and typo tolerance are documented in tests/test_intent_coverage_pm039.py.

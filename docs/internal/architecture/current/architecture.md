@@ -194,13 +194,14 @@ layer is superseded by the routing graph above.
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                            UI MESSAGE LAYER                                │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│  ActionHumanizer           │  TemplateRenderer        │  Message Templates   │
-│  • Cache-first lookup      │  • Template selection    │  • Intent-based     │
-│  • Rule-based conversion   │  • Variable substitution │  • Workflow-based   │
-│  • Usage tracking          │  • Humanization integration │  • Fallbacks     │
+│  ActionHumanizer                                                            │
+│  • Cache-first lookup                                                       │
+│  • Rule-based conversion                                                    │
+│  • Usage tracking                                                           │
+│  (TemplateRenderer + template dicts removed 2026-08-29 per #1638 — never    │
+│   wired to a production code path; recoverable from git history)            │
 └─────────────────────────────────────────────────────────────────────────────┘
-                │                        │                         │
-                └────────────────────────┴─────────────────────────┘
+                                        │
                                         │
                                         ▼
                               User-Facing Messages
@@ -1268,7 +1269,10 @@ context["intent_action"] = intent.action
 ### Template System Integration
 
 **Date**: July 13, 2025
-**Status**: Successfully integrated with minimal architectural impact
+**Status**: REMOVED 2026-08-29 (#1638). The integration point described below was `main.py`'s
+chat handler, which was gutted 2025-10-01; the template module was never re-wired into the
+successor path (`web/app.py` / `IntentService`) and was disposed with zero production callers
+per Arch's 2026-08-28 ruling. Kept as a historical record of the original design.
 
 #### Design Success
 

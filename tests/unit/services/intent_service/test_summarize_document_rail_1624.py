@@ -421,8 +421,10 @@ class TestDeadVocabularyStaysDeleted:
         with pytest.raises(ModuleNotFoundError):
             importlib.import_module("services.intent_service.intent_enricher")
 
-    def test_never_fired_template_rows_are_gone(self):
-        from services.ui_messages.templates import INTENT_BASED_TEMPLATES
-
-        assert ("synthesis", "summarize_document") not in INTENT_BASED_TEMPLATES
-        assert ("synthesis", "summarize_file") not in INTENT_BASED_TEMPLATES
+    def test_never_fired_template_module_is_gone(self):
+        """#1624 deleted the vestige summarize rows from INTENT_BASED_TEMPLATES;
+        #1638 then disposed the whole templates module (TemplateRenderer family,
+        zero production callers, Arch-ruled 2026-08-28). Recoverable from git
+        history if ever needed."""
+        with pytest.raises(ModuleNotFoundError):
+            importlib.import_module("services.ui_messages.templates")

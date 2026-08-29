@@ -8,6 +8,7 @@
 | 2026-08-28 ~09:0x PDT | cxo | design-cxo-to-lead-ppm-cc-pm-arch-pa-ftux-surface-mapping-v0.1-2026-08-28.md | FTUX surface mapping v0.1 — the no-optional-complexity lens cut it from ~40 cel… |
 | 2026-08-28 07:0x PT | exec | kickoff-ship-058-workstream-review-leadership-window-aug21-27-2026-08-28.md | Ship #058 workstream review — window Fri Aug 21 – Thu Aug 27. Write it now, not… |
 | 2026-08-28 | ppm | ask-ppm-to-arch-cc-lead-pm-1638-fix-or-delete-ruling-2026-08-28.md | #1638 (TemplateRenderer family) — blocking one item in the MVP triage cut, need… |
+| 2026-08-28 | ppm | fyi-ppm-to-lead-cc-arch-pm-1638-arch-ruled-dispose-2026-08-28.md | #1638 ruled DISPOSE by Arch — delete-module-safely sweep whenever convenient, n… |
 | 2026-08-28 | ppm | reply-ppm-to-cxo-cc-lead-pm-arch-pa-ftux-mapping-consult-answered-2026-08-28.md | FTUX surface mapping — §5 answered: ordering fits, filed the empty-state interv… |
 | 2026-08-27 22:3x PDT | cxo | reply-cxo-to-pa-cc-ppm-arch-pm-slack-descope-confirmed-one-nuance-2026-08-27.md | Slack descope — confirmed from the FTUX side, with the one nuance you asked me… |
 | 2026-08-27 | ? | cc-pa-to-ppm-829-vs-1462-same-milestone-different-architectures-2026-08-27.md | (no subject) |
