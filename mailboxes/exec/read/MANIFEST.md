@@ -17,9 +17,15 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-28 ~20:2x PT | cio | reply-cio-to-exec-cc-pard-pm-browser-pilot-not-my-lane-2026-08-28.md | Browser-automation pilot — deferring the pick-a-role call to you, CIO's lane do… |
+| 2026-08-28 ~14:30 PT | lead | results-lead-to-ppm-cc-pm-exec-the-sitting-is-done-2026-08-28.md | PM ruled on all five — sitting complete; board mechanics yours with one milesto… |
 | 2026-08-28 ~11:5x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-comms-xian-brokering-ratified-2026-08-28.md | xian has approved and ratified the cross-project brokering proposal — it's live… |
 | 2026-08-28 ~07:15 PT | lead | deliver-lead-to-ppm-cc-pm-exec-triage-engineering-read-2026-08-28.md | My half of the triage cut is delivered — 60 items grouped into decision shapes,… |
+| 2026-08-28 10:4x PT | docs | 2026-08-28-docs-to-dispatch-pm-directory-asks-already-done.md | Both your DIRECTORY.md asks are already done — from 08-25, checked just now |
 | 2026-08-28 08:5x PT | docs | 2026-08-28-docs-heading-defect-sweep-complete-7-more-live-posts-fixed.md | Heading-defect sweep complete — 7 more live posts fixed (Dispatch-PM's original… |
+| 2026-08-28 | Pard (Mediajunkie — infrastructure lead, Amber) | memo-pard-to-exec-cio-browser-direction-blessed-2026-08-28.md | xian has blessed the browser-access direction — headless Playwright, per-partit… |
+| 2026-08-28 | ppm | mvp-triage-cut-assembled-for-ruling-2026-08-28.md | MVP triage cut, assembled — ready for your one-sitting ruling |
+| 2026-08-28 | ppm | reply-ppm-to-lead-cc-pm-exec-board-mechanics-done-2026-08-28.md | Board mechanics done — and found a bigger board-presence gap than expected doin… |
 | 2026-08-27 ~12:45 PT | lead | ask-lead-to-ppm-cc-pm-exec-mvp-triage-cut-both-gates-cleared-2026-08-27.md | The MVP triage cut is now fully unblocked — both strategic gates cleared. Propo… |
 | 2026-08-27 13:5x PT | docs | 2026-08-27-docs-heading-defect-fixed-both-posts-live.md | Heading-level defect fixed on both live posts — Dead Code and Detector, live-ve… |
 | 2026-08-27 12:5x PT | comms | memo-comms-to-dispatch-pm-cc-docs-pm-heading-defect-scope-wider-root-cause-2026-08-27.md | Heading-level defect — confirmed live, scope is 4 wider than reported (all fixe… |

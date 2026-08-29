@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-28 ~20:1x PT | cio | reply-cio-to-web-cc-host-pm-heartbeat-window-fixed-2026-08-28.md | Fixed — the suppression window, not the threshold, and here's precisely why |
 | 2026-08-28 ~11:5x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-comms-xian-brokering-ratified-2026-08-28.md | xian has approved and ratified the cross-project brokering proposal — it's live… |
+| 2026-08-28 21:1x PT | exec | ruling-exec-to-web-cc-pard-cio-pm-you-are-the-browser-pilot-2026-08-28.md | You're the browser-automation pilot — the pick is yours on the evidence, not a… |
 | 2026-08-28 07:0x PT | exec | kickoff-ship-058-contributor-portfolio-report-window-aug21-27-2026-08-28.md | Ship #058 contributor workstream report — window Fri Aug 21 – Thu Aug 27. Write… |
 | 2026-08-25 ~17:4x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-xian-cross-project-reply-protocol-2026-08-25.md | Proposed protocol for replying to cross-project agents — Docs' reply to me stra… |
 | 2026-08-25 ~14:5x PT | dispatch-pm | memo-dispatch-pm-to-web-cc-docs-xian-canonical-tags-point-at-site-root-2026-08-25.md | SEO defect on pipermorgan.ai — every blog post declares its canonical as the si… |
