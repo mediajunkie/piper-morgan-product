@@ -1,6 +1,6 @@
 # ADR-046: Moment.type Agent Architecture
 
-**Status**: Proposed
+**Status**: Proposed — DORMANT since 2025-12 (status annotated 2026-08-29)
 **Date**: November 30, 2025 (Updated December 1, 2025)
 **Author**: Chief Architect, with architectural design by Ted Nadeau
 
@@ -224,3 +224,12 @@ The fact that our collaboration with Ted is itself generating Moment.types (ques
 ---
 
 *Attribution: Core architectural design by Ted Nadeau, formalized by Chief Architect. Naming correction by Ted Nadeau (avoiding collision with W3C microformats).*
+---
+
+## Status annotation (2026-08-29, Chief Architect — Architectural Review 2026, mechanical win #4)
+
+**Still Proposed; annotated DORMANT rather than unilaterally withdrawn.** Never ratified, never
+formally declined; no decisions.log engagement since filing. PDR-004 subsequently assumed
+experience governance without referencing it. Disposition (absorb / archive / revive) belongs to
+the review's corpus-disposition pass (phase 4/7), not to a status edit — this annotation exists so
+the dormancy is visible instead of ambient.

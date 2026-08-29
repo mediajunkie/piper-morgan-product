@@ -1,7 +1,7 @@
 # ADR-018: Server Functionality Architecture
 
 **Date**: August 17, 2025
-**Status**: Accepted
+**Status**: Superseded (status corrected 2026-08-29; prior status 'Implemented' was inaccurate)
 **Deciders**: Principal Architect, Chief Architect, Chief of Staff
 **Classification**: Architectural (High Impact)
 
@@ -254,3 +254,13 @@ The success metrics aren't aspirational—they're achieved. The platform transfo
 ---
 
 *"From tool to platform, from consumer to provider, from isolated intelligence to ecosystem infrastructure."*
+---
+
+## Status correction (2026-08-29, Chief Architect — Architectural Review 2026, mechanical win #4)
+
+**Status corrected → Superseded, and the prior 'Implemented' status is explicitly disavowed.** The
+dual-mode MCP server this ADR claimed as implemented was deleted 2026-07-18 in the Tier-3 pass,
+characterized in the deletion record as "fake federated-search + hardcoded health, the pre-ADR-070
+server" — i.e., the implementation claim was recorded aspiration, not verified fact. The live
+successor direction is ADR-070 (MCP-consumer) + PDR-006 (hosted MCP distribution). Kept as
+history; corrected so no future reader inherits the false status.

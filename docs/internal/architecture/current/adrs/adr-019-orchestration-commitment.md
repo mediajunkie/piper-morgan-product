@@ -1,7 +1,7 @@
 # ADR-019: Full Orchestration Commitment
 
 **Date**: August 17, 2025
-**Status**: Accepted
+**Status**: Superseded (status corrected 2026-08-29)
 **Deciders**: Principal Architect, Chief Architect, Chief of Staff
 **Classification**: Architectural (Strategic)
 
@@ -197,3 +197,14 @@ This decision embraces the reality that in modern AI systems, coordination is ch
 ---
 
 *"Go whole hog or go home. Orchestration isn't overhead—it's architecture."*
+---
+
+## Status correction (2026-08-29, Chief Architect — Architectural Review 2026, mechanical win #4)
+
+**Status corrected Accepted → Superseded.** "If it can be orchestrated, it should be orchestrated"
+was never formally rescinded, but: ADR-043 (Nov 2025) quietly reinterpreted orchestration as an
+application-layer workflow pattern (a partial, unlabeled supersession — labeled now), and
+`services/orchestration/` was deleted 2026-07-18 as unreachable/fabricating code. The premises
+(0ms coordination, Chain-of-Draft economics, 7626x acceleration) were never validated per
+ADR-015's own protocol. Field evidence gathered by the Architectural Review 2026 (comparables Leg
+C1) independently identifies orchestration-everywhere as the category's signature overbuild.

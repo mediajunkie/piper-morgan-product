@@ -1,8 +1,18 @@
 # Architectural Decision Records (ADR) Index
 
+> ⚠️ **THIS INDEX IS STALE AND SCHEDULED FOR REPLACEMENT BY A DERIVED VIEW** (banner added
+> 2026-08-29, Chief Architect — Architectural Review 2026). The counts and per-ADR statuses below
+> are NOT current: 78 numbered ADRs exist (through 079; 067/068 never filed), and as of
+> 2026-08-29 at least eight carry corrected Superseded/Dormant statuses (ADR-013, -016, -018,
+> -019, -020, -021, -024, -028, plus dormancy annotations on -046/-056) that this index does not
+> reflect. Per the review's ratified ADR reform (demote-don't-retire; decisions.log 2026-08-29),
+> this hand-maintained index is exactly the drift-prone surface m-36/ADR-077/ADR-079 forbid — it
+> will be regenerated from ADR headers as a derived view rather than hand-reconciled again.
+> **Trust the individual ADR files' Status lines, not this catalog, until then.**
+
 **Last Updated**: 2026-05-16 (ADR-061 + ADR-062 + ADR-063 + ADR-064 entries added; full index reconciliation pending)
-**Total ADRs**: 67 (000-064, excluding field-mapping-report and this index)
-**Status**: Active
+**Total ADRs**: 67 (000-064, excluding field-mapping-report and this index) *(inaccurate — see banner)*
+**Status**: Stale — see banner
 
 ## Overview
 

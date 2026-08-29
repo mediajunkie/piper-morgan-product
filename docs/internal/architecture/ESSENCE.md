@@ -63,10 +63,12 @@ else.
 ## What it does today, on which surface (dated snapshot — 2026-08-29)
 
 - **Live surface**: the web-chat app (alpha, ~11 testers + PM), in **explicit maintenance mode**
-  as of 2026-08-29 — bugs fixed, nothing new built. It classifies intents (legacy chain, 100% of
-  traffic; Inversion flip staged and ratified), files/updates GitHub issues via a real MCP
-  consumer path, manages todos/reminders (consent-gated), generates the standup, ingests and
-  answers questions about documents, and holds the conversational floor with the honesty rails.
+  as of 2026-08-29 — bugs fixed, nothing new built. It classifies intents (legacy chain carries
+  observed traffic; flip-1 live for `read_status` since 08-21 via deployment secrets, unexercised
+  to date; full staged flip ratified and sequenced by Lead into PM's next watched round),
+  files/updates GitHub issues via a real MCP consumer path, manages todos/reminders
+  (consent-gated), generates the standup, ingests and answers questions about documents, and holds
+  the conversational floor with the honesty rails.
 - **Build surface**: the hosted MCP path (`mcp.pipermorgan.ai`, PDR-006) — where all new effort
   goes, in roughly the clean-room agent's increment order: cold-start reflection first.
 - **Connectors, honestly stated**: GitHub — real MCP, load-bearing. Calendar — live via Google SDK

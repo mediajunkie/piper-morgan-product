@@ -1,7 +1,7 @@
 # ADR-021: Multi-Federation Achievement
 
 **Date**: August 17, 2025
-**Status**: Accepted
+**Status**: Superseded — implementation claims disavowed (status corrected 2026-08-29)
 **Deciders**: Principal Architect, Chief Architect, Chief of Staff
 **Classification**: Operational/Architectural (Hybrid)
 
@@ -210,3 +210,13 @@ The spatial intelligence from PM-074 proved crucial. By giving abstract work ite
 ---
 
 *"Federation isn't about moving data—it's about preserving meaning across boundaries."*
+---
+
+## Status correction (2026-08-29, Chief Architect — Architectural Review 2026, mechanical win #4)
+
+**Status corrected → Superseded, with the implementation claims explicitly disavowed.** This ADR
+records "5 platforms successfully federated" including Jira and Linear; neither appears in any
+subsequent integration set, and the federation code was deleted 2026-07-18 as "fake
+federated-search." The claim was aspiration recorded as achievement (Architectural Review 2026,
+Leg A1/A3 findings). Cross-platform reach is answered today by PDR-006's host-mediated model, not
+federation.
