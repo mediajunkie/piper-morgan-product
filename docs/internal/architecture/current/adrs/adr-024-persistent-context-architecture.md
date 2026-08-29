@@ -1,7 +1,7 @@
 # ADR-024: Persistent Context Foundation Architecture
 
 ## Status
-Accepted
+Superseded by ADR-075 (status corrected 2026-08-29 — see Status correction at end of file)
 
 ## Context
 MVP features require user preferences and session context persistence. The current system has in-memory session management with TTL cleanup, but lacks persistent storage for user preferences and long-term context retention across conversations and system restarts.
@@ -92,3 +92,10 @@ class PreferenceAPI:
 **Date**: August 20, 2025
 **Author**: Cursor Agent
 **Reviewers**: Chief Architect, Lead Developer
+---
+
+## Status correction (2026-08-29, Chief Architect — Architectural Review 2026, mechanical win #4)
+
+**Status corrected → Superseded by ADR-075.** The JSON-field preference persistence this ADR
+established was functionally replaced by ADR-075's owner-scoped personalization store; no
+supersession was recorded at the time — this note closes that gap.

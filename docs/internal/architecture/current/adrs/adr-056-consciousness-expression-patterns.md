@@ -1,6 +1,6 @@
 # ADR-056: Consciousness Expression Patterns
 
-**Status**: Proposed
+**Status**: Proposed — DORMANT since 2026-01 (status annotated 2026-08-29)
 **Date**: January 21, 2026
 **Author**: Claude Code (Programmer)
 **Source**: #407 MUX-VISION-STANDUP-EXTRACT
@@ -265,3 +265,13 @@ Use templates without validation requirements.
 
 _ADR created: January 21, 2026_
 _Part of MUX-VISION Sprint (V2)_
+---
+
+## Status annotation (2026-08-29, Chief Architect — Architectural Review 2026, mechanical win #4)
+
+**Still Proposed; annotated DORMANT rather than unilaterally withdrawn.** The MVC compliance rule
+("every Piper output MUST contain an 'I' statement") has no located validation mechanism and no
+2026 decisions.log engagement; PDR-004 took over experience governance without reference. The
+*voice* this ADR protects demonstrably lives (standup warmth, consciousness-philosophy.md as style
+guide); whether the ADR's structural machinery should be absorbed, archived, or revived is the
+corpus-disposition pass's call.

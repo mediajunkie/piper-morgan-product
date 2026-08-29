@@ -1,7 +1,7 @@
 # ADR-020: Protocol Development Investment
 
 **Date**: August 17, 2025
-**Status**: Accepted
+**Status**: Superseded — never executed (status corrected 2026-08-29)
 **Deciders**: Principal Architect, Chief Architect, Chief of Staff
 **Classification**: Strategic (Long-term Vision)
 
@@ -191,3 +191,11 @@ As our architecture discussions revealed: "Bad architecture can never become ope
 ---
 
 *"Protocols are how good architecture becomes shared infrastructure. We're not just building Piper—we're defining how PM tools communicate."*
+---
+
+## Status correction (2026-08-29, Chief Architect — Architectural Review 2026, mechanical win #4)
+
+**Status corrected Accepted → Superseded (never executed).** No phase of the Piper Protocol plan
+(spec, reference implementation, open-sourcing) was ever built; no decision record ever cancelled
+it — this note is that record. The distribution question this ADR reached for is answered by
+PDR-005/PDR-006 (BYOC + hosted MCP) using the industry's protocol (MCP) rather than an owned one.

@@ -1,6 +1,6 @@
 # ADR-016: Ambiguity-Driven Architecture with Chain-of-Draft Integration
 
-**Status**: Proposed
+**Status**: Superseded (status corrected 2026-08-29)
 **Date**: August 17, 2025
 **Decision Makers**: PM, Chief Architect, Chief of Staff
 **Classification**: Revolutionary Bundle (includes Chain-of-Draft Integration, Ambiguity Assessment, Three-Tier Orchestration)
@@ -227,3 +227,13 @@ Success metrics:
   *[Target: Acceptable trade-off per paper]*
 - 10x increase in multi-agent usage due to economics
   *[Aspirational: Depends on cost sensitivity of use cases]*
+---
+
+## Status correction (2026-08-29, Chief Architect — Architectural Review 2026, mechanical win #4)
+
+**Status corrected Accepted → Superseded.** The Chain-of-Draft implementation this ADR's economics
+rested on was deleted 2026-07-18 in the Tier-3 fix-or-delete pass (decisions.log; `services/
+orchestration/` family), and the 92%-token-reduction premise was never independently validated
+(see ADR-015's own verification protocol, filed the same day). No successor decision is needed —
+the multi-agent economics question, if it returns, re-enters through the scope-bet gate. The ADR
+remains as history; this note exists so the trail tells the truth about itself.
