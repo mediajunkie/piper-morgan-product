@@ -93,7 +93,8 @@ Every module, doc, and capability in the repo is exactly one of these, with the 
 ## What Piper Morgan is NOT (the boundary, stated so it can't drift)
 
 Not an **agent harness** (that's a commodity knife-fight against the platform vendors' own
-products — the field's evidence and Dialog's lived experience both say so). Not a **destination
+products — both the field's evidence and the lived experience of solo builders currently in
+exactly that fight say so). Not a **destination
 UI** (the structurally doomed shape in the copilot category). Not a **platform or marketplace**
 (Era 2 bought that vision on unverified claims; July deleted its remains). Not **enterprise
 multi-tenant SaaS** — unless and until a Bet Memo with a named buyer says otherwise. The
@@ -103,7 +104,11 @@ scope-bet gate governs all *becoming*; this document governs all *being*.
 
 - The classifier stays stateless (ADR-078 D4); state resolves before or beside the call, never by
   injecting history.
-- Both routers feed one rail; consent evaluates the entry's EffectClass, never the router.
+- Every intent-understanding mechanism feeds one dispatch rail. Piper currently has two such
+  mechanisms on the chat path (the legacy LLM-classifier chain and its successor, the
+  constrained registry-backed router it is migrating to); whichever one interprets a request,
+  the same rail dispatches it and the same consent gate evaluates the operation's declared
+  effect class — so no routing change can ever loosen a safety check.
 - The LLM floor guarantee: at least as good as a well-prompted LLM with the user's context —
   handlers make it better, never different.
 - Derive, don't hand-maintain: registries, catalogs, prompts, and manifests are generated from
