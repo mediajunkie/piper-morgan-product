@@ -15,7 +15,7 @@
 - `dev/2026/05/09/2026-05-09-1037-cio-code-opus-log.md` (Chief Innovation Officer — ~10:37 AM → ~3:00 PM; brief evening wrap)
 - `dev/2026/05/09/2026-05-09-1040-docs-code-opus-log.md` (Documentation Management — 10:40 AM → late evening; capped by remote-control connection failure)
 - **Artifacts in `dev/2026/05/09/`**: 6 audit memos (#933, #932, #1064, #936, #935, #921 issue audits + gameplans); `canonical-retest-m2f-baseline-v3-{report.md,results.csv}` (Run 7 baseline); standing-items tracker updates
-- **Pattern artifacts**: `dev/active/pattern-library-index.md` + `pattern-meta-synthesis.md` + `pattern-sweep-2.0-results-2026-05-09.md`; `docs/internal/architecture/current/anti-pattern-index.md` (regen); `docs/internal/architecture/current/patterns/pattern-066-stacked-silent-failures.md` (new); `docs/internal/architecture/current/patterns/pattern-067-issue-body-reality-mismatch.md` (new)
+- **Pattern artifacts**: `dev/active/pattern-library-index.md` + `pattern-meta-synthesis.md` + `pattern-sweep-2.0-results-2026-05-09.md`; `docs/internal/architecture/current/anti-pattern-index.md` (regen); `docs/internal/architecture/patterns/pattern-066-stacked-silent-failures.md` (new); `docs/internal/architecture/patterns/pattern-067-issue-body-reality-mismatch.md` (new)
 
 **Cross-reference gate**: PM-confirmed source set is Docs + Lead Dev + CIO only for May 9. Each source log scanned for cross-role mentions; no missing-but-mentioned roles surfaced. Subagents (CIO Phase 2 A/B/C/D + Lead Dev #932/#933 Phase 3) operated under guardrail brief — no independent logs filed (per design). Janus activity is cross-project relay reconstructed from inbound memos, not a parallel session.
 

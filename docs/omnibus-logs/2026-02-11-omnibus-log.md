@@ -263,7 +263,7 @@ Feedback → immediate methodology improvement.
 - `tools/schema_validator.py` - ARRAY type recognition
 
 ### Audit Reports
-- `docs/internal/architecture/current/adrs/adr-042-*.md` - Link fixes
+- `docs/internal/architecture/adrs/adr-042-*.md` - Link fixes
 
 ### Retrospectives (Migrated)
 - `docs/internal/retrospectives/PERIOD-4-*.md` (5 files)

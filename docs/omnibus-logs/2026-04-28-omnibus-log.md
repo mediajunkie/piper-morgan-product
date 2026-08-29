@@ -42,7 +42,7 @@ PM Apr 28 morning: stranded session logs as critical loss-risk. Three Apr 27 lea
 
 ### Morning: Architect ships ADR-061 v0.1 + Pattern-064
 
-**~9:00 AM** — **Architect** ships **ADR-061** *"LLM-Touch Boundary Enforcement"* v0.1 (`35a1108c`, 184 lines at `docs/internal/architecture/current/adrs/`). Captures:
+**~9:00 AM** — **Architect** ships **ADR-061** *"LLM-Touch Boundary Enforcement"* v0.1 (`35a1108c`, 184 lines at `docs/internal/architecture/adrs/`). Captures:
 - Two-layer detection architecture (substring fast-path + semantic detector)
 - Ethics floor as de-facto third layer (post-#992 Phase E findings)
 - Four-element principle from #1016 Phase 1
@@ -50,7 +50,7 @@ PM Apr 28 morning: stranded session logs as critical loss-risk. Three Apr 27 lea
 - `redirect_context` handoff as canonical reference
 - Cross-references ADR-060, Pattern-062/064, Pattern-045
 
-**Same commit** — **Pattern-064 (Emerging) formalized**: *"Extension Without Integration"* at `docs/internal/architecture/current/patterns/pattern-064-extension-without-integration.md`. Apr 25 sketch promoted to Emerging. **Sibling sub-pattern of Pattern-062** (alongside CIO's Pattern-063 Parallel-Authoring Drift) — completes the **062/063/064 family table**:
+**Same commit** — **Pattern-064 (Emerging) formalized**: *"Extension Without Integration"* at `docs/internal/architecture/patterns/pattern-064-extension-without-integration.md`. Apr 25 sketch promoted to Emerging. **Sibling sub-pattern of Pattern-062** (alongside CIO's Pattern-063 Parallel-Authoring Drift) — completes the **062/063/064 family table**:
 - 062: Assembly Assumption (component layer; integration at the seams)
 - 063: Parallel-Authoring Drift (vocabulary layer; same letter, different concepts)
 - 064: Extension Without Integration (extension layer; new feature added without integration pass)
@@ -183,8 +183,8 @@ Apr 27 PPM v4 said all conditions met; Lead Dev recommended defer pending ADR-06
 
 - **`scripts/merge-keeper-sweep.py`** (454 lines) — Lead Dev `f63c2acf`. Heuristic: wrapped (>24h since last commit) + clean (no secret patterns, no >1MB blobs, no conflicts) → auto-merge; everything else escalates. CLI: default dry-run; `--apply` merges. Writes `dev/active/merge-keeper-{date}.md` audit log.
 - **`scripts/regenerate-mailbox-manifests.py`** (319 lines) — Lead Dev `4df51302`. Walks `mailboxes/{role}/{inbox,read}/`, parses YAML frontmatter, regenerates MANIFEST.md atomically. CLI: `--role`, `--dry-run`, `--quiet`. SessionStart hook integration. Bulk baseline: 24 manifests across 16 roles.
-- **ADR-061 v0.1** — Architect `35a1108c` at `docs/internal/architecture/current/adrs/adr-061-llm-touch-boundary-enforcement.md` (184 lines). Two-layer detection architecture, audit envelope structure, redirect_context handoff as canonical reference.
-- **Pattern-064 (Emerging)** — Architect `35a1108c` at `docs/internal/architecture/current/patterns/pattern-064-extension-without-integration.md`. Sibling to 062/063; extension-layer manifestation. Reference instance: BoundaryEnforcer #197 substring detector recall gap.
+- **ADR-061 v0.1** — Architect `35a1108c` at `docs/internal/architecture/adrs/adr-061-llm-touch-boundary-enforcement.md` (184 lines). Two-layer detection architecture, audit envelope structure, redirect_context handoff as canonical reference.
+- **Pattern-064 (Emerging)** — Architect `35a1108c` at `docs/internal/architecture/patterns/pattern-064-extension-without-integration.md`. Sibling to 062/063; extension-layer manifestation. Reference instance: BoundaryEnforcer #197 substring detector recall gap.
 - **Sign-off discipline norm landed** — `a74fb4a8`. CLAUDE.md "Sign-Off Discipline (CRITICAL)" + Docs "Merge-Keeper Sweep" + leadership memo to 10 inboxes + Lead Dev hook-feasibility scoping ask.
 - **Phase F pre-stage branch** — Lead Dev `cc2f404b` on `claude/phase-f-flag-flip` (HELD). docker-compose.yml + verify-phase-f-flag.py + #992 closure draft. Live LLM verification confirms post-#1004 behavior working.
 - **Excellence Flywheel retirement** — Lead Dev `adfd453b`. 6 test files deleted; 1 mixed-scope file edited (5 of 13 tests removed). #1026 pre-existing test failure surfaced (Discovered Work Discipline).
