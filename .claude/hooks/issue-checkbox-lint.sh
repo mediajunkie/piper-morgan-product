@@ -81,9 +81,16 @@ fi
 WARNINGS=""
 TOTAL_UNCHECKED=0
 for n in $ISSUE_NUMS; do
-    BODY=$("$GH" issue view "$n" --json body --jq '.body' 2>/dev/null || echo "")
+    # Issue 1618 fix: only warn on OPEN issues. A close-keyword next to a
+    # closed issue's number can't auto-close anything, so the warning's
+    # premise ("update the body before this push closes it") doesn't hold —
+    # and in practice such matches are often not issue references at all
+    # (checklist item numbers, PR numbers). The real 1618 incident matched
+    # "Resolved #5" (an internal checklist item) against closed issue 5.
+    BODY=$("$GH" issue view "$n" --json body,state \
+        --jq 'if .state == "OPEN" then .body else "" end' 2>/dev/null || echo "")
     if [ -z "$BODY" ]; then
-        # Issue doesn't exist or gh failed — skip silently
+        # Issue doesn't exist, isn't open, or gh failed — skip silently
         continue
     fi
     # Count lines matching unchecked checkbox pattern, EXCLUDING lines that
@@ -111,6 +118,9 @@ cat >&2 <<EOF
 ⚠️  issue-checkbox-lint (#1083): commit references issue(s) with unchecked
 checkboxes in their description bodies:
 ${WARNINGS}
+
+(Note: this lint pattern-matches "closes/fixes/resolves #N" loosely — if the
+number wasn't meant as a GitHub issue reference, verify relevance and ignore.)
 
 The close-issue-properly skill requires description-first updates: each
 [ ] should become [x] OR carry an explicit annotation (e.g.,
