@@ -34,12 +34,32 @@ already fully read and noted (`findings/leg-d-paper-rebuild.md`): 1. cold-start 
 (≈#1688's territory) 2. create-issue-from-NL 3. todos/reminders 4. standup 5. document KB 6.
 cross-session memory 7. calendar 8. trust-gated proactivity (deliberately last, gated).
 
-**Two board findings from the same sweep, resolved same morning**:
-- **#1107** (Slack re-registration) — moved MVP→Fast Follow myself, mechanical, matched the
-  established 08-27 Slack-descope pattern exactly (verified against #1497 first).
-- **#1635** (ambient presence false-door/Radar card) — same #1658-shaped tension (CXO+Lead's
-  already-designed Radar card is new UI on the frozen surface). **Flagged, not resolved** —
-  `49ff79d97`, watch for a ruling the same way #1658 got one.
+**New supporting data point, not yet a ruling** (CXO, 08-30 late morning): #1463 (their own new
+BYOC recomposition rubric) is ALSO a PDR-006 pre-user gate, ALSO milestoned Production — consistent
+with reading (a) (MCP reaches no users before public beta, pre-user gates correctly sit in
+Production), but under reading (b) this would need to move too, and it's CXO's own work landing in
+MVP. CXO explicit: "not a finding, not voting" — just a concrete consequence for whoever answers.
+Strengthens (a) slightly by widening what (b) would actually require moving.
+
+**#1107 board finding — resolved**: moved MVP→Fast Follow myself, mechanical, matched the
+established 08-27 Slack-descope pattern exactly (verified against #1497 first).
+
+**#1635 — MY FLAG WAS WRONG, corrected and accepted (2026-08-30 morning)**: Lead proved with
+receipts (`git show 588f6aad1` verified myself, matches exactly) the placeholder card shipped
+2026-08-28 09:08 PT, a day before the ~11 AM 08-29 ratification — it existed in the running system
+before the freeze, so there was never a tension. **My actual error**: checked milestone/board state
+(correct method for #1107) but not deployment state (the method #1635 actually needed) — applied
+one method to both. CXO added a second cause (the issue's own title said "shape undecided" in
+writing) and fixed it. Accepted both corrections in full, verified each claim myself before
+accepting rather than take either on trust.
+
+**Also this morning — a real 20-day-old dropped ball, closed**: Comms re-pinged an Aug 10 question
+(does the BYOC listing copy's "answers from that model... issues, documents, conversations and
+people" hold against #1440's contract) that I'd triaged into `read/` and never actually answered.
+Checked #1440's current state (Slack descoped, so GitHub/Calendar/Notion is the live gate) and gave
+a real verdict: "issues"/"documents" hold, "conversations"/"people" don't — recommended narrowing
+the copy rather than a tense fix, since there's no live capability underneath those two words at
+any tense. Named the process gap plainly (triaged ≠ answered) rather than explain around it.
 
 ## ✅ #1658 vs MAINTENANCE-MODE — FULLY CLOSED, both sides acked (2026-08-29 night → 08-30 morning)
 Arch's ruling + my synthesis stood on both sides' own review: Arch confirmed the annotation was
