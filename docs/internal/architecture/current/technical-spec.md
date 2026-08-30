@@ -50,7 +50,7 @@ The web UI is now implemented as a DDD-compliant, test-driven interface. Key asp
 
 - All bot message rendering and response handling is unified in a shared domain module (`bot-message-renderer.js`)
 - UI logic is modular, reusable, and fully testable
-- TDD process: All UI logic is covered by unit and integration tests (`test-message-renderer.js`, `test-response-integration.js`)
+- TDD process: renderer logic is covered by the frontend unit tests under `tests/frontend/unit/` (the original web-root scratch harnesses `test-message-renderer.js` / `test-response-integration.js` were disposed 2026-08-30; retrievable by commit-hash in the disposal record)
 - Markdown rendering uses the `marked.js` library for reliability
 
 **Benefits:**
