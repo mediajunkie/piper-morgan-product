@@ -1,6 +1,6 @@
 ---
 image: 'two-of-me-ai-lighthouse.png'
-alt: ''
+alt: 'A human leader discovers two identical AI conductors, hidden from each other by a narrow partition, simultaneously directing the same puzzled orchestra.'
 caption: '"What''s all this then?"'
 ---
 
