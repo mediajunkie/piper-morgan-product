@@ -8,10 +8,13 @@ server reference.
 
 Design (gameplan ``dev/2026/06/27/1220-real-mcp-transport-gameplan.md``):
 **Shape B** — a NEW SDK-based client, NOT a retrofit of the hand-rolled
-``MCPProtocolClient``. The legacy simulation stack stays live in
-``services/queries/query_router.py`` (``simulation_mode``) untouched, so query
-routing carries zero regression risk; cutting that path over to the real client
-is a separate follow-up, explicitly out of #1220 scope.
+``MCPProtocolClient``. (Historical note, corrected 2026-08-30: this docstring
+originally said the legacy simulation stack "stays live in
+services/queries/query_router.py" — that file was deleted long before the
+2026-08-29 census, and services/queries/ itself was disposed 2026-08-30. The
+simulation stack now survives only via GoogleCalendarMCPAdapter's constructor
+plumbing — see the connection_pool->adapters->spatial cascade HOLD in
+services/mcp/__init__.py and the 2026-08-30 disposal record in decisions.log.)
 
 Two construction modes:
   * ``MCPClient(session)`` — wrap an already-initialized ``ClientSession``
