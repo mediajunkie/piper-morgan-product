@@ -85,6 +85,25 @@ rc7=$?
 [ "$rc7" -eq 0 ] && ok "does not crash on a malformed (single-column) registry row" || no "exit code was $rc7 on a malformed registry row"
 rm -rf "$SCRATCH7"
 
+echo "== T8: Last Active is NOT heartbeat-only — a role's recent role-tagged commit must win over"
+echo "       stale/absent heartbeat data (regression test for the 2026-08-29 inversion Exec found:"
+echo "       cxo read 19 days stale from heartbeat data alone while having committed 40 min earlier) =="
+# cio is this worktree's own role and has committed (role-tagged) within the last hour by
+# construction of this very test run — a real, not synthetic, instance of the bug's trigger case.
+cio_row=$(echo "$out1" | grep -E '^\| *cio *\|')
+cio_last_active_epoch=$(git -C "$ROOT" log -1 --format=%ct --grep='^cio:' --grep='(cio):' -E origin/main -- . 2>/dev/null | head -1)
+now_epoch=$(date +%s)
+if [ -n "$cio_last_active_epoch" ]; then
+  age_h=$(( (now_epoch - cio_last_active_epoch) / 3600 ))
+  if [ "$age_h" -le 24 ]; then
+    echo "$cio_row" | grep -qE 'commit \(role-tagged' && ok "cio's row credits the role-tagged-commit signal (age ${age_h}h), not heartbeat-only" || no "cio's row did NOT credit a role-tagged commit despite one existing ${age_h}h ago: $cio_row"
+  else
+    echo "  (skipped strict check — cio's newest role-tagged commit is ${age_h}h old, not a fresh-enough fixture for this run)"
+  fi
+else
+  echo "  (skipped — could not independently compute cio's last role-tagged commit epoch)"
+fi
+
 echo ""
 echo "==================== RESULT: $PASS passed, $FAIL failed ===================="
 [ "$FAIL" -eq 0 ] && exit 0 || exit 1
