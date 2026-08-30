@@ -85,11 +85,10 @@ If no parent is specified, the system will automatically select the first availa
    - Handles authentication, API calls, rate limiting
    - Key methods: `connect()`, `get_current_user()`, `search()`, `create_page()`, `get_page()`, `list_pages()`
 
-2. **NotionSpatialIntelligence** (`services/intelligence/spatial/notion_spatial.py`)
-
-   - 8-dimensional spatial analysis
-   - 631 lines of intelligence mapping
-   - Analyzes page relationships and context
+2. ~~**NotionSpatialIntelligence**~~ — *removed 2026-08-29 (spatial cold-island disposal): the
+   8-dimensional direct-API spatial layer for Notion was a superseded predecessor of the MCP
+   adapter above and was never wired into the live app. Its design thinking is preserved in
+   `docs/internal/architecture/design-records/spatial-cold-island-per-connector-place-modeling.md`.*
 
 3. **NotionCanonicalQueryEngine** (`services/features/notion_queries.py`)
 

@@ -1,5 +1,13 @@
 # GitBook MCP + Spatial Intelligence Integration Plan
 
+> ⚠️ **Dated note (2026-08-29)**: this plan is HISTORICAL. The GitBook spatial modules it
+> describes (`services/intelligence/spatial/gitbook_spatial.py`, its `integrations/spatial`
+> counterpart, and the GitBook MCP adapters) were disposed of in the PM-ruled 2026-08-15/16
+> spatial cold-island disposal — never-wired committed-theory code, zero importers. Prior art:
+> commit-hash references in the 2026-08-29 spatial-disposal entry of
+> `docs/internal/architecture/decisions/decisions.log`; design semantics in
+> `docs/internal/architecture/design-records/spatial-cold-island-per-connector-place-modeling.md`.
+
 ## 🎯 **OBJECTIVE**
 
 Complete PM-033b final criterion by implementing GitBook integration following our proven MCP+Spatial Intelligence pattern.

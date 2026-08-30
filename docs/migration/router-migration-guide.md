@@ -273,8 +273,9 @@ CORE-QUERY-1 service migration"
    - Migration: Line 10, 19
    - Commit: 750b4357
 
-3. **notion_spatial.py**
-   - Location: `services/intelligence/spatial/notion_spatial.py`
+3. **notion_spatial.py** — *deleted 2026-08-29 (spatial cold-island disposal; it had migrated
+   to the router but was itself never wired into the live app)*
+   - Location: was `services/intelligence/spatial/notion_spatial.py`
    - Usage: Notion spatial intelligence with 8-dimensional analysis
    - Migration: Lines 19, 87
    - Commit: 750b4357

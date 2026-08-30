@@ -4,6 +4,11 @@ Simplified Production Readiness Test Runner
 
 Tests PM-specific use cases with actual data validation.
 This version doesn't rely on pytest fixtures and handles async cleanup properly.
+
+2026-08-29 surgery (spatial cold-island disposal, PM-ruled 2026-08-15/16):
+same excision as the twin file test_production_readiness.py — the
+NotionSpatialIntelligence-subject classes went with the module they tested;
+the live NotionMCPAdapter coverage stays.
 """
 
 import asyncio
@@ -14,171 +19,6 @@ from unittest.mock import patch
 import pytest
 
 from services.integrations.mcp.notion_adapter import NotionMCPAdapter
-from services.intelligence.spatial.notion_spatial import NotionSpatialIntelligence
-
-
-class TestPMWorkflowScenarios:
-    """Test actual PM workflow scenarios for alpha users"""
-
-    async def test_pm_workflow_scenario_1(self):
-        """
-        Scenario 1: "What GitHub issues need my attention today?"
-        Should use TEMPORAL + PRIORITY + COLLABORATIVE dimensions
-        """
-        print("\n🔍 Testing PM Scenario 1: Attention-needed issues")
-
-        spatial = NotionSpatialIntelligence()
-        try:
-            # Test spatial intelligence initialization
-            assert spatial is not None
-            assert hasattr(spatial, "dimensions")
-            assert "TEMPORAL" in spatial.dimensions
-            assert "PRIORITY" in spatial.dimensions
-            assert "COLLABORATIVE" in spatial.dimensions
-
-            # Verify dimension analysis functions exist
-            temporal_func = spatial.dimensions["TEMPORAL"]
-            priority_func = spatial.dimensions["PRIORITY"]
-            collaborative_func = spatial.dimensions["COLLABORATIVE"]
-
-            assert callable(temporal_func)
-            assert callable(priority_func)
-            assert callable(collaborative_func)
-
-            print("✅ TEMPORAL + PRIORITY + COLLABORATIVE dimensions ready")
-            return True
-        finally:
-            await spatial.close()
-
-    async def test_pm_workflow_scenario_2(self):
-        """
-        Scenario 2: "What's the status of PM-033 work?"
-        Should use HIERARCHY + FLOW + CONTEXTUAL dimensions
-        """
-        print("\n🔍 Testing PM Scenario 2: PM-033 status tracking")
-
-        spatial = NotionSpatialIntelligence()
-        try:
-            # Test spatial intelligence initialization
-            assert spatial is not None
-            assert hasattr(spatial, "dimensions")
-            assert "HIERARCHY" in spatial.dimensions
-            assert "FLOW" in spatial.dimensions
-            assert "CONTEXTUAL" in spatial.dimensions
-
-            # Verify dimension analysis functions exist
-            hierarchy_func = spatial.dimensions["HIERARCHY"]
-            flow_func = spatial.dimensions["FLOW"]
-            contextual_func = spatial.dimensions["CONTEXTUAL"]
-
-            assert callable(hierarchy_func)
-            assert callable(flow_func)
-            assert callable(contextual_func)
-
-            print("✅ HIERARCHY + FLOW + CONTEXTUAL dimensions ready")
-            return True
-        finally:
-            await spatial.close()
-
-    async def test_pm_workflow_scenario_3(self):
-        """
-        Scenario 3: "Show me all documentation tasks across tools"
-        Should federate GitHub + Notion with CAUSAL linking
-        """
-        print("\n🔍 Testing PM Scenario 3: Cross-tool documentation tasks")
-
-        spatial = NotionSpatialIntelligence()
-        try:
-            # Test spatial intelligence initialization
-            assert spatial is not None
-            assert hasattr(spatial, "dimensions")
-            assert "CAUSAL" in spatial.dimensions
-
-            # Verify dimension analysis functions exist
-            causal_func = spatial.dimensions["CAUSAL"]
-            assert callable(causal_func)
-
-            # Test comprehensive spatial analysis capability
-            assert hasattr(spatial, "get_comprehensive_spatial_analysis")
-            comprehensive_func = spatial.get_comprehensive_spatial_analysis
-            assert callable(comprehensive_func)
-
-            print("✅ CAUSAL dimension and comprehensive analysis ready")
-            return True
-        finally:
-            await spatial.close()
-
-
-class TestSpatialIntelligenceValue:
-    """Verify spatial intelligence adds real value vs raw API calls"""
-
-    async def test_spatial_intelligence_enhancement(self):
-        """Test that spatial intelligence provides enhanced value"""
-        print("\n🧠 Testing Spatial Intelligence Value Enhancement")
-
-        spatial = NotionSpatialIntelligence()
-        try:
-            # Test 8-dimensional analysis framework
-            dimensions = spatial.dimensions
-            assert len(dimensions) == 8, f"Expected 8 dimensions, got {len(dimensions)}"
-
-            # Verify all required dimensions are present
-            required_dimensions = {
-                "HIERARCHY",
-                "TEMPORAL",
-                "PRIORITY",
-                "COLLABORATIVE",
-                "FLOW",
-                "QUANTITATIVE",
-                "CAUSAL",
-                "CONTEXTUAL",
-            }
-
-            for dimension in required_dimensions:
-                assert dimension in dimensions, f"Missing dimension: {dimension}"
-                assert callable(dimensions[dimension]), f"Dimension {dimension} is not callable"
-
-            print("✅ All 8 spatial dimensions present and functional")
-
-            # Test spatial analytics
-            analytics = spatial.get_spatial_analytics()
-            assert isinstance(analytics, dict)
-            assert "workspaces_analyzed" in analytics
-            assert "databases_mapped" in analytics
-            assert "pages_processed" in analytics
-
-            print("✅ Spatial analytics framework operational")
-
-            return True
-        finally:
-            await spatial.close()
-
-    async def test_performance_benchmarks(self):
-        """Test performance characteristics of spatial intelligence"""
-        print("\n⚡ Testing Performance Benchmarks")
-
-        # Test initialization performance
-        start_time = time.time()
-        spatial = NotionSpatialIntelligence()
-        init_time = time.time() - start_time
-
-        try:
-            assert init_time < 1.0, f"Initialization took {init_time:.3f}s, should be <1.0s"
-            print(f"✅ Initialization performance: {init_time:.3f}s")
-
-            # Test dimension access performance
-            start_time = time.time()
-            dimensions = spatial.dimensions
-            access_time = time.time() - start_time
-
-            assert (
-                access_time < 0.001
-            ), f"Dimension access took {access_time:.6f}s, should be <0.001s"
-            print(f"✅ Dimension access performance: {access_time:.6f}s")
-
-            return True
-        finally:
-            await spatial.close()
 
 
 class TestRateLimitingCompliance:
@@ -322,46 +162,14 @@ class TestAuthenticationFlows:
             await adapter.close()
 
 
-class TestCanonicalQueryEnhancement:
-    """Test how spatial intelligence enhances standup queries"""
-
-    async def test_standup_query_enhancement(self):
-        """Test enhanced responses for standup queries"""
-        print("\n📊 Testing Standup Query Enhancement")
-
-        spatial = NotionSpatialIntelligence()
-        try:
-            # Test "What am I working on?" spatial context
-            assert hasattr(spatial, "dimensions")
-            assert "PRIORITY" in spatial.dimensions
-            assert "FLOW" in spatial.dimensions
-
-            # Test "What should I focus on today?" priority analysis
-            priority_func = spatial.dimensions["PRIORITY"]
-            assert callable(priority_func)
-
-            # Test comprehensive analysis capability
-            assert hasattr(spatial, "get_comprehensive_spatial_analysis")
-            comprehensive_func = spatial.get_comprehensive_spatial_analysis
-            assert callable(comprehensive_func)
-
-            print("✅ Standup query enhancement capabilities verified")
-            return True
-        finally:
-            await spatial.close()
-
-
 async def run_production_readiness_tests():
     """Run all production readiness tests"""
     print("🚀 Production Readiness Test Suite")
     print("=" * 60)
 
     test_classes = [
-        TestPMWorkflowScenarios,
-        TestSpatialIntelligenceValue,
         TestRateLimitingCompliance,
         TestAuthenticationFlows,
-        TestCanonicalQueryEnhancement,
     ]
 
     total_tests = 0
