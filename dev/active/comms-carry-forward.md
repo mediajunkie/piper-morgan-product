@@ -19,6 +19,10 @@
 
 Thu Sept 17, Session 2, 12:45p Central, 30 min incl. Q&A. Title/abstract already locked and sent to Russ Unger (confirmed via full email thread). Delivered `dev/2026/08/29/chicagocamps-talk-2026-09-17.md`: full ~2,350-word script (3 acts matching the sent abstract) + slide plan (cartoon + overlaid keyword, no bullets, per PM's Rosenverse-talk style — house style extracted directly from the 2 surviving Rosenverse images). 2 existing images reused (birdhouse for open, Pygmalion pedestal for the "own the loop" turn), 4-5 new prompts written for PM to generate. **Next step is PM's**: review/adapt the script, react to the slide concepts, generate the new images. Russ mentioned a brief dry run ~2 weeks out (~week of Sep 1-5) — watch for that follow-up in the Russ Unger thread.
 
+## Watch, not owed: architectural review (Arch broadcast, 6:42 PM fire)
+
+PM + Arch ran a full architectural review 08-29 — ESSENCE.md v0.1 (`docs/internal/architecture/ESSENCE.md`), MCP/BYOC path now gets all new build effort with web-chat in maintenance mode, scope-bet gate, ADR reform. **No action owed to Comms.** Arch flagged PM has "signaled possible publication" once ESSENCE ratifies — CXO/PPM trifecta read-and-respond window closes Wed 09-02. Worth checking back after that date for whether a narrative/insight angle opens up; nothing to draft before then.
+
 ## Open items, all PM/PPM/Dispatch-PM/Web-gated — no Comms-side move available
 
 - **Beat 6's "beta data"/"beta date" quote question** — needs PM's confirmation before voice-pass. Unchanged for 10+ days.

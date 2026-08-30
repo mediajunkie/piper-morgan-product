@@ -15,7 +15,13 @@
 cited here as the Embedded-Intelligence proof, has zero importers, while Notion's spatial capability is
 live by another route. **Do not cite §§106–112, 134, 144 or 204 as current fact.**
 
-Spatial deletions remain **HELD** pending PM's call; spatial intelligence is protected representation.
+~~Spatial deletions remain **HELD** pending PM's call; spatial intelligence is protected representation.~~
+**Update 2026-08-29: PM ruled 2026-08-15/16 (spatial committed-theory review closed) and the
+cold-island disposal is now EXECUTED** — `notion_spatial` and its cold peers are deleted from the
+live tree, retained as prior art via commit-hash references in the 2026-08-29 spatial-disposal
+entry of `docs/internal/architecture/decisions/decisions.log`. The live spatial layer
+(github_spatial, place_service, place_detector, home_state_service, spatial_intent_classifier,
+the `spatial_adapter` base class, the slack socket-path pair) stays — rescope, not abandonment.
 
 *(Two interim CXO notices stood here from 2026-07-29 as placeholders pending the amendment. **Amendment
 A supersedes them and folds in their substance**, so they are collapsed to this pointer rather than left

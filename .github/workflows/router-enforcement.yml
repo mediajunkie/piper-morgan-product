@@ -54,7 +54,10 @@ jobs:
             exit 1
           fi
           # Check Notion services use NotionIntegrationRouter
-          if ! grep -r "NotionIntegrationRouter" services/domain/notion_domain_service.py services/publishing/publisher.py services/intelligence/spatial/notion_spatial.py; then
+          # notion_spatial.py removed from this list 2026-08-29: the module was disposed of in
+          # the PM-ruled spatial cold-island disposal (a missing file makes grep -r exit 2 and
+          # fails this step as a false red).
+          if ! grep -r "NotionIntegrationRouter" services/domain/notion_domain_service.py services/publishing/publisher.py; then
             echo "ERROR: Notion services missing router imports"
             exit 1
           fi
