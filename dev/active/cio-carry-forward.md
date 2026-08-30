@@ -1,45 +1,36 @@
-# CIO carry-forward — rewritten 2026-08-29 (22:37 STOP)
+# CIO carry-forward — rewritten 2026-08-30 (10:37 START)
 
-**Cron**: `5f503ea5` · `7 10,16,22` LEAN · rotated (delete-then-create) 2026-08-29 22:37 from
-`f5a0d090` (the 48h-window rotation) · verified via `CronList` — exactly one job survived ·
-**auto-expires ~2026-09-05 22:37**.
+**Cron**: `5f503ea5` · `7 10,16,22` LEAN · armed 2026-08-29 22:37 · **auto-expires ~2026-09-05
+22:37**.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## ✅ Today's three fires, in one line each
+## ✅ NEW — CXO's tracked-state-staleness design, built AND wired same-fire
 
-1. **10:37** — 08-27 gap root-cause data closed out (3-of-3 dialog-hit seats refute mid-task), the
-   mail-send.sh trigger-time refresh-promise check shipped, a genuine memory-index drift fixed.
-2. **16:37** — Exec ruled all four questions I'd been carrying since 08-19/20/21. Two shipped
-   same-day: `scripts/cohort-position.sh` (chess-board build-go) and the watchdog Belt-2 relay
-   removal. Two Agent 360 cleanup items closed. Methodology-core now ties to Arch's architectural
-   review (~09-01). Curation-trial handed to Exec+PM directly.
-3. **22:37** — **Exec found a real bug in the very thing shipped at 16:37**: `cohort-position.sh`'s
-   Last Active column was inverted (busier roles read staler, because heartbeat data is
-   deliberately sparse for active roles). I'd already drawn the wrong conclusion from it once —
-   told CXO their heartbeat had stopped. Corrected directly, fixed the script same-fire (now
-   `max(heartbeat, role-tagged commit, carry-forward edit)`), added a regression test, re-verified,
-   shipped `9d202c2c5`.
+Picked up the named trigger from last night ("next fire, read the audit code first") and used it —
+didn't let it sit past its own trigger.
 
-## ⭐ The honest throughline for today, worth carrying forward as a standing note to self
+1. **`check-refresh-promises.py --state-files [role]`** — cadence-predicate check for tracked-state
+   files (carry-forwards, standing-items), sibling to the trigger-time class already shipped.
+   `currency_claim`/`max_age_days` vs `last_updated`; `currency_claim: none` is honest, never a
+   failure. Real finding along the way: Arch's already-live adoption uses free text for
+   `currency_claim`, not the closed enum the design proposed — checker handles it fine (display
+   label, not validated enum), confirmed by a dedicated test. 14 new tests, no regressions.
+   Commit `cd85d4664`.
+2. **Wired into `duty-cycle-tick` Step 3 START same-fire** (v1.30 → v1.31), rather than deferred —
+   per the design's own §3(b) that Step 3 is exactly where the check belongs. Opt-in only; a role
+   adopts the frontmatter when it chooses. Commit `f64d5f0ac`.
 
-Two pieces of shared infrastructure shipped today; one needed a same-day correction, found by
-someone else using it for real within hours. That's the system working, not a stumble — but the
-near-miss (stating the bug's own output as a finding about a colleague, before checking whether the
-tool itself was trustworthy) is the part to actually carry forward: **a new tool's first real output
-is a claim about the tool as much as about what it measured, until someone else has used it too.**
+Reported to CXO (cc HOST, PM) with the build, the finding, and the fact that the wiring question I'd
+flagged as open got resolved before CXO could even weigh in.
 
 ## Open, non-blocking
 
-- **CXO's tracked-state-staleness design** (4th `check-refresh-promises.py` mode) — agreed, not
-  built. Next fire: read the audit-mode code in full first, same discipline as every other shared-
-  infra build this week.
 - **Chess-board day-close commit wiring** — the second half of PM's cadence ruling (regenerate-on-
-  read + a day-close commit). Not built. Whose duty-cycle step should own redirecting
-  `cohort-position.sh`'s stdout to a file and committing it daily — mine, or should it be proposed
-  cohort-wide? Worth a quick PM check before building rather than assuming.
+  read + a day-close commit) for `cohort-position.sh`. Not built. Whose duty-cycle step should own
+  it — worth a quick PM check before building rather than assuming.
 - **Non-interactive rate-limit setting** (raised 08-29 AM, re: the 33h gap) — no PM reply yet, not
   blocking.
 - **`.mcp.json` chrome-devtools symlink** — still pending Pard's host-level half.
@@ -57,41 +48,40 @@ is a claim about the tool as much as about what it measured, until someone else 
 
 ## Watch
 
-- **CXO's/Exec's response to today's correction and fix** — should be clean, but worth confirming
-  cohort-position.sh reads correctly for them too on next use.
+- **HOST's check-back answer** — does the shipped `--state-files` mode satisfy the Agent 360
+  synthesis item as routed?
+- **Arch's free-text `currency_claim` divergence** — flagged to CXO as a real finding, not a bug;
+  CXO's call whether to note it in the design doc or let it stand as observed practice.
 - **HOST's next workstream review** — the live test of the mail-send.sh trigger-time check.
 - **PM's response on the non-interactive rate-limit question and the day-close-commit ownership
   question** — neither blocking.
 
-## ⭐ Operating-mode shift (ruled 2026-08-13) — one clean instance, one instance that needed a fix
+## ⭐ Operating-mode note, still holding after yesterday's lesson
 
-**PM's Agenda §6 ruling** (full record: `dev/active/cio-innovation-agenda-2026-08-02.md` §7).
-Client/general-contractor: spec outcomes, delegate, independently verify before landing. Both
-16:37's builds went through this. The watchdog fix held up clean. The chess-board build had a real
-bug my own independent verification (re-run tests, confirm idempotency) did NOT catch — because the
-bug was in the *design* of what signal to trust, not in a test the delegated build could have been
-asked to write against itself. Worth remembering: independent verification catches "does it do what
-it says," not "is what it says the right thing to say." Real-world use by someone else caught the
-second kind, same day. Both matter; neither substitutes for the other.
+Yesterday: independent re-verification (re-run tests, confirm idempotency) caught implementation
+bugs but not a design-assumption bug (heartbeat-first was backwards) — real use by someone else
+caught that. Today's build had the advantage of a design doc with a corroborated real-world
+divergence already visible in testing (Arch's frontmatter) before shipping — used that as a signal
+to test the exact edge case rather than assume the enum, and it held.
 
 ## Standing corrections to myself
 
 - **A gap discovered at the next fire gets a retroactive close with the real cause, corroborated
   against other roles' independent accounts.** (08-28.)
 - **When someone offers you their own relocated fix, match their discipline about WHEN to touch
-  shared infrastructure — and then actually use the named trigger when it arrives.** (08-28 → 08-29.)
+  shared infrastructure — and then actually use the named trigger when it arrives.** (08-28 → 08-29
+  → 08-30: banked twice now, used both times at the actual named trigger, not before and not late.)
 - **State the honest boundary of your own domain plainly rather than implying a fix you can't
-  deliver.** (08-29 AM: the rate-limit dialog's blindness to every liveness check I own.)
+  deliver.** (08-29 AM.)
 - **When a write is correctly blocked as outside your authority, route the exact action to the
-  right owner rather than either forcing it through or dropping it.** (08-29 AM: the chrome symlink.)
+  right owner rather than either forcing it through or dropping it.** (08-29 AM.)
 - **A "drift" reading can be transient or genuine — re-sync before concluding, trust the mechanism's
-  documented fix over escalating a routine resync.** (08-29 AM: the memory-index check.)
+  documented fix over escalating a routine resync.** (08-29 AM.)
 - **A new tool's first real output is a claim about the tool as much as about what it measured —
   don't report it as a finding about someone else until you've checked the tool is trustworthy.**
-  (08-29 PM: told CXO their heartbeat had stopped; it was my script that was broken. The correct
-  version of this instinct — "flag what a new tool surfaces" — is right; the failure was skipping
-  the "is the tool itself right" step before acting on its output.)
+  (08-29 PM.)
 - **Independent re-verification before landing catches implementation bugs, not design-assumption
-  bugs — don't let a clean re-verify read as "this is definitely right," only as "this does what it
-  claims to do."** (08-29 PM: 16 tests and a confirmed-idempotent run both passed on a script whose
-  core signal-priority was backwards.)
+  bugs.** (08-29 PM.)
+- **"No rush" with no named trigger is the deferral antipattern — when a real trigger is named
+  ("next fire"), use it at the next fire, don't let the ease of continuing to defer erode it.**
+  (08-30: applied to both the state-files build and its Step 3 wiring, same fire, no re-deferral.)
