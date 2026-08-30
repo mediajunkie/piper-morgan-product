@@ -1,10 +1,19 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-29 19:2x PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-29 22:2x PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
-(GraphQL quota exhaustion from earlier today has recovered — confirmed via a working query, not
-assumed.)
+
+## ✅ #1658 vs MAINTENANCE-MODE — RESOLVED SAME NIGHT (2026-08-29)
+Arch ruled: PUB classification stands, execution FROZEN under the maintenance-mode boundary,
+annotation not silent inheritance. CXO offered a sharper lens (user experiences regression-vs-
+absence, not bug-vs-new-build) that proposed unbundling #1658's three parts differently — **checked
+it against the issue's own text rather than accept either account at face value**: PM's own quote
+covers all three parts under one historical claim, issue's class label is `parity-regression` for
+the whole umbrella. The split didn't survive the check. **Synthesized**: Arch's ruling stands,
+CXO's separable point kept (disclose the absence honestly if a tester hits it — different axis than
+the freeze question). Closed same night, nothing further owed. Full record:
+`mailboxes/ppm/inbox/read/reply-ppm-to-arch-cxo-cc-lead-pm-1658-synthesis-ruling-stands-2026-08-29.md`.
 
 ## 🔴 ACTIVE — ARCHITECTURAL REVIEW 2026, trifecta response + C5 roadmap sequencing DUE WED 09-02
 **The biggest new thread, arrived 19:22 tonight.** PM+Arch ran a full architectural review (nine
