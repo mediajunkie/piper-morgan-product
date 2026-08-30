@@ -209,34 +209,7 @@ async def test_slack_response_handler_dispatches_from_dict_only_intent():
     )
 
 
-@pytest.mark.asyncio
-async def test_simple_slack_response_handler_dispatches_from_dict_only_intent():
-    from services.integrations.slack.simple_response_handler import (
-        SimpleSlackResponseHandler,
-    )
-
-    mock_intent_service = MagicMock()
-    mock_result = MagicMock()
-    mock_result.success = True
-    mock_result.message = "done"
-    mock_intent_service.process_intent = AsyncMock(return_value=mock_result)
-
-    handler = SimpleSlackResponseHandler(
-        spatial_adapter=MagicMock(),
-        intent_classifier=MagicMock(),
-        slack_client=MagicMock(),
-        intent_service=mock_intent_service,
-    )
-
-    intent = _execution_intent_dict_only("create an issue about flaky tests")
-    slack_context = {"user_id": "U123", "channel_id": "C123"}
-
-    result = await handler._process_through_orchestration(intent, slack_context)
-
-    assert result is not None
-    assert result["type"] == "workflow_result"
-    mock_intent_service.process_intent.assert_awaited_once()
-    assert (
-        mock_intent_service.process_intent.await_args.kwargs["message"]
-        == "create an issue about flaky tests"
-    )
+# NOTE (2026-08-30, census disposal Batch 3): the SimpleSlackResponseHandler
+# twin of the test above was excised here with
+# services/integrations/slack/simple_response_handler.py (zero production
+# callers; the LIVE 1460 surface is response_handler, covered above).

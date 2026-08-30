@@ -50,8 +50,9 @@ class SlackIntegrationRouter:
         """Initialize router with feature flag checking and config service.
 
         #1110: The router is a startup SINGLETON (e.g. SlackPlugin builds one at
-        module import, ReminderScheduler / SlackWebhookRouter each hold one for
-        their lifetime). user_id, however, is per-OPERATION (per request, per
+        module import, SlackWebhookRouter holds one for its lifetime;
+        ReminderScheduler did too until its disposal, 2026-08-30 census
+        disposal Batch 3). user_id, however, is per-OPERATION (per request, per
         reminder-user, per inbound event). So the underlying ``SlackClient`` —
         which requires a user_id because ``SlackConfigService.get_config`` does —
         is built LAZILY per operation via ``_get_client(user_id)`` rather than

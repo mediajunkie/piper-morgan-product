@@ -30,7 +30,7 @@ issues = MarkdownFormatter.validate_markdown_syntax(llm_output)
 
 ### Integration Points
 
-- **TextAnalyzer**: Applied after LLM summary generation
+- ~~**TextAnalyzer**: Applied after LLM summary generation~~ *(disposed 2026-08-30, census disposal Batch 3 — `services/analysis/text_analyzer.py` had zero production callers; DocumentAnalyzer is the live analysis path)*
 - **DocumentAnalyzer**: Applied after LLM summary generation
 - **Prompt Templates**: Updated with explicit formatting rules
 

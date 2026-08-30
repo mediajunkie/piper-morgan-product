@@ -105,7 +105,9 @@ class TestNoNaiveDatetimeNowInTodoLayer1493:
 
     FILES = [
         "services/repositories/todo_repository.py",
-        "services/api/todo_management.py",
+        # services/api/todo_management.py disposed 2026-08-30 (census disposal
+        # Batch 3) — the unmounted todos REST surface; #1493's live todo layer
+        # is fully covered by the remaining four.
         "services/intent_service/temporal_utils.py",
         "services/intent_service/todo_handlers.py",
         "services/todo/todo_management_service.py",
@@ -150,8 +152,8 @@ class TestNoNaiveDatetimeNowInTodoLayer1493:
                     violations.append(f"{rel}:{node.lineno}")
 
         assert (
-            files_checked == len(self.FILES) == 5
-        ), f"guard checked {files_checked} files, expected 5 (denominator)"
+            files_checked == len(self.FILES) == 4
+        ), f"guard checked {files_checked} files, expected 4 (denominator)"
         assert not violations, (
             f"bare naive-local datetime.now() in the todo layer (#1493) — use "
             f"services.utils.datetime_utils.utc_now() (or an aware local time "

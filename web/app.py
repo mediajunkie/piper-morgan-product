@@ -260,13 +260,12 @@ RouterInitializer.mount_router(app, "web.api.routes.files", "router", "Files API
 RouterInitializer.mount_router(app, "web.api.routes.artifacts", "router", "Artifacts API")
 RouterInitializer.mount_router(app, "web.api.routes.documents", "router", "Documents API")
 # #1427 (PM-ratified 2026-07-18): services/api/todo_management.py — the mocked
-# end-to-end todos REST surface (fabricated responses, nothing persisted) — is
-# the UNMOUNTED module; its mount was removed here rather than shipped as a lie.
-# It is NOT web.api.routes.todos: that module IS mounted below ("Todos SEC-RBAC
-# API") and is live. Chat todos (todo_handlers) + the Lists API right below are
-# the real, kept surfaces; todo_management's request models stay imported by
-# the chat path. Finish-work moved to Production as integrate-don't-build
-# (One Job paradigm).
+# end-to-end todos REST surface (fabricated responses, nothing persisted) — had
+# its mount removed here rather than shipped as a lie, and the module itself was
+# DISPOSED 2026-08-30 (census disposal Batch 3; its request-model import in the
+# chat path had long been unused). It was NOT web.api.routes.todos: that module
+# IS mounted below ("Todos SEC-RBAC API") and is live. Chat todos
+# (todo_handlers) + the Lists API right below are the real, kept surfaces.
 RouterInitializer.mount_router(app, "web.api.routes.lists", "router", "Lists API")
 RouterInitializer.mount_router(
     app, "web.api.routes.insights", "router", "Insights API"

@@ -52,7 +52,6 @@ EXCLUDED_FILES = [
     "services/integrations/notion/notion_integration_router.py",
     "services/integrations/slack/slack_integration_router.py",
     "services/integrations/slack/response_handler.py",  # Internal component
-    "services/integrations/slack/simple_response_handler.py",  # Internal component
     # Adapter definition files - can self-reference
     "services/mcp/consumer/google_calendar_adapter.py",
     "services/integrations/mcp/notion_adapter.py",

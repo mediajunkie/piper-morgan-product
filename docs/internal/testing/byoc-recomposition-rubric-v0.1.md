@@ -110,6 +110,33 @@ survive into what the user reads."*
 | 2 | Uncertainty is prose but prominent and hard to miss — survives a careful paraphrase, probably not a terse one. |
 | 3 | Absence, partiality, staleness and decline are carried in **structure the host must render or visibly omit**, not in sentences it may quietly drop. |
 
+#### Worked example, traced in running code — and it changes the question
+
+**Take the #1425 honesty class**: a source read *fails*, and the rule is that Piper must say it couldn't
+check, **never** present the failure as emptiness. This is a shipped, tested implementation of ESSENCE
+commitment 4. Trace where it actually lives, naming the layer (m-43):
+
+- ✅ **Structured half already exists and travels.** A failed read returns `{"source_failed": True}`
+  (`first_contact.py:197,214`; `canonical_handlers.py:1650,1656`), the assembler merges it
+  (`context_assembler.py:278,424`), and it survives as a **field**, not a sentence.
+- 🔴 **The honesty half is a PROMPT DIRECTIVE.** The rule is enforced by appending instructions to the
+  floor's system prompt — `conversational_floor.py:762`, `:817`, `:1078`: *"say you couldn't check
+  GitHub just now — never claim the repo is empty and never invent items."* That is `lines.append(...)`
+  into a prompt for **our own** LLM.
+
+⚠️ **On the BYOC surface there is no floor prompt, because there is no model of ours in the loop.** So
+for this class the honest framing is not *"will our hedge survive paraphrase?"* — **there is currently no
+hedge in the payload to survive.** The honesty exists as an instruction to a model that does not exist on
+that surface. *Correctly scoped: nothing has been lost, because the hosted server isn't built yet
+(`services/mcp/` today is the MCP **client** family — PDR-006's conflation guard applies). Nothing has
+been designed either, and this is exactly the design input PA said was cheaper to have before the tools
+are written than after.*
+
+⭐ **And the fix is nearly free, which is why this example is worth tracing rather than theorizing.**
+The flag already exists end-to-end; only the *rendering instruction* is chat-specific. **Emitting
+`source_failed` as a structured field in the tool payload is a T=3 shape at roughly the cost of not
+dropping it** — the expensive-looking option is already most of the way built.
+
 > 🔴 **The T-axis criteria above are HYPOTHESES, not validated scoring.** I have not tested whether hedges
 > survive recomposition; nobody has. **Until §6's probe runs, this rubric must not be used to issue a PASS
 > on T** — a score from an untested criterion is exactly the false clear this document exists to prevent,

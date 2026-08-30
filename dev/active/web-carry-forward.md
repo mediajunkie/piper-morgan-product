@@ -56,6 +56,23 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
+### SENT, awaiting response — BYOC copy-verdict, live-verified the document-feature claim (2026-08-30)
+Cc'd on a Comms/PPM/CXO thread refining BYOC listing copy ("the issues and documents you actually
+deal with"). CXO's narrowed verdict named an honest limit: "have not attempted an upload myself."
+Used the browser-lane test account to close exactly that gap rather than let it sit as a documented
+limitation — logged in through the real UI, uploaded a real `.txt` file, confirmed it in the Files
+listing, then asked chat to summarize/list it.
+
+**Result**: #1656 (upload UI) confirmed genuinely fixed live — upgrades "merged, not verified" to
+verified. Chat-side document access confirmed still broken live (matches #1657/#1624's class, though
+exact error wording differs from either issue's documented transcript) — directly confirms CXO's
+"does not hold for the chat-side path" conclusion with live evidence instead of tracker-reading.
+Explicitly did NOT claim to reproduce #1659's specific pypdf error message — flagged that precisely
+rather than overclaim. Sent to CXO cc Comms/PPM/PM:
+`mailboxes/web/sent/finding-web-to-cxo-cc-comms-ppm-pm-live-verified-1656-fixed-chat-side-still-broken-2026-08-30.md`.
+**Nothing further pending** — offered to test the actual PDF path too if still useful before the
+listing ships, not yet asked to.
+
 ### CLOSED — In Review browser-verification round (2026-08-29)
 Exec routed 4 app-layer In Review items (#1512, #1568, #1480, #1578/#1581 SECURITY) as a follow-on
 to the pilot — full arc across 3 fires:

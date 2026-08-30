@@ -80,7 +80,6 @@ class ConfigPerformanceMetrics:
 PERFORMANCE_TARGETS = {
     "config_loading_first_load": 100,  # First load should be <100ms
     "config_loading_cache_hit": 5,  # Cache hit should be <5ms
-    "config_validation": 50,  # Validation should be <50ms
     "system_prompt_generation": 20,  # System prompt generation <20ms
     "parse_piper_md": 80,  # Markdown parsing <80ms
 }
@@ -210,53 +209,14 @@ class TestConfigLoaderPerformance:
 
 
 # ============================================================================
-# Integration Performance Tests
-# ============================================================================
-
-
-class TestConfigValidationPerformance:
-    """Performance tests for configuration validation"""
-
-    @pytest.fixture
-    def metrics(self):
-        return ConfigPerformanceMetrics()
-
-    def test_config_validation_performance(self, metrics):
-        """Benchmark configuration validation"""
-        from services.config_validator import ConfigValidator
-
-        validator = ConfigValidator()
-
-        start_time = time.time()
-        results = validator.validate_all_services()
-        duration_ms = (time.time() - start_time) * 1000
-
-        metrics.record("config_validation", duration_ms)
-
-        assert results is not None
-        assert duration_ms < PERFORMANCE_TARGETS["config_validation"]
-
-    def test_validation_report_formatting(self, metrics):
-        """Benchmark validation report generation"""
-        from services.config_validator import ConfigValidator
-
-        validator = ConfigValidator()
-        results = validator.validate_all_services()
-
-        start_time = time.time()
-        report = validator.format_validation_report(results)
-        duration_ms = (time.time() - start_time) * 1000
-
-        metrics.record("validation_report_formatting", duration_ms)
-
-        assert report is not None
-        assert len(report) > 0
-        assert duration_ms < 10  # Formatting should be very fast
-
-
-# ============================================================================
 # Regression Test Markers
 # ============================================================================
+# NOTE (2026-08-30, census disposal Batch 3): TestConfigValidationPerformance
+# was excised here with services/config_validator.py — the CI-stub validator
+# (returned {"status": "ok"} unconditionally since 2025-10-13; PM-ruled
+# 2026-08-28 with the behavioral-validation CI job removal, #1687). The LIVE
+# validator is services/infrastructure/config/config_validator.py, which is
+# not what these benchmarks exercised.
 
 
 @pytest.mark.regression

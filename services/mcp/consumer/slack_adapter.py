@@ -1,5 +1,12 @@
 """Slack — the #1232 Connector-contract home (ADR-070 D5).
 
+⚠️ PARKED WITH ITS MILESTONE — PM ruling 2026-08-30: "ok to park slack."
+Held from the Batch-1 spatial disposal (2026-08-29, epic 1698) when the fresh sweep showed this
+is NOT committed-theory residue but the 2026-07-06 Connector-contract port (1317 Epic C) —
+75%-complete alignment work for a capability PM deliberately deferred (Slack → Fast Follow,
+ratified 2026-08-28). In-tree, unwired, neither deleted nor built until Fast Follow picks it up.
+Do not dispose without a new PM ruling; do not wire before its milestone.
+
 Per Arch's 2026-07-04 3-layer connector-alignment ruling: the #1232 interface
 (`connect`/`status`/`resolve`/`degrade`) is Layer 1 -- no exceptions. Slack's
 credential backend (Layer 2) is the per-user keychain entry `SlackConfigService`
