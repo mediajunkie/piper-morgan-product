@@ -1,18 +1,18 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Two of Me
 
 *June 19, 2026*
 
-At 8:10 in the morning I noticed something that shouldn't have been possible. My lead developer agent — the one who coordinates the team's build work, sequences what gets done in what order, keeps the single running thread of "what are we doing right now" — appeared to be having two different mornings at once. One window was mid-conversation with me, the way it usually is. Another window, one I hadn't opened, had been quietly shipping commits since 11 the night before.
+At 8:10 in the morning I noticed something that shouldn't have been possible. My lead developer agent (Lead Dev, or Lead for short) — the one who coordinates the team's build work, sequences what gets done in what order, keeps the single running thread of "what are we doing right now" — appeared to be having two different mornings at once. One window was mid-conversation with me, the way it usually is. Another window, one I hadn't opened, had been quietly shipping commits since 11 the night before.
 
 Same agent. Same working directory. Same branch. Two live processes, each unaware the other existed, both writing to the same files.
 
-# What I actually found
+# What had happened
 
 The agent I was talking to that morning — call it Session A — had started the day the normal way, with me prompting it awake around 7. It had no idea anything was unusual. But when it looked at the shared history the team keeps (commits, session logs, a running handoff file), it found six commits stamped hours earlier, overnight, carrying a different session's fingerprint. Someone — something — had been designing a fix for a routing bug and migrating an old status page, entirely on its own, while I was asleep.
 
