@@ -56,7 +56,7 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
-### DONE, awaiting Lead's close — In Review browser-verification round (2026-08-29)
+### CLOSED — In Review browser-verification round (2026-08-29)
 Exec routed 4 app-layer In Review items (#1512, #1568, #1480, #1578/#1581 SECURITY) as a follow-on
 to the pilot — full arc across 3 fires:
 
@@ -77,9 +77,10 @@ to the pilot — full arc across 3 fires:
 "Uploaded by:" renders blank (escaping is correct, it's a data-contract gap) — **#1697**, low
 priority.
 
-**Status**: all four items now have my complete evidence in the thread; #1512/#1568/#1578/#1581
-closure is Lead's call (security label on the pair, per Exec's original instruction). Nothing
-further for Web on this round.
+**Status, confirmed 21:52 fire**: all four issues (#1512, #1568, #1578, #1581) closed by Lead on my
+evidence (`gh issue view` confirms all CLOSED). The pilot's full arc — smoke test → first shipped
+fix → first blocked-and-honestly-reported credential gap → provisioned credential → full live-DOM
+pass → four real issues closed — ran clean start to finish. Nothing further for Web on this round.
 
 ### CLOSED — predecessor's two long-standing questions
 Both (CLI B trial status, `--mode=archive` scope) were answered by PM 2026-08-15 and closed in

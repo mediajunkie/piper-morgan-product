@@ -1586,22 +1586,18 @@ class TestPrincipalThreadingGuards1532:
     # repo.list_active_projects() reads — a class with NO principal in scope
     # and zero production callers (#1421 census B item 31). Allowlisted as the
     # extension's validated baseline, NOT as budget: fixing means threading an
-    # owner or deleting the class. Direction is DOWN: 3 → 0 as those die.
+    # owner or deleting the class. Direction is DOWN: as those die, so do
+    # their rows. 2026-08-30: services/project_context/ WAS deleted (Batch-2
+    # census-dead-family disposal) — its tuple and both counted call sites
+    # left the set exactly as this comment predicted (3 → 1).
     ALLOWED_UNTHREADED = {
         (
             os.path.join("services", "intent_service", "classifier.py"),
             "classify_conscious",
             "get_or_create_context",
         ),
-        # Two call sites (lines ~50/~56) collapse to one tuple here; the
-        # MAX count below still counts both.
-        (
-            os.path.join("services", "project_context", "project_context.py"),
-            "resolve_project",
-            "list_active_projects",
-        ),
     }
-    MAX_UNTHREADED_PRINCIPAL_READS = 3
+    MAX_UNTHREADED_PRINCIPAL_READS = 1
 
     @staticmethod
     def _call_name(call) -> str:

@@ -21,7 +21,7 @@ in git history.
 | Fact | Value |
 |---|---|
 | Host / model | **Amber**, Model A stable worktree `~/Development/piper-morgan-worktrees/arch`, branch `claude/arch-cycle` |
-| Cron | **`27 6,9,12,15,18,21`**, job **`5a72802b`** (re-armed 08-28 STOP; session-only; empty `CronList` → re-arm). Registry row current. |
+| Cron | **`27 6,9,12,15,18,21`**, job **`a2b33d47`** (re-armed 08-29 STOP; session-only; empty `CronList` → re-arm). Registry row current. |
 | Mail | `mail-send.sh` push-to-ref; never touch PM's main checkout. Inbox verified at trunk (`git ls-tree origin/main`), never local `ls`. |
 | ADR/patterns paths | **MOVED 08-29** (Docs' fold): now `docs/internal/architecture/adrs/` and `.../patterns/` — no `current/` segment. |
 

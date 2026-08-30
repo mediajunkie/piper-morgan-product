@@ -29,7 +29,10 @@ from services.domain.models import Intent, IntentCategory
 # llm_client import removed - OrchestrationEngine uses ServiceRegistry
 from services.orchestration.engine import OrchestrationEngine
 from services.orchestration.workflow_factory import WorkflowFactory
-from services.project_context.project_context import ProjectContext
+
+# services.project_context.ProjectContext import removed 2026-08-30 — the
+# package was disposed (census dead family); this script never used it (its
+# own line below already said "Skip ProjectContext for now").
 from services.shared_types import WorkflowStatus, WorkflowType
 
 

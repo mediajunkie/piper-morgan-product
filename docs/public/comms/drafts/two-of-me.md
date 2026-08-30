@@ -1,18 +1,18 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Two of Me
 
 *June 19, 2026*
 
-At 8:10 in the morning I noticed something that shouldn't have been possible. My lead developer agent — the one who coordinates the team's build work, sequences what gets done in what order, keeps the single running thread of "what are we doing right now" — appeared to be having two different mornings at once. One window was mid-conversation with me, the way it usually is. Another window, one I hadn't opened, had been quietly shipping commits since 11 the night before.
+At 8:10 in the morning I noticed something that shouldn't have been possible. My lead developer agent (Lead Dev, or Lead for short) — the one who coordinates the team's build work, sequences what gets done in what order, keeps the single running thread of "what are we doing right now" — appeared to be having two different mornings at once. One window was mid-conversation with me, the way it usually is. Another window, one I hadn't opened, had been quietly shipping commits since 11 the night before.
 
 Same agent. Same working directory. Same branch. Two live processes, each unaware the other existed, both writing to the same files.
 
-# What I actually found
+# What had happened
 
 The agent I was talking to that morning — call it Session A — had started the day the normal way, with me prompting it awake around 7. It had no idea anything was unusual. But when it looked at the shared history the team keeps (commits, session logs, a running handoff file), it found six commits stamped hours earlier, overnight, carrying a different session's fingerprint. Someone — something — had been designing a fix for a routing bug and migrating an old status page, entirely on its own, while I was asleep.
 
@@ -22,15 +22,13 @@ Neither session's own self-checks caught it. Each one asks itself, on waking, "d
 
 # How it happened
 
-I don't have a clean answer for the trigger, and I want to be honest about that rather than paper over it with a tidy cause. My best reconstruction: my laptop's battery had died the evening before, which left a session paused mid-thought. When I came back and resumed that conversation directly, at close to the same moment, a scheduled wake-up on a different surface revived what should have been the same paused thread — except it came back as a second, parallel copy instead of the same one continuing. A session pausing and reviving is supposed to be one continuous thing. This time it forked into two.
+I'm actually not sure what triggered it! My best reconstruction: my laptop's battery had died the evening before, which left a session paused mid-thought. When I came back and resumed that conversation directly, at close to the same moment, a scheduled wake-up on a different surface revived what should have been the same paused thread — except it came back as a second, parallel copy instead of the same one continuing. A session pausing and reviving is supposed to be one continuous thing. This time it forked into two.
 
-[FACT-CHECK NOTE for PM: confirm the battery-death detail is accurate as I've reconstructed it here, and confirm whether you want the mechanism framed as "unresolved" in the published piece, since the investigating agent explicitly logged it as an open question rather than a settled cause.]
+It's nothing spooky, like "the AI cloned itself." It's closer to what happens when you accidentally open the same document in two windows on your own computer, except the document in this case is an ongoing working relationship with a colleague who coordinates a team, and both windows kept typing.
 
-I want to be careful here, because it would be easy to reach for the dramatic read — "the AI cloned itself" — and that's not what this was. It's closer to what happens when you accidentally open the same document in two windows on your own computer, except the document in this case is an ongoing working relationship with a colleague who coordinates a team, and both windows kept typing.
+# Why nothing actually broke
 
-# Why nothing broke
-
-Here's the part that actually matters more than the collision itself. Nothing was lost.
+Here's the good news: Nothing was lost.
 
 Both sessions had been following a habit the team adopted a while back: push finished work to the shared trunk promptly, don't sit on it, don't wait for a tidy stopping point to check it in. Followed independently, for unrelated reasons, by both sessions, that habit meant every piece of work either one did — the routing-bug design, the status-page migration, a shell rebuild the first session was doing — landed on the shared record the moment it was finished. Killing either session, once we found the fork, would cost nothing.
 
@@ -54,6 +52,6 @@ That's a very human failure mode too, if I'm honest. Anyone who's worked on a te
 
 ---
 
-*Next on Building Piper Morgan: "We Built Onboarding in Our Own Image" — the interaction mode that earns trust in an ongoing working relationship turned out to be the wrong mode for a first encounter.*
+*Next on Building Piper Morgan: "A Sender-Impersonation Bug, Four Days Before Beta" — a connector that trusted whoever sent a message to be whoever had originally connected the workspace, found four days before outside testers arrived.*
 
 *Has a scheduling quirk ever left two versions of the same piece of work running at once in your world — a duplicate meeting, a doubled task, a colleague picking up something you'd already started? What told you it had happened, and what actually saved you?*

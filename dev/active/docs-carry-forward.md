@@ -1,9 +1,16 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-29 ~19:3x PDT (crossposts recorded, 33h-gap closed, roadmap/CORE flattened,
-current/ folded out of adrs+patterns paths, architectural review received)
-**Session log**: `dev/2026/08/29/2026-08-29-0727-docs-code-log.md` (open).
-**Cron**: `5e2279de`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-04.
+**Updated**: 2026-08-29 22:3x PDT, STOP/day-close (crossposts recorded, 33h-gap closed,
+roadmap/CORE flattened, current/ folded out of adrs+patterns paths, architectural review received)
+**Session log**: `dev/2026/08/29/2026-08-29-0727-docs-code-log.md` — **CLOSED**,
+`<!-- DAY-CLOSED: 2026-08-29 -->` written. Tomorrow's START creates a fresh dated log.
+**Cron**: `61dd5aa2` (re-armed at STOP via delete-then-create from `5e2279de`, CronList-verified
+sole job), same expression `57 6,9,12,15,18,21 * * *`, healthy through ~09-05.
+
+**⚠️ Monday 09-01 is a triple-convergence day — check ALL THREE, don't let one eclipse the others**:
+(1) Weekly Docs Audit (every Monday), (2) Monthly Housekeeping Audit (#1486, first Monday), (3)
+**B3 corpus-disposition kickoff** (patterns, my lane, see below) — new and easy to under-weight
+against the two recurring ones since it doesn't have a standing bullet yet.
 
 **⭐ NEW — Architectural Review 2026, ratified 2026-08-29, B3 kicks off ~09-01 (Monday)**: Arch ran
 a full review with PM (9 discovery legs, synthesis, phase-3 ratification). Full record:

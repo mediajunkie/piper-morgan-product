@@ -1,10 +1,19 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-29 19:2x PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-29 22:2x PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
-(GraphQL quota exhaustion from earlier today has recovered — confirmed via a working query, not
-assumed.)
+
+## ✅ #1658 vs MAINTENANCE-MODE — RESOLVED SAME NIGHT (2026-08-29)
+Arch ruled: PUB classification stands, execution FROZEN under the maintenance-mode boundary,
+annotation not silent inheritance. CXO offered a sharper lens (user experiences regression-vs-
+absence, not bug-vs-new-build) that proposed unbundling #1658's three parts differently — **checked
+it against the issue's own text rather than accept either account at face value**: PM's own quote
+covers all three parts under one historical claim, issue's class label is `parity-regression` for
+the whole umbrella. The split didn't survive the check. **Synthesized**: Arch's ruling stands,
+CXO's separable point kept (disclose the absence honestly if a tester hits it — different axis than
+the freeze question). Closed same night, nothing further owed. Full record:
+`mailboxes/ppm/inbox/read/reply-ppm-to-arch-cxo-cc-lead-pm-1658-synthesis-ruling-stands-2026-08-29.md`.
 
 ## 🔴 ACTIVE — ARCHITECTURAL REVIEW 2026, trifecta response + C5 roadmap sequencing DUE WED 09-02
 **The biggest new thread, arrived 19:22 tonight.** PM+Arch ran a full architectural review (nine
@@ -759,16 +768,18 @@ resolved or reframed into larger tracked work. Do not read this paragraph as cur
 
 ## Cron
 
-**ARMED** — job **`759b28c2`** (re-armed at 08-28 22:22 STOP; delete-then-create, `CronList`-
-verified exactly one). Prior job `d58bcc15` (armed 08-26 22:22) retired cleanly — no gap, no
-incident. **Updated the WATCH FOR line at this re-arm** (the only content change): now points at
-criterion 6 only (2/4/5 confirmed closed, 1 stale-but-satisfied), plus a passive notice-don't-chase
-on Lead's #1677/#1488 close and the #1638 delete-sweep landing overnight. Still carries: **NO
-STANDING OWED WORK ITEM** header, **DATES**, **MILESTONE SEQUENCE**, **SURFACES**, **COUNTS**,
-**AUDIT BIAS**, **GENERAL CONTRACTS**, **PROXIES**, **MAIL-SEND CAN FAIL SILENTLY**, **TOOL
-OUTAGES**, **HEARTBEAT PUSH RACES**.
+**ARMED** — job **`b35c8662`** (re-armed at 08-29 22:22 STOP; delete-then-create, `CronList`-
+verified exactly one). Prior job `759b28c2` (armed 08-28 22:22) retired cleanly — no gap, no
+incident. **Two real content changes at this re-arm**: (1) WATCH FOR now points at criterion 6 only
+— the two resolved overnight items (#1677/#1488, #1638) dropped from the line since both landed
+today; (2) added a new **AUTO-CLOSE TRAP** standing line (avoid close/fix/resolve keywords adjacent
+to a bare issue number in any commit subject — bit me directly today) and an **OWED, REAL DEADLINE**
+line naming the architectural-review trifecta + C5 sequencing due Wed 09-02, to delete once both
+are sent. Still carries: **NO STANDING OWED WORK ITEM** header (now qualified), **DATES**,
+**MILESTONE SEQUENCE**, **SURFACES**, **COUNTS**, **AUDIT BIAS**, **GENERAL CONTRACTS**, **PROXIES**,
+**MAIL-SEND CAN FAIL SILENTLY**, **TOOL OUTAGES**, **HEARTBEAT PUSH RACES**.
 
-⚠️ **Session-only + 7-day auto-expiry, both silent** — `759b28c2` expires ~2026-09-04 if not
+⚠️ **Session-only + 7-day auto-expiry, both silent** — `b35c8662` expires ~2026-09-05 if not
 re-armed sooner (re-armed every STOP in practice, so this is a backstop, not the expected path).
 
 ---
