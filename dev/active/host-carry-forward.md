@@ -1,6 +1,12 @@
+---
+last_updated: 2026-08-30
+currency_claim: per-stop
+max_age_days: 1
+---
+
 # HOST carry-forward
 
-**Written**: 2026-08-29 21:5x PDT (STOP fire, day 36 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-30 16:2x PDT (mid-session, day 37 on Amber — frontmatter above is the checkable claim, added this fire after running `check-refresh-promises.py --state-files` and finding this file undeclared; this prose line is not checkable and must not be trusted over the frontmatter) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 

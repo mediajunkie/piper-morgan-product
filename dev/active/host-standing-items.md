@@ -1,4 +1,9 @@
-# HOST Standing Items — Task List
+---
+retired: 2026-08-30
+retirement_reason: "Superseded by dev/active/host-carry-forward.md's own 'Owed by me' section, which has done this file's job for the entire Amber era (since 2026-07-25) — every fire this whole period read/wrote the carry-forward, never this file. Discovered while running check-refresh-promises.py --state-files against real tracked-state files (CIO's shipped 08-30) and finding this file listed as undeclared/untouched since 2026-07-26. Matches PPM's identical, independently-reached finding for their own role's standing-items.md (Agent 360 v0.4, §2.5): 'this file doesn't currently exist for me in practice — the carry-forward absorbed that function.' Content below preserved as history, not current status — everything dated June/early-July either resolved months ago (v0.3 Agent 360 synthesized+closed, v0.3 spec shipped) or was silently absorbed into carry-forward tracking. Do not resurrect without a fresh reason; if HOST ever needs a distinct task-queue surface again, start clean rather than un-stale this one."
+---
+
+# HOST Standing Items — Task List (RETIRED 2026-08-30 — see frontmatter)
 
 **Purpose**: HOST's task queue per duty cycle v0.6 (reframed standing-items tracker per Architectural Decision 1).
 
