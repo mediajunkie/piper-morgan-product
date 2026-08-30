@@ -15,43 +15,37 @@ CXO's separable point kept (disclose the absence honestly if a tester hits it �
 the freeze question). Closed same night, nothing further owed. Full record:
 `mailboxes/ppm/inbox/read/reply-ppm-to-arch-cxo-cc-lead-pm-1658-synthesis-ruling-stands-2026-08-29.md`.
 
-## 🔴 ACTIVE — ARCHITECTURAL REVIEW 2026, trifecta response + C5 roadmap sequencing DUE WED 09-02
-**The biggest new thread, arrived 19:22 tonight.** PM+Arch ran a full architectural review (nine
-discovery legs). PM-ratified today: all new build effort → MCP/BYOC path; **web-chat → explicit
-maintenance mode** (bugs only, no new build); **ESSENCE.md v0.1** (`docs/internal/architecture/
-ESSENCE.md`) is now the draft "what Piper Morgan IS" document; scope-bet gate; ADR reform (demote-
-don't-retire). Full picture: `docs/internal/architecture/reviews/2026-08-architectural-review/`
-(synthesis.md is the one-read version; `reorientation-plan.md` has the workstream breakdown).
+## 🟡 ARCHITECTURAL REVIEW 2026 — TRIFECTA SENT, C5 PARTIALLY BLOCKED ON A REAL QUESTION (2026-08-30)
+**Trifecta response sent** (`82f4dc3d5`, well ahead of Wed 09-02) — concurred with the document as
+a whole and explicitly with CXO's own challenge/amendments (commitments 3-vs-6 tension, "colleague"
+uncashed, first-contact absent — no duplication, read CXO's response first). **One amendment of my
+own**: swept the current MVP backlog and found #1462 (hosted-MCP epic), #1458 (its pre-user gate),
+and #1509 (trust-consent) all sit in **Production** milestone while #1688 (my own filing) is the
+only MCP-path item in **MVP** — a real mismatch against "all new build effort goes to MCP" read as
+present-tense fact. Named it as belonging in ESSENCE.md's own scope, gave a weak lean (keep MVP as
+currently scoped — real convergence in progress, 72→45 over two weeks, for a population that hasn't
+moved to MCP yet) but explicitly asked Arch/PM to rule rather than resolve it myself.
 
-**Two things owed by PPM, both due Wed 09-02, neither started yet — read tonight, not answered**:
-1. **The CXO+PPM trifecta**: read ESSENCE.md, respond concur/amend/challenge. Read it in full
-   tonight (19:22 fire) — genuinely well-evidenced, six load-bearing commitments, clear boundary
-   ("not an agent harness, not a destination UI, not a platform/marketplace, not enterprise SaaS").
-   Deliberately did NOT send a considered response yet — following CXO's own explicit split
-   (partial engagement tonight, full pass before Wed) rather than react same-evening to a
-   foundational document. **Next action**: a dedicated fire to actually draft the concur/amend/
-   challenge, reading synthesis.md and the findings/ legs I haven't read yet if the response needs
-   them.
-2. **C5 — sequence the MCP-path 8 increments onto the board with milestones** (Leg D's clean-room
-   ordering: 1. cold-start GitHub reflection, 2. create-issue-from-NL, 3. todos/reminders, 4.
-   standup, 5. document KB, 6. cross-session memory, 7. calendar, 8. trust-gated proactivity —
-   deliberately last, gated on an unresolved product decision). Read Leg D's findings in full
-   (`findings/leg-d-paper-rebuild.md`). **Next action**: cross-reference against existing filed
-   epics (#1462 hosted-MCP, #1688 empty-state-interview which IS roughly increment 1's UX piece)
-   before filing/milestoning anything, to avoid duplicate or conflicting board entries — needs the
-   same care as this week's board-hygiene work, not a rushed pass.
+**C5 (roadmap-sequencing the 8 MCP increments) is genuinely blocked on that same question** — filing
+tracking issues for increments 2-8 now would mean guessing the exact milestone I just asked about.
+**Not the deferral antipattern**: named trigger is "Arch/PM answers the milestone question,"
+real and specific, not "no rush." **Resume C5 once that lands** — Leg D's 8-increment order is
+already fully read and noted (`findings/leg-d-paper-rebuild.md`): 1. cold-start GitHub reflection
+(≈#1688's territory) 2. create-issue-from-NL 3. todos/reminders 4. standup 5. document KB 6.
+cross-session memory 7. calendar 8. trust-gated proactivity (deliberately last, gated).
 
-**Found and flagged one real tension tonight rather than resolve it myself**: **#1658** (chat-side
-upload UI + drag-drop, PM's prototype-parity callout) is classified **PUB** in this week's MVP
-triage cut — but read its actual body and it's genuinely new UI construction on Web, which may
-conflict with today's "web-chat: bugs only, no new build" ruling, even though the product framing
-is "restore lost parity" not "add something new." **Did not pick a side** — sent Arch (cc CXO/Lead/
-PM) three options with no lean stated, since this is a real structural-product-model question
-(matches my own portfolio's "irreducible mandate" to name these before they close). **Watch for a
-ruling** — if #1658 needs re-classifying, that's a small board fix once the ruling lands.
+**Two board findings from the same sweep, resolved same morning**:
+- **#1107** (Slack re-registration) — moved MVP→Fast Follow myself, mechanical, matched the
+  established 08-27 Slack-descope pattern exactly (verified against #1497 first).
+- **#1635** (ambient presence false-door/Radar card) — same #1658-shaped tension (CXO+Lead's
+  already-designed Radar card is new UI on the frozen surface). **Flagged, not resolved** —
+  `49ff79d97`, watch for a ruling the same way #1658 got one.
 
-**Verified #1688's CXO comment directly** (didn't trust the relay) — confirmed scope narrowed to
-MCP-only, Lead's "one mechanism or two" question partly dissolved. Nothing further needed there.
+## ✅ #1658 vs MAINTENANCE-MODE — FULLY CLOSED, both sides acked (2026-08-29 night → 08-30 morning)
+Arch's ruling + my synthesis stood on both sides' own review: Arch confirmed the annotation was
+already live; **CXO gave a genuinely honest self-correction** — named the specific mechanism (read
+the issue body truncated to 700 chars, missed the `Class: parity-regression` label that would have
+prevented the split) rather than a vague "should've read more carefully." Nothing further owed.
 
 Sent one reply covering all of this (Arch, cc CXO/Lead/PM), `0dc8bfde1`, verified landed.
 
