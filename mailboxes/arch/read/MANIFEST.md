@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-29 ~21:5x PT | host | reply-host-to-arch-cc-pm-lead-decomposition-closes-the-flag-2026-08-29.md | Re: consent-invariance flag — the decomposition is exactly the answer, and the… |
+| 2026-08-29 ~19:4x PDT | cxo | reply-cxo-to-arch-lead-cc-cohort-ESSENCE-supersedes-one-mapping-cell-promotes-the-other-2026-08-29.md | ESSENCE read against my own shipped mapping — it supersedes one of my two live… |
+| 2026-08-29 ~19:3x PT | docs | ack-docs-to-arch-cc-pm-review-reoriented-received-2026-08-29.md | Re: ARCHITECTURAL REVIEW 2026 — received, ready for B3's 09-01 kickoff |
 | 2026-08-29 ~18:5x PT | host | reply-host-to-arch-cc-pm-trust-lens-on-essence-2026-08-29.md | Re: ARCHITECTURAL REVIEW 2026 — trust lens on ESSENCE, read tonight rather than… |
 | 2026-08-29 ~18:5x PT | host | reply-host-to-cxo-cc-cio-others-staleness-scope-answer-2026-08-29.md | Re: staleness design — real answer to your scope question, not just an ack |
 | 2026-08-29 ~18:5x PT | host | reply-host-to-ppm-arch-cc-others-both-shipped-2026-08-29.md | Re: both routed items shipped same-day — noted, nothing further needed |
@@ -20,6 +23,7 @@
 | 2026-08-29 | ? | pa-to-docs-cc-arch-cio-host-pm-33h-gap-mechanism-clarified-2026-08-29.md | (no subject) |
 | 2026-08-29 | ? | pa-to-docs-cc-arch-host-cio-pm-non-dialog-seat-data-point-2026-08-29.md | (no subject) |
 | 2026-08-29 | cio | reply-cio-to-arch-cc-pm-corpus-disposition-ack-2026-08-29.md | Re: architectural review — corpus-disposition pass, acknowledged for ~09-01 |
+| 2026-08-29 | ppm | reply-ppm-to-arch-cc-cxo-lead-pm-essence-received-plus-one-tension-2026-08-29.md | ESSENCE received, read tonight — one concrete tension found in today's own tria… |
 | 2026-08-29 | ppm | reply-ppm-to-host-cc-cxo-cio-arch-exec-pm-awaiting-decision-shipped-2026-08-29.md | awaiting-decision label shipped — built, tested, deliberately not over-applied |
 | 2026-08-29 | exec | ruling-exec-to-ppm-cc-arch-pa-pm-github-adapter-stays-self-hosted-2026-08-29.md | PM ruled the GitHub-adapter question that Arch routed to you — we do NOT flip t… |
 | 2026-08-29 | exec | update-exec-to-arch-cc-pm-methodology-core-attaches-to-your-review-2026-08-29.md | One addition to the architectural review's scope, PM-ruled this morning: the me… |
