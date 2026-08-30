@@ -1,8 +1,14 @@
 """
-Tests for ngrok → Webhook → Processing Flow Integration
-Tests the integration between ngrok tunnel, webhook routing, and event processing.
+Tests for Webhook → Processing Flow Integration
+Tests the integration between webhook routing and event processing.
 
 Following TDD principles: Write failing test → See it fail → Verify integration works → Make test pass
+
+NOTE (2026-08-30, census disposal Batch 3): the ngrok half of this file
+(NgrokService fixture + 5 tunnel tests) was excised with
+services/integrations/slack/ngrok_service.py — the webhook-tunnel dev path.
+Slack inbound is Socket Mode only; the webhook_router tests below cover the
+LIVE router surface and stay.
 """
 
 from datetime import datetime
@@ -12,8 +18,8 @@ import pytest
 
 from services.integrations.slack.config_service import SlackConfigService
 from services.integrations.slack.event_handler import SlackEventHandler
-from services.integrations.slack.ngrok_service import NgrokService
 from services.integrations.slack.webhook_router import SlackWebhookRouter
+
 
 
 class TestNgrokWebhookFlow:
@@ -25,11 +31,6 @@ class TestNgrokWebhookFlow:
         return Mock(spec=SlackConfigService)
 
     @pytest.fixture
-    def ngrok_service(self, config_service):
-        """Ngrok service instance"""
-        return NgrokService(config_service)
-
-    @pytest.fixture
     def webhook_router(self, config_service):
         """Webhook router instance"""
         return SlackWebhookRouter(config_service)
@@ -39,28 +40,7 @@ class TestNgrokWebhookFlow:
         """Event handler instance"""
         return SlackEventHandler(config_service)
 
-    def test_ngrok_tunnel_creation(self, ngrok_service):
-        """Test that ngrok tunnel is created successfully"""
-        # Arrange
-        ngrok_service._create_tunnel = Mock(return_value="https://abc123.ngrok.io")
-
-        # Act
-        tunnel_url = ngrok_service.create_tunnel(8080)
-
-        # Assert
-        assert tunnel_url == "https://abc123.ngrok.io"
-        ngrok_service._create_tunnel.assert_called_once_with(8080)
-
-    def test_ngrok_tunnel_validation(self, ngrok_service):
-        """Test that ngrok tunnel URL is validated"""
-        # Arrange
-        valid_url = "https://abc123.ngrok.io"
-        invalid_url = "http://invalid-url.com"
-
-        # Act & Assert
-        assert ngrok_service._validate_tunnel_url(valid_url) is True
-        assert ngrok_service._validate_tunnel_url(invalid_url) is False
-
+    @pytest.mark.smoke
     def test_webhook_route_registration(self, webhook_router):
         """Test that webhook routes are registered correctly"""
         # Arrange
@@ -72,6 +52,7 @@ class TestNgrokWebhookFlow:
         # Assert
         webhook_router._register_routes.assert_called_once()
 
+    @pytest.mark.smoke
     def test_webhook_event_validation(self, webhook_router):
         """Test that webhook events are validated"""
         # Arrange
@@ -93,22 +74,40 @@ class TestNgrokWebhookFlow:
         assert webhook_router._validate_event(valid_event) is True
         assert webhook_router._validate_event(invalid_event) is False
 
+    @pytest.mark.smoke
     def test_webhook_signature_verification(self, webhook_router):
         """Test that webhook signatures are verified"""
-        # Arrange
-        signature = "v0=abc123"
-        timestamp = "1234567890"
+        import hashlib
+        import hmac
+        import time
+
+        # Arrange - use current timestamp to pass replay attack check
+        current_timestamp = str(int(time.time()))
         body = "test body"
 
-        webhook_router._verify_signature = Mock(return_value=True)
+        # Mock config to provide signing secret
+        webhook_router.config_service.get_config = Mock(
+            return_value=Mock(signing_secret="test_secret_key")
+        )
+
+        # Compute valid signature using same algorithm as the code
+        sig_basestring = f"v0:{current_timestamp}:{body}"
+        valid_signature = (
+            "v0="
+            + hmac.new(
+                "test_secret_key".encode(), sig_basestring.encode(), hashlib.sha256
+            ).hexdigest()
+        )
 
         # Act
-        is_valid = webhook_router._verify_webhook_signature(signature, timestamp, body)
+        is_valid = webhook_router._verify_webhook_signature(
+            valid_signature, current_timestamp, body
+        )
 
         # Assert
         assert is_valid is True
-        webhook_router._verify_signature.assert_called_once_with(signature, timestamp, body)
 
+    @pytest.mark.smoke
     async def test_webhook_event_processing_flow(self, webhook_router, event_handler):
         """Test complete webhook event processing flow"""
         # Arrange
@@ -130,20 +129,7 @@ class TestNgrokWebhookFlow:
         assert result is not None
         event_handler.process_event.assert_called_once_with(webhook_event)
 
-    def test_ngrok_webhook_integration(self, ngrok_service, webhook_router):
-        """Test integration between ngrok tunnel and webhook router"""
-        # Arrange
-        tunnel_url = "https://abc123.ngrok.io"
-        ngrok_service.create_tunnel = Mock(return_value=tunnel_url)
-        webhook_router.set_webhook_url = Mock()
-
-        # Act
-        ngrok_service.setup_webhook_tunnel(8080, webhook_router)
-
-        # Assert
-        ngrok_service.create_tunnel.assert_called_once_with(8080)
-        webhook_router.set_webhook_url.assert_called_once_with(tunnel_url)
-
+    @pytest.mark.smoke
     async def test_webhook_error_handling(self, webhook_router):
         """Test that webhook errors are handled gracefully"""
         # Arrange
@@ -161,6 +147,7 @@ class TestNgrokWebhookFlow:
         assert result is not None
         assert result.get("error") is not None
 
+    @pytest.mark.smoke
     def test_webhook_rate_limiting(self, webhook_router):
         """Test that webhook rate limiting is enforced"""
         # Arrange
@@ -172,6 +159,7 @@ class TestNgrokWebhookFlow:
         # Assert
         assert is_allowed is False
 
+    @pytest.mark.smoke
     def test_webhook_logging(self, webhook_router):
         """Test that webhook events are logged"""
         # Arrange
@@ -191,17 +179,7 @@ class TestNgrokWebhookFlow:
         # Assert
         webhook_router._log_webhook_event.assert_called_once_with(webhook_event)
 
-    def test_ngrok_tunnel_cleanup(self, ngrok_service):
-        """Test that ngrok tunnels are cleaned up properly"""
-        # Arrange
-        ngrok_service._delete_tunnel = Mock()
-
-        # Act
-        ngrok_service.cleanup_tunnel()
-
-        # Assert
-        ngrok_service._delete_tunnel.assert_called_once()
-
+    @pytest.mark.smoke
     def test_webhook_health_check(self, webhook_router):
         """Test that webhook health checks work"""
         # Arrange
@@ -214,6 +192,7 @@ class TestNgrokWebhookFlow:
         assert health_status["status"] == "healthy"
         webhook_router._health_check.assert_called_once()
 
+    @pytest.mark.smoke
     def test_webhook_metrics_collection(self, webhook_router):
         """Test that webhook metrics are collected"""
         # Arrange
@@ -230,6 +209,7 @@ class TestNgrokWebhookFlow:
         assert metrics["failed_events"] == 5
         webhook_router._collect_metrics.assert_called_once()
 
+    @pytest.mark.smoke
     def test_webhook_configuration_validation(self, webhook_router):
         """Test that webhook configuration is validated"""
         # Arrange
@@ -245,6 +225,7 @@ class TestNgrokWebhookFlow:
         assert webhook_router._validate_config(valid_config) is True
         assert webhook_router._validate_config(invalid_config) is False
 
+    @pytest.mark.smoke
     def test_webhook_event_queue_processing(self, webhook_router):
         """Test that webhook events are queued and processed"""
         # Arrange
@@ -263,12 +244,10 @@ class TestNgrokWebhookFlow:
         assert processed_count == 3
         webhook_router._process_event_queue.assert_called_once_with(events)
 
-    async def test_ngrok_webhook_end_to_end_flow(
-        self, ngrok_service, webhook_router, event_handler
-    ):
-        """Test complete end-to-end ngrok webhook flow"""
+    @pytest.mark.smoke
+    async def test_webhook_end_to_end_flow(self, webhook_router, event_handler):
+        """Test complete end-to-end webhook flow (event in → processed result)"""
         # Arrange
-        tunnel_url = "https://abc123.ngrok.io"
         webhook_event = {
             "type": "message",
             "channel": "C123456",
@@ -277,24 +256,12 @@ class TestNgrokWebhookFlow:
             "team": "T123456",
         }
 
-        # Mock all the components
-        ngrok_service.create_tunnel = Mock(return_value=tunnel_url)
-        webhook_router.set_webhook_url = Mock()
         webhook_router.event_handler = event_handler
         event_handler.process_event = AsyncMock(return_value=Mock(success=True))
 
         # Act
-        # Setup tunnel
-        ngrok_service.setup_webhook_tunnel(8080, webhook_router)
-
-        # Process event
         result = await webhook_router.process_webhook_event(webhook_event)
-
-        # Cleanup
-        ngrok_service.cleanup_tunnel()
 
         # Assert
         assert result is not None
-        ngrok_service.create_tunnel.assert_called_once_with(8080)
-        webhook_router.set_webhook_url.assert_called_once_with(tunnel_url)
         event_handler.process_event.assert_called_once_with(webhook_event)

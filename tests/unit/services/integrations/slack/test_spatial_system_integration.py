@@ -20,7 +20,6 @@ from services.integrations.slack.attention_model import (
     AttentionModel,
     AttentionSource,
 )
-from services.integrations.slack.ngrok_service import NgrokService
 from services.integrations.slack.oauth_handler import SlackOAuthHandler
 from services.integrations.slack.spatial_mapper import SlackSpatialMapper
 from services.integrations.slack.spatial_memory import SpatialMemoryRecord, SpatialMemoryStore

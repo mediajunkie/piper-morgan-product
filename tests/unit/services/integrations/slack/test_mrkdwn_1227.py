@@ -92,7 +92,8 @@ class TestIssueExample:
 
 class TestSendMessageSeamConverts:
     """#1227 Phase 2: slack_client.send_message normalizes text to mrkdwn — the
-    single chokepoint response_handler + simple_response_handler route through.
+    single chokepoint response_handler routes through (simple_response_handler
+    did too, until its disposal — 2026-08-30 census disposal Batch 3).
     Outgoing Slack text must contain mrkdwn (*bold*), not raw markdown (**bold**)."""
 
     async def test_send_message_converts_text_to_mrkdwn(self):
