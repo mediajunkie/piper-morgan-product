@@ -16,7 +16,7 @@ the rubric's T criteria are hypotheses and the doc says so in a red banner.
 
 ## Live threads
 
-- **#1463 / PDR-006 pre-user gate** — v0.1 branched + landed today; R and C scoreable, **T is
+- **#1463 / PDR-006 pre-user gate** — v0.1 branched + amended with a traced worked example (the #1425 honesty class is a floor-PROMPT directive with no BYOC analogue; the `source_failed` flag already travels, so emitting it structurally is near-free — sent Lead as a verified ask superseding the morning hypothesis). Originally branched + landed today; R and C scoreable, **T is
   `PENDING-PROBE`**. Tier unratified (PPM/PM, same open question as CT itself). The CT rubric's
   back-reference goes in **on ratification, not before.**
 - **#1688** (FTUX empty-state interview, MCP-only) — Lead builds; **no build commits as of today**, which
