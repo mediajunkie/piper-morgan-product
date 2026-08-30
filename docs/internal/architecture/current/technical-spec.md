@@ -544,6 +544,12 @@ async def _create_github_issue(self, task: Task, context: dict):
 
 ### 2.6 Query Service (`services/queries/query_service.py`)
 
+> ⚠️ **Dated note (2026-08-30)**: HISTORICAL. `services/queries/` was disposed in the Batch-2
+> census-dead-family disposal — the CQRS-lite query layer was never wired to any entrypoint
+> (its QueryRouter predeceased it; the 2026-08-29 leg-B census + fresh delete-time sweep found
+> zero production callers). Live query traffic rides the intent-service canonical handlers.
+> Retrievable by commit hash via the 2026-08-30 disposal record in decisions.log.
+
 **Purpose**: Handle read-only data operations without workflow overhead
 
 ```python
@@ -622,6 +628,12 @@ class ProjectQueryService:
 | Complex process | Command | Workflow     | "Analyze repository"    |
 
 ### 2.7 Project Context (`services/project_context/project_context.py`)
+
+> ⚠️ **Dated note (2026-08-30)**: HISTORICAL. `services/project_context/` was disposed in the
+> Batch-2 census-dead-family disposal (never loaded from any entrypoint; zero production
+> callers at delete time). The live `ProjectContext` dataclass in `services/domain/models.py`
+> is a DIFFERENT, unrelated class — same name, name-collision trap. Retrievable by commit hash
+> via the 2026-08-30 disposal record in decisions.log.
 
 **Purpose**: Sophisticated project resolution for multi-project support
 
@@ -702,6 +714,10 @@ class ProjectContext:
 ```
 
 ### 3.2 Query Flow (Data Retrieval)
+
+> ⚠️ **Dated note (2026-08-30)**: the QueryRouter/ProjectQueryService rail below never shipped
+> (disposed with `services/queries/`, see §2.6 note). Live query flow routes through the
+> intent-service category handlers.
 
 ```
 1. User Input: "What projects are available?"

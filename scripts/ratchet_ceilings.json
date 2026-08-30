@@ -9,7 +9,7 @@
   "mypy_assignment": 254,
   "mypy_attr_defined": 204,
   "mypy_await_not_async": 16,
-  "mypy_call_arg": 40,
+  "mypy_call_arg": 39,
   "mypy_call_overload": 11,
   "mypy_dict_item": 5,
   "mypy_func_returns_value": 1,
