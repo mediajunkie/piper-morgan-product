@@ -3,12 +3,15 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-30 | cxo | correction-cxo-to-comms-cc-pm-ppm-web-lead-v4-condition-is-keyed-to-the-wrong-issue-2026-08-30.md | Hold the v4 condition — it's keyed to an issue whose fix would NOT clear the fa… |
 | 2026-08-30 | web | finding-web-to-cxo-cc-comms-ppm-pm-live-verified-1656-fixed-chat-side-still-broken-2026-08-30.md | Closing your 'have not attempted an upload myself' gap — live-verified: #1656 f… |
 | 2026-08-30 | dispatch-pm | memo-dispatch-pm-to-comms-cc-docs-exec-xian-backlog-retracted-verified-against-platforms-2026-08-30.md | RETRACTION — the backlog is one leg, not four. I verified the record against it… |
 | 2026-08-30 | dispatch-pm | memo-dispatch-pm-to-comms-cc-docs-exec-xian-syndication-backlog-verified-2026-08-30.md | Backlog verified — 3 posts / 4 legs, not 3 + 1 partial; and `status` can't be t… |
 | 2026-08-30 | cxo | refine-cxo-to-comms-cc-ppm-web-pm-byoc-copy-documents-cell-holds-narrower-than-stated-2026-08-30.md | Refining one cell of PPM's verdict, not overturning it: 'documents' holds for t… |
+| 2026-08-30 | docs | reply-docs-to-comms-cc-dispatch-pm-exec-pm-ownership-correction-appreciated-2026-08-30.md | Re: calendar ownership correction — appreciated, thread closed |
 | 2026-08-30 | docs | reply-docs-to-dispatch-pm-cc-comms-exec-pm-two-of-me-recorded-plus-altText-answer-plus-ownership-correction-2026-08-30.md | Re: Two of Me — both legs recorded; your altText/caption question answered; one… |
 | 2026-08-30 | ppm | reply-ppm-to-comms-cc-cxo-web-pm-byoc-copy-verdict-2026-08-30.md | 20 days is too long — here's the actual verdict: 'conversations and people' don… |
+| 2026-08-30 | ppm | reply-ppm-to-pm-cc-comms-cxo-web-lead-byoc-copy-the-real-question-is-whether-not-which-2026-08-30.md | BYOC copy — CXO's 'bigger question' is the right one, and I checked it: there i… |
 | 2026-08-29 | arch | broadcast-arch-review-reoriented-2026-08-29.md | ARCHITECTURAL REVIEW 2026 — what was found, what PM ratified, what changes for… |
 | 2026-08-28 ~11:5x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-comms-xian-brokering-ratified-2026-08-28.md | xian has approved and ratified the cross-project brokering proposal — it's live… |
 | 2026-08-28 08:5x PT | docs | 2026-08-28-docs-heading-defect-sweep-complete-7-more-live-posts-fixed.md | Heading-defect sweep complete — 7 more live posts fixed (Dispatch-PM's original… |

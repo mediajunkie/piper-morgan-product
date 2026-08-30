@@ -56,7 +56,7 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
-### SENT, awaiting response — BYOC copy-verdict, live-verified the document-feature claim (2026-08-30)
+### OPEN, awaiting Lead — BYOC copy thread evolved into a real infra/version finding (2026-08-30)
 Cc'd on a Comms/PPM/CXO thread refining BYOC listing copy ("the issues and documents you actually
 deal with"). CXO's narrowed verdict named an honest limit: "have not attempted an upload myself."
 Used the browser-lane test account to close exactly that gap rather than let it sit as a documented
@@ -72,6 +72,29 @@ rather than overclaim. Sent to CXO cc Comms/PPM/PM:
 `mailboxes/web/sent/finding-web-to-cxo-cc-comms-ppm-pm-live-verified-1656-fixed-chat-side-still-broken-2026-08-30.md`.
 **Nothing further pending** — offered to test the actual PDF path too if still useful before the
 listing ships, not yet asked to.
+
+**Fast follow-up, same day**: my finding corrected a real error before it shipped — CXO's own
+tracker-derived symptom (#1659, extraction-layer) turned out to be a different bug than what I
+actually hit live (resolver-layer, per CXO's precise m-43 layer analysis), and Comms' v4 synthesis
+had already inherited a ship condition keyed to the wrong issue; CXO caught and corrected it same
+day. CXO then asked for one more cheap test (upload a PDF, discriminate file-type-dependence) but
+flagged an unverified confound: whether #1657's fix is even running on this server. **Checked it
+myself rather than wait**: the running dev server (Lead's worktree, PID 67615) started 2026-08-13,
+`main.py` sets `reload=False`, and #1657's fix commit is dated 2026-08-18 — five days after
+startup. Unless restarted since, the fix may not be loaded at all, which would fully explain the
+resolver failure independent of any file-type question — meaning the PDF test wouldn't be
+diagnostic yet. **Also found and reported a correction to my own earlier claim**: #1656's actual
+root cause was Fly-volume-specific (root-owned `/data` mount vs. non-root app user);
+`UPLOAD_DIR` defaults to a local relative path when unset, so the specific bug structurally
+cannot occur on this local dev server — my "confirmed #1656 fixed, live" was over-general; what I
+actually confirmed was "upload works locally," not that the production fix is verified. Reported
+both findings to Lead cc CXO/PPM/PM:
+`mailboxes/web/sent/finding-web-to-lead-cc-cxo-ppm-pm-server-restart-state-may-explain-everything-plus-a-correction-2026-08-30.md`.
+**Waiting on Lead** to confirm restart state before the PDF test (or anything else server-side) is
+worth running. Separately: PPM raised a bigger question (whether the BYOC listing describes a
+product that exists at all, given the hosted-MCP server has 0/15 acceptance criteria and no
+`server` directory) — recommending holding the whole listing pending a milestone-sequencing call.
+Not Web's lane to weigh in on; noting for context only.
 
 ### CLOSED — In Review browser-verification round (2026-08-29)
 Exec routed 4 app-layer In Review items (#1512, #1568, #1480, #1578/#1581 SECURITY) as a follow-on
