@@ -92,10 +92,13 @@ rather than guessing):
   question that had been sitting since 2026-07-19 is resolved.
 - [x→ANSWERED 2026-08-15] ~~**`--mode=archive` scope**~~ — PM: the need has
   passed. Closed, no further action.
-- [ ] **#1669 — no build-time check for hero-image filename drift** — filed
-  2026-08-19 after PM found+fixed two live 404 hero images (frontmatter
-  pointing at pre-conversion `.png` names instead of the deployed `.webp`
-  names). Low priority, no rush — direction not scoped.
+- [x] **#1669 — CLOSED 2026-08-30** (website `3019ac9`). Added
+  `scripts/check-hero-image-refs.js`, wired into `prebuild`. Traced the
+  real historical bug location from the actual fix commit (an `<img>`
+  embedded in `blog-content.json`'s HTML content, not just
+  `medium-posts.json`'s structured fields) rather than guessing — checks
+  both. Verified failing-first by reintroducing the exact historical bug
+  pattern before committing.
 - [x] **Above-the-fold hero design — SHIPPED 2026-08-29** (website `b21d89e`).
   Replaced the generic marketing `<Hero>` on `/blog` with the pre-existing
   (previously unwired) `organisms/FeaturedPost` component, extended with a
