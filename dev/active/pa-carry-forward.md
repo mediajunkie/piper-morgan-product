@@ -184,9 +184,24 @@ days stale.
       Code/presumably a fourth) name PA as owner; CXO+PPM are the "directional trifecta" who must
       read-and-respond on ESSENCE by Wed 09-02, not PA. PA's job is to bring this into the next BYOC
       conversation with PM as context, not to execute on the review itself.
+  - 🔴 **PPM's ESSENCE trifecta response, 08-30 — a real open question directly inside PA's BYOC
+    lane, not PA's to resolve but essential context for the next conversation.** PPM concurred with
+    ESSENCE overall but found, checking milestone state rather than guessing: **#1462 (the hosted-MCP
+    epic) is still milestoned Production — i.e., scheduled AFTER MVP/beta — while ESSENCE states "all
+    new build effort goes to the MCP/BYOC path" as a present-tense operating fact.** The board hasn't
+    caught up to the ratification. PPM explicitly declined to resolve this unilaterally (*"I'd want
+    Arch's or PM's read"*) and asked for it to be recorded as a decision, not left as an implication.
+    Two readings PPM named: (a) MVP stays web-chat-scoped as designed, MCP genuinely belongs in
+    Production since the alpha population is still on web-chat today; (b) some of #1462's early
+    phases (build-independent work, the identity boundary) move into MVP now, so "beta" isn't reached
+    by finishing a surface the product is moving away from. PPM's own weak lean is (a). **This is the
+    live sequencing question sitting directly under the BYOC conversation PA is steering** — whichever
+    way it resolves shapes what "next steps" for BYOC even means. Watch for Arch's or PM's answer;
+    bring it into the next BYOC conversation explicitly rather than assume it's settled.
   - **Thread status, restated**: the connector-architecture sub-thread is fully closed (see above).
     PM signaled the next topic is "the BYOC skunkworks project itself, next steps" — still PM's
-    timing to initiate, now with ESSENCE.md as the fixed point that conversation should reference.
+    timing to initiate, now with ESSENCE.md as the fixed point, plus the live MVP-vs-Production
+    milestone question above as something that conversation may need to actually settle.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
