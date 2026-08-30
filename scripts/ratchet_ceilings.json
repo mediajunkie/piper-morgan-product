@@ -5,9 +5,9 @@
   "notimplementederror": 8,
   "todo_markers": 70,
   "unscoped_repo_reads": 36,
-  "mypy_arg_type": 383,
+  "mypy_arg_type": 381,
   "mypy_assignment": 248,
-  "mypy_attr_defined": 199,
+  "mypy_attr_defined": 197,
   "mypy_await_not_async": 16,
   "mypy_call_arg": 39,
   "mypy_call_overload": 11,
@@ -28,6 +28,6 @@
   "mypy_type_var": 0,
   "mypy_union_attr": 165,
   "mypy_valid_type": 14,
-  "mypy_var_annotated": 78,
+  "mypy_var_annotated": 75,
   "chat_invisible": 27
 }
