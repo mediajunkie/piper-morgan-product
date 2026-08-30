@@ -1,11 +1,50 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-29 16:3x PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-29 19:2x PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
-⚠️ **GitHub GraphQL quota hit 0/5000 this afternoon** (confirmed via `gh api graphql -f query='{
-rateLimit {...} }'`, resets ~17:14 PDT) — #1386 and a fresh `sprint-truth.py` unchecked since
-~16:30; re-verify at the next fire rather than trust the last-known numbers below indefinitely.
+(GraphQL quota exhaustion from earlier today has recovered — confirmed via a working query, not
+assumed.)
+
+## 🔴 ACTIVE — ARCHITECTURAL REVIEW 2026, trifecta response + C5 roadmap sequencing DUE WED 09-02
+**The biggest new thread, arrived 19:22 tonight.** PM+Arch ran a full architectural review (nine
+discovery legs). PM-ratified today: all new build effort → MCP/BYOC path; **web-chat → explicit
+maintenance mode** (bugs only, no new build); **ESSENCE.md v0.1** (`docs/internal/architecture/
+ESSENCE.md`) is now the draft "what Piper Morgan IS" document; scope-bet gate; ADR reform (demote-
+don't-retire). Full picture: `docs/internal/architecture/reviews/2026-08-architectural-review/`
+(synthesis.md is the one-read version; `reorientation-plan.md` has the workstream breakdown).
+
+**Two things owed by PPM, both due Wed 09-02, neither started yet — read tonight, not answered**:
+1. **The CXO+PPM trifecta**: read ESSENCE.md, respond concur/amend/challenge. Read it in full
+   tonight (19:22 fire) — genuinely well-evidenced, six load-bearing commitments, clear boundary
+   ("not an agent harness, not a destination UI, not a platform/marketplace, not enterprise SaaS").
+   Deliberately did NOT send a considered response yet — following CXO's own explicit split
+   (partial engagement tonight, full pass before Wed) rather than react same-evening to a
+   foundational document. **Next action**: a dedicated fire to actually draft the concur/amend/
+   challenge, reading synthesis.md and the findings/ legs I haven't read yet if the response needs
+   them.
+2. **C5 — sequence the MCP-path 8 increments onto the board with milestones** (Leg D's clean-room
+   ordering: 1. cold-start GitHub reflection, 2. create-issue-from-NL, 3. todos/reminders, 4.
+   standup, 5. document KB, 6. cross-session memory, 7. calendar, 8. trust-gated proactivity —
+   deliberately last, gated on an unresolved product decision). Read Leg D's findings in full
+   (`findings/leg-d-paper-rebuild.md`). **Next action**: cross-reference against existing filed
+   epics (#1462 hosted-MCP, #1688 empty-state-interview which IS roughly increment 1's UX piece)
+   before filing/milestoning anything, to avoid duplicate or conflicting board entries — needs the
+   same care as this week's board-hygiene work, not a rushed pass.
+
+**Found and flagged one real tension tonight rather than resolve it myself**: **#1658** (chat-side
+upload UI + drag-drop, PM's prototype-parity callout) is classified **PUB** in this week's MVP
+triage cut — but read its actual body and it's genuinely new UI construction on Web, which may
+conflict with today's "web-chat: bugs only, no new build" ruling, even though the product framing
+is "restore lost parity" not "add something new." **Did not pick a side** — sent Arch (cc CXO/Lead/
+PM) three options with no lean stated, since this is a real structural-product-model question
+(matches my own portfolio's "irreducible mandate" to name these before they close). **Watch for a
+ruling** — if #1658 needs re-classifying, that's a small board fix once the ruling lands.
+
+**Verified #1688's CXO comment directly** (didn't trust the relay) — confirmed scope narrowed to
+MCP-only, Lead's "one mechanism or two" question partly dissolved. Nothing further needed there.
+
+Sent one reply covering all of this (Arch, cc CXO/Lead/PM), `0dc8bfde1`, verified landed.
 
 ## ✅ AWAITING-DECISION LABEL — SHIPPED (2026-08-29, Agent 360 v0.4 item PM approved)
 My own 08-15 proposal, routed to me by HOST today. Created the GitHub label (safe/additive), wired
