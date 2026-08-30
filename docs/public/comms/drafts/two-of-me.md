@@ -1,7 +1,7 @@
 ---
 image: 'two-of-me-ai-lighthouse.png'
 alt: ''
-caption: ''
+caption: '"What''s all this then?"'
 ---
 
 # Two of Me
