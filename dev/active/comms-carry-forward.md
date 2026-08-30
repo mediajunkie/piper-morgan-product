@@ -1,6 +1,6 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-08-30 09:42 PT WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-08-30 12:42 PT WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
@@ -8,32 +8,33 @@
 
 ## Closed today
 
-- **"Two of Me" — published.** Full editorial review (mechanical sweep clean, frontmatter/image verified, footer-tease mismatch caught and fixed pre-review). PM voice-passed + illustrated, resolved the FACT-CHECK bracket in their own voice. Docs published same day — live on both repos.
-- **Beat 6's "beta date" quote — CLOSED.** PM confirmed "date" is correct; the source's "beta data" was PM's own original transcription typo, not an error I introduced. Calendar notes updated.
-- **Beats 4-6 numbering explained to PM** — it's a local PM-approved 6-beat sub-sequence (confirmed 2026-08-15, the beta-readiness saga), distinct from the main narrative's own beat count. Beats 1-3 of that sequence published; 4-6 still drafted, scheduled Sep 1/3/8.
-- **website#35 — substantially resolved.** Someone (likely Web) root-caused and fixed the actual bug in code (missing React `key` prop, commit `8edfc11`) independent of confirming PM's specific incident. Only a low-stakes reproducibility question remains, PM will watch for recurrence rather than answer now.
-- **BYOC listing copy v4 — re-pinged PPM** (20 days silent). Sent `reping-comms-to-ppm-...-2026-08-30.md`, noting PPM's also on the hook for the ESSENCE trifecta by Wed 09-02 as possible context.
-- **Dispatch-PM syndication backlog — resolved, mostly a false alarm.** My Aug 25 flag (3 posts/4 legs) turned out overstated: Dispatch-PM's first verification pass found 1 false positive; after PM pushed back for platform-level (not calendar-level) verification, a full retraction found the real gap is **one single Medium leg** ("Drained on Paper") — the other two were already correctly syndicated, just never written back to the calendar. **Filled both record-gap rows myself** with Dispatch-PM's platform-verified URLs (fetched the exact LinkedIn pubdate directly rather than trust their flagged paraphrase). Replied via the Exec-broker protocol: clarified that per my own `update-calendar` skill, Comms is the sole calendar hand-editor (their second memo's "Docs owns it" line needs correcting), recommended just running the one remaining leg whenever convenient (no burst/sequencing concern now), and concurred with their proposed 4-point verification framework (platform-as-ground-truth, URL columns as record, `status` isn't a syndication signal — same root cause as #1683, platform-check-before-claiming-a-gap).
+- **"Two of Me" — published.** Full editorial review, PM voice-passed + illustrated, resolved own FACT-CHECK bracket. Docs published, live on both repos.
+- **Beat 6's "beta date" quote — CLOSED.** PM confirmed "date" correct, source's "beta data" was PM's own original typo.
+- **Beats 4-6 numbering explained** — local PM-approved 6-beat sub-sequence (beta-readiness saga), distinct from the main narrative's beat count. 1-3 published; 4-6 drafted, scheduled Sep 1/3/8.
+- **website#35 — substantially resolved** in code (missing React `key` prop, `8edfc11`). Only a low-stakes reproducibility question remains; PM watching for recurrence.
+- **Dispatch-PM syndication backlog — resolved.** Real gap shrank from my overstated "3 posts/4 legs" (Aug 25 flag, never platform-verified) to one genuine leg ("Drained on Paper," Medium) after Dispatch-PM's platform-level re-check. Filled the two record-gap rows... **except I filled the wrong columns — see correction below.**
+- **⚠️ Real process miss, owned and corrected same fire**: filled `mediumURL`/`linkedinURL`/`liPubDate`/`status` on those two rows myself, then told Dispatch-PM "Comms is the sole hand-editor" of the calendar. **Both wrong.** Docs corrected me directly: the ratified convention (2026-07-29) is multi-writer *by column* — those four are explicitly Docs's columns, not mine. Re-read the actual skill file, confirmed Docs was right, no data conflict resulted (different row than Docs's own edit) but the claim to Dispatch-PM was a bad steer to an external party. Sent corrections to both Docs and Dispatch-PM (via Exec broker) same fire. **Going forward: syndication URL columns (`mediumURL`/`linkedinURL`/`liPubDate`/`blogURL`/`blogPath`/`canonicalSite`, `status` published→distributed) are Docs's to write, not mine** — don't repeat this.
+- **BYOC listing copy v4 — converged and sent to PM.** Re-ping worked: PPM answered the 20-day-open question same-day (checked #1440's actual contract), CXO narrowed the "documents" claim via the tracker, Web live-verified it with a real test account and upload. Synthesized into v4 ("the issues and documents you actually deal with," dropped conversations/people) with one live condition (#1659 — cut to "issues" alone if it doesn't land before listing). Sent to PM, cc PPM/CXO/Web.
 
 ## Active: ChicagoCamps / Leadership By Design talk — Sept 17, 2026
 
-Thu Sept 17, Session 2, 12:45p Central, 30 min incl. Q&A. Script + slide plan delivered at `dev/2026/08/29/chicagocamps-talk-2026-09-17.md`. **PM will work on it in the coming week** (after an overnight trip) — reviewing/adapting the script and generating the 4-5 new slide images from the written prompts (2 images already reusable from the Rosenverse archive). No Comms-side action until PM comes back with edits or questions. Russ mentioned a dry run ~week of Sep 1-5 — watch for that in the Russ Unger thread if it surfaces.
+Thu Sept 17, Session 2, 12:45p Central, 30 min incl. Q&A. Script + slide plan delivered at `dev/2026/08/29/chicagocamps-talk-2026-09-17.md`. **PM working on it next week** (after an overnight trip) — script review + generating remaining slide images. No Comms-side action until PM returns with edits/questions.
 
 ## Watch, not owed: architectural review (ESSENCE.md)
 
-PM + Arch ran a full architectural review 08-29. **No action owed to Comms.** CXO/PPM trifecta read-and-respond window closes Wed 09-02 — PM has signaled possible publication once it ratifies. Check back after that date for a narrative/insight angle; nothing to draft before then.
+CXO/PPM trifecta window closes Wed 09-02. Check back after for a possible narrative/insight angle; nothing to draft before then.
 
 ## Open items — no Comms-side move available right now
 
-- **Beats 4-6** — await PM's voice-pass/art (Sep 1/3/8 slots).
-- **Dispatch's one remaining syndication leg** ("Drained on Paper," Medium) — Dispatch-PM will run it; I'll fill the calendar row once the URL lands.
-- **website#35** — PM watching for recurrence, not actively pursuing the reproducibility answer.
-- **BYOC listing copy v4** — re-pinged PPM today, awaiting reply.
+- **Beats 4-6** — await PM's voice-pass/art (Sep 1/3/8).
+- **Dispatch's one remaining leg** ("Drained on Paper," Medium) — Dispatch-PM runs it, then Docs (not me) fills the calendar's syndication columns per the corrected ownership model.
+- **website#35** — PM watching for recurrence.
+- **BYOC copy v4** — sent to PM for a decision; PPM/CXO/Web's work is done.
 
 ## Waiting on others
 
-- **PM** — ChicagoCamps script/slide review (next week).
-- **Dispatch-PM** — the one remaining syndication leg; my reply on calendar ownership + sequencing rec + framework concurrence.
-- **PPM** — BYOC listing copy v4 re-ping.
+- **PM** — ChicagoCamps script/slide review (next week); BYOC v4 decision.
+- **Dispatch-PM** — the one remaining syndication leg.
+- **Docs** — will now own filling syndication URL columns going forward (corrected today).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
-- **Someone (unclear who)** — #1636 (cluster-data pipeline fix, filed 08-15); #1647 (hook bug, filed 08-18).
+- **Someone (unclear who)** — #1636 (filed 08-15); #1647 (filed 08-18).
