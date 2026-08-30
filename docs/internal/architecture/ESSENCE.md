@@ -108,7 +108,12 @@ scope-bet gate governs all *becoming*; this document governs all *being*.
   mechanisms on the chat path (the legacy LLM-classifier chain and its successor, the
   constrained registry-backed router it is migrating to); whichever one interprets a request,
   the same rail dispatches it and the same consent gate evaluates the operation's declared
-  effect class — so no routing change can ever loosen a safety check.
+  effect class — so no routing change can ever loosen a safety check. *(Verified how, per HOST's
+  2026-08-29 trust-lens flag: the single-convergence-point structure is verified by static trace
+  (08-25); the legacy-routed path is verified behaviorally by #1685's A/B seam assertion; the
+  successor-routed path's behavioral receipt is PENDING — scheduled onto Lead's watched flip
+  round. Until it lands, this line's "can ever" is design-intent for that path, not settled
+  fact.)*
 - The LLM floor guarantee: at least as good as a well-prompted LLM with the user's context —
   handlers make it better, never different.
 - Derive, don't hand-maintain: registries, catalogs, prompts, and manifests are generated from
