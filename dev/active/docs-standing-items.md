@@ -89,12 +89,17 @@ silently — flag at next PM engagement rather than resume unprompted.
   26 still on the stamp as of 2026-08-24 (down from 23 a week prior — modest, ongoing). Cohort-
   wide, no single owner. Check at next Monday audit; escalate by name if still >75% stale.
 - [ ] **`universal-list-architecture-guide.md` duplicate** — two paths, diverged content, Sept
-  2025 reorg artifact. Lead Dev's lane, flagged 2026-08-17, unchanged as of 2026-08-24.
+  2025 reorg artifact. Confirmed via #1585 (2026-08-30 update) as a genuine judgment call, not a
+  mechanical fix — different detail levels, not a version-bump pair. Still unowned/unclaimed.
 - [ ] **#1644** — full v19 historical fold of roadmap.md still owed (PPM's lane). The header-date
-  symptom was fixed 2026-08-24; the underlying narrative content is still frozen at July 16 state.
+  symptom was fixed 2026-08-24 (confirmed still correct, verified live 2026-08-30 when the issue
+  description was refreshed to reflect it); the underlying narrative content is still frozen at
+  July 16 state.
 - [ ] **#1683** (new, 2026-08-25) — 145 editorial-calendar rows genuinely syndicated but
   `status`/`canonicalSite` never bumped (root cause: 2026-07-19 migration used an unreliable
-  selection field). Historical, not urgent. Needs a scripted per-row day-of-week-routing
+  selection field). Historical, not urgent. **Independently corroborated 2026-08-30** by
+  Dispatch-PM via platform-verification (~150 rows, same shape, different method) — comment added
+  to the issue, disposition unchanged (deliberately not rushed). Needs a scripted per-row day-of-week-routing
   reconstruction before any bulk fix — not something to attempt casually.
 - [ ] **Feature-guide 4-item PM click-through** — PA's code-level verification is done; 4 items
   need a live browser PM doesn't have on their Amber seat's normal path. PM said they'd take it
