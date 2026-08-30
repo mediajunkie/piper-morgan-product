@@ -1,9 +1,23 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-29 ~15:xx PDT (crossposts recorded, 33h-gap closed, roadmap/CORE flattened,
-current/ folded out of adrs+patterns paths — both flattening-plan candidates now executed)
+**Updated**: 2026-08-29 ~19:3x PDT (crossposts recorded, 33h-gap closed, roadmap/CORE flattened,
+current/ folded out of adrs+patterns paths, architectural review received)
 **Session log**: `dev/2026/08/29/2026-08-29-0727-docs-code-log.md` (open).
 **Cron**: `5e2279de`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-04.
+
+**⭐ NEW — Architectural Review 2026, ratified 2026-08-29, B3 kicks off ~09-01 (Monday)**: Arch ran
+a full review with PM (9 discovery legs, synthesis, phase-3 ratification). Full record:
+`docs/internal/architecture/reviews/2026-08-architectural-review/` (`synthesis.md` is the one-read
+summary; `reorientation-plan.md` has the 4 workstreams A-D with owners/dates). **My lane is
+workstream B3**: corpus-disposition pass over ADRs + methodology-core (CIO's) + patterns (mine),
+owner Arch with CIO + Docs, kickoff ~09-01, target ~1 week. Mechanical first axis already done via
+citation census (`findings/citation-census-summary.md`) — patterns: 0 zero-cited, top-cited P-073/
+P-045/P-062, ~8 of 81 CLAUDE.md/skill-cited (the "surviving law" candidates). My `current/`-fold
+today already touched every file in both corpora (path-only, zero content change) — flagged this
+to Arch so B3 doesn't trip on stale pre-fold paths. Acknowledged, no blockers, ready for kickoff —
+nothing to do before Monday. Also: CXO+PPM owe a direct ESSENCE.md v0.1 read-and-respond by Wed
+09-02 (not my lane, just context); B2 (living-core-doc naming) and B4 (derived ADR index) ride
+alongside B3.
 
 **"The Orphan Migration" fully closed**: published + dual-syndicated (Medium + LinkedIn),
 fact-checked clean, live-verified. https://pipermorgan.ai/blog/the-orphan-migration
