@@ -209,12 +209,22 @@ days stale.
     phases (build-independent work, the identity boundary) move into MVP now, so "beta" isn't reached
     by finishing a surface the product is moving away from. PPM's own weak lean is (a). **This is the
     live sequencing question sitting directly under the BYOC conversation PA is steering** — whichever
-    way it resolves shapes what "next steps" for BYOC even means. Watch for Arch's or PM's answer;
-    bring it into the next BYOC conversation explicitly rather than assume it's settled.
+    way it resolves shapes what "next steps" for BYOC even means.
+  - **SHARPENED 08-30 — Arch's A3 trifecta synthesis (delivered 4 days early) frames this as one of
+    exactly three explicit PM decisions**, not left as an open finding: *"That's a question about
+    what beta IS, which is yours."* Arch's own lean matches PPM's — option (a), record it explicitly
+    in `decisions.log` + a note on #1462 rather than let C5 sequencing resolve it by implication, and
+    revisit at the beta gate. The one architectural fact stated without deciding: PDR-006's fail-
+    closed identity boundary gates the *next-rung* population regardless of which milestone it lives
+    in — so the real question is what "beta" is defined to include, not a technical dependency. Full
+    doc: `docs/internal/architecture/reviews/2026-08-architectural-review/trifecta-synthesis.md`
+    (also carries PM decisions 1 and 3 — the "colleague" headline fork and ESSENCE's ratification
+    itself — neither in PA's lane, noted only for completeness). **Still awaiting PM's actual ruling**
+    — bring whichever way it lands into the next BYOC conversation.
   - **Thread status, restated**: the connector-architecture sub-thread is fully closed (see above).
     PM signaled the next topic is "the BYOC skunkworks project itself, next steps" — still PM's
-    timing to initiate, now with ESSENCE.md as the fixed point, plus the live MVP-vs-Production
-    milestone question above as something that conversation may need to actually settle.
+    timing to initiate, now with ESSENCE.md as the fixed point, plus the milestone question above
+    (crisply framed, PM's ruling pending) as something that conversation may need to actually settle.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
