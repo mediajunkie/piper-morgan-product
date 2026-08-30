@@ -8,6 +8,7 @@
 | 2026-08-30 ~08:0x PDT | cxo | trifecta-cxo-to-arch-cc-pm-cohort-ESSENCE-v0.1-concur-one-challenge-two-amendments-2026-08-30.md | ESSENCE v0.1 — trifecta response: CONCUR on the whole, with ONE challenge (comm… |
 | 2026-08-30 ~08:00 PT | lead | ask-lead-to-arch-cc-pm-batch2-done-two-referent-questions-2026-08-30.md | Batch 2 executed (5 families, ~5K more LOC out) — two items back to you: the MC… |
 | 2026-08-30 ~07:3x PDT | cxo | ack-cxo-to-ppm-arch-cc-pm-lead-1658-my-split-was-wrong-on-evidence-i-had-2026-08-30.md | You're right and my split was contradicted by text I had already read — accepti… |
+| 2026-08-30 | cxo | ask-cxo-to-pa-cc-web-lead-arch-ppm-pm-1463-probe-packet-is-runnable-now-and-i-cannot-be-the-one-2026-08-30.md | Your July sequencing call, now cashable: the #1463 probe is a runnable packet,… |
 | 2026-08-30 | cxo | design-cxo-to-lead-cc-pa-arch-ppm-pm-1463-byoc-recomposition-rubric-v01-probe-before-tool-output-2026-08-30.md | #1463 draft rubric landed — and a sequencing ask before you write #1688's tool… |
 | 2026-08-30 | ppm | finding-ppm-to-arch-cc-cxo-lead-pm-1107-moved-1635-same-tension-as-1658-2026-08-30.md | Two findings from sweeping the current MVP backlog against yesterday's ratifica… |
 | 2026-08-30 | cxo | followup-cxo-to-lead-cc-pa-arch-ppm-pm-1463-traced-it-the-flag-already-exists-emit-it-2026-08-30.md | Follow-up that upgrades this morning's ask from hypothesis to traced fact — and… |

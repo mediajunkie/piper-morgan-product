@@ -7,22 +7,25 @@ max_age_days: 1
 # CXO carry-forward — rewritten 2026-08-30 at the 10:19 fire (frontmatter above is the checkable
 claim; this prose line is not, and must not be trusted over it).
 
-## 🔴 NEXT FIRE — nothing is owed on a clock. Two things to watch, one thing to pick up if idle.
+## 🔴 NEXT FIRE — nothing owed on a clock. One watch, one thing to pick up.
 
-**Pick up if idle**: the **#1463 probe** (`docs/internal/testing/byoc-recomposition-rubric-v0.1.md` §6).
-It is the missing half of the instrument I shipped today, it needs no build, and it is the only piece of
-my own work that is blocked on nothing but me. ⚠️ **Do not score T against anything until it runs** —
-the rubric's T criteria are hypotheses and the doc says so in a red banner.
+**Watch**: has anyone run the **#1463 probe**? Packet is
+`docs/internal/testing/byoc-recomposition-probe-packet-2026-08-30.md`, routed to PA cc Web 08-30.
+⚠️ **I cannot run it myself** — subject and scorer confound. If it's still unrun in a few days, the
+right move is a nudge, not running it anyway.
 
-## ⚠️ Two things with a clock on them
+**Pick up if idle**: standing item **B′ is now DONE** (the rubric + packet were it). Next candidate is
+the **quarterly Colleague-Test rubric review with PPM** (CT v2.4's C=0 disambiguation, long-deferred) —
+now more live than it was, since the BYOC branch gives CT a sibling and the tier question is open for
+both.
 
-1. **BYOC listing copy** — I recommended shipping **"issues" alone** and told Comms their #1659-keyed
-   condition is **keyed to the wrong layer** (resolver vs extraction; #1659's fix would not clear Web's
-   live failure). PM has the synthesis. **If PM ships v4 as written, the documents claim goes out on a
-   surface that can't honor it.** Watch for PM's word.
-2. **Web's discriminator** (upload a PDF, summarize it) — if both PDF and `.txt` fail, the resolver
-   can't see fresh uploads at all and it goes back to **Lead on #1657**, not into #1659. ⚠️ Unresolved
-   confound: I have not verified the running cut carries #1657's fix.
+## ✅ Closed today, do not re-open
+
+- **BYOC listing copy** — PPM found the surface doesn't exist (#1462 0/15, no `server` dir); Comms
+  retracted; **my own "ship issues alone" is WITHDRAWN and PM told not to act on it.** Held pending the
+  MCP milestone question, which is PM's.
+- **Web's discriminator / my #1657 confound** — resolved: dev server had run 17 days with `reload=False`,
+  the fix was never loaded. Lead restarted. **Not a coverage gap in the fix.**
 
 ## Live threads
 

@@ -23,9 +23,19 @@ done via `docs/internal/architecture/reviews/2026-08-architectural-review/
 findings/citation-census-summary.md` — my job at kickoff is the second axis (effective/inert
 judgment) for the cited patterns, working from that census rather than re-deriving from zero.
 Target ~1 week from kickoff. Full plan: `reorientation-plan.md` in the same review directory.
-No prep owed before 09-01 — acknowledged to Arch, ready.
+**B3 disposition motion is absorb-and-mark, not just archive** — per B2's living-core-doc plan
+(below), each ADR/pattern that gets absorbed should get its "absorbed into X" marker as part of
+the same motion, not a separate pass. No prep owed before 09-01 — acknowledged to Arch, ready.
 
----
+## B2 living-core-doc set — glossary is now a Docs-owned living core doc (new, 2026-08-30)
+
+Six documents now carry "current law" status per Arch's `living-core-docs.md` v0.1
+(`docs/internal/architecture/reviews/2026-08-architectural-review/`): ESSENCE.md, SYSTEM.md (new),
+intent-routing-stack.md, data-model.md, CONNECTORS.md (new), and **`knowledge/piper-morgan-glossary-v1.1.md`
+— mine**. 60-day staleness contract; needs CXO's tracked-state frontmatter
+(`last_updated`/`currency_claim`/`max_age_days`) added at first substantive touch, per the plan's
+own sequencing — not urgent today, current header is prose-only (v1.4, dated 2026-06-27). Joins
+the same machine-read staleness checker the other 5 docs use once frontmatter lands.
 
 ---
 

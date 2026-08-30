@@ -1,9 +1,22 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-30 ~13:4x PDT (calendar-ownership loop fully closed both directions; #1455
-confirmed re-scoped by Arch; PM's local-sync issue still parked)
+**Updated**: 2026-08-30 ~16:4x PDT (ESSENCE v1.0 ratified; B2 living-core-doc set lands the
+glossary as a new Docs standing responsibility; PM's local-sync issue still parked)
 **Session log**: `dev/2026/08/30/2026-08-30-0727-docs-code-log.md` (open).
 **Cron**: `61dd5aa2`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-05.
+
+**⭐ NEW — B2 living-core-doc set drafted (Arch, `living-core-docs.md` v0.1, circulates with
+Monday's B3 kickoff)**: six documents now carry "current law" status — ESSENCE.md, SYSTEM.md (new),
+intent-routing-stack.md, data-model.md, CONNECTORS.md (new), and **`piper-morgan-glossary` — mine**,
+60-day staleness contract, needs CXO's tracked-state frontmatter (`last_updated`/`currency_claim`/
+`max_age_days`) added "at first touch," not urgently today. Also load-bearing for tomorrow: "ADR
+absorption markers: as B3's disposition processes each ADR — absorb-and-mark is one motion" — my
+B3 patterns work should mark absorption into these six docs where applicable, not just
+disposition-and-archive. ESSENCE itself hit v1.0 RATIFIED today (7th commitment, PUBLIC-BETA GATE
+on milestone #9, full PM decision chain) — Arch also logged a real process incident (a
+decisions.log merge conflict that the broad-staging hook blocked mid-resolution, caught and fixed
+before landing a conflict-marker; resolved via the hook's own documented bypass for sync-merges).
+No action owed from me on any of this before tomorrow — reading now so B3 kickoff isn't cold.
 
 **Calendar-ownership thread fully closed**: Comms self-corrected cleanly on both fronts — sent
 their own correction to me AND independently to Dispatch-PM, confirmed no actual data conflict

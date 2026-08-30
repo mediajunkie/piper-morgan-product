@@ -1,7 +1,9 @@
 # The Essence of Piper Morgan
 
-**Version**: v0.1 — DRAFT for PM ratification
-**Date**: 2026-08-29
+**Version**: **v1.0 — RATIFIED by PM 2026-08-30** (in-conversation, after the full trifecta pass:
+CXO concur + one challenge + two amendments · PPM concur + one amendment · HOST trust lens. The
+synthesis and its addendum: `reviews/2026-08-architectural-review/trifecta-synthesis.md`.)
+**Date**: 2026-08-29 (v0.1) · 2026-08-30 (v1.0)
 **Authors**: Chief Architect, from the Architectural Review 2026 (PM+Arch co-led); every claim
 traces to the review's evidence (`docs/internal/architecture/reviews/2026-08-architectural-review/`)
 or a PM ratification recorded in `decisions.log` on 2026-08-29.
@@ -26,7 +28,7 @@ it. Purchases justified by users beyond the current rung go through the scope-be
 
 ## What Piper Morgan is
 
-**A product-management colleague — not a tool, not a platform, not a harness.** Six commitments
+**A product-management colleague — not a tool, not a platform, not a harness.** Seven commitments
 make that sentence mean something. Each is load-bearing: remove it and the product is something
 else.
 
@@ -41,10 +43,16 @@ else.
    real, filed, in the owner's repos — then the PRD/spec/document family. The field's verdict:
    own the artifact or own the record system; everything between is acquisition inventory. Piper
    owns the artifact side.
-3. **It shows up once a day, and answers whenever asked.** The morning standup is the proactive
-   ritual — the one feature where the original vision survived, and the specific behavior that
-   converts "a chatbot I visit" into "an assistant that works for me." Responsiveness the rest of
-   the day is table stakes; the ritual is the relationship.
+3. **It shows up once a day, answers whenever asked — and earns the relationship in the first
+   exchange.** The morning standup is the proactive ritual — the one feature where the original
+   vision survived, and the specific behavior that converts "a chatbot I visit" into "an assistant
+   that works for me." Responsiveness the rest of the day is table stakes; the ritual is the
+   relationship — and first contact is where colleague-or-chatbot is decided, which is why
+   cold-start reflection is the first build increment. The ritual is **surface-bounded**: where
+   the host affords initiation (web today; a notification layer if that bet is ever made), Piper
+   opens; on MCP — structurally request-response, per ratified PDR-005 — it takes the
+   **response-shaped variant**: the user opens the conversation, and Piper's first turn IS the
+   briefing. *(v1.0: surface qualification + first-contact clause, per the trifecta pass.)*
 4. **It never lies, and it degrades honestly.** No fabricated data, no claimed actions it didn't
    perform, no capability overclaim, honest decline over silent improvisation. This discipline is
    the one assumption re-ratified after every reckoning in the project's history, and it is
@@ -59,8 +67,16 @@ else.
    Connector rule, ratified: Piper's backend holds a grant only where it must act without the user
    present (standup generation, background reflection, document mirroring); in-conversation reads
    of third-party services belong to the host's own connectors.
+7. **It works WITH its owner, like a colleague — not just FOR them, like an appliance.**
+   Offer-first collaboration (propose, draft, ask — never hijack the session), judgment framed as
+   a peer's ("here's my read; you decide"), the working stance of an apprentice becoming a peer.
+   Honesty (commitment 4) is necessary but not sufficient — an honest vending machine is still a
+   vending machine. Operationalized by the already-ratified **Colleague Test** (the standing DoD
+   gate for exactly this property); on the BYOC path, its recomposition variant carries the same
+   gate. This commitment licenses no new build — it gates HOW everything else is built.
+   *(Added v1.0: CXO's amendment 1, PM Decision 1 — the headline is now cashed, not rhetorical.)*
 
-## What it does today, on which surface (dated snapshot — 2026-08-29)
+## What it does today, on which surface (dated snapshot — 2026-08-29, "not yet" line 2026-08-30)
 
 - **Live surface**: the web-chat app (alpha, ~11 testers + PM), in **explicit maintenance mode**
   as of 2026-08-29 — bugs fixed, nothing new built. It classifies intents (legacy chain carries
@@ -71,6 +87,17 @@ else.
   the conversational floor with the honesty rails.
 - **Build surface**: the hosted MCP path (`mcp.pipermorgan.ai`, PDR-006) — where all new effort
   goes, in roughly the clean-room agent's increment order: cold-start reflection first.
+- **What the MCP path cannot do yet** *(dated 2026-08-30 — update this line as items close, per
+  the tense discipline: these sentences describe the path we're building, and here is the honest
+  gap between it and today)*: it **cannot initiate a turn** (the ritual runs response-shaped
+  there until a push-capable surface exists); **honesty hedges are not yet payload-borne** (the
+  structured `source_failed` flag travels end-to-end, but the hedge text lives in a floor prompt
+  that doesn't exist on BYOC — recomposition probe + tool-output design precede the first tool
+  results); and **its build items sit at the FRONT of the Production milestone, not in MVP**, per
+  PM's 2026-08-30 ruling: **MCP-path completion is the PUBLIC-BETA GATE.** Private beta (v0.9.0,
+  invitation-only) starts when the MVP milestone closes and runs on the existing surface; public
+  beta requires the MCP path complete. The one prior MVP-resident MCP item (#1688) moves to
+  Production-front accordingly.
 - **Connectors, honestly stated**: GitHub — real MCP, load-bearing. Calendar — live via Google SDK
   (an honest shim; MCP upgrade is an implementation detail). Notion — live via REST, its held
   grant governed by Bet 003 (the mirror bet). Slack — descoped to Fast Follow, adapter dead.
@@ -122,4 +149,11 @@ scope-bet gate governs all *becoming*; this document governs all *being*.
 
 ---
 
-*Amendment log: (none yet — v0.1 awaiting PM ratification.)*
+*Amendment log:*
+- *v1.0, 2026-08-30 — **RATIFIED by PM** after the full trifecta pass. Changes from v0.1: seventh
+  commitment added (colleague, cashed via the Colleague Test — Decision 1); commitment 3
+  surface-qualified + first-contact clause (CXO challenge resolution (a) + amendment 2); dated
+  MCP "not yet" line added recording Decision 2 (**MCP stays Production, front-loaded;
+  MCP-path completion = PUBLIC-BETA GATE**; #1688 → Production-front) and the payload-honesty
+  gap (#1463 trace). Consent-invariance verification footnote retained pending the watched-round
+  behavioral receipt. Full synthesis: `reviews/2026-08-architectural-review/trifecta-synthesis.md`.*
