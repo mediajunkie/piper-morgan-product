@@ -7,6 +7,24 @@ max_age_days: 1
 # CXO carry-forward — last rewritten 2026-08-29 (see frontmatter, which is the checkable claim; this
 line is prose and MUST NOT be trusted over it).
 
+## 🔴 NEXT FIRE (08-30 START): rotate the cron FIRST, then the ESSENCE trifecta response
+
+1. **Cron rotation** — `cd9b3ddc` expires ~08-31. Delete-then-create, verify one job, record old→new.
+2. **ESSENCE.md v0.1 full read + trifecta response** — Arch's direct ask to CXO+PPM, due **Wed 09-02**,
+   deliberately deferred from 08-29 with a named trigger. Read the WHOLE document (six commitments, the
+   "what it is NOT" boundary, the classification), not just the surface sections I read against my mapping.
+   Partial engagement already sent (Web cell superseded / MCP cell promoted) is **not** the response.
+   PPM is deferring on the same split and lands theirs by Wed too.
+
+## Live threads (all with others)
+
+- **#1688** (empty-state interview) — MVP, on the board; scope narrowed to MCP-only tonight; Lead's
+  one-mechanism question partly dissolved. Lead builds.
+- **#1658 tension** — PPM flagged, I supplied the regression-vs-absence lens, **Arch's or PM's call.**
+- **Staleness check** — design mine (shipped), build CIO's (`--currency-check`, next fire). HOST is the
+  fifth data point either way.
+- **#1635 / #1539 / #1509** — Lead's builds and PM's live rounds.
+
 ⚠️ **Why this file now has frontmatter** (2026-08-29): its old header claimed *"rewritten 2026-08-28 at
 STOP"* while `git log` showed it modified 08-29 — a false currency claim, in the very file I was using to
 design the cohort-wide staleness check (`docs/internal/design/tracked-state-staleness-design-2026-08-29.md`).

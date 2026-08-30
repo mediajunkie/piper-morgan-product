@@ -1,6 +1,6 @@
 # HOST carry-forward
 
-**Written**: 2026-08-28 22:1x PDT (STOP fire, day 35 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-29 21:5x PDT (STOP fire, day 36 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -121,20 +121,16 @@
 
 ## Cron
 
-Current job **`03b5a26d`** (chain … `26deaf24 → 478fbee3 → 03b5a26d`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-28 STOP via delete-then-create, `CronList`-verified exactly one job before and after. **The prior job (`478fbee3`) survived the 08-27→28 ~30.5h availability gap intact — same job id throughout, never died, session just didn't get a turn** (root cause, corrected 08-29: a **blocking rate-limit modal dialog** — hold/overage/upgrade — not the watchdog's own "machine-asleep" guess; PM manually tmux'd into HOST/Arch/CIO to clear it. HOST's own timing checked against PM's mid-task hypothesis and refutes it: Fire 3 completed cleanly 13:02:23 PDT, session was idle when the limit hit ~14:00 PT. Full account: 08-27's log correction section + 08-29's Fire 2). Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`; not repeated here. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`ffe64ab5`** (chain … `478fbee3 → 03b5a26d → ffe64ab5`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-29 STOP via delete-then-create, `CronList`-verified exactly one job before and after. The 08-27/28 ~30.5h availability gap's mechanism is fully resolved (blocking rate-limit dialog, PM-confirmed, cross-verified by four roles' own timing — see 08-27's log correction + 08-29's Fires 2-3 if the detail is ever needed again). Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-**Aside, informational**: Exec repaired `.mcp.json`'s `chrome-devtools` path 08-29 (was pointing at a nonexistent Chrome on Amber) — a real, partial answer to the browser/visual-verification gap Agent 360 v0.4's synthesis named as a top convergent finding (PA/Web/Docs/Exec). Fragile (version-pinned, Playwright rotates the dir) and routed to CIO's lane, not HOST's to act on — noting the coincidence only.
+## Open threads, as of 08-29 STOP
 
-## Open threads, as of 08-28 STOP
-
-- **Agent 360 v0.4** — ✅ Synthesized, approved, routed — see item 0 above. Only cohort-share remains, pending PM's framing sign-off.
-- **Ship #058 workstream review** — ✅ Filed 08-28 (kickoff landed 08-28 morning during the availability gap, actioned same evening once the session resumed). Nothing further owed.
-- ✅ **Portfolio's 4th lapse → CXO's diagnosis → CIO's fix, closed end-to-end 08-29.** CXO relocated the fix from edit-time (`--diff`) to trigger-time (the gap between a trigger firing and anyone remembering to edit). CIO shipped `check-refresh-promises.py --trigger-sent` wired into `mail-send.sh`'s success path same-day (`80be21100`), using the exact named trigger they'd banked it against. **My next workstream-review filing is now a live test of the real mechanism** — report the result plainly either way (clean pass confirms the fix; a lapse anyway is a stronger finding than anyone proposed).
-- **Heartbeat suppression-window fix, 08-28** (CIO, closing Web's earlier false-positive finding) — verified against CIO's own fix memo before triaging Web's confirmation: real cascading-suppression root cause, real fix (6h→3h window), real test suite, commit `9d92d8efa`. No HOST action needed, archival.
-- **Criterion E** — ✅ Fully closed 08-22/23: ruling given, filed as #1680 by CIO, routed to Lead, recorded in `decisions.log`. Nothing further owed.
-- **Two April carryovers (Sparker/Holder naming, migration-experience confer)** — ✅ Both disposed 08-23, CIO acknowledged same day, tracker closed on both ends. Archival — don't resurrect either.
-- Criterion E UX ruling, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
-- **BRIEFING-CURRENT-STATE.md flagged STALE (11 days, last 2026-08-12)** by SessionStart hook — unchanged status, still not HOST's lane to refresh unprompted.
+- **Agent 360 v0.4** — ✅ Fully closed: synthesized, PM-approved (all 6), routed. Three of four live items shipped same-day (PPM's label, Arch's verified-how field, CXO's staleness design). **CIO's two items still open** (mail-send.sh doc fix, browser verify-then-close) — <1 day old, not concerning yet. Only cohort-share remains, pending PM's framing sign-off.
+- **ESSENCE.md v0.1 trust-lens** — ✅ Given 08-29, same-day rather than banked to 09-02. Flagged the consent-gate invariance claim; Arch answered same-evening with an honest three-part decomposition (structural verified, legacy-behavioral verified, inversion-behavioral explicitly not-yet-verified) and annotated ESSENCE.md itself with the gap. **Watch for**: Lead's watched round adding the inversion-path test, or Arch's standalone probe if it doesn't land within a week.
+- **Ship #058 workstream review** — ✅ Filed 08-28. Nothing further owed.
+- ✅ **Portfolio's 4th lapse → CXO's diagnosis → CIO's fix, closed end-to-end 08-29.** `check-refresh-promises.py --trigger-sent` wired into `mail-send.sh`'s success path (`80be21100`). **My next workstream-review filing is the live test** — report the result plainly either way.
+- Criterion E, two April carryovers, heartbeat suppression-window fix, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
+- **BRIEFING-CURRENT-STATE.md flagged STALE** by SessionStart hook — unchanged status, still not HOST's lane to refresh unprompted.
 - **Pattern-069 promoted to Proven, 08-25** (CIO) — verified directly against the pattern file, acked. Archival.
 - **Cross-project reply protocol ratified, 08-25** (Exec broadcast) — cohort-wide procedure, no HOST-specific action, worth knowing if ever needed.
 - **08-26 was the second fully quiet day this week** (after 08-24) — all six fires clean, nothing owed in, nothing new arrived. Noted as a baseline pattern, not itself an open thread.

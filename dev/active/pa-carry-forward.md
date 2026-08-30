@@ -209,27 +209,31 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-28 STOP (21:41)
+## Active state — 2026-08-29 STOP (21:16)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/28/2026-08-28-0644-pa-code-log.md` — **8/28 DAY-CLOSED**, verified
-  strict. Also holds the retroactive 8/27 closure (cohort-wide weekly-usage-limit outage, no work
-  lost) at the top of the 8/27 log if picking that thread up cold.
+- **Session log**: `dev/2026/08/29/2026-08-29-0712-pa-code-log.md` — **8/29 DAY-CLOSED**, verified
+  strict. Full day-arc: 33h-gap cross-role investigation, connector-architecture thread's final close,
+  and the Architectural Review 2026 / ESSENCE.md context — read that log if picking any thread up cold.
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure.
-- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `07bfdd69` deleted → job
-  `6a56583e` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
+- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `6a56583e` deleted → job
+  `33420d97` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
 - **Standing discipline (from 08-15's correction, still active)**: re-verify carried-forward claims
   against their live source before citing them in an external report, not just at routine
   carry-forward-hygiene time. Habit, not yet mechanical.
-- **BYOC/connector-architecture thread: GENUINELY FULLY RESOLVED as of tonight** — see PM Attention
-  above for the complete arc. All three loop-in recipients (CXO, PPM, Arch) have replied; Slack's
-  Fast Follow move is executed and confirmed from every angle (FTUX, roadmap, architecture). Nothing
-  owed, nothing to chase. The one live, unfinished thread is PM's own next topic — "the BYOC
-  skunkworks project itself, next steps" plus a preview of a shipping-small-things discussion — both
-  explicitly on PM's timing, not a deadline. Pick up naturally when PM re-engages; don't self-initiate.
+- **Connector-architecture thread: PERMANENTLY CLOSED as of 08-29** — every sub-question (Slack
+  milestone, #1572/#1522, standing-lens proposal, GitHub self-hosting) now has a final, PM-ratified
+  answer; #1572 itself shipped. Nothing owed, nothing to chase.
+- **The live thread now is BYOC's next phase, with a new fixed point**: PM's own next topic — "the
+  BYOC skunkworks project itself, next steps" plus a preview of a shipping-small-things discussion —
+  is still explicitly on PM's timing, not a deadline. But it now has `docs/internal/architecture/
+  ESSENCE.md` (v0.1, from the 08-29 Architectural Review) as its fixed point per Arch's direct
+  broadcast to PA. Read ESSENCE.md fresh before that conversation resumes, not from memory of this
+  summary — see the PM Attention section above for what's already known to matter (all-new-build-to-
+  MCP/BYOC effective now, the sharper backend-grant-only-when-user-absent connector rule).
 
 🔔 **STEP 5b — HEARTBEAT: emit it IMMEDIATELY AFTER `date`, BEFORE the git fetch/merge, and WITHOUT
 `--if-quiet`** *(ordering fixed 2026-08-05: my heartbeat had five commands incl. fetch+merge in front of
