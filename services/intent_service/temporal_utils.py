@@ -14,6 +14,23 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional, Tuple
 
 
+def _anchor_now(user_timezone: Optional[str] = None) -> datetime:
+    """#1572: the ONE parse anchor. With a valid IANA tz, "now" is the
+    USER'S wall clock — so "4pm today" typed at 1:49 PM Pacific is 2+ hours
+    in the future, not 4 hours in the past on the server's UTC clock (audit
+    F1/F4). Without one (or with an invalid one), the pre-#1572 aware
+    server-local anchor is kept unchanged (fail-safe: unknown tz → existing
+    behavior; see #1493 for why the anchor is aware either way)."""
+    if user_timezone:
+        try:
+            from zoneinfo import ZoneInfo
+
+            return datetime.now(ZoneInfo(user_timezone))
+        except Exception:  # silent-ok: fail-safe direction (#1572) — an unresolvable tz degrades to the server anchor, never crashes a parse
+            pass
+    return datetime.now().astimezone()
+
+
 def parse_relative_date(
     message: str, user_timezone: Optional[str] = None
 ) -> Tuple[datetime, datetime, str]:
@@ -41,8 +58,11 @@ def parse_relative_date(
     # #1493: AWARE local time — the naive value stored to timestamptz drifted
     # by the server's UTC offset (asyncpg interprets naive as UTC). Local
     # wall-clock semantics are unchanged; the value now carries its offset so
-    # storage is UTC-normalized. Per-user timezones are the #747/#750 family.
-    now = datetime.now().astimezone()
+    # storage is UTC-normalized.
+    # #1572: user_timezone is LIVE (the 2026-08-10 audit found it dead —
+    # body never read it). When supplied, "today" is the user's calendar
+    # day; when absent, the server anchor is unchanged.
+    now = _anchor_now(user_timezone)
     today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
     # Check for "tomorrow" first (more specific than "today")
@@ -221,7 +241,9 @@ PAST_TODAY_PREFIX = "past-today:"
 _TODAY_WORD_RE = re.compile(r"\btoday\b(?!['’]s)")
 
 
-def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
+def parse_reminder_time(
+    message: str, user_timezone: Optional[str] = None
+) -> Tuple[Optional[datetime], str]:
     """
     Issue #903: Extract a reminder datetime from natural language.
 
@@ -238,6 +260,11 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
 
     Args:
         message: The user's full message
+        user_timezone: #1572 — optional IANA tz name. When valid, every
+            wall-clock expression ("4pm today", "tomorrow at 9am") and every
+            past-check binds on the USER'S clock; the returned datetime is
+            aware in that tz (same UTC instant on storage). When absent or
+            invalid: the pre-#1572 server anchor, unchanged.
 
     Returns:
         Tuple of (reminder_datetime, human_label)
@@ -245,10 +272,9 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
         - human_label: Human-readable description of the time
     """
     message_lower = message.lower()
-    # #1493: AWARE local time (see parse_relative_date) — "tomorrow at 3pm"
-    # still means 3pm server-local, but the stored timestamptz instant is now
-    # unambiguous instead of drifting by the UTC offset.
-    now = datetime.now().astimezone()
+    # #1493: AWARE anchor (see parse_relative_date) — the stored timestamptz
+    # instant is unambiguous. #1572: anchored on the user's clock when known.
+    now = _anchor_now(user_timezone)
 
     # Issue #1490 invariant: find any explicit clock time up front so every
     # date-word branch below can bind it, whichever side of the date it sits
@@ -363,14 +389,14 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
     # PM live 8/10 (07:16 PT): this stored TOMORROW 9:41 — the branch below
     # claimed "today at 9:41" as its case but had no today handling, so its
     # past-roll silently overrode the explicit day word. And the past-check
-    # runs on the SERVER clock (aware-local = UTC on fly), so a time still
-    # hours in the user's future can look past here. Never-default (#1490
-    # family): an explicit "today" binds TODAY; if the time HAS passed on the
-    # server clock, return the honest-ask shape (None, PAST_TODAY_PREFIX +
-    # label) so the handler asks "did you mean tomorrow?" — NEVER a silent
-    # roll. The server-tz limitation (past-check on server-local time) stays
-    # until per-user timezones land (#1535/#747) — do NOT build per-user tz
-    # here.
+    # runs on the ANCHOR clock. Never-default (#1490 family): an explicit
+    # "today" binds TODAY; if the time HAS passed on the anchor clock,
+    # return the honest-ask shape (None, PAST_TODAY_PREFIX + label) so the
+    # handler asks "did you mean tomorrow?" — NEVER a silent roll.
+    # #1572: with a stored user tz the anchor IS the user's clock, so the
+    # false "already passed" refusal (PM refused '4 PM today' at 1:49 PM
+    # Pacific because 16:00 < 20:49 UTC) is gone; without one, the
+    # server-clock limitation remains, unchanged.
     has_today = _TODAY_WORD_RE.search(message_lower) is not None
     if has_today and clock is not None:
         dt = now.replace(hour=clock[0], minute=clock[1], second=0, microsecond=0)

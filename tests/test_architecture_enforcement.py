@@ -2142,3 +2142,248 @@ class TestInversionShadowNoExecutionBoundary:
             "the shadow check must be fire-and-forget — awaiting it puts the "
             "router's latency on the user's turn"
         )
+
+
+class TestExtractionPatternRatchet:
+    """PM-ratified 2026-08-29 (live round, in-conversation): NO MORE
+    EXTRACTION-PATTERN WHACK-A-MOLE.
+
+    The interpretation-by-pattern surfaces below have grown one regex at a
+    time, each patching one live phrasing miss (#1490, #1543, #1649, #1693,
+    ...). Every added pattern is a new hand-maintained micro-parser branch —
+    the same architectural smell the #1124 dispatch ratchet closed for
+    `elif intent.action` chains, one layer down. PM's ruling: that failure
+    class becomes CORPUS DEPOSITS; argument extraction moves into the
+    Inversion router's slot emission.
+
+    ⚠️ THE DEFAULT ANSWER TO A NEW FAILING PHRASING IS A CORPUS ROW, NOT A
+    PATTERN. ADDING A PATTERN REQUIRES lowering something else, or a REVIEWED
+    ceiling raise WITH a corpus-deposit justification recorded in the same
+    commit (why a deposit could not cover it). If you hit this ratchet while
+    fixing a live phrasing miss, that is the ratchet WORKING: deposit the
+    phrasing in the corpus and let the Inversion slot-emission lane learn it.
+
+    Mechanism (mirrors TestPreFloorDispatchSiteRatchet): each named span's
+    source is located by AST and its regex literals counted — list elements
+    of any `*pattern*`-named list literal, plus every `re`/`_re` call whose
+    pattern argument is inline (not a bare name), plus 1 for a named pattern
+    CONSTANT. Ceilings are frozen at counts MEASURED 2026-08-29. LOWER them
+    as extraction migrates onto the router; never raise without the review
+    above.
+
+    Vacuity guard: a named function/constant that disappears FAILS the count
+    (AssertionError in the locator), so a refactor cannot silently unhook a
+    surface from the ratchet.
+    """
+
+    # Frozen ceilings — MEASURED 2026-08-29 (see class docstring; the
+    # tightness test below keeps these exactly equal to the actual counts,
+    # so drift in either direction is loud).
+    CEILINGS = {
+        "todo-create": 5,
+        "reminder-extraction": 11,
+        "issue-slot-extraction": 15,
+        "pre-classifier": 567,
+    }
+
+    # The named interpretation-by-pattern spans, per surface: (file, symbols).
+    SURFACE_SPANS = {
+        "todo-create": [
+            (
+                "services/intent_service/todo_handlers.py",
+                ["_extract_todo_text", "_TODO_TOKEN", "_TODO_SEP"],
+            ),
+        ],
+        "reminder-extraction": [
+            (
+                "services/intent_service/todo_handlers.py",
+                [
+                    "_extract_reminder_text",
+                    "_strip_trailing_time_expressions",
+                    "_is_pure_time_expression",
+                    "_has_time_signal",
+                ],
+            ),
+        ],
+        "issue-slot-extraction": [
+            (
+                "services/intent_service/drafted_issue.py",
+                [
+                    "_ANSWER_QSPAN",
+                    "_ANSWER_MARKER_QUOTED_RE",
+                    "_ANSWER_BARE_QUOTED_RE",
+                    "_ANSWER_MARKER_UNQUOTED_RE",
+                    "_ANSWER_METACOMMENT_RE",
+                    "extract_title_answer",  # count may be 0; existence is the guard
+                ],
+            ),
+            (
+                "services/intent/intent_service.py",
+                ["_slotfill_issue_request"],  # _qspan + the marker patterns live here
+            ),
+        ],
+    }
+
+    _PRE_CLASSIFIER_PY = "services/intent_service/pre_classifier.py"
+    # Vacuity floor for the pre-classifier scan: the class held 35 `*PATTERNS`
+    # lists at freeze time; a scan finding far fewer means the derivation
+    # broke (renamed class / moved lists), not that patterns went away.
+    _MIN_PATTERN_LISTS = 30
+
+    _RE_METHODS = frozenset(
+        {"search", "match", "fullmatch", "sub", "subn", "split", "findall", "finditer", "compile"}
+    )
+
+    # ---- counting mechanism ----
+
+    def _find_named_node(self, tree, name):
+        import ast
+
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == name:
+                return node
+            if isinstance(node, ast.Assign):
+                for target in node.targets:
+                    if isinstance(target, ast.Name) and target.id == name:
+                        return node
+        return None
+
+    def _count_regex_literals(self, node) -> int:
+        import ast
+
+        count = 0
+        for sub in ast.walk(node):
+            if isinstance(sub, ast.Assign):
+                for target in sub.targets:
+                    if (
+                        isinstance(target, ast.Name)
+                        and "pattern" in target.id.lower()
+                        and isinstance(sub.value, (ast.List, ast.Tuple))
+                    ):
+                        count += len(sub.value.elts)
+            elif isinstance(sub, ast.Call):
+                func = sub.func
+                if (
+                    isinstance(func, ast.Attribute)
+                    and func.attr in self._RE_METHODS
+                    and isinstance(func.value, ast.Name)
+                    and func.value.id in ("re", "_re")
+                    and sub.args
+                    and not isinstance(sub.args[0], ast.Name)
+                ):
+                    count += 1
+        if count == 0 and isinstance(node, ast.Assign):
+            # A named pattern CONSTANT (_TODO_TOKEN, _ANSWER_QSPAN, ...): the
+            # assignment itself is one pattern literal.
+            count = 1
+        return count
+
+    def _surface_count(self, surface: str) -> int:
+        import ast
+
+        total = 0
+        for file_path, symbols in self.SURFACE_SPANS[surface]:
+            with open(file_path, encoding="utf-8") as fh:
+                tree = ast.parse(fh.read())
+            for name in symbols:
+                node = self._find_named_node(tree, name)
+                assert node is not None, (
+                    f"VACUITY: named extraction span `{name}` not found in "
+                    f"{file_path} — a refactor moved/renamed it without "
+                    f"re-pointing TestExtractionPatternRatchet. Update "
+                    f"SURFACE_SPANS (and re-measure the ceiling) in the same "
+                    f"commit; the ratchet must never silently unhook a surface."
+                )
+                total += self._count_regex_literals(node)
+        return total
+
+    def _pre_classifier_count(self) -> int:
+        import ast
+
+        with open(self._PRE_CLASSIFIER_PY, encoding="utf-8") as fh:
+            tree = ast.parse(fh.read())
+        cls = next(
+            (n for n in ast.walk(tree) if isinstance(n, ast.ClassDef) and n.name == "PreClassifier"),
+            None,
+        )
+        assert cls is not None, (
+            "VACUITY: PreClassifier class not found in pre_classifier.py — "
+            "re-point TestExtractionPatternRatchet in the same commit."
+        )
+        lists = {}
+        for stmt in cls.body:
+            if isinstance(stmt, ast.Assign) and isinstance(stmt.value, (ast.List, ast.Tuple)):
+                for target in stmt.targets:
+                    if isinstance(target, ast.Name) and target.id.endswith("PATTERNS"):
+                        lists[target.id] = len(stmt.value.elts)
+        assert len(lists) >= self._MIN_PATTERN_LISTS, (
+            f"VACUITY: pre-classifier scan found only {len(lists)} `*PATTERNS` "
+            f"lists (expected ≥{self._MIN_PATTERN_LISTS}) — the derivation "
+            f"idiom changed; fix _pre_classifier_count(), don't trust this count."
+        )
+        return sum(lists.values())
+
+    def _all_counts(self) -> dict:
+        counts = {surface: self._surface_count(surface) for surface in self.SURFACE_SPANS}
+        counts["pre-classifier"] = self._pre_classifier_count()
+        return counts
+
+    # ---- the tests ----
+
+    def test_no_new_extraction_patterns(self):
+        """Fails if any interpretation-by-pattern surface GREW.
+
+        The default answer to a new failing phrasing is a CORPUS ROW (the
+        Inversion router's slot emission learns it), not a new regex here.
+        A ceiling raise requires review + a corpus-deposit justification in
+        the same commit (PM-ratified 2026-08-29).
+        """
+        counts = self._all_counts()
+        over = {s: (n, self.CEILINGS[s]) for s, n in counts.items() if n > self.CEILINGS[s]}
+        assert not over, (
+            f"Extraction-pattern ratchet exceeded: "
+            f"{ {s: f'{n} > ceiling {c}' for s, (n, c) in over.items()} }. "
+            f"A new regex pattern in an interpretation surface is the "
+            f"whack-a-mole class PM retired 2026-08-29: deposit the failing "
+            f"phrasing as a corpus row and let the Inversion slot-emission "
+            f"lane cover it. If a pattern is genuinely unavoidable, lower "
+            f"another surface or raise the ceiling in a REVIEWED commit that "
+            f"records why a corpus deposit could not cover it."
+        )
+
+    def test_extraction_ratchet_stays_tight(self):
+        """Ceilings must equal actual counts — a loose ceiling silently
+        permits regressions up to the slack (same rule as
+        TestPreFloorDispatchSiteRatchet.test_ratchet_target_stays_tight).
+        When migration onto the router lowers a real count, lower the
+        CEILINGS entry to match in the same commit."""
+        counts = self._all_counts()
+        drift = {
+            s: (n, self.CEILINGS[s]) for s, n in counts.items() if n != self.CEILINGS[s]
+        }
+        assert not drift, (
+            f"Ratchet drift: actual vs frozen ceiling differs: "
+            f"{ {s: f'actual {n}, ceiling {c}' for s, (n, c) in drift.items()} }. "
+            f"If a migration just LOWERED a count, set the CEILINGS entry to "
+            f"the new number in this commit so the ratchet stays tight."
+        )
+
+    def test_named_spans_still_exist(self):
+        """Explicit vacuity check: every named span resolves. (The counters
+        assert this too; this test makes a disappeared symbol fail with its
+        own name in the test report rather than inside a count.)"""
+        import ast
+
+        missing = []
+        for surface, spans in self.SURFACE_SPANS.items():
+            for file_path, symbols in spans:
+                with open(file_path, encoding="utf-8") as fh:
+                    tree = ast.parse(fh.read())
+                for name in symbols:
+                    if self._find_named_node(tree, name) is None:
+                        missing.append(f"{surface}: {name} ({file_path})")
+        assert not missing, (
+            f"Named extraction spans no longer resolve: {missing}. Update "
+            f"SURFACE_SPANS + re-measure ceilings in the same commit — the "
+            f"ratchet must never silently unhook a surface."
+        )

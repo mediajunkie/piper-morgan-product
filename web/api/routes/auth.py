@@ -80,6 +80,12 @@ async def login(
     response: Response,
     username: str = Form(..., min_length=1),
     password: str = Form(..., min_length=1),
+    # #1572: the browser's IANA timezone, posted by auth.js from
+    # Intl.DateTimeFormat().resolvedOptions().timeZone. Optional — every
+    # existing client that doesn't send it logs in unchanged. Named
+    # browser_timezone on the wire (and here) so it can't shadow the
+    # datetime.timezone import this module uses.
+    browser_timezone: Optional[str] = Form(None, max_length=64),
     jwt_service: JWTService = Depends(get_jwt_service),
 ):
     """
@@ -192,6 +198,34 @@ async def login(
 
             # Update last_login_at (in same session)
             user.last_login_at = datetime.now(timezone.utc)
+
+            # #1572: per-user timezone capture — the supply half the
+            # 2026-08-10 time audit found at 0%. Validated IANA name into
+            # users.preferences["timezone"], riding the same commit as
+            # last_login_at. Best-effort: a missing or invalid value never
+            # affects login (fail-safe direction — consumers then keep the
+            # server-clock/UTC-labeled behavior).
+            if browser_timezone:
+                from services.utils.user_timezone import (
+                    TIMEZONE_PREF_KEY,
+                    is_valid_iana_timezone,
+                )
+
+                if is_valid_iana_timezone(browser_timezone):
+                    # New dict on purpose: reassignment marks the JSONB
+                    # column dirty; in-place mutation can silently not
+                    # persist (collaboration_gate._save_preference rationale).
+                    prefs = dict(user.preferences or {})
+                    if prefs.get(TIMEZONE_PREF_KEY) != browser_timezone:
+                        prefs[TIMEZONE_PREF_KEY] = browser_timezone
+                        user.preferences = prefs
+                else:
+                    logger.warning(
+                        "login_browser_timezone_invalid",
+                        user_id=str(user.id),
+                        browser_timezone=browser_timezone[:64],
+                    )
+
             await session.commit()
 
             # Store user details for response (before session closes)

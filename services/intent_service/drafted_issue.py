@@ -321,6 +321,67 @@ _TITLE_MAX_CHARS = 80
 _FIRST_SENTENCE_RE = re.compile(r"(.+?[.!?])(?:\s|$)")
 
 
+# #1649 REWORK (PM live 2026-08-29, v64): slot-ANSWER extraction. PM answered
+# the title re-ask with `title should be 'Login timeout' as I indicated in my
+# initial request` and the ENTIRE correction sentence became the title — the
+# bind path had no notion of a quoted value inside an answer. The rule: a
+# quoted value in a slot-answer turn IS the value (both straight and curly,
+# both single and double), and metacommentary ("should be", "as I
+# indicated…") never enters the slot. Deterministic pure functions so they
+# lift cleanly into the SessionSnapshot draft-state consumers (Inversion).
+_ANSWER_QSPAN = "(?:\"([^\"]+)\"|“([^”]+)”|'([^']+)'|‘([^’]+)’)"
+# Marker-led dictation, ANCHORED at the turn's start so quoted spans floating
+# inside genuine body prose ("Users see 'session expired' after login") are
+# never stolen — a body answer is not a title answer.
+_ANSWER_MARKER_QUOTED_RE = re.compile(
+    r"^\s*(?:ok(?:ay)?[,.\s]+|sure[,.\s]+|no[,.\s]+)?(?:please\s+)?"
+    r"(?:(?:make|set|use|change)\s+)?(?:the\s+|its\s+)?(?:title|subject)\b\s*"
+    r"(?:(?:should|must|could|can|will)\s+be\s+|(?:of|is|being|to)\s+|[:=,]\s*)?" + _ANSWER_QSPAN,
+    re.IGNORECASE,
+)
+# The whole turn is one quoted span (plus optional terminal punctuation):
+# `'Login timeout'` as the complete answer.
+_ANSWER_BARE_QUOTED_RE = re.compile(r"^\s*" + _ANSWER_QSPAN + r"[\s.!?]*$")
+# Unquoted dictation — only the unambiguous dictation verbs (`should/must
+# be`, `set … to`), never bare `is`: "the subject is being spammed…" is
+# prose about the issue, not a title dictation.
+_ANSWER_MARKER_UNQUOTED_RE = re.compile(
+    r"^\s*(?:(?:please\s+)?(?:make|set|change)\s+)?(?:the\s+|its\s+)?"
+    r"(?:title|subject)\s+(?:(?:should|must)\s+be|to)\s+(.+?)\s*$",
+    re.IGNORECASE,
+)
+# Trailing metacommentary on an unquoted dictation: ", as I indicated in my
+# initial request", "like I said", "per my first message".
+_ANSWER_METACOMMENT_RE = re.compile(
+    r",?\s*(?:(?:exactly\s+)?(?:as|like)\s+I\s+\w+.*|per\s+my\s+.*)$",
+    re.IGNORECASE,
+)
+
+
+def extract_title_answer(prose: str) -> Optional[str]:
+    """The explicitly-DICTATED title inside a slot-answer turn, or None.
+
+    None means the turn dictates nothing explicitly — the caller falls back
+    to ``derive_subject_from_prose`` (bare answers like `Login timeout`
+    keep titling the draft verbatim exactly as before)."""
+    text = (prose or "").strip()
+    if not text:
+        return None
+    for pattern in (_ANSWER_MARKER_QUOTED_RE, _ANSWER_BARE_QUOTED_RE):
+        m = pattern.match(text)
+        if m:
+            value = next((g for g in m.groups() if g is not None), "").strip()
+            if value:
+                return value
+    m = _ANSWER_MARKER_UNQUOTED_RE.match(text)
+    if m:
+        value = _ANSWER_METACOMMENT_RE.sub("", m.group(1))
+        value = value.strip().strip("\"'‘’“”").rstrip(" .!?,;:").strip()
+        if value:
+            return value
+    return None
+
+
 def derive_subject_from_prose(prose: str) -> str:
     """#1630 — name a subjectless draft from its first bound prose answer.
 
@@ -502,19 +563,31 @@ def _bind_body_prose(
     # no extractable subject) is NAMED by its first bound answer — the prose
     # becomes both the subject (headline) and the body seed.
     titled_now = False
+    explicit_title = False
     if not (draft.get("title") or "").strip():
-        derived = derive_subject_from_prose(prose)
+        # #1649 REWORK (PM live 2026-08-29, v64): a slot-answer turn that
+        # DICTATES its value ("title should be 'Login timeout' as I
+        # indicated…") gives exactly the dictated string — the quoted value
+        # wins over the raw message, and the metacommentary around it never
+        # enters the slot. Only when the turn dictates nothing explicitly
+        # does the derive-from-prose headline apply (bare `Login timeout`
+        # answers keep working verbatim).
+        explicit = extract_title_answer(prose)
+        derived = explicit or derive_subject_from_prose(prose)
         if derived:
             draft["title"] = derived
             pending_action["summary"] = _draft_summary(derived, draft.get("repository"))
             titled_now = True
+            explicit_title = explicit is not None
     existing = (draft.get("body") or "").strip()
     # #1649: a draft armed with an explicit description but NO subject asked
     # only for the title — so the first bound prose on a body-carrying,
     # untitled draft IS the title answer. Naming the draft consumes it;
     # appending it to the given description would duplicate the headline
-    # into the body.
-    title_answer = titled_now and bool(existing)
+    # into the body. An explicitly-DICTATED title (v64 rework) is a title
+    # answer regardless of body state — its metacommentary must not seed
+    # the body either.
+    title_answer = titled_now and (bool(existing) or explicit_title)
     if title_answer:
         body = existing
     else:
@@ -585,7 +658,12 @@ def _bind_body_prose(
         lead = "Added to the draft — nothing is filed yet. Here's where it " "stands:\n\n"
     return {
         "message": (
-            f"{lead}" f"**Title**: {title}\n\n" f"**Body**:\n{body}\n\n" f"{_POST_BIND_ASK}"
+            f"{lead}"
+            f"**Title**: {title}\n\n"
+            # (v64 rework) an explicitly-dictated title on a bodyless draft
+            # leaves the body legitimately empty — say so, don't render blank.
+            f"**Body**:\n{body or '(no body yet)'}\n\n"
+            f"{_POST_BIND_ASK}"
         ),
         "intent_data": intent_data,
         "requires_clarification": True,

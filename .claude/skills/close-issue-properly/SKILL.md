@@ -112,6 +112,9 @@ gh issue comment <id> --body "$(cat <<'EOF'
 - [File]: [What changed]
 
 ### Verification
+- **Verified how**: [REQUIRED — the method actually run this time (command/probe), the layer it
+  measured (m-43: curl 200 ≠ render test), and the denominator (m-44: covered X of Y). A closure
+  without this line is an unverified claim — per CLAUDE.md §Evidence Required, 2026-08-29.]
 - Evidence doc: [path if applicable]
 - Tests: [count] passing (if applicable)
 - Files modified: [list]

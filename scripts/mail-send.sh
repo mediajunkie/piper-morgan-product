@@ -34,6 +34,17 @@
 # tested nothing. Lead hit this 2026-08-26 verifying the inbox/read guard: the run reported success
 # while the actual push it meant to test never happened. Caught only by reading stdout, not the
 # exit code — same shape as the hook-probe confounds in CLAUDE.md, met here in the wild.
+#
+# ⚠️ LOCAL-BRANCH LAG (Agent 360 v0.4, 5 independent respondents, 2026-08-27 — the cheapest fix in
+# the whole synthesis, documented here rather than fixed in code because there is nothing to fix:
+# push-to-ref is deliberately branch-agnostic). A successful send lands the commit on origin/main —
+# but it does NOT touch your local branch's HEAD, upstream, or reflog. Any command that inspects
+# local git state right after a send (`git log`, `git status`, `git log origin/main..HEAD`, a
+# freeze-check reading local heartbeats) reads a snapshot that is now one commit stale relative to
+# what you just pushed, until you `git fetch origin main` (and merge, if you need the content
+# locally). This is the send-side twin of the #1310 self-reconcile note above — that one covers your
+# WORKING TREE for the exact paths you passed; this one covers your BRANCH/REF state for everything
+# else. Fetch+merge origin/main before inspecting local state after any push-to-ref call.
 set -uo pipefail
 
 REPO="${PIPER_REPO:-$(git rev-parse --show-toplevel 2>/dev/null)}"

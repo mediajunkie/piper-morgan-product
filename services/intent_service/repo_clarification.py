@@ -297,6 +297,36 @@ def strip_trailing_repo_clause(title: str) -> str:
     return _TRAILING_REPO_CLAUSE_RE.sub("", title).strip()
 
 
+def strip_repo_phrase_for(title: str, repository: Optional[str]) -> str:
+    """#1543 REWORK (PM live 2026-08-29, v64): remove a trailing routing
+    phrase that NAMES the repo the write actually targets — `…the login
+    timeout in test-piper-morgan` when the issue is being created in
+    mediajunkie/test-piper-morgan.
+
+    ``strip_trailing_repo_clause`` handles the shapes that are
+    self-evidently repos at extraction time (owner/name, `… the X
+    repository`). A BARE name is only knowable as routing once the target
+    repo is resolved, so this runs at the handler AFTER resolution (named
+    or default — PM's live case was the default repo coinciding with the
+    named one). Pure function; phrases naming anything else are left alone
+    (never guess), and a title that is nothing but the phrase is returned
+    unchanged rather than emptied."""
+    if not title or not repository or "/" not in repository:
+        return title
+    name = repository.split("/", 1)[1]
+    for target in (repository, name):
+        pat = re.compile(
+            r"[\s,]+(?:in|into|inside|on|for|to)\s+(?:the\s+|my\s+|our\s+)?"
+            r"[\"'‘“]?" + re.escape(target) + r"[\"'’”]?"
+            r"(?:\s+(?:repository|repo))?\s*$",
+            re.IGNORECASE,
+        )
+        stripped = pat.sub("", title).strip().rstrip(" .!?,;:")
+        if stripped and stripped != title:
+            return stripped
+    return title
+
+
 def _clean_name(candidate: str) -> Optional[str]:
     name = candidate.strip().strip("\"'‘’“”").rstrip(" .!?,;:")
     if not name or not re.search(r"[A-Za-z]", name):

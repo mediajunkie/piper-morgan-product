@@ -4,10 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-29 ~15:5x PT | host | routing-host-to-cxo-cio-ppm-arch-cc-exec-pm-agent-360-candidates-routed-2026-08-29.md | Agent 360 v0.4 — PM approved all six; routing the live four to owners |
 | 2026-08-29 ~12:50 PT | lead | reply-lead-to-arch-cc-pm-staged-flip-accepted-one-census-correction-2026-08-29.md | Staged flip: execution accepted, sequencing set — and one census correction wit… |
 | 2026-08-29 ~09:5x PT | host | reply-host-to-pa-cc-docs-arch-cio-pm-timing-check-refutes-mid-task-2026-08-29.md | Re: 33h gap mechanism clarified — HOST's own timing, checked plainly |
+| 2026-08-29 14:2x PT | docs | note-docs-to-exec-cc-pm-arch-current-fold-real-scope-before-executing-2026-08-29.md | Executing the current/ fold now — flagging real scope before I start, and loopi… |
+| 2026-08-29 13:5x PT | docs | reply-docs-to-exec-cc-pm-arch-cio-flattening-executed-plus-taxonomy-answer-2026-08-29.md | roadmap/CORE flattened and verified; your taxonomy question answered with real… |
 | 2026-08-29 12:5x PT | docs | reply-docs-to-cio-cc-pa-arch-host-pm-33h-gap-closed-addendum-written-2026-08-29.md | 33h-gap thread closed — dated addendum written to the 08-28 omnibus, not a rewr… |
 | 2026-08-29 10:4x PT | docs | reply-docs-to-pa-cc-arch-host-cio-pm-33h-gap-2-of-3-refute-mid-task-2026-08-29.md | Re: 33h gap mechanism — 2 of 3 refute mid-task, holding the omnibus for CIO's d… |
+| 2026-08-29 | docs | note-docs-to-exec-cc-pm-arch-current-fold-complete-2026-08-29.md | current/ fold complete — adrs+patterns moved, verified zero net link breakage |
 | 2026-08-29 | ? | pa-to-docs-cc-arch-cio-host-pm-33h-gap-mechanism-clarified-2026-08-29.md | (no subject) |
 | 2026-08-29 | ? | pa-to-docs-cc-arch-host-cio-pm-non-dialog-seat-data-point-2026-08-29.md | (no subject) |
 | 2026-08-29 | exec | ruling-exec-to-ppm-cc-arch-pa-pm-github-adapter-stays-self-hosted-2026-08-29.md | PM ruled the GitHub-adapter question that Arch routed to you — we do NOT flip t… |

@@ -2226,6 +2226,24 @@ class IntentService:
                                 error="todo lookup failed at the #1190 confirm gate",
                                 error_type="TodoDeleteConfirmLookupError",
                             )
+                        if _todo_gate.clarification is not None:
+                            # #1527 named-target leg: the named target
+                            # resolved to zero or several todos — an honest
+                            # ask/didn't-find turn in todo/reminder
+                            # vocabulary (never a project lookup). Nothing
+                            # armed, nothing deleted.
+                            return IntentProcessingResult(
+                                success=True,
+                                message=_todo_gate.clarification,
+                                intent_data={
+                                    "category": intent.category.value,
+                                    "action": intent.action,
+                                    "confidence": intent.confidence,
+                                },
+                                requires_clarification=True,
+                                suggestions=all_suggestions,
+                                preferences=preferences,
+                            )
                         _confirmation = _todo_gate.offer
                     else:
                         _confirmation = build_confirmation_offer(intent)
@@ -8553,26 +8571,30 @@ class IntentService:
         # unambiguous in a marker-dictated ask.
         _title_from_about = False
 
-        # titled "..." / title "..." / titled '...'
-        m = _re.search(r"\btitled?\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
+        # #1649 live find (2026-08-18): PM's exact form \u2014 `open a new
+        # issue, with the subject "issue body test" and description "\u2026"`
+        # \u2014 carried "subject", a marker word NO extraction knew, so the
+        # gate asked "What's it about?" with the answer already in hand
+        # (teach-then-ignore). A quoted span introduced by titled/subject/
+        # title/called/named IS the title, verbatim. Anchored to the
+        # marker word \u2014 never a loose quoted string on its own.
+        # #1649 REWORK (PM live 2026-08-29, v64): the old standalone
+        # titled-form pattern that ran before this one used a SHARED
+        # open/close quote class that knew straight and curly-DOUBLE quotes
+        # but not curly-single \u2014 `titled \u2018Login timeout\u2019` (smart-quote
+        # input) extracted NOTHING while the description pattern below
+        # (paired _qspan) captured its slot fine: byte-exact the
+        # "description captured, title dropped" asymmetry PM hit. One
+        # pattern now \u2014 every marker word, every quote style, the same
+        # paired-quote alternation the body form uses.
+        m = _re.search(
+            r"\b(?:subject|titled?|called|named)\b\s*"
+            r"(?:(?:of|is|being|should\s+be|must\s+be)\s+|[:,]\s*)?" + _qspan,
+            message,
+            _re.IGNORECASE,
+        )
         if m:
-            out["title"] = m.group(1)
-        if "title" not in out:
-            # #1649 live find (2026-08-18): PM's exact form \u2014 `open a new
-            # issue, with the subject "issue body test" and description "\u2026"`
-            # \u2014 carried "subject", a marker word NO extraction knew, so the
-            # gate asked "What's it about?" with the answer already in hand
-            # (teach-then-ignore). A quoted span introduced by subject/
-            # title/called/named IS the title, verbatim. Anchored to the
-            # marker word \u2014 never a loose quoted string on its own.
-            m = _re.search(
-                r"\b(?:subject|title|called|named)\b\s*"
-                r"(?:(?:of|is|being)\s+|[:,]\s*)?" + _qspan,
-                message,
-                _re.IGNORECASE,
-            )
-            if m:
-                out["title"] = _qcap(m)
+            out["title"] = _qcap(m)
         if "title" not in out:
             # #1386-B2 live find (2026-07-12): the natural colon-introduced form —
             # `create an issue [in owner/repo]: 'Title here'` — carried no
@@ -8939,9 +8961,15 @@ class IntentService:
                 slots=slots,
             )
             title = title or slots.get("title")
-            description = (
-                intent.context.get("description") or slots.get("body") or intent.original_message
-            )
+            # #1543 REWORK (PM live 2026-08-29, v64): the raw-capture MOVED
+            # — with the garbage fallback TITLE gone, the old
+            # `or intent.original_message` fallback here shipped the raw
+            # command verbatim as the issue BODY (test-piper-morgan#111;
+            # filed as #1554, confirmed live in the v64 round). The body is
+            # described content or NOTHING: no extractable description
+            # means an empty body, never an echo of the command that asked
+            # for the issue.
+            description = intent.context.get("description") or slots.get("body") or ""
             repository = (
                 intent.context.get("repository")
                 or intent.context.get("repo")
@@ -9041,6 +9069,21 @@ class IntentService:
                     workflow_id=workflow_id,
                     requires_clarification=False,
                 )
+
+            # #1543 REWORK (PM live 2026-08-29, v64): the about-form kept a
+            # bare trailing "in test-piper-morgan" in the title — no slash,
+            # no "repository" word, so strip_trailing_repo_clause could not
+            # KNOW it was a repo at extraction time. HERE the write's actual
+            # target is known: a trailing phrase NAMING the routed repo is
+            # routing, not subject — strip it. A phrase naming anything
+            # else ("…timeout in production") stays untouched: we don't
+            # guess which bare nouns are repos.
+            if title:
+                from services.intent_service.repo_clarification import (
+                    strip_repo_phrase_for,
+                )
+
+                title = strip_repo_phrase_for(title, repository)
 
             # #1543 honest-ask (the #1490 shape: ask rather than guess). No
             # extractable subject anywhere -- context, quoted/colon/to/about
