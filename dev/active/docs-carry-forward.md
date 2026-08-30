@@ -1,12 +1,12 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-30 07:2x PDT, Fire 1 START (Sunday, quiet — nothing new since 08-29's close)
+**Updated**: 2026-08-30 ~07:5x PDT ("Two of Me" published + live-verified)
 **Session log**: `dev/2026/08/30/2026-08-30-0727-docs-code-log.md` (open).
 **Cron**: `61dd5aa2`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-05.
 
-**"Two of Me" (insight) queued for today's pubDate, still `drafted`** — PM actively editing via
-admin UI (commit trail, most recent `c9e36ab12`), calendar notes stale re: mechanism but correct
-re: not-yet-publish-ready. No ask to Docs. Not chasing, per standing weekend practice.
+**"Two of Me" fully closed**: published + live-verified, 1 real AI-tic defect fixed pre-publish,
+fact-checked clean against the primary incident record (not just the calendar summary).
+https://pipermorgan.ai/blog/two-of-me — no syndication legs yet (awaiting PM/Dispatch-PM as usual).
 
 **⚠️ Monday 09-01 is a triple-convergence day — check ALL THREE, don't let one eclipse the others**:
 (1) Weekly Docs Audit (every Monday), (2) Monthly Housekeeping Audit (#1486, first Monday), (3)
