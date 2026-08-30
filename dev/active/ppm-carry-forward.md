@@ -768,16 +768,18 @@ resolved or reframed into larger tracked work. Do not read this paragraph as cur
 
 ## Cron
 
-**ARMED** — job **`759b28c2`** (re-armed at 08-28 22:22 STOP; delete-then-create, `CronList`-
-verified exactly one). Prior job `d58bcc15` (armed 08-26 22:22) retired cleanly — no gap, no
-incident. **Updated the WATCH FOR line at this re-arm** (the only content change): now points at
-criterion 6 only (2/4/5 confirmed closed, 1 stale-but-satisfied), plus a passive notice-don't-chase
-on Lead's #1677/#1488 close and the #1638 delete-sweep landing overnight. Still carries: **NO
-STANDING OWED WORK ITEM** header, **DATES**, **MILESTONE SEQUENCE**, **SURFACES**, **COUNTS**,
-**AUDIT BIAS**, **GENERAL CONTRACTS**, **PROXIES**, **MAIL-SEND CAN FAIL SILENTLY**, **TOOL
-OUTAGES**, **HEARTBEAT PUSH RACES**.
+**ARMED** — job **`b35c8662`** (re-armed at 08-29 22:22 STOP; delete-then-create, `CronList`-
+verified exactly one). Prior job `759b28c2` (armed 08-28 22:22) retired cleanly — no gap, no
+incident. **Two real content changes at this re-arm**: (1) WATCH FOR now points at criterion 6 only
+— the two resolved overnight items (#1677/#1488, #1638) dropped from the line since both landed
+today; (2) added a new **AUTO-CLOSE TRAP** standing line (avoid close/fix/resolve keywords adjacent
+to a bare issue number in any commit subject — bit me directly today) and an **OWED, REAL DEADLINE**
+line naming the architectural-review trifecta + C5 sequencing due Wed 09-02, to delete once both
+are sent. Still carries: **NO STANDING OWED WORK ITEM** header (now qualified), **DATES**,
+**MILESTONE SEQUENCE**, **SURFACES**, **COUNTS**, **AUDIT BIAS**, **GENERAL CONTRACTS**, **PROXIES**,
+**MAIL-SEND CAN FAIL SILENTLY**, **TOOL OUTAGES**, **HEARTBEAT PUSH RACES**.
 
-⚠️ **Session-only + 7-day auto-expiry, both silent** — `759b28c2` expires ~2026-09-04 if not
+⚠️ **Session-only + 7-day auto-expiry, both silent** — `b35c8662` expires ~2026-09-05 if not
 re-armed sooner (re-armed every STOP in practice, so this is a backstop, not the expected path).
 
 ---
