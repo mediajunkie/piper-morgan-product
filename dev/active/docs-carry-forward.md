@@ -1,9 +1,15 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-30 ~10:5x PDT (Two of Me fully closed + syndicated + recorded; issue-triage
-from PM finished; #1585/#1682 substantially closed out; PM's local-sync issue still parked)
+**Updated**: 2026-08-30 ~13:4x PDT (calendar-ownership loop fully closed both directions; #1455
+confirmed re-scoped by Arch; PM's local-sync issue still parked)
 **Session log**: `dev/2026/08/30/2026-08-30-0727-docs-code-log.md` (open).
 **Cron**: `61dd5aa2`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-05.
+
+**Calendar-ownership thread fully closed**: Comms self-corrected cleanly on both fronts — sent
+their own correction to me AND independently to Dispatch-PM, confirmed no actual data conflict
+resulted (checked commit history, different rows touched). Replied acknowledging, nothing further
+owed. **#1455 confirmed**: Arch re-scoped it on GitHub to "closes via B4's derived index" per my
+supersession flag — no hand-fix needed, it's now B4's own acceptance test.
 
 **"Two of Me" now FULLY closed** — https://pipermorgan.ai/blog/two-of-me. Published, then a live
 art defect PM caught (byte-identical reuse of Detector's art under this post's filename,
