@@ -638,7 +638,11 @@ class PreClassifier:
         r"\bcreate\s+(?:a\s+)?reminders?\b",
         r"\bdon'?t\s+let\s+me\s+forget\b",
         r"\bneed\s+to\s+remember\b",
-        r"\b(?:delete|remove|cancel|clear|dismiss)\b",
+        # "get rid of" joined 1527: with the portfolio delete-claims narrowed,
+        # "get rid of my reminders" reached this lane and the destructive-verb
+        # blocker missed the phrasal form (reminder_clear's own delete-answer
+        # detector already reads "get rid" as delete-family).
+        r"\b(?:delete|remove|cancel|clear|dismiss)\b|\bget\s+rid\s+of\b",
     ]
 
     # Issue #903: Reminder patterns - Query #32
@@ -932,15 +936,31 @@ class PreClassifier:
     # Issue #675: PORTFOLIO patterns for project management operations
     # Routes to PortfolioService from services.onboarding
     # Note: Imports patterns from portfolio_service.py at module level for reuse
+    #
+    # 1527: the DELETE-family patterns below are guarded by a negative
+    # lookahead — when the delete-target noun phrase carries reminder/todo
+    # vocabulary ("delete the reminder to hydrate", "delete my hydrate
+    # reminder", "delete my reminders", "remove the todo about X"), the
+    # portfolio lane must NOT claim the turn. The greedy `(.+)` capture had
+    # claimed every such delete into "I couldn't find a project called
+    # 'the reminder to hydrate'" (PM live 2026-08-29, three misroutes in one
+    # exchange, including a phrase Piper itself taught). The guard makes the
+    # pattern DECLINE so the turn falls through this surface to the LLM lane,
+    # whose delete_todo emission dispatches the 1666 DESTRUCTIVE rail family
+    # (delete_todo/remove_todo/cancel_todo). NARROWING ONLY: no new claim is
+    # added anywhere — a guarded miss is a fall-through, never a reroute.
+    REMINDER_TODO_NOUN_GUARD = r"(?!.*\b(?:reminders?|to-?dos?|tasks?)\b)"
+
     PORTFOLIO_PATTERNS = [
         # Archive operations - "Archive my project X"
         r"\barchive\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         r"\bhide\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         r"\bput\s+(.+)\s+(?:away|aside)",
-        # Delete operations - "Delete my project X"
-        r"\bdelete\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
-        r"\bremove\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
-        r"\bget rid of\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        # Delete operations - "Delete my project X" (reminder/todo-noun
+        # deletes decline via the guard, #1527 — see comment above)
+        rf"\bdelete\s+{REMINDER_TODO_NOUN_GUARD}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        rf"\bremove\s+{REMINDER_TODO_NOUN_GUARD}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        rf"\bget rid of\s+{REMINDER_TODO_NOUN_GUARD}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         # Restore operations - "Restore project X"
         r"\brestore\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         r"\bunarchive\s+(?:my\s+)?(?:the\s+)?(.+)",

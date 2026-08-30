@@ -1,5 +1,13 @@
 # MCP+Spatial Federation Deployment Guide
 
+> ⚠️ **Dated note (2026-08-29)**: the Notion half of this guide is HISTORICAL.
+> `NotionSpatialIntelligence` (`services/intelligence/spatial/notion_spatial.py`) was disposed
+> of in the PM-ruled spatial cold-island disposal — its import/verification snippets below no
+> longer run. The live Notion path is `NotionMCPAdapter` via the plugin router; the live spatial
+> layer is GitHub's (`services/integrations/spatial/github_spatial.py`). Prior art: commit-hash
+> references in the 2026-08-29 spatial-disposal entry of
+> `docs/internal/architecture/decisions/decisions.log`.
+
 ## Overview
 
 This guide documents the production deployment procedures for the MCP+Spatial Intelligence federation across GitHub and Notion integrations. The architectural signature delivers sub-1ms federated search capabilities with 8-dimensional spatial intelligence.

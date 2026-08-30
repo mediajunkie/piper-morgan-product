@@ -1,5 +1,11 @@
 # MCP+Spatial Pattern Implementation Methodology
 
+> ⚠️ **Dated note (2026-08-29)**: code excerpts below referencing `NotionSpatialIntelligence`
+> are HISTORICAL — that module was disposed of in the PM-ruled 2026-08-15/16 spatial cold-island
+> disposal (superseded, never wired). The methodology itself and the live exemplar
+> (`github_spatial` + the MCP consumer path) are unaffected. Prior art: the 2026-08-29
+> spatial-disposal entry of `docs/internal/architecture/decisions/decisions.log`.
+
 ## Overview
 
 This document captures the systematic approach that delivered the MCP+Spatial Intelligence architectural signature, achieving sub-1ms federated search performance (150x better than targets) through rigorous TDD methodology and spatial intelligence development.

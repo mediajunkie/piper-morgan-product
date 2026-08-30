@@ -335,11 +335,108 @@ class TodoDeleteGate:
       no-op turn directly. Never pass a possibly-deleting turn through
       unverified, and never arm a number-only confirm (#1666 AC: the user
       confirms WHAT, not just WHICH).
+    - ``clarification``: a named target resolved to zero or several todos
+      (#1527 named-target leg) — return this honest ask/didn't-find turn
+      directly. Nothing armed, nothing deleted; it names todos/reminders,
+      never projects (the 1527 misroute's exact wound).
     """
 
     offer: Optional[ConfirmationOffer] = None
     passthrough: bool = False
     error_message: Optional[str] = None
+    clarification: Optional[str] = None
+
+
+# --- #1527 named-target delete: deriving the target WITHOUT new patterns ----
+#
+# PM live 2026-08-29 (v64): "delete my hydrate reminder" — the phrase Piper
+# itself taught — ROUTES correctly post-1527 but then died on this gate's
+# no-number passthrough: handle_delete_todo's only no-number answer was
+# "Which todo? Try: 'delete todo [number]'". The named target must resolve
+# the way complete_todo's already does.
+#
+# The extraction-pattern ratchet (TestExtractionPatternRatchet, PM-ratified
+# the same day) forbids growing the regex micro-parsers, so the target is
+# NOT parsed out of the message — it is derived by set subtraction: drop the
+# delete-command vocabulary and stopwords, keep the rest, and match THAT
+# against the DB list with the shared todo_handlers matcher. String
+# filtering against known word sets, zero new interpretation patterns.
+_DELETE_COMMAND_NOISE = frozenset(
+    {
+        # the delete-family verbs this gate's rail actions cover
+        "delete",
+        "remove",
+        "cancel",
+        "erase",
+        "drop",
+        "trash",
+        "scrap",
+        # "get rid of" (phrasal, #1527's third verb)
+        "get",
+        "rid",
+        # domain nouns — the user names the KIND, the todo text never does
+        # ("todo"/"task" are already _STOPWORDS; plurals and "reminder" not)
+        "reminder",
+        "reminders",
+        "todos",
+        "tasks",
+        # connective/lead-in noise around a named target
+        "about",
+        "called",
+        "titled",
+        "named",
+        "please",
+    }
+)
+
+
+def _named_delete_target(message: str) -> str:
+    """The message minus delete-command vocabulary and stopwords, in order.
+
+    "delete my hydrate reminder" → "hydrate"; "delete the reminder to
+    hydrate" → "hydrate"; "delete my reminders" → "" (nothing named — the
+    caller passes through to the handler's which-todo ask).
+    """
+    from services.intent_service.todo_handlers import _STOPWORDS
+
+    kept = [
+        word
+        for word in re.findall(r"\w+", message)
+        if word.lower() not in _STOPWORDS and word.lower() not in _DELETE_COMMAND_NOISE
+    ]
+    return " ".join(kept)
+
+
+def _armed_todo_delete(
+    intent: Intent, todo: Any, position: int, question: str, summary: str
+) -> TodoDeleteGate:
+    """Bind the resolved row into the intent (list-shift protection: the
+    confirmed yes deletes exactly this row by id, never a positional
+    re-resolve) and arm the #1190 confirm. Copy-on-write on the context."""
+    intent.context = dict(intent.context or {})
+    intent.context[RESOLVED_TODO_CONTEXT_KEY] = {
+        "todo_id": todo.id,
+        "text": todo.text,
+        "number": str(position),
+    }
+    return TodoDeleteGate(
+        offer=ConfirmationOffer(
+            question=question,
+            offer={
+                "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+                # #1665: the rendered ask rides the record — the same string
+                # the caller returns as the turn's message (built once).
+                "question": question,
+                "pending_action": {
+                    "kind": DESTRUCTIVE_CONFIRM_KIND,
+                    "action": intent.action,
+                    "intent": intent,
+                    "summary": summary,
+                },
+                "decline_message": (f"Okay — I won't {summary}. Nothing has been changed."),
+            },
+        )
+    )
 
 
 async def build_todo_delete_confirmation(
@@ -362,10 +459,20 @@ async def build_todo_delete_confirmation(
       are ``None`` to ``detect_clear_family_ask`` by its _EXPLICIT_VERB_RE,
       so this gate owns them — the boundary holds in both directions.
     - **no principal**: the entry point returns the auth-required decline.
-    - **no parseable todo number**: handle_delete_todo returns the
-      "Which todo should I remove?" clarification (its only no-number path).
+    - **no parseable todo number AND no named target**: handle_delete_todo
+      returns the "Which todo should I remove?" clarification (its only
+      no-number path).
     - **number out of range / non-numeric**: handle_delete_todo returns the
       "couldn't find todo #N" / "doesn't look like a number" copy.
+
+    Named-target leg (#1527's remaining scope, PM live 2026-08-29): a
+    no-number delete that DOES name a target ("delete my hydrate reminder")
+    resolves it against the owner's list with complete_todo's shared matcher
+    (exact → fuzzy, same threshold). One match → the title-bound confirm
+    arms ('Delete todo: "hydrate"? (yes/no)', DESTRUCTIVE kind, resolved row
+    bound). Several → the clarification leg asks which, listing candidates
+    by real list position. Zero → the clarification leg answers honestly in
+    todo/reminder vocabulary — never a project lookup.
     """
     # Lazy import: reminder_clear imports THIS module (kind constants), so a
     # module-level import back would be circular.
@@ -384,8 +491,13 @@ async def build_todo_delete_confirmation(
         return TodoDeleteGate(passthrough=True)
 
     todo_number = todo_handlers._extract_todo_id(message)
+    named_target = None
     if todo_number is None:
-        return TodoDeleteGate(passthrough=True)
+        named_target = _named_delete_target(message)
+        if not named_target:
+            # Nothing numbered AND nothing named — the handler's
+            # "Which todo should I remove?" ask is the honest turn.
+            return TodoDeleteGate(passthrough=True)
 
     try:
         todos = await todo_handlers.todo_service.list_todos(
@@ -404,42 +516,59 @@ async def build_todo_delete_confirmation(
             )
         )
 
-    try:
-        idx = int(todo_number) - 1
-    except ValueError:
-        return TodoDeleteGate(passthrough=True)
-    if idx < 0 or idx >= len(todos):
-        return TodoDeleteGate(passthrough=True)
+    if todo_number is not None:
+        try:
+            idx = int(todo_number) - 1
+        except ValueError:
+            return TodoDeleteGate(passthrough=True)
+        if idx < 0 or idx >= len(todos):
+            return TodoDeleteGate(passthrough=True)
 
-    todo = todos[idx]
-    # Bind WHAT, not just WHICH (#1666 AC): stash the row resolved AT ASK
-    # TIME so the confirmed yes deletes exactly the todo named in the ask,
-    # even if the list shifts between the ask and the yes. Copy-on-write —
-    # never mutate a context dict the caller may share (#1190 idiom).
-    intent.context = dict(intent.context or {})
-    intent.context[RESOLVED_TODO_CONTEXT_KEY] = {
-        "todo_id": todo.id,
-        "text": todo.text,
-        "number": str(todo_number),
-    }
-
-    summary = f'delete todo {todo_number}: "{todo.text}"'
-    question = f'Delete todo {todo_number}: "{todo.text}"? (yes/no)'
-    return TodoDeleteGate(
-        offer=ConfirmationOffer(
-            question=question,
-            offer={
-                "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
-                # #1665: the rendered ask rides the record — the same string
-                # the caller returns as the turn's message (built once, above).
-                "question": question,
-                "pending_action": {
-                    "kind": DESTRUCTIVE_CONFIRM_KIND,
-                    "action": intent.action,
-                    "intent": intent,
-                    "summary": summary,
-                },
-                "decline_message": (f"Okay — I won't {summary}. Nothing has been changed."),
-            },
+        todo = todos[idx]
+        # Bind WHAT, not just WHICH (#1666 AC): stash the row resolved AT
+        # ASK TIME so the confirmed yes deletes exactly the todo named in
+        # the ask, even if the list shifts between the ask and the yes.
+        return _armed_todo_delete(
+            intent,
+            todo,
+            idx + 1,
+            question=f'Delete todo {todo_number}: "{todo.text}"? (yes/no)',
+            summary=f'delete todo {todo_number}: "{todo.text}"',
         )
+
+    # --- named-target leg (#1527 remaining scope) ---------------------------
+    # Lazy import (same circularity note as reminder_clear above).
+    from services.intent_service.todo_handlers import resolve_named_todo_target
+
+    matches = resolve_named_todo_target(named_target, todos)
+
+    if not matches:
+        return TodoDeleteGate(
+            clarification=(
+                f'I couldn\'t find a todo or reminder matching "{named_target}". '
+                "Say 'show my todos' to see the list — nothing has been deleted."
+            )
+        )
+
+    if len(matches) > 1:
+        position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}
+        candidates = ", ".join(f'{position_by_id[t.id]}. "{t.text}"' for t in matches)
+        return TodoDeleteGate(
+            clarification=(
+                f'I found {len(matches)} todos matching "{named_target}": '
+                f"{candidates}. Which one should I delete? "
+                "Try 'delete todo [number]'."
+            )
+        )
+
+    todo = matches[0]
+    position = next(i + 1 for i, t in enumerate(todos) if t.id == todo.id)
+    # Same WHAT-binding as the positional leg: the confirmed yes deletes the
+    # row named in the ask by id, immune to list shift.
+    return _armed_todo_delete(
+        intent,
+        todo,
+        position,
+        question=f'Delete todo: "{todo.text}"? (yes/no)',
+        summary=f'delete the todo "{todo.text}"',
     )

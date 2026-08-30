@@ -4,6 +4,17 @@
 
 **Proven**
 
+> ⚠️ **Dated note (2026-08-29)**: the Linear reference implementation this pattern excerpts
+> (`LinearSpatialIntelligence` / `LinearMCPSpatialAdapter`) was disposed of in the PM-ruled
+> 2026-08-15/16 spatial cold-island disposal — it was a never-wired committed-theory module,
+> superseded by the migration the pattern itself describes. The pattern remains proven by the
+> LIVE implementation (`services/integrations/spatial/github_spatial.py` +
+> `services/mcp/consumer/github_adapter.py`); read the code excerpts below as historical
+> exemplars, not current source. Prior-art retrieval: commit-hash references in the 2026-08-29
+> spatial-disposal entry of `docs/internal/architecture/decisions/decisions.log`; design
+> semantics preserved in
+> `docs/internal/architecture/design-records/spatial-cold-island-per-connector-place-modeling.md`.
+
 ## Context
 
 Modern development environments require integration with multiple external tools and services (Linear, GitHub, Slack, etc.) while maintaining rich contextual awareness for intelligent routing and search. Traditional integration approaches often result in shallow connections that lose important dimensional context, making it difficult to provide meaningful cross-system insights. The MCP+Spatial Intelligence Integration Pattern addresses:

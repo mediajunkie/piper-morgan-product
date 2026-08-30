@@ -3,7 +3,7 @@
 **Document Version**: 1.0
 **Date**: 2026-07-29
 **Author**: CXO (experience-design lane)
-**Status**: ⚠️ **INPUT to a pending decision — NOT a decision.** See "Standing" below.
+**Status**: ⚠️ ~~INPUT to a pending decision — NOT a decision.~~ **The decision landed and executed**: PM ruled 2026-08-15/16 (keep live layer, dispose cold island, retrievable by commit hash); disposal executed 2026-08-29 — see the decisions.log entries and `design-records/spatial-cold-island-per-connector-place-modeling.md`. The thesis's "later, not failed" framing is now the recorded rationale of the disposal ("superseded implementation strategy, retained as prior art").
 **Related**: ADR-013 (deprecated for pattern policy), ADR-038 (current pattern policy),
 `spatial-intelligence-competitive-advantage.md` (Aug 2025, maximalist companion to ADR-013),
 `dev/active/spatial-intelligence-architectural-history-arch-WIP.md` (Arch's in-flight synthesis),

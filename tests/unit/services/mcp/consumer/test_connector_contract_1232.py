@@ -2,10 +2,18 @@
 
 The guard enforces the four-method contract on adapters that **declare**
 conformance (``IMPLEMENTS_CONNECTOR = True``), via pure AST (no import / no
-instantiation). Declared-conformer scoping is deliberate: the 5 not-yet-ported
-adapters don't break the build, but a declared connector cannot silently skip
+instantiation). Declared-conformer scoping is deliberate: a not-yet-ported
+adapter doesn't break the build, but a declared connector cannot silently skip
 honest-degradation or status. Mirrors the TestSessionScopeCommitContract (#1193)
 AST-enforcement pattern.
+
+History: at creation there were 5 not-yet-ported adapters (and a companion test
+asserting some adapters were unported). The 2026-08-29 spatial cold-island
+disposal (PM-ruled 2026-08-15/16) deleted the four never-wired spatial adapters
+(cicd/devenvironment/gitbook/linear), leaving every surviving adapter a declared
+conformer, so that companion test's premise expired and it was removed. The
+declared-conformer scoping stays: a future unported adapter still won't break
+the build until it declares.
 """
 
 import ast
@@ -61,15 +69,6 @@ def test_every_declared_connector_implements_all_four_methods():
 
 def test_github_adapter_is_a_declared_connector():
     assert "GitHubMCPSpatialAdapter" in _all_declaring()
-
-
-def test_unported_adapters_are_not_enforced_yet():
-    # The guard enforces only declared conformers, so un-ported adapters don't break the build.
-    declaring = set(_all_declaring())
-    all_adapters = {
-        os.path.basename(p) for p in glob.glob(os.path.join(CONSUMER_DIR, "*_adapter.py"))
-    }
-    assert len(all_adapters) > len(declaring), "expected some adapters not yet ported (un-enforced)"
 
 
 def test_guard_helper_flags_declared_but_incomplete(tmp_path):

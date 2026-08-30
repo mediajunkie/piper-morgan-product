@@ -14,6 +14,25 @@ consumes: ftux-experience-model-2026-08-21.md (PM-aligned) · surfaces-taxonomy-
 **The model said what meeting Piper should be. This says where.** Per PM's framing on 2026-08-21: model
 first, then map.
 
+> 🔴 **AMENDED 2026-08-29 — the architectural review changed one of this document's two live cells.**
+> PM ratified the same day (`decisions.log`, Arch's review): **web-chat is in explicit maintenance mode —
+> bugs fixed, nothing new built — and all NEW build effort goes to the MCP/BYOC path.** Two consequences
+> for this mapping, one narrowing and one *strengthening*:
+>
+> - **§1 (F-FirstRun × Web) is SUPERSEDED as a build target.** Its recommendation — "Piper speaks first"
+>   in the existing chat view — is new build on a maintenance-mode surface. It stands as a *design record*
+>   of what Web's first-run should be if and when Web builds again; it is **not** something to sequence
+>   now. My 08-28 lens-driven position (smaller move, no new home view) was correct *and* is now moot for
+>   scheduling purposes.
+> - ⭐ **§2 (F-FirstRun × MCP) is PROMOTED, explicitly.** ESSENCE.md's build-surface line orders the MCP
+>   path *"in roughly the clean-room agent's increment order: **cold-start reflection first**"* — which
+>   **is this mapping's §2 gap**, named as the first increment on the only surface now taking new build.
+>   The empty-state interview (#1688) is therefore not merely still valid; it is the leading item.
+>
+> **Net**: this mapping's central finding survives the review intact and gets sharper — one live cell
+> instead of two, and it's the one ESSENCE puts first. **The two-cell framing was right; the count is now
+> one.** Caught by reading ESSENCE against my own shipped doc rather than filing the broadcast as FYI.
+
 ## 0. The lens applied FIRST, which is why this document is short
 
 📌 **PM's principle, named 2026-08-26**: *"No optional complexity. It's a rule because it is so easy to

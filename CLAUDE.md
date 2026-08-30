@@ -314,6 +314,8 @@ Before creating or extending anything, investigate the existing situation fully.
 
 The discipline is identical across all of these: understand what exists before you extend it.
 
+Corollary for intent-routing fixes: argument-extraction-by-regex is interpretation-layer work — gate-side, corpus-deposit by default (the default answer to a new failing phrasing is a corpus row, not a new pattern), enforced by `TestExtractionPatternRatchet` in `tests/test_architecture_enforcement.py` (added 2026-08-29, PM-ratified after the live round).
+
 ### Name the layer, and state the denominator (m-43 · m-44 companions)
 
 Two rules that keep producing incidents when absent. Both are about a report that is *technically true*

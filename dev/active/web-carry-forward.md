@@ -56,21 +56,30 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
-### PARTIALLY CLOSED — In Review browser-verification round (2026-08-29)
+### DONE, awaiting Lead's close — In Review browser-verification round (2026-08-29)
 Exec routed 4 app-layer In Review items (#1512, #1568, #1480, #1578/#1581 SECURITY) as a follow-on
-to the pilot. Full report: `mailboxes/web/sent/report-web-to-lead-cc-exec-pm-four-In-Review-items-verified-with-one-credential-gap-2026-08-29.md`.
+to the pilot — full arc across 3 fires:
 
-**#1480 — CLOSED by Lead**, citing my verification directly. Lead specifically named two things as
-"house discipline done right": diffing the *served* JS byte-identical against source before trusting
-it, and executing the real extracted function body against attack vectors rather than reasoning
-about it — worth defaulting to both on any future live-JS check. Lead also confirmed I was right not
-to invent credentials or self-provision.
+1. Code-verified all four; **#1480 fully live-verified with no login needed** (redirect chain +
+   executed the real deployed guard logic) — **CLOSED by Lead**, who named the served-vs-source
+   byte-diff and real-extracted-function-execution approach as worth defaulting to going forward.
+2. Credential gap (no test account existed) reported rather than worked around — Lead provisioned
+   a dedicated browser-lane account through the real signup path (not DB-injected).
+3. **Live-DOM pass done with the credential**: logged in through the real `/login` page, drove
+   `/todos` and `/files` via Playwright (real form fills/selects/uploads, not API shortcuts) —
+   **#1512** (priority-high chip renders correctly after real dialog submission), **#1568** (real
+   edit → save → server-persisted, confirmed via follow-up GET), **#1578/#1581** (hostile
+   title/filename render as escaped inert text in the live DOM, zero script execution — third
+   verification layer after static read + independent jest re-run). Full report:
+   `mailboxes/web/sent/report-web-to-lead-cc-exec-pm-live-DOM-pass-complete-all-four-verified-2026-08-29.md`.
 
-**Credential gap — Lead's to fix, queued**: a dedicated browser-lane test account, provisioned
-through the real signup path (not DB-injected), handed to me out-of-band, "before your next
-verification batch." #1512/#1568/#1578/#1581 stay open pending that live-DOM pass — my code-level
-evidence is banked in the thread. **Nothing further for Web until the credential lands** — don't
-chase it.
+**Incidental finding, filed not fixed**: `/api/v1/files/list` has no `owner_id` field, so files.html's
+"Uploaded by:" renders blank (escaping is correct, it's a data-contract gap) — **#1697**, low
+priority.
+
+**Status**: all four items now have my complete evidence in the thread; #1512/#1568/#1578/#1581
+closure is Lead's call (security label on the pair, per Exec's original instruction). Nothing
+further for Web on this round.
 
 ### CLOSED — predecessor's two long-standing questions
 Both (CLI B trial status, `--mode=archive` scope) were answered by PM 2026-08-15 and closed in

@@ -213,18 +213,14 @@ else:
 ```
 
 **Test Notion Spatial System**:
-```python
-# Python REPL or script
-from services.intelligence.spatial.notion_spatial import NotionSpatialIntelligence
 
-try:
-    spatial = NotionSpatialIntelligence()
-    print(f"✅ Notion spatial system operational")
-    print(f"   Dimensions: {len(spatial.dimensions)} available")
-    print(f"   Dimensions: {list(spatial.dimensions.keys())}")
-except Exception as e:
-    print(f"❌ Notion spatial system error: {e}")
-```
+> ⚠️ **Removed 2026-08-29**: `NotionSpatialIntelligence`
+> (`services/intelligence/spatial/notion_spatial.py`) was disposed of in the PM-ruled spatial
+> cold-island disposal — it was the superseded direct-API predecessor of the live Notion path
+> and had zero importers. The live Notion integration is `NotionMCPAdapter`
+> (`services/integrations/mcp/notion_adapter.py`) via the Notion plugin router; verify that
+> instead. Prior art: commit-hash references in the 2026-08-29 spatial-disposal entry of
+> `docs/internal/architecture/decisions/decisions.log`.
 
 **Quick Verification Script**:
 ```bash
@@ -252,13 +248,8 @@ try:
 except Exception as e:
     print(f"❌ Slack spatial error: {e}")
 
-# Test Notion
-try:
-    from services.intelligence.spatial.notion_spatial import NotionSpatialIntelligence
-    spatial = NotionSpatialIntelligence()
-    print(f"✅ Notion spatial: enabled ({len(spatial.dimensions)} dimensions)")
-except Exception as e:
-    print(f"❌ Notion spatial error: {e}")
+# Notion spatial check removed 2026-08-29: NotionSpatialIntelligence was disposed of
+# (spatial cold-island disposal); the live Notion path is NotionMCPAdapter via the plugin router.
 
 print("\n=== VERIFICATION COMPLETE ===")
 EOF
