@@ -148,6 +148,19 @@ days stale.
     extension of #1536's own AC3, not "differentiator work getting a pass by default." Both cc'd to
     PA, no action needed — just a good outcome worth having on record: the lens is compounding across
     roles, not a one-off.
+  - 🟢 **CONNECTORS.md v1 (living core doc #5), 08-30 — PA's 08-27 connector-reality finding is now
+    permanent, cited architecture, and this diagram artifact is superseded on connector status
+    specifically.** Arch authored, Lead maintains going forward
+    (`docs/internal/architecture/CONNECTORS.md`). The Slack row's governing-decisions cell cites
+    **"PA's 08-27 connector-reality finding"** by name alongside #1481/#1484 and the descope memo
+    trail. The table formalizes exactly what PA found (GitHub real MCP, Notion/Calendar honest
+    shims, Slack dead/descoped) plus ESSENCE's standing test (backend holds a grant only for
+    no-user-present work) as a per-connector, actively-maintained source of truth — not something
+    PA needs to keep parallel-maintaining in `dev/active/pdr-006-architecture-2026-08-10-rev1.html`.
+    **Going forward: point anyone asking about connector status to CONNECTORS.md, not PA's diagram**
+    — the diagram did its job (surfaced the finding, drove the Slack descope) and that job is now
+    done; no need to keep it current on this specific axis. Also codifies a rule directly downstream
+    of CXO's #1463 trace: *"hedges ride the payload, not a prompt"* for the MCP tool layer.
   - **Arch replied 08-28 evening — architecture read confirmed, thread now fully closed**: investigated
     independently (checked the code AND looked up GitHub's actual hosted-endpoint contract) rather than
     just accept PA's framing. Confirmed config-level per ADR-070 Amendment A's own design — no ADR
