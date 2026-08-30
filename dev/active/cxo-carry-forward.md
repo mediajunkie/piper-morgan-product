@@ -14,6 +14,16 @@ It is the missing half of the instrument I shipped today, it needs no build, and
 my own work that is blocked on nothing but me. ⚠️ **Do not score T against anything until it runs** —
 the rubric's T criteria are hypotheses and the doc says so in a red banner.
 
+## ⚠️ Two things with a clock on them
+
+1. **BYOC listing copy** — I recommended shipping **"issues" alone** and told Comms their #1659-keyed
+   condition is **keyed to the wrong layer** (resolver vs extraction; #1659's fix would not clear Web's
+   live failure). PM has the synthesis. **If PM ships v4 as written, the documents claim goes out on a
+   surface that can't honor it.** Watch for PM's word.
+2. **Web's discriminator** (upload a PDF, summarize it) — if both PDF and `.txt` fail, the resolver
+   can't see fresh uploads at all and it goes back to **Lead on #1657**, not into #1659. ⚠️ Unresolved
+   confound: I have not verified the running cut carries #1657's fix.
+
 ## Live threads
 
 - **#1463 / PDR-006 pre-user gate** — v0.1 branched + amended with a traced worked example (the #1425 honesty class is a floor-PROMPT directive with no BYOC analogue; the `source_failed` flag already travels, so emitting it structurally is near-free — sent Lead as a verified ask superseding the morning hypothesis). Originally branched + landed today; R and C scoreable, **T is

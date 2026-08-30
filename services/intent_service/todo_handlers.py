@@ -2,11 +2,12 @@
 Todo Intent Handlers - Natural language interface for todo operations
 
 Issue #285: CORE-ALPHA-TODO-INCOMPLETE
-Wires chat commands to TodoManagementService, reusing request models from
-services/api/todo_management.py (PM-081). NOTE (#1427): that module's REST
-surface is UNMOUNTED (it was mocked end-to-end); chat — this file — and the
-Lists API are the live todos surfaces. The live /api/v1/todos REST routes are
-web/api/routes/todos.py (a different module).
+Wires chat commands to TodoManagementService. NOTE (#1427 → 2026-08-30):
+services/api/todo_management.py — the mocked, unmounted todos REST surface
+this file once borrowed request models from (PM-081) — was disposed in the
+census disposal Batch 3 (the model import here had long been unused). Chat —
+this file — and the Lists API are the live todos surfaces. The live
+/api/v1/todos REST routes are web/api/routes/todos.py (a different module).
 
 Enhanced with consciousness injection (#407 MUX-VISION-STANDUP-EXTRACT)
 for more alive, present-feeling responses.
@@ -30,7 +31,6 @@ from uuid import UUID
 import structlog
 from sqlalchemy.exc import SQLAlchemyError
 
-from services.api.todo_management import TodoCreateRequest, TodoUpdateRequest
 from services.consciousness.todo_consciousness import (
     format_next_todo_conscious,
     format_todo_completed_conscious,

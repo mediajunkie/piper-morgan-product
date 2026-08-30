@@ -241,7 +241,8 @@ class SlackClient:
 
         #1227: the floor emits GitHub-flavored markdown but Slack renders the
         ``text`` field as mrkdwn, so normalize here — the single chokepoint that
-        response_handler + simple_response_handler both route through. (Applied
+        response_handler routes through (simple_response_handler did too, until
+        its disposal — 2026-08-30 census disposal Batch 3). (Applied
         once per path: socket_mode_runner uses its own WebClient, not this seam,
         and converts there — so no double-conversion.)
 

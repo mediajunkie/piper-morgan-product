@@ -25,8 +25,9 @@ class LLMDomainService:
     This is THE ONLY way to access LLM providers in the system.
 
     Usage:
-        # Access via ServiceRegistry
-        llm = ServiceRegistry.get_llm()
+        # Access via the service container's registry (services/container/):
+        # ServiceInitializer registers the instance under "llm" at startup.
+        llm = container._registry.get("llm")
 
         # Generate completion
         response = await llm.complete(

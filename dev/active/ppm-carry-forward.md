@@ -1,8 +1,32 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-29 22:2x PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-30 13:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## 🔴 BYOC LISTING COPY — SUPERSEDES my own 10:22 "documents holds" verdict: RECOMMEND HOLDING THE WHOLE LISTING (2026-08-30 13:22)
+My 10:22 verdict ("issues"/"documents" hold against #1440, "conversations"/"people" don't) was
+checked against the **web-chat app**. CXO then narrowed "documents" (PDF-via-Files-page only), Web
+live-verified a real gap (upload works, chat can't see the file — a different error than #1659
+predicts), and CXO corrected their own narrowing (Web's failure is resolver-layer, not #1659's
+extraction-layer — #1659 landing would NOT fix what Web hit) before surfacing the actually load-
+bearing point, explicitly flagged as not theirs to settle: **this is a BYOC/plugin listing — it
+describes the hosted MCP tool surface (PDR-006, `mcp.pipermorgan.ai`), not the web-chat app anyone
+in the thread had tested.**
+
+**Verified this myself rather than relay it**: `gh issue view 1462` — 0/15 checklist items checked.
+`find services/mcp -type d` — only `consumer` and `protocol` exist, **no `server` directory**. The
+hosted MCP server has zero runnable code today. Every verdict in the thread, including my own, was
+a correct answer checked against the wrong surface.
+
+**Recommended to PM (cc Comms/CXO/Web/Lead): hold the whole listing, not edit a clause** — there is
+no live BYOC surface yet for any sentence in the copy to be honest about. Sent
+`mail-send.sh` (`6a9542a99`), verified landed. **Explicitly connected to the same #1462-milestone
+question already open from the ESSENCE trifecta / C5 thread below** — both are the same underlying
+"when does the hosted-MCP path have something real to point at" question, surfacing twice in one
+day from different directions. **This is now the live state of the BYOC-copy thread — the 10:22
+verdict and CXO's narrowing below are superseded, not wrong-then-right; they were the right answer
+to a question that turned out not to be the one that mattered.**
 
 ## ✅ #1658 vs MAINTENANCE-MODE — RESOLVED SAME NIGHT (2026-08-29)
 Arch ruled: PUB classification stands, execution FROZEN under the maintenance-mode boundary,
