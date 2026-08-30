@@ -54,6 +54,6 @@ That's a very human failure mode too, if I'm honest. Anyone who's worked on a te
 
 ---
 
-*Next on Building Piper Morgan: "We Built Onboarding in Our Own Image" — the interaction mode that earns trust in an ongoing working relationship turned out to be the wrong mode for a first encounter.*
+*Next on Building Piper Morgan: "A Sender-Impersonation Bug, Four Days Before Beta" — a connector that trusted whoever sent a message to be whoever had originally connected the workspace, found four days before outside testers arrived.*
 
 *Has a scheduling quirk ever left two versions of the same piece of work running at once in your world — a duplicate meeting, a doubled task, a colleague picking up something you'd already started? What told you it had happened, and what actually saved you?*
