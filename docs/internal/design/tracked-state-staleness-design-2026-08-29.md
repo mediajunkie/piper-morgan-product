@@ -4,7 +4,7 @@ role: CXO (Chief Experience Officer), design owner
 status: v0.1 — DRAFT for CIO (build partner) and cohort review. PM approved the item; this is the design, not the build.
 authored: 2026-08-29
 authored_by: CXO
-last_updated: 2026-08-29
+last_updated: 2026-08-30
 build_partner: CIO
 origin: Agent 360 v0.4 synthesis (HOST) — most-named finding, 8 of 10 respondents cited an own-file staleness incident. PM approved the candidate set 2026-08-29; HOST routed the design to CXO.
 ---
@@ -66,6 +66,32 @@ max_age_days: 1                 # what the claim implies; the checkable half
 `currency_claim: none` is a **legitimate, honest declaration** — the direct analogue of
 `refresh_verifiability: by-hand`, which exists precisely so an honest limit isn't punished as delinquency.
 A file that says "this is scratch, don't trust its currency" is *better* than one silently implying more.
+
+> ### ✅ Amendment 2026-08-30 — `currency_claim` is DELIBERATELY free text, not a validated enum
+>
+> The four values above are **suggestions, not a closed set.** Written down because CIO found the field
+> drifting from them before it had been live a full day — and the drift is *better* than the design was.
+>
+> **What happened**: CXO and Arch both adopted the frontmatter independently, before the checker shipped.
+> CXO's matches the shape above; **Arch's `currency_claim` is a free-text sentence** — *"rewritten at
+> substantive-change boundaries, verified at every START"* — which is not one of the four. The checker
+> (`check-refresh-promises.py --state-files`, CIO, `cd85d4664`) was already lenient: it treats the claim
+> as a display label, so nothing broke.
+>
+> ⭐ **Why leniency is correct rather than a lucky escape: the enforcement was never in this field.**
+> `max_age_days` is the machine-checkable half; `currency_claim` states the promise for a human reader.
+> A free-text claim therefore costs the checker **nothing — there is no check it weakens** — while
+> Arch's sentence says something none of the four buckets can. Forcing it into a bucket would trade real
+> information for a validation nobody performs.
+>
+> ⚠️ **And the reason this is written here rather than left as observed practice**: a convention that
+> lives only in what people happen to do is precisely what this design exists to replace. **Prose headers
+> drift because updating content and updating the claim are two acts joined only by memory** — an
+> unwritten field convention is that same failure one level up. Two of us knowing it is not the same as
+> the fourth adopter being able to read it.
+>
+> **So**: state your real refresh promise in whatever words are true. Keep `max_age_days` honest, because
+> that is the half a machine can contradict you with.
 
 **(b) Check it where the claim goes stale — at START.** The duty-cycle-tick Step 3 already reads the
 carry-forward. That read is the moment to compare `last_updated` against `max_age_days`, and say so:
