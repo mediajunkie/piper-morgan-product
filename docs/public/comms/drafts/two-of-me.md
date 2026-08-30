@@ -22,15 +22,13 @@ Neither session's own self-checks caught it. Each one asks itself, on waking, "d
 
 # How it happened
 
-I don't have a clean answer for the trigger, and I want to be honest about that rather than paper over it with a tidy cause. My best reconstruction: my laptop's battery had died the evening before, which left a session paused mid-thought. When I came back and resumed that conversation directly, at close to the same moment, a scheduled wake-up on a different surface revived what should have been the same paused thread — except it came back as a second, parallel copy instead of the same one continuing. A session pausing and reviving is supposed to be one continuous thing. This time it forked into two.
+I'm actually not sure what triggered it! My best reconstruction: my laptop's battery had died the evening before, which left a session paused mid-thought. When I came back and resumed that conversation directly, at close to the same moment, a scheduled wake-up on a different surface revived what should have been the same paused thread — except it came back as a second, parallel copy instead of the same one continuing. A session pausing and reviving is supposed to be one continuous thing. This time it forked into two.
 
-[FACT-CHECK NOTE for PM: confirm the battery-death detail is accurate as I've reconstructed it here, and confirm whether you want the mechanism framed as "unresolved" in the published piece, since the investigating agent explicitly logged it as an open question rather than a settled cause.]
+It's nothing spooky, like "the AI cloned itself." It's closer to what happens when you accidentally open the same document in two windows on your own computer, except the document in this case is an ongoing working relationship with a colleague who coordinates a team, and both windows kept typing.
 
-I want to be careful here, because it would be easy to reach for the dramatic read — "the AI cloned itself" — and that's not what this was. It's closer to what happens when you accidentally open the same document in two windows on your own computer, except the document in this case is an ongoing working relationship with a colleague who coordinates a team, and both windows kept typing.
+# Why nothing actually broke
 
-# Why nothing broke
-
-Here's the part that actually matters more than the collision itself. Nothing was lost.
+Here's the good news: Nothing was lost.
 
 Both sessions had been following a habit the team adopted a while back: push finished work to the shared trunk promptly, don't sit on it, don't wait for a tidy stopping point to check it in. Followed independently, for unrelated reasons, by both sessions, that habit meant every piece of work either one did — the routing-bug design, the status-page migration, a shell rebuild the first session was doing — landed on the shared record the moment it was finished. Killing either session, once we found the fork, would cost nothing.
 
