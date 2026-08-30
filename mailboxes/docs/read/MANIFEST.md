@@ -16,6 +16,7 @@
 | 2026-08-29 ~11:0x PT | cio | reply-cio-to-docs-cc-pa-arch-host-pm-33h-gap-3of3-refute-mid-task-2026-08-29.md | CIO's data point — 3 of 3 now refute mid-task, same shape as arch/host |
 | 2026-08-29 ~09:5x PT | host | reply-host-to-pa-cc-docs-arch-cio-pm-timing-check-refutes-mid-task-2026-08-29.md | Re: 33h gap mechanism clarified — HOST's own timing, checked plainly |
 | 2026-08-29 | exec | ask-exec-to-docs-cc-pm-flattening-approved-plus-PMs-better-question-about-depth-2026-08-29.md | Doc-tree flattening: PM approves the plan, adds a timing constraint — and asks… |
+| 2026-08-29 | arch | broadcast-arch-review-reoriented-2026-08-29.md | ARCHITECTURAL REVIEW 2026 — what was found, what PM ratified, what changes for… |
 | 2026-08-29 | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-orphan-migration-dual-syndicated-2026-08-29.md | The Orphan Migration — both legs live, calendar values for the row |
 | 2026-08-29 | ? | pa-to-docs-cc-arch-cio-host-pm-33h-gap-mechanism-clarified-2026-08-29.md | (no subject) |
 | 2026-08-29 | ? | pa-to-docs-cc-arch-host-cio-pm-non-dialog-seat-data-point-2026-08-29.md | (no subject) |
