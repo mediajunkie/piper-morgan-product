@@ -77,6 +77,27 @@ With decisions 1–2 made and v0.2 applied, ESSENCE graduates from draft to rati
 line + the amendment log records the trifecta pass). HOST's consent-invariance footnote stays
 as-is until Lead's watched round lands the pending behavioral receipt.
 
+## ADDENDUM 2026-08-30 ~13:0x — CXO and PPM identified a shared root; the fix consolidates
+
+After filing their responses, CXO noticed (and PPM confirmed) that the challenge and the milestone
+amendment are **one defect at two altitudes: ESSENCE's MCP sentences are written in the present
+tense about a future MCP** — once as a capability gap (can't initiate; honesty hedges not yet
+payload-borne), once as a schedule gap (the path's work is milestoned post-beta). Both flagged,
+with exemplary m-45 hygiene, that this is NOT independent corroboration — PPM read CXO's response
+before sweeping the board, so it's one observation with two supporting instances.
+
+**Consequence for the v0.2 edits**: the two uncontested fixes stay, and they're joined by **one
+dated "not yet" line in the build-surface section** stating plainly what the MCP path cannot do
+today and where the enabling work sits: (i) cannot initiate a turn (ritual = response-shaped
+variant until a push-capable surface exists, per the commitment-3 qualification); (ii) honesty
+hedges are not yet payload-borne — commitment 4's enforcement on BYOC currently lives in a floor
+prompt that doesn't exist on that surface (CXO's #1463 trace: the structured `source_failed` field
+travels end-to-end, the hedge instruction doesn't) — probe + tool-output design pending with Lead;
+(iii) the path's build items are milestoned per PM's Decision-2 answer. This is the same tense
+discipline PM already ratified for `experience-across-surfaces.md` ("knows" → "learns"), applied
+to ESSENCE's own prose. **Decision 2 is unchanged and still yours** — the dated line records
+whichever answer you give; it doesn't presuppose one.
+
 ## Recorded with appreciation, no action needed
 
 CXO checked their challenge's load-bearing claim at source (PDR-005:258) rather than from memory,

@@ -220,7 +220,22 @@ days stale.
     doc: `docs/internal/architecture/reviews/2026-08-architectural-review/trifecta-synthesis.md`
     (also carries PM decisions 1 and 3 — the "colleague" headline fork and ESSENCE's ratification
     itself — neither in PA's lane, noted only for completeness). **Still awaiting PM's actual ruling**
-    — bring whichever way it lands into the next BYOC conversation.
+    — bring whichever way it lands into the next BYOC conversation. CXO added one more data point
+    for whoever answers it (not a vote): #1458 and #1463, PDR-006's own *pre-user* gates, are both
+    milestoned Production — consistent with reading (a) since MCP reaches no users before public
+    beta; under (b) both would need to move too, including CXO's own #1463 work.
+  - ⭐ **PA's July Probe-A sequencing insight paid off concretely, 08-30 — worth having on record.**
+    CXO's #1463 BYOC recomposition-rubric work traced the #1425 honesty class in running code and
+    found the structured half (`source_failed`) already exists and travels end-to-end
+    (`first_contact.py`, `context_assembler.py`); only the *rendering* half is a chat-specific floor-
+    prompt instruction with no BYOC analogue. CXO credited PA's 07-30 framing twice — *"your July
+    sequencing call was right and is the reason this is actionable rather than academic"* and *"this
+    is your July sequencing point paying off concretely... we got the answer for one class without
+    needing the probe at all, by reading code."* Ask went to Lead (emit `source_failed` as a
+    structured field in #1688's tool output) — cheap, doesn't need the probe, doesn't block anything.
+    No action for PA; triaged. The recomposition probe itself (Probe B) is still needed for classes
+    that aren't already structured — unchanged status, still gated on the credential question noted
+    elsewhere in this file.
   - **Thread status, restated**: the connector-architecture sub-thread is fully closed (see above).
     PM signaled the next topic is "the BYOC skunkworks project itself, next steps" — still PM's
     timing to initiate, now with ESSENCE.md as the fixed point, plus the milestone question above
