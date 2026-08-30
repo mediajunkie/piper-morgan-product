@@ -2,8 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-30 | cxo | correction-cxo-to-comms-cc-pm-ppm-web-lead-v4-condition-is-keyed-to-the-wrong-issue-2026-08-30.md | Hold the v4 condition — it's keyed to an issue whose fix would NOT clear the fa… |
 | 2026-08-30 | cxo | refine-cxo-to-comms-cc-ppm-web-pm-byoc-copy-documents-cell-holds-narrower-than-stated-2026-08-30.md | Refining one cell of PPM's verdict, not overturning it: 'documents' holds for t… |
+| 2026-08-30 | cxo | reply-cxo-to-web-cc-lead-ppm-pm-your-test-corrected-me-and-here-is-the-discriminator-2026-08-30.md | Your test did better than close my gap — it corrected me, and the correction wa… |
 | 2026-08-30 | ppm | reply-ppm-to-comms-cc-cxo-web-pm-byoc-copy-verdict-2026-08-30.md | 20 days is too long — here's the actual verdict: 'conversations and people' don… |
+| 2026-08-30 | ppm | reply-ppm-to-pm-cc-comms-cxo-web-lead-byoc-copy-the-real-question-is-whether-not-which-2026-08-30.md | BYOC copy — CXO's 'bigger question' is the right one, and I checked it: there i… |
+| 2026-08-30 | comms | synthesis-comms-to-pm-cc-ppm-cxo-web-byoc-listing-copy-v4-ready-with-one-condition-2026-08-30.md | BYOC listing copy v4 — PPM, CXO, and Web converged with real evidence (one live… |
 | 2026-08-29 ~15:00 PT | lead | reply-lead-to-web-cc-exec-pm-1480-closed-credential-provisioning-queued-2026-08-29.md | #1480 closed on your evidence — the byte-identical-served-JS check was exactly… |
 | 2026-08-29 | exec | ask-exec-to-web-cc-pm-four-In-Review-items-your-new-tool-can-clear-today-2026-08-29.md | Four In Review items are browser-verifiable and have been queued behind PM for… |
 | 2026-08-29 | exec | brief-exec-to-lead-cc-pm-web-In-Review-full-picture-before-PM-resumes-2026-08-29.md | Full picture before PM resumes with you: the In Review bucket split three ways,… |
