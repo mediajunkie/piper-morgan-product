@@ -4,19 +4,12 @@ Captures and processes user corrections for learning
 """
 
 from .capture import FeedbackCapture
-from .narrative_bridge import FeedbackNarrativeBridge
-from .narrative_helpers import (
-    acknowledge_feedback,
-    acknowledge_feedback_with_rating,
-    acknowledge_feedback_with_sentiment,
-    get_feedback_formality,
-    is_detailed_feedback,
-    is_negative_feedback,
-    narrate_feedback_type,
-)
 
-# Issue #623: Grammar-conscious response components
-from .response_context import FeedbackResponseContext
+# The Issue-623 grammar-conscious triplet (narrative_bridge / narrative_helpers /
+# response_context) was disposed 2026-08-30 in the Batch-2 census-dead-family
+# disposal — loaded-only, zero call sites. Retrievable by commit hash via the
+# disposal record in decisions.log. The pattern's in-tree exemplar lives on in
+# services/onboarding/narrative_bridge.py.
 
 # Note: We'll create the global instance in main.py after Redis is initialized
 # since FeedbackCapture requires a Redis connection
@@ -24,15 +17,4 @@ from .response_context import FeedbackResponseContext
 __all__ = [
     # Capture
     "FeedbackCapture",
-    # Response context
-    "FeedbackResponseContext",
-    "FeedbackNarrativeBridge",
-    # Narrative helpers
-    "acknowledge_feedback",
-    "acknowledge_feedback_with_sentiment",
-    "acknowledge_feedback_with_rating",
-    "narrate_feedback_type",
-    "get_feedback_formality",
-    "is_negative_feedback",
-    "is_detailed_feedback",
 ]

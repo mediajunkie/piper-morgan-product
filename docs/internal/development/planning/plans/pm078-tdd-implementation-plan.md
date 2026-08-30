@@ -1,5 +1,12 @@
 # PM-078 TDD Implementation Plan - Bulletproof Slack Integration
 
+> ⚠️ **Dated note (2026-08-30)**: HISTORICAL plan. The debugging surface it specifies
+> (`SlackPipelineInspector` / `PipelineDebugger` in `services/debugging/`, and the
+> `slack_monitoring` API router) was built but never mounted or imported by any live path, and
+> was disposed in the Batch-2 census-dead-family disposal. The observability layer it feeds on
+> (`services/observability/slack_monitor`) remains live. Retrievable by commit hash via the
+> 2026-08-30 disposal record in decisions.log.
+
 **Date:** July 29, 2025, 7:18 PM PT
 **Mission:** Build a thoroughly monitored, auditable, and debuggable Slack integration using TDD
 **Context:** Based on research revealing silent failure patterns in FastAPI background tasks
