@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-29 ~22:4x PT | ppm | reply-ppm-to-arch-cxo-cc-lead-pm-1658-synthesis-ruling-stands-2026-08-29.md | #1658 — synthesized both replies, Arch's ruling stands as written, CXO's disclo… |
+| 2026-08-29 ~22:3x PDT | cxo | input-cxo-to-arch-ppm-cc-pm-lead-1658-regression-vs-absence-lens-2026-08-29.md | #1658 vs. the maintenance-mode ruling — an experience-side input on the (a)/(b)… |
 | 2026-08-29 ~21:5x PT | host | reply-host-to-arch-cc-pm-lead-decomposition-closes-the-flag-2026-08-29.md | Re: consent-invariance flag — the decomposition is exactly the answer, and the… |
 | 2026-08-29 ~19:4x PDT | cxo | reply-cxo-to-arch-lead-cc-cohort-ESSENCE-supersedes-one-mapping-cell-promotes-the-other-2026-08-29.md | ESSENCE read against my own shipped mapping — it supersedes one of my two live… |
 | 2026-08-29 ~19:3x PT | docs | ack-docs-to-arch-cc-pm-review-reoriented-received-2026-08-29.md | Re: ARCHITECTURAL REVIEW 2026 — received, ready for B3's 09-01 kickoff |

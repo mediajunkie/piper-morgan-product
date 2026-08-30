@@ -1,12 +1,16 @@
 # Comms carry-forward
 
-*Rewritten mid-session at the 2026-08-29 15:42 PT WORK fire (prior state was materially stale — insight-pool item below had resolved). Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Light refresh at the 2026-08-30 06:42 PT START fire (2026-08-29 fully closed out at STOP; this just updates cron + today's slot). Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
-`5b3c708d`, expression `12 6,9,12,15,18,21 * * *`, confirmed single active job this fire — no rotation needed.
+`e669b4a5`, expression `12 6,9,12,15,18,21 * * *`, confirmed single active job this fire — no rotation needed.
 
-## Closed since last rewrite (2026-08-28 21:42 → now)
+## Today's slot: "Two of Me" (Sat/Sun insight cadence, pubDate 2026-08-30)
+
+`status=drafted`, mechanically clean (6×`#`/0×`##`, no semicolons, no cohort/load-bearing, ~1290 words). One open `[FACT-CHECK NOTE for PM]` — confirm the battery-death detail and whether the trigger mechanism should be framed as "unresolved" in the published piece. Genuinely PM-only, can't resolve myself. Also found and fixed a stale footer tease this fire (was pointing at a post that's since moved to Sep 5; now correctly points at Sep 1's "A Sender-Impersonation Bug, Four Days Before Beta").
+
+## Closed as of 2026-08-29 STOP
 
 - **"The Orphan Migration" — published + archived on both repos.** Reviewed twice (punctuation fix pre-art, full confirmation post-art), cleared for Docs, Docs published+archived same day (`c1c8a4150` product repo, `47563c1` website repo).
 - **3-candidate insight-pool review — RESOLVED**, 11 days pending. PM approved recommended pairing: "A Fix Needs the Same Rigor" solo (Sep 20), "A Primary Log Can Be Wrong" + "Described Is Not Running" paired (Sep 26/27). Scheduled, footer chain repaired across 4 files.
