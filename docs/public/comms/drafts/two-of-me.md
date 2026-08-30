@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'two-of-me-ai-lighthouse.png'
 alt: ''
 caption: ''
 ---
