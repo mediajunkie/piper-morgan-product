@@ -298,6 +298,11 @@ class GitHubConfigService:
         Integrates with FeatureFlags utility following ADR-010 patterns.
         """
         feature_flag_methods = {
+            # NOTE (2026-08-30, census disposal Batch 3): the module this flag
+            # gated (services/integrations/github/production_client.py) was
+            # disposed — zero callers ever consulted the flag to construct it.
+            # Entry retained so the get_configuration_summary() status shape
+            # stays stable; it now reports a preference with no consumer.
             "production_client": self._is_production_client_enabled,
             "enhanced_error_handling": self._is_enhanced_error_handling_enabled,
             "content_generation": self._is_content_generation_enabled,
