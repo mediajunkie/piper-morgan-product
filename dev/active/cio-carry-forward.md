@@ -1,7 +1,8 @@
 # CIO carry-forward — rewritten 2026-08-29 (22:37 STOP)
 
-**Cron**: rotating this STOP (48h window per the 2026-08-24 22:37 arm date) — see new job ID below,
-recorded immediately after rotation.
+**Cron**: `5f503ea5` · `7 10,16,22` LEAN · rotated (delete-then-create) 2026-08-29 22:37 from
+`f5a0d090` (the 48h-window rotation) · verified via `CronList` — exactly one job survived ·
+**auto-expires ~2026-09-05 22:37**.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
