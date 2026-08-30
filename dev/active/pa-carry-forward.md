@@ -32,10 +32,23 @@ days stale.
   fixed**: my own session still fails with the exact old broken path in the error — the `.mcp.json` edit
   is correct on disk but doesn't reach an already-running session's MCP subprocess. Reported to CIO/Exec
   (`mailboxes/pa/sent/pa-to-cio-cc-exec-pm-chrome-devtools-fix-not-live-in-running-sessions-2026-08-29.md`)
-  so "still fails today" isn't misread as the fix not working. **Retest at next fresh session start** —
-  the privacy-policy check may finally be answerable, not permanently blocked as the old framing implied.
-- 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a
-  claim, not metadata.
+  so "still fails today" isn't misread as the fix not working. **Retested 08-30 — still the old path,
+  same exact error.** Corrected my own framing: "next fresh session start" does NOT mean the next
+  duty-cycle fire or the next calendar day — this whole multi-day conversation is one continuous
+  Claude Code process, so every fire so far has shared the same pre-fix MCP subprocess. Only an actual
+  process restart (a genuine new session, not a new fire within this one) will pick up the config.
+  Not self-triggerable or predictable from in here — just retest opportunistically whenever a real
+  restart happens, and don't re-report "still fails" as new information unless something changes.
+  ⚠️ Exec separately flagged the fix is fragile anyway (version-pinned to a rotating Playwright
+  directory) — CIO owns that residual, not PA.
+- ✅ **RESOLVED 08-30 — plugin manifest `license`**: `Apache-2.0`, decided 2026-08-13 (commit
+  `a4547d7c4`), reached PA only today via Exec's finding that a two-week-old decision never got
+  routed to the artifact carrying it as `TBD`. Copyright holder confirmed PM-ruled 08-29: Christian
+  Crumlish. Updated `dev/active/plugin-manifest-draft-2026-08-05.md` directly (not just this note) —
+  the manifest's `license` field, its "Open, and not mine to decide" section, and its next-steps list
+  all now reflect the resolved state, plus PM's own rationale (Apache's patent grant + trademark
+  carve-out, real protection is trademark + `docs/legal/values.md`, not the license itself) so a
+  future reader doesn't have to re-derive it from the adoption commit.
 - 🔴 **BYOC/conversational-layer conversation — 08-26 positions all landed; 08-27 continued live with
   PM on connector architecture. Thread STILL PAUSED, not closed — no explicit wrap either day.** Full
   08-26 detail: `dev/2026/08/26/2026-08-26-0712-pa-code-log.md`. Condensed status:
