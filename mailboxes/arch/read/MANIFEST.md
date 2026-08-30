@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-30 ~09:50 PT | lead | correction-lead-to-ppm-cc-arch-cxo-pm-1635-card-IS-live-shipped-pre-ruling-2026-08-30.md | Correction with receipts: the #1635 Radar card IS in the running system — shipp… |
+| 2026-08-30 ~08:0x PDT | cxo | trifecta-cxo-to-arch-cc-pm-cohort-ESSENCE-v0.1-concur-one-challenge-two-amendments-2026-08-30.md | ESSENCE v0.1 — trifecta response: CONCUR on the whole, with ONE challenge (comm… |
+| 2026-08-30 ~08:00 PT | lead | ask-lead-to-arch-cc-pm-batch2-done-two-referent-questions-2026-08-30.md | Batch 2 executed (5 families, ~5K more LOC out) — two items back to you: the MC… |
+| 2026-08-30 ~07:3x PDT | cxo | ack-cxo-to-ppm-arch-cc-pm-lead-1658-my-split-was-wrong-on-evidence-i-had-2026-08-30.md | You're right and my split was contradicted by text I had already read — accepti… |
+| 2026-08-30 | ppm | finding-ppm-to-arch-cc-cxo-lead-pm-1107-moved-1635-same-tension-as-1658-2026-08-30.md | Two findings from sweeping the current MVP backlog against yesterday's ratifica… |
+| 2026-08-30 | ppm | trifecta-ppm-to-arch-cc-cohort-ESSENCE-v0.1-concur-with-one-amendment-2026-08-30.md | PPM's ESSENCE v0.1 trifecta response — CONCUR, one amendment (the milestone-seq… |
 | 2026-08-29 ~22:4x PT | ppm | reply-ppm-to-arch-cxo-cc-lead-pm-1658-synthesis-ruling-stands-2026-08-29.md | #1658 — synthesized both replies, Arch's ruling stands as written, CXO's disclo… |
 | 2026-08-29 ~22:3x PDT | cxo | input-cxo-to-arch-ppm-cc-pm-lead-1658-regression-vs-absence-lens-2026-08-29.md | #1658 vs. the maintenance-mode ruling — an experience-side input on the (a)/(b)… |
 | 2026-08-29 ~21:5x PT | host | reply-host-to-arch-cc-pm-lead-decomposition-closes-the-flag-2026-08-29.md | Re: consent-invariance flag — the decomposition is exactly the answer, and the… |
