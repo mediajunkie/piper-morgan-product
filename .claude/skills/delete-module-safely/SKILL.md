@@ -44,6 +44,15 @@ class, 6 instances named by Arch). For module `pkg.mod`:
 5. **Non-code referents** — CI workflows (a deleted directory was still a
    `--cov` target and an inline-python import in test.yml), scripts/, docs
    that describe the module as live, config files listing its paths.
+6. **ALL python roots, not just services/+web/+tests/** — sweep `cli/`,
+   `coordination/`, `rag/`, `shared/`, `skunkworks/`, `suggestions/`,
+   `tools/`, `alembic/`, `scripts/` too. `cli/` is pytest-invisible
+   (testpaths=tests) and was outside the 2026-08 census denominator; it held
+   a live importer of a Batch-3 target AND a broken import of a Batch-1
+   deletion that nothing surfaced for a day (#1700, 2026-08-30). A root no
+   collector touches is exactly where a stranded importer hides silently.
+   And don't `| head`-truncate sweep output — truncation hid two dedicated
+   test files in the same batch; use `grep -rl` file-level output instead.
 
 ## The cut
 - `git rm` explicit paths only. Family tests (dedicated test files) ride the
