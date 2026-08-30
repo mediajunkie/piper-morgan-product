@@ -67,7 +67,7 @@ false negative. **Never `head` a search you intend to draw a NEGATIVE conclusion
   },
   "homepage": "https://pipermorgan.ai",
   "repository": "https://github.com/mediajunkie/piper-morgan-product",
-  "license": "TBD — PM decision, see below",
+  "license": "Apache-2.0",
   "keywords": ["product-management", "pm", "issues", "github", "notion"]
 }
 ```
@@ -76,10 +76,21 @@ false negative. **Never `head` a search you intend to draw a NEGATIVE conclusion
 **authorable** — `http` transport with `url` + `headersHelper` — but is deliberately still absent here
 until `mcp.pipermorgan.ai` exists and its auth shape is decided (Phase 2, Arch's condition 1).
 
+### Resolved
+
+- ✅ **`license`** — `Apache-2.0`, adopted 2026-08-13 (commit `a4547d7c4`; `LICENSE` + `NOTICE` at repo
+  root). This was decided two weeks before it reached this draft — the delay, not the decision, was
+  the defect (Exec's finding, 2026-08-30). Copyright holder confirmed PM-ruled 2026-08-29: Christian
+  Crumlish. **Why Apache over MIT** (PM's own rationale, from the adoption commit): the explicit patent
+  grant and trademark carve-out (§6), dovetailing with a separate trademark process — the real concern
+  was an "evil Piper" fork stripping the ethical architecture, which **no OSS license family
+  prevents** (freedom-to-run-for-any-purpose is foundational to OSD/FSF definitions). The actual
+  protection is trademark + `docs/legal/values.md`, referenced via `NOTICE` §4(d) — **the license is
+  deliberately not doing that work.** If this manifest or its listing copy ever touches values/ethics/
+  what-a-fork-owes, `values.md` is the load-bearing artifact, not this field.
+
 ### Open, and not mine to decide
 
-- **`license`** — the repo is public (PM confirmed), but *public* is not the same as *licensed*. A
-  directory submission naming a license we haven't chosen is a claim, not metadata. **PM's call.**
 - **`version`** — `0.1.0` is a placeholder. Note the reference's behaviour: **setting `version` pins the
   plugin to that string and users only get updates when it's bumped; omitting it falls back to the git
   commit SHA, so every commit is a new version.** For a beta that ships often, that's a real choice, not
@@ -91,6 +102,6 @@ until `mcp.pipermorgan.ai` exists and its auth shape is decided (Phase 2, Arch's
 ## Next, in order
 
 1. ✅ **Remote-MCP question answered** — supported; no shim owed; `headersHelper` carries condition 1.
-2. **PM: license.**
-3. Only then is `claude plugin validate` meaningful — and note **it can't run from my seat**: `claude` is
-   not on PATH or at the common install paths here.
+2. ✅ **License answered** — `Apache-2.0`, decided 08-13, confirmed to this draft 08-30.
+3. `claude plugin validate` is now meaningful against the two resolved fields above — still note
+   **it can't run from my seat**: `claude` is not on PATH or at the common install paths here.
