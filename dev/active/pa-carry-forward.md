@@ -156,9 +156,37 @@ days stale.
     (Arch's gate 2) comes off the critical path entirely, since it was only needed to de-risk a flip
     that isn't happening. Nothing owed by PA, PPM, or Arch on this going forward.
   - **Thread status — genuinely fully resolved as of 08-28 evening**: all three loop-in recipients
-    (CXO, PPM, Arch) have now responded; every question raised in the 08-27 memo has a home. PM
-    signaled the next topic is "the BYOC skunkworks project itself, next steps" — a new phase, not yet
-    started, PM's timing to initiate.
+    (CXO, PPM, Arch) have now responded; every question raised in the 08-27 memo has a home.
+  - 🔴 **MAJOR NEW CONTEXT, 08-29 — ESSENCE.md v0.1 is now the fixed point for the next BYOC
+    conversation with PM.** PM+Arch ran a full "Architectural Review 2026" (9 discovery legs, a
+    docs-blind 491-module census, clean-room paper-rebuild test) and PM ratified a genuinely
+    load-bearing set of decisions same-day (`docs/internal/architecture/ESSENCE.md`,
+    `docs/internal/architecture/reviews/2026-08-architectural-review/`). Arch's cohort-wide
+    broadcast explicitly named PA: *"no action owed. PA — the BYOC convergence discussion you're
+    steering with PM now has the essence doc as its fixed point."*
+    - **All NEW build effort goes to the MCP/BYOC path, effective now** — not a future fork per
+      08-26's "one track that forks once the shared foundation is done," but the live sequencing
+      decision as of today. **Web-chat is explicitly in maintenance mode**: bugs fixed, nothing new
+      built. This is an acceleration/sharpening of Position 1, not a contradiction of it.
+    - **A new, sharper connector rule** (ESSENCE commitment #6): *"Piper's backend holds a grant
+      only where it must act without the user present (standup generation, background reflection,
+      document mirroring); in-conversation reads of third-party services belong to the host's own
+      connectors."* This is a more precise successor to the 08-27 shim-vs-real-MCP finding — it
+      suggests Piper shouldn't be building its own in-conversation connector reads at all in the
+      target architecture, only holding grants for background/no-user-present work. Worth bringing
+      into the next BYOC conversation explicitly, not just filed away.
+    - **Connector status list matches PA's own 08-27 finding almost verbatim**, now official: GitHub
+      real MCP (load-bearing); Calendar honest SDK shim; Notion REST, held grant now governed by
+      **Bet 003** (the new scope-bet-gate mechanism — a named, PM-ratified justification, not just
+      "cheap to maintain"); **Slack descoped to Fast Follow, adapter dead** — exactly PA's
+      recommendation, now load-bearing architecture doc language.
+    - **Not PA's to act on** — none of the four reorientation workstreams (Socialize/Docs-reform/
+      Code/presumably a fourth) name PA as owner; CXO+PPM are the "directional trifecta" who must
+      read-and-respond on ESSENCE by Wed 09-02, not PA. PA's job is to bring this into the next BYOC
+      conversation with PM as context, not to execute on the review itself.
+  - **Thread status, restated**: the connector-architecture sub-thread is fully closed (see above).
+    PM signaled the next topic is "the BYOC skunkworks project itself, next steps" — still PM's
+    timing to initiate, now with ESSENCE.md as the fixed point that conversation should reference.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
