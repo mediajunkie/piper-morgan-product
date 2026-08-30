@@ -32,10 +32,23 @@ days stale.
   fixed**: my own session still fails with the exact old broken path in the error — the `.mcp.json` edit
   is correct on disk but doesn't reach an already-running session's MCP subprocess. Reported to CIO/Exec
   (`mailboxes/pa/sent/pa-to-cio-cc-exec-pm-chrome-devtools-fix-not-live-in-running-sessions-2026-08-29.md`)
-  so "still fails today" isn't misread as the fix not working. **Retest at next fresh session start** —
-  the privacy-policy check may finally be answerable, not permanently blocked as the old framing implied.
-- 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a
-  claim, not metadata.
+  so "still fails today" isn't misread as the fix not working. **Retested 08-30 — still the old path,
+  same exact error.** Corrected my own framing: "next fresh session start" does NOT mean the next
+  duty-cycle fire or the next calendar day — this whole multi-day conversation is one continuous
+  Claude Code process, so every fire so far has shared the same pre-fix MCP subprocess. Only an actual
+  process restart (a genuine new session, not a new fire within this one) will pick up the config.
+  Not self-triggerable or predictable from in here — just retest opportunistically whenever a real
+  restart happens, and don't re-report "still fails" as new information unless something changes.
+  ⚠️ Exec separately flagged the fix is fragile anyway (version-pinned to a rotating Playwright
+  directory) — CIO owns that residual, not PA.
+- ✅ **RESOLVED 08-30 — plugin manifest `license`**: `Apache-2.0`, decided 2026-08-13 (commit
+  `a4547d7c4`), reached PA only today via Exec's finding that a two-week-old decision never got
+  routed to the artifact carrying it as `TBD`. Copyright holder confirmed PM-ruled 08-29: Christian
+  Crumlish. Updated `dev/active/plugin-manifest-draft-2026-08-05.md` directly (not just this note) —
+  the manifest's `license` field, its "Open, and not mine to decide" section, and its next-steps list
+  all now reflect the resolved state, plus PM's own rationale (Apache's patent grant + trademark
+  carve-out, real protection is trademark + `docs/legal/values.md`, not the license itself) so a
+  future reader doesn't have to re-derive it from the adoption commit.
 - 🔴 **BYOC/conversational-layer conversation — 08-26 positions all landed; 08-27 continued live with
   PM on connector architecture. Thread STILL PAUSED, not closed — no explicit wrap either day.** Full
   08-26 detail: `dev/2026/08/26/2026-08-26-0712-pa-code-log.md`. Condensed status:
@@ -196,12 +209,37 @@ days stale.
     phases (build-independent work, the identity boundary) move into MVP now, so "beta" isn't reached
     by finishing a surface the product is moving away from. PPM's own weak lean is (a). **This is the
     live sequencing question sitting directly under the BYOC conversation PA is steering** — whichever
-    way it resolves shapes what "next steps" for BYOC even means. Watch for Arch's or PM's answer;
-    bring it into the next BYOC conversation explicitly rather than assume it's settled.
+    way it resolves shapes what "next steps" for BYOC even means.
+  - **SHARPENED 08-30 — Arch's A3 trifecta synthesis (delivered 4 days early) frames this as one of
+    exactly three explicit PM decisions**, not left as an open finding: *"That's a question about
+    what beta IS, which is yours."* Arch's own lean matches PPM's — option (a), record it explicitly
+    in `decisions.log` + a note on #1462 rather than let C5 sequencing resolve it by implication, and
+    revisit at the beta gate. The one architectural fact stated without deciding: PDR-006's fail-
+    closed identity boundary gates the *next-rung* population regardless of which milestone it lives
+    in — so the real question is what "beta" is defined to include, not a technical dependency. Full
+    doc: `docs/internal/architecture/reviews/2026-08-architectural-review/trifecta-synthesis.md`
+    (also carries PM decisions 1 and 3 — the "colleague" headline fork and ESSENCE's ratification
+    itself — neither in PA's lane, noted only for completeness). **Still awaiting PM's actual ruling**
+    — bring whichever way it lands into the next BYOC conversation. CXO added one more data point
+    for whoever answers it (not a vote): #1458 and #1463, PDR-006's own *pre-user* gates, are both
+    milestoned Production — consistent with reading (a) since MCP reaches no users before public
+    beta; under (b) both would need to move too, including CXO's own #1463 work.
+  - ⭐ **PA's July Probe-A sequencing insight paid off concretely, 08-30 — worth having on record.**
+    CXO's #1463 BYOC recomposition-rubric work traced the #1425 honesty class in running code and
+    found the structured half (`source_failed`) already exists and travels end-to-end
+    (`first_contact.py`, `context_assembler.py`); only the *rendering* half is a chat-specific floor-
+    prompt instruction with no BYOC analogue. CXO credited PA's 07-30 framing twice — *"your July
+    sequencing call was right and is the reason this is actionable rather than academic"* and *"this
+    is your July sequencing point paying off concretely... we got the answer for one class without
+    needing the probe at all, by reading code."* Ask went to Lead (emit `source_failed` as a
+    structured field in #1688's tool output) — cheap, doesn't need the probe, doesn't block anything.
+    No action for PA; triaged. The recomposition probe itself (Probe B) is still needed for classes
+    that aren't already structured — unchanged status, still gated on the credential question noted
+    elsewhere in this file.
   - **Thread status, restated**: the connector-architecture sub-thread is fully closed (see above).
     PM signaled the next topic is "the BYOC skunkworks project itself, next steps" — still PM's
-    timing to initiate, now with ESSENCE.md as the fixed point, plus the live MVP-vs-Production
-    milestone question above as something that conversation may need to actually settle.
+    timing to initiate, now with ESSENCE.md as the fixed point, plus the milestone question above
+    (crisply framed, PM's ruling pending) as something that conversation may need to actually settle.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
   to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
   registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in

@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-30 | dispatch-pm | memo-dispatch-pm-to-comms-cc-docs-exec-xian-backlog-retracted-verified-against-platforms-2026-08-30.md | RETRACTION — the backlog is one leg, not four. I verified the record against it… |
+| 2026-08-30 | dispatch-pm | memo-dispatch-pm-to-comms-cc-docs-exec-xian-syndication-backlog-verified-2026-08-30.md | Backlog verified — 3 posts / 4 legs, not 3 + 1 partial; and `status` can't be t… |
 | 2026-08-29 | arch | broadcast-arch-review-reoriented-2026-08-29.md | ARCHITECTURAL REVIEW 2026 — what was found, what PM ratified, what changes for… |
 | 2026-08-28 ~11:5x PT | dispatch-pm | memo-dispatch-pm-to-exec-cc-docs-web-comms-xian-brokering-ratified-2026-08-28.md | xian has approved and ratified the cross-project brokering proposal — it's live… |
 | 2026-08-28 08:5x PT | docs | 2026-08-28-docs-heading-defect-sweep-complete-7-more-live-posts-fixed.md | Heading-defect sweep complete — 7 more live posts fixed (Dispatch-PM's original… |

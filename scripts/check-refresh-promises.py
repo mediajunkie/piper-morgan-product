@@ -381,9 +381,134 @@ def trigger_sent_mode(sent_path):
     return 0  # advisory only — never a failure signal, matching the mail-send.sh contract this hooks into
 
 
+# ── STATE-FILES MODE (CXO's design, docs/internal/design/tracked-state-staleness-design-2026-08-29.md)
+# The class this covers is DIFFERENT from the promise-vs-event class above: a carry-forward's claim
+# is CADENCE-shaped ("rewritten at every STOP"), checkable only against time and the agent's own
+# rhythm, not against a trigger artifact. CXO measured all 11 real carry-forwards before designing
+# this: 7 of 11 declared no date at all; CXO's own header was actively wrong at the moment of
+# measuring. Same script per CXO's own weak lean (§5 of the design doc) — frontmatter reading,
+# denominator reporting, and honest-declaration handling are already here; a cadence predicate is a
+# different CHECK on the same substrate, not a different substrate.
+STATE_FILE_GLOBS = [
+    "dev/active/*-carry-forward.md",
+    "dev/active/*-standing-items.md",
+]
+
+CURRENCY_KEYS = ("currency_claim", "max_age_days")
+
+
+def _parse_iso_date(s):
+    import datetime
+
+    m = ISO.match(s or "")
+    if not m:
+        return None
+    y, mo, d = (int(g) for g in m.groups())
+    try:
+        return datetime.date(y, mo, d)
+    except ValueError:
+        return None
+
+
+def state_files_mode(role=None):
+    """Cadence-predicate check for tracked-state files (carry-forwards, standing-items).
+    role=None audits every role's tracked-state files (cohort-wide sweep, denominator-reported
+    like main()); a role slug scopes to just that role's own files — the shape duty-cycle-tick's
+    Step 3 calls at START, right where it already reads the carry-forward, per the design doc's
+    §3(b). Reads only, never writes. Exit 1 only if a DECLARED claim is actually stale — same
+    contract as main(): a green here means the declared/checked set held, not that every tracked-
+    state file in the cohort is current (the undeclared bucket is the finding, not a pass)."""
+    import datetime
+
+    candidates = []
+    for g in STATE_FILE_GLOBS:
+        candidates.extend(sorted(glob.glob(str(ROOT / g))))
+
+    if role:
+        candidates = [c for c in candidates if Path(c).name.startswith(f"{role}-")]
+
+    checked = 0
+    stale = 0
+    declared_none = []
+    undeclared = []
+    malformed = []
+    today = datetime.date.today()
+
+    print(f"── tracked-state staleness check{f' ({role})' if role else ''} ──────────────────────")
+    for c in candidates:
+        path = Path(c)
+        if not path.exists():
+            continue
+        rel = str(path.relative_to(ROOT))
+        fm = frontmatter(path)
+
+        if not any(k in fm for k in CURRENCY_KEYS) and "last_updated" not in fm:
+            undeclared.append(f"{rel} — no currency_claim/max_age_days/last_updated at all")
+            continue
+
+        claim = fm.get("currency_claim", "").strip().lower()
+        updated_raw = fm.get("last_updated", "")
+
+        if claim == "none":
+            declared_none.append(f"{rel} — currency_claim: none, declared honest (like refresh_verifiability: by-hand)")
+            continue
+
+        if not claim or "max_age_days" not in fm:
+            undeclared.append(f"{rel} — has last_updated but no currency_claim/max_age_days pair (not yet migrated)")
+            continue
+
+        updated = _parse_iso_date(updated_raw)
+        try:
+            max_age = int(fm.get("max_age_days", ""))
+        except ValueError:
+            max_age = None
+
+        if updated is None or max_age is None:
+            malformed.append(f"{rel} — currency_claim {claim!r} declared but last_updated={updated_raw!r} / max_age_days={fm.get('max_age_days')!r} unparseable")
+            continue
+
+        checked += 1
+        age_days = (today - updated).days
+        print()
+        print(f"▸ {rel}  (claim: {claim}, max {max_age}d)")
+        if age_days > max_age:
+            stale += 1
+            print(f"  ✗ STALE — last_updated {updated_raw}, {age_days}d old, claim allows {max_age}d.")
+            print(f"    Its header is not evidence; the frontmatter is what's being checked.")
+        else:
+            print(f"  ✓ current — last_updated {updated_raw}, {age_days}d old, within its own {max_age}d claim.")
+
+    print()
+    print("── coverage ─────────────────────────────────────────────────────────────────")
+    total = checked + len(declared_none) + len(undeclared) + len(malformed)
+    print(f"tracked-state files examined: {total}")
+    print(f"  verifiable and checked: {checked}")
+    print(f"  declared currency_claim: none (honest, not a failure): {len(declared_none)}")
+    for d in declared_none:
+        print(f"    · {d}")
+    print(f"  UNDECLARED (no checkable claim at all — the finding, per CXO's measurement): {len(undeclared)}")
+    for u in undeclared:
+        print(f"    ✗ {u}")
+    if malformed:
+        print(f"  malformed: {len(malformed)}")
+        for m_ in malformed:
+            print(f"    ✗ {m_}")
+    print()
+    if stale:
+        print(f"✗ Exit 1: {stale} of {checked} VERIFIABLE tracked-state claim(s) are stale.")
+    else:
+        print(f"✓ Exit 0 means: none of the {checked} VERIFIABLE claim(s) are stale.")
+    print(f"  It does NOT mean the other {total - checked} are current — {len(undeclared)} of them")
+    print("  make no checkable claim at all. Read the coverage block before treating green as a")
+    print("  statement about the whole tracked-state population.")
+    return 1 if stale else 0
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--diff":
         sys.exit(diff_mode(sys.argv[2] if len(sys.argv) > 2 else "HEAD"))
     if len(sys.argv) > 2 and sys.argv[1] == "--trigger-sent":
         sys.exit(trigger_sent_mode(sys.argv[2]))
+    if sys.argv[1:2] == ["--state-files"]:
+        sys.exit(state_files_mode(sys.argv[2] if len(sys.argv) > 2 else None))
     sys.exit(main())
