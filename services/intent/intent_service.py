@@ -2226,6 +2226,24 @@ class IntentService:
                                 error="todo lookup failed at the #1190 confirm gate",
                                 error_type="TodoDeleteConfirmLookupError",
                             )
+                        if _todo_gate.clarification is not None:
+                            # #1527 named-target leg: the named target
+                            # resolved to zero or several todos — an honest
+                            # ask/didn't-find turn in todo/reminder
+                            # vocabulary (never a project lookup). Nothing
+                            # armed, nothing deleted.
+                            return IntentProcessingResult(
+                                success=True,
+                                message=_todo_gate.clarification,
+                                intent_data={
+                                    "category": intent.category.value,
+                                    "action": intent.action,
+                                    "confidence": intent.confidence,
+                                },
+                                requires_clarification=True,
+                                suggestions=all_suggestions,
+                                preferences=preferences,
+                            )
                         _confirmation = _todo_gate.offer
                     else:
                         _confirmation = build_confirmation_offer(intent)

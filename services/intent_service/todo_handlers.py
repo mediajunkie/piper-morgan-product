@@ -87,6 +87,73 @@ _STOPWORDS = frozenset(
 _FUZZY_MATCH_THRESHOLD = 0.3
 
 
+# --- shared title matcher (pure, module-level) ------------------------------
+#
+# #904 built this as TodoIntentHandlers methods for the completion path;
+# the #1527 named-target delete gate (destructive_confirm.
+# build_todo_delete_confirmation) needs the SAME matching — same word-overlap
+# score, same _FUZZY_MATCH_THRESHOLD — so the mechanism lives here as pure
+# functions and both callers delegate. One matcher, two policies: completion
+# takes the best match (unchanged #904 behavior); the DESTRUCTIVE delete gate
+# branches on the candidate count (single → title-bound confirm, several →
+# ask which, none → honest didn't-find). Pure functions by design (the
+# SessionSnapshot-lift note): no self, no I/O — the todos list comes in as
+# an argument.
+
+
+def _meaningful_words(text: str) -> frozenset:
+    """The non-stopword word set of ``text`` (lowercased)."""
+    return frozenset(w for w in re.findall(r"\w+", text.lower()) if w not in _STOPWORDS)
+
+
+def fuzzy_todo_match_score(query: str, candidate: str) -> float:
+    """Score how well query words match candidate words (0.0 to 1.0).
+
+    Word overlap with stopword filtering: the fraction of meaningful query
+    words found in the candidate (#904's mechanism, verbatim).
+    """
+    query_words = _meaningful_words(query)
+    candidate_words = _meaningful_words(candidate)
+
+    if not query_words:
+        return 0.0
+
+    overlap = query_words & candidate_words
+    return len(overlap) / len(query_words)
+
+
+def match_todos_by_text(search_text: str, todos: List[Todo]) -> List[Tuple[float, Todo]]:
+    """All todos scoring >= _FUZZY_MATCH_THRESHOLD against ``search_text``,
+    best first (stable sort: list order breaks ties)."""
+    if not todos or not search_text:
+        return []
+    scored = [(fuzzy_todo_match_score(search_text, todo.text), todo) for todo in todos]
+    scored = [(score, todo) for score, todo in scored if score >= _FUZZY_MATCH_THRESHOLD]
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return scored
+
+
+def resolve_named_todo_target(search_text: str, todos: List[Todo]) -> List[Todo]:
+    """Resolve a NAMED todo target to its candidate rows — exact → fuzzy.
+
+    Exact tier: a candidate whose meaningful word set equals the query's
+    exactly. A UNIQUE exact match wins outright (so "call mom" against
+    ["call mom", "call the dentist"] is one match, not an ambiguity).
+    Otherwise every fuzzy candidate at the shared threshold comes back,
+    best first — the caller decides what multiple candidates mean (the
+    delete gate asks which; completion's best-match policy never calls
+    this, it takes ``match_todos_by_text``'s head).
+    """
+    query_words = _meaningful_words(search_text)
+    if not query_words:
+        return []
+    scored = match_todos_by_text(search_text, todos)
+    exact = [todo for _, todo in scored if _meaningful_words(todo.text) == query_words]
+    if len(exact) == 1:
+        return exact
+    return [todo for _, todo in scored]
+
+
 # --- #1648: the reminder time-clarify carrier -------------------------------
 #
 # Instance 2 of the #1648 fabrication incident: handle_create_reminder's
@@ -1060,38 +1127,16 @@ class TodoIntentHandlers:
         """Find the todo that best matches the search text using fuzzy word overlap.
 
         Returns the best matching todo if score >= threshold, else None.
+        Delegates to the shared module-level matcher (see the "shared title
+        matcher" block above) — the same mechanism the named-target delete
+        gate resolves against.
         """
-        if not todos or not search_text:
-            return None
+        scored = match_todos_by_text(search_text, todos)
+        return scored[0][1] if scored else None
 
-        scored: List[Tuple[float, Todo]] = []
-        for todo in todos:
-            score = self._fuzzy_match_score(search_text, todo.text)
-            if score >= _FUZZY_MATCH_THRESHOLD:
-                scored.append((score, todo))
-
-        if not scored:
-            return None
-
-        # Sort by score descending, return best match
-        scored.sort(key=lambda x: x[0], reverse=True)
-        return scored[0][1]
-
-    @staticmethod
-    def _fuzzy_match_score(query: str, candidate: str) -> float:
-        """Score how well query words match candidate words (0.0 to 1.0).
-
-        Uses word overlap with stopword filtering. Score is the fraction
-        of meaningful query words found in the candidate.
-        """
-        query_words = {w for w in re.findall(r"\w+", query.lower()) if w not in _STOPWORDS}
-        candidate_words = {w for w in re.findall(r"\w+", candidate.lower()) if w not in _STOPWORDS}
-
-        if not query_words:
-            return 0.0
-
-        overlap = query_words & candidate_words
-        return len(overlap) / len(query_words)
+    # Shared with the named-target delete gate — one matcher, both callers
+    # (see the module-level "shared title matcher" block).
+    _fuzzy_match_score = staticmethod(fuzzy_todo_match_score)
 
     @staticmethod
     def _wants_completed_todos(message: str) -> bool:

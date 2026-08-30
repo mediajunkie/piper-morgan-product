@@ -242,16 +242,20 @@ def todo_boundary(monkeypatch):
 class TestEndToEndRoutedDestination:
     pytestmark = pytest.mark.asyncio
 
-    @pytest.mark.parametrize("phrase", PM_PHRASES)
-    async def test_pm_phrasings_land_in_the_todo_family_not_a_project_lookup(
+    @pytest.mark.parametrize(
+        "phrase", ("delete the reminder to hydrate", "delete my hydrate reminder")
+    )
+    async def test_pm_named_phrasings_arm_the_title_bound_confirm(
         self, live_service, monkeypatch, todo_boundary, phrase
     ):
         """RED pre-1527 (behaviorally): surface 1 claimed the turn as
         PORTFOLIO/manage_portfolio and the canonical handler answered
-        "I couldn't find a project called '…'". GREEN: the turn dispatches
-        the delete_todo rail — the no-number leg answers with the todo
-        family's own clarification, deletes nothing, and never mentions a
-        project."""
+        "I couldn't find a project called '…'". RED post-1527-routing but
+        pre-named-target-resolution: the correctly-routed turn died on
+        "Which todo? Try: 'delete todo [number]'" (the lane's honest scope
+        note). GREEN: the named target resolves against the list and the
+        #1666 title-bound DESTRUCTIVE confirm arms — nothing deleted on the
+        ask turn, never a project mentioned."""
         _stub_classification(monkeypatch, live_service, phrase, "delete_todo")
         result = await live_service.process_intent(
             message=phrase, session_id=f"e2e-1527-{hash(phrase) & 0xFFFF}", user_id=_USER
@@ -259,7 +263,30 @@ class TestEndToEndRoutedDestination:
         # never the project lane's copy:
         assert "couldn't find a project" not in result.message.lower()
         assert "project" not in result.message.lower()
-        # the todo delete family's own no-number clarification:
+        # the #1666 title-bound confirm, resolved by name:
+        assert result.message == 'Delete todo: "hydrate"? (yes/no)'
+        assert result.intent_data.get("destructive_confirmation_pending") is True
+        stored = live_service.workflow_offer_service._pending_offers.get(
+            f"e2e-1527-{hash(phrase) & 0xFFFF}"
+        )
+        assert stored is not None
+        assert stored["pending_action"]["kind"] == DESTRUCTIVE_CONFIRM_KIND
+        assert result.intent_data.get("action") == "delete_todo"
+        assert todo_boundary["deleted"] == []
+
+    async def test_bulk_delete_my_reminders_gets_the_todo_family_clarification(
+        self, live_service, monkeypatch, todo_boundary
+    ):
+        """'delete my reminders' names no single target (every word is
+        command vocabulary) — the todo family's own which-todo clarification
+        answers, deletes nothing, and never mentions a project."""
+        phrase = "delete my reminders"
+        _stub_classification(monkeypatch, live_service, phrase, "delete_todo")
+        result = await live_service.process_intent(
+            message=phrase, session_id="e2e-1527-bulk", user_id=_USER
+        )
+        assert "couldn't find a project" not in result.message.lower()
+        assert "project" not in result.message.lower()
         assert "Which todo should I remove?" in result.message
         assert result.intent_data.get("action") == "delete_todo"
         assert todo_boundary["deleted"] == []

@@ -290,12 +290,28 @@ class TestConfirmBuilder:
             gate = await build_todo_delete_confirmation(_delete_intent(message), handlers, _USER)
             assert gate.passthrough and gate.offer is None, message
 
-    async def test_no_number_passes_through(self):
+    async def test_no_number_no_named_target_passes_through(self):
+        """No number AND nothing named — the handler's which-todo ask is the
+        honest turn (the #1527 named-target leg claims only turns that
+        actually name a target)."""
+        handlers = _BuilderHandlers()
+        for message in ("delete it", "delete my reminders"):
+            gate = await build_todo_delete_confirmation(_delete_intent(message), handlers, _USER)
+            assert gate.passthrough and gate.offer is None, message
+
+    async def test_named_target_without_match_is_honest_didnt_find(self):
+        """#1527 named-target leg (was a passthrough pre-1527-scope-close):
+        'delete the meeting todo' NAMES a target; against a list with no
+        match the gate answers honestly in todo/reminder vocabulary —
+        nothing armed, nothing deleted, never a project lookup."""
         handlers = _BuilderHandlers()
         gate = await build_todo_delete_confirmation(
             _delete_intent("delete the meeting todo"), handlers, _USER
         )
-        assert gate.passthrough and gate.offer is None
+        assert gate.clarification is not None
+        assert gate.offer is None and not gate.passthrough
+        assert "couldn't find a todo or reminder" in gate.clarification
+        assert "project" not in gate.clarification.lower()
 
     async def test_out_of_range_passes_through(self):
         handlers = _BuilderHandlers()
@@ -474,13 +490,16 @@ class TestEndToEndConfirmFlow:
 class TestEndToEndReadOnlyLegs:
     pytestmark = pytest.mark.asyncio
 
-    async def test_no_number_gets_clarification_not_confirm(
+    async def test_no_referent_gets_clarification_not_confirm(
         self, live_service, monkeypatch, todo_boundary
     ):
+        """No number and no named target ('delete it') — the handler's
+        which-todo ask. (Named-but-unmatched targets now get the #1527
+        didn't-find leg instead — pinned in test_delete_todo_named_target_1527.)"""
         sid = "e2e-1666-nonum"
-        _stub_classification(monkeypatch, live_service, "delete the meeting todo", "delete_todo")
+        _stub_classification(monkeypatch, live_service, "delete it", "delete_todo")
         result = await live_service.process_intent(
-            message="delete the meeting todo", session_id=sid, user_id=_USER
+            message="delete it", session_id=sid, user_id=_USER
         )
         assert "Which todo should I remove?" in result.message
         assert _pending_offers(live_service).get(sid) is None
