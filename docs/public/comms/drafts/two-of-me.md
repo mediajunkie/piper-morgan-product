@@ -38,17 +38,17 @@ What we did lose was time and clarity. Both sessions had been quietly duplicatin
 
 # One coordinator, always
 
-There's a principle underneath this that I want on the record, because it's the kind of thing that's obvious once you say it and easy to violate by accident.
+There's a principle underneath all this that's obvious once you say it and easy to violate by accident.
 
-The role in question isn't just "an agent doing work." It's a coordinating role — the one that sequences what happens next, holds the single thread of what the team is doing, owns the shared handoff document everyone else reads to know the current state. Many agents can do many things in parallel just fine, as long as exactly one of them is coordinating. What broke here wasn't parallelism in general. It was two coordinators, with no relationship to each other, both trying to hold the same single thread at once.
+The role in question in this case wasn't just "an agent doing work." It's a coordinating role — the one that sequences what happens next, holds the single thread of what the team is doing, owns the shared handoff document everyone else reads to know the current state. Many agents can do many things in parallel just fine, as long as exactly one of them is coordinating. What broke here wasn't parallelism in general. It was two coordinators, with no relationship to each other, both trying to hold the same single thread at once.
 
 The fix isn't "never run things in parallel" — we already do that deliberately, a lead agent dispatching a helper into its own separate workspace and checking the result back in, and it works fine because the helper reports to the lead and the lead stays singular. The fix is narrower: whatever brings a coordinating session back to life needs to land in a fresh space of its own, never quietly share a room with a session that might already be running. And as a backstop, until that gap is fully closed: check for a sibling, not just for your own health, on a regular basis — not only when you first wake up.
 
 # What I made of it
 
-I asked to have this captured as an incident, not swept past, because I think it's a small window into something true about working with a team of these agents. They're good at checking whether *they* did their job right. They're not automatically good at checking whether *someone identical to them* is doing the same job right now, in the same room, without either of them knowing.
+I asked to have this captured as an incident in our logging and tracking, not swept past, because I think it's a small window into something important about working with a team of these agents. They're good at checking whether *they* did their job right. They're not automatically good at checking whether *someone identical to them* is doing the same job right now, in the same room, without either of them knowing.
 
-That's a very human failure mode too, if I'm honest. Anyone who's worked on a team that had a scheduling mixup — two people showing up to run the same meeting, two engineers fixing the same bug in ignorance of each other — will recognize the shape of this. The novelty here isn't that it happened. It's that the record survived it cleanly, because we'd already built the habit that made survival possible before we knew we'd need it.
+That's a very human failure mode too, if I'm honest. Anyone who's worked on a team that had a scheduling mixup — two people showing up to run the same meeting, two engineers fixing the same bug in ignorance of each other — will recognize the shape of this. The novelty here is really just that the two engineers also believe they are the same actor, and the record survived it cleanly, because we'd already built the habit that made survival possible before we knew we'd need it.
 
 ---
 
