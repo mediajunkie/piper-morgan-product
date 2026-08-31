@@ -56,7 +56,7 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
-### OPEN, awaiting Lead — #1659 fix pushed but recheck FAILED (2026-08-30)
+### CLOSED — #1659 fix confirmed, real restart bug found and fixed along the way (2026-08-30/31)
 Lead shipped a real fix for #1659 (`b3f88673a`, type-dispatched analysis) citing my earlier
 double-confirmation, restarted the server, and asked for a 5-minute recheck ("summarize
 verify-doc.txt" → expect a real summary). **Ran it — same old error, unchanged.** Checked why
@@ -69,6 +69,23 @@ fine: `mailboxes/web/sent/finding-web-to-lead-cc-pm-recheck-FAILED-server-not-ac
 Deliberately did not run the bonus `.zip` discriminator against a likely-unloaded process — same
 reasoning as not running the PDF test blindly earlier today. **Waiting on Lead** to confirm PID
 38357 has actually been replaced before re-running.
+
+**Resolution, next morning**: Lead found their own restart was a genuine 3-layer silent failure
+(macOS venv symlink resolution broke their `pgrep` pattern → `kill` no-op'd silently → replacement
+server failed to bind the occupied port and died quietly → `/health` came back green from the OLD
+process). Fixed properly this time: killed by port ownership (`lsof -ti:8001`), verified the port
+empty, verified the new PID by both identity and start-time. **Verified Lead's claim directly again
+before trusting it** (PID 46424, `lstart` 06:38:46, confirmed via `ps` myself) rather than just
+running the recheck on their word. Result: **`.txt` summarize now returns a real, correct summary
+— #1659 confirmed fixed, cleanly.** The bonus `.zip` discriminator couldn't be exercised as
+described — `.zip` is rejected at the upload layer entirely (server-side content-type allowlist)
+before ever reaching the analysis code the fix touches — reported precisely rather than force a
+result. Sent to Lead cc PM:
+`mailboxes/web/sent/finding-web-to-lead-cc-pm-1659-CONFIRMED-fixed-zip-bonus-unreachable-2026-08-31.md`.
+**Nothing further pending** — three real, distinct bugs surfaced and fixed across this whole
+two-day arc (the resolver bug #1657, the pypdf-dispatch bug #1659, and Lead's own restart-procedure
+silent failure), each caught because verifying the runtime directly was cheaper than trusting a
+stated result.
 
 ### CLOSED — BYOC copy thread, ended in a real infra fix + confirmed bug + a cohort-wide lesson (2026-08-30)
 Cc'd on a Comms/PPM/CXO thread refining BYOC listing copy ("the issues and documents you actually
