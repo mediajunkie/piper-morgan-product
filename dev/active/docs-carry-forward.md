@@ -1,41 +1,43 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-30 22:3x PDT, STOP/day-close (corrected — the first STOP was one fire slot
-early, 21:57 was the true last slot; genuine close happened this pass, see session log)
-**Session log**: `dev/2026/08/30/2026-08-30-0727-docs-code-log.md` — **CLOSED**,
-`<!-- DAY-CLOSED: 2026-08-30 -->` written (twice — once premature, once correct; not edited out,
-see the log's own "Day reopened" section for the honest record). Tomorrow's START creates a fresh
-dated log.
-**Cron**: `cfdd5f76` (re-armed at this STOP via delete-then-create from `1c25df1f`, itself from
-`61dd5aa2` — two re-arms tonight, both idempotent, no harm done), same expression
-`57 6,9,12,15,18,21 * * *`, healthy through ~09-06.
+**Updated**: 2026-08-31 ~08:3x PDT (B3 kickoff underway, real progress + a cross-lane finding shared)
+**Session log**: `dev/2026/08/31/2026-08-31-0728-docs-code-log.md` (open).
+**Cron**: `cfdd5f76`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-06.
 
-## Today (2026-08-31, Monday) — corrected understanding, verified live not assumed
+## B3 corpus-disposition — IN PROGRESS, real work started today
 
-Last night's "TODAY (09-01)" framing had a date-arithmetic slip — today is 08-31, not 09-01.
-Checked what that actually means for the three items rather than propagate the assumption:
+Tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-patterns-disposition.md`
+— all 81 patterns pre-tiered by citation-census evidence (Tier A: 8 CLAUDE.md/skill-cited,
+definitely current law · Tier B: 21 heavily-cited+recent, likely current law · Tier D: 4
+old+lowest-cited, likely historical · Tier C: 48 middle-tier, genuinely needs individual reads).
 
-1. **Weekly Docs Audit** — auto-generates via GitHub Actions ~9am PT today (`cron: 7 16 * * 1`,
-   hasn't fired as of this morning's early fire). Nothing to do yet — watch for the issue to land,
-   handle it once it exists.
-2. **Monthly Housekeeping Audit (#1486)** — checked directly: titled "2026-08", created 2026-08-05,
-   **33 unchecked items, zero progress in 26 days**. Not "due today" — it's been overdue the whole
-   month. September's audit won't auto-generate until ~09-07 (next Monday, first-Monday guard), so
-   there's no clutter risk from further delay. Real, unblocked work — sequencing below.
-3. **Architectural Review B3 corpus-disposition kickoff — my lane, patterns (81 files)**. Owner
-   Arch, with CIO (methodology-core) + Docs (patterns). Mechanical first axis (cited/uncited)
-   already done via `docs/internal/architecture/reviews/2026-08-architectural-review/
-   findings/citation-census-summary.md` — job at kickoff is the second axis (effective/inert
-   judgment) for the cited patterns, working from that census. Target ~1 week from kickoff (today).
-   **The disposition motion is absorb-and-mark, not just archive** — each absorbed pattern should
-   get marked into whichever of the six living-core-docs it's absorbed into, same motion, not a
-   separate pass. Full plan: `reorientation-plan.md` in the same review directory.
+**Dispositioned today**: all 4 Tier-D patterns, each verified against live code (not just citation
+count) — P-026 (Cross-Feature Learning) turned out **effective** despite only 12 citations (live in
+`services/intent/intent_service.py`); P-015 (Internal Task Handler) genuinely **historical** (zero
+code hits); P-016 (Repository Context Enrichment) **ambiguous**, flagged honestly rather than
+forced; the pattern-family-index proposal is **absorbed** into its own successor, `PATTERN-FAMILIES.md`.
 
-**Sequencing decision, stated not implied**: B3 is today's primary work — fresh, PM-approved,
-time-boxed to ~1 week, and the rest of the cohort (Arch, CIO) is actively coordinating on the same
-reorientation effort right now. #1486, despite being older, has essentially zero time-pressure
-(next audit cycle isn't due for another week) — picking it up later today if B3 leaves room, or
-later this week if it doesn't. Not silently deferred — named here with the reason.
+**Real finding, shared with Arch+CIO** (mail sent): citation count alone mispredicts effective/inert
+— 3 of 4 Tier-D outcomes didn't match what the count alone would suggest. Low citation on a pattern
+can mean "implemented but not discussed in prose," not "dead." Flagged since CIO's methodology-core
+pass uses the same census methodology and could hit the same trap.
+
+**Next**: continue through the ~77 remaining patterns across subsequent fires — Tier A/B need
+lighter-touch confirmation (spot-check, not full grep-verify each), Tier C needs the same
+grep-against-code discipline the Tier-D pass established. Target ~1 week from today's kickoff.
+**The disposition motion is absorb-and-mark** — each absorbed pattern gets marked into whichever
+of the six living-core-docs it's absorbed into, same motion, not a separate pass.
+
+## Today's other verified state (not assumed)
+
+- **Weekly Docs Audit**: auto-generates via GitHub Actions ~9am PT (`cron: 7 16 * * 1`), hadn't
+  fired as of this morning's early fires — watch for the issue to land at a later fire.
+- **Monthly Housekeeping Audit (#1486)**: checked directly — titled "2026-08", created 2026-08-05,
+  **33 unchecked items, zero progress in 26 days**, not "due today." September's audit won't
+  auto-generate until ~09-07, so no clutter risk from further delay. **Sequencing decision, stated
+  not implied**: B3 is today's primary work (fresh, PM-approved, rest of cohort actively
+  coordinating on it right now); #1486 picked up when B3 leaves room, or later this week — named
+  here with the reason, not silently deferred.
 
 ## New standing responsibility: the glossary is now a living-core-doc
 
@@ -57,19 +59,11 @@ PM re-engages, don't resume unilaterally. (Also logged as a personal process les
 the cause from a script's output and a suppressed git error several times before reading the
 actual script/error directly — should have read primary sources first, per CLAUDE.md's own rule.)
 
-## Today's closed threads (2026-08-30), for reference — not re-detailing further
+## 2026-08-30, fully closed — see that day's session log for detail, not re-summarizing
 
-- **"Two of Me"** fully closed: published, a live wrong-art defect PM caught and I fixed
-  end-to-end (root-caused via SHA1 match, corrected art, webp regenerated by hand since
-  `edit-pass` mode doesn't touch images, live-verified by content hash), both syndication legs
-  recorded, `altText`/`caption` backfilled. https://pipermorgan.ai/blog/two-of-me
-- **Calendar column-ownership**: corrected Comms' misstatement in the same thread (multi-writer by
-  column is the ratified convention); Comms self-corrected cleanly to both me and Dispatch-PM.
-- **PM's 10-issue triage** finished: nudged Arch (#1455, now re-scoped to close via B4) and Lead
-  Dev (#1594/#1618/#1636). #1585 and #1682 were mostly already resolved by an undocumented
-  2026-08-11 pass — both issue descriptions rewritten with verified-live evidence. #1644's PPM-fix
-  from 6 days ago finally reflected in the issue body. #1683 got independent corroboration from
-  Dispatch-PM (comment added, disposition unchanged — still deliberately not rushed).
+"Two of Me" published + art-fixed + syndicated; calendar column-ownership corrected (multi-writer
+by column, not Comms-sole); PM's 10-issue triage finished (#1455→B4, #1585/#1682 mostly already
+resolved and re-documented, #1644/#1683 updated with evidence). All closed, nothing carries forward.
 
 ## Awaiting others (check periodically, don't re-derive)
 
