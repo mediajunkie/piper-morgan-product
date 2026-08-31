@@ -15,6 +15,7 @@ cited GitHub issues (#1058, #974, #972, #1127, #1128, #1206) were all CLOSED (ve
 ---
 
 ## Architectural Review 2026 — B3 corpus-disposition pass (owed, kickoff ~09-01)
+**Added**: 2026-08-29
 
 Arch ran a full architectural review with PM, ratified 2026-08-29. My lane: **workstream B3** —
 corpus-disposition pass over patterns (81 files, my side) alongside CIO's methodology-core (64
@@ -28,6 +29,7 @@ Target ~1 week from kickoff. Full plan: `reorientation-plan.md` in the same revi
 the same motion, not a separate pass. No prep owed before 09-01 — acknowledged to Arch, ready.
 
 ## B2 living-core-doc set — glossary is now a Docs-owned living core doc (new, 2026-08-30)
+**Added**: 2026-08-30
 
 Six documents now carry "current law" status per Arch's `living-core-docs.md` v0.1
 (`docs/internal/architecture/reviews/2026-08-architectural-review/`): ESSENCE.md, SYSTEM.md (new),
@@ -42,6 +44,8 @@ the same machine-read staleness checker the other 5 docs use once frontmatter la
 ## Active items
 
 ### PreCompact hook — locality differentiation (owed since May, CIO re-flagged 2026-08-23)
+**Added**: 2026-08-23 (row); underlying obligation dates to a May second-incident memo — older
+than this row, per CIO's audit anchor-date question, see the reply on that.
 
 `.claude/hooks/precompact-signoff-warning.sh` — I'm the named owner (per the May 10 second-incident
 memo). Of the 3 proposed refinement options, 2 are addressed (severity tiering, shipped May 10;
@@ -56,6 +60,10 @@ control-flow change, not a same-fire patch. Scope the detection mechanism first,
 watch it fire before trusting it, per CLAUDE.md's hook-verification discipline.
 
 ### Critical-docs YAML-frontmatter upgrade (PM-directed 2026-05-28; still genuinely incomplete)
+**Added**: 2026-05-28 — **95 days as of 2026-08-31, per CIO's audit. Real candidate, not
+neglect-by-omission: the item's own text already names its trigger ("flag at next PM
+engagement"), it's just that a natural PM-engagement moment for THIS item specifically hasn't
+landed yet. Surfacing plainly rather than let the honest deferral condition become a silent one.**
 
 PM directive: upgrade critical docs to proper YAML frontmatter; Docs prompts + supervises +
 validates subagents. **Validated pattern** (briefing pilot, `b40876b87`): subagent prepends
@@ -95,26 +103,29 @@ silently — flag at next PM engagement rather than resume unprompted.
 - [x] **BRIEFING-CURRENT-STATE engineering/CI/backlog staleness** — flagged 2026-08-17 (#1643),
   escalated directly to Lead Dev 2026-08-24 (a 2nd, name-addressed flag after the first sat a
   week), fixed same-day. Resolved, dropping from watch.
-- [ ] **`last_verified: "2026-06-19"` bulk-stamp cluster** — flagged 2026-07-30 (Arch/CIO), 20 of
-  26 still on the stamp as of 2026-08-24 (down from 23 a week prior — modest, ongoing). Cohort-
-  wide, no single owner. Check at next Monday audit; escalate by name if still >75% stale.
-- [ ] **`universal-list-architecture-guide.md` duplicate** — two paths, diverged content, Sept
-  2025 reorg artifact. Confirmed via #1585 (2026-08-30 update) as a genuine judgment call, not a
-  mechanical fix — different detail levels, not a version-bump pair. Still unowned/unclaimed.
-- [ ] **#1644** — full v19 historical fold of roadmap.md still owed (PPM's lane). The header-date
-  symptom was fixed 2026-08-24 (confirmed still correct, verified live 2026-08-30 when the issue
-  description was refreshed to reflect it); the underlying narrative content is still frozen at
-  July 16 state.
-- [ ] **#1683** (new, 2026-08-25) — 145 editorial-calendar rows genuinely syndicated but
-  `status`/`canonicalSite` never bumped (root cause: 2026-07-19 migration used an unreliable
-  selection field). Historical, not urgent. **Independently corroborated 2026-08-30** by
-  Dispatch-PM via platform-verification (~150 rows, same shape, different method) — comment added
-  to the issue, disposition unchanged (deliberately not rushed). Needs a scripted per-row day-of-week-routing
-  reconstruction before any bulk fix — not something to attempt casually.
-- [ ] **Feature-guide 4-item PM click-through** — PA's code-level verification is done; 4 items
-  need a live browser PM doesn't have on their Amber seat's normal path. PM said they'd take it
-  directly (2026-08-16); status of completion still unconfirmed as of 2026-08-25 — surface at
-  next PM engagement, don't chase.
+- [ ] **`last_verified: "2026-06-19"` bulk-stamp cluster** — **Added**: 2026-07-30 (flagged;
+  entered this tracker 2026-08-19). 20 of 26 still on the stamp as of 2026-08-24 (down from 23 a
+  week prior — modest, ongoing). Cohort-wide, no single owner. Check at next Monday audit;
+  escalate by name if still >75% stale.
+- [ ] **`universal-list-architecture-guide.md` duplicate** — **Added**: entered this tracker
+  2026-08-19; GH #1585 created 2026-08-10. Two paths, diverged content, Sept 2025 reorg artifact.
+  Confirmed via #1585 (2026-08-30 update) as a genuine judgment call, not a mechanical fix —
+  different detail levels, not a version-bump pair. Still unowned/unclaimed.
+- [ ] **#1644** — **Added**: entered this tracker 2026-08-19; GH #1644 created 2026-08-17. Full
+  v19 historical fold of roadmap.md still owed (PPM's lane). The header-date symptom was fixed
+  2026-08-24 (confirmed still correct, verified live 2026-08-30 when the issue description was
+  refreshed to reflect it); the underlying narrative content is still frozen at July 16 state.
+- [ ] **#1683** — **Added**: 2026-08-25, matches GH creation. 145 editorial-calendar rows
+  genuinely syndicated but `status`/`canonicalSite` never bumped (root cause: 2026-07-19 migration
+  used an unreliable selection field). Historical, not urgent. **Independently corroborated
+  2026-08-30** by Dispatch-PM via platform-verification (~150 rows, same shape, different method)
+  — comment added to the issue, disposition unchanged (deliberately not rushed). Needs a scripted
+  per-row day-of-week-routing reconstruction before any bulk fix — not something to attempt casually.
+- [ ] **Feature-guide 4-item PM click-through** — **Added**: entered this tracker 2026-08-19; PM
+  commitment cited 2026-08-16. PA's code-level verification is done; 4 items need a live browser
+  PM doesn't have on their Amber seat's normal path. PM said they'd take it directly (2026-08-16);
+  status of completion still unconfirmed as of 2026-08-25 — surface at next PM engagement, don't
+  chase.
 
 ## Blocked items
 
