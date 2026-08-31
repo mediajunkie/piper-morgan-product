@@ -47,19 +47,32 @@ echo "$real_out" | grep -q "── coverage ──" && ok "coverage section head
 echo "$real_out" | grep -q "standing-items files found:" && ok "file-count line present" || no "file-count line missing"
 echo "$real_out" | grep -qE "no parseable per-item date column at all \(COVERAGE GAP\): [0-9]+" && ok "coverage-gap count line present" || no "coverage-gap count line missing"
 
+echo "== T1b: real repo — host-standing-items.md is not the only retired file (ppm retired same-day) =="
+echo "$real_out" | grep -A5 "retired (skipped" | grep -q "· ppm$" && ok "ppm is named in the coverage 'retired' bucket" || no "ppm not named under the retired bucket"
+
 echo "== T4: real repo — denominator honesty: files with no parseable date column are individually named =="
-# arch/docs/lead/web are non-tabular (bullet lists); comms/cxo/ppm are tabular but with
-# no recognized date-column header. All seven are real, sampled by hand before writing
-# the parser — this pins that the coverage bucket actually names them, not just counts.
-for role in arch docs lead web comms cxo ppm; do
+# ⚠️ THIS LIST IS A MOVING TARGET, BY DESIGN — testing against real files means this
+# assertion tracks real cohort adoption, not a frozen fixture. As of 2026-08-31 (v1.1,
+# after the inline-bold-label + Blocked-on-column fixes): docs/web/cxo adopted a
+# recognized format same-day and dropped out of this gap; arch/comms/lead had not yet.
+# If this test starts failing because MORE roles have since adopted a format, that is
+# the mechanism working, not a regression — update this list to match, don't just widen
+# the match to make it pass.
+for role in arch comms lead; do
     echo "$real_out" | grep -A20 "no parseable per-item date column" | grep -q "· $role$" \
         && ok "$role correctly named in the no-date-column coverage gap" \
         || no "$role missing from the no-date-column coverage gap"
 done
 
-echo "== T5: real repo — cio and pa (the two roles with a real parseable date column) are NOT in the gap bucket =="
+echo "== T5: real repo — roles with a real parseable date are NOT in the gap bucket =="
 echo "$real_out" | grep -A20 "no parseable per-item date column" | grep -q "· cio$" && no "cio wrongly listed as a coverage gap" || ok "cio correctly excluded from the coverage gap (it has a real Filed column)"
 echo "$real_out" | grep -A20 "no parseable per-item date column" | grep -q "· pa$" && no "pa wrongly listed as a coverage gap" || ok "pa correctly excluded from the coverage gap (it has a real Noted/Filed column)"
+
+echo "== T5b: real repo — docs is readable via the NEW inline-bold-label path (v1.1 fix, Web's finding) =="
+echo "$real_out" | grep -A20 "no parseable per-item date column" | grep -q "· docs$" && no "docs still in the coverage gap — inline-label fix regressed" || ok "docs correctly excluded (inline **Added**: date now recognized)"
+
+echo "== T5c: real repo — cxo's structural Blocked-on column now suppresses its 2 known false positives (v1.1 fix, CXO's finding) =="
+echo "$real_out" | grep -q "AGING: cxo — .*Spatial committed-theory review" && no "cxo's Spatial-committed-theory row still false-positives — Blocked-on-column fix regressed" || ok "cxo's Blocked-on-column row no longer false-positives"
 
 echo "== T6: fixture — an old (30d), unblocked row IS flagged AGING =="
 DATE_OLD=$(date -v-30d +%Y-%m-%d)
@@ -110,7 +123,52 @@ echo "$out10" | grep -A20 "no parseable per-item date column" | grep -q "· zzzt
 
 rm -f "$FIXTURE"
 
-echo "== T11: no real tracked file was touched by this test run =="
+echo "== T12: fixture — v1.1 inline-bold-label path (Web's finding): unblocked heading flagged,"
+echo "        blocked heading excluded, recent heading not flagged =="
+cat >"$FIXTURE" <<EOF
+# ZZZTest Standing Items (v1.1 fixture — inline bold-label, non-tabular shape)
+
+## An unblocked heading item
+**Filed**: $DATE_OLD
+
+This item has no blocking language anywhere in its own prose.
+
+## A blocked heading item
+**Filed**: $DATE_OLD
+
+Blocked on: PPM picking a slot.
+
+## A recent heading item
+**Added**: $DATE_RECENT
+
+Too new to flag either way.
+EOF
+out12=$(cd "$ROOT" && bash "$SCRIPT" 2>&1)
+rc12=$?
+echo "$out12" | grep -q "AGING: zzztest — An unblocked heading item" && ok "unblocked inline-labeled heading IS flagged AGING" || no "expected AGING for the unblocked heading, got: $(echo "$out12" | grep zzztest)"
+echo "$out12" | grep -q "AGING: zzztest — A blocked heading item" && no "blocked inline-labeled heading was WRONGLY flagged" || ok "blocked inline-labeled heading correctly excluded (blocking language found in the look-ahead window)"
+echo "$out12" | grep -q "AGING: zzztest — A recent heading item" && no "recent inline-labeled heading was WRONGLY flagged" || ok "recent inline-labeled heading correctly not flagged (too new)"
+[ "$rc12" -eq 0 ] && ok "exit 0 with the inline-label path exercised" || no "expected exit 0, got $rc12"
+rm -f "$FIXTURE"
+
+echo "== T13: fixture — v1.1 structural Blocked-on column (CXO's finding): a non-empty cell blocks"
+echo "        regardless of wording, even generic wording no phrase list would catch =="
+cat >"$FIXTURE" <<EOF
+# ZZZTest Standing Items (v1.1 fixture — structural Blocked-on column)
+
+| Filed | Item | Blocked on | Recheck trigger |
+|---|---|---|---|
+| $DATE_OLD | **Genuinely unblocked** | | |
+| $DATE_OLD | **Structurally blocked, generic wording** | Someone else has to go first | when they do |
+EOF
+out13=$(cd "$ROOT" && bash "$SCRIPT" 2>&1)
+rc13=$?
+echo "$out13" | grep -q "AGING: zzztest — .*Genuinely unblocked" && ok "row with an EMPTY Blocked-on cell IS flagged AGING" || no "expected AGING for the genuinely-unblocked row, got: $(echo "$out13" | grep zzztest)"
+echo "$out13" | grep -q "AGING: zzztest — .*Structurally blocked" && no "row with a non-empty Blocked-on cell was WRONGLY flagged, despite wording no BLOCK_PHRASES entry matches" || ok "row with a non-empty Blocked-on cell correctly excluded, even with generic wording"
+[ "$rc13" -eq 0 ] && ok "exit 0 with the Blocked-on-column path exercised" || no "expected exit 0, got $rc13"
+rm -f "$FIXTURE"
+
+echo "== T14: no real tracked file was touched by this test run =="
 git -C "$ROOT" status --porcelain dev/active/duty-cycle-registry.tsv | grep -q . \
     && no "duty-cycle-registry.tsv shows a change" || ok "duty-cycle-registry.tsv untouched"
 git -C "$ROOT" diff --stat -- 'dev/active/*-standing-items.md' | grep -q . \
