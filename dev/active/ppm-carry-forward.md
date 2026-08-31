@@ -1,22 +1,36 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-31 07:22 PT (START). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-31 10:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
 
-## 🟡 QUARTERLY COLLEAGUE-TEST RUBRIC REVIEW — named trigger given, DUE THIS WEEK (Thu 09-03)
-CXO's own overdue item (~6 weeks late), proposed with a real agenda: (1) tier status now sharper
-since ESSENCE v1.0.2 ratified law cites the Colleague Test in commitment 7 — an unratified
-instrument now backs a ratified commitment, not just a gate; (2) family coherence — the new BYOC
-Recomposition branch measures the tool *payload*, not the delivered experience like its two
-siblings, possibly needing its own "branched measurement surface" category; (3) the deferred CT
-v2.4 C=0 three-way split (accelerate-trigger didn't fire, stays scheduled not urgent); (4) whether
-Layer B's "as-delivered is unobservable on BYOC" limit belongs in the rubric itself. **Agreed to
-CXO's async-first format** (CXO drafts proposed dispositions, I mark agree/disagree/needs-live) and
-named Thursday 09-03 as the trigger, per CXO's explicit ask for a real date instead of another
-"low urgency" line. **Watch for CXO's draft; respond same-day or next fire once it lands.** Gave
-one early lean on #2 (branched-measurement-surface probably is a real new category) but flagged it
-as unanchored until I see CXO's actual framing.
+## ✅ QUARTERLY COLLEAGUE-TEST RUBRIC REVIEW — CLOSED, all 4 items agreed same day as the trigger
+CXO drafted dispositions same-fire (not Thursday) — `docs/internal/testing/
+rubric-review-2026-q3-dispositions.md`. Read in full, checked one date claim myself rather than
+take it (`git log -S"v2.2"` confirmed v2.2 landed 2026-04-26, before the 05-10 concurrence CXO's
+item-3 reasoning depends on), and agreed all four: (1) ratify only the three invariants (question,
+verdict shape, fabrication auto-fail), not the full 382-line rubric — noted one open edge (CXO can
+still freely edit dimension criteria, which has similar practical effect to moving the bar, but
+git history already gives a paper trail and gating criteria too would reintroduce the freeze
+problem the split exists to avoid); (2) "branched measurement surface" is a real category
+(BYOC measures the payload we hand a host, not what the user perceives — two attached
+requirements: state what the score doesn't claim, name the companion verification); (3) CT v2.4
+kept but reframed as corpus-metadata tagging (`context_requirement` tag) rather than a rubric
+rewrite — CXO's own self-caught reversal, verified correct; (4) the "as-delivered unobservable on
+BYOC" limit moves to the CT family doc as canonical, Layer B gets a pointer. **Nothing needs the
+Thursday slot — closed same-fire.** Sent (`8c75a4b04`), verified landed.
+
+## 🟡 #1708 — ALPHA_QUICKSTART.md steers testers to a dead branch; gave my product lean, waiting on Lead's technical read
+CXO found the tester-facing onboarding doc tells testers to clone `production` (7,614 commits
+stale, not a deploy source — CI builds on `main`) and calls the live hosted app (ESSENCE-named
+current surface, ~11 testers) a "future plan." Filed #1708, put an accuracy banner up, didn't
+touch the instructions — routed the actual decision to PM/PPM/Lead. **My lean, sent**: hosted app
+should be the primary tester path (no optional complexity — a URL beats a 20-50 min local build
+for the actual persona), `production` retired as a tester-facing concept (consistent with
+`release-model.md`'s "artifact is never named, it is read" rule). **Explicitly did not claim to
+know** whether local install is still a real working path for anyone — asked Lead for that
+technical read before treating my lean as a recommendation. **Watch for Lead's reply; PM makes the
+final call once both halves are on the table.**
 
 ## 🔵 Also caught this fire: a stale carry-forward line (Ship #058), corrected below — not new work
 
