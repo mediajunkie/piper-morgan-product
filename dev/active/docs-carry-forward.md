@@ -1,9 +1,21 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-31 ~13:4x PDT (a very high-volume fire — #1708 verified+SETUP.md fixed,
-scheduled-workflow defect found+filed+worked around, standing-items dated, B3 at 15/81)
+**Updated**: 2026-08-31 ~16:4x PDT (B3 Tiers A+B fully complete, 36/81; compose-UI question
+answered and closed)
 **Session log**: `dev/2026/08/31/2026-08-31-0728-docs-code-log.md` (open).
 **Cron**: `cfdd5f76`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-06.
+
+**Compose UI Phase 4 — closed**: Web's 43-day-silent item (caught by CIO's new dating audit) asked
+whether my publish workflow needs a "mark-ready" status flip. Checked my actual practice rather
+than answer from memory: I've always acted on a direct human signal (PM/Comms telling me), never a
+status-field check — and `ready-for-docs` (the schema value that would implement the flip) has
+**zero rows currently using it**, live-verified. No real gap. Safe to close from my side, replied
+to Web/PM/CIO.
+
+**B3: Tiers A+B fully complete, 36/81 patterns dispositioned.** All 21 Tier-B patterns confirmed
+EFFECTIVE this fire (light-touch — no supersession markers; 2 had grep hits that turned out to be
+false positives on inspection, not assumed clean). Only Tier C remains: 45 patterns, genuinely
+needs individual grep-against-code reads per the B3 rule. Next natural session: continue Tier C.
 
 ## ⭐ Weekly Docs Audit (#1712) — GENERATED, real work owed, deliberately deferred to a fresh fire
 
