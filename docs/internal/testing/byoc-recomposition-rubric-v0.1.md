@@ -1,7 +1,8 @@
 ---
 type: scoring-instrument
 name: BYOC Recomposition Rubric
-version: v0.1 — DRAFT, unratified; T-axis criteria are HYPOTHESES pending the probe in §6
+version: v0.2 — DRAFT, unratified. T=3 REVISED on probe evidence 2026-08-30 (the "must render" claim
+  was falsified); axis still PENDING-PROBE for issuing a PASS — one vendor, n=1/cell, known design confound.
 date: 2026-08-30
 owner: CXO
 branched_from: Colleague Test Rubric v2.3.2 (`colleague-test-rubric.md`), per its own §"How to Extend
@@ -128,7 +129,55 @@ survive into what the user reads."*
 | 0 | The output **permits a confident overclaim** — e.g. an empty result set returned as an empty list with no explicit absence marker, letting the host fill the silence. Auto-fail. |
 | 1 | Uncertainty is present but purely prose, buried mid-payload, and easy to drop under summarization pressure. |
 | 2 | Uncertainty is prose but prominent and hard to miss — survives a careful paraphrase, probably not a terse one. |
-| 3 | Absence, partiality, staleness and decline are carried in **structure the host must render or visibly omit**, not in sentences it may quietly drop. |
+| 3 | ~~Absence, partiality, staleness and decline are carried in **structure the host must render or visibly omit**, not in sentences it may quietly drop.~~ **FALSIFIED 2026-08-30 — see below.** Revised: the qualification is carried in a field that **constrains what may be claimed** (a directive), not merely one that **describes the data** (a descriptor). |
+
+> ### 🔴 T-AXIS REVISED ON EVIDENCE, 2026-08-30 — my governing hypothesis is PARTLY FALSIFIED
+>
+> PA ran the probe (Claude arm; full results `dev/active/probes/RESULTS-probe-b-recomposition-2026-08-30.md`).
+> **The core case confirmed the hypothesis and a second case reversed it**, so the scale changes.
+>
+> - ✅ **Item 1 (failed read vs. empty)** — prose **fabricated**: *"your todo list is currently empty"*
+>   stated from a **failed** read, the exact claim `conversational_floor.py:214–226` exists to forbid,
+>   reproduced live with no floor to block it. Structured stayed clean.
+> - 🔴 **Item 3 (partial coverage)** — **structured DROPPED the hedge that prose kept.** No mention of
+>   partial coverage anywhere in the reply.
+>
+> ⚠️ **So "structure the host MUST render or visibly omit" is false as written.** A host can silently
+> drop a structured field exactly as it drops a sentence. That clause promised a guarantee the format
+> does not provide, and it was the load-bearing word in the whole scale.
+>
+> #### ⚠️ And the reason the run cannot settle *why* is a design flaw in my own packet
+>
+> **I varied two things at once inside the "structured" arm and called it one variable.** Checking my
+> own payloads after the fact:
+>
+> | Item | Structured field | Relation to the question asked | Outcome |
+> |---|---|---|---|
+> | **1** | `may_claim_empty: false` — **a DIRECTIVE** (+ `read_status`) | the failure *is* the whole answer | ✅ survived |
+> | **3** | `coverage: "partial"` — **descriptor** | peripheral; 3 real issues to enumerate instead | 🔴 **dropped** |
+> | **4** | `freshness: "stale"` — descriptor | central ("what's the current state?") | ✅ survived |
+> | **6** | `action_performed: false` — descriptor | *is* the answer | ✅ survived |
+>
+> **Item 1 is the only structured payload carrying a directive field.** So the run cannot separate
+> *"structure helps"* from *"directives help"* — and a third variable (whether the qualification is
+> central or peripheral to the question) tracks the outcomes just as well: item 3 is both the only pure
+> descriptor that was peripheral, and the only one dropped.
+>
+> **Two candidate explanations, deliberately not chosen** (n=1 per cell, one vendor):
+> **(a) directive > descriptive** — a field that constrains a claim is honored; one that merely
+> describes data is treated as decoration. **(b) central > peripheral** — a qualification survives when
+> omitting it would leave the question unanswered, and is dropped when there is ample positive content
+> to fill the reply without it.
+>
+> **The next run must hold one constant while varying the other** — e.g. item 3 re-run with
+> `may_claim_total: false` alongside `coverage: partial`. That is a two-call experiment.
+>
+> #### What changes now, and what does not
+>
+> - ✅ **The scale changes now** — T=3 requires a *directive* field, on the evidence above.
+> - 🔴 **The axis stays `PENDING-PROBE` for issuing a PASS.** One vendor (the GPT arm collected **zero**
+>   data — an OpenAI quota exhaustion, not a finding), n=1 per cell, and a known confound in the design.
+>   **Revising criteria on evidence and licensing a pass are different acts**; only the first is earned.
 
 #### Worked example, traced in running code — and it changes the question
 
