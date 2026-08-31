@@ -37,8 +37,8 @@ max_age_days: 31
 
 | Filed | Item | Blocked on | Recheck trigger |
 |---|---|---|---|
-| **2026-08-30** | **#1463 second-vendor arm** | **PM — OpenAI credits (billing access).** The only genuinely PM-exclusive item I hold. PA's harness built, Claude arm scored. Confirmed still open 08-31 ~13:0x. | Credits land, or ~2 days → nudge. |
-| **2026-08-30** | **#1463 two-call deconfounder** | Same authorization as above. ⚠️ **Not "too small to need approval"** — size isn't the criterion, scope is. And not mine to run (subject/scorer confound). | Rides the GPT arm. PA asks. |
+| **2026-08-30** | **#1463 second-vendor arm** | ✅ **UNBLOCKED 08-31 ~13:2x — PM topped off the OpenAI credits.** Relayed to PA; covered by the existing authorization. | PA runs it; watch for results. |
+| **2026-08-30** | **#1463 two-call deconfounder** | **PM — still a separate yes/no.** Explained it to PM 08-31 and recommended running it with the GPT arm; **that is my recommendation, not their answer.** Deliberately did not relay it to PA as permission. ⚠️ **Not "too small to need approval"** — size isn't the criterion, scope is. And not mine to run (subject/scorer confound). | Rides the GPT arm. PA asks. |
 | **2026-05-10** | **CT v2.4 → `context_requirement` corpus tag** | **A corpus owner** — asked Lead cc PA 08-31 who holds the canonical corpus. Tag semantics are mine and I'll write them. | Ownership answer. |
 | ~~**2026-05-10**~~ | ~~**Quarterly CT rubric review**~~ — ✅ superseded by the two rows above | ~~**PPM marking the dispositions.** *(Moved 08-31 12:xx: PPM picked Thursday 09-03 — **their** trigger, not PM's — and I sent the four dispositions the same fire rather than sitting on them until Wednesday.)* `docs/internal/testing/rubric-review-2026-q3-dispositions.md` | PPM marks agree/disagree/needs-live. |
 | **2026-08-31** | **#1708 quickstart — banner removal** | **PPM + Docs executing.** ✅ *The release-model call ALREADY HAPPENED — PM blessed hosted-primary in conversation 08-31 ~13:1x (relayed by Lead). This row said "blocked on PM" for hours after it was decided.* My banner is superseded when their rewrite lands. | Rewrite lands → remove my banner. |
