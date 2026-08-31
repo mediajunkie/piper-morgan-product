@@ -587,7 +587,11 @@
         } catch (e) {
           btn.disabled = false;
           btn.textContent = original;
-          alert('Could not start GitHub OAuth: ' + e.message);
+          // #1689: Dialog.alert (design-floor F1 #1170), not native alert()
+          await Dialog.alert({
+            title: 'Could not start GitHub OAuth',
+            body: e.message,
+          });
         }
       }
 

@@ -9876,8 +9876,12 @@ class IntentService:
             github_service = GitHubDomainService()
 
             # Get recent activity (includes commits)
+            # #1646: the resolved repository reaches the fetch — the response
+            # names {repository}, so the query must be scoped to it (m-43).
             self.logger.info(f"Fetching commits for {repository} (last {days} days)")
-            activity = await github_service._github_agent.get_recent_activity(days=days)
+            activity = await github_service._github_agent.get_recent_activity(
+                days=days, repository=repository
+            )
 
             # Extract commits from activity
             commits = activity.get("commits", [])
@@ -9994,8 +9998,12 @@ class IntentService:
             github_service = GitHubDomainService()
 
             # Get recent activity (includes commits, PRs, issues)
+            # #1646: the resolved repository reaches the fetch — the report
+            # names {repository}, so the query must be scoped to it (m-43).
             self.logger.info(f"Generating {report_type} report for {repository} (last {days} days)")
-            activity = await github_service._github_agent.get_recent_activity(days=days)
+            activity = await github_service._github_agent.get_recent_activity(
+                days=days, repository=repository
+            )
 
             # Generate report based on type
             if report_type == "commit_analysis":
@@ -10162,9 +10170,13 @@ class IntentService:
             timeframe = intent.context.get("timeframe", f"last {days} days")
 
             # Get GitHub service and fetch data
+            # #1646: the resolved repository reaches the fetch — the analysis
+            # names {repository}, so the query must be scoped to it (m-43).
             github_service = GitHubDomainService()
             self.logger.info(f"Analyzing {data_type} for {repository} (last {days} days)")
-            activity = await github_service._github_agent.get_recent_activity(days=days)
+            activity = await github_service._github_agent.get_recent_activity(
+                days=days, repository=repository
+            )
 
             # Route to appropriate analysis helper
             if data_type == "repository_metrics":

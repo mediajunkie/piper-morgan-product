@@ -31,8 +31,7 @@ class TestPMFailingPhrasings1693:
 
     def test_one_more_hyphenated_todo_dash(self, handlers):
         assert (
-            handlers._extract_todo_text("one more to-do - water the plants")
-            == "water the plants"
+            handlers._extract_todo_text("one more to-do - water the plants") == "water the plants"
         )
 
     def test_add_hyphenated_todo_colon(self, handlers):
@@ -103,6 +102,5 @@ class TestReminderBoundary1693:
 
     def test_reminder_extraction_unchanged(self, handlers):
         assert (
-            handlers._extract_reminder_text("remind me to water the plants")
-            == "water the plants"
+            handlers._extract_reminder_text("remind me to water the plants") == "water the plants"
         )

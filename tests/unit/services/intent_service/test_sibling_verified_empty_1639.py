@@ -14,9 +14,14 @@ The fix, per lane, mirrors #1544's:
   of None/absent (a zero from a LIMIT-capped read is exact — no truncation
   at zero rows);
 - the floor renderer gains a distinct "none — checked this turn" state
-  beside populated, with absent staying silent (there is no source-failed
-  state on these lanes — a compute error still returns None, which must
-  NEVER surface as verified-empty).
+  beside populated, with absent staying silent.
+
+#1645 upgraded the error path this file originally pinned as error→None:
+a compute error now returns the distinct ``{"source_failed": True}`` state
+(the #1573 shape), which must STILL never surface as verified-empty — the
+pin's substance (failure is not an empty fact) is unchanged; only the
+honest carrier changed. The #1645 lanes' own pins live in
+test_projects_lane_honesty_1645.py.
 
 Layer honesty (m-43): these tests pin the PROMPT text and the deterministic
 CONTEXT-RENDERER seam — not a live model.
@@ -183,8 +188,11 @@ class TestProjectsAssemblerVerifiedEmpty:
         )
 
     @pytest.mark.asyncio
-    async def test_compute_error_still_returns_none_never_verified_empty(self):
+    async def test_compute_error_is_never_verified_empty(self):
         # A failed read is NOT a verified-empty — projects may exist.
+        # #1645: the error carrier upgraded from None to the distinct
+        # {"source_failed": True} state; the substance pinned here is that
+        # it can never be mistaken for the verified-empty fact.
         @asynccontextmanager
         async def broken_scope():
             raise RuntimeError("db down")
@@ -195,7 +203,8 @@ class TestProjectsAssemblerVerifiedEmpty:
             mock_factory.session_scope = broken_scope
             result = await assembler._compute_projects(str(uuid4()))
 
-        assert result is None
+        assert result == {"source_failed": True}
+        assert result != {"projects": [], "project_count": 0}
 
     @pytest.mark.asyncio
     async def test_cached_layer_passes_verified_empty_and_count_through(self):
@@ -210,9 +219,11 @@ class TestProjectsAssemblerVerifiedEmpty:
         assert result == {"projects": [], "project_count": 0}
 
     @pytest.mark.asyncio
-    async def test_cached_layer_populated_carries_no_truncated_count(self):
-        # m-44: the populated compute is LIMIT-capped, so no total exists —
-        # the cached layer must not invent a project_count from slice length.
+    async def test_cached_layer_never_invents_a_count_for_stale_entries(self):
+        # m-44: a cache entry predating #1645 carries no populated count —
+        # the cached layer must not invent a project_count from slice
+        # length. (#1645: fresh computes DO carry a real windowed COUNT;
+        # that path is pinned in test_projects_lane_honesty_1645.py.)
         assembler = ContextAssembler()
         with patch.object(
             assembler,
@@ -265,7 +276,10 @@ class TestCompletedTodosAssemblerVerifiedEmpty:
         assert result == {"completed_todos": [], "completed_todo_count": 0}
 
     @pytest.mark.asyncio
-    async def test_compute_error_still_returns_none_never_verified_empty(self):
+    async def test_compute_error_is_never_verified_empty(self):
+        # #1645: error carrier upgraded None → {"source_failed": True};
+        # the substance pinned here is unchanged — a failure must never
+        # read as the verified-empty fact.
         mock_svc = MagicMock()
         mock_svc.list_todos = AsyncMock(side_effect=RuntimeError("db down"))
 
@@ -276,7 +290,8 @@ class TestCompletedTodosAssemblerVerifiedEmpty:
         ):
             result = await assembler._compute_completed_todos(str(uuid4()))
 
-        assert result is None
+        assert result == {"source_failed": True}
+        assert result != {"completed_todos": [], "completed_todo_count": 0}
 
     @pytest.mark.asyncio
     async def test_cached_layer_passes_verified_empty_through(self):

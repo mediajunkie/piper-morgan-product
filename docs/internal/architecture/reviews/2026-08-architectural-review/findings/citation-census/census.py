@@ -4,7 +4,13 @@
 Input: git-grep dumps (path:lineno:content) produced beforehand.
 Output: census_report.md (tables + stats) and audit.md (FP-risk samples).
 """
-import os, re, sys, subprocess, collections, json
+
+import collections
+import json
+import os
+import re
+import subprocess
+import sys
 
 REPO = "/Users/xian/Development/piper-morgan-worktrees/arch"
 S = os.path.dirname(os.path.abspath(__file__))
@@ -17,9 +23,9 @@ meth_files = sorted(os.listdir(os.path.join(REPO, METH_DIR)))
 pat_files = sorted(f for f in os.listdir(os.path.join(REPO, PAT_DIR)) if f.endswith(".md"))
 pat_files.append("proposals/pattern-family-index-proposal.md")
 
-meth_num = {}   # int -> relpath
-pat_num = {}    # int -> relpath
-corpus = {}     # relpath -> corpus id ('m' or 'p')
+meth_num = {}  # int -> relpath
+pat_num = {}  # int -> relpath
+corpus = {}  # relpath -> corpus id ('m' or 'p')
 for f in meth_files:
     rel = f"{METH_DIR}/{f}"
     corpus[rel] = "m"
@@ -67,16 +73,17 @@ BASENAME_RX = {k: re.compile(v) for k, v in BASENAME_RX.items()}
 
 # ---- token regexes ----
 METH_TOK = re.compile(r"(?i)methodolog[a-z]*[-_ /]0*(\d{1,2})\b(?!\s*(?:[%→]|->))")
-M_TOK    = re.compile(r"(?i)\bm-0*(\d{1,2})\b")
-PAT_TOK  = re.compile(r"(?i)\bpatterns?[-_ ]0*(\d{1,3})\b(?!\s*(?:[%→]|->))")
-P_TOK    = re.compile(r"(?i)\bp-0*(\d{1,3})\b")
-CONT     = re.compile(r"\s*(?:,|/|·|&|\+|–|—|-|\band\b|\bthrough\b)\s*(0*\d{1,3})\b")
+M_TOK = re.compile(r"(?i)\bm-0*(\d{1,2})\b")
+PAT_TOK = re.compile(r"(?i)\bpatterns?[-_ ]0*(\d{1,3})\b(?!\s*(?:[%→]|->))")
+P_TOK = re.compile(r"(?i)\bp-0*(\d{1,3})\b")
+CONT = re.compile(r"\s*(?:,|/|·|&|\+|–|—|-|\band\b|\bthrough\b)\s*(0*\d{1,3})\b")
 
 DATE_RX = re.compile(r"(20\d{2})[-/](\d{2})[-/](\d{2})")
 
 # citations[target_relpath] = dict(citer -> set of match-form strings)
 citations = collections.defaultdict(lambda: collections.defaultdict(set))
 audit = collections.defaultdict(list)  # risk-class -> sample lines
+
 
 def parse_dump(path):
     with open(path, encoding="utf-8", errors="replace") as fh:
@@ -88,12 +95,14 @@ def parse_dump(path):
             citer, lineno, content = parts[0], parts[1], parts[2]
             yield citer, lineno, content, raw
 
+
 def add(target, citer, form, raw, risk=None):
     if target is None or citer == target:
         return
     citations[target][citer].add(form)
     if risk:
         audit[risk].append(raw[:300])
+
 
 def numbers_with_continuation(rx, content, valid):
     """yield (num, form, endpos) for rx matches plus enumeration continuations."""
@@ -113,6 +122,7 @@ def numbers_with_continuation(rx, content, valid):
                 out.append((cn, m.group(0) + "…" + c.group(0).strip(), c.end()))
             pos = c.end()
     return out
+
 
 # ---- pass 1: methodology dump ----
 for citer, lineno, content, raw in parse_dump(f"{S}/dump_meth.txt"):
@@ -180,15 +190,20 @@ for citer, lineno, content, raw in parse_dump(f"{S}/dump_base.txt"):
 
 # ---- manual adds (audited-genuine citations the mechanical regexes exclude) ----
 MANUAL = [
-    (f"{PAT_DIR}/pattern-029-multi-agent-coordination.md",
-     f"{METH_DIR}/methodology-37-COVERAGE-AUDIT-GATE-FOR-REFACTOR-DELTAS.md",
-     "Pattern-29 (unpadded, audited genuine)"),
-    (f"{PAT_DIR}/pattern-067-issue-body-reality-mismatch.md",
-     "docs/public/comms/drafts/published/hypothesis-refuted.md",
-     "Pattern 67 (unpadded, audited genuine)"),
+    (
+        f"{PAT_DIR}/pattern-029-multi-agent-coordination.md",
+        f"{METH_DIR}/methodology-37-COVERAGE-AUDIT-GATE-FOR-REFACTOR-DELTAS.md",
+        "Pattern-29 (unpadded, audited genuine)",
+    ),
+    (
+        f"{PAT_DIR}/pattern-067-issue-body-reality-mismatch.md",
+        "docs/public/comms/drafts/published/hypothesis-refuted.md",
+        "Pattern 67 (unpadded, audited genuine)",
+    ),
 ]
 for target, citer, form in MANUAL:
     add(target, citer, form, form)
+
 
 # ---- classification ----
 def bucket(citer):
@@ -224,8 +239,11 @@ def bucket(citer):
         return "knowledge"
     return "other"
 
+
 # ---- recency ----
 git_date_cache = {}
+
+
 def file_date(citer):
     m = DATE_RX.search(citer)
     if m:
@@ -234,11 +252,15 @@ def file_date(citer):
         try:
             out = subprocess.run(
                 ["git", "-C", REPO, "log", "-1", "--format=%as", "--", citer],
-                capture_output=True, text=True, timeout=60).stdout.strip()
+                capture_output=True,
+                text=True,
+                timeout=60,
+            ).stdout.strip()
             git_date_cache[citer] = out or "?"
         except Exception:
             git_date_cache[citer] = "?"
     return git_date_cache[citer]
+
 
 # ---- header extraction ----
 def header_info(rel):
@@ -257,10 +279,13 @@ def header_info(rel):
             if m:
                 status = m.group(1).strip(" *")
         if not updated:
-            m = re.match(r"(?i)[*>\- ]*\**(last[- ]?updated|updated|created|date)\**\s*[:*]\s*(.+)", ln)
+            m = re.match(
+                r"(?i)[*>\- ]*\**(last[- ]?updated|updated|created|date)\**\s*[:*]\s*(.+)", ln
+            )
             if m:
                 updated = f"{m.group(1)}: {m.group(2).strip(' *')}"
     return title, status, updated
+
 
 # ---- build report rows ----
 def rows_for(corpus_id, file_list, dirprefix):
@@ -276,7 +301,9 @@ def rows_for(corpus_id, file_list, dirprefix):
                 real[citer] = forms
         # deduped view: drop auto-generated mailbox MANIFESTs; collapse mailbox
         # cc/sent/read copies of the same memo (same basename) to one
-        nonmani = {c for c in real if not (c.startswith("mailboxes/") and c.endswith("MANIFEST.md"))}
+        nonmani = {
+            c for c in real if not (c.startswith("mailboxes/") and c.endswith("MANIFEST.md"))
+        }
         mb_bases = {os.path.basename(c) for c in nonmani if c.startswith("mailboxes/")}
         nonmb = [c for c in nonmani if not c.startswith("mailboxes/")]
         dedup = len(nonmb) + len(mb_bases)
@@ -285,30 +312,49 @@ def rows_for(corpus_id, file_list, dirprefix):
         recent = next((d for d in dates if d != "?"), "-")
         num = ""
         m = re.match(r"methodology-(\d{2})", f)
-        if m: num = f"m-{m.group(1)}"
+        if m:
+            num = f"m-{m.group(1)}"
         m = re.match(r"pattern-(\d{3})", os.path.basename(f))
-        if m: num = f"P-{m.group(1)}"
+        if m:
+            num = f"P-{m.group(1)}"
         title, status, updated = header_info(rel)
-        rows.append(dict(file=f, num=num, count=len(real), dedup=dedup,
-                         buckets=buckets, recent=recent,
-                         index_only=bool(index_only) and not real,
-                         status=status, title=title, updated=updated,
-                         citers=sorted(real)))
+        rows.append(
+            dict(
+                file=f,
+                num=num,
+                count=len(real),
+                dedup=dedup,
+                buckets=buckets,
+                recent=recent,
+                index_only=bool(index_only) and not real,
+                status=status,
+                title=title,
+                updated=updated,
+                citers=sorted(real),
+            )
+        )
     rows.sort(key=lambda r: (r["dedup"], r["file"]))
     return rows
+
 
 meth_rows = rows_for("m", meth_files, METH_DIR)
 pat_rows = rows_for("p", pat_files, PAT_DIR)
 
+
 def fmt_table(rows):
-    out = ["| file | # | deduped | raw | citing dirs | most recent | status (own header) |",
-           "|---|---|---|---|---|---|---|"]
+    out = [
+        "| file | # | deduped | raw | citing dirs | most recent | status (own header) |",
+        "|---|---|---|---|---|---|---|",
+    ]
     for r in rows:
         b = ", ".join(f"{k}:{v}" for k, v in sorted(r["buckets"].items(), key=lambda kv: -kv[1]))
         flag = " (index-only)" if r["index_only"] else ""
         st = (r["status"] or "-")[:60]
-        out.append(f"| {r['file']} | {r['num'] or '-'} | {r['dedup']}{flag} | {r['count']} | {b or '-'} | {r['recent']} | {st} |")
+        out.append(
+            f"| {r['file']} | {r['num'] or '-'} | {r['dedup']}{flag} | {r['count']} | {b or '-'} | {r['recent']} | {st} |"
+        )
     return "\n".join(out)
+
 
 with open(f"{S}/census_report.md", "w") as fh:
     fh.write("## Corpus 1: methodology-core\n\n" + fmt_table(meth_rows) + "\n\n")
@@ -316,8 +362,14 @@ with open(f"{S}/census_report.md", "w") as fh:
     for name, rows in (("methodology", meth_rows), ("patterns", pat_rows)):
         zero = [r["file"] for r in rows if r["count"] == 0]
         idx = [r["file"] for r in rows if r["index_only"]]
-        own = [r["file"] for r in rows if r["count"] > 0 and all(k.startswith("corpus:") for k in r["buckets"])]
-        strong = [r["file"] for r in rows if "CLAUDE.md" in r["buckets"] or "skills" in r["buckets"]]
+        own = [
+            r["file"]
+            for r in rows
+            if r["count"] > 0 and all(k.startswith("corpus:") for k in r["buckets"])
+        ]
+        strong = [
+            r["file"] for r in rows if "CLAUDE.md" in r["buckets"] or "skills" in r["buckets"]
+        ]
         fh.write(f"### Stats {name}\nzero-cited ({len(zero)}): {', '.join(zero)}\n\n")
         fh.write(f"index-only ({len(idx)}): {', '.join(idx)}\n\n")
         fh.write(f"own-corpus-only ({len(own)}): {', '.join(own)}\n\n")
@@ -348,6 +400,20 @@ with open(f"{S}/audit.md", "w") as fh:
         fh.write("\n")
 # titles/updated for report composition
 with open(f"{S}/headers.json", "w") as fh:
-    json.dump({r["file"]: dict(title=r["title"], status=r["status"], updated=r["updated"], recent=r["recent"], count=r["count"], buckets=dict(r["buckets"])) for r in meth_rows + pat_rows}, fh, indent=0)
+    json.dump(
+        {
+            r["file"]: dict(
+                title=r["title"],
+                status=r["status"],
+                updated=r["updated"],
+                recent=r["recent"],
+                count=r["count"],
+                buckets=dict(r["buckets"]),
+            )
+            for r in meth_rows + pat_rows
+        },
+        fh,
+        indent=0,
+    )
 print("done. meth rows:", len(meth_rows), "pat rows:", len(pat_rows))
 print("audit classes:", {k: len(v) for k, v in audit.items()})

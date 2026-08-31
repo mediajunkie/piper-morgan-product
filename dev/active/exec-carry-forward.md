@@ -1,8 +1,9 @@
 # Exec Carry-Forward
 
-**Rewritten 2026-08-30 09:1x PDT (START).** Full rewrite, not patched — see "Standing rules" below
-for why that's now the only form I update this file in.
-**Session log today**: `dev/2026/08/30/2026-08-30-0902-exec-code-log.md`
+**Updated 2026-08-31 09:2x PDT (START)** — PM-gated section re-derived from live carry-forwards.
+**The header date moves with every edit**, which is the actual content of the rewrite-whole rule: the
+failure was never patching, it was a frame that stayed still while the content moved.
+**Session log today**: `dev/2026/08/31/2026-08-31-0902-exec-code-log.md`
 **Role**: Chief of Staff (Exec) · Amber · Model A worktree · branch `claude/exec-cycle` · upstream
 `origin/main` (verified correct) · cron `32 8,20`, job `b55d60bf`
 **⚠️ Arm-date NOT recorded** (gap found 08-30). Earliest evidence of this id is 08-29 → worst-case
@@ -53,15 +54,27 @@ rather than **prompt**? A session that dies cleanly is visible to everything we 
 | **Architectural review** | Ran 08-29. ESSENCE.md v0.1; PM ratified: Inversion flips live on chat, **all NEW build → MCP/BYOC**, **web-chat = maintenance mode** | Trifecta reads due **Wed 09-02** — CXO and PPM both filed **08-30, early**. CXO raises a structural tension between commitments 3 and 6. Arch synthesizes disagreements to PM by **09-03**. My workstream state rides Arch's weekly review; **methodology-core disposition = workstream B3**. |
 | **In Review bucket** | 27 items, split 3 ways and briefed to Lead | Web verified 4 through the real UI (2 closable, 2 XSS escaped-no-exploit). Lead has the 6 deterministic ones. ~12 need PM's live conversational testing. |
 
-## PM-gated, on the board
+## PM-gated, on the board — re-derived live 2026-08-31, not carried forward
 
-Plugin manifest `license` → **ANSWERED, tell PA**: `Apache-2.0`, adopted 08-13 (`a4547d7c4`); MIT was
-never decided, just a stale README badge · Agent 360 "what's worth changing" step (all 6 approved
-08-29; HOST routed; several already shipped) · Comms' Beat 6 quote · marketplace listing copy (routed
-to PPM, no response).
+★ **First application of PM's aging rule.** The rule says an aged item usually means *the board
+under-described it*, so the work is **re-describing, not re-listing**. Doing that surfaced that most
+of last week's queue resolved — and that two items I'd have re-listed were already closed.
 
-**PM availability**: longer response cycle **Sun 08-30 / Mon 08-31** — mostly vacation, *"not fully
-out of touch, just on a longer cycle."* Lean toward draining and recording over surfacing.
+| Item | Age | State |
+|---|---|---|
+| **BYOC/marketplace listing copy v4** | 1d | 🔴 **WITH PM.** Converged 08-30 after PPM answered a 20-day-open question by checking #1440's actual contract: "issues" and "documents" hold, "conversations" and "people" don't (no population mechanism for "people" exists at all). CXO narrowed "documents" to Files-page PDF uploads only. Web verified live with the browser-lane account. **Carries a live condition**: if #1659 doesn't land before the listing ships, cut to "issues" alone rather than let a stranger's first `.txt` upload error out. |
+| **Probe B — API spend** | ~1d | 🔴 **Small, concrete, with a real downstream.** Do situation-shaped tool names route worse than object-shaped? **B's answer decides which of the 12 canonical tool names we pick**, so it precedes the catalog rather than sitting beside it. PA correctly refuses to extend PM's Probe-A "yes you may" silently. |
+| **Trifecta's three PM decisions** | new | Arch synthesizes to PM by **09-03**. The one in PA's lane, in Arch's own framing: *"a question about what beta IS, which is yours."* Arch and PPM both lean option (a). |
+| **"Flip it"** | — | Not waiting on PM — **it's a trigger PM holds.** Lead has Arch's ratified staged plan loaded; PM is mid-round at 8 of 16. |
+
+**Closed since the last board, verified rather than assumed** (a dropped item is not a resolved one —
+Comms had rewritten their carry-forward, so I checked their logs): Beat 6's quote — closed 08-30, PM
+confirmed "date" was correct, PM's own original typo · insight pool — PM reviewed with Comms 08-29 ·
+plugin `license` — answered `Apache-2.0` · docs-tree flattening, CIO's four, GitHub adapter,
+CXO floor/ethics + §4 column — all ruled 08-29/30.
+
+**PM availability**: longer response cycle **Mon 08-31** — vacation-ish. **Voice pass Tuesday**,
+publish Wed 09-02. Nothing above is worth interrupting a vacation for; all of it is fresh.
 
 ## Standing rules for this file
 
