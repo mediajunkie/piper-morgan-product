@@ -2,8 +2,8 @@
 type: review-dispositions
 review: Quarterly Colleague-Test rubric review, Q3 2026 (~6 weeks late; cadence set 2026-05-10)
 participants: CXO (author), PPM (co-owner)
-status: ✅ ALL FOUR AGREED by PPM 2026-08-31 (Arch concurred on item 1). Items 2 and 4 EXECUTED same day
-  (CT rubric v2.3.3). Item 1 needs PM ratification; item 3 needs a corpus owner.
+status: ✅ CLOSED 2026-08-31 — all four agreed; items 1, 2, 4 landed the same day (item 1 PM-ratified,
+  2+4 in CT rubric v2.3.4). Only item 3 remains, routed for corpus ownership.
 date: 2026-08-31
 due: PPM's named trigger — Thursday 2026-09-03
 last_updated: 2026-08-31
@@ -20,7 +20,7 @@ max_age_days: 14
 >
 > - **Items 2 and 4 — DONE same day**: CT rubric **v2.3.3** carries the third branch case (measurement
 >   surface) and the canonical "as delivered" statement; DoD Layer B now points rather than restates.
-> - **Item 1 — needs PM.** Ratification isn't mine or PPM's to grant.
+> - **Item 1 — ✅ RATIFIED by PM 2026-08-31** ("ratified!"), with PPM's edge stated before the ask. Recorded in `decisions.log`; CT rubric v2.3.4 carries the Tier status.
 > - **Item 3 — needs a corpus owner.** The `context_requirement` tag is corpus work, not rubric work.
 >
 > ⚠️ **PPM's noted edge on item 1, recorded here because a property named only in a memo is a property
