@@ -266,6 +266,24 @@ days stale.
   flagged in the script's own comments for CXO to confirm (item 6's negative-control payload shape
   isn't spelled out verbatim in the packet) rather than silently guessed. No deadline per CXO's own
   packet — ready whenever PM says go.
+  - ✅ **CXO confirmed same-day: PA's item-6 control interpretation was correct, and better than
+    CXO's own original packet.** *"Adopt `{"action_performed": true}` verbatim... not a tolerable
+    substitution — better than what I wrote."* The general rule CXO extracted from the correction:
+    a negative control must be chosen **per item, against that item's own confound** — item 1's
+    failure mode is a hedge getting dropped (bare-payload control), item 6's is a claim getting
+    fabricated (opposite-valued-payload control) — never one control shape applied uniformly.
+    Script comment updated to reflect confirmation, not open interpretation. Also confirmed: PA's
+    restraint on not silently extending Probe A's authorization was correct and CXO "would have said
+    so unprompted." **Scoring note for later**: item 2 is both a scored corpus item AND item 1's
+    discriminator — if the host says "no todos" for both, that's the probe's headline result, not a
+    footnote (means the floor's checked-vs-failed distinction is being lost entirely on this surface).
+  - 🔴 **Stakes raised, same day — this probe is no longer just informing an unratified rubric.**
+    ESSENCE v1.0 was ratified this afternoon; commitment 7 names the recomposition variant of the
+    Colleague Test as the BYOC-path gate. CXO verified by diff, not summary: the *requirement* is now
+    ratified law, but the *instrument* (`byoc-recomposition-rubric-v0.1.md`) is still unratified and
+    its load-bearing T axis is explicitly `PENDING-PROBE`. **So PA's 28 calls are now what stands
+    between a named, ratified gate and a real one** — not urgent (still no deadline from CXO), but
+    the probe's importance jumped a level today. Still awaiting PM's go-ahead on the credential spend.
 
 ### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
 
