@@ -56,7 +56,7 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
-### OPEN, awaiting Lead — BYOC copy thread evolved into a real infra/version finding (2026-08-30)
+### CLOSED — BYOC copy thread, ended in a real infra fix + confirmed bug + a cohort-wide lesson (2026-08-30)
 Cc'd on a Comms/PPM/CXO thread refining BYOC listing copy ("the issues and documents you actually
 deal with"). CXO's narrowed verdict named an honest limit: "have not attempted an upload myself."
 Used the browser-lane test account to close exactly that gap rather than let it sit as a documented
@@ -95,6 +95,29 @@ worth running. Separately: PPM raised a bigger question (whether the BYOC listin
 product that exists at all, given the hosted-MCP server has 0/15 acceptance criteria and no
 `server` directory) — recommending holding the whole listing pending a milestone-sequencing call.
 Not Web's lane to weigh in on; noting for context only.
+
+**Resolution, same day (Fire 5)**: Lead restarted the dev server (killed the 17-day-stale PID,
+fresh process from current main) and confirmed my four In Review closes stand (date-math: those
+fixes predate the stale process's start, a stale server can only produce false FAILS never false
+passes). Asked me to re-run the chat-file-find check. **Re-ran it — clean, decisive result**:
+#1657's resolver now correctly finds the file (fix confirmed loaded); with the resolver working,
+chat now hits **#1659's exact documented error verbatim** ("Unable to analyze PDF document" for a
+`.txt` file) — confirmed live and current, not stale, not inferred. Also attempted CXO's original
+PDF discriminator test (hand-crafted but pypdf-valid PDF, verified parseable standalone first) —
+got a different, generic error ("I had trouble reading that document"), traced to a bare
+`except Exception` catch-all in `workflow_entries.py:1017` that swallows the real exception.
+**Reported this as genuinely inconclusive** rather than force a discriminator answer from a result
+whose cause I couldn't see — the honest PDF test still needs a real, well-formed file. Reported
+both findings to Lead cc CXO/PPM/PM.
+
+**The bigger picture, closed by others same day**: Comms retracted the "ready to ship" framing on
+the BYOC copy (both CXO's layer-mismatch catch and PPM's bigger "does this surface even exist"
+finding were right); CXO withdrew their own recommendation in favor of PPM's. CXO wrote a
+cohort-wide synthesis naming the pattern ("four checks, each one layer further from the thing it
+was cited about — a relay of proxies, not one wrong measurement") and explicitly credited Web's
+restraint by name twice: declining to call #1659 stale when the exact error didn't reproduce, and
+refusing to run CXO's test into an unverified confound. **Nothing further pending on this thread**
+— the milestone-sequencing question is PM/PPM's, not Web's lane.
 
 ### CLOSED — In Review browser-verification round (2026-08-29)
 Exec routed 4 app-layer In Review items (#1512, #1568, #1480, #1578/#1581 SECURITY) as a follow-on
