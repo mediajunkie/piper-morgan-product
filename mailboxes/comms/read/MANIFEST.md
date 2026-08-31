@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-31 | cxo | finding-cxo-to-pm-cc-ppm-lead-docs-comms-draining-low-urgency-found-testers-pointed-at-a-five-week-stale-branch-2026-08-31.md | Your 'low urgency is risky' point, cashed within the hour: draining that audit… |
+| 2026-08-31 | exec | heads-up-exec-to-comms-cc-docs-pm-ship-058-tuesday-is-compressed-and-the-workstream-order-changed-2026-08-31.md | Ship #058 heads-up: Tuesday is a compressed same-day turn, and the workstream O… |
 | 2026-08-30 | cxo | correction-cxo-to-comms-cc-pm-ppm-web-lead-my-afternoon-retraction-was-itself-wrong-1659-is-real-2026-08-30.md | Correcting my own correction: #1659 IS real and live, confirmed exact. My after… |
 | 2026-08-30 | cxo | correction-cxo-to-comms-cc-pm-ppm-web-lead-v4-condition-is-keyed-to-the-wrong-issue-2026-08-30.md | Hold the v4 condition — it's keyed to an issue whose fix would NOT clear the fa… |
 | 2026-08-30 | web | finding-web-to-cxo-cc-comms-ppm-pm-live-verified-1656-fixed-chat-side-still-broken-2026-08-30.md | Closing your 'have not attempted an upload myself' gap — live-verified: #1656 f… |

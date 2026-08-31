@@ -364,20 +364,30 @@ def trigger_sent_mode(sent_path):
             continue
         # Does the sent path fall inside this doc's declared trigger glob?
         matches = {str(Path(p)) for p in glob.glob(str(ROOT / pattern))}
-        if str((ROOT / sent_path).resolve()) not in {str(Path(p).resolve()) for p in matches} \
-           and str(ROOT / sent_path) not in matches:
+        if (
+            str((ROOT / sent_path).resolve()) not in {str(Path(p).resolve()) for p in matches}
+            and str(ROOT / sent_path) not in matches
+        ):
             continue
         matched_any = True
         rel = str(path.relative_to(ROOT))
         updated = fm.get("last_updated", "")
         if not ISO.match(updated):
-            print(f"mail-send: refresh-trigger check — {rel} has a malformed last_updated ({updated!r}); cannot evaluate")
+            print(
+                f"mail-send: refresh-trigger check — {rel} has a malformed last_updated ({updated!r}); cannot evaluate"
+            )
             continue
         if sent_date > updated:
-            print(f"mail-send: ⚠️  {rel}'s promise just LAPSED — this send ({sent_date}) postdates its last_updated ({updated})")
-            print(f"mail-send:   the trigger you just sent is exactly what {rel} declared it refreshes on — bump it now, while it's in front of you")
+            print(
+                f"mail-send: ⚠️  {rel}'s promise just LAPSED — this send ({sent_date}) postdates its last_updated ({updated})"
+            )
+            print(
+                f"mail-send:   the trigger you just sent is exactly what {rel} declared it refreshes on — bump it now, while it's in front of you"
+            )
         else:
-            print(f"mail-send: {rel} still current relative to this send ({sent_date} ≤ last_updated {updated})")
+            print(
+                f"mail-send: {rel} still current relative to this send ({sent_date} ≤ last_updated {updated})"
+            )
     return 0  # advisory only — never a failure signal, matching the mail-send.sh contract this hooks into
 
 
@@ -450,11 +460,15 @@ def state_files_mode(role=None):
         updated_raw = fm.get("last_updated", "")
 
         if claim == "none":
-            declared_none.append(f"{rel} — currency_claim: none, declared honest (like refresh_verifiability: by-hand)")
+            declared_none.append(
+                f"{rel} — currency_claim: none, declared honest (like refresh_verifiability: by-hand)"
+            )
             continue
 
         if not claim or "max_age_days" not in fm:
-            undeclared.append(f"{rel} — has last_updated but no currency_claim/max_age_days pair (not yet migrated)")
+            undeclared.append(
+                f"{rel} — has last_updated but no currency_claim/max_age_days pair (not yet migrated)"
+            )
             continue
 
         updated = _parse_iso_date(updated_raw)
@@ -464,7 +478,9 @@ def state_files_mode(role=None):
             max_age = None
 
         if updated is None or max_age is None:
-            malformed.append(f"{rel} — currency_claim {claim!r} declared but last_updated={updated_raw!r} / max_age_days={fm.get('max_age_days')!r} unparseable")
+            malformed.append(
+                f"{rel} — currency_claim {claim!r} declared but last_updated={updated_raw!r} / max_age_days={fm.get('max_age_days')!r} unparseable"
+            )
             continue
 
         checked += 1
@@ -473,10 +489,14 @@ def state_files_mode(role=None):
         print(f"▸ {rel}  (claim: {claim}, max {max_age}d)")
         if age_days > max_age:
             stale += 1
-            print(f"  ✗ STALE — last_updated {updated_raw}, {age_days}d old, claim allows {max_age}d.")
+            print(
+                f"  ✗ STALE — last_updated {updated_raw}, {age_days}d old, claim allows {max_age}d."
+            )
             print(f"    Its header is not evidence; the frontmatter is what's being checked.")
         else:
-            print(f"  ✓ current — last_updated {updated_raw}, {age_days}d old, within its own {max_age}d claim.")
+            print(
+                f"  ✓ current — last_updated {updated_raw}, {age_days}d old, within its own {max_age}d claim."
+            )
 
     print()
     print("── coverage ─────────────────────────────────────────────────────────────────")
@@ -486,7 +506,9 @@ def state_files_mode(role=None):
     print(f"  declared currency_claim: none (honest, not a failure): {len(declared_none)}")
     for d in declared_none:
         print(f"    · {d}")
-    print(f"  UNDECLARED (no checkable claim at all — the finding, per CXO's measurement): {len(undeclared)}")
+    print(
+        f"  UNDECLARED (no checkable claim at all — the finding, per CXO's measurement): {len(undeclared)}"
+    )
     for u in undeclared:
         print(f"    ✗ {u}")
     if malformed:

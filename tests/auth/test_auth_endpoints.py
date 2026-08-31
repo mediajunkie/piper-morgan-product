@@ -119,7 +119,9 @@ class TestAuthEndpoints:
         ps = PasswordService()
         test_password = "test_login_password_123"
         test_user = User(
-            username="tz_login_test_user", email=email, password_hash=ps.hash_password(test_password)
+            username="tz_login_test_user",
+            email=email,
+            password_hash=ps.hash_password(test_password),
         )
 
         try:

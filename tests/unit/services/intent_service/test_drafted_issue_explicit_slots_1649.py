@@ -394,8 +394,12 @@ class TestExplicitSlotsEndToEnd:
 # curly-single, which is the only mechanism that reproduces PM's observed
 # split (description captured, title dropped).
 PM_V64_ASK = "draft an issue titled 'Login timeout' with description 'sessions expire after 5 min'"
-PM_V64_ASK_CURLY = "draft an issue titled ‘Login timeout’ with description ‘sessions expire after 5 min’"
-PM_V64_ASK_DOUBLE = 'draft an issue titled "Login timeout" with description "sessions expire after 5 min"'
+PM_V64_ASK_CURLY = (
+    "draft an issue titled ‘Login timeout’ with description ‘sessions expire after 5 min’"
+)
+PM_V64_ASK_DOUBLE = (
+    'draft an issue titled "Login timeout" with description "sessions expire after 5 min"'
+)
 # PM's exact correction turn — live, this ENTIRE sentence became the title.
 PM_V64_CORRECTION = "title should be 'Login timeout' as I indicated in my initial request"
 V64_TITLE = "Login timeout"
@@ -426,7 +430,9 @@ class TestV64FirstTurnExtraction:
         assert slots.get("body") == V64_DESCRIPTION
 
     def test_curly_double_quotes(self):
-        slots = _slotfill()("draft an issue titled “Login timeout” with description “sessions expire after 5 min”")
+        slots = _slotfill()(
+            "draft an issue titled “Login timeout” with description “sessions expire after 5 min”"
+        )
         assert slots.get("title") == V64_TITLE
         assert slots.get("body") == V64_DESCRIPTION
 
@@ -460,7 +466,9 @@ class TestTitleAnswerExtraction:
         assert self._extract()("Login timeout") is None
 
     def test_unquoted_dictation_strips_metacommentary(self):
-        assert self._extract()("the title should be Login timeout as I indicated earlier") == V64_TITLE
+        assert (
+            self._extract()("the title should be Login timeout as I indicated earlier") == V64_TITLE
+        )
 
     def test_body_prose_with_incidental_quotes_is_never_stolen(self):
         # A quoted span floating inside genuine body prose is content —

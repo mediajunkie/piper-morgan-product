@@ -1,15 +1,15 @@
-date,run,queries_total,routing_pass,routing_fail,routing_pct,quality_pass,quality_fail,quality_skip,quality_pct,env_errors,notes
-2026-03-12,M0 (884),61,43,10,70.5%,,,8,,0,No quality judge in this run; routing-only baseline (8 NOT_IMPL)
-2026-04-11,M1,61,57,4,93.4%,52,6,1,86.7%,0,M1 milestone gate; quality judged on 60 queries (1 skipped NOT_IMPL)
-2026-05-08,M2f-baseline,61,57,4,93.4%,40,10,1,66.7%,0,M2f pre-work baseline; quality dropped vs M1 (judge variance expected)
-2026-05-09,M2f-v2,61,57,4,93.4%,41,9,1,68.3%,0,Same-day re-run with v2 harness; slight quality improvement
-2026-05-09,M2f-v3,61,57,4,93.4%,39,8,1,65.0%,0,Same-day v3 harness; quality lower — judge variance across runs
-2026-05-09,Run 7,61,57,4,93.4%,42,3,1,70.0%,0,Run 7; quality recovering; 1 skipped
-2026-05-13,Run 8,63,59,4,93.7%,43,5,1,69.4%,0,Run 8; corpus expanded to 63 queries; quality steady
-2026-05-13,Run 9,63,59,4,93.7%,44,3,1,71.0%,0,Run 9; May 13 baseline for M2g close tracking
-2026-05-28,Run 10,63,59,4,93.7%,,,,82.0%,,0,M2 quality gate MET (≥75% north star); gate commit 3baa27ee3; #1131 filed (3 fails are test-artifacts)
-2026-06-03,Run 11,61,57,4,93.4%,,,,80.3%,,0,Expected-pass quality 80.5%; Phantom=6 noted — #995 re-run filed as M5 polish
-2026-06-04,Run 12 INVALID,61,34,27,55.7%,0,,,,36,INVALID — env issue: empty ANTHROPIC_API_KEY from Claude Code shell shadowed .env; 36 service escalations; discard
-2026-06-04,Run 12,61,57,4,93.4%,52,,,85.2%,0,Clean-env restart (env -u ANTHROPIC_API_KEY); confirmed env-fix; new valid baseline; documented in CLAUDE.md
-2026-06-12,Run 13 INVALID,,,,,,,,,,INVALID — RecursionError in harness (~boot-49 tipping point under function-scoped fixtures; harness-only not app); #1165 filed; no clean results
-2026-08-21,Run 14,61,60,1,98.4%,22,0,0,100%,0,First KEYED run since Run 12 (keychain-resolved; judge=claude-sonnet-4-6). Q36 mode-4 drift filed #1674; Q38 expectation updated to 1624-designed behavior (dated in-corpus); ground-truth wrong-empty filed #1675 (2 sibling tests; excluded from routing/quality counts per column defs). Unjudged same-day pre-run discarded (judge env unset — 22 quality skips; owned in Lead log). #1675 resolved 2026-08-22: both ground-truth failures were HARNESS ARTIFACTS — the LLM-routed seed turn stochastically drew create_ticket so no row was written and the empty list was honest; production never wrong; seed made deterministic (service-layer write as the authenticated principal); recolors the run as 0 real ground-truth failures; follow-ups #1676 #1677.
+date,run,queries_total,routing_pass,routing_fail,routing_pct,quality_pass,quality_fail,quality_skip,quality_pct,env_errors,notes,serving_provider,serving_model
+2026-03-12,M0 (884),61,43,10,70.5%,,,8,,0,No quality judge in this run; routing-only baseline (8 NOT_IMPL),unrecorded,unrecorded
+2026-04-11,M1,61,57,4,93.4%,52,6,1,86.7%,0,M1 milestone gate; quality judged on 60 queries (1 skipped NOT_IMPL),unrecorded,unrecorded
+2026-05-08,M2f-baseline,61,57,4,93.4%,40,10,1,66.7%,0,M2f pre-work baseline; quality dropped vs M1 (judge variance expected),unrecorded,unrecorded
+2026-05-09,M2f-v2,61,57,4,93.4%,41,9,1,68.3%,0,Same-day re-run with v2 harness; slight quality improvement,unrecorded,unrecorded
+2026-05-09,M2f-v3,61,57,4,93.4%,39,8,1,65.0%,0,Same-day v3 harness; quality lower — judge variance across runs,unrecorded,unrecorded
+2026-05-09,Run 7,61,57,4,93.4%,42,3,1,70.0%,0,Run 7; quality recovering; 1 skipped,unrecorded,unrecorded
+2026-05-13,Run 8,63,59,4,93.7%,43,5,1,69.4%,0,Run 8; corpus expanded to 63 queries; quality steady,unrecorded,unrecorded
+2026-05-13,Run 9,63,59,4,93.7%,44,3,1,71.0%,0,Run 9; May 13 baseline for M2g close tracking,unrecorded,unrecorded
+2026-05-28,Run 10,63,59,4,93.7%,,,,82.0%,0,M2 quality gate MET (≥75% north star); gate commit 3baa27ee3; #1131 filed (3 fails are test-artifacts),unrecorded,unrecorded
+2026-06-03,Run 11,61,57,4,93.4%,,,,80.3%,0,Expected-pass quality 80.5%; Phantom=6 noted — #995 re-run filed as M5 polish,unrecorded,unrecorded
+2026-06-04,Run 12 INVALID,61,34,27,55.7%,0,,,,36,INVALID — env issue: empty ANTHROPIC_API_KEY from Claude Code shell shadowed .env; 36 service escalations; discard,unrecorded,unrecorded
+2026-06-04,Run 12,61,57,4,93.4%,52,,,85.2%,0,Clean-env restart (env -u ANTHROPIC_API_KEY); confirmed env-fix; new valid baseline; documented in CLAUDE.md,unrecorded,unrecorded
+2026-06-12,Run 13 INVALID,,,,,,,,,,INVALID — RecursionError in harness (~boot-49 tipping point under function-scoped fixtures; harness-only not app); #1165 filed; no clean results,unrecorded,unrecorded
+2026-08-21,Run 14,61,60,1,98.4%,22,0,0,100%,0,First KEYED run since Run 12 (keychain-resolved; judge=claude-sonnet-4-6). Q36 mode-4 drift filed #1674; Q38 expectation updated to 1624-designed behavior (dated in-corpus); ground-truth wrong-empty filed #1675 (2 sibling tests; excluded from routing/quality counts per column defs). Unjudged same-day pre-run discarded (judge env unset — 22 quality skips; owned in Lead log). #1675 resolved 2026-08-22: both ground-truth failures were HARNESS ARTIFACTS — the LLM-routed seed turn stochastically drew create_ticket so no row was written and the empty list was honest; production never wrong; seed made deterministic (service-layer write as the authenticated principal); recolors the run as 0 real ground-truth failures; follow-ups #1676 #1677.,unrecorded,unrecorded

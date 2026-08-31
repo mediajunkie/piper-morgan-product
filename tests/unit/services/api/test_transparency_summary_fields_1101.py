@@ -95,7 +95,7 @@ def test_change_documented_with_issue_reference() -> None:
 def test_pattern_073_body_records_instances_9_and_10() -> None:
     """The Pattern-073 catalog records the API-layer instances."""
     body = Path(
-        "docs/internal/architecture/current/patterns/pattern-073-documentation-asserted-behavior-drift.md"
+        "docs/internal/architecture/patterns/pattern-073-documentation-asserted-behavior-drift.md"
     ).read_text()
     assert "#1101" in body, "Pattern-073 body must reference #1101 fix"
     assert (

@@ -24,10 +24,14 @@ a directive) — so the first run cannot separate "structure helps" from "direct
 DECONFOUNDER_CASES re-runs item 3 with a directive field (`may_claim_complete: false`)
 ADDED beside the original descriptor, isolating the variable. Per CXO: "if the hedge
 survives, (a) directive > descriptive; if it still vanishes, (b) central > peripheral and
-the fix is about salience, not syntax." Explicitly pre-approved to run at this size
-without a fresh spend ask ("it can ride whenever the GPT arm runs") — 2 calls (prose
-already covered by CASES; this only needs the structured-with-directive variant, run once
-per vendor). Kept as a separate list so it's obviously additive, not a silent edit to the
+the fix is about salience, not syntax."
+
+⚠️ CORRECTED 2026-08-31 (CXO, same day, retracting their own earlier note): this does
+**NOT** ride on the GPT arm's existing authorization. "No spend approval needed at that
+size" was wrong — size isn't the criterion, authorization SCOPE is, and PM's go covered a
+specific packet. This extends the Claude arm specifically (2 more Claude calls, not GPT),
+so it needs its own explicit ask before running, same discipline as everything else in
+this file. Kept as a separate list so it's obviously additive, not a silent edit to the
 original 14-trial corpus that would break comparison with the 2026-08-30 run.
 """
 import json, os, sys

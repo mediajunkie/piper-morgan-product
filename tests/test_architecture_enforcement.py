@@ -2299,7 +2299,11 @@ class TestExtractionPatternRatchet:
         with open(self._PRE_CLASSIFIER_PY, encoding="utf-8") as fh:
             tree = ast.parse(fh.read())
         cls = next(
-            (n for n in ast.walk(tree) if isinstance(n, ast.ClassDef) and n.name == "PreClassifier"),
+            (
+                n
+                for n in ast.walk(tree)
+                if isinstance(n, ast.ClassDef) and n.name == "PreClassifier"
+            ),
             None,
         )
         assert cls is not None, (
@@ -2354,9 +2358,7 @@ class TestExtractionPatternRatchet:
         When migration onto the router lowers a real count, lower the
         CEILINGS entry to match in the same commit."""
         counts = self._all_counts()
-        drift = {
-            s: (n, self.CEILINGS[s]) for s, n in counts.items() if n != self.CEILINGS[s]
-        }
+        drift = {s: (n, self.CEILINGS[s]) for s, n in counts.items() if n != self.CEILINGS[s]}
         assert not drift, (
             f"Ratchet drift: actual vs frozen ceiling differs: "
             f"{ {s: f'actual {n}, ceiling {c}' for s, (n, c) in drift.items()} }. "

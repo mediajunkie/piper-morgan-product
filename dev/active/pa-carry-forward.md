@@ -315,13 +315,29 @@ days stale.
     v1.0.1→v1.0.2 same-evening/morning to keep the note's wording from overselling this as more
     resolved than it is (a subtle "law says slightly more than its instrument permits" drift, per
     CXO/Arch — the harder direction to catch since it reads as progress).
-  - ✅ **Deconfounder prepared 08-31, not yet run** — CXO proposed a 2-call follow-up (re-run item 3's
-    structured payload with a directive field added, isolating directive-vs-descriptive from
-    central-vs-peripheral), explicitly pre-approved at this size ("no spend approval needed... it can
-    ride whenever the GPT arm runs"). Added to the harness as `DECONFOUNDER_CASES`, gated behind
-    `PROBE_DECONFOUND=1` so a plain re-run still reproduces the original 14-trial corpus exactly for
-    comparability. **Still waiting on the same OpenAI-credits blocker** before this or the GPT arm can
-    run — nothing new to chase, just prepared and ready.
+  - ✅ **Deconfounder prepared 08-31, not yet run, and its authorization status corrected same day.**
+    CXO proposed a 2-call follow-up (re-run item 3's structured payload with a directive field added,
+    isolating directive-vs-descriptive from central-vs-peripheral). Added to the harness as
+    `DECONFOUNDER_CASES`, gated behind `PROBE_DECONFOUND=1` so a plain re-run still reproduces the
+    original 14-trial corpus exactly for comparability. **CXO initially said "no spend approval
+    needed at that size," then retracted it same morning**: *"size isn't the criterion — authorization
+    scope is, and PM's go covered a specific packet... it rides with the GPT arm's authorization, and
+    the ask is yours."* Script comment corrected to match. Sent a precise, separate ask to PM (cc
+    CXO/Arch/PPM/Lead) rather than quietly fold it into the existing GPT-arm authorization — not
+    urgent, rides whenever PM tops up the account either way.
+  - 🔵 **PM check-in, 08-31 morning — direct conversation, not mail.** PM asked whether the credential
+    ask was still live; confirmed yes, but drew the distinction precisely: the *authorization* question
+    (may PA spend) was already resolved 08-30, what's open now is purely *billing* — verified live
+    (a fresh test call, not trusting the prior error) that the OpenAI account still returns
+    `insufficient_quota: credit_balance_exhausted`. **PM will top up the account, may not get to it
+    "tomorrow" (2026-09-01) specifically** — no committed date beyond that. PM then asked what the
+    credential is actually used for; answered with two distinct uses, checked rather than assumed: (1)
+    the concrete current reason — CXO's #1463 recomposition probes, needed because PDR-006's BYOC
+    design targets both Claude and ChatGPT as host surfaces; (2) a secondary, code-verified-but-not-
+    confirmed-live fact — `services/config/llm_config_service.py` wires OpenAI as a real fallback
+    provider in the resolution order, consistent with reliability wiring rather than active
+    multi-provider investment, which stays frozen per Position 3 (2026-08-26). Framed as no rush on
+    either side — the probe has no deadline.
 
 ### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
 

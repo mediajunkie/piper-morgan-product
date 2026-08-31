@@ -21,7 +21,6 @@ from services.integrations.slack.event_handler import SlackEventHandler
 from services.integrations.slack.webhook_router import SlackWebhookRouter
 
 
-
 class TestNgrokWebhookFlow:
     """Test ngrok tunnel to webhook processing flow"""
 
