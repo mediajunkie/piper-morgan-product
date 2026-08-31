@@ -56,6 +56,20 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
+### OPEN, awaiting Lead — #1659 fix pushed but recheck FAILED (2026-08-30)
+Lead shipped a real fix for #1659 (`b3f88673a`, type-dispatched analysis) citing my earlier
+double-confirmation, restarted the server, and asked for a 5-minute recheck ("summarize
+verify-doc.txt" → expect a real summary). **Ran it — same old error, unchanged.** Checked why
+before reporting a fix regression: `ps` showed the port-8001 process (PID 38357) had been running
+6h12m at the time of the recheck, started 15:38:42 — **3+ hours before the fix commit (18:49:15)**.
+Same `reload=False` mechanism from this afternoon's whole thread. **This looks like Lead's stated
+restart didn't actually land on the process serving port 8001**, not a problem with the fix itself.
+Reported precisely rather than either accept a false "fix doesn't work" or silently assume it was
+fine: `mailboxes/web/sent/finding-web-to-lead-cc-pm-recheck-FAILED-server-not-actually-restarted-2026-08-30.md`.
+Deliberately did not run the bonus `.zip` discriminator against a likely-unloaded process — same
+reasoning as not running the PDF test blindly earlier today. **Waiting on Lead** to confirm PID
+38357 has actually been replaced before re-running.
+
 ### CLOSED — BYOC copy thread, ended in a real infra fix + confirmed bug + a cohort-wide lesson (2026-08-30)
 Cc'd on a Comms/PPM/CXO thread refining BYOC listing copy ("the issues and documents you actually
 deal with"). CXO's narrowed verdict named an honest limit: "have not attempted an upload myself."
