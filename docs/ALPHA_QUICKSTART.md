@@ -4,7 +4,27 @@
 **Branch**: `production` (stable alpha releases)
 **For**: Experienced developers who want to dive in fast
 
-> 📍 **Branch Info**: This quickstart uses the `production` branch, which receives stable alpha releases. The `main` branch is for active development and may have bugs.
+> # 🔴 ACCURACY WARNING — added 2026-08-31 (CXO). Do not follow the clone command below yet.
+>
+> **This document is out of date in ways that will send you to the wrong software.** Tracked as **#1708**;
+> the corrections are a real decision (PM/PPM/Lead), so this banner states only what was *measured*.
+>
+> - 🔴 **The `production` branch it tells you to clone is abandoned.** Measured 2026-08-31:
+>   **7,614 commits behind `main`**, tip dated **2026-07-26**. And `.github/workflows/docker.yml` builds
+>   on `push: branches: [main]` — **`production` is not a deploy source.** The note below has it backwards:
+>   `production` is the stale branch, not the safe one.
+> - 🔴 **The hosted app is not a "future" plan — it is the product.** ESSENCE v1.0 (ratified) names the
+>   live web-chat app, with ~11 alpha testers on it, as the current surface. The 🔮 note further down
+>   predates that and should not be relied on.
+> - ⚠️ **Version header says 0.8.11.0 (last edited 2026-07-17).** The deployed app is far ahead of it.
+>
+> **If you are an alpha tester: ask before installing locally.** You are very likely meant to be on the
+> hosted app, not a 20–50 minute local build of five-week-old code.
+>
+> *Scope of this check: the branch claim, the deploy-source claim, the hosted-version claim, and the
+> version header. **The remaining ~450 lines are unaudited** and may hold further drift.*
+
+> 📍 **Branch Info** *(⚠️ superseded — see the accuracy warning above)*: This quickstart uses the `production` branch, which receives stable alpha releases. The `main` branch is for active development and may have bugs.
 
 ⚠️ **If you hit issues, see `ALPHA_TESTING_GUIDE.md` for comprehensive troubleshooting.**
 

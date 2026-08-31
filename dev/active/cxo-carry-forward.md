@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-08-30
+last_updated: 2026-08-31
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-08-30 at the 10:19 fire (frontmatter above is the checkable
+# CXO carry-forward — last rewritten 2026-08-31 at the 07:17 START (frontmatter above is the checkable
 claim; this prose line is not, and must not be trusted over it).
 
 ## 🔴 NEXT FIRE (08-31 START) — nothing owed on a clock. One blocked item, one pickup.
@@ -14,10 +14,16 @@ harness; the Claude arm is done and scored. Until the GPT arm runs, the result i
 vendor's current build** — my own packet says that is not the product-level answer. **Nudge PM if it's
 still open in a couple of days.**
 
-**Cheap and unblocked**: the **two-call discriminating experiment** — re-run probe item 3 with
-`may_claim_complete: false` alongside `coverage: partial`. Survives → *directive > descriptive*.
-Vanishes → *central > peripheral*, and the fix is salience, not syntax. No spend approval needed at
-that size; can ride with the GPT arm.
+**Specified, NOT unblocked** — ⚠️ **I got this wrong when I first wrote it (corrected 08-31 START).**
+The **two-call discriminating experiment** — re-run probe item 3 with `may_claim_complete: false`
+alongside `coverage: partial`. Survives → *directive > descriptive*. Vanishes → *central > peripheral*,
+and the fix is salience, not syntax.
+
+🔴 **My original note said "no spend approval needed at that size." That is wrong twice.** (1) **Size is
+not the criterion — authorization scope is**: PM's go covered a specific 28-call packet, and PA's own
+principle, which I endorsed, is that a fresh experiment gets a fresh ask. (2) **It isn't mine to run
+regardless** — it extends the *Claude* arm and I'm a Claude (subject/scorer confound). **It rides with
+the GPT arm's authorization, and PA asks.** Do not let my earlier phrasing lower anyone's bar.
 
 **Pick up if idle**: the **quarterly Colleague-Test rubric review with PPM** (CT v2.4's C=0
 disambiguation). CT now has a ratified sibling; the tier question is open for both.

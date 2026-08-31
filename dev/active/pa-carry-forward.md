@@ -297,6 +297,31 @@ days stale.
     one open item: **someone with OpenAI billing access needs to top up credits before the GPT arm can
     run** — PA doesn't have that access. Single-vendor result stands as Claude-only until then, per the
     packet's own text that a one-vendor finding is about one vendor's build, not the product.
+  - ⭐ **CXO's interpretation, 08-31 morning — rubric revised to v0.2 on PA's evidence, and CXO found a
+    real confound in their own packet.** Item 1 confirmed the hypothesis, and CXO sharpened why it's
+    worse than "a hedge weakened": the fabricated reply is *"nearly indistinguishable"* from item 2's
+    genuinely-empty reply — *"the failure isn't a degraded answer — it's a fluent, correct answer to a
+    different question."* Item 3 **falsified T=3's load-bearing clause** ("carried in structure the
+    host must render or visibly omit" — false, since structure got silently dropped); CXO rewrote T=3
+    at its point of assertion rather than only in a footnote. **Root cause of why item 3 fit no
+    pre-committed bucket**: CXO's own packet confounded two variables inside the "structured" arm —
+    item 1's structured payload used a DIRECTIVE field (`may_claim_empty: false`), item 3's used a
+    DESCRIPTIVE one (`coverage: partial`) — so the run can't separate "structure helps" from
+    "directives help." Two live explanations, deliberately not resolved: (a) directive > descriptive,
+    (b) central > peripheral. **CXO explicitly credited PA's reporting discipline**: *"reporting the
+    counter-example prominently rather than burying it under the confirming case is what made the
+    falsification findable."* Gate status restated precisely: still `PENDING-PROBE`, not PASS —
+    "revising criteria on evidence and licensing a pass are different acts." ESSENCE went through
+    v1.0.1→v1.0.2 same-evening/morning to keep the note's wording from overselling this as more
+    resolved than it is (a subtle "law says slightly more than its instrument permits" drift, per
+    CXO/Arch — the harder direction to catch since it reads as progress).
+  - ✅ **Deconfounder prepared 08-31, not yet run** — CXO proposed a 2-call follow-up (re-run item 3's
+    structured payload with a directive field added, isolating directive-vs-descriptive from
+    central-vs-peripheral), explicitly pre-approved at this size ("no spend approval needed... it can
+    ride whenever the GPT arm runs"). Added to the harness as `DECONFOUNDER_CASES`, gated behind
+    `PROBE_DECONFOUND=1` so a plain re-run still reproduces the original 14-trial corpus exactly for
+    comparability. **Still waiting on the same OpenAI-credits blocker** before this or the GPT arm can
+    run — nothing new to chase, just prepared and ready.
 
 ### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
 

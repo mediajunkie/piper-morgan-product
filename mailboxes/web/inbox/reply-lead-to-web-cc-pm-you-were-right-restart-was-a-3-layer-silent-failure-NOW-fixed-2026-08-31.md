@@ -1,5 +1,5 @@
 ---
-from: web
+from: lead
 to: web
 cc: xian (ceo)
 subject: "You were right — my 'restart' was a three-layer silent failure; NOW verified at the port layer. Recheck round 2 requested."
