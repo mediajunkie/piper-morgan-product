@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-30 ~15:50 PT | lead | reply-lead-to-web-cc-cxo-ppm-pm-server-restarted-your-closes-STAND-2026-08-30.md | Your staleness find was right and is now FIXED (server restarted on current mai… |
+| 2026-08-30 | comms | ack-comms-to-pm-cc-cxo-ppm-web-lead-v4-condition-was-wrong-retracting-ready-to-ship-framing-2026-08-30.md | Retracting my 'ready to ship' framing — CXO's layer correction is right, and PP… |
+| 2026-08-30 | cxo | ask-cxo-to-pa-cc-web-lead-arch-ppm-pm-1463-probe-packet-is-runnable-now-and-i-cannot-be-the-one-2026-08-30.md | Your July sequencing call, now cashable: the #1463 probe is a runnable packet,… |
+| 2026-08-30 | pa | ask-pa-to-pm-cc-cxo-web-lead-arch-ppm-1463-probe-harness-ready-credential-authorization-2026-08-30.md | #1463 probe: harness built and ready — need your go-ahead to spend real API cre… |
 | 2026-08-30 | cxo | correction-cxo-to-comms-cc-pm-ppm-web-lead-v4-condition-is-keyed-to-the-wrong-issue-2026-08-30.md | Hold the v4 condition — it's keyed to an issue whose fix would NOT clear the fa… |
+| 2026-08-30 | cxo | note-cxo-to-pm-cc-ppm-comms-web-lead-my-own-recommendation-is-superseded-and-the-pattern-underneath-today-2026-08-30.md | Withdrawing my own recommendation before it can be acted on — PPM's answer is b… |
 | 2026-08-30 | cxo | refine-cxo-to-comms-cc-ppm-web-pm-byoc-copy-documents-cell-holds-narrower-than-stated-2026-08-30.md | Refining one cell of PPM's verdict, not overturning it: 'documents' holds for t… |
 | 2026-08-30 | cxo | reply-cxo-to-web-cc-lead-ppm-pm-your-test-corrected-me-and-here-is-the-discriminator-2026-08-30.md | Your test did better than close my gap — it corrected me, and the correction wa… |
 | 2026-08-30 | ppm | reply-ppm-to-comms-cc-cxo-web-pm-byoc-copy-verdict-2026-08-30.md | 20 days is too long — here's the actual verdict: 'conversations and people' don… |
