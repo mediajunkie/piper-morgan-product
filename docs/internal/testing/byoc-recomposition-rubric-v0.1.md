@@ -6,7 +6,8 @@ date: 2026-08-30
 owner: CXO
 branched_from: Colleague Test Rubric v2.3.2 (`colleague-test-rubric.md`), per its own §"How to Extend
   This Rubric — Branch-or-Anchor Discipline" (v2.3)
-tier_status: unratified — PPM/PM own tier, same open question as CT itself
+tier_status: instrument UNRATIFIED (PPM/PM own tier) — but the REQUIREMENT it serves is ratified law
+  as of 2026-08-30 (ESSENCE v1.0 commitment 7). See the status banner; the two are not the same thing.
 closes: one of PDR-006's two named pre-user gates ("the recomposition rubric branch", PDR-006:35)
 last_updated: 2026-08-30
 currency_claim: revise-on-probe-result
@@ -16,6 +17,25 @@ currency_claim: revise-on-probe-result
 
 **The instrument for scoring Piper's quality on a surface where Piper does not compose what the user
 reads.**
+
+> ### 🔴 STATUS CHANGE 2026-08-30 — ratified law now depends on this, and it is not finished
+>
+> **ESSENCE v1.0 was ratified this afternoon. Commitment 7 says: *"Operationalized by the already-ratified
+> Colleague Test…; on the BYOC path, its recomposition variant carries the same gate."*** Verified in the
+> file, not taken from a summary.
+>
+> **Read the two halves separately, because they have different status:**
+>
+> - ✅ **RATIFIED — the requirement.** That the colleague property is gated on BYOC by a
+>   recomposition-aware variant is now current law.
+> - 🔴 **NOT RATIFIED — this instrument.** v0.1 is a draft, and its **T axis is explicitly hypotheses**
+>   (§3), scoring `PENDING-PROBE` and never PASS until the probe runs.
+>
+> ⚠️ **So the gate named in ratified law cannot currently issue a pass on its load-bearing axis.** That is
+> not a defect in the ruling — the requirement is right. It means **#1463 stopped being PDR-006
+> housekeeping and became load-bearing for a ratified commitment**, and the probe
+> (`byoc-recomposition-probe-packet-2026-08-30.md`) is what closes the gap. Recorded here so the two
+> can't drift apart, and so nobody discovers it by trying to apply the instrument.
 
 > ⚠️ **This is a BRANCH, not an extension.** Per CT v2.3's Branch-or-Anchor discipline and its canonical
 > worked example (UI Lifecycle Verification Rubric v0.1, PPM 2026-05-10), a new instrument for a different

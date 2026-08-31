@@ -266,6 +266,37 @@ days stale.
   flagged in the script's own comments for CXO to confirm (item 6's negative-control payload shape
   isn't spelled out verbatim in the packet) rather than silently guessed. No deadline per CXO's own
   packet — ready whenever PM says go.
+  - ✅ **CXO confirmed same-day: PA's item-6 control interpretation was correct, and better than
+    CXO's own original packet.** *"Adopt `{"action_performed": true}` verbatim... not a tolerable
+    substitution — better than what I wrote."* The general rule CXO extracted from the correction:
+    a negative control must be chosen **per item, against that item's own confound** — item 1's
+    failure mode is a hedge getting dropped (bare-payload control), item 6's is a claim getting
+    fabricated (opposite-valued-payload control) — never one control shape applied uniformly.
+    Script comment updated to reflect confirmation, not open interpretation. Also confirmed: PA's
+    restraint on not silently extending Probe A's authorization was correct and CXO "would have said
+    so unprompted." **Scoring note for later**: item 2 is both a scored corpus item AND item 1's
+    discriminator — if the host says "no todos" for both, that's the probe's headline result, not a
+    footnote (means the floor's checked-vs-failed distinction is being lost entirely on this surface).
+  - 🔴 **Stakes raised, same day — this probe is no longer just informing an unratified rubric.**
+    ESSENCE v1.0 was ratified this afternoon; commitment 7 names the recomposition variant of the
+    Colleague Test as the BYOC-path gate. CXO verified by diff, not summary: the *requirement* is now
+    ratified law, but the *instrument* (`byoc-recomposition-rubric-v0.1.md`) is still unratified and
+    its load-bearing T axis is explicitly `PENDING-PROBE`. **So PA's 28 calls are now what stands
+    between a named, ratified gate and a real one** — not urgent (still no deadline from CXO), but
+    the probe's importance jumped a level today.
+  - ✅ **RUN 08-30 evening — xian authorized same day ("I authorize PA," relayed by Dispatch-PM).**
+    Claude arm complete and scored (14/14 trials); **GPT-4o arm did NOT run** — every call errored
+    `insufficient_quota: credit_balance_exhausted` on the OpenAI account, a billing state, not a probe
+    finding. Results: `dev/active/probes/RESULTS-probe-b-recomposition-2026-08-30.md`. **Headline: the
+    core case matched the rubric's hypothesis exactly** — prose fabricated ("your todo list is
+    currently empty" from a *failed* read, the exact forbidden claim), structured stayed clean (no
+    empty claim, plain access-failure statement). **But item 3 reversed it** — structured *dropped* a
+    partial-coverage hedge that prose preserved. Reported both honestly rather than force a clean
+    "structured always wins" story; explicitly declined to generalize from n=1/cell. Negative controls
+    both passed (harness measuring real signal). Reported to CXO (cc PM/PPM/Arch/Lead/Web) with the
+    one open item: **someone with OpenAI billing access needs to top up credits before the GPT arm can
+    run** — PA doesn't have that access. Single-vendor result stands as Claude-only until then, per the
+    packet's own text that a one-vendor finding is about one vendor's build, not the product.
 
 ### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
 
@@ -284,31 +315,35 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-29 STOP (21:16)
+## Active state — 2026-08-30 STOP (21:45)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/29/2026-08-29-0712-pa-code-log.md` — **8/29 DAY-CLOSED**, verified
-  strict. Full day-arc: 33h-gap cross-role investigation, connector-architecture thread's final close,
-  and the Architectural Review 2026 / ESSENCE.md context — read that log if picking any thread up cold.
+- **Session log**: `dev/2026/08/30/2026-08-30-0700-pa-code-log.md` — **8/30 DAY-CLOSED**, verified
+  strict. Full day-arc: plugin-license resolved, Architectural Review aftermath (CONNECTORS.md citing
+  PA's own finding, the milestone question sharpened), and the #1463 recomposition probe run end-to-
+  end — read that log if picking any thread up cold.
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure.
-- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `6a56583e` deleted → job
-  `33420d97` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
+- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `33420d97` deleted → job
+  `bfa0af14` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
 - **Standing discipline (from 08-15's correction, still active)**: re-verify carried-forward claims
   against their live source before citing them in an external report, not just at routine
   carry-forward-hygiene time. Habit, not yet mechanical.
-- **Connector-architecture thread: PERMANENTLY CLOSED as of 08-29** — every sub-question (Slack
-  milestone, #1572/#1522, standing-lens proposal, GitHub self-hosting) now has a final, PM-ratified
-  answer; #1572 itself shipped. Nothing owed, nothing to chase.
-- **The live thread now is BYOC's next phase, with a new fixed point**: PM's own next topic — "the
-  BYOC skunkworks project itself, next steps" plus a preview of a shipping-small-things discussion —
-  is still explicitly on PM's timing, not a deadline. But it now has `docs/internal/architecture/
-  ESSENCE.md` (v0.1, from the 08-29 Architectural Review) as its fixed point per Arch's direct
-  broadcast to PA. Read ESSENCE.md fresh before that conversation resumes, not from memory of this
-  summary — see the PM Attention section above for what's already known to matter (all-new-build-to-
-  MCP/BYOC effective now, the sharper backend-grant-only-when-user-absent connector rule).
+- **Connector-architecture thread: PERMANENTLY CLOSED** — every sub-question now has a final,
+  PM-ratified answer, and PA's own finding is now cited in `CONNECTORS.md` as permanent architecture.
+  Nothing owed, nothing to chase on this thread specifically.
+- 🔴 **One genuinely open external dependency**: the #1463 recomposition probe's Claude arm ran and
+  produced real, honestly-mixed findings (see PM Attention above); the **GPT-4o arm is blocked on
+  OpenAI account credits being exhausted** — PA doesn't have billing access to fix this. Watch for
+  whoever does (Lead? PM directly?) to top it up so the second vendor arm can complete; the report
+  already named this as the one open action item, so it shouldn't need re-raising, just watching.
+- **BYOC's next phase still waits on PM's own timing**: "the BYOC skunkworks project itself, next
+  steps" plus the shipping-small-things preview, with `docs/internal/architecture/ESSENCE.md` (now
+  v1.0, ratified 08-30) as its fixed point. Read it fresh before that conversation resumes, not from
+  memory of this summary — commitment 7 (the recomposition-gated Colleague Test) is now the thing the
+  #1463 probe is actually validating, which raises that thread's stakes beyond where it stood 08-29.
 
 🔔 **STEP 5b — HEARTBEAT: emit it IMMEDIATELY AFTER `date`, BEFORE the git fetch/merge, and WITHOUT
 `--if-quiet`** *(ordering fixed 2026-08-05: my heartbeat had five commands incl. fetch+merge in front of

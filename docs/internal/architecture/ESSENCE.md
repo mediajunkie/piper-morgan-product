@@ -75,6 +75,14 @@ else.
    gate for exactly this property); on the BYOC path, its recomposition variant carries the same
    gate. This commitment licenses no new build — it gates HOW everything else is built.
    *(Added v1.0: CXO's amendment 1, PM Decision 1 — the headline is now cashed, not rhetorical.)*
+   *(Instrument status, dated 2026-08-30 — the REQUIREMENT here is ratified; the recomposition
+   INSTRUMENT is not yet fully validated: its honesty-under-recomposition axis scored
+   PENDING-PROBE until the first probe ran this evening. Claude arm: the governing hypothesis
+   confirmed live on the core case — prose fabricated from a failed read, structured payload
+   stayed honest — with one reversed case honestly recorded; GPT arm blocked on account credits,
+   zero data. The gate can begin issuing informed judgments; full validation pends the
+   second-vendor run. Per CXO's flag: a reader applying this gate should know its instrument's
+   state without excavating #1463.)*
 
 ## What it does today, on which surface (dated snapshot — 2026-08-29, "not yet" line 2026-08-30)
 
@@ -157,3 +165,7 @@ scope-bet gate governs all *becoming*; this document governs all *being*.
   MCP-path completion = PUBLIC-BETA GATE**; #1688 → Production-front) and the payload-honesty
   gap (#1463 trace). Consent-invariance verification footnote retained pending the watched-round
   behavioral receipt. Full synthesis: `reviews/2026-08-architectural-review/trifecta-synthesis.md`.*
+- *v1.0.1, 2026-08-30 (same evening) — instrument-status note added to commitment 7 per CXO's
+  dependency flag (ratified requirement vs. not-yet-validated instrument, stated in place) and
+  updated same-hour with the first probe results (PA's Claude-arm run: governing hypothesis
+  confirmed on the core case; GPT arm pending credits). Tense-honest per the document's own rule.*

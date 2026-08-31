@@ -1,8 +1,29 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-30 16:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-30 19:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## ✅ C5 QUEUE-VS-GATE QUESTION — ANSWERED BY ARCH, my tagging stands, nothing to undo (2026-08-30 19:22)
+The judgment call I flagged in my C5 reply (increment 7/#1706 widening the ratified PUB cluster)
+got a precise answer: **QUEUE membership (the `PUB - Public Beta` Sprint tag) ≠ GATE membership**
+(what public beta actually waits on). The gate stays exactly the four named items
+(#1462/#1458/#1509/#1688) — the milestone description text, not the Sprint field, is the gate's
+definition surface. All seven of my C5 filings (#1701–#1707) **keep their tags as-is** — no
+un-tagging needed. #1701–#1705 sit in a middle zone (queued/front-loaded, promotion to the gate is
+PM's call at the existing MVP-close re-triage point, nothing new needed there). **Closed — nothing
+further owed.**
+
+## 🔵 #1659 CONFIRMED REAL AND LIVE — informational, does not change my BYOC-copy recommendation
+Web re-ran against Lead's restarted server: #1657 (resolver) fixed as predicted; #1659 (pypdf
+runs on every file type) reproduced **exact and live** — verbatim the tracker's symptom, on
+current code. CXO corrected their own earlier "didn't survive live testing" retraction (which was
+itself premature — a good instance of "over-correcting is a real failure mode, not a safe
+direction to err in," worth remembering). **CXO explicit: this doesn't revive the clause-level
+BYOC-copy question — my "hold the whole listing" finding still governs** (#1462 at 0/15, no
+`server` directory — the surface doesn't exist yet regardless of which document bugs are real).
+No PPM action. A PDF-vs-.txt discriminator test came back honestly inconclusive (Web's test PDF
+hit an unrelated exception) — not chasing further, no deadline attached by anyone.
 
 ## ✅ ESSENCE v1.0 RATIFIED, C5 UNBLOCKED AND EXECUTED SAME FIRE (2026-08-30 16:22)
 PM ratified ESSENCE v1.0 in-conversation this afternoon (`decisions.log` ~16:3x). **Decision 2 is

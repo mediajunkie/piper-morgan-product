@@ -65,6 +65,59 @@ Common synonyms in memo headers (all route to the same mailbox):
 | `pm` | 2026-04-29 | Was a separate PM mailbox; messages migrated to `mailboxes/xian (ceo)/read/`; directory deleted |
 | `ceo` | 2026-04-29 | Briefly created same day in error; reconciled with canonical `xian (ceo)` |
 
+## 🔴 IF YOU ARE NOT CERTAIN WHERE MAIL GOES — READ THIS FIRST (PM directive, 2026-08-30)
+
+**PM, relayed via Dispatch-PM:** agents should *"know how to route mail, or know to escalate via Exec
+when uncertain, versus guessing."*
+
+### The rule, in one line
+
+> **Uncertain where it goes? Put the REAL recipient in `to:`, cc `exec`, deliver to
+> `mailboxes/exec/inbox/`, and say in the memo that you weren't sure. Exec routes it.**
+> That is not a fallback or an admission — **it is the correct destination for uncertain mail**, and
+> it is always available.
+
+**You are never required to guess.** Guessing is the one option this convention removes.
+
+### Why this section exists — three failures in one week, none of them carelessness
+
+Each agent did something reasonable and the mail still didn't arrive. That is what makes it a
+convention problem rather than a discipline problem.
+
+| # | What happened | Why no one was at fault |
+|---|---|---|
+| 1 | Comms wrote to Dispatch-PM. It landed in `comms/sent/`, `exec/read/`, and xian's inbox — **three real places, none of them anywhere Dispatch-PM looks.** Sat **5 days** until xian nudged. | **There is no `mailboxes/dispatch-pm/`.** There was no correct destination to choose. |
+| 2 | Docs addressed a memo `To: Dispatch` — accurate, that is the role's name. | The recipient's inbox sweep greps for `dispatch-pm`. **Correctly addressed, invisible to the sweep.** |
+| 3 | A Tessera memo sat undelivered across a host migration. | No signal to either end. **The sender believed they had sent it.** |
+
+★ **All three share one shape: the sender believed they had sent it.** Writing is not delivering.
+
+### Four rules that follow
+
+1. **Address by MAILBOX NAME, never by role prose.** `to: dispatch-pm`, not `To: Dispatch`. Sweeps
+   grep for the slug. A human-readable role name in `to:` is invisible to the machine that looks.
+   **Aliases honored** (write the slug, not the alias, in `to:`): `dispatch` → `dispatch-pm` ·
+   `dinp` / `design in product` → `janus` · `ceo` / `pm` / `xian` → `xian (ceo)` ·
+   `chief of staff` / `cos` → `exec` · `lead dev` → `lead`.
+2. **If a role has no mailbox here, this file must say where its mail goes instead.** A role that is
+   addressable but absent from this directory is the gap that produced failure #1. **If you find one,
+   add it or tell Exec** — an unlisted destination is a defect in this file, not a puzzle for you to
+   solve.
+3. **A write outside `mailboxes/` is not a send until you verify it landed.** `mail-send.sh` gives you
+   a push receipt for in-repo mail. Sibling repos give you nothing. **Confirm the file is observable
+   at the destination on `origin/main` before declaring it sent** — untracked local files in a sibling
+   repo have sat invisible for up to a month (7 Docs memos, 2026-08-25; Tessera's, 28 days).
+4. **When uncertain, escalate to Exec rather than guess.** The top of this section. Cheap for you,
+   cheap for Exec, and it converts a silent five-day stranding into a one-fire relay.
+
+### ⚠️ Note the scope change — this generalizes an existing protocol you may have read narrowly
+
+The Exec-relay path below was ratified 2026-08-25 as *"the cross-project **reply** protocol."* That
+framing was accurate and too narrow: an agent uncertain where mail goes **for any other reason** did
+not recognize it as applicable, because they weren't replying and weren't sure the recipient was
+cross-project. **It now covers any mail whose destination you are not certain of**, cross-project or
+not, reply or not.
+
 ## Replying to a cross-project agent — the ratified path (2026-08-25)
 
 **Use this, not a direct write to a sibling repo, unless you have a specific reason not to.**
