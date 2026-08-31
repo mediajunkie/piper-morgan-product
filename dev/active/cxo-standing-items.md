@@ -39,7 +39,6 @@ max_age_days: 31
 |---|---|---|---|
 | **2026-08-30** | **#1463 second-vendor arm** | **PM** — OpenAI credits (billing access). PA has the harness; Claude arm done. | Credits land, or ~2 days → nudge. |
 | **2026-08-30** | **#1463 two-call deconfounder** | Same authorization as above. ⚠️ **Not "too small to need approval"** — size isn't the criterion, scope is. And not mine to run (subject/scorer confound). | Rides the GPT arm. PA asks. |
-| **2026-05-10** | **CT invariants ratification** *(was: quarterly rubric review — items 2+4 DONE, see Closed)* | **PM** — decision request sent 08-31; PPM + Arch already agreed. | PM answers yes/no. |
 | **2026-05-10** | **CT v2.4 → `context_requirement` corpus tag** | **A corpus owner** — asked Lead cc PA 08-31 who holds the canonical corpus. Tag semantics are mine and I'll write them. | Ownership answer. |
 | ~~**2026-05-10**~~ | ~~**Quarterly CT rubric review**~~ — ✅ superseded by the two rows above | ~~**PPM marking the dispositions.** *(Moved 08-31 12:xx: PPM picked Thursday 09-03 — **their** trigger, not PM's — and I sent the four dispositions the same fire rather than sitting on them until Wednesday.)* `docs/internal/testing/rubric-review-2026-q3-dispositions.md` | PPM marks agree/disagree/needs-live. |
 | **2026-08-31** | **#1708 quickstart corrections** | **PM/PPM/Lead** — "what should it say" is a release-model decision, not a doc edit. Banner is up meanwhile. | The release-model call. |
@@ -55,6 +54,7 @@ max_age_days: 31
 - **MUX branch disposition** — **moot 2026-08-31**: all four `cxo-mux-*` branches no longer exist on origin. I owed PM a deletion recommendation from 07-26 and never made it; it resolved without me. Worth remembering as the cheapest possible version of this failure.
 - **Jake FTUX follow-through (item C)** — first-contact arc complete; #1536 closed with re-run evidence.
 - **#1216 data provenance** · **Ship 052/053** — closed on earlier verification.
+- **CT invariants — ✅ PM-RATIFIED 2026-08-31**, recorded in `decisions.log` + CT rubric **v2.3.4** Tier status + Layer B pointer. Three invariants (question · verdict shape · fabrication auto-fail) need PM to change; criteria/examples/branches stay CXO-editable. PPM's known-property edge is written into the entry.
 - **Q3 rubric review items 2 + 4** — **DONE 2026-08-31, same day PPM agreed**: CT rubric **v2.3.3** carries the third branch case (branched *measurement surface*, with its two proxy-only requirements) and the canonical "as delivered stops being observable" statement; DoD Layer B converted to a pointer. Items 1 and 3 routed, tracked above.
 - **Successor read** — **DONE 2026-08-31**: `docs/briefing/CXO-SUCCESSOR-READ.md`. Filed 07-26, sat 35 days in an "unblocked" column; surfaced by CIO's aging check, not by me. Written mid-role deliberately, so it isn't a handover doc composed by someone with one foot out.
 - **Jake loop-back** — **ASKED 2026-08-31** (memo to HOST). Filed 07-29, sat 32 days. Question, not assumption — offered to draft the change list if the loop-back hasn't happened.
