@@ -31,8 +31,7 @@ max_age_days: 31
 
 | Filed | Item | What's actually owed | Note |
 |---|---|---|---|
-| **2026-07-26** | **Successor read / role self-assessment** | My predecessor left no lessons, no load-bearing-vs-commodity read, no relationship read. Write mine as I go so the next CXO isn't handed an artifact-only note. | Genuinely mine and genuinely unblocked. Was "background thread" — that was the old label doing its work. |
-| **2026-07-29** | **Jake loop-back — check it happened** | HOST owns the welfare item; **my stake is that improvements shipped from his feedback get reported back to him.** #1536 shipped and the first-contact arc closed 08-something. **Ask HOST whether the loop-back actually happened** rather than assuming it did. | Small. One memo. |
+| *(none — both drained 2026-08-31)* | — | — | — |
 
 ## 🟡 BLOCKED ON A NAMED THING — recheck when that thing moves
 
@@ -54,6 +53,8 @@ max_age_days: 31
 - **MUX branch disposition** — **moot 2026-08-31**: all four `cxo-mux-*` branches no longer exist on origin. I owed PM a deletion recommendation from 07-26 and never made it; it resolved without me. Worth remembering as the cheapest possible version of this failure.
 - **Jake FTUX follow-through (item C)** — first-contact arc complete; #1536 closed with re-run evidence.
 - **#1216 data provenance** · **Ship 052/053** — closed on earlier verification.
+- **Successor read** — **DONE 2026-08-31**: `docs/briefing/CXO-SUCCESSOR-READ.md`. Filed 07-26, sat 35 days in an "unblocked" column; surfaced by CIO's aging check, not by me. Written mid-role deliberately, so it isn't a handover doc composed by someone with one foot out.
+- **Jake loop-back** — **ASKED 2026-08-31** (memo to HOST). Filed 07-29, sat 32 days. Question, not assumption — offered to draft the change list if the loop-back hasn't happened.
 
 ## Environment caveat carried into every fire
 
