@@ -10,19 +10,32 @@ dated log.
 `61dd5aa2` — two re-arms tonight, both idempotent, no harm done), same expression
 `57 6,9,12,15,18,21 * * *`, healthy through ~09-06.
 
-## ⚠️ TOMORROW (09-01) IS A TRIPLE-CONVERGENCE DAY — check all three
+## Today (2026-08-31, Monday) — corrected understanding, verified live not assumed
 
-1. **Weekly Docs Audit** (every Monday).
-2. **Monthly Housekeeping Audit** (#1486, first Monday — full checklist already read, not started
-   early, correctly scheduled for tomorrow).
+Last night's "TODAY (09-01)" framing had a date-arithmetic slip — today is 08-31, not 09-01.
+Checked what that actually means for the three items rather than propagate the assumption:
+
+1. **Weekly Docs Audit** — auto-generates via GitHub Actions ~9am PT today (`cron: 7 16 * * 1`,
+   hasn't fired as of this morning's early fire). Nothing to do yet — watch for the issue to land,
+   handle it once it exists.
+2. **Monthly Housekeeping Audit (#1486)** — checked directly: titled "2026-08", created 2026-08-05,
+   **33 unchecked items, zero progress in 26 days**. Not "due today" — it's been overdue the whole
+   month. September's audit won't auto-generate until ~09-07 (next Monday, first-Monday guard), so
+   there's no clutter risk from further delay. Real, unblocked work — sequencing below.
 3. **Architectural Review B3 corpus-disposition kickoff — my lane, patterns (81 files)**. Owner
    Arch, with CIO (methodology-core) + Docs (patterns). Mechanical first axis (cited/uncited)
    already done via `docs/internal/architecture/reviews/2026-08-architectural-review/
    findings/citation-census-summary.md` — job at kickoff is the second axis (effective/inert
-   judgment) for the cited patterns, working from that census. Target ~1 week. **The disposition
-   motion is absorb-and-mark, not just archive** — each absorbed pattern should get marked into
-   whichever of the six living-core-docs it's absorbed into, same motion, not a separate pass.
-   Full plan: `reorientation-plan.md` in the same review directory. No prep owed — ready.
+   judgment) for the cited patterns, working from that census. Target ~1 week from kickoff (today).
+   **The disposition motion is absorb-and-mark, not just archive** — each absorbed pattern should
+   get marked into whichever of the six living-core-docs it's absorbed into, same motion, not a
+   separate pass. Full plan: `reorientation-plan.md` in the same review directory.
+
+**Sequencing decision, stated not implied**: B3 is today's primary work — fresh, PM-approved,
+time-boxed to ~1 week, and the rest of the cohort (Arch, CIO) is actively coordinating on the same
+reorientation effort right now. #1486, despite being older, has essentially zero time-pressure
+(next audit cycle isn't due for another week) — picking it up later today if B3 leaves room, or
+later this week if it doesn't. Not silently deferred — named here with the reason.
 
 ## New standing responsibility: the glossary is now a living-core-doc
 
