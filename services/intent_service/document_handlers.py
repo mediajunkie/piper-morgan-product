@@ -11,7 +11,6 @@ Each handler:
 - Returns structured results for Tests 19-24
 """
 
-import io
 from pathlib import Path
 from typing import Dict, List, Optional
 from uuid import UUID
@@ -20,7 +19,7 @@ import structlog
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from services.analysis.document_analyzer import DocumentAnalyzer
+from services.analysis.document_analyzer import DocumentAnalyzer, extract_document_text
 from services.database.connection import db
 from services.database.models import UploadedFileDB
 from services.database.session_factory import AsyncSessionFactory
@@ -130,8 +129,14 @@ async def handle_analyze_document(file_id: str, user_id: str) -> Dict:
         if not file_path or not Path(file_path).exists():
             raise FileNotFoundError(f"File not found in storage: {file_path}")
 
-        # 3. Call existing analyzer
-        analysis_result = await _doc_analyzer.analyze(str(file_path))
+        # 3. Call existing analyzer — passing the stored MIME type + original
+        # filename so it dispatches per file type (#1659) instead of running
+        # pypdf on everything.
+        analysis_result = await _doc_analyzer.analyze(
+            str(file_path),
+            file_type=file_record.file_type,
+            filename=file_record.filename,
+        )
 
         # 4. Return formatted result
         return {
@@ -177,14 +182,15 @@ async def handle_question_document(file_id: str, question: str, user_id: str) ->
         if not file_path or not Path(file_path).exists():
             raise FileNotFoundError(f"File not found in storage: {file_path}")
 
-        # 3. Extract text content (for PDFs)
-        import pypdf
-
-        text_content = ""
+        # 3. Extract text content — type-dispatched (#1659): plain text reads
+        # directly, PDFs via pypdf; unsupported types raise with an honest
+        # message naming the real type, never a wrong 'corrupted PDF' claim.
         # #1306: bytes via the decrypt seam, never a raw open()
-        reader = pypdf.PdfReader(io.BytesIO(read_file_from_storage(file_path)))
-        for page in reader.pages:
-            text_content += page.extract_text() or ""
+        text_content = extract_document_text(
+            read_file_from_storage(file_path),
+            file_type=file_record.file_type,
+            filename=file_record.filename,
+        )
 
         # 4. Build Q&A prompt
         prompt = f"""You are answering a question about a document.
@@ -296,14 +302,13 @@ async def handle_compare_documents(file_ids: List[str], user_id: str) -> Dict:
             if not file_path or not Path(file_path).exists():
                 raise FileNotFoundError(f"File not found in storage: {file_path}")
 
-            # Extract text
-            import pypdf
-
-            text_content = ""
+            # Extract text — type-dispatched (#1659), honest on unsupported types
             # #1306: bytes via the decrypt seam, never a raw open()
-            reader = pypdf.PdfReader(io.BytesIO(read_file_from_storage(file_path)))
-            for page in reader.pages:
-                text_content += page.extract_text() or ""
+            text_content = extract_document_text(
+                read_file_from_storage(file_path),
+                file_type=file_record.file_type,
+                filename=file_record.filename,
+            )
 
             documents.append(
                 {
@@ -443,14 +448,15 @@ async def handle_reference_in_conversation(
         if not file_path or not Path(file_path).exists():
             raise FileNotFoundError(f"File not found in storage: {file_path}")
 
-        # Extract text content
-        import pypdf
-
-        text_content = ""
+        # Extract text content — type-dispatched (#1659), honest on unsupported
+        # types. PDF branch keeps the first-5-pages cap to avoid token overflow.
         # #1306: bytes via the decrypt seam, never a raw open()
-        reader = pypdf.PdfReader(io.BytesIO(read_file_from_storage(file_path)))
-        for page in reader.pages[:5]:  # First 5 pages to avoid token overflow
-            text_content += page.extract_text() or ""
+        text_content = extract_document_text(
+            read_file_from_storage(file_path),
+            file_type=file_record.file_type,
+            filename=file_record.filename,
+            max_pages=5,
+        )
 
     # 3. Build conversation context
     conversation_context = ""
