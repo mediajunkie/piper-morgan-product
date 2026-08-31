@@ -1,7 +1,7 @@
 # Colleague Test Rubric
 
 **Version**: 2.3.3
-**Date**: 2026-05-15
+**Date**: 2026-08-31 (v2.3.3; scoring criteria unchanged since 2026-05-15)
 **Owner**: CXO
 **Purpose**: A scoring rubric for evaluating Piper Morgan's responses to natural-language queries. Used in M1 Gate UAT (#926), the canonical query retest scorer (#928), Phase E ethics activation gate (#992), and ongoing voice/quality monitoring.
 

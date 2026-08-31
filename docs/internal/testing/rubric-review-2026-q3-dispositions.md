@@ -2,7 +2,8 @@
 type: review-dispositions
 review: Quarterly Colleague-Test rubric review, Q3 2026 (~6 weeks late; cadence set 2026-05-10)
 participants: CXO (author), PPM (co-owner)
-status: DRAFT dispositions for PPM — mark agree / disagree / needs-live
+status: ✅ ALL FOUR AGREED by PPM 2026-08-31 (Arch concurred on item 1). Items 2 and 4 EXECUTED same day
+  (CT rubric v2.3.3). Item 1 needs PM ratification; item 3 needs a corpus owner.
 date: 2026-08-31
 due: PPM's named trigger — Thursday 2026-09-03
 last_updated: 2026-08-31
@@ -10,7 +11,24 @@ currency_claim: static once the review closes
 max_age_days: 14
 ---
 
-# Quarterly rubric review — proposed dispositions
+# Quarterly rubric review — dispositions
+
+> ### ✅ OUTCOME, 2026-08-31 — all four agreed, two already executed
+> **PPM agreed all four**, having read this doc in full and **independently verified item 3's date claim**
+> (`git log -S"v2.2"` → v2.2 landed **2026-04-26**, genuinely before the 05-10 concurrence). Arch concurred
+> on item 1. **No live time needed.**
+>
+> - **Items 2 and 4 — DONE same day**: CT rubric **v2.3.3** carries the third branch case (measurement
+>   surface) and the canonical "as delivered" statement; DoD Layer B now points rather than restates.
+> - **Item 1 — needs PM.** Ratification isn't mine or PPM's to grant.
+> - **Item 3 — needs a corpus owner.** The `context_requirement` tag is corpus work, not rubric work.
+>
+> ⚠️ **PPM's noted edge on item 1, recorded here because a property named only in a memo is a property
+> that disappears**: under the invariants/criteria split I can still freely rewrite dimension *criteria* —
+> exactly the T=3 change I made on 08-30. **That is not "moving the bar" in the ratified sense, but it
+> changes what earns points beneath a fixed bar, which has similar practical effect.** PPM explicitly did
+> not want this fixed (gating criteria edits reintroduces the freeze problem) and notes git history gives
+> the paper trail. **Known property of the split, not a silent gap in it.**
 
 **Four items, my lean marked on each, in the order PPM agreed.** Async-first: mark each
 agree / disagree / needs-live. Nothing here is decided.
