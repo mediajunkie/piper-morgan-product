@@ -1,8 +1,63 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-31 10:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-31 13:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## ✅ #1708 EXECUTED — ALPHA_QUICKSTART.md hosted-primary, CONTRIBUTING.md gets full local setup (2026-08-31 13:22)
+PM blessed the plan ("yes I bless the plan") after Lead's technical read + fresh-clone probe
+(no hard credential wall — the /setup wizard funnels fine; the real problem was eight sequential
+doc failures plus a new silent Keychain-ACL-hang trap on rebuild). Executed same-fire:
+- **`docs/ALPHA_QUICKSTART.md`** rewritten hosted-primary — `piper-morgan.fly.dev` is step one, no
+  clone/Docker/Python section left for testers, stale accuracy banner replaced with a short
+  what-changed note, `localhost:8001` refs removed or pointed at the hosted URL, stale "Setup &
+  Onboarding" wizard bullet cut (testers don't see a wizard now), footer date updated. 528→~220
+  lines.
+- **`CONTRIBUTING.md`** extended: fixed its own stale Python-version claim ("3.11+" → "3.11 or
+  3.12 only," Lead's verified finding), new "1b. Running the Full App Locally" section with
+  Lead's probe-measured steps (one-stack-per-machine compose warning, the Keychain-hang fix,
+  `main` never `production`), port/database/env troubleshooting moved into "Common Issues."
+- Dropped the broken setup-wizard screenshot walkthrough rather than propagate it — the referenced
+  PNGs don't exist in the repo (pre-existing gap, documented 08-13, not new; verified via
+  `docs/assets/images/alpha-onboarding/README.md`).
+
+**A real near-miss, caught and defused**: Docs independently started the same rewrite mid-fire
+(same PM ruling, same urgency read). No actual file conflict — I'd already committed and pushed
+before Docs' note reached me — but sent an immediate urgent heads-up (`95985ceec`) so they didn't
+duplicate effort or hit a push conflict. **Named explicitly what's still open** so nothing drops
+in the handoff: `SETUP.md` still has Lead-flagged wrong content (PIPER.example.md step, psql
+check, uvicorn entry point) untouched, may now overlap with CONTRIBUTING.md's new section —
+worth Docs/Lead deciding whether to consolidate. `ALPHA_TESTING_GUIDE.md` not audited against the
+hosted-primary change, flagged honestly in the quickstart's own "Getting Help" section rather than
+left silently inconsistent.
+
+Committed (`a98dae054`), merged a diverged origin/main (8 commits, clean no-conflict merge),
+pushed (`013d5a0cd`). **Nothing further owed from PPM on #1708** unless Lead/Docs' SETUP.md or
+ALPHA_TESTING_GUIDE.md follow-up surfaces a product question.
+
+## ✅ QUARTERLY RUBRIC REVIEW — fully closed, item 3 routed onward (2026-08-31 13:22)
+PM ratified item 1 in conversation. **3 of 4 items landed same day**: tier status (ratified +
+recorded, my known-property edge written into the entry itself per Arch's suggestion — dated
+changelog + same-day cc now the floor for CXO's future criteria edits), family coherence (CT
+v2.3.3), the as-delivered limit (canonical in CT, Layer B points). **Item 3** (CT v2.4 →
+`context_requirement` corpus tag) routed to Lead/PA for corpus ownership — not mine, watching only
+if it resurfaces. Thursday's held slot returned, unneeded.
+
+## ✅ CIO's standing-items audit — confirmed against my own independent retirement (2026-08-31 13:22)
+CIO's cohort-wide git-archaeology pass found `ppm-standing-items.md` 49 days stale with ~6 of 17
+items already resolved and never reconciled — arrived after I'd already retired the file this same
+fire for the identical reason. Checked CIO's three "genuinely still open" items against GitHub
+myself rather than trust the table: **#1270, #683, #1397 all confirmed OPEN** — none are PPM's to
+action (Lead's technical-debt lane / duty-cycle tooling, correctly watch-only), noting here so they
+don't disappear a second time.
+
+## 🔵 #1463 PROBE — Claude arm results in, GPT arm + deconfounder authorized, still running (2026-08-31, informational)
+Background to today's mail volume, no PPM stake: Claude arm confirmed CXO's fabrication hypothesis
+exactly (a failed read rendered as "currently empty," the class `conversational_floor.py:214-226`
+exists to block). GPT arm blocked on OpenAI credits most of the day (a real top-up landed in the
+wrong place or was delayed — PA correctly tested live rather than trust the "unblocked" report,
+CXO owned the layer-error precisely). Both the GPT arm and a 2-call deconfounder are now
+PM-authorized to run together. Watch only if a product question falls out of the result.
 
 ## ✅ QUARTERLY COLLEAGUE-TEST RUBRIC REVIEW — CLOSED, all 4 items agreed same day as the trigger
 CXO drafted dispositions same-fire (not Thursday) — `docs/internal/testing/
