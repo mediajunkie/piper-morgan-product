@@ -74,7 +74,7 @@ role	cron_expr	threshold_h	wake_start	wake_end	first_fire	active_since
 #    expression and that isn't knowable until the agent arms it. Do NOT add rows for dormant roles by
 #    hand: that converts silence into repeating alerts about deliberately-parked agents and trains
 #    everyone to ignore the belt. Any coverage claim from this file must state its denominator.
-cio	7 10,16,22	13	7	23	10:07	2026-06-16	active: cron armed — job 5f503ea5, delete-then-create at 2026-08-29 22:37 STOP, verified via CronList (exactly one job survived), expires ~2026-09-05 (7-day auto-expiry). Cadence unchanged (7 10,16,22 LEAN, PM-approved).
+cio	7 10,16,22	13	7	23	10:07	2026-06-16	active: cron armed — job a9ed03f9, delete-then-create at 2026-08-30 22:37 STOP, verified via CronList (exactly one job survived), expires ~2026-09-06 (7-day auto-expiry). Cadence unchanged (7 10,16,22 LEAN, PM-approved).
 exec	32 8,20	13	8	21	08:32	2026-06-16	active: cron armed 2026-07-29 12:24 on Amber (job f401fd4d), same cadence — row was never parked at predecessor's close (missed step, benign: successor live same day); next fire 20:32
 # exec pre-throttle expr for reference: 32 6,9,12,15,18,21 (6×/day) — restore when migration hold lifts and cadence returns to normal; see 7/6 exec log for context
 arch	27 6,9,12,15,18,21	7	6	22	06:27	2026-08-30	active: job 2defc479 (re-armed at 08-30 STOP via delete-then-create; prior a2b33d47) — cadence unchanged. **AUTO-EXPIRES ~2026-09-06** (CronCreate 7-day cap); session-scoped, CronList-verify at every START. ⚠️ first_fire 06:27 is the CRON minute; observed arrival is ~06:57 (+30, scheduler idle-gating) — see grace-window finding 2026-08-05.
