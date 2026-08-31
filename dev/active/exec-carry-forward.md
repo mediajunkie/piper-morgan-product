@@ -5,6 +5,9 @@ for why that's now the only form I update this file in.
 **Session log today**: `dev/2026/08/30/2026-08-30-0902-exec-code-log.md`
 **Role**: Chief of Staff (Exec) · Amber · Model A worktree · branch `claude/exec-cycle` · upstream
 `origin/main` (verified correct) · cron `32 8,20`, job `b55d60bf`
+**⚠️ Arm-date NOT recorded** (gap found 08-30). Earliest evidence of this id is 08-29 → worst-case
+expiry **~09-05**. **Rotate proactively at the 09-03 START** rather than discover absence. Record the
+arm-date at every future re-arm — `CronList` does not return creation time, so it is unrecoverable.
 
 ---
 
