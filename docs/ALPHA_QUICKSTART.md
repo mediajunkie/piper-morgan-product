@@ -1,51 +1,37 @@
 # Piper Morgan Alpha - Quick Start
 
-**Version**: 0.8.11.0
-**Branch**: `production` (stable alpha releases)
-**For**: Experienced developers who want to dive in fast
+**Rewritten 2026-08-31 (PPM), per #1708 and PM's in-conversation ruling ("yes I bless the plan").**
+This doc previously told testers to build a local copy from an abandoned branch. It doesn't
+anymore — see the note below for what changed and why.
 
-> # 🔴 ACCURACY WARNING — added 2026-08-31 (CXO). Do not follow the clone command below yet.
->
-> **This document is out of date in ways that will send you to the wrong software.** Tracked as **#1708**;
-> the corrections are a real decision (PM/PPM/Lead), so this banner states only what was *measured*.
->
-> - 🔴 **The `production` branch it tells you to clone is abandoned.** Measured 2026-08-31:
->   **7,614 commits behind `main`**, tip dated **2026-07-26**. And `.github/workflows/docker.yml` builds
->   on `push: branches: [main]` — **`production` is not a deploy source.** The note below has it backwards:
->   `production` is the stale branch, not the safe one.
-> - 🔴 **The hosted app is not a "future" plan — it is the product.** ESSENCE v1.0 (ratified) names the
->   live web-chat app, with ~11 alpha testers on it, as the current surface. The 🔮 note further down
->   predates that and should not be relied on.
-> - ⚠️ **Version header says 0.8.11.0 (last edited 2026-07-17).** The deployed app is far ahead of it.
->
-> **If you are an alpha tester: ask before installing locally.** You are very likely meant to be on the
-> hosted app, not a 20–50 minute local build of five-week-old code.
->
-> *Scope of this check: the branch claim, the deploy-source claim, the hosted-version claim, and the
-> version header. **The remaining ~450 lines are unaudited** and may hold further drift.*
+**For**: Alpha testers who want to try Piper Morgan.
+**For engineers who want to run the code locally or contribute**: see `CONTRIBUTING.md` — local
+setup now lives there, not here.
 
-> 📍 **Branch Info** *(⚠️ superseded — see the accuracy warning above)*: This quickstart uses the `production` branch, which receives stable alpha releases. The `main` branch is for active development and may have bugs.
+> ℹ️ **What changed, and why (2026-08-31)**: this doc used to send testers to clone a `production`
+> branch that turned out to be **7,614 commits behind `main`** and not a real deploy source
+> (`.github/workflows/docker.yml` builds on `main`), and called the hosted app a "planned for 2026"
+> future feature. Neither was true — ESSENCE v1.0 (ratified) names the live web-chat app as the
+> current surface, and it's what the existing alpha testers are actually on. **The fix is the
+> surface change below, not a corrected clone command**: testers use the hosted app; local install
+> is now an engineer path in `CONTRIBUTING.md`, pointing at `main`, never `production`. Full record:
+> #1708.
 
 ⚠️ **If you hit issues, see `ALPHA_TESTING_GUIDE.md` for comprehensive troubleshooting.**
 
 ---
 
-## Time & Storage Requirements
+## Getting Started
 
-| Step | First Run | Subsequent Runs |
-|------|-----------|-----------------|
-| Clone repository | 1-2 min (~91MB with --depth 1) | N/A |
-| Install Python packages | 5-10 min (~216 packages, ~1GB) | 1-2 min |
-| Docker image download | 10-30 min (~4GB, depends on connection) | Skipped if cached |
-| Database migrations | 1-2 min | 30 sec |
-| Setup wizard | 2-5 min | N/A |
-| **Total (first time)** | **20-50 minutes** | **5-10 min** |
+Piper Morgan runs as a hosted app — there's nothing to install. Go to
+**[piper-morgan.fly.dev](https://piper-morgan.fly.dev)** and log in.
 
-**Storage Requirements**:
-- Docker images: ~4GB
-- Python packages: ~1GB
-- Database: ~100MB (grows with usage)
-- **Total**: ~6GB free disk space recommended
+If you don't have login credentials yet, you're likely a new tester — email
+**xian@pipermorgan.ai** to get set up. Alpha testing is currently a small, curated group (per
+`ESSENCE.md`, ~11 testers), so access is arranged directly rather than through self-serve signup.
+
+That's it — no clone, no Docker, no Python version to check. **Time to first use: however long it
+takes to log in.**
 
 ---
 
@@ -69,175 +55,16 @@ This release is a systematic sweep through half-finished corners of the product:
 
 **Also in this release** — Owner-scoping fixes so searches and defaults can't leak across users (#1420, #1421, #1434); list/todo metadata that actually persists instead of being silently discarded on save (#1435); and an end to false capability denials — Piper no longer claims it can't accept file uploads or set reminders when it can (#1426).
 
-**Database Migration Required**: Run `alembic upgrade head` after updating (two migrations: the session-activity ledger and the restored preferences column).
-
-See [Release Notes v0.8.11.0](releases/RELEASE-NOTES-v0.8.11.0.md) for full details.
-
----
-
-## Choose Your Path
-
-| I want to... | Use this guide | Time |
-|--------------|----------------|------|
-| **Try Piper Morgan** (alpha testing) | This guide (ALPHA_QUICKSTART.md) | 20-50 min |
-| **Develop/contribute code** | [SETUP.md](../SETUP.md) | 30-60 min |
-
-> 🔮 **Future**: A hosted version and Docker Hub images are planned for 2026, which will enable a true "5-minute setup" for users who just want to run Piper. For now, all paths require the developer setup.
+See [Release Notes v0.8.11.0](releases/RELEASE-NOTES-v0.8.11.0.md) for full details. (Deploying an
+update yourself? See `CONTRIBUTING.md` — migrations are an operator step, not a tester one.)
 
 ---
 
-## Prerequisites
+## Want to run it locally instead?
 
-- Python 3.11 or 3.12, Docker, Git installed and working
-- OpenAI or Anthropic API key ready
-- Terminal comfort (for initial clone and install)
-
----
-
-## Automated Setup (Recommended for Alpha Testers)
-
-**For macOS/Linux/WSL2:**
-```bash
-# Fast clone (~91MB instead of ~800MB) - recommended for alpha testers
-git clone --depth 1 -b production https://github.com/mediajunkie/piper-morgan-product.git
-cd piper-morgan-product
-./scripts/alpha-setup.sh
-# Script will:
-# → Check requirements (Python 3.11/3.12, Docker, Git)
-# → Create virtual environment
-# → Install dependencies
-# → Generate JWT secret automatically
-# → Start Docker containers
-# → Launch the setup wizard at http://localhost:8001/setup
-```
-
-**For Windows (Command Prompt or PowerShell):**
-```cmd
-REM Fast clone (~91MB instead of ~800MB) - recommended for alpha testers
-git clone --depth 1 -b production https://github.com/mediajunkie/piper-morgan-product.git
-cd piper-morgan-product
-.\scripts\alpha-setup.bat
-REM Script will:
-REM → Check requirements (Python 3.11/3.12, Docker, Git)
-REM → Create virtual environment
-REM → Install dependencies
-REM → Generate JWT secret automatically
-REM → Start Docker containers
-REM → Launch the setup wizard at http://localhost:8001/setup
-```
-
----
-
-## Manual Setup (If You Prefer Full Control)
-
-```bash
-# 1. Clone and setup (~2-3 min)
-# --depth 1 gives you a fast ~91MB download (vs ~800MB full history)
-git clone --depth 1 -b production https://github.com/mediajunkie/piper-morgan-product.git
-cd piper-morgan-product
-python3.12 -m venv venv && source venv/bin/activate
-# Requires Python 3.11 or 3.12 - verify with: python --version
-
-# 2. Install dependencies (~5-10 min first time, 216 packages)
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-# ☕ This downloads ~1GB of packages - good time for a coffee break
-
-# 3. Configure environment variables (~1 min)
-cp .env.example .env
-# Edit .env and set JWT_SECRET_KEY:
-# Generate a secure key: openssl rand -hex 32
-# Add to .env: JWT_SECRET_KEY=your-generated-key-here
-# Note: .env is gitignored and survives git pull operations
-
-# 4. Start Docker containers (~10-30 min first time)
-docker compose up -d
-# First run downloads ~4GB of images (PostgreSQL, Redis, etc.)
-# ☕ Another good coffee break opportunity
-# Subsequent runs: instant (images are cached)
-
-# 5. Run database migrations (~1-2 min)
-python -m alembic upgrade head
-# This creates/updates all database tables
-
-# 6. Start server for first-time setup
-python main.py
-# → Opens http://localhost:8001/setup (GUI setup wizard)
-
-# 7. Complete setup wizard (~2-5 min)
-# → Navigate through visual setup screens
-# → Configure API keys, create user account
-# → See "Setup Wizard Walkthrough" below for details
-
-# 8. Configure preferences (optional, ~2 min)
-python main.py preferences
-# → Answer 5 questions about your work style
-# → Or skip and configure later via Settings page
-
-# 9. Validate installation (optional)
-python scripts/validate_install.py
-# → Checks all components are working
-# → Shows clear pass/fail status
-```
-
----
-
-## Setup Wizard Walkthrough (New in 0.8.2)
-
-The GUI setup wizard guides you through configuration with a visual interface:
-
-### Step 1: Welcome Screen
-The setup wizard welcome screen explains what will be configured and gives you a clear starting point.
-
-<img src="./assets/images/alpha-onboarding/setup-wizard-welcome.png" alt="Setup wizard welcome screen" width="600">
-
-### Step 2: System Health Check
-Automatic validation of your system:
-- ✓ Docker installed and running
-- ✓ Python version correct
-- ✓ Port 8001 available
-- ✓ Database accessible
-
-<img src="./assets/images/alpha-onboarding/setup-wizard-health-check.png" alt="Setup wizard health check" width="600">
-
-### Step 3: API Key Configuration
-Configure your LLM API keys through a form interface. Much easier than pasting in the terminal - you can see what you're typing, correct mistakes, and get immediate validation feedback.
-
-Supports:
-- OpenAI (GPT-4, GPT-3.5)
-- Anthropic (Claude)
-- Google Gemini
-
-<img src="./assets/images/alpha-onboarding/setup-wizard-api-keys.png" alt="Setup wizard API key configuration" width="600">
-
-### Step 4: User Account Creation
-Create your admin account:
-- Username and email
-- Secure password (min 8 chars, bcrypt-hashed)
-- Confirmation and validation
-
-<img src="./assets/images/alpha-onboarding/setup-wizard-user-creation.png" alt="Setup wizard user account creation" width="600">
-
-### Step 5: Setup Complete
-Setup confirmation with next steps and quick links to start using Piper.
-
-<img src="./assets/images/alpha-onboarding/setup-wizard-success.png" alt="Setup wizard success screen" width="600">
-
----
-
-## Alternative: Command-Line Setup
-
-If you prefer the original command-line setup wizard:
-
-```bash
-python main.py setup
-# → Follow prompts for:
-#    - Username and email
-#    - Secure password (min 8 chars, bcrypt-hashed)
-#    - API keys (OpenAI/Anthropic/Gemini)
-```
-
-Both methods configure the same settings. Use whichever you're comfortable with.
+Local install is now an **engineer/contributor path**, not a tester one — see `CONTRIBUTING.md`
+for the full setup (Python, Docker, Postgres, the setup wizard). Point at `main`, never
+`production` (that branch isn't a deploy source and drifts stale — see `release-model.md`).
 
 ---
 
@@ -254,7 +81,7 @@ Both methods configure the same settings. Use whichever you're comfortable with.
 
 ### Via UI Features
 
-After logging in to http://localhost:8001:
+After logging in at [piper-morgan.fly.dev](https://piper-morgan.fly.dev):
 
 1. **Lists Management** → Click "Lists" → "Create New List"
    - Add list name and description
@@ -282,7 +109,6 @@ After logging in to http://localhost:8001:
 ## Testing Focus for 0.8.11
 
 **What's Stable** (light testing recommended):
-- ✅ Setup wizard (GUI and CLI)
 - ✅ Login/authentication
 - ✅ Lists, Todos, Projects management (chat todos are real; the REST `/api/v1/todos` endpoint is still mocked, #1427)
 - ✅ Files upload/download/preview/tagging
@@ -301,162 +127,30 @@ After logging in to http://localhost:8001:
 
 ## If Something Breaks
 
-### Docker not running?
+### Can't log in / forgot your password?
 
-```bash
-docker --version  # Should show version
-docker ps         # Should show containers
-# If not: Start Docker Desktop
-```
+Email **xian@pipermorgan.ai** — accounts are provisioned directly for this small a tester group,
+so there's no self-serve password reset yet.
 
-### Port 8001 taken?
+### Something else looks broken?
 
-```bash
-lsof -i :8001     # See what's using it
-kill -9 [PID]     # Kill it
-```
+Check [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) first — it may already be tracked. If not,
+report it (see "Getting Help" below).
 
-### Database/migration issues?
+*(Running a local copy and hit a setup problem instead? That's `CONTRIBUTING.md`'s
+troubleshooting section, not this one.)*
 
-```bash
-# If setup wizard fails with "column does not exist" error:
-python -m alembic upgrade head
+### UI Navigation
 
-# If alembic command not found (not in venv):
-source venv/bin/activate
-alembic upgrade head
+After logging in at [piper-morgan.fly.dev](https://piper-morgan.fly.dev):
 
-# Verify database is running:
-docker ps | grep postgres
-# Should show: piper-postgres running on port 5433
-
-# Reset database completely (WARNING: deletes all data):
-docker compose down -v
-docker compose up -d
-python -m alembic upgrade head
-```
-
-### API key issues?
-
-```bash
-# Web UI method (easier):
-# Navigate to http://localhost:8001/setup
-# Re-enter your API keys in the form
-
-# Or command-line method:
-python main.py setup  # Re-run setup wizard
-python main.py status # Verify keys
-```
-
-### Login issues?
-
-```bash
-# Forgot password? Re-run setup to create new account
-python main.py setup
-
-# Can't access http://localhost:8001?
-# Check server is running: python main.py
-# Try: http://127.0.0.1:8001
-```
-
-### Windows: localhost doesn't work?
-
-**Problem**: `http://localhost:8001` gives connection error, but `http://127.0.0.1:8001` works.
-
-**Why**: Windows may resolve `localhost` to IPv6 (`::1`) while Piper binds to IPv4 (`127.0.0.1`).
-
-**Solution**: Use `http://127.0.0.1:8001` instead of `localhost:8001` on Windows.
-
-### Environment variables not loading after git pull?
-
-```bash
-# Your .env file is gitignored and NEVER deleted by git operations
-# If you see JWT_SECRET_KEY warnings after pulling new code:
-
-# 1. Verify .env exists:
-ls -la .env
-
-# 2. If missing, CREATE it (this is required for all setups):
-cp .env.example .env
-
-# Edit .env in your IDE or text editor and add:
-# JWT_SECRET_KEY=<paste-generated-key-here>
-
-# Generate the key:
-openssl rand -hex 32
-
-# 3. Restart server:
-python main.py
-
-# Note: .env survives git pull, checkout, merge - git never touches it
-# If you never created .env, that's the issue - Step 2 above is mandatory
-# The setup wizard stores API keys separately (in secure keyring)
-```
-
-### Commands not found after restarting terminal?
-
-If `python main.py` gives errors like "No module named..." or commands aren't found:
-
-```bash
-# You need to reactivate your virtual environment!
-# The venv deactivates when you close your terminal.
-
-# Mac/Linux:
-cd piper-morgan-product
-source venv/bin/activate
-
-# Windows PowerShell:
-cd piper-morgan-product
-.\venv\Scripts\Activate.ps1
-
-# Windows Command Prompt:
-cd piper-morgan-product
-venv\Scripts\activate.bat
-
-# Your prompt should now show (venv) - try your command again
-python main.py
-```
-
----
-
-## Key Commands Reference
-
-> ⚠️ **Important**: All commands must be run inside an activated virtual environment!
->
-> **Activate venv each time you open a new terminal:**
-> ```bash
-> # Mac/Linux:
-> source venv/bin/activate
->
-> # Windows PowerShell:
-> .\venv\Scripts\Activate.ps1
->
-> # Windows Command Prompt:
-> venv\Scripts\activate.bat
-> ```
-> Your prompt should show `(venv)` when activated.
-
-```bash
-python main.py              # Start server (opens browser automatically)
-python main.py setup        # CLI setup wizard (alternative to GUI)
-python main.py preferences  # Configure your preferences
-python main.py status       # System health check
-python main.py --verbose    # Show detailed logs
-python main.py --no-browser # Don't auto-open browser
-```
-
-### UI Navigation (After Server Starts)
-
-After `python main.py` starts the server at http://localhost:8001:
-
-- **Setup** → http://localhost:8001/setup (first-time setup only)
-- **Home** → http://localhost:8001/ (chat interface)
-- **Lists** → http://localhost:8001/lists (manage lists)
-- **Todos** → http://localhost:8001/todos (manage todos)
-- **Projects** → http://localhost:8001/projects (manage projects)
-- **Files** → http://localhost:8001/files (upload/download files)
-- **Standup** → http://localhost:8001/standup (generate daily standup)
-- **Settings** → http://localhost:8001/settings (preferences, integrations)
+- **Home** → `/` (chat interface)
+- **Lists** → `/lists`
+- **Todos** → `/todos`
+- **Projects** → `/projects`
+- **Files** → `/files`
+- **Standup** → `/standup`
+- **Settings** → `/settings` (preferences, integrations)
 - **User Menu** (top right) → Logout, profile settings
 
 ---
@@ -490,12 +184,6 @@ After `python main.py` starts the server at http://localhost:8001:
    - "Connect my GitHub"-style questions get real setup guidance (#1417)
    - Slack outbound, DMs, @-mentions (the `/standup` command has known gaps, #1429)
 
-✅ **Setup & Onboarding**:
-   - GUI setup wizard with visual interface
-   - System health checks
-   - API key validation (OpenAI, Anthropic, Gemini)
-   - User account creation
-
 ✅ **Core Infrastructure**:
    - Multi-user support with owner-scoped data access, tightened this release (#1420, #1421, #1434)
    - JWT auth, bcrypt passwords
@@ -508,7 +196,10 @@ See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for current limitations.
 
 ## Getting Help
 
-- **Full Guide**: [ALPHA_TESTING_GUIDE.md](ALPHA_TESTING_GUIDE.md) (comprehensive setup)
+- **Full Guide**: [ALPHA_TESTING_GUIDE.md](ALPHA_TESTING_GUIDE.md) — deeper testing walkthrough.
+  ⚠️ **Not yet audited for the hosted-primary change** (that doc still assumes local install in
+  places) — if it contradicts this one on how to get started, trust this doc and flag the
+  discrepancy.
 - **Known Issues**: [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) (bugs and status)
 - **Legal**: [ALPHA_AGREEMENT_v2.md](ALPHA_AGREEMENT_v2.md) (terms and conditions)
 - **Version Info**: [VERSION_NUMBERING.md](VERSION_NUMBERING.md) (what 0.8.11.0 means)
@@ -525,4 +216,4 @@ This is **alpha software** (0.8.11.0). Expect bugs. Don't use for production. Yo
 
 **Happy testing!** 🚀
 
-_Last Updated: July 17, 2026_
+_Last Updated: August 31, 2026_

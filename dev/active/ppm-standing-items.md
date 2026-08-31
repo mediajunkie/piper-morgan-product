@@ -1,4 +1,9 @@
-# PPM Standing Items — Carry-Forward
+---
+retired: 2026-08-31
+retirement_reason: "Superseded by dev/active/ppm-carry-forward.md, which has done this file's job for the entire Model-A/Amber era — every fire this whole period read/wrote the carry-forward, never this file. PPM already made this exact finding in the Agent 360 v0.4 response (2026-08-15, §PPM-specific section): 'this file doesn't currently exist for me in practice — the carry-forward absorbed that function.' Confirmed 2026-08-31 while triaging CIO's cohort broadcast on standing-items dating conventions (`c3ab42f12`, `scripts/aging-standing-items.sh`) — HOST retired their own identical file 2026-08-30 citing the same prior PPM finding. Content below preserved as history, not current status — last touched 2026-07-13, everything on it either resolved weeks/months ago (sprint-history recovery, #1386 criterion 3, entity-model deliverables) or was silently absorbed into carry-forward tracking. carry-forward.md already dates every section header (e.g. '## ✅ ... (2026-08-31 10:22)'), so the spirit of CIO's dating convention is already satisfied there. Do not resurrect without a fresh reason; if PPM ever needs a distinct task-queue surface again, start clean rather than un-stale this one."
+---
+
+# PPM Standing Items — Carry-Forward (RETIRED 2026-08-31 — see frontmatter)
 
 **Role**: Principal Product Manager (PPM)
 **Last rewritten**: 2026-07-13 (~7:15 AM PT)

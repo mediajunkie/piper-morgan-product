@@ -4,8 +4,10 @@
 
 ### Python Version
 
-- **Required**: Python 3.11+
-- **Recommended**: Python 3.11.9 (latest stable)
+- **Required**: Python **3.11 or 3.12 only** — not 3.13 or 3.14. Pinned dependencies have no
+  builds for newer versions (verified via a fresh-clone probe, 2026-08-31; `requirements.txt`'s
+  pip wall is the first failure a newcomer on a newer Python hits).
+- **Recommended**: Python 3.12 (latest of the two supported versions)
 
 All development must be compatible with Python 3.11. Key features we rely on:
 
@@ -49,6 +51,48 @@ pip install -r requirements.txt
 # Verify Python 3.11 features
 python -c "import asyncio; asyncio.timeout(1.0); print('✅ Python 3.11 ready')"
 ```
+
+### 1b. Running the Full App Locally
+
+*Added 2026-08-31, moved from `docs/ALPHA_QUICKSTART.md` — testers now use the hosted app
+([piper-morgan.fly.dev](https://piper-morgan.fly.dev)), so this is an engineer/contributor path,
+not a tester one. Steps below are probe-measured (Lead, 2026-08-31 fresh-clone test), not
+assumed — see #1708.*
+
+⚠️ **Clone `main`, never `production`.** `production` is not a deploy source (CI builds on `main`)
+and drifts stale with no warning — see `docs/internal/planning/release-model.md`.
+
+```bash
+# 1. Clone and set up Python (see 1. Environment Setup above for the venv steps)
+git clone https://github.com/mediajunkie/piper-morgan-product.git
+cd piper-morgan-product
+python3.12 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt   # ~5-10 min cold; requires Python 3.11 or 3.12 (see above)
+cp .env.example .env
+
+# 2. Start the local infrastructure — ONE stack per machine
+docker compose up -d
+# → PostgreSQL on host port 5433, Redis, ChromaDB.
+# ⚠️ The compose project/container names are fixed, not per-checkout. A second checkout on the
+#    same machine silently commandeers the first one's containers rather than erroring — don't
+#    run two Piper checkouts against Docker on one machine without changing the project name.
+
+# 3. Migrate and launch
+alembic upgrade head
+python main.py
+# → Fresh-clone measured: healthy server in ~13s with ZERO API keys configured. It warns, then
+#    302s you to /setup, where the wizard collects an Anthropic or OpenAI key. Without a key the
+#    server runs but chat won't work — the wizard tells you this rather than failing silently.
+```
+
+**If startup hangs silently** at `"Validating LLM providers..."` on macOS: that's a Keychain ACL
+dialog for your new Python binary, and it's invisible in a headless/background terminal. Click
+**Always Allow** once (a GUI dialog is waiting behind your terminal), or set
+`PIPER_CREDENTIAL_STORE=db` to skip Keychain entirely.
+
+**Visit `/setup`** to configure API keys and create your account through the GUI wizard (health
+checks, key entry, account creation, confirmation) — or run `python main.py setup` for the
+equivalent CLI flow. Both configure the same settings.
 
 ### 2. Code Quality Checks
 
@@ -469,6 +513,34 @@ docker-compose exec app python --version  # Verify 3.11+
 
 **Problem**: GitHub Actions fail with Python compatibility
 **Solution**: Workflows updated to use Python 3.11 - clear cache and retry
+
+### Running the app locally — port, database, and environment issues
+
+*Moved from `docs/ALPHA_QUICKSTART.md`, 2026-08-31 (#1708).*
+
+**Port 8001 already taken?**
+```bash
+lsof -i :8001 && kill -9 [PID]
+```
+
+**Database/migration errors** (e.g. "column does not exist"):
+```bash
+alembic upgrade head          # from an activated venv
+docker ps | grep postgres     # confirm piper-postgres is running on 5433
+
+# Full reset (WARNING: deletes all local data):
+docker compose down -v && docker compose up -d && alembic upgrade head
+```
+
+**`localhost:8001` doesn't load on Windows, but `127.0.0.1:8001` does**: Windows can resolve
+`localhost` to IPv6 (`::1`) while Piper binds IPv4 (`127.0.0.1`) — use the IP form.
+
+**`.env` missing after a `git pull`?** It won't be — `.env` is gitignored and git never touches
+it. If you never created one: `cp .env.example .env`, then set `JWT_SECRET_KEY` (generate with
+`openssl rand -hex 32`).
+
+**Commands not found in a new terminal?** Your venv deactivated when the terminal closed —
+`source venv/bin/activate` (or the Windows equivalent above) and try again.
 
 ## Review Process
 
