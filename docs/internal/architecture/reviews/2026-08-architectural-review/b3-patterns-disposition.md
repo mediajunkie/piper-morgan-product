@@ -41,19 +41,19 @@ disposition is using citation count more heavily as a decision signal rather tha
 | B: heavily-cited + recent (very likely current law) | pattern-068-silent-state-mutation-shared-working-tree.md | P-068 | 99 | 2026-08-29 | - | *pending* |
 | B: heavily-cited + recent (very likely current law) | pattern-034-error-handling-standards.md | P-034 | 64 | 2026-08-13 | ✅ Active | *pending* |
 | B: heavily-cited + recent (very likely current law) | pattern-071-audit-logs-as-attack-surface.md | P-071 | 63 | 2026-08-29 | - | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-029-multi-agent-coordination.md | P-029 | 60 | 2026-08-12 | - | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-012-llm-adapter.md | P-012 | 59 | 2026-07-16 | - | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-050-context-dataclass-pair.md | P-050 | 58 | 2026-08-24 | Proven | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-074-visibility-loss-after-premature-retirement.md | P-074 | 54 | 2026-08-29 | - | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-032-intent-pattern-catalog.md | P-032 | 53 | 2026-08-13 | - | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-054-honest-failure.md | P-054 | 52 | 2026-08-24 | Proven | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-069-coarse-triggers-false-positive-triage-cost.md | P-069 | 46 | 2026-08-29 | - | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-007-async-error-handling.md | P-007 | 45 | 2026-08-28 | - | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-053-warmth-calibration.md | P-053 | 45 | 2026-08-24 | Proven | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-060-cascade-investigation.md | P-060 | 44 | 2026-08-10 | - | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-031-plugin-wrapper.md | P-031 | 42 | 2026-08-24 | Active | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-051-parallel-place-gathering.md | P-051 | 41 | 2026-08-24 | Proven | *pending* |
-| B: heavily-cited + recent (very likely current law) | pattern-052-personality-bridge.md | P-052 | 40 | 2026-08-24 | Proven | *pending* |
+| B: heavily-cited + recent (very likely current law) | pattern-029-multi-agent-coordination.md | P-029 | 60 | 2026-08-12 | - | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
+| B: heavily-cited + recent (very likely current law) | pattern-012-llm-adapter.md | P-012 | 59 | 2026-07-16 | - | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
+| B: heavily-cited + recent (very likely current law) | pattern-050-context-dataclass-pair.md | P-050 | 58 | 2026-08-24 | Proven | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
+| B: heavily-cited + recent (very likely current law) | pattern-074-visibility-loss-after-premature-retirement.md | P-074 | 54 | 2026-08-29 | - | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
+| B: heavily-cited + recent (very likely current law) | pattern-032-intent-pattern-catalog.md | P-032 | 53 | 2026-08-13 | - | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
+| B: heavily-cited + recent (very likely current law) | pattern-054-honest-failure.md | P-054 | 52 | 2026-08-24 | Proven | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
+| B: heavily-cited + recent (very likely current law) | pattern-069-coarse-triggers-false-positive-triage-cost.md | P-069 | 46 | 2026-08-29 | - | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
+| B: heavily-cited + recent (very likely current law) | pattern-007-async-error-handling.md | P-007 | 45 | 2026-08-28 | - | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
+| B: heavily-cited + recent (very likely current law) | pattern-053-warmth-calibration.md | P-053 | 45 | 2026-08-24 | Proven | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
+| B: heavily-cited + recent (very likely current law) | pattern-060-cascade-investigation.md | P-060 | 44 | 2026-08-10 | - | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
+| B: heavily-cited + recent (very likely current law) | pattern-031-plugin-wrapper.md | P-031 | 42 | 2026-08-24 | Active | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
+| B: heavily-cited + recent (very likely current law) | pattern-051-parallel-place-gathering.md | P-051 | 41 | 2026-08-24 | Proven | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
+| B: heavily-cited + recent (very likely current law) | pattern-052-personality-bridge.md | P-052 | 40 | 2026-08-24 | Proven | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
 | C: middle tier (needs individual read) | META-PATTERNS.md | - | 60 | 2026-06-17 | Established | *pending* |
 | C: middle tier (needs individual read) | pattern-059-leadership-caucus.md | P-059 | 51 | 2026-06-17 | - | *pending* |
 | C: middle tier (needs individual read) | pattern-008-ddd-service-layer.md | P-008 | 49 | 2026-06-17 | - | *pending* |
