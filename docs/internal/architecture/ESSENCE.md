@@ -75,14 +75,17 @@ else.
    gate for exactly this property); on the BYOC path, its recomposition variant carries the same
    gate. This commitment licenses no new build — it gates HOW everything else is built.
    *(Added v1.0: CXO's amendment 1, PM Decision 1 — the headline is now cashed, not rhetorical.)*
-   *(Instrument status, dated 2026-08-30 — the REQUIREMENT here is ratified; the recomposition
-   INSTRUMENT is not yet fully validated: its honesty-under-recomposition axis scored
-   PENDING-PROBE until the first probe ran this evening. Claude arm: the governing hypothesis
-   confirmed live on the core case — prose fabricated from a failed read, structured payload
-   stayed honest — with one reversed case honestly recorded; GPT arm blocked on account credits,
-   zero data. The gate can begin issuing informed judgments; full validation pends the
-   second-vendor run. Per CXO's flag: a reader applying this gate should know its instrument's
-   state without excavating #1463.)*
+   *(Instrument status, dated 2026-08-30, precision-corrected same night — the REQUIREMENT here
+   is ratified; the recomposition INSTRUMENT is not: its honesty-under-recomposition axis **still
+   scores PENDING-PROBE for issuing a pass** — the first probe revised its criteria rather than
+   validating them. Claude arm: the core fabrication case confirmed live (prose fabricated from a
+   failed read — a fluent, correct answer to a different question; the directive-carrying
+   structured payload stayed honest), AND the reversed case **falsified the scale's
+   structural-guarantee clause** (a host silently dropped a descriptor field — structure alone
+   buys no rendering guarantee; whether directives or salience carry the effect is confounded,
+   deconfounding re-run designed). GPT arm blocked on credits, zero data. **The gate can inform
+   design decisions; it cannot yet issue a T-axis pass.** Per CXO's flag: a reader applying this
+   gate should know its instrument's state without excavating #1463.)*
 
 ## What it does today, on which surface (dated snapshot — 2026-08-29, "not yet" line 2026-08-30)
 
@@ -169,3 +172,10 @@ scope-bet gate governs all *becoming*; this document governs all *being*.
   dependency flag (ratified requirement vs. not-yet-validated instrument, stated in place) and
   updated same-hour with the first probe results (PA's Claude-arm run: governing hypothesis
   confirmed on the core case; GPT arm pending credits). Tense-honest per the document's own rule.*
+- *v1.0.2, 2026-08-31 (precision, per CXO's same-night correction — their interpretation of the
+  probe landed after v1.0.1 was written): the instrument note no longer says "can begin issuing
+  informed judgments" (reads as scoring license the instrument forbids on T); the accurate split —
+  inform design decisions YES, issue a T-axis pass NOT YET — plus the falsification framing (the
+  probe revised the scale's criteria rather than validating them; rubric now v0.2). The drift this
+  fixes is requirement-vs-instrument running the subtle direction: law saying slightly more than
+  its instrument permits, which reads as progress.*
