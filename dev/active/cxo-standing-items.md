@@ -6,6 +6,8 @@ max_age_days: 31
 
 # CXO Standing Items
 
+**Every row carries the date it was filed** (PM-ratified 2026-08-31) so `scripts/aging-standing-items.sh` can read this file — it could not before 2026-08-31.
+
 **Owner**: CXO (cxo-code) | **Worktree**: `~/Development/piper-morgan-worktrees/cxo` on `claude/cxo-cycle`
 
 > ## 🔴 REBUILT 2026-08-31 — the "low priority / future" section is GONE, deliberately
@@ -27,22 +29,22 @@ max_age_days: 31
 
 ## 🟢 UNBLOCKED — do now
 
-| Item | What's actually owed | Note |
-|---|---|---|
-| **Successor read / role self-assessment** | My predecessor left no lessons, no load-bearing-vs-commodity read, no relationship read. Write mine as I go so the next CXO isn't handed an artifact-only note. | Genuinely mine and genuinely unblocked. Was "background thread" — that was the old label doing its work. |
-| **Jake loop-back — check it happened** | HOST owns the welfare item; **my stake is that improvements shipped from his feedback get reported back to him.** #1536 shipped and the first-contact arc closed 08-something. **Ask HOST whether the loop-back actually happened** rather than assuming it did. | Small. One memo. |
+| Filed | Item | What's actually owed | Note |
+|---|---|---|---|
+| **2026-07-26** | **Successor read / role self-assessment** | My predecessor left no lessons, no load-bearing-vs-commodity read, no relationship read. Write mine as I go so the next CXO isn't handed an artifact-only note. | Genuinely mine and genuinely unblocked. Was "background thread" — that was the old label doing its work. |
+| **2026-07-29** | **Jake loop-back — check it happened** | HOST owns the welfare item; **my stake is that improvements shipped from his feedback get reported back to him.** #1536 shipped and the first-contact arc closed 08-something. **Ask HOST whether the loop-back actually happened** rather than assuming it did. | Small. One memo. |
 
 ## 🟡 BLOCKED ON A NAMED THING — recheck when that thing moves
 
-| Item | Blocked on | Recheck trigger |
-|---|---|---|
-| **#1463 second-vendor arm** | **PM** — OpenAI credits (billing access). PA has the harness; Claude arm done. | Credits land, or ~2 days → nudge. |
-| **#1463 two-call deconfounder** | Same authorization as above. ⚠️ **Not "too small to need approval"** — size isn't the criterion, scope is. And not mine to run (subject/scorer confound). | Rides the GPT arm. PA asks. |
-| **Quarterly CT rubric review (+ CT v2.4 C=0 split)** | **PPM** picking a slot. Agenda sent 08-31 with a named trigger — *this week or next* — precisely so it can't re-enter drift. | PPM replies. |
-| **#1708 quickstart corrections** | **PM/PPM/Lead** — "what should it say" is a release-model decision, not a doc edit. Banner is up meanwhile. | The release-model call. |
-| **#1386 beta gate** | Others. **All CXO criteria (criterion 3) are signed off since 07-12.** Remaining: sprint surface, canonical suite, stability window. | Not mine to drive; watch. |
-| **Spatial committed-theory review** | **Arch** synthesis. CXO slice folded in verbatim; convergence matches my (b) vote. | Arch publishes. |
-| **Ethics-decline VOICE watch** | A deploy touching floor/decline copy, or a live decline observed. | Method: Colleague Test. Report with denominator. |
+| Filed | Item | Blocked on | Recheck trigger |
+|---|---|---|---|
+| **2026-08-30** | **#1463 second-vendor arm** | **PM** — OpenAI credits (billing access). PA has the harness; Claude arm done. | Credits land, or ~2 days → nudge. |
+| **2026-08-30** | **#1463 two-call deconfounder** | Same authorization as above. ⚠️ **Not "too small to need approval"** — size isn't the criterion, scope is. And not mine to run (subject/scorer confound). | Rides the GPT arm. PA asks. |
+| **2026-05-10** | **Quarterly CT rubric review (+ CT v2.4 C=0 split)** | **PPM** picking a slot. Agenda sent 08-31 with a named trigger — *this week or next* — precisely so it can't re-enter drift. | PPM replies. |
+| **2026-08-31** | **#1708 quickstart corrections** | **PM/PPM/Lead** — "what should it say" is a release-model decision, not a doc edit. Banner is up meanwhile. | The release-model call. |
+| **2026-07-26** | **#1386 beta gate** | Others. **All CXO criteria (criterion 3) are signed off since 07-12.** Remaining: sprint surface, canonical suite, stability window. | Not mine to drive; watch. |
+| **2026-07-26** | **Spatial committed-theory review** | **Arch** synthesis. CXO slice folded in verbatim; convergence matches my (b) vote. | Arch publishes. |
+| **2026-08-28** | **Ethics-decline VOICE watch** | A deploy touching floor/decline copy, or a live decline observed. | Method: Colleague Test. Report with denominator. |
 
 ## ✅ CLOSED ON VERIFICATION — do not re-open
 
