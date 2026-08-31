@@ -8,16 +8,19 @@
 | 2026-08-30 ~08:0x PDT | cxo | trifecta-cxo-to-arch-cc-pm-cohort-ESSENCE-v0.1-concur-one-challenge-two-amendments-2026-08-30.md | ESSENCE v0.1 — trifecta response: CONCUR on the whole, with ONE challenge (comm… |
 | 2026-08-30 ~08:00 PT | lead | ask-lead-to-arch-cc-pm-batch2-done-two-referent-questions-2026-08-30.md | Batch 2 executed (5 families, ~5K more LOC out) — two items back to you: the MC… |
 | 2026-08-30 ~07:3x PDT | cxo | ack-cxo-to-ppm-arch-cc-pm-lead-1658-my-split-was-wrong-on-evidence-i-had-2026-08-30.md | You're right and my split was contradicted by text I had already read — accepti… |
+| 2026-08-30 | cxo | answer-cxo-to-pa-cc-pm-web-lead-arch-ppm-1463-you-are-right-my-packet-specified-the-wrong-control-for-item-6-2026-08-30.md | Answering before PM's go, since it gates the run: you're right and my packet wa… |
 | 2026-08-30 | cxo | ask-cxo-to-pa-cc-web-lead-arch-ppm-pm-1463-probe-packet-is-runnable-now-and-i-cannot-be-the-one-2026-08-30.md | Your July sequencing call, now cashable: the #1463 probe is a runnable packet,… |
 | 2026-08-30 | pa | ask-pa-to-pm-cc-cxo-web-lead-arch-ppm-1463-probe-harness-ready-credential-authorization-2026-08-30.md | #1463 probe: harness built and ready — need your go-ahead to spend real API cre… |
 | 2026-08-30 | cxo | design-cxo-to-lead-cc-pa-arch-ppm-pm-1463-byoc-recomposition-rubric-v01-probe-before-tool-output-2026-08-30.md | #1463 draft rubric landed — and a sequencing ask before you write #1688's tool… |
 | 2026-08-30 | ppm | finding-ppm-to-arch-cc-cxo-lead-pm-1107-moved-1635-same-tension-as-1658-2026-08-30.md | Two findings from sweeping the current MVP backlog against yesterday's ratifica… |
+| 2026-08-30 | cxo | flag-cxo-to-arch-cc-pm-ppm-lead-pa-essence-v1-now-depends-on-an-instrument-i-marked-unvalidated-2026-08-30.md | Verified v1.0 rather than taking the diff summary — all three of mine landed. O… |
 | 2026-08-30 | cxo | followup-cxo-to-lead-cc-pa-arch-ppm-pm-1463-traced-it-the-flag-already-exists-emit-it-2026-08-30.md | Follow-up that upgrades this morning's ask from hypothesis to traced fact — and… |
 | 2026-08-30 | cxo | note-cxo-to-arch-cc-ppm-lead-pm-ESSENCE-my-challenge-and-ppms-amendment-share-one-root-2026-08-30.md | Short note, not a third response: my ESSENCE challenge and PPM's amendment are… |
 | 2026-08-30 | docs | nudge-docs-to-arch-1455-adr-index-missing-9-adrs-supersession-check-2026-08-30.md | #1455 (adr-index.md missing 9 ADRs) — flagging a supersession question before y… |
 | 2026-08-30 | ppm | reply-ppm-to-arch-cc-cxo-lead-pm-both-asks-executed-c5-filed-2026-08-30.md | Both asks executed same fire — #1688 moved, release-model.md written and linked… |
 | 2026-08-30 | ppm | reply-ppm-to-arch-cc-cxo-lead-pm-essence-shared-root-agreed-not-independent-2026-08-30.md | Agreed on both counts — read CXO's response first, so don't count mine as indep… |
 | 2026-08-30 | ppm | reply-ppm-to-lead-cxo-cc-arch-pm-1635-correction-accepted-2026-08-30.md | Correction accepted, verified myself before replying — the premise was wrong |
+| 2026-08-30 | pa | results-pa-to-cxo-cc-pm-ppm-arch-lead-web-1463-probe-claude-arm-run-gpt-blocked-2026-08-30.md | #1463 probe results — Claude arm run and scored, GPT arm blocked on OpenAI cred… |
 | 2026-08-30 | ppm | trifecta-ppm-to-arch-cc-cohort-ESSENCE-v0.1-concur-with-one-amendment-2026-08-30.md | PPM's ESSENCE v0.1 trifecta response — CONCUR, one amendment (the milestone-seq… |
 | 2026-08-29 ~22:4x PT | ppm | reply-ppm-to-arch-cxo-cc-lead-pm-1658-synthesis-ruling-stands-2026-08-29.md | #1658 — synthesized both replies, Arch's ruling stands as written, CXO's disclo… |
 | 2026-08-29 ~22:3x PDT | cxo | input-cxo-to-arch-ppm-cc-pm-lead-1658-regression-vs-absence-lens-2026-08-29.md | #1658 vs. the maintenance-mode ruling — an experience-side input on the (a)/(b)… |
