@@ -37,11 +37,11 @@ max_age_days: 31
 
 | Filed | Item | Blocked on | Recheck trigger |
 |---|---|---|---|
-| **2026-08-30** | **#1463 second-vendor arm** | **PM** — OpenAI credits (billing access). PA has the harness; Claude arm done. | Credits land, or ~2 days → nudge. |
+| **2026-08-30** | **#1463 second-vendor arm** | **PM — OpenAI credits (billing access).** The only genuinely PM-exclusive item I hold. PA's harness built, Claude arm scored. Confirmed still open 08-31 ~13:0x. | Credits land, or ~2 days → nudge. |
 | **2026-08-30** | **#1463 two-call deconfounder** | Same authorization as above. ⚠️ **Not "too small to need approval"** — size isn't the criterion, scope is. And not mine to run (subject/scorer confound). | Rides the GPT arm. PA asks. |
 | **2026-05-10** | **CT v2.4 → `context_requirement` corpus tag** | **A corpus owner** — asked Lead cc PA 08-31 who holds the canonical corpus. Tag semantics are mine and I'll write them. | Ownership answer. |
 | ~~**2026-05-10**~~ | ~~**Quarterly CT rubric review**~~ — ✅ superseded by the two rows above | ~~**PPM marking the dispositions.** *(Moved 08-31 12:xx: PPM picked Thursday 09-03 — **their** trigger, not PM's — and I sent the four dispositions the same fire rather than sitting on them until Wednesday.)* `docs/internal/testing/rubric-review-2026-q3-dispositions.md` | PPM marks agree/disagree/needs-live. |
-| **2026-08-31** | **#1708 quickstart corrections** | **PM/PPM/Lead** — "what should it say" is a release-model decision, not a doc edit. Banner is up meanwhile. | The release-model call. |
+| **2026-08-31** | **#1708 quickstart — banner removal** | **PPM + Docs executing.** ✅ *The release-model call ALREADY HAPPENED — PM blessed hosted-primary in conversation 08-31 ~13:1x (relayed by Lead). This row said "blocked on PM" for hours after it was decided.* My banner is superseded when their rewrite lands. | Rewrite lands → remove my banner. |
 | **2026-07-26** | **#1386 beta gate** | Others. **All CXO criteria (criterion 3) are signed off since 07-12.** Remaining: sprint surface, canonical suite, stability window. | Not mine to drive; watch. |
 | **2026-07-26** | **Spatial committed-theory review** | **Arch** synthesis. CXO slice folded in verbatim; convergence matches my (b) vote. | Arch publishes. |
 | **2026-08-28** | **Ethics-decline VOICE watch** | A deploy touching floor/decline copy, or a live decline observed. | Method: Colleague Test. Report with denominator. |
