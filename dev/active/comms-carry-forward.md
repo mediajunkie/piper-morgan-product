@@ -14,9 +14,13 @@ No scheduled pubDate row for 2026-08-31 (Monday isn't in the Tue/Thu narrative, 
 
 Landed 08-30 afternoon as v1.0, well before the Wed 09-02 trifecta deadline I'd been tracking. **Concretely resolves the BYOC-copy milestone question**: PM ruled MCP work stays in the **Production** milestone, front-loaded, and its completion is the public-beta gate — not moving to MVP. Per PPM's own stated preference from 08-30 ("if MCP-path work stays in Production... this listing shouldn't exist yet at all"), **BYOC copy stays held**, not rescoped to a partial slice. Not owed to act — not addressed to me, no new ask — but this closes the loop on what was an open watch item. PM may still want a narrative/insight angle on the review itself; nothing to draft unless/until PM signals it.
 
+## Watch: Tuesday Sep 1 is a busy day for PM
+
+Two things compete for PM's Tuesday-morning writing time: **Ship #058's voice-pass** (Exec confirmed same-day compressed turn — my review + Docs' fact-check both land Tuesday, after PM's pass) and **Beat 4's still-needed voice-pass + art** (also pubDate Sep 1). Flagged this to Exec/Docs/PM as an FYI, not a problem — Beat 4 may just slip a day. No action needed from me until one or the other moves.
+
 ## Open items — no Comms-side move available right now
 
-- **Beats 4-6** — await PM's voice-pass/art (Sep 1/3/8 slots).
+- **Beats 4-6** — await PM's voice-pass/art (Sep 1/3/8 slots — Beat 4's Sep 1 may slip, see above).
 - **ChicagoCamps talk** — PM reviewing script/slides this week (after an overnight trip); script + slide plan at `dev/2026/08/29/chicagocamps-talk-2026-09-17.md`.
 - **Dispatch's one remaining syndication leg** ("Drained on Paper," Medium) — Dispatch-PM runs it, Docs fills the calendar's syndication columns per the corrected ownership model (Comms owns editorial columns only, per `.claude/skills/update-calendar/SKILL.md`).
 - **website#35** — PM watching for recurrence, not actively pursuing.
