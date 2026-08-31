@@ -6,7 +6,7 @@ max_age_days: 1
 
 # HOST carry-forward
 
-**Written**: 2026-08-30 16:2x PDT (mid-session, day 37 on Amber — frontmatter above is the checkable claim, added this fire after running `check-refresh-promises.py --state-files` and finding this file undeclared; this prose line is not checkable and must not be trusted over the frontmatter) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-30 22:1x PDT (STOP fire, day 37 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -127,15 +127,15 @@ max_age_days: 1
 
 ## Cron
 
-Current job **`ffe64ab5`** (chain … `478fbee3 → 03b5a26d → ffe64ab5`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-29 STOP via delete-then-create, `CronList`-verified exactly one job before and after. The 08-27/28 ~30.5h availability gap's mechanism is fully resolved (blocking rate-limit dialog, PM-confirmed, cross-verified by four roles' own timing — see 08-27's log correction + 08-29's Fires 2-3 if the detail is ever needed again). Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`fa76147d`** (chain … `03b5a26d → ffe64ab5 → fa76147d`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-30 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 08-29 STOP
+## Open threads, as of 08-30 STOP
 
-- **Agent 360 v0.4** — ✅ Fully closed: synthesized, PM-approved (all 6), routed. Three of four live items shipped same-day (PPM's label, Arch's verified-how field, CXO's staleness design). **CIO's two items still open** (mail-send.sh doc fix, browser verify-then-close) — <1 day old, not concerning yet. Only cohort-share remains, pending PM's framing sign-off.
-- **ESSENCE.md v0.1 trust-lens** — ✅ Given 08-29, same-day rather than banked to 09-02. Flagged the consent-gate invariance claim; Arch answered same-evening with an honest three-part decomposition (structural verified, legacy-behavioral verified, inversion-behavioral explicitly not-yet-verified) and annotated ESSENCE.md itself with the gap. **Watch for**: Lead's watched round adding the inversion-path test, or Arch's standalone probe if it doesn't land within a week.
-- **Ship #058 workstream review** — ✅ Filed 08-28. Nothing further owed.
+- **Agent 360 v0.4** — ✅ Fully closed: synthesized, PM-approved (all 6), routed, all four live items shipped/verified. PM gave direct positive feedback 08-30 — the synthesis prompted a "deep conversation with the chief architect" that produced the 08-30 architectural review + ESSENCE.md. Recorded in 08-30's log. Only cohort-share remains, pending PM's framing sign-off.
+- **Tracked-state staleness check** — ✅ Fully shipped and verified 08-30 (`--state-files` mode, `cd85d4664`; `duty-cycle-tick` v1.31 wiring, `f64d5f0ac`). Adopted on HOST's own carry-forward (real `currency_claim`/`max_age_days` frontmatter). **`host-standing-items.md` retired formally** — June-era, silently orphaned since 07-26, fully superseded by the carry-forward's task section (matches PPM's identical independent finding — likely cohort-wide, worth CIO/CXO checking the other 9 roles). **Watch for**: tomorrow's 06:37 START — the first live test of the wiring actually firing on HOST's own seat.
+- **ESSENCE.md v0.1 trust-lens** — ✅ Given 08-29. Consent-gate invariance flag closed properly by Arch's honest three-part decomposition. **Watch for**: Lead's watched round adding the inversion-path test, or Arch's standalone probe if it doesn't land within a week.
 - ✅ **Portfolio's 4th lapse → CXO's diagnosis → CIO's fix, closed end-to-end 08-29.** `check-refresh-promises.py --trigger-sent` wired into `mail-send.sh`'s success path (`80be21100`). **My next workstream-review filing is the live test** — report the result plainly either way.
-- Criterion E, two April carryovers, heartbeat suppression-window fix, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
+- Ship #058, Criterion E, two April carryovers, heartbeat suppression-window fix, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
 - **BRIEFING-CURRENT-STATE.md flagged STALE** by SessionStart hook — unchanged status, still not HOST's lane to refresh unprompted.
 - **Pattern-069 promoted to Proven, 08-25** (CIO) — verified directly against the pattern file, acked. Archival.
 - **Cross-project reply protocol ratified, 08-25** (Exec broadcast) — cohort-wide procedure, no HOST-specific action, worth knowing if ever needed.

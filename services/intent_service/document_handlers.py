@@ -117,6 +117,9 @@ async def handle_analyze_document(file_id: str, user_id: str) -> Dict:
                     ),
                     "summary": analysis_result.summary if analysis_result.summary else "",
                     "key_findings": analysis_result.key_findings or [],
+                    # #1660: same response shape as the upload branch below
+                    # (analyze_text always sets recommendations=[] today).
+                    "recommendations": analysis_result.recommendations or [],
                     "analyzed_at": analysis_result.generated_at.isoformat(),
                 }
             raise FileNotFoundError(
@@ -139,11 +142,18 @@ async def handle_analyze_document(file_id: str, user_id: str) -> Dict:
         )
 
         # 4. Return formatted result
+        # #1660: the real findings ride in .key_findings — analyze() constructs
+        # every happy-path AnalysisResult with recommendations=[], so the old
+        # `.recommendations` read here rendered every analysis findings-free.
+        # Both fields surface under their own names: recommendations is
+        # non-empty only on the analyzer's honest-failure paths (unsupported
+        # type, unreadable PDF), where it carries the actionable next step.
         return {
             "file_id": file_id,
             "filename": file_record.filename,
             "summary": analysis_result.summary if analysis_result.summary else "",
-            "key_findings": analysis_result.recommendations or [],
+            "key_findings": analysis_result.key_findings or [],
+            "recommendations": analysis_result.recommendations or [],
             "analyzed_at": analysis_result.generated_at.isoformat(),
         }
 
@@ -248,9 +258,24 @@ async def handle_summarize_document(file_id: str, format: str, user_id: str) -> 
             summary_text = "\n".join([f"• {sent}" for sent in sentences[:5]])
 
     elif format == "detailed":
-        # Include key findings
-        detailed = f"{summary_text}\n\nKey Findings:\n"
-        detailed += "\n".join([f"- {finding}" for finding in analysis["key_findings"]])
+        # Include key findings.
+        # #1660 + #1648 honesty contract: never render a "Key Findings:"
+        # header over an empty list as if it were content — if there are
+        # genuinely no findings, the response says so.
+        findings = analysis["key_findings"]
+        if findings:
+            detailed = f"{summary_text}\n\nKey Findings:\n"
+            detailed += "\n".join([f"- {finding}" for finding in findings])
+        else:
+            detailed = f"{summary_text}\n\nNo key findings were extracted from this document."
+        # Recommendations are non-empty only on the analyzer's honest-failure
+        # paths (unsupported type, unreadable PDF) — surface them under their
+        # own name rather than dropping them (.get: pre-#1660 callers/mocks
+        # may hand an analysis dict without the key).
+        recommendations = analysis.get("recommendations") or []
+        if recommendations:
+            detailed += "\n\nRecommendations:\n"
+            detailed += "\n".join([f"- {rec}" for rec in recommendations])
         summary_text = detailed
 
     # format == "paragraph" uses summary as-is
