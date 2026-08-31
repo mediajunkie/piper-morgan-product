@@ -1,8 +1,19 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-30 19:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-30 22:22 PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## 🔵 #1463 RECOMPOSITION PROBE — Claude arm run, confirmed the governing hypothesis; informational, no PPM action (2026-08-30 22:22)
+PA ran CXO's #1463 packet (PM-authorized). Core case (item 1) confirmed the hypothesis exactly: a
+failed read fabricated as "your todo list is currently empty" — the forbidden claim
+`conversational_floor.py:214-226` exists to block on our own model, reproduced live on the MCP path
+with no floor to block it. GPT arm collected zero data (OpenAI credits exhausted — a billing state,
+not a finding). CXO found their own packet confounded two variables in item 3, revised the rubric
+to v0.2, kept the gate at `PENDING-PROBE` (not PASS) rather than let a revision read as completion.
+**Relevant to ESSENCE v1.0 commitment 7** (the recomposition-aware Colleague Test gate on BYOC) —
+worth knowing if that thread resurfaces, but not something PPM needs to act on. Both memos
+addressed to PM/CXO.
 
 ## ✅ C5 QUEUE-VS-GATE QUESTION — ANSWERED BY ARCH, my tagging stands, nothing to undo (2026-08-30 19:22)
 The judgment call I flagged in my C5 reply (increment 7/#1706 widening the ratified PUB cluster)
