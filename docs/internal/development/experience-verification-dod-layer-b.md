@@ -28,27 +28,15 @@ The delivered experience is scored against the appropriate rubric in the Colleag
 
 The score is taken on the experience **as delivered**, not as intended — the same "score what the user gets" discipline the rubric applies to degraded/error paths.
 
-> ### ⚠️ "As delivered" does not work the same way on BYOC — added 2026-08-31, and it is a real limit, not a caveat
+> ### ⚠️ "As delivered" does not work the same way on BYOC
 >
-> On every surface above except one, *as delivered* is observable: the reply, the rendered card, the error
-> screen are all ours and all inspectable. **On the BYOC/MCP path they are not.** The user-visible text is
-> composed by a host LLM from our tool output, and **we never see it** — not in logs, not in telemetry,
-> not after the fact.
+> **Canonical statement lives in `docs/internal/testing/colleague-test-rubric.md`** §"Where 'as delivered'
+> stops being observable" (moved there 2026-08-31, Q3 review item 4 — it is a claim about the rubric
+> family, and ESSENCE's ratified rule says hand-maintained copies are the documented failure mode).
 >
-> **So the BYOC rubric scores the payload, not the delivery — deliberately** (see its §5: *"a 9/9 here
-> means we handed the host everything it needed… not that the reply was good"*). **That is a proxy.** A
-> good one, and the only one available in production — but a Layer-B pass on this surface is **not** the
-> same claim as a Layer-B pass anywhere else, and it must not be reported as if it were.
->
-> 🔴 **This is not hypothetical.** In the #1463 probe (2026-08-30), a payload that carried its
-> qualification honestly still produced a **fabricated** user-visible reply — *"your todo list is currently
-> empty"* from a **failed** read. **Scoring the payload alone would have missed it.**
->
-> **What closes the gap**: end-to-end BYOC verification requires a **probe harness** that captures the
-> composed reply and scores *that* with the Colleague Test proper. It is possible — the #1463 probe did
-> exactly this — but it is a deliberate test act, never a by-product of shipping. **Until such a harness
-> is a standing part of the gate, a BYOC Layer-B pass states what we handed over, and states its own
-> limit.**
+> **The one line you need here**: on the BYOC/MCP path the user-visible text is composed by a host we
+> don't control and **we never see it**, so a rubric there scores **the payload, not the delivery**.
+> A pass on that surface is **not the same claim** as a pass elsewhere and must state its own limit.
 
 ### Criterion 2 — MUX-doc conformance
 
