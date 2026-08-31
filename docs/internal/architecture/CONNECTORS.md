@@ -34,8 +34,10 @@ its headless case converts to host-mediated and is dropped.
 1. **Hedges ride the payload, not a prompt.** On BYOC no model of ours is in the loop, so honesty
    (commitment 4) must be carried by what the tool RETURNS — structured flags (`source_failed`
    already travels end-to-end) plus rendered hedge text in the result itself. A floor-prompt
-   instruction enforces nothing on a surface that has no floor. (CXO's #1463 trace, 08-30; the
-   recomposition probe is sequenced before #1688's tool output is authored.)
+   instruction enforces nothing on a surface that has no floor. (CXO's #1463 trace, 08-30; **first live
+   evidence same evening** — probe Claude arm: prose fabricated "your todo list is currently
+   empty" from a FAILED read while the structured variant stayed honest; GPT arm pending. The
+   rule is now evidence-backed, not just traced.)
 2. **New held grants trip the scope-bet gate** (tripwire 3) — no second knowledge-source connector
    rides in on Bet 003.
 3. **Adapter names must tell the transport truth** — no more `*MCPAdapter` over REST. Rename on
