@@ -315,31 +315,35 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-29 STOP (21:16)
+## Active state — 2026-08-30 STOP (21:45)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/29/2026-08-29-0712-pa-code-log.md` — **8/29 DAY-CLOSED**, verified
-  strict. Full day-arc: 33h-gap cross-role investigation, connector-architecture thread's final close,
-  and the Architectural Review 2026 / ESSENCE.md context — read that log if picking any thread up cold.
+- **Session log**: `dev/2026/08/30/2026-08-30-0700-pa-code-log.md` — **8/30 DAY-CLOSED**, verified
+  strict. Full day-arc: plugin-license resolved, Architectural Review aftermath (CONNECTORS.md citing
+  PA's own finding, the milestone question sharpened), and the #1463 recomposition probe run end-to-
+  end — read that log if picking any thread up cold.
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure.
-- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `6a56583e` deleted → job
-  `33420d97` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
+- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `33420d97` deleted → job
+  `bfa0af14` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
 - **Standing discipline (from 08-15's correction, still active)**: re-verify carried-forward claims
   against their live source before citing them in an external report, not just at routine
   carry-forward-hygiene time. Habit, not yet mechanical.
-- **Connector-architecture thread: PERMANENTLY CLOSED as of 08-29** — every sub-question (Slack
-  milestone, #1572/#1522, standing-lens proposal, GitHub self-hosting) now has a final, PM-ratified
-  answer; #1572 itself shipped. Nothing owed, nothing to chase.
-- **The live thread now is BYOC's next phase, with a new fixed point**: PM's own next topic — "the
-  BYOC skunkworks project itself, next steps" plus a preview of a shipping-small-things discussion —
-  is still explicitly on PM's timing, not a deadline. But it now has `docs/internal/architecture/
-  ESSENCE.md` (v0.1, from the 08-29 Architectural Review) as its fixed point per Arch's direct
-  broadcast to PA. Read ESSENCE.md fresh before that conversation resumes, not from memory of this
-  summary — see the PM Attention section above for what's already known to matter (all-new-build-to-
-  MCP/BYOC effective now, the sharper backend-grant-only-when-user-absent connector rule).
+- **Connector-architecture thread: PERMANENTLY CLOSED** — every sub-question now has a final,
+  PM-ratified answer, and PA's own finding is now cited in `CONNECTORS.md` as permanent architecture.
+  Nothing owed, nothing to chase on this thread specifically.
+- 🔴 **One genuinely open external dependency**: the #1463 recomposition probe's Claude arm ran and
+  produced real, honestly-mixed findings (see PM Attention above); the **GPT-4o arm is blocked on
+  OpenAI account credits being exhausted** — PA doesn't have billing access to fix this. Watch for
+  whoever does (Lead? PM directly?) to top it up so the second vendor arm can complete; the report
+  already named this as the one open action item, so it shouldn't need re-raising, just watching.
+- **BYOC's next phase still waits on PM's own timing**: "the BYOC skunkworks project itself, next
+  steps" plus the shipping-small-things preview, with `docs/internal/architecture/ESSENCE.md` (now
+  v1.0, ratified 08-30) as its fixed point. Read it fresh before that conversation resumes, not from
+  memory of this summary — commitment 7 (the recomposition-gated Colleague Test) is now the thing the
+  #1463 probe is actually validating, which raises that thread's stakes beyond where it stood 08-29.
 
 🔔 **STEP 5b — HEARTBEAT: emit it IMMEDIATELY AFTER `date`, BEFORE the git fetch/merge, and WITHOUT
 `--if-quiet`** *(ordering fixed 2026-08-05: my heartbeat had five commands incl. fetch+merge in front of
