@@ -4,6 +4,10 @@
 **Author**: Claude Code (Opus 4.5), Session 2025-11-29-1655-test-code-opus
 **Reference**: ADR-045 Object Model, Object Model Brief v2, MUX-TECH-PHASE4-COMPOSTING
 **Status**: Architecture Specification (No Implementation)
+**Update 2026-08-31 (1613)**: QueryLearningLoop — named below as an integration
+point — was DELETED per PM ruling (it pooled patterns across users by
+source_feature, contradicting published privacy claims). Any implementation of
+this spec must integrate with the user-scoped LearningHandler (#300) only.
 
 ---
 
@@ -438,7 +442,7 @@ surface_learning(insight, context):
 | System | Integration Point | Data Flow |
 |--------|------------------|-----------|
 | **LearningHandler** (services/learning/) | Pattern storage | Composting feeds patterns to existing handler |
-| **QueryLearningLoop** | Query pattern matching | Learnings inform query suggestions |
+| ~~**QueryLearningLoop**~~ | ~~Query pattern matching~~ | REMOVED 2026-08-31 (1613, cross-user pooling); use user-scoped LearningHandler |
 | **KnowledgeGraph** | Graph updates | Composting updates node/edge weights |
 | **Morning Standup** | Context provider | Standup Moments are prime composting candidates |
 
@@ -575,7 +579,7 @@ class CompostingService:
 │  ├─────────────────────────────────────────────────────────────────────┤   │
 │  │                                                                     │   │
 │  │  LearningHandler ◄──── Patterns                                     │   │
-│  │  QueryLearningLoop ◄── Suggestions                                  │   │
+│  │  (QueryLearningLoop — REMOVED per 1613, 2026-08-31)                 │   │
 │  │  KnowledgeGraph ◄───── Relationship updates                         │   │
 │  │  MorningStandup ◄───── Context source & improvement target          │   │
 │  │                                                                     │   │
@@ -598,7 +602,7 @@ class CompostingService:
 | Feedback loop to Emergent stage mapped | ✅ | Section 6: Spiral lifecycle, confidence thresholds |
 | Insight Journal connection documented | ✅ | Section 5: Complete journal structure |
 | Architectural diagram created | ✅ | Section 8: Full system view |
-| Integration points with existing systems identified | ✅ | Section 7: LearningHandler, QueryLearningLoop, etc. |
+| Integration points with existing systems identified | ✅ | Section 7: LearningHandler, etc. (QueryLearningLoop removed per 1613) |
 
 ### Anti-Flattening Validation
 
@@ -620,7 +624,7 @@ The Composting to Learning Pipeline transforms Piper from a tool that executes t
 2. **"Filing dreams" during rest** - Composting happens in quiet hours, enabling organic framing
 3. **Trust-gated surfacing** - Learnings respect user trust level before being shared
 4. **Spiral lifecycle** - Each cycle adds depth, making Piper smarter over time
-5. **Integration with existing learning system** - Builds on LearningHandler and QueryLearningLoop
+5. **Integration with existing learning system** - Builds on LearningHandler (QueryLearningLoop removed per 1613, 2026-08-31)
 
 This architecture enables the core promise of ADR-045: *"Nothing disappears, it transforms."*
 

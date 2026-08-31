@@ -4,6 +4,11 @@ Intelligent Automation Services for Piper Morgan
 CORE-LEARN-E: Intelligent Automation with Safety First
 
 Issue: #225
+
+1613: the former predictive-assistance layer (PredictiveAssistant — read
+pattern predictions from the cross-user pooled learning store) was removed
+per PM ruling 2026-08-31; the pooled store contradicted published privacy
+claims.
 """
 
 from services.automation.action_classifier import (
@@ -18,11 +23,6 @@ from services.automation.autonomous_executor import (
     get_autonomous_executor,
 )
 from services.automation.emergency_stop import EmergencyStop, get_emergency_stop
-from services.automation.predictive_assistant import (
-    PredictionResult,
-    PredictiveAssistant,
-    get_predictive_assistant,
-)
 from services.automation.user_approval_system import (
     ApprovalRequest,
     ApprovalStatus,
@@ -40,10 +40,6 @@ __all__ = [
     "AuditTrail",
     "AutomationEvent",
     "get_audit_trail",
-    # Predictive Assistance (Phase 2)
-    "PredictiveAssistant",
-    "PredictionResult",
-    "get_predictive_assistant",
     # Autonomous Execution (Phase 3)
     "AutonomousExecutor",
     "ExecutionResult",

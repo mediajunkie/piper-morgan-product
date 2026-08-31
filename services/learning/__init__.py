@@ -1,48 +1,20 @@
 """
-Learning Module - Cross-Feature Pattern Learning System
+Learning Module
 
-Provides pattern tracking and learning capabilities between different features
-of the Piper Morgan system for continuous improvement.
+Database-backed, per-user learning (Issue #300) lives in
+``services.learning.learning_handler`` (imported directly, not re-exported
+here). ``ContextMatcher`` provides context-similarity scoring for it.
+
+1613: the former cross-feature pooled pattern system (QueryLearningLoop,
+CrossFeatureKnowledgeService — patterns keyed by source_feature, NOT by user)
+was removed per PM ruling 2026-08-31. It implemented exactly the cross-user
+data pooling our published privacy claims disclaim, and was superseded by the
+user-scoped #300 system.
 """
 
 from .context_matcher import ContextMatcher
-from .cross_feature_knowledge import (
-    ConfidenceLevel,
-    CrossFeatureKnowledgeService,
-    CrossFeaturePattern,
-    KnowledgeSharingType,
-    SharedKnowledge,
-    get_cross_feature_service,
-)
-from .query_learning_loop import (
-    LearnedPattern,
-    PatternConfidence,
-    PatternFeedback,
-    PatternType,
-    QueryLearningLoop,
-    get_learning_loop,
-    learn_query_pattern,
-    learn_response_pattern,
-)
 
 __version__ = "1.0.0"
 __all__ = [
-    # Context Matching
     "ContextMatcher",
-    # Query Learning Loop
-    "QueryLearningLoop",
-    "LearnedPattern",
-    "PatternFeedback",
-    "PatternType",
-    "PatternConfidence",
-    "get_learning_loop",
-    "learn_query_pattern",
-    "learn_response_pattern",
-    # Cross-Feature Knowledge Sharing
-    "CrossFeatureKnowledgeService",
-    "SharedKnowledge",
-    "CrossFeaturePattern",
-    "KnowledgeSharingType",
-    "ConfidenceLevel",
-    "get_cross_feature_service",
 ]

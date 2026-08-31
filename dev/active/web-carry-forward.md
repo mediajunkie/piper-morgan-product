@@ -56,6 +56,25 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
+### OPEN — obs-pass + site walkthrough, pre-staged, joint session planned for tomorrow (2026-08-31)
+PM asked "anything I can unblock" — offered to pre-stage the two long-standing PM-gated walkthrough
+items (obs-pass ~20-item queue + the site walkthrough) using screenshots instead of waiting for a
+synchronous session, since Playwright now makes that possible. PM: yes to both, "let's plan our
+walkthrough together tomorrow."
+
+**Delivered same session**: full 31-item May 24 obs-pass reconciled against 3+ months of drift —
+13 resolved (live-verified, not just marked-shipped), 10 still genuinely open, 1 new finding
+(`/newsletter` now redirects to `/blog`, not `/try/beta` as documented), 1 page substantively
+changed since May (`/methodology` — flagged, not relitigated against a page that no longer exists
+in that form). Fresh screenshots of all 15 pages in the A–E order proposed 5/28
+(`dev/2026/05/28/...`), status pills, summary stat bar. Published as an artifact:
+`pipermorgan-walkthrough-prep-2026-08-31.html` — https://claude.ai/code/artifact/b02c86c4-0131-432f-b9b8-752ffc2d0b84.
+Session log has full method detail: `dev/2026/08/31/2026-08-31-0630-web-code-log.md`, 12:45 PM entry.
+
+**Waiting on**: PM to review async and/or bring it to tomorrow's planned joint session for the
+actual +1/−1/defer verdicts. Nothing further for Web until then — this was prep, not the decision
+pass itself.
+
 ### CLOSED — #1659 fix confirmed, real restart bug found and fixed along the way (2026-08-30/31)
 Lead shipped a real fix for #1659 (`b3f88673a`, type-dispatched analysis) citing my earlier
 double-confirmation, restarted the server, and asked for a 5-minute recheck ("summarize

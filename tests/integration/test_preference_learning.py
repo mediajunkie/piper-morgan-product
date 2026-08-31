@@ -1,9 +1,13 @@
 """
 Integration tests for preference learning system.
 
-Tests the flow from pattern detection → implicit preference → explicit preference.
+Tests the flow from pattern detection → implicit preference → explicit preference,
+all through the user-scoped UserPreferenceManager.
 
 Issue: #223 (CORE-LEARN-C)
+
+1613: the QueryLearningLoop fixture and its two pooled-store tests were removed
+with the pooled store itself (PM ruling 2026-08-31).
 """
 
 from datetime import datetime
@@ -11,7 +15,6 @@ from datetime import datetime
 import pytest
 
 from services.domain.user_preference_manager import UserPreferenceManager
-from services.learning.query_learning_loop import PatternType, QueryLearningLoop
 
 
 class TestPreferenceLearning:
@@ -28,14 +31,8 @@ class TestPreferenceLearning:
         except:
             pass  # Ignore cleanup errors
 
-    @pytest.fixture
-    async def learning_loop(self):
-        """Create QueryLearningLoop instance."""
-        loop = QueryLearningLoop()
-        yield loop
-
     @pytest.mark.asyncio
-    async def test_pattern_to_preference_flow(self, preference_manager, learning_loop):
+    async def test_pattern_to_preference_flow(self, preference_manager):
         """
         Test complete flow: User behavior → Pattern → Preference.
 
@@ -151,37 +148,6 @@ class TestPreferenceLearning:
         )
 
         assert format_pref_no_session == "markdown"  # User value
-
-    @pytest.mark.asyncio
-    async def test_learning_loop_integration(self, learning_loop):
-        """
-        Test that QueryLearningLoop correctly applies USER_PREFERENCE_PATTERN.
-
-        End-to-end test of the wiring between systems.
-        """
-        # Create and learn a preference pattern
-        pattern_id = await learning_loop.learn_pattern(
-            pattern_type=PatternType.USER_PREFERENCE_PATTERN,
-            source_feature="test_feature",
-            pattern_data={"preference_key": "test_preference", "preference_value": "test_value"},
-            initial_confidence=0.85,
-            metadata={"test": True},
-        )
-
-        assert pattern_id is not None
-
-        # Apply the pattern through QueryLearningLoop
-        success, result, confidence = await learning_loop.apply_pattern(
-            pattern_id=pattern_id, context={"user_id": "test_user_integration"}
-        )
-
-        # Verify pattern was applied successfully
-        assert success is True
-        assert "preference_key" in result
-        assert result["preference_key"] == "test_preference"
-        assert result["preference_value"] == "test_value"
-        assert result["applied_scope"] in ["user", "session"]
-        assert confidence > 0.7  # High confidence maintained
 
     @pytest.mark.asyncio
     async def test_invalid_pattern_data(self, preference_manager):

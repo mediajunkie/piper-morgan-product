@@ -350,6 +350,23 @@ days stale.
     wrong decision for this specific credential. Confirmed this explicitly so the record doesn't drift:
     **BYOC is NOT scoped Claude-only-at-launch**; the multi-provider freeze is about Piper's own backend
     only. No change to the probe or the credential ask either way.
+  - ✅ **Both authorizations now confirmed, independently, twice over.** PM told PA directly ("agreed run
+    it together") and separately told CXO, who relayed it on the durable surface — GPT arm AND the
+    2-call deconfounder are both authorized to run together. **But the credential itself is NOT actually
+    live yet, despite PM's own belief and CXO's relay that it was** — PA tested live (not trusted the
+    report) twice, ~1hr apart, both times the exact same `insufficient_quota: credit_balance_exhausted`.
+    Corrected the record for the whole cc list (CXO/PM/Arch/PPM/Lead) rather than let "unblocked" stand
+    uncorrected or silently keep retrying — suggested PM verify the $10 actually posted at
+    `platform.openai.com/settings/organization/billing/`, since an hour is long enough to rule out a
+    trivial propagation delay as the only explanation. **Will run everything (GPT arm + deconfounder,
+    scored against rubric v0.2) the moment a live test call actually succeeds** — no further ask needed,
+    just watching for the credential to actually clear.
+  - **Separately, cc'd on a corpus-ownership question, answered factually rather than claimed or
+    disclaimed reflexively**: CXO asked Lead whether Lead or PA owns "the canonical query corpus"
+    feeding #928's Colleague-Test scorer. Clarified precisely: PA's probe scripts
+    (`dev/active/probes/`) are one-off, hand-built corpora for specific design questions, not the
+    ongoing canonical corpus CXO's memo describes — flagged this distinction so Lead isn't choosing
+    between two real candidates when PA likely isn't one. Not PA's to decide either way.
 
 ### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
 

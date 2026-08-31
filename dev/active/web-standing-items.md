@@ -58,17 +58,19 @@ different, newer implementation that fully supersedes this one. Current reality:
   human-first-agent-aware-interfaces). PM is now thinking about expressing more
   processes as admin UIs — worth surfacing ideas as they come up.
 
-### Site-quality queues (PM-react gated) — ⚠️ status genuinely unverified, flagging not resolving
-- [ ] **Obs-pass joint walkthrough** — PM confirmed visual spot-check clean (VA-2, VA-3 resolved by PM eyeball 6/17). Remaining ~20 obs items need PM +1/−1/defer. Hold for joint pass. Canonical: `dev/2026/05/24/site-observation-pass-2026-05-24.md`.
-  **Known-stale, not re-audited today**: this line's own count is already wrong — item #3 in
-  that doc (Formspree placeholder endpoint) was fixed 2026-06-17 by the Buttondown migration,
-  which is recorded three lines below in *this same file's* "Recently completed" section but
-  never reconciled back up into this count. I have no browser on this host to re-check the
-  other ~19 items' current rendered state, so I'm not attempting a full re-audit here — that
-  would need either a live visual pass or careful cross-referencing of two months of session
-  logs, disproportionate for a quiet fire. **Flagging the count is stale rather than either
-  trusting it or silently re-deriving a new one.**
-- [ ] **Site walkthrough** — formal joint pass; resumable at `/methodology`.
+### Site-quality queues (PM-react gated) — PRE-STAGED 2026-08-31, joint session planned for tomorrow
+- [ ] **Obs-pass joint walkthrough** — the stale-count problem below is now resolved: full 31-item
+  reconciliation done live via Playwright against the actual deployed site (not code-reading), not
+  a quiet-fire re-audit. 13 resolved, 10 still open, 1 new finding, 1 page substantively changed.
+  Artifact: `pipermorgan-walkthrough-prep-2026-08-31.html` —
+  https://claude.ai/code/artifact/b02c86c4-0131-432f-b9b8-752ffc2d0b84. Canonical source doc
+  unchanged: `dev/2026/05/24/site-observation-pass-2026-05-24.md`. **Still needs PM's actual
+  +1/−1/defer verdicts** — this was prep, not the decision pass.
+  ~~**Known-stale, not re-audited today**~~ — superseded by the above; kept struck-through as the
+  record of why a re-audit was needed, not as current status.
+- [ ] **Site walkthrough** — same prep pass covers this; artifact above follows the A–E order
+  proposed 5/28 (`dev/2026/05/28/...`), resuming cleanly at `/methodology` as planned. Formal joint
+  pass with PM still the next step.
 
 ### Alt-text backfill — COMPLETE 2026-06-17
 - [x] **blog-metadata.csv imageAlt** — all 276 filled; editorial-calendar 144 synced; medium-posts.json rebuilt; pushed to main (`03a4f42cc`). Verify via `/admin/calendar/` (gap count should be 0 for published posts with imageSlug). Plan: `dev/active/alt-text-backfill-plan-2026-06-17.md`.

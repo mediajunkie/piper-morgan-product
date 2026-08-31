@@ -6,8 +6,12 @@ Provides immediate value through issue management commands:
 - piper issues status: Current issue status overview
 - piper issues patterns: Discovered issue patterns and insights
 
-Built on: Learning Loop + Cross-Feature Knowledge + GitHub Integration
-Performance: Real-time issue intelligence with pattern learning
+Built on: GitHub Integration
+
+1613: the former Learning Loop + Cross-Feature Knowledge integration (the
+cross-user pooled pattern store) was severed per PM ruling 2026-08-31 —
+pooling by source_feature contradicted published privacy claims. The
+learning-insight branches below degrade gracefully (learning_loop stays None).
 """
 
 import asyncio
@@ -27,7 +31,6 @@ from services.configuration.piper_config_loader import PiperConfigLoader
 from services.domain.github_domain_service import GitHubDomainService
 from services.domain.pm_number_manager import PMNumberManager
 from services.intent_service.canonical_handlers import CanonicalHandlers
-from services.learning import get_cross_feature_service, get_learning_loop
 
 
 class IssuesCommand:
@@ -50,16 +53,15 @@ class IssuesCommand:
     def __init__(self):
         """Initialize the issues command with required services"""
         self.github_domain_service = GitHubDomainService()
-        self.learning_loop = None  # Will be initialized when needed
-        self.cross_feature_service = None  # Will be initialized when needed
+        # 1613: always None — the pooled learning store was severed (PM ruling
+        # 2026-08-31); the `if self.learning_loop:` branches degrade gracefully.
+        self.learning_loop = None
+        self.cross_feature_service = None
 
     async def _initialize_services(self):
-        """Initialize learning services when needed"""
-        if self.learning_loop is None:
-            self.learning_loop = await get_learning_loop()
-
-        # Note: cross_feature_service requires knowledge service instances
-        # For now, we'll work with the learning loop directly
+        """Initialize services when needed (learning severed per 1613)"""
+        # 1613: no learning-loop initialization — pooled pattern learning removed.
+        pass
 
     def print_colored(self, text: str, color: str = "reset", bold: bool = False) -> None:
         """Print colored and optionally bold text"""
