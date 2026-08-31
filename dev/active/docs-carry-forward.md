@@ -1,37 +1,41 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-31 ~08:3x PDT (B3 kickoff underway, real progress + a cross-lane finding shared)
+**Updated**: 2026-08-31 ~10:3x PDT (B3: 15/81 patterns dispositioned; mail loop drained twice)
 **Session log**: `dev/2026/08/31/2026-08-31-0728-docs-code-log.md` (open).
 **Cron**: `cfdd5f76`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-06.
 
-## B3 corpus-disposition — IN PROGRESS, real work started today
+## B3 corpus-disposition — IN PROGRESS, 15/81 patterns dispositioned
 
 Tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-patterns-disposition.md`
-— all 81 patterns pre-tiered by citation-census evidence (Tier A: 8 CLAUDE.md/skill-cited,
-definitely current law · Tier B: 21 heavily-cited+recent, likely current law · Tier D: 4
-old+lowest-cited, likely historical · Tier C: 48 middle-tier, genuinely needs individual reads).
+— all 81 patterns pre-tiered by citation-census evidence (Tier A: 8 CLAUDE.md/skill-cited · Tier B:
+21 heavily-cited+recent · Tier D: 4 old+lowest-cited · Tier C: 48 middle-tier, needs individual reads).
 
-**Dispositioned today**: all 4 Tier-D patterns, each verified against live code (not just citation
-count) — P-026 (Cross-Feature Learning) turned out **effective** despite only 12 citations (live in
-`services/intent/intent_service.py`); P-015 (Internal Task Handler) genuinely **historical** (zero
-code hits); P-016 (Repository Context Enrichment) **ambiguous**, flagged honestly rather than
-forced; the pattern-family-index proposal is **absorbed** into its own successor, `PATTERN-FAMILIES.md`.
+**Done so far**: all 8 Tier A confirmed EFFECTIVE (light-touch — already load-bearing, no
+supersession markers). All 4 Tier D dispositioned via grep-against-code (2 effective despite low
+citation, 1 historical, 1 absorbed-into-successor). 3 Tier C patterns dispositioned the same way
+(P-019 placeholder-instruction — effective, live in `conversational_floor.py`; P-058
+ownership-graph — strongly effective, its exact NATIVE/FEDERATED/SYNTHETIC model is implemented
+verbatim in `services/mux/ownership.py`, tied to ADR-045; P-018 configuration-access — principle
+effective, illustrative sample code diverges from actual class names, a normal pattern-doc shape
+not evidence of staleness).
 
-**Real finding, shared with Arch+CIO** (mail sent): citation count alone mispredicts effective/inert
-— 3 of 4 Tier-D outcomes didn't match what the count alone would suggest. Low citation on a pattern
-can mean "implemented but not discussed in prose," not "dead." Flagged since CIO's methodology-core
-pass uses the same census methodology and could hit the same trap.
+**Real finding, shared with Arch+CIO, adopted as the standing B3 rule**: citation count alone
+mispredicts effective/inert (3 of 4 Tier-D outcomes contradicted the count). Arch formalized it:
+**citation census triages, live-code grep disposes** — codified for both corpora. Arch also named
+the methodology-core equivalent for CIO (internalized-via-practice can look like low-citation too).
 
-**Next**: continue through the ~77 remaining patterns across subsequent fires — Tier A/B need
-lighter-touch confirmation (spot-check, not full grep-verify each), Tier C needs the same
-grep-against-code discipline the Tier-D pass established. Target ~1 week from today's kickoff.
-**The disposition motion is absorb-and-mark** — each absorbed pattern gets marked into whichever
-of the six living-core-docs it's absorbed into, same motion, not a separate pass.
+**Next**: ~66 patterns remain (13 more Tier B, 45 more Tier C) across subsequent fires — same
+grep-against-code discipline for anything heading toward archive. Target ~1 week from kickoff.
+**Disposition motion is absorb-and-mark** — each absorbed pattern gets marked into whichever of the
+six living-core-docs it's absorbed into, same motion, not a separate pass.
 
 ## Today's other verified state (not assumed)
 
-- **Weekly Docs Audit**: auto-generates via GitHub Actions ~9am PT (`cron: 7 16 * * 1`), hadn't
-  fired as of this morning's early fires — watch for the issue to land at a later fire.
+- **Weekly Docs Audit**: ⚠️ hadn't fired as of 10:31am PT (90 min past its `7 16 * * 1` / 9am PT
+  schedule) — no workflow run at all today per `gh run list`. Same class of delay the workflow's
+  own comment already documents once (top-of-hour GH Actions congestion, found 2026-08-03). Not
+  yet alarming at 90 min, but check again next fire — if it's still absent, worth a closer look
+  rather than assuming benign delay indefinitely.
 - **Monthly Housekeeping Audit (#1486)**: checked directly — titled "2026-08", created 2026-08-05,
   **33 unchecked items, zero progress in 26 days**, not "due today." September's audit won't
   auto-generate until ~09-07, so no clutter risk from further delay. **Sequencing decision, stated

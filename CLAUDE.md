@@ -339,6 +339,21 @@ wearing a quality costume. Two valid states only: **do it now**, or **"deferring
 session/compaction because [the explicit reason]"** — said explicitly and owned. And don't tell another
 agent "no rush" either; it plants an imaginary trigger in them.
 
+**This rule alone keeps getting ignored, not because it's worded badly, but because it depends on the
+deferring agent noticing its own deferral and self-reporting it** — the same structural gap this cohort
+has already fixed elsewhere with an external, mechanical check instead of a prose rule (a mailbox-commit
+hook, a heartbeat decoupled from work output, a tracked-state currency checker). Real instance
+(2026-08-31): three CIO items sat in `cio-standing-items.md` for 3.5 months, genuinely unblocked, found
+only because PM happened to ask directly what was being postponed — luck, not process.
+
+**Standing-items trackers: every row must carry the date it was filed/added** (no new schema, no
+frontmatter — just write today's date next to whatever you're adding, the same way you'd date a diary
+entry). This is what makes silent deferral mechanically detectable — `scripts/aging-standing-items.sh`
+scans every `dev/active/{role}-standing-items.md` for rows past a staleness threshold with no stated
+blocker, and reports honestly on which roles' trackers it can't yet read because they carry no per-item
+date at all. Undated rows aren't a failure retroactively — they're just invisible to the mechanism until
+dated going forward.
+
 ---
 
 ## Progressive Loading

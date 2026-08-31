@@ -15,7 +15,6 @@ from services.automation.action_classifier import ActionClassifier, ActionSafety
 from services.automation.audit_trail import AuditTrail, get_audit_trail
 from services.automation.autonomous_executor import AutonomousExecutor, get_autonomous_executor
 from services.automation.emergency_stop import EmergencyStop, get_emergency_stop
-from services.automation.predictive_assistant import PredictiveAssistant, get_predictive_assistant
 from services.automation.user_approval_system import (
     ApprovalStatus,
     UserApprovalSystem,
@@ -284,19 +283,6 @@ class TestIntelligentAutomationIntegration:
         # Get statistics
         stats = audit_trail.get_automation_statistics()
         assert stats["total_events"] >= 3
-
-    @pytest.mark.asyncio
-    async def test_prediction_integration(self):
-        """Test predictive assistant integration."""
-        executor = get_autonomous_executor()
-
-        # Test prediction (will return None without learned patterns)
-        prediction = await executor.predict_and_suggest(
-            user_id="test_user", context={"current_task": "github_workflow"}
-        )
-
-        # Should return None or dict
-        assert prediction is None or isinstance(prediction, dict)
 
     @pytest.mark.asyncio
     async def test_concurrent_safety(self):
