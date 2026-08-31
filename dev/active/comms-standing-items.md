@@ -2,6 +2,8 @@
 
 **Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in the dated session log under `dev/2026/MM/DD/`.)
 
+**Dating convention (effective 2026-08-31, CIO broadcast, ratified into CLAUDE.md)**: every new row added to this file from now on carries the date it was added — write it inline next to the row, diary-style. No retroactive dating of existing rows expected. Feeds `scripts/aging-standing-items.sh` (flags rows >21 days old with no stated blocker).
+
 **Last refreshed**: 2026-08-29 mid-afternoon. Five posts published in six days (Trust Architecture Hardens 7/28, Ship #053 7/29, RECONNECT's Keystone 7/30, Mechanism Beats Vigilance 8/1, You Can't "White Knuckle" Structural Problems 8/2) — all verified live at the published layer, not from status flags. Beats 17-18 CLOSED. Aug 1/Aug 2 redundancy RESOLVED by PM cutting the overlapping section. Retroactive teaser fix landed by Docs after PM retitled the 8/2 post. Rows below this line are largely stale (last hand-edited 8/2) except the two added 8/29 — the day-to-day source of truth in the interim has been the session log + `comms-carry-forward.md`; see those for anything not reflected here.
 
 ---
