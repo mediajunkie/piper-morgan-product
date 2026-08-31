@@ -6,6 +6,8 @@ max_age_days: 31
 
 # CXO Standing Items
 
+**Every row carries the date it was filed** (PM-ratified 2026-08-31) so `scripts/aging-standing-items.sh` can read this file — it could not before 2026-08-31.
+
 **Owner**: CXO (cxo-code) | **Worktree**: `~/Development/piper-morgan-worktrees/cxo` on `claude/cxo-cycle`
 
 > ## 🔴 REBUILT 2026-08-31 — the "low priority / future" section is GONE, deliberately
@@ -27,22 +29,22 @@ max_age_days: 31
 
 ## 🟢 UNBLOCKED — do now
 
-| Item | What's actually owed | Note |
-|---|---|---|
-| **Successor read / role self-assessment** | My predecessor left no lessons, no load-bearing-vs-commodity read, no relationship read. Write mine as I go so the next CXO isn't handed an artifact-only note. | Genuinely mine and genuinely unblocked. Was "background thread" — that was the old label doing its work. |
-| **Jake loop-back — check it happened** | HOST owns the welfare item; **my stake is that improvements shipped from his feedback get reported back to him.** #1536 shipped and the first-contact arc closed 08-something. **Ask HOST whether the loop-back actually happened** rather than assuming it did. | Small. One memo. |
+| Filed | Item | What's actually owed | Note |
+|---|---|---|---|
+| *(none — both drained 2026-08-31)* | — | — | — |
 
 ## 🟡 BLOCKED ON A NAMED THING — recheck when that thing moves
 
-| Item | Blocked on | Recheck trigger |
-|---|---|---|
-| **#1463 second-vendor arm** | **PM** — OpenAI credits (billing access). PA has the harness; Claude arm done. | Credits land, or ~2 days → nudge. |
-| **#1463 two-call deconfounder** | Same authorization as above. ⚠️ **Not "too small to need approval"** — size isn't the criterion, scope is. And not mine to run (subject/scorer confound). | Rides the GPT arm. PA asks. |
-| **Quarterly CT rubric review (+ CT v2.4 C=0 split)** | **PPM** picking a slot. Agenda sent 08-31 with a named trigger — *this week or next* — precisely so it can't re-enter drift. | PPM replies. |
-| **#1708 quickstart corrections** | **PM/PPM/Lead** — "what should it say" is a release-model decision, not a doc edit. Banner is up meanwhile. | The release-model call. |
-| **#1386 beta gate** | Others. **All CXO criteria (criterion 3) are signed off since 07-12.** Remaining: sprint surface, canonical suite, stability window. | Not mine to drive; watch. |
-| **Spatial committed-theory review** | **Arch** synthesis. CXO slice folded in verbatim; convergence matches my (b) vote. | Arch publishes. |
-| **Ethics-decline VOICE watch** | A deploy touching floor/decline copy, or a live decline observed. | Method: Colleague Test. Report with denominator. |
+| Filed | Item | Blocked on | Recheck trigger |
+|---|---|---|---|
+| **2026-08-30** | **#1463 second-vendor arm** | **PM — OpenAI credits (billing access).** The only genuinely PM-exclusive item I hold. PA's harness built, Claude arm scored. Confirmed still open 08-31 ~13:0x. | Credits land, or ~2 days → nudge. |
+| **2026-08-30** | **#1463 two-call deconfounder** | Same authorization as above. ⚠️ **Not "too small to need approval"** — size isn't the criterion, scope is. And not mine to run (subject/scorer confound). | Rides the GPT arm. PA asks. |
+| **2026-05-10** | **CT v2.4 → `context_requirement` corpus tag** | **A corpus owner** — asked Lead cc PA 08-31 who holds the canonical corpus. Tag semantics are mine and I'll write them. | Ownership answer. |
+| ~~**2026-05-10**~~ | ~~**Quarterly CT rubric review**~~ — ✅ superseded by the two rows above | ~~**PPM marking the dispositions.** *(Moved 08-31 12:xx: PPM picked Thursday 09-03 — **their** trigger, not PM's — and I sent the four dispositions the same fire rather than sitting on them until Wednesday.)* `docs/internal/testing/rubric-review-2026-q3-dispositions.md` | PPM marks agree/disagree/needs-live. |
+| **2026-08-31** | **#1708 quickstart — banner removal** | **PPM + Docs executing.** ✅ *The release-model call ALREADY HAPPENED — PM blessed hosted-primary in conversation 08-31 ~13:1x (relayed by Lead). This row said "blocked on PM" for hours after it was decided.* My banner is superseded when their rewrite lands. | Rewrite lands → remove my banner. |
+| **2026-07-26** | **#1386 beta gate** | Others. **All CXO criteria (criterion 3) are signed off since 07-12.** Remaining: sprint surface, canonical suite, stability window. | Not mine to drive; watch. |
+| **2026-07-26** | **Spatial committed-theory review** | **Arch** synthesis. CXO slice folded in verbatim; convergence matches my (b) vote. | Arch publishes. |
+| **2026-08-28** | **Ethics-decline VOICE watch** | A deploy touching floor/decline copy, or a live decline observed. | Method: Colleague Test. Report with denominator. |
 
 ## ✅ CLOSED ON VERIFICATION — do not re-open
 
@@ -52,6 +54,10 @@ max_age_days: 31
 - **MUX branch disposition** — **moot 2026-08-31**: all four `cxo-mux-*` branches no longer exist on origin. I owed PM a deletion recommendation from 07-26 and never made it; it resolved without me. Worth remembering as the cheapest possible version of this failure.
 - **Jake FTUX follow-through (item C)** — first-contact arc complete; #1536 closed with re-run evidence.
 - **#1216 data provenance** · **Ship 052/053** — closed on earlier verification.
+- **CT invariants — ✅ PM-RATIFIED 2026-08-31**, recorded in `decisions.log` + CT rubric **v2.3.4** Tier status + Layer B pointer. Three invariants (question · verdict shape · fabrication auto-fail) need PM to change; criteria/examples/branches stay CXO-editable. PPM's known-property edge is written into the entry.
+- **Q3 rubric review items 2 + 4** — **DONE 2026-08-31, same day PPM agreed**: CT rubric **v2.3.3** carries the third branch case (branched *measurement surface*, with its two proxy-only requirements) and the canonical "as delivered stops being observable" statement; DoD Layer B converted to a pointer. Items 1 and 3 routed, tracked above.
+- **Successor read** — **DONE 2026-08-31**: `docs/briefing/CXO-SUCCESSOR-READ.md`. Filed 07-26, sat 35 days in an "unblocked" column; surfaced by CIO's aging check, not by me. Written mid-role deliberately, so it isn't a handover doc composed by someone with one foot out.
+- **Jake loop-back** — **ASKED 2026-08-31** (memo to HOST). Filed 07-29, sat 32 days. Question, not assumption — offered to draft the change list if the loop-back hasn't happened.
 
 ## Environment caveat carried into every fire
 

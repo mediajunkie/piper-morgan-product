@@ -8,7 +8,12 @@ Flow:
 1. After intent classification → detect preferences from message
 2. After response generation → analyze user's reaction
 3. Before returning to user → suggest or auto-apply detected preferences
-4. When preference confirmed → store in learning system
+4. When preference confirmed → store via UserPreferenceManager (user-scoped)
+
+1613: confirmed preferences are stored ONLY through the user-scoped
+UserPreferenceManager. The former hand-off to the cross-user pooled learning
+store (QueryLearningLoop) was severed per PM ruling 2026-08-31 — pooling by
+source_feature contradicted published privacy claims.
 """
 
 import logging
@@ -17,7 +22,6 @@ from typing import Any, Dict, Optional
 from uuid import UUID, uuid4
 
 from services.domain.user_preference_manager import UserPreferenceManager
-from services.learning.query_learning_loop import PatternType, QueryLearningLoop
 from services.personality.conversation_analyzer import ConversationAnalyzer
 from services.personality.personality_profile import PersonalityProfile
 from services.personality.preference_detection import (
@@ -41,14 +45,13 @@ class PreferenceDetectionHandler:
     1. Post-intent-classification hook → detect from message
     2. Post-response-generation hook → analyze user reaction
     3. Post-response-delivery hook → suggest or auto-apply
-    4. Preference-confirmation hook → store in learning system
+    4. Preference-confirmation hook → store via user-scoped UserPreferenceManager
     """
 
     def __init__(self):
         """Initialize handler with dependencies"""
         self.analyzer = ConversationAnalyzer()
         self.preference_manager = UserPreferenceManager()
-        self.learning_loop = QueryLearningLoop()
 
     async def handle_message_analysis(
         self,
@@ -213,9 +216,6 @@ class PreferenceDetectionHandler:
                     scope="session" if session_id else "user",
                 )
 
-                # Log to learning system
-                await self._log_preference_to_learning(confirmation)
-
                 applied.append(
                     {
                         "dimension": hint.dimension.value,
@@ -349,17 +349,6 @@ class PreferenceDetectionHandler:
             current_value = hint_dict["current_value"]
             detected_value = hint_dict["detected_value"]
 
-            # Create confirmation record
-            confirmation = PreferenceConfirmation(
-                id=f"confirm_{uuid4().hex[:8]}",
-                user_id=user_id,
-                dimension=dimension,
-                new_value=detected_value,
-                previous_value=current_value,
-                hint_id=hint_id,
-                confirmation_source="user_accepted",
-            )
-
             # Store preference in UserPreferenceManager (persistent)
             pref_key = f"personality_{dimension.value}"
             await self.preference_manager.set_preference(
@@ -368,9 +357,6 @@ class PreferenceDetectionHandler:
                 user_id=UUID(user_id) if user_id != "user_id" else None,
                 scope="user" if user_id else "global",
             )
-
-            # Log to learning system
-            await self._log_preference_to_learning(confirmation)
 
             logger.info(
                 f"User {user_id} accepted and applied preference: "
@@ -396,61 +382,6 @@ class PreferenceDetectionHandler:
             }
 
     # Private helper methods
-
-    async def _log_preference_to_learning(self, confirmation: PreferenceConfirmation) -> bool:
-        """
-        Log confirmed preference to learning system as a LearnedPattern.
-
-        Args:
-            confirmation: PreferenceConfirmation to log
-
-        Returns:
-            True if successfully logged
-        """
-        try:
-            # Create LearnedPattern from confirmation
-            pattern_data = {
-                "dimension": confirmation.dimension.value,
-                "new_value": str(confirmation.new_value),
-                "previous_value": str(confirmation.previous_value),
-                "hint_id": confirmation.hint_id,
-                "source": confirmation.confirmation_source,
-            }
-
-            # Apply to learning system
-            # The learning system will handle persistence
-            result = await self.learning_loop._apply_user_preference_pattern(
-                pattern=type(
-                    "LearnedPattern",
-                    (),
-                    {
-                        # #1436 B9: PatternType has no PREFERENCE member — this
-                        # AttributeError killed every preference confirmation
-                        # (swallowed by the classify hook's broad except).
-                        "pattern_type": PatternType.USER_PREFERENCE_PATTERN,
-                        "pattern_data": pattern_data,
-                        "confidence": 0.95,  # User confirmed
-                        "pattern_id": confirmation.id,
-                    },
-                )(),
-                context={
-                    "user_id": confirmation.user_id,
-                },
-            )
-
-            if result.get("success"):
-                logger.info(
-                    f"Logged preference to learning system for {confirmation.user_id}: "
-                    f"{confirmation.dimension.value}"
-                )
-                return True
-            else:
-                logger.warning(f"Learning system failed to apply preference: {result}")
-                return False
-
-        except Exception as e:
-            logger.error(f"Error logging preference to learning system: {e}")
-            return False
 
     def _generate_suggestion_explanation(self, hint: PreferenceHint) -> str:
         """

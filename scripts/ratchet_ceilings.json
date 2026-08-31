@@ -1,6 +1,6 @@
 {
   "_comment": "Finish-the-Unfinished sprint (#1424) frozen ceilings, census 2026-07-16; unscoped_repo_reads added 2026-07-17 (ADR-079 D2b warn-mode baseline, pre-calibration). Counts may only go DOWN; lower the ceiling in the same commit as the fix. See tests/test_completion_ratchets.py. mypy_* keys: #1436 slice 2026-08-08 extended the gate from 4 codes to EVERY code mypy emits (closes #1469 \u2014 [name-defined] was filtered out while being a guaranteed-runtime-NameError class; its ceiling is 0 and stays 0). The 4 original mypy ceilings were re-measured in that census: resolving the 16 dangling forward refs exposed 13 previously-invisible arg-type errors (services/database/models.py +7, services/api/todo_management.py +6) \u2014 pre-existing drift made visible \u2014 and the slice's fixes still brought arg_type in below its old 405 ceiling.",
-  "silent_death_core": 198,
+  "silent_death_core": 197,
   "unscoped_reads": 54,
   "notimplementederror": 8,
   "todo_markers": 35,

@@ -37,12 +37,24 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 
 | # | Item | Filed | Status |
 |---|---|---|---|
-| 7a | **Corpus-coherence cycle proposal** (Pattern Sweep Phase 4 finding) | May 9 | ~60% zero-citation rate at both pattern-catalog and methodology-corpus layers, never actioned. PM/Exec discussion never happened. Still real; low urgency. |
+| 7a | **Corpus-coherence cycle proposal** (Pattern Sweep Phase 4 finding) | May 9 | ~60% zero-citation rate at both pattern-catalog and methodology-corpus layers, never actioned. **Raised directly to PM in chat 2026-08-31** rather than continue carrying as an un-actioned line — this is exactly the PM/Exec conversation that's been missing. |
 | 7b | **PreCompact hook: locality differentiation (Option 1), genuinely unbuilt** | May 11 (orig.), reverified twice Aug 23 | **Docs corrected my count same-day**: Option 3 ("safe to compact" path) was already present in *substance* (SOFT tier's option (c)), just worded differently than my grep matched — reworded to the memo's exact language so this doesn't false-negative again (`298fd4f89`). Real corrected state: **2 of 3 addressed, 1 genuinely open** — Option 1 (locality differentiation, still the highest-leverage one) needs actual detection-logic design and is deliberately not being rushed, given the hook's own May 10-17 wedge-incident history. Docs owns it as scoped, unblocked work now — not CIO's to chase further. |
 | 7c | **Docs sign-off `git status` inventory pattern** — methodology-corpus candidate | May 10 | Needs HOST + Docs concurrence on framing; never pursued. Low priority. |
-| 7d | **Metadata-cleanup ticket** — pattern Status-field vocabulary contamination | May 9 | Cosmetic; low-priority Docs work; never filed as an actual issue. |
-| 7e | **Anti-pattern P-16 candidate** ("Cross-Agent Residue Accumulation in Shared Working Tree") | May 10 | Queued for a Pattern Sweep anti-pattern index update that hasn't happened since. |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
+
+- **Metadata-cleanup ticket — pattern Status-field vocabulary contamination** (#7d, May 9) —
+  **filed as issue #1710 (2026-08-31)**, PM directly prompted checking for genuinely-unblocked
+  work sitting un-actioned. Verified the contamination is real and current before filing (not just
+  recycling a 3-month-old claim): `grep` across `docs/internal/architecture/patterns/*.md`'s
+  `Status:` fields shows 6 "Proven", 5 "Established", 4 "Active", plus several free-text
+  qualifiers — "Established" and "Active" aren't in the canonical Emerging/Proven/Reclassified/
+  Closed vocabulary at all. Scoped as a Docs-owned cleanup, not a CIO build task.
+- **Anti-pattern P-16 candidate ("Cross-Agent Residue Accumulation in Shared Working Tree")**
+  (#7e, May 10) — **already done, discovered before filing a duplicate issue.** Checked
+  `docs/internal/architecture/current/anti-pattern-index.md` before creating anything: P-16 has
+  existed there since May 9/10, cross-referenced as a sub-instance of pattern-068 (Silent State
+  Mutation in Shared Working Tree). The tracker line was simply never updated after the work
+  landed — carried forward stale for 3.5 months. Closing as resolved, no new work needed.
 
 - **Dashboard welfare-criteria v0.3, F2 (cross-pair thread staleness)** (Jul 3 → flagged Aug 24 → **ruled Aug 24**) — **Exec: not building it.** The rollup's live-state pass already covers the failure mode by a different route — reading all ten carry-forwards directly surfaces "the same blocked thread named twice, nobody owning it" without needing text-matching. Two real instances this month cited (BYOC conversation across 3 roles' files, a taxonomy-naming call in two roles' docs). Text-matching itself would be the wrong shape even if built — carry-forwards name shared threads differently by construction, so a tight matcher would miss the interesting cases. If the property needs mechanical backing later, the real gap is compile *cadence*, not detection — and even that isn't worth building without a real instance of it biting. Welfare-criteria spec is now fully disposed: every criterion either done, ruled, or explicitly declined with reasoning.
 

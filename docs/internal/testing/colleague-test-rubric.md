@@ -1,7 +1,13 @@
 # Colleague Test Rubric
 
-**Version**: 2.3.2
-**Date**: 2026-05-15
+**Version**: 2.3.4
+**Tier status**: ⭐ **Three invariants RATIFIED by PM 2026-08-31** — *the question*, *the verdict shape*
+(3 × 0–3, ≥7/9 PASS, any single 0 auto-fails), and *the fabrication auto-fail* (C=0). **Changing any of
+those three requires PM.** Everything else here — dimension criteria, score bands, worked examples,
+calibration notes, and branches with their dimension meanings — **remains CXO-editable and moves with
+evidence.** Why the split, and the known property PPM flagged before ratification: `decisions.log`
+2026-08-31, and `rubric-review-2026-q3-dispositions.md` item 1.
+**Date**: 2026-08-31 (v2.3.3; scoring criteria unchanged since 2026-05-15)
 **Owner**: CXO
 **Purpose**: A scoring rubric for evaluating Piper Morgan's responses to natural-language queries. Used in M1 Gate UAT (#926), the canonical query retest scorer (#928), Phase E ethics activation gate (#992), and ongoing voice/quality monitoring.
 
@@ -320,6 +326,53 @@ When adapting this rubric for local use (an activation gate, a sub-epic gate, a 
 
 What is **not** allowed: silent extension. Reusing axis labels (R, C, T) with adjusted criteria while citing CT as the source. This is the failure mode this rule prevents.
 
+### A third case, added v2.3.3 (2026-08-31) — **branched MEASUREMENT SURFACE**
+
+*CXO proposed, PPM agreed 2026-08-31 (Q3 rubric review, item 2). Both prior cases branch what the
+dimensions **mean**. This one branches what gets **measured**, and it is a difference in kind.*
+
+| Branch | Artifact measured | Verdict comparable to CT's? |
+|---|---|---|
+| **UI Lifecycle Verification Rubric v0.1** | rendered UI — **still what the user perceives** | ✅ yes — both say "this is/isn't good for the user" |
+| **BYOC Recomposition Rubric v0.2** | **the tool payload handed to a host LLM** — *not* what the user perceives | 🔴 **no** |
+
+⚠️ **The hazard is a sentence.** A gate report reading *"passed the Colleague Test family rubric, 9/9"*
+looks **identical** in both cases — while in one it means the user's experience was good, and in the other
+it means *we handed the host good material and never saw what the user read.* **Same vocabulary, different
+claim, both converging on PASS** — the Apr 26 incident's exact shape, one level up.
+
+**So two requirements attach to a measurement-surface branch, and to no other kind:**
+
+1. **State what the score does NOT claim** — in the instrument itself *and* in any report citing it.
+   (Worked example: BYOC Recomposition §5 — *"a 9/9 here means we handed the host everything it needed…
+   not that the reply was good."*)
+2. **Name the companion verification** — how the un-measured artifact gets checked. For BYOC that is the
+   recomposition probe harness. **Without this the family silently loses coverage of the user's actual
+   experience on that surface, while every report still reads PASS.**
+
+**Note the asymmetry**: the UI branch needs neither, because rendered UI *is* user-perceived. **These
+attach to proxies, not to branches generally.**
+
+### Where "as delivered" stops being observable — canonical statement
+
+*Moved here from DoD Layer B on 2026-08-31 (Q3 review item 4), per ESSENCE's ratified standing rule —
+"hand-maintained copies are the documented failure mode." Layer B now points here rather than restating.*
+
+DoD Layer B scores the experience **as delivered, not as intended**. On response-text and UI surfaces that
+is observable: the reply, the card, the error screen are ours and inspectable.
+
+🔴 **On the BYOC/MCP path it is not.** The user-visible text is composed by a host LLM from our tool
+output, and **we never see it** — not in logs, not in telemetry, not after the fact. A rubric on that
+surface therefore scores **the payload, not the delivery.** That is a **proxy** — the only one available in
+production, and a good one — but a pass there is **not the same claim** as a pass on any other surface and
+must not be reported as if it were.
+
+**This is not hypothetical**: in the #1463 probe (2026-08-30) a payload that carried its qualification
+honestly still produced a **fabricated** user-visible reply — *"your todo list is currently empty"* from a
+**failed** read. **Payload-only scoring would have missed it.** End-to-end verification on this surface
+requires a probe harness that captures the composed reply and scores *that* with the Colleague Test proper:
+possible, but always a deliberate test act, never a by-product of shipping.
+
 ### Why the rule exists
 
 The Apr 26 rubric C-axis incident (PPM scoring CT v2 with C=Context vs. CXO scoring Phase E rubric with C=Clarity, both responsibly authored, verdicts converging at PASS while methodology silently diverging) is the canonical case. It surfaced as score divergence with no obvious cause; resolution required reconstructing the parallel-authoring history of two rubrics that shared the letter "C" with different meanings.
@@ -372,6 +425,8 @@ If you are *certain* the answer would be the same but you are also certain you a
 - **v2.1 (2026-04-26)** — CXO. Tone-axis anchor sharpening, formalized in the Phase E countersign (`mailboxes/cxo/sent/memo-cxo-to-ppm-phase-e-scoring-2026-04-26.md` §1). Concrete behaviors at T=2 and T=3 ("competent rather than characteristic" / "concrete, names what the user *can* do, doesn't flatten or stiffen"). Template-fingerprinted and chatbot-warmth failure modes preserved at T=0 alongside content-filter cadence.
 - **v2.2 (2026-04-26)** — CXO. Fresh-account C-axis ceiling clarification, prompted by score divergence with PPM on Phase E (`memo-cxo-to-pm-cc-ppm-arch-lead-pa-exec-phase-f-input-2026-04-26.md` §3). On no-project-context test scenarios, C-axis ceiling is C=2 by definition. PPM's strict reading of the C=3 anchor — *"could not have been produced by a generic LLM without this project's context"* — is the load-bearing language; the limitation note is now explicit about how it applies. Score magnitude calibration, not gate-verdict change.
 - **v2.3 (2026-04-27)** — CXO. New section "How to Extend This Rubric — Branch-or-Anchor Discipline" added, per CIO Apr 26 methodology framing memo (`memo-cio-to-ppm-cc-cxo-lead-pm-pa-arch-exec-rubric-drift-methodology-2026-04-26.md`) and CXO concurrence (`memo-cxo-to-cio-cc-ppm-lead-pm-pa-arch-exec-pattern-063-and-rule-embedding-2026-04-26.md`). Belt-and-suspenders with the methodology-core entry CIO will file. Embeds the rule at the rubric surface so authors who go straight to the rubric to extend it (the actual high-failure path — the Apr 23 Phase E rubric drafting was exactly that) encounter the rule before silent extension can happen. References Pattern-063 (Parallel-Authoring Drift, CIO Apr 27). No scoring-criteria changes.
+- **v2.3.4 (2026-08-31)** — CXO. Tier status recorded: PM ratified three invariants (question · verdict shape · fabrication auto-fail); the rest stays CXO-editable. No scoring-criteria changes — this records governance, not measurement.
+- **v2.3.3 (2026-08-31)** — CXO. §"How to Extend This Rubric" gains a **third case: branched MEASUREMENT SURFACE** (what gets measured changes, not what the dimensions mean), with two requirements that attach to proxies only — state what the score does NOT claim, and name the companion verification. Also absorbs the canonical **"where 'as delivered' stops being observable"** statement, moved from DoD Layer B per ESSENCE's derive-don't-hand-maintain rule. Q3 rubric review items 2 and 4; CXO proposed, **PPM agreed 2026-08-31**. No scoring-criteria changes.
 - **v2.3.1 (2026-05-10)** — CXO. Documentation update only (no scoring-criteria changes). §"How to Extend This Rubric" gains a canonical worked example section citing the **UI Lifecycle Verification Rubric v0.1** (PPM branched May 10 per Methodology-24, in response to CXO refinement on the M2d gate completion criteria memo). The example demonstrates legitimate branching: preserve R/C/T dimension shape for cohort coherence; explicitly branch dimension meanings with a named new instrument + version + provenance + cross-reference. Closes the loop on the May 4 M2d gate completion criteria thread.
 - **v2.3.2 (2026-05-15)** — CXO. Documentation update only. Updates worked-example cross-reference from PPM's consolidation memo path to the standalone canonical file Lead Dev landed May 10 (`docs/internal/testing/ui-lifecycle-verification-rubric-v0.1.md`, commit `057b042c`). No scoring-criteria changes.
 
