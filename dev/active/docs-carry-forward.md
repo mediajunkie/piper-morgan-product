@@ -1,8 +1,46 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-31 ~10:3x PDT (B3: 15/81 patterns dispositioned; mail loop drained twice)
+**Updated**: 2026-08-31 ~13:4x PDT (a very high-volume fire — #1708 verified+SETUP.md fixed,
+scheduled-workflow defect found+filed+worked around, standing-items dated, B3 at 15/81)
 **Session log**: `dev/2026/08/31/2026-08-31-0728-docs-code-log.md` (open).
 **Cron**: `cfdd5f76`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-06.
+
+## ⭐ Weekly Docs Audit (#1712) — GENERATED, real work owed, deliberately deferred to a fresh fire
+
+Found a real infrastructure defect: neither of this repo's two Monday-scheduled GH Actions
+(weekly-docs-audit, monthly-housekeeping-audit) fired on schedule today — 4.5 hours late, zero
+runs, while `push`-triggered workflows fired normally throughout (ruling out a general Actions
+outage). Filed **#1713** with the full evidence trail. Manually dispatched `weekly-docs-audit.yml`
+to unblock myself — succeeded immediately, produced **#1712** (today's real audit, 74 unchecked
+items). Did NOT manually dispatch the monthly one, since #1486 (last month's) is still open and a
+second one would compound rather than close a gap — left that call to whoever owns #1486.
+
+**#1712 itself is genuinely deferred, not avoided**: 74 items is comparable to prior weeks' full
+audits (#1643, #1681), and this fire has already delivered a lot of real, verified work — picking
+it up fresh next fire is quality-banking against an explicit trigger (checklist-scale work
+deserves undivided attention), not the "no rush" antipattern. Named here so it isn't silently
+dropped.
+
+## #1708 (ALPHA_QUICKSTART hosted-primary) — MY SHARE DONE, verified independently
+
+PM blessed the plan in-conversation; PPM landed the main rewrite (`013d5a0cd`) while I was
+mid-heads-up-memo — a genuine same-fire race, no actual collision (caught before I'd touched any
+file). **Verified PPM's landed work independently rather than trust the summary**: confirmed
+`piper-morgan.fly.dev` responds live, confirmed the 4 remaining "production" mentions are all
+contextual/explanatory not instructional, read `CONTRIBUTING.md`'s new §1b against Lead's probe
+report line-by-line — clean match.
+
+**Picked up the flagged residual PPM couldn't finish**: `SETUP.md` had 3 real defects Lead's probe
+found (nonexistent `config/PIPER.example.md` path, wrong psql port/user for the Docker path, wrong
+server entry point `uvicorn web.app:app` instead of `main.py`) — verified each claim independently
+against the actual codebase before fixing (didn't just trust Lead's memo), then fixed all 3 plus
+their echoes elsewhere in the same doc (Python version claim, Quick Reference table, Troubleshooting
+section) rather than just the first instance of each. Flagged the SETUP.md/CONTRIBUTING.md overlap
+honestly at the top of the doc rather than unilaterally consolidate — real decision, not mine alone.
+**Not touched**: `ALPHA_TESTING_GUIDE.md` (PPM's other flagged residual) — more entangled, deserves
+its own pass rather than a rushed one riding this fire.
+
+## B3 corpus-disposition — IN PROGRESS, 15/81 patterns dispositioned
 
 ## B3 corpus-disposition — IN PROGRESS, 15/81 patterns dispositioned
 
@@ -29,19 +67,12 @@ grep-against-code discipline for anything heading toward archive. Target ~1 week
 **Disposition motion is absorb-and-mark** — each absorbed pattern gets marked into whichever of the
 six living-core-docs it's absorbed into, same motion, not a separate pass.
 
-## Today's other verified state (not assumed)
+## Monthly Housekeeping Audit (#1486) — still deliberately sequenced behind B3
 
-- **Weekly Docs Audit**: ⚠️ hadn't fired as of 10:31am PT (90 min past its `7 16 * * 1` / 9am PT
-  schedule) — no workflow run at all today per `gh run list`. Same class of delay the workflow's
-  own comment already documents once (top-of-hour GH Actions congestion, found 2026-08-03). Not
-  yet alarming at 90 min, but check again next fire — if it's still absent, worth a closer look
-  rather than assuming benign delay indefinitely.
-- **Monthly Housekeeping Audit (#1486)**: checked directly — titled "2026-08", created 2026-08-05,
-  **33 unchecked items, zero progress in 26 days**, not "due today." September's audit won't
-  auto-generate until ~09-07, so no clutter risk from further delay. **Sequencing decision, stated
-  not implied**: B3 is today's primary work (fresh, PM-approved, rest of cohort actively
-  coordinating on it right now); #1486 picked up when B3 leaves room, or later this week — named
-  here with the reason, not silently deferred.
+Checked directly earlier today: titled "2026-08", created 2026-08-05, 33 unchecked items, zero
+progress in 26 days, not "due today." September's won't auto-generate until ~09-07 (and given
+today's scheduled-workflow defect, may need a manual dispatch when the time comes too — watch for
+it). B3 + #1712 both take priority; #1486 picked up when they leave room, or later this week.
 
 ## New standing responsibility: the glossary is now a living-core-doc
 

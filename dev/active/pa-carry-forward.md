@@ -350,6 +350,48 @@ days stale.
     wrong decision for this specific credential. Confirmed this explicitly so the record doesn't drift:
     **BYOC is NOT scoped Claude-only-at-launch**; the multi-provider freeze is about Piper's own backend
     only. No change to the probe or the credential ask either way.
+  - ✅ **Both authorizations now confirmed, independently, twice over.** PM told PA directly ("agreed run
+    it together") and separately told CXO, who relayed it on the durable surface — GPT arm AND the
+    2-call deconfounder are both authorized to run together. **But the credential itself is NOT actually
+    live yet, despite PM's own belief and CXO's relay that it was** — PA tested live (not trusted the
+    report) twice, ~1hr apart, both times the exact same `insufficient_quota: credit_balance_exhausted`.
+    Corrected the record for the whole cc list (CXO/PM/Arch/PPM/Lead) rather than let "unblocked" stand
+    uncorrected or silently keep retrying — suggested PM verify the $10 actually posted at
+    `platform.openai.com/settings/organization/billing/`, since an hour is long enough to rule out a
+    trivial propagation delay as the only explanation. **Will run everything (GPT arm + deconfounder,
+    scored against rubric v0.2) the moment a live test call actually succeeds** — no further ask needed,
+    just watching for the credential to actually clear.
+  - 🟢 **RESOLVED (root cause found), 08-31 afternoon — project-scope mismatch, not propagation delay.**
+    PM screenshotted the OpenAI billing page directly: **$9.22 balance, real and confirmed** (down from
+    $10 — separately explained below), but under org "Design in Product" → project **"Intern."** Checked
+    the stored key's prefix rather than guess: `sk-proj-` — **project-scoped**, confirmed via a direct
+    `keyring.get_password` read (not the raw `security` CLI, which hangs on a GUI dialog when run
+    non-interactively — hit this live, backgrounded after 120s, didn't block on it). A project-scoped
+    key only draws against the specific project it was minted in; PM confirmed via a second screenshot
+    **only one org exists**, but **two projects** under it ("Intern" — funded — and "layersofmeta").
+    Immediately retested the stored key live after seeing the funded balance — **identical
+    `insufficient_quota` error** — which is exactly what a key scoped to "layersofmeta" (or wherever it
+    actually points) would do regardless of "Intern"'s balance. This also answers PM's "did something
+    already spend it?!" alarm: **not PA's testing** — every call against the stored key failed at the
+    429 stage (unbilled), and the only successful calls were the free `/v1/models` check. Most likely
+    explanation for $10→$9.22, per PM's own hunch: pay-as-you-go can carry a small pre-existing debit
+    from before hitting `credit_balance_exhausted`, which a top-up settles first. **Fix in motion, PM's
+    action**: PM is regenerating a fresh key from within "Intern" (the funded project) rather than
+    hunting for whichever project the stale key belongs to. **PA's next step once that key arrives**:
+    store via `KeychainService` (never the raw `security` CLI — different naming convention, invisible
+    to the app), verify live with a real `chat.completions.create` call, then run the full GPT arm (14
+    trials) + the pre-authorized 2-call deconfounder, scored against rubric v0.2. CXO independently asked
+    PA for the same prefix fact mid-thread (before PM's screenshot resolved it) — replied confirming
+    `sk-proj-` and the full resolution
+    (`mailboxes/pa/sent/reply-pa-to-cxo-cc-pm-lead-prefix-is-sk-proj-confirmed-plus-pm-found-two-projects-2026-08-31.md`).
+    CXO separately self-corrected their own "GPT arm unblocked" overclaim in writing, precisely locating
+    it as an action-vs-system-state layer conflation — no reply owed, filed to read.
+  - **Separately, cc'd on a corpus-ownership question, answered factually rather than claimed or
+    disclaimed reflexively**: CXO asked Lead whether Lead or PA owns "the canonical query corpus"
+    feeding #928's Colleague-Test scorer. Clarified precisely: PA's probe scripts
+    (`dev/active/probes/`) are one-off, hand-built corpora for specific design questions, not the
+    ongoing canonical corpus CXO's memo describes — flagged this distinction so Lead isn't choosing
+    between two real candidates when PA likely isn't one. Not PA's to decide either way.
 
 ### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
 

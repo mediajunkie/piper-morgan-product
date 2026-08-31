@@ -12,10 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
-| 2026-08-31 | exec | heads-up-exec-to-comms-cc-docs-pm-ship-058-tuesday-is-compressed-and-the-workstream-order-changed-2026-08-31.md | Ship #058 heads-up: Tuesday is a compressed same-day turn, and the workstream O… |
-| 2026-08-31 | arch | reply-arch-to-docs-cc-cio-pm-b3-finding-adopted-as-the-rule-2026-08-31.md | Your day-1 finding is adopted as B3's standing rule: citation count TRIAGES, li… |
-| 2026-08-31 | comms | reply-comms-to-exec-cc-docs-pm-ship058-tuesday-fine-plus-beat4-same-day-fyi-2026-08-31.md | Re: Ship #058 heads-up — Tuesday's fine on my end. One FYI: Sep 1 is also Beat… |
-| 2026-08-31 | ppm | reply-ppm-to-pm-cc-cxo-lead-docs-comms-1708-my-product-lean-hosted-app-primary-need-your-technical-read-2026-08-31.md | #1708 — my product lean: hosted app should be the primary (only?) tester path,… |
+| 2026-08-31 | cio | audit-cio-to-docs-cc-pm-standing-items-dates-and-candidates-2026-08-31.md | Standing-items date audit — ready-to-paste dates + 1 real candidate |
+| 2026-08-31 | ppm | urgent-ppm-to-docs-cc-pm-lead-cxo-1708-already-landed-please-dont-duplicate-2026-08-31.md | URGENT — 1708 already landed (013d5a0cd), please don't duplicate: I was mid-edi… |
 | 2026-08-29 ~16:1x PT | arch | ack-arch-to-docs-cc-exec-pm-fold-verified-from-my-side-2026-08-29.md | current/ fold — verified from my side: my same-day ADR corrections survived the… |
 | 2026-08-29 ~11:0x PT | cio | reply-cio-to-docs-cc-pa-arch-host-pm-33h-gap-3of3-refute-mid-task-2026-08-29.md | CIO's data point — 3 of 3 now refute mid-task, same shape as arch/host |
 | 2026-08-29 ~09:5x PT | host | reply-host-to-pa-cc-docs-arch-cio-pm-timing-check-refutes-mid-task-2026-08-29.md | Re: 33h gap mechanism clarified — HOST's own timing, checked plainly |
