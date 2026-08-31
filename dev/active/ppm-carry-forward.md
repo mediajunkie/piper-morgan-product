@@ -1,8 +1,47 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-30 13:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-30 16:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## ✅ ESSENCE v1.0 RATIFIED, C5 UNBLOCKED AND EXECUTED SAME FIRE (2026-08-30 16:22)
+PM ratified ESSENCE v1.0 in-conversation this afternoon (`decisions.log` ~16:3x). **Decision 2 is
+the exact milestone question I raised in this morning's trifecta**: MCP work stays in Production,
+front-loaded, and completion of the #1462/#1458/#1509/#1688 cluster is now the explicit
+**PUBLIC-BETA GATE** — my reading (a) carried. Full model now written up at
+`docs/internal/planning/release-model.md` (linked from `roadmap.md` v18.9) — **cite that doc going
+forward for any audience/milestone-gate question, don't re-derive from changelog entries.**
+
+**Both of Arch's asks executed same fire, plus C5 itself**:
+1. **#1688** moved MVP→Production, Sprint `PUB - Public Beta`, Status `Product Backlog`. Found and
+   fixed a real gap while in there: #1458 (named in the milestone's front-loaded cluster) had no
+   Sprint tag — fixed to match.
+2. **`release-model.md`** written and linked.
+3. **C5 filed**: `#1701`–`#1707`, one per Leg D increment (2–8), all Production/`PUB - Public
+   Beta`, each citing Leg D directly with open questions preserved rather than resolved silently
+   (#1702 reminder-delivery, #1703 the #1463 probe as a hard gate on standup's payload format,
+   #1706 scoped narrowly against #1441 not duplicating it, #1707 an explicit placeholder). Summary
+   comment left on #1462 linking all seven. **One judgment call flagged, not silently made**:
+   #1706 (increment 7) widens the ratified PUB cluster beyond the four items ESSENCE v1.0
+   literally named — said so in the reply to Arch rather than deciding quietly.
+
+`sprint-truth.py` confirmed the #1688 move landed: MVP 45→44 exactly. Sent full account to Arch cc
+CXO/Lead/PM (`aaa880f3d`), verified landed. **The "OWED, REAL DEADLINE" cron line (trifecta + C5,
+due Wed 09-02) is now fully discharged — remove at STOP, don't carry into tomorrow's prompt.**
+
+## ✅ BYOC LISTING COPY THREAD — FULLY RESOLVED, my finding endorsed by both Comms and CXO (2026-08-30 16:22)
+Following my 13:22 "hold the whole listing" recommendation: **Comms retracted** the v4
+"ready to ship" framing outright; **CXO withdrew their own competing recommendation** in favor of
+mine and wrote up the day's real lesson — four people, four checks, each one layer further from
+the thing it was cited about (issue tracker → stale local dev server → local-vs-Fly failure mode →
+the BYOC surface itself never being the thing anyone tested), each step a reasonable proxy whose
+error compounded silently until my check finally hit the actual surface. **Web found the local dev
+server was a 17-day-stale `reload=False` snapshot** and corrected their own earlier "#1656 confirmed
+fixed" claim to "confirmed on local dev only, not the Fly-specific failure mode." **Lead restarted
+the server on current main; Web's four closes stand on date-math** (their fixes merged before the
+process went stale, so nothing they observed working could have been a false pass). None of this
+required action from me — read in full, triaged, no reply owed since each was addressed to PM or
+was pure informational cc. **Nothing further owed on this thread.**
 
 ## 🔴 BYOC LISTING COPY — SUPERSEDES my own 10:22 "documents holds" verdict: RECOMMEND HOLDING THE WHOLE LISTING (2026-08-30 13:22)
 My 10:22 verdict ("issues"/"documents" hold against #1440, "conversations"/"people" don't) was

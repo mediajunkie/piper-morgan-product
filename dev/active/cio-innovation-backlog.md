@@ -44,13 +44,25 @@ Surface column indicates where the innovation lives if Captured (or where it wou
 | 14 | CLAUDE.md "Git Worktrees" section | `CLAUDE.md` | Apr 22 | branch collision incident |
 | 15 | CLAUDE.md "Mailbox Discipline" section + `check-branch.sh` enforcement | `CLAUDE.md` + hook | Apr 26 | Ship #040 kickoff trapped on feature branch |
 | 16 | DECISIONS.md cross-project practice | repo root + per-project | Apr 18 | Klatch + OpenLaws cross-pollination |
-| 17 | Workstream memo naming standard | `memo-exec-to-all-workstream-naming-standard-2026-04-19.md` | Apr 19 | Apr 19 six-way variant observation |
-| 18 | Verifiable-claims discipline | `memo-exec-to-host-verifiable-claims-2026-04-19.md` | Apr 19 | HOST superlative caught in Ship #039 fact-check |
+| 17 | Workstream memo naming standard | `docs/internal/development/weekly-ship-process-guide.md` §Workstream memo naming convention (corrected 2026-08-30 — the originally-cited memo filename has no git history; the standard's live home is this guide, per Apr 19 omnibus's own "Effective Ship #040 onward" framing) | Apr 19 | Apr 19 six-way variant observation |
+| 18 | Verifiable-claims discipline | `docs/internal/development/methodology-core/methodology-25-WORKSTREAM-REVIEW-CADENCE.md` §Verifiable-Claims Discipline (corrected 2026-08-30 — same as #17: the cited memo filename has no git history; methodology-25 is where the norm actually lives and is enforced today, and still names the phantom memo as its own citation) | Apr 19 | HOST superlative caught in Ship #039 fact-check |
 | 19 | Per-memo commit-and-push norm | `CLAUDE.md` Mailbox Discipline section | Apr 26 (CXO origination) | CXO operational discipline established |
 | 20 | Step 7 (Verify Canonical References) in create-omnibus skill | `create-omnibus` skill | Apr 16 | PDR-004 paraphrase-drift correction chain |
 | 21 | HOST migration session-end pulse pattern (3 affective questions) | HOST migration checklist Phase 1 | Apr 22 | HOST origination |
 | 22 | Six-section handoff memo structure | HOST migration checklist + Pattern-065 reference | Apr 22 | HOST migration; cross-project precedent at Klatch Phase 3.5 |
 | 23 | Migration checklist 4-phase structure (Before / During / First Code Session / Follow-Up) | `memo-host-migration-checklist-2026-04-22.md` | Apr 22 | HOST origination |
+
+**Full existence-verification sweep of this tier executed 2026-08-30** — the one tier the 2026-08-25
+sweep didn't reach (that pass covered Emerging + Reclassified + Watch List only). 21 of 23 Surface
+citations checked out on disk exactly as written. **Two (#17, #18) cited a memo filename with no git
+history at all** — `memo-exec-to-all-workstream-naming-standard-2026-04-19.md` and
+`memo-exec-to-host-verifiable-claims-2026-04-19.md` never landed as committed artifacts, though the
+2026-04-19 omnibus log narrates both being written. Both underlying practices are real and adopted —
+found live and enforced today in `weekly-ship-process-guide.md` and `methodology-25` respectively —
+so this is a citation-drift finding, not a "practice never happened" finding. Corrected both rows'
+Surface column to point at where the practice actually and currently lives rather than a phantom
+memo path; `methodology-25` itself still cites the non-existent filename by name and hasn't been
+touched.
 
 ### Operational — Adopted In Practice, Awaiting Canonical Capture
 

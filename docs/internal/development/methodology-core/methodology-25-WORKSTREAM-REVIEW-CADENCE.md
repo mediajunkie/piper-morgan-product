@@ -168,7 +168,9 @@ Cross-role observations in §5 ("Cross-role threads") are welcome; *replacing* a
 
 ## Verifiable-Claims Discipline
 
-Per Exec Apr 19 standing norm (`memo-exec-to-host-verifiable-claims-2026-04-19.md`):
+Per Exec's Apr 19 standing norm (originated in `memo-exec-to-host-verifiable-claims-2026-04-19.md`,
+per the 2026-04-19 omnibus log; that memo file itself has no git history — corrected 2026-08-30,
+CIO's Innovation Backlog Captured-tier sweep — this section is the norm's actual live home):
 
 - Comparative claims of the form "most X," "first Y," "more Z than ever" need source-verification before they ship
 - If a claim feels rhetorically strong but unverified: source-check it, downgrade the wording, or flag explicitly as "needs PA/Docs verification"
