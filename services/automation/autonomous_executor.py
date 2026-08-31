@@ -14,7 +14,6 @@ from uuid import UUID
 from services.automation.action_classifier import ActionClassifier, ActionSafetyLevel
 from services.automation.audit_trail import get_audit_trail
 from services.automation.emergency_stop import get_emergency_stop
-from services.automation.predictive_assistant import get_predictive_assistant
 
 
 @dataclass
@@ -47,14 +46,16 @@ class AutonomousExecutor:
     - ActionClassifier (safety classification)
     - EmergencyStop (halt capability)
     - AuditTrail (comprehensive logging)
-    - PredictiveAssistant (pattern-based predictions)
+
+    1613: the former PredictiveAssistant integration (pattern-based predictions
+    read from the cross-user pooled learning store) was severed per PM ruling
+    2026-08-31 — the pooled store contradicted published privacy claims.
     """
 
     def __init__(self):
         self.classifier = ActionClassifier()
         self.emergency_stop = get_emergency_stop()
         self.audit_trail = get_audit_trail()
-        self.predictive_assistant = get_predictive_assistant()
 
         # Rollback stack for undo capability
         self._rollback_stack: List[Dict] = []
@@ -265,38 +266,6 @@ class AutonomousExecutor:
             )
 
             return result
-
-    async def predict_and_suggest(self, user_id: UUID, context: Dict[str, Any]) -> Optional[Dict]:
-        """
-        Predict next action and provide suggestions.
-
-        Args:
-            user_id: User ID for personalized predictions
-            context: Current context
-
-        Returns:
-            Dictionary with prediction and suggestions, or None
-        """
-        # Use PredictiveAssistant to predict next action
-        prediction = await self.predictive_assistant.predict_next_action(user_id, context)
-
-        if not prediction:
-            return None
-
-        # Classify the predicted action for safety info
-        classification = self.classifier.classify_action(prediction.action_type)
-
-        return {
-            "predicted_action": prediction.action_type,
-            "confidence": prediction.confidence,
-            "suggested_params": prediction.suggested_params,
-            "reasoning": prediction.reasoning,
-            "safety_level": classification.safety_level.value,
-            "can_auto_execute": self.classifier.is_safe_for_auto_execution(
-                prediction.action_type, prediction.confidence
-            ),
-            "requires_approval": classification.requires_confirmation,
-        }
 
     def get_rollback_info(self) -> List[Dict]:
         """
