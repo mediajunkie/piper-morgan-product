@@ -331,9 +331,7 @@ class TestServingReportShape:
         assert r["llm_calls_served"] == 117
 
     def test_mixed_run_names_every_pair_and_stays_csv_safe(self):
-        r = build_serving_report(
-            Counter({"anthropic:claude-haiku-4-5": 57, "openai:gpt-4o": 4})
-        )
+        r = build_serving_report(Counter({"anthropic:claude-haiku-4-5": 57, "openai:gpt-4o": 4}))
         assert r["serving_provider"] == "mixed"
         assert "anthropic:claude-haiku-4-5(57)" in r["serving_model"]
         assert "openai:gpt-4o(4)" in r["serving_model"]

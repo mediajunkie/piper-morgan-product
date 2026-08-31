@@ -71,9 +71,7 @@ async def get_user_timezone(user_id) -> Optional[str]:
         if not db._initialized:
             await db.initialize()
         async with AsyncSessionFactory.session_scope_fresh() as session:
-            row = await session.execute(
-                select(User.preferences).where(User.id == str(user_id))
-            )
+            row = await session.execute(select(User.preferences).where(User.id == str(user_id)))
             prefs = row.scalar_one_or_none() or {}
         tz_name = prefs.get(TIMEZONE_PREF_KEY)
         if is_valid_iana_timezone(tz_name):

@@ -226,9 +226,7 @@ class Test1659TypeDispatch:
         p = tmp_path / "20260830_120000_abc123_notes.txt"
         p.write_text(f"Team planning notes.\n{MARKER_1659}\nEnd of notes.\n", encoding="utf-8")
 
-        result = await self.analyzer.analyze(
-            str(p), file_type="text/plain", filename="notes.txt"
-        )
+        result = await self.analyzer.analyze(str(p), file_type="text/plain", filename="notes.txt")
 
         assert MARKER_1659 in result.metadata["text"]
         sent_prompt = self.mock_llm.complete.await_args.kwargs["prompt"]
@@ -245,9 +243,7 @@ class Test1659TypeDispatch:
         p = tmp_path / "20260830_120000_def456_plan.md"
         p.write_text(f"# Plan\n\n{MARKER_1659}\n", encoding="utf-8")
 
-        result = await self.analyzer.analyze(
-            str(p), file_type="text/markdown", filename="plan.md"
-        )
+        result = await self.analyzer.analyze(str(p), file_type="text/markdown", filename="plan.md")
 
         assert MARKER_1659 in result.metadata["text"]
         assert MARKER_1659 in self.mock_llm.complete.await_args.kwargs["prompt"]
@@ -403,9 +399,7 @@ class Test1659Classifier:
     def test_unknown_reports_extension_as_display(self):
         from services.analysis.document_analyzer import classify_document_type
 
-        kind, display = classify_document_type(
-            file_type="application/zip", filename="a.zip"
-        )
+        kind, display = classify_document_type(file_type="application/zip", filename="a.zip")
         assert kind == "unknown"
         assert display == ".zip"
 

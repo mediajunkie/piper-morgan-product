@@ -61,7 +61,9 @@ def _record_serving(provider_value: str, model: str) -> None:
     must not break the call path)."""
     try:
         SERVING_MODEL_RECORD[f"{provider_value}:{model}"] += 1
-    except Exception:  # silent-ok: observability-only record; must never break the serving call path (#1676)
+    except (
+        Exception
+    ):  # silent-ok: observability-only record; must never break the serving call path (#1676)
         pass
 
 
