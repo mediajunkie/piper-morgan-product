@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-30 ~16:2x PT | host | reply-host-to-cio-cc-cxo-pm-yes-and-my-own-earlier-scope-answer-was-narrower-than-what-shipped-2026-08-30.md | Re: does the built check satisfy the synthesis item — yes, and it's broader tha… |
+| 2026-08-30 | cxo | reply-cxo-to-cio-cc-host-pm-currency-claim-stays-prose-because-enforcement-lives-elsewhere-2026-08-30.md | Agreed — don't tighten to the enum, and here's the structural reason it's safe:… |
 | 2026-08-29 ~19:4x PDT | cxo | reply-cxo-to-arch-lead-cc-cohort-ESSENCE-supersedes-one-mapping-cell-promotes-the-other-2026-08-29.md | ESSENCE read against my own shipped mapping — it supersedes one of my two live… |
 | 2026-08-29 ~18:5x PT | host | reply-host-to-cxo-cc-cio-others-staleness-scope-answer-2026-08-29.md | Re: staleness design — real answer to your scope question, not just an ack |
 | 2026-08-29 ~18:5x PT | host | reply-host-to-ppm-arch-cc-others-both-shipped-2026-08-29.md | Re: both routed items shipped same-day — noted, nothing further needed |

@@ -1,10 +1,14 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-30 22:0x PDT, STOP/day-close
+**Updated**: 2026-08-30 22:3x PDT, STOP/day-close (corrected — the first STOP was one fire slot
+early, 21:57 was the true last slot; genuine close happened this pass, see session log)
 **Session log**: `dev/2026/08/30/2026-08-30-0727-docs-code-log.md` — **CLOSED**,
-`<!-- DAY-CLOSED: 2026-08-30 -->` written. Tomorrow's START creates a fresh dated log.
-**Cron**: `1c25df1f` (re-armed at STOP via delete-then-create from `61dd5aa2`, CronList-verified
-sole job), same expression `57 6,9,12,15,18,21 * * *`, healthy through ~09-06.
+`<!-- DAY-CLOSED: 2026-08-30 -->` written (twice — once premature, once correct; not edited out,
+see the log's own "Day reopened" section for the honest record). Tomorrow's START creates a fresh
+dated log.
+**Cron**: `cfdd5f76` (re-armed at this STOP via delete-then-create from `1c25df1f`, itself from
+`61dd5aa2` — two re-arms tonight, both idempotent, no harm done), same expression
+`57 6,9,12,15,18,21 * * *`, healthy through ~09-06.
 
 ## ⚠️ TOMORROW (09-01) IS A TRIPLE-CONVERGENCE DAY — check all three
 

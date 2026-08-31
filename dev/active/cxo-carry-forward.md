@@ -7,20 +7,24 @@ max_age_days: 1
 # CXO carry-forward — rewritten 2026-08-30 at the 10:19 fire (frontmatter above is the checkable
 claim; this prose line is not, and must not be trusted over it).
 
-## 🔴 NEXT FIRE — one watch, one thing to pick up.
+## 🔴 NEXT FIRE (08-31 START) — nothing owed on a clock. One blocked item, one pickup.
 
-**Watch**: **#1463 probe.** PA has the harness built (`dev/active/probes/probe_b_recomposition_2026-08-30.py`,
-28 calls / 2 vendors) and is waiting on **PM's authorization for the API spend** — correctly refusing to
-extend Probe A's old approval. I confirmed their item-6 control fix. ⚠️ **I cannot run it** (subject/scorer
-confound). If PM's go hasn't come in a few days, nudge PM — do NOT run it myself.
+**Blocked on PM**: 🔴 **OpenAI credits** to run the #1463 probe's **second vendor arm**. PA has the
+harness; the Claude arm is done and scored. Until the GPT arm runs, the result is a finding about **one
+vendor's current build** — my own packet says that is not the product-level answer. **Nudge PM if it's
+still open in a couple of days.**
 
-🔴 **Why it now matters more than it did this morning**: **ESSENCE v1.0 commitment 7** (ratified 08-30)
-names *"the recomposition variant"* of the Colleague Test as the BYOC gate. **The requirement is ratified
-law; the instrument is v0.1 with an unvalidated T axis.** Ratified law depends on an unfinished
-instrument, and the probe is what closes it. Status banner is in the rubric.
+**Cheap and unblocked**: the **two-call discriminating experiment** — re-run probe item 3 with
+`may_claim_complete: false` alongside `coverage: partial`. Survives → *directive > descriptive*.
+Vanishes → *central > peripheral*, and the fix is salience, not syntax. No spend approval needed at
+that size; can ride with the GPT arm.
 
 **Pick up if idle**: the **quarterly Colleague-Test rubric review with PPM** (CT v2.4's C=0
-disambiguation). More live now — CT has a ratified sibling and the tier question is open for both.
+disambiguation). CT now has a ratified sibling; the tier question is open for both.
+
+⚠️ **Rubric is v0.2 — do NOT score T for a PASS.** The axis is `PENDING-PROBE` (one vendor, n=1/cell,
+known confound in my own packet design). The gate can **inform design decisions**; it cannot **issue a
+T-axis pass**. ESSENCE v1.0.1 commitment 7 depends on it, so the distinction is load-bearing.
 
 ## ✅ Closed today, do not re-open
 
