@@ -172,7 +172,7 @@ def test_pattern_073_body_records_instance_8():
     """The Pattern-073 catalog body must record this fix as instance 8
     (data-substitution layer — sequential after instance 7 manifest-sync)."""
     body = Path(
-        "docs/internal/architecture/current/patterns/pattern-073-documentation-asserted-behavior-drift.md"
+        "docs/internal/architecture/patterns/pattern-073-documentation-asserted-behavior-drift.md"
     ).read_text()
     # We're not requiring full instance text, just that the issue number is
     # cited so the fix is traceable.
