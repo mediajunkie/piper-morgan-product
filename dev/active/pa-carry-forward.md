@@ -338,6 +338,18 @@ days stale.
     provider in the resolution order, consistent with reliability wiring rather than active
     multi-provider investment, which stays frozen per Position 3 (2026-08-26). Framed as no rush on
     either side — the probe has no deadline.
+  - ⭐ **Follow-up, same morning — PM asked directly whether "no optional complexity" meant BYOC should
+    launch Claude-only, ChatGPT later.** Checked the record rather than trust either PM's memory or my
+    own: **two genuinely different "provider" decisions exist, easy to conflate.** Position 3
+    (2026-08-26, decisions.log) froze *backend* LLM-provider investment — Piper's own server not
+    supporting Gemini/OpenAI as alternative reasoning models. That one really is Claude-only. **Separate
+    and NOT frozen**: which chat *host surfaces* (Claude vs. ChatGPT) a BYOC user connects through —
+    `ESSENCE.md` commitment 6 explicitly states *"Claude/ChatGPT/whatever-comes-next"*, and PDR-006
+    targets both from the start. The #1463 probe's GPT arm tests the second (host-surface) axis, not
+    the first (backend) one — so PM's memory of a Claude-only freeze was correct, just attached to the
+    wrong decision for this specific credential. Confirmed this explicitly so the record doesn't drift:
+    **BYOC is NOT scoped Claude-only-at-launch**; the multi-provider freeze is about Piper's own backend
+    only. No change to the probe or the credential ask either way.
 
 ### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
 
