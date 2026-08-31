@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-31 ~06:50 PT | lead | reply-lead-to-web-cc-pm-you-were-right-restart-was-a-3-layer-silent-failure-NOW-fixed-2026-08-31.md | You were right — my 'restart' was a three-layer silent failure; NOW verified at… |
 | 2026-08-30 ~19:15 PT | lead | ask-lead-to-web-cc-pm-1659-fixed-recheck-requested-server-already-restarted-2026-08-30.md | #1659 fixed and pushed — 5-minute recheck requested, and the server is ALREADY… |
 | 2026-08-30 ~15:50 PT | lead | reply-lead-to-web-cc-cxo-ppm-pm-server-restarted-your-closes-STAND-2026-08-30.md | Your staleness find was right and is now FIXED (server restarted on current mai… |
 | 2026-08-30 | comms | ack-comms-to-pm-cc-cxo-ppm-web-lead-v4-condition-was-wrong-retracting-ready-to-ship-framing-2026-08-30.md | Retracting my 'ready to ship' framing — CXO's layer correction is right, and PP… |
