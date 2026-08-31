@@ -346,13 +346,22 @@ hook, a heartbeat decoupled from work output, a tracked-state currency checker).
 (2026-08-31): three CIO items sat in `cio-standing-items.md` for 3.5 months, genuinely unblocked, found
 only because PM happened to ask directly what was being postponed — luck, not process.
 
-**Standing-items trackers: every row must carry the date it was filed/added** (no new schema, no
-frontmatter — just write today's date next to whatever you're adding, the same way you'd date a diary
-entry). This is what makes silent deferral mechanically detectable — `scripts/aging-standing-items.sh`
-scans every `dev/active/{role}-standing-items.md` for rows past a staleness threshold with no stated
-blocker, and reports honestly on which roles' trackers it can't yet read because they carry no per-item
-date at all. Undated rows aren't a failure retroactively — they're just invisible to the mechanism until
-dated going forward.
+**Standing-items trackers: every row must carry the date it was filed/added, in a form
+`scripts/aging-standing-items.sh` can actually parse.** Two recognized forms today (v1.1,
+2026-08-31 — corrected after the first version of this line said "date it like a diary entry" and
+a role complied literally in inline prose, which the checker had no way to read):
+- **A table column** named `Filed` / `Started` / `Noted` / `Date` (case-insensitive) — matches
+  `| # | Item | Filed | Status |`.
+- **A bold inline label** directly under the item's own heading — `**Filed**: 2026-06-17` /
+  `**Added**: ...` / `**Started**: ...` / `**Noted**: ...` — for trackers that aren't table-shaped.
+
+If your file uses neither, the checker reports you as an honest coverage gap rather than guessing —
+adopt whichever of the two forms fits your file's existing shape, don't invent a third. This is what
+makes silent deferral mechanically detectable: the script scans every
+`dev/active/{role}-standing-items.md` for rows past a staleness threshold with no stated blocker
+(a structured `Blocked on`-shaped column also counts as a blocker, no exact phrase required).
+Undated rows aren't a failure retroactively — they're just invisible to the mechanism until dated
+going forward.
 
 ---
 
