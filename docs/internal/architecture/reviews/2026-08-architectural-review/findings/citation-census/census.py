@@ -5,7 +5,12 @@ Input: git-grep dumps (path:lineno:content) produced beforehand.
 Output: census_report.md (tables + stats) and audit.md (FP-risk samples).
 """
 
-import os, re, sys, subprocess, collections, json
+import collections
+import json
+import os
+import re
+import subprocess
+import sys
 
 REPO = "/Users/xian/Development/piper-morgan-worktrees/arch"
 S = os.path.dirname(os.path.abspath(__file__))
