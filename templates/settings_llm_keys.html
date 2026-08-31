@@ -158,7 +158,15 @@
     const btn = ev.target.closest("button[data-del]");
     if (!btn) return;
     const provider = btn.getAttribute("data-del");
-    if (!window.confirm("Delete your " + provider + " key? This one really is gone — we destroy our copy immediately. The key itself stays valid at " + provider + " until you revoke it there.")) return;
+    // #1689: promise-style Dialog.confirm (design-floor F1 #1170), not the native confirm.
+    // Copy preserved verbatim (#1482 delete-copy honesty set — pinned by
+    // tests/unit/templates/test_delete_copy_honesty_1482.py).
+    const confirmed = await Dialog.confirm({
+      title: "Delete your " + provider + " key?",
+      message: "This one really is gone — we destroy our copy immediately. The key itself stays valid at " + provider + " until you revoke it there.",
+      confirmText: "Delete",
+    });
+    if (!confirmed) return;
     btn.disabled = true;
     try {
       const res = await fetch("/api/v1/keys/" + encodeURIComponent(provider), {
