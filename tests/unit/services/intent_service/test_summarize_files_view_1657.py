@@ -216,6 +216,7 @@ class TestHandlerArtifactBranch:
         analysis = SimpleNamespace(
             summary="Ships the beta. Rest follows. Risks are noted",
             key_findings=["Beta first"],
+            recommendations=[],  # #1660: handler now surfaces this field too
             generated_at=datetime(2026, 8, 18, 12, 0, 0),
         )
         with (
