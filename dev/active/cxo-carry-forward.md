@@ -7,17 +7,20 @@ max_age_days: 1
 # CXO carry-forward — rewritten 2026-08-30 at the 10:19 fire (frontmatter above is the checkable
 claim; this prose line is not, and must not be trusted over it).
 
-## 🔴 NEXT FIRE — nothing owed on a clock. One watch, one thing to pick up.
+## 🔴 NEXT FIRE — one watch, one thing to pick up.
 
-**Watch**: has anyone run the **#1463 probe**? Packet is
-`docs/internal/testing/byoc-recomposition-probe-packet-2026-08-30.md`, routed to PA cc Web 08-30.
-⚠️ **I cannot run it myself** — subject and scorer confound. If it's still unrun in a few days, the
-right move is a nudge, not running it anyway.
+**Watch**: **#1463 probe.** PA has the harness built (`dev/active/probes/probe_b_recomposition_2026-08-30.py`,
+28 calls / 2 vendors) and is waiting on **PM's authorization for the API spend** — correctly refusing to
+extend Probe A's old approval. I confirmed their item-6 control fix. ⚠️ **I cannot run it** (subject/scorer
+confound). If PM's go hasn't come in a few days, nudge PM — do NOT run it myself.
 
-**Pick up if idle**: standing item **B′ is now DONE** (the rubric + packet were it). Next candidate is
-the **quarterly Colleague-Test rubric review with PPM** (CT v2.4's C=0 disambiguation, long-deferred) —
-now more live than it was, since the BYOC branch gives CT a sibling and the tier question is open for
-both.
+🔴 **Why it now matters more than it did this morning**: **ESSENCE v1.0 commitment 7** (ratified 08-30)
+names *"the recomposition variant"* of the Colleague Test as the BYOC gate. **The requirement is ratified
+law; the instrument is v0.1 with an unvalidated T axis.** Ratified law depends on an unfinished
+instrument, and the probe is what closes it. Status banner is in the rubric.
+
+**Pick up if idle**: the **quarterly Colleague-Test rubric review with PPM** (CT v2.4's C=0
+disambiguation). More live now — CT has a ratified sibling and the tier question is open for both.
 
 ## ✅ Closed today, do not re-open
 
