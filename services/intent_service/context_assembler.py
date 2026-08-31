@@ -1241,7 +1241,15 @@ class ContextAssembler:
             ttl_seconds=_TTL_COMPLETED_TODOS,
             compute_fn=lambda: self._compute_completed_todos(user_id),
         )
-        if not cached or "completed_todos" not in cached:
+        if not cached:
+            return None
+        if cached.get("source_failed"):
+            # #1645 (#1573 shape): the completed-todos lookup FAILED — the
+            # user may have completed things. Translate to a lane-specific
+            # key so the floor says "couldn't check", never fake-empty and
+            # never a silent absence.
+            return {"completed_todos_source_failed": True}
+        if "completed_todos" not in cached:
             return None
         return {
             "completed_todos": cached["completed_todos"][:limit],
@@ -1251,7 +1259,12 @@ class ContextAssembler:
         }
 
     async def _compute_completed_todos(self, user_id: str) -> Optional[Dict[str, Any]]:
-        """Compute completed-todos (uncached) for cache miss. Stores up to 10."""
+        """Compute completed-todos (uncached) for cache miss. Stores up to 10.
+
+        #1645 (#1573 shape): a genuine failure returns
+        ``{"source_failed": True}`` at ERROR level — never a silent None,
+        which was indistinguishable from never-gathered at the floor.
+        """
         try:
             from uuid import UUID
 
@@ -1275,8 +1288,13 @@ class ContextAssembler:
                 "completed_todo_count": len(completed),
             }
         except Exception as e:
-            logger.warning("context_assembler_completed_todos_error", error=str(e))
-            return None
+            logger.error(
+                "context_assembler_completed_todos_error",
+                error=str(e),
+                user_id=user_id,
+                exc_info=True,
+            )
+            return {"source_failed": True}
 
     async def _get_projects_cached(self, user_id: str, limit: int = 5) -> Optional[Dict[str, Any]]:
         """Cached projects list (from `projects` table). TTL 5min.
@@ -1288,19 +1306,38 @@ class ContextAssembler:
             ttl_seconds=_TTL_PROJECTS,
             compute_fn=lambda: self._compute_projects(user_id),
         )
-        if not cached or "projects" not in cached:
+        if not cached:
+            return None
+        if cached.get("source_failed"):
+            # #1645 (#1573 shape): the projects lookup FAILED — projects may
+            # exist. Translate to a lane-specific key (the generic
+            # "source_failed" renders as a REMINDER-check failure on the
+            # floor) so the floor says "couldn't check projects", never
+            # fake-empty and never a silent absence.
+            return {"projects_source_failed": True}
+        if "projects" not in cached:
             return None
         result: Dict[str, Any] = {"projects": cached["projects"][:limit]}
-        # #1639: pass the verified-empty zero count through. Only the empty
-        # case carries a count from _compute_projects — the populated query is
-        # LIMIT-capped, so len(rows) there is a truncated slice, not a total
-        # (m-44: never present a truncated count as the denominator).
+        # #1639/#1645: pass the row-derived count through — the verified-empty
+        # zero, or the windowed COUNT riding the populated read (#1645). A
+        # stale cache entry predating #1645 may lack the populated count;
+        # never invent one from the truncated display slice (m-44).
         if "project_count" in cached:
             result["project_count"] = cached["project_count"]
         return result
 
     async def _compute_projects(self, user_id: str) -> Optional[Dict[str, Any]]:
-        """Compute project list (uncached) for cache miss. Stores up to 5."""
+        """Compute project list (uncached) for cache miss. Stores up to 5.
+
+        #1645 (m-44, #1530 shape): the populated read carries a REAL total —
+        ``COUNT(*) OVER ()`` riding the same gather — because the display
+        slice is LIMIT-capped and a denominator derived from slice length
+        would present 5 as the total for a >5-project user.
+
+        #1645 (#1573 shape): a genuine failure returns
+        ``{"source_failed": True}`` at ERROR level — never a silent None,
+        which was indistinguishable from never-gathered at the floor.
+        """
         try:
             from services.database.session_factory import AsyncSessionFactory
 
@@ -1309,7 +1346,8 @@ class ContextAssembler:
 
                 result = await session.execute(
                     text(
-                        "SELECT name, created_at, updated_at FROM projects "
+                        "SELECT name, created_at, updated_at, COUNT(*) OVER () AS total "
+                        "FROM projects "
                         "WHERE owner_id = :uid ORDER BY updated_at DESC LIMIT 5"
                     ),
                     {"uid": user_id},
@@ -1332,11 +1370,21 @@ class ContextAssembler:
                             "last_updated": str(r[2]) if r[2] else None,
                         }
                         for r in rows
-                    ]
+                    ],
+                    # #1645 (m-44): the window COUNT is this owner's full row
+                    # count — exact even though the display is LIMIT-5. The
+                    # LIMIT applies after the window, so every returned row
+                    # carries the same pre-LIMIT total.
+                    "project_count": int(rows[0][3]),
                 }
         except Exception as e:
-            logger.warning("context_assembler_projects_error", error=str(e))
-            return None
+            logger.error(
+                "context_assembler_projects_error",
+                error=str(e),
+                user_id=user_id,
+                exc_info=True,
+            )
+            return {"source_failed": True}
 
     async def _get_user_context_cached(self, user_id: str) -> Optional[Dict[str, Any]]:
         """Cached user_context_service output. TTL 5min.
