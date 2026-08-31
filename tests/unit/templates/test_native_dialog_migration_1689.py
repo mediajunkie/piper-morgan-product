@@ -66,7 +66,9 @@ def test_settings_github_has_no_native_dialogs(github):
 def test_settings_llm_keys_renders_with_dialog_assets():
     html = _render("settings_llm_keys.html")
     assert "/static/js/dialog.js" in html, "settings_llm_keys must load dialog.js (via app_shell)"
-    assert "/static/css/dialog.css" in html, "settings_llm_keys must load dialog.css (via app_shell)"
+    assert (
+        "/static/css/dialog.css" in html
+    ), "settings_llm_keys must load dialog.css (via app_shell)"
 
 
 def test_settings_llm_keys_delete_uses_dialog_confirm(llm_keys):
