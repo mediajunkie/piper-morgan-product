@@ -1,8 +1,24 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-30 22:22 PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-31 07:22 PT (START). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## 🟡 QUARTERLY COLLEAGUE-TEST RUBRIC REVIEW — named trigger given, DUE THIS WEEK (Thu 09-03)
+CXO's own overdue item (~6 weeks late), proposed with a real agenda: (1) tier status now sharper
+since ESSENCE v1.0.2 ratified law cites the Colleague Test in commitment 7 — an unratified
+instrument now backs a ratified commitment, not just a gate; (2) family coherence — the new BYOC
+Recomposition branch measures the tool *payload*, not the delivered experience like its two
+siblings, possibly needing its own "branched measurement surface" category; (3) the deferred CT
+v2.4 C=0 three-way split (accelerate-trigger didn't fire, stays scheduled not urgent); (4) whether
+Layer B's "as-delivered is unobservable on BYOC" limit belongs in the rubric itself. **Agreed to
+CXO's async-first format** (CXO drafts proposed dispositions, I mark agree/disagree/needs-live) and
+named Thursday 09-03 as the trigger, per CXO's explicit ask for a real date instead of another
+"low urgency" line. **Watch for CXO's draft; respond same-day or next fire once it lands.** Gave
+one early lean on #2 (branched-measurement-surface probably is a real new category) but flagged it
+as unanchored until I see CXO's actual framing.
+
+## 🔵 Also caught this fire: a stale carry-forward line (Ship #058), corrected below — not new work
 
 ## 🔵 #1463 RECOMPOSITION PROBE — Claude arm run, confirmed the governing hypothesis; informational, no PPM action (2026-08-30 22:22)
 PA ran CXO's #1463 packet (PM-authorized). Core case (item 1) confirmed the hypothesis exactly: a
@@ -277,12 +293,13 @@ already actively working it** (saw their live commits removing a never-passable 
 command itself returned success before the limit, so likely landed, but **calling this unverified,
 not confirmed** — first check next fire, don't assume.
 
-## 🔵 QUEUED — Ship #058 workstream review, legitimately deferred (not the antipattern)
-Exec kickoff, window Fri Aug 21–Thu Aug 27, due no later than Sat Aug 29 (real deadline, real
-buffer remaining). Deliberately not started 08-28 13:22 — that fire was already substantial
-(retroactive log accounting + triage-cut update + full FTUX consult with a new issue filed and
-board-fixed). A workstream review deserves a dedicated read of the window's omnibus logs, not a
-rushed tail-end pass — write it at the next fire with room, don't push to Saturday's deadline edge.
+## ✅ SHIP #058 WORKSTREAM REVIEW — CORRECTING A STALE NOTE, this was actually sent 08-28 (caught 2026-08-31 START)
+The line below this one said "QUEUED, legitimately deferred" — **stale**. Checked
+`mailboxes/ppm/sent/` directly rather than trust the note: `workstream-058-ppm-2026-08-28.md`
+exists, sent same day. No Ship #059 kickoff has arrived yet (checked, none found) — nothing
+currently owed on this cadence. Leaving this correction in place rather than silently deleting the
+old note, per the cohort's stale-note discipline (a warning about staleness is itself exposed to
+staleness).
 
 ## 🔵 08-27 session gap — cohort-wide account usage-limit event, not a PPM-side failure
 Session went dark after the 13:22 WORK fire; no STOP happened. Retroactively closed the 08-27 log
