@@ -49,34 +49,30 @@ different, newer implementation that fully supersedes this one. Current reality:
   Does NOT do webp conversion (needs cwebp/Pillow, unavailable in Vercel's
   serverless environment) — that step still runs at actual publish time via
   `publish-post.js`, unchanged.
-- [ ] **Filed 2026-07-19. Phase 4** (mark-ready + git handoff) — Escalated to PM cc Docs
-  2026-08-31 for an actual decision; not Web's to close solo. NOT built. Sat 43 days without a
-  decision — CIO's standing-items date audit (2026-08-31) caught it as a candidate for exactly the
-  silent-deferral pattern CLAUDE.md warns against, and it wasn't on my own "remaining open items"
-  radar despite the row still being live. The current system already auto-commits on every save,
-  so "git handoff" as originally scoped may be partly moot; asked PM/Docs whether anything's still
-  wanted (a ready-for-publish status flip? a memo-to-Docs trigger?) rather than let it keep aging
-  silently.
+- **Phase 4** (mark-ready + git handoff) — NOT built. Tracked in the "Genuinely still open" table
+  above (#3) — escalated to PM cc Docs 2026-08-31 after CIO's date audit caught it sitting 43 days
+  undecided.
 - PM gave unprompted positive feedback on this system 2026-07-18, specifically
   because edits are agent-discoverable via git (see memory:
   human-first-agent-aware-interfaces). PM is now thinking about expressing more
   processes as admin UIs — worth surfacing ideas as they come up.
 
-### Site-quality queues (PM-react gated) — PRE-STAGED 2026-08-31, joint session planned for tomorrow
-- [ ] **Filed 2026-06-17. Obs-pass joint walkthrough** — Hold for PM's +1/−1/defer; not Web's to
-  close. The stale-count problem below is now resolved: full 31-item reconciliation done live via
-  Playwright against the actual deployed site (not code-reading), not a quiet-fire re-audit. 13
-  resolved, 10 still open, 1 new finding, 1 page substantively changed. Artifact:
-  `pipermorgan-walkthrough-prep-2026-08-31.html` —
-  https://claude.ai/code/artifact/b02c86c4-0131-432f-b9b8-752ffc2d0b84. Canonical source doc
-  unchanged: `dev/2026/05/24/site-observation-pass-2026-05-24.md`. **Still needs PM's actual
-  +1/−1/defer verdicts** — this was prep, not the decision pass.
-  ~~**Known-stale, not re-audited today**~~ — superseded by the above; kept struck-through as the
-  record of why a re-audit was needed, not as current status.
-- [ ] **Filed 2026-05-29. Site walkthrough** — Hold for PM joint session; not Web's to close. Same
-  prep pass covers this; artifact above follows the A–E order proposed 5/28
-  (`dev/2026/05/28/...`), resuming cleanly at `/methodology` as planned. Formal joint pass with PM
-  still the next step.
+### Genuinely still open, carried forward
+
+⚠️ **Table shape adopted 2026-08-31** (not just diary-dated prose) after checking
+`scripts/aging-standing-items.sh` against my own file post-dating and finding it still reported as
+a COVERAGE GAP — the broadcast's "date it like a diary entry" description doesn't match what the
+checker actually parses (a markdown table with a `Filed` header column; no fallback for inline
+bullet-list dates). Flagged to CIO as a doc/script mismatch likely to bite anyone else who read the
+broadcast literally; converting my own file to the real required shape rather than staying
+superficially-but-not-mechanically compliant.
+
+| # | Item | Filed | Status |
+|---|---|---|---|
+| 1 | **Obs-pass joint walkthrough** | 2026-06-17 | **Hold for** PM's +1/−1/defer; not Web's to close. Pre-staged 2026-08-31: full 31-item reconciliation done live via Playwright against the deployed site, not code-reading. 13 resolved, 10 still open, 1 new finding, 1 page substantively changed. Artifact: `pipermorgan-walkthrough-prep-2026-08-31.html` — https://claude.ai/code/artifact/b02c86c4-0131-432f-b9b8-752ffc2d0b84. Canonical source: `dev/2026/05/24/site-observation-pass-2026-05-24.md`. |
+| 2 | **Site walkthrough** (formal joint pass) | 2026-05-29 | **Hold for** PM joint session; not Web's to close. Same 2026-08-31 prep pass covers this — artifact above follows the A–E order proposed 5/28 (`dev/2026/05/28/...`), resuming cleanly at `/methodology`. |
+| 3 | **Phase 4** (compose UI mark-ready + git handoff, #998 family) | 2026-07-19 | **Awaiting PM/Docs decision** — escalated 2026-08-31 rather than let it keep aging; sat 43 days undecided, caught by CIO's date audit as a candidate for the exact silent-deferral pattern CLAUDE.md warns against. Current system already auto-commits on save, so the original scope may be partly moot; asked whether anything's still wanted. Memo: `mailboxes/web/sent/ask-web-to-pm-cc-docs-cio-compose-ui-phase-4-decision-needed-43-days-silent-2026-08-31.md`. |
+| 4 | **Buttondown native newsletter publishing** | 2026-08-15 | **Hold for** PM research; not Web's to close (explicitly long-term/not-urgent). Publish blog posts natively to Buttondown, possibly with subscriber choice (blog vs. Ship) — Buttondown may not support that granularity without multiple newsletters. **2026-08-31**: PM doing research when back at desk. |
 
 ### Alt-text backfill — COMPLETE 2026-06-17
 - [x] **blog-metadata.csv imageAlt** — all 276 filled; editorial-calendar 144 synced; medium-posts.json rebuilt; pushed to main (`03a4f42cc`). Verify via `/admin/calendar/` (gap count should be 0 for published posts with imageSlug). Plan: `dev/active/alt-text-backfill-plan-2026-06-17.md`.
@@ -118,12 +114,8 @@ rather than guessing):
   the browser-automation pilot tooling — genuinely unblocked this fix (the
   visual claim couldn't have been confirmed on code-reading alone, which is
   exactly how the 08-09 partial fix shipped without catching this).
-- [ ] **Filed 2026-08-15. Buttondown native newsletter publishing** — Hold for PM research; not
-  Web's to close (explicitly long-term/not-urgent). Publish blog posts natively to the Buttondown
-  newsletter, possibly with subscriber choice (blog vs. Ship, narrative vs. insights) — PM noted
-  Buttondown may not support that granularity without multiple newsletters, needs more thought
-  before scoping. **2026-08-31**: PM doing Buttondown research when back at desk; no action from
-  Web until then.
+- **Buttondown native newsletter publishing** — tracked in the "Genuinely still open" table above
+  (#4). Explicitly long-term/not-urgent; PM doing research 2026-08-31, no action from Web until then.
 
 ## Blocked items
 None currently open.
