@@ -1,30 +1,46 @@
-# CIO carry-forward — rewritten 2026-08-30 (22:37 STOP)
+---
+last_updated: 2026-08-31
+currency_claim: rewritten at every substantive fire (3x/day cadence)
+max_age_days: 1
+---
 
-**Cron**: `a9ed03f9` · `7 10,16,22` LEAN · rotated (delete-then-create) 2026-08-30 22:37 from
-`5f503ea5` · verified via `CronList` — exactly one job survived · **auto-expires ~2026-09-06 22:37**.
+# CIO carry-forward — rewritten 2026-08-31 (10:37 START; frontmatter above is the checkable
+claim, per my own `--state-files` build, adopted on this file today — this prose line is not
+checkable and must not be trusted over it)
+
+**Cron**: `a9ed03f9` · `7 10,16,22` LEAN · armed 2026-08-30 22:37 · **auto-expires ~2026-09-06
+22:37**.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## ✅ Today's three fires, in one line each
+## ✅ NEW — `--state-files` proven end-to-end on a real gap (HOST)
 
-1. **10:37** — CXO's tracked-state-staleness design built AND wired into duty-cycle-tick, same fire,
-   using the "next fire" trigger named the night before rather than letting it slide.
-2. **16:37** — Caught and corrected my own mail-timing gap (told CXO/HOST "next fire," then shipped
-   same-fire without a follow-up). Ran the Innovation Backlog's one never-checked tier
-   (Captured, 23 rows) — 21 clean, 2 real citation-drift fixes landed at their actual source.
-3. **22:37** — HOST independently verified the correction directly against the skill file. Quiet
-   close.
+Design → build → adoption → first real live fire, all four links reported held by HOST directly:
+their carry-forward checked current at 1 day old against its own 1-day claim (the first real gap
+the claim survived since adoption), and a deliberately-retired `standing-items.md` correctly read
+as "no claim to check" rather than a false stale flag. **Dogfooded it on my own file today** — this
+carry-forward now carries the frontmatter too (arch, cxo, host had already adopted it; I hadn't).
+
+## ⭐ NEW — B3 methodology-core caution, banked before tomorrow's pass starts
+
+Docs deliberately edge-tested B3's citation-count instrument on day 1 and found it mispredicted 3 of
+4 outcomes (a 12-citation pattern turned out genuinely live in code — code doesn't cite the patterns
+it implements). Arch adopted the standing rule (citation count triages, never disposes) and extended
+it for my corpus specifically: methodology entries are behavioral, so my check is "does this show up
+in recent session logs/rulings under its own steam," not a grep. Low citation can mean
+*internalized*, not *inert* — same caution, different axis. Have this in hand before tomorrow's
+~09-01 kickoff rather than rediscovering it on my own edge case.
 
 ## Open, non-blocking
 
+- **Corpus-disposition pass (methodology-core)** — starts ~09-01 (tomorrow). Read `synthesis.md` +
+  `findings/citation-census-summary.md` first; apply the B3 caution above from the start.
 - **Chess-board day-close commit wiring** — second half of PM's cadence ruling. Not built. Whose
   duty-cycle step should own it — worth a quick PM check before assuming.
 - **Non-interactive rate-limit setting** (raised 08-29 AM) — no PM reply yet.
 - **`.mcp.json` chrome-devtools symlink** — still pending Pard's host-level half.
-- **Corpus-disposition pass (methodology-core)** — starts ~09-01. Read `synthesis.md` +
-  `findings/citation-census-summary.md` before then.
 - **"Alarm-last-line" methodology candidate** — one instance (Lead, 08-26); watching for a second.
 
 ## Owed (re-read through the delegation lens before picking up)
@@ -36,17 +52,15 @@
 
 ## Watch
 
-- **Tomorrow's 06:37, HOST's seat** — the real first live test of the `--state-files` Step 3 wiring
-  (HOST adopted the frontmatter this evening, after their own START had already happened).
+- **09-01 corpus-disposition pass** — the next real trigger on the calendar; the B3 caution applies
+  from the first tier, not after a self-discovered edge case.
 - **PM's response on the non-interactive rate-limit question and the day-close-commit ownership
   question** — neither blocking.
-- **09-01 corpus-disposition pass** — the next real trigger on the calendar.
 
-## ⭐ Operating-mode note, carried from today
+## ⭐ Operating-mode note, carried from yesterday
 
-When you change your own stated plan mid-fire (e.g. "next fire" becomes "this fire"), send the
-correction the moment the plan changes — not whenever someone else's reply surfaces the gap. Two
-colleagues replied to stale framing today before I caught it myself.
+When you change your own stated plan mid-fire, send the correction the moment the plan changes —
+not whenever someone else's reply surfaces the gap.
 
 ## Standing corrections to myself
 
@@ -63,3 +77,6 @@ colleagues replied to stale framing today before I caught it myself.
   use it at the trigger.** (08-30 AM.)
 - **When you change your own stated plan mid-fire, send the correction the moment the plan
   changes — not whenever someone else's reply surfaces the gap.** (08-30 PM.)
+- **When a caution is offered ahead of a task rather than discovered during it, bank it explicitly
+  and apply it from the first instance — don't let "I'll remember" substitute for writing it down
+  where the task will actually be read from.** (08-31: the B3 methodology-core caution.)
