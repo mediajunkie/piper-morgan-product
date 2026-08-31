@@ -14,7 +14,7 @@ last_updated: 2026-08-30
 currency_claim: revise-on-probe-result
 ---
 
-# BYOC Recomposition Rubric v0.1
+# BYOC Recomposition Rubric — v0.2
 
 **The instrument for scoring Piper's quality on a surface where Piper does not compose what the user
 reads.**
@@ -29,8 +29,9 @@ reads.**
 >
 > - ✅ **RATIFIED — the requirement.** That the colleague property is gated on BYOC by a
 >   recomposition-aware variant is now current law.
-> - 🔴 **NOT RATIFIED — this instrument.** v0.1 is a draft, and its **T axis is explicitly hypotheses**
->   (§3), scoring `PENDING-PROBE` and never PASS until the probe runs.
+> - 🔴 **NOT RATIFIED — this instrument.** v0.2 is a draft. Its **T axis has now been probed once and
+>   partly falsified** (§3 revision banner): T=3 was rewritten on the evidence, and the axis still scores
+>   `PENDING-PROBE` rather than PASS — one vendor, n=1 per cell, and a design confound I introduced.
 >
 > ⚠️ **So the gate named in ratified law cannot currently issue a pass on its load-bearing axis.** That is
 > not a defect in the ruling — the requirement is right. It means **#1463 stopped being PDR-006
@@ -117,9 +118,15 @@ survive into what the user reads."*
 
 **The governing principle, and the reason this axis is actionable rather than merely worrying:**
 
-> ⭐ **Honesty carried in prose is droppable. Honesty carried in structure is not.**
-> A sentence saying "I don't have data for last quarter" is an input to paraphrase. A required field
-> saying `coverage: none` is something the host must render or visibly omit. This is the same move
+> ⭐ **Honesty carried in prose is droppable. Honesty carried in a *directive* field is harder to drop.**
+> 🔴 **REVISED 2026-08-30 on probe evidence — the original read "…in structure is not [droppable]," and
+> that is FALSIFIED.** A host silently dropped `coverage: "partial"` (item 3). **Structure alone buys
+> nothing; a field that constrains what may be claimed is what survived.** Full evidence, the two
+> competing explanations, and the confound in my own packet are in the revision banner below the table
+> — but the claim is corrected *here*, at the point of assertion, because a correction that lives only
+> further down is one a reader can quote past.
+> A sentence saying "I don't have data for last quarter" is an input to paraphrase. A field saying
+> `may_claim_complete: false` constrains the claim rather than describing the data. This is the same move
 > ESSENCE commitment 1 makes for portability (*"architectural, not policy"*) and commitment 4 makes for
 > honesty (*"enforced structurally where possible… rather than by vigilance"*) — applied to the one
 > surface where our own vigilance provably cannot reach.
