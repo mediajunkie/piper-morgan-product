@@ -23,9 +23,32 @@ Two criteria, both required. Neither alone is sufficient.
 The delivered experience is scored against the appropriate rubric in the Colleague Test family:
 - **Response-text surfaces** (chat replies, declines, error/degraded paths) → **Colleague Test rubric** (R/C/T, ≥7/9, no zero-dimension, auto-fail rules per path type). `docs/internal/testing/colleague-test-rubric.md` (canonical version **v2.3.2**).
 - **UI-rendering surfaces** (lifecycle indicators, staleness cards, status surfaces) → **UI Lifecycle Verification Rubric** (R=Recognition / C=Clarity / T=Tone), the canonical legitimate branch for non-response-text surfaces. `docs/internal/testing/ui-lifecycle-verification-rubric-v0.1.md`.
+- **BYOC / MCP tool surfaces** (hosted MCP path, PDR-006 — where a host LLM composes what the user reads) → **BYOC Recomposition Rubric** (R=Sufficiency / C=Context, anchored / T=Honesty-under-recomposition). `docs/internal/testing/byoc-recomposition-rubric-v0.1.md` (current version **v0.2**). *Added 2026-08-31 — the branch already exists; do not branch a second one.* ⚠️ **Its T axis scores `PENDING-PROBE`, never PASS**, until the second-vendor arm runs (#1463) — so **this rubric can inform design decisions but cannot yet close a Layer-B gate on T alone.** Score R and C; record T as pending and say so.
 - **New surface type with no fitting rubric** → branch a new instrument per the Branch-or-Anchor discipline (CT §"How to Extend This Rubric"). Do **not** silently re-use R/C/T with shifted meanings. Naming the absence of a fitting rubric is itself a Layer-B finding.
 
 The score is taken on the experience **as delivered**, not as intended — the same "score what the user gets" discipline the rubric applies to degraded/error paths.
+
+> ### ⚠️ "As delivered" does not work the same way on BYOC — added 2026-08-31, and it is a real limit, not a caveat
+>
+> On every surface above except one, *as delivered* is observable: the reply, the rendered card, the error
+> screen are all ours and all inspectable. **On the BYOC/MCP path they are not.** The user-visible text is
+> composed by a host LLM from our tool output, and **we never see it** — not in logs, not in telemetry,
+> not after the fact.
+>
+> **So the BYOC rubric scores the payload, not the delivery — deliberately** (see its §5: *"a 9/9 here
+> means we handed the host everything it needed… not that the reply was good"*). **That is a proxy.** A
+> good one, and the only one available in production — but a Layer-B pass on this surface is **not** the
+> same claim as a Layer-B pass anywhere else, and it must not be reported as if it were.
+>
+> 🔴 **This is not hypothetical.** In the #1463 probe (2026-08-30), a payload that carried its
+> qualification honestly still produced a **fabricated** user-visible reply — *"your todo list is currently
+> empty"* from a **failed** read. **Scoring the payload alone would have missed it.**
+>
+> **What closes the gap**: end-to-end BYOC verification requires a **probe harness** that captures the
+> composed reply and scores *that* with the Colleague Test proper. It is possible — the #1463 probe did
+> exactly this — but it is a deliberate test act, never a by-product of shipping. **Until such a harness
+> is a standing part of the gate, a BYOC Layer-B pass states what we handed over, and states its own
+> limit.**
 
 ### Criterion 2 — MUX-doc conformance
 
