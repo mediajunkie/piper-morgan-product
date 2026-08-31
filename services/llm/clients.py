@@ -5,6 +5,7 @@ Handles connections to Anthropic, OpenAI, and Gemini.
 Uses LLMConfigService for secure key management and validation.
 """
 
+from collections import Counter
 from typing import Any, Dict, Optional
 
 import structlog
@@ -44,6 +45,24 @@ logger = structlog.get_logger()
 # Fallback preference order — tried in sequence if the primary provider fails.
 # Anthropic first (project default), Gemini second (added Apr 16), OpenAI last.
 _FALLBACK_ORDER = [LLMProvider.ANTHROPIC, LLMProvider.GEMINI, LLMProvider.OPENAI]
+
+# #1676 (the #1620 record-the-model discipline): per-process record of which
+# provider+model ACTUALLY answered — incremented only at a SUCCESSFUL
+# _call_provider return, so a silent cross-provider fallback is visible here,
+# where config-at-rest is not. Keyed "provider:model" (e.g.
+# "anthropic:claude-haiku-4-5"). In-process observability for harnesses that
+# must report the serving LLM per run (canonical retest boots the app in-process
+# via ASGITransport and reads the delta); NOT persisted, NOT per-user state.
+SERVING_MODEL_RECORD: Counter = Counter()
+
+
+def _record_serving(provider_value: str, model: str) -> None:
+    """Record one successfully-served LLM call. Never raises (observability
+    must not break the call path)."""
+    try:
+        SERVING_MODEL_RECORD[f"{provider_value}:{model}"] += 1
+    except Exception:  # silent-ok: observability-only record; must never break the serving call path (#1676)
+        pass
 
 
 class LLMClient:
@@ -329,9 +348,13 @@ class LLMClient:
 
         # Try primary provider first
         try:
-            return await self._call_provider(
+            result = await self._call_provider(
                 primary_provider, prompt, config, response_format, context, system
             )
+            # #1676: record the SERVING provider+model (success only).
+            # resolve_model_alias(...) is the exact id the provider call sends.
+            _record_serving(primary_provider.value, resolve_model_alias(config["model"].value))
+            return result
         except Exception as e:
             logger.warning(
                 "llm_primary_failed",
@@ -367,7 +390,7 @@ class LLMClient:
                 logger.info(f"Falling back to {fallback_provider.value}")
 
                 try:
-                    return await self._call_provider(
+                    result = await self._call_provider(
                         fallback_provider,
                         prompt,
                         fallback_config,
@@ -375,6 +398,13 @@ class LLMClient:
                         context,
                         system,
                     )
+                    # #1676: a cross-provider fallback CHANGES the serving model —
+                    # record it so the instrument's identity is never silent.
+                    _record_serving(
+                        fallback_provider.value,
+                        resolve_model_alias(fallback_config["model"].value),
+                    )
+                    return result
                 except Exception as fallback_error:
                     logger.warning(
                         f"Fallback provider {fallback_provider.value} failed: {fallback_error}"

@@ -20,11 +20,24 @@ Append one row after each canonical-retest run. The table exists so Lead Dev can
 | `quality_pct` | Quality pass % — use judged-only denominator: quality_pass / (queries_total - quality_skip) |
 | `env_errors` | Count of environment/service errors (Slack not configured, etc.) |
 | `notes` | Free text: what changed since last run, gate status, known flakes |
+| `serving_provider` | **#1676** — which provider ACTUALLY answered this run's queries. Copy verbatim from the harness's end-of-run report (see below). Vocabulary: a provider name (`anthropic`/`openai`/`gemini`), `mixed` (more than one served — the run is its own confound; details go in serving_model), `none` (zero LLM calls served), or `unrecorded` (pre-#1676 rows only — never write this for a new run, and never guess) |
+| `serving_model` | **#1676** — the model id that answered (e.g. `claude-haiku-4-5`), same source. For `mixed` runs: every `provider:model(count)` pair joined with `;` (never commas — this CSV is unquoted). `unrecorded` for pre-#1676 rows only |
+
+### Where serving_provider / serving_model come from (#1676)
+
+**Read them off the harness — never off config.** The suite records which provider+model each successful LLM call was actually served by (`SERVING_MODEL_RECORD` in `services/llm/clients.py`, incremented only at a successful provider-call return — so a silent cross-provider fallback, e.g. openai 429 → anthropic, is captured as what it is). At module teardown the suite:
+
+- prints a `=== CANONICAL RUN SERVING LLM (#1676) ===` block with the CSV-ready values, and
+- writes the same report to `dev/active/canonical-retest-serving-llm.json` (timestamped, survives terminal scrollback).
+
+Why this exists: Run 14 vs Run 15's Q36 routing flip was fully explainable by the two runs classifying on different models behind an identical-looking history row (#1676, found during #1674). A `mixed` value is a finding, not a formatting problem — it means the instrument changed identity mid-run.
+
+Note: the Tier-2 **judge** model is NOT what these columns record (the judge is a direct SDK client, outside the serving path). Keep recording the judge model in `notes` (e.g. `judge=claude-sonnet-4-6`) as Run 14 did.
 
 ## One-liner append (from repo root)
 
 ```bash
-echo "YYYY-MM-DD,Run N,63,57,6,90.5%,48,8,1,77.4%,0,Short note here" \
+echo "YYYY-MM-DD,Run N,63,57,6,90.5%,48,8,1,77.4%,0,Short note here,anthropic,claude-haiku-4-5" \
   >> docs/internal/operations/canonical-retest-history.csv
 git add docs/internal/operations/canonical-retest-history.csv
 git commit -m "ops: canonical-retest Run N results (YYYY-MM-DD)"

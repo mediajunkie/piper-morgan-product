@@ -16,6 +16,11 @@ def test_current_ids_pass_through():
 
 def test_clients_wired_through_alias_resolver():
     # The three request-construction sites must route model IDs through the
-    # alias resolver (anthropic + openai request_params, gemini model_name).
+    # alias resolver (anthropic + openai request_params, gemini model_name),
+    # plus the #1676 primary-path serving record (which must log the same
+    # alias-resolved wire id the request sites send, not the enum value).
+    # The #1676 fallback-path record resolves via fallback_config — asserted
+    # separately below.
     src = open("services/llm/clients.py").read()
-    assert src.count('resolve_model_alias(config["model"].value)') == 3
+    assert src.count('resolve_model_alias(config["model"].value)') == 4
+    assert src.count('resolve_model_alias(fallback_config["model"].value)') == 1

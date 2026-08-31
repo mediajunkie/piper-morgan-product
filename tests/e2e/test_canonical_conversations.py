@@ -28,8 +28,10 @@ Requirements:
 
 import json
 import os
+from collections import Counter
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from typing import Optional
 from unittest.mock import AsyncMock, patch
 from uuid import UUID, uuid4
@@ -235,6 +237,109 @@ def determine_actual_routing(intent_data: dict) -> str:
     if category == "execution":
         return "action"
     return "canonical"
+
+
+# ---------------------------------------------------------------------------
+# #1676: serving-LLM capture — record which provider+model ACTUALLY answered
+# this run's queries. The confound this closes: the seat's primary provider can
+# 429 (credit exhaustion) and classification silently falls back cross-provider,
+# so two runs can classify on DIFFERENT MODELS with nothing in
+# canonical-retest-history.csv recording it (Run 14 vs Run 15's Q36 flip is
+# fully explainable this way). Same discipline as #1620 / the Phase-2 gate's
+# "Model identity (m-43)" section — but recorded BY THE HARNESS at run time
+# from the serving site (services/llm/clients.py SERVING_MODEL_RECORD,
+# incremented only on a successful provider call), never reconstructed from
+# config-at-rest. Works because this suite boots the app IN-PROCESS
+# (ASGITransport), so the module-level Counter is directly readable.
+#
+# NOT counted: Tier 2's judge calls — the judge_client is a direct Anthropic
+# SDK client, not routed through LLMClient. The judge model stays a notes-level
+# fact (JUDGE_MODEL env); the new CSV columns describe the SERVING LLM only.
+# ---------------------------------------------------------------------------
+
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+SERVING_REPORT_PATH = _REPO_ROOT / "dev" / "active" / "canonical-retest-serving-llm.json"
+
+
+def build_serving_report(served: Counter) -> dict:
+    """Collapse the per-run serving delta into the CSV-ready shape.
+
+    CSV-safety invariant: neither value ever contains a comma (the history CSV
+    is comma-delimited with unquoted fields) — mixed-run detail uses ';'.
+    """
+    total = sum(served.values())
+    if total == 0:
+        provider = model = "none"
+    elif len(served) == 1:
+        provider, model = next(iter(served)).split(":", 1)
+    else:
+        # More than one provider:model served this run — the run itself is the
+        # confound. Name every serving pair with counts; don't average it away.
+        provider = "mixed"
+        model = ";".join(f"{k}({n})" for k, n in sorted(served.items()))
+    return {
+        "serving_provider": provider,
+        "serving_model": model,
+        "llm_calls_served": total,
+        "calls": dict(sorted(served.items())),
+    }
+
+
+@pytest.fixture(scope="module", autouse=True)
+def serving_llm_report():
+    """#1676: snapshot SERVING_MODEL_RECORD around the whole module; on
+    teardown, print the run's serving-LLM report and write it to
+    dev/active/canonical-retest-serving-llm.json so the operator appending the
+    history-CSV row has the serving_provider/serving_model values verbatim
+    (see docs/internal/operations/canonical-retest-history-update.md)."""
+    from services.llm.clients import SERVING_MODEL_RECORD
+
+    before = Counter(SERVING_MODEL_RECORD)
+    yield
+    served = Counter(SERVING_MODEL_RECORD) - before
+    report = build_serving_report(served)
+    report["run_at"] = datetime.now(timezone.utc).isoformat()
+    report["judge_model"] = JUDGE_MODEL if JUDGE_ENABLED else "judge-off"
+    try:
+        SERVING_REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
+        SERVING_REPORT_PATH.write_text(json.dumps(report, indent=2) + "\n")
+    except OSError:  # silent-ok: report file is best-effort; the print below still lands
+        pass
+    print("\n=== CANONICAL RUN SERVING LLM (#1676) ===")
+    print(json.dumps(report, indent=2))
+    print(
+        "history-CSV columns -> "
+        f"serving_provider={report['serving_provider']} "
+        f"serving_model={report['serving_model']}"
+    )
+
+
+class TestServingReportShape:
+    """#1676: the report builder's contract (no LLM, no app boot — runs in
+    keyless sweeps)."""
+
+    def test_zero_served_is_none_not_a_guess(self):
+        r = build_serving_report(Counter())
+        assert r["serving_provider"] == "none"
+        assert r["serving_model"] == "none"
+        assert r["llm_calls_served"] == 0
+
+    def test_single_provider_model_splits_cleanly(self):
+        r = build_serving_report(Counter({"anthropic:claude-haiku-4-5": 117}))
+        assert r["serving_provider"] == "anthropic"
+        assert r["serving_model"] == "claude-haiku-4-5"
+        assert r["llm_calls_served"] == 117
+
+    def test_mixed_run_names_every_pair_and_stays_csv_safe(self):
+        r = build_serving_report(
+            Counter({"anthropic:claude-haiku-4-5": 57, "openai:gpt-4o": 4})
+        )
+        assert r["serving_provider"] == "mixed"
+        assert "anthropic:claude-haiku-4-5(57)" in r["serving_model"]
+        assert "openai:gpt-4o(4)" in r["serving_model"]
+        # CSV-safety: values must never contain the delimiter
+        assert "," not in r["serving_provider"]
+        assert "," not in r["serving_model"]
 
 
 # ---------------------------------------------------------------------------
