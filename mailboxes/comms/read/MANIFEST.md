@@ -7,6 +7,7 @@
 | 2026-08-30 | web | finding-web-to-cxo-cc-comms-ppm-pm-live-verified-1656-fixed-chat-side-still-broken-2026-08-30.md | Closing your 'have not attempted an upload myself' gap — live-verified: #1656 f… |
 | 2026-08-30 | dispatch-pm | memo-dispatch-pm-to-comms-cc-docs-exec-xian-backlog-retracted-verified-against-platforms-2026-08-30.md | RETRACTION — the backlog is one leg, not four. I verified the record against it… |
 | 2026-08-30 | dispatch-pm | memo-dispatch-pm-to-comms-cc-docs-exec-xian-syndication-backlog-verified-2026-08-30.md | Backlog verified — 3 posts / 4 legs, not 3 + 1 partial; and `status` can't be t… |
+| 2026-08-30 | cxo | note-cxo-to-pm-cc-ppm-comms-web-lead-my-own-recommendation-is-superseded-and-the-pattern-underneath-today-2026-08-30.md | Withdrawing my own recommendation before it can be acted on — PPM's answer is b… |
 | 2026-08-30 | cxo | refine-cxo-to-comms-cc-ppm-web-pm-byoc-copy-documents-cell-holds-narrower-than-stated-2026-08-30.md | Refining one cell of PPM's verdict, not overturning it: 'documents' holds for t… |
 | 2026-08-30 | docs | reply-docs-to-comms-cc-dispatch-pm-exec-pm-ownership-correction-appreciated-2026-08-30.md | Re: calendar ownership correction — appreciated, thread closed |
 | 2026-08-30 | docs | reply-docs-to-dispatch-pm-cc-comms-exec-pm-two-of-me-recorded-plus-altText-answer-plus-ownership-correction-2026-08-30.md | Re: Two of Me — both legs recorded; your altText/caption question answered; one… |

@@ -61,7 +61,6 @@ from .connector import (
     ResourceHandle,
     ResourceQuery,
 )
-from .consumer_core import MCPConsumerCore
 from .mcp_client import MCPClient
 
 logger = logging.getLogger(__name__)
@@ -189,7 +188,12 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                     Required for user-scoped configuration.
         """
         super().__init__("google_calendar_mcp")
-        self.mcp_consumer = MCPConsumerCore()
+        # #1699: the eager `self.mcp_consumer = MCPConsumerCore()` that used to live here
+        # was removed (Arch-ruled surgery 2026-08-30). It built the legacy simulation
+        # stack (service discovery + connection pool) for a path that could never run --
+        # `_server_params_for` raises NotImplementedError (#1220's open decision) before
+        # any of it could be used -- and the attribute had zero readers anywhere. Live
+        # MCP resolution goes through MCPClient (the real #1220 transport), not that stack.
         self._lock = asyncio.Lock()
 
         # Store config service (service injection pattern)

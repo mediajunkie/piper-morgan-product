@@ -75,6 +75,7 @@ services:
   postgres:
     image: postgres:15
     container_name: piper-postgres # Fixed name
+    restart: unless-stopped # 1594: data services must survive a host reboot
     environment:
       POSTGRES_USER: piper
       POSTGRES_PASSWORD: dev_changeme_in_production
@@ -113,6 +114,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: piper-redis
+    restart: unless-stopped # 1594: data services must survive a host reboot
     command: redis-server --appendonly yes
     volumes:
       - ./data/redis:/data
@@ -128,6 +130,7 @@ services:
   chromadb:
     image: chromadb/chroma:latest
     container_name: piper-chromadb
+    restart: unless-stopped # 1594: data services must survive a host reboot
     volumes:
       - ./data/chromadb:/chroma/chroma
     ports:

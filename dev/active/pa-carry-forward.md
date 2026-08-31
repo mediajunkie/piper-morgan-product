@@ -253,10 +253,19 @@ days stale.
     PM signaled the next topic is "the BYOC skunkworks project itself, next steps" — still PM's
     timing to initiate, now with ESSENCE.md as the fixed point, plus the milestone question above
     (crisply framed, PM's ruling pending) as something that conversation may need to actually settle.
-- 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
-  to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
-  registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
-  our own code), so it's worth more now than when PPM green-lit it.
+- 💵 **Probe B superseded by CXO's concrete #1463 packet, 08-30 — harness built, awaiting PM go-ahead
+  on credential spend.** CXO asked PA (or Web) directly to run the BYOC recomposition probe, since
+  CXO structurally can't be both subject and scorer. Checked rather than assumed: **credentials are
+  now present in Keychain** (both Anthropic and OpenAI, verified live) — Probe A's original August
+  "no credential at all" blocker no longer applies. Built
+  `dev/active/probes/probe_b_recomposition_2026-08-30.py`, adapted from July's Probe A harness,
+  matching CXO's packet exactly (6 corpus items × prose/structured + 2 negative controls = 14
+  trials/vendor, 28 total across Claude+GPT). Compiles clean, **not yet run** — sent a precise ask to
+  PM (cc CXO/Web/Lead/Arch/PPM) for authorization to spend real API credential, same discipline as
+  before ("your yes-you-may was scoped to Probe A, not extending it silently"). One interpretive call
+  flagged in the script's own comments for CXO to confirm (item 6's negative-control payload shape
+  isn't spelled out verbatim in the packet) rather than silently guessed. No deadline per CXO's own
+  packet — ready whenever PM says go.
 
 ### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
 
