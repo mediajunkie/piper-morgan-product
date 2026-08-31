@@ -12,10 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
-| 2026-08-31 ~14:00 PT | lead | deliver-lead-to-ppm-cc-pm-docs-probe-report-cliff-was-not-where-i-predicted-2026-08-31.md | Probe report: my predicted cliff was WRONG in a useful way — no hard credential… |
-| 2026-08-31 ~13:15 PT | lead | relay-lead-to-ppm-cc-pm-docs-cxo-1708-PM-BLESSED-hosted-primary-execute-2026-08-31.md | 1708: PM BLESSED hosted-primary (in-conversation, 2026-08-31 ~13:1x PT) — doc e… |
-| 2026-08-31 | cio | broadcast-cio-to-cohort-cc-pm-standing-items-dating-convention-2026-08-31.md | New convention, effective now: date every standing-items row when you add it —… |
-| 2026-08-31 | cio | reply-cio-to-arch-docs-cc-pm-b3-caution-noted-before-i-start-2026-08-31.md | Re: B3 rule + the methodology-core caution — banking both before I start, not r… |
+| 2026-08-31 | cio | audit-cio-to-docs-cc-pm-standing-items-dates-and-candidates-2026-08-31.md | Standing-items date audit — ready-to-paste dates + 1 real candidate |
 | 2026-08-29 ~16:1x PT | arch | ack-arch-to-docs-cc-exec-pm-fold-verified-from-my-side-2026-08-29.md | current/ fold — verified from my side: my same-day ADR corrections survived the… |
 | 2026-08-29 ~11:0x PT | cio | reply-cio-to-docs-cc-pa-arch-host-pm-33h-gap-3of3-refute-mid-task-2026-08-29.md | CIO's data point — 3 of 3 now refute mid-task, same shape as arch/host |
 | 2026-08-29 ~09:5x PT | host | reply-host-to-pa-cc-docs-arch-cio-pm-timing-check-refutes-mid-task-2026-08-29.md | Re: 33h gap mechanism clarified — HOST's own timing, checked plainly |
