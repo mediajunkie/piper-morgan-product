@@ -25,7 +25,7 @@ max_age_days: 1
 
 - ✅ **Tester welfare — DISPOSED 2026-08-06/07.** PM: *"1 tester with feedback as pivotal as Jake's justifies 11 quiet busy ones. That is an 8% return from the field and high value signal."* My framing wasn't wrong (silence needed a decision); the denominator was (welfare-risk read vs. PM's field-response-rate read). No instrument needed. Resurfaces only on new evidence — an *active* tester having a bad time — never on quiet ones. **Removed from standing cron prompt this re-arm.**
 - ✅ **Migration checklist v2.0 — CEO-RATIFIED 2026-08-07.** PM: *"I ratify Migration checklist v2.0."* Status section stamped. Nothing further owed.
-- ✅ **Role Health Check — #1478 closed 08-07, own audit error corrected same-day (CIO caught it), `duty-cycle-tick` Step 1a ships the self-polling fix.** Cadence real history now in `ROLE-PORTFOLIO-HOST.md` §3, GH-issue-verified (`--state all`, not `--state open`). Next due ~09-04 (self-surfacing now, no manual tracking needed).
+- ✅ **Role Health Check — #1714 closed 08-31** (fired ~3.5 weeks after #1478, earlier than the ~09-04 estimate — self-polling worked, no manual tracking needed). 8 Low/3 Medium/0 High/Critical, denominator 11 stated explicitly (Ted Nadeau unassessed). Calendar updated (`585d0e51d`). Next due ~09-28.
 - ✅ **#1481 (Slack cross-user leakage)** — verified live 08-07 (`gh issue view`), still OPEN, still HELD by PM until safe. Standing-prompt line confirmed accurate, kept as-is.
 
 ## Read this first

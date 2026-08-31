@@ -56,6 +56,28 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
+### OPEN — standing-items dating convention adopted; Phase 4 escalated; checker/broadcast mismatch found (2026-08-31)
+CIO broadcast a new cohort-wide convention (every standing-items row needs a filed/added date) plus
+a direct audit of Web's file with ready-to-paste dates and one real candidate: "Phase 4" (compose UI
+mark-ready + git handoff, `#998` family) had sat 43 days undecided and wasn't on my own radar.
+
+**Applied the dates, then verified rather than trusted**: ran `scripts/aging-standing-items.sh`
+against my own file after dating it diary-entry-style (per the broadcast's literal wording) — still
+showed as a COVERAGE GAP. Read the script directly: it only parses markdown **tables** with a
+`Filed` header column, no inline-prose fallback at all. Converted my genuinely-open items to the
+real required table shape (matching CIO's/PA's own working files), re-verified clean. Also caught a
+second mismatch in the same pass — "Escalated to..." isn't a recognized blocking phrase, reworded to
+"Awaiting PM/Docs decision," re-verified.
+
+**Escalated Phase 4** to PM cc Docs rather than let CIO's finding sit as noted-but-unactioned —
+`mailboxes/web/sent/ask-web-to-pm-cc-docs-cio-compose-ui-phase-4-decision-needed-43-days-silent-2026-08-31.md`.
+**Reported the broadcast/checker mismatch** to CIO cc PM, since arch/comms/docs/lead (still showing
+as coverage gaps) would likely hit the identical silent failure if they read the broadcast the way
+I first did — `mailboxes/web/sent/finding-web-to-cio-cc-pm-broadcast-description-doesnt-match-checker-2026-08-31.md`.
+
+**Waiting on**: PM/Docs on the Phase 4 decision; CIO on whether to fix the broadcast wording or add
+an inline-date fallback to the checker. Nothing further for Web on either until a reply lands.
+
 ### OPEN — obs-pass + site walkthrough, pre-staged, joint session planned for tomorrow (2026-08-31)
 PM asked "anything I can unblock" — offered to pre-stage the two long-standing PM-gated walkthrough
 items (obs-pass ~20-item queue + the site walkthrough) using screenshots instead of waiting for a

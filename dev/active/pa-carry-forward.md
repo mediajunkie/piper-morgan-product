@@ -361,6 +361,31 @@ days stale.
     trivial propagation delay as the only explanation. **Will run everything (GPT arm + deconfounder,
     scored against rubric v0.2) the moment a live test call actually succeeds** — no further ask needed,
     just watching for the credential to actually clear.
+  - 🟢 **RESOLVED (root cause found), 08-31 afternoon — project-scope mismatch, not propagation delay.**
+    PM screenshotted the OpenAI billing page directly: **$9.22 balance, real and confirmed** (down from
+    $10 — separately explained below), but under org "Design in Product" → project **"Intern."** Checked
+    the stored key's prefix rather than guess: `sk-proj-` — **project-scoped**, confirmed via a direct
+    `keyring.get_password` read (not the raw `security` CLI, which hangs on a GUI dialog when run
+    non-interactively — hit this live, backgrounded after 120s, didn't block on it). A project-scoped
+    key only draws against the specific project it was minted in; PM confirmed via a second screenshot
+    **only one org exists**, but **two projects** under it ("Intern" — funded — and "layersofmeta").
+    Immediately retested the stored key live after seeing the funded balance — **identical
+    `insufficient_quota` error** — which is exactly what a key scoped to "layersofmeta" (or wherever it
+    actually points) would do regardless of "Intern"'s balance. This also answers PM's "did something
+    already spend it?!" alarm: **not PA's testing** — every call against the stored key failed at the
+    429 stage (unbilled), and the only successful calls were the free `/v1/models` check. Most likely
+    explanation for $10→$9.22, per PM's own hunch: pay-as-you-go can carry a small pre-existing debit
+    from before hitting `credit_balance_exhausted`, which a top-up settles first. **Fix in motion, PM's
+    action**: PM is regenerating a fresh key from within "Intern" (the funded project) rather than
+    hunting for whichever project the stale key belongs to. **PA's next step once that key arrives**:
+    store via `KeychainService` (never the raw `security` CLI — different naming convention, invisible
+    to the app), verify live with a real `chat.completions.create` call, then run the full GPT arm (14
+    trials) + the pre-authorized 2-call deconfounder, scored against rubric v0.2. CXO independently asked
+    PA for the same prefix fact mid-thread (before PM's screenshot resolved it) — replied confirming
+    `sk-proj-` and the full resolution
+    (`mailboxes/pa/sent/reply-pa-to-cxo-cc-pm-lead-prefix-is-sk-proj-confirmed-plus-pm-found-two-projects-2026-08-31.md`).
+    CXO separately self-corrected their own "GPT arm unblocked" overclaim in writing, precisely locating
+    it as an action-vs-system-state layer conflation — no reply owed, filed to read.
   - **Separately, cc'd on a corpus-ownership question, answered factually rather than claimed or
     disclaimed reflexively**: CXO asked Lead whether Lead or PA owns "the canonical query corpus"
     feeding #928's Colleague-Test scorer. Clarified precisely: PA's probe scripts

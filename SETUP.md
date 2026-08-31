@@ -4,11 +4,19 @@ Complete step-by-step guide to set up the Piper Morgan development environment.
 
 > **Not a developer?** If you're an alpha tester who just wants to try Piper Morgan, see [ALPHA_QUICKSTART.md](docs/ALPHA_QUICKSTART.md) instead. This guide is for contributors who want to modify the codebase.
 
+> ⚠️ **Overlap note, added 2026-08-31 (#1708)**: `CONTRIBUTING.md` §"1b. Running the Full App
+> Locally" now also covers this setup, with steps that are probe-measured against a real fresh
+> clone rather than assumed. This doc's factual errors found by that same probe (wrong config
+> file, wrong psql command, wrong server entry point) are corrected below, but the two docs
+> substantially overlap now and a consolidation decision is still open — see #1708. If they ever
+> disagree, trust `CONTRIBUTING.md`'s §1b as the more recently verified source.
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
 
-- **Python 3.9+** (recommended: 3.11)
+- **Python 3.11 or 3.12 only** (pinned dependencies have no 3.13/3.14 builds — probe-measured,
+  2026-08-31, see `CONTRIBUTING.md` §1b)
   - Check: `python --version`
   - Install: https://www.python.org/downloads/
 
@@ -74,25 +82,27 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 
 # Verify
-python --version  # Should be 3.9+
+python --version  # Should be 3.11 or 3.12 (see Prerequisites)
 pip list | grep pytest  # Should see pytest
 ```
 
 ## Step 5: Set Up Environment Variables
 
 ```bash
-# Copy example environment file
-cp config/PIPER.example.md config/PIPER.md
-
-# Edit with your settings
-code config/PIPER.md
+cp .env.example .env
 ```
 
-Key settings to configure:
-- `WEB_PORT`: Default 8001
-- `DATABASE_URL`: PostgreSQL connection string
-- `SLACK_BOT_TOKEN`: (optional, for Slack integration)
-- `NOTION_TOKEN`: (optional, for Notion integration)
+> ⚠️ **Corrected 2026-08-31** — this step previously said `cp config/PIPER.example.md config/PIPER.md`.
+> `config/PIPER.example.md` doesn't exist and never has (verified against the current tree); the
+> generic config template is `config/PIPER.defaults.md`, and it's read automatically — you don't
+> copy it. The actual per-developer file to create is `.env` from `.env.example`.
+
+Key settings to configure in `.env`:
+- `PIPER_PORT`: Default 8001 (non-default only if you need to run multiple instances)
+- An Anthropic or OpenAI API key (the `/setup` wizard also collects this on first run — see Step 8)
+
+*(Unverified this pass — not part of Lead's 2026-08-31 probe, may need its own check:
+`SLACK_BOT_TOKEN` / `NOTION_TOKEN` for optional integrations.)*
 
 ## Step 6: Set Up Database
 
@@ -112,7 +122,12 @@ alembic upgrade head
 ```bash
 # Start database container
 docker compose up -d
-
+```
+> ⚠️ **Added 2026-08-31** (probe-measured, see `CONTRIBUTING.md` §1b): the compose project/container
+> names are fixed, not per-checkout. A second checkout on this machine will silently commandeer the
+> first one's containers rather than erroring — don't run two Piper checkouts against Docker on one
+> machine without changing the project name.
+```bash
 # Run migrations
 source venv/bin/activate
 alembic upgrade head
@@ -120,9 +135,12 @@ alembic upgrade head
 
 **Verify**:
 ```bash
-# Connect to database
+# Option A (local Postgres): your own local defaults — typically your OS user, port 5432.
 psql piper_morgan
-# Should connect successfully
+
+# Option B (Docker): corrected 2026-08-31 — this used to say the same bare command as Option A,
+# which doesn't match the container's actual config (host port 5433, user "piper").
+psql -h localhost -p 5433 -U piper piper_morgan
 ```
 
 ## Step 7: Run Tests
@@ -149,8 +167,11 @@ pytest tests/ -v
 
 ```bash
 source venv/bin/activate
-python -m uvicorn web.app:app --reload --port 8001
+python main.py
 ```
+> ⚠️ **Corrected 2026-08-31** — this used to say `python -m uvicorn web.app:app --reload --port
+> 8001`. `main.py`'s own docstring states it directly: *"This is the proper way to start Piper
+> Morgan."* Set `PIPER_PORT` in `.env` if you need a non-default port.
 
 ### Option B: VSCode Debugger
 
@@ -206,7 +227,8 @@ python3.11 -m venv venv
 
 ```bash
 # Test PostgreSQL connection
-psql piper_morgan
+# Local install: psql piper_morgan (your own defaults)
+# Docker: psql -h localhost -p 5433 -U piper piper_morgan (see Step 6, Option B)
 
 # If using Docker:
 docker compose ps  # Check if container is running
@@ -242,7 +264,7 @@ alembic upgrade head
 | Activate venv (Windows) | `.\venv\Scripts\Activate.ps1` | Auto on open |
 | Install deps | `pip install -r requirements.txt` | Task: "Install Dependencies" |
 | Run tests | `pytest tests/unit/ -v` | Debug: "Pytest (Current File)" |
-| Start server | `python -m uvicorn web.app:app --reload` | Debug: "FastAPI" |
+| Start server | `python main.py` | Debug: "FastAPI" |
 | Format code | `black .` | Task: "Format Code (Black)" |
 | Run linter | `flake8 .` | Task: "Lint Code (Flake8)" |
 | Database setup | `alembic upgrade head` | Task: "Database: Setup" |
