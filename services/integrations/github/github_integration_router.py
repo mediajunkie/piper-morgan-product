@@ -732,13 +732,25 @@ class GitHubIntegrationRouter:
         # Spatial fallback
         return empty
 
-    async def get_recent_activity(self, days: int = 7) -> Dict[str, List[Dict[str, Any]]]:
+    async def get_recent_activity(
+        self, days: int = 7, repository: Optional[str] = None
+    ) -> Dict[str, List[Dict[str, Any]]]:
         """
         Get recent GitHub activity for standup (commits, PRs, issues).
 
         Used by: domain/standup_orchestration_service.py
+
+        Issue #1646: ``repository`` (an ``owner/name`` full name) scopes the
+        fetch to the repo the caller RESOLVED — the ANALYSIS handlers name a
+        resolved repository in their copy, so the fetch must receive the same
+        repo or the message claims a scope the query didn't have (m-43).
+        ``None`` keeps the pre-#1646 shape (the integration's internally
+        configured repo) for callers that never name one (canonical standup).
         """
-        return await self._get_integration("get_recent_activity").get_recent_activity(days)
+        integration = self._get_integration("get_recent_activity")
+        if repository is not None:
+            return await integration.get_recent_activity(days, repository=repository)
+        return await integration.get_recent_activity(days)
 
     def list_repositories(self) -> List[Dict[str, Any]]:
         """
