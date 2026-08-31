@@ -985,6 +985,15 @@ class ConversationalFloor:
             else:
                 lines.append(f"- Active project count: {total}")
 
+        # #1645 (#1573 shape): the projects lookup FAILED — projects may
+        # exist. Say we couldn't check; NEVER present this as "no projects".
+        if domain_context.get("projects_source_failed"):
+            lines.append(
+                "- Project check FAILED: could not load the user's project "
+                "list just now. If projects come up, say you couldn't check "
+                "them — do not claim there are none."
+            )
+
         # #950 iteration: user-anchoring fields from extended _gather_identity_context
         if "user_projects" in domain_context:
             up = domain_context["user_projects"]
@@ -1102,6 +1111,16 @@ class ConversationalFloor:
                     "asked, state it as a plain account-level fact: they "
                     "have no completed todos right now."
                 )
+
+        # #1645 (#1573 shape): the completed-todos lookup FAILED — the user
+        # may have completed things. Say we couldn't check; NEVER present
+        # this as "nothing completed".
+        if domain_context.get("completed_todos_source_failed"):
+            lines.append(
+                "- Completed-todo check FAILED: could not load the user's "
+                "completed todos just now. If asked what they've finished, "
+                "say you couldn't check — do not claim there are none."
+            )
 
         # #983: Surface blocked items (open GitHub issues labeled
         # `status: blocked`) for "what's blocked?" / "what's waiting on
