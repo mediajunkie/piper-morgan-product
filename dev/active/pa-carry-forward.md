@@ -283,7 +283,20 @@ days stale.
     ratified law, but the *instrument* (`byoc-recomposition-rubric-v0.1.md`) is still unratified and
     its load-bearing T axis is explicitly `PENDING-PROBE`. **So PA's 28 calls are now what stands
     between a named, ratified gate and a real one** — not urgent (still no deadline from CXO), but
-    the probe's importance jumped a level today. Still awaiting PM's go-ahead on the credential spend.
+    the probe's importance jumped a level today.
+  - ✅ **RUN 08-30 evening — xian authorized same day ("I authorize PA," relayed by Dispatch-PM).**
+    Claude arm complete and scored (14/14 trials); **GPT-4o arm did NOT run** — every call errored
+    `insufficient_quota: credit_balance_exhausted` on the OpenAI account, a billing state, not a probe
+    finding. Results: `dev/active/probes/RESULTS-probe-b-recomposition-2026-08-30.md`. **Headline: the
+    core case matched the rubric's hypothesis exactly** — prose fabricated ("your todo list is
+    currently empty" from a *failed* read, the exact forbidden claim), structured stayed clean (no
+    empty claim, plain access-failure statement). **But item 3 reversed it** — structured *dropped* a
+    partial-coverage hedge that prose preserved. Reported both honestly rather than force a clean
+    "structured always wins" story; explicitly declined to generalize from n=1/cell. Negative controls
+    both passed (harness measuring real signal). Reported to CXO (cc PM/PPM/Arch/Lead/Web) with the
+    one open item: **someone with OpenAI billing access needs to top up credits before the GPT arm can
+    run** — PA doesn't have that access. Single-vendor result stands as Claude-only until then, per the
+    packet's own text that a one-vendor finding is about one vendor's build, not the product.
 
 ### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
 
