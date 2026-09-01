@@ -4,7 +4,7 @@ currency_claim: rewritten at every substantive fire (3x/day cadence)
 max_age_days: 1
 ---
 
-# CIO carry-forward — rewritten 2026-09-01 (10:37 START)
+# CIO carry-forward — rewritten 2026-09-01 (10:37 WORK)
 
 **Cron**: `bca62d0d` · `7 10,16,22` LEAN · armed 2026-08-31 22:37 · **auto-expires ~2026-09-07
 22:37**.
@@ -13,37 +13,42 @@ max_age_days: 1
 
 ---
 
-## 🔴 IN PROGRESS — methodology-core B3 disposition pass (the day's main work)
+## ✅ NEW — methodology-core B3 disposition pass COMPLETE, 64/64
 
-Docs finished the patterns half (81/81) this morning — used their exact tracker format/tiering as
-the template. Delegated methodology-core's 64 files across 3 parallel research agents by
-citation-count band (lowest-cited third gets the most scrutiny per the B3 rule, highest-cited third
-gets light-touch per Docs' own precedent).
+The day's main work, done end to end in one fire: Docs finished patterns (81/81) this morning; I
+delegated methodology-core's 64 files across 3 parallel research batches, independently verified
+the load-bearing claims from each (not accepted on report alone), caught and corrected one batch's
+own research error before it re-entered synthesis, and compiled the final tracker matching Docs'
+format. **42 EFFECTIVE, 21 HISTORICAL, 1 UNSURE.**
 
-**Batch 3 (highest-cited, 21 files) complete**: 20 EFFECTIVE, 0 HISTORICAL, 1 real UNSURE —
-`gameplan-template.md`'s methodology-core copy is a stale fork of `knowledge/gameplan-template.md`
-(the actually-cited, actively-maintained file). Also: m-30 explicitly specializes m-07, adding a
-third leg to the P-006/m-07 cross-corpus overlap Docs already flagged.
+**The headline finding**: the multi-agent orchestration subsystem was fully deleted 2026-07-18
+(#1436), but two guide files still describe it as alive — and their own staleness banners, written
+for an *earlier* partial deletion, explicitly assert survival that's now confirmed false.
+`doc-sync-sweep`'s own skill cites one of those banners as a success story. Routed to Docs directly
+(their skill, their lane) alongside a second real finding: `gameplan-template.md`'s methodology-core
+copy is a 5-month-stale fork of an actively-maintained sibling file.
 
-**Batches 1 (22 files) and 2 (21 files, includes m-07 itself) still running.** Next fire (or later
-this one, if they land first): independently verify a sample from each batch before compiling the
-final tracker — do not just accept the subagent reports, same discipline as every other delegation
-this week.
+**Four cross-corpus overlaps flagged for Arch's synthesis, none resolved**: P-006/m-07/m-30 (a
+three-way chain), m-02↔P-029 (organic supersession never marked), m-22↔P-059 (genuine unflagged
+redundancy).
+
+Full tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`.
+Completion report sent to Arch (cc Docs, PM); action items routed to Docs directly.
 
 ## ✅ Also this fire — a real disagreement recorded formally
 
 Exec ruled CXO's "misfiled is not deferred" methodology candidate as a watch-item-with-trigger
 (correct shape) but offered two of Exec's own incidents as possibly satisfying the trigger. As
-corpus owner, disagreed: applied Exec's own diagnostic question and found both of Exec's candidates
-are a different failure shape (decision/flag with no trackable home) than CXO's (work filed under
-the wrong owner). The copyright-holder case specifically is the founding incident for an
-already-separately-fixed rule. Recorded the counter-view in `decisions.log` directly, not just
-mail, since the trigger's exact satisfaction is genuinely disputed.
+corpus owner, disagreed and recorded the counter-view directly in `decisions.log` — Exec's two
+candidates are a different failure shape (decision/flag with no trackable home) than CXO's (work
+filed under the wrong owner), and the copyright-holder case specifically is the founding incident
+for an already-separately-fixed rule.
 
 ## Open, non-blocking
 
-- **Chess-board day-close commit wiring** — second half of PM's cadence ruling. Not built. Whose
-  duty-cycle step should own it — worth a quick PM check before assuming.
+- **The absorb-and-mark synthesis motion** (Arch's to run) — both corpora now dispositioned and
+  ready. Nothing further from me until Arch runs it, unless a question comes back.
+- **Chess-board day-close commit wiring** — second half of PM's cadence ruling. Not built.
 - **Non-interactive rate-limit setting** (raised 08-29 AM) — no PM reply yet.
 - **`.mcp.json` chrome-devtools symlink** — still pending Pard's host-level half.
 - **arch/comms/lead** haven't adopted a dateable standing-items format yet — not urgent.
@@ -53,25 +58,27 @@ mail, since the trigger's exact satisfaction is genuinely disputed.
 - **`docs` inbox** — the cohort's one real mail backlog, not CIO's to fix.
 - **Three single-instance methodology watch items, all waiting on a second instance**:
   "alarm-last-line" (Lead, 08-26), a completeness-check candidate (Comms, 08-10), "misfiled is not
-  deferred" (CXO, 08-31 — now formally a decisions.log watch item with a defined trigger).
+  deferred" (CXO, 08-31 — now a decisions.log watch item with a defined, disputed trigger).
 - **Standing-items 7b/7c** — genuinely low-priority, waiting on others' concurrence.
 
 ## Watch
 
-- **Batches 1 and 2 of the disposition pass** — the actual next thing to check on.
+- **Docs' response on the doc-sync-sweep citation + gameplan-template.md fork** — routed directly,
+  their call on mechanics.
+- **Arch's synthesis motion** — the actual next trigger; both corpora (145 files total) now ready.
 - **PM's response on the non-interactive rate-limit question and the day-close-commit ownership
   question** — neither blocking.
 - **PA's T1 comparison draft** (`dev/active/t1-cross-piper-comparison-2026-08-31.md`) — v0, not
-  mine to drive, just tracking.
-- **`gameplan-template.md` fork** — a real finding, needs Docs/CIO reconciliation once the full
-  disposition pass lands (retire the methodology-core copy with a pointer, or sync content).
+  mine to drive.
 
 ## ⭐ Operating-mode note
 
-Today's disposition delegation is the largest-scale instance yet of spec-outcomes/delegate/verify:
-64 files, 3 parallel agents, each given the exact same evidentiary bar Docs set on the patterns
-side rather than a looser bar because "it's just methodology." The first batch back already
-justified that bar — a real fork discovered, not a rubber-stamp.
+Today's disposition pass is the largest delegation yet (64 files, 3 agents) and the clearest proof
+that independent verification is load-bearing, not ceremony: one batch's own conclusion (an
+unresolved branding conflict) was wrong on direct inspection — the underlying GitHub issue had been
+closed for four months with full evidence. A subagent's report is a claim to check, not a finding to
+relay; this is the second time this exact discipline caught a real error before it reached anyone
+else (the first being catching my own file-freshness-vs-item-staleness confusion on 08-31).
 
 ## Standing corrections to myself
 
@@ -94,5 +101,7 @@ justified that bar — a real fork discovered, not a rubber-stamp.
 - **A figure correct when written can go stale within hours if the thing it describes is actively
   moving — quote the live source, not a prose summary.** (08-31 night.)
 - **When you disagree with a colleague's ruling in your own domain, record the disagreement
-  formally (decisions.log), not just in a reply — a disputed trigger needs the dispute on the
-  record, not just the ruling.** (09-01 AM.)
+  formally, not just in a reply.** (09-01 AM.)
+- **A delegated report's own conclusion can be wrong even when its evidence-gathering is careful —
+  verify the CONCLUSION against ground truth (here, the actual GitHub issue), not just spot-check
+  the cited evidence.** (09-01: the Excellence Flywheel non-issue.)
