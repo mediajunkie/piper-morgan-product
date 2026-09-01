@@ -103,20 +103,30 @@ These are the load-bearing rows, because nobody told either of us to converge he
    tidied-up retrospective framing** — worth having in hand if this comparison is ever shared past this
    draft. Piper Morgan the product routinely returns findings, status, and search results to users.
 
-   **Checked, not assumed, against Piper's own code — first pass, not exhaustive.**
-   `services/mux/lenses/priority.py` is architecturally exactly the mechanism that would do this: a
-   `PriorityLens` whose stated job is "how important/urgent is this, what needs attention first," with
-   example framings like *"I notice 2 high-priority items need your focus."* **But `_get_priority_data`
-   currently returns hardcoded constants** (`"importance": "normal"`, `"urgency": "normal"`,
-   `"attention_level": "ambient"`, `"priority_score": 50`) — the lens is wired architecturally but not
-   yet connected to real data. Separately, `action_registry.py`'s blocker-related entries are a query
-   type the *user* has to invoke ("What's blocking the milestone?") rather than something Piper
-   volunteers unprompted when reporting a finding. **Both point the same direction**: the mechanism PO
-   learned to apply by hand exists as an architectural intention in Piper Morgan (spatial intelligence's
-   PRIORITY dimension) but isn't yet live in what a user actually experiences. `[PLACEHOLDER: this is
-   two files, not a full audit — there may be other response paths (conversational_floor.py, action
-   confirmations) that already do some version of this; worth a real pass before treating "not yet live"
-   as a settled product gap rather than a lead worth following up.]`
+   **Checked, not assumed, against Piper's own code — now three files, and the picture is genuinely
+   mixed, not a clean gap.** `services/mux/lenses/priority.py` is architecturally exactly the mechanism
+   that would do this — a `PriorityLens` whose stated job is "how important/urgent is this" — but
+   `_get_priority_data` currently returns hardcoded constants, not live data. `action_registry.py`'s
+   blocker-related entries are a query type the *user* has to invoke rather than something Piper
+   volunteers.
+
+   **But `conversational_floor.py` (the actual chat-response builder, checked 09-01) shows Piper Morgan
+   already does this in at least two places — real, live, shipped, not stubbed.** Its `due_reminders`
+   handling instructs the model explicitly: *"Briefly surface them in your reply... even if the user's
+   message is about something else — do not wait to be asked."* That's the relevance-pre-attached
+   pattern, proactive and unprompted, already in production. Its `source_failed` handling is the exact
+   discipline the #1463 probe's core case tests: *"Reminder check FAILED: could not verify whether any
+   reminders are due right now... do not claim none are due"* — the same "never fabricate confidence
+   from a failed read" principle Claude's structured arm passed and prose arm failed, already written
+   into Piper's own system prompt as a standing instruction.
+
+   **What's still a real gap, now more precisely located**: `priorities`/`urgent_items` context is
+   injected as a flat data line (*"High-priority issues: X"*) with no accompanying instruction to
+   surface it proactively or frame it by relevance — closer to the `action_registry.py` pattern than the
+   `due_reminders` one. **So the honest finding isn't "the mechanism doesn't exist yet"** — it's "Piper
+   already applies this discipline to reminders and read-failures, and hasn't yet extended the same
+   pattern to priority/urgency data specifically." That's a narrower, more actionable gap than the
+   earlier draft claimed, and a better product story: the precedent to copy already ships.
 
 5. **Generalize a correction after the first recurrence, not the second.** PO's retro (bet-close):
    wrote the persistent-memory fix only after the *second* instance of the same mistake in one day —
@@ -148,11 +158,12 @@ These are the load-bearing rows, because nobody told either of us to converge he
    promise, verify-before-assert, and extend-prior-art all recur across the whole engagement, not just
    at close. No disconfirming case turned up — see the evidence-quality caveat above about what that
    does and doesn't prove from retros alone.
-2. ✅ **Done, first cut**: checked `priority.py` and `action_registry.py` against the relevance-pre-
-   attached bar — found the architectural hook exists but isn't wired to real data yet. **Still open**:
-   a real pass across the rest of the response-generation surface (`conversational_floor.py`, action
-   confirmations, search-result formatting) before treating this as a settled product gap rather than
-   one lead.
+2. ✅ **Done, upgraded 09-01**: checked `priority.py`, `action_registry.py`, and now
+   `conversational_floor.py` (the real chat-response builder) against the relevance-pre-attached bar.
+   Corrected the earlier framing — this isn't a clean gap, it's mixed: `due_reminders` and
+   `source_failed` already implement the exact discipline live, in production; `priorities`/
+   `urgent_items` doesn't yet. **Still open**: action confirmations and search-result formatting
+   specifically, not yet checked.
 3. ✅ **Partially done**: read 2 of ~90 PO session logs (05-19, 07-31) as a contemporaneous check —
    both confirmed the retro claims directly, and 07-31 surfaced the actual real-time incident behind
    lesson #4. Still a thin sample; more logs would strengthen this further but aren't required to trust
