@@ -6,7 +6,8 @@ max_age_days: 1
 
 # CIO carry-forward — rewritten 2026-08-31 (22:37 STOP)
 
-**Cron**: rotating this STOP — see new job ID below, recorded immediately after rotation.
+**Cron**: `bca62d0d` · `7 10,16,22` LEAN · rotated (delete-then-create) 2026-08-31 22:37 from
+`a9ed03f9` · verified via `CronList` — exactly one job survived · **auto-expires ~2026-09-07 22:37**.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
