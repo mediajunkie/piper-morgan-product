@@ -1,11 +1,12 @@
 ---
 type: instrument-spec
 name: context_requirement — corpus tag semantics + C-axis scoring guidance
-version: v1.0 — spec for Lead to execute the metadata pass
+version: v1.1 — EXECUTED 2026-08-31 (Lead, 61/61). Adjudications recorded in §5b; §5 hypothesis resolved;
+  one self-correction to §7's tie-break justification.
 date: 2026-08-31
 owner: CXO (semantics + scoring) · Lead (corpus artifact + the tagging pass)
 closes: CT v2.4's C=0 disambiguation, agreed 2026-05-10, reframed 2026-08-31 as corpus work
-applies_to: Colleague Test Rubric v2.3.4 C-axis; and the BYOC Recomposition Rubric, whose C anchors to it
+applies_to: Colleague Test Rubric v2.3.5 C-axis; and the BYOC Recomposition Rubric, whose C anchors to it
 last_updated: 2026-08-31
 currency_claim: static once the tagging pass lands
 max_age_days: 60
@@ -75,7 +76,7 @@ This tag is a different axis. **Two orthogonal reasons a response can be legitim
 separately in any scoring note.** Collapsing them into one "generic is OK here" intuition is exactly the
 silent-drift shape the Branch-or-Anchor discipline exists to prevent.
 
-## 5. A consequence worth stating before the data arrives
+## 5. ✅ RESOLVED — the hypothesis was PARTLY right, and smaller than it might have been
 
 📄 CT v2.3.4 currently reads: *"When the canonical retest shows responses clustering at C=2, that's the
 signal that context assembly is not flowing into generation."*
@@ -84,12 +85,40 @@ signal that context assembly is not flowing into generation."*
 `not_applicable`, then some historical C=2 clustering is **an artifact of the instrument, not a
 context-assembly failure** — the response was correct and the rubric had nowhere to put it.
 
-🔴 **Stated as a hypothesis the tagging pass will test, not a finding.** I have not measured the
-distribution and will not claim it before Lead's pass reports one. **If a material share comes back
-`not_applicable`, the C=2-clustering diagnostic needs rewording in the rubric** — and I own that edit.
+**MEASURED (Lead's pass, 2026-08-31, n=61)**: `required` **49 (80.3%)** · `optional` **2** ·
+`not_applicable` **10 (16.4%)**.
 
-**So the first thing the pass should report is the distribution itself**: how many queries in each bucket,
-out of how many total. That number is the finding, before any rescoring.
+**Verdict on my own hypothesis: partly supported, and I want it sized honestly rather than claimed.**
+
+- ✅ **Real**: 10 of 61 queries **cap at C=2 by construction**, no matter how good the product gets. So
+  ~16% of any observed C=2 mass is **instrument, not product**. Arithmetic, not speculation: a **perfect**
+  system scores **2.836 pooled, not 3.000** — a **5.5% structural drag** on any pooled mean.
+- 🔴 **But NOT the sweeping version.** At **80.3% `required`**, the corpus is overwhelmingly a
+  personal-context instrument and the C=2-clustering diagnostic **remains valid and load-bearing** where
+  it matters. **I was directionally right and it would have been easy to overclaim** — "the clustering was
+  an artifact" is false; "≈16% of it is" is true.
+
+**Rubric edit made** (CT **v2.3.5**): the diagnostic is **narrowed to the `required` bucket**, with the
+distribution and the 2.836 figure recorded inline. Criteria untouched — this corrected an *interpretive*
+claim, not a measurement.
+
+## 5b. Two judgment principles — ADJUDICATED 2026-08-31, both blessed
+
+Lead's tagging pass applied these uniformly and flagged them for ruling. **Both accepted, and they belong
+in the spec rather than only in a corpus header:**
+
+1. ✅ **Action queries are `required`.** *"A fully correct answer truthfully confirms a real change to
+   THIS user's world, which no access-less model can produce."* Correct, and it usefully widens the tag
+   past *reading* context: the C axis also covers whether the answer is grounded in a real result.
+2. ✅ **⭐ Environment context ≠ user context.** *"What day is it?"* → `not_applicable`: **it needs a
+   clock, not user data.** This is a genuinely good distinction and the spec was silent on it. Time,
+   locale, and system state are not the user's project context, and a response that uses them well earns
+   no C credit for doing so.
+
+**Q23/Q24** (*"What risks should I be aware of?"* / *"What opportunities should I pursue?"*) → ✅
+**`optional` blessed.** Lead's contrast with Q22 is the right line: *"what patterns do you see"* demands
+observed data (**required**), while *"what should I be aware of"* admits real craft advice. And per the
+corrected tie-break above, the middle value bounds the cost of being wrong.
 
 ## 6. Reporting requirement
 
@@ -103,13 +132,23 @@ answers no question anyone has. Retest output should carry:
 
 ## 7. Scope, and what I am not asking for
 
-- **No rubric text change lands with this spec.** The C-axis tables in CT v2.3.4 stay as they are; this
-  adds an input the judge previously lacked. **Any rubric edit waits on §5's distribution.**
+- **No rubric text change landed *with* this spec** — the C-axis tables are untouched; the tag adds an
+  input the judge previously lacked. ✅ **The one edit §5 reserved has since been made and only that one**:
+  CT v2.3.5 narrows the C=2-clustering diagnostic to the `required` bucket, on the measured distribution.
 - **Applies to the BYOC Recomposition Rubric too**, whose C axis anchors to CT — same missing input, same
   fix, one tagging pass serves both.
 - **`optional` is expected to be the hardest call.** If a query is genuinely ambiguous, tag it `optional`
-  and flag it; a mis-tag toward `optional` is the least damaging error, because it neither manufactures a
-  failure nor excuses one.
+  and flag it.
+
+> ⚠️ **CORRECTION 2026-08-31, same day, to my own justification above.** v1.0 said a mis-tag toward
+> `optional` *"neither manufactures a failure nor excuses one."* **That is wrong.** `optional` sets the
+> pass floor at C=2, so a query that genuinely needed context **would pass at C=2 when C=3 was the bar** —
+> which is exactly excusing a failure. **The tie-break itself stands; my reason for it did not.**
+>
+> **The correct reason**: `optional` is the **middle value**, so a mis-tag costs at most **one step** of
+> severity in either direction, where mis-tagging to `required` or `not_applicable` costs two. It bounds
+> the error rather than eliminating it. *Recorded because Lead applied this tie-break on my authority
+> before I caught it.*
 
 ---
 

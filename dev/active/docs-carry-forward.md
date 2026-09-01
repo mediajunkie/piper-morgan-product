@@ -1,7 +1,7 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-31 ~16:4x PDT (B3 Tiers A+B fully complete, 36/81; compose-UI question
-answered and closed)
+**Updated**: 2026-08-31 ~19:4x PDT (B3 at 46/81 — Tiers A+B complete, 10 into Tier C; compose-UI
+closed; a real cross-corpus overlap found and flagged)
 **Session log**: `dev/2026/08/31/2026-08-31-0728-docs-code-log.md` (open).
 **Cron**: `cfdd5f76`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-06.
 
@@ -9,13 +9,17 @@ answered and closed)
 whether my publish workflow needs a "mark-ready" status flip. Checked my actual practice rather
 than answer from memory: I've always acted on a direct human signal (PM/Comms telling me), never a
 status-field check — and `ready-for-docs` (the schema value that would implement the flip) has
-**zero rows currently using it**, live-verified. No real gap. Safe to close from my side, replied
-to Web/PM/CIO.
+**zero rows currently using it**, live-verified. No real gap. Safe to close from my side.
 
-**B3: Tiers A+B fully complete, 36/81 patterns dispositioned.** All 21 Tier-B patterns confirmed
-EFFECTIVE this fire (light-touch — no supersession markers; 2 had grep hits that turned out to be
-false positives on inspection, not assumed clean). Only Tier C remains: 45 patterns, genuinely
-needs individual grep-against-code reads per the B3 rule. Next natural session: continue Tier C.
+**B3: 46/81 patterns dispositioned — Tiers A+B fully complete, Tier C 10/45 done.** This fire's
+Tier-C batch surfaced two genuinely new things: (1) a class of patterns that aren't code at all —
+`META-PATTERNS.md`, `PROTO-PATTERNS.md`, `pattern-000-template.md` are structural/meta documents
+about the catalog itself, dispositioned on structural relevance rather than forcing a
+grep-against-code check that doesn't apply; (2) a **real cross-corpus overlap**:
+`pattern-006-verification-first.md` and methodology-core's `m-07-VERIFICATION-FIRST.md` are the
+same principle living independently in both corpora. Flagged both to Arch/CIO while fresh (mail
+sent) — not fixing either, that's a synthesis-stage call. **Tier C remaining: 35 patterns** across
+subsequent fires, same discipline.
 
 ## ⭐ Weekly Docs Audit (#1712) — GENERATED, real work owed, deliberately deferred to a fresh fire
 

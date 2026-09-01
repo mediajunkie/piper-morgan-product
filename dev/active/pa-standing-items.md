@@ -29,9 +29,7 @@
 
 _Strategic threads PM flagged to revisit — not operational/owed items; no near-term action._
 
-| # | Topic | Noted | Notes |
-|---|---|---|---|
-| T1 | **Cross-Piper synthesis** — converge learnings across Piper instances (Piper Morgan / PA, Piper Open on OpenLaws, future siblings) | 2026-06-07 | PM-flagged at the BYOC milestone. **Two-layer by firewall**: *general/transferable* (harness, methodology, role-design, calibration technique) converges up; *client/domain-specific* (OpenLaws IP) stays partitioned. Enabling events are PM-driven (consulting-posture shift, or PM arranging direct PA↔Piper-Open correspondence). No trigger yet as of this prune. |
+_(T1 promoted to Active 2026-08-31 — see below. Nothing else currently sits in this section.)_
 
 ## Active Standing Items
 
@@ -40,6 +38,7 @@ _Strategic threads PM flagged to revisit — not operational/owed items; no near
 | # | Item | Filed | Notes |
 |---|---|---|---|
 | 1 | **Architecture/BYOC — live thread with PM** | 2026-07-26, converged with the BYOC strategic conversation 2026-08-18 | **Current state lives in `pa-carry-forward.md` PM Attention section, not here** — it's rewritten every substantive fire. The 08-10 architecture-diagram connector-overlap question and 08-18's BYOC conversation are the same underlying topic; carry-forward tracks both together now. This row exists only so the Task List doesn't look empty on the thread that's actually the most active one PA owns; don't duplicate the detail in both places. |
+| T1 | **Cross-Piper synthesis — PROMOTED from long-horizon, triggered 2026-08-31** | Noted 2026-06-07, triggered 2026-08-31 | PM sharpened the original convergence framing into a specific ask (relayed via CIO): compare PA and Piper Open specifically — both have functioned as a product assistant — to establish the bar Piper Morgan the product needs to clear. First-pass draft written same-fire: `dev/active/t1-cross-piper-comparison-2026-08-31.md`. Read PO's identity doc + full-engagement bet-close retro; found real convergent lessons (structural-fix-vs-promise, verify-before-assert, and one flagged-portable-by-PO-itself finding — "report findings with relevance pre-attached" — that's a testable claim about Piper Morgan's own response surfaces, not just agent process). Explicitly a DRAFT v0 — PO's other ~10 retros and session logs unread; the OpenLaws-IP firewall from the original framing still applies (general/transferable converges, client-specific stays partitioned). Next: read remaining PO retros, check Piper's actual response generation against the relevance-pre-attached bar, ask PM the draft-then-review-vs-review-then-draft trust-model question flagged in the doc. No deadline stated. |
 
 ### Pending external action
 
