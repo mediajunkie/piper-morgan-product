@@ -2,9 +2,9 @@
 name: template-audit
 description: Run a mechanical template audit on a finished blog draft before sending the publish-ready signal to Docs. Use after PM's voice pass is complete. Produces a pass/fail report with specific flags. Blocks the publish-ready signal on any FAIL.
 scope: comms
-version: 1.10
+version: 1.11
 created: 2026-06-19
-updated: 2026-08-09
+updated: 2026-09-01
 ---
 
 # template-audit
@@ -41,12 +41,12 @@ grep -i "$(basename <draft> .md)" docs/internal/planning/comms/editorial-calenda
 |---|---|---|
 | **#1** caption non-empty | **6 of 6** | Ships carry no caption by convention (#044/#050 use the literal `N/A`) |
 | **#6** footer tease present | **6 of 6** | Ships sit outside the tease chain entirely — see check #6 |
-| **#12** word count ≤1,600 | **4 of 6** | Ship norm is **~1,630 words** (measured #049–#053: 1279 / 1384 / 1906 / 1827 / 1764). The 800–1,300 target is a *narrative and insight* range |
-| **#14** no `#NNN` in prose | **6 of 6** | `#053`, `#054` are **Ship numbers**, not issue numbers, and they are conventional in Ship prose + the previous/next links |
+| **#13** word count ≤1,600 | **4 of 6** | Ship norm is **~1,630 words** (measured #049–#053: 1279 / 1384 / 1906 / 1827 / 1764). The 800–1,300 target is a *narrative and insight* range |
+| **#15** no `#NNN` in prose | **6 of 6** | `#053`, `#054` are **Ship numbers**, not issue numbers, and they are conventional in Ship prose + the previous/next links |
 
 **So a full audit against a Ship produces roughly four false FAILs every single time.** On `theme=ship`, mark these **N/A — by convention**, never FAIL. Every other check applies to Ships unchanged.
 
-⚠️ **Why this is worth a table rather than four footnotes**: a mandatory gate that cries wolf on four of fourteen checks trains its own operator to discard failures by eye — and the discarding habit does not stay confined to the four that deserve it. That is the same dynamic CLAUDE.md documents for the sign-off checklist, where a step that reported thousands of unpushed commits every session got quietly substituted away by the people following it most carefully. **A check that is wrong in a knowable, repeating way is a check people learn to skim.**
+⚠️ **Why this is worth a table rather than four footnotes**: a mandatory gate that cries wolf on four of sixteen checks trains its own operator to discard failures by eye — and the discarding habit does not stay confined to the four that deserve it. That is the same dynamic CLAUDE.md documents for the sign-off checklist, where a step that reported thousands of unpushed commits every session got quietly substituted away by the people following it most carefully. **A check that is wrong in a knowable, repeating way is a check people learn to skim.**
 
 ## The Checklist
 
@@ -85,9 +85,9 @@ PY
 
 ⚠️ **`caption` is legitimately empty on Weekly Ships** — verified across #047–#052, and #044/#050 use the literal `N/A`. So a `FAIL: caption present but EMPTY` on a `theme=ship` draft is **expected and not a blocker**; treat it as N/A-by-convention and say so in the report. On narratives and insights it is a real FAIL.
 
-**If this check ever cannot run** — a `Traceback`, a missing interpreter, anything other than three verdict lines — **report it as `⚠ CANNOT RUN`, not as PASS, and verify the frontmatter by reading it.** A check that did not execute has measured nothing, and its silence is indistinguishable from a clean result (methodology-44). The same rule applies to check #13 below.
+**If this check ever cannot run** — a `Traceback`, a missing interpreter, anything other than three verdict lines — **report it as `⚠ CANNOT RUN`, not as PASS, and verify the frontmatter by reading it.** A check that did not execute has measured nothing, and its silence is indistinguishable from a clean result (methodology-44). The same rule applies to check #14 below.
 
-⚠️ **`\[PM\b` was added 2026-08-03 and it is the load-bearing half.** The prior pattern missed the two bracket forms actually in use — **`[PM: …]`** and **`[PM VOICE-PASS: …]`** — which are the conventions these drafts really carry, present in **5 drafts** at the time of the fix. Measured: the old pattern scored **0** against a draft with a live open bracket, so **this check — the one that BLOCKS the publish-ready signal on placeholders — was passing drafts with unresolved PM questions in them.** It was caught only because an ad-hoc grep during a pre-pass used a different pattern than the skill's own and disagreed with it. Verified: `\[PM\b` catches every real instance across the drafts directory with **zero false positives** — every match is a genuine editorial bracket. Note the skill's own check #13 already referenced `[PM: ...]` brackets, so the form was documented here while this check could not see it.
+⚠️ **`\[PM\b` was added 2026-08-03 and it is the load-bearing half.** The prior pattern missed the two bracket forms actually in use — **`[PM: …]`** and **`[PM VOICE-PASS: …]`** — which are the conventions these drafts really carry, present in **5 drafts** at the time of the fix. Measured: the old pattern scored **0** against a draft with a live open bracket, so **this check — the one that BLOCKS the publish-ready signal on placeholders — was passing drafts with unresolved PM questions in them.** It was caught only because an ad-hoc grep during a pre-pass used a different pattern than the skill's own and disagreed with it. Verified: `\[PM\b` catches every real instance across the drafts directory with **zero false positives** — every match is a genuine editorial bracket. Note the skill's own check #14 already referenced `[PM: ...]` brackets, so the form was documented here while this check could not see it.
 
 **Caption format check**: if caption starts with `'"`, it's a spoken-line format. Verify any apostrophe inside is doubled: `'"It''s fine."'` not `'"It's fine."'` (the latter breaks YAML). ⚠️ **The `''` doubling is correct ONLY inside single-quoted YAML.** Copying that form into markdown **body** text renders the doubled apostrophe literally — a real instance shipped in the Ship #053 draft as `*"OK, let''s see"*`. If a caption also appears in the body, it takes ordinary prose punctuation.
 
@@ -185,7 +185,23 @@ grep -in "cohort" <draft>
 
 Any match = FAIL. Public prose uses "team" (default) or "agent team" (agents-specific context). "Cohort" is fine in session logs, mail, and internal docs — not in published posts.
 
-### 11. AI-writing-tics / cliché constructions
+### 11. Agents referred to as "people"
+
+```bash
+grep -inE "\bpeople\b|\bsomeone\b|\banyone\b|\beveryone\b|\bnobody\b" <draft>
+```
+
+**Needs judgment, not a bare grep result** — most of these are legitimate. The only FAIL case is when the word stands in for a *named agent* (PA, Arch, PPM, CXO, Comms, etc., individually or as a group) rather than for a human — a tester, a reader, a user, or a genuinely generic unknown actor. Read each match in context:
+
+- ✗ **FAIL**: "five people independently measure the wrong thing" when the five are PA/Arch/PPM/Comms/CXO. Fix: "five agents," or name the group ("the team," "every agent who...").
+- ✗ **FAIL**: a section heading like "Everyone checked, and everyone was wrong" describing a specific set of named agents. Fix: "The team checked..." ("team" is the sanctioned public-prose collective noun — see check #10) or restate with "agents."
+- ✓ **PASS**: "the gate wasn't actually protecting anyone yet" — "anyone" means testers/users, not agents.
+- ✓ **PASS**: "from the point of view of someone trying to set up the connector" — a human configuring the product, not an agent.
+- ✓ **PASS**: a closing reader-question ("the next time several people agree with you fast...") that deliberately generalizes to the reader's own world — these are supposed to reach past the agent-specific story, don't flatten them to "agents."
+
+Caught 2026-09-01 (PM: "recent drafts have taken to referring to agents as 'people' — we may need to add that to the things you check"), found in 2 of 2 drafts checked that morning — one had just a footer instance, the other had it running through nearly every section, including a heading. Same family as check #10 ("cohort"): an internal-register word choice that reads wrong in public prose, but unlike #10 this one can't be a pure banned-string check because half its matches are correct as written.
+
+### 12. AI-writing-tics / cliché constructions
 
 ```bash
 grep -inE "(isn't|wasn't) [a-z][^.]{0,60}\. (It'?s|It was|They were)|wasn't [a-z][^.]{0,60}, it was|-fold\b" <draft>
@@ -204,7 +220,7 @@ grep -inE "here'?s the thing|the thing I'?m (keeping|taking)|what I keep coming 
 
 Any confirmed instance of the reveal-cliché or "-fold" = FAIL.
 
-### 12. Word count — within range
+### 13. Word count — within range
 
 ```bash
 wc -w <draft>
@@ -219,7 +235,7 @@ wc -w <draft>
 
 Nominal target: ~800–1,300 words for narratives and insights (markdown word count includes some frontmatter noise — subtract ~10). FAIL if significantly over (>1,600) — flag for PM review, don't auto-block.
 
-### 13. Acronym sweep
+### 14. Acronym sweep
 
 ```bash
 python3 scripts/check-acronyms.py <draft>
@@ -227,7 +243,7 @@ python3 scripts/check-acronyms.py <draft>
 
 Any `⛔ FALSE-UNPACK` line = FAIL. Warnings are advisory — surface to PM if unexpected. (Skip if script not present; note the skip.) NO-GLOSS warnings matching text ONLY inside a `[PM: ...]` editorial bracket or a `[PLACEHOLDER ...]` footer note are false positives — check where the match actually falls before flagging.
 
-### 14. Issue/commit references in narrative prose
+### 15. Issue/commit references in narrative prose
 
 ```bash
 grep -n "#[0-9]\{3,\}\|[a-f0-9]\{7,40\}" <draft>
@@ -235,7 +251,7 @@ grep -n "#[0-9]\{3,\}\|[a-f0-9]\{7,40\}" <draft>
 
 Issue numbers (#824, #888) and commit hashes in narrative prose = FAIL unless they're inside a technical-detail section or coordinate reference (e.g., a metrics table). Replace with role-functional descriptions in running prose.
 
-### 15. Typographic residue — doubled punctuation, orphaned markers, stray double spaces
+### 16. Typographic residue — doubled punctuation, orphaned markers, stray double spaces
 
 ```bash
 grep -nE '(^|[^.])\.\.($|[^.])|[,;:!?]{2,}|,\.|\.,|[a-z][0-9]\)|  +[A-Za-z]' <draft>
@@ -273,13 +289,14 @@ Check                        Result
 8. Zero semicolons           ✓ PASS (0)
 9. No "load-bearing"         ✓ PASS
 10. No "cohort"              ✗ FAIL — 4 instances (lines 13, 33, 49×2, 51)
-11. AI-writing-tics          ✗ FAIL — negation-reveal cliché at lines 17, 29
-12. Word count               ✓ PASS (1,104 words)
-13. Acronym sweep            ✓ PASS
-14. Issue refs in prose      ✓ PASS
+11. Agents as "people"       ✓ PASS
+12. AI-writing-tics          ✗ FAIL — negation-reveal cliché at lines 17, 29
+13. Word count               ✓ PASS (1,104 words)
+14. Acronym sweep            ✓ PASS
+15. Issue refs in prose      ✓ PASS
 
 VERDICT: FAIL (3 issues)
-ACTION: Fix items 5, 10, 11 before sending publish-ready signal.
+ACTION: Fix items 5, 10, 12 before sending publish-ready signal.
 ```
 
 ## On Failure
@@ -304,14 +321,16 @@ On PASS: send the publish-ready memo to Docs inbox per the handoff protocol (Jun
 
 *v1.4 — 2026-08-03. **Check #6 corrected: Weekly Ships sit outside the footer-tease chain.** The check said the tease must match "the next scheduled post" with no exception for Ships. Measured against actual practice: **6 of 6 recent Ships carry no tease**, and **7 of 8** narratives/insights whose next calendar row was a Ship teased *past* it to the following non-Ship post. Read literally, the old wording would have had me "fix" *The List That Lies* to tease Ship #054 — **corrupting a correct chain the day before it published.** Distinct from the v1.3 defect and worse in kind: check #5 was *blind* (it missed things), check #6 was *wrongly directive* (it would have manufactured the defect it claims to prevent). Added a calendar-derived query for the tease target so the rule isn't re-derived by eye. Second gate defect found in this skill in one day — both surfaced by running the gate against real queue state rather than reading it.*
 
-*v1.5 — 2026-08-04. **Added the Ship-calibration table at the top of the checklist.** Four checks — #1 caption, #6 tease, #12 word count, #14 `#NNN` refs — are calibrated for narratives and produce **false FAILs on Weekly Ships**: measured against the 6 most recent published Ships, they'd fail **6/6, 6/6, 4/6, 6/6** respectively, on posts that shipped clean and are live. Ship word norm measured at **~1,630** (#049–#053), against the narrative target of 800–1,300. Two of the four (#1, #6) already had scattered N/A notes; #12 and #14 had none. **Consolidated into one theme-keyed table rather than a fourth footnote**, because the real hazard isn't any single false FAIL — it's that a gate crying wolf on four of fourteen checks teaches its operator to discard failures by eye, and that habit doesn't stay confined to the four that earned it. Same dynamic CLAUDE.md records for the sign-off checklist. Found while pre-passing Ship #054.*
+*v1.5 — 2026-08-04. **Added the Ship-calibration table at the top of the checklist.** Four checks — #1 caption, #6 tease, #13 word count, #15 `#NNN` refs (numbers as of v1.11 renumbering; originally #12/#14) — are calibrated for narratives and produce **false FAILs on Weekly Ships**: measured against the 6 most recent published Ships, they'd fail **6/6, 6/6, 4/6, 6/6** respectively, on posts that shipped clean and are live. Ship word norm measured at **~1,630** (#049–#053), against the narrative target of 800–1,300. Two of the four (#1, #6) already had scattered N/A notes; word count and `#NNN` refs had none. **Consolidated into one theme-keyed table rather than a fourth footnote**, because the real hazard isn't any single false FAIL — it's that a gate crying wolf on four checks teaches its operator to discard failures by eye, and that habit doesn't stay confined to the four that earned it. Same dynamic CLAUDE.md records for the sign-off checklist. Found while pre-passing Ship #054.*
 
 *v1.6 — 2026-08-07. **Added check #15, typographic residue.** Docs' step-5 proof caught **four** defects in *Drained on Paper* after my audit passed it: `architecture..`, `skill1)`, `unthethering`, `mistakes`→`mistake`. **Two of the four were mechanically greppable and this gate should have caught them** — same family as the double space it did catch. The other two need a reader and correctly belong to step 5. Pattern verified against a known-positive (pre-fix file: finds both), a known-negative (published file: 0) and a false-positive sweep (17 active drafts: 0), with the 3-dot ellipsis deliberately excluded after it produced the only false hit. **The sharper lesson is recorded in the check itself**: the same audit caught one number-agreement error and never swept for the class, leaving a second one four paragraphs away.*
 
-*v1.7 — 2026-08-08. **Check #11 gains fake-personal throat-clearing**, named by PM the same morning they stripped two instances from a closing paragraph they'd voice-passed. The shape: a first-person preamble that performs reflection instead of delivering it. **The load-bearing addition is WHERE to look — closings first.** Both instances were closers, and PM's own read was that it signalled a skimmed close. Also recorded in `xian-voice-tone-guide.md` with the delete-the-preamble test.*
+*v1.7 — 2026-08-08. **Check #12 (AI-writing-tics; #11 at the time) gains fake-personal throat-clearing**, named by PM the same morning they stripped two instances from a closing paragraph they'd voice-passed. The shape: a first-person preamble that performs reflection instead of delivering it. **The load-bearing addition is WHERE to look — closings first.** Both instances were closers, and PM's own read was that it signalled a skimmed close. Also recorded in `xian-voice-tone-guide.md` with the delete-the-preamble test.*
 
 *v1.8 — 2026-08-08. **Throat-clearing check extended to OPENERS**, per PM within the hour: *"Openers also have a lot of that 'set up' type prose that ends up being fat to cut."* Same shape, different dialect — scene-setting that delays the first real sentence, where the second paragraph is usually the real opener. **Both ends, not the middle**: the middle is where the argument lives and gets attention.*
 
-*v1.9 — 2026-08-09. **Check #11 gains PM's word-order discriminator.** Reviewing *Over-Checking Pays Dividends* I flagged *"That's a portfolio observation, not a per-decision one"* as the negation-reveal shape and left it for PM. PM's ruling names the actual boundary: **"it doesn't LEAD with the negation, which is part of the tic."** So the defect is **denial-first word order**, not the presence of a negation — a claim stated first and sharpened by a negative is fine. This retires a whole class of false positives the check was generating.*
+*v1.9 — 2026-08-09. **Check #12 (AI-writing-tics; #11 at the time) gains PM's word-order discriminator.** Reviewing *Over-Checking Pays Dividends* I flagged *"That's a portfolio observation, not a per-decision one"* as the negation-reveal shape and left it for PM. PM's ruling names the actual boundary: **"it doesn't LEAD with the negation, which is part of the tic."** So the defect is **denial-first word order**, not the presence of a negation — a claim stated first and sharpened by a negative is fine. This retires a whole class of false positives the check was generating.*
 
-*v1.10 — 2026-08-09. **Check #12 recalibrated against reality.** The 800–1,300 target describes **2 of the last 14** published narratives/insights (min 597, median 1,403, max 2,564), and the >1,600 flag fires on **6 of 14** — posts that shipped fine. Found while pre-passing Beat 21 at 550 words: I nearly reported it as under-length when *Almost Beta* (597) and *What the Running System Found* (614) had published clean weeks earlier. **The fix is not a wider range but a direction**: long is the live concern PM is actively cutting; short is not a defect; **never pad a complete story to reach a floor.** Same mis-calibration family as the v1.5 Ship table — a check whose numbers didn't match what actually ships.*
+*v1.10 — 2026-08-09. **Check #13 (word count; #12 at the time) recalibrated against reality.** The 800–1,300 target describes **2 of the last 14** published narratives/insights (min 597, median 1,403, max 2,564), and the >1,600 flag fires on **6 of 14** — posts that shipped fine. Found while pre-passing Beat 21 at 550 words: I nearly reported it as under-length when *Almost Beta* (597) and *What the Running System Found* (614) had published clean weeks earlier. **The fix is not a wider range but a direction**: long is the live concern PM is actively cutting; short is not a defect; **never pad a complete story to reach a floor.** Same mis-calibration family as the v1.5 Ship table — a check whose numbers didn't match what actually ships.*
+
+*v1.11 — 2026-09-01. **New check #11, agents referred to as "people."** PM: "recent drafts have taken to referring to agents as 'people' — we may need to add that to the things you check." Found reviewing Beats 4 and 5 the same morning: one footer instance in Beat 4, and Beat 5 ("Repetition Isn't Convergence") had it running through nearly every section including a section heading ("Everyone checked, and everyone was wrong the same way"). **This check needs judgment, not a bare grep** — unlike #10 ("cohort"), roughly half of any match set is legitimate (a "someone" configuring the product, an "anyone" meaning testers, a deliberately human-generalizing reader question). The check documents worked examples of both FAIL and PASS so the judgment call is reproducible rather than ad hoc. Checks #12–#16 renumbered up by one to make room (was #11–#15); all internal cross-references and historical changelog number-mentions updated to match current numbering, with the original number noted in parens where a changelog entry describes a check by the number it had at the time.*
