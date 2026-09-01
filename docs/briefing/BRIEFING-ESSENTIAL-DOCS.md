@@ -3,8 +3,8 @@ type: briefing
 title: BRIEFING-ESSENTIAL-DOCS
 valid_from: "2026-03-19"
 last_updated: "2026-07-30"
-last_verified: "2026-07-30"
-verified_scope: "migration status vs actual (was false); session-log naming convention vs 06-29 change; blog-pipeline section vs publish-post.js. ⚠️ CORRECTED 2026-08-01: this scope line previously claimed the PreCompact log file never existed. That check used git history against a GITIGNORED path and was structurally incapable of finding it — the hook DID fire (HOST seat, 2026-07-29 22:10 PDT)."
+last_verified: "2026-09-01"
+verified_scope: "2026-09-01 (Docs): spot-verified blog-metadata pipeline claims against today's own live publish (blog-metadata.csv confirmed still a live publish-post.js output, not a stale legacy reference); merge-keeper section, PreCompact-hook correction, cross-repo worktree warning, and Amber image-toolchain note all read consistent with this session's actual practice. Content unchanged — verification confirmed currency, no drift found. Prior scope (2026-07-30): migration status vs actual (was false); session-log naming convention vs 06-29 change; blog-pipeline section vs publish-post.js. ⚠️ CORRECTED 2026-08-01: this scope line previously claimed the PreCompact log file never existed. That check used git history against a GITIGNORED path and was structurally incapable of finding it — the hook DID fire (HOST seat, 2026-07-29 22:10 PDT)."
 ---
 
 # BRIEFING-ESSENTIAL-DOCS
