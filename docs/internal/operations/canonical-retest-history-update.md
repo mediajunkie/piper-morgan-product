@@ -34,6 +34,18 @@ Why this exists: Run 14 vs Run 15's Q36 routing flip was fully explainable by th
 
 Note: the Tier-2 **judge** model is NOT what these columns record (the judge is a direct SDK client, outside the serving path). Keep recording the judge model in `notes` (e.g. `judge=claude-sonnet-4-6`) as Run 14 did.
 
+## C-axis reporting is per-bucket, never pooled (context_requirement — 2026-08-31)
+
+Every corpus query carries a `context_requirement` tag (`required` / `optional` / `not_applicable`) — the sixth field of each `CANONICAL_QUERIES` row in `tests/e2e/test_canonical_conversations.py`. Semantics + scoring floors: `docs/internal/testing/context-requirement-tag-spec.md` (CXO spec; supports 1674 / 1676 instrument work).
+
+**When a judged run reports C-axis results, report C per bucket — a single pooled C mean across `required` and `not_applicable` queries answers no question anyone has.** Carry this line in the run's `notes` (or the run report it links):
+
+> `C-axis: required n=__ mean=__ · optional n=__ mean=__ · not_applicable n=__ (excluded from the context-assembly signal)`
+
+The **`required` bucket alone is the context-assembly health signal.** A `not_applicable` query scoring C=2 is full marks, not a deficiency — do not read historical C=2 clustering as a context-assembly failure without first splitting by bucket (spec §5).
+
+Tagging-pass distribution (2026-08-31, the spec's §5 finding): **required=49 · optional=2 (Q23, Q24 — §7 flags, CXO adjudicates) · not_applicable=10 (Q1–5, Q6, Q26–28, Q50) · total=61.**
+
 ## One-liner append (from repo root)
 
 ```bash

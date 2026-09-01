@@ -1,8 +1,37 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-31 13:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-31 16:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## ✅ #1166 RE-GATED — dead "post-M3" trigger fixed, no PDR opened (2026-08-31 16:22)
+Arch flagged (via CIO's standing-items audit) that #1166's (Type-2 Dreaming discovery-spike)
+kickoff gate — "awaiting M3 ship" — can never fire since M3/M4/M5 were swept 07-04/05. Checked:
+the underlying dependency (persisted memory) was actually satisfied when M3's own scope shipped in
+early June — the gate died on a label, not on its real condition. Posted the re-gate directly on
+the issue (per Arch's own framing — "same bucket as other post-beta re-triage items" is a complete
+answer): milestone stays Production (already correct), trigger corrected to "re-triage at
+MVP-close" like everything else deferred this way, PDR deliberately not opened now (current build
+effort is MCP-path-first per ESSENCE v1.0; this is discovery-spike work for a speculative
+feature). 2026-06-08 three-lens convergence preserved, doesn't need redoing later. **Closed —
+nothing further owed.**
+
+## ✅ #1708 THREAD FULLY CLOSED — Docs verified independently, picked up SETUP.md cleanly (2026-08-31 16:22)
+Docs confirmed no actual collision (verified my landed work independently rather than trust my
+summary — checked the hosted URL live, checked all 4 "production" mentions are contextual not
+instructional, read CONTRIBUTING.md's §1b against Lead's probe line-by-line). Picked up the
+`SETUP.md` residual I'd flagged: fixed Lead's three specific errors (nonexistent
+`PIPER.example.md`, wrong psql check for the Docker path, stale uvicorn entry point) plus their
+echoes elsewhere in the doc, flagged the CONTRIBUTING.md/SETUP.md overlap explicitly rather than
+consolidate unilaterally (matches my own framing that this was a real decision, not Docs' to make
+alone), left `ALPHA_TESTING_GUIDE.md` for its own pass. **Nothing further owed from PPM.**
+
+## 🔵 BYOC MARKETPLACE NARRATIVE — Comms re-surfaced a 23-day-stale ask to PM, informational
+Comms' Aug-8 angle-pick request (A/B/C or deprioritize) never got a PM answer; CIO's standing-items
+audit caught it. Comms correctly notes this is a separate blog/GTM artifact from the BYOC *listing*
+copy I put on hold — probably doesn't need to wait on the same #1462 gate, but flagged the
+connection since angle B touches plugin/marketplace positioning. Addressed to PM, not mine to
+decide. No PPM action.
 
 ## ✅ #1708 EXECUTED — ALPHA_QUICKSTART.md hosted-primary, CONTRIBUTING.md gets full local setup (2026-08-31 13:22)
 PM blessed the plan ("yes I bless the plan") after Lead's technical read + fresh-clone probe

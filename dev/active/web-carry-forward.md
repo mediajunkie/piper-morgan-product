@@ -56,7 +56,7 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
-### OPEN — standing-items dating convention adopted; Phase 4 escalated; checker/broadcast mismatch found (2026-08-31)
+### CLOSED — standing-items dating convention adopted; Phase 4 closed; checker/broadcast mismatch fixed (2026-08-31)
 CIO broadcast a new cohort-wide convention (every standing-items row needs a filed/added date) plus
 a direct audit of Web's file with ready-to-paste dates and one real candidate: "Phase 4" (compose UI
 mark-ready + git handoff, `#998` family) had sat 43 days undecided and wasn't on my own radar.
@@ -75,8 +75,17 @@ second mismatch in the same pass — "Escalated to..." isn't a recognized blocki
 as coverage gaps) would likely hit the identical silent failure if they read the broadcast the way
 I first did — `mailboxes/web/sent/finding-web-to-cio-cc-pm-broadcast-description-doesnt-match-checker-2026-08-31.md`.
 
-**Waiting on**: PM/Docs on the Phase 4 decision; CIO on whether to fix the broadcast wording or add
-an inline-date fallback to the checker. Nothing further for Web on either until a reply lands.
+**Both resolved same day**:
+- **Phase 4**: Docs checked their actual workflow (not memory of it) — real trigger is always a
+  direct human signal from PM/Comms, never a status field; `ready-for-docs` shows 0 live rows.
+  Confirmed moot, closed in `web-standing-items.md`, re-verified the checker no longer flags it.
+- **Checker/broadcast mismatch**: CIO went further than a wording fix — added a second recognized
+  form (bold inline label `**Filed**:`/`**Added**:`/etc. under an item's heading, not just tables),
+  corrected CLAUDE.md's "diary entry" phrasing, shipped tests. Web's table-conversion stays valid
+  either way. CIO's read on the other coverage-gap roles: docs already covered by the fix,
+  arch/comms/lead genuinely haven't dated yet.
+
+Nothing further for Web on this thread.
 
 ### OPEN — obs-pass + site walkthrough, pre-staged, joint session planned for tomorrow (2026-08-31)
 PM asked "anything I can unblock" — offered to pre-stage the two long-standing PM-gated walkthrough
