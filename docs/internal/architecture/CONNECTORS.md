@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-30
+last_updated: 2026-09-01
 currency_claim: updated same-commit with any connector transport/grant/scope change
 max_age_days: 30
 ---
@@ -31,13 +31,23 @@ its headless case converts to host-mediated and is dropped.
 
 ## Rules for the tool layer (MCP surface — apply before authoring any tool output)
 
-1. **Hedges ride the payload, not a prompt.** On BYOC no model of ours is in the loop, so honesty
-   (commitment 4) must be carried by what the tool RETURNS — structured flags (`source_failed`
-   already travels end-to-end) plus rendered hedge text in the result itself. A floor-prompt
-   instruction enforces nothing on a surface that has no floor. (CXO's #1463 trace, 08-30; **first live
-   evidence same evening** — probe Claude arm: prose fabricated "your todo list is currently
-   empty" from a FAILED read while the structured variant stayed honest; GPT arm pending. The
-   rule is now evidence-backed, not just traced.)
+1. **Hedges ride the payload, not a prompt — and the payload FORM is class-dependent** *(revised
+   2026-09-01 on both-vendor probe evidence; the class taxonomy is a post-hoc account with a
+   designed killer test pending — treat as best-current-guidance, not settled law)*. On BYOC no
+   model of ours is in the loop; a floor-prompt instruction enforces nothing there. What the
+   evidence says about how honesty travels:
+   - **Class A — the qualification is about the DELIVERED content, or IS the answer** (total read
+     failure, staleness, decline, action-not-taken): **structure works and prose is the fabrication
+     risk** — `source_failed` as a structured field is exactly right (Claude's prose fabricated
+     "your todo list is currently empty" from a failed read; structure fixed it, both vendors).
+   - **Class B — the qualification is about content NOT delivered while delivered content already
+     answers the question** (partial coverage, truncation): **structure VANISHES in both vendors,
+     ± directive fields; prose survives.** Carry that class in prose the host is summarizing — or
+     better, don't return partial-with-a-caveat at all: return complete data, or make partialness
+     part of the list's own shape rather than a note beside it.
+   No single slogan covers both classes — format effectiveness runs in opposite directions.
+   (Trail: CXO's #1463 trace 08-30 → first probe 08-30 → both-vendor deconfounder 09-01 falsifying
+   two format-axis principles; rubric v0.3.)
 2. **New held grants trip the scope-bet gate** (tripwire 3) — no second knowledge-source connector
    rides in on Bet 003.
 3. **Adapter names must tell the transport truth** — no more `*MCPAdapter` over REST. Rename on

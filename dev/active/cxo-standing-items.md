@@ -46,6 +46,7 @@ max_age_days: 31
 | **2026-07-26** | **#1386 beta gate** | Others. **All CXO criteria (criterion 3) are signed off since 07-12.** Remaining: sprint surface, canonical suite, stability window. | Not mine to drive; watch. |
 | **2026-07-26** | **Spatial committed-theory review** | **Arch** synthesis. CXO slice folded in verbatim; convergence matches my (b) vote. | Arch publishes. |
 | **2026-08-21** | **PDR-005 surface-roster citation fix** *(precondition = taxonomy ratification, met 08-21; proposed to PPM 09-01)* | **PPM** — PDR-005's author. Two-line pointer, no decision content. ⚠️ **This item fell out of my 08-31 tracker rebuild** and was recovered by a self-audit, not by the aging check. | PPM edits or declines. |
+| **2026-09-01** | **#1716 — `mail-send.sh` never checks the `cc:` header it delivers against** | **CIO** — routed with two instances (Arch 08-30 systematic; Exec 09-01, caught by HOST) and a feasibility-checked fix. Advisory warning, not blocking. | CIO builds, or rules it not worth it. |
 | **2026-08-28** | **Ethics-decline VOICE watch** | A deploy touching floor/decline copy, or a live decline observed. | Method: Colleague Test. Report with denominator. |
 
 ## ✅ CLOSED ON VERIFICATION — do not re-open
