@@ -19,9 +19,17 @@ another verify-before-assert instance, specifically "when a memory asserts an ab
 asserting it as current," after PO overclaimed connector availability twice on stale memory). That's
 either because the lessons are real and simply hold, or because five self-authored retros by the same
 agent aren't independent enough samples to expect disconfirmation from — worth naming rather than letting
-five-for-five read as stronger evidence than it is. PO's session logs (not yet read) are a better test:
-they're contemporaneous, not retrospective, so they'd show the lessons *failing to apply in the moment*
-if that ever happened, which a retro written after the fact is more likely to smooth over.
+five-for-five read as stronger evidence than it is.
+
+**Update, 09-01: checked two session logs against the retros' claims — they upgrade, not just fail to
+disconfirm.** Read `logs/2026-05-19-po-log.md` (week 3's flagged Monday) and `logs/2026-07-31-po-log.md`
+(bet-close retro's flagged "two corrections in one day"). Both matched the retrospective accounts
+closely, and 07-31 did better than match — it contains the actual timestamped incident (issue 329,
+17:45 PDT) that produced lesson #4 below, with xian's real words and PO's same-evening memory write,
+which is a stronger artifact than the retro's own summary of it. This doesn't fully resolve the
+five-for-five-agreement caveat above (2 of ~90 logs is still a thin sample), but it's a real, if
+partial, upgrade from "no disconfirmation found" to "direct confirmation found," on the two logs
+actually checked.
 
 ---
 
@@ -84,14 +92,16 @@ These are the load-bearing rows, because nobody told either of us to converge he
    against, recurring at the same rate in both: a plausible secondhand claim about system state, stated
    with the confidence of a directly-observed fact.
 
-4. **⭐ "Report findings with relevance pre-attached" — PO's own #9, explicitly flagged portable.** Exact
-   quote: *"whose problem, blocking or not, new or not — in the same sentence as the finding, not as a
-   follow-up after the human has to ask."* PO's failure mode (retro §2): reporting issue 329's status as
-   a flat, accurate fact during deadline pressure, which read as alarming and made xian do triage work
-   PO should have done first. **This is the single most product-relevant finding in the whole
-   comparison** — it's not a process tip for an agent, it's a description of what a *good PM-assistant
-   response* looks like. Piper Morgan the product routinely returns findings, status, and search results
-   to users.
+4. **⭐ "Report findings with relevance pre-attached" — PO's own #9, explicitly flagged portable, and now
+   confirmed against the actual contemporaneous incident, not just the retrospective summary.** Read the
+   real session log (`logs/2026-07-31-po-log.md`, 17:45 PDT entry) rather than take the retro's word for
+   it: *"xian caught three things and corrected them: (1) I reported issue 329's status as a flat sweep
+   line without saying whose problem it was or whether it blocked invoicing — confusing and alarming
+   near a deadline."* Same evening, PO wrote the persistent-memory fix immediately — not after a delay —
+   with the exact wording that became the retro's #9: *"always say whose problem + blocking-or-not +
+   new-or-not in the same breath as a finding."* **This is a real anecdote with a real timestamp, not a
+   tidied-up retrospective framing** — worth having in hand if this comparison is ever shared past this
+   draft. Piper Morgan the product routinely returns findings, status, and search results to users.
 
    **Checked, not assumed, against Piper's own code — first pass, not exhaustive.**
    `services/mux/lenses/priority.py` is architecturally exactly the mechanism that would do this: a
@@ -143,9 +153,10 @@ These are the load-bearing rows, because nobody told either of us to converge he
    a real pass across the rest of the response-generation surface (`conversational_floor.py`, action
    confirmations, search-result formatting) before treating this as a settled product gap rather than
    one lead.
-3. **Now the more useful remaining source**: PO's ~30 daily session logs are contemporaneous, not
-   retrospective — a better test of whether the convergent lessons actually held in the moment or just
-   read cleanly in hindsight. Not started.
+3. ✅ **Partially done**: read 2 of ~90 PO session logs (05-19, 07-31) as a contemporaneous check —
+   both confirmed the retro claims directly, and 07-31 surfaced the actual real-time incident behind
+   lesson #4. Still a thin sample; more logs would strengthen this further but aren't required to trust
+   the finding already in hand.
 4. Ask PM the PLACEHOLDER question above about the draft-then-review vs. review-then-draft trust model.
 
 — PA
