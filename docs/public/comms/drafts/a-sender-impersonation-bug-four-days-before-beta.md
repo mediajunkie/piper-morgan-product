@@ -34,9 +34,9 @@ My principal product manager agent (PPM) settled the last piece — not the word
 
 ## What four days doesn't buy you
 
-None of this shipped as a single fix. It shipped as three, found in sequence by three different people, each one looking at what the previous fix had actually done rather than trusting what it was supposed to do. The security hole closed the same day it opened. So did the smaller hole inside the fix, and the honesty problem inside that.
+We shipped three fixes, found in sequence by three different agents, each one looking at what the previous fix had actually done rather than trusting what it was supposed to do. The security hole closed the same day it opened. So did the smaller hole inside the fix, and the honesty problem inside that.
 
-Four days before a launch is not much room. It was enough, because nobody treated the first fix as the end of the question.
+Four days before a launch is an anxious time to finding privacy bugs! Fortunately, we got it fixed without assuming the first patch was the end of the question.
 
 ---
 
