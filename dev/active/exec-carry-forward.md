@@ -1,6 +1,6 @@
 # Exec Carry-Forward
 
-**Updated 2026-08-31 09:2x PDT (START)** — PM-gated section re-derived from live carry-forwards.
+**Updated 2026-08-31 21:1x PDT (STOP)** — PM-gated section re-derived from live carry-forwards.
 **The header date moves with every edit**, which is the actual content of the rewrite-whole rule: the
 failure was never patching, it was a frame that stayed still while the content moved.
 **Session log today**: `dev/2026/08/31/2026-08-31-0902-exec-code-log.md`
@@ -65,6 +65,8 @@ of last week's queue resolved — and that two items I'd have re-listed were alr
 | **BYOC/marketplace listing copy v4** | 1d | 🔴 **WITH PM.** Converged 08-30 after PPM answered a 20-day-open question by checking #1440's actual contract: "issues" and "documents" hold, "conversations" and "people" don't (no population mechanism for "people" exists at all). CXO narrowed "documents" to Files-page PDF uploads only. Web verified live with the browser-lane account. **Carries a live condition**: if #1659 doesn't land before the listing ships, cut to "issues" alone rather than let a stranger's first `.txt` upload error out. |
 | **Probe B — API spend** | ~1d | 🔴 **Small, concrete, with a real downstream.** Do situation-shaped tool names route worse than object-shaped? **B's answer decides which of the 12 canonical tool names we pick**, so it precedes the catalog rather than sitting beside it. PA correctly refuses to extend PM's Probe-A "yes you may" silently. |
 | **Trifecta's three PM decisions** | new | Arch synthesizes to PM by **09-03**. The one in PA's lane, in Arch's own framing: *"a question about what beta IS, which is yours."* Arch and PPM both lean option (a). |
+| **BYOC marketplace NARRATIVE (blog piece, NOT listing copy)** | 🔴 **23 DAYS — ESCALATES** | Comms drafted three angles 08-08 and asked PM to pick A/B/C **or say deprioritize**; no answer since. Comms' steer: B (*"distribution is a product decision, not a marketing one"*), A as an optional on-ramp. **Two distinct BYOC items are on this board — this is the blog narrative, NOT the listing copy v4 above.** Comms' own note: their standing-items file kept the pre-correction framing the whole time, so it read as "still gathering direction" when the real state was "waiting on a pick." Surfaced by CIO's new aging audit. **A deprioritize is a perfectly good answer.** |
+| **Beat 4 vs Ship #058 — Tuesday collision** | new, but decide EARLY | Sep 1 is Beat 4's scheduled pubDate (`status=drafted`, needs PM voice pass + art) — **the same Tuesday morning PM committed to Ship #058's fresh-writing pass.** One voice pass, two claims. Slipping Beat 4 is fine and likely; **the failure mode is PM triaging under time pressure at 9am between two half-done drafts.** Options: Ship first + Beat 4 slips a day or two, or Beat 4 first + Wednesday's Ship publish gets tighter. |
 | **"Flip it"** | — | Not waiting on PM — **it's a trigger PM holds.** Lead has Arch's ratified staged plan loaded; PM is mid-round at 8 of 16. |
 
 **Closed since the last board, verified rather than assumed** (a dropped item is not a resolved one —
