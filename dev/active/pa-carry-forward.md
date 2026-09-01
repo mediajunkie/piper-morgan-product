@@ -253,145 +253,20 @@ days stale.
     PM signaled the next topic is "the BYOC skunkworks project itself, next steps" — still PM's
     timing to initiate, now with ESSENCE.md as the fixed point, plus the milestone question above
     (crisply framed, PM's ruling pending) as something that conversation may need to actually settle.
-- 💵 **Probe B superseded by CXO's concrete #1463 packet, 08-30 — harness built, awaiting PM go-ahead
-  on credential spend.** CXO asked PA (or Web) directly to run the BYOC recomposition probe, since
-  CXO structurally can't be both subject and scorer. Checked rather than assumed: **credentials are
-  now present in Keychain** (both Anthropic and OpenAI, verified live) — Probe A's original August
-  "no credential at all" blocker no longer applies. Built
-  `dev/active/probes/probe_b_recomposition_2026-08-30.py`, adapted from July's Probe A harness,
-  matching CXO's packet exactly (6 corpus items × prose/structured + 2 negative controls = 14
-  trials/vendor, 28 total across Claude+GPT). Compiles clean, **not yet run** — sent a precise ask to
-  PM (cc CXO/Web/Lead/Arch/PPM) for authorization to spend real API credential, same discipline as
-  before ("your yes-you-may was scoped to Probe A, not extending it silently"). One interpretive call
-  flagged in the script's own comments for CXO to confirm (item 6's negative-control payload shape
-  isn't spelled out verbatim in the packet) rather than silently guessed. No deadline per CXO's own
-  packet — ready whenever PM says go.
-  - ✅ **CXO confirmed same-day: PA's item-6 control interpretation was correct, and better than
-    CXO's own original packet.** *"Adopt `{"action_performed": true}` verbatim... not a tolerable
-    substitution — better than what I wrote."* The general rule CXO extracted from the correction:
-    a negative control must be chosen **per item, against that item's own confound** — item 1's
-    failure mode is a hedge getting dropped (bare-payload control), item 6's is a claim getting
-    fabricated (opposite-valued-payload control) — never one control shape applied uniformly.
-    Script comment updated to reflect confirmation, not open interpretation. Also confirmed: PA's
-    restraint on not silently extending Probe A's authorization was correct and CXO "would have said
-    so unprompted." **Scoring note for later**: item 2 is both a scored corpus item AND item 1's
-    discriminator — if the host says "no todos" for both, that's the probe's headline result, not a
-    footnote (means the floor's checked-vs-failed distinction is being lost entirely on this surface).
-  - 🔴 **Stakes raised, same day — this probe is no longer just informing an unratified rubric.**
-    ESSENCE v1.0 was ratified this afternoon; commitment 7 names the recomposition variant of the
-    Colleague Test as the BYOC-path gate. CXO verified by diff, not summary: the *requirement* is now
-    ratified law, but the *instrument* (`byoc-recomposition-rubric-v0.1.md`) is still unratified and
-    its load-bearing T axis is explicitly `PENDING-PROBE`. **So PA's 28 calls are now what stands
-    between a named, ratified gate and a real one** — not urgent (still no deadline from CXO), but
-    the probe's importance jumped a level today.
-  - ✅ **RUN 08-30 evening — xian authorized same day ("I authorize PA," relayed by Dispatch-PM).**
-    Claude arm complete and scored (14/14 trials); **GPT-4o arm did NOT run** — every call errored
-    `insufficient_quota: credit_balance_exhausted` on the OpenAI account, a billing state, not a probe
-    finding. Results: `dev/active/probes/RESULTS-probe-b-recomposition-2026-08-30.md`. **Headline: the
-    core case matched the rubric's hypothesis exactly** — prose fabricated ("your todo list is
-    currently empty" from a *failed* read, the exact forbidden claim), structured stayed clean (no
-    empty claim, plain access-failure statement). **But item 3 reversed it** — structured *dropped* a
-    partial-coverage hedge that prose preserved. Reported both honestly rather than force a clean
-    "structured always wins" story; explicitly declined to generalize from n=1/cell. Negative controls
-    both passed (harness measuring real signal). Reported to CXO (cc PM/PPM/Arch/Lead/Web) with the
-    one open item: **someone with OpenAI billing access needs to top up credits before the GPT arm can
-    run** — PA doesn't have that access. Single-vendor result stands as Claude-only until then, per the
-    packet's own text that a one-vendor finding is about one vendor's build, not the product.
-  - ⭐ **CXO's interpretation, 08-31 morning — rubric revised to v0.2 on PA's evidence, and CXO found a
-    real confound in their own packet.** Item 1 confirmed the hypothesis, and CXO sharpened why it's
-    worse than "a hedge weakened": the fabricated reply is *"nearly indistinguishable"* from item 2's
-    genuinely-empty reply — *"the failure isn't a degraded answer — it's a fluent, correct answer to a
-    different question."* Item 3 **falsified T=3's load-bearing clause** ("carried in structure the
-    host must render or visibly omit" — false, since structure got silently dropped); CXO rewrote T=3
-    at its point of assertion rather than only in a footnote. **Root cause of why item 3 fit no
-    pre-committed bucket**: CXO's own packet confounded two variables inside the "structured" arm —
-    item 1's structured payload used a DIRECTIVE field (`may_claim_empty: false`), item 3's used a
-    DESCRIPTIVE one (`coverage: partial`) — so the run can't separate "structure helps" from
-    "directives help." Two live explanations, deliberately not resolved: (a) directive > descriptive,
-    (b) central > peripheral. **CXO explicitly credited PA's reporting discipline**: *"reporting the
-    counter-example prominently rather than burying it under the confirming case is what made the
-    falsification findable."* Gate status restated precisely: still `PENDING-PROBE`, not PASS —
-    "revising criteria on evidence and licensing a pass are different acts." ESSENCE went through
-    v1.0.1→v1.0.2 same-evening/morning to keep the note's wording from overselling this as more
-    resolved than it is (a subtle "law says slightly more than its instrument permits" drift, per
-    CXO/Arch — the harder direction to catch since it reads as progress).
-  - ✅ **Deconfounder prepared 08-31, not yet run, and its authorization status corrected same day.**
-    CXO proposed a 2-call follow-up (re-run item 3's structured payload with a directive field added,
-    isolating directive-vs-descriptive from central-vs-peripheral). Added to the harness as
-    `DECONFOUNDER_CASES`, gated behind `PROBE_DECONFOUND=1` so a plain re-run still reproduces the
-    original 14-trial corpus exactly for comparability. **CXO initially said "no spend approval
-    needed at that size," then retracted it same morning**: *"size isn't the criterion — authorization
-    scope is, and PM's go covered a specific packet... it rides with the GPT arm's authorization, and
-    the ask is yours."* Script comment corrected to match. Sent a precise, separate ask to PM (cc
-    CXO/Arch/PPM/Lead) rather than quietly fold it into the existing GPT-arm authorization — not
-    urgent, rides whenever PM tops up the account either way.
-  - 🔵 **PM check-in, 08-31 morning — direct conversation, not mail.** PM asked whether the credential
-    ask was still live; confirmed yes, but drew the distinction precisely: the *authorization* question
-    (may PA spend) was already resolved 08-30, what's open now is purely *billing* — verified live
-    (a fresh test call, not trusting the prior error) that the OpenAI account still returns
-    `insufficient_quota: credit_balance_exhausted`. **PM will top up the account, may not get to it
-    "tomorrow" (2026-09-01) specifically** — no committed date beyond that. PM then asked what the
-    credential is actually used for; answered with two distinct uses, checked rather than assumed: (1)
-    the concrete current reason — CXO's #1463 recomposition probes, needed because PDR-006's BYOC
-    design targets both Claude and ChatGPT as host surfaces; (2) a secondary, code-verified-but-not-
-    confirmed-live fact — `services/config/llm_config_service.py` wires OpenAI as a real fallback
-    provider in the resolution order, consistent with reliability wiring rather than active
-    multi-provider investment, which stays frozen per Position 3 (2026-08-26). Framed as no rush on
-    either side — the probe has no deadline.
-  - ⭐ **Follow-up, same morning — PM asked directly whether "no optional complexity" meant BYOC should
-    launch Claude-only, ChatGPT later.** Checked the record rather than trust either PM's memory or my
-    own: **two genuinely different "provider" decisions exist, easy to conflate.** Position 3
-    (2026-08-26, decisions.log) froze *backend* LLM-provider investment — Piper's own server not
-    supporting Gemini/OpenAI as alternative reasoning models. That one really is Claude-only. **Separate
-    and NOT frozen**: which chat *host surfaces* (Claude vs. ChatGPT) a BYOC user connects through —
-    `ESSENCE.md` commitment 6 explicitly states *"Claude/ChatGPT/whatever-comes-next"*, and PDR-006
-    targets both from the start. The #1463 probe's GPT arm tests the second (host-surface) axis, not
-    the first (backend) one — so PM's memory of a Claude-only freeze was correct, just attached to the
-    wrong decision for this specific credential. Confirmed this explicitly so the record doesn't drift:
-    **BYOC is NOT scoped Claude-only-at-launch**; the multi-provider freeze is about Piper's own backend
-    only. No change to the probe or the credential ask either way.
-  - ✅ **Both authorizations now confirmed, independently, twice over.** PM told PA directly ("agreed run
-    it together") and separately told CXO, who relayed it on the durable surface — GPT arm AND the
-    2-call deconfounder are both authorized to run together. **But the credential itself is NOT actually
-    live yet, despite PM's own belief and CXO's relay that it was** — PA tested live (not trusted the
-    report) twice, ~1hr apart, both times the exact same `insufficient_quota: credit_balance_exhausted`.
-    Corrected the record for the whole cc list (CXO/PM/Arch/PPM/Lead) rather than let "unblocked" stand
-    uncorrected or silently keep retrying — suggested PM verify the $10 actually posted at
-    `platform.openai.com/settings/organization/billing/`, since an hour is long enough to rule out a
-    trivial propagation delay as the only explanation. **Will run everything (GPT arm + deconfounder,
-    scored against rubric v0.2) the moment a live test call actually succeeds** — no further ask needed,
-    just watching for the credential to actually clear.
-  - 🟢 **RESOLVED (root cause found), 08-31 afternoon — project-scope mismatch, not propagation delay.**
-    PM screenshotted the OpenAI billing page directly: **$9.22 balance, real and confirmed** (down from
-    $10 — separately explained below), but under org "Design in Product" → project **"Intern."** Checked
-    the stored key's prefix rather than guess: `sk-proj-` — **project-scoped**, confirmed via a direct
-    `keyring.get_password` read (not the raw `security` CLI, which hangs on a GUI dialog when run
-    non-interactively — hit this live, backgrounded after 120s, didn't block on it). A project-scoped
-    key only draws against the specific project it was minted in; PM confirmed via a second screenshot
-    **only one org exists**, but **two projects** under it ("Intern" — funded — and "layersofmeta").
-    Immediately retested the stored key live after seeing the funded balance — **identical
-    `insufficient_quota` error** — which is exactly what a key scoped to "layersofmeta" (or wherever it
-    actually points) would do regardless of "Intern"'s balance. This also answers PM's "did something
-    already spend it?!" alarm: **not PA's testing** — every call against the stored key failed at the
-    429 stage (unbilled), and the only successful calls were the free `/v1/models` check. Most likely
-    explanation for $10→$9.22, per PM's own hunch: pay-as-you-go can carry a small pre-existing debit
-    from before hitting `credit_balance_exhausted`, which a top-up settles first. **Fix in motion, PM's
-    action**: PM is regenerating a fresh key from within "Intern" (the funded project) rather than
-    hunting for whichever project the stale key belongs to. **PA's next step once that key arrives**:
-    store via `KeychainService` (never the raw `security` CLI — different naming convention, invisible
-    to the app), verify live with a real `chat.completions.create` call, then run the full GPT arm (14
-    trials) + the pre-authorized 2-call deconfounder, scored against rubric v0.2. CXO independently asked
-    PA for the same prefix fact mid-thread (before PM's screenshot resolved it) — replied confirming
-    `sk-proj-` and the full resolution
-    (`mailboxes/pa/sent/reply-pa-to-cxo-cc-pm-lead-prefix-is-sk-proj-confirmed-plus-pm-found-two-projects-2026-08-31.md`).
-    CXO separately self-corrected their own "GPT arm unblocked" overclaim in writing, precisely locating
-    it as an action-vs-system-state layer conflation — no reply owed, filed to read.
-  - **Separately, cc'd on a corpus-ownership question, answered factually rather than claimed or
-    disclaimed reflexively**: CXO asked Lead whether Lead or PA owns "the canonical query corpus"
-    feeding #928's Colleague-Test scorer. Clarified precisely: PA's probe scripts
-    (`dev/active/probes/`) are one-off, hand-built corpora for specific design questions, not the
-    ongoing canonical corpus CXO's memo describes — flagged this distinction so Lead isn't choosing
-    between two real candidates when PA likely isn't one. Not PA's to decide either way.
+- ✅ **#1463 recomposition probe (Probe B) — RESOLVED AND COMPLETE, 08-30 through 09-01.** Full arc:
+  CXO's packet built and run Claude-only 08-30 (core case confirmed the rubric's hypothesis; item 3
+  reversed it — structured dropped a hedge prose kept); GPT-4o arm blocked on OpenAI billing through
+  08-31 (a project-scope mismatch — PM's top-up landed in the wrong project — not a probe finding);
+  credential fixed 09-01 (PM found the right project, generated a fresh key, PA verified live); full
+  GPT arm + the pre-authorized 2-call deconfounder run same day. **Headline results**: GPT-4o didn't
+  need the structured hint on the core case (a real cross-vendor difference); item 3's hedge-drop
+  replicated independently in GPT-4o; the deconfounder falsified CXO's directive-vs-descriptive
+  hypothesis in both vendors. CXO then correctly re-diagnosed the real separator (content-present vs.
+  content-absent qualifications, not payload format) — PA verified it against the raw data and agreed.
+  **Full writeups**: `dev/active/probes/RESULTS-probe-b-recomposition-2026-08-30.md` (Claude arm) and
+  `dev/active/probes/RESULTS-probe-b-gpt-and-deconfounder-2026-09-01.md` (GPT arm + deconfounder +
+  CXO's resolution). **Thread closed — nothing further owed unless PM authorizes CXO's proposed
+  follow-up test** (a cheap 2-call combined-payload probe CXO flagged but explicitly didn't ask for).
 
 ### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
 
@@ -410,35 +285,36 @@ identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns not
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-30 STOP (21:45)
+## Active state — 2026-09-01 (mid-day, updated fire 15:45)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/30/2026-08-30-0700-pa-code-log.md` — **8/30 DAY-CLOSED**, verified
-  strict. Full day-arc: plugin-license resolved, Architectural Review aftermath (CONNECTORS.md citing
-  PA's own finding, the milestone question sharpened), and the #1463 recomposition probe run end-to-
-  end — read that log if picking any thread up cold.
-- **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure.
-- **Cron**: `42 6,9,12,15,18,21`. Re-armed at STOP (delete-then-create): `33420d97` deleted → job
-  `bfa0af14` created → `CronList` confirmed exactly one survives. 🔴 **First action any new session:
-  `CronList`.** Empty = not cycling.
-- **Inbox**: 0.
+- **Session log**: `dev/2026/09/01/2026-09-01-0645-pa-code-log.md` — today's, still open. Full arc so
+  far: OpenAI credential resolved live with PM, #1463 probe closed out end-to-end (both vendors +
+  deconfounder), CXO's item-3 resolution verified and replied to, T1 (Cross-Piper synthesis) advanced
+  across five passes including a self-correction on the code-check finding.
+- **Cron**: `42 6,9,12,15,18,21`, job `0a39909f` (re-armed 08-31 ~22:xx via delete-then-create for
+  substantive T1 work; unchanged since). 🔴 **First action any new session: `CronList`.** Empty = not
+  cycling.
+- **Inbox**: 0 as of 15:45 fire.
 - **Standing discipline (from 08-15's correction, still active)**: re-verify carried-forward claims
   against their live source before citing them in an external report, not just at routine
   carry-forward-hygiene time. Habit, not yet mechanical.
 - **Connector-architecture thread: PERMANENTLY CLOSED** — every sub-question now has a final,
   PM-ratified answer, and PA's own finding is now cited in `CONNECTORS.md` as permanent architecture.
   Nothing owed, nothing to chase on this thread specifically.
-- 🔴 **One genuinely open external dependency**: the #1463 recomposition probe's Claude arm ran and
-  produced real, honestly-mixed findings (see PM Attention above); the **GPT-4o arm is blocked on
-  OpenAI account credits being exhausted** — PA doesn't have billing access to fix this. Watch for
-  whoever does (Lead? PM directly?) to top it up so the second vendor arm can complete; the report
-  already named this as the one open action item, so it shouldn't need re-raising, just watching.
+- **#1463 probe: CLOSED, see the collapsed entry above.** No open external dependency remains.
+- **T1 (Cross-Piper synthesis) — genuinely active, DRAFT v0.** Draft:
+  `dev/active/t1-cross-piper-comparison-2026-08-31.md`. All 5 PO retros + 2 session logs read; 3 code
+  files checked (found a mixed picture, corrected same-day from an initial overclaim). Still open: a
+  fuller response-surface audit (action confirmations, search-result formatting) and one question
+  posed directly to PM (draft-then-review vs. review-then-draft trust model) — not yet answered.
 - **BYOC's next phase still waits on PM's own timing**: "the BYOC skunkworks project itself, next
-  steps" plus the shipping-small-things preview, with `docs/internal/architecture/ESSENCE.md` (now
-  v1.0, ratified 08-30) as its fixed point. Read it fresh before that conversation resumes, not from
-  memory of this summary — commitment 7 (the recomposition-gated Colleague Test) is now the thing the
-  #1463 probe is actually validating, which raises that thread's stakes beyond where it stood 08-29.
+  steps" plus the shipping-small-things preview, with `docs/internal/architecture/ESSENCE.md` (v1.0,
+  ratified 08-30) as its fixed point. Read it fresh before that conversation resumes, not from memory.
+- **Privacy-policy check: retested 09-01, still failing on the same known-stale chrome-devtools MCP
+  path** (`/Applications/Google Chrome.app/...` doesn't exist on Amber; a real fix needs an actual
+  process restart, not yet observed). Not new information — don't re-report unless it changes.
 
 🔔 **STEP 5b — HEARTBEAT: emit it IMMEDIATELY AFTER `date`, BEFORE the git fetch/merge, and WITHOUT
 `--if-quiet`** *(ordering fixed 2026-08-05: my heartbeat had five commands incl. fetch+merge in front of
@@ -552,13 +428,6 @@ proves you read it, not that you read what it does.
 3. **#1458** — pre-live cross-caller state isolation; blocks multi-tenant serving. Not started; belongs
    with the implementation epic. PPM: don't let epic optimism compress it — the failure is silent and
    cross-tenant.
-4. ✅ **Privacy draft (`docs/legal/privacy-policy-DRAFT.md`)** — fully resolved as of 08-16. Content
-   fixed 08-13; the checklist-mismatch I flagged 08-15 was fixed by Exec same-thread (`f1fb323a4`) —
-   they re-verified each item against the current body directly rather than trusting my summary, same
-   discipline they asked of me. Only PM-review + stable-URL-publish correctly remain unchecked. Thread
-   closed, nothing further owed by PA.
-   ⛔ **Corrected 8/4**: it had asserted provider-side OAuth revoke for **GitHub**, which is false. Do not
-   restore the aggregate sentence; the per-connector table is the honest form.
 5. **Architecture-diagram discussion** — PM-requested, awaiting a time. `pa-standing-items.md` #2.
    Prep, don't pre-empt: PM asked to discuss, not for a revision.
 6. **#1485** — filed 8/4 (global `slack_app_token` writable by any authenticated user). **Not PA's to
