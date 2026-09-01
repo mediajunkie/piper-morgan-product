@@ -1,15 +1,56 @@
 ---
 type: experience-model
 role: CXO (Chief Experience Officer), lead
-status: v0.1 — captures the PM↔CXO live 1-1 of 2026-08-21; aligned in conversation, this write-up itself open to PM's correction
+status: v0.1 body UNCHANGED (the 2026-08-21 record). ⚠️ MIXED STANDING as of 2026-09-01 — parts are now
+  ratified in ESSENCE v1.0.2, parts remain CXO-model-pending. See the status block at the top before citing.
 authored: 2026-08-21
 authored_by: CXO
 co_owner: xian (ceo)
 purpose: The surface-agnostic model of what a new person meeting Piper should experience — decided BEFORE mapping to any surface, per PM's own framing. Cite it; don't re-derive it.
-related: surfaces-taxonomy-2026-08-16.md (RATIFIED v1.0) · experience-across-surfaces.md · first-contact-criterion-merged-2026-08-10.md (RATIFIED) · conversational-layer-strategic-brief-2026-08-18.md
+last_updated: 2026-09-01
+currency_claim: body is a dated record and does not change; the status block is refreshed when surrounding law does
+max_age_days: 45
+related: ESSENCE.md (v1.0.2, RATIFIED — commitment 3 carries §2's variant) · ftux-surface-mapping-2026-08-28.md (AMENDED 08-29) · surfaces-taxonomy-2026-08-16.md (RATIFIED v1.0) · experience-across-surfaces.md · first-contact-criterion-merged-2026-08-10.md (RATIFIED) · conversational-layer-strategic-brief-2026-08-18.md
 ---
 
 # The FTUX experience model — meeting Piper for the first time
+
+> ## ⚠️ STATUS UPDATE 2026-09-01 — parts of this doc are now RATIFIED LAW and it didn't know it
+>
+> **This file has not been touched since 2026-08-21. ESSENCE v1.0 was ratified 2026-08-30 (v1.0.2 same
+> evening) and absorbed several of the claims below.** So its own status line — *"open to PM's
+> correction"* — is now **too weak for some claims and still correct for others**, and a reader can't
+> tell which. Sorting that, because an undifferentiated draft banner over ratified content is the
+> flattening this doc exists to resist.
+>
+> ### 📄 Now RATIFIED — cite ESSENCE, not this doc
+>
+> - **First contact is decisive.** Commitment 3: *"first contact is where colleague-or-chatbot is
+>   decided, which is why cold-start reflection is the first build increment."*
+> - **⭐ The response-shaped variant** (§2's platform-shaped greeting case). Commitment 3, now law:
+>   the ritual is **surface-bounded** — where the host affords initiation Piper opens; **on MCP,
+>   structurally request-response per PDR-005, the user opens and Piper's first turn IS the briefing.**
+> - **Cold-start reflection as the first build increment** — also in ESSENCE's build-surface section.
+>
+> ### ✏️ STILL a CXO model, PM-aligned in conversation only — unchanged status
+>
+> §3's three-states-one-principle · §4's ceremony-scaled-to-novelty · the wizard-as-an-offer-inside-FTUX ·
+> §5's Radar filtering. **These were never ratified and this banner does not upgrade them.**
+>
+> ### 🔗 §4b has left the doc and become tracked work
+>
+> The held-state parity principle is **#1673** (OPEN, Production milestone): *"equip Piper (the agent)
+> with the operating discipline the cohort has proven on itself."* It is no longer a captured idea
+> awaiting a home.
+>
+> ### ⚠️ §"What this model does NOT do" — the surface mapping it defers to has itself moved
+>
+> That mapping (`ftux-surface-mapping-2026-08-28.md`) was **amended 2026-08-29**: the **Web cell is
+> superseded** by web-chat's maintenance mode, and the **MCP cell was promoted** by ESSENCE's own build
+> order. **Read the mapping's amendment banner before using this doc to reason about surfaces.**
+>
+> *Nothing in the body below was edited — only this header. The body is the 08-21 record and should stay
+> that way.*
 
 **Provenance marks**: 📌 PM's words (2026-08-21 1-1, or cited earlier rulings) · 📄 ratified elsewhere ·
 ✏️ CXO's contribution, aligned in the 1-1 but correctable.
