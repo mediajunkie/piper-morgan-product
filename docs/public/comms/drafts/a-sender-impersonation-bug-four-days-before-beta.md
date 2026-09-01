@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'a-sender-impersonation-bug-four-days-before-beta-bank-vault.png'
+alt: 'Three translucent AI bank inspectors continue checking a newly locked vault: one points out an exposed master-key machine while another stops a confused customer from retrying a disabled entrance, as their human leader watches.'
 caption: ''
 ---
 
