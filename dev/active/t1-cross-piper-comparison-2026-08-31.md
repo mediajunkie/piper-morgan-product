@@ -6,12 +6,22 @@ Alpha since both of them have functioned as a product assistant and represent a 
 Piper Morgan product would have to improve on to really be valuable."* This is PA's own working note,
 not a finished deliverable — sections marked `[PLACEHOLDER]` are gaps, not omissions.
 
-**What I've actually read for this pass**: PO's identity doc (`roles/PIPER-OPEN.md` v0.4) and four of
-PO's five self-assessments spanning the full engagement — week 3 (05-19), week 5 (05-29), mid-bet
-(06-08), and the full-engagement bet-close retro (08-03). **Not yet read**: week 4's retro, PO's ~30
-daily session logs, `DECISIONS.md`, or any dispatch signal traffic. Also did a first, non-exhaustive
-check of Piper Morgan's own code against one of the findings below (see §3 item 3) — flagged as
-checked-not-assumed, but not a full audit of every response-generation path.
+**What I've actually read for this pass**: PO's identity doc (`roles/PIPER-OPEN.md` v0.4) and all five
+of PO's self-assessments spanning the full engagement — week 3 (05-19), week 4 (05-21), week 5 (05-29),
+mid-bet (06-08), and the full-engagement bet-close retro (08-03). **Not yet read**: PO's ~30 daily
+session logs, `DECISIONS.md`, or any dispatch signal traffic. Also did a first, non-exhaustive check of
+Piper Morgan's own code against one of the findings below (see §3 item 4) — flagged as checked-not-
+assumed, but not a full audit of every response-generation path.
+
+**Honest note on evidence quality, having now read the full retro set**: every retro reinforced the same
+handful of lessons rather than complicating them — no genuinely disconfirming case turned up (week 4 adds
+another verify-before-assert instance, specifically "when a memory asserts an absence, test before
+asserting it as current," after PO overclaimed connector availability twice on stale memory). That's
+either because the lessons are real and simply hold, or because five self-authored retros by the same
+agent aren't independent enough samples to expect disconfirmation from — worth naming rather than letting
+five-for-five read as stronger evidence than it is. PO's session logs (not yet read) are a better test:
+they're contemporaneous, not retrospective, so they'd show the lessons *failing to apply in the moment*
+if that ever happened, which a retro written after the fact is more likely to smooth over.
 
 ---
 
@@ -124,18 +134,18 @@ These are the load-bearing rows, because nobody told either of us to converge he
 
 ## Recommended next steps
 
-1. ✅ **Done this pass**: read 4 of 5 PO retros (week 3, week 5, mid-bet, bet-close) — confirmed
-   structural-fix-vs-promise and verify-before-assert both recur across the whole engagement, not just
-   at close; found a third convergent lesson (extend-prior-art) in the process.
-2. ✅ **Done this pass, first cut**: checked `priority.py` and `action_registry.py` against the
-   relevance-pre-attached bar — found the architectural hook exists but isn't wired to real data yet.
-   **Still open**: a real pass across the rest of the response-generation surface
-   (`conversational_floor.py`, action confirmations, search-result formatting) before treating this as
-   a settled product gap rather than one lead.
-3. Read week 4's retro (the one gap left in the PO retro set) and PO's session logs for anything that
-   contradicts or complicates the three convergent lessons above — so far every source has reinforced
-   them, which is itself worth treating with a little suspicion (confirmation is easy when you're not
-   looking for the disconfirming case).
+1. ✅ **Done**: read all 5 PO retros (week 3, 4, 5, mid-bet, bet-close) — confirmed structural-fix-vs-
+   promise, verify-before-assert, and extend-prior-art all recur across the whole engagement, not just
+   at close. No disconfirming case turned up — see the evidence-quality caveat above about what that
+   does and doesn't prove from retros alone.
+2. ✅ **Done, first cut**: checked `priority.py` and `action_registry.py` against the relevance-pre-
+   attached bar — found the architectural hook exists but isn't wired to real data yet. **Still open**:
+   a real pass across the rest of the response-generation surface (`conversational_floor.py`, action
+   confirmations, search-result formatting) before treating this as a settled product gap rather than
+   one lead.
+3. **Now the more useful remaining source**: PO's ~30 daily session logs are contemporaneous, not
+   retrospective — a better test of whether the convergent lessons actually held in the moment or just
+   read cleanly in hindsight. Not started.
 4. Ask PM the PLACEHOLDER question above about the draft-then-review vs. review-then-draft trust model.
 
 — PA
