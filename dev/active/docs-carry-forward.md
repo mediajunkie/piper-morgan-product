@@ -1,10 +1,14 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-31 22:5x PDT, STOP/day-close
-**Session log**: `dev/2026/08/31/2026-08-31-0728-docs-code-log.md` — **CLOSED**,
-`<!-- DAY-CLOSED: 2026-08-31 -->` written. Tomorrow's START creates a fresh dated log.
-**Cron**: `b6541910` (re-armed at STOP via delete-then-create from `cfdd5f76`, CronList-verified
-sole job), same expression `57 6,9,12,15,18,21 * * *`, healthy through ~09-07.
+**Updated**: 2026-09-01 ~07:3x PDT (PM-engaged session start, "A Sender-Impersonation Bug"
+published + fact-checked + live-verified; day otherwise starting fresh)
+**Session log**: `dev/2026/09/01/2026-09-01-0730-docs-code-log.md` (open).
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-07, next fire 09:57.
+
+**"A Sender-Impersonation Bug, Four Days Before Beta" (Beat 4) fully closed**: published,
+independently fact-checked against both primary source logs (not the calendar's summary), live-
+verified. https://pipermorgan.ai/blog/a-sender-impersonation-bug-four-days-before-beta — no
+syndication legs yet (awaiting PM/Dispatch-PM as usual, not chasing).
 
 ## B3 corpus-disposition — 46/81 patterns done, real work still ahead
 
