@@ -91,6 +91,24 @@ distribution and will not claim it before Lead's pass reports one. **If a materi
 **So the first thing the pass should report is the distribution itself**: how many queries in each bucket,
 out of how many total. That number is the finding, before any rescoring.
 
+## 5b. Two judgment principles — ADJUDICATED 2026-08-31, both blessed
+
+Lead's tagging pass applied these uniformly and flagged them for ruling. **Both accepted, and they belong
+in the spec rather than only in a corpus header:**
+
+1. ✅ **Action queries are `required`.** *"A fully correct answer truthfully confirms a real change to
+   THIS user's world, which no access-less model can produce."* Correct, and it usefully widens the tag
+   past *reading* context: the C axis also covers whether the answer is grounded in a real result.
+2. ✅ **⭐ Environment context ≠ user context.** *"What day is it?"* → `not_applicable`: **it needs a
+   clock, not user data.** This is a genuinely good distinction and the spec was silent on it. Time,
+   locale, and system state are not the user's project context, and a response that uses them well earns
+   no C credit for doing so.
+
+**Q23/Q24** (*"What risks should I be aware of?"* / *"What opportunities should I pursue?"*) → ✅
+**`optional` blessed.** Lead's contrast with Q22 is the right line: *"what patterns do you see"* demands
+observed data (**required**), while *"what should I be aware of"* admits real craft advice. And per the
+corrected tie-break above, the middle value bounds the cost of being wrong.
+
 ## 6. Reporting requirement
 
 **Report C per bucket, never pooled.** A single mean across `required` and `not_applicable` queries
@@ -108,8 +126,17 @@ answers no question anyone has. Retest output should carry:
 - **Applies to the BYOC Recomposition Rubric too**, whose C axis anchors to CT — same missing input, same
   fix, one tagging pass serves both.
 - **`optional` is expected to be the hardest call.** If a query is genuinely ambiguous, tag it `optional`
-  and flag it; a mis-tag toward `optional` is the least damaging error, because it neither manufactures a
-  failure nor excuses one.
+  and flag it.
+
+> ⚠️ **CORRECTION 2026-08-31, same day, to my own justification above.** v1.0 said a mis-tag toward
+> `optional` *"neither manufactures a failure nor excuses one."* **That is wrong.** `optional` sets the
+> pass floor at C=2, so a query that genuinely needed context **would pass at C=2 when C=3 was the bar** —
+> which is exactly excusing a failure. **The tie-break itself stands; my reason for it did not.**
+>
+> **The correct reason**: `optional` is the **middle value**, so a mis-tag costs at most **one step** of
+> severity in either direction, where mis-tagging to `required` or `not_applicable` costs two. It bounds
+> the error rather than eliminating it. *Recorded because Lead applied this tie-break on my authority
+> before I caught it.*
 
 ---
 
