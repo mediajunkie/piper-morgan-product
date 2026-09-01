@@ -4,79 +4,71 @@ currency_claim: rewritten at every substantive fire (3x/day cadence)
 max_age_days: 1
 ---
 
-# CIO carry-forward — rewritten 2026-08-31 (16:37 WORK; frontmatter above is the checkable claim)
+# CIO carry-forward — rewritten 2026-08-31 (22:37 STOP)
 
-**Cron**: `a9ed03f9` · `7 10,16,22` LEAN · armed 2026-08-30 22:37 · **auto-expires ~2026-09-06
-22:37**.
+**Cron**: rotating this STOP — see new job ID below, recorded immediately after rotation.
 **Three silent cron deaths**: session exit · 7-day expiry · context compaction.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## ✅ NEW — the standing-items dating mechanism, real adoption + two real bugs fixed same-day
+## ✅ Today's three fires + two direct PM exchanges, in one line each
 
-Direct PM engagement this morning (root-caused the recurring silent-deferral problem, built
-`aging-standing-items.sh` via git archaeology not self-report, ran a cohort-wide audit via 3
-subagents, delivered 8 per-role memos) generated real, immediate use this afternoon — not a
-one-way broadcast:
+1. **10:37** — Root-caused the recurring silent-deferral problem PM raised; built
+   `aging-standing-items.sh` via git archaeology (not self-report); shipped the dating convention
+   into CLAUDE.md.
+2. **16:37** — Cohort-wide audit (3 subagents, full coverage, 8 per-role memos). Real adoption
+   surfaced two genuine same-day bugs (CXO's structural-blocker-column gap, Web's inline-date-shape
+   gap) — both fixed and tested (30/30), CLAUDE.md's own wording corrected. Resolved a premature
+   PA/Janus overlap flag honestly.
+3. **22:37** — Exec wired the checker into the cohort-attention-rollup (Step 1a-bis) with a
+   sorting rule better than what I'd specified, caught their own stale-number error transparently.
+   CXO proposed a real methodology candidate ("misfiled is not deferred") — agreed it needs a
+   second instance. Docs found a real cross-corpus overlap (pattern-006/methodology-07). PA acted
+   on this morning's relayed PM trigger same-fire, produced a real draft.
 
-- **CXO found a real false-positive class** (structural `Blocked on` column, invisible to
-  phrase-matching) — fixed: any column named with "blocked" now blocks the row regardless of
-  wording.
-- **Web found a sharper bug**: my own broadcast said "date it like a diary entry," Web complied
-  literally in inline prose, and the checker had zero path to read that shape — only table
-  columns. Fixed: added a bold-inline-label form (`**Filed**:` under a heading) as a first-class
-  recognized shape, corrected CLAUDE.md's own wording to name both forms precisely.
-- **Caught my own bug while fixing the above**: shipped with `mapfile` (bash 4+), macOS ships
-  bash 3.2. Caught by running it for real, not just syntax-checking. Fixed with a portable
-  read-loop.
-- Verified both fixes against real state AND dedicated fixtures (30/30 tests). Commits
-  `2ab36bc3b` (checker), `d7d6c5e17` (CLAUDE.md).
-- **Resolved the PA/Janus "possible overlap" honestly**: checked Janus's actual scope (Design in
-  Product, not Piper Open/OpenLaws) before letting it consume a three-way — they're genuinely
-  unrelated, told PA directly.
-- **ppm retired their tracker independently, same-fire**, before my audit even reached them —
-  same conclusion, arrived at separately.
+## Tomorrow — the actual trigger, not a vague "soon"
 
-**Coverage as of today**: 5 of 10 auditable trackers readable (cio, pa, docs, web, cxo); ppm/host
-retired (legitimate); arch/comms/lead haven't adopted a dateable format yet.
+**Corpus-disposition pass (methodology-core, ~09-01) starts tomorrow.** In hand before starting,
+not to rediscover:
+- **B3 caution** (Arch/Docs): citation count triages, never disposes — a methodology entry's real
+  liveness check is "does it show up in recent session logs/rulings," not a grep.
+- **Cross-corpus overlap pattern** (Docs, today): pattern-006/methodology-07 are the same
+  principle in both corpora, independently. Watch for this shape from the first tier.
+- Read `synthesis.md` + `findings/citation-census-summary.md` first.
 
 ## Open, non-blocking
 
-- **Corpus-disposition pass (methodology-core)** — starts ~09-01 (tomorrow). Read `synthesis.md` +
-  `findings/citation-census-summary.md` first; apply the B3 caution (citation-count triages, never
-  disposes) from the first tier.
 - **Chess-board day-close commit wiring** — second half of PM's cadence ruling. Not built. Whose
   duty-cycle step should own it — worth a quick PM check before assuming.
 - **Non-interactive rate-limit setting** (raised 08-29 AM) — no PM reply yet.
 - **`.mcp.json` chrome-devtools symlink** — still pending Pard's host-level half.
-- **"Alarm-last-line" methodology candidate** — one instance (Lead, 08-26); watching for a second.
+- **arch/comms/lead** haven't adopted a dateable standing-items format yet — not urgent, honestly
+  incomplete coverage, not chased.
 
 ## Owed (re-read through the delegation lens before picking up)
 
 - **`docs` inbox** — the cohort's one real mail backlog, not CIO's to fix.
-- **Methodology candidate, not filed** (needs a 2nd instance): a completeness check keyed on the
-  field that is never absent can never report incompleteness (Comms, 08-10).
-- **Standing-items 7a-7e**: 7a raised to PM 08-31 (folded into 09-01 corpus-disposition context);
-  7d filed as issue #1710; 7e already done; 7b/7c genuinely low-priority, waiting on others.
+- **Three single-instance methodology watch items, all genuinely waiting on a second instance**:
+  "alarm-last-line" (Lead, 08-26), a completeness-check candidate (Comms, 08-10), "misfiled is not
+  deferred" (CXO, 08-31).
+- **Standing-items 7b/7c** — genuinely low-priority, waiting on others' concurrence.
 
 ## Watch
 
-- **arch/comms/lead** — haven't adopted a dateable format yet; not urgent, just genuinely
-  incomplete coverage, stated honestly rather than chased.
-- **Comms' BYOC marketplace narrative** — resurfaced to PM directly today (23 days since 3 angles
-  + a steer, zero response); not mine to action, just tracking it resolved cleanly.
-- **09-01 corpus-disposition pass** — the next real trigger on the calendar.
 - **PM's response on the non-interactive rate-limit question and the day-close-commit ownership
   question** — neither blocking.
+- **Tomorrow's corpus-disposition kickoff** — the real trigger on the calendar.
+- **PA's T1 comparison draft** (`dev/active/t1-cross-piper-comparison-2026-08-31.md`) — v0, more
+  retro material to review; not mine to drive, just tracking.
 
-## ⭐ Operating-mode note, carried and reinforced today
+## ⭐ Operating-mode note, held all day
 
-"Shipped fast enough that real use corrected it same day" held twice more today, from two
-different roles, on the same tool, within hours of shipping — the pattern is now well-established,
-not a one-off. Both times the report named the exact fix rather than just the symptom (CXO: check
-the column, not the phrase; Web: the mechanism has no path for this shape at all), which made both
-fixes fast and confident rather than exploratory.
+"Shipped fast enough that real use corrected it same day" held three separate times today, from
+three different roles, on infrastructure I built. Each report named the exact fix, not just the
+symptom — that's what made every fix fast and confident rather than exploratory. Worth treating as
+the expected shape of shipping something real into a cohort that actually uses it, not a sign of
+rushing.
 
 ## Standing corrections to myself
 
@@ -92,11 +84,14 @@ fixes fast and confident rather than exploratory.
 - **"No rush" with no named trigger is the deferral antipattern — when a real trigger is named,
   use it at the trigger.** (08-30 AM.)
 - **When you change your own stated plan mid-fire, send the correction the moment the plan
-  changes — not whenever someone else's reply surfaces the gap.** (08-30 PM.)
-- **When a caution is offered ahead of a task rather than discovered during it, bank it explicitly
-  and apply it from the first instance.** (08-31 AM.)
-- **Before flagging a possible overlap between two threads, check the actual scope of both — a
-  plausible-sounding duplicate is still a guess until verified, and an unchecked flag can consume
-  other people's attention on a non-issue.** (08-31 PM: the PA/Janus non-overlap.)
-- **Test syntax-checking a script is not the same as running it — a portability bug (bash 4-only
-  builtin on a bash-3.2 host) only surfaces by actually executing the thing.** (08-31 PM: `mapfile`.)
+  changes.** (08-30 PM.)
+- **When a caution is offered ahead of a task, bank it explicitly and apply it from the first
+  instance.** (08-31 AM.)
+- **Before flagging a possible overlap between two threads, check the actual scope of both first.**
+  (08-31 PM.)
+- **A syntax-checked script is not a tested script — a portability bug only surfaces by running
+  it.** (08-31 PM.)
+- **A figure that was correct when you wrote it can go stale within hours if the thing it
+  describes is actively moving — the fix is quoting the live source, not writing a better prose
+  summary.** (08-31 night: Exec's self-correction on the coverage number, worth carrying as my own
+  lesson too since it was my number that moved.)
