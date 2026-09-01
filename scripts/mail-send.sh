@@ -198,6 +198,62 @@ while :; do
             echo "mail-send: ⚠️  ${n_dirty} mailbox path(s) left behind — see above" >&2
         fi
 
+        # --- #1716: warn when a named to:/cc: recipient has no matching inbox/ delivery -----------
+        # CXO's finding, two independent instances (Arch's own 08-30 self-audit found three of
+        # their own sends under-delivered; HOST caught a 09-01 case via `git log --all`, zero
+        # commits, not even transient). Neither agent was careless — that's the tell it's
+        # structural: a memo's `to:`/`cc:` header is a claim about delivery this script never
+        # reads. It takes explicit paths; the frontmatter is prose. Nothing connects them, so they
+        # silently disagree — and the failure mode is the bad one: the sender's sent/ copy shows a
+        # header naming the recipient, so BOTH ends believe it happened. Advisory only, like every
+        # other check in this family — mail-send.sh must never become a reason mail doesn't go out.
+        # Checks against mailboxes/DIRECTORY.md-documented slugs (a real `mailboxes/<slug>/`
+        # directory existing is the cheap proxy for "this is a real recipient," avoiding false
+        # positives on garbled or non-slug header text).
+        #
+        # Reads content via `git cat-file -p "$tree:$f"`, NOT the worktree file — the #1310
+        # reconcile above already ran and deletes just-sent NEW files from the worktree (they're
+        # untracked-before, so "reset to HEAD state" means removing them), so `$REPO/$f` is
+        # already gone for exactly the memos this check needs to read. The pushed tree object is
+        # the one thing guaranteed to still hold the content that actually shipped.
+        checked_basenames=""
+        for f in "$@"; do
+            case "$f" in mailboxes/*/inbox/*|mailboxes/*/sent/*|mailboxes/*/read/*) ;; *) continue ;; esac
+            G cat-file -e "$tree:$f" 2>/dev/null || continue
+            bn="$(basename "$f")"
+            case "$'\n'$checked_basenames$'\n'" in *$'\n'"$bn"$'\n'*) continue ;; esac
+            checked_basenames="${checked_basenames}${bn}"$'\n'
+
+            recipients="$(G cat-file -p "$tree:$f" 2>/dev/null | awk '
+                NR==1 && /^---[[:space:]]*$/ { infm=1; next }
+                infm && /^---[[:space:]]*$/ { exit }
+                infm && /^to:[[:space:]]*/ { sub(/^to:[[:space:]]*/, ""); print }
+                infm && /^cc:[[:space:]]*/ { sub(/^cc:[[:space:]]*/, ""); print }
+            ')"
+            [ -z "$recipients" ] && continue
+
+            # `recipients` holds one line per matched header (to: and cc: print separately) —
+            # each line is itself comma-separated. `read -ra` only ever consumes ONE line from
+            # a here-string, so a naive single read here silently drops every line but the
+            # first (caught in testing: a to:+cc: capture dropped the whole cc: line).
+            while IFS= read -r line; do
+                [ -z "$line" ] && continue
+                IFS=',' read -ra tokens <<<"$line"
+                for tok in "${tokens[@]}"; do
+                    slug="$(printf '%s' "$tok" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/^"//' -e 's/"$//')"
+                    [ -z "$slug" ] && continue
+                    [ -d "$REPO/mailboxes/$slug" ] || continue
+                    expected="mailboxes/$slug/inbox/$bn"
+                    found=0
+                    for g in "$@"; do [ "$g" = "$expected" ] && found=1 && break; done
+                    if [ "$found" -eq 0 ]; then
+                        echo "mail-send: WARNING — '$bn' names '$slug' in to:/cc: but $expected wasn't part of this send" >&2
+                        echo "mail-send:   the header and the delivery can silently disagree (#1716) — pass that path too if the recipient should get it" >&2
+                    fi
+                done
+            done <<<"$recipients"
+        done
+
         # --- CXO/HOST's 2026-08-28 relocation: check refresh-trigger promises AT the trigger ------
         # HOST's diff-checker (#1296-adjacent, shipped 08-26) caught "edited content, forgot to bump
         # last_updated" — but it lapsed a 4th time anyway, because the real failure is upstream of

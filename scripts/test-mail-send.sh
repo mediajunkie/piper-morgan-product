@@ -212,6 +212,51 @@ git -C "$T/wtJ" fetch -q origin
 onmain "$T/wtJ" mailboxes/docs/read/memo-j.md && ok "the read/ memo landed" || no "the read/ memo missing"
 echo "$out" | grep -q "STRANDED" && no "false positive: warned even though inbox/MANIFEST.md was explicitly passed" || ok "no false-positive warning when the sibling path was explicitly passed, even with no tree delta"
 
+echo "── T12: #1716 — cc: recipient named in frontmatter but not delivered triggers a warning ──"
+# Reproduces the HOST/Arch shape: a memo's YAML frontmatter names `cio, cxo` in cc:, but the
+# caller only passes the `to:` recipient's inbox path — the cc'd recipients' inbox copies never
+# made it into the argument list, so their inbox never gets the file.
+clone wtK
+mkdir -p "$T/wtK/mailboxes/lead/inbox"
+cat > "$T/wtK/mailboxes/lead/inbox/memo-k.md" <<'EOF'
+---
+from: exec
+to: lead
+cc: cio, cxo
+subject: "test"
+date: 2026-09-01
+---
+
+body
+EOF
+out=$(PIPER_REPO="$T/wtK" bash "$V3" "mail(k): T12 cc gap" mailboxes/lead/inbox/memo-k.md 2>&1)
+git -C "$T/wtK" fetch -q origin
+onmain "$T/wtK" mailboxes/lead/inbox/memo-k.md && ok "the passed memo still landed" || no "the passed memo missing"
+echo "$out" | grep -q "names 'cio'.*wasn't part of this send" && ok "WARNING fired for missing cio delivery" || no "no warning for missing cio delivery"
+echo "$out" | grep -q "names 'cxo'.*wasn't part of this send" && ok "WARNING fired for missing cxo delivery" || no "no warning for missing cxo delivery"
+
+echo "── T13: #1716 — no false-positive when every named recipient's inbox copy is passed ──"
+clone wtL
+mkdir -p "$T/wtL/mailboxes/lead/inbox" "$T/wtL/mailboxes/cio/inbox"
+cat > "$T/wtL/mailboxes/lead/inbox/memo-l.md" <<'EOF'
+---
+from: exec
+to: lead
+cc: cio
+subject: "test"
+date: 2026-09-01
+---
+
+body
+EOF
+cp "$T/wtL/mailboxes/lead/inbox/memo-l.md" "$T/wtL/mailboxes/cio/inbox/memo-l.md"
+out=$(PIPER_REPO="$T/wtL" bash "$V3" "mail(l): T13 fully delivered" \
+    mailboxes/lead/inbox/memo-l.md mailboxes/cio/inbox/memo-l.md 2>&1)
+git -C "$T/wtL" fetch -q origin
+onmain "$T/wtL" mailboxes/lead/inbox/memo-l.md && onmain "$T/wtL" mailboxes/cio/inbox/memo-l.md \
+    && ok "both copies landed" || no "a copy is missing"
+echo "$out" | grep -q "wasn't part of this send" && no "false-positive warning fired even though cio's inbox copy was passed" || ok "no false-positive when all named recipients are covered"
+
 echo ""
 echo "════════ RESULT: $PASS passed, $FAIL failed ════════"
 [ "$FAIL" = 0 ] && exit 0 || exit 1
