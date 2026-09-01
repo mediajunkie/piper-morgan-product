@@ -2,7 +2,15 @@
 
 ## Status
 
-**Proven**
+**Absorbed** — absorbed into `methodology-07-VERIFICATION-FIRST.md`, ruled canonical 2026-09-01 by
+Arch's B3 synthesis motion (`docs/internal/architecture/reviews/2026-08-architectural-review/`):
+verification-first is a practice, and practices live in methodology-core; CLAUDE.md's "Evidence
+Required" section is its enforcement surface. This was the first cross-corpus absorb identified
+during the review — Docs and CIO independently found the same principle living in both the
+patterns and methodology-core corpora and flagged it upward rather than resolving it unilaterally.
+`methodology-30-CONSUMER-TRACE-VERIFICATION.md` stays independent of this absorption — it
+specializes m-07 (consumer-trace is a specific technique), a healthy relationship, not redundancy.
+Pattern content preserved below for historical reference.
 
 ## Context
 

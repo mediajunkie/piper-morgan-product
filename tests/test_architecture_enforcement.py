@@ -2176,7 +2176,7 @@ class TestExtractionPatternRatchet:
     # tightness test below keeps these exactly equal to the actual counts,
     # so drift in either direction is loud).
     CEILINGS = {
-        "todo-create": 5,
+        "todo-create": 11,  # 5 + _extract_completion_text's 6, frozen at measured value 2026-09-01
         "reminder-extraction": 11,
         "issue-slot-extraction": 15,
         "pre-classifier": 567,
@@ -2187,7 +2187,10 @@ class TestExtractionPatternRatchet:
         "todo-create": [
             (
                 "services/intent_service/todo_handlers.py",
-                ["_extract_todo_text", "_TODO_TOKEN", "_TODO_SEP"],
+                # _extract_completion_text added 2026-09-01 (coverage gap flagged by the
+                # 1527 named-target lane: complete_todo's extraction was outside the frozen
+                # surfaces while its siblings were ratcheted).
+                ["_extract_todo_text", "_TODO_TOKEN", "_TODO_SEP", "_extract_completion_text"],
             ),
         ],
         "reminder-extraction": [

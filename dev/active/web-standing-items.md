@@ -116,6 +116,8 @@ rather than guessing):
   the browser-automation pilot tooling — genuinely unblocked this fix (the
   visual claim couldn't have been confirmed on code-reading alone, which is
   exactly how the 08-09 partial fix shipped without catching this).
+  **PM reaction, 2026-09-01**: unprompted "the new blog landing page looks wonderful!" — closes
+  the loop from shipped-pending-PM-reaction to confirmed-well-received. Nothing further needed.
 - **Buttondown native newsletter publishing** — tracked in the "Genuinely still open" table above
   (#4). Explicitly long-term/not-urgent; PM doing research 2026-08-31, no action from Web until then.
 

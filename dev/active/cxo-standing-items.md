@@ -47,7 +47,8 @@ max_age_days: 31
 | **2026-07-26** | **Spatial committed-theory review** | **Arch** synthesis. CXO slice folded in verbatim; convergence matches my (b) vote. | Arch publishes. |
 | **2026-08-21** | **PDR-005 surface-roster citation fix** *(precondition = taxonomy ratification, met 08-21; proposed to PPM 09-01)* | **PPM** — PDR-005's author. Two-line pointer, no decision content. ⚠️ **This item fell out of my 08-31 tracker rebuild** and was recovered by a self-audit, not by the aging check. | PPM edits or declines. |
 | **2026-09-01** | **#1716 — `mail-send.sh` never checks the `cc:` header it delivers against** | **CIO** — routed with two instances (Arch 08-30 systematic; Exec 09-01, caught by HOST) and a feasibility-checked fix. Advisory warning, not blocking. | CIO builds, or rules it not worth it. |
-| **2026-08-28** | **Ethics-decline VOICE watch** | A deploy touching floor/decline copy, or a live decline observed. | Method: Colleague Test. Report with denominator. |
+| **2026-09-01** | **#1717 — multi-failure voice** (from the watch below) | **Lead/PPM** — priority theirs; web-chat is in maintenance mode and this is a voice-degradation bug, not new capability. ⚠️ **The consequence is UNVERIFIED** — I read the prompt structure, not an observed reply. | Someone runs the 5-flag render + one floor call. |
+| **2026-08-28** | **Ethics-decline / degraded-path VOICE watch** | ✅ **FIRED 09-01** on `000ca9421` (#1645) and produced #1717. Re-arms on the next deploy touching floor/decline copy, or a live decline observed. | Method: Colleague Test. Report with denominator. |
 
 ## ✅ CLOSED ON VERIFICATION — do not re-open
 

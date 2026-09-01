@@ -55,9 +55,9 @@ disposition is using citation count more heavily as a decision signal rather tha
 | B: heavily-cited + recent (very likely current law) | pattern-051-parallel-place-gathering.md | P-051 | 41 | 2026-08-24 | Proven | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
 | B: heavily-cited + recent (very likely current law) | pattern-052-personality-bridge.md | P-052 | 40 | 2026-08-24 | Proven | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule (grep-verify reserved for archive-leaning calls). |
 | C: middle tier (needs individual read) | META-PATTERNS.md | - | 60 | 2026-06-17 | Established | **EFFECTIVE (structural/meta)** — not a code pattern, a catalog-structure document ("patterns about patterns"); still the organizing document for how the pattern catalog itself works. Verification method: structural relevance, not grep. |
-| C: middle tier (needs individual read) | pattern-059-leadership-caucus.md | P-059 | 51 | 2026-06-17 | - | **EFFECTIVE (behavioral)** — describes multi-advisor consultation before cross-cutting decisions; directly observed this session (PM consulting CXO/PPM/Lead/Arch/CIO on ESSENCE, #1708, etc.). Arch's extension applies: verified against practice, not code. |
+| C: middle tier (needs individual read) | pattern-059-leadership-caucus.md | P-059 | 51 | 2026-06-17 | - | **ABSORBED — EXECUTED 2026-09-01.** Originally EFFECTIVE (behavioral — multi-advisor consultation before cross-cutting decisions, directly observed this session). **CIO's B3 pass independently found this overlaps `methodology-22-ROUNDTABLE-SYNTHESIS.md`** (genuine unflagged redundancy, both EFFECTIVE); Arch's synthesis ruling directed Docs+CIO to jointly pick a direction. Picked m-22 canonical (it carries 3 dated case studies + a template + failure-mode catalog — the larger body of unique content, so absorbing P-059 into it was the smaller migration). P-059's own unique content (Anti-Patterns table, P-029 differentiation) folded into m-22 as part of the same edit. Marker executed in `pattern-059-leadership-caucus.md`. |
 | C: middle tier (needs individual read) | pattern-008-ddd-service-layer.md | P-008 | 49 | 2026-06-17 | - | **EFFECTIVE** — 58 `class *Service` definitions found across `services/`, the pattern's core structural claim is trivially confirmed live and foundational. |
-| C: middle tier (needs individual read) | pattern-006-verification-first.md | P-006 | 38 | 2026-06-17 | - | **EFFECTIVE (behavioral)** — this whole session's own discipline (verify claims before acting, name the layer, state the denominator). Note: overlaps with methodology-core's own m-07 VERIFICATION-FIRST — a genuine cross-corpus redundancy worth flagging to Arch/CIO in the eventual synthesis, not urgent now. |
+| C: middle tier (needs individual read) | pattern-006-verification-first.md | P-006 | 38 | 2026-06-17 | - | **ABSORBED — EXECUTED 2026-09-01.** Originally dispositioned EFFECTIVE (behavioral — this whole session's own discipline of verifying claims before acting) with the cross-corpus overlap flagged upward, not resolved unilaterally. **Arch's B3 synthesis ruling (2026-09-01)**: m-07 is canonical (verification-first is a practice, practices live in methodology-core); P-006 absorbed into it. In-file marker added to `pattern-006-verification-first.md`, content preserved for historical reference. |
 | C: middle tier (needs individual read) | PROTO-PATTERNS.md | - | 37 | 2026-07-30 | - | **EFFECTIVE (structural), but its own review cadence looks overdue** — only 2 proto-patterns tracked (PP-001, PP-002, latest dated April 2026), against a stated "evaluated during 6-week pattern sweeps" cadence. The document itself is still structurally valid; whether the cadence it promises is being kept is a separate, smaller finding worth a mention, not a disposition blocker. |
 | C: middle tier (needs individual read) | pattern-066-stacked-silent-failures.md | P-066 | 36 | 2026-08-29 | - | **EFFECTIVE (behavioral)** — this is m-43 ("name the layer") in pattern form; actively practiced this session (e.g. distinguishing which git-state layer a mail-send collision actually occurred at). |
 | C: middle tier (needs individual read) | pattern-001-repository.md | P-001 | 34 | 2026-07-28 | - | **EFFECTIVE** — 15 `class *Repository` definitions found across `services/`, foundational and confirmed live. |
@@ -107,20 +107,25 @@ disposition is using citation count more heavily as a decision signal rather tha
 | D: old + low-citation (likely historical, needs read) | pattern-016-repository-context-enrichment.md | P-016 | 6 | 2026-02-03 | - | **LIKELY HISTORICAL** — one tangential comment in `action_registry.py` mentions "InsightRepository context enrichment," but `context_assembler.py` (the file the pattern's own mechanism would live in) has zero matches for the described enrichment logic. Not as clean a case as P-015 — flagging the caveat rather than overclaiming certainty. |
 | D: old + low-citation (likely historical, needs read) | proposals/pattern-family-index-proposal.md | - | 4 | 2026-02-05 | - | **ABSORBED** — this is the original proposal (Docs, 2026-02-05) that became `PATTERN-FAMILIES.md` (now live, Tier A, CLAUDE.md/skill-cited). Different disposition class from the other three: not "historical/inert," but "superseded-by-its-own-implementation." Candidate for archive with an explicit "implemented as PATTERN-FAMILIES.md" marker. |
 
-## Status: COMPLETE — 81/81 patterns dispositioned (2026-09-01)
+## Status: RATIFIED — 81/81 patterns dispositioned, Arch's B3 synthesis ruling landed (2026-09-01)
 
 Tiers A+B (29, light-touch) + Tier C (45, individual reads) + Tier D (4, grep-against-code) +
-1 proposal doc, all dispositioned. Breakdown (verified by count, not recalled): **77 EFFECTIVE**
-(including several "principle live, naming evolved" instances where illustrative sample code
-isn't literal but the described mechanism is), **2 HISTORICAL** (P-015, and P-024 which
-self-documents its own supersession), **1 LIKELY HISTORICAL** (P-016, flagged with caveat rather
-than overclaimed), **1 ABSORBED** (pattern-family-index-proposal → `PATTERN-FAMILIES.md`). Zero
-patterns dispositioned on citation count alone — every entry heading for anything but a routine
-"effective" got a grep-against-code (or grep-against-practice, for process patterns) check per
-the B3 rule below.
+1 proposal doc, all dispositioned. **Original breakdown**: 77 EFFECTIVE (including several
+"principle live, naming evolved" instances where illustrative sample code isn't literal but the
+described mechanism is), 2 HISTORICAL (P-015, and P-024 which self-documents its own
+supersession), 1 LIKELY HISTORICAL (P-016, flagged with caveat rather than overclaimed), 1
+ABSORBED (pattern-family-index-proposal → `PATTERN-FAMILIES.md`). Zero patterns dispositioned on
+citation count alone — every entry heading for anything but a routine "effective" got a
+grep-against-code (or grep-against-practice, for process patterns) check per the B3 rule below.
 
-**Handoff**: ready for Arch's synthesis-stage motion (absorb-and-mark into the six living-core
-docs). Two cross-lane findings already flagged separately and not fixed unilaterally here: the
-P-006/m-07 verification-first duplication across the patterns and methodology-core corpora, and
-this file's own citation-mispredicts-effective finding (below), which Arch adopted cohort-wide
-for the methodology-core lane as well.
+**Arch's B3 synthesis ruling (2026-09-01)** ratified all 145 dispositions across both corpora
+(patterns + CIO's methodology-core) in one motion and resolved five cross-corpus overlaps. On the
+patterns side: **P-006 (verification-first) is now ABSORBED into m-07** — m-07 ruled canonical
+(verification-first is a practice; practices live in methodology-core), marker executed same day
+in `pattern-006-verification-first.md`. The m-22/P-059 (roundtable-synthesis/leadership-caucus)
+overlap — CIO's independent find, Arch delegated the pick to Docs+CIO jointly — is also EXECUTED:
+m-22 picked canonical (larger body of unique content), P-059 absorbed, unique P-059 content
+(Anti-Patterns table, P-029 differentiation) folded into m-22 rather than lost. **Current
+breakdown: 75 EFFECTIVE, 2 HISTORICAL, 1 LIKELY HISTORICAL, 3 ABSORBED.** B4 (the derived
+ADR/pattern/methodology index, closing #1455) is Arch's, starting next fire — no action needed
+here.
