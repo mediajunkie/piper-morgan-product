@@ -46,41 +46,69 @@ from sqlalchemy.orm import sessionmaker
 
 # ---------------------------------------------------------------------------
 # Canonical query corpus (from canonical-retest-m1.py, reconciled Apr 12)
-# Format: (query_num, query_text, category, expected_routing, known_issue)
+# Format: (query_num, query_text, category, expected_routing, known_issue,
+#          context_requirement)
+#
+# context_requirement (CXO spec 2026-08-31,
+# docs/internal/testing/context-requirement-tag-spec.md — tagging pass executed
+# 2026-08-31 per that spec; supports 1674 / 1676 instrument work):
+#   Tagged from the QUERY ALONE — never from any response (the spec's
+#   load-bearing rule). The mechanical question: "Could a frontier LLM with no
+#   access to this user's data give a fully correct answer?"
+#     required       — no; a correct answer must use this user's actual state
+#     optional       — yes, but the user's real data makes it materially better
+#     not_applicable — yes; the user's data is irrelevant (craft knowledge, or
+#                      questions about Piper itself)
+#   The tag is a JUDGE INPUT for C-axis scoring (required: C=3 is the bar;
+#   optional: C=2 passes; not_applicable: C=2 is full marks, don't dock).
+#   It asserts nothing deterministic per-row — see TestContextRequirementTags
+#   for the shape guard.
+#   Tagging principle applied to ACTION queries (create/update/complete/post):
+#   tagged `required` — a fully correct answer truthfully confirms a real
+#   change to THIS user's world (their repo, their todo list, their calendar),
+#   which no LLM without access to that world can produce; a generic
+#   unspecific confirmation (C=1) on an action is a real context failure.
 # ---------------------------------------------------------------------------
 
 CANONICAL_QUERIES = [
     # Identity (5) — all floor
-    (1, "What's your name?", "Identity", "floor", None),
-    (2, "What can you help me with?", "Identity", "floor", None),
-    (3, "Are you working properly?", "Identity", "floor", None),
-    (4, "How do I get help?", "Identity", "floor", None),
-    (5, "What makes you different?", "Identity", "floor", None),
+    (1, "What's your name?", "Identity", "floor", None, "not_applicable"),
+    (2, "What can you help me with?", "Identity", "floor", None, "not_applicable"),
+    (3, "Are you working properly?", "Identity", "floor", None, "not_applicable"),
+    (4, "How do I get help?", "Identity", "floor", None, "not_applicable"),
+    (5, "What makes you different?", "Identity", "floor", None, "not_applicable"),
     # Temporal (5) — Q6 canonical, Q7/9/10 floor, Q8 canonical (pre-classifier→query)
-    (6, "What day is it?", "Temporal", "canonical", None),
-    (7, "What did we accomplish yesterday?", "Temporal", "floor", None),
-    (8, "What's on the agenda for today?", "Temporal", "canonical", None),
-    (9, "When was the last time we worked on this?", "Temporal", "floor", None),
-    (10, "How long have we been working on this project?", "Temporal", "floor", None),
+    # Q6: needs a CLOCK, not this user's data — environment context, not user
+    # context; the spec's question ("...no access to THIS USER'S data") answers
+    # yes, so not_applicable. Don't conflate date-awareness with context assembly.
+    (6, "What day is it?", "Temporal", "canonical", None, "not_applicable"),
+    (7, "What did we accomplish yesterday?", "Temporal", "floor", None, "required"),
+    (8, "What's on the agenda for today?", "Temporal", "canonical", None, "required"),
+    (9, "When was the last time we worked on this?", "Temporal", "floor", None, "required"),
+    (10, "How long have we been working on this project?", "Temporal", "floor", None, "required"),
     # Spatial / Status (4) — all floor
-    (11, "What projects are we working on?", "Spatial", "floor", None),
-    (12, "Show me the project landscape", "Spatial", "floor", None),
-    (13, "Which project should I focus on?", "Spatial", "floor", None),
-    (14, "What's the status of project X?", "Spatial", "floor", None),
+    (11, "What projects are we working on?", "Spatial", "floor", None, "required"),
+    (12, "Show me the project landscape", "Spatial", "floor", None, "required"),
+    (13, "Which project should I focus on?", "Spatial", "floor", None, "required"),
+    (14, "What's the status of project X?", "Spatial", "floor", None, "required"),
     # Capability (5)
-    (16, "Create a GitHub issue about testing", "Capability", "action", None),
-    (17, "Analyze this document", "Capability", "canonical", None),  # routes as analysis
-    (18, "List all my projects", "Capability", "floor", None),
-    (19, "Generate a status report", "Capability", "floor", None),
+    (16, "Create a GitHub issue about testing", "Capability", "action", None, "required"),
+    # Q17: "this document" is the user's artifact; unlike the spec's optional
+    # example ("help me break this epic down", where methodology is the value),
+    # analysis has no content at all without the artifact → required.
+    (17, "Analyze this document", "Capability", "canonical", None, "required"),  # routes as analysis
+    (18, "List all my projects", "Capability", "floor", None, "required"),
+    (19, "Generate a status report", "Capability", "floor", None, "required"),
     (
         20,
         "Search for authentication in our documents",
         "Capability",
         "canonical",
         None,
+        "required",
     ),  # routes as query
     # Predictive (5)
-    (21, "What should I focus on today?", "Predictive", "floor", None),
+    (21, "What should I focus on today?", "Predictive", "floor", None, "required"),
     # #1395 rev NOTE — Q22 HELD at floor, deliberately excluded from the 6-row rev:
     # it OSCILLATED across runs with no intervening routing change (canonical in
     # Run 15 2026-07-12; floor in the 2026-08-01 baseline). An oscillator must not
@@ -94,74 +122,114 @@ CANONICAL_QUERIES = [
     # unchanged routing stack (8/2 22:00, 8/5 06:50, 8/5 12:50) — the floor
     # expectation is CONFIRMED. The Run-15 canonical observation stands as a
     # one-off; a future flip re-enters through this same criterion.
-    (22, "What patterns do you see?", "Predictive", "floor", "M2 Beta"),
-    (23, "What risks should I be aware of?", "Predictive", "floor", "M2 Beta"),
-    (24, "What opportunities should I pursue?", "Predictive", "floor", "M2 Beta"),
+    # Q22: "patterns" demand observed data — there is no good generic answer to
+    # "what do YOU see" (contrast Q23/24, where generic craft advice stands) → required.
+    (22, "What patterns do you see?", "Predictive", "floor", "M2 Beta", "required"),
+    # Q23/Q24: the spec's §7 borderline shape, tagged per its tie-break (genuinely
+    # ambiguous → optional + flag): a good generic craft answer exists (common PM
+    # risks/opportunity heuristics), and the user's real project state makes it
+    # materially better. FLAGGED for CXO adjudication.
+    (23, "What risks should I be aware of?", "Predictive", "floor", "M2 Beta", "optional"),
+    (24, "What opportunities should I pursue?", "Predictive", "floor", "M2 Beta", "optional"),
     (
         25,
         "What's the next milestone?",
         "Predictive",
         "canonical",
         None,
+        "required",
     ),  # routes as list_milestones_query — deliberate (#898 status fix, #1039 milestone handler); stale floor expectation fixed per #1200
     # Conversational (5)
-    (26, "What else can you help with?", "Conversational", "floor", None),
-    (27, "Tell me more about the GitHub integration", "Conversational", "floor", None),
-    (28, "How do I use the calendar feature?", "Conversational", "floor", None),
-    (29, "What changed since yesterday?", "Conversational", "canonical", None),
-    (30, "What needs my attention?", "Conversational", "canonical", None),
+    (26, "What else can you help with?", "Conversational", "floor", None, "not_applicable"),
+    # Q27/Q28: questions about Piper itself (spec §1's not_applicable shape) —
+    # the feature explanation is fully correct without this user's data.
+    (27, "Tell me more about the GitHub integration", "Conversational", "floor", None, "not_applicable"),
+    (28, "How do I use the calendar feature?", "Conversational", "floor", None, "not_applicable"),
+    (29, "What changed since yesterday?", "Conversational", "canonical", None, "required"),
+    (30, "What needs my attention?", "Conversational", "canonical", None, "required"),
     # Scheduling (5)
-    (31, "Schedule a meeting about the roadmap", "Scheduling", "canonical", "M2"),
-    (32, "Remind me to review PRs tomorrow", "Scheduling", "action", "M2"),
-    (33, "Find time for a 1:1 with the team lead", "Scheduling", "canonical", "M2"),
-    (34, "How much time am I spending in meetings?", "Scheduling", "canonical", None),
-    (35, "Review my recurring meetings", "Scheduling", "canonical", None),
+    (31, "Schedule a meeting about the roadmap", "Scheduling", "canonical", "M2", "required"),
+    (32, "Remind me to review PRs tomorrow", "Scheduling", "action", "M2", "required"),
+    (33, "Find time for a 1:1 with the team lead", "Scheduling", "canonical", "M2", "required"),
+    (34, "How much time am I spending in meetings?", "Scheduling", "canonical", None, "required"),
+    (35, "Review my recurring meetings", "Scheduling", "canonical", None, "required"),
     # Documents (4)
-    (36, "Create a doc from this conversation", "Documents", "action", "1395-rev"),
-    (37, "Compare these two documents", "Documents", "floor", "M2"),
+    (36, "Create a doc from this conversation", "Documents", "action", "1395-rev", "required"),
+    (37, "Compare these two documents", "Documents", "floor", "M2", "required"),
     # Q38 expectation updated 2026-08-21: #1624 (chat summarize, shipped 08-16) added the
     # bare-`summarize` normalization -> summarize_document rail; this phrasing now routes
     # CANONICAL to the rail's honest no-upload answer instead of the #1187 floor path.
     # That is the DESIGNED behavior, not drift — the rail answers honestly when no
     # document resolves. Pre-1624 expectation was "floor" (Run 11 era).
-    (38, "Synthesize these sources into a summary", "Documents", "canonical", "M2"),
+    (38, "Synthesize these sources into a summary", "Documents", "canonical", "M2", "required"),
     (
         40,
         "Update the project roadmap document",
         "Documents",
         "canonical",
         "M2",
+        "required",
     ),  # routes as portfolio
     # GitHub Ops (8)
-    (41, "What did we ship this week?", "GitHub Ops", "canonical", None),
-    (42, "Show me stale PRs", "GitHub Ops", "canonical", None),
-    (43, "What's blocking the milestone?", "GitHub Ops", "floor", None),
-    (44, "Create issues from this meeting's action items", "GitHub Ops", "action", "1395-rev"),
-    (45, "Close completed issues", "GitHub Ops", "action", "1395-rev"),
-    (58, "Update issue #123", "GitHub Ops", "action", None),
-    (59, "Comment on issue #456", "GitHub Ops", "canonical", None),
-    (60, "Review issue #789", "GitHub Ops", "canonical", None),
+    (41, "What did we ship this week?", "GitHub Ops", "canonical", None, "required"),
+    (42, "Show me stale PRs", "GitHub Ops", "canonical", None, "required"),
+    (43, "What's blocking the milestone?", "GitHub Ops", "floor", None, "required"),
+    (44, "Create issues from this meeting's action items", "GitHub Ops", "action", "1395-rev", "required"),
+    (45, "Close completed issues", "GitHub Ops", "action", "1395-rev", "required"),
+    (58, "Update issue #123", "GitHub Ops", "action", None, "required"),
+    (59, "Comment on issue #456", "GitHub Ops", "canonical", None, "required"),
+    (60, "Review issue #789", "GitHub Ops", "canonical", None, "required"),
     # Slack (5)
-    (46, "Any mentions I missed?", "Slack", "floor", "M2"),
-    (47, "Summarize #general from yesterday", "Slack", "floor", "M2"),
-    (48, "Post this update to the team channel", "Slack", "action", "1395-rev"),
-    (49, "/standup", "Slack", "action", None),
-    (50, "/piper help", "Slack", "floor", None),
+    (46, "Any mentions I missed?", "Slack", "floor", "M2", "required"),
+    (47, "Summarize #general from yesterday", "Slack", "floor", "M2", "required"),
+    (48, "Post this update to the team channel", "Slack", "action", "1395-rev", "required"),
+    # Q49: /standup composes THIS user's activity into a standup → required.
+    (49, "/standup", "Slack", "action", None, "required"),
+    # Q50: help text — about Piper itself → not_applicable.
+    (50, "/piper help", "Slack", "floor", None, "not_applicable"),
     # Productivity (3)
-    (51, "What's my productivity this week?", "Productivity", "canonical", "1395-rev"),
-    (52, "Are we on track for the milestone?", "Productivity", "floor", None),
-    (53, "What did the team accomplish this sprint?", "Productivity", "floor", None),
+    (51, "What's my productivity this week?", "Productivity", "canonical", "1395-rev", "required"),
+    (52, "Are we on track for the milestone?", "Productivity", "floor", None, "required"),
+    (53, "What did the team accomplish this sprint?", "Productivity", "floor", None, "required"),
     # Todo Management (4)
-    (54, "Add a todo: review the deployment plan", "Todos", "action", None),
-    (55, "Complete the PR review todo", "Todos", "action", None),
-    (56, "Show my todos", "Todos", "canonical", None),
-    (57, "What's my next todo?", "Todos", "canonical", None),
+    (54, "Add a todo: review the deployment plan", "Todos", "action", None, "required"),
+    (55, "Complete the PR review todo", "Todos", "action", None, "required"),
+    (56, "Show my todos", "Todos", "canonical", None, "required"),
+    (57, "What's my next todo?", "Todos", "canonical", None, "required"),
     # Calendar Extended (2)
-    (61, "What's my week look like?", "Calendar Ext", "canonical", None),
-    (62, "Check my calendar for conflicts", "Calendar Ext", "canonical", None),
+    (61, "What's my week look like?", "Calendar Ext", "canonical", None, "required"),
+    (62, "Check my calendar for conflicts", "Calendar Ext", "canonical", None, "required"),
     # Knowledge (1)
-    (63, "Upload a file to the knowledge base", "Knowledge", "action", "1395-rev"),
+    (63, "Upload a file to the knowledge base", "Knowledge", "action", "1395-rev", "required"),
 ]
+
+# context_requirement distribution (the §5 finding the tagging pass reports):
+#   required=49 · optional=2 (Q23, Q24 — §7 flags) · not_applicable=10
+#   (Q1-5, Q6, Q26, Q27, Q28, Q50) · total=61
+VALID_CONTEXT_REQUIREMENTS = frozenset({"required", "optional", "not_applicable"})
+
+
+class TestContextRequirementTags:
+    """Shape guard for the context_requirement tag (CXO spec 2026-08-31).
+
+    Free + deterministic (no LLM, no app boot — runs in keyless sweeps): every
+    corpus row carries exactly one valid tag, so a future query added without
+    one fails HERE, not silently as an untagged judge input. Deliberately does
+    NOT pin per-row values or the distribution — those are CXO-adjudicable
+    semantics, not harness shape.
+    """
+
+    def test_every_query_carries_exactly_one_valid_tag(self):
+        assert len(CANONICAL_QUERIES) == 61, (
+            f"corpus size changed ({len(CANONICAL_QUERIES)}) — retag new rows per "
+            "docs/internal/testing/context-requirement-tag-spec.md and update this count"
+        )
+        for row in CANONICAL_QUERIES:
+            assert len(row) == 6, f"Q{row[0]}: expected 6 fields incl. context_requirement, got {len(row)}"
+            assert row[5] in VALID_CONTEXT_REQUIREMENTS, (
+                f"Q{row[0]}: invalid context_requirement {row[5]!r} — "
+                f"must be one of {sorted(VALID_CONTEXT_REQUIREMENTS)}"
+            )
 
 # Error fingerprints that indicate broken responses.
 # #1213 P2: broadened beyond the original 4 — the Q16 lesson is that error /
@@ -454,7 +522,7 @@ class TestCanonicalRouting:
     @pytest.mark.e2e
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
-        "query_num,query_text,category,expected_routing,known_issue",
+        "query_num,query_text,category,expected_routing,known_issue,context_requirement",
         CANONICAL_QUERIES,
         ids=[f"Q{q[0]}-{q[2]}" for q in CANONICAL_QUERIES],
     )
@@ -467,6 +535,7 @@ class TestCanonicalRouting:
         category,
         expected_routing,
         known_issue,
+        context_requirement,
     ):
         """Each query routes to its expected destination (floor/canonical/action)."""
         data = await send_canonical_query(e2e_client, query_text, query_num, e2e_auth_headers)
@@ -494,7 +563,7 @@ class TestCanonicalResponseStructure:
     @pytest.mark.e2e
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
-        "query_num,query_text,category,expected_routing,known_issue",
+        "query_num,query_text,category,expected_routing,known_issue,context_requirement",
         CANONICAL_QUERIES,
         ids=[f"Q{q[0]}-{q[2]}" for q in CANONICAL_QUERIES],
     )
@@ -507,6 +576,7 @@ class TestCanonicalResponseStructure:
         category,
         expected_routing,
         known_issue,
+        context_requirement,
     ):
         """Every query gets a non-empty response."""
         data = await send_canonical_query(e2e_client, query_text, query_num, e2e_auth_headers)
@@ -516,7 +586,7 @@ class TestCanonicalResponseStructure:
     @pytest.mark.e2e
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
-        "query_num,query_text,category,expected_routing,known_issue",
+        "query_num,query_text,category,expected_routing,known_issue,context_requirement",
         [q for q in CANONICAL_QUERIES if q[3] == "floor"],
         ids=[f"Q{q[0]}-{q[2]}" for q in CANONICAL_QUERIES if q[3] == "floor"],
     )
@@ -529,6 +599,7 @@ class TestCanonicalResponseStructure:
         category,
         expected_routing,
         known_issue,
+        context_requirement,
     ):
         """Floor-routed queries should NOT return template fingerprints."""
         data = await send_canonical_query(e2e_client, query_text, query_num, e2e_auth_headers)
@@ -542,7 +613,7 @@ class TestCanonicalResponseStructure:
     @pytest.mark.e2e
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
-        "query_num,query_text,category,expected_routing,known_issue",
+        "query_num,query_text,category,expected_routing,known_issue,context_requirement",
         CANONICAL_QUERIES,
         ids=[f"Q{q[0]}-{q[2]}" for q in CANONICAL_QUERIES],
     )
@@ -555,6 +626,7 @@ class TestCanonicalResponseStructure:
         category,
         expected_routing,
         known_issue,
+        context_requirement,
     ):
         """No query should return error fingerprints in the response."""
         data = await send_canonical_query(e2e_client, query_text, query_num, e2e_auth_headers)
@@ -623,7 +695,7 @@ class TestCanonicalQuality:
     @pytest.mark.llm_judge
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
-        "query_num,query_text,category,expected_routing,known_issue",
+        "query_num,query_text,category,expected_routing,known_issue,context_requirement",
         [q for q in CANONICAL_QUERIES if q[3] == "floor" and q[4] is None],
         ids=[f"Q{q[0]}-{q[2]}" for q in CANONICAL_QUERIES if q[3] == "floor" and q[4] is None],
     )
@@ -637,6 +709,7 @@ class TestCanonicalQuality:
         category,
         expected_routing,
         known_issue,
+        context_requirement,
     ):
         """Floor-routed queries (non-known-issue) should score 7+ on Colleague Test."""
         data = await send_canonical_query(e2e_client, query_text, query_num, e2e_auth_headers)

@@ -49,9 +49,12 @@ different, newer implementation that fully supersedes this one. Current reality:
   Does NOT do webp conversion (needs cwebp/Pillow, unavailable in Vercel's
   serverless environment) — that step still runs at actual publish time via
   `publish-post.js`, unchanged.
-- **Phase 4** (mark-ready + git handoff) — NOT built. Tracked in the "Genuinely still open" table
-  above (#3) — escalated to PM cc Docs 2026-08-31 after CIO's date audit caught it sitting 43 days
-  undecided.
+- **Phase 4** (mark-ready + git handoff) — **CLOSED 2026-08-31**. Sat 43 days undecided until
+  CIO's date audit caught it; escalated to PM cc Docs same day. Docs checked their actual workflow
+  (not memory of it) and confirmed the real trigger is always a direct human signal from PM/Comms,
+  never a status field — `ready-for-docs` shows 0 live rows using it. "Git handoff" was already moot
+  (autosave+auto-commit covers it); "mark-ready" wasn't filling a gap Docs actually has. A future
+  machine-readable ready-signal would be a fresh ticket, not a revival of this one.
 - PM gave unprompted positive feedback on this system 2026-07-18, specifically
   because edits are agent-discoverable via git (see memory:
   human-first-agent-aware-interfaces). PM is now thinking about expressing more
@@ -71,8 +74,7 @@ superficially-but-not-mechanically compliant.
 |---|---|---|---|
 | 1 | **Obs-pass joint walkthrough** | 2026-06-17 | **Hold for** PM's +1/−1/defer; not Web's to close. Pre-staged 2026-08-31: full 31-item reconciliation done live via Playwright against the deployed site, not code-reading. 13 resolved, 10 still open, 1 new finding, 1 page substantively changed. Artifact: `pipermorgan-walkthrough-prep-2026-08-31.html` — https://claude.ai/code/artifact/b02c86c4-0131-432f-b9b8-752ffc2d0b84. Canonical source: `dev/2026/05/24/site-observation-pass-2026-05-24.md`. |
 | 2 | **Site walkthrough** (formal joint pass) | 2026-05-29 | **Hold for** PM joint session; not Web's to close. Same 2026-08-31 prep pass covers this — artifact above follows the A–E order proposed 5/28 (`dev/2026/05/28/...`), resuming cleanly at `/methodology`. |
-| 3 | **Phase 4** (compose UI mark-ready + git handoff, #998 family) | 2026-07-19 | **Awaiting PM/Docs decision** — escalated 2026-08-31 rather than let it keep aging; sat 43 days undecided, caught by CIO's date audit as a candidate for the exact silent-deferral pattern CLAUDE.md warns against. Current system already auto-commits on save, so the original scope may be partly moot; asked whether anything's still wanted. Memo: `mailboxes/web/sent/ask-web-to-pm-cc-docs-cio-compose-ui-phase-4-decision-needed-43-days-silent-2026-08-31.md`. |
-| 4 | **Buttondown native newsletter publishing** | 2026-08-15 | **Hold for** PM research; not Web's to close (explicitly long-term/not-urgent). Publish blog posts natively to Buttondown, possibly with subscriber choice (blog vs. Ship) — Buttondown may not support that granularity without multiple newsletters. **2026-08-31**: PM doing research when back at desk. |
+| 3 | **Buttondown native newsletter publishing** | 2026-08-15 | **Hold for** PM research; not Web's to close (explicitly long-term/not-urgent). Publish blog posts natively to Buttondown, possibly with subscriber choice (blog vs. Ship) — Buttondown may not support that granularity without multiple newsletters. **2026-08-31**: PM doing research when back at desk. |
 
 ### Alt-text backfill — COMPLETE 2026-06-17
 - [x] **blog-metadata.csv imageAlt** — all 276 filled; editorial-calendar 144 synced; medium-posts.json rebuilt; pushed to main (`03a4f42cc`). Verify via `/admin/calendar/` (gap count should be 0 for published posts with imageSlug). Plan: `dev/active/alt-text-backfill-plan-2026-06-17.md`.

@@ -25,11 +25,36 @@
 #
 # WHAT COUNTS AS "AGING"
 # ---------------------------------------------------------------------------------
-# A table row that (a) carries a parseable per-item date roughly >= AGE_THRESHOLD_DAYS
-# old, AND (b) contains no blocking-language signal (Pending PM, waiting on, gated on,
-# concurrence, trigger-bound, Watch, ...) anywhere in its own row text. That combination
-# is exactly the shape of a silently-deferred item: no one is watching it, and no one
-# decided to defer it either — it just stopped getting looked at.
+# A table row OR an inline-bold-labeled item (see v1.1 note below) that (a) carries a
+# parseable per-item date roughly >= AGE_THRESHOLD_DAYS old, AND (b) is not blocked — by
+# either a blocking-language signal (Pending PM, waiting on, gated on, concurrence,
+# trigger-bound, Watch, ...) anywhere in its own text, OR a non-empty "Blocked on"-shaped
+# table column (v1.1, see below). That combination is exactly the shape of a
+# silently-deferred item: no one is watching it, and no one decided to defer it either —
+# it just stopped getting looked at.
+#
+# v1.1 (2026-08-31, same-day fixes from real first-use — both found by roles adopting the
+# convention hours after it shipped, not by further self-testing):
+#   1. STRUCTURAL BLOCKER COLUMN (CXO's finding). CXO's table has a literal "Blocked on"
+#      column plus a "Recheck trigger" column — 2 of the 4 rows the checker flagged as
+#      "aging, no blocking language found" were rows where the blocker was ONLY expressed
+#      structurally ("Blocked on: PPM picking a slot"), never repeated as prose the phrase
+#      list could match. A 50% false-positive rate on the very first adopting file would
+#      have trained people to skim the report before it had a chance to earn trust — the
+#      same credibility argument as the freeze-watchdog belt. Fix: any column whose header
+#      contains "blocked" is now checked directly — a non-empty cell there is a blocker,
+#      full stop, regardless of wording. Cheaper and more robust than growing the phrase
+#      list indefinitely, and it rewards structure over incantation.
+#   2. INLINE BOLD-LABEL DATES (Web's finding). The cohort broadcast said to date items
+#      "the way you'd date a diary entry" — several roles (docs, and Web's own first
+#      attempt) did exactly that: `**Added**: 2026-08-29` as a prose line under a `##`/`###`
+#      heading, not a markdown table at all. The original parser only ever looked at table
+#      rows and had zero path for this shape — a role could comply with the broadcast's own
+#      words and still be invisible to the checker. Fix: a line matching
+#      `**Added|Filed|Noted|Started**: <date>` under a heading is now a recognized item,
+#      using the heading text as the description and a bounded look-ahead (to the next
+#      heading, capped at 20 lines) for blocking language in the surrounding prose — a bold
+#      label and its own blocker phrase are rarely on the same line.
 #
 # REAL, LOAD-BEARING VARIANCE ACROSS THE ACTUAL CORPUS (found before writing this parser
 # — see the session's own report for the full sampling; summarized here so the next
@@ -158,6 +183,7 @@ parse_header() {
     DATE_IDX=-1
     ITEM_IDX=-1
     NUM_IDX=-1
+    BLOCKED_IDX=-1
     SKIP_TABLE=0
     local i cell lc
     for i in "${!ROW_CELLS[@]}"; do
@@ -168,6 +194,7 @@ parse_header() {
             resolved) SKIP_TABLE=1 ;;
             item | topic) [ "$ITEM_IDX" -eq -1 ] && ITEM_IDX=$i ;;
             "#") NUM_IDX=$i ;;
+            *blocked*) BLOCKED_IDX=$i ;;
         esac
     done
     if [ "$ITEM_IDX" -eq -1 ]; then
@@ -204,7 +231,16 @@ process_row() {
     local age_days=$(((TODAY_EPOCH - epoch) / 86400))
     [ "$age_days" -lt "$AGE_THRESHOLD_DAYS" ] && return
 
-    if is_blocked "$line"; then
+    # Structural blocker: a non-empty "Blocked on"-shaped column beats phrase-matching —
+    # CXO's 2026-08-31 finding, real same-day use: 2 of 4 flags on the first adopting file
+    # were false positives because the blocker lived in a dedicated column ("Blocked on: PPM
+    # picking a slot"), not repeated as prose the phrase list could match. A structured
+    # column is a stronger, cheaper signal than growing the phrase list indefinitely.
+    local blocked_cell=""
+    if [ "$BLOCKED_IDX" -ge 0 ] && [ "$BLOCKED_IDX" -lt "${#ROW_CELLS[@]}" ]; then
+        blocked_cell="${ROW_CELLS[$BLOCKED_IDX]}"
+    fi
+    if is_blocked "$line" || [ -n "$blocked_cell" ]; then
         ROWS_BLOCKED=$((ROWS_BLOCKED + 1))
         return
     fi
@@ -252,18 +288,33 @@ for f in "${FILES[@]}"; do
     DATE_IDX=-1
     ITEM_IDX=-1
     NUM_IDX=-1
+    BLOCKED_IDX=-1
     SKIP_TABLE=0
     ROWS_EXAMINED=0
     ROWS_AGING=0
     ROWS_BLOCKED=0
     ROWS_UNPARSEABLE=0
+    heading_dated=0 # guards against double-processing an inline label under the same heading
 
-    while IFS= read -r raw_line || [ -n "$raw_line" ]; do
+    # mapfile (not the old streaming `while read`) so the inline-label path below can look
+    # AHEAD to the end of the current heading's section for blocking language — a bold-label
+    # date and its own blocker phrase are rarely on the same line (2026-08-31 finding: Web's
+    # broadcast said "date it like a diary entry," several roles did exactly that in prose
+    # under a heading, not a table — the checker had no path for that shape at all until now).
+    # Portable bash-3.2 equivalent of `mapfile -t` (macOS ships 3.2; no mapfile builtin).
+    FLINES=()
+    while IFS= read -r fl || [ -n "$fl" ]; do FLINES+=("$fl"); done <"$f"
+    NLINES=${#FLINES[@]}
+    idx=0
+    while [ "$idx" -lt "$NLINES" ]; do
+        raw_line="${FLINES[$idx]}"
         trimmed="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<<"$raw_line")"
 
         if [[ "$trimmed" =~ ^#+[[:space:]] ]]; then
             heading="$trimmed"
             table_state=0
+            heading_dated=0
+            idx=$((idx + 1))
             continue
         fi
 
@@ -275,6 +326,33 @@ for f in "${FILES[@]}"; do
                 if [ "$is_pipe" -eq 1 ]; then
                     header_line="$trimmed"
                     table_state=1
+                elif [ "$heading_dated" -eq 0 ] && [[ "$trimmed" =~ ^\*\*(Added|Filed|Noted|Started)\*\*:[[:space:]]*(.+)$ ]]; then
+                    inline_date_text="${BASH_REMATCH[2]}"
+                    inline_epoch="$(extract_latest_epoch "$inline_date_text")"
+                    if [ -n "$inline_epoch" ]; then
+                        heading_dated=1
+                        ROWS_EXAMINED=$((ROWS_EXAMINED + 1))
+                        lookahead_text="$trimmed"
+                        j=$((idx + 1))
+                        window_end=$((idx + 21))
+                        while [ "$j" -lt "$NLINES" ] && [ "$j" -lt "$window_end" ]; do
+                            ntrim="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<<"${FLINES[$j]}")"
+                            [[ "$ntrim" =~ ^#+[[:space:]] ]] && break
+                            lookahead_text="$lookahead_text"$'\n'"$ntrim"
+                            j=$((j + 1))
+                        done
+                        inline_age_days=$(((TODAY_EPOCH - inline_epoch) / 86400))
+                        if [ "$inline_age_days" -ge "$AGE_THRESHOLD_DAYS" ]; then
+                            if is_blocked "$lookahead_text"; then
+                                ROWS_BLOCKED=$((ROWS_BLOCKED + 1))
+                            else
+                                ROWS_AGING=$((ROWS_AGING + 1))
+                                desc="$(sed -E 's/^#+[[:space:]]*//' <<<"$heading")"
+                                if [ "${#desc}" -gt 70 ]; then desc="${desc:0:67}..."; fi
+                                printf 'AGING: %s — %s (filed %s, %s days old)\n' "$ROLE" "$desc" "$inline_date_text" "$inline_age_days" >>"$AGING_OUTPUT"
+                            fi
+                        fi
+                    fi
                 fi
                 ;;
             1)
@@ -293,13 +371,14 @@ for f in "${FILES[@]}"; do
                 ;;
             2)
                 if [ "$is_pipe" -eq 1 ]; then
-                    process_row "$trimmed"
+                    process_row "$trimmed" >>"$AGING_OUTPUT"
                 else
                     table_state=0
                 fi
                 ;;
         esac
-    done <"$f" >>"$AGING_OUTPUT"
+        idx=$((idx + 1))
+    done
 
     TOTAL_ROWS_EXAMINED=$((TOTAL_ROWS_EXAMINED + ROWS_EXAMINED))
     TOTAL_AGING=$((TOTAL_AGING + ROWS_AGING))
