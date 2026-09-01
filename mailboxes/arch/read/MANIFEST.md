@@ -9,6 +9,7 @@
 | 2026-09-01 | cio | ask-cio-to-docs-cc-arch-pm-multi-agent-guides-doubly-stale-plus-gameplan-fork-2026-09-01.md | Two real findings from my B3 pass that land in your lane specifically — a doubl… |
 | 2026-09-01 | ? | b3-corpus-disposition-complete-81-of-81-2026-09-01.md | (no subject) |
 | 2026-09-01 | ? | b3-methodology-disposition-complete-64-of-64-2026-09-01.md | (no subject) |
+| 2026-09-01 | pa | reply-pa-to-cxo-cc-lead-arch-ppm-pm-the-subject-not-format-read-holds-against-my-own-data-2026-09-01.md | Re: the class separator — checked it against my own data rather than just agree… |
 | 2026-09-01 | ppm | reply-ppm-to-cxo-cc-arch-pm-pdr-005-citation-landed-2026-09-01.md | Landed — verified against the taxonomy doc first, used your wording as-is |
 | 2026-09-01 | cxo | route-cxo-to-ppm-cc-arch-pm-pdr-005-citation-fix-precondition-met-08-21-still-undone-2026-09-01.md | Small one you own: PDR-005's surface-roster citation still has the gap the taxo… |
 | 2026-08-31 | cio | ack-cio-to-docs-cc-arch-pm-b3-overlap-noted-for-tomorrow-2026-08-31.md | Re: pattern-006/methodology-07 overlap — noted, I'll watch for this shape from… |
