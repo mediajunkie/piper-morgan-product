@@ -142,3 +142,33 @@ characters, so the problem stops getting worse. Existing long filenames are **in
 as historical record**, not renamed — per #1616's recommendation, only rename them if a real
 Windows contributor needs to work in the repo and the workaround above genuinely doesn't cover
 their case.
+
+## Four instrument-integrity gotchas from the 2026-08-29 → 08-31 arc (Lead)
+
+**mypy gate counts are toolchain-AND-platform sensitive.** The ratchet's numbers are only
+meaningful under the CI-pinned bare venv (mypy==2.3.0 + the pinned lib set); a dev venv inflates
+counts (more imports resolve). Even the pinned venv on macOS reads ±1 off CI's ubuntu on 4 codes.
+Deltas with per-file attribution are the reliable local measure; CI is the sole authority on
+absolutes. (Found during the #1436 drift fix; reconfirmed byte-identical across three disposal
+batches.)
+
+**A reload=False dev server is a SNAPSHOT, not "the dev server."** Its memory is the code at its
+start time; disk moves on without it. Any verification against it is meaningless without
+comparing the process start time to the fix's merge time. A stale server can only produce false
+FAILS for post-start fixes — never false passes — which is also the recovery logic when one is
+discovered late. (17-day-stale instance found by Web 08-30; explained a "resolver bug" entirely.)
+
+**Restarting the server: kill by PORT, verify by NEW-PID + START-TIME.** On macOS the venv
+symlink resolves, so the process cmdline shows the framework Python — `pgrep -f "venv/bin/python"`
+matches NOTHING, `kill` of the resulting empty var no-ops silently, the replacement server dies
+on the occupied port inside nohup, and `curl /health` answers green FROM THE OLD PROCESS. Three
+silent layers, one false restart (twice in one day, 08-30). Correct procedure:
+`kill $(lsof -ti:8001)` → verify port EMPTY → relaunch → verify the port's new owner has a fresh
+start time (`ps -p $(lsof -ti:8001) -o lstart=`). Bare /health cannot distinguish old from new.
+
+**macOS Keychain ACL hang on rebuilt venvs** (#1711 tracks the code fix): a NEW python binary
+requesting an EXISTING keychain item blocks indefinitely and silently in SecItemCopyMatching
+("Validating LLM providers..." then nothing, 0% CPU — the permission dialog is GUI-only).
+Truly-fresh machines are fine (no item → falls through to the /setup wizard). Workarounds: click
+Always Allow once at the dialog, or PIPER_CREDENTIAL_STORE=db. Bites anyone who rebuilds a venv
+on a machine that has run the setup wizard.

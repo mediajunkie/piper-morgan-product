@@ -1,8 +1,9 @@
 ---
 type: scoring-instrument
 name: BYOC Recomposition Rubric
-version: v0.2 — DRAFT, unratified. T=3 REVISED on probe evidence 2026-08-30 (the "must render" claim
-  was falsified); axis still PENDING-PROBE for issuing a PASS — one vendor, n=1/cell, known design confound.
+version: v0.3 — DRAFT, unratified. T axis RESTRUCTURED BY QUALIFICATION CLASS 2026-09-01 after a second
+  falsification (the directive-field criterion was refuted in both vendors by its own deconfounder).
+  Still PENDING-PROBE for issuing a PASS: n=1 per cell per vendor throughout.
 date: 2026-08-30
 owner: CXO
 branched_from: Colleague Test Rubric v2.3.2 (`colleague-test-rubric.md`), per its own §"How to Extend
@@ -14,7 +15,7 @@ last_updated: 2026-08-30
 currency_claim: revise-on-probe-result
 ---
 
-# BYOC Recomposition Rubric — v0.2
+# BYOC Recomposition Rubric — v0.3
 
 **The instrument for scoring Piper's quality on a surface where Piper does not compose what the user
 reads.**
@@ -118,25 +119,46 @@ survive into what the user reads."*
 
 **The governing principle, and the reason this axis is actionable rather than merely worrying:**
 
-> ⭐ **Honesty carried in prose is droppable. Honesty carried in a *directive* field is harder to drop.**
-> 🔴 **REVISED 2026-08-30 on probe evidence — the original read "…in structure is not [droppable]," and
-> that is FALSIFIED.** A host silently dropped `coverage: "partial"` (item 3). **Structure alone buys
-> nothing; a field that constrains what may be claimed is what survived.** Full evidence, the two
-> competing explanations, and the confound in my own packet are in the revision banner below the table
-> — but the claim is corrected *here*, at the point of assertion, because a correction that lives only
-> further down is one a reader can quote past.
-> A sentence saying "I don't have data for last quarter" is an input to paraphrase. A field saying
-> `may_claim_complete: false` constrains the claim rather than describing the data. This is the same move
-> ESSENCE commitment 1 makes for portability (*"architectural, not policy"*) and commitment 4 makes for
-> honesty (*"enforced structurally where possible… rather than by vigilance"*) — applied to the one
-> surface where our own vigilance provably cannot reach.
+> ## 🔴 GOVERNING PRINCIPLE REPLACED, 2026-09-01 — v0.3. Third version, second falsification.
+>
+> **v0.1 said**: *honesty in prose is droppable, honesty in structure is not.* **v0.2 said**: *…in a
+> **directive** field is harder to drop.* **Both are now falsified by direct test** (PA, 30 trials, two
+> vendors). The deconfounder I designed to confirm v0.2 refuted it in **both** vendors.
+>
+> ⚠️ **And the deeper miss: my principles were about payload FORMAT. Format is not the variable.**
+>
+> ### What the evidence actually separates — the qualification's SUBJECT, not its form
+>
+> | Class | Prose | Structured |
+> |---|---|---|
+> | **(A) About the content being delivered — or IS the answer**: total read failure, staleness, decline, action-not-taken *(items 1, 4, 5, 6)* | survives — ⚠️ except **Claude fabricated** on item 1 prose | ✅ **survives reliably, both vendors** |
+> | **(B) About content NOT delivered, while content IS delivered**: partial coverage, truncation, "there may be more" *(item 3)* | ✅ **survives, both vendors** | 🔴 **VANISHES, both vendors, with AND without a directive** |
+>
+> ⭐ **The separator is: is the qualification about what's in the reply, or about what isn't?** Item 3 is
+> the only tested case where the caveat concerns *absent* content while *present* content already answers
+> the question — and it is the only case that fails.
+>
+> 🔴 **Format effectiveness runs in OPPOSITE directions across the two classes.** For (A) structure is the
+> fix. For (B) **structure is the failure mode and prose is what works.** A single slogan cannot cover
+> both, which is why the previous two were wrong.
+>
+> *(One line of mechanism, marked as speculation: a prose caveat is itself content the host is
+> summarising; a structured field about **absence** reads as metadata about the data and gets dropped when
+> composing a content answer — whereas a structured field about **failure** changes what the answer IS, so
+> it cannot be dropped.)*
+>
+> ⚠️ **This account fits 6/6 items × 2 vendors but was built AFTER seeing the data.** It is a reframe, not
+> a tested claim. **The 2-call test that discriminates it** — put both classes in ONE payload and one
+> question: item 3's three issues, tagged *both* `coverage: partial` **and** a present-content caveat
+> ("these 3 are from a cached read"). **If the account holds, the staleness note survives and the
+> completeness note vanishes in the same reply.** If both vanish, it's item 3's topic, not the class.
 
 | Score | Criteria |
 |---|---|
 | 0 | The output **permits a confident overclaim** — e.g. an empty result set returned as an empty list with no explicit absence marker, letting the host fill the silence. Auto-fail. |
 | 1 | Uncertainty is present but purely prose, buried mid-payload, and easy to drop under summarization pressure. |
 | 2 | Uncertainty is prose but prominent and hard to miss — survives a careful paraphrase, probably not a terse one. |
-| 3 | ~~Absence, partiality, staleness and decline are carried in **structure the host must render or visibly omit**, not in sentences it may quietly drop.~~ **FALSIFIED 2026-08-30 — see below.** Revised: the qualification is carried in a field that **constrains what may be claimed** (a directive), not merely one that **describes the data** (a descriptor). |
+| 3 | **Class-dependent, per the table above.** For **class (A)** qualifications (about the delivered content, or which *are* the answer): carried in a **structured field**. For **class (B)** (about content not delivered, alongside delivered content): 🔴 **no structured mechanism tested survives — carry it in PROSE, and preferably do not create the situation at all.** *(v0.2's "directive field" criterion is FALSIFIED; v0.1's "structure over prose" is falsified for class B.)* |
 
 > ### 🔴 T-AXIS REVISED ON EVIDENCE, 2026-08-30 — my governing hypothesis is PARTLY FALSIFIED
 >
