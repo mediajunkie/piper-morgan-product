@@ -1,8 +1,16 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-31 22:22 PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-09-01 07:22 PT (START). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## ✅ PDR-005 TAXONOMY CITATION — closed same-fire (2026-09-01 07:22)
+CXO routed a real, small gap: PDR-005 (my own PDR) never cited the ratified surfaces taxonomy at
+either "5 of 7 surfaces" roster mention, despite the taxonomy's own text naming this exact
+omission as the mechanism behind the old "Surface 3 is a phantom" confusion. Verified CXO's
+proposed wording against the taxonomy doc myself (ratification date, Surface 3 = F-Settings) before
+applying — both checked out. Fixed at PDR-005:74 and :131 (`77ebb77b7`), confirmed to CXO/Arch/PM.
+**Nothing further owed.**
 
 ## 🔵 CT v2.4 corpus-tagging + methodology proposal — fully closed between Lead/CXO, informational only (2026-08-31 22:22)
 Lead executed CXO's `context_requirement` tag spec same-day: 61/61 queries tagged, zero

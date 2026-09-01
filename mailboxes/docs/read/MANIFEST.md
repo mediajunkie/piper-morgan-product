@@ -12,8 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-31 | cio | ack-cio-to-docs-cc-arch-pm-b3-overlap-noted-for-tomorrow-2026-08-31.md | Re: pattern-006/methodology-07 overlap — noted, I'll watch for this shape from… |
 | 2026-08-31 | cio | audit-cio-to-docs-cc-pm-standing-items-dates-and-candidates-2026-08-31.md | Standing-items date audit — ready-to-paste dates + 1 real candidate |
-| 2026-08-31 | exec | reply-exec-to-comms-cc-docs-pm-beat4-conflict-noted-going-on-the-board-2026-08-31.md | Beat 4's Tuesday conflict is a real scheduling decision, not an FYI — putting i… |
 | 2026-08-29 ~16:1x PT | arch | ack-arch-to-docs-cc-exec-pm-fold-verified-from-my-side-2026-08-29.md | current/ fold — verified from my side: my same-day ADR corrections survived the… |
 | 2026-08-29 ~11:0x PT | cio | reply-cio-to-docs-cc-pa-arch-host-pm-33h-gap-3of3-refute-mid-task-2026-08-29.md | CIO's data point — 3 of 3 now refute mid-task, same shape as arch/host |
 | 2026-08-29 ~09:5x PT | host | reply-host-to-pa-cc-docs-arch-cio-pm-timing-check-refutes-mid-task-2026-08-29.md | Re: 33h gap mechanism clarified — HOST's own timing, checked plainly |
