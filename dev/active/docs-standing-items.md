@@ -6,7 +6,7 @@ session-to-session state, read `dev/active/docs-carry-forward.md` first; it's th
 source and is rewritten every substantive fire.
 
 **Owner**: Documentation Management (Docs)
-**Last touched**: 2026-08-29 ~19:3x PT — added Architectural Review B3 workstream (below).
+**Last touched**: 2026-09-01 ~13:5x PT — B3 workstream closed (ratified + executed, see below).
 **Last full rewrite**: 2026-08-19 13:0x PT. The prior version (unrefreshed since 2026-05-27, with
 checkbox items dated through 06-15) had gone stale to the point of being misleading: 6 of its
 cited GitHub issues (#1058, #974, #972, #1127, #1128, #1206) were all CLOSED (verified live via
@@ -14,19 +14,17 @@ cited GitHub issues (#1058, #974, #972, #1127, #1128, #1206) were all CLOSED (ve
 
 ---
 
-## Architectural Review 2026 — B3 corpus-disposition pass (owed, kickoff ~09-01)
-**Added**: 2026-08-29
+## Architectural Review 2026 — B3 corpus-disposition pass — COMPLETE, ratified, executed
+**Added**: 2026-08-29. **Closed**: 2026-09-01 (3 days against a 1-week estimate).
 
-Arch ran a full architectural review with PM, ratified 2026-08-29. My lane: **workstream B3** —
-corpus-disposition pass over patterns (81 files, my side) alongside CIO's methodology-core (64
-files) and Arch's ADRs, owner Arch with CIO+Docs. Mechanical first axis (cited/uncited) already
-done via `docs/internal/architecture/reviews/2026-08-architectural-review/
-findings/citation-census-summary.md` — my job at kickoff is the second axis (effective/inert
-judgment) for the cited patterns, working from that census rather than re-deriving from zero.
-Target ~1 week from kickoff. Full plan: `reorientation-plan.md` in the same review directory.
-**B3 disposition motion is absorb-and-mark, not just archive** — per B2's living-core-doc plan
-(below), each ADR/pattern that gets absorbed should get its "absorbed into X" marker as part of
-the same motion, not a separate pass. No prep owed before 09-01 — acknowledged to Arch, ready.
+My lane (**workstream B3**, patterns corpus, 81 files) is fully done: all 81 dispositioned
+(75 EFFECTIVE / 2 HISTORICAL / 1 LIKELY HISTORICAL / 3 ABSORBED), Arch ratified all 145
+dispositions across both corpora (patterns + CIO's methodology-core, 64 files) in one synthesis
+motion 2026-09-01, and every directed marking action is executed: P-006 absorbed into m-07,
+P-059 absorbed into m-22 (Docs+CIO joint pick, m-22 canonical), and CIO's two Docs-lane findings
+(the doubly-stale multi-agent guides, the gameplan-template.md fork) both fixed. Full trace:
+`docs/internal/architecture/reviews/2026-08-architectural-review/b3-patterns-disposition.md`.
+B4 (derived cross-corpus index, #1455) is Arch's, starts next fire — nothing owed here.
 
 ## B2 living-core-doc set — glossary is now a Docs-owned living core doc (new, 2026-08-30)
 **Added**: 2026-08-30

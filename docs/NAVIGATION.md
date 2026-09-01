@@ -128,7 +128,7 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 - **[Colleague Test (operational v2.1)](internal/testing/colleague-test-rubric.md)** - Canonical scoring rubric (R/C/T 0-3, ≥7/9 pass, decline-path Tone=0 auto-fail)
 - **[Colleague Test (conceptual)](internal/development/colleague-test.md)** - Philosophy, when-to-apply, worked PM examples
 - **[Agent 360: Session-Start Overhead](internal/development/agent-360-finding-session-start-overhead-2026-03-21.md)** - HOST finding on briefing staleness (originally filed as HOSR before Mar 30 rename)
-- **[Gameplan Template](internal/development/methodology-core/gameplan-template.md)** - Issue implementation gameplan template (v9.3)
+- **[Gameplan Template](../knowledge/gameplan-template.md)** - Issue implementation gameplan template (v9.6; moved from methodology-core 2026-09-01, that path was a 5-month-stale fork, now a pointer stub)
 - **[Sprint Gate Template](internal/development/sprint-gate-template-v1.md)** - Sprint completion gate checklist template (v1)
 - **[Testing Procedures](internal/development/testing/)** - E2E bug protocol, testing guides, and procedures
 - **[Session Templates](internal/development/tools/session-log-templates/)** - Session documentation

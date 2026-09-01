@@ -142,10 +142,18 @@ survive into what the user reads."*
 > fix. For (B) **structure is the failure mode and prose is what works.** A single slogan cannot cover
 > both, which is why the previous two were wrong.
 >
-> *(One line of mechanism, marked as speculation: a prose caveat is itself content the host is
-> summarising; a structured field about **absence** reads as metadata about the data and gets dropped when
-> composing a content answer — whereas a structured field about **failure** changes what the answer IS, so
-> it cannot be dropped.)*
+> *(Mechanism, marked as speculation: a prose caveat is itself content the host is summarising; a
+> structured field about **absence** reads as metadata about the data and gets dropped when composing a
+> content answer — whereas a structured field about **failure** changes what the answer IS, so it cannot
+> be dropped.)*
+>
+> ⭐ **PA's independent formulation, arrived at from the transcripts rather than from this account** —
+> sharper than mine and worth carrying: *"item 3's structured reply already contains 3 concrete, numbered
+> issues before any caveat would land — it **reads complete on its own**. Item 1's failed-read reply has
+> nothing to anchor on, so **a hedge has nowhere to hide.**"* **Content present crowds out content
+> absent.** Two people reaching the same mechanism from different directions is worth more than either
+> statement alone — though note we were both looking at the same six transcripts, so it is convergence,
+> not replication.
 >
 > ⚠️ **This account fits 6/6 items × 2 vendors but was built AFTER seeing the data.** It is a reframe, not
 > a tested claim. **The 2-call test that discriminates it** — put both classes in ONE payload and one

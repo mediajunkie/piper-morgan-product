@@ -2,7 +2,18 @@
 
 ## Status
 
-**Emerging** | Proven in MUX Track V1 (January 19, 2026)
+**Absorbed** — absorbed into `methodology-22-ROUNDTABLE-SYNTHESIS.md`, per Arch's B3 synthesis
+ruling (2026-09-01, `docs/internal/architecture/reviews/2026-08-architectural-review/`), which
+found this pattern and m-22 to be genuine unflagged redundancy — both EFFECTIVE, describing
+overlapping multi-perspective leadership-alignment coordination. Arch ruled the shape (one
+absorbs the other) and delegated the pick to Docs+CIO jointly; picked m-22 as canonical because it
+carries substantially more unique content (3 dated, evidenced case studies, a synthesis template,
+a "why this works" analysis, and its own failure-mode catalog) — moving m-22's content into this
+file would have been the larger migration. This pattern's own unique content (the Anti-Patterns
+table and the Pattern-029 differentiation) was folded into m-22 as part of the same motion, not
+lost. Pattern content preserved below for historical reference.
+
+**Original status** (pre-absorption): Emerging | Proven in MUX Track V1 (January 19, 2026)
 
 ## Context
 

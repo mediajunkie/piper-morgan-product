@@ -1,21 +1,24 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-01 ~10:5x PDT (B3 COMPLETE, 81/81; Sender-Impersonation Bug fully closed incl.
-syndication; a real publish-workflow proposal adopted; #1712 audit started, 4 items closed)
+**Updated**: 2026-09-01 ~13:5x PDT (B3 fully RATIFIED + EXECUTED, both corpora, Arch's synthesis
+motion landed and actioned same-fire; Sender-Impersonation Bug closed; #1712 audit 4 items closed)
 **Session log**: `dev/2026/09/01/2026-09-01-0730-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-07, next fire 12:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-07, next fire ~15:57.
 
-## B3 corpus-disposition — COMPLETE, 81/81 patterns dispositioned
+## B3 corpus-disposition — CLOSED. Ratified by Arch, all directed markers executed.
 
 Tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-patterns-disposition.md`.
-**Final result**: 77 EFFECTIVE, 2 HISTORICAL (P-015 clean zero-hit; P-024 self-documented
-supersession), 1 LIKELY HISTORICAL (P-016, flagged with caveat), 1 ABSORBED
-(pattern-family-index-proposal → `PATTERN-FAMILIES.md`). Sent completion memo to Arch (cc CIO)
-2026-09-01 — ready for the synthesis-stage absorb-and-mark motion into the six living-core docs.
-Two real cross-lane findings flagged, not fixed unilaterally: P-006-verification-first duplicates
-methodology-core's own m-07 (same principle, two corpora); citation count mispredicts
-effective/inert (adopted as the standing B3 rule, Arch already extended it to CIO's
-methodology-core lane). **Nothing further owed on B3 from me** — next move is Arch's.
+**Final result: 75 EFFECTIVE, 2 HISTORICAL, 1 LIKELY HISTORICAL, 3 ABSORBED** (P-006→m-07,
+P-059→m-22, pattern-family-index-proposal→`PATTERN-FAMILIES.md`). CIO's parallel methodology-core
+pass (64 files) also complete. **Arch ratified all 145 dispositions across both corpora in one
+synthesis motion (2026-09-01)** and ruled five cross-corpus overlaps — all executed same-fire:
+P-006 absorbed into m-07; P-059 absorbed into m-22 (Docs+CIO joint pick, m-22 canonical — carried
+more unique content, smaller migration; P-059's Anti-Patterns table + P-029 differentiation folded
+into m-22 first); the two doubly-stale multi-agent guides re-bannered fully HISTORICAL
+(`services/orchestration/` confirmed fully deleted, #1436); `doc-sync-sweep`'s stale citation
+corrected in place; `gameplan-template.md`'s methodology-core fork retired to a pointer stub,
+`NAVIGATION.md` repointed. **Nothing further owed on B3** — B4 (derived cross-corpus index, #1455)
+is Arch's, starts next fire.
 
 ## "A Sender-Impersonation Bug, Four Days Before Beta" — fully closed
 

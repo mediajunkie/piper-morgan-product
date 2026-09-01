@@ -183,6 +183,35 @@ The roundtable's effectiveness comes from three properties:
 
 **Synthesis creates commitment.** A ratified synthesis is a shared decision that every participant helped shape. It's harder to undermine or relitigate than a unilateral call, because every role's concerns are visibly addressed in the document.
 
+## Anti-Patterns
+
+*(Folded in from `pattern-059-leadership-caucus.md` on absorption, 2026-09-01 — see note at end of file.)*
+
+| Anti-Pattern | Why It's Wrong | Correction |
+|--------------|----------------|------------|
+| Roundtable for single-domain decisions | Overkill; wastes reviewer time | Use direct consultation or mailbox |
+| Skipping the roundtable for cross-cutting strategic questions | Creates alignment debt; the decision may need relitigating later | Convene the roundtable upfront |
+| No independent-delivery discipline | Anchoring — later memos echo the first instead of reasoning independently | Deliver the prompt to all roles at approximately the same time, with no visibility into others' answers |
+| Synthesis as pure summary | Fails to resolve tensions or propose action; not doing the synthesizer's job | Synthesis must make at least one decision or identify at least one gap |
+| Full participant roster always | Not every strategic question needs every role | Invite only roles with real domain standing on the question |
+
+## Differentiation: Roundtable Synthesis vs. Multi-Agent Coordination (Pattern-029)
+
+*(Folded in from `pattern-059-leadership-caucus.md` on absorption — the same distinction the caucus pattern drew against P-029 applies here.)*
+
+Roundtable Synthesis and [Pattern-029: Multi-Agent Coordination](../../architecture/patterns/pattern-029-multi-agent-coordination.md) both involve multiple agents but serve different purposes:
+
+| Dimension | Roundtable Synthesis (m-22) | Pattern-029 (Multi-Agent Coordination) |
+|-----------|------------------------------|----------------------------------------|
+| **Domain** | Leadership alignment | Technical execution |
+| **Purpose** | Converge on a strategic decision before work begins | Coordinate parallel implementation work |
+| **Participants** | Advisory roles (PPM, CXO, Architect, CIO) + PM | Coding agents |
+| **Timing** | Before execution | During execution |
+| **Output** | A ratified synthesis document — decision, assignments, direction | Code, tests, validated changes |
+| **Coordination mode** | Independent parallel memos, then synthesis | Cross-validation, handoffs, parallel phases |
+
+**In practice**: A ratified roundtable synthesis produces the decision and assignment that triggers a Multi-Agent Coordination deployment. They are sequential, not competing — one decides *what* and *how*; the other *executes*.
+
 ## Common Failure Modes
 
 **Anchoring**: If one memo is shared before others are complete, subsequent memos anchor to it. Maintain independence through parallel delivery.
