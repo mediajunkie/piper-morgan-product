@@ -44,6 +44,7 @@ max_age_days: 31
 | **2026-08-31** | **#1708 quickstart — banner removal** | **PPM + Docs executing.** ✅ *The release-model call ALREADY HAPPENED — PM blessed hosted-primary in conversation 08-31 ~13:1x (relayed by Lead). This row said "blocked on PM" for hours after it was decided.* My banner is superseded when their rewrite lands. | Rewrite lands → remove my banner. |
 | **2026-07-26** | **#1386 beta gate** | Others. **All CXO criteria (criterion 3) are signed off since 07-12.** Remaining: sprint surface, canonical suite, stability window. | Not mine to drive; watch. |
 | **2026-07-26** | **Spatial committed-theory review** | **Arch** synthesis. CXO slice folded in verbatim; convergence matches my (b) vote. | Arch publishes. |
+| **2026-08-21** | **PDR-005 surface-roster citation fix** *(precondition = taxonomy ratification, met 08-21; proposed to PPM 09-01)* | **PPM** — PDR-005's author. Two-line pointer, no decision content. ⚠️ **This item fell out of my 08-31 tracker rebuild** and was recovered by a self-audit, not by the aging check. | PPM edits or declines. |
 | **2026-08-28** | **Ethics-decline VOICE watch** | A deploy touching floor/decline copy, or a live decline observed. | Method: Colleague Test. Report with denominator. |
 
 ## ✅ CLOSED ON VERIFICATION — do not re-open
