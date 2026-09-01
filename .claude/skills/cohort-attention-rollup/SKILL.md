@@ -148,6 +148,52 @@ items whose authors knew to route them. They structurally miss items flagged *in
 commit body, an issue comment, a design doc's own status line, a memo's closing paragraph. When you
 encounter one anywhere, **it belongs on the next board**, regardless of which surface it came from.
 
+### (a-bis) Run `scripts/aging-standing-items.sh` as a Step 1 source — it reaches where Step 1 structurally cannot
+
+*(Wired in 2026-08-31, Exec's call, on CIO's flag. CIO built the tool and deliberately did not edit
+this file — the integration point was mine to decide.)*
+
+**The gap it closes, stated precisely**: Step 1's sources are carry-forwards, GitHub, and blocker
+mail. A **standing-items row that was never promoted into a carry-forward's PM-attention section is
+outside all three** — so it can age indefinitely and no board will ever see it. CIO found three of
+their own rows that had sat **3.5 months** in exactly that position, surfaced only because PM happened
+to ask directly what they were postponing.
+
+That is requirement (a) — *the board is the flag* — failing from the other end: not a flag lost in a
+commit message, but work quietly deferred where nothing looks.
+
+**How to treat hits — a hit is a CANDIDATE, not a board item.** The script flags rows past 21 days
+carrying no blocking language, which means *quietly deferred*, not necessarily *needs PM*. Run the
+Step 2 live-verification pass on each hit as you would any other candidate, then sort:
+- **Genuinely PM-gated** → onto the board, **first-seen = the row's filed date**, not today. An item
+  that has aged 3 months should render as 3 months, not as new.
+- **The agent's own deferred work** → not PM's problem. Note it to that role, don't board it.
+
+⚠️ **STATE THE COVERAGE, EVERY TIME — and take it from the script's own output, not from a memo.**
+
+**The script already reports its own denominator, and reports it well.** Measured run, 2026-08-31:
+`10 standing-items files · 2 retired (deliberately skipped, not a gap) · 3 with no parseable
+per-item date column — arch, comms, lead · 5 readable · 16 rows examined · 1 flagged aging · 4
+correctly excluded for blocking language`. Its closing line says outright that a clean run *"is NOT a
+claim that the other 3 files carry no silently-aging items."* **Quote that block; do not summarize it
+into a number.**
+
+★ **Worked example of why, and it is mine**: CIO's memo introducing the tool said *"only 2 of 11
+roles' trackers currently carry a per-item date at all."* I wrote that into this skill. Then I ran the
+script and it reported **5 of 10 readable**. CIO undersold their own tool — and I propagated their
+figure without measuring, into the very section whose subject is stating denominators honestly. **The
+number was one command away and I took it from prose instead.** Run the script; paste its coverage
+block.
+
+*(Note the distinction the script is drawing, so nobody "corrects" it wrongly: `arch`, `comms` and
+`lead` do contain dates in prose — a bare grep finds 88 in `arch` alone — but not in a **parseable
+per-item column**. The script is right and the grep is the cruder instrument.)*
+
+PM has written the per-item dating habit into `CLAUDE.md`, so coverage should climb. Until it does, a
+clean run means **"nothing found in the fraction I can see."** Rendering that as "nothing is being
+silently deferred" is precisely the false clear this board exists to prevent, committed by the board
+itself.
+
 ### (b) Age is itself an escalation signal — carry a FIRST-SEEN date on every item
 
 **Every decision-bucket item carries the date it first appeared on a board.** Render it. An item is
