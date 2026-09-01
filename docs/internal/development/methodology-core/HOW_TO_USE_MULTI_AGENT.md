@@ -1,10 +1,30 @@
 # How to Use the Multi-Agent Coordinator
 
-> ⚠️ **Post-#1094 staleness banner (2026-05-15)**: Sections of this guide reference `services/orchestration/engine.py` and `OrchestrationEngine`, both deleted in #1094 (ENGINE-DELETION, γ-preserve). The `from services.orchestration.engine import OrchestrationEngine` import + `engine.create_workflow_from_intent(...)` + `engine.execute_workflow(...)` examples are no longer valid. EXECUTION-intent dispatch now flows through `intent_service.process_intent` direct dispatch via the `task_type` registry (Pattern-072, promoted to Proven via #1094). The `MultiAgentCoordinator` (`services/orchestration/multi_agent_coordinator.py`) survives. Use intent_service handler dispatch instead of engine workflow creation.
+> 🔴 **HISTORICAL — the whole subsystem this guide teaches is deleted (2026-09-01 banner, supersedes
+> the 2026-05-15 one below).** `services/orchestration/` — including `multi_agent_coordinator.py`,
+> which the prior banner claimed "survives" — was fully deleted 2026-07-18 (#1436, Tier-3 Family-2
+> orchestration-island deletion, commit `addb61c99`; PM-033d thinking preserved as a design record).
+> That claim is confirmed false as of this correction: `services/orchestration/` does not exist in
+> the live tree. There is no live code this guide can be followed against. Confirmed via B3
+> corpus-disposition (CIO, 2026-09-01): `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`.
+> Guide content preserved below for historical reference only — do not write code against it.
+>
+> <details><summary>Prior (2026-05-15) staleness banner, superseded above</summary>
+>
+> Sections of this guide reference `services/orchestration/engine.py` and `OrchestrationEngine`,
+> both deleted in #1094 (ENGINE-DELETION, γ-preserve). The
+> `from services.orchestration.engine import OrchestrationEngine` import +
+> `engine.create_workflow_from_intent(...)` + `engine.execute_workflow(...)` examples are no
+> longer valid. EXECUTION-intent dispatch now flows through `intent_service.process_intent`
+> direct dispatch via the `task_type` registry (Pattern-072, promoted to Proven via #1094). The
+> `MultiAgentCoordinator` (`services/orchestration/multi_agent_coordinator.py`) survives. Use
+> intent_service handler dispatch instead of engine workflow creation.
+>
+> </details>
 
 **Purpose**: Practical guide for using the Multi-Agent Coordinator in development workflows
-**Audience**: Developers implementing complex features
-**Status**: ✅ Complete Operational Guide (engine-integration sections stale post-#1094; see banner)
+**Audience**: Developers implementing complex features (historical — subsystem deleted, see banner)
+**Status**: 🔴 HISTORICAL — subsystem fully deleted 2026-07-18 (#1436); preserved for reference only
 
 ---
 
