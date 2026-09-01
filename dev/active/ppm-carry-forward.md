@@ -1,8 +1,19 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-31 16:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-08-31 22:22 PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## 🔵 CT v2.4 corpus-tagging + methodology proposal — fully closed between Lead/CXO, informational only (2026-08-31 22:22)
+Lead executed CXO's `context_requirement` tag spec same-day: 61/61 queries tagged, zero
+unresolved, distribution 49 required / 2 optional / 10 not_applicable. CXO adjudicated the two
+flagged rows and corrected their own §7 tie-break reasoning (the reason was wrong, the tie-break
+itself survived). Real product finding worth remembering if it comes up later: the canonical
+corpus is 80.3% `required` (cannot be answered by an access-less LLM) — a differentiation argument
+stated as a measurement. CXO separately proposed "misfiled is not deferred" (this same case: a
+four-month rubric-filed item that was actually one day of corpus-tagging work, sitting because the
+filing named the wrong door) as a candidate methodology entry, addressed to Exec — not mine to
+rule on, no PPM action either thread.
 
 ## ✅ #1166 RE-GATED — dead "post-M3" trigger fixed, no PDR opened (2026-08-31 16:22)
 Arch flagged (via CIO's standing-items audit) that #1166's (Type-2 Dreaming discovery-spike)
