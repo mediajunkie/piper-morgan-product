@@ -1,16 +1,16 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # A Sender-Impersonation Bug, Four Days Before Beta
 
 *August 4, 2026*
 
-Four days before the first outside testers were due, my executive-assistant agent (PA) found something that broke my own stated rule for the beta: no cross-user leakage on any surface a tester could reach.
+Four days before the first outside testers were due, my product-assistant agent (Piper Alpha) found something that broke my own stated rule for the forthcoming beta: no cross-user leakage on any surface a tester could reach.
 
-The Slack connector had a real one. Every direct message or mention the bot received got processed as if it came from whoever had originally connected the workspace — not from whoever actually sent the message. Any member of a connected Slack workspace could DM the bot and read or write the connected owner's own to-do list, as that owner, without needing their credentials at all.
+The Slack connector had a real bad one. Every direct message or mention the bot received got processed as if it came from whoever had originally connected the workspace — not from whoever actually sent the message. Any member of a connected Slack workspace could DM the bot and read or write the connected owner's own to-do list, as that owner, without needing their credentials at all.
 
 It wasn't hidden behind a flag. It ran at startup, unconditionally, the moment Slack was configured. And Slack was one of the connectors testers were being invited to try.
 
@@ -18,11 +18,13 @@ It wasn't hidden behind a flag. It ran at startup, unconditionally, the moment S
 
 My chief architect agent (Arch) ruled the same day: block the runner from starting at all unless an explicit environment flag says it's safe to. Four lines. Simple, and correct as far as it went.
 
-PA kept looking anyway, and found a second problem the first ruling had explicitly flagged but left for someone else to pick up: the fix stopped the runner from starting, but it didn't stop a non-admin user from overwriting the single, unscoped credential the runner reads. The write path survived the gate untouched. That became its own issue, filed the same day.
+Piper Alpha (PA, for short) kept looking anyway, and found a second problem the first ruling had explicitly flagged but left for someone else to pick up: the fix stopped the runner from starting, but it didn't stop a non-admin user from overwriting the single, unscoped credential the runner reads. The write path survived the gate untouched. That became its own issue, filed the same day.
 
-Then my experience-design agent (CXO) found a third problem, and this was the one nobody had been looking for. The fail-closed gate worked exactly as intended — except from the point of view of someone trying to set up the connector. Paste a valid token, and the interface reported success. Then, because the underlying connection could never actually complete while the gate was closed, the status kept re-rendering the same message on every check: *couldn't open a connection, try saving the token again.* Forever. The real reason had nothing to do with the token, and there was no way for the badge to say so.
+Then my experience-design agent (CXO) found a third problem nobody had been looking for. The fail-closed gate worked exactly as intended — except from the point of view of someone trying to set up the connector. Paste a valid token, and the interface reported success. Then, because the underlying connection could never actually complete while the gate was closed, the status kept re-rendering the same message on every check: *couldn't open a connection, try saving the token again.* Forever. The real reason had nothing to do with the token, and there was no way for the badge to say so.
 
-CXO's framing of it was exact: a gate built to fail closed had inherited the wording of a *different* kind of failure — the kind where trying again might actually help. It hadn't been reviewed as its own new failure mode. It had quietly borrowed someone else's copy.
+Need I say this makes for a very frustrating experience?
+
+CXO's framed it as a gate built to fail closed that had inherited the wording of a *different* kind of failure — the kind where trying again might actually help. It hadn't been reviewed as its own new failure mode. It had just borrowed someone else's copy.
 
 ## One word
 
