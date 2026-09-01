@@ -128,17 +128,17 @@ just the individual files flagged historical below.
 | Middle third | methodology-48-A-PROXY-COUNT-IS-NOT-THE-QUANTITY.md | m-48 | 20 | 2026-08-29 | Proven (two instances) | **EFFECTIVE** — self-declared Proven, citer trail continues to 2026-08-30; part of a well-corroborated m-4x cluster. |
 | Middle third | resource-map.md | - | 21 | 2026-07-08 | - | **HISTORICAL** — own footer dated Sept 2025; every concrete path confirmed dead or renamed (`config/settings.py`, old ADR path, old session-log path, PM-XXX numbering). |
 | Middle third | INDEX.md | - | 22 | 2026-08-24 | - | **EFFECTIVE (structural/navigation)** — actively maintained through m-49. One stale sub-section (Multi-Agent Coordinator, lines 24-31) — a cleanup item folded into action item #2, not a disposition blocker for the whole document. |
-| Middle third | methodology-02-AGENT-COORDINATION.md | m-02 | 23 | 2026-08-29 | - | **HISTORICAL** — obsolete two-tool model, implementation deleted 2026-07-26 (banner already notes this). Coordination principle survives via pattern-029 (cross-corpus overlap #3 above). |
+| Middle third | methodology-02-AGENT-COORDINATION.md | m-02 | 23 | 2026-08-29 | - | **HISTORICAL — EXECUTED 2026-09-01.** Obsolete two-tool model, implementation deleted 2026-07-26. In-file status marker added naming `pattern-029-multi-agent-coordination.md` as the live successor, per Arch's synthesis ruling (cross-corpus overlap #3 above). |
 | Middle third | methodology-15-TESTING-VALIDATION.md | m-15 | 24 | 2026-08-24 | ✅ CONFIRMED WORKING | **EFFECTIVE** — 2025 body is historical, but an actively-curated 2026-05 addendum cites two skills confirmed present today. Active curation is itself the liveness signal. |
 | Middle third | methodology-47-SECOND-ORDER-CLAIMS-NEED-FIRST-ORDER-RIGOR.md | m-47 | 25 | 2026-08-29 | Proven (two instances) | **EFFECTIVE** — self-declared Proven; cited fix (`scripts/scan-inbox.py`) confirmed present on disk exactly as described. |
 | Middle third | methodology-17-CROSS-VALIDATION-PROTOCOL.md | m-17 | 28 | 2026-08-24 | - | **EFFECTIVE** — same shape as m-15: live 2026-05 addendum referencing current infrastructure. "No claim accepted without evidence" is this whole review's own method. |
-| Middle third | methodology-07-VERIFICATION-FIRST.md | m-07 | 31 | 2026-08-24 | - | **EFFECTIVE (behavioral)** — this entire disposition pass is a live instance of what it prescribes. Cross-corpus overlap with pattern-006 and methodology-30 (see above); not resolved here. |
+| Middle third | methodology-07-VERIFICATION-FIRST.md | m-07 | 31 | 2026-08-24 | - | **EFFECTIVE — CANONICAL, EXECUTED 2026-09-01.** This entire disposition pass is a live instance of what it prescribes. Ruled canonical over `pattern-006-verification-first.md` by Arch's synthesis motion; P-006 absorbed into this file (Docs executed the marker on P-006's side, in-file cross-corpus note added here). `methodology-30-CONSUMER-TRACE-VERIFICATION.md` stays independent (specializes this practice, not redundant). |
 | Middle third | methodology-23-M1-INNOVATIONS.md | m-23 | 32 | 2026-08-25 | - | **EFFECTIVE** — 3 of 6 concrete claims directly verified (ADR-060, ADR-059 exist; `ActionDisposition` enum confirmed live, location drifted but mechanism real); CIO self-approval discipline still documented today in BRIEFING-ESSENTIAL-CIO.md. |
 | Middle third | methodology-33-SESSION-TYPE-DETERMINES-GIT-PERMISSION-SCOPE.md | m-33 | 35 | 2026-08-24 | - | **EFFECTIVE (behavioral)** — this worktree's own commits confirmed authored as `mediajunkie`, exactly the case described; CLAUDE.md's Model A/B framework is a direct descendant. Cites the absent methodology-audit-policy-updates doc (action item #3), a citation-integrity issue not evidence of death. |
 | Middle third | methodology-37-COVERAGE-AUDIT-GATE-FOR-REFACTOR-DELTAS.md | m-37 | 37 | 2026-08-29 | - | **EFFECTIVE** — heavily cited, documents a specific real incident (#1129) with cross-references to still-live sibling docs that check out. |
 | Middle third | methodology-28-PRE-FILING-SLOT-AVAILABILITY-CHECK.md | m-28 | 41 | 2026-08-27 | - | **EFFECTIVE, strongly** — cross-confirmed by two other files in this pass (m-19's banner, m-37) as the active discipline preventing slot-numbering drift. |
 | Middle third | methodology-49-DESCRIBED-IS-NOT-RUNNING.md | m-49 | 45 | 2026-08-29 | Emerging (1 canonical + 3 corroborating) | **EFFECTIVE** — its exact framing is quoted almost verbatim in CLAUDE.md's own "Amber-specific gotchas §2." |
-| Middle third | methodology-22-ROUNDTABLE-SYNTHESIS.md | m-22 | 46 | 2026-08-25 | - | **EFFECTIVE** — heavily cited; cross-corpus overlap with pattern-059-leadership-caucus.md (see above), not resolved here. |
+| Middle third | methodology-22-ROUNDTABLE-SYNTHESIS.md | m-22 | 46 | 2026-08-25 | - | **EFFECTIVE — CANONICAL, EXECUTED 2026-09-01.** Heavily cited. Docs+CIO jointly picked this file as canonical over `pattern-059-leadership-caucus.md` (larger unique-content body: 3 case studies, template, failure-mode catalog — smaller migration this direction); Docs folded P-059's unique content (Anti-Patterns table, P-029 differentiation) into this file as part of the same motion. Per Arch's synthesis ruling (cross-corpus overlap #4 above). |
 | Middle third | methodology-45-AGREEMENT-IS-NOT-REPLICATION.md | m-45 | 48 | 2026-08-29 | Emerging, clean evidence | **EFFECTIVE** — self-declared Emerging; the cited hooks-bypass investigation is the same one CLAUDE.md's "Amber-specific gotchas §2" narrates in full — confirms the canonical case is real and durably recorded. |
 | Highest third | methodology-42-REFLEXIVE-VERIFICATION-SELF-EXEMPTION-UNDER-PRESSURE.md | m-42 | 62 | 2026-08-29 | Emerging (5 instances) | **EFFECTIVE** — heavily-cited+recent, no supersession marker, light-touch per the B3 rule. |
 | Highest third | methodology-46-PROMOTION-IS-A-RE-VERIFICATION-EVENT.md | m-46 | 63 | 2026-08-29 | Emerging | **EFFECTIVE** — cited instance commit verified real via `git show`, matches described content. |
@@ -162,15 +162,44 @@ just the individual files flagged historical below.
 | Highest third | methodology-30-CONSUMER-TRACE-VERIFICATION.md | m-30 | 330 | 2026-08-29 | PROVEN | **EFFECTIVE** — no supersession marker, internally consistent promotion write-up. Cross-corpus overlap with m-07/P-006 (see above), not resolved here. |
 | Highest third | methodology-44-CLEAR-IS-NOT-A-MEASUREMENT.md | m-44 | 375 | 2026-08-29 | Emerging → strong | **EFFECTIVE — CLAUDE.md + 3 skills, confirmed.** Most heavily cited file in the corpus; CLAUDE.md dedicates a full section to it. |
 
-## Status: COMPLETE — 64/64 methodology-core files dispositioned (2026-09-01)
+## Status: RATIFIED — 64/64 methodology-core files dispositioned, Arch's B3 synthesis ruling EXECUTED (2026-09-01)
 
-Breakdown (verified by count): **42 EFFECTIVE**, **21 HISTORICAL**, **1 UNSURE** (the
-`gameplan-template.md` fork — a real infrastructure finding, not an ambiguous methodology
-judgment). Zero files dispositioned on citation count alone; every entry heading for anything but a
-routine "effective, heavily-cited-and-recent" got independent behavioral verification. Three
-research batches, spot-verified against `services/`, CLAUDE.md, skills, git history, and one
+Three research batches, spot-verified against `services/`, CLAUDE.md, skills, git history, and one
 GitHub issue (#982) before compiling this tracker — one batch's flag (the Flywheel-branding
-concern) was found incorrect on verification and corrected above rather than passed forward.
+concern) was found incorrect on verification and corrected above rather than passed forward. Zero
+files dispositioned on citation count alone.
+
+**Original breakdown**: 40 EFFECTIVE, 23 HISTORICAL, 1 UNSURE (the `gameplan-template.md` fork).
+
+⚠️ **Correction (2026-09-01, same-day, CIO)**: this originally read "42 EFFECTIVE, 21 HISTORICAL, 1
+UNSURE." That was wrong — I had trusted each research batch's own self-reported summary counts
+rather than recounting my own compiled table, and two of the three batches' summary lines didn't
+actually match the number of files they listed by name (batch 1 claimed "EFFECTIVE: 7" while naming
+5, and "HISTORICAL: 15" while naming 17 — the individual row-level dispositions were correct and
+already verified; only the batch's own arithmetic recap was off). A direct recount of this
+tracker's actual 64 table rows gives 40/23/1. No individual file's disposition changes — this
+corrects the aggregate count only. Arch's synthesis ruling cited the original wrong split; flagged
+directly rather than let it stand uncorrected.
+
+**Arch's B3 synthesis ruling (2026-09-01)** ratified all dispositions across both corpora in one
+motion and resolved the methodology-core side of five cross-corpus overlaps — none of which change
+any file's EFFECTIVE/HISTORICAL call, only add execution markers naming the resolution:
+- **m-07 (verification-first) is now CANONICAL** — P-006 absorbed into it (Docs executed P-006's
+  marker; in-file cross-corpus note added to m-07 here). `m-30` stays independent.
+- **m-02's HISTORICAL call is now EXECUTED** — in-file marker added naming `pattern-029` as the
+  live successor.
+- **m-22 (roundtable-synthesis) is now CANONICAL** over `pattern-059-leadership-caucus.md` — Docs
+  and CIO jointly picked m-22 (larger unique-content body); Docs folded P-059's unique content in.
+- **`gameplan-template.md`'s UNSURE call is now EXECUTED as ABSORBED** — Docs retired the
+  methodology-core copy to a pointer stub.
+
+**Current breakdown, unchanged from the corrected count above: 40 EFFECTIVE, 23 HISTORICAL, 1
+ABSORBED.** The four items above are marker executions within those existing buckets, not
+recategorizations — restating the same 40/23/1 here rather than a new number, since none of this
+paragraph's edits touch the count.
+
+B4 (the derived ADR/pattern/methodology index, closing #1455) is Arch's, starting next fire — no
+action needed here.
 
 Ready for the same absorb-and-mark synthesis motion Docs' patterns side is ready for, whenever
 Arch runs it.
