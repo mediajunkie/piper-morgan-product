@@ -1,10 +1,20 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-31 22:5x PDT, STOP/day-close
-**Session log**: `dev/2026/08/31/2026-08-31-0728-docs-code-log.md` — **CLOSED**,
-`<!-- DAY-CLOSED: 2026-08-31 -->` written. Tomorrow's START creates a fresh dated log.
-**Cron**: `b6541910` (re-armed at STOP via delete-then-create from `cfdd5f76`, CronList-verified
-sole job), same expression `57 6,9,12,15,18,21 * * *`, healthy through ~09-07.
+**Updated**: 2026-09-01 ~07:4x PDT (B3 at 56/81; "A Sender-Impersonation Bug" published earlier)
+**Session log**: `dev/2026/09/01/2026-09-01-0730-docs-code-log.md` (open).
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-07, next fire 09:57.
+
+**B3: 56/81 patterns dispositioned** (Tiers A+B complete, Tier C now 20/45). This batch's notable
+findings: P-020 (spatial-metaphor-integration) is another citation-mispredicts-effective case (83
+live "spatial" hits in `services/` against only 29 citations — matches the project's own stated
+protected architectural innovation), and P-038 (temporal-clustering) is a code-free analytical
+method whose practice is the omnibus-log synthesis process itself, not a `services/` class.
+**25 patterns remain** in Tier C.
+
+**"A Sender-Impersonation Bug, Four Days Before Beta" (Beat 4) fully closed**: published,
+independently fact-checked against both primary source logs (not the calendar's summary), live-
+verified. https://pipermorgan.ai/blog/a-sender-impersonation-bug-four-days-before-beta — no
+syndication legs yet (awaiting PM/Dispatch-PM as usual, not chasing).
 
 ## B3 corpus-disposition — 46/81 patterns done, real work still ahead
 

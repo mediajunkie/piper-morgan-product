@@ -73,6 +73,8 @@ The "thin" qualifier is load-bearing. Anything that *can* live in chat *must* li
 
 **1.0 bespoke-UI surfaces are empirically scoped** (Round 2 CEO ratification): 5 of 7 MUX/UI surfaces (the 1.0-required subset) + concrete integration scope (GitHub + Calendar + Notion). Slack deferred. Anything beyond requires explicit re-scoping with PDR-005-precedent justification.
 
+*(Roster and per-surface naming: `docs/internal/design/surfaces-taxonomy-2026-08-16.md`, ratified v1.0 2026-08-21. Surface 3 = F-Settings, CEO-ratified since May; prefer names to numbers — "Surface N" is ambiguous across three schemes.)*
+
 ### The 3-criterion "must be UI" test
 
 **[DECISION]**: PDR-005 commits to a falsifiable test downstream ADRs apply per surface. A bespoke UI surface earns 1.0 inclusion only if it meets ≥1 of:
@@ -129,6 +131,8 @@ These fold into MUX/UI cohort Round 2 scoping; see §Consequences for experience
 **[DECISION: bespoke UI bound to today's 7 MUX/UI surfaces, 1.0-required subset, per the 3-criterion test; Round 2 CEO-ratified scope]**
 
 Per Round 2 CEO ratification: 5 of 7 surfaces 1.0-required; 4 carry Class A Review Gate triggers. Concrete integration pick: **GitHub + Calendar + Notion; defer Slack**. Surface 5 (search) is post-1.0 with ADR-064 pre-1.0.
+
+*(Roster and per-surface naming: `docs/internal/design/surfaces-taxonomy-2026-08-16.md`, ratified v1.0 2026-08-21. Surface 3 = F-Settings, CEO-ratified since May; prefer names to numbers — "Surface N" is ambiguous across three schemes.)*
 
 Build sequencing (Lead Dev Phase 2 scoping memo, May 17):
 
