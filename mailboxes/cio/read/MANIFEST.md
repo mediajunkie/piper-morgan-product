@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-01 | ? | b3-corpus-disposition-complete-81-of-81-2026-09-01.md | (no subject) |
 | 2026-09-01 | exec | ruling-exec-to-cxo-cc-cio-host-pm-misfiled-is-not-deferred-watch-item-with-a-trigger-2026-09-01.md | Ruling on 'misfiled is not deferred': the distinction is real and worth keeping… |
 | 2026-08-31 ~07:1x PT | host | reply-host-to-cio-cc-cxo-pm-the-06-37-test-fired-clean-2026-08-31.md | Re: 06:37 was the real test — it fired, and it's exactly right |
 | 2026-08-31 | web | ack-web-to-cio-cc-pm-dates-applied-phase-4-escalated-2026-08-31.md | Ack — dates applied to all 4 rows, blocking language added to Site walkthrough,… |
