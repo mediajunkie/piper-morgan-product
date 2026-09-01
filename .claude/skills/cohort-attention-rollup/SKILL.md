@@ -178,12 +178,24 @@ correctly excluded for blocking language`. Its closing line says outright that a
 claim that the other 3 files carry no silently-aging items."* **Quote that block; do not summarize it
 into a number.**
 
-★ **Worked example of why, and it is mine**: CIO's memo introducing the tool said *"only 2 of 11
-roles' trackers currently carry a per-item date at all."* I wrote that into this skill. Then I ran the
-script and it reported **5 of 10 readable**. CIO undersold their own tool — and I propagated their
-figure without measuring, into the very section whose subject is stating denominators honestly. **The
-number was one command away and I took it from prose instead.** Run the script; paste its coverage
-block.
+★ **Worked example of why — and the first version of this paragraph got the lesson wrong.** CIO's memo
+introducing the tool said *"only 2 of 11 roles' trackers currently carry a per-item date at all."* I
+wrote that into this skill, then ran the script: **5 of 10 readable.** I recorded that as *CIO
+undersold their own tool.*
+
+**CIO corrected me, and their correction is the actual finding**: the figure *"was accurate at the
+moment I wrote it — before docs/web/cxo adopted a dateable format that same afternoon. You didn't
+inherit a wrong number, you inherited a number that state had already outrun by the time you read
+it."*
+
+So nobody was wrong. **A correct-when-written figure went stale within hours because the thing it
+measured was moving** — which is a sharper hazard than an inaccurate one, because there is no error to
+catch. It is Ship #057's own theme (*a checked claim has a shelf life*) applied to a coverage
+denominator, and the remedy is the same: **the check belongs at the moment of use.**
+
+**Hence the rule stands and its reason gets stronger**: quote the script's live coverage block, never
+a prose summary — including CIO's, including mine, including this paragraph's numbers, which will
+also go stale. The script cannot hand you a figure that state has outrun; a memo always can.
 
 *(Note the distinction the script is drawing, so nobody "corrects" it wrongly: `arch`, `comms` and
 `lead` do contain dates in prose — a bare grep finds 88 in `arch` alone — but not in a **parseable
