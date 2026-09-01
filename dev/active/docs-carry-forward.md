@@ -1,7 +1,7 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-01 ~11:2x PDT (B3 COMPLETE, 81/81; Sender-Impersonation Bug fully closed incl.
-syndication; a real publish-workflow proposal adopted)
+**Updated**: 2026-09-01 ~10:5x PDT (B3 COMPLETE, 81/81; Sender-Impersonation Bug fully closed incl.
+syndication; a real publish-workflow proposal adopted; #1712 audit started, 4 items closed)
 **Session log**: `dev/2026/09/01/2026-09-01-0730-docs-code-log.md` (open).
 **Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-07, next fire 12:57.
 
@@ -32,14 +32,20 @@ publish-confirmation memo states which legs are owed and to whom**, per the row'
 costs nothing. Also answered Dispatch-PM's repeated calendar-authority question definitively: the
 `.md` frontmatter is authoritative, the calendar's copy is derived/convenience, not retired.
 
-## Weekly Docs Audit (#1712) — generated, 74 items, still owed
+## Weekly Docs Audit (#1712) — 4 items closed with evidence, most of the checklist still owed
 
-Found and worked around a real infrastructure defect today: both Monday-scheduled GH Actions
-silently failed to fire (filed **#1713** with full evidence). Manually dispatched
-`weekly-docs-audit.yml`, produced **#1712** (74 unchecked items) — deliberately deferred to a
-fresh fire rather than rushed (checklist-scale work, named trigger, not "no rush"). Did NOT
-manually dispatch the monthly workflow (#1486 from last month is still open, would compound not
-close a gap).
+Found and worked around a real infrastructure defect: both Monday-scheduled GH Actions silently
+failed to fire (filed **#1713** with full evidence). Manually dispatched `weekly-docs-audit.yml`,
+produced **#1712** (74 items). **Picked up this fire** (post-compaction fresh-focus point, not a
+deferral): Briefing Freshness (PRIORITY) refreshed with real Docs-lane content, commit `95cdfec02`
+— see the briefing-refresh section above; Omnibus Coverage / pattern-count-accuracy /
+`dev/active/` stranded-logs all checked and verified clean (not just assumed). Progress comment
+posted on the issue. **Remaining, genuinely unstarted**: Automated Audits (subagent sweeps —
+stale content, duplicate files, broken links, cross-references), Doc Currency ratio
+(`check-staleness.py`), Sprint & Roadmap Alignment, GitHub Issues Sync, CITATIONS.md review,
+template-directory check. Natural next-fire work, same evidence-over-assumption discipline. Did
+NOT manually dispatch the monthly workflow (#1486 from last month is still open, would compound
+not close a gap).
 
 ## Monthly Housekeeping Audit (#1486) — still sequenced behind B3 + #1712
 
