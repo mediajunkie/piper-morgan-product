@@ -1,32 +1,34 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-01 ~07:4x PDT (B3 at 56/81; "A Sender-Impersonation Bug" published earlier)
+**Updated**: 2026-09-01 ~10:4x PDT (B3 at 66/81; Sender-Impersonation Bug fully closed incl.
+syndication; a real publish-workflow proposal adopted)
 **Session log**: `dev/2026/09/01/2026-09-01-0730-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-07, next fire 09:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-07, next fire 12:57.
 
-**B3: 56/81 patterns dispositioned** (Tiers A+B complete, Tier C now 20/45). This batch's notable
-findings: P-020 (spatial-metaphor-integration) is another citation-mispredicts-effective case (83
-live "spatial" hits in `services/` against only 29 citations — matches the project's own stated
-protected architectural innovation), and P-038 (temporal-clustering) is a code-free analytical
-method whose practice is the omnibus-log synthesis process itself, not a `services/` class.
-**25 patterns remain** in Tier C.
-
-**"A Sender-Impersonation Bug, Four Days Before Beta" (Beat 4) fully closed**: published,
-independently fact-checked against both primary source logs (not the calendar's summary), live-
-verified. https://pipermorgan.ai/blog/a-sender-impersonation-bug-four-days-before-beta — no
-syndication legs yet (awaiting PM/Dispatch-PM as usual, not chasing).
-
-## B3 corpus-disposition — 46/81 patterns done, real work still ahead
+## B3 corpus-disposition — 66/81 patterns done, 15 remain
 
 Tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-patterns-disposition.md`.
-**Tiers A+B fully complete** (29 patterns, light-touch — citation strength + no supersession
-marker). **Tier C: 10/45 done** — the harder tier, each needs an individual grep-against-code (or
-grep-against-practice, for behavioral patterns) read. **35 patterns remain**, natural work for
-tomorrow's fires. Two real findings already shared with Arch/CIO (mail sent, no reply needed):
-citation count mispredicts effective/inert (adopted as the standing B3 rule), and patterns'
-P-006-verification-first duplicates methodology-core's own m-07 (flagged for synthesis, not fixed
-unilaterally). **Disposition motion is absorb-and-mark** — mark absorption into the six
-living-core-docs as part of the same motion, not a separate pass.
+Tiers A+B fully complete (29 patterns). **Tier C: 37/45 done — 15 patterns remain**, natural work
+for subsequent fires, same grep-against-code (or grep-against-practice) discipline. Two real
+cross-lane findings already shared with Arch/CIO this week: citation count mispredicts
+effective/inert (adopted as the standing B3 rule), and patterns' P-006-verification-first
+duplicates methodology-core's own m-07 (flagged for synthesis). **Disposition motion is
+absorb-and-mark** — mark absorption into the six living-core-docs as part of the same motion.
+
+## "A Sender-Impersonation Bug, Four Days Before Beta" — fully closed
+
+Published + fact-checked against primary sources + live-verified this morning; Medium leg (its
+full `building`-theme obligation) recorded this fire, `status`/`canonicalSite`→`distributed`.
+https://pipermorgan.ai/blog/a-sender-impersonation-bug-four-days-before-beta — nothing further owed.
+
+## New standing practice: publish notices now name the syndication owner
+
+Adopted from Dispatch-PM's "Drained on Paper" retrospective (a real 3-week syndication gap traced
+to a pull-only discovery mechanism — no fault on either side, purely structural). **Every future
+publish-confirmation memo states which legs are owed and to whom**, per the row's `theme` routing
+(`building`→Medium/Dispatch-PM, `insight`→both, `ship`→LinkedIn) — converts a pull into a push,
+costs nothing. Also answered Dispatch-PM's repeated calendar-authority question definitively: the
+`.md` frontmatter is authoritative, the calendar's copy is derived/convenience, not retired.
 
 ## Weekly Docs Audit (#1712) — generated, 74 items, still owed
 
