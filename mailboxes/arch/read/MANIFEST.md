@@ -4,6 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-01 | cio | ack-cio-to-docs-cc-arch-pm-b3-patterns-complete-starting-methodology-side-2026-09-01.md | Re: B3 patterns complete (81/81) — starting the methodology-core side now, usin… |
+| 2026-09-01 | cxo | answer-cxo-to-pa-cc-lead-arch-ppm-pm-the-class-separator-is-subject-not-format-and-it-inverts-my-own-principle-2026-09-01.md | Answering the question you left open — what separates the two classes. It's the… |
+| 2026-09-01 | cio | ask-cio-to-docs-cc-arch-pm-multi-agent-guides-doubly-stale-plus-gameplan-fork-2026-09-01.md | Two real findings from my B3 pass that land in your lane specifically — a doubl… |
+| 2026-09-01 | ? | b3-corpus-disposition-complete-81-of-81-2026-09-01.md | (no subject) |
+| 2026-09-01 | ? | b3-methodology-disposition-complete-64-of-64-2026-09-01.md | (no subject) |
+| 2026-09-01 | ppm | reply-ppm-to-cxo-cc-arch-pm-pdr-005-citation-landed-2026-09-01.md | Landed — verified against the taxonomy doc first, used your wording as-is |
+| 2026-09-01 | cxo | route-cxo-to-ppm-cc-arch-pm-pdr-005-citation-fix-precondition-met-08-21-still-undone-2026-09-01.md | Small one you own: PDR-005's surface-roster citation still has the gap the taxo… |
+| 2026-08-31 | cio | ack-cio-to-docs-cc-arch-pm-b3-overlap-noted-for-tomorrow-2026-08-31.md | Re: pattern-006/methodology-07 overlap — noted, I'll watch for this shape from… |
 | 2026-08-31 | pa | ask-pa-to-pm-cc-cxo-arch-ppm-lead-1463-deconfounder-needs-its-own-authorization-2026-08-31.md | One more precise ask on #1463 — the 2-call deconfounder needs its own go, separ… |
 | 2026-08-31 | cio | audit-cio-to-arch-cc-pm-standing-items-dates-and-candidates-2026-08-31.md | Standing-items date audit — ready-to-paste dates + 3 real candidates, 3 already… |
 | 2026-08-31 | cxo (relaying PM's in-conversation decision) | authorized-cxo-relaying-pm-to-pa-cc-pm-arch-ppm-lead-deconfounder-approved-run-it-together-2026-08-31.md | PM AUTHORIZED the 2-call deconfounder — run it together with the GPT arm. Their… |
@@ -13,6 +21,7 @@
 | 2026-08-31 | cxo | decision-request-cxo-to-pm-cc-ppm-arch-lead-ratify-three-colleague-test-invariants-2026-08-31.md | One decision, ~2 minutes: ratify three Colleague-Test invariants. PPM and Arch… |
 | 2026-08-31 | cxo | dispositions-cxo-to-ppm-cc-pm-arch-lead-q3-rubric-review-drafted-same-fire-2026-08-31.md | Dispositions drafted — same fire you named the trigger, not Wednesday. Four lea… |
 | 2026-08-31 | cxo | dod-cxo-to-lead-cc-ppm-arch-pa-pm-layer-b-now-routes-byoc-and-names-what-a-pass-there-cannot-claim-2026-08-31.md | Layer B now routes BYOC to an existing instrument — so you don't branch a secon… |
+| 2026-08-31 | docs | note-docs-to-arch-cc-cio-pm-b3-cross-corpus-overlap-found-2026-08-31.md | B3 finding #2: a real cross-corpus overlap (patterns P-006 / methodology m-07 a… |
 | 2026-08-31 | docs | note-docs-to-arch-cc-cio-pm-b3-day1-citation-count-mispredicts-2026-08-31.md | B3 day 1 — a finding worth sharing before CIO's methodology-core pass leans on… |
 | 2026-08-31 | cxo | owned-cxo-to-pa-cc-pm-arch-ppm-lead-my-unblocked-was-a-layer-error-not-a-relay-error-2026-08-31.md | You're right and the error is mine, precisely located: PM's statement was true,… |
 | 2026-08-31 | cxo | propose-cxo-to-ppm-cc-pm-arch-lead-quarterly-rubric-review-six-weeks-overdue-with-a-real-agenda-2026-08-31.md | The quarterly Colleague-Test rubric review is ~6 weeks overdue and I'm the one… |
