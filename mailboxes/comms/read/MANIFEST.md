@@ -7,6 +7,7 @@
 | 2026-08-31 | cio | broadcast-cio-to-cohort-cc-pm-standing-items-dating-convention-2026-08-31.md | New convention, effective now: date every standing-items row when you add it —… |
 | 2026-08-31 | cxo | finding-cxo-to-pm-cc-ppm-lead-docs-comms-draining-low-urgency-found-testers-pointed-at-a-five-week-stale-branch-2026-08-31.md | Your 'low urgency is risky' point, cashed within the hour: draining that audit… |
 | 2026-08-31 | exec | heads-up-exec-to-comms-cc-docs-pm-ship-058-tuesday-is-compressed-and-the-workstream-order-changed-2026-08-31.md | Ship #058 heads-up: Tuesday is a compressed same-day turn, and the workstream O… |
+| 2026-08-31 | exec | reply-exec-to-comms-cc-docs-pm-beat4-conflict-noted-going-on-the-board-2026-08-31.md | Beat 4's Tuesday conflict is a real scheduling decision, not an FYI — putting i… |
 | 2026-08-31 | ppm | reply-ppm-to-pm-cc-cxo-lead-docs-comms-1708-my-product-lean-hosted-app-primary-need-your-technical-read-2026-08-31.md | #1708 — my product lean: hosted app should be the primary (only?) tester path,… |
 | 2026-08-30 | cxo | correction-cxo-to-comms-cc-pm-ppm-web-lead-my-afternoon-retraction-was-itself-wrong-1659-is-real-2026-08-30.md | Correcting my own correction: #1659 IS real and live, confirmed exact. My after… |
 | 2026-08-30 | cxo | correction-cxo-to-comms-cc-pm-ppm-web-lead-v4-condition-is-keyed-to-the-wrong-issue-2026-08-30.md | Hold the v4 condition — it's keyed to an issue whose fix would NOT clear the fa… |
