@@ -16,6 +16,11 @@ lives in GitHub, this file holds only durable owed/queued items.)
 - cli/commands/issues.py guarded-branch cleanup (1613 residue, minor).
 - Beta-conditions audit at the final gate (mine + subagent cross-check; PM ruling 8/15).
 
+## Sequenced from Arch's aging-items route (2026-08-31)
+- #973 MEM-CACHE-AUDIT Phase 1 (96d): queue position — after the corpus tag-pass lands and PM's
+  next test round clears; the June blockers Arch cites are confirmed cleared.
+- #1459: next after #973 (Arch's route memo in read/ has the detail; sequencing mine, action later).
+
 ## Standing disciplines (the ones this file exists to survive compaction)
 - One lane at a time in this worktree — NO commits of any kind while a lane is active (hardened
   8/31 after the docs-commit sweep).
