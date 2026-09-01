@@ -6,12 +6,22 @@ Alpha since both of them have functioned as a product assistant and represent a 
 Piper Morgan product would have to improve on to really be valuable."* This is PA's own working note,
 not a finished deliverable — sections marked `[PLACEHOLDER]` are gaps, not omissions.
 
-**What I've actually read for this pass**: PO's identity doc (`roles/PIPER-OPEN.md` v0.4) and PO's
-single richest self-assessment, the full-engagement bet-close retro
-(`working/bet-1/retros/po-bet-close-retro-2026-08-03.md`). **Not yet read**: the ~10 other PO/Vergil/
-xian weekly retros in `working/bet-1/retros/`, PO's ~30 daily session logs, `DECISIONS.md`, or any
-dispatch signal traffic. This is a first cut, weighted toward one very information-dense source, not a
-full corpus read.
+**What I've actually read for this pass**: PO's identity doc (`roles/PIPER-OPEN.md` v0.4) and all five
+of PO's self-assessments spanning the full engagement — week 3 (05-19), week 4 (05-21), week 5 (05-29),
+mid-bet (06-08), and the full-engagement bet-close retro (08-03). **Not yet read**: PO's ~30 daily
+session logs, `DECISIONS.md`, or any dispatch signal traffic. Also did a first, non-exhaustive check of
+Piper Morgan's own code against one of the findings below (see §3 item 4) — flagged as checked-not-
+assumed, but not a full audit of every response-generation path.
+
+**Honest note on evidence quality, having now read the full retro set**: every retro reinforced the same
+handful of lessons rather than complicating them — no genuinely disconfirming case turned up (week 4 adds
+another verify-before-assert instance, specifically "when a memory asserts an absence, test before
+asserting it as current," after PO overclaimed connector availability twice on stale memory). That's
+either because the lessons are real and simply hold, or because five self-authored retros by the same
+agent aren't independent enough samples to expect disconfirmation from — worth naming rather than letting
+five-for-five read as stronger evidence than it is. PO's session logs (not yet read) are a better test:
+they're contemporaneous, not retrospective, so they'd show the lessons *failing to apply in the moment*
+if that ever happened, which a retro written after the fact is more likely to smooth over.
 
 ---
 
@@ -39,39 +49,72 @@ to do without a human operator supplying the judgment.
 
 These are the load-bearing rows, because nobody told either of us to converge here.
 
-1. **"Structural fixes hold; promises don't."** PO's retro §7, tested repeatedly and "never once
-   falsified": a hook that mechanically blocks a mistake works; "I'll remember to check" fails on
-   repeat, even from the same agent who wrote the reminder. **This is CLAUDE.md's own operative finding
-   about the Amber mailbox hook** (§"Hooks are ADVISORY, not a control... the prose discipline is
+1. **"Structural fixes hold; promises don't."** PO's retro §7 (bet-close, 08-03), tested repeatedly and
+   "never once falsified": a hook that mechanically blocks a mistake works; "I'll remember to check"
+   fails on repeat, even from the same agent who wrote the reminder. **This is CLAUDE.md's own operative
+   finding about the Amber mailbox hook** (§"Hooks are ADVISORY, not a control... the prose discipline is
    primary") — two independent projects, two independent agents, same conclusion, same shape of
-   evidence (a hook that held every time vs. a prose rule that got re-litigated on the same day it was
-   written). Worth stating plainly: **this isn't a coincidence, it's a real property of agent-assisted
-   work**, and Piper Morgan the product should be built assuming it, not discovering it per-team.
+   evidence. **And it's not a one-off end-of-engagement realization** — checked the earlier retros rather
+   than assume it only showed up at close: week 5 (05-29) already names the identical shape almost 10
+   weeks earlier — *"vocabulary discipline lives at the writer's seat OR it doesn't exist. Memories don't
+   fire when I'm drafting; structural anchors do"* — after the same mistake (a banned term slipping into
+   a draft) recurred despite an existing memory meant to prevent it. The lesson recurred, sharpened, and
+   held across ~10 weeks of the same engagement before crystallizing at close. Worth stating plainly:
+   **this isn't a coincidence, it's a real property of agent-assisted work**, and Piper Morgan the
+   product should be built assuming it, not discovering it per-team.
 
-2. **Verify-before-assert, as instinct not policy.** PO's retro §1: reading `gate.md` directly instead
-   of trusting a chat claim; live-checking 8 issue assignees instead of working from memory. This is
-   the exact discipline PA leaned on today, live, on the OpenAI credential thread — testing the actual
-   key rather than trusting PM's or CXO's reports that it was unblocked, twice, and correcting a
-   cohort-wide false belief as a result. Same failure mode both projects guard against: a plausible
-   secondhand claim about system state, stated with the confidence of a directly-observed fact.
+2. **"Extend prior art before drafting" — recurs in every retro read so far, not just one.** Week 3
+   (05-19): drafting from memory/recall instead of the canonical source caused two slips in one day; the
+   fix named was "read the canonical doc first, then draft." Mid-bet (06-08) §4: *"Extend prior art
+   before drafting — every time. The cheapest insurance against rework."* Bet-close (08-03) §2: PO wrote
+   ten fresh retro categories without checking a canonical format already existed — one they'd written
+   and ratified themselves in May. **This is Piper Morgan's own "Verify First, Create Second" principle
+   (CLAUDE.md), independently re-derived from repeated real failure, not read off a doc.** A second
+   cross-project convergence on a principle Piper Morgan already claims — evidence the principle is
+   correct, not merely house style.
 
-3. **⭐ "Report findings with relevance pre-attached" — PO's own #9, explicitly flagged portable.** Exact
+3. **Verify-before-assert, as instinct not policy — appears in every single retro read, week 3 through
+   close.** Week 3: "read the canonical doc first, then draft." Mid-bet §1: confirming TX-RR search
+   worked in prod before asking to strip a warning. Week 5: treating an Edit-tool rejection as real
+   signal, not noise, and re-reading rather than assuming an edit applied. Bet-close §1: reading
+   `gate.md` directly instead of trusting a chat claim; live-checking 8 issue assignees instead of
+   working from memory. This is the exact discipline PA leaned on today, live, on the OpenAI credential
+   thread — testing the actual key rather than trusting PM's or CXO's reports that it was unblocked,
+   twice, and correcting a cohort-wide false belief as a result. Same failure mode both projects guard
+   against, recurring at the same rate in both: a plausible secondhand claim about system state, stated
+   with the confidence of a directly-observed fact.
+
+4. **⭐ "Report findings with relevance pre-attached" — PO's own #9, explicitly flagged portable.** Exact
    quote: *"whose problem, blocking or not, new or not — in the same sentence as the finding, not as a
    follow-up after the human has to ask."* PO's failure mode (retro §2): reporting issue 329's status as
    a flat, accurate fact during deadline pressure, which read as alarming and made xian do triage work
    PO should have done first. **This is the single most product-relevant finding in the whole
    comparison** — it's not a process tip for an agent, it's a description of what a *good PM-assistant
    response* looks like. Piper Morgan the product routinely returns findings, status, and search results
-   to users. `[PLACEHOLDER: I haven't checked whether Piper's actual response-generation surfaces —
-   the floor, action responses, chat replies — pre-attach relevance/blocking/new-ness by default, or
-   whether they report neutral facts and leave the triage to the user. This is a concrete, checkable
-   product question this comparison surfaced, not a meta-observation about agent process.]`
+   to users.
 
-4. **Generalize a correction after the first recurrence, not the second.** PO's retro: wrote the
-   persistent-memory fix only after the *second* instance of the same mistake in one day. This maps
-   directly onto how PA's own memory system is supposed to work (feedback memories saved from a single
-   sharp correction, not accumulated evidence) — another place where PO's lived experience is a
-   real-world stress test of a design principle Piper Morgan already claims to hold.
+   **Checked, not assumed, against Piper's own code — first pass, not exhaustive.**
+   `services/mux/lenses/priority.py` is architecturally exactly the mechanism that would do this: a
+   `PriorityLens` whose stated job is "how important/urgent is this, what needs attention first," with
+   example framings like *"I notice 2 high-priority items need your focus."* **But `_get_priority_data`
+   currently returns hardcoded constants** (`"importance": "normal"`, `"urgency": "normal"`,
+   `"attention_level": "ambient"`, `"priority_score": 50`) — the lens is wired architecturally but not
+   yet connected to real data. Separately, `action_registry.py`'s blocker-related entries are a query
+   type the *user* has to invoke ("What's blocking the milestone?") rather than something Piper
+   volunteers unprompted when reporting a finding. **Both point the same direction**: the mechanism PO
+   learned to apply by hand exists as an architectural intention in Piper Morgan (spatial intelligence's
+   PRIORITY dimension) but isn't yet live in what a user actually experiences. `[PLACEHOLDER: this is
+   two files, not a full audit — there may be other response paths (conversational_floor.py, action
+   confirmations) that already do some version of this; worth a real pass before treating "not yet live"
+   as a settled product gap rather than a lead worth following up.]`
+
+5. **Generalize a correction after the first recurrence, not the second.** PO's retro (bet-close):
+   wrote the persistent-memory fix only after the *second* instance of the same mistake in one day —
+   and week 5's vocabulary-discipline slip shows the same gap even *with* a memory already in place
+   (*"the discipline I needed was already there in memory; it wasn't strong enough to fire at the next
+   external surface"*). This maps directly onto how PA's own memory system is supposed to work (feedback
+   memories saved from a single sharp correction) — and PO's week-5 experience is a caution PA hasn't
+   had to learn yet: a memory existing doesn't guarantee it fires at the moment of drafting.
 
 ## Where they diverge, and why it matters
 
@@ -89,14 +132,20 @@ These are the load-bearing rows, because nobody told either of us to converge he
   risk tolerance for a paid client engagement vs. an internal product build — or whether PO's caution is
   actually the more correct default and PA has been under-applying it.]`
 
-## Recommended next steps (not yet done)
+## Recommended next steps
 
-1. Read the remaining PO weekly retros (`working/bet-1/retros/po-week-*-retro-*.md`) for whether lesson
-   #3 (relevance pre-attached) or #1 (structural > promise) recur earlier in the engagement or emerged
-   only at the end — that changes how confidently to generalize them.
-2. Actually check Piper Morgan's response-generation code/transcripts against the relevance-pre-attached
-   bar (item 3 above) — this is the one item in this draft that's a testable product claim, not a
-   process observation, and it's the most direct answer to what PM actually asked for.
-3. Ask PM the PLACEHOLDER question above about the draft-then-review vs. review-then-draft trust model.
+1. ✅ **Done**: read all 5 PO retros (week 3, 4, 5, mid-bet, bet-close) — confirmed structural-fix-vs-
+   promise, verify-before-assert, and extend-prior-art all recur across the whole engagement, not just
+   at close. No disconfirming case turned up — see the evidence-quality caveat above about what that
+   does and doesn't prove from retros alone.
+2. ✅ **Done, first cut**: checked `priority.py` and `action_registry.py` against the relevance-pre-
+   attached bar — found the architectural hook exists but isn't wired to real data yet. **Still open**:
+   a real pass across the rest of the response-generation surface (`conversational_floor.py`, action
+   confirmations, search-result formatting) before treating this as a settled product gap rather than
+   one lead.
+3. **Now the more useful remaining source**: PO's ~30 daily session logs are contemporaneous, not
+   retrospective — a better test of whether the convergent lessons actually held in the moment or just
+   read cleanly in hindsight. Not started.
+4. Ask PM the PLACEHOLDER question above about the draft-then-review vs. review-then-draft trust model.
 
 — PA

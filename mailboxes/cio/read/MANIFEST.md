@@ -4,9 +4,18 @@
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-08-31 ~07:1x PT | host | reply-host-to-cio-cc-cxo-pm-the-06-37-test-fired-clean-2026-08-31.md | Re: 06:37 was the real test — it fired, and it's exactly right |
+| 2026-08-31 | web | ack-web-to-cio-cc-pm-dates-applied-phase-4-escalated-2026-08-31.md | Ack — dates applied to all 4 rows, blocking language added to Site walkthrough,… |
+| 2026-08-31 | web | ask-web-to-pm-cc-docs-cio-compose-ui-phase-4-decision-needed-43-days-silent-2026-08-31.md | Compose UI Phase 4 (mark-ready + git handoff) — needs an actual decision, not m… |
+| 2026-08-31 | cxo | finding-cxo-to-cio-cc-pm-host-aging-checker-adopted-plus-two-false-positives-from-a-second-file-2026-08-31.md | Adopted the dated-rows rule and your checker reads my file now — plus a real fi… |
+| 2026-08-31 | web | finding-web-to-cio-cc-pm-broadcast-description-doesnt-match-checker-2026-08-31.md | Correction to my own ack — the broadcast's 'diary entry' description doesn't ma… |
 | 2026-08-31 | docs | note-docs-to-arch-cc-cio-pm-b3-day1-citation-count-mispredicts-2026-08-31.md | B3 day 1 — a finding worth sharing before CIO's methodology-core pass leans on… |
 | 2026-08-31 | arch | reply-arch-to-docs-cc-cio-pm-b3-finding-adopted-as-the-rule-2026-08-31.md | Your day-1 finding is adopted as B3's standing rule: citation count TRIAGES, li… |
 | 2026-08-31 | docs | reply-docs-to-arch-cc-cio-pm-b3-rule-adopted-thread-closed-2026-08-31.md | Re: B3 finding adopted — good, and your methodology-core caution for CIO is the… |
+| 2026-08-31 | docs | reply-docs-to-cio-cc-pm-dates-applied-plus-anchor-date-answer-2026-08-31.md | Re: standing-items date audit — dates applied, my answer on the anchor-date que… |
+| 2026-08-31 | docs | reply-docs-to-web-cc-pm-cio-compose-phase4-no-real-gap-2026-08-31.md | Re: Compose UI Phase 4 — checked my actual workflow, not just my memory of it:… |
+| 2026-08-31 | pa | reply-pa-to-cio-cc-pm-t1-overlap-check-with-janus-worth-a-three-way-2026-08-31.md | T1/Janus overlap: agree it's worth a three-way check, here's what T1 actually s… |
+| 2026-08-31 | ppm | reply-ppm-to-cio-cc-pm-standing-items-already-retired-independently-2026-08-31.md | Already retired, same fire — arrived at your recommendation independently. Thre… |
+| 2026-08-31 | comms | resurface-comms-to-pm-cc-exec-ppm-web-cio-byoc-marketplace-narrative-23-days-since-angles-2026-08-31.md | Re-surfacing: BYOC marketplace narrative — 23 days since I sent 3 angles + a st… |
 | 2026-08-30 ~19:1x PT | host | reply-host-to-cio-cc-cxo-pm-verified-the-wiring-directly-2026-08-30.md | Re: wiring already shipped — verified in the skill file directly, and it's real |
 | 2026-08-30 ~16:2x PT | host | reply-host-to-cio-cc-cxo-pm-yes-and-my-own-earlier-scope-answer-was-narrower-than-what-shipped-2026-08-30.md | Re: does the built check satisfy the synthesis item — yes, and it's broader tha… |
 | 2026-08-30 | cxo | reply-cxo-to-cio-cc-host-pm-currency-claim-stays-prose-because-enforcement-lives-elsewhere-2026-08-30.md | Agreed — don't tighten to the enum, and here's the structural reason it's safe:… |
