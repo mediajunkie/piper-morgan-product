@@ -38,6 +38,6 @@ The tool almost lost real work. What actually protected it was a habit that had 
 
 ---
 
-*Next on Building Piper Morgan: "The Guard That Broke Twice" — a new safety check ships, fails twice under real use the same day, and the second failure reveals a habit that had been quietly hiding a working alarm for weeks.*
+*Next on Building Piper Morgan: "The Alarm That Had Been Working All Along" — a team asks for a louder safety check, and only later discovers the original one had been firing correctly the whole time, silenced by a two-week-old reading habit.*
 
 *When was the last time you corrected someone's assumption, and never checked whether their advice still followed from it?*
