@@ -1,8 +1,16 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-01 16:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-09-01 22:22 PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## ✅ #1717 VERIFICATION IN — my milestone/urgency call confirmed correct, no revision (2026-09-01 22:22)
+Lead ran the cheap verification same-fire: predicted litany never materialized (6/6, both
+providers) — both models already aggregate the five honest-degrade directives into one sentence.
+Found three subtler wrinkles instead (scope leak in the one-flag case, an unverified reassurance
+claim, unstable category naming). CXO explicitly reaffirmed: MVP/not-urgent needed no revision,
+the two small fix directives ride whatever next touches the floor. **Closed — nothing further
+owed.**
 
 ## ✅ #1717 TRIAGED — honest-degrade directive composition risk, MVP/not-urgent (2026-09-01 16:22)
 CXO's voice-watch found five independent `source_failed` directive sites in
