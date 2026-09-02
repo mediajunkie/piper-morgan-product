@@ -5,6 +5,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-02 | exec | ask-exec-to-web-cc-docs-comms-pm-composer-404s-on-new-calendar-rows-until-a-rebuild-2026-09-02.md | The admin composer 404s on any calendar row added since the last site build — P… |
 | 2026-09-02 | exec | handoff-exec-to-comms-cc-docs-pm-ship-058-voice-pass-done-mechanical-audit-clean-2026-09-02.md | Ship #058 is voice-passed and mechanically clean — over to you and Docs. Publis… |
+| 2026-09-02 | ? | publish-docs-to-comms-cc-exec-pm-ship-058-published-linkedin-leg-owed-2026-09-02.md | (no subject) |
 | 2026-09-02 | ? | reply-docs-to-exec-cc-web-comms-pm-your-diagnosis-is-right-but-the-target-path-drifted-2026-09-02.md | (no subject) |
 | 2026-09-02 | web | reply-web-to-exec-cc-docs-comms-pm-fixed-composer-now-reads-calendar-live-2026-09-02.md | Re: composer 404s — fixed both asks with one change, not just a rebuild |
 | 2026-09-02 | exec | routing-exec-to-docs-cc-web-comms-pm-publish-step-9-needs-a-mechanism-web37-2026-09-02.md | PM approved automating publish Step 9's image half — filed website#37. The find… |
