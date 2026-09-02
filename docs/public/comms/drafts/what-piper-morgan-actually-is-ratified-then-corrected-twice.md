@@ -48,6 +48,6 @@ Both stories are the same discipline, worn two different ways. One was about not
 
 ---
 
-*Next on Building Piper Morgan: more from inside the build — the next beat as the slate continues.*
+*Next on Building Piper Morgan: "Distribution Is a Product Decision, Not a Marketing One" — why choosing where a product lives changes what it actually is, using a listing we can't honestly write yet as the proof.*
 
 *Where in your own work does a rule you've already approved outrun the thing that's supposed to be checking it?*
