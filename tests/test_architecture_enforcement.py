@@ -2067,6 +2067,12 @@ class TestInversionShadowNoExecutionBoundary:
         # RoutingDecision and re-express it as an Intent for the existing
         # rail. Kept to EXACTLY one named module; do not widen by pattern.
         os.path.normpath("services/intent_service/inversion_live.py"),
+        # Pre-claim shadow probe (2026-09-02): the #1668 mirror — an OBSERVER
+        # like inversion_shadow.py (its coroutine returns None; the decision
+        # is logged and dropped, never dispatched). Measurement backbone for
+        # the PM-ratified 2026-08-29 pre-classifier narrowing schedule.
+        # Named file, never a pattern.
+        os.path.normpath("services/intent_service/preclaim_shadow.py"),
     }
 
     def _referrers(self):
@@ -2100,6 +2106,12 @@ class TestInversionShadowNoExecutionBoundary:
             "live-consult lane is dead while its allowlist entry survives; "
             "either the flip was removed (then shrink ALLOWED_REFERRERS in the "
             "same commit) or the consult broke silently (m-44)"
+        )
+        assert os.path.normpath("services/intent_service/preclaim_shadow.py") in referrers, (
+            "preclaim_shadow.py no longer references the router — the "
+            "pre-claim probe lane is dead while its allowlist entry survives; "
+            "either the probe was removed (then shrink ALLOWED_REFERRERS in "
+            "the same commit) or it broke silently (m-44)"
         )
         offenders = sorted(set(referrers) - self.ALLOWED_REFERRERS)
         assert not offenders, (

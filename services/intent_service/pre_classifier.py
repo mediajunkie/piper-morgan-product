@@ -23,6 +23,11 @@ class MultiIntentResult:
     intents: List[Intent] = field(default_factory=list)
     original_message: str = ""  # stored for logging/debug, not consumed downstream (audit #827)
     is_multi_intent: bool = False
+    # Pre-claim shadow probe (2026-09-02): the name of the *PATTERNS list that
+    # produced each intent, ALIGNED with ``intents`` (post-subsumption).
+    # Measurement-only telemetry — nothing routes on it; default [] keeps every
+    # existing constructor call byte-identical.
+    pattern_lists: List[str] = field(default_factory=list)
 
     @property
     def primary_intent(self) -> Optional[Intent]:
@@ -1077,7 +1082,34 @@ class PreClassifier:
 
     @staticmethod
     def pre_classify(message: str) -> Optional[Intent]:
-        """Pre-classify message using rule-based patterns"""
+        """Pre-classify message using rule-based patterns.
+
+        Thin delegator over :meth:`pre_classify_with_pattern_list` — the
+        claim is byte-identical; the pattern-list identity is dropped here.
+        Callers that need to know WHICH ``*PATTERNS`` list claimed the
+        message (the pre-claim shadow probe, measurement only) call the
+        sibling directly.
+        """
+        intent, _pattern_list = PreClassifier.pre_classify_with_pattern_list(message)
+        return intent
+
+    @staticmethod
+    def pre_classify_with_pattern_list(
+        message: str,
+    ) -> Tuple[Optional[Intent], Optional[str]]:
+        """Rule-based pre-classification WITH the claiming list's identity.
+
+        Returns ``(intent, pattern_list_name)`` — the name of the class-level
+        ``*PATTERNS`` list whose match produced the claim (e.g.
+        ``"DISCOVERY_PATTERNS"``), or ``(None, None)`` when no pattern claims.
+        Two synthetic names cover claim sites without a class-level list: the
+        #1068 inline milestone-status check reports
+        ``MILESTONE_STATUS_INLINE_PATTERNS``, and the helper-guarded lanes
+        report their underlying lists (``INTEGRATION_CONNECT_PATTERNS``,
+        ``REMINDER_QUERY_PATTERNS``). The identity is telemetry for the
+        pre-claim shadow probe (2026-09-02, the measurement backbone for the
+        PM-ratified 2026-08-29 narrowing schedule) — nothing routes on it.
+        """
         clean_msg = message.strip().lower()
         clean_for_matching = clean_msg.rstrip(string.punctuation + "!?.,;:😊🙂👋")
 
@@ -1111,7 +1143,7 @@ class PreClassifier:
                 action="greeting",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "GREETING_PATTERNS"
         if greeting_match and not pleasantry_only:
             logger.info(
                 "PRE_CLASSIFIER DEBUG - Greeting with substantive residue; "
@@ -1127,7 +1159,7 @@ class PreClassifier:
                 action="farewell",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "FAREWELL_PATTERNS"
 
         # Check for thanks (#1416: same pleasantry-only precondition)
         if pleasantry_only and PreClassifier._matches_patterns(
@@ -1138,7 +1170,7 @@ class PreClassifier:
                 action="thanks",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "THANKS_PATTERNS"
 
         # Issue #488: Check DISCOVERY before IDENTITY
         # "What can you do?" should return dynamic capabilities, not static identity
@@ -1148,7 +1180,7 @@ class PreClassifier:
                 action="get_capabilities",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "DISCOVERY_PATTERNS"
 
         # Issue #1030 R4: Check PROVENANCE BEFORE TRUST
         # "Why did you mention/suggest/recommend X?" routes to ProvenanceHandler
@@ -1160,7 +1192,7 @@ class PreClassifier:
                 action="explain_suggestion",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "PROVENANCE_PATTERNS"
 
         # Issue #673: Check TRUST before IDENTITY
         # "Why can't you...?" and "How well do you know me?" route to ExplanationHandler
@@ -1170,7 +1202,7 @@ class PreClassifier:
                 action="explain_trust",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "TRUST_PATTERNS"
 
         # Issue #1030 INSIGHT-PULL: Check pull-mode insight queries BEFORE MEMORY
         # so "what have you learned about my work style" wins over "what do you
@@ -1183,7 +1215,7 @@ class PreClassifier:
                 action="pull_insights",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "INSIGHT_PULL_PATTERNS"
 
         # Issue #674: Check MEMORY before IDENTITY
         # "What do you remember about me?" routes to UserHistoryService
@@ -1193,7 +1225,7 @@ class PreClassifier:
                 action="get_memory",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "MEMORY_PATTERNS"
 
         # RECONNECT #1327 build #2: Check GET_DEFAULT_REPO before SET_DEFAULT_REPO
         # and DOCUMENT_QUERY. The read patterns ("what/which/show ... default repo")
@@ -1210,7 +1242,7 @@ class PreClassifier:
                 action="get_default_repo",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "GET_DEFAULT_REPO_PATTERNS"
 
         # RECONNECT #1327: Check SET_DEFAULT_REPO before DOCUMENT_QUERY and
         # REPO_MANAGEMENT. It must precede DOCUMENT_QUERY because a phrasing like
@@ -1227,7 +1259,7 @@ class PreClassifier:
                 action="set_default_repo",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "SET_DEFAULT_REPO_PATTERNS"
 
         # #1256: stakeholder-update composition BEFORE document patterns —
         # "write an update FOR [person]" is outbound communication, not
@@ -1240,7 +1272,7 @@ class PreClassifier:
                 action="write_stakeholder_update",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "STAKEHOLDER_UPDATE_PATTERNS"
 
         # Issue #522, #681: Check Document query patterns BEFORE PORTFOLIO
         # "update the project plan doc" must route to QUERY, not PORTFOLIO
@@ -1253,7 +1285,7 @@ class PreClassifier:
                 action="update_document_query",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "DOCUMENT_QUERY_PATTERNS"
 
         # Issue #862: Check REPO_MANAGEMENT before PORTFOLIO (more specific)
         # "link owner/repo to project" routes to repo management handler
@@ -1265,7 +1297,7 @@ class PreClassifier:
                 action="manage_repos",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "REPO_MANAGEMENT_PATTERNS"
 
         # Issue #675: Check PORTFOLIO for project management operations
         # "Archive/delete/restore project X" routes to PortfolioService
@@ -1275,7 +1307,7 @@ class PreClassifier:
                 action="manage_portfolio",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "PORTFOLIO_PATTERNS"
 
         # Issue #901: Check feature/integration info queries BEFORE identity
         # "Tell me more about the GitHub integration" → QUERY, not IDENTITY
@@ -1285,7 +1317,7 @@ class PreClassifier:
                 action="get_feature_info",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "FEATURE_INFO_PATTERNS"
 
         # Check for identity queries - "Who are you?"
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.IDENTITY_PATTERNS):
@@ -1294,7 +1326,7 @@ class PreClassifier:
                 action="get_identity",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "IDENTITY_PATTERNS"
 
         # Issue #521: Check CONTEXTUAL_QUERY before TEMPORAL to prevent pattern collision
         # "what changed since yesterday" would match r"\bwhat.*yesterday\b" in TEMPORAL
@@ -1324,7 +1356,7 @@ class PreClassifier:
                 action=action,
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "CONTEXTUAL_QUERY_PATTERNS"
 
         # Issue #523: Phase A Canonical Query patterns
         # Issue #589: Check Calendar queries BEFORE temporal to route to QUERY handler
@@ -1386,7 +1418,7 @@ class PreClassifier:
                 action=action,
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "CALENDAR_QUERY_PATTERNS"
 
         # Issue #1068: Status-y milestone phrasing must route to STATUS
         # before reaching GITHUB_QUERY (which has broader milestone patterns
@@ -1407,7 +1439,7 @@ class PreClassifier:
                 action="get_project_status",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "MILESTONE_STATUS_INLINE_PATTERNS"
 
         # Issue #1044: Local-git status queries must be checked BEFORE
         # GITHUB_QUERY_PATTERNS — "what branch are we on?" would otherwise
@@ -1421,7 +1453,7 @@ class PreClassifier:
                 action="local_git_status_query",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "LOCAL_GIT_STATUS_PATTERNS"
 
         # Check GitHub queries (Queries #41, #42, #45, #59, #60)
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.GITHUB_QUERY_PATTERNS):
@@ -1519,7 +1551,7 @@ class PreClassifier:
                 action=action,
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "GITHUB_QUERY_PATTERNS"
 
         # Check Session-activity recall (#1394 / ADR-078 B4) — "what did we create
         # this session". Before Productivity; distinct from GITHUB's "what did we
@@ -1532,7 +1564,7 @@ class PreClassifier:
                 action="session_activity_query",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "SESSION_ACTIVITY_QUERY_PATTERNS"
 
         # Check Productivity query (Query #51)
         if PreClassifier._matches_patterns(
@@ -1543,7 +1575,7 @@ class PreClassifier:
                 action="productivity_query",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "PRODUCTIVITY_QUERY_PATTERNS"
 
         # #1521: Check reminder-QUERY before reminder-CREATION and far above
         # TEMPORAL. Read-before-write mirrors GET_DEFAULT_REPO vs
@@ -1559,7 +1591,7 @@ class PreClassifier:
                 action="list_reminders_query",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "REMINDER_QUERY_PATTERNS"
 
         # Issue #903: Check Reminder patterns (Query #32) before todo patterns
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.REMINDER_PATTERNS):
@@ -1568,7 +1600,7 @@ class PreClassifier:
                 action="create_reminder",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "REMINDER_PATTERNS"
 
         # Issue #904: Check Todo completion patterns (Query #55) before list patterns
         if PreClassifier._matches_patterns(
@@ -1579,7 +1611,7 @@ class PreClassifier:
                 action="complete_todo",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "TODO_COMPLETE_PATTERNS"
 
         # Check Todo queries (Queries #56, #57)
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.TODO_QUERY_PATTERNS):
@@ -1610,7 +1642,7 @@ class PreClassifier:
                 action=action,
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "TODO_QUERY_PATTERNS"
 
         # Note: DOCUMENT_QUERY check moved earlier (before PORTFOLIO) per Issue #681
 
@@ -1628,7 +1660,7 @@ class PreClassifier:
                 action="check_completion_status",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "COMPLETION_HISTORY_PATTERNS"
 
         # #1417: integration-connect routes deterministically to the guidance
         # lane (the capability exists — this makes it *reachable*). Checked with
@@ -1650,7 +1682,7 @@ class PreClassifier:
                     "original_message": message,
                     "setup_target": connect_match.group("integration").strip(),
                 },
-            )
+            ), "INTEGRATION_CONNECT_PATTERNS"
 
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.TEMPORAL_PATTERNS):
             return Intent(
@@ -1658,7 +1690,7 @@ class PreClassifier:
                 action="get_current_time",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "TEMPORAL_PATTERNS"
 
         # Issue #487: Check GUIDANCE before STATUS to catch "help setup my projects"
         # before "my projects" triggers STATUS. More specific patterns should match first.
@@ -1668,7 +1700,7 @@ class PreClassifier:
                 action="get_contextual_guidance",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "GUIDANCE_PATTERNS"
 
         # Issue #901: Check ANALYSIS before STATUS to catch blocker/risk queries
         # "What's blocking the milestone?" should be ANALYSIS, not STATUS
@@ -1678,7 +1710,7 @@ class PreClassifier:
                 action="analyze_blockers",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "ANALYSIS_PATTERNS"
 
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.STATUS_PATTERNS):
             return Intent(
@@ -1686,7 +1718,7 @@ class PreClassifier:
                 action="get_project_status",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "STATUS_PATTERNS"
 
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.PRIORITY_PATTERNS):
             return Intent(
@@ -1694,9 +1726,9 @@ class PreClassifier:
                 action="get_top_priority",
                 confidence=1.0,
                 context={"original_message": message},
-            )
+            ), "PRIORITY_PATTERNS"
 
-        return None
+        return None, None
 
     @staticmethod
     def detect_file_reference(message: str) -> bool:
@@ -1760,6 +1792,21 @@ class PreClassifier:
             if re.search(pattern, message):
                 return True
         return False
+
+    @staticmethod
+    def _pattern_list_name(patterns: list) -> str:
+        """Resolve a pattern-list OBJECT back to its class-attribute name.
+
+        Identity comparison against the class dict — no parallel name table to
+        drift (the whack-a-mole lesson: a hand-maintained mapping is a second
+        copy of the precedence order). Used by the pre-claim shadow probe's
+        multi-intent threading; ``UNNAMED_PATTERNS`` is the honest fallback
+        for a list object that is not a class attribute (none exists today).
+        """
+        for attr, val in vars(PreClassifier).items():
+            if attr.endswith("PATTERNS") and val is patterns:
+                return attr
+        return "UNNAMED_PATTERNS"
 
     @staticmethod
     def _reminder_query_match(clean_message: str) -> bool:
@@ -1920,6 +1967,10 @@ class PreClassifier:
 
         # Check each pattern group
         connect_substituted = False
+        # Pre-claim shadow probe: which *PATTERNS list produced each intent,
+        # keyed by object identity so the post-loop subsumption filter (which
+        # preserves the surviving Intent OBJECTS) realigns for free.
+        claimed_list_by_id: dict = {}
         for patterns, category, action in pattern_groups:
             # #1471: same precedence as pre_classify() — an integration-connect
             # ask must not surface as a TEMPORAL calendar/schedule query on the
@@ -1933,19 +1984,19 @@ class PreClassifier:
             ):
                 connect_match = PreClassifier._integration_connect_match(clean_for_matching)
                 if connect_match:
-                    intents.append(
-                        Intent(
-                            category=IntentCategory.GUIDANCE,
-                            action="get_contextual_guidance",
-                            confidence=1.0,
-                            original_message=message,
-                            context={
-                                "original_message": message,
-                                "multi_intent_detection": True,
-                                "setup_target": connect_match.group("integration").strip(),
-                            },
-                        )
+                    connect_intent = Intent(
+                        category=IntentCategory.GUIDANCE,
+                        action="get_contextual_guidance",
+                        confidence=1.0,
+                        original_message=message,
+                        context={
+                            "original_message": message,
+                            "multi_intent_detection": True,
+                            "setup_target": connect_match.group("integration").strip(),
+                        },
                     )
+                    intents.append(connect_intent)
+                    claimed_list_by_id[id(connect_intent)] = "INTEGRATION_CONNECT_PATTERNS"
                     connect_substituted = True
                     logger.debug(
                         "multi_intent_connect_substitution",
@@ -2000,6 +2051,7 @@ class PreClassifier:
                     context={"original_message": message, "multi_intent_detection": True},
                 )
                 intents.append(intent)
+                claimed_list_by_id[id(intent)] = PreClassifier._pattern_list_name(patterns)
 
                 logger.debug(
                     "multi_intent_detected",
@@ -2020,6 +2072,9 @@ class PreClassifier:
             intents=intents,
             original_message=message,
             is_multi_intent=len(intents) > 1,
+            # Pre-claim shadow probe: identity realigns post-filter for free —
+            # the subsumption filter keeps the surviving Intent OBJECTS.
+            pattern_lists=[claimed_list_by_id.get(id(i), "UNNAMED_PATTERNS") for i in intents],
         )
 
         logger.info(
