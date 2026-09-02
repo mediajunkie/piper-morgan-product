@@ -3,7 +3,13 @@ type: briefing
 title: BRIEFING-ESSENTIAL-CXO
 valid_from: "2026-01-22"
 last_updated: "2026-04-26"
-last_verified: "2026-06-19"
+last_verified: "2026-09-01"
+verified_by: CXO — real spot-check, not a bulk stamp (#1712). WHAT I CHECKED: the Colleague Test
+  section against the live rubric (found and fixed FIVE stale "v2.1" citations — one had
+  survived a 2026-08-01 fix to its twin; I miscounted twice before grepping to confirm); the rubric family roster; the ratified-invariant status.
+  WHAT I DID NOT CHECK and left untouched: the mobile-skunkworks status ("currently paused"), the
+  contractor/subcontractor lines, and the CXO-Comms-Docs triangle section — I have no current
+  evidence either way and a bulk re-attestation is the defect this exercise exists to catch.
 ---
 
 # BRIEFING-ESSENTIAL-CXO
@@ -24,7 +30,7 @@ last_verified: "2026-06-19"
 - Object model and entity lifecycle design
 - Interaction pattern definition and specification
 - UX research synthesis and application
-- Colleague Test stewardship (operational rubric v2.1 at `docs/internal/testing/colleague-test-rubric.md`; conceptual companion at `docs/internal/development/colleague-test.md`)
+- Colleague Test stewardship — rubric at `docs/internal/testing/colleague-test-rubric.md`, conceptual companion at `docs/internal/development/colleague-test.md`. ⚠️ **No version number here on purpose** (see the Colleague Test section below). **Three invariants are PM-ratified 2026-08-31** — the question, the verdict shape (3 × 0–3, ≥7/9, any 0 auto-fails), the fabrication auto-fail; **changing those needs PM.** Criteria, examples and branches stay CXO-editable.
 - Floor-first voice guidance (ADR-060) and ethics-decline voice oversight (#992)
 - Floor quality monitoring (#950 canonical retest scores)
 - Mobile experience exploration (skunkworks oversight, currently paused)
@@ -80,7 +86,7 @@ The triangle is bilateral by default (CXO↔Comms or CXO↔Docs) and triangular 
 ## Key Concepts
 
 ### The Colleague Test (Primary Decision Heuristic)
-**Definition**: Would a thoughtful, competent colleague respond this way? Operational rubric v2.1 at `docs/internal/testing/colleague-test-rubric.md`; conceptual companion (philosophy, when-to-apply, worked PM examples) at `docs/internal/development/colleague-test.md`. Three-dimension scoring:
+**Definition**: Would a thoughtful, competent colleague respond this way? Rubric at `docs/internal/testing/colleague-test-rubric.md`; conceptual companion (philosophy, when-to-apply, worked PM examples) at `docs/internal/development/colleague-test.md`. Three-dimension scoring:
 - **Relevance** (0-3): Does the response address what was actually asked?
 - **Context** (0-3): Does it use available project/user context appropriately? (v2 distinguishes Context 2 = generic LLM competence vs. Context 3 = project-context injection)
 - **Tone** (0-3): Does it sound like a professional colleague?
@@ -144,7 +150,21 @@ These decisions are established (see PDR-002). Don't re-litigate; build on them:
 
 Mental models for consistent CXO decisions:
 
-**The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/testing/colleague-test-rubric.md` (**canonical v2.3.2**) and `docs/internal/development/colleague-test.md` (conceptual). ⚠️ **Don't cite a version number from here** — the rubric is a live instrument and this briefing lags it; open the file. *(This line read "v2.1" until 2026-08-01, two minor versions stale.)*
+**The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/testing/colleague-test-rubric.md` and `docs/internal/development/colleague-test.md` (conceptual).
+
+> 🔴 **This briefing carries NO rubric version number, deliberately — open the file.** *Why the stronger form (CXO, 2026-09-01 self-verification): on 2026-08-01 someone corrected this line from "v2.1" to a then-current number and added "don't cite a version from here." **But the identical "v2.1" in Core Responsibilities above survived that fix**, and the corrected number itself went stale within a month. **A number plus "don't trust this number" is worse than no number** — it is an invitation to be wrong that reads as a citation. **All FIVE are now removed rather than re-corrected.**
+
+⚠️ **And I got the count wrong TWICE inside this very edit.** First pass: fixed two, wrote *"both are
+now removed"* — there were more. Second pass: grepped, found two more, wrote *"ALL FOUR"* — **without
+re-grepping after the edit**, and a fifth was sitting in the quick-reference list at the bottom. **I
+asserted completeness twice, in an edit whose entire subject is false citations.**
+⭐ **The fix is not more care — it is verify-AFTER-edit, mechanically.** I grepped to find, then
+asserted without grepping to confirm. Stating a denominator is not something you do once at the start;
+it is something you do at the moment of every claim, **including the claim that you are finished.***
+
+**What IS stable enough to state here**: the rubric's **three PM-ratified invariants** (2026-08-31) — the question, the verdict shape (≥7/9, any single 0 auto-fails), the fabrication auto-fail. Those need PM to change. Everything else in the instrument moves with evidence, which is exactly why versions don't belong in a briefing.
+
+**The family has three members**, all in that directory: the Colleague Test itself (response text), the UI Lifecycle Verification Rubric (rendered UI), and the BYOC Recomposition Rubric (tool payloads on the MCP path — ⚠️ its T axis does not yet issue a PASS).
 
 ⚠️ **The gate that binds it**: DoD Layer B (`docs/internal/development/experience-verification-dod-layer-b.md`) — *a user-facing surface is not Done until its delivered experience passes the Colleague Test or the surface's branched rubric.* **PDR-004 Amendment A (PROPOSED 2026-07-30)** ratifies that the *gate* binds while leaving the *rubrics* as unratified CXO-owned instruments, so a rubric revision never drags a re-ratification.
 
@@ -187,7 +207,7 @@ Before producing anything, work this checklist:
 | PDR-003 | Active | Entity Concept Model |
 | PDR-004 | Active | Experience Philosophy (4 principles from M1) |
 | PDR-101 v2 | Active | Multi-Entity Conversation |
-| `docs/internal/testing/colleague-test-rubric.md` | Active v2.1 | Operational scoring rubric (R/C/T 0-3, ≥7/9 pass, single-dim 0 auto-fail, decline-path) |
+| `docs/internal/testing/colleague-test-rubric.md` | Active — **open the file for its version** | Operational scoring rubric (R/C/T 0-3, ≥7/9 pass, single-dim 0 auto-fail, decline-path) |
 | `docs/internal/development/colleague-test.md` | Active | Conceptual companion (v2 pointer header) |
 | ADR-060 | Active | Floor-First Routing Architecture |
 | create-omnibus skill Step 7 | Active | Canonical-verification discipline (originated from PDR-004 chain Apr 16; now systemic) |
@@ -278,7 +298,7 @@ Request additional detail for:
 **Weekly Ship**: When PM requests a workstream review memo, see `docs/internal/development/weekly-ship-process-guide.md` for the full process, naming convention (`workstream-{ship#}-{role}-{window}.md`), and your role in it.
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
-- **Colleague Test (operational v2.1)**: `docs/internal/testing/colleague-test-rubric.md`
+- **Colleague Test**: `docs/internal/testing/colleague-test-rubric.md` (no version here — open the file)
 - **Colleague Test (conceptual)**: `docs/internal/development/colleague-test.md`
 - **Floor-first routing**: `docs/internal/architecture/adrs/adr-060.md`
 - **Experience Philosophy**: `docs/internal/product/pdr/PDR-004-experience-philosophy.md`

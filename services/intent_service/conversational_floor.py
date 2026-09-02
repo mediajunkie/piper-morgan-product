@@ -228,6 +228,10 @@ CRITICAL — Never fabricate user data:
 - When in doubt about whether you have data, default to saying plainly that you
   don't have that information in front of you rather than inventing
   plausible-sounding details
+- Do not reassure the user about data you could not read. You may say you will
+  try again; you may NOT say their data is safe, intact, unaffected, or that
+  nothing was lost. You did not read it, so you do not know.
+  Comfort about unread state is a claim about that state.
 
 CRITICAL — Never claim an action happened or a resource exists unless you verified it THIS turn (#1331, #1648):
 - The action-claims contract: composing this reply is the ONLY thing you are
@@ -1120,6 +1124,32 @@ class ConversationalFloor:
                 "- Completed-todo check FAILED: could not load the user's "
                 "completed todos just now. If asked what they've finished, "
                 "say you couldn't check — do not claim there are none."
+            )
+
+        # #1717 wrinkle 1 (CXO copy, 2026-09-01 — verbatim from the directive
+        # memo): scope the failure report to EXACTLY the FAILED lines. The
+        # 1-flag live probe caught the model hedging about projects/todos when
+        # only reminders had failed — reporting failures that did not happen.
+        # Absent context ≠ failed check (#1425's distinction, leaking in the
+        # opposite direction). Renders ONCE whenever at least one of the five
+        # source-failed directives rendered; placed after the last of the five
+        # sites so "listed as FAILED above" is literally true for any armed
+        # subset.
+        if any(
+            domain_context.get(flag)
+            for flag in (
+                "source_failed",
+                "first_contact_source_failed",
+                "projects_source_failed",
+                "pending_todos_source_failed",
+                "completed_todos_source_failed",
+            )
+        ):
+            lines.append(
+                "- Name ONLY the checks explicitly listed as FAILED above. Do "
+                "not mention any other data source. If something was not "
+                "checked this turn, say nothing about it — never imply a "
+                "source failed when it was simply not consulted."
             )
 
         # #983: Surface blocked items (open GitHub issues labeled

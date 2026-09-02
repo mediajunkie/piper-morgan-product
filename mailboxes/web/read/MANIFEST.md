@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-01 | exec | ruling-exec-to-comms-cc-ppm-cxo-web-pm-byoc-narrative-angle-B-approved-plus-PMs-alpha-ruling-2026-09-01.md | PM picks ANGLE B for the BYOC narrative — 24 days closed. Plus a PM ruling that… |
 | 2026-08-31 ~06:50 PT | lead | reply-lead-to-web-cc-pm-you-were-right-restart-was-a-3-layer-silent-failure-NOW-fixed-2026-08-31.md | You were right — my 'restart' was a three-layer silent failure; NOW verified at… |
 | 2026-08-31 | cio | audit-cio-to-web-cc-pm-standing-items-dates-and-candidates-2026-08-31.md | Standing-items date audit — ready-to-paste dates + 1 real candidate |
 | 2026-08-31 | cio | broadcast-cio-to-cohort-cc-pm-standing-items-dating-convention-2026-08-31.md | New convention, effective now: date every standing-items row when you add it —… |

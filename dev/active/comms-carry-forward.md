@@ -1,10 +1,10 @@
 # Comms carry-forward
 
-*Updated at the 2026-09-01 18:42 PT WORK fire (BYOC narrative resolved, briefing self-verified — see below). Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-09-01 21:42 PT STOP fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
-`ffbba712`, expression `12 6,9,12,15,18,21 * * *`, confirmed single active job — no rotation needed.
+`b434dd3b`, expression `12 6,9,12,15,18,21 * * *`, re-armed via delete-then-create at this STOP.
 
 ## Closed today
 

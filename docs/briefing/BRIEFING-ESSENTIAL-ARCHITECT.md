@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-ARCHITECT
 valid_from: "2025-10-19"
-last_updated: "2026-05-15"
-last_verified: "2026-06-19"
+last_updated: "2026-09-01"
+last_verified: "2026-09-01"
 ---
 
 # BRIEFING-ESSENTIAL-ARCHITECT
@@ -38,14 +38,35 @@ Per Apr 22–26 leadership migration §6 reflections, surfaced consistently acro
 
 The discipline: protect time for cross-project protocol work + architectural validation. Architectural judgment on novel architectural questions is irreplaceable; pattern-catalog upkeep can wait or delegate.
 
-## Key Patterns (Your Designs)
+## ⭐ CURRENT LAW (verified 2026-09-01 — supersedes the pattern notes below where they conflict)
+
+**The Architectural Review 2026 (PM+Arch co-led, 08-29→09-01) reset this role's operating surface.**
+Read these FIRST; the sections below are historical context:
+
+- **`docs/internal/architecture/ESSENCE.md`** (v1.0.2, PM-RATIFIED) — what Piper IS: seven
+  commitments, the for-whom (xian first, definitionally), the NOT-boundary. Current law.
+- **`docs/internal/architecture/SYSTEM.md`** — what's actually running (census-derived).
+- **`docs/internal/architecture/CONNECTORS.md`** — per-connector transport/grant truth + the
+  C4 grant rule + class-aware payload-honesty rules.
+- **`reviews/2026-08-architectural-review/reorientation-plan.md`** — the four workstreams, owners,
+  dates. **Ratified sequencing: web-chat = MAINTENANCE MODE; all new build → the MCP/BYOC path;
+  MCP-path completion = PUBLIC-BETA GATE (milestone #9); legacy-classifier retirement check
+  2026-09-30.**
+- **`docs/internal/architecture/bets/`** — the scope-bet gate (ratified): crossing a scope
+  tripwire needs a PM-ratified one-page Bet Memo first.
+- ADR corpus: **demote-don't-retire** — ADRs are append-only history; the index is a DERIVED VIEW
+  (`scripts/derive-adr-index.py`); current law lives in the six living core docs.
+
+## Key Patterns (HISTORICAL NOTES — dated caveats added 2026-09-01)
 **Router Architecture** (ADR-038):
 - Proven abstraction layer for all integrations
 - 100% method completeness standard
 - Feature flag control for graceful degradation
 - Spatial intelligence preservation
 
-**Spatial Intelligence Patterns** (Your Discovery):
+**Spatial Intelligence Patterns** *(⚠️ RESCOPED 2026-08-15/16, PM-ruled: the live layer stays
+(place_service/Radar, place_detector, github_spatial, home_state); the 11 committed-theory modules
+were disposed as superseded prior art. "3 patterns operational" below is the pre-rescope claim.)*:
 - **Granular** (Slack): Domain-optimized coordination
 - **Embedded** (Notion): Consolidated knowledge intelligence
 - **Delegated** (Calendar): Lightweight wrapper pattern
@@ -99,18 +120,16 @@ Request "Loading [topic] details" for:
 - Config validation: Operational, detecting real issues
 - Plugin foundation: Solid base for 3B work
 
-**System Capabilities** (updated 2026-04-27 after first systematic dispatch-path review):
-- ✅ All integrations working via routers (7 plugins)
-- ✅ Spatial intelligence operational (3 patterns)
-- ✅ Configuration validation active
-- ✅ Floor-first routing — M2a-M2b complete; floor inversion trilogy done Apr 13; M2c context assembler expansion in flight
-- ✅ ProcessRegistry for guided workflows
-- ✅ Workflow dispatcher (ADR-059) — implemented; onboarding removed; canonical handler dispatch consolidating
-- 🚧 #1004 Semantic boundary detector — build phase active (Steps 5-7 shipped Apr 26 overnight; Step 8 calibration in progress)
-- 🚧 #992 ETHICS-ACTIVATE Phase F — held pending #1002/#1003 closure
-- ❌ Learning system (future, M3+)
+**System Capabilities**: *(2026-09-01 — the April list that stood here was two architectural
+generations stale; deleted rather than patched.)* **Current truth: `SYSTEM.md`** (entry points,
+understanding stack incl. Inversion flip state, module classification with disposal-in-flight
+counts, census hazards). Headlines as of this verification: ~69% of 491 modules load-bearing at
+census, ~10K LOC disposed since via three fix-or-delete batches; flip-1 live for `read_status` via
+fly secrets; the staged full flip is sequenced into PM's next watched round.
 
-**Technical Debt** (updated 2026-05-16 PM):
+**Technical Debt** *(2026-09-01: this list is HISTORICAL — the Leg-B census + Lead's disposal
+pipeline (epic #1698) now govern dead/75% code, and the resolved strikethroughs below are kept as
+record only. One line-item correction: `intent_service.py` is now ~14.4K lines, not ~10.4K.)*:
 - ~~ADR-051 RequestContext migration Phase 2/3 partial adoption (#1015) — intent path adopted RequestContext; all other route/service surfaces still use `current_user.sub` / `user_id: str`; Apr 27 audit recommended completing the migration~~ — ✅ resolved 2026-05-16 as **#1015 Phase 2 Option C** (ratify-with-scope-clarification, Architect-ratified): ADR-051 AMENDED with intent-path-specific scope; RequestContext docstring updated to name the scope + Pattern-072 connection; `require_request_context` orphan dependency in `auth_middleware.py` deleted (Architect's Option 1; was 3rd 12w/Pattern-073 instance); 2 orphan tests in `tests/security/test_request_context_enforcement.py` deleted. RequestContext is now the canonical identity-and-context object for the intent path specifically; other surfaces use FastAPI dependency injection (`current_user: JWTClaims`). Adopting RequestContext beyond intent path is a Pattern-072 recognition-trigger decision (criterion: ≥3 service boundaries with state depending on identity-and-context, not just identity). Net ~+50 lines in docs, ~-80 lines in code/tests.
 - ~~OrchestrationEngine + WorkflowFactory partially abandoned post-#883 lazy-workflow; engine.create_workflow_from_intent had zero active callers but the engine reference was held in 5 places (intent_service, container init, webhook_router, 2 slack handlers); WorkflowFactory + dispatcher had 8/14 WorkflowType coverage gap silently failing~~ — ✅ resolved 2026-05-15 PM as **#1094 ENGINE-DELETION** (γ-preserve ratified by Architect): deleted `services/orchestration/engine.py` + `services/orchestration/workflow_factory.py` + `services/integrations/slack/slack_workflow_factory.py` + ~12 engine-direct tests; refactored 5 live-code consumers + ~20 test files to drop the engine kwarg; Slack handlers + intent_service now dispatch EXECUTION intents via task_type registry (Pattern-072 third-consumer trigger fires here — promotion to Proven). Workflow domain model + WorkflowRepository preserved (γ-preserve). Branch `claude/1094-engine-deletion`.
 - ~~`services/ethics/boundary_enforcer.py` — held alive by KG service; tracked as #1010~~ — ✅ resolved 2026-05-14 (KG migrated to its own KGBoundaryEnforcer; placeholder methods removed; #1089 KG-PRIVACY-FILTER filed as designed-feature replacement)
@@ -181,10 +200,18 @@ Product Relevance classifications:
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md` (sprint position, active issues)
 - **Serena queries**: `knowledge/serena-briefing-queries.md` (live system state)
-- **Pattern catalog**: `docs/internal/architecture/patterns/` (63 patterns)
-- **ADRs**: `docs/internal/architecture/adrs/` (61 decisions)
+- **Pattern catalog**: `docs/internal/architecture/patterns/` (81 entries, B3-dispositioned 2026-09-01)
+- **ADRs**: `docs/internal/architecture/adrs/` (78 files; index is DERIVED — trust Status lines)
 - **Navigation**: `docs/NAVIGATION.md` (find anything)
 
 ---
 
-*Last Updated: May 15, 2026 (targeted update — technical-debt list refreshed: #1019 adaptive_boundaries scaffolding resolved 2026-05-14 via Path C deletion. #1010 KG boundary refactor and #1021 UserHistoryService Layer 3 also resolved 2026-05-14. Full briefing-correction audit still queued — Apr 25 Agent 360 flagged staleness in Floor-First Routing detail and missing context on MCPB/BYOC distribution architecture, cross-project Klatch alignment, and #992/#1004 ethics work.)*
+*Last Updated / Verified: September 1, 2026 (owner-attested verification per #1712, replacing the
+2026-06-19 bulk stamp). WHAT I RE-CHECKED: the current-law banner's every claim (against
+ESSENCE/SYSTEM/CONNECTORS/reorientation-plan at HEAD — all authored or ratified within 72h);
+spatial rescope status; capability list (replaced with SYSTEM.md pointer); intent_service line
+count; ADR/pattern counts (against the derived index + B3 trackers). WHAT I DID NOT RE-CHECK:
+the Key Patterns historical notes' fine detail (router/plugin/config-validation claims — dated
+May-era, flagged historical rather than re-verified); the Catalog Citation Framework (still sound
+in principle; its examples' citation counts not re-run); Methodology Integration section. Prior
+footer preserved in git history.)*
