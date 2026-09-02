@@ -96,7 +96,14 @@ CANONICAL_QUERIES = [
     # Q17: "this document" is the user's artifact; unlike the spec's optional
     # example ("help me break this epic down", where methodology is the value),
     # analysis has no content at all without the artifact → required.
-    (17, "Analyze this document", "Capability", "canonical", None, "required"),  # routes as analysis
+    (
+        17,
+        "Analyze this document",
+        "Capability",
+        "canonical",
+        None,
+        "required",
+    ),  # routes as analysis
     (18, "List all my projects", "Capability", "floor", None, "required"),
     (19, "Generate a status report", "Capability", "floor", None, "required"),
     (
@@ -143,7 +150,14 @@ CANONICAL_QUERIES = [
     (26, "What else can you help with?", "Conversational", "floor", None, "not_applicable"),
     # Q27/Q28: questions about Piper itself (spec §1's not_applicable shape) —
     # the feature explanation is fully correct without this user's data.
-    (27, "Tell me more about the GitHub integration", "Conversational", "floor", None, "not_applicable"),
+    (
+        27,
+        "Tell me more about the GitHub integration",
+        "Conversational",
+        "floor",
+        None,
+        "not_applicable",
+    ),
     (28, "How do I use the calendar feature?", "Conversational", "floor", None, "not_applicable"),
     (29, "What changed since yesterday?", "Conversational", "canonical", None, "required"),
     (30, "What needs my attention?", "Conversational", "canonical", None, "required"),
@@ -174,7 +188,14 @@ CANONICAL_QUERIES = [
     (41, "What did we ship this week?", "GitHub Ops", "canonical", None, "required"),
     (42, "Show me stale PRs", "GitHub Ops", "canonical", None, "required"),
     (43, "What's blocking the milestone?", "GitHub Ops", "floor", None, "required"),
-    (44, "Create issues from this meeting's action items", "GitHub Ops", "action", "1395-rev", "required"),
+    (
+        44,
+        "Create issues from this meeting's action items",
+        "GitHub Ops",
+        "action",
+        "1395-rev",
+        "required",
+    ),
     (45, "Close completed issues", "GitHub Ops", "action", "1395-rev", "required"),
     (58, "Update issue #123", "GitHub Ops", "action", None, "required"),
     (59, "Comment on issue #456", "GitHub Ops", "canonical", None, "required"),
@@ -225,11 +246,14 @@ class TestContextRequirementTags:
             "docs/internal/testing/context-requirement-tag-spec.md and update this count"
         )
         for row in CANONICAL_QUERIES:
-            assert len(row) == 6, f"Q{row[0]}: expected 6 fields incl. context_requirement, got {len(row)}"
+            assert (
+                len(row) == 6
+            ), f"Q{row[0]}: expected 6 fields incl. context_requirement, got {len(row)}"
             assert row[5] in VALID_CONTEXT_REQUIREMENTS, (
                 f"Q{row[0]}: invalid context_requirement {row[5]!r} — "
                 f"must be one of {sorted(VALID_CONTEXT_REQUIREMENTS)}"
             )
+
 
 # Error fingerprints that indicate broken responses.
 # #1213 P2: broadened beyond the original 4 — the Q16 lesson is that error /
