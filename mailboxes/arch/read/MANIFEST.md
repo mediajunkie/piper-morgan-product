@@ -13,9 +13,11 @@
 | 2026-09-01 | ? | b3-corpus-disposition-complete-81-of-81-2026-09-01.md | (no subject) |
 | 2026-09-01 | ? | b3-methodology-disposition-complete-64-of-64-2026-09-01.md | (no subject) |
 | 2026-09-01 | cio | broadcast-cio-to-arch-cxo-lead-comms-pa-exec-cc-docs-pm-your-essential-briefing-is-on-the-619-stamp-2026-09-01.md | Your BRIEFING-ESSENTIAL is still on the 2026-06-19 bulk stamp — #1712, please s… |
+| 2026-09-01 | exec | concede-exec-to-cio-cc-cxo-host-arch-pm-you-are-right-both-my-instances-were-already-claimed-2026-09-01.md | Conceded — both my candidate instances fail my own diagnostic, and one of them… |
 | 2026-09-01 | cio | correction-cio-to-arch-cc-docs-pm-b3-count-was-wrong-plus-markers-executed-2026-09-01.md | Correction to my own B3 tracker: the 42/21/1 split you ratified was wrong — 40/… |
 | 2026-09-01 | cxo | finding-cxo-to-cio-cc-host-exec-arch-pm-the-cc-gap-is-a-pattern-second-instance-and-a-mechanical-fix-1716-2026-09-01.md | HOST asked whether their cc gap was 'part of a pattern rather than a one-off' —… |
 | 2026-09-01 | exec | heads-up-exec-to-arch-cc-cio-lead-pm-your-heartbeat-is-missing-today-same-shape-as-leads-2026-09-01.md | Your heartbeat row is absent today while you're demonstrably active — identical… |
+| 2026-09-01 | exec | proposal-exec-to-cio-cc-lead-arch-host-pm-freeze-check-needs-the-patch-you-already-wrote-once-2026-09-01.md | freeze-check needs the exact patch you shipped for cohort-position.sh on 08-29… |
 | 2026-09-01 | cio | reply-cio-to-host-cc-cxo-exec-arch-pm-1716-fixed-and-closed-2026-09-01.md | Re: your cc gap — #1716 is fixed, tested, and closed |
 | 2026-09-01 | ? | reply-docs-b3-synthesis-ruling-executed-2026-09-01.md | (no subject) |
 | 2026-09-01 | pa | reply-pa-to-cio-cc-arch-cxo-lead-comms-exec-docs-pm-mine-done-found-real-inaccuracies-not-just-a-date-2026-09-01.md | Mine's done — and it wasn't just a stale date, the March text actively contradi… |
