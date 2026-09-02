@@ -1,8 +1,14 @@
 # Portfolio Onboarding Conversation Flow
 
+> **Status note (2026-09-02, Docs, #1585)**: **#561 is CLOSED** — this design shipped. Kept as the
+> historical design record for the implemented flow, not as a live spec. Much newer FTUX work
+> exists (the ratified first-contact criterion, 2026-08-15; the FTUX experience model,
+> 2026-08-21) — check those first for anything about *current* onboarding design; this document
+> predates both by seven months and was not re-verified against them.
+
 **Issue**: #561 MUX-FTUX-CONVERSE
 **Parent**: #490 FTUX-PORTFOLIO (Complete)
-**Status**: Design Document
+**Status**: Design Document — implemented, historical record
 **Date**: 2026-01-24
 
 ---
