@@ -1,8 +1,18 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-01 22:22 PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-09-02 10:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## ✅ #1718 TRIAGED PROACTIVELY — real tester-affecting bug, MVP/Beta Blockers (2026-09-02 10:22)
+Found by checking `sprint-truth.py`'s unmilestoned count myself (17→18), not from mail — an empty
+inbox isn't the same as nothing needing triage. LLM key-validation discards the specific failure
+reason (auth-invalid vs. no-credits both show flat "invalid"), affecting a named real alpha tester
+(Rebecca Refoy) at first-contact. Checked #1414 (same class, honest API-key error messages) for
+precedent — MVP, closed — and matched it: **MVP / Sprint Backlog / Beta Blockers - Hard Gates
+Only**. Fix direction in the issue (route existing `ValidationResult.error_message` through the
+already-built `user_friendly_errors.py` translator) doesn't need a product call. Posted triage
+comment, no mail needed (nobody routed this to me, no thread to reply into).
 
 ## ✅ #1717 VERIFICATION IN — my milestone/urgency call confirmed correct, no revision (2026-09-01 22:22)
 Lead ran the cheap verification same-fire: predicted litany never materialized (6/6, both

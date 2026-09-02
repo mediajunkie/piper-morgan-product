@@ -77,5 +77,29 @@ out=$(run "$W" "$R" 11)
 echo "$out" | grep -q "STALE testrole" && ok "B3 fallback (unparseable cron → flat thr 6): 7h-old → flagged" || no "B3 fallback broken: '${out:-<empty>}'"
 echo "$out" | grep -q "not fire-count-derived" && ok "B3b message labels fallback as non-fire-count (v0.9)" || no "B3b fallback wrongly claims a fires count: '${out:-<empty>}'"
 
+# PART C — v0.10 (2026-09-02): the bare "role: ..." commit-subject form (no parens) must be read
+# by ct just as readily as the parenthesized "verb(role):" form. Reproduces the real gap found
+# verifying Exec's freeze-check proposal: cohort-position.sh's sibling function already ORs both
+# forms; age_of() only had the parenthesized one. Fixture mirrors real history exactly (e.g. "arch:
+# carry-forward state refreshed...") — a fresh BARE-form commit with NO session-log touch in the
+# same commit (so ct2 can't be the one saving the result) and no heartbeat file at all (ct3 empty).
+mkfixture_bare(){
+  local when="$1" TMP; TMP=$(mktemp -d); TMPS+=("$TMP")
+  git init --bare -q "$TMP/o.git"
+  git clone -q "$TMP/o.git" "$TMP/w" 2>/dev/null
+  ( cd "$TMP/w"
+    git config user.email t@t.test; git config user.name tester
+    echo "state" > notes.txt
+    git add -A
+    GIT_AUTHOR_DATE="@$when +0000" GIT_COMMITTER_DATE="@$when +0000" \
+      git commit -qm "testrole: state refreshed, bare form, no parens"   # the gap this reproduces
+    git push -q origin HEAD:main 2>/dev/null )
+  echo "$TMP/w"
+}
+
+W=$(mkfixture_bare "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+[ -z "$out" ] && ok "C1 bare 'role: ...' commit form (no parens, no session-log touch) → not flagged" || no "C1 FALSE-STALE on bare form: $out"
+
 echo "── $PASS passed, $FAIL failed ──"
 [ "$FAIL" -eq 0 ]

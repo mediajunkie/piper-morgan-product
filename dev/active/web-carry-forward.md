@@ -56,6 +56,23 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
+### OPEN, awaiting PM — piper-ship image relocation, discussed not built (2026-09-02)
+PM asked (direct conversation, not mail) to show `piper-ship.webp` fully/uncropped on the Shipping
+News landing page and remove it from individual Ship posts — but explicitly said "discuss first,"
+since Dispatch was actively publishing this week's Ship and PM didn't want a collision.
+
+Investigated before responding: same single static asset either way (currently OG-meta-only on
+the index page, small+cropped via `object-cover` on every `ShipPostContent.tsx`); no
+`publish-post.js` changes needed. Checked the actual collision risk rather than reassure blindly —
+confirmed via `git log` that Ship #058's content commit landed directly in the website repo this
+morning (also confirms yesterday's compose live-calendar fix worked in practice). Read: low
+collision risk (disjoint files), but said plainly I don't have full visibility into Dispatch's own
+automation this week, so PM's caution stands regardless of my read.
+
+Responded with findings + one clarifying question (banner-style vs. more contained treatment). **Did
+not implement anything** — PM's explicit ask was to discuss first. **Waiting on PM** for design
+direction and a go-ahead once Dispatch's publish window is clear.
+
 ### CLOSED — composer 404 on new calendar rows, fixed same fire (2026-09-02)
 Exec root-caused (with two honest false-starts noted) a real bug PM hit editing Ship #058: the
 composer looked up calendar entries via a build-time CSV snapshot, so any row added since the last

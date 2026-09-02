@@ -1,25 +1,64 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-01 ~22:3x PDT (DAY CLOSED — 2026-09-01 fully wrapped, sign-off checklist
-clean, DAY-CLOSED marker present)
-**Session log**: `dev/2026/09/01/2026-09-01-0730-docs-code-log.md` (closed, see day summary at
-the bottom before the DAY-CLOSED marker). Tomorrow (2026-09-02) starts a NEW session log.
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 6:57 PDT 2026-09-02 (a genuine
-day boundary — arithmetic verified explicitly, not by feel).
+**Updated**: 2026-09-02 ~12:1x PDT (Ship #058 published + title-case fixed; Ongoing-milestone
+audit backlog triaged and delegated; FLYWHEEL backlog assessed, 4 issues closed, 7 delegated to CIO)
+**Session log**: `dev/2026/09/02/2026-09-02-0727-docs-code-log.md` (open).
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 12:57.
 
-## No unblocked work outstanding — genuinely idle
+## Ongoing-milestone backlog work (PM-directed, this fire) — own portfolio items still owed
 
-B3 closed (Fire 3), #1712 substantively complete (Fires 4-5), #1486 not due until ~09-07, glossary
-frontmatter explicitly not urgent, PM's local checkout parked. First action tomorrow: sync, mail
-loop, check whether CIO replied to the doc-currency escalation (mailed 09-01, `c98ca3d65` — don't
-re-chase before next Monday's audit if silent), then it's genuinely open floor — no named priority
-queued for 09-02 beyond the recurring day-of-week triggers below.
+Read all 7 audit-related Ongoing-milestone issues in full; 6 are mine, 2 sub-items routed away
+(`#1584` Part C → CIO, `#1682` item 1 → Lead Dev, both mailed). **Still genuinely queued, mine to
+work through** (not yet started this fire, real remaining scope):
+- **#1584** Parts A+B — ~240 broken docs links, mostly mechanical (Part A alone: strip a leftover
+  `models/` path prefix, likely resolves 100+ links)
+- **#1644** — 56 residual broken links (mostly low-priority legacy/excluded-from-site)
+- **#1682** item 3 — CITATIONS.md staleness, needs a real attribution-completeness review
+- **#1683** — 145-row editorial-calendar syndication-status reconciliation (needs a scripted
+  day-of-week-routing check per the issue's own suggested procedure, not a blind bulk edit)
+- **#1392** — 2 metadata-prefix title fixes + 3 double-hero-image body-HTML fixes (one open
+  question for PM: caption handling for the removed inline figures)
+- **#1585** — 3 stale READMEs (low priority) + 3 duplicate-file judgment calls (mine to just pick)
+- **#1486** — Monthly Housekeeping Audit, 33 items, not due to auto-regen until ~09-07 but already
+  open and actionable now that B3/#1712 are both closed
+- **#1611** (new, from the FLYWHEEL sweep) — `mac-dock-integration.md`, alpha-tester-facing,
+  likely-stale two-process architecture, verify before rewriting
 
-⚠️ **Recurring finding worth watching**: today's cron CONSTANTS block went stale within one fire
-of B3 closing (still said "35/45 Tier C left" for the rest of the day, across 4 more fires) — the
-prompt-generation mechanism doesn't appear to refresh between fires within a session. Not
-actionable by me, but worth surfacing if it recurs tomorrow — read this file over the prompt's
-own claims every time, as always.
+Also closed 4 stale issues (#1259/#1275/#1162/#465, evidence on each) and sent CIO a 7-issue
+delegation list (cc Lead Dev) for the current-stage-relevant FLYWHEEL backlog that shouldn't sit
+on Lead. Full reasoning in today's session log.
+
+## Weekly Ship #058 published — https://pipermorgan.ai/shipping-news/weekly-ship-058-what-we-actually-had
+
+PM-engaged (not a cron fire). Independent mechanical audit + 4 load-bearing fact-checks against
+primary sources (issues-closed count, connector-investigation numbers, heading-defect count,
+learning-pattern callback) — zero discrepancies. hashId `201e33efbf5c`. **Syndication leg owed**:
+LinkedIn only (`theme=ship`), owed to Dispatch-PM — memo sent to Comms/Exec/PM naming it.
+
+⚠️ **Real self-caught bug worth remembering**: a `git add` with 4 paths, one of them already
+stale post-`git mv`, aborted the *whole* add silently (matches CLAUDE.md's documented 08-30/31
+failure class) — the calendar status update never landed in the first "archive" commit despite
+looking committed. Caught by re-verifying content on `origin/main`, not by trusting `git status`'s
+leading-space staged/unstaged distinction at a glance. Fixed same-fire (`be7c56524`). **Lesson**:
+after any multi-path `git add`, check `git diff --cached --name-only` lists every intended file —
+don't infer from `git status --short`'s single-line summary alone.
+
+## Doc-currency escalation is working — CIO broadcast it, roles are self-correcting for real
+
+CIO broadcast my 8/31 escalation to the 6 role owners on the 6/19 bulk stamp, using my own
+`BRIEFING-ESSENTIAL-DOCS.md` re-verification as the worked example. PA already found a real stale
+claim in their own briefing ("you are not autonomous," 2 months post-Amber-migration) rather than
+blind-bump — the mechanism this escalation was for is visibly working. Nothing further needed from
+me; watch periodically, don't chase.
+
+## Owed by Web: publish Step 9 automation, target path corrected
+
+`piper-morgan-website#37` — Exec found Step 9 (image archival) is documented but has no code, real
+near-miss on PM's laptop. I confirmed the shape but corrected the target: checked git history
+(not memory) and found my own last 2 publishes drifted from the documented `images-archive/` split
+to co-locating image+`.md` in `drafts/published/`. Told Exec/Web to build against the actual
+current practice, not the stale doc. **I owe**: update `docs-notify.js:88`'s text once Web's
+automation lands, so doc and mechanism agree. Not urgent — wait for Web's issue to move.
 
 ## 2026-09-01, fully closed — see that day's session log for full detail
 

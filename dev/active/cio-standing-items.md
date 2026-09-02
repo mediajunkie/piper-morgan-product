@@ -40,9 +40,27 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 | 7a | **Corpus-coherence cycle proposal** (Pattern Sweep Phase 4 finding) | May 9 | ~60% zero-citation rate at both pattern-catalog and methodology-corpus layers, never actioned. **Raised directly to PM in chat 2026-08-31** rather than continue carrying as an un-actioned line — this is exactly the PM/Exec conversation that's been missing. |
 | 7b | **PreCompact hook: locality differentiation (Option 1), genuinely unbuilt** | May 11 (orig.), reverified twice Aug 23 | **Docs corrected my count same-day**: Option 3 ("safe to compact" path) was already present in *substance* (SOFT tier's option (c)), just worded differently than my grep matched — reworded to the memo's exact language so this doesn't false-negative again (`298fd4f89`). Real corrected state: **2 of 3 addressed, 1 genuinely open** — Option 1 (locality differentiation, still the highest-leverage one) needs actual detection-logic design and is deliberately not being rushed, given the hook's own May 10-17 wedge-incident history. Docs owns it as scoped, unblocked work now — not CIO's to chase further. |
 | 7c | **Docs sign-off `git status` inventory pattern** — methodology-corpus candidate | May 10 | Needs HOST + Docs concurrence on framing; never pursued. Low priority. |
-| 7f | **`duty-cycle-freeze-check.sh`: add commit-recency, mirror the `cohort-position.sh` fix** (Exec's proposal) | Sept 1 | Scoped, mechanical port of `max(heartbeat, role-tagged commit)` from the 08-29 `cohort-position.sh` fix, pointed the other direction. Regression test against the live Arch case (active, committing, no heartbeat row) — same shape that produced a false-STALE report to PM this morning. Also add Arch's "alive but belt-invisible" as a named third state distinct from "dark." Deliberately not built in the 09-01 22:39 fire (named trigger: end of day, wants the same build-mirror-test-verify rigor as that fire's #1716 fix). CIO's tool, CIO's call. |
-| 7g | **`aging-standing-items.sh`: flag rows whose blocker text contains a closed `#NNNN`** (CXO's "stale-blocker-rot" finding) | Sept 1 | A third failure mechanism distinct from deferral (7a-style) and misfiling (the 09-01 decisions.log dispute): a row's stated blocker clears but the row is never updated, so it looks correctly parked while being stale. 5/9 instances found in CXO's own tracker within 36 hours. Mechanical fix: for any row with `#NNNN` in its blocker text, `gh issue view` it and flag if closed. Won't catch person-named blockers (needs discipline, not tooling — CXO's own caveat). Not urgent (CXO's words) but real and scoped. Queued alongside 7f for the same reason. |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
+
+- **`duty-cycle-freeze-check.sh` commit-recency** (#7f, Sept 1, Exec's proposal) — **built and
+  shipped Sept 2, commit `7c2e10d6c`, but not as originally proposed.** Verified Exec's premise
+  before building: `age_of()` already read the max of three signals (two commit-based), and the
+  specific incident cited (Arch's 15:44/15:46 commits) was confirmed NOT a miss via a live replay.
+  The real, narrower gap: `ct`'s grep only matched the parenthesized `(role):` form, missing the
+  bare `role: ...` convention `cohort-position.sh`'s sibling function already handled. Widened to
+  match both. Regression test (C1) reproduces the gap with an isolating fixture, confirmed to fail
+  pre-fix via `git stash` and pass post-fix. Full suite 8/8. Did not build Arch's "alive but
+  belt-invisible" state-naming — it rested on the same disproven premise. Corrected finding sent
+  to Exec (cc Arch/Host/CXO/PM).
+- **`aging-standing-items.sh` stale-blocker-rot check** (#7g, Sept 1, CXO's finding) — **built and
+  shipped Sept 2, commit `1b718c4f7`.** Flags a blocked row whose blocker text cites a closed
+  `#NNNN`. Runs independent of the age-threshold gate (CXO's real instances were recently dated —
+  gating behind the aging threshold would have excluded exactly the rows it exists to catch).
+  Scoped to CXO's own stated boundary (person-named blockers out of scope). Tested with a mocked
+  `gh` (T15/T16: closed-flags, open/person-named non-flags, failed-lookup non-flag), 38/38. Ran
+  live against real repo state — clean, zero false positives. PA independently validated the
+  concept for real this morning (caught PDR-006's stale gate count by hand) before the build
+  landed.
 
 - **Metadata-cleanup ticket — pattern Status-field vocabulary contamination** (#7d, May 9) —
   **filed as issue #1710 (2026-08-31)**, PM directly prompted checking for genuinely-unblocked

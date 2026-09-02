@@ -80,14 +80,29 @@ today=$(date +%Y/%m/%d); today_dash=$(date +%Y-%m-%d)
 git -C "$REPO" fetch origin main -q 2>/dev/null || true
 
 # hours since the role's newest heartbeat on origin/main; non-zero exit if none found.
-# Heartbeat = the more-recent of: (a) a "(role)"-tagged commit message, OR (b) any commit touching the
+# Heartbeat = the more-recent of: (a) a role-tagged commit message, OR (b) any commit touching the
 # role's session log (ANY model — opus/sonnet/…). (b) is robust to commit-tag drift — e.g. ppm's
 # "docs(session): PPM …" style, which (a)'s "(ppm)" grep misses. (CIO fix 2026-06-22, after ppm
 # false-staled 40h while firing every cycle — PM caught it; the (role)-grep + opus-only assumptions
 # were migration-era and broke as roles moved to Sonnet + the session-commit tag style.)
+#
+# v0.10 (2026-09-02, CIO — Exec's freeze-check proposal, verified before building): Exec's premise
+# ("22 heartbeat references, 1 git-log reference, heartbeat-dominant") was a crude substring count
+# (`git log` as two words) that didn't match how this file's `git -C "$REPO" log` calls actually
+# read — age_of() already took the max of THREE real signals, two of them commit-based, before this
+# fix. The specific incident Exec cited (Arch, 15:44/15:46 commits, "did NOT flag") confirms this:
+# both commits used the "verb(arch):" form and were correctly read. Empirically verified via a live
+# `age_of arch` run before writing this comment.
+#
+# The REAL, narrower gap: `ct`'s grep only matched the parenthesized "(role)" form (fixed-string),
+# missing the bare "role: ..." commit-subject convention several roles also use (e.g. "arch:
+# carry-forward state refreshed..." — no parens at all). `cohort-position.sh`'s sibling function
+# already ORs both forms (`^role:` and `\(role\):`); this one didn't. Widened to match, mirroring
+# that pattern exactly rather than porting a different fix for a gap that measurement shows isn't
+# there.
 age_of() {
   local role="$1" ct ct2 newest
-  ct=$(git -C "$REPO" log origin/main -1 --format=%ct -F --grep="($role)" --since="9 days ago" 2>/dev/null)
+  ct=$(git -C "$REPO" log origin/main -1 --format=%ct -E --grep="^${role}:" --grep="\(${role}\):" --since="9 days ago" 2>/dev/null)
   ct2=$(git -C "$REPO" log origin/main -1 --format=%ct --since="9 days ago" -- ":(glob)dev/**/*-${role}-code-*log.md" 2>/dev/null)
   # v0.8 (2026-07-28): the HEARTBEAT surface. Work output is a valid liveness signal but not a
   # COMPLETE one -- a compliant quiet fire produces none, which is what made the belt alert on

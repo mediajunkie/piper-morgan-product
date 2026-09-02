@@ -162,6 +162,41 @@ extract_latest_epoch() {
     echo "$best"
 }
 
+# v1.2 (2026-09-02, CXO's "stale-blocker-rot" finding — 5 real instances in her own tracker
+# within 36 hours). A THIRD failure mechanism, distinct from both silent deferral (what the rest
+# of this script catches) and misfiling: a row's stated blocker CLEARS, but the row itself is
+# never updated, so it goes on looking correctly-parked while being wrong. This script's own
+# is_blocked()/BLOCKED_IDX logic is exactly what makes such a row invisible to the aging check —
+# a recently-dated, blocker-stated row is precisely what HEALTHY looks like. The check is correct
+# and the row is still wrong; a different mechanism is needed, not a wider aging net.
+#
+# Mechanical half only (CXO's own caveat: this "won't catch person-named blockers... those need
+# the discipline change, not more tooling"): when a row's blocking text/column cites a GitHub
+# issue (`#NNNN`), check whether that issue is closed. A closed #NNNN is checkable in one
+# `gh issue view` call; a blocker like "waiting on PPM" is not, and this script doesn't guess.
+#
+# Cached per run (bash 3.2 has no associative arrays — macOS ships 3.2, see the mapfile note
+# above) so a #NNNN cited on multiple rows costs one `gh` call, not N. `gh` unavailable/failed
+# lookup is treated as "unknown," never as "closed" — a failed check must never manufacture a
+# false STALE-BLOCKER flag.
+ISSUE_STATE_CACHE=""
+
+issue_num_in() {
+    grep -oE '#[0-9]+' <<<"$1" | head -1 | tr -d '#'
+}
+
+issue_is_closed() {
+    local num="$1" cached state
+    cached="$(grep -m1 "^${num}|" <<<"$ISSUE_STATE_CACHE" 2>/dev/null)"
+    if [ -n "$cached" ]; then
+        state="${cached#*|}"
+    else
+        state="$(gh issue view "$num" --json state -q .state 2>/dev/null)"
+        ISSUE_STATE_CACHE="${ISSUE_STATE_CACHE}${num}|${state}"$'\n'
+    fi
+    [ "$state" = "CLOSED" ]
+}
+
 # Split a markdown table row on '|', trimming each cell and dropping the empty
 # leading/trailing element a leading/trailing pipe produces. Populates ROW_CELLS.
 split_row() {
@@ -221,6 +256,41 @@ process_row() {
 
     ROWS_EXAMINED=$((ROWS_EXAMINED + 1))
 
+    # Structural blocker: a non-empty "Blocked on"-shaped column beats phrase-matching —
+    # CXO's 2026-08-31 finding, real same-day use: 2 of 4 flags on the first adopting file
+    # were false positives because the blocker lived in a dedicated column ("Blocked on: PPM
+    # picking a slot"), not repeated as prose the phrase list could match. A structured
+    # column is a stronger, cheaper signal than growing the phrase list indefinitely.
+    local blocked_cell=""
+    if [ "$BLOCKED_IDX" -ge 0 ] && [ "$BLOCKED_IDX" -lt "${#ROW_CELLS[@]}" ]; then
+        blocked_cell="${ROW_CELLS[$BLOCKED_IDX]}"
+    fi
+    local is_row_blocked=0
+    if is_blocked "$line" || [ -n "$blocked_cell" ]; then
+        is_row_blocked=1
+    fi
+
+    # v1.2 stale-blocker-rot check — deliberately runs BEFORE the age-threshold check below and
+    # regardless of it. CXO's real instances were RECENTLY dated rows (a blocker that cleared
+    # hours or days ago, not weeks) — gating this behind AGE_THRESHOLD_DAYS would silently
+    # exclude exactly the rows this check exists to catch. Only fires on an otherwise-blocked
+    # row whose blocker text/column names a checkable #NNNN.
+    if [ "$is_row_blocked" -eq 1 ]; then
+        local blocker_text="${blocked_cell:-$line}" issue_num
+        issue_num="$(issue_num_in "$blocker_text")"
+        if [ -n "$issue_num" ] && issue_is_closed "$issue_num"; then
+            ROWS_STALE_BLOCKER=$((ROWS_STALE_BLOCKER + 1))
+            local sb_num_cell="" sb_header="$ROLE" sb_desc="$item_cell"
+            if [ "$NUM_IDX" -ge 0 ] && [ "$NUM_IDX" -lt "${#ROW_CELLS[@]}" ]; then
+                sb_num_cell="${ROW_CELLS[$NUM_IDX]}"
+            fi
+            [ -n "$sb_num_cell" ] && sb_header="$ROLE #$sb_num_cell"
+            [ "${#sb_desc}" -gt 70 ] && sb_desc="${sb_desc:0:67}..."
+            printf 'STALE-BLOCKER: %s — %s (blocker cites #%s, which is CLOSED — row may be stale)\n' \
+                "$sb_header" "$sb_desc" "$issue_num"
+        fi
+    fi
+
     local epoch
     epoch="$(extract_latest_epoch "$date_cell")"
     if [ -z "$epoch" ]; then
@@ -231,16 +301,7 @@ process_row() {
     local age_days=$(((TODAY_EPOCH - epoch) / 86400))
     [ "$age_days" -lt "$AGE_THRESHOLD_DAYS" ] && return
 
-    # Structural blocker: a non-empty "Blocked on"-shaped column beats phrase-matching —
-    # CXO's 2026-08-31 finding, real same-day use: 2 of 4 flags on the first adopting file
-    # were false positives because the blocker lived in a dedicated column ("Blocked on: PPM
-    # picking a slot"), not repeated as prose the phrase list could match. A structured
-    # column is a stronger, cheaper signal than growing the phrase list indefinitely.
-    local blocked_cell=""
-    if [ "$BLOCKED_IDX" -ge 0 ] && [ "$BLOCKED_IDX" -lt "${#ROW_CELLS[@]}" ]; then
-        blocked_cell="${ROW_CELLS[$BLOCKED_IDX]}"
-    fi
-    if is_blocked "$line" || [ -n "$blocked_cell" ]; then
+    if [ "$is_row_blocked" -eq 1 ]; then
         ROWS_BLOCKED=$((ROWS_BLOCKED + 1))
         return
     fi
@@ -267,6 +328,7 @@ TOTAL_ROWS_EXAMINED=0
 TOTAL_AGING=0
 TOTAL_BLOCKED=0
 TOTAL_UNPARSEABLE=0
+TOTAL_STALE_BLOCKER=0
 
 echo "── aging-standing-items scan (threshold: ${AGE_THRESHOLD_DAYS}d) ──────────────────────"
 AGING_OUTPUT="$(mktemp)"
@@ -294,6 +356,7 @@ for f in "${FILES[@]}"; do
     ROWS_AGING=0
     ROWS_BLOCKED=0
     ROWS_UNPARSEABLE=0
+    ROWS_STALE_BLOCKER=0
     heading_dated=0 # guards against double-processing an inline label under the same heading
 
     # mapfile (not the old streaming `while read`) so the inline-label path below can look
@@ -384,6 +447,7 @@ for f in "${FILES[@]}"; do
     TOTAL_AGING=$((TOTAL_AGING + ROWS_AGING))
     TOTAL_BLOCKED=$((TOTAL_BLOCKED + ROWS_BLOCKED))
     TOTAL_UNPARSEABLE=$((TOTAL_UNPARSEABLE + ROWS_UNPARSEABLE))
+    TOTAL_STALE_BLOCKER=$((TOTAL_STALE_BLOCKER + ROWS_STALE_BLOCKER))
 
     if [ "$ROWS_EXAMINED" -eq 0 ]; then
         NO_DATE_COL_ROLES+=("$ROLE")
@@ -408,6 +472,10 @@ echo "rows examined, across roles WITH a parseable date column: $TOTAL_ROWS_EXAM
 echo "  flagged AGING (>= ${AGE_THRESHOLD_DAYS}d old, no blocking language found): $TOTAL_AGING"
 echo "  correctly excluded — blocking language present (filter is discriminating, not blanket): $TOTAL_BLOCKED"
 echo "  unparseable date text within an otherwise-recognized column: $TOTAL_UNPARSEABLE"
+echo "  of the blocked rows above, flagged STALE-BLOCKER (blocker cites a closed #NNNN): $TOTAL_STALE_BLOCKER"
+echo "    coverage note: only checks rows whose blocker cites a #NNNN — a person-named blocker"
+echo "    ('waiting on PPM') is not mechanically checkable and is never flagged here (CXO's own"
+echo "    caveat: that class needs a discipline change, not more tooling)."
 echo
 CHECKABLE=$((TOTAL_FILES - ${#RETIRED_ROLES[@]} - ${#NO_DATE_COL_ROLES[@]}))
 echo "Only $CHECKABLE of $TOTAL_FILES standing-items files have any per-item date this script"
