@@ -1,70 +1,48 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-01 ~19:5x PDT (B3 fully closed; Sender-Impersonation Bug closed; #1712 audit
-substantively COMPLETE — all ~10 sections covered with real evidence, left open for other-role items)
-**Session log**: `dev/2026/09/01/2026-09-01-0730-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-07, next fire 21:57 (LAST slot
-today — verify the cron arithmetic before STOPping, per the standing practice below).
+**Updated**: 2026-09-01 ~22:3x PDT (DAY CLOSED — 2026-09-01 fully wrapped, sign-off checklist
+clean, DAY-CLOSED marker present)
+**Session log**: `dev/2026/09/01/2026-09-01-0730-docs-code-log.md` (closed, see day summary at
+the bottom before the DAY-CLOSED marker). Tomorrow (2026-09-02) starts a NEW session log.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 6:57 PDT 2026-09-02 (a genuine
+day boundary — arithmetic verified explicitly, not by feel).
 
-## B3 corpus-disposition — CLOSED. Ratified by Arch, all directed markers executed.
+## No unblocked work outstanding — genuinely idle
 
-Tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-patterns-disposition.md`.
-**Final result: 75 EFFECTIVE, 2 HISTORICAL, 1 LIKELY HISTORICAL, 3 ABSORBED** (P-006→m-07,
-P-059→m-22, pattern-family-index-proposal→`PATTERN-FAMILIES.md`). CIO's parallel methodology-core
-pass (64 files) also complete. **Arch ratified all 145 dispositions across both corpora in one
-synthesis motion (2026-09-01)** and ruled five cross-corpus overlaps — all executed same-fire:
-P-006 absorbed into m-07; P-059 absorbed into m-22 (Docs+CIO joint pick, m-22 canonical — carried
-more unique content, smaller migration; P-059's Anti-Patterns table + P-029 differentiation folded
-into m-22 first); the two doubly-stale multi-agent guides re-bannered fully HISTORICAL
-(`services/orchestration/` confirmed fully deleted, #1436); `doc-sync-sweep`'s stale citation
-corrected in place; `gameplan-template.md`'s methodology-core fork retired to a pointer stub,
-`NAVIGATION.md` repointed. **Nothing further owed on B3** — B4 (derived cross-corpus index, #1455)
-is Arch's, starts next fire.
+B3 closed (Fire 3), #1712 substantively complete (Fires 4-5), #1486 not due until ~09-07, glossary
+frontmatter explicitly not urgent, PM's local checkout parked. First action tomorrow: sync, mail
+loop, check whether CIO replied to the doc-currency escalation (mailed 09-01, `c98ca3d65` — don't
+re-chase before next Monday's audit if silent), then it's genuinely open floor — no named priority
+queued for 09-02 beyond the recurring day-of-week triggers below.
 
-## "A Sender-Impersonation Bug, Four Days Before Beta" — fully closed
+⚠️ **Recurring finding worth watching**: today's cron CONSTANTS block went stale within one fire
+of B3 closing (still said "35/45 Tier C left" for the rest of the day, across 4 more fires) — the
+prompt-generation mechanism doesn't appear to refresh between fires within a session. Not
+actionable by me, but worth surfacing if it recurs tomorrow — read this file over the prompt's
+own claims every time, as always.
 
-Published + fact-checked against primary sources + live-verified this morning; Medium leg (its
-full `building`-theme obligation) recorded this fire, `status`/`canonicalSite`→`distributed`.
-https://pipermorgan.ai/blog/a-sender-impersonation-bug-four-days-before-beta — nothing further owed.
+## 2026-09-01, fully closed — see that day's session log for full detail
 
-## New standing practice: publish notices now name the syndication owner
-
-Adopted from Dispatch-PM's "Drained on Paper" retrospective (a real 3-week syndication gap traced
-to a pull-only discovery mechanism — no fault on either side, purely structural). **Every future
-publish-confirmation memo states which legs are owed and to whom**, per the row's `theme` routing
-(`building`→Medium/Dispatch-PM, `insight`→both, `ship`→LinkedIn) — converts a pull into a push,
-costs nothing. Also answered Dispatch-PM's repeated calendar-authority question definitively: the
-`.md` frontmatter is authoritative, the calendar's copy is derived/convenience, not retired.
-
-## Weekly Docs Audit (#1712) — substantively COMPLETE, left open for other-role items
-
-Found and worked around a real infrastructure defect: both Monday-scheduled GH Actions silently
-failed to fire (filed **#1713** with full evidence). Manually dispatched `weekly-docs-audit.yml`,
-produced **#1712** (74 items). **All ~10 sections now covered with real evidence** across 4 fires
-today — full detail in the issue's comment thread (4 comments, each with concrete numbers). The
-two real findings that needed action: **Doc Currency** (31/38 stale, 20 on an identical 6/19 bulk
-stamp, escalated to CIO by name) and confirming **#1585**'s already-tracked duplicate finding
-independently. Everything else came back clean (omnibus coverage, pattern count, link integrity,
-cross-references, `dev/active/` hygiene) or was honestly flagged as other-role territory (sprint
-triage, GitHub issue milestone assignment — 331 open / 17 no-milestone / 172 stale>30d, counts
-only, no unilateral action) or genuinely deferred (CITATIONS.md completeness — needs domain
-judgment, not a mechanical pass; the 245-file wider stale-content backlog).
-
-**Left the issue open** — real work remains for PPM/Lead/CIO, closing would misrepresent it as
-fully done. Did NOT manually dispatch the monthly workflow (#1486 from last month is still open,
-would compound not close a gap).
+B3 corpus-disposition CLOSED (81/81 patterns, Arch's cross-corpus synthesis ruling executed
+same-day including a real P-059→m-22 judgment call — full trace in
+`docs/internal/architecture/reviews/2026-08-architectural-review/b3-patterns-disposition.md`).
+"A Sender-Impersonation Bug" published + fully syndicated, nothing owed. **New standing practice
+adopted**: publish-confirmation memos now name which syndication legs are owed and to whom, per
+theme routing — carries forward indefinitely, not a 09-01-only item. Weekly Docs Audit #1712
+driven to substantive completion (~10 sections, real evidence, left open for other-role items).
+`.md` frontmatter is authoritative for editorial calendar data; calendar CSV is derived/convenience.
 
 ## Watch: CIO's response on the doc-currency escalation
 
-Mailed 2026-09-01 (`c98ca3d65`). Cohort-wide staleness mechanism, not mine to fix beyond my own
-two docs. Don't re-chase before next Monday's audit — check periodically per the "Awaiting others"
-discipline below.
+Mailed 2026-09-01 (`c98ca3d65`) — 31/38 operating docs stale, 20 on an identical 6/19 bulk stamp,
+crossed the 75% threshold. Cohort-wide staleness mechanism, not mine to fix beyond my own two
+docs. Don't re-chase before next Monday's audit.
 
-## Monthly Housekeeping Audit (#1486) — still sequenced behind B3 + #1712
+## Monthly Housekeeping Audit (#1486) — not due yet
 
 33 unchecked items, zero progress since 2026-08-05. September's audit won't auto-generate until
-~09-07 (and may need another manual dispatch given today's scheduled-workflow defect — watch for
-it). No time pressure; picked up when B3/#1712 leave room.
+~09-07 (may need another manual dispatch given the 08-31 scheduled-workflow defect — watch for
+it, #1713 has the evidence if it recurs). No time pressure.
 
 ## New standing responsibility: the glossary is a living-core-doc
 
@@ -78,13 +56,6 @@ docs (60-day staleness contract). Needs CXO's tracked-state frontmatter at first
 `git pull --ff-only` in PM's own checkout. A `diff origin/main..HEAD --stat` was pulled (touches
 ~20+ files, not obviously safe-to-discard) but never reviewed. **Do not act on this without PM
 present** — resume only if PM re-engages.
-
-## 2026-08-31, fully closed — see that day's session log for full detail
-
-#1708 (ALPHA_QUICKSTART hosted-primary) landed and independently verified; `SETUP.md`'s 3 real
-defects fixed; compose UI Phase 4 closed (no real gap, verified against actual practice); calendar
-column-ownership and #1585/#1682/#1644/#1683 all closed the day before. Nothing carries forward
-from either day except what's listed above.
 
 ## Awaiting others (check periodically, don't re-derive)
 
