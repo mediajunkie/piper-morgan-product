@@ -23,11 +23,14 @@ its original filing, before routing it to someone.**
 but PPM's own 08-24 fix explicitly flagged the full v19 roadmap.md historical fold as separately,
 genuinely still owed. Not mine; don't touch without PPM.
 
+**Closed since**: #1682 (all 3 items — item 3 CITATIONS.md real targeted review, fixed a genuinely
+wrong MCP platform claim, verified spatial-intelligence claim still accurate). **#1683 partially
+resolved** (143/144 rows reconciled with a data-verified completion rule after the issue's own
+day-of-week theory failed a spot-check; left open for 2 new inverse-case residuals — "Building for
+Learning" and "Drained on Paper," need real Medium verification, not guessing).
+
 **Still genuinely queued, mine, real remaining scope, no artificial fire-splitting — picking up
 sequentially, not deferring**:
-- **#1682** item 3 — CITATIONS.md staleness, needs a real attribution-completeness review
-- **#1683** — 145-row editorial-calendar syndication-status reconciliation (needs a scripted
-  day-of-week-routing check per the issue's own suggested procedure, not a blind bulk edit)
 - **#1392** — 2 metadata-prefix title fixes + 3 double-hero-image body-HTML fixes (one open
   question for PM: caption handling for the removed inline figures — genuine blocker on that one
   sub-item only, rest is unblocked)
