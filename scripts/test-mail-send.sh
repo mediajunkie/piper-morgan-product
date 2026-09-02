@@ -214,10 +214,12 @@ echo "$out" | grep -q "STRANDED" && no "false positive: warned even though inbox
 
 echo "── T12: #1716 — cc: recipient named in frontmatter but not delivered triggers a warning ──"
 # Reproduces the HOST/Arch shape: a memo's YAML frontmatter names `cio, cxo` in cc:, but the
-# caller only passes the `to:` recipient's inbox path — the cc'd recipients' inbox copies never
-# made it into the argument list, so their inbox never gets the file.
+# caller only passes the `to:` recipient's inbox path (plus the sender's own sent/ mirror,
+# per cohort convention) — the cc'd recipients' inbox copies never made it into the argument
+# list, so their inbox never gets the file. The check only scans sent/ paths (see mail-send.sh's
+# #1716 comment) — an inbox/read-only call is a triage move, not a send, and must NOT trigger it.
 clone wtK
-mkdir -p "$T/wtK/mailboxes/lead/inbox"
+mkdir -p "$T/wtK/mailboxes/lead/inbox" "$T/wtK/mailboxes/exec/sent"
 cat > "$T/wtK/mailboxes/lead/inbox/memo-k.md" <<'EOF'
 ---
 from: exec
@@ -229,7 +231,9 @@ date: 2026-09-01
 
 body
 EOF
-out=$(PIPER_REPO="$T/wtK" bash "$V3" "mail(k): T12 cc gap" mailboxes/lead/inbox/memo-k.md 2>&1)
+cp "$T/wtK/mailboxes/lead/inbox/memo-k.md" "$T/wtK/mailboxes/exec/sent/memo-k.md"
+out=$(PIPER_REPO="$T/wtK" bash "$V3" "mail(k): T12 cc gap" \
+    mailboxes/lead/inbox/memo-k.md mailboxes/exec/sent/memo-k.md 2>&1)
 git -C "$T/wtK" fetch -q origin
 onmain "$T/wtK" mailboxes/lead/inbox/memo-k.md && ok "the passed memo still landed" || no "the passed memo missing"
 echo "$out" | grep -q "names 'cio'.*wasn't part of this send" && ok "WARNING fired for missing cio delivery" || no "no warning for missing cio delivery"
@@ -237,7 +241,7 @@ echo "$out" | grep -q "names 'cxo'.*wasn't part of this send" && ok "WARNING fir
 
 echo "── T13: #1716 — no false-positive when every named recipient's inbox copy is passed ──"
 clone wtL
-mkdir -p "$T/wtL/mailboxes/lead/inbox" "$T/wtL/mailboxes/cio/inbox"
+mkdir -p "$T/wtL/mailboxes/lead/inbox" "$T/wtL/mailboxes/cio/inbox" "$T/wtL/mailboxes/exec/sent"
 cat > "$T/wtL/mailboxes/lead/inbox/memo-l.md" <<'EOF'
 ---
 from: exec
@@ -250,12 +254,40 @@ date: 2026-09-01
 body
 EOF
 cp "$T/wtL/mailboxes/lead/inbox/memo-l.md" "$T/wtL/mailboxes/cio/inbox/memo-l.md"
+cp "$T/wtL/mailboxes/lead/inbox/memo-l.md" "$T/wtL/mailboxes/exec/sent/memo-l.md"
 out=$(PIPER_REPO="$T/wtL" bash "$V3" "mail(l): T13 fully delivered" \
-    mailboxes/lead/inbox/memo-l.md mailboxes/cio/inbox/memo-l.md 2>&1)
+    mailboxes/lead/inbox/memo-l.md mailboxes/cio/inbox/memo-l.md mailboxes/exec/sent/memo-l.md 2>&1)
 git -C "$T/wtL" fetch -q origin
 onmain "$T/wtL" mailboxes/lead/inbox/memo-l.md && onmain "$T/wtL" mailboxes/cio/inbox/memo-l.md \
     && ok "both copies landed" || no "a copy is missing"
 echo "$out" | grep -q "wasn't part of this send" && no "false-positive warning fired even though cio's inbox copy was passed" || ok "no false-positive when all named recipients are covered"
+
+echo "── T14: #1716 — a plain inbox→read triage move never triggers the check (no sent/ path) ──"
+# The false-positive this fix specifically guards against: archiving mail you already received
+# (no sent/ mirror in this call, because you're not the sender) must produce zero #1716 warnings,
+# even though the memo's own frontmatter still names cc's that obviously aren't part of this call.
+clone wtM
+mkdir -p "$T/wtM/mailboxes/cio/inbox" "$T/wtM/mailboxes/cio/read"
+cat > "$T/wtM/mailboxes/cio/inbox/memo-m.md" <<'EOF'
+---
+from: exec
+to: cio
+cc: host, cxo
+subject: "test"
+date: 2026-09-01
+---
+
+body
+EOF
+git -C "$T/wtM" add mailboxes/cio/inbox/memo-m.md
+git -C "$T/wtM" commit -qm "seed the inbox original for T14" >/dev/null 2>&1
+git -C "$T/wtM" push -q origin HEAD:main
+mv "$T/wtM/mailboxes/cio/inbox/memo-m.md" "$T/wtM/mailboxes/cio/read/memo-m.md"
+out=$(PIPER_REPO="$T/wtM" bash "$V3" "mail(m): T14 pure triage move, not a send" \
+    mailboxes/cio/read/memo-m.md mailboxes/cio/inbox/memo-m.md 2>&1)
+git -C "$T/wtM" fetch -q origin
+onmain "$T/wtM" mailboxes/cio/read/memo-m.md && ok "the read/ copy landed" || no "the read/ copy missing"
+echo "$out" | grep -q "#1716" && no "false-positive: #1716 warning fired on a pure triage move" || ok "no #1716 warning on a pure inbox->read triage move"
 
 echo ""
 echo "════════ RESULT: $PASS passed, $FAIL failed ════════"

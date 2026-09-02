@@ -216,9 +216,23 @@ while :; do
         # untracked-before, so "reset to HEAD state" means removing them), so `$REPO/$f` is
         # already gone for exactly the memos this check needs to read. The pushed tree object is
         # the one thing guaranteed to still hold the content that actually shipped.
+        #
+        # Only scans `*/sent/*` paths — NOT inbox/ or read/ — found live in testing: an ordinary
+        # inbox→read triage move (archiving mail you already received) passes those same paths
+        # through mail-send.sh, and that memo's to:/cc: header describes ITS ORIGINAL send, which
+        # this call has nothing to do with. Scanning inbox/read fired this warning on every single
+        # triage move in the cohort's own mail loop — the exact cry-wolf failure this file's own
+        # sign-off-checklist history warns about (a mandatory check people learn to skim once it's
+        # wrong often enough). `sent/` is written ONLY by the sender actually composing a new send
+        # (the cohort convention: "write the memo + cc copies + sent mirror" — CLAUDE.md's mailbox
+        # workflow section), so its presence in "$@" is the correct signal "this call is a send,"
+        # not "this call moved a file that happens to live in a mailbox." Trade-off: a send that
+        # skips writing its own sent/ mirror won't be checked — accepted, since every real instance
+        # of this bug (Arch 08-30, HOST 09-01) included one, and false negatives are the safe side
+        # for an advisory check.
         checked_basenames=""
         for f in "$@"; do
-            case "$f" in mailboxes/*/inbox/*|mailboxes/*/sent/*|mailboxes/*/read/*) ;; *) continue ;; esac
+            case "$f" in mailboxes/*/sent/*) ;; *) continue ;; esac
             G cat-file -e "$tree:$f" 2>/dev/null || continue
             bn="$(basename "$f")"
             case "$'\n'$checked_basenames$'\n'" in *$'\n'"$bn"$'\n'*) continue ;; esac
