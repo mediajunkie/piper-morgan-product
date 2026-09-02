@@ -168,6 +168,64 @@ echo "$out13" | grep -q "AGING: zzztest — .*Structurally blocked" && no "row w
 [ "$rc13" -eq 0 ] && ok "exit 0 with the Blocked-on-column path exercised" || no "expected exit 0, got $rc13"
 rm -f "$FIXTURE"
 
+echo "== T15: v1.2 stale-blocker-rot (CXO's finding, 2026-09-02) — blocker cites a CLOSED #NNNN =="
+# Mock `gh` so this is deterministic and offline — no real network/auth dependency. #999991 is
+# "closed", #999992 is "open"; neither is a real issue number.
+MOCKDIR="$(mktemp -d)"
+cat >"$MOCKDIR/gh" <<'MOCKEOF'
+#!/usr/bin/env bash
+if [ "$1" = "issue" ] && [ "$2" = "view" ]; then
+    case "$3" in
+        999991) echo "CLOSED" ;;
+        999992) echo "OPEN" ;;
+        *) exit 1 ;;
+    esac
+fi
+MOCKEOF
+chmod +x "$MOCKDIR/gh"
+cat >"$FIXTURE" <<EOF
+# ZZZTest Standing Items (v1.2 fixture — stale-blocker-rot)
+
+| Filed | Item | Blocked on | Recheck trigger |
+|---|---|---|---|
+| $DATE_RECENT | **Blocker actually closed** | Rides #999991 closing | when #999991 closes |
+| $DATE_RECENT | **Blocker still open** | Rides #999992 closing | when #999992 closes |
+| $DATE_RECENT | **Person-named blocker, no issue** | Waiting on PPM to pick a slot | when PPM decides |
+EOF
+out15=$(cd "$ROOT" && PATH="$MOCKDIR:$PATH" bash "$SCRIPT" 2>&1)
+rc15=$?
+echo "$out15" | grep -q "STALE-BLOCKER: zzztest — .*Blocker actually closed.*#999991" && ok "row citing a CLOSED #NNNN is flagged STALE-BLOCKER" || no "expected STALE-BLOCKER for the closed-issue row, got: $(echo "$out15" | grep zzztest)"
+echo "$out15" | grep -q "STALE-BLOCKER: zzztest — .*Blocker still open" && no "row citing an OPEN #NNNN was WRONGLY flagged STALE-BLOCKER" || ok "row citing an OPEN #NNNN correctly not flagged"
+echo "$out15" | grep -q "STALE-BLOCKER: zzztest — .*Person-named blocker" && no "person-named blocker (no #NNNN) was WRONGLY flagged — out of mechanical scope" || ok "person-named blocker correctly not flagged (CXO's own caveat: needs discipline, not tooling)"
+# Since these rows are RECENT (not >= AGE_THRESHOLD_DAYS), none should appear as plain AGING —
+# proves the stale-blocker check runs independent of the age gate, not gated behind it.
+echo "$out15" | grep -q "^AGING: zzztest" && no "a recent row leaked into plain AGING output" || ok "recent rows correctly absent from plain AGING (stale-blocker check is age-independent, as designed)"
+echo "$out15" | grep -q "flagged STALE-BLOCKER (blocker cites a closed #NNNN): 1" && ok "coverage summary reports exactly 1 stale-blocker" || no "coverage summary stale-blocker count wrong: $(echo "$out15" | grep 'STALE-BLOCKER (blocker')"
+[ "$rc15" -eq 0 ] && ok "exit 0 with the stale-blocker path exercised" || no "expected exit 0, got $rc15"
+rm -rf "$MOCKDIR"
+rm -f "$FIXTURE"
+
+echo "== T16: v1.2 stale-blocker-rot — gh unavailable/failing never manufactures a false flag =="
+BADMOCKDIR="$(mktemp -d)"
+cat >"$BADMOCKDIR/gh" <<'MOCKEOF'
+#!/usr/bin/env bash
+exit 1
+MOCKEOF
+chmod +x "$BADMOCKDIR/gh"
+cat >"$FIXTURE" <<EOF
+# ZZZTest Standing Items (v1.2 fixture — gh failure)
+
+| Filed | Item | Blocked on | Recheck trigger |
+|---|---|---|---|
+| $DATE_RECENT | **Blocker cites an issue, gh fails** | Rides #999993 closing | when #999993 closes |
+EOF
+out16=$(cd "$ROOT" && PATH="$BADMOCKDIR:$PATH" bash "$SCRIPT" 2>&1)
+rc16=$?
+echo "$out16" | grep -q "STALE-BLOCKER: zzztest" && no "a failed gh lookup was WRONGLY treated as CLOSED" || ok "a failed gh lookup correctly does not manufacture a STALE-BLOCKER flag"
+[ "$rc16" -eq 0 ] && ok "exit 0 even when gh itself fails (advisory, never crashes the caller)" || no "expected exit 0, got $rc16"
+rm -rf "$BADMOCKDIR"
+rm -f "$FIXTURE"
+
 echo "== T14: no real tracked file was touched by this test run =="
 git -C "$ROOT" status --porcelain dev/active/duty-cycle-registry.tsv | grep -q . \
     && no "duty-cycle-registry.tsv shows a change" || ok "duty-cycle-registry.tsv untouched"

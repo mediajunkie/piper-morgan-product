@@ -2,9 +2,9 @@
 name: template-audit
 description: Run a mechanical template audit on a finished blog draft before sending the publish-ready signal to Docs. Use after PM's voice pass is complete. Produces a pass/fail report with specific flags. Blocks the publish-ready signal on any FAIL.
 scope: comms
-version: 1.11
+version: 1.12
 created: 2026-06-19
-updated: 2026-09-01
+updated: 2026-09-02
 ---
 
 # template-audit
@@ -91,13 +91,47 @@ PY
 
 **Caption format check**: if caption starts with `'"`, it's a spoken-line format. Verify any apostrophe inside is doubled: `'"It''s fine."'` not `'"It's fine."'` (the latter breaks YAML). ⚠️ **The `''` doubling is correct ONLY inside single-quoted YAML.** Copying that form into markdown **body** text renders the doubled apostrophe literally — a real instance shipped in the Ship #053 draft as `*"OK, let''s see"*`. If a caption also appears in the body, it takes ordinary prose punctuation.
 
-### 2. Title is H1
+### 2. Title is H1, and title case
 
 ```bash
 grep -n "^# " <draft> | head -3
 ```
 
 First `#` heading should be the post title on the first non-frontmatter line. FAIL if missing or if it's `##`.
+
+**Also verify title case.** Every published title across all three variants (Ships, narratives, insights) uses title case, not sentence case — measured across the 8 most recent Ships (#051–#058) and 10 most recent narratives/insights, 100% title case. Small words (a, an, the, and, but, or, nor, for, so, yet, to, in, on, at, by, of, as, up, vs, is) may stay lowercase mid-title; every other word, plus the first and last word regardless of length, must be capitalized.
+
+```bash
+python3 - "<draft>" <<'PY'
+import re, sys
+path = sys.argv[1]
+text = open(path, encoding='utf-8').read()
+m = re.search(r'^# (.+)$', text, re.MULTILINE)
+if not m:
+    print('FAIL: no H1 title found'); sys.exit(0)
+title = m.group(1)
+title_for_check = re.sub(r'^Weekly Ship #\d+:\s*', '', title)
+SMALL = {'a','an','the','and','but','or','nor','for','so','yet','to','in','on',
+         'at','by','of','as','up','vs','is'}
+words = re.findall(r"[A-Za-z][A-Za-z'-]*", title_for_check)
+bad = []
+for i, w in enumerate(words):
+    if i == 0 or i == len(words) - 1:
+        if not w[0].isupper():
+            bad.append(w)
+        continue
+    if w.lower() in SMALL:
+        continue
+    if not w[0].isupper():
+        bad.append(w)
+if bad:
+    print(f'FAIL: lowercase word(s) outside small-word list: {bad} — title: "{title}"')
+else:
+    print(f'OK: title case clean — "{title}"')
+PY
+```
+
+Added 2026-09-02 after Ship #058 published as *"What we actually had"* (sentence case) — the defect survived Exec's draft, PM's own voice pass, this skill's own audit, and Docs' independent audit, all four layers checking sense and none checking case. PM caught it post-publish and fixed it directly. Same failure shape as check #11's origin: a real, consistent corpus-wide convention that nobody had made mechanically checkable.
 
 ### 3. Dateline — italicized, correct format, no stray draft dates
 
@@ -334,3 +368,5 @@ On PASS: send the publish-ready memo to Docs inbox per the handoff protocol (Jun
 *v1.10 — 2026-08-09. **Check #13 (word count; #12 at the time) recalibrated against reality.** The 800–1,300 target describes **2 of the last 14** published narratives/insights (min 597, median 1,403, max 2,564), and the >1,600 flag fires on **6 of 14** — posts that shipped fine. Found while pre-passing Beat 21 at 550 words: I nearly reported it as under-length when *Almost Beta* (597) and *What the Running System Found* (614) had published clean weeks earlier. **The fix is not a wider range but a direction**: long is the live concern PM is actively cutting; short is not a defect; **never pad a complete story to reach a floor.** Same mis-calibration family as the v1.5 Ship table — a check whose numbers didn't match what actually ships.*
 
 *v1.11 — 2026-09-01. **New check #11, agents referred to as "people."** PM: "recent drafts have taken to referring to agents as 'people' — we may need to add that to the things you check." Found reviewing Beats 4 and 5 the same morning: one footer instance in Beat 4, and Beat 5 ("Repetition Isn't Convergence") had it running through nearly every section including a section heading ("Everyone checked, and everyone was wrong the same way"). **This check needs judgment, not a bare grep** — unlike #10 ("cohort"), roughly half of any match set is legitimate (a "someone" configuring the product, an "anyone" meaning testers, a deliberately human-generalizing reader question). The check documents worked examples of both FAIL and PASS so the judgment call is reproducible rather than ad hoc. Checks #12–#16 renumbered up by one to make room (was #11–#15); all internal cross-references and historical changelog number-mentions updated to match current numbering, with the original number noted in parens where a changelog entry describes a check by the number it had at the time.*
+
+*v1.12 — 2026-09-02. **Check #2 gains title-case verification.** Ship #058 published as "What we actually had" — sentence case, against a corpus where the 8 most recent Ships and 10 most recent narratives/insights are 100% title case. The defect passed Exec's draft, PM's own voice pass, this skill's own audit, and Docs' independent post-publish audit — four layers, all checking sense, none checking case, because nothing had ever made the convention mechanically checkable. PM caught it after publish and fixed it directly. Added a small-word-aware title-case script to check #2 (the natural home, since both checks read the same H1 line) rather than opening a new numbered check and renumbering the other fifteen. Verified against three controls: the original defective title (flags "we," "actually," "had"), the corrected title (clean), and a false-positive sweep of 10 real published titles across all three variants (0 false positives). Same failure shape as v1.11's origin — and the irony wasn't lost: this is Ship #058's own learning-pattern theme ("no single layer was reliable enough alone") playing out inside the very checklist meant to catch it.*

@@ -4,7 +4,7 @@ alt: 'A child and a crew of robots checking each other''s work on a boat.'
 caption: ''
 ---
 
-# Weekly Ship #058: What we actually had
+# Weekly Ship #058: What We Actually Had
 
 *August 21–27, 2026*
 
@@ -27,11 +27,11 @@ Similar patterns all week: An agent checked a safety claim attached to a routing
 
 The administrative gating work turned up a surprise, a set of read-only routes exposing cache and health metrics to any authenticated user, and closed it in the same pass.
 
-**Three of four connectors were not what the diagram said.** Piper Alpha checked the actual code rather than relying on its own architecture drawing after I raised a direct challenge about whether we were treating our own early prototyping as the "real" integration layer. The GitHub adapter is genuine — eight live tool-call sites, though pointed at our own hosted instance rather than the vendor's. The Slack and Notion adapters have zero real calls of that kind. They are bespoke request wrappers inside a shim that made them look uniform. My concern was correct for three of the four, not all four, and the distinction changed what we do next rather than just confirming a worry.
+**Three of four connectors were not what the diagram said.** Piper Alpha checked the actual code rather than relying on its own architecture drawing after I raised a direct challenge about whether we were treating our own early prototyping as the "real" integration layer. The GitHub adapter is genuine — eight live tool-call sites, though pointed at our own hosted instance rather than the vendor's. The Slack and Notion adapters have zero real calls. They are bespoke request wrappers inside a shim that made them look uniform. My concern was correct for three of the four connectors, and the distinction changed what we do next rather than just confirming a worry.
 
 **A write operation can now be promoted individually, through a reviewed list rather than a blanket relaxation.** My Chief Architect was asked whether one named write could move ahead of the larger migration. Rather than rule on the framing, they dispatched an investigation — and found the safety claim underpinning the request was false. The operation in question had no registration at all, the same pattern as a gap found earlier on the deletion side. The ruling preserved the specificity that had already caught a real prior bug, and the prerequisite shipped the same night with the consent behavior proven by comparison against the pre-change code rather than asserted.
 
-**Every blog post and Weekly Ship was pointing search engines at the site root instead of itself.** Web root-caused the problem, fixed the three flagged pages plus five more found by systematic check, and verified against all 381 built pages with none remaining. Now the canonical links work as intended, making my own site the source of truth for search engines.
+**Every blog post and Weekly Ship was pointing search engines at the site root instead of itself.** Web root-caused the problem, fixed the three flagged pages plus five more found by systematic check, and verified against all 381 built pages with none remaining. My own site is now the source of truth for search engines.
 
 ## 🎯 Product & experience
 
@@ -43,9 +43,9 @@ The administrative gating work turned up a surprise, a set of read-only routes e
 
 ## 🔬 Methodology & process innovation
 
-**A seven-week-old specification was fully disposed, criterion by criterion.** Chief Innovation Officer closed the last open piece by routing it correctly and taking a reasoned decline rather than letting it sit. Every item in that document is now done, ruled, or explicitly declined, with nothing left in an ambiguous state.
+**A seven-week-old specification was fully disposed, criterion by criterion.** Chief Innovation Officer closed the last open piece by routing it correctly and taking a reasoned decline rather than letting it sit. Every item in that document is now done, ruled, or explicitly declined.
 
-**A mail-integrity guard shipped and was corrected twice the same day by the two agents who used it.** The first correction sharpened the diagnosis: the existing check had been firing correctly for weeks, and a habit of reading only the last line of its output had hidden the alarm. The second found a genuine false positive the new guard produced. Both were fixed within hours. Two independent same-day corrections is a reasonable sign that a mechanism is actually in use.
+**A mail-integrity guard shipped and was corrected twice the same day by the two agents who used it.** The first correction sharpened the diagnosis: the existing check had been firing correctly for weeks, and a habit of reading only the last line of its output had hidden the alarm. The second found a genuine false positive the new guard produced. Both were fixed within hours. Two independent same-day corrections show a mechanism is actually in use.
 
 **A four-month-old questionnaire cycle closed at ten of ten responses** and was synthesized the same day the final one landed rather than waiting for the calendar target.
 
@@ -72,11 +72,11 @@ A heading-level defect turned up in routine pre-publication checking and traced 
 - **Deployed:** v60 → v62, three releases, with a fourth built across the week and shipped at its end
 - **Published:** 5 pieces, no missed slots
 
-**What the working sessions produced.** Two of my own conversations with agents this week account for a disproportionate share of what moved. The session diving into first-time user experience (FTUX) with Chief Experience Officer resolved five long-carried threads and produced a model I now co-own. Then, a long overdue architecture review with Chief Architect helped clarify how a bring-your-own-container track relates to the shared foundation, extended a second decision into a general principle about all surfaces sharing one durable backend, and produced a new project-wide rule based on one of my hard-won product mottos: "no optional complexity." That rule was applied the same day to an audit of our own release gates, and the result was moving an integration out of the near-term gate entirely, along with the five issues and one epic that had to move with it.
+**What the working sessions produced.** Two of my own conversations with agents this week account for a disproportionate share of what moved. One was the first-run-experience session with Chief Experience Officer, above. The other was a long overdue architecture review with Chief Architect that clarified how a bring-your-own-container track relates to the shared foundation, extended a second decision into a general principle about all surfaces sharing one durable backend, and produced a new project-wide rule based on one of my hard-won product mottos: "no optional complexity." That rule was applied the same day to an audit of our own release gates, and the result was moving an integration out of the near-term gate entirely, along with the five issues and one epic that had to move with it.
 
 For all the increasingly effective autonomy I've been able to set up for the agent team and my efforts to factor myself out of the mundane processes, the limiting factor on our overall progress remains my availability to focus, communicate, define, and decide.
 
-**One usage ceiling, hit in the last hours of the week.** Seven roles went quiet Thursday afternoon when the account's weekly capacity ran out. Nothing was lost — scheduled cycles survived, queued work drained on return, and each role recorded the gap honestly rather than reconstructing a smooth narrative around it. Running out in the final few percent of a week is close to full utilization of what was bought, which puts a positive spin on this usage-limit outage.
+**One usage ceiling, hit in the last hours of the week.** Seven roles went quiet Thursday afternoon when the account's weekly capacity ran out. Nothing was lost — scheduled cycles survived, queued work drained on return, and each role recorded the gap honestly rather than reconstructing a smooth narrative around it. Running out with only a few percent of the week left is close to full utilization of what was bought — a positive spin on a usage-limit outage.
 
 ---
 
@@ -88,7 +88,7 @@ The first live write moves through the new routing path, which makes it the firs
 
 # 🚧 Blockers & asks
 
-Review capacity remains the tightest constraint. My ability to test and verify the vast number of fixed Lead Developer has cranked out these past few weeks is the biggest factor slowing down the project right now. We've also gotten a bit sloppy in issue-tracking: An audit of the twenty-eight items marked as never started found that ten of them were mislabeled — work had landed, or a ruling had been made, and the board had not been updated. The durable fix we've adopted is to derive status from what actually happened rather than setting it by hand.
+Review capacity remains the tightest constraint — my ability to test and verify the vast number of fixes Lead Developer has cranked out these past few weeks is what's actually slowing the project down. We've also gotten a bit sloppy in issue-tracking: An audit of the twenty-eight items marked as never started found that ten of them were mislabeled — work had landed, or a ruling had been made, and the board had not been updated. The durable fix we've adopted is to derive status from what actually happened rather than setting it by hand.
 
 ---
 

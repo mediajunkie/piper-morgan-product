@@ -13,6 +13,13 @@ PM-attention items live **here**, in the section immediately below.
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-04 fire 3.)*
 
+- ⏳ **Pending PM: CXO's 2-call combined-payload deconfounder, 09-02.** CXO's BYOC rubric T-axis reframe
+  (content-present-vs-absent) fits 6/6 probe items but has never been tested and CXO's own prior two
+  attempts at this axis were falsified — asking PM directly for authorization on 2 more Claude API calls
+  to test it before anyone builds against it. PA has the harness ready and would run it the moment PM
+  says go; nothing for PA to do until then. `mailboxes/pa/sent/` has no PA reply — correctly, since the
+  ask is PM's to answer, not PA's.
+
 **Beta target: MOVED BACK A MONTH from 2026-08-09** (PM, 08-08 10:10 PT, in-conversation with Lead,
 verbatim: *"I am going to move the beta date back a month. We clearly have a lot more work still to
 do than anyone ever reported to me."* — `decisions.log:1242`). No new fixed date recorded as of this
