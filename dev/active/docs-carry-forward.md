@@ -34,9 +34,12 @@ checked, 2 more already fixed, 1 new instance found+fixed). Left open for PM's c
 `thirteen-mailboxes` — the body figure now references a genuinely *different* image than the hero
 (not the literal duplicate the issue described), real editorial question, not mine to guess.
 
+**#1585 CLOSED** — all 6 items resolved. 2 of 3 duplicate-file calls turned out mischaracterized
+in the original filing (checked directly, not trusted) — canonical-queries pair aren't duplicates;
+INDEX.md's real problem was staleness, not discoverability.
+
 **Still genuinely queued, mine, real remaining scope, no artificial fire-splitting — picking up
 sequentially, not deferring**:
-- **#1585** — 3 stale READMEs (low priority) + 3 duplicate-file judgment calls (mine to just pick)
 - **#1486** — Monthly Housekeeping Audit, 33 items, not due to auto-regen until ~09-07 but already
   open and actionable now that B3/#1712 are both closed
 - **#1611** (from the FLYWHEEL sweep) — `mac-dock-integration.md`, alpha-tester-facing,
