@@ -1,12 +1,12 @@
 ---
-last_updated: 2026-08-31
+last_updated: 2026-09-01
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-08-31 22:1x PDT (STOP fire, day 38 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-09-01 22:1x PDT (STOP fire, day 39 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -128,16 +128,17 @@ max_age_days: 1
 
 ## Cron
 
-Current job **`282d5894`** (chain … `ffe64ab5 → fa76147d → 282d5894`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 08-31 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`7264276d`** (chain … `fa76147d → 282d5894 → 7264276d`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-01 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 08-31 STOP
+## Open threads, as of 09-01 STOP
 
-- **Jake loop-back** — 🟡 Drafted, waiting on PM to send. See item -1 above for the full account. Watch for PM sending it or requesting changes; if untouched >~2 weeks, worth a check-in.
+- **Jake loop-back** — 🟡 Drafted 08-31, waiting on PM to send. Watch for PM sending it or requesting changes; if untouched >~2 weeks (~09-14), worth a check-in.
+- **Mailbox cc-delivery gap (#1716)** — ✅ Found, diagnosed, fixed, and verified same-day (09-01). `mail-send.sh` now warns (advisory) when a named `to:`/`cc:` recipient's inbox delivery is missing from the send call. Nothing further owed.
+- **Freeze-watchdog false-positive class** — 🟡 Watching, not HOST's to fix. Exec found `duty-cycle-freeze-check.sh` has the same commit-blind defect CIO already fixed once in `cohort-position.sh` — produced a real false "Lead STALE" report to PM 09-01. Two of eleven seats currently exposed. Separately, Arch found their own heartbeat practice died at an 08-25 context compaction and stayed dead 7 days, masked by heavy commit output — proposing a distinct "alive but belt-invisible" state. Both routed to CIO as the tool's owner. No HOST action, but worth knowing given the trust-signal stakes.
 - **Role Health Check** — ✅ #1714 closed 08-31. 8 Low/3 Medium/0 High. Next due ~09-28.
-- **Tracked-state staleness check** — ✅ Fully verified end-to-end 08-31: the actual live test fired correctly on HOST's own seat at this morning's START (carry-forward current, retired standing-items.md correctly read as "no claim" not "stale"). Reported back to CIO/CXO. Closed, nothing further owed.
-- **Agent 360 v0.4** — ✅ Fully closed: synthesized, PM-approved (all 6), routed, all four live items shipped/verified. PM gave direct positive feedback 08-30 — the synthesis prompted a "deep conversation with the chief architect" that produced the architectural review + ESSENCE.md. Only cohort-share remains, pending PM's framing sign-off.
-- **ESSENCE.md v0.1 trust-lens** — ✅ Given 08-29. Consent-gate invariance flag closed properly by Arch's honest three-part decomposition. **Watch for**: Lead's watched round adding the inversion-path test, or Arch's standalone probe if it doesn't land within a week.
-- Portfolio-lapse fix, Ship #058, Criterion E, two April carryovers, heartbeat suppression-window fix, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
+- **Agent 360 v0.4** — ✅ Fully closed. Only cohort-share remains, pending PM's framing sign-off.
+- **ESSENCE.md v0.1 trust-lens** — ✅ Given 08-29, consent-gate flag closed properly. **Watch for**: Lead's watched round adding the inversion-path test, or Arch's standalone probe if it doesn't land within a week.
+- Portfolio-lapse fix, tracked-state staleness check, Ship #058, Criterion E, two April carryovers, heartbeat suppression-window fix, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
 - **BRIEFING-CURRENT-STATE.md flagged STALE** by SessionStart hook — unchanged status, still not HOST's lane to refresh unprompted.
 - **Pattern-069 promoted to Proven, 08-25** (CIO) — verified directly against the pattern file, acked. Archival.
 - **Cross-project reply protocol ratified, 08-25** (Exec broadcast) — cohort-wide procedure, no HOST-specific action, worth knowing if ever needed.
