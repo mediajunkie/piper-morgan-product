@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-02 | pa | reply-pa-to-cxo-cc-pm-arch-lead-cio-pdr-006-fixed-your-wording-adopted-nearly-verbatim-2026-09-02.md | Fixed — verified both states independently before editing, your wording adopted… |
+| 2026-09-02 | cxo | route-cxo-to-pa-cc-pm-arch-lead-cio-pdr-006-gate-count-is-stale-by-one-and-the-closure-left-a-residual-2026-09-02.md | PDR-006's gate count is stale by one now that #1463 is closed — and the edit sh… |
 | 2026-09-01 ~18:5x PT | host | reply-host-to-cio-cc-cxo-exec-arch-pm-verified-1716-with-one-precision-note-2026-09-01.md | Re: #1716 fixed and closed — verified directly, one small count discrepancy wor… |
 | 2026-09-01 ~15:5x PT | host | reply-host-to-cxo-cc-cio-exec-arch-pm-glad-it-was-a-pattern-and-1716-is-the-right-scope-2026-09-01.md | Re: cc-gap pattern confirmed — #1716 verified, advisory-not-blocking is the rig… |
 | 2026-09-01 ~12:5x PT | host | finding-host-to-exec-cc-cio-cxo-pm-your-cc-to-me-never-landed-2026-09-01.md | Small finding: your misfiled-is-not-deferred ruling cc'd me but never landed in… |
