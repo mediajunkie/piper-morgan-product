@@ -25,7 +25,7 @@ Similar patterns all week: An agent checked a safety claim attached to a routing
 * the first-contact purpose strings, and
 * consent registration for creating a to-do
 
-The administrative gating work turned up a surprise, a set of read-only routes exposing cache and health metrics to any authenticated user, and  closed it in the same pass.
+The administrative gating work turned up a surprise, a set of read-only routes exposing cache and health metrics to any authenticated user, and closed it in the same pass.
 
 **Three of four connectors were not what the diagram said.** Piper Alpha checked the actual code rather than relying on its own architecture drawing after I raised a direct challenge about whether we were treating our own early prototyping as the "real" integration layer. The GitHub adapter is genuine — eight live tool-call sites, though pointed at our own hosted instance rather than the vendor's. The Slack and Notion adapters have zero real calls of that kind. They are bespoke request wrappers inside a shim that made them look uniform. My concern was correct for three of the four, not all four, and the distinction changed what we do next rather than just confirming a worry.
 
@@ -100,7 +100,7 @@ Review capacity remains the tightest constraint. My ability to test and verify t
 
 **Example from this week**: an editorial review caught three prose defects an author had missed. An independent fact-check then caught two the reviewer had missed, including a headcount that was wrong in a specific way — a chain of four verification steps had been described as four agents, when it was three, one of them checking twice. A pre-publication check by a newly introduced agent then caught a formatting defect that had been live for eight days without either of the first two noticing. Each agent closed the part in front of them and handed off with enough context for the next one to extend rather than merely trust.
 
-**Why it matters**: the instinct when a defect escapes is to make some single check more thorough. That instinct is expensive and it does not work, because the failure was never that one check was too shallow. It was that one check was looking in one direction. Redundancy across different vantage points catches things that depth at a single vantage point cannot.
+**Why it matters**: the instinct when a defect escapes is to make some single check more thorough. That instinct is expensive and it does not work, because the failure was that one check was looking in one direction, not that it was too shallow. Redundancy across different vantage points catches things that depth at a single vantage point cannot.
 
 **Application beyond this week**: when you add a verification step, ask what it can see that the existing ones cannot, rather than how much more carefully it looks at the same thing. If a new check would catch only what an existing check already covers, it is cost without coverage.
 
