@@ -5,8 +5,8 @@ valid_from: "2026-01-22"
 last_updated: "2026-04-26"
 last_verified: "2026-09-01"
 verified_by: CXO — real spot-check, not a bulk stamp (#1712). WHAT I CHECKED: the Colleague Test
-  section against the live rubric (found and fixed FOUR stale "v2.1" citations — one had
-  survived a 2026-08-01 fix to its twin, and I initially found only two of the four); the rubric family roster; the ratified-invariant status.
+  section against the live rubric (found and fixed FIVE stale "v2.1" citations — one had
+  survived a 2026-08-01 fix to its twin; I miscounted twice before grepping to confirm); the rubric family roster; the ratified-invariant status.
   WHAT I DID NOT CHECK and left untouched: the mobile-skunkworks status ("currently paused"), the
   contractor/subcontractor lines, and the CXO-Comms-Docs triangle section — I have no current
   evidence either way and a bulk re-attestation is the defect this exercise exists to catch.
@@ -152,12 +152,15 @@ Mental models for consistent CXO decisions:
 
 **The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/testing/colleague-test-rubric.md` and `docs/internal/development/colleague-test.md` (conceptual).
 
-> 🔴 **This briefing carries NO rubric version number, deliberately — open the file.** *Why the stronger form (CXO, 2026-09-01 self-verification): on 2026-08-01 someone corrected this line from "v2.1" to a then-current number and added "don't cite a version from here." **But the identical "v2.1" in Core Responsibilities above survived that fix**, and the corrected number itself went stale within a month. **A number plus "don't trust this number" is worse than no number** — it is an invitation to be wrong that reads as a citation. **ALL FOUR are now removed rather than re-corrected.**
+> 🔴 **This briefing carries NO rubric version number, deliberately — open the file.** *Why the stronger form (CXO, 2026-09-01 self-verification): on 2026-08-01 someone corrected this line from "v2.1" to a then-current number and added "don't cite a version from here." **But the identical "v2.1" in Core Responsibilities above survived that fix**, and the corrected number itself went stale within a month. **A number plus "don't trust this number" is worse than no number** — it is an invitation to be wrong that reads as a citation. **All FIVE are now removed rather than re-corrected.**
 
-⚠️ **And I got the count wrong on my first pass of this very edit**: I fixed two, wrote "both are now
-removed," and only found the other two by grepping afterward. **I asserted completeness without counting
-— in an edit about false citations.** Stating the denominator is not a thing you do once; it is a thing
-you do at the moment of every claim, including the claim that you have finished.*
+⚠️ **And I got the count wrong TWICE inside this very edit.** First pass: fixed two, wrote *"both are
+now removed"* — there were more. Second pass: grepped, found two more, wrote *"ALL FOUR"* — **without
+re-grepping after the edit**, and a fifth was sitting in the quick-reference list at the bottom. **I
+asserted completeness twice, in an edit whose entire subject is false citations.**
+⭐ **The fix is not more care — it is verify-AFTER-edit, mechanically.** I grepped to find, then
+asserted without grepping to confirm. Stating a denominator is not something you do once at the start;
+it is something you do at the moment of every claim, **including the claim that you are finished.***
 
 **What IS stable enough to state here**: the rubric's **three PM-ratified invariants** (2026-08-31) — the question, the verdict shape (≥7/9, any single 0 auto-fails), the fabrication auto-fail. Those need PM to change. Everything else in the instrument moves with evidence, which is exactly why versions don't belong in a briefing.
 
@@ -295,7 +298,7 @@ Request additional detail for:
 **Weekly Ship**: When PM requests a workstream review memo, see `docs/internal/development/weekly-ship-process-guide.md` for the full process, naming convention (`workstream-{ship#}-{role}-{window}.md`), and your role in it.
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
-- **Colleague Test (operational v2.1)**: `docs/internal/testing/colleague-test-rubric.md`
+- **Colleague Test**: `docs/internal/testing/colleague-test-rubric.md` (no version here — open the file)
 - **Colleague Test (conceptual)**: `docs/internal/development/colleague-test.md`
 - **Floor-first routing**: `docs/internal/architecture/adrs/adr-060.md`
 - **Experience Philosophy**: `docs/internal/product/pdr/PDR-004-experience-philosophy.md`
