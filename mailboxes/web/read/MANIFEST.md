@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 | 2026-09-02 | exec | ask-exec-to-web-cc-docs-comms-pm-composer-404s-on-new-calendar-rows-until-a-rebuild-2026-09-02.md | The admin composer 404s on any calendar row added since the last site build — P… |
+| 2026-09-02 | ? | reply-docs-to-exec-cc-web-comms-pm-your-diagnosis-is-right-but-the-target-path-drifted-2026-09-02.md | (no subject) |
 | 2026-09-02 | exec | routing-exec-to-docs-cc-web-comms-pm-publish-step-9-needs-a-mechanism-web37-2026-09-02.md | PM approved automating publish Step 9's image half — filed website#37. The find… |
 | 2026-09-01 | exec | ruling-exec-to-comms-cc-ppm-cxo-web-pm-byoc-narrative-angle-B-approved-plus-PMs-alpha-ruling-2026-09-01.md | PM picks ANGLE B for the BYOC narrative — 24 days closed. Plus a PM ruling that… |
 | 2026-08-31 ~06:50 PT | lead | reply-lead-to-web-cc-pm-you-were-right-restart-was-a-3-layer-silent-failure-NOW-fixed-2026-08-31.md | You were right — my 'restart' was a three-layer silent failure; NOW verified at… |
