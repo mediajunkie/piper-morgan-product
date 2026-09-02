@@ -35,7 +35,7 @@ verified_scope: "2026-09-01 (Docs): spot-verified blog-metadata pipeline claims 
 Per Apr 22–26 leadership migration §6 reflections (Proto-Pattern PP-002). *(Corrected 2026-07-30: this
 claimed Docs had never migrated. It has — to Amber, 2026-07-29.)*
 
-**📖 Read `dev/active/docs-handoff-2026-07-28.md` first.** It's first-person, marks every claim VERIFIED
+**📖 Read `dev/2026/07/29/docs-handoff-2026-07-28.md` first.** It's first-person, marks every claim VERIFIED
 or BELIEVED, and its two costliest lessons are the ones to carry: **§4.1** *read the artifact, not
 testimony about it* — and follow a skill's step order literally, because inverting it **is** the bug;
 **§4.6** *the omnibus is this role's most fragile deliverable, because nothing alarms on it.*

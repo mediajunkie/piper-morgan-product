@@ -42,7 +42,7 @@ A migration is a session handoff across an account/model boundary. Two prompts d
 - **The inherited-blocked-task slot** (bootstrap field 5) — gives staged-blocked items a designed home instead of letting them float in a log section where they get lost.
 
 ## Provenance + reuse
-- **Extracted from** the May–June 2026 cohort wave (9 pairs in `dev/active/{role}-{migration-handoff,bootstrap-brief}-*.md`); the "what every bootstrap carries" lessons list in `dev/active/cohort-plan-of-record-2026-06-12.html` §5 is the in-wave precursor to this doc.
+- **Extracted from** the May–June 2026 cohort wave (9 pairs in `dev/active/{role}-{migration-handoff,bootstrap-brief}-*.md`); the "what every bootstrap carries" lessons list in `dev/2026/06/19/cohort-plan-of-record-2026-06-12.html` §5 is the in-wave precursor to this doc.
 - **Validated cross-project** by Janus (Design in Product, 2026-06-18) — the format transferred to a different substrate (local-cron-on-host, state-in-durable-files) with only context-fitting, not structural change.
 - **Reuse**: cohort future migrations (model changes, account moves) + cross-project. Fit the load-bearing fields to context; don't drop them.
 

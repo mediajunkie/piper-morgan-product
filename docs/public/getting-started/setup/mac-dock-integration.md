@@ -1,37 +1,46 @@
 # Mac Dock Integration for One-Click Startup
 
+> **Rewritten 2026-09-02 (Docs, #1611)**: this doc previously had two problems, either one enough
+> to block using it as-is. First, it was framed entirely around PM's own personal "6:00 AM PT
+> standup" routine — not something an alpha tester or contributor has. Second, its startup script
+> launched what it described as two separate processes (`main.py` on port 8001 and a second
+> `web/app.py`/`uvicorn` process on port 8081) — a nearly-year-old architecture. **Confirmed
+> directly**: `main.py` runs `web.app:app` internally via uvicorn on a single port; there is no
+> separate frontend process, and CLAUDE.md's own quick reference agrees (`python main.py # Start
+> server (port 8001)`, "Entry point: `main.py` (not `web/app.py`)"). Rewritten below against the
+> real single-process architecture, with generic "one-click startup" framing instead of PM's own
+> routine.
+
 ## Overview
 
-This guide enables you to add Piper Morgan to your Mac dock for one-click startup, making your daily 6:00 AM PT standup routine seamless and frictionless.
+This guide adds Piper Morgan to your Mac dock for one-click startup — launch the server with a
+single click instead of typing a command every time.
 
-## 🎯 **Benefits**
+## 🎯 Benefits
 
 - **One-Click Startup**: Launch Piper Morgan with a single dock click
-- **Daily Standup Routine**: Perfect for 6:00 AM PT standup sessions
 - **Zero Configuration**: No manual setup required after initial configuration
 - **Professional Appearance**: Clean dock icon representing Piper Morgan
 - **Health Check Integration**: Automatic service validation on startup
 
-## 📋 **Prerequisites**
+## 📋 Prerequisites
 
-### **System Requirements**
+### System Requirements
 
 - **macOS**: 10.15 (Catalina) or later
-- **Docker Desktop**: Must be running before startup
+- **Docker Desktop**: Must be running before startup (for PostgreSQL/Redis)
 - **Git**: For repository access and updates
 - **Terminal**: Built-in macOS Terminal app
 
-### **Piper Morgan Setup**
+### Piper Morgan Setup
 
-- **Repository**: Cloned to local machine
-- **Dependencies**: Python virtual environment configured
-- **Services**: PostgreSQL and Redis accessible
+- Repository cloned to local machine
+- Python virtual environment configured
+- PostgreSQL and Redis accessible (via Docker Compose — see `SETUP.md`)
 
-## 🚀 **Setup Instructions**
+## 🚀 Setup Instructions
 
-### **Step 1: Create Startup Script**
-
-First, create the startup script in your Piper Morgan directory:
+### Step 1: Create Startup Script
 
 ```bash
 # Navigate to your Piper Morgan directory
@@ -42,7 +51,6 @@ cat > start-piper.sh << 'EOF'
 #!/bin/bash
 
 # Piper Morgan One-Click Startup Script
-# Version: 1.0.0
 # Purpose: Launch Piper Morgan with health checks
 
 set -e  # Exit on any error
@@ -61,7 +69,7 @@ fi
 echo "✅ Docker Desktop is running"
 
 # Check if we're in the right directory
-if [ ! -f "main.py" ] || [ ! -f "web/app.py" ]; then
+if [ ! -f "main.py" ]; then
     echo "❌ Not in Piper Morgan directory"
     echo "Please navigate to your piper-morgan directory and try again"
     exit 1
@@ -90,72 +98,44 @@ fi
 
 echo "✅ Python dependencies verified"
 
-# Start backend services
-echo "🚀 Starting backend services..."
-echo "Starting main.py in background..."
-nohup python main.py > logs/backend.log 2>&1 &
-BACKEND_PID=$!
-echo "Backend PID: $BACKEND_PID"
+# Start the server (main.py runs the app internally — one process, port 8001)
+echo "🚀 Starting Piper Morgan server..."
+nohup python main.py > logs/piper.log 2>&1 &
+SERVER_PID=$!
+echo "Server PID: $SERVER_PID"
 
-# Wait for backend to start
-echo "⏳ Waiting for backend to start..."
+# Wait for the server to start
+echo "⏳ Waiting for server to start..."
 sleep 5
 
-# Check backend health
+# Check server health
 if curl -s http://localhost:8001/health > /dev/null 2>&1; then
-    echo "✅ Backend is healthy"
+    echo "✅ Server is healthy"
 else
-    echo "❌ Backend health check failed"
-    echo "Check logs/backend.log for details"
-    exit 1
-fi
-
-# Start frontend
-echo "🌐 Starting frontend..."
-echo "Starting web/app.py..."
-nohup python web/app.py > logs/frontend.log 2>&1 &
-FRONTEND_PID=$!
-echo "Frontend PID: $FRONTEND_PID"
-
-# Wait for frontend to start
-echo "⏳ Waiting for frontend to start..."
-sleep 3
-
-# Check frontend health
-if curl -s http://localhost:8081/health > /dev/null 2>&1; then
-    echo "✅ Frontend is healthy"
-else
-    echo "❌ Frontend health check failed"
-    echo "Check logs/frontend.log for details"
+    echo "❌ Server health check failed"
+    echo "Check logs/piper.log for details"
     exit 1
 fi
 
 # Create PID file for management
-echo "$BACKEND_PID" > .piper-backend.pid
-echo "$FRONTEND_PID" > .piper-frontend.pid
+echo "$SERVER_PID" > .piper.pid
 
 echo "🎉 Piper Morgan is ready!"
 echo "================================"
-echo "🌐 Frontend: http://localhost:8081/"
-echo "🔧 Backend: http://localhost:8001/"
-echo "📊 Health: http://localhost:8081/health"
+echo "🌐 Open: http://localhost:8001/"
+echo "📊 Health: http://localhost:8001/health"
 echo ""
-echo "💡 Tip: Bookmark http://localhost:8081/ for quick access"
 echo "🔄 To stop: ./stop-piper.sh"
-echo ""
-echo "🚀 Ready for your 6:00 AM PT standup!"
 
 # Open browser
-open http://localhost:8081/
+open http://localhost:8001/
 EOF
 
 # Make the script executable
 chmod +x start-piper.sh
 ```
 
-### **Step 2: Create Stop Script**
-
-Create a companion stop script for clean shutdown:
+### Step 2: Create Stop Script
 
 ```bash
 # Create the stop script
@@ -163,46 +143,27 @@ cat > stop-piper.sh << 'EOF'
 #!/bin/bash
 
 # Piper Morgan Stop Script
-# Version: 1.0.0
-# Purpose: Clean shutdown of Piper Morgan services
+# Purpose: Clean shutdown of the Piper Morgan server
 
 echo "🛑 Stopping Piper Morgan..."
 echo "================================"
 
-# Stop backend
-if [ -f ".piper-backend.pid" ]; then
-    BACKEND_PID=$(cat .piper-backend.pid)
-    if kill -0 $BACKEND_PID 2>/dev/null; then
-        echo "🛑 Stopping backend (PID: $BACKEND_PID)..."
-        kill $BACKEND_PID
-        echo "✅ Backend stopped"
+if [ -f ".piper.pid" ]; then
+    SERVER_PID=$(cat .piper.pid)
+    if kill -0 $SERVER_PID 2>/dev/null; then
+        echo "🛑 Stopping server (PID: $SERVER_PID)..."
+        kill $SERVER_PID
+        echo "✅ Server stopped"
     else
-        echo "ℹ️  Backend already stopped"
+        echo "ℹ️  Server already stopped"
     fi
-    rm -f .piper-backend.pid
+    rm -f .piper.pid
 else
-    echo "ℹ️  No backend PID file found"
+    echo "ℹ️  No PID file found"
 fi
 
-# Stop frontend
-if [ -f ".piper-frontend.pid" ]; then
-    FRONTEND_PID=$(cat .piper-frontend.pid)
-    if kill -0 $FRONTEND_PID 2>/dev/null; then
-        echo "🛑 Stopping frontend (PID: $FRONTEND_PID)..."
-        kill $FRONTEND_PID
-        echo "✅ Frontend stopped"
-    else
-        echo "ℹ️  Frontend already stopped"
-    fi
-    rm -f .piper-frontend.pid
-else
-    echo "ℹ️  No frontend PID file found"
-fi
-
-# Clean up any remaining processes
-echo "🧹 Cleaning up..."
+# Clean up any remaining process
 pkill -f "python main.py" 2>/dev/null || true
-pkill -f "python web/app.py" 2>/dev/null || true
 
 echo "✅ Piper Morgan stopped successfully"
 echo "================================"
@@ -212,39 +173,33 @@ EOF
 chmod +x stop-piper.sh
 ```
 
-### **Step 3: Create Logs Directory**
+### Step 3: Create Logs Directory
 
 ```bash
-# Create logs directory
 mkdir -p logs
 echo "✅ Logs directory created"
 ```
 
-### **Step 4: Add to Mac Dock**
+### Step 4: Add to Mac Dock
 
-#### **Option A: Drag and Drop (Recommended)**
+#### Option A: Drag and Drop (Recommended)
 
 1. **Open Finder** and navigate to your Piper Morgan directory
 2. **Drag the `start-piper.sh` file** to your Mac dock
 3. **Right-click the dock icon** and select "Options" → "Keep in Dock"
-4. **Customize the icon** (optional - see Customization section below)
+4. **Customize the icon** (optional — see Customization section below)
 
-#### **Option B: Create Application Bundle**
+#### Option B: Create Application Bundle
 
 For a more professional appearance, create an application bundle:
 
 ```bash
-# Create application bundle
 mkdir -p "Piper Morgan.app/Contents/MacOS"
 mkdir -p "Piper Morgan.app/Contents/Resources"
 
-# Copy startup script to bundle
 cp start-piper.sh "Piper Morgan.app/Contents/MacOS/Piper Morgan"
-
-# Make executable
 chmod +x "Piper Morgan.app/Contents/MacOS/Piper Morgan"
 
-# Create Info.plist
 cat > "Piper Morgan.app/Contents/Info.plist" << 'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -273,253 +228,123 @@ EOF
 echo "✅ Application bundle created"
 ```
 
-### **Step 5: Test the Integration**
+### Step 5: Test the Integration
 
 ```bash
-# Test the startup script
 ./start-piper.sh
-
-# Verify services are running
-curl http://localhost:8081/health
 curl http://localhost:8001/health
-
-# Test the stop script
 ./stop-piper.sh
 ```
 
-## 🎨 **Customization**
+## 🎨 Customization
 
-### **Custom Dock Icon**
+### Custom Dock Icon
 
-1. **Create or download** a 512x512 PNG icon
-2. **Convert to ICNS format** using Icon Composer or online tools
-3. **Replace the icon** in your application bundle:
+1. Create or download a 512x512 PNG icon
+2. Convert to ICNS format using Icon Composer or online tools
+3. Replace the icon in your application bundle:
 
 ```bash
-# For application bundle
 cp your-icon.icns "Piper Morgan.app/Contents/Resources/AppIcon.icns"
-
-# Update Info.plist to reference the icon
-# Add this to Info.plist:
+# Add to Info.plist:
 # <key>CFBundleIconFile</key>
 # <string>AppIcon.icns</string>
 ```
 
-### **Dock Badge**
+## 🔧 Troubleshooting
 
-The dock icon can show a badge indicating system status:
-
-- **Green**: All services healthy
-- **Yellow**: Some services starting
-- **Red**: Service issues detected
-
-## 🔧 **Troubleshooting**
-
-### **Common Issues**
-
-#### **Docker Desktop Not Running**
+### Docker Desktop Not Running
 
 ```bash
-# Error: Docker Desktop is not running
-# Solution: Start Docker Desktop from Applications folder
 open -a Docker
 ```
 
-#### **Port Already in Use**
+### Port Already in Use
 
 ```bash
-# Error: Port 8081 or 8000 already in use
-# Solution: Stop existing services
 ./stop-piper.sh
-# Or find and kill processes using the ports
-lsof -ti:8081 | xargs kill -9
-lsof -ti:8000 | xargs kill -9
+# Or find and kill the process directly
+lsof -ti:8001 | xargs kill -9
 ```
 
-#### **Virtual Environment Issues**
+### Virtual Environment Issues
 
 ```bash
-# Error: Virtual environment not found
-# Solution: Recreate virtual environment
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-#### **Permission Denied**
+### Permission Denied
 
 ```bash
-# Error: Permission denied on startup script
-# Solution: Make script executable
 chmod +x start-piper.sh
 chmod +x stop-piper.sh
 ```
 
-### **Log Analysis**
-
-Check logs for detailed error information:
+### Log Analysis
 
 ```bash
-# Backend logs
-tail -f logs/backend.log
-
-# Frontend logs
-tail -f logs/frontend.log
-
-# System logs
-tail -f /var/log/system.log | grep -i piper
+tail -f logs/piper.log
 ```
 
-### **Health Check Commands**
+### Health Check Commands
 
 ```bash
-# Check service status
-curl http://localhost:8081/health
 curl http://localhost:8001/health
-
-# Check process status
-ps aux | grep -E "(main.py|app.py)"
-
-# Check port usage
-lsof -i :8081
+ps aux | grep "main.py"
 lsof -i :8001
 ```
 
-## 📱 **Daily Usage**
+## 📱 Daily Usage
 
-### **Morning Standup (6:00 AM PT)**
+### Starting
 
-1. **Click the Piper Morgan dock icon**
-2. **Wait for startup completion** (usually 30 seconds)
-3. **Open browser** to http://localhost:8081/
-4. **Begin your daily standup routine**
+1. Click the Piper Morgan dock icon
+2. Wait for startup completion (usually 15-30 seconds)
+3. Your browser opens automatically to http://localhost:8001/
 
-### **Evening Shutdown**
+### Stopping
 
-1. **Click the stop script** or run `./stop-piper.sh`
-2. **Verify services stopped** (no processes running)
-3. **Close browser tabs** if desired
+1. Run `./stop-piper.sh`
+2. Verify the process stopped (`ps aux | grep "main.py"` shows nothing)
 
-### **Quick Restart**
+### Quick Restart
 
 ```bash
-# Quick restart for development
 ./stop-piper.sh && sleep 2 && ./start-piper.sh
 ```
 
-## 🔄 **Maintenance**
+## 🔄 Maintenance
 
-### **Regular Updates**
+### Regular Updates
 
 ```bash
-# Update Piper Morgan
 git pull origin main
-
-# Update dependencies
 source venv/bin/activate
 pip install -r requirements.txt
-
-# Test startup
 ./stop-piper.sh
 ./start-piper.sh
 ```
 
-### **Log Rotation**
+### Log Rotation
 
 ```bash
-# Rotate logs weekly
 find logs/ -name "*.log" -mtime +7 -delete
 ```
 
-### **Health Monitoring**
+## 🔗 Related Documentation
 
-```bash
-# Check system health
-./start-piper.sh --health-check-only
+- **[Troubleshooting Guide](../../../installation/troubleshooting.md)** — Common issues and solutions
+- **[Architecture Overview](../../README.md#architecture-overview)** — System design and components
 
-# Monitor resource usage
-top -pid $(cat .piper-backend.pid) -pid $(cat .piper-frontend.pid)
-```
-
-## 📊 **Performance Metrics**
-
-### **Startup Times**
-
-- **Cold Start**: 30-45 seconds (first startup of the day)
-- **Warm Start**: 15-20 seconds (subsequent startups)
-- **Service Health Check**: 5-10 seconds
-
-### **Resource Usage**
-
-- **Memory**: ~200MB (backend) + ~150MB (frontend)
-- **CPU**: Low usage during idle, spikes during startup
-- **Disk**: Minimal, mostly logs and temporary files
-
-## 🎯 **Best Practices**
-
-### **Daily Routine**
-
-1. **Start Docker Desktop** before 6:00 AM PT
-2. **Click dock icon** for one-click startup
-3. **Verify health status** before beginning standup
-4. **Use stop script** for clean shutdown
-
-### **Development Workflow**
-
-1. **Keep startup script updated** with latest changes
-2. **Test startup/stop** after major updates
-3. **Monitor logs** for any issues
-4. **Update dependencies** regularly
-
-### **Troubleshooting Workflow**
-
-1. **Check Docker Desktop** status first
-2. **Verify virtual environment** is activated
-3. **Check logs** for specific error messages
-4. **Use health check commands** for diagnosis
-5. **Restart services** if needed
-
-## 🔗 **Related Documentation**
-
-- **Getting Started Guide *(proposed; doc TBD)*** - Complete setup guide
-- **[Troubleshooting Guide](../../../installation/troubleshooting.md)** - Common issues and solutions
-- **[Architecture Overview](../../README.md#architecture-overview)** - System design and components
-- **API Documentation *(proposed; doc TBD)*** - Complete endpoint reference
-
-## 📞 **Support**
-
-### **GitHub Issues**
+## 📞 Support
 
 - **Repository**: [piper-morgan-product](https://github.com/mediajunkie/piper-morgan-product)
 - **Issue Template**: Use "Bug Report" for technical issues
-- **Feature Request**: Use "Feature Request" for enhancements
-
-### **Documentation**
-
 - **Main Site**: [pmorgan.tech](https://pmorgan.tech)
-- **Setup Guides**: [docs/setup/](../setup/)
-- **User Guides**: [docs/user-guides/](../../user-guides/)
 
 ---
 
-**Status**: ✅ **Ready for Production Use**
-**Last Updated**: September 10, 2025
-**Version**: 2.0.0 - Enhanced for Issue #163 startup process changes
-**Next Review**: September 17, 2025
-
-## 🆕 **What's New in Version 2.0.0 (September 2025)**
-
-### **Updated for Issue #163 Fixes**
-
-- **Backend Port**: Updated from `8000` to `8001`
-- **Frontend Process**: Updated from `python web/app.py` to `uvicorn app:app --port 8081`
-- **Environment Handling**: Enhanced `GITHUB_TOKEN` preservation for subprocess inheritance
-- **Error Handling**: Robust validation and automatic permission management
-- **Terminal Integration**: Custom window titles and improved AppleScript launcher
-
-### **Enhanced Features**
-
-- **Automatic Cleanup**: Removes old app bundles before creating new ones
-- **Environment Preservation**: Maintains `GITHUB_TOKEN` and other critical environment variables
-- **Path Validation**: Verifies startup script location and permissions
-- **Improved Messaging**: Clear status updates and troubleshooting guidance
+**Last Updated**: September 2, 2026 (Docs, #1611) — rewritten against the current single-process
+architecture; PM's personal-routine framing replaced with generic one-click-startup language.

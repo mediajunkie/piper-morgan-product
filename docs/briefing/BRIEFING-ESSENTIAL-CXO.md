@@ -243,7 +243,7 @@ These are standing CXO disciplines, not one-off tasks. They run in parallel with
 
 **Active as of 2026-08-01** (attested from this week's commits and memos):
 6. **Beta gate #1386 (experience criteria)** — criterion-2 sign-off **withheld** pending key provisioning (a keyless canonical suite *skips* and reports green); Scenario-B review owed when Lead runs it. **Turn-4 remains an open CXO scenario-vs-rescope design call.**
-7. **PDR-006 experience implications** (ratified 2026-07-31) — first-contact design spec `dev/active/design-spec-first-contact-plugin-surface-2026-07-31.md` (v0.2); **plugin-surface rubric branch OPEN**, blocked on Probe A; capability legibility under ChatGPT's per-skill add; the "colleague model" naming gap.
+7. **PDR-006 experience implications** (ratified 2026-07-31) — first-contact design spec `dev/2026/08/10/design-spec-first-contact-plugin-surface-2026-07-31.md` (v0.2); **plugin-surface rubric branch OPEN**, blocked on Probe A; capability legibility under ChatGPT's per-skill add; the "colleague model" naming gap.
 8. **Jake Krajewski alpha FTUX** — four-lens review complete; PM+CXO decision in progress. ⚠️ *Anti-pattern watch: "alpha feedback collected but not integrated" is on this file's own list.*
 9. **Spatial committed-theory review** — CXO experience-theory lane; **(b) converged three ways**; PM's protected-surface call pending on the cold island.
 10. **#1174 proactive-presence discovery** — re-scoped 2026-08-01 to make explicit that the *delivery capability is unscheduled*; discovery is CXO's, run with HOST.

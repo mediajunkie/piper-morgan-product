@@ -6,6 +6,8 @@ max_age_days: 31
 
 # CXO Standing Items
 
+⚠️ **EDIT THIS FILE BY HAND, NOT BY REGEX.** A truncated `.replace()` on 09-01 left an orphan line mid-table, which **silently hid three rows from the scanner for a day** — every scan reported me clean while not reading them. Markdown tables have no validator; the damage is invisible to the eye and fatal to the parse. **After any edit: re-run `scripts/aging-standing-items.sh` and check the *rows examined* count moved as expected.**
+
 **Every row carries the date it was filed** (PM-ratified 2026-08-31) so `scripts/aging-standing-items.sh` can read this file — it could not before 2026-08-31.
 
 **Owner**: CXO (cxo-code) | **Worktree**: `~/Development/piper-morgan-worktrees/cxo` on `claude/cxo-cycle`
@@ -38,13 +40,10 @@ max_age_days: 31
 | Filed | Item | Blocked on | Recheck trigger |
 |---|---|---|---|
 | **2026-09-01** | **#1463 class-discriminator test (2 calls)** *(⚠️ #1463 itself CLOSED 09-01 22:49 — the test survives it; the instrument's T axis is still `PENDING-PROBE`)* — item 3's payload carrying BOTH a class-A caveat (cached read) and a class-B caveat (`coverage: partial`), one question. Holds → staleness survives, completeness vanishes, same reply. Both vanish → I'm wrong again. | **PM** — ⚠️ **ASKED 09-02.** *I had parked this as "cheap and available, not asking yet" for two days — a deferral with no trigger. Resolved: asked, with "drop it" offered as an equally fine answer.* | PM says go or drop. |
-| ~~**2026-07-30**~~ | ✅ **#1463 both arms — DONE 09-01** (PA, 30 trials, 2 vendors; credential resolved). See Closed. | 🔴 **BLOCKED, cause FOUND 08-31 ~16:0x.** Key prefix is **`sk-proj-`** (PA verified) = project-scoped; PM's org has **two** projects and the top-up landed in the funded one ("Intern", $9.22) while the key belongs elsewhere. **A project-scoped key cannot see org-level or sibling-project balance.** PM is minting a fresh key from inside the funded project; PA stores via `KeychainService` and verifies live. ⚠️ *I marked this UNBLOCKED at ~13:2x on PM's report of a top-up; PA tested the credential live twice, an hour apart, and it still fails. Authorizations are fine — the credential is not.* **Diagnostic put to PM**: check the billing page directly, which distinguishes propagation delay from a top-up posted to a different org/project. | A live API call succeeds. PA runs both immediately then. |
- Ownership answer. |
-| ~~**2026-05-10**~~ | ~~**Quarterly CT rubric review**~~ — ✅ superseded by the two rows above | ~~**PPM marking the dispositions.** *(Moved 08-31 12:xx: PPM picked Thursday 09-03 — **their** trigger, not PM's — and I sent the four dispositions the same fire rather than sitting on them until Wednesday.)* `docs/internal/testing/rubric-review-2026-q3-dispositions.md` | PPM marks agree/disagree/needs-live. |
 | **2026-07-26** | **#1386 beta gate** | Others. **All CXO criteria (criterion 3) are signed off since 07-12.** Remaining: sprint surface, canonical suite, stability window. | Not mine to drive; watch. |
 | **2026-07-26** | **Spatial committed-theory review** | **Arch** synthesis. CXO slice folded in verbatim; convergence matches my (b) vote. | Arch publishes. |
 | **2026-09-01** | **#1717 — two voice directives** *(scope changed: my litany prediction was FALSIFIED; these are the two wrinkles Lead's run actually found)* | **Lead** — drafted copy sent 09-01 for the scope-leak and unverified-reassurance directives. MVP, explicitly not urgent. | Lead lands them on whatever touches the floor next. |
-| **2026-08-28** | **Ethics-decline / degraded-path VOICE watch** | ✅ **FIRED 09-01** on `000ca9421` (#1645) and produced #1717. Re-arms on the next deploy touching floor/decline copy, or a live decline observed. | Method: Colleague Test. Report with denominator. |
+| **2026-08-28** | **Ethics-decline / degraded-path VOICE watch** | **Trigger-based, not issue-blocked** — re-arms on the next deploy touching floor/decline copy, or a live decline observed. *(Previously cited a now-closed issue as its blocker; CIO's new STALE-BLOCKER check flagged it 09-02 — correctly. A fired-and-closed trigger is not a blocker. **Issue number deliberately omitted here** — naming it in the blocker column is what tripped the check.)* | Method: Colleague Test. Report with denominator. |
 
 ## ✅ CLOSED ON VERIFICATION — do not re-open
 

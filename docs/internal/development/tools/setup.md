@@ -295,6 +295,7 @@ After completing setup:
 If you encounter issues:
 
 1. Check this troubleshooting guide
-2. Review [PM-055 Implementation Package](pm-055-step1-implementation-package.md)
+2. Review the PM-055 Implementation Package *(dead link removed 2026-09-02 — no file at this or
+   any other path in the repo; likely never committed or lost in an early reorg)*
 3. Check [GitHub Issues](https://github.com/yourusername/piper-morgan-platform/issues)
 4. Contact the development team

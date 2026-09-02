@@ -88,7 +88,7 @@ Full detail with consent-gradient (freely / sign-off / unilateral) per seam: `RO
 
 ## References
 
-- **Predecessor handoff** (honest VERIFIED/BELIEVED framing): `dev/active/handoff-web-predecessor-2026-07-29.md`
+- **Predecessor handoff** (honest VERIFIED/BELIEVED framing): `dev/2026/07/29/handoff-web-predecessor-2026-07-29.md`
 - **Portfolio** (medium-pace priorities, co-ownership detail, the two mandates in full): `docs/briefing/ROLE-PORTFOLIO-WEB.md`
 - **Framework this briefing + the portfolio are both written against**: `docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md`
 

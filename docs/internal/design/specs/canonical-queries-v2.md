@@ -1,5 +1,10 @@
 # Canonical Queries v2.2
 
+> **Not a duplicate of `docs/internal/architecture/current/canonical-queries.md`** (confirmed
+> 2026-09-02, Docs, #1585). **This file** is the versioned implementation-tracking spec (query
+> counts, changelog, per-query implementation status). **The other file** is a plain reference
+> list of example query phrasings by category. Both are legitimate; neither supersedes the other.
+
 **Version**: 2.2
 **Date**: December 27, 2025
 **Total Queries**: 62
