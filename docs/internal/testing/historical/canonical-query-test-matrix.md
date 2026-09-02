@@ -3,7 +3,7 @@
 > ⚠️ **HISTORICAL — SUPERSEDED 2026-04-11**
 > This v1 matrix describes a pre-M1 architecture in which canonical handlers were the primary routing destination. After the M1 floor inversion (#911) and the Apr 8 IDENTITY full migration to floor (commit 33e6758a), most read-only categories route to the conversational floor instead.
 >
-> **Use [canonical-query-test-matrix-v3.md](canonical-query-test-matrix-v3.md)** for current methodology and routing expectations.
+> **Use [canonical-query-test-matrix-v3.md](../canonical-query-test-matrix-v3.md)** for current methodology and routing expectations.
 >
 > This file is retained for historical reference only.
 

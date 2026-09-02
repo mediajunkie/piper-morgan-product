@@ -395,9 +395,9 @@ What happens to existing `ProjectIntegration` records with GitHub configs?
 
 ## References
 
-- [CXO Memo: Domain Model Response (Feb 26, 2026)](memo-cxo-domain-model-response-2026-02-26.md)
-- [PPM Memo: Domain Model Synthesis (Feb 26, 2026)](memo-ppm-domain-model-synthesis-2026-02-26.md)
-- [Lead Developer Memo: Domain Model Gaps (Feb 26, 2026)](2026-02-26-domain-model-product-project-repo-relationships.md)
+- [CXO Memo: Domain Model Response (Feb 26, 2026)](../../../../mailboxes/lead/read/memo-cxo-to-ppm-lead-xian-domain-model-response-2026-02-26.md) *(path corrected 2026-09-02 — filename had drifted; this is the real memo, addressed to PPM/Lead/xian)*
+- PPM Memo: Domain Model Synthesis (Feb 26, 2026) *(dead link removed 2026-09-02 — no file at this or any other path; a synthesis memo may never have been written)*
+- [Lead Developer Memo: Domain Model Gaps (Feb 26, 2026)](../../../../mailboxes/cxo/read/2026-02-26-domain-model-product-project-repo-relationships.md) *(path corrected 2026-09-02 — file exists in mailboxes/, not alongside this PDR)*
 - [ADR-045: Object Model](../../architecture/adrs/adr-045-object-model.md)
 - [domain-models.md](../../architecture/current/models/domain-models.md) — requires update per this PDR
 
