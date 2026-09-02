@@ -1,9 +1,9 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-01 ~13:5x PDT (B3 fully RATIFIED + EXECUTED, both corpora, Arch's synthesis
-motion landed and actioned same-fire; Sender-Impersonation Bug closed; #1712 audit 4 items closed)
+**Updated**: 2026-09-01 ~16:5x PDT (B3 fully closed; Sender-Impersonation Bug closed; #1712 audit
+now 6 of ~10 sections covered incl. a real Doc-Currency escalation mailed to CIO)
 **Session log**: `dev/2026/09/01/2026-09-01-0730-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-07, next fire ~15:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy through ~09-07, next fire 18:57.
 
 ## B3 corpus-disposition — CLOSED. Ratified by Arch, all directed markers executed.
 
@@ -35,20 +35,29 @@ publish-confirmation memo states which legs are owed and to whom**, per the row'
 costs nothing. Also answered Dispatch-PM's repeated calendar-authority question definitively: the
 `.md` frontmatter is authoritative, the calendar's copy is derived/convenience, not retired.
 
-## Weekly Docs Audit (#1712) — 4 items closed with evidence, most of the checklist still owed
+## Weekly Docs Audit (#1712) — 6 of ~10 sections covered, incl. a real escalation
 
 Found and worked around a real infrastructure defect: both Monday-scheduled GH Actions silently
 failed to fire (filed **#1713** with full evidence). Manually dispatched `weekly-docs-audit.yml`,
-produced **#1712** (74 items). **Picked up this fire** (post-compaction fresh-focus point, not a
-deferral): Briefing Freshness (PRIORITY) refreshed with real Docs-lane content, commit `95cdfec02`
-— see the briefing-refresh section above; Omnibus Coverage / pattern-count-accuracy /
-`dev/active/` stranded-logs all checked and verified clean (not just assumed). Progress comment
-posted on the issue. **Remaining, genuinely unstarted**: Automated Audits (subagent sweeps —
-stale content, duplicate files, broken links, cross-references), Doc Currency ratio
-(`check-staleness.py`), Sprint & Roadmap Alignment, GitHub Issues Sync, CITATIONS.md review,
+produced **#1712** (74 items). **Covered so far**: Briefing Freshness (PRIORITY, real content
+refresh); Omnibus Coverage (verified clean); Pattern Count Accuracy (verified clean); `dev/active/`
+stranded-logs (verified clean); **Doc Currency Check** — ran `check-staleness.py`, found **31/38
+stale, 20 stuck on an identical 6/19 bulk stamp, unchanged in a week** — crossed my own 75%
+escalation threshold, fixed my own 2 docs for real (not blind-bumped), **mailed CIO by name**
+(cohort-wide mechanism they own); **Link Integrity** — 0 broken links across ADRs/patterns/
+briefings, well within target. All posted to the issue with evidence.
+
+**Remaining, genuinely unstarted**: Automated Audits (subagent sweeps — stale content, duplicate
+files, cross-references), Sprint & Roadmap Alignment, GitHub Issues Sync, CITATIONS.md review,
 template-directory check. Natural next-fire work, same evidence-over-assumption discipline. Did
 NOT manually dispatch the monthly workflow (#1486 from last month is still open, would compound
 not close a gap).
+
+## Watch: CIO's response on the doc-currency escalation
+
+Mailed 2026-09-01 (`c98ca3d65`). Cohort-wide staleness mechanism, not mine to fix beyond my own
+two docs. Don't re-chase before next Monday's audit — check periodically per the "Awaiting others"
+discipline below.
 
 ## Monthly Housekeeping Audit (#1486) — still sequenced behind B3 + #1712
 

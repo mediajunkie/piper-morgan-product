@@ -1,8 +1,19 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-01 07:22 PT (START). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-09-01 16:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## ✅ #1717 TRIAGED — honest-degrade directive composition risk, MVP/not-urgent (2026-09-01 16:22)
+CXO's voice-watch found five independent `source_failed` directive sites in
+`conversational_floor.py` that compose additively with no cap — a plausible (unverified) Tone
+failure if multiple lookups fail in one turn ("I couldn't check X, and I couldn't check Y..." vs.
+one honest sentence). Explicitly routed the priority call to me and Lead. Milestoned **MVP**
+(matches #1425/#1645 family precedent, live-surface voice-quality risk, fits maintenance-mode
+bug-fixing scope), Status **Product Backlog** (not urgent — CXO's own framing, and the failure
+mode is still structural reasoning, not an observed reply). Posted the disposition on the issue
+and confirmed to CXO/Lead/Arch. **Next actual step is Lead's**: a free structural render + one
+floor call to see what the model really produces before any fix.
 
 ## ✅ PDR-005 TAXONOMY CITATION — closed same-fire (2026-09-01 07:22)
 CXO routed a real, small gap: PDR-005 (my own PDR) never cited the ratified surfaces taxonomy at

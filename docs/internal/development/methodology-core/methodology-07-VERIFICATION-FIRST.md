@@ -1,5 +1,12 @@
 # Verification-First Methodology
 
+> **Cross-corpus note (2026-09-01)**: ruled canonical for this principle by Arch's B3 synthesis
+> motion — `pattern-006-verification-first.md` described the same practice independently in the
+> patterns catalog and has been absorbed into this file (content preserved there for historical
+> reference). `methodology-30-CONSUMER-TRACE-VERIFICATION.md` stays independent — it specializes
+> this methodology for consumer-relationship claims specifically, a healthy relationship, not
+> redundancy.
+
 ## Overview
 
 The **Verification-First Methodology** is a systematic approach to development that prioritizes understanding existing systems before implementing changes. This methodology prevents integration issues and ensures robust, production-ready implementations.

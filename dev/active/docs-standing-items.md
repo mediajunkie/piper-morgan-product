@@ -102,9 +102,12 @@ silently — flag at next PM engagement rather than resume unprompted.
   escalated directly to Lead Dev 2026-08-24 (a 2nd, name-addressed flag after the first sat a
   week), fixed same-day. Resolved, dropping from watch.
 - [ ] **`last_verified: "2026-06-19"` bulk-stamp cluster** — **Added**: 2026-07-30 (flagged;
-  entered this tracker 2026-08-19). 20 of 26 still on the stamp as of 2026-08-24 (down from 23 a
-  week prior — modest, ongoing). Cohort-wide, no single owner. Check at next Monday audit;
-  escalate by name if still >75% stale.
+  entered this tracker 2026-08-19). **Escalated by name 2026-09-01**: still 20 of 38 on the stamp
+  (was 20/26 on 08-24 — zero movement in a week, denominator only grew), 31/38 = 82% stale overall,
+  crossed the 75% threshold with no progress. Mailed CIO by name (cohort-wide staleness-mechanism
+  owner, not a single-fix-mine item). Fixed my own two surfaces this pass (BRIEFING-ESSENTIAL-DOCS
+  re-verified, ROLE-PORTFOLIO-DOCS PDR-007 row corrected). Watch for CIO's response; don't re-chase
+  before next Monday audit.
 - [ ] **`universal-list-architecture-guide.md` duplicate** — **Added**: entered this tracker
   2026-08-19; GH #1585 created 2026-08-10. Two paths, diverged content, Sept 2025 reorg artifact.
   Confirmed via #1585 (2026-08-30 update) as a genuine judgment call, not a mechanical fix —

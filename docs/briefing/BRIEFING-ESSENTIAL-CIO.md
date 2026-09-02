@@ -3,7 +3,7 @@ type: briefing
 title: BRIEFING-ESSENTIAL-CIO
 valid_from: "2026-01-09"
 last_updated: "2026-05-03"
-last_verified: "2026-06-19"
+last_verified: "2026-09-01"
 ---
 
 # BRIEFING-ESSENTIAL-CIO
@@ -146,6 +146,15 @@ Live practices not yet codified elsewhere (per CIO predecessor handoff §3 + Apr
 
 See standing file: `docs/operations/startup-routines/cio-code-startup.md`. Read at the start of every session.
 
+**As of 2026-08-25 (Amber migration)**: session start/resume runs via the `duty-cycle-tick` skill
+on a cron-fire model, not ad hoc — worktree is the stable Model-A path
+`~/Development/piper-morgan-worktrees/cio` on branch `claude/cio-cycle`, reused every session
+(never a fresh path). Ephemeral state (mail-loop status, active threads) lives in
+`dev/active/cio-carry-forward.md`; durable owed work lives in `dev/active/cio-standing-items.md`.
+Mailbox sends go through `scripts/mail-send.sh` (push-to-ref, lands on `origin/main` directly, no
+`cd` to a shared checkout) — CIO co-maintains this script's checker family alongside the mail
+infra owners (most recently: #1716's to:/cc: delivery-gap warning, 2026-09-01).
+
 ## Coordination Surfaces
 
 - **Mailbox**: `mailboxes/cio/` (inbox/sent/read; per Apr 26 mailbox-on-main norm)
@@ -239,4 +248,5 @@ Request additional detail for:
 *Workstream: Methodology & Process Innovation*
 *Note: This describes stable role context. For current project state, see BRIEFING-CURRENT-STATE.md*
 *Updated May 3 (v3) — Section 4 structural gaps from CIO Apr 27 correction memo applied: Recurring Deliverables (7 items), Operating Norms (7 live practices), Session Startup Routine (pointer to standing file), Coordination Surfaces (9 surfaces), Live Standards (6 disciplines), Decision Authority additions (methodology-core entry slots, pattern slot allocation, Innovation Backlog ownership). Section 4.6 (CXO/PPM/HOST/PA/Comms in Collaboration Boundaries) was applied in the Apr 29 v2 update.*
+*Re-verified 2026-09-01 (#1712 doc-currency escalation, Docs flagged 31/38 stale cohort-wide): spot-checked and added the Amber/Model-A session-startup note above (worktree model, mail-send.sh ownership) — genuinely new since May. Role Responsibilities, Decision Authority, Workstream Scope, and Collaboration Boundaries sections were NOT re-verified this pass (still describe the Apr/May-era role shape; content not disproven, just not re-checked) — a fuller structural refresh is still owed, tracked as a CIO backlog item rather than rubber-stamped here.*
 *Updated Apr 29 (v2) per CIO Apr 27 briefing-correction memo: Section 2 path fixes (`docs/internal/methodology/` → `docs/internal/development/methodology-core/`), stale dates, Active Work refresh (operational pattern recognition primary; calendar-cadence sweeps deprecated per predecessor §4 lesson), Resolved Decisions Apr-period additions (M1 audit, Step 2.5 gate, Flywheel v2.0, HOST/CIO cadence-split, Pattern-063, Methodologies 24/25/26, Pattern-065), Collaboration Boundaries expanded to include CXO/PPM/HOST/PA/Comms.*
