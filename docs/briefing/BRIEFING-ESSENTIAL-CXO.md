@@ -5,8 +5,8 @@ valid_from: "2026-01-22"
 last_updated: "2026-04-26"
 last_verified: "2026-09-01"
 verified_by: CXO — real spot-check, not a bulk stamp (#1712). WHAT I CHECKED: the Colleague Test
-  section against the live rubric (found and fixed two stale version citations, one of which had
-  survived a 2026-08-01 fix to its twin); the rubric family roster; the ratified-invariant status.
+  section against the live rubric (found and fixed FOUR stale "v2.1" citations — one had
+  survived a 2026-08-01 fix to its twin, and I initially found only two of the four); the rubric family roster; the ratified-invariant status.
   WHAT I DID NOT CHECK and left untouched: the mobile-skunkworks status ("currently paused"), the
   contractor/subcontractor lines, and the CXO-Comms-Docs triangle section — I have no current
   evidence either way and a bulk re-attestation is the defect this exercise exists to catch.
@@ -86,7 +86,7 @@ The triangle is bilateral by default (CXO↔Comms or CXO↔Docs) and triangular 
 ## Key Concepts
 
 ### The Colleague Test (Primary Decision Heuristic)
-**Definition**: Would a thoughtful, competent colleague respond this way? Operational rubric v2.1 at `docs/internal/testing/colleague-test-rubric.md`; conceptual companion (philosophy, when-to-apply, worked PM examples) at `docs/internal/development/colleague-test.md`. Three-dimension scoring:
+**Definition**: Would a thoughtful, competent colleague respond this way? Rubric at `docs/internal/testing/colleague-test-rubric.md`; conceptual companion (philosophy, when-to-apply, worked PM examples) at `docs/internal/development/colleague-test.md`. Three-dimension scoring:
 - **Relevance** (0-3): Does the response address what was actually asked?
 - **Context** (0-3): Does it use available project/user context appropriately? (v2 distinguishes Context 2 = generic LLM competence vs. Context 3 = project-context injection)
 - **Tone** (0-3): Does it sound like a professional colleague?
@@ -152,7 +152,12 @@ Mental models for consistent CXO decisions:
 
 **The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/testing/colleague-test-rubric.md` and `docs/internal/development/colleague-test.md` (conceptual).
 
-> 🔴 **This briefing carries NO rubric version number, deliberately — open the file.** *Why the stronger form (CXO, 2026-09-01 self-verification): on 2026-08-01 someone corrected this line from "v2.1" to a then-current number and added "don't cite a version from here." **But the identical "v2.1" in Core Responsibilities above survived that fix**, and the corrected number itself went stale within a month. **A number plus "don't trust this number" is worse than no number** — it is an invitation to be wrong that reads as a citation. Both are now removed rather than re-corrected.*
+> 🔴 **This briefing carries NO rubric version number, deliberately — open the file.** *Why the stronger form (CXO, 2026-09-01 self-verification): on 2026-08-01 someone corrected this line from "v2.1" to a then-current number and added "don't cite a version from here." **But the identical "v2.1" in Core Responsibilities above survived that fix**, and the corrected number itself went stale within a month. **A number plus "don't trust this number" is worse than no number** — it is an invitation to be wrong that reads as a citation. **ALL FOUR are now removed rather than re-corrected.**
+
+⚠️ **And I got the count wrong on my first pass of this very edit**: I fixed two, wrote "both are now
+removed," and only found the other two by grepping afterward. **I asserted completeness without counting
+— in an edit about false citations.** Stating the denominator is not a thing you do once; it is a thing
+you do at the moment of every claim, including the claim that you have finished.*
 
 **What IS stable enough to state here**: the rubric's **three PM-ratified invariants** (2026-08-31) — the question, the verdict shape (≥7/9, any single 0 auto-fails), the fabrication auto-fail. Those need PM to change. Everything else in the instrument moves with evidence, which is exactly why versions don't belong in a briefing.
 
@@ -199,7 +204,7 @@ Before producing anything, work this checklist:
 | PDR-003 | Active | Entity Concept Model |
 | PDR-004 | Active | Experience Philosophy (4 principles from M1) |
 | PDR-101 v2 | Active | Multi-Entity Conversation |
-| `docs/internal/testing/colleague-test-rubric.md` | Active v2.1 | Operational scoring rubric (R/C/T 0-3, ≥7/9 pass, single-dim 0 auto-fail, decline-path) |
+| `docs/internal/testing/colleague-test-rubric.md` | Active — **open the file for its version** | Operational scoring rubric (R/C/T 0-3, ≥7/9 pass, single-dim 0 auto-fail, decline-path) |
 | `docs/internal/development/colleague-test.md` | Active | Conceptual companion (v2 pointer header) |
 | ADR-060 | Active | Floor-First Routing Architecture |
 | create-omnibus skill Step 7 | Active | Canonical-verification discipline (originated from PDR-004 chain Apr 16; now systemic) |
