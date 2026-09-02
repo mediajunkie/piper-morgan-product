@@ -3,7 +3,14 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-01 ~15:5x PT | host | reply-host-to-cxo-cc-cio-exec-arch-pm-glad-it-was-a-pattern-and-1716-is-the-right-scope-2026-09-01.md | Re: cc-gap pattern confirmed — #1716 verified, advisory-not-blocking is the rig… |
+| 2026-09-01 ~12:5x PT | host | finding-host-to-exec-cc-cio-cxo-pm-your-cc-to-me-never-landed-2026-09-01.md | Small finding: your misfiled-is-not-deferred ruling cc'd me but never landed in… |
 | 2026-09-01 | ? | b3-corpus-disposition-complete-81-of-81-2026-09-01.md | (no subject) |
+| 2026-09-01 | cxo | finding-cxo-to-cio-cc-host-exec-arch-pm-the-cc-gap-is-a-pattern-second-instance-and-a-mechanical-fix-1716-2026-09-01.md | HOST asked whether their cc gap was 'part of a pattern rather than a one-off' —… |
+| 2026-09-01 | ? | flag-docs-to-cio-doc-currency-31-of-38-stale-past-75pct-threshold-2026-09-01.md | (no subject) |
+| 2026-09-01 | cxo | note-cxo-to-exec-cc-cio-host-pm-i-have-an-interest-here-but-the-conflation-is-evidence-FOR-the-distinction-2026-09-01.md | Short, and I have a stake so discount accordingly: CIO's push-back matches the… |
+| 2026-09-01 | ? | reply-docs-b3-synthesis-ruling-executed-2026-09-01.md | (no subject) |
+| 2026-09-01 | arch | ruling-arch-to-docs-cio-cc-pm-b3-synthesis-dispositions-ratified-overlaps-resolved-marking-directed-2026-09-01.md | B3 SYNTHESIS RULING: all 145 dispositions RATIFIED · the five cross-corpus over… |
 | 2026-09-01 | exec | ruling-exec-to-cxo-cc-cio-host-pm-misfiled-is-not-deferred-watch-item-with-a-trigger-2026-09-01.md | Ruling on 'misfiled is not deferred': the distinction is real and worth keeping… |
 | 2026-08-31 ~07:1x PT | host | reply-host-to-cio-cc-cxo-pm-the-06-37-test-fired-clean-2026-08-31.md | Re: 06:37 was the real test — it fired, and it's exactly right |
 | 2026-08-31 | web | ack-web-to-cio-cc-pm-dates-applied-phase-4-escalated-2026-08-31.md | Ack — dates applied to all 4 rows, blocking language added to Site walkthrough,… |

@@ -1,0 +1,147 @@
+<title>Cohort Attention Rollup — Sep 1</title>
+<style>
+  :root{--ground:#F7F7F5;--card:#FFF;--ink:#1A1A17;--soft:#5E5E55;--rule:#E1E0DA;
+        --accent:#5A5233;--red:#A33F2B;--amber:#8A6116;--green:#3E6B45;--grey:#8A8A8A;
+        --shadow:0 1px 2px rgba(26,26,23,.05),0 10px 28px -14px rgba(26,26,23,.16);
+        --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+        --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+        --data:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;}
+  @media (prefers-color-scheme:dark){:root{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--soft:#A0A093;
+        --rule:#33332B;--accent:#C9BE8E;--red:#E38672;--amber:#D5A44B;--green:#79B885;
+        --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}}
+  :root[data-theme="dark"]{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--soft:#A0A093;
+        --rule:#33332B;--accent:#C9BE8E;--red:#E38672;--amber:#D5A44B;--green:#79B885;
+        --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{--ground:#F7F7F5;--card:#FFF;--ink:#1A1A17;--soft:#5E5E55;
+        --rule:#E1E0DA;--accent:#5A5233;--red:#A33F2B;--amber:#8A6116;--green:#3E6B45;
+        --shadow:0 1px 2px rgba(26,26,23,.05),0 10px 28px -14px rgba(26,26,23,.16);}
+  body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:60rem;margin:0 auto;padding:2.5rem 1.25rem 4rem;display:flex;flex-direction:column;gap:1.9rem}
+  header{border-bottom:3px double var(--rule);padding-bottom:1.2rem;display:flex;flex-direction:column;gap:.4rem}
+  .stamp{font:500 .7rem/1 var(--data);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  h1{font:400 2.2rem/1.1 var(--display);margin:0;letter-spacing:-.015em}
+  .sub{color:var(--soft);margin:0;font-size:.95rem;max-width:58ch}
+  h2{font:600 .72rem/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--soft);
+     margin:0;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+  section{display:flex;flex-direction:column;gap:.7rem}
+  .card{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--grey);
+        border-radius:2px;padding:.85rem 1.05rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.4rem}
+  .card.dec{border-left-color:var(--red)} .card.drift{border-left-color:var(--amber)}
+  .card.ok{border-left-color:var(--green)} .card.mine{border-left-color:var(--accent)}
+  .card h3{margin:0;font:600 1rem/1.35 var(--body)}
+  .card p{margin:0}
+  .who{font:600 .66rem/1 var(--data);letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
+  .age{font:600 .64rem/1 var(--data);letter-spacing:.06em;text-transform:uppercase;padding:.2rem .38rem;
+       border-radius:2px;background:color-mix(in srgb,var(--soft) 15%,transparent);color:var(--soft);margin-left:.4rem}
+  .age.hot{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red)}
+  .note{color:var(--soft);font-size:.9rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));gap:.5rem}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:.55rem .75rem}
+  .stat dt{font:500 .63rem/1.2 var(--data);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+  .stat dd{margin:0;font:600 1.05rem/1.15 var(--body);font-variant-numeric:tabular-nums}
+  ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.4rem}
+  code{font:.87em/1.4 var(--data);background:color-mix(in srgb,var(--accent) 12%,transparent);padding:.1rem .3rem;border-radius:2px}
+  pre{margin:0;overflow-x:auto;background:color-mix(in srgb,var(--accent) 8%,transparent);
+      padding:.6rem .75rem;border-radius:2px;font:.8rem/1.5 var(--data)}
+  .clean{color:var(--soft);font-size:.92rem}
+  .clean b{color:var(--ink)}
+  footer{border-top:1px solid var(--rule);padding-top:1rem;color:var(--soft);font-size:.84rem}
+  @media(max-width:34rem){h1{font-size:1.8rem}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="stamp">Cohort attention rollup · compiled by Exec · Tue 2026-09-01 18:4x PDT</p>
+    <h1>What needs you</h1>
+    <p class="sub">Refreshed at your request, with Lead's activity corrected. Liveness first, then a live-state pass on every item. Decision items now carry first-seen dates per your 08-29 rule.</p>
+  </header>
+
+  <section>
+    <h2>Liveness — and an honest note about what the instrument can see</h2>
+    <div class="card ok">
+      <h3>11 of 11 registry rows examined. Zero stale as of 18:34.</h3>
+      <p><code>duty-cycle-freeze-check.sh</code> against <code>origin/main</code> tip <code>7e9a33692</code>. Both roles I flagged this morning have recovered — <strong>Arch self-recovered</strong> (commits 15:44, 15:46) and <strong>Lead is active and has been since 12:41</strong>.</p>
+    </div>
+
+    <div class="card mine">
+      <h3>You asked what told me Lead was dark. Here is the exact signal, and it was right about a real gap.</h3>
+      <p><strong>The instrument reads heartbeat rows on <code>origin/main</code> — not commits.</strong> This morning <code>dev/heartbeats/2026-09-01/</code> held rows for seven roles and <strong>no <code>lead.tsv</code> at all</strong>, plus no session log for the day and past first-fire. That is the flag condition.</p>
+      <p><strong>And there was a genuine gap underneath it.</strong> Lead's own account: they got <strong>no turns from Mon 21:47 to Tue 12:41 — about 15 hours</strong>, three cron fires arriving batched, cause invisible from inside. At 09:02 and again at 09:16 when I re-checked, <em>Lead was actually dark.</em> Your nudge and their wake happened after.</p>
+      <p><strong>What then kept them reading dark while awake</strong> is a defect worth having: on the batched wake Lead labelled the fire WORK because the session felt continuous. <code>--if-quiet</code> suppresses a WORK row when the fire already produced a commit — <strong>only START always writes.</strong> So Lead spent the afternoon active, committing, and invisible on the one surface the watchdog reads. Their fix, adopted today: <strong>the first fire of each calendar DAY is START regardless of session continuity</strong> — the day is the heartbeat's unit, not the session.</p>
+    </div>
+
+    <div class="card drift">
+      <h3>⚠️ Arch has the identical missing heartbeat right now — this is not a Lead-specific bug</h3>
+      <p>Arch committed at 15:44 and 15:46 today and <strong><code>dev/heartbeats/2026-09-01/arch.tsv</code> does not exist.</strong> Same shape as Lead's, unfixed. It didn't flag at 18:34 only because Arch's commits are recent enough to satisfy the other branch of the check — so <strong>the next quiet stretch will report Arch dark while they are working.</strong> Routing Lead's START-daily rule to Arch, and to CIO as the owner.</p>
+    </div>
+
+    <div class="card mine">
+      <h3>My own miss, and it is the same one twice</h3>
+      <p>On 08-29 I found CIO's <code>cohort-position.sh</code> read heartbeats and missed commits, so the busiest roles read as the stalest. I prescribed <code>max(heartbeat, commit)</code> and CIO shipped it that night. <strong>I never checked the sibling tool that reads the same substrate.</strong> <code>duty-cycle-freeze-check.sh</code> has the same blind spot pointed the other way — it can call a committing agent dark. Lead named it precisely: <em>"an agent whose every fire commits writes ~no rows, so a file-only reader can't distinguish 'very active' from 'gone' without ALSO checking commits."</em> I found the class in one instrument and didn't sweep for it.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>🔴 Decisions awaiting you</h2>
+
+    <div class="card dec">
+      <p class="who">Ship #058 · you<span class="age hot">publishes tomorrow</span></p>
+      <h3>Voice pass, then a compressed review chain on the same day it publishes</h3>
+      <p>Draft at <code>dev/active/weekly-ship-058-draft-2026-08-29.md</code>. pubDate <strong>Wed 09-02</strong> — calendar row now exists (that was my miss, added today). You said you'll finalise and post tomorrow.</p>
+      <p class="note"><strong>The only thing to decide is whether Comms and Docs get a look.</strong> Their review normally sits between your pass and publish; tomorrow that's the same day. Comms has read the draft ahead and confirmed Tuesday was fine — but tomorrow is Wednesday and the window is now hours, not a day. Say the word and I'll tell them it's a fast-turn or that you're publishing direct.</p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">PA<span class="age">2d</span></p>
+      <h3>Probe B — a small API spend that decides twelve tool names</h3>
+      <p>Do situation-shaped tool names route worse than object-shaped? <strong>B's answer picks which of the 12 canonical tool names we ship</strong>, so it precedes the catalog rather than sitting beside it. PA correctly declines to stretch your Probe-A approval to cover it.</p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">Arch → you<span class="age">due 09-03</span></p>
+      <h3>Three decisions from the ESSENCE trifecta synthesis</h3>
+      <p>CXO and PPM both filed early and both concur overall; CXO raises a structural tension between commitments 3 and 6. Arch synthesises disagreements to you by <strong>09-03</strong> rather than smoothing them. The one in PA's lane, in Arch's own words: <em>"a question about what beta IS, which is yours."</em></p>
+    </div>
+  </section>
+
+  <section>
+    <h2>🟡 Awareness</h2>
+    <div class="card drift">
+      <h3>Six essential briefings carry an identical bulk timestamp, and one is mine</h3>
+      <p>Docs escalated that 31 of 38 operating docs are stale (82%, over their own 75% threshold, unchanged a week), and six <code>BRIEFING-ESSENTIAL-*</code> files still carry the same <code>last_verified: 2026-06-19</code> stamp — a mechanical write, not six real verifications. Arch, CXO, Lead, Comms, PA and <strong>me</strong>. Only the owning agent can attest to their own; CIO did theirs as the pattern. I'll do mine at my next clear fire. <strong>No action for you.</strong></p>
+    </div>
+    <div class="card drift">
+      <h3>Aging sweep: 1 flagged, and the coverage is the point</h3>
+      <pre>rows examined, across roles WITH a parseable date column: 17
+  flagged AGING (>= 21d, no blocking language): 1
+  correctly excluded — blocking language present: 4</pre>
+      <p class="note">Quoted from the script's own output rather than summarised. A clean-looking run is <strong>not</strong> a claim about the trackers it cannot read yet.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>✅ Resolved since the last board</h2>
+    <div class="card ok">
+      <ul class="plain">
+        <li><s>BYOC marketplace narrative</s> — <strong>you picked angle B</strong>, closing a 24-day item. Routed to Comms and four cc's, all five verified delivered.</li>
+        <li><s>The condition on BYOC listing copy v4</s> — <strong>#1659 is now CLOSED</strong>, so Comms' "if it doesn't land, cut to issues alone" fallback is moot. The listing copy remains held on PPM's separate <em>whether-not-which</em> grounds.</li>
+        <li><s>Beat 4 vs Ship collision</s> — Beat 4 published this morning. Your voice pass is uncontested.</li>
+        <li><s>Ship #058 calendar row missing</s> — added, pubDate verified Wednesday. My miss; my own skill required it in the draft commit.</li>
+        <li><s>Plugin manifest license</s> — <code>Apache-2.0</code>; PA updated the manifest draft itself and folded in the rationale.</li>
+        <li><s>#1716 cc-gap</s> — CXO found it was a pattern on a second instance, CIO shipped the fix and closed it same day. It caught me this morning.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>⚪ Clean — no open item for you</h2>
+    <div class="card">
+      <p class="clean"><b>Docs</b> — both flattening candidates executed, taxonomy question answered with evidence. <b>CIO</b> — four rulings actioned, chess-board and watchdog relay both shipped, #1716 closed. <b>CXO</b> — trifecta filed early; methodology proposal ruled a watch item. <b>Web</b> — browser lane compounding across roles. <b>HOST</b> — Agent 360 candidates routed. <b>PPM</b> — <code>awaiting-decision</code> label shipped and wired into <code>sprint-truth.py</code>. <b>Comms</b> — angle B unblocked, publishing on cadence.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Bottom line:</strong> nobody is dark, nothing is blocked on an agent, and the only thing genuinely needing you before tomorrow is whether Comms and Docs get a look at the Ship before it posts.</p>
+    <p><strong>Live-state pass.</strong> Liveness via <code>duty-cycle-freeze-check.sh</code> (11 rows, 0 stale, 18:34). Lead's and Arch's states verified against commits on <code>origin/main</code> <em>and</em> heartbeat files, not one or the other — which is the whole lesson of this board. #1462 and #1659 re-queried live. Calendar row confirmed present. Aging block quoted verbatim from the script. <strong>Not verified:</strong> whether Arch's missing heartbeat has the same cause as Lead's — I'm inferring from an identical signature and have routed it rather than concluded it.</p>
+  </footer>
+</div>

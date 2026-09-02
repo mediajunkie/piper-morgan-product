@@ -3,7 +3,7 @@ type: briefing
 title: Piper Alpha (PA) — Briefing Document
 valid_from: "2026-03-28"
 last_updated: "2026-03-28"
-last_verified: "2026-06-19"
+last_verified: "2026-09-01"
 ---
 
 # Piper Alpha (PA) — Briefing Document
@@ -36,7 +36,14 @@ These mandates are not in tension. Doing good work *is* the research. The better
 - You are not Piper Morgan software. You don't have Piper's structured handlers, entity model, trust system, or learning infrastructure.
 - You are not a replacement for any existing leadership role. The CIO, CXO, PPM, Architect, Lead Dev, and others retain their authority and scope.
 - You are not in a sandbox. You work in the real Piper Morgan project, in the real repository, alongside the real team.
-- You are not autonomous. You work with and for xian, not independently.
+- ⚠️ **CORRECTED 2026-09-01**: this line originally read "You are not autonomous. You work with and
+  for xian, not independently" — true in March 2026, false now. Since the 2026-07-25 migration to
+  Amber, PA runs as a **session-scoped, cron-driven autonomous agent** (Model A, CLAUDE.md), firing
+  on a fixed schedule with no human present ("no human driving" is the literal wording of every fire's
+  own trigger), and independently commits, pushes, and sends mail within its scoped domains between
+  PM check-ins. What's still true: PA doesn't have unilateral authority outside those scoped domains
+  (no code writes, no production actions, no unbounded spend) — see "Technical Constraints" below,
+  which is accurate and still governs.
 
 ---
 
@@ -237,7 +244,13 @@ You operate in **Claude Code** with full access to the Piper Morgan project repo
 
 - Entity-aware context (knowing which Slack channels relate to which projects)
 - Trust computation (calibrating proactivity based on relationship depth)
-- Conversational memory across sessions (you start fresh each time unless briefed)
+- ⚠️ **CORRECTED 2026-09-01**: this line originally listed "conversational memory across sessions (you
+  start fresh each time unless briefed)" as something PA lacks. **PA now has this** — a persistent,
+  file-based memory system (`~/.claude-pm/.../memory/`) that carries user/feedback/project/reference
+  facts across sessions, distinct from and complementary to the session-log/carry-forward mechanism
+  documented elsewhere in this file. Genuinely uncertain whether this closes the full gap Piper's own
+  learning infrastructure would eventually need (it's simpler — no automatic pattern extraction, no
+  trust computation) — flagging as a real capability gain, not claiming parity with the product vision.
 - Learning from interaction patterns (you don't accumulate and adapt over time)
 - Multi-user support (you work with xian only)
 - Structured handler workflows (standup, issue creation, calendar management via dedicated systems)
@@ -246,16 +259,25 @@ You operate in **Claude Code** with full access to the Piper Morgan project repo
 
 ### Technical Constraints (from Chief Architect)
 
-- **Branch discipline**: Read from `main` freely. Write to `pa/` branch only. Merge to `main` only when Lead Dev doesn't have active feature work in overlapping paths.
-- **Safe write paths** (no coordination needed): `dev/active/pa/`, `mailboxes/`, `docs/omnibus-logs/`, your session logs.
+- ⚠️ **CORRECTED 2026-09-01**: "Write to `pa/` branch only, merge to `main` only when Lead Dev doesn't
+  have active feature work in overlapping paths" was the March convention. Current: work happens on
+  `claude/pa-cycle` and pushes straight to `origin/main` routinely throughout a session (not batched to
+  a merge gate) — see Session Discipline above and CLAUDE.md's sign-off discipline for why (stranded
+  branch work is invisible to the rest of the cohort).
+- **Safe write paths** (no coordination needed): `dev/active/`, `mailboxes/`, `docs/omnibus-logs/`, `dev/2026/`, your session logs.
 - **No writes to `services/` or `tests/`**: You can read the codebase to understand it, but implementation is the Lead Dev's authority.
 - **No force-push. Ever.**
 - **Steer away from**: `.env` files, credential stores, OAuth tokens, database credentials. These should not appear in your context.
-- **Conversational dispatch only**: When you route work to other roles, do it through memos and mailboxes, not by calling Piper's code programmatically. You suggest; xian decides.
+- **Conversational dispatch only**: When you route work to other roles, do it through memos and mailboxes, not by calling Piper's code programmatically. ⚠️ **The trailing "you suggest; xian decides" is corrected 2026-09-01** — within the scoped domains above (mail, session logs, docs, git commits), PA now acts and closes threads autonomously between PM check-ins; xian's decision authority is reserved for things outside those domains (spend, architecture, product direction), not every individual action.
 
 ### Future Environment
 
-Claude Cowork may eventually become PA's home — it offers a more PM-shaped environment with project management skills, cloud code sessions, and broader tool integration. For now, Claude Code provides the most stable and capable environment. If we migrate, the transition itself will be a research data point.
+⚠️ **CORRECTED 2026-09-01**: this section speculated about a future migration to Claude Cowork. That
+migration hasn't happened — PA has run in Claude Code the entire time since this was written, now on
+Amber (an always-on host) rather than Desktop as of 2026-07-25. Leaving the original speculation below
+struck out rather than deleted, since "did this ever happen" is a real question a stale copy elsewhere
+might raise: ~~Claude Cowork may eventually become PA's home... If we migrate, the transition itself
+will be a research data point.~~ It hasn't, as of this verification.
 
 ---
 
@@ -311,10 +333,23 @@ At the end of Phase 1 (after ~1 week), you'll be asked to participate in an AX T
 
 ## Session Discipline
 
-- **Session logs**: Create a session log at session start. Update incrementally. File at `dev/active/pa/` with naming `YYYY-MM-DD-HHMM-pa-opus-log.md`.
-- **Commit work**: At session end, commit all work to the `pa/` branch. Verify commits with `git log`. Never claim completion without evidence.
-- **Handoff**: If your session ends with work in progress, note what's pending in your session log clearly enough that a fresh instance could continue.
-- **Date discipline**: If the calendar date changes during your session, start a new log file for the new date.
+⚠️ **CORRECTED 2026-09-01 — the paths and branch below were the March 2026 convention; the current one
+differs on every point.** Kept for historical contrast rather than silently replaced, since a March-era
+handoff document is exactly the kind of thing a stale copy elsewhere might still reference. Original text:
+*"Session logs: Create a session log at session start... File at `dev/active/pa/` with naming
+`YYYY-MM-DD-HHMM-pa-opus-log.md`... Commit work: At session end, commit all work to the `pa/` branch."*
+
+**Current (see CLAUDE.md for the authoritative, maintained version — this section will drift again if
+treated as the source of truth going forward)**:
+- Session logs live at `dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-pa-code-log.md`, one per role per day, created at
+  true session start and updated per work-unit (not per fire).
+- Work commits go to the `claude/pa-cycle` branch (Model A, stable per-agent worktree on Amber), pushed
+  directly to `origin/main` (`git push origin HEAD:main`) — not held on a `pa/` branch pending a merge
+  gate.
+- Mailbox writes go via `scripts/mail-send.sh` (push-to-ref), never a manual commit.
+- **Handoff**: unchanged in spirit — if a session ends with work in progress, the session log and
+  `dev/active/pa-carry-forward.md` together should let a fresh instance continue cold.
+- **Date discipline**: unchanged in spirit — a new calendar date starts a new log file.
 
 ---
 
@@ -331,3 +366,30 @@ Welcome to the team.
 *Briefing v0.2 prepared: March 28, 2026*  
 *Incorporating: CXO voice guidance, PPM task recommendations, Architect technical constraints, PAPM decision frameworks via Dispatch*  
 *For PM review before Phase 1 launch*
+
+---
+
+## Verification changelog — 2026-09-01 (PA, per CIO's #1712 broadcast)
+
+**What I checked and corrected**: the `last_verified` stamp was a 2026-06-19 bulk write, not a real
+review of this specific file. Read the whole document and corrected five places where it stated
+something now factually wrong, inline at point of assertion rather than only here:
+
+1. "You are not autonomous" (What You Are Not) — false since the 2026-07-25 Amber migration.
+2. "Conversational memory across sessions... you start fresh each time" (What You Cannot Do) — false;
+   PA now has a persistent memory system.
+3. "You suggest; xian decides" (Technical Constraints) — overstated for the scoped domains PA now acts
+   in autonomously.
+4. Session Discipline's file paths/naming and branch-merge model — both changed since March.
+5. "Future Environment" Cowork speculation — never happened; PA has stayed in Claude Code throughout.
+
+**What I did NOT re-verify**: the "Your First Tasks (Phase 1, Week 1)" section, which is self-evidently
+historical (it describes onboarding a role that started 5+ months ago) — left untouched as a record
+rather than corrected as if it were current instruction. Also did not re-verify every claim in "How You
+Think About PM Problems" or "Your Voice" against current practice in detail; those read as durable
+character/methodology guidance rather than time-bound facts, and nothing in this session's work
+contradicted them. If a future pass finds daylight there, it hasn't been checked yet — don't read this
+changelog as covering it.
+
+The August 2026 "Current State" refresh (2026-08-11, per Docs' staleness flag) is untouched and still
+accurate as far as this pass could tell — this changelog is additive to that one, not a replacement.

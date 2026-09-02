@@ -1,5 +1,11 @@
 # Agent Coordination Methodology
 
+> **Status: HISTORICAL — superseded by `pattern-029-multi-agent-coordination.md`** (B3
+> disposition, 2026-09-01). This document's coordination model predates the current duty-cycle
+> fleet + mailbox protocol and names a two-tool (Claude-Code/Cursor) shape no longer in use;
+> Pattern-029 was refreshed 2026-06-17 to the current reality and is the live descendant. Content
+> preserved below for historical reference; consult Pattern-029 for current practice.
+
 > **Related Documentation**:
 > - **Quick Reference**: [METHODOLOGY.md](../../../briefing/METHODOLOGY.md#multi-agent-coordination) - Operational overview
 > - **Pattern Reference**: [Pattern-061: Human-AI Collaboration Referee](../../architecture/patterns/pattern-061-human-ai-collaboration-referee.md) - Handoff protocols, validation gates, real project examples
