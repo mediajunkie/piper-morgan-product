@@ -29,11 +29,13 @@ resolved** (143/144 rows reconciled with a data-verified completion rule after t
 day-of-week theory failed a spot-check; left open for 2 new inverse-case residuals — "Building for
 Learning" and "Drained on Paper," need real Medium verification, not guessing).
 
+**#1392 mostly resolved this session**: 5 of 6 items done (2 already fixed independently before I
+checked, 2 more already fixed, 1 new instance found+fixed). Left open for PM's call on
+`thirteen-mailboxes` — the body figure now references a genuinely *different* image than the hero
+(not the literal duplicate the issue described), real editorial question, not mine to guess.
+
 **Still genuinely queued, mine, real remaining scope, no artificial fire-splitting — picking up
 sequentially, not deferring**:
-- **#1392** — 2 metadata-prefix title fixes + 3 double-hero-image body-HTML fixes (one open
-  question for PM: caption handling for the removed inline figures — genuine blocker on that one
-  sub-item only, rest is unblocked)
 - **#1585** — 3 stale READMEs (low priority) + 3 duplicate-file judgment calls (mine to just pick)
 - **#1486** — Monthly Housekeeping Audit, 33 items, not due to auto-regen until ~09-07 but already
   open and actionable now that B3/#1712 are both closed
