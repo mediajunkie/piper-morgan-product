@@ -1,9 +1,32 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-02 ~11:2x PDT (Weekly Ship #058 published + independently fact-checked;
-self-caught a real git-add-drops-silently bug on my own archive commit, fixed same-fire)
+**Updated**: 2026-09-02 ~12:1x PDT (Ship #058 published + title-case fixed; Ongoing-milestone
+audit backlog triaged and delegated; FLYWHEEL backlog assessed, 4 issues closed, 7 delegated to CIO)
 **Session log**: `dev/2026/09/02/2026-09-02-0727-docs-code-log.md` (open).
 **Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 12:57.
+
+## Ongoing-milestone backlog work (PM-directed, this fire) — own portfolio items still owed
+
+Read all 7 audit-related Ongoing-milestone issues in full; 6 are mine, 2 sub-items routed away
+(`#1584` Part C → CIO, `#1682` item 1 → Lead Dev, both mailed). **Still genuinely queued, mine to
+work through** (not yet started this fire, real remaining scope):
+- **#1584** Parts A+B — ~240 broken docs links, mostly mechanical (Part A alone: strip a leftover
+  `models/` path prefix, likely resolves 100+ links)
+- **#1644** — 56 residual broken links (mostly low-priority legacy/excluded-from-site)
+- **#1682** item 3 — CITATIONS.md staleness, needs a real attribution-completeness review
+- **#1683** — 145-row editorial-calendar syndication-status reconciliation (needs a scripted
+  day-of-week-routing check per the issue's own suggested procedure, not a blind bulk edit)
+- **#1392** — 2 metadata-prefix title fixes + 3 double-hero-image body-HTML fixes (one open
+  question for PM: caption handling for the removed inline figures)
+- **#1585** — 3 stale READMEs (low priority) + 3 duplicate-file judgment calls (mine to just pick)
+- **#1486** — Monthly Housekeeping Audit, 33 items, not due to auto-regen until ~09-07 but already
+  open and actionable now that B3/#1712 are both closed
+- **#1611** (new, from the FLYWHEEL sweep) — `mac-dock-integration.md`, alpha-tester-facing,
+  likely-stale two-process architecture, verify before rewriting
+
+Also closed 4 stale issues (#1259/#1275/#1162/#465, evidence on each) and sent CIO a 7-issue
+delegation list (cc Lead Dev) for the current-stage-relevant FLYWHEEL backlog that shouldn't sit
+on Lead. Full reasoning in today's session log.
 
 ## Weekly Ship #058 published — https://pipermorgan.ai/shipping-news/weekly-ship-058-what-we-actually-had
 
