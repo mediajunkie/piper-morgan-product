@@ -38,12 +38,17 @@ checked, 2 more already fixed, 1 new instance found+fixed). Left open for PM's c
 in the original filing (checked directly, not trusted) — canonical-queries pair aren't duplicates;
 INDEX.md's real problem was staleness, not discoverability.
 
-**Still genuinely queued, mine, real remaining scope, no artificial fire-splitting — picking up
-sequentially, not deferring**:
+**#1611 CLOSED** — confirmed the architecture (single-process, not two), full rewrite of the doc
+(scripts + framing), kept in the visitor-facing KEEP set.
+
+**5 issues closed this fire total**: #1584, #1682, #1585, #1611, plus the earlier
+#1259/#1275/#1162/#465 batch. **2 substantially resolved, appropriately left open**: #1683
+(143/144 rows, 2 genuine residuals need Medium verification), #1392 (5/6 items, 1 real editorial
+question for PM).
+
+**Still genuinely queued, mine**:
 - **#1486** — Monthly Housekeeping Audit, 33 items, not due to auto-regen until ~09-07 but already
   open and actionable now that B3/#1712 are both closed
-- **#1611** (from the FLYWHEEL sweep) — `mac-dock-integration.md`, alpha-tester-facing,
-  likely-stale two-process architecture, verify before rewriting
 
 Sent CIO a 7-issue delegation list (cc Lead Dev) for the current-stage-relevant FLYWHEEL backlog
 that shouldn't sit on Lead. Full reasoning in today's session log.
