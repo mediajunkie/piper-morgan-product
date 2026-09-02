@@ -134,6 +134,15 @@ continues at their cadence (their remaining tiers overlap surfaces Docs has alre
    CONTRIBUTING ("what lands in the public build"); the exclude list gets an owner (Docs) and a
    review trigger (any new top-level directory in `docs/`).
 
+## Status: ALL THREE PHASES COMPLETE (verified 2026-09-02)
+
+Phase 1 (config + verify) and Phase 2 (scrub, logged complete 2026-08-14 above) were already done.
+**Phase 3 (guard rails), verified complete today**: #1593 (link-checker gate) CLOSED;
+`docs/CONTRIBUTING.md` carries the two-surfaces scoping note; `docs/_config.yml`'s `exclude:`
+block carries the owner (Docs) + review-trigger (any new top-level `docs/` directory) comment.
+**Live-verified**: `https://pmorgan.tech/` (kept surface) → 200; an excluded `internal/` page and
+`NAVIGATION.html` → 404, both exactly as designed. Nothing further owed on this project.
+
 ## Division of labor (PM-set, 2026-08-12)
 
 - **Docs**: execution — config, README, navigation, scrub, verification. Owns this doc.
