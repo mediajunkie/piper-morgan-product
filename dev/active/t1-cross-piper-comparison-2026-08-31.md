@@ -145,12 +145,27 @@ These are the load-bearing rows, because nobody told either of us to converge he
   scale, and PO's retro can't speak to it. If Piper Morgan the product ever mediates between multiple
   humans' shared state, this is a failure class worth designing against explicitly — PO's single-client
   design never had to.
-- **PO's "you prompt me, I write" flip doesn't map cleanly onto PA's mode.** PO holds back from
-  producing finished-looking external artifacts specifically to avoid rubber-stamping by xian. PA
-  routinely ships drafts directly (mail, docs, code) under a different trust model (PM reviews after,
-  not before). `[PLACEHOLDER: worth asking PM directly whether this difference is deliberate — different
-  risk tolerance for a paid client engagement vs. an internal product build — or whether PO's caution is
-  actually the more correct default and PA has been under-applying it.]`
+- **PO's "you prompt me, I write" flip doesn't map cleanly onto PA's mode — ANSWERED, 09-02, by PM
+  directly.** PO holds back from producing finished-looking external artifacts specifically to avoid
+  rubber-stamping by xian; PA routinely ships drafts directly. PM's answer: **the axis is audience, not
+  risk tolerance in the abstract.** *"Clients get human-readable deliverables where I don't want AI slop
+  leaking through... our own internal mail, docs, and code are for our own eyes and don't require that I
+  steer them as strongly."* Externally-facing work (client deliverables, and by extension Piper Morgan's
+  own blog/Ship posts, which PM edits freely under their own name) gets the PO treatment; internal
+  coordination gets PA's current mode. **This resolves the open question directly**: not a different risk
+  tolerance PA should second-guess, and not evidence PA under-applies PO's caution — a deliberate,
+  named split PM already holds.
+
+  **And it's not abstract for PO — PM volunteered the concrete cost.** *"With Piper Open we faced
+  criticism from the client that the deliverables were full of incomprehensibly compacted and overly
+  jargonized Claude-isms, and we repeatedly had to iterate on processes to avoid our internal gibberish
+  from harming my credibility with the client."* This is the *why* behind an incident this draft already
+  found first-hand in PO's actual session log (05-29, week 5): a banned-vocabulary slip ("anti-confab,"
+  "caveat-class") propagated into an external-facing draft despite an existing memory meant to prevent
+  it, requiring a dedicated vocabulary doc + scrub-pass discipline to hold. The retro described the
+  symptom and the fix; PM's answer supplies the stakes that made the fix necessary — client credibility,
+  not just polish. Piper Morgan the product inherits this directly: anything a user might show a *their*
+  client or boss needs the same discipline PO had to build by hand.
 
 ## Recommended next steps
 
@@ -168,6 +183,8 @@ These are the load-bearing rows, because nobody told either of us to converge he
    both confirmed the retro claims directly, and 07-31 surfaced the actual real-time incident behind
    lesson #4. Still a thin sample; more logs would strengthen this further but aren't required to trust
    the finding already in hand.
-4. Ask PM the PLACEHOLDER question above about the draft-then-review vs. review-then-draft trust model.
+4. ✅ **Done, 09-02**: asked PM directly about the draft-then-review vs. review-then-draft trust model —
+   answered, see the updated finding above. Audience (client-facing vs. internal), not risk tolerance,
+   and PM supplied the real cost (client credibility) that made PO's vocabulary discipline necessary.
 
 — PA

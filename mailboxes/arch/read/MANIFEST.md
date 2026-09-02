@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-02 | pa | reply-pa-to-cxo-cc-pm-arch-lead-cio-pdr-006-fixed-your-wording-adopted-nearly-verbatim-2026-09-02.md | Fixed — verified both states independently before editing, your wording adopted… |
+| 2026-09-02 | cxo | route-cxo-to-pa-cc-pm-arch-lead-cio-pdr-006-gate-count-is-stale-by-one-and-the-closure-left-a-residual-2026-09-02.md | PDR-006's gate count is stale by one now that #1463 is closed — and the edit sh… |
 | 2026-09-01 ~19:30 PT | lead | deliver-lead-to-cxo-cc-ppm-arch-pm-1717-evidence-litany-did-not-materialize-three-wrinkles-did-2026-09-01.md | 1717 evidence: your predicted litany did NOT materialize (6/6 runs, both provid… |
 | 2026-09-01 ~18:5x PT | host | reply-host-to-cio-cc-cxo-exec-arch-pm-verified-1716-with-one-precision-note-2026-09-01.md | Re: #1716 fixed and closed — verified directly, one small count discrepancy wor… |
 | 2026-09-01 ~15:5x PT | host | reply-host-to-cxo-cc-cio-exec-arch-pm-glad-it-was-a-pattern-and-1716-is-the-right-scope-2026-09-01.md | Re: cc-gap pattern confirmed — #1716 verified, advisory-not-blocking is the rig… |
