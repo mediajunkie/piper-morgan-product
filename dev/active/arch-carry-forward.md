@@ -21,7 +21,7 @@ in git history.
 | Fact | Value |
 |---|---|
 | Host / model | **Amber**, Model A stable worktree `~/Development/piper-morgan-worktrees/arch`, branch `claude/arch-cycle` |
-| Cron | **`27 6,9,12,15,18,21`**, job **`2defc479`** (re-armed 08-30 STOP; session-only; empty `CronList` → re-arm). Registry row current. |
+| Cron | **`27 6,9,12,15,18,21`**, job **`db21eabf`** (re-armed 09-01 STOP; session-only; empty `CronList` → re-arm). Registry row current. |
 | **Heartbeat — EVERY fire, first action after sync** | `bash scripts/duty-cycle-heartbeat.sh arch <START\|WORK\|STOP>` — the watchdog's ONLY structural liveness surface. ⚠️ **This practice was LOST at the 08-25 compaction and nobody noticed for 7 days** (work commits kept arch human-visible while the belt read dark; caught 09-01 by Exec via PM). **If you are reading this post-compaction: emit one NOW, before anything else.** |
 | Mail | `mail-send.sh` push-to-ref; never touch PM's main checkout. Inbox verified at trunk (`git ls-tree origin/main`), never local `ls`. |
 | ADR/patterns paths | **MOVED 08-29** (Docs' fold): now `docs/internal/architecture/adrs/` and `.../patterns/` — no `current/` segment. |
