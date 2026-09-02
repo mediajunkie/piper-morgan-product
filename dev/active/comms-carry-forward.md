@@ -1,6 +1,6 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-09-01 09:48 PT WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Updated at the 2026-09-01 18:42 PT WORK fire (BYOC narrative resolved, briefing self-verified — see below). Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
@@ -21,19 +21,19 @@
   Footer chain verified clean end to end. All 7 need PM's voice-pass + art before their pubDates — none of that has happened yet, this was drafting only.
 - **Dispatch-PM's syndication retrospective — closed.** Thorough, honest tracing of the earlier "Drained on Paper" miss to its structural cause. Replied via the Exec-broker protocol: aligned on their 3 proposals (publish-notice is Docs' to implement, `status` definition already open with Docs, platform-check discipline already in practice), noted a genuine same-day coincidence (they independently hit the same "agents not people" pattern I'd just built a check for).
 - **Owned a guessed timestamp** in my own session log (wrote "~9:00 AM–2:00 PM" without checking `date`; actual span was under an hour) — caught and corrected same-fire, per `feedback_verify_timestamps_never_guess`.
+- **BYOC marketplace narrative — resolved and drafted.** PM picked angle B same day it was re-surfaced ("distribution is a product decision, not a marketing one"), closing a 24-day-open item. Drafted as an insight, "Distribution Is a Product Decision, Not a Marketing One," using PM's alpha ruling ("no product exists till we ship to production") as the sharpening turn and our own not-yet-shippable hosted MCP endpoint as the worked example. Calendared Oct 3 — the actual next scheduled item after Beat 13, so fixed Beat 13's footer to chain to it.
+- **`BRIEFING-ESSENTIAL-COMMS.md` self-verified** per CIO's cohort-wide #1712 ask — real pass, not a timestamp bump: fixed a broken file reference, corrected a real misconception the doc was propagating about sole calendar ownership, fixed the Weekly Ship division-of-labor description, added 5 load-bearing skills that were entirely missing. Documented what was and wasn't re-checked.
 
 ## Open items — no Comms-side move available right now
 
-- **7 fresh narrative beats** — all await PM's voice-pass + art (Sep 10 through Oct 1 slots).
+- **8 fresh drafts, front-loaded queue** — 7 narrative beats (Sep 10 through Oct 1) + 1 insight (Oct 3), all await PM's voice-pass + art.
 - **ChicagoCamps talk** — PM reviewing script/slides this week; script + slide plan at `dev/2026/08/29/chicagocamps-talk-2026-09-17.md`.
-- **BYOC marketplace narrative** — re-surfaced to PM 08-31 (pick A/B/C or deprioritize), still awaiting response.
-- **Ship #058** — Tuesday timing conflict with Beat 4 was resolved in Beat 4's favor (Beat 4 published this morning); Ship #058's own voice-pass/review status unconfirmed, watch for it.
+- **Ship #058** — Tuesday timing conflict with Beat 4 was resolved in Beat 4's favor (Beat 4 published + syndicated); Ship #058's own voice-pass/review status unconfirmed, watch for it.
 - **website#35** — PM watching for recurrence, not actively pursuing.
-- **BYOC listing copy** — held per the ESSENCE ratification (MCP stays in Production).
+- **BYOC listing copy** — held per the ESSENCE ratification (MCP stays in Production); the marketplace *narrative* piece above is a separate artifact, not blocked by this.
 
 ## Waiting on others
 
-- **PM** — voice-pass + art on 7 new beats; ChicagoCamps script/slide review; BYOC marketplace narrative pick.
-- **Dispatch-PM** — nothing currently owed; thread closed this fire.
+- **PM** — voice-pass + art on 8 new drafts; ChicagoCamps script/slide review.
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15); #1647 (filed 08-18).
