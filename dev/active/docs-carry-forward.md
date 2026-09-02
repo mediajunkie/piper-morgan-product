@@ -67,10 +67,19 @@ present** — resume only if PM re-engages.
 
 - **PreCompact hook locality differentiation** (added 08-23) — real design work, scope
   deliberately before implementing. Full detail in `docs-standing-items.md`.
-- **pmorgan.tech scrub remaining queue** — per-surface staleness+link pass, batched over fires,
-  not urgent.
 - **Critical-docs YAML-frontmatter upgrade** — 95 days old per CIO's dating audit, own deferral
   condition is "flag at next PM engagement" — hasn't found its moment yet, surface when it does.
+
+## ✅ pmorgan.tech scrub — CORRECTED 2026-09-02, this was actually DONE, not "remaining queue"
+
+The prior line here (carried since ~08-14) said "remaining queue, batched over fires" without
+re-verification. Checked directly today: all 3 Phase-3 guard rails from
+`docs/internal/operations/docs-site-scoping-proposal-2026-08-12.md`'s sequencing are complete —
+**#1593** (link-checker gate) is CLOSED, `docs/CONTRIBUTING.md` carries the two-surfaces scoping
+note, `docs/_config.yml` carries the owner/review-trigger comment. Phase-2 staleness/link pass was
+already logged COMPLETE in that doc's own 2026-08-14 status update. **Live-verified** just now:
+`https://pmorgan.tech/` (kept surface) → 200; excluded surfaces (`internal/...`, `NAVIGATION.html`)
+→ 404, exactly as designed. Nothing left on this item — nothing further owed.
 
 ## Day-of-week duty triggers — CHECK EVERY START
 
