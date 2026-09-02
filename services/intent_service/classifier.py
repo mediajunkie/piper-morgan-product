@@ -443,8 +443,10 @@ class IntentClassifier:
 
                 return intent_obj
 
-        # Stage 1: Pre-classification
-        pre_intent = PreClassifier.pre_classify(message)
+        # Stage 1: Pre-classification. The pattern-list identity rides along
+        # for the pre-claim shadow probe (measurement only — the claim is
+        # byte-identical to pre_classify's).
+        pre_intent, preclaim_pattern_list = PreClassifier.pre_classify_with_pattern_list(message)
         if pre_intent:
             # #1332/#1220 completion (found via #1417, 2026-07-16): the
             # pre-classifier's ~31 emission sites set only
@@ -475,6 +477,32 @@ class IntentClassifier:
                 }
                 self.cache.set(message, cache_data)
                 logger.debug("intent_cached_preclassifier", message_preview=message[:50])
+
+            # Pre-claim shadow probe (2026-09-02): on a sampled surface-1
+            # claim, fire-and-forget ONE constrained-router consult and log
+            # what the inversion would have said, with the claiming
+            # pattern-list name attached — the measurement backbone for the
+            # PM-ratified 2026-08-29 narrowing schedule. Default OFF
+            # (PIPER_PRECLAIM_SHADOW); measurement only, never awaited,
+            # never affects the claim. Fail-open: a scheduling failure is
+            # swallowed here and the task logs its own failures.
+            try:
+                from services.intent_service.preclaim_shadow import (
+                    maybe_schedule_preclaim_shadow,
+                )
+
+                maybe_schedule_preclaim_shadow(
+                    message,
+                    claimed_category=pre_intent.category.value,
+                    claimed_action=pre_intent.action,
+                    pattern_list=preclaim_pattern_list,
+                    entry_surface="pre_classify",
+                    session_id=session_id,
+                    user_id=user_id,
+                    llm_service=self._llm,
+                )
+            except Exception:  # silent-ok: probe scheduling must never break classification; the task error-logs its own failures (preclaim_shadow_check_failed)
+                pass
 
             return pre_intent
 
@@ -1030,6 +1058,36 @@ class IntentClassifier:
                 intent_count=len(multi_result.intents),
                 is_multi_intent=multi_result.is_multi_intent,
             )
+            # Pre-claim shadow probe (2026-09-02): the multi-intent rules leg
+            # is the OTHER surface-1 entry — same probe, same flag, comparison
+            # against the PRIMARY claim, every co-claiming list on the line.
+            # Default OFF; measurement only; fail-open (see the pre_classify
+            # site's comment).
+            try:
+                from services.intent_service.preclaim_shadow import (
+                    maybe_schedule_preclaim_shadow,
+                )
+
+                primary = multi_result.primary_intent
+                if primary is not None:
+                    primary_pattern_list = None
+                    for idx, claimed in enumerate(multi_result.intents):
+                        if claimed is primary and idx < len(multi_result.pattern_lists):
+                            primary_pattern_list = multi_result.pattern_lists[idx]
+                            break
+                    maybe_schedule_preclaim_shadow(
+                        message,
+                        claimed_category=primary.category.value,
+                        claimed_action=primary.action,
+                        pattern_list=primary_pattern_list,
+                        entry_surface="detect_multiple_intents",
+                        all_pattern_lists=list(multi_result.pattern_lists) or None,
+                        session_id=session_id,
+                        user_id=user_id,
+                        llm_service=self._llm,
+                    )
+            except Exception:  # silent-ok: probe scheduling must never break classification; the task error-logs its own failures (preclaim_shadow_check_failed)
+                pass
             return multi_result
 
         # Fall back to standard LLM classification (returns single intent)
