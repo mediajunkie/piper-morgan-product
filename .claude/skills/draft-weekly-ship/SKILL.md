@@ -77,7 +77,7 @@ Invoke this skill when:
 
 Open all 4 in order. Read the process guide first (it tells you what the deliverable IS), then template (structure), then voice guide (tone), then most recent published Ship (in-practice example).
 
-**Why this order matters**: The process guide names the 5 workstreams as REQUIRED. The template shows the structure with emoji prefixes and learning-pattern 5-component shape. The voice guide names the discipline (no semicolons, no "load-bearing" in public prose, no "CoS" in public prose, parenthetical gloss on first use of role names, temporal-relationship over absolute-date stamps, affirmative direct over disclaim-then-affirmative, section headings as noun phrases not verb phrases). The recent published Ship shows what the in-practice format actually looks like (which may have evolved from the template).
+**Why this order matters**: The process guide names the 5 workstreams as REQUIRED. The template shows the structure with emoji prefixes and learning-pattern 5-component shape. The voice guide names the discipline (no semicolons, no "load-bearing" in public prose, no "CoS" in public prose, **agents named directly — the voice guide's parenthetical-gloss rule is for BLOG posts, NOT Ships (see the audit checklist)**, temporal-relationship over absolute-date stamps, affirmative direct over disclaim-then-affirmative, section headings as noun phrases not verb phrases). The recent published Ship shows what the in-practice format actually looks like (which may have evolved from the template).
 
 ### Step 2: Confirm the window and theme
 
@@ -258,7 +258,17 @@ Verify before declaring done:
       ("the alpha-tester coldstart fix," not "#1536"). Precedent: 0 of the published Ships before
       #056 do this; Docs caught and fixed a live instance in #056's draft, first time this rule was
       stated explicitly rather than existing only as unbroken precedent (added 2026-08-19)
-- [ ] Parenthetical gloss on first use of internal role names (e.g., "the product-management role (Piper Alpha)")
+- [ ] ⚠️ **NAME AGENTS DIRECTLY — no parenthetical gloss.** `Arch`, `CXO`, `Lead Dev`, or the
+      anonymous `one role`. **NOT** "my chief architect agent (Arch)" or "the product-management role
+      (Piper Alpha)."
+      ★ **This line said the opposite until 2026-09-02 and produced a live error in #058's draft**,
+      which PM caught and fixed by hand while editing. Verified against every published Ship
+      #054–#057: bare role names and `one role` throughout, **zero instances of the gloss.**
+      **The gloss is a BLOG convention, correct there** ("My chief architect agent (Arch) noticed a
+      pattern…") **and imported into this skill by mistake.** The Ship's reader is following an
+      ongoing series and already knows the cast; a blog post's reader may be arriving cold. Different
+      audience, different rule — don't let the voice guide's general prose discipline override the
+      Ship's own observed practice.
 - [ ] Temporal-relationship language preferred over absolute-date stamps when the relationship is the point
 - [ ] Affirmative direct preferred over disclaim-then-affirmative
 - [ ] Section heading names are noun phrases, not verb phrases
