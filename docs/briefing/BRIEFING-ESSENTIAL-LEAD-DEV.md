@@ -50,7 +50,7 @@ last_verified: "2026-09-02"
 
 ## Deploys
 - **Only on PM's explicit word** — and flag/secrets changes to the deployed env count as deploys. Rollback for flag flips = unset.
-- Deployment model: `git pull && fly deploy` from an up-to-date `main` checkout (see `scripts/check-release-parity.sh` header; `origin/production` tracks nothing — never cite it as "what's live").
+- Deployment model: on PM's explicit word ONLY (env/secrets changes count), from the main checkout `~/Development/piper-morgan-product`: `git pull && fly deploy`, then verify `fly releases` + `/health` — never bare curls (see `scripts/check-release-parity.sh`; `origin/production` tracks nothing — never cite it as "what's live").
 - Verify after: `fly releases` + machine on the new version + `/health` green **in the running env**. A version number is not a content claim — "a deploy happened" and "what's in it" are two claims (decisions.log 2026-08-28). Fly release numbers are consumed by secrets restarts, so don't assume consecutive.
 - Live env receipts beat file census: `fly secrets` state is invisible to config-file greps (the 08-29 Inversion census correction).
 - Release cuts: `cut-release` skill + `docs/internal/operations/release-runbook.md`.
