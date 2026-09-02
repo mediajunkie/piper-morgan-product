@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-30
+last_updated: 2026-09-01
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -29,28 +29,19 @@ in git history.
 ## THE active thread: Architectural Review 2026 → Reorientation Plan v1.0
 
 **Everything routes through `docs/internal/architecture/reviews/2026-08-architectural-review/reorientation-plan.md`** —
-four workstreams (A socialize · B docs reform · C code reorientation · D governance), owners,
-dates, done-conditions. Read it at START; do not reconstruct from memory. Key state as of this
-rewrite:
+four workstreams (A socialize · B docs reform · C code reorientation · D governance). Read it at
+START; do not reconstruct from memory. **State as of 09-01 STOP — most of it is DONE**: A complete
+(trifecta passed, synthesized 4 days early, PM ratified all three decisions). B complete-or-executing
+(B1✅ · B2✅ ESSENCE/SYSTEM/CONNECTORS authored · B3✅ 145 dispositions ratified + owners executed
+markers · B4✅ derived ADR index shipped, #1455 closed · B5 homed in living-core-docs.md). C in
+motion at owners (flip sequenced into PM's watched round; disposal batches 1–3 done ~10K LOC;
+retirement check 2026-09-30). D done (gate ratified; Bets 001–003 await PM, NON-BLOCKING;
+"Verified how" shipped). Today's log has the detail; trust the plan doc + trackers over this
+paragraph if they disagree.
 
-- **A**: broadcast sent to all 10 roles 08-29. **CXO+PPM trifecta ESSENCE pass due Wed 09-02;
-  Arch synthesizes responses to PM by 09-03.** HOST's trust-lens already in (consent-invariance
-  flag — answered with the verification decomposition; ESSENCE annotated; the pending behavioral
-  receipt rides Lead's watched round). CIO ack'd 09-01 disposition start.
-- **B**: living-core-doc-set draft due from me **09-01**; corpus disposition (ADRs +
-  methodology-core + patterns) kicks off **09-01** with CIO + Docs; citation census filed with
-  reproducible artifacts; Leg D's 24 unanswerable questions = doc-gap backlog.
-- **C**: staged flip with Lead, sequenced into PM's watched round (correction on the record:
-  flip-1 live for `read_status` since 08-21 via fly secrets, unexercised). **Legacy-classifier
-  retirement criterion encoded, check date 2026-09-30.** Disposal routing (spatial 11 + census
-  dead families, with explicit live-spatial keep-list) in Lead's inbox. #1690 (demo plugin) filed.
-- **D**: scope-bet gate RATIFIED; register at `docs/internal/architecture/bets/`; **Bets 001–003
-  await PM's buyer/appetite fields and are EXPLICITLY NON-BLOCKING.** "Verified how" required
-  field shipped (CLAUDE.md + close-issue-properly).
-
-**ESSENCE.md** (`docs/internal/architecture/ESSENCE.md`) v0.1: PM called it "excellent," polish
-applied (genericized for possible publication; routing rule self-explanatory), consent-invariance
-line carries a verification-status footnote. Ratification = PM + trifecta input, after 09-02.
+**ESSENCE.md is RATIFIED LAW at v1.0.2** (PM "go!" 08-30; two same-night precision corrections
+honored; instrument-status note current per the 09-01 probe results). PUBLIC-BETA GATE on milestone
+#9. Heartbeat practice: see Environment table — EVERY fire.
 
 **PM's standing posture ask, reaffirmed 08-29**: *assert the POV, don't just ratify* — and
 operating plans live in documents, not in my head (PM pressed exactly this at 16:46 and was right).
