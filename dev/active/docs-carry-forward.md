@@ -1,25 +1,26 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-01 ~22:3x PDT (DAY CLOSED — 2026-09-01 fully wrapped, sign-off checklist
-clean, DAY-CLOSED marker present)
-**Session log**: `dev/2026/09/01/2026-09-01-0730-docs-code-log.md` (closed, see day summary at
-the bottom before the DAY-CLOSED marker). Tomorrow (2026-09-02) starts a NEW session log.
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 6:57 PDT 2026-09-02 (a genuine
-day boundary — arithmetic verified explicitly, not by feel).
+**Updated**: 2026-09-02 ~10:5x PDT (doc-currency escalation is doing its job cohort-wide; a real
+evidence-based correction sent to Exec on publish Step 9's target path)
+**Session log**: `dev/2026/09/02/2026-09-02-0727-docs-code-log.md` (open).
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 12:57.
 
-## No unblocked work outstanding — genuinely idle
+## Doc-currency escalation is working — CIO broadcast it, roles are self-correcting for real
 
-B3 closed (Fire 3), #1712 substantively complete (Fires 4-5), #1486 not due until ~09-07, glossary
-frontmatter explicitly not urgent, PM's local checkout parked. First action tomorrow: sync, mail
-loop, check whether CIO replied to the doc-currency escalation (mailed 09-01, `c98ca3d65` — don't
-re-chase before next Monday's audit if silent), then it's genuinely open floor — no named priority
-queued for 09-02 beyond the recurring day-of-week triggers below.
+CIO broadcast my 8/31 escalation to the 6 role owners on the 6/19 bulk stamp, using my own
+`BRIEFING-ESSENTIAL-DOCS.md` re-verification as the worked example. PA already found a real stale
+claim in their own briefing ("you are not autonomous," 2 months post-Amber-migration) rather than
+blind-bump — the mechanism this escalation was for is visibly working. Nothing further needed from
+me; watch periodically, don't chase.
 
-⚠️ **Recurring finding worth watching**: today's cron CONSTANTS block went stale within one fire
-of B3 closing (still said "35/45 Tier C left" for the rest of the day, across 4 more fires) — the
-prompt-generation mechanism doesn't appear to refresh between fires within a session. Not
-actionable by me, but worth surfacing if it recurs tomorrow — read this file over the prompt's
-own claims every time, as always.
+## Owed by Web: publish Step 9 automation, target path corrected
+
+`piper-morgan-website#37` — Exec found Step 9 (image archival) is documented but has no code, real
+near-miss on PM's laptop. I confirmed the shape but corrected the target: checked git history
+(not memory) and found my own last 2 publishes drifted from the documented `images-archive/` split
+to co-locating image+`.md` in `drafts/published/`. Told Exec/Web to build against the actual
+current practice, not the stale doc. **I owe**: update `docs-notify.js:88`'s text once Web's
+automation lands, so doc and mechanism agree. Not urgent — wait for Web's issue to move.
 
 ## 2026-09-01, fully closed — see that day's session log for full detail
 
