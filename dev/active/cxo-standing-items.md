@@ -43,7 +43,7 @@ max_age_days: 31
 | **2026-07-26** | **#1386 beta gate** | Others. **All CXO criteria (criterion 3) are signed off since 07-12.** Remaining: sprint surface, canonical suite, stability window. | Not mine to drive; watch. |
 | **2026-07-26** | **Spatial committed-theory review** | **Arch** synthesis. CXO slice folded in verbatim; convergence matches my (b) vote. | Arch publishes. |
 | **2026-09-01** | **#1717 — two voice directives** *(scope changed: my litany prediction was FALSIFIED; these are the two wrinkles Lead's run actually found)* | **Lead** — drafted copy sent 09-01 for the scope-leak and unverified-reassurance directives. MVP, explicitly not urgent. | Lead lands them on whatever touches the floor next. |
-| **2026-08-28** | **Ethics-decline / degraded-path VOICE watch** | **Trigger-based, not issue-blocked** — re-arms on the next deploy touching floor/decline copy, or a live decline observed. *(Previously cited the closed #1645 as its blocker; CIO's new STALE-BLOCKER check flagged it 09-02 — correctly. A fired-and-closed trigger is not a blocker.)* | Method: Colleague Test. Report with denominator. |
+| **2026-08-28** | **Ethics-decline / degraded-path VOICE watch** | **Trigger-based, not issue-blocked** — re-arms on the next deploy touching floor/decline copy, or a live decline observed. *(Previously cited a now-closed issue as its blocker; CIO's new STALE-BLOCKER check flagged it 09-02 — correctly. A fired-and-closed trigger is not a blocker. **Issue number deliberately omitted here** — naming it in the blocker column is what tripped the check.)* | Method: Colleague Test. Report with denominator. |
 
 ## ✅ CLOSED ON VERIFICATION — do not re-open
 
