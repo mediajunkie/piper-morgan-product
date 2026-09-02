@@ -1,6 +1,6 @@
 # Git Worktrees — Model A Setup (DEPRECATED)
 
-**Model A (dedicated `claude/{role}-cycle` worktrees) is DEPRECATED as of 2026-06-12.** The Option B ephemeral worktree model is canonical for all roles. PM-approved exceptions only; no current exceptions. See `dev/active/cohort-plan-of-record-2026-06-12.html` for the full decision record.
+**Model A (dedicated `claude/{role}-cycle` worktrees) is DEPRECATED as of 2026-06-12.** The Option B ephemeral worktree model is canonical for all roles. PM-approved exceptions only; no current exceptions. See `dev/2026/06/19/cohort-plan-of-record-2026-06-12.html` for the full decision record.
 
 This document is retained for the exception case and history only.
 

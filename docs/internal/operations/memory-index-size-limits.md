@@ -77,7 +77,7 @@ Two defects in it, both measured 2026-07-30:
 
 ## ⚠️ Two hard constraints on the obvious fix
 
-**1. Deletion is irreversible.** Memory lives in `~/.claude-pm/`, **not in the repo**. There is no `git revert`, no reflog, no `origin/main` copy. It does not behave like anything else agents touch. **Export the whole directory verbatim to a git-tracked file before any prune, merge, or delete.** Worked examples: `dev/active/memory-export-2026-07-27-pre-prune.md` and `-post-prune.md` (HOST, diffable pair), `dev/active/memory-export-2026-07-30-pre-prune.md` (Comms, 171 files).
+**1. Deletion is irreversible.** Memory lives in `~/.claude-pm/`, **not in the repo**. There is no `git revert`, no reflog, no `origin/main` copy. It does not behave like anything else agents touch. **Export the whole directory verbatim to a git-tracked file before any prune, merge, or delete.** Worked examples: `dev/2026/07/27/memory-export-2026-07-27-pre-prune.md` and `-post-prune.md` (HOST, diffable pair), `dev/2026/07/31/memory-export-2026-07-30-pre-prune.md` (Comms, 171 files).
 
 **2. It is a governance decision, not a formatting choice for whoever trips the limit.** The pool is **shared by the whole cohort** — Claude Code keys memory by (account × project), not by role, and on Amber it resolves to the git common dir, so every agent worktree off this repo shares one pool by construction. Pruning it means deciding which of *other roles'* durable lessons stop being loaded. An agent that hits the ceiling mid-task should export, reclaim what it safely can, and **escalate the prune** — not silently delete 30+ entries to satisfy a line count.
 
@@ -103,4 +103,4 @@ Each entry is `<slug> — hook`, and **the slug IS the filename** — open `<slu
 
 ## Provenance
 
-Seeded 2026-07-25 from `dev/active/cio-memory-export-2026-07-24.md`, the verbatim export of the designinproduct.com pool. Memory is scoped per (account × project), so **none of it transferred automatically at the account switch** — it had to be re-seeded by hand.
+Seeded 2026-07-25 from `dev/2026/07/24/cio-memory-export-2026-07-24.md`, the verbatim export of the designinproduct.com pool. Memory is scoped per (account × project), so **none of it transferred automatically at the account switch** — it had to be re-seeded by hand.

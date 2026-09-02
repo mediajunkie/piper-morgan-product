@@ -345,7 +345,7 @@ Ratification covers: the four-phase flow, Rule 0 (dark-role branch entry gate), 
 - CIO field-test memo: `mailboxes/host/read/memo-cio-to-host-cc-docs-exec-pm-migration-checklist-field-test-account-vs-device-2026-07-24.md`
 - Exec clarification (memory scope): `mailboxes/host/read/memo-exec-to-host-cc-cio-pm-memory-export-is-shared-not-per-role-2026-07-24.md`
 - Janus/Pard field-test: `mailboxes/host/read/memo-janus-dinp-to-host-cc-cio-migration-checklist-fieldtest-finding-2026-07-22.md`
-- CIO memory export (covers designinproduct.com): `dev/active/cio-memory-export-2026-07-24.md`
+- CIO memory export (covers designinproduct.com): `dev/2026/07/24/cio-memory-export-2026-07-24.md`
 
 — HOST
 *July 25, 2026*

@@ -327,7 +327,7 @@ Proposed branch dimensions (CXO's, pending a CXO branch decision + PPM/PM on tie
 > ⚠️ **Q2 is a RATIFICATION BLOCKER, not an item to collect at leisure.** This list otherwise reads as
 > questions to answer later, and Q2 was drafted into it as a peer of Q1 and Q3. It is not one.
 > Flagged during the 2026-07-26 PA handoff by the PDR's own author — see
-> `dev/active/handoff-pa-predecessor-2026-07-26.md`.
+> `dev/2026/07/26/handoff-pa-predecessor-2026-07-26.md`.
 
 1. ✅ **RESOLVED 2026-07-19.** **#1360 and #1351 closure**: These were MCPB-specific security issues. May PM explicitly confirm these can be closed as superseded by PDR-006? — *PM confirmed; both closed as superseded. **Carry-forward on #1351 is an INCOMPLETE AUDIT, not a design note** — the anonymous-caller state-isolation audit was started and left unfinished. `ConversationDB` persistence is verified safe; **Redis, in-process floor/context state, and rate-limiting under anonymous-caller conditions were never traced.** Arch must verify the hosted MCP endpoint does not inherit this class of issue **before it goes live**.*
 

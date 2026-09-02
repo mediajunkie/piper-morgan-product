@@ -1,6 +1,6 @@
 # Release-train definition — SKETCH for PM review
 
-**By**: Arch, 2026-08-07 · **Status**: 🟡 **SKETCH — not ratified, not in force.** Written on PM's word (*"Yes Arch should sketch something out for my review"*), from Exec's prior-art trace (`dev/active/release-sequence-groundwork-for-arch-2026-08-07.md`).
+**By**: Arch, 2026-08-07 · **Status**: 🟡 **SKETCH — not ratified, not in force.** Written on PM's word (*"Yes Arch should sketch something out for my review"*), from Exec's prior-art trace (`dev/2026/08/07/release-sequence-groundwork-for-arch-2026-08-07.md`).
 **On ratification** this becomes an ADR and supersedes or amends **ADR-007**. Until PM rules, nothing here binds anyone.
 
 ---

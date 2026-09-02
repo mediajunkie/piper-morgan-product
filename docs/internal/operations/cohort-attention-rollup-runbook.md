@@ -10,7 +10,7 @@ This runbook is the **spec + judgment layer**. The skill is the **how** (gather 
 
 ## 1. What it is
 
-The attention rollup is a PM-facing board (`dev/active/exec-attention-board.html`, also renderable as an inline widget) that answers one question for PM at a glance: **"is anything stuck or waiting on me, and is everything else actually fine?"** Exec maintains it by sweeping the cohort's self-reported state, verifying each item against live truth, and rendering it blockers-first.
+The attention rollup is a PM-facing board (`dev/2026/06/23/exec-attention-board.html`, also renderable as an inline widget) that answers one question for PM at a glance: **"is anything stuck or waiting on me, and is everything else actually fine?"** Exec maintains it by sweeping the cohort's self-reported state, verifying each item against live truth, and rendering it blockers-first.
 
 **It exists so PM can disengage.** PM 2026-06-18: *"it calms my mind knowing things are running smoothly as I attend to my OpenLaws project."* That is the whole point and also the whole risk: a board PM relies on to *stop looking elsewhere* must be **verified-true**, never **assumed-true**. A false "all clear" is not untidiness — it is a trust breach, because PM has stopped checking the things the board claims are fine. (This is HOST welfare-criterion D: no silent non-surfacing — a quiet board must mean *verified-clear*, never *haven't-checked*.)
 
