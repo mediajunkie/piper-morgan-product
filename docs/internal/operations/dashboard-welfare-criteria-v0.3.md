@@ -2,7 +2,7 @@
 
 **Owner**: HOST (welfare criteria lane, m-39)  
 **Status**: SPEC — design decisions settled in HOST↔CIO pairing (2026-06-18/19). Implementation-ready.  
-**Supersedes**: `dev/2026/06/09/dashboard-welfare-criteria-host-v0.1.md` (seed) + `dev/active/dashboard-welfare-criteria-host-v0.2-seed.md` (seed)  
+**Supersedes**: `dev/2026/06/09/dashboard-welfare-criteria-host-v0.1.md` (seed) + `dev/2026/06/19/dashboard-welfare-criteria-host-v0.2-seed.md` (seed)  
 **Last updated**: 2026-07-03
 
 ---

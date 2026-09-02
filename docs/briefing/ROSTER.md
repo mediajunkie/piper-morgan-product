@@ -72,6 +72,7 @@ Roles deployed for specific work shapes rather than continuous standing presence
 |---|---|---|---|---|
 | **Coding Agent** (subagent) | `prog-code` | `BRIEFING-ESSENTIAL-AGENT.md` | Active (deployed by Lead Dev / others as needed) | Subagent role for precise technical tasks; systematic verification + evidence |
 | **Exploratory Testing Agent** (ETA) | `test` | `BRIEFING-ESSENTIAL-ETA.md` | Dormant (last session March 2026) | Agent-perspective testing of Piper Morgan's systems; friction + capability-gap surfacing |
+| **Special Assignments** | `spec` | — | Active (activated as needed) | Specialist work outside the standing roles' scope; `mailboxes/spec/` exists, no dedicated briefing yet |
 
 ---
 

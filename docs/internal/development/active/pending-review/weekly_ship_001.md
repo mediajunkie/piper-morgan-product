@@ -41,7 +41,7 @@ Here's what the AI PM assistant project accomplished this week and what's coming
 
 ## 🧠 Learning Patterns Applied
 
-*Pattern strength ratings (1-16) based on systematic analysis of development session outcomes - see [pattern documentation](/docs/architecture/pattern-catalog.md) for methodology.*
+*Pattern strength ratings (1-16) based on systematic analysis of development session outcomes - see pattern documentation *(dead link removed 2026-09-02 — historical record, July 2025 draft, no fix attempted)* for methodology.*
 
 ### Session Log Pattern (16/16 Strength)
 

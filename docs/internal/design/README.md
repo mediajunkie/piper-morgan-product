@@ -50,7 +50,7 @@ When specs conflict, defer to higher-numbered authority:
 
 | Spec | Domain | Status | Consult When... |
 |------|--------|--------|-----------------|
-| [Cross-Session Greeting UX](specs/cross-session-greeting-ux-spec-v1.md) | Greetings | v1 Final | Implementing greeting logic |
+| Cross-Session Greeting UX *(proposed; doc TBD — index claimed "v1 Final" but no file exists at this or any path, checked 2026-09-02)* | Greetings | — | Implementing greeting logic |
 | [Contextual Hint UX](specs/contextual-hint-ux-spec-v1.md) | Suggestions | v1 Final | Adding proactive hints |
 | [Multi-Entry FTUX](specs/multi-entry-ftux-exploration-v1.md) | Onboarding | v1 Final | Modifying setup flow |
 | [Empty State Voice Guide](specs/empty-state-voice-guide-v1.md) | Empty States | v1 Final | Writing empty state copy |

@@ -63,7 +63,7 @@ path without the per-connector adapter chain.
 product-value, Lead code census); Arch synthesizes; **PM decides**. Gated on PPM's
 roadmap-dependency check. Emerging convergence is toward *keep-live-reasoning + park-cold-adapters +
 scope-clarify* — **not yet a decision.** Live synthesis:
-`dev/active/spatial-intelligence-architectural-history-arch-WIP.md`.
+`dev/2026/07/29/spatial-intelligence-architectural-history-arch-WIP.md`.
 
 ---mm
 

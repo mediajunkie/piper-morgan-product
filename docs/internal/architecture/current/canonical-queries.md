@@ -1,5 +1,13 @@
 # Canonical Queries Reference List
 
+> **Not a duplicate of `docs/internal/design/specs/canonical-queries-v2.md`** (confirmed 2026-09-02,
+> Docs, #1585 — the two were flagged as a possible duplicate pair by basename similarity, checked
+> directly, and are genuinely different documents). **This file** is a plain reference list of
+> example query phrasings by category (Identity, Temporal, Status, etc.) — what NAVIGATION.md
+> already correctly links to it for. **`canonical-queries-v2.md`** is a versioned implementation-
+> tracking spec (query counts, changelog, per-query implementation status). Both are legitimate;
+> neither supersedes the other.
+
 ## Identity Queries
 
 ### 1. What's your name and role?

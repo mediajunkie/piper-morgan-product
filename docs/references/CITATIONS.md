@@ -1,7 +1,16 @@
 # CITATIONS.md
 
 **Project**: Piper Morgan - AI-Powered Product Management Assistant
-**Last Updated**: March 3, 2026
+**Last Updated**: September 2, 2026 (Docs) — targeted review, not a full pass: verified the
+"8-Dimensional Spatial Intelligence" claim is still live in code post the 2026-08-15 spatial
+cold-island disposal (confirmed via `services/integrations/spatial/github_spatial.py`); fixed the
+MCP section's platform list, which named Linear/CI/CD/GitBook — none of which are live MCP
+integrations — instead of the actual current set (GitHub/Google Calendar/Notion/Slack); checked
+orchestration-related citations against the codebase, none tied to the deleted
+`services/orchestration/`/`methodology/coordination` packages, no changes needed. **Not checked
+this pass**: whether recent architecture (MUX Object Model/ADR-055, Understanding-Layer Inversion,
+the PDR-006 hosted-MCP distribution pivot) warrants new citations — that needs a real research
+pass, not a mechanical check, flagged rather than guessed at. Prior: March 3, 2026.
 **Purpose**: Comprehensive attribution of ideas, frameworks, and research that inform our work
 
 > "We proudly acknowledge we build on the work of others while trying to contribute what we can to the common weal."
@@ -138,7 +147,9 @@
 - Standardized JSON-RPC 2.0 communication
 - Tool federation patterns
 - Resource discovery and management
-- *Used in: 5-platform integration (GitHub, Linear, Notion, CI/CD, GitBook)*
+- *Used in: connector integration (GitHub, Google Calendar, Notion, Slack — `services/mcp/consumer/`);
+  corrected 2026-09-02, the prior platform list (Linear, CI/CD, GitBook) no longer matched the
+  live integrations*
 
 ### Domain-Driven Design (DDD)
 **Eric Evans** - "Domain-Driven Design: Tackling Complexity in the Heart of Software" (2003)

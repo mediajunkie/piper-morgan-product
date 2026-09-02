@@ -17,7 +17,8 @@ This directory contains documentation for tools in the Piper Morgan system.
 - **[Dev Guidelines](dev-guidelines.md)** - Step-by-step guidance and instructions
 - **[Integration Debugging Guide](integration-debugging-guide.md)** - Step-by-step guidance and instructions
 - **[Issue Generation Workflow](issue-generation-workflow.md)** - Documentation and guidance
-- **[Issue Intelligence Integration Examples](issue-intelligence-integration-examples.md)** - Integration guides and examples
+- **Issue Intelligence Integration Examples** *(dead link removed 2026-09-02 — no file at this or
+  any other path in the repo)* - Integration guides and examples
 - **[Onboarding](onboarding.md)** - Documentation and guidance
 - **[Personality Configuration](personality-configuration.md)** - Configuration guidelines and examples
 - **[Phase 2B Configuration Analysis](phase-2b-configuration-analysis.md)** - Configuration guidelines and examples

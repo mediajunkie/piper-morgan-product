@@ -1,7 +1,5 @@
 # Internal Documentation
 
-## NEEDS UPDATING
-
 **Purpose**: Working documents for active development and internal processes
 **Audience**: Development team, architects, and project contributors
 
@@ -12,50 +10,34 @@
 
 ## Directory Organization
 
-### Development (`development/`)
-- **Current sprint/iteration work**
-- **Development methodologies and tools**
-- **Agent coordination and handoff prompts**
-- **Active planning and status tracking**
+*(Refreshed 2026-09-02 against the actual current tree — the prior list of 4 directories had
+drifted from reality and one claim, below, was factually wrong.)*
 
-### Architecture (`architecture/`)
-- **Current architectural decisions (ADRs)**
-- **Domain models and system design**
-- **Technical patterns and guidelines**
-- **Architecture evolution tracking**
-
-### Planning (`planning/`)
-- **Active planning cycles**
-- **Backlog and issue tracking**
-- **Roadmap and strategic planning**
-- **Resource allocation and timelines**
-
-### Operations (`operations/`)
-- **Deployment and infrastructure**
-- **Monitoring and maintenance**
-- **Performance tracking**
-- **Operational procedures**
+- **`development/`** — current sprint/iteration work, methodologies, tools, agent coordination
+- **`architecture/`** — ADRs, patterns, domain models, system design, technical guidelines
+- **`planning/`** — active planning cycles, roadmap, sprint tracking
+- **`operations/`** — deployment, infrastructure, monitoring, duty-cycle design
+- **`product/`** — PDRs and product decision records
+- **`design/`** — UX specs, design audits, interaction patterns
+- **`audits/`** — dated audit records
+- **`testing/`** — test strategy and canonical query test matrices
+- **`retrospectives/`** — dated retrospective records
 
 ---
 
 ## Usage Guidelines
 
 ### Active vs Historical
-- **Internal docs**: Current, actively maintained content
-- **Archives**: Historical content moved after completion
-- **Clear status**: Use status indicators for document lifecycle
-
-### Working Document Lifecycle
-1. **Draft** - Initial creation in appropriate subdirectory
-2. **Review** - Internal review and collaboration
-3. **Active** - Current working version
-4. **Complete** - Finished, ready for archive
-5. **Archived** - Moved to `/docs/archives/`
+- Most subdirectories carry their own dated/superseded content inline (banners, `historical/`
+  subfolders) rather than a separate top-level archive.
+- ⚠️ **Correction 2026-09-02**: this file previously claimed completed work moves to
+  `/docs/archives/` — **that directory does not exist**. Don't rely on that claim; check a
+  subdirectory's own convention instead (e.g. `docs/internal/testing/historical/`).
 
 ### Cross-References
-- Link to archived decisions and historical context
-- Reference public documentation where appropriate
-- Maintain archaeological research links
+- Link to superseded/historical content where it lives (in-tree, dated banners), not a central
+  archive.
+- Reference public documentation where appropriate.
 
 ---
 
@@ -63,16 +45,12 @@
 
 ### By Role
 - **Developers**: Focus on `development/` and `architecture/`
-- **Product Managers**: Focus on `planning/` and `development/`
+- **Product Managers**: Focus on `planning/`, `product/`, and `development/`
 - **Operations**: Focus on `operations/` and `architecture/`
 - **Architects**: Access across all internal directories
 
-### By Work Type
-- **Current tasks**: `development/active/`
-- **Technical decisions**: `architecture/current/`
-- **Sprint planning**: `planning/current/`
-- **System operations**: `operations/`
-
 ---
 
-*Internal documentation organization established: September 20, 2025*
+*Internal documentation organization established: September 20, 2025. Directory listing refreshed
+2026-09-02 (Docs, #1585) against the live tree — prior listing (4 directories) had drifted; a
+false claim about a central `/docs/archives/` directory removed.*

@@ -1,5 +1,14 @@
 # Session Logs Index
 
+> 🔴 **HISTORICAL — genuinely obsolete, not stale-but-directionally-right.** Corrected 2026-09-02
+> (Docs, #1585): this file was originally flagged as "0 inbound references" (a discoverability
+> gap) — that turned out to be wrong, `README.md` in this same directory already links to it. The
+> real problem is the content: it describes a session-log system this project doesn't use anymore
+> — a manually-maintained weekly index, `Cursor Agent` as an active role, and an archive path
+> (`docs/archive/session-logs/`) that doesn't exist. **The actual current system**: session logs
+> live in dated directories (`dev/YYYY/MM/DD/`), which are the index — nothing separately tracks
+> them in a file like this one. Kept for historical reference only; do not use as a live index.
+
 **Last Updated**: 2025-09-02
 **Purpose**: Track all active session logs in chronological order
 
