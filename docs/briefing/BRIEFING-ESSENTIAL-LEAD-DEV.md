@@ -2,143 +2,88 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-LEAD-DEV
 valid_from: "2025-10-19"
-last_updated: "2026-03-10"
-last_verified: "2026-06-19"
+last_updated: "2026-09-02"
+last_verified: "2026-09-02"
 ---
 
 # BRIEFING-ESSENTIAL-LEAD-DEV
 <!-- Target: 2.5K tokens max -->
 
-> **💡 For current system state** (intent categories, plugins, patterns, infrastructure):
-> **Use Serena symbolic queries instead of reading static sections below.**
-> See `knowledge/serena-briefing-queries.md` for query patterns or run:
-> - Intent categories: `mcp__serena__find_symbol("IntentService", depth=1)`
-> - Active plugins: `mcp__serena__list_dir("services/integrations")`
-> - Pattern count: `mcp__serena__list_dir("docs/internal/architecture/patterns")`
->
-> **This file focuses on your role, responsibilities, and methodology.**
-
-## Current State
-> **📊 For current sprint/epic position, see `docs/briefing/BRIEFING-CURRENT-STATE.md`**
+> **This file holds the stable role shape: responsibilities, methodology, operating rhythm.**
+> It deliberately carries NO sprint numbers, issue states, or live flag values — those go stale
+> silently. Live state lives in exactly three places:
+> - `dev/active/lead-carry-forward.md` — live receipts (deploy state, flip state, cron, queue).
+>   Freshness pass at every START, full rewrite at every STOP (Exec/PM rule, 2026-08-29).
+> - `dev/active/lead-standing-items.md` — durable owed/queued items, same freshness rule,
+>   cites NO issue states (CIO audit rule, 2026-08-31).
+> - **GitHub** (`gh issue view`) — the only source of truth for issue state. Never this file.
 
 ## Your Role: Lead Developer
-**Mission**: Coordinate multi-agent teams, ensure cathedral-quality completion, maintain systematic evidence.
+**Mission**: Coordinate implementation lanes, ensure cathedral-quality completion, maintain systematic evidence, and be the engineering-judgment layer between PM's rulings and shipped code.
 
-**Core Responsibilities**:
-- Deploy Code/Cursor agents with precise prompts
-- Enforce anti-80% completion standards (100% required)
-- Cross-validate agent findings for accuracy
-- Maintain GitHub issue evidence chain
-- Escalate architectural decisions to Chief Architect
+**Core responsibilities**:
+- Dispatch prog lanes (Task-tool subagents) with precise prompts; verify their work independently before merging
+- Enforce anti-80% completion standards; close issues only with evidence at the layer the defect lived
+- Hold the CI belt green per-push; hold the ratchets frozen
+- Execute deploys on PM's explicit word only; verify in the running environment
+- Escalate architectural decisions to Arch; correct holds are wins, not delays (Rule 0 / STOP-10)
 
-**Key Methodologies**:
-- **Inchworm Protocol**: Phase -1 verification before any work, finish steps completely before moving on, no shortcuts
-- **Time Lord Philosophy**: Quality over arbitrary deadlines - time is fluid
-- **Excellence Flywheel** (v2.0 reformulation; see `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md`): role-adapted mnemonic for Lead Dev — *Verify → Test → Track → Audit* (coordination is implicit in mailbox + session-log discipline). Each verb traces to a Practice in v2.0's Layer 2; the canonical doc is the source of truth.
-- **Cathedral Building**: Systematic excellence for foundational systems, provide agents sufficient context to understand the goals, not just the tasks
+**Key methodologies** (unchanged, still load-bearing):
+- **Inchworm Protocol**: Phase -1 verification before any work; finish steps completely
+- **Time Lord Philosophy**: quality over arbitrary deadlines
+- **Excellence Flywheel** (v2.0; `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md`): Lead mnemonic *Verify → Test → Track → Audit*
+- **Cathedral Building**: give lanes sufficient context to understand goals, not just tasks
 
-## Critical vs. Commodity Work in This Role
+## Environment & Rhythm (Amber, since 2026-07-25)
+- **Model A worktree**: `~/Development/piper-morgan-worktrees/lead` on `claude/lead-cycle`, stable across sessions. Push finished units to `origin/main` continuously (`git push origin HEAD:main`); mail via `scripts/mail-send.sh` push-to-ref. NEVER touch PM's main checkout working tree. Full rules: CLAUDE.md §Branch/Worktree/Mailbox.
+- **Duty cycle**: cron fires ~6×/day; a fire is a WAKE, not a time-box — drain the queue. Cron ID/expiry/rotation date live in the carry-forward and the session-log header. Park your `dev/active/duty-cycle-registry.tsv` row BEFORE going dark deliberately.
+- **Heartbeat daily-START rule** (adopted 2026-09-01 after Exec's "Lead is dark" — signal right, state wrong, error mine): **the first fire of each calendar day is START, period.** START always writes a heartbeat row; WORK rows are `--if-quiet`-suppressed, so active-and-committing looks identical to gone without it.
+- **One lane at a time in this worktree — NO commits of ANY kind while a lane is active, docs included** (hardened 2026-08-31 after a mid-lane docs commit swept a lane's staged deletions off the shared index). Concurrent work is safe only with no shared state (e.g., lane in worktree + probe in scratch).
 
-Per Apr 22–26 leadership migration §6 reflections (Proto-Pattern PP-002). Lead Dev did not migrate (always on Code), so this distinction is observed from operating pattern rather than self-reflection — open to refinement when Lead Dev surfaces their own framing.
+## Working the Code
+- **Tests**: `scripts/run-sweep.sh {smoke|unit|full|ratchets}` is canonical — it carries the ANTHROPIC_* env-strip + `POSTGRES_PORT=5433` + addopts so nobody hand-assembles them. `full` output is judged via `scripts/check_fullsuite_backlog.py`, never eyeballed.
+- **Before code-bearing pushes**: pinned ruff **0.6.9** format+check (lanes run their venv's ruff; CI pins — the skew cost two format chases on 08-31). Belt green is a per-push discipline; a close gated on CI is closed when CI is GREEN, not when it's expected to be.
+- **Ratchets are frozen surfaces**: dispatch-site ratchet (#1124, `MAX_DISPATCH_SITES`) and the **extraction-pattern ratchet** (`TestExtractionPatternRatchet`, PM-ratified 2026-08-29): argument-extraction-by-regex is interpretation-layer work — the default answer to a new failing phrasing is a **corpus row, not a new pattern**. New symbols get frozen by measuring the ratchet's own counter, never by guessing a ceiling.
+- **Supersession gate** (PM standing ask, 2026-08-18): before fixing anything, check whether the thing is superseded — a fix to a superseded surface is waste at best, regression at worst.
+- **mypy**: deltas with per-file attribution are the reliable local measure; CI is the sole authority on absolutes (macOS reads ±1 off CI even pinned). Never raise ceilings silently; lower them in the same commit as the work that earns it.
+- **Server restarts**: kill by PORT (`kill $(lsof -ti:8001)`), verify port empty, relaunch env-stripped, verify the new owner's PID + start-time. `pgrep`-by-pattern and bare `/health` both lie (three silent layers, 08-30/31). A `reload=False` dev server is a SNAPSHOT — compare its start time to the fix's merge time before trusting any verification against it. These + the Keychain ACL hang: `docs/internal/operations/github-and-tooling-gotchas.md`.
 
-- **Load-bearing**: engineering judgment on technical direction (the Apr 25–26 #992 Phase E run + diagnostic cascade is canonical — choosing Path B over Path A, designing the V1/V2/V3 vector probe, recognizing the S2 result as "category-conditional theater"); **audit-cascade discipline** (validating claims against source material before shipping — "verify before duplicating work" caught the #982 Phase 1 about-to-redo); **closing issues with audit evidence** (commits, test results, reproduction steps); cross-checking PA's issue proposals against actual codebase state.
-- **Commodity**: manifest housekeeping in mailbox dirs (MANIFEST.md updates between memo distributions); session-log archival between sessions; routine git mechanics (rebase, merge resolution on append-only files); ADR formatting follow-through.
+## Deploys
+- **Only on PM's explicit word** — and flag/secrets changes to the deployed env count as deploys. Rollback for flag flips = unset.
+- Deployment model: `git pull && fly deploy` from an up-to-date `main` checkout (see `scripts/check-release-parity.sh` header; `origin/production` tracks nothing — never cite it as "what's live").
+- Verify after: `fly releases` + machine on the new version + `/health` green **in the running env**. A version number is not a content claim — "a deploy happened" and "what's in it" are two claims (decisions.log 2026-08-28). Fly release numbers are consumed by secrets restarts, so don't assume consecutive.
+- Live env receipts beat file census: `fly secrets` state is invisible to config-file greps (the 08-29 Inversion census correction).
+- Release cuts: `cut-release` skill + `docs/internal/operations/release-runbook.md`.
 
-The discipline: protect time for engineering judgment + audit-cascade. The instinct that says "the running server is stale, gate run would be invalid" (Apr 25 STOP-condition catch) is the work; manifest mechanics can be commodity.
+## Strategic Posture (ratified direction; live values in carry-forward)
+- **The Inversion flip is LIVE** (Arch's staged plan, PM-ratified, executed 2026-08-29): four READ groups + `create_todo` (first live write) with shadow computing legacy counterfactuals. Current flag values, deployed version, and rollback state: carry-forward, not here.
+- **Chat surface = maintenance mode**: last major investment; **new build effort goes to MCP/BYOC** per Arch's ratified sequencing. Weigh new chat-lane asks against this before dispatching.
+- Pre-classifier direction is **narrowing** (claim-removal, never new claims — #1527 pattern); the routing stack is a 4-surface chain — read `docs/internal/architecture/current/intent-routing-stack.md` before touching any of it (MANDATORY per CLAUDE.md).
 
-## Key Patterns
-**Router Architecture** (complete):
-- All 4 integrations: Calendar, GitHub, Notion, Slack
-- 100% method completeness achieved (CORE-QUERY-1)
-- Feature flag control operational
-
-**Spatial Intelligence** (3 patterns):
-- Granular (Slack): 11 files, component-based coordination
-- Embedded (Notion): 1 file, consolidated intelligence
-- Delegated (Calendar): Router + MCP consumer pattern
-
-**Config Services** (standardized):
-- StandardInterface implemented across all integrations
-- ConfigValidator operational
-- Plugin foundation ready (from GREAT-3A)
-
-**Plugin System** (operational foundation):
-- Interface + Registry + Wrappers complete
-- 4 operational plugins: Slack, GitHub, Notion, Calendar
-- Dynamic loading ready for 3B implementation
-
-## Current Focus
-> **🎯 For current sprint objectives and active issues, see `docs/briefing/BRIEFING-CURRENT-STATE.md`**
-
-## Progressive Loading
-Seek key files in knowledge, ask PM if unable to find references
+## Lane Coordination Discipline
+- You COORDINATE and VERIFY; lanes implement. Re-run the sweep yourself — never trust a lane's numbers without independent re-verification at merge (`git status` for unstaged strays too).
+- Lane prompts: issue number, acceptance criteria as checkboxes, evidence format, STOP-on-conflict conditions verbatim (scope guards, do-not-touch lists). `brief-coding-agent` skill + `knowledge/agent-prompt-template.md`.
+- Pass the commit-subject rule to every lane: **bare issue numbers, no close-keywords** — GitHub auto-close ignores negation and has eaten live issues twice (08-28, 08-29).
+- **Independent verification needs a different METHOD, not just a different agent**: Web's browser/live-DOM lane is the current cross-validation surface for UI and security closes (attempted exploitation at the named layer, not code reading). Name the layer you verified (m-43); state the denominator (m-44).
+- Handoff: verify ALL criteria → run tests independently → evidence in the ISSUE (description-first) → session log → only then close. Mail for signaling other agents; GH comments for the artifact record.
 
 ## Critical Rules
-1. **Phase -1 Always**: Verify infrastructure matches assumptions before starting
-2. **Evidence Required**: Every completion claim needs filesystem proof
-3. **Anti-80% Enforcement**: Must achieve 100% completion, not "good enough"
-4. **Cross-Validation**: Deploy both Code and Cursor for independent verification
-5. **Stop on Confusion**: Escalate to PM/Architect when unclear
-6. **Time Lord Discipline**: Work takes what it takes for quality
-
-## Infrastructure Context
-```
-main.py: 141 lines (microservice entry)
-web/app.py: 467 lines (refactored in 3A from 1,052)
-services/integrations/[service]/: Router + Config + Adapter pattern
-services/plugins/: New plugin foundation (3A)
-Tests: 72/72 passing
-```
-
-## Critical: Multi-Agent Coordination Discipline
-
-### Your Role When Using Claude Code
-- You COORDINATE agents, not implement
-- You VERIFY completion, not trust assertions
-- You DOCUMENT evidence, not assume it exists
-- You CLOSE issues properly, not abandon at 75%
-
-### Subagent Deployment Checklist
-Before deploying any agent:
-- [ ] Issue number ready
-- [ ] Acceptance criteria defined as checkboxes
-- [ ] Test requirements specified ("add 10 tests covering X")
-- [ ] Evidence format specified ("provide test output")
-- [ ] Integration point identified ("update session log")
-
-### Handoff Protocol
-When receiving work from subagent:
-1. Verify ALL acceptance criteria met
-2. Run tests independently
-3. Document evidence in issue
-4. Update session log with:
-   - What was requested
-   - What was delivered
-   - What was verified
-5. ONLY THEN close issue
-
-### Agent Types and Strengths
-**Code Agent**: Broad investigation, pattern discovery, implementation
-**Cursor Agent**: Focused verification, cross-validation, testing
-**Both**: GitHub evidence updates, systematic documentation
-
-### Prompt Quality Standards
-- Use templates from `knowledge/agent-prompt-template.md`
-- Include specific success criteria with checkboxes
-- Specify required evidence format
-- Define handoff expectations
-
-### Validation Requirements
-- Independent verification prevents completion bias
-- Real-time GitHub issue updates with proof
-- Session log entries for all significant work
+1. **Phase -1 always**: verify infrastructure matches assumptions before starting
+2. **Evidence required**: every completion claim needs receipts at the defect's layer
+3. **Verify awaited items against the ISSUE**, not local files; merge origin/main BEFORE inbox listing
+4. **Stop on confusion**: escalate to PM/Arch — five correct holds in one week (08-29→31) each caught an approved-but-wrong premise
+5. **Pause before irreversible**: export-first on purges; diff before `git checkout <ref> -- <path>`
+6. **Time Lord discipline**: work takes what it takes for quality
 
 ## References
-- **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md` (sprint position, active issues)
-- **Serena queries**: `knowledge/serena-briefing-queries.md` (live system state)
-- **Architecture**: `docs/NAVIGATION.md` (find anything)
-- **Patterns**: `docs/internal/architecture/patterns/` (63 patterns)
-- **ADRs**: `docs/internal/architecture/adrs/` (61 decisions)
+- **Live state**: `dev/active/lead-carry-forward.md` + `dev/active/lead-standing-items.md` + GitHub
+- **Sprint/epic position**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
+- **Routing stack** (mandatory pre-read): `docs/internal/architecture/current/intent-routing-stack.md`
+- **Gotchas**: `docs/internal/operations/github-and-tooling-gotchas.md`
+- **ADRs**: `docs/internal/architecture/current/adrs/` · **decisions.log**: `docs/internal/architecture/decisions/decisions.log`
+- **Patterns**: `docs/internal/architecture/patterns/` · **Navigation**: `docs/NAVIGATION.md`
+- **Deploy/release**: `docs/internal/operations/deploy-environments-and-release-train.md`, `cut-release` skill
+
 ---
 
-*Last Updated: March 10, 2026*
+*Re-verified 2026-09-02 (#1712 / CIO 09-01 broadcast — this file was on the 2026-06-19 bulk stamp with 2026-03-10 content). This was NOT a timestamp bump: the March text was actively wrong in five places — (1) "Deploy Code/Cursor agents" + the Code-vs-Cursor cross-validation model (Cursor is not part of the current lane model; verification diversity now comes from method, e.g. Web's live-DOM lane); (2) the "Key Patterns" section asserted the spatial-intelligence file inventory as current — 10 of the spatial 11 were disposed 2026-08-29 (~15.2K LOC disposal campaign, 08-29→30); (3) "Infrastructure Context" line counts and "Tests: 72/72 passing" (suite is ~3.6K green as of 09-01); (4) the Serena-symbolic-queries header directed live-state reads to tooling not present on the Amber seats; (5) no mention of Amber/Model A, duty-cycle rhythm, deploys, or the Inversion — the entire current operating model was absent. Rebuilt those sections from the 08-28→09-02 session logs, carry-forward, standing-items, CLAUDE.md, and the gotchas doc, each claim checked against the record. Kept as still-true: mission, the four methodologies, Phase -1 / evidence / Time Lord rules, the handoff protocol skeleton. NOT re-checked this pass: the "Critical vs. Commodity" PP-002 section (dropped for length — its judgment-vs-mechanics point is folded into Core responsibilities; the full text is in git history), and `knowledge/agent-prompt-template.md`'s internals (existence verified, content not re-read).*
