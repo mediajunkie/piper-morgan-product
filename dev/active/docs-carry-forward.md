@@ -5,28 +5,40 @@ audit backlog triaged and delegated; FLYWHEEL backlog assessed, 4 issues closed,
 **Session log**: `dev/2026/09/02/2026-09-02-0727-docs-code-log.md` (open).
 **Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 12:57.
 
-## Ongoing-milestone backlog work (PM-directed, this fire) — own portfolio items still owed
+## Ongoing-milestone backlog work (PM-directed) — 3 closed, 1 open-with-real-remainder, 5 still queued
 
-Read all 7 audit-related Ongoing-milestone issues in full; 6 are mine, 2 sub-items routed away
-(`#1584` Part C → CIO, `#1682` item 1 → Lead Dev, both mailed). **Still genuinely queued, mine to
-work through** (not yet started this fire, real remaining scope):
-- **#1584** Parts A+B — ~240 broken docs links, mostly mechanical (Part A alone: strip a leftover
-  `models/` path prefix, likely resolves 100+ links)
-- **#1644** — 56 residual broken links (mostly low-priority legacy/excluded-from-site)
+**Closed this session**: #1259/#1275/#1162/#465 (stale, evidence on each), **#1584** (both
+Parts A+B — Part A was already done 08-10, Part B fixed today: 4 real fixes + 4 dead-link
+annotations, ~28 remaining hits are all already-dispositioned low-priority/historical/false-
+positive, not actionable). **#1682**: item 1 closed by Lead (verify-first — deleted a leftover
+duplicate, not moved), item 2 already fixed 08-30 — **only item 3 (CITATIONS.md) remains, mine.**
+
+⚠️ **Caught a real mistake mid-fire**: mailed CIO asking them to fix #1584 Part C, which turned
+out already done 2026-08-12 (and *I'd verified it myself* at the time) — my carry-forward carried
+it as still-open without re-checking the issue's own comment thread. Sent CIO a direct correction
+owning the cause. **Lesson for future backlog triage: read an issue's comment history, not just
+its original filing, before routing it to someone.**
+
+**#1644** left open (not closeable) — its 56 broken-link residual is resolved (same #1584 pass),
+but PPM's own 08-24 fix explicitly flagged the full v19 roadmap.md historical fold as separately,
+genuinely still owed. Not mine; don't touch without PPM.
+
+**Still genuinely queued, mine, real remaining scope, no artificial fire-splitting — picking up
+sequentially, not deferring**:
 - **#1682** item 3 — CITATIONS.md staleness, needs a real attribution-completeness review
 - **#1683** — 145-row editorial-calendar syndication-status reconciliation (needs a scripted
   day-of-week-routing check per the issue's own suggested procedure, not a blind bulk edit)
 - **#1392** — 2 metadata-prefix title fixes + 3 double-hero-image body-HTML fixes (one open
-  question for PM: caption handling for the removed inline figures)
+  question for PM: caption handling for the removed inline figures — genuine blocker on that one
+  sub-item only, rest is unblocked)
 - **#1585** — 3 stale READMEs (low priority) + 3 duplicate-file judgment calls (mine to just pick)
 - **#1486** — Monthly Housekeeping Audit, 33 items, not due to auto-regen until ~09-07 but already
   open and actionable now that B3/#1712 are both closed
-- **#1611** (new, from the FLYWHEEL sweep) — `mac-dock-integration.md`, alpha-tester-facing,
+- **#1611** (from the FLYWHEEL sweep) — `mac-dock-integration.md`, alpha-tester-facing,
   likely-stale two-process architecture, verify before rewriting
 
-Also closed 4 stale issues (#1259/#1275/#1162/#465, evidence on each) and sent CIO a 7-issue
-delegation list (cc Lead Dev) for the current-stage-relevant FLYWHEEL backlog that shouldn't sit
-on Lead. Full reasoning in today's session log.
+Sent CIO a 7-issue delegation list (cc Lead Dev) for the current-stage-relevant FLYWHEEL backlog
+that shouldn't sit on Lead. Full reasoning in today's session log.
 
 ## Weekly Ship #058 published — https://pipermorgan.ai/shipping-news/weekly-ship-058-what-we-actually-had
 
