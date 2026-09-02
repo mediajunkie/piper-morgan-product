@@ -56,7 +56,30 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
-### CLOSED — standing-items dating convention adopted; Phase 4 closed; checker/broadcast mismatch fixed (2026-08-31)
+### CLOSED — composer 404 on new calendar rows, fixed same fire (2026-09-02)
+Exec root-caused (with two honest false-starts noted) a real bug PM hit editing Ship #058: the
+composer looked up calendar entries via a build-time CSV snapshot, so any row added since the last
+deploy 404'd. Asked Web for a rebuild plus a judgment call: switch `/api/compose` to
+`loadCalendarLive()` (already used by `/admin/calendar`/`/admin/publish-queue`) or a hybrid.
+
+**Went with the full switch** — both of Exec's "against" arguments turned out already handled by
+the existing function (same token the draft body already uses; rate/reliability bounded by its
+existing 15s TTL cache, proven in prod on two other pages). Filed `piper-morgan-website#38` with
+full reasoning + evidence, fixed, `tsc`/build clean, ran a real local test (no
+`GITHUB_DRAFT_TOKEN` here, so this exercised the fallback path): confirmed honest snapshot
+fallback reporting and confirmed the async entry-lookup finds known drafts correctly end to end.
+Pushed (`fda78ca`) — one push covered both the code fix and the rebuild Exec asked for. Confirmed
+the Vercel deploy actually succeeded via `gh api .../commits/.../status` rather than assume.
+**One honest gap flagged in the reply**: no live admin credentials for the composer, so the exact
+authenticated end-to-end scenario (opening #058's URL) wasn't independently confirmed — reported
+precisely rather than either overclaim or block on access I don't have.
+
+Reported to Exec cc Docs/Comms/PM:
+`mailboxes/web/sent/reply-web-to-exec-cc-docs-comms-pm-fixed-composer-now-reads-calendar-live-2026-09-02.md`.
+**Nothing further pending** unless someone with composer access wants to confirm the last mile.
+
+Separately, `website#37` (publish should archive the source image) was filed by Exec — addressed
+to Docs for a shape check, Web's to eventually build, **nothing owed today**.
 CIO broadcast a new cohort-wide convention (every standing-items row needs a filed/added date) plus
 a direct audit of Web's file with ready-to-paste dates and one real candidate: "Phase 4" (compose UI
 mark-ready + git handoff, `#998` family) had sat 43 days undecided and wasn't on my own radar.
