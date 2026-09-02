@@ -3,7 +3,13 @@ type: briefing
 title: BRIEFING-ESSENTIAL-CXO
 valid_from: "2026-01-22"
 last_updated: "2026-04-26"
-last_verified: "2026-06-19"
+last_verified: "2026-09-01"
+verified_by: CXO — real spot-check, not a bulk stamp (#1712). WHAT I CHECKED: the Colleague Test
+  section against the live rubric (found and fixed two stale version citations, one of which had
+  survived a 2026-08-01 fix to its twin); the rubric family roster; the ratified-invariant status.
+  WHAT I DID NOT CHECK and left untouched: the mobile-skunkworks status ("currently paused"), the
+  contractor/subcontractor lines, and the CXO-Comms-Docs triangle section — I have no current
+  evidence either way and a bulk re-attestation is the defect this exercise exists to catch.
 ---
 
 # BRIEFING-ESSENTIAL-CXO
@@ -24,7 +30,7 @@ last_verified: "2026-06-19"
 - Object model and entity lifecycle design
 - Interaction pattern definition and specification
 - UX research synthesis and application
-- Colleague Test stewardship (operational rubric v2.1 at `docs/internal/testing/colleague-test-rubric.md`; conceptual companion at `docs/internal/development/colleague-test.md`)
+- Colleague Test stewardship — rubric at `docs/internal/testing/colleague-test-rubric.md`, conceptual companion at `docs/internal/development/colleague-test.md`. ⚠️ **No version number here on purpose** (see the Colleague Test section below). **Three invariants are PM-ratified 2026-08-31** — the question, the verdict shape (3 × 0–3, ≥7/9, any 0 auto-fails), the fabrication auto-fail; **changing those needs PM.** Criteria, examples and branches stay CXO-editable.
 - Floor-first voice guidance (ADR-060) and ethics-decline voice oversight (#992)
 - Floor quality monitoring (#950 canonical retest scores)
 - Mobile experience exploration (skunkworks oversight, currently paused)
@@ -144,7 +150,13 @@ These decisions are established (see PDR-002). Don't re-litigate; build on them:
 
 Mental models for consistent CXO decisions:
 
-**The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/testing/colleague-test-rubric.md` (**canonical v2.3.2**) and `docs/internal/development/colleague-test.md` (conceptual). ⚠️ **Don't cite a version number from here** — the rubric is a live instrument and this briefing lags it; open the file. *(This line read "v2.1" until 2026-08-01, two minor versions stale.)*
+**The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/testing/colleague-test-rubric.md` and `docs/internal/development/colleague-test.md` (conceptual).
+
+> 🔴 **This briefing carries NO rubric version number, deliberately — open the file.** *Why the stronger form (CXO, 2026-09-01 self-verification): on 2026-08-01 someone corrected this line from "v2.1" to a then-current number and added "don't cite a version from here." **But the identical "v2.1" in Core Responsibilities above survived that fix**, and the corrected number itself went stale within a month. **A number plus "don't trust this number" is worse than no number** — it is an invitation to be wrong that reads as a citation. Both are now removed rather than re-corrected.*
+
+**What IS stable enough to state here**: the rubric's **three PM-ratified invariants** (2026-08-31) — the question, the verdict shape (≥7/9, any single 0 auto-fails), the fabrication auto-fail. Those need PM to change. Everything else in the instrument moves with evidence, which is exactly why versions don't belong in a briefing.
+
+**The family has three members**, all in that directory: the Colleague Test itself (response text), the UI Lifecycle Verification Rubric (rendered UI), and the BYOC Recomposition Rubric (tool payloads on the MCP path — ⚠️ its T axis does not yet issue a PASS).
 
 ⚠️ **The gate that binds it**: DoD Layer B (`docs/internal/development/experience-verification-dod-layer-b.md`) — *a user-facing surface is not Done until its delivered experience passes the Colleague Test or the surface's branched rubric.* **PDR-004 Amendment A (PROPOSED 2026-07-30)** ratifies that the *gate* binds while leaving the *rubrics* as unratified CXO-owned instruments, so a rubric revision never drags a re-ratification.
 
