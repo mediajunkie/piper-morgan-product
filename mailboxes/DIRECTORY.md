@@ -163,7 +163,7 @@ The distinction: an *empty* `mailboxes/{agent}/` you're tempted to create today 
 
 **Prefer routing through Exec rather than writing directly** (PM directive, 2026-07-04): **Exec is this project's primary point of contact for Janus.** Exec already has an established direct relationship (see `mailboxes/exec/read/` for prior Janus↔Exec history going back to April). Send Janus-bound content to `exec` and let Exec relay, rather than reaching into a sibling repo yourself — this avoids exactly the convention-drift problem this section exists to fix. (Direct writes to sibling repos aren't forbidden if the situation calls for it, but Exec-as-relay is the default.)
 
-**Known gap** (#1358, filed 2026-07-04): a durable cross-project `cross-project-mail-routing.md` reference doc was promised back in an April 2026 escalation (Exec→Architect) but never created — this table is a stopgap, not that doc.
+**Closed** (#1358, filed 2026-07-04, closed 2026-09-02): the promised `cross-project-mail-routing.md` reference doc now exists at `docs/internal/operations/cross-project-mail-routing.md` — it points back to this table as the canonical locations source rather than duplicating it, and adds the failure history + known-unknowns the original Apr 30 plan specified.
 
 These are external repos on the local filesystem, not part of this repo — use `git -C <path>` for any git operations there, and follow that repo's own commit conventions (verify by reading recent commits in `docs/mail/`, don't assume Piper Morgan's mail-send.sh applies). If a cross-project agent's location changes, re-verify by reading their repo rather than trusting this table blindly — it's a snapshot, not a live registry.
 
