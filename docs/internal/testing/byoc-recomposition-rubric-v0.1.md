@@ -1,7 +1,9 @@
 ---
 type: scoring-instrument
 name: BYOC Recomposition Rubric
-version: v0.3 — DRAFT, unratified. T axis RESTRUCTURED BY QUALIFICATION CLASS 2026-09-01 after a second
+version: v0.4 — DRAFT, unratified. T now scores ADDITION as well as SURVIVAL (2026-09-01 evening, on
+  Lead's #1717 evidence: the observed failures were host-added claims, not lost qualifications).
+  v0.3 restructured the axis by qualification class 2026-09-01 after a second
   falsification (the directive-field criterion was refuted in both vendors by its own deconfounder).
   Still PENDING-PROBE for issuing a PASS: n=1 per cell per vendor throughout.
 date: 2026-08-30
@@ -15,7 +17,7 @@ last_updated: 2026-08-30
 currency_claim: revise-on-probe-result
 ---
 
-# BYOC Recomposition Rubric — v0.3
+# BYOC Recomposition Rubric — v0.4
 
 **The instrument for scoring Piper's quality on a surface where Piper does not compose what the user
 reads.**
@@ -118,6 +120,36 @@ property of **text we control.** Hand a hedged tool response to someone else's L
 survive into what the user reads."*
 
 **The governing principle, and the reason this axis is actionable rather than merely worrying:**
+
+> ## 🔴 v0.4, 2026-09-01 (evening) — T MUST ALSO SCORE ADDITION, NOT ONLY SURVIVAL
+>
+> **Third falsification of mine this week, and the three share a root.** Lead ran the #1717 verification
+> (6× five-flag + 2× one-flag, gpt-4o **and** sonnet): **the litany I predicted never appeared.** Both
+> models aggregated five failure directives into one sentence, every run. The honesty guards held.
+>
+> ⚠️ **My three wrong predictions this week — *structure beats prose*, *directives beat descriptors*,
+> *five directives yield five clauses* — all assume the host executes instructions LITERALLY.** It
+> doesn't; it **synthesises**. My model of the composition layer has been too mechanical, consistently
+> in one direction.
+>
+> ⭐ **And that changes what this axis must measure.** The observed failures were not the qualification
+> being **lost** — they were the host **adding** claims the payload never licensed:
+>
+> - **Scope leak** (the inverse of my prediction — it appeared in the ONE-flag case, not the five): with
+>   only reminders failed, the model volunteered *"I don't have your projects or todos in front of me."*
+>   **It reported failures that did not happen.** Absent context ≠ failed check — the very distinction
+>   the floor's #1425 discipline exists to protect, leaking in the opposite direction.
+> - **Unverified reassurance**: *"Nothing's lost on your end."* **We don't know that.** We know we
+>   couldn't read it. ⭐ **Comfort is a claim** — and the anti-fabrication rails cover inventing *data*,
+>   not inventing *safety*.
+>
+> **So T is not only "does the qualification survive recomposition."** It is also: **does the payload
+> constrain the host from asserting what it was not given?** T=0's "permits a confident overclaim"
+> already reaches these cases — but the axis was framed loss-shaped throughout, and a loss-shaped reading
+> would have scored both wrinkles as passes.
+>
+> *(Denominator, Lead's and kept: 6 samples, one query shape, two providers — an observed norm, not an
+> impossibility proof.)*
 
 > ## 🔴 GOVERNING PRINCIPLE REPLACED, 2026-09-01 — v0.3. Third version, second falsification.
 >
