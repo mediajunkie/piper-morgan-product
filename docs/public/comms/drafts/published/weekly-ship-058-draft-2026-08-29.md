@@ -4,7 +4,7 @@ alt: 'A child and a crew of robots checking each other''s work on a boat.'
 caption: ''
 ---
 
-# Weekly Ship #058: What we actually had
+# Weekly Ship #058: What We Actually Had
 
 *August 21–27, 2026*
 
