@@ -1,9 +1,24 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-02 ~10:5x PDT (doc-currency escalation is doing its job cohort-wide; a real
-evidence-based correction sent to Exec on publish Step 9's target path)
+**Updated**: 2026-09-02 ~11:2x PDT (Weekly Ship #058 published + independently fact-checked;
+self-caught a real git-add-drops-silently bug on my own archive commit, fixed same-fire)
 **Session log**: `dev/2026/09/02/2026-09-02-0727-docs-code-log.md` (open).
 **Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 12:57.
+
+## Weekly Ship #058 published — https://pipermorgan.ai/shipping-news/weekly-ship-058-what-we-actually-had
+
+PM-engaged (not a cron fire). Independent mechanical audit + 4 load-bearing fact-checks against
+primary sources (issues-closed count, connector-investigation numbers, heading-defect count,
+learning-pattern callback) — zero discrepancies. hashId `201e33efbf5c`. **Syndication leg owed**:
+LinkedIn only (`theme=ship`), owed to Dispatch-PM — memo sent to Comms/Exec/PM naming it.
+
+⚠️ **Real self-caught bug worth remembering**: a `git add` with 4 paths, one of them already
+stale post-`git mv`, aborted the *whole* add silently (matches CLAUDE.md's documented 08-30/31
+failure class) — the calendar status update never landed in the first "archive" commit despite
+looking committed. Caught by re-verifying content on `origin/main`, not by trusting `git status`'s
+leading-space staged/unstaged distinction at a glance. Fixed same-fire (`be7c56524`). **Lesson**:
+after any multi-path `git add`, check `git diff --cached --name-only` lists every intended file —
+don't infer from `git status --short`'s single-line summary alone.
 
 ## Doc-currency escalation is working — CIO broadcast it, roles are self-correcting for real
 
