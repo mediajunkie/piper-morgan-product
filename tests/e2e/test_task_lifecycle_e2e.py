@@ -17,6 +17,8 @@ Requirements:
 - LLM API keys in environment (for floor responses)
 """
 
+from uuid import uuid4
+
 import pytest
 
 # ---------------------------------------------------------------------------
@@ -49,7 +51,7 @@ class TestTodoLifecycleE2E:
         data = await send_message(
             e2e_client,
             "Add a todo: review the deployment plan",
-            "e2e-todo-lifecycle",
+            f"e2e-todo-lifecycle-{uuid4()}",
             e2e_auth_headers,
         )
 
@@ -64,7 +66,7 @@ class TestTodoLifecycleE2E:
     @pytest.mark.asyncio
     async def test_list_todos_shows_created_todo(self, e2e_client, e2e_auth_headers):
         """After creating a todo, listing should show it."""
-        session = "e2e-todo-list"
+        session = f"e2e-todo-list-{uuid4()}"
 
         # Create
         await send_message(
@@ -103,7 +105,7 @@ class TestGitHubCloseE2E:
         data = await send_message(
             e2e_client,
             "Close issue #1",
-            "e2e-github-close",
+            f"e2e-github-close-{uuid4()}",
             e2e_auth_headers,
         )
 
@@ -130,7 +132,7 @@ class TestReminderE2E:
         data = await send_message(
             e2e_client,
             "Remind me to check the deployment status tomorrow",
-            "e2e-reminder",
+            f"e2e-reminder-{uuid4()}",
             e2e_auth_headers,
         )
 
@@ -168,7 +170,7 @@ class TestFloorRoutingE2E:
         data = await send_message(
             e2e_client,
             "What can you help me with?",
-            "e2e-floor-discovery",
+            f"e2e-floor-discovery-{uuid4()}",
             e2e_auth_headers,
         )
 
@@ -184,7 +186,7 @@ class TestFloorRoutingE2E:
         data = await send_message(
             e2e_client,
             "Thanks for your help today!",
-            "e2e-floor-farewell",
+            f"e2e-floor-farewell-{uuid4()}",
             e2e_auth_headers,
         )
 
@@ -200,7 +202,7 @@ class TestFloorRoutingE2E:
         data = await send_message(
             e2e_client,
             "Good morning!",
-            "e2e-floor-greeting",
+            f"e2e-floor-greeting-{uuid4()}",
             e2e_auth_headers,
         )
 
@@ -224,7 +226,7 @@ class TestCapabilityBoundaryE2E:
         data = await send_message(
             e2e_client,
             "Can you book me a flight to New York?",
-            "e2e-capability-boundary",
+            f"e2e-capability-boundary-{uuid4()}",
             e2e_auth_headers,
         )
 
@@ -241,7 +243,7 @@ class TestCapabilityBoundaryE2E:
         data = await send_message(
             e2e_client,
             "Deploy the latest build to production",
-            "e2e-capability-deploy",
+            f"e2e-capability-deploy-{uuid4()}",
             e2e_auth_headers,
         )
 
