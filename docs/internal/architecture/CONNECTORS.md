@@ -47,13 +47,19 @@ its headless case converts to host-mediated and is dropped.
      risk** — `source_failed` as a structured field is exactly right (Claude's prose fabricated
      "your todo list is currently empty" from a failed read; structure fixed it, both vendors).
    - **Class B — the qualification is about content NOT delivered while delivered content already
-     answers the question** (partial coverage, truncation): **structure VANISHES in both vendors,
-     ± directive fields; prose survives.** Carry that class in prose the host is summarizing — or
-     better, don't return partial-with-a-caveat at all: return complete data, or make partialness
-     part of the list's own shape rather than a note beside it.
+     answers the question** (partial coverage, truncation): **the PRIMARY rule, vendor-independent
+     by construction: put the caveat where the model cannot drop it — as a MEMBER of the rendered
+     sequence, not a field beside it** (e.g. an item reading "…and N more not shown," the
+     `search_consciousness.py` template precedent). GPT dropped the solo structured class-B caveat
+     twice; prose survived; but member-not-metadata is immune to the vendor split entirely, which
+     is why it's the recommendation rather than prose. Or return complete data and have no caveat
+     to carry.
    No single slogan covers both classes — format effectiveness runs in opposite directions.
-   (Trail: CXO's #1463 trace 08-30 → first probe 08-30 → both-vendor deconfounder 09-01 falsifying
-   two format-axis principles; rubric v0.3.)
+   *(Series CLOSED 2026-09-03, CXO's verdict: the killer test could not isolate its own variable —
+   comparing classes within one reply necessarily introduces caveat-COUNT as a confound — and the
+   fourth test that would resolve it isn't needed, because member-not-metadata sidesteps the
+   theoretical question. Trail: #1463 trace 08-30 → probe 08-30 → deconfounder 09-01 → killer test
+   09-03; rubric interpretation is CXO's.)*
 2. **New held grants trip the scope-bet gate** (tripwire 3) — no second knowledge-source connector
    rides in on Bet 003.
 3. **Adapter names must tell the transport truth** — no more `*MCPAdapter` over REST. Rename on

@@ -1,9 +1,9 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-03 ~07:40 PDT (mid-day, session log open)
+**Updated**: 2026-09-03 ~10:30 PDT (mid-day, session log open)
 **Session log**: `dev/2026/09/03/2026-09-03-0703-docs-code-log.md` (open).
 **Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy (confirmed via `CronList` this fire),
-next fire 09:57.
+next fire 12:57.
 
 ## No unblocked work outstanding right now
 
@@ -20,8 +20,10 @@ Two substantive things done this session already:
    missing screenshots), frontmatter-drift fixes on `BRIEFING-CURRENT-STATE.md` +
    `ROLE-PORTFOLIO-DOCS.md`, corrected a real miscount from yesterday's #1486 (skills = 35, not 37).
 
-**First action next fire**: sync, mail loop (should be empty — just drained), check whether the
-#1720/#1721 findings get picked up by anyone, otherwise genuinely open floor.
+**#1720/#1721 already triaged by PPM same-day** (Milestone Ongoing / Sprint FLYWHEEL) — checked at
+the 09:57 fire, nothing further owed from Docs on either.
+
+**First action next fire**: sync, mail loop, otherwise genuinely open floor — nothing owed.
 
 ## Watch surfaces (things owned by others, checked periodically)
 

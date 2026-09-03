@@ -69,7 +69,7 @@ class TestOnboardingHTTPE2E:
         # Step 2: Send greeting via /api/v1/intent
         intent_response = await e2e_client.post(
             "/api/v1/intent",
-            json={"message": "Hello", "session_id": "test-session"},
+            json={"message": "Hello", "session_id": f"e2e-greeting-onboarding-{uuid4()}"},
             cookies=cookies,
         )
 
@@ -119,11 +119,12 @@ class TestOnboardingHTTPE2E:
             data={"username": username, "password": password},
         )
         cookies = login_response.cookies
+        session_id = f"e2e-project-info-not-echoed-{uuid4()}"
 
         # Send greeting first (to trigger onboarding)
         await e2e_client.post(
             "/api/v1/intent",
-            json={"message": "Hello", "session_id": "test-session"},
+            json={"message": "Hello", "session_id": session_id},
             cookies=cookies,
         )
 
@@ -131,7 +132,7 @@ class TestOnboardingHTTPE2E:
         project_message = "My main project is called Piper Morgan"
         intent_response = await e2e_client.post(
             "/api/v1/intent",
-            json={"message": project_message, "session_id": "test-session"},
+            json={"message": project_message, "session_id": session_id},
             cookies=cookies,
         )
 
@@ -477,7 +478,10 @@ async def test_degradation_response_not_echo(e2e_client):
     # Send request without auth (will trigger some error path)
     response = await e2e_client.post(
         "/api/v1/intent",
-        json={"message": "Test message that should not be echoed", "session_id": "test"},
+        json={
+            "message": "Test message that should not be echoed",
+            "session_id": f"e2e-degradation-not-echo-{uuid4()}",
+        },
     )
 
     result = response.json()

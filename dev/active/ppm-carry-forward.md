@@ -1,8 +1,22 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-02 22:22 PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-09-03 10:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## ✅ #1720/#1721 TRIAGED PROACTIVELY — Weekly Docs Audit findings, both Ongoing/FLYWHEEL (2026-09-03 10:22)
+Found via `sprint-truth.py`'s unmilestoned count drift again (17→18), same discipline as this
+week's #1718/#1719. Both from today's Weekly Docs Audit #1712. **#1720**: two public-facing user
+guides reference a class retired by #1289 with copy-pasteable code that would literally
+`ImportError` — flagged as a different risk shape than internal doc drift (external developer
+impact) without escalating priority on that basis alone; owner question (needs
+`StandupOrchestrationService`'s real interface confirmed first) correctly left to Lead/feature-owner.
+**#1721**: 5 missing onboarding screenshots in `ALPHA_TESTING_GUIDE.md` — **directly connects to
+my own #1708 close-out**, where I'd already flagged that doc as "not yet audited for the
+hosted-primary change." Recommended folding into that eventual pass rather than a standalone
+screenshot-capture task, since the wizard walkthrough moved to CONTRIBUTING.md and the guide's own
+scope may need to change first. Both milestoned Ongoing/FLYWHEEL, board-added, verified no
+collateral damage.
 
 **Quiet close today**: no new state past the 16:22 entries above (#1717 verification, #1718,
 #1719). Both #1718 and #1719 are freshly triaged, nobody has acted on them yet — normal, not a
