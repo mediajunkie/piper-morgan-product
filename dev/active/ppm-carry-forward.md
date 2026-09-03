@@ -1,8 +1,12 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-02 16:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-09-02 22:22 PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+**Quiet close today**: no new state past the 16:22 entries above (#1717 verification, #1718,
+#1719). Both #1718 and #1719 are freshly triaged, nobody has acted on them yet — normal, not a
+gap.
 
 ## ✅ #1719 TRIAGED PROACTIVELY — cohort tooling debt, Ongoing/FLYWHEEL (2026-09-02 16:22)
 Found via `sprint-truth.py`'s unmilestoned count again (17→18), same discipline as #1718 this

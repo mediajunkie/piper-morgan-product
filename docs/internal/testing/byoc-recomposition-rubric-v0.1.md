@@ -121,6 +121,29 @@ survive into what the user reads."*
 
 **The governing principle, and the reason this axis is actionable rather than merely worrying:**
 
+> ## 🟡 CANDIDATE MITIGATION for class B, 2026-09-02 — PA's find, and it is the first one grounded in
+> shipped code rather than my speculation
+>
+> **PA found a live precedent while doing unrelated work**: `search_consciousness.py:84-85` appends
+> *"...and N more results."* — and it **cannot** silently drop that caveat, because nothing asks a model
+> to preserve it.
+>
+> ⭐ **Verified in source, and the mechanism is sharper than "template not model."** The caveat is
+> `sections.append(...)` into **the same list as the enumerated items**, then joined. **It is a MEMBER of
+> the sequence, not METADATA about the sequence.**
+>
+> **Why that might transfer to BYOC, where PA correctly notes the host still recomposes**: every class-B
+> failure so far has been a **field** the host declined to surface (`coverage: partial`,
+> `may_claim_complete: false`). **A host enumerating a list enumerates its members.** So the candidate
+> form is: **make the caveat the final ELEMENT of the array the host is rendering** — e.g. a last item
+> reading *"…and 7 more not shown"* — rather than a sibling field describing it. **Dropping it would then
+> require dropping a list item, which is a different and rarer behaviour than omitting a field.**
+>
+> 🔴 **Untested, and my track record on this axis is 0 for 2** — *structure beats prose* and *directives
+> beat descriptors* both died on exactly this case. **Recorded as a candidate, not adopted into the T
+> scale.** It is a 2-call test and it should ride with the pending class-discriminator test rather than
+> become a second ask; I am not extending scope before the first is answered.
+
 > ## 🔴 v0.4, 2026-09-01 (evening) — T MUST ALSO SCORE ADDITION, NOT ONLY SURVIVAL
 >
 > **Third falsification of mine this week, and the three share a root.** Lead ran the #1717 verification

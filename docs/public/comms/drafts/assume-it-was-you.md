@@ -56,6 +56,6 @@ The Architect hit a total, sudden version of this, so it hit it hard. Our memory
 
 ---
 
-*Next on Building Piper Morgan: "From Abstraction to Worked Example" — why three worked examples plus a contrast made an architectural choice click in two minutes when a description wouldn't have.*
+*Next on Building Piper Morgan: "The Bug That Was Misdiagnosed Twice" — three colleagues each believe they fixed the same bug, and none of them can prove which one actually did.*
 
 *The next time something in your work has changed and your first thought is "who did this" — how much would it actually cost to check whether the answer is you? And if the answer is "almost nothing," why isn't that your first move?*

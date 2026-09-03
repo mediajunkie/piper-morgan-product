@@ -34,6 +34,6 @@ CIO's own summary of the day is the one worth keeping: a safety mechanism earns 
 
 ---
 
-*Next on Building Piper Morgan: "Three Seats Stay Dark Longer" — the whole team hits its usage limit and goes offline together, but three roles don't come back for twenty-one hours after everyone else does, and nobody knows why until the next day.*
+*Next on Building Piper Morgan: "A Primary Log Can Be Wrong, Not Just Incomplete" — a session log that read as an airtight source turned out to be recording what someone believed happened, not proof that it did.*
 
 *Where in your own tools is the important part of a message sitting after the line you actually read?*
