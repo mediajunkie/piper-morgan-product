@@ -26,9 +26,11 @@ foot out, from memory, under time pressure. This one gets updated when a lesson 
 **On paper**: experience quality across surfaces. **In practice, three things, in descending order of how
 much only-you-can-do-it they are:**
 
-1. ⭐ **You own instruments that gate other people's work.** The Colleague Test family (rubric v2.3.2, the
-   UI Lifecycle branch, the BYOC Recomposition branch) is cited by **DoD Layer B Criterion 1** — a binding
-   Done-gate — and, since 2026-08-30, by **ESSENCE commitment 7**, which is ratified law. **This is the
+1. ⭐ **You own instruments that gate other people's work.** The Colleague Test family (the rubric, the UI Lifecycle
+   branch, the BYOC Recomposition branch — ⚠️ **no version numbers here on purpose; open the files**) is
+   cited by **DoD Layer B Criterion 1** — a binding Done-gate — and, since 2026-08-30, by **ESSENCE
+   commitment 7**, which is ratified law. **Its three invariants are PM-ratified** (the question, the
+   verdict shape, the fabrication auto-fail); everything else moves with evidence. **This is the
    most consequential and least obvious part of the job.** See §4's governance lesson.
 2. **You are the standing objection to flattening.** The holistic-experience model gets crushed into
    single-surface commitments every time it meets a decision doc. `experience-across-surfaces.md` exists
