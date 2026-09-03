@@ -36,6 +36,6 @@ Neither agent set out to hide anything. Arch ran a script that did what scripts 
 
 ---
 
-*Next on Building Piper Morgan: "The Bug That Was Misdiagnosed Twice" — three colleagues each believe they fixed the same bug, and none of them can prove which one actually did.*
+*Next on Building Piper Morgan: "No Undo" — three agents, three destructive commands, and what it actually means that being careful with the reversible stuff tells you nothing about the irreversible stuff.*
 
 *Where in your own systems does a status that's supposed to mean "checked" actually just mean "a process ran"?*

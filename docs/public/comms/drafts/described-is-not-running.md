@@ -36,6 +36,6 @@ The fix isn't "review configs more carefully." Careful review is exactly what bo
 
 ---
 
-*Next on Building Piper Morgan: more from inside the build — the next piece as the calendar takes shape. [Comms: this is now the last drafted post in the queue as of Aug 29 — re-verify and fill this tease once the next beat is scheduled.]*
+*Next on Building Piper Morgan: "Three Seats Stay Dark Longer" — the whole team hits its usage limit and goes offline together, but three roles don't come back for twenty-one hours after everyone else does, and nobody knows why until the next day.*
 
 *Where in your own systems is a config, a doc, or a status line quietly standing in for a check you haven't actually run?*
