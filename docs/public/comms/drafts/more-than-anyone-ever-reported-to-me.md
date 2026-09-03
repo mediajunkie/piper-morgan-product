@@ -42,6 +42,6 @@ That's what a month of schedule actually bought. Not more code. A more honest re
 
 ---
 
-*Next on Building Piper Morgan: "No Undo" — three separate destructive-command near-misses in two weeks make the case for a guardrail class of their own, distinct from ordinary competence.*
+*Next on Building Piper Morgan: "The Mailbox Trust Violation" — an agent searches for a memo, can't find it, and tells PM it doesn't exist, while a second agent's own honest search independently lands on the same wrong answer.*
 
 *Where in your own work has "the queue is empty" quietly become "we're done" — and how would you actually find out if it had?*

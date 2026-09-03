@@ -107,6 +107,28 @@ DECONFOUNDER_CASES = [
       "coverage": "partial", "total_known": False, "may_claim_complete": False}),
 ]
 
+# Killer test (2026-09-03, CXO's design, PM-authorized verbatim 2026-09-03 06:0x PT:
+# "got it. let's do the killer test (authorized!)") — one payload carrying BOTH a
+# class-A caveat (about content that IS delivered — staleness, matching item 4's exact
+# `as_of`/`freshness` field shape, which survives in both vendors) and a class-B caveat
+# (about content NOT delivered — item 3's `coverage`/`total_known` fields, which vanish
+# in both vendors). Same question, same turn, same reply.
+#   Confirms the class taxonomy -> staleness survives AND completeness vanishes, in the
+#     SAME reply, same model, same turn. Cleanest possible signature.
+#   Kills it -> both vanish (or both survive), meaning item 3 was that item's topic, not
+#     a real class distinction, and CXO's subject-not-format reframe is wrong a third
+#     time on this axis.
+KILLER_TEST_CASES = [
+    ("item3_killer", "combined payload: class A (staleness, survives) + class B (partial coverage, vanishes) in one turn",
+     "piper_get_issues", "Summarize my open issues.",
+     {"issues": [
+         {"id": "ISSUE-101", "title": "Login fails on SSO redirect"},
+         {"id": "ISSUE-102", "title": "Export button missing on mobile"},
+         {"id": "ISSUE-103", "title": "Slack notifications duplicated"}],
+      "coverage": "partial", "total_known": False,
+      "as_of": "2026-08-23", "freshness": "stale"}),
+]
+
 # Negative controls (packet §4) — CONFIRMED by CXO 2026-08-30, chosen per-item against
 # that item's own confound, not applied uniformly:
 #   item 1's failure mode is a hedge getting DROPPED -> control is a bare unhedged
@@ -224,6 +246,23 @@ if __name__ == "__main__":
                         "payload": payload, "user_msg": user_msg, "reply": reply})
             print("=" * 78)
             print("CASE %s  [%s / %s]  DECONFOUNDER" % (cid, PROVIDER, MODEL))
+            print("CLASS: %s" % kind)
+            print("-" * 78)
+            print(reply)
+            print()
+
+    # Killer test — opt-in via PROBE_KILLER=1, same isolation discipline as the deconfounder.
+    if os.environ.get("PROBE_KILLER") == "1":
+        for cid, kind, tool_name, user_msg, payload in KILLER_TEST_CASES:
+            trial_count += 1
+            try:
+                reply = call(tool_name, user_msg, payload, key)
+            except Exception as e:
+                reply = "ERROR: %s" % e
+            out.append({"id": cid, "class": kind, "variant": "killer_test",
+                        "payload": payload, "user_msg": user_msg, "reply": reply})
+            print("=" * 78)
+            print("CASE %s  [%s / %s]  KILLER TEST" % (cid, PROVIDER, MODEL))
             print("CLASS: %s" % kind)
             print("-" * 78)
             print(reply)
