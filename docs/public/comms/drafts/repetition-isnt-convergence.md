@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'repetition-isnt-convergence-false-consensus.png'
 alt: ''
 caption: ''
 ---
