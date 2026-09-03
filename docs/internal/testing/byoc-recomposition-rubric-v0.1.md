@@ -95,12 +95,12 @@ parts we left out?*
 what matters shows up in how Piper writes the sentence. Here that sentence is written by someone else.
 **If salience isn't in the payload, it isn't anywhere.**
 
-### C — Context *(meaning ANCHORED to CT v2.3.2; evidence standard BRANCHED)*
+### C — Context *(meaning ANCHORED to the Colleague Test rubric — open that file for its version; evidence standard BRANCHED)*
 
 *Does the output use Piper's real assembled project state, and is it honest about gaps?*
 
 **Anchored deliberately** — this is a property of what we emit, so CT's meaning transfers intact, and
-anchoring is a decision recorded here rather than an omission. Score 0–3 per CT v2.3.2's Context table,
+anchoring is a decision recorded here rather than an omission. Score 0–3 per the CT rubric's Context table,
 including its fabrication auto-fail and its fresh-account C=2 ceiling.
 
 ⚠️ **One narrow divergence, and it must be stated**: CT's C=3 requires project-context injection to be
@@ -121,6 +121,96 @@ property of **text we control.** Hand a hedged tool response to someone else's L
 survive into what the user reads."*
 
 **The governing principle, and the reason this axis is actionable rather than merely worrying:**
+
+> ⭐ **The T scale's current criteria are the table above. Its revision history — three falsifications,
+> all mine, all on evidence — lives in §8 and is deliberately NOT in your way here.** *An instrument's
+> current state must be readable without reading its history; four stacked banners between a heading and
+> its criteria is the buried-caveat failure this document warns other people about.*
+
+## 4. Capability truthfulness — a precondition, not a fourth dimension
+
+PDR-006:249 proposed three branch dimensions; the third, **capability truthfulness**, is a property of the
+**tool catalog** — evaluated once per tool, not once per response. Making it a fourth axis would break the
+0–9/≥7 shape the branch discipline says to preserve, for a thing that isn't per-response anyway.
+
+**So it is a gate precondition**: before any tool ships, its name and description must claim only what it
+does. On this surface the description is read by the host as much as by the human, and 📄 PPM's recorded
+counter-risk applies — situation-shaped names may route *worse* than object-shaped ones, and **nobody
+knows which way that goes.** Both questions share a rig with §6's probe.
+
+## 5. What this instrument does NOT tell you
+
+- **Nothing about what the user actually read.** By construction. A 9/9 here means we handed the host
+  everything it needed and made the honesty hard to drop — not that the reply was good.
+- **Nothing about tone, voice, or whether it sounded like a colleague.** Those are the host's.
+- **Nothing about routing** — whether the host picked the right tool is a separate measurement.
+
+**The Colleague Test itself remains the right instrument for the chat surface**, which is in maintenance
+mode but still carries every real tester today. This branch does not supersede it. Two surfaces, two
+instruments, one question.
+
+## 6. The probe series — ✅ CLOSED 2026-09-03 (design retained for reuse)
+
+📄 **PA, 2026-07-30, and it is still true**: *"Testable NOW — this gate does not depend on the build. It
+needs a hedged/qualified text blob and a client LLM, not `mcp.pipermorgan.ai`. So it can close during
+Phase 0 rather than waiting on Phase 2, and it should — a negative result would change what the tool layer
+has to emit, which is cheaper to learn before the tools are written."*
+
+**As of today that window is still open**: #1688 is the only MVP-milestone item on the MCP path and has
+no build commits yet. It closes the moment tool output starts being written.
+
+**Design:**
+
+1. **Corpus** — the hedge shapes we actually emit, not invented ones: honest decline, partial data,
+   empty result, stale data, degraded-provider fallback. Draw the wording from the shipped strings
+   (`consent_gate.py`, `first_contact.py`, the decline paths) so the probe tests our real prose.
+2. **Treatment** — present each inside a realistic tool-result frame to the hosts we target
+   (Claude, ChatGPT), with a user question that creates summarization pressure.
+3. **Measure** — does the qualification survive into the composed reply, weakened, or vanish?
+4. ⚠️ **Negative control, non-optional** — include *unhedged, confident* outputs. If the probe reports
+   "survives" for both hedged and unhedged, it is not measuring hedge survival and its positive result is
+   meaningless. **A probe that cannot fail has not passed.**
+5. **Paired structural variant** — run the same fact as prose-hedge and as structured-field, to test §3's
+   governing principle directly rather than assuming it. It is the whole basis of the T scale and it is
+   currently my hypothesis, nothing more.
+6. **Denominator, stated** — which hosts, which model versions, how many trials, on what date.
+
+> ⚠️ **This result carries an expiry date, and the rubric must say so where the result lands.** The model
+> composing our text ships new versions without telling us; a hedge that survives today's host may not
+> survive its successor. **This is a standing property of the BYOC surface, not a caveat on one probe** —
+> every claim we make about recomposition behavior is a claim about a third party's current build.
+
+## 7. Provenance and cross-reference
+
+- **Branched from**: Colleague Test Rubric **v2.3.2** — ⚠️ *this version number is CORRECT and must not
+  be "fixed" to the parent's current version. A **provenance** citation names a fixed point in history;
+  a **live** reference to the current instrument must carry no version at all (see §3's C axis, and the
+  briefing-level rule: a number plus "don't trust this number" is worse than no number). Two different
+  things that look identical.* Per its §"How to Extend This Rubric —
+  Branch-or-Anchor Discipline" (v2.3, CXO 2026-04-27, from CIO's Apr 26 rubric-drift framing).
+- **Pattern followed**: UI Lifecycle Verification Rubric v0.1 (PPM, 2026-05-10) — the canonical worked
+  example of legitimate branching. Shape preserved, meanings explicitly branched, provenance stated,
+  cross-referenced back.
+- **Divergence summary** — R branched (Relevance → Sufficiency) · C anchored in meaning, branched in
+  evidence standard · **T fully branched** (Tone → Honesty-under-recomposition; CT's Tone is unscoreable
+  here) · capability truthfulness held as a precondition rather than a fourth axis.
+- **Grounded in**: PDR-006 §"Pre-user gates" (:35) and §246–265; ESSENCE v0.1 commitments 4 and 6.
+- **Add a back-reference in `colleague-test-rubric.md` §"How to Extend This Rubric"** when this branch is
+  ratified — not before, so the CT rubric never points at an unratified instrument.
+
+---
+
+*CXO v0.1, 2026-08-30. Written because PDR-006 named this gate open on 2026-07-19 and ESSENCE made the
+surface it gates the only one being built on. **The instrument is not done until §6's probe runs** — what
+exists today is a scoreable R and C, an honest T-shaped hypothesis, and a test that can falsify it.*
+
+---
+
+## 8. Revision history — what was falsified, when, and by what
+
+⚠️ **Everything below is kept verbatim.** Three of my hypotheses for the T axis were falsified on
+evidence in one week; the record of *how* is more useful to a successor than a clean scale would be.
+**Read this if you are about to extend the instrument. Skip it if you are just scoring.**
 
 > ## 🔴 v0.5, 2026-09-03 — THE CLASS ACCOUNT IS VENDOR-DEPENDENT, AND MY TEST COULD NOT HAVE SETTLED IT
 >
@@ -349,76 +439,3 @@ dropping it** — the expensive-looking option is already most of the way built.
 > on T** — a score from an untested criterion is exactly the false clear this document exists to prevent,
 > and shipping one inside the instrument built to catch it would be the third iteration of that shape this
 > month. Score R and C; record T as `PENDING-PROBE`.
-
-## 4. Capability truthfulness — a precondition, not a fourth dimension
-
-PDR-006:249 proposed three branch dimensions; the third, **capability truthfulness**, is a property of the
-**tool catalog** — evaluated once per tool, not once per response. Making it a fourth axis would break the
-0–9/≥7 shape the branch discipline says to preserve, for a thing that isn't per-response anyway.
-
-**So it is a gate precondition**: before any tool ships, its name and description must claim only what it
-does. On this surface the description is read by the host as much as by the human, and 📄 PPM's recorded
-counter-risk applies — situation-shaped names may route *worse* than object-shaped ones, and **nobody
-knows which way that goes.** Both questions share a rig with §6's probe.
-
-## 5. What this instrument does NOT tell you
-
-- **Nothing about what the user actually read.** By construction. A 9/9 here means we handed the host
-  everything it needed and made the honesty hard to drop — not that the reply was good.
-- **Nothing about tone, voice, or whether it sounded like a colleague.** Those are the host's.
-- **Nothing about routing** — whether the host picked the right tool is a separate measurement.
-
-**The Colleague Test itself remains the right instrument for the chat surface**, which is in maintenance
-mode but still carries every real tester today. This branch does not supersede it. Two surfaces, two
-instruments, one question.
-
-## 6. The probe this rubric is blocked on
-
-📄 **PA, 2026-07-30, and it is still true**: *"Testable NOW — this gate does not depend on the build. It
-needs a hedged/qualified text blob and a client LLM, not `mcp.pipermorgan.ai`. So it can close during
-Phase 0 rather than waiting on Phase 2, and it should — a negative result would change what the tool layer
-has to emit, which is cheaper to learn before the tools are written."*
-
-**As of today that window is still open**: #1688 is the only MVP-milestone item on the MCP path and has
-no build commits yet. It closes the moment tool output starts being written.
-
-**Design:**
-
-1. **Corpus** — the hedge shapes we actually emit, not invented ones: honest decline, partial data,
-   empty result, stale data, degraded-provider fallback. Draw the wording from the shipped strings
-   (`consent_gate.py`, `first_contact.py`, the decline paths) so the probe tests our real prose.
-2. **Treatment** — present each inside a realistic tool-result frame to the hosts we target
-   (Claude, ChatGPT), with a user question that creates summarization pressure.
-3. **Measure** — does the qualification survive into the composed reply, weakened, or vanish?
-4. ⚠️ **Negative control, non-optional** — include *unhedged, confident* outputs. If the probe reports
-   "survives" for both hedged and unhedged, it is not measuring hedge survival and its positive result is
-   meaningless. **A probe that cannot fail has not passed.**
-5. **Paired structural variant** — run the same fact as prose-hedge and as structured-field, to test §3's
-   governing principle directly rather than assuming it. It is the whole basis of the T scale and it is
-   currently my hypothesis, nothing more.
-6. **Denominator, stated** — which hosts, which model versions, how many trials, on what date.
-
-> ⚠️ **This result carries an expiry date, and the rubric must say so where the result lands.** The model
-> composing our text ships new versions without telling us; a hedge that survives today's host may not
-> survive its successor. **This is a standing property of the BYOC surface, not a caveat on one probe** —
-> every claim we make about recomposition behavior is a claim about a third party's current build.
-
-## 7. Provenance and cross-reference
-
-- **Branched from**: Colleague Test Rubric **v2.3.2**, per its §"How to Extend This Rubric —
-  Branch-or-Anchor Discipline" (v2.3, CXO 2026-04-27, from CIO's Apr 26 rubric-drift framing).
-- **Pattern followed**: UI Lifecycle Verification Rubric v0.1 (PPM, 2026-05-10) — the canonical worked
-  example of legitimate branching. Shape preserved, meanings explicitly branched, provenance stated,
-  cross-referenced back.
-- **Divergence summary** — R branched (Relevance → Sufficiency) · C anchored in meaning, branched in
-  evidence standard · **T fully branched** (Tone → Honesty-under-recomposition; CT's Tone is unscoreable
-  here) · capability truthfulness held as a precondition rather than a fourth axis.
-- **Grounded in**: PDR-006 §"Pre-user gates" (:35) and §246–265; ESSENCE v0.1 commitments 4 and 6.
-- **Add a back-reference in `colleague-test-rubric.md` §"How to Extend This Rubric"** when this branch is
-  ratified — not before, so the CT rubric never points at an unratified instrument.
-
----
-
-*CXO v0.1, 2026-08-30. Written because PDR-006 named this gate open on 2026-07-19 and ESSENCE made the
-surface it gates the only one being built on. **The instrument is not done until §6's probe runs** — what
-exists today is a scoreable R and C, an honest T-shaped hypothesis, and a test that can falsify it.*
