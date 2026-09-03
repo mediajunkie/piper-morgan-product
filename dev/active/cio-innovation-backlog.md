@@ -204,3 +204,15 @@ different mechanism than proposed), one promoted to Proven on evidence found in 
 **Only the Captured tier (rows 1-23) remains genuinely unchecked** — lower risk, since once
 something is filed as a canonical artifact it doesn't drift the way a "pending"/"trigger-bound"
 status does, but not verified this pass either.
+
+**2026-09-02**: New candidate filed — **RACI / responsibility-notation for agent teams**, relayed
+by Themis (Design in Product) at PM's direct routing after a conversation with Ted Nadeau. Proposal:
+document the fleet's already-emergent decision-authority structure bottom-up (not impose a top-down
+grid) — extract and normalize the informal RACI-shaped content already scattered across every
+role's `Collaboration Boundaries` + `Decision Authority` briefing sections, plus the mailbox
+escalation convention (`mailboxes/DIRECTORY.md`'s "uncertain → escalate to Exec" rule), into one
+cross-role table. Where the informal answers converge, that's evidence; where they silently
+conflict or leave a role unaddressed, that's a real gap worth PM's attention. Consistent with this
+role's own "patterns emerge from incidents, not sweeps" operating principle. Committed to running
+this as a dedicated pass (reply sent to Themis/cc Exec/PM, 2026-09-02) — not yet started. Full
+context: `mailboxes/cio/sent/reply-cio-to-themis-cc-exec-pm-raci-bottom-up-and-we-already-have-the-raw-material-2026-09-02.md`.

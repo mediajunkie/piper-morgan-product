@@ -1,8 +1,16 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-02 10:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-09-02 16:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## ✅ #1719 TRIAGED PROACTIVELY — cohort tooling debt, Ongoing/FLYWHEEL (2026-09-02 16:22)
+Found via `sprint-truth.py`'s unmilestoned count again (17→18), same discipline as #1718 this
+morning. Cross-ref-drift-after-file-move recurring 4th time, filed per Monthly Housekeeping
+Audit's own "3+ recurrences → structural fix" rule. Not a product/feature question — cohort CI
+hygiene. Milestoned **Ongoing**, Sprint **FLYWHEEL - Process improvement**. Mechanism choice
+(widen lychee's watched paths vs. a pre-move grep check) explicitly routed to Arch/Lead, not
+decided here — the issue itself correctly declined to pick.
 
 ## ✅ #1718 TRIAGED PROACTIVELY — real tester-affecting bug, MVP/Beta Blockers (2026-09-02 10:22)
 Found by checking `sprint-truth.py`'s unmilestoned count myself (17→18), not from mail — an empty

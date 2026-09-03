@@ -226,6 +226,22 @@ echo "$out16" | grep -q "STALE-BLOCKER: zzztest" && no "a failed gh lookup was W
 rm -rf "$BADMOCKDIR"
 rm -f "$FIXTURE"
 
+echo "== T17: v1.3 per-file rows-examined breakdown (CXO's finding, 2026-09-02) =="
+# Reproduces CXO's real incident directly: a fixture with a real per-item date column (so it's
+# NOT in the no-date-column coverage gap), but the coverage section must still show its per-file
+# row count explicitly — the exact signal that would have caught her truncated table a day early.
+cat >"$FIXTURE" <<EOF
+# ZZZTest Standing Items (v1.3 fixture — per-file rows breakdown)
+
+| Filed | Item | Status |
+|---|---|---|
+| $DATE_RECENT | **Row one** | Fine. |
+| $DATE_RECENT | **Row two** | Fine. |
+EOF
+out17=$(cd "$ROOT" && bash "$SCRIPT" 2>&1)
+echo "$out17" | grep -q "· zzztest: 2" && ok "per-file breakdown shows zzztest: 2 (matches the 2 real rows)" || no "expected '· zzztest: 2' in per-file breakdown, got: $(echo "$out17" | grep zzztest)"
+rm -f "$FIXTURE"
+
 echo "== T14: no real tracked file was touched by this test run =="
 git -C "$ROOT" status --porcelain dev/active/duty-cycle-registry.tsv | grep -q . \
     && no "duty-cycle-registry.tsv shows a change" || ok "duty-cycle-registry.tsv untouched"
