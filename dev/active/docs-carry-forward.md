@@ -1,27 +1,31 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-03 ~10:30 PDT (mid-day, session log open)
+**Updated**: 2026-09-03 ~13:35 PDT (mid-day, session log open)
 **Session log**: `dev/2026/09/03/2026-09-03-0703-docs-code-log.md` (open).
 **Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy (confirmed via `CronList` this fire),
-next fire 12:57.
+next fire 15:57.
 
 ## No unblocked work outstanding right now
 
-Two substantive things done this session already:
+Three substantive things done this session already:
 
-1. **"Repetition Isn't Convergence" published** — https://pipermorgan.ai/blog/repetition-isnt-convergence/
-   Live-verified by content. Caught+fixed a real bug on myself mid-publish: a `git reset HEAD`
-   silently dropped the deletion half of a `git mv` during drafts archival — 2nd confirmed instance
-   of the exact failure class named in yesterday's carry-forward. Full trace in today's log.
+1. **"Repetition Isn't Convergence" fully distributed** —
+   https://pipermorgan.ai/blog/repetition-isnt-convergence/ +
+   https://medium.com/building-piper-morgan/repetition-isnt-convergence-f8ac3ca22b7b (building
+   theme, LinkedIn correctly empty). Calendar status=distributed, canonicalSite=distributed. Caught
+   +fixed a real bug on myself mid-publish: a `git reset HEAD` silently dropped the deletion half of
+   a `git mv` during drafts archival — 2nd confirmed instance of the exact failure class named in
+   yesterday's carry-forward. Full trace in today's log.
 2. **Weekly Docs Audit #1712 closed** (3 days late — found via a CONSTANTS-block mismatch check,
-   not the actual Monday trigger; the CONSTANTS block a cron fire carried was stale on 3 separate
-   claims, all checked against real state before trusting any of them). Full 8-section pass, 2 real
-   findings filed (**#1720** stale `MorningStandupWorkflow` refs in 2 public guides, **#1721** 5
-   missing screenshots), frontmatter-drift fixes on `BRIEFING-CURRENT-STATE.md` +
-   `ROLE-PORTFOLIO-DOCS.md`, corrected a real miscount from yesterday's #1486 (skills = 35, not 37).
-
-**#1720/#1721 already triaged by PPM same-day** (Milestone Ongoing / Sprint FLYWHEEL) — checked at
-the 09:57 fire, nothing further owed from Docs on either.
+   not the actual Monday trigger). Full 8-section pass, 2 real findings filed (**#1720** stale
+   `MorningStandupWorkflow` refs in 2 public guides, **#1721** 5 missing screenshots), frontmatter-
+   drift fixes on `BRIEFING-CURRENT-STATE.md` + `ROLE-PORTFOLIO-DOCS.md`, corrected a real miscount
+   from yesterday's #1486 (skills = 35, not 37). **Both filed issues already triaged by PPM
+   same-day** into Milestone Ongoing / Sprint FLYWHEEL — nothing further owed.
+3. **Read CIO's FLYWHEEL delegation results** (the 7-issue delegation I sent 09-02): all 7 handled,
+   4 were already done before dispatch, 2 genuinely new fixes shipped with real evidence, 1 done
+   directly, 1 filed as CIO's own standing item. CIO also filed **#1722** (91 orphaned subagent
+   worktrees) — not mine, noted for awareness only.
 
 **First action next fire**: sync, mail loop, otherwise genuinely open floor — nothing owed.
 
@@ -99,6 +103,11 @@ without PM present** — resume only if PM re-engages.
 - **`gh issue list` defaults to a 30-item limit if `--limit` is omitted** — always pass an explicit
   high limit for anything claiming to be a total count; a suspiciously round or low number is a
   signal to re-check, not trust.
+- **`mail-send.sh` does not advance local HEAD** — it pushes via `commit-tree` straight to
+  `origin/main`. Right after a send, local disk for the paths involved can still look pre-move
+  until an explicit `git merge origin/main`. If a triaged file appears to still be sitting in
+  `inbox/` right after a successful send, check `git log HEAD..origin/main` before assuming
+  anything went wrong or re-sending.
 
 ## Mail-loop scan
 

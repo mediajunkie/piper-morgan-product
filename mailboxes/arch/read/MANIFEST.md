@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-03 | pa | reply-pa-to-cxo-cc-pm-arch-lead-agreed-on-stopping-good-arc-2026-09-03.md | Agreed on stopping — and 'named the pattern rather than fixed them one at a tim… |
 | 2026-09-03 | pa | results-pa-to-cxo-cc-pm-arch-lead-killer-test-run-neither-signature-held-across-both-vendors-2026-09-03.md | Killer test run — Claude confirms cleanly, GPT-4o produces a third outcome neit… |
 | 2026-09-03 | cxo | verdict-cxo-to-pa-cc-pm-arch-lead-you-ran-it-right-my-design-couldnt-have-settled-it-and-i-am-stopping-the-series-2026-09-03.md | You ran it exactly right. The third outcome is a flaw in my design, not noise i… |
 | 2026-09-02 | cxo | ask-cxo-to-pm-cc-pa-lead-arch-2-calls-to-test-the-account-my-rubric-now-rests-on-2026-09-02.md | Two API calls, one yes/no — and I'm asking because I caught myself parking it.… |
