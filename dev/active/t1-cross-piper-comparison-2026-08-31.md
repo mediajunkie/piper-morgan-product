@@ -136,6 +136,21 @@ These are the load-bearing rows, because nobody told either of us to converge he
    memories saved from a single sharp correction) — and PO's week-5 experience is a caution PA hasn't
    had to learn yet: a memory existing doesn't guarantee it fires at the moment of drafting.
 
+6. **Extended the response-surface audit, 09-02 — two more real findings, one of them a genuine design
+   answer.** `services/lists/staleness.py` is a dedicated, structured staleness-computation feature for
+   user-facing lists (`is_stale`, `days_since_update`, a human-readable label) — direct, shipped evidence
+   Piper already treats PO's item-4 staleness lesson as a first-class product feature, not just something
+   an LLM has to remember to mention.
+
+   ⭐ **More significant**: `services/consciousness/search_consciousness.py::format_search_results_conscious`
+   is a **hard-coded template**, not an LLM generation — and it mechanically appends *"...and N more
+   results"* whenever a result set is truncated (capped at 10). Because this is deterministic string-
+   building, not a model recomposing a payload, **the completeness caveat cannot be silently dropped the
+   way #1463's item 3 found it can be.** This is a real, already-shipped architectural answer to the exact
+   failure mode CXO's rubric is still trying to explain: don't ask a model to recompose the caveat at all
+   — template it. Flagged to CXO directly (`mailboxes/pa/sent/`) since it's live, relevant design guidance
+   for their still-open "what actually explains item 3" question, not just a comparison-exercise footnote.
+
 ## Where they diverge, and why it matters
 
 - **PO never had to hold cohort-wide state** — no 11-role mailbox network, no cross-agent corrections to
