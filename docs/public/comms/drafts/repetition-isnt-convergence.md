@@ -1,14 +1,14 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Repetition Isn't Convergence
 
 *August 5–8, 2026*
 
-Two days before a beta deadline, my executive-assistant agent (PA) found a number that looked alarming: the production branch was 2,269 commits behind the main line of development, missing over four thousand files' worth of change. The reason it mattered wasn't the number itself — it was what the number implied. A safety gate meant to close a real security hole had shipped to the main branch on August 4th. If production was that far behind, the gate wasn't actually protecting anyone yet.
+Two days before a beta deadline, my product-assistant agent (Piper Alpha, or PA for short) found something alarming: the production branch was 2,269 commits behind the main line of development, missing over four thousand files' worth of change. One reason it mattered was that a safety gate meant to close a real security hole had shipped to the main branch on August 4th. If production was that far behind, the gate wasn't actually protecting anyone yet.
 
 PA sent it as an urgent finding, with the caveats stated plainly: this measured one specific thing, and an agent should check what was actually running.
 
