@@ -1,7 +1,7 @@
 ---
 image: 'repetition-isnt-convergence-false-consensus.png'
-alt: ''
-caption: ''
+alt: 'Four AI detectives compare identical photos of a huge breach, while a fifth steps outside to inspect the actual unsecured door directly.'
+caption: '"Hey did anyone check this door?"'
 ---
 
 # Repetition Isn't Convergence
