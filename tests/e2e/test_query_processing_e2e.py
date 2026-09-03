@@ -8,6 +8,8 @@ content (that would be fragile) — only on response structure and deterministic
 Issue: #352 TEST-SMOKE-E2E
 """
 
+from uuid import uuid4
+
 import pytest
 
 
@@ -15,9 +17,10 @@ import pytest
 @pytest.mark.asyncio
 async def test_intent_returns_structured_response(e2e_client, e2e_auth_headers):
     """Authenticated intent request returns well-structured response."""
+    session_id = f"e2e-test-session-{uuid4()}"
     response = await e2e_client.post(
         "/api/v1/intent",
-        json={"message": "Hello", "session_id": "e2e-test-session"},
+        json={"message": "Hello", "session_id": session_id},
         **e2e_auth_headers,
     )
 
@@ -33,7 +36,7 @@ async def test_intent_returns_structured_response(e2e_client, e2e_auth_headers):
     assert "intent" in data, f"Response missing 'intent': {data}"
 
     # Session ID should be echoed back
-    assert data.get("session_id") == "e2e-test-session"
+    assert data.get("session_id") == session_id
 
 
 @pytest.mark.e2e
@@ -42,7 +45,7 @@ async def test_intent_without_auth_still_responds(e2e_client):
     """Intent endpoint works without auth (graceful degradation)."""
     response = await e2e_client.post(
         "/api/v1/intent",
-        json={"message": "What can you do?", "session_id": "e2e-unauth"},
+        json={"message": "What can you do?", "session_id": f"e2e-unauth-{uuid4()}"},
     )
 
     assert response.status_code == 200
@@ -59,7 +62,7 @@ async def test_intent_does_not_echo_input(e2e_client, e2e_auth_headers):
 
     response = await e2e_client.post(
         "/api/v1/intent",
-        json={"message": test_message, "session_id": "e2e-echo-test"},
+        json={"message": test_message, "session_id": f"e2e-echo-test-{uuid4()}"},
         **e2e_auth_headers,
     )
 
@@ -74,7 +77,7 @@ async def test_intent_handles_empty_message_gracefully(e2e_client, e2e_auth_head
     """Empty message should get a response, not a crash."""
     response = await e2e_client.post(
         "/api/v1/intent",
-        json={"message": "", "session_id": "e2e-empty-test"},
+        json={"message": "", "session_id": f"e2e-empty-test-{uuid4()}"},
         **e2e_auth_headers,
     )
 
