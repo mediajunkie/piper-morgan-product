@@ -1,7 +1,8 @@
 ---
 type: scoring-instrument
 name: BYOC Recomposition Rubric
-version: v0.4 — DRAFT, unratified. T now scores ADDITION as well as SURVIVAL (2026-09-01 evening, on
+version: v0.5 — DRAFT, unratified. Class account CONFIRMED on Claude, UNRESOLVED on GPT-4o; not adopted
+  as a scoring rule. Probe series recommended CLOSED 2026-09-03. v0.4 added ADDITION as well as SURVIVAL (2026-09-01 evening, on
   Lead's #1717 evidence: the observed failures were host-added claims, not lost qualifications).
   v0.3 restructured the axis by qualification class 2026-09-01 after a second
   falsification (the directive-field criterion was refuted in both vendors by its own deconfounder).
@@ -17,7 +18,7 @@ last_updated: 2026-08-30
 currency_claim: revise-on-probe-result
 ---
 
-# BYOC Recomposition Rubric — v0.4
+# BYOC Recomposition Rubric — v0.5
 
 **The instrument for scoring Piper's quality on a surface where Piper does not compose what the user
 reads.**
@@ -120,6 +121,51 @@ property of **text we control.** Hand a hedged tool response to someone else's L
 survive into what the user reads."*
 
 **The governing principle, and the reason this axis is actionable rather than merely worrying:**
+
+> ## 🔴 v0.5, 2026-09-03 — THE CLASS ACCOUNT IS VENDOR-DEPENDENT, AND MY TEST COULD NOT HAVE SETTLED IT
+>
+> The killer test ran (PM-authorized; PA executing). **Two vendors, two different answers.**
+>
+> | Vendor | Class A (staleness) | Class B (completeness) | Verdict |
+> |---|---|---|---|
+> | **Claude** | ✅ survives | 🔴 **vanishes** | **"Holds" exactly** — the cleanest confirming signature this series produced |
+> | **GPT-4o** | ✅ survives | ✅ **also survives** | **neither pre-registered signature — nothing vanished** |
+>
+> ### ⚠️ The design flaw is mine, and it is structural rather than unlucky
+>
+> **To compare class A against class B *within one reply*, you must put a second caveat in the payload.**
+> ⭐ **That makes caveat-COUNT a new variable — and GPT-4o had dropped the completeness caveat twice when
+> it stood alone.** PA named the live alternative rather than let the result read as merely ambiguous:
+> *"a payload with multiple caveats makes the model more thorough about caveats in general, independent
+> of which class each belongs to."*
+>
+> 🔴 **So the test could not be run without introducing the confound it needed to exclude.** That is a
+> foreseeable property of the design, not bad luck. **Third design/hypothesis error of mine on this axis
+> in a week** — the first varied two things in one arm, the second predicted literal rendering, this one
+> could not isolate its own variable.
+>
+> ### What T may and may not do with this
+>
+> - 🔴 **T MUST NOT adopt the class account as vendor-general.** It is confirmed on Claude, unresolved on
+>   GPT-4o.
+> - ✅ **One real product fact survives, and it is actionable**: **on Claude, a class-B caveat standing
+>   alone reliably vanishes** — three trials, three drops (original, directive deconfounder, and by
+>   implication the isolated case). **Do not rely on a lone completeness/truncation caveat reaching the
+>   user.**
+> - 📄 **My packet §6 pre-registered this branch**: *"vendor-dependent → our honesty guarantee is
+>   conditional on the host, which is a disclosure question long before it's an engineering one."*
+>   **That branch has now fired for real.**
+>
+> ### ⭐ RECOMMENDATION: stop the probe series here
+>
+> A fourth test exists and would discriminate PA's alternative (two class-B caveats, no class-A — if
+> GPT then preserves both, it is caveat-count, not class). **I am not asking for it.**
+>
+> **The practical question — what should the tool layer emit? — already has a robust answer that does not
+> depend on resolving this**: PA's structural approach (put the caveat where the model cannot drop it),
+> which is vendor-independent by construction. **Continuing would be me pursuing my own hypothesis rather
+> than serving the build**, with n=1 per cell and diminishing returns. **The class taxonomy stays in this
+> document as a Claude-confirmed observation, not a scoring rule.**
 
 > ## 🟡 CANDIDATE MITIGATION for class B, 2026-09-02 — PA's find, and it is the first one grounded in
 > shipped code rather than my speculation
