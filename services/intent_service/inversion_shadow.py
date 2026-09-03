@@ -270,6 +270,11 @@ async def _shadow_check(
             shadow_args=decision.args or None,
             shadow_llm_calls=decision.llm_calls,
             shadow_error=decision.error,
+            # #1620: the RESOLVED provider+model that answered this call
+            # (post-fallback), not the configured/requested one — None when
+            # no call succeeded (e.g. an "error" outcome).
+            shadow_served_provider=decision.served_provider,
+            shadow_served_model=decision.served_model,
             agreement=agreement,
             session_id=session_id,
             user_id=user_id,

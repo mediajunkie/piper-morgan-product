@@ -142,6 +142,14 @@ class RoutingDecision:
       - ``"refused"``   — output failed validation twice; recorded honestly,
                           NEVER converted into a guessed route
       - ``"error"``     — the LLM call itself failed; recorded, never faked
+
+    ``served_provider``/``served_model`` (#1620): the RESOLVED provider+model
+    that actually answered the routing call, after fallback — None when no
+    call succeeded (``error``, or every attempt raised before a completion
+    returned). This is what m-43 calls the layer the measurement is at: a
+    cross-run comparison of route labels is only comparable if the model
+    that produced them is also recorded, not inferred from what was
+    *configured*.
     """
 
     outcome: str
@@ -153,6 +161,8 @@ class RoutingDecision:
     repair_attempted: bool = False
     error: Optional[str] = None
     raw_response: Optional[str] = None
+    served_provider: Optional[str] = None
+    served_model: Optional[str] = None
 
     @property
     def route_label(self) -> str:
@@ -414,6 +424,7 @@ async def route(
     repair_attempted = False
     last_error: Optional[str] = None
     last_raw: Optional[str] = None
+    served: Dict[str, str] = {}  # #1620: populated on a successful complete() call
 
     for attempt in (1, 2):  # initial + ONE repair retry
         attempt_prompt = prompt
@@ -434,6 +445,7 @@ async def route(
                 system=_SYSTEM_PROMPT,
                 response_format={"type": "json_object"},
                 user_id=user_id,
+                served=served,
             )
         except Exception as e:  # silent-ok: returned as an explicit ERROR decision + warning log — an honest recorded failure, never a faked route (#1595 scorer discipline)
             # ERROR is recorded, never faked into a route (scorer discipline).
@@ -464,6 +476,8 @@ async def route(
                 llm_calls=llm_calls,
                 repair_attempted=repair_attempted,
                 raw_response=raw,
+                served_provider=served.get("provider"),
+                served_model=served.get("model"),
             )
         last_error = err
 
@@ -476,4 +490,6 @@ async def route(
         repair_attempted=repair_attempted,
         error=last_error,
         raw_response=last_raw,
+        served_provider=served.get("provider"),
+        served_model=served.get("model"),
     )

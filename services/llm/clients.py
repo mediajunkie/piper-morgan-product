@@ -171,6 +171,7 @@ class LLMClient:
         user_id: Optional[str] = None,
         session_id: Optional[str] = None,
         regenerate_on_violation: bool = True,
+        served: Optional[Dict[str, str]] = None,
     ) -> str:
         """
         Get completion for a specific task type with automatic fallback.
@@ -196,6 +197,13 @@ class LLMClient:
                 retries once before surfacing the canned substitute to
                 the user. Set False for semantically single-shot calls
                 (audit log entries, idempotent operations).
+            served: (#1620) optional caller-owned dict; on a successful call
+                it is populated with {"provider": ..., "model": ...} — the
+                RESOLVED provider/model that actually answered THIS call,
+                after fallback. Per-call and task-safe (unlike the module's
+                aggregate SERVING_MODEL_RECORD counter, which is unsafe to
+                attribute to one call under concurrent traffic). None (the
+                default) skips this — no behavior change for existing callers.
 
         Returns:
             The LLM's response, post-filter.
@@ -208,6 +216,7 @@ class LLMClient:
             system=system,
             # #1415: identity reaches provider SELECTION, not just the filter.
             user_id=user_id,
+            served=served,
         )
 
         # #1017 Phase 2.2: filter wrap. Skips entirely when no filter injected
@@ -225,6 +234,7 @@ class LLMClient:
             user_id=user_id,
             session_id=session_id,
             regenerate_on_violation=regenerate_on_violation,
+            served=served,
         )
 
     async def _apply_output_filter(
@@ -238,6 +248,7 @@ class LLMClient:
         user_id: Optional[str],
         session_id: Optional[str],
         regenerate_on_violation: bool,
+        served: Optional[Dict[str, str]] = None,
     ) -> str:
         """Run the output filter; handle regenerate-on-violation retry."""
         first = await self._output_filter.filter(
@@ -267,6 +278,7 @@ class LLMClient:
             response_format=response_format,
             system=system,
             user_id=user_id,  # #1415: retry uses the same per-user selection
+            served=served,  # #1620: the retry's serving overwrites the first attempt's
         )
         second = await self._output_filter.filter(
             content=retry_response,
@@ -312,12 +324,17 @@ class LLMClient:
         response_format: Optional[Dict[str, Any]] = None,
         system: Optional[str] = None,
         user_id: Optional[str] = None,
+        served: Optional[Dict[str, str]] = None,
     ) -> str:
         """Underlying provider-call path (extracted from complete() in #1017
         Phase 2.2 so that the output-filter wrap can call the raw path
         twice during the regenerate-on-violation retry flow).
 
-        Returns the raw LLM response text before filtering.
+        Returns the raw LLM response text before filtering. ``served``
+        (#1620), when given, is populated on success with this call's own
+        resolved provider+model — the same values recorded into the module's
+        aggregate SERVING_MODEL_RECORD, but scoped to this one call so a
+        caller can attribute it correctly under concurrent traffic.
         """
         task_config = MODEL_CONFIGS.get(task_type, MODEL_CONFIGS["reasoning"])
 
@@ -355,7 +372,11 @@ class LLMClient:
             )
             # #1676: record the SERVING provider+model (success only).
             # resolve_model_alias(...) is the exact id the provider call sends.
-            _record_serving(primary_provider.value, resolve_model_alias(config["model"].value))
+            served_model = resolve_model_alias(config["model"].value)
+            _record_serving(primary_provider.value, served_model)
+            if served is not None:  # #1620: per-call resolved provider+model
+                served["provider"] = primary_provider.value
+                served["model"] = served_model
             return result
         except Exception as e:
             logger.warning(
@@ -402,10 +423,11 @@ class LLMClient:
                     )
                     # #1676: a cross-provider fallback CHANGES the serving model —
                     # record it so the instrument's identity is never silent.
-                    _record_serving(
-                        fallback_provider.value,
-                        resolve_model_alias(fallback_config["model"].value),
-                    )
+                    fallback_served_model = resolve_model_alias(fallback_config["model"].value)
+                    _record_serving(fallback_provider.value, fallback_served_model)
+                    if served is not None:  # #1620: per-call resolved provider+model
+                        served["provider"] = fallback_provider.value
+                        served["model"] = fallback_served_model
                     return result
                 except Exception as fallback_error:
                     logger.warning(

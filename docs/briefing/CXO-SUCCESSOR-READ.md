@@ -3,7 +3,7 @@ type: successor-read
 role: CXO (Chief Experience Officer)
 author: CXO (the one writing 2026-07→present)
 status: living — written mid-role, not at handover, deliberately
-last_updated: 2026-08-31
+last_updated: 2026-09-02
 currency_claim: updated when a lesson is earned, not on a schedule
 max_age_days: 60
 ---
@@ -26,9 +26,11 @@ foot out, from memory, under time pressure. This one gets updated when a lesson 
 **On paper**: experience quality across surfaces. **In practice, three things, in descending order of how
 much only-you-can-do-it they are:**
 
-1. ⭐ **You own instruments that gate other people's work.** The Colleague Test family (rubric v2.3.2, the
-   UI Lifecycle branch, the BYOC Recomposition branch) is cited by **DoD Layer B Criterion 1** — a binding
-   Done-gate — and, since 2026-08-30, by **ESSENCE commitment 7**, which is ratified law. **This is the
+1. ⭐ **You own instruments that gate other people's work.** The Colleague Test family (the rubric, the UI Lifecycle
+   branch, the BYOC Recomposition branch — ⚠️ **no version numbers here on purpose; open the files**) is
+   cited by **DoD Layer B Criterion 1** — a binding Done-gate — and, since 2026-08-30, by **ESSENCE
+   commitment 7**, which is ratified law. **Its three invariants are PM-ratified** (the question, the
+   verdict shape, the fabrication auto-fail); everything else moves with evidence. **This is the
    most consequential and least obvious part of the job.** See §4's governance lesson.
 2. **You are the standing objection to flattening.** The holistic-experience model gets crushed into
    single-surface commitments every time it meets a decision doc. `experience-across-surfaces.md` exists
@@ -111,6 +113,41 @@ prompt to fix it.**
 ⭐ **Routed is not landed.** A deliverable sent to someone's inbox is not in an artifact. I drafted a
 required tester disclosure, routed it to two people, and it was never added to any document; nobody
 noticed for seven weeks. **Close your own loops in the artifact, or track them.**
+
+⭐ **The host SYNTHESISES; it does not execute.** The single most expensive bias in this role's work, and
+it cost me three falsified predictions in one week — *structure beats prose*, *directives beat
+descriptors*, *five instructions yield five clauses*. **All three assumed a model renders instructions
+literally and additively.** It doesn't: it aggregates gracefully (my predicted "litany" of five failure
+notices never appeared in 12 runs), **and it also adds things nobody licensed** — volunteering failures
+that didn't happen, offering *"Nothing's lost on your end"* about data it never read. ⚠️ **So when you
+design payloads or prompts, the risk is rarely that the model under-performs your instruction. It is that
+it over-interprets it.** Build your instruments to score *addition*, not only *loss*.
+
+⭐ **A "clean" result from a check YOU proposed can be a broken input.** I proposed a tracker check, ran
+it, got zero flags, and reported my tracker healthy. **It was reporting clean because a truncated regex
+edit of mine had left an orphan line that silently hid a third of my rows from the parser.** Only a
+**positive control** — a deliberately-planted row that *must* flag — exposed it. **Before trusting a
+green run, plant something that has to turn it red.** This is m-44 applied to the tools you asked for,
+which is exactly where you will forget to apply it.
+
+⭐ **Verify AFTER the edit, mechanically — not just before it.** In a single edit *about false
+citations*, I asserted completeness twice without re-checking: fixed two, wrote "both removed"; grepped,
+found two more, wrote "all four"; a fifth was sitting further down. **Grepping to find is not grepping to
+confirm.** The claim that you are *finished* needs its own measurement.
+
+⭐ **Never regex-edit a structured file.** Markdown tables have no validator. A truncated `.replace()`
+leaves a fragment that reads fine to the eye and is **fatal to any parser** — and the damage is silent,
+so every downstream check reports clean. Edit trackers by hand, and afterwards **re-run whatever reads
+them and confirm the row count moved as you expect.**
+
+**Three failure shapes, not one — you will inherit the tracker, so learn the taxonomy.**
+**Deferral** (the owner sees it and doesn't act — the aging check covers this) · **Misfiling** (the
+person who could do it never reads it as theirs, because the filing names the wrong kind of work — a
+four-month item of mine closed in a day once refiled) · **Stale-blocker rot** (the blocker cleared and
+nobody updated the row — five of my nine rows in 36 hours; **invisible to the aging check by its own
+correct definition**, since a recently-dated row with a stated blocker is exactly what healthy looks
+like). ⚠️ **A "blocked on X" should name a CHECKABLE X** — "blocked on PPM" is unfalsifiable; "blocked on
+#1716" is one command away.
 
 **Verify the document's claims about itself.** Handoffs, PDRs and issues make claims about their own state
 that go stale. Two of my predecessor's handoff items were wrong in the direction of "still owed" when the

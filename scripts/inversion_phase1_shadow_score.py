@@ -189,7 +189,25 @@ def select_exhibit_rows(row_results: list[dict]) -> list[dict]:
     ]
 
 
-def build_report(scored: dict, grammar, llm_note: str) -> str:
+def served_summary(decisions: list) -> str:
+    """#1620: the RESOLVED provider+model that actually answered each routed
+    row, after fallback — never the configured/requested one. Cross-run
+    same-model comparability (run N vs run N+1) is otherwise inferred, not
+    proven (m-43: the served model is part of the measurement's layer)."""
+    counts: defaultdict[str, int] = defaultdict(int)
+    for d in decisions:
+        provider = getattr(d, "served_provider", None)
+        model = getattr(d, "served_model", None)
+        key = f"{provider}:{model}" if provider and model else "unresolved (no successful call)"
+        counts[key] += 1
+    if not counts:
+        return "no rows routed"
+    return "; ".join(
+        f"{k} ({v}/{len(decisions)})" for k, v in sorted(counts.items(), key=lambda kv: -kv[1])
+    )
+
+
+def build_report(scored: dict, grammar, llm_note: str, served_note: str) -> str:
     per_cat = scored["per_cat"]
     row_results = scored["rows"]
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%MZ")
@@ -200,6 +218,7 @@ def build_report(scored: dict, grammar, llm_note: str) -> str:
         "# Inversion Phase-1 shadow score — CONSTRAINED ROUTER vs Phase-0 baseline",
         f"Run: {stamp} · corpus: inversion_corpus_phase0.yaml ({len(row_results)} rows) · "
         "scripts/inversion_phase1_shadow_score.py",
+        f"Served (#1620 — resolved, post-fallback, per row): {served_note}",
         "",
         "LAYER (m-43): **router only, context-free** — one constrained "
         f"Haiku-class call per row ({llm_note}), grammar derived from the live "
@@ -372,10 +391,12 @@ async def run(dry_run: bool, out: Optional[Path]) -> int:
     calls = sum(getattr(d, "llm_calls", 0) for d in decisions)
     errors = sum(1 for d in decisions if getattr(d, "outcome", "") == "error")
     refused = sum(1 for d in decisions if getattr(d, "outcome", "") == "refused")
+    print(f"served (#1620, resolved post-fallback): {served_summary(decisions)}")
     report = build_report(
         scored,
         grammar,
         llm_note=f"{calls} LLM calls incl. repair retries; {errors} ERROR, {refused} REFUSED",
+        served_note=served_summary(decisions),
     )
     out = out or DEFAULT_OUT
     out.write_text(report)

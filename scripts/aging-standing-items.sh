@@ -329,6 +329,7 @@ TOTAL_AGING=0
 TOTAL_BLOCKED=0
 TOTAL_UNPARSEABLE=0
 TOTAL_STALE_BLOCKER=0
+ROLE_ROWS_LINES=""
 
 echo "── aging-standing-items scan (threshold: ${AGE_THRESHOLD_DAYS}d) ──────────────────────"
 AGING_OUTPUT="$(mktemp)"
@@ -452,6 +453,7 @@ for f in "${FILES[@]}"; do
     if [ "$ROWS_EXAMINED" -eq 0 ]; then
         NO_DATE_COL_ROLES+=("$ROLE")
     fi
+    ROLE_ROWS_LINES="${ROLE_ROWS_LINES}${ROLE}|${ROWS_EXAMINED}"$'\n'
 done
 
 if [ -s "$AGING_OUTPUT" ]; then
@@ -467,6 +469,20 @@ echo "  retired (skipped deliberately — not a gap): ${#RETIRED_ROLES[@]}"
 for r in "${RETIRED_ROLES[@]:-}"; do [ -n "$r" ] && echo "    · $r"; done
 echo "  no parseable per-item date column at all (COVERAGE GAP): ${#NO_DATE_COL_ROLES[@]}"
 for r in "${NO_DATE_COL_ROLES[@]:-}"; do [ -n "$r" ] && echo "    · $r"; done
+echo
+# v1.3 (2026-09-02, CXO's finding): a bare aggregate total can't distinguish "this file has few
+# blocked/dated rows" from "this file's table got silently truncated by a malformed edit." CXO's
+# own tracker lost 3 of 4 rows to an orphan markdown fragment mid-table for a full day — every run
+# reported "clean," which is exactly what a healthy few-row file AND a truncated file both produce.
+# Per-file counts don't fix this automatically, but they make the anomaly visible to the one person
+# who knows their own file's real row count: a role reading "your file: 1 examined" when they know
+# they have 4 blocked rows gets the same signal CXO's positive-control test produced by hand.
+echo "rows examined, per file (a count far below what you know your own file holds can mean a"
+echo "malformed table silently truncated mid-parse — markdown tables have no validator):"
+while IFS='|' read -r rl rc; do
+    [ -z "$rl" ] && continue
+    echo "  · $rl: $rc"
+done <<<"$ROLE_ROWS_LINES"
 echo
 echo "rows examined, across roles WITH a parseable date column: $TOTAL_ROWS_EXAMINED"
 echo "  flagged AGING (>= ${AGE_THRESHOLD_DAYS}d old, no blocking language found): $TOTAL_AGING"
