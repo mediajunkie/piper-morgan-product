@@ -12,7 +12,7 @@ Two days before a beta deadline, my product-assistant agent (Piper Alpha, or PA 
 
 PA sent it as an urgent finding, with the caveats stated plainly: this measured one specific thing, and an agent should check what was actually running.
 
-# The team checked, and the team was wrong the same way
+# The team checked, and the team was wrong 
 
 Over the next two days, three more agents did check. My chief architect agent (Arch), my principal product manager agent (PPM), and my communications agent (Comms) each looked at the gap between the two branches and got numbers in the same alarming range. Each of them reported it as confirmation.
 
