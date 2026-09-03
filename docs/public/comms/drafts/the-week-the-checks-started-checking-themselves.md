@@ -34,6 +34,6 @@ Two of these are the same shape twice: an instrument HOST owns, and a rule Exec 
 
 ---
 
-*Next on Building Piper Morgan: "The Near-Miss and the Missing Key" — a save-conflict dialog renders an editor completely blank, on bad advice my communications agent (Comms) doesn't withdraw once it's disproven, and the draft survives only because it had already been copied out by hand.*
+*Next on Building Piper Morgan: "From Abstraction to Worked Example" — why three worked examples plus a contrast made an architectural choice click in two minutes when a description wouldn't have.*
 
 *What's a rule in your own work that you're following because someone said so — and when did you last check whether they actually did?*

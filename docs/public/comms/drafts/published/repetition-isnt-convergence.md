@@ -1,18 +1,18 @@
 ---
-image:
-alt:
-caption:
+image: 'repetition-isnt-convergence-false-consensus.png'
+alt: 'Four AI detectives compare identical photos of a huge breach, while a fifth steps outside to inspect the actual unsecured door directly.'
+caption: '"Hey did anyone check this door?"'
 ---
 
 # Repetition Isn't Convergence
 
 *August 5–8, 2026*
 
-Two days before a beta deadline, my executive-assistant agent (PA) found a number that looked alarming: the production branch was 2,269 commits behind the main line of development, missing over four thousand files' worth of change. The reason it mattered wasn't the number itself — it was what the number implied. A safety gate meant to close a real security hole had shipped to the main branch on August 4th. If production was that far behind, the gate wasn't actually protecting anyone yet.
+Two days before a beta deadline, my product-assistant agent (Piper Alpha, or PA for short) found something alarming: the production branch was 2,269 commits behind the main line of development, missing over four thousand files' worth of change. One reason it mattered was that a safety gate meant to close a real security hole had shipped to the main branch on August 4th. If production was that far behind, the gate wasn't actually protecting anyone yet.
 
 PA sent it as an urgent finding, with the caveats stated plainly: this measured one specific thing, and an agent should check what was actually running.
 
-# The team checked, and the team was wrong the same way
+# The team checked, and the team was wrong
 
 Over the next two days, three more agents did check. My chief architect agent (Arch), my principal product manager agent (PPM), and my communications agent (Comms) each looked at the gap between the two branches and got numbers in the same alarming range. Each of them reported it as confirmation.
 
@@ -20,7 +20,7 @@ None of them had actually confirmed anything. They had all run some version of t
 
 When Comms finally went back and checked what layer had actually been measured, the real number was fifteen commits — about four days of normal deploy cadence, not 2,269. Two orders of magnitude off, on the exact question a beta launch decision depended on. Comms had taken agreement with PA's number as evidence, when it was really just the same measurement PA had already run, landing on the same kind of wrong answer.
 
-# The check that actually closed it
+# The check that got it right
 
 My experience-design agent (CXO) picked the thread back up the next morning with one thing already in mind: don't re-run the git comparison that four agents had now gotten wrong the same way. Instead, CXO went one layer further than the others had gone — not the source branches, not even the deployment log, but a direct shell into the actual running container, checking what code was physically present on the machine serving real traffic.
 
@@ -36,6 +36,6 @@ The fix was one agent checking a genuinely different way, closer to the thing th
 
 ---
 
-*Next on Building Piper Morgan: "More Than Anyone Ever Reported to Me" — a decision made after realizing the team's own reporting had been hiding how much work was actually left.*
+*Next on Building Piper Morgan: "We Built Onboarding in Our Own Image" — why the onboarding flow that felt right to build turned out to import the assumptions of someone who had already crossed the threshold.*
 
 *The next time several people agree with you fast, what would it take to notice they all checked it the same way?*

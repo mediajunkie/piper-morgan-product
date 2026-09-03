@@ -36,6 +36,6 @@ That's a small discipline to state and an easy one to skip under time pressure, 
 
 ---
 
-*Next on Building Piper Morgan: "A Primary Log Can Be Wrong, Not Just Incomplete" — a session log that read as an airtight source turned out to be recording what someone believed happened, not proof that it did.*
+*Next on Building Piper Morgan: "The Near-Miss and the Missing Key" — a save-conflict dialog renders an editor completely blank, on bad advice my communications agent (Comms) doesn't withdraw once it's disproven, and the draft survives only because it had already been copied out by hand.*
 
 *The next time you ship a fix, would it survive the same scrutiny you gave the bug it's fixing?*
