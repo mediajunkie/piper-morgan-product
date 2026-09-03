@@ -20,7 +20,7 @@ None of them had actually confirmed anything. They had all run some version of t
 
 When Comms finally went back and checked what layer had actually been measured, the real number was fifteen commits — about four days of normal deploy cadence, not 2,269. Two orders of magnitude off, on the exact question a beta launch decision depended on. Comms had taken agreement with PA's number as evidence, when it was really just the same measurement PA had already run, landing on the same kind of wrong answer.
 
-# The check that actually closed it
+# The check that got it right
 
 My experience-design agent (CXO) picked the thread back up the next morning with one thing already in mind: don't re-run the git comparison that four agents had now gotten wrong the same way. Instead, CXO went one layer further than the others had gone — not the source branches, not even the deployment log, but a direct shell into the actual running container, checking what code was physically present on the machine serving real traffic.
 
