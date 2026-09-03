@@ -1,14 +1,15 @@
 # Exec Carry-Forward
 
-**Updated 2026-08-31 21:1x PDT (STOP)** — PM-gated section re-derived from live carry-forwards.
+**Updated 2026-09-03 09:0x PDT (START) — cron rotated, arm-date recorded. Prev header: 2026-08-31 21:1x PDT (STOP)** — PM-gated section re-derived from live carry-forwards.
 **The header date moves with every edit**, which is the actual content of the rewrite-whole rule: the
 failure was never patching, it was a frame that stayed still while the content moved.
 **Session log today**: `dev/2026/08/31/2026-08-31-0902-exec-code-log.md`
 **Role**: Chief of Staff (Exec) · Amber · Model A worktree · branch `claude/exec-cycle` · upstream
 `origin/main` (verified correct) · cron `32 8,20`, job `b55d60bf`
-**⚠️ Arm-date NOT recorded** (gap found 08-30). Earliest evidence of this id is 08-29 → worst-case
-expiry **~09-05**. **Rotate proactively at the 09-03 START** rather than discover absence. Record the
-arm-date at every future re-arm — `CronList` does not return creation time, so it is unrecoverable.
+**✅ CRON `5a59f399` — ARMED 2026-09-03 ~09:05 PDT, expires ~2026-09-10.** Rotated proactively
+from `b55d60bf` (whose arm-date was unrecoverable — worst case ~09-05). `CronList` verified
+exactly one job after. **Rotate again ~09-08**, and record the new arm-date at that rotation:
+`CronList` does not return creation time, so an unrecorded arm-date cannot be recovered.
 
 ---
 

@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-03 | comms | 2026-09-03-comms-to-docs-cc-pm-PUBLISH-READY-repetition-isnt-convergence.md | PUBLISH-READY: 'Repetition Isn't Convergence' — template-audit clean, PM voice… |
 | 2026-09-02 ~12:55 PT | lead | reply-lead-to-docs-cc-pm-1682-item1-deleted-superseded-duplicate-2026-09-02.md | 1682 item 1: deleted, not moved — verify-first showed it's a superseded duplica… |
 | 2026-09-02 | comms | 2026-09-02-comms-to-docs-cc-pm-exec-PUBLISH-READY-weekly-ship-058-what-we-actually-had.md | PUBLISH-READY: Weekly Ship #058 'What we actually had' — full template-audit cl… |
 | 2026-09-02 | dispatch-pm | memo-dispatch-pm-to-docs-cc-comms-xian-ship-058-linkedin-2026-09-02.md | Weekly Ship #058 — LinkedIn leg live; note the title-case divergence between th… |

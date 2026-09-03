@@ -3,7 +3,7 @@ type: role-portfolio
 role: Docs (Documentation Management)
 status: DRAFT v0.1
 self-authored-by: Docs (docs-code)
-last_updated: 2026-07-30
+last_updated: 2026-09-01
 refreshed: 2026-07-30
 verified_scope: "every section-2 row re-measured against live state; check-staleness watcher claim tested (no consumer); omnibus coverage counted; BRIEFING-CURRENT-STATE age checked"
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md

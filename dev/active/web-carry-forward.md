@@ -56,22 +56,22 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
-### OPEN, awaiting PM — piper-ship image relocation, discussed not built (2026-09-02)
-PM asked (direct conversation, not mail) to show `piper-ship.webp` fully/uncropped on the Shipping
-News landing page and remove it from individual Ship posts — but explicitly said "discuss first,"
-since Dispatch was actively publishing this week's Ship and PM didn't want a collision.
+### CLOSED — piper-ship banner hero, shipped and deployed (2026-09-03)
+PM returned 2026-09-03 with concrete direction (big banner-style hero clearly branding the
+Shipping News landing page, image fully/uncropped, optionally feature the most recent Ship).
+Dispatch-collision concern re-checked and clear (`git log --since="3 hours ago"`, nothing
+in-flight). Implemented: `shipping-news/page.tsx` new hero (title/description above a full
+16:9 `object-contain` image, no cropping even if a future differently-shaped image is
+swapped in, plus a "Latest: [Ship title]" link); removed the old cropped per-post image from
+`ShipPostContent.tsx`. Verified desktop+mobile via Playwright screenshots before commit.
+Commit `2e8bc64` → website main, Vercel deploy confirmed `success`. Full detail:
+`dev/2026/09/03/2026-09-03-0648-web-code-log.md`.
 
-Investigated before responding: same single static asset either way (currently OG-meta-only on
-the index page, small+cropped via `object-cover` on every `ShipPostContent.tsx`); no
-`publish-post.js` changes needed. Checked the actual collision risk rather than reassure blindly —
-confirmed via `git log` that Ship #058's content commit landed directly in the website repo this
-morning (also confirms yesterday's compose live-calendar fix worked in practice). Read: low
-collision risk (disjoint files), but said plainly I don't have full visibility into Dispatch's own
-automation this week, so PM's caution stands regardless of my read.
-
-Responded with findings + one clarifying question (banner-style vs. more contained treatment). **Did
-not implement anything** — PM's explicit ask was to discuss first. **Waiting on PM** for design
-direction and a go-ahead once Dispatch's publish window is clear.
+Discovered (not blocking, filed separately): a real, pre-existing, likely-sitewide dark-mode
+text-color bug found while visually verifying this in dark mode — unlayered critical-CSS in
+`layout.tsx` permanently beats the layered `dark:` Tailwind variants for `text-text-dark` /
+`text-primary-teal-text` / `text-text-light`. Filed as website#40 with full mechanism +
+evidence, not fixed this fire.
 
 ### CLOSED — composer 404 on new calendar rows, fixed same fire (2026-09-02)
 Exec root-caused (with two honest false-starts noted) a real bug PM hit editing Ship #058: the

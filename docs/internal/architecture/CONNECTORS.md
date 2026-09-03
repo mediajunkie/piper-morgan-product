@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-01
+last_updated: 2026-09-03
 currency_claim: updated same-commit with any connector transport/grant/scope change
 max_age_days: 30
 ---
@@ -32,10 +32,16 @@ its headless case converts to host-mediated and is dropped.
 ## Rules for the tool layer (MCP surface — apply before authoring any tool output)
 
 1. **Hedges ride the payload, not a prompt — and the payload FORM is class-dependent** *(revised
-   2026-09-01 on both-vendor probe evidence; the class taxonomy is a post-hoc account with a
-   designed killer test pending — treat as best-current-guidance, not settled law)*. On BYOC no
+   2026-09-01; killer test RUN 2026-09-03: **Claude confirmed the class taxonomy exactly** —
+   staleness survived, completeness vanished, same reply — while **GPT-4o produced a third
+   outcome**: with two co-occurring caveats it kept BOTH, despite dropping the solo class-B caveat
+   twice in prior runs. So the taxonomy is confirmed for one vendor and confounded-by-co-occurrence
+   for the other; PA's named alternative — multiple caveat-shaped fields may raise caveat
+   thoroughness in general, class-independent — is live and untested. Vendor divergence is now the
+   documented state, n=1 per cell throughout; CXO owns the rubric interpretation.)*. On BYOC no
    model of ours is in the loop; a floor-prompt instruction enforces nothing there. What the
-   evidence says about how honesty travels:
+   evidence says about how honesty travels — **and the practical guidance below survives all three
+   outcomes, because GPT dropped the SOLO class-B caveat twice regardless**:
    - **Class A — the qualification is about the DELIVERED content, or IS the answer** (total read
      failure, staleness, decline, action-not-taken): **structure works and prose is the fabrication
      risk** — `source_failed` as a structured field is exactly right (Claude's prose fabricated

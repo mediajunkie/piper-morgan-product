@@ -9,8 +9,9 @@ prose line is not, and must not be trusted over it).
 
 ## 🔴 NEXT FIRE (09-03 START)
 
-**First move**: run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 7`**
-(6 blocked rows + 1 unblocked placeholder). ⚠️ **A count below that means my file is malformed, not
+**First move**: run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 6`**
+(5 blocked rows + 1 unblocked placeholder — ⚠️ **updated 09-03 when a row closed; this expectation is
+itself a fact that goes stale, so re-state it whenever you add or remove a row**). ⚠️ **A count below that means my file is malformed, not
 clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO shipped the per-file count
 specifically so this is visible without building a control.
 
