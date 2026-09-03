@@ -45,5 +45,7 @@ first is answered.
 
 ## Cron
 
-Job **`8207809c`**, expires **~09-06**. 🔴 **Rotate at the last fire before that** — delete → create →
-verify exactly one. **This is the nearest hard deadline I hold.**
+Job **`8207809c`**, expires **~09-06**. 🔴 **Rotate at the 09-05 21:47 fire — NOT 09-06 06:47.**
+*(My earlier wording said "the last fire before expiry." That leaves ~30 minutes of margin, and a single
+missed fire kills the cron silently. Name the fire, not the boundary.)* Delete → create → verify exactly
+one. **This is the nearest hard deadline I hold.**
