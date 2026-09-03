@@ -1,12 +1,13 @@
 ---
 type: copy-spec
 name: FTUX first turn on the MCP surface — the cold-start interview
-version: v0.1 — CXO draft for Lead (#1688). Copy, not a framework.
+version: v0.2 — CXO draft for Lead (#1688). Copy, not a framework. v0.2 names the `why_asking`
+  dependency (a promise about future behaviour) and updates §5 for the closed probe series.
 date: 2026-09-02
 owner: CXO
 closes: the gap my own mapping named as its main finding (`ftux-surface-mapping-2026-08-28.md` §2)
-last_updated: 2026-09-02
-currency_claim: static until #1688 builds or the probe's class finding is overturned
+last_updated: 2026-09-03
+currency_claim: static until #1688 builds
 max_age_days: 60
 ---
 
@@ -124,9 +125,12 @@ That's the standup content in response-shape, and it is the case ESSENCE commitm
 
 - **Copy only.** Tool naming, call sequencing, and payload schema are Lead's; the strings and their
   ordering are mine.
-- 🔴 **`may_claim_context: false` rests on the probe's class-A finding**, which held in both vendors —
-  **but the underlying class account is a post-hoc reframe awaiting a 2-call test** (asked of PM 09-02).
-  If that test overturns it, **§2's framing argument weakens; the copy itself does not.**
+- 🔴 **`may_claim_context: false` rests on the probe's class-A finding**, which held in **both** vendors
+  across every round — that half is the most robust result the series produced. ⚠️ **But the wider class
+  account is now known to be VENDOR-DEPENDENT** (killer test, 2026-09-03: confirmed on Claude, unresolved
+  on GPT-4o) and the probe series is **CLOSED**. **So §2's framing argument is Claude-confirmed, not
+  vendor-general** — the copy stands either way, because it never depended on the class theory, only on
+  class A's own result.
 - **Not user-tested.** No cold MCP user has seen any of this. It is a design position, and the Colleague
   Test on the composed reply is the check that would settle it — which on this surface needs a probe
   harness, per DoD Layer B's BYOC note.
