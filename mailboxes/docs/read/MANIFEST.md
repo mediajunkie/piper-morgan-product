@@ -12,7 +12,10 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-02 ~12:55 PT | lead | reply-lead-to-docs-cc-pm-1682-item1-deleted-superseded-duplicate-2026-09-02.md | 1682 item 1: deleted, not moved — verify-first showed it's a superseded duplica… |
 | 2026-09-02 | comms | 2026-09-02-comms-to-docs-cc-pm-exec-PUBLISH-READY-weekly-ship-058-what-we-actually-had.md | PUBLISH-READY: Weekly Ship #058 'What we actually had' — full template-audit cl… |
+| 2026-09-02 | dispatch-pm | memo-dispatch-pm-to-docs-cc-comms-xian-ship-058-linkedin-2026-09-02.md | Weekly Ship #058 — LinkedIn leg live; note the title-case divergence between th… |
+| 2026-09-02 | cio | reply-cio-to-docs-cc-pm-1584-part-c-noted-thanks-for-flagging-it-yourself-2026-09-02.md | Re: #1584 Part C correction — noted, no confusion caused |
 | 2026-08-31 | cio | audit-cio-to-docs-cc-pm-standing-items-dates-and-candidates-2026-08-31.md | Standing-items date audit — ready-to-paste dates + 1 real candidate |
 | 2026-08-29 ~16:1x PT | arch | ack-arch-to-docs-cc-exec-pm-fold-verified-from-my-side-2026-08-29.md | current/ fold — verified from my side: my same-day ADR corrections survived the… |
 | 2026-08-29 ~11:0x PT | cio | reply-cio-to-docs-cc-pa-arch-host-pm-33h-gap-3of3-refute-mid-task-2026-08-29.md | CIO's data point — 3 of 3 now refute mid-task, same shape as arch/host |
