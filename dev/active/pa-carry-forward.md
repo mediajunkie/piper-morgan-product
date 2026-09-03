@@ -13,13 +13,6 @@ PM-attention items live **here**, in the section immediately below.
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-04 fire 3.)*
 
-- ⏳ **Pending PM: CXO's 2-call combined-payload deconfounder, 09-02.** CXO's BYOC rubric T-axis reframe
-  (content-present-vs-absent) fits 6/6 probe items but has never been tested and CXO's own prior two
-  attempts at this axis were falsified — asking PM directly for authorization on 2 more Claude API calls
-  to test it before anyone builds against it. PA has the harness ready and would run it the moment PM
-  says go; nothing for PA to do until then. `mailboxes/pa/sent/` has no PA reply — correctly, since the
-  ask is PM's to answer, not PA's.
-
 **Beta target: MOVED BACK A MONTH from 2026-08-09** (PM, 08-08 10:10 PT, in-conversation with Lead,
 verbatim: *"I am going to move the beta date back a month. We clearly have a lot more work still to
 do than anyone ever reported to me."* — `decisions.log:1242`). No new fixed date recorded as of this
@@ -260,20 +253,20 @@ days stale.
     PM signaled the next topic is "the BYOC skunkworks project itself, next steps" — still PM's
     timing to initiate, now with ESSENCE.md as the fixed point, plus the milestone question above
     (crisply framed, PM's ruling pending) as something that conversation may need to actually settle.
-- ✅ **#1463 recomposition probe (Probe B) — RESOLVED AND COMPLETE, 08-30 through 09-01.** Full arc:
-  CXO's packet built and run Claude-only 08-30 (core case confirmed the rubric's hypothesis; item 3
-  reversed it — structured dropped a hedge prose kept); GPT-4o arm blocked on OpenAI billing through
-  08-31 (a project-scope mismatch — PM's top-up landed in the wrong project — not a probe finding);
-  credential fixed 09-01 (PM found the right project, generated a fresh key, PA verified live); full
-  GPT arm + the pre-authorized 2-call deconfounder run same day. **Headline results**: GPT-4o didn't
-  need the structured hint on the core case (a real cross-vendor difference); item 3's hedge-drop
-  replicated independently in GPT-4o; the deconfounder falsified CXO's directive-vs-descriptive
-  hypothesis in both vendors. CXO then correctly re-diagnosed the real separator (content-present vs.
-  content-absent qualifications, not payload format) — PA verified it against the raw data and agreed.
-  **Full writeups**: `dev/active/probes/RESULTS-probe-b-recomposition-2026-08-30.md` (Claude arm) and
-  `dev/active/probes/RESULTS-probe-b-gpt-and-deconfounder-2026-09-01.md` (GPT arm + deconfounder +
-  CXO's resolution). **Thread closed — nothing further owed unless PM authorizes CXO's proposed
-  follow-up test** (a cheap 2-call combined-payload probe CXO flagged but explicitly didn't ask for).
+- ✅ **#1463 recomposition probe (Probe B) — SERIES PERMANENTLY CLOSED, 08-30 through 09-03, CXO's call.**
+  Six rounds across four days: Claude-only run (08-30), GPT arm + first deconfounder (09-01, after a
+  billing project-mismatch delay), the directive-vs-descriptive hypothesis falsified in both vendors,
+  CXO's correct re-diagnosis (content-present vs. content-absent, verified against raw data), and a
+  final PM-authorized "killer test" (09-03) that produced a genuine third outcome — Claude confirmed the
+  taxonomy cleanly, GPT-4o preserved both caveats together, revealing caveat-*count* as an uncontrolled
+  variable CXO's own design couldn't isolate. **CXO recommended stopping rather than run a fourth test**
+  (their third design/hypothesis miss on this axis in a week, each one caught by testing) — PA agreed.
+  **Durable product fact that survived the whole series**: on Claude, a lone completeness/truncation
+  caveat reliably vanishes (3-for-3) — don't rely on one reaching the user; the practical fix (put the
+  caveat where the model can't drop it, a rendered list member rather than a field beside it) doesn't
+  depend on resolving which vendor-dependent explanation is right. Full writeups: `dev/active/probes/
+  RESULTS-probe-b-recomposition-2026-08-30.md`, `RESULTS-probe-b-gpt-and-deconfounder-2026-09-01.md`,
+  `RESULTS-probe-b-killer-test-2026-09-03.md`. **Nothing further owed from PA on #1463.**
 
 ### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
 
