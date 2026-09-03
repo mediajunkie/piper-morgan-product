@@ -1,50 +1,33 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-02 ~17:0x PDT (Ongoing-milestone backlog PM assigned this session is fully
-worked — 6 issues closed, 2 substantially resolved and left open, #1719 filed, Ship #058 published)
-**Session log**: `dev/2026/09/02/2026-09-02-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 18:57.
+**Updated**: 2026-09-02 ~22:30 PDT (day closed — see `dev/2026/09/02/2026-09-02-0727-docs-code-log.md`,
+`<!-- DAY-CLOSED: 2026-09-02 -->`)
+**Session log**: none open — next fire (2026-09-03 06:57) creates today's log.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57.
 
-## No unblocked work outstanding — the whole PM-assigned backlog is closed
+## No unblocked work outstanding — yesterday's PM-assigned backlog is fully closed
 
-PM asked (in-conversation, this session) to work my own portfolio of Ongoing-milestone issues and
-delegate the rest. **Fully done**:
+2026-09-02 was a dense day: Weekly Ship #058 published + verified (title-case fix applied
+same-day), then the entire Ongoing-milestone backlog PM assigned. **10 issues closed** (#1259,
+#1275, #1162, #465, #1584, #1682, #1585, #1611, #1486, plus supporting work), **2 left open on
+real conditions** (below), **7 issues delegated to CIO** (FLYWHEEL track), **#1719 filed** for a
+genuine recurring pattern (file moved, cross-refs not updated — 4th confirmed instance).
+`dev/active/` cleaned 183→33 files (real cleanup, not a target-chase — see the day's session log
+for the full accounting and the stale-target note).
 
-- **Closed**: #1259, #1275, #1162, #465 (all stale, evidence on each) · #1584 (broken links, both
-  parts — Part A already done 08-10, Part B fixed this session) · #1682 (all 3 items — item 1 by
-  Lead, item 3 CITATIONS.md by me) · #1585 (6 items, 2 of 3 "duplicate" calls turned out
-  mischaracterized on direct check, corrected rather than forced) · #1611 (mac-dock-integration.md,
-  full rewrite against the confirmed single-process architecture) · #1486 (Monthly Housekeeping,
-  all 7 sections, real dev/active/ cleanup 183→33 files).
-- **Substantially resolved, left open on purpose** (real remaining work, not mine to force):
-  #1683 (143/144 calendar rows reconciled, 2 genuine inverse-case residuals need Medium
-  verification) · #1392 (5/6 items, 1 real editorial question for PM — does a second, genuinely
-  *different* mailbox image belong in the post).
-- **Delegated**: 7-issue FLYWHEEL list to CIO (cc Lead Dev) · #1584 Part C and #1682 item 1 routed
-  (though Part C turned out already done — see below) · **#1719 filed** for a real recurring
-  pattern (file moved, cross-refs not updated — 4th confirmed instance, caught from my own
-  dev/active/ cleanup today).
+**Two real mistakes were caught and corrected in the open** (both now standing practices below):
+a redundant delegation to CIO for work already done three weeks earlier, and a silently-dropped
+`git add` that made a commit look complete when it wasn't. Full detail in the 2026-09-02 log.
 
-**Two real self-caught mistakes this session, both corrected rather than left standing**:
-1. Mailed CIO asking them to redo #1584 Part C — it was already done 2026-08-12, and I'd verified
-   it myself at the time. My carry-forward carried it as open without re-checking the issue's own
-   comment thread. **Lesson**: read an issue's comment history, not just its original filing,
-   before routing it to someone.
-2. A `git add` with a stale post-`git mv` path silently aborted the whole add (matches CLAUDE.md's
-   documented failure class) — a calendar update looked committed but wasn't. Caught by
-   re-verifying content on `origin/main`, not by trusting `git status`'s output at a glance.
-   **Lesson**: after any multi-path `git add`, check `git diff --cached --name-only` lists every
-   intended file.
+**Genuinely open, not mine to force**:
+- **#1683** — 2 inverse-case calendar rows ("Building for Learning", "Drained on Paper") need real
+  Medium verification, not guessing. 143/144 rows reconciled.
+- **#1392** — "Thirteen Mailboxes" double-hero-image question is PM's editorial call: the body
+  figure now references a genuinely *different* image file than the hero (verified by file size,
+  not filename similarity), so the original filing's premise no longer holds.
 
-**First action next fire**: sync, mail loop, check whether CIO/Lead replied to anything delegated.
-Otherwise genuinely open floor — no named priority queued beyond the day-of-week triggers below.
-
-## Weekly Ship #058 published — https://pipermorgan.ai/shipping-news/weekly-ship-058-what-we-actually-had
-
-Independent mechanical audit + 4 load-bearing fact-checks against primary sources, zero
-discrepancies. Title-case fix applied same-day (PM caught it) across both repos, live-verified.
-hashId `201e33efbf5c`. LinkedIn leg confirmed live by Dispatch-PM, title-case now matches on both
-copies. Nothing further owed.
+**First action next fire**: sync, mail loop, check whether CIO/Lead replied to the FLYWHEEL
+delegation. No named priority queued beyond the day-of-week triggers below — genuinely open floor.
 
 ## Doc-currency escalation is working — CIO broadcast it, roles are self-correcting for real
 
@@ -80,9 +63,10 @@ if PM re-engages.
 ## Day-of-week duty triggers — CHECK EVERY START
 
 - **Every Monday**: Weekly Docs Audit.
-- **First Monday of month**: Monthly Housekeeping Audit — just closed (#1486); next one auto-
-  generates ~09-07, watch for the same GH-Actions scheduling defect #1713 documented.
-- **Every Friday, EARLY**: omnibus logs Fri–Thu. Chain current through 08-28, next batch due 09-04.
+- **First Monday of month**: Monthly Housekeeping Audit — just closed (#1486, 2026-09-02); next
+  one auto-generates ~09-07, watch for the same GH-Actions scheduling defect #1713 documented.
+- **Every Friday, EARLY**: omnibus logs Fri–Thu. Chain current through 08-28, next batch due 09-04
+  (Friday) — covers 08-29 through 09-04.
 - **First Tuesday**: Skill-Candidates Review — not mine (PM+Exec+CIO).
 - **Not mine otherwise**: Role Health Check (4-weekly, HOST).
 
