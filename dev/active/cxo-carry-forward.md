@@ -7,7 +7,19 @@ max_age_days: 1
 # CXO carry-forward — rewritten 2026-09-02 at the 22:17 STOP (frontmatter is the checkable claim; this
 prose line is not, and must not be trusted over it).
 
-## 🔴 EVERY FIRE — Step 5b, which I had never run until 09-03
+## 🔴 EVERY FIRE — two steps I had silently stopped running
+
+**Both were case (c): invoked for weeks, then stopped, with no signal.** Found by looking, not by alarm.
+
+1. **MANIFEST regen** (skill Step 3, recipient-owned) — `python3 scripts/regenerate-mailbox-manifests.py
+   --role cxo` after draining mail. ⚠️ **Lapsed 2026-07-30 → 2026-09-04, 36 days.**
+2. **Heartbeat** — see below. Lapsed 24 days.
+
+⚠️ **A third, `cohort-freeze-detect.sh` at START/WATCH, is UNVERIFIABLE** — running it and skipping it
+produce identical artifacts on the normal path (rc=0). **I cannot tell from the record whether I have
+ever run it.** Run it at START; don't pretend the record answers the question.
+
+## 🔴 EVERY FIRE — Step 5b heartbeat, which I had stopped running
 
 `scripts/duty-cycle-heartbeat.sh cxo {START|WATCH|WORK|STOP} --if-quiet` **before finishing the fire.**
 ⚠️ **It self-suppresses when the fire already committed**, so on a busy fire it costs nothing and writes
