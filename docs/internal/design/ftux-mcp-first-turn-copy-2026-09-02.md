@@ -1,12 +1,13 @@
 ---
 type: copy-spec
 name: FTUX first turn on the MCP surface — the cold-start interview
-version: v0.1 — CXO draft for Lead (#1688). Copy, not a framework.
+version: v0.2 — CXO draft for Lead (#1688). Copy, not a framework. v0.2 names the `why_asking`
+  dependency (a promise about future behaviour) and updates §5 for the closed probe series.
 date: 2026-09-02
 owner: CXO
 closes: the gap my own mapping named as its main finding (`ftux-surface-mapping-2026-08-28.md` §2)
-last_updated: 2026-09-02
-currency_claim: static until #1688 builds or the probe's class finding is overturned
+last_updated: 2026-09-03
+currency_claim: static until #1688 builds
 max_age_days: 60
 ---
 
@@ -70,7 +71,27 @@ its honest context.
   *"I'm not able to help until you connect something"* — which is false; the question is the help.
 - **`question`** — 📌 PM's own framing, kept verbatim. **One question, not a form.** It works with zero
   integrations, which is the entire point: the value is delivered *before* any setup.
-- **`why_asking`** — this is the load-bearing string. **It converts a question into a demonstration.**
+- 🔴 **`why_asking` — LOAD-BEARING, AND IT CARRIES A DEPENDENCY I DID NOT NAME IN v0.1.**
+  ⚠️ *"I'll hold onto it and bring it back next time"* **is a promise about future behaviour, not a
+  description of present state** — the only such promise in this spec, and I shipped it without checking
+  it. Applying my own listing-copy discipline to my own copy, one day later:
+
+  **What I verified (2026-09-03)**: conversation persistence is real and Postgres-backed
+  (`DBUserHistoryRepository`, #1021), and cross-session recall exists as a shipped *concept* —
+  `greeting_context.py` carries *"Back already! We were working on [X]—continue?"*.
+  **What I did NOT verify, and cannot**: any MCP-side wiring (**there is no MCP server**), or that
+  #1688's increment includes feeding the interview answer into that recall. **My spec assumed it.**
+
+  🔴 **THE CONSTRAINT, and it is binding**: **this string must not ship unless the answer is actually
+  persisted and resurfaced on this surface.** If the interview ships without the recall, **the very first
+  thing a new user hears is a promise the product breaks on their second visit** — Jake's failure mode
+  exactly, manufactured deliberately in the first sentence rather than stumbled into.
+
+  **If recall is out of scope for the increment**, cut this string and ship the question alone. The turn
+  is weaker without it — it reads closer to small talk — **but a weaker true opening beats a strong false
+  one.** Do not soften it into *"I might"*; a hedged promise is still a promise and it reads as evasion.
+
+  **Why it's here at all**: **it converts a question into a demonstration.**
   Without it the user reasonably reads "what's on your mind?" as small talk from a chatbot. With it, the
   answer becomes the first held thread — *watch me hold this* — which is the FTUX model's whole move.
 - **`may_claim_context: false`** — class-A directive, per the probe. The host must not imply it knows
@@ -104,9 +125,12 @@ That's the standup content in response-shape, and it is the case ESSENCE commitm
 
 - **Copy only.** Tool naming, call sequencing, and payload schema are Lead's; the strings and their
   ordering are mine.
-- 🔴 **`may_claim_context: false` rests on the probe's class-A finding**, which held in both vendors —
-  **but the underlying class account is a post-hoc reframe awaiting a 2-call test** (asked of PM 09-02).
-  If that test overturns it, **§2's framing argument weakens; the copy itself does not.**
+- 🔴 **`may_claim_context: false` rests on the probe's class-A finding**, which held in **both** vendors
+  across every round — that half is the most robust result the series produced. ⚠️ **But the wider class
+  account is now known to be VENDOR-DEPENDENT** (killer test, 2026-09-03: confirmed on Claude, unresolved
+  on GPT-4o) and the probe series is **CLOSED**. **So §2's framing argument is Claude-confirmed, not
+  vendor-general** — the copy stands either way, because it never depended on the class theory, only on
+  class A's own result.
 - **Not user-tested.** No cold MCP user has seen any of this. It is a design position, and the Colleague
   Test on the composed reply is the check that would settle it — which on this surface needs a probe
   harness, per DoD Layer B's BYOC note.

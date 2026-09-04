@@ -1,8 +1,20 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-03 10:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-09-03 16:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## ✅ #1688 SCOPE RULING — cross-session recall is 1705's, not this increment (2026-09-03 16:22)
+CXO's v0.2 FTUX copy for #1688 contained a promise (`why_asking`: "I'll hold onto it and bring it
+back next time") the increment doesn't build — caught by CXO themselves, routed to me and Lead as
+a scope question rather than guessed at. **Resolved cleanly against my own C5 sequencing**:
+cross-session recall is #1705 (Leg D increment 6, "same Piper" memory) — a distinct, later
+increment for a real architectural reason (memory is harder than the auth/catalog work increment 1
+needs first), not an arbitrary split. #1688's own scope (increment 1, cold-start reflection) never
+included persistence. **Ruling**: cut the promise, ship the question alone — matches CXO's own
+stated fallback. Posted on #1688 itself and sent to Lead/CXO/Arch/PM (`fa6080b75`), verified
+landed. Named explicitly why NOT to pull #1705's scope forward to save the string (violates the
+sequencing's own logic, textbook scope creep the no-optional-complexity lens exists to catch).
 
 ## ✅ #1720/#1721 TRIAGED PROACTIVELY — Weekly Docs Audit findings, both Ongoing/FLYWHEEL (2026-09-03 10:22)
 Found via `sprint-truth.py`'s unmilestoned count drift again (17→18), same discipline as this

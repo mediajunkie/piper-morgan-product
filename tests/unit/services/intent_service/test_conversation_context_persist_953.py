@@ -65,6 +65,10 @@ class TestPersistableStateRoundTrip:
             "last_offer",
             "last_response_was_floor",
             "last_floor_category",
+            # #1688: the FTUX interview's bound answer — session-scoped (the
+            # slice is keyed by THIS session; surviving a mid-session restart
+            # is not cross-session recall, which is #1705's).
+            "ftux_interview_answer",
         }
 
 

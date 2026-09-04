@@ -54,7 +54,9 @@ echo "freeze-check regression + v0.4:"
 # A1 — false-stale regression: fresh sonnet log + untagged commit → not flagged (daytime).
 W=$(mkfixture "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out=$(run "$W" "$R" 11)
-[ -z "$out" ] && ok "A1 live role (sonnet log, untagged) → not flagged" || no "A1 FALSE-STALE regressed: $out"
+# v0.11 note: BELT-INVISIBLE is expected/orthogonal output here (this fixture writes no heartbeat
+# file), so the assertion checks for the absence of a STALE line specifically, not bare emptiness.
+echo "$out" | grep -q "^STALE" && no "A1 FALSE-STALE regressed: $out" || ok "A1 live role (sonnet log, untagged) → not flagged"
 
 # A2 — negative control: 10h-old heartbeat in daytime (dyn thr ~5h) → flagged.
 W=$(mkfixture "$(( NOW - 36000 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
@@ -68,7 +70,7 @@ R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out_day=$(run "$W" "$R" 11)           # hour 11: between 10 and 13 → gap 3 → thr ~5
 out_morn=$(run "$W" "$R" 5)           # hour 5: between 3 and 10 → gap 7 → thr ~11
 echo "$out_day" | grep -q "STALE testrole" && ok "B1 v0.4 daytime (thr~5): 9h-old → flagged" || no "B1 v0.4 daytime missed 9h: '${out_day:-<empty>}'"
-[ -z "$out_morn" ] && ok "B2 v0.4 morning gap (thr~11): same 9h-old → NOT flagged (wide)" || no "B2 v0.4 false-flagged 9h overnight: $out_morn"
+echo "$out_morn" | grep -q "^STALE" && no "B2 v0.4 false-flagged 9h overnight: $out_morn" || ok "B2 v0.4 morning gap (thr~11): same 9h-old → NOT flagged (wide)"
 
 # B3 — fallback: unparseable cron hours → use the registry flat thr (6h); 7h-old → flagged.
 W=$(mkfixture "$(( NOW - 25200 ))")   # 7h old
@@ -99,7 +101,37 @@ mkfixture_bare(){
 
 W=$(mkfixture_bare "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out=$(run "$W" "$R" 11)
-[ -z "$out" ] && ok "C1 bare 'role: ...' commit form (no parens, no session-log touch) → not flagged" || no "C1 FALSE-STALE on bare form: $out"
+echo "$out" | grep -q "^STALE" && no "C1 FALSE-STALE on bare form: $out" || ok "C1 bare 'role: ...' commit form (no parens, no session-log touch) → not flagged"
+
+# PART D — v0.11 (2026-09-03): "alive but belt-invisible" state, distinct from and never affecting
+# STALE. A role alive by commit signal but with no heartbeat row for TODAY should get a
+# BELT-INVISIBLE line; a role alive AND heartbeat-current should get neither.
+mkfixture_with_heartbeat(){
+  local when="$1" TMP; TMP=$(mktemp -d); TMPS+=("$TMP")
+  git init --bare -q "$TMP/o.git"
+  git clone -q "$TMP/o.git" "$TMP/w" 2>/dev/null
+  ( cd "$TMP/w"
+    git config user.email t@t.test; git config user.name tester
+    mkdir -p "dev/$today" "dev/heartbeats/$today_dash"
+    echo "# session log testrole (sonnet)" > "dev/$today/${today_dash}-testrole-code-sonnet-log.md"
+    printf '%s\ttestrole\tWORK\n' "$(date -j -f %s "$when" '+%Y-%m-%d %H:%M:%S %Z' 2>/dev/null || date -d "@$when" '+%Y-%m-%d %H:%M:%S %Z')" \
+      > "dev/heartbeats/$today_dash/testrole.tsv"
+    git add -A
+    GIT_AUTHOR_DATE="@$when +0000" GIT_COMMITTER_DATE="@$when +0000" \
+      git commit -qm "docs(session): TestRole afternoon work"
+    git push -q origin HEAD:main 2>/dev/null )
+  echo "$TMP/w"
+}
+
+W=$(mkfixture "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "^BELT-INVISIBLE testrole" && ok "D1 alive, no heartbeat row today → BELT-INVISIBLE fires" || no "D1 expected BELT-INVISIBLE, got: ${out:-<empty>}"
+echo "$out" | grep -q "^STALE" && no "D1b BELT-INVISIBLE case wrongly ALSO flagged STALE: $out" || ok "D1b BELT-INVISIBLE never co-occurs with STALE"
+
+W=$(mkfixture_with_heartbeat "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "BELT-INVISIBLE" && no "D2 alive WITH today's heartbeat row was WRONGLY flagged BELT-INVISIBLE: $out" || ok "D2 alive + heartbeat-current → no BELT-INVISIBLE"
+[ -z "$out" ] && ok "D2b fully healthy role → no output at all" || no "D2b expected empty output, got: $out"
 
 echo "── $PASS passed, $FAIL failed ──"
 [ "$FAIL" -eq 0 ]

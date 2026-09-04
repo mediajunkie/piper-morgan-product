@@ -20,6 +20,9 @@
 # Heartbeat / session log / DAY-CLOSED are all read from origin/main (no working-tree currency dependency).
 # Output: "STALE <role> <detail>" per frozen role; empty = healthy / off-hours / not-cycling. Exit 0 always
 # (a watchdog must never fail loudly itself). A wrapper (launchd) turns STALE lines into the PM alert.
+# Also emits (never STALE-prefixed, so a `grep "^STALE "` consumer is unaffected): "PARK-NO-EXIT",
+# "HEARTBEAT-WRITER-SILENT", and (v0.11) "BELT-INVISIBLE <role>" — a role that's alive by every
+# liveness signal but wrote no heartbeat row today, distinct from and never affecting STALE status.
 #
 # COVERAGE BOUNDARY (CXO battery-outage 2026-06-18): this catches a session-freeze on a LIVE machine. It
 # CANNOT catch a machine-death (battery/crash/logout) while it's happening — the launchd watcher runs ON the
@@ -329,7 +332,24 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
     else
       fires_note="~${fires_label} missed fires"
     fi
-    (( a >= thr_eff )) && echo "STALE $role ${a}h (dyn-threshold ${thr_eff}h wake-window-aware, ${fires_note}; cron '$cron')"
+    if (( a >= thr_eff )); then
+      echo "STALE $role ${a}h (dyn-threshold ${thr_eff}h wake-window-aware, ${fires_note}; cron '$cron')"
+    else
+      # v0.11 (2026-09-03, Arch's "alive but belt-invisible" proposal via Exec, filed as standing-
+      # item 7h). This role is ALIVE — age_of() found a recent commit/session-log signal, which is
+      # independent of heartbeat presence and unaffected by anything below. But it has written no
+      # heartbeat row for TODAY specifically. That never changes the STALE verdict, and it isn't
+      # one: a role can be perfectly fine by every liveness signal that matters and still be
+      # missing this one. What it DOES mean is the heartbeat-writer mechanism itself may be
+      # silently skipped for this role — exactly Arch's real incident (2026-08-25: their own
+      # heartbeat practice died at a context compaction and stayed dead 7 days, masked the whole
+      # time by a week of heavy commit output that satisfied every OTHER liveness check). A
+      # distinct, named state, not a folded-in STALE variant and not gated behind
+      # DUTY_CYCLE_COVERAGE — this is meant to surface actively, the same as PARK-NO-EXIT above.
+      if ! git -C "$REPO" cat-file -e "origin/main:dev/heartbeats/$today_dash/$role.tsv" 2>/dev/null; then
+        echo "BELT-INVISIBLE $role — alive (${a}h since last commit/session-log signal) but no heartbeat row for $today_dash; the heartbeat-writer may be silently skipped for this role even though it's fine"
+      fi
+    fi
   else
     echo "STALE $role NO-HEARTBEAT (should be cycling but no recent (${role}) commit or session-log update)"
   fi

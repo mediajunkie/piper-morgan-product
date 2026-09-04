@@ -289,6 +289,247 @@ def render_first_contact_block(payload: Optional[Dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+# --- #1688: the FTUX empty-state interview (Leg D increment 1) --------------
+#
+# The sibling gap to the demo above: #1536 handles the RICH case (real held
+# state -> honest demonstration) and honestly declines to fabricate in the
+# EMPTY case -- which left the cold user (zero connected sources) meeting an
+# ordinary greeting. The FTUX model (ftux-experience-model-2026-08-21.md) says
+# that empty moment is where the most important work happens; the interview
+# OWNS it (same rule that suppresses the #1635 Radar placeholder on empty).
+#
+# Copy is CXO's, VERBATIM, from the v0.2 copy spec
+# (docs/internal/design/ftux-mcp-first-turn-copy-2026-09-02.md §3a), with ONE
+# scope cut ruled by PPM 2026-09-03 (mail thread ruling-ppm-to-lead-...-1688):
+# the spec's third string (`why_asking`) promised cross-session recall --
+# a capability that belongs to increment 6 (#1705) and does not exist -- so it
+# is CUT ENTIRELY, not reworded. The question ships alone ("a weaker true
+# opening beats a strong false one" -- CXO's own stated fallback). No string
+# on this surface may claim or imply persistence beyond the session.
+#
+# The answer BINDS at the offer seam per the #1654 carrier idiom (no new
+# message-parsing regex -- the extraction ratchet is frozen): the interview
+# arms a #846 pending-offer record; the next turn's substantive answer is
+# stored into the session's ConversationContext (within-session use only) and
+# the turn routes to the conversational floor so the reply engages with the
+# answer's content. Declines, bare exits, and pre-classifier-claimed commands
+# release WITHOUT binding.
+
+# CXO v0.2 §3a literals -- pinned verbatim in
+# tests/unit/services/intent_service/test_ftux_interview_1688.py. Do not edit
+# without a new CXO ruling; drift fails there.
+FTUX_INTERVIEW_OPENING_LINE = (
+    "I don't have anything of yours in front of me yet — nothing's connected."
+)
+FTUX_INTERVIEW_QUESTION = "What's the thing most on your mind at work right now?"
+
+# The #846 carrier vocabulary (the #1654 idiom).
+FTUX_INTERVIEW_QUESTION_KIND = "ftux_interview_question"
+FTUX_INTERVIEW_WORKFLOW = "ftux_interview"
+
+# Honest decline copy: no claim about anything saved, remembered, or pending
+# (#1648 action-claims contract; nothing WAS saved).
+_FTUX_INTERVIEW_DECLINE = "No problem — we can start anywhere you like."
+
+
+async def is_cold_user(user_id: Optional[str]) -> bool:
+    """True iff the user has ZERO configured integrations (the interview's
+    "nothing's connected" must be literally true before it renders).
+
+    Canonical connector truth is ``IntegrationStatusService`` (#1547,
+    binding-first) across the whole user-facing set -- never the registry
+    (#784). Fail-closed both ways that matter: no principal or any status
+    error -> False (no interview; a skipped interview is recoverable, a
+    false "nothing's connected" over a connected account is a fabrication).
+    """
+    if not user_id:
+        return False
+    try:
+        from services.integrations.integration_status_service import (
+            IntegrationStatusService,
+        )
+
+        statuses = await IntegrationStatusService().get_all(user_id)
+        return not any(s.get("configured") for s in statuses.values())
+    except Exception as e:  # silent-ok: cold probe only gates the interview; a broken probe must never break the greeting, and False = no-interview (safe default, #1688)
+        logger.warning("ftux_interview_cold_check_error", error=str(e))
+        return False
+
+
+def render_ftux_interview() -> str:
+    """The interview opening, CXO's two strings verbatim, nothing else.
+
+    Deterministic user copy (the render_first_contact_block discipline):
+    structurally incapable of adding a promise the increment doesn't keep.
+    """
+    return f"{FTUX_INTERVIEW_OPENING_LINE}\n\n{FTUX_INTERVIEW_QUESTION}"
+
+
+def build_ftux_interview_offer(user_id: Optional[str]) -> Dict[str, Any]:
+    """The #846 pending-offer record arming the interview question.
+
+    ``question`` (#1665): the ask verbatim as rendered -- stored on the
+    record so the SessionSnapshot's pending_offer_question matches what the
+    user saw. An open question, NOT a yes/no (outside the #1664
+    confirm-kind set, like the repo question and the #1654 task question).
+    """
+    return {
+        "workflow_type": FTUX_INTERVIEW_WORKFLOW,
+        "question": FTUX_INTERVIEW_QUESTION,
+        "pending_action": {
+            "kind": FTUX_INTERVIEW_QUESTION_KIND,
+            "action": "ftux_interview",
+            "user_id": str(user_id) if user_id else None,
+            "summary": "answer the opening question",
+        },
+        "decline_message": _FTUX_INTERVIEW_DECLINE,
+    }
+
+
+async def ftux_interview_greeting(
+    session_id: Optional[str], user_id: Optional[str]
+) -> Optional[Dict[str, Any]]:
+    """The greeting seam: first-exchange gate + cold gate, in one call.
+
+    Returns ``{"message": <rendered interview>, "offer": <#846 record>}``
+    when the interview owns this greeting, else None (the normal greeting
+    stands). Ordering: newness first (cheap, in-memory) then coldness (a
+    status read). Fail-closed at both gates.
+
+    The interview REPLACES the canned greeting rather than appending to it
+    (the demo-block pattern): the canned greeting ends in its own question
+    ("What would you like to work on today?"), and two competing questions
+    is the plain greeting wearing a costume. The empty moment is owned or
+    it isn't.
+    """
+    if not user_id or not is_first_exchange(session_id, user_id):
+        return None
+    if not await is_cold_user(user_id):
+        return None
+    return {
+        "message": render_ftux_interview(),
+        "offer": build_ftux_interview_offer(user_id),
+    }
+
+
+def _bind_interview_answer(session_id: str, user_id, answer: str) -> bool:
+    """Store the answer as session-scoped working state (within-session use
+    ONLY -- cross-session recall is #1705 and does not exist). Returns False
+    on any failure so the caller releases instead of claiming a binding."""
+    try:
+        from services.intent_service.conversation_context import get_or_create_context
+
+        conv_ctx = get_or_create_context(session_id, user_id=user_id)
+        conv_ctx.ftux_interview_answer = answer
+        return True
+    except Exception as e:  # silent-ok: a failed bind releases the turn to normal routing (the floor still answers); logged, never crashes the turn
+        logger.warning("ftux_interview_bind_error", error=str(e))
+        return False
+
+
+async def handle_ftux_interview_turn(
+    pending_offer: dict,
+    message: str,
+    *,
+    session_id: str,
+    user_id,
+    intent_service,
+) -> Optional[dict]:
+    """#1688 -- kind-specific turn handling for a pending interview question,
+    run at the offer seam BEFORE any classification surface (the #1605/#1648
+    sanctioned handler-internal seam; the pop already happened).
+
+    Returns a ``{"message", "intent_data"}`` dict when this turn is consumed
+    here, ``{"route_to_floor": True, ...}`` when the answer bound and the
+    reply should be composed on the floor (so the turn ENGAGES with the
+    answer's content -- deterministic dispatch, never re-classification), or
+    ``None`` to fall through to the generic offer flow (declines and bare
+    exits drop honestly via ``decline_message``; pre-classifier-claimed
+    commands abandon via the pop and route normally).
+
+    Off-intent discrimination follows #1654's exactly: the answer space is
+    arbitrary work talk, so the discriminator is the pre-classifier's
+    DETERMINISTIC claim, never a verb-shape read. No time/task extraction --
+    the answer binds WHOLE (extraction ratchet frozen; nothing to parse).
+    """
+    text = (message or "").strip()
+    if not text:
+        return None
+
+    payload = pending_offer.get("pending_action") or {}
+
+    # Principal binding (the #1605 discipline): the question was asked of the
+    # user who greeted -- a different principal's turn releases unbound.
+    offer_user = payload.get("user_id")
+    if offer_user and user_id and str(user_id) != str(offer_user):
+        logger.warning(
+            "ftux_interview_principal_mismatch",
+            offer_user=offer_user,
+            turn_user=str(user_id),
+        )
+        return None
+
+    from services.intent_service.destructive_confirm import detect_bare_exit
+    from services.intent_service.soft_invocation import detect_offer_response
+
+    if detect_bare_exit(text):
+        return None  # generic flow -> honest decline via decline_message
+    resp = detect_offer_response(text)
+    if resp == "decline":
+        return None  # same honest decline path
+
+    if resp == "accept":
+        # A bare "yes" doesn't answer an open question -- re-ask verbatim
+        # (#1648 direction 2: the honest re-ask, never a silent abandon).
+        # If re-arming fails the question still renders; the next turn just
+        # routes normally (degraded, never dishonest -- nothing is claimed).
+        try:
+            intent_service.workflow_offer_service.set_pending_offer(
+                session_id, pending_offer, user_id=user_id
+            )
+        except Exception as e:  # silent-ok: a failed re-arm degrades to normal routing next turn; logged ERROR, copy stays honest (claims nothing)
+            logger.error("ftux_interview_rearm_failed", error=str(e))
+        return {
+            "message": FTUX_INTERVIEW_QUESTION,
+            "intent_data": {
+                "category": "conversation",
+                "action": "ftux_interview",
+                "ftux_interview_question_pending": True,
+            },
+        }
+
+    # Off-intent: a turn the pre-classifier claims deterministically is a
+    # product command -- release it unbound (routes normally; the question
+    # is abandoned per the carrier's rules). Same granularity as #1654 and
+    # for the same reason: verb-shape reads claim legitimate answers.
+    from services.intent_service.pre_classifier import PreClassifier
+
+    claimed = PreClassifier.pre_classify(text)
+    if claimed is not None:
+        logger.info(
+            "ftux_interview_command_released",
+            session_id=session_id,
+            claimed_action=claimed.action,
+        )
+        return None
+
+    # The turn IS the answer. Bind it whole -- session-scoped, within-session
+    # use only -- then compose the reply on the floor so this turn engages
+    # with the content (the bound answer is already in context for the
+    # assembler by the time the floor gathers).
+    if not _bind_interview_answer(session_id, user_id, text):
+        return None  # failed bind -> honest release; normal routing answers
+    logger.info("ftux_interview_answer_bound", session_id=session_id)
+    return {
+        "route_to_floor": True,
+        "intent_data": {
+            "category": "conversation",
+            "action": "ftux_interview_answer",
+            "ftux_interview_answer_bound": True,
+        },
+    }
+
+
 async def first_contact_demo_block(
     session_id: Optional[str], user_id: Optional[str], cache: Any = None
 ) -> str:

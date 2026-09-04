@@ -359,6 +359,9 @@ class IntentService:
             # #1651: the standup's bound overdue-todo offer must survive
             # this turn (armed on the rail-dispatched get_standup path).
             "standup_todo_offer_pending",
+            # #1688: the armed FTUX interview question (the cold-greeting
+            # empty-state interview — its answer must find the carrier).
+            "ftux_interview_question_pending",
         )
         if result.intent_data and any(result.intent_data.get(f) for f in _pending_flags):
             return result
@@ -1193,6 +1196,46 @@ class IntentService:
                             intent_data=_rtask_turn["intent_data"],
                             requires_clarification=_rtask_turn.get("requires_clarification", False),
                         )
+                # #1688: a pending FTUX INTERVIEW QUESTION (armed by the
+                # cold-greeting empty-state interview) binds the answer into
+                # session context at this seam — before any classification
+                # surface — then composes the reply on the floor so the turn
+                # ENGAGES with the answer's content (the bound answer is in
+                # domain context by gather time). Returning None falls
+                # through: declines/bare exits drop honestly via
+                # decline_message; pre-classifier-claimed commands abandon
+                # via the pop and route normally. Within-session use only —
+                # cross-session recall is #1705 and no reply may claim it.
+                elif _vi_payload.get("kind") == "ftux_interview_question":
+                    from services.intent_service import first_contact as _fc
+
+                    _fi_turn = await _fc.handle_ftux_interview_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _fi_turn is not None:
+                        if _fi_turn.get("route_to_floor"):
+                            return await self._handle_unknown_intent(
+                                Intent(
+                                    category=IntentCategory.UNKNOWN,
+                                    action="ftux_interview_answer",
+                                    confidence=1.0,
+                                    original_message=message,
+                                ),
+                                None,
+                                session_id,
+                                user_id=user_id,
+                                formality_baseline=formality_baseline,
+                            )
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_fi_turn["message"],
+                            intent_data=_fi_turn["intent_data"],
+                            requires_clarification=_fi_turn.get("requires_clarification", False),
+                        )
                 # #1567: a pending REPO QUESTION binds the answer that names
                 # the repository — bare owner/name, bare repo name (resolved
                 # against the user's actual repos), natural phrasings ("in
@@ -1396,6 +1439,10 @@ class IntentService:
                         # #1648: a released reminder time question (full
                         # restatement or unrelated command) routes normally.
                         "reminder_time_question": "reminder_time_question_abandoned",
+                        # #1688: a released interview question (decline, bare
+                        # exit, or claimed command) drops via the pop; nothing
+                        # was bound, nothing is claimed.
+                        "ftux_interview_question": "ftux_interview_question_released",
                         # #1651: an ignored standup todo offer is dropped by
                         # the pop; nothing completes, the todo stays.
                         "standup_todo_offer": "standup_todo_offer_abandoned",
@@ -2072,6 +2119,18 @@ class IntentService:
                         },
                         user_id=user_id,
                     )
+
+                # #1688: the cold-greeting interview arms its #846 carrier
+                # here (the greeting handler has no offer-store access) so
+                # the next turn's answer binds at the offer seam. The
+                # result's ftux_interview_question_pending flag keeps
+                # _apply_soft_offer from clobbering the one-slot store.
+                _ftux_offer = canonical_result.get("ftux_interview_offer")
+                if _ftux_offer and session_id:
+                    self.workflow_offer_service.set_pending_offer(
+                        session_id, _ftux_offer, user_id=user_id
+                    )
+                    self.logger.info("ftux_interview_question_armed", session_id=session_id)
 
                 # Issue #852: Track contextual offer for continuation detection
                 # Complements action_required (line 864) — different storage, same location.
