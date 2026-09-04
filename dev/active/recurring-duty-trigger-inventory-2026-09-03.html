@@ -1,0 +1,152 @@
+<title>Recurring Duty & Trigger Inventory</title>
+<style>
+  :root{--ground:#F7F7F5;--card:#FFF;--ink:#1A1A17;--soft:#5E5E55;--rule:#E1E0DA;
+        --accent:#5A5233;--red:#A33F2B;--amber:#8A6116;--green:#3E6B45;
+        --shadow:0 1px 2px rgba(26,26,23,.05),0 10px 28px -14px rgba(26,26,23,.16);
+        --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+        --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+        --data:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;}
+  @media (prefers-color-scheme:dark){:root{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--soft:#A0A093;
+        --rule:#33332B;--accent:#C9BE8E;--red:#E38672;--amber:#D5A44B;--green:#79B885;
+        --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}}
+  :root[data-theme="dark"]{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--soft:#A0A093;
+        --rule:#33332B;--accent:#C9BE8E;--red:#E38672;--amber:#D5A44B;--green:#79B885;
+        --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{--ground:#F7F7F5;--card:#FFF;--ink:#1A1A17;--soft:#5E5E55;
+        --rule:#E1E0DA;--accent:#5A5233;--red:#A33F2B;--amber:#8A6116;--green:#3E6B45;
+        --shadow:0 1px 2px rgba(26,26,23,.05),0 10px 28px -14px rgba(26,26,23,.16);}
+  body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:64rem;margin:0 auto;padding:2.5rem 1.25rem 4rem;display:flex;flex-direction:column;gap:2rem}
+  header{border-bottom:3px double var(--rule);padding-bottom:1.2rem;display:flex;flex-direction:column;gap:.4rem}
+  .stamp{font:500 .7rem/1 var(--data);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  h1{font:400 2.2rem/1.1 var(--display);margin:0;letter-spacing:-.015em;text-wrap:balance}
+  .sub{color:var(--soft);margin:0;font-size:1rem;max-width:60ch}
+  h2{font:600 .72rem/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--soft);
+     margin:0;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+  section{display:flex;flex-direction:column;gap:.8rem}
+  .card{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--soft);
+        border-radius:2px;padding:1rem 1.15rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.5rem}
+  .card.bad{border-left-color:var(--red)} .card.warn{border-left-color:var(--amber)}
+  .card.ok{border-left-color:var(--green)} .card.hero{border-left-color:var(--accent);padding:1.4rem 1.5rem}
+  .card h3{margin:0;font:600 1.02rem/1.35 var(--body);text-wrap:balance}
+  .card.hero h3{font:400 1.45rem/1.25 var(--display)}
+  .card p{margin:0}
+  .note{color:var(--soft);font-size:.92rem}
+  .tablewrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}
+  th{text-align:left;font:600 .66rem/1.3 var(--data);letter-spacing:.07em;text-transform:uppercase;
+     color:var(--soft);padding:.5rem .55rem;border-bottom:1px solid var(--rule);white-space:nowrap}
+  td{padding:.55rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tag{font:600 .63rem/1 var(--data);letter-spacing:.05em;text-transform:uppercase;padding:.22rem .38rem;
+       border-radius:2px;white-space:nowrap;display:inline-block}
+  .t-ok{background:color-mix(in srgb,var(--green) 15%,transparent);color:var(--green)}
+  .t-warn{background:color-mix(in srgb,var(--amber) 17%,transparent);color:var(--amber)}
+  .t-bad{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red)}
+  ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.42rem}
+  code{font:.87em/1.4 var(--data);background:color-mix(in srgb,var(--accent) 12%,transparent);padding:.1rem .3rem;border-radius:2px}
+  footer{border-top:1px solid var(--rule);padding-top:1rem;color:var(--soft);font-size:.85rem}
+  @media(max-width:34rem){h1{font-size:1.75rem}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="stamp">First pass · Exec · 2026-09-03 · for the portfolio/duty-cycle retro</p>
+    <h1>What recurs, what fires it, and what notices if it doesn't</h1>
+    <p class="sub">An inventory of recurring duties across the team, sorted by trigger type rather than by owner — because the trigger is where they fail. Scope per your ask: staggered audits, scheduled workflow actions, and duties tied to a day part, a day of week, or an audit calendar.</p>
+  </header>
+
+  <section>
+    <h2>The finding, before the inventory</h2>
+    <div class="card hero">
+      <h3>A recurring duty survives in proportion to whether someone <em>else's</em> action fires it</h3>
+      <p>Sorting everything by trigger type made one line fall out. <strong>Duties triggered by another agent's output are the ones that don't lapse. Duties an agent must fire for itself decay — silently, and the busier the agent the longer it takes anyone to notice.</strong></p>
+      <p>The weekly workstream review is the healthiest recurring obligation we have, and it is the only one where <strong>a memo lands in your inbox from a colleague</strong>. Nearly every role portfolio hangs its recurring work off "each weekly review" — that's ten of eleven roles keying to one reliable event.</p>
+      <p>Everything that has quietly failed this month failed on the self-fired side: a health-check workflow generating issues for over two months with nobody polling · a heartbeat step marked MANDATORY that one seat stopped running for 24 days · a documented archival step no code executes · a portfolio-refresh line unattested four windows running.</p>
+      <p class="note"><strong>The design implication</strong>: your instinct about hooking workflows to trigger assignments is the right shape. It converts a self-fired duty into an other-fired one. That is the only intervention on this page that changes the failure rate rather than the detection rate.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Layer 1 — Scheduled GitHub workflows (8)</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Workflow</th><th>Schedule</th><th>Creates issue</th><th>Who consumes it</th></tr></thead>
+        <tbody>
+          <tr><td><code>weekly-docs-audit</code></td><td>Mon 16:07 UTC</td><td>yes</td><td>Docs <span class="tag t-ok">polled</span></td></tr>
+          <tr><td><code>role-health-check</code></td><td>Mon 16:00, 4-weekly</td><td>yes</td><td>HOST <span class="tag t-warn">polled only since 08-07</span></td></tr>
+          <tr><td><code>monthly-housekeeping</code></td><td>Mon 16:00 + day-of-month guard</td><td>yes</td><td><span class="tag t-bad">unnamed</span></td></tr>
+          <tr><td><code>pattern-sweep</code></td><td>Tue 17:00</td><td>yes</td><td><span class="tag t-bad">unnamed</span> — presumably CIO</td></tr>
+          <tr><td><code>dependency-health</code></td><td>Mon 09:00</td><td>yes</td><td><span class="tag t-bad">unnamed</span> — Lead? security labels</td></tr>
+          <tr><td><code>link-checker</code></td><td>Sun 02:00</td><td>yes</td><td><span class="tag t-bad">unnamed</span> — Docs by convention</td></tr>
+          <tr><td><code>ci-liveness</code></td><td>Tue 14:23</td><td>yes</td><td><span class="tag t-bad">unnamed</span></td></tr>
+          <tr><td><code>quarterly-maintenance</code></td><td>Jan/Apr/Jul/Oct 1st</td><td>yes</td><td><span class="tag t-bad">unnamed</span></td></tr>
+          <tr><td><code>e2e-aaxt</code></td><td>daily 06:00</td><td>no</td><td>n/a — no artifact</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card bad">
+      <h3>🔴 The trigger layer itself fails silently — and we know this, twice</h3>
+      <p><strong>#1713</strong>: both Monday-scheduled workflows had <em>zero runs</em> on 2026-08-31, 4.5 hours past fire time, while push-triggered workflows ran normally throughout. Both report <code>state: active</code>. A manual dispatch worked immediately. <strong>The <code>schedule</code> event specifically did not fire.</strong></p>
+      <p>This is the <strong>second</strong> instance for <code>weekly-docs-audit</code> — a 2026-08-03 no-fire was mitigated by moving the cron off the top of the hour, and <strong>the mitigation did not hold.</strong></p>
+      <p class="note"><strong>Consequence for the retro</strong>: hooking duties to workflows makes them other-fired, which is the right direction — but this layer needs its own liveness check, or we swap a reliable-ish habit for an unreliable robot. <em>Nothing currently notices when a scheduled workflow doesn't run.</em></p>
+    </div>
+
+    <div class="card warn">
+      <h3>Six of eight have no named consumer</h3>
+      <p>Seven of eight create issues; only two have a role that demonstrably polls for them. <strong>The known cost</strong>: <code>role-health-check</code> generated issues on a 4-weekly cron and <em>nothing polled them for over two months</em> — the issue template itself asserted HOST's duty cycle would, and no code or step did, until HOST added a one-line poll on 2026-08-07.</p>
+      <p><strong>An unconsumed generator is worse than no generator</strong>: it produces a growing pile that reads as tracked work.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Layer 2 — Duty-cycle crons (11 roles, staggered)</h2>
+    <div class="card ok">
+      <h3>The stagger is real and well-designed</h3>
+      <p>Nine roles at <code>6,9,12,15,18,21</code> with distinct minute offsets — comms :12, web :22, arch :27, host :37, pa :42, cxo :47, ppm :52, docs :57, lead :17. CIO runs lean at <code>7 10,16,22</code>; Exec at <code>32 8,20</code>. <strong>Deliberate anti-stampede spacing, and it holds.</strong></p>
+    </div>
+    <div class="card warn">
+      <h3>But the cron is session-scoped, and the wake is the fragile part</h3>
+      <p><code>durable:true</code> is a no-op. The job dies with the session, and a session can end at day-close, wedge on a modal rate-limit dialog, or lose its cron to a context compaction. <strong>Three failure modes, all silent, all producing the same signature</strong> — no output.</p>
+      <p class="note">Observed this week alone: lead + cxo both dark this morning after clean 22:00 day-closes; arch and cio wedged on a dialog for 30+ hours last week. <strong>Recovery requires you at a tmux prompt in every case.</strong></p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Layer 3 — Event-triggered duties (the healthy layer)</h2>
+    <div class="card ok">
+      <h3>"Each weekly review" is doing most of the work in the portfolio layer</h3>
+      <p>Ten of eleven role portfolios key recurring obligations to the weekly workstream review. Several phrase it as a dependency rather than a chore — <em>"you can't write the HOST weekly narrative without…"</em> — which is stronger still, because the duty is <strong>load-bearing for an output someone is waiting on.</strong></p>
+      <p><strong>Why it works</strong>: a kickoff memo lands in the inbox. The agent doesn't have to remember what day it is.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Layer 4 — Day-part and day-of-week duties (mostly undocumented)</h2>
+    <div class="card bad">
+      <h3>🔴 The duties you named are real, and almost none of them are written down</h3>
+      <p>You named four: Docs builds the omnibus at START each day · Docs runs the weekly docs audit Monday · Exec starts the weekly review Friday · HOST checks whether a 360 is due.</p>
+      <p><strong>Searching every role portfolio and essential briefing for day-part or day-of-week language returns almost nothing</strong> beyond "each weekly review." The Monday audit exists as a <em>workflow</em>; the Friday review exists as <em>my habit</em>; the daily omnibus exists as <em>Docs' habit</em>; the 360 cadence became a poll only after it had already lapsed two months.</p>
+      <p class="note"><strong>So these run on memory.</strong> They have worked, which is a credit to the roles — and it is exactly the condition your 08-29 trigger ruling names as academic when applied to documents. The same test applied to duties: <em>what fires this, and what notices if it doesn't?</em></p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I'd put to the retro</h2>
+    <div class="card">
+      <ul class="plain">
+        <li><strong>Name a consumer for all six unowned workflows</strong>, or retire them. An issue-generator nobody reads is a queue that looks like tracking.</li>
+        <li><strong>Give the schedule layer its own liveness check.</strong> Nothing notices a workflow that didn't run, and we have two documented instances. Hooking duties to workflows without this trades a habit for an unmonitored robot.</li>
+        <li><strong>Write the day-part and day-of-week duties into the portfolios</strong>, with a named trigger and a named artifact each — the form that survives, per the weekly-review pattern.</li>
+        <li><strong>Prefer other-fired over self-fired wherever it's cheap.</strong> Your workflow-triggers-assignment idea is this, and it is the only lever here that reduces failures rather than improving detection.</li>
+        <li><strong>Result-tracking is the genuine blank.</strong> I found triggers and owners; I found almost no mechanism that records <em>whether a recurring duty produced its artifact this cycle.</em> The heartbeat is the one instrument that does, and its own writer-health was unobservable for 24 days on one seat.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Scope and limits, stated plainly.</strong> First pass, built from repo state on Amber — workflow files, the duty-cycle registry, role portfolios, essential briefings, and issue history. <strong>I did not interview any role</strong>, so "unnamed consumer" means <em>no owner is asserted in the workflow file or a portfolio</em>, not that nobody reads it — several probably have de-facto owners I can't see from here. Verifying those is the obvious next step and is better done by asking than by grepping.</p>
+    <p><strong>Not covered</strong>: cross-project recurring duties (Klatch, Design in Product, One Job), the <code>docs-notify</code> step sequence beyond Step 9, and whatever recurring obligations live only in an agent's own carry-forward rather than a portfolio.</p>
+  </footer>
+</div>
