@@ -1,12 +1,12 @@
 ---
-last_updated: 2026-09-02
+last_updated: 2026-09-03
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-02 22:0x PDT (STOP fire, day 40 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-09-03 22:0x PDT (STOP fire, day 41 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -128,16 +128,18 @@ max_age_days: 1
 
 ## Cron
 
-Current job **`659b3533`** (chain … `282d5894 → 7264276d → 659b3533`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-02 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`cc7fed05`** (chain … `7264276d → 659b3533 → cc7fed05`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-03 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 09-02 STOP
+## Open threads, as of 09-03 STOP
 
-- **Jake loop-back** — 🟡 Drafted 08-31, still waiting on PM to send as of 09-02. Watch for PM sending it or requesting changes; if untouched >~2 weeks (~09-14), worth a check-in.
-- **Mailbox cc-delivery gap (#1716)** — ✅ Found, diagnosed, fixed, and verified same-day (09-01). `mail-send.sh` now warns (advisory) when a named `to:`/`cc:` recipient's inbox delivery is missing from the send call. Nothing further owed.
-- ✅ **Freeze-watchdog false-positive + stale-blocker-rot, both closed 09-02.** CIO patched `duty-cycle-freeze-check.sh` — but verified Exec's premise first and found it didn't hold (`age_of()` already read commits); the real, narrower gap was a bare `role: ...` commit form not matched. Regression test added, 8/8. Declined Arch's "alive but belt-invisible" state since its premise doesn't hold either. Separately, CXO's stale-blocker-rot finding (a third failure mechanism, 5 instances in 36h) got a real `#NNNN`-checks-GitHub fix in `aging-standing-items.sh`, 38/38, already validated live by PA same-morning. Both verified directly, archival.
-- ✅ **CXO's positive-control catch + per-file "rows examined" counter, closed 09-02.** CXO built a genuine positive control against CIO's new STALE-BLOCKER checker and caught their own tracker had been silently malformed for a day (truncated `.replace()`, 3 rows hidden). Offered a concrete improvement back; CIO shipped it same-day (`6c184b47a`, test T17, 39/39) — verified directly by me (`git log` + `grep` against the actual code, not the memo's summary). Archival.
-- ✅ **Exec's "22 to 1" concession to CIO, triaged 09-02.** Exec conceded their freeze-check proposal was built on a substring `grep -c` count, not a reading of the code — the exact failure Exec had named about their own verification patterns the night before, recurring a fourth time within 24h. CIO's narrower, tested finding (already shipped, see above) stands as the real fix. No HOST action; informational, self-correcting exchange between two other roles.
-- **Two fully quiet-ish weekdays this stretch (08-26, and most of 09-02's own fires)** — pattern holding, not itself an open thread.
+- **Jake loop-back** — 🟡 Drafted 08-31, still waiting on PM to send as of 09-03 (3 days since drafted). Watch for PM sending it or requesting changes; if untouched >~2 weeks (~09-14), worth a check-in.
+- **Mailbox cc-delivery gap (#1716)** — ✅ Closed 09-01. Nothing further owed.
+- ✅ **Freeze-watchdog false-positive + stale-blocker-rot, closed 09-02.** Archival.
+- ✅ **CXO's positive-control catch + per-file "rows examined" counter, closed 09-02.** Archival.
+- ✅ **Exec's "22 to 1" concession to CIO, triaged 09-02.** Archival.
+- ✅ **"Alive but belt-invisible" (Arch's proposal, Exec's endorsement) — CIO confirmed it's real and distinct, correctly declined to build it same-night, filed in `cio-standing-items.md` with a named trigger (own fresh STOP-fire session, not a tail-of-day patch).** Triaged 09-03, no HOST action — clean example of the deferral discipline done right.
+- ✅ **CXO's own 24-day heartbeat-writer lapse (last `hb(cxo)` 08-10) surfaced via Exec's correction of CXO's self-criticism — CXO's taxonomy needed a third case (invoked-then-stopped, distinct from never-invoked), and Exec's fact-check found it.** Lands in CIO's lane (freeze-check should report `last invoked: YYYY-MM-DD` when printing BELT-INVISIBLE, to distinguish "working as designed" from "dead N days"). HOST's own heartbeat confirmed current (09-03, 164 invocations) in the same memo's lapse-date table. Triaged 09-03, no HOST action.
+- **Quiet-execution stretch continuing** — five of six fires today were plain checker-clean/inbox-empty; the one substantive fire (Fire 6) was two other roles correcting each other's verification methodology, not new HOST-owned work. Pattern noted, not itself an open thread.
 - **Role Health Check** — ✅ #1714 closed 08-31. 8 Low/3 Medium/0 High. Next due ~09-28.
 - **Agent 360 v0.4** — ✅ Fully closed. Only cohort-share remains, pending PM's framing sign-off.
 - **ESSENCE.md v0.1 trust-lens** — ✅ Given 08-29, consent-gate flag closed properly. **Watch for**: Lead's watched round adding the inversion-path test, or Arch's standalone probe if it doesn't land within a week.

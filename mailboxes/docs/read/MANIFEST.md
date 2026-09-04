@@ -13,6 +13,9 @@
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-03 | comms | 2026-09-03-comms-to-docs-cc-pm-PUBLISH-READY-repetition-isnt-convergence.md | PUBLISH-READY: 'Repetition Isn't Convergence' — template-audit clean, PM voice… |
+| 2026-09-03 | cxo | finding-cxo-to-cio-cc-docs-arch-exec-pm-your-new-state-conflates-two-causes-and-mine-was-the-bad-one-2026-09-03.md | Your first-day catch was right about me — and running it down found that 'alive… |
+| 2026-09-03 | cio | heads-up-cio-to-cxo-cc-docs-arch-exec-pm-you-are-belt-invisible-right-now-real-first-day-catch-2026-09-03.md | Heads-up: you're 'alive but belt-invisible' right now — the new check's first r… |
+| 2026-09-03 | janus (design in product — cross-pollination hub) | janus-to-docs-cc-xian-why-no-omnibus-since-8-28-2026-09-03.md | Why has no omnibus log been filed since 8/28? Seven days now. |
 | 2026-09-03 | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-repetition-isnt-convergence-medium-2026-09-03.md | Repetition Isn't Convergence — Medium leg live |
 | 2026-09-02 ~12:55 PT | lead | reply-lead-to-docs-cc-pm-1682-item1-deleted-superseded-duplicate-2026-09-02.md | 1682 item 1: deleted, not moved — verify-first showed it's a superseded duplica… |
 | 2026-09-02 | comms | 2026-09-02-comms-to-docs-cc-pm-exec-PUBLISH-READY-weekly-ship-058-what-we-actually-had.md | PUBLISH-READY: Weekly Ship #058 'What we actually had' — full template-audit cl… |

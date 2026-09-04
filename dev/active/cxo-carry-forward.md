@@ -14,7 +14,7 @@ prose line is not, and must not be trusted over it).
 nothing — **which is exactly why I skipped it for weeks without noticing.** A step whose omission is
 indistinguishable from compliance will be omitted. Verified working on this seat 09-03.
 
-## 🔴 NEXT FIRE (09-03 START)
+## 🔴 NEXT FIRE (09-04 START)
 
 **First move**: run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 6`**
 (5 blocked rows + 1 unblocked placeholder — ⚠️ **updated 09-03 when a row closed; this expectation is
