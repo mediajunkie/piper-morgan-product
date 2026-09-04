@@ -66,6 +66,21 @@ DIR="dev/heartbeats/$DAY"
 FILE="$DIR/${ROLE}.tsv"
 TS="$(date '+%Y-%m-%d %H:%M:%S %Z')"
 
+# v1.1 (2026-09-04, CXO's finding, Docs/Exec endorsed — standing-item 7j). Prior to this, an
+# --if-quiet suppression wrote NOTHING: the freeze-watchdog then saw "no heartbeat row today" and
+# could not tell (a) writer runs, correctly suppressed vs. (c) writer invoked once, then stopped
+# entirely (CXO's real case: 7 real invocations, then silence for 24 days, masked the whole time by
+# real commit output — Arch's incident shape exactly). `--if-quiet` making the writer's own health
+# unobservable is precisely the failure mode CXO named: "a busy agent never writes a row, therefore
+# never learns whether its writer works — until the day it goes quiet, and that is exactly the day
+# the answer matters." Fix: this marker is OVERWRITTEN (not appended, so no unbounded growth like
+# the per-day TSVs) on every invocation of this script, suppressed or not — so a role's writer
+# health becomes checkable independent of whether today produced a real heartbeat row.
+LAST_INVOKED_DIR="dev/heartbeats/last-invoked"
+LAST_INVOKED_FILE="$LAST_INVOKED_DIR/${ROLE}.txt"
+mkdir -p "$LAST_INVOKED_DIR"
+printf '%s\t%s\n' "$TS" "$FIRE" > "$LAST_INVOKED_FILE"
+
 # --if-quiet: skip when the fire already produced a role-tagged commit today. That commit IS the
 # heartbeat (refinement a), so writing another would be pure churn.
 # ⚠️ 2026-08-04: START ALWAYS WRITES, --if-quiet or not.
@@ -106,7 +121,24 @@ if [ "$MODE" = "--if-quiet" ]; then
   recent="$(git log origin/main --since="3 hours ago" --format=%s 2>/dev/null || true)"
   case "$recent" in *"($ROLE)"*) hb_already=1;; *) hb_already=0;; esac
   if [ "$hb_already" = 1 ]; then
-    echo "heartbeat: $ROLE committed within 3h — that commit IS the heartbeat; nothing written (refinement a)"
+    # v1.1: don't just exit — land the last-invoked marker so the suppression itself is observable.
+    # Same failure posture as the full-write path below (fail loud, never silently), but this is a
+    # single-line overwrite, not an unbounded append, so the "cost is per quiet fire" design intent
+    # is preserved: the marker commit is the same trivial size a heartbeat row would have been.
+    git add -- "$LAST_INVOKED_FILE" 2>/dev/null
+    if git diff --cached --quiet -- "$LAST_INVOKED_FILE" 2>/dev/null; then
+      echo "heartbeat: $ROLE committed within 3h — that commit IS the heartbeat; nothing written (refinement a)"
+      exit 0
+    fi
+    if git commit -q -m "hb-last-invoked($ROLE): suppressed $FIRE $TS" -- "$LAST_INVOKED_FILE" 2>/dev/null \
+       && git fetch origin main -q 2>/dev/null \
+       && git merge origin/main --no-edit -q 2>/dev/null \
+       && git push -q origin HEAD:main 2>/dev/null; then
+      git push -q origin HEAD 2>/dev/null || true
+      echo "heartbeat: $ROLE committed within 3h — row suppressed (refinement a), last-invoked marker updated"
+      exit 0
+    fi
+    echo "heartbeat: WARNING — last-invoked marker failed to land for $ROLE (row itself correctly suppressed); not treated as fatal" >&2
     exit 0
   fi
 fi
@@ -121,12 +153,13 @@ printf '%s\t%s\t%s\n' "$TS" "$ROLE" "$FIRE" >> "$FILE"
 #
 # Per-role daily paths mean two agents can never touch the same file, so no retry/rebase dance is
 # needed — the only conflict possible is on the commit tip, which the push handles.
-git add -- "$FILE" 2>/dev/null
+# v1.1: the last-invoked marker rides in the SAME commit as the heartbeat row (one push, not two).
+git add -- "$FILE" "$LAST_INVOKED_FILE" 2>/dev/null
 if git diff --cached --quiet -- "$FILE" 2>/dev/null; then
   echo "heartbeat: nothing staged for $FILE — refusing to report success (m-44: a no-op must not look like a write)" >&2
   exit 1
 fi
-if git commit -q -m "hb($ROLE): $FIRE $TS" -- "$FILE" 2>/dev/null \
+if git commit -q -m "hb($ROLE): $FIRE $TS" -- "$FILE" "$LAST_INVOKED_FILE" 2>/dev/null \
    && git fetch origin main -q 2>/dev/null \
    && git merge origin/main --no-edit -q 2>/dev/null \
    && git push -q origin HEAD:main 2>/dev/null; then

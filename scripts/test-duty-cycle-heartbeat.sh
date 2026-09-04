@@ -34,12 +34,12 @@ seed_commit_ago() {
      git push -q origin HEAD:main >/dev/null)
 }
 
-echo "── T1: commit 2h ago (within new 3h window) → --if-quiet suppresses, writes nothing ──"
+echo "── T1: commit 2h ago (within new 3h window) → --if-quiet suppresses the ROW, writes nothing to the day's TSV ──"
 W1=$(mkclone w1)
 seed_commit_ago "$W1" testrole $((2*3600))
 out=$(cd "$W1" && bash "$HB" testrole work --if-quiet 2>&1)
 [ ! -f "$W1/dev/heartbeats/$(date +%Y-%m-%d)/testrole.tsv" ] && ok "no heartbeat file written (suppressed)" || no "heartbeat file was written — should have suppressed"
-echo "$out" | grep -q "nothing written" && ok "reported suppression correctly" || no "did not report suppression"
+echo "$out" | grep -q "row suppressed" && ok "reported suppression correctly" || no "did not report suppression"
 
 echo "── T2: commit 4h ago (past new 3h window) → --if-quiet writes a heartbeat ──"
 W2=$(mkclone w2)
@@ -72,6 +72,43 @@ seed_commit_ago "$W5" testrole $((1*3600))   # well within any suppression windo
 out=$(cd "$W5" && bash "$HB" testrole START --if-quiet 2>&1)
 [ -f "$W5/dev/heartbeats/$(date +%Y-%m-%d)/testrole.tsv" ] && ok "START wrote despite --if-quiet and a recent commit (unchanged behavior)" || no "START was suppressed — should never happen"
 echo "$out" | grep -q "START always writes" && ok "reported the START-always-writes override" || no "did not report the override"
+
+echo "── T6: v1.1 (2026-09-04, CXO's finding) — suppression STILL lands the last-invoked marker ──"
+# The whole point of 7j: a suppressed fire must not be completely invisible. Reproduces CXO's real
+# shape (writer invoked, then a long silent stretch that's indistinguishable from "never invoked"
+# without this marker) by checking the marker is written and pushed even when the row is suppressed.
+W6=$(mkclone w6)
+seed_commit_ago "$W6" testrole $((2*3600))
+out=$(cd "$W6" && bash "$HB" testrole work --if-quiet 2>&1)
+[ -f "$W6/dev/heartbeats/last-invoked/testrole.txt" ] && ok "last-invoked marker written locally even though the row was suppressed" || no "marker missing after suppression"
+git -C "$W6" fetch -q origin
+git -C "$W6" cat-file -e "origin/main:dev/heartbeats/last-invoked/testrole.txt" 2>/dev/null \
+    && ok "last-invoked marker landed on origin/main despite suppression" || no "marker did not land on origin/main"
+echo "$out" | grep -q "marker updated" && ok "reported the marker update in output" || no "did not report the marker update"
+
+echo "── T7: v1.1 — a full (non-suppressed) write lands the marker in the SAME commit, not a second one ──"
+W7=$(mkclone w7)
+seed_commit_ago "$W7" testrole $((4*3600))   # past the 3h window → writes for real
+git -C "$W7" fetch -q origin
+before_origin=$(git -C "$W7" rev-list --count origin/main)
+out=$(cd "$W7" && bash "$HB" testrole work --if-quiet 2>&1)
+git -C "$W7" fetch -q origin
+after_origin=$(git -C "$W7" rev-list --count origin/main)
+[ "$((after_origin - before_origin))" = 1 ] && ok "exactly ONE new commit landed (row + marker together, not two pushes)" || no "expected exactly 1 new commit, delta was $((after_origin - before_origin))"
+git -C "$W7" cat-file -e "origin/main:dev/heartbeats/last-invoked/testrole.txt" 2>/dev/null \
+    && ok "last-invoked marker present after a full write too" || no "marker missing after a full write"
+
+echo "── T8: v1.1 — the marker is OVERWRITTEN across invocations, not appended (bounded size) ──"
+W8=$(mkclone w8)
+seed_commit_ago "$W8" testrole $((2*3600))
+cd "$W8" && bash "$HB" testrole work --if-quiet >/dev/null 2>&1
+first_line_count=$(wc -l < dev/heartbeats/last-invoked/testrole.txt | tr -d ' ')
+git fetch -q origin && git merge -q origin/main --no-edit >/dev/null 2>&1
+seed_commit_ago "$W8" testrole $((2*3600))
+bash "$HB" testrole work --if-quiet >/dev/null 2>&1
+second_line_count=$(wc -l < dev/heartbeats/last-invoked/testrole.txt | tr -d ' ')
+cd - >/dev/null
+[ "$first_line_count" = "1" ] && [ "$second_line_count" = "1" ] && ok "marker stays 1 line across repeated suppressed invocations (overwritten, not appended)" || no "marker grew — expected overwrite, got $first_line_count then $second_line_count lines"
 
 echo ""
 echo "════════ RESULT: $PASS passed, $FAIL failed ════════"
