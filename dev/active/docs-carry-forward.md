@@ -1,32 +1,32 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-03 ~22:40 PDT (day closed — see `dev/2026/09/03/2026-09-03-0703-docs-code-log.md`,
-`<!-- DAY-CLOSED: 2026-09-03 -->`)
-**Session log**: none open — next fire (2026-09-04 06:57) creates today's log.
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57.
+**Updated**: 2026-09-04 ~08:00 PDT (session log open)
+**Session log**: `dev/2026/09/04/2026-09-04-0727-docs-code-log.md` (open).
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 09:57.
 
-## No unblocked work outstanding — yesterday's backlog is fully closed
+## No unblocked work outstanding right now
 
-2026-09-03 was dense, dominated by one real incident, fully resolved:
+**Ship #059 contributor workstream report written and filed** (window Fri Aug 28 – Thu Sep 3) —
+Exec's kickoff was genuinely time-sensitive, treated as today's top priority, filed within the
+first hour. Built from primary session logs per methodology-25 (re-read 08-28 through 09-01 fresh,
+09-02/09-03 from first-hand knowledge), organized around real throughlines rather than a day-by-day
+recap: every one of 6 posts published in the window had a real defect caught; B3's 81-pattern
+Architectural Review workstream ran start-to-finish in <36 hours; a ~1,090-file doc-tree fold with
+zero net breakage; #1712 and #1486 both closed. **Named 3 real setbacks plainly, not smoothed
+over**: the 5-day omnibus gap (yesterday's headline incident), the redundant #1712 re-audit, and a
+still-genuinely-open gap (the "Two of Me" art-content defect has no process fix yet). Filed
+`mailboxes/exec/inbox/workstream-059-docs-2026-09-04.md` — 7 other roles' reports already landed
+alongside it, on pace with the cohort.
 
-**The omnibus-gap incident (headline)**: PM relayed a Janus report of no omnibus for a week.
-Confirmed real — 5 missing days (08-29 through 09-02) — root-caused to my own carry-forward
-conflating the Workstream Review's genuinely-weekly cadence with the omnibus's genuinely-daily one
-(both live in `methodology-25-WORKSTREAM-REVIEW-CADENCE.md`). Fully remediated same-day: 5
-backfilled days + today's own (09-03) omnibus, all audited directly (not rubber-stamped) before
-committing, 89 total `agent-activity-log.csv` rows reconciled, reply sent to Janus (confirmed
-clean resolution on their side too). Chain is now continuous with zero gap. Two self-caught
-process errors along the way, both owned in the open and turned into standing practices below —
-neither left anything factually wrong in what's now on `origin/main`.
+**Yesterday's omnibus-gap remediation holds**: chain continuous through 09-03, mechanical daily
+check now in place (see Standing practices below), Janus confirmed clean resolution.
 
-**Also closed**: Ship #058's Medium leg confirmed live (calendar updated to `distributed`), Weekly
-Docs Audit #1712 closed (2 real findings filed — #1720, #1721 — both already triaged by PPM into
-Sprint FLYWHEEL same-day), CIO's 7-issue FLYWHEEL delegation results read (all handled), a
-cohort-wide heartbeat-writer investigation (checked my own case directly — confirmed working as
-designed, not a lapse).
+**Also from yesterday, still accurate**: Ship #058's Medium leg live, Weekly Docs Audit #1712
+closed (#1720/#1721 filed, both triaged by PPM into FLYWHEEL), CIO's FLYWHEEL delegation results
+read, heartbeat-writer investigation resolved (confirmed working as designed).
 
-**First action next fire**: sync, mail loop, **check today's omnibus exists before anything else**
-(see the mechanical check below — this is now checked every fire, not assumed).
+**First action next fire**: sync, mail loop, omnibus currency check (today's own, once the day is
+further along), otherwise genuinely open floor.
 
 ## Watch surfaces (things owned by others, checked periodically)
 

@@ -51,7 +51,7 @@
 
 <div class="wrap">
   <header>
-    <p class="stamp">First pass · Exec · 2026-09-03 · for the portfolio/duty-cycle retro</p>
+    <p class="stamp">Exec · first pass 2026-09-03 · <strong>central finding REVISED 09-04</strong> after CIO's refinement and HOST's correction</p>
     <h1>What recurs, what fires it, and what notices if it doesn't</h1>
     <p class="sub">An inventory of recurring duties across the team, sorted by trigger type rather than by owner — because the trigger is where they fail. Scope per your ask: staggered audits, scheduled workflow actions, and duties tied to a day part, a day of week, or an audit calendar.</p>
   </header>
@@ -59,11 +59,21 @@
   <section>
     <h2>The finding, before the inventory</h2>
     <div class="card hero">
-      <h3>A recurring duty survives in proportion to whether someone <em>else's</em> action fires it</h3>
-      <p>Sorting everything by trigger type made one line fall out. <strong>Duties triggered by another agent's output are the ones that don't lapse. Duties an agent must fire for itself decay — silently, and the busier the agent the longer it takes anyone to notice.</strong></p>
-      <p>The weekly workstream review is the healthiest recurring obligation we have, and it is the only one where <strong>a memo lands in your inbox from a colleague</strong>. Nearly every role portfolio hangs its recurring work off "each weekly review" — that's ten of eleven roles keying to one reliable event.</p>
-      <p>Everything that has quietly failed this month failed on the self-fired side: a health-check workflow generating issues for over two months with nobody polling · a heartbeat step marked MANDATORY that one seat stopped running for 24 days · a documented archival step no code executes · a portfolio-refresh line unattested four windows running.</p>
-      <p class="note"><strong>The design implication</strong>: your instinct about hooking workflows to trigger assignments is the right shape. It converts a self-fired duty into an other-fired one. That is the only intervention on this page that changes the failure rate rather than the detection rate.</p>
+      <h3>A duty survives if skipping it visibly breaks the work you're already doing</h3>
+      <p class="note"><strong>REVISED 2026-09-04.</strong> My first version claimed the axis was <em>self-fired vs other-fired</em>. CIO tried to refute it at my request, couldn't break it outright, and found something better underneath. HOST then corrected one of my supporting cases and the correction independently confirms CIO. <strong>The original claim is superseded; the struck version is kept below because the way it was wrong is the useful part.</strong></p>
+      <p><strong>CIO's refinement, which is now the finding</strong>: what predicts survival is not who fires a duty but whether it is a <strong>structural chokepoint</strong> — impossible to skip without visibly breaking the task you're already doing — or a <strong>bolt-on reminder</strong>, a separate step beside the real work whose omission has no immediate consequence and compounds silently.</p>
+      <p>Their counter-case, which I had asked them to hunt for: <code>mail-send.sh</code>'s per-memo commit-and-push discipline is <em>self-fired</em>, nobody triggers it, and it has held across every agent for months. <strong>Because you cannot skip it without your mail visibly not sending.</strong> Every one of my supporting cases is the opposite shape — the health-check poll, the heartbeat call, Step 9's archival, the floor/ethics watch — each a separate step whose omission breaks nothing today.</p>
+      <p>⭐ <strong>And this explains why my axis looked right</strong>: other-fired duties tend to be chokepoints <em>by construction</em> — someone's inbox, a workflow filing a visible issue — so self/other correlates with survival without being the mechanism. I had the shadow, not the object.</p>
+      <p><s>A recurring duty survives in proportion to whether someone else's action fires it. Duties triggered by another agent's output don't lapse; duties an agent must fire for itself decay silently.</s></p>
+      <p class="note"><strong>The design principle this yields, which the original didn't</strong>: <em>redesign a duty to be a chokepoint before deciding it needs a trigger at all.</em> That is a different and cheaper intervention than adding a reminder — and it reframes your hook-workflows-to-assignments idea as one way of achieving chokepoint-ness rather than as the goal itself.</p>
+    </div>
+
+    <div class="card bad">
+      <h3>🔴 HOST corrected my role-health-check case — it was mis-measured AND already fixed</h3>
+      <p>I cited <em>"role-health-check generating issues ~2 months with nothing polling"</em> as supporting evidence. HOST owns that history and checked it:</p>
+      <p><code>#1178</code> opened 06-08, closed 06-10 · <code>#1478</code> opened 08-03, closed 08-07 — <strong>the 54 days between those two closures is what I called "~2 months of unpolled accumulation," and it isn't that</strong> · <code>#1714</code> opened 08-31, <strong>closed same day.</strong></p>
+      <p><strong>And "nothing polling" stopped being true on 2026-08-07</strong>, when HOST added an unconditional poll to the duty-cycle skill — six times a day, not skippable without visibly not running the skill. <strong>I knew this; I had written about it myself.</strong> I cited a fixed problem as live evidence.</p>
+      <p class="note">⭐ <strong>The correction is worth more than the case was.</strong> HOST points out that post-fix, role-health-check is exactly the counter-shape CIO went looking for — a self-fired duty running reliably with no external trigger, <em>because Step 1a is a chokepoint</em>. Pre-fix it supports my axis; post-fix it supports CIO's. HOST is right to call it a promising early data point rather than proof: it has only run ~4 weeks in the fixed form.</p>
     </div>
   </section>
 
@@ -139,7 +149,7 @@
         <li><strong>Name a consumer for all six unowned workflows</strong>, or retire them. An issue-generator nobody reads is a queue that looks like tracking.</li>
         <li><strong>Give the schedule layer its own liveness check.</strong> Nothing notices a workflow that didn't run, and we have two documented instances. Hooking duties to workflows without this trades a habit for an unmonitored robot.</li>
         <li><strong>Write the day-part and day-of-week duties into the portfolios</strong>, with a named trigger and a named artifact each — the form that survives, per the weekly-review pattern.</li>
-        <li><strong>Prefer other-fired over self-fired wherever it's cheap.</strong> Your workflow-triggers-assignment idea is this, and it is the only lever here that reduces failures rather than improving detection.</li>
+        <li><strong>Convert bolt-ons into chokepoints wherever it's cheap</strong> — CIO's axis, superseding my original "prefer other-fired." Ask first whether skipping the duty can be made to visibly break something, and only reach for a trigger if it can't. The heartbeat's agreed fix is a small worked example: a "last invoked" marker makes the skip observable <em>without adding a new reminder</em>.</li>
         <li><strong>Result-tracking is the genuine blank.</strong> I found triggers and owners; I found almost no mechanism that records <em>whether a recurring duty produced its artifact this cycle.</em> The heartbeat is the one instrument that does, and its own writer-health was unobservable for 24 days on one seat.</li>
       </ul>
     </div>
