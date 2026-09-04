@@ -1,8 +1,27 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-03 16:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-09-03 19:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## 🟡 #1688 SHIP CALL — RULED HOLD, PM flagged explicitly for possible overrule (2026-09-03 19:22)
+Lead built the web-chat half (MCP half verified unbuildable — no served MCP server exists yet) and
+flagged a real tension: my own 08-29 MCP-only narrowing of #1688 assumed MCP was buildable now,
+which turned out false, so the actual choice was Web-or-nothing, not Web-or-MCP. CXO (author of
+that narrowing) agreed the premise was false and offered a real counter-argument for shipping
+anyway, explicitly not neutral, explicitly deferring to my ruling.
+
+**Ruled HOLD**, applying Arch's own #1658 precedent (same freeze, "did this UI exist in the
+running system yesterday" test) rather than reasoning fresh — #1688's interview never ran in
+production, same as #1658's UI, same disposition for consistency. Addressed CXO's counter-argument
+directly rather than overriding it silently: the false MCP-buildability premise doesn't repeal the
+freeze's actual subject (new capability investment in web-chat), and the 08-31 hosted-primary
+ruling settled *where* testers go, not that primary surfaces get freeze exceptions. **Explicitly
+flagged to PM that this is closer than #1658 and named the real cost of holding (broken first
+impression on the now-primary surface)** — inviting an overrule rather than treating my own
+consistency argument as automatically correct. Build stays merged, not deployed; nothing else
+depends on it. Posted on #1688 and sent to Lead/CXO/Arch/PM (`2c0c0a196`), verified landed.
+**Watch for PM's word — this could go either way and I said so.**
 
 ## ✅ #1688 SCOPE RULING — cross-session recall is 1705's, not this increment (2026-09-03 16:22)
 CXO's v0.2 FTUX copy for #1688 contained a promise (`why_asking`: "I'll hold onto it and bring it
