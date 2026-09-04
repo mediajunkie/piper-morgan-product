@@ -7,7 +7,7 @@
 - **FLIP IS ON since ~1 PM 8/29**: PIPER_INVERSION_LIVE_CATEGORIES=read_status,read_referent,
   read_synthesis,create_todo + PIPER_INVERSION_SHADOW=1 (verified in running env). Rollback=unset.
   PM's round: ZERO misroutes under the flip (the 1488 class absent).
-- **Cron 449e67f0** `17 6,9,12,15,18,21 * * *` (armed 8/31; expires ~9/7; rotate ~9/5).
+- **Cron f6b052f2** `17 6,9,12,15,18,21 * * *` (armed 9/4; expires ~9/11; rotate ~9/9).
 - Model: Fable 5 (restored 8/28 08:36).
 
 ## The one PM-gated moment
