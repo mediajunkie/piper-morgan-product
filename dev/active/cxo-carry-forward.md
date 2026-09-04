@@ -7,6 +7,13 @@ max_age_days: 1
 # CXO carry-forward — rewritten 2026-09-02 at the 22:17 STOP (frontmatter is the checkable claim; this
 prose line is not, and must not be trusted over it).
 
+## 🔴 EVERY FIRE — Step 5b, which I had never run until 09-03
+
+`scripts/duty-cycle-heartbeat.sh cxo {START|WATCH|WORK|STOP} --if-quiet` **before finishing the fire.**
+⚠️ **It self-suppresses when the fire already committed**, so on a busy fire it costs nothing and writes
+nothing — **which is exactly why I skipped it for weeks without noticing.** A step whose omission is
+indistinguishable from compliance will be omitted. Verified working on this seat 09-03.
+
 ## 🔴 NEXT FIRE (09-03 START)
 
 **First move**: run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 6`**

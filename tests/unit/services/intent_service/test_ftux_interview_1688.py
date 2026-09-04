@@ -25,6 +25,13 @@ Layer honesty (m-43): greeting tests assert the FINAL user-facing message
 (deterministic path); floor tests assert the prompt block handed to the LLM
 (the composed reply is LLM work, not measured here); seam tests assert the
 handler contract + context binding.
+
+HOLD (PPM ruling 2026-09-03, matching #1658's precedent): the merged build
+ships DARK behind ``PIPER_FTUX_INTERVIEW`` (default OFF; flip-on is a PM/PPM
+decision). The autouse fixture below sets the flag ON so this file pins the
+build-as-merged behavior; ``TestFlagDefaultOff`` unsets it per-test to pin
+the deploy default -- the pre-1688 canned greeting byte-identical, no
+interview strings, no carrier armed, no status read performed.
 """
 
 import re
@@ -45,6 +52,7 @@ from services.intent_service.first_contact import (
     FTUX_INTERVIEW_QUESTION_KIND,
     FTUX_INTERVIEW_WORKFLOW,
     build_ftux_interview_offer,
+    ftux_interview_enabled,
     ftux_interview_greeting,
     handle_ftux_interview_turn,
     is_cold_user,
@@ -54,6 +62,16 @@ from services.intent_service.first_contact import (
 # ---------------------------------------------------------------------------
 # Fixtures / helpers
 # ---------------------------------------------------------------------------
+
+
+@pytest.fixture(autouse=True)
+def _interview_flag_on(monkeypatch):
+    """#1688 HOLD: the interview is gated behind PIPER_FTUX_INTERVIEW
+    (default OFF). Set it ON file-wide so these tests keep pinning the
+    build-as-merged behavior; the TestFlagDefaultOff pins delenv it
+    per-test (the flag is read at call time, so a per-test delenv wins)."""
+    monkeypatch.setenv("PIPER_FTUX_INTERVIEW", "1")
+
 
 # The promise-language pin (PPM ruling 2026-09-03): the cut `why_asking`
 # string's distinctive phrases must be ABSENT from every rendered surface.
@@ -283,6 +301,92 @@ class TestGreetingHandler:
             result = await handler._respond_to_greeting(intent, session_id, user_id=user_id)
         assert "ftux_interview_offer" not in result
         assert result["message"] != render_ftux_interview()
+
+
+# ---------------------------------------------------------------------------
+# The HOLD flag — default OFF pins (#1688 HOLD, PPM 2026-09-03)
+# ---------------------------------------------------------------------------
+
+
+class TestFlagDefaultOff:
+    """With PIPER_FTUX_INTERVIEW unset (the deploy default), the pre-1688
+    behavior stands byte-identical: the canned greeting renders, no
+    interview string appears anywhere, no #846 carrier arms, and the gate
+    short-circuits before the cold probe's status read."""
+
+    def test_flag_vocabulary_matches_inversion_shadow(self, monkeypatch):
+        """Same truthy set as PIPER_INVERSION_SHADOW; unset/empty/other OFF."""
+        for val in ("1", "true", "on", "yes", " TRUE "):
+            monkeypatch.setenv("PIPER_FTUX_INTERVIEW", val)
+            assert ftux_interview_enabled() is True, val
+        for val in ("", "0", "false", "off", "no"):
+            monkeypatch.setenv("PIPER_FTUX_INTERVIEW", val)
+            assert ftux_interview_enabled() is False, val
+        monkeypatch.delenv("PIPER_FTUX_INTERVIEW")
+        assert ftux_interview_enabled() is False
+
+    @pytest.mark.asyncio
+    async def test_default_off_no_interview_and_no_status_read(self, monkeypatch):
+        """The ONE gate point short-circuits BEFORE the cold probe: a cold
+        first-exchange user gets None from the greeting seam, and the
+        explosive status boundary proves no read even happens on the held
+        path (assert_not_called is the proof — is_cold_user swallows
+        exceptions, so an explosion alone couldn't distinguish)."""
+        monkeypatch.delenv("PIPER_FTUX_INTERVIEW", raising=False)
+        user_id = str(uuid4())
+        session_id = _fresh_session(user_id)
+        inst = MagicMock()
+        inst.get_all = AsyncMock(side_effect=AssertionError("status read on the held path"))
+        with patch(
+            "services.integrations.integration_status_service.IntegrationStatusService",
+            return_value=inst,
+        ):
+            assert await ftux_interview_greeting(session_id, user_id) is None
+        inst.get_all.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_default_off_cold_greeting_is_canned_greeting_byte_identical(self, monkeypatch):
+        """The pre-1688 pin: a cold first-exchange user WITHOUT the flag
+        gets exactly format_greeting_conscious's canned greeting (calendar
+        and demo block quieted the same way test_non_cold_greeting_unchanged
+        quiets them), with no interview string, no armed carrier, and no
+        pending flag on the intent."""
+        monkeypatch.delenv("PIPER_FTUX_INTERVIEW", raising=False)
+        from services.consciousness.conversation_consciousness import (
+            format_greeting_conscious,
+        )
+        from services.conversation.conversation_handler import ConversationHandler
+        from services.domain.models import Intent
+        from services.shared_types import IntentCategory
+
+        user_id = str(uuid4())
+        session_id = _fresh_session(user_id)
+        intent = Intent(
+            category=IntentCategory.CONVERSATION,
+            action="greeting",
+            confidence=1.0,
+            original_message="hello",
+            context={"user_id": user_id},
+        )
+        handler = ConversationHandler()
+        with (
+            _status_all(COLD),
+            patch.object(handler, "_check_suspended_session_reentry", AsyncMock(return_value=None)),
+            patch.object(handler, "_get_calendar_summary", AsyncMock(return_value=None)),
+            patch(
+                "services.intent_service.first_contact.first_contact_demo_block",
+                AsyncMock(return_value=""),
+            ),
+        ):
+            result = await handler._respond_to_greeting(intent, session_id, user_id=user_id)
+        # Byte-identical to the pre-1688 canned path
+        assert result["message"] == format_greeting_conscious(calendar_summary=None)
+        # No interview string renders
+        assert FTUX_INTERVIEW_OPENING_LINE not in result["message"]
+        assert FTUX_INTERVIEW_QUESTION not in result["message"]
+        # No carrier arms, no clobber-protection flag set
+        assert "ftux_interview_offer" not in result
+        assert result["intent"].get("ftux_interview_question_pending") is None
 
 
 # ---------------------------------------------------------------------------

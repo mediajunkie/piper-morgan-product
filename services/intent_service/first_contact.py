@@ -44,6 +44,7 @@ assigned yet). The read below follows its binding-first shape (status-service
 gate → router init → read → close per #1279) with failure kept distinct.
 """
 
+import os
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -315,6 +316,24 @@ def render_first_contact_block(payload: Optional[Dict[str, Any]]) -> str:
 # answer's content. Declines, bare exits, and pre-classifier-claimed commands
 # release WITHOUT binding.
 
+# #1688 HOLD (PPM ruling 2026-09-03, matching #1658's precedent): the build
+# is merged but must NOT ship with the next deploy -- by Arch's own #1658 test
+# ("did this UI exist in the running system yesterday") the empty-state
+# interview is new build on the maintenance-mode web-chat surface, so it ships
+# DARK behind this flag. DEFAULT OFF: a deploy of main carries the pre-1688
+# canned-greeting behavior byte-identical. Flip-on is a PM/PPM decision, never
+# an engineering one -- do not enable outside a test without that ruling.
+# Read at call time, never import time; same truthy vocabulary as
+# PIPER_INVERSION_SHADOW (inversion_shadow.py _TRUTHY).
+_FTUX_INTERVIEW_FLAG = "PIPER_FTUX_INTERVIEW"
+_FLAG_TRUTHY = {"1", "true", "on", "yes"}
+
+
+def ftux_interview_enabled() -> bool:
+    """True iff PIPER_FTUX_INTERVIEW is set truthy (#1688 HOLD; default OFF)."""
+    return os.environ.get(_FTUX_INTERVIEW_FLAG, "").strip().lower() in _FLAG_TRUTHY
+
+
 # CXO v0.2 §3a literals -- pinned verbatim in
 # tests/unit/services/intent_service/test_ftux_interview_1688.py. Do not edit
 # without a new CXO ruling; drift fails there.
@@ -389,12 +408,15 @@ def build_ftux_interview_offer(user_id: Optional[str]) -> Dict[str, Any]:
 async def ftux_interview_greeting(
     session_id: Optional[str], user_id: Optional[str]
 ) -> Optional[Dict[str, Any]]:
-    """The greeting seam: first-exchange gate + cold gate, in one call.
+    """The greeting seam: flag gate + first-exchange gate + cold gate, in
+    one call.
 
     Returns ``{"message": <rendered interview>, "offer": <#846 record>}``
     when the interview owns this greeting, else None (the normal greeting
-    stands). Ordering: newness first (cheap, in-memory) then coldness (a
-    status read). Fail-closed at both gates.
+    stands). Ordering: flag first (#1688 HOLD -- the ONE gate point: with
+    the flag off no interview renders and no carrier ever arms, so the
+    offer-seam handler downstream is unreachable too), then newness (cheap,
+    in-memory), then coldness (a status read). Fail-closed at every gate.
 
     The interview REPLACES the canned greeting rather than appending to it
     (the demo-block pattern): the canned greeting ends in its own question
@@ -402,6 +424,8 @@ async def ftux_interview_greeting(
     is the plain greeting wearing a costume. The empty moment is owned or
     it isn't.
     """
+    if not ftux_interview_enabled():
+        return None  # held dark (#1688 HOLD, PPM 2026-09-03): canned greeting stands
     if not user_id or not is_first_exchange(session_id, user_id):
         return None
     if not await is_cold_user(user_id):
