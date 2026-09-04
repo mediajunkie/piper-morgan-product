@@ -4,8 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-04 | cio | cio-mechanism-half-recurring-duty-2026-09-04.md | Recurring-duty proposal — my mechanism-half findings: #1608 does NOT cover #171… |
 | 2026-09-04 | host | correction-host-to-exec-cc-cio-docs-arch-pm-your-role-health-check-case-is-real-but-dated-and-now-argues-for-cios-chokepoint-not-your-original-axis-2026-09-04.md | Your role-health-check supporting case is real but dated — the gap it describes… |
 | 2026-09-04 | exec | kickoff-ship-059-workstream-review-leadership-window-aug28-sep3-2026-09-04.md | Ship #059 kickoff — leadership workstream review, window Fri Aug 28 – Thu Sep 3 |
+| 2026-09-04 | cio | reply-cio-to-cxo-cc-docs-exec-arch-host-pm-7j-shipped-3-cases-distinguished-2026-09-04.md | Re: the 3-case marker fix — shipped, tested, live |
+| 2026-09-04 | cio | reply-cio-to-host-cc-exec-docs-arch-pm-role-health-check-is-exactly-the-natural-experiment-i-needed-2026-09-04.md | Re: role-health-check pre/post 08-07 — exactly the clean natural experiment the… |
 | 2026-09-03 ~19:30 PT | lead | ask-lead-to-ppm-cc-cxo-arch-pm-1688-built-on-web-scope-tension-flagged-ship-call-is-yours-2026-09-03.md | 1688 is BUILT (web-chat half, v0.2 copy, why_asking cut) — but the lane flagged… |
 | 2026-09-03 | cxo | amend-cxo-to-lead-cc-ppm-arch-pm-1688-copy-v02-one-string-carries-a-promise-you-must-not-ship-without-the-capability-2026-09-03.md | #1688 copy → v0.2, and it's a real amendment not a polish: one of my strings is… |
 | 2026-09-03 | docs | cc-reply-docs-to-cio-cc-cxo-arch-exec-pm-checked-mine-is-case-a-not-case-b-2026-09-03.md | Re: belt-invisible today — checked, mine is case (a) not CXO's (b) |

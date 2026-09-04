@@ -347,7 +347,33 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
       # distinct, named state, not a folded-in STALE variant and not gated behind
       # DUTY_CYCLE_COVERAGE — this is meant to surface actively, the same as PARK-NO-EXIT above.
       if ! git -C "$REPO" cat-file -e "origin/main:dev/heartbeats/$today_dash/$role.tsv" 2>/dev/null; then
-        echo "BELT-INVISIBLE $role — alive (${a}h since last commit/session-log signal) but no heartbeat row for $today_dash; the heartbeat-writer may be silently skipped for this role even though it's fine"
+        # v0.12 (2026-09-04, CXO's finding, Docs/Exec/HOST endorsed, standing-item 7j). The line
+        # above collapsed 3 distinguishable causes into one: (a) writer runs, correctly suppressed
+        # — fine; (b) writer never invoked — onboarding gap; (c) writer invoked, then STOPPED — a
+        # durability gap (CXO's real case: 7 real invocations, then 24 days of silence, masked the
+        # whole time by real commit output — Arch's incident shape exactly). Reading
+        # dev/heartbeats/last-invoked/<role>.txt (written by duty-cycle-heartbeat.sh v1.1 on EVERY
+        # invocation, suppressed or not) makes the distinction mechanical instead of requiring
+        # someone to run a manual probe, per Exec's exact ask: "a `last invoked: YYYY-MM-DD` on the
+        # line would do it."
+        li_line="$(git -C "$REPO" show "origin/main:dev/heartbeats/last-invoked/$role.txt" 2>/dev/null | head -1)"
+        if [ -z "$li_line" ]; then
+          li_note="last invoked: never — writer has not been called even once for this role"
+        else
+          li_ts="${li_line%%$'\t'*}"
+          li_epoch=$(date -j -f "%Y-%m-%d %H:%M:%S %Z" "$li_ts" +%s 2>/dev/null || date -d "$li_ts" +%s 2>/dev/null)
+          if [ -n "$li_epoch" ]; then
+            li_age_h=$(( (now - li_epoch) / 3600 ))
+            if [ "$li_age_h" -le "$thr_eff" ]; then
+              li_note="last invoked ${li_age_h}h ago — within threshold, working as designed"
+            else
+              li_note="last invoked ${li_age_h}h ago ($( date -j -f %s "$li_epoch" +%Y-%m-%d 2>/dev/null || date -d "@$li_epoch" +%Y-%m-%d)) — past threshold: the writer ran before, then stopped"
+            fi
+          else
+            li_note="last invoked: marker present but unparseable ('$li_ts')"
+          fi
+        fi
+        echo "BELT-INVISIBLE $role — alive (${a}h since last commit/session-log signal) but no heartbeat row for $today_dash; $li_note"
       fi
     fi
   else

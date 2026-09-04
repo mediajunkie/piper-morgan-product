@@ -127,11 +127,40 @@ W=$(mkfixture "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out=$(run "$W" "$R" 11)
 echo "$out" | grep -q "^BELT-INVISIBLE testrole" && ok "D1 alive, no heartbeat row today → BELT-INVISIBLE fires" || no "D1 expected BELT-INVISIBLE, got: ${out:-<empty>}"
 echo "$out" | grep -q "^STALE" && no "D1b BELT-INVISIBLE case wrongly ALSO flagged STALE: $out" || ok "D1b BELT-INVISIBLE never co-occurs with STALE"
+echo "$out" | grep -q "last invoked: never" && ok "D1c no last-invoked marker at all → reports 'never' (case b: never invoked)" || no "D1c expected 'last invoked: never', got: $out"
 
 W=$(mkfixture_with_heartbeat "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out=$(run "$W" "$R" 11)
 echo "$out" | grep -q "BELT-INVISIBLE" && no "D2 alive WITH today's heartbeat row was WRONGLY flagged BELT-INVISIBLE: $out" || ok "D2 alive + heartbeat-current → no BELT-INVISIBLE"
 [ -z "$out" ] && ok "D2b fully healthy role → no output at all" || no "D2b expected empty output, got: $out"
+
+# PART E — v0.12 (2026-09-04): the last-invoked marker distinguishes case (a) [working as designed]
+# from case (c) [invoked, then stopped — CXO's real incident shape] on the SAME BELT-INVISIBLE line.
+mkfixture_with_last_invoked(){
+  local commit_when="$1" marker_when="$2" TMP; TMP=$(mktemp -d); TMPS+=("$TMP")
+  git init --bare -q "$TMP/o.git"
+  git clone -q "$TMP/o.git" "$TMP/w" 2>/dev/null
+  ( cd "$TMP/w"
+    git config user.email t@t.test; git config user.name tester
+    mkdir -p "dev/$today" "dev/heartbeats/last-invoked"
+    echo "# session log testrole (sonnet)" > "dev/$today/${today_dash}-testrole-code-sonnet-log.md"
+    marker_ts="$(date -j -f %s "$marker_when" '+%Y-%m-%d %H:%M:%S %Z' 2>/dev/null || date -d "@$marker_when" '+%Y-%m-%d %H:%M:%S %Z')"
+    printf '%s\twork\n' "$marker_ts" > "dev/heartbeats/last-invoked/testrole.txt"
+    git add -A
+    GIT_AUTHOR_DATE="@$commit_when +0000" GIT_COMMITTER_DATE="@$commit_when +0000" \
+      git commit -qm "docs(session): TestRole afternoon work"
+    git push -q origin HEAD:main 2>/dev/null )
+  echo "$TMP/w"
+}
+
+W=$(mkfixture_with_last_invoked "$NOW" "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "working as designed" && ok "E1 last-invoked recent (within threshold) → reports case (a), working as designed" || no "E1 expected 'working as designed', got: $out"
+
+W=$(mkfixture_with_last_invoked "$NOW" "$(( NOW - 24*3600 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "ran before, then stopped" && ok "E2 last-invoked 24h ago (past threshold) → reports case (c), CXO's real incident shape" || no "E2 expected 'ran before, then stopped', got: $out"
+echo "$out" | grep -qE "last invoked 24h ago \([0-9]{4}-[0-9]{2}-[0-9]{2}\)" && ok "E2b message includes the actual last-invoked date, not just an hour count" || no "E2b missing the dated marker: $out"
 
 echo "── $PASS passed, $FAIL failed ──"
 [ "$FAIL" -eq 0 ]
