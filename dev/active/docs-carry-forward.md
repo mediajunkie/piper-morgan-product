@@ -1,9 +1,9 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-03 ~19:55 PDT (mid-day, session log open)
+**Updated**: 2026-09-03 ~19:35 PDT (19:31 fire was quiet — confirmed nothing changed)
 **Session log**: `dev/2026/09/03/2026-09-03-0703-docs-code-log.md` (open).
 **Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy (confirmed via `CronList` this fire),
-next fire 21:57.
+next fire 21:57 — this is today's LAST scheduled fire, expect day-close then.
 
 ## The day's headline: a real 5-day omnibus gap, found, root-caused, and closed
 
