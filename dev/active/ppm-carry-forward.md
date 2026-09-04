@@ -1,8 +1,17 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-03 22:22 PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
-sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+**Last rewritten**: 2026-09-04 07:22 PT (START). **Still watching**: #1386 — **only criterion 6
+(PM sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally
+satisfied. **#1688's overrule call also still open** — see below.
+
+## ✅ SHIP #059 SENT SAME-DAY + ROLE-PORTFOLIO REFRESHED (2026-09-04 07:22)
+Window Fri Aug 28–Thu Sep 3. Wrote it this fire rather than defer (no other blocking work, "every
+hour earlier" framing from the kickoff) — pulled the actual `sprint-truth.py` trajectory and
+day-summary content from all seven session logs in the window rather than work from memory. Also
+did the Rule-5 `ROLE-PORTFOLIO-PPM.md` refresh the review triggers by construction — replaced the
+whole §2 table (was dated 08-28). Sent `7c9328288` / `10bbb96fa`, both verified landed. **Nothing
+further owed on either.**
 
 ## 🟡 #1688 SHIP CALL — HOLD, Arch (the precedent's own author) concurred fully, PM overrule still open (2026-09-03 22:22)
 Arch concurred with the HOLD ruling below, including the hardest part of the reasoning (a frozen
