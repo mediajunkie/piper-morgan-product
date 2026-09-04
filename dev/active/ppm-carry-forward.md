@@ -1,8 +1,17 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-03 19:22 PT (WORK). **Still watching**: #1386 — **only criterion 6 (PM
+**Last rewritten**: 2026-09-03 22:22 PT (STOP). **Still watching**: #1386 — **only criterion 6 (PM
 sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally satisfied.
+
+## 🟡 #1688 SHIP CALL — HOLD, Arch (the precedent's own author) concurred fully, PM overrule still open (2026-09-03 22:22)
+Arch concurred with the HOLD ruling below, including the hardest part of the reasoning (a frozen
+surface being the only currently-buildable one is precisely when the freeze does its work, not an
+exception to it). Added a useful framing: the merged-not-deployed build isn't wasted — the
+interview mechanism transfers to MCP once its infra exists, and the Web presentation sits ready if
+that surface's status is ever revisited. **PM's overrule call remains explicitly open** — nothing
+further from PPM unless PM rules the other way. Worth a fresh read at next START in case PM
+responded overnight.
 
 ## 🟡 #1688 SHIP CALL — RULED HOLD, PM flagged explicitly for possible overrule (2026-09-03 19:22)
 Lead built the web-chat half (MCP half verified unbuildable — no served MCP server exists yet) and
