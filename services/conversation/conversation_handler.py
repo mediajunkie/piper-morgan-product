@@ -183,6 +183,40 @@ class ConversationHandler:
         # ADR-059: Portfolio onboarding offer disabled (onboarding on ice)
         # Was: _check_portfolio_onboarding(user_id, session_id)
 
+        # #1688 FTUX empty-state interview: a COLD user (zero configured
+        # integrations) on the FIRST exchange gets the interview opening
+        # instead of the canned greeting — the interview OWNS the empty
+        # moment (the FTUX model's rule; same family as #1635's empty-state
+        # suppression). Copy is CXO's v0.2 verbatim, minus the why_asking
+        # promise PPM cut (cross-session recall is #1705, unbuilt). The
+        # returned offer record is armed by intent_service at the canonical
+        # seam so the next turn's answer binds (#1654 carrier idiom).
+        # Fail-graceful: any error → the normal greeting, never a dead turn.
+        try:
+            from services.intent_service import first_contact as _first_contact
+
+            interview = await _first_contact.ftux_interview_greeting(
+                session_id=session_id, user_id=user_id
+            )
+        except Exception as e:
+            logger.warning("ftux_interview_greeting_error", error=str(e))
+            interview = None
+        if interview:
+            interview_intent = intent_to_dict(intent)
+            # Top-level flag: _apply_soft_offer's _pending_flags check reads
+            # result.intent_data — a soft workflow offer must never clobber
+            # the just-armed interview question (the #1605 one-slot rule).
+            interview_intent["ftux_interview_question_pending"] = True
+            return {
+                "message": interview["message"],
+                "intent": interview_intent,
+                "workflow_id": None,
+                # Armed at the intent_service canonical seam (the #846
+                # register-embedded-offers seam) — this handler has no
+                # access to the session-scoped offer store.
+                "ftux_interview_offer": interview["offer"],
+            }
+
         # Get calendar summary (may be None if unavailable)
         # Issue #849: Thread user_id for user-scoped calendar auth
         calendar_summary = await self._get_calendar_summary(user_id=user_id)

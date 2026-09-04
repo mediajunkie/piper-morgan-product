@@ -276,6 +276,10 @@ class ContextAssembler:
             "filter": "state:open, recency-ranked",
         },
         "first_contact_source_failed": {"source": "GitHubIntegrationRouter"},
+        # #1688: the FTUX interview's bound answer -- session-scoped working
+        # state from the offer seam; within-session use only (#1705 owns
+        # cross-session).
+        "ftux_interview_answer": {"source": "ConversationContext"},
     }
 
     def _attribute_provenance(
@@ -436,6 +440,26 @@ class ContextAssembler:
                         self._attribute_provenance(list(fc_ctx.keys()), user_id=user_id)
             except Exception as e:  # silent-ok: first-contact demo is an enhancement; failure skips the demo, logged, and the greeting proceeds without a claim (#1536)
                 logger.warning("context_assembler_first_contact_error", error=str(e))
+
+        # #1688: the FTUX interview's bound answer rides every floor-bound
+        # turn for the rest of the session (within-session use is the whole
+        # deliverable; cross-session is #1705). Rides OUTSIDE the category
+        # dispatch like the #1536 block above, and a read failure can't take
+        # the rest of the context down.
+        if session_id:
+            try:
+                from services.intent_service.conversation_context import (
+                    get_or_create_context,
+                )
+
+                _ftux_answer = get_or_create_context(
+                    session_id, user_id=user_id
+                ).ftux_interview_answer
+                if _ftux_answer:
+                    context["ftux_interview_answer"] = _ftux_answer
+                    self._attribute_provenance(["ftux_interview_answer"], user_id=user_id)
+            except Exception as e:  # silent-ok: the bound answer is an enhancement; failure omits it, logged, and the floor composes without it (#1688)
+                logger.warning("context_assembler_ftux_answer_error", error=str(e))
 
         # #960: Context contract violation logging — warn when a data-query
         # category reaches the floor with no user data in context.

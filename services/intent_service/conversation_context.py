@@ -133,6 +133,13 @@ class ConversationContext:
     # not part of equality (compare=False).
     _hydrated: bool = field(default=False, compare=False, repr=False)
 
+    # #1688: the FTUX empty-state interview's bound answer -- session-scoped
+    # working state, set at the offer seam (first_contact.handle_ftux_
+    # interview_turn) and surfaced to the floor via the context assembler.
+    # WITHIN-SESSION use only: cross-session recall is #1705 (Leg D
+    # increment 6) and does not exist; no surface may claim otherwise.
+    ftux_interview_answer: Optional[str] = None
+
     # Issue #1030 R4: per-turn provenance sidecar for "why did you suggest that?"
     # citations. Keyed by ConversationTurn.id. Values are dicts of
     # {domain_context_key: {source, identifier, fetch_timestamp, ...}} representing
@@ -259,6 +266,10 @@ class ConversationContext:
             ),
             "last_response_was_floor": self.last_response_was_floor,
             "last_floor_category": self.last_floor_category,
+            # #1688: session-scoped (the persisted slice is keyed by THIS
+            # session) -- surviving a mid-session restart is not
+            # cross-session recall, which stays #1705's.
+            "ftux_interview_answer": self.ftux_interview_answer,
         }
 
     def apply_persisted_state(self, state: Optional[dict[str, Any]]) -> None:
@@ -285,6 +296,9 @@ class ConversationContext:
             self.last_response_was_floor = bool(state.get("last_response_was_floor"))
         if "last_floor_category" in state:
             self.last_floor_category = state.get("last_floor_category")
+        if "ftux_interview_answer" in state:  # #1688; legacy states lack the key
+            answer = state.get("ftux_interview_answer")
+            self.ftux_interview_answer = str(answer) if answer is not None else None
 
     # ---- Lens stack operations (#763 Phase 4) ----
 

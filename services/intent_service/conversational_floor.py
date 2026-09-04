@@ -811,6 +811,24 @@ class ConversationalFloor:
                     "dig into one of them."
                 )
 
+        # #1688: the FTUX interview's bound answer — the user told us, earlier
+        # this session, what's most on their mind at work. Within-session use
+        # ONLY: the guidance states the persistence rule without reciting any
+        # example reply (#1655 discipline), and the promise language PPM cut
+        # from the copy spec must not be re-taught here (#1570: the model
+        # imitates vocabulary its prompt carries even when prohibited).
+        if domain_context.get("ftux_interview_answer"):
+            _ftux_answer = domain_context["ftux_interview_answer"]
+            lines.append(
+                "- OPENING-QUESTION ANSWER (this session): asked what's most "
+                f"on their mind at work, the user said: {_ftux_answer!r}. "
+                "Treat it as live context — connect your replies to it where "
+                "relevant, and offer to work on it. It is NOT stored beyond "
+                "this session: never claim it was saved or remembered, and "
+                "never promise to recall or resurface it in a future session "
+                "— no such capability exists."
+            )
+
         # #1536 + #1425 honesty: GitHub is connected but the first-exchange
         # read FAILED — a demonstration was promised by the connection, so say
         # we couldn't check; never present the failure as an empty repo.
