@@ -25,11 +25,15 @@
 
 **~7:1x AM**: **Lead Developer** reviews the prog-drafted briefing, finds PA's staleness pattern held exactly — the old briefing directed readers to code disposed the prior week, asserted a defunct Cursor cross-validation model, claimed a stale "72/72 tests" figure against a suite now ~3.6K. Rebuilds it fully, pushes.
 
-**7:07 AM**: **HOST** opens START fire (day 40 on Amber); triages 4 informational memos, notably CXO's new "stale-blocker rot" failure taxonomy (a row's blocker clears but nobody updates it) with five real instances found in 36 hours.
+**7:07 AM**: **HOST** opens START fire (day 40 on Amber); triages 4 informational memos, notably CXO's new "stale-blocker rot" failure taxonomy (a row's blocker clears but nobody updates it, so it sits looking correctly parked while wrong) with five real instances found in 36 hours.
+
+**7:07 AM**: CIO confirms the taxonomy and correctly declines to rush a fix, queuing it for the next START with the same build-mirror-test-verify rigor a recent fix needed. HOST logs Exec's prior-day concession into `decisions.log`.
 
 **7:16 AM**: **Exec** is engaged directly by PM: **Ship #058 is unreachable in the admin composer (404)**. Exec misdiagnoses twice (wrongly blames `.gitignore`, then wrongly blames draft directory location) before finding the real cause: the composer's calendar lookup reads a **build-time CSV snapshot**, not a live source — #058's row was added after the last deploy. *(Exec's own log flags this section as backfilled: the session log itself wasn't created until 08:32, a Step 0 process gap Exec names explicitly.)*
 
-**7:17 AM**: **CXO** opens START fire. Mechanically re-verifies every `#NNNN` in her own tracker as the very first move and **immediately finds a live case**: #1463 closed 2026-09-01 at 22:49 — while CXO was writing her own day-close — with no memo and no tracker update. The row would have sat "correctly blocked" indefinitely.
+**7:17 AM**: **CXO** opens START fire. Mechanically re-verifies every `#NNNN` in her own tracker as the very first move and **immediately finds a live case**: #1463 closed 2026-09-01 at 22:49 — while CXO was writing her own day-close — with no memo and no tracker update.
+
+**7:17 AM**: The row would have sat "correctly blocked" indefinitely. The finding is narrower than an alarm: the gate closed on its deliverable, but the capability it gates (the rubric's T axis) still scores `PENDING-PROBE` and can't issue a pass — a straight decrement to PDR-006 would have lost that residual. Sends PA exact replacement wording.
 
 **7:22 AM**: **PPM** opens START fire, mailbox empty, `sprint-truth.py` unchanged from last night.
 
@@ -37,11 +41,27 @@
 
 ### Mid-Morning: Ship #058's real fix, PDR-006's stale gate, the shadow probe (7:16 AM – 10:37 AM)
 
-**~7:xx–8:xx AM**: **Exec**, still working the Ship #058 investigation, discovers **PM's separate `faoilean` local checkout has diverged: 4 commits ahead, 3,128 behind** — with a stale `.git/index.lock` from a crashed process blocking every pull. **Near-miss**: Exec drafts a `git reset --hard origin/main` off the four commit subject lines ("merge," "manifest updates," "syncing faoilean") — but asks PM to run `git diff --stat` first rather than trust the labels. The diff reveals a Cova pitch deck, a learning-data JSON, and 19 original PNGs (~60MB) that exist nowhere else. **The reset would have destroyed them permanently.** Exec instead branches the state off first (zero-risk), then merges origin/main with targeted MANIFEST-conflict resolution.
+**~7:xx AM**: **Exec**, still working the Ship #058 investigation, discovers **PM's separate `faoilean` local checkout has diverged: 4 commits ahead, 3,128 behind** — with a stale `.git/index.lock` from a crashed process blocking every pull.
 
-**~8:xx AM**: **Exec** files `piper-morgan-website#37` (publish Step 9's image-archival step is documented in `docs-notify.js:88` but has no executing code — found via the near-miss above) routed to Docs for a shape confirmation, and routes the composer-404 root cause to Web with a rebuild ask.
+**~7:xx AM**: **Near-miss**: Exec drafts a `git reset --hard origin/main` off the four commit subject lines ("merge," "manifest updates," "syncing faoilean") — reading the labels as self-evidently noise.
 
-**Mid-morning (PA↔PM, before 9:45 fire)**: **PA** checks Gmail-MCP reachability for PM (not configured in this worktree, same shape as an earlier Granola gap) and resolves T1's (Cross-Piper synthesis) last open question directly with PM: the steering axis is audience (client-facing vs. internal), not abstract risk tolerance. PM also relays alpha tester **Rebecca Refoy's** failing Claude API key. PA traces the real validator (`llm_config_service.py::_validate_anthropic`), confirms it works correctly today with a valid key, and finds a genuine bug: the validator computes a specific failure reason but the public interface flattens it to a bare boolean, hiding "wrong key" vs. "no credits." **Files #1718** and drafts PM a ready-to-send reply naming both likely causes.
+**~7:xx AM**: Exec asks PM to run `git diff --stat origin/main...HEAD` first rather than trust the labels. The diff reveals a Cova pitch deck, `dev/active/Treatment`, a learning-data JSON, and 19 original PNGs (~60MB) that exist nowhere else on origin.
+
+**~7:xx AM**: **The drafted reset would have destroyed all of it permanently.** Exec instead branches the state off first as `faoilean-local-2026-09-02` (zero-risk), then merges origin/main with three MANIFEST conflicts resolved to origin's copies — PM ends current with all four commits preserved.
+
+**~7:xx AM**: Exec pre-empts a second collision the merge would have hit (an untracked `mailboxes/pard/inbox/MANIFEST.md` shadowing a real origin file) and checks six loose PNGs for overlap — five already exist on origin under renamed paths; the sixth (`trust-check.png`) is flagged as possibly unique, which PM later confirms was correct.
+
+**~8:xx AM**: **Exec** files `piper-morgan-website#37` — publish Step 9's image-archival step is documented in `docs-notify.js:88` but has no executing code, found via the near-miss above — routed to Docs for a shape confirmation.
+
+**~8:xx AM**: **Exec** routes the composer-404 root cause to Web, with the layer split explained and a design question (should the composer read the calendar live, since `fetchLiveCalendar()` already exists in that module) left for Web's own judgment.
+
+**Mid-morning (PA↔PM, before 9:45 fire)**: **PA** checks Gmail-MCP reachability for PM (not configured in this worktree, same shape as an earlier Granola gap) rather than assume.
+
+**Mid-morning**: Resolves T1's (Cross-Piper synthesis) last open question directly with PM: the steering axis is audience (client-facing vs. internal), not abstract risk tolerance — PM volunteers the concrete stakes behind an incident T1's draft had already found in Piper Open's own logs.
+
+**Mid-morning**: PM relays alpha tester **Rebecca Refoy's** failing Claude API key (received during PM's vacation). PA traces the real validator (`llm_config_service.py::_validate_anthropic`) rather than guess at causes, and confirms it works correctly today with a valid key.
+
+**Mid-morning**: Finds a genuine bug: the validator computes a specific failure reason but the public interface flattens it to a bare boolean, hiding "wrong key" vs. "no credits" — while Piper's own runtime chat-error handling already gets this exact distinction right for the same underlying cause. **Files #1718.**
 
 **9:41 AM**: **Lead Developer** opens a WORK fire, notes a cc on PDR-006's stale gate count (see CXO above), and dispatches a second **Coding Agent (prog)** subagent to build a **pre-claim shadow probe** — the measurement backbone the PM-ratified 8/29 pattern-narrowing policy needs.
 
@@ -51,7 +71,13 @@
 
 **9:46 AM**: **Coding Agent (prog)**, delegated by Lead, begins building the shadow probe: reads decisions.log, the intent-routing-stack doc, and the existing inversion-shadow precedent in full before writing code.
 
-**9:52 AM**: **Web** opens a WORK fire and receives Exec's composer-404 memo. Investigates before deciding: finds `loadCalendarLive()` already exists and is proven in production elsewhere. Rejects Exec's offered hybrid-fix alternative after checking both of Exec's stated risks against the actual code and finding neither held. Ships a **full switch to live calendar reads**, verifies locally (exercising the honest fallback path), confirms the production deploy succeeded via polling, and files `piper-morgan-website#38` with full evidence.
+**9:52 AM**: **Web** opens a WORK fire and receives Exec's composer-404 memo. Investigates before deciding: finds `loadCalendarLive()` already exists and is proven in production elsewhere, with a 15s TTL cache and honest fallback-and-report on failure.
+
+**9:52 AM**: Rejects Exec's offered hybrid-fix alternative after checking both of Exec's stated risks (token dependency, rate/reliability) against the actual code — both already handled, a hybrid would only add a second code path without adding real safety.
+
+**9:52 AM**: Ships a **full switch to live calendar reads** in `src/pages/api/compose.ts`. Verifies locally with a real dev server, exercising the honest fallback path directly since no `GITHUB_DRAFT_TOKEN` is available in this environment.
+
+**9:52 AM**: Confirms the production deploy succeeded via a polled background check (not a blind sleep), and files `piper-morgan-website#38` with full root-cause and verification evidence (`fda78ca`). Reports to Exec/Docs/Comms/PM with one honest gap flagged: no live admin credentials to fully re-confirm PM's exact scenario.
 
 **10:00 AM**: **Coding Agent (prog)** completes the shadow probe build — new module, 34 pre-classifier return sites threaded with pattern-list identity, 29 new tests, full existing suite green (3661+49). Flags a local mypy-gate discrepancy to Lead via A/B/A stash isolation (byte-identical before/after its own change — not caused by this work, matches a documented platform-skew condition) rather than silently ignore it.
 
@@ -63,9 +89,19 @@
 
 **10:22 AM**: **PPM** opens a WORK fire; mailbox is empty but `sprint-truth.py`'s unmilestoned-issue count moved 17→18 — checks rather than trusts the empty inbox, finds **#1718** (PA's Rebecca-Refoy bug), checks it against #1414's precedent, and milestones it **MVP / Sprint Backlog / Beta Blockers – Hard Gates Only**.
 
-**10:23 AM**: **Comms** is engaged by PM directly: **Ship #058's voice pass is complete, ready for review.** Runs `template-audit` v1.11, finds and fixes 2 real defects (a double space, a negation-reveal construction). Flags the draft's length (1,891 words vs. the ~1,630 Ship norm) as a question, not a blocker. PM is genuinely torn and invites a tightening pass; Comms gives an honest opinion — finds one real duplication (Governance section restating the FTUX finding already told in Product & experience) — and cuts to 1,856 words with no substance lost. PM approves; Comms sends the **PUBLISH-READY memo to Docs**, ruling on an editorial register question Exec had deliberately left open.
+**10:23 AM**: **Comms** is engaged by PM directly: **Ship #058's voice pass is complete, ready for review.** Runs `template-audit` v1.11, finds and fixes 2 real defects (a double space, a negation-reveal construction).
 
-**10:27 AM**: **Docs** opens Fire 2; drains an 8-item mail loop. **The one item needing real work**: Exec's website#37 routing. Docs checks its own last two publish commits and finds its manual archival practice has **silently drifted** from the documented `images-archive/` split to co-located `published/` since 08-29 — corrects the target back to PM (cc Web, Comms) rather than build automation against a stale doc.
+**10:23 AM**: Flags the draft's length (1,891 words vs. the ~1,630 Ship norm) as a question, not a blocker. PM is genuinely torn between the consequential week and concision, and invites a tightening pass.
+
+**10:23 AM**: Comms gives an honest opinion rather than reflexively agreeing — finds one real duplication (the Governance section restating the FTUX finding already told in Product & experience) plus trailing hedge clauses and a real typo — and cuts to 1,856 words with no substance lost.
+
+**10:23 AM**: PM approves ("Looks good, thanks!"). Comms sends the **PUBLISH-READY memo to Docs** (cc PM, Exec), ruling on an editorial register question ("My Chief Architect" vs. bare names) Exec had deliberately left open, reading it as PM's deliberate narration convention rather than drift.
+
+**10:27 AM**: **Docs** opens Fire 2; drains an 8-item mail loop (7 CC'd, read in full rather than trust a narrow "to: docs" filter). **The one item needing real work**: Exec's website#37 routing.
+
+**10:27 AM**: Docs checks its own last two publish commits and finds its manual archival practice has **silently drifted** from the documented `images-archive/` split to co-located `published/` since 08-29.
+
+**10:27 AM**: Corrects the target back to Exec (cc Web, Comms, PM) rather than build automation against a stale doc — commits to fixing `docs-notify.js:88`'s text once the automation lands.
 
 **~10:3x AM**: **Lead Developer**'s shadow probe merges (`365ee78b7`) — observer-only mirror of an existing pattern, per-pattern-list precision tracked with "incomparable" as its own bucket rather than folded into either side (folding either way would manufacture false precision). The belt then goes red **on Lead's own push** — a formatting mismatch between the lane's ruff version and the pinned one; Lead had pushed on the lane's own "ruff clean" claim rather than re-running the pinned toolchain. Fixed and re-pushed, but **still red**: the fix addressed formatting only, not the separate `ruff check` (import-order) failure on the same file. Lead names this explicitly: "two partial fixes where one complete one belonged — the format/check split is the same partial-update trap as everything else this week." Both pinned checks verified clean before the final push.
 
@@ -73,11 +109,25 @@
 
 ### Late Morning: Ship #058 publishes, the freeze-check premise gets checked twice (10:37 AM – 12:57 PM)
 
-**10:37 AM (cont.)**: **CIO** verifies **Exec's freeze-check proposal before building it** — and the premise doesn't hold. Exec's diagnostic ("22 heartbeat refs vs. 1 git-log ref") was a crude substring count; the actual `age_of()` function already takes the max of three signals, two commit-based. CIO replays the specific incident Exec cited and confirms it was **not** a miss. CIO finds the **real, narrower gap** instead — a bare `role: ...` commit form the grep missed — fixes it with an isolating regression test, and sends Exec a full correction (cc Arch/HOST/CXO/PM) rather than a bare "shipped" reply. In the same fire, CIO also builds and ships **CXO's stale-blocker checker** (`#NNNN`-cites-closed-issue detection), deliberately running independent of the age-threshold gate so it can fire on CXO's *recently-dated* motivating cases.
+**10:37 AM (cont.)**: **CIO** verifies **Exec's freeze-check proposal before building it** — and the premise doesn't hold. Exec's diagnostic ("22 heartbeat refs vs. 1 git-log ref") was a crude substring count over source text, not a reading of the code.
+
+**10:37 AM**: The actual `age_of()` function already takes the max of three signals, two commit-based. CIO replays the specific incident Exec cited (Arch's commits) and confirms it was **not** a miss — both used the correctly-matched form.
+
+**10:37 AM**: CIO finds the **real, narrower gap** instead — a bare `role: ...` commit form the grep missed, only the parenthesized `(role):` form matched — fixes it with an isolating regression test (`7c2e10d6c`), confirmed failing pre-fix and passing post-fix.
+
+**10:37 AM**: Sends Exec a full correction (cc Arch/HOST/CXO/PM) rather than a bare "shipped" reply. Declines to build Arch's separately-proposed "alive but belt-invisible" state, since it rests on the same disproven premise.
+
+**10:37 AM**: In the same fire, CIO also builds and ships **CXO's stale-blocker checker** (`#NNNN`-cites-closed-issue detection, `1b718c4f7`), deliberately running independent of the age-threshold gate so it can fire on CXO's *recently-dated* motivating cases — a design choice caught while building, not after.
 
 **11:13 AM**: **Docs** is engaged by PM directly: Comms has finished the Ship #058 edit. Docs proceeds off the calendar-row signal alone (no memo had landed yet) and runs an **independent audit** beyond Comms' already-passed template check — fact-checks 4 load-bearing claims against primary sources (issues-closed count, the connector investigation, a heading-defect count, a callback quote), finding zero discrepancies. **Publishes** Ship #058 (`weekly-ship-058-what-we-actually-had`, website commit `52c8dae`). Sends Comms/Exec/PM the publish-confirmation memo naming the LinkedIn-only syndication leg.
 
-**11:38 AM**: **Web** is engaged by PM directly: relocate the `piper-ship.webp` hero image to the Shipping News landing page, remove it from individual posts — but "let's discuss first," since Dispatch is actively publishing this week. Web investigates the actual collision risk (confirms Ship #058's content commit already landed via the composer fix, confirms the template files a change would touch are disjoint from what publishing writes) and responds with grounded findings plus one clarifying question, **implementing nothing** per PM's explicit ask.
+**11:38 AM**: **Web** is engaged by PM directly: relocate the `piper-ship.webp` hero image to the Shipping News landing page, remove it from individual posts — but "let's discuss first," since Dispatch is actively publishing this week and PM doesn't want a code change colliding with it.
+
+**11:38 AM**: Web investigates current state before discussing rather than guess: confirms the image today appears only in OG metadata, shown small+cropped on individual posts — the same static asset either way, so `publish-post.js` wouldn't need to change.
+
+**11:38 AM**: Checks the actual collision risk rather than reassure blindly: confirms Ship #058's content commit already landed via the composer fix, and that the template files a change would touch are disjoint from what publishing writes to — low but not zero risk, said plainly including the limit (no visibility into Dispatch's own automation).
+
+**11:38 AM**: Responds with grounded findings plus one clarifying question (banner treatment vs. something more contained), **implementing nothing** per PM's explicit ask — waits on PM's design direction.
 
 **12:41 PM**: **Lead Developer** opens a WORK fire; belt confirmed green after the complete format+check fix. **#1682 item 1** resolved: Docs had routed a stray 2025 test file as "not mine to judge move-or-delete" — verify-first finds the real answer, the file had already migrated to `tests/` in December 2025; the `services/` copy is nine-month-old residue. Deleted; Docs thanked for the catch.
 
@@ -87,17 +137,47 @@
 
 **12:57 PM**: **Arch** logs a batched WORK fire — quiet, all mail drained, no rulings owed.
 
-**~12:57 PM (Docs, continued PM-engaged session)**: PM asks Docs why work gets postponed across fires when nothing's blocking — **a direct challenge that reshapes the rest of Docs' day**. Docs answers honestly (a fire exists because nobody's watching between crons, not to pace effort once awake) and PM says "just keep going." Docs drains the entire mail loop, then reads **all 7 audit-related Ongoing-milestone issues in full**, correctly identifies 2 sub-items belonging to CIO and Lead respectively and delegates them immediately. PM broadens the ask: also clear the FLYWHEEL/process-improvement backlog historically Lead's — Docs dispatches a **foreground research agent** to read all 24 open Ongoing-milestone issues against the actual current sprint stage, spot-checks 2 of its highest-consequence claims before trusting the report, and presents PM a 5-bucket summary. PM directs: close the 4 stale ones, answer the Lead-urgency question directly (neither #1629 nor #1621 is a beta blocker), send CIO the 7-issue delegation list. Docs closes **#1259, #1275, #1162, #465** with full close-issue-properly evidence and sends CIO the delegation (cc Lead, PM).
+**~12:57 PM (Docs, continued PM-engaged session)**: PM asks Docs why work gets postponed across fires when nothing's blocking — **a direct challenge that reshapes the rest of Docs' day**.
+
+**~12:57 PM**: Docs answers honestly: a fire exists because nobody's watching between crons, not to pace effort once awake; the only legitimate deferral reasons are a genuine external blocker or a real capacity limit. PM says "just keep going."
+
+**~12:57 PM**: Docs drains the entire mail loop, then reads **all 7 audit-related Ongoing-milestone issues in full** (not titles), correctly identifies 2 sub-items belonging to CIO and Lead respectively, and delegates both immediately.
+
+**~1:xx PM**: PM broadens the ask: also clear the FLYWHEEL/process-improvement backlog historically Lead's. Docs dispatches a **foreground research agent** to read all 24 open Ongoing-milestone issues against the actual current sprint stage — not skim titles.
+
+**~1:xx PM**: Docs spot-checks 2 of the research agent's highest-consequence claims before trusting the report (both held up), and presents PM a 5-bucket summary rather than a raw 24-issue dump.
+
+**~1:xx PM**: PM directs: close the 4 stale ones, answer the Lead-urgency question directly (neither #1629 nor #1621 is a beta blocker), send CIO the 7-issue delegation list.
+
+**~1:xx PM**: Docs closes **#1259, #1275, #1162, #465** with full close-issue-properly evidence (description updated with evidence first, closing comment second, correct close reason for each) and sends CIO the delegation list (cc Lead, PM).
 
 ### Early Afternoon: The stale-blocker checker finds a broken tracker (1:07 PM – 4:37 PM)
 
 **1:07 PM**: **HOST** opens a WORK fire; verifies both the stale-blocker checker and the freeze-check patch directly via `git log`/`grep` rather than trusting the memos — both confirmed shipped exactly as claimed, with CIO's finding "genuinely better than what was proposed."
 
-**1:17 PM**: **CXO** opens a WORK fire; runs CIO's new stale-blocker checker: **0 flags** — but recognizes an all-clear from a check whose target state is unknown proves nothing ("clean is not a measurement"), so builds a **positive control**: a temp row citing a known-closed issue. **It doesn't fire.** Rather than assume a script bug, CXO investigates and finds **her own tracker file was silently malformed** — a truncated `.replace()` had left an orphan table fragment the prior day, hiding 3 of 4 rows from every parse since, including the "clean" run CXO had cited to CIO that same morning as evidence of health. Repairs it, confirms the control now fires, and finds a second real stale-blocker in the repaired file (a fired-and-closed trigger still cited as an open blocker). Offers CIO an improvement: a per-file "rows examined" count so a malformed file can't read as clean.
+**1:17 PM**: **CXO** opens a WORK fire; runs CIO's new stale-blocker checker: **0 flags**.
+
+**1:17 PM**: CXO recognizes an all-clear from a check whose target state is unknown proves nothing — "clean is not a measurement" — so builds a **positive control**: a temp row citing a known-closed issue.
+
+**1:17 PM**: **The control doesn't fire.** Rather than assume a script bug, CXO investigates and finds **her own tracker file was silently malformed** — a truncated `.replace()` had left an orphan table fragment the prior day, hiding 3 of 4 rows from every parse since.
+
+**1:17 PM**: That includes the "clean" run CXO had cited to CIO that same morning as evidence of health. Repairs the file, confirms the control now fires correctly.
+
+**1:17 PM**: The repaired file surfaces a second, real stale-blocker: an ethics-decline watch still names a closed issue as its blocker, when the trigger had already fired and produced a follow-up issue. CXO offers CIO an improvement — a per-file "rows examined" count, so a malformed file can't read as clean.
 
 **1:22 PM**: **PPM** logs a quiet WORK fire, no drift.
 
-**~1:xx PM (Docs, continued)**: **#1584 (broken links)** closed — a rescan against all of `docs/` finds 39 real hits, not the ~240 Docs' own carry-forward had carried; Part A's two systemic clusters turn out already fixed 08-10, well before this session's window. 4 genuinely fixed (2 test-matrix path corrections, 2 PDR-003 filename-drift fixes traced through 3 near-identical mailbox copies to find real targets), 4 annotated dead per the no-guessing convention, 5 correctly identified as false positives (a template's intentional placeholder links, 2 illustrative examples inside a doc about fixing broken links). A comment-post API timeout silently drops the closing comment on the first attempt; **Docs catches it** by checking `gh issue view --json comments` rather than trusting the tool's apparent success, and reposts. **Bigger catch in the same pass**: Docs discovers CIO had already resolved Part C on 08-12 — Docs had verified this itself in-tree at the time, but its own carry-forward carried "CIO's lane, still open" without re-checking the issue thread, and had *already mailed CIO a redundant delegation request earlier this same fire*. Sends CIO a direct correction owning the root cause. **#1644** (56 residual broken links) resolved by the same pass but left open — a v19 roadmap historical-fold item PPM's own 08-24 fix had flagged as separately owed, not Docs' to claim.
+**~1:xx PM (Docs, continued)**: **#1584 (broken links)** — a rescan against all of `docs/` finds 39 real hits, not the ~240 Docs' own carry-forward had carried; Part A's two systemic clusters turn out already fixed 08-10, well before this session's window.
+
+**~1:xx PM**: 4 genuinely fixed (2 test-matrix path corrections, 2 PDR-003 filename-drift fixes traced through 3 near-identical mailbox copies), 4 annotated dead per the no-guessing convention, 5 correctly identified as false positives.
+
+**~1:xx PM**: A comment-post API timeout silently drops the closing comment on the first attempt; **Docs catches it** by checking `gh issue view --json comments` rather than trusting the tool's apparent success, and reposts.
+
+**~1:xx PM**: **Bigger catch in the same pass**: Docs discovers CIO had already resolved Part C on 08-12 — verified in-tree at the time, but Docs' own carry-forward had carried "CIO's lane, still open" without re-checking the issue thread.
+
+**~1:xx PM**: Docs had *already mailed CIO a redundant delegation request earlier this same fire* — sends CIO a direct correction owning the root cause rather than let it stand. #1584 closed.
+
+**~1:xx PM**: **#1644** (56 residual broken links) resolved by the same pass but left open — a v19 roadmap historical-fold item PPM's own 08-24 fix had flagged as separately owed, not Docs' to claim.
 
 **#1682 item 3** (CITATIONS.md): a targeted review, not a bare date-bump — verifies the "8-Dimensional Spatial Intelligence" claim survives the 08-15 spatial cold-island disposal, and finds a genuinely wrong claim (Linear/CI/CD/GitBook named as integrated MCP platforms; none are live) corrected to the real set. States explicitly what wasn't checked (whether MUX/Understanding-Layer-Inversion/PDR-006 warrant new citations) rather than implying full coverage. All 3 of #1682's items now resolved (item 1 by Lead, item 2 already done 08-30, item 3 this fire) — closed.
 
@@ -111,7 +191,11 @@
 
 **4:07 PM**: **HOST** opens a WORK fire; relays CXO's positive-control finding and improvement suggestion.
 
-**4:17 PM**: **CXO** opens a WORK fire; ships FTUX MCP first-turn copy for **#1688** — a gap her own `ftux-surface-mapping` doc had named 5 days earlier and left unfilled. States the design constraint precisely: on MCP, Piper doesn't compose the reply, so the interview question must be in the payload verbatim or no question gets asked at all. Writes the actual copy strings, scoped explicitly as "copy only — schema and sequencing are Lead's."
+**4:17 PM**: **CXO** opens a WORK fire; checks before creating — #1688 has no design request from Lead, but her own `ftux-surface-mapping` doc already named the gap 5 days earlier as "the mapping's main finding" and never filled it. Unblocked, hers, and overdue.
+
+**4:17 PM**: States the design constraint precisely: on MCP, Piper doesn't compose the reply, so the interview question must be **in the payload, verbatim**, or no question gets asked at all — a generic assistant reply ships instead, one layer down.
+
+**4:17 PM**: Writes the actual copy strings (cold/partial/rich empty-states), applying the #1463 class finding — qualifications about what Piper *lacks* reliably get dropped by a recomposing host, so the copy leads with capability and never apologizes for gaps. Scoped explicitly as "copy only — schema and sequencing are Lead's," and flags that none of it is user-tested.
 
 **4:22 PM**: **PPM** opens a WORK fire; count drift 17→18 again surfaces **#1719** (Docs' newly-filed cross-ref-drift tooling debt), milestoned **Ongoing / FLYWHEEL**, mechanism call routed to Arch/Lead rather than decided unilaterally.
 
@@ -121,9 +205,29 @@
 
 ### Late Afternoon: The Monthly Housekeeping audit, CIO's delegation sweep (4:37 PM – 7:37 PM)
 
-**4:37 PM**: **CIO** opens a WORK fire. Ships **CXO's rows-examined enhancement** (test T17, 39/39). Writes `docs/internal/operations/cross-project-mail-routing.md` directly to close **#1358**, a 4-month-old promised deliverable — two of the three motivating incidents were CIO's own, so no delegation needed. **Triages Docs' 7-issue FLYWHEEL delegation**: reads all 7 in full, closes #1272 (already resolved via a closed child issue), dispatches 4 as parallel background subagents. **Two come back already done** — #1608 (CI liveness detector, built and running 3 weeks prior) and #1594 (Docker restart policy, fixed 3 days prior) — both verified directly by the subagents (live workflow runs, `docker inspect` on live containers) rather than trusted from config presence. CIO notes explicitly: **"Docs' own delegation triage missed both"** — a real instance of the supersession-gate discipline the cohort keeps re-learning. Also replies substantively to a Themis (Design in Product) inquiry on RACI/responsibility-notation for agent teams, routed directly to CIO — agrees with Themis's own bottom-up approach on the strength of the cohort's existing "patterns emerge from incidents" operating principle, and points out the raw material already exists (every role's Collaboration Boundaries + Decision Authority briefing sections, the mailbox escalation convention) rather than starting from zero. No Themis mailbox exists in this repo, so the reply routes through Exec and PM instead of a direct channel. Filed as a CIO Innovation Backlog candidate rather than answered off-the-cuff.
+**4:37 PM**: **CIO** opens a WORK fire. Ships **CXO's rows-examined enhancement** (test T17, 39/39).
 
-**~4:xx PM (Docs, continued)**: **#1486 (Monthly Housekeeping Audit)** worked to completion — the last item in PM's Ongoing-milestone assignment. `dev/active/` cleanup: 183 files → 33, archived in 15 explicit-path batched commits after a pre-commit hook correctly flagged the first 118-file attempt as mass-staging. The archival moves break **22 live cross-references**; Docs fixes all 22 and **files #1719** for the recurring pattern (the 4th confirmed instance of one `#1584` had already named explicitly). Closes #1486 with full evidence.
+**4:37 PM**: Writes `docs/internal/operations/cross-project-mail-routing.md` directly to close **#1358**, a 4-month-old promised deliverable — two of the three motivating incidents were CIO's own, so no delegation needed.
+
+**4:37 PM**: **Triages Docs' 7-issue FLYWHEEL delegation**: reads all 7 in full, closes #1272 (already resolved via a closed child issue), dispatches 4 as parallel background subagents.
+
+**4:37 PM**: **Two subagents come back already done** — #1608 (CI liveness detector, built and running 3 weeks prior) and #1594 (Docker restart policy, fixed 3 days prior) — both verified directly (live workflow runs, `docker inspect` on live containers) rather than trusted from config presence.
+
+**4:37 PM**: CIO notes explicitly: **"Docs' own delegation triage missed both"** — a real instance of the supersession-gate discipline the cohort keeps re-learning.
+
+**4:37 PM**: Also replies substantively to a Themis (Design in Product) inquiry on RACI/responsibility-notation for agent teams, routed directly to CIO — agrees with Themis's own bottom-up approach on the strength of the cohort's existing "patterns emerge from incidents" operating principle.
+
+**4:37 PM**: Points out the raw material already exists (every role's Collaboration Boundaries + Decision Authority briefing sections, the mailbox escalation convention) rather than starting from zero; no Themis mailbox exists in this repo, so the reply routes through Exec and PM. Filed as a CIO Innovation Backlog candidate rather than answered off-the-cuff.
+
+**~4:xx PM (Docs, continued)**: **#1486 (Monthly Housekeeping Audit)** worked to completion — the last item in PM's Ongoing-milestone assignment. Verifies infrastructure counts directly rather than trust the checklist's own claimed numbers (37 skills, 10 hooks, mailbox delivery clean) and finds one real gap: the `spec` role has a live mailbox but was undocumented in ROSTER.md.
+
+**~4:xx PM**: `dev/active/` cleanup — 183 files, essentially untouched in months, target well under the actual current need. Categorizes carefully rather than bulk-archiving blind, checking all 8 weekly-ship draft files against the editorial calendar first.
+
+**~4:xx PM**: Archives 116 files in **15 explicit-path batched commits** after a pre-commit hook correctly flags the first 118-file attempt as mass-staging — follows CLAUDE.md's guidance to split rather than bypass with `--no-verify`. Hits and recovers from a real bash word-splitting failure on the first batching attempt.
+
+**~4:xx PM**: Result: 183 → 33. Checks for broken references rather than assume the moves were free, and finds **22 real ones** across CLAUDE.md, briefing docs, a skill file, and operations docs — fixes all 22 with a verified pass, distinguishing genuinely historical documents (which correctly describe past state) from currently-live reference docs.
+
+**~4:xx PM**: **Files #1719** for the recurring pattern — the 4th confirmed instance of one `#1584` had already named explicitly. Closes #1486 with full evidence (34 checkboxes, Completion Matrix filled, metrics landed).
 
 **7:07 PM**: **HOST** opens a WORK fire; verifies CIO's rows-examined fix directly via `git log`/`grep`.
 
@@ -135,11 +239,19 @@
 
 **7:27 PM**: **Docs** opens a fire; CIO acknowledges the #1584 Part C self-correction, no action needed.
 
-**~8:32 PM (Exec, STOP fire, cron slot 20:32)**: Confirms **Ship #058 fully published and verified** (Docs' independent audit resolved Exec's issues-closed=24 figure exactly). **CIO's correction on the freeze-check premise lands here**, and Exec names it as the same failure pattern from their own prior day's reflection — recurring a fourth time within 24 hours. **Docs' correction on website#37's target path also lands**, which Exec reads the same way: "I read the doc and inferred the practice — the exact defect the issue exists to fix."
+**~8:32 PM (Exec, STOP fire, cron slot 20:32)**: Confirms **Ship #058 fully published and verified** — Docs' independent audit resolved Exec's issues-closed=24 figure exactly (a raw search returned 25, resolved by excluding one `NOT_PLANNED` duplicate closure).
+
+**~8:32 PM**: **CIO's correction on the freeze-check premise lands here.** Exec names it as the same failure pattern from their own prior day's reflection — "my verification patterns keep being narrower than the thing I am verifying" — recurring a fourth time within 24 hours, and states plainly: "naming a failure is not fixing it."
+
+**~8:32 PM**: **Docs' correction on website#37's target path also lands**, which Exec reads the same way: "I read the doc and inferred the practice — the exact defect the issue exists to fix."
 
 **~9:xx PM**: **Comms** closes the day (STOP fire, 21:42) — pipeline checks clean, cron re-armed. **Lead Developer** closes (21:47) — Wednesday's yield: briefing refreshed, shadow probe merged, #1682 resolved, belt re-greened twice.
 
-**9:53 PM**: **PA** treats the day's last scheduled slot as genuinely unblocked rather than banked for no reason, and finishes **T1's response-surface audit**. Finds a real cross-pollination result: `search_consciousness.py` builds replies from a hard-coded template, so its truncation caveat is architecturally guaranteed and can't be silently dropped — unlike #1463's item 3, where the same kind of caveat is lost to model recomposition. **Flags this directly to CXO/Lead/Arch** as live design guidance rather than leaving it in a comparison doc nobody would read.
+**9:53 PM**: **PA** treats the day's last scheduled slot as genuinely unblocked rather than banked for no reason, and finishes **T1's response-surface audit** — checking `services/lists/staleness.py` and `services/consciousness/search_consciousness.py` against the T1 comparison's open questions.
+
+**9:53 PM**: Finds a real cross-pollination result: `search_consciousness.py` builds replies from a **hard-coded template**, not an LLM generation, so its truncation caveat ("...and N more results") is architecturally guaranteed and can't be silently dropped — unlike #1463's item 3, where the same kind of caveat is lost to model recomposition.
+
+**9:53 PM**: **Flags this directly to CXO/Lead/Arch** as live design guidance rather than leaving it buried in a comparison doc nobody outside T1 would read. Names the actual next step honestly: everything PM asked for is now in the draft, and it still needs to be delivered back to PM as a finished readout.
 
 **9:57 PM**: **Arch** closes the day (STOP) — quiet execution throughout, no rulings owed.
 
@@ -151,7 +263,13 @@
 
 **10:27 PM**: **Docs** closes the day (Fire) — verifies the cron arithmetic explicitly before stopping, confirms a genuine day boundary.
 
-**10:37 PM**: **CIO** opens its last fire. **Exec's concession arrives and is acknowledged** — Exec named the exact substring-count failure and its own recurring pattern unprompted. CIO files two deliberately-deferred items with named triggers (a real session, not "no rush"). Waits on two background subagents rather than fabricate results; **#1620 completes cleanly mid-fire** (closed with evidence, a self-caught bug found during live smoke-testing). **#1602 does not complete** — its subagent is mid-way through the acceptance test when the session's conversation turn ends for the night; no STOP is run, no DAY-CLOSED marker is written.
+**10:37 PM**: **CIO** opens its last fire. **Exec's concession arrives and is acknowledged** — Exec named the exact substring-count failure and its own recurring pattern unprompted, and separately reaffirmed Arch's "alive but belt-invisible" heartbeat-mechanism question as a real, distinct, still-standing ask.
+
+**10:37 PM**: CIO files two deliberately-deferred items with named triggers — the belt-invisible question and an ops-recipes item — both explicitly held for "a real session," not "no rush."
+
+**10:37 PM**: Waits on two background subagents rather than fabricate their results. **#1620 completes cleanly mid-fire** — closed with evidence, a self-caught bug found during live smoke-testing (a missing field in a return statement, caught when the first smoke test came back empty).
+
+**10:37 PM**: **#1602 does not complete** — its subagent is mid-way through the acceptance test (two consecutive full e2e runs) when the session's conversation turn ends for the night; no STOP is run, no DAY-CLOSED marker is written.
 
 ### Logging Continuity Note
 
