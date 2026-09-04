@@ -4919,13 +4919,18 @@ What would you like to set up first?"""
         result = await conversation_handler.respond(intent, session_id, user_id=user_id)
 
         # Return in canonical format (Dict)
-        return {
+        canonical = {
             "message": result["message"],
             "intent": result["intent"],
             "workflow_id": result.get("workflow_id"),
             "requires_clarification": result.get("requires_clarification", False),
             "clarification_type": result.get("clarification_type"),
         }
+        # #1688: the cold-greeting interview's #846 carrier rides through to
+        # the intent_service canonical seam, which owns the offer store.
+        if result.get("ftux_interview_offer"):
+            canonical["ftux_interview_offer"] = result["ftux_interview_offer"]
+        return canonical
 
     # Issue #1030 R4: human-readable phrases per provenance key. Used by
     # _handle_provenance_query to convert structured provenance dict into

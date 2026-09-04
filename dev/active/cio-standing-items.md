@@ -40,9 +40,17 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 | 7a | **Corpus-coherence cycle proposal** (Pattern Sweep Phase 4 finding) | May 9 | ~60% zero-citation rate at both pattern-catalog and methodology-corpus layers, never actioned. **Raised directly to PM in chat 2026-08-31** rather than continue carrying as an un-actioned line — this is exactly the PM/Exec conversation that's been missing. |
 | 7b | **PreCompact hook: locality differentiation (Option 1), genuinely unbuilt** | May 11 (orig.), reverified twice Aug 23 | **Docs corrected my count same-day**: Option 3 ("safe to compact" path) was already present in *substance* (SOFT tier's option (c)), just worded differently than my grep matched — reworded to the memo's exact language so this doesn't false-negative again (`298fd4f89`). Real corrected state: **2 of 3 addressed, 1 genuinely open** — Option 1 (locality differentiation, still the highest-leverage one) needs actual detection-logic design and is deliberately not being rushed, given the hook's own May 10-17 wedge-incident history. Docs owns it as scoped, unblocked work now — not CIO's to chase further. |
 | 7c | **Docs sign-off `git status` inventory pattern** — methodology-corpus candidate | May 10 | Needs HOST + Docs concurrence on framing; never pursued. Low priority. |
-| 7h | **`duty-cycle-freeze-check.sh`: "alive but belt-invisible" state** (Arch's proposal, endorsed by Exec) | Sept 2 | A per-role surface for "committing, but no heartbeat row today" — distinct from freeze-detection accuracy (which never reads heartbeat alone), useful for auditing whether the heartbeat-writer mechanism itself is silently degrading per-role. Deliberately not built same-day as 7f (which fixed a different, disproven premise) — deserves a real session, not a tail-of-fire patch. |
 | 7i | **`docs/internal/operations/canonical-ops-recipes.md`** (issue #1277, PM's Ongoing-milestone delegation) | Sept 2 | Partially already covered — CLAUDE.md documents the ANTHROPIC_* env-var server-launch recipe in detail. Needs: verify that coverage + fill 2 remaining gaps (integrations connect-flow map for Slack/Notion/GitHub auth patterns; GH Actions scheduling debug — cron syntax + `gh run list` pattern). Real, scoped, but needs investigation I don't have loaded right now — good subagent candidate next session. |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
+
+- **`duty-cycle-freeze-check.sh` "alive but belt-invisible" state** (#7h, Sept 2, Arch's proposal
+  via Exec) — **built and shipped Sept 3, commit `5855b0c6d`.** Emits `BELT-INVISIBLE <role>` when
+  a role is alive by commit/session-log signal but has no heartbeat row for today — never affects
+  the STALE verdict, distinct signal about heartbeat-writer health specifically. Tests D1/D2 added
+  (fires correctly, never co-occurs with STALE, silent when heartbeat-current); confirmed D1 fails
+  pre-fix via `git stash`, passes post-fix. Full suite 12/12. **First real run found a genuine live
+  instance**: CXO and Docs both belt-invisible at the moment of the run — heads-up mail sent to
+  both (cc Arch/Exec/PM) same-fire, not just a hypothetical feature.
 
 - **`duty-cycle-freeze-check.sh` commit-recency** (#7f, Sept 1, Exec's proposal) — **built and
   shipped Sept 2, commit `7c2e10d6c`, but not as originally proposed.** Verified Exec's premise

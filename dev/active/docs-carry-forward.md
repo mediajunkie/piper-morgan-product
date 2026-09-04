@@ -1,9 +1,9 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-03 ~13:35 PDT (mid-day, session log open)
+**Updated**: 2026-09-03 ~16:30 PDT (mid-day, session log open; 15:57 fire was quiet, no new content)
 **Session log**: `dev/2026/09/03/2026-09-03-0703-docs-code-log.md` (open).
 **Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy (confirmed via `CronList` this fire),
-next fire 15:57.
+next fire 18:57.
 
 ## No unblocked work outstanding right now
 
@@ -77,8 +77,26 @@ without PM present** — resume only if PM re-engages.
 - **Every Monday**: Weekly Docs Audit — next auto-generates 09-07 (also 1st Monday → Monthly
   Housekeeping same day; watch for the #1713 GH-Actions scheduling defect on both).
 - **First Monday of month**: Monthly Housekeeping — just closed (#1486, 09-02); next due 09-07.
-- **Every Friday, EARLY**: omnibus logs Fri–Thu. Chain current through 08-28; next batch due 09-04
-  (tomorrow, Friday) — covers 08-29 through 09-04.
+- **DAILY, NON-NEGOTIABLE, PART OF EVERY START — omnibus logs.** PM, 09-03, direct instruction:
+  *"Synthesizing session logs daily is a mandatory part of your START cycle. Do not forget it! It
+  is the keystone of our entire learning and iterative process."* This is not a day-of-week trigger
+  like the others on this list — check "does today already have an omnibus?" at the START of
+  **every** fire, not on a Friday-shaped schedule.
+  ⚠️ **CORRECTED 09-03, after a real 5-day gap (08-29→09-02) went unnoticed through 5 duty-cycle
+  fires**, surfaced only when PM relayed a Janus report. **Root cause, PM's own diagnosis, confirmed
+  against the doc**: `methodology-25-WORKSTREAM-REVIEW-CADENCE.md` legitimately uses "Friday–
+  Thursday sprint window" language for **Workstream Reviews** (a separate, genuinely-weekly
+  deliverable) and mentions the omnibus in the very same breath — that doc's real weekly cadence
+  got conflated with the omnibus's own unrelated line in the SAME doc, "Daily omnibus synthesis
+  continues," which never changed. This line used to correctly carry that distinction ("Friday is
+  the designed weekly catch-up — not evidence of a failing daily cadence") and it eroded across
+  several self-rewrites this week into "next batch due Friday," which read as on-schedule from
+  inside my own tracking. **Checked the full history**: every gap since 2025-09-02 had been ≤1 day
+  until this one — first backsliding like this in over a year, not a recurring pattern. **Checked
+  Ship impact**: Ship #058 (published 09-02) was NOT affected — its workstream-review window
+  (08-21–08-27) fully predates the gap. The upcoming Ship's window (08-28–09-03) DOES overlap it,
+  but workstream-review drafting for that window doesn't start until tomorrow (Friday) — a
+  near-miss, not actual damage, contingent on the backfill landing before then.
 - **First Tuesday**: Skill-Candidates Review — not mine (PM+Exec+CIO).
 
 ## Standing practices (apply at every fire, not just START)
@@ -116,6 +134,21 @@ python3 scripts/scan-inbox.py mailboxes/docs/inbox | grep -iE "to:\s*docs\b|to:.
 ```
 Run every fire, not just START. (Just drained as of this rewrite — should read empty next fire
 unless something new arrived.)
+
+## Omnibus currency check — RUN EVERY FIRE, NOT A WEEKLY BULLET (added 09-03 after the 5-day gap)
+
+```bash
+python3 -c "
+import datetime
+today = datetime.date(2026, 9, 3)   # update mentally to actual today
+latest = max(__import__('glob').glob('docs/omnibus-logs/????-??-??-omnibus-log.md'))
+print('latest omnibus:', latest)
+"
+ls docs/omnibus-logs/*.md | tail -1
+```
+If the latest entry isn't yesterday (or today, once today's has been written), that is the single
+highest-priority item of the fire — not a "next Friday" item. This is a mechanical replacement for
+a written reminder, because the written reminder is exactly what failed here.
 
 ---
 
