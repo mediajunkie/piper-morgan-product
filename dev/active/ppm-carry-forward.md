@@ -1,9 +1,10 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-04 07:22 PT (START). **Still watching**: #1386 — **only criterion 6
+**Last rewritten**: 2026-09-04 22:22 PT (STOP). **Still watching**: #1386 — **only criterion 6
 (PM sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally
-satisfied. **#1688's overrule call also still open** — see below.
+satisfied. **#1688's overrule call also still open** — a full day passed with no PM response,
+no urgency attached (build sits harmlessly behind a flag either way), carrying into next week.
 
 ## ✅ SHIP #059 SENT SAME-DAY + ROLE-PORTFOLIO REFRESHED (2026-09-04 07:22)
 Window Fri Aug 28–Thu Sep 3. Wrote it this fire rather than defer (no other blocking work, "every
