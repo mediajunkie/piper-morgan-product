@@ -1,12 +1,12 @@
 ---
-last_updated: 2026-09-03
+last_updated: 2026-09-04
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-03 22:0x PDT (STOP fire, day 41 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-09-04 22:0x PDT (STOP fire, day 42 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -128,22 +128,21 @@ max_age_days: 1
 
 ## Cron
 
-Current job **`cc7fed05`** (chain … `7264276d → 659b3533 → cc7fed05`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-03 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`586c41c1`** (chain … `659b3533 → cc7fed05 → 586c41c1`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-04 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 09-03 STOP
+## Open threads, as of 09-04 STOP
 
-- **Jake loop-back** — 🟡 Drafted 08-31, still waiting on PM to send as of 09-03 (3 days since drafted). Watch for PM sending it or requesting changes; if untouched >~2 weeks (~09-14), worth a check-in.
-- **Mailbox cc-delivery gap (#1716)** — ✅ Closed 09-01. Nothing further owed.
+- **Jake loop-back** — 🟡 Drafted 08-31, still waiting on PM to send as of 09-04 (4 days since drafted). Watch for PM sending it or requesting changes; if untouched >~2 weeks (~09-14), worth a check-in.
+- **Workstream Review #059** — ✅ Filed 09-04, same-day as kickoff. Portfolio refreshed via the trigger-time check's first live pass (clean `--diff`). Nothing further owed until #060's kickoff.
+- ✅ **Role-health-check natural experiment** — sent a factual correction to Exec's recurring-duty proposal (09-04): the "~2 months, nothing polling" case pre-dates HOST's own 08-07 fix; post-fix it's a clean chokepoint counter-case instead. CIO folded it into the joint proposal directly, cited as HOST's finding. Archival.
+- ✅ **Machine-written-vs-self-narrated axis** — HOST's own finding (09-04, prompted by checking CXO's freeze-check claim against HOST's own Step 2c logging habit): a durable, git-committed session-log line is not evidence of compliance unless it's machine-written at invocation time, not hand-narrated afterward by the agent in question. CXO conceded it replaces their own "artifact vs. no artifact" cut and caught themselves about to commit the exact error mid-fire. CIO confirmed it as a second, orthogonal axis to chokepoint-vs-bolt-on, tied it to m-45 (an agent can't score its own compliance either), folded into the joint recurring-duty proposal. Archival — landed cleanly, no further HOST action.
+- ✅ **#059's frontmatter gap** — Exec found HOST's workstream-review filing has no YAML frontmatter (invisible to header sweeps). Checked all five prior filings (#055-#059): same gap in every one, a month-old convention not a fresh mistake. Fixing the template from #060 onward, not retrofitting history. Same metadata-bolt-on family as CIO's stale filename stamp and CXO's off-convention filename, same cycle. Archival.
+- ✅ **CIO's "last invoked" three-case marker** — shipped 09-04 (`bb0e7cd76`), verified directly. Exec found a cold-start artifact same evening (new roles read "never" when they simply haven't fired since the marker was created, not because they never ran) — CIO's lane, HOST confirmed its own marker exists and is unaffected. Watching for CIO's fix, not chasing.
 - ✅ **Freeze-watchdog false-positive + stale-blocker-rot, closed 09-02.** Archival.
-- ✅ **CXO's positive-control catch + per-file "rows examined" counter, closed 09-02.** Archival.
-- ✅ **Exec's "22 to 1" concession to CIO, triaged 09-02.** Archival.
-- ✅ **"Alive but belt-invisible" (Arch's proposal, Exec's endorsement) — CIO confirmed it's real and distinct, correctly declined to build it same-night, filed in `cio-standing-items.md` with a named trigger (own fresh STOP-fire session, not a tail-of-day patch).** Triaged 09-03, no HOST action — clean example of the deferral discipline done right.
-- ✅ **CXO's own 24-day heartbeat-writer lapse (last `hb(cxo)` 08-10) surfaced via Exec's correction of CXO's self-criticism — CXO's taxonomy needed a third case (invoked-then-stopped, distinct from never-invoked), and Exec's fact-check found it.** Lands in CIO's lane (freeze-check should report `last invoked: YYYY-MM-DD` when printing BELT-INVISIBLE, to distinguish "working as designed" from "dead N days"). HOST's own heartbeat confirmed current (09-03, 164 invocations) in the same memo's lapse-date table. Triaged 09-03, no HOST action.
-- **Quiet-execution stretch continuing** — five of six fires today were plain checker-clean/inbox-empty; the one substantive fire (Fire 6) was two other roles correcting each other's verification methodology, not new HOST-owned work. Pattern noted, not itself an open thread.
 - **Role Health Check** — ✅ #1714 closed 08-31. 8 Low/3 Medium/0 High. Next due ~09-28.
 - **Agent 360 v0.4** — ✅ Fully closed. Only cohort-share remains, pending PM's framing sign-off.
 - **ESSENCE.md v0.1 trust-lens** — ✅ Given 08-29, consent-gate flag closed properly. **Watch for**: Lead's watched round adding the inversion-path test, or Arch's standalone probe if it doesn't land within a week.
-- Portfolio-lapse fix, tracked-state staleness check, Ship #058, Criterion E, two April carryovers, heartbeat suppression-window fix, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
+- Portfolio-lapse fix, tracked-state staleness check, mailbox cc-delivery gap, Ship #058, Criterion E, two April carryovers, heartbeat suppression-window fix, values doc, retention policy, audit-ownership, MEMORY.md headroom, watchdog alerts — all closed/ruled, archival.
 - **BRIEFING-CURRENT-STATE.md flagged STALE** by SessionStart hook — unchanged status, still not HOST's lane to refresh unprompted.
 - **Pattern-069 promoted to Proven, 08-25** (CIO) — verified directly against the pattern file, acked. Archival.
 - **Cross-project reply protocol ratified, 08-25** (Exec broadcast) — cohort-wide procedure, no HOST-specific action, worth knowing if ever needed.
