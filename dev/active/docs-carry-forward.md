@@ -1,33 +1,36 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-04 ~19:30 PDT (18:57 fire was quiet, no new content)
-**Session log**: `dev/2026/09/04/2026-09-04-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 21:57 — this is today's LAST
-scheduled fire, expect day-close then (write today's own omnibus per the daily-check practice).
+**Updated**: 2026-09-04 ~22:35 PDT (day closed — see `dev/2026/09/04/2026-09-04-0727-docs-code-log.md`,
+`<!-- DAY-CLOSED: 2026-09-04 -->`)
+**Session log**: none open — next fire (2026-09-05 06:57) creates today's log.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57.
 
-## No unblocked work outstanding right now
+## No unblocked work outstanding — yesterday's backlog is fully closed
 
-**Ship #059 contributor workstream report written and filed** (window Fri Aug 28 – Thu Sep 3) —
-Exec's kickoff was genuinely time-sensitive, treated as today's top priority, filed within the
-first hour. Built from primary session logs per methodology-25 (re-read 08-28 through 09-01 fresh,
-09-02/09-03 from first-hand knowledge), organized around real throughlines rather than a day-by-day
-recap: every one of 6 posts published in the window had a real defect caught; B3's 81-pattern
-Architectural Review workstream ran start-to-finish in <36 hours; a ~1,090-file doc-tree fold with
-zero net breakage; #1712 and #1486 both closed. **Named 3 real setbacks plainly, not smoothed
-over**: the 5-day omnibus gap (yesterday's headline incident), the redundant #1712 re-audit, and a
-still-genuinely-open gap (the "Two of Me" art-content defect has no process fix yet). Filed
-`mailboxes/exec/inbox/workstream-059-docs-2026-09-04.md` — 7 other roles' reports already landed
-alongside it, on pace with the cohort.
+2026-09-04 was a normal, lighter day after 09-03's dense omnibus-gap incident:
 
-**Yesterday's omnibus-gap remediation holds**: chain continuous through 09-03, mechanical daily
-check now in place (see Standing practices below), Janus confirmed clean resolution.
+1. **Ship #059 contributor workstream report written and filed** (window Fri Aug 28 – Thu Sep 3),
+   first thing in the morning per Exec's time-sensitive kickoff. Built from primary session logs,
+   organized around real throughlines (6 posts published with defects caught in every one, B3's
+   81-pattern review closed in <36 hours, a ~1,090-file doc-tree fold with zero net breakage), and
+   named 3 real setbacks plainly (the omnibus gap, a redundant #1712 re-audit, a still-open art-
+   defect gap) rather than smoothed into wins. Filed to `mailboxes/exec/inbox/`, on pace with the
+   rest of the cohort (7 other reports landed same-day).
+2. **Today's own omnibus written at day-close** (11 sessions, HIGH-COMPLEXITY:COORDINATION, 239
+   lines) — the daily practice held on its first real test since yesterday's fix. Audited before
+   committing (line count matched the agent's own report exactly, no repeat of Wednesday's mid-
+   revision-commit mistake).
+3. **A real methodology-citation-drift finding caught and flagged**: today's cohort-wide
+   recurring-duty design thread (CIO/CXO/HOST/Exec) cited methodology-45 for a principle the actual
+   doc doesn't state. Verified directly against the canonical file before flagging (not just
+   trusted the omnibus agent's read), searched for a better-fitting existing doc (none found),
+   flagged to CIO (methodology owner, not mine to fix) rather than let it compound. **CIO fixed it
+   same-fire** — fast, clean resolution.
+4. **`agent-activity-log.csv` extended with 11 rows for today** — 0 fallback rows on first pass,
+   reusing yesterday's dual-timestamp-format-handling regex.
 
-**Also from yesterday, still accurate**: Ship #058's Medium leg live, Weekly Docs Audit #1712
-closed (#1720/#1721 filed, both triaged by PPM into FLYWHEEL), CIO's FLYWHEEL delegation results
-read, heartbeat-writer investigation resolved (confirmed working as designed).
-
-**First action next fire**: sync, mail loop, omnibus currency check (today's own, once the day is
-further along), otherwise genuinely open floor.
+**First action next fire**: sync, mail loop, omnibus currency check (yesterday=09-04, correct until
+today's own gets written at day-close), otherwise genuinely open floor.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
@@ -40,6 +43,10 @@ further along), otherwise genuinely open floor.
   milestone — reported as a ratio in #1712, not mine to triage individually.
 - **#1720/#1721** — filed by me, already triaged by PPM into FLYWHEEL — watch for progress,
   don't chase.
+- **The cohort-wide "recurring duty survival" design thread** (CIO/CXO/HOST/Exec, running since
+  09-03 evening) — a joint proposal to PM on self-fired vs. chokepoint duties, my own omnibus-gap
+  incident is one of the cited supporting cases. Not mine to co-author (Exec/CIO's lane), but worth
+  reading the eventual proposal since it may reshape how my own daily/weekly duties are tracked.
 
 ## Owed by Web: publish Step 9 automation, target path corrected
 
@@ -62,6 +69,10 @@ without PM present.**
   deliberately before implementing.
 - **Critical-docs YAML-frontmatter upgrade** — 95+ days old, deferral condition is "flag at next PM
   engagement" — hasn't found its moment yet.
+- **"Two of Me" art-audit gap** (named honestly in the Ship #059 report, 08-30 incident) — the
+  publish audit checks image existence/dimensions but not image-content-matches-alt-text. No
+  process fix added yet. Worth a small addition to the publish checklist when there's a natural
+  moment, not urgent enough to interrupt other work for.
 
 ## Day-of-week duty triggers — CHECK EVERY START
 
@@ -70,36 +81,28 @@ without PM present.**
 - **First Monday of month**: Monthly Housekeeping — just closed (#1486, 09-02); next due 09-07.
 - **First Tuesday**: Skill-Candidates Review — not mine (PM+Exec+CIO).
 
-(The omnibus is deliberately NOT on this list — it's a daily check, not a day-of-week trigger.
-Treating it as one is exactly what caused a 5-day gap this week. See Standing practices.)
+(The omnibus is deliberately NOT on this list — it's a daily check, not a day-of-week trigger.)
 
 ## Standing practices (apply at every fire, not just START)
 
-- **DAILY, CHECKED EVERY FIRE — the omnibus.** PM, 09-03, direct: *"Synthesizing session logs
-  daily is a mandatory part of your START cycle. Do not forget it! It is the keystone of our
-  entire learning and iterative process."*
+- **DAILY, CHECKED EVERY FIRE — the omnibus.**
   ```bash
   ls docs/omnibus-logs/[0-9]*.md | tail -1
   ```
-  (Use the `[0-9]*` glob, not `*.md` — a bare `*.md` glob sorts `README.md` after the dated files
-  alphabetically and can mask the real answer.) If the latest entry isn't yesterday (or today,
-  once written), that's the fire's top priority — not a "next Friday" item.
-- **Cadence/schedule beliefs get re-verified against the canonical doc, never re-propagated from
-  my own prior carry-forward wording.** A belief re-copied more than once without re-checking the
-  source is exactly how the 5-day gap happened.
-- **Before starting ANY audit/analysis task on a tracked GitHub issue: `gh issue view --json
-  comments` first**, not just the issue body. Redid ~45 minutes of #1712's audit this morning
-  because I checked "is this in my carry-forward" but not the issue's own comment history — a
-  prior session had already done most of it. Same lesson as "read comment history before routing
-  to someone," generalized to re-verification work too.
+  If the latest entry isn't yesterday (or today, once written), that's the fire's top priority.
+  Held correctly for its first full day (09-04) since yesterday's fix.
 - **A background agent's file-on-disk is provisional until its completion notification confirms
-  it.** Committed 3 of 5 backfilled omnibus files once based on what was on disk while their
-  agents were still revising; caught it via line-count mismatch against the agent's own final
-  report and corrected. Wait for the actual completion report before treating delegated file
-  output as final — or verify the committed line count matches the report exactly.
+  it, OR its committed line count matches the report exactly.** Verified this explicitly both days
+  now (09-03 backfills, 09-04's own) before committing — no repeat of the mid-revision mistake.
+- **Verify a flagged discrepancy against the primary source yourself before acting on it or
+  passing it along** — did this for the m-45 citation-drift flag today (opened the actual
+  methodology file rather than trust the omnibus agent's characterization) before mailing CIO.
+- **Cadence/schedule beliefs get re-verified against the canonical doc, never re-propagated from
+  my own prior carry-forward wording.**
+- **Before starting ANY audit/analysis task on a tracked GitHub issue: `gh issue view --json
+  comments` first**, not just the issue body.
 - **Omnibus timeline entry formats vary file-to-file** (`**H:MM**:` vs plain `H:MM AM/PM:`) — any
-  script parsing timeline entries (e.g. for activity-log CSV notes) needs to handle both, checked
-  directly against the actual file rather than assumed consistent.
+  script parsing timeline entries needs to handle both.
 - A duty-cycle sync from earlier in the session is a timestamped fact, not a durable one — re-sync
   if meaningful time has passed.
 - **"Last scheduled fire of today" is arithmetic on the cron expression**, not a feel-based
@@ -116,6 +119,9 @@ Treating it as one is exactly what caused a 5-day gap this week. See Standing pr
   triaged file "didn't move."
 - **CC copies with a `cc-` filename prefix trigger a soft mail-send.sh warning** even though
   delivery is correct — verify via direct `ls`/`diff` before treating it as a real failure.
+- **A `git push` can hit a transient SSH/network timeout** (`kex_exchange_identification`) —
+  distinct from a real non-fast-forward rejection; just retry once after confirming the error is
+  network-shaped, not a real conflict.
 
 ## Mail-loop scan
 
