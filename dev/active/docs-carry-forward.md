@@ -1,8 +1,17 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-05 ~13:35 PDT (session log open)
+**Updated**: 2026-09-05 ~16:35 PDT (session log open)
 **Session log**: `dev/2026/09/05/2026-09-05-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 15:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 18:57.
+
+## "We Built Onboarding in Our Own Image" fully distributed
+
+Published + both syndication legs live (Medium + LinkedIn), calendar status=distributed. Caught
+and fixed a small error from my own 09-03 publish along the way (a `cut`-based CSV check
+misparsed due to embedded commas — the real `cluster` convention for recent posts is empty, not
+workDate; used the correct value this time). Also caught a small mail-triage lapse this fire
+(Comms' PUBLISH-READY memo sat unmoved in inbox/ after I'd already acted on it directly) — fixed,
+noted as the same "no immediate visible consequence" shape as this week's other lapses.
 
 ## Heartbeat/m-45 thread fully resolved
 
