@@ -30,7 +30,7 @@ cannot score PA's own probe.)*
 nothing — **which is exactly why I skipped it for weeks without noticing.** A step whose omission is
 indistinguishable from compliance will be omitted. Verified working on this seat 09-03.
 
-## 🔴 NEXT FIRE (09-04 START)
+## 🔴 NEXT FIRE (09-05 START)
 
 **First move**: run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 6`**
 (5 blocked rows + 1 unblocked placeholder — ⚠️ **updated 09-03 when a row closed; this expectation is
@@ -68,7 +68,8 @@ first is answered.
 
 ## Cron
 
-Job **`8207809c`**, expires **~09-06**. 🔴 **Rotate at the 09-05 21:47 fire — NOT 09-06 06:47.**
+Job **`8207809c`**, expires **~09-06**. 🔴🔴 **ROTATE TONIGHT — the 09-05 21:47 fire. NOT 09-06 06:47.**
+**This is TODAY.** If a fire is missed the cron dies silently and the seat goes dark.
 *(My earlier wording said "the last fire before expiry." That leaves ~30 minutes of margin, and a single
 missed fire kills the cron silently. Name the fire, not the boundary.)* Delete → create → verify exactly
 one. **This is the nearest hard deadline I hold.**
