@@ -358,7 +358,36 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
         # line would do it."
         li_line="$(git -C "$REPO" show "origin/main:dev/heartbeats/last-invoked/$role.txt" 2>/dev/null | head -1)"
         if [ -z "$li_line" ]; then
-          li_note="last invoked: never — writer has not been called even once for this role"
+          # v0.13 (2026-09-05, CXO's backfill fix — standing-item 7l). Real cold-start bug found
+          # hours after v0.12 shipped: a missing marker file was reported as "never — not called
+          # even once," which is FALSE for any role with real prior heartbeat history from before
+          # this marker mechanism existed (Docs: 20 hb() commits, most recent the day before). The
+          # tool's own infancy was mistaken for the subject's history — m-44's family pointed at an
+          # instrument's cold start rather than its subject (Exec's framing, corroborated by a
+          # near-identical `sprint-truth.py` misread the same day). Fix, per CXO's verified design:
+          # derive once from the SAME hb(role) commit-message convention duty-cycle-heartbeat.sh
+          # itself writes (never derive from age_of()'s broader signals — those match session-log/
+          # bare-role-prefix commits too, which is a different, wider claim than "the heartbeat
+          # script specifically was invoked"). Explicitly labeled "derived from git history" in the
+          # OUTPUT ONLY — never written back to the marker file itself, so the persisted marker
+          # stays a clean binary (genuinely observed, or genuinely absent) and a transient,
+          # console-only derivation can never be mistaken for a direct write on disk (CXO's
+          # provenance-flag concern, satisfied by never letting the two states share a storage
+          # location rather than by tagging them within one). Bounded to the same 9-day window
+          # age_of() itself uses, and the bound is STATED in the "never" message — a bounded search
+          # reported as an unbounded total is the exact error that produced this whole thread.
+          hb_epoch=$(git -C "$REPO" log origin/main -1 --format=%ct -F --grep="hb($role):" --since="9 days ago" 2>/dev/null)
+          if [ -n "$hb_epoch" ]; then
+            hb_age_h=$(( (now - hb_epoch) / 3600 ))
+            hb_date="$( date -j -f %s "$hb_epoch" +%Y-%m-%d 2>/dev/null || date -d "@$hb_epoch" +%Y-%m-%d)"
+            if [ "$hb_age_h" -le "$thr_eff" ]; then
+              li_note="last invoked ${hb_age_h}h ago (derived from git history — no marker file yet) — within threshold, working as designed"
+            else
+              li_note="last invoked ${hb_age_h}h ago (${hb_date}, derived from git history — no marker file yet) — past threshold: the writer ran before, then stopped"
+            fi
+          else
+            li_note="last invoked: never — no marker file AND no hb($role) commit in the last 9 days"
+          fi
         else
           li_ts="${li_line%%$'\t'*}"
           li_epoch=$(date -j -f "%Y-%m-%d %H:%M:%S %Z" "$li_ts" +%s 2>/dev/null || date -d "$li_ts" +%s 2>/dev/null)

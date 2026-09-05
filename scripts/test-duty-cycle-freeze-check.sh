@@ -162,5 +162,44 @@ out=$(run "$W" "$R" 11)
 echo "$out" | grep -q "ran before, then stopped" && ok "E2 last-invoked 24h ago (past threshold) → reports case (c), CXO's real incident shape" || no "E2 expected 'ran before, then stopped', got: $out"
 echo "$out" | grep -qE "last invoked 24h ago \([0-9]{4}-[0-9]{2}-[0-9]{2}\)" && ok "E2b message includes the actual last-invoked date, not just an hour count" || no "E2b missing the dated marker: $out"
 
+# PART F — v0.13 (2026-09-05): cold-start backfill. A missing marker + REAL prior hb(role) history
+# must NOT report "never" — it must derive from git log and say so explicitly. Reproduces Docs'
+# exact incident: 20 real heartbeat commits, none since the marker mechanism existed.
+mkfixture_hb_history_no_marker(){
+  local hb_when="$1" TMP; TMP=$(mktemp -d); TMPS+=("$TMP")
+  git init --bare -q "$TMP/o.git"
+  git clone -q "$TMP/o.git" "$TMP/w" 2>/dev/null
+  ( cd "$TMP/w"
+    git config user.email t@t.test; git config user.name tester
+    mkdir -p "dev/$today" "dev/heartbeats/2026-08-01"
+    echo "# session log testrole (sonnet)" > "dev/$today/${today_dash}-testrole-code-sonnet-log.md"
+    echo "old heartbeat row" > "dev/heartbeats/2026-08-01/testrole.tsv"
+    git add -A
+    GIT_AUTHOR_DATE="@$hb_when +0000" GIT_COMMITTER_DATE="@$hb_when +0000" \
+      git commit -qm "hb(testrole): WORK old real invocation, no last-invoked marker exists"
+    # Second commit today keeps the role "alive" by age_of()'s own signal, matching Docs' real
+    # shape (active elsewhere, just not on this specific step) — same-role, no marker either.
+    echo "# session log testrole (sonnet) day 2" >> "dev/$today/${today_dash}-testrole-code-sonnet-log.md"
+    git add -A
+    GIT_AUTHOR_DATE="@$NOW +0000" GIT_COMMITTER_DATE="@$NOW +0000" \
+      git commit -qm "docs(session): TestRole still active, untagged"
+    git push -q origin HEAD:main 2>/dev/null )
+  echo "$TMP/w"
+}
+
+W=$(mkfixture_hb_history_no_marker "$(( NOW - 24*3600 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "never" && no "F1 REGRESSION: real hb() history with no marker still reports 'never' — Docs' exact cold-start bug: $out" || ok "F1 real hb() history + no marker → does NOT report 'never'"
+echo "$out" | grep -q "derived from git history" && ok "F1b message is explicitly labeled as derived, not a direct observation" || no "F1b missing the derived-from-git-history label: $out"
+echo "$out" | grep -q "ran before, then stopped" && ok "F1c 24h-old derived invocation, past threshold → correctly reads as case (c)" || no "F1c expected case (c) framing: $out"
+
+W=$(mkfixture_hb_history_no_marker "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "working as designed" && ok "F2 recent derived invocation, within threshold → correctly reads as case (a)" || no "F2 expected case (a) framing: $out"
+
+W=$(mkfixture "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "no marker file AND no hb(testrole) commit in the last 9 days" && ok "F3 genuine never-invoked case still states its bound explicitly (no regression on D1c)" || no "F3 'never' message lost its stated bound: $out"
+
 echo "── $PASS passed, $FAIL failed ──"
 [ "$FAIL" -eq 0 ]
