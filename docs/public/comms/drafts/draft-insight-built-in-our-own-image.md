@@ -30,12 +30,10 @@ The whole exercise of planning the introduction to your experience requires exam
 
 # What I don't know yet
 
-I know the serial model was wrong for this onboarding context. The right model is still being worked out. Maybe batched questions that show the shape of what you're in, maybe progressive disclosure where you start shallow and wait for them to ask for more detail, maybe the sort of widget-y modular form interactions LLMs can , something else entirely. This is genuinely open.
-
-What we have is a finding: the mode that earns trust in an ongoing working relationship isn't the mode that earns first-encounter trust. The harder question — what earns first-encounter trust, for this kind of tool, for this kind of user — is still ahead of us.
+I know the serial model felt wrong for this onboarding context. I'm still thinking about what might be the right model. (I've heard now of more than one AI product where the onboarding flow *reduced* activation.) Maybe batched questions that show the shape of what you're in, maybe progressive disclosure where you start shallow and wait for them to ask for more detail, maybe the sort of widget-y modular form interactions LLMs can conjure up these days, or something else entirely. You tell me!
 
 ---
 
 *Next on Building Piper Morgan: "Patterns Naming Patterns" — the pattern catalog that names failure modes in the product had a failure mode of its own, and hadn't been reading itself.*
 
-*Where in your own product or service have you designed the first-encounter experience from inside the steady-state experience? What would a first-time user need that you've already learned not to need?*
+*What's your approach to onboarding new users into conversational or generative environments? I need more examples!*
