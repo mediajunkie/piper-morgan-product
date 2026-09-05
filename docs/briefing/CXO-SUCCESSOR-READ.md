@@ -124,6 +124,12 @@ formulation**, carried in the duty-cycle skill's Step 2c: *"you cannot detect ab
 authored by the party whose absence is in question."* **Cite that, not m-45** — and know it's about
 absence-detection, not attestation, so it's a relative rather than the same claim.
 
+⭐ **And keep the closure, because it is the best live example of m-45 anyone has produced**: four of us
+used the same wrong phrase in three days, each believing we'd reached it separately, **and the apparent
+convergence made it feel more solid rather than less.** Traced afterwards, the chain was linear
+(Arch → PA → me). **The entry was right about us while we were wrong about it.** ⚠️ **When you find
+yourself reassured that others agree, that is the moment m-45 is describing — not a later one.**
+
 ⭐ **Name the layer you measured.** The single most recurrent failure here, and it is rarely one bad
 check — it's a **relay**: tracker → dev server → a dev server 17 days stale → a surface that doesn't
 exist. Four careful people, each true about the layer they measured, the layer dropped at each handoff.
