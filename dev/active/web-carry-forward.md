@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-09-03 (active), cron ID last updated 2026-09-03
+# Web carry-forward — 2026-09-04 (active), cron ID last updated 2026-09-04
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `f6e72169`, re-armed at 2026-09-03 STOP) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `e5e2e414`, re-armed at 2026-09-04 STOP) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 ⚠️ **Trimmed 2026-08-29** — everything this file carried from 2026-08-03 through 2026-08-25 was
 fully-resolved historical record (marked CLOSED/FIXED/SHIPPED/SETTLED at the time), sitting in
