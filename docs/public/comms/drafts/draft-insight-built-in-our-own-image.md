@@ -1,28 +1,34 @@
 ---
-image: 
-alt: 
-caption: 
+image: ''
+alt: ''
+caption: ''
 ---
 
 # We Built Onboarding in Our Own Image
 
 *May 19–31, 2026*
 
-My working preference for conversations is serial. One thing at a time. Deliberate. Let each exchange settle before moving to the next. I've worked out over time that this is the mode that maintains context without losing the thread, that keeps me from feeling overwhelmed by too much at once.
+My personal working preference for conversations is serial. One thing at a time. I've worked out over time that this keeps me from feeling overwhelmed by too much at once. 
 
-When we built the cold-start interview — an onboarding skill that helps a new user describe how they work so Piper Morgan can adapt to them before the first real session — the design reached for what was known to work. The interview would proceed one turn at a time, one question at a time. The same deliberate cadence that makes ongoing collaboration feel careful and considered.
+While building an Claude plugin for a client I deconstructed some of the plugins Anthropic was releasing at the time and liked the idea of what they called a cold-start interview" skill, for gathering preferences and background about the user to inform later interactions with the remote API (via MCP, *M-O-U-S-E*). This is maps more or less to what product people call onboarding and or what UX folks call first-time user experience (or "ftux").
 
-I was the first tester.
+So I made one for Piper Morgan, an onboarding skill that helps a new user describe how they work so Piper Morgan can adapt to them before the first real session. This was all part of a "skunkworks" project on the side that I assigned to my product assistant *on* the Piper Morgan project, Piper Alpha (or PA for short). Piper drafted the skill and seamlessly incorporated *my* personal preference into its design: The interview would proceed conversationally, one turn at a time, one question at a time. The same deliberate cadence that makes ongoing collaboration feel careful and considered *for me*.
 
-The experience stretched. It was hard to follow. At several points I had no sense of where I was in the interview or how much was left. What registers as deliberate and careful when you're already in a working relationship — already calibrated, already comfortable with the format — registered differently from outside it. From outside it, serial means: you don't know how long this will take, you can't see the shape of what you're in, and there's no map.
+As usual, I was the first tester.
 
-# The mode that earns trust is context-dependent
+Boy did the experience drag! It stretched out. It was hard to follow. At several points I had no sense of where I was in the interview or how much was left, which made me anxious. If this were not my own software I might easily have bailed out of impatience partway through. What was intended as deliberate and careful, calibrated for an established ongoing dialogue, registered differently as a first impression. For a beginner the result is you don't know how long this will take, you can't see the shape of what you're in, and there's no map.
 
-Ongoing use earns trust by maintaining careful context, by not overwhelming, by letting each thing land. Those are real properties of the mode.
+# Trust is earned in context
 
-Onboarding earns trust by orienting — giving someone a sense of what they're getting into, how much is asked, what the shape of the thing is. Those aren't the same goals. They don't necessarily benefit from the same interaction model.
+Ongoing use can earn trust by maintaining careful context, by not overwhelming, by letting each thing land. Those are real properties of the serial conversational mode.
 
-It's a natural mistake to import the mode that works in steady state into the entry point. You know what works, you're building for users you understand because you're the user. But being the user of the ongoing experience doesn't make you a good model of a first-time user. The skills that help you navigate steady state — comfort with open-ended context, tolerance for deliberate pacing, familiarity with where the conversation is going — are exactly what first-time users don't have yet.
+Onboarding earns trust by orienting, by giving someone a sense of what they're getting into, how much is asked, what the shape of the thing is. Those are different goals. They don't necessarily benefit from the same interaction model, even for people whose preferences are similar to mine.
+
+It's a natural mistake to import the mode that works for the familiar or dominant case into the entry point. The whole exercise of planning the introduction to your experience requires examining those distinctions and figuring out what needs to be different. By nature this means you end up missing things till you notice how they clash or fail to serve.
+
+[PAUSED EDITING for phone call]
+
+ You know what works, you're building for users you understand because you're the user. But being the user of the ongoing experience doesn't make you a good model of a first-time user. The skills that help you navigate steady state — comfort with open-ended context, tolerance for deliberate pacing, familiarity with where the conversation is going — are exactly what first-time users don't have yet.
 
 Building onboarding in your own image imports the assumptions of someone who has already crossed the threshold into an experience designed to help someone cross it for the first time.
 
