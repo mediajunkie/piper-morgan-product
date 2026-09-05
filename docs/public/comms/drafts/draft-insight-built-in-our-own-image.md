@@ -1,7 +1,7 @@
 ---
 image: 'draft-insight-built-in-our-own-image-first-time.png'
 alt: 'A smiling, translucent dolphin concierge gestures toward a service bell while a weary hotel guest slumps beside her suitcase, waiting for the welcome to end.'
-caption: ''
+caption: '"...oh, and did I mention the pool and gym?"'
 ---
 
 # We Built Onboarding in Our Own Image
