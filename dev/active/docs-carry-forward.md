@@ -1,8 +1,16 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-05 ~10:35 PDT (session log open)
+**Updated**: 2026-09-05 ~13:35 PDT (session log open)
 **Session log**: `dev/2026/09/05/2026-09-05-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 12:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 15:57.
+
+## Heartbeat/m-45 thread fully resolved
+
+CIO's backfill fix shipped, tested directly against my own incident as a fixture (21/21 passing),
+confirmed live and working this fire (marker updated even on a suppressed row). CXO found one real
+residual (no observed/derived provenance field on the marker) rather than report a false
+behavioral pass — CIO's lane, not mine. **`methodology-50-SELF-ATTESTATION-IS-NOT-VERIFICATION.md`
+filed**, citing my own lapse accurately as one of three real instances. Nothing further owed.
 
 ## No unblocked work outstanding right now
 
