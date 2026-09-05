@@ -68,3 +68,29 @@ Three operational corollaries:
 - When two hypotheses both fit, **design the cell where they disagree** rather than gathering more cases where they don't.
 - If a conclusion reached a canonical surface on convergent evidence, **re-check it when the mechanism lands** — HOST's checklist carried the wrong claim precisely because consensus felt sufficient at write time.
 - **Treat "independently confirmed" as a claim requiring its own evidence**, the same way m-44 treats "all clear."
+
+## A fourth-order instance, on this entry's own citation (2026-09-05)
+
+**This entry's own number was miscited, and the miscitation propagated exactly as the entry
+describes.** While filing methodology-50 (Self-Attestation Is Not Verification), CXO cited "m-45's
+subject/scorer separation" for a claim m-45 does not make (self-attestation, not agreement-via-
+shared-confound). Arch traced the citation's provenance with commit-level precision (`git log -S`
+on the phrase, correcting for the difference between file-add dates and phrase-introduction dates —
+without that correction the trace would have produced a confident, wrong ordering) and found it
+originated in one relay memo (Arch, 2026-09-03 06:10), reached PA within 56 minutes as part of an
+authorization PA was reading, then reached CXO via PA's memo hours later.
+
+**Every recipient believed they had reached the citation independently.** PA's own first
+self-correction stated "arrived at independently" as a verified fact; checking their own fire log
+against Arch's trace showed they had, in fact, read the phrase in Arch's memo minutes before using
+it. CXO's own account of PA's usage — "PA made the identical error independently" — was wrong in
+the same direction and, on CXO's own re-trace, reversed: CXO's proximate source was PA's memo, read
+verbatim. The "several agents independently confirmed this citation" story that formed around the
+error was itself the shared-procedure confound this entry describes, and it made the wrong citation
+feel more solid rather than less, exactly per "Why this is worth naming" above.
+
+**Notable departure from the original case**: unlike the 2026-07-26 hooks-bypass incident, every
+participant here re-traced their own link against their own primary records (fire logs, sent mail)
+rather than accept or deny the trace on the tracer's word — and each confirmation matched Arch's
+independently. That is the corrective this entry's own "how to apply" section prescribes, executed
+in real time on the entry's own miscitation.

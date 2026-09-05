@@ -1,26 +1,35 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-05 ~07:50 PDT (session log open)
+**Updated**: 2026-09-05 ~10:35 PDT (session log open)
 **Session log**: `dev/2026/09/05/2026-09-05-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 09:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 12:57.
 
 ## No unblocked work outstanding right now
 
-**My m-45 citation-drift finding from 09-04 confirmed twice over**: CIO acknowledged directly and
-fixed it same-fire; CXO independently made and caught the identical mistake in a separate context,
-tracing the drift's actual start to 09-03. Disposition (fix-the-shorthand vs. file a genuinely new
-methodology entry) correctly deferred by CIO to a fresh session, not rushed.
+**A real heartbeat-invocation lapse found in my own practice, owned and fixed.** Exec corrected
+their own earlier "cold-start, not urgent" read about my status (10 of 11 roles now had a marker,
+only Docs didn't, 38 hours stale) and asked for a direct check. Ran it — the writer works fine. But
+my own first explanation (assumed benign `--if-quiet` suppression) was ALSO wrong, caught only by
+checking my own session logs directly rather than trusting the assumption: the explicit per-fire
+"Heartbeat: X" practice ran consistently 08-28 through 09-02, then dropped to a single instance on
+09-03 (the day the omnibus-gap investigation displaced the normal fire structure) and never
+resumed — not for the rest of that day, not on 09-04, not this morning. A genuine "invoked, then
+stopped" case, the same shape as two of CXO's lapses this week, HOST's third confirmed instance.
+Replied to Exec (cc CIO/CXO/HOST/PM) owning both the lapse and the fact that my own initial
+explanation repeated the exact unverified-assertion mistake Exec's own memo had just apologized
+for. Re-added the heartbeat step to standing practices below.
 
-**A cold-start defect in CIO's new heartbeat "last invoked" marker** produced a false "never" read
-on my own 20-commit history (Exec caught it live). Fix already queued by CIO (backfill from
-`git log --grep`, not a rewording) — not urgent, my actual status is unaffected, just noting the
-readout was briefly wrong.
+**My m-45 citation-drift finding from 09-04 confirmed twice over**: CIO acknowledged directly and
+fixed it same-fire; CXO independently made and caught the identical mistake in a separate context.
+Disposition correctly deferred by CIO to a fresh session, not rushed. Arch/PA/CXO traced the
+citation error's own provenance today (informational, already resolved).
 
 **Today's queue** ("We Built Onboarding in Our Own Image," insight, Saturday) still `status=drafted`
 — matches every prior weekend this week, not chasing.
 
-**First action next fire**: sync, mail loop, omnibus currency check (yesterday=09-04, correct until
-today's own gets written at day-close), otherwise genuinely open floor.
+**First action next fire**: sync, mail loop, omnibus currency check, **run the heartbeat step
+explicitly this fire and every fire going forward** (see Standing practices), otherwise genuinely
+open floor.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
@@ -75,6 +84,19 @@ without PM present.**
 
 ## Standing practices (apply at every fire, not just START)
 
+- **EVERY FIRE — run the heartbeat step explicitly and log it.**
+  ```bash
+  bash scripts/duty-cycle-heartbeat.sh docs {START|WATCH|WORK|STOP} --if-quiet
+  ```
+  Then write `Heartbeat: {phase}` in the fire's log entry. ⚠️ **This is not a fresh reminder — it
+  was already the standing practice through 09-02, then genuinely dropped 09-03 through 09-05
+  morning** (found via `grep -c "Heartbeat:"` across my own logs when Exec/HOST flagged a real 38-
+  hour marker gap — confirmed by direct test that the writer works fine, the step itself had just
+  stopped being invoked). The lesson isn't "add the step" — it already existed. It's that a step
+  whose omission produces no visible consequence gets silently dropped under load, and the actual
+  fix is periodically checking the practice against the log, not re-writing the reminder more
+  firmly. If this line is ever removed from carry-forward again, check the logs before assuming
+  the practice held.
 - **DAILY, CHECKED EVERY FIRE — the omnibus.**
   ```bash
   ls docs/omnibus-logs/[0-9]*.md | tail -1

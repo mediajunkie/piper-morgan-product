@@ -268,6 +268,39 @@ while :; do
             done <<<"$recipients"
         done
 
+        # --- #7m: warn when a filename's date stamp disagrees with its own frontmatter date: -----
+        # Exec's finding, real instance: CIO's own Ship #059 filename
+        # (workstream-059-cio-2026-08-28.md) carried #058's date stamp — copy-the-previous-report-
+        # as-template, rewrite the body, and the filename's date segment survives untouched since
+        # nothing ever re-reads it. Nearly caused a wrong "9 of 10 filed" report to PM (a `059`-
+        # named file stamped a week stale reads exactly like leftover debris). Textbook bolt-on
+        # per CIO's own chokepoint framing: costs the writer nothing to get wrong, all cost lands
+        # on a later reader who can't tell current-but-mislabeled from genuinely stale.
+        #
+        # Checks EVERY path in "$@" (not scoped to sent/ like #1716) — this is about a file's own
+        # self-consistency, not about delivery, so a later inbox->read triage move re-checking an
+        # already-correct file is a no-op, not a false positive (the file's content doesn't change
+        # on a move). Only fires when a file's basename contains a YYYY-MM-DD segment AND its own
+        # frontmatter declares a `date:` field — silent on any file lacking either, since this
+        # checks self-consistency, not imposes a convention nothing asked for.
+        for f in "$@"; do
+            case "$f" in mailboxes/*) ;; *) continue ;; esac
+            bn="$(basename "$f")"
+            fn_date="$(printf '%s' "$bn" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | tail -1)"
+            [ -z "$fn_date" ] && continue
+            G cat-file -e "$tree:$f" 2>/dev/null || continue
+            fm_date="$(G cat-file -p "$tree:$f" 2>/dev/null | awk '
+                NR==1 && /^---[[:space:]]*$/ { infm=1; next }
+                infm && /^---[[:space:]]*$/ { exit }
+                infm && /^date:[[:space:]]*/ { sub(/^date:[[:space:]]*/, ""); print; exit }
+            ' | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1)"
+            [ -z "$fm_date" ] && continue
+            if [ "$fn_date" != "$fm_date" ]; then
+                echo "mail-send: WARNING — '$bn' filename says $fn_date but its own frontmatter date: says $fm_date (#7m)" >&2
+                echo "mail-send:   a mismatched filename date reads as stale debris to anyone who doesn't open the file — rename before sending if this wasn't intentional" >&2
+            fi
+        done
+
         # --- CXO/HOST's 2026-08-28 relocation: check refresh-trigger promises AT the trigger ------
         # HOST's diff-checker (#1296-adjacent, shipped 08-26) caught "edited content, forgot to bump
         # last_updated" — but it lapsed a 4th time anyway, because the real failure is upstream of
