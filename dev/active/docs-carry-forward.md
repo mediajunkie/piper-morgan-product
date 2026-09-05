@@ -1,33 +1,23 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-04 ~22:35 PDT (day closed — see `dev/2026/09/04/2026-09-04-0727-docs-code-log.md`,
-`<!-- DAY-CLOSED: 2026-09-04 -->`)
-**Session log**: none open — next fire (2026-09-05 06:57) creates today's log.
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57.
+**Updated**: 2026-09-05 ~07:50 PDT (session log open)
+**Session log**: `dev/2026/09/05/2026-09-05-0727-docs-code-log.md` (open).
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 09:57.
 
-## No unblocked work outstanding — yesterday's backlog is fully closed
+## No unblocked work outstanding right now
 
-2026-09-04 was a normal, lighter day after 09-03's dense omnibus-gap incident:
+**My m-45 citation-drift finding from 09-04 confirmed twice over**: CIO acknowledged directly and
+fixed it same-fire; CXO independently made and caught the identical mistake in a separate context,
+tracing the drift's actual start to 09-03. Disposition (fix-the-shorthand vs. file a genuinely new
+methodology entry) correctly deferred by CIO to a fresh session, not rushed.
 
-1. **Ship #059 contributor workstream report written and filed** (window Fri Aug 28 – Thu Sep 3),
-   first thing in the morning per Exec's time-sensitive kickoff. Built from primary session logs,
-   organized around real throughlines (6 posts published with defects caught in every one, B3's
-   81-pattern review closed in <36 hours, a ~1,090-file doc-tree fold with zero net breakage), and
-   named 3 real setbacks plainly (the omnibus gap, a redundant #1712 re-audit, a still-open art-
-   defect gap) rather than smoothed into wins. Filed to `mailboxes/exec/inbox/`, on pace with the
-   rest of the cohort (7 other reports landed same-day).
-2. **Today's own omnibus written at day-close** (11 sessions, HIGH-COMPLEXITY:COORDINATION, 239
-   lines) — the daily practice held on its first real test since yesterday's fix. Audited before
-   committing (line count matched the agent's own report exactly, no repeat of Wednesday's mid-
-   revision-commit mistake).
-3. **A real methodology-citation-drift finding caught and flagged**: today's cohort-wide
-   recurring-duty design thread (CIO/CXO/HOST/Exec) cited methodology-45 for a principle the actual
-   doc doesn't state. Verified directly against the canonical file before flagging (not just
-   trusted the omnibus agent's read), searched for a better-fitting existing doc (none found),
-   flagged to CIO (methodology owner, not mine to fix) rather than let it compound. **CIO fixed it
-   same-fire** — fast, clean resolution.
-4. **`agent-activity-log.csv` extended with 11 rows for today** — 0 fallback rows on first pass,
-   reusing yesterday's dual-timestamp-format-handling regex.
+**A cold-start defect in CIO's new heartbeat "last invoked" marker** produced a false "never" read
+on my own 20-commit history (Exec caught it live). Fix already queued by CIO (backfill from
+`git log --grep`, not a rewording) — not urgent, my actual status is unaffected, just noting the
+readout was briefly wrong.
+
+**Today's queue** ("We Built Onboarding in Our Own Image," insight, Saturday) still `status=drafted`
+— matches every prior weekend this week, not chasing.
 
 **First action next fire**: sync, mail loop, omnibus currency check (yesterday=09-04, correct until
 today's own gets written at day-close), otherwise genuinely open floor.
