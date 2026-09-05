@@ -289,6 +289,75 @@ git -C "$T/wtM" fetch -q origin
 onmain "$T/wtM" mailboxes/cio/read/memo-m.md && ok "the read/ copy landed" || no "the read/ copy missing"
 echo "$out" | grep -q "#1716" && no "false-positive: #1716 warning fired on a pure triage move" || ok "no #1716 warning on a pure inbox->read triage move"
 
+echo "── T15: #7m — filename date disagreeing with its own frontmatter date: triggers a warning ──"
+# Reproduces CIO's real Ship #059 incident: filename carries a stale date, frontmatter has the
+# real one.
+clone wtN
+mkdir -p "$T/wtN/mailboxes/exec/inbox"
+cat > "$T/wtN/mailboxes/exec/inbox/workstream-059-cio-2026-08-28.md" <<'EOF'
+---
+from: cio
+to: exec
+subject: "test"
+date: 2026-09-04
+---
+
+body
+EOF
+out=$(PIPER_REPO="$T/wtN" bash "$V3" "mail(n): T15 stale filename date" \
+    mailboxes/exec/inbox/workstream-059-cio-2026-08-28.md 2>&1)
+git -C "$T/wtN" fetch -q origin
+onmain "$T/wtN" mailboxes/exec/inbox/workstream-059-cio-2026-08-28.md && ok "the passed memo still landed despite the mismatch" || no "the passed memo missing"
+echo "$out" | grep -q "filename says 2026-08-28 but its own frontmatter date: says 2026-09-04" && ok "WARNING fired naming both dates (#7m)" || no "expected the #7m mismatch warning, got: $(echo "$out" | grep '#7m')"
+
+echo "── T16: #7m — no false-positive when the filename date matches frontmatter date: ──"
+clone wtO
+mkdir -p "$T/wtO/mailboxes/exec/inbox"
+cat > "$T/wtO/mailboxes/exec/inbox/workstream-060-cio-2026-09-05.md" <<'EOF'
+---
+from: cio
+to: exec
+subject: "test"
+date: 2026-09-05
+---
+
+body
+EOF
+out=$(PIPER_REPO="$T/wtO" bash "$V3" "mail(o): T16 matching filename date" \
+    mailboxes/exec/inbox/workstream-060-cio-2026-09-05.md 2>&1)
+git -C "$T/wtO" fetch -q origin
+onmain "$T/wtO" mailboxes/exec/inbox/workstream-060-cio-2026-09-05.md && ok "the memo landed" || no "the memo missing"
+echo "$out" | grep -q "#7m" && no "false-positive: #7m warning fired on a matching filename/frontmatter date" || ok "no #7m warning when the dates agree"
+
+echo "── T17: #7m — silent when the filename has no date segment at all ──"
+clone wtP
+mkdir -p "$T/wtP/mailboxes/exec/inbox"
+cat > "$T/wtP/mailboxes/exec/inbox/note-no-date-in-name.md" <<'EOF'
+---
+from: cio
+to: exec
+subject: "test"
+date: 2026-09-05
+---
+
+body
+EOF
+out=$(PIPER_REPO="$T/wtP" bash "$V3" "mail(p): T17 no filename date" \
+    mailboxes/exec/inbox/note-no-date-in-name.md 2>&1)
+echo "$out" | grep -q "#7m" && no "false-positive: #7m warning fired on a filename with no date segment" || ok "no #7m warning when the filename carries no date at all"
+
+echo "── T18: #7m — silent when the file has no frontmatter date: field ──"
+clone wtQ
+mkdir -p "$T/wtQ/mailboxes/exec/inbox"
+cat > "$T/wtQ/mailboxes/exec/inbox/note-2026-09-05-no-frontmatter-date.md" <<'EOF'
+**From**: CIO
+**To**: Exec
+**Subject**: test, bold-header style with no date: key
+EOF
+out=$(PIPER_REPO="$T/wtQ" bash "$V3" "mail(q): T18 no frontmatter date field" \
+    mailboxes/exec/inbox/note-2026-09-05-no-frontmatter-date.md 2>&1)
+echo "$out" | grep -q "#7m" && no "false-positive: #7m warning fired on a file with no frontmatter date: field" || ok "no #7m warning when the file has no frontmatter date: field"
+
 echo ""
 echo "════════ RESULT: $PASS passed, $FAIL failed ════════"
 [ "$FAIL" = 0 ] && exit 0 || exit 1
