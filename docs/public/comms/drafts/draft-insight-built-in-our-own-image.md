@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'draft-insight-built-in-our-own-image-first-time.png'
+alt: 'A smiling, translucent dolphin concierge gestures toward a service bell while a weary hotel guest slumps beside her suitcase, waiting for the welcome to end.'
 caption: ''
 ---
 
