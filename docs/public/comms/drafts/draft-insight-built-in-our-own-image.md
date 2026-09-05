@@ -28,7 +28,7 @@ It's a natural mistake to import the mode that works for the familiar or dominan
 
 [PAUSED EDITING for phone call]
 
- You know what works, you're building for users you understand because you're the user. But being the user of the ongoing experience doesn't make you a good model of a first-time user. The skills that help you navigate steady state — comfort with open-ended context, tolerance for deliberate pacing, familiarity with where the conversation is going — are exactly what first-time users don't have yet.
+You know what works, you're building for users you understand because you're the user. But being the user of the ongoing experience doesn't make you a good model of a first-time user. The skills that help you navigate steady state — comfort with open-ended context, tolerance for deliberate pacing, familiarity with where the conversation is going — are exactly what first-time users don't have yet.
 
 Building onboarding in your own image imports the assumptions of someone who has already crossed the threshold into an experience designed to help someone cross it for the first time.
 
