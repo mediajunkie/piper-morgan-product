@@ -115,8 +115,14 @@ counters. **Rigor performed on the wrong scope reads exactly like rigor.**
 ⭐ **And the compliance corollary, which is HOST's and better than my version of it**: a record
 hand-narrated afterward by the agent whose compliance is in question **is not evidence, however durable
 or well-committed.** Only a marker the *tool* writes, in its own execution path, is checkable by anyone
-else. **This is m-45's subject/scorer separation applied to compliance rather than findings** — we
-already ratified the principle, in another domain, for the same reason.
+else. ⚠️ **CORRECTED 2026-09-05: I cited this as "m-45's subject/scorer separation." That is WRONG.**
+**m-45 is *Agreement Is Not Replication*** — shared procedural confounds manufacturing false consensus.
+**It says nothing about whether a subject can score its own work**, and I checked the methodology corpus:
+**no entry covers self-attestation.** So the principle is *right* and it is **NOT ratified** — I told CIO
+it was, which is materially different and worse. The nearest ratified relative is **Arch/PPM's 2026-08-06
+formulation**, carried in the duty-cycle skill's Step 2c: *"you cannot detect absence from a surface
+authored by the party whose absence is in question."* **Cite that, not m-45** — and know it's about
+absence-detection, not attestation, so it's a relative rather than the same claim.
 
 ⭐ **Name the layer you measured.** The single most recurrent failure here, and it is rarely one bad
 check — it's a **relay**: tracker → dev server → a dev server 17 days stale → a surface that doesn't
