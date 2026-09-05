@@ -15,9 +15,13 @@ prose line is not, and must not be trusted over it).
    --role cxo` after draining mail. ⚠️ **Lapsed 2026-07-30 → 2026-09-04, 36 days.**
 2. **Heartbeat** — see below. Lapsed 24 days.
 
-⚠️ **A third, `cohort-freeze-detect.sh` at START/WATCH, is UNVERIFIABLE** — running it and skipping it
-produce identical artifacts on the normal path (rc=0). **I cannot tell from the record whether I have
-ever run it.** Run it at START; don't pretend the record answers the question.
+⚠️ **A third, `cohort-freeze-detect.sh` at START/WATCH, is UNVERIFIABLE — and writing "I ran it" in this
+file does NOT fix that.** 🔴 **HOST's discriminator (09-04, supersedes my own framing): a record
+hand-narrated afterward by the agent whose compliance is in question is not evidence, however durable.**
+Only a marker the TOOL writes, in its own execution path, counts. **So: run it at START — and do not let
+a log line saying you ran it read as proof that you did.** *(This is m-45's subject/scorer separation
+applied to compliance: an agent cannot attest its own procedural compliance, for the same reason PA
+cannot score PA's own probe.)*
 
 ## 🔴 EVERY FIRE — Step 5b heartbeat, which I had stopped running
 
