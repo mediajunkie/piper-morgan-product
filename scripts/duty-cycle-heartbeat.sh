@@ -79,7 +79,16 @@ TS="$(date '+%Y-%m-%d %H:%M:%S %Z')"
 LAST_INVOKED_DIR="dev/heartbeats/last-invoked"
 LAST_INVOKED_FILE="$LAST_INVOKED_DIR/${ROLE}.txt"
 mkdir -p "$LAST_INVOKED_DIR"
-printf '%s\t%s\n' "$TS" "$FIRE" > "$LAST_INVOKED_FILE"
+# v1.2 (2026-09-05, CXO's finding, Arch's precedent): third field is a provenance tag, always
+# "observed" here — this script is the ONLY writer of this file, and every write IS a direct
+# observation (the script ran, right now, in this process). Explicit rather than implicit so the
+# invariant is machine-checkable: duty-cycle-freeze-check.sh's cold-start backfill (7l) computes a
+# "derived" reading transiently for its own console output when this file doesn't exist, and NEVER
+# persists that derived value here — this field is what makes that boundary enforceable rather
+# than just documented in a comment, matching the ratified derived-artifacts-declare-themselves
+# precedent (the B4 derived ADR index's own "GENERATED FILE" banner, per Arch, m-36's rationale
+# applied at a different altitude: a value that's inferred must say so on the artifact itself).
+printf '%s\t%s\tobserved\n' "$TS" "$FIRE" > "$LAST_INVOKED_FILE"
 
 # --if-quiet: skip when the fire already produced a role-tagged commit today. That commit IS the
 # heartbeat (refinement a), so writing another would be pure churn.
