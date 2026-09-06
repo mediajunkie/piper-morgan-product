@@ -110,6 +110,27 @@ second_line_count=$(wc -l < dev/heartbeats/last-invoked/testrole.txt | tr -d ' '
 cd - >/dev/null
 [ "$first_line_count" = "1" ] && [ "$second_line_count" = "1" ] && ok "marker stays 1 line across repeated suppressed invocations (overwritten, not appended)" || no "marker grew — expected overwrite, got $first_line_count then $second_line_count lines"
 
+echo "── T9: v1.2 (2026-09-05, CXO's finding) — the marker carries an explicit 'observed' provenance tag ──"
+W9=$(mkclone w9)
+seed_commit_ago "$W9" testrole $((2*3600))
+cd "$W9" && bash "$HB" testrole work --if-quiet >/dev/null 2>&1
+marker_content=$(cat dev/heartbeats/last-invoked/testrole.txt)
+cd - >/dev/null
+IFS=$'\t' read -ra marker_fields <<<"$marker_content"
+[ "${#marker_fields[@]}" = 3 ] && [ "${marker_fields[2]}" = "observed" ] \
+    && ok "suppressed-path marker carries the 'observed' tag as its third field" \
+    || no "expected a 3-field 'TS<TAB>FIRE<TAB>observed' marker on suppression, got: $marker_content"
+
+W10=$(mkclone w10)
+seed_commit_ago "$W10" testrole $((4*3600))
+cd "$W10" && bash "$HB" testrole work --if-quiet >/dev/null 2>&1
+marker_content=$(cat dev/heartbeats/last-invoked/testrole.txt)
+cd - >/dev/null
+IFS=$'\t' read -ra marker_fields <<<"$marker_content"
+[ "${#marker_fields[@]}" = 3 ] && [ "${marker_fields[2]}" = "observed" ] \
+    && ok "full-write-path marker carries the 'observed' tag as its third field" \
+    || no "expected a 3-field 'TS<TAB>FIRE<TAB>observed' marker on a full write, got: $marker_content"
+
 echo ""
 echo "════════ RESULT: $PASS passed, $FAIL failed ════════"
 [ "$FAIL" = 0 ] && exit 0 || exit 1
