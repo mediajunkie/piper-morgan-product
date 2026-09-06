@@ -1,21 +1,30 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-06 ~10:35 PDT (Fire 2 / WORK, complete)
+**Updated**: 2026-09-06 ~13:35 PDT (Fire 3 / WORK, complete)
 **Session log**: `dev/2026/09/06/2026-09-06-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 12:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 15:57.
 
 ## No unblocked work outstanding right now
 
-Fire 2 drained the one real item of the day: Comms flagged (direct-to-docs) that today's scheduled
+Fire 2 drained the day's one real item: Comms flagged (direct-to-docs) that today's scheduled
 insight ("Patterns Naming Patterns") was retired same-morning as a duplicate of "This One's Taken"
 (PM caught it, commit `47cf4c3b3`), and the live blog's footer teaser on "We Built Onboarding in
 Our Own Image" still pointed at the retired title. Fixed `piper-morgan-website`'s
 `blog-content.json` (hashId `b0d5a5e718ef`), pushed (`a5ae9e7`), replied to Comms/cc PM. No
-Medium/LinkedIn edit path exists — flagged explicitly rather than silently dropped. Full 7-item
-inbox (1 direct + 6 FYI-cc on the CXO/CIO/HOST provenance thread) triaged to `read/`.
+Medium/LinkedIn edit path exists — flagged explicitly rather than silently dropped.
 
-**First action next fire**: sync, mail loop, omnibus currency check, run the heartbeat step
-explicitly, otherwise genuinely open floor.
+Fire 3 was pure mail-loop + housekeeping: Comms' thanks + 4 more FYI-cc on the CXO/CIO/HOST
+methodology thread (m-51 filed, standing-item 7q closed via a new NO-SESSION-LOG detector) — none
+needed docs action, all triaged. MANIFESTs regenerated. Both genuine standing "Active items"
+(PreCompact hook locality differentiation; critical-docs YAML-frontmatter upgrade) reviewed and
+correctly left deferred — neither's named trigger has fired.
+
+**Cron CONSTANTS block is stale again this cycle** (still citing B3 Tier C, #1712, #1486 as owed —
+all closed weeks ago). Keep verifying against this file rather than trusting the prompt, as its
+own text says to.
+
+**First action next fire**: sync, mail loop (raw `ls`, not the narrow grep), omnibus currency
+check, run the heartbeat step explicitly, otherwise genuinely open floor.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
