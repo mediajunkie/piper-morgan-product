@@ -1,11 +1,20 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-05 22:22 PT (STOP). **Still watching**: #1386 — **only criterion 6
+**Last rewritten**: 2026-09-06 07:22 PT (START). **Still watching**: #1386 — **only criterion 6
 (PM sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally
-satisfied. **#1688's overrule call also still open** — three full days with no PM response now,
-no urgency attached (build sits harmlessly behind a flag either way), carrying into next week.
-The quietest day of the cycle today: empty mailbox and zero drift in any watched signal across all
+satisfied. **#1688's overrule call also still open** — four full days with no PM response now,
+no urgency attached (build sits harmlessly behind a flag either way), carrying forward.
+
+## 🔵 NEW BASELINE — PM did direct MVP milestone triage overnight (2026-09-06 07:22)
+`sprint-truth.py` jumped `MVP: 39 → 50 not done` (Sprint Backlog 20→31), unmilestoned dropped
+17→2. Traced via `git log` rather than flagged as unexplained drift: commit `672aaf2b9` (PM,
+direct, not via a role agent) added a 50-row personal export
+(`dev/active/piper-morgan-MVP-open-2026-09-06.tsv`) matching the new count exactly — PM doing
+hands-on milestone triage, likely the acceptance-testing pass PM had flagged wanting to do. No
+PPM action implied; noted as the new baseline for future count comparisons.
+
+The quietest day of the cycle prior: empty mailbox and zero drift in any watched signal across all
 six fires — a legitimate Saturday, not a coverage gap.
 
 ## ✅ SHIP #059 SENT SAME-DAY + ROLE-PORTFOLIO REFRESHED (2026-09-04 07:22)
