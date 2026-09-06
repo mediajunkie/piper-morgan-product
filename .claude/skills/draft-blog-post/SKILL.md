@@ -2,9 +2,9 @@
 name: draft-blog-post
 description: Draft a blog post (narrative, insight, or Weekly Ship) for an editorial-calendar slot. Use when Comms is drafting a scheduled post, when PM hands off a slot, when starting from a source artifact (session logs, omnibus, Granola transcript), or when picking up an in-progress draft. Mandates a Phase 0 pipeline-inventory precondition (Layer C), carries voice discipline upstream from voice-pass to draft-time, applies the four-category opacity sweep before handoff, runs the verifiable-claims discipline at draft time, and enforces the calendar-row-at-draft-creation rule (Layer A) that prevents orphan drafts.
 scope: role-specific
-version: 1.2
+version: 1.3
 created: 2026-05-15
-updated: 2026-05-31
+updated: 2026-09-06
 ---
 
 # draft-blog-post
@@ -59,6 +59,8 @@ Exit 0 = clean. Any drift output = surface and address before drafting new piece
 - **TRUE ORPHANS** — `docs/public/comms/drafts/*.md` files with no calendar row referencing them (the "lost draft")
 - **MISSING DRAFTPATH** — active (drafted/queued) rows with empty `draftPath` column (file↔row link unrecorded; naive reconciliation false-flags + file rename silently breaks the link)
 - **STALE DRAFTPATH** — active rows whose `draftPath` points to a file that no longer exists
+
+⚠️ **A TRUE ORPHAN can be a fork of already-published content under a different title, not a genuinely lost draft — the byte-identical check catches a literal leftover copy but is blind to a retitled fork.** Real incident, 2026-09-06: "Patterns Naming Patterns" was the original May 23 draft, slotted for Jun 20. Before that date, someone copied it into a new file, retitled it "This One's Taken," and published *that* — but the commit message called it a "rename" while the original file was never deleted, just left with no calendar row. A later orphan-rescue (Jul 4) found the true orphan, confirmed it wasn't byte-identical to anything (correct — it wasn't, the fork had a different filename and separately edited prose), and rescheduled it. PM caught it mid-illustration, four months later, only because the story felt familiar. **Before scheduling a rescued orphan, check whether its `workDate`/`endWorkDate` overlaps an already-published piece's `workDate`/`endWorkDate`, and if so, read both — a shared date range on a genuine orphan is the signature of exactly this fork.** (The date-range check alone is noisy — narrative beats and insights routinely share a week with a Weekly Ship covering the same window, which is expected, not a duplicate. The signal is a *non-Ship* overlap on the same or near-identical date range, which is rare enough to warrant a direct read.)
 
 **2. Drafted-and-awaiting view** (Layer B mechanism; Layer C invocation):
 
