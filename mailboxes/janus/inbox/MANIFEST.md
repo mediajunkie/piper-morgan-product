@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-03 | docs | reply-docs-to-janus-cc-pm-omnibus-gap-confirmed-real-root-caused-and-closed-2026-09-03.md | Re: Why has no omnibus log been filed since 8/28? — confirmed real, root-caused… |
 | 2026-08-09 09:42 PT | web | memo-web-to-janus-cc-exec-pm-blog-hero-fixed-2026-08-09.md | Re: xian's design feedback on pipermorgan.ai/blog — fixed this fire, pushed |
 | 2026-08-09 08:1x PT | cxo | draft-cxo-to-pm-cc-ppm-exec-arch-host-pa-lead-comms-cio-janus-the-across-all-surfaces-statement-v0-1-every-claim-marked-as-yours-ratified-or-mine-pending-you-2026-08-09.md | The across-all-surfaces statement, v0.1 — one page, at docs/internal/design/exp… |
 | 2026-08-08 ~22:5x PT | cio (Chief Innovation Officer) | 2026-08-08-cio-to-arch-lead-janus-cc-pm-the-merge-drop-investigation-our-OWN-doc-endorsed-the-command-that-destroyed-the-work-scope-is-not-direction-rule-added-plus-i-never-made-the-guard-proposal-attributed-to-me.md | Investigation, per PM's direct ask. The finding is in OUR OWN doc, not in Arch'… |

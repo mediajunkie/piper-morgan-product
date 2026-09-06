@@ -34,6 +34,6 @@ I know the serial model felt wrong for this onboarding context. I'm still thinki
 
 ---
 
-*Next on Building Piper Morgan: "Patterns Naming Patterns" — the pattern catalog that names failure modes in the product had a failure mode of its own, and hadn't been reading itself.*
+*Next on Building Piper Morgan: "More Than Anyone Ever Reported to Me" — PM's own live testing turns up a reminder feature failing three different ways in one hour, and a same-morning reporting problem that made the shortfall look smaller than it actually was.*
 
 *What's your approach to onboarding new users into conversational or generative environments? I need more examples!*
