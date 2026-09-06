@@ -21,8 +21,12 @@
 # Output: "STALE <role> <detail>" per frozen role; empty = healthy / off-hours / not-cycling. Exit 0 always
 # (a watchdog must never fail loudly itself). A wrapper (launchd) turns STALE lines into the PM alert.
 # Also emits (never STALE-prefixed, so a `grep "^STALE "` consumer is unaffected): "PARK-NO-EXIT",
-# "HEARTBEAT-WRITER-SILENT", and (v0.11) "BELT-INVISIBLE <role>" — a role that's alive by every
-# liveness signal but wrote no heartbeat row today, distinct from and never affecting STALE status.
+# "HEARTBEAT-WRITER-SILENT", (v0.11) "BELT-INVISIBLE <role>" — a role that's alive by every
+# liveness signal but wrote no heartbeat row today, distinct from and never affecting STALE status —
+# and (v0.15) "NO-SESSION-LOG <role>" — a role with a role-tagged commit today but no session-log
+# file for today, the "unguarded entrance" signal (Exec's finding, standing-item 7q): a day PM opens
+# directly rather than via a cron fire skips duty-cycle-tick's Step 0 (and Step 5b) entirely, with
+# no error anywhere — this is the only place that gap becomes visible.
 #
 # COVERAGE BOUNDARY (CXO battery-outage 2026-06-18): this catches a session-freeze on a LIVE machine. It
 # CANNOT catch a machine-death (battery/crash/logout) while it's happening — the launchd watcher runs ON the
@@ -117,17 +121,34 @@ age_of() {
   echo $(( (now - newest) / 3600 ))
 }
 
-# should this role be checked right now? args: role, first_fire(HH:MM). 0 = check, 1 = skip.
-cycling_now() {
-  local role="$1" ff="$2" ff_h ff_m ff_min paths p
+# ALL of today's session-log paths for a role, or empty. Shared by cycling_now() (the DAY-CLOSED
+# gate) and the NO-SESSION-LOG check below (v0.15) — factored out so both read the identical
+# definition of "does today have a log," rather than risk two greps drifting apart.
+today_log_paths() {
+  local role="$1"
   # ALL of today's logs for this role, not just one — a multi-log day (session death/restart,
   # migration handoff) has more than one file, and the close can live in any of them. Picking
   # only the first (this used `head -1` until 2026-07-30) checks the wrong file on exactly the
   # disrupted days most likely to be genuinely unclosed: closure is a property of the DAY, not a
   # single file (HOST 2026-07-30, caught after their own ad-hoc analysis tool made the identical
   # first-file assumption and misreported their own migration day as open).
-  paths=$(git -C "$REPO" ls-tree -r --name-only origin/main -- "dev/$today/" 2>/dev/null \
-         | grep -E "${role}-code-.*log\.md$")   # any model (opus/sonnet/…), not opus-only
+  git -C "$REPO" ls-tree -r --name-only origin/main -- "dev/$today/" 2>/dev/null \
+    | grep -E "${role}-code-.*log\.md$"   # any model (opus/sonnet/…), not opus-only
+}
+
+# does this role have a role-tagged commit dated TODAY (local)? Same grep shape as age_of()'s `ct`,
+# scoped to today instead of a 9-day window. Used only by the NO-SESSION-LOG check (v0.15) — this
+# is deliberately a narrower, same-day question, not a liveness check.
+role_committed_today() {
+  local role="$1"
+  git -C "$REPO" log origin/main -1 --format=%ct -E --grep="^${role}:" --grep="\(${role}\):" \
+    --since="${today_dash} 00:00:00" 2>/dev/null
+}
+
+# should this role be checked right now? args: role, first_fire(HH:MM). 0 = check, 1 = skip.
+cycling_now() {
+  local role="$1" ff="$2" ff_h ff_m ff_min paths p
+  paths=$(today_log_paths "$role")
   if [ -z "$paths" ]; then
     # No today-log. Distinguish "legitimately pre-START" from "missed START → frozen" (Exec 2026-06-17 fix,
     # closes the closed→never-restarted blind spot — the overnight-dormancy Gap-C). Gate on first_fire+grace.
@@ -324,6 +345,29 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
       continue ;;
   esac
   (( hour < ws || hour >= we )) && continue           # outside this role's waking/alerting window
+
+  # ── NO-SESSION-LOG, v0.15 (2026-09-06, Exec's "unguarded entrance" finding, CXO's corroboration
+  # + reframe, standing-item 7q) ──────────────────────────────────────────────────────────────────
+  # Deliberately runs BEFORE cycling_now's first-fire-grace gate, not after: the scenario this
+  # exists to catch is a PM-initiated session that starts BEFORE the role's own scheduled first
+  # fire (Exec's real instances: 05:53 and 06:53 starts against later-hour first_fire values) —
+  # cycling_now would skip exactly that window as "legitimately not started yet," which is true for
+  # the CRON's start but false for the role's actual work. If commits already exist today, "not
+  # started yet" is simply wrong, regardless of what the clock says relative to first_fire.
+  #
+  # CXO's sharper framing (independently corroborated on their own seat before CIO had to ask):
+  # duty-cycle-tick's steps are bolted to PROMPT SHAPE (a cron fire), not to WORK OUTPUT — so any
+  # turn that isn't the cron prompt skips them, PM-opened days and mid-fire PM interjections alike.
+  # The heartbeat's own `--if-quiet` already solved this for itself by keying on "did a commit
+  # happen," not "did a cron prompt arrive" — this check applies the same keying to Step 0's
+  # artifact (the session log) rather than inventing a new detection shape.
+  #
+  # Never STALE-prefixed (own state, like BELT-INVISIBLE) and never gates the STALE verdict below —
+  # a role can be NO-SESSION-LOG and perfectly alive at the same time; that's the whole point.
+  if ct_today=$(role_committed_today "$role") && [ -n "$ct_today" ] && [ -z "$(today_log_paths "$role")" ]; then
+    echo "NO-SESSION-LOG $role — role-tagged commit(s) today ($today_dash) but no dev/$today/*-${role}-code-*log.md yet; likely a PM-initiated entrance that bypassed duty-cycle-tick Step 0 (session-log creation) and Step 5b (heartbeat) — see standing-item 7q."
+  fi
+
   cycling_now "$role" "$ff" || continue               # not-should-be-cycling now → skip
   if a=$(age_of "$role"); then
     read -r thr_eff fires_label <<< "$(expected_threshold "$hour" "$cron" "$thr")"  # v0.4/v0.9
