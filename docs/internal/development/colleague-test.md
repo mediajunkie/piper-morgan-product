@@ -5,7 +5,26 @@
 **Created**: March 21, 2026
 **Status**: Active — applies to all Piper responses, floor and handler alike
 
-> **Operational rubric**: For scoring, the canonical document is `docs/internal/testing/colleague-test-rubric.md` (**v2.0** as of 2026-04-25). v2 adds the **Context 2-vs-3 distinction** (generic LLM competence vs. assembled project-context injection) and **decline-path scoring** (Tone=0 auto-fail on content-filter cadence, used in #992 ETHICS-ACTIVATE Phase E). When the rubric wording in this conceptual companion differs from v2, **v2 wins**.
+> **Operational rubric**: for scoring, the canonical document is
+> `docs/internal/testing/colleague-test-rubric.md`. ⚠️ **No version number here on purpose — open the
+> file.** *(This line pinned "v2.0 as of 2026-04-25" until 2026-09-06, five revisions stale, and it
+> stated a precedence rule against that pin. A live reference must carry no version; only a provenance
+> citation may — those look identical and are not.)* **Precedence, stated version-independently: where
+> this conceptual companion and the rubric differ on scoring, THE RUBRIC WINS.** This doc explains why
+> the test exists and when to apply it; it is not a scoring authority.
+>
+> ⭐ **What IS stable enough to state here — the three PM-ratified invariants (2026-08-31)**: the
+> question (*"would a smart, capable PM colleague respond this way?"*), the verdict shape (three
+> dimensions 0–3, **≥7/9 PASS**, any single 0 auto-fails), and the **fabrication auto-fail**. Changing
+> those needs PM. Everything else in the instrument moves with evidence, which is exactly why versions
+> don't belong in a conceptual doc.
+>
+> **And the test is now a FAMILY of three, not one instrument** — a fact this doc predated:
+> **Colleague Test** (response text Piper composes) · **UI Lifecycle Verification Rubric** (rendered
+> UI) · **BYOC Recomposition Rubric** (tool payloads on the MCP path). ⚠️ **The third is unlike the
+> other two**: it scores *what we hand a host LLM*, not what the user receives — a **branched
+> measurement surface**, so its scores are **not comparable** to its siblings'. See the rubric's
+> §"How to Extend This Rubric" for the branching discipline before adapting any of them.
 
 ---
 
