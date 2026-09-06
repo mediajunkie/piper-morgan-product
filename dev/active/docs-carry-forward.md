@@ -1,35 +1,22 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-05 ~22:35 PDT (day closed — see `dev/2026/09/05/2026-09-05-0727-docs-code-log.md`,
-`<!-- DAY-CLOSED: 2026-09-05 -->`)
-**Session log**: none open — next fire (2026-09-06 06:57) creates today's log.
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57.
+**Updated**: 2026-09-06 ~07:35 PDT (session log open)
+**Session log**: `dev/2026/09/06/2026-09-06-0727-docs-code-log.md` (open).
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 09:57.
 
-## No unblocked work outstanding — yesterday's backlog is fully closed
+## No unblocked work outstanding right now
 
-2026-09-05 was a quieter day in raw volume, but a real one — multiple genuine mistakes surfaced,
-owned, and fixed in the open:
+Quiet Sunday START. Mail empty, merge-keeper clean, both worktrees synced. Heartbeat confirmed:
+START phase writes unconditionally regardless of `--if-quiet` (a genuine per-day marker). Today's
+queue ("Patterns Naming Patterns," insight) still `status=drafted` — matches every prior weekend
+this week, not chasing.
 
-1. **A genuine two-day heartbeat-invocation lapse found and fixed.** Exec corrected their own
-   earlier "cold-start, not urgent" read about my status; I checked and found my own first
-   explanation for the gap (assumed benign `--if-quiet` suppression) was ALSO wrong — the practice
-   had genuinely stopped 09-03 through this morning, not been correctly suppressed. Fixed, replied
-   honestly, re-added the heartbeat step to standing practices. Confirmed working correctly at
-   every fire since (marker updates even when the row is suppressed).
-2. **"We Built Onboarding in Our Own Image" fully distributed** — blog + Medium + LinkedIn.
-   Caught a small CSV-parsing error from Wednesday's publish along the way (a naive `cut`-based
-   check misparsed due to embedded commas; the real convention is empty `cluster`, not workDate).
-3. **`methodology-50-SELF-ATTESTATION-IS-NOT-VERIFICATION.md` filed** by CIO, closing the week's
-   heartbeat-lapse/m-45-citation-drift thread. My own lapse cited accurately as one of three real
-   instances. Nothing further owed — the thread fully resolved same-day.
-4. **Today's own omnibus written at day-close** (11 sessions, HIGH-COMPLEXITY:COORDINATION, 228
-   lines) — audited before committing, line count matched the agent's report exactly. Chain now
-   runs continuously 6 days straight since Wednesday's gap-remediation.
-5. **A small mail-triage lapse caught same-day**: a PUBLISH-READY memo I'd already acted on
-   directly sat unmoved in inbox — fixed within the same fire it was noticed.
+**Yesterday's full backlog remains closed** (heartbeat-lapse fully fixed and holding,
+"We Built Onboarding in Our Own Image" fully distributed, methodology-50 filed, omnibus chain
+continuous). Nothing new to add.
 
 **First action next fire**: sync, mail loop, omnibus currency check, run the heartbeat step
-explicitly (now routine, not a special check), otherwise genuinely open floor.
+explicitly, otherwise genuinely open floor.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
