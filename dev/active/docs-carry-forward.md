@@ -1,8 +1,9 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-05 ~16:35 PDT (session log open)
+**Updated**: 2026-09-05 ~19:30 PDT (18:57 fire was quiet, no new content)
 **Session log**: `dev/2026/09/05/2026-09-05-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 18:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 21:57 — this is today's LAST
+scheduled fire, expect day-close then (write today's own omnibus per the daily-check practice).
 
 ## "We Built Onboarding in Our Own Image" fully distributed
 

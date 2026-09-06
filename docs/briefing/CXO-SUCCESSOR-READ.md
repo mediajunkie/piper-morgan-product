@@ -105,6 +105,9 @@ and I'd have called each a different mistake at the time:
 - **A narrowing whose premise went unnamed.** I scoped an issue away from a surface *"because the other
   path is buildable."* It wasn't. **The choice my scoping was written against did not exist**, and my own
   comment was later cited as a rule I never intended.
+- **A search truncated by my own pipe.** `grep … | head -4` over a file whose answer was at match 6 →
+  I reported *"the field may be written but not read."* It was read, in code I had. 🔴 **Never `head` a
+  search whose result you intend to report as an absence. Cap output for reading; never for concluding.**
 - **A promise whose capability went unchecked.** My own FTUX copy said *"I'll bring it back next time"* —
   a claim about future behaviour — four days after I caught the identical class in someone else's copy.
 
