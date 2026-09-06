@@ -106,6 +106,35 @@ in-conversation, and any mailbox items explicitly addressed to PM that assign a 
 
 ## Step 2 — Live-state verification pass (the discipline that makes this trustworthy)
 
+### ⚠️ 2.0 — A MAIL-BASED ASK IS VERIFIED IN THE RECIPIENT'S `sent/`, NOT ON GITHUB
+
+**Added 2026-09-06 after this exact failure.** Step 2 below is written around GitHub state, and that
+is where the eye goes: an item citing `#1234` gets `gh issue view`, and an item that is *a memo
+someone sent* gets… nothing. **So mail-based asks were never actually verified.**
+
+**The incident**: Web escalated a 43-day-old compose-UI question on 08-31. **Docs replied the same
+day** — checked their real workflow rather than their memory of it, found no gap, said "safe to
+close." That reply sat in `mailboxes/docs/sent/`. **The board carried the item as PM-gated for six
+more days and rendered it at the top as "49 days, escalating."** PM asked to walk the decisions and
+the first one was already closed.
+
+⭐ **The shape, and it is the one this board exists to prevent**: a verification pass that covered
+the part of its space with obvious handles (issue numbers) and reported as though it had covered all
+of it. Same family as m-44 — an all-clear emitted by a check that measured the wrong subset.
+
+**So for every candidate that is an ASK rather than an ISSUE:**
+
+1. **Look in the recipient's `sent/`** for a reply — `grep -rl "<topic>" mailboxes/*/sent/`. An
+   answered ask is not a PM item no matter how old the original is.
+2. **Check the asker's own carry-forward.** Roles record "no reply yet" explicitly when it's true —
+   CIO's rate-limit line literally reads `(raised 08-29, carried into Ship #059, no reply yet)`.
+   That is a verified-open signal, and its absence is a prompt to look harder.
+3. ⚠️ **A GitHub assignee does NOT establish ownership here.** Every agent commits and acts as
+   `mediajunkie`, so `assignee: mediajunkie` is the default state, not a decision. #1722 looked
+   assigned and its ownership question was still genuinely open.
+4. **Age is not evidence of openness.** The oldest item on a board is the one most likely to have
+   been quietly resolved, precisely because it has had the most time in which someone could answer it.
+
 For every candidate "decision awaiting PM" item, **verify it's actually still open** before listing it:
 
 - If it cites a GitHub issue/PR, check current state (`gh issue view <n> --json state,title` or the GitHub

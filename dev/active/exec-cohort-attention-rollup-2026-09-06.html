@@ -50,9 +50,9 @@
 
 <div class="wrap">
   <header>
-    <p class="stamp">Cohort attention rollup · compiled by Exec · Sun 2026-09-06 13:3x PDT</p>
+    <p class="stamp">Cohort attention rollup · Exec · Sun 2026-09-06 · <strong>REVISED 14:0x — one item removed, it was already answered</strong></p>
     <h1>What needs you</h1>
-    <p class="sub">Liveness first, then every item re-derived from live carry-forwards and re-queried against GitHub. Decision items carry first-seen dates. Nothing is blocked on an agent — all nine open items are yours.</p>
+    <p class="sub">Liveness first, then every item re-derived from live carry-forwards and re-queried against GitHub. Decision items carry first-seen dates. Nothing is blocked on an agent. <strong>Eight open items, not nine</strong> — the oldest turned out to have been answered six days ago and I had not checked.</p>
   </header>
 
   <section>
@@ -63,8 +63,8 @@
     </div>
     <dl class="grid">
       <div class="stat"><dt>Roles live</dt><dd>11 / 11</dd></div>
-      <div class="stat"><dt>Need you</dt><dd>9</dd></div>
-      <div class="stat"><dt>Oldest</dt><dd>49d</dd></div>
+      <div class="stat"><dt>Need you</dt><dd>8</dd></div>
+      <div class="stat"><dt>Oldest</dt><dd>8d</dd></div>
       <div class="stat"><dt>Blocked on an agent</dt><dd>0</dd></div>
     </dl>
   </section>
@@ -72,12 +72,11 @@
   <section>
     <h2>🔴 Escalating — waiting longer than they should be</h2>
 
-    <div class="card dec">
-      <p class="who">Web<span class="age hot">49 days</span></p>
-      <h3>Compose UI "Phase 4" — and Web escalated it themselves after a tool caught it</h3>
-      <p>Undecided since <strong>2026-07-19</strong>, and it wasn't on Web's own open-items list — CIO's new dating convention surfaced it on 08-31 and Web escalated rather than let the finding sit. Their words: <em>"Not deciding to defer it, just… not noticing it was still open."</em></p>
-      <p><strong>The question is real and partly stale</strong>: Phase 4 was scoped as "mark-ready + git handoff," but the shipped composer already auto-commits on every save, so the git half is likely moot. What's unknown is whether a gap remains underneath — <strong>a ready-for-publish status flip, or a notification so Docs knows a draft is ready without checking manually.</strong></p>
-      <p class="note"><strong>This one needs Docs more than it needs you.</strong> Web says plainly they can't answer it — it depends on Docs' actual publish workflow. Your call could be as small as "Docs, does this gap exist?" and it stops being yours.</p>
+    <div class="card mine">
+      <p class="who">Exec · board correction</p>
+      <h3>🔴 Web's compose Phase 4 was answered on 08-31 and I carried it for six days as your oldest item</h3>
+      <p>Web escalated it, and <strong>Docs replied the same day</strong> — checking their real workflow rather than their memory of it. Their trigger for publishing is a direct human signal, never a status field. They also counted the schema flag that would have carried it: <strong>zero rows use it</strong> (275 distributed, 145 published, 7 drafted, 4 queued). Safe to close, and it was safe to close six days ago.</p>
+      <p class="note"><strong>Why my board missed it</strong>: my verification pass re-queries GitHub for anything citing an issue number, and does nothing at all for an ask that lives in mail. So the items with obvious handles got checked and the memo-shaped ones didn't. <strong>A pass that covered part of its space and reported as though it covered all of it</strong> — the exact failure this board exists to catch, committed by the board. Fixed in the skill as Step 2.0, including that a GitHub assignee of <code>mediajunkie</code> proves nothing, since every agent acts as that identity.</p>
     </div>
 
     <div class="card dec">
@@ -146,6 +145,7 @@
     <h2>✅ Closed since the last board</h2>
     <div class="card ok">
       <ul class="plain">
+        <li><s>Web's compose UI Phase 4</s> — <strong>Docs answered 08-31: no real gap.</strong> Autosave plus auto-commit already covers the git half, and the mark-ready half fills a need Docs does not have.</li>
         <li><s>Jake loop-back</s> — <strong>you sent it</strong>, edited from the draft. That was the one item only you could do.</li>
         <li><s>17 issues outside every gate count</s> — <strong>you triaged them; 2 remain.</strong></li>
         <li><s>Milestone dates</s> — reset and confirmed against GitHub. Note: <strong>Enterprise reads 2028-10-30 there</strong>, not 2027 as your message had it.</li>
@@ -163,7 +163,7 @@
   </section>
 
   <footer>
-    <p><strong>Bottom line:</strong> nothing is blocked on an agent. Two items are genuinely aged — Web's Phase 4 at 49 days, which mostly needs a question put to Docs, and CIO's rate-limit question at three cycles, where <em>"I don't know either"</em> would close it. The rest are days old and none is urgent.</p>
-    <p><strong>Live-state pass.</strong> Liveness via <code>duty-cycle-freeze-check.sh</code> (11 rows, 0 stale). Every item re-derived from the eleven live carry-forwards, not carried from the last board. #1709, #1722, #1386 and #1509 re-queried against GitHub; the unmilestoned count re-counted (17 → 2). Milestone dates read from the GitHub API rather than from your message. Aging sweep run — 1 flagged, 6 correctly excluded, and <strong>its own coverage caveat applies: 5 of 10 trackers carry parseable dates, and a person-named blocker ("waiting on PPM") is never mechanically checkable at all.</strong></p>
+    <p><strong>Bottom line:</strong> nothing is blocked on an agent, and the queue is eight. <strong>Only one is genuinely aged</strong> — CIO's rate-limit question at three cycles, where <em>"I don't know either"</em> closes it. The rest are days old. The item that had looked oldest was already answered.</p>
+    <p><strong>Live-state pass.</strong> Liveness via <code>duty-cycle-freeze-check.sh</code> (11 rows, 0 stale). Every item re-derived from the eleven live carry-forwards, not carried from the last board. #1709, #1722, #1386 and #1509 re-queried against GitHub; the unmilestoned count re-counted (17 → 2). Milestone dates read from the GitHub API rather than from your message. <strong>And this revision: every remaining mail-based ask re-checked against the recipient's <code>sent/</code> and the asker's own carry-forward</strong> — CIO's rate-limit line reads "no reply yet" explicitly, CXO still lists theirs as waiting, the beta definition is absent from <code>decisions.log</code>, and #1722's assignee is the shared identity rather than a named owner. Those four are genuinely open. Aging sweep run — 1 flagged, 6 correctly excluded, and <strong>its own coverage caveat applies: 5 of 10 trackers carry parseable dates, and a person-named blocker ("waiting on PPM") is never mechanically checkable at all.</strong></p>
   </footer>
 </div>
