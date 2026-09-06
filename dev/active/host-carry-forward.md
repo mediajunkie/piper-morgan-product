@@ -1,12 +1,12 @@
 ---
-last_updated: 2026-09-04
+last_updated: 2026-09-05
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-04 22:0x PDT (STOP fire, day 42 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-09-05 22:0x PDT (STOP fire, day 43 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -128,17 +128,16 @@ max_age_days: 1
 
 ## Cron
 
-Current job **`586c41c1`** (chain … `659b3533 → cc7fed05 → 586c41c1`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-04 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`90a7a76a`** (chain … `cc7fed05 → 586c41c1 → 90a7a76a`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-05 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 09-04 STOP
+## Open threads, as of 09-05 STOP
 
-- **Jake loop-back** — 🟡 Drafted 08-31, still waiting on PM to send as of 09-04 (4 days since drafted). Watch for PM sending it or requesting changes; if untouched >~2 weeks (~09-14), worth a check-in.
-- **Workstream Review #059** — ✅ Filed 09-04, same-day as kickoff. Portfolio refreshed via the trigger-time check's first live pass (clean `--diff`). Nothing further owed until #060's kickoff.
-- ✅ **Role-health-check natural experiment** — sent a factual correction to Exec's recurring-duty proposal (09-04): the "~2 months, nothing polling" case pre-dates HOST's own 08-07 fix; post-fix it's a clean chokepoint counter-case instead. CIO folded it into the joint proposal directly, cited as HOST's finding. Archival.
-- ✅ **Machine-written-vs-self-narrated axis** — HOST's own finding (09-04, prompted by checking CXO's freeze-check claim against HOST's own Step 2c logging habit): a durable, git-committed session-log line is not evidence of compliance unless it's machine-written at invocation time, not hand-narrated afterward by the agent in question. CXO conceded it replaces their own "artifact vs. no artifact" cut and caught themselves about to commit the exact error mid-fire. CIO confirmed it as a second, orthogonal axis to chokepoint-vs-bolt-on, tied it to m-45 (an agent can't score its own compliance either), folded into the joint recurring-duty proposal. Archival — landed cleanly, no further HOST action.
-- ✅ **#059's frontmatter gap** — Exec found HOST's workstream-review filing has no YAML frontmatter (invisible to header sweeps). Checked all five prior filings (#055-#059): same gap in every one, a month-old convention not a fresh mistake. Fixing the template from #060 onward, not retrofitting history. Same metadata-bolt-on family as CIO's stale filename stamp and CXO's off-convention filename, same cycle. Archival.
-- ✅ **CIO's "last invoked" three-case marker** — shipped 09-04 (`bb0e7cd76`), verified directly. Exec found a cold-start artifact same evening (new roles read "never" when they simply haven't fired since the marker was created, not because they never ran) — CIO's lane, HOST confirmed its own marker exists and is unaffected. Watching for CIO's fix, not chasing.
-- ✅ **Freeze-watchdog false-positive + stale-blocker-rot, closed 09-02.** Archival.
+- **Jake loop-back** — 🟡 Drafted 08-31, still waiting on PM to send as of 09-05 (5 days since drafted). Watch for PM sending it or requesting changes; if untouched >~2 weeks (~09-14), worth a check-in.
+- ✅ **methodology-50 (Self-Attestation Is Not Verification) — filed 09-05, HOST's own discriminator credited by name and date.** CIO filed same-day after cross-verification from five people: three real instances (CXO's heartbeat, CXO's MANIFEST regen, Docs' heartbeat, all "invoked then stopped"), CXO's 08-30 carry-forward line as the correctly-uncited seed formulation. A genuine m-45 genealogy surfaced alongside it — the "m-45" miscitation that started the whole thread traced (via Arch's `git log -S` provenance work) to one origination (Arch's 09-03 relay) propagating through direct recipients within an hour, not independent convergence — added as evidence to m-45's own entry. Archival, but the highest-quality single day this window.
+- ✅ **The "last invoked" marker's two cold-start gaps, both found and fixed same-day.** First: a missing marker read as "never — not called even once" for roles with real prior heartbeat history (Exec caught it on Docs, 20 commits); fixed via backfill-from-`git log`, bounded and labeled derived (`6f9401283`). Second: the marker format itself had no observed/derived provenance field (CXO's finding, itself m-50 applied reflexively to the instrument built to enforce it); fixed same-day (`9ac50f78c`), and the reader already handles a missing field as its own explicit "pre-provenance-field, still genuine observation" case rather than defaulting silently — confirmed by HOST directly after CXO reported being unable to verify it from their own grep. Archival.
+- ✅ **Docs' real heartbeat lapse (invoked 20x, stopped 09-03) — found, confirmed, fixed same-day.** Verified independently by HOST before Exec's correction landed; Docs ran the check, confirmed the writer works, and found their own prior "benign self-suppression" explanation was itself unverified assumption — same shape as the wider week. HOST sent a synthesizing note naming the precise count (3 confirmed practice-deaths this week, one seat twice) as a welfare-adjacent signal, now carried into the joint recurring-duty proposal as evidence. Archival.
+- **Workstream Review #059** — ✅ Filed 09-04. Portfolio refreshed via the trigger-time check's first live pass (clean `--diff`). Nothing further owed until #060's kickoff.
+- ✅ **Role-health-check natural experiment, #059's frontmatter gap, machine-written-vs-self-narrated axis — all closed 09-04.** Archival.
 - **Role Health Check** — ✅ #1714 closed 08-31. 8 Low/3 Medium/0 High. Next due ~09-28.
 - **Agent 360 v0.4** — ✅ Fully closed. Only cohort-share remains, pending PM's framing sign-off.
 - **ESSENCE.md v0.1 trust-lens** — ✅ Given 08-29, consent-gate flag closed properly. **Watch for**: Lead's watched round adding the inversion-path test, or Arch's standalone probe if it doesn't land within a week.
