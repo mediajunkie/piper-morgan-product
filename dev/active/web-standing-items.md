@@ -75,7 +75,24 @@ superficially-but-not-mechanically compliant.
 | 1 | **Obs-pass joint walkthrough** | 2026-06-17 | **Hold for** PM's +1/−1/defer; not Web's to close. Pre-staged 2026-08-31: full 31-item reconciliation done live via Playwright against the deployed site, not code-reading. 13 resolved, 10 still open, 1 new finding, 1 page substantively changed. Artifact: `pipermorgan-walkthrough-prep-2026-08-31.html` — https://claude.ai/code/artifact/b02c86c4-0131-432f-b9b8-752ffc2d0b84. Canonical source: `dev/2026/05/24/site-observation-pass-2026-05-24.md`. |
 | 2 | **Site walkthrough** (formal joint pass) | 2026-05-29 | **Hold for** PM joint session; not Web's to close. Same 2026-08-31 prep pass covers this — artifact above follows the A–E order proposed 5/28 (`dev/2026/05/28/...`), resuming cleanly at `/methodology`. |
 | 3 | **Buttondown native newsletter publishing** | 2026-08-15 | **Hold for** PM research; not Web's to close (explicitly long-term/not-urgent). Publish blog posts natively to Buttondown, possibly with subscriber choice (blog vs. Ship) — Buttondown may not support that granularity without multiple newsletters. **2026-08-31**: PM doing research when back at desk. |
-| 4 | **website#39 era-clustering backfill — fully verified, blocked on go-ahead** | 2026-09-06 | Comms found the real root cause (era computed from `publishedAt`, not `workDate` as originally diagnosed) and provided a full 288-post mechanical mapping. Independently re-derived the entire mapping from scratch against `episodes.ts`'s 7 era ranges — exact match, zero ambiguity. Applied to `data/blog-metadata.csv` (source of truth), field-level verified as exactly 287 `cluster`-only changes (1 slug, `weekly-ship-44`, correctly skipped — a separate orphan-duplicate-JSON-entry bug, to be filed distinctly). Ran `sync-csv-to-json.js`, output matches independent computation exactly (all 7 eras now non-zero). Production build clean (exit 0). **Blocked**: the auto-mode classifier is refusing `git add`/any git command in the website worktree on this change, consistent with my explicit ask to PM last fire ("do you want me to proceed with committing and deploying"). Holding the pending change as-is (uncommitted, unstaged) until PM responds — not retrying the blocked commands. |
+### website#39 era-clustering backfill — CLOSED 2026-09-06
+- [x] Comms found the real root cause (era computed from `publishedAt`, not `workDate` as
+  originally diagnosed); independently re-derived the full 288-post mapping from scratch against
+  `episodes.ts`'s 7 era ranges — exact match, zero ambiguity. Applied to `data/blog-metadata.csv`
+  (source of truth): 287 `cluster`-only changes, field-verified. `weekly-ship-44` correctly skipped
+  (a separate orphan-duplicate-JSON-entry bug, filed as website#41). Regenerated
+  `medium-posts.json` via `sync-csv-to-json.js`, build clean. Shipped website `1bc123f`, Vercel
+  deploy confirmed `success`. website#39 closed with full evidence; replied to Comms cc PM.
+
+### website#41 orphan duplicate JSON entry — CLOSED 2026-09-06
+- [x] Root-caused via git history (not guessed): commit `1f66571` ("Slug fix: weekly-ship-44 →
+  weekly-ship-044-what-survives-an-experiment"), 7 minutes after the original add commit, intended
+  a rename but the write path added a new entry instead of updating in place, leaving
+  `weekly-ship-44` behind as a stale orphan. Comms confirmed nothing to reconcile on the
+  editorial-calendar side. Removed the orphan entry from `medium-posts.json`, structurally verified
+  (exactly 1 post removed, 0 other changes), skipped a redirect (7-minute exposure window,
+  disproportionate). Shipped website `441ef10`, deploy confirmed `success`, closed with full
+  evidence, replied to Comms cc PM.
 
 ### Alt-text backfill — COMPLETE 2026-06-17
 - [x] **blog-metadata.csv imageAlt** — all 276 filled; editorial-calendar 144 synced; medium-posts.json rebuilt; pushed to main (`03a4f42cc`). Verify via `/admin/calendar/` (gap count should be 0 for published posts with imageSlug). Plan: `dev/active/alt-text-backfill-plan-2026-06-17.md`.
