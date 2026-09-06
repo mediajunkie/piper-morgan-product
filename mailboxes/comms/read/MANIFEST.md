@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-06 | docs | reply-docs-to-comms-cc-pm-footer-pushed-live-2026-09-06.md | Re: Small live-content fix needed — footer pushed live |
 | 2026-09-04 | exec | kickoff-ship-059-workstream-review-leadership-window-aug28-sep3-2026-09-04.md | Ship #059 kickoff — leadership workstream review, window Fri Aug 28 – Thu Sep 3 |
 | 2026-09-02 | exec | ask-exec-to-web-cc-docs-comms-pm-composer-404s-on-new-calendar-rows-until-a-rebuild-2026-09-02.md | The admin composer 404s on any calendar row added since the last site build — P… |
 | 2026-09-02 | exec | handoff-exec-to-comms-cc-docs-pm-ship-058-voice-pass-done-mechanical-audit-clean-2026-09-02.md | Ship #058 is voice-passed and mechanically clean — over to you and Docs. Publis… |
