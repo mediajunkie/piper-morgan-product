@@ -1,0 +1,169 @@
+<title>Cohort Attention Rollup — Sep 6</title>
+<style>
+  :root{--ground:#F7F7F5;--card:#FFF;--ink:#1A1A17;--soft:#5E5E55;--rule:#E1E0DA;
+        --accent:#5A5233;--red:#A33F2B;--amber:#8A6116;--green:#3E6B45;
+        --shadow:0 1px 2px rgba(26,26,23,.05),0 10px 28px -14px rgba(26,26,23,.16);
+        --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+        --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+        --data:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;}
+  @media (prefers-color-scheme:dark){:root{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--soft:#A0A093;
+        --rule:#33332B;--accent:#C9BE8E;--red:#E38672;--amber:#D5A44B;--green:#79B885;
+        --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}}
+  :root[data-theme="dark"]{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--soft:#A0A093;
+        --rule:#33332B;--accent:#C9BE8E;--red:#E38672;--amber:#D5A44B;--green:#79B885;
+        --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{--ground:#F7F7F5;--card:#FFF;--ink:#1A1A17;--soft:#5E5E55;
+        --rule:#E1E0DA;--accent:#5A5233;--red:#A33F2B;--amber:#8A6116;--green:#3E6B45;
+        --shadow:0 1px 2px rgba(26,26,23,.05),0 10px 28px -14px rgba(26,26,23,.16);}
+  body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:60rem;margin:0 auto;padding:2.5rem 1.25rem 4rem;display:flex;flex-direction:column;gap:1.9rem}
+  header{border-bottom:3px double var(--rule);padding-bottom:1.2rem;display:flex;flex-direction:column;gap:.4rem}
+  .stamp{font:500 .7rem/1 var(--data);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  h1{font:400 2.2rem/1.1 var(--display);margin:0;letter-spacing:-.015em}
+  .sub{color:var(--soft);margin:0;font-size:.95rem;max-width:58ch}
+  h2{font:600 .72rem/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--soft);
+     margin:0;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+  section{display:flex;flex-direction:column;gap:.7rem}
+  .card{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--soft);
+        border-radius:2px;padding:.85rem 1.05rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.4rem}
+  .card.dec{border-left-color:var(--red)} .card.drift{border-left-color:var(--amber)}
+  .card.ok{border-left-color:var(--green)} .card.mine{border-left-color:var(--accent)}
+  .card h3{margin:0;font:600 1rem/1.35 var(--body);text-wrap:balance}
+  .card p{margin:0}
+  .who{font:600 .66rem/1 var(--data);letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
+  .age{font:600 .64rem/1 var(--data);letter-spacing:.06em;text-transform:uppercase;padding:.2rem .38rem;
+       border-radius:2px;background:color-mix(in srgb,var(--soft) 15%,transparent);color:var(--soft);margin-left:.4rem}
+  .age.hot{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red)}
+  .age.warm{background:color-mix(in srgb,var(--amber) 16%,transparent);color:var(--amber)}
+  .note{color:var(--soft);font-size:.9rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));gap:.5rem}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:.55rem .75rem}
+  .stat dt{font:500 .63rem/1.2 var(--data);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+  .stat dd{margin:0;font:600 1.05rem/1.15 var(--body);font-variant-numeric:tabular-nums}
+  ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.4rem}
+  code{font:.87em/1.4 var(--data);background:color-mix(in srgb,var(--accent) 12%,transparent);padding:.1rem .3rem;border-radius:2px}
+  .clean{color:var(--soft);font-size:.92rem}
+  .clean b{color:var(--ink)}
+  footer{border-top:1px solid var(--rule);padding-top:1rem;color:var(--soft);font-size:.84rem}
+  @media(max-width:34rem){h1{font-size:1.8rem}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="stamp">Cohort attention rollup · compiled by Exec · Sun 2026-09-06 13:3x PDT</p>
+    <h1>What needs you</h1>
+    <p class="sub">Liveness first, then every item re-derived from live carry-forwards and re-queried against GitHub. Decision items carry first-seen dates. Nothing is blocked on an agent — all nine open items are yours.</p>
+  </header>
+
+  <section>
+    <h2>Liveness</h2>
+    <div class="card ok">
+      <h3>11 of 11 rows examined. Zero stale, zero belt-invisible.</h3>
+      <p><code>duty-cycle-freeze-check.sh</code> against <code>origin/main</code> tip <code>9905c8ef7</code>, 13:27. Clean for the third consecutive check — the heartbeat lapses that ran all week are closed.</p>
+    </div>
+    <dl class="grid">
+      <div class="stat"><dt>Roles live</dt><dd>11 / 11</dd></div>
+      <div class="stat"><dt>Need you</dt><dd>9</dd></div>
+      <div class="stat"><dt>Oldest</dt><dd>49d</dd></div>
+      <div class="stat"><dt>Blocked on an agent</dt><dd>0</dd></div>
+    </dl>
+  </section>
+
+  <section>
+    <h2>🔴 Escalating — waiting longer than they should be</h2>
+
+    <div class="card dec">
+      <p class="who">Web<span class="age hot">49 days</span></p>
+      <h3>Compose UI "Phase 4" — and Web escalated it themselves after a tool caught it</h3>
+      <p>Undecided since <strong>2026-07-19</strong>, and it wasn't on Web's own open-items list — CIO's new dating convention surfaced it on 08-31 and Web escalated rather than let the finding sit. Their words: <em>"Not deciding to defer it, just… not noticing it was still open."</em></p>
+      <p><strong>The question is real and partly stale</strong>: Phase 4 was scoped as "mark-ready + git handoff," but the shipped composer already auto-commits on every save, so the git half is likely moot. What's unknown is whether a gap remains underneath — <strong>a ready-for-publish status flip, or a notification so Docs knows a draft is ready without checking manually.</strong></p>
+      <p class="note"><strong>This one needs Docs more than it needs you.</strong> Web says plainly they can't answer it — it depends on Docs' actual publish workflow. Your call could be as small as "Docs, does this gap exist?" and it stops being yours.</p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">CIO<span class="age hot">8 days · 3 cycles</span></p>
+      <h3>The non-interactive rate-limit setting — carried into a third Ship window</h3>
+      <p>Raised 08-29. The question: <strong>is there a mode that makes a rate-limit hit FAIL rather than PROMPT?</strong> A session that dies cleanly is visible to every instrument we own. One parked on a modal dialog is visible to none — which is what left Arch, CIO and HOST dark for 30+ hours and needed you at a tmux prompt.</p>
+      <p class="note">CIO has said plainly it isn't answerable from inside a session. If the answer is "I don't know either," that's a fine answer and closes it — <strong>the cost right now is that it reads as open and gets re-carried every week.</strong></p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">PA · Arch<span class="age warm">7 days</span></p>
+      <h3>What "beta" is defined to include — one of Arch's three named PM decisions</h3>
+      <p>Arch's framing, delivered four days early: <em>"That's a question about what beta IS, which is yours."</em> Arch's lean matches PPM's — option (a), record it explicitly rather than let sequencing resolve it by implication, and revisit at the beta gate.</p>
+      <p class="note">The architectural fact stated without deciding it: the fail-closed identity boundary gates the next-rung population <em>regardless</em> of which milestone it sits in. <strong>So it's a definition question, not a technical dependency.</strong></p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">CXO<span class="age warm">4 days</span></p>
+      <h3>Two API calls for the class-discriminator test — and "drop it" was offered as equally fine</h3>
+      <p>Asked 09-02. ⭐ <strong>CXO explicitly flags that PA's new candidate should ride the SAME authorization</strong> and is deliberately <em>not</em> raising it as a second ask before the first is answered. That restraint is worth noticing — it's the opposite of the queue-stuffing that makes a decision list unreadable.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>🔴 Newer, but yours</h2>
+
+    <div class="card dec">
+      <p class="who">from today's #1709 discussion<span class="age">new</span></p>
+      <h3>Whether to write the missing interface, which would surface the other eight at once</h3>
+      <p>The router dispatches 14 GitHub operations through a seam typed <code>-> Any</code>, backed by classes whose declared Protocol covers <em>spatial mapping</em> — a different set of methods entirely. <strong>Nine of the fourteen are defined by neither backing implementation</strong>, and the code's own docstring records a prior instance of the identical bug being fixed by hand.</p>
+      <p class="note"><strong>The decision is whether to declare the operations contract as a Protocol and type the seam to it.</strong> That fails the build for every missing method at once instead of one AttributeError at a time. Probably Arch's call to make rather than yours — but it needs someone to name it as work.</p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">CIO<span class="age">3 days</span></p>
+      <h3>#1722 — 91 orphaned subagent worktrees need an owner named before anyone sweeps</h3>
+      <p>Real disk and git-object bloat, and <strong>possibly holding unrecovered work</strong> — one did exactly that this week, and CIO recovered a fix from a stranded worktree. CIO explicitly declines to sweep unilaterally. Needs Pard or Arch named.</p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">Lead · you hold the trigger</p>
+      <h3>"Flip it" — not waiting on you so much as held by you</h3>
+      <p>Lead has Arch's ratified staged plan loaded and ready to run in one watched round. Rollback is unsetting a flag. Listed so it doesn't vanish from view, not as a nag.</p>
+    </div>
+
+    <div class="card dec">
+      <p class="who">#1386</p>
+      <h3>Criterion 6 is your own sign-off, and it's the last one</h3>
+      <p>Unchanged across two full windows. Everything else on that gate is closed.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>🟡 Small, and one is mine</h2>
+    <div class="card mine">
+      <h3>Your laptop is still on the <code>ship-058</code> branch, because I left you there</h3>
+      <p><code>git checkout main</code>, and <code>git branch -d ship-058</code> if you want it gone. My command sequence ended at the push and I never gave you the step back.</p>
+    </div>
+    <div class="card drift">
+      <h3>The chrome-devtools symlink still needs Pard's host-level half</h3>
+      <p>CIO's side is done. Not blocking anything — the browser lane works via Playwright.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>✅ Closed since the last board</h2>
+    <div class="card ok">
+      <ul class="plain">
+        <li><s>Jake loop-back</s> — <strong>you sent it</strong>, edited from the draft. That was the one item only you could do.</li>
+        <li><s>17 issues outside every gate count</s> — <strong>you triaged them; 2 remain.</strong></li>
+        <li><s>Milestone dates</s> — reset and confirmed against GitHub. Note: <strong>Enterprise reads 2028-10-30 there</strong>, not 2027 as your message had it.</li>
+        <li><s>Ship #058</s> — published. <s>BYOC narrative angle</s> — you picked B. <s>Beat 4 collision</s> — resolved itself.</li>
+        <li><s>The week's three heartbeat lapses</s> — CXO's, Docs', and the cold-start false reading — all closed and the mechanism corrected.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>⚪ Clean — no open item for you</h2>
+    <div class="card">
+      <p class="clean"><b>Arch</b> — review executed, corpus dispositioned, ADR index derived. <b>Lead</b> — three deploys, belt green, flip staged. <b>Docs</b> — six posts, corpus half done, heartbeat resumed. <b>PPM</b> — public-beta gate written, increments filed. <b>Comms</b> — narrative front closed to October, #059 awaiting your pass. <b>HOST</b> — Agent 360 fully routed, lapse mechanism fixed. <b>CIO</b> — six instruments shipped, mechanism half of the joint proposal delivered.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Bottom line:</strong> nothing is blocked on an agent. Two items are genuinely aged — Web's Phase 4 at 49 days, which mostly needs a question put to Docs, and CIO's rate-limit question at three cycles, where <em>"I don't know either"</em> would close it. The rest are days old and none is urgent.</p>
+    <p><strong>Live-state pass.</strong> Liveness via <code>duty-cycle-freeze-check.sh</code> (11 rows, 0 stale). Every item re-derived from the eleven live carry-forwards, not carried from the last board. #1709, #1722, #1386 and #1509 re-queried against GitHub; the unmilestoned count re-counted (17 → 2). Milestone dates read from the GitHub API rather than from your message. Aging sweep run — 1 flagged, 6 correctly excluded, and <strong>its own coverage caveat applies: 5 of 10 trackers carry parseable dates, and a person-named blocker ("waiting on PPM") is never mechanically checkable at all.</strong></p>
+  </footer>
+</div>
