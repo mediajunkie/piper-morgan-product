@@ -42,8 +42,21 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 | 7c | **Docs sign-off `git status` inventory pattern** — methodology-corpus candidate | May 10 | Needs HOST + Docs concurrence on framing; never pursued. Low priority. |
 | 7i | **`docs/internal/operations/canonical-ops-recipes.md`** (issue #1277, PM's Ongoing-milestone delegation) | Sept 2 | Partially already covered — CLAUDE.md documents the ANTHROPIC_* env-var server-launch recipe in detail. Needs: verify that coverage + fill 2 remaining gaps (integrations connect-flow map for Slack/Notion/GitHub auth patterns; GH Actions scheduling debug — cron syntax + `gh run list` pattern). Real, scoped, but needs investigation I don't have loaded right now — good subagent candidate next session. |
 | 7k | **Joint recurring-duty/trigger/result-tracking proposal with Exec** (PM-directed, Sept 3) | Sept 3 | PM wants a retro on recurring duties, triggers, and result-tracking cohort-wide. Two orthogonal design principles, both now formally filed as methodology entries: chokepoint-vs-bolt-on (mine, HOST's role-health-check natural experiment) and self-attestation-is-not-verification (**m-50, filed 09-05** — see 7n). **New evidence for the proposal, HOST's count (09-05)**: three confirmed real "invoked, then stopped" lapses in one week (CXO's heartbeat, CXO's MANIFEST regen, Docs' heartbeat), one seat repeated — caught only because a marker existed and people kept auditing themselves afterward. HOST frames this as a trust-lane signal about the cohort's recurring-duty surface reliability, not an individual-diligence issue; feeding directly into the proposal's evidence base. My mechanism-half sent to Exec 09-04 (schedule-layer monitorability — #1608 does NOT cover #1713's shape; heartbeat's real scope limit; cron/session-scope failure taxonomy). **Joint synthesis document to PM not yet written** — waiting on Exec's response on how to structure it; real, growing progress, not yet complete. |
-| 7q | **Missing-session-log detector for `duty-cycle-freeze-check.sh`** (Exec's finding, Sept 6) | Sept 6 | Exec found the duty-cycle fire's "unguarded entrance": when PM opens a day directly rather than via a cron fire, Step 0 (session log) and Step 5b (heartbeat) are silently skipped — confirmed on Exec's own seat twice, four days apart, different steps each time. CXO corroborated on their own seat (5-of-5 clean record, but confirmed to be schedule luck — a cron fire always created the log before PM engaged — not procedural protection) and sharpened the framing: the steps are bolted to prompt-shape, not to the fire itself, and the heartbeat's existing `--if-quiet` (keys on "did a commit happen," not "did a cron prompt arrive") is the right precedent to extend. In progress this fire — building a same-day-commits-but-no-session-log state in the freeze-check, mirroring BELT-INVISIBLE's shape. |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
+
+- **Missing-session-log detector for `duty-cycle-freeze-check.sh`** (#7q, Sept 6, Exec's finding,
+  CXO's reframe) — **built and shipped Sept 6, commit `550fa5200`.** Exec found the duty-cycle
+  fire's "unguarded entrance" — a PM-initiated day silently skips Step 0 (session log) and Step 5b
+  (heartbeat), confirmed twice on Exec's own seat, different steps, four days apart. CXO
+  corroborated (5-of-5 clean record on their own seat, but confirmed to be schedule luck, not
+  procedural protection) and reframed it: the steps are bolted to prompt-shape, not to work-output,
+  and the heartbeat's own `--if-quiet` (keys on "did a commit happen") is the right precedent.
+  Shipped a `NO-SESSION-LOG` state in `duty-cycle-freeze-check.sh` v0.15: fires when a role has a
+  role-tagged commit dated today but no today-dated session log — deliberately checked *before*
+  `cycling_now`'s first-fire grace gate, since the scenario is exactly a start earlier than the
+  role's own scheduled first fire. Never STALE-prefixed, never affects the STALE verdict. Tests
+  H1-H3 confirmed to fail pre-fix and pass post-fix; full suite 29/29; live run against the real
+  registry clean.
 
 - **Methodology candidate: "bounded search is not a total"** (#7p, Sept 5, CXO's finding) —
   **filed Sept 6 as `methodology-51-A-BOUNDED-SEARCH-IS-NOT-A-TOTAL.md` (Emerging, scoped to one
