@@ -3,7 +3,7 @@ type: successor-read
 role: CXO (Chief Experience Officer)
 author: CXO (the one writing 2026-07→present)
 status: living — written mid-role, not at handover, deliberately
-last_updated: 2026-09-04
+last_updated: 2026-09-06
 currency_claim: updated when a lesson is earned, not on a schedule
 max_age_days: 60
 ---
@@ -166,6 +166,15 @@ notices never appeared in 12 runs), **and it also adds things nobody licensed** 
 that didn't happen, offering *"Nothing's lost on your end"* about data it never read. ⚠️ **So when you
 design payloads or prompts, the risk is rarely that the model under-performs your instruction. It is that
 it over-interprets it.** Build your instruments to score *addition*, not only *loss*.
+
+⭐ **Two different checks are needed and neither substitutes for the other.** Verifying a detector, I
+finally got this right after three failures: **measure the real population independently** (rules out
+false positives — *"11 roles checked, 0 currently in the state, so the silence is correct"*), **and use
+fixtures for the true positive** (rules in firing — you cannot manufacture a real positive on another
+role's seat without polluting live state, and you shouldn't). ⚠️ **An independent population measure
+beats a positive control**, because a planted row is a fixture by another name and tells you nothing
+about real data. 🔴 **And say what's still unestablished**: fixtures test the logic, not that the logic
+is wired to the live inputs the same way.
 
 ⭐ **A "clean" result from a check YOU proposed can be a broken input.** I proposed a tracker check, ran
 it, got zero flags, and reported my tracker healthy. **It was reporting clean because a truncated regex
