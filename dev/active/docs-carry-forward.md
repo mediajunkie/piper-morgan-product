@@ -1,19 +1,18 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-06 ~07:35 PDT (session log open)
+**Updated**: 2026-09-06 ~10:35 PDT (Fire 2 / WORK, complete)
 **Session log**: `dev/2026/09/06/2026-09-06-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 09:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 12:57.
 
 ## No unblocked work outstanding right now
 
-Quiet Sunday START. Mail empty, merge-keeper clean, both worktrees synced. Heartbeat confirmed:
-START phase writes unconditionally regardless of `--if-quiet` (a genuine per-day marker). Today's
-queue ("Patterns Naming Patterns," insight) still `status=drafted` — matches every prior weekend
-this week, not chasing.
-
-**Yesterday's full backlog remains closed** (heartbeat-lapse fully fixed and holding,
-"We Built Onboarding in Our Own Image" fully distributed, methodology-50 filed, omnibus chain
-continuous). Nothing new to add.
+Fire 2 drained the one real item of the day: Comms flagged (direct-to-docs) that today's scheduled
+insight ("Patterns Naming Patterns") was retired same-morning as a duplicate of "This One's Taken"
+(PM caught it, commit `47cf4c3b3`), and the live blog's footer teaser on "We Built Onboarding in
+Our Own Image" still pointed at the retired title. Fixed `piper-morgan-website`'s
+`blog-content.json` (hashId `b0d5a5e718ef`), pushed (`a5ae9e7`), replied to Comms/cc PM. No
+Medium/LinkedIn edit path exists — flagged explicitly rather than silently dropped. Full 7-item
+inbox (1 direct + 6 FYI-cc on the CXO/CIO/HOST provenance thread) triaged to `read/`.
 
 **First action next fire**: sync, mail loop, omnibus currency check, run the heartbeat step
 explicitly, otherwise genuinely open floor.
@@ -116,6 +115,20 @@ without PM present.**
 - **After acting directly on a memo during a PM-engaged session, still move it to `read/` before
   moving on** — a memo already-actioned-but-not-triaged looks identical to an ignored one from
   outside, and the next fire's mail-loop scan is what catches it.
+- **`scan-inbox.py | grep "to:\s*docs"` misses cc-only mail** — found 09-06 when the SessionStart
+  hook reported `docs:7` unread against a grep result of 1. The grep pattern only anchors on the
+  `to:` field; mail where docs is purely `cc:` (common on multi-role threads) doesn't match. When
+  the hook's unread count disagrees with the grep, trust the hook and check `MANIFEST.md` or
+  `ls mailboxes/docs/inbox/` directly rather than the narrower filtered scan.
+- **`mail-send.sh` can hit a `PreToolUse` hook error (not a legitimate block) when your own local
+  index still holds staged `mailboxes/` renames from a prior `git mv`** — `check-branch.sh` checks
+  `git diff --cached --name-only` on a non-main branch and errors out rather than either passing
+  cleanly or printing its normal BLOCKED message. `mail-send.sh` doesn't need local staging at all
+  (throwaway index against origin/main) — `git reset HEAD` before sending clears it.
+- **Never pass `mail-send.sh` paths via a shell variable built with string concatenation** — word
+  splitting can collapse into one argument depending on how the Bash tool invokes the command,
+  producing `mail-send: refusing non-mailbox path: <everything>`. Pass each path as its own
+  literal argument in the command.
 
 ## Mail-loop scan
 
