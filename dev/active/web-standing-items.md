@@ -84,6 +84,16 @@ superficially-but-not-mechanically compliant.
   `medium-posts.json` via `sync-csv-to-json.js`, build clean. Shipped website `1bc123f`, Vercel
   deploy confirmed `success`. website#39 closed with full evidence; replied to Comms cc PM.
 
+### website#41 orphan duplicate JSON entry — CLOSED 2026-09-06
+- [x] Root-caused via git history (not guessed): commit `1f66571` ("Slug fix: weekly-ship-44 →
+  weekly-ship-044-what-survives-an-experiment"), 7 minutes after the original add commit, intended
+  a rename but the write path added a new entry instead of updating in place, leaving
+  `weekly-ship-44` behind as a stale orphan. Comms confirmed nothing to reconcile on the
+  editorial-calendar side. Removed the orphan entry from `medium-posts.json`, structurally verified
+  (exactly 1 post removed, 0 other changes), skipped a redirect (7-minute exposure window,
+  disproportionate). Shipped website `441ef10`, deploy confirmed `success`, closed with full
+  evidence, replied to Comms cc PM.
+
 ### Alt-text backfill — COMPLETE 2026-06-17
 - [x] **blog-metadata.csv imageAlt** — all 276 filled; editorial-calendar 144 synced; medium-posts.json rebuilt; pushed to main (`03a4f42cc`). Verify via `/admin/calendar/` (gap count should be 0 for published posts with imageSlug). Plan: `dev/active/alt-text-backfill-plan-2026-06-17.md`.
 
