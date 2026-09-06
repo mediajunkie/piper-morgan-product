@@ -1,20 +1,20 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Patterns Naming Patterns
 
 *May 9–11, 2026*
 
-The project has a pattern catalog. Numbered entries. Each pattern has a name (parallel-authoring drift, extension without integration, assembly assumption) and a short formal write-up of the failure mode it describes, how to recognize it, what the counter-pattern is. The catalog is one of the central methodology artifacts. The team uses it the way a software project uses an issue tracker — by reference, often, sometimes by number, with the assumption that anyone can look up what the number means.
+The Piper Morhan project has its own pattern catalog. We've got numbered entries. Each pattern has a name ("parallel-authoring drift", "extension without integration", "assembly assumption") and a short formal write-up of the failure mode it describes, how to recognize it, what the counter-pattern is. The catalog is one of the central methodology artifacts. The team uses it the way a software project uses an issue tracker — by reference, often, sometimes by number, with the assumption that anyone can look up what the number means.
 
 In early May the catalog got to Pattern-067.
 
-Pattern-067 was filed on May 9 by Lead Dev (engineering). The pattern named was *issue-body-reality-mismatch* — the failure mode where a tracking issue's description says one thing about the code and the code says another. Specific shape. Specific counter-discipline. Specific examples from the previous week's cleanup sprint. Filing landed cleanly. Catalog count went from 66 to 67.
+Pattern-067 was filed on May 9 by my lead developer agent (Lead Dev, or just Lead for short). The pattern got named *issue-body-reality-mismatch* — the failure mode where a tracking issue's description says one thing about the code and the code says another. It includes specific examples from the previous week's cleanup sprint. Pattern filed, the catalog count went from 66 to 67.
 
-Two days later, on the morning of May 11, the CIO (innovation) filed Pattern-067.
+Two days later, on the morning of May 11, the my chief innovation agent (CIO) also filed Pattern-067.
 
 The new Pattern-067 named a different failure mode. *Silent state mutation in shared working tree.* Same number. Different shape. The innovation role had been preparing the filing for a while, the engineering role had filed two days earlier, and the team's filing-convention didn't include a check for whether the slot was already taken.
 
