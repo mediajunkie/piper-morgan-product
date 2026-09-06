@@ -231,5 +231,51 @@ W=$(mkfixture_with_tagged_marker "$NOW" "$NOW" "derived"); R=$(mkreg "$(dirname 
 out=$(run "$W" "$R" 11)
 echo "$out" | grep -q "provenance field says 'derived'" && ok "G2 an unexpected non-'observed' tag is called out explicitly, not silently trusted" || no "G2 expected the unexpected-provenance warning, got: $out"
 
+# PART H — v0.15 (2026-09-06, Exec's "unguarded entrance" finding, standing-item 7q): a role with
+# a role-tagged commit TODAY but no session-log file for today must get a NO-SESSION-LOG line —
+# the PM-initiated-day case where duty-cycle-tick's Step 0 never ran because no cron fire triggered
+# it. Must NOT fire when a today-log already exists (A1's fixture) or when there's no commit today
+# at all (not-yet-started / quiet day).
+mkfixture_commit_no_log(){
+  local when="$1" TMP; TMP=$(mktemp -d); TMPS+=("$TMP")
+  git init --bare -q "$TMP/o.git"
+  git clone -q "$TMP/o.git" "$TMP/w" 2>/dev/null
+  ( cd "$TMP/w"
+    git config user.email t@t.test; git config user.name tester
+    echo "work" > work.txt
+    git add -A
+    GIT_AUTHOR_DATE="@$when +0000" GIT_COMMITTER_DATE="@$when +0000" \
+      git commit -qm "(testrole): PM-initiated work, no session log created yet"
+    git push -q origin HEAD:main 2>/dev/null )
+  echo "$TMP/w"
+}
+
+mkfixture_yesterday_only(){
+  local when="$1" TMP; TMP=$(mktemp -d); TMPS+=("$TMP")
+  git init --bare -q "$TMP/o.git"
+  git clone -q "$TMP/o.git" "$TMP/w" 2>/dev/null
+  ( cd "$TMP/w"
+    git config user.email t@t.test; git config user.name tester
+    echo "work" > work.txt
+    git add -A
+    GIT_AUTHOR_DATE="@$when +0000" GIT_COMMITTER_DATE="@$when +0000" \
+      git commit -qm "(testrole): yesterday's work, nothing today"
+    git push -q origin HEAD:main 2>/dev/null )
+  echo "$TMP/w"
+}
+
+W=$(mkfixture_commit_no_log "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "^NO-SESSION-LOG testrole" && ok "H1 commit today, no session log → NO-SESSION-LOG fires" || no "H1 expected NO-SESSION-LOG, got: ${out:-<empty>}"
+echo "$out" | grep -q "standing-item 7q" && ok "H1b message cites 7q for traceability" || no "H1b missing 7q citation: $out"
+
+W=$(mkfixture "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "NO-SESSION-LOG" && no "H2 today's log already exists but NO-SESSION-LOG wrongly fired: $out" || ok "H2 session log already exists today → no NO-SESSION-LOG"
+
+W=$(mkfixture_yesterday_only "$(( NOW - 30*3600 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "NO-SESSION-LOG" && no "H3 no commit today at all but NO-SESSION-LOG wrongly fired: $out" || ok "H3 no commit today (quiet/not-started) → no NO-SESSION-LOG"
+
 echo "── $PASS passed, $FAIL failed ──"
 [ "$FAIL" -eq 0 ]
