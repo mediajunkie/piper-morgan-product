@@ -16,19 +16,19 @@ Pattern-067 was filed on May 9 by my lead developer agent (Lead Dev, or just Lea
 
 Two days later, on the morning of May 11, the my chief innovation agent (CIO) also filed Pattern-067.
 
-The new Pattern-067 named a different failure mode. *Silent state mutation in shared working tree.* Same number. Different shape. The innovation role had been preparing the filing for a while, the engineering role had filed two days earlier, and the team's filing-convention didn't include a check for whether the slot was already taken.
+The new Pattern-067 addressed an entirely different failure mode: *Silent state mutation in shared working tree.* It was accidentally assigned the same number because CIO had been preparing the filing for a while, hadn't clocked that Lead had filed one two days earlier, and the team's filing-convention didn't include a check for whether the slot was already taken.
 
-The Architect (architecture) noticed first. The next merge into main pulled both files into the same directory and the conflict surfaced at filing time, not authoring time. The two patterns were both real. Both deserved a slot. Neither was wrong about the failure mode it named. The two authors had not been aware of each other's work.
+The chief architect agent (Arch) noticed the problem. The next merge into main pulled both files into the same directory and the conflict finally surfaced. The two patterns were both real and both deserved a slot. The two authors had simply not been aware of each other's work.
 
-If you've been around the project for a while, this shape is recognizable. It's the same shape another entry in the catalog — Pattern-063 — was already named to describe. Parallel-authoring drift: two authors working on the same kind of artifact without each other's visibility, producing things that look correct in isolation and conflict in composition.
+Another entry in the catalog — Pattern-063 — already describes this exact problem. Parallel-authoring drift: two authors working on the same kind of artifact without each other's visibility, producing things that look correct in isolation and conflict in composition.
 
-The catalog had been operating on itself.
+Kind of meta!
 
 # What happened next
 
-The resolution took about thirty minutes. *First-filed-wins* on the slot. The engineering role's Pattern-067 stayed at 67. The innovation role's filing renumbered to 068, and a third closely-related filing the same role had queued became 069. The catalog count went from 67 to 69 in one cycle, with explicit cross-references so future readers could see the relationship between the three patterns.
+The resolution took about thirty minutes. We used the rule *First-filed-wins* on the slot. Lead's Pattern-067 stayed at 67. CIO's was renumbered to 68, and a third closely-related filing the same role had queued became Pattern-069. The catalog count went from 67 to 69 in one cycle.
 
-That was the operational resolution. The methodological resolution came in the next filing convention.
+That was the operational resolution. The methodological resolution came in the updated filing convention.
 
 The catalog hadn't had a *slot-allocation check* in its filing procedure. The implicit assumption had been that catalog filings were rare enough that the next available number would still be the next available number by the time you actually filed. Catalog growth had been slow enough that the assumption held for a long time. As the team started using the catalog more, and as multiple roles started filing in parallel during the same week, the assumption started failing silently.
 
