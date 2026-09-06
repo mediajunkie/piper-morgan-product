@@ -44,6 +44,15 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 | 7k | **Joint recurring-duty/trigger/result-tracking proposal with Exec** (PM-directed, Sept 3) | Sept 3 | PM wants a retro on recurring duties, triggers, and result-tracking cohort-wide. Two orthogonal design principles, both now formally filed as methodology entries: chokepoint-vs-bolt-on (mine, HOST's role-health-check natural experiment) and self-attestation-is-not-verification (**m-50, filed 09-05** — see 7n). **New evidence for the proposal, HOST's count (09-05)**: three confirmed real "invoked, then stopped" lapses in one week (CXO's heartbeat, CXO's MANIFEST regen, Docs' heartbeat), one seat repeated — caught only because a marker existed and people kept auditing themselves afterward. HOST frames this as a trust-lane signal about the cohort's recurring-duty surface reliability, not an individual-diligence issue; feeding directly into the proposal's evidence base. My mechanism-half sent to Exec 09-04 (schedule-layer monitorability — #1608 does NOT cover #1713's shape; heartbeat's real scope limit; cron/session-scope failure taxonomy). **Joint synthesis document to PM not yet written** — waiting on Exec's response on how to structure it; real, growing progress, not yet complete. |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
 
+- **Provenance field for the last-invoked marker** (#7o, Sept 5, CXO's finding, Arch's precedent) —
+  **built and shipped same-day, commit `9ac50f78c`.** CXO tried to verify 7l behaviorally, honestly
+  reported it couldn't be (the failure condition isn't present anywhere live right now, caught
+  themselves almost mistaking an unrelated observation for evidence), and separately found the
+  marker file's own schema had no field distinguishing a genuine observation from a hypothetical
+  future persisted-derived value. `duty-cycle-heartbeat.sh` now tags every write "observed";
+  `duty-cycle-freeze-check.sh` reads it explicitly (correctly-tagged reads clean, pre-field markers
+  noted as such, unexpected values called out). Tests confirm both write paths tag correctly and
+  the reader distinguishes all three states; confirmed against pre-fix code. 16/16 + 25/25.
 - **`mail-send.sh` filename-date-vs-frontmatter mismatch check** (#7m, Sept 4, Exec's proposal) —
   **built and shipped Sept 5, commit `39ad30a63`.** Re-assessed cost/benefit fresh rather than
   assume "not yet decided" meant no — real instance (my own #059 filename), cheap build, same shape

@@ -156,6 +156,7 @@ mkfixture_with_last_invoked(){
 W=$(mkfixture_with_last_invoked "$NOW" "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out=$(run "$W" "$R" 11)
 echo "$out" | grep -q "working as designed" && ok "E1 last-invoked recent (within threshold) → reports case (a), working as designed" || no "E1 expected 'working as designed', got: $out"
+echo "$out" | grep -q "pre-provenance-field marker" && ok "E1c a legacy 2-field marker (no provenance tag) is explicitly noted as pre-field, not silently treated as tagged" || no "E1c expected the pre-provenance-field caveat, got: $out"
 
 W=$(mkfixture_with_last_invoked "$NOW" "$(( NOW - 24*3600 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out=$(run "$W" "$R" 11)
@@ -200,6 +201,35 @@ echo "$out" | grep -q "working as designed" && ok "F2 recent derived invocation,
 W=$(mkfixture "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out=$(run "$W" "$R" 11)
 echo "$out" | grep -q "no marker file AND no hb(testrole) commit in the last 9 days" && ok "F3 genuine never-invoked case still states its bound explicitly (no regression on D1c)" || no "F3 'never' message lost its stated bound: $out"
+
+# PART G — v0.14 (2026-09-05, CXO's finding + Arch's precedent): a marker WITH the real 'observed'
+# provenance tag must read cleanly with no caveat — the caveat is only for markers predating the
+# tag (Part E's fixtures) or a genuinely unexpected provenance value.
+mkfixture_with_tagged_marker(){
+  local commit_when="$1" marker_when="$2" tag="$3" TMP; TMP=$(mktemp -d); TMPS+=("$TMP")
+  git init --bare -q "$TMP/o.git"
+  git clone -q "$TMP/o.git" "$TMP/w" 2>/dev/null
+  ( cd "$TMP/w"
+    git config user.email t@t.test; git config user.name tester
+    mkdir -p "dev/$today" "dev/heartbeats/last-invoked"
+    echo "# session log testrole (sonnet)" > "dev/$today/${today_dash}-testrole-code-sonnet-log.md"
+    marker_ts="$(date -j -f %s "$marker_when" '+%Y-%m-%d %H:%M:%S %Z' 2>/dev/null || date -d "@$marker_when" '+%Y-%m-%d %H:%M:%S %Z')"
+    printf '%s\twork\t%s\n' "$marker_ts" "$tag" > "dev/heartbeats/last-invoked/testrole.txt"
+    git add -A
+    GIT_AUTHOR_DATE="@$commit_when +0000" GIT_COMMITTER_DATE="@$commit_when +0000" \
+      git commit -qm "docs(session): TestRole afternoon work"
+    git push -q origin HEAD:main 2>/dev/null )
+  echo "$TMP/w"
+}
+
+W=$(mkfixture_with_tagged_marker "$NOW" "$NOW" "observed"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "working as designed" && ok "G1 properly-tagged 'observed' marker → reports case (a) cleanly" || no "G1 expected 'working as designed', got: $out"
+echo "$out" | grep -q "pre-provenance-field\|⚠️" && no "G1b false caveat fired on a correctly-tagged marker: $out" || ok "G1b no caveat on a correctly-tagged 'observed' marker"
+
+W=$(mkfixture_with_tagged_marker "$NOW" "$NOW" "derived"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "provenance field says 'derived'" && ok "G2 an unexpected non-'observed' tag is called out explicitly, not silently trusted" || no "G2 expected the unexpected-provenance warning, got: $out"
 
 echo "── $PASS passed, $FAIL failed ──"
 [ "$FAIL" -eq 0 ]

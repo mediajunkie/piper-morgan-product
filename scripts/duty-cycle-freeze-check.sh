@@ -390,13 +390,27 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
           fi
         else
           li_ts="${li_line%%$'\t'*}"
+          # v0.14 (2026-09-05, CXO's finding — the marker file itself had no provenance field,
+          # so a future persisted-derived-value could become indistinguishable from a genuine
+          # observation; Arch's precedent: derived artifacts must declare themselves, same rule
+          # as the B4 derived ADR index's own "GENERATED FILE" banner). The writer (v1.2) now
+          # tags every write "observed" as its 3rd field. Read it explicitly rather than assume:
+          # a marker missing the tag entirely is a pre-v1.2 write, still a genuine observation
+          # (this script never wrote anything else before the tag existed) — but say so, don't
+          # silently treat "no tag" and "tagged observed" as identical without stating why.
+          li_prov="$(printf '%s' "$li_line" | awk -F'\t' '{print $3}')"
+          case "$li_prov" in
+            observed) li_prov_note="" ;;
+            "") li_prov_note=" [pre-provenance-field marker, written before this field existed — still a genuine observation, not derived]" ;;
+            *) li_prov_note=" [⚠️ marker's provenance field says '$li_prov', not 'observed' — treat this reading with the same caution as a derived one until that's understood]" ;;
+          esac
           li_epoch=$(date -j -f "%Y-%m-%d %H:%M:%S %Z" "$li_ts" +%s 2>/dev/null || date -d "$li_ts" +%s 2>/dev/null)
           if [ -n "$li_epoch" ]; then
             li_age_h=$(( (now - li_epoch) / 3600 ))
             if [ "$li_age_h" -le "$thr_eff" ]; then
-              li_note="last invoked ${li_age_h}h ago — within threshold, working as designed"
+              li_note="last invoked ${li_age_h}h ago — within threshold, working as designed${li_prov_note}"
             else
-              li_note="last invoked ${li_age_h}h ago ($( date -j -f %s "$li_epoch" +%Y-%m-%d 2>/dev/null || date -d "@$li_epoch" +%Y-%m-%d)) — past threshold: the writer ran before, then stopped"
+              li_note="last invoked ${li_age_h}h ago ($( date -j -f %s "$li_epoch" +%Y-%m-%d 2>/dev/null || date -d "@$li_epoch" +%Y-%m-%d)) — past threshold: the writer ran before, then stopped${li_prov_note}"
             fi
           else
             li_note="last invoked: marker present but unparseable ('$li_ts')"

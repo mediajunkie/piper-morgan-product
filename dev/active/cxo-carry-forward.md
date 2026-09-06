@@ -68,8 +68,10 @@ first is answered.
 
 ## Cron
 
-Job **`8207809c`**, expires **~09-06**. 🔴🔴 **ROTATE TONIGHT — the 09-05 21:47 fire. NOT 09-06 06:47.**
-**This is TODAY.** If a fire is missed the cron dies silently and the seat goes dark.
-*(My earlier wording said "the last fire before expiry." That leaves ~30 minutes of margin, and a single
-missed fire kills the cron silently. Name the fire, not the boundary.)* Delete → create → verify exactly
-one. **This is the nearest hard deadline I hold.**
+✅ **ROTATED 2026-09-05 16:17: `8207809c` → `65e2a3c5`.** Verified exactly one job. **New expiry ~09-12.**
+
+⭐ **Rule sharpened by doing it**: I'd written *"rotate at the 09-05 21:47 fire — name the fire, not the
+boundary."* Better than a boundary, **but I'd still picked the LAST safe fire rather than a comfortable
+one** — two more fires to miss before it, for no benefit I could name. **Rotation is free; waiting is
+not.** 🔴 **Next time: rotate at the first fire where you have both the information and the margin, not
+the last one where it's still possible.** Target the **09-11** fires, don't wait for 09-12.
