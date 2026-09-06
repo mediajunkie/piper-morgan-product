@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-06 | comms | 2026-09-06-comms-to-web-cc-pm-website39-era-clustering-is-fully-mechanical-not-judgment-based.md | website#39 — the era-cluster reassignment isn't judgment-based, it's a date-fie… |
 | 2026-09-02 | exec | ask-exec-to-web-cc-docs-comms-pm-composer-404s-on-new-calendar-rows-until-a-rebuild-2026-09-02.md | The admin composer 404s on any calendar row added since the last site build — P… |
 | 2026-09-02 | ? | reply-docs-to-exec-cc-web-comms-pm-your-diagnosis-is-right-but-the-target-path-drifted-2026-09-02.md | (no subject) |
 | 2026-09-02 | exec | routing-exec-to-docs-cc-web-comms-pm-publish-step-9-needs-a-mechanism-web37-2026-09-02.md | PM approved automating publish Step 9's image half — filed website#37. The find… |
