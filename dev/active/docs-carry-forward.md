@@ -1,27 +1,36 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-07 ~10:35 PDT (Fire 2 / WORK — two audit agents dispatched, in progress)
+**Updated**: 2026-09-07 ~11:15 PDT (Fire 2 / WORK, complete — both Monday audits closed same-day)
 **Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` (open).
 **Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 12:57.
 
-## IN PROGRESS: 2026-09 Monday audits (#1725, #1724) — background agents dispatched, awaiting audit
+## Both Monday audits (#1725, #1724) worked and CLOSED same-day — first time this cycle
 
-Both Monday auto-audits fired cleanly today (no #1713 recurrence — genuinely good news, noted as
-such rather than assumed). Fresh issues: **#1725** (Weekly Docs Audit, 74 items) and **#1724**
-(Monthly Housekeeping, 33 items). Given both checklists' own precedent (#1712 took 3 days; the
-Weekly checklist's FAQ explicitly says "can span multiple days if needed"), dispatched one
-thorough background agent per issue rather than rush or silently defer. Both instructed to work
-every section with real evidence, file real GitHub issues for real findings, fix quick things
-directly, use REST over GraphQL (today's shared cohort GitHub API pool has been intermittently
-rate-limited), and NOT close their issue or touch the staggered audit calendar — that's mine to do
-after personally auditing each report (line-by-line evidence check, same discipline as the
-omnibus audits this week).
+Both fired cleanly on schedule (no #1713 recurrence). Dispatched one thorough background agent
+per issue; personally audited both reports against real command output before touching either
+issue (verified paths, file staleness, all 3 new issue filings, both YAML diffs); did the full
+close-issue-properly treatment (checkbox-by-checkbox, Completion Matrix, closing comment,
+staggered-calendar update) rather than a comment-only close; closed both.
 
-**NEXT ACTION when each agent completes**: audit its report against the precedent set by #1712's
-and #1486's own closing comments (ratios not lists, real fixes vs. filed issues vs. explicitly
-out-of-lane, honest accounting of anything not done) before touching either issue's description,
-Completion Matrix, or the staggered audit calendar. Do not trust a "done" claim without evidence
-in the report, same discipline as the 09-06 omnibus audit.
+**Real findings filed**: #1726 (structural — `last_verified` bulk-stamp re-diagnosed 5 audits
+running, zero fix — CIO's lane to pick up), #1727 (10 files, dead legacy-guide links), #1728
+(stale `mailboxes/DIRECTORY.md` row). **Real fixes shipped**: both audit-generating workflow
+YAMLs corrected at the source (12 combined path/format bugs, months-old, silently worked around
+until now), a 5-month-stale `requirements.txt.bak` and a dead stray workflow file removed, a live
+customer-facing beta-date overpromise fixed in `docs/README.md`, `BRIEFING-CURRENT-STATE.md`
+refreshed, `dev/active/` cut 70→42 (2 wrong moves caught and reverted before finalizing).
+
+**Standing lesson for future multi-agent dispatches**: the two background agents ran concurrently
+in this same shared worktree and could have collided (both self-managed it carefully this time,
+but I hadn't guarded against it) — use `isolation: "worktree"` next time if dispatching multiple
+agents whose file scopes could plausibly overlap in the same role's worktree.
+
+**One real mistake, caught immediately**: `gh api ... -f body=@file` does NOT do curl-style file
+expansion — it literally wrote the string as the issue body on the first #1725 update attempt.
+Caught by checking the API response, fixed with `gh issue edit --body-file` (the correct form),
+used correctly from the start on #1724.
+
+Next Due dates recorded: weekly Sep 14, monthly Oct 5.
 
 ## #1713 (GH Actions no-fire defect) — still open, but today is a clean data point
 
