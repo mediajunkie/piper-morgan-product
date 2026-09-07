@@ -132,7 +132,7 @@ PM ratification + CIO methodology review pending. This skill is **DRAFT — prop
 ## Cross-references
 
 - CIO 12w watch surface (Saturday AM bundled acks, 2026-05-16)
-- Lead Dev second-instance memo (`mailboxes/cio/inbox/memo-lead-to-cio-cc-arch-ceo-12w-second-instance-living-docs-describing-dead-code-2026-05-16.md`)
+- Lead Dev second-instance memo (`mailboxes/cio/read/memo-lead-to-cio-cc-arch-ceo-12w-second-instance-living-docs-describing-dead-code-2026-05-16.md` — moved from `inbox/` to `read/` since this citation was written; path corrected 2026-09-07 monthly housekeeping audit)
 - #1064 investigation memo (`dev/2026/05/16/floor-fabrication-investigation.md`) — third instance surfacing
 - Pattern-064 (Alive Scaffolding) + Pattern-064 Evolution section (the broader family this fits)
 - #1079 fix (`b5d7972d`) — concrete instance of docstring drift in `repositories.py:2335-2337`

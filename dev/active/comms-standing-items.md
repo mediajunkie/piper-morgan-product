@@ -4,7 +4,7 @@
 
 **Dating convention (effective 2026-08-31, CIO broadcast, ratified into CLAUDE.md)**: every new row added to this file from now on carries the date it was added — write it inline next to the row, diary-style. No retroactive dating of existing rows expected. Feeds `scripts/aging-standing-items.sh` (flags rows >21 days old with no stated blocker).
 
-**Last refreshed**: 2026-08-31, following CIO's cohort-wide standing-items audit (`dev/active/cohort-standing-items-audit-2026-08-31.md`). CIO cross-checked every row below "The Ritual Becomes a Skill" against the live editorial calendar and confirmed the file's own staleness self-admission held — everything CIO could verify as published/resolved has been removed from this table (the closure detail lives in the session logs and git history that already recorded it, not duplicated here). One item CIO flagged as a real miss — a mechanical "awaiting direction" phrase-match that was actually stale — got a full re-investigation below, not just a re-flag.
+**Last refreshed**: 2026-08-31, following CIO's cohort-wide standing-items audit (`dev/2026/08/31/cohort-standing-items-audit-2026-08-31.md` — archived from `dev/active/` 2026-09-07 monthly housekeeping). CIO cross-checked every row below "The Ritual Becomes a Skill" against the live editorial calendar and confirmed the file's own staleness self-admission held — everything CIO could verify as published/resolved has been removed from this table (the closure detail lives in the session logs and git history that already recorded it, not duplicated here). One item CIO flagged as a real miss — a mechanical "awaiting direction" phrase-match that was actually stale — got a full re-investigation below, not just a re-flag.
 
 ---
 
