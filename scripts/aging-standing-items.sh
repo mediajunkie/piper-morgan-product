@@ -151,10 +151,17 @@ extract_latest_epoch() {
         [ -z "$day" ] && continue
         mon3="$(echo "${mon:0:3}" | awk '{print toupper(substr($0,1,1)) tolower(substr($0,2))}')"
         cand_year="$TODAY_YEAR"
-        ep=$(date -j -f "%b %d %Y" "$mon3 $day $cand_year" +%s 2>/dev/null) || continue
+        # v1.3 (2026-09-06, Exec's finding — a row filed literally TODAY read as 364 days old).
+        # BSD `date -j -f` fills any time-of-day field NOT present in the input from the CURRENT
+        # wall clock, not midnight. Without an explicit "00:00:00", a cell dated today computes an
+        # epoch a few seconds ahead of $TODAY_EPOCH (captured earlier in the script's run), which
+        # this function's own "is it in the future?" test then reads as "must be next year" and
+        # rolls the year back by one — exactly backwards, and worst on the newest rows. Pin the
+        # time-of-day explicitly so the comparison is midnight-vs-now, never now-vs-slightly-earlier-now.
+        ep=$(date -j -f "%b %d %Y %H:%M:%S" "$mon3 $day $cand_year 00:00:00" +%s 2>/dev/null) || continue
         if [ "$ep" -gt "$TODAY_EPOCH" ]; then
             cand_year=$((TODAY_YEAR - 1))
-            ep=$(date -j -f "%b %d %Y" "$mon3 $day $cand_year" +%s 2>/dev/null) || continue
+            ep=$(date -j -f "%b %d %Y %H:%M:%S" "$mon3 $day $cand_year 00:00:00" +%s 2>/dev/null) || continue
         fi
         if [ -z "$best" ] || [ "$ep" -gt "$best" ]; then best="$ep"; fi
     done < <(grep -oE '(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-zA-Z]*\.?[[:space:]]+[0-9]{1,2}(st|nd|rd|th)?' <<<"$text")
@@ -181,8 +188,17 @@ extract_latest_epoch() {
 # false STALE-BLOCKER flag.
 ISSUE_STATE_CACHE=""
 
+# v1.3 (2026-09-06, Exec's finding — dogfooded on their own new exec-standing-items.md): this
+# cohort uses #NNN for both GitHub issues and Weekly Ship numbers, and they collide in exactly the
+# low range Ships currently occupy (#043-#059 are all live GitHub issue numbers too). "Ship #059"
+# parsed as issue #59 and flagged STALE-BLOCKER against an unrelated closed issue (PM-030). Exec's
+# own fix (dropping the leading '#') works per-row but doesn't scale — a convention nobody has to
+# remember beats one everybody has to. Strip "ship #NNN" / "Ship #NNN" before searching, so a Ship
+# reference can never be mistaken for the issue-number pattern this check exists to catch.
 issue_num_in() {
-    grep -oE '#[0-9]+' <<<"$1" | head -1 | tr -d '#'
+    local stripped
+    stripped="$(sed -E 's/[Ss]hip #[0-9]+//g' <<<"$1")"
+    grep -oE '#[0-9]+' <<<"$stripped" | head -1 | tr -d '#'
 }
 
 issue_is_closed() {

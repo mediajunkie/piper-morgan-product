@@ -4,58 +4,65 @@ currency_claim: rewritten at every substantive fire (3x/day cadence)
 max_age_days: 1
 ---
 
-# CIO carry-forward — rewritten 2026-09-06 (16:37 fire, complete)
+# CIO carry-forward — rewritten 2026-09-06 (22:37 STOP, day-closed)
 
-**Cron**: `491c9972` · `7 10,16,22 * * *` · armed at 2026-09-05 22:40 STOP · expires ~2026-09-12.
+**Cron**: `cb843371` · `7 10,16,22 * * *` · armed at 2026-09-06 22:45 STOP (was `491c9972`) ·
+expires ~2026-09-13.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
+**Registry**: `dev/active/duty-cycle-registry.tsv` row updated to match.
 
 ---
 
-## ⭐ Tonight/tomorrow: build the 7r sweep script (real, unblocked, not urgent)
+## ⭐ First thing tomorrow's START: draft the 7k joint synthesis (explicit trigger, do it)
 
-PM (via Exec) asked for a proposal on subagent worktree cleanup + accountability, off #1722 (91
-orphaned worktrees, 36GB — Pard owns the actual disk cleanup separately). Sent the proposal this
-fire: direction half extends CLAUDE.md's existing subagent-commit-verification checklist to cover
-worktree removal; accountability half is a content-based sweep script (`git cherry`/patch-id
-against `main`, per Exec's finding) covering all 91 worktrees, not the 20-of-91 sample already
-done. Committed to building it — same family as `duty-cycle-freeze-check.sh`. Not blocking Pard.
-**Explicit next unblocked build; do it tonight's fire or tomorrow's START, whichever has room.**
+Exec gave the explicit go-ahead tonight and a suggested drafting order: lead with the shared cause
+(state created by a start; cleanup attached to a clean ending; all three — 7k's cron/session gaps,
+7q's session-log gap, 7r's worktree gap — can end unclean), then the chokepoint/bolt-on axis as the
+diagnostic, then the inventory (Exec's original finding) as evidence rather than the point. I
+deliberately didn't write it tonight (four other substantial deliverables already landed this fire)
+and told Exec so directly — this is the actual promised deferral, not a soft "later." Send Exec a
+draft to pass over before it goes to PM.
 
-## Today's shape so far (2026-09-06)
+## Today's shape (2026-09-06, full day)
 
-10:37 fire: filed methodology-51 (A Bounded Search Is Not a Total, CXO's finding) closing 7p;
-found-and-shipped the NO-SESSION-LOG detector (7q, Exec's "unguarded entrance" finding) same-fire.
+10:37 fire: filed methodology-51 (7p closed); found-and-shipped the NO-SESSION-LOG detector (7q).
 16:37 fire: answered PM's subagent-cleanup ask with a real proposal (7r filed); CXO delivered an
-exemplary three-part verification of 7q; refined m-51 with CXO's real numbers at their request.
-7k's tracker entry now names the unifying lens across 7k/7q/7r explicitly — three deliverables,
-one underlying design principle (cleanup attached to clean endings fails when endings aren't
-clean).
+exemplary verification of 7q; refined m-51 with CXO's real numbers. 22:37 fire — the busiest single
+fire this segment: built and shipped the worktree-safety-sweep script end-to-end (proposal → build
+→ tests → live run against the real 91 worktrees → 3 flagged, spot-checked, reported honestly to
+Pard rather than cleared unilaterally); fixed two real bugs in `aging-standing-items.sh` that Exec
+found dogfooding it on their own new tracker; explicitly deferred the 7k draft to tomorrow rather
+than let it silently not happen.
 
 ## Open, non-blocking
 
-- **7r** — subagent-worktree sweep script. See above, the day's most concrete next build.
 - **7i** — `docs/internal/operations/canonical-ops-recipes.md` (#1277) — real, scoped, deliberately
   left for its own dedicated pass.
-- **7k** — joint recurring-duty proposal with Exec. Ready to draft whenever Exec gives the go on
-  timing; evidence base is strong and growing (now includes 7q + 7r as concrete instances).
+- **7k** — draft it tomorrow, see above. Not waiting on anything else.
 - **Standing-items 7a/7b/7c** — 7a raised directly to PM in chat 08-31, no reply yet; 7b is Docs-
   owned unblocked work; 7c needs HOST+Docs concurrence, low priority.
 - **Chess-board day-close commit wiring** — second half of PM's cadence ruling. Not built.
-- **Non-interactive rate-limit setting** (raised 08-29, carried into Ship #059, no reply yet).
 - **`.mcp.json` chrome-devtools symlink** — still pending Pard's host-level half.
+- ~~Non-interactive rate-limit setting~~ — **closed 09-06.** PM doesn't know either; re-routed to
+  Pard (harness-level visibility) per Exec's ruling. Off this list for good — three Ship windows
+  carried was already too many.
 
 ## Watch
 
+- **The 3 flagged worktrees** (`agent-a7eae8908361d5be2`, `agent-ab82a92399df9e617`,
+  `agent-af6f27891de682d61`) — reported to Pard, my read is they're likely already-landed content
+  under a non-patch-id-matching commit, not genuinely lost, but Pard's call before deletion.
 - **The RACI/responsibility-notation backlog item** (Themis relay, filed 09-02) — still not started.
 
 ## Standing corrections to myself
 
 - **A syntax-checked script is not a tested script.** (recurring.)
-- **When someone else admits "I diagnosed this and didn't route it, so it recurred" — don't let
-  the same gap happen on my own side of the next handoff.** (confirmed again today — 7r's proposal
-  went out same-fire as the ask, not banked for later.)
-- **A concrete, real worked example anchors a subtle methodology point better than a generic
-  placeholder — swap in the real instance when the person who lived it offers it.** (09-06, m-51.)
-- **A bounded sample (20-of-91) is legitimate for a first analysis but shouldn't be the thing a
-  final safety decision rests on — apply methodology-51's own lesson to my own proposals, same day
-  it was filed, not just to other people's memos.** (09-06, 7r.)
+- **When someone hands you a finding plus a bounded sample, build the total check rather than
+  accept the sample as sufficient — even when the person handing it to you already flagged the
+  same concern themselves.** (09-06, 7r — Exec caught their own 20-of-91 sample as an m-51 instance
+  before I had to.)
+- **A found bug should be reproduced on demand before being fixed from a plausible theory** — the
+  364-day bug's real cause (wall-clock-filled time-of-day fields) was confirmed with a live 2-second
+  `sleep` repro, not just inferred from reading the code. (09-06.)
+- **Naming a deferral's trigger explicitly, in writing, to the person who asked for the thing, is
+  the actual discipline — not just deciding internally not to do it.** (09-06, 7k.)

@@ -242,6 +242,51 @@ out17=$(cd "$ROOT" && bash "$SCRIPT" 2>&1)
 echo "$out17" | grep -q "· zzztest: 2" && ok "per-file breakdown shows zzztest: 2 (matches the 2 real rows)" || no "expected '· zzztest: 2' in per-file breakdown, got: $(echo "$out17" | grep zzztest)"
 rm -f "$FIXTURE"
 
+echo "== T18: v1.3 — a row filed literally TODAY, in 'Month Day' form, must not read as ~364 days old =="
+# Reproduces Exec's real incident directly: a brand-new row (own real 7r item, dated the day it was
+# filed) read as 364 days old and got flagged AGING. Root cause: BSD `date -j -f` fills any
+# unspecified time-of-day field from the CURRENT wall clock, so a "Month Day" cell resolving to
+# today computed an epoch a few seconds AHEAD of $TODAY_EPOCH (captured earlier in the run) —
+# read as "must be in the future", triggering the year-rollback branch backwards.
+DATE_TODAY_WORD="$(date +'%b %-d')"   # e.g. "Sep 6" -- the exact form real trackers use
+cat >"$FIXTURE" <<EOF
+# ZZZTest Standing Items (v1.3 fixture — today's-date false-old)
+
+| Filed | Item | Status |
+|---|---|---|
+| $DATE_TODAY_WORD | **Brand new row, filed today** | Fresh, not blocked. |
+EOF
+out18=$(cd "$ROOT" && bash "$SCRIPT" 2>&1)
+echo "$out18" | grep -q "^AGING: zzztest.*Brand new row" && no "REGRESSION: a row filed TODAY was flagged AGING (Exec's 364-day bug): $(echo "$out18" | grep 'Brand new row')" || ok "a row filed today ('Month Day' form) is correctly NOT flagged AGING"
+rm -f "$FIXTURE"
+
+echo "== T19: v1.3 — 'Ship #NNN' must never be parsed as a GitHub issue number (Exec's finding) =="
+# This cohort uses #NNN for both GitHub issues and Weekly Ship numbers, colliding in the low range
+# Ships currently occupy. Mock gh treats 999995 as CLOSED; if "Ship #999995" were parsed as an
+# issue reference the row would wrongly flag STALE-BLOCKER against it.
+SHIPMOCKDIR="$(mktemp -d)"
+cat >"$SHIPMOCKDIR/gh" <<'MOCKEOF'
+#!/usr/bin/env bash
+if [ "$1" = "issue" ] && [ "$2" = "view" ]; then
+    case "$3" in
+        999995) echo "CLOSED" ;;
+        *) exit 1 ;;
+    esac
+fi
+MOCKEOF
+chmod +x "$SHIPMOCKDIR/gh"
+cat >"$FIXTURE" <<EOF
+# ZZZTest Standing Items (v1.3 fixture — ship/issue collision)
+
+| Filed | Item | Blocked on | Recheck trigger |
+|---|---|---|---|
+| $DATE_RECENT | **Ship review pending** | Rides Ship #999995 review | when Ship #999995 publishes |
+EOF
+out19=$(cd "$ROOT" && PATH="$SHIPMOCKDIR:$PATH" bash "$SCRIPT" 2>&1)
+echo "$out19" | grep -q "STALE-BLOCKER: zzztest.*Ship review pending" && no "REGRESSION: 'Ship #999995' was parsed as GitHub issue #999995 and wrongly flagged: $(echo "$out19" | grep 'Ship review')" || ok "'Ship #NNN' correctly never parsed as a GitHub issue reference"
+rm -rf "$SHIPMOCKDIR"
+rm -f "$FIXTURE"
+
 echo "== T14: no real tracked file was touched by this test run =="
 git -C "$ROOT" status --porcelain dev/active/duty-cycle-registry.tsv | grep -q . \
     && no "duty-cycle-registry.tsv shows a change" || ok "duty-cycle-registry.tsv untouched"
