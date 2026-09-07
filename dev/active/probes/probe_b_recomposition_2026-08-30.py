@@ -129,6 +129,26 @@ KILLER_TEST_CASES = [
       "as_of": "2026-08-23", "freshness": "stale"}),
 ]
 
+# PA's candidate mitigation test (2026-09-02 design, PM-authorized 2026-09-06, rode the killer
+# test's authorization per CXO's explicit framing but was never actually built/run until now).
+# CXO's mechanism, one level down from "template not model": search_consciousness.py appends
+# its truncation note as another MEMBER of the same array being joined, not as a sibling FIELD
+# describing the array. Candidate form: make the caveat the final element of the `issues` array
+# itself (a last item reading "...and more not shown") rather than `coverage`/`total_known`
+# fields beside it. If dropping it now requires dropping a list item rather than omitting a
+# field, CXO predicts that's a different, rarer failure mode. CXO's own record on this axis is
+# 0-for-2 (structure-beats-prose, directive-beats-descriptive both died on this exact case) —
+# treat this as a candidate to test, not an assumed fix.
+MEMBER_CASES = [
+    ("item3_member", "candidate mitigation: partial-coverage caveat as a LIST MEMBER, not a sibling field",
+     "piper_get_issues", "Summarize my open issues.",
+     {"issues": [
+         {"id": "ISSUE-101", "title": "Login fails on SSO redirect"},
+         {"id": "ISSUE-102", "title": "Export button missing on mobile"},
+         {"id": "ISSUE-103", "title": "Slack notifications duplicated"},
+         {"note": "...and more not shown"}]}),
+]
+
 # Negative controls (packet §4) — CONFIRMED by CXO 2026-08-30, chosen per-item against
 # that item's own confound, not applied uniformly:
 #   item 1's failure mode is a hedge getting DROPPED -> control is a bare unhedged
@@ -263,6 +283,23 @@ if __name__ == "__main__":
                         "payload": payload, "user_msg": user_msg, "reply": reply})
             print("=" * 78)
             print("CASE %s  [%s / %s]  KILLER TEST" % (cid, PROVIDER, MODEL))
+            print("CLASS: %s" % kind)
+            print("-" * 78)
+            print(reply)
+            print()
+
+    # PA's member-vs-metadata candidate — opt-in via PROBE_MEMBER=1, same isolation discipline.
+    if os.environ.get("PROBE_MEMBER") == "1":
+        for cid, kind, tool_name, user_msg, payload in MEMBER_CASES:
+            trial_count += 1
+            try:
+                reply = call(tool_name, user_msg, payload, key)
+            except Exception as e:
+                reply = "ERROR: %s" % e
+            out.append({"id": cid, "class": kind, "variant": "member_candidate",
+                        "payload": payload, "user_msg": user_msg, "reply": reply})
+            print("=" * 78)
+            print("CASE %s  [%s / %s]  MEMBER CANDIDATE" % (cid, PROVIDER, MODEL))
             print("CLASS: %s" % kind)
             print("-" * 78)
             print(reply)
