@@ -30,6 +30,7 @@ from services.infrastructure.config.feature_flags import FeatureFlags
 from services.integrations.spatial.github_spatial import GitHubSpatialIntelligence
 
 from .config_service import GitHubConfigService
+from .github_operations_protocol import GitHubOperations
 
 logger = logging.getLogger(__name__)
 
@@ -192,30 +193,33 @@ class GitHubIntegrationRouter:
                 logger.warning(f"GitHubIntegrationRouter close failed (non-fatal): {e}")
         self._initialized = False
 
-    def _get_integration(self, operation: str) -> Any:
+    def _get_integration(self, operation: str) -> GitHubOperations:
         """
-        Get the GitHub integration (MCP adapter preferred, spatial fallback).
+        Get the GitHub integration that owes the ``GitHubOperations`` contract.
 
-        CORE-MCP-MIGRATION #198: Prefers MCP adapter when available.
+        #1723: typed to the Protocol the router actually dispatches against
+        (was ``-> Any``, which erased the contract — the #892/#1709 pattern).
+        The spatial fallback is gone from this path deliberately: measured
+        2026-09-06, ``GitHubSpatialIntelligence`` implements zero of the
+        dispatched operations, so returning it here could only convert "no
+        integration" into a delayed AttributeError deep in a handler. Failing
+        immediately with an honest message is strictly better. Spatial remains
+        in use where the router calls it explicitly (e.g. ``get_issue``).
 
         Args:
-            operation: Operation name (for error messages)
-
-        Returns:
-            GitHubMCPSpatialAdapter or GitHubSpatialIntelligence instance
+            operation: Operation name (for the error message)
 
         Raises:
-            RuntimeError: If no integration available
+            RuntimeError: If the MCP adapter is unavailable
         """
-        # Prefer MCP adapter if available
         if self.mcp_adapter:
             return self.mcp_adapter
 
-        # Fall back to spatial intelligence
-        if self.spatial_github:
-            return self.spatial_github
-
-        raise RuntimeError(f"No GitHub integration available for {operation}")
+        raise RuntimeError(
+            f"No GitHub integration available for {operation}: the MCP adapter "
+            f"is not configured, and the spatial fallback implements none of "
+            f"the dispatched operations (#1723)"
+        )
 
     async def get_issue(
         self,
@@ -253,15 +257,6 @@ class GitHubIntegrationRouter:
             )
         # Spatial fallback
         return await self.spatial_github.get_issue(repo_name, issue_number)
-
-    async def list_issues(self, repository: str, **kwargs) -> List[Dict[str, Any]]:
-        """
-        List GitHub issues.
-
-        Note: ``repository`` is the full ``owner/name`` slug here; the
-        underlying integration handles parsing.
-        """
-        return await self._get_integration("list_issues").list_issues(repository, **kwargs)
 
     async def is_available(self) -> bool:
         """#1220/#1382: is GitHub usable for THIS user — via the per-user OAuth
@@ -443,9 +438,14 @@ class GitHubIntegrationRouter:
         )
 
     def get_integration_status(self) -> Dict[str, Any]:
-        """Get current integration status for monitoring and debugging."""
-        integration = self._get_integration("get_integration_status")
-        if hasattr(integration, "get_integration_status"):
+        """Get current integration status for monitoring and debugging.
+
+        #1723: no longer routed through ``_get_integration()`` — introspection
+        is optional by design (hence outside the ``GitHubOperations`` Protocol)
+        and must not fail when no integration is configured.
+        """
+        integration = self.mcp_adapter or self.spatial_github
+        if integration is not None and hasattr(integration, "get_integration_status"):
             return integration.get_integration_status()
         # Fallback status if integration doesn't support status method
         return {
@@ -760,30 +760,6 @@ class GitHubIntegrationRouter:
         """
         return self._get_integration("list_repositories").list_repositories()
 
-    async def create_issue_from_work_item(
-        self, repo_name: str, work_item: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """
-        Create GitHub issue from work item data.
-        """
-        return await self._get_integration(
-            "create_issue_from_work_item"
-        ).create_issue_from_work_item(repo_name, work_item)
-
-    async def create_pm_issue(
-        self,
-        repo_name: str,
-        pm_number: str,
-        title: str,
-        body: str,
-        labels: Optional[List[str]] = None,
-        assignees: Optional[List[str]] = None,
-    ) -> Dict[str, Any]:
-        """Create PM-specific GitHub issue."""
-        return await self._get_integration("create_pm_issue").create_pm_issue(
-            repo_name, pm_number, title, body, labels, assignees
-        )
-
     async def get_closed_issues(
         self, project: Optional[str] = None, limit: int = 10
     ) -> List[Dict[str, Any]]:
@@ -792,29 +768,11 @@ class GitHubIntegrationRouter:
         """
         return await self._get_integration("get_closed_issues").get_closed_issues(project, limit)
 
-    async def get_issues_by_priority(self) -> List[Dict[str, Any]]:
-        """
-        Get GitHub issues organized by priority.
-        """
-        return await self._get_integration("get_issues_by_priority").get_issues_by_priority()
-
-    async def get_development_context(self) -> Dict[str, Any]:
-        """
-        Get development context from GitHub.
-        """
-        return await self._get_integration("get_development_context").get_development_context()
-
     def parse_github_url(self, url: str) -> Optional[Tuple[str, str, int]]:
         """
         Parse GitHub issue URL to extract owner, repo, and issue number.
         """
         return self._get_integration("parse_github_url").parse_github_url(url)
-
-    def test_connection(self) -> Dict[str, Any]:
-        """
-        Test GitHub connection and return status.
-        """
-        return self._get_integration("test_connection").test_connection()
 
 
 # Convenience factory function
