@@ -1,23 +1,39 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-07 ~07:35 PDT (Session log open, Fire 1 / START)
+**Updated**: 2026-09-07 ~10:35 PDT (Fire 2 / WORK — two audit agents dispatched, in progress)
 **Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 09:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 12:57.
 
-## Watch today: Monday auto-audits, known #1713 no-fire risk
+## IN PROGRESS: 2026-09 Monday audits (#1725, #1724) — background agents dispatched, awaiting audit
 
-First Monday of the month — both `weekly-docs-audit.yml` and `monthly-housekeeping-audit.yml` are
-scheduled for 9:00 AM PT but hadn't fired as of this 07:27 fire (too early). #1713 (still OPEN,
-root cause GitHub-platform-side, unresolved) documents both workflows silently failing to fire on
-08-31 with no alerting — a real, live recurrence risk, not a solved problem. **At the 09:57 fire,
-check `gh run list` / search for new FLY-AUDIT issues directly** rather than assume the schedule
-fired. If both are silent again, that's a third instance worth flagging plainly (per #1713's own
-"decision either way rather than a third silent recurrence" framing) — this is not something Docs
-can fix (GitHub-platform-side), so the action is surfacing it clearly, not diagnosing it further.
+Both Monday auto-audits fired cleanly today (no #1713 recurrence — genuinely good news, noted as
+such rather than assumed). Fresh issues: **#1725** (Weekly Docs Audit, 74 items) and **#1724**
+(Monthly Housekeeping, 33 items). Given both checklists' own precedent (#1712 took 3 days; the
+Weekly checklist's FAQ explicitly says "can span multiple days if needed"), dispatched one
+thorough background agent per issue rather than rush or silently defer. Both instructed to work
+every section with real evidence, file real GitHub issues for real findings, fix quick things
+directly, use REST over GraphQL (today's shared cohort GitHub API pool has been intermittently
+rate-limited), and NOT close their issue or touch the staggered audit calendar — that's mine to do
+after personally auditing each report (line-by-line evidence check, same discipline as the
+omnibus audits this week).
 
-Verified directly via `gh issue view` (not the stale cron CONSTANTS block, which keeps citing these
-as open): #1712 (prior Weekly Docs Audit) and #1486 (prior Monthly Housekeeping) are both CLOSED
-(09-02/09-03). B3 corpus-disposition also closed weeks ago. Nothing owed from any of those.
+**NEXT ACTION when each agent completes**: audit its report against the precedent set by #1712's
+and #1486's own closing comments (ratios not lists, real fixes vs. filed issues vs. explicitly
+out-of-lane, honest accounting of anything not done) before touching either issue's description,
+Completion Matrix, or the staggered audit calendar. Do not trust a "done" claim without evidence
+in the report, same discipline as the 09-06 omnibus audit.
+
+## #1713 (GH Actions no-fire defect) — still open, but today is a clean data point
+
+Confirmed directly (REST API) that both Monday workflows fired via `schedule` this time (run IDs
+34142935309, 34142667321, both `success`) — no recurrence of the 08-31 silent-no-fire incident.
+Asked the #1724 agent to add a brief factual comment to #1713 noting this (not closing it — whether
+the underlying question is resolved isn't Docs' call).
+
+Verified directly via `gh issue view`/`gh api` (not the stale cron CONSTANTS block, which keeps
+citing these as open): the PRIOR #1712 and #1486 are both CLOSED (09-02/09-03). B3 corpus-
+disposition also closed weeks ago. Nothing owed from any of those — today's #1725/#1724 are the
+current, live instances.
 
 ## Yesterday (2026-09-06) closed clean — for reference
 
