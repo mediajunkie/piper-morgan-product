@@ -744,21 +744,34 @@ class GitHubIntegrationRouter:
         fetch to the repo the caller RESOLVED — the ANALYSIS handlers name a
         resolved repository in their copy, so the fetch must receive the same
         repo or the message claims a scope the query didn't have (m-43).
-        ``None`` keeps the pre-#1646 shape (the integration's internally
-        configured repo) for callers that never name one (canonical standup).
+        ``None`` keeps the pre-#1646 shape for callers that never name one
+        (the temporal last-activity handler): the adapter resolves via
+        ``resolve_repo`` (#1709 — there is no "internally configured repo").
         """
+        # Lazy initialization (ensures token loaded on first use) — #1709: the
+        # ANALYSIS handlers reach this via a fresh GitHubDomainService() and
+        # never call initialize(); without this the fetch runs sessionless and
+        # every answer is a false empty (m-44). Mirrors every peer method.
+        if not self._initialized:
+            await self.initialize()
         integration = self._get_integration("get_recent_activity")
         if repository is not None:
             return await integration.get_recent_activity(days, repository=repository)
         return await integration.get_recent_activity(days)
 
-    def list_repositories(self) -> List[Dict[str, Any]]:
+    async def list_repositories(self) -> List[Dict[str, Any]]:
         """
         List accessible repositories.
 
         Used by: domain/github_domain_service.py
+
+        #1723: async since the MCP adapter implemented it (aiohttp transport;
+        the sync signature was a PyGithub-era fossil), with the standard
+        lazy-init so the token is loaded on first use.
         """
-        return self._get_integration("list_repositories").list_repositories()
+        if not self._initialized:
+            await self.initialize()
+        return await self._get_integration("list_repositories").list_repositories()
 
     async def get_closed_issues(
         self, project: Optional[str] = None, limit: int = 10

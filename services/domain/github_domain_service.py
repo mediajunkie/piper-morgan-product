@@ -105,10 +105,15 @@ class GitHubDomainService:
 
     # Repository Operations
 
-    def list_repositories(self) -> List[Dict[str, Any]]:
-        """List GitHub repositories for domain consumption"""
+    async def list_repositories(self) -> List[Dict[str, Any]]:
+        """List GitHub repositories for domain consumption.
+
+        #1723: async — the whole chain (adapter → router → here → the
+        project-metadata caller) went async when the MCP adapter implemented
+        the operation over its aiohttp transport.
+        """
         try:
-            return self._github_agent.list_repositories()
+            return await self._github_agent.list_repositories()
         except GitHubAuthFailedError:
             logger.error("GitHub authentication failed for repository listing")
             raise
