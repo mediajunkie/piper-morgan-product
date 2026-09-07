@@ -1,22 +1,33 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-06 ~23:55 PDT (Day genuinely closed)
-**Session log**: `dev/2026/09/06/2026-09-06-0727-docs-code-log.md` — `<!-- DAY-CLOSED: 2026-09-06 -->` present.
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57 tomorrow (2026-09-07).
+**Updated**: 2026-09-07 ~07:35 PDT (Session log open, Fire 1 / START)
+**Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` (open).
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 09:57.
 
-## Day closed clean — nothing outstanding
+## Watch today: Monday auto-audits, known #1713 no-fire risk
 
-All 6 fires drained. Day's one real user-facing item: fixed the live blog's footer teaser after
-Comms flagged a retired duplicate post (`piper-morgan-website` commit `a5ae9e7`). Today's omnibus
+First Monday of the month — both `weekly-docs-audit.yml` and `monthly-housekeeping-audit.yml` are
+scheduled for 9:00 AM PT but hadn't fired as of this 07:27 fire (too early). #1713 (still OPEN,
+root cause GitHub-platform-side, unresolved) documents both workflows silently failing to fire on
+08-31 with no alerting — a real, live recurrence risk, not a solved problem. **At the 09:57 fire,
+check `gh run list` / search for new FLY-AUDIT issues directly** rather than assume the schedule
+fired. If both are silent again, that's a third instance worth flagging plainly (per #1713's own
+"decision either way rather than a third silent recurrence" framing) — this is not something Docs
+can fix (GitHub-platform-side), so the action is surfacing it clearly, not diagnosing it further.
+
+Verified directly via `gh issue view` (not the stale cron CONSTANTS block, which keeps citing these
+as open): #1712 (prior Weekly Docs Audit) and #1486 (prior Monthly Housekeeping) are both CLOSED
+(09-02/09-03). B3 corpus-disposition also closed weeks ago. Nothing owed from any of those.
+
+## Yesterday (2026-09-06) closed clean — for reference
+
+All 6 fires drained. One real user-facing item: fixed the live blog's footer teaser after Comms
+flagged a retired duplicate post (`piper-morgan-website` commit `a5ae9e7`). Omnibus
 (`docs/omnibus-logs/2026-09-06-omnibus-log.md`, 430 lines, HIGH-COMPLEXITY:COORDINATION) went
-through a genuine two-pass audit: first draft came in at 387 lines against methodology-20's stated
-450-600 target ("under 400 = likely under-compressed"), sent back for a real second pass over the
-same 11 sources rather than accepted at face value — the second pass found and fixed two real
-content errors (a missing Arch STOP-fire entry, a mistimed Comms STOP-fire) along the way, landing
-at 430 with the agent's own honest disclosure that further additions would mean padding. Both the
-omnibus commit (`bf7441167`) and the Step 10.5 activity-log CSV reconciliation (`1725a3a7c`) are
-pushed. A new cohort-wide standing rule was noted (sub-25-API-call probes proceed without asking,
-Exec/PM-ratified) — low relevance to Docs' typical work but recorded for completeness.
+through a genuine two-pass audit — first draft under methodology-20's stated floor, sent back and
+caught two real content errors on the second pass. Omnibus (`bf7441167`) and activity-log
+reconciliation (`1725a3a7c`) both pushed. A new cohort-wide standing rule was noted (sub-25-API-
+call probes proceed without asking, Exec/PM-ratified) — low relevance to Docs but recorded.
 
 **First action next fire (06:57 tomorrow)**: sync, mail loop (raw `ls`, not the narrow grep),
 omnibus currency check (should read 09-06 as "yesterday," correct), heartbeat step, otherwise
