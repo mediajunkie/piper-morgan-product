@@ -120,6 +120,13 @@ is why the sort matters: family one is fixed by stating the bound at the moment 
 is fixed only by OPENING THE ARTIFACT.** 🔴 **You can state a perfectly honest denominator about a
 document you never opened.**
 
+⭐ **Refined again 2026-09-07** — two of those "family two" cases are just **m-49 (Described Is Not
+Running)**: a capability described and never observed. **What ISN'T m-49 is the tighter thing worth
+knowing**: reading an artifact's *summary* — its title, its description, your memory of it — **in place
+of its content**. 🔴 **The discriminator: m-49's remedy is "watch it fire"; this one's remedy is "open
+it."** If the answer is static, present, sitting in the file, and you inferred from a summary instead —
+**that needed no observation at all, only reading.**
+
 **None were wrong about what they measured. All were wrong about what they claimed to cover.** ⚠️ **The
 tell is that each felt like diligence at the time** — I ran a command, I reproduced it, I checked the
 counters. **Rigor performed on the wrong scope reads exactly like rigor.**
