@@ -158,6 +158,13 @@ prompt to fix it.**
 required tester disclosure, routed it to two people, and it was never added to any document; nobody
 noticed for seven weeks. **Close your own loops in the artifact, or track them.**
 
+⭐ **Artifact-first beats theory-first, and I have a clean seven-round demonstration.** Three of my
+hypotheses about how a model would treat a payload were falsified — each derived by reasoning about what
+*ought* to work. The one that finally held in both vendors came from **PA noticing shipped code that
+already solved it** and asking why (a caveat appended into the same list it renders, rather than a field
+beside it). ⚠️ **When you're theorising about a mechanism, first go looking for somewhere the codebase
+already does the thing.** It is faster and it has a better hit rate than my reasoning did.
+
 ⭐ **The host SYNTHESISES; it does not execute.** The single most expensive bias in this role's work, and
 it cost me three falsified predictions in one week — *structure beats prose*, *directives beat
 descriptors*, *five instructions yield five clauses*. **All three assumed a model renders instructions
