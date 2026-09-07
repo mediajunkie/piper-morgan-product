@@ -43,7 +43,7 @@ transition.
 | Stage | Gated by | What starts | Precedent / ratification |
 |---|---|---|---|
 | **Alpha** | (already running) | Existing invited testers, current surface | Ongoing |
-| **Private beta** (v0.9.0) | **MVP milestone closes** | Invitation-only beta, existing surface | v18.4, 2026-07-04: "MVP milestone = beta gate — beta ships when MVP milestone is complete, not on a calendar date." Unchanged since; beta date itself was explicitly dropped 2026-08-08 (moved back a month, no new fixed date set — see `decisions.log:1242`). |
+| **Private beta** (v0.9.0) | **MVP milestone closes** | Invitation-only beta, existing surface | v18.4, 2026-07-04: "MVP milestone = beta gate — beta ships when MVP milestone is complete, not on a calendar date." The Aug 1 target was explicitly dropped 2026-08-08 (see `decisions.log:1242`). **MVP milestone's `due_on` is now set to 2026-10-30** (verified via GitHub API, set 2026-09-06) — still gated on milestone completion, not the calendar date; the field is a planning target, not a promise. |
 | **Public beta** | **Production-milestone MCP-path work completes** (front-loaded: the #1462 cluster — #1462, #1458, #1509, #1688) | General availability of the beta, MCP path live | **2026-08-30, ESSENCE v1.0** (`decisions.log` ~16:3x): "MCP-path completion is the PUBLIC-BETA GATE." Same shape as the precedent below — a named subset of Production-milestone work gates the *next* audience stage, not Production's own closure. |
 | **1.0 / GA** | **Production milestone closes in full** | General release | Milestone #9 definition, unchanged. |
 
