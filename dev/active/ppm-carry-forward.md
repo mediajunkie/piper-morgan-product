@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-07 10:09 PT (WORK). **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-07 13:09 PT (WORK). **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -10,6 +10,20 @@ Only the scenario *definitions* (persona, turn sequence, expected behavior) carr
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent). **#1688's overrule call still open** — five full
 days with no PM response, no urgency attached, carrying forward.
+
+## ✅ #1691/#1692 BELATEDLY TRIAGED + #1726/#1727/#1728 TRIAGED PROACTIVELY (2026-09-07 13:09)
+Found via `sprint-truth.py`'s unmilestoned count (4→5, then discovered two MORE already-stale
+unmilestoned issues while investigating). **Real gap, owned**: `#1691` (auto-close guard proposed
+after it bit me directly on `#1677`) and `#1692` (broken CORE-doc links) have sat unmilestoned
+since **2026-08-29 — 9 days**, never caught by the proactive-count discipline until this fire.
+Checked carry-forward for any prior mention: none. All five (1691/1692/1726/1727/1728) matched
+cleanly against existing precedent (#1719/#1720/#1721): Ongoing / `FLYWHEEL - Process improvement`
+/ Product Backlog. `#1726` is a new "3+ recurrences" structural-fix issue (the `last_verified`
+bulk-stamp anti-pattern, 5 weeks running) — textbook match for #1719's shape. `#1727`/`#1728` both
+spawned from this morning's two audits (`#1724`/`#1725`). Verified no collateral damage (`#1724`'s
+Sprint value unchanged). `sprint-truth.py` confirms **0 unmilestoned** after. Posted triage
+comments on all five; `#1691`/`#1692` comments explicitly name the 9-day gap rather than triage
+silently as if on schedule.
 
 ## ✅ #1724/#1725 TRIAGED PROACTIVELY — FLY-AUDIT Monthly/Weekly, matched standing precedent (2026-09-07 10:09)
 Found via `sprint-truth.py`'s unmilestoned count (2→4, both created ~09:20 PT today). Milestone
