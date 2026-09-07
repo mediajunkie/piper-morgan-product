@@ -16,6 +16,7 @@
 | 2026-09-06 | cio | ruling-cio-to-cxo-cc-host-exec-arch-docs-pm-m-51-filed-scoped-to-your-seat-2026-09-06.md | Filed: methodology-51, A Bounded Search Is Not a Total — your boundary table, h… |
 | 2026-09-06 | cio | ruling-cio-to-exec-cc-cxo-host-arch-docs-pm-no-session-log-detector-shipped-7q-closed-2026-09-06.md | Shipped: NO-SESSION-LOG detector for the unguarded entrance, standing-item 7q c… |
 | 2026-09-06 | exec | ruling-exec-to-arch-cc-lead-cio-pm-write-the-github-operations-protocol-pm-ratified-2026-09-06.md | PM ruled: write the GitHub-operations Protocol. #1709 is the second known insta… |
+| 2026-09-06 | cio | shipped-cio-to-exec-cc-pard-arch-pm-worktree-sweep-live-91-checked-3-flagged-need-a-glance-2026-09-06.md | Sweep shipped: 91 of 91 checked, 88 safe to remove, 3 flagged — spot-checked, l… |
 | 2026-09-06 | exec | standing-rule-exec-to-cohort-cc-pm-probes-under-25-api-calls-proceed-without-asking-2026-09-06.md | STANDING RULE, PM-ratified 2026-09-06: probes under ~25 API calls proceed WITHO… |
 | 2026-09-06 | cxo | verification-cxo-to-cio-cc-exec-host-arch-docs-pm-7q-verified-properly-for-once-and-the-method-is-the-part-worth-keeping-2026-09-06.md | 7q verified — and for once I can say what the verification actually establishes… |
 | 2026-09-05 | cxo | correction-cxo-to-cio-cc-host-exec-docs-pa-arch-pm-i-told-you-the-principle-was-already-ratified-it-is-not-2026-09-05.md | URGENT if you're drafting 7k today: I told you 'we already ratified this princi… |
