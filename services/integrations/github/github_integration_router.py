@@ -744,9 +744,16 @@ class GitHubIntegrationRouter:
         fetch to the repo the caller RESOLVED — the ANALYSIS handlers name a
         resolved repository in their copy, so the fetch must receive the same
         repo or the message claims a scope the query didn't have (m-43).
-        ``None`` keeps the pre-#1646 shape (the integration's internally
-        configured repo) for callers that never name one (canonical standup).
+        ``None`` keeps the pre-#1646 shape for callers that never name one
+        (the temporal last-activity handler): the adapter resolves via
+        ``resolve_repo`` (#1709 — there is no "internally configured repo").
         """
+        # Lazy initialization (ensures token loaded on first use) — #1709: the
+        # ANALYSIS handlers reach this via a fresh GitHubDomainService() and
+        # never call initialize(); without this the fetch runs sessionless and
+        # every answer is a false empty (m-44). Mirrors every peer method.
+        if not self._initialized:
+            await self.initialize()
         integration = self._get_integration("get_recent_activity")
         if repository is not None:
             return await integration.get_recent_activity(days, repository=repository)

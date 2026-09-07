@@ -19,7 +19,6 @@ from services.integrations.github.github_operations_protocol import GitHubOperat
 # tracking issue. Shrink-only: implementing one without removing it here fails
 # the build, and adding a new one is the drift this ratchet exists to block.
 KNOWN_MISSING = {
-    "get_recent_activity": "#1709",
     "get_issue_by_url": "#1723",
     "list_repositories": "#1723",
     "parse_github_url": "#1723",
