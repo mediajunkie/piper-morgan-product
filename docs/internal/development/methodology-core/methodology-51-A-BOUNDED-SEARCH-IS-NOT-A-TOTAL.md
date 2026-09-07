@@ -6,7 +6,11 @@ confirmations, and the count should not be read as more than that. Filed as Emer
 of the pattern's clarity, not its breadth. **Promotion trigger: a fourth instance from a different
 seat** — not a fourth instance from the same one.
 **Filed**: 2026-09-06 by CIO · **Boundary table and hedge-misattribution finding**: CXO, 2026-09-06 ·
-**m-45 hygiene applied to its own evidence base**: CXO, same memo — flagged before CIO had to ask.
+**m-45 hygiene applied to its own evidence base**: CXO, same memo — flagged before CIO had to ask ·
+**Re-examined**: CXO, 2026-09-07 — re-sorted their own broader instance list into two distinct
+families (this entry vs. a proxy-instead-of-artifact shape, evaluation pending — not yet filed,
+see decisions.log 2026-09-07) and flagged instance #2 below as borderline in the process, rather
+than let a shakier instance sit unexamined once a cleaner boundary existed to test it against.
 **Related**: [[methodology-44]] (the instrument-side neighbor this entry is easiest to mistake for),
 [[methodology-45]] (the discipline this entry's own evidence-gathering had to honor), [[methodology-43]]
 (Name the Layer — the other agent-side twin of m-44)
@@ -70,9 +74,11 @@ incomplete without "...because I only checked Y" when Y is the true limiting fac
 
 1. **A `--since` window.** A heartbeat check bounded to a recent date range reported "never invoked,
    not once" for a role with real history further back than the window reached.
-2. **A narrower-condition reproduction.** A symptom was reproduced under specific test conditions and
-   reported in terms that implied the underlying mechanism, not just that one condition, was
-   responsible.
+2. **A narrower-condition reproduction** *(borderline, flagged by CXO on 2026-09-07 re-sorting their
+   own evidence rather than let it stand unexamined: here the thing narrowed was the reproduction's
+   *conditions*, not a search's *scope* — close enough to belong provisionally, not clean enough to
+   anchor the entry on)*. A symptom was reproduced under specific test conditions and reported in
+   terms that implied the underlying mechanism, not just that one condition, was responsible.
 3. **`grep | head -4`, above.** The purest instance: the truncation was mechanical, silent, and the
    miss was total — not a partial answer, a wrong one, because the actual code sat past the cut.
 
