@@ -1,10 +1,18 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-06 07:22 PT (START). **Still watching**: #1386 — **only criterion 6
+**Last rewritten**: 2026-09-06 19:22 PT (WORK). **Still watching**: #1386 — **only criterion 6
 (PM sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally
 satisfied. **#1688's overrule call also still open** — four full days with no PM response now,
 no urgency attached (build sits harmlessly behind a flag either way), carrying forward.
+
+## ✅ #1723 TRIAGED PROACTIVELY — GitHub operations Protocol umbrella, matched #1709's precedent (2026-09-06 19:22)
+Found via `sprint-truth.py`'s unmilestoned count (2→3). Arch's own architecture cleanup (typed
+`GitHubOperations` Protocol, dead-code removal, a ratchet test) already mostly shipped same-day;
+this issue tracks the 3 remaining live-called-but-unbacked operations. Checked #1709 (the sibling
+issue for the 4th such operation) for precedent — MVP, closed — and matched it: milestone MVP,
+Status In Progress, Sprint Beta Blockers - Hard Gates Only. Board mechanics only; implementation is
+Arch/Lead's.
 
 ## 🔵 NEW BASELINE — PM did direct MVP milestone triage overnight (2026-09-06 07:22)
 `sprint-truth.py` jumped `MVP: 39 → 50 not done` (Sprint Backlog 20→31), unmilestoned dropped
