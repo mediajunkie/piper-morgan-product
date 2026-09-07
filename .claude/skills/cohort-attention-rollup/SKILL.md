@@ -106,6 +106,50 @@ in-conversation, and any mailbox items explicitly addressed to PM that assign a 
 
 ## Step 2 — Live-state verification pass (the discipline that makes this trustworthy)
 
+### 🔴 2.00 — FIRST ASK: IS THERE A DOCUMENT THAT ALREADY ANSWERS THIS?
+
+**Added 2026-09-06, after this failed on the SAME DAY as 2.0 below and in a different hiding place.**
+
+**Before checking anything else, check `decisions.log` and the relevant durable doc.** An item can be
+fully ruled, recorded, *and* written into a purpose-built document while every role's carry-forward
+still describes it as open.
+
+**The incident**: PM ruled the beta-audience model on 2026-08-30 (`decisions.log:1761`, ESSENCE v1.0
+ratification) — *"MVP closure ends alpha and starts invitation-only private beta; public beta
+requires MCP path complete; Production closure = 1.0.0."* PPM then wrote
+`docs/internal/planning/release-model.md` **that same day** and linked it from the roadmap. The board
+carried it as an open PM decision for seven more days, and PM had to say *"I feel that I answered this
+in detail last week."*
+
+⭐ **Read that document's own purpose paragraph, because it diagnosed this before it happened**:
+
+> *"Before this, the audience/gate model existed only as scattered roadmap changelog entries and
+> milestone-description prose — real, ratified, and **re-derived from scratch by whoever next needed
+> it.** Cite this doc; don't re-derive."*
+
+**It was written to stop exactly this, and it did not, because nothing in the board's process ever
+opened it.**
+
+**Why the carry-forwards lie here, and it is not carelessness**: Arch's trifecta synthesis named the
+item as a PM decision, and the synthesis was written *before* the ratification concluded **the same
+day**. So the framing outlived its own premise. PA carried "still awaiting PM's actual ruling"
+forward in good faith. **A role's carry-forward records the state at the moment they last touched
+it — it is not a live claim**, and boarding it without checking the durable record propagates a
+stale one.
+
+**So, for every candidate:**
+
+1. `grep decisions.log` for the topic. A PM ruling is recorded there by convention.
+2. **Check whether a purpose-built doc exists** — `release-model.md`, `ESSENCE.md`, a PDR, an ADR.
+   If the answer has a home, the item is closed no matter what any tracker says.
+3. **Only then** treat the carry-forward's framing as current.
+
+★ **The generalization, which is the point**: over two days this board carried two stale items whose
+answers lived in two different places — one in a recipient's `sent/`, one in a ratified document.
+**Both times the failure was the same: verifying only the surfaces I remembered to verify.** "Is
+there a document that already answers this" was never a step at all, which is a strange omission for
+a role whose whole job is knowing what has already been decided.
+
 ### ⚠️ 2.0 — A MAIL-BASED ASK IS VERIFIED IN THE RECIPIENT'S `sent/`, NOT ON GITHUB
 
 **Added 2026-09-06 after this exact failure.** Step 2 below is written around GitHub state, and that
