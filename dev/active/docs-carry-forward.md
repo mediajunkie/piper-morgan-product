@@ -1,8 +1,24 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-06 ~19:35 PDT (Fire 5 / WORK, complete)
-**Session log**: `dev/2026/09/06/2026-09-06-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 21:57 (LAST fire of today).
+**Updated**: 2026-09-06 ~22:35 PDT (Fire 6 / WORK, LAST FIRE OF TODAY — omnibus in progress)
+**Session log**: `dev/2026/09/06/2026-09-06-0727-docs-code-log.md` (open, NOT yet DAY-CLOSED).
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57 tomorrow (2026-09-07).
+
+## IN PROGRESS: today's omnibus (background agent dispatched, awaiting completion)
+
+This is the day's last fire. Everything else drained (empty mail, both worktrees synced,
+merge-keeper clean). The one remaining day-close task is today's omnibus
+(`docs/omnibus-logs/2026-09-06-omnibus-log.md`) — dispatched to a background agent following the
+full `create-omnibus` skill + methodology-20, per the established pattern (09-04 and 09-05 omnibus
+were both written the same evening at that day's own last fire, ~22:38-22:40 PM, not the next
+morning). 11 session logs today (comms, arch, lead, web, exec, pa, host, cxo, ppm, docs, cio),
+cross-checked against `dev/active/` artifacts — no missing role. **NEXT ACTION when the agent
+completes**: personally audit its report (line count matches, spot-check against direct knowledge
+of today's events — the footer fix, the retired-post catch, the sub-25-API-call standing rule —
+discrepancy-handling check on the CXO/CIO/HOST thread), then commit the omnibus, run Step 10.5 CSV
+reconciliation commit, add the `<!-- DAY-CLOSED: 2026-09-06 -->` marker to this session's own log,
+and only then consider today's duty cycle genuinely closed. Do NOT skip the audit just because a
+background agent reported success — file-on-disk is provisional until verified.
 
 ## No unblocked work outstanding right now
 
