@@ -59,17 +59,16 @@ class TestGitHubMCPRouterIntegration:
         # Verify it's the MCP adapter (check class name)
         assert integration is router.mcp_adapter, "Should return MCP adapter when available"
 
-    def test_get_integration_falls_back_to_spatial(self):
-        """Test _get_integration falls back to spatial when MCP not available."""
+    def test_get_integration_raises_without_mcp_adapter(self):
+        """#1723: the spatial fallback is OUT of _get_integration — it implements
+        zero dispatched operations, so falling back could only convert "no
+        integration" into a delayed AttributeError. No MCP adapter → immediate
+        honest RuntimeError. (Replaces the pre-#1723 falls-back-to-spatial pin.)"""
         with patch.dict(os.environ, {"USE_MCP_GITHUB": "false"}):
             router = GitHubIntegrationRouter()
 
-            # Should use spatial
-            integration = router._get_integration("test_operation")
-
-            assert (
-                integration is router.spatial_github
-            ), "Should fall back to spatial when MCP disabled"
+            with pytest.raises(RuntimeError, match="No GitHub integration available"):
+                router._get_integration("test_operation")
 
     def test_get_integration_raises_when_none_available(self):
         """Test _get_integration raises error when no integration available."""
@@ -172,19 +171,18 @@ class TestGitHubMCPBackwardCompatibility:
         """Test router still provides all expected methods for backward compatibility."""
         router = GitHubIntegrationRouter()
 
-        # Verify all expected methods exist
+        # Verify all expected methods exist. #1723 deleted the 6 dead router
+        # methods (list_issues, create_pm_issue, test_connection, and 3 more
+        # with zero external callers) — this list now pins the LIVE surface only.
         expected_methods = [
             "get_issue",
-            "list_issues",
             "create_issue",
             "update_issue",
             "get_open_issues",
             "get_recent_issues",
             "get_recent_activity",
             "list_repositories",
-            "create_pm_issue",
             "get_integration_status",
-            "test_connection",
         ]
 
         for method_name in expected_methods:

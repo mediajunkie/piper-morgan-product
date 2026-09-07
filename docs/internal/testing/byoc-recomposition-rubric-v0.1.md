@@ -1,7 +1,8 @@
 ---
 type: scoring-instrument
 name: BYOC Recomposition Rubric
-version: v0.5 — DRAFT, unratified. Class account CONFIRMED on Claude, UNRESOLVED on GPT-4o; not adopted
+version: v0.6 — DRAFT, unratified. Class B now has a working mechanism (PA's member-not-metadata,
+  clean in both vendors, one shape, n=1). v0.5: class account CONFIRMED on Claude, UNRESOLVED on GPT-4o; not adopted
   as a scoring rule. Probe series recommended CLOSED 2026-09-03. v0.4 added ADDITION as well as SURVIVAL (2026-09-01 evening, on
   Lead's #1717 evidence: the observed failures were host-added claims, not lost qualifications).
   v0.3 restructured the axis by qualification class 2026-09-01 after a second
@@ -18,7 +19,7 @@ last_updated: 2026-08-30
 currency_claim: revise-on-probe-result
 ---
 
-# BYOC Recomposition Rubric — v0.5
+# BYOC Recomposition Rubric — v0.6
 
 **The instrument for scoring Piper's quality on a surface where Piper does not compose what the user
 reads.**
@@ -126,6 +127,29 @@ survive into what the user reads."*
 > all mine, all on evidence — lives in §8 and is deliberately NOT in your way here.** *An instrument's
 > current state must be readable without reading its history; four stacked banners between a heading and
 > its criteria is the buried-caveat failure this document warns other people about.*
+
+> ### ✅ v0.6, 2026-09-06 — CLASS B HAS A WORKING MECHANISM, and it is the first positive result here
+>
+> **PA's member-vs-metadata candidate passed cleanly in BOTH vendors, first try.** The partial-coverage
+> caveat, represented as a **final member of the `issues` array** rather than a sibling field, survived:
+> Claude *"…and there are more issues not shown in this summary"*; GPT-4o *"There are more issues not
+> shown here."*
+>
+> 🔴 **Seven rounds; the first time a completeness caveat held cleanly in both vendors on the same shape.**
+>
+> ⭐ **Why it worked when my three hypotheses didn't, and this is the durable lesson**: *structure beats
+> prose*, *directives beat descriptors*, *five instructions yield five clauses* were all **theory-first —
+> reasoning about how a model ought to treat a payload.** PA's came **artifact-first**, from shipped code
+> that already solves it (`search_consciousness.py` appends *"…and N more results"* into the same list it
+> renders). **The winning hypothesis was found by observing what already works, not by theorising about
+> the mechanism.**
+>
+> **T=3 for class B, revised**: carry the qualification as a **member of the collection the host renders**,
+> not as metadata beside it. A host enumerating a list enumerates its members; it drops fields.
+>
+> ⚠️ **Limits, and they bind**: **n=1 per cell, ONE class-B shape (partial coverage).** Truncation,
+> staleness-of-omitted-items and other absence claims are **untested**. **This is a design lead, not a
+> verified criterion** — and *"passed both vendors"* must not be read as *"verified."*
 
 ## 4. Capability truthfulness — a precondition, not a fourth dimension
 
