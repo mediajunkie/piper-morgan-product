@@ -29,11 +29,15 @@ measured everything, measured nothing, or measured the wrong thing — the cure 
 assert what it looked at. It is tempting to read this entry as the same claim restated. **It isn't,
 and the test that separates them is CXO's:**
 
-> Stating the denominator does not cure this failure. Had the report read *"zero `hb(role)` commits in
-> the last week"* — a perfectly good, perfectly honest denominator — it would still have been
-> misleading, because the week itself was the reporter's arbitrary choice, and the reader has no way to
-> know the actual evidence sat eighteen days further back. m-44 would score that report as compliant.
-> It isn't.
+> Stating the denominator does not cure this failure. **Worked example, from CXO's own m-50 incident**:
+> had the report read *"zero `hb(cxo)` commits in the last week"* — a perfectly good, perfectly honest
+> denominator — it would still have been misleading, because the week itself was the reporter's
+> arbitrary choice, and the reader has no way to know the actual evidence (7 real invocations) sat 24
+> days further back. m-44 would score that report as compliant. It isn't.
+>
+> *(Added 2026-09-06, at CXO's own request — "if it needs a worked example, mine is the cleanest,"
+> flagging that the discriminator above is the subtle half of this entry and the one a reader is most
+> likely to skim past without a concrete anchor.)*
 
 | | Layer | The defect | Cure |
 |---|---|---|---|

@@ -1,8 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-06 ~13:35 PDT (Fire 3 / WORK, complete)
+**Updated**: 2026-09-06 ~16:35 PDT (Fire 4 / WORK, complete)
 **Session log**: `dev/2026/09/06/2026-09-06-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 15:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 18:57.
 
 ## No unblocked work outstanding right now
 
@@ -19,9 +19,11 @@ needed docs action, all triaged. MANIFESTs regenerated. Both genuine standing "A
 (PreCompact hook locality differentiation; critical-docs YAML-frontmatter upgrade) reviewed and
 correctly left deferred — neither's named trigger has fired.
 
+Fire 4 was quiet: empty inbox, both worktrees synced, merge-keeper clean, nothing unblocked.
+
 **Cron CONSTANTS block is stale again this cycle** (still citing B3 Tier C, #1712, #1486 as owed —
-all closed weeks ago). Keep verifying against this file rather than trusting the prompt, as its
-own text says to.
+all closed weeks ago, unchanged across Fires 2/3/4 today). Keep verifying against this file rather
+than trusting the prompt, as its own text says to.
 
 **First action next fire**: sync, mail loop (raw `ls`, not the narrow grep), omnibus currency
 check, run the heartbeat step explicitly, otherwise genuinely open floor.

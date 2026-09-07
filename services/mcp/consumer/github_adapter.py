@@ -19,6 +19,7 @@ from services.database.session_factory import AsyncSessionFactory
 from services.integrations.github.repo_resolver import (
     ResolvedRepo,
     UnresolvedRepoError,
+    parse_full_name,
     resolve_repo,
 )
 from services.integrations.mcp.token_counter import TokenCounter
@@ -1357,6 +1358,150 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error getting closed issues: {e}")
             return []
 
+    async def get_recent_activity(
+        self, days: int = 7, repository: Optional[str] = None
+    ) -> Dict[str, List[Dict[str, Any]]]:
+        """#1709: recent repo activity — commits, PRs, issues — over the ``days`` window.
+
+        The GitHubOperations member the router dispatched for years with nothing
+        beneath it (every caller either caught broadly or mocked the seam). Backs:
+
+        - the three ANALYSIS handlers (analyze_commits / generate_report /
+          analyze_data) — #1646 threads their RESOLVED ``repository`` here
+        - the temporal "when did we last work on X?" handler (#504), which
+          passes no repository
+
+        Args:
+            days: lookback window in days (GitHub ``since`` filter).
+            repository: ``owner/name`` full name scoping the fetch (#1646).
+                ``None`` → resolve via ``resolve_repo`` (env-var
+                ``PIPER_DEFAULT_REPO`` path — no user context at this seam);
+                unresolvable → empty shape, logged (mirrors the router's
+                #1042 graceful empty-state for general queries).
+
+        Returns:
+            ``{"commits": [...], "prs": [...], "issues_created": [...],
+            "issues_closed": [...]}`` — the shape every live consumer already
+            reads (and the #1646 test fixtures pin). Commits keep the nested
+            REST ``commit.author.{name,date}`` / ``commit.message`` the ANALYSIS
+            handlers navigate, plus flat ``author``/``message``/``created_at``
+            conveniences (contributor stats + temporal sort). PR/issue items
+            carry flat ``author`` (login) because contributor stats reads
+            ``item["author"]`` as a string. Empty shape (never None) on any
+            failure — house shape for this seam (#969/#1039 siblings).
+        """
+        empty: Dict[str, List[Dict[str, Any]]] = {
+            "commits": [],
+            "prs": [],
+            "issues_created": [],
+            "issues_closed": [],
+        }
+        try:
+            if repository is not None:
+                try:
+                    owner, repo = parse_full_name(repository)
+                except ValueError:
+                    logger.warning(
+                        f"get_recent_activity: repository {repository!r} is not an "
+                        f"'owner/name' full name — returning empty activity (#1709)"
+                    )
+                    return empty
+            else:
+                try:
+                    resolved = await resolve_repo(user_id=None, project_id=None)
+                    owner, repo = resolved.owner, resolved.name
+                except UnresolvedRepoError:
+                    logger.warning(
+                        "get_recent_activity: no repository named and none resolves "
+                        "— returning empty activity (#1709)"
+                    )
+                    return empty
+
+            from datetime import datetime, timedelta, timezone
+
+            since = (datetime.now(timezone.utc) - timedelta(days=days)).strftime(
+                "%Y-%m-%dT%H:%M:%SZ"
+            )
+
+            commits_data = await self._call_github_api(
+                f"repos/{owner}/{repo}/commits", {"since": since, "per_page": 100}
+            )
+            issues_data = await self._call_github_api(
+                f"repos/{owner}/{repo}/issues",
+                {"state": "all", "since": since, "per_page": 100},
+            )
+
+            commits = []
+            for c in commits_data or []:
+                nested = c.get("commit") or {}
+                author_info = nested.get("author") or {}
+                message = nested.get("message", "") or ""
+                commits.append(
+                    {
+                        "sha": c.get("sha"),
+                        "html_url": c.get("html_url"),
+                        # Nested REST shape the ANALYSIS handlers navigate:
+                        # commit.author.name / commit.author.date / commit.message
+                        "commit": {
+                            "message": message,
+                            "author": {
+                                "name": author_info.get("name", "Unknown"),
+                                "date": author_info.get("date"),
+                            },
+                        },
+                        # Flat conveniences: author login-or-name string
+                        # (contributor stats), first message line + timestamp
+                        # (temporal last-activity sort).
+                        "author": (c.get("author") or {}).get("login")
+                        or author_info.get("name", "Unknown"),
+                        "message": message.split("\n")[0],
+                        "created_at": author_info.get("date"),
+                        "updated_at": author_info.get("date"),
+                    }
+                )
+
+            prs, issues_created, issues_closed = [], [], []
+            for item in issues_data or []:
+                normalized = {
+                    "number": item.get("number"),
+                    "title": item.get("title"),
+                    "state": item.get("state"),
+                    "created_at": item.get("created_at"),
+                    "updated_at": item.get("updated_at"),
+                    "closed_at": item.get("closed_at"),
+                    "html_url": item.get("html_url"),
+                    # Flat login string — contributor stats reads item["author"]
+                    "author": (item.get("user") or {}).get("login", "Unknown"),
+                    "is_pull_request": item.get("pull_request") is not None,
+                }
+                if normalized["is_pull_request"]:
+                    # "PRs updated" in the window (the trends copy's phrasing) —
+                    # the since filter already scopes to updated-in-window.
+                    prs.append(normalized)
+                    continue
+                # An issue both created and closed in the window appears in both
+                # lists — both events happened; the metrics sum counts activities.
+                if (normalized["created_at"] or "") >= since:
+                    issues_created.append(normalized)
+                if normalized["closed_at"] and normalized["closed_at"] >= since:
+                    issues_closed.append(normalized)
+
+            logger.info(
+                f"Retrieved recent activity for {owner}/{repo} (last {days}d): "
+                f"{len(commits)} commits, {len(prs)} PRs, "
+                f"{len(issues_created)} issues created, {len(issues_closed)} closed"
+            )
+            return {
+                "commits": commits,
+                "prs": prs,
+                "issues_created": issues_created,
+                "issues_closed": issues_closed,
+            }
+
+        except Exception as e:
+            logger.error(f"Error getting recent activity: {e}")
+            return empty
+
     async def list_milestones(
         self, repo: str, owner: str, state: str = "open"
     ) -> List[Dict[str, Any]]:
@@ -1525,6 +1670,50 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
         except Exception as e:
             logger.error(f"Error listing branches for {owner}/{repo}: {e}")
+            return []
+
+    async def list_repositories(self) -> List[Dict[str, Any]]:
+        """#1723: list the repositories accessible to the configured token.
+
+        Backs the router's ``list_repositories`` dispatch — live caller is
+        ``_get_project_metadata`` (canonical handlers, issue #18 project-status
+        surfaces), which matches project names against ``name``/``full_name``.
+        Native REST over the shared-PAT session (``GET /user/repos`` — the
+        authenticated user's repos), the house shape at this seam. NOTE: async,
+        unlike the pre-#1723 Protocol fossil — the sync signature dated from
+        the PyGithub era; an aiohttp adapter cannot honor it without blocking
+        the event loop, so the whole (four-hop) chain went async with it.
+
+        Returns:
+            Normalized repo dicts — ``{id, name, full_name, description,
+            html_url, private, archived, updated_at}`` (the caller reads
+            ``name`` + ``full_name``; the rest mirrors the
+            ``GitHubRepositoryInfo`` shape). Empty list on any failure.
+        """
+        try:
+            repos_data = await self._call_github_api(
+                "user/repos", {"per_page": 100, "sort": "updated"}
+            )
+            if not repos_data:
+                return []
+            repos = []
+            for repo in repos_data:
+                repos.append(
+                    {
+                        "id": repo.get("id", 0),
+                        "name": repo.get("name", ""),
+                        "full_name": repo.get("full_name", ""),
+                        "description": repo.get("description") or "",
+                        "html_url": repo.get("html_url"),
+                        "private": bool(repo.get("private", False)),
+                        "archived": bool(repo.get("archived", False)),
+                        "updated_at": repo.get("updated_at"),
+                    }
+                )
+            logger.info(f"Retrieved {len(repos)} accessible repositories")
+            return repos
+        except Exception as e:
+            logger.error(f"Error listing repositories: {e}")
             return []
 
     async def get_repository_info(self, repo: str, owner: str) -> Optional[Dict[str, Any]]:

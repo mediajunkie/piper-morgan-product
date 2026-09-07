@@ -1491,8 +1491,8 @@ class CanonicalHandlers:
                 logger.debug("GitHub not connected — honest-degrade (#1231)")
                 return {"__degrade_reason__": DegradationReason.CONNECT_REQUIRED}
 
-            # Get repositories list
-            repos = github_service.list_repositories()
+            # Get repositories list (#1723: async since the adapter implemented it)
+            repos = await github_service.list_repositories()
             repo_names = {repo.get("name", "").lower(): repo for repo in repos}
 
             # Try to match projects to repositories
