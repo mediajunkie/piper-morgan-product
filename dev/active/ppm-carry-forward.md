@@ -1,13 +1,28 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-06 22:22 PT (STOP). **⚠️ #1386 framing CORRECTED today — do not use
-the old "only criterion 6 remains" shorthand.** PM re-scoped the gate: **criteria 3 and 6 fire at
-MVP milestone close** (now `due_on` 2026-10-30, verified via GitHub API); **criteria 2, 4, 5
-re-run fresh at that point** — their evidence is point-in-time and has expired (16+ days, multiple
-deploys since each was verified). Only **criterion 1** stands unqualified (text-stale, functionally
-satisfied, not artifact-dependent). **#1688's overrule call also still open** — four full days with
-no PM response, no urgency attached, carrying forward.
+**Last rewritten**: 2026-09-07 10:09 PT (WORK). **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
+went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
+criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
+fresh then** (every one is an artifact-execution result and the artifact will change by then).
+Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
+unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
+functionally satisfied, not artifact-dependent). **#1688's overrule call still open** — five full
+days with no PM response, no urgency attached, carrying forward.
+
+## ✅ #1724/#1725 TRIAGED PROACTIVELY — FLY-AUDIT Monthly/Weekly, matched standing precedent (2026-09-07 10:09)
+Found via `sprint-truth.py`'s unmilestoned count (2→4, both created ~09:20 PT today). Milestone
+Ongoing, Sprint `Q - Recurring Audits`, Status Sprint Backlog — matches every prior FLY-AUDIT issue
+(#1486, #1712, #1681, #1643) exactly, no judgment call needed. **Hit a real GitHub API secondary
+rate limit mid-fire** (shared cohort-wide, not this seat's own quota — `rate_limit` showed
+5000/5000 remaining while `gh project item-list`/`field-list` both failed) — worked around it by
+using smaller single-issue/single-field GraphQL queries instead of the heavy full-board pulls,
+which stayed under whatever threshold was tripping. Verified both landed via the same light
+queries (milestone + Sprint + Status all correct) and confirmed no collateral damage (#1723's
+unrelated Sprint value unchanged). `sprint-truth.py`'s own board pull failed on the same limit at
+verification time — noted honestly as unmeasured, not read as a false clear; the per-issue checks
+already confirm the fix. Board mechanics only, posted triage comments on both issues.
 
 ## ✅ #1386 CRITERION-3 RULING — verified CXO's fact-check, ruled to re-run at MVP close (2026-09-06 22:22)
 Exec relayed PM's re-scope of criterion 6 (fires at MVP close, not now) and the fresh-run
