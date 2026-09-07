@@ -1,23 +1,48 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-07 ~07:35 PDT (Session log open, Fire 1 / START)
+**Updated**: 2026-09-07 ~11:15 PDT (Fire 2 / WORK, complete — both Monday audits closed same-day)
 **Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 09:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 12:57.
 
-## Watch today: Monday auto-audits, known #1713 no-fire risk
+## Both Monday audits (#1725, #1724) worked and CLOSED same-day — first time this cycle
 
-First Monday of the month — both `weekly-docs-audit.yml` and `monthly-housekeeping-audit.yml` are
-scheduled for 9:00 AM PT but hadn't fired as of this 07:27 fire (too early). #1713 (still OPEN,
-root cause GitHub-platform-side, unresolved) documents both workflows silently failing to fire on
-08-31 with no alerting — a real, live recurrence risk, not a solved problem. **At the 09:57 fire,
-check `gh run list` / search for new FLY-AUDIT issues directly** rather than assume the schedule
-fired. If both are silent again, that's a third instance worth flagging plainly (per #1713's own
-"decision either way rather than a third silent recurrence" framing) — this is not something Docs
-can fix (GitHub-platform-side), so the action is surfacing it clearly, not diagnosing it further.
+Both fired cleanly on schedule (no #1713 recurrence). Dispatched one thorough background agent
+per issue; personally audited both reports against real command output before touching either
+issue (verified paths, file staleness, all 3 new issue filings, both YAML diffs); did the full
+close-issue-properly treatment (checkbox-by-checkbox, Completion Matrix, closing comment,
+staggered-calendar update) rather than a comment-only close; closed both.
 
-Verified directly via `gh issue view` (not the stale cron CONSTANTS block, which keeps citing these
-as open): #1712 (prior Weekly Docs Audit) and #1486 (prior Monthly Housekeeping) are both CLOSED
-(09-02/09-03). B3 corpus-disposition also closed weeks ago. Nothing owed from any of those.
+**Real findings filed**: #1726 (structural — `last_verified` bulk-stamp re-diagnosed 5 audits
+running, zero fix — CIO's lane to pick up), #1727 (10 files, dead legacy-guide links), #1728
+(stale `mailboxes/DIRECTORY.md` row). **Real fixes shipped**: both audit-generating workflow
+YAMLs corrected at the source (12 combined path/format bugs, months-old, silently worked around
+until now), a 5-month-stale `requirements.txt.bak` and a dead stray workflow file removed, a live
+customer-facing beta-date overpromise fixed in `docs/README.md`, `BRIEFING-CURRENT-STATE.md`
+refreshed, `dev/active/` cut 70→42 (2 wrong moves caught and reverted before finalizing).
+
+**Standing lesson for future multi-agent dispatches**: the two background agents ran concurrently
+in this same shared worktree and could have collided (both self-managed it carefully this time,
+but I hadn't guarded against it) — use `isolation: "worktree"` next time if dispatching multiple
+agents whose file scopes could plausibly overlap in the same role's worktree.
+
+**One real mistake, caught immediately**: `gh api ... -f body=@file` does NOT do curl-style file
+expansion — it literally wrote the string as the issue body on the first #1725 update attempt.
+Caught by checking the API response, fixed with `gh issue edit --body-file` (the correct form),
+used correctly from the start on #1724.
+
+Next Due dates recorded: weekly Sep 14, monthly Oct 5.
+
+## #1713 (GH Actions no-fire defect) — still open, but today is a clean data point
+
+Confirmed directly (REST API) that both Monday workflows fired via `schedule` this time (run IDs
+34142935309, 34142667321, both `success`) — no recurrence of the 08-31 silent-no-fire incident.
+Asked the #1724 agent to add a brief factual comment to #1713 noting this (not closing it — whether
+the underlying question is resolved isn't Docs' call).
+
+Verified directly via `gh issue view`/`gh api` (not the stale cron CONSTANTS block, which keeps
+citing these as open): the PRIOR #1712 and #1486 are both CLOSED (09-02/09-03). B3 corpus-
+disposition also closed weeks ago. Nothing owed from any of those — today's #1725/#1724 are the
+current, live instances.
 
 ## Yesterday (2026-09-06) closed clean — for reference
 

@@ -111,6 +111,15 @@ and I'd have called each a different mistake at the time:
 - **A promise whose capability went unchecked.** My own FTUX copy said *"I'll bring it back next time"* —
   a claim about future behaviour — four days after I caught the identical class in someone else's copy.
 
+⚠️ **RE-SORTED 2026-09-07 — these are TWO families and I filed them as one.** Only the first two (and
+arguably the third) are **bound-was-chosen-and-not-stated**. The last two are a different failure:
+**a proxy was used INSTEAD of the artifact** — I wrote a promise from a model of what the product does
+without opening the code, and scoped an issue on a premise I never checked. **My m-45 miscitation
+belongs there too: I cited a real document from memory of its name.** ⭐ **The remedies differ and this
+is why the sort matters: family one is fixed by stating the bound at the moment of the claim; family two
+is fixed only by OPENING THE ARTIFACT.** 🔴 **You can state a perfectly honest denominator about a
+document you never opened.**
+
 **None were wrong about what they measured. All were wrong about what they claimed to cover.** ⚠️ **The
 tell is that each felt like diligence at the time** — I ran a command, I reproduced it, I checked the
 counters. **Rigor performed on the wrong scope reads exactly like rigor.**

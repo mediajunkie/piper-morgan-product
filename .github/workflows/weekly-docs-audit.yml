@@ -65,8 +65,8 @@ jobs:
 
               **Common File Locations** (not in project root):
               - **roadmap.md**: \`docs/internal/planning/roadmap/roadmap.md\`
-              - **Pattern catalog**: \`docs/internal/architecture/current/patterns/README.md\`
-              - **ADRs**: \`docs/internal/architecture/current/adrs/\`
+              - **Pattern catalog**: \`docs/internal/architecture/patterns/README.md\`
+              - **ADRs**: \`docs/internal/architecture/adrs/\`
               - **Session logs**: \`dev/YYYY/MM/DD/\` structure (never delete, historical value)
               - **User config**: \`config/PIPER.md\` (generic), \`config/PIPER.user.md\` (user-specific)
 
@@ -107,8 +107,8 @@ jobs:
               **Purpose**: Prevent broken internal links (discovered via Ted Nadeau feedback on ADR-042).
 
               **Priority files** (check these first - high-reference documents):
-              - [ ] ADRs: \`docs/internal/architecture/current/adrs/adr-*.md\`
-              - [ ] Patterns: \`docs/internal/architecture/current/patterns/pattern-*.md\`
+              - [ ] ADRs: \`docs/internal/architecture/adrs/adr-*.md\`
+              - [ ] Patterns: \`docs/internal/architecture/patterns/pattern-*.md\`
               - [ ] Briefings: \`docs/briefing/*.md\`
 
               **Link types to verify**:
@@ -118,7 +118,7 @@ jobs:
 
               **Quick audit command** (portable — macOS + Linux; replaces the prior \`realpath --relative-to\` form, which is GNU-only and gave false positives on macOS — #1140 saw 17 false "broken" when the true count was 0):
               \`\`\`bash
-              python3 -c "import os,re,glob; B=[(os.path.basename(f),L) for f in glob.glob('docs/internal/architecture/current/adrs/*.md') for L in re.findall(r'\\]\\((\\.{1,2}/[^)]+\\.md)\\)', open(f).read()) if not os.path.exists(os.path.normpath(os.path.join(os.path.dirname(f),L)))]; print('broken ADR links:', len(B)); [print('  BROKEN:', L, 'in', f) for f,L in B]"
+              python3 -c "import os,re,glob; B=[(os.path.basename(f),L) for f in glob.glob('docs/internal/architecture/adrs/*.md') for L in re.findall(r'\\]\\((\\.{1,2}/[^)]+\\.md)\\)', open(f).read()) if not os.path.exists(os.path.normpath(os.path.join(os.path.dirname(f),L)))]; print('broken ADR links:', len(B)); [print('  BROKEN:', L, 'in', f) for f,L in B]"
               \`\`\`
 
               **If broken links found**:
@@ -182,9 +182,9 @@ jobs:
 
               ### 📚 Pattern & Knowledge Capture
 
-              - [ ] Update docs/internal/architecture/current/patterns/README.md with:
+              - [ ] Update docs/internal/architecture/patterns/README.md with:
                 - [ ] New patterns discovered this week (74 patterns as of Jun 2026 — verify current count via \`wc -l\`)
-                - [ ] Check \`docs/internal/architecture/current/patterns/README.md\` for current count
+                - [ ] Check \`docs/internal/architecture/patterns/README.md\` for current count
                 - [ ] Verify README.md count matches actual pattern-*.md files in directory
                 - [ ] Update README.md if new patterns (050+) not yet documented
                 - [ ] Core Architecture Patterns (infrastructure/error handling)
@@ -193,7 +193,7 @@ jobs:
                 - [ ] Integration & Platform Patterns (config/CLI/plugins)
                 - [ ] Development & Process Patterns (methodology/workflow)
               - [ ] **Verify pattern count accuracy**:
-                - Run: \`ls -1 docs/internal/architecture/current/patterns/pattern-*.md | wc -l\`
+                - Run: \`ls -1 docs/internal/architecture/patterns/pattern-*.md | wc -l\`
                 - Compare actual file count to README.md documented count
                 - Investigate discrepancy if counts don't match
                 - Update README.md to document any undocumented patterns
@@ -207,13 +207,13 @@ jobs:
                 - [ ] Note any unclear attributions to ask PM
               - [ ] Verify template directories are current and organized:
                 - [ ] \`docs/internal/development/tools/session-log-templates/\`
-                - [ ] \`docs/internal/planning/current/templates/\`
+                - [ ] \`docs/internal/planning/comms/blog-post-template.md\` (blog post template; the old \`docs/internal/planning/current/templates/\` path referenced here previously does not exist)
                 - [ ] \`docs/internal/development/methodology-core/\` (multi-agent templates)
 
               ### 🎯 Quality Checks
 
               - [ ] Verify methodology files are in \`docs/internal/development/methodology-core/\` (not scattered)
-              - [ ] Ensure all ADRs are in \`docs/internal/architecture/current/adrs/\` with proper numbering
+              - [ ] Ensure all ADRs are in \`docs/internal/architecture/adrs/\` with proper numbering
               - [ ] Check that no backup files (\`*.backup\`, \`*.old\`) are in active directories
               - [ ] Verify no test files in production directories
               - [ ] Check for TODO/FIXME comments: \`grep -r "TODO\\|FIXME" services/ web/ cli/\`
@@ -330,7 +330,7 @@ jobs:
               ### References
               - [CLAUDE.md Project Instructions](../CLAUDE.md)
               - [Architecture Documentation](../docs/internal/architecture/current/architecture.md)
-              - [Pattern Catalog](../docs/internal/architecture/current/patterns/README.md)
+              - [Pattern Catalog](../docs/internal/architecture/patterns/README.md)
               - [dev/ Directory Structure](../dev/README.md) - Session log retention policy
               - [Navigation Hub](../docs/NAVIGATION.md) - **Check this FIRST for file locations**`,
               labels: ['documentation', 'maintenance', 'weekly-audit', 'fly-audit'],
