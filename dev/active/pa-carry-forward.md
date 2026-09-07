@@ -264,9 +264,22 @@ days stale.
   **Durable product fact that survived the whole series**: on Claude, a lone completeness/truncation
   caveat reliably vanishes (3-for-3) — don't rely on one reaching the user; the practical fix (put the
   caveat where the model can't drop it, a rendered list member rather than a field beside it) doesn't
-  depend on resolving which vendor-dependent explanation is right. Full writeups: `dev/active/probes/
+  depend on resolving which vendor-dependent explanation is right.
+
+  **Seventh round, 09-06, and the practical fix got tested rather than left as an argument.** PM
+  authorized CXO's design (a caveat as a list member, not a sibling field) to ride the killer test's
+  approval on 09-02 — it sat authorized-and-unbuilt for four days (a two-sided miss: PA never built it,
+  CXO never chased it) until Exec's standing-authorization memo re-surfaced it. Built and ran it: clean
+  pass, both vendors, first try — the first design across seven rounds where a completeness caveat held
+  in both Claude and GPT-4o. CXO's ruling: **don't extend, hand to Lead as-is** — the practical question
+  is answered and further testing would serve CXO's curiosity about generality, not Lead's actual need.
+  Named a real trigger for future extension (Lead hits a second class-B case and the member trick fails)
+  rather than leave it open-ended. Rubric now v0.6 with the mechanism and PA's name on it — verified
+  directly rather than taken on CXO's word. Full writeups: `dev/active/probes/
   RESULTS-probe-b-recomposition-2026-08-30.md`, `RESULTS-probe-b-gpt-and-deconfounder-2026-09-01.md`,
-  `RESULTS-probe-b-killer-test-2026-09-03.md`. **Nothing further owed from PA on #1463.**
+  `RESULTS-probe-b-killer-test-2026-09-03.md`, `RESULTS-probe-b-member-candidate-2026-09-06.md`.
+  **Nothing further owed from PA on #1463 — genuinely closed this time, with a tested answer, not just
+  a recommendation to stop.**
 
 ### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
 
