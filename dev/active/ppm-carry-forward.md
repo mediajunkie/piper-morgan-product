@@ -1,10 +1,27 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-06 19:22 PT (WORK). **Still watching**: #1386 — **only criterion 6
-(PM sign-off) genuinely remains open**; 2/4/5 confirmed closed, 1 text-stale but functionally
-satisfied. **#1688's overrule call also still open** — four full days with no PM response now,
-no urgency attached (build sits harmlessly behind a flag either way), carrying forward.
+**Last rewritten**: 2026-09-06 22:22 PT (STOP). **⚠️ #1386 framing CORRECTED today — do not use
+the old "only criterion 6 remains" shorthand.** PM re-scoped the gate: **criteria 3 and 6 fire at
+MVP milestone close** (now `due_on` 2026-10-30, verified via GitHub API); **criteria 2, 4, 5
+re-run fresh at that point** — their evidence is point-in-time and has expired (16+ days, multiple
+deploys since each was verified). Only **criterion 1** stands unqualified (text-stale, functionally
+satisfied, not artifact-dependent). **#1688's overrule call also still open** — four full days with
+no PM response, no urgency attached, carrying forward.
+
+## ✅ #1386 CRITERION-3 RULING — verified CXO's fact-check, ruled to re-run at MVP close (2026-09-06 22:22)
+Exec relayed PM's re-scope of criterion 6 (fires at MVP close, not now) and the fresh-run
+requirement for criteria 2/4/5 (evidence perishes as the deployed artifact changes). CXO caught a
+real gap: criterion 3 (my own co-authored scenarios with CXO) was left off that list as
+"definitional," but its own checklist text says each scenario was "executed against the deployed
+Fly artifact (2026-07-12)" — the SAME point-in-time shape as 2/4/5, and actually the *oldest*
+evidence in the gate (15 weeks at MVP close vs ~10 for criterion 2). **Verified directly against
+#1386's own text before ruling** rather than trust either account. **Ruled: criterion 3 joins the
+fresh-run set** — the scenario definitions stay as-is (genuinely durable), only the pass/fail
+execution evidence needs re-running against whatever's deployed at MVP close. Posted on #1386
+itself and sent to Exec/CXO/PM (`073437d5b`), verified landed. Also fixed a small factual staleness
+in my own `release-model.md` (said "no fixed date set" for MVP close; it now has one, `due_on`
+2026-10-30, verified via GitHub API) — committed separately (`988c0382a`).
 
 ## ✅ #1723 TRIAGED PROACTIVELY — GitHub operations Protocol umbrella, matched #1709's precedent (2026-09-06 19:22)
 Found via `sprint-truth.py`'s unmilestoned count (2→3). Arch's own architecture cleanup (typed
