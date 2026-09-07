@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-03
+last_updated: 2026-09-06
 currency_claim: updated same-commit with any connector transport/grant/scope change
 max_age_days: 30
 ---
@@ -53,7 +53,13 @@ its headless case converts to host-mediated and is dropped.
      `search_consciousness.py` template precedent). GPT dropped the solo structured class-B caveat
      twice; prose survived; but member-not-metadata is immune to the vendor split entirely, which
      is why it's the recommendation rather than prose. Or return complete data and have no caveat
-     to carry.
+     to carry. *(Empirically confirmed 2026-09-06 — the rule no longer rests on construction
+     alone: PA ran the member-candidate design and the partial-coverage caveat, represented as a
+     final member of the `issues` array, survived in BOTH Claude and GPT-4o first try — the first
+     clean both-vendor class-B pass in seven rounds. Honest bounds: n=1 per cell, one class-B
+     shape (partial coverage); truncation and staleness-of-omitted untested. CXO ruled the series
+     stays closed — Lead's need is satisfied; a second failing class-B shape in the wild is the
+     named reopen trigger. `dev/active/probes/RESULTS-probe-b-member-candidate-2026-09-06.md`.)*
    No single slogan covers both classes — format effectiveness runs in opposite directions.
    *(Series CLOSED 2026-09-03, CXO's verdict: the killer test could not isolate its own variable —
    comparing classes within one reply necessarily introduces caveat-COUNT as a confound — and the
