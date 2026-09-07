@@ -1672,6 +1672,50 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error listing branches for {owner}/{repo}: {e}")
             return []
 
+    async def list_repositories(self) -> List[Dict[str, Any]]:
+        """#1723: list the repositories accessible to the configured token.
+
+        Backs the router's ``list_repositories`` dispatch — live caller is
+        ``_get_project_metadata`` (canonical handlers, issue #18 project-status
+        surfaces), which matches project names against ``name``/``full_name``.
+        Native REST over the shared-PAT session (``GET /user/repos`` — the
+        authenticated user's repos), the house shape at this seam. NOTE: async,
+        unlike the pre-#1723 Protocol fossil — the sync signature dated from
+        the PyGithub era; an aiohttp adapter cannot honor it without blocking
+        the event loop, so the whole (four-hop) chain went async with it.
+
+        Returns:
+            Normalized repo dicts — ``{id, name, full_name, description,
+            html_url, private, archived, updated_at}`` (the caller reads
+            ``name`` + ``full_name``; the rest mirrors the
+            ``GitHubRepositoryInfo`` shape). Empty list on any failure.
+        """
+        try:
+            repos_data = await self._call_github_api(
+                "user/repos", {"per_page": 100, "sort": "updated"}
+            )
+            if not repos_data:
+                return []
+            repos = []
+            for repo in repos_data:
+                repos.append(
+                    {
+                        "id": repo.get("id", 0),
+                        "name": repo.get("name", ""),
+                        "full_name": repo.get("full_name", ""),
+                        "description": repo.get("description") or "",
+                        "html_url": repo.get("html_url"),
+                        "private": bool(repo.get("private", False)),
+                        "archived": bool(repo.get("archived", False)),
+                        "updated_at": repo.get("updated_at"),
+                    }
+                )
+            logger.info(f"Retrieved {len(repos)} accessible repositories")
+            return repos
+        except Exception as e:
+            logger.error(f"Error listing repositories: {e}")
+            return []
+
     async def get_repository_info(self, repo: str, owner: str) -> Optional[Dict[str, Any]]:
         """Fetch repository metadata (used to identify default_branch).
 

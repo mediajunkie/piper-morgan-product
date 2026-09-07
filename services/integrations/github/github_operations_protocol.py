@@ -72,6 +72,12 @@ class GitHubOperations(Protocol):
 
     async def get_issue_by_url(self, url: str) -> Dict[str, Any]: ...
 
-    def list_repositories(self) -> List[Dict[str, Any]]: ...
+    # #1723 implementation note: declared sync when this Protocol was written
+    # (transcribing the router's then-dispatch, a PyGithub-era fossil); went
+    # async when the MCP adapter implemented it — an aiohttp-backed adapter
+    # cannot honor a sync signature without blocking the event loop. The full
+    # chain (router → domain service → _get_project_metadata) went async in
+    # the same change.
+    async def list_repositories(self) -> List[Dict[str, Any]]: ...
 
     def parse_github_url(self, url: str) -> Optional[Tuple[str, str, int]]: ...

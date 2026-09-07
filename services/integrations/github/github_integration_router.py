@@ -759,13 +759,19 @@ class GitHubIntegrationRouter:
             return await integration.get_recent_activity(days, repository=repository)
         return await integration.get_recent_activity(days)
 
-    def list_repositories(self) -> List[Dict[str, Any]]:
+    async def list_repositories(self) -> List[Dict[str, Any]]:
         """
         List accessible repositories.
 
         Used by: domain/github_domain_service.py
+
+        #1723: async since the MCP adapter implemented it (aiohttp transport;
+        the sync signature was a PyGithub-era fossil), with the standard
+        lazy-init so the token is loaded on first use.
         """
-        return self._get_integration("list_repositories").list_repositories()
+        if not self._initialized:
+            await self.initialize()
+        return await self._get_integration("list_repositories").list_repositories()
 
     async def get_closed_issues(
         self, project: Optional[str] = None, limit: int = 10

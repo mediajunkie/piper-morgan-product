@@ -20,7 +20,6 @@ from services.integrations.github.github_operations_protocol import GitHubOperat
 # the build, and adding a new one is the drift this ratchet exists to block.
 KNOWN_MISSING = {
     "get_issue_by_url": "#1723",
-    "list_repositories": "#1723",
     "parse_github_url": "#1723",
 }
 
