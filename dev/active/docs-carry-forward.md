@@ -1,24 +1,26 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-06 ~22:35 PDT (Fire 6 / WORK, LAST FIRE OF TODAY — omnibus in progress)
-**Session log**: `dev/2026/09/06/2026-09-06-0727-docs-code-log.md` (open, NOT yet DAY-CLOSED).
+**Updated**: 2026-09-06 ~23:55 PDT (Day genuinely closed)
+**Session log**: `dev/2026/09/06/2026-09-06-0727-docs-code-log.md` — `<!-- DAY-CLOSED: 2026-09-06 -->` present.
 **Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57 tomorrow (2026-09-07).
 
-## IN PROGRESS: today's omnibus (background agent dispatched, awaiting completion)
+## Day closed clean — nothing outstanding
 
-This is the day's last fire. Everything else drained (empty mail, both worktrees synced,
-merge-keeper clean). The one remaining day-close task is today's omnibus
-(`docs/omnibus-logs/2026-09-06-omnibus-log.md`) — dispatched to a background agent following the
-full `create-omnibus` skill + methodology-20, per the established pattern (09-04 and 09-05 omnibus
-were both written the same evening at that day's own last fire, ~22:38-22:40 PM, not the next
-morning). 11 session logs today (comms, arch, lead, web, exec, pa, host, cxo, ppm, docs, cio),
-cross-checked against `dev/active/` artifacts — no missing role. **NEXT ACTION when the agent
-completes**: personally audit its report (line count matches, spot-check against direct knowledge
-of today's events — the footer fix, the retired-post catch, the sub-25-API-call standing rule —
-discrepancy-handling check on the CXO/CIO/HOST thread), then commit the omnibus, run Step 10.5 CSV
-reconciliation commit, add the `<!-- DAY-CLOSED: 2026-09-06 -->` marker to this session's own log,
-and only then consider today's duty cycle genuinely closed. Do NOT skip the audit just because a
-background agent reported success — file-on-disk is provisional until verified.
+All 6 fires drained. Day's one real user-facing item: fixed the live blog's footer teaser after
+Comms flagged a retired duplicate post (`piper-morgan-website` commit `a5ae9e7`). Today's omnibus
+(`docs/omnibus-logs/2026-09-06-omnibus-log.md`, 430 lines, HIGH-COMPLEXITY:COORDINATION) went
+through a genuine two-pass audit: first draft came in at 387 lines against methodology-20's stated
+450-600 target ("under 400 = likely under-compressed"), sent back for a real second pass over the
+same 11 sources rather than accepted at face value — the second pass found and fixed two real
+content errors (a missing Arch STOP-fire entry, a mistimed Comms STOP-fire) along the way, landing
+at 430 with the agent's own honest disclosure that further additions would mean padding. Both the
+omnibus commit (`bf7441167`) and the Step 10.5 activity-log CSV reconciliation (`1725a3a7c`) are
+pushed. A new cohort-wide standing rule was noted (sub-25-API-call probes proceed without asking,
+Exec/PM-ratified) — low relevance to Docs' typical work but recorded for completeness.
+
+**First action next fire (06:57 tomorrow)**: sync, mail loop (raw `ls`, not the narrow grep),
+omnibus currency check (should read 09-06 as "yesterday," correct), heartbeat step, otherwise
+genuinely open floor.
 
 ## No unblocked work outstanding right now
 
