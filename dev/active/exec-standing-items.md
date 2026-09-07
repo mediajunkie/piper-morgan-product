@@ -16,7 +16,7 @@ A row with no blocker and a `Filed` date ≥21 days old will be flagged — that
 
 | # | Item | Filed | Status |
 |---|---|---|---|
-| 1 | Ship #059 — PM review + edit before Wed Sep 9 publish | 2026-09-06 | Blocked on PM (draft delivered, audit clean, calendar row committed) |
+| 1 | Weekly Ship 059 — PM review + edit before Wed Sep 9 publish | 2026-09-06 | Blocked on PM (draft delivered, audit clean, calendar row committed) |
 | 2 | Cron rotation — job `5a59f399` armed 09-03, expires ~09-10 | 2026-09-03 | Rotate ~09-08 per the ~48h-before-expiry rule |
 | 3 | Pard — 91 orphaned worktrees / 36 GB cleanup | 2026-09-06 | Blocked on CIO's total content-based sweep (I told Pard to hold rather than run off my 22% sample) |
 | 4 | Pard — rate-limit non-interactive setting, as a harness question | 2026-09-06 | Awaiting Pard; PM ruled *"correct - I do not know"* and it was re-routed rather than closed |
