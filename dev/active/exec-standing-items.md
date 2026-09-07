@@ -25,6 +25,10 @@ A row with no blocker and a `Filed` date ≥21 days old will be flagged — that
 | 7 | Lead — refresh carry-forward + add the refresh to START | 2026-09-06 | Awaiting Lead; PM directive, delivered 09-06 |
 | 8 | Lead's brief decisions 2 and 3 — short test round, #1688 closer-call | 2026-09-06 | Blocked on PM; deploy (decision 1) approved 09-06, these two explicitly not covered |
 | 9 | PM — should the START-side carry-forward refresh become a cohort-wide `duty-cycle-tick` amendment? | 2026-09-06 | Blocked on PM; flagged rather than broadcast off a single-role ruling |
+| 10 | #1386 criterion 3 — re-run at MVP close with 2/4/5 (CXO+PPM correction accepted) | 2026-09-07 | Blocked until MVP close 2026-10-30; carry is now **4 of 6**, not 3 |
+| 11 | Worktree `agent-af6f27891de682d61` — held, my clearance test was inconclusive | 2026-09-07 | Awaiting a tree-level check; other 2 flagged cleared, 88 safe |
+| 12 | 12 tracked CSVs carry CRLF against `.gitattributes` eol=lf (incl. editorial-calendar) | 2026-09-07 | Unowned — needs a repo-wide `git add --renormalize` decision, not a unilateral fix |
+| 13 | Lead — name the proposed test-round six by issue number | 2026-09-07 | Awaiting Lead; blocks PM's decision 2 from being a real choice |
 
 ## Closed
 
