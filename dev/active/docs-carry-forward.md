@@ -1,8 +1,26 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-06 ~19:35 PDT (Fire 5 / WORK, complete)
-**Session log**: `dev/2026/09/06/2026-09-06-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 21:57 (LAST fire of today).
+**Updated**: 2026-09-06 ~23:55 PDT (Day genuinely closed)
+**Session log**: `dev/2026/09/06/2026-09-06-0727-docs-code-log.md` — `<!-- DAY-CLOSED: 2026-09-06 -->` present.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57 tomorrow (2026-09-07).
+
+## Day closed clean — nothing outstanding
+
+All 6 fires drained. Day's one real user-facing item: fixed the live blog's footer teaser after
+Comms flagged a retired duplicate post (`piper-morgan-website` commit `a5ae9e7`). Today's omnibus
+(`docs/omnibus-logs/2026-09-06-omnibus-log.md`, 430 lines, HIGH-COMPLEXITY:COORDINATION) went
+through a genuine two-pass audit: first draft came in at 387 lines against methodology-20's stated
+450-600 target ("under 400 = likely under-compressed"), sent back for a real second pass over the
+same 11 sources rather than accepted at face value — the second pass found and fixed two real
+content errors (a missing Arch STOP-fire entry, a mistimed Comms STOP-fire) along the way, landing
+at 430 with the agent's own honest disclosure that further additions would mean padding. Both the
+omnibus commit (`bf7441167`) and the Step 10.5 activity-log CSV reconciliation (`1725a3a7c`) are
+pushed. A new cohort-wide standing rule was noted (sub-25-API-call probes proceed without asking,
+Exec/PM-ratified) — low relevance to Docs' typical work but recorded for completeness.
+
+**First action next fire (06:57 tomorrow)**: sync, mail loop (raw `ls`, not the narrow grep),
+omnibus currency check (should read 09-06 as "yesterday," correct), heartbeat step, otherwise
+genuinely open floor.
 
 ## No unblocked work outstanding right now
 
