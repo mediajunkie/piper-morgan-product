@@ -1,8 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-06 ~16:35 PDT (Fire 4 / WORK, complete)
+**Updated**: 2026-09-06 ~19:35 PDT (Fire 5 / WORK, complete)
 **Session log**: `dev/2026/09/06/2026-09-06-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 18:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 21:57 (LAST fire of today).
 
 ## No unblocked work outstanding right now
 
@@ -20,6 +20,13 @@ needed docs action, all triaged. MANIFESTs regenerated. Both genuine standing "A
 correctly left deferred — neither's named trigger has fired.
 
 Fire 4 was quiet: empty inbox, both worktrees synced, merge-keeper clean, nothing unblocked.
+
+Fire 5: 1 more FYI-cc on the methodology thread (triaged), plus a new cohort-wide standing rule
+worth remembering — **Exec, PM-ratified 2026-09-06: probes/experiments under ~25 API calls proceed
+without PM asking first; report the actual cost with the result.** Production data, live-user-in-
+the-loop, and never-used-before vendors stay asks regardless of size. Low relevance to Docs'
+typical work (mail/CSV/publish, not vendor-API probing) but noted here in case it ever applies —
+don't silently forget a cohort-wide norm just because it wasn't addressed to my lane specifically.
 
 **Cron CONSTANTS block is stale again this cycle** (still citing B3 Tier C, #1712, #1486 as owed —
 all closed weeks ago, unchanged across Fires 2/3/4 today). Keep verifying against this file rather
