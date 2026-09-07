@@ -28,6 +28,17 @@
 #   UNRESOLVED <path> [<branch>] — detached HEAD, or `git cherry` itself failed. Reported so it is
 #     never silently treated as safe.
 #
+# ⚠️ KNOWN FALSE-POSITIVE CLASS (found live, 2026-09-07, Exec's follow-up check on the first real
+# run): a flagged commit that bundles CODE + a subagent SESSION LOG will read UNMERGED-CONTENT even
+# when the code fully landed, if the log reached <upstream> separately (a different commit, a
+# different file set → a different patch-id, by construction). 2 of the first 3 live flags were
+# exactly this — Exec confirmed by diffing each flagged commit against its same-titled twin on
+# main with the log path excluded, and found the code hunks byte-identical. This script does NOT
+# auto-clear that case — doing so risks masking a real partial loss (code differs, only the log
+# matches) behind a plausible-looking exclusion rule. UNMERGED-CONTENT stays a "needs a human
+# glance" signal, not a verdict; see mailboxes/cio/read/cleared-exec-... (2026-09-07) for the
+# manual diff-based follow-up procedure that DOES resolve it, and re-run this script immediately
+# before any deletion rather than act on a stale run — worktrees can change between runs.
 # ALWAYS prints a denominator line on stderr (m-44/m-51 discipline: never let a partial count stand
 # in for the total) — states how many worktree directories exist on disk vs how many `git worktree
 # list` reported vs how many this run actually classified, and WARNS if they disagree rather than
