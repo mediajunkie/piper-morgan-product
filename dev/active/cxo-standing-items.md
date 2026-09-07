@@ -39,7 +39,7 @@ max_age_days: 31
 
 | Filed | Item | Blocked on | Recheck trigger |
 |---|---|---|---|
-| **2026-07-26** | **#1386 beta gate** | Others. **All CXO criteria (criterion 3) are signed off since 07-12.** Remaining: sprint surface, canonical suite, stability window. | Not mine to drive; watch. |
+| **2026-07-26** | **#1386 beta gate — criterion 3 re-run** | **Exec/PPM** ruling. ⚠️ **Criterion 3 (mine, signed 07-12) is the OLDEST evidence in the gate** — 40 days older than criterion 2, on a July Fly artifact, and **NOT in Exec's 09-06 re-run set (2/4/5).** Proposed adding it; more work for me, and I'd rather that than sign a gate on July evidence. | Exec rules on whether 3 joins the fresh-run set at MVP close. |
 | **2026-07-26** | **Spatial committed-theory review** | **Arch** synthesis. CXO slice folded in verbatim; convergence matches my (b) vote. | Arch publishes. |
 | **2026-09-02** | **#1688 FTUX MCP first-turn copy** | **Lead** — spec delivered 09-02 (`ftux-mcp-first-turn-copy-2026-09-02.md`), posted to the issue. Production-milestoned, build not started. Copy is mine; schema/sequencing Lead's. | Lead builds, or asks for changes. |
 | **2026-09-01** | **#1717 — two voice directives** *(scope changed: my litany prediction was FALSIFIED; these are the two wrinkles Lead's run actually found)* | **Lead** — drafted copy sent 09-01 for the scope-leak and unverified-reassurance directives. MVP, explicitly not urgent. | Lead lands them on whatever touches the floor next. |
