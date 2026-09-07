@@ -107,7 +107,7 @@ The working corpus lives in [the repository](https://github.com/mediajunkie/pipe
 
 ## What's next
 
-Piper Morgan is in invite-only alpha, working toward the **0.9.0 beta** (targeting early September 2026). The release sequence from here: **MVP** (the beta gate — alpha findings that must land before the private beta), then **Production** (required for the public beta), then **Fast Follow**.
+Piper Morgan is in invite-only alpha, working toward the **0.9.0 beta**. There's no fixed target date — the MVP milestone *is* the beta gate, and beta ships when it closes. The release sequence from here: **MVP** (the beta gate — alpha findings that must land before the private beta), then **Production** (required for the public beta), then **Fast Follow**.
 
 Follow the weekly ships at [pipermorgan.ai/shipping-news](https://pipermorgan.ai/shipping-news) to see what's shipping.
 

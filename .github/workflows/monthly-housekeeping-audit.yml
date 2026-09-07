@@ -93,7 +93,7 @@ jobs:
 
               Skills, hooks, and mailbox delivery are living procedures. Monthly correctness sweep:
 
-              - [ ] **Skills audit** (\`ls .claude/skills/ | wc -l\`): Count skills; for each, verify the referenced files still exist at stated paths.
+              - [ ] **Skills audit** (\`find .claude/skills -maxdepth 1 -mindepth 1 -type d | wc -l\` — NOT \`ls .claude/skills/ | wc -l\`, which over-counts by 2: \`SKILLS.md\` and \`SKILL-CREATION-RUNBOOK.md\` live alongside the skill directories and aren't skills; corrected 2026-09-07 per #1712's independent catch of #1486's wrong count): Count skills; for each, verify the referenced files still exist at stated paths.
                 \`\`\`bash
                 # Spot-check: does each skill reference real paths?
                 for skill in .claude/skills/*/; do
@@ -107,11 +107,11 @@ jobs:
                 done
                 \`\`\`
               - [ ] **Mailbox delivery check**: Verify \`mailboxes/DIRECTORY.md\` — each slug maps to a real directory under \`mailboxes/\`. Stale slugs cause silent mis-routing.
+                (NOTE: DIRECTORY.md's Active mailboxes table is markdown-table-shaped (a pipe-delimited row with the slug in backticks), not the older \`- **bold**\` prose shape. The command below matches the CURRENT format; re-check it if DIRECTORY.md's table shape changes again.)
                 \`\`\`bash
-                grep -oP '^- \*\*[^*]+\*\*.*\`mailboxes/[^/\`]+' mailboxes/DIRECTORY.md | \
-                  while read line; do
-                    dir=$(echo "$line" | grep -oP 'mailboxes/[^\`]+')
-                    [ -d "$dir" ] && echo "OK: $dir" || echo "MISSING: $dir"
+                grep -oE '^\| \`[a-zA-Z0-9_ ()-]+\`' mailboxes/DIRECTORY.md | sed -E 's/^\| \`//; s/\`$//' | \
+                  while read -r slug; do
+                    [ -d "mailboxes/$slug" ] && echo "OK: mailboxes/$slug" || echo "MISSING: mailboxes/$slug"
                   done
                 \`\`\`
               - [ ] **DIRECTORY.md ↔ ROSTER.md freshness**: Verify canonical slugs in \`mailboxes/DIRECTORY.md\` match current role slugs in \`docs/briefing/ROSTER.md\`. A slug change in ROSTER.md not echoed in DIRECTORY.md = silent mis-routing.
@@ -130,16 +130,17 @@ jobs:
                 \`\`\`bash
                 grep -r "8080" docs/ --include="*.md"
                 \`\`\`
-                Expected: 9 matches, all in "not 8080" / "legacy port" context. Any NEW match asserting 8080 as correct is a finding.
+                The match count itself drifts upward over time (each month's own omnibus logs and staggered-audit-calendar rows cite prior "port 8080" audit findings, which are themselves legitimate historical/meta references) — don't treat a rising count alone as a finding. Read every match's context: anti-example ("not 8080" / "legacy port") and meta/historical citation (an omnibus log or calendar row describing a past audit) are both clean. Only a NEW match asserting 8080 as the CURRENT correct port is a real finding.
               - [ ] Check for mock fallbacks: \`grep -r "mock_\\|fallback" services/ --include="*.py"\`
               - [ ] Verify AsyncSessionFactory pattern: \`grep -r "DatabasePool" services/ --include="*.py"\` (should be empty)
               - [ ] Check cursor rules exist: \`ls -la .cursor/rules/\` (5 rule files expected)
-              - [ ] Verify pattern count matches README:
+              - [ ] Verify pattern count matches README (path has no \`current/\` segment — corrected 2026-09-07, prior path 404'd):
                 \`\`\`bash
-                ls -1 docs/internal/architecture/current/patterns/pattern-*.md | wc -l
-                grep -c "^| pattern-" docs/internal/architecture/current/patterns/README.md
+                ls -1 docs/internal/architecture/patterns/pattern-*.md | wc -l
+                grep -oE '\\[Pattern-[0-9]{3}' docs/internal/architecture/patterns/README.md | sort -u | wc -l
                 \`\`\`
-              - [ ] Verify ADR naming convention: \`ls docs/internal/architecture/current/adrs/adr-*.md\` (all lowercase, no gaps)
+                (README's bullet-list format is \`- [Pattern-NNN: ...]\`, not a \`| pattern-\` table row — use the grep above, not a table-row match.)
+              - [ ] Verify ADR naming convention (path has no \`current/\` segment — corrected 2026-09-07, prior path 404'd): \`ls docs/internal/architecture/adrs/adr-*.md\` (all lowercase, no gaps; \`adr-index.md\`/\`adr-field-mapping-report.md\` are catalog meta-files, not numbered ADRs — exclude them when counting)
 
               ---
 
@@ -175,10 +176,10 @@ jobs:
               ### 📈 Metrics Snapshot
 
               - [ ] Document count: \`find docs/ -name "*.md" | wc -l\`
-              - [ ] Pattern file count: \`ls -1 docs/internal/architecture/current/patterns/pattern-*.md | wc -l\`
-              - [ ] ADR count: \`ls -1 docs/internal/architecture/current/adrs/adr-*.md | wc -l\`
-              - [ ] Skills count: \`ls .claude/skills/ | wc -l\`
-              - [ ] Active session logs: \`ls dev/active/*log*.md 2>/dev/null | wc -l\`
+              - [ ] Pattern file count (no \`current/\` in path — corrected 2026-09-07): \`ls -1 docs/internal/architecture/patterns/pattern-*.md | wc -l\`
+              - [ ] ADR count (no \`current/\` in path — corrected 2026-09-07; excludes \`adr-index.md\`/\`adr-field-mapping-report.md\` meta-files): \`ls -1 docs/internal/architecture/adrs/adr-*.md | grep -vE 'adr-index|adr-field-mapping' | wc -l\`
+              - [ ] Skills count (excludes \`SKILLS.md\`/\`SKILL-CREATION-RUNBOOK.md\` meta-files, which \`ls | wc -l\` wrongly counts as skills — corrected 2026-09-07 per #1712's independent catch): \`find .claude/skills -maxdepth 1 -mindepth 1 -type d | wc -l\`
+              - [ ] Active session logs (narrowed to the real session-log filename shape — corrected 2026-09-07; the old \`*log*.md\` glob false-positives on trackers like \`*-innovation-backlog.md\`): \`ls dev/active/*-code-log.md 2>/dev/null | wc -l\`
               - [ ] Test count (if available): \`python -m pytest tests/ --collect-only -q 2>/dev/null | tail -3\`
               - [ ] Record metrics in closing comment for trend tracking
 
