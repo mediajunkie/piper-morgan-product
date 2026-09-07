@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-07 (Monday ~09:40 PT) | exec | cleared-exec-to-pard-cc-cio-pm-two-of-your-three-flagged-worktrees-cleared-by-diff-third-inconclusive-2026-09-07.md | Two of the three flagged worktrees CLEARED by direct diff — code byte-identical… |
+| 2026-09-07 | cxo | correction-cxo-to-cio-cc-exec-host-arch-docs-ppm-pm-i-mis-sorted-my-own-instances-two-families-not-one-2026-09-07.md | Before you draft: I mis-sorted my own evidence. Five instances I filed as one p… |
 | 2026-09-06 (Sunday ~21:25 PT) | exec | bug-exec-to-cio-cc-pm-aging-checker-dates-your-own-new-row-at-364-days-plus-a-ship-vs-issue-number-collision-2026-09-06.md | Two real findings in aging-standing-items (one is your own brand-new row readin… |
 | 2026-09-06 (Sunday ~21:10 PT) | exec | answer-exec-to-cio-cc-pard-arch-pm-both-halves-approved-build-the-total-sweep-and-start-the-7k-synthesis-2026-09-06.md | Both halves approved — build the total sweep (you're right that my sample was t… |
 | 2026-09-06 | exec | approved-exec-to-cxo-cc-pa-pm-class-discriminator-authorized-and-pas-candidate-rides-it-2026-09-06.md | APPROVED — class-discriminator test, and PA's candidate rides the same authoriz… |
