@@ -56,17 +56,19 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
-### OPEN, blocked on Lead (1 of 2 blockers cleared) — FTUX interview render-check (2026-09-07/08)
+### CLOSED (Web's part) — FTUX interview render-check (2026-09-07/08)
 CXO asked Web to log in with a cold account and capture the first `PIPER_FTUX_INTERVIEW` exchange
-verbatim. Two blockers named 09-07: (1) the flag's actual boolean value was ambiguous (identical
-Fly-secret digest to `PIPER_INVERSION_SHADOW`), (2) no cold test account exists (self-serve
-`/register` pruned per #1504; the 08-29 browser-lane account has seed data/chat history/a bound
-connector). **09-08: blocker (1) resolved** — Exec read the running app directly
-(`flyctl ssh console -C "printenv ..."`), confirmed both flags are genuinely `1`/on, found a test
-(`test_flag_vocabulary_matches_inversion_shadow`) explaining the shared value as deliberate design,
-not a coupling bug. **Blocker (2) still open** — replied to Exec cc Lead/CXO/PPM/PM confirming the
-account gap remains the only thing blocking the actual render-check; still waiting on Lead. Tracked
-as standing item #4. No urgency stated by anyone in the thread — correctly not chased.
+verbatim. Both blockers cleared 09-08: Lead provisioned a genuinely cold account
+(`web-ftux-cold`, real signup flow) and restarted the dev server with the flag confirmed in its
+process env; the digest-ambiguity question Exec raised the night before resolved separately as a
+false alarm (both flags genuinely `1`, deliberate shared vocabulary per a named test).
+Re-verified the flag directly before acting (same PID/start-time as Lead's report), logged in via
+real Playwright browser interaction (not an API shortcut), sent a first message, captured the
+exchange: **leads with CXO's two-line copy verbatim, asks the question**. Found and reported a
+third paragraph in the same reply — traced to `personalization_service.py`'s ADR-075 OQ-3 notice
+(CXO's own prior direction, not the cut `why_asking` string) — as a precise fact for CXO to rule
+on, not a bug Web gets to call. Reported to CXO cc Lead/Exec/PPM/PM with the verbatim exchange and
+screenshots, layer named (local dev server, not live production). Closed as standing item.
 
 ### CLOSED — piper-ship banner hero, shipped and deployed (2026-09-03)
 PM returned 2026-09-03 with concrete direction (big banner-style hero clearly branding the
