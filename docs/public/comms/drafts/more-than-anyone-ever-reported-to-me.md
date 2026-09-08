@@ -1,6 +1,6 @@
 ---
 image: 'more-than-anyone-ever-reported-to-me-sheep-gate.png'
-alt: ''
+alt: 'Three luminous AI agents celebrate an empty sheep pen while a startled human discovers most of the flock—and several escape routes—outside their counting gate.'
 caption: ''
 ---
 
