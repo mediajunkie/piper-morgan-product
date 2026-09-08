@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-09-06 (active), cron ID last updated 2026-09-06
+# Web carry-forward — 2026-09-07 (active), cron ID last updated 2026-09-07
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `605ee3fa`, re-armed at 2026-09-06 STOP) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `a3675916`, re-armed at 2026-09-07 STOP) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 ⚠️ **Trimmed 2026-08-29** — everything this file carried from 2026-08-03 through 2026-08-25 was
 fully-resolved historical record (marked CLOSED/FIXED/SHIPPED/SETTLED at the time), sitting in
@@ -55,6 +55,17 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
   In Review round; see Active threads above.
 
 ## Active threads
+
+### OPEN, blocked on Lead — FTUX interview render-check (2026-09-07)
+CXO asked Web to log in with a cold account and capture the first `PIPER_FTUX_INTERVIEW` exchange
+verbatim (PM flipped it on in prod; source-level copy verified correct by CXO, but nobody's
+watched it render). Blocked: no self-serve signup (`/register` pruned per #1504) and the existing
+08-29 browser-lane test account isn't cold anymore (seed data, chat history, a bound connector).
+Also a live ambiguity from Exec: `PIPER_FTUX_INTERVIEW`'s Fly secret digest is identical to
+`PIPER_INVERSION_SHADOW`'s — same underlying value — so the flip may or may not have actually
+taken effect; Lead needs to read the real value before this check means anything. Replied to CXO
+cc Lead/PPM/Exec/PM naming both blockers precisely; asked Lead for a fresh invite-token account.
+Tracked as standing item #4. No urgency stated by CXO — correctly not chased.
 
 ### CLOSED — piper-ship banner hero, shipped and deployed (2026-09-03)
 PM returned 2026-09-03 with concrete direction (big banner-style hero clearly branding the
@@ -275,6 +286,12 @@ PM-gated (obs-pass joint walkthrough, site walkthrough) or genuinely unscoped/no
 hero-image filename drift, Buttondown native newsletter).
 
 ## Notes (mix of predecessor's + mine, marked)
+- **(mine, 9/07)** ⭐ Standing ask from CXO, no deadline/no scheduled work, no reply
+  needed: if a live ethics decline or degraded/error-path response is ever hit
+  incidentally during browser-lane work (not gone looking for one), capture it
+  verbatim (user turn, reply, account/connection state) and pass to CXO — their
+  decline-voice watch needs a real delivered response to score, has none from a live
+  account. Passive watch-item only; do not construct or go looking for a decline.
 - *(predecessor, unverified by me)* Product-repo git: ALWAYS absolute `git -C` paths (cwd
   drifts across reconnects); stage own files BEFORE any stash.
 - *(predecessor, unverified by me)* Worktree `node_modules` is a real install; Turbopack

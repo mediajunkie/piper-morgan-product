@@ -1,10 +1,19 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-07 ~16:35 PDT (Fire 4 / WORK, complete)
+**Updated**: 2026-09-07 ~19:35 PDT (Fire 5 / WORK, complete)
 **Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 18:57.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 21:57 (LAST fire of today).
 
-Fire 4 was quiet: empty inbox, everything synced/clean, nothing unblocked.
+Fire 5 was quiet: 1 more FYI-cc closing the methodology thread (m-52 filed), everything else
+synced/clean, nothing unblocked.
+
+## Next fire (21:57) is day-close — omnibus expected
+
+Per this week's established pattern (each day's omnibus written at that day's own last fire,
+~22:38-22:40 PM), expect to dispatch/write today's omnibus at the 21:57 fire. Today's session-log
+roster should include the same 11 roles; also check whether Comms/PM's holiday-Monday content
+queue needs any attention (unlikely, matches the weekend pattern) and confirm the day's #1725/
+#1724 audit-closure work is the day's headline item for the omnibus.
 
 ## Both Monday audits (#1725, #1724) worked and CLOSED same-day — first time this cycle
 

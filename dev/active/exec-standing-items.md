@@ -17,18 +17,21 @@ A row with no blocker and a `Filed` date ≥21 days old will be flagged — that
 | # | Item | Filed | Status |
 |---|---|---|---|
 | 1 | Weekly Ship 059 — PM review + edit before Wed Sep 9 publish | 2026-09-06 | Blocked on PM (draft delivered, audit clean, calendar row committed) |
-| 2 | Cron rotation — job `5a59f399` armed 09-03, expires ~09-10 | 2026-09-03 | Rotate ~09-08 per the ~48h-before-expiry rule |
+| 2 | Cron rotation — job `52fb898d` armed 09-07 21:03, expires ~09-14 | 2026-09-07 | Rotate ~09-12; registry row updated (it had named a July job, 3 rotations stale) |
 | 3 | Pard — 91 orphaned worktrees / 36 GB cleanup | 2026-09-06 | Blocked on CIO's total content-based sweep (I told Pard to hold rather than run off my 22% sample) |
 | 4 | Pard — rate-limit non-interactive setting, as a harness question | 2026-09-06 | Awaiting Pard; PM ruled *"correct - I do not know"* and it was re-routed rather than closed |
 | 5 | CIO — 7k joint recurring-duty synthesis | 2026-09-03 | Greenlit 09-06; CIO drafting, I take a pass before it reaches PM |
 | 6 | CIO — `worktree-safety-check.sh` total sweep (91 of 91, states its denominator) | 2026-09-06 | Awaiting CIO; approved tonight |
 | 7 | Lead — refresh carry-forward + add the refresh to START | 2026-09-06 | Awaiting Lead; PM directive, delivered 09-06 |
-| 8 | Lead's brief decisions 2 and 3 — short test round, #1688 closer-call | 2026-09-06 | Blocked on PM; deploy (decision 1) approved 09-06, these two explicitly not covered |
+| 8 | Lead's brief decision 2 — the test round | 2026-09-06 | Blocked on PM; decision 1 (deploy) and decision 3 (FTUX flip) both ruled 09-07 |
 | 9 | PM — should the START-side carry-forward refresh become a cohort-wide `duty-cycle-tick` amendment? | 2026-09-06 | Blocked on PM; flagged rather than broadcast off a single-role ruling |
 | 10 | #1386 criterion 3 — re-run at MVP close with 2/4/5 (CXO+PPM correction accepted) | 2026-09-07 | Blocked until MVP close 2026-10-30; carry is now **4 of 6**, not 3 |
 | 11 | Worktree `agent-af6f27891de682d61` — held, my clearance test was inconclusive | 2026-09-07 | Awaiting a tree-level check; other 2 flagged cleared, 88 safe |
 | 12 | 12 tracked CSVs carry CRLF against `.gitattributes` eol=lf (incl. editorial-calendar) | 2026-09-07 | Unowned — needs a repo-wide `git add --renormalize` decision, not a unilateral fix |
 | 13 | Lead — name the proposed test-round six by issue number | 2026-09-07 | Awaiting Lead; blocks PM's decision 2 from being a real choice |
+| 14 | Lead — read `PIPER_FTUX_INTERVIEW`'s value; its Fly digest matches `PIPER_INVERSION_SHADOW` | 2026-09-07 | Awaiting Lead; if it resolves false the flip was a no-op |
+| 15 | Web — cold-login capture of the FTUX first exchange (CXO's unknown #3) | 2026-09-07 | Awaiting Web, gated on item 14 so a false flag isn't misread as broken copy |
+| 16 | PM's six-item test round | 2026-09-07 | Blocked on PM; walkthrough delivered, PM sequenced it after tomorrow's blog post |
 
 ## Closed
 
