@@ -32,7 +32,11 @@ _FABRICATED_SUCCESS = [
     "i've",
     "i have created",
 ]
+# Curated per-action copy asserts absence definitely (we know it's unwired).
 _HONEST_DECLINE = ["can't", "cannot", "can not", "not yet", "yet"]
+# #1730: the GENERIC decline is honest via uncertainty instead — it fires for
+# any unmapped emission, including a classifier misread of a wired capability.
+_HONEST_UNCERTAINTY = ["didn't recognize", "may have misread"]
 
 
 @pytest.fixture
@@ -60,7 +64,7 @@ async def test_novel_unwired_action_declines_not_confabulates_1333(intent_servic
     assert isinstance(result, IntentProcessingResult)
     assert result.success is True  # honest decline, not a 422 error
     msg = result.message.lower()
-    assert any(m in msg for m in _HONEST_DECLINE), f"not an honest decline: {result.message!r}"
+    assert any(m in msg for m in _HONEST_UNCERTAINTY), f"not an honest decline: {result.message!r}"
     assert not any(
         m in msg for m in _FABRICATED_SUCCESS
     ), f"confabulated success: {result.message!r}"
