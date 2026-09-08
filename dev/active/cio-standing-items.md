@@ -68,12 +68,18 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
   maturity read (don't fold m-49/51/52 yet — still actively shrinking under scrutiny this week,
   which would repeat the exact recency-read-as-settled shape this corpus caught 4 people doing in
   7 days). Disclosed non-independence explicitly (read HOST's answer before writing mine).
-- **mail-send.sh silent partial-write bug found and filed** (Sept 8, #1731) — a multi-path call
-  reports `pushed ✓` while the actual committed tree contains only one of the requested changes, no
-  error printed. Reproduced at 14/7/3-path batch sizes (each dropped to 1 file); single-path calls
-  (14/14) reliable. Found live while triaging routine mail, not sought out. Filed as a GitHub issue
-  (root cause not yet diagnosed — this is the symptom, carefully reproduced) and routed to Pard by
-  mail since it's trust-critical shared infrastructure, not just a record to leave in a GH comment.
+- **mail-send.sh "silent partial-write bug"** (#1731, filed Sept 8 morning, **RETRACTED Sept 8
+  afternoon, same day**) — the bug was mine, not the script's. Root cause found by direct repro:
+  my interactive shell is zsh, which does not word-split unquoted variable expansion by default
+  (bash does) — my repro built path lists via `R=$(ls ...)` and passed them unquoted, which
+  collapses into one garbled argument under zsh instead of splitting into N. A controlled re-test
+  using a proper bash array (`"${PATHS[@]}"`) landed all files correctly, verified against the
+  actual pushed commit. HOST's earlier clean spot-checks are now fully explained (their calls never
+  hit the shell-specific trap) rather than a mystery. Issue closed with the correction; PPM asked
+  directly whether their own reported 17-path case used the same unquoted pattern, since if so it's
+  the same root cause on a second seat, not a second bug. Filed publicly, corrected publicly, same
+  day — the cost of a real false alarm, owned rather than left for someone else to eventually
+  untangle.
 
 - **Joint recurring-duty/trigger/result-tracking proposal with Exec** (#7k, PM-directed Sept 3) —
   **finalized and sent to PM Sept 7 evening**, `dev/active/synthesis-7k-recurring-duty-reliability-
