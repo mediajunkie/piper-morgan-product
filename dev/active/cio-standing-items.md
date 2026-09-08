@@ -40,8 +40,40 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 | 7a | **Corpus-coherence cycle proposal** (Pattern Sweep Phase 4 finding) | May 9 | ~60% zero-citation rate at both pattern-catalog and methodology-corpus layers, never actioned. **Raised directly to PM in chat 2026-08-31** rather than continue carrying as an un-actioned line — this is exactly the PM/Exec conversation that's been missing. |
 | 7b | **PreCompact hook: locality differentiation (Option 1), genuinely unbuilt** | May 11 (orig.), reverified twice Aug 23 | **Docs corrected my count same-day**: Option 3 ("safe to compact" path) was already present in *substance* (SOFT tier's option (c)), just worded differently than my grep matched — reworded to the memo's exact language so this doesn't false-negative again (`298fd4f89`). Real corrected state: **2 of 3 addressed, 1 genuinely open** — Option 1 (locality differentiation, still the highest-leverage one) needs actual detection-logic design and is deliberately not being rushed, given the hook's own May 10-17 wedge-incident history. Docs owns it as scoped, unblocked work now — not CIO's to chase further. |
 | 7c | **Docs sign-off `git status` inventory pattern** — methodology-corpus candidate | May 10 | Needs HOST + Docs concurrence on framing; never pursued. Low priority. |
-| 7i | **`docs/internal/operations/canonical-ops-recipes.md`** (issue #1277, PM's Ongoing-milestone delegation) | Sept 2 | Partially already covered — CLAUDE.md documents the ANTHROPIC_* env-var server-launch recipe in detail. Needs: verify that coverage + fill 2 remaining gaps (integrations connect-flow map for Slack/Notion/GitHub auth patterns; GH Actions scheduling debug — cron syntax + `gh run list` pattern). Real, scoped, but needs investigation I don't have loaded right now — good subagent candidate next session. |
+| 7i | **`docs/internal/operations/canonical-ops-recipes.md`** (issue #1277, PM's Ongoing-milestone delegation) | Sept 2 | Partially already covered — CLAUDE.md documents the ANTHROPIC_* env-var server-launch recipe in detail. Needs: verify that coverage + fill 2 remaining gaps (integrations connect-flow map for Slack/Notion/GitHub auth patterns; GH Actions scheduling debug — cron syntax + `gh run list` pattern). Real, scoped, but needs investigation I don't have loaded right now — good subagent candidate next session. Now the longest-standing item on this tracker; deferred again today in favor of the flywheel re-eval's genuine urgency, not by default. |
+| 7s | **Flywheel re-evaluation, Q2 (joint with Docs)** — is Layer 2 (5 practices) still canonical vs. superseded by the 52-entry corpus? | Sept 8 | PM-approved cohort-wide re-eval, Arch leading. Docs already did the heavy lifting (read all 52 entries' full text against the 5 practices, found Practice 3 is the real casualty — not simple staleness, its cited elaborating entry m-02 is itself HISTORICAL and was never actually about Practice 3's real content anyway). My own contribution (as the filer of m-43 through m-53) not yet written — deliberately deferred to a later fire today rather than tacked onto an already-massive fire that already shipped 2 skill amendments, 1 methodology filing, and a Q4 answer. Named trigger: this same day's later fire, not indefinite. |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
+
+- **Duty-cycle-tick backlog intake + START-side carry-forward refresh** (Sept 8, PM-ruled via Exec,
+  off PM's own "there is no work / 28 open items" finding) — **shipped same-morning,
+  `duty-cycle-tick` v1.32, commit `9543d5558`.** PM found the flywheel's work-definition excluded
+  the product backlog entirely — Lead's quiet WATCH fires were the procedure executing correctly,
+  not a failure. Task Loop now redefines "drained" to include a backlog-intake check (PPM's
+  eligibility denominator + claim convention, Arch's denominator refinement so a future missing
+  surface announces itself) for build-capable roles. Separately, PM ruled the carry-forward refresh
+  becomes a cohort norm: refresh at START (not just end-of-fire, since the failure mode is the long
+  quiet stretch) AND re-verify each PM-gated row against its actual source (3 surfaces: decisions
+  log, sent/, GitHub) rather than just rewrite it — with an explicit honest caveat in the skill text
+  that the re-verify half is currently prose, not a chokepoint, naming the mechanization gap rather
+  than hiding it. Ruled Exec's own question (edge case or exception to anti-instrument-sprawl?) as
+  edge case — no new artifact/reminder/surface, just a completed definition inside an already-
+  mandatory step.
+- **Methodology-53 filed (Chokepoint vs. Bolt-On)** (Sept 8, HOST's finding while answering Q4) —
+  the design principle behind 4+ shipped mechanisms this week had never been a citable document.
+  Filed with the natural-experiment evidence (HOST's role-health-check pre/post-08-07) and the
+  four instances since (7q, 7r, this morning's backlog-intake amendment, 7k's own diagnostic use).
+- **Q4 flywheel answer sent** (Sept 8, joint with HOST) — agreed with HOST's fold (chokepoint-vs-
+  bolt-on into Practice 3, m-43/44/50 into Practice 4 as named sub-clauses, five practices
+  unchanged in count); added m-53's actual filing rather than just proposing it, plus an evidence-
+  maturity read (don't fold m-49/51/52 yet — still actively shrinking under scrutiny this week,
+  which would repeat the exact recency-read-as-settled shape this corpus caught 4 people doing in
+  7 days). Disclosed non-independence explicitly (read HOST's answer before writing mine).
+- **mail-send.sh silent partial-write bug found and filed** (Sept 8, #1731) — a multi-path call
+  reports `pushed ✓` while the actual committed tree contains only one of the requested changes, no
+  error printed. Reproduced at 14/7/3-path batch sizes (each dropped to 1 file); single-path calls
+  (14/14) reliable. Found live while triaging routine mail, not sought out. Filed as a GitHub issue
+  (root cause not yet diagnosed — this is the symptom, carefully reproduced) and routed to Pard by
+  mail since it's trust-critical shared infrastructure, not just a record to leave in a GH comment.
 
 - **Joint recurring-duty/trigger/result-tracking proposal with Exec** (#7k, PM-directed Sept 3) —
   **finalized and sent to PM Sept 7 evening**, `dev/active/synthesis-7k-recurring-duty-reliability-
