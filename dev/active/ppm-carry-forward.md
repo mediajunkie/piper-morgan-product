@@ -1,15 +1,31 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-07 13:09 PT (WORK). **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-07 19:09 PT (WORK). **#1688's overrule call is RESOLVED — PM flipped
+it ON, executed same evening, remove from cron WATCH FOR at tonight's STOP.** **⚠️ #1386 framing
+CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
 fresh then** (every one is an artifact-execution result and the artifact will change by then).
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
-functionally satisfied, not artifact-dependent). **#1688's overrule call still open** — five full
-days with no PM response, no urgency attached, carrying forward.
+functionally satisfied, not artifact-dependent).
+
+## ✅ #1688 — PM OVERRULED THE HOLD, EXECUTED SAME EVENING (2026-09-07 19:09)
+"Flip ftux" — PM's word, relayed by Exec, executed by Lead same evening (v69 deployed,
+`PIPER_FTUX_INTERVIEW=1` set and verified live, health green). **My HOLD wasn't found wrong** —
+Exec explicit that applying #1658's own test was correct method for the question I had; PM weighed
+a cost the test doesn't price (the hold's cost lands specifically on the first private-beta wave,
+the exact population a cold-start first impression exists for), which is PM's call to make, not
+mine to have anticipated. **Verified independently rather than trust the relay**: checked #1688
+directly (Lead's own comment confirms the deploy + live verification), hit
+`piper-morgan.fly.dev/health` myself (200). Sent an ack naming the real thing worth keeping —
+Exec's consistency-cost flag ("already built" is doing real work in this reasoning; next time it's
+invoked, name it as the same precedent, don't treat it as fresh) — to Exec cc Lead/CXO/Arch/PM
+(`5958bf058`, cc copies `933fd11ef`, both verified landed). **Retiring this watch item — remove
+from tonight's cron re-arm.** Remaining scope on #1688 itself (MCP-surface half, blocked on
+increment-1 infra; cross-session recall stays #1705) is Lead's/architecture's, not mine.
 
 ## ✅ #1691/#1692 BELATEDLY TRIAGED + #1726/#1727/#1728 TRIAGED PROACTIVELY (2026-09-07 13:09)
 Found via `sprint-truth.py`'s unmilestoned count (4→5, then discovered two MORE already-stale
