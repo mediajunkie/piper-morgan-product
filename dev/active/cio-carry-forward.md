@@ -1,63 +1,70 @@
 ---
-last_updated: 2026-09-07
+last_updated: 2026-09-08
 currency_claim: rewritten at every substantive fire (3x/day cadence)
 max_age_days: 1
 ---
 
-# CIO carry-forward — rewritten 2026-09-07 (22:37 STOP, day-closed)
+# CIO carry-forward — rewritten 2026-09-08 (10:37 fire, complete)
 
-**Cron**: `f1ba34e3` · `7 10,16,22 * * *` · armed at 2026-09-07 22:45 STOP (was `cb843371`) ·
-expires ~2026-09-14.
+**Cron**: `f1ba34e3` · `7 10,16,22 * * *` · armed at 2026-09-07 22:45 STOP · expires ~2026-09-14.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
-**Registry**: `dev/active/duty-cycle-registry.tsv` row updated to match.
 
 ---
 
-## ✅ 7k closed — nothing further needed unless PM/Exec follow up
+## ⭐ Today's real shape: PM found the duty-cycle's intake gap, a whole workstream followed
 
-Four days, filed 09-03 to delivered 09-07 night. Final version:
-`dev/active/synthesis-7k-recurring-duty-reliability-2026-09-07.md`, sent directly to PM's inbox
-(cc Exec) after Exec's edit pass. No action pending on my end — if PM or Exec have follow-up
-questions they'll come via mail or chat; nothing to proactively chase.
+PM: *"I am told 'there is no work' but I can see work... something has been lost."* Exec traced it
+to one sentence in `duty-cycle-tick` — the Task Loop's definition of "drained" never included the
+product backlog. Triggered: a flywheel re-evaluation (Arch leading, 5 ESSENCE-shaped questions —
+I'm on Q2 with Docs and Q4 with HOST) plus a same-day intake fix kept explicitly OUT of that larger
+scope. **Both duty-cycle-tick amendments already shipped this morning** (v1.32) — see below.
 
-## Today's shape (2026-09-07, full day)
+## ✅ Shipped this fire
 
-10:37 fire: drafted and sent 7k to Exec for review; corrected methodology-51 per CXO's honest
-re-sort of their own evidence; documented a real false-positive class Exec found in the worktree
-sweep. 16:37 fire: filed methodology-52 (Open It), resolving yesterday's open question about
-whether a "proxy vs. artifact" pattern was genuinely distinct from m-49 — it split further into
-"fold 2 instances into m-49" + "file the remaining 2 as something new." 22:37 fire: incorporated
-Exec's edit pass into 7k and sent the final version to PM, closing the day's headline item; replied
-to a token-expiry routing from Exec, agreeing on substance but declining to unilaterally edit
-Lead's own START procedure.
+- **`duty-cycle-tick` v1.32**: Task Loop backlog intake (build-capable roles; PPM's eligibility
+  denominator + claim convention; Arch's "state the denominator" refinement) + START-side carry-
+  forward refresh/re-verify (PM-ruled cohort norm; honest caveat that the re-verify half is prose,
+  not yet a chokepoint, named directly in the skill text).
+- **methodology-53 filed** (Chokepoint vs. Bolt-On) — HOST found my own design principle had never
+  been a citable document despite shaping 4+ mechanisms this week.
+- **Q4 answered** (with HOST) — agreed with HOST's fold (5 practices, none added), filed m-53
+  rather than just proposing it, ruled against folding m-49/51/52 yet (still shrinking under
+  scrutiny this week).
+- **`mail-send.sh` bug found and filed** (#1731) — multi-path calls silently drop all-but-one path
+  while reporting success. Routed to Pard by mail. Workaround: one path per call.
 
 ## Open, non-blocking
 
-- **7i** — `docs/internal/operations/canonical-ops-recipes.md` (#1277) — real, scoped, deliberately
-  left for its own dedicated pass. This is now the longest-standing item on the tracker with 7k
-  closed — worth actually scheduling rather than continuing to roll forward unexamined.
-- **Standing-items 7a/7b/7c** — 7a raised directly to PM in chat 08-31, no reply yet; 7b is Docs-
-  owned unblocked work; 7c needs HOST+Docs concurrence, low priority.
+- **7s — Q2** (with Docs, is Layer 2 still canonical vs. superseded by the corpus?): explicitly
+  deferred to a **later fire TODAY** — named trigger, not indefinite. Docs already did the heavy
+  lifting; my contribution deserves its own pass.
+- **7i** — canonical-ops-recipes.md (#1277): deprioritized again today in favor of genuine urgency,
+  noted as such, not by default. Now the longest-standing item on the tracker.
+- **Standing-items 7a/7b/7c** — 7a raised directly to PM in chat 08-31, no reply yet; 7b Docs-
+  owned; 7c needs HOST+Docs concurrence, low priority.
 - **Chess-board day-close commit wiring** — second half of PM's cadence ruling. Not built.
 - **`.mcp.json` chrome-devtools symlink** — still pending Pard's host-level half.
 
 ## Watch
 
+- **The flywheel re-eval's remaining threads** (Q1 PPM/Arch, Q3 Arch, Q5 PM-to-rule) — not mine to
+  drive, watch for the synthesis when Arch has all reads in.
+- **#1731** (mail-send.sh bug) — watch for Pard's diagnosis/fix; my own mailbox is clean via the
+  one-path-per-call workaround.
 - **The 1 still-held worktree** (`agent-af6f27891de682d61`) — inconclusive by Exec's diff check,
   correctly held.
-- **Token-watch follow-through** (Lead/Pard implementing option 3 — wire the non-expiring deploy
-  token, keep a whoami check as the monitor) — not mine to build, watching for their result as a
-  possible future 7k citation.
 - **The RACI/responsibility-notation backlog item** (Themis relay, filed 09-02) — still not started.
 
 ## Standing corrections to myself
 
-- **A syntax-checked script is not a tested script.** (recurring.)
-- **Before claiming "I did X" in a memo, check that X is actually true as of the moment of sending**
-  — caught myself about to write "cited in tonight's 7k draft" for a finding that arrived after 7k
-  had already gone to PM. (09-07.)
-- **A colleague's edit pass on a document meant for PM should actually change the document, not
-  just be acknowledged in reply.** (09-07, 7k — both of Exec's fixes landed in the sent version.)
-- **When a long-running item finally closes, check what's now the longest-standing item left** — 7i
-  has been "deliberately deferred" since Sept 2 without a real trigger; worth actually scheduling
-  rather than let deferred-with-reason quietly become deferred-indefinitely. (09-07.)
+- **A syntax-checked script is not a tested script.** (recurring — and today it applied to
+  `mail-send.sh` too: a tool reporting success is not the same as verifying what it actually
+  committed, which is exactly what caught #1731.)
+- **When the day's actual events overtake the planned fire, say so plainly and re-prioritize —
+  don't quietly try to do both the plan and the real event in one already-large fire.** (09-08 — 7i
+  was correctly dropped for the day rather than squeezed in.)
+- **Disclose non-independence explicitly when you've read a co-assignee's answer before writing
+  your own — don't let silence imply an independence you don't have.** (09-08, Q4 — the whole
+  thread this week has been about exactly this discipline.)
+- **A tool's own "success" message is a claim, not a verification — check what actually landed,
+  especially for infrastructure everyone else trusts on sight.** (09-08, mail-send.sh.)
