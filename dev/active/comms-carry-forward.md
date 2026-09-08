@@ -4,7 +4,7 @@
 
 ## Cron
 
-`666546f1`, expression `12 6,9,12,15,18,21 * * *`, re-armed via delete-then-create at this STOP.
+`265df85c`, expression `12 6,9,12,15,18,21 * * *`, re-armed via delete-then-create at this STOP (was `666546f1`).
 
 ## Closed today
 
