@@ -1,8 +1,35 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-07 ~23:45 PDT (Day genuinely closed)
-**Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` — `<!-- DAY-CLOSED: 2026-09-07 -->` present.
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57 tomorrow (2026-09-08).
+**Updated**: 2026-09-08 ~07:45 PDT (06:57 fire, in progress)
+**Session log**: `dev/2026/09/08/2026-09-08-0528-docs-code-log.md` (open; started PM-initiated pre-cron).
+**Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy, **re-armed 07:27 today after Gap-C
+self-heal** (job vanished silently between its last fire and this one — CronList returned "No
+scheduled jobs" despite this fire having just been triggered by it). Expires ~2026-09-15 (7-day
+auto-expiry) — watch for a proactive re-arm before then.
+
+## Flywheel Q2 — my independent read sent; watching for CIO's and the Arch-led synthesis
+
+This morning: published "More Than Anyone Ever Reported to Me" (PM-initiated pre-cron ask),
+proofread clean, live-verified. Medium leg + calendar image-fields gap (flagged by Dispatch-PM,
+"first miss in four") fixed same-fire.
+
+**Q2 (joint with CIO, part of Arch-led flywheel re-evaluation)**: read all 52 methodology entries'
+full text against Layer 2's 5 practices, spot-verified the load-bearing claims directly, and sent
+an independent judgment to Arch cc CIO/Exec/HOST/PPM/CXO/PM before seeing any reply on the thread
+(genuinely independent, per Exec's ESSENCE-style ask). **My core finding**: not clean supersession
+— uneven. Practice 2 (testing) still stands alone. Practices 1/4 have real content-level updates
+in the corpus (m-50 changes what "documented" means, not just adds detail). **Practice 3 is the
+real casualty**: its own cited "authoritative reference" (m-02) is self-disclosed historical and
+was never actually elaborating Practice 3 even before going stale, the entries that do elaborate
+it sit uncited, and m-41 documents the practice's own "session logs" bullet silently broke for
+6/9 roles under automation — a near-failure Layer 2 has never been updated to reflect. Recommended
+Layer 2 become an explicit index (see-also pointers per practice), Practice 3 needing correction
+not just addition, Practice 2 left alone; flagged (not force-categorized) that ~21% of the corpus
+is meta-methodology the 3-layer model has no place for.
+
+**Watch, don't chase**: this is Arch-led, scoped work with a stated end (explicitly not a standing
+duty-cycle item per Exec's memo) — no further action from Docs unless Arch's synthesis asks for
+something specific. Full 52-entry mapping is in hand if requested.
 
 ## Day closed clean — nothing outstanding
 
