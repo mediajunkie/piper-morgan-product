@@ -4,42 +4,35 @@ currency_claim: rewritten at every substantive fire (3x/day cadence)
 max_age_days: 1
 ---
 
-# CIO carry-forward — rewritten 2026-09-08 (10:37 fire, complete)
+# CIO carry-forward — rewritten 2026-09-08 (16:37 fire, complete)
 
 **Cron**: `f1ba34e3` · `7 10,16,22 * * *` · armed at 2026-09-07 22:45 STOP · expires ~2026-09-14.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## ⭐ Today's real shape: PM found the duty-cycle's intake gap, a whole workstream followed
+## ⚠️ #1731 retracted — own the correction, watch for PPM's follow-up
 
-PM: *"I am told 'there is no work' but I can see work... something has been lost."* Exec traced it
-to one sentence in `duty-cycle-tick` — the Task Loop's definition of "drained" never included the
-product backlog. Triggered: a flywheel re-evaluation (Arch leading, 5 ESSENCE-shaped questions —
-I'm on Q2 with Docs and Q4 with HOST) plus a same-day intake fix kept explicitly OUT of that larger
-scope. **Both duty-cycle-tick amendments already shipped this morning** (v1.32) — see below.
+This morning's "mail-send.sh silent partial-write bug" was my own zsh shell not word-splitting
+unquoted variable expansion (bash does; zsh doesn't, by default). Confirmed by direct repro,
+retracted publicly (GitHub issue commented + closed, mail sent to Pard/PPM/HOST/Exec/PM). **Real
+lesson kept**: build multi-path lists as bash arrays (`"${PATHS[@]}"`), never unquoted command
+substitution. **Watch for PPM's reply** on whether their own 17-path case used the same pattern —
+if yes, same root cause, fully closed; if genuinely different, something else may be real and
+needs a fresh look.
 
-## ✅ Shipped this fire
+## Today's shape so far (2026-09-08)
 
-- **`duty-cycle-tick` v1.32**: Task Loop backlog intake (build-capable roles; PPM's eligibility
-  denominator + claim convention; Arch's "state the denominator" refinement) + START-side carry-
-  forward refresh/re-verify (PM-ruled cohort norm; honest caveat that the re-verify half is prose,
-  not yet a chokepoint, named directly in the skill text).
-- **methodology-53 filed** (Chokepoint vs. Bolt-On) — HOST found my own design principle had never
-  been a citable document despite shaping 4+ mechanisms this week.
-- **Q4 answered** (with HOST) — agreed with HOST's fold (5 practices, none added), filed m-53
-  rather than just proposing it, ruled against folding m-49/51/52 yet (still shrinking under
-  scrutiny this week).
-- **`mail-send.sh` bug found and filed** (#1731) — multi-path calls silently drop all-but-one path
-  while reporting success. Routed to Pard by mail. Workaround: one path per call.
+10:37 fire: PM found the duty-cycle intake gap; shipped both requested amendments (backlog intake,
+carry-forward refresh+re-verify) same-morning; filed m-53 (chokepoint-vs-bolt-on, HOST found it had
+never been documented); answered Q4 (with HOST). 16:37 fire: retracted #1731 same-day; answered Q2
+(with Docs), reconciling it with Q4's sub-clause proposal (m-53 goes into Practice 3 specifically).
 
 ## Open, non-blocking
 
-- **7s — Q2** (with Docs, is Layer 2 still canonical vs. superseded by the corpus?): explicitly
-  deferred to a **later fire TODAY** — named trigger, not indefinite. Docs already did the heavy
-  lifting; my contribution deserves its own pass.
-- **7i** — canonical-ops-recipes.md (#1277): deprioritized again today in favor of genuine urgency,
-  noted as such, not by default. Now the longest-standing item on the tracker.
+- **7i** — canonical-ops-recipes.md (#1277): deprioritized again today, now the longest-standing
+  item on the tracker. Needs an actual scheduled pass, not another day of correct-but-repeated
+  deferral.
 - **Standing-items 7a/7b/7c** — 7a raised directly to PM in chat 08-31, no reply yet; 7b Docs-
   owned; 7c needs HOST+Docs concurrence, low priority.
 - **Chess-board day-close commit wiring** — second half of PM's cadence ruling. Not built.
@@ -47,24 +40,22 @@ scope. **Both duty-cycle-tick amendments already shipped this morning** (v1.32) 
 
 ## Watch
 
-- **The flywheel re-eval's remaining threads** (Q1 PPM/Arch, Q3 Arch, Q5 PM-to-rule) — not mine to
-  drive, watch for the synthesis when Arch has all reads in.
-- **#1731** (mail-send.sh bug) — watch for Pard's diagnosis/fix; my own mailbox is clean via the
-  one-path-per-call workaround.
-- **The 1 still-held worktree** (`agent-af6f27891de682d61`) — inconclusive by Exec's diff check,
-  correctly held.
+- **PPM's #1731 follow-up** — see above.
+- **The flywheel re-eval's remaining threads** (Q1 PPM/Arch, Q3 Arch already filed, Q5 PM-to-rule)
+  — not mine to drive, watch for Arch's synthesis.
+- **The 1 still-held worktree** (`agent-af6f27891de682d61`) — inconclusive, correctly held.
 - **The RACI/responsibility-notation backlog item** (Themis relay, filed 09-02) — still not started.
 
 ## Standing corrections to myself
 
-- **A syntax-checked script is not a tested script.** (recurring — and today it applied to
-  `mail-send.sh` too: a tool reporting success is not the same as verifying what it actually
-  committed, which is exactly what caught #1731.)
-- **When the day's actual events overtake the planned fire, say so plainly and re-prioritize —
-  don't quietly try to do both the plan and the real event in one already-large fire.** (09-08 — 7i
-  was correctly dropped for the day rather than squeezed in.)
-- **Disclose non-independence explicitly when you've read a co-assignee's answer before writing
-  your own — don't let silence imply an independence you don't have.** (09-08, Q4 — the whole
-  thread this week has been about exactly this discipline.)
-- **A tool's own "success" message is a claim, not a verification — check what actually landed,
-  especially for infrastructure everyone else trusts on sight.** (09-08, mail-send.sh.)
+- **A syntax-checked script is not a tested script — and today it was ME who reported a "bug" from
+  an under-tested repro rather than a controlled one.** Re-investigating rather than defending a
+  filed claim, same day, is the actual discipline this whole week has argued for. (09-08.)
+- **When a colleague's result contradicts your own filed finding, re-investigate — don't let the
+  contradiction just sit unexplained next to a still-open issue.** HOST's clean batches didn't fit
+  my theory; chasing that mismatch down is what actually found the real cause. (09-08.)
+- **A public retraction, same day, with the actual mechanism explained, costs less than letting a
+  wrong report age into something people build around.** (09-08, #1731.)
+- **Reconcile parallel answers to related questions actively — don't let two threads (Q2, Q4) each
+  land a plausible but slightly different fix for the same underlying gap.** (09-08 — m-53 into
+  Practice 3 is the reconciliation, not a coincidence of two independent answers.)
