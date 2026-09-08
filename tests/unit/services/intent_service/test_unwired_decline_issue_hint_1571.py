@@ -25,6 +25,7 @@ routing — routing coverage lives in test_unwired_execution_derived_decline_133
 from services.intent_service.unwired_writes import (
     GENERIC_UNWIRED_WRITE_DECLINE,
     UNWIRED_WRITE_DECLINES,
+    generic_unwired_write_decline,
     get_unwired_write_decline,
 )
 
@@ -40,7 +41,10 @@ _FABRICATED_SUCCESS_MARKERS = [
     "i've created",
     "i have created",
 ]
-_HONEST_DECLINE_MARKERS = ["can't", "cannot", "can not", "not yet", "yet"]
+# #1730: the GENERIC decline (which every hint in this file rides on) is honest
+# via UNCERTAINTY — it fires for any unmapped emission, including a classifier
+# misread of a wired capability, so it never asserts absence ("can't … yet").
+_HONEST_UNCERTAINTY_MARKERS = ["didn't recognize", "may have misread"]
 
 _INCIDENT_MESSAGE = "file it in mediajunkie/piper-morgan-product"
 
@@ -74,7 +78,9 @@ class TestIssueLikeFilesFamilyHint:
         monkeypatch.setattr(wd, "wired_chat_actions", lambda: ["create_todo", "list_todos"])
         msg = get_unwired_write_decline("file_issue", original_message=_INCIDENT_MESSAGE)
         assert "create an issue" not in msg.lower()
-        assert msg.startswith(GENERIC_UNWIRED_WRITE_DECLINE)
+        # #1730: the generic now carries the echo, so compare against the
+        # echo-bearing builder output — hint gone, nothing else changed.
+        assert msg == generic_unwired_write_decline(_INCIDENT_MESSAGE)
 
     def test_issue_wording_in_message_triggers_hint(self):
         msg = get_unwired_write_decline(
@@ -88,9 +94,10 @@ class TestIssueLikeFilesFamilyHint:
 
     def test_hinted_copy_keeps_honesty_properties(self):
         # #1231/#1333: still an honest decline, never a confabulated success.
+        # (#1730: generic honesty = uncertainty markers, not absence claims.)
         msg = get_unwired_write_decline("file_issue", original_message=_INCIDENT_MESSAGE)
         low = msg.lower()
-        assert any(m in low for m in _HONEST_DECLINE_MARKERS)
+        assert any(m in low for m in _HONEST_UNCERTAINTY_MARKERS)
         for marker in _FABRICATED_SUCCESS_MARKERS:
             assert marker not in low, f"confabulated-success marker {marker!r}: {msg!r}"
 
@@ -102,7 +109,8 @@ class TestHintScopeIsNarrow:
         msg = get_unwired_write_decline(
             "create_file", original_message="make a new markdown file for my notes"
         )
-        assert msg == GENERIC_UNWIRED_WRITE_DECLINE
+        # #1730: generic-with-echo, no hint appended.
+        assert msg == generic_unwired_write_decline("make a new markdown file for my notes")
 
     def test_non_files_family_curated_copy_unchanged(self):
         # create_milestone is issue-adjacent but NOT files-family: curated
@@ -115,7 +123,8 @@ class TestHintScopeIsNarrow:
     def test_no_message_context_no_repo_no_issue_token_no_hint(self):
         # Files-family action alone, with no issue-like signal at all.
         msg = get_unwired_write_decline("upload_file", original_message="upload the file")
-        assert msg == GENERIC_UNWIRED_WRITE_DECLINE
+        # #1730: generic-with-echo, no hint appended.
+        assert msg == generic_unwired_write_decline("upload the file")
 
     def test_backward_compatible_single_arg_call(self):
         # The pre-#1571 call shape (action only) must behave exactly as before.

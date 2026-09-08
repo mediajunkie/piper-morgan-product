@@ -35,7 +35,13 @@ _FABRICATED_SUCCESS_MARKERS = [
     "i have created",
 ]
 # Substrings that indicate an HONEST decline.
+# Curated per-action copy asserts absence DEFINITELY (for a mapped action we
+# genuinely know it's unwired — #1730 kept these definite on purpose).
 _HONEST_DECLINE_MARKERS = ["can't", "cannot", "can not", "not yet", "yet"]
+# The generic (#1730) speaks in UNCERTAINTY instead — it fires for any unmapped
+# emission, including a classifier misread of a wired capability, so it may not
+# claim the capability is absent.
+_HONEST_UNCERTAINTY_MARKERS = ["didn't recognize", "may have misread"]
 
 
 class TestCuratedDeclineCopy:
@@ -59,11 +65,13 @@ class TestCuratedDeclineCopy:
 
     def test_unknown_action_falls_back_to_generic_honest_decline(self):
         """A novel/unlisted action (the drift gap) still gets an honest, non-confabulating
-        decline via the generic fallback — so 'not on the list' never means 'confabulate'."""
+        decline via the generic fallback — so 'not on the list' never means 'confabulate'.
+        #1730: the generic is honest via UNCERTAINTY (didn't recognize / may have
+        misread), never via a definite absence claim it can't support."""
         msg = get_unwired_write_decline("archive_repository")
         assert msg == GENERIC_UNWIRED_WRITE_DECLINE
         low = msg.lower()
-        assert any(m in low for m in _HONEST_DECLINE_MARKERS)
+        assert any(m in low for m in _HONEST_UNCERTAINTY_MARKERS)
         for marker in _FABRICATED_SUCCESS_MARKERS:
             assert marker not in low
 

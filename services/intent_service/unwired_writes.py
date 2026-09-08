@@ -20,8 +20,10 @@ first fix WAS a hand-maintained `UNWIRED_WRITE_ACTIONS` list fanned onto the
 action-dispatch rail via `_handle_unwired_write`; #1333 retired the list + handler +
 registration as the drift surface Arch flagged.)
 
-SCOPE DISCIPLINE — honest-decline FLOOR only, NO real writes. The decline names the
-capability, says it's not available *yet*, and points to the GitHub alternative.
+SCOPE DISCIPLINE — honest-decline FLOOR only, NO real writes. A curated per-action
+decline names the capability, says it's not available *yet*, and points to the
+GitHub alternative. The GENERIC decline (#1730) does NOT assert absence — see the
+comment on GENERIC_UNWIRED_WRITE_DECLINE below.
 Real connector-backed writes are #1440 (RECONNECT R2; was #1322 Q3 — closed) (a separate later effort). When a real
 handler ships for one of these actions (wired into `_handle_execution_intent` /
 ActionMapper), it stops reaching the else-branch and behaves honestly on its own —
@@ -95,15 +97,98 @@ UNWIRED_WRITE_DECLINES: Dict[str, str] = {
 # Generic decline for any unwired write that lacks bespoke copy (defensive — the
 # handler should always find per-action copy above, but never confabulate even if
 # the set grows without copy being added).
-# #1426 (census D3): the old second sentence — "make the change directly in the
-# relevant tool (e.g. GitHub)" — MISDIRECTED for every non-GitHub-object request
-# (connect-integrations, api-keys, lists…), where the relevant surface is
-# Piper's own Settings/pages. Name both, presume neither.
-GENERIC_UNWIRED_WRITE_DECLINE = (
-    "I can't do that from chat yet — that capability is still on the way. "
-    "Depending on what you're after, it may already be available in Piper's own "
-    "pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub)."
+#
+# #1730 (CXO copy, 2026-09-08): the generic must NOT assert absence. It fires for
+# ANY unmapped emission — including one where the CLASSIFIER misread a request for
+# a capability that IS wired. The system knows "I have no mapping for this
+# emission"; the old copy published "that capability doesn't exist yet" — two
+# different claims, and the second is the one the user acts on (PM hit a false
+# denial for a shipped capability). The per-action map above is the opposite
+# case: for a mapped action we genuinely KNOW it's unwired, so its definite
+# copy stays. Only the generic speaks in uncertainty ("I didn't recognize…",
+# "may have misread") and offers the recovery affordance (the echo — see
+# generic_unwired_write_decline()).
+# #1426 (census D3, preserved verbatim in intent): the old second sentence —
+# "make the change directly in the relevant tool (e.g. GitHub)" — MISDIRECTED
+# for every non-GitHub-object request (connect-integrations, api-keys, lists…),
+# where the relevant surface is Piper's own Settings/pages. Name both surfaces,
+# presume neither.
+_GENERIC_DECLINE_RECOGNITION = (
+    "I didn't recognize that as something I can do from chat — I may have "
+    "misread the ask rather than being unable to do it."
 )
+_GENERIC_DECLINE_RECOVERY = (
+    "If I misread it, try saying it another way. If not, it may already be "
+    "doable in Piper's own pages (Settings, Files, Lists) or in the "
+    "underlying tool (e.g. GitHub)."
+)
+GENERIC_UNWIRED_WRITE_DECLINE = f"{_GENERIC_DECLINE_RECOGNITION} {_GENERIC_DECLINE_RECOVERY}"
+
+# ---------------------------------------------------------------------------
+# #1730 — the echo ("What I heard was: …"), the recovery affordance.
+#
+# A user who sees what we heard can correct a misclassification in one turn;
+# without it they can only rephrase blind. Two safety constraints (CXO's build
+# constraints + the render-path facts):
+#
+# CAP: a pasted-in paragraph would swamp the reply, so the echo is truncated at
+# _ECHO_MAX_CHARS with an honest ellipsis ("…" replaces the terminal period —
+# never a full stop pretending completeness).
+#
+# ESCAPE — layers named: the chat frontend renders bot messages as MARKDOWN
+# with NO sanitizer (web/bot-message-renderer.js: marked.parse() →
+# element.innerHTML; same path in web/static/js/chat.js history render; marked
+# loaded via CDN in templates/layouts/app_shell.html). There is no server-side
+# escaping on this reply path (the #1578/#1581 XSS fixes covered the todos/files
+# TEMPLATE surfaces, not chat). So a verbatim echo would (a) hand user-typed
+# raw HTML to innerHTML and (b) re-parse the user's words as markdown — the
+# #1729 concern; CXO: "rendered as the user's words, not re-parsed". Two-part
+# fix, one per layer:
+#   HTML layer: entity-escape & < > — no raw tag can reach innerHTML. This
+#   holds even in the renderer's DEGRADED fallback (typeof marked ===
+#   "undefined" → raw content into innerHTML), where backslash-escapes alone
+#   would not stop a tag from parsing.
+#   Markdown layer: backslash-escape the remaining ASCII punctuation (the
+#   CommonMark escapable set). marked renders each char LITERALLY — `\*`/`\_`/
+#   backticks don't restyle, and escaped `.`/`:` defeat GFM autolinks. (`;` is
+#   left alone so the entities survive; it has no markdown meaning.)
+# Whitespace runs (incl. newlines) collapse to single spaces so the echo can't
+# open block-level structure mid-sentence.
+# ---------------------------------------------------------------------------
+
+_ECHO_MAX_CHARS = 200
+
+# ASCII punctuation (the CommonMark escapable set !-/ :-@ [-` {-~) MINUS the
+# four handled at the HTML layer or needed by its entities: & ; < >.
+_MD_ESCAPABLE_RE = re.compile(r"([!-%'-/:=?-@\[-`{-~])")
+
+
+def _escape_echo(text: str) -> str:
+    """Escape user text for the chat reply surface — see the layer notes above."""
+    text = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return _MD_ESCAPABLE_RE.sub(r"\\\1", text)
+
+
+def _echo_sentence(original_message: str) -> str:
+    """Build the 'What I heard was: …' sentence, or "" when there's nothing to echo."""
+    heard = re.sub(r"\s+", " ", original_message or "").strip()
+    if not heard:
+        return ""
+    if len(heard) > _ECHO_MAX_CHARS:
+        heard = heard[:_ECHO_MAX_CHARS].rstrip()
+        terminal = "…"  # honest ellipsis: the echo is truncated
+    else:
+        terminal = "."
+    return f'What I heard was: "{_escape_echo(heard)}{terminal}"'
+
+
+def generic_unwired_write_decline(original_message: Optional[str] = None) -> str:
+    """The #1730 generic decline, with the echo inserted after the first sentence
+    when the user's message is available (CXO's copy, verbatim)."""
+    echo = _echo_sentence(original_message or "")
+    if not echo:
+        return GENERIC_UNWIRED_WRITE_DECLINE
+    return f"{_GENERIC_DECLINE_RECOGNITION} {echo} {_GENERIC_DECLINE_RECOVERY}"
 
 
 # ---------------------------------------------------------------------------
@@ -205,6 +290,13 @@ def get_unwired_write_decline(action: str, original_message: Optional[str] = Non
     derived from the wired registry). Deterministic template; no LLM call.
     ``original_message`` is optional — the pre-#1571 single-arg call shape
     behaves exactly as before.
+
+    #1730: the GENERIC path (no bespoke copy) speaks in uncertainty rather than
+    asserting absence, and echoes the user's message (capped + markdown-escaped)
+    as the recovery affordance when ``original_message`` is available. Curated
+    per-action copy is untouched — for a mapped action we genuinely know it's
+    unwired, so its definite wording is honest.
     """
-    decline = UNWIRED_WRITE_DECLINES.get(action, GENERIC_UNWIRED_WRITE_DECLINE)
+    curated = UNWIRED_WRITE_DECLINES.get(action)
+    decline = curated if curated is not None else generic_unwired_write_decline(original_message)
     return decline + _issue_like_files_family_hint(action, original_message)
