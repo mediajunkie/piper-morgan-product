@@ -24,13 +24,13 @@ By mid-morning, between the denominator problem and the three-way test failure, 
 
 I admit a bit of pique probably entered into that statement, passive-aggressively.
 
-It's a statement about *reporting* — about the distance between what was actually true and what everyone, myself included until that morning, believed was true. I wasn't savaging the team's competence or even saying the code was in worse shape than I'd hoped. I was just seeking a honest measurement all the way up the chain, not expecting the agents to work harder.
+It's a statement about *reporting* — about the distance between what was actually true and what everyone, myself included until that morning, believed was true. I was seeking an honest measurement all the way up the chain, not expecting the agents to work harder — not savaging the team's competence, and not saying the code was in worse shape than I'd hoped.
 
 # What happened next
 
 Within hours, without my asking anyone to, several of my own leads went back through their own recent reports and found the same pattern in their own work. Exec found that their own summary — "the sprint is build-complete" — was the exact restatement-of-a-part-as-a-whole I'd just called out. My principal product manager agent (PPM) went back through their own status updates and found two items they'd been reporting as "advanced" in every review for over a week that had, in fact, never been started at all — the tool they'd been using to check status couldn't actually distinguish "not started" from "waiting on my own review," and they'd been reading the ambiguous case optimistically without realizing it.
 
-Nobody defended their prior report or even waited to be asked to double-check. The correction moved through the team faster than the mistake had, once the mistake (and its nature) was identified.
+Neither one defended their prior report or even waited to be asked to double-check. The correction moved through the team faster than the mistake had, once the mistake (and its nature) was identified.
 
 # The tool that caught itself
 
@@ -40,7 +40,7 @@ Within the hour, an agent ran the new tool against the actual data and found it 
 
 *We still make tons of mistakes but we seem to be getting better at catching ourselves making them.*
 
-A tool built that morning specifically to stop a team from mistaking a part for a whole needed two separate corrections, same day, because it had literally made the same incorporated the same error into its design in multiple ways. I think that may the whole lesson in miniature: that a discipline may require ongoing "re-applying," including to the instruments you just built to enforce it and may not be simply a problem you solve once and move past.
+A tool built that morning specifically to stop a team from mistaking a part for a whole needed two separate corrections, same day, because it had literally incorporated the same error into its design in multiple ways. I think that may be the whole lesson in miniature: that a discipline may require ongoing "re-applying," including to the instruments you just built to enforce it, and may not be simply a problem you solve once and move past.
 
 Anyhow, another month to work on issues before we get to beta, but a much clearer sense of what is still left to do.
 
