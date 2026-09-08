@@ -210,33 +210,22 @@ days stale.
       Code/presumably a fourth) name PA as owner; CXO+PPM are the "directional trifecta" who must
       read-and-respond on ESSENCE by Wed 09-02, not PA. PA's job is to bring this into the next BYOC
       conversation with PM as context, not to execute on the review itself.
-  - 🔴 **PPM's ESSENCE trifecta response, 08-30 — a real open question directly inside PA's BYOC
-    lane, not PA's to resolve but essential context for the next conversation.** PPM concurred with
-    ESSENCE overall but found, checking milestone state rather than guessing: **#1462 (the hosted-MCP
-    epic) is still milestoned Production — i.e., scheduled AFTER MVP/beta — while ESSENCE states "all
-    new build effort goes to the MCP/BYOC path" as a present-tense operating fact.** The board hasn't
-    caught up to the ratification. PPM explicitly declined to resolve this unilaterally (*"I'd want
-    Arch's or PM's read"*) and asked for it to be recorded as a decision, not left as an implication.
-    Two readings PPM named: (a) MVP stays web-chat-scoped as designed, MCP genuinely belongs in
-    Production since the alpha population is still on web-chat today; (b) some of #1462's early
-    phases (build-independent work, the identity boundary) move into MVP now, so "beta" isn't reached
-    by finishing a surface the product is moving away from. PPM's own weak lean is (a). **This is the
-    live sequencing question sitting directly under the BYOC conversation PA is steering** — whichever
-    way it resolves shapes what "next steps" for BYOC even means.
-  - **SHARPENED 08-30 — Arch's A3 trifecta synthesis (delivered 4 days early) frames this as one of
-    exactly three explicit PM decisions**, not left as an open finding: *"That's a question about
-    what beta IS, which is yours."* Arch's own lean matches PPM's — option (a), record it explicitly
-    in `decisions.log` + a note on #1462 rather than let C5 sequencing resolve it by implication, and
-    revisit at the beta gate. The one architectural fact stated without deciding: PDR-006's fail-
-    closed identity boundary gates the *next-rung* population regardless of which milestone it lives
-    in — so the real question is what "beta" is defined to include, not a technical dependency. Full
-    doc: `docs/internal/architecture/reviews/2026-08-architectural-review/trifecta-synthesis.md`
-    (also carries PM decisions 1 and 3 — the "colleague" headline fork and ESSENCE's ratification
-    itself — neither in PA's lane, noted only for completeness). **Still awaiting PM's actual ruling**
-    — bring whichever way it lands into the next BYOC conversation. CXO added one more data point
-    for whoever answers it (not a vote): #1458 and #1463, PDR-006's own *pre-user* gates, are both
-    milestoned Production — consistent with reading (a) since MCP reaches no users before public
-    beta; under (b) both would need to move too, including CXO's own #1463 work.
+  - ✅ **RESOLVED 08-30, caught stale 09-08 — the milestone/beta-definition question (PPM's reading a
+    vs. b) was decision (2) of the same-day ESSENCE ratification, not left open.** Sat in this file as
+    "still awaiting PM's actual ruling" for 9 days after being ratified — Exec's 09-08 re-verification
+    sweep caught it, not a re-check PA ran itself; verified directly against `decisions.log:1761`
+    rather than take Exec's framing on faith (Exec's own memo only flagged decisions 1/3 as resolved
+    and asked PA to confirm decision 2's status — checking the source directly showed all three
+    landed in one ruling, decision 2 being the one actually in PA's lane).
+
+    **The ratified model, verbatim**: *"MILESTONE RECONCILIATION: MCP work STAYS in the Production
+    milestone, FRONT-LOADED — MCP-path completion is the PUBLIC-BETA GATE. PM's full model restated
+    as law: MVP closure ends alpha and starts invitation-only private beta (v0.9.0); PUB sprint
+    front-loaded; public beta requires MCP path complete; Production milestone closure = 1.0.0."*
+    Matches reading (a), which both PPM and Arch had leaned toward. #1688 moved MVP → Production-front
+    (MCP-path new build, not web-chat convergence); PPM tasked with executing the board move and
+    refreshing a citable release-model doc. **Bring the resolved model into the next BYOC conversation,
+    not the open question** — the framing this file carried until today was wrong by 9 days.
   - ⭐ **PA's July Probe-A sequencing insight paid off concretely, 08-30 — worth having on record.**
     CXO's #1463 BYOC recomposition-rubric work traced the #1425 honesty class in running code and
     found the structured half (`source_failed`) already exists and travels end-to-end
@@ -246,13 +235,17 @@ days stale.
     is your July sequencing point paying off concretely... we got the answer for one class without
     needing the probe at all, by reading code."* Ask went to Lead (emit `source_failed` as a
     structured field in #1688's tool output) — cheap, doesn't need the probe, doesn't block anything.
-    No action for PA; triaged. The recomposition probe itself (Probe B) is still needed for classes
-    that aren't already structured — unchanged status, still gated on the credential question noted
-    elsewhere in this file.
-  - **Thread status, restated**: the connector-architecture sub-thread is fully closed (see above).
-    PM signaled the next topic is "the BYOC skunkworks project itself, next steps" — still PM's
-    timing to initiate, now with ESSENCE.md as the fixed point, plus the milestone question above
-    (crisply framed, PM's ruling pending) as something that conversation may need to actually settle.
+    No action for PA; triaged. ⚠️ **The next two sentences were stale at the point of this re-read too
+    — a second cascade from the same fix, caught in the same pass**: this used to say the recomposition
+    probe "is still needed... still gated on the credential question" and that the milestone question
+    below was "PM's ruling pending." Both wrong as of today — the probe series is `SERIES PERMANENTLY
+    CLOSED` (see the entry right below this one) and the milestone question is resolved (see above).
+    Corrected in place rather than left for a third pass to catch.
+  - **Thread status, restated**: the connector-architecture sub-thread is fully closed (see above); the
+    #1463 probe series is closed (see below); the milestone/beta-definition question is resolved (see
+    above). PM signaled the next topic is "the BYOC skunkworks project itself, next steps" — still PM's
+    timing to initiate, now with ESSENCE.md and the ratified milestone model as its fixed points, not
+    open questions to bring in.
 - ✅ **#1463 recomposition probe (Probe B) — SERIES PERMANENTLY CLOSED, 08-30 through 09-03, CXO's call.**
   Six rounds across four days: Claude-only run (08-30), GPT arm + first deconfounder (09-01, after a
   billing project-mismatch delay), the directive-vs-descriptive hypothesis falsified in both vendors,
@@ -422,27 +415,18 @@ proves you read it, not that you read what it does.
    not on PATH or at common install paths, **and no plugin manifest exists** (`coordination/manifest.json`
    is the async-prompt-queue tracker, unrelated). **The real item is "author a plugin manifest, THEN
    validate"** — a build task, not a command. · public docs page · ChatGPT 5-positive/3-negative test cases.
-2. 🟡 **Probe B — now UPSTREAM of the catalog, and PM-gated on API spend.**
-   Spec: `dev/active/phase0-client-llm-probe-spec-2026-07-30.md`. **Do situation-shaped tool names route
-   worse than object-shaped?** ⭐ **The alias set is that experiment sitting in the codebase** —
-   `what_changed`/`show_changes`/`changes_since` (situation) vs `changes_query` (object). **B's answer
-   decides which of the 12 canonical tool names we pick**, so it precedes the catalog rather than sitting
-   beside it.
-   ⛔ **PM's "yes you may" was scoped to Probe A. B is new API spend — do not extend it silently; ask.**
-   ✅ **CXO's two-audience worry is RESOLVED and does not constrain B**: MCP Tool carries **`name`**
-   (*"Unique identifier"*) **and `title`** (*"human-readable… for display purposes"*) as **separate
-   fields** — verified against the 2025-06-18 spec. B decides `name`; `title` is legibility (CXO's copy).
-   **Still state B's denominator** in the probe: *measures routing for `name`, not legibility of `title`*.
-   ⭐ **Arch's suggestion worth weighing**: the 103 aliases are a **naturally-occurring sample across both
-   name shapes** — B may be answerable partly *from the registry* rather than only in front of it, which
-   would cut the API spend.
-   ⚠️ **Keep schemas identical across arms.** ⚠️ **Rescore by hand, not by tally** — the Probe A scorer was
-   wrong 4× across 5 arms and every error was caught by hand-reading, never by the tally.
-3. **#1458** — pre-live cross-caller state isolation; blocks multi-tenant serving. Not started; belongs
-   with the implementation epic. PPM: don't let epic optimism compress it — the failure is silent and
-   cross-tenant.
+2. ⚠️ **PRUNED 09-08 — abandoned, not confirmed-closed.** The old tool-name-routing "Probe B" (situation-
+   vs-object-shaped names, upstream of a 12-tool catalog, PM-gated on spend that was never asked for).
+   Its own spec file (`dev/active/phase0-client-llm-probe-spec-2026-07-30.md`) no longer exists on disk
+   — checked directly rather than assumed still there — and no trace of this thread anywhere in five
+   weeks of subsequent work (the catalog/#1124 work, ESSENCE, #1463's own — unrelated — "Probe B," the
+   connector architecture). Consistent with the 08-11 prune's own disposition for items with no
+   corroborating evidence: pruned as abandoned, not verified resolved. If it resurfaces, it'll come from
+   a fresher source (PM, a GitHub issue, Lead), not from this stale row.
+3. **#1458** — pre-live cross-caller state isolation; blocks multi-tenant serving. Re-verified 09-08:
+   still `OPEN` on GitHub, matches this row exactly. Not started; belongs with the implementation epic.
+   PPM: don't let epic optimism compress it — the failure is silent and cross-tenant.
 5. **Architecture-diagram discussion** — PM-requested, awaiting a time. `pa-standing-items.md` #2.
    Prep, don't pre-empt: PM asked to discuss, not for a revision.
-6. **#1485** — filed 8/4 (global `slack_app_token` writable by any authenticated user). **Not PA's to
-   implement.** Watch that its audit AC isn't trimmed — the finding was incidental, so the class is
-   unexhausted.
+6. ✅ **#1485 — RESOLVED, re-verified 09-08.** `gh issue view` shows CLOSED 2026-08-13, a month ago,
+   clean — no evidence anywhere since of a trimmed AC or unaddressed class. Nothing further to watch.
