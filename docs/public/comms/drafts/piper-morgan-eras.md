@@ -72,6 +72,6 @@ If this reached you on Medium or LinkedIn, the canonical site is worth the visit
 
 ---
 
-*Next on Building Piper Morgan: more from inside the build — the next piece as the calendar takes shape. [Comms: unscheduled as of 2026-09-08 — verify + fill this tease once PM confirms a pubDate.]*
+*Next on Building Piper Morgan: "Who's Who at Piper Morgan" — eleven agents, one founder, and a straightforward answer to a question a friend asked a month ago: who's actually doing all this?*
 
 *Where in your own work is a category, a label, or a filing scheme that hasn't been checked against the real data in a while — and what would it actually show if you counted?*

@@ -36,6 +36,6 @@ The fix isn't "review configs more carefully." Careful review is exactly what bo
 
 ---
 
-*Next on Building Piper Morgan: "Three Seats Stay Dark Longer" — the whole team hits its usage limit and goes offline together, but three roles don't come back for twenty-one hours after everyone else does, and nobody knows why until the next day.*
+*Next on Building Piper Morgan: "Distribution Is a Product Decision, Not a Marketing One" — why choosing where a product lives changes what it actually is, using a listing we can't honestly write yet as the proof.*
 
 *Where in your own systems is a config, a doc, or a status line quietly standing in for a check you haven't actually run?*

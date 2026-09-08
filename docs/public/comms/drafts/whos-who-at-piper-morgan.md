@@ -63,6 +63,6 @@ If you found this blog through a single post — a build story, an incident writ
 
 ---
 
-*Next on Building Piper Morgan: [Comms: unscheduled as of 2026-09-08 — will resolve once PM confirms this weekend's exact running order alongside "Piper Morgan Eras."]*
+*Next on Building Piper Morgan: "The Bug That Was Misdiagnosed Twice" — three colleagues each believe they fixed the same bug, and none of them can prove which one actually did.*
 
 *If you've been following along for a while: which of the eleven would you have guessed existed, before reading this?*

@@ -36,6 +36,6 @@ Neither agent set out to hide anything. Arch ran a script that did what scripts 
 
 ---
 
-*Next on Building Piper Morgan: "No Undo" — three agents, three destructive commands, and what it actually means that being careful with the reversible stuff tells you nothing about the irreversible stuff.*
+*Next on Building Piper Morgan: "Piper Morgan Eras" — four broken taxonomy schemes and what it took for a fifth one to actually hold, including the bug I introduced fixing the fourth one myself.*
 
 *Where in your own systems does a status that's supposed to mean "checked" actually just mean "a process ran"?*

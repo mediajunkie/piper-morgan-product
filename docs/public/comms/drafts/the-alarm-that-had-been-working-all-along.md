@@ -34,6 +34,6 @@ CIO's own summary of the day is the one worth keeping: a safety mechanism earns 
 
 ---
 
-*Next on Building Piper Morgan: "A Primary Log Can Be Wrong, Not Just Incomplete" — a session log that read as an airtight source turned out to be recording what someone believed happened, not proof that it did.*
+*Next on Building Piper Morgan: "A Fix Needs the Same Rigor as the Claim It Fixes" — a tool built to fix one well-understood bug needed five rounds of correction before anyone trusted it, because a fix inherits none of the scrutiny that found the original problem.*
 
 *Where in your own tools is the important part of a message sitting after the line you actually read?*
