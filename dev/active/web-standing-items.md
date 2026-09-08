@@ -75,7 +75,18 @@ superficially-but-not-mechanically compliant.
 | 1 | **Obs-pass joint walkthrough** | 2026-06-17 | **Hold for** PM's +1/−1/defer; not Web's to close. Pre-staged 2026-08-31: full 31-item reconciliation done live via Playwright against the deployed site, not code-reading. 13 resolved, 10 still open, 1 new finding, 1 page substantively changed. Artifact: `pipermorgan-walkthrough-prep-2026-08-31.html` — https://claude.ai/code/artifact/b02c86c4-0131-432f-b9b8-752ffc2d0b84. Canonical source: `dev/2026/05/24/site-observation-pass-2026-05-24.md`. |
 | 2 | **Site walkthrough** (formal joint pass) | 2026-05-29 | **Hold for** PM joint session; not Web's to close. Same 2026-08-31 prep pass covers this — artifact above follows the A–E order proposed 5/28 (`dev/2026/05/28/...`), resuming cleanly at `/methodology`. |
 | 3 | **Buttondown native newsletter publishing** | 2026-08-15 | **Hold for** PM research; not Web's to close (explicitly long-term/not-urgent). Publish blog posts natively to Buttondown, possibly with subscriber choice (blog vs. Ship) — Buttondown may not support that granularity without multiple newsletters. **2026-08-31**: PM doing research when back at desk. |
-| 4 | **FTUX interview render-check** (CXO ask, PIPER_FTUX_INTERVIEW live) | 2026-09-07 | **2026-09-08**: flag-value ambiguity resolved — Exec confirmed both `PIPER_FTUX_INTERVIEW`/`PIPER_INVERSION_SHADOW` are genuinely `1`/on via direct `printenv` read, shared value is deliberate design (per a named test), not a bug. **Hold for** Lead to provision a genuinely cold (never-onboarded) test account — self-serve `/register` is pruned per #1504, and the existing browser-lane test account from 08-29 has seed data/chat history/a bound connector, so it's not cold anymore. This is now the ONLY remaining blocker. Not Web's to unblock; ready to run the moment a fresh invite-token account exists. When it does: log in, capture the first exchange verbatim (user turn, Piper's reply, connector-bound state), report whether the reply leads with CXO's opening line and whether it asks the question at all. No urgency stated by anyone in the thread. |
+### FTUX interview render-check — CLOSED 2026-09-08 (Web's part; CXO's design call still open)
+- [x] Lead provisioned a genuinely cold account (`web-ftux-cold`, real signup flow, 0 prior state)
+  and restarted the dev server with `PIPER_FTUX_INTERVIEW=1` confirmed in its process env.
+  Re-verified the flag directly (same PID, same start time) immediately before acting rather than
+  trust the memo alone. Logged in via real Playwright browser interaction, sent a first message
+  ("Hi"), captured the exchange verbatim: the reply **leads** with CXO's two-line interview copy
+  exactly as specified, and **asks the question**. Traced a third paragraph in the same reply to
+  `personalization_service.py`'s `FIRST_RESPONSE_PERSONALIZATION_NOTICE` (CXO's own prior ADR-075
+  OQ-3 direction, not the `why_asking` string that was cut) and reported it precisely rather than
+  rule on it myself — CXO's design call whether the combination is fine. Reported to CXO cc
+  Lead/Exec/PPM/PM with the verbatim exchange, screenshots, and the layer named (local dev server,
+  not live production).
 ### website#39 era-clustering backfill — CLOSED 2026-09-06
 - [x] Comms found the real root cause (era computed from `publishedAt`, not `workDate` as
   originally diagnosed); independently re-derived the full 288-post mapping from scratch against

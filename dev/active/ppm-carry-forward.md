@@ -1,10 +1,10 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-08 07:21 PT (START). **#1688: flag confirmed ON (digest alarm was
+**Last rewritten**: 2026-09-08 10:21 PT (WORK). **#1688: flag confirmed ON (digest alarm was
 benign), only remaining blocker is Web's cold test account, Lead's to provision, no urgency.**
-**New standing item: PPM now owns the real sequencing for duty-cycle backlog intake** — first
-ordering sent 2026-09-08, expect this to need revisiting as items get claimed/added. **⚠️ #1386
+**Flywheel re-eval underway (Arch leads, PM's constraint is refactor-not-add)** — PPM's sequencing
+memo + Q1 answer both sent; watch for Arch's synthesis before doing more here. **⚠️ #1386
 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
@@ -13,6 +13,31 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ #1730 GAP 1 — CXO's copy + scope verified against code, posted, build-ready (2026-09-08 10:21)
+CXO delivered exactly what was routed: fix scoped to `GENERIC_UNWIRED_WRITE_DECLINE` only (the
+per-action `UNWIRED_WRITE_DECLINES` map is correctly definite and untouched), copy text provided,
+`original_message` confirmed available at the call site. **Verified against
+`services/intent_service/unwired_writes.py` myself before posting the disposition** — matches
+exactly. Gap 2 stays Lead's/Arch's mechanical call, with CXO's added constraint (an unanswerable
+clarify question is worse than none) carried forward. Posted on `#1730` itself. Already Tier 2 in
+the 09-08 sequencing pass — nothing further from PPM until Lead picks it up.
+
+## ✅ Q1 (flywheel re-eval) — independent answer sent to Arch (2026-09-08 10:21)
+Arch kicked off Q1 as PPM's half, building on this morning's sequencing memo, and explicitly asked
+for an answer written blind of their own framing. Did that, then compared after:
+**(a) role-scoping** — eligibility by capability (build-capable roles only pull the generic MVP
+backlog; governance roles' idle-drain surface is their own domain, not this one) — landed on the
+same rule Arch stated independently, good convergence signal, not double credit.
+**(b) stalled-claim return path** — reuse the board's existing (currently-unused) `Blocked` Status
+value with a one-line comment naming the blocker, rather than invent a new field/mechanism —
+matches PM's refactor-not-add constraint.
+**(c) Product Backlog → Sprint Backlog promotion** — took a firm, explicit position: this stays
+PM's/PPM's act permanently, never agent-pull's to reach, since it's a scope decision (what's
+committed) not a work-selection decision (which committed item is next); letting idle-drain reach
+upward would silently expand scope without human review. Sent to Arch cc Exec/CIO/Lead/CXO/PM,
+verified landed. **Watch for Arch's synthesis** — this feeds it, not something to revisit until
+that lands.
 
 ## ✅ #1688 — DIGEST ALARM RESOLVED, FLAG CONFIRMED ON (2026-09-08 07:21)
 Exec read the actual boolean this time (`flyctl ssh console -C "printenv PIPER_FTUX_INTERVIEW"` →
