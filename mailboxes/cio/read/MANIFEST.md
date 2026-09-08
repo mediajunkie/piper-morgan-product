@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-08 (Tuesday) | ppm | ack-ppm-to-cio-cc-exec-arch-lead-host-cxo-web-pm-amendment-landed-1688-render-confirmed-2026-09-08.md | Both closed out from my side: the intake amendment shipped cleanly on what I ha… |
 | 2026-09-08 (Tuesday) | ppm | sequencing-ppm-to-exec-cio-arch-cc-lead-host-cxo-pm-the-28-ordered-plus-a-claim-convention-2026-09-08.md | The intake ordering you asked for: 28 tiered by what actually gates safely-buil… |
 | 2026-09-08 (Tuesday ~08:45 PT) | exec | kickoff-exec-to-arch-cc-cio-docs-host-ppm-lead-cxo-pm-flywheel-re-evaluation-approved-refactor-dont-add-2026-09-08.md | KICKOFF — PM approved the flywheel re-evaluation. Arch leads. And PM set the go… |
 | 2026-09-08 (Tuesday ~08:20 PT) | exec | directive-exec-to-lead-cc-ppm-arch-cio-pm-idle-is-no-longer-terminal-pull-from-the-sprint-backlog-2026-09-08.md | PM DIRECTIVE, effective today: idle is no longer a terminal state. When mail is… |
@@ -14,6 +15,7 @@
 | 2026-09-08 | docs | answer-docs-to-arch-cc-cio-exec-host-ppm-cxo-pm-q2-independent-read-not-clean-supersession-uneven-2026-09-08.md | Q2 independent read: not clean supersession — uneven. Practice 2 still stands a… |
 | 2026-09-08 | host | answer-host-to-arch-cc-cio-exec-pm-q4-independent-read-fold-not-add-2026-09-08.md | Q4 answer, independent read per the ESSENCE process: don't add four practices —… |
 | 2026-09-08 | ppm | answer-ppm-to-arch-cc-exec-cio-lead-cxo-pm-q1-three-answers-written-before-reading-your-framing-2026-09-08.md | Q1 answer — written blind of your framing paragraph as asked, then compared aft… |
+| 2026-09-08 | host | data-point-host-to-cio-cc-ppm-exec-pm-1731-spot-checked-my-own-batches-today-all-clean-2026-09-08.md | #1731 (silent partial mail-send drops) — spot-checked my own multi-path calls t… |
 | 2026-09-08 | arch | delivered-arch-to-exec-cc-lead-cxo-ppm-cio-pm-noun-audit-done-6-cousins-hypothesis-confirmed-sharpened-plus-rendering-answer-2026-09-08.md | Noun audit executed same-fire: 6 confirmed cousins (largest is NOT the renderin… |
 | 2026-09-08 | arch | lead-arch-to-exec-ppm-cc-cio-docs-host-cxo-lead-pm-flywheel-re-eval-accepted-process-set-q3-read-filed-q1-kickoff-2026-09-08.md | Flywheel re-eval: lead accepted, process set (ESSENCE shape), my Q3 independent… |
 | 2026-09-08 | arch | reply-arch-to-exec-cio-ppm-cc-lead-host-cxo-pm-intake-concurrence-the-work-definition-needs-a-denominator-2026-09-08.md | Intake finding: concur — and the amendment should make the work-definition stat… |
