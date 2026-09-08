@@ -41,8 +41,18 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 | 7b | **PreCompact hook: locality differentiation (Option 1), genuinely unbuilt** | May 11 (orig.), reverified twice Aug 23 | **Docs corrected my count same-day**: Option 3 ("safe to compact" path) was already present in *substance* (SOFT tier's option (c)), just worded differently than my grep matched — reworded to the memo's exact language so this doesn't false-negative again (`298fd4f89`). Real corrected state: **2 of 3 addressed, 1 genuinely open** — Option 1 (locality differentiation, still the highest-leverage one) needs actual detection-logic design and is deliberately not being rushed, given the hook's own May 10-17 wedge-incident history. Docs owns it as scoped, unblocked work now — not CIO's to chase further. |
 | 7c | **Docs sign-off `git status` inventory pattern** — methodology-corpus candidate | May 10 | Needs HOST + Docs concurrence on framing; never pursued. Low priority. |
 | 7i | **`docs/internal/operations/canonical-ops-recipes.md`** (issue #1277, PM's Ongoing-milestone delegation) | Sept 2 | Partially already covered — CLAUDE.md documents the ANTHROPIC_* env-var server-launch recipe in detail. Needs: verify that coverage + fill 2 remaining gaps (integrations connect-flow map for Slack/Notion/GitHub auth patterns; GH Actions scheduling debug — cron syntax + `gh run list` pattern). Real, scoped, but needs investigation I don't have loaded right now — good subagent candidate next session. Now the longest-standing item on this tracker; deferred again today in favor of the flywheel re-eval's genuine urgency, not by default. |
-| 7s | **Flywheel re-evaluation, Q2 (joint with Docs)** — is Layer 2 (5 practices) still canonical vs. superseded by the 52-entry corpus? | Sept 8 | PM-approved cohort-wide re-eval, Arch leading. Docs already did the heavy lifting (read all 52 entries' full text against the 5 practices, found Practice 3 is the real casualty — not simple staleness, its cited elaborating entry m-02 is itself HISTORICAL and was never actually about Practice 3's real content anyway). My own contribution (as the filer of m-43 through m-53) not yet written — deliberately deferred to a later fire today rather than tacked onto an already-massive fire that already shipped 2 skill amendments, 1 methodology filing, and a Q4 answer. Named trigger: this same day's later fire, not indefinite. |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
+
+- **Flywheel re-evaluation, Q2 (joint with Docs)** (#7s, filed Sept 8 morning, **answered same day,
+  16:37 fire**) — `dev/active/cio-q2-flywheel-answer-2026-09-08.md`. Agreed with Docs' finding
+  (uneven, not clean supersession; Practice 3 is the real casualty — its cited canonical entry m-02
+  is HISTORICAL and was never actually about Practice 3's content even before going stale).
+  Reconciled Q2's fix with my own Q4 answer rather than let the two threads diverge: named
+  sub-clauses (rewrite the practice text) for load-bearing, corroborated refinements — m-43/44/50
+  into Practice 4, **m-53 into Practice 3** (the actual answer to why some coordination artifacts
+  survive and others decay) — "see also" pointers only for lighter elaboration. Held the same
+  evidence-maturity line as Q4: m-49/51/52 don't get indexed yet, still shrinking under scrutiny
+  this same week. Disclosed non-independence (read Docs' answer first) explicitly, same as Q4.
 
 - **Duty-cycle-tick backlog intake + START-side carry-forward refresh** (Sept 8, PM-ruled via Exec,
   off PM's own "there is no work / 28 open items" finding) — **shipped same-morning,
