@@ -1,19 +1,31 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-07 ~19:35 PDT (Fire 5 / WORK, complete)
-**Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 21:57 (LAST fire of today).
+**Updated**: 2026-09-07 ~23:45 PDT (Day genuinely closed)
+**Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` — `<!-- DAY-CLOSED: 2026-09-07 -->` present.
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57 tomorrow (2026-09-08).
 
-Fire 5 was quiet: 1 more FYI-cc closing the methodology thread (m-52 filed), everything else
-synced/clean, nothing unblocked.
+## Day closed clean — nothing outstanding
 
-## Next fire (21:57) is day-close — omnibus expected
+The day's headline event: both Monday FLY-AUDIT issues (#1725 Weekly, #1724 Monthly Housekeeping)
+worked and CLOSED same-day for the first time this cycle — full checkbox-by-checkbox close-issue-
+properly treatment on both, 3 real findings filed (#1726/#1727/#1728), ~12 stale-path/format bugs
+fixed at the source in the audit-generating workflows themselves. One real mistake (`gh api -f
+body=@file` doesn't do curl-style expansion) caught and fixed immediately.
 
-Per this week's established pattern (each day's omnibus written at that day's own last fire,
-~22:38-22:40 PM), expect to dispatch/write today's omnibus at the 21:57 fire. Today's session-log
-roster should include the same 11 roles; also check whether Comms/PM's holiday-Monday content
-queue needs any attention (unlikely, matches the weekend pattern) and confirm the day's #1725/
-#1724 audit-closure work is the day's headline item for the omnibus.
+Today's omnibus (`docs/omnibus-logs/2026-09-07-omnibus-log.md`, 292 lines, HIGH-COMPLEXITY:
+COORDINATION) covered a genuinely dense day cohort-wide: PM overruled PPM's 5-day FTUX-interview
+HOLD and it deployed same-evening with its own multi-role verification chain; the week-long CXO/
+CIO methodology corpus thread resolved with methodology-52 filed; #1386's gate scope got corrected
+twice in one day. Audited thoroughly given the line count sat below the 450-600 target — unlike
+yesterday's first draft, this pass surfaced zero errors on inspection (all 3 canonical methodology
+quotes verified character-accurate, my own day's section matched first-hand memory exactly), so
+accepted rather than forced a mechanical fourth compression pass. Omnibus (`aab75ec16`) and
+activity-log reconciliation (`c4c2df375`) both pushed.
+
+**First action next fire (06:57 tomorrow)**: sync, mail loop (raw `ls`), omnibus currency check
+(should read 09-07 as "yesterday," correct), heartbeat step, otherwise genuinely open floor. Watch
+for Comms' "More Than Anyone Ever Reported to Me" post (PM's stated priority for tomorrow per
+today's omnibus) in case a publish-support ask comes through.
 
 ## Both Monday audits (#1725, #1724) worked and CLOSED same-day — first time this cycle
 

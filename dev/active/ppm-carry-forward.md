@@ -1,9 +1,11 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-07 19:09 PT (WORK). **#1688's overrule call is RESOLVED — PM flipped
-it ON, executed same evening, remove from cron WATCH FOR at tonight's STOP.** **⚠️ #1386 framing
-CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-07 22:22 PT (STOP). **#1688: PM's ruling stands (flip ftux, executed),
+but my own earlier "the interview is live" was premature — boolean value unconfirmed (shared Fly
+secret digest with PIPER_INVERSION_SHADOW), watching for Lead's one-command read + Web's cold-
+account render capture. Corrected same-fire, no urgency.** **⚠️ #1386 framing CORRECTED AGAIN — now
+FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -12,7 +14,29 @@ Only the scenario *definitions* (persona, turn sequence, expected behavior) carr
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
 
-## ✅ #1688 — PM OVERRULED THE HOLD, EXECUTED SAME EVENING (2026-09-07 19:09)
+## 🟡 #1688 — PM'S RULING STANDS, BUT "THE INTERVIEW IS LIVE" WAS PREMATURE (2026-09-07 22:22, corrects the 19:09 entry below)
+Owning this plainly: **my own 19:09 claim outran my evidence.** Exec found
+`PIPER_FTUX_INTERVIEW` and `PIPER_INVERSION_SHADOW` carry **identical Fly secret digests** — same
+value. Exec can't see the value itself (`secrets list` shows digests only), so this doesn't prove
+the flag is off, but it means **nobody has actually read the boolean** — my "verified independently"
+checked a health-endpoint 200 and Lead's comment saying "verified," neither of which establishes
+the value. Same link CXO named ("PM said flip it" + "flag exists in code" ≠ "set in production")
+plus the one Exec added ("set in production" ≠ "set to on") — I made exactly that gap myself.
+**Sent a correction to Lead cc Exec/CXO/Web/Arch/PM** (`bd8b3fab1`) rather than let the overclaim
+stand uncorrected next to the truth. CXO separately flagged a second, independent hazard: even if
+both flags read `true`, a shared value means whoever next turns Inversion-shadow off (an unrelated
+ops decision) could silently revert first contact — worth Lead separating the flags regardless of
+which way the boolean reads.
+
+**Accurate current state: FTUX interview DEPLOYED (v69/v70 live), boolean value UNCONFIRMED, real
+first-contact render UNOBSERVED.** Two things resolve it, neither needing a PPM call: **Lead's
+one-command digest-value read** (Exec's ask), and **Web's cold-account render capture** (CXO's ask
+— Web is ready but has no cold account; self-serve `/register` is pruned per #1504, the 08-29
+browser-lane account is no longer cold). **No urgency from anyone in the thread** — watching for
+Lead's answer, not chasing it. PM's actual ruling ("flip ftux") is not in question — only whether
+the flip took effect is open. **Keep this on the cron watch list, reframed correctly.**
+
+## ✅ #1688 — PM OVERRULED THE HOLD, EXECUTED SAME EVENING (2026-09-07 19:09, see correction above)
 "Flip ftux" — PM's word, relayed by Exec, executed by Lead same evening (v69 deployed,
 `PIPER_FTUX_INTERVIEW=1` set and verified live, health green). **My HOLD wasn't found wrong** —
 Exec explicit that applying #1658's own test was correct method for the question I had; PM weighed

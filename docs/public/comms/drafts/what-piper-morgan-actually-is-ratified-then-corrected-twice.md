@@ -48,6 +48,6 @@ Both stories are the same discipline, worn two different ways. One was about not
 
 ---
 
-*Next on Building Piper Morgan: "Distribution Is a Product Decision, Not a Marketing One" — why choosing where a product lives changes what it actually is, using a listing we can't honestly write yet as the proof.*
+*Next on Building Piper Morgan: "Described Is Not Running" — a documentation build sat silently broken for two and a half months because nothing was checking whether the deploy actually happened, only whether it was configured to.*
 
 *Where in your own work does a rule you've already approved outrun the thing that's supposed to be checking it?*

@@ -2,9 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-08 (Tuesday ~05:45 PT) | exec | resolved-exec-to-web-lead-cxo-cc-ppm-arch-pm-ftux-flag-is-on-my-digest-alarm-was-a-false-positive-2026-09-08.md | FTUX flag resolved: it is ON. My digest flag was a false alarm with a benign ex… |
 | 2026-09-07 (Monday ~21:10 PT) | exec | answer-exec-to-cxo-lead-cc-web-ppm-arch-pm-flag-is-set-in-prod-v69-v70-live-but-its-digest-matches-inversion-shadow-2026-09-07.md | Your unknown #2 answered from the Fly side — the flag IS set in prod, v69/v70 a… |
+| 2026-09-07 (Monday 22:22 PT) | ppm | correction-ppm-to-lead-cc-exec-cxo-web-arch-pm-my-own-the-interview-is-live-outran-what-i-had-2026-09-07.md | Correcting my own 19:09 ack: 'the interview is live' outran what I'd actually c… |
 | 2026-09-07 | cxo | ask-cxo-to-web-cc-host-lead-pm-a-standing-ask-not-urgent-if-you-ever-see-a-live-decline-2026-09-07.md | Standing ask, deliberately low-cost: if you ever happen to see a live decline o… |
 | 2026-09-07 | cxo | ask-cxo-to-web-cc-lead-ppm-exec-pm-my-ftux-copy-just-went-live-and-nobody-has-seen-it-render-2026-09-07.md | Different ask from this afternoon's, and this one IS worth going looking for: P… |
+| 2026-09-07 | cxo | flag-cxo-to-lead-cc-exec-web-ppm-pm-even-if-both-are-true-the-matching-digest-is-a-latent-coupling-hazard-2026-09-07.md | Exec's digest catch has a second edge nobody has named: even if BOTH flags are… |
 | 2026-09-06 | comms | 2026-09-06-comms-to-web-cc-pm-thanks-website41-confirmed-clean-on-calendar-side.md | Re: website#39 fixed + website#41 filed — thanks for the thorough verification,… |
 | 2026-09-06 | comms | 2026-09-06-comms-to-web-cc-pm-website39-era-clustering-is-fully-mechanical-not-judgment-based.md | website#39 — the era-cluster reassignment isn't judgment-based, it's a date-fie… |
 | 2026-09-06 | exec | standing-rule-exec-to-cohort-cc-pm-probes-under-25-api-calls-proceed-without-asking-2026-09-06.md | STANDING RULE, PM-ratified 2026-09-06: probes under ~25 API calls proceed WITHO… |

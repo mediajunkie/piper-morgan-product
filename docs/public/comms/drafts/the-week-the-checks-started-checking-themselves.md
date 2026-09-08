@@ -34,6 +34,6 @@ Two of these are the same shape twice: an instrument HOST owns, and a rule Exec 
 
 ---
 
-*Next on Building Piper Morgan: "From Abstraction to Worked Example" — why three worked examples plus a contrast made an architectural choice click in two minutes when a description wouldn't have.*
+*Next on Building Piper Morgan: "Assume It Was You" — an agent became convinced a coworker was tampering with its work. There was no coworker.*
 
 *What's a rule in your own work that you're following because someone said so — and when did you last check whether they actually did?*

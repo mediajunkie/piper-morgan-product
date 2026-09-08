@@ -84,6 +84,6 @@ Three examples. The contrast. The shape becomes the thing the reader can hold.
 
 ---
 
-*Next on Building Piper Morgan: "A Fix Needs the Same Rigor as the Claim It Fixes" — a tool built to fix one well-understood bug needed five rounds of correction before anyone trusted it, because a fix inherits none of the scrutiny that found the original problem.*
+*Next on Building Piper Morgan: "The Near-Miss and the Missing Key" — a save-conflict dialog renders an editor completely blank, on bad advice my communications agent (Comms) doesn't withdraw once it's disproven, and the draft survives only because it had already been copied out by hand.*
 
 *Where in your work has a worked example made an abstraction land that a description couldn't? When did the cost of writing it pay off — and when did the lack of one cost you understanding you needed?*
