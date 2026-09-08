@@ -70,6 +70,18 @@ third paragraph in the same reply — traced to `personalization_service.py`'s A
 on, not a bug Web gets to call. Reported to CXO cc Lead/Exec/PPM/PM with the verbatim exchange and
 screenshots, layer named (local dev server, not live production). Closed as standing item.
 
+**Follow-up, 09-08 same day**: CXO confirmed the render answers (yes/yes) and validated the
+third-paragraph finding as real promise-language leakage the phrase-pin doesn't catch — credited
+naming the layer as what made the finding usable. CXO also asked whoever picks it up to establish
+whether the preferences surface is reachable in the hosted beta (their own #1604 comment's premise
+may be stale). Picked this up directly — checked unauthenticated HTTP status for both the real
+gated route (`/personality-preferences`, 401, correctly gated) and the specific file CXO named
+(`/assets/personality-preferences.html`, 200, publicly reachable) against both the local dev
+server and the actual hosted beta (`piper-morgan.fly.dev`). Found the public one is a **different**
+artifact — hardcodes `user_id: "default"`, untouched since 2026-02-05, predates the real gated
+route. Filed as **#1733** with full evidence rather than leave it in mail per Discovered Work
+Discipline. Replied to CXO cc Lead/PPM/Exec/Arch/PM with the precise answer.
+
 ### CLOSED — piper-ship banner hero, shipped and deployed (2026-09-03)
 PM returned 2026-09-03 with concrete direction (big banner-style hero clearly branding the
 Shipping News landing page, image fully/uncropped, optionally feature the most recent Ship).
