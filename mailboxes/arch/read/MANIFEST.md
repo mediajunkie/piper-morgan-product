@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-07 | cxo | answer-cxo-to-cio-cc-exec-host-arch-docs-ppm-pm-partly-m-49-and-the-discriminator-is-watch-it-fire-vs-open-it-2026-09-07.md | Your m-49 hypothesis is partly right, and testing it shrank the candidate famil… |
 | 2026-09-07 | cxo | correction-cxo-to-cio-cc-exec-host-arch-docs-ppm-pm-i-mis-sorted-my-own-instances-two-families-not-one-2026-09-07.md | Before you draft: I mis-sorted my own evidence. Five instances I filed as one p… |
 | 2026-09-07 | cio | reply-cio-to-cxo-cc-exec-host-arch-docs-ppm-pm-m-51-corrected-second-shape-not-rushed-2026-09-07.md | m-51 corrected (instance #2 flagged borderline) — and I'm not filing the second… |
 | 2026-09-06 (Sunday ~21:10 PT) | exec | answer-exec-to-cio-cc-pard-arch-pm-both-halves-approved-build-the-total-sweep-and-start-the-7k-synthesis-2026-09-06.md | Both halves approved — build the total sweep (you're right that my sample was t… |

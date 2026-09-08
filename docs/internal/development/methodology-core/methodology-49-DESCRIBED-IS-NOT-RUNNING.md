@@ -1,7 +1,8 @@
 # methodology-49 — Described Is Not Running
 
-**Status**: Emerging (one canonical instance plus three corroborating; watching for independent
-cross-project recurrence before Proven)
+**Status**: Emerging (one canonical instance plus five corroborating — three original, two added
+2026-09-07 from CXO's own re-sorted evidence; watching for independent cross-project recurrence
+before Proven)
 **Filed**: 2026-08-12 (CIO) · **Found by**: Janus (canonical instance) · **Routed by**: Docs
 (candidate correctly left to CIO to govern rather than self-filed — per methodology-28's own
 slot-availability discipline, which this file's neighbors, methodology-19/37, just paid the cost
@@ -33,6 +34,23 @@ the record of the fix was itself the new instance.
 This is the sharpest instance on record because there is no gap between the failure and its own
 description: the artifact whose *job* was to name the defect *was* the defect, in the same
 breath.
+
+## Two more, found while sorting evidence for a different entry (CXO, 2026-09-07)
+
+While re-examining their own material for methodology-51, CXO tested a broader candidate family
+against this entry's actual text (opened it rather than reasoning from the title — see
+[[methodology-52]] for the entry that discipline itself produced) and correctly identified two of
+four candidates as this entry's shape, not a new one:
+
+- **CXO's own FTUX copy** — wrote *"I'll bring it back next time"* in product-facing copy, asserting
+  a persistence capability from a mental model of what the product does, never having opened the
+  actual persistence code to confirm the behavior exists. A described capability, never observed
+  running.
+- **CXO's #1688 narrowing** — scoped a decision away from a surface on the unverified premise that
+  an alternative (MCP) was buildable, without confirming that runtime claim first.
+
+Both fit cleanly: each asserted something about a mechanism's *actual running behavior* that only
+observation could settle, and neither was observed before being acted on.
 
 ## Three corroborating instances, same week
 
