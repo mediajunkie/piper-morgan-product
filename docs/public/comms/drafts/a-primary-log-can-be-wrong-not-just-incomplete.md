@@ -40,6 +40,6 @@ The claim didn't make it into the published post. What replaced it was a descrip
 
 ---
 
-*Next on Building Piper Morgan: "Described Is Not Running" — a documentation build sat silently broken for two and a half months because nothing was checking whether the deploy actually happened, only whether it was configured to.*
+*Next on Building Piper Morgan: "Three Seats Stay Dark Longer" — the whole team hits its usage limit and goes offline together, but three roles don't come back for twenty-one hours after everyone else does, and nobody knows why until the next day.*
 
 *Where in your own systems does "we have a record of it" quietly substitute for "we confirmed it happened"?*

@@ -1,0 +1,290 @@
+<title>In Review round — sixteen items, five flows</title>
+<style>
+  :root{
+    --paper:#f2f5f4; --card:#ffffff; --ink:#15211f; --mute:#5c6b69;
+    --line:#d8e0de; --accent:#0f6e63; --accent-soft:#e2efec;
+    --warn:#8f4820; --warn-soft:#f6ece5; --crit:#93311f;
+    --code-bg:#122120; --code-ink:#d6e6e2;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#0e1514; --card:#161f1e; --ink:#e4ecea; --mute:#93a4a1;
+      --line:#26332f; --accent:#54c3b1; --accent-soft:#152a27;
+      --warn:#d99361; --warn-soft:#241a13; --crit:#e08a72;
+      --code-bg:#0a1211; --code-ink:#cfe3df; }
+  }
+  :root[data-theme="dark"]{ --paper:#0e1514; --card:#161f1e; --ink:#e4ecea; --mute:#93a4a1;
+    --line:#26332f; --accent:#54c3b1; --accent-soft:#152a27; --warn:#d99361; --warn-soft:#241a13;
+    --crit:#e08a72; --code-bg:#0a1211; --code-ink:#cfe3df; }
+  :root[data-theme="light"]{ --paper:#f2f5f4; --card:#ffffff; --ink:#15211f; --mute:#5c6b69;
+    --line:#d8e0de; --accent:#0f6e63; --accent-soft:#e2efec; --warn:#8f4820; --warn-soft:#f6ece5;
+    --crit:#93311f; --code-bg:#122120; --code-ink:#d6e6e2; }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-text-size-adjust:100%}
+  .wrap{max-width:44rem;margin:0 auto;padding:1.5rem 1.1rem 4rem}
+  .eyebrow{font-size:.7rem;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
+    font-weight:500;margin:0 0 .45rem}
+  h1{font-size:1.6rem;line-height:1.18;margin:0 0 .5rem;text-wrap:balance;letter-spacing:-.015em}
+  .standfirst{color:var(--mute);margin:0;font-size:.97rem}
+  .gate{display:flex;gap:.7rem;background:var(--warn-soft);border:1px solid var(--line);
+    border-left:3px solid var(--warn);border-radius:8px;padding:.8rem .9rem;margin:1.3rem 0 1.6rem;font-size:.92rem}
+  .gate b{color:var(--warn)}
+
+  .flow{margin:2rem 0 0}
+  .flow-head{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.15rem}
+  .flow-num{flex:0 0 auto;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);
+    color:var(--paper);font-size:.85rem;font-weight:600;display:flex;align-items:center;
+    justify-content:center;font-variant-numeric:tabular-nums}
+  .flow h2{font-size:1.14rem;margin:0;letter-spacing:-.01em}
+  .flow-meta{font-size:.78rem;color:var(--mute);margin:.2rem 0 .7rem 2.3rem;font-variant-numeric:tabular-nums}
+
+  .step{background:var(--card);border:1px solid var(--line);border-radius:9px;
+    padding:.85rem .95rem;margin:0 0 .65rem}
+  .step.crit{border-left:3px solid var(--crit)}
+  .step h3{font-size:.95rem;margin:0 0 .15rem;font-weight:600}
+  .issue{font-size:.72rem;color:var(--mute);font-variant-numeric:tabular-nums;margin:0 0 .6rem}
+  .lbl{font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--mute);
+    font-weight:600;margin:.7rem 0 .28rem}
+  .say{background:var(--code-bg);color:var(--code-ink);border-radius:7px;padding:.58rem .72rem;margin:0;
+    font:.86rem/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+  .expect{margin:0;font-size:.93rem}
+  .fail{margin:.28rem 0 0;font-size:.89rem;color:var(--mute)}
+  .fail b{color:var(--warn);font-weight:600}
+  .verdict{display:flex;gap:1rem;margin-top:.8rem;padding-top:.6rem;border-top:1px solid var(--line);flex-wrap:wrap}
+  .verdict label{display:flex;align-items:center;gap:.35rem;font-size:.86rem;color:var(--mute);cursor:pointer;user-select:none}
+  .verdict input{width:1.05rem;height:1.05rem;accent-color:var(--accent);cursor:pointer}
+  .verdict input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .watch{background:var(--accent-soft);border-radius:8px;padding:.7rem .9rem;margin:.6rem 0;font-size:.9rem}
+  .watch b{color:var(--accent)}
+  .closer{margin-top:2rem;padding:1rem;border:1px solid var(--line);border-radius:10px;
+    background:var(--accent-soft);font-size:.93rem}
+  .closer h2{font-size:1rem;margin:0 0 .5rem;font-weight:600}
+  .closer p{margin:0 0 .55rem} .closer p:last-child{margin-bottom:0}
+  footer{margin-top:2rem;color:var(--mute);font-size:.8rem;border-top:1px solid var(--line);padding-top:.9rem}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Sixteen In Review items grouped into five conversation flows, ordered so stopping early still closes the most issues.</h2>
+
+<p class="eyebrow">In Review round · 16 items · 5 flows · ~30 minutes</p>
+<h1>Fifteen tests, five conversations, and one you can't run</h1>
+<p class="standfirst">These sixteen are fixed and waiting only on your verdict. They group into five flows — each flow is <em>one continuous conversation</em> that exercises several issues, so you're not resetting between every check.</p>
+
+<div class="gate">
+<div><b>Honest timing: this is ~30 minutes, not 20.</b> So it's ordered by value — flow 1 alone closes four issues including the most serious one on the list. <b>Stopping after any flow is a clean result</b>, not an abandoned round.</div>
+</div>
+
+<!-- FLOW 1 -->
+<div class="flow">
+<div class="flow-head"><span class="flow-num">1</span><h2>File an issue, start to finish</h2></div>
+<p class="flow-meta">closes #1649 · #1571 · #1648 · #1543 — one conversation, ends with a GitHub check</p>
+
+<div class="step crit">
+  <h3>Give it the subject and description up front</h3>
+  <p class="issue">#1649 — the draft flow used to ignore explicitly-given slots</p>
+  <p class="lbl">Say this</p>
+  <p class="say">let's open a new issue, with the subject "issue body test" and description "checking that stated slots are used"</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">It uses <strong>your</strong> subject and description. It should <em>not</em> ask "what's it about?"</p>
+  <p class="fail"><b>If it fails:</b> it asks what it's about anyway, then invents a title from whatever you say next — your stated subject never used.</p>
+  <div class="verdict"><label><input type="checkbox"> Used my slots</label><label><input type="checkbox"> Asked anyway</label></div>
+</div>
+
+<div class="step crit">
+  <h3>Then file it with the exact phrase it teaches you</h3>
+  <p class="issue">#1571 — this phrase used to get a false "I can't do that"</p>
+  <p class="lbl">Say this</p>
+  <p class="say">file it in mediajunkie/test-piper-morgan</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">It files the issue and tells you so.</p>
+  <p class="fail"><b>If it fails:</b> <em>"I can't do that from chat yet — that capability is still on the way."</em> That's a false denial of something wired and working. <strong>Note it verbatim if you see it</strong> — the same sentence appeared in yesterday's round on a different request.</p>
+  <div class="verdict"><label><input type="checkbox"> Filed it</label><label><input type="checkbox"> False denial</label></div>
+</div>
+
+<div class="step crit">
+  <h3>⚠️ Now go look — did the issue actually get created?</h3>
+  <p class="issue">#1648 CRITICAL — the floor once role-played an entire filing that never happened</p>
+  <p class="lbl">Do this</p>
+  <p class="say">Open github.com/mediajunkie/test-piper-morgan/issues
+Is the issue you just filed actually there?</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">A real issue, matching what it claimed.</p>
+  <p class="fail"><b>If it fails:</b> it said "Filed!" and nothing exists. <strong>This is the one worth your attention above all the others</strong> — a confident confirmation of an action that never occurred. Don't skip the look; the chat reply is exactly what can't be trusted here.</p>
+  <div class="verdict"><label><input type="checkbox"> It's really there</label><label><input type="checkbox"> Phantom — nothing exists</label></div>
+</div>
+
+<div class="step">
+  <h3>While you're there — read its title</h3>
+  <p class="issue">#1543 — titles used to capture your raw command, truncated</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">A title that reads like a subject — <em>"issue body test"</em> or similar.</p>
+  <p class="fail"><b>If it fails:</b> something like <em>"Issue: create an issue in mediajunkie/test-piper-morgan a"</em> — your whole command, cut off mid-word.</p>
+  <div class="verdict"><label><input type="checkbox"> Real title</label><label><input type="checkbox"> Raw command</label></div>
+</div>
+</div>
+
+<!-- FLOW 2 -->
+<div class="flow">
+<div class="flow-head"><span class="flow-num">2</span><h2>Run a standup all the way through</h2></div>
+<p class="flow-meta">closes #1623 · #1617 · #1651 · #1625 — one interview, answer normally</p>
+
+<div class="watch">
+<b>Watch throughout this flow:</b> does a "due reminders" block get appended to <em>every</em> reply, including mid-question? Once is right. Every turn is <b>#1625</b> — your own note was <em>"reminders are a bit relentless."</em>
+</div>
+
+<div class="step">
+  <h3>Start it, and answer the questions with real multi-clause answers</h3>
+  <p class="issue">#1623 — mid-interview answers used to be stolen by other surfaces</p>
+  <p class="lbl">Say this, then answer each question naturally</p>
+  <p class="say">let's do my standup
+
+  ↳ when it asks what you're working on, answer with something long,
+    e.g.  continue testing with Lead, then discuss FTUX with CXO</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">Every answer lands in the interview and it moves to the next question.</p>
+  <p class="fail"><b>If it fails:</b> an answer gets eaten — <em>"I can't do that from chat yet"</em> or an unrelated canned reply — and the interview loses that turn.</p>
+  <div class="verdict"><label><input type="checkbox"> All answers landed</label><label><input type="checkbox"> One got stolen</label></div>
+</div>
+
+<div class="step">
+  <h3>If it offers to act on a specific item, accept it</h3>
+  <p class="issue">#1651 — standup couldn't consume its own offer</p>
+  <p class="lbl">If you see an offer like "mark that overdue todo done?"</p>
+  <p class="say">Yes, mark the overdue todo done.</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">It acts on the specific item it just offered.</p>
+  <p class="fail"><b>If it fails:</b> <em>"I couldn't find a todo matching overdue."</em> It offered the thing and then couldn't find what it meant. <span style="color:var(--mute)">(Skip if no such offer appears — not every standup produces one.)</span></p>
+  <div class="verdict"><label><input type="checkbox"> Acted on it</label><label><input type="checkbox"> Lost its own referent</label><label><input type="checkbox"> No offer appeared</label></div>
+</div>
+
+<div class="step">
+  <h3>After it finishes — give it an unrelated command immediately</h3>
+  <p class="issue">#1617 — the completion tail used to swallow real commands</p>
+  <p class="lbl">Right after "anything else?" or the final summary, say</p>
+  <p class="say">show my open issues</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">It does that. First try.</p>
+  <p class="fail"><b>If it fails:</b> it re-renders the standup summary instead, and you have to repeat yourself two or three times before the command lands.</p>
+  <div class="verdict"><label><input type="checkbox"> First try</label><label><input type="checkbox"> Had to repeat</label></div>
+</div>
+
+<div class="step">
+  <h3>And read those issue titles</h3>
+  <p class="issue">#1628 — chat-side listings render titles verbatim, unguarded</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">Readable titles.</p>
+  <p class="fail"><b>If it fails:</b> a garbage entry — a literal <code>{</code> or similar debris — rendered straight through.</p>
+  <div class="verdict"><label><input type="checkbox"> Clean</label><label><input type="checkbox"> Garbage title</label></div>
+</div>
+</div>
+
+<!-- FLOW 3 -->
+<div class="flow">
+<div class="flow-head"><span class="flow-num">3</span><h2>Reminders, in words rather than digits</h2></div>
+<p class="flow-meta">closes #1542 · #1650 — two exchanges</p>
+
+<div class="step">
+  <h3>Spell the duration out, and put it before the task</h3>
+  <p class="issue">#1542 — word-form durations silently defaulted to tomorrow 9am</p>
+  <p class="lbl">Say both of these, separately</p>
+  <p class="say">remind me in two hours to stretch
+
+remind me to stretch in two hours</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">Both save for <strong>two hours from now</strong>, with "stretch" as the task.</p>
+  <p class="fail"><b>If it fails, two different ways:</b> the first says <em>"didn't catch what you'd like to be reminded about"</em>; the second saves for <strong>tomorrow 9am</strong> with the task text reading "stretch in two hours" — the duration swallowed and silently replaced by a default. <strong>The silent default is the worse of the two.</strong></p>
+  <div class="verdict"><label><input type="checkbox"> Both correct</label><label><input type="checkbox"> One failed</label><label><input type="checkbox"> Both failed</label></div>
+</div>
+
+<div class="step">
+  <h3>Arm a delete confirm, then say something that isn't an answer</h3>
+  <p class="issue">#1650 — a prose aside once fired a real delete</p>
+  <p class="lbl">Ask it to delete a reminder so a yes/no confirm appears, then type</p>
+  <p class="say">please note that I'll need to figure out later why you thought I wanted that</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">It does <strong>not</strong> treat that as "yes." The confirm stays open or is set aside.</p>
+  <p class="fail"><b>If it fails:</b> the delete fires — because the sentence starts with "please." <strong>Use a reminder you don't mind losing.</strong></p>
+  <div class="verdict"><label><input type="checkbox"> Held</label><label><input type="checkbox"> Fired on my aside</label></div>
+</div>
+</div>
+
+<!-- FLOW 4 -->
+<div class="flow">
+<div class="flow-head"><span class="flow-num">4</span><h2>Ask for things you know exist</h2></div>
+<p class="flow-meta">closes #1570 · #1631 — quick</p>
+
+<div class="step">
+  <h3>Query something the app can already show you</h3>
+  <p class="issue">#1570 — floor said "no data" while the data existed, and leaked scaffolding</p>
+  <p class="lbl">Say this</p>
+  <p class="say">what todos are pending?</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">Your actual pending todos — matching the Todos page. And <strong>no internal annotation</strong> in the reply.</p>
+  <p class="fail"><b>Two failures to watch for:</b> "I don't see any todos coming back" while the page shows several — <em>and</em> a literal <code>[Available context: no todo data returned this turn]</code> appearing in the text. That's our own scaffolding leaking to you.</p>
+  <div class="verdict"><label><input type="checkbox"> Data + clean</label><label><input type="checkbox"> Wrong-empty</label><label><input type="checkbox"> Scaffolding leaked</label></div>
+</div>
+
+<div class="step">
+  <h3>Answer an offer with a long sentence that starts with "yes,"</h3>
+  <p class="issue">#1631 — accept patterns matched into prose on any offer kind</p>
+  <p class="lbl">With any offer armed, reply with something like</p>
+  <p class="say">yes, though I want to think about whether this is really the right approach before we go further</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">It does not treat a long hedged sentence as a bare acceptance.</p>
+  <p class="fail"><b>If it fails:</b> the "yes," prefix claims the whole reply and the action fires while you were still thinking aloud.</p>
+  <div class="verdict"><label><input type="checkbox"> Didn't over-claim</label><label><input type="checkbox"> Fired on prose</label></div>
+</div>
+</div>
+
+<!-- FLOW 5 -->
+<div class="flow">
+<div class="flow-head"><span class="flow-num">5</span><h2>Project names, four ways</h2></div>
+<p class="flow-meta">closes #1492 · #1632 — quick</p>
+
+<div class="step">
+  <h3>Say the same thing four ways</h3>
+  <p class="issue">#1492 — only the bare form used to work</p>
+  <p class="lbl">Try each, on a project you don't mind archiving</p>
+  <p class="say">Archive my Test project, please.
+Archive my project called "Test" please
+Archive my project "Test"
+Archive my project Test</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">All four resolve to the same project — <strong>Test</strong>.</p>
+  <p class="fail"><b>If it fails:</b> it looks up <em>"test project, please."</em> or <em>"called \"test\""</em> or <em>"\"test\""</em> — the punctuation, politeness and quotes swallowed into the name.</p>
+  <div class="verdict"><label><input type="checkbox"> All four</label><label><input type="checkbox"> Only some</label></div>
+</div>
+
+<div class="step">
+  <h3>Ask what it can do, and whether others would see it</h3>
+  <p class="issue">#1632 — the capability catalog should say which actions are visible to other people</p>
+  <p class="lbl">Say this</p>
+  <p class="say">what can you do?</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">Actions that land in front of other people are <strong>marked as such</strong> — "visible to others," or similar.</p>
+  <p class="fail"><b>If it fails:</b> a flat capability list with no indication of which actions are private and which are public.</p>
+  <div class="verdict"><label><input type="checkbox"> Outwardness shown</label><label><input type="checkbox"> Flat list</label></div>
+</div>
+</div>
+
+<div class="closer">
+  <h2>The sixteenth — and why you shouldn't test it</h2>
+  <p><strong>#1431</strong> is a latent bug: a function that mathematically always returns empty, with <strong>no live caller</strong>. Nothing user-facing reaches it today. <strong>There is no user action that can exercise it</strong>, so any test I invented would be theatre.</p>
+  <p>It needs a code-level verdict from Lead, not a live one from you. I'm routing it that way rather than padding this list to sixteen.</p>
+</div>
+
+<div class="closer">
+  <h2>When you're done, or when you stop</h2>
+  <p>Tell me which flows you got through and what happened — a line each. I'll close the passes with your verdict as the evidence and file the failures with what you actually saw.</p>
+  <p><strong>Flow 1 is the one to do if you only do one.</strong> Four issues, and #1648 is the most serious thing on this list — a confident claim that an action happened when it didn't.</p>
+</div>
+
+<footer>
+  Built from each issue's own text, not from a summary. Flows group items that share a conversation so you aren't resetting between checks; the same reply often answers two issues at once. All sixteen are In Review — fixed, awaiting only your verdict to close.
+</footer>
+</div>

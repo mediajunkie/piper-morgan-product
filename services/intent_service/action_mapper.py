@@ -98,6 +98,13 @@ class ActionMapper:
         "delete_todo": "delete_todo",
         "remove_todo": "delete_todo",
         "cancel_todo": "delete_todo",
+        # 1527 (v70 live): reminder-noun raw emissions ("delete my hydrate
+        # reminder" → delete_reminder, observed 2026-09-08). Rail-registered
+        # as delete_todo_entry aliases in workflow_entries; mirrored here per
+        # the #284 convention (rail alias keys track mapper alias keys).
+        "delete_reminder": "delete_todo",
+        "remove_reminder": "delete_todo",
+        "cancel_reminder": "delete_todo",
         # ===== SPECIAL ACTIONS =====
         # Clarification/Unknown (fallback handling)
         "clarification_needed": "unknown_intent",

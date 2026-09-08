@@ -472,6 +472,16 @@ corpus:
     expected: REVIEW
     source: "issue-1527 (greedy portfolio delete pattern claims non-portfolio deletes)"
     notes: "verb decision (clear=complete/delete/dismiss) is #1605/#1569's product question"
+  - phrase: "delete my hydrate reminder"
+    category: TEMPORAL
+    expected: action:delete_todo
+    source: "issue-1527 (v70 live 2026-09-08: LLM emitted execution/delete_reminder — verb=delete source_type=reminder — which no registry surface recognized; fell to the generic unwired-write decline, a false capability denial)"
+    notes: "pinned: test_reminder_delete_live_emission_1527.py (real classifier path)"
+  - phrase: "remind me"
+    category: TEMPORAL
+    expected: action:create_reminder
+    source: "issue-1654 (v70 live 2026-09-08: bare 'remind me' drew unknown/clarification_needed -> floor composed a merged what-and-when question with NO carrier armed; the bare answer 'make coffee' orphaned into the routing chain as a literal request)"
+    notes: "incomplete but lane-known: create_reminder's handler owns the clarify (no-task ask arms the 1654 task carrier; answer binds at the offer seam)"
   - phrase: "hi piper, connect my github"
     category: EXECUTION
     expected: REVIEW

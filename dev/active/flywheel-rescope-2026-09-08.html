@@ -1,0 +1,154 @@
+<title>Scoping: re-evaluating the Excellence Flywheel</title>
+<style>
+  :root{
+    --paper:#f6f5f1; --card:#fff; --ink:#191a17; --mute:#615f57; --line:#dbd8d0;
+    --accent:#7a4a1c; --accentsoft:#f0e7dc; --red:#8f3324; --green:#39603f; --rule:#c8c3b7;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#121310; --card:#1b1c18; --ink:#e9e7e0; --mute:#9d9a91; --line:#2d2f28;
+           --accent:#d19a63; --accentsoft:#241d15; --red:#e0917f; --green:#8bbd93; --rule:#3a3c33; }
+  }
+  :root[data-theme="dark"]{ --paper:#121310; --card:#1b1c18; --ink:#e9e7e0; --mute:#9d9a91; --line:#2d2f28;
+    --accent:#d19a63; --accentsoft:#241d15; --red:#e0917f; --green:#8bbd93; --rule:#3a3c33; }
+  :root[data-theme="light"]{ --paper:#f6f5f1; --card:#fff; --ink:#191a17; --mute:#615f57; --line:#dbd8d0;
+    --accent:#7a4a1c; --accentsoft:#f0e7dc; --red:#8f3324; --green:#39603f; --rule:#c8c3b7; }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.6 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:47rem;margin:0 auto;padding:2rem 1.15rem 5rem}
+  .eyebrow{font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);
+    font-weight:600;margin:0 0 .5rem}
+  h1{font-size:1.75rem;line-height:1.15;margin:0 0 .55rem;letter-spacing:-.02em;text-wrap:balance}
+  .standfirst{color:var(--mute);margin:0 0 .3rem;font-size:1rem}
+  .meta{color:var(--mute);font-size:.82rem;margin:1rem 0 0;padding-top:.7rem;border-top:1px solid var(--line)}
+  h2{font-size:1.12rem;margin:2.4rem 0 .7rem;letter-spacing:-.01em;
+     padding-bottom:.4rem;border-bottom:2px solid var(--rule)}
+  h3{font-size:.98rem;margin:1.4rem 0 .4rem;font-weight:600}
+  p{margin:.7rem 0}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.95rem 1.05rem;margin:1rem 0}
+  .box.hot{border-left:3px solid var(--red)}
+  .box.warm{border-left:3px solid var(--accent)}
+  .box.cool{border-left:3px solid var(--green)}
+  .box p:first-child{margin-top:0} .box p:last-child{margin-bottom:0}
+  table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem;display:block;overflow-x:auto}
+  th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  td.n{white-space:nowrap;color:var(--mute);font-variant-numeric:tabular-nums}
+  ol,ul{margin:.6rem 0;padding-left:1.3rem} li{margin:.35rem 0}
+  code{font:.87em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--accentsoft);
+    padding:.1em .35em;border-radius:3px}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.9rem 1rem;margin:.7rem 0}
+  .q .lab{font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .q h3{margin:.25rem 0 .35rem}
+  .q p{font-size:.93rem;margin:.35rem 0 0;color:var(--mute)}
+  .q p strong{color:var(--ink)}
+  .owner{display:inline-block;font-size:.72rem;background:var(--accentsoft);color:var(--accent);
+    padding:.12rem .45rem;border-radius:4px;font-weight:600;margin-top:.5rem}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Scoping document for re-evaluating the Excellence Flywheel's practice layer against the autonomous duty-cycle era.</h2>
+
+<p class="eyebrow">Scoping · for PM approval before any work starts</p>
+<h1>The flywheel's practice layer expired four months ago, and it says so itself</h1>
+<p class="standfirst">A scope for re-deriving Methodology-00 Layer 2 against the tooling stack we actually run on. Not a proposal to change what the flywheel means — a proposal to update what it asks people to do.</p>
+<p class="meta">Exec · 8 September 2026 · requested by PM after finding that the duty cycle has no intake from the product backlog</p>
+
+<h2>Why now</h2>
+
+<p>PM: <em>"Something has been lost despite this huge autonomy improvement and I honestly don't understand it… I feel like the excellence flywheel is due for a re-evaluation against our current tooling stack."</em></p>
+
+<p>The triggering symptom, found this morning: <strong>the <code>duty-cycle-tick</code> procedure defines available work as an agent's inbox plus their own standing-items file. No step reads the sprint board, the milestone, or open issues.</strong> So "there is no work" and "28 items are open" are simultaneously true, and a role reporting the first while the second holds is following the procedure correctly.</p>
+
+<div class="box hot">
+<p><strong>That is one symptom. The scope below is about the mechanism that produced it</strong> — a practice layer written for a world where PM assigned work, still in force in a world where eleven agents wake on timers and assign their own.</p>
+</div>
+
+<h2>The document names its own expiry</h2>
+
+<p><code>methodology-00-EXCELLENCE-FLYWHEEL.md</code>, v2.0, dated <strong>26 April 2026</strong>, is explicit about its own structure:</p>
+
+<table>
+<tr><th>Layer</th><th>What it is</th><th>The doc's own words</th><th>Status</th></tr>
+<tr><td><b>1 · Concept</b></td><td>Quality compounds into velocity</td><td><em>"Stable. Doesn't change."</em></td><td>✅ Not in scope</td></tr>
+<tr><td><b>2 · Practice</b></td><td>Five named practices</td><td><em>"Enumerable… will evolve as the project evolves… reflect operational reality through M0–M1 (closed Apr 11, 2026)"</em></td><td>🔴 <b>The scope</b></td></tr>
+<tr><td><b>3 · Mnemonic</b></td><td>Role-adapted recall aids</td><td><em>"Different across roles is fine."</em></td><td>🟡 Touched only where 2 forces it</td></tr>
+</table>
+
+<p><strong>The practice layer was scoped to a milestone that closed on 11 April and has not been substantively revised since 26 April.</strong> It authorised its own revision and nothing triggered one. That is the same shape as every other finding this month: the mechanism was written down, and writing it down was not a chokepoint.</p>
+
+<h2>What changed underneath it</h2>
+
+<table>
+<tr><th>Change</th><th class="n">Date</th><th>Why it bears on the practice layer</th></tr>
+<tr><td>Autonomous duty cycles ship</td><td class="n">6 Jun</td><td>Work intake stops being PM-push and becomes agent-pull — <b>six weeks after v2.0 was written</b></td></tr>
+<tr><td>Migration to an always-on host</td><td class="n">25 Jul</td><td>Stable per-agent worktrees; roles run continuously rather than per-session</td></tr>
+<tr><td>Subagents at scale</td><td class="n">Aug</td><td>75 delegated coding sessions in one month; parallelism becomes a real lever</td></tr>
+<tr><td>Backlog reaches current size</td><td class="n">Aug</td><td>~1,000 issues in the MVP milestone; 28 never started</td></tr>
+<tr><td>Methodology corpus grows to 53</td><td class="n">ongoing</td><td>See the open question below — this may be the biggest one</td></tr>
+</table>
+
+<h2>The questions the re-evaluation should answer</h2>
+
+<div class="q">
+<p class="lab">Q1 — the triggering one</p>
+<h3>Where does work come from?</h3>
+<p>The five practices tell you how to do work well. <strong>None of them tells you how to find it.</strong> That was fine when PM assigned it. Under agent-pull it is the load-bearing gap, and today's near-term fix (pull from the Sprint Backlog when otherwise idle) is a patch on it, not an answer to it.</p>
+<span class="owner">Arch + PPM</span>
+</div>
+
+<div class="q">
+<p class="lab">Q2 — the one I'd expect to be contentious</p>
+<h3>Five practices, or fifty-three methodology entries?</h3>
+<p>Layer 2 names five practices. The methodology corpus now holds <strong>53 entries</strong>, several filed this week, and they are what agents actually cite day to day — m-43, m-44, m-49, m-50, m-51. <strong>Is the practice layer still canonical, or has it been quietly superseded by a corpus nobody reconciled it against?</strong> If the latter, saying so is more valuable than adding a sixth practice.</p>
+<span class="owner">CIO + Docs</span>
+</div>
+
+<div class="q">
+<p class="lab">Q3</p>
+<h3>Which of the five still hold under autonomy, unchanged?</h3>
+<p>Not a rewrite by default. <em>Verify Before Building</em> and <em>Track to Completion with Evidence</em> look durable. <em>Coordinate Through Structure</em> was written for a smaller cohort with different surfaces. <strong>The answer "four of five stand" is a good outcome and should be reachable.</strong></p>
+<span class="owner">Arch</span>
+</div>
+
+<div class="q">
+<p class="lab">Q4</p>
+<h3>What practices does the autonomous era need that didn't exist in April?</h3>
+<p>Candidates the cohort has already paid for and never promoted: <strong>chokepoint-vs-bolt-on</strong> (a duty survives only if skipping it visibly breaks work already in progress), <strong>a self-report is not evidence</strong>, <strong>state the denominator</strong>, <strong>name the layer you measured</strong>. These are live and load-bearing and none is in Layer 2.</p>
+<span class="owner">CIO + HOST</span>
+</div>
+
+<div class="q">
+<p class="lab">Q5</p>
+<h3>Is idle a legitimate terminal state?</h3>
+<p>Today's directive says no for Lead. <strong>Is that role-specific or general?</strong> A governance role with an empty inbox arguably <em>should</em> idle; a build role with 28 open items should not. The flywheel currently has no vocabulary for that distinction, which is why it never surfaced as a question.</p>
+<span class="owner">PM + Arch</span>
+</div>
+
+<h2>What done looks like</h2>
+
+<div class="box cool">
+<p><strong>A revised Layer 2</strong> — practices re-derived for agent-pull work intake, each one traceable to operational evidence from the autonomous period rather than carried forward on authority.</p>
+<p><strong>An explicit reconciliation with the 53-entry corpus</strong> — either the practice layer is the index and the corpus is its detail, or the practice layer is historical and the corpus is canonical. <b>Ambiguity here is the actual defect; either answer beats it.</b></p>
+<p><strong>A stated review trigger.</strong> v2.0 said the practice layer evolves with the project and nothing made that happen. Whatever v3 says, it needs a condition that fires — a milestone close, a stack change — not an intention.</p>
+</div>
+
+<h2>Explicitly out of scope</h2>
+<ul>
+  <li><strong>Layer 1.</strong> "Quality compounds into velocity" is right and the July 2025 formulation got it right. Not reopening it.</li>
+  <li><strong>Per-role mnemonics.</strong> Divergence there is explicitly fine per v2.0. Touch only where Layer 2 forces it.</li>
+  <li><strong>The near-term backlog fix.</strong> Already directed to Lead today. This scope must not become the reason that waits.</li>
+  <li><strong>Rewriting <code>duty-cycle-tick</code>.</strong> The intake step is a separate, faster change already routed to CIO. If this scope absorbs it, the fix ships in weeks instead of days.</li>
+</ul>
+
+<h2>The risk worth naming out loud</h2>
+
+<div class="box warm">
+<p>This cohort has spent a month establishing that new obligations decay unless they ride on something that already can't be skipped. <strong>A methodology re-evaluation is exactly the kind of work that produces a beautiful document nobody's daily loop touches.</strong></p>
+<p><strong>The test I'd hold it to:</strong> if the output is a revised Layer 2 that no procedure reads, we have written a better description of a flywheel while the flywheel keeps missing its intake. <b>Every practice in v3 should name where in a live procedure it is enforced — or be marked explicitly as aspirational.</b></p>
+</div>
+
+<p class="meta"><b>Recommended shape:</b> Arch leads, CIO and Docs on Q2, HOST on Q4, PM rules Q5. One synthesis, reviewed before adoption the way ESSENCE was. <b>Not a duty-cycle item</b> — a scoped piece of work with a start and an end, because a standing obligation to re-evaluate the flywheel is precisely the bolt-on this document warns about.</p>
+</div>

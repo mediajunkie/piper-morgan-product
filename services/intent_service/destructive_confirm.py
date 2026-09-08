@@ -197,7 +197,18 @@ _REOPEN_FAMILY = frozenset({"reopen_issue", "reopen_issue_query"})
 # list read the handler itself performs — done once here, one turn earlier,
 # with the resolved row BOUND into the intent so the confirmed yes deletes
 # exactly what was named in the ask.
-_DELETE_TODO_FAMILY = frozenset({"delete_todo", "remove_todo", "cancel_todo"})
+_DELETE_TODO_FAMILY = frozenset(
+    {
+        "delete_todo",
+        "remove_todo",
+        "cancel_todo",
+        # 1527 (v70 live): reminder-noun raw emissions, rail-registered as
+        # delete_todo_entry aliases — same family, same title-bound confirm.
+        "delete_reminder",
+        "remove_reminder",
+        "cancel_reminder",
+    }
+)
 
 # Context key for the gate-time resolution (see build_todo_delete_confirmation):
 # {"todo_id": str, "text": str, "number": str}. handle_delete_todo honors it

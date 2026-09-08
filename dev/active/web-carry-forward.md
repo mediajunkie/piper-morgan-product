@@ -56,16 +56,17 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
 
 ## Active threads
 
-### OPEN, blocked on Lead — FTUX interview render-check (2026-09-07)
+### OPEN, blocked on Lead (1 of 2 blockers cleared) — FTUX interview render-check (2026-09-07/08)
 CXO asked Web to log in with a cold account and capture the first `PIPER_FTUX_INTERVIEW` exchange
-verbatim (PM flipped it on in prod; source-level copy verified correct by CXO, but nobody's
-watched it render). Blocked: no self-serve signup (`/register` pruned per #1504) and the existing
-08-29 browser-lane test account isn't cold anymore (seed data, chat history, a bound connector).
-Also a live ambiguity from Exec: `PIPER_FTUX_INTERVIEW`'s Fly secret digest is identical to
-`PIPER_INVERSION_SHADOW`'s — same underlying value — so the flip may or may not have actually
-taken effect; Lead needs to read the real value before this check means anything. Replied to CXO
-cc Lead/PPM/Exec/PM naming both blockers precisely; asked Lead for a fresh invite-token account.
-Tracked as standing item #4. No urgency stated by CXO — correctly not chased.
+verbatim. Two blockers named 09-07: (1) the flag's actual boolean value was ambiguous (identical
+Fly-secret digest to `PIPER_INVERSION_SHADOW`), (2) no cold test account exists (self-serve
+`/register` pruned per #1504; the 08-29 browser-lane account has seed data/chat history/a bound
+connector). **09-08: blocker (1) resolved** — Exec read the running app directly
+(`flyctl ssh console -C "printenv ..."`), confirmed both flags are genuinely `1`/on, found a test
+(`test_flag_vocabulary_matches_inversion_shadow`) explaining the shared value as deliberate design,
+not a coupling bug. **Blocker (2) still open** — replied to Exec cc Lead/CXO/PPM/PM confirming the
+account gap remains the only thing blocking the actual render-check; still waiting on Lead. Tracked
+as standing item #4. No urgency stated by anyone in the thread — correctly not chased.
 
 ### CLOSED — piper-ship banner hero, shipped and deployed (2026-09-03)
 PM returned 2026-09-03 with concrete direction (big banner-style hero clearly branding the
@@ -286,6 +287,14 @@ PM-gated (obs-pass joint walkthrough, site walkthrough) or genuinely unscoped/no
 hero-image filename drift, Buttondown native newsletter).
 
 ## Notes (mix of predecessor's + mine, marked)
+- **(mine, 9/08)** Filename-case gotcha in mail triage: `mv` on this filesystem is
+  case-insensitive, so `mv .../flag-is-on-....md read/` silently matches a real file
+  actually named `flag-is-ON-....md` and moves it — but git and `mail-send.sh` treat
+  the two casings as genuinely different paths. Result: the read-side landed fine
+  (under the wrong-case name), but the original inbox-side path was never deleted on
+  `origin/main` — a stray duplicate that only surfaced because `mail-send.sh`'s
+  "left behind" warning caught it. Always copy the exact filename from `ls` output
+  before constructing a `mv`/mail-send path rather than retype it from memory.
 - **(mine, 9/07)** ⭐ Standing ask from CXO, no deadline/no scheduled work, no reply
   needed: if a live ethics decline or degraded/error-path response is ever hit
   incidentally during browser-lane work (not gone looking for one), capture it

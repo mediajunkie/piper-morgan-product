@@ -1727,6 +1727,18 @@ def register_default_workflows() -> None:
         "delete_todo": delete_todo_entry,
         "remove_todo": delete_todo_entry,
         "cancel_todo": delete_todo_entry,
+        # 1527 (v70 live, 2026-09-08): the classifier's reminder-NOUN raw
+        # emissions for the same delete ask. PM's "delete my hydrate reminder"
+        # emitted EXECUTION/delete_reminder (3/3 live-classifier runs, conf
+        # 0.9-0.95); unregistered, it fell past the rail to the #1333 generic
+        # unwired-write decline — a false "still on the way" for a wired,
+        # confirm-gated capability. Same alias discipline as the create
+        # family's add_reminder (#1426: census-observed LLM emission).
+        # destructive_confirm._DELETE_TODO_FAMILY carries the same three so
+        # the title-bound confirm (not the generic offer) arms on this leg.
+        "delete_reminder": delete_todo_entry,
+        "remove_reminder": delete_todo_entry,
+        "cancel_reminder": delete_todo_entry,
         # RECONNECT #1327 gap 1: set-default-repo (QUERY category, pre-classifier action).
         "set_default_repo": set_default_repo_entry,
         # RECONNECT #1327 build #2: get-default-repo (read counterpart).

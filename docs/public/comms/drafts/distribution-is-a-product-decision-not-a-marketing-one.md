@@ -38,6 +38,6 @@ That's the actual argument for treating distribution as product work from the st
 
 ---
 
-*Next on Building Piper Morgan: the next beat, once the narrative front advances past Aug 31. [Comms: this is the last drafted post in the queue as of 2026-09-01 — re-verify and fill this tease once the next beat is scheduled.]*
+*Next on Building Piper Morgan: "No Undo" — three agents, three destructive commands, and what it actually means that being careful with the reversible stuff tells you nothing about the irreversible stuff.*
 
 *Where in your own work has "how we'll ship it" quietly become "what it actually is" — after the decision was already made, not before?*
