@@ -29,9 +29,13 @@ A row with no blocker and a `Filed` date ≥21 days old will be flagged — that
 | 11 | Worktree `agent-af6f27891de682d61` — held, my clearance test was inconclusive | 2026-09-07 | Awaiting a tree-level check; other 2 flagged cleared, 88 safe |
 | 12 | 12 tracked CSVs carry CRLF against `.gitattributes` eol=lf (incl. editorial-calendar) | 2026-09-07 | Unowned — needs a repo-wide `git add --renormalize` decision, not a unilateral fix |
 | 13 | Lead — name the proposed test-round six by issue number | 2026-09-07 | Awaiting Lead; blocks PM's decision 2 from being a real choice |
-| 14 | Lead — read `PIPER_FTUX_INTERVIEW`'s value; its Fly digest matches `PIPER_INVERSION_SHADOW` | 2026-09-07 | Awaiting Lead; if it resolves false the flip was a no-op |
-| 15 | Web — cold-login capture of the FTUX first exchange (CXO's unknown #3) | 2026-09-07 | Awaiting Web, gated on item 14 so a false flag isn't misread as broken copy |
+| 14 | ~~Lead — read the FTUX flag value~~ | 2026-09-07 | CLOSED 09-08: read it myself, `=1`, ON. My digest alarm was a false positive |
+| 15 | Web — cold-login capture of the FTUX first exchange (CXO's third unknown) | 2026-09-07 | Awaiting Web; unblocked 09-08, flag confirmed ON |
 | 16 | PM's six-item test round | 2026-09-07 | Blocked on PM; walkthrough delivered, PM sequenced it after tomorrow's blog post |
+| 17 | CXO+Arch — is there a METHOD for markdown→display and deliverable presentation? | 2026-09-08 | Awaiting CXO/Arch; PM's observation, 5 fixes at 5 sites, #1615 recurred as #1729 |
+| 18 | Lead — #1527: did named-delete ship (a) or is the capability-decline false (b)? | 2026-09-08 | Awaiting Lead; if (b), a decline is a false claim about our own surface |
+| 19 | PA — confirm whether the ESSENCE ruling reference is live or historical | 2026-09-08 | Awaiting PA; deliberately not boarded as open OR stale |
+| 20 | PM — should the START-side carry-forward refresh become a cohort norm? | 2026-09-06 | Blocked on PM; asked 09-06, unanswered, 3 more stale instances found 09-08 |
 
 ## Closed
 
