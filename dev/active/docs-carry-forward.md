@@ -1,23 +1,31 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-07 ~22:35 PDT (Fire 6 / WORK, LAST FIRE OF TODAY — omnibus in progress)
-**Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` (open, NOT yet DAY-CLOSED).
+**Updated**: 2026-09-07 ~23:45 PDT (Day genuinely closed)
+**Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` — `<!-- DAY-CLOSED: 2026-09-07 -->` present.
 **Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57 tomorrow (2026-09-08).
 
-## IN PROGRESS: today's omnibus (background agent dispatched, awaiting completion)
+## Day closed clean — nothing outstanding
 
-This is the day's last fire. Everything else drained (empty mail, both worktrees synced,
-merge-keeper clean). Dispatched today's omnibus (`docs/omnibus-logs/2026-09-07-omnibus-log.md`)
-to a background agent, 11 roles, following the same discipline as yesterday's two-pass audit.
-Flagged two specific threads to get right from primary sources: the continuing CXO/CIO
-methodology corpus work (m-49→m-51→m-52) and today's own #1725/#1724 same-day audit closure
-(substantial, shouldn't compress to one line). **NEXT ACTION when the agent completes**:
-personally audit its report (line count, spot-check against direct knowledge of today's own 6
-fires, discrepancy-handling check) — do NOT skip the audit just because a background agent
-reported success, matching yesterday's discipline where the first draft needed a genuine second
-pass. Then commit the omnibus, run the Step 10.5 CSV reconciliation commit, add the
-`<!-- DAY-CLOSED: 2026-09-07 -->` marker to this session's own log, and only then consider today's
-duty cycle genuinely closed.
+The day's headline event: both Monday FLY-AUDIT issues (#1725 Weekly, #1724 Monthly Housekeeping)
+worked and CLOSED same-day for the first time this cycle — full checkbox-by-checkbox close-issue-
+properly treatment on both, 3 real findings filed (#1726/#1727/#1728), ~12 stale-path/format bugs
+fixed at the source in the audit-generating workflows themselves. One real mistake (`gh api -f
+body=@file` doesn't do curl-style expansion) caught and fixed immediately.
+
+Today's omnibus (`docs/omnibus-logs/2026-09-07-omnibus-log.md`, 292 lines, HIGH-COMPLEXITY:
+COORDINATION) covered a genuinely dense day cohort-wide: PM overruled PPM's 5-day FTUX-interview
+HOLD and it deployed same-evening with its own multi-role verification chain; the week-long CXO/
+CIO methodology corpus thread resolved with methodology-52 filed; #1386's gate scope got corrected
+twice in one day. Audited thoroughly given the line count sat below the 450-600 target — unlike
+yesterday's first draft, this pass surfaced zero errors on inspection (all 3 canonical methodology
+quotes verified character-accurate, my own day's section matched first-hand memory exactly), so
+accepted rather than forced a mechanical fourth compression pass. Omnibus (`aab75ec16`) and
+activity-log reconciliation (`c4c2df375`) both pushed.
+
+**First action next fire (06:57 tomorrow)**: sync, mail loop (raw `ls`), omnibus currency check
+(should read 09-07 as "yesterday," correct), heartbeat step, otherwise genuinely open floor. Watch
+for Comms' "More Than Anyone Ever Reported to Me" post (PM's stated priority for tomorrow per
+today's omnibus) in case a publish-support ask comes through.
 
 ## Both Monday audits (#1725, #1724) worked and CLOSED same-day — first time this cycle
 
