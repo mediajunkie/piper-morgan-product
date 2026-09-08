@@ -1,11 +1,11 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-07 22:22 PT (STOP). **#1688: PM's ruling stands (flip ftux, executed),
-but my own earlier "the interview is live" was premature — boolean value unconfirmed (shared Fly
-secret digest with PIPER_INVERSION_SHADOW), watching for Lead's one-command read + Web's cold-
-account render capture. Corrected same-fire, no urgency.** **⚠️ #1386 framing CORRECTED AGAIN — now
-FOUR of
+**Last rewritten**: 2026-09-08 07:21 PT (START). **#1688: flag confirmed ON (digest alarm was
+benign), only remaining blocker is Web's cold test account, Lead's to provision, no urgency.**
+**New standing item: PPM now owns the real sequencing for duty-cycle backlog intake** — first
+ordering sent 2026-09-08, expect this to need revisiting as items get claimed/added. **⚠️ #1386
+framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -14,7 +14,51 @@ Only the scenario *definitions* (persona, turn sequence, expected behavior) carr
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
 
-## 🟡 #1688 — PM'S RULING STANDS, BUT "THE INTERVIEW IS LIVE" WAS PREMATURE (2026-09-07 22:22, corrects the 19:09 entry below)
+## ✅ #1688 — DIGEST ALARM RESOLVED, FLAG CONFIRMED ON (2026-09-08 07:21)
+Exec read the actual boolean this time (`flyctl ssh console -C "printenv PIPER_FTUX_INTERVIEW"` →
+`1`) — the shared digest was a benign coincidence (both flags deliberately share
+`PIPER_INVERSION_SHADOW`'s truthy vocabulary per a named test). **My own correction from last
+night stands as the right call at the time** — the value genuinely hadn't been read yet when I
+sent it. Web is now unblocked on the flag question, still blocked on a cold test account (Lead's
+to provision) for the actual render capture. **Watch item downgraded**: only the cold-account
+blocker remains, no urgency, watching Lead.
+
+## ✅ BIG ITEM — PPM's sequencing reply to the duty-cycle intake finding, sent (2026-09-08 07:21)
+PM found a structural gap overnight: the duty-cycle procedure defines work as inbox + standing-
+items only, never the sprint board — so "no work" and "28 open MVP items" were both true at once,
+and Lead's quiet fires were the flywheel working exactly as specified. Exec and Arch both asked
+PPM directly for the ordering (Exec: *"what IS the next unblocked item... PPM owns the real
+sequencing"*; Arch: *"the role-scoping question... is PPM's to define"*).
+
+**Sent a full reply** (`83067843e` + fixups): denominator stated explicitly (eligible = open +
+milestone MVP + Status Sprint Backlog, re-derivable from `sprint-truth.py`, no new artifact); the
+28 tiered into six bands by an actual principle per band (broken-pipeline-first, fresh-evidence-
+today, conversational-state-structural, corpus-pattern-batch, tester-visible-cheap, large-needs-
+own-fire) rather than re-bucketed by title guess; two items (`#1635`, `#1663`) explicitly flagged
+as needing a real read rather than placed on a guess; claim convention scoped honestly to today's
+single consumer (first-mutation-wins is fine now, will need a real check-then-claim if PM's fleet
+idea multiplies consumers — named so it doesn't silently get outgrown). Sent to Exec/CIO/Arch cc
+Lead/Host/CXO/PM, verified landed.
+
+**Also triaged two new issues from today's PM round while doing this**: `#1729` (doc-summary
+rendering bug) and `#1730` (two honesty-structural gaps — decline-asserts-absence, floor-clarify-
+without-carrier) — both MVP/Sprint Backlog/Beta Blockers, matching this week's live-round-bug
+precedent. `#1730` explicitly needs CXO's copy + a structural call, not just board mechanics —
+routed to CXO directly by mail (not just a GH comment) since it needs someone to actually act.
+
+**Also fixed a real stale-carry-forward instance Exec caught**: my own line ~917 still carried
+`#1201` as PM-gated; it's been CLOSED for a while — the exact "left the queue by ACTION not
+ANSWER, nothing noticed" pattern I'd apparently already diagnosed in my own file at line ~997 and
+then repeated three lines away. Corrected in place.
+
+**Mailbox mechanics note for future me**: a 17-item single-call `mail-send.sh` batch that mixed
+new-file adds with inbox→read moves silently no-op'd on the move half (reconcile from an earlier
+send in the same batch removed my local `read/` copies before the moves were captured, so the
+fixup pass initially hit the same false "nothing to send" until re-sent in smaller batches of
+4-6). Resolved by re-sending in batches — verified via direct `git cat-file -e origin/main:<path>`
+checks, not by trusting the tool's own success message alone.
+
+## 🟡 #1688 — PM'S RULING STANDS, BUT "THE INTERVIEW IS LIVE" WAS PREMATURE (2026-09-07 22:22, corrects the 19:09 entry below, downgraded further above)
 Owning this plainly: **my own 19:09 claim outran my evidence.** Exec found
 `PIPER_FTUX_INTERVIEW` and `PIPER_INVERSION_SHADOW` carry **identical Fly secret digests** — same
 value. Exec can't see the value itself (`secrets list` shows digests only), so this doesn't prove
@@ -914,7 +958,10 @@ them. **What changes my own reasoning going forward:**
   failing) and **Architecture Enforcement red on every push since 08-09 15:07** — a STOP condition
   per CLAUDE.md, PM's to triage, not mine, but relevant context if any PPM spec work assumes green CI.
 - **New beta blocker #1599**: `is_admin` unset for anyone (1377 users, zero admin) — 7 routes 403,
-  including the Slack app-token save (#1201). PM-gated.
+  including the Slack app-token save (#1201). PM-gated. ⚠️ **CORRECTED 2026-09-08 (Exec's rollup
+  caught it): #1201 is CLOSED, not still PM-gated** — the call I was carrying as "waiting on PM" had
+  already been made by ACTION, not answer, and nothing in this file noticed. Textbook instance of
+  the pattern named two entries down.
 Filed for my own awareness only; moved to `mailboxes/ppm/inbox/read/` after triage, nothing else
 required of PPM.
 
