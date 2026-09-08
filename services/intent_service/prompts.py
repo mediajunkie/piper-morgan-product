@@ -257,6 +257,7 @@ names are allowlisted there. Don't add examples with invented action names.)
 - "show me stale pull requests" → {{"category": "query", "action": "stale_prs_query", "confidence": 0.9}}
 - "hi there" → {{"category": "conversation", "action": "greeting", "confidence": 0.9}}
 - "fix it" → {{"category": "conversation", "action": "clarification_needed", "confidence": 0.7}}
+- "remind me" → {{"category": "execution", "action": "create_reminder", "confidence": 0.7}} (incomplete but clearly the reminder lane — its handler asks its own follow-up questions; do NOT emit clarification_needed for it)
 
 ## Disambiguation Examples:
 - "what time is it in Tokyo?" → {{"category": "query", "action": "get_time_info", "confidence": 0.9}} (general fact)
