@@ -1,12 +1,12 @@
 ---
-last_updated: 2026-09-06
+last_updated: 2026-09-07
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-06 22:0x PDT (STOP fire, day 44 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-09-07 22:0x PDT (STOP fire, day 45 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -128,18 +128,18 @@ max_age_days: 1
 
 ## Cron
 
-Current job **`27e21cea`** (chain … `586c41c1 → 90a7a76a → 27e21cea`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-06 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`6a1fa69f`** (chain … `90a7a76a → 27e21cea → 6a1fa69f`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-07 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 09-06 STOP
+## Open threads, as of 09-07 STOP
 
-- **Jake loop-back** — 🟡 Drafted 08-31, still waiting on PM to send as of 09-06 (6 days since drafted). Watch for PM sending it or requesting changes; if untouched >~2 weeks (~09-14), worth a check-in.
-- ✅ **methodology-51 (A Bounded Search Is Not a Total) — filed 09-06, closed same-day it was queued (7p → filed, promised as "first thing tomorrow's START" 09-05 and delivered).** CXO's three-way boundary against m-44/m-45, the hedge-misattribution finding (a formally honest hedge naming the wrong cause of its own uncertainty is worse than none), and CXO's own m-45-hygiene applied to their evidence base (3 instances, one seat, one week — scoped "Emerging," promotion trigger set to a fourth instance from a *different* seat). Verified the file exists and reads correctly. Archival.
-- ✅ **NO-SESSION-LOG detector (standing-item 7q) — shipped and verified same-day, closing Exec's "unguarded entrance" finding.** The duty-cycle fire is the cohort's real chokepoint, but a PM-initiated turn bypasses it silently (Exec: 2 confirmed instances, Step 0 and Step 5b, 4 days apart, including an honest admission the finding itself wasn't routed when first diagnosed). CXO corroborated on their own seat (clean 5-of-5 record was schedule luck, not procedural protection) and sharpened the framing (bolt to work-output, not prompt-shape — the heartbeat's `--if-quiet` already does this). **HOST checked its own seat the same way**: 6-of-6 clean, but every turn this window has been the identical cron prompt — same unentered gap, reported honestly rather than assumed clean. CIO shipped the detector same-day (`550fa5200`), CXO gave the sharpest verification report of the week (independent population measure + fixtures, explicitly naming what remained unestablished). Archival.
-- ✅ **The joint recurring-duty proposal (CIO + Exec, "7k")** — not yet drafted as of 09-06 STOP, but CIO signaled readiness to draft this week given the accumulated evidence (HOST's chokepoint counter-case, the three self-attestation instances, m-50/m-51, today's NO-SESSION-LOG mechanism). Watching, not chasing — CIO/Exec's call on timing.
-- ✅ **Standing rule: probes under ~25 API calls proceed without asking, cost reported with result — PM-ratified 09-06.** Addressed directly to HOST, already recorded in `decisions.log` by Exec (verified). Nothing further to do.
+- **Jake loop-back** — 🟡 Drafted 08-31, still waiting on PM to send as of 09-07 (7 days since drafted). Watch for PM sending it or requesting changes; if untouched >~2 weeks (~09-14), worth a check-in.
+- ✅ **methodology-52 (Open It — A Summary Is Not Its Contents) — filed 09-07, closing a three-day self-correction cascade.** Started as m-51's Saturday evidence (5 instances), shrank to 3 after CXO applied m-45 hygiene to their own base, shrank to 2 after CXO tested each against m-49's actual text and found the real discriminator ("watch it fire" vs. "open it"). CIO filed the surviving 2 as m-52 (CXO's own m-45 miscitation, Exec's #1386 criterion-3 miss — both real, cross-seat, arrived at independently in real time), folded the other 2 into m-49's corroborating list. Verified the file exists and the commit (`2aefb904a`) matches the claim. Archival — but a clean worked example of the corpus discipline holding under its own scrutiny three times running.
+- ✅ **methodology-51 (A Bounded Search Is Not a Total) — filed 09-06, corrected 09-07 same-morning** (instance #2 flagged borderline per CXO's re-sort). Archival.
+- ✅ **NO-SESSION-LOG detector (standing-item 7q) — shipped 09-06, closing Exec's "unguarded entrance" finding.** HOST checked its own seat the same way CXO did and found the identical unentered gap, reported honestly. Archival.
+- **The joint recurring-duty proposal (CIO + Exec, "7k")** — still not drafted as of 09-07 STOP. CIO's evidence base now includes m-50, m-51, m-52, the NO-SESSION-LOG mechanism, and HOST's chokepoint counter-case. Watching, not chasing.
+- ✅ **Standing rule: probes under ~25 API calls proceed without asking, cost reported with result — PM-ratified 09-06.** Already recorded in `decisions.log`. Nothing further to do.
 - ✅ **methodology-50 (Self-Attestation Is Not Verification) — filed 09-05, HOST's own discriminator credited by name and date.** Archival.
-- ✅ **The "last invoked" marker's two cold-start gaps, both found and fixed same-day (09-05).** Archival.
-- ✅ **Docs' real heartbeat lapse (invoked 20x, stopped 09-03) — found, confirmed, fixed same-day (09-05).** Archival.
+- ✅ **The "last invoked" marker's two cold-start gaps, Docs' real heartbeat lapse — both found and fixed same-day (09-05).** Archival.
 - **Workstream Review #059** — ✅ Filed 09-04. Nothing further owed until #060's kickoff.
 - **Role Health Check** — ✅ #1714 closed 08-31. 8 Low/3 Medium/0 High. Next due ~09-28.
 - **Agent 360 v0.4** — ✅ Fully closed. Only cohort-share remains, pending PM's framing sign-off.

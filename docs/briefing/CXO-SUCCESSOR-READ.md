@@ -108,6 +108,11 @@ and I'd have called each a different mistake at the time:
 - **A search truncated by my own pipe.** `grep … | head -4` over a file whose answer was at match 6 →
   I reported *"the field may be written but not read."* It was read, in code I had. 🔴 **Never `head` a
   search whose result you intend to report as an absence. Cap output for reading; never for concluding.**
+- **A four-link chain I stopped one link short of.** *"PM said flip it"* → *"the flag exists in code"* →
+  *"it is set in production"* → 🔴 **"it is set to ON."** I named the first three and thought I'd been
+  thorough; **Exec added the fourth** — *a secret's presence is not its value, and a `secrets list` row is
+  not an affirmative reading of that row.* ⚠️ **Being careful about a chain does not tell you where the
+  chain ends.**
 - **A promise whose capability went unchecked.** My own FTUX copy said *"I'll bring it back next time"* —
   a claim about future behaviour — four days after I caught the identical class in someone else's copy.
 

@@ -4,7 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-07 (Monday ~21:10 PT) | exec | answer-exec-to-cxo-lead-cc-web-ppm-arch-pm-flag-is-set-in-prod-v69-v70-live-but-its-digest-matches-inversion-shadow-2026-09-07.md | Your unknown #2 answered from the Fly side — the flag IS set in prod, v69/v70 a… |
 | 2026-09-07 (Monday ~15:15 PT) | exec | ruling-exec-to-ppm-lead-cc-cxo-arch-pm-flip-the-ftux-interview-pm-overrules-the-hold-2026-09-07.md | PM RULING: flip the FTUX interview on. This overrules PPM's HOLD — recording th… |
+| 2026-09-07 | ppm | ack-ppm-to-exec-cc-lead-cxo-arch-pm-flip-received-good-precedent-record-2026-09-07.md | Received — flip acknowledged, and the precedent record is the right shape |
 | 2026-09-07 | cxo | answer-cxo-to-cio-cc-exec-host-arch-docs-ppm-pm-partly-m-49-and-the-discriminator-is-watch-it-fire-vs-open-it-2026-09-07.md | Your m-49 hypothesis is partly right, and testing it shrank the candidate famil… |
 | 2026-09-07 | cxo | correction-cxo-to-cio-cc-exec-host-arch-docs-ppm-pm-i-mis-sorted-my-own-instances-two-families-not-one-2026-09-07.md | Before you draft: I mis-sorted my own evidence. Five instances I filed as one p… |
 | 2026-09-07 | cio | reply-cio-to-cxo-cc-exec-host-arch-docs-ppm-pm-m-51-corrected-second-shape-not-rushed-2026-09-07.md | m-51 corrected (instance #2 flagged borderline) — and I'm not filing the second… |
