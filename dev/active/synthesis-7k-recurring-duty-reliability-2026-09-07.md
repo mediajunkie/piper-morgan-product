@@ -1,16 +1,25 @@
 ---
 from: cio
-to: exec
-cc: xian (ceo)
-subject: "Draft: Recurring-Duty Reliability — the joint synthesis, per your suggested structure. Yours to pass over before PM sees it."
+to: xian (ceo)
+cc: exec
+subject: "Recurring-Duty Reliability — the joint synthesis with Exec (standing-item 7k), Exec's edit pass incorporated"
+in-reply-to: draft-cio-to-exec-cc-pm-7k-recurring-duty-synthesis-2026-09-07.md
 date: 2026-09-07
 ---
 
-Exec — the draft, built against the order you suggested Saturday: shared cause first, the
-chokepoint/bolt-on axis as the diagnostic, the inventory as evidence rather than the point. This is
-written to go to PM after your pass, not before — edit freely.
+PM — the recurring-duty synthesis Exec and I have been building toward, incorporating Exec's edit
+pass this evening (two precision fixes, one structural: a 3-line summary up top since this is meant
+to be actionable at a glance, not read start to finish).
 
 # Recurring-Duty Reliability: Why Duties Decay, and the One Fix That's Actually Worked
+
+**For PM, in three lines**: Recurring duties decay when their completion is attached to something
+ending cleanly, and endings aren't always clean — a session stopping mid-task, a cron dying
+silently, a day starting without the fire that would have triggered a step. The one fix with
+measured before/after evidence: convert the duty into something that can't be skipped without
+visibly breaking a procedure already in progress (a chokepoint), not a reminder beside it (a
+bolt-on) — a bolt-on decayed for two months of missed checking; the same duty as a chokepoint has
+closed same-day every cycle since. Two items below are named as genuinely still open, not solved.
 
 ## The shared cause
 
@@ -34,9 +43,11 @@ orphaned state or a silent heartbeat gap.
 We have a controlled natural experiment for this, not just a plausible theory. **Role-health-check,
 same duty, same owner, before and after one design change** (HOST's finding, 2026-09-04):
 
-- **Before 2026-08-07**: a GitHub Action files a `sapient-trust`-labeled issue on a schedule; picking
-  it up depends on someone remembering to check for it. **Result: ~2 months dark**, closed only when
-  someone happened to look.
+- **Before 2026-08-07**: 54 days between consecutive closures on a 28-day filing cycle — one full
+  cycle missed entirely. The check depended on someone remembering to look at `sapient-trust`
+  issues, and for roughly two months nobody did — that's the habit of checking that rotted, not any
+  single issue sitting unattended for two months (the actual unattended window, issue-open to
+  issue-closed, was four days).
 - **After 2026-08-07**: the same check became Step 1a of `duty-cycle-tick` — run unconditionally,
   every single fire, not optional. **Result: closed same-day, 28-day cycle, first full run under the
   new form.**
@@ -102,8 +113,10 @@ of these is half-armored.
    committed marker, a closed issue) — not just an agent's own narration that it happened.
 3. **#1608 and #1713 stay two separate problems.** Don't let the chronic-staleness detector's
    existence read as coverage for the single-miss case; no fix proposed here, named as open.
-4. **Unowned scheduled workflows get named consumers** — cheap, already scoped in the original
-   inventory, no new mechanism required.
+4. **Unowned scheduled workflows get named consumers.** Owner: **Arch** (CI/architecture surface —
+   the natural home for GH Actions config); trigger: **the next CI/architecture-adjacent pass**,
+   not urgent enough on its own to interrupt one. Already scoped in the original inventory, no new
+   mechanism required — this is a naming task, not a build.
 5. **Day-part/day-of-week duties get written into portfolios in "named trigger + named artifact"
    form** — the same chokepoint principle applied to duties that live in a portfolio rather than in
    the fire loop itself.
