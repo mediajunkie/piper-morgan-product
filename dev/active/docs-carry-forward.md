@@ -1,19 +1,23 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-07 ~19:35 PDT (Fire 5 / WORK, complete)
-**Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` (open).
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 21:57 (LAST fire of today).
+**Updated**: 2026-09-07 ~22:35 PDT (Fire 6 / WORK, LAST FIRE OF TODAY — omnibus in progress)
+**Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` (open, NOT yet DAY-CLOSED).
+**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57 tomorrow (2026-09-08).
 
-Fire 5 was quiet: 1 more FYI-cc closing the methodology thread (m-52 filed), everything else
-synced/clean, nothing unblocked.
+## IN PROGRESS: today's omnibus (background agent dispatched, awaiting completion)
 
-## Next fire (21:57) is day-close — omnibus expected
-
-Per this week's established pattern (each day's omnibus written at that day's own last fire,
-~22:38-22:40 PM), expect to dispatch/write today's omnibus at the 21:57 fire. Today's session-log
-roster should include the same 11 roles; also check whether Comms/PM's holiday-Monday content
-queue needs any attention (unlikely, matches the weekend pattern) and confirm the day's #1725/
-#1724 audit-closure work is the day's headline item for the omnibus.
+This is the day's last fire. Everything else drained (empty mail, both worktrees synced,
+merge-keeper clean). Dispatched today's omnibus (`docs/omnibus-logs/2026-09-07-omnibus-log.md`)
+to a background agent, 11 roles, following the same discipline as yesterday's two-pass audit.
+Flagged two specific threads to get right from primary sources: the continuing CXO/CIO
+methodology corpus work (m-49→m-51→m-52) and today's own #1725/#1724 same-day audit closure
+(substantial, shouldn't compress to one line). **NEXT ACTION when the agent completes**:
+personally audit its report (line count, spot-check against direct knowledge of today's own 6
+fires, discrepancy-handling check) — do NOT skip the audit just because a background agent
+reported success, matching yesterday's discipline where the first draft needed a genuine second
+pass. Then commit the omnibus, run the Step 10.5 CSV reconciliation commit, add the
+`<!-- DAY-CLOSED: 2026-09-07 -->` marker to this session's own log, and only then consider today's
+duty cycle genuinely closed.
 
 ## Both Monday audits (#1725, #1724) worked and CLOSED same-day — first time this cycle
 
