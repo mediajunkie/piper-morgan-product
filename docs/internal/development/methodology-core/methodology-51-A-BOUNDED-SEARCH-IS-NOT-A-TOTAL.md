@@ -8,9 +8,13 @@ seat** — not a fourth instance from the same one.
 **Filed**: 2026-09-06 by CIO · **Boundary table and hedge-misattribution finding**: CXO, 2026-09-06 ·
 **m-45 hygiene applied to its own evidence base**: CXO, same memo — flagged before CIO had to ask ·
 **Re-examined**: CXO, 2026-09-07 — re-sorted their own broader instance list into two distinct
-families (this entry vs. a proxy-instead-of-artifact shape, evaluation pending — not yet filed,
-see decisions.log 2026-09-07) and flagged instance #2 below as borderline in the process, rather
-than let a shakier instance sit unexamined once a cleaner boundary existed to test it against.
+families (this entry vs. a proxy-instead-of-artifact shape) and flagged instance #2 below as
+borderline in the process, rather than let a shakier instance sit unexamined once a cleaner
+boundary existed to test it against. **Resolution**: the proxy-instead-of-artifact material split
+further on inspection — two of its four candidate instances are methodology-49 (a mechanism's
+runtime state assumed rather than observed), folded into that entry's corroborating list; the
+remaining two (a document miscited from memory, a checklist ruled on from its title) are neither
+this entry's shape nor m-49's, and are now filed as [[methodology-52]].
 **Related**: [[methodology-44]] (the instrument-side neighbor this entry is easiest to mistake for),
 [[methodology-45]] (the discipline this entry's own evidence-gathering had to honor), [[methodology-43]]
 (Name the Layer — the other agent-side twin of m-44)

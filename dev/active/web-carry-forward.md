@@ -275,6 +275,12 @@ PM-gated (obs-pass joint walkthrough, site walkthrough) or genuinely unscoped/no
 hero-image filename drift, Buttondown native newsletter).
 
 ## Notes (mix of predecessor's + mine, marked)
+- **(mine, 9/07)** ⭐ Standing ask from CXO, no deadline/no scheduled work, no reply
+  needed: if a live ethics decline or degraded/error-path response is ever hit
+  incidentally during browser-lane work (not gone looking for one), capture it
+  verbatim (user turn, reply, account/connection state) and pass to CXO — their
+  decline-voice watch needs a real delivered response to score, has none from a live
+  account. Passive watch-item only; do not construct or go looking for a decline.
 - *(predecessor, unverified by me)* Product-repo git: ALWAYS absolute `git -C` paths (cwd
   drifts across reconnects); stage own files BEFORE any stash.
 - *(predecessor, unverified by me)* Worktree `node_modules` is a real install; Turbopack
