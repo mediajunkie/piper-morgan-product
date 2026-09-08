@@ -78,6 +78,33 @@ def _interview_flag_on(monkeypatch):
 # Checked case-insensitively; "hold on to" covers the spaced variant.
 PROMISE_PHRASES = ("bring it back", "next time", "hold onto", "hold on to")
 
+# The promise-CLASS lexicon (CXO render-check finding, 2026-09-08): the pin
+# above protects the STRINGS that were cut, not the PROPERTY they were cut
+# for. The real cold first-contact turn carries a third line the interview
+# didn't write — personalization_service.FIRST_RESPONSE_PERSONALIZATION_NOTICE
+# (ADR-075 OQ-3) — whose "I'll tune to your role and priorities as I learn
+# them" is exactly the future-behavior-promise class PPM ruled out of scope.
+# This lexicon pins the CLASS, curated against every surface it is asserted
+# on (probed 2026-09-08: zero false positives outside the notice itself).
+# Substring match, case-insensitive.
+PROMISE_CLASS_LEXICON = (
+    # -- CXO's original cut-phrase pins (why_asking, PPM ruling 09-03) --
+    "bring it back",
+    "next time",
+    "hold onto",
+    "hold on to",  # spaced variant
+    # -- future-behavior commitment markers (CXO 2026-09-08 memo) --
+    "i'll",  # elided first-person future ("I'll tune…", "I'll remember…")
+    "i will",  # unelided form of the same commitment
+    "as i learn",  # passive-learning claim — implies a mechanism that must exist
+    "will tune",  # covers non-first-person phrasings ("Piper will tune…")
+    "going forward",  # open-ended future-behavior framing
+    "over time",  # gradual-improvement framing ("it gets better over time")
+    # NOT included, deliberately: bare "will" / "learn" / "tune" — far too
+    # broad for prose surfaces; the class marker is the COMMITMENT phrasing,
+    # not the verb.
+)
+
 
 def _assert_no_promise_language(text: str):
     low = (text or "").lower()
@@ -629,3 +656,129 @@ class TestSeamWiringPins:
     def test_canonical_seam_arms_the_offer(self):
         src = self._src()
         assert 'canonical_result.get("ftux_interview_offer")' in src
+
+
+# ---------------------------------------------------------------------------
+# Promise-CLASS pins (CXO 2026-09-08) — the real cold turn, all contributors
+# ---------------------------------------------------------------------------
+
+
+def _assert_no_promise_class_language(text: str):
+    low = (text or "").lower()
+    for phrase in PROMISE_CLASS_LEXICON:
+        assert phrase not in low, f"promise-class language {phrase!r} in: {text!r}"
+
+
+def _compose_cold_first_contact_turn(answer_message: str) -> str:
+    """The REAL cold first-contact turn: the greeting answer plus the ADR-075
+    one-time personalization notice, composed exactly as
+    ``services.intent.intent_service`` appends it (capability first, metadata
+    second). ``test_notice_append_seam_matches_production`` pins this shape
+    against the production source so the composition here cannot drift
+    silently."""
+    from services.configuration.personalization_service import (
+        FIRST_RESPONSE_PERSONALIZATION_NOTICE,
+    )
+
+    return f"{answer_message}\n\n{FIRST_RESPONSE_PERSONALIZATION_NOTICE}"
+
+
+class TestPromiseClassPin:
+    """CXO's render-check finding (memo 2026-09-08): a green PROMISE_PHRASES
+    suite must not be readable as "no promises in first contact" — the pin
+    protected the cut strings, not the promise class, and the class re-entered
+    the same turn through personalization_service (pre-existing, ADR-075).
+    These pins assert the CLASS against the assembled turn; the notice's own
+    line is EXPECTED-FAIL (strict) until the copy decision lands — an xfail
+    with the reference beats a green lie."""
+
+    def test_notice_append_seam_matches_production(self):
+        """The composition helper mirrors the live seam. Grep-able pin: if
+        the append shape in intent_service changes, this fails and the
+        composed-turn pins below must be re-derived, not assumed."""
+        import services.intent.intent_service as m
+
+        with open(m.__file__) as f:
+            src = f.read()
+        assert "maybe_consume_first_response_notice(" in src
+        assert r'result.message = f"{result.message}\n\n{notice}"' in src
+
+    def test_no_promise_class_language_on_1688_owned_surfaces(self):
+        """The widened GREEN pin: every surface #1688 owns — the interview
+        render, every string in the offer record, the floor guidance block,
+        and the flag-off canned greeting — is clean against the CLASS lexicon,
+        not just the cut strings."""
+        from services.consciousness.conversation_consciousness import (
+            format_greeting_conscious,
+        )
+
+        _assert_no_promise_class_language(render_ftux_interview())
+
+        def walk(value):
+            if isinstance(value, str):
+                _assert_no_promise_class_language(value)
+            elif isinstance(value, dict):
+                for v in value.values():
+                    walk(v)
+
+        walk(build_ftux_interview_offer(str(uuid4())))
+        _assert_no_promise_class_language(
+            ConversationalFloor()._format_domain_context(
+                {"ftux_interview_answer": "the beta launch"}
+            )
+        )
+        _assert_no_promise_class_language(format_greeting_conscious(calendar_summary=None))
+
+    @pytest.mark.xfail(
+        strict=True,
+        reason=(
+            "FIRST_RESPONSE_PERSONALIZATION_NOTICE (ADR-075 OQ-3, "
+            "personalization_service.py) carries \"I'll tune to your role and "
+            'priorities as I learn them" — the future-behavior-promise class '
+            "PPM ruled out of scope 2026-09-03. Copy decision pending with CXO "
+            "(memo 2026-09-08, cc lead/ppm/exec/arch/pm). strict: when the "
+            "copy changes, this XPASSes loudly — promote it to a green pin."
+        ),
+    )
+    def test_real_cold_turn_flag_on_is_promise_free(self):
+        """The assembled cold turn with the interview flag ON (what Web's
+        09-08 render check captured): interview render + the one-time
+        personalization notice. EXPECTED FAIL today — the notice is the
+        promise. Honest about current state by construction."""
+        _assert_no_promise_class_language(_compose_cold_first_contact_turn(render_ftux_interview()))
+
+    @pytest.mark.xfail(
+        strict=True,
+        reason=(
+            "Same promise line, deploy-default path: with PIPER_FTUX_INTERVIEW "
+            "unset the cold turn is the canned greeting + the same "
+            "FIRST_RESPONSE_PERSONALIZATION_NOTICE. Copy decision pending with "
+            "CXO (memo 2026-09-08). strict: XPASS on copy change — promote."
+        ),
+    )
+    def test_real_cold_turn_flag_off_is_promise_free(self):
+        """The assembled cold turn on the DEPLOY DEFAULT (flag unset): canned
+        greeting + notice. EXPECTED FAIL today for the same single reason —
+        the promise class enters through the notice on both paths."""
+        from services.consciousness.conversation_consciousness import (
+            format_greeting_conscious,
+        )
+
+        _assert_no_promise_class_language(
+            _compose_cold_first_contact_turn(format_greeting_conscious(calendar_summary=None))
+        )
+
+    def test_notice_is_the_only_promise_carrier_in_the_cold_turn(self):
+        """Fact pin of CXO's finding: the promise-class hits in the assembled
+        cold turn come from the notice and ONLY the notice — today exactly
+        {"i'll", "as i learn"}. If this fails, either a second carrier
+        appeared (widen the xfails' blame) or the notice copy changed (the
+        xfails above are already XPASSing — promote them)."""
+        from services.configuration.personalization_service import (
+            FIRST_RESPONSE_PERSONALIZATION_NOTICE,
+        )
+
+        low = FIRST_RESPONSE_PERSONALIZATION_NOTICE.lower()
+        assert {p for p in PROMISE_CLASS_LEXICON if p in low} == {"i'll", "as i learn"}
+        # And the answer half contributes zero hits on either path
+        _assert_no_promise_class_language(render_ftux_interview())

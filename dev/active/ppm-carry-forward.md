@@ -1,11 +1,11 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-08 10:21 PT (WORK). **#1688: flag confirmed ON (digest alarm was
-benign), only remaining blocker is Web's cold test account, Lead's to provision, no urgency.**
-**Flywheel re-eval underway (Arch leads, PM's constraint is refactor-not-add)** — PPM's sequencing
-memo + Q1 answer both sent; watch for Arch's synthesis before doing more here. **⚠️ #1386
-framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-08 13:21 PT (WORK). **#1688 is FULLY CLOSED** — render check confirms
+it works as designed, off the watch list entirely. **Flywheel re-eval underway (Arch leads, PM's
+constraint is refactor-not-add)** — PPM's sequencing memo + Q1 answer both sent and already
+partially shipped (CIO's v1.32 intake amendment); watch for Arch's synthesis before doing more
+here. **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -13,6 +13,27 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ #1688 — RENDER CHECK CONFIRMS IT WORKS AS DESIGNED, WATCH ITEM FULLY CLOSED (2026-09-08 13:21)
+Web ran the cold-account capture: leads with CXO's opening line verbatim, asks the question
+verbatim, no promise language from `first_contact.py` itself. **This closes the multi-day thread**
+(HOLD → PM overrule → digest scare → resolved → this). My own 09-07 correction stands as the right
+call at the time — the render genuinely hadn't been observed yet. CXO found one adjacent thing
+(a pre-existing, unrelated personalization-notice string with its own promise-shaped phrase,
+`personalization_service.py` — not part of this increment) — correctly holding it pending
+reachability of the preferences surface, not filed yet, not mine to rule on or duplicate-flag.
+Sent a closing ack to CIO cc the whole thread, verified landed. **Nothing further on #1688 — off
+the watch list.**
+
+## ✅ #1731/#1732 TRIAGED — one security bug, one infra bug I hit myself independently (2026-09-08 13:21)
+Found via the unmilestoned-count check (0→2). `#1732`: chat-render XSS (`marked.parse()` →
+`innerHTML`, no sanitizer), found via the #1730 lane — MVP/Beta Blockers, matches #1578/#1581
+family exactly. `#1731`: `mail-send.sh` silently drops paths in a large batch — CIO hit it
+independently this morning; **I hit the same shape myself in this morning's 17-path batch**
+(documented in my own 07:21 log entry) — added as corroborating evidence on the issue since the
+two reports don't yet pin the same failure boundary. Milestone Ongoing/FLYWHEEL (cohort tooling,
+not a product surface — corrected my own first instinct to put it in MVP before applying the
+right precedent).
 
 ## ✅ #1730 GAP 1 — CXO's copy + scope verified against code, posted, build-ready (2026-09-08 10:21)
 CXO delivered exactly what was routed: fix scoped to `GENERIC_UNWIRED_WRITE_DECLINE` only (the
