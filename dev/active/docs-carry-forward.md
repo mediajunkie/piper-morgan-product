@@ -1,8 +1,30 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-07 ~23:45 PDT (Day genuinely closed)
-**Session log**: `dev/2026/09/07/2026-09-07-0727-docs-code-log.md` — `<!-- DAY-CLOSED: 2026-09-07 -->` present.
-**Cron**: `b6541910`, `57 6,9,12,15,18,21 * * *`, healthy, next fire 06:57 tomorrow (2026-09-08).
+**Updated**: 2026-09-08 ~07:45 PDT (06:57 fire, in progress)
+**Session log**: `dev/2026/09/08/2026-09-08-0528-docs-code-log.md` (open; started PM-initiated pre-cron).
+**Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy, **re-armed 07:27 today after Gap-C
+self-heal** (job vanished silently between its last fire and this one — CronList returned "No
+scheduled jobs" despite this fire having just been triggered by it). Expires ~2026-09-15 (7-day
+auto-expiry) — watch for a proactive re-arm before then.
+
+## IN PROGRESS: Flywheel Q2 (joint with CIO) — background research agent dispatched
+
+This morning: published "More Than Anyone Ever Reported to Me" (PM-initiated pre-cron ask),
+proofread clean, live-verified. Medium leg + calendar image-fields gap (flagged by Dispatch-PM,
+"first miss in four") fixed same-fire.
+
+**Real new work**: PM approved a scoped re-evaluation of Methodology-00's Layer 2 (5 practices)
+against the autonomous-duty-cycle era (Exec's kickoff, `dev/active/flywheel-rescope-2026-09-08.html`).
+Docs + CIO jointly own **Q2**: is the 5-practice layer still canonical, or quietly superseded by
+the 53-entry methodology corpus? PM's governing constraint: refactor, don't add layers. Per Exec's
+explicit ask for independent reads before comparing, started my own analysis rather than waiting
+on CIO — dispatched a background agent to map all 53 methodology entries' full text (not just
+INDEX.md's one-liners) against the 5 practices, plus a specific check on whether methodology-02
+(INDEX's own "authoritative reference" for coordination) has drifted from Practice 3. **NEXT
+ACTION when it completes**: personally verify the mapping (spot-check several entries directly,
+don't trust the categorization at face value), then write up an independent Q2 read and share
+with CIO — do not let this become a standing duty-cycle item (Exec's memo is explicit: scoped
+work with a start and end). Not PM-blocking, but real and worth continuing across fires today.
 
 ## Day closed clean — nothing outstanding
 
