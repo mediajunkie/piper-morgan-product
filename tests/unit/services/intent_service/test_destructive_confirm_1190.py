@@ -40,7 +40,17 @@ CLOSE_ALIASES = ("close_issue", "close_issue_query")
 REOPEN_ALIASES = ("reopen_issue", "reopen_issue_query")
 # #1666: delete_todo joined the destructive tier (its own ruling — the
 # consent-gate coverage gap Arch found; suite: test_delete_todo_confirm_1666).
-DELETE_TODO_ALIASES = ("delete_todo", "remove_todo", "cancel_todo")
+# 1527 (v70): + the reminder-noun raw-emission aliases — the SAME entry object
+# under the same #1666 ruling, not a new destructive capability (live evidence:
+# test_reminder_delete_live_emission_1527.py).
+DELETE_TODO_ALIASES = (
+    "delete_todo",
+    "remove_todo",
+    "cancel_todo",
+    "delete_reminder",
+    "remove_reminder",
+    "cancel_reminder",
+)
 
 _USER = "3f7b8a52-1190-4b00-9e00-000000001190"  # valid UUID: survives principal parsing
 

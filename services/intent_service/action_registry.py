@@ -552,6 +552,22 @@ _VERB_SOURCE_TO_ACTION: dict[tuple["Verb", Optional[str]], str] = {
     (Verb.COMMENT, None): "comment_issue_query",
     (Verb.UPDATE, None): "update_document_query",
     (Verb.COMPLETE, None): "complete_todo",
+    # 1527 (v70 live, 2026-09-08): the classifier DOES emit the canonical
+    # DELETE verb for todo-domain deletes — PM's "delete my hydrate reminder"
+    # emitted verb=delete, source_type=reminder, action=delete_reminder
+    # (captured verbatim from the live LLM). With no DELETE cell the shim
+    # returned None, the free-form action survived, and the turn fell past
+    # the rail to the generic unwired-write decline. Todo-domain sources
+    # canonicalize to the rail-registered delete_todo entry (#1666 family;
+    # round-trips: get_verb("delete_todo") == Verb.DELETE). Deliberately NO
+    # (DELETE, None) cell: a delete aimed at a non-todo object (file,
+    # document, issue) must NOT canonicalize to a todo delete — unknown
+    # sources keep the free-form action, now caught by the rail's
+    # delete_reminder/remove_reminder/cancel_reminder alias keys or the
+    # honest-decline default.
+    (Verb.DELETE, "reminder"): "delete_todo",
+    (Verb.DELETE, "todo"): "delete_todo",
+    (Verb.DELETE, "task"): "delete_todo",
 }
 
 

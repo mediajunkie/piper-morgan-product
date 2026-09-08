@@ -55,7 +55,17 @@ from services.shared_types import EffectClass, IntentCategory, Outwardness
 
 _USER = "3f7b8a52-1666-4b00-9e00-000000001666"  # valid UUID: survives principal parsing
 
-DELETE_TODO_ALIASES = ("delete_todo", "remove_todo", "cancel_todo")
+# 1527 (v70): + the reminder-noun raw-emission aliases — the SAME entry object
+# under the same #1666 ruling (live evidence:
+# test_reminder_delete_live_emission_1527.py).
+DELETE_TODO_ALIASES = (
+    "delete_todo",
+    "remove_todo",
+    "cancel_todo",
+    "delete_reminder",
+    "remove_reminder",
+    "cancel_reminder",
+)
 
 # PM's exact #1650 aside, verbatim — the one-label-two-objects shape that
 # fired an armed delete off the greedy accept row pre-#1650. The delete-todo
