@@ -1,0 +1,108 @@
+<title>Workstream review — 8 September</title>
+<style>
+  :root{
+    --paper:#f4f4f2; --card:#fff; --ink:#1b1a17; --mute:#66635c; --line:#dcdad4;
+    --red:#9d3427; --amber:#8a6516; --green:#2f6440; --blue:#2a5578; --accentsoft:#ecebe6;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#131311; --card:#1c1c19; --ink:#e8e6e0; --mute:#9a968d; --line:#2e2d28;
+           --red:#e08a7a; --amber:#d7a94f; --green:#82c093; --blue:#8bb4d8; --accentsoft:#232320; }
+  }
+  :root[data-theme="dark"]{ --paper:#131311; --card:#1c1c19; --ink:#e8e6e0; --mute:#9a968d; --line:#2e2d28;
+    --red:#e08a7a; --amber:#d7a94f; --green:#82c093; --blue:#8bb4d8; --accentsoft:#232320; }
+  :root[data-theme="light"]{ --paper:#f4f4f2; --card:#fff; --ink:#1b1a17; --mute:#66635c; --line:#dcdad4;
+    --red:#9d3427; --amber:#8a6516; --green:#2f6440; --blue:#2a5578; --accentsoft:#ecebe6; }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:47rem;margin:0 auto;padding:1.6rem 1.1rem 4rem}
+  h1{font-size:1.5rem;margin:0 0 .3rem;letter-spacing:-.015em}
+  .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.5rem}
+  h2{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);
+     font-weight:600;margin:2rem 0 .7rem;padding-bottom:.35rem;border-bottom:1px solid var(--line)}
+  h2:first-of-type{margin-top:1rem}
+  .item{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--mute);
+    border-radius:7px;padding:.8rem .95rem;margin:0 0 .7rem}
+  .item.dec{border-left-color:var(--red)} .item.drift{border-left-color:var(--amber)}
+  .item.ok{border-left-color:var(--green)} .item.res{border-left-color:var(--blue)}
+  .who{font-weight:600;font-size:.83rem}
+  .item p{margin:.35rem 0 0;font-size:.94rem}
+  .item p.sub{color:var(--mute);font-size:.87rem}
+  .big{font-size:1.02rem;color:var(--green);font-weight:500;margin:0}
+  table{width:100%;border-collapse:collapse;margin:.3rem 0 0;font-size:.88rem;display:block;overflow-x:auto}
+  th,td{text-align:left;padding:.4rem .55rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  td.n{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--mute)}
+  footer{margin-top:2.2rem;border-top:1px solid var(--line);padding-top:1rem;color:var(--mute);font-size:.82rem}
+  footer b{color:var(--ink)}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Workstream review for 8 September: one blocker needing Lead, one decision needing PM, seven workstreams in flight, and a heavy resolution day.</h2>
+
+<h1>Workstream review</h1>
+<p class="meta">Compiled by Exec · <b>Tuesday 8 September, 09:15 PT</b> · second pass today · live-verified against GitHub, <code>decisions.log</code>, Fly, and the deployed app</p>
+
+<h2>🛑 Blocked — one, and it needs Lead not you</h2>
+<div class="item dec">
+  <span class="who">Web → Lead</span>
+  <p><b>Needs a genuinely cold test account</b> — fresh invite token, zero prior state.</p>
+  <p class="sub">The FTUX interview is live on v70 and <b>nobody has watched it render for a real first-contact user.</b> Web's existing browser-lane account carries seed data, chat history and a bound connector from the 08-29 round, so it can't answer the question. Web: <em>"the moment that exists, I'll run the capture immediately — no other work is blocking it."</em> Asked yesterday, still unprovisioned as of this pass. <b>One provisioning step stands between us and knowing whether the thing you flipped on actually works.</b></p>
+</div>
+
+<h2>🔴 Needs your decision — one</h2>
+<div class="item dec">
+  <span class="who">Flywheel scope · Q5</span>
+  <p><b>Is idle a legitimate terminal state — and is that role-specific or general?</b></p>
+  <p class="sub">You ruled it for Lead this morning (no: pull from the backlog). The open question is whether that generalises. A governance role with an empty inbox arguably <em>should</em> idle; a build role with 28 open items should not. The flywheel has no vocabulary for that distinction, which is why it never surfaced. Not urgent — Arch needs it before the re-evaluation concludes, not to start.</p>
+</div>
+
+<h2>🟢 In flight — seven workstreams, all moving</h2>
+<div class="item ok">
+  <table>
+    <tr><th>Workstream</th><th>Owner</th><th>State</th></tr>
+    <tr><td><b>Flywheel re-evaluation</b></td><td>Arch</td><td>Kicked off this morning with your refactor-not-add constraint as the success criterion</td></tr>
+    <tr><td><b>Un-modeled-noun audit</b></td><td>Arch</td><td><b>DELIVERED same-day.</b> See below — it sharpened the hypothesis</td></tr>
+    <tr><td><b>Backlog drain</b></td><td>Lead</td><td>Directive live; 28 banded; idle no longer terminal</td></tr>
+    <tr><td><b>Recurring-duty synthesis (7k)</b></td><td>CIO</td><td>Final sent to you after my pass</td></tr>
+    <tr><td><b>Duty-cycle intake step</b></td><td>CIO</td><td>Arch concurs; flagged that the work definition needs a denominator</td></tr>
+    <tr><td><b>Test-round failures</b></td><td>Lead</td><td>#1654 and #1527 both reproduced; #1527's branch question open</td></tr>
+    <tr><td><b>Worktree cleanup</b></td><td>Pard</td><td>91-of-91 swept, 88 clear, 2 cleared by me, 1 held</td></tr>
+  </table>
+</div>
+
+<h2>🟡 Worth knowing</h2>
+<div class="item drift">
+  <span class="who">Arch — the noun audit already paid off</span>
+  <p><b>Denominator stated: 435 issues scanned</b> (47 open-MVP + 388 closed since 1 Jun), 10 nouns considered, <b>6 survived</b> the ≥2-sites test.</p>
+  <p class="sub">And a sharpening worth more than the count: <b>three of the six are half-modeled, not un-modeled</b> — a dict-key convention, an enum the failing seam un-adopts, a Protocol wired to only one consumer. Arch's discriminator: <em>"can the thing be passed, typed, and enforced across the seam where it fails. A convention is not a model."</em> Top-ranked cousin is <b>an empty-or-degraded answer</b> at ~10 sites — larger than the rendering case that started this.</p>
+</div>
+<div class="item drift">
+  <span class="who">PA — found more than I did, by not trusting my check</span>
+  <p>I told PA the ESSENCE row was stale and they needn't verify. <b>They read the source anyway and found the bigger thing.</b></p>
+  <p class="sub">Decision (2), milestone reconciliation, <em>was</em> in their lane and answered the beta-sequencing question they'd carried for over a week — I'd framed the whole ruling as outside their lane. PA also found two further stale claims cascading off the same passage. <b>Their line: "someone else checked" isn't the same claim as "I checked."</b></p>
+</div>
+<div class="item drift">
+  <span class="who">CXO — the digest coupling</span>
+  <p>Both flags read <code>1</code> and the alarm was a false positive, but CXO flagged that <b>two independent flags sharing a value is a latent coupling hazard</b> regardless. Correct, and filed under Lead's answer.</p>
+</div>
+<div class="item drift">
+  <span class="who">CIO's session-log detector — first real catch</span>
+  <p><code>NO-SESSION-LOG pa</code> fired this morning: role-tagged commits, no session log. <b>Shipped Saturday for a gap I diagnosed on my own seat; caught a live instance three days later.</b></p>
+</div>
+
+<h2>✅ Resolved today</h2>
+<div class="item res">
+  <p><b>Four MVP issues closed on your verdict</b> — #1656 upload, #1657 summarize, #1572 timezone, plus the honesty check.</p>
+  <p><b>Deploy unblocked</b> → v69 + v70 shipped. <b>FTUX flipped and verified ON</b> in the running app.</p>
+  <p><b>Two failures documented with verbatim evidence</b> (#1654, #1527) and <b>#1729 filed</b> for the summary rendering.</p>
+  <p><b>Four stale PM-gated items cleared</b> across HOST, Comms, PPM and PA.</p>
+</div>
+
+<footer>
+  <b>Bottom line:</b> one provisioning step blocks the FTUX render check; one non-urgent decision waits on you; everything else is moving and today closed four issues.<br><br>
+  <b>Live-state pass.</b> Liveness ran first — <code>duty-cycle-freeze-check</code> rc=0 across <b>11 of 11</b> rows, with one NO-SESSION-LOG (PA) and one BELT-INVISIBLE (Comms, within threshold, working as designed). Sprint verified live: <b>MVP 47 not done — 28 Sprint Backlog, 3 In Progress, 16 In Review; 1,119 done.</b> The 16 In Review are the next population that needs only your twenty minutes.
+</footer>
+</div>
