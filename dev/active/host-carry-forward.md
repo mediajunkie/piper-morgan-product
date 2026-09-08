@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-07
+last_updated: 2026-09-08
 currency_claim: per-stop
 max_age_days: 1
 ---
