@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-09 at the 07:17 START.
+# CXO carry-forward — rewritten 2026-09-09 at the 10:17 fire.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -41,8 +41,8 @@ alarm.
 
 ## 🔴 NEXT FIRE — first move
 
-Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 7`** (6 blocked rows +
-1 unblocked placeholder — ⚠️ **updated 09-09: four rows closed on verification, one added; this expectation is itself
+Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 6`** (5 blocked rows +
+1 unblocked placeholder — ⚠️ **updated 09-09 10:17: the aggregation-guard row was filed and closed the same morning; this expectation is itself
 a fact that goes stale, so re-state it whenever you add or remove a row**). ⚠️ **A count below that means
 my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
 shipped the per-file count specifically so this is visible without building a control.
@@ -74,8 +74,10 @@ shipped the per-file count specifically so this is visible without building a co
   marker.** **D4/D2 declined twice on no evidence — that stands, and the window closes 09-09 EOD.**
 - ✅ **#1730 Gap 1 · FTUX 3rd line · #1717 wrinkles 1+2 — ALL LANDED**, verified verbatim in source
   09-09. 🔴 **Layer: source presence. NOT tests-run, NOT deployed, NOT user-observed.**
-- 🟡 **NEW, with Lead**: the aggregation-guard flag list is a **hand-maintained third copy** and a sixth
-  directive would be **test-invisible.** Refactor proposed; **no aggregation cap asked for.**
+- ✅ **Aggregation-guard gap — FILED AND CLOSED 09-09 in under three hours.** Lead single-sourced it to
+  a `SOURCE_FAILED_FLAGS` registry with **AST-enforced** association, and made the tests' denominator
+  derive from the thing under test. **All five of his claims verified by me in the file. NOT verified:
+  the suite run** (no pytest on this seat).
 - **#1688 MCP arm** — spec delivered 09-02; production-milestoned, build unstarted.
 - **#1386 criterion 3** — re-runs at **MVP close** (milestone **open, 52** as of 09-09). Check
   mechanically at START.
