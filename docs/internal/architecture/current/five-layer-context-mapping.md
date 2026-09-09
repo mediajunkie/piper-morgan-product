@@ -185,7 +185,7 @@ The five-layer model originates from Klatch's `PROMPT-ASSEMBLY.md` and is implem
   - Page refresh (new session_id)
   - Process crash
   - No Redis/DB backing implemented
-  - Context assembler notes "Cache-ready — design for Redis TTL caching later (not implemented yet)"
+  - Context assembler notes "Cache-ready — design for Redis TTL caching later (not implemented yet)" *[Update 2026-09-09, 973 audit: superseded — 984 (closed 2026-05-12) implemented Redis TTL caching (`ContextCache`) with PM-approved per-source TTLs; the assembler's stable/dynamic split now lives in its module docstring. The conversation-context volatility described above is a separate, still-accurate point.]*
 
 **Impact**: User refreshes page mid-conversation → loses "what we were discussing." Multi-turn refinement breaks. Lens stack (topic digression/restoration) resets. Last offer state lost.
 
