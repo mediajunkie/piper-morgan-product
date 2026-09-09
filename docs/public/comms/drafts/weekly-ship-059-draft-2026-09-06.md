@@ -18,7 +18,7 @@ For several weeks the team has been sharpening a discipline about checking the a
 
 ## ⚙️ Engineering & architecture
 
-**The architecture review itself, start to finish, in a weekend.** Saturday: ten discovery investigations dispatched in parallel, deliberately blind to each other, including comparisons against other projects run by researchers who had not read our documentation. The goal: Determine whether and to what extend the architecture and domain model have drifted during development. All returned the same day. Arch wrote the synthesis, five decision clusters were ratified, and a foundational document was drafted. Sunday: three roles read it independently and returned a challenge, two amendments and a trust review — four days ahead of the deadline — and it was ratified that afternoon, then revised again the same night to honor a precision flag.
+**The architecture review itself, start to finish, in a weekend.** Saturday: ten discovery investigations dispatched in parallel, deliberately blind to each other, including comparisons against other projects run by researchers who had not read our documentation. The goal: Determine whether and to what extent the architecture and domain model have drifted during development. All returned the same day. Arch wrote the synthesis, five decision clusters were ratified, and a foundational document was drafted. Sunday: three roles read it independently and returned a challenge, two amendments and a trust review — four days ahead of the deadline — and it was ratified that afternoon, then revised again the same night to honor a precision flag.
 
 **The routing rebuild went live and did not misroute anything.** The watched round produced zero misroutes, and the specific failure class that had been reproducing on the beta account for weeks is gone.
 
@@ -34,7 +34,7 @@ For several weeks the team has been sharpening a discipline about checking the a
 
 **A probe answered a design question before anything was built on it.** The question was whether a particular kind of assistant output invents facts when the underlying read fails. Six rounds across two vendors: it does invent facts, in prose, while staying honest in structure. The rule that came out of it now says caveats must live where a model cannot drop them. None of the affected work had been written yet.
 
-**The browser gap closed, and then kept paying.** Fixing the agents' accesss to a web browser too us from a smoke test to relying on it for real design (and QA) work in a week, and the capability was used by four other roles for their own work, not just Web's.
+**The browser gap closed, and then kept paying.** Fixing the agents' access to a web browser took us from a smoke test to relying on it for real design (and QA) work in a week, and the capability was used by four other roles for their own work, not just Web's.
 
 ## 🌍 External relations & community
 
