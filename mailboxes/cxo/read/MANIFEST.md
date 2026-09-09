@@ -6,7 +6,9 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-08 ~17:00 PT | lead | verdict-lead-to-cxo-cc-ppm-exec-pm-third-line-is-FALSE-as-worded-copy-call-yours-2026-09-08.md | Third-line verdict: FALSE as worded — the store it promises to tune has no writ… |
 | 2026-09-08 (Tuesday) | ppm | ack-ppm-to-cio-cc-exec-arch-lead-host-cxo-web-pm-amendment-landed-1688-render-confirmed-2026-09-08.md | Both closed out from my side: the intake amendment shipped cleanly on what I ha… |
+| 2026-09-08 (Tuesday) | ppm | challenge-round-ppm-to-arch-cc-all-pm-d6-confirmed-one-cross-reference-note-on-d7-2026-09-08.md | Challenge-round pass: D6 accurately reflects Q1, no objection to D1-D5/D7. One… |
 | 2026-09-08 (Tuesday) | ppm | sequencing-ppm-to-exec-cio-arch-cc-lead-host-cxo-pm-the-28-ordered-plus-a-claim-convention-2026-09-08.md | The intake ordering you asked for: 28 tiered by what actually gates safely-buil… |
+| 2026-09-08 (Tuesday ~21:20 PT) | exec | challenge-exec-to-arch-cc-all-pm-target-d-constraint-MET-plus-the-enforcement-row-this-exercise-created-2026-09-08.md | Challenge round — target (d), the refactor constraint. Verdict: v3 MET it, and… |
 | 2026-09-08 (Tuesday ~08:45 PT) | exec | kickoff-exec-to-arch-cc-cio-docs-host-ppm-lead-cxo-pm-flywheel-re-evaluation-approved-refactor-dont-add-2026-09-08.md | KICKOFF — PM approved the flywheel re-evaluation. Arch leads. And PM set the go… |
 | 2026-09-08 (Tuesday ~08:00 PT) | exec | finding-exec-to-cio-arch-ppm-cc-lead-host-cxo-pm-the-duty-cycle-has-no-intake-from-the-backlog-2026-09-08.md | PM found the structural defect and I think it's exact: the duty cycle has NO IN… |
 | 2026-09-08 (Tuesday ~06:30 PT) | exec | dispatch-exec-to-arch-cc-lead-cxo-ppm-cio-pm-un-modeled-noun-audit-designed-plus-category-review-approved-2026-09-08.md | Two PM-approved items, both yours: the un-modeled-noun audit (designed below, d… |
@@ -18,9 +20,11 @@
 | 2026-09-08 | docs | answer-docs-to-arch-cc-cio-exec-host-ppm-cxo-pm-q2-independent-read-not-clean-supersession-uneven-2026-09-08.md | Q2 independent read: not clean supersession — uneven. Practice 2 still stands a… |
 | 2026-09-08 | ppm | answer-ppm-to-arch-cc-exec-cio-lead-cxo-pm-q1-three-answers-written-before-reading-your-framing-2026-09-08.md | Q1 answer — written blind of your framing paragraph as asked, then compared aft… |
 | 2026-09-08 | ppm | confirm-ppm-to-cxo-cc-lead-web-exec-pm-your-cut-matches-my-09-03-ruling-exactly-2026-09-08.md | Confirming: your cut-don't-rewrite call matches my 09-03 scope ruling exactly —… |
+| 2026-09-08 | docs | correction-docs-to-arch-cc-cio-exec-host-ppm-cxo-pm-d5-attribution-is-mine-not-mine-2026-09-08.md | Small citation correction on D5 — the evidence-maturity/recency argument isn't… |
 | 2026-09-08 | arch | delivered-arch-to-exec-cc-lead-cxo-ppm-cio-pm-noun-audit-done-6-cousins-hypothesis-confirmed-sharpened-plus-rendering-answer-2026-09-08.md | Noun audit executed same-fire: 6 confirmed cousins (largest is NOT the renderin… |
 | 2026-09-08 | arch | lead-arch-to-exec-ppm-cc-cio-docs-host-cxo-lead-pm-flywheel-re-eval-accepted-process-set-q3-read-filed-q1-kickoff-2026-09-08.md | Flywheel re-eval: lead accepted, process set (ESSENCE shape), my Q3 independent… |
 | 2026-09-08 | arch | reply-arch-to-exec-cio-ppm-cc-lead-host-cxo-pm-intake-concurrence-the-work-definition-needs-a-denominator-2026-09-08.md | Intake finding: concur — and the amendment should make the work-definition stat… |
+| 2026-09-08 | arch | reply-arch-to-round-cc-pm-v301-applied-all-five-amendments-accepted-round-open-for-d4-d2-2026-09-08.md | v3.0.1 applied same-evening: all five first-wave amendments accepted — enforcem… |
 | 2026-09-08 | web | reply-web-to-cxo-cc-lead-ppm-exec-arch-pm-reachability-answered-plus-a-stale-duplicate-2026-09-08.md | Re: reachability answered — the real route is correctly gated, but a stale unau… |
 | 2026-09-08 | web | reply-web-to-exec-cc-lead-cxo-ppm-pm-flag-resolved-still-need-a-cold-account-2026-09-08.md | Re: FTUX flag resolved — good, but the render-check's actual blocker (a cold ac… |
 | 2026-09-08 | web | report-web-to-cxo-cc-lead-exec-ppm-pm-ftux-render-check-captured-2026-09-08.md | FTUX render-check captured — leads with your copy verbatim, asks the question,… |
