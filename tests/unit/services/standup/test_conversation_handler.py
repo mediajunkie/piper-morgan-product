@@ -824,3 +824,100 @@ class TestMonitoringIntegration:
 
         # Should be abandoned
         assert conv.state == StandupConversationState.ABANDONED
+
+
+class TestRefiningAcceptanceContract1739:
+    """#1739 — the REFINING seam consults THE acceptance predicate.
+
+    PM live 2026-09-09 (Exec's convergence memo, verbatim): *"are we done
+    with that standup?"* — a QUESTION, no affirmative token — **fired** a
+    real state change. The mechanism was this seam's substring word-list:
+    the word "done" appeared INSIDE the question. Contract axis (a):
+    question-forms NEVER accept — a state query gets an honest status
+    answer and the arm survives.
+    """
+
+    # PM's exact failing turn, verbatim from the 2026-09-09 live round.
+    PM_QUESTION = "are we done with that standup?"
+
+    @pytest.fixture
+    def handler(self):
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
+
+    @pytest_asyncio.fixture
+    async def refining_conversation(self, handler):
+        conv = await handler.manager.create_conversation("s1739", "u1739")
+        await handler.manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await handler.manager.set_standup_content(
+            conv.id, "*Yesterday:*\n* Shipped the gate\n\n*Today:*\n* Adopt the contract"
+        )
+        await handler.manager.transition_state(conv.id, StandupConversationState.REFINING)
+        return await handler.manager.get_conversation(conv.id)
+
+    @pytest.mark.asyncio
+    async def test_pm_question_gets_status_answer_never_fires(self, handler, refining_conversation):
+        """THE pin: PM's verbatim turn. RED pre-fix: substring "done" →
+        COMPLETE ("Great! Here's your final standup…"). GREEN: an honest
+        status answer, the flow STAYS in REFINING, the ask is restated —
+        the arm survives, nothing fires."""
+        response = await handler.handle_turn(refining_conversation, self.PM_QUESTION)
+
+        assert response.state == StandupConversationState.REFINING
+        assert response.requires_input is True
+        # Honest status: the draft is shown and the armed offer is restated.
+        assert "waiting on your go-ahead" in response.message
+        assert "looks good" in response.message.lower()
+        # NEVER the completion copy.
+        assert "final standup" not in response.message
+        # And the conversation truly did not complete.
+        conv = await handler.manager.get_conversation(refining_conversation.id)
+        assert conv.state == StandupConversationState.REFINING
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("question", ["done?", "is it done?", "are we finished here?"])
+    async def test_question_shapes_never_complete(self, handler, refining_conversation, question):
+        """Contract axis (a) generalized at this seam: interrogative shape —
+        terminal '?' or interrogative opener — is a state query."""
+        response = await handler.handle_turn(refining_conversation, question)
+        assert response.state == StandupConversationState.REFINING
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "closing", ["looks good", "perfect!", "thanks", "done", "yes", "ok", "sounds good"]
+    )
+    async def test_taught_and_bare_accepts_still_complete(
+        self, handler, refining_conversation, closing
+    ):
+        """Contract axis (b): bare affirmatives and the seam's own taught
+        chips accept the exactly-armed offer — #1694's failure direction
+        (a rejected plain yes) must not appear here."""
+        response = await handler.handle_turn(refining_conversation, closing)
+        assert response.state == StandupConversationState.COMPLETE
+        assert response.requires_input is False
+
+    @pytest.mark.asyncio
+    async def test_aside_containing_accept_word_refines_not_completes(
+        self, handler, refining_conversation
+    ):
+        """Contract axis (c): an aside that merely CONTAINS a taught word
+        ("good") neither accepts nor steals — the old substring list would
+        have completed the flow on this refinement request."""
+        response = await handler.handle_turn(
+            refining_conversation, "add that the demo went good yesterday"
+        )
+        assert response.state == StandupConversationState.REFINING
+
+    @pytest.mark.asyncio
+    async def test_arm_site_stores_rendered_ask(self, handler):
+        """#1739 input adequacy (Arch condition (a)): the site arming
+        REFINING stores the ask the user actually saw."""
+        conv = await handler.manager.create_conversation("s1739b", "u1739b")
+        await handler.manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await handler.manager.set_standup_content(conv.id, "*Yesterday:*\n* x")
+        conv = await handler.manager.get_conversation(conv.id)
+        response = await handler.handle_turn(conv, "anything")
+
+        assert response.state == StandupConversationState.REFINING
+        stored_ask = conv.context.get("refining_ask")
+        assert stored_ask
+        assert stored_ask in response.message

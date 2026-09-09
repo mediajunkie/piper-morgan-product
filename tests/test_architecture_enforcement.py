@@ -2400,3 +2400,225 @@ class TestExtractionPatternRatchet:
             f"SURFACE_SPANS + re-measure ceilings in the same commit — the "
             f"ratchet must never silently unhook a surface."
         )
+
+
+class TestAcceptanceContractRatchet:
+    """#1739 — THE acceptance contract's adoption ratchet (Arch condition (c)).
+
+    Arch ruling 2026-09-09: "Enumerate the armed seams; each is either
+    predicate-consulting or in the set with its tracking issue; the set only
+    shrinks, and any NEW seam with bespoke acceptance logic fails the build
+    listing itself. Without this, the contract is a convention — and a
+    convention is not a model (m-53): skipping the predicate must break the
+    build visibly, or adoption will decay per-seam the way every bolt-on
+    does."
+
+    THE MECHANISM: an acceptance consultation is detectable at two
+    signatures —
+
+    1. a CALL to a legacy detector (``detect_offer_response(`` /
+       ``detect_confirm_response(``) outside their definition/alias module
+       (``soft_invocation.py``). Every such (file, detector) pair must be in
+       ``KNOWN_UNADOPTED_DETECTOR_SITES``.
+    2. a REFERENCE to the acceptance vocabulary (``ACCEPT_PATTERNS`` /
+       ``DECLINE_PATTERNS`` / ``CONFIRM_ACCEPT_RE`` / ``_CONFIRM_ACCEPT_WORD``)
+       outside the two contract modules (``soft_invocation.py`` declares it,
+       ``acceptance.py`` composes it) — a bespoke regex copy or a private
+       vocabulary. Every such file must be in
+       ``KNOWN_BESPOKE_VOCABULARY_FILES``.
+
+    Both baselines are SHRINK-ONLY (the KNOWN_UNMIGRATED / MAX_DISPATCH_SITES
+    idiom): migrate a seam onto ``acceptance.evaluate_acceptance`` and remove
+    its row in the same commit; never add a row.
+
+    ADOPTION STATUS TABLE (#1739, 2026-09-09 — the bookkeeping Arch asked
+    for; per-seam, most seams below are file-granular here because the scan
+    is file-granular):
+
+    ============================================  ======  ==========  =======================
+    seam                                          tier    status      input-adequacy (#1665)
+    ============================================  ======  ==========  =======================
+    standup REFINING tail (conversation_handler)  READ    ADOPTED     asks stored + det. default
+    generic offer seam, READ kinds (intent_svc)   READ    ADOPTED     "question" on the record
+    contextual last_offer binding (intent_svc)    READ    ADOPTED     LastOffer.offer_text
+    soft-offer arm site (intent_svc)              READ    ADOPTED     "question" added 09-09
+    confirm-workflow seam (intent_svc:1284)       DESTR   VIA ALIAS   holds ("question" stored)
+    destructive_confirm module residues           DESTR   VIA ALIAS   holds
+    drafted_issue file-confirm residues           W/OUT   VIA ALIAS   holds
+    repo_clarification residues                   W/OUT   VIA ALIAS   holds
+    reminder time/task turns (todo_handlers)      READ*   UNADOPTED   holds (kind-specific)
+    reminder_clear turns                          READ*   UNADOPTED   holds (kind-specific)
+    FTUX interview turn (first_contact)           READ    UNADOPTED   holds
+    verified_inference meta/decline seam          WRITE   UNADOPTED   holds (prose opt-out)
+    onboarding portfolio_handler (own vocab)      WRITE   UNADOPTED   onboarding on ice
+    ============================================  ======  ==========  =======================
+
+    VIA ALIAS = the seam consults the predicate through the
+    ``detect_confirm_response`` compatibility alias: contract axes (a)
+    question-guard and (c) prose floor apply; the seam does not yet thread
+    its declared axes + stored ask (LEGACY_UNTHREADED). Full adoption of the
+    DESTRUCTIVE-adjacent seams is deliberately sequenced LAST (Arch
+    condition (b): EffectClass ascending). READ* = the generic-branch
+    residue of those kinds IS adopted; the kind-specific handlers' own
+    detector calls are not.
+    """
+
+    _CONTRACT_MODULES = (
+        os.path.join("services", "intent_service", "soft_invocation.py"),
+        os.path.join("services", "intent_service", "acceptance.py"),
+    )
+
+    # Legacy detector CALL sites: (relpath, detector) pairs. SHRINK-ONLY —
+    # migrate the seam to acceptance.evaluate_acceptance (threading its
+    # declared axes + stored ask), then remove its row in the same commit.
+    # Tracking issue for every row: #1739.
+    KNOWN_UNADOPTED_DETECTOR_SITES = frozenset(
+        {
+            ("services/intent/intent_service.py", "detect_confirm_response"),
+            ("services/intent/intent_service.py", "detect_offer_response"),
+            ("services/intent_service/repo_clarification.py", "detect_confirm_response"),
+            ("services/intent_service/repo_clarification.py", "detect_offer_response"),
+            ("services/intent_service/drafted_issue.py", "detect_confirm_response"),
+            ("services/intent_service/drafted_issue.py", "detect_offer_response"),
+            ("services/intent_service/todo_handlers.py", "detect_offer_response"),
+            ("services/intent_service/reminder_clear.py", "detect_offer_response"),
+            ("services/intent_service/first_contact.py", "detect_offer_response"),
+            ("services/intent_service/verified_inference.py", "detect_offer_response"),
+        }
+    )
+
+    # Files with a PRIVATE acceptance vocabulary (bespoke regex lists) —
+    # the un-modeled-noun failure profile itself. SHRINK-ONLY. Tracking: #1739
+    # (portfolio onboarding is on ice per ADR-059; its vocabulary migrates or
+    # dies with it).
+    KNOWN_BESPOKE_VOCABULARY_FILES = frozenset(
+        {
+            "services/onboarding/portfolio_handler.py",
+        }
+    )
+
+    _DETECTOR_CALL_RE = re.compile(r"\b(detect_offer_response|detect_confirm_response)\s*\(")
+    _VOCABULARY_REF_RE = re.compile(
+        r"\b(ACCEPT_PATTERNS|DECLINE_PATTERNS|CONFIRM_ACCEPT_RE|_CONFIRM_ACCEPT_WORD)\b"
+    )
+
+    def _repo_root(self) -> str:
+        return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    def _production_files(self):
+        root = self._repo_root()
+        for top in ("services", "web"):
+            for path in glob.glob(os.path.join(root, top, "**", "*.py"), recursive=True):
+                rel = os.path.relpath(path, root).replace(os.sep, "/")
+                yield rel, path
+
+    def _detector_call_sites(self) -> set:
+        found = set()
+        skip = {p.replace(os.sep, "/") for p in self._CONTRACT_MODULES}
+        for rel, path in self._production_files():
+            if rel in skip:
+                continue
+            with open(path, encoding="utf-8") as fh:
+                text = fh.read()
+            for name in set(self._DETECTOR_CALL_RE.findall(text)):
+                found.add((rel, name))
+        return found
+
+    def _bespoke_vocabulary_files(self) -> set:
+        found = set()
+        skip = {p.replace(os.sep, "/") for p in self._CONTRACT_MODULES}
+        for rel, path in self._production_files():
+            if rel in skip:
+                continue
+            with open(path, encoding="utf-8") as fh:
+                # Comment lines may NAME the vocabulary (e.g.
+                # destructive_confirm.py's "#1650 rationale" note); only code
+                # references are a bespoke implementation.
+                code = "\n".join(
+                    line for line in fh.read().splitlines() if not line.lstrip().startswith("#")
+                )
+            if self._VOCABULARY_REF_RE.search(code):
+                found.add(rel)
+        return found
+
+    def test_scan_space_is_populated(self):
+        """Vacuity guard (m-44): the scan must actually see the known world —
+        an empty result set is indistinguishable from a broken scanner."""
+        sites = self._detector_call_sites()
+        assert ("services/intent/intent_service.py", "detect_offer_response") in sites, (
+            "The detector-call scan no longer finds the generic offer seam "
+            "(intent_service.py) — the scanner is measuring nothing. Fix the "
+            "scan before trusting any of this class's other results."
+        )
+
+    def test_no_new_unadopted_acceptance_seams(self):
+        """Arch condition (c): a NEW seam with bespoke acceptance logic fails
+        the build listing itself. Consult acceptance.evaluate_acceptance
+        (threading the seam's declared EffectClass + Outwardness and its
+        arm-site's stored ask) instead of calling the legacy detectors."""
+        new_sites = self._detector_call_sites() - self.KNOWN_UNADOPTED_DETECTOR_SITES
+        assert not new_sites, (
+            f"NEW legacy acceptance-detector call sites: {sorted(new_sites)}. "
+            f"#1739: every armed seam consults THE acceptance predicate "
+            f"(services/intent_service/acceptance.py, evaluate_acceptance) with "
+            f"its declared axes and stored ask. Do NOT add rows to "
+            f"KNOWN_UNADOPTED_DETECTOR_SITES — it only shrinks."
+        )
+
+    def test_no_new_bespoke_acceptance_vocabulary(self):
+        """A private accept/decline vocabulary outside the contract modules is
+        a bespoke acceptance implementation — the exact failure profile #1739
+        exists to end (N seams, N rules)."""
+        new_files = self._bespoke_vocabulary_files() - self.KNOWN_BESPOKE_VOCABULARY_FILES
+        assert not new_files, (
+            f"NEW bespoke acceptance-vocabulary files: {sorted(new_files)}. "
+            f"The acceptance vocabularies live in soft_invocation.py and are "
+            f"composed ONLY by acceptance.evaluate_acceptance (#1739). Do NOT "
+            f"add rows to KNOWN_BESPOKE_VOCABULARY_FILES — it only shrinks."
+        )
+
+    def test_unadopted_baseline_stays_tight(self):
+        """Shrink-only, enforced: a baseline row whose seam no longer calls a
+        legacy detector is STALE — remove it in the migrating commit, so the
+        baseline always states the true remaining adoption debt (m-44: the
+        denominator must be real)."""
+        sites = self._detector_call_sites()
+        stale = self.KNOWN_UNADOPTED_DETECTOR_SITES - sites
+        assert not stale, (
+            f"KNOWN_UNADOPTED_DETECTOR_SITES lists seams that no longer call a "
+            f"legacy detector: {sorted(stale)}. Remove the rows (the set only "
+            f"shrinks)."
+        )
+        stale_vocab = self.KNOWN_BESPOKE_VOCABULARY_FILES - self._bespoke_vocabulary_files()
+        assert not stale_vocab, (
+            f"KNOWN_BESPOKE_VOCABULARY_FILES lists files with no bespoke "
+            f"vocabulary left: {sorted(stale_vocab)}. Remove the rows."
+        )
+
+    def test_adopted_seams_do_not_regress(self):
+        """A regressed adoption fails loudly (Arch's red-proof requirement):
+        the migrated seams must still consult the predicate, and the #1617
+        substring word-list must never come back."""
+        root = self._repo_root()
+        standup = os.path.join(root, "services", "standup", "conversation_handler.py")
+        with open(standup, encoding="utf-8") as fh:
+            standup_src = fh.read()
+        assert "evaluate_acceptance" in standup_src, (
+            "services/standup/conversation_handler.py no longer consults "
+            "acceptance.evaluate_acceptance — the #1617 seam regressed off the "
+            "#1739 contract (PM's live 'are we done with that standup?' fired "
+            "on exactly this seam's bespoke logic)."
+        )
+        assert "acceptance_words" not in standup_src, (
+            "The #1617 substring acceptance word-list is back in "
+            "conversation_handler.py — that list is the mechanism that fired a "
+            "state change on PM's question. The predicate is the only "
+            "acceptance authority (#1739)."
+        )
+        intent_svc = os.path.join(root, "services", "intent", "intent_service.py")
+        with open(intent_svc, encoding="utf-8") as fh:
+            assert "evaluate_acceptance" in fh.read(), (
+                "services/intent/intent_service.py no longer consults "
+                "acceptance.evaluate_acceptance — the READ-tier offer-seam "
+                "adoption (#1739) regressed."
+            )
