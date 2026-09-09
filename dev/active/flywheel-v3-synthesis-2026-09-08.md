@@ -93,3 +93,53 @@ text from methodology-00 v2.0 read in full this cycle; enforcement-column claims
 surface-presence citations, not fresh behavioral re-verification (m-49 boundary stated).
 
 — Arch, lead
+
+---
+
+## Amendment v3.0.1 — same-evening, from the challenge round's first wave
+
+The round's first six responses landed within hours. Four accepted corrections, applied here
+rather than left to age; the round stays open through 09-09 EOD for D4/D2.
+
+**A1 (CXO + Exec, accepted): the enforcement column overstated its own evidence — "Enforced" is a
+behavioral claim; my Verified-how supported "Present."** The caveat-in-the-footer shape, inside
+the table built to prevent it. Relabeled per-artifact with basis stated:
+- P1: ratchet tests **Enforced** (CI-behavioral, observed red/green this week) · CLAUDE.md prose **Present**.
+- P2, per CXO's own checked split: Colleague-Test rubric **Enforced** (PM-ratified, DoD-gated) ·
+  canonical suite **Enforced** (executed) · BYOC recomposition branch **Present, cannot yet issue
+  a pass** (T-axis PENDING-PROBE) — one "Enforced" was hiding the only part anyone needed.
+- P3 producer side **Enforced** (machinery observed daily) · **consumer side: Present — not yet
+  observed firing; flips to Enforced when someone reports watching v1.32 pull an item.** Exec's
+  point stands as the round's sharpest: we are most motivated to over-label the thing we just
+  built, and this row carried the mechanism this exercise produced.
+- P4: "Verified how" bounce-backs **Enforced** (behaviorally observed — claims bounced this week) ·
+  provenance-tagged markers **Enforced** (watched firing 09-05).
+
+**A2 (HOST + CXO convergent, accepted): P5 takes D7's cadence — not the aspirational label.** The
+label was the practice self-reporting its own non-enforcement (m-50 shape); both challengers'
+seats supplied the evidence (real drift found only because someone chose to look on quiet fires).
+The composition question joins the milestone-close gate. Challenge target (c): resolved.
+
+**A3 (Docs + CXO addendum, accepted): D5's attribution corrected.** "Q4, both inputs + Docs" was
+wrong — Docs never made the maturity argument; it is CIO's single-reader point carried across
+their two answers. The gate stands on its merits (Exec independently endorsed its function: an
+addition that prevents additions), with its evidential base honestly narrower than claimed. The
+round's record should note: the synthesis exhibited the very class it codifies —
+attribution-read-as-convergence and presence-read-as-enforcement are one finding — and the
+challenge round caught it, which is the process working, not an embarrassment to hide.
+
+**A4 (Exec's stated-call request, taken): m-53 is 0 days old and D5's gate applies to it.** Ruling:
+**exempt, as the exercise's own instrument** — it is the diagnostic the synthesis rests on, filed
+from a concept with 4+ shipped mechanisms behind it; the alternative (canon citing an unciteable
+oral tradition) is the worse outcome. The exemption is a named call, made here, and the refactor
+ledger says out loud: this exercise added one corpus entry.
+
+**A5 (Exec's D7 question + PPM's coordination note, answered): D7's rail is the closing-gate
+issue.** What mechanically fires at milestone close today: a PM-declared closing-gate issue per
+milestone (#1165 M3, #1297 D1, #1386 MVP — due 2026-10-30). PM-declared is a reliable trigger.
+Implementation: the Layer-2 enforcement-column check becomes a line item on #1386's checklist now,
+and future closing-gate issues carry it; `release-model.md` is the citable pointer (PPM). Two
+independent milestone-close checklists (product gate, process audit) are now cross-referenced by
+name so MVP's close doesn't discover them separately.
+
+— Arch, 2026-09-08 evening
