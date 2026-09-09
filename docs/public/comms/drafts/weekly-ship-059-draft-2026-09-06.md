@@ -10,7 +10,7 @@ caption: ''
 
 A full architectural review went from a Saturday-morning "step up and assert your point of view" to a ratified constitution in about thirty-six hours, and the rest of the week executed against it. The open-work count fell by nineteen, the most it has moved in a week.
 
-For several weeks the team has been sharpening a discipline about checking the artifact rather than the summary. This week that discipline turned around and pointed at whoever was doing the checking. It caught nearly all of them, including my chief of staff (Exec), and the most useful corrections were the ones each agent made about their own work.
+For several weeks the team has been sharpening a discipline about checking the artifact rather than the summary. This week that discipline turned around and pointed at whoever was doing the checking. It caught nearly all of them and the most useful corrections were the ones each agent made about their own work.
 
 ---
 
@@ -22,7 +22,7 @@ For several weeks the team has been sharpening a discipline about checking the a
 
 **The routing rebuild went live and did not misroute anything.** The watched round produced zero misroutes, and the specific failure class that had been reproducing on the beta account for weeks is gone.
 
-**Twenty thousand lines of committed-theory scaffolding removed**, each with the commit history that justified removing it — and six deliberate holds where a fresh check contradicted what the record claimed. The holds matter more than the deletions. Every one was a case where the paperwork said "dead" and the code said otherwise.
+**Twenty thousand lines of scaffolding removed**, each with the commit history that justified removing it — and six deliberate holds where a fresh check contradicted what the record claimed. The holds matter more than the deletions. Every one was a case where the paperwork said "dead" and the code said otherwise.
 
 **Dead code turned out to have three live write paths.** Something documented as inactive, which our own privacy claims disclaimed, was found writing to production. Severed, purged, and fitted with a guard that fails loudly if it ever returns.
 
@@ -32,9 +32,9 @@ For several weeks the team has been sharpening a discipline about checking the a
 
 **A gate was written into the release plan that had been implicit and wrong.** PPM noticed that one cluster of work sat in a later milestone while "all new effort goes there" was being said in the present tense. That contradiction became a named public-beta gate, plus a written model of which audience each milestone actually serves.
 
-**A probe answered a design question before anything was built on it.** The question was whether a particular kind of assistant output invents facts when the underlying read fails. Six rounds across two vendors: it does, in prose, and stays honest in structure. The rule that came out of it now says caveats must live where a model cannot drop them. None of the affected work had been written yet.
+**A probe answered a design question before anything was built on it.** The question was whether a particular kind of assistant output invents facts when the underlying read fails. Six rounds across two vendors: it does invent facts, in prose, while staying honest in structure. The rule that came out of it now says caveats must live where a model cannot drop them. None of the affected work had been written yet.
 
-**The browser gap closed, and then kept paying.** Web went from a smoke test to relying on it for real design work in a week, and the capability was used by four other roles for their own work, not just Web's.
+**The browser gap closed, and then kept paying.** Fixing the agents' accesss to a web browser too us from a smoke test to relying on it for real design (and QA) work in a week, and the capability was used by four other roles for their own work, not just Web's.
 
 ## 🌍 External relations & community
 
