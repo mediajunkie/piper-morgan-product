@@ -1,49 +1,47 @@
 # Exec (Chief of Staff) — carry-forward
 
-**Rewritten 2026-09-06 ~21:15 PT.** Previous write was 09-03 — three days stale, which is older than
-the Lead carry-forward I flagged to PM the same evening. Refreshing at START from here, which is the
-discipline I asked Lead to adopt an hour ago.
+**Rewritten 2026-09-08 ~21:30 PT at day-close.** Refreshed at START and at close per the cohort norm
+PM ruled today.
 
 ## Cron
 
-Job `5a59f399`, `32 8,20 * * *`, armed 2026-09-03, **expires ~09-10 → rotate ~09-08.** Verified
-exactly one job for this expression at the 09-06 20:32 fire.
+Job `52fb898d`, `32 8,20 * * *`, armed **2026-09-07 21:03**, expires ~09-14 → **rotate ~09-12.**
+Verified exactly one job at both of today's fires. Registry row updated 09-08 (it had named a July
+job, three rotations stale).
 
 ## Live PM threads
 
-- **Ship #059** — draft delivered and clean; PM reviews/edits before **Wed Sep 9** publish.
-- **Deploy approved** 09-06 (PM: *"deploy yes"*). Lead ships Monday. **Decisions 2 and 3 of Lead's
-  return brief are NOT covered** — the short ~6-item test round and the #1688 closer-call are open
-  with no lean pressed by anyone.
-- **Open question to PM**: should the START-side carry-forward refresh become a cohort-wide
-  `duty-cycle-tick` amendment? Flagged, not broadcast — the shape is general (all three stale board
-  items on 09-06 came from different roles' carry-forwards) but it's PM's call.
+- **In Review test round delivered** — 15 items in 5 flows, `dev/active/in-review-test-round-2026-09-08.html`.
+  PM working through it. Flow 1 leads with #1648 (floor fabricating a filing) and ends with an
+  instruction to open GitHub, because the chat reply is the untrustworthy surface there.
+- **Ship #059** publishes tomorrow (Wed 09-09). PM edits pending.
+- **Flywheel v3 challenge round open through 09-09 EOD.** My target-(d) challenge sent: constraint MET,
+  but enforcement row 3 says `Enforced` where the same cell says "new, watch its first weeks."
+- **Awaiting PM**: Q5 (is idle a legitimate terminal state generally, or build-roles only?).
+
+## What landed today
+
+MVP **52 not done** (34 Sprint Backlog, 3 In Progress, 15 In Review); 1,120 done. ⚠️ Sprint Backlog
+rose 28 → 34 — **new filings from PM's round and the FTUX thread, not regression.** State it with the
+number every time.
+
+- 4 issues closed on PM's verdict; 2 failures documented; #1729 filed.
+- **#1730** — the false-capability-denial root cause: `unwired_writes.py` asserts absence for ANY
+  unmapped emission. My "a decline is a claim" is the cited framing. **Structural, not one phrasing.**
+- 🔴 **#1734 [SECURITY]** — personality API looks user-scoped but PUT-rewrites the GLOBAL config;
+  any hosted user's save clobbers everyone's. Found via the FTUX copy thread. **Flag to PM.**
+- **#1735** — the personalization learning loop is disconnected at every joint.
+- Flywheel re-evaluation: kicked off, seven decisions, challenge round — **same day.**
 
 ## Awaiting other agents
 
-- **Pard**: worktree cleanup (holding for CIO's total sweep, not my 22% sample) · rate-limit harness question.
-- **CIO**: 7k joint synthesis draft (greenlit 09-06, I pass on it before PM) · `worktree-safety-check.sh`.
-- **Lead**: carry-forward refresh + START addition (PM directive, delivered 09-06).
+Arch (v3 close-out) · Lead (#1431 code verdict, deploy of staged dawn fixes) · CIO (aging-checker
+`#NNN` collision) · Pard (worktree cleanup, #1731).
 
-## State
+## Open self-corrections
 
-**Attention board is EMPTY** as of 09-06 ~16:1x — nine items walked with PM, three found already
-resolved, five ruled, one (#1386 criterion 6) re-scoped to fire at MVP close with criteria 2/4/5
-re-running then.
-
-**MVP: 50 not done** (30 Sprint Backlog, 3 In Progress, 16 In Review, 1 Product Backlog); 1,116 done;
-2 unmilestoned. ⚠️ The not-done count rose 39 → 50 across two runs on 09-06 — **that is PM's
-milestone triage landing, not regression** (unmilestoned went 17 → 2). Always state that alongside
-the number.
-
-**Milestones reset by PM 09-06**: MVP 2026-10-30 · Production Feb 2 (**2027**, PM confirmed the typo)
-· Fast Follow May 8 · Dot Releases Sep 2 · Enterprise 2027-10-30.
-
-## Open self-corrections carried forward
-
-- ⚠️ **zsh `nomatch` on paired globs** — `ls A* B*` aborts entirely if either is unmatched, and my
-  `||` fallback then prints a confident false negative. Burned me ≥4 times this window, including
-  once in the command immediately after I diagnosed it. **Use `find`, never paired globs.**
-- ⚠️ **My verification patterns keep being narrower than my questions** — `grep -c` over source text
-  stood in for reading the code (CIO disproved the "22 to 1" claim); a 20-of-91 sample stood in for
-  a total (CIO caught it, m-51). Both times a colleague did the check I should have.
+- ⚠️ **zsh paired globs and unquoted splitting** — burned me repeatedly; CIO hit the same class in
+  #1731 today. Use `find`, quote expansions, never paired globs.
+- ⚠️ **My verification keeps being narrower than my claim.** Today: I measured Lead's throughput four
+  ways and had to correct two of the numbers, while PM asked the structural question once and it was
+  the right one. **Measuring a symptom repeatedly is not looking at the mechanism.**

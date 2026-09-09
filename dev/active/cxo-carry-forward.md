@@ -1,51 +1,58 @@
 ---
-last_updated: 2026-09-02
+last_updated: 2026-09-08
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-02 at the 22:17 STOP (frontmatter is the checkable claim; this
-prose line is not, and must not be trusted over it).
+# CXO carry-forward — rewritten 2026-09-08 at the 19:17 fire.
 
-## 🔴 EVERY FIRE — two steps I had silently stopped running
+> ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
+>
+> The previous version opened: *"frontmatter is the checkable claim; this prose line is not, and must not
+> be trusted over it."* **Correct instruction. And its `last_updated` read `2026-09-02` while the body
+> carried 09-04 and 09-05 events** — so anyone following the instruction would have trusted the **stale**
+> field over the **current** prose. ⚠️ **`max_age_days: 1` made it 6× over, and nothing flagged it**,
+> because nothing reads this file's frontmatter but me.
+>
+> ⭐ **The reusable part**: I kept the body current and the metadata stale, which is the *opposite* of the
+> failure the header warns about and **produces the same wrong answer**. A currency claim you update by
+> hand, on a file only you read, degrades silently in whichever direction you aren't looking.
+> **Touch the date whenever you touch the body — same edit, not a later one.**
 
-**Both were case (c): invoked for weeks, then stopped, with no signal.** Found by looking, not by alarm.
+## 🔴 EVERY FIRE — three steps, two of which I had silently stopped running
+
+**Both lapses were case (c): invoked for weeks, then stopped, with no signal.** Found by looking, not by
+alarm.
 
 1. **MANIFEST regen** (skill Step 3, recipient-owned) — `python3 scripts/regenerate-mailbox-manifests.py
    --role cxo` after draining mail. ⚠️ **Lapsed 2026-07-30 → 2026-09-04, 36 days.**
-2. **Heartbeat** — see below. Lapsed 24 days.
+2. **Heartbeat** — `scripts/duty-cycle-heartbeat.sh cxo {START|WATCH|WORK|STOP} --if-quiet` **before
+   finishing the fire.** Lapsed 24 days. ⚠️ **It self-suppresses when the fire already committed**, so on
+   a busy fire it costs nothing and writes nothing — **which is exactly why I skipped it for weeks
+   without noticing.** ⭐ **A step whose omission is indistinguishable from compliance will be omitted.**
+   Verified working on this seat 09-03.
+3. **`cohort-freeze-detect.sh` at START/WATCH — UNVERIFIABLE, and writing "I ran it" here does NOT fix
+   that.** 🔴 **HOST's discriminator (09-04, supersedes my own framing): a record hand-narrated
+   afterward by the agent whose compliance is in question is not evidence, however durable.** Only a
+   marker the TOOL writes, in its own execution path, counts. **Run it at START — and don't let a log
+   line saying you ran it read as proof that you did.** *(m-45's subject/scorer separation applied to
+   compliance: an agent cannot attest its own procedural compliance, for the same reason PA cannot score
+   PA's own probe.)*
 
-⚠️ **A third, `cohort-freeze-detect.sh` at START/WATCH, is UNVERIFIABLE — and writing "I ran it" in this
-file does NOT fix that.** 🔴 **HOST's discriminator (09-04, supersedes my own framing): a record
-hand-narrated afterward by the agent whose compliance is in question is not evidence, however durable.**
-Only a marker the TOOL writes, in its own execution path, counts. **So: run it at START — and do not let
-a log line saying you ran it read as proof that you did.** *(This is m-45's subject/scorer separation
-applied to compliance: an agent cannot attest its own procedural compliance, for the same reason PA
-cannot score PA's own probe.)*
+## 🔴 NEXT FIRE — first move
 
-## 🔴 EVERY FIRE — Step 5b heartbeat, which I had stopped running
-
-`scripts/duty-cycle-heartbeat.sh cxo {START|WATCH|WORK|STOP} --if-quiet` **before finishing the fire.**
-⚠️ **It self-suppresses when the fire already committed**, so on a busy fire it costs nothing and writes
-nothing — **which is exactly why I skipped it for weeks without noticing.** A step whose omission is
-indistinguishable from compliance will be omitted. Verified working on this seat 09-03.
-
-## 🔴 NEXT FIRE (09-05 START)
-
-**First move**: run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 9`**
-(8 blocked rows + 1 unblocked placeholder — ⚠️ **updated 09-03 when a row closed; this expectation is
-itself a fact that goes stale, so re-state it whenever you add or remove a row**). ⚠️ **A count below that means my file is malformed, not
-clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO shipped the per-file count
-specifically so this is visible without building a control.
+Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 10`** (9 blocked rows +
+1 unblocked placeholder — ⚠️ **updated 09-08 when the flywheel row was added; this expectation is itself
+a fact that goes stale, so re-state it whenever you add or remove a row**). ⚠️ **A count below that means
+my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
+shipped the per-file count specifically so this is visible without building a control.
 
 ⚠️ **Never regex-edit the tracker.** Hand-edit, then re-run and confirm the count moved as expected.
 
-## Waiting on PM — one item, already asked
+## Waiting on others — nothing owed to PM
 
-**#1463 class-discriminator test (2 calls)** — asked 09-02 with *"drop it"* offered as an equally fine
-answer. ⚠️ **PA's new candidate (caveat as list MEMBER, not metadata) should ride the SAME
-authorization** — it is deliberately **not** a second ask, and I should not raise it as one before the
-first is answered.
+✅ **The #1463 PM ask is DISCHARGED** — authorized, run 09-03, series **CLOSED** on my recommendation.
+**Nothing is currently queued for PM from this seat.**
 
 ## ⚠️ Instrument state — read before scoring anything
 
@@ -53,25 +60,33 @@ first is answered.
   for its version — no version numbers in briefings.**
 - **C-axis**: report **per bucket, never pooled**. `not_applicable` = full marks at C=2. The
   C=2-clustering diagnostic applies to the **`required` bucket only**.
-- 🔴 **BYOC rubric v0.4**: **T scores ADDITION as well as survival.** Still `PENDING-PROBE` — informs
-  design, **cannot close a Layer-B gate on T.**
+- 🔴 **BYOC rubric (v0.6)**: **T scores ADDITION as well as survival.** Still `PENDING-PROBE` — informs
+  design, **cannot close a Layer-B gate on T.** ⭐ **This is exactly the split I challenged Arch's
+  enforcement column over on 09-08: present ≠ enforced, and my own lane is the proof.**
 - ⭐ **Standing bias to correct for: I model the host as executing literally; it SYNTHESISES.** Three
-  falsified predictions this week share that root. **My track record on the class-B mechanism is 0 for
-  2** — treat any new mechanism of mine as a candidate until tested.
+  falsified predictions share that root. **My track record on the class-B mechanism is 0 for 2** — treat
+  any new mechanism of mine as a candidate until tested.
 
 ## Live threads (watch only)
 
-- **#1688** — FTUX MCP first-turn copy delivered 09-02; Lead builds. Production-milestoned, unstarted.
-- **#1717** — two voice directives drafted for Lead. MVP, not urgent.
-- **#1386 · spatial review · Jake loop-back (PM sends) · misfiled-is-not-deferred (Exec watch)** — others'.
-- **Voice watch** — re-arms on the next deploy touching floor/decline copy.
+- **Flywheel v3 challenge** — sent 09-08 to Arch. Two challenges: the **enforcement column overstates**
+  its own Verified-how (surface-presence ≠ "Enforced"), and **P5 should take D7's milestone-close
+  cadence**. Window closes **09-09 EOD**; Arch rules.
+- **#1730 Gap 1 copy · FTUX 3rd-line cut · #1717's two voice directives** — all with **Lead** to land.
+- **#1688 MCP arm** — spec delivered 09-02; production-milestoned, build unstarted.
+- **#1386 criterion 3** — re-runs at **MVP close** (milestone open, ~50). Check mechanically at START.
+- **Spatial committed-theory synthesis** — Arch publishes.
+- **Voice watch** — ⚠️ **method is per-trigger**: code change → **structural** review; live decline →
+  **Colleague Test with denominator**. Do not claim the second when doing the first.
+- **Exec #17 (render method)** — ✅ **my half answered 09-08**, after reading the render layer. Awaiting
+  Arch.
 
 ## Cron
 
-✅ **ROTATED 2026-09-05 16:17: `8207809c` → `65e2a3c5`.** Verified exactly one job. **New expiry ~09-12.**
+✅ **ROTATED 2026-09-05 16:17: `8207809c` → `65e2a3c5`.** Verified exactly one job. **Expiry ~09-12.**
 
-⭐ **Rule sharpened by doing it**: I'd written *"rotate at the 09-05 21:47 fire — name the fire, not the
-boundary."* Better than a boundary, **but I'd still picked the LAST safe fire rather than a comfortable
-one** — two more fires to miss before it, for no benefit I could name. **Rotation is free; waiting is
-not.** 🔴 **Next time: rotate at the first fire where you have both the information and the margin, not
-the last one where it's still possible.** Target the **09-11** fires, don't wait for 09-12.
+🔴 **ROTATE AT A 09-11 FIRE.** ⭐ **Rule sharpened by doing it**: I'd written *"rotate at the 09-05 21:47
+fire — name the fire, not the boundary."* Better than a boundary, **but I'd still picked the LAST safe
+fire rather than a comfortable one** — two more fires to miss before it, for no benefit I could name.
+**Rotation is free; waiting is not. Rotate at the first fire where you have both the information and the
+margin, not the last one where it's still possible.**

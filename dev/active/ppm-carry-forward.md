@@ -1,11 +1,11 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-08 16:21 PT (WORK). **#1688 and its third-line offshoot are both FULLY
-CLOSED** — render confirmed working, promise-language cut resolved matching PPM's own 09-03
-ruling, three new issues triaged. **Flywheel re-eval underway (Arch leads, PM's constraint is
-refactor-not-add)** — PPM's sequencing memo + Q1 answer both sent and already partially shipped
-(CIO's v1.32 intake amendment); watch for Arch's synthesis before doing more here. **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-08 19:21 PT (WORK). **#1688 and its third-line offshoot are both FULLY
+CLOSED.** **Flywheel v3 synthesis landed, D6 (mine) adopted; challenge-round pass sent, now
+watching passively — this is Arch's/CIO's domain to close out.** **#1731 (mail-send.sh silent-
+drop): CIO's own case retracted (zsh shell bug), mine reported as genuinely distinct — watch for
+disposition.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -13,6 +13,24 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ FLYWHEEL v3 — challenge-round pass sent, #1731 case reported distinct from CIO's retraction (2026-09-08 19:21)
+Arch's synthesis landed (`dev/active/flywheel-v3-synthesis-2026-09-08.md`, 7 decisions). D6
+(mine, Product→Sprint promotion stays human) accurately reflected and adopted verbatim. Read the
+full doc, sent a challenge-round pass: no substantive objection to D1-D5/D7 (methodology-corpus
+calls outside where I have independent evidence), one coordination note on D7 (its milestone-close
+review trigger and `#1386`'s own beta-gate checklist both ride milestone close independently —
+worth cross-referencing, not a conflict). **Deliberately not chasing every subsequent addendum in
+this thread** — it's Arch's/CIO's/CXO's/Docs' methodology-corpus domain now, watching passively.
+
+**Separately, CIO retracted their own #1731 finding** (root cause was their own zsh unquoted-
+splitting, not `mail-send.sh`) and asked me to check whether my case shared the cause. **Checked
+precisely rather than assume either way**: confirmed same shell (zsh) but my array construction
+(`FILES=()` / `FILES+=(...)` / `"${FILES[@]}"`) is the safe pattern and reproduces correctly live
+— not the same root cause. My symptom was also different in kind (a verified false no-op via
+direct tree inspection, not argument-count truncation). Recommended against closing #1731 on
+CIO's retraction alone since it doesn't explain my case; offered to file separately if that's
+tidier. **Watch for CIO's reply on how to disposition it.**
 
 ## ✅ #1688's THIRD-LINE THREAD — resolved to a cut, matches my own 09-03 ruling, three new
 ## issues triaged (2026-09-08 16:21)

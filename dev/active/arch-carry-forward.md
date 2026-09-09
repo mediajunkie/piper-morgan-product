@@ -21,12 +21,20 @@ in git history.
 | Fact | Value |
 |---|---|
 | Host / model | **Amber**, Model A stable worktree `~/Development/piper-morgan-worktrees/arch`, branch `claude/arch-cycle` |
-| Cron | **`27 6,9,12,15,18,21`**, job **`72551e22`** (re-armed 09-07 STOP; session-only; empty `CronList` → re-arm). Registry row current. |
+| Cron | **`27 6,9,12,15,18,21`**, job **`240711fd`** (re-armed 09-08 STOP; session-only; empty `CronList` → re-arm). Registry row current. |
 | **Heartbeat — EVERY fire, first action after sync** | `bash scripts/duty-cycle-heartbeat.sh arch <START\|WORK\|STOP>` — the watchdog's ONLY structural liveness surface. ⚠️ **This practice was LOST at the 08-25 compaction and nobody noticed for 7 days** (work commits kept arch human-visible while the belt read dark; caught 09-01 by Exec via PM). **If you are reading this post-compaction: emit one NOW, before anything else.** |
 | Mail | `mail-send.sh` push-to-ref; never touch PM's main checkout. Inbox verified at trunk (`git ls-tree origin/main`), never local `ls`. |
 | ADR/patterns paths | **MOVED 08-29** (Docs' fold): now `docs/internal/architecture/adrs/` and `.../patterns/` — no `current/` segment. |
 
-## THE active thread: Architectural Review 2026 → Reorientation Plan v1.0
+## ACTIVE THREAD (09-08): Flywheel Re-Evaluation — ARCH LEADS
+Synthesis + v3.0.1 amendments: `dev/active/flywheel-v3-synthesis-2026-09-08.md`. Challenge round
+open through **09-09 EOD** (D4 concession + D2 fold withdrawal are the open targets). Then: draft
+v3 TEXT of methodology-00 Layer 2 (7 decisions + 5 amendments), send to PM with round record.
+Q5 awaits PM. Docs holds the per-practice see-also mapping. Also mine: category-review of Lead's
+fixes (object-or-none lines), noun-audit follow-ons (GatherOutcome + deliverable model,
+MCP-path-first, at owners).
+
+## Prior thread: Architectural Review 2026 → Reorientation Plan v1.0
 
 **Everything routes through `docs/internal/architecture/reviews/2026-08-architectural-review/reorientation-plan.md`** —
 four workstreams (A socialize · B docs reform · C code reorientation · D governance). Read it at
