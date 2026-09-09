@@ -84,6 +84,17 @@ without PM present.**
 
 ## Standing practices (apply at every fire, not just START)
 
+- **A commit that includes a `git mv`-staged rename alongside separately-staged file
+  modifications can silently commit only the rename** — now observed twice (09-06's footer fix
+  publish, 09-09's Ship #059 publish), same shape both times: `git status` shows everything
+  staged immediately before the commit, but the commit only picks up the renamed file. Always
+  verify via `git status` *after* the commit, not just a clean exit code — fix is a simple
+  re-add + separate commit, cheap once caught, but easy to miss if not checking.
+- **A live-page 200 status can be a stale cached not-found fallback, not a real render** — hit
+  this on the Ship #059 publish: `x-vercel-cache: PRERENDER` served instantly with `title: "Ship
+  Not Found"` embedded. Always do an actual content check (title/image/body-text fragment) after
+  the 200, and if it fails, don't assume broken — compare response headers against a known-good
+  page of the same type first; this one resolved with more propagation time, not a fix.
 - **EVERY FIRE — run the heartbeat step explicitly and log it.**
   ```bash
   bash scripts/duty-cycle-heartbeat.sh docs {START|WATCH|WORK|STOP} --if-quiet
