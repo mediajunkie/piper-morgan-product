@@ -1,10 +1,27 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-08 ~23:50 PDT (Day genuinely closed)
-**Session log**: `dev/2026/09/08/2026-09-08-0528-docs-code-log.md` — `<!-- DAY-CLOSED: 2026-09-08 -->` present.
-**Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy, re-armed once today after a genuine
-Gap-C self-heal (07:27). Expires ~2026-09-15 (7-day auto-expiry) — watch for a proactive re-arm
-before then, and watch whether Gap-C recurs.
+**Updated**: 2026-09-09 ~07:35 PDT (Fire 2 / WORK, complete)
+**Session log**: `dev/2026/09/09/2026-09-09-0609-docs-code-log.md` (open; started PM-initiated pre-cron).
+**Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
+— watch for a proactive re-arm before then, and watch whether Gap-C recurs.
+
+## Today so far: Weekly Ship #059 published + syndicated, both legs
+
+PM-initiated pre-cron ask to publish today's Ship. Proofread clean (independently verified, not
+just trusted Comms' report); one real timing snag — the first "200 OK" was a stale cached
+not-found fallback, resolved with more propagation wait, confirmed live via actual content check.
+LinkedIn leg (the whole syndication obligation for `ship` theme) landed same-morning, calendar
+updated to `distributed`. Self-caught a real triage lapse: forgot to move Comms' original
+PUBLISH-READY memo to `read/` after acting on it directly — fixed at the next fire's mail loop,
+exactly the failure shape my own standing lesson already named.
+
+**Two real gotchas from today, added to Standing practices below**: (1) a commit combining a
+`git mv`-staged rename with separately-staged modifications can silently commit only the rename
+— now observed twice, always verify `git status` after committing, not just a clean exit; (2) a
+live page's 200 status can be a stale cached not-found fallback — always do a real content check.
+
+**Watch, not chase**: Ship #058's own calendar row has `canonicalSite=distributed` with an empty
+`linkedinURL` — a pre-existing data gap noticed in passing, out of scope for today's task.
 
 ## Day closed clean — headline: full flywheel re-evaluation arc + a real publish, same day
 

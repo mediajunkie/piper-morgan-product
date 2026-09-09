@@ -111,6 +111,45 @@ def strip_placeholder_slots(text: str) -> Tuple[str, int]:
     return _PLACEHOLDER_SLOT_RE.subn(_PLACEHOLDER_SLOT_REPLACEMENT, text)
 
 
+# ---- Source-failed flag registry (#1717 wrinkle 1, CXO structural review
+# 2026-09-09) ----
+#
+# SINGLE SOURCE OF TRUTH for the source-failed honest-degrade directives in
+# _format_domain_context. Before this registry the flag list existed three
+# times by hand — the five render sites, the scope-directive gate's tuple,
+# and the 1717 test's own DIRECTIVES dict — so a sixth flag could render its
+# FAILED line while silently escaping the scope directive AND the tests (the
+# exact report-failures-that-didn't-happen leak wrinkle 1 exists to stop).
+#
+# Now: the scope-directive gate iterates THIS tuple, and the 1717 composition
+# tests derive their denominator from it. The five render sites themselves
+# stay hand-placed (each FAILED line must sit inside its topical section —
+# reminders, first-contact, projects, pending/completed todos — and the scope
+# directive after the LAST of them, so "listed as FAILED above" stays
+# literally true; a unifying loop would break that interleaving). The
+# site↔registry association is therefore enforced structurally instead:
+# tests/unit/services/intent_service/test_source_failed_registry_1717.py
+# parses this module's AST and fails if the flags the render sites actually
+# check ever diverge from this registry (key set OR order).
+#
+# To add a sixth source-failed directive: add its render site in its topical
+# section ABOVE the scope-directive gate, and add its (flag, rendered-line
+# prefix) pair here in the same source order. Miss either half and the
+# derivation test is a red build, not a silent leak.
+#
+# Shape: (domain_context flag key, stable prefix of the rendered line).
+# The prefix is what the tests key off; it must match the site's copy
+# byte-for-byte (the composition tests assert the derived prefix appears in
+# real renderer output, so a drifted prefix also fails behaviorally).
+SOURCE_FAILED_FLAGS: Tuple[Tuple[str, str], ...] = (
+    ("source_failed", "- Reminder check FAILED:"),
+    ("first_contact_source_failed", "- First-exchange GitHub check FAILED:"),
+    ("projects_source_failed", "- Project check FAILED:"),
+    ("pending_todos_source_failed", "- Todo check FAILED:"),
+    ("completed_todos_source_failed", "- Completed-todo check FAILED:"),
+)
+
+
 # ---- Floor System Prompt ----
 
 # FLOOR_SYSTEM_PROMPT_ADDENDUM v2 — evolved 2026-04-16 per #950
@@ -759,6 +798,7 @@ class ConversationalFloor:
 
         # #1425 honesty: the reminder lookup FAILED — a promised reminder may
         # exist. Say we couldn't check; NEVER present this as "nothing due".
+        # Registered in SOURCE_FAILED_FLAGS (AST-enforced association).
         if domain_context.get("source_failed"):
             lines.append(
                 "- Reminder check FAILED: could not verify whether any "
@@ -832,6 +872,7 @@ class ConversationalFloor:
         # #1536 + #1425 honesty: GitHub is connected but the first-exchange
         # read FAILED — a demonstration was promised by the connection, so say
         # we couldn't check; never present the failure as an empty repo.
+        # Registered in SOURCE_FAILED_FLAGS (AST-enforced association).
         if domain_context.get("first_contact_source_failed"):
             lines.append(
                 "- First-exchange GitHub check FAILED: the user's GitHub is "
@@ -1009,6 +1050,7 @@ class ConversationalFloor:
 
         # #1645 (#1573 shape): the projects lookup FAILED — projects may
         # exist. Say we couldn't check; NEVER present this as "no projects".
+        # Registered in SOURCE_FAILED_FLAGS (AST-enforced association).
         if domain_context.get("projects_source_failed"):
             lines.append(
                 "- Project check FAILED: could not load the user's project "
@@ -1103,6 +1145,7 @@ class ConversationalFloor:
 
         # #1573 (#1425 honesty): the pending-todos lookup FAILED — todos may
         # exist. Say we couldn't check; NEVER present this as "no todos".
+        # Registered in SOURCE_FAILED_FLAGS (AST-enforced association).
         if domain_context.get("pending_todos_source_failed"):
             lines.append(
                 "- Todo check FAILED: could not load the user's pending todos "
@@ -1137,6 +1180,7 @@ class ConversationalFloor:
         # #1645 (#1573 shape): the completed-todos lookup FAILED — the user
         # may have completed things. Say we couldn't check; NEVER present
         # this as "nothing completed".
+        # Registered in SOURCE_FAILED_FLAGS (AST-enforced association).
         if domain_context.get("completed_todos_source_failed"):
             lines.append(
                 "- Completed-todo check FAILED: could not load the user's "
@@ -1149,20 +1193,13 @@ class ConversationalFloor:
         # 1-flag live probe caught the model hedging about projects/todos when
         # only reminders had failed — reporting failures that did not happen.
         # Absent context ≠ failed check (#1425's distinction, leaking in the
-        # opposite direction). Renders ONCE whenever at least one of the five
-        # source-failed directives rendered; placed after the last of the five
+        # opposite direction). Renders ONCE whenever at least one of the
+        # source-failed directives rendered; placed after the last of the
         # sites so "listed as FAILED above" is literally true for any armed
-        # subset.
-        if any(
-            domain_context.get(flag)
-            for flag in (
-                "source_failed",
-                "first_contact_source_failed",
-                "projects_source_failed",
-                "pending_todos_source_failed",
-                "completed_todos_source_failed",
-            )
-        ):
+        # subset. The flag list derives from SOURCE_FAILED_FLAGS (the module
+        # registry) — never enumerate flags by hand here: a hand tuple is how
+        # a sixth flag rendered a FAILED line while escaping this gate.
+        if any(domain_context.get(flag) for flag, _ in SOURCE_FAILED_FLAGS):
             lines.append(
                 "- Name ONLY the checks explicitly listed as FAILED above. Do "
                 "not mention any other data source. If something was not "
