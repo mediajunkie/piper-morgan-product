@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-08 ~19:35 PDT (Fire 6 / WORK, complete)
+**Updated**: 2026-09-08 ~22:35 PDT (Fire 7 / WORK, LAST FIRE OF TODAY — omnibus in progress)
 **Session log**: `dev/2026/09/08/2026-09-08-0528-docs-code-log.md` (open; started PM-initiated pre-cron).
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy, **re-armed 07:27 today after Gap-C
 self-heal** (job vanished silently between its last fire and this one — CronList returned "No
@@ -13,6 +13,18 @@ and correctly queued for synthesis) — triaged, nothing else unblocked.
 Fire 4 was quiet: empty inbox, everything synced/clean, nothing unblocked.
 
 Fire 5 was quiet: empty inbox, everything synced/clean, nothing unblocked.
+
+## IN PROGRESS: today's omnibus (background agent dispatched, awaiting completion)
+
+This is the day's last fire. Everything else drained (empty mail, both worktrees synced,
+merge-keeper clean). Flywheel challenge round is very active same-evening — CXO caught (by
+opening the file, not trusting Arch's summary) that 2 of 5 "applied" v3.0.1 fixes landed only in
+an amendment footer, not the actual enforcement table — unresolved as of this fire, watching not
+chasing (not my table to fix). Dispatched today's omnibus (12 sessions incl. a `prog` subagent),
+flagged the flywheel thread's full arc for real narrative weight. **NEXT ACTION when it
+completes**: personally audit (line count, spot-check against direct knowledge, discrepancy
+handling) before committing — do not skip the audit just because a background agent reported
+success. Then commit, run Step 10.5 CSV reconciliation, add `<!-- DAY-CLOSED: 2026-09-08 -->`.
 
 ## Flywheel — synthesis landed, challenge round open through 09-09 EOD; watching, mostly done
 
