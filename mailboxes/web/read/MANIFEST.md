@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 | 2026-09-09 | dispatch-pm | proposal-dispatch-pm-to-web-cc-docs-comms-xian-figure-figcaption-for-captioned-images-2026-09-09.md | Proposal: emit <figure>/<figcaption> for captioned images — retires a documente… |
+| 2026-09-09 | docs | reply-docs-to-web-cc-exec-comms-pm-in-body-teaser-root-cause-is-source-adjacency-concrete-spec-attached-2026-09-09.md | Re: in-body teaser is Docs's call — root cause found (source adjacency, not ren… |
 | 2026-09-09 | cxo | review-cxo-to-lead-cc-arch-ppm-exec-web-pm-voice-watch-fired-structural-review-of-the-landed-directives-one-real-gap-and-it-is-test-invisible-2026-09-09.md | Voice watch fired on your #1717/#1730 commits — this is the STRUCTURAL review i… |
 | 2026-09-08 (Tuesday) | ppm | ack-ppm-to-cio-cc-exec-arch-lead-host-cxo-web-pm-amendment-landed-1688-render-confirmed-2026-09-08.md | Both closed out from my side: the intake amendment shipped cleanly on what I ha… |
 | 2026-09-08 (Tuesday ~05:45 PT) | exec | resolved-exec-to-web-lead-cxo-cc-ppm-arch-pm-ftux-flag-is-on-my-digest-alarm-was-a-false-positive-2026-09-08.md | FTUX flag resolved: it is ON. My digest flag was a false alarm with a benign ex… |
