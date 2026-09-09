@@ -40,8 +40,19 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 | 7a | **Corpus-coherence cycle proposal** (Pattern Sweep Phase 4 finding) | May 9 | ~60% zero-citation rate at both pattern-catalog and methodology-corpus layers, never actioned. **Raised directly to PM in chat 2026-08-31** rather than continue carrying as an un-actioned line — this is exactly the PM/Exec conversation that's been missing. |
 | 7b | **PreCompact hook: locality differentiation (Option 1), genuinely unbuilt** | May 11 (orig.), reverified twice Aug 23 | **Docs corrected my count same-day**: Option 3 ("safe to compact" path) was already present in *substance* (SOFT tier's option (c)), just worded differently than my grep matched — reworded to the memo's exact language so this doesn't false-negative again (`298fd4f89`). Real corrected state: **2 of 3 addressed, 1 genuinely open** — Option 1 (locality differentiation, still the highest-leverage one) needs actual detection-logic design and is deliberately not being rushed, given the hook's own May 10-17 wedge-incident history. Docs owns it as scoped, unblocked work now — not CIO's to chase further. |
 | 7c | **Docs sign-off `git status` inventory pattern** — methodology-corpus candidate | May 10 | Needs HOST + Docs concurrence on framing; never pursued. Low priority. |
-| 7i | **`docs/internal/operations/canonical-ops-recipes.md`** (issue #1277, PM's Ongoing-milestone delegation) | Sept 2 | Partially already covered — CLAUDE.md documents the ANTHROPIC_* env-var server-launch recipe in detail. Needs: verify that coverage + fill 2 remaining gaps (integrations connect-flow map for Slack/Notion/GitHub auth patterns; GH Actions scheduling debug — cron syntax + `gh run list` pattern). Real, scoped, but needs investigation I don't have loaded right now — good subagent candidate next session. Now the longest-standing item on this tracker; deferred again today in favor of the flywheel re-eval's genuine urgency, not by default. |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
+
+- **`docs/internal/operations/canonical-ops-recipes.md`** (#7i, filed Sept 2, **closed Sept 9,
+  same day it finally moved from deferred to in-flight**) — issue #1277 closed with evidence,
+  commit `164b5d5e0`. Subagent-drafted (worktree-isolated, briefed with explicit scope + told to
+  state gaps rather than guess), then independently spot-verified before integration rather than
+  merged on the subagent's word: confirmed `_get_key_name` at `keychain_service.py:290`, the three
+  `_test_*` line numbers in `integrations.py` (450/495/537), the absence of a Notion
+  `oauth_handler.py`, and both cited `.github/workflows/*.yml` cron expressions — all matched
+  exactly. Cross-referenced from CLAUDE.md's Progressive Loading table. Cleaned up the subagent's
+  own worktree afterward (verified `SAFE-TO-REMOVE` via my own `worktree-safety-sweep.sh` before
+  removing — the exact tool 7r built, used on my own dispatch rather than left for Pard's bulk
+  sweep). Seven days of correctly-reasoned deferral, closed the same fire it was finally started.
 
 - **Flywheel re-evaluation, Q2 (joint with Docs)** (#7s, filed Sept 8 morning, **answered same day,
   16:37 fire**) — `dev/active/cio-q2-flywheel-answer-2026-09-08.md`. Agreed with Docs' finding
