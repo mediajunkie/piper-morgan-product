@@ -63,16 +63,23 @@ NEUTRAL_DEFAULT_CONTEXT: dict = {
 # ONCE, after the answer (capability first, metadata second), never before,
 # never per-response. Capability-affirming register, not a degraded/error
 # state; non-catastrophizing; names no affordance it cannot cash (#1604).
-# #1604 sweep (2026-08-12): this copy shipped "add your context in
-# Settings → Profile" — A PAGE THAT DOES NOT EXIST, in the single line every
-# new user sees first. The overlay mechanism (PIPER.user.md, ADR-075 D4) is
-# file-based and unreachable from the hosted beta, so there is NO real
-# surface to point at; the honest fix is to remove the fabricated
-# affordance, not substitute a different one. A real context-editing
-# surface is filed as its own product gap.
+# #1604 sweep (2026-08-12): the original copy shipped "add your context in
+# Settings → Profile" — a page that does not exist — so the fabricated
+# affordance was removed rather than substituted (a real context-editing
+# surface is filed as its own product gap).
+# CXO copy call (2026-09-08 memo, binding; Lead mechanism verdict:
+# FALSE-as-worded): CUT, don't rewrite. "I'll tune to your role and
+# priorities as I learn them" promised a learning→tuning loop whose write
+# path has zero callers (#1735), and "I'm fully useful as-is" was a
+# self-assessment, not a fact. No softer promise substituted — a hedged
+# promise is still a promise — and deliberately NO pointer until a real
+# role-context surface exists (the tone-preferences page edits tone, not
+# role/priorities; pointing there would be #1604's misdirection with a
+# different destination). "Nothing here needs setting up first" is a true,
+# checkable claim about the product that keeps the anti-catastrophizing
+# intent without self-praise.
 FIRST_RESPONSE_PERSONALIZATION_NOTICE = (
-    "(Running with a default configuration for now — I'm fully useful "
-    "as-is, and I'll tune to your role and priorities as I learn them.)"
+    "(Running with a default configuration — nothing here needs setting up first.)"
 )
 
 

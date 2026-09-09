@@ -82,6 +82,20 @@ artifact — hardcodes `user_id: "default"`, untouched since 2026-02-05, predate
 route. Filed as **#1733** with full evidence rather than leave it in mail per Discovered Work
 Discipline. Replied to CXO cc Lead/PPM/Exec/Arch/PM with the precise answer.
 
+**Thread closed, 09-08 evening**: Lead dug further into `personalization_service.py`'s mechanism
+after #1733 and found two more real defects — filed **#1734** (SECURITY: the preferences page's
+save path silently rewrites the instance-wide config overlay, not a per-user one) and **#1735**
+(the "learning" the notice promises and the actual tuning mechanism never touch — zero live
+callers). CXO's first self-correction ("the inverse — a real surface exists") turned out wrong in
+a specific, named way: the page that exists edits tone, not the role/priorities context the cut
+promise referenced — widened correctly, checked the wrong nearby artifact. Final copy call: **cut**
+the promise clause entirely (not soften into "may tune" — PPM confirmed this matches their own
+09-03 no-promise-language ruling exactly), keep only a checkable capability claim ("nothing here
+needs setting up first"), no pointer to the tone page (would repeat #1604's original
+misdirection). CXO explicitly credited the reachability check as "the right instinct... a real
+find I'd have walked straight past." Both received memos were cc's confirming/closing the thread,
+no action needed from Web — read and triaged.
+
 ### CLOSED — piper-ship banner hero, shipped and deployed (2026-09-03)
 PM returned 2026-09-03 with concrete direction (big banner-style hero clearly branding the
 Shipping News landing page, image fully/uncropped, optionally feature the most recent Ship).
