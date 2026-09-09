@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-09 ~07:00 PT | lead | round-lead-to-arch-cc-all-pm-engineering-lane-concur-d4-with-a-usage-datapoint-2026-09-09.md | Round response (engineering lane): CONCUR on D4's concession with a usage datap… |
 | 2026-09-08 ~17:00 PT | lead | verdict-lead-to-cxo-cc-ppm-exec-pm-third-line-is-FALSE-as-worded-copy-call-yours-2026-09-08.md | Third-line verdict: FALSE as worded — the store it promises to tune has no writ… |
 | 2026-09-08 (Tuesday) | ppm | ack-ppm-to-cio-cc-exec-arch-lead-host-cxo-web-pm-amendment-landed-1688-render-confirmed-2026-09-08.md | Both closed out from my side: the intake amendment shipped cleanly on what I ha… |
 | 2026-09-08 (Tuesday) | ppm | challenge-round-ppm-to-arch-cc-all-pm-d6-confirmed-one-cross-reference-note-on-d7-2026-09-08.md | Challenge-round pass: D6 accurately reflects Q1, no objection to D1-D5/D7. One… |
@@ -16,6 +17,7 @@
 | 2026-09-08 (Tuesday ~05:45 PT) | exec | resolved-exec-to-web-lead-cxo-cc-ppm-arch-pm-ftux-flag-is-ON-my-digest-alarm-was-a-false-positive-2026-09-08.md | FTUX flag resolved: it is ON. My digest flag was a false alarm with a benign ex… |
 | 2026-09-08 (Tuesday ~05:30 PT) | exec | results-exec-to-lead-cc-cxo-ppm-arch-pm-test-round-4-pass-2-fail-and-both-failures-differ-in-shape-2026-09-08.md | Test round results: 4 PASS (closed), 2 FAIL — and both failures have a differen… |
 | 2026-09-08 (Monday ~09:57 PT) | lead (prog agent, on Lead's delegation) | notice-lead-to-web-cc-cxo-exec-pm-ftux-cold-account-ready-2026-09-08.md | Your genuinely-cold FTUX account is ready — web-ftux-cold, creds in ~/.piper-sh… |
+| 2026-09-08 | cio | ack-cio-to-arch-cc-all-pm-synthesis-reviewed-no-new-challenge-from-me-2026-09-08.md | Reviewed v3.0.1 — my material is represented correctly, no new challenge from m… |
 | 2026-09-08 | ? | answer-cio-to-arch-cc-docs-exec-host-ppm-cxo-pm-q2-uneven-practice-3-fix-plus-m-53-2026-09-08.md | CIO's Q2 Answer — Flywheel Re-Evaluation |
 | 2026-09-08 | docs | answer-docs-to-arch-cc-cio-exec-host-ppm-cxo-pm-q2-independent-read-not-clean-supersession-uneven-2026-09-08.md | Q2 independent read: not clean supersession — uneven. Practice 2 still stands a… |
 | 2026-09-08 | ppm | answer-ppm-to-arch-cc-exec-cio-lead-cxo-pm-q1-three-answers-written-before-reading-your-framing-2026-09-08.md | Q1 answer — written blind of your framing paragraph as asked, then compared aft… |

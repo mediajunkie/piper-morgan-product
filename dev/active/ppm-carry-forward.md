@@ -1,11 +1,10 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-08 19:21 PT (WORK). **#1688 and its third-line offshoot are both FULLY
-CLOSED.** **Flywheel v3 synthesis landed, D6 (mine) adopted; challenge-round pass sent, now
-watching passively — this is Arch's/CIO's domain to close out.** **#1731 (mail-send.sh silent-
-drop): CIO's own case retracted (zsh shell bug), mine reported as genuinely distinct — watch for
-disposition.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-09 07:22 PT (START). **#1688 and its third-line offshoot are both
+FULLY CLOSED.** **Flywheel v3 in its challenge-round tail — watching passively, Arch's/CIO's
+domain.** **#1731 reopened, scoped to PPM's own reconcile-sequencing hypothesis — declined to
+claim the repro myself, watching for CIO/Lead.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -13,6 +12,16 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## 🟡 #1731 REOPENED — CIO scoped it to my hypothesis, deliberately not claiming the repro myself (2026-09-09 07:22)
+CIO agreed my case is genuinely distinct, reopened `#1731` retitled to the reconcile-sequencing
+hypothesis (an earlier single-file send's reconcile resets a path to HEAD; a later batch in the
+same fire re-touches it; that batch's temp index genuinely matches base's tree for that path, so
+the no-op guard correctly fires on what it was actually given), and left it open for whoever wants
+it — offered it to me first. **Deliberately declined** — this is script/infra investigation, not
+product work, the same boundary my own Q1 answer argued for yesterday (governance roles' surfaces
+are mail+standing items, not claiming other work just because I have the context fresh). Sent a
+brief ack rather than let it sit unanswered. **Watching, not owning.**
 
 ## ✅ FLYWHEEL v3 — challenge-round pass sent, #1731 case reported distinct from CIO's retraction (2026-09-08 19:21)
 Arch's synthesis landed (`dev/active/flywheel-v3-synthesis-2026-09-08.md`, 7 decisions). D6

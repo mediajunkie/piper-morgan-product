@@ -22,6 +22,13 @@ flags is armed, never at zero flags. And wrinkle 2 (anti-reassurance) landed
 in the floor addendum's never-fabricate block. Both directives' copy is
 CXO's verbatim and is pinned as literals below (the 8/21 lesson: pin NEW
 copy fragments, so drift is a test failure rather than a live regression).
+
+Registry round (2026-09-09, CXO structural review): DIRECTIVES below now
+DERIVES from SOURCE_FAILED_FLAGS — the renderer's own registry — instead of
+being a third hand-maintained copy of the flag list. A sixth flag registered
+there is automatically in every denominator here (the counts use
+len(DIRECTIVES), never a bare 5). The registry↔render-site association
+itself is AST-enforced by test_source_failed_registry_1717.py.
 """
 
 from unittest.mock import MagicMock
@@ -30,20 +37,17 @@ import pytest
 
 from services.intent_service.conversational_floor import (
     FLOOR_SYSTEM_PROMPT_ADDENDUM,
+    SOURCE_FAILED_FLAGS,
     ConversationalFloor,
     FloorContext,
 )
 
-# flag key in domain_context -> the directive line it appends (stable prefix)
-DIRECTIVES = {
-    "source_failed": "- Reminder check FAILED:",
-    "first_contact_source_failed": "- First-exchange GitHub check FAILED:",
-    "projects_source_failed": "- Project check FAILED:",
-    "pending_todos_source_failed": "- Todo check FAILED:",
-    "completed_todos_source_failed": "- Completed-todo check FAILED:",
-}
+# flag key in domain_context -> the directive line it appends (stable prefix).
+# Derived from the renderer's registry — the single source of truth — so this
+# file's denominator can never drift from what the renderer actually checks.
+DIRECTIVES = dict(SOURCE_FAILED_FLAGS)
 
-ALL_FIVE = {flag: True for flag in DIRECTIVES}
+ALL_FLAGS = {flag: True for flag in DIRECTIVES}
 
 # #1717 wrinkle 1 — CXO's scope directive, verbatim (the rendered line, whole).
 # Rides ONCE with any armed source-failed subset; the 1-flag live probe caught
@@ -65,7 +69,7 @@ class TestAllFiveCompose:
     """5-of-5: every directive lands, independently and additively."""
 
     def test_all_five_flags_render_all_five_directives(self):
-        out = _floor()._format_domain_context(dict(ALL_FIVE))
+        out = _floor()._format_domain_context(dict(ALL_FLAGS))
         for flag, directive in DIRECTIVES.items():
             assert directive in out, f"{flag} directive missing from renderer output"
         # #1717 wrinkle 1: the scope directive rides once — not per-flag.
@@ -76,15 +80,15 @@ class TestAllFiveCompose:
         # separate "check FAILED" lines — nothing merges, caps, or
         # substitutes an aggregate. (The content lists in the same renderer
         # ARE capped; the failure lines are not.)
-        out = _floor()._format_domain_context(dict(ALL_FIVE))
-        assert out.count("check FAILED:") == 5
+        out = _floor()._format_domain_context(dict(ALL_FLAGS))
+        assert out.count("check FAILED:") == len(DIRECTIVES)
 
     def test_each_directive_carries_its_own_honesty_guard(self):
         # Every one of the five independently instructs "don't claim empty" —
         # five separate honesty guards, which is what makes the composed
         # shape a litany rather than one sentence.
-        out = _floor()._format_domain_context(dict(ALL_FIVE))
-        assert out.count("claim") >= 5
+        out = _floor()._format_domain_context(dict(ALL_FLAGS))
+        assert out.count("claim") >= len(DIRECTIVES)
 
     def test_composed_prompt_carries_all_five(self):
         # One level up (m-43): the PROMPT the floor would hand the LLM —
@@ -92,12 +96,12 @@ class TestAllFiveCompose:
         ctx = FloorContext(
             user_message="good morning, what's my status?",
             session_id="pin-1717",
-            domain_context=dict(ALL_FIVE),
+            domain_context=dict(ALL_FLAGS),
         )
         prompt = _floor()._build_prompt(ctx)
         for flag, directive in DIRECTIVES.items():
             assert directive in prompt, f"{flag} directive missing from composed prompt"
-        assert prompt.count("check FAILED:") == 5
+        assert prompt.count("check FAILED:") == len(DIRECTIVES)
         assert prompt.count(SCOPE_DIRECTIVE) == 1
 
 

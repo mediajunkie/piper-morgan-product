@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-08
+last_updated: 2026-09-09
 currency_claim: rewritten when an item changes state; audited whole at least monthly
 max_age_days: 31
 ---
@@ -40,16 +40,28 @@ max_age_days: 31
 | Filed | Item | Blocked on | Recheck trigger |
 |---|---|---|---|
 | **2026-09-06** | 🔴 **#1386 criterion 3 — RE-RUN OWED AT MVP CLOSE** *(PPM ruled 09-06: criterion 3 joins the fresh-run set. My proposal, accepted.)* Re-execute scenarios **A/B/C** against the **then-deployed** artifact and re-sign or don't. ⚠️ **The 07-12 sign-off does NOT carry forward.** | **The MVP milestone closing.** ✅ **Checkable, not a feeling**: `gh api …/milestones` → MVP, due **2026-10-30**, currently **open, 50 open / 1116 closed**. | **MVP milestone state flips to closed, OR open-count nears zero.** Check it at every START; do not wait to be told. |
-| **2026-09-08** | **#1730 Gap 1 — generic unwired-write decline copy** | **Lead** — copy delivered 09-08 (memo + issue comment). ⚠️ **Scoped to the GENERIC fallback only**; per-action declines keep their definiteness. Two build constraints named (truncate the echo; render as the user's words). | Lead lands it, or asks for changes. |
-| **2026-09-08** | **Flywheel v3 challenge — two challenges filed** ⭐ **(1)** the enforcement column reads **"Enforced"** on five rows while Arch's own Verified-how says **surface-presence citations, not fresh behavioral re-verification** — the honest label is **"Present."** My P2 row splits three ways and the BYOC branch is **present-not-enforced** (T `PENDING-PROBE`, cannot issue a pass) while ESSENCE commitment 7 cites it as law. **(2)** P5 should adopt **D7's milestone-close trigger** rather than stay episodic — my own 09-06 and 09-04 audits both found real drift and **both happened only because a fire was idle.** Declined targets (a) and (b): no independent read, said so rather than manufacture one. | **Arch** — challenge round closes **09-09 EOD**; Arch rules on the column labels and P5's cadence. | Arch publishes the ruling or the revised synthesis. |
 | **2026-07-26** | **Spatial committed-theory review** | **Arch** synthesis. CXO slice folded in verbatim; convergence matches my (b) vote. | Arch publishes. |
-| **2026-09-08** | **FTUX 3rd line — copy cut delivered** *(mechanism verdict: Lead; reachability: Web)* ⚠️ **No issue number in this cell on purpose** — my last three rows put explanatory refs in the blocker column and tripped the STALE-BLOCKER check three times. Refs live in the Item cell now. | **Lead** — copy call delivered 09-08: cut the false clause, no softer promise, no pointer. | Lead lands it. |
+| **2026-09-09** | **Aggregation-guard flag list is a hand-maintained third copy** — found by the voice watch's structural review. `_format_domain_context` enumerates the five `*_source_failed` flags at their `if` sites AND again in a tuple gating wrinkle 1's scope directive; the test file keeps a **third** copy. A sixth directive renders its FAILED line, is invisible to the guard, and **no test fails.** Refactor proposed (derive from the appended lines, delete the tuple). ⭐ **Explicitly did NOT ask for an aggregation cap** — my litany prediction was falsified and I'm 0 for 2 on this class. | **Lead** — sent 09-09; his call whether to take the derive-from-lines form or a per-site flag. | Lead rules or lands it. |
 | ~~**2026-09-07**~~ | ✅ **#1688 FTUX render — CONFIRMED 09-08 by Web** (local dev, layer named): my copy leads verbatim and asks the question. See Closed. *(PM overruled the hold 09-07, "flip ftux")*. ✅ **Source verified by me**: both strings verbatim at `first_contact.py:341,343`; promise-language pin present. 🔴 **NOT verified**: tests pass here (no pytest in this env), **the flag is actually ON in prod**, and **that a cold user sees it.** | **Web capturing a cold first exchange** — asked 09-07, non-urgent. | Web reports, or reports it isn't live. |
 | **2026-09-02** | **#1688 FTUX MCP first-turn copy (MCP arm)** | **Lead** — spec delivered 09-02 (`ftux-mcp-first-turn-copy-2026-09-02.md`), posted to the issue. Production-milestoned, build not started. Copy is mine; schema/sequencing Lead's. | Lead builds, or asks for changes. |
-| **2026-09-01** | **#1717 — two voice directives** *(scope changed: my litany prediction was FALSIFIED; these are the two wrinkles Lead's run actually found)* | **Lead** — drafted copy sent 09-01 for the scope-leak and unverified-reassurance directives. MVP, explicitly not urgent. | Lead lands them on whatever touches the floor next. |
 | **2026-08-28** | **Ethics-decline / degraded-path VOICE watch** — ⚠️ **METHOD IS NOW PER-TRIGGER (corrected 2026-09-07).** *The row previously stated one method, "Colleague Test, report with denominator," for BOTH triggers. It cannot perform that at one of them, and on 09-01 it fired and I produced a structural finding (#1717) while the row still claimed a Colleague Test. The watch was described as doing something it did not do — m-49 on my own instrument.* | **Two triggers, two methods:** 🔧 **(a) a deploy/commit touching floor or decline copy → STRUCTURAL review** of the directives and their composition. No delivered responses exist to score, so a Colleague Test is impossible here — say so rather than imply one. 🗣️ **(b) a live decline observed → COLLEAGUE TEST**, scored, **with the denominator** (how many declines, on what surface, which account state). ⚠️ **(b) needs a live account — Web's browser lane — so it is an ASK, not something I can self-serve.** | (a) fires on the next such commit; (b) fires when someone observes a live decline. |
 
 ## ✅ CLOSED ON VERIFICATION — do not re-open
+
+- **Four copy items landed — CLOSED 2026-09-09, all verified verbatim in source.** **#1730 Gap 1**
+  generic decline (split into `_RECOGNITION` + `_RECOVERY` — better than my single blob) · **FTUX 3rd
+  line** cut with the no-pointer reasoning pinned in comments · **#1717 wrinkles 1 and 2**, wrinkle 2
+  including its final sentence. ⭐ **Lead's echo implementation exceeded my constraints** — I asked for
+  "truncate" and "render as the user's words"; he named the render **layers** (`marked.parse()` →
+  `innerHTML`, no server-side escaping on that path) **and the degraded fallback I didn't know existed.**
+  🔴 **Layer measured: source presence. NOT measured: tests run, deployed, or any user seeing it.**
+- **Flywheel v3 challenge — CLOSED 2026-09-09, both accepted, then verified.** Arch applied all five
+  first-wave challenges within hours; **I opened the file rather than trust the memo and found the fix
+  had landed in the amendment note while the TABLE still carried every corrected label** — the
+  caveat-in-the-footer shape reproduced inside its own correction. ✅ **Arch then corrected the table in
+  place at v3.0.2 with a visible marker**, the exact resolution I proposed, and P5 now reads
+  *"Enforced-by-D7 once the first closing gate runs it; Present until then"* — **better than what I
+  asked for.** **D4 and D2 declined twice on no independent evidence; that stands.**
 
 - **A — spatial (b) UX argument into the ADR corpus** — done 2026-07-29; thesis doc landed, three surfaces annotated.
 - **B — Colleague Test → ADR corpus** — already done; the handoff claiming otherwise was factually wrong. Canonical doc + v2.3.2 rubric + DoD Layer B gate all exist.
