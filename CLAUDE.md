@@ -384,6 +384,7 @@ Load detailed protocols only when needed:
 | **Intent routing / LLM responses / action handlers** | `docs/internal/architecture/current/intent-routing-stack.md` — **MANDATORY before touching classification, dispatch, or chat-response behavior.** Routing is a 4-surface chain (pre-classifier → LLM classifier → action rail → category/floor-internal); working from a partial model of it produced 7 false findings in one audit (2026-07-08). If your change makes the doc stale, update it in the same commit. |
 | Live system state | Use Serena symbolic queries |
 | Terminology / acronyms | `knowledge/piper-morgan-glossary-v1.1.md` — **STOP and read this before writing any content that uses: Plugin, MCPB, MCP bundle, Connector, Extension, Skills, Cowork, Claude Desktop. These terms have precise distinct meanings and are frequently conflated.** |
+| Server-launch env-var stripping, integrations auth/keychain map, GH Actions scheduling debug | `docs/internal/operations/canonical-ops-recipes.md` — short copy-pasteable recipes, not full docs (#1277) |
 
 **Skills** (formalized procedures): `.claude/skills/`
 
