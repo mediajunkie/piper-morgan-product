@@ -2,7 +2,7 @@
 name: template-audit
 description: Run a mechanical template audit on a finished blog draft before sending the publish-ready signal to Docs. Use after PM's voice pass is complete. Produces a pass/fail report with specific flags. Blocks the publish-ready signal on any FAIL.
 scope: comms
-version: 1.12
+version: 1.13
 created: 2026-06-19
 updated: 2026-09-02
 ---
@@ -33,7 +33,7 @@ grep -i "$(basename <draft> .md)" docs/internal/planning/comms/editorial-calenda
 # Find the next pubDate entry after this post's pubDate
 ```
 
-## ⚠️ FIRST: check the theme. Four checks are calibrated for narratives and are WRONG on Weekly Ships.
+## ⚠️ FIRST: check the theme. Five checks are calibrated for narratives and are WRONG on Weekly Ships.
 
 **Look up `theme` on the calendar row before running anything.** Measured 2026-08-04 against the **6 most recent published Ships** — posts that shipped clean and are live on the site:
 
@@ -42,9 +42,12 @@ grep -i "$(basename <draft> .md)" docs/internal/planning/comms/editorial-calenda
 | **#1** caption non-empty | **6 of 6** | Ships carry no caption by convention (#044/#050 use the literal `N/A`) |
 | **#6** footer tease present | **6 of 6** | Ships sit outside the tease chain entirely — see check #6 |
 | **#13** word count ≤1,600 | **4 of 6** | Ship norm is **~1,630 words** (measured #049–#053: 1279 / 1384 / 1906 / 1827 / 1764). The 800–1,300 target is a *narrative and insight* range |
+| **#14** acronym NO-GLOSS on agent role short-forms | not re-measured against all 6, but **5 of 6** carry at least one unglossed short-form (Arch/CXO/PPM/CIO/HOST/Comms/Docs/PA) | Ships use short-form role names without a first-use gloss as a matter of course — Ship #055 alone carries 5 different unglossed short forms and published clean. Narratives and insights DO gloss on first use (Phase 3 opacity sweep in `draft-blog-post`); Ships don't carry that convention |
 | **#15** no `#NNN` in prose | **6 of 6** | `#053`, `#054` are **Ship numbers**, not issue numbers, and they are conventional in Ship prose + the previous/next links |
 
-**So a full audit against a Ship produces roughly four false FAILs every single time.** On `theme=ship`, mark these **N/A — by convention**, never FAIL. Every other check applies to Ships unchanged.
+**So a full audit against a Ship produces roughly five false FAILs every single time.** On `theme=ship`, mark these **N/A — by convention**, never FAIL. Every other check applies to Ships unchanged.
+
+⚠️ **#14 is a narrower exception than the other four — read it precisely.** It's ONLY the short-form-glossing sub-check that's N/A on Ships; the check's *hard-acronym* findings (the ones the script actually calls FALSE-UNPACK) still apply and still block. Confirmed 2026-09-09 (Ship #059 review, PM: *"we should keep track of the distinct conventions between the blog series and the Ship"*) — checked against 5 prior published Ships (#050, #051, #053, #054, #055) before treating the NO-GLOSS warnings as noise rather than assume it. Don't over-extend this row to mean "acronym check is N/A on Ships" — it isn't; only the short-form-role-name glossing sub-pattern is exempt.
 
 ⚠️ **Why this is worth a table rather than four footnotes**: a mandatory gate that cries wolf on four of sixteen checks trains its own operator to discard failures by eye — and the discarding habit does not stay confined to the four that deserve it. That is the same dynamic CLAUDE.md documents for the sign-off checklist, where a step that reported thousands of unpushed commits every session got quietly substituted away by the people following it most carefully. **A check that is wrong in a knowable, repeating way is a check people learn to skim.**
 
@@ -370,3 +373,5 @@ On PASS: send the publish-ready memo to Docs inbox per the handoff protocol (Jun
 *v1.11 — 2026-09-01. **New check #11, agents referred to as "people."** PM: "recent drafts have taken to referring to agents as 'people' — we may need to add that to the things you check." Found reviewing Beats 4 and 5 the same morning: one footer instance in Beat 4, and Beat 5 ("Repetition Isn't Convergence") had it running through nearly every section including a section heading ("Everyone checked, and everyone was wrong the same way"). **This check needs judgment, not a bare grep** — unlike #10 ("cohort"), roughly half of any match set is legitimate (a "someone" configuring the product, an "anyone" meaning testers, a deliberately human-generalizing reader question). The check documents worked examples of both FAIL and PASS so the judgment call is reproducible rather than ad hoc. Checks #12–#16 renumbered up by one to make room (was #11–#15); all internal cross-references and historical changelog number-mentions updated to match current numbering, with the original number noted in parens where a changelog entry describes a check by the number it had at the time.*
 
 *v1.12 — 2026-09-02. **Check #2 gains title-case verification.** Ship #058 published as "What we actually had" — sentence case, against a corpus where the 8 most recent Ships and 10 most recent narratives/insights are 100% title case. The defect passed Exec's draft, PM's own voice pass, this skill's own audit, and Docs' independent post-publish audit — four layers, all checking sense, none checking case, because nothing had ever made the convention mechanically checkable. PM caught it after publish and fixed it directly. Added a small-word-aware title-case script to check #2 (the natural home, since both checks read the same H1 line) rather than opening a new numbered check and renumbering the other fifteen. Verified against three controls: the original defective title (flags "we," "actually," "had"), the corrected title (clean), and a false-positive sweep of 10 real published titles across all three variants (0 false positives). Same failure shape as v1.11's origin — and the irony wasn't lost: this is Ship #058's own learning-pattern theme ("no single layer was reliable enough alone") playing out inside the very checklist meant to catch it.*
+
+*v1.13 — 2026-09-09. **Ship calibration table gains a fifth row: check #14's short-form-role-name NO-GLOSS sub-check is N/A on Ships.** Reviewing Ship #059, the acronym check flagged Arch/CXO/PPM/CIO/HOST/Comms/Docs as unglossed. Rather than assume they were real findings or dismiss them on instinct, checked against 5 prior published Ships (#050, #051, #053, #054, #055) — #055 alone carries 5 different unglossed short forms and published clean, confirming this is established Ship-genre convention, not a defect. PM, on hearing the finding: *"we should keep track of the distinct conventions between the blog series and the Ship"* — this table is that tracking surface, so the finding belongs here rather than only in a session log. **Narrower than the other four rows**: only the short-form-glossing sub-pattern is exempt on Ships; check #14's actual hard-acronym FALSE-UNPACK findings still apply and still block.*
