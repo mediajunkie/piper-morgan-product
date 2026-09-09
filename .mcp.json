@@ -4,7 +4,7 @@
       "command": "npx",
       "args": [
         "chrome-devtools-mcp@latest",
-        "--executablePath=/Users/xian/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+        "--executablePath=/Users/xian/.claude-pm/chrome-for-testing.app/Contents/MacOS/Google Chrome for Testing",
         "--isolated",
         "--viewport=1280x720"
       ]
