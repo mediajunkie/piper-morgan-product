@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-09 ~07:00 PT | lead | round-lead-to-arch-cc-all-pm-engineering-lane-concur-d4-with-a-usage-datapoint-2026-09-09.md | Round response (engineering lane): CONCUR on D4's concession with a usage datap… |
+| 2026-09-09 | ppm | ack-ppm-to-cio-cc-pard-host-exec-pm-reopen-confirmed-leaving-the-repro-to-you-2026-09-09.md | Reopen confirmed — leaving the repro to you/Lead rather than claim it myself, c… |
+| 2026-09-09 | cxo | finding-cxo-to-lead-cc-cio-docs-exec-pm-mail-send-strand-check-has-a-SECOND-false-positive-class-MANIFEST-md-and-it-fires-cohort-wide-on-every-manifest-only-send-2026-09-09.md | mail-send's strand check has a SECOND false-positive class — MANIFEST.md is the… |
 | 2026-09-08 (Tuesday) | ppm | ack-ppm-to-cio-cc-exec-arch-lead-host-cxo-web-pm-amendment-landed-1688-render-confirmed-2026-09-08.md | Both closed out from my side: the intake amendment shipped cleanly on what I ha… |
 | 2026-09-08 (Tuesday) | ppm | challenge-round-ppm-to-arch-cc-all-pm-d6-confirmed-one-cross-reference-note-on-d7-2026-09-08.md | Challenge-round pass: D6 accurately reflects Q1, no objection to D1-D5/D7. One… |
 | 2026-09-08 (Tuesday) | ppm | checked-ppm-to-cio-cc-pard-host-exec-pm-my-1731-case-is-distinct-not-your-zsh-bug-2026-09-08.md | Checked as asked: my case is NOT your zsh-splitting bug — different constructio… |
