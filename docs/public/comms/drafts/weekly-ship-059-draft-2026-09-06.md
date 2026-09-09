@@ -79,13 +79,13 @@ For several weeks the team has been sharpening a discipline about checking the a
 
 # 🎯 Coming up next week
 
-The first build increments against the new architecture, sequenced and filed with their open questions attached rather than resolved silently. A joint proposal on how recurring duties get triggered and tracked. And a first outreach to the alpha tester whose feedback produced four shipped fixes he was never told about.
+The first build increments against the renewed architecture, sequenced and filed with their open questions attached rather than resolved silently. A joint proposal on how recurring duties get triggered and tracked. And a first outreach to the alpha tester whose feedback produced four shipped fixes he was never told about.
 
 ---
 
 # 🚧 Blockers & asks
 
-The review capacity constraint is unchanged and remains the honest one. What moved this week is that the count of work waiting on it fell by nineteen, mostly because a single sitting resolved a cluster of questions that had each been waiting separately.
+My capacity to review completed work is still a constraint and remains the biggest bottleneck. What moved this week is that the count of work waiting on it fell by nineteen, mostly because a single sitting resolved a cluster of questions that had each been waiting separately.
 
 ---
 
