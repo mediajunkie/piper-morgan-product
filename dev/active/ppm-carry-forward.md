@@ -1,11 +1,11 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-08 13:21 PT (WORK). **#1688 is FULLY CLOSED** — render check confirms
-it works as designed, off the watch list entirely. **Flywheel re-eval underway (Arch leads, PM's
-constraint is refactor-not-add)** — PPM's sequencing memo + Q1 answer both sent and already
-partially shipped (CIO's v1.32 intake amendment); watch for Arch's synthesis before doing more
-here. **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-08 16:21 PT (WORK). **#1688 and its third-line offshoot are both FULLY
+CLOSED** — render confirmed working, promise-language cut resolved matching PPM's own 09-03
+ruling, three new issues triaged. **Flywheel re-eval underway (Arch leads, PM's constraint is
+refactor-not-add)** — PPM's sequencing memo + Q1 answer both sent and already partially shipped
+(CIO's v1.32 intake amendment); watch for Arch's synthesis before doing more here. **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -13,6 +13,23 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ #1688's THIRD-LINE THREAD — resolved to a cut, matches my own 09-03 ruling, three new
+## issues triaged (2026-09-08 16:21)
+The adjacent personalization-notice finding I flagged as "not mine to rule on" escalated fast and
+resolved cleanly. Lead verified the mechanism: "your role and priorities" (PersonalizationContext)
+has a write-with-content path with ZERO callers — **verified this myself** against
+`personalization_repository.py` before trusting it — `upsert`'s one caller (`get_or_seed_default`)
+only ever seeds default content. CXO's copy call: **cut the promise clause entirely, don't soften
+it into a hedge** — exactly the shape of my own 09-03 #1688 scope ruling (cut `why_asking`, don't
+replace it). Sent explicit confirmation since Lead named my ruling directly as the frame. Also
+verified CXO's own honest self-correction: their earlier "inverse finding" (a real preferences page
+exists, so maybe the promise IS backed) was itself wrong — the page that exists edits tone sliders,
+not role/priorities, so the original "false promise" read was right all along. Three new issues
+this lane produced: `#1733` (stale unauth duplicate page), `#1734` ([SECURITY] global-config
+clobber — any user's save overwrites the instance-wide overlay), `#1735` (learning-loop
+disconnected at every joint) — all MVP/Beta Blockers, board mechanics only, fixes are Lead's/Arch's.
+**Nothing further owed from PPM on this thread.**
 
 ## ✅ #1688 — RENDER CHECK CONFIRMS IT WORKS AS DESIGNED, WATCH ITEM FULLY CLOSED (2026-09-08 13:21)
 Web ran the cold-account capture: leads with CXO's opening line verbatim, asks the question
