@@ -410,6 +410,12 @@ class IntentService:
             result.pending_offer = {
                 "workflow_type": detection.offer.workflow_type,
                 "offer_message": detection.offer.offer_message,
+                # #1665/#1739 input adequacy (Arch condition (a)): the
+                # rendered ask rides the record under the SAME key every
+                # other arm site uses — the soft offer's message IS its ask,
+                # and the acceptance predicate evaluates against what the
+                # user actually saw.
+                "question": detection.offer.offer_message,
                 "decline_message": detection.offer.decline_message,
                 "active_lens": current_lens,  # Issue #820: Include lens context
                 "trigger_message": message,  # Issue #825: For slot extraction
@@ -1280,16 +1286,66 @@ class IntentService:
                     CONFIRM_PENDING_ACTION_WORKFLOW,
                 )
 
-                if pending_offer.get("workflow_type") == CONFIRM_PENDING_ACTION_WORKFLOW:
+                # #1739: READ-tier kinds at this seam consult THE acceptance
+                # predicate (Arch condition (b): adopt by EffectClass
+                # ascending — READ first). A STATE_QUESTION verdict RE-ARMS
+                # the offer and lets normal processing answer the question —
+                # the arm survives a state query instead of being consumed
+                # (the #1617 direction) or silently dropped by the pop (CXO
+                # ruling: a question is a different speech act, not a failed
+                # acceptance). Non-READ kinds keep their documented legacy
+                # detectors unchanged, tracked by the #1739 ratchet.
+                _offer_survived_state_question = False
+                _wf_type = pending_offer.get("workflow_type")
+                if _wf_type == CONFIRM_PENDING_ACTION_WORKFLOW:
                     response_type = detect_confirm_response(message)
                 else:
-                    response_type = detect_offer_response(message)
+                    from services.intent_service.acceptance import (
+                        AcceptanceVerdict,
+                        declared_axes_for_workflow,
+                        evaluate_acceptance,
+                    )
+                    from services.shared_types import EffectClass as _EC
+
+                    _axes = declared_axes_for_workflow(_wf_type)
+                    if _axes is not None and _axes[0] == _EC.READ:
+                        _verdict = evaluate_acceptance(
+                            message,
+                            effect=_axes[0],
+                            outwardness=_axes[1],
+                            # #1665: the rendered ask rides the offer record;
+                            # arm sites for every READ kind here store it.
+                            armed_question=pending_offer.get("question"),
+                        )
+                        if _verdict is AcceptanceVerdict.STATE_QUESTION:
+                            self.workflow_offer_service.set_pending_offer(
+                                session_id, pending_offer, user_id=user_id
+                            )
+                            _offer_survived_state_question = True
+                            response_type = None
+                            self.logger.info(
+                                "armed_offer_survives_state_question",
+                                workflow_type=_wf_type,
+                                session_id=session_id,
+                            )
+                        elif _verdict is AcceptanceVerdict.ACCEPT:
+                            response_type = "accept"
+                        elif _verdict is AcceptanceVerdict.DECLINE:
+                            response_type = "decline"
+                        else:
+                            response_type = None
+                    else:
+                        response_type = detect_offer_response(message)
                 # #1190: a pending DESTRUCTIVE confirmation treats bare exit
                 # commands ("cancel", "stop", "forget it" — #888 ∪ #1529
                 # sets) as an honest decline, not as a message that silently
                 # drops the offer. Exit tier of the #1529 escape semantics
                 # applied to a one-turn offer.
-                if response_type is None and pending_offer.get("pending_action"):
+                if (
+                    response_type is None
+                    and not _offer_survived_state_question
+                    and pending_offer.get("pending_action")
+                ):
                     from services.intent_service.destructive_confirm import (
                         detect_bare_exit,
                     )
@@ -1410,7 +1466,10 @@ class IntentService:
                 # cancel (#1529 off_intent tier): the pop above already
                 # removed the pending action, so nothing can ever fire it,
                 # and normal processing answers the new message.
-                elif pending_offer.get("pending_action"):
+                # #1739: a state-question turn is NOT an abandonment — the
+                # offer was re-armed above and survives; only the answering
+                # falls through to normal processing.
+                elif pending_offer.get("pending_action") and not _offer_survived_state_question:
                     # #1510: off-intent on a verification read-back abandons
                     # it the same way (the pop discarded it; nothing stored)
                     # — logged under its own name for honest observability.
@@ -1488,7 +1547,39 @@ class IntentService:
                     last_offer = _conv_ctx.last_offer
                     _conv_ctx.last_offer = None  # One-turn memory: always clear
 
-                    response_type = detect_offer_response(message)
+                    # #1739 (adopted, READ tier): contextual continuations are
+                    # list/show hints steered INTO the classifier — any write
+                    # they could reach downstream still passes the #1509
+                    # consent gate at the rail, so the binding itself is
+                    # READ-tier. THE predicate replaces the greedy generic
+                    # detector: a question-form ("yes, what's on it?") can no
+                    # longer bind the hint as an acceptance (contract axis
+                    # (a)); asides neither accept nor steal. Input adequacy
+                    # (Arch condition (a)): the arm-site stores its rendered
+                    # ask as LastOffer.offer_text. The one-turn expiry for
+                    # non-accepts is the #852 invariant, unchanged — arm
+                    # SURVIVAL on a state question at this store is #1739
+                    # follow-on work, tracked on the issue.
+                    from services.intent_service.acceptance import (
+                        AcceptanceVerdict as _AV,
+                    )
+                    from services.intent_service.acceptance import (
+                        evaluate_acceptance as _eval_acceptance,
+                    )
+                    from services.shared_types import EffectClass as _EC
+                    from services.shared_types import Outwardness as _OW
+
+                    _ctx_verdict = _eval_acceptance(
+                        message,
+                        effect=_EC.READ,
+                        outwardness=_OW.PRIVATE,
+                        armed_question=getattr(last_offer, "offer_text", None),
+                    )
+                    response_type = {
+                        _AV.ACCEPT: "accept",
+                        _AV.DECLINE: "decline",
+                        _AV.STATE_QUESTION: "state_question",
+                    }.get(_ctx_verdict)
                     if last_offer.offer_type == "process_resume":
                         # #1529: resume offers are deterministic (handled at
                         # _check_pending_resume_offer), not classifier hints.
