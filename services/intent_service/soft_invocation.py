@@ -340,26 +340,39 @@ def detect_confirm_response(message: str) -> Optional[str]:
     from :func:`detect_offer_response` — declines were never the greedy
     hazard, and a decline only cancels.
 
+    #1739: now a COMPATIBILITY ALIAS over THE acceptance predicate
+    (``acceptance.evaluate_acceptance``) at the NAMED_OBJECT tier — the
+    predicate absorbed this detector's machinery; one contract, one
+    implementation. Same vocabulary, same prose floor, PLUS contract axis
+    (a): a question-form ("are we done with that standup?", "yes?") NEVER
+    accepts — and never declines either; it falls to the kind's documented
+    off-intent rule (a state query is a different speech act, not a failed
+    acceptance — CXO ruling 2026-09-09). Callers of this alias do not
+    thread their arm-site's stored ask (LEGACY_UNTHREADED); the #1739
+    ratchet lists them as unadopted. New seams call the predicate directly
+    with their declared axes and stored ask.
+
     Returns "accept", "decline", or None. None means the confirm's
     documented off-intent rule applies — for the #1190 tier the pop already
     cancelled the pending action (nothing can fire it) and normal processing
     answers the turn; kinds that document a re-ask re-ask.
     """
-    if not message:
-        return None
+    from services.intent_service.acceptance import (
+        LEGACY_UNTHREADED,
+        AcceptanceVerdict,
+        evaluate_acceptance,
+    )
+    from services.shared_types import EffectClass
 
-    clean = message.strip()
-
-    if is_prose_reply(clean):
-        return None
-
-    if CONFIRM_ACCEPT_RE.match(clean):
+    verdict = evaluate_acceptance(
+        message,
+        effect=EffectClass.DESTRUCTIVE,
+        armed_question=LEGACY_UNTHREADED,
+    )
+    if verdict is AcceptanceVerdict.ACCEPT:
         return "accept"
-
-    for pattern in DECLINE_PATTERNS:
-        if pattern.search(clean):
-            return "decline"
-
+    if verdict is AcceptanceVerdict.DECLINE:
+        return "decline"
     return None
 
 
