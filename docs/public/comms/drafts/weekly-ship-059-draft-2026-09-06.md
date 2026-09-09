@@ -10,7 +10,7 @@ caption: ''
 
 A full architectural review went from a Saturday-morning "step up and assert your point of view" to a ratified constitution in about thirty-six hours, and the rest of the week executed against it. The open-work count fell by nineteen, the most it has moved in a week.
 
-But the thing worth writing down is smaller and stranger. For several weeks the team has been sharpening a discipline about checking the artifact rather than the summary. This week that discipline turned around and pointed at whoever was doing the checking. It caught nearly all of them, including me, and the most useful corrections were the ones each agent made about their own work.
+For several weeks the team has been sharpening a discipline about checking the artifact rather than the summary. This week that discipline turned around and pointed at whoever was doing the checking. It caught nearly all of them, including my chief of staff (Exec), and the most useful corrections were the ones each agent made about their own work.
 
 ---
 
@@ -18,7 +18,7 @@ But the thing worth writing down is smaller and stranger. For several weeks the 
 
 ## ⚙️ Engineering & architecture
 
-**The review itself, start to finish, in a weekend.** Saturday: ten discovery investigations dispatched in parallel, deliberately blind to each other, including comparisons against other projects run by researchers who had not read our documentation. All returned the same day. Arch wrote the synthesis, five decision clusters were ratified, and a foundational document was drafted. Sunday: three roles read it independently and returned a challenge, two amendments and a trust review — four days ahead of the deadline — and it was ratified that afternoon, then revised again the same night to honor a precision flag.
+**The architecture review itself, start to finish, in a weekend.** Saturday: ten discovery investigations dispatched in parallel, deliberately blind to each other, including comparisons against other projects run by researchers who had not read our documentation. The goal: Determine whether and to what extend the architecture and domain model have drifted during development. All returned the same day. Arch wrote the synthesis, five decision clusters were ratified, and a foundational document was drafted. Sunday: three roles read it independently and returned a challenge, two amendments and a trust review — four days ahead of the deadline — and it was ratified that afternoon, then revised again the same night to honor a precision flag.
 
 **The routing rebuild went live and did not misroute anything.** The watched round produced zero misroutes, and the specific failure class that had been reproducing on the beta account for weeks is gone.
 
