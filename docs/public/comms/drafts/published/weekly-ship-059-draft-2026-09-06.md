@@ -10,7 +10,7 @@ caption: ''
 
 A full architectural review went from a Saturday-morning "step up and assert your point of view" to a ratified constitution in about thirty-six hours, and the rest of the week executed against it. The open-work count fell by nineteen, the most it has moved in a week.
 
-But the thing worth writing down is smaller and stranger. For several weeks the team has been sharpening a discipline about checking the artifact rather than the summary. This week that discipline turned around and pointed at whoever was doing the checking. It caught nearly all of them, including me, and the most useful corrections were the ones each agent made about their own work.
+For several weeks the team has been sharpening a discipline about checking the artifact rather than the summary. This week that discipline turned around and pointed at whoever was doing the checking. It caught nearly all of them and the most useful corrections were the ones each agent made about their own work.
 
 ---
 
@@ -18,11 +18,11 @@ But the thing worth writing down is smaller and stranger. For several weeks the 
 
 ## ⚙️ Engineering & architecture
 
-**The review itself, start to finish, in a weekend.** Saturday: ten discovery investigations dispatched in parallel, deliberately blind to each other, including comparisons against other projects run by researchers who had not read our documentation. All returned the same day. Arch wrote the synthesis, five decision clusters were ratified, and a foundational document was drafted. Sunday: three roles read it independently and returned a challenge, two amendments and a trust review — four days ahead of the deadline — and it was ratified that afternoon, then revised again the same night to honor a precision flag.
+**The architecture review itself, start to finish, in a weekend.** Saturday: ten discovery investigations dispatched in parallel, deliberately blind to each other, including comparisons against other projects run by researchers who had not read our documentation. The goal: Determine whether and to what extent the architecture and domain model have drifted during development. All returned the same day. Arch wrote the synthesis, five decision clusters were ratified, and a foundational document was drafted. Sunday: three roles read it independently and returned a challenge, two amendments and a trust review — four days ahead of the deadline — and it was ratified that afternoon, then revised again the same night to honor a precision flag.
 
 **The routing rebuild went live and did not misroute anything.** The watched round produced zero misroutes, and the specific failure class that had been reproducing on the beta account for weeks is gone.
 
-**Twenty thousand lines of committed-theory scaffolding removed**, each with the commit history that justified removing it — and six deliberate holds where a fresh check contradicted what the record claimed. The holds matter more than the deletions. Every one was a case where the paperwork said "dead" and the code said otherwise.
+**Twenty thousand lines of scaffolding removed**, each with the commit history that justified removing it — and six deliberate holds where a fresh check contradicted what the record claimed. The holds matter more than the deletions. Every one was a case where the paperwork said "dead" and the code said otherwise.
 
 **Dead code turned out to have three live write paths.** Something documented as inactive, which our own privacy claims disclaimed, was found writing to production. Severed, purged, and fitted with a guard that fails loudly if it ever returns.
 
@@ -32,9 +32,9 @@ But the thing worth writing down is smaller and stranger. For several weeks the 
 
 **A gate was written into the release plan that had been implicit and wrong.** PPM noticed that one cluster of work sat in a later milestone while "all new effort goes there" was being said in the present tense. That contradiction became a named public-beta gate, plus a written model of which audience each milestone actually serves.
 
-**A probe answered a design question before anything was built on it.** The question was whether a particular kind of assistant output invents facts when the underlying read fails. Six rounds across two vendors: it does, in prose, and stays honest in structure. The rule that came out of it now says caveats must live where a model cannot drop them. None of the affected work had been written yet.
+**A probe answered a design question before anything was built on it.** The question was whether a particular kind of assistant output invents facts when the underlying read fails. Six rounds across two vendors: it does invent facts, in prose, while staying honest in structure. The rule that came out of it now says caveats must live where a model cannot drop them. None of the affected work had been written yet.
 
-**The browser gap closed, and then kept paying.** Web went from a smoke test to relying on it for real design work in a week, and the capability was used by four other roles for their own work, not just Web's.
+**The browser gap closed, and then kept paying.** Fixing the agents' access to a web browser took us from a smoke test to relying on it for real design (and QA) work in a week, and the capability was used by four other roles for their own work, not just Web's.
 
 ## 🌍 External relations & community
 
@@ -79,13 +79,13 @@ But the thing worth writing down is smaller and stranger. For several weeks the 
 
 # 🎯 Coming up next week
 
-The first build increments against the new architecture, sequenced and filed with their open questions attached rather than resolved silently. A joint proposal on how recurring duties get triggered and tracked. And a first outreach to the alpha tester whose feedback produced four shipped fixes he was never told about.
+The first build increments against the renewed architecture, sequenced and filed with their open questions attached rather than resolved silently. A joint proposal on how recurring duties get triggered and tracked. And a first outreach to the alpha tester whose feedback produced four shipped fixes he was never told about.
 
 ---
 
 # 🚧 Blockers & asks
 
-The review capacity constraint is unchanged and remains the honest one. What moved this week is that the count of work waiting on it fell by nineteen, mostly because a single sitting resolved a cluster of questions that had each been waiting separately.
+My capacity to review completed work is still a constraint and remains the biggest bottleneck. What moved this week is that the count of work waiting on it fell by nineteen, mostly because a single sitting resolved a cluster of questions that had each been waiting separately.
 
 ---
 

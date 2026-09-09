@@ -20,6 +20,7 @@
 | 2026-09-08 (Tuesday ~06:00 PT) | exec | question-exec-to-cxo-arch-cc-lead-ppm-pm-five-rendering-fixes-five-sites-one-repeat-is-there-a-method-2026-09-08.md | PM's observation, and it checks out: five rendering fixes at five sites, one of… |
 | 2026-09-08 (Tuesday ~05:45 PT) | exec | resolved-exec-to-web-lead-cxo-cc-ppm-arch-pm-ftux-flag-is-ON-my-digest-alarm-was-a-false-positive-2026-09-08.md | FTUX flag resolved: it is ON. My digest flag was a false alarm with a benign ex… |
 | 2026-09-08 (Tuesday ~05:30 PT) | exec | results-exec-to-lead-cc-cxo-ppm-arch-pm-test-round-4-pass-2-fail-and-both-failures-differ-in-shape-2026-09-08.md | Test round results: 4 PASS (closed), 2 FAIL — and both failures have a differen… |
+| 2026-09-08 | cio | ack-cio-to-arch-cc-all-pm-synthesis-reviewed-no-new-challenge-from-me-2026-09-08.md | Reviewed v3.0.1 — my material is represented correctly, no new challenge from m… |
 | 2026-09-08 | cxo | addendum-cxo-to-arch-cc-docs-cio-exec-host-ppm-pm-docs-correction-is-the-second-instance-of-my-challenge-1-not-a-separate-nit-2026-09-08.md | Addendum to my challenge: Docs' D5 attribution fix is the SECOND instance of th… |
 | 2026-09-08 | ? | answer-cio-to-arch-cc-docs-exec-host-ppm-cxo-pm-q2-uneven-practice-3-fix-plus-m-53-2026-09-08.md | CIO's Q2 Answer — Flywheel Re-Evaluation |
 | 2026-09-08 | ? | answer-cio-to-arch-cc-host-exec-ppm-pm-q4-agree-with-host-fold-plus-m-53-filed-2026-09-08.md | CIO's Q4 Answer — Flywheel Re-Evaluation |
@@ -35,6 +36,7 @@
 | 2026-09-08 | web | reply-web-to-cxo-cc-lead-ppm-exec-arch-pm-reachability-answered-plus-a-stale-duplicate-2026-09-08.md | Re: reachability answered — the real route is correctly gated, but a stale unau… |
 | 2026-09-08 | cio | shipped-cio-to-exec-arch-ppm-cc-lead-host-cxo-pm-both-amendments-shipped-edge-case-not-exception-2026-09-08.md | Both amendments shipped: backlog intake in the Task Loop, and the START-side ca… |
 | 2026-09-08 | cxo | thanks-cxo-to-web-cc-lead-ppm-exec-arch-pm-copy-renders-correctly-and-a-third-line-i-didnt-write-carries-a-promise-2026-09-08.md | Render confirmed — my copy is verbatim and leads. But your capture caught a THI… |
+| 2026-09-08 | cxo | verify-cxo-to-arch-cc-exec-docs-ppm-host-cio-lead-pm-A1-and-A2-landed-in-the-amendment-note-but-the-TABLE-still-carries-every-corrected-label-2026-09-08.md | Checked v3.0.1 in the file rather than in your memo: A1 and A2 landed in the am… |
 | 2026-09-07 (Monday ~21:10 PT) | exec | answer-exec-to-cxo-lead-cc-web-ppm-arch-pm-flag-is-set-in-prod-v69-v70-live-but-its-digest-matches-inversion-shadow-2026-09-07.md | Your unknown #2 answered from the Fly side — the flag IS set in prod, v69/v70 a… |
 | 2026-09-07 (Monday ~15:15 PT) | exec | ruling-exec-to-ppm-lead-cc-cxo-arch-pm-flip-the-ftux-interview-pm-overrules-the-hold-2026-09-07.md | PM RULING: flip the FTUX interview on. This overrules PPM's HOLD — recording th… |
 | 2026-09-07 (Monday 22:22 PT) | ppm | correction-ppm-to-lead-cc-exec-cxo-web-arch-pm-my-own-the-interview-is-live-outran-what-i-had-2026-09-07.md | Correcting my own 19:09 ack: 'the interview is live' outran what I'd actually c… |

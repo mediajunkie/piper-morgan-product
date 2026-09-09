@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-08
+last_updated: 2026-09-09
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-08 at the 19:17 fire.
+# CXO carry-forward — rewritten 2026-09-09 at the 07:17 START.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -41,8 +41,8 @@ alarm.
 
 ## 🔴 NEXT FIRE — first move
 
-Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 10`** (9 blocked rows +
-1 unblocked placeholder — ⚠️ **updated 09-08 when the flywheel row was added; this expectation is itself
+Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 7`** (6 blocked rows +
+1 unblocked placeholder — ⚠️ **updated 09-09: four rows closed on verification, one added; this expectation is itself
 a fact that goes stale, so re-state it whenever you add or remove a row**). ⚠️ **A count below that means
 my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
 shipped the per-file count specifically so this is visible without building a control.
@@ -69,15 +69,20 @@ shipped the per-file count specifically so this is visible without building a co
 
 ## Live threads (watch only)
 
-- **Flywheel v3 challenge** — sent 09-08 to Arch. Two challenges: the **enforcement column overstates**
-  its own Verified-how (surface-presence ≠ "Enforced"), and **P5 should take D7's milestone-close
-  cadence**. Window closes **09-09 EOD**; Arch rules.
-- **#1730 Gap 1 copy · FTUX 3rd-line cut · #1717's two voice directives** — all with **Lead** to land.
+- ✅ **Flywheel v3 — CLOSED for me.** Both challenges accepted; the table fix landed only in the
+  amendment note until I checked the file, then **Arch corrected it in place at v3.0.2 with a visible
+  marker.** **D4/D2 declined twice on no evidence — that stands, and the window closes 09-09 EOD.**
+- ✅ **#1730 Gap 1 · FTUX 3rd line · #1717 wrinkles 1+2 — ALL LANDED**, verified verbatim in source
+  09-09. 🔴 **Layer: source presence. NOT tests-run, NOT deployed, NOT user-observed.**
+- 🟡 **NEW, with Lead**: the aggregation-guard flag list is a **hand-maintained third copy** and a sixth
+  directive would be **test-invisible.** Refactor proposed; **no aggregation cap asked for.**
 - **#1688 MCP arm** — spec delivered 09-02; production-milestoned, build unstarted.
-- **#1386 criterion 3** — re-runs at **MVP close** (milestone open, ~50). Check mechanically at START.
+- **#1386 criterion 3** — re-runs at **MVP close** (milestone **open, 52** as of 09-09). Check
+  mechanically at START.
 - **Spatial committed-theory synthesis** — Arch publishes.
 - **Voice watch** — ⚠️ **method is per-trigger**: code change → **structural** review; live decline →
-  **Colleague Test with denominator**. Do not claim the second when doing the first.
+  **Colleague Test with denominator**. Do not claim the second when doing the first. ✅ **Trigger (a)
+  fired 09-09 and the structural review was delivered as a structural review.**
 - **Exec #17 (render method)** — ✅ **my half answered 09-08**, after reading the render layer. Awaiting
   Arch.
 

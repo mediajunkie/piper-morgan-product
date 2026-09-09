@@ -72,13 +72,16 @@ methodology-00 itself. No standing re-evaluation duty — the workstream closes 
 
 ## The enforcement column (Exec's acceptance gate, applied)
 
+*(Table corrected in place per A1/A2 — v3.0.2, 09-09 morning, after CXO verified the amendment
+note had left these cells unchanged. The amendment section below remains the dated record.)*
+
 | Practice (v3) | Live enforcement | Status |
 |---|---|---|
-| 1 Verify Before Building | CLAUDE.md §Verify-First · supersession gate · extraction ratchet | Enforced |
-| 2 Test What Matters | Colleague-test rubric · canonical suite | Enforced (content unchanged; the one practice more current than its corpus) |
-| 3 Coordinate Through Structure (bidirectional) | Produce: mail machinery, hooks, heartbeat/watchdog · Consume: duty-cycle v1.32 intake + eligibility denominator | Enforced (consumer side: new, watch its first weeks) |
-| 4 Track to Completion w/ Evidence (+m-43/44/50) | "Verified how:" field · closure protocol · provenance-tagged markers | Enforced |
-| 5 Audit the Composition | Episodic dispatch only (census, false-trails, noun audit) | **Aspirational, honestly labeled** — or adopts the D7 trigger as its cadence; challenge round decides |
+| 1 Verify Before Building | Extraction/protocol ratchets · CLAUDE.md §Verify-First · supersession gate | Ratchets **Enforced** (CI-behavioral) · prose norms **Present** |
+| 2 Test What Matters | Colleague-test rubric · canonical suite · BYOC recomposition branch | Rubric **Enforced** (PM-ratified, DoD-gated) · suite **Enforced** (executed) · recomposition branch **Present — cannot yet issue a pass** (T-axis PENDING-PROBE) |
+| 3 Coordinate Through Structure (bidirectional) | Produce: mail machinery, hooks, heartbeat/watchdog · Consume: duty-cycle v1.32 intake + eligibility denominator | Producer side **Enforced** (observed daily) · consumer side **Present — not yet observed firing**; flips to Enforced when someone reports watching v1.32 pull an item |
+| 4 Track to Completion w/ Evidence (+m-43/44/50) | "Verified how:" field · closure protocol · provenance-tagged markers | **Enforced** (bounce-backs and marker-firing behaviorally observed this week) |
+| 5 Audit the Composition | **D7's milestone-close cadence** (adopted per A2) + episodic dispatch | **Enforced-by-D7 once the first closing gate runs it; Present until then** |
 | Q5 (PM) | Idle is legitimate when the role's consumed surfaces are drained — role-scoped denominators, same rule for all roles | Awaits PM ruling; HOST's sequencing note adopted (rule it after Q1's fix has run for a bit) |
 
 ## What the challenge round should attack

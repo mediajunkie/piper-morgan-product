@@ -1,166 +1,44 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-08 ~19:35 PDT (Fire 6 / WORK, complete)
-**Session log**: `dev/2026/09/08/2026-09-08-0528-docs-code-log.md` (open; started PM-initiated pre-cron).
-**Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy, **re-armed 07:27 today after Gap-C
-self-heal** (job vanished silently between its last fire and this one — CronList returned "No
-scheduled jobs" despite this fire having just been triggered by it). Expires ~2026-09-15 (7-day
-auto-expiry) — watch for a proactive re-arm before then.
+**Updated**: 2026-09-08 ~23:50 PDT (Day genuinely closed)
+**Session log**: `dev/2026/09/08/2026-09-08-0528-docs-code-log.md` — `<!-- DAY-CLOSED: 2026-09-08 -->` present.
+**Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy, re-armed once today after a genuine
+Gap-C self-heal (07:27). Expires ~2026-09-15 (7-day auto-expiry) — watch for a proactive re-arm
+before then, and watch whether Gap-C recurs.
 
-Fire 3 was quiet on new work: 1 FYI (Arch's flywheel process update, confirms my Q2 memo received
-and correctly queued for synthesis) — triaged, nothing else unblocked.
+## Day closed clean — headline: full flywheel re-evaluation arc + a real publish, same day
 
-Fire 4 was quiet: empty inbox, everything synced/clean, nothing unblocked.
-
-Fire 5 was quiet: empty inbox, everything synced/clean, nothing unblocked.
-
-## Flywheel — synthesis landed, challenge round open through 09-09 EOD; watching, mostly done
-
-Arch's synthesis (`dev/active/flywheel-v3-synthesis-2026-09-08.md`) is up — 7 decisions, D3
-(Practice 3's rewrite) correctly flags my Q2 read as one of a genuine 3-way independent
-convergence. Sent one correction (D5's attribution overcredited me with an argument that was
-actually CIO's — caught by re-reading my own sent memo rather than trusting memory) — not a
-challenge to substance. Deliberately stayed out of the P5/D7-cadence and D4-evidence-family
-challenges; not my lane, no independent basis. **Watch, don't chase**: challenge round closes
-09-09 EOD, then v3 text goes to PM. No further action expected from Docs unless the final v3 asks
-for something specific (e.g. the "see also" pointer list I already have mapped, if requested).
-
-## Flywheel Q2 (superseded by the section above — kept for reference) — my independent read sent
-
-This morning: published "More Than Anyone Ever Reported to Me" (PM-initiated pre-cron ask),
-proofread clean, live-verified. Medium leg + calendar image-fields gap (flagged by Dispatch-PM,
-"first miss in four") fixed same-fire.
-
-**Q2 (joint with CIO, part of Arch-led flywheel re-evaluation)**: read all 52 methodology entries'
-full text against Layer 2's 5 practices, spot-verified the load-bearing claims directly, and sent
-an independent judgment to Arch cc CIO/Exec/HOST/PPM/CXO/PM before seeing any reply on the thread
-(genuinely independent, per Exec's ESSENCE-style ask). **My core finding**: not clean supersession
-— uneven. Practice 2 (testing) still stands alone. Practices 1/4 have real content-level updates
-in the corpus (m-50 changes what "documented" means, not just adds detail). **Practice 3 is the
-real casualty**: its own cited "authoritative reference" (m-02) is self-disclosed historical and
-was never actually elaborating Practice 3 even before going stale, the entries that do elaborate
-it sit uncited, and m-41 documents the practice's own "session logs" bullet silently broke for
-6/9 roles under automation — a near-failure Layer 2 has never been updated to reflect. Recommended
-Layer 2 become an explicit index (see-also pointers per practice), Practice 3 needing correction
-not just addition, Practice 2 left alone; flagged (not force-categorized) that ~21% of the corpus
-is meta-methodology the 3-layer model has no place for.
-
-**Watch, don't chase**: this is Arch-led, scoped work with a stated end (explicitly not a standing
-duty-cycle item per Exec's memo) — no further action from Docs unless Arch's synthesis asks for
-something specific. Full 52-entry mapping is in hand if requested.
-
-## Day closed clean — nothing outstanding
-
-The day's headline event: both Monday FLY-AUDIT issues (#1725 Weekly, #1724 Monthly Housekeeping)
-worked and CLOSED same-day for the first time this cycle — full checkbox-by-checkbox close-issue-
-properly treatment on both, 3 real findings filed (#1726/#1727/#1728), ~12 stale-path/format bugs
-fixed at the source in the audit-generating workflows themselves. One real mistake (`gh api -f
-body=@file` doesn't do curl-style expansion) caught and fixed immediately.
-
-Today's omnibus (`docs/omnibus-logs/2026-09-07-omnibus-log.md`, 292 lines, HIGH-COMPLEXITY:
-COORDINATION) covered a genuinely dense day cohort-wide: PM overruled PPM's 5-day FTUX-interview
-HOLD and it deployed same-evening with its own multi-role verification chain; the week-long CXO/
-CIO methodology corpus thread resolved with methodology-52 filed; #1386's gate scope got corrected
-twice in one day. Audited thoroughly given the line count sat below the 450-600 target — unlike
-yesterday's first draft, this pass surfaced zero errors on inspection (all 3 canonical methodology
-quotes verified character-accurate, my own day's section matched first-hand memory exactly), so
-accepted rather than forced a mechanical fourth compression pass. Omnibus (`aab75ec16`) and
-activity-log reconciliation (`c4c2df375`) both pushed.
+Published "More Than Anyone Ever Reported to Me" (PM-initiated pre-cron), self-healed a dead cron
+(Gap-C), fixed a real syndication-metadata gap. Sent an independent Q2 read for the PM-approved
+Excellence Flywheel re-evaluation — verified as one of the exercise's genuine three-way
+independent convergences (Practice 3's rewrite). Caught and corrected a real misattribution (D5)
+before it reached PM. Today's omnibus (`docs/omnibus-logs/2026-09-08-omnibus-log.md`, 483 lines,
+HIGH-COMPLEXITY:COORDINATION) covered the full same-day flywheel arc (kickoff → 5 independent
+reads → 7-decision synthesis → active challenge round → v3.0.1 amendments → a still-unresolved
+finding that the amendments landed only in a footer, not the enforcement table itself — audited
+and confirmed accurate by reading the primary file directly) plus a 6-role PM-test-round fix
+chain. Clean first-pass audit this time (unlike the prior two days, no second compression round
+needed). Omnibus (`85f4de376`) and activity-log reconciliation (`cd5c52b6a`) both pushed.
 
 **First action next fire (06:57 tomorrow)**: sync, mail loop (raw `ls`), omnibus currency check
-(should read 09-07 as "yesterday," correct), heartbeat step, otherwise genuinely open floor. Watch
-for Comms' "More Than Anyone Ever Reported to Me" post (PM's stated priority for tomorrow per
-today's omnibus) in case a publish-support ask comes through.
+(should read 09-08 as "yesterday," correct), heartbeat step. Watch for the flywheel challenge
+round closing (09-09 EOD) and whether the table-vs-footer finding gets resolved — not mine to fix,
+just worth checking if it lands in v3's final text before it goes to PM.
 
-## Both Monday audits (#1725, #1724) worked and CLOSED same-day — first time this cycle
-
-Both fired cleanly on schedule (no #1713 recurrence). Dispatched one thorough background agent
-per issue; personally audited both reports against real command output before touching either
-issue (verified paths, file staleness, all 3 new issue filings, both YAML diffs); did the full
-close-issue-properly treatment (checkbox-by-checkbox, Completion Matrix, closing comment,
-staggered-calendar update) rather than a comment-only close; closed both.
-
-**Real findings filed**: #1726 (structural — `last_verified` bulk-stamp re-diagnosed 5 audits
-running, zero fix — CIO's lane to pick up), #1727 (10 files, dead legacy-guide links), #1728
-(stale `mailboxes/DIRECTORY.md` row). **Real fixes shipped**: both audit-generating workflow
-YAMLs corrected at the source (12 combined path/format bugs, months-old, silently worked around
-until now), a 5-month-stale `requirements.txt.bak` and a dead stray workflow file removed, a live
-customer-facing beta-date overpromise fixed in `docs/README.md`, `BRIEFING-CURRENT-STATE.md`
-refreshed, `dev/active/` cut 70→42 (2 wrong moves caught and reverted before finalizing).
-
-**Standing lesson for future multi-agent dispatches**: the two background agents ran concurrently
-in this same shared worktree and could have collided (both self-managed it carefully this time,
-but I hadn't guarded against it) — use `isolation: "worktree"` next time if dispatching multiple
-agents whose file scopes could plausibly overlap in the same role's worktree.
-
-**One real mistake, caught immediately**: `gh api ... -f body=@file` does NOT do curl-style file
-expansion — it literally wrote the string as the issue body on the first #1725 update attempt.
-Caught by checking the API response, fixed with `gh issue edit --body-file` (the correct form),
-used correctly from the start on #1724.
-
-Next Due dates recorded: weekly Sep 14, monthly Oct 5.
-
-## #1713 (GH Actions no-fire defect) — still open, but today is a clean data point
-
-Confirmed directly (REST API) that both Monday workflows fired via `schedule` this time (run IDs
-34142935309, 34142667321, both `success`) — no recurrence of the 08-31 silent-no-fire incident.
-Asked the #1724 agent to add a brief factual comment to #1713 noting this (not closing it — whether
-the underlying question is resolved isn't Docs' call).
-
-Verified directly via `gh issue view`/`gh api` (not the stale cron CONSTANTS block, which keeps
-citing these as open): the PRIOR #1712 and #1486 are both CLOSED (09-02/09-03). B3 corpus-
-disposition also closed weeks ago. Nothing owed from any of those — today's #1725/#1724 are the
-current, live instances.
-
-## Yesterday (2026-09-06) closed clean — for reference
-
-All 6 fires drained. One real user-facing item: fixed the live blog's footer teaser after Comms
-flagged a retired duplicate post (`piper-morgan-website` commit `a5ae9e7`). Omnibus
-(`docs/omnibus-logs/2026-09-06-omnibus-log.md`, 430 lines, HIGH-COMPLEXITY:COORDINATION) went
-through a genuine two-pass audit — first draft under methodology-20's stated floor, sent back and
-caught two real content errors on the second pass. Omnibus (`bf7441167`) and activity-log
-reconciliation (`1725a3a7c`) both pushed. A new cohort-wide standing rule was noted (sub-25-API-
-call probes proceed without asking, Exec/PM-ratified) — low relevance to Docs but recorded.
-
-**First action next fire (06:57 tomorrow)**: sync, mail loop (raw `ls`, not the narrow grep),
-omnibus currency check (should read 09-06 as "yesterday," correct), heartbeat step, otherwise
-genuinely open floor.
-
-## No unblocked work outstanding right now
-
-Fire 2 drained the day's one real item: Comms flagged (direct-to-docs) that today's scheduled
-insight ("Patterns Naming Patterns") was retired same-morning as a duplicate of "This One's Taken"
-(PM caught it, commit `47cf4c3b3`), and the live blog's footer teaser on "We Built Onboarding in
-Our Own Image" still pointed at the retired title. Fixed `piper-morgan-website`'s
-`blog-content.json` (hashId `b0d5a5e718ef`), pushed (`a5ae9e7`), replied to Comms/cc PM. No
-Medium/LinkedIn edit path exists — flagged explicitly rather than silently dropped.
-
-Fire 3 was pure mail-loop + housekeeping: Comms' thanks + 4 more FYI-cc on the CXO/CIO/HOST
-methodology thread (m-51 filed, standing-item 7q closed via a new NO-SESSION-LOG detector) — none
-needed docs action, all triaged. MANIFESTs regenerated. Both genuine standing "Active items"
-(PreCompact hook locality differentiation; critical-docs YAML-frontmatter upgrade) reviewed and
-correctly left deferred — neither's named trigger has fired.
-
-Fire 4 was quiet: empty inbox, both worktrees synced, merge-keeper clean, nothing unblocked.
-
-Fire 5: 1 more FYI-cc on the methodology thread (triaged), plus a new cohort-wide standing rule
-worth remembering — **Exec, PM-ratified 2026-09-06: probes/experiments under ~25 API calls proceed
-without PM asking first; report the actual cost with the result.** Production data, live-user-in-
-the-loop, and never-used-before vendors stay asks regardless of size. Low relevance to Docs'
-typical work (mail/CSV/publish, not vendor-API probing) but noted here in case it ever applies —
-don't silently forget a cohort-wide norm just because it wasn't addressed to my lane specifically.
-
-**Cron CONSTANTS block is stale again this cycle** (still citing B3 Tier C, #1712, #1486 as owed —
-all closed weeks ago, unchanged across Fires 2/3/4 today). Keep verifying against this file rather
-than trusting the prompt, as its own text says to.
-
-**First action next fire**: sync, mail loop (raw `ls`, not the narrow grep), omnibus currency
-check, run the heartbeat step explicitly, otherwise genuinely open floor.
+**New cohort-wide standing rule (Exec, PM-ratified 2026-09-06, still in force)**: probes/
+experiments under ~25 API calls proceed without PM asking first; report the actual cost with the
+result. Production data, live-user-in-the-loop, and never-used-before vendors stay asks regardless
+of size. Low relevance to Docs' typical work but noted in case it ever applies.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
-- **`last_verified` bulk-stamp cluster**: 14/38 as of 09-03 — check again at next Monday audit
-  (09-07).
+- **`last_verified` bulk-stamp cluster**: 24/38 as of 09-07's audit (#1725) — unchanged from 09-03,
+  structural fix now filed as #1726 (CIO's lane) rather than re-escalated each audit. Check again
+  at the next Weekly Docs Audit (09-14).
+- **Flywheel re-evaluation v3** (Arch-led) — challenge round closes 09-09 EOD; a live finding as of
+  09-08 EOD is that v3.0.1's enforcement-column fixes landed only in an amendment footer, not the
+  actual table (CXO's catch, personally verified). Watch whether this lands in the final v3 text
+  before it reaches PM — not mine to fix, just worth checking.
 - **#1644** — roadmap.md full historical fold still owed (PPM's lane). Not mine to force.
 - **#1683** — 2 inverse-case calendar rows need real Medium verification, not guessing.
 - **#1392** — "Thirteen Mailboxes" double-hero-image question is PM's editorial call.
@@ -196,15 +74,27 @@ without PM present.**
 
 ## Day-of-week duty triggers — CHECK EVERY START
 
-- **Every Monday**: Weekly Docs Audit — next auto-generates 09-07 (also 1st Monday → Monthly
-  Housekeeping same day; watch for the #1713 GH-Actions scheduling defect on both).
-- **First Monday of month**: Monthly Housekeeping — just closed (#1486, 09-02); next due 09-07.
+- **Every Monday**: Weekly Docs Audit — #1725 closed same-day 09-07 (first time this cycle); next
+  due 09-14. #1713 (GH-Actions no-fire defect) confirmed clean on 09-07 — still open as a question,
+  watch for recurrence.
+- **First Monday of month**: Monthly Housekeeping — #1724 closed same-day 09-07; next due 10-05.
 - **First Tuesday**: Skill-Candidates Review — not mine (PM+Exec+CIO).
 
 (The omnibus is deliberately NOT on this list — it's a daily check, not a day-of-week trigger.)
 
 ## Standing practices (apply at every fire, not just START)
 
+- **A commit that includes a `git mv`-staged rename alongside separately-staged file
+  modifications can silently commit only the rename** — now observed twice (09-06's footer fix
+  publish, 09-09's Ship #059 publish), same shape both times: `git status` shows everything
+  staged immediately before the commit, but the commit only picks up the renamed file. Always
+  verify via `git status` *after* the commit, not just a clean exit code — fix is a simple
+  re-add + separate commit, cheap once caught, but easy to miss if not checking.
+- **A live-page 200 status can be a stale cached not-found fallback, not a real render** — hit
+  this on the Ship #059 publish: `x-vercel-cache: PRERENDER` served instantly with `title: "Ship
+  Not Found"` embedded. Always do an actual content check (title/image/body-text fragment) after
+  the 200, and if it fails, don't assume broken — compare response headers against a known-good
+  page of the same type first; this one resolved with more propagation time, not a fix.
 - **EVERY FIRE — run the heartbeat step explicitly and log it.**
   ```bash
   bash scripts/duty-cycle-heartbeat.sh docs {START|WATCH|WORK|STOP} --if-quiet
