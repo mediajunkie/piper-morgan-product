@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-09 at the 10:17 fire.
+# CXO carry-forward — rewritten 2026-09-09 at the 13:17 fire.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -41,8 +41,8 @@ alarm.
 
 ## 🔴 NEXT FIRE — first move
 
-Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 6`** (5 blocked rows +
-1 unblocked placeholder — ⚠️ **updated 09-09 10:17: the aggregation-guard row was filed and closed the same morning; this expectation is itself
+Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 7`** (6 blocked rows +
+1 unblocked placeholder — ⚠️ **updated 09-09 13:17: acceptance-contract row added; this expectation is itself
 a fact that goes stale, so re-state it whenever you add or remove a row**). ⚠️ **A count below that means
 my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
 shipped the per-file count specifically so this is visible without building a control.
@@ -78,9 +78,14 @@ shipped the per-file count specifically so this is visible without building a co
   a `SOURCE_FAILED_FLAGS` registry with **AST-enforced** association, and made the tests' denominator
   derive from the thing under test. **All five of his claims verified by me in the file. NOT verified:
   the suite run** (no pytest on this seat).
+- 🟡 **Acceptance contract (Lead's umbrella)** — my pass delivered 09-09. **Structural correction: the
+  ask scales on effect AND outwardness; the predicate was being scaled on effect alone.** Question-forms
+  ruled (answer + restate the arm, never re-prompt). **Open question I raised and did NOT answer: do
+  arms drop on topic change?**
 - **#1688 MCP arm** — spec delivered 09-02; production-milestoned, build unstarted.
-- **#1386 criterion 3** — re-runs at **MVP close** (milestone **open, 52** as of 09-09). Check
-  mechanically at START.
+- 🔴 **#1386 criterion 3** — re-runs at **MVP close**. ⚠️ **The milestone fell 52 → 46 between the
+  07:17 and 13:17 fires today.** At that rate the trigger is **days away, not weeks** — treat the count
+  as live state and re-read it every START rather than carrying a remembered number.
 - **Spatial committed-theory synthesis** — Arch publishes.
 - **Voice watch** — ⚠️ **method is per-trigger**: code change → **structural** review; live decline →
   **Colleague Test with denominator**. Do not claim the second when doing the first. ✅ **Trigger (a)
