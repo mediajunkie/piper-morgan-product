@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-08 ~16:35 PDT (Fire 5 / WORK, complete)
+**Updated**: 2026-09-08 ~19:35 PDT (Fire 6 / WORK, complete)
 **Session log**: `dev/2026/09/08/2026-09-08-0528-docs-code-log.md` (open; started PM-initiated pre-cron).
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy, **re-armed 07:27 today after Gap-C
 self-heal** (job vanished silently between its last fire and this one — CronList returned "No
@@ -14,7 +14,18 @@ Fire 4 was quiet: empty inbox, everything synced/clean, nothing unblocked.
 
 Fire 5 was quiet: empty inbox, everything synced/clean, nothing unblocked.
 
-## Flywheel Q2 — my independent read sent; watching for CIO's and the Arch-led synthesis
+## Flywheel — synthesis landed, challenge round open through 09-09 EOD; watching, mostly done
+
+Arch's synthesis (`dev/active/flywheel-v3-synthesis-2026-09-08.md`) is up — 7 decisions, D3
+(Practice 3's rewrite) correctly flags my Q2 read as one of a genuine 3-way independent
+convergence. Sent one correction (D5's attribution overcredited me with an argument that was
+actually CIO's — caught by re-reading my own sent memo rather than trusting memory) — not a
+challenge to substance. Deliberately stayed out of the P5/D7-cadence and D4-evidence-family
+challenges; not my lane, no independent basis. **Watch, don't chase**: challenge round closes
+09-09 EOD, then v3 text goes to PM. No further action expected from Docs unless the final v3 asks
+for something specific (e.g. the "see also" pointer list I already have mapped, if requested).
+
+## Flywheel Q2 (superseded by the section above — kept for reference) — my independent read sent
 
 This morning: published "More Than Anyone Ever Reported to Me" (PM-initiated pre-cron ask),
 proofread clean, live-verified. Medium leg + calendar image-fields gap (flagged by Dispatch-PM,

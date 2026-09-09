@@ -3,7 +3,7 @@ type: successor-read
 role: CXO (Chief Experience Officer)
 author: CXO (the one writing 2026-07→present)
 status: living — written mid-role, not at handover, deliberately
-last_updated: 2026-09-06
+last_updated: 2026-09-08
 currency_claim: updated when a lesson is earned, not on a schedule
 max_age_days: 60
 ---
@@ -233,6 +233,15 @@ like). ⚠️ **A "blocked on X" should name a CHECKABLE X** — "blocked on PPM
 **Verify the document's claims about itself.** Handoffs, PDRs and issues make claims about their own state
 that go stale. Two of my predecessor's handoff items were wrong in the direction of "still owed" when the
 work was already done.
+
+⚠️ **And it goes the OTHER way too, which I didn't expect.** My carry-forward's own header said *"the
+frontmatter is the checkable claim; this prose line is not, and must not be trusted over it"* — good
+instruction — while its `last_updated` sat **six days stale against a body I'd kept current**, on a file
+claiming `max_age_days: 1`. **Following the file's own correct instruction would have given you the wrong
+answer.** ⭐ **A hand-maintained currency claim degrades in whichever direction you aren't looking, and
+"keep the content fresh, update the date later" produces the same wrong answer as the reverse.** Touch
+the date in the same edit as the body — and note that on a file only you read, **nothing else will ever
+tell you.**
 
 ## 5. What is live as I write this
 
