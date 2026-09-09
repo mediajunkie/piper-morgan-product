@@ -8,7 +8,23 @@ the user's question.
 Design principles:
 1. Declarative — returns structured data (facts, lists), not formatted text
 2. Fail-graceful — partial results on failure, never throws
-3. Cache-ready — design for Redis TTL caching later (not implemented yet)
+3. Cached — Redis TTL caching via ContextCache (#984, PM-approved TTLs
+   2026-05-12; fail-open: any Redis error → cache miss → compute from source)
+
+Stable vs dynamic (973 audit, 2026-09-09) — the stable/dynamic split the
+original design deferred is realized as per-source TTLs rather than a binary:
+- STABLE (cached, longer TTL): trust (1h); projects, user_context,
+  completed_todos, blocked_items, active_milestones, recent_activity,
+  high_priority_issues (5min)
+- SEMI-STABLE (cached, short TTL): calendar (60s — only external API call);
+  pending_todos, reminders (30s, eager-invalidated on todo CRUD)
+- DYNAMIC (per-request/per-session, deliberately uncached): current_time,
+  identity/discovery (pure ledger read + live integration status +
+  in-memory session state), conversation memory, insight pull, the
+  per-session reminder mention gate (#1625), the ftux bound answer (#1688)
+Assembly order is category dispatch + cross-cutting riders; ordering has no
+caching consequence because caching is per-source inside get_or_compute,
+not prompt-prefix-based.
 """
 
 from datetime import datetime, timedelta, timezone
@@ -502,6 +518,10 @@ class ContextAssembler:
         consistently — "generic response that could apply to any user" —
         because the gatherer only provided global capability + integration info.
         User-anchoring: projects, recent conversation topics. Fail-graceful.
+
+        973: DYNAMIC (uncached). Capabilities are a pure in-process ledger
+        read (nothing to cache); integration status should reflect a just-
+        configured connector immediately; the rest is in-memory session state.
         """
         context: Dict[str, Any] = {}
 
@@ -576,6 +596,7 @@ class ContextAssembler:
         Gather available capabilities list for DISCOVERY intents.
 
         Same data as identity context — capabilities and integrations.
+        973: DYNAMIC (uncached) — delegates to _gather_identity_context.
         """
         return await self._gather_identity_context(user_id)
 
@@ -643,6 +664,8 @@ class ContextAssembler:
         Gather conversation history summary for MEMORY intents.
 
         Reads from in-memory conversation context and UserHistoryService.
+        973: DYNAMIC (uncached) — per-session conversational state; caching
+        would serve one turn's history to a later turn.
         """
         context: Dict[str, Any] = {}
 
@@ -719,6 +742,11 @@ class ContextAssembler:
         Empty dict signals to the floor that no insights are available,
         which lets it respond with the honest "nothing learned yet" framing
         the AC requires (vs. fabricating or deflecting).
+
+        973: DYNAMIC (uncached). An explicit "what have you learned?" pull
+        should read the repository fresh — a just-composted insight must be
+        visible immediately, and the query is rare enough that caching buys
+        nothing.
         """
         context: Dict[str, Any] = {}
 

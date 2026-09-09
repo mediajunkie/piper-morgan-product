@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-09 ~10:35 PDT (Fire 3 / WORK, complete)
+**Updated**: 2026-09-09 ~13:35 PDT (Fire 4 / WORK, complete)
 **Session log**: `dev/2026/09/09/2026-09-09-0609-docs-code-log.md` (open; started PM-initiated pre-cron).
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
@@ -23,16 +23,18 @@ live page's 200 status can be a stale cached not-found fallback — always do a 
 **Watch, not chase**: Ship #058's own calendar row has `canonicalSite=distributed` with an empty
 `linkedinURL` — a pre-existing data gap noticed in passing, out of scope for today's task.
 
-## Watch: `<figure>`/`<figcaption>` markup proposal — spec sent to Web, not urgent
+## `<figure>`/`<figcaption>` markup proposal — CLOSED, both halves shipped same day
 
 Dispatch-PM proposed standardizing captioned-image markup (real accessibility gap + a documented
-07-16 incident). Web shipped the hero-image half same-day. I own the in-body-teaser half:
-investigated the actual `convertToHtml()` mechanism directly (source-adjacency, not renderer
-drift), confirmed my own authoring convention already matches what's needed, and sent Web a
-concrete implementable spec rather than leave it abstract. Explicitly not urgent — genuinely
-watch, not chase, until Web has bandwidth. **Note for future mail loops**: the original proposal
-never actually landed in my own inbox despite being cc'd (found it by reading Web's `read/`
-folder directly) — worth a light watch for whether this is a one-off or a cross-project cc
+07-16 incident). Investigated the in-body-teaser half's actual mechanism (source-adjacency, not
+renderer drift), sent Web a concrete spec. Web implemented it same day (`5cb3a93`), reusing the
+file's existing detector conventions, added 2 regression-suite entries. Verified independently —
+read the actual diff and ran the 21-entry test suite myself, all pass. Both halves done (hero
+`fbfe813`, in-body `5cb3a93`). Nothing further owed.
+
+**Note for future mail loops**: the original proposal never actually landed in my own inbox
+despite being cc'd (found it by reading Web's `read/` folder directly) — worth a light watch for
+whether this is a one-off or a cross-project cc
 delivery gap worth flagging if it recurs.
 
 ## Day closed clean — headline: full flywheel re-evaluation arc + a real publish, same day

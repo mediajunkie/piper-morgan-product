@@ -4,8 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-09 ~12:50 PT | lead | propose-lead-to-arch-cxo-cc-exec-ppm-pm-one-acceptance-contract-the-convergence-answered-2026-09-09.md | Proposing the ONE acceptance contract Exec's convergence calls for — filed as a… |
 | 2026-09-09 ~10:30 PT | lead | closed-lead-to-cxo-cc-arch-ppm-exec-pm-your-gap-is-structurally-unrecreatable-now-2026-09-09.md | Your twice-enumerated gap: closed the way it deserved — single registry, AST-en… |
 | 2026-09-09 ~07:00 PT | lead | round-lead-to-arch-cc-all-pm-engineering-lane-concur-d4-with-a-usage-datapoint-2026-09-09.md | Round response (engineering lane): CONCUR on D4's concession with a usage datap… |
+| 2026-09-09 (Wednesday ~11:45 PT) | exec | results-exec-to-lead-cc-cxo-arch-ppm-pm-round-second-half-6-closed-and-the-failures-converge-on-one-contract-2026-09-09.md | PM's round, second half: 6 CLOSED, and the failures converge on ONE contract —… |
+| 2026-09-09 | arch | ruling-arch-to-lead-cxo-cc-exec-ppm-pm-predicate-shape-right-three-sequencing-conditions-and-a-ratchet-2026-09-09.md | Acceptance-contract ruling: predicate-as-single-source is RIGHT (it's the noun… |
 | 2026-09-08 ~17:00 PT | lead | verdict-lead-to-cxo-cc-ppm-exec-pm-third-line-is-FALSE-as-worded-copy-call-yours-2026-09-08.md | Third-line verdict: FALSE as worded — the store it promises to tune has no writ… |
 | 2026-09-08 (Tuesday) | ppm | ack-ppm-to-cio-cc-exec-arch-lead-host-cxo-web-pm-amendment-landed-1688-render-confirmed-2026-09-08.md | Both closed out from my side: the intake amendment shipped cleanly on what I ha… |
 | 2026-09-08 (Tuesday) | ppm | challenge-round-ppm-to-arch-cc-all-pm-d6-confirmed-one-cross-reference-note-on-d7-2026-09-08.md | Challenge-round pass: D6 accurately reflects Q1, no objection to D1-D5/D7. One… |

@@ -52,6 +52,38 @@ _SKIP_SIGNAL_PHRASES = (
 )
 
 
+# --- #1739: the REFINING seam's armed asks + taught acceptance vocabulary ---
+
+# The rendered asks this flow arms REFINING with (deterministic per state —
+# stored into conversation.context["refining_ask"] at each arm site, with
+# the default below as what the user saw when the stored copy didn't cross
+# a persistence boundary). Input adequacy per Arch condition (a) on #1739.
+_REFINING_DEFAULT_ASK = "Would you like to make any changes?"
+_REFINING_ANYTHING_ELSE_ASK = "Anything else?"
+_REFINING_FALLBACK_ASK = "You can customize it to fit your day."
+
+# Taught closing phrases for the REFINING seam — the flow's own suggestion
+# chips plus the short closing forms the old word-list accepted. FULL-MESSAGE
+# matches only (the predicate's taught_accepts contract): "thanks" completes;
+# "thanks for the notes, also add X" refines. Generic bare affirmatives
+# ("yes", "ok", "sounds good") come from the predicate's shared vocabulary.
+_REFINING_TAUGHT_ACCEPTS = frozenset(
+    {
+        "good",
+        "done",
+        "all done",
+        "looks good",
+        "looks great",
+        "perfect",
+        "fine",
+        "great",
+        "thanks",
+        "thank you",
+        "that's it",
+    }
+)
+
+
 def _is_skip_signal(message: str) -> bool:
     """True if the user message reads as a skip/empty signal for the current part."""
     text = message.strip().lower()
@@ -497,10 +529,11 @@ class StandupConversationHandler:
         # But handle it by showing current standup
         if conversation.current_standup:
             await self.manager.transition_state(conversation.id, StandupConversationState.REFINING)
+            conversation.context["refining_ask"] = _REFINING_DEFAULT_ASK  # #1739 arm site
             return ConversationResponse(
                 message=(
                     f"Here's your standup:\n\n{conversation.current_standup}\n\n"
-                    "Would you like to make any changes?"
+                    f"{_REFINING_DEFAULT_ASK}"
                 ),
                 state=StandupConversationState.REFINING,
                 standup_content=conversation.current_standup,
@@ -515,22 +548,73 @@ class StandupConversationHandler:
         user_message: str,
         context: Dict[str, Any],
     ) -> ConversationResponse:
-        """Handle REFINING state - user providing feedback."""
+        """Handle REFINING state - user providing feedback.
+
+        #1739 (adopted seam, READ tier): acceptance goes through THE
+        acceptance predicate (``acceptance.evaluate_acceptance``) instead of
+        the old substring word-list — which is the exact mechanism that
+        fired PM's live 2026-09-09 turn *"are we done with that standup?"*
+        as an acceptance (the word "done" appeared INSIDE a question).
+        Under the contract:
+
+        - a question-form is a STATE QUERY — it gets an honest status answer
+          and the flow stays in REFINING with the ask restated (the arm
+          survives; it is never consumed and never silently dropped);
+        - taught closing phrases ("looks good", "done", "perfect", "thanks"
+          — the suggestion chips this flow itself renders) accept as
+          FULL-MESSAGE matches only, so an aside that merely CONTAINS one
+          ("thanks for the notes, also add the demo") refines instead of
+          completing;
+        - tier: READ — the acceptance finalizes an already-rendered draft;
+          nothing durable outside the conversation changes (EffectClass.READ's
+          own boundary), and the flow's session-internal state transition is
+          recoverable by starting a fresh standup.
+
+        Input adequacy (Arch condition (a)): every site that arms this seam
+        stores its rendered ask in ``conversation.context["refining_ask"]``;
+        the ask is also deterministic per state, so ``_REFINING_DEFAULT_ASK``
+        is what the user saw whenever the stored copy didn't survive a
+        persistence boundary.
+        """
+        from services.intent_service.acceptance import (
+            AcceptanceVerdict,
+            evaluate_acceptance,
+        )
+        from services.shared_types import EffectClass, Outwardness
+
         message_lower = user_message.lower()
 
-        # Check for acceptance
-        acceptance_words = [
-            "good",
-            "done",
-            "looks good",
-            "perfect",
-            "yes",
-            "ok",
-            "fine",
-            "great",
-            "thanks",
-        ]
-        if any(word in message_lower for word in acceptance_words):
+        armed_ask = conversation.context.get("refining_ask") or _REFINING_DEFAULT_ASK
+        verdict = evaluate_acceptance(
+            user_message,
+            effect=EffectClass.READ,
+            outwardness=Outwardness.PRIVATE,
+            armed_question=armed_ask,
+            taught_accepts=_REFINING_TAUGHT_ACCEPTS,
+        )
+
+        if verdict is AcceptanceVerdict.STATE_QUESTION:
+            # #1739 pin (PM live 2026-09-09): "are we done with that
+            # standup?" → an honest status answer, NEVER a fire. The flow
+            # stays in REFINING; the armed ask is restated in one clause
+            # (CXO: answer the question truthfully from state, then restate
+            # the armed offer — the arm survives).
+            # ⚠️ COPY SEAM: Lead-drafted mechanism copy; CXO owns the voice
+            # of this surface — adjust wording here, not at call sites.
+            draft = conversation.current_standup or "(no draft yet)"
+            return ConversationResponse(
+                message=(
+                    f"Not quite — your standup's drafted and waiting on your "
+                    f"go-ahead:\n\n{draft}\n\n"
+                    "Say 'looks good' to finalize it, or tell me what to change."
+                ),
+                state=StandupConversationState.REFINING,
+                standup_content=conversation.current_standup,
+                requires_input=True,
+                suggestions=["Looks good", "Add a blocker", "Start over"],
+            )
+
+        if verdict is AcceptanceVerdict.ACCEPT:
             # #1617 (PM live 2026-08-13): the final confirmation COMPLETES the
             # flow — no FINALIZING tail turn. The old tail ('share this or
             # save your preferences?') claimed every subsequent turn and its
@@ -557,8 +641,12 @@ class StandupConversationHandler:
             )
             return await self._generate_standup(conversation, context)
 
-        # Handle refinement request
+        # Handle refinement request. DECLINE falls through here deliberately:
+        # this seam's asks are inverted-polarity ("any changes?"), so a "no"
+        # is NOT a decline of the standup — polarity handling is CXO-owned
+        # copy/interaction design, tracked on #1739; behavior unchanged.
         refined = await self._apply_refinement(conversation, user_message)
+        conversation.context["refining_ask"] = _REFINING_ANYTHING_ELSE_ASK
         return ConversationResponse(
             message=f"I've updated your standup:\n\n{refined}\n\nAnything else?",
             state=StandupConversationState.REFINING,
@@ -634,11 +722,11 @@ class StandupConversationHandler:
 
             await self.manager.set_standup_content(conversation.id, standup_content)
             await self.manager.transition_state(conversation.id, StandupConversationState.REFINING)
+            conversation.context["refining_ask"] = _REFINING_DEFAULT_ASK  # #1739 arm site
 
             return ConversationResponse(
                 message=(
-                    f"Here's your standup:\n\n{standup_content}\n\n"
-                    "Would you like to make any changes?"
+                    f"Here's your standup:\n\n{standup_content}\n\n" f"{_REFINING_DEFAULT_ASK}"
                 ),
                 state=StandupConversationState.REFINING,
                 standup_content=standup_content,
@@ -870,11 +958,11 @@ class StandupConversationHandler:
         basic = self._generate_basic_standup({})
         await self.manager.set_standup_content(conversation.id, basic)
         await self.manager.transition_state(conversation.id, StandupConversationState.REFINING)
+        conversation.context["refining_ask"] = _REFINING_FALLBACK_ASK  # #1739 arm site
 
         return ConversationResponse(
             message=(
-                f"Here's a basic standup template:\n\n{basic}\n\n"
-                "You can customize it to fit your day."
+                f"Here's a basic standup template:\n\n{basic}\n\n" f"{_REFINING_FALLBACK_ASK}"
             ),
             state=StandupConversationState.REFINING,
             standup_content=basic,
