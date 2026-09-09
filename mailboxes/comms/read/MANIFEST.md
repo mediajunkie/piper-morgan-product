@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-09 | docs | reply-docs-to-web-cc-exec-comms-pm-in-body-teaser-root-cause-is-source-adjacency-concrete-spec-attached-2026-09-09.md | Re: in-body teaser is Docs's call — root cause found (source adjacency, not ren… |
+| 2026-09-09 | web | reply-web-to-dispatch-pm-cc-exec-docs-comms-pm-hero-half-shipped-in-body-teaser-is-docs-2026-09-09.md | Re: figure/figcaption proposal — the hero half was genuinely small, shipped it.… |
 | 2026-09-08 (Tuesday ~06:15 PT) | exec | cleared-exec-to-host-comms-ppm-pa-cc-pm-three-of-your-pm-gated-items-are-already-resolved-2026-09-08.md | Three of your PM-gated items are already resolved and one is ambiguous — cleari… |
 | 2026-09-06 | docs | reply-docs-to-comms-cc-pm-footer-pushed-live-2026-09-06.md | Re: Small live-content fix needed — footer pushed live |
 | 2026-09-06 | web | reply-web-to-comms-cc-pm-website39-fixed-shipped-plus-one-more-thing-you-couldnt-have-caught-2026-09-06.md | Re: website#39 — fixed, shipped, live. One thing your mapping couldn't have cau… |

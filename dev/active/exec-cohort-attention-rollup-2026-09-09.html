@@ -1,0 +1,118 @@
+<title>MVP status &amp; the drawdown question — 9 September</title>
+<style>
+  :root{
+    --paper:#f4f4f2; --card:#fff; --ink:#1b1a17; --mute:#66635c; --line:#dcdad4;
+    --red:#9d3427; --amber:#8a6516; --green:#2f6440; --blue:#2a5578; --soft:#ecebe6;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#131311; --card:#1c1c19; --ink:#e8e6e0; --mute:#9a968d; --line:#2e2d28;
+           --red:#e08a7a; --amber:#d7a94f; --green:#82c093; --blue:#8bb4d8; --soft:#232320; }
+  }
+  :root[data-theme="dark"]{ --paper:#131311; --card:#1c1c19; --ink:#e8e6e0; --mute:#9a968d; --line:#2e2d28;
+    --red:#e08a7a; --amber:#d7a94f; --green:#82c093; --blue:#8bb4d8; --soft:#232320; }
+  :root[data-theme="light"]{ --paper:#f4f4f2; --card:#fff; --ink:#1b1a17; --mute:#66635c; --line:#dcdad4;
+    --red:#9d3427; --amber:#8a6516; --green:#2f6440; --blue:#2a5578; --soft:#ecebe6; }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:47rem;margin:0 auto;padding:1.6rem 1.1rem 4rem}
+  h1{font-size:1.5rem;margin:0 0 .3rem;letter-spacing:-.015em}
+  .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.5rem}
+  h2{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);
+     font-weight:600;margin:2rem 0 .7rem;padding-bottom:.35rem;border-bottom:1px solid var(--line)}
+  h2:first-of-type{margin-top:1rem}
+  .item{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--mute);
+    border-radius:7px;padding:.85rem .95rem;margin:0 0 .7rem}
+  .item.dec{border-left-color:var(--red)} .item.drift{border-left-color:var(--amber)}
+  .item.ok{border-left-color:var(--green)} .item.res{border-left-color:var(--blue)}
+  .who{font-weight:600;font-size:.83rem}
+  .item p{margin:.4rem 0 0;font-size:.94rem}
+  .item p.sub{color:var(--mute);font-size:.88rem}
+  .big{font-size:1.02rem;color:var(--green);font-weight:500;margin:0}
+  .nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(7rem,1fr));gap:.6rem;margin:.3rem 0 0}
+  .n{background:var(--soft);border-radius:7px;padding:.6rem .7rem}
+  .n b{display:block;font-size:1.5rem;line-height:1.1;font-variant-numeric:tabular-nums}
+  .n span{font-size:.74rem;color:var(--mute);letter-spacing:.03em}
+  table{width:100%;border-collapse:collapse;margin:.4rem 0 0;font-size:.88rem;display:block;overflow-x:auto}
+  th,td{text-align:left;padding:.4rem .55rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  td.c{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--mute)}
+  footer{margin-top:2.2rem;border-top:1px solid var(--line);padding-top:1rem;color:var(--mute);font-size:.82rem}
+  footer b{color:var(--ink)}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">MVP milestone status and the finding that the backlog-drawdown directive has never actually fired.</h2>
+
+<h1>MVP status, and why the drawdown directive hasn't fired</h1>
+<p class="meta">Compiled by Exec · <b>Wednesday 9 September, 12:00 PT</b> · live-verified against the project board, <code>sprint-truth</code>, Lead's session logs and the deployed app</p>
+
+<h2>MVP milestone — where it actually stands</h2>
+<div class="item ok">
+  <div class="nums">
+    <div class="n"><b>46</b><span>NOT DONE</span></div>
+    <div class="n"><b>34</b><span>NEVER STARTED</span></div>
+    <div class="n"><b>9</b><span>IN REVIEW (yours)</span></div>
+    <div class="n"><b>1,126</b><span>DONE</span></div>
+    <div class="n"><b>51</b><span>DAYS TO 30 OCT</span></div>
+  </div>
+  <p class="sub" style="margin-top:.7rem"><b>Movement since yesterday:</b> In Review 15 → <b>9</b> — you closed six this morning. Done 1,120 → 1,126. <b>Sprint Backlog 28 → 34</b>, and 3 items sit outside every gate count with no milestone.</p>
+  <p class="sub">⚠️ <b>The backlog grew by six while you were closing six.</b> Not regression — new filings, several of them mine off your own round (#1736, #1737, #1738). But it means <b>your testing throughput is currently being matched by our filing rate</b>, and the never-started number hasn't moved down all week.</p>
+</div>
+
+<h2>🔴 Your question: is Lead drawing down the backlog when mail drains?</h2>
+<div class="item dec">
+  <span class="who">The honest answer: the directive has never had an idle fire to act on.</span>
+  <p><b>Lead adopted it explicitly</b> — their 09-08 log: <em>"EXEC DIRECTIVES adopted: idle-is-not-terminal (quiet fires pull from Sprint Backlog) + keep-a-build-item-running."</em></p>
+  <p>Then, in the same entry: <em><b>"The two failures ARE the build item today."</b></em></p>
+  <p class="sub">That's defensible — #1527 and #1654 are genuine Sprint Backlog items and Lead root-caused, fixed and staged both. <b>But they arrived from your round, not from a pull.</b></p>
+</div>
+<div class="item dec">
+  <span class="who">What the board says, which is the check that matters</span>
+  <table>
+    <tr><th>Signal</th><th>Reading</th></tr>
+    <tr><td>MVP items <b>In Progress</b></td><td>3 — #1386, #1595, #1723. <b>All last updated 07 Sep</b>, before the directive.</td></tr>
+    <tr><td>Items claimed from Sprint Backlog since 08 Sep</td><td class="c"><b>0</b></td></tr>
+    <tr><td>Lead's lanes since the directive</td><td>#1730 copy · third-line verdict · CXO's cut · CXO's registry gap · round response — <b>every one inbound from someone else</b></td></tr>
+  </table>
+</div>
+<div class="item dec">
+  <span class="who">⭐ So it isn't non-compliance. It's that the precondition never occurred.</span>
+  <p>The step fires <b>when mail is drained and standing items are blocked.</b> Since the directive landed, <b>Lead has not had a quiet fire</b> — ten other agents plus your round have kept inbound work arriving faster than it clears.</p>
+  <p><b>This is exactly the state I challenged in the flywheel table yesterday, and the same words apply: <em>Present — not yet observed firing.</em></b> Arch adopted that language for row 3 this morning. It describes our own directive equally well.</p>
+</div>
+
+<h2>🟡 The fresh insight, and it changes what the fix has to be</h2>
+<div class="item drift">
+  <p><b>A pull that waits for idle cannot drain a backlog in a cohort this active.</b> Lead is the only builder among eleven roles, so Lead is also the busiest recipient. <b>The conditions under which the intake step runs are the conditions Lead least often reaches.</b></p>
+  <p class="sub">The mechanism isn't wrong — it's <em>subordinate</em>. Everything inbound outranks it by construction, and inbound is generated by ten colleagues who are all working well.</p>
+  <p><b>What would actually change the number:</b> the backlog item competes with inbound rather than waiting for its absence — e.g. one claimed item held open <em>across</em> fires, advanced whenever a fire has room, rather than started only when a fire has nothing else. <b>That is a different rule from the one you approved</b>, and it's Arch's and CIO's to design, not mine to assert.</p>
+  <p class="sub">⚠️ Stated as a hypothesis: I have one day of evidence and a directive that has not yet been exercised. <b>It may simply need a quiet day to prove itself.</b> The falsifiable test is cheap — <b>watch for the first quiet Lead fire and see whether an item gets claimed.</b> If one happens and nothing is claimed, the rule is wrong. If no quiet fire happens all week, the rule is unreachable, which is the same problem by a different route.</p>
+</div>
+
+<h2>✅ Your round — six closed, and the failures converged</h2>
+<div class="item res">
+  <p><b>Closed:</b> #1649 · #1571 · #1543 · #1648 · #1542 · #1492. #1648 closed by reading the GitHub artifact, not the chat claim.</p>
+  <p><b>⭐ The three failures are one contract, failing in opposite directions in a single session:</b> #1617 fired a state change on <em>"are we done with that standup?"</em> — a question with no affirmative token — while #1694 did nothing with a bare <em>"yes"</em> and asked you to retype the command. <b>A mechanism that accepts a question and rejects a yes has no arming contract, not a threshold problem.</b> Routed as one question per your don't-whack-a-mole framing.</p>
+  <p><b>#1738 is the one I'd put in front of Arch:</b> Piper truncated a six-item list to five, then said <em>"the list I got back only showed five names clearly"</em> — describing its own render as an upstream result. <b>It reasons over its rendered text, not the data.</b> Third member of a family with #1570 and #1736.</p>
+</div>
+
+<h2>🟢 Everything else, briefly</h2>
+<div class="item ok">
+  <table>
+    <tr><th>Workstream</th><th>State</th></tr>
+    <tr><td><b>Ship #059</b></td><td>Live and distributed — canonical 308→200 and hero image both verified</td></tr>
+    <tr><td><b>Flywheel v3</b></td><td>Challenge round closes EOD; v3.0.2 put the corrected labels in the table after CXO caught v3.0.1 recording them only in a note</td></tr>
+    <tr><td><b>Noun audit</b></td><td>Delivered — 6 cousins, 435-issue denominator, three of them <em>half</em>-modeled</td></tr>
+    <tr><td><b>#1734 [SECURITY]</b></td><td>Personality API PUT-rewrites the GLOBAL config — <b>still unacknowledged by you</b></td></tr>
+    <tr><td><b>Q5</b></td><td>Still open — is idle a legitimate terminal state generally, or build-roles only? <b>Today's finding makes this less academic than it looked.</b></td></tr>
+  </table>
+</div>
+
+<footer>
+  <b>Bottom line:</b> you closed six and the backlog grew six; the drawdown directive was adopted, is defensible, and <b>has not yet had a quiet fire to run in</b>. Watch for the first one — that's the falsifiable test.<br><br>
+  <b>Live-state pass.</b> Liveness first — <code>duty-cycle-freeze-check</code> rc=0 across <b>11 of 11</b> rows. Sprint figures from <code>sprint-truth.py</code> run at compile time. The drawdown finding rests on the project board's In Progress column and Lead's own session-log entries, <b>not</b> on Lead's self-report of adoption — which was accurate, and would not have revealed this.
+</footer>
+</div>
