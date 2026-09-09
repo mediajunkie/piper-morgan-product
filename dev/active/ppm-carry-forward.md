@@ -1,10 +1,11 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-09 07:22 PT (START). **#1688 and its third-line offshoot are both
-FULLY CLOSED.** **Flywheel v3 in its challenge-round tail — watching passively, Arch's/CIO's
-domain.** **#1731 reopened, scoped to PPM's own reconcile-sequencing hypothesis — declined to
-claim the repro myself, watching for CIO/Lead.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-09 13:22 PT (WORK). **#1688 and its third-line offshoot are both
+FULLY CLOSED.** **#1731: CIO attempted the repro, couldn't reproduce in ~20 min, left it honestly
+unconfirmed rather than false-close — genuinely open, nobody chasing it further right now.** **A
+real acceptance-contract convergence landed today (#1617/#1631/#1650/#1694 → one predicate),
+fully owned by Lead/Arch/CXO/Exec — watching, not participating.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -12,6 +13,21 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ #1736-#1739 TRIAGED — PM's live round, one acceptance-contract umbrella (2026-09-09 13:22)
+Found via unmilestoned drift (0→4). PM's round produced a real convergence: three failures
+(#1617 fired on a question, #1694 rejected a bare `yes`, #1631/#1650 fired on prose) are one
+acceptance predicate failing in opposite directions, not four seam bugs — matches PM's own
+framing ("capturing patterns, not whack-a-mole"). Lead filed the umbrella (`#1739`), Arch ruled
+predicate-as-single-source is right (ties to Monday's noun-audit + ESSENCE commitment 5) with
+three sequencing conditions (input-adequacy before destructive adoption, EffectClass-ascending
+rollout, a shrink-only ratchet so it's a chokepoint not a convention), CXO added the user-facing
+half (question-forms get an honest status answer, never a re-ask; a real structural catch —
+strictness should scale on BOTH ratified axes, effect AND outwardness, not effect alone, since
+`decide_consent` already takes both). **All fully owned by Lead/Arch/CXO/Exec — no PPM ruling
+needed**, read for context only. Also triaged `#1736` (fabricated "no description"), `#1737`
+(composer UI), `#1738` (Piper reasoning over its own truncated render as if it were the data) —
+all MVP/Beta Blockers, matching this week's live-round precedent, no collateral damage.
 
 ## 🟡 #1731 REOPENED — CIO scoped it to my hypothesis, deliberately not claiming the repro myself (2026-09-09 07:22)
 CIO agreed my case is genuinely distinct, reopened `#1731` retitled to the reconcile-sequencing
