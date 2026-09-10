@@ -74,6 +74,7 @@ jobs:
             echo "to: ppm"
             echo "subject: \"Scope-drift flag(s) from push scan — advisory; verify before acting, the predicate is in its measured period\""
             echo "date: ${STAMP}"
+            echo "verdict: UNSET"
             echo "---"
             echo ""
             echo "Automated flag — machine-written at invocation (m-50-conformant by construction)."
@@ -84,17 +85,31 @@ jobs:
             echo ""
             echo "Denominator: ${DENOM}"
             echo ""
-            echo "Advisory period: count this flag's verdict (true/false positive) in your drain"
-            echo "notes — promotion to a required check rides the measured rate, not an assumption."
+            echo "Advisory period: set the \`verdict:\` line above to \`true-positive\` or"
+            echo "\`false-positive\` when you drain this — promotion to a required check reads the"
+            echo "rate from these headers (\`grep -h '^verdict:' mailboxes/ppm/{inbox,read}/flag-scope-guard-*.md"
+            echo "| sort | uniq -c\`), not a hand-kept tally. An UNSET verdict after drain just means"
+            echo "the count is honestly incomplete, not zero."
           } > "$MEMO"
           git config user.name "scope-guard[bot]"
           git config user.email "scope-guard@users.noreply.github.com"
           git add "$MEMO"
           git commit -m "flag(scope-guard): drift detected — memo to ppm inbox [skip ci]"
+          PUSHED=0
           for i in 1 2 3; do
-            git push origin HEAD:main && break
-            git fetch origin main && git rebase origin/main && continue
+            if git push origin HEAD:main; then PUSHED=1; break; fi
+            git fetch origin main && git rebase origin/main
           done
+          # 2026-09-10 synthetic test finding: GITHUB_TOKEN cannot push to protected main
+          # (GH006) and the original loop swallowed that — the run read SUCCESS with no memo
+          # delivered, a false clear from the mechanism built to prevent false clears. A failed
+          # delivery must fail the run. The bypass grant (bot on the protection allowlist, or a
+          # scoped PAT secret) is a repo-settings decision routed to PM; until it lands, this
+          # step failing loudly IS the correct behavior.
+          if [ "$PUSHED" != "1" ]; then
+            echo "::error::flag memo could NOT be delivered (push to protected main failed — GH006?). The flag exists in this run's log only. Do not treat this run as delivered."
+            exit 1
+          fi
       - name: Quiet-run record (m-44 — silence must be distinguishable)
         if: steps.detect.outputs.flags == ''
         run: echo "No flags. ${{ steps.detect.outputs.denom }} — a measured zero, not an unmeasured one."

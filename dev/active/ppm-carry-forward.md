@@ -1,12 +1,13 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-10 10:22 PT (WORK). **Epic order is live-tracking real progress** —
-3 closures marked (`#1637`/`#1732`/`#1734`), 2 new findings folded in. **New issues default to
-Product Backlog until triaged into the order.** **Scope-guard: CIO brings the detection predicate
-+ flag format at their own START today; PPM is the named consumer, no action until it ships.**
-**Flywheel v3 at PM's ratification step — watching, not participating.** **#1688 fully closed.
-#1731 genuinely open, unconfirmed, not urgent.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-10 13:22 PT (WORK). **Scope-guard is built and dispatch-tested**
+(verdict-slot fix shipped, false-positive rate reads from memo headers not a hand-kept tally) —
+**not armed yet, waits for `#1687`.** **Epic order live-tracking real progress** — 3 closures
+marked, 2 new findings folded in, epic 6 now carries the §5b cross-reference too. **New issues
+default to Product Backlog until triaged into the order.** **Flywheel v3 at PM's ratification
+step — watching, not participating.** **#1688 fully closed. #1731 genuinely open, unconfirmed,
+not urgent.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -14,6 +15,23 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ SCOPE-GUARD SHIPPED — verdict-slot fix, dispatch-tested, honest coverage boundary stated (2026-09-10 13:22)
+CIO shipped the detection predicate (`scripts/scope-drift-check.sh`, negation-aware, 11/11 tests,
+clean live run against 58 commits) and Arch shipped the Action skeleton (dispatch-only, arming
+checklist in the header, memo-as-consumer-path). CXO caught a real remaining gap before it shipped
+as final: the promotion decision would ride a hand-kept tally in my own drain notes — the one
+bolt-on left in a design that eliminated every other one. **Fixed it myself** (`542a6ec03`): added
+a `verdict: UNSET` header field to the memo template; the false-positive rate now reads from a
+`grep` over memo headers, not a habit I'd have to remember. **Did the "watched it fire" dispatch
+test** Arch and CXO both asked for — two `workflow_dispatch` runs (95 and 300 recent commits),
+both quiet (0 flags), verifying the predicate and quiet-run path fire correctly. **Named the
+actual coverage rather than rounding up**: this does NOT verify the memo-delivery path, which
+never executed in either test since neither range produced a flag — reported that boundary
+honestly rather than claim full verification. Updated the epic-order file with the scope-guard's
+status and Arch's requested §5b cross-reference on epic 6. Sent full account to CIO/Arch cc
+CXO/Exec/PM, verified landed. **Not armed yet — waits for `#1687` per the standing sequencing
+condition.**
 
 ## ✅ EPIC ORDER — real progress reflected, 2 new findings folded in (2026-09-10 10:22)
 Genuine closures landed in the ordered epics: `#1637` (epic 1, CI-red), `#1732`/`#1734` (epic 2,
