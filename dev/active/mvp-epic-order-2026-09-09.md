@@ -167,3 +167,16 @@ read, that's real information — update this file, don't defend the original gr
   tests (95 and 300 recent commits, both quiet/0-flagged) — verifies the predicate and quiet-run
   path fire correctly; does NOT yet verify the memo-delivery path, which hasn't fired in either
   test. Arms after `#1687` closes per the standing sequencing condition (epic 1, above).
+- 2026-09-10 even later (PPM): Arch ran the real synthetic test (`#1744`, fixture issue,
+  Blocked). **Predicate proven live** (1/1 flagged correctly). **Delivery half found broken**:
+  `GITHUB_TOKEN` can't push to protected main (GH006) — Arch's retry loop had silently swallowed
+  the push failure and reported SUCCESS with no memo delivered, a real false-clear. Fixed same-day
+  (failed delivery now fails the run loudly). **The remaining decision is PM's**: bot needs either
+  a branch-protection bypass grant or a scoped PAT secret — repo-settings change, not ours to make
+  unilaterally. `#1744` stays open until the delivery path is actually observed working.
+  **CXO also caught a real gap in my own verdict-slot fix**: the grep-count has no denominator, so
+  it can't distinguish "zero flags occurred" from "flags occurred and never arrived" — exactly the
+  state the bot-can't-push defect put us in. **Fix accepted, sequenced with arming** (a per-run
+  ledger, `dev/active/scope-guard-runs.tsv`, one line per run whether quiet or flagging — not
+  built yet, since it closes nothing before PM's decision lands anyway). **Not armed. Blocked on
+  PM.**

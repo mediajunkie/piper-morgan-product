@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-10 at the 13:03 fire.
+# CXO carry-forward — rewritten 2026-09-10 at the 16:03 fire.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -114,8 +114,12 @@ about writing fewer memos** — Exec owns the broadcast; this is a seat rule.
 - ✅ **#1738 rule is now the JOINT INVARIANT of epics #1 and #2** (Arch, 09-10). §5b is the citation
   target both inherit. ⭐ **Arch's sharper half, recorded verbatim in the doc**: *the assistant reading
   its own render as evidence is the architectural defect, not the truncation.*
-- 🟡 **Scope-guard**: offered a `verdict: UNSET` line in the flag memo so the promotion rate is a grep
-  rather than a hand-kept tally. **PPM's call.** 🔴 **I read the file; I did not run the Action.**
+- 🟡 **Scope-guard**: my `verdict: UNSET` line shipped (PPM, `542a6ec03`) — **then I found my own count
+  is a NUMERATOR WITH NO DENOMINATOR**: over zero files the grep prints nothing, identical to "no flags
+  yet," and Arch proved no memo has ever landed (bot can't push to protected main). ⭐ **Success reports
+  to the watched channel; failure and denominator report to the unwatched one — backwards.** Offered a
+  one-line-per-run committed ledger, **sequenced with arming, not before** (it rides the same push).
+  **Blocked on PM's repo-settings decision.**
 - 🟢 **Cousin-1 contract DELIVERED 09-09** — `docs/internal/design/gather-outcome-user-facing-contract-2026-09-09.md`.
   🔴 **Its finding**: aggregation already exists in the **composed** path (`orchestrator._combine_results`)
   and not the **directive** path (the floor's five sites) — **two mechanisms, one noun.** ⚠️ **Exec's live
