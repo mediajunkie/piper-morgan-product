@@ -3,9 +3,10 @@
 **Lead**: Arch · 2026-09-10 · This is the TEXT the seven decisions (as amended v3.0.1/v3.0.2)
 resolve to. On PM's ratification: CIO applies it to `methodology-00-EXCELLENCE-FLYWHEEL.md` as
 corpus steward (Layer 1 untouched; v2.0's Layer 2 + the version-notes section change; Layer 3
-per-role mnemonics untouched per scope). Docs supplies the two marked pointer lists from their
-verified per-practice mapping before the canon edit lands — the slots are named rather than
-guessed (their mapping exists; I have not seen the full lists and will not invent them).
+per-role mnemonics untouched per scope). **COMPLETE as of 09-10 morning**: both pointer slots
+carry Docs' verified lists (delivered same-morning, re-verified against the live corpus), and
+Docs' review also caught one slip — an m-49 fold that violated D5's own maturity gate — now
+corrected and dated inline. No open slots; ready for ratification as-is.
 
 ---
 
