@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-10 at the 07:17 START.
+# CXO carry-forward — rewritten 2026-09-10 at the 10:17 fire.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -133,10 +133,14 @@ about writing fewer memos** — Exec owns the broadcast; this is a seat rule.
 
 ## Cron
 
-✅ **ROTATED 2026-09-05 16:17: `8207809c` → `65e2a3c5`.** Verified exactly one job. **Expiry ~09-12.**
+✅ **ROTATED 2026-09-10 10:17: `65e2a3c5` → `2e2952df`.** Create-then-delete, so the count never passed
+through zero; verified exactly one job after. **New expiry ~09-17 → next rotation window opens 09-15.**
 
-🔴 **ROTATE AT A 09-11 FIRE.** ⭐ **Rule sharpened by doing it**: I'd written *"rotate at the 09-05 21:47
-fire — name the fire, not the boundary."* Better than a boundary, **but I'd still picked the LAST safe
-fire rather than a comfortable one** — two more fires to miss before it, for no benefit I could name.
-**Rotation is free; waiting is not. Rotate at the first fire where you have both the information and the
-margin, not the last one where it's still possible.**
+⭐ **Rotated a day EARLY, against my own note and in line with my own rule.** The note said *"a 09-11
+fire"*; the rule says **rotate at the first fire where you have both the information and the margin, not
+the last one where it's still possible.** I had both. **Cost of early: one day of job life. Cost of
+waiting: a nonzero chance of missing the window.**
+
+⚠️ **The lesson worth carrying: a target DATE written into this file quietly outranks the RULE that
+produced it** — the note reads as state, the rule reads as theory, and I nearly obeyed the note.
+🔴 **Next time: name the rule in the note, not just the date.**
