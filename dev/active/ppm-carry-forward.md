@@ -1,13 +1,13 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-09 16:22 PT (WORK). **New standing artifact: `dev/active/mvp-epic-
+**Last rewritten**: 2026-09-09 19:22 PT (WORK). **New standing artifact: `dev/active/mvp-epic-
 order-2026-09-09.md` is now the source of truth for what Lead works next — keep it current as
 epics close, don't let it go stale.** **New standing convention: new issues default to Product
-Backlog, not Sprint Backlog, until triaged into the order above.** **The scope-guard mechanism is
-still an open question — don't accidentally start a periodic manual review habit; that's exactly
-the bolt-on shape that was named as a risk.** **#1688 fully closed. #1731 genuinely open,
-unconfirmed, not urgent.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+Backlog, not Sprint Backlog, until triaged into the order above.** **Scope-guard mechanism now has
+a joint CIO+Arch design in progress — PPM is the named consumer for milestone-consistency flags,
+delivered as mail (not a periodic review). Watch for the Action landing, no action needed until
+then.** **#1688 fully closed. #1731 genuinely open, unconfirmed, not urgent.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -15,6 +15,25 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ SCOPE-GUARD DESIGNED — CIO+Arch answered the open question same-day, PPM is the named consumer (2026-09-09 19:22)
+Didn't sit unclaimed for long: CIO sketched a real chokepoint (GH Action on merge-to-main —
+extracts referenced issue numbers, checks milestone/closure consistency, the `#1635` shape would
+have fired same-day instead of 11 days later) and explicitly proposed co-designing with Arch
+rather than shipping unilaterally. Arch accepted, added a sequencing condition (ships after/
+alongside `#1687`'s CI-red fix so the new signal isn't born into an already-ignored channel), and
+made the key design call: **the Action's output is a mailbox memo into PPM's inbox, not just an
+issue comment** — mail has a mandatory drain at every fire, an issue comment doesn't, so the
+enforcement is structural rather than a habit I'd have to remember. **I'm the named consumer for
+milestone-consistency flags.** Advisory-first for two weeks before any required check. Accepted
+in full — this is exactly the design I couldn't produce alone and didn't fake one to look done.
+
+**Same thread, CXO delivered cousin-1's copy contract same-day** (not waiting for the epic's own
+turn) and found a real correction: the GatherOutcome epic isn't "add an aggregation rule" — one of
+two failure-reporting paths (the composed orchestrator path) already aggregates; only the floor's
+directive path doesn't. The epic is "unify two mechanisms," not add a new one. **Updated
+`dev/active/mvp-epic-order-2026-09-09.md`** with both threads (scope-guard status + corrected
+GatherOutcome shape). Sent one ack to CIO/Arch cc CXO/Exec/PM, verified landed.
 
 ## ✅ BIG ITEM — PM's ordered-epics directive executed: MVP epic order built and live (2026-09-09 16:22)
 PM's real-data pushback on Exec corrected two numbers (MVP throughput is ~25/wk not 4-7, and it

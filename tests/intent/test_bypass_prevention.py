@@ -98,13 +98,24 @@ class TestBypassPrevention:
 
     @pytest.mark.asyncio
     async def test_middleware_is_registered(self, authenticated_client):
-        """Verify IntentEnforcementMiddleware is active."""
+        """Verify IntentEnforcementMiddleware is active.
+
+        1637: this used to pin magic counts (nl_endpoints == 4,
+        exempt_paths == 12), which went stale the moment the exempt list
+        legitimately grew — a red-nobody-sees. The claim this test exists to
+        make is "the middleware is registered and the monitoring endpoint
+        reports ITS ACTUAL config", so compare against the config source
+        itself. Growth in the exempt list is the exempt-list tests' concern,
+        not this one's.
+        """
+        from web.middleware.intent_enforcement import IntentEnforcementMiddleware
+
         response = await authenticated_client.get("/api/admin/intent-monitoring")
         assert response.status_code == 200
         data = response.json()
         assert data["middleware_active"] is True
-        assert len(data["nl_endpoints"]) == 4
-        assert len(data["exempt_paths"]) == 12
+        assert data["nl_endpoints"] == IntentEnforcementMiddleware.NL_ENDPOINTS
+        assert data["exempt_paths"] == IntentEnforcementMiddleware.EXEMPT_PATHS
 
     @pytest.mark.asyncio
     async def test_nl_endpoints_marked(self, authenticated_client):

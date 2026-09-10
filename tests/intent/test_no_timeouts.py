@@ -59,15 +59,45 @@ class TestNoTimeoutErrors:
 
     @pytest.mark.asyncio
     async def test_query_fallback_handles_misclassifications(self, intent_service):
-        """QUERY category should never cause 'No workflow type found' errors"""
+        """QUERY category should never cause 'No workflow type found' errors.
 
-        # Force a QUERY classification (generic question)
+        1637: this used to send the raw message through the REAL classifier —
+        "what is the meaning of life" matches no pre-classifier pattern, so it
+        reached the LLM classifier, which in this environment has no
+        initialized container and raised INTENT_CLASSIFICATION_FAILED. The
+        test was env-dependent, and the failure it produced was the
+        classifier's, not the dispatch fallback's — the layer this test
+        exists to cover (m-43). Stub classification to hand dispatch a QUERY
+        intent directly; what stays under test is that QUERY dispatch
+        completes via the fallback rail instead of a workflow-type error.
+        """
+        from unittest.mock import AsyncMock, patch
+
+        from services.domain.models import Intent
+        from services.intent_service.pre_classifier import MultiIntentResult
+        from services.shared_types import IntentCategory
+
         query = "what is the meaning of life"
+        query_intent = Intent(
+            original_message=query,
+            category=IntentCategory.QUERY,
+            action=None,
+            confidence=0.9,
+        )
+        multi_result = MultiIntentResult(
+            intents=[query_intent], original_message=query, is_multi_intent=False
+        )
 
-        result = await intent_service.process_intent(query, session_id="test_query_fallback")
+        with patch.object(
+            intent_service.intent_classifier,
+            "classify_multiple",
+            AsyncMock(return_value=multi_result),
+        ):
+            result = await intent_service.process_intent(query, session_id="test_query_fallback")
 
         # Should complete (either via GENERATE_REPORT or other fallback)
         assert result is not None
+        assert result.success is True
         assert "No workflow type found" not in (result.message or "")
 
         print(f"\n✅ QUERY fallback working: '{query}' handled gracefully")

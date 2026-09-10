@@ -12,8 +12,9 @@ Now: Extracted to separate router module
 """
 
 import structlog
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, Request
 
+from services.auth.auth_middleware import JWTClaims, require_admin
 from web.personality_integration import (
     PersonalityResponseEnhancer,
     PiperConfigParser,
@@ -63,8 +64,24 @@ async def get_personality_profile(user_id: str = "default", request: Request = N
 
 
 @router.put("/profile/{user_id}")
-async def update_personality_profile(user_id: str, request: Request):
-    """Update user's personality preferences"""
+async def update_personality_profile(
+    user_id: str,
+    request: Request,
+    current_user: JWTClaims = Depends(require_admin),
+):
+    """Update user's personality preferences.
+
+    1734: ADMIN-ONLY until the store is per-user. Despite the {user_id} in the
+    path, PiperConfigParser.save_personality_config ignores user_id entirely and
+    rewrites the GLOBAL config/PIPER.user.md — so on the hosted beta, any
+    authenticated user's save would clobber every user's overlay (including
+    PM's ADR-075 D4 personal overlay, if present). require_admin is the #1508/
+    #1598 idiom: global-blast-radius write → admin authority, live DB check,
+    fail-closed, no payload in the refusal. The GET above and /enhance below
+    stay ungated — they only read. When the store is scoped per-user (users.
+    preferences JSONB is the natural home, per the 1734 filing), this gate can
+    come off in the same change that makes user_id real.
+    """
     try:
         # Get config_parser from app state (initialized in app.py)
         config_parser = (
