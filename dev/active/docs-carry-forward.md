@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-09 ~19:35 PDT (Fire 6 / WORK, complete)
+**Updated**: 2026-09-09 ~22:35 PDT (Fire 7 / WORK, LAST FIRE OF TODAY — omnibus in progress)
 **Session log**: `dev/2026/09/09/2026-09-09-0609-docs-code-log.md` (open; started PM-initiated pre-cron).
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
@@ -22,6 +22,16 @@ live page's 200 status can be a stale cached not-found fallback — always do a 
 
 **Watch, not chase**: Ship #058's own calendar row has `canonicalSite=distributed` with an empty
 `linkedinURL` — a pre-existing data gap noticed in passing, out of scope for today's task.
+
+## IN PROGRESS: today's omnibus (background agent dispatched, awaiting completion)
+
+This is the day's last fire. Everything else drained (empty mail, both worktrees synced,
+merge-keeper clean). 14 session logs today across 12 roles (3 separate `prog` delegations).
+Dispatched today's omnibus, flagged: today's own publish+syndication+accessibility thread,
+the 3 prog delegations to read individually, and whether the flywheel challenge round (stated to
+close 09-09 EOD) actually concluded. **NEXT ACTION when it completes**: personally audit (line
+count, spot-check against direct knowledge, discrepancy handling) before committing. Then commit,
+run Step 10.5 CSV reconciliation (expect +14 rows), add `<!-- DAY-CLOSED: 2026-09-09 -->`.
 
 ## `<figure>`/`<figcaption>` markup proposal — CLOSED, both halves shipped same day
 
