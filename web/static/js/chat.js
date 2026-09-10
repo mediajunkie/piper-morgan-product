@@ -6,6 +6,26 @@
   const chatWindow = document.getElementById("chat-window");
   let sessionId = null;
 
+  /**
+   * #1732 [SECURITY]: backstop sanitizer for the paths that DON'T go through
+   * renderBotMessage (its fallbacks + error interpolation). The renderer is
+   * shell-loaded so these fallbacks should be dead code, but a raw
+   * marked.parse → innerHTML must never ship unsanitized. Mirrors the
+   * renderer's _sanitizeRenderedHtml: DOMPurify (vendored, pinned) with
+   * ADD_ATTR target (#1123), fail CLOSED to entity-escaping without it.
+   */
+  function sanitizeRendered(html) {
+    if (typeof DOMPurify !== 'undefined' && DOMPurify.isSupported !== false) {
+      return DOMPurify.sanitize(html, { ADD_ATTR: ['target'] });
+    }
+    return String(html)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   // Issue #924: Chat avatar support
   const AVATAR_COLORS = [
     '#e74c3c', '#e67e22', '#f1c40f', '#2ecc71', '#1abc9c',
@@ -249,8 +269,10 @@
       if (typeof renderBotMessage !== 'undefined') {
         msgDiv.innerHTML = renderBotMessage(html, 'success', false);
       } else {
-        // Fallback if bot-message-renderer.js not loaded
-        msgDiv.innerHTML = typeof marked !== 'undefined' ? marked.parse(html) : html;
+        // Fallback if bot-message-renderer.js not loaded (#1732: sanitized)
+        msgDiv.innerHTML = sanitizeRendered(
+          typeof marked !== 'undefined' ? marked.parse(html) : html
+        );
       }
     }
 
@@ -442,9 +464,9 @@
       const html = renderBotMessage(result.message || result.reply || "", "success", false);
       element.innerHTML = html;
     } else {
-      // Fallback: render markdown manually
+      // Fallback: render markdown manually (#1732: sanitized)
       if (typeof marked !== 'undefined') {
-        element.innerHTML = marked.parse(result.message || result.reply || "");
+        element.innerHTML = sanitizeRendered(marked.parse(result.message || result.reply || ""));
       } else {
         element.textContent = result.message || result.reply || "";
       }
@@ -453,10 +475,12 @@
 
   /**
    * Handle error response from the API
+   * #1732: error.message can carry server text that echoes user input —
+   * sanitize before it hits innerHTML.
    */
   function handleErrorResponse(error, element) {
     const errorMsg = error.message || "An unknown error occurred";
-    element.innerHTML = `<div class="result error">${errorMsg}</div>`;
+    element.innerHTML = `<div class="result error">${sanitizeRendered(errorMsg)}</div>`;
     element.classList.add("error");
   }
 

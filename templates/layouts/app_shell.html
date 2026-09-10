@@ -71,7 +71,13 @@
   {# Shell-owned chrome runtime — the nav-included floating chat widget + markdown #}
   {# rendering need these (mirrors home.html). Migrated pages drop their own copies; #}
   {# page-specific JS goes in {% block scripts %}. #}
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  {# #1732 [SECURITY]: markdown parser + sanitizer are VENDORED and version-pinned #}
+  {# (was an UNPINNED CDN load — supply-chain + silent-parse-drift exposure). The  #}
+  {# renderer is shell-owned so every chat surface goes through the sanitized      #}
+  {# renderBotMessage chokepoint, not chat.js's raw-marked fallback.               #}
+  <script src="/static/vendor/marked-15.0.12.min.js"></script>
+  <script src="/static/vendor/purify-3.2.7.min.js"></script>
+  <script src="/assets/bot-message-renderer.js"></script>
   <script src="/static/js/timestamp-utils.js"></script>
   <script src="/static/js/chat.js"></script>
   <script src="/static/js/toast.js"></script>
