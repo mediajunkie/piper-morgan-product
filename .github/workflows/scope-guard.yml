@@ -1,0 +1,100 @@
+# scope-guard.yml — the delivery half of the scope-drift chokepoint (standing-item 7t).
+#
+# DESIGN (Arch + CIO joint, 2026-09-09/10 mail thread; PM-visible throughout):
+#   detection = scripts/scope-drift-check.sh (CIO's half — two signals, negation-aware, read-only)
+#   delivery  = THIS workflow (Arch's half): flags land as a MAILBOX MEMO in the named consumer's
+#               inbox (PPM), committed and pushed to main by the Action itself. Mail is the one
+#               surface with a mandatory, verified per-fire drain — an unconsumed flag is VISIBLE
+#               as unread mail, where an unwatched check or issue comment is silent (#1687 is the
+#               standing proof of that graveyard). An issue comment can be added later as the
+#               artifact-trail half; the memo is the consumer path.
+#
+# ⚠️ NOT ARMED. Trigger is workflow_dispatch ONLY, by explicit sequencing condition (Arch,
+# 2026-09-09, PPM-acked): this ships to `push: main` only after #1687 (four standing-red
+# workflows) is resolved — a new signal must not be born into a channel with a known graveyard.
+# ARMING CHECKLIST (do all three in one commit):
+#   1. Replace `workflow_dispatch:` below with the push trigger (commented out, ready).
+#   2. Confirm #1687 closed with evidence, and cite it in the arming commit message.
+#   3. Advisory period starts at arming: two weeks memo-only, false-positive rate measured
+#      (count in PPM's drain notes), promotion to required check decided on the measurement.
+name: scope-guard (advisory, NOT ARMED — dispatch only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      range:
+        description: "commit range to scan (default: last push's range approximation HEAD~10..HEAD)"
+        required: false
+        default: "HEAD~10..HEAD"
+  # push:              # ← the real trigger, installed by the arming commit per the checklist above
+  #   branches: [main]
+
+permissions:
+  contents: write      # the memo commit
+  issues: read         # the predicate reads issue state via gh
+
+jobs:
+  scope-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+      - name: Run detection predicate (CIO's half)
+        id: detect
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RANGE="${{ github.event.inputs.range || 'HEAD~10..HEAD' }}"
+          # push-trigger form (when armed): RANGE="${{ github.event.before }}..${{ github.sha }}"
+          set +e
+          FLAGS="$(bash scripts/scope-drift-check.sh "$RANGE" 2> denom.txt)"
+          RC=$?
+          set -e
+          echo "denominator: $(cat denom.txt)"
+          if [ $RC -gt 1 ]; then echo "predicate errored (rc=$RC) — failing loudly, not silently"; exit $RC; fi
+          {
+            echo "flags<<EOF"
+            echo "$FLAGS"
+            echo "EOF"
+            echo "denom=$(cat denom.txt | tr -d '\n')"
+          } >> "$GITHUB_OUTPUT"
+      - name: Deliver flags as mailbox memo to PPM (Arch's half)
+        if: steps.detect.outputs.flags != ''
+        env:
+          FLAGS: ${{ steps.detect.outputs.flags }}
+          DENOM: ${{ steps.detect.outputs.denom }}
+        run: |
+          STAMP="$(date -u +%Y-%m-%d)"
+          T="$(date -u +%H%MZ)"
+          MEMO="mailboxes/ppm/inbox/flag-scope-guard-to-ppm-cc-none-drift-detected-${STAMP}-${T}.md"
+          {
+            echo "---"
+            echo "from: scope-guard (automated, arch+cio design, 7t)"
+            echo "to: ppm"
+            echo "subject: \"Scope-drift flag(s) from push scan — advisory; verify before acting, the predicate is in its measured period\""
+            echo "date: ${STAMP}"
+            echo "---"
+            echo ""
+            echo "Automated flag — machine-written at invocation (m-50-conformant by construction)."
+            echo ""
+            echo '```'
+            echo "$FLAGS"
+            echo '```'
+            echo ""
+            echo "Denominator: ${DENOM}"
+            echo ""
+            echo "Advisory period: count this flag's verdict (true/false positive) in your drain"
+            echo "notes — promotion to a required check rides the measured rate, not an assumption."
+          } > "$MEMO"
+          git config user.name "scope-guard[bot]"
+          git config user.email "scope-guard@users.noreply.github.com"
+          git add "$MEMO"
+          git commit -m "flag(scope-guard): drift detected — memo to ppm inbox [skip ci]"
+          for i in 1 2 3; do
+            git push origin HEAD:main && break
+            git fetch origin main && git rebase origin/main && continue
+          done
+      - name: Quiet-run record (m-44 — silence must be distinguishable)
+        if: steps.detect.outputs.flags == ''
+        run: echo "No flags. ${{ steps.detect.outputs.denom }} — a measured zero, not an unmeasured one."

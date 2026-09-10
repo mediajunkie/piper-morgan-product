@@ -351,7 +351,6 @@ This memory system is the foundation for conversational AI:
 
 - **[Getting Started Guide](./getting-started-conversational-ai.md)** - 15-minute user journey
 - **[Understanding Anaphoric References](./understanding-anaphoric-references.md)** - Deep dive into reference resolution
-- **[API Documentation](../development/PM-034-conversation-api-documentation.md)** - Technical implementation details
 
 ### Performance Validation
 
@@ -412,7 +411,6 @@ Real performance data from PM-034:
 - [Understanding Anaphoric References](./understanding-anaphoric-references.md)
 - [Upgrading from Command Mode](./upgrading-from-command-mode.md)
 - [Conversation Examples](./conversation-scenario-examples.md)
-- [API Documentation](../development/PM-034-conversation-api-documentation.md)
 - [Report an Issue](https://github.com/your-repo/issues)
 
 ---
