@@ -28,6 +28,15 @@ describe('#1123 LINK-NEW-TAB — renderBotMessage link behavior', () => {
     };
     global.marked = fakeMarked;
 
+    // #1732: the renderer now sanitizes at the render boundary and fails
+    // CLOSED (entity-escapes) when DOMPurify is absent — so this suite loads
+    // the REAL vendored DOMPurify, which also makes these tests prove that
+    // target="_blank"/rel survive sanitization (ADD_ATTR config), not just
+    // that the link renderer emits them.
+    let purify = require('../../../web/static/vendor/purify-3.2.7.min.js');
+    if (!purify.sanitize && typeof purify === 'function') purify = purify(window);
+    global.DOMPurify = purify;
+
     // Load the renderer module's source and evaluate it
     const fs = require('fs');
     const path = require('path');
@@ -36,11 +45,15 @@ describe('#1123 LINK-NEW-TAB — renderBotMessage link behavior', () => {
       'utf8'
     );
     // Wrap so top-level function declarations attach to a captured object
-    const wrapped = new Function('marked', `
+    const wrapped = new Function('marked', 'DOMPurify', `
       ${code}
       return { renderBotMessage };
     `);
-    renderBotMessage = wrapped(fakeMarked).renderBotMessage;
+    renderBotMessage = wrapped(fakeMarked, purify).renderBotMessage;
+  });
+
+  afterEach(() => {
+    delete global.DOMPurify;
   });
 
   test('external https link gets target="_blank" and rel="noopener noreferrer"', () => {

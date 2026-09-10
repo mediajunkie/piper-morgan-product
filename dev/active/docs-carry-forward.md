@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-10 ~07:35 PDT (Fire 1 / START, complete)
+**Updated**: 2026-09-10 ~10:35 PDT (Fire 2 / WORK, complete)
 **Session log**: `dev/2026/09/10/2026-09-10-0720-docs-code-log.md` (open).
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
@@ -12,7 +12,13 @@ Arch's ratification memo named a concrete ask: P1/P5 "see also" pointer lists fo
 of my 09-08 Q2 mapping), re-verified every candidate entry against the live corpus before citing
 anything in a document about to become canonical, cross-checked for duplication against what P3/
 P4/P5 already claim inline. Sent: P1 → m-07, m-30, m-42, m-16, m-14; P5 → m-23, m-24, m-37
-(alongside the already-present m-45). Nothing further owed — watch for PM's ratification and
+(alongside the already-present m-45).
+
+**Update**: text is now genuinely COMPLETE — verified directly against the live file, not just
+the memo. A side effect worth noting: a discrepancy I mentioned but explicitly declined to press
+(P4's list included m-49 despite my own Monday tracking showing it still under the maturity gate)
+turned out to be a real slip in Arch's draft; Arch found and fixed it, crediting me. Both pointer
+lists confirmed landed exactly as sent. Nothing further owed — watch for PM's ratification and
 CIO's canon edit landing, not mine to chase.
 
 ## Yesterday (09-09) closed clean — headline: Ship #059 published+syndicated, figure/figcaption closed, flywheel round closed

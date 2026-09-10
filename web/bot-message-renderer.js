@@ -8,6 +8,25 @@
  * @param {boolean} isThinking - Whether this is a thinking/loading state
  * @returns {string} - Rendered HTML
  */
+/**
+ * #1732 [SECURITY]: render-boundary sanitizer — the ONE chokepoint between
+ * message text (user-controlled content reaches it, e.g. todo/reminder text
+ * interpolated server-side) and innerHTML. marked does NOT sanitize.
+ * DOMPurify (vendored, pinned) when available; ADD_ATTR keeps #1123's
+ * target="_blank". Fail CLOSED (entity-escape) when DOMPurify is missing.
+ */
+function _sanitizeRenderedHtml(html) {
+  if (typeof DOMPurify !== "undefined" && DOMPurify.isSupported !== false) {
+    return DOMPurify.sanitize(html, { ADD_ATTR: ["target"] });
+  }
+  return String(html)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function renderBotMessage(content, type = "success", isThinking = false) {
   if (!content) return "";
   // Always wrap in a div with correct classes
@@ -20,6 +39,9 @@ function renderBotMessage(content, type = "success", isThinking = false) {
       processedContent = content;
     }
   }
+  // #1732: sanitize EVERY path — parsed markdown, raw error/thinking text,
+  // and the parse-failure fallback all reach innerHTML.
+  processedContent = _sanitizeRenderedHtml(processedContent);
   const cssClasses = ["result", type];
   if (isThinking) cssClasses.push("thinking");
   return `<div class="${cssClasses.join(" ")}">${processedContent}</div>`;
