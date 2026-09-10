@@ -112,6 +112,12 @@ silent truncation. CXO explicit: not proposing the fix, not re-ranking the epics
 **Why here**: same "prove the idiom first" logic as epic 5; MCP-path-first per the ratified scope
 ruling, per Arch. **Same CXO flag applies** — name the copy-owner before scoping the fix.
 
+**Joint invariant with epic 5, confirmed by Arch (2026-09-10)**: §5b's rule (provenance must
+survive rendering unchanged; a render cap may shorten what the user sees, never what the system
+believes it has) applies here too — the direction (not yet the build) is that the renderer
+consumes the structured GatherOutcome and never becomes the model's own evidence about the world.
+Fix design waits for this epic's turn; nothing jumps the queue.
+
 ### 7. False-trails / claimed-not-wired (3 items) — pre-existing epic, no stated urgency
 `#1522` (the epic itself, PM-directed) · `#1735` · `#1678`.
 
@@ -151,4 +157,13 @@ read, that's real information — update this file, don't defend the original gr
   rule; doesn't reorder either). **General note, not epic-specific**: Exec found the board's In
   Progress count is not a reliable in-flight signal — three closures this week went Sprint
   Backlog → Done directly, skipping it. Don't read a flat In Progress count as "nothing is
-  moving" when checking this file against live board state.
+  moving" when checking this file against live board state. Also added epic 6's §5b pointer per
+  Arch's ask, so both cousins carry the joint invariant rather than one.
+- 2026-09-10 later (PPM): scope-guard status — both halves shipped
+  (`scripts/scope-drift-check.sh`, `.github/workflows/scope-guard.yml`, still dispatch-only, not
+  armed). Added a `verdict:` header slot to the memo template per CXO's catch (the promotion
+  decision was riding a hand-kept tally, the one bolt-on left in an otherwise chokepoint-shaped
+  design) — rate now reads from memo headers via grep, not a habit. Ran two `workflow_dispatch`
+  tests (95 and 300 recent commits, both quiet/0-flagged) — verifies the predicate and quiet-run
+  path fire correctly; does NOT yet verify the memo-delivery path, which hasn't fired in either
+  test. Arms after `#1687` closes per the standing sequencing condition (epic 1, above).
