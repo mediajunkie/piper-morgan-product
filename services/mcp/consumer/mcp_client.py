@@ -12,7 +12,7 @@ Design (gameplan ``dev/2026/06/27/1220-real-mcp-transport-gameplan.md``):
 originally said the legacy simulation stack "stays live in
 services/queries/ query_router module" — deleted long before the
 2026-08-29 census, and services/queries/ itself was disposed 2026-08-30. The
-simulation stack's last live constructor — GoogleCalendarMCPAdapter's eager
+simulation stack's last live constructor — the google_calendar_adapter's eager
 ``MCPConsumerCore()`` — was removed by the #1699 surgery (also 2026-08-30), so
 the stack is now import-reachable only (package inits), constructed by nothing
 at runtime — see the connection_pool->adapters->spatial cascade HOLD in
