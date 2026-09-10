@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-09-08 (active), cron ID last updated 2026-09-08
+# Web carry-forward — 2026-09-09 (active), cron ID last updated 2026-09-09
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `4e7e1685`, re-armed at 2026-09-08 STOP) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `a7c05808`, re-armed at 2026-09-09 STOP) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 ⚠️ **Trimmed 2026-08-29** — everything this file carried from 2026-08-03 through 2026-08-25 was
 fully-resolved historical record (marked CLOSED/FIXED/SHIPPED/SETTLED at the time), sitting in
@@ -55,6 +55,16 @@ this ships as shipped-pending-PM-reaction, not shipped-pending-PM-approval.
   In Review round; see Active threads above.
 
 ## Active threads
+
+### OPEN, blocked on PM/access — Vercel usage-limit warning Q1 (2026-09-09)
+PM saw a Vercel plan/usage warning, wants it understood before an outage. Exec resolved Q2 live
+(beta app is on Fly, website on Vercel — separate accounts, one ceiling can't take both down). Q1
+(which resource, how close, what happens at the ceiling) routed to Web — genuinely blocked, not
+deferring: no `vercel` CLI, no auth token, no dashboard access in this environment, and no existing
+plan/usage docs in either repo. Replied to Exec cc Pard/CIO/PM naming the exact blocker and what
+would unblock it (the actual warning text/screenshot, or Vercel API credentials). PM's own framing
+via Exec: "next-working-day, not tonight" — genuinely not urgent, correctly not chased further.
+Tracked as standing item #4.
 
 ### CLOSED (Web's part) — FTUX interview render-check (2026-09-07/08)
 CXO asked Web to log in with a cold account and capture the first `PIPER_FTUX_INTERVIEW` exchange
