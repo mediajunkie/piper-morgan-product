@@ -1,0 +1,118 @@
+<title>State of the forest — 10 September</title>
+<style>
+  :root{--paper:#f4f4f2;--card:#fff;--ink:#1b1a17;--mute:#66635c;--line:#dcdad4;
+    --red:#9d3427;--amber:#8a6516;--green:#2f6440;--blue:#2a5578;--soft:#ecebe6;}
+  @media (prefers-color-scheme:dark){:root{--paper:#131311;--card:#1c1c19;--ink:#e8e6e0;--mute:#9a968d;
+    --line:#2e2d28;--red:#e08a7a;--amber:#d7a94f;--green:#82c093;--blue:#8bb4d8;--soft:#232320;}}
+  :root[data-theme="dark"]{--paper:#131311;--card:#1c1c19;--ink:#e8e6e0;--mute:#9a968d;--line:#2e2d28;
+    --red:#e08a7a;--amber:#d7a94f;--green:#82c093;--blue:#8bb4d8;--soft:#232320;}
+  :root[data-theme="light"]{--paper:#f4f4f2;--card:#fff;--ink:#1b1a17;--mute:#66635c;--line:#dcdad4;
+    --red:#9d3427;--amber:#8a6516;--green:#2f6440;--blue:#2a5578;--soft:#ecebe6;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:47rem;margin:0 auto;padding:1.6rem 1.1rem 4rem}
+  h1{font-size:1.5rem;margin:0 0 .3rem;letter-spacing:-.015em}
+  .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.5rem}
+  h2{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:600;
+     margin:2rem 0 .7rem;padding-bottom:.35rem;border-bottom:1px solid var(--line)}
+  h2:first-of-type{margin-top:1rem}
+  .item{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--mute);
+    border-radius:7px;padding:.85rem .95rem;margin:0 0 .7rem}
+  .item.dec{border-left-color:var(--red)}.item.drift{border-left-color:var(--amber)}
+  .item.ok{border-left-color:var(--green)}.item.res{border-left-color:var(--blue)}
+  .who{font-weight:600;font-size:.83rem}
+  .item p{margin:.4rem 0 0;font-size:.94rem}
+  .item p.sub{color:var(--mute);font-size:.88rem}
+  .nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(6.5rem,1fr));gap:.55rem;margin:.3rem 0 0}
+  .n{background:var(--soft);border-radius:7px;padding:.55rem .65rem}
+  .n b{display:block;font-size:1.45rem;line-height:1.1;font-variant-numeric:tabular-nums}
+  .n span{font-size:.72rem;color:var(--mute)}
+  table{width:100%;border-collapse:collapse;margin:.4rem 0 0;font-size:.88rem;display:block;overflow-x:auto}
+  th,td{text-align:left;padding:.4rem .55rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  td.c{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--mute)}
+  footer{margin-top:2.2rem;border-top:1px solid var(--line);padding-top:1rem;color:var(--mute);font-size:.82rem}
+  footer b{color:var(--ink)}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">State of the project on 10 September: three things only PM can clear, the trajectory, and the testing queue.</h2>
+
+<h1>State of the forest</h1>
+<p class="meta">Exec · <b>Thursday 10 September, 16:45 PT</b> · every PM-facing item re-verified against source this pass · closure dates corrected to Pacific</p>
+
+<h2>🔴 Only you can clear these — three</h2>
+<div class="item dec">
+  <span class="who">1 · Vercel access → Web</span>
+  <p><b>Web is hard-blocked and it is access, not effort.</b> No <code>vercel</code> CLI, no auth token, no dashboard — they cannot see plan or usage at all.</p>
+  <p class="sub">Their words: <em>"not because it's hard, but because I have no way to see it."</em> Unchanged since last night. Q2 is already resolved — the beta is on Fly, so <b>only the website is exposed</b>. What's still unknown is which resource runs out, how close, and whether the ceiling throttles or hard-stops.</p>
+</div>
+<div class="item dec">
+  <span class="who">2 · The bot needs a path onto protected main → Arch</span>
+  <p>The scope-guard's delivery half can detect but <b>cannot write its memo</b> — <code>GITHUB_TOKEN</code> is refused by branch protection (GH006).</p>
+  <p class="sub">Either the github-actions bot goes on the bypass allowlist, or a scoped PAT. <b>Arch found this by running a synthetic end-to-end test rather than trusting a clean quiet run</b> — and found a second defect riding it: their retry loop swallowed the push failure and reported SUCCESS. A false clear from the mechanism built to prevent false clears. That half is fixed; the permission is yours.</p>
+</div>
+<div class="item dec">
+  <span class="who">3 · Flywheel v3 ratification → Arch</span>
+  <p>Text is ready: <code>dev/active/flywheel-v3-layer2-text-2026-09-10.md</code>. <b>On your ratification the workstream CLOSES</b> — no standing re-evaluation duty; the milestone-close trigger carries it.</p>
+  <p class="sub">Five days from <em>"something has been lost"</em> to a one-page Layer 2 replacement, through seven independent reads and a challenge round that produced five accepted amendments. <b>Verified unruled</b> — no ratification entry in <code>decisions.log</code>.</p>
+</div>
+<div class="item drift">
+  <span class="who">And Q5, still open — no rush, and that's now considered</span>
+  <p><b>Verified unruled</b> (zero matches in <code>decisions.log</code>). HOST's sequencing advice: rule <em>after</em> the intake step has real mileage. The v3 text has a slot built so your answer drops in without reopening anything.</p>
+</div>
+
+<h2>📈 The trajectory — this is the part that changed</h2>
+<div class="item ok">
+  <div class="nums">
+    <div class="n"><b>17</b><span>MVP CLOSED IN 3 DAYS</span></div>
+    <div class="n"><b>45</b><span>NOT DONE</span></div>
+    <div class="n"><b>35</b><span>NEVER STARTED</span></div>
+    <div class="n"><b>7</b><span>AWAITING YOU</span></div>
+    <div class="n"><b>1,133</b><span>DONE</span></div>
+    <div class="n"><b>50</b><span>DAYS TO 30 OCT</span></div>
+  </div>
+  <p class="sub" style="margin-top:.7rem"><b>4 on Mon · 9 on Tue · 4 today</b> — against 7–11 per <em>week</em> during the collapse. Every open issue now carries a milestone; zero unmilestoned.</p>
+</div>
+<div class="item ok">
+  <span class="who">⭐ And the factoring is demonstrably working, not just adopted</span>
+  <p><b>Three of today's four closes are one cause</b> — #1631, #1650 and #1694, the acceptance contract. Yesterday morning I flagged them as one contract failing in opposite directions. Today they closed together.</p>
+  <p class="sub">That's the falsifiable claim landing: <b>the cause-grouping predicted which items would share a fix, and it was right.</b> Arch's factoring put 37 items into 8 groups plus 7 honest singletons — and declined to force the remainder, calling that <em>"taxonomy theater."</em> The fourth close was #1732, a second security issue.</p>
+</div>
+<div class="item ok">
+  <span class="who">Lead's intake rule — day 2, holding</span>
+  <p>One never-started item per fire regardless of inbound. Their own diagnosis of the two-week stall: <em>"reactive work crowded out intake, one fire at a time, invisibly — each fire locally correct, the sum wrong."</em></p>
+</div>
+
+<h2>🧪 Your testing queue — 7 items, and I've prepped it</h2>
+<div class="item drift">
+  <p>#1570 · #1617 · #1623 · #1625 · #1628 · #1632 · #1651 — <b>six of the seven are one standup and one chat exchange.</b> Separate artifact, same format as before.</p>
+  <p class="sub">#1617 and #1651 you already <em>failed</em> live on Wednesday; they're back In Review because Lead fixed them since. Worth re-running rather than assuming.</p>
+</div>
+
+<h2>🟢 Everything else, one line each</h2>
+<div class="item ok">
+  <table>
+    <tr><th>Workstream</th><th>State</th></tr>
+    <tr><td><b>Scope guard</b></td><td>Predicate SHIPPED and proven live (run 34539213471, 1 flagged correctly). Delivery half blocked on your permission call.</td></tr>
+    <tr><td><b>Epic order</b></td><td>PPM built it; Arch's 8 groups + 7 singletons underneath. Lead working down it.</td></tr>
+    <tr><td><b>#1738</b></td><td>CXO reframed it — <b>a provenance misattribution, not a rendering bug</b>, and it fails their own contract one layer up.</td></tr>
+    <tr><td><b>Security</b></td><td>#1734 and #1732 both closed. Two shipped-and-closed pre-beta.</td></tr>
+    <tr><td><b>Model budget</b></td><td>Fable limit hit; Lead on Opus. <b>93% overall, resets 22:00.</b></td></tr>
+  </table>
+</div>
+
+<h2>🔍 What this pass corrected</h2>
+<div class="item res">
+  <p><b>Closure counts were being read in UTC.</b> Evening Pacific closes landed on the next day, so yesterday's figure was inflated and today's double-counted two of Lead's. <b>Today is 4, not 6.</b> Corrected here and going forward.</p>
+  <p><b>The watchdog metric I proposed to you Tuesday is wrong and I killed it.</b> "≥1 item In Progress" would have read <em>nothing in flight</em> on the day nine issues closed — all nine went Sprint&nbsp;Backlog&nbsp;→&nbsp;Done without touching the column. Replacement sent to CIO and Arch: <b>days-since-last-closure plus backlog trend</b>.</p>
+  <p><b>Why you saw no updates today: my cron is <code>32 8,20</code> — two fires a day. Every other role runs six.</b> I'm silent 09:05→20:32 by construction, and the belt now flags me BELT-INVISIBLE for it. Worth changing; it's your call and I'd take 6×.</p>
+</div>
+
+<footer>
+  <b>Bottom line:</b> the machine is working — 17 MVP closed in three days against 7–11 per week during the collapse, and the cause-grouping proved itself by predicting three closes. <b>Three permissions and a ratification sit with you; none is urgent tonight.</b><br><br>
+  <b>Live-state pass.</b> Liveness first: <code>duty-cycle-freeze-check</code> rc=0 across <b>11 of 11</b> rows (one alert, and it's me). Each PM-facing item re-verified against its source this pass — <code>decisions.log</code> for the two rulings, mail for the Vercel block, the project board for the queue. Sprint figures from <code>sprint-truth</code> at compile time.
+</footer>
+</div>
