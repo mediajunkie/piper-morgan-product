@@ -19,22 +19,34 @@ agree: 37 items, same membership). Ordering and any reclassification below is PP
 
 ## Order
 
-### 1. CI/infra red (3 items) — cheap, and it's a quiet tax on every epic after it
+### 1. CI/infra red (3 items, 1 closed) — cheap, and it's a quiet tax on every epic after it
 `#1687` four CI workflows standing red · `#1711` Keychain ACL hang blocks server startup silently
-· `#1637` 6 standing test failures poisoning 6 more when run combined.
+· ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**.
 
 **Why first**: every day CI stays red, every other epic's evidence weakens (a green suite means
 less when four workflows are already known-broken). Cheap relative to its value. If it turns out
 not-cheap, the fallback is explicitly accepting these as known-red rather than let them silently
 discount every later epic's signal.
 
-### 2. Security/tenancy (4 items) — before beta wave 1, regardless of everything else
-`#1734` [SECURITY] personality API PUT-rewrites the global config (any user's save clobbers the
-instance overlay) · `#1690` demo plugin live-mounted by default in every prod deploy · `#1732`
-[SECURITY] chat-render XSS, no sanitizer · `#1733` stale unauthenticated duplicate page.
+### 2. Security/tenancy (4 items, 2 closed) — before beta wave 1, regardless of everything else
+~~`#1734`~~ [SECURITY] personality API global-config clobber — **CLOSED**. `#1690` demo plugin
+live-mounted by default in every prod deploy · ~~`#1732`~~ [SECURITY] chat-render XSS, no
+sanitizer — **CLOSED**. `#1733` stale unauthenticated duplicate page.
 
-**Why here, non-negotiable**: `#1734` is a global-write hazard live on the hosted beta right now.
-This epic's position doesn't move for scheduling convenience.
+**Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
+half-closed.
+
+**Two more findings folded in (2026-09-10), both surfaced fixing `#1732`, both matched to this
+epic rather than filed standalone**: `#1741` [SECURITY] pattern-suggestions UI interpolates
+unescaped into innerHTML, outside `#1732`'s chokepoint · `#1740` twin-file renderer drift (a dead
+unserved copy of `bot-message-renderer.js` diverged from the live one) — folded here rather than
+into false-trails since it's the exact same "fixing X surfaced Y in the same file" shape as
+`#1741`, not a separate parallel-system finding.
+
+⚠️ **Caution, not an alarm**: `#1637`/`#1732`/`#1734` closed Sprint Backlog → Done directly,
+skipping In Progress (Exec's 09-10 finding — the board's In Progress count is not a reliable
+in-flight signal; see the general note below). Reads as PM's verification round closing
+already-fixed items, not a violation of one-epic-at-a-time — noting for accuracy, not flagging.
 
 ### 3. Acceptance contract (8 items) — freshest pain, design is DONE, unblocks a whole cluster
 `#1739` (umbrella) · `#1663` · `#1652` · `#1653` · `#1654` · `#1694` · `#1696` · `#1596`.
@@ -84,8 +96,18 @@ Exec's live "I wasn't able to check" rider on a *succeeding* turn is a reportabi
 (content that had no business in that answer), not an aggregation defect — fixing aggregation
 alone won't touch it; the site is unidentified.
 
+⭐ **CXO's 09-10 framing on `#1738` — argues epics 5 and 6 share a rule, doesn't move either**:
+`#1738` isn't a truncation bug, it's a provenance misattribution — the gather was `fresh` and
+complete, the *renderer* dropped an item, and the assistant then described its own truncated
+render as its evidence ("the list I got back"). Stated as a general rule now in the contract
+(§5b, v0.2): a provenance value is a fact about the source and must survive rendering unchanged;
+a render cap may shorten what the user sees, never what the system believes it has. Practical
+consequence for whoever scopes this: "…and N more" is a claim the assistant must be able to cash —
+if it can't name the N, the honest render is "6 archived; here are 5, ask for the rest," not a
+silent truncation. CXO explicit: not proposing the fix, not re-ranking the epics.
+
 ### 6. Rendered deliverable (2 items + 2 shared with GatherOutcome/Security) — same reasoning as 5
-`#1729` · shares `#1732` (security) and `#1738` (GatherOutcome).
+`#1729` · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome).
 
 **Why here**: same "prove the idiom first" logic as epic 5; MCP-path-first per the ratified scope
 ruling, per Arch. **Same CXO flag applies** — name the copy-owner before scoping the fix.
@@ -122,3 +144,11 @@ read, that's real information — update this file, don't defend the original gr
   "unify two existing mechanisms." Scope-guard chokepoint (open question in v1) now has a joint
   CIO+Arch design in progress — GH Action on merge-to-main, PPM named consumer for milestone-
   consistency flags delivered as mail, advisory-first for two weeks before any required check.
+- 2026-09-10 (PPM): three items closed (`#1637`, `#1732`, `#1734`) across epics 1 and 2 — marked
+  in place rather than removed, so the record shows what closed and when. Folded two new findings
+  from fixing `#1732` into epic 2 (`#1740`, `#1741`) rather than filing them as unplaced
+  singletons. Added CXO's provenance-vs-rendering framing to epic 5 (argues epics 5/6 share a
+  rule; doesn't reorder either). **General note, not epic-specific**: Exec found the board's In
+  Progress count is not a reliable in-flight signal — three closures this week went Sprint
+  Backlog → Done directly, skipping it. Don't read a flat In Progress count as "nothing is
+  moving" when checking this file against live board state.

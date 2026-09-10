@@ -18,8 +18,10 @@ THE CONTRACT (issue #1739, Arch ruling + CXO pass 2026-09-09, both binding):
     done?" as an acceptance-that-didn't-parse is the category error that
     produced #1617; treating it as a failed acceptance and re-prompting is
     the same error the other way, #1579). The verdict is STATE_QUESTION:
-    the seam answers truthfully from state and the arm SURVIVES — it is
-    neither consumed nor silently dropped.
+    the seam answers truthfully from state and the arm is neither consumed
+    nor silently dropped — HOW it survives is per-tier and STATED, not
+    inherited (CXO arm-survival ruling 2026-09-10; see the
+    ``AcceptanceVerdict.STATE_QUESTION`` tier table).
 (b) **Bare affirmatives accept exactly-armed offers.** #1694's "yes" doing
     nothing is the contract failing in the strict direction.
 (c) **Prose asides neither accept nor steal** — the #1631 shape floor and
@@ -79,7 +81,20 @@ class AcceptanceVerdict(Enum):
     ACCEPT = "accept"  # consent granted — the armed action may fire
     DECLINE = "decline"  # consent withheld — cancel honestly, nothing fires
     # A query about state — NOT a failed acceptance (CXO's ruling). The seam
-    # answers truthfully and the arm SURVIVES (restated, never re-fired).
+    # answers truthfully and the arm is neither consumed nor silently
+    # dropped. HOW it survives is PER-TIER, stated (not inherited) per CXO's
+    # arm-survival ruling 2026-09-10 (contract doc §5a/§5b,
+    # docs/internal/design/acceptance-contract-user-facing-2026-09-10.md):
+    #   - LOW_CEREMONY (READ/collaborate offers): the arm survives SILENTLY
+    #     (re-armed; normal processing answers) — survival is a convenience
+    #     and the cost of a stale accept is a re-draft.
+    #   - NAMED_OBJECT (DESTRUCTIVE + outward WRITE confirms): the arm NEVER
+    #     survives silently — consent has a FRESHNESS property. The reply
+    #     answers the question and RE-RENDERS the stored ask in one clause;
+    #     the re-render is itself a new ask, so it arms, and the next "yes"
+    #     binds to an ask the user saw THIS turn. No stored ask → nothing to
+    #     restate → the pop stands. "An ambiguous acceptance should cost a
+    #     turn, not an action."
     STATE_QUESTION = "state_question"
     # An aside / off-intent turn: neither accepts nor steals. Each seam's
     # documented off-intent rule applies (#1190: the pop already cancelled

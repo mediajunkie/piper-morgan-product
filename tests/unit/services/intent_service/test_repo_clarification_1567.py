@@ -551,8 +551,11 @@ class TestPinnedTranscript:
         assert "Updated issue #108" in result.message
 
     async def test_unrelated_command_mid_ask_still_routes(self, service):
-        """An off-intent command abandons the question via the pop and routes
-        normally through the chain — nothing writes, no repo ask repeats."""
+        """An off-intent COMMAND abandons the question via the pop and routes
+        normally through the chain — nothing writes, no repo ask repeats.
+        (#1739, 2026-09-10: this pin's message changed from "what reminders
+        do I have?" to an imperative — a question-form is no longer an
+        abandonment; it gets the state-question turn pinned below.)"""
         sid = "t-offintent"
         await self._ask_turn(service, sid)
         explosive_write = patch(
@@ -565,10 +568,74 @@ class TestPinnedTranscript:
             explosive_write,
         ):
             result = await service.process_intent(
-                message="what reminders do I have?", session_id=sid, user_id=_USER
+                message="list my reminders", session_id=sid, user_id=_USER
             )
         assert "Which repository" not in result.message
         assert _pending(service, sid) is None  # abandoned via the pop
+
+    async def test_state_question_mid_ask_answers_and_rerenders_the_ask(self, service):
+        """#1739 (contract §3 + CXO's arm-survival ruling §5a/§5b,
+        2026-09-10): a question-form mid-ask is a STATE QUESTION — a
+        different speech act, not an abandonment and never a write. The
+        question is answered by normal processing, the repo ask is
+        RE-RENDERED in one clause in the same reply, and the re-render ARMS
+        (visible re-arm — a CONFIRM-tier arm never survives silently, and
+        the next answer binds to an ask the user saw THIS turn)."""
+        sid = "t-statequestion"
+        await self._ask_turn(service, sid)
+        explosive_write = patch(
+            f"{ROUTER}.update_issue",
+            new=AsyncMock(side_effect=AssertionError("a state question must never write")),
+        )
+        with (
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            explosive_write,
+        ):
+            result = await service.process_intent(
+                message="what reminders do I have?", session_id=sid, user_id=_USER
+            )
+        # The ask is restated AFTER the answer, in one clause — never a bare
+        # re-prompt (the #1579 shape CXO banned).
+        assert "Still pending: Which repository is issue #108 in?" in result.message
+        # The re-render armed: the offer survives with its verbatim ask.
+        pending = _pending(service, sid)
+        assert pending is not None
+        assert "Which repository is issue #108 in?" in pending["question"]
+
+    async def test_question_naming_a_repo_never_binds_and_fires(self, service):
+        """#1739: pre-adoption, a QUESTION that happened to name a repo
+        ("should it go in mediajunkie/test-piper-morgan?") extracted the
+        token and FIRED the held outward update — a question executing an
+        act. Post-adoption it is a state question: nothing writes, the ask
+        re-renders, the arm survives visibly."""
+        from services.intent.intent_service import IntentProcessingError
+
+        sid = "t-question-repo"
+        await self._ask_turn(service, sid)
+        explosive_write = patch(
+            f"{ROUTER}.update_issue",
+            new=AsyncMock(side_effect=AssertionError("a question-form must never fire the update")),
+        )
+        with (
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            explosive_write,
+        ):
+            try:
+                result = await service.process_intent(
+                    message="should it go in mediajunkie/test-piper-morgan?",
+                    session_id=sid,
+                    user_id=_USER,
+                )
+                assert "Updated issue #108" not in result.message
+            except IntentProcessingError as exc:
+                # The turn fell through to normal processing (the explosive
+                # LLM boundary) — proving no seam bound-and-fired it.
+                assert "LLM boundary touched" in str(exc) or "INTENT_CLASSIFICATION_FAILED" in str(
+                    exc
+                ), str(exc)
+        assert _pending(service, sid) is not None  # re-armed, not consumed
 
     async def test_bare_yes_re_asks_and_re_arms(self, service):
         """'yes' answers nothing on the open question — the generic accept

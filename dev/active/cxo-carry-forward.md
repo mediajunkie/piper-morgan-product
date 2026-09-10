@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-10 at the 07:17 START.
+# CXO carry-forward — rewritten 2026-09-10 at the 13:03 fire.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -111,6 +111,11 @@ about writing fewer memos** — Exec owns the broadcast; this is a seat rule.
 - ✅ **Six-cousin epics — my flag was ADOPTED and I was named an owner.** PPM's `mvp-epic-order-2026-09-09.md`
   carries the line requiring the user-facing-contract owner named *before* the copy; Arch named the first
   one: **cousin 1's aggregation copy is mine**, #1717's composition case as its acceptance test.
+- ✅ **#1738 rule is now the JOINT INVARIANT of epics #1 and #2** (Arch, 09-10). §5b is the citation
+  target both inherit. ⭐ **Arch's sharper half, recorded verbatim in the doc**: *the assistant reading
+  its own render as evidence is the architectural defect, not the truncation.*
+- 🟡 **Scope-guard**: offered a `verdict: UNSET` line in the flag memo so the promotion rate is a grep
+  rather than a hand-kept tally. **PPM's call.** 🔴 **I read the file; I did not run the Action.**
 - 🟢 **Cousin-1 contract DELIVERED 09-09** — `docs/internal/design/gather-outcome-user-facing-contract-2026-09-09.md`.
   🔴 **Its finding**: aggregation already exists in the **composed** path (`orchestrator._combine_results`)
   and not the **directive** path (the floor's five sites) — **two mechanisms, one noun.** ⚠️ **Exec's live
@@ -133,10 +138,14 @@ about writing fewer memos** — Exec owns the broadcast; this is a seat rule.
 
 ## Cron
 
-✅ **ROTATED 2026-09-05 16:17: `8207809c` → `65e2a3c5`.** Verified exactly one job. **Expiry ~09-12.**
+✅ **ROTATED 2026-09-10 10:17: `65e2a3c5` → `2e2952df`.** Create-then-delete, so the count never passed
+through zero; verified exactly one job after. **New expiry ~09-17 → next rotation window opens 09-15.**
 
-🔴 **ROTATE AT A 09-11 FIRE.** ⭐ **Rule sharpened by doing it**: I'd written *"rotate at the 09-05 21:47
-fire — name the fire, not the boundary."* Better than a boundary, **but I'd still picked the LAST safe
-fire rather than a comfortable one** — two more fires to miss before it, for no benefit I could name.
-**Rotation is free; waiting is not. Rotate at the first fire where you have both the information and the
-margin, not the last one where it's still possible.**
+⭐ **Rotated a day EARLY, against my own note and in line with my own rule.** The note said *"a 09-11
+fire"*; the rule says **rotate at the first fire where you have both the information and the margin, not
+the last one where it's still possible.** I had both. **Cost of early: one day of job life. Cost of
+waiting: a nonzero chance of missing the window.**
+
+⚠️ **The lesson worth carrying: a target DATE written into this file quietly outranks the RULE that
+produced it** — the note reads as state, the rule reads as theory, and I nearly obeyed the note.
+🔴 **Next time: name the rule in the note, not just the date.**

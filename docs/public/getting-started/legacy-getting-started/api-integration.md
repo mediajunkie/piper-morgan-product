@@ -219,7 +219,6 @@ logging.getLogger('piper_morgan').setLevel(logging.DEBUG)
 ## Next Steps
 
 - Explore the [complete API reference](../../../internal/architecture/current/api-reference.md)
-- Check out [integration examples](../../../internal/development/tools/issue-intelligence-integration-examples.md)
 - Review [webhook documentation](../../../internal/architecture/current/api-specification.md#webhooks)
 - Join our [developer community](https://discord.gg/piper-morgan)
 

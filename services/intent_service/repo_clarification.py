@@ -713,9 +713,11 @@ async def handle_repo_question_turn(
     Returns the acceptance-seam dict shape when this turn was consumed;
     None falls through to the generic offer flow (bare "yes" → the confirm
     workflow's re-dispatch re-asks; "no"/bare exit → honest decline copy;
-    anything else — including unrelated commands, which keep routing — is
-    abandoned via the pop, inheriting the #1631 prose/command discrimination
-    ``detect_offer_response`` applies at the generic seam)."""
+    #1739: a state question is answered by normal processing with the repo
+    ask re-rendered in the same reply — CXO's §5a/§5b semantics; anything
+    else — including unrelated commands, which keep routing — is abandoned
+    via the pop, inheriting the #1631 prose/command discrimination the
+    generic seam applies)."""
     payload = pending_offer.get("pending_action") or {}
     if payload.get("kind") != REPO_QUESTION_KIND:
         return None
@@ -743,11 +745,43 @@ async def handle_repo_question_turn(
             },
         }
 
+    # #1739 (adopted 2026-09-10): the accept/decline DECISION at this seam
+    # routes through THE acceptance predicate, threading the carrier's
+    # registry-declared axes (this record rides
+    # CONFIRM_PENDING_ACTION_WORKFLOW: DESTRUCTIVE/PRIVATE → the
+    # NAMED_OBJECT bar — #1650 ruled the closed-default bind a CONFIRM,
+    # since binding FIRES the held operation) and this arm-site's stored
+    # ask (#1665). The detect_offer_response consult below survives ONLY
+    # as a vocabulary SHAPE read for ``allow_bare_token`` — it decides
+    # whether a bare token can be read as a repo name, never whether
+    # anything fires.
+    from services.intent_service.acceptance import (
+        AcceptanceVerdict,
+        declared_axes_for_workflow,
+        evaluate_acceptance,
+    )
     from services.intent_service.soft_invocation import detect_offer_response
 
-    resp = detect_offer_response(text)
-    if resp == "decline":
+    _axes = declared_axes_for_workflow(pending_offer.get("workflow_type")) or (None, None)
+    verdict = evaluate_acceptance(
+        text,
+        effect=_axes[0],
+        outwardness=_axes[1],
+        armed_question=pending_offer.get("question"),
+    )
+    if verdict is AcceptanceVerdict.STATE_QUESTION:
+        # Contract §3 + CXO's arm-survival ruling (§5a/§5b): a question-form
+        # mid-ask is a state query — it must never bind-and-fire the held
+        # operation, even when it names a repository ("should it go in
+        # owner/repo?"). None hands the turn to the generic confirm seam,
+        # which answers it via normal processing and RE-RENDERS the repo
+        # ask in the same reply (visible re-arm — a CONFIRM-tier arm never
+        # survives silently).
+        return None
+    if verdict is AcceptanceVerdict.DECLINE:
         return None  # generic decline drops honestly via decline_message
+
+    resp = detect_offer_response(text)
 
     default_repo = payload.get("default_repo")
 
@@ -768,15 +802,14 @@ async def handle_repo_question_turn(
         # "yes" against the closed default question binds the default; the
         # open question's "yes" falls to the generic accept (self-re-ask).
         # #1650: binding the default FIRES the held update — a CONFIRM — so
-        # only a crisp, full-message affirmative binds it. A greedy-row
-        # pseudo-accept ("please note that…" under the #1631 floor) falls
-        # through to None → the generic seam's off-intent rule (the pop
-        # drops the question; the new turn routes normally).
-        from services.intent_service.soft_invocation import (
-            detect_confirm_response,
-        )
-
-        if detect_confirm_response(text) == "accept" and default_repo:
+        # only a crisp, full-message affirmative binds it (#1739: the
+        # predicate verdict above, at the NAMED_OBJECT bar with the stored
+        # ask threaded — an accept against a record with no rendered ask is
+        # refused). A greedy-row pseudo-accept ("please note that…" under
+        # the #1631 floor) falls through to None → the generic seam's
+        # off-intent rule (the pop drops the question; the new turn routes
+        # normally).
+        if verdict is AcceptanceVerdict.ACCEPT and default_repo:
             return await _bind_and_dispatch(
                 pending_offer,
                 payload,
