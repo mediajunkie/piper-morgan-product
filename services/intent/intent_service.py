@@ -395,7 +395,13 @@ class IntentService:
             detection = self.soft_invocation_detector.detect(
                 message, active_lens=current_lens, formality_baseline=formality_baseline
             )
-            if not detection.has_offer:
+            # Bind a narrowed local: has_offer=True always ships with offer set
+            # (soft_invocation.py constructs them together), but the type is
+            # Optional[WorkflowOffer] and `has_offer` doesn't narrow it — the
+            # None-check does, and a local survives the method calls below
+            # (which would invalidate mypy's member narrowing on detection.offer).
+            offer = detection.offer
+            if not detection.has_offer or offer is None:
                 return result
 
             # Issue #826: Use resolved trust stage from caller, default to BUILDING
@@ -415,24 +421,22 @@ class IntentService:
                 self.logger.debug(
                     "soft_offer_throttled",
                     reason=reason,
-                    workflow_type=detection.offer.workflow_type,
+                    workflow_type=offer.workflow_type,
                 )
                 return result
 
             # Append offer to response
-            result.message = self.workflow_offer_service.format_offer(
-                detection.offer, result.message
-            )
+            result.message = self.workflow_offer_service.format_offer(offer, result.message)
             result.pending_offer = {
-                "workflow_type": detection.offer.workflow_type,
-                "offer_message": detection.offer.offer_message,
+                "workflow_type": offer.workflow_type,
+                "offer_message": offer.offer_message,
                 # #1665/#1739 input adequacy (Arch condition (a)): the
                 # rendered ask rides the record under the SAME key every
                 # other arm site uses — the soft offer's message IS its ask,
                 # and the acceptance predicate evaluates against what the
                 # user actually saw.
-                "question": detection.offer.offer_message,
-                "decline_message": detection.offer.decline_message,
+                "question": offer.offer_message,
+                "decline_message": offer.decline_message,
                 "active_lens": current_lens,  # Issue #820: Include lens context
                 "trigger_message": message,  # Issue #825: For slot extraction
             }
@@ -446,7 +450,7 @@ class IntentService:
 
             self.logger.info(
                 "soft_offer_added",
-                workflow_type=detection.offer.workflow_type,
+                workflow_type=offer.workflow_type,
                 session_id=session_id,
                 active_lens=current_lens,  # Issue #820: Log lens context
             )
