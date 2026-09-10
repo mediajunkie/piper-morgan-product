@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-09 at the 16:17 fire.
+# CXO carry-forward — rewritten 2026-09-09 at the 19:17 fire.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -41,8 +41,8 @@ alarm.
 
 ## 🔴 NEXT FIRE — first move
 
-Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 7`** (6 blocked rows +
-1 unblocked placeholder — ⚠️ **updated 09-09 13:17: acceptance-contract row added; this expectation is itself
+Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 8`** (7 blocked rows +
+1 unblocked placeholder — ⚠️ **updated 09-09 19:17: cousin-1 contract row added; this expectation is itself
 a fact that goes stale, so re-state it whenever you add or remove a row**). ⚠️ **A count below that means
 my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
 shipped the per-file count specifically so this is visible without building a control.
@@ -99,10 +99,14 @@ about writing fewer memos** — Exec owns the broadcast; this is a seat rule.
   Amended condition (b): the predicate takes `(effect, outwardness)`; **outward WRITEs accept at the
   DESTRUCTIVE bar.** Lead builds. **Still open and mine to remember: do arms drop on topic change? I
   raised it as a question and never answered it.**
-- 🟡 **Six-cousin epics (Arch causes / PPM ordering)** — offered cousin #4's user-facing half 09-09
-  (*a decline is a claim about a capability* — my #1730 copy is the worked case). **One risk flagged
-  once**: #1/#2/#4 all terminate in something a user reads; a correct model can still ship N sentences.
-  **Asked only for a line naming whose the user-facing contract is — not a gate.**
+- ✅ **Six-cousin epics — my flag was ADOPTED and I was named an owner.** PPM's `mvp-epic-order-2026-09-09.md`
+  carries the line requiring the user-facing-contract owner named *before* the copy; Arch named the first
+  one: **cousin 1's aggregation copy is mine**, #1717's composition case as its acceptance test.
+- 🟢 **Cousin-1 contract DELIVERED 09-09** — `docs/internal/design/gather-outcome-user-facing-contract-2026-09-09.md`.
+  🔴 **Its finding**: aggregation already exists in the **composed** path (`orchestrator._combine_results`)
+  and not the **directive** path (the floor's five sites) — **two mechanisms, one noun.** ⚠️ **Exec's live
+  rider is therefore a REPORTABILITY defect, not an aggregation one — fixing aggregation would leave it
+  untouched.** **Site not identified; I did not claim one.**
 - **#1688 MCP arm** — spec delivered 09-02; production-milestoned, build unstarted.
 - 🔴 **#1386 criterion 3** — re-runs at **MVP close**. ⚠️ **CORRECTED 09-09 16:17, three hours after I
   wrote it**: I recorded *"fell 52 → 46 today… the trigger is days away, not weeks."* **It is 49 now —

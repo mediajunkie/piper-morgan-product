@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-09 ~16:35 PDT (Fire 5 / WORK, complete)
+**Updated**: 2026-09-09 ~19:35 PDT (Fire 6 / WORK, complete)
 **Session log**: `dev/2026/09/09/2026-09-09-0609-docs-code-log.md` (open; started PM-initiated pre-cron).
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.

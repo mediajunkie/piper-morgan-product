@@ -100,7 +100,13 @@ async def test_status_query_empty_projects(handlers):
 
         # Should provide helpful message
         assert "configure" in response["message"].lower() or "set up" in response["message"].lower()
-        assert response.get("action_required") == "configure_projects"
+        # 1637: this used to pin action_required == "configure_projects" — the
+        # pre-ADR-059 contract, where empty projects triggered an interactive
+        # onboarding offer. ADR-059 put onboarding on ice: the empty-projects
+        # branch now returns a simple floor response flagged generic (#908),
+        # deliberately WITHOUT an action_required. Pin that.
+        assert response.get("is_generic_response") is True
+        assert response.get("action_required") is None
 
 
 @pytest.mark.asyncio
