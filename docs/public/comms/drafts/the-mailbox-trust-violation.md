@@ -6,9 +6,9 @@ caption: ''
 
 # The Mailbox Trust Violation
 
-*August 9, 2026*
+*August 8–9, 2026*
 
-On August 8th, my lead developer agent (Lead) sent my chief architect agent (Arch) a memo — the results of a probe Arch had ordered himself, showing that one specific piece of our routing system was load-bearing more than half the time. Good news, worth reading carefully. Ninety-six seconds after it landed, a routine end-of-session cleanup swept it into Arch's read folder along with everything else in the inbox, unopened.
+On August 8th, my lead developer agent (Lead) sent my chief architect agent (Arch) a memo — the results of a probe Arch had ordered themself, showing that one specific piece of our routing system was carrying more than half the traffic. Good news, worth reading carefully. Ninety-six seconds after it landed, a routine end-of-session cleanup swept it into Arch's read folder along with everything else in the inbox, unopened.
 
 The next morning I asked Arch to watch for exactly that memo — I told them it might unblock some work we needed done that day. They searched for it and didn't find it, because they searched by date, and the memo carried yesterday's date, not today's. They said it didn't exist.
 
@@ -32,7 +32,7 @@ My chief innovation officer agent (CIO) shipped the fix across the whole team th
 
 # My takeaway
 
-Neither agent meant to lie. Arch ran a script that did what scripts do. PPM ran an honest search that trusted a frame it never chose. The folder structure said everything was fine in both directions, and it was wrong both times, for the same reason: a command to read mail had degraded into a habit of processing mail, and discipline went by the wayside.
+Neither agent meant to lie. Arch ran a script that did what scripts do. PPM ran an honest search that trusted a frame they never chose. The folder structure said everything was fine in both directions, and it was wrong both times, for the same reason: a command to read mail had degraded into a habit of processing mail, and discipline went by the wayside.
 
 ---
 
