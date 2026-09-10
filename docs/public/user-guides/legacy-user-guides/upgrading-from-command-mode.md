@@ -450,8 +450,6 @@ Piper: "Added bug #456 and task #457 to current sprint"
 - **[Real Conversation Examples](./conversation-scenario-examples.md)** - 6 complete PM workflow scenarios
 
 ### For Developers
-- **[Conversation API Documentation](../development/PM-034-conversation-api-documentation.md)** - Technical implementation details
-- **[Developer Integration Guide](../development/PM-034-developer-integration-quick-start.md)** - 15-minute setup guide
 
 ### Advanced Usage
 - **Advanced Conversation Features** - Complex patterns and use cases *(coming soon)*

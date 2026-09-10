@@ -395,7 +395,6 @@ Confidence: 0.0
 - [Understanding Anaphoric References](./understanding-anaphoric-references.md)
 - [Conversation Memory and Context](./conversation-memory-guide.md)
 - [Upgrading from Command Mode](./upgrading-from-command-mode.md)
-- [API Documentation](../development/PM-034-conversation-api-documentation.md)
 - [Report an Issue](https://github.com/your-repo/issues)
 
 ---

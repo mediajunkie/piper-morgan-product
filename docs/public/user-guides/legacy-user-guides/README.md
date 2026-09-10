@@ -40,7 +40,6 @@ Start here for a complete 15-minute introduction:
 | Resource                                                                          | Purpose                                  | Audience        |
 | --------------------------------------------------------------------------------- | ---------------------------------------- | --------------- |
 | **[Conversation Examples](./conversation-scenario-examples.md)**                  | Real conversation scenarios and patterns | All users       |
-| **[API Documentation](../development/PM-034-conversation-api-documentation.md)**  | Technical implementation details         | Developers      |
 | **[Performance Validation](../development/pm034-phase3-readiness-assessment.md)** | System performance metrics               | Technical users |
 
 ---
@@ -141,8 +140,6 @@ Start here for a complete 15-minute introduction:
 
 ### Technical Resources
 
-- [API Documentation](../development/PM-034-conversation-api-documentation.md)
-- [Developer Integration Guide](../development/PM-034-developer-integration-quick-start.md)
 - [Performance Validation](../development/pm034-phase3-readiness-assessment.md)
 
 ### Support
@@ -186,8 +183,6 @@ Choose your path:
 **[🔄 Existing User? Upgrade Here](./upgrading-from-command-mode.md)**
 
 **[📖 Want Examples? See Scenarios](./conversation-scenario-examples.md)**
-
-**[🔧 Technical Details? API Docs](../development/PM-034-conversation-api-documentation.md)**
 
 ---
 
