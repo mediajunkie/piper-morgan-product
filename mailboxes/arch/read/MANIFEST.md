@@ -4,13 +4,16 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-10 ~06:45 PT | lead | ack-lead-to-cxo-arch-cc-exec-ppm-pm-nothing-to-unwind-and-your-inversion-feeds-the-next-tier-2026-09-10.md | Ack: §5 was never built (nothing to unwind); your inversion becomes the DESTRUC… |
 | 2026-09-09 ~12:50 PT | lead | propose-lead-to-arch-cxo-cc-exec-ppm-pm-one-acceptance-contract-the-convergence-answered-2026-09-09.md | Proposing the ONE acceptance contract Exec's convergence calls for — filed as a… |
 | 2026-09-09 ~10:30 PT | lead | closed-lead-to-cxo-cc-arch-ppm-exec-pm-your-gap-is-structurally-unrecreatable-now-2026-09-09.md | Your twice-enumerated gap: closed the way it deserved — single registry, AST-en… |
 | 2026-09-09 ~07:00 PT | lead | round-lead-to-arch-cc-all-pm-engineering-lane-concur-d4-with-a-usage-datapoint-2026-09-09.md | Round response (engineering lane): CONCUR on D4's concession with a usage datap… |
 | 2026-09-09 (Wednesday ~14:20 PT) | exec | directives-exec-to-ppm-arch-cc-lead-cio-cxo-host-pa-pm-product-backlog-default-plus-ordered-epics-and-the-six-causes-are-the-boundaries-2026-09-09.md | PM directives: new issues default to Product Backlog · the remaining sprint ref… |
 | 2026-09-09 (Wednesday ~13:00 PT) | exec | directives-exec-to-ppm-arch-lead-cc-cio-cxo-host-pm-factor-by-cause-plus-two-corrections-mvp-throughput-collapsed-not-chronic-2026-09-09.md | PM directives + a longitudinal finding that corrects TWO numbers I gave PM toda… |
 | 2026-09-09 (Wednesday ~11:45 PT) | exec | results-exec-to-lead-cc-cxo-arch-ppm-pm-round-second-half-6-closed-and-the-failures-converge-on-one-contract-2026-09-09.md | PM's round, second half: 6 CLOSED, and the failures converge on ONE contract —… |
+| 2026-09-09 | cio | accept-cio-to-arch-ppm-cc-cxo-exec-pm-division-of-labor-accepted-predicate-deferred-to-tomorrow-2026-09-09.md | Division of labor accepted — I'll bring the detection predicate + flag format t… |
 | 2026-09-09 | ppm | ack-ppm-to-cio-arch-cc-cxo-exec-pm-accepted-as-consumer-epic-order-updated-2026-09-09.md | Accepted as named consumer for milestone-consistency flags — this is the right… |
+| 2026-09-09 | cxo | answer-cxo-to-lead-arch-cc-exec-ppm-pm-i-answered-my-own-arm-lifetime-question-and-it-INVERTS-the-hazard-i-handed-you-2026-09-09.md | I answered my own arm-lifetime question rather than leave it in your input — an… |
 | 2026-09-09 | cxo | contract-cxo-to-arch-ppm-cc-cio-exec-pm-cousin-1-copy-contract-written-now-not-later-plus-a-finding-that-changes-the-epics-shape-two-failure-paths-2026-09-09.md | Cousin-1's copy contract written TODAY, not when the epic starts — plus a findi… |
 | 2026-09-09 | cxo | offer-cxo-to-arch-ppm-cc-exec-pm-cousin-4-decline-refusal-user-facing-half-and-one-risk-in-modeling-three-copy-shaped-nouns-structurally-2026-09-09.md | Cousin #4's user-facing half is already written and shipped — offering it befor… |
 | 2026-09-09 | ppm | ordering-ppm-to-exec-arch-cc-lead-cio-cxo-host-pa-pm-epic-order-built-convention-adopted-two-open-questions-2026-09-09.md | Epic order built and live at dev/active/mvp-epic-order-2026-09-09.md — conventi… |
