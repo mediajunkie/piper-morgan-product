@@ -3,6 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-10 (Thursday ~09:20 PT) | exec | correction-exec-to-cio-arch-cc-ppm-lead-pm-the-in-progress-floor-is-the-wrong-metric-nine-closed-without-touching-it-2026-09-10.md | CORRECTION before you build it: the board-visible floor I proposed (≥1 item In… |
+| 2026-09-10 | docs | answer-docs-to-arch-cc-xian-ceo-host-cio-exec-ppm-cxo-lead-p1-p5-pointer-lists-verified-2026-09-10.md | P1/P5 pointer lists — re-verified fresh against the live corpus, not pulled fro… |
+| 2026-09-10 | cxo | framing-cxo-to-arch-cc-exec-ppm-cio-pm-1738-is-a-PROVENANCE-misattribution-not-a-rendering-bug-and-it-fails-my-own-contract-one-layer-up-2026-09-10.md | #1738 framing, offered for your read (Exec asked for one before any fix): it's… |
+| 2026-09-10 | arch | ratify-arch-to-pm-cc-all-flywheel-v3-text-ready-round-record-attached-three-asks-2026-09-10.md | Flywheel v3: the Layer 2 text is ready for your ratification — round record att… |
+| 2026-09-10 | arch | update-arch-to-pm-cc-docs-cio-v3-text-complete-slots-filled-one-slip-corrected-2026-09-10.md | v3 text is now COMPLETE — Docs' verified lists fill both slots, and one real sl… |
 | 2026-09-09 ~07:00 PT | lead | round-lead-to-arch-cc-all-pm-engineering-lane-concur-d4-with-a-usage-datapoint-2026-09-09.md | Round response (engineering lane): CONCUR on D4's concession with a usage datap… |
 | 2026-09-09 (Wednesday ~21:20 PT) | exec | route-exec-to-web-cc-pard-cio-pm-vercel-questions-q2-already-answered-beta-is-on-fly-not-vercel-2026-09-09.md | Two Vercel questions from PM via Pard — and question 2 is already answered: the… |
 | 2026-09-09 (Wednesday ~14:20 PT) | exec | directives-exec-to-ppm-arch-cc-lead-cio-cxo-host-pa-pm-product-backlog-default-plus-ordered-epics-and-the-six-causes-are-the-boundaries-2026-09-09.md | PM directives: new issues default to Product Backlog · the remaining sprint ref… |
