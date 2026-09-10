@@ -1,75 +1,42 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-09 ~22:35 PDT (Fire 7 / WORK, LAST FIRE OF TODAY — omnibus in progress)
-**Session log**: `dev/2026/09/09/2026-09-09-0609-docs-code-log.md` (open; started PM-initiated pre-cron).
+**Updated**: 2026-09-09 ~23:45 PDT (Day genuinely closed)
+**Session log**: `dev/2026/09/09/2026-09-09-0609-docs-code-log.md` — `<!-- DAY-CLOSED: 2026-09-09 -->` present.
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
 
-## Today so far: Weekly Ship #059 published + syndicated, both legs
+## Day closed clean — headline: Ship #059 published+syndicated, figure/figcaption closed, flywheel round closed
 
-PM-initiated pre-cron ask to publish today's Ship. Proofread clean (independently verified, not
-just trusted Comms' report); one real timing snag — the first "200 OK" was a stale cached
-not-found fallback, resolved with more propagation wait, confirmed live via actual content check.
-LinkedIn leg (the whole syndication obligation for `ship` theme) landed same-morning, calendar
-updated to `distributed`. Self-caught a real triage lapse: forgot to move Comms' original
-PUBLISH-READY memo to `read/` after acting on it directly — fixed at the next fire's mail loop,
-exactly the failure shape my own standing lesson already named.
+Published and syndicated Weekly Ship #059 (PM-initiated pre-cron) — caught a real deploy-
+propagation false-negative (a stale-cached "not found" page behind a live 200) via an actual
+content check rather than trusting status alone, LinkedIn leg confirmed and recorded. Closed out
+a cross-project accessibility proposal (`<figure>`/`<figcaption>` markup) same-day: investigated
+the real mechanism (source-adjacency, not renderer drift), sent Web a concrete spec, then
+independently verified their implementation by reading the diff and running the test suite myself
+(21/21 passing) rather than trusting the report. The multi-day Excellence Flywheel re-evaluation's
+challenge round also closed today — verified directly that Arch's v3.0.2 genuinely fixed the
+enforcement table this time (yesterday's v3.0.1 only patched a footer note), with the final
+ratification text deliberately deferred to a fresh session on a named trigger.
 
-**Two real gotchas from today, added to Standing practices below**: (1) a commit combining a
-`git mv`-staged rename with separately-staged modifications can silently commit only the rename
-— now observed twice, always verify `git status` after committing, not just a clean exit; (2) a
-live page's 200 status can be a stale cached not-found fallback — always do a real content check.
+Today's omnibus (`docs/omnibus-logs/2026-09-09-omnibus-log.md`, 578 lines, HIGH-COMPLEXITY:
+COORDINATION, 14 sessions/12 roles) went through a genuine second-compression-pass audit — first
+draft was 8.2x compressed against source (well under-compressed), second pass nearly doubled word
+count with real sourced detail. Both highest-stakes claims verified directly against primary
+files before trusting the report. Omnibus (`c9dd4fc99`) and activity-log reconciliation
+(`0e0ec365f`) both pushed.
+
+**Two real gotchas recorded this week, in Standing practices below**: (1) a commit combining a
+`git mv`-staged rename with separately-staged modifications can silently commit only the rename —
+observed twice, always verify `git status` after committing; (2) a live page's 200 status can be
+a stale cached not-found fallback — always do a real content check, not just a status check.
 
 **Watch, not chase**: Ship #058's own calendar row has `canonicalSite=distributed` with an empty
-`linkedinURL` — a pre-existing data gap noticed in passing, out of scope for today's task.
-
-## IN PROGRESS: today's omnibus (background agent dispatched, awaiting completion)
-
-This is the day's last fire. Everything else drained (empty mail, both worktrees synced,
-merge-keeper clean). 14 session logs today across 12 roles (3 separate `prog` delegations).
-Dispatched today's omnibus, flagged: today's own publish+syndication+accessibility thread,
-the 3 prog delegations to read individually, and whether the flywheel challenge round (stated to
-close 09-09 EOD) actually concluded. **NEXT ACTION when it completes**: personally audit (line
-count, spot-check against direct knowledge, discrepancy handling) before committing. Then commit,
-run Step 10.5 CSV reconciliation (expect +14 rows), add `<!-- DAY-CLOSED: 2026-09-09 -->`.
-
-## `<figure>`/`<figcaption>` markup proposal — CLOSED, both halves shipped same day
-
-Dispatch-PM proposed standardizing captioned-image markup (real accessibility gap + a documented
-07-16 incident). Investigated the in-body-teaser half's actual mechanism (source-adjacency, not
-renderer drift), sent Web a concrete spec. Web implemented it same day (`5cb3a93`), reusing the
-file's existing detector conventions, added 2 regression-suite entries. Verified independently —
-read the actual diff and ran the 21-entry test suite myself, all pass. Both halves done (hero
-`fbfe813`, in-body `5cb3a93`). Nothing further owed.
-
-**Note for future mail loops**: the original proposal never actually landed in my own inbox
-despite being cc'd (found it by reading Web's `read/` folder directly) — worth a light watch for
-whether this is a one-off or a cross-project cc
-delivery gap worth flagging if it recurs.
-
-## Day closed clean — headline: full flywheel re-evaluation arc + a real publish, same day
-
-Published "More Than Anyone Ever Reported to Me" (PM-initiated pre-cron), self-healed a dead cron
-(Gap-C), fixed a real syndication-metadata gap. Sent an independent Q2 read for the PM-approved
-Excellence Flywheel re-evaluation — verified as one of the exercise's genuine three-way
-independent convergences (Practice 3's rewrite). Caught and corrected a real misattribution (D5)
-before it reached PM. Today's omnibus (`docs/omnibus-logs/2026-09-08-omnibus-log.md`, 483 lines,
-HIGH-COMPLEXITY:COORDINATION) covered the full same-day flywheel arc (kickoff → 5 independent
-reads → 7-decision synthesis → active challenge round → v3.0.1 amendments → a still-unresolved
-finding that the amendments landed only in a footer, not the enforcement table itself — audited
-and confirmed accurate by reading the primary file directly) plus a 6-role PM-test-round fix
-chain. Clean first-pass audit this time (unlike the prior two days, no second compression round
-needed). Omnibus (`85f4de376`) and activity-log reconciliation (`cd5c52b6a`) both pushed.
+`linkedinURL` — a pre-existing data gap noticed in passing. A cross-project cc-delivery gap (the
+figure/figcaption proposal never landed in my own inbox despite being cc'd) — worth a light watch
+for recurrence, not yet worth escalating on one instance.
 
 **First action next fire (06:57 tomorrow)**: sync, mail loop (raw `ls`), omnibus currency check
-(should read 09-08 as "yesterday," correct), heartbeat step. Watch for the flywheel challenge
-round closing (09-09 EOD) and whether the table-vs-footer finding gets resolved — not mine to fix,
-just worth checking if it lands in v3's final text before it goes to PM.
-
-**New cohort-wide standing rule (Exec, PM-ratified 2026-09-06, still in force)**: probes/
-experiments under ~25 API calls proceed without PM asking first; report the actual cost with the
-result. Production data, live-user-in-the-loop, and never-used-before vendors stay asks regardless
-of size. Low relevance to Docs' typical work but noted in case it ever applies.
+(should read 09-09 as "yesterday," correct), heartbeat step, otherwise genuinely open floor.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
