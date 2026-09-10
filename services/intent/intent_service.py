@@ -49,7 +49,6 @@ from services.intent_service.pre_classifier import MultiIntentResult
 from services.intent_service.soft_invocation import (
     SoftInvocationDetector,
     WorkflowOfferService,
-    detect_confirm_response,
     detect_offer_response,
 )
 from services.intent_service.todo_handlers import TodoIntentHandlers
@@ -292,6 +291,7 @@ class IntentService:
         user_id: Optional[str] = None,
         formality_baseline: Optional[float] = None,
         off_topic_prefix: Optional[str] = None,
+        restate_suffix: Optional[str] = None,
     ) -> "IntentProcessingResult":
         """
         Issue #767: Check for soft invocation opportunity and append offer.
@@ -314,6 +314,12 @@ class IntentService:
                 with no acknowledgment. Applied here so every funneled return
                 carries it; the end-of-method prepend still covers the
                 fall-through path.
+            restate_suffix: #1739 (CXO arm-survival ruling, contract §5a/§5b)
+                — the CONFIRM-tier state-question restatement: the armed ask
+                re-rendered in one clause AFTER the turn's answer ("Answer it
+                truthfully, then restate the armed offer in one clause" —
+                contract §3). Applied here so every funneled return carries
+                it; the end-of-method application covers the fall-through.
 
         Returns:
             Modified result with offer appended, or original result unchanged
@@ -322,6 +328,16 @@ class IntentService:
             result = IntentProcessingResult(
                 success=result.success,
                 message=f"{off_topic_prefix}\n\n{result.message}",
+                intent_data=result.intent_data,
+                workflow_id=result.workflow_id,
+                requires_clarification=result.requires_clarification,
+                suggestions=result.suggestions,
+                preferences=result.preferences,
+            )
+        if restate_suffix and result.message:
+            result = IntentProcessingResult(
+                success=result.success,
+                message=f"{result.message}\n\n{restate_suffix}",
                 intent_data=result.intent_data,
                 workflow_id=result.workflow_id,
                 requires_clarification=result.requires_clarification,
@@ -1046,6 +1062,15 @@ class IntentService:
 
             # Issue #899: Off-topic pause message prefix (set by guided process check)
             off_topic_prefix = None
+            # #1739 (CXO arm-survival ruling §5a/§5b): the CONFIRM-tier
+            # state-question restatement — the armed ask re-rendered in one
+            # clause, appended to whatever answers the turn. Rides the same
+            # two application points as off_topic_prefix (the
+            # _apply_soft_offer funnel + the end-of-method application), with
+            # the same coverage residue: early returns that bypass both
+            # (guided process, resume, standup) drop it — accepted parity
+            # with #899, noted here so nobody rediscovers it as a bug.
+            _pending_ask_restate = None
 
             # Issue #838: Load formality baseline from PersonalityProfile
             # Must load early — needed by pending offer handling and soft offer detection.
@@ -1286,28 +1311,94 @@ class IntentService:
                     CONFIRM_PENDING_ACTION_WORKFLOW,
                 )
 
-                # #1739: READ-tier kinds at this seam consult THE acceptance
-                # predicate (Arch condition (b): adopt by EffectClass
-                # ascending — READ first). A STATE_QUESTION verdict RE-ARMS
-                # the offer and lets normal processing answer the question —
-                # the arm survives a state query instead of being consumed
-                # (the #1617 direction) or silently dropped by the pop (CXO
-                # ruling: a question is a different speech act, not a failed
-                # acceptance). Non-READ kinds keep their documented legacy
-                # detectors unchanged, tracked by the #1739 ratchet.
+                # #1739: THE acceptance predicate at this seam, both tiers
+                # (Arch condition (b), EffectClass ascending: READ kinds
+                # adopted 2026-09-09; the DESTRUCTIVE-adjacent #1650 CONFIRM
+                # carrier adopted 2026-09-10). A STATE_QUESTION verdict at a
+                # READ kind RE-ARMS the offer silently and lets normal
+                # processing answer the question — the arm survives a state
+                # query instead of being consumed (the #1617 direction) or
+                # silently dropped by the pop (CXO ruling: a question is a
+                # different speech act, not a failed acceptance). Remaining
+                # non-READ generic kinds keep their documented legacy
+                # detector unchanged, tracked by the #1739 ratchet (their
+                # adoption is blocked on the LOW-tier vocabulary tightening,
+                # CXO-owned).
                 _offer_survived_state_question = False
                 _wf_type = pending_offer.get("workflow_type")
-                if _wf_type == CONFIRM_PENDING_ACTION_WORKFLOW:
-                    response_type = detect_confirm_response(message)
-                else:
-                    from services.intent_service.acceptance import (
-                        AcceptanceVerdict,
-                        declared_axes_for_workflow,
-                        evaluate_acceptance,
-                    )
-                    from services.shared_types import EffectClass as _EC
+                from services.intent_service.acceptance import (
+                    AcceptanceVerdict,
+                    declared_axes_for_workflow,
+                    evaluate_acceptance,
+                )
+                from services.shared_types import EffectClass as _EC
 
-                    _axes = declared_axes_for_workflow(_wf_type)
+                _axes = declared_axes_for_workflow(_wf_type)
+                if _wf_type == CONFIRM_PENDING_ACTION_WORKFLOW:
+                    # #1739 (adopted 2026-09-10): the CONFIRM carrier consults
+                    # THE predicate directly, threading the carrier's
+                    # REGISTRY-DECLARED axes (confirm_pending_action:
+                    # DESTRUCTIVE/PRIVATE → the NAMED_OBJECT bar — crisp
+                    # full-message accepts only, the #1650 vocabulary) and
+                    # the arm-site's stored ask (#1665). An accept against a
+                    # record with NO rendered ask is REFUSED by the predicate
+                    # (Arch condition (a): the user cannot confirm what
+                    # cannot be quoted back to them). Per-pending-action axis
+                    # threading is deliberately NOT done here: a consent_check
+                    # riding this carrier for a WRITE×PRIVATE action would
+                    # drop to the LOW_CEREMONY bar, whose vocabulary still
+                    # carries the #1631 greedy rows — tightening it first is
+                    # CXO-owned #1739 work; until then every kind on this
+                    # carrier accepts at the CONFIRM bar exactly as #1650
+                    # shipped it.
+                    _verdict = evaluate_acceptance(
+                        message,
+                        effect=_axes[0] if _axes else _EC.DESTRUCTIVE,
+                        outwardness=_axes[1] if _axes else None,
+                        armed_question=pending_offer.get("question"),
+                    )
+                    if _verdict is AcceptanceVerdict.STATE_QUESTION:
+                        # CXO's arm-survival ruling (contract doc §5a/§5b,
+                        # 2026-09-10): a CONFIRM-tier arm never SILENTLY
+                        # survives — consent has a freshness property a
+                        # draft offer doesn't. The state question is
+                        # answered by normal processing, and the stored ask
+                        # is RE-RENDERED in the same reply (restated in one
+                        # clause via the same application rail as the #899
+                        # prefix); the re-render is itself a new ask, so it
+                        # ARMS (§5b) and the next "yes" binds to an ask the
+                        # user saw THIS turn. With no stored ask there is
+                        # nothing to restate — the pop stands (a confirm
+                        # whose object slot is empty can be neither accepted
+                        # nor re-rendered, contract §3).
+                        response_type = None
+                        _stored_ask = pending_offer.get("question")
+                        if _stored_ask:
+                            self.workflow_offer_service.set_pending_offer(
+                                session_id, pending_offer, user_id=user_id
+                            )
+                            _pending_ask_restate = f"Still pending: {_stored_ask}"
+                            _offer_survived_state_question = True
+                            self.logger.info(
+                                "confirm_state_question_ask_rerendered",
+                                workflow_type=_wf_type,
+                                kind=_vi_payload.get("kind"),
+                                session_id=session_id,
+                            )
+                        else:
+                            self.logger.warning(
+                                "confirm_state_question_no_stored_ask",
+                                workflow_type=_wf_type,
+                                kind=_vi_payload.get("kind"),
+                                session_id=session_id,
+                            )
+                    elif _verdict is AcceptanceVerdict.ACCEPT:
+                        response_type = "accept"
+                    elif _verdict is AcceptanceVerdict.DECLINE:
+                        response_type = "decline"
+                    else:
+                        response_type = None
+                else:
                     if _axes is not None and _axes[0] == _EC.READ:
                         _verdict = evaluate_acceptance(
                             message,
@@ -1891,6 +1982,7 @@ class IntentService:
                             user_id=user_id,
                             formality_baseline=formality_baseline,
                             off_topic_prefix=off_topic_prefix,
+                            restate_suffix=_pending_ask_restate,
                         )
                     except Exception as e:
                         # Graceful fallback: process primary intent only
@@ -2135,6 +2227,7 @@ class IntentService:
                     user_id=user_id,
                     formality_baseline=formality_baseline,
                     off_topic_prefix=off_topic_prefix,
+                    restate_suffix=_pending_ask_restate,
                 )
 
             # Issue #286: Handle canonical intents (PORTFOLIO, EXECUTION, STATUS, etc.)
@@ -2175,6 +2268,7 @@ class IntentService:
                         user_id=user_id,
                         formality_baseline=formality_baseline,
                         off_topic_prefix=off_topic_prefix,
+                        restate_suffix=_pending_ask_restate,
                     )
 
                 # Issue #595: Add greeting prefix if multi-intent with greeting detected
@@ -2275,6 +2369,7 @@ class IntentService:
                     user_id=user_id,
                     formality_baseline=formality_baseline,
                     off_topic_prefix=off_topic_prefix,
+                    restate_suffix=_pending_ask_restate,
                 )
 
             # Issue #883 + #1094: workflows are no longer pre-created. Handlers
@@ -2521,6 +2616,7 @@ class IntentService:
                         user_id=user_id,
                         formality_baseline=formality_baseline,
                         off_topic_prefix=off_topic_prefix,
+                        restate_suffix=_pending_ask_restate,
                     )
 
             # Handle QUERY intents with domain services
@@ -2538,6 +2634,7 @@ class IntentService:
                     user_id=user_id,
                     formality_baseline=formality_baseline,
                     off_topic_prefix=off_topic_prefix,
+                    restate_suffix=_pending_ask_restate,
                 )
 
             # GREAT-4D Phase 1: Handle EXECUTION intents with domain services
@@ -2554,6 +2651,7 @@ class IntentService:
                     user_id=user_id,
                     formality_baseline=formality_baseline,
                     off_topic_prefix=off_topic_prefix,
+                    restate_suffix=_pending_ask_restate,
                 )
 
             # GREAT-4D Phase 2: Handle ANALYSIS intents with domain services
@@ -2570,6 +2668,7 @@ class IntentService:
                     user_id=user_id,
                     formality_baseline=formality_baseline,
                     off_topic_prefix=off_topic_prefix,
+                    restate_suffix=_pending_ask_restate,
                 )
 
             # GREAT-4D Phase 4: Handle SYNTHESIS intents
@@ -2586,6 +2685,7 @@ class IntentService:
                     user_id=user_id,
                     formality_baseline=formality_baseline,
                     off_topic_prefix=off_topic_prefix,
+                    restate_suffix=_pending_ask_restate,
                 )
 
             # GREAT-4D Phase 5: Handle STRATEGY intents
@@ -2602,6 +2702,7 @@ class IntentService:
                     user_id=user_id,
                     formality_baseline=formality_baseline,
                     off_topic_prefix=off_topic_prefix,
+                    restate_suffix=_pending_ask_restate,
                 )
 
             # GREAT-4D Phase 6: Handle LEARNING intents
@@ -2618,6 +2719,7 @@ class IntentService:
                     user_id=user_id,
                     formality_baseline=formality_baseline,
                     off_topic_prefix=off_topic_prefix,
+                    restate_suffix=_pending_ask_restate,
                 )
 
             # GREAT-4D Phase 7: Handle UNKNOWN intents via conversational floor (#907)
@@ -2641,6 +2743,7 @@ class IntentService:
                     user_id=user_id,
                     formality_baseline=formality_baseline,
                     off_topic_prefix=off_topic_prefix,
+                    restate_suffix=_pending_ask_restate,
                 )
 
             # Fallback for truly unhandled categories (should never reach here)
@@ -2686,6 +2789,18 @@ class IntentService:
                 result = IntentProcessingResult(
                     success=result.success,
                     message=f"{off_topic_prefix}\n\n{result.message}",
+                    intent_data=result.intent_data,
+                    workflow_id=result.workflow_id,
+                    requires_clarification=result.requires_clarification,
+                )
+
+            # #1739 (CXO §5a/§5b): append the CONFIRM-tier state-question
+            # restatement on the fall-through path (funneled returns get it
+            # in _apply_soft_offer).
+            if _pending_ask_restate and result.message:
+                result = IntentProcessingResult(
+                    success=result.success,
+                    message=f"{result.message}\n\n{_pending_ask_restate}",
                     intent_data=result.intent_data,
                     workflow_id=result.workflow_id,
                     requires_clarification=result.requires_clarification,

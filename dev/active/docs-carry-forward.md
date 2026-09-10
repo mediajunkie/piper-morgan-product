@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-10 ~07:35 PDT (Fire 1 / START, complete)
+**Updated**: 2026-09-10 ~11:05 PDT (Fire 2 / WORK, complete — dead-link cleanup added)
 **Session log**: `dev/2026/09/10/2026-09-10-0720-docs-code-log.md` (open).
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
@@ -12,8 +12,25 @@ Arch's ratification memo named a concrete ask: P1/P5 "see also" pointer lists fo
 of my 09-08 Q2 mapping), re-verified every candidate entry against the live corpus before citing
 anything in a document about to become canonical, cross-checked for duplication against what P3/
 P4/P5 already claim inline. Sent: P1 → m-07, m-30, m-42, m-16, m-14; P5 → m-23, m-24, m-37
-(alongside the already-present m-45). Nothing further owed — watch for PM's ratification and
+(alongside the already-present m-45).
+
+**Update**: text is now genuinely COMPLETE — verified directly against the live file, not just
+the memo. A side effect worth noting: a discrepancy I mentioned but explicitly declined to press
+(P4's list included m-49 despite my own Monday tracking showing it still under the maturity gate)
+turned out to be a real slip in Arch's draft; Arch found and fixed it, crediting me. Both pointer
+lists confirmed landed exactly as sent. Nothing further owed — watch for PM's ratification and
 CIO's canon edit landing, not mine to chase.
+
+## Today (09-10) Fire 2 — closed #1727 + #1742 (dead links)
+
+Hook flagged a 3-day-old open docs audit residual (#1727, Weekly Docs Audit #1725 residual,
+unassigned). 10 dead links across 8 legacy-user-guides/legacy-getting-started files pointing at 3
+targets confirmed never to have existed in the repo (whole-repo `find` by basename, zero hits).
+Removed per the issue's own recommendation (legacy trees, content never written — proportionate
+fix is removal not restoration). Found an adjacent dead link outside #1727's scoped 3 targets
+while fixing it (`PM-034-developer-integration-quick-start.md`, 3 refs) — filed #1742 rather than
+silently folding it in, fixed in the same commit (`faa10b4f0`) since it's the identical
+remediation. Both closed with evidence comments. Nothing further owed on this.
 
 ## Yesterday (09-09) closed clean — headline: Ship #059 published+syndicated, figure/figcaption closed, flywheel round closed
 

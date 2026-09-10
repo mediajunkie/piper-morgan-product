@@ -572,8 +572,6 @@ User: "Summarize the document"
 
 - **[Getting Started Guide](./getting-started-conversational-ai.md)** - 15-minute user journey
 - **[Real Conversation Examples](./conversation-scenario-examples.md)** - 6 practical scenarios
-- **[PM-034 API Documentation](../development/PM-034-conversation-api-documentation.md)** - Technical reference
-- **[Developer Integration Guide](../development/PM-034-developer-integration-quick-start.md)** - Implementation guide
 
 ### Implementation Dependencies
 

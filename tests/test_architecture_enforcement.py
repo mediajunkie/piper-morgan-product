@@ -2431,9 +2431,9 @@ class TestAcceptanceContractRatchet:
     idiom): migrate a seam onto ``acceptance.evaluate_acceptance`` and remove
     its row in the same commit; never add a row.
 
-    ADOPTION STATUS TABLE (#1739, 2026-09-09 — the bookkeeping Arch asked
-    for; per-seam, most seams below are file-granular here because the scan
-    is file-granular):
+    ADOPTION STATUS TABLE (#1739, updated 2026-09-10 — the bookkeeping Arch
+    asked for; per-seam, most seams below are file-granular here because the
+    scan is file-granular):
 
     ============================================  ======  ==========  =======================
     seam                                          tier    status      input-adequacy (#1665)
@@ -2442,10 +2442,11 @@ class TestAcceptanceContractRatchet:
     generic offer seam, READ kinds (intent_svc)   READ    ADOPTED     "question" on the record
     contextual last_offer binding (intent_svc)    READ    ADOPTED     LastOffer.offer_text
     soft-offer arm site (intent_svc)              READ    ADOPTED     "question" added 09-09
-    confirm-workflow seam (intent_svc:1284)       DESTR   VIA ALIAS   holds ("question" stored)
-    destructive_confirm module residues           DESTR   VIA ALIAS   holds
-    drafted_issue file-confirm residues           W/OUT   VIA ALIAS   holds
-    repo_clarification residues                   W/OUT   VIA ALIAS   holds
+    confirm-workflow seam (intent_svc)            DESTR   ADOPTED     "question" threaded 09-10
+    destructive_confirm module residues           DESTR   ADOPTED     (via the confirm seam)
+    drafted_issue file-confirm decision           W/OUT   ADOPTED     "question" threaded 09-10
+    repo_clarification accept/decline decision    W/OUT   ADOPTED     "question" threaded 09-10
+    generic offer seam, non-READ kinds            W/PRIV  UNADOPTED   blocked: LOW-tier vocab
     reminder time/task turns (todo_handlers)      READ*   UNADOPTED   holds (kind-specific)
     reminder_clear turns                          READ*   UNADOPTED   holds (kind-specific)
     FTUX interview turn (first_contact)           READ    UNADOPTED   holds
@@ -2453,14 +2454,32 @@ class TestAcceptanceContractRatchet:
     onboarding portfolio_handler (own vocab)      WRITE   UNADOPTED   onboarding on ice
     ============================================  ======  ==========  =======================
 
-    VIA ALIAS = the seam consults the predicate through the
-    ``detect_confirm_response`` compatibility alias: contract axes (a)
-    question-guard and (c) prose floor apply; the seam does not yet thread
-    its declared axes + stored ask (LEGACY_UNTHREADED). Full adoption of the
-    DESTRUCTIVE-adjacent seams is deliberately sequenced LAST (Arch
-    condition (b): EffectClass ascending). READ* = the generic-branch
-    residue of those kinds IS adopted; the kind-specific handlers' own
-    detector calls are not.
+    2026-09-10 (DESTRUCTIVE-adjacent adoption, Arch condition (b) complete
+    for the CONFIRM carrier): the confirm-workflow seam, drafted_issue's
+    file-confirm, and repo_clarification's accept/decline all consult
+    ``evaluate_acceptance`` directly, threading registry-declared axes and
+    the arm-site's stored ask; ``detect_confirm_response`` has NO production
+    callers left (it survives in soft_invocation.py as the tested
+    compatibility alias only). The rows still listed for drafted_issue /
+    repo_clarification / intent_service under ``detect_offer_response`` are
+    NOT acceptance decisions: drafted_issue's are vocabulary SHAPE reads
+    (near-accept / near-miss re-ask discrimination — they pick between
+    re-ask copies, nothing fires off them), repo_clarification's is the
+    ``allow_bare_token`` shape read, and intent_service's is the non-READ
+    generic-kind residue whose adoption is BLOCKED on the LOW-tier greedy-row
+    vocabulary tightening (CXO-owned; see
+    test_low_tier_keeps_the_generic_vocabulary_including_its_greedy_residue).
+    READ* = the generic-branch residue of those kinds IS adopted; the
+    kind-specific handlers' own detector calls are not.
+
+    Arm-survival semantics as adopted (CXO ruling 2026-09-10, contract doc
+    §5a/§5b — docs/internal/design/acceptance-contract-user-facing-2026-09-10.md):
+    READ-tier arms survive a state question SILENTLY (re-armed, normal
+    processing answers). CONFIRM-tier arms NEVER survive silently — a state
+    question is answered by normal processing with the stored ask RE-RENDERED
+    in one clause appended to the reply; the re-render is itself a new ask,
+    so it arms, and the next "yes" binds to an ask the user saw THIS turn.
+    No stored ask → nothing to restate → the pop stands.
     """
 
     _CONTRACT_MODULES = (
@@ -2474,11 +2493,14 @@ class TestAcceptanceContractRatchet:
     # Tracking issue for every row: #1739.
     KNOWN_UNADOPTED_DETECTOR_SITES = frozenset(
         {
-            ("services/intent/intent_service.py", "detect_confirm_response"),
+            # 2026-09-10: the three detect_confirm_response rows (this file,
+            # drafted_issue, repo_clarification) shrank out — the
+            # DESTRUCTIVE-adjacent adoption. The remaining
+            # detect_offer_response rows for those files are documented in
+            # the class docstring: shape reads + the blocked non-READ
+            # generic residue, not acceptance decisions.
             ("services/intent/intent_service.py", "detect_offer_response"),
-            ("services/intent_service/repo_clarification.py", "detect_confirm_response"),
             ("services/intent_service/repo_clarification.py", "detect_offer_response"),
-            ("services/intent_service/drafted_issue.py", "detect_confirm_response"),
             ("services/intent_service/drafted_issue.py", "detect_offer_response"),
             ("services/intent_service/todo_handlers.py", "detect_offer_response"),
             ("services/intent_service/reminder_clear.py", "detect_offer_response"),
@@ -2617,8 +2639,29 @@ class TestAcceptanceContractRatchet:
         )
         intent_svc = os.path.join(root, "services", "intent", "intent_service.py")
         with open(intent_svc, encoding="utf-8") as fh:
-            assert "evaluate_acceptance" in fh.read(), (
-                "services/intent/intent_service.py no longer consults "
-                "acceptance.evaluate_acceptance — the READ-tier offer-seam "
-                "adoption (#1739) regressed."
+            intent_src = fh.read()
+        assert "evaluate_acceptance" in intent_src, (
+            "services/intent/intent_service.py no longer consults "
+            "acceptance.evaluate_acceptance — the READ-tier offer-seam "
+            "adoption (#1739) regressed."
+        )
+        assert "detect_confirm_response" not in intent_src, (
+            "services/intent/intent_service.py calls detect_confirm_response "
+            "again — the DESTRUCTIVE-adjacent confirm-seam adoption "
+            "(#1739, 2026-09-10) regressed off the predicate."
+        )
+        for rel in (
+            os.path.join("services", "intent_service", "drafted_issue.py"),
+            os.path.join("services", "intent_service", "repo_clarification.py"),
+        ):
+            with open(os.path.join(root, rel), encoding="utf-8") as fh:
+                src = fh.read()
+            assert "evaluate_acceptance" in src, (
+                f"{rel} no longer consults acceptance.evaluate_acceptance — "
+                "the DESTRUCTIVE-adjacent adoption (#1739, 2026-09-10) "
+                "regressed."
+            )
+            assert "detect_confirm_response(" not in src, (
+                f"{rel} calls detect_confirm_response again — its acceptance "
+                "decision must route through the predicate (#1739)."
             )

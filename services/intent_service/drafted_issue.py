@@ -685,35 +685,73 @@ async def handle_drafted_issue_turn(
     Returns a ``{"message", "intent_data", ...}`` dict when this turn is
     consumed here; ``None`` to fall through to the generic offer flow
     (declines and bare exits drop honestly there via ``decline_message``;
-    off-intent abandons per the carrier's rules).
+    off-intent abandons per the carrier's rules; #1739: a state question
+    falls through so the generic confirm seam can answer it and re-render
+    this draft's open ask in the same reply — CXO's §5a/§5b semantics).
     """
     from services.intent_service.soft_invocation import detect_offer_response
 
     pending_action = pending_offer.get("pending_action") or {}
     file_cmd = detect_file_command(message)
     if file_cmd is None:
-        # #1627: a prose turn that answers the draft's open question BINDS
-        # to the draft. Checked BEFORE the generic accept consult so the
-        # unanchored accept rows ("^please\s", "^yes,?\s") can't file a
-        # half-shaped draft off the front of a long body answer, and
-        # returned BEFORE the off-intent fall-through so no classification
-        # surface (surface 1's greedy portfolio pattern was the live thief)
-        # ever sees body prose. Deliberate exits and explicit commands fall
-        # through exactly as before — the hold is not a turn lock.
-        if is_body_prose_answer(message):
-            return _bind_body_prose(
-                pending_offer,
-                pending_action,
-                message,
-                session_id=session_id,
-                user_id=user_id,
-                intent_service=intent_service,
-            )
-        from services.intent_service.soft_invocation import (
-            detect_confirm_response,
+        # #1739 (adopted 2026-09-10): the file-confirm DECISION routes
+        # through THE acceptance predicate, threading the HELD action's
+        # registry-declared axes (create_issue: WRITE×OUTWARD → the
+        # NAMED_OBJECT bar — the contract's corrected cell: an outward
+        # write accepts at the DESTRUCTIVE-tier bar) and this arm-site's
+        # stored ask (#1665). The remaining detect_offer_response consults
+        # below are vocabulary SHAPE reads (near-accept / near-miss re-ask
+        # discrimination) — they pick between re-ask copies, never whether
+        # anything fires.
+        from services.intent_service.acceptance import (
+            AcceptanceVerdict,
+            declared_axes_for_workflow,
+            evaluate_acceptance,
         )
 
-        if detect_confirm_response(message) != "accept":
+        _axes = declared_axes_for_workflow(pending_action.get("action")) or (None, None)
+        verdict = evaluate_acceptance(
+            message,
+            effect=_axes[0],
+            outwardness=_axes[1],
+            armed_question=pending_offer.get("question"),
+        )
+        if verdict is AcceptanceVerdict.STATE_QUESTION:
+            # Contract §3 + CXO's arm-survival ruling (§5a/§5b): a short
+            # question-form is a state query — never an accept, never a
+            # body bind (pre-adoption it bound as body text, the #1627
+            # documented limit). None hands the turn to the generic
+            # confirm seam, which answers it via normal processing and
+            # RE-RENDERS this draft's open ask in the same reply (visible
+            # re-arm — a CONFIRM-tier arm never survives silently). Long
+            # prose questions are PASS (the predicate's prose floor runs
+            # first) and keep binding as body text — the #1627 bias toward
+            # recoverable binds is unchanged for prose.
+            return None
+        if verdict is not AcceptanceVerdict.ACCEPT:
+            if verdict is AcceptanceVerdict.DECLINE:
+                # Generic decline drops the draft honestly via
+                # decline_message (same destination as the pre-adoption
+                # fall-through for declines).
+                return None
+            # #1627: a prose turn that answers the draft's open question
+            # BINDS to the draft. Checked BEFORE the near-accept consult so
+            # the unanchored accept rows ("^please\s", "^yes,?\s") can't
+            # file a half-shaped draft off the front of a long body answer,
+            # and returned BEFORE the off-intent fall-through so no
+            # classification surface (surface 1's greedy portfolio pattern
+            # was the live thief) ever sees body prose. Deliberate exits
+            # and explicit commands fall through exactly as before — the
+            # hold is not a turn lock.
+            if is_body_prose_answer(message):
+                return _bind_body_prose(
+                    pending_offer,
+                    pending_action,
+                    message,
+                    session_id=session_id,
+                    user_id=user_id,
+                    intent_service=intent_service,
+                )
             # #1650: filing is a CONFIRM — only an anchored, crisp,
             # full-message affirmative (or a taught file phrase, handled
             # above) fires the create. A short turn the greedy generic rows
@@ -721,7 +759,9 @@ async def handle_drafted_issue_turn(
             # think") is a NEAR-ACCEPT: it must neither file (the aside
             # wasn't a yes) nor fall to off-intent (the pop would drop
             # composed work). Re-arm and re-ask — a confirm that neither
-            # confirms nor declines re-asks.
+            # confirms nor declines re-asks. (An accept the predicate
+            # REFUSED for a missing stored ask lands here too: the re-ask
+            # stores _NEAR_ACCEPT_ASK, repairing the record's #1665 slot.)
             if detect_offer_response(message) == "accept":
                 # #1665: this re-ask turn's open question (stored pre-store).
                 pending_offer["question"] = _NEAR_ACCEPT_ASK
@@ -771,7 +811,7 @@ async def handle_drafted_issue_turn(
                     user_id=user_id,
                     intent_service=intent_service,
                 )
-            return None  # decline / bare-exit / explicit command → generic flow
+            return None  # bare-exit / explicit command → generic flow
 
     intent = pending_action.get("intent")
     if intent is None:

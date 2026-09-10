@@ -347,10 +347,13 @@ def detect_confirm_response(message: str) -> Optional[str]:
     (a): a question-form ("are we done with that standup?", "yes?") NEVER
     accepts — and never declines either; it falls to the kind's documented
     off-intent rule (a state query is a different speech act, not a failed
-    acceptance — CXO ruling 2026-09-09). Callers of this alias do not
-    thread their arm-site's stored ask (LEGACY_UNTHREADED); the #1739
-    ratchet lists them as unadopted. New seams call the predicate directly
-    with their declared axes and stored ask.
+    acceptance — CXO ruling 2026-09-09). 2026-09-10: the DESTRUCTIVE-adjacent
+    seams (the confirm-workflow seam, drafted_issue's file-confirm,
+    repo_clarification's accept/decline) adopted the predicate DIRECTLY,
+    threading their declared axes + stored ask — this alias has NO
+    production callers left and survives as the tested compatibility
+    surface only (its LEGACY_UNTHREADED path keeps #1650 behavior for any
+    future stragglers, which the #1739 ratchet would list as unadopted).
 
     Returns "accept", "decline", or None. None means the confirm's
     documented off-intent rule applies — for the #1190 tier the pop already

@@ -462,3 +462,255 @@ class TestReadTierOfferSeamEndToEnd:
         # non-error reply with the offer consumed proves the dispatch.
         assert result.success
         assert _pending_offers(live_service).get(sid) is None
+
+
+# ---------------------------------------------------------------------------
+# 4. The adopted DESTRUCTIVE-adjacent confirm seam (end-to-end, real service)
+#    — #1739 remainder, adopted 2026-09-10 per Arch condition (b) ascending
+#    and CXO's arm-survival ruling (contract doc §5a/§5b:
+#    docs/internal/design/acceptance-contract-user-facing-2026-09-10.md).
+# ---------------------------------------------------------------------------
+
+
+def _github_router_patches(monkeypatch, allow_update=False):
+    """The #1650-suite idiom: explosive by default; update mocked only when
+    the test expects a fire."""
+    from unittest.mock import AsyncMock
+
+    from services.integrations.github.github_integration_router import (
+        GitHubIntegrationRouter,
+    )
+
+    async def _noop_init(self, user_id=None):
+        return None
+
+    async def _available(self):
+        return True
+
+    monkeypatch.setattr(GitHubIntegrationRouter, "initialize", _noop_init)
+    monkeypatch.setattr(GitHubIntegrationRouter, "is_available", _available)
+
+    if allow_update:
+        update_mock = AsyncMock(
+            return_value={
+                "title": "Test issue",
+                "html_url": "https://github.com/x/y/issues/108",
+            }
+        )
+        monkeypatch.setattr(GitHubIntegrationRouter, "update_issue", update_mock)
+        return update_mock
+
+    async def _explosive_update(self, *a, **k):
+        raise AssertionError(
+            "github_router.update_issue FIRED — a destructive mutation "
+            "executed without a crisp confirmed yes (#1739 confirm-seam breach)"
+        )
+
+    monkeypatch.setattr(GitHubIntegrationRouter, "update_issue", _explosive_update)
+    return None
+
+
+_CLOSE_ASK = "Close issue #108? (yes/no)"
+
+
+class TestConfirmSeamAdopted:
+    pytestmark = pytest.mark.asyncio
+
+    async def _arm_close_confirm(self, service, sid, monkeypatch):
+        _github_router_patches(monkeypatch, allow_update=False)
+        result = await service.process_intent(
+            message="close issue #108", session_id=sid, user_id=_USER
+        )
+        assert _CLOSE_ASK in result.message
+        assert _pending_offers(service).get(sid) is not None
+
+    async def test_state_question_rearms_visibly_never_silently(self, live_service, monkeypatch):
+        """CXO's §5a/§5b as implemented: a question-form against an armed
+        DESTRUCTIVE confirm never accepts and never silently drops the arm —
+        the turn falls to normal processing (the explosive boundary proves
+        no seam claimed it) and the offer is RE-ARMED with its verbatim
+        stored ask, because the reply re-renders that ask (the re-render is
+        itself a new ask, so it arms)."""
+        sid = "e2e-1739-confirm-question"
+        await self._arm_close_confirm(live_service, sid, monkeypatch)
+        update_mock = _github_router_patches(monkeypatch, allow_update=True)
+        try:
+            await live_service.process_intent(
+                message="did that work?", session_id=sid, user_id=_USER
+            )
+        except IntentProcessingError as exc:
+            assert "LLM boundary touched" in str(exc) or "INTENT_CLASSIFICATION_FAILED" in str(
+                exc
+            ), str(exc)
+        update_mock.assert_not_awaited()  # a question never fires
+        pending = _pending_offers(live_service).get(sid)
+        assert pending is not None  # visible re-arm (§5b: the re-render arms)
+        assert pending["question"] == _CLOSE_ASK  # verbatim, never re-rendered
+
+    async def test_state_question_reply_restates_the_ask_then_next_yes_fires(
+        self, live_service, monkeypatch
+    ):
+        """The full §5b arc on a deterministic route: the state question is
+        ANSWERED (reminders list) with the armed ask RESTATED in one clause
+        after the answer — never a bare re-prompt (#1579) — and the NEXT
+        crisp yes binds to that re-rendered ask and fires. 'An ambiguous
+        acceptance should cost a turn, not an action.'"""
+        sid = "e2e-1739-confirm-restate"
+        await self._arm_close_confirm(live_service, sid, monkeypatch)
+        update_mock = _github_router_patches(monkeypatch, allow_update=True)
+        result = await live_service.process_intent(
+            message="what reminders do I have?", session_id=sid, user_id=_USER
+        )
+        update_mock.assert_not_awaited()
+        # Answer first, restatement after — one clause, the verbatim ask.
+        assert f"Still pending: {_CLOSE_ASK}" in result.message
+        assert result.message.index("Still pending:") > 0
+        assert _pending_offers(live_service).get(sid) is not None
+        # The next yes binds to the re-rendered ask and fires the close.
+        result2 = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
+        update_mock.assert_awaited_once_with(108, state="closed")
+        assert "Closed issue #108" in result2.message
+        assert _pending_offers(live_service).get(sid) is None
+
+    async def test_accept_refused_when_record_stores_no_ask(self, live_service, monkeypatch):
+        """Arch condition (a) with teeth AT THE SEAM: a carrier record with
+        no rendered ask (#1665 slot empty — a stale or malformed arm) cannot
+        be accepted; the predicate refuses, nothing dispatches, and the pop
+        stands (nothing to restate: 'a confirm whose object slot is empty
+        cannot be accepted', contract §3)."""
+        from unittest.mock import AsyncMock
+
+        from services.intent_service import workflow_dispatcher as _wd
+        from services.intent_service.destructive_confirm import (
+            CONFIRM_PENDING_ACTION_WORKFLOW,
+        )
+
+        sid = "e2e-1739-no-ask"
+        live_service.workflow_offer_service.set_pending_offer(
+            sid,
+            {
+                "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+                # NO "question" key — the input-adequacy gap this refusal exists for.
+                "pending_action": {
+                    "kind": "destructive_action_confirmation",
+                    "action": "close_issue",
+                    "intent": None,
+                    "summary": "close issue #108",
+                },
+                "decline_message": "Okay — I won't close issue #108.",
+            },
+        )
+        explosive_dispatch = AsyncMock(
+            side_effect=AssertionError(
+                "dispatch_workflow ran — an accept was honored against a "
+                "record with no stored ask (#1739 input-adequacy breach)"
+            )
+        )
+        monkeypatch.setattr(_wd, "dispatch_workflow", explosive_dispatch)
+        try:
+            await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
+        except IntentProcessingError as exc:
+            assert "LLM boundary touched" in str(exc) or "INTENT_CLASSIFICATION_FAILED" in str(
+                exc
+            ), str(exc)
+        explosive_dispatch.assert_not_awaited()
+        # No re-arm either: with no stored ask there is nothing to restate.
+        assert _pending_offers(live_service).get(sid) is None
+
+
+# ---------------------------------------------------------------------------
+# 5. The adopted drafted-issue file-confirm decision (handler-level)
+# ---------------------------------------------------------------------------
+
+
+class TestDraftedIssueDecisionAdopted:
+    pytestmark = pytest.mark.asyncio
+
+    def _record(self, question='Say "file it as is" and I\'ll create it.'):
+        from services.intent_service.destructive_confirm import (
+            CONFIRM_PENDING_ACTION_WORKFLOW,
+        )
+
+        record = {
+            "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+            "pending_action": {
+                "kind": "drafted_issue",
+                "action": "create_issue",
+                "intent": None,
+                "summary": 'a drafted issue titled "Login timeout"',
+                "draft": {"title": "Login timeout", "body": "Users get logged out."},
+            },
+            "decline_message": "Okay — I've set that draft aside.",
+        }
+        if question is not None:
+            record["question"] = question
+        return record
+
+    async def test_short_question_diverts_to_the_generic_seam(self):
+        """Pre-adoption a short question mid-flow BOUND AS BODY TEXT (the
+        #1627 documented limit). Adopted: it is a state question — the
+        handler returns None so the generic confirm seam answers it and
+        re-renders the draft's open ask (CXO §5a/§5b). The draft is not
+        touched and nothing files."""
+        from services.intent_service.drafted_issue import handle_drafted_issue_turn
+
+        record = self._record()
+        result = await handle_drafted_issue_turn(
+            record,
+            "is it filed yet?",
+            session_id="sess-1739-di-q",
+            user_id=_USER,
+            intent_service=None,  # must not be touched on this path
+        )
+        assert result is None
+        assert record["pending_action"]["draft"]["body"] == "Users get logged out."
+
+    async def test_long_prose_question_still_binds_as_body(self):
+        """The #1627 bias is UNCHANGED for prose: the predicate's prose
+        floor runs before its question check, so a long interrogative body
+        answer keeps binding (recoverable) instead of routing away."""
+        from unittest.mock import MagicMock
+
+        from services.intent_service.drafted_issue import handle_drafted_issue_turn
+
+        long_question = (
+            "Would it make sense for the body to spell out the three "
+            "reproduction steps we saw yesterday, note that the session "
+            "cookie expires early on mobile Safari specifically, and link "
+            "the support thread where two more users reported it?"
+        )
+        assert len(long_question) >= 160
+        record = self._record()
+        svc = MagicMock()
+        result = await handle_drafted_issue_turn(
+            record,
+            long_question,
+            session_id="sess-1739-di-prose",
+            user_id=_USER,
+            intent_service=svc,
+        )
+        assert result is not None
+        assert "nothing is filed yet" in result["message"].lower()
+
+    async def test_yes_with_no_stored_ask_reasks_and_repairs_the_slot(self):
+        """Input adequacy at this seam degrades HONESTLY: an accept the
+        predicate refused (no stored ask) lands in the near-accept re-ask,
+        which stores its own ask — repairing the record's #1665 slot instead
+        of firing on a confirm the user couldn't quote."""
+        from unittest.mock import MagicMock
+
+        from services.intent_service.drafted_issue import handle_drafted_issue_turn
+
+        record = self._record(question=None)
+        svc = MagicMock()
+        result = await handle_drafted_issue_turn(
+            record,
+            "yes",
+            session_id="sess-1739-di-noask",
+            user_id=_USER,
+            intent_service=svc,
+        )
+        assert result is not None
+        assert "haven't filed anything" in result["message"]
+        assert record.get("question")  # the re-ask repaired the slot
+        svc.workflow_offer_service.set_pending_offer.assert_called_once()

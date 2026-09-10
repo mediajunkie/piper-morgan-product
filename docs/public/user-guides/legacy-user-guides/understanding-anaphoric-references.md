@@ -387,7 +387,6 @@ Performance: 18ms ✅
 - [Conversation Memory and Context](./conversation-memory-guide.md)
 - [Upgrading from Command Mode](./upgrading-from-command-mode.md)
 - [Conversation Examples](./conversation-scenario-examples.md)
-- [API Documentation](../development/PM-034-conversation-api-documentation.md)
 - [Report an Issue](https://github.com/your-repo/issues)
 
 ---
