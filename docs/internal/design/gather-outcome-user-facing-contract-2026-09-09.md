@@ -1,14 +1,14 @@
 ---
 type: copy-contract
 name: GatherOutcome — the user-facing contract (cousin 1's aggregation copy)
-version: v0.1
+version: v0.2 — §5b added 2026-09-10 (provenance must survive rendering; #1738)
 date: 2026-09-09
 owner: CXO
 assigned_by: Arch 2026-09-09 — "cousin 1's aggregation copy (the N-failures→one-sentence rule) is CXO's
   user-facing contract, with the #1717 composition case as its acceptance test"
 applies_to: un-modeled-nouns audit cousin 1 ("an empty-or-degraded answer"); the GatherOutcome epic
 acceptance_test: §6
-last_updated: 2026-09-09
+last_updated: 2026-09-10
 currency_claim: static until the GatherOutcome epic starts; re-verify §5's site survey then
 max_age_days: 60
 ---
@@ -117,6 +117,43 @@ rule.** The composed path already emits one sentence for N topics — so if the 
 succeeding turn, the defect is **§2 reportability** (a failure reported that had no business in that
 answer), not aggregation. 🔴 **I have not identified the site of Exec's observation and am not claiming
 one.** Fixing "aggregation" would leave that case untouched.
+
+## 5b. ⭐ ADDED 2026-09-10 — provenance must survive RENDERING, not just gathering
+
+📄 **#1738, PM live on v70**, is this contract's rule failing one layer above where I wrote it:
+
+> **Piper:** You have **6** archived projects: • Klatch • Test • Test1 • Test2 • Test3 **…and 1 more.**
+> **PM:** what's the sixth one?
+> **Piper:** *"I don't have that detail in front of me right now — **the list I got back only showed five
+> names clearly.**"*
+
+🔴 **The gather was `fresh` and complete — it knew the count was 6 and said so. The RENDERER dropped the
+sixth. The assistant then described its own output as "the list I got back."**
+
+⭐ **That is a false claim about provenance**, and it belongs in this contract even though the defect
+lives in cousin #2's territory: **the model reported a `fresh` slice as though it were partial, because
+its own rendered text had become its evidence about the world.** ⚠️ **Whatever the renderer drops becomes,
+from the assistant's own position, information it never had** — so truncation stops being cosmetic and
+becomes real information loss *inside the turn*.
+
+**The rule this adds:**
+
+> 🔴 **A provenance value is a fact about the SOURCE, and it must survive rendering unchanged. A render
+> cap may shorten what the user sees; it must never change what the system believes it has.**
+
+**Two consequences worth stating because they are cheap and they are not obvious:**
+
+1. ⚠️ **"…and N more" is a claim the assistant must be able to cash.** If it cannot name the N, the
+   honest render is not a truncation — it is *"6 archived projects; here are 5, ask for the rest."*
+   ⭐ **The difference is whether the elision is ours or the data's**, which is precisely §2's
+   distinction applied to display.
+2. **Raising the truncation cap is not a fix.** It moves the boundary; the property survives at the new
+   cap. 📄 Exec said this first — *"'raise the truncation cap' would treat the symptom and leave the
+   property"* — and I'm recording agreement, not discovering it.
+
+🔴 **I am NOT proposing the fix.** Whether provenance rides a structured field, whether the assistant
+should ever read back its own render, and where the renderer sits are Arch's and Lead's. **This section
+says only what the user must be able to trust: that "I don't have it" means we don't have it.**
 
 ## 6. Acceptance test
 
