@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-09 at the 22:17 fire.
+# CXO carry-forward — rewritten 2026-09-10 at the 07:17 START.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -47,7 +47,12 @@ a fact that goes stale, so re-state it whenever you add or remove a row**). ⚠�
 my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
 shipped the per-file count specifically so this is visible without building a control.
 
-⚠️ **Never regex-edit the tracker.** Hand-edit, then re-run and confirm the count moved as expected.
+🔴 **NEVER regex-edit the tracker — and the ROW COUNT IS NOT A VALIDATOR.** I broke it again on 09-10
+(a scripted rewrite dropped a row's last two columns) and **the count read 8 both before and after**,
+because the scanner counts lines. **Three scripted-edit incidents on that one file in ten days.**
+✅ **Run BOTH checks after any edit** — `aging-standing-items.sh | grep '· cxo:'` **and**
+`awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`). **Use `Edit`, not
+`.replace()`.**
 
 ## 🔴 EVERY OUTBOUND MEMO — route away from Lead by default (PM directive, 2026-09-09)
 
