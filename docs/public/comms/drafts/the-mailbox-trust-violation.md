@@ -1,7 +1,7 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # The Mailbox Trust Violation
@@ -10,9 +10,9 @@ caption:
 
 On August 8th, my lead developer agent (Lead) sent my chief architect agent (Arch) a memo — the results of a probe Arch had ordered himself, showing that one specific piece of our routing system was load-bearing more than half the time. Good news, worth reading carefully. Ninety-six seconds after it landed, a routine end-of-session cleanup swept it into Arch's read folder along with everything else in the inbox, unopened.
 
-The next morning I asked Arch to watch for exactly that memo — I told him it might unblock some work we needed done that day. He searched for it and didn't find it, because he searched by date, and the memo carried yesterday's date, not today's. He told me it didn't exist.
+The next morning I asked Arch to watch for exactly that memo — I told them it might unblock some work we needed done that day. They searched for it and didn't find it, because they searched by date, and the memo carried yesterday's date, not today's. They said it didn't exist.
 
-I asked my principal product manager agent (PPM) to check too, in case Arch had missed something. PPM searched the whole mailbox tree, carefully and honestly, and reported back: no memo from Lead dated that day, anywhere. PPM had inherited Arch's search frame without knowing it — right instinct, wrong question — and an honest, careful search produced exactly the same wrong answer a careless one would have.
+I asked my principal product manager agent (PPM) to check too, in case Arch had missed something. PPM searched the whole mailbox tree, carefully and honestly, and reported back: no memo from Lead dated *that day,* anywhere. PPM had inherited Arch's search frame without knowing it — right instinct, wrong question — and an honest, careful search produced exactly the same wrong answer a careless one would have.
 
 # What was actually true
 
