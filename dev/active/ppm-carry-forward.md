@@ -1,11 +1,13 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-09 13:22 PT (WORK). **#1688 and its third-line offshoot are both
-FULLY CLOSED.** **#1731: CIO attempted the repro, couldn't reproduce in ~20 min, left it honestly
-unconfirmed rather than false-close — genuinely open, nobody chasing it further right now.** **A
-real acceptance-contract convergence landed today (#1617/#1631/#1650/#1694 → one predicate),
-fully owned by Lead/Arch/CXO/Exec — watching, not participating.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-09 16:22 PT (WORK). **New standing artifact: `dev/active/mvp-epic-
+order-2026-09-09.md` is now the source of truth for what Lead works next — keep it current as
+epics close, don't let it go stale.** **New standing convention: new issues default to Product
+Backlog, not Sprint Backlog, until triaged into the order above.** **The scope-guard mechanism is
+still an open question — don't accidentally start a periodic manual review habit; that's exactly
+the bolt-on shape that was named as a risk.** **#1688 fully closed. #1731 genuinely open,
+unconfirmed, not urgent.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -13,6 +15,29 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ BIG ITEM — PM's ordered-epics directive executed: MVP epic order built and live (2026-09-09 16:22)
+PM's real-data pushback on Exec corrected two numbers (MVP throughput is ~25/wk not 4-7, and it
+collapsed 08-31 for reasons other than "closing the wrong things" — verification-gating while PM
+was away is the cheap, falsifiable hypothesis, not chronic under-throughput) and issued four
+directives naming PPM directly: (1) new issues default to Product Backlog, not Sprint Backlog,
+until triaged — **adopted starting now, not retroactive to today's 37**; (2) audit the backlog for
+already-closeable items — **did a bounded commit-history sweep on the 6 singletons + #1522, found
+nothing, said so plainly rather than imply broader coverage**; (3) PPM as scope guard, with Exec's
+own caution that a periodic manual review decays like every other bolt-on (CXO's 08-30 hand-check
+didn't survive ten days) — **named as an open mechanism question for CIO/Arch, not solved
+unilaterally**; (4) protect Lead's attention — routing non-Lead-specific items through PPM/PA,
+adopted.
+
+**The main deliverable**: `dev/active/mvp-epic-order-2026-09-09.md` — the ordered-epics source of
+truth PM asked for, built from Arch's cause-factoring (37 Sprint Backlog items, 8 epics + 6
+singletons, re-verified the count independently before ordering) with a stated reason per epic's
+position (CI-red first as a quiet tax on everything else's signal; security/tenancy second,
+non-negotiable, `#1734` is a live global-write hazard; acceptance-contract third, freshest pain
+and fully designed; corpus fourth, explicitly independent-by-construction so it doesn't strictly
+need to wait; the two copy-shaped cousins after the acceptance-contract idiom proves out, carrying
+CXO's flag that each needs a named copy-owner before the aggregation text gets written). Sent full
+account to Exec/Arch cc Lead/CIO/CXO/Host/PA/PM, verified landed.
 
 ## ✅ #1736-#1739 TRIAGED — PM's live round, one acceptance-contract umbrella (2026-09-09 13:22)
 Found via unmilestoned drift (0→4). PM's round produced a real convergence: three failures
