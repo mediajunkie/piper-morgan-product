@@ -1,12 +1,12 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-10 07:22 PT (START). **`dev/active/mvp-epic-order-2026-09-09.md`
-remains the source of truth for what Lead works next — keep it current as epics close.** **New
-issues default to Product Backlog until triaged into the order.** **Scope-guard: CIO brings the
-detection predicate + flag format at their own START today; PPM is the named consumer, no action
-until it ships.** **Flywheel v3 at PM's ratification step — watching, not participating.** **#1688
-fully closed. #1731 genuinely open, unconfirmed, not urgent.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-10 10:22 PT (WORK). **Epic order is live-tracking real progress** —
+3 closures marked (`#1637`/`#1732`/`#1734`), 2 new findings folded in. **New issues default to
+Product Backlog until triaged into the order.** **Scope-guard: CIO brings the detection predicate
++ flag format at their own START today; PPM is the named consumer, no action until it ships.**
+**Flywheel v3 at PM's ratification step — watching, not participating.** **#1688 fully closed.
+#1731 genuinely open, unconfirmed, not urgent.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -14,6 +14,18 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ EPIC ORDER — real progress reflected, 2 new findings folded in (2026-09-10 10:22)
+Genuine closures landed in the ordered epics: `#1637` (epic 1, CI-red), `#1732`/`#1734` (epic 2,
+security) all CLOSED. Marked in place in `dev/active/mvp-epic-order-2026-09-09.md` rather than
+just deleted, so the record shows what closed and when. Two new findings from fixing `#1732`
+(`#1740` twin-file renderer drift, `#1741` another XSS-adjacent gap outside `#1732`'s chokepoint)
+folded into epic 2 rather than left as unplaced singletons. Added CXO's provenance-vs-rendering
+framing to epic 5 (a render cap may shorten what the user sees, never what the system believes it
+has — argues epics 5/6 share a rule, doesn't reorder either). **General note carried into the
+file**: Exec found the board's In Progress count isn't a reliable in-flight signal (three closures
+this week went Sprint Backlog → Done directly) — don't read a flat In Progress count as "nothing
+moving" when checking this file against live state.
 
 ## 🔵 FLYWHEEL v3 — at PM's ratification step, informational only (2026-09-10 07:22)
 Arch's text is ready (`dev/active/flywheel-v3-layer2-text-2026-09-10.md`), Docs filled their
