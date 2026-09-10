@@ -61,11 +61,22 @@ Deliverable below).
 acceptance contract proving the single-source-predicate idiom on a live seam first, rather than
 inventing a second one in parallel.
 
-⚠️ **CXO's flag, carried forward — one line, not a gate**: this cousin is copy-shaped (the model
-settles what's *true*; the user-facing sentence is a separate artifact — see `#1717`'s own
-standing proof, a correctly-composed turn that still read as a broken-system litany). **Whoever
-scopes this epic's build should name, in the epic issue itself, whose the user-facing contract
-is** (CXO's, by the existing pattern) before writing the aggregation copy, not after.
+✅ **User-facing contract owner named and delivered, ahead of the epic's own position** — CXO,
+`docs/internal/design/gather-outcome-user-facing-contract-2026-09-09.md`, written the same day
+this order was drafted rather than waiting for epic 5's turn (per Arch: *"cousin 1's aggregation
+copy is CXO's user-facing contract, with the #1717 composition case as its acceptance test"* —
+goes in the epic's own description verbatim when it's filed).
+
+🔴 **CXO's read also corrects the epic's shape — this is not "add an aggregation rule."**
+Aggregation for N-failed-slices already exists in ONE of two failure-reporting paths
+(`orchestrator._combine_results`, deterministic string assembly) but not the other (the floor's
+five `*_source_failed` directive sites, which the LLM composes freely). **The epic is "one noun,
+two mechanisms" — thread `GatherOutcome` through the directive path without leaving the composed
+path as a second, differently-honest voice.** CXO's own boundary: this is "two paths located" by
+grep, not "two paths confirmed" — re-run the survey when scoping, don't inherit the count. Also:
+Exec's live "I wasn't able to check" rider on a *succeeding* turn is a reportability defect
+(content that had no business in that answer), not an aggregation defect — fixing aggregation
+alone won't touch it; the site is unidentified.
 
 ### 6. Rendered deliverable (2 items + 2 shared with GatherOutcome/Security) — same reasoning as 5
 `#1729` · shares `#1732` (security) and `#1738` (GatherOutcome).
@@ -100,3 +111,8 @@ read, that's real information — update this file, don't defend the original gr
 ## Change log
 - 2026-09-09 (PPM): first version, built from Arch's factoring + dependency notes + CXO's
   copy-contract flag. 37 items, 8 epics + 6 singletons.
+- 2026-09-09 evening (PPM): epic 5 (GatherOutcome) updated — CXO's copy contract delivered ahead
+  of schedule, and CXO's own read corrects the epic's shape from "add an aggregation rule" to
+  "unify two existing mechanisms." Scope-guard chokepoint (open question in v1) now has a joint
+  CIO+Arch design in progress — GH Action on merge-to-main, PPM named consumer for milestone-
+  consistency flags delivered as mail, advisory-first for two weeks before any required check.

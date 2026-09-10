@@ -45,11 +45,37 @@ class TestFutureEndpoints:
 
         configured = IntentEnforcementMiddleware.NL_ENDPOINTS
 
-        # All potential NL routes should be configured
+        # 1637: known false positives of the keyword heuristic — routes whose
+        # path matches an NL keyword but which take only STRUCTURED input
+        # (typed query/path params, no free text for a classifier). Add here
+        # ONLY with that justification.
+        # - "/query": GET /api/v1/knowledge/query (knowledge_graph.py) —
+        #   node_type/search_term/limit query params, SEC-RBAC-gated graph
+        #   lookup, no NL body. Masked until now by the per-route assert
+        #   aborting at "/intent" first.
+        structured_route_suffixes = {"/query"}
+
+        # All potential NL routes should be configured.
+        # 1637 (two fixes here):
+        # - The regex above captures the DECORATOR path, which for routers
+        #   mounted with a prefix is only the suffix of the real route —
+        #   web/api/routes/intent.py declares @router.post("/intent") on a
+        #   router with prefix="/api/v1", and the middleware (correctly)
+        #   configures the full "/api/v1/intent". Accept a configured endpoint
+        #   whose path ends with the captured suffix; a genuinely unconfigured
+        #   NL route still matches nothing and fails.
+        # - Collect ALL offenders instead of asserting per-route, so one
+        #   failure can't mask the rest.
+        unconfigured = []
         for route in potential_nl_routes:
-            assert (
-                route in configured
-            ), f"Route {route} looks like NL endpoint but not in middleware config"
+            if route in structured_route_suffixes:
+                continue
+            if route not in configured and not any(c.endswith(route) for c in configured):
+                unconfigured.append(route)
+
+        assert (
+            not unconfigured
+        ), f"routes look like NL endpoints but are not in middleware config: {unconfigured}"
 
     def test_no_direct_service_calls_in_routes(self):
         """Web routes should not directly call services for NL processing."""

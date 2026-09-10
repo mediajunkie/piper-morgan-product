@@ -29,12 +29,20 @@ class TestEnforcementIntegration:
         # GREAT-5: Should succeed or auth error, but NOT crash (500)
         assert response.status_code in [200, 401]
 
-    def test_monitoring_endpoint_accessible(self, client):
-        """Admin monitoring should be accessible."""
-        response = client.get("/api/admin/intent-monitoring")
-        assert response.status_code == 200
+    def test_monitoring_endpoint_exists_and_is_gated(self, client):
+        """Admin monitoring endpoint exists — and refuses the unauthenticated.
 
-        data = response.json()
-        assert "middleware_active" in data
-        assert "nl_endpoints" in data
-        assert "exempt_paths" in data
+        1637: this test pinned the pre-#1598 contract (unauthenticated 200).
+        #1598 admin-gated every read on the admin surface, so 401 IS the
+        current contract for this client, which carries no token. The
+        endpoint's payload shape and its admin-side 200 are pinned where the
+        gate lives: tests/unit/web/api/routes/test_admin_readonly_routes_gated_1598.py.
+        What remains this file's concern is that the route is mounted at all
+        (401 from the gate, never 404) — a vanished monitoring endpoint would
+        otherwise hide behind the gate's refusal.
+        """
+        response = client.get("/api/admin/intent-monitoring")
+        assert response.status_code == 401, (
+            f"expected 401 (mounted but gated, #1598) — got {response.status_code}; "
+            "404 would mean the monitoring endpoint is gone, 200 would mean the gate is off"
+        )

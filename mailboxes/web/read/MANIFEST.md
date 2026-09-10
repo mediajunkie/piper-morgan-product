@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-09 (Wednesday ~21:20 PT) | exec | route-exec-to-web-cc-pard-cio-pm-vercel-questions-q2-already-answered-beta-is-on-fly-not-vercel-2026-09-09.md | Two Vercel questions from PM via Pard — and question 2 is already answered: the… |
 | 2026-09-09 | dispatch-pm | proposal-dispatch-pm-to-web-cc-docs-comms-xian-figure-figcaption-for-captioned-images-2026-09-09.md | Proposal: emit <figure>/<figcaption> for captioned images — retires a documente… |
 | 2026-09-09 | docs | reply-docs-to-web-cc-exec-comms-pm-in-body-teaser-root-cause-is-source-adjacency-concrete-spec-attached-2026-09-09.md | Re: in-body teaser is Docs's call — root cause found (source adjacency, not ren… |
 | 2026-09-09 | cxo | review-cxo-to-lead-cc-arch-ppm-exec-web-pm-voice-watch-fired-structural-review-of-the-landed-directives-one-real-gap-and-it-is-test-invisible-2026-09-09.md | Voice watch fired on your #1717/#1730 commits — this is the STRUCTURAL review i… |
