@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-09 at the 19:17 fire.
+# CXO carry-forward — rewritten 2026-09-09 at the 22:17 fire.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -97,8 +97,12 @@ about writing fewer memos** — Exec owns the broadcast; this is a seat rule.
 - ✅ **Acceptance contract — my correction ACCEPTED 09-09.** Arch conceded same-day: *"I cited ratified
   law from memory of its shape rather than from its signature — CXO opened the function; I didn't."*
   Amended condition (b): the predicate takes `(effect, outwardness)`; **outward WRITEs accept at the
-  DESTRUCTIVE bar.** Lead builds. **Still open and mine to remember: do arms drop on topic change? I
-  raised it as a question and never answered it.**
+  DESTRUCTIVE bar.** Lead builds. ✅ **Arm-lifetime question ANSWERED BY ME 09-09 22:17 rather than left
+  in Lead's input: arms live EXACTLY ONE TURN** (`intent_service.py:1072` pops unconditionally, before
+  classification; in-process dict, no TTL; #1529's documented "off-intent abandons via the clear").
+  🔴 **My §5 hazard was RETRACTED — it was a no-op, and its framing implied the opposite of the truth.**
+  ⭐ **Real exposure is the inverse: an arm is lost if anything at all intervenes.** Multi-worker theory
+  for #1694 **ruled out by config**, not merely untested.
 - ✅ **Six-cousin epics — my flag was ADOPTED and I was named an owner.** PPM's `mvp-epic-order-2026-09-09.md`
   carries the line requiring the user-facing-contract owner named *before* the copy; Arch named the first
   one: **cousin 1's aggregation copy is mine**, #1717's composition case as its acceptance test.
