@@ -1,0 +1,148 @@
+<title>In Review round — seven items, two conversations</title>
+<style>
+  :root{--paper:#f2f5f4;--card:#fff;--ink:#15211f;--mute:#5c6b69;--line:#d8e0de;
+    --accent:#0f6e63;--accent-soft:#e2efec;--warn:#8f4820;--warn-soft:#f6ece5;
+    --code-bg:#122120;--code-ink:#d6e6e2;}
+  @media (prefers-color-scheme:dark){:root{--paper:#0e1514;--card:#161f1e;--ink:#e4ecea;--mute:#93a4a1;
+    --line:#26332f;--accent:#54c3b1;--accent-soft:#152a27;--warn:#d99361;--warn-soft:#241a13;
+    --code-bg:#0a1211;--code-ink:#cfe3df;}}
+  :root[data-theme="dark"]{--paper:#0e1514;--card:#161f1e;--ink:#e4ecea;--mute:#93a4a1;--line:#26332f;
+    --accent:#54c3b1;--accent-soft:#152a27;--warn:#d99361;--warn-soft:#241a13;--code-bg:#0a1211;--code-ink:#cfe3df;}
+  :root[data-theme="light"]{--paper:#f2f5f4;--card:#fff;--ink:#15211f;--mute:#5c6b69;--line:#d8e0de;
+    --accent:#0f6e63;--accent-soft:#e2efec;--warn:#8f4820;--warn-soft:#f6ece5;--code-bg:#122120;--code-ink:#d6e6e2;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+  .wrap{max-width:44rem;margin:0 auto;padding:1.5rem 1.1rem 4rem}
+  .eyebrow{font-size:.7rem;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);font-weight:500;margin:0 0 .45rem}
+  h1{font-size:1.55rem;line-height:1.18;margin:0 0 .5rem;text-wrap:balance;letter-spacing:-.015em}
+  .standfirst{color:var(--mute);margin:0;font-size:.97rem}
+  .gate{display:flex;gap:.7rem;background:var(--warn-soft);border:1px solid var(--line);border-left:3px solid var(--warn);
+    border-radius:8px;padding:.8rem .9rem;margin:1.3rem 0 1.6rem;font-size:.92rem}
+  .gate b{color:var(--warn)}
+  .flow{margin:2rem 0 0}
+  .flow-head{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.15rem}
+  .flow-num{flex:0 0 auto;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:var(--paper);
+    font-size:.85rem;font-weight:600;display:flex;align-items:center;justify-content:center}
+  .flow h2{font-size:1.12rem;margin:0;letter-spacing:-.01em}
+  .flow-meta{font-size:.78rem;color:var(--mute);margin:.2rem 0 .7rem 2.3rem}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:.85rem .95rem;margin:0 0 .65rem}
+  .step h3{font-size:.95rem;margin:0 0 .15rem;font-weight:600}
+  .issue{font-size:.72rem;color:var(--mute);margin:0 0 .6rem}
+  .issue .re{color:var(--warn);font-weight:600}
+  .lbl{font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--mute);font-weight:600;margin:.7rem 0 .28rem}
+  .say{background:var(--code-bg);color:var(--code-ink);border-radius:7px;padding:.58rem .72rem;margin:0;
+    font:.86rem/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+  .expect{margin:0;font-size:.93rem}
+  .fail{margin:.28rem 0 0;font-size:.89rem;color:var(--mute)}
+  .fail b{color:var(--warn);font-weight:600}
+  .verdict{display:flex;gap:1rem;margin-top:.8rem;padding-top:.6rem;border-top:1px solid var(--line);flex-wrap:wrap}
+  .verdict label{display:flex;align-items:center;gap:.35rem;font-size:.86rem;color:var(--mute);cursor:pointer;user-select:none}
+  .verdict input{width:1.05rem;height:1.05rem;accent-color:var(--accent);cursor:pointer}
+  .watch{background:var(--accent-soft);border-radius:8px;padding:.7rem .9rem;margin:.6rem 0;font-size:.9rem}
+  .watch b{color:var(--accent)}
+  .closer{margin-top:2rem;padding:1rem;border:1px solid var(--line);border-radius:10px;background:var(--accent-soft);font-size:.93rem}
+  .closer h2{font-size:1rem;margin:0 0 .5rem;font-weight:600}
+  .closer p{margin:0 0 .55rem}.closer p:last-child{margin-bottom:0}
+  footer{margin-top:2rem;color:var(--mute);font-size:.8rem;border-top:1px solid var(--line);padding-top:.9rem}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Seven In Review items in two conversations — one standup and one chat exchange.</h2>
+
+<p class="eyebrow">In Review round · 7 items · 2 conversations · ~12 minutes</p>
+<h1>One standup and one chat exchange clears all seven</h1>
+<p class="standfirst">These cluster tightly — six of the seven live inside a single standup. Two you already failed live on Wednesday; Lead has fixed them since, so they're worth re-running rather than assuming either way.</p>
+
+<div class="gate"><div><b>Shorter than the last one.</b> Roughly twelve minutes if nothing breaks. If something does, stop and tell me — a failure mid-flow is more useful than a completed checklist.</div></div>
+
+<div class="flow">
+<div class="flow-head"><span class="flow-num">1</span><h2>Run one standup, start to finish</h2></div>
+<p class="flow-meta">covers #1623 · #1617 · #1651 · #1625 — answer naturally, in full sentences</p>
+
+<div class="watch"><b>Watch the whole way through:</b> does a "due reminders" block get appended to <em>every</em> reply? Once is right; every turn is <b>#1625</b> — your own note was <em>"reminders are a bit relentless."</em></div>
+
+<div class="step">
+  <h3>Start it and answer with real multi-clause answers</h3>
+  <p class="issue">#1623 — answers used to be stolen mid-interview by other surfaces</p>
+  <p class="lbl">Say this, then answer each question naturally</p>
+  <p class="say">let's do my standup
+
+  ↳ answer at length, e.g.  caught up with Lead, finished today's illustration,
+    and worked through the sprint with Exec</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">Every answer lands in the interview and it moves to the next question.</p>
+  <p class="fail"><b>If it fails:</b> an answer gets eaten — <em>"I can't do that from chat yet"</em> or an unrelated canned reply — and the interview loses that turn.</p>
+  <div class="verdict"><label><input type="checkbox"> All landed</label><label><input type="checkbox"> One stolen</label></div>
+</div>
+
+<div class="step">
+  <h3>If it offers to act on a specific item, accept it</h3>
+  <p class="issue">#1651 · <span class="re">you failed this Wednesday — re-run</span></p>
+  <p class="lbl">If you see something like "mark that overdue todo done?"</p>
+  <p class="say">Yes, mark the overdue todo done.</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">It acts on the specific item it just offered.</p>
+  <p class="fail"><b>If it fails:</b> <em>"I couldn't find a todo matching overdue."</em> It offered the thing, then couldn't find what it meant. <span style="color:var(--mute)">(Skip if no such offer appears.)</span></p>
+  <div class="verdict"><label><input type="checkbox"> Acted</label><label><input type="checkbox"> Lost its referent</label><label><input type="checkbox"> No offer</label></div>
+</div>
+
+<div class="step">
+  <h3>The moment it finishes, give it an unrelated command</h3>
+  <p class="issue">#1617 · <span class="re">you failed this Wednesday — and it FIRED an action on a question</span></p>
+  <p class="lbl">Right after the final summary or "anything else?"</p>
+  <p class="say">show my open issues</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">It does that. First try.</p>
+  <p class="fail"><b>Two failures to watch for.</b> The old one: it re-renders the standup summary and you have to repeat yourself. <b>The worse one from Wednesday:</b> you asked <em>"are we done with that standup?"</em> and it silently marked a todo done — treating a question as consent. <b>If anything gets marked or changed that you didn't ask for, that's the finding.</b></p>
+  <div class="verdict"><label><input type="checkbox"> Clean first try</label><label><input type="checkbox"> Had to repeat</label><label><input type="checkbox"> Acted without consent</label></div>
+</div>
+
+<div class="step">
+  <h3>Read those issue titles</h3>
+  <p class="issue">#1628 — chat listings render titles verbatim, outside the Radar guard</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">Readable titles.</p>
+  <p class="fail"><b>If it fails:</b> a garbage entry — a literal <code>{</code> or similar debris rendered straight through.</p>
+  <div class="verdict"><label><input type="checkbox"> Clean</label><label><input type="checkbox"> Garbage title</label></div>
+</div>
+</div>
+
+<div class="flow">
+<div class="flow-head"><span class="flow-num">2</span><h2>Two questions in one exchange</h2></div>
+<p class="flow-meta">covers #1570 · #1632</p>
+
+<div class="step">
+  <h3>Ask for something you know exists</h3>
+  <p class="issue">#1570 — floor said "no data" while data existed, and leaked scaffolding</p>
+  <p class="lbl">Say this</p>
+  <p class="say">what todos are pending?</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">Your actual pending todos, matching the Todos page — and <strong>no internal annotation</strong> in the reply.</p>
+  <p class="fail"><b>Two failures:</b> "I don't see any todos coming back" while the page shows several — <em>and</em> a literal <code>[Available context: no todo data returned this turn]</code> leaking into the text.</p>
+  <div class="verdict"><label><input type="checkbox"> Data + clean</label><label><input type="checkbox"> Wrong-empty</label><label><input type="checkbox"> Scaffolding leaked</label></div>
+</div>
+
+<div class="step">
+  <h3>Ask what it can do</h3>
+  <p class="issue">#1632 · <span class="re">you failed this Wednesday — outward actions were unmarked</span></p>
+  <p class="lbl">Say this</p>
+  <p class="say">what can you do?</p>
+  <p class="lbl">You should see</p>
+  <p class="expect">Actions that land in front of other people — filing issues, commenting, closing — <strong>marked as such</strong>. "Visible to others," or similar.</p>
+  <p class="fail"><b>If it fails:</b> a flat list where filing a public GitHub issue reads the same as writing a private todo.</p>
+  <div class="verdict"><label><input type="checkbox"> Outwardness shown</label><label><input type="checkbox"> Flat list</label></div>
+</div>
+</div>
+
+<div class="closer">
+  <h2>When you're done</h2>
+  <p>A line each is plenty. I'll close the passes with your verdict as evidence and file the failures with what you actually saw.</p>
+  <p><strong>Flow 1 is worth more than flow 2.</strong> Four issues, and it re-tests the two that failed on you Wednesday — including the one where a question got treated as consent and something changed without you asking.</p>
+</div>
+
+<footer>
+  Built from each issue's own text. All seven are In Review — fixed, awaiting only your verdict. #1617, #1651 and #1632 you failed live on 2026-09-09; Lead has shipped fixes since, so a re-run is a real test rather than a formality.
+</footer>
+</div>
