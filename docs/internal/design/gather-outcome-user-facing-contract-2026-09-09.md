@@ -1,7 +1,7 @@
 ---
 type: copy-contract
 name: GatherOutcome — the user-facing contract (cousin 1's aggregation copy)
-version: v0.2 — §5b added 2026-09-10 (provenance must survive rendering; #1738)
+version: v0.3 — §5b CONFIRMED by Arch 2026-09-10 and elevated to the joint invariant of epics #1 and #2; Arch's architectural half recorded inline
 date: 2026-09-09
 owner: CXO
 assigned_by: Arch 2026-09-09 — "cousin 1's aggregation copy (the N-failures→one-sentence rule) is CXO's
@@ -154,6 +154,25 @@ becomes real information loss *inside the turn*.
 🔴 **I am NOT proposing the fix.** Whether provenance rides a structured field, whether the assistant
 should ever read back its own render, and where the renderer sits are Arch's and Lead's. **This section
 says only what the user must be able to trust: that "I don't have it" means we don't have it.**
+
+> ### ✅ CONFIRMED AND ELEVATED — Arch, 2026-09-10, same day
+>
+> **This is no longer a CXO position in a copy contract. Arch made the rule above the JOINT INVARIANT of
+> epics #1 and #2** — *"rather than a note in either"* — and §5b is the citation target both inherit.
+> **PPM adds a pointer line on each epic's row so it can't be re-derived.**
+>
+> ⭐ **And Arch supplied the architectural half, which is sharper than mine and belongs here so the two
+> halves stay together** (their words, direction not build):
+>
+> > *provenance rides the structured GatherOutcome, the renderer **consumes** it and may **never write**
+> > it, and the model's context gets the **OUTCOME, not the rendered string** — **the assistant reading
+> > its own render as evidence is the architectural defect, not the truncation.***
+>
+> ⚠️ **That last clause is the load-bearing one, and it is stronger than what §5b originally said.** I
+> framed the defect as *a false claim about provenance*; Arch names the mechanism that makes such claims
+> possible at all. **Truncation is the occasion; render-as-evidence is the defect.**
+>
+> **Fix design still waits for the epics' turn in PPM's order — nothing jumps the queue.**
 
 ## 6. Acceptance test
 
