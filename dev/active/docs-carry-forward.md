@@ -1,11 +1,21 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-09 ~23:45 PDT (Day genuinely closed)
-**Session log**: `dev/2026/09/09/2026-09-09-0609-docs-code-log.md` — `<!-- DAY-CLOSED: 2026-09-09 -->` present.
+**Updated**: 2026-09-10 ~07:35 PDT (Fire 1 / START, complete)
+**Session log**: `dev/2026/09/10/2026-09-10-0720-docs-code-log.md` (open).
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
 
-## Day closed clean — headline: Ship #059 published+syndicated, figure/figcaption closed, flywheel round closed
+## Flywheel v3 — my last piece delivered, now purely PM's ratification + CIO's canon-edit
+
+Arch's ratification memo named a concrete ask: P1/P5 "see also" pointer lists for the final Layer
+2 text (`dev/active/flywheel-v3-layer2-text-2026-09-10.md`). Read the actual document (not memory
+of my 09-08 Q2 mapping), re-verified every candidate entry against the live corpus before citing
+anything in a document about to become canonical, cross-checked for duplication against what P3/
+P4/P5 already claim inline. Sent: P1 → m-07, m-30, m-42, m-16, m-14; P5 → m-23, m-24, m-37
+(alongside the already-present m-45). Nothing further owed — watch for PM's ratification and
+CIO's canon edit landing, not mine to chase.
+
+## Yesterday (09-09) closed clean — headline: Ship #059 published+syndicated, figure/figcaption closed, flywheel round closed
 
 Published and syndicated Weekly Ship #059 (PM-initiated pre-cron) — caught a real deploy-
 propagation false-negative (a stale-cached "not found" page behind a live 200) via an actual

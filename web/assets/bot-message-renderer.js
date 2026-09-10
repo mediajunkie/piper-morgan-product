@@ -48,6 +48,30 @@ function _ensureLinkRendererConfigured() {
 }
 
 /**
+ * #1732 [SECURITY]: the render-boundary sanitizer — the ONE chokepoint between
+ * message text (which carries user-controlled content, e.g. todo/reminder text
+ * interpolated server-side) and innerHTML. marked does NOT sanitize; without
+ * this, `<script>`/`onerror` payloads in a message execute (self-XSS minimum,
+ * stored-XSS on any shared surface — the #1578 threat model).
+ *
+ * DOMPurify (vendored, pinned: /static/vendor/purify-3.2.7.min.js) when
+ * available; ADD_ATTR keeps #1123's target="_blank" on external links, which
+ * DOMPurify strips by default. If DOMPurify is missing we fail CLOSED —
+ * entity-escape to inert text — never pass raw HTML through.
+ */
+function _sanitizeRenderedHtml(html) {
+    if (typeof DOMPurify !== 'undefined' && DOMPurify.isSupported !== false) {
+        return DOMPurify.sanitize(html, { ADD_ATTR: ['target'] });
+    }
+    return String(html)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+/**
  * Render bot message with consistent formatting
  * @param {string} content - The message content
  * @param {string} type - 'success', 'error', 'thinking'
@@ -56,7 +80,9 @@ function _ensureLinkRendererConfigured() {
  */
 function renderBotMessage(content, type = 'success', isThinking = false) {
     if (!content) return '';
-    if (isThinking) return content; // Don't process thinking messages
+    // #1732: thinking states are app-authored markup but still innerHTML-bound —
+    // same chokepoint, no exceptions (DOMPurify preserves benign spinner markup).
+    if (isThinking) return _sanitizeRenderedHtml(content);
 
     // Domain logic: Apply markdown only to success messages
     let processedContent = content;
@@ -69,6 +95,10 @@ function renderBotMessage(content, type = 'success', isThinking = false) {
             processedContent = content; // Fallback to raw content
         }
     }
+
+    // #1732: sanitize EVERY path — parsed markdown, raw error text, and the
+    // parse-failure fallback all reach innerHTML.
+    processedContent = _sanitizeRenderedHtml(processedContent);
 
     // Domain logic: Apply consistent CSS classes
     const cssClasses = ['result', type];

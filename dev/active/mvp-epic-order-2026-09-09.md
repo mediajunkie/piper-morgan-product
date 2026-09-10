@@ -44,6 +44,12 @@ passes are already in (Arch's sequencing ruling + CXO's two-axis correction, con
 Lead builds against a finished spec, not an open question. Closing this epic unblocks the
 reminder/standup UX cluster wholesale, per Arch's read.
 
+**Spec address (2026-09-10)**: the user-facing contract consolidated from three separate memos
+into one doc — `docs/internal/design/acceptance-contract-user-facing-2026-09-10.md`. Includes
+CXO's arm-survival ruling (consent has a freshness property a draft offer doesn't; per-tier
+survival policy feeds the DESTRUCTIVE-tier design). Cite that doc going forward, not the mail
+thread.
+
 ### 4. Corpus/classifier deposits (6 items) — no dependency, pick up opportunistically
 `#1505` `#1527` `#1559` `#1579` `#1606` `#1693`.
 

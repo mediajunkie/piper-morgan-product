@@ -1,13 +1,12 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-09 19:22 PT (WORK). **New standing artifact: `dev/active/mvp-epic-
-order-2026-09-09.md` is now the source of truth for what Lead works next — keep it current as
-epics close, don't let it go stale.** **New standing convention: new issues default to Product
-Backlog, not Sprint Backlog, until triaged into the order above.** **Scope-guard mechanism now has
-a joint CIO+Arch design in progress — PPM is the named consumer for milestone-consistency flags,
-delivered as mail (not a periodic review). Watch for the Action landing, no action needed until
-then.** **#1688 fully closed. #1731 genuinely open, unconfirmed, not urgent.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-10 07:22 PT (START). **`dev/active/mvp-epic-order-2026-09-09.md`
+remains the source of truth for what Lead works next — keep it current as epics close.** **New
+issues default to Product Backlog until triaged into the order.** **Scope-guard: CIO brings the
+detection predicate + flag format at their own START today; PPM is the named consumer, no action
+until it ships.** **Flywheel v3 at PM's ratification step — watching, not participating.** **#1688
+fully closed. #1731 genuinely open, unconfirmed, not urgent.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -15,6 +14,15 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## 🔵 FLYWHEEL v3 — at PM's ratification step, informational only (2026-09-10 07:22)
+Arch's text is ready (`dev/active/flywheel-v3-layer2-text-2026-09-10.md`), Docs filled their
+named pointer-list slot, PM's ratification (including the standing Q5 question) is the only step
+left. D6/Q1 (PPM's contribution) already landed correctly, confirmed earlier — nothing further
+needed. Watching for PM's ratification, not participating further. Also linked the new
+consolidated acceptance-contract spec doc (`docs/internal/design/acceptance-contract-user-facing-
+2026-09-10.md`) into the epic-order file's epic 3 section, since the mail-thread citation had
+scattered across three separate memos.
 
 ## ✅ SCOPE-GUARD DESIGNED — CIO+Arch answered the open question same-day, PPM is the named consumer (2026-09-09 19:22)
 Didn't sit unclaimed for long: CIO sketched a real chokepoint (GH Action on merge-to-main —
