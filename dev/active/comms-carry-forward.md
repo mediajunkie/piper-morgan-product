@@ -1,6 +1,6 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-09-10 06:15 PT START fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-09-10 12:12 PT WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
@@ -8,11 +8,11 @@
 
 ## Closed today (so far)
 
-- Nothing yet — START fire, mail empty, pipeline clean.
+- Reviewed "The Mailbox Trust Violation" (today's scheduled beat) after PM's text-edit commits landed. Fixed 4 real issues: "load-bearing" idiom, 2 pronoun inconsistencies (Arch/PPM), and a dateline range mismatch.
 
 ## Open items — no Comms-side move available right now
 
-- **Today's scheduled slot** — "The Mailbox Trust Violation" (building, Thu 9/10 narrative cadence), still `drafted`, awaiting PM's voice-pass.
+- **"The Mailbox Trust Violation"** — content fixed and clean, but frontmatter (image/alt/caption) still empty. No signal yet that PM's art pass is done. Not sending PUBLISH-READY until confirmed — watching, not chasing.
 - **11 other drafts in the queue** — building beats + insights, all `drafted`, all await PM's voice-pass + art. Includes "Piper Morgan Eras" (Sat 9/12) and "Who's Who at Piper Morgan" (Sun 9/13).
 - **ChicagoCamps talk** — PM reviewing script/slides; script + slide plan at `dev/2026/08/29/chicagocamps-talk-2026-09-17.md`. Dry-run window closed Sep 5 with no signal — not chasing further.
 - **website#35** — PM watching for recurrence, not actively pursuing.
@@ -21,6 +21,6 @@
 
 ## Waiting on others
 
-- **PM** — voice-pass + art on the 12 drafted items; edit pass on "Piper Morgan Eras" before Saturday 9/12; "Who's Who at Piper Morgan" before Sunday 9/13; ChicagoCamps script/slide review.
+- **PM** — art pass on "The Mailbox Trust Violation"; voice-pass + art on the other 11 drafted items; edit pass on "Piper Morgan Eras" before Saturday 9/12; "Who's Who at Piper Morgan" before Sunday 9/13; ChicagoCamps script/slide review.
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15); #1647 (filed 08-18).
