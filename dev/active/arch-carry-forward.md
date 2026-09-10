@@ -21,15 +21,19 @@ in git history.
 | Fact | Value |
 |---|---|
 | Host / model | **Amber**, Model A stable worktree `~/Development/piper-morgan-worktrees/arch`, branch `claude/arch-cycle` |
-| Cron | **`27 6,9,12,15,18,21`**, job **`240711fd`** (re-armed 09-08 STOP; session-only; empty `CronList` → re-arm). Registry row current. |
+| Cron | **`27 6,9,12,15,18,21`**, job **`360c96ae`** (re-armed 09-09 STOP; session-only; empty `CronList` → re-arm). Registry row current. |
 | **Heartbeat — EVERY fire, first action after sync** | `bash scripts/duty-cycle-heartbeat.sh arch <START\|WORK\|STOP>` — the watchdog's ONLY structural liveness surface. ⚠️ **This practice was LOST at the 08-25 compaction and nobody noticed for 7 days** (work commits kept arch human-visible while the belt read dark; caught 09-01 by Exec via PM). **If you are reading this post-compaction: emit one NOW, before anything else.** |
 | Mail | `mail-send.sh` push-to-ref; never touch PM's main checkout. Inbox verified at trunk (`git ls-tree origin/main`), never local `ls`. |
 | ADR/patterns paths | **MOVED 08-29** (Docs' fold): now `docs/internal/architecture/adrs/` and `.../patterns/` — no `current/` segment. |
 
 ## ACTIVE THREAD (09-08): Flywheel Re-Evaluation — ARCH LEADS
-Synthesis + v3.0.1 amendments: `dev/active/flywheel-v3-synthesis-2026-09-08.md`. Challenge round
-open through **09-09 EOD** (D4 concession + D2 fold withdrawal are the open targets). Then: draft
-v3 TEXT of methodology-00 Layer 2 (7 decisions + 5 amendments), send to PM with round record.
+Synthesis at v3.0.2 (table corrected in place): `dev/active/flywheel-v3-synthesis-2026-09-08.md`.
+**CHALLENGE ROUND CLOSED 09-09 EOD** — D4 concur-with-usage-data (Lead), D2 unopposed x3, first
+wave all accepted (5 amendments + table fix). **NEXT (09-10 START, named trigger — fresh pass for
+ratification-grade text): draft v3 TEXT of methodology-00 Layer 2** per the 7 decisions as
+amended, send to PM with the round record. Fold CXO's two-mechanism finding (directive path vs
+composed path — GatherOutcome must reach BOTH or two differently-honest voices) into the
+GatherOutcome epic sketch when it drafts.
 Q5 awaits PM. Docs holds the per-practice see-also mapping. Also mine: category-review of Lead's
 fixes (object-or-none lines), noun-audit follow-ons (GatherOutcome + deliverable model,
 MCP-path-first, at owners).
