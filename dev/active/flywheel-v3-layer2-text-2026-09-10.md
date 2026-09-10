@@ -31,7 +31,7 @@ by m-52: **open the artifact; a summary (or your memory of one) is not its conte
 
 **Enforced**: extraction/protocol ratchet tests (CI-behavioral) · supersession-gate standing ask
 · CLAUDE.md §Verify-First (prose norm — Present, not machine-checked).
-**See also**: *[Docs' verified P1 pointer list — slot, do not guess]*.
+**See also**: m-07 (Verification-First — canonical for this principle), m-30 (Consumer-Trace-Verification, an m-07 specialization), m-42 (Reflexive Verification — the self-exemption failure mode), m-16 (Stop Conditions), m-14 (Documentation-Standards — this principle applied to docs). *(Docs-verified 2026-09-10.)*
 
 ### 2. Test What Matters, Not What's Easy
 
@@ -91,7 +91,7 @@ required field on completion claims — method, layer, denominator.
 **Enforced**: "Verified how:" bounce-back norm (behaviorally observed — claims get bounced) ·
 issue-closure protocol · provenance-tagged heartbeat markers (observed firing) · board-status
 discipline.
-**See also**: m-43, m-44, m-49, m-50 — and m-51/m-52 when they clear the maturity gate.
+**See also**: m-43, m-44, m-50 — and m-49/m-51/m-52 when they clear the maturity gate. *(Corrected 09-10: an earlier draft folded m-49 here, against D5's own ruling that m-49/51/52 wait — Docs caught the slip without even re-litigating it.)*
 
 ### 5. Audit the Composition (Pattern-062)
 
@@ -106,7 +106,7 @@ composition question — "does this milestone's work compose, and what got fixed
 should have been fixed per-class?" — **is a named line on every milestone-close gate**, alongside
 the Layer-2 enforcement-column check below. Episodic audits (census, false-trails, noun audits)
 remain available as dispatch tools; the cadence is what stops them being luck.
-**See also**: Pattern-062 lineage entries *[Docs' verified P5 list — slot]* · m-45.
+**See also**: m-23 (M1 Innovations — the wiring-pass origin v2.0's own changelog names), m-24 (Branch-or-Anchor — Pattern-062 lineage at the spec layer), m-37 (Coverage-Audit Gate — the per-PR "does this compose" mechanism) · m-45. *(Docs-verified 2026-09-10; m-24's tie is via Pattern-062 explicitly, not a literal Practice-5 citation.)*
 
 ---
 
