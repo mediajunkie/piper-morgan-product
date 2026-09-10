@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-09 at the 13:17 fire.
+# CXO carry-forward — rewritten 2026-09-09 at the 16:17 fire.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -49,6 +49,22 @@ shipped the per-file count specifically so this is visible without building a co
 
 ⚠️ **Never regex-edit the tracker.** Hand-edit, then re-run and confirm the count moved as expected.
 
+## 🔴 EVERY OUTBOUND MEMO — route away from Lead by default (PM directive, 2026-09-09)
+
+📌 **PM**: *"Fewer memos to Lead if they don't bear on current work or require their input… running
+interference for a busy dev is part of the product role."* **It binds me, not just Exec.**
+
+**Self-audit, 09-08→09-09: nine memos of mine reached Lead's inbox in two days.** Honest split — three
+needed him (voice-watch review, which he acted on in 3h · the acceptance pass he *requested* · the FTUX
+copy call). 🟡 One was a courtesy ack that could have been three lines. 🔴 **One was a clear miss: the
+`mail-send.sh` false-positive. That's tooling, not his current work — it should have gone to CIO with
+Lead cc'd.**
+
+**The rule going forward**: *before addressing Lead, ask whether he is the one who must ACT.* If the
+answer is "he wrote it" rather than "he must act on it," **cc, don't address** — and prefer CIO/PPM/Arch
+as the primary. ⚠️ **Cc'ing is not free either** (four of the nine were cc's). **Do not write a memo
+about writing fewer memos** — Exec owns the broadcast; this is a seat rule.
+
 ## Waiting on others — nothing owed to PM
 
 ✅ **The #1463 PM ask is DISCHARGED** — authorized, run 09-03, series **CLOSED** on my recommendation.
@@ -78,14 +94,23 @@ shipped the per-file count specifically so this is visible without building a co
   a `SOURCE_FAILED_FLAGS` registry with **AST-enforced** association, and made the tests' denominator
   derive from the thing under test. **All five of his claims verified by me in the file. NOT verified:
   the suite run** (no pytest on this seat).
-- 🟡 **Acceptance contract (Lead's umbrella)** — my pass delivered 09-09. **Structural correction: the
-  ask scales on effect AND outwardness; the predicate was being scaled on effect alone.** Question-forms
-  ruled (answer + restate the arm, never re-prompt). **Open question I raised and did NOT answer: do
-  arms drop on topic change?**
+- ✅ **Acceptance contract — my correction ACCEPTED 09-09.** Arch conceded same-day: *"I cited ratified
+  law from memory of its shape rather than from its signature — CXO opened the function; I didn't."*
+  Amended condition (b): the predicate takes `(effect, outwardness)`; **outward WRITEs accept at the
+  DESTRUCTIVE bar.** Lead builds. **Still open and mine to remember: do arms drop on topic change? I
+  raised it as a question and never answered it.**
+- 🟡 **Six-cousin epics (Arch causes / PPM ordering)** — offered cousin #4's user-facing half 09-09
+  (*a decline is a claim about a capability* — my #1730 copy is the worked case). **One risk flagged
+  once**: #1/#2/#4 all terminate in something a user reads; a correct model can still ship N sentences.
+  **Asked only for a line naming whose the user-facing contract is — not a gate.**
 - **#1688 MCP arm** — spec delivered 09-02; production-milestoned, build unstarted.
-- 🔴 **#1386 criterion 3** — re-runs at **MVP close**. ⚠️ **The milestone fell 52 → 46 between the
-  07:17 and 13:17 fires today.** At that rate the trigger is **days away, not weeks** — treat the count
-  as live state and re-read it every START rather than carrying a remembered number.
+- 🔴 **#1386 criterion 3** — re-runs at **MVP close**. ⚠️ **CORRECTED 09-09 16:17, three hours after I
+  wrote it**: I recorded *"fell 52 → 46 today… the trigger is days away, not weeks."* **It is 49 now —
+  it went back UP**, and 📄 Exec's longitudinal pull the same afternoon shows MVP closures averaged
+  **~25/week** and *collapsed* to 7–11 in the last fortnight. ⭐ **I extrapolated a trend from two points
+  three hours apart** — the same error class Exec corrected in themselves the same day (*"a narrow recent
+  window presented as the steady state"*), on the same metric, independently. **Re-read the count every
+  START; do not carry a remembered number OR a remembered direction.**
 - **Spatial committed-theory synthesis** — Arch publishes.
 - **Voice watch** — ⚠️ **method is per-trigger**: code change → **structural** review; live decline →
   **Colleague Test with denominator**. Do not claim the second when doing the first. ✅ **Trigger (a)
