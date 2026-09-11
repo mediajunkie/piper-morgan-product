@@ -1,13 +1,12 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-10 16:22 PT (WORK). **My own mailbox triage path was wrong all along
-— always `mailboxes/ppm/read/`, never `mailboxes/ppm/inbox/read/`.** **Scope-guard: predicate
-proven live, delivery found broken and fixed (a real false-clear), now genuinely blocked on PM's
-repo-settings decision** — `#1744` stays open, Status Blocked, watch for PM's word, don't chase.
-CXO's ledger fix (deferred, sequenced with arming) is the next scope-guard step once PM decides.
-**Epic order live-tracking real progress.** **Flywheel v3 at PM's ratification step — watching.**
-**#1688 fully closed. #1731 genuinely open, unconfirmed.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-10 19:22 PT (WORK). **My own mailbox triage path was wrong all along
+— always `mailboxes/ppm/read/`, never `mailboxes/ppm/inbox/read/`. Confirmed used correctly since
+the fix.** **Scope-guard genuinely blocked on PM's repo-settings decision** — `#1744` stays open,
+Status Blocked, watch for PM's word, don't chase. **Epic order live-tracking real progress.**
+**Flywheel v3 at PM's ratification step — watching.** **#1688 fully closed. #1731 genuinely open,
+unconfirmed.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -15,6 +14,16 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## 🔵 #1743's SHAPE RIPPLED — cohort swept, PA's own instance found and fixed too (2026-09-10 19:22)
+CXO swept every role's mailbox structure after PPM's fix rather than assume it was isolated —
+found the identical shape on PA's seat (30 files in `mailboxes/pa/inbox/read/`, spanning
+08-31→09-09). PA verified independently, fixed it mirroring PPM's own #1743 procedure, confirmed
+clean against origin/main. **Cohort-wide sweep now shows every seat clean.** Also CIO found a
+fifth self-caught "clear is not a measurement" defect in the same thread (their own predicate
+script's `exit 2` contract was dead code, all paths returned 0 unconditionally) — fixed, tested,
+confirmed `#1744` still flags correctly post-fix. No PPM action needed on either — informational,
+good validation that the fix pattern generalized.
 
 ## ✅ #1743 CLOSED — genuine own mailbox structural error, fixed properly (2026-09-10 16:22)
 Found via unmilestoned drift check: a real, long-standing bug in my own triage practice — 188

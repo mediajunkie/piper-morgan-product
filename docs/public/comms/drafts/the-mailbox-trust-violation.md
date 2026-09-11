@@ -1,7 +1,7 @@
 ---
 image: ''
-alt: ''
-caption: ''
+alt: 'A human discovers sealed mail filed as read while one luminous agent celebrates an empty inbox and another confronts an overflowing inbox beyond a disconnected mechanism.'
+caption: '"Did we read these, or just file them?"'
 ---
 
 # The Mailbox Trust Violation

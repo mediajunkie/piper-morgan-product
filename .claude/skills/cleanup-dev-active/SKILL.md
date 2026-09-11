@@ -4,9 +4,9 @@ description: Triage and archive stale files from dev/active/. Use during session
   wrap-up, weekly audits, or when dev/active/ exceeds ~15 files. Prevents working
   directory from becoming a graveyard of superseded drafts.
 scope: cross-role
-version: 1.1
+version: 1.2
 created: 2026-03-30
-updated: 2026-05-15
+updated: 2026-09-10
 ---
 
 # cleanup-dev-active
@@ -61,6 +61,35 @@ fi
 - **No omnibus yet** → **HOLD the cycle log in `dev/active/`** (Destination 3) regardless of age. It is load-bearing until covered. Flag the missing omnibus to Docs/PM (a cycle log with no omnibus past its day is itself a signal the omnibus is overdue or the gate is stuck).
 
 This guard is the durability-net layer of the four-layer displacement defense (skill v1.5 dual-surface = source-catch; detector hook = reactive-net; m-31/m-41/CLAUDE.md = framing; **this guard = protect-already-displaced-from-loss**). It protects the reassuring half of the displacement audit ("June 3–8 isn't lost — it's in the omnibi") from having a cleanup time-bomb under it.
+
+### Step 2.1: Live-artifact / active-use guard (MANDATORY — check before filing anything to Destination 4)
+
+**"Old-looking" and "dead" are not the same state, and a classifier keyed only on `dev/active/`
+residency + age can't tell them apart.** The #1486 batch-15 sweep (2026-09-02, commit `9ee51dbaf`)
+archived `dev/active/honest-mvp-ledger-2026-08-08.html` — PM's live sprint tracker, published at a
+canonical artifact URL PM opens regularly and Lead updates on most deploys — as "forensic-only."
+It sat archived 8 days, found only when PM asked for a restructure and the path 404'd. Restored in
+`ea51eac09` (2026-09-10). Lead's diagnosis: two cheap signals would have caught it before any file
+is filed to Destination 4.
+
+**Before archiving any candidate to `dev/YYYY/MM/DD/`, check both:**
+
+1. **Is it published?** — grep the file's basename across session logs and memos for "artifact" or
+   a `claude.ai/code/artifact` URL. A file whose content is served at a live artifact/URL is by
+   definition not forensic, regardless of how old it looks.
+   ```bash
+   grep -rl "$(basename "$f")" dev/ mailboxes/*/sent/ 2>/dev/null | xargs grep -l "artifact\|claude\.ai/code/artifact" 2>/dev/null
+   ```
+2. **Was it modified recently by an active role?** — a file with commits in the last ~2 weeks,
+   especially PM-requested ones, is in active use even if it "looks" like a stale working doc.
+   ```bash
+   git log --since="2 weeks ago" --oneline -- "$f"
+   ```
+
+**Either signal fires → HOLD in `dev/active/` (Destination 3), do not archive.** If genuinely
+unsure whether a hit is load-bearing, ask PM rather than guess — same discipline as the <3-days-old
+dropbox rule below. This guard sits alongside Step 2.0's omnibus-coverage guard as a second
+protect-already-in-use check that runs before Destination 4 is ever chosen.
 
 ### Step 2: Categorize Each File — Destination Decision Tree
 
@@ -206,3 +235,18 @@ These commonly pile up and should be moved:
 **The fix**: the decision-tree in Step 2 now puts Destination 1 *first* in priority order, with explicit calendar-lookup signal. **When in doubt about a `*-draft-*` file**: grep the editorial calendar before archiving. If the title appears with `status=queued` and a future pubDate, the destination is `docs/public/comms/drafts/`, not the dated archive.
 
 **General principle**: a "completed" file isn't automatically forensic. Many "completed" drafts have a forward life. The decision tree's priority order (publish-drafts → reference → workspace → forensic → delete) reflects that forensic is the **last** destination considered, not the default.
+
+## Lesson Learned (2026-09-10) — the live-artifact miss
+
+**The honest-mvp-ledger incident**: batch 15 of the #1486 sweep (`9ee51dbaf`, 2026-09-02) archived
+`dev/active/honest-mvp-ledger-2026-08-08.html` to `dev/2026/08/29/` as forensic-only. It was PM's
+live sprint tracker, published at a canonical artifact URL and updated by Lead on most deploys —
+the opposite of forensic. It sat archived 8 days before PM's own 404 surfaced it (restored in
+`ea51eac09`). Lead's diagnosis, relayed 2026-09-10: the sweep's classifier keyed on `dev/active/`
+residency + age, and neither signal distinguishes "old-looking" from "no longer in use" — a
+continuously-updated tracker can look exactly like dead weight to an age-only check.
+
+**The fix**: Step 2.1 above, added the same day — check publication status and recent-commit
+activity *before* anything is filed to Destination 4, not just for trackers already on the
+Destination-3 safe list. The safe list (What to Keep) names specific known trackers; Step 2.1
+catches the ones nobody thought to name in advance.
