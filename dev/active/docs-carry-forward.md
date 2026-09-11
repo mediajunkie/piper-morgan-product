@@ -1,9 +1,43 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-10 ~22:50 PDT (Fire 6 / STOP, day-close complete).
-**Session log**: `dev/2026/09/10/2026-09-10-0720-docs-code-log.md` — DAY-CLOSED.
+**Updated**: 2026-09-11 ~07:45 PDT (06:57 fire, in progress — session started PM-engaged at 06:23
+before the cron fire, publishing "The Mailbox Trust Violation").
+**Session log**: `dev/2026/09/11/2026-09-11-0623-docs-code-log.md` (open).
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
+
+## Today (09-11) so far — published + syndicated "The Mailbox Trust Violation," flywheel v3 RATIFIED, big cross-cutting mail thread
+
+PM engaged directly at session start (before the 06:57 cron fire): yesterday's scheduled post
+never finished (PM's phone image-upload issue), Comms reviewed it overnight, mine to proofread and
+publish. Did an independent proofread (not a rubber-stamp of Comms' two passes) — template/voice
+guide read fresh, acronym-lint clean (ROLE-GLOSS advisories are expected false positives for this
+narrative register), footer tease verified against the live calendar, image verified thematically.
+Published (hashId `defb143fe6eb`, `--work-date 2026-08-09`), archived draft to `drafts/published/`,
+live-verified via actual rendered content (not just a 200 — see gotcha below). Dispatch-PM
+syndicated to Medium same morning; caught and corrected a real error in their proposed `altText`
+value by checking three independent sources directly (see Standing practices).
+
+**Flywheel v3 is RATIFIED** — PM approved the Layer 2 text this morning, five days after naming the
+feeling that started the re-evaluation. My own piece (P1/P5 pointer lists, the m-49 catch) already
+landed 09-10; nothing further owed. CIO applies to canon; the workstream formally closes.
+
+**PM ruled on the work-queue definition** — carried work + mail + newly-observed GitHub issues
+meeting role-relevant criteria, idle only when all three are empty — and explicitly named Docs
+("the recurring Docs audit and any issues generated from an audit"). Validates what I already do
+(picking up hook-flagged audit residuals like #1727); nothing new for me to implement, CIO owns the
+mechanical skill change.
+
+**Filed Ship #060's workstream report** (Exec's kickoff this time explicitly included Docs in the
+`to:` list, not just cc) — window Fri 09-04–Thu 09-10, Docs-POV per the standing scope memory, all
+cited figures re-verified directly (omnibus line counts re-`wc -l`'d, #1725/#1724 facts re-grepped
+from source, hashIds re-checked against the live website CSV) rather than recalled from memory.
+
+**Contributed a datapoint to the fire-heading/"next fire" cohort thread** — named twice by PA and
+CXO as the seat uniquely positioned to judge whether wake-shaped headings cost real effort (I build
+the omnibus from all 11 roles' logs daily). Measured my own logs directly: "next fire" phrase
+dropped to zero unprompted from 09-06 on; `Fire N` headings present and wake-shaped same as the
+other three seats reporting. Added the omnibus-consumer angle nobody else could supply.
 
 ## Yesterday (09-10) closed — headline: flywheel v3 text complete, two real skill/mailbox defects found and fixed, HIGH-COMPLEXITY day
 
@@ -175,6 +209,22 @@ without PM present.**
   `git status`. Lead owns the one-line fix (`mail-send.sh`); until it lands, a lone
   `MANIFEST.md STRANDED` warning after a manifest regen is expected noise, not a real strand —
   still verify with the diff/status check before assuming, don't just suppress the warning.
+- **A `git mv`-staged rename is NOT enough for `mail-send.sh` — pass BOTH the old and new paths
+  explicitly, every time, not just the destination.** Git's local rename detection has nothing to
+  do with what `mail-send.sh` pushes (it builds the commit from explicit paths against
+  `origin/main` via `commit-tree`). Hit this for real (not the MANIFEST.md false-positive class)
+  09-11: passed only 7 `read/` destination paths, stranded all 7 `inbox/`-side deletions — confirmed
+  real via `git diff origin/main`, fixed by resending with both sides.
+- **A cc'd memo needs a physical copy in every named recipient's inbox, not just the `to:`
+  recipients' — `mail-send.sh`'s own `#1716` warning catches this if you miss it, but check before
+  sending, not after.** Missed 8 of 9 cc'd roles on a broadcast 09-11, caught by the warning,
+  fixed by copying to all named inboxes and resending.
+- **`curl -s` does not follow redirects by default — a page behind a 301/308 (e.g. a trailing-slash
+  normalize) will make a `curl -s -o file && grep` poll loop forever**, saving the tiny redirect
+  body every time and never matching real content. Always add `-L`, or check headers first with
+  `curl -sD -` before trusting a poll loop's absence of output. Cost 27 minutes of a stuck
+  background task 09-11 before caught via `TaskOutput` showing `running` far past a normal
+  deploy-propagation window.
 - **`cleanup-dev-active` now has a mandatory Step 2.1 live-artifact/active-use guard** (v1.2,
   09-10) — before filing anything to the forensic archive, check for a published-artifact
   reference and recent-commit activity; either fires, hold in `dev/active/` instead. Apply this

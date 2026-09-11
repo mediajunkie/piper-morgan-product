@@ -1,6 +1,6 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-09-11 06:12 PT WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-09-11 09:12 PT WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
@@ -8,7 +8,9 @@
 
 ## Closed today (so far)
 
-- "The Mailbox Trust Violation" — fully closed. Art landed overnight, final review clean, PUBLISH-READY sent, Docs independently proofread and published same morning (live at `https://pipermorgan.ai/blog/the-mailbox-trust-violation`). One day late per PM's phone-upload issue (Web debugging separately, not mine).
+- "The Mailbox Trust Violation" — fully closed, published, confirmed via Docs's mail.
+- Ship #060 workstream review (window Fri 9/4–Thu 9/10) written and filed to Exec.
+- Fire-heading/next-fire methodology thread: measured my own seat (1 real hit, resolved clean; 67 headings, no padding found), sent as a fifth-seat datapoint. Confirmed PM's work-queue ruling creates no gap for Comms (no GH-issue surface distinguishable per-role; the calendar/drafts pipeline is already my first-class queue).
 
 ## Open items — no Comms-side move available right now
 
@@ -22,5 +24,6 @@
 
 - **PM** — voice-pass + art on the 11 drafted items; edit pass on "Piper Morgan Eras" before Saturday 9/12; "Who's Who at Piper Morgan" before Sunday 9/13; ChicagoCamps script/slide review.
 - **Web** — debug the phone image-upload issue PM hit yesterday (PM's own ask, not routed through Comms).
+- **CIO** — implementation call on the fire-heading/next-fire proposal (retire vocabulary, log by work-unit) — 5 seats of data submitted, decision pending.
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15); #1647 (filed 08-18).
