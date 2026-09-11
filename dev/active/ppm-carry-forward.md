@@ -1,14 +1,13 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-10 22:22 PT (STOP). **The mailbox nesting defect has a real,
-CI-verified structural fix now** (`scripts/mailbox_filename_lint.py`'s nesting check, watched-it-
-fire green) — not a third-time-lucky cleanup. My own triage path stays `mailboxes/ppm/read/`,
-never `inbox/read/`, and now a CI check exists that would catch a recurrence regardless of
-memory. **Scope-guard genuinely blocked on PM's repo-settings decision** — `#1744` stays open,
-Status Blocked, watch for PM's word, don't chase. **Epic order live-tracking real progress.**
-**Flywheel v3 at PM's ratification step — watching.** **#1688 fully closed. #1731 genuinely open,
-unconfirmed.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-11 07:11 PT (START). **Flywheel v3 RATIFIED — closed, no more
+watching.** **Ship #060 filed same-fire, ROLE-PORTFOLIO refreshed.** **PM ruled on the work-queue
+definition (carried + mail + GitHub); PPM's own practice already matches it, made explicit in a
+reply.** **PM removed the PR requirement on main — Arch re-testing scope-guard's GH006 now, watch
+for the result.** `#1744` stays open until that lands. **My own triage path stays
+`mailboxes/ppm/read/`, never `inbox/read/`** — CI-enforced now, not just memory. **#1688 fully
+closed. #1731 genuinely open, unconfirmed.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -16,6 +15,27 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ SHIP #060 FILED + PORTFOLIO REFRESHED + FLYWHEEL RATIFIED (2026-09-11 07:11)
+Big morning batch. **Flywheel v3 RATIFIED by PM** ("The flywheel v3 layer 3 text looks good. I
+approve it." — PM wrote "layer 3," meant the Layer 2 replacement text, Exec recorded the slip
+rather than silently correct it). PPM's D6/Q1 contribution is now permanently in the ratified
+canon. Workstream closes on Arch's side, no standing duty. **PM ruled on the work-queue
+definition** — not the inbox alone, but carried work + mail + newly-observed GitHub issues
+meeting role-relevant criteria, idle only when all three are empty. Checked my own seat honestly
+(grepped recent logs for "next fire"-style deferral language, found none) and replied naming
+PPM's own already-running third source (the unmilestoned-count check) as the criteria line for
+CIO's per-role formalization — matches the shape PM named, not new work, just made explicit.
+**PM removed the PR requirement on `main`**, Arch re-testing scope-guard's GH006 now — watching
+for the result, not duplicating the test.
+
+**Ship #060 filed same-fire** (`dev/active/workstream-060-ppm-2026-09-11.md`, window Fri 09-04 →
+Thu 09-10) — real trajectory cited (`sprint-truth.py` 50→45 not-done, 1116→1133 done across the
+week, explicitly caveated as cohort-wide not PPM's own code output), honest "what didn't move"
+section, and the throughline named plainly: two of PPM's own repeating mistakes caught and
+corrected this week, one same-day, one after a month of silent recurrence. **Also did the Rule-5
+ROLE-PORTFOLIO refresh riding it** — full §2 table replaced, closed items dropped, new items
+(epic order, scope-guard, mailbox invariant) added with real status.
 
 ## ✅ THE ACTUAL FIX — nesting invariant installed, not a fourth cleanup (2026-09-10 22:22)
 CXO's follow-through found what mattered more than the ripple to PA: PPM's own #1743 fix TODAY
