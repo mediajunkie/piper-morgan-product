@@ -19,14 +19,24 @@ agree: 37 items, same membership). Ordering and any reclassification below is PP
 
 ## Order
 
-### 1. CI/infra red (3 items, 1 closed) — cheap, and it's a quiet tax on every epic after it
+### 1. CI/infra red (6 items, 1 closed) — cheap, and it's a quiet tax on every epic after it
 `#1687` four CI workflows standing red · `#1711` Keychain ACL hang blocks server startup silently
-· ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**.
+· ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**. Plus, filed
+2026-09-11 from a direct #1687 close-out audit (same author, same denominator problem, folded in
+rather than treated as new epics): `#1747` 'Tests' and 'E2E & AAXT' workflows are STANDING-RED —
+outside #1687's own four-workflow denominator, so every subsequent "belt fully green" claim
+(including this file's own ship-060 citations) silently meant "the five tracked," the exact m-44
+shape #1687 itself documented · `#1748` CI test-isolation defect — tests write fake provider keys
+into the shared per-job Postgres via #1382's DB store, conftest later loads one as real, turning
+keyless behavior into live 401s that read as product failures · `#1749` a deterministic-looking
+search test fails in CI only, passes locally, mechanism undiagnosed (env-divergence class).
 
 **Why first**: every day CI stays red, every other epic's evidence weakens (a green suite means
-less when four workflows are already known-broken). Cheap relative to its value. If it turns out
-not-cheap, the fallback is explicitly accepting these as known-red rather than let them silently
-discount every later epic's signal.
+less when four — now confirmed six — workflows are already known-broken). Cheap relative to its
+value. If it turns out not-cheap, the fallback is explicitly accepting these as known-red rather
+than let them silently discount every later epic's signal. **#1747 is itself an instance of that
+fallback failing quietly** — the denominator drifted from four to six without anyone's "fully
+green" claims noticing, which is exactly the m-44 risk this epic exists to retire.
 
 ### 2. Security/tenancy (4 items, 2 closed) — before beta wave 1, regardless of everything else
 ~~`#1734`~~ [SECURITY] personality API global-config clobber — **CLOSED**. `#1690` demo plugin
@@ -187,3 +197,9 @@ read, that's real information — update this file, don't defend the original gr
   ledger, `dev/active/scope-guard-runs.tsv`, one line per run whether quiet or flagging — not
   built yet, since it closes nothing before PM's decision lands anyway). **Not armed. Blocked on
   PM.**
+- 2026-09-11 16:11 WORK (PPM): 3 unmilestoned issues triaged — `#1747`/`#1748`/`#1749`, all filed
+  same-day from a direct #1687 close-out audit (same author). All stated "Milestone: MVP" in body
+  but the field wasn't set; milestone set, added to board, Sprint=Beta Blockers/Status=Sprint
+  Backlog matching #1687/#1711 precedent, verified no collateral damage. Folded into epic 1 as a
+  continuation rather than new epics — `#1747` is a direct instance of the epic's own risk (the
+  belt's tracked-workflow denominator silently drifted from four to six).
