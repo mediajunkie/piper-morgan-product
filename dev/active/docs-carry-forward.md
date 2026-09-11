@@ -10,9 +10,13 @@ mail-send false-positive on my own seat (ordinary manifest-regen path, not contr
 Lead/CXO/CIO/Exec/PM as the confirming second-seat evidence CXO's finding was waiting on; not mine
 to fix (Lead owns `mail-send.sh`).
 
-**Next fire (21:57) is today's last scheduled fire** — day-close procedure due: create-omnibus
-dispatch for 09-10, personal audit of the draft, commit + Step 10.5 CSV reconciliation, trim this
-carry-forward file, `<!-- DAY-CLOSED: 2026-09-10 -->` marker on the session log.
+**Fire 6 (21:57, ran ~22:27) — day-close in progress.** 14 session logs today (11 roles + 3 prog
+delegations) — HIGH-COMPLEXITY day. Dispatched the omnibus synthesis to a background agent
+following the full methodology-20 procedure (in progress as of this write). Next step once it
+returns: personal audit (line-count/CSV-count + 2-3 direct primary-source spot-checks) before
+committing, then Step 10 archive + Step 10.5 CSV reconciliation, trim this carry-forward file,
+`<!-- DAY-CLOSED: 2026-09-10 -->` marker on the session log. "The Mailbox Trust Violation" still
+`drafted` on the calendar as of this fire — Comms never handed it off today; watch tomorrow.
 **Session log**: `dev/2026/09/10/2026-09-10-0720-docs-code-log.md` (open).
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
