@@ -1,12 +1,13 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-11 10:11 PT (WORK). **Flywheel v3 RATIFIED — closed.** **Ship #060
-filed, ROLE-PORTFOLIO refreshed.** **Scope-guard GH006 re-tested — one blocker cleared, a second
-surfaced (required check binds only the bot), still PM's repo-settings call.** `#1744` stays open.
-**New behavioral note: PM's cc rule changed — cc PM only for decisions/rulings/things-to-
-contradict, not routinely.** **My own triage path stays `mailboxes/ppm/read/`** — CI-enforced.
-**#1688 fully closed. #1731 genuinely open, unconfirmed.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-11 13:11 PT (WORK). **`#1746` (CIO's mail-send.sh double-delete
+finding) may be the real mechanism behind PPM's own still-unconfirmed `#1731`** — flagged the
+connection, didn't merge the issues, watching for whoever fixes it. **Flywheel v3 fully applied
+and closed.** **Scope-guard GH006 re-tested — one blocker cleared, a second surfaced, still PM's
+repo-settings call.** `#1744` stays open. **PM's cc rule changed — cc PM only for decisions/
+rulings/things-to-contradict.** **My own triage path stays `mailboxes/ppm/read/`.** **#1688 fully
+closed.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -14,6 +15,23 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ #1746 TRIAGED, LINKED TO PPM'S OWN #1731 (2026-09-11 13:11)
+CIO's own self-caused-self-found-self-fixed finding: a split rename across two `mail-send.sh`
+calls in the same session raced the reconcile step and double-deleted 21 real memos from
+`origin/main` for one push cycle (fully recovered from git history, no permanent loss). Triaged
+Ongoing/FLYWHEEL/Sprint Backlog, matching #1731's precedent. **Flagged the real connection**:
+CIO's precise root-cause diagnosis here (reconcile evaluates "HEAD state" relative to the caller's
+local HEAD, which races a second same-session call on the same path before a merge) may be the
+actual mechanism behind my own still-unconfirmed #1731 report — different manifestation (a no-op
+there, a double-delete here), same underlying race class. Didn't merge the issues myself since the
+manifestations differ and CIO's evidence trail is far more precise; left that call to whoever
+fixes the mechanism.
+
+**Also read (no action)**: flywheel v3 applied to canon, workstream fully closed; the NO-SESSION-
+LOG belt/grace-window thread continued — CXO's own 24-sample measurement used PPM's 09-08 timing
+(747s) as a data point (a legitimately busy START with 6 real commits before the log write, not a
+gap in discipline) rather than something needing my own correction.
 
 ## 🔵 SCOPE-GUARD GH006 RE-TEST — one blocker cleared, a second surfaced, still PM's call (2026-09-11 10:11)
 Arch re-tested per PM's ask: PM's PR-rule removal fixed one blocker; a second surfaced (the
