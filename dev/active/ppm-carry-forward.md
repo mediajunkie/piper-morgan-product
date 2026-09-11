@@ -1,13 +1,13 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-10 13:22 PT (WORK). **Scope-guard is built and dispatch-tested**
-(verdict-slot fix shipped, false-positive rate reads from memo headers not a hand-kept tally) —
-**not armed yet, waits for `#1687`.** **Epic order live-tracking real progress** — 3 closures
-marked, 2 new findings folded in, epic 6 now carries the §5b cross-reference too. **New issues
-default to Product Backlog until triaged into the order.** **Flywheel v3 at PM's ratification
-step — watching, not participating.** **#1688 fully closed. #1731 genuinely open, unconfirmed,
-not urgent.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-10 16:22 PT (WORK). **My own mailbox triage path was wrong all along
+— always `mailboxes/ppm/read/`, never `mailboxes/ppm/inbox/read/`.** **Scope-guard: predicate
+proven live, delivery found broken and fixed (a real false-clear), now genuinely blocked on PM's
+repo-settings decision** — `#1744` stays open, Status Blocked, watch for PM's word, don't chase.
+CXO's ledger fix (deferred, sequenced with arming) is the next scope-guard step once PM decides.
+**Epic order live-tracking real progress.** **Flywheel v3 at PM's ratification step — watching.**
+**#1688 fully closed. #1731 genuinely open, unconfirmed.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -15,6 +15,30 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ #1743 CLOSED — genuine own mailbox structural error, fixed properly (2026-09-10 16:22)
+Found via unmilestoned drift check: a real, long-standing bug in my own triage practice — 188
+files had been landing in `mailboxes/ppm/inbox/read/` instead of `mailboxes/ppm/read/`, an error
+this whole multi-day session (and longer) repeated every single fire. Fixed properly: checked for
+basename collisions (none), moved all 188 in 10 batches of ~20 via `mail-send.sh` (old+new paths
+per batch), verified each batch against `origin/main` before the next, updated the one
+grandfathered lint-baseline entry, regenerated both MANIFESTs, confirmed lint green, verified all
+three acceptance criteria directly against origin/main before closing the issue with evidence.
+**Correcting my own triage instructions going forward: `mailboxes/ppm/read/`, never
+`mailboxes/ppm/inbox/read/`.**
+
+## ✅ SCOPE-GUARD SYNTHETIC TEST — real defect found and fixed, PM decision pending (2026-09-10 16:22)
+Arch ran the actual end-to-end synthetic test (fixture `#1744`): the detection predicate proved
+live (1/1 flagged correctly), but the delivery half was broken — `GITHUB_TOKEN` can't push to
+protected main, and Arch's own retry loop had silently swallowed that failure and reported
+SUCCESS with no memo delivered. A real false-clear, fixed same-day (failed delivery now fails the
+run loudly). **The remaining decision is PM's** (branch-protection bypass or a scoped PAT) — not
+mine to make. Separately, CXO caught a real gap in my own verdict-slot fix from this morning: the
+grep-count has no denominator, so it can't distinguish "zero flags" from "flags never delivered" —
+exactly the state we're actually in. Accepted CXO's ledger fix, sequenced with arming (closes
+nothing before PM's decision lands anyway, so not urgent now). `#1744` stays open, Status
+`Blocked` — the same board value my own Q1 design proposed for exactly this shape. Updated the
+epic-order file with the full result. Sent one ack to Arch/CIO/CXO cc Exec/PM, verified landed.
 
 ## ✅ SCOPE-GUARD SHIPPED — verdict-slot fix, dispatch-tested, honest coverage boundary stated (2026-09-10 13:22)
 CIO shipped the detection predicate (`scripts/scope-drift-check.sh`, negation-aware, 11/11 tests,

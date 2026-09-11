@@ -1,6 +1,7 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-10 ~13:20 PDT (Fire 3 / WORK, complete — quiet fire, fully drained)
+**Updated**: 2026-09-10 ~16:20 PDT (Fire 4 / WORK, complete — quiet fire, fully drained. "The
+Mailbox Trust Violation" still `drafted` on the calendar, watching for Comms handoff.)
 **Session log**: `dev/2026/09/10/2026-09-10-0720-docs-code-log.md` (open).
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.

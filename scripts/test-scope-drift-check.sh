@@ -89,11 +89,24 @@ echo "$err" | grep -qE "checked 6 commit" && ok "T7 denominator line states comm
 echo "$err" | grep -qE "6 issue reference" && ok "T7b denominator line states issue-reference count" || no "T7b missing reference count: $err"
 echo "$err" | grep -qE "2 flagged" && ok "T7c denominator line states flagged count correctly (2: #9001 + #9005)" || no "T7c wrong flagged count in denominator: $err"
 
-# T8 -- non-git directory -> loud, but still exit 0 (advisory family convention)
+# T8 -- non-git directory -> loud AND a distinguishable non-zero exit (v1.1 correction: Arch's
+# Action already checked `rc -gt 1` to catch exactly this; v1.0 always exited 0, making that
+# branch dead code that could never fire for the error it exists to catch).
 NOTGIT=$(mktemp -d); TMPS+=("$NOTGIT")
 out2=$(cd "$NOTGIT" && SCOPE_DRIFT_REPO="$NOTGIT" bash "$SC" 2>&1); rc2=$?
 echo "$out2" | grep -q "measured NOTHING" && ok "T8 non-git directory reports 'measured NOTHING' rather than a silent empty pass" || no "T8 expected 'measured NOTHING' for a non-git dir, got: $out2"
-[ "$rc2" -eq 0 ] && ok "T8b non-git-dir case still exits 0 (advisory, never fails the caller)" || no "T8b expected rc=0, got $rc2"
+[ "$rc2" -gt 1 ] && ok "T8b non-git-dir case exits with rc>1 (matches Arch's Action's error-detection contract)" || no "T8b expected rc>1 for a non-git dir, got rc=$rc2"
+
+# T9 -- malformed commit range -> also loud AND rc>1, distinguished from a legitimately empty range
+REPO2=$(mkfixture)
+out3=$(cd "$REPO2" && bash "$SC" "not-a-real-range..also-not-real" 2>&1); rc3=$?
+echo "$out3" | grep -q "measured NOTHING" && ok "T9 malformed range reports 'measured NOTHING'" || no "T9 expected 'measured NOTHING' for a bad range, got: $out3"
+[ "$rc3" -gt 1 ] && ok "T9b malformed range exits with rc>1, not silently read as zero commits" || no "T9b expected rc>1 for a malformed range, got rc=$rc3"
+
+# T10 -- a legitimately EMPTY (but valid) range must NOT be confused with the malformed case above
+out4=$(cd "$REPO2" && bash "$SC" "HEAD..HEAD" 2>&1); rc4=$?
+[ "$rc4" -eq 0 ] && ok "T10 a valid but empty range (HEAD..HEAD) exits 0, distinct from the malformed-range error" || no "T10 expected rc=0 for a valid empty range, got rc=$rc4"
+echo "$out4" | grep -qE "checked 0 commit" && ok "T10b denominator correctly reports 0 commits for the empty range, not an error" || no "T10b expected 'checked 0 commit' for the empty range, got: $out4"
 
 echo "── $PASS passed, $FAIL failed ──"
 [ "$FAIL" -eq 0 ]
