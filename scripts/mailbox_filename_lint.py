@@ -44,6 +44,18 @@ Usage:
     python scripts/mailbox_filename_lint.py --summary          # count only
     python scripts/mailbox_filename_lint.py --baseline FILE    # fail only on NEW long paths
     python scripts/mailbox_filename_lint.py --write-baseline FILE
+
+Nesting invariant (added 2026-09-10, #1743's third recurrence): no directory may exist below
+`mailboxes/<role>/<box>` (box = inbox/read/sent). This is the "correct home" defect — a triage
+move landing at `mailboxes/<role>/inbox/read/` instead of `mailboxes/<role>/read/`. Found and
+fixed in isolation THREE times (08-10: 21 files, cohort-swept "PPM only"; 09-10: 188 files on
+PPM's own seat, the habit resumed the very next day in 08-10's case; same day, 30 files
+independently on PA's seat) with no standing check installed after any of the first two fixes —
+each cleanup was a rollback of the symptom, not a fix of the recurring cause. No baseline needed:
+the correct count is always zero, so any hit is a NEW violation by definition, unlike the
+length-lint above which grandfathers real history. This check runs unconditionally (it is not
+gated behind `--baseline`) precisely because the failure mode it exists to catch is a check that
+only fires sometimes.
 """
 
 from __future__ import annotations
@@ -71,6 +83,25 @@ def find_violations(root: Path = MAILBOX_ROOT) -> List[str]:
     return violations
 
 
+def find_nested_dirs(root: Path = MAILBOX_ROOT) -> List[str]:
+    """Directories that exist below `mailboxes/<role>/<box>` — the recurring #1743 defect.
+
+    `mailboxes/<role>/<box>` is depth 2 relative to `root` (role, then box: inbox/read/sent).
+    Any directory found deeper than that (e.g. `mailboxes/ppm/inbox/read/`) is a violation —
+    always, with no grandfathering, since the correct count is zero by construction.
+    """
+    if not root.is_dir():
+        return []
+    violations = []
+    for p in sorted(root.rglob("*")):
+        if not p.is_dir():
+            continue
+        depth = len(p.relative_to(root).parts)
+        if depth > 2:
+            violations.append(p.as_posix())
+    return violations
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     import argparse
 
@@ -88,6 +119,23 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     current = Counter(find_violations())
 
+    # Nesting invariant runs unconditionally, in every mode, with no baseline — see module
+    # docstring. A hit here fails regardless of what the length-lint branches below decide.
+    nested = find_nested_dirs()
+    if nested:
+        print(
+            f"mailbox-nesting-lint: {len(nested)} directory(ies) exist below "
+            f"mailboxes/<role>/<box> (#1743's recurring defect — a triage move landed at "
+            f"inbox/read/ instead of read/, or similar):"
+        )
+        for path in nested:
+            print(f"  {path}")
+        print(
+            "\nMove the files to mailboxes/<role>/<box>/ (no nested nesting), regenerate the "
+            "role's MANIFEST(s), and delete the empty nested directory. See #1743 for the "
+            "worked procedure."
+        )
+
     if ns.write_baseline:
         Path(ns.write_baseline).write_text(
             "\n".join(sorted(current.elements())) + "\n", encoding="utf-8"
@@ -96,11 +144,11 @@ def main(argv: Optional[List[str]] = None) -> int:
             f"mailbox-filename-lint: wrote baseline ({sum(current.values())} "
             f"path(s) over {MAX_PATH_LENGTH} chars) to {ns.write_baseline}"
         )
-        return 0
+        return 1 if nested else 0
 
     if ns.summary:
         print(f"mailbox-filename-lint: {len(current)} path(s) over {MAX_PATH_LENGTH} chars")
-        return 1 if current else 0
+        return 1 if (current or nested) else 0
 
     if ns.baseline:
         base = Counter(
@@ -131,13 +179,13 @@ def main(argv: Optional[List[str]] = None) -> int:
         )
         msg += f"; {fixed} no longer present)." if fixed else ")."
         print(msg)
-        return 0
+        return 1 if nested else 0
 
     for path in sorted(current.elements()):
         print(f"{path}  ({len(path)} chars)")
     if current:
         print(f"\nmailbox-filename-lint: {len(current)} path(s) over {MAX_PATH_LENGTH} chars.")
-    return 1 if current else 0
+    return 1 if (current or nested) else 0
 
 
 if __name__ == "__main__":

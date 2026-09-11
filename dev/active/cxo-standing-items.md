@@ -42,7 +42,9 @@ max_age_days: 31
 
 | Filed | Item | What's actually owed | Note |
 |---|---|---|---|
-| *(none — both drained 2026-08-31)* | — | — | — |
+| **2026-09-11** | 🔴 **#1166 TYPE-2-DREAMING — CXO/PPM/Arch convergence.** Settle what methodology-27 deferred: does Type 2 (threat-rehearsal) dreaming belong on the roadmap, at what depth, and what is its design surface? PM flagged it **2026-06-06** as unfinished business and a *potential true innovation*. Last touched 08-31. | **Write the CXO slice of the convergence** — the design-surface half. Production-milestoned, so not urgent; **but it has sat since June, which is the category PM says reliably means never.** | ⭐ **Surfaced 09-11 by applying PM's three-source work-queue ruling to my own seat — it was never in my queue because my queue was mail + tracker.** |
+| **2026-09-11** | **#1174 BEING-GOOD-PROACTIVE-PRESENCE** — discovery thread on proactive relevance / notifications. Production. | **Read it and decide whether it's a CXO lane item or someone else's**; it is currently neither claimed nor declined by me. | Same source as #1166. Do this before #1108. |
+| **2026-09-11** | **#1108 Slack OAuth failed-attempt recovery UX** — no clear path to retry in a different workspace. Fast Follow. | **A concrete copy/flow item** — the smallest of the three and the most obviously mine. | Same source. |
 
 ## 🟡 BLOCKED ON A NAMED THING — recheck when that thing moves
 

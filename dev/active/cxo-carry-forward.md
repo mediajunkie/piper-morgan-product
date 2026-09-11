@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-09
+last_updated: 2026-09-11
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-10 at the 19:03 fire.
+# CXO carry-forward — rewritten 2026-09-11 at the 07:03 START.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -18,6 +18,20 @@ max_age_days: 1
 > failure the header warns about and **produces the same wrong answer**. A currency claim you update by
 > hand, on a file only you read, degrades silently in whichever direction you aren't looking.
 > **Touch the date whenever you touch the body — same edit, not a later one.**
+
+## 🔴 THE QUEUE IS THREE SOURCES, NOT TWO (PM ruling, 2026-09-11)
+
+📌 **PM**: the work queue = **carried work + mail + newly-observed GitHub issues meeting role-relevant
+criteria**; *"an agent should really only go idle when there is nothing to work on at all."*
+
+🔴 **My `(0,0)` idle reports covered mail + tracker — two of three.** ⭐ **m-44 applied to my own status
+line: "(0,0)" and "(0,0) of the sources I check" are different claims and I filed the first.**
+
+✅ **My criteria line, proposed to CIO 09-11: `gh issue list --label UX --state open`.** Denominator
+today **3** — #1166, #1174, #1108, all now in the tracker's UNBLOCKED column. ⚠️ **Stated blind spot: it
+depends on the label being applied.** ⚠️ **And for a small label the useful form is "the open set is
+non-empty," NOT "created since last fire"** — a last-seen marker would report clean forever on a standing
+backlog.
 
 ## 🔴 EVERY FIRE — three steps, two of which I had silently stopped running
 
@@ -41,9 +55,10 @@ alarm.
 
 ## 🔴 NEXT FIRE — first move
 
-Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 8`** (7 blocked rows +
-1 unblocked placeholder — ⚠️ **updated 09-09 19:17: cousin-1 contract row added; this expectation is itself
-a fact that goes stale, so re-state it whenever you add or remove a row**). ⚠️ **A count below that means
+Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 10`** — **7 blocked +
+3 UNBLOCKED rows; the old placeholder row is gone** (⚠️ **updated 09-11 07:03 when the three `label:UX`
+items entered the queue; this expectation is itself a fact that goes stale, so re-state it whenever you
+add or remove a row**). ⚠️ **A count below that means
 my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
 shipped the per-file count specifically so this is visible without building a control.
 
@@ -70,6 +85,35 @@ answer is "he wrote it" rather than "he must act on it," **cc, don't address** �
 as the primary. ⚠️ **Cc'ing is not free either** (four of the nine were cc's). **Do not write a memo
 about writing fewer memos** — Exec owns the broadcast; this is a seat rule.
 
+## 🔴 EVERY MEMO — filename budget, because MY habit turned CI red
+
+**PPM found it while installing the mailbox invariant (09-10): my own memo's filename tripped the
+pre-existing 180-char path lint and `Code Quality` was RED on `origin/main` until they baselined it.**
+
+⚠️ **They baselined the artifact — the correct remedy for an already-merged file — and the habit that
+produced it is mine to change.** ⭐ **That is yesterday's own lesson ("a cleanup that doesn't change the
+behaviour is a rollback") landing on me the next morning.**
+
+**Measured, not estimated** (09-11): longest inbox dir is `mailboxes/dispatch-dinp/inbox` = 29 chars,
+so with the `/` the **basename budget is 150**. Of my 09-04→09-11 memos, **one was 161** (the red one)
+and **three more sat at 142–150** — I run at the edge habitually, not occasionally.
+
+🔴 **Working rule: keep the memo basename ≤ 130 characters.** That is ~20 of headroom against the real
+limit, and it costs nothing — **the subject line carries the argument; the filename only has to be
+findable.**
+
+> ### 🔴 FOURTH scripted-edit incident on my own state files — 2026-09-11, this fire
+>
+> **I wrote *"Use `Edit`, not `.replace()`"* into this very file yesterday, then used `.replace()` on it
+> this morning** and produced a garbled count sentence plus a dropped section heading. **Caught by
+> reading the file back, not by any check.**
+>
+> ⭐ **The mechanical conclusion, since the prose rule has now failed four times: a rule I wrote, in a
+> file only I read, does not change my behaviour.** **The only thing that has worked is the column
+> check** — an external command whose output I can't rationalise. 🔴 **So: state-file edits go through
+> `Edit`, full stop, and any `.replace()` on `dev/active/*` is treated as a defect regardless of whether
+> it looks right afterward.**
+
 ## Waiting on others — nothing owed to PM
 
 ✅ **The #1463 PM ask is DISCHARGED** — authorized, run 09-03, series **CLOSED** on my recommendation.
@@ -90,9 +134,13 @@ about writing fewer memos** — Exec owns the broadcast; this is a seat rule.
 
 ## Live threads (watch only)
 
-- 🟡 **`mailboxes/pa/inbox/read/` — 30 files, still live (newest 09-09).** Reported to PA 09-10 after
-  sweeping the cohort for #1743's shape; **one hit, no collisions, mine clean.** ⭐ **PPM fixed their own
-  instance and nobody swept** — that gap is the reusable lesson. **PA's to fix; I moved nothing.**
+- 🟡 **inbox/read defect — THIRD cleanup in a month; invariant proposed, not yet installed.** PA fixed
+  their 30 same-day. 🔴 **But PPM had already found, fixed AND cohort-swept this on 08-10 (21 files,
+  "PPM only") — the habit resumed the next day and returned as 188.** ⭐ **A cleanup that doesn't change
+  the behaviour is a rollback, not a fix**, and **a cohort sweep has a shelf life — including mine.**
+  Proposed a one-line repo invariant (no dir below `mailboxes/<role>/<box>`), home suggested as the
+  existing lint belt. **PPM/CIO's call. Watch for whether anything actually gets installed** — if not,
+  the fourth instance is the falsification.
 
 - ✅ **Flywheel v3 — CLOSED for me.** Both challenges accepted; the table fix landed only in the
   amendment note until I checked the file, then **Arch corrected it in place at v3.0.2 with a visible

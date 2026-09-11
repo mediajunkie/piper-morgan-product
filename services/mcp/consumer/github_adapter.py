@@ -1094,6 +1094,28 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error calling GitHub API: {e}")
             return None
 
+    async def _call_github_api_list(
+        self, endpoint: str, params: Optional[Dict[str, Any]] = None
+    ) -> Optional[List[Dict[str, Any]]]:
+        """Call a GitHub *collection* endpoint, which returns a JSON array.
+
+        ``_call_github_api`` is annotated ``Optional[Dict[str, Any]]`` for the
+        single-resource endpoints. Calling it for a collection typed every loop
+        variable as ``str`` -- iterating a dict yields its keys -- which is the
+        root of this file's ``"str" has no attribute "get"`` cluster, and a real
+        latent ``AttributeError`` on any response that is not the expected array.
+
+        Returns ``None`` (the same signal the transport already uses for a failed
+        call, which every caller here handles) when the payload is not an array.
+        """
+        result: Any = await self._call_github_api(endpoint, params)
+        if result is None:
+            return None
+        if not isinstance(result, list):
+            logger.warning(f"Expected a JSON array from {endpoint}, got {type(result).__name__}")
+            return None
+        return result
+
     async def _post_github_api(
         self, endpoint: str, data: Dict[str, Any]
     ) -> Optional[Dict[str, Any]]:
@@ -1267,7 +1289,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 endpoint = f"repos/{owner}/{repo}/issues"
                 params = {"state": "all", "per_page": 100}
 
-                issues_data = await self._call_github_api(endpoint, params)
+                issues_data = await self._call_github_api_list(endpoint, params)
                 if not issues_data:
                     logger.warning("No GitHub issues data received")
                     return []
@@ -1335,7 +1357,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         try:
             endpoint = f"repos/{owner}/{repo}/issues"
             params = {"state": "closed", "per_page": min(limit, 100)}
-            issues_data = await self._call_github_api(endpoint, params)
+            issues_data = await self._call_github_api_list(endpoint, params)
             if not issues_data:
                 return []
 
@@ -1423,10 +1445,10 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 "%Y-%m-%dT%H:%M:%SZ"
             )
 
-            commits_data = await self._call_github_api(
+            commits_data = await self._call_github_api_list(
                 f"repos/{owner}/{repo}/commits", {"since": since, "per_page": 100}
             )
-            issues_data = await self._call_github_api(
+            issues_data = await self._call_github_api_list(
                 f"repos/{owner}/{repo}/issues",
                 {"state": "all", "since": since, "per_page": 100},
             )
@@ -1522,7 +1544,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         try:
             endpoint = f"repos/{owner}/{repo}/milestones"
             params = {"state": state, "per_page": 100}
-            milestones_data = await self._call_github_api(endpoint, params)
+            milestones_data = await self._call_github_api_list(endpoint, params)
             if not milestones_data:
                 return []
 
@@ -1567,7 +1589,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         try:
             endpoint = f"repos/{owner}/{repo}/releases"
             params = {"per_page": 100}
-            releases_data = await self._call_github_api(endpoint, params)
+            releases_data = await self._call_github_api_list(endpoint, params)
             if not releases_data:
                 return []
 
@@ -1609,7 +1631,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         try:
             endpoint = f"repos/{owner}/{repo}/labels"
             params = {"per_page": 100}
-            labels_data = await self._call_github_api(endpoint, params)
+            labels_data = await self._call_github_api_list(endpoint, params)
             if not labels_data:
                 return []
 
@@ -1651,7 +1673,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         try:
             endpoint = f"repos/{owner}/{repo}/branches"
             params = {"per_page": 100}
-            branches_data = await self._call_github_api(endpoint, params)
+            branches_data = await self._call_github_api_list(endpoint, params)
             if not branches_data:
                 return []
 
@@ -1691,7 +1713,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             ``GitHubRepositoryInfo`` shape). Empty list on any failure.
         """
         try:
-            repos_data = await self._call_github_api(
+            repos_data = await self._call_github_api_list(
                 "user/repos", {"per_page": 100, "sort": "updated"}
             )
             if not repos_data:
