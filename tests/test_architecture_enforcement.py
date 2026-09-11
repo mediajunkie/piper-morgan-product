@@ -2446,7 +2446,8 @@ class TestAcceptanceContractRatchet:
     destructive_confirm module residues           DESTR   ADOPTED     (via the confirm seam)
     drafted_issue file-confirm decision           W/OUT   ADOPTED     "question" threaded 09-10
     repo_clarification accept/decline decision    W/OUT   ADOPTED     "question" threaded 09-10
-    generic offer seam, non-READ kinds            W/PRIV  UNADOPTED   blocked: LOW-tier vocab
+    standup overdue-todo offer answers (int_svc)  W/PRIV  ADOPTED     "question" on the record
+    generic offer seam, other non-READ kinds      W/PRIV  UNADOPTED   blocked: LOW-tier vocab
     reminder time/task turns (todo_handlers)      READ*   UNADOPTED   holds (kind-specific)
     reminder_clear turns                          READ*   UNADOPTED   holds (kind-specific)
     FTUX interview turn (first_contact)           READ    UNADOPTED   holds
@@ -2472,6 +2473,24 @@ class TestAcceptanceContractRatchet:
     READ* = the generic-branch residue of those kinds IS adopted; the
     kind-specific handlers' own detector calls are not.
 
+    2026-09-11 (PM live PARTIAL on #1617's contract behavior, v71 06:54:
+    "are we done with that standup?" against the armed overdue-todo offer
+    released to the classifier and fuzzy-matched as a completion attempt):
+    the ``standup_complete_todo`` kind adopted at the generic seam.
+    Tier judgment recorded there and here: adopted at its DECLARED axes
+    (WRITE×PRIVATE → LOW_CEREMONY), NOT the stricter escape hatch for the
+    blocked LOW vocabulary — the NAMED_OBJECT bar cannot parse the
+    #1651-pinned verbatim acceptance "Yes mark the overdue todo done." and
+    refusing it would re-release that turn to the fuzzy classifier (the
+    original #1651 harm). The greedy residue the seam inherits is
+    byte-identical to the legacy detector it replaced, so the accept surface
+    widened by nothing; the kind inherits the CXO-owned LOW-tier tightening
+    automatically when it lands. The intent_service.py
+    ``detect_offer_response`` baseline row REMAINS: the OTHER non-READ /
+    axis-less generic kinds (verify_inference and standup-interview
+    accept/decline residues, ftux and unregistered workflow types) still
+    take the legacy branch — the row states the true remaining debt (m-44).
+
     Arm-survival semantics as adopted (CXO ruling 2026-09-10, contract doc
     §5a/§5b — docs/internal/design/acceptance-contract-user-facing-2026-09-10.md):
     READ-tier arms survive a state question SILENTLY (re-armed, normal
@@ -2479,7 +2498,15 @@ class TestAcceptanceContractRatchet:
     question is answered by normal processing with the stored ask RE-RENDERED
     in one clause appended to the reply; the re-render is itself a new ask,
     so it arms, and the next "yes" binds to an ask the user saw THIS turn.
-    No stored ask → nothing to restate → the pop stands.
+    No stored ask → nothing to restate → the pop stands. The
+    standup_complete_todo kind (LOW tier by axes) deliberately takes the
+    VISIBLE form, stated per the ruling's survival-must-be-stated clause:
+    silent survival delegates the ANSWER to normal processing, and PM's live
+    turn is the proof normal processing misreads this kind's state question
+    as a completion attempt — questions naming the offer's referents are
+    answered at the seam (standup_todo_offer.state_question_reply) with the
+    ask re-rendered in the same reply; other questions re-arm with the
+    confirm-style "Still pending:" suffix.
     """
 
     _CONTRACT_MODULES = (
