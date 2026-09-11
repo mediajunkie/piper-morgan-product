@@ -82,6 +82,16 @@ REG="${DUTY_CYCLE_REGISTRY:-$REPO/dev/active/duty-cycle-registry.tsv}"
 # The cost is stated honestly: a genuine morning stall is now detected ~35 min later. That is the
 # right trade when the alternative has produced six consecutive false alarms and zero true ones.
 FIRST_FIRE_GRACE_MIN="${FIRST_FIRE_GRACE_MIN:-45}"   # minutes past first_fire before a missing log = missed START
+# 2026-09-11 (CXO's finding, HOST's corroboration): a role-tagged commit that legitimately PRECEDES
+# the session-log commit (a mail-send.sh push under the per-memo commit-and-push norm, or a
+# heartbeat write) trips role_committed_today()'s grep just as validly as real work would — and
+# under normal START-fire sequencing (drain mail, THEN commit the log-carrying work) it almost
+# always does. Observed windows: HOST 20s (heartbeat-first), CXO 2m27s (mail-drain-first). This is
+# NOT a false-positive-by-message-shape problem (excluding `mail(...)`/`hb(...)` commits would trade
+# it for a false NEGATIVE — a genuine mail-only day with no log would go invisible, which is exactly
+# the case NO-SESSION-LOG exists to catch) — it's a race, so the fix is a grace window on the
+# commit's own age, sized comfortably past the slower observed shape (2m27s), not a message filter.
+NO_SESSION_LOG_GRACE_MIN="${NO_SESSION_LOG_GRACE_MIN:-10}"   # minutes a role-tagged commit must age before its absence-of-log becomes a real signal
 now=$(date +%s); hour=${FREEZE_CHECK_NOW_HOUR:-$(date +%-H)}; min=$(date +%-M); now_min=$(( hour * 60 + min ))
 today=$(date +%Y/%m/%d); today_dash=$(date +%Y-%m-%d)
 git -C "$REPO" fetch origin main -q 2>/dev/null || true
@@ -364,7 +374,13 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
   #
   # Never STALE-prefixed (own state, like BELT-INVISIBLE) and never gates the STALE verdict below —
   # a role can be NO-SESSION-LOG and perfectly alive at the same time; that's the whole point.
-  if ct_today=$(role_committed_today "$role") && [ -n "$ct_today" ] && [ -z "$(today_log_paths "$role")" ]; then
+  #
+  # 2026-09-11 grace-window fix: require the flagged commit to be at least NO_SESSION_LOG_GRACE_MIN
+  # old before treating its log's absence as real (see the constant's definition above for why —
+  # this is a race between two legitimate commits, not a message-shape problem to filter around).
+  if ct_today=$(role_committed_today "$role") && [ -n "$ct_today" ] \
+     && (( now - ct_today >= NO_SESSION_LOG_GRACE_MIN * 60 )) \
+     && [ -z "$(today_log_paths "$role")" ]; then
     echo "NO-SESSION-LOG $role — role-tagged commit(s) today ($today_dash) but no dev/$today/*-${role}-code-*log.md yet; likely a PM-initiated entrance that bypassed duty-cycle-tick Step 0 (session-log creation) and Step 5b (heartbeat) — see standing-item 7q."
   fi
 
