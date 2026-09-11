@@ -1,23 +1,18 @@
 # Lead carry-forward — rewritten 2026-08-29 ~18:15 PT (freshness rule: full pass at START/STOP)
 
-## Live state (receipts, not recall)
-- **v66 LIVE** (deployed Sat 8/29 ~18:05 PT on PM's word; v65 number consumed by the flip secrets
-  update). Carries the whole Saturday pile: 1527 narrowing · 1693 extraction · 1572 timezone
-  (captures at PM's next LOGIN) · 1543/1649 slot rework · extraction-pattern ratchet.
-- **FLIP IS ON since ~1 PM 8/29**: PIPER_INVERSION_LIVE_CATEGORIES=read_status,read_referent,
-  read_synthesis,create_todo + PIPER_INVERSION_SHADOW=1 (verified in running env). Rollback=unset.
-  PM's round: ZERO misroutes under the flip (the 1488 class absent).
-- **Cron 28c6042f** `17 6,9,12,15,18,21 * * *` (armed 9/9; expires ~9/16; rotate ~9/14).
-- Model: Fable 5 (restored 8/28 08:36).
-
-## The one PM-gated moment
-- **"Flip it"** — PM's named trigger, now executing ARCH'S RATIFIED STAGED PLAN in one watched
-  round: at "flip it" → SHADOW=sampled + four READ flip_groups (one secrets update); mid-round at
-  the todo cluster → create_todo (Stage 2, first live write, watched). Rollback = unset.
-  Verified 8/29: prod env DOES carry read_status (fly secrets; config-file census could not see it). Then IF clean: close
-  #1677 + #1488 with PM's transcript, description-first (1677 reopened 8/29 after PPM's
-  mail-commit subject auto-closed it — keyword gotcha, not a decision).
-- Round sequencing in the tracker artifact: security (1578/1581/1501) → flip + todo/reminder → rest.
+## Live state (receipts, refreshed 2026-09-10 18:4x)
+- **v71 LIVE** (deployed 9/10 ~08:00 on PM's word): 1527+1654 dawn fixes · 1730 honest decline ·
+  notice cut · 1734 admin gate. Health green.
+- **Acceptance contract #1739 FULLY ADOPTED** (both tiers); 1631/1650/1694 CLOSED; **1617 held
+  for PM's live standup pass** (~90 seconds, explained to PM 9/10).
+- **Render boundary sanitized** (#1732 closed, DOMPurify+marked vendored) — epic 2 complete but #1741.
+- **Belt: 2/3 green.** Code Quality + Router repaired 9/10. **Architecture RED on a KNOWN
+  env-signature** (CI counts jumped to the documented macOS-skew pattern → env-drift hypothesis);
+  diagnosis lane QUEUED (interrupted by the Fable cap 9/10 17:00, resets 22:00).
+- **MVP 26 open**, structured by PPM's epic order (`dev/active/mvp-epic-order-2026-09-09.md`).
+- Cron 28c6042f (expires ~9/16, rotate ~9/14). Model Fable 5 (cap window 9/10 17:00–22:00).
+- Tracker artifact restored to dev/active + epic-restructured (batch-15 sweep had archived it;
+  Docs notified with two classifier guards).
 
 ## Queue (PM pre-authorized; one lane at a time in this worktree)
 - RUNNING: named-target delete resolution lane (the 1527 lane's scope note; PM's live pain).
