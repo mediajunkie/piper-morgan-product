@@ -1862,3 +1862,4 @@ Fixes: protocol_client keyed _pending_requests by `str|int` (JSON-RPC 2.0's actu
 and annotated a Future; github_adapter got _call_github_api_list for collection endpoints
 (the 62 `"str" has no attribute "get"` errors were one wrong annotation — dict iteration
 yields keys — and a real latent AttributeError on any non-array payload). Gate green, exit 0.
+2026-09-11 07:55 [lead] PM RULED (in-conversation): deploys no longer wait for PM approval — deploy staged work by default as part of fire cadence; hold ONLY for a named cause and escalate any hold to Exec immediately. Supersedes deploys-only-on-PM's-word. Watched flag-flips PM asked to observe remain PM-gated. Also PM named the overinterpret-own-notes pattern (the skew entry, the 1617 seam guess) — reinforces: check the SOURCE (GitHub/code/CI) before answering, especially answers PM will act on.
