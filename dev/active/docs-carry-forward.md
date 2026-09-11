@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-11 ~13:35 PDT (12:57 fire, complete).
+**Updated**: 2026-09-11 ~16:20 PDT (15:57 fire, complete — quiet, fully drained).
 **Session log**: `dev/2026/09/11/2026-09-11-0623-docs-code-log.md` (open).
 **New standing practice, effective immediately**: only cc PM (`xian (ceo)`) on memos that (a)
 contain a decision only PM can make, (b) relay a PM ruling, or (c) contain something PM would want
