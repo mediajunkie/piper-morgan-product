@@ -133,6 +133,13 @@ into whichever numbered epic above touches the same file if one turns out to ove
 inspection — these were classified from titles, not full reads; PPM's own read of an individual
 issue may reclassify it without changing the shape of the other 36.
 
+**Cross-milestone note (2026-09-11)**: `#1718` is the audit's cousin #3 ("an error surfaced to a
+user," half-modeled at a broken seam). `#1108` (Fast Follow, out of this file's MVP scope) is a
+concrete second instance of the same cousin, per CXO — two OAuth error surfaces, one leaking a raw
+slug, one recommending a retry that cannot work. **If `#1718` ever gets promoted from singleton to
+a real scoped epic, cite `#1108` alongside it rather than fix either in isolation** — CXO's own
+framing, not fixed here since it's a different milestone.
+
 ---
 
 ## The falsifiability note, carried from Arch's memo (why this ordering is checkable, not asserted)
