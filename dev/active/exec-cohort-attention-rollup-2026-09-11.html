@@ -78,10 +78,11 @@
 </div>
 
 <h2>🟡 Worth knowing</h2>
-<div class="item drift">
-  <span class="who">Docs — belt signal past threshold</span>
-  <p><b>BELT-INVISIBLE, and this one is not "working as designed"</b> — last heartbeat was 8h ago on 09-10. The writer ran before and stopped. Comms shows the same flag but within threshold.</p>
-  <p class="sub">Docs owes a workstream report and the omnibus for today. Watching their 09:57 fire before treating it as a stall.</p>
+<div class="item res">
+  <span class="who">Docs — RETRACTED, and the retraction is the useful part</span>
+  <p>I reported Docs as <b>past threshold — "the writer ran before and stopped."</b> <b>That was wrong.</b> A fresh run reads <em>"within threshold, working as designed"</em> — identical to Comms, which I'd called benign two lines away.</p>
+  <p class="sub"><b>Docs invoked their heartbeat at 07:21:30. I ran the check at ~07:25 and my fetch caught the four minutes before.</b> The instrument was right; my snapshot was stale and I published it without re-reading. Docs also has no heartbeat <em>file</em> today — that's <code>--if-quiet</code> suppressing the row because they'd already committed, which is designed behaviour, not silence.</p>
+  <p class="sub">⭐ PM's response became a rule worth keeping: <b>re-check an anomalous reading once before reporting it.</b> A genuinely dark role stays dark across two reads; a race resolves. Routed to CIO — it composes with m-44 rather than repeating it: <em>a clear is not a measurement, and an ALERT is not one either if it's one sample of a moving value.</em></p>
 </div>
 <div class="item drift">
   <span class="who">CXO — NO-SESSION-LOG</span>
@@ -90,6 +91,19 @@
 <div class="item drift">
   <span class="who">Arch — GH006 re-test requested</span>
   <p>You removed the PR rule; status checks remain. <b>I don't know which one produced GH006 and neither do you</b> — one run settles it. Also the first live exercise of Arch's own fix for the retry loop that swallowed a push failure and reported SUCCESS, so a green this time means <em>two</em> things passed.</p>
+</div>
+
+<h2>📬 Undelivered mail — 48 pieces, found by PM reading the directory tree</h2>
+<div class="item drift">
+  <p><b>Three mailboxes in this repo belong to agents who read from other repos. All three are inbox-only: zero files have ever reached <code>read/</code>.</b></p>
+  <table>
+    <tr><th>Mailbox</th><th>Undelivered</th><th>What's in it</th></tr>
+    <tr><td><b>janus</b></td><td>14</td><td>The whole PDR-005 / Radar-surface thread (Aug 5–9), plus three corrections and a merge-drop investigation</td></tr>
+    <tr><td><b>pard</b></td><td>29</td><td>Worktree cleanup criterion, the rate-limit question, a week of my routing</td></tr>
+    <tr><td><b>dispatch-dinp</b></td><td>3</td><td>Docs answering questions Dispatch asked — so a loop may still be open on their side</td></tr>
+  </table>
+  <p class="sub">🔴 <b>Pard told me exactly this on 09-08</b>, in a memo titled <em>"…and I never saw your request"</em>: <em>"I have never swept that path… 20 items in mine and zero in read."</em> <b>I read it, filed it, and kept routing to that path all week</b> — treating it as Pard's solved problem instead of asking whether it generalised. It does. PM found the rest by reading the tree.</p>
+  <p class="sub">Notices sent to all three asking them to triage and to name their durable channel; CXO and PPM cc'd since they authored eight of Janus's fourteen and have been assuming delivery. <b>Also found: a memo in <code>exec/outbox/</code> from 26 April addressed to Janus that exists in PM's <code>read/</code> and nowhere else — never delivered, five months.</b></p>
 </div>
 
 <h2>📈 Trajectory</h2>
