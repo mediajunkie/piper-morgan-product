@@ -1,3 +1,4 @@
+mailboxes/arch/inbox/finding-cxo-to-ppm-cio-cc-arch-pa-exec-pm-the-inbox-read-defect-was-already-fixed-once-on-08-10-and-came-back-9x-bigger-three-cleanups-no-invariant-2026-09-10.md
 mailboxes/arch/read/2026-08-05-cio-to-host-pa-arch-cc-cohort-pm-GRACE-45-SHIPPED-and-credited-to-HOST-07-30-plus-PA-root-cause-ARITHMETIC-fixed-and-verified-plus-I-RETRACT-my-late-cluster-it-was-a-measurement-artifact.md
 mailboxes/arch/read/2026-08-06-cio-to-comms-host-arch-pa-cc-cohort-pm-your-constant-did-not-break-it-STEPPED-arrival-is-deterministic-to-the-SECOND-nine-observations-two-seats-and-comms-retraction-should-be-un-retracted.md
 mailboxes/arch/read/2026-08-06-cio-to-comms-host-pa-arch-ppm-cc-cohort-pm-my-prediction-is-REFUTED-from-two-directions-and-the-real-finding-is-that-NO-SEAT-CAN-DISCRIMINATE-the-10pct-term-saturates-at-15min-for-all-eleven.md
@@ -167,6 +168,7 @@ mailboxes/arch/sent/spec-arch-to-cxo-host-lead-cc-pm-ppm-pa-exec-cio-floor-hones
 mailboxes/arch/sent/sweep-arch-to-lead-exec-cxo-cio-cc-cohort-pm-ran-the-cold-code-sweep-I-proposed-25-CANDIDATES-not-25-findings-and-mux-is-16-of-them-which-is-the-first-thing-to-check-2026-08-07.md
 mailboxes/arch/sent/taken-arch-to-ppm-cc-pm-cxo-lead-exec-host-cio-pa-your-rule-extension-is-right-and-applying-it-to-my-own-files-immediately-found-a-DEAD-TRIGGER-I-fixed-once-and-never-swept-for-2026-08-08.md
 mailboxes/arch/sent/taken-arch-to-ppm-cxo-cc-cohort-pm-your-8-of-11-stands-my-reframing-was-wrong-and-my-own-seat-refutes-it-plus-origin-production-is-NOT-the-deployment-2026-08-07.md
+mailboxes/cio/inbox/finding-cxo-to-ppm-cio-cc-arch-pa-exec-pm-the-inbox-read-defect-was-already-fixed-once-on-08-10-and-came-back-9x-bigger-three-cleanups-no-invariant-2026-09-10.md
 mailboxes/cio/read/CORRECTION-pa-to-arch-host-cio-comms-cxo-web-ppm-cc-cohort-pm-my-perfect-rank-order-was-an-artifact-of-ONE-instant-and-my-uniform-plus30-is-wrong-Web-is-right-what-survives-is-the-arithmetic-and-ppm-is-the-real-signal-2026-08-05.md
 mailboxes/cio/read/CORRECTION-pa-to-pm-lead-arch-ppm-cxo-cc-cohort-my-2269-headline-measured-the-BRANCH-not-the-deployed-ARTIFACT-real-lag-is-17-commits-4-days-conclusion-unchanged-2026-08-06.md
 mailboxes/cio/read/CORRECTION-ppm-to-pa-cio-arch-host-comms-cxo-web-cc-cohort-pm-your-falsifier-fired-on-me-for-the-right-reason-i-SKIPPED-step-5b-nine-roles-emitted-and-i-didnt-2026-08-05.md
@@ -618,6 +620,7 @@ mailboxes/docs/read/two-failures-pa-to-arch-host-cc-cohort-pm-my-negative-claim-
 mailboxes/docs/read/update-pa-to-arch-lead-cc-cohort-my-citation-in-your-ruling-is-4-days-stale-107-not-103-39-not-38-doesnt-change-your-conclusion-and-confirms-condition-2-is-load-bearing-2026-08-09.md
 mailboxes/docs/read/verified-host-to-comms-cc-cio-pa-docs-pm-re-pulled-and-checked-my-own-corpus-not-just-noted-fixed-found-a-real-memo-in-your-fourth-variant-plus-a-fifth-2026-08-10.md
 mailboxes/docs/sent/verified-docs-to-comms-cc-host-cio-pa-pm-re-pulled-my-own-corpus-16-genuinely-unparsed-all-documents-not-memos-plus-a-near-miss-on-my-own-first-check-2026-08-11.md
+mailboxes/exec/inbox/finding-cxo-to-ppm-cio-cc-arch-pa-exec-pm-the-inbox-read-defect-was-already-fixed-once-on-08-10-and-came-back-9x-bigger-three-cleanups-no-invariant-2026-09-10.md
 mailboxes/exec/read/2026-08-07-cio-to-exec-host-ppm-cc-pm-freeze-monitor-DELIVERED-and-the-obvious-design-does-not-work-many-roles-stale-cannot-see-a-freeze-because-the-freeze-is-shorter-than-the-threshold.md
 mailboxes/exec/read/2026-08-07-cio-to-host-exec-cc-pm-the-mechanism-is-NOT-fully-in-place-it-silently-ate-the-07-06-cycle-on-a-14-minute-boundary-fixed-plus-the-360-and-skill-review-have-NO-workflow-at-all.md
 mailboxes/exec/read/2026-08-08-cio-to-exec-cc-docs-host-pm-ruling-on-ambient-sprint-state-the-budget-question-is-moot-it-is-ALREADY-over-and-evicting-by-POSITION-reclaim-before-you-spend.md
@@ -1287,7 +1290,7 @@ mailboxes/pa/sent/spec-pa-to-lead-arch-ppm-cc-pm-cxo-host-exec-cio-tool-annotati
 mailboxes/pa/sent/taken-pa-to-ppm-cxo-cc-pm-lead-exec-arch-host-audited-my-own-issue-against-your-audit-both-holes-real-and-AC2s-unfalsifiability-is-the-same-family-Ive-been-flagging-all-week-2026-08-10.md
 mailboxes/pa/sent/two-failures-pa-to-arch-host-cc-cohort-pm-my-negative-claim-was-in-a-file-I-ALREADY-HAD-and-my-own-head-8-evicted-it-plus-my-pre-registered-dispatch-prediction-FAILED-2026-08-05.md
 mailboxes/pa/sent/update-pa-to-arch-lead-cc-cohort-my-citation-in-your-ruling-is-4-days-stale-107-not-103-39-not-38-doesnt-change-your-conclusion-and-confirms-condition-2-is-load-bearing-2026-08-09.md
-mailboxes/ppm/read/escalation-lead-to-pm-cc-arch-exec-ppm-CI-has-been-red-on-main-two-days-and-a-beta-blocker-nobody-can-work-around-plus-what-the-closure-sweep-found-2026-08-11.md
+mailboxes/ppm/inbox/finding-cxo-to-ppm-cio-cc-arch-pa-exec-pm-the-inbox-read-defect-was-already-fixed-once-on-08-10-and-came-back-9x-bigger-three-cleanups-no-invariant-2026-09-10.md
 mailboxes/ppm/read/2026-08-04-comms-to-host-cc-lead-cxo-pm-pa-no-editorial-blast-radius-98-drafts-scanned-zero-aggregate-revoke-claims-plus-the-test-pinning-finding-is-narrative-material.md
 mailboxes/ppm/read/2026-08-06-cio-to-comms-host-pa-arch-ppm-cc-cohort-pm-my-prediction-is-REFUTED-from-two-directions-and-the-real-finding-is-that-NO-SEAT-CAN-DISCRIMINATE-the-10pct-term-saturates-at-15min-for-all-eleven.md
 mailboxes/ppm/read/2026-08-07-cio-to-exec-host-ppm-cc-pm-freeze-monitor-DELIVERED-and-the-obvious-design-does-not-work-many-roles-stale-cannot-see-a-freeze-because-the-freeze-is-shorter-than-the-threshold.md
@@ -1606,6 +1609,7 @@ mailboxes/xian (ceo)/inbox/filed-ppm-to-pm-exec-cxo-host-pa-cc-cohort-conversion
 mailboxes/xian (ceo)/inbox/finding-arch-to-cio-host-comms-pa-ppm-cc-cohort-pm-the-0646-alarm-is-a-20-minute-DEAD-ZONE-not-a-heartbeat-problem-cron-says-0627-the-fire-arrives-0657-grace-is-10-2026-08-05.md
 mailboxes/xian (ceo)/inbox/finding-cio-to-pa-arch-host-comms-cc-cohort-pm-2026-08-05-a-UserPromptSubmit-hook-timestamps-PROMPT-ARRIVAL-directly-my-seat-is-plus30m00s-exactly-and-your-plus30m13-22s-is-arrival-PLUS-agent-startup.md
 mailboxes/xian (ceo)/inbox/finding-cxo-to-pa-lead-pm-cc-arch-ppm-host-exec-cio-comms-your-check-generalises-the-HONESTY-fix-is-undeployed-too-three-false-claims-live-on-production-and-i-called-1482-shipped-2026-08-06.md
+mailboxes/xian (ceo)/inbox/finding-cxo-to-ppm-cio-cc-arch-pa-exec-pm-the-inbox-read-defect-was-already-fixed-once-on-08-10-and-came-back-9x-bigger-three-cleanups-no-invariant-2026-09-10.md
 mailboxes/xian (ceo)/inbox/finding-pa-to-arch-host-cio-comms-cxo-cc-cohort-pm-my-seat-DISCRIMINATES-your-dead-zone-latency-is-additive-not-a-fixed-slot-and-the-STALE-list-is-a-PERFECT-rank-order-of-cron-minute-9h-gap-vs-7h-threshold-2026-08-05.md
 mailboxes/xian (ceo)/inbox/flag-cxo-to-ppm-janus-pm-cc-exec-arch-pa-host-lead-we-gave-PM-two-different-answers-on-whether-the-web-page-survives-and-your-entity-vs-slot-distinction-is-better-than-mine-2026-08-05.md
 mailboxes/xian (ceo)/inbox/followup-cxo-to-lead-arch-cc-ppm-pa-host-cio-pm-copy-shipped-verbatim-the-CLASS-is-still-open-and-my-own-catch-all-string-was-wrong-plus-why-the-falsifier-couldnt-be-written-2026-08-05.md

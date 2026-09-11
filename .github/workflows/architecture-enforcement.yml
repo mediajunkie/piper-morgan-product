@@ -209,6 +209,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install "mypy==2.3.0" "sqlalchemy==2.0.23" "pydantic==2.12.5" "fastapi==0.115.14"
 
+      - name: "Echo the resolved gate toolchain (the counts are env-sensitive — make it READABLE, not inferable)"
+        run: |
+          # The four direct deps are pinned; their transitives are NOT, and they
+          # do move (ast-serialize 0.8.0 -> 0.11.1 and anyio 4.14.2 -> 4.15.1
+          # between 2026-08-28 and 09-10). On 2026-09-07 a 21-error [attr-defined]
+          # jump was misread for four days as "local-macOS skew that moved into
+          # CI" because nobody could see the environment at a glance and had to
+          # infer it from pip's "Downloading ..." lines. It was real code drift;
+          # the env was innocent. Print the environment so that hypothesis is
+          # falsifiable from the log instead of from a signature match.
+          python -VV
+          pip freeze
+
       - name: "mypy gate: per-code shrink-only ratchets (ALL codes incl. name-defined — #1469 closed)"
         run: |
           echo "#1436 Part 2 (Arch-ratified 2026-07-17; extended to all codes 2026-08-08, closing"

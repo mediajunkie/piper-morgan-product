@@ -1,91 +1,53 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-10 ~19:20 PDT (Fire 5 / WORK, complete). "The Mailbox Trust Violation" still
-`drafted` on the calendar as of Fire 4, watching for Comms handoff — recheck at Fire 6.
-
-**Fire 5 highlights**: shipped `cleanup-dev-active` v1.2 (Step 2.1 live-artifact/active-use guard)
-per Lead's finding that the #1486 batch-15 sweep archived PM's live sprint tracker as forensic —
-see session log for full trace, commit `b180a578f`. Also reproduced CXO's 09-09 MANIFEST.md
-mail-send false-positive on my own seat (ordinary manifest-regen path, not contrived) — reported to
-Lead/CXO/CIO/Exec/PM as the confirming second-seat evidence CXO's finding was waiting on; not mine
-to fix (Lead owns `mail-send.sh`).
-
-**Next fire (21:57) is today's last scheduled fire** — day-close procedure due: create-omnibus
-dispatch for 09-10, personal audit of the draft, commit + Step 10.5 CSV reconciliation, trim this
-carry-forward file, `<!-- DAY-CLOSED: 2026-09-10 -->` marker on the session log.
-**Session log**: `dev/2026/09/10/2026-09-10-0720-docs-code-log.md` (open).
+**Updated**: 2026-09-10 ~22:50 PDT (Fire 6 / STOP, day-close complete).
+**Session log**: `dev/2026/09/10/2026-09-10-0720-docs-code-log.md` — DAY-CLOSED.
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
 
-## Flywheel v3 — my last piece delivered, now purely PM's ratification + CIO's canon-edit
+## Yesterday (09-10) closed — headline: flywheel v3 text complete, two real skill/mailbox defects found and fixed, HIGH-COMPLEXITY day
 
-Arch's ratification memo named a concrete ask: P1/P5 "see also" pointer lists for the final Layer
-2 text (`dev/active/flywheel-v3-layer2-text-2026-09-10.md`). Read the actual document (not memory
-of my 09-08 Q2 mapping), re-verified every candidate entry against the live corpus before citing
-anything in a document about to become canonical, cross-checked for duplication against what P3/
-P4/P5 already claim inline. Sent: P1 → m-07, m-30, m-42, m-16, m-14; P5 → m-23, m-24, m-37
-(alongside the already-present m-45).
+Verified the flywheel v3 Layer 2 text (my P1/P5 pointer-list ask, sent 09-09 EOD) landed complete —
+both lists confirmed exactly as sent, and a discrepancy I'd noted but declined to press (P4's list
+had folded m-49 against Arch's own maturity-gate ruling) turned out to be a real slip Arch found
+and fixed, crediting me. Text now awaits only PM's ratification and CIO's canon edit — nothing
+further owed on my end.
 
-**Update**: text is now genuinely COMPLETE — verified directly against the live file, not just
-the memo. A side effect worth noting: a discrepancy I mentioned but explicitly declined to press
-(P4's list included m-49 despite my own Monday tracking showing it still under the maturity gate)
-turned out to be a real slip in Arch's draft; Arch found and fixed it, crediting me. Both pointer
-lists confirmed landed exactly as sent. Nothing further owed — watch for PM's ratification and
-CIO's canon edit landing, not mine to chase.
+Closed **#1727 + #1742** (13 dead links across 9 legacy-doc files, 3 targets confirmed never to
+have existed in the repo) same pass, evidence comments on both.
 
-## Today (09-10) Fire 2 — closed #1727 + #1742 (dead links)
+**Two real process defects found and fixed, both closing classes not just instances**: (1) Lead
+flagged that the #1486 batch-15 housekeeping sweep (09-02) had archived PM's *live* sprint tracker
+as "forensic-only" for 8 days — shipped `cleanup-dev-active` v1.1→v1.2 with a mandatory Step 2.1
+guard (published-artifact + recent-commit checks) so age-only classification can't repeat this.
+(2) Independently reproduced CXO's 09-09 MANIFEST.md `mail-send.sh` false-positive on my own seat
+via the ordinary manifest-regen workflow — reported as the confirming second-seat evidence CXO's
+finding was waiting on (Lead owns the one-line fix, not mine to make).
 
-Hook flagged a 3-day-old open docs audit residual (#1727, Weekly Docs Audit #1725 residual,
-unassigned). 10 dead links across 8 legacy-user-guides/legacy-getting-started files pointing at 3
-targets confirmed never to have existed in the repo (whole-repo `find` by basename, zero hits).
-Removed per the issue's own recommendation (legacy trees, content never written — proportionate
-fix is removal not restoration). Found an adjacent dead link outside #1727's scoped 3 targets
-while fixing it (`PM-034-developer-integration-quick-start.md`, 3 refs) — filed #1742 rather than
-silently folding it in, fixed in the same commit (`faa10b4f0`) since it's the identical
-remediation. Both closed with evidence comments. Nothing further owed on this.
+Today's omnibus (`docs/omnibus-logs/2026-09-10-omnibus-log.md`, 529 lines, HIGH-COMPLEXITY:
+COORDINATION, 14 sessions/11 roles + 3 prog) accepted on first pass — audited via commit-count
+verification (280, matched directly against both repos' git logs), a direct `decisions.log` check
+(confirms flywheel v3 not yet ratified), a `gh issue view` timestamp check on #1743's closure, and
+a spot-check of CIO's fifth false-clear catch against their own log — all matched exactly, zero
+discrepancies. Omnibus (`9b3a3cd63`) and activity-log reconciliation (`d29ba1cc1`) both pushed.
 
-## Yesterday (09-09) closed clean — headline: Ship #059 published+syndicated, figure/figcaption closed, flywheel round closed
-
-Published and syndicated Weekly Ship #059 (PM-initiated pre-cron) — caught a real deploy-
-propagation false-negative (a stale-cached "not found" page behind a live 200) via an actual
-content check rather than trusting status alone, LinkedIn leg confirmed and recorded. Closed out
-a cross-project accessibility proposal (`<figure>`/`<figcaption>` markup) same-day: investigated
-the real mechanism (source-adjacency, not renderer drift), sent Web a concrete spec, then
-independently verified their implementation by reading the diff and running the test suite myself
-(21/21 passing) rather than trusting the report. The multi-day Excellence Flywheel re-evaluation's
-challenge round also closed today — verified directly that Arch's v3.0.2 genuinely fixed the
-enforcement table this time (yesterday's v3.0.1 only patched a footer note), with the final
-ratification text deliberately deferred to a fresh session on a named trigger.
-
-Today's omnibus (`docs/omnibus-logs/2026-09-09-omnibus-log.md`, 578 lines, HIGH-COMPLEXITY:
-COORDINATION, 14 sessions/12 roles) went through a genuine second-compression-pass audit — first
-draft was 8.2x compressed against source (well under-compressed), second pass nearly doubled word
-count with real sourced detail. Both highest-stakes claims verified directly against primary
-files before trusting the report. Omnibus (`c9dd4fc99`) and activity-log reconciliation
-(`0e0ec365f`) both pushed.
-
-**Two real gotchas recorded this week, in Standing practices below**: (1) a commit combining a
-`git mv`-staged rename with separately-staged modifications can silently commit only the rename —
-observed twice, always verify `git status` after committing; (2) a live page's 200 status can be
-a stale cached not-found fallback — always do a real content check, not just a status check.
-
-**Watch, not chase**: Ship #058's own calendar row has `canonicalSite=distributed` with an empty
-`linkedinURL` — a pre-existing data gap noticed in passing. A cross-project cc-delivery gap (the
-figure/figcaption proposal never landed in my own inbox despite being cc'd) — worth a light watch
-for recurrence, not yet worth escalating on one instance.
+**Watch, not chase**: "The Mailbox Trust Violation" (today's scheduled beat) never left `drafted` —
+Comms' own log shows the art (image field) still incomplete at day's close, correctly not chased.
+Ship #058's `linkedinURL` calendar gap and the cross-project cc-delivery watch item both carry over
+unchanged, still single-instance, not yet worth escalating.
 
 **First action next fire (06:57 tomorrow)**: sync, mail loop (raw `ls`), omnibus currency check
-(should read 09-09 as "yesterday," correct), heartbeat step, otherwise genuinely open floor.
+(should read 09-10 as "yesterday," correct), heartbeat step, check "The Mailbox Trust Violation"'s
+calendar status again, otherwise genuinely open floor.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
 - **`last_verified` bulk-stamp cluster**: 24/38 as of 09-07's audit (#1725) — unchanged from 09-03,
   structural fix now filed as #1726 (CIO's lane) rather than re-escalated each audit. Check again
   at the next Weekly Docs Audit (09-14).
-- **Flywheel re-evaluation v3** (Arch-led) — challenge round closes 09-09 EOD; a live finding as of
-  09-08 EOD is that v3.0.1's enforcement-column fixes landed only in an amendment footer, not the
-  actual table (CXO's catch, personally verified). Watch whether this lands in the final v3 text
-  before it reaches PM — not mine to fix, just worth checking.
+- **Flywheel v3 ratification** (Arch-led) — text complete as of 09-10 morning, awaiting PM's word;
+  CIO applies to `methodology-00-EXCELLENCE-FLYWHEEL.md` on ratification. Not yet landed as of
+  09-10 EOD (verified directly against `decisions.log`). Watch, don't chase.
 - **#1644** — roadmap.md full historical fold still owed (PPM's lane). Not mine to force.
 - **#1683** — 2 inverse-case calendar rows need real Medium verification, not guessing.
 - **#1392** — "Thirteen Mailboxes" double-hero-image question is PM's editorial call.
@@ -206,6 +168,17 @@ without PM present.**
   splitting can collapse into one argument depending on how the Bash tool invokes the command,
   producing `mail-send: refusing non-mailbox path: <everything>`. Pass each path as its own
   literal argument in the command.
+- **`mail-send.sh`'s half-pushed-move check false-positives on any manifest-only send** —
+  `MANIFEST.md` exists permanently in both `inbox/` and `read/` as separate regenerated indexes,
+  never a moved memo, so the sibling always "exists" and the check always warns. Confirmed on my
+  own seat 09-10 (CXO found it first 09-09) via `git diff origin/main -- <path>` empty + clean
+  `git status`. Lead owns the one-line fix (`mail-send.sh`); until it lands, a lone
+  `MANIFEST.md STRANDED` warning after a manifest regen is expected noise, not a real strand —
+  still verify with the diff/status check before assuming, don't just suppress the warning.
+- **`cleanup-dev-active` now has a mandatory Step 2.1 live-artifact/active-use guard** (v1.2,
+  09-10) — before filing anything to the forensic archive, check for a published-artifact
+  reference and recent-commit activity; either fires, hold in `dev/active/` instead. Apply this
+  myself on every future cleanup pass, not just cite it as history.
 
 ## Mail-loop scan
 
