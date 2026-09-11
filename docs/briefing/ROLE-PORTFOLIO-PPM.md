@@ -3,8 +3,8 @@ type: role-portfolio
 role: PPM (Principal Product Manager)
 status: v0.1 — main-cohort wave
 self-authored-by: PPM
-last_updated: 2026-09-04
-refreshed: 2026-09-04
+last_updated: 2026-09-11
+refreshed: 2026-09-11
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-PPM.md
 refresh_discipline: "section 2 updated as part of each weekly workstream review — can't write the Ship/workstream without restating priorities + status, so the review keeps this current by construction (Rule 5)"
@@ -32,25 +32,23 @@ The why: PM can't synthesize every cross-role lens in real time. PPM exists so t
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has direction + current status + how we'll know it's moving. Rule 5: refreshed at each weekly workstream review. -->
 
 > **Sprint context, updated**: **the MVP milestone IS the private-beta gate** (v0.9.0, invitation-
-> only, existing surface). **A second, narrower gate now exists above it**: ESSENCE v1.0 (ratified
-> 2026-08-30) makes MCP-path completion — the front-loaded #1462/#1458/#1509/#1688 cluster — the
-> explicit **PUBLIC-BETA GATE**. Full model: `docs/internal/planning/release-model.md`. ⚠️ **Do not
-> carry a specific beta date here** — still PM's to set. **Refreshed 2026-09-04 per Rule 5**, filed
-> with Ship #059's workstream review, window Fri Aug 28–Thu Sep 3 — this pass replaces the entire
-> table, not just the header.
+> only, existing surface, `due_on` now 2026-10-30 — a planning target, not a promise). **A second,
+> narrower gate exists above it**: ESSENCE v1.0 makes MCP-path completion the **PUBLIC-BETA GATE**.
+> Full model: `docs/internal/planning/release-model.md`. ⚠️ **Do not carry a specific beta date
+> here** — still PM's to set. **Refreshed 2026-09-11 per Rule 5**, filed with Ship #060's
+> workstream review, window Fri Sep 4–Thu Sep 10 — this pass replaces the entire table, not just
+> the header.
 
-| Priority | What I'm advancing | Status (Sep 3 close) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Sep 10 close) | How we'll know it's moving |
 |---|---|---|---|
-| **#1386 beta gate** | The shape-level gate for beta: does "done" mean the right thing was built | **Only criterion 6 (PM's own sign-off) remains open** — unchanged for over a week now | Watch for PM's sign-off — nothing further PPM-owned |
-| **ESSENCE v1.0 + release-model.md** *(closed, 08-30)* | The audience/milestone gate model — resolved my own trifecta amendment on the MCP-milestone question | ✅ **RATIFIED + EXECUTED same-fire**: #1688 moved MVP→Production, `release-model.md` authored, C5's 8-increment sequence filed as #1701–#1707 | Closed — cite `release-model.md` going forward, don't re-derive |
-| **#1688 (FTUX empty-state interview)** *(new tension, 09-03)* | Scope question (cross-session recall in scope? resolved: no, that's #1705) then a freeze-exception ship/hold call once Lead's web-chat build landed | 🟡 **RULED HOLD**, matching #1658's precedent, Arch (the precedent's author) concurred. **PM's overrule call explicitly open** — build merged, not deployed | Watch for PM's word; report outcome in Ship #060 if it lands first |
-| **BYOC listing copy** *(closed, 08-30)* | 20-day-overdue verdict on which words the marketplace listing can honestly use | ✅ Escalated past the literal question — the hosted-MCP surface the listing describes doesn't exist yet (#1462 at 0/15). Recommended holding the whole listing; Comms/CXO both retracted narrower framings and endorsed this same-day | Closed pending #1462's own progress |
-| **#1708 (tester onboarding)** *(closed, 08-31)* | PM's hosted-app-primary ruling, executed against `ALPHA_QUICKSTART.md`/`CONTRIBUTING.md` | ✅ **CLOSED** — full rewrite done, near-miss with Docs' parallel start defused same-fire, `SETUP.md`/`ALPHA_TESTING_GUIDE.md` residuals explicitly hand off (the latter surfaced again as #1721) | Closed |
-| **Quarterly Colleague-Test rubric review** *(closed, 08-31)* | Six-weeks-overdue review of the CT/UI/BYOC rubric family | ✅ **CLOSED same-day it was proposed** — 3 of 4 items ratified, item 3 (misfiled corpus-tagging work) routed and closed by evening | Closed |
-| **Proactive board-drift triage** *(ongoing practice, established 09-02)* | Checking `sprint-truth.py`'s unmilestoned count for drift rather than waiting on routed mail | ✅ **4 real issues caught this way in 3 days** (#1718, #1719, #1720, #1721) — none were mailed to me | Keep checking the count every fire, not just when mail is empty |
-| **Board visibility** | Sprint/milestone state readable at all | Same recurring finding as last window, still true — every new filing needs an explicit board-presence check, `gh issue create --milestone` doesn't add to the board by construction | Ongoing discipline, not a closeable item |
-| **PDR-005 taxonomy citation** *(closed, 09-01)* | My own PDR missing a citation the ratified taxonomy's own text named as a gap | ✅ **CLOSED same-morning** it was routed | Closed |
-| **First-contact criterion / Jake FTUX / Spatial disposition / Surfaces taxonomy** | Prior-window closures, held steady | ✅ All closed and unchanged since their respective ratification dates (08-09 through 08-21) | Dropped from active tracking next refresh unless something reopens them |
+| **#1386 beta gate** | The shape-level gate for beta: does "done" mean the right thing was built | 🟡 **Shape corrected, not closed**: criterion 6 (PM sign-off) fires at MVP close (2026-10-30); criteria 2/3/4/5 all re-run fresh THEN (their evidence is point-in-time and expires as the deployed artifact changes); only criterion 1 stands unqualified. Corrected from an earlier "only criterion 6" shorthand that undercounted the real remaining work | Not actionable before MVP close — keep the corrected shape from drifting back to the shorthand |
+| **`dev/active/mvp-epic-order-2026-09-09.md`** *(new, 09-09)* | The ordered-epics source of truth Lead actually works from, per PM's directive following a real-data correction to Exec's throughput narrative | ✅ **Live and maintained** — 37 items, 8 dependency-ordered epics, 6 singletons; 3 closures marked and 2 epics' shapes corrected under real findings this week alone | Keep current every fire something routes to it; watch it decay into staleness the way other board artifacts have |
+| **Scope-guard (7t)** *(new, 09-09/10)* | Named as an open mechanism question (a periodic PPM review would decay like every bolt-on) rather than fake-solved | 🟡 **Built, dispatch-tested, real synthetic test caught a genuine false-clear** (bot couldn't push to protected main, a retry loop swallowed the failure) — fixed. **Blocked on one PM repo-settings decision**, not a PPM call | Watch for PM's decision; `#1744` stays open until the delivery path is observed working end to end |
+| **`#1688` (FTUX empty-state interview)** *(closed, 09-08)* | PM overruled PPM's HOLD ("flip ftux"); both the flag-state and an adjacent honesty-copy finding needed resolving | ✅ **CLOSED** — render confirmed live, third-line finding resolved to a cut matching PPM's own 09-03 scope ruling | Closed |
+| **Mailbox nesting defect (`#1743`/`#1745`)** *(closed, 09-10)* | A month-old recurring structural error in PPM's own triage practice (found once 08-10, silently repeated 9x bigger by 09-10) | ✅ **CLOSED with a real fix, not a fourth cleanup** — CI-enforced invariant installed, watched-it-fire green on a live Actions run | Closed; the invariant is the standing safeguard now, not memory |
+| **Proactive board-drift triage** *(ongoing practice, established 09-02)* | Checking `sprint-truth.py`'s unmilestoned count every fire rather than waiting on routed mail | ✅ **Generalized this week by PM's own work-queue ruling** (09-11): carried work + mail + newly-observed GitHub issues meeting role-relevant criteria, idle only when all three are empty — PPM's own informal practice all week turns out to already match the shape PM named for the whole cohort. ~10 more issues caught this way this window (`#1729`→`#1745`), none routed by mail | Keep running every fire; the criteria line is now explicit, not just habit |
+| **Flywheel v3 (D6/Q1 contribution)** *(closed, 09-11)* | PPM's Q1 answer on duty-cycle backlog eligibility fed the re-evaluation Arch led | ✅ **RATIFIED** — D6 adopted PPM's contribution verbatim (capability-scoped eligibility, `Blocked`-status return path, Product→Sprint promotion stays a permanent human act) | Closed — workstream closes on Arch's side too, no standing duty |
+| **Board visibility** | Sprint/milestone state readable at all | Same recurring finding as prior windows, still true | Ongoing discipline, not a closeable item |
 
 ---
 
