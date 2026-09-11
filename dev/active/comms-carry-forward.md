@@ -1,6 +1,6 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-09-11 06:20 PT WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-09-11 06:12 PT WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
@@ -8,7 +8,7 @@
 
 ## Closed today (so far)
 
-- "The Mailbox Trust Violation" — art landed overnight, final review pass clean end to end, PUBLISH-READY sent to Docs (cc PM). One day late per PM's phone-upload issue (Web debugging separately, not mine).
+- "The Mailbox Trust Violation" — fully closed. Art landed overnight, final review clean, PUBLISH-READY sent, Docs independently proofread and published same morning (live at `https://pipermorgan.ai/blog/the-mailbox-trust-violation`). One day late per PM's phone-upload issue (Web debugging separately, not mine).
 
 ## Open items — no Comms-side move available right now
 
@@ -20,7 +20,6 @@
 
 ## Waiting on others
 
-- **Docs** — proofread + publish "The Mailbox Trust Violation" today.
 - **PM** — voice-pass + art on the 11 drafted items; edit pass on "Piper Morgan Eras" before Saturday 9/12; "Who's Who at Piper Morgan" before Sunday 9/13; ChicagoCamps script/slide review.
 - **Web** — debug the phone image-upload issue PM hit yesterday (PM's own ask, not routed through Comms).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
