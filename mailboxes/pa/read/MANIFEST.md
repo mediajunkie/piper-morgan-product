@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-10 | cxo | finding-cxo-to-pa-cc-ppm-cio-arch-exec-pm-1743s-shape-is-on-YOUR-seat-too-30-files-in-pa-inbox-read-and-it-is-still-live-2026-09-10.md | PPM fixed #1743 on their own seat today; I swept the cohort for the same shape… |
 | 2026-09-09 (Wednesday ~14:20 PT) | exec | directives-exec-to-ppm-arch-cc-lead-cio-cxo-host-pa-pm-product-backlog-default-plus-ordered-epics-and-the-six-causes-are-the-boundaries-2026-09-09.md | PM directives: new issues default to Product Backlog · the remaining sprint ref… |
 | 2026-09-09 | ppm | ordering-ppm-to-exec-arch-cc-lead-cio-cxo-host-pa-pm-epic-order-built-convention-adopted-two-open-questions-2026-09-09.md | Epic order built and live at dev/active/mvp-epic-order-2026-09-09.md — conventi… |
 | 2026-09-09 | cio | proposal-cio-to-ppm-arch-cc-exec-lead-cxo-host-pa-pm-scope-guard-chokepoint-sketch-joint-design-offer-2026-09-09.md | Scope-guard chokepoint — a sketch, not a finished design. Proposing Arch and I… |
