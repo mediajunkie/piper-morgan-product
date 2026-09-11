@@ -45,10 +45,21 @@ def _hanging_keyring_call(*args, **kwargs):
 
 @pytest.fixture(autouse=True)
 def _isolate(monkeypatch):
-    """Fresh hang-memo + fast timeout + no forced store, per test."""
+    """Fresh hang-memo + fast timeout + FORCED keychain store, per test.
+
+    PIPER_CREDENTIAL_STORE=keychain (not merely unset): the code under test is
+    the #1711 timeout guard around raw keyring calls, which only exists on the
+    OS-keyring path. On CI's ubuntu runners keyring resolves to the fail
+    backend, so an unforced KeychainService routes to the #1382 DB store (or
+    the no-secure-store refusal) and never reaches `_keyring_call` — the
+    patched hanging keyring function is never invoked and the write test
+    reported "DID NOT RAISE". Forcing `keychain` exercises the guard
+    identically under both backends; on macOS it changes nothing (that is the
+    auto-selected path already).
+    """
     _reset_keychain_hang_for_tests()
     _release.clear()
-    monkeypatch.delenv("PIPER_CREDENTIAL_STORE", raising=False)
+    monkeypatch.setenv("PIPER_CREDENTIAL_STORE", "keychain")
     monkeypatch.setenv(KEYCHAIN_TIMEOUT_ENV_VAR, "0.2")
     yield
     _release.set()  # release any abandoned worker threads
@@ -56,7 +67,9 @@ def _isolate(monkeypatch):
 
 
 @pytest.fixture
-def service():
+def service(_isolate):
+    # Depends on _isolate explicitly: the forced-store env var must be set
+    # BEFORE construction (store selection happens in __init__).
     return KeychainService(service_name="piper-test-1711")
 
 

@@ -7,8 +7,10 @@
 #   triage       = not yet glanced — triaging it IS part of the burn-down
 #   flaky        = oscillates run-to-run (tolerated both states); burn-down = DE-FLAKE, then retag
 # Source: dev/2026/07/19/fullsuite-enumeration-2026-07-19.txt (CI-parity local run 2).
-tests/features/test_issue_intelligence.py::TestIssueIntelligenceCanonicalQueryEngine::test_canonical_query_engine_initialization	triage
 tests/features/test_quick_integration.py::test_method_signatures	triage
+tests/e2e/test_scenario_driver.py::test_multi_turn_scenario[fresh_tester_onboarding]	fixture
+tests/e2e/test_task_lifecycle_e2e.py::TestTodoLifecycleE2E::test_create_todo_returns_confirmation	fixture
+tests/integration/services/test_db_user_history_repository.py::test_search_matches_title_preview_topics	triage
 tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolCircuitBreaker::test_circuit_breaker_opens_on_failures	triage
 tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolCircuitBreaker::test_circuit_breaker_recovers_after_timeout	triage
 tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolGracefulShutdown::test_shutdown_disconnects_all_connections	triage
@@ -37,12 +39,6 @@ tests/integration/test_standup_multi_turn_1079.py::TestStandupConversationPersis
 tests/integration/test_standup_multi_turn_1079.py::TestStandupMultiTurnState::test_q149_detailed_path_reaches_standup_handler	triage
 tests/integration/test_standup_multi_turn_1079.py::TestStandupMultiTurnState::test_q150_no_path_acknowledges_cancellation	triage
 tests/integration/test_standup_multi_turn_1079.py::TestStandupMultiTurnState::test_q49_quick_path_reaches_standup_handler	triage
-tests/intent/test_bypass_prevention.py::TestBypassPrevention::test_middleware_is_registered	triage
-tests/intent/test_enforcement_integration.py::TestEnforcementIntegration::test_monitoring_endpoint_accessible	triage
-tests/intent/test_future_nl_endpoints.py::TestFutureEndpoints::test_all_nl_routes_in_middleware_config	triage
-tests/intent/test_handler_error_handling.py::test_status_query_empty_projects	triage
-tests/intent/test_no_cli_bypasses.py::TestCLIIntentEnforcement::test_all_commands_import_intent	triage
-tests/intent/test_no_timeouts.py::TestNoTimeoutErrors::test_query_fallback_handles_misclassifications	triage
 tests/performance/orchestration/test_agent_scalability.py::TestAgentScalability::test_cpu_usage_under_load	flaky
 tests/performance/test_database_performance.py::test_simple_query_performance	flaky
 tests/performance/test_token_blacklist_performance.py::test_concurrent_blacklist_lookups	triage
