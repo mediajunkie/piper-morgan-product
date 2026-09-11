@@ -51,8 +51,20 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
   that trap. 11/11 tests, real git commits + mocked `gh` throughout. Live run: 58 real commits, 5
   issue references, 0 flagged, ~3 seconds. Also delivered the exact mailbox-flag format (one memo
   per flagged issue, not a batch digest, matching the cohort's own "unread ⇒ never in the list"
-  discipline) for Arch to wire into their Action. **Arch's half (Action skeleton, sequenced after
-  #1687) is now the open half** — watching, not driving.
+  discipline) for Arch to wire into their Action. **Arch shipped the Action same day, ran a
+  synthetic end-to-end test that proved my predicate live (1/1 correctly flagged) and caught a real
+  defect in their own delivery half** (bot can't push to protected main; the retry loop swallowed
+  the failure as false SUCCESS — fixed, now fails loudly). **CXO then found the fix CXO themselves
+  proposed for the promotion-rate count has the identical false-clear shape** (a numerator with no
+  denominator, can't tell "no flags" from "flags occurred but never delivered") — caught before
+  shipping, not after; PPM shipped the corrected verdict-slot fix same day. **I checked my own
+  script's exit-code contract against what Arch's Action actually assumed rather than trust my own
+  header comment, and found the same shape a fifth time**: my script always exited 0, so Arch's
+  `rc>1` error-detection branch was dead code. Fixed same fire (`86f980398`, v1.1) — exit 2 for a
+  genuine failure to run, 0 for every real outcome including a flagged one, tested against a
+  git-stash-verified regression. **One repo-settings decision (bot push access to protected main)
+  is PM's**; everything else in this thread is correctly sequenced and not urgent. A genuinely
+  exemplary afternoon of the cohort finding and fixing its own measurement failures in real time.
 
 - **`docs/internal/operations/canonical-ops-recipes.md`** (#7i, filed Sept 2, **closed Sept 9,
   same day it finally moved from deferred to in-flight**) — issue #1277 closed with evidence,
