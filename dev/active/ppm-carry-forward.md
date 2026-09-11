@@ -1,9 +1,11 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-10 19:22 PT (WORK). **My own mailbox triage path was wrong all along
-— always `mailboxes/ppm/read/`, never `mailboxes/ppm/inbox/read/`. Confirmed used correctly since
-the fix.** **Scope-guard genuinely blocked on PM's repo-settings decision** — `#1744` stays open,
+**Last rewritten**: 2026-09-10 22:22 PT (STOP). **The mailbox nesting defect has a real,
+CI-verified structural fix now** (`scripts/mailbox_filename_lint.py`'s nesting check, watched-it-
+fire green) — not a third-time-lucky cleanup. My own triage path stays `mailboxes/ppm/read/`,
+never `inbox/read/`, and now a CI check exists that would catch a recurrence regardless of
+memory. **Scope-guard genuinely blocked on PM's repo-settings decision** — `#1744` stays open,
 Status Blocked, watch for PM's word, don't chase. **Epic order live-tracking real progress.**
 **Flywheel v3 at PM's ratification step — watching.** **#1688 fully closed. #1731 genuinely open,
 unconfirmed.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
@@ -14,6 +16,23 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## ✅ THE ACTUAL FIX — nesting invariant installed, not a fourth cleanup (2026-09-10 22:22)
+CXO's follow-through found what mattered more than the ripple to PA: PPM's own #1743 fix TODAY
+was the THIRD cleanup of the identical defect — first found and fixed 2026-08-10 (21 files,
+cohort-swept "PPM only"), and the exact habit resumed the very next day per PPM's own 08-11 log,
+growing to 188 files by today. **Owned this plainly rather than defensively** — a month of
+repeating a mistake I'd already fixed once, not a one-time slip. **Installed the actual fix this
+time instead of cleaning up a fourth time**: added `find_nested_dirs()` to
+`scripts/mailbox_filename_lint.py` (CXO's proposed home — the tree walk is already paid for),
+runs unconditionally with no baseline (correct count is always zero), wired into the existing CI
+gate that already runs on every push. **Verified properly, not just read the diff**: clean
+pre-fix, synthetic violation correctly detected and failed loudly, cleaned up, then watched the
+real GitHub Actions run go green post-push (run `34566018910`) — the actual "watched it fire"
+standard. **Incidental find, fixed same-fire**: testing surfaced a genuinely live CI-red condition
+(CXO's own memo filename tripped the pre-existing length lint) — baselined properly rather than
+leave a real red check sitting next to the one I was fixing. Filed and closed `#1745` with full
+evidence. Sent the full account to CXO/CIO cc Arch/PA/Exec/PM, verified landed.
 
 ## 🔵 #1743's SHAPE RIPPLED — cohort swept, PA's own instance found and fixed too (2026-09-10 19:22)
 CXO swept every role's mailbox structure after PPM's fix rather than assume it was isolated —
