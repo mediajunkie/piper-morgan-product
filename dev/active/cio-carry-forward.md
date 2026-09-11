@@ -1,51 +1,55 @@
 ---
-last_updated: 2026-09-10
+last_updated: 2026-09-11
 currency_claim: rewritten at every substantive fire (3x/day cadence)
 max_age_days: 1
 ---
 
-# CIO carry-forward — rewritten 2026-09-10 (22:37 STOP, day closed)
+# CIO carry-forward — rewritten 2026-09-11 (10:37 fire, complete)
 
 **Cron**: `a03890a3` · `7 10,16,22 * * *` · armed at 2026-09-09 22:45 STOP · expires ~2026-09-16.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## New today — needs a look at next wake
+## Today's headline: flywheel ratified, a real detector bug fixed, a self-caused incident found and fixed same-fire
 
-- **Standing-item 7u: Pard's duty-cycle standard v1.4 proposal** (session-cron → boot-persistent
-  LaunchAgent as the cohort-wide trigger mechanism). Sent my technical read to Pard/Exec/HOST/PM:
-  **adopt** — my own cron mitigations are the same "patch the symptom, not the mechanism" shape
-  PPM's #1743 illustrated in the same inbox tonight. Cost (~2h Pard's time, ~10 LaunchAgents) is
-  PM's decision, not mine to make unilaterally. **Watch for Exec's read and PM's word** — if PM
-  says go, the skill-side work (retiring cron-rotation steps, registry column reframe) is on me,
-  same-day, no prep needed.
-  - Also surfaced two candidate methodology additions from Pard's memo, not yet filed: an
-    instrument-can't-measure-must-say-so guarantee (adjacent to m-51/m-52), and a
-    capability/permission-envelope guarantee (escalate rather than repeat the same blocker forever).
-    No trigger named yet for filing either — watch for a second corroborating instance before acting.
+- **Flywheel v3 applied** to `methodology-00-EXCELLENCE-FLYWHEEL.md` (`bfd1445bc`). Workstream
+  closed — no standing duty.
+- **`duty-cycle-freeze-check.sh` NO-SESSION-LOG race fixed** (`5ab4a021a`) — CXO/HOST's exact
+  false-positive windows (2m27s, 20s) reproduced as tests, confirmed fail-pre/pass-post via
+  `git stash`.
+- **🔴 Self-caused a real (recovered) data-loss incident**: split a 21-file mailbox rename across
+  two `mail-send.sh` calls; the tool's own reconcile step + a second call on the same paths
+  committed both sides as deletions, wiping 21 memos from `origin/main` for one push cycle.
+  Recovered from git history (nothing permanently lost), verified against `origin/main`, filed as
+  **#1746** with repro + fix directions. **Lesson for myself and anyone reading this**: never split
+  a rename across two `mail-send.sh` calls — always pass both the old and new path together, in
+  the SAME call. If you must correct a partial send, re-check `origin/main` directly (not local
+  disk) before deciding what a follow-up call should contain.
+
+## New today — needs a fresh session/compaction (named trigger, deliberately not rushed)
+
+- **Standing-item 7v**: implement PM's work-queue ruling (carried + mail + newly-observed GitHub
+  issues; idle only when all three empty) and retire "next fire"/`## Fire N` vocabulary from
+  `duty-cycle-tick` SKILL.md — Exec's explicit routing to me as skill owner. CXO already has a
+  worked per-role criteria-line example (`label:UX state:open`, denominator 3) to generalize from.
+- **Standing-item 7x**: Exec's 3-item process proposal — archive `mailboxes/*/read/` (11,510
+  files cohort-wide, quarterly buckets, exercise on one seat first), change the PM-cc rule
+  (decision/ruling/contradiction-only), adopt "re-check anomalies once before reporting." Bundling
+  with 7v rather than three separate edits to the same skill doc in one day.
+- **Standing-item 7w**: Arch's ask for a formal methodology entry on the Lead/Arch skew-finding
+  shape. Haven't read the source memo directly yet (only a digest-agent's summary) — read it first.
 
 ## Still watching, not acting
 
-- **Flywheel v3 ratification** — still hasn't landed as of end of day 09-10. Do NOT apply anything
-  to `methodology-00-EXCELLENCE-FLYWHEEL.md` until it does.
-- **#1744** — will show up in future live scope-drift-check runs as a correct, expected flag (the
-  team's own synthetic-test fixture, deliberately left open pending the push-access decision). Not
+- **7t (scope guard)**: narrowed to one PM decision — bypass the required status check for the
+  bot's actor, or remove it. PR-rule blocker already resolved via PM's settings change.
+- **Standing-item 7u (Pard's LaunchAgent proposal)**: sent my "adopt" read yesterday; watching for
+  Exec's read and PM's word.
+- **#1744**: will show up in future live scope-drift-check runs as a correct, expected flag — not
   a new bug if it reappears.
-- **7t's remaining threads** — Arch's Action arming (after #1687), PM's repo-settings decision (bot
-  push access to protected main), CXO's ledger fix (sequenced with arming). All correctly not
-  urgent, not mine to push.
-
-## Today's shape (2026-09-10, full day)
-
-10:37: shipped 7t's predicate same-day as promised (`scripts/scope-drift-check.sh`). 16:37: joined a
-5-instance "clear is not a measurement" cascade across 4 people, contributed a real verified fix
-(exit-code contract) to my own script, credited colleagues rather than report my own piece in
-isolation. 22:37: gave a substantive, non-deferred technical read on a real cross-project
-infrastructure proposal (Pard's LaunchAgent case); watched the tail of a separate #1743 cascade
-(nested `inbox/read/` mailbox defect, third cleanup in a month, PPM finally installed the invariant)
-resolve without needing my action; found and cleared 14 stale local draft files in `dev/active/`
-dating back to 08-14, verified each was genuinely already-delivered elsewhere before deleting.
+- **Ship #060 workstream review**: window Sep 4-10, due no later than Sat Sep 12 (Exec's nudge
+  date, not the actual deadline — "write it now" is the actual ask). Not started this fire.
 
 ## Open, non-blocking
 
@@ -58,21 +62,24 @@ dating back to 08-14, verified each was genuinely already-delivered elsewhere be
 - **#1731** — PPM's reconcile-sequencing hypothesis, unconfirmed, not actively chasing.
 - **The 1 still-held worktree** (`agent-af6f27891de682d61`) — inconclusive, correctly held.
 - **The RACI/responsibility-notation backlog item** (Themis relay, filed 09-02) — still not started.
-- **A candidate gap worth a future pass**: methodology-53 now has 6+ real applications with no
-  short "how to apply it" checklist alongside the entry — still not urgent, no trigger named.
-- **The `mailboxes/*/MANIFEST.md` sibling-basename false-strand warning** (CXO/Docs' finding,
-  fix proposed: `[ "$name" = "MANIFEST.md" ] && continue` in mail-send.sh's strand check) — hit it
-  on my own seat tonight, confirmed harmless, not mine to fix. Watch for the actual patch landing.
+- **methodology-53** now has 6+ real applications with no short "how to apply it" checklist — not
+  urgent, no trigger named.
+- **The `mailboxes/*/MANIFEST.md` sibling-basename false-strand warning** — hit it again today,
+  confirmed harmless both times, not mine to fix. Watch for the actual patch landing.
 
 ## Standing corrections to myself
 
-- **A syntax-checked script is not a tested script.** (recurring — 09-10 it was specifically an
-  exit-code CONTRACT that was never tested against its actual caller's assumption.)
+- **A syntax-checked script is not a tested script.** (recurring.)
 - **When someone describes what your own tool does, verify it against the actual code rather than
   accept the description — even when the description is praise.** (09-10.)
-- **Credit colleagues' discipline explicitly when reporting your own catch in the same thread.**
-  (09-10.)
 - **A stray untracked file from weeks ago is not automatically lost work — check whether it was
-  delivered through a channel other than the one you're currently scanning before treating its
-  absence as a loss.** (09-10 — the Janus/Themis drafts looked alarming until the session logs
-  showed the real delivery channel was a different repo entirely.)
+  delivered through a channel other than the one you're currently scanning.** (09-10.)
+- **NEW (09-11): never split a mailbox rename across two `mail-send.sh` calls.** Pass both the old
+  and new path together, in the same call, every time — the tool's own reconcile step makes a
+  second call on the same paths structurally unsafe (see #1746). If a first call was incomplete,
+  check `origin/main` directly before deciding what a follow-up needs to contain — don't trust
+  local disk state right after a send.
+- **NEW (09-11): checking your own tool's actual commit diff, not just its printed success
+  message, is what caught this.** `mail-send.sh` printed a clean "pushed ✓" for the incident
+  commit — the tool did exactly what it was told; the bug was in what I told it to do. A green
+  message is not the same claim as "the diff does what I intended."

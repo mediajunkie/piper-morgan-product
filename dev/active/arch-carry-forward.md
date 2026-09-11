@@ -26,17 +26,14 @@ in git history.
 | Mail | `mail-send.sh` push-to-ref; never touch PM's main checkout. Inbox verified at trunk (`git ls-tree origin/main`), never local `ls`. |
 | ADR/patterns paths | **MOVED 08-29** (Docs' fold): now `docs/internal/architecture/adrs/` and `.../patterns/` — no `current/` segment. |
 
-## ACTIVE THREAD (09-08): Flywheel Re-Evaluation — ARCH LEADS
-Synthesis at v3.0.2 (table corrected in place): `dev/active/flywheel-v3-synthesis-2026-09-08.md`.
-**CHALLENGE ROUND CLOSED 09-09 EOD** — D4 concur-with-usage-data (Lead), D2 unopposed x3, first
-wave all accepted (5 amendments + table fix). **NEXT (09-10 START, named trigger — fresh pass for
-ratification-grade text): draft v3 TEXT of methodology-00 Layer 2** per the 7 decisions as
-amended, send to PM with the round record. Fold CXO's two-mechanism finding (directive path vs
-composed path — GatherOutcome must reach BOTH or two differently-honest voices) into the
-GatherOutcome epic sketch when it drafts.
-Q5 awaits PM. Docs holds the per-practice see-also mapping. Also mine: category-review of Lead's
-fixes (object-or-none lines), noun-audit follow-ons (GatherOutcome + deliverable model,
-MCP-path-first, at owners).
+## Flywheel Re-Evaluation: CLOSED 09-11 (ratified + applied to canon)
+PM ratified 09-11; CIO applied to methodology-00 (`bfd1445bc`) verbatim. No standing duty — the
+milestone-close trigger (in the doc itself) carries it. Q5 formally un-ruled but the work-queue
+ruling (carried+mail+github) supplied its substance; the slot in canon takes PM's word whenever
+it comes. Residuals in MY lane: scope-guard delivery blocked on PM's ruleset decision (#1744
+open, blocker 2 of 2 = required status check that binds only the bot); GatherOutcome +
+Deliverable epics await their turn in PPM's order (inputs banked: two-mechanism finding, §5b
+provenance invariant, the adapter list-wrapper as first adoption site).
 
 ## Prior thread: Architectural Review 2026 → Reorientation Plan v1.0
 
