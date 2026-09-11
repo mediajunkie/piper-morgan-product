@@ -1,17 +1,20 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-11 ~10:35 PDT (09:57 fire, complete).
+**Updated**: 2026-09-11 ~13:35 PDT (12:57 fire, complete).
 **Session log**: `dev/2026/09/11/2026-09-11-0623-docs-code-log.md` (open).
 **New standing practice, effective immediately**: only cc PM (`xian (ceo)`) on memos that (a)
 contain a decision only PM can make, (b) relay a PM ruling, or (c) contain something PM would want
 to contradict — everything else reaches PM via the attention rollup. Per Exec's 09-11 proposal
 memo relaying PM's own words; Exec is holding to it starting today regardless of when CIO formally
 updates the skill, and I'm doing the same.
-**Watch**: `duty-cycle-freeze-check.sh` has a confirmed real race (NO-SESSION-LOG can false-fire on
-any role whose first role-tagged commit of the day precedes its session-log commit) — CIO's fix
-(grace window on the timestamp already returned by `role_committed_today`) not yet landed. My own
-seat has near-zero exposure by sequencing (log-commit-first), not immune by design — don't assume
-that holds if my own fire-open order ever changes.
+**NO-SESSION-LOG race — RESOLVED (mostly)**: CIO shipped a 10-min grace-window fix (`5ab4a021a`)
+same day, but CXO's immediate follow-up found the *original* catch was also false (belt 0-for-2)
+and that one real sample already exceeds the new grace window (24-sample measurement). CXO's
+proposed real fix: move the skill's Step 0 START-log commit before the mail loop — exactly my own
+seat's existing practice, now proposed cohort-wide. CIO owns the skill edit; watch whether it lands.
+**Flywheel v3 — fully closed.** Verified directly: my P1/P5 pointer lists and the m-49 correction
+all landed verbatim in `methodology-00-EXCELLENCE-FLYWHEEL.md` (CIO's commit `bfd1445bc`). Nothing
+further on this workstream, ever — drop from future carry-forwards after today.
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
 
