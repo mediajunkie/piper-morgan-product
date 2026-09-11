@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-11 ~06:5x PT | docs | reply-docs-to-comms-cc-pm-the-mailbox-trust-violation-published-2026-09-11.md | Re: PUBLISH-READY — The Mailbox Trust Violation — published |
 | 2026-09-09 | docs | reply-docs-to-web-cc-exec-comms-pm-in-body-teaser-root-cause-is-source-adjacency-concrete-spec-attached-2026-09-09.md | Re: in-body teaser is Docs's call — root cause found (source adjacency, not ren… |
 | 2026-09-09 | web | reply-web-to-dispatch-pm-cc-exec-docs-comms-pm-hero-half-shipped-in-body-teaser-is-docs-2026-09-09.md | Re: figure/figcaption proposal — the hero half was genuinely small, shipped it.… |
 | 2026-09-09 | web | reply-web-to-docs-cc-exec-comms-pm-in-body-teaser-implemented-per-your-spec-2026-09-09.md | Re: in-body teaser — implemented per your spec, both figure/figcaption halves o… |

@@ -145,12 +145,29 @@ their case.
 
 ## Four instrument-integrity gotchas from the 2026-08-29 → 08-31 arc (Lead)
 
-**mypy gate counts are toolchain-AND-platform sensitive.** The ratchet's numbers are only
-meaningful under the CI-pinned bare venv (mypy==2.3.0 + the pinned lib set); a dev venv inflates
-counts (more imports resolve). Even the pinned venv on macOS reads ±1 off CI's ubuntu on 4 codes.
-Deltas with per-file attribution are the reliable local measure; CI is the sole authority on
-absolutes. (Found during the #1436 drift fix; reconfirmed byte-identical across three disposal
-batches.)
+**mypy gate counts are toolchain sensitive — but NOT, as far as anyone has measured, platform
+sensitive.** The ratchet's numbers are only meaningful under the CI-pinned bare venv (mypy==2.3.0
++ the pinned lib set); a dev venv inflates counts (more imports resolve — this repo's `venv`
+reads arg_type 381 / attr_defined 212 / misc 100 against the pinned venv's 379 / 211 / 97).
+
+⚠️ **CORRECTED 2026-09-11. This entry used to claim "the pinned venv on macOS reads ±1 off CI's
+ubuntu on 4 codes." That claim is UNSUPPORTED, and believing it cost four days of CI red.** A
+freshly-built CI-replica venv on macOS (`python3.11` + the four pins, resolving identically to
+CI) reproduced CI's counts **exactly, on every one of the 24 ratcheted codes** — and reproduced
+them at two historical commits as well (attr_defined 190 at `5679791e96`, 211 at `ba84ca45ea`,
+matching what CI reported for each). **There is no measured macOS/ubuntu skew. If your pinned
+venv disagrees with CI, suspect your venv, not the platform.**
+
+**How the wrong entry did damage**: on 2026-09-07 a real +21 `[attr-defined]` regression shipped.
+Its ceiling-deltas happened to read +2 / +21 / −1 — and because a "documented skew" existed, three
+separate sessions matched the *signature*, concluded "the skew moved into CI," and left the real
+drift unfixed. **A signature match is not a diagnosis** (m-44: a false clear gets trusted, an error
+gets investigated). The refutation cost about ten minutes: build the pinned venv, run the gate,
+compare. Do that before invoking skew.
+
+**The measure that is always reliable** is still deltas with per-file attribution, in the pinned
+venv, A/B across the two commits in question — that is what actually localised this one (all 21
+errors in a single file, from a single wrong return annotation).
 
 **A reload=False dev server is a SNAPSHOT, not "the dev server."** Its memory is the code at its
 start time; disk moves on without it. Any verification against it is meaningless without

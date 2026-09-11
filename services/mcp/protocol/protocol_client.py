@@ -27,7 +27,11 @@ class MCPProtocolClient(PiperMCPClient):
     def __init__(self, server_config: Dict[str, Any]):
         super().__init__(server_config)
         self.message_handler = MCPMessageHandler()
-        self._pending_requests: Dict[str, asyncio.Future] = {}
+        # JSON-RPC 2.0 ids are `str | int` (see MCPMessage.__init__), so the
+        # pending-request map must be keyed the same way — declaring it `str`
+        # made every `request.id` lookup/pop a type error while the runtime
+        # behaviour was already correct.
+        self._pending_requests: Dict[Union[str, int], asyncio.Future] = {}
         self._server_capabilities: Optional[Dict[str, Any]] = None
         self._initialized = False
 
@@ -145,7 +149,7 @@ class MCPProtocolClient(PiperMCPClient):
             request_json = self.message_handler.serialize_message(request)
 
             # Create future for response
-            future = asyncio.Future()
+            future: asyncio.Future = asyncio.Future()
             self._pending_requests[request.id] = future
 
             # Send request (implementation depends on transport)
