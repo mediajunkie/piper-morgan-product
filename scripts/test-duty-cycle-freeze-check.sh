@@ -264,9 +264,11 @@ mkfixture_yesterday_only(){
   echo "$TMP/w"
 }
 
-W=$(mkfixture_commit_no_log "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+# H1's commit must clear the 2026-09-11 grace window (default 10 min) to be a genuine, aged signal
+# rather than a race — see H4/H5 below for the race itself.
+W=$(mkfixture_commit_no_log "$(( NOW - 900 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out=$(run "$W" "$R" 11)
-echo "$out" | grep -q "^NO-SESSION-LOG testrole" && ok "H1 commit today, no session log → NO-SESSION-LOG fires" || no "H1 expected NO-SESSION-LOG, got: ${out:-<empty>}"
+echo "$out" | grep -q "^NO-SESSION-LOG testrole" && ok "H1 commit today (aged past grace), no session log → NO-SESSION-LOG fires" || no "H1 expected NO-SESSION-LOG, got: ${out:-<empty>}"
 echo "$out" | grep -q "standing-item 7q" && ok "H1b message cites 7q for traceability" || no "H1b missing 7q citation: $out"
 
 W=$(mkfixture "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
@@ -276,6 +278,19 @@ echo "$out" | grep -q "NO-SESSION-LOG" && no "H2 today's log already exists but 
 W=$(mkfixture_yesterday_only "$(( NOW - 30*3600 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out=$(run "$W" "$R" 11)
 echo "$out" | grep -q "NO-SESSION-LOG" && no "H3 no commit today at all but NO-SESSION-LOG wrongly fired: $out" || ok "H3 no commit today (quiet/not-started) → no NO-SESSION-LOG"
+
+# H4/H5 — the 2026-09-11 race (CXO's finding, HOST's corroboration): a role-tagged commit that
+# legitimately PRECEDES the session log (mail-send.sh push, heartbeat write) must NOT trip
+# NO-SESSION-LOG while it's still within the grace window, even though role_committed_today()
+# matches it exactly the same as real work. CXO's own window was 2m27s, HOST's was 20s — both must
+# stay silent under the default 10-minute grace.
+W=$(mkfixture_commit_no_log "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "NO-SESSION-LOG" && no "H4 fresh commit (0s old, CXO/HOST's exact race) wrongly fired NO-SESSION-LOG: $out" || ok "H4 fresh commit within grace window does not fire NO-SESSION-LOG (the CXO/HOST race)"
+
+W=$(mkfixture_commit_no_log "$(( NOW - 147 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "NO-SESSION-LOG" && no "H5 commit at CXO's exact observed window (147s old) wrongly fired: $out" || ok "H5 commit aged exactly to CXO's observed 2m27s window still does not fire (correctly inside grace)"
 
 echo "── $PASS passed, $FAIL failed ──"
 [ "$FAIL" -eq 0 ]

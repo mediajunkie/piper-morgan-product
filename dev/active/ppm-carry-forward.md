@@ -1,13 +1,12 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-11 07:11 PT (START). **Flywheel v3 RATIFIED — closed, no more
-watching.** **Ship #060 filed same-fire, ROLE-PORTFOLIO refreshed.** **PM ruled on the work-queue
-definition (carried + mail + GitHub); PPM's own practice already matches it, made explicit in a
-reply.** **PM removed the PR requirement on main — Arch re-testing scope-guard's GH006 now, watch
-for the result.** `#1744` stays open until that lands. **My own triage path stays
-`mailboxes/ppm/read/`, never `inbox/read/`** — CI-enforced now, not just memory. **#1688 fully
-closed. #1731 genuinely open, unconfirmed.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
+**Last rewritten**: 2026-09-11 10:11 PT (WORK). **Flywheel v3 RATIFIED — closed.** **Ship #060
+filed, ROLE-PORTFOLIO refreshed.** **Scope-guard GH006 re-tested — one blocker cleared, a second
+surfaced (required check binds only the bot), still PM's repo-settings call.** `#1744` stays open.
+**New behavioral note: PM's cc rule changed — cc PM only for decisions/rulings/things-to-
+contradict, not routinely.** **My own triage path stays `mailboxes/ppm/read/`** — CI-enforced.
+**#1688 fully closed. #1731 genuinely open, unconfirmed.** **⚠️ #1386 framing CORRECTED AGAIN — now FOUR of
 six criteria re-run at MVP close, not three.** Exec accepted my criterion-3 ruling in full and
 went further: criterion 3 is the *oldest* evidence in the whole gate (2026-07-12), older than
 criteria 2/4/5. Corrected shape: **criterion 6 fires at MVP close; criteria 2, 3, 4, 5 all re-run
@@ -15,6 +14,21 @@ fresh then** (every one is an artifact-execution result and the artifact will ch
 Only the scenario *definitions* (persona, turn sequence, expected behavior) carry forward
 unchanged — not the pass/fail evidence. **Only criterion 1** stands unqualified (text-stale,
 functionally satisfied, not artifact-dependent).
+
+## 🔵 SCOPE-GUARD GH006 RE-TEST — one blocker cleared, a second surfaced, still PM's call (2026-09-11 10:11)
+Arch re-tested per PM's ask: PM's PR-rule removal fixed one blocker; a second surfaced (the
+required status check binds only the bot, since every human pushes as admin and bypasses it
+anyway). Arch's own loud-failure fix from Tuesday worked correctly — the run failed rather than
+reporting a false SUCCESS. Arch recommended a narrower fix (bypass-actor grant) over removing the
+check outright. **Still PM's repo-settings call, `#1744` stays open.** No PPM action.
+
+**Behavioral note adopted**: PM's new cc rule (cc PM only when a memo carries a decision only PM
+can make, relays PM's own ruling, or contains something PM would want to contradict — otherwise
+the attention rollup is the path) applies to PPM's own memos going forward, not just Exec's.
+
+**Small epic-order addition**: CXO found `#1108` (Fast Follow) is a concrete second instance of
+`#1718`'s cousin (#3, "an error surfaced to a user") — added a cross-milestone note so if `#1718`
+ever gets promoted to a real epic, `#1108` gets cited alongside it rather than fixed in isolation.
 
 ## ✅ SHIP #060 FILED + PORTFOLIO REFRESHED + FLYWHEEL RATIFIED (2026-09-11 07:11)
 Big morning batch. **Flywheel v3 RATIFIED by PM** ("The flywheel v3 layer 3 text looks good. I

@@ -1,8 +1,17 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-11 ~07:45 PDT (06:57 fire, in progress — session started PM-engaged at 06:23
-before the cron fire, publishing "The Mailbox Trust Violation").
+**Updated**: 2026-09-11 ~10:35 PDT (09:57 fire, complete).
 **Session log**: `dev/2026/09/11/2026-09-11-0623-docs-code-log.md` (open).
+**New standing practice, effective immediately**: only cc PM (`xian (ceo)`) on memos that (a)
+contain a decision only PM can make, (b) relay a PM ruling, or (c) contain something PM would want
+to contradict — everything else reaches PM via the attention rollup. Per Exec's 09-11 proposal
+memo relaying PM's own words; Exec is holding to it starting today regardless of when CIO formally
+updates the skill, and I'm doing the same.
+**Watch**: `duty-cycle-freeze-check.sh` has a confirmed real race (NO-SESSION-LOG can false-fire on
+any role whose first role-tagged commit of the day precedes its session-log commit) — CIO's fix
+(grace window on the timestamp already returned by `role_committed_today`) not yet landed. My own
+seat has near-zero exposure by sequencing (log-commit-first), not immune by design — don't assume
+that holds if my own fire-open order ever changes.
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
 
@@ -39,40 +48,13 @@ the omnibus from all 11 roles' logs daily). Measured my own logs directly: "next
 dropped to zero unprompted from 09-06 on; `Fire N` headings present and wake-shaped same as the
 other three seats reporting. Added the omnibus-consumer angle nobody else could supply.
 
-## Yesterday (09-10) closed — headline: flywheel v3 text complete, two real skill/mailbox defects found and fixed, HIGH-COMPLEXITY day
+## 09-10 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-10-omnibus-log.md`)
 
-Verified the flywheel v3 Layer 2 text (my P1/P5 pointer-list ask, sent 09-09 EOD) landed complete —
-both lists confirmed exactly as sent, and a discrepancy I'd noted but declined to press (P4's list
-had folded m-49 against Arch's own maturity-gate ruling) turned out to be a real slip Arch found
-and fixed, crediting me. Text now awaits only PM's ratification and CIO's canon edit — nothing
-further owed on my end.
-
-Closed **#1727 + #1742** (13 dead links across 9 legacy-doc files, 3 targets confirmed never to
-have existed in the repo) same pass, evidence comments on both.
-
-**Two real process defects found and fixed, both closing classes not just instances**: (1) Lead
-flagged that the #1486 batch-15 housekeeping sweep (09-02) had archived PM's *live* sprint tracker
-as "forensic-only" for 8 days — shipped `cleanup-dev-active` v1.1→v1.2 with a mandatory Step 2.1
-guard (published-artifact + recent-commit checks) so age-only classification can't repeat this.
-(2) Independently reproduced CXO's 09-09 MANIFEST.md `mail-send.sh` false-positive on my own seat
-via the ordinary manifest-regen workflow — reported as the confirming second-seat evidence CXO's
-finding was waiting on (Lead owns the one-line fix, not mine to make).
-
-Today's omnibus (`docs/omnibus-logs/2026-09-10-omnibus-log.md`, 529 lines, HIGH-COMPLEXITY:
-COORDINATION, 14 sessions/11 roles + 3 prog) accepted on first pass — audited via commit-count
-verification (280, matched directly against both repos' git logs), a direct `decisions.log` check
-(confirms flywheel v3 not yet ratified), a `gh issue view` timestamp check on #1743's closure, and
-a spot-check of CIO's fifth false-clear catch against their own log — all matched exactly, zero
-discrepancies. Omnibus (`9b3a3cd63`) and activity-log reconciliation (`d29ba1cc1`) both pushed.
-
-**Watch, not chase**: "The Mailbox Trust Violation" (today's scheduled beat) never left `drafted` —
-Comms' own log shows the art (image field) still incomplete at day's close, correctly not chased.
-Ship #058's `linkedinURL` calendar gap and the cross-project cc-delivery watch item both carry over
-unchanged, still single-instance, not yet worth escalating.
-
-**First action next fire (06:57 tomorrow)**: sync, mail loop (raw `ls`), omnibus currency check
-(should read 09-10 as "yesterday," correct), heartbeat step, check "The Mailbox Trust Violation"'s
-calendar status again, otherwise genuinely open floor.
+Flywheel v3 text completed (my P1/P5 pointer lists + a real m-49 catch). Closed #1727+#1742 (13
+dead links). Two process defects closed at the class level: `cleanup-dev-active` v1.2 (live-artifact
+guard) and confirmed CXO's MANIFEST.md `mail-send.sh` false-positive on a second seat. Omnibus
+(529 lines) personally audited, zero discrepancies. Ship #058's `linkedinURL` calendar gap and the
+cross-project cc-delivery watch item both still single-instance, not worth escalating.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
