@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: 'A human discovers sealed mail filed as read while one luminous agent celebrates an empty inbox and another confronts an overflowing inbox beyond a disconnected mechanism.'
 caption: ''
 ---
 
