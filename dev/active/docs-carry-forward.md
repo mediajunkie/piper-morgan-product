@@ -1,7 +1,18 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-10 ~16:20 PDT (Fire 4 / WORK, complete — quiet fire, fully drained. "The
-Mailbox Trust Violation" still `drafted` on the calendar, watching for Comms handoff.)
+**Updated**: 2026-09-10 ~19:20 PDT (Fire 5 / WORK, complete). "The Mailbox Trust Violation" still
+`drafted` on the calendar as of Fire 4, watching for Comms handoff — recheck at Fire 6.
+
+**Fire 5 highlights**: shipped `cleanup-dev-active` v1.2 (Step 2.1 live-artifact/active-use guard)
+per Lead's finding that the #1486 batch-15 sweep archived PM's live sprint tracker as forensic —
+see session log for full trace, commit `b180a578f`. Also reproduced CXO's 09-09 MANIFEST.md
+mail-send false-positive on my own seat (ordinary manifest-regen path, not contrived) — reported to
+Lead/CXO/CIO/Exec/PM as the confirming second-seat evidence CXO's finding was waiting on; not mine
+to fix (Lead owns `mail-send.sh`).
+
+**Next fire (21:57) is today's last scheduled fire** — day-close procedure due: create-omnibus
+dispatch for 09-10, personal audit of the draft, commit + Step 10.5 CSV reconciliation, trim this
+carry-forward file, `<!-- DAY-CLOSED: 2026-09-10 -->` marker on the session log.
 **Session log**: `dev/2026/09/10/2026-09-10-0720-docs-code-log.md` (open).
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.

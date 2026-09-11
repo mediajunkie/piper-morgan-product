@@ -1,47 +1,48 @@
 # Exec (Chief of Staff) — carry-forward
 
-**Rewritten 2026-09-09 ~21:30 PT at day-close.**
+**Rewritten 2026-09-10 ~21:15 PT at day-close.**
 
 ## Cron
-Job `52fb898d`, `32 8,20 * * *`, armed 09-07 21:03, expires ~09-14 → **rotate ~09-12** (Friday).
-Verified exactly one at both fires today.
+Job `52fb898d`, `32 8,20 * * *`, armed 09-07 21:03, expires ~09-14 → **rotate at a 09-12 fire**
+(window opens then; several fires available, no urgency).
+⚠️ **PENDING PM RULING: my cadence is 2 fires/day while every other role runs 6.** I am silent
+09:05→20:32 by construction and the belt flags me BELT-INVISIBLE for it. PM saw the gap and asked
+about it; I proposed 6× and PM has not ruled. **Do not change unilaterally.**
 
-## The day in one line
-**9 MVP issues closed** — the most in a day since the collapse began, and the structural blockage
-cleared itself once the right question got asked.
+## Blocked on PM — three, all verified live 09-10
+1. **Vercel dashboard access.** Web is hard-blocked: no CLI, no token, no dashboard. Repo has **no
+   `vercel.json` and no `.vercel` dir** — the integration is account-side and deploys on GitHub
+   push, which is why Web can deploy and cannot see billing. **Nothing changed; there was never a
+   credential.** PM options given: read the dashboard themselves · invite Web as Viewer · read-only
+   token via `KeychainService` (`_api_key` suffix trap).
+2. **Bot path onto protected main.** Verified config: required PR reviews ON, **bypass allowances
+   NONE SET**, enforce_admins OFF (which is why PM's pushes work and the bot's don't). Fix: add
+   `github-actions[bot]` to the bypass allowlist. Settings → Branches → `main` rule.
+3. **Flywheel v3 ratification.** Text published as artifact for PM
+   (`dev/active/flywheel-v3-layer2-text-2026-09-10.md` — published Arch's actual text, not a
+   re-presentation). Reports itself complete, no open slots. **On ratification the workstream
+   CLOSES.**
+- **Q5 also unruled** (verified: 0 matches in decisions.log). HOST advises ruling after the intake
+  step has mileage. v3 has a slot for either answer.
 
-## Live PM threads
-- **In Review: 9 remain.** PM ran flows 1, 2 and 5 of the test round; **flows 3 and 4 unrun** —
-  `dev/active/in-review-test-round-2026-09-08.html`.
-- **Ship #059** published 09-09, canonical + hero image verified 200.
-- **Awaiting PM**: Q5 (idle a terminal state — general or build-roles only?) · whether to adopt the
-  board-visible floor (≥1 MVP item In Progress at all times) as a watchdog line.
-- **PM ruling landed**: new issues default to **Product Backlog**, not Sprint Backlog. **I was
-  violating this** — 3 of my filings today went straight to Sprint Backlog.
+## PM's testing queue
+**7 In Review**, round prepped: `dev/active/in-review-test-round-2026-09-10.html` — 2 conversations,
+~12 min. **#1617, #1651, #1632 PM failed live 09-09**; Lead shipped fixes, so they are real re-runs.
 
-## What changed structurally today
-- ⭐ **Lead answered the two-week question: "(a) nothing prevents it — PM has never been the blocker,
-  I have."** Their mechanism, better than my three theories: *"reactive work crowded out intake, one
-  fire at a time, invisibly — each fire locally correct, the sum wrong."* **Fix is mechanical: one
-  never-started item gets a lane EVERY fire regardless of inbound.** Held for the rest of the day —
-  #1734 (security) and #1637 closed on it.
-- **Arch factored the 37 by cause**: 8 groups + 7 singletons; **cousins load-bearing for 10 (18 if
-  the acceptance family counts).** Honest remainder named rather than forced — *"forcing these into
-  groups would be taxonomy theater."*
-- **PPM built the epic order**; CIO + Arch designing the scope guard jointly.
-- **PM's nudge worked where mine had not.** I asked once on 09-08, got no reply, then built three
-  theories on the gap instead of following up.
+## Trajectory
+**17 MVP closed in 3 days** (4 Mon · 9 Tue · 4 Thu) vs 7–11 per WEEK during the collapse.
+MVP 45 not done (35 Sprint Backlog, 3 In Progress, 7 In Review); 1,133 done; zero unmilestoned.
+⭐ **The cause-factoring proved itself**: 3 of today's 4 closes (#1631/#1650/#1694) are ONE contract
+— the convergence flagged 09-09 morning. The grouping predicted which items share a fix.
 
 ## Awaiting others
-Web (Vercel Q1 — Q2 I resolved: beta is on Fly, not Vercel, so one ceiling can't take both) ·
-Arch/PPM (epic order → Lead's source of truth) · CIO+Arch (scope guard) · Lead (#1739 acceptance
-contract).
+Web (Vercel, blocked on PM) · Arch/CIO (scope-guard delivery, blocked on PM) · Lead (carry-forward
+refresh — flagged 09-10; their session log is excellent) · PPM/Arch (epic order in use).
 
 ## Standing corrections on me
-- ⚠️ **Three throughput numbers today, two retracted.** MVP is ~25/wk historically, not 4-7; and
-  targeting was never the problem (82% of closures are MVP). **Check twice before reporting a rate.**
-- ⚠️ **PM asked for the forest, not the trees.** Rollups have been item-feeds. The standing briefing
-  must report trajectory and structure — the epic model finally gives something to report against.
-- ⚠️ **Protect Lead's attention — I was the largest offender**, ~8 memos in two days. Batch
-  non-urgent; route what does not need Lead.
-- ⚠️ **Ask once is not ask.** A question unanswered is not a question answered.
+- ⚠️ **`closedAt` is UTC.** Evening-Pacific closes land next-day. Every closure figure must be
+  computed in Pacific — this inflated one figure and double-counted another this week.
+- ⚠️ **Killed my own In-Progress watchdog proposal**: 9 issues closed Sprint Backlog → Done without
+  touching the column. Replacement: days-since-last-closure + backlog trend.
+- ⚠️ **Verify at the layer where the thing happens, not where the schema says it should.**
+- ⚠️ **Ask once is not ask.** A question unanswered is not answered.

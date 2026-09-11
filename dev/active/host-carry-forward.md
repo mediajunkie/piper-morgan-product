@@ -1,12 +1,12 @@
 ---
-last_updated: 2026-09-09
+last_updated: 2026-09-10
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-09 22:0x PDT (STOP fire, day 47 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-09-10 22:0x PDT (STOP fire, day 48 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -57,17 +57,18 @@ max_age_days: 1
 
 ## Cron
 
-Current job **`6b3e358b`** (chain … `6a1fa69f → dd10b841 → 6b3e358b`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-09 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`c866b28e`** (chain … `dd10b841 → 6b3e358b → c866b28e`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-10 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 09-09 STOP
+## Open threads, as of 09-10 STOP
 
-- ✅ **The flywheel re-evaluation — v3 landed, challenge round converged, HOST's Q4 work credited throughout.** v3.0.2 shipped 09-09 morning after CXO caught A1/A2's fix landing in the amendment footer rather than the actual enforcement table (verified directly — confirmed, then found Arch had already corrected it before this fire started). D4 (Practice 4 absorbs the evidence family) and D2 (five practices stay five) both closed with explicit concurrence from Lead (real usage-data point: two weeks of name-the-layer/state-the-denominator invocations, 100% in verification, 0% in scoping) and CIO (reviewed the full document directly, no new challenge). Archival — the whole thread from 09-08's kickoff to today's convergence is one of the cleanest examples of the cohort's own verification discipline this window has produced.
-- **`#1731` (mail-send.sh silent writes) — reopened, rescoped to PPM's reconcile-sequencing hypothesis, still genuinely open.** CIO attempted the repro fixture (~20 min) and couldn't reproduce PPM's false-no-op — correctly declined to close on a negative result, left findings on the issue, and correctly stopped chasing once it stopped cooperating rather than let it eat a second fire. Watching, not chasing — CIO's/Lead's to pick up if it surfaces again live.
-- **PM's backlog/epic reforms continuing to execute same-day, outside HOST's lane but worth tracking for cohort-health context**: new issues default to Product Backlog; the sprint refactored into eight ordered epics + six singletons (`dev/active/mvp-epic-order-2026-09-09.md`), one-epic-at-a-time with discovered work non-blocking unless it lands in the same epic; Exec self-corrected two numbers given to PM the same day (MVP throughput averaged ~25/week and collapsed to 7-11 starting 08-31, not a chronic 4-7/week) rather than let a wrong figure stand; CIO offered a scope-guard chokepoint sketch (hook to the PR-merge chokepoint, already mandatory) for co-design with Arch rather than ship unilaterally.
-- ✅ **Jake loop-back — SENT** (PM sent it 09-06, carry-forward corrected 09-08). Archival.
+- ✅ **The flywheel re-evaluation — v3 text finalized and sent to PM for ratification.** Full text at `dev/active/flywheel-v3-layer2-text-2026-09-10.md` (verified directly, confirmed HOST's own contributions accurately reflected: the m-53 chokepoint sub-clause under Practice 3, Practice 5 taking D7's cadence). Docs delivered the two remaining pointer-list slots same-day, re-verified fresh against the live corpus rather than pulled from memory. Ratification unblocked; only Q5 (is idle a legitimate terminal state) remains PM's to rule, with HOST's own sequencing advice cited as the reason there's no rush. Archival on HOST's side — nothing further owed unless PM's ratification surfaces a question.
+- ✅ **Scope-guard mechanism work progressing fast, all verified directly.** CIO shipped the detection predicate (`scripts/scope-drift-check.sh`, commit `ec65e48f7`) — negation-aware after checking against the #1278 incident, 11/11 real tests, verified directly rather than trust the memo. Arch/PPM own the Action skeleton next.
+- **`#1731` (mail-send.sh silent writes) — still genuinely open, no movement this window.** CIO's repro attempt was inconclusive; watching, not chasing.
+- **PM's backlog/epic reforms** — epic order built and live (`dev/active/mvp-epic-order-2026-09-09.md`), outside HOST's lane, tracked for cohort-health context only.
+- ✅ **Jake loop-back — SENT.** Archival.
 - **Role Health Check** — ✅ #1714 closed 08-31. Next due ~09-28.
 - **Agent 360 v0.4** — ✅ Fully closed. Only cohort-share remains, pending PM's framing sign-off.
 - **ESSENCE.md v0.1 trust-lens** — ✅ Given 08-29. **Watch for**: Lead's watched round adding the inversion-path test.
-- The 09-08 carry-forward cleanup (151→80 lines), four methodology entries filed this week (m-50 through m-53), Workstream Review #059, NO-SESSION-LOG detector, the "last invoked" marker's cold-start fixes — all closed/ruled, archival.
+- The 09-08 carry-forward cleanup, four methodology entries filed the week of 09-04 (m-50 through m-53), Workstream Review #059, NO-SESSION-LOG detector — all closed/ruled, archival.
 - **BRIEFING-CURRENT-STATE.md flagged STALE** by SessionStart hook — unchanged status, still not HOST's lane to refresh unprompted.
 - **08-26 was the second fully quiet day this week** (after 08-24) — all six fires clean, nothing owed in, nothing new arrived. Noted as a baseline pattern, not itself an open thread.
