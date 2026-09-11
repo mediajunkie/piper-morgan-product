@@ -38,7 +38,18 @@
 # denominator to stderr on every run — "checked N commits, M issue references, F flagged" — so a
 # silent run (no output) is distinguishable from a run that measured nothing.
 #
-# Exit 0 always (advisory, like every other check in this family — never fails the caller's build).
+# EXIT CODES (v1.1, 2026-09-10 — corrected after Arch's Action was found to already check for
+# this contract, `if [ $RC -gt 1 ]`, while this script only ever returned 0. That branch was dead
+# code protecting against nothing — a real internal predicate failure (bad range, corrupt repo)
+# would have printed a warning to stderr and still exited 0, indistinguishable from "ran cleanly,
+# found nothing." The exact "clear is not a measurement" shape this whole thread spent the
+# afternoon catching in three other places, found here by checking my own script's contract
+# against what its caller actually assumes, not by re-reading my own header comment):
+#   0 = ran successfully — 0 or more flags is a NORMAL outcome, not distinguished by exit code.
+#       Flags themselves are on stdout; "clean" vs "found something" is never encoded in the exit
+#       status, only in whether stdout is empty.
+#   2 = the predicate could not run at all — not a git repo, or `git log` itself failed on the
+#       given range. This is the case Arch's Action's `rc -gt 1` guard exists to catch.
 set -uo pipefail
 
 REPO="${SCOPE_DRIFT_REPO:-$(git rev-parse --show-toplevel 2>/dev/null)}"
@@ -48,7 +59,14 @@ G() { git -C "$REPO" "$@"; }
 
 if [ -z "$REPO" ] || ! git -C "$REPO" rev-parse --git-dir >/dev/null 2>&1; then
   echo "scope-drift-check: ERROR — '${REPO:-<unset>}' is not a git repo (set SCOPE_DRIFT_REPO); measured NOTHING." >&2
-  exit 0
+  exit 2
+fi
+
+# Verify the range itself is valid BEFORE trusting a `git log` loop that silently reads zero lines
+# on failure either way — a malformed range and a legitimately-empty range must not look the same.
+if ! G log --format='%h' "$RANGE" >/dev/null 2>&1; then
+  echo "scope-drift-check: ERROR — commit range '$RANGE' is invalid or unreadable in '$REPO'; measured NOTHING." >&2
+  exit 2
 fi
 
 NEGATION_WORDS='not|never|no|isn.?t|doesn.?t|didn.?t|wasn.?t|hasn.?t|haven.?t|won.?t|cannot|can.?t|yet to be|still needs|remains'
