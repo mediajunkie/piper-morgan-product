@@ -264,9 +264,9 @@ mkfixture_yesterday_only(){
   echo "$TMP/w"
 }
 
-# H1's commit must clear the 2026-09-11 grace window (default 10 min) to be a genuine, aged signal
-# rather than a race — see H4/H5 below for the race itself.
-W=$(mkfixture_commit_no_log "$(( NOW - 900 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+# H1's commit must clear the 2026-09-11 grace window (default 20 min) to be a genuine, aged signal
+# rather than a race — see H4/H5/H6 below for the race itself.
+W=$(mkfixture_commit_no_log "$(( NOW - 1500 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out=$(run "$W" "$R" 11)
 echo "$out" | grep -q "^NO-SESSION-LOG testrole" && ok "H1 commit today (aged past grace), no session log → NO-SESSION-LOG fires" || no "H1 expected NO-SESSION-LOG, got: ${out:-<empty>}"
 echo "$out" | grep -q "standing-item 7q" && ok "H1b message cites 7q for traceability" || no "H1b missing 7q citation: $out"
@@ -291,6 +291,13 @@ echo "$out" | grep -q "NO-SESSION-LOG" && no "H4 fresh commit (0s old, CXO/HOST'
 W=$(mkfixture_commit_no_log "$(( NOW - 147 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
 out=$(run "$W" "$R" 11)
 echo "$out" | grep -q "NO-SESSION-LOG" && no "H5 commit at CXO's exact observed window (147s old) wrongly fired: $out" || ok "H5 commit aged exactly to CXO's observed 2m27s window still does not fire (correctly inside grace)"
+
+# H6 — the 2026-09-11 grace widening: CXO's 24-sample distribution measurement found the real max
+# (PPM, 09-08) at 747s (12m27s), past the ORIGINAL 10-minute grace. Widened to 20 minutes; this
+# reproduces PPM's exact real window to confirm the widened grace actually covers it.
+W=$(mkfixture_commit_no_log "$(( NOW - 747 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "NO-SESSION-LOG" && no "H6 commit at PPM's real 747s (12m27s) window wrongly fired: $out" || ok "H6 commit aged to PPM's real 12m27s window does not fire (covered by the widened 20-min grace)"
 
 echo "── $PASS passed, $FAIL failed ──"
 [ "$FAIL" -eq 0 ]

@@ -84,14 +84,30 @@ REG="${DUTY_CYCLE_REGISTRY:-$REPO/dev/active/duty-cycle-registry.tsv}"
 FIRST_FIRE_GRACE_MIN="${FIRST_FIRE_GRACE_MIN:-45}"   # minutes past first_fire before a missing log = missed START
 # 2026-09-11 (CXO's finding, HOST's corroboration): a role-tagged commit that legitimately PRECEDES
 # the session-log commit (a mail-send.sh push under the per-memo commit-and-push norm, or a
-# heartbeat write) trips role_committed_today()'s grep just as validly as real work would — and
-# under normal START-fire sequencing (drain mail, THEN commit the log-carrying work) it almost
-# always does. Observed windows: HOST 20s (heartbeat-first), CXO 2m27s (mail-drain-first). This is
-# NOT a false-positive-by-message-shape problem (excluding `mail(...)`/`hb(...)` commits would trade
-# it for a false NEGATIVE — a genuine mail-only day with no log would go invisible, which is exactly
-# the case NO-SESSION-LOG exists to catch) — it's a race, so the fix is a grace window on the
-# commit's own age, sized comfortably past the slower observed shape (2m27s), not a message filter.
-NO_SESSION_LOG_GRACE_MIN="${NO_SESSION_LOG_GRACE_MIN:-10}"   # minutes a role-tagged commit must age before its absence-of-log becomes a real signal
+# heartbeat write, or any other role-tagged commit — CXO's follow-up broadened this past mail/
+# heartbeat specifically, see below) trips role_committed_today()'s grep just as validly as real
+# work would — and under normal START-fire sequencing (drain mail, THEN commit the log-carrying
+# work) it almost always does. This is NOT a false-positive-by-message-shape problem (excluding
+# `mail(...)`/`hb(...)` commits would trade it for a false NEGATIVE — a genuine mail-only day with
+# no log would go invisible, which is exactly the case NO-SESSION-LOG exists to catch) — it's a
+# race, so the fix is a grace window on the commit's own age, not a message filter.
+#
+# 2026-09-11, same day, widened: the initial 10-minute grace was sized against 2 observed windows
+# (HOST 20s, CXO 2m27s). CXO then measured the REAL distribution — 24 samples across 11 roles x 4
+# days with a positive gap — and found the original catch (#1, PA, 09-08, 4m15s — also independently
+# re-derived by PA themselves rather than trusted from CXO's memo) was ALSO a false positive (belt
+# 0-for-2, not 2-for-2), and that one real sample (PPM, 09-08) sits at 747s (12m27s), comfortably
+# past the original 10-minute grace, with four more in the 6-7 minute band. The lesson stated
+# plainly: a threshold sized against the observations you happened to have, not the distribution,
+# is exactly the failure this whole thread has been finding elsewhere. Widened to 20 minutes —
+# comfortably past the real observed max (12m27s) with margin, not just past the two original
+# points. CXO's own proposed alternative (a commit-COUNT threshold instead of a duration) is
+# refuted by their own data (the 747s case has the MOST commits-before-log in the sample, so count
+# and duration correlate rather than being orthogonal) — noted here so nobody re-proposes it without
+# re-checking. CXO's structural fix (move the START-entry commit before the mail loop in
+# duty-cycle-tick's Step 0, making the window zero by construction) is the better long-term
+# direction and is bundled into standing-item 7v rather than done piecemeal here.
+NO_SESSION_LOG_GRACE_MIN="${NO_SESSION_LOG_GRACE_MIN:-20}"   # minutes a role-tagged commit must age before its absence-of-log becomes a real signal
 now=$(date +%s); hour=${FREEZE_CHECK_NOW_HOUR:-$(date +%-H)}; min=$(date +%-M); now_min=$(( hour * 60 + min ))
 today=$(date +%Y/%m/%d); today_dash=$(date +%Y-%m-%d)
 git -C "$REPO" fetch origin main -q 2>/dev/null || true
