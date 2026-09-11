@@ -377,6 +377,141 @@ class TestEndToEndStandupOfferTurns:
         assert result.message.startswith(f"Good morning! {PROSE}")
         assert result.intent_data.get("standup_todo_offer_pending") is None
 
+    async def test_state_question_answers_and_rearms_pm_live_0911(self, live_service):
+        """#1739 adoption at this seam — PM live 2026-09-11 06:54 (v71), the
+        PARTIAL pass: the core #1617 harm stayed dead (nothing fired), but
+        "are we done with that standup?" fell through the legacy detector to
+        the classifier, which read it as a completion attempt ("I couldn't
+        find a todo matching 'that standup?'"). Pinned: the exact live
+        exchange — question → honest status + the offer re-rendered →
+        "yes" → the NAMED todo marked done. The classifier must never see
+        the question turn (explosive patch)."""
+        todo = _todo("important thing", todo_id=str(uuid4()))
+        todo.due_date = datetime(2026, 8, 10, tzinfo=timezone.utc)
+        behind = []
+        for i in range(8):
+            t = _todo(f"backlog item {i}")
+            t.due_date = datetime(2026, 8, 11 + i, tzinfo=timezone.utc)
+            behind.append(t)
+        fake = _wire_todos(live_service, [todo] + behind)
+        sid = "e2e-1617-state-q"
+        armed = await _standup_turn(live_service, sid)
+        offer_line = (
+            'Also: your todo "important thing" is overdue (was due 2026-08-10), '
+            "and 8 more todos are overdue behind it. "
+            'Want me to mark "important thing" done? (yes/no)'
+        )
+        assert offer_line in armed.message  # PM's transcript, verbatim
+
+        with patch.object(
+            live_service.intent_classifier,
+            "classify_multiple",
+            new=AsyncMock(
+                side_effect=AssertionError(
+                    "classifier reached — the fuzzy-completion fallback must "
+                    "no longer see offer-answer turns (#1739 / PM live 09-11)"
+                )
+            ),
+        ):
+            result = await live_service.process_intent(
+                message="are we done with that standup?", session_id=sid, user_id=_USER
+            )
+        # Core #1617 harm stays dead: a question NEVER fires the write.
+        assert fake.completed_calls == []
+        assert todo.completed is False
+        # The PARTIAL's failure copy never renders.
+        assert "couldn't find a todo matching" not in result.message.lower()
+        # Honest state answer + the stored ask re-rendered VERBATIM in the
+        # same reply (§5b: the re-render is itself a new ask).
+        assert "that standup is done" in result.message
+        assert offer_line in result.message
+        assert result.intent_data.get("state_question_answered") is True
+        # Visible re-arm: the same bound offer survives the question turn.
+        stored = _pending_offers(live_service).get(sid)
+        assert stored is not None
+        assert stored["pending_action"]["todo_id"] == str(todo.id)
+
+        # Then PM's "yes" — binds to the ask re-rendered THIS turn and marks
+        # the NAMED todo done.
+        result_yes = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
+        assert fake.completed_calls == [(str(todo.id), _USER)]
+        assert todo.completed is True
+        assert "important thing" in result_yes.message
+        assert _pending_offers(live_service).get(sid) is None  # consumed
+
+    async def test_state_question_then_no_declines_cleanly(self, live_service):
+        """The decline half of the pinned exchange: question → honest status
+        + re-offer → "no" → declined cleanly, nothing changed."""
+        todo = _todo("important thing", days_overdue=3)
+        fake = _wire_todos(live_service, [todo])
+        sid = "e2e-1617-state-q-no"
+        await _standup_turn(live_service, sid)
+        await live_service.process_intent(
+            message="are we done with that standup?", session_id=sid, user_id=_USER
+        )
+        result = await live_service.process_intent(message="no", session_id=sid, user_id=_USER)
+        assert fake.completed_calls == []
+        assert todo.completed is False
+        assert '"important thing" stays on your list' in result.message
+        assert "Nothing has been changed" in result.message
+        assert _pending_offers(live_service).get(sid) is None
+
+    async def test_todo_referent_question_answers_not_yet(self, live_service):
+        """A state question about the TODO (not the standup) gets the other
+        honest status: the todo is still open, nothing has been changed —
+        and the offer re-renders and re-arms the same way."""
+        todo = _todo("important thing", days_overdue=3)
+        fake = _wire_todos(live_service, [todo])
+        sid = "e2e-1617-todo-q"
+        await _standup_turn(live_service, sid)
+        result = await live_service.process_intent(
+            message="is that overdue todo done yet?", session_id=sid, user_id=_USER
+        )
+        assert fake.completed_calls == []
+        assert 'Not yet — "important thing" is still open' in result.message
+        assert "(yes/no)" in result.message
+        assert _pending_offers(live_service).get(sid) is not None
+
+    async def test_unrelated_question_survives_via_visible_restate(self, live_service):
+        """A state question naming neither the standup nor the todo cannot be
+        answered honestly from the offer record — it re-arms with the
+        confirm-style restate suffix and routes to normal processing (the
+        seam never fabricates an answer it doesn't hold)."""
+        todo = _todo("important thing", days_overdue=3)
+        fake = _wire_todos(live_service, [todo])
+        sid = "e2e-1617-unrelated-q"
+        await _standup_turn(live_service, sid)
+        question = "what meetings are on my calendar?"
+        from services.domain.models import Intent
+        from services.intent_service.pre_classifier import MultiIntentResult
+        from services.shared_types import IntentCategory
+
+        fallback = Intent(
+            category=IntentCategory.UNKNOWN,
+            action="unknown",
+            confidence=0.2,
+            original_message=question,
+            context={"original_message": question},
+        )
+        with patch.object(
+            live_service.intent_classifier,
+            "classify_multiple",
+            new=AsyncMock(
+                return_value=MultiIntentResult(intents=[fallback], original_message=question)
+            ),
+        ):
+            with patch.object(
+                live_service,
+                "_handle_unknown_intent",
+                new=AsyncMock(return_value=MagicMock(success=True, message="ok", intent_data={})),
+            ):
+                await live_service.process_intent(message=question, session_id=sid, user_id=_USER)
+        assert fake.completed_calls == []
+        # The arm SURVIVED the question turn (not abandoned by the pop).
+        stored = _pending_offers(live_service).get(sid)
+        assert stored is not None
+        assert stored["pending_action"]["todo_id"] == str(todo.id)
+
     async def test_prose_reply_neither_fires_nor_declines_1631(self, live_service):
         """#1631 at the generic seam: a long prose turn abandons the offer
         via the pop (off-intent) — the bound completion never fires off a

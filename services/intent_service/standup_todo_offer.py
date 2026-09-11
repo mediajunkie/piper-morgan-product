@@ -27,11 +27,21 @@ re-parses the user's phrasing.
   ``TodoManagementService.complete_todo`` — no title matching anywhere.
 - **Decline** ("no"): the generic decline path answers with the stored
   honest copy; nothing fires, the todo stays.
+- **State question** (#1739, adopted 2026-09-11 — PM live: "are we done with
+  that standup?"): the answer turn consults ``evaluate_acceptance`` at this
+  workflow's registry-declared axes; a STATE_QUESTION verdict never fires and
+  never silently drops the arm. A question naming this offer's own referents
+  (the standup / the bound todo) is answered AT the seam by
+  :func:`state_question_reply` — honest status + the stored ask re-rendered —
+  because normal processing demonstrably misreads it as a completion attempt
+  (the classifier's fuzzy title match answered PM's live question with
+  "I couldn't find a todo matching 'that standup?'"). Other questions keep
+  the confirm-tier shape: visible re-arm, normal processing answers, the ask
+  restates as a suffix.
 - **Off-intent**: the pop already cancelled the offer (the #1529 off_intent
-  tier); the new message routes normally. The #1631 prose override applies at
-  the generic seam (``detect_offer_response`` returns None for prose-shaped
-  turns), so a long free-text reply neither fires nor drops the offer's
-  action beyond the pop's abandonment.
+  tier); the new message routes normally. The #1631 prose floor applies via
+  the predicate (PASS for prose-shaped turns), so a long free-text reply
+  neither fires nor drops the offer's action beyond the pop's abandonment.
 
 Interplay with #1591 (one ask per turn, one-slot #846 store): when this offer
 arms, the mode read-back / interview invitation is NOT armed on the same turn
@@ -180,6 +190,62 @@ def build_overdue_todo_offer(
             "decline_message": (f'Okay — "{text}" stays on your list. Nothing has been changed.'),
         },
     )
+
+
+# --- #1739 STATE_QUESTION handling (adopted 2026-09-11) ----------------------
+
+# Referent terms a state question can use to point at THIS offer's subjects:
+# the standup report the offer trails, or the overdue-todo domain. A question
+# naming neither is not necessarily unrelated, but the seam cannot answer it
+# honestly from the offer record alone — it falls back to the confirm-tier
+# visible re-arm (normal processing answers; the ask restates as a suffix).
+# This is ANSWER composition for an already-delivered STATE_QUESTION verdict,
+# not acceptance vocabulary — the accept/decline judgment stays with
+# ``evaluate_acceptance`` (#1739's one-predicate rule).
+_STANDUP_REFERENT = "standup"
+_TODO_REFERENT_TERMS = ("todo", "overdue")
+
+
+def state_question_reply(offer: Dict[str, Any], message: str) -> Optional[Dict[str, Any]]:
+    """Seam-composed answer to a STATE_QUESTION that names this offer's own
+    referents; None when it doesn't (caller falls back to visible re-arm +
+    routed answer).
+
+    Honesty is why the seam can answer at all: this offer only arms AFTER a
+    non-empty standup report rendered (the arm site is the standup handler's
+    closing line), so "the standup is done" is a fact the record proves; and
+    while the offer pends nothing has fired, so "the todo is still open" is
+    too. The stored ask re-renders verbatim in the same reply (contract doc
+    §5b: a re-render is still an ASK — the caller re-arms, and the next
+    "yes" binds to an ask the user saw THIS turn).
+
+    ⚠️ COPY SEAM: Lead-drafted mechanism copy; CXO owns the voice — adjust
+    wording here, not at call sites.
+    """
+    lowered = (message or "").lower()
+    payload = offer.get("pending_action") or {}
+    todo_text = payload.get("todo_text") or ""
+    about_standup = _STANDUP_REFERENT in lowered
+    about_todo = any(t in lowered for t in _TODO_REFERENT_TERMS) or (
+        bool(todo_text) and todo_text.lower() in lowered
+    )
+    if not (about_standup or about_todo):
+        return None
+    if about_standup:
+        status = "Yes — that standup is done; the full report rendered above."
+    else:
+        text = todo_text or "that todo"
+        status = f'Not yet — "{text}" is still open; nothing has been changed.'
+    question = offer.get("question") or ""
+    return {
+        "message": f"{status} {question}".strip(),
+        "intent_data": {
+            "category": "soft_offer_state_question",
+            "action": STANDUP_COMPLETE_TODO_WORKFLOW,
+            "state_question_answered": True,
+            "offer_rearmed": bool(question),
+        },
+    }
 
 
 async def run_standup_complete_todo_workflow(

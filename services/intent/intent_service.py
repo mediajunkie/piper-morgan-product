@@ -1323,11 +1323,13 @@ class IntentService:
                 # processing answer the question — the arm survives a state
                 # query instead of being consumed (the #1617 direction) or
                 # silently dropped by the pop (CXO ruling: a question is a
-                # different speech act, not a failed acceptance). Remaining
-                # non-READ generic kinds keep their documented legacy
-                # detector unchanged, tracked by the #1739 ratchet (their
-                # adoption is blocked on the LOW-tier vocabulary tightening,
-                # CXO-owned).
+                # different speech act, not a failed acceptance). 2026-09-11:
+                # the standup_complete_todo kind adopted at its declared
+                # WRITE×PRIVATE axes (PM live PARTIAL — see the branch
+                # comment below). Remaining non-READ generic kinds keep
+                # their documented legacy detector unchanged, tracked by the
+                # #1739 ratchet (their adoption is blocked on the LOW-tier
+                # vocabulary tightening, CXO-owned).
                 _offer_survived_state_question = False
                 _wf_type = pending_offer.get("workflow_type")
                 from services.intent_service.acceptance import (
@@ -1403,6 +1405,10 @@ class IntentService:
                     else:
                         response_type = None
                 else:
+                    from services.intent_service.standup_todo_offer import (
+                        STANDUP_COMPLETE_TODO_WORKFLOW as _STO_WORKFLOW,
+                    )
+
                     if _axes is not None and _axes[0] == _EC.READ:
                         _verdict = evaluate_acceptance(
                             message,
@@ -1423,6 +1429,97 @@ class IntentService:
                                 workflow_type=_wf_type,
                                 session_id=session_id,
                             )
+                        elif _verdict is AcceptanceVerdict.ACCEPT:
+                            response_type = "accept"
+                        elif _verdict is AcceptanceVerdict.DECLINE:
+                            response_type = "decline"
+                        else:
+                            response_type = None
+                    elif _wf_type == _STO_WORKFLOW:
+                        # #1739 adoption, 2026-09-11 (PM live PARTIAL on the
+                        # #1617 contract behavior, v71 06:54): "are we done
+                        # with that standup?" against the armed overdue-todo
+                        # offer fell through this branch's legacy detector to
+                        # the classifier, which read it as a completion
+                        # attempt ("I couldn't find a todo matching 'that
+                        # standup?'"). The kind now consults THE predicate at
+                        # its REGISTRY-DECLARED axes (standup_complete_todo:
+                        # WRITE×PRIVATE → LOW_CEREMONY).
+                        #
+                        # TIER JUDGMENT — deliberately the DECLARED tier, not
+                        # the stricter escape hatch for the blocked LOW
+                        # vocabulary, on evidence: the NAMED_OBJECT bar's
+                        # crisp vocabulary cannot parse the #1651-pinned
+                        # verbatim acceptance "Yes mark the overdue todo
+                        # done."; refusing it would release that exact turn
+                        # back to the fuzzy-completion classifier — the
+                        # original #1651 harm. The LOW-tier greedy residue
+                        # this seam inherits is byte-identical to the legacy
+                        # detect_offer_response it replaces (same
+                        # ACCEPT_PATTERNS; the predicate adds only the crisp
+                        # CONFIRM superset), so adoption widens the accept
+                        # surface by nothing while adding the STATE_QUESTION
+                        # verdict — and the seam inherits the CXO-owned
+                        # LOW-tier vocabulary tightening automatically when
+                        # it lands.
+                        #
+                        # ARM SURVIVAL — VISIBLE, stated per CXO's per-tier
+                        # rule (contract doc §5a/§5b), NOT the LOW/READ
+                        # silent form, because silent survival delegates the
+                        # ANSWER to normal processing and PM's live turn is
+                        # the proof normal processing misreads this kind's
+                        # state question as a completion attempt. A question
+                        # naming the offer's own referents is answered AT
+                        # THE SEAM (state_question_reply — the seam can be
+                        # honest: the offer only arms after a non-empty
+                        # report rendered, and nothing fires while it
+                        # pends), with the stored ask re-rendered in the
+                        # same reply; any other question keeps the
+                        # confirm-tier shape (re-arm + restate suffix,
+                        # normal processing answers). Either way the
+                        # re-render is itself a new ask (§5b), so the next
+                        # "yes" binds to an ask the user saw this turn. No
+                        # stored ask → nothing to restate → the pop stands
+                        # (contract §3).
+                        _verdict = evaluate_acceptance(
+                            message,
+                            effect=_axes[0] if _axes else None,
+                            outwardness=_axes[1] if _axes else None,
+                            armed_question=pending_offer.get("question"),
+                        )
+                        if _verdict is AcceptanceVerdict.STATE_QUESTION:
+                            response_type = None
+                            _stored_ask = pending_offer.get("question")
+                            if _stored_ask:
+                                from services.intent_service import (
+                                    standup_todo_offer as _sto,
+                                )
+
+                                self.workflow_offer_service.set_pending_offer(
+                                    session_id, pending_offer, user_id=user_id
+                                )
+                                _offer_survived_state_question = True
+                                _sto_reply = _sto.state_question_reply(pending_offer, message)
+                                if _sto_reply is not None:
+                                    self.logger.info(
+                                        "standup_todo_offer_state_question_answered",
+                                        session_id=session_id,
+                                    )
+                                    return IntentProcessingResult(
+                                        success=True,
+                                        message=_sto_reply["message"],
+                                        intent_data=_sto_reply["intent_data"],
+                                    )
+                                _pending_ask_restate = f"Still pending: {_stored_ask}"
+                                self.logger.info(
+                                    "standup_todo_offer_state_question_rerendered",
+                                    session_id=session_id,
+                                )
+                            else:
+                                self.logger.warning(
+                                    "standup_todo_offer_state_question_no_stored_ask",
+                                    session_id=session_id,
+                                )
                         elif _verdict is AcceptanceVerdict.ACCEPT:
                             response_type = "accept"
                         elif _verdict is AcceptanceVerdict.DECLINE:
