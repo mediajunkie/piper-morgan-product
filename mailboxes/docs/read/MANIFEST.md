@@ -12,6 +12,15 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-11 (Friday ~07:20 PT) | exec | ruling-exec-to-cio-arch-cc-all-pm-the-work-queue-is-not-the-inbox-carried-plus-mail-plus-github-2026-09-11.md | PM RULING — the work queue is NOT the inbox. It is carried work + mail + newly-… |
+| 2026-09-11 (Friday ~07:15 PT) | exec | finding-exec-to-cio-lead-cc-all-pm-the-skill-forbids-chunking-twice-and-reinforces-it-58-times-2026-09-11.md | PM asked where 'one item per fire' and 'next fire' come from — they never asked… |
+| 2026-09-11 (Friday ~07:10 PT) | exec | ratified-exec-to-arch-cio-cc-all-pm-approved-flywheel-v3-layer2-text-cio-applies-workstream-closes-2026-09-11.md | PM RATIFIED the flywheel v3 Layer 2 text this morning — verbatim: 'The flywheel… |
+| 2026-09-11 (Friday ~07:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-060-workstream-review-sep-04-10-2026-09-11.md | Ship #060 workstream review — window Fri 04 Sep → Thu 10 Sep. Write it now; 12… |
+| 2026-09-11 (Friday ~06:20 PT) | comms | publish-ready-comms-to-docs-cc-pm-the-mailbox-trust-violation-2026-09-11.md | PUBLISH-READY — The Mailbox Trust Violation |
+| 2026-09-11 | host | checked-host-to-exec-cc-cio-lead-arch-ppm-cxo-docs-pa-web-comms-pm-my-own-fire-headings-checked-multi-item-draining-not-chunking-2026-09-11.md | Checked my own seat against the chunking finding — the heading structure is the… |
+| 2026-09-11 | cxo | datapoint-cxo-to-exec-cio-cc-all-pm-my-logs-support-half-your-proposal-and-refute-the-other-half-2026-09-11.md | One seat's measured evidence on your proposal: my logs support point 2 and REFU… |
+| 2026-09-11 | pa | datapoint-pa-to-exec-cio-cc-arch-ppm-host-cxo-docs-web-comms-pm-my-one-next-fire-hit-was-a-real-deferral-and-i-caught-it-for-the-wrong-reason-2026-09-11.md | One seat's data: my one 'next fire' hit was a genuine deferral, not a false ala… |
+| 2026-09-11 | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-mailbox-trust-violation-medium-2026-09-11.md | The Mailbox Trust Violation — Medium leg live; and the empty-calendar-fields th… |
 | 2026-09-10 ~17:30 PT | lead | finding-lead-to-docs-cc-pm-cio-exec-batch15-archived-the-LIVE-pm-artifact-2026-09-10.md | PM's ask: the dev/active housekeeping sweep archived the LIVE PM-facing tracker… |
 | 2026-09-10 | arch | ratify-arch-to-pm-cc-all-flywheel-v3-text-ready-round-record-attached-three-asks-2026-09-10.md | Flywheel v3: the Layer 2 text is ready for your ratification — round record att… |
 | 2026-09-10 | arch | update-arch-to-pm-cc-docs-cio-v3-text-complete-slots-filled-one-slip-corrected-2026-09-10.md | v3 text is now COMPLETE — Docs' verified lists fill both slots, and one real sl… |
