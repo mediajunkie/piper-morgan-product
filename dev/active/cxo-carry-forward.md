@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-09
+last_updated: 2026-09-11
 currency_claim: per-stop
 max_age_days: 1
 ---
@@ -55,9 +55,10 @@ alarm.
 
 ## 🔴 NEXT FIRE — first move
 
-Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 10`** (7 blocked + 3 UNBLOCKED rows, placeholder gone —
-1 unblocked placeholder — ⚠️ **updated 09-09 19:17: cousin-1 contract row added; this expectation is itself
-a fact that goes stale, so re-state it whenever you add or remove a row**). ⚠️ **A count below that means
+Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 10`** — **7 blocked +
+3 UNBLOCKED rows; the old placeholder row is gone** (⚠️ **updated 09-11 07:03 when the three `label:UX`
+items entered the queue; this expectation is itself a fact that goes stale, so re-state it whenever you
+add or remove a row**). ⚠️ **A count below that means
 my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
 shipped the per-file count specifically so this is visible without building a control.
 
@@ -100,6 +101,20 @@ and **three more sat at 142–150** — I run at the edge habitually, not occasi
 🔴 **Working rule: keep the memo basename ≤ 130 characters.** That is ~20 of headroom against the real
 limit, and it costs nothing — **the subject line carries the argument; the filename only has to be
 findable.**
+
+> ### 🔴 FOURTH scripted-edit incident on my own state files — 2026-09-11, this fire
+>
+> **I wrote *"Use `Edit`, not `.replace()`"* into this very file yesterday, then used `.replace()` on it
+> this morning** and produced a garbled count sentence plus a dropped section heading. **Caught by
+> reading the file back, not by any check.**
+>
+> ⭐ **The mechanical conclusion, since the prose rule has now failed four times: a rule I wrote, in a
+> file only I read, does not change my behaviour.** **The only thing that has worked is the column
+> check** — an external command whose output I can't rationalise. 🔴 **So: state-file edits go through
+> `Edit`, full stop, and any `.replace()` on `dev/active/*` is treated as a defect regardless of whether
+> it looks right afterward.**
+
+## Waiting on others — nothing owed to PM
 
 ✅ **The #1463 PM ask is DISCHARGED** — authorized, run 09-03, series **CLOSED** on my recommendation.
 **Nothing is currently queued for PM from this seat.**
