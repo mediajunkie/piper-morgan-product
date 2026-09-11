@@ -1,0 +1,120 @@
+<title>State of the forest — 11 September</title>
+<style>
+  :root{--paper:#f4f4f2;--card:#fff;--ink:#1b1a17;--mute:#66635c;--line:#dcdad4;
+    --red:#9d3427;--amber:#8a6516;--green:#2f6440;--blue:#2a5578;--soft:#ecebe6;}
+  @media (prefers-color-scheme:dark){:root{--paper:#131311;--card:#1c1c19;--ink:#e8e6e0;--mute:#9a968d;
+    --line:#2e2d28;--red:#e08a7a;--amber:#d7a94f;--green:#82c093;--blue:#8bb4d8;--soft:#232320;}}
+  :root[data-theme="dark"]{--paper:#131311;--card:#1c1c19;--ink:#e8e6e0;--mute:#9a968d;--line:#2e2d28;
+    --red:#e08a7a;--amber:#d7a94f;--green:#82c093;--blue:#8bb4d8;--soft:#232320;}
+  :root[data-theme="light"]{--paper:#f4f4f2;--card:#fff;--ink:#1b1a17;--mute:#66635c;--line:#dcdad4;
+    --red:#9d3427;--amber:#8a6516;--green:#2f6440;--blue:#2a5578;--soft:#ecebe6;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:47rem;margin:0 auto;padding:1.6rem 1.1rem 4rem}
+  h1{font-size:1.5rem;margin:0 0 .3rem;letter-spacing:-.015em}
+  .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.5rem}
+  h2{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:600;
+     margin:2rem 0 .7rem;padding-bottom:.35rem;border-bottom:1px solid var(--line)}
+  h2:first-of-type{margin-top:1rem}
+  .item{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--mute);
+    border-radius:7px;padding:.85rem .95rem;margin:0 0 .7rem}
+  .item.dec{border-left-color:var(--red)}.item.drift{border-left-color:var(--amber)}
+  .item.ok{border-left-color:var(--green)}.item.res{border-left-color:var(--blue)}
+  .who{font-weight:600;font-size:.83rem}
+  .item p{margin:.4rem 0 0;font-size:.94rem}
+  .item p.sub{color:var(--mute);font-size:.88rem}
+  .nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(6.5rem,1fr));gap:.55rem;margin:.3rem 0 0}
+  .n{background:var(--soft);border-radius:7px;padding:.55rem .65rem}
+  .n b{display:block;font-size:1.45rem;line-height:1.1;font-variant-numeric:tabular-nums}
+  .n span{font-size:.72rem;color:var(--mute)}
+  table{width:100%;border-collapse:collapse;margin:.4rem 0 0;font-size:.88rem;display:block;overflow-x:auto}
+  th,td{text-align:left;padding:.4rem .55rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  code{font:.87em ui-monospace,Menlo,monospace;background:var(--soft);padding:.08em .3em;border-radius:3px}
+  footer{margin-top:2.2rem;border-top:1px solid var(--line);padding-top:1rem;color:var(--mute);font-size:.82rem}
+  footer b{color:var(--ink)}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">State of the project on 11 September: the weekly cycle is running, nothing blocked on PM, and a measured finding about why agents chunk work per fire.</h2>
+
+<h1>State of the forest</h1>
+<p class="meta">Exec · <b>Friday 11 September, 07:30 PT</b> · weekly review day · every item re-verified this pass · closure dates in Pacific</p>
+
+<h2>🔴 Blocked on you — nothing</h2>
+<div class="item ok">
+  <p style="font-size:1.02rem;color:var(--green);font-weight:500;margin:0">All three of yesterday's blockers cleared this morning.</p>
+  <p class="sub">Flywheel v3 ratified · PR requirement removed · Vercel diagnosed. Nothing waits on you right now. <b>Your day is the weekly review.</b></p>
+</div>
+
+<h2>📋 The weekly cycle — running</h2>
+<div class="item drift">
+  <span class="who">Ship #060 · window Fri 04 Sep → Thu 10 Sep</span>
+  <table>
+    <tr><th>Step</th><th>State</th></tr>
+    <tr><td>Omnibus coverage</td><td><b>7 of 7 present</b> — nothing to backfill</td></tr>
+    <tr><td>Kickoff</td><td><b>Sent 07:00</b>, verified landed in 12 inboxes</td></tr>
+    <tr><td>Reports in</td><td><b>0 of 10</b> — and that is not a signal yet</td></tr>
+    <tr><td>Next</td><td>Internal synthesis → your review → the Ship draft</td></tr>
+  </table>
+  <p class="sub"><b>Nobody has seen it.</b> Most roles fired at 06:xx, just before I sent it. <b>First wave lands 09:12–09:57</b>; that's when a missing reply starts to mean something.</p>
+</div>
+
+<h2>⭐ The finding of the morning — your question, measured</h2>
+<div class="item drift">
+  <span class="who">Where "next fire" comes from</span>
+  <p>You asked where "one item per fire" and planning "for next fire" come from, and said you never asked for either. <b>You didn't.</b> I counted the duty-cycle skill:</p>
+  <table>
+    <tr><th>Term</th><th>Occurrences</th></tr>
+    <tr><td>the word <code>fire</code></td><td><b>58</b></td></tr>
+    <tr><td><code>next fire</code> — the deferral phrase</td><td><b>5</b> (the skill uses what it forbids)</td></tr>
+    <tr><td><code>bite-siz</code> — the warning against it</td><td><b>2</b></td></tr>
+  </table>
+  <p><b>The doctrine forbids per-fire chunking in two places and reinforces the frame that produces it in fifty-eight.</b> Nobody is ignoring a rule — the rule is outnumbered 29 to 1 by the vocabulary.</p>
+  <p class="sub">"Fire" is our coinage, not yours. You asked for a duty cycle; we named the container of work after the interrupt, then logged <code>## Fire 1</code>, <code>## Fire 2</code> and planned things for the next one. <b>"One item per fire" is Lead's phrasing from 09-09 — and I relayed it to you approvingly without noticing what it encodes.</b> It means <em>at least one</em> and reads as <em>one</em>.</p>
+  <p class="sub"><b>Your work-queue ruling already supersedes it.</b> Under it there's no per-fire quota because there's no per-fire anything. Routed to CIO with three proposals — retire the phrase, stop making <code>Fire N</code> the log's organizing unit, leave the anti-chunking prose alone since its wording was never the problem.</p>
+</div>
+
+<h2>🟡 Worth knowing</h2>
+<div class="item drift">
+  <span class="who">Docs — belt signal past threshold</span>
+  <p><b>BELT-INVISIBLE, and this one is not "working as designed"</b> — last heartbeat was 8h ago on 09-10. The writer ran before and stopped. Comms shows the same flag but within threshold.</p>
+  <p class="sub">Docs owes a workstream report and the omnibus for today. Watching their 09:57 fire before treating it as a stall.</p>
+</div>
+<div class="item drift">
+  <span class="who">CXO — NO-SESSION-LOG</span>
+  <p>Role-tagged commits today with no session log — the PM-initiated-entrance gap CIO's detector was built for. Second live catch since it shipped.</p>
+</div>
+<div class="item drift">
+  <span class="who">Arch — GH006 re-test requested</span>
+  <p>You removed the PR rule; status checks remain. <b>I don't know which one produced GH006 and neither do you</b> — one run settles it. Also the first live exercise of Arch's own fix for the retry loop that swallowed a push failure and reported SUCCESS, so a green this time means <em>two</em> things passed.</p>
+</div>
+
+<h2>📈 Trajectory</h2>
+<div class="item ok">
+  <div class="nums">
+    <div class="n"><b>17</b><span>MVP, MON–THU</span></div>
+    <div class="n"><b>45</b><span>NOT DONE</span></div>
+    <div class="n"><b>35</b><span>NEVER STARTED</span></div>
+    <div class="n"><b>7</b><span>AWAITING YOU</span></div>
+    <div class="n"><b>1,133</b><span>DONE</span></div>
+    <div class="n"><b>49</b><span>DAYS TO 30 OCT</span></div>
+  </div>
+  <p class="sub" style="margin-top:.7rem"><b>0 closed today</b> — it's 07:30 on review day and that's normal. Zero unmilestoned. The week's rate was 17 in four days against 7–11 per <em>week</em> during the preceding fortnight.</p>
+</div>
+
+<h2>✅ Cleared this morning</h2>
+<div class="item res">
+  <p><b>Flywheel v3 ratified</b> → CIO applies to <code>methodology-00</code>; workstream closes, no standing duty. <span style="color:var(--mute)">(You wrote "layer 3"; the artifact was Layer 2 — recorded rather than silently corrected.)</span></p>
+  <p><b>PR requirement removed</b> → my "bypass allowlist" instruction was wrong; that's an org feature and <code>mediajunkie</code> is a personal account. Your instinct to remove the rule was the right call.</p>
+  <p><b>Work-queue ruling routed</b> → carried + mail + newly-observed GitHub issues; idle only when all three are empty. Probably dissolves Q5 rather than answering it.</p>
+  <p><b>Exec cadence</b> → <code>38 6,10,14,18,22</code>, five fires, never more than four hours apart.</p>
+</div>
+
+<footer>
+  <b>Bottom line:</b> nothing blocked on you; the weekly cycle is running and the first reports are due mid-morning; and the "next fire" habit you flagged turns out to be a vocabulary problem with a 29-to-1 ratio behind it.<br><br>
+  <b>Live-state pass.</b> Liveness first — <code>duty-cycle-freeze-check</code> rc=0 across <b>11 of 11</b> rows, three flags (one past threshold). Kickoff receipt verified per-mailbox on <code>origin/main</code>, not from my own sent copy. Sprint figures from <code>sprint-truth</code> at compile time; closures computed in Pacific.
+</footer>
+</div>
