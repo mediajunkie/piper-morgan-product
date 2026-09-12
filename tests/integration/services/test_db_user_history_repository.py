@@ -178,6 +178,67 @@ async def test_search_matches_title_preview_topics(db_session, user_id):
 
 
 @pytest.mark.asyncio
+async def test_search_matches_preview_topics_encrypted_at_rest_1749(
+    db_session, user_id, monkeypatch
+):
+    """#1749: with ENCRYPTION_MASTER_KEY set — CI always (test.yml exports the
+    #1382 store key) and any keyed deployment — `preview`/`topics` are stored
+    as `PMENC1:` ciphertext (#1305), so the old server-side ILIKE matched
+    nothing but the plaintext `title` column. This was the CI-only red of
+    test_search_matches_title_preview_topics: local dev has no key, so the
+    dev plaintext fallback made the same query pass. Red before the
+    repositories.py post-load-matching fix (ids == {by_title.id}); green after.
+    The encrypted types resolve the key from env per call, so setting it here
+    is sufficient to exercise the encrypted write+read path.
+    """
+    import base64
+
+    from sqlalchemy import text as sql_text
+
+    # Test-only key (32 bytes, base64) — never a real credential.
+    monkeypatch.setenv(
+        "ENCRYPTION_MASTER_KEY",
+        base64.b64encode(b"1749-test-only-key-32-bytes-long").decode(),
+    )
+
+    token = f"roadmap-{uuid4().hex[:8]}"
+    by_title = await _make_conversation(db_session, user_id, title=f"{token} discussion")
+    by_preview = await _make_conversation(
+        db_session, user_id, title="Other", preview=f"thoughts on the {token}"
+    )
+    by_topic = await _make_conversation(db_session, user_id, title="Third", topics=[token])
+    no_match = await _make_conversation(db_session, user_id, title="Unrelated")
+
+    # Sanity gate: the rows really are ciphertext at rest. Without this, a
+    # future env-handling change could silently degrade this test into a
+    # plaintext rerun of test_search_matches_title_preview_topics (m-43:
+    # assert the layer you claim to be testing).
+    raw_preview = (
+        await db_session.execute(
+            sql_text("SELECT preview FROM conversations WHERE id = :cid"),
+            {"cid": by_preview.id},
+        )
+    ).scalar()
+    assert raw_preview.startswith("PMENC1:"), (
+        f"expected ciphertext at rest, got {raw_preview[:20]!r} — the encrypted "
+        "path is not engaged and this test is not testing #1749"
+    )
+
+    repo = DBUserHistoryRepository(db_session)
+    matches = await repo.search_conversations(user_id=user_id, query=token, limit=10)
+    ids = {m.conversation_id for m in matches}
+
+    assert by_title.id in ids
+    assert by_preview.id in ids
+    assert by_topic.id in ids
+    assert no_match.id not in ids
+
+    for c in (by_title, by_preview, by_topic, no_match):
+        await db_session.delete(c)
+    await db_session.commit()
+
+
+@pytest.mark.asyncio
 async def test_search_excludes_private(db_session, user_id):
     public = await _make_conversation(db_session, user_id, title="Public roadmap")
     private = await _make_conversation(

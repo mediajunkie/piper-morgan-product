@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
 import structlog
-from sqlalchemy import String, and_, func, or_, select, update
+from sqlalchemy import and_, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -2037,48 +2037,62 @@ class DBUserHistoryRepository:
         """Search across title, preview, and topics.
 
         Excludes private + DELETED. Title matches sort first, then by
-        recency. Topic search uses JSONB containment via the GIN index
-        (idx_conversations_topics_gin).
+        recency (mirrors InMemoryUserHistoryRepository's contract).
+
+        #1749: matching happens PYTHON-SIDE, post-ORM-load. `preview` and
+        `topics` are encrypted at rest (#1305 EncryptedString/EncryptedJSON),
+        so a server-side ILIKE compares the pattern against `PMENC1:`
+        ciphertext and silently matches nothing whenever ENCRYPTION_MASTER_KEY
+        is set (CI always, since test.yml exports the #1382 store key; any
+        keyed deployment likewise). The ORM type decorators decrypt
+        transparently on load, so post-load is the only layer where those
+        fields are comparable. SQL still narrows on the plaintext columns
+        (user_id, lifecycle_state, is_private); the resulting per-user scan is
+        the pattern #1305 already ratified for `topics` ("only Python-side
+        filtering post-ORM-load" — the GIN index was dropped for exactly this
+        reason) and is acceptable at conversation-history scale (typically
+        < 10k rows per user).
         """
         from services.database.models import ConversationDB
-        from services.memory.user_history import ConversationSummary
 
         query_lower = query.lower()
-        ilike_pattern = f"%{query}%"
 
         visible_states = [
             ConversationLifecycleState.ACTIVE.value,
             ConversationLifecycleState.ARCHIVED.value,
         ]
 
-        # Topic match uses JSONB path query: topics @> '["query"]' style won't
-        # match case-insensitive, so we use the @? JSON path operator with
-        # like_regex. Simpler portable approach: cast topics to text and ILIKE.
-        # Loses GIN index for topic-only matches but keeps the title+preview
-        # path fast; topic-only matches fall back to seq scan, acceptable for
-        # conversation-history scale (typically < 10k rows per user).
         stmt = (
             select(ConversationDB)
             .where(ConversationDB.user_id == user_id)
             .where(ConversationDB.lifecycle_state.in_(visible_states))
             .where(ConversationDB.is_private.is_(False))
-            .where(
-                or_(
-                    ConversationDB.title.ilike(ilike_pattern),
-                    ConversationDB.preview.ilike(ilike_pattern),
-                    func.cast(ConversationDB.topics, String).ilike(ilike_pattern),
-                )
-            )
-            .order_by(
-                # Title matches first (rank by title-match bit), then recency.
-                func.lower(ConversationDB.title).ilike(ilike_pattern).desc(),
-                func.coalesce(ConversationDB.last_activity_at, ConversationDB.created_at).desc(),
-            )
-            .limit(limit)
         )
-
         db_convs = (await self.session.execute(stmt)).scalars().all()
-        return [self._to_summary(c) for c in db_convs]
+
+        def _title_match(c) -> bool:
+            return query_lower in (c.title or "").lower()
+
+        def _matches(c) -> bool:
+            if _title_match(c):
+                return True
+            if query_lower in (c.preview or "").lower():
+                return True
+            return any(query_lower in str(t).lower() for t in (c.topics or []))
+
+        epoch = datetime(1970, 1, 1, tzinfo=timezone.utc)
+
+        def _recency(c) -> float:
+            ts = c.last_activity_at or c.created_at or epoch
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
+            return ts.timestamp()
+
+        matching = [c for c in db_convs if _matches(c)]
+        # Title matches first (parity with the old SQL rank bit), then recency
+        # (COALESCE(last_activity_at, created_at) DESC).
+        matching.sort(key=lambda c: (0 if _title_match(c) else 1, -_recency(c)))
+        return [self._to_summary(c) for c in matching[:limit]]
 
     async def set_private(
         self,
