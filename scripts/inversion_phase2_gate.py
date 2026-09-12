@@ -28,10 +28,19 @@ would measure only stochasticity. Stated, not hidden (m-44).
 
 Scoring reuses the Phase-0/1 idioms unchanged (registry-alias-aware
 matching, per-category denominators, ERROR recorded never faked, REVIEW as
-its own bucket), plus two sentinel expectations for armed rows:
-``route:NONE`` / ``route:CLARIFY`` — the correct decision for a turn that
-answers an armed flow's open question is the NONE sentinel (the flow's
-handler is the offer seam, not a catalog operation).
+its own bucket), plus armed-row expectation forms:
+
+- ``route:NONE`` / ``route:CLARIFY`` — sentinels for turns that do NOT
+  answer the armed question (asides, uncovered prose): nothing to bind,
+  no fresh operation may claim them.
+- ``flow:<canonical>`` — BINDING-TO-FLOW (#1663 Arch ruling, option (b),
+  ratified 2026-08-19): an armed ANSWER-turn's expected emission is the
+  armed flow's own completing operation. Phase 2.2's seam consumes a
+  flow-matching emission (args in hand) — never a fresh dispatch; a
+  non-matching emission falls to the seam's re-ask, never the floor.
+  Scored alias-aware, same as ``action:``. (Pre-ruling, answer-turns
+  asserted route:NONE — the 2026-08-19 run was scored that way, 1/7;
+  the gate doc's #1663 addendum keeps both readings legible.)
 
 HONESTY RULE (task item 4): if with-snapshot does NOT beat without on the
 armed rows, that is a REPORTED RESULT. This script contains no
@@ -80,6 +89,9 @@ DEFAULT_OUT = (
 
 _VALID_CONDITIONS = {"armed", "control"}
 _ROUTE_SENTINELS = {"route:NONE": "none", "route:CLARIFY": "clarify"}
+# #1663: BINDING-TO-FLOW expectation — the armed flow's own completing
+# operation, alias-aware. See the module docstring and the corpus header.
+_FLOW_PREFIX = "flow:"
 
 
 def snapshot_field_names() -> Tuple[str, ...]:
@@ -119,6 +131,7 @@ def load_armed_corpus(path: Path = ARMED_CORPUS) -> List[Dict[str, Any]]:
             or exp in _ROUTE_SENTINELS
             or exp.startswith("action:")
             or exp.startswith("category:")
+            or exp.startswith(_FLOW_PREFIX)
         ):
             raise ValueError(f"{where}: bad expected {exp!r}")
         fixture = r.get("fixture")
@@ -161,6 +174,18 @@ def armed_matches(expected: str, decision: Any, op_categories: Dict[str, str]) -
         if decision.outcome == want:
             return True, ""
         return False, decision.route_label
+    if expected.startswith(_FLOW_PREFIX):
+        # #1663 ruling (option (b)): the expected emission is the ARMED
+        # FLOW'S OWN completing operation, matched alias-aware exactly like
+        # action:. Semantics are BINDING-TO-FLOW — a match means the 2.2
+        # seam consumes the emission (args in hand), never fresh-dispatch.
+        # Any other emission is a miss, annotated with what was emitted:
+        # on an armed turn it falls to the seam's re-ask, and a NONE here
+        # is NOT a stand-down win — stateless NONE is the #1648 floor path.
+        ok, _ = p1.router_matches(
+            "action:" + expected[len(_FLOW_PREFIX) :], decision, op_categories
+        )
+        return (True, "") if ok else (False, decision.route_label)
     return p1.router_matches(expected, decision, op_categories)
 
 
@@ -406,9 +431,10 @@ def build_report(
         "",
         "- **Routing layer only, corpus fixtures only.** Not live traffic, not "
         "handlers, not the floor. A route:NONE MATCH says the router declined to "
-        "steal an answer-turn; whether the offer seam then consumes it (and "
-        "whether the floor stays honest if it doesn't — #1648's fabrication "
-        "class) are separate lanes this run cannot see.",
+        "steal a non-answer turn; a flow: MATCH says the router named the armed "
+        "flow's own completing operation — whether the 2.2 seam then consumes it "
+        "as a binding (and whether the floor stays honest when nothing does — "
+        "#1648's fabrication class) are separate lanes this run cannot see.",
         "- **Fixture `pending_offer_question` values exceed today's live "
         "assembly.** Arm sites currently store `summary`, not their rendered "
         "ask, so live snapshots carry question=None for most kinds "
@@ -421,10 +447,15 @@ def build_report(
         "confirm-aside pair, NONE is correct both as 'aside, not an answer' and "
         "as 'answer belongs to the flow' — the rationale column, not the "
         "verdict, shows which reading the router took.",
-        "- **Armed expectations are Lead-contract-derived, not PM-ratified.** "
-        "The route:NONE assertions follow the serialized RULE in "
-        "session_snapshot.py; if Phase 2.2 decides answer-turns should emit a "
-        "different sentinel, these rows re-score, not the runner.",
+        "- **Armed answer-turn expectations follow the #1663 Arch ruling** "
+        "(option (b), ratified 2026-08-19): flow-binding (`flow:<op>`) — the "
+        "armed flow's own completing operation, consumed by the 2.2 seam, "
+        "never fresh-dispatched. Non-answer turns keep route:NONE. Runs before "
+        "2026-09-12 scored answer-turns against route:NONE (the pre-ruling "
+        "reading of session_snapshot.py's serialized RULE) — compare across "
+        "runs only via the 2026-08-19 doc's #1663 addendum. Required condition "
+        "rides the ruling: per-flow confirmation-adequacy must be confirmed "
+        "before wiring each binding (EffectClass tier vs the arm-time ask).",
         "- **Single run per condition.** No repetition; margin rows can flip "
         "run-to-run (the Phase-1b calendar-flip precedent). Deltas of ±1 on "
         "any category are within observed stochasticity.",
