@@ -1,7 +1,29 @@
+---
+currency_claim: none
+currency_claim_reason: "Rewritten at the end of every substantive fire (multiple times/day) — a
+  max_age_days check would either be trivially satisfied or would need an implausibly short
+  window. Declared honest per check-refresh-promises.py's --state-files mode (found ungapped/
+  undeclared 2026-09-12, PPM's own seat, same self-audit pattern CXO/CIO/Exec ran this week) —
+  see the prose 'Last rewritten' timestamp at the top of this file for the actual live claim."
+---
+
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-12 07:09 PT (START). **Quiet open — 0 unmilestoned, mailbox drained
+**Last rewritten**: 2026-09-12 10:09 PT (WORK). **Epic 2 (Security/tenancy) CLOSED IN FULL** — all
+6 members done, live-verified deployed (Lead). 3 unmilestoned issues triaged: `#1750`/`#1751`
+(epic-2-class findings from the #1733 close-out sweep, deliberately parked at MVP/Product Backlog
+rather than folded in — would reopen a closed epic) and `#1752` (found during #1654's own epic-3
+adoption, folded directly into the active epic 3, now 9 items). **Answered Lead's denominator
+question**: milestone-wide is canonical (matches `sprint-truth.py`), the order doc's "37 Sprint
+Backlog" line was a factoring-time snapshot for a different purpose — stated explicitly now so it
+doesn't drift. **Also ran `check-refresh-promises.py` against my own seat for the first time**
+(prompted by CXO/CIO/Exec's self-audit thread) and found two real gaps — `ppm-carry-forward.md`
+had no currency claim at all, `ROLE-PORTFOLIO-PPM.md`'s refresh promise was undeclared — both
+fixed with honest declarations (`currency_claim: none` / `refresh_verifiability: by-hand`) rather
+than fake checkable triggers.
+
+**Prior fire: 2026-09-12 07:09 PT (START). Quiet open — 0 unmilestoned, mailbox drained
 clean.** Two mail items, both continuing CXO's DAY-CLOSED self-audit thread from last night: CIO
 (14/14 clean) and Exec (13/14 clean) both checked their own seats rather than assume, and Exec
 added the sharper structural point — the self-heal is a Step-0 grep inside START, so it cannot
