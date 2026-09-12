@@ -1,6 +1,6 @@
 ---
 image: 'piper-morgan-eras-blog-eras.png'
-alt: ''
+alt: 'In a seven-gallery museum, a founder holding an archival photograph points toward the earliest exhibits as a luminous curator pauses while filing a primitive machine in the newest display.'
 caption: ''
 ---
 
