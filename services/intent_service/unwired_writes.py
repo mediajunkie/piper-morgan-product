@@ -135,10 +135,14 @@ GENERIC_UNWIRED_WRITE_DECLINE = f"{_GENERIC_DECLINE_RECOGNITION} {_GENERIC_DECLI
 # _ECHO_MAX_CHARS with an honest ellipsis ("…" replaces the terminal period —
 # never a full stop pretending completeness).
 #
-# ESCAPE — layers named: the chat frontend renders bot messages as MARKDOWN
-# with NO sanitizer (web/bot-message-renderer.js: marked.parse() →
-# element.innerHTML; same path in web/static/js/chat.js history render; marked
-# loaded via CDN in templates/layouts/app_shell.html). There is no server-side
+# ESCAPE — layers named (render-path facts as of #1730's design; since then
+# #1732 added a DOMPurify sanitizer at the render chokepoint and vendored a
+# pinned marked — this escaping predates that and stays as server-side
+# defense-in-depth — and #1740 deleted the unserved root-twin copy this
+# comment originally cited): the chat frontend renders bot messages as
+# MARKDOWN (web/assets/bot-message-renderer.js: marked.parse() →
+# element.innerHTML; same path in web/static/js/chat.js history render). At
+# #1730 time there was ALSO no server-side
 # escaping on this reply path (the #1578/#1581 XSS fixes covered the todos/files
 # TEMPLATE surfaces, not chat). So a verbatim echo would (a) hand user-typed
 # raw HTML to innerHTML and (b) re-parse the user's words as markdown — the

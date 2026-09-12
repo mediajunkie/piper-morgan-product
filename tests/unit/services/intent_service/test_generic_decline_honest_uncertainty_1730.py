@@ -19,8 +19,11 @@ by-construction-unwired fixture test_unwired_execution_derived_decline_1333
 uses), not via phrasings that no longer hit the branch.
 
 Echo safety (layer named): the chat frontend renders bot messages as markdown
-with NO sanitizer (web/bot-message-renderer.js: marked.parse() → innerHTML),
-and there is no server-side escaping on the reply path — so the echo is
+(web/assets/bot-message-renderer.js: marked.parse() → innerHTML — sanitized
+at the chokepoint since #1732; the escaping below predates that and stays as
+defense-in-depth; the unserved root twin this docstring once cited was
+deleted by #1740). At #1730 design time there was no sanitizer and no
+server-side escaping on the reply path — so the echo is
 markdown-escaped (backslash before every ASCII punctuation char: literal
 render, no raw HTML, no re-parse — the #1729 family concern) and capped with
 an honest ellipsis.

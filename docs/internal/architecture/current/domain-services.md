@@ -58,7 +58,7 @@ INFO: Markdown formatting issues detected and fixed: ['Non-standard bullet synta
 
 ## BotMessageRenderer Domain Service (Web UI, 2025)
 
-**File**: `web/bot-message-renderer.js`
+**File**: `web/assets/bot-message-renderer.js` *(served at `/assets/bot-message-renderer.js`, loaded by `templates/layouts/app_shell.html`. A divergent unserved twin at `web/bot-message-renderer.js` was deleted by #1740; its absence is test-pinned.)*
 **Purpose**: Unify all bot message rendering and response handling in the web UI, following DDD principles
 **Domain**: Web UI Response Handling
 

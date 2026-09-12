@@ -10,10 +10,13 @@
  *
  * LAYER (named honestly): RUNTIME DOM via jsdom, through the REAL vendored
  * marked (15.0.12) + the REAL vendored DOMPurify (3.2.7) + the REAL renderer
- * sources (both copies: web/assets/ = the served one; web/ root = the
- * issue-cited CommonJS twin). Hostile output is innerHTML'd into a real jsdom
- * container. What it is NOT: a browser E2E through the live server — Web's
- * browser lane is the natural live verifier (per the filing).
+ * source (web/assets/bot-message-renderer.js — the served copy; the divergent
+ * CommonJS twin at web/ root that this suite used to also pin was deleted by
+ * #1740, and its absence is pinned in
+ * tests/unit/web/test_renderer_twin_absent_1740.py). Hostile output is
+ * innerHTML'd into a real jsdom container. What it is NOT: a browser E2E
+ * through the live server — Web's browser lane is the natural live verifier
+ * (per the filing).
  */
 
 const fs = require('fs');
@@ -23,7 +26,6 @@ const VENDOR = path.join(__dirname, '../../../web/static/vendor');
 const MARKED = path.join(VENDOR, 'marked-15.0.12.min.js');
 const PURIFY = path.join(VENDOR, 'purify-3.2.7.min.js');
 const ASSETS_RENDERER = path.join(__dirname, '../../../web/assets/bot-message-renderer.js');
-const ROOT_RENDERER = path.join(__dirname, '../../../web/bot-message-renderer.js');
 
 function realMarked() {
   // marked's UMD exports the same object the browser global gets ({parse, use, ...}).
@@ -70,15 +72,12 @@ const PAYLOAD_JSHREF = '[click me](javascript:window.__pwned = true)';
 const PAYLOAD_RESTYLE =
   '**Todo saved:** <iframe src="javascript:window.__pwned=true"></iframe> _done_';
 
-describe.each([
-  ['served copy (web/assets)', ASSETS_RENDERER],
-  ['issue-cited twin (web/ root)', ROOT_RENDERER],
-])('#1732 render boundary — %s — with REAL marked + REAL DOMPurify', (_label, file) => {
+describe('#1732 render boundary — served copy (web/assets) — with REAL marked + REAL DOMPurify', () => {
   let render;
 
   beforeEach(() => {
     delete window.__pwned;
-    render = loadRenderer(file, { purify: realDOMPurify() });
+    render = loadRenderer(ASSETS_RENDERER, { purify: realDOMPurify() });
   });
 
   test('script-tag payload emerges inert (no element, no execution)', () => {
@@ -138,12 +137,9 @@ describe.each([
 });
 
 describe('#1732 fail-closed: DOMPurify missing (never raw HTML through)', () => {
-  test.each([
-    ['served copy', ASSETS_RENDERER],
-    ['root twin', ROOT_RENDERER],
-  ])('%s escapes to inert text without DOMPurify', (_label, file) => {
+  test('served copy escapes to inert text without DOMPurify', () => {
     delete window.__pwned;
-    const render = loadRenderer(file, { purify: undefined });
+    const render = loadRenderer(ASSETS_RENDERER, { purify: undefined });
     const el = mount(render, `hi ${PAYLOAD_SCRIPT}`);
     expect(el.querySelector('script')).toBeNull();
     expect(window.__pwned).toBeUndefined();
