@@ -4197,12 +4197,21 @@ What would you like to set up first?"""
                 if operation == "list":
                     projects = await portfolio_service.list_active_projects(user_id=user_id)
                     if projects:
-                        project_names = [p.name for p in projects[:5]]
+                        # #1738: render the FULL set — turn.response (this
+                        # string) is the only per-turn record that reaches
+                        # next-turn context (build_recent_history), so a
+                        # `[:5]` render cap here silently became the model's
+                        # data: "the list I got back only showed five names"
+                        # (PM live 2026-09-09 v70). GatherOutcome contract
+                        # §5b: a render cap may shorten what the user sees;
+                        # it must never change what the system believes it
+                        # has. Display treatment for very long lists belongs
+                        # to a renderer that consumes structured outcomes
+                        # (epic 6), never to a data-destroying slice here.
+                        project_names = [p.name for p in projects]
                         response = f"You have {len(projects)} active projects:\n\n" + "\n".join(
                             f"- {name}" for name in project_names
                         )
-                        if len(projects) > 5:
-                            response += f"\n\n...and {len(projects) - 5} more."
                     else:
                         response = (
                             "You don't have any active projects yet. " "Would you like to add one?"
@@ -4230,14 +4239,22 @@ What would you like to set up first?"""
                 if operation == "list_archived":
                     projects = await portfolio_service.list_archived_projects(user_id=user_id)
                     if projects:
-                        project_names = [p.name for p in projects[:5]]
+                        # #1738: full set, no "...and N more" — see the
+                        # operation == "list" comment above (same defect,
+                        # same §5b invariant). "…and N more" was a claim the
+                        # assistant could not cash: asked for the elided 6th
+                        # name, it described its own render as "the list I
+                        # got back".
+                        project_names = [p.name for p in projects]
                         noun = "project" if len(projects) == 1 else "projects"
                         response = f"You have {len(projects)} archived {noun}:\n\n" + "\n".join(
                             f"- {name}" for name in project_names
                         )
-                        if len(projects) > 5:
-                            response += f"\n\n...and {len(projects) - 5} more."
-                        response += '\n\nSay "restore <name>" to bring one back.'
+                        # #1738 defect 1: the placeholder was `<name>`, which
+                        # the web render swallows as an unknown HTML tag —
+                        # PM saw 'Say "restore " to bring one back.' with an
+                        # empty slot. Square brackets survive an HTML render.
+                        response += '\n\nSay "restore [project name]" to bring one back.'
                     else:
                         response = "You don't have any archived projects."
                     return {

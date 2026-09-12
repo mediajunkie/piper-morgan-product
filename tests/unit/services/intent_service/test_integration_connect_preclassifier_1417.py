@@ -111,8 +111,11 @@ def test_no_integration_noun_no_match(message):
 # calendar-noun patterns. "connect my calendar" matched `\bmy calendar\b` in
 # TEMPORAL_PATTERNS (checked earlier than the #1417 lane) and answered with
 # the current time; only pattern-avoiding phrasings ("link my google
-# calendar") reached setup guidance. Fixed by precedence (pre_classify) and
-# substitution (detect_multiple_intents), sharing _integration_connect_match.
+# calendar") reached setup guidance. Fixed by precedence (pre_classify) and —
+# originally — a TEMPORAL-collision substitution in detect_multiple_intents,
+# replaced by #1505 with a general INTEGRATION_CONNECT pattern group (same
+# shared _integration_connect_match, same behavior on this family; see
+# test_multi_intent_connect_1505.py).
 # ---------------------------------------------------------------------------
 
 

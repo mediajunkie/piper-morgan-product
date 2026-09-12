@@ -1,51 +1,51 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-11 ~23:15 PDT (21:57 fire, day-close complete).
-**Session log**: `dev/2026/09/11/2026-09-11-0623-docs-code-log.md` — DAY-CLOSED.
-**New standing practice, effective immediately**: only cc PM (`xian (ceo)`) on memos that (a)
-contain a decision only PM can make, (b) relay a PM ruling, or (c) contain something PM would want
-to contradict — everything else reaches PM via the attention rollup. Per Exec's 09-11 proposal
-memo relaying PM's own words.
+**Updated**: 2026-09-12 ~10:35 PDT (09:57 fire, complete).
+**Session log**: `dev/2026/09/12/2026-09-12-0720-docs-code-log.md` (open).
+**Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
+make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything
+else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM's own words.
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
 
-## Yesterday (09-11) closed — headline: published + syndicated a post (real cross-project catch), flywheel v3 fully closed, contributed to a cohort-wide detector-bug thread
+## Today (09-12) so far — published "Piper Morgan Eras" (with a real self-caught mistake), then fixed the recurring altText gap at the mechanism
 
-Published "The Mailbox Trust Violation" (independent proofread, not a rubber-stamp of Comms' two
-passes; hashId `defb143fe6eb`). Dispatch-PM syndicated to Medium same morning — caught and
-corrected a real error in their proposed `altText` value by checking three independent sources
-directly (draft frontmatter, website CSV, live rendered attribute), rather than trusting either
-side unverified.
+Published "Piper Morgan Eras" (hashId `0547bee91100`). **Made a real, live mistake mid-proofread**:
+"corrected" the deliberate house term "minimum-**valuable**-product" to the conventional
+"**viable**," not realizing PM had just reasserted "valuable" via the admin UI 9 minutes before my
+publish (my session's initial sync predated that edit). Caught it myself via the file's own git
+history before reporting done, fixed the live content directly, corrected the calendar's own
+notes rather than let the wrong account stand. Same stale-snapshot failure shape as this whole
+week's other incidents (Docs BELT-INVISIBLE, the NO-SESSION-LOG race) — re-sync immediately before
+any wording edit, not just at session start.
 
-**Flywheel v3 fully closed today** — PM ratified the text this morning; CIO applied it to
-`methodology-00-EXCELLENCE-FLYWHEEL.md` the same fire. Verified directly (twice, at two different
-points in the day) rather than trust the closure memos: grepped the live canonical file for both
-my delivered pointer lists and the m-49 correction — all landed verbatim, tags intact. Nothing
-further on this workstream, ever.
+PM's follow-up: this belongs in a blog style guide, which didn't exist. Created
+`docs/internal/planning/comms/blog-style-guide.md` (house terminology decisions that deliberately
+override convention), cross-linked into Comms' `blog-post-template.md` Required Reading and my own
+`publish-to-blog` SKILL.md. Notified Comms.
 
-**Contributed twice to a cohort-wide `duty-cycle-freeze-check.sh` bug thread** (the NO-SESSION-LOG
-race): first, a data point showing my own seat has near-zero exposure by sequencing (session-log
-commit before heartbeat, verified across 3 non-consecutive mornings) rather than luck; second,
-after CIO's fix and CXO's sharper follow-up (the *original* catch was also false — belt 0-for-2 —
-and the grace window needed widening 10→20min against a real 24-sample distribution), verified the
-closure directly. CXO's proposed structural fix (move the skill's Step 0 log-commit before the mail
-loop) matches my own seat's practice exactly — satisfying, nothing further to add.
+**Then the exact same underlying gap (empty altText/caption/cartoon on the calendar) recurred a
+THIRD time** on this same post (09-08, 09-11, 09-12), flagged by Dispatch-PM. I'd already told
+myself I'd fix it after the second occurrence and didn't — prose reminders to myself don't work.
+Fixed it at the mechanism instead: added an `altText`-empty-on-live-post warning to
+`scripts/validate-editorial-calendar.py`, measured carefully before shipping (the obvious version
+checking caption/cartoon too would have fired 337 times — both are empty on 73%/28% of the
+historical corpus, longstanding convention not defects). Verified against the file's own
+established 3-control discipline (known-positive/negative/full-sweep) — 28 clean warnings, no
+flood. Also found and fixed a real bug in my own new check during that verification (legacy
+`theme='shipping news'` rows leaking through).
 
-Also filed Ship #060's workstream report (Exec included Docs directly this cycle, not just cc) and
-a chunking-vocabulary data point (my own "next fire" usage dropped to zero unprompted from 09-06 on;
-`Fire N` headings present and wake-shaped, matching three other seats).
+Also caught and corrected a real timing-race claim from Dispatch-PM (`status=drafted` on a live
+post) — checked the actual commit timeline rather than assume either side was right; confirmed
+current state correct, named the underlying timing gap honestly rather than just asserting fixed.
 
-**Two real mail-mechanics mistakes made and fixed within one fire**: stranding 7 triage moves'
-inbox-side deletions (same-shape mistake as the MANIFEST.md false-positive, but genuinely real this
-time) and missing 8 of 9 cc'd inboxes on a broadcast — both caught (the second via `mail-send.sh`'s
-own `#1716` warning) and fixed same-fire. See Standing practices below.
+## 09-11 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-11-omnibus-log.md`)
 
-Today's omnibus (`docs/omnibus-logs/2026-09-11-omnibus-log.md`, 527 lines, HIGH-COMPLEXITY:
-COORDINATION, 16 sessions/11 roles + 5 prog) required two real fixes on audit: a missing
-`**Git Commits**:` header field (required by the skill's own template, omitted in the draft) and a
-commit-count correction (339 product-only → 340 combined, verified both repos' logs directly).
-Five other claims spot-checked (five practice names, PM's ratification quote, CXO's 16-day
-DAY-CLOSED gap) all matched exactly.
+Published + syndicated "The Mailbox Trust Violation" (caught a real Dispatch-PM altText error).
+Flywheel v3 fully closed (PM ratified, CIO applied to canon, verified directly twice). Contributed
+twice to the cohort-wide NO-SESSION-LOG detector-bug thread. Filed Ship #060's report. Two mail-
+mechanics mistakes caught and fixed same-fire (stranded triage moves, missed cc copies). Omnibus
+(527 lines) required two real audit fixes (missing header field, commit-count correction).
 
 ## Watch surfaces (things owned by others, checked periodically)
 
@@ -199,6 +199,18 @@ without PM present.**
   09-10) — before filing anything to the forensic archive, check for a published-artifact
   reference and recent-commit activity; either fires, hold in `dev/active/` instead. Apply this
   myself on every future cleanup pass, not just cite it as history.
+- **A term that looks like a typo may be a documented deliberate house choice** — check
+  `docs/internal/planning/comms/blog-style-guide.md` and the glossary before "fixing" any
+  spelled-out term that looks wrong. Cost a real live-published mistake 09-12 (MVP =
+  "Minimum Valuable Product," not "Viable" — reverted PM's own deliberate edit without checking).
+- **`scripts/validate-editorial-calendar.py` now warns on `altText` empty on a published/
+  distributed non-Ship row** (added 09-12, after the same gap recurred 3x on one post). Run the
+  validator after every publish, not just at CSV-edit time — this is exactly the kind of gap a
+  quick mental checklist keeps missing.
+- **A prose reminder to "fix this going forward," written in my own carry-forward, does not
+  reliably change my own next-day behavior** — the altText gap above is the proof: I wrote almost
+  this exact sentence in the 09-11 carry-forward and repeated the mistake the very next publish.
+  When a mistake recurs once, the fix is a mechanical check, not a stronger promise to remember.
 
 ## Mail-loop scan
 
