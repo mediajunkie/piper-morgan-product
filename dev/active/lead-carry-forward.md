@@ -7,7 +7,9 @@
   7 In Review). ⚠️ My "25→24→23" was stale decrement-arithmetic, never a measurement —
   RE-MEASURE the headline every time (`gh issue list --milestone MVP --state open`); never
   decrement. Memo to PPM asks which denominator to pin; correction owned in PM's tracker.
-- **EPIC 2 filed remainder EMPTY**: 1690 + 1741 + 1733 all closed + live-verified today.
+- **EPIC 2**: 1690 + 1741 + 1733 closed + live-verified today; remainder = **1740** (dead
+  renderer twin — folded into epic 2 per the order doc 9/10; my earlier "remainder EMPTY"
+  note was wrong, caught on re-reading the order doc).
   New tail (unplaced, PPM's call): 1750 (standup.html stale twin) · 1751 (canonical
   personality page hardcodes user_id "default").
 - **1741 CLOSED + deployed**: suggestions UI escaped per the 1578 treatment (user text out of
