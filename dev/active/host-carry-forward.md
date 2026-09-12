@@ -1,12 +1,12 @@
 ---
-last_updated: 2026-09-10
+last_updated: 2026-09-11
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-10 22:0x PDT (STOP fire, day 48 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-09-11 22:0x PDT (STOP fire, day 49 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
@@ -57,18 +57,19 @@ max_age_days: 1
 
 ## Cron
 
-Current job **`c866b28e`** (chain … `dd10b841 → 6b3e358b → c866b28e`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-10 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`6cafe9a1`** (chain … `6b3e358b → c866b28e → 6cafe9a1`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-11 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry (~09-18); delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 09-10 STOP
+## Open threads, as of 09-11 STOP
 
-- ✅ **The flywheel re-evaluation — v3 text finalized and sent to PM for ratification.** Full text at `dev/active/flywheel-v3-layer2-text-2026-09-10.md` (verified directly, confirmed HOST's own contributions accurately reflected: the m-53 chokepoint sub-clause under Practice 3, Practice 5 taking D7's cadence). Docs delivered the two remaining pointer-list slots same-day, re-verified fresh against the live corpus rather than pulled from memory. Ratification unblocked; only Q5 (is idle a legitimate terminal state) remains PM's to rule, with HOST's own sequencing advice cited as the reason there's no rush. Archival on HOST's side — nothing further owed unless PM's ratification surfaces a question.
-- ✅ **Scope-guard mechanism work progressing fast, all verified directly.** CIO shipped the detection predicate (`scripts/scope-drift-check.sh`, commit `ec65e48f7`) — negation-aware after checking against the #1278 incident, 11/11 real tests, verified directly rather than trust the memo. Arch/PPM own the Action skeleton next.
-- **`#1731` (mail-send.sh silent writes) — still genuinely open, no movement this window.** CIO's repro attempt was inconclusive; watching, not chasing.
+- ✅ **Flywheel v3 — ratified AND applied to canon.** PM ratified Fire 1 ("I approve it"); CIO applied it to `methodology-00-EXCELLENCE-FLYWHEEL.md` same day (commit `bfd1445bc`). Verified directly both HOST-contributed pieces survived: the m-53 chokepoint-vs-bolt-on sub-clause (Practice 3), Practice 5 taking D7's cadence. Fully archival — nothing further owed.
+- ✅ **PM's work-queue ruling (09-11)** — queue = carried work + mail + newly-observed role-relevant GitHub issues; idle legitimate only when all three are empty. Supersedes prior local per-role patches (Exec's 09-08, Lead's 09-09). Exec noted HOST's own Step 1a self-poll was this ruling "implemented eight months early" — no action needed, HOST's existing practice already conforms.
+- ✅ **Chunking-vocabulary finding (09-11)** — checked HOST's own logs (09-08 through 09-10, 18 fire headings) against the actual antipattern rather than assume immunity: no case found of unblocked work deferred without a named trigger. Reported as a data point to the cohort-wide count. Archival on HOST's side.
+- ✅ **#1174 welfare-safety half — filed and synthesized.** Wrote `docs/internal/design/proactive-presence-host-half-2026-09-11.md` (content gate: a tell must report a change in the world, never a pattern in the user; competence-threat axis independent of CXO's cost axis; second argument for tell-never-offer ceiling). CXO folded both into v0.2 same-day — verified the fold via direct `grep`, not the notification. Discovery-only, no prototype, funding banner not reopened. Archival unless #1174 reopens with new scope.
+- ✅ **NO-SESSION-LOG race — found, fixed, re-measured.** Two independent root causes (CXO's mail-drain-first, HOST's own heartbeat-first) converged on a grace-window fix; CIO widened 10→20min after CXO's 24-sample distribution (max 12m27s observed). The belt's own first catch (PA, 09-08) was re-examined and found to be a false positive on the same clock — the self-correction that keeps a belt trustworthy. Structural fix (reorder session-log commit before mail loop) parked as a named future item, not a fourth piecemeal edit. Archival, watch only if a new false-positive surfaces.
+- **`#1731` — partially resolved.** CIO's instance retracted as a zsh shell-config artifact (verified the specific word-splitting claim directly, zsh vs bash). **PPM's separate instance remains genuinely open and distinct** — not closed by the retraction. Watching PPM's thread only.
+- ✅ **Ship #060 workstream review — filed, with frontmatter this time.** `dev/active/workstream-060-host-2026-09-11.md`, sent to Exec cc PM (`5e7f6b757`). Archival.
 - **PM's backlog/epic reforms** — epic order built and live (`dev/active/mvp-epic-order-2026-09-09.md`), outside HOST's lane, tracked for cohort-health context only.
-- ✅ **Jake loop-back — SENT.** Archival.
 - **Role Health Check** — ✅ #1714 closed 08-31. Next due ~09-28.
 - **Agent 360 v0.4** — ✅ Fully closed. Only cohort-share remains, pending PM's framing sign-off.
 - **ESSENCE.md v0.1 trust-lens** — ✅ Given 08-29. **Watch for**: Lead's watched round adding the inversion-path test.
-- The 09-08 carry-forward cleanup, four methodology entries filed the week of 09-04 (m-50 through m-53), Workstream Review #059, NO-SESSION-LOG detector — all closed/ruled, archival.
 - **BRIEFING-CURRENT-STATE.md flagged STALE** by SessionStart hook — unchanged status, still not HOST's lane to refresh unprompted.
-- **08-26 was the second fully quiet day this week** (after 08-24) — all six fires clean, nothing owed in, nothing new arrived. Noted as a baseline pattern, not itself an open thread.

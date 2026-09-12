@@ -131,6 +131,40 @@ function handleDirectResponse(result, element) {
 }
 
 /**
+ * #1741 [SECURITY]: escaping helpers for the suggestions UI.
+ *
+ * This markup carries inline onclick handlers BY DESIGN, so it cannot route
+ * through the #1732 DOMPurify chokepoint (_sanitizeRenderedHtml) — DOMPurify
+ * would strip the handlers and break the accept/reject/execute buttons. It
+ * gets the #1578 treatment instead: escapeHtml/escapeAttr on every
+ * interpolation of pattern-derived data (reasoning/description/action_params
+ * are plausibly user-authored — e.g. an issue title captured into a learned
+ * create_github_issue pattern — so a stored payload would execute when the
+ * suggestion renders).
+ *
+ * NOTE (#1578): HTML-escaping CANNOT protect a JS string inside an inline
+ * onclick="..." — the HTML parser decodes entities before the JS engine
+ * parses the handler, so a quote re-materializes and breaks out. Therefore
+ * user-authored text NEVER crosses that boundary: only the server-generated
+ * pattern id (a DB UUID, learning_handler.py str(pattern.id)) appears in
+ * onclick, escapeAttr'd for the HTML-attribute layer.
+ */
+function _escapeHtml(value) {
+    return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+}
+
+// Attribute-context variant. Same escapes; the name documents the call-site
+// context (mirrors templates/todos.html, #1568/#1578).
+function _escapeAttr(value) {
+    return _escapeHtml(value);
+}
+
+/**
  * Render pattern suggestions UI (Phase 3)
  * @param {Array} suggestions - Array of suggestion objects
  * @returns {string} - Rendered HTML
@@ -181,9 +215,12 @@ function renderSuggestionCard(suggestion, index) {
         return '';
     }
 
-    const confidence = Math.round((suggestion.confidence || 0) * 100);
-    const patternType = (suggestion.pattern_type || 'unknown').replace('_', ' ').toLowerCase();
-    const usageText = `Used ${suggestion.usage_count} time${suggestion.usage_count === 1 ? '' : 's'}`;
+    // #1741: numeric fields coerced to real numbers (hostile strings -> 0) so
+    // what reaches the markup is arithmetic output, never attacker-shaped text.
+    const confidence = Math.round((Number(suggestion.confidence) || 0) * 100);
+    const usageCount = Number(suggestion.usage_count) || 0;
+    const patternType = String(suggestion.pattern_type || 'unknown').replace('_', ' ').toLowerCase();
+    const usageText = `Used ${usageCount} time${usageCount === 1 ? '' : 's'}`;
 
     // Phase 4: Check for auto-triggered flag
     const isAutoTriggered = suggestion.auto_triggered || false;
@@ -214,16 +251,21 @@ function renderSuggestionCard(suggestion, index) {
     const badgeClass = isAutoTriggered ? 'auto-badge' : 'manual-badge';
     const badgeText = isAutoTriggered ? 'Auto-detected' : 'Suggested';
 
+    // #1741: every pattern-derived interpolation below is escaped for its
+    // context; user-adjacent text (reasoning) appears ONLY in HTML text
+    // context, never in onclick (see the escaping note above).
+    const safePatternId = _escapeAttr(suggestion.pattern_id);
+
     return `
-        <div class="suggestion-card ${cardClass}" data-pattern-id="${suggestion.pattern_id}">
+        <div class="suggestion-card ${cardClass}" data-pattern-id="${safePatternId}">
             <div class="suggestion-content">
                 <div class="suggestion-header">
                     <span class="suggestion-icon">${icon}</span>
                     <span class="suggestion-badge ${badgeClass}">${badgeText}</span>
                 </div>
-                <div class="suggestion-reasoning">${reasoning}</div>
+                <div class="suggestion-reasoning">${_escapeHtml(reasoning)}</div>
                 <div class="suggestion-meta">
-                    <span class="suggestion-type">${patternType}</span>
+                    <span class="suggestion-type">${_escapeHtml(patternType)}</span>
                     <span class="suggestion-usage">${usageText}</span>
                 </div>
                 <div class="confidence-bar-container">
@@ -233,23 +275,23 @@ function renderSuggestionCard(suggestion, index) {
             </div>
             <div class="suggestion-actions">
                 ${isAutoTriggered ? `
-                    <button class="suggestion-btn execute" onclick="handleExecute('${suggestion.pattern_id}')">
+                    <button class="suggestion-btn execute" onclick="handleExecute('${safePatternId}')">
                         ▶ Execute Now
                     </button>
-                    <button class="suggestion-btn skip" onclick="handleSkip('${suggestion.pattern_id}')">
+                    <button class="suggestion-btn skip" onclick="handleSkip('${safePatternId}')">
                         Skip This Time
                     </button>
-                    <button class="suggestion-btn disable" onclick="handleDisable('${suggestion.pattern_id}')">
+                    <button class="suggestion-btn disable" onclick="handleDisable('${safePatternId}')">
                         Disable Pattern
                     </button>
                 ` : `
-                    <button class="suggestion-btn accept" onclick="handleSuggestionFeedback('${suggestion.pattern_id}', 'accept')">
+                    <button class="suggestion-btn accept" onclick="handleSuggestionFeedback('${safePatternId}', 'accept')">
                         ✓ Accept
                     </button>
-                    <button class="suggestion-btn reject" onclick="handleSuggestionFeedback('${suggestion.pattern_id}', 'reject')">
+                    <button class="suggestion-btn reject" onclick="handleSuggestionFeedback('${safePatternId}', 'reject')">
                         ✗ Reject
                     </button>
-                    <button class="suggestion-btn dismiss" onclick="handleSuggestionFeedback('${suggestion.pattern_id}', 'dismiss')">
+                    <button class="suggestion-btn dismiss" onclick="handleSuggestionFeedback('${safePatternId}', 'dismiss')">
                         Dismiss
                     </button>
                 `}

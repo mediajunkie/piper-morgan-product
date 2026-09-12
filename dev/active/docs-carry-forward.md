@@ -1,74 +1,57 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-11 ~19:20 PDT (18:57 fire, complete). NO-SESSION-LOG thread fully closed
-(grace widened 10→20min, belt confirmed 0-for-2, structural fix bundled into CIO's 7v). Next fire
-(21:57) is today's last — day-close procedure due.
-**Session log**: `dev/2026/09/11/2026-09-11-0623-docs-code-log.md` (open).
+**Updated**: 2026-09-11 ~23:15 PDT (21:57 fire, day-close complete).
+**Session log**: `dev/2026/09/11/2026-09-11-0623-docs-code-log.md` — DAY-CLOSED.
 **New standing practice, effective immediately**: only cc PM (`xian (ceo)`) on memos that (a)
 contain a decision only PM can make, (b) relay a PM ruling, or (c) contain something PM would want
 to contradict — everything else reaches PM via the attention rollup. Per Exec's 09-11 proposal
-memo relaying PM's own words; Exec is holding to it starting today regardless of when CIO formally
-updates the skill, and I'm doing the same.
-**NO-SESSION-LOG race — RESOLVED (mostly)**: CIO shipped a 10-min grace-window fix (`5ab4a021a`)
-same day, but CXO's immediate follow-up found the *original* catch was also false (belt 0-for-2)
-and that one real sample already exceeds the new grace window (24-sample measurement). CXO's
-proposed real fix: move the skill's Step 0 START-log commit before the mail loop — exactly my own
-seat's existing practice, now proposed cohort-wide. CIO owns the skill edit; watch whether it lands.
-**Flywheel v3 — fully closed.** Verified directly: my P1/P5 pointer lists and the m-49 correction
-all landed verbatim in `methodology-00-EXCELLENCE-FLYWHEEL.md` (CIO's commit `bfd1445bc`). Nothing
-further on this workstream, ever — drop from future carry-forwards after today.
+memo relaying PM's own words.
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
 
-## Today (09-11) so far — published + syndicated "The Mailbox Trust Violation," flywheel v3 RATIFIED, big cross-cutting mail thread
+## Yesterday (09-11) closed — headline: published + syndicated a post (real cross-project catch), flywheel v3 fully closed, contributed to a cohort-wide detector-bug thread
 
-PM engaged directly at session start (before the 06:57 cron fire): yesterday's scheduled post
-never finished (PM's phone image-upload issue), Comms reviewed it overnight, mine to proofread and
-publish. Did an independent proofread (not a rubber-stamp of Comms' two passes) — template/voice
-guide read fresh, acronym-lint clean (ROLE-GLOSS advisories are expected false positives for this
-narrative register), footer tease verified against the live calendar, image verified thematically.
-Published (hashId `defb143fe6eb`, `--work-date 2026-08-09`), archived draft to `drafts/published/`,
-live-verified via actual rendered content (not just a 200 — see gotcha below). Dispatch-PM
-syndicated to Medium same morning; caught and corrected a real error in their proposed `altText`
-value by checking three independent sources directly (see Standing practices).
+Published "The Mailbox Trust Violation" (independent proofread, not a rubber-stamp of Comms' two
+passes; hashId `defb143fe6eb`). Dispatch-PM syndicated to Medium same morning — caught and
+corrected a real error in their proposed `altText` value by checking three independent sources
+directly (draft frontmatter, website CSV, live rendered attribute), rather than trusting either
+side unverified.
 
-**Flywheel v3 is RATIFIED** — PM approved the Layer 2 text this morning, five days after naming the
-feeling that started the re-evaluation. My own piece (P1/P5 pointer lists, the m-49 catch) already
-landed 09-10; nothing further owed. CIO applies to canon; the workstream formally closes.
+**Flywheel v3 fully closed today** — PM ratified the text this morning; CIO applied it to
+`methodology-00-EXCELLENCE-FLYWHEEL.md` the same fire. Verified directly (twice, at two different
+points in the day) rather than trust the closure memos: grepped the live canonical file for both
+my delivered pointer lists and the m-49 correction — all landed verbatim, tags intact. Nothing
+further on this workstream, ever.
 
-**PM ruled on the work-queue definition** — carried work + mail + newly-observed GitHub issues
-meeting role-relevant criteria, idle only when all three are empty — and explicitly named Docs
-("the recurring Docs audit and any issues generated from an audit"). Validates what I already do
-(picking up hook-flagged audit residuals like #1727); nothing new for me to implement, CIO owns the
-mechanical skill change.
+**Contributed twice to a cohort-wide `duty-cycle-freeze-check.sh` bug thread** (the NO-SESSION-LOG
+race): first, a data point showing my own seat has near-zero exposure by sequencing (session-log
+commit before heartbeat, verified across 3 non-consecutive mornings) rather than luck; second,
+after CIO's fix and CXO's sharper follow-up (the *original* catch was also false — belt 0-for-2 —
+and the grace window needed widening 10→20min against a real 24-sample distribution), verified the
+closure directly. CXO's proposed structural fix (move the skill's Step 0 log-commit before the mail
+loop) matches my own seat's practice exactly — satisfying, nothing further to add.
 
-**Filed Ship #060's workstream report** (Exec's kickoff this time explicitly included Docs in the
-`to:` list, not just cc) — window Fri 09-04–Thu 09-10, Docs-POV per the standing scope memory, all
-cited figures re-verified directly (omnibus line counts re-`wc -l`'d, #1725/#1724 facts re-grepped
-from source, hashIds re-checked against the live website CSV) rather than recalled from memory.
+Also filed Ship #060's workstream report (Exec included Docs directly this cycle, not just cc) and
+a chunking-vocabulary data point (my own "next fire" usage dropped to zero unprompted from 09-06 on;
+`Fire N` headings present and wake-shaped, matching three other seats).
 
-**Contributed a datapoint to the fire-heading/"next fire" cohort thread** — named twice by PA and
-CXO as the seat uniquely positioned to judge whether wake-shaped headings cost real effort (I build
-the omnibus from all 11 roles' logs daily). Measured my own logs directly: "next fire" phrase
-dropped to zero unprompted from 09-06 on; `Fire N` headings present and wake-shaped same as the
-other three seats reporting. Added the omnibus-consumer angle nobody else could supply.
+**Two real mail-mechanics mistakes made and fixed within one fire**: stranding 7 triage moves'
+inbox-side deletions (same-shape mistake as the MANIFEST.md false-positive, but genuinely real this
+time) and missing 8 of 9 cc'd inboxes on a broadcast — both caught (the second via `mail-send.sh`'s
+own `#1716` warning) and fixed same-fire. See Standing practices below.
 
-## 09-10 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-10-omnibus-log.md`)
-
-Flywheel v3 text completed (my P1/P5 pointer lists + a real m-49 catch). Closed #1727+#1742 (13
-dead links). Two process defects closed at the class level: `cleanup-dev-active` v1.2 (live-artifact
-guard) and confirmed CXO's MANIFEST.md `mail-send.sh` false-positive on a second seat. Omnibus
-(529 lines) personally audited, zero discrepancies. Ship #058's `linkedinURL` calendar gap and the
-cross-project cc-delivery watch item both still single-instance, not worth escalating.
+Today's omnibus (`docs/omnibus-logs/2026-09-11-omnibus-log.md`, 527 lines, HIGH-COMPLEXITY:
+COORDINATION, 16 sessions/11 roles + 5 prog) required two real fixes on audit: a missing
+`**Git Commits**:` header field (required by the skill's own template, omitted in the draft) and a
+commit-count correction (339 product-only → 340 combined, verified both repos' logs directly).
+Five other claims spot-checked (five practice names, PM's ratification quote, CXO's 16-day
+DAY-CLOSED gap) all matched exactly.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
 - **`last_verified` bulk-stamp cluster**: 24/38 as of 09-07's audit (#1725) — unchanged from 09-03,
   structural fix now filed as #1726 (CIO's lane) rather than re-escalated each audit. Check again
   at the next Weekly Docs Audit (09-14).
-- **Flywheel v3 ratification** (Arch-led) — text complete as of 09-10 morning, awaiting PM's word;
-  CIO applies to `methodology-00-EXCELLENCE-FLYWHEEL.md` on ratification. Not yet landed as of
-  09-10 EOD (verified directly against `decisions.log`). Watch, don't chase.
 - **#1644** — roadmap.md full historical fold still owed (PPM's lane). Not mine to force.
 - **#1683** — 2 inverse-case calendar rows need real Medium verification, not guessing.
 - **#1392** — "Thirteen Mailboxes" double-hero-image question is PM's editorial call.

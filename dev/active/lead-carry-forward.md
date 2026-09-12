@@ -1,50 +1,43 @@
 # Lead carry-forward — rewritten 2026-08-29 ~18:15 PT (freshness rule: full pass at START/STOP)
 
-## Live state (receipts, refreshed 2026-09-11 21:5x — day close)
-- **v72 LIVE** (deploy-by-default rule in force since 9/11 am). MVP **25 open**.
-- **Belt: SIX OF SEVEN GREEN** — Tests green for the first time since Aug 8 (1711 portability +
-  backlog reconciliation, CI-verified). E2E (never green in 1000 visible runs) waits ONLY on
-  PM's Anthropic repo-secret rotation (escalated via Exec, ~3 min, spend-cap note included).
-- **1617**: replay PASSED 3/3 on v72 — PM's 90-second natural standup closes it.
-- CLOSED today: 1711 (bounded keychain guard; pytest-hang exposure covered) · Tests-red root
-  causes. FILED: 1747 (the denominator own-goal, audit complete) · 1748 (CI credential
-  pollution) · 1749 (CI-only search miss).
+## Live state (receipts, refreshed 2026-09-12 07:0x — Saturday fire 1)
+- **v74 LIVE** (two deploys this fire, deploy-by-default; belt green each time: smoke 506 /
+  unit 10603 / ratchets 54 / jest 25). MVP **23 open**.
+- **1741 CLOSED + deployed**: suggestions UI escaped per the 1578 treatment (user text out of
+  onclick; deliberately NOT the DOMPurify chokepoint — inline handlers are by design).
+  ⚠️ jest verifies need `--config tests/frontend/jest.config.js` — bare `npx jest` runs
+  node-env and fails 9/9 while looking like a broken fix.
+- **1690 CLOSED + verified in prod**: demo plugin default-OFF (opt-in `PIPER_DEMO_PLUGIN=1`);
+  running instance shows "Initialized 4/4 plugin(s)" — demo absent. ⚠️ curl probes of prod
+  routes are UNINFORMATIVE for mounted/unmounted: auth middleware 401s before routing
+  (calibrated with a nonexistent-route control). Use startup logs or route-table pins.
+- **Backlog burn-down**: test_github_place_has_name fixed (May-era #1042 sentinel bug,
+  backlog entry removed per the #1452 gate; 59 entries remain).
+- **Belt: SIX OF SEVEN GREEN** — E2E waits ONLY on PM's Anthropic repo-secret rotation
+  (escalated via Exec, ~3 min). 1687 close-out awaits the full 7-green snapshot.
+- **1617**: replay PASSED 3/3 (v72, still valid on v73) — PM's 90-second natural standup closes it.
 - **The keyless illusion**: conftest reloads the real key from Keychain at session start —
-  env-strip was NEVER keyless; months of local-vs-CI divergence explained (1748 tracks the fix).
-- Cron 28c6042f (expires ~9/16, rotate ~9/14). Ship-060 filed. 1687 close-out awaits the full
-  7-green snapshot (post-rotation).
-
-# Lead carry-forward — rewritten 2026-08-29 ~18:15 PT (freshness rule: full pass at START/STOP)
-
-## Live state (receipts, refreshed 2026-09-10 18:4x)
-- **v71 LIVE** (deployed 9/10 ~08:00 on PM's word): 1527+1654 dawn fixes · 1730 honest decline ·
-  notice cut · 1734 admin gate. Health green.
-- **Acceptance contract #1739 FULLY ADOPTED** (both tiers); 1631/1650/1694 CLOSED; **1617 held
-  for PM's live standup pass** (~90 seconds, explained to PM 9/10).
-- **Render boundary sanitized** (#1732 closed, DOMPurify+marked vendored) — epic 2 complete but #1741.
-- **Belt: 2/3 green.** Code Quality + Router repaired 9/10. **Architecture RED on a KNOWN
-  env-signature** (CI counts jumped to the documented macOS-skew pattern → env-drift hypothesis);
-  diagnosis lane QUEUED (interrupted by the Fable cap 9/10 17:00, resets 22:00).
-- **MVP 26 open**, structured by PPM's epic order (`dev/active/mvp-epic-order-2026-09-09.md`).
-- Cron 28c6042f (expires ~9/16, rotate ~9/14). Model Fable 5 (cap window 9/10 17:00–22:00).
-- Tracker artifact restored to dev/active + epic-restructured (batch-15 sweep had archived it;
-  Docs notified with two classifier guards).
+  env-strip was NEVER keyless (1748 tracks the fix).
+- Cron 28c6042f (expires ~9/16, **rotate ~9/14 — tomorrow-ish**).
 
 ## Queue (PM pre-authorized; one lane at a time in this worktree)
-- RUNNING: named-target delete resolution lane (the 1527 lane's scope note; PM's live pain).
-- NEXT: Web's test credential (real signup path — unblocks 1512/1568/1578/1581 browser closes) ·
-  1677/1488 close-out on PM's transcript · #1689 native dialogs · #1659/#1660 file residues ·
-  #1653/#1652 consent keeps · pre-claim shadow probe (measurement for the narrowing schedule) ·
-  #1522 fresh-scan-then-delegate · config-validator stub disposal.
-- Rate-limited, retry next fire: file the named-target delete gap issue (lane building it anyway).
+- INTAKE NEXT FIRE: next never-started MVP item per PPM's epic order
+  (`dev/active/mvp-epic-order-2026-09-09.md`); epic-2 remainder = 1733 (stale unauth
+  personality page) only — 1741 closed this fire.
+- THEN: Web's test credential (real signup path — unblocks 1512/1568/1578/1581 browser
+  closes) · 1677/1488 close-out on PM's transcript · #1689 native dialogs · #1659/#1660
+  file residues · #1653/#1652 consent keeps · pre-claim shadow probe (measurement for the
+  narrowing schedule) · #1522 fresh-scan-then-delegate · config-validator stub disposal ·
+  unassigned follow-ons: 1747/1748/1749/1740/1743/1735.
+
+## PM-attention items (both ~5 min, standing)
+- (a) 90-second natural standup exchange → closes #1617.
+- (b) ~3-minute Anthropic repo-secret rotation → unblocks E2E workflow (escalated via Exec).
 
 ## Recently resolved (for context, not action)
-- Triage cut: ruled by PM one-at-a-time 8/28, board-executed by PPM (5 moved), #1638 DISPOSED
-  8/29 under delete-module-safely. Sitting fully closed.
-- CI belt honest as of 8/28: Arch Enforcement + Docker + Router + Config Validation green;
-  mypy gate fix-forward (no ceilings raised).
-- #1386: criteria 2 (signed off 8/21), 4 (belt fixed), 5 (attested on deployed machine) — gate
-  nearly assembled; PM verdicts on the round are the remaining input.
+- 1711 (bounded keychain guard) · Tests workflow green first time since Aug 8 · triage cut
+  fully executed · #1638 disposed · acceptance contract #1739 fully adopted, 1631/1650/1694
+  closed · #1732 render boundary sanitized.
 
 ## Standing
 - Supersession gate; push-after-reading (batteries ≠ push chain); merge-BEFORE-inbox-ls at every
