@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'piper-morgan-eras-blog-eras.png'
 alt: ''
 caption: ''
 ---
