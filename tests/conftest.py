@@ -412,7 +412,7 @@ async def intent_service():
     # Initialize IntentService with test configuration
     service = IntentService(
         intent_classifier=classifier,
-        conversation_handler=ConversationHandler(session_manager=None),
+        conversation_handler=ConversationHandler(),
     )
 
     yield service
@@ -480,7 +480,7 @@ def client_with_intent():
     if not hasattr(app.state, "intent_service") or app.state.intent_service is None:
         app.state.intent_service = IntentService(
             intent_classifier=classifier,
-            conversation_handler=ConversationHandler(session_manager=None),
+            conversation_handler=ConversationHandler(),
         )
 
     client = TestClient(app)

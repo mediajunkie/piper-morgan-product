@@ -124,39 +124,10 @@ class TestHonestFailureHandler:
         assert result.follow_up_suggestion is not None
         assert "?" in result.follow_up_suggestion
 
-    # --- Vague Intent Tests ---
-
-    def test_vague_intent_asks_for_specifics(self, handler, basic_context, casual_settings):
-        """Vague intent asks for more details."""
-        intent = Intent(
-            category=IntentCategory.LEARNING,
-            action="learn_pattern",
-            confidence=0.5,
-        )
-        result = handler.handle_vague_intent(
-            intent=intent,
-            context=basic_context,
-            place_settings=casual_settings,
-        )
-        narrative = result.understanding_narrative.lower()
-        # Should ask what they want
-        assert "what" in narrative or "specific" in narrative
-
-    def test_vague_intent_offers_help(self, handler, basic_context, casual_settings):
-        """Vague intent offers willingness to help."""
-        intent = Intent(
-            category=IntentCategory.CONVERSATION,
-            action="get_help",
-            confidence=0.6,
-        )
-        result = handler.handle_vague_intent(
-            intent=intent,
-            context=basic_context,
-            place_settings=casual_settings,
-        )
-        narrative = result.understanding_narrative.lower()
-        # Should offer help
-        assert "help" in narrative
+    # #1759: the vague-intent tests were excised with handle_vague_intent,
+    # deleted as part of the dead clarify-carrier machinery (#1730 Gap-2
+    # ruling). handle_classification_failure / handle_low_confidence tests
+    # above cover the surviving members.
 
     # --- Experience Tests ---
 
