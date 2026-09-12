@@ -65,3 +65,5 @@
   `$(date +%H:%M)` command substitution inside the heredoc — never a typed time.
 - **REPLAYS OWED next fire (both v88+)**: "show me issue #112" (#1736) + the v70 archived-
   projects exchange (#1738). Then both close.
+- **WATCH: next Tests-workflow run** (triggered by cd980af2c push) — the #1748 guard line
+  replacing "Loaded ANTHROPIC_API_KEY from keychain" in the diagnose step closes #1748.
