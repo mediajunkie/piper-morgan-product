@@ -2570,6 +2570,18 @@ class TestAcceptanceContractRatchet:
     answered at the seam (standup_todo_offer.state_question_reply) with the
     ask re-rendered in the same reply; other questions re-arm with the
     confirm-style "Still pending:" suffix.
+
+    2026-09-12 (#1753, the survival ruling's soft-offer corollary): a
+    survived arm must also outlive the SAME TURN's soft-offer application.
+    Survival turns compose their result in normal processing, so the
+    ``_apply_soft_offer`` ``_pending_flags`` belt (which reads only
+    ``result.intent_data``) structurally cannot cover them; the guard now
+    also PEEKS THE STORE (read-only, #1595) before setting — any entry
+    present at apply time was armed or survival-re-armed this turn (the
+    store is popped before classification, #1529), so the soft offer is
+    skipped honestly instead of replacing the arm in the one-slot #846
+    store. The flag belt remains (#1652 pins stand). Regression:
+    ``test_soft_offer_survival_clobber_1753.py``.
     """
 
     _CONTRACT_MODULES = (

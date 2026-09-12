@@ -388,6 +388,35 @@ class IntentService:
         if result.intent_data and any(result.intent_data.get(f) for f in _pending_flags):
             return result
 
+        # #1753: the flags above cover ARM turns only — the arming handler
+        # composes the result and stamps its flag. They structurally CANNOT
+        # cover STATE_QUESTION survival turns (#1739 contract §5a): the seam
+        # re-arms the offer silently and NORMAL PROCESSING composes the
+        # result (floor, reminders list, …), so no flag rides it, and a
+        # soft offer allowed on that same turn would replace the survived
+        # arm in the one-slot #846 store — the question silently costing
+        # the user their pending ask, the exact failure the survival ruling
+        # exists to prevent. THE STORE is the single source of truth for
+        # "an arm is live right now": process_intent pops the store before
+        # classification (the #1529 binding semantic), so any entry present
+        # HERE was armed — or re-armed via survival — THIS turn. Peek is
+        # read-only (#1595); the pop semantics are untouched. The flag belt
+        # above remains (its #1652 pins stand); this guard covers what
+        # flags cannot: turns whose result the arm's owner never composes.
+        # (No defensive try here: the peek is a plain dict read on the
+        # session-keyed store — a raise would be a real defect to surface,
+        # not degrade around; #1424 silent-death ratchet.)
+        _live_arm = self.workflow_offer_service.peek_pending_offer(session_id, user_id=user_id)
+        if _live_arm is not None:
+            self.logger.info(
+                "soft_offer_skipped_live_pending_arm",
+                session_id=session_id,
+                armed_workflow_type=(
+                    _live_arm.get("workflow_type") if isinstance(_live_arm, dict) else None
+                ),
+            )
+            return result
+
         try:
             # Issue #820: Read current lens from conversation context
             # Classifier already extracts and stores lens during classify_multiple()

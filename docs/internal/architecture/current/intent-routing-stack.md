@@ -148,9 +148,15 @@ of the whole ask, nothing bound, nothing touched. Three new offer-only registry
 keys (`clarify_reminder_clear_verb` READ, `reminder_clear_correction` READ,
 `clear_reminders_delete` DESTRUCTIVE — all `action_triggered=False`, so the
 surface-3 destructive rail-scope denominator is unchanged). `_apply_soft_offer`
-now refuses to clobber a just-armed pending action (guarded on the
-`*_pending` intent_data flags — the one-slot #846 store is shared with soft
-offers). **#1569 render half** (same commit): the floor's
+now refuses to clobber a just-armed pending action (the one-slot #846 store is
+shared with soft offers) — guarded TWO ways since #1753 (2026-09-12): the
+`*_pending` intent_data flags cover ARM turns (the arming handler composes the
+result and stamps its flag), and a read-only STORE PEEK (#1595) covers
+STATE_QUESTION survival turns (#1739 §5a), whose result is composed by normal
+processing with no flag — any entry present at apply time was armed or
+survival-re-armed THIS turn (the store is popped before classification, #1529),
+so the soft offer is skipped honestly instead of replacing the arm. Regression:
+`test_soft_offer_survival_clobber_1753.py`. **#1569 render half** (same commit): the floor's
 `_format_domain_context` renders the two context families as visually distinct
 sections with per-origin vocabulary instructions — `due_reminders` (from
 `context:reminders:{user_id}`) says "reminder", `pending_todos` (from
