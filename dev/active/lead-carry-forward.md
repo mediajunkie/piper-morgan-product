@@ -1,5 +1,21 @@
 # Lead carry-forward — rewritten 2026-08-29 ~18:15 PT (freshness rule: full pass at START/STOP)
 
+## Live state (receipts, refreshed 2026-09-11 21:5x — day close)
+- **v72 LIVE** (deploy-by-default rule in force since 9/11 am). MVP **25 open**.
+- **Belt: SIX OF SEVEN GREEN** — Tests green for the first time since Aug 8 (1711 portability +
+  backlog reconciliation, CI-verified). E2E (never green in 1000 visible runs) waits ONLY on
+  PM's Anthropic repo-secret rotation (escalated via Exec, ~3 min, spend-cap note included).
+- **1617**: replay PASSED 3/3 on v72 — PM's 90-second natural standup closes it.
+- CLOSED today: 1711 (bounded keychain guard; pytest-hang exposure covered) · Tests-red root
+  causes. FILED: 1747 (the denominator own-goal, audit complete) · 1748 (CI credential
+  pollution) · 1749 (CI-only search miss).
+- **The keyless illusion**: conftest reloads the real key from Keychain at session start —
+  env-strip was NEVER keyless; months of local-vs-CI divergence explained (1748 tracks the fix).
+- Cron 28c6042f (expires ~9/16, rotate ~9/14). Ship-060 filed. 1687 close-out awaits the full
+  7-green snapshot (post-rotation).
+
+# Lead carry-forward — rewritten 2026-08-29 ~18:15 PT (freshness rule: full pass at START/STOP)
+
 ## Live state (receipts, refreshed 2026-09-10 18:4x)
 - **v71 LIVE** (deployed 9/10 ~08:00 on PM's word): 1527+1654 dawn fixes · 1730 honest decline ·
   notice cut · 1734 admin gate. Health green.
