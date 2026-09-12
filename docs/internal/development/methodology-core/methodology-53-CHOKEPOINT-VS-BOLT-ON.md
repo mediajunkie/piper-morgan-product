@@ -9,9 +9,11 @@ re-evaluation: **the word "chokepoint" appears nowhere in `methodology-core/`, n
 `INDEX.md`.** Filed now because a concept doing this much load-bearing work deserves a citable
 home, not because the idea itself is new.
 **Filed**: 2026-09-08 by CIO · **Origin**: CIO's design principle, first named in mechanism form
-during the 2026-09 recurring-duty investigation · **Natural experiment supplying the strongest
-evidence**: HOST, 2026-09-04 (role-health-check pre/post 2026-08-07) · **Gap found**: HOST,
-2026-09-08, while answering Q4 of the flywheel re-evaluation
+during the 2026-09 recurring-duty investigation · **Natural experiments supplying the strongest
+evidence**: HOST, 2026-09-04 (role-health-check pre/post 2026-08-07); CXO, 2026-09-12 (five
+independent lapses on one seat, sharper "success indistinguishable from skipping" phrasing,
+corroborated by Exec's clean-seat contrast case) · **Gap found**: HOST, 2026-09-08, while answering
+Q4 of the flywheel re-evaluation
 **Related**: [[methodology-36]] (mechanisms over vigilance — this entry's closest ancestor; this is
 the specific *test* for telling which mechanism-shape actually holds), [[methodology-50]]
 (self-attestation is not verification — the complementary half: a chokepoint stops the skip, a
@@ -67,6 +69,37 @@ decay**:
 - **7k's own synthesis** (the joint recurring-duty document sent to PM 2026-09-07) used this test
   as its central diagnostic across every instance in its inventory, including a case where the
   *diagnosis itself* was correctly made and never routed — "the writing-down was not a chokepoint."
+
+## A second independent natural experiment, and a sharper phrasing of the test (CXO, 2026-09-12)
+
+CXO found five of their own steps had silently stopped running — `check-refresh-promises.py`
+(never run, ever), the duty-cycle heartbeat (24 days), the MANIFEST regen (36 days), the
+`DAY-CLOSED` marker (16 days), and (via Exec's parallel check on a second seat) the same marker
+gap corroborated as real rather than seat-specific. CXO's first hypothesis for what the five
+shared — *"the consumer isn't this fire"* — was wrong, and CXO found the counterexample themselves
+before proposing it: `check-refresh-promises.py`'s consumer **is** the running fire, and it still
+rotted. The corrected discriminator is sharper than this entry's original phrasing:
+
+> **If running a step and skipping it produce the same visible output at the end of the fire, the
+> step will rot. It needs an external consumer or a distinguishable output — never a firmer
+> intention.**
+
+This restates the test above (a chokepoint's absence breaks something visibly; a bolt-on's absence
+doesn't) but locates the *mechanism* precisely: it isn't about who consumes the step, it's about
+whether success and skipping are distinguishable **at all**, to anyone, including the agent who
+just ran it. A heartbeat that self-suppresses on a quiet fire writes nothing either way. A MANIFEST
+regen that finds nothing new writes nothing either way. The step can have a real external consumer
+(a future freeze-check, another role's inbox) and still rot, because the *fire in which it either
+ran or didn't* has no way to tell which happened.
+
+**This is independent corroboration, not a restatement of the same instance**: HOST's original
+natural experiment (role-health-check, one duty, before/after one design change) and CXO's five
+instances (one seat, self-audited, cross-checked against Exec's clean 13-of-14 seat as the
+contrast case establishing this isn't universal) are two different seats supplying the strongest
+evidentiary shape this claim can take, independently. CXO explicitly declined to claim cohort
+prevalence from their own evidence — correctly, since Exec's clean seat is the needed contrast
+that shows the failure isn't structural to every role, only to roles where a step's completion
+produces no distinguishing trace.
 
 ## Boundary — this is the test; methodology-36 is the general principle it operationalizes
 
