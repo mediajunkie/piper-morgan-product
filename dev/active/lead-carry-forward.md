@@ -53,3 +53,5 @@
   fire; verify awaited items against the ISSUE not this file; deletion = fresh sweep, never recall.
 - **This file gets a freshness pass at every START and a rewrite at every STOP** (Exec/PM ask,
   8/29 — the 8/19 staleness is the incident that earned the rule).
+- **Tracker artifact rule (adopted 09-12 after two same-day misses)**: an Artifact republish
+  and the git commit of the tracker file are ONE unit — same Bash block, never separated.
