@@ -6,11 +6,24 @@ Singleton pattern ensures global registry instance.
 """
 
 import logging
+import os
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter
 
 from .plugin_interface import PiperPlugin, PluginMetadata
+
+# 1690: the demo template plugin mounts live example routes
+# (/api/v1/integrations/demo/*) and must NOT ship in a default deployment.
+# It is excluded from the no-config "enable everything" default unless this
+# env var opts in (dev/demo walkthroughs), or config/PIPER.user.md lists it
+# explicitly under plugins.enabled (an explicit choice is always honored).
+DEMO_PLUGIN_ENV = "PIPER_DEMO_PLUGIN"
+
+
+def demo_plugin_opted_in() -> bool:
+    """True when the operator explicitly opted in to the demo template plugin."""
+    return os.getenv(DEMO_PLUGIN_ENV, "").strip().lower() in {"1", "true", "yes"}
 
 
 class PluginRegistry:
@@ -461,7 +474,9 @@ class PluginRegistry:
 
         Default Behavior:
             - If no config: return all discovered plugins (backwards compatible)
-            - If config exists but no enabled list: return all discovered plugins
+              EXCEPT the demo template plugin, which requires explicit opt-in
+              via PIPER_DEMO_PLUGIN=1 or a plugins.enabled listing (#1690)
+            - If config exists but no enabled list: same as no config
             - If empty enabled list: return empty list (all plugins disabled)
         """
         config = self._read_plugin_config()
@@ -475,9 +490,20 @@ class PluginRegistry:
             )
             return enabled if enabled is not None else []
 
-        # Default: all discovered plugins enabled
+        # Default: all discovered plugins enabled — except the demo template
+        # plugin, which must not mount live routes in a default deployment
+        # (1690). Opt in with PIPER_DEMO_PLUGIN=1 or list it explicitly under
+        # plugins.enabled in config/PIPER.user.md.
         available = self.discover_plugins()
         all_plugins = list(available.keys())
+
+        if "demo" in all_plugins and not demo_plugin_opted_in():
+            all_plugins.remove("demo")
+            self.logger.info(
+                "Demo plugin excluded from default-enabled set "
+                f"(set {DEMO_PLUGIN_ENV}=1 to enable)",
+                extra={"excluded_plugin": "demo"},
+            )
 
         self.logger.info(
             f"No config found, enabling all discovered plugins: {all_plugins}",

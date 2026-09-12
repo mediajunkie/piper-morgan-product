@@ -332,10 +332,15 @@ ls -la services/integrations/demo/
 # Run demo plugin tests
 PYTHONPATH=. pytest services/integrations/demo/tests/ -v
 
-# Try the demo endpoints
-python3 main.py
-curl http://localhost:8001/api/integrations/demo/health
+# Try the demo endpoints (demo plugin is OFF by default — opt in, #1690)
+PIPER_DEMO_PLUGIN=1 python3 main.py
+curl http://localhost:8001/api/v1/integrations/demo/health
 ```
+
+Note: the demo plugin is excluded from the default-enabled plugin set so its
+example routes never mount in a production deployment. Enable it locally with
+`PIPER_DEMO_PLUGIN=1` or an explicit `plugins.enabled` listing in
+`config/PIPER.user.md`.
 
 The demo plugin demonstrates:
 

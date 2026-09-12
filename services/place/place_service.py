@@ -115,7 +115,10 @@ class PlaceService:
             return Place(
                 id=f"github-{resolved_name}",
                 place_type=PlaceType.ISSUE_TRACKING,
-                name=f"{resolved_name} repository" if "/" in resolved_name else "GitHub",
+                # "github" is the unresolved sentinel, not a repo name; any
+                # explicitly-passed or resolved name (bare or owner/repo)
+                # keeps its identity in the Place name (#1042 regression).
+                name=f"{resolved_name} repository" if resolved_name != "github" else "GitHub",
                 confidence=PlaceConfidence.HIGH,
                 summary=summary,
                 source_url=source_url,
@@ -131,7 +134,7 @@ class PlaceService:
             return Place(
                 id=f"github-{fallback_name}",
                 place_type=PlaceType.ISSUE_TRACKING,
-                name=f"{fallback_name} repository" if "/" in fallback_name else "GitHub",
+                name=f"{fallback_name} repository" if fallback_name != "github" else "GitHub",
                 confidence=PlaceConfidence.LOW,
                 summary="I couldn't reach GitHub right now",
                 source_url="https://github.com",

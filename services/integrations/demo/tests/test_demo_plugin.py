@@ -28,7 +28,7 @@ class TestDemoPlugin:
         router = plugin.get_router()
 
         assert router is not None
-        assert router.prefix == "/api/integrations/demo"
+        assert router.prefix == "/api/v1/integrations/demo"
         assert "demo" in router.tags
 
     def test_plugin_is_configured(self):
@@ -65,7 +65,7 @@ class TestDemoPlugin:
         assert "routes" in status
         # Demo plugin disabled by default - won't appear in identity responses
         assert status["configured"] is False
-        assert status["router_prefix"] == "/api/integrations/demo"
+        assert status["router_prefix"] == "/api/v1/integrations/demo"
         assert (
             status["routes"] >= 3
         )  # At least health, echo, status  # At least health, echo, status
@@ -78,9 +78,9 @@ class TestDemoPlugin:
         # Get all route paths
         paths = [route.path for route in router.routes]
 
-        assert "/api/integrations/demo/health" in paths
-        assert "/api/integrations/demo/echo" in paths
-        assert "/api/integrations/demo/status" in paths
+        assert "/api/v1/integrations/demo/health" in paths
+        assert "/api/v1/integrations/demo/echo" in paths
+        assert "/api/v1/integrations/demo/status" in paths
 
 
 class TestDemoConfigService:
