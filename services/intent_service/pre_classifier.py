@@ -956,16 +956,33 @@ class PreClassifier:
     # added anywhere — a guarded miss is a fall-through, never a reroute.
     REMINDER_TODO_NOUN_GUARD = r"(?!.*\b(?:reminders?|to-?dos?|tasks?)\b)"
 
+    # 1527 audit round (2026-09-12): the reminder guard fixed exactly the
+    # reminder/todo vocabulary and nothing else — a 57-shape probe found the
+    # delete family still claiming 45 non-project deletes (issues, files,
+    # drafts, notes, meetings, credentials, messages, repos, lists, emails,
+    # accounts, and every free-text name: "delete the flayrod"). The claim
+    # space is OPEN (free text), so no blocklist can contain it; the
+    # discipline flips to POSITIVE EVIDENCE — the delete-family patterns
+    # claim only when the text after the verb carries the project noun
+    # ("delete the alpha project", "delete project X", "delete my project").
+    # Everything else falls through to later surfaces / the LLM lane, same
+    # fall-through-never-reroute contract as the reminder guard above (which
+    # stays: a reminder ABOUT a project is still a reminder delete). Guard on
+    # the EXISTING patterns — no new pattern, no new capture; the
+    # TestExtractionPatternRatchet pre-classifier count is unchanged.
+    PROJECT_NOUN_REQUIRED = r"(?=.*\bprojects?\b)"
+
     PORTFOLIO_PATTERNS = [
         # Archive operations - "Archive my project X"
         r"\barchive\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         r"\bhide\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         r"\bput\s+(.+)\s+(?:away|aside)",
         # Delete operations - "Delete my project X" (reminder/todo-noun
-        # deletes decline via the guard, #1527 — see comment above)
-        rf"\bdelete\s+{REMINDER_TODO_NOUN_GUARD}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
-        rf"\bremove\s+{REMINDER_TODO_NOUN_GUARD}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
-        rf"\bget rid of\s+{REMINDER_TODO_NOUN_GUARD}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        # deletes decline via the negative guard; non-project deletes decline
+        # via the positive project-noun requirement, #1527 — see comments above)
+        rf"\bdelete\s+{REMINDER_TODO_NOUN_GUARD}{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        rf"\bremove\s+{REMINDER_TODO_NOUN_GUARD}{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        rf"\bget rid of\s+{REMINDER_TODO_NOUN_GUARD}{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         # Restore operations - "Restore project X"
         r"\brestore\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         r"\bunarchive\s+(?:my\s+)?(?:the\s+)?(.+)",
