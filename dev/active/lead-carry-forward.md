@@ -63,3 +63,5 @@
   #1736 (code done, deployed; unit evidence covers the PAT path that produced PM's turn).
 - **Log-entry mechanics (self-rule, 3rd timestamp guess today)**: entry headers use
   `$(date +%H:%M)` command substitution inside the heredoc — never a typed time.
+- **REPLAYS OWED next fire (both v88+)**: "show me issue #112" (#1736) + the v70 archived-
+  projects exchange (#1738). Then both close.
