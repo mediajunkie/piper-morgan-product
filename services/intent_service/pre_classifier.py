@@ -1931,6 +1931,20 @@ class PreClassifier:
                 IntentCategory.STATUS,
                 "check_completion_status",
             ),
+            # #1505: integration-connect — the single path's #1417/#1471 claim
+            # made reachable on the multi path. Before this group existed, a
+            # connect ask riding with any other matched group was silently
+            # dropped ("hi piper, connect my github" -> greeting only), and
+            # because classify_multiple returns any non-empty detection, the
+            # LLM never saw it either. Checked BEFORE TEMPORAL (same
+            # precedence as pre_classify, #1471) and guarded in the loop body
+            # by _integration_connect_match so the #862 repo-lane and #1471
+            # event-write blockers hold here too.
+            (
+                PreClassifier.INTEGRATION_CONNECT_PATTERNS,
+                IntentCategory.GUIDANCE,
+                "get_contextual_guidance",
+            ),
             # Temporal patterns
             (PreClassifier.TEMPORAL_PATTERNS, IntentCategory.TEMPORAL, "get_current_time"),
             # Issue #671-#675: MUX-WIRE patterns must come BEFORE STATUS to match first
@@ -1966,22 +1980,21 @@ class PreClassifier:
         ]
 
         # Check each pattern group
-        connect_substituted = False
+        connect_claimed = False
         # Pre-claim shadow probe: which *PATTERNS list produced each intent,
         # keyed by object identity so the post-loop subsumption filter (which
         # preserves the surviving Intent OBJECTS) realigns for free.
         claimed_list_by_id: dict = {}
         for patterns, category, action in pattern_groups:
-            # #1471: same precedence as pre_classify() — an integration-connect
-            # ask must not surface as a TEMPORAL calendar/schedule query on the
-            # multi-intent path ("connect my calendar" was answered with the
-            # current time). Substitute the guidance-lane intent for the
-            # temporal one (rather than just skipping) so multi-intent
-            # messages keep their other parts ("hi piper, connect my calendar"
-            # stays greeting + setup guidance).
-            if patterns is PreClassifier.TEMPORAL_PATTERNS and PreClassifier._matches_patterns(
-                clean_for_matching, patterns
-            ):
+            # #1505: the integration-connect group is blocker-guarded — the
+            # shared _integration_connect_match (not the raw pattern match)
+            # decides, so the #862 repo-lane and #1471 event-write blockers
+            # apply on the multi-intent path too. This general group replaces
+            # the #1471 TEMPORAL-collision substitution special-case, which
+            # only covered integrations whose nouns happened to collide with
+            # TEMPORAL_PATTERNS (calendar) — github/slack/notion asks were
+            # dropped whenever any other group matched.
+            if patterns is PreClassifier.INTEGRATION_CONNECT_PATTERNS:
                 connect_match = PreClassifier._integration_connect_match(clean_for_matching)
                 if connect_match:
                     connect_intent = Intent(
@@ -1997,17 +2010,26 @@ class PreClassifier:
                     )
                     intents.append(connect_intent)
                     claimed_list_by_id[id(connect_intent)] = "INTEGRATION_CONNECT_PATTERNS"
-                    connect_substituted = True
+                    connect_claimed = True
                     logger.debug(
-                        "multi_intent_connect_substitution",
+                        "multi_intent_connect_detected",
                         category="guidance",
                         action="get_contextual_guidance",
                     )
-                    continue
-            # #1471: if the substitution already emitted the guidance-lane
+                continue
+            # #1471: a connect claim suppresses TEMPORAL — "connect my
+            # calendar" also matches the temporal `\bmy calendar\b` pattern on
+            # the same words; without this skip the user gets a current-time
+            # phantom beside the setup guidance. Byte-for-byte the behavior
+            # the substitution era produced (a genuinely two-part
+            # "what time is it? also connect my github" loses its temporal
+            # part here exactly as it did under the substitution).
+            if patterns is PreClassifier.TEMPORAL_PATTERNS and connect_claimed:
+                continue
+            # #1471: if the connect group already emitted the guidance-lane
             # intent, don't let GUIDANCE_PATTERNS add a duplicate of the same
             # (category, action) ("help me set up my calendar" matches both).
-            if patterns is PreClassifier.GUIDANCE_PATTERNS and connect_substituted:
+            if patterns is PreClassifier.GUIDANCE_PATTERNS and connect_claimed:
                 continue
             # #1521: the reminder-query group is blocker-guarded — the shared
             # helper (not the raw pattern match) decides, so creation
