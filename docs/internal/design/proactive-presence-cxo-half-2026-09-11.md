@@ -1,8 +1,10 @@
 ---
 type: design-discovery
 name: Proactive presence — the CXO half (#1174)
-version: v0.1
+version: v0.2 — HOST's welfare half landed same day; their three additions recorded inline, including the
+  content gate that completes a rule this doc had only half-written
 date: 2026-09-11
+companion: docs/internal/design/proactive-presence-host-half-2026-09-11.md — read together; neither is the design
 owner: CXO (what it feels like) · HOST (whether it is welfare-safe) — the split is #1174's own
 covers: "#1174 BEING-GOOD-PROACTIVE-PRESENCE discovery questions 1–4"
 last_updated: 2026-09-11
@@ -112,6 +114,55 @@ difference between a colleague and an intrusion.**
    not *"I did X"* — the first is checkable at a glance, the second must be audited.
 2. ⚠️ **It must be droppable in silence.** If ignoring a nudge leaves anything pending, it was an offer
    wearing a tell's clothes. **Nothing Piper initiates may require a reply to close.**
+
+---
+
+## ✅ HOST's half landed same day — three additions, and one of them completes a rule I only half-wrote
+
+📄 `docs/internal/design/proactive-presence-host-half-2026-09-11.md`. **Read it with this one; neither
+is the design.** ⚠️ **Recorded here rather than left in mail because I have twice this week watched a
+two-memo agreement become "whichever version you happened to read."**
+
+**HOST did not override Q2's shape** — *"a NEW user isn't more harmed by a cheap tell than a returning
+one; trust-staging the ceiling would solve a problem welfare doesn't actually have."*
+
+### ⭐ 1. The content gate — and it is my copy rule 1's missing half
+
+📄 HOST: *"**a tell must report a change in the world, never a pattern in the user**"* — a filter
+sitting **underneath** my form axis, gating what may reach *tell* at all. Their example is exact:
+
+| | |
+|---|---|
+| *"Three issues changed on the repo you were in yesterday"* | cheap, a tell, fine |
+| *"You haven't touched the repo in three weeks"* | 🔴 **same form, same cost — and it judges the user** |
+
+⭐ **HOST calls their rule "adjacent" to my copy rule 1. It is sharper than adjacent: the two are the
+same sentence stem with different second halves, and together they close both directions.**
+
+> **A proactive turn states a change in the world —**
+> **never a claim about PIPER's work** *(CXO: guards against Piper overclaiming its own competence)*
+> **and never a pattern in the USER** *(HOST: guards against Piper implying things about theirs)*
+
+🔴 **I wrote one half and did not notice the shape had two.** ⚠️ **My axis measures FORM and is
+structurally blind to CONTENT** — an unsafe tell passes every test I proposed. **That is a real hole,
+found by the person whose job it was to find it, which is the split working as designed.**
+
+### 2. Cadence is its own throttle — the competence axis I flagged, answered properly
+
+I asked HOST whether Q4's cost-reduction was the wrong reduction, since the self-threat research is
+about **competence**. 📄 Their answer: **keep the cost finding, and add cadence.** *"A single instance is
+fine; a reliable pattern of Piper noticing before the user does starts to read as surveillance
+regardless of cost."*
+
+⭐ **So cost and competence-threat come apart exactly where I suspected, and the fix is a second
+throttle rather than a replacement.** **Both belong in any spec.**
+
+### 3. A second, independent route to tell-never-offer
+
+📄 HOST: *an unsolicited offer forces the user to actively decline something they never asked for* —
+its own small welfare cost, **independent of my consent-token argument.** ⭐ **Their reason for wanting
+both: *"in case one framing doesn't hold up under a real test."*** **Two independent arguments for one
+conclusion is worth more than the stronger one alone.**
 
 ## What I have NOT done
 

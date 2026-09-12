@@ -1,7 +1,15 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-11 13:11 PT (WORK). **`#1746` (CIO's mail-send.sh double-delete
+**Last rewritten**: 2026-09-11 16:11 PT (WORK). **3 unmilestoned issues triaged — `#1747`/`#1748`/
+`#1749`**, all filed same-day from a direct #1687 close-out audit (same author). Milestone MVP set
+(stated in body, field wasn't), added to board, Sprint=Beta Blockers/Status=Sprint Backlog matching
+#1687/#1711, no collateral damage. Folded into epic 1 of `mvp-epic-order-2026-09-09.md` as a
+continuation, not new epics — `#1747` itself shows the epic's own tracked-workflow denominator
+silently drifted 4→6. Two `#1174` mail items (HOST/CXO welfare-half design discourse) read, no PPM
+action, filed to read/. **Also fixed a stale Cron section in this very file** — it had named the
+08-29 job (`b35c8662`) for 13 days while the rest of the file stayed current; now reads `373e370b`.
+**`#1746` (CIO's mail-send.sh double-delete
 finding) may be the real mechanism behind PPM's own still-unconfirmed `#1731`** — flagged the
 connection, didn't merge the issues, watching for whoever fixes it. **Flywheel v3 fully applied
 and closed.** **Scope-guard GH006 re-tested — one blocker cleared, a second surfaced, still PM's
@@ -1560,18 +1568,15 @@ resolved or reframed into larger tracked work. Do not read this paragraph as cur
 
 ## Cron
 
-**ARMED** — job **`b35c8662`** (re-armed at 08-29 22:22 STOP; delete-then-create, `CronList`-
-verified exactly one). Prior job `759b28c2` (armed 08-28 22:22) retired cleanly — no gap, no
-incident. **Two real content changes at this re-arm**: (1) WATCH FOR now points at criterion 6 only
-— the two resolved overnight items (#1677/#1488, #1638) dropped from the line since both landed
-today; (2) added a new **AUTO-CLOSE TRAP** standing line (avoid close/fix/resolve keywords adjacent
-to a bare issue number in any commit subject — bit me directly today) and an **OWED, REAL DEADLINE**
-line naming the architectural-review trifecta + C5 sequencing due Wed 09-02, to delete once both
-are sent. Still carries: **NO STANDING OWED WORK ITEM** header (now qualified), **DATES**,
-**MILESTONE SEQUENCE**, **SURFACES**, **COUNTS**, **AUDIT BIAS**, **GENERAL CONTRACTS**, **PROXIES**,
-**MAIL-SEND CAN FAIL SILENTLY**, **TOOL OUTAGES**, **HEARTBEAT PUSH RACES**.
+**ARMED** — job **`373e370b`** (re-armed at 09-10 22:22 STOP; delete-then-create, `CronList`-
+verified exactly one; unchanged through today's fires). ⚠️ **This section had gone stale for ~13
+days** (still named the 08-29 job `b35c8662` while the file's own head content was current through
+09-11) — caught and fixed 09-11 16:11 WORK while triaging unrelated issues. Worth noting as a
+pattern: the file's prose head gets rewritten every fire, but a tail section like this one is easy
+to walk past silently. No process fix proposed here beyond noticing it — just don't assume the
+whole file is current because the top of it is.
 
-⚠️ **Session-only + 7-day auto-expiry, both silent** — `b35c8662` expires ~2026-09-05 if not
+⚠️ **Session-only + 7-day auto-expiry, both silent** — `373e370b` expires ~2026-09-17 if not
 re-armed sooner (re-armed every STOP in practice, so this is a backstop, not the expected path).
 
 ---
