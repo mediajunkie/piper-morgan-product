@@ -20,11 +20,11 @@ This twelve-episode scheme held for about a month. By November (I was still post
 
 # Backwards down the number line
 
-By March 2026 the blog had 275 posts. The fifteen-episode scheme was still sitting in the code, present in every page that referenced it — and matching **zero** of those 275 posts. Not "most posts miscategorized." Zero. The episode definitions and the actual post data had drifted apart so completely that the connection between them had stopped existing in practice, while every page kept rendering as though it still worked.
+By March 2026 the blog had 275 posts. The fifteen-episode scheme was still sitting in the code, present in every page that referenced it but along the way the organization refreshed and design updates had completed detached the posts from their episode assignments. Now. each of the episodes matched **zero** of those 275 posts. The episode definitions and the actual post data had drifted apart so completely that the connection between them had stopped existing in practice, while every page kept rendering as though it still worked.
 
-Nobody had done anything wrong to cause this. Posts kept publishing through the normal pipeline. The episode assignments just never got extended alongside them. A scheme that isn't checked against the data it's supposed to organize doesn't fail loudly. It just quietly stops being true, and keeps looking fine until someone happens to look underneath it.
+Posts kept publishing through the normal pipeline. The episode assignments just never got extended alongside them. A scheme that isn't checked against the data it's supposed to organize fails with a whimper, not a bang. It sat that way till I actually looked at it again.
 
-The fix was a full rebuild: five non-overlapping eras, spanning the whole timeline from May 2025 forward, all 275 posts reassigned by actual work date. The Build. The Methodology. The Reflection. The Foundation. The Sprint. This time the assignment was mechanical — computed from the data, not maintained by hand — which is exactly the property the fifteen-episode scheme had been missing.
+The fix this time was a full refactor and a full rebuild: five non-overlapping eras, spanning the whole timeline from May 2025 forward, all 275 posts reassigned by actual work date. The Build. The Methodology. The Reflection. The Foundation. The Sprint. This time the assignment was mechanical — computed from the data, not maintained by hand — which is exactly the property the fifteen-episode scheme had been missing.
 
 # Where I came in
 
