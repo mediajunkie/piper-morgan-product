@@ -5484,15 +5484,35 @@ class IntentService:
                 if isinstance(labels, list)
                 else []
             )
-            body = issue.get("body", "No description") or "No description"
-            body_preview = body[:200] + "..." if len(body) > 200 else body
+            # #1736 honest-empty (GatherOutcome contract): never render "No description"
+            # when the truth is "the field wasn't in the payload". The connector shape
+            # carries the body under BOTH "body" and "description"; the native PAT shape
+            # (get_github_issue_direct) historically carried only "description" — reading
+            # only "body" here fabricated an absence for issues that have a body (PM live
+            # 2026-09-09, v70). Three states, three renders:
+            #   delivered + non-empty → the preview; delivered + empty → a definite
+            #   "(none)" with no hedge (verified empty); field absent → honest
+            #   couldn't-retrieve, never an empty claim.
+            body_delivered = "body" in issue or "description" in issue
+            body = issue.get("body") or issue.get("description") or ""
+            if body:
+                body_preview = body[:200] + "..." if len(body) > 200 else body
+            elif body_delivered:
+                body_preview = "(none — this issue has no description)"
+            else:
+                body_preview = (
+                    "(I couldn't retrieve the description this turn — "
+                    "view the issue on GitHub to read it)"
+                )
             assignees = issue.get("assignees", [])
             assignee_names = (
                 [(a.get("login", "") if isinstance(a, dict) else a) for a in assignees]
                 if isinstance(assignees, list)
                 else []
             )
-            url = issue.get("html_url", "")
+            # #1736 same shape-mismatch family: native PAT shape carries "uri", never
+            # "html_url" — without the fallback the URL line silently vanished there.
+            url = issue.get("html_url") or issue.get("uri") or ""
 
             lines = [
                 f"**Issue #{issue_number}: {title}**\n",
