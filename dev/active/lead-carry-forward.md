@@ -55,3 +55,7 @@
   8/29 — the 8/19 staleness is the incident that earned the rule).
 - **Tracker artifact rule (adopted 09-12 after two same-day misses)**: an Artifact republish
   and the git commit of the tracker file are ONE unit — same Bash block, never separated.
+- **PPM rulings 09-12**: tracker headline = milestone-wide + status breakdown (sprint-truth.py
+  convention). #1750 parked (cleanup-class); **#1751 is MORE than cosmetic per PPM — real
+  multi-tenancy bug on the CANONICAL personality page, #1419/#1734-adjacent, PUT admin-gate
+  limits blast radius; take it when epic-2-class work resumes, not as cleanup.**
