@@ -428,32 +428,50 @@ class IntentService:
         if result.intent_data and any(result.intent_data.get(f) for f in _pending_flags):
             return result
 
-        # #1753: the flags above cover ARM turns only — the arming handler
-        # composes the result and stamps its flag. They structurally CANNOT
-        # cover STATE_QUESTION survival turns (#1739 contract §5a): the seam
-        # re-arms the offer silently and NORMAL PROCESSING composes the
-        # result (floor, reminders list, …), so no flag rides it, and a
-        # soft offer allowed on that same turn would replace the survived
-        # arm in the one-slot #846 store — the question silently costing
-        # the user their pending ask, the exact failure the survival ruling
-        # exists to prevent. THE STORE is the single source of truth for
-        # "an arm is live right now": process_intent pops the store before
-        # classification (the #1529 binding semantic), so any entry present
-        # HERE was armed — or re-armed via survival — THIS turn. Peek is
-        # read-only (#1595); the pop semantics are untouched. The flag belt
-        # above remains (its #1652 pins stand); this guard covers what
-        # flags cannot: turns whose result the arm's owner never composes.
-        # (No defensive try here: the peek is a plain dict read on the
-        # session-keyed store — a raise would be a real defect to surface,
-        # not degrade around; #1424 silent-death ratchet.)
+        # #1753 (+#1770): the flags above cover ARM turns only — the arming
+        # handler composes the result and stamps its flag. They structurally
+        # CANNOT cover STATE_QUESTION survival turns (#1739 contract §5a):
+        # the seam re-arms the offer silently and NORMAL PROCESSING composes
+        # the result (floor, reminders list, …), so no flag rides it, and a
+        # soft offer allowed on that same turn would clobber the survived
+        # arm — the question silently costing the user their pending ask,
+        # the exact failure the survival ruling exists to prevent. THE
+        # STORES are the single source of truth for "an arm is live right
+        # now" — BOTH one-slot arm rails (#1770): the #846 pending-offer
+        # store (#1753's original coverage) and the #852/#1529 one-turn
+        # ``last_offer`` rail, where the #1769 resume survival re-arms (a
+        # soft offer arming the #846 store over a live resume arm would
+        # steal the NEXT turn's answer — the #846 pop runs before the
+        # last_offer pop). The soundness argument is identical for both:
+        # process_intent pops the #846 store before classification (the
+        # #1529 binding semantic) and always-clears ``last_offer`` at turn
+        # start (the #852 one-turn invariant) — both before every call site
+        # of this method — so any entry present HERE was armed, or re-armed
+        # via survival, THIS turn; a stale prior-turn arm cannot reach this
+        # guard (no over-block, pinned). Peeks are read-only (#1595 for the
+        # store, a plain attribute read for the rail); both pop semantics
+        # are untouched. The flag belt above remains (its #1652 pins
+        # stand); this guard covers what flags cannot: turns whose result
+        # the arm's owner never composes. (No defensive try here: both
+        # peeks are plain reads — a raise would be a real defect to
+        # surface, not degrade around; #1424 silent-death ratchet.)
+        _armed_store = None
+        _armed_type = None
         _live_arm = self.workflow_offer_service.peek_pending_offer(session_id, user_id=user_id)
         if _live_arm is not None:
+            _armed_store = "pending_offer"  # the #846 one-slot store
+            _armed_type = _live_arm.get("workflow_type") if isinstance(_live_arm, dict) else None
+        else:
+            _live_rail = self._peek_last_offer(session_id, user_id=user_id)
+            if _live_rail is not None:
+                _armed_store = "last_offer"  # the #852/#1529 one-turn rail
+                _armed_type = _live_rail.offer_type
+        if _armed_store is not None:
             self.logger.info(
                 "soft_offer_skipped_live_pending_arm",
                 session_id=session_id,
-                armed_workflow_type=(
-                    _live_arm.get("workflow_type") if isinstance(_live_arm, dict) else None
-                ),
+                armed_store=_armed_store,
+                armed_workflow_type=_armed_type,
             )
             return result
 
@@ -2598,7 +2616,26 @@ class IntentService:
                         conv_ctx = get_or_create_context(session_id, user_id=user_id)
                     except (ValueError, KeyError):
                         conv_ctx = None  # Non-UUID session_id — skip offer tracking
-                    if conv_ctx:
+                    if conv_ctx is not None and conv_ctx.last_offer is not None:
+                        # #1770: first-arm-wins on the one-turn rail. The
+                        # rail is always-cleared at turn start (the #852
+                        # invariant), so a non-None value HERE was armed —
+                        # or survival-re-armed (#1769, #1739 §5a) — THIS
+                        # turn: e.g. a STATE_QUESTION-survived resume arm
+                        # whose answer this canonical result is. Writing
+                        # the hint would silently replace that live ask
+                        # (the #1753 defect shape at the second one-slot
+                        # store); skip it honestly instead. Same
+                        # first-arm-wins discipline as the
+                        # _apply_soft_offer guard, applied at the rail's
+                        # only other same-turn write site.
+                        self.logger.info(
+                            "contextual_offer_hint_skipped_live_arm",
+                            session_id=session_id,
+                            armed_offer_type=conv_ctx.last_offer.offer_type,
+                            skipped_hint=offer_hint["continuation_hint"],
+                        )
+                    elif conv_ctx:
                         conv_ctx.last_offer = LastOffer(
                             offer_type="contextual",
                             continuation_hint=offer_hint["continuation_hint"],
@@ -3245,6 +3282,33 @@ class IntentService:
             offer_text=question,
         )
 
+    @staticmethod
+    def _peek_last_offer(session_id: Optional[str], user_id: Optional[str] = None):
+        """#1770: read-only peek at the one-turn ``last_offer`` rail (#852/
+        #1529) — the SECOND one-slot arm store the ``_apply_soft_offer``
+        no-clobber guard covers (the #846 store peek is the #1753 half).
+
+        Sound for the same reason the #846 peek is: ``process_intent``
+        always-clears the rail at turn start (the #852 one-turn invariant —
+        before classification and before every ``_apply_soft_offer`` call
+        site), so a non-None value here was armed — or survival-re-armed
+        (#1769, #1739 §5a) — THIS turn. When no context is reachable (no
+        session id, or the same lookup failure the pop site tolerates),
+        the peek reports no arm: it can never block on state the
+        turn-start clear couldn't have reached, so a stale prior-turn arm
+        never suppresses offers (no over-block, pinned in
+        test_soft_offer_last_offer_clobber_1770.py).
+        """
+        if not session_id:
+            return None
+        from services.intent_service.conversation_context import get_or_create_context
+
+        try:
+            ctx = get_or_create_context(session_id, user_id=user_id)
+        except (ValueError, KeyError):
+            return None  # Same tolerance as the pop/write sites (#1394 keying)
+        return ctx.last_offer
+
     async def _check_pending_resume_offer(
         self,
         user_id: str,
@@ -3400,12 +3464,13 @@ class IntentService:
                 #    survived arm this turn (we return None); a later accept
                 #    re-enters a flow the user can end or re-suspend, so the
                 #    cost of a stale accept is a recoverable re-entry.
-                #    Honest boundary: a soft contextual offer applied later
-                #    THIS turn writes the same one-slot last_offer field and
-                #    would clobber the survived arm — the #1753 store-peek
-                #    guard covers the #846 store, not this rail (filed as
-                #    discovered work on #1769). Even then the suspended flow
-                #    persists durably and re-offers at the next greeting.
+                #    The former honest boundary here — a same-turn soft
+                #    contextual offer clobbering this one-slot field — was
+                #    filed as #1770 and is DISCHARGED: the _apply_soft_offer
+                #    guard peeks this rail too (both one-slot stores), and
+                #    the canonical offer_hint write is first-arm-wins.
+                #    Backstop regardless: the suspended flow persists
+                #    durably and re-offers at the next greeting.
                 self.logger.info(
                     "resume_offer_survives_state_question",
                     user_id=user_id,

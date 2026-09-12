@@ -2610,6 +2610,19 @@ class TestAcceptanceContractRatchet:
     narrowed out (bespoke-only tokens; a PASS leaves the flow suspended for
     greeting re-entry). Arm half: both #1766 census rows for this seam's ask
     sites shrank out in the same commit.
+
+    2026-09-12 (#1770, the #1753 corollary at the SECOND one-slot store):
+    the clobber residue #1769 filed is discharged. The cohort's other
+    one-slot arm rail — the #852/#1529 one-turn ``last_offer`` field, where
+    the resume survival re-arms — is now covered by the SAME apply-seam
+    guard: ``_apply_soft_offer`` peeks BOTH stores (one block, one skip log
+    naming the store), and the canonical ``offer_hint`` write is
+    first-arm-wins. Same soundness argument as #1753: the rail is
+    always-cleared at turn start (the #852 invariant, before every
+    apply-seam call site), so any value present at either guard site was
+    armed or survival-re-armed THIS turn; a stale prior-turn arm cannot
+    reach the guards (no-over-block pinned). Regression:
+    ``test_soft_offer_last_offer_clobber_1770.py``.
     """
 
     _CONTRACT_MODULES = (

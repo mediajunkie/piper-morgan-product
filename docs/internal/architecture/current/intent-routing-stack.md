@@ -155,8 +155,16 @@ result and stamps its flag), and a read-only STORE PEEK (#1595) covers
 STATE_QUESTION survival turns (#1739 §5a), whose result is composed by normal
 processing with no flag — any entry present at apply time was armed or
 survival-re-armed THIS turn (the store is popped before classification, #1529),
-so the soft offer is skipped honestly instead of replacing the arm. Regression:
-`test_soft_offer_survival_clobber_1753.py`. **#1569 render half** (same commit): the floor's
+so the soft offer is skipped honestly instead of replacing the arm. Since #1770
+(same day) the peek covers BOTH one-slot arm rails: the #846 store and the
+#852/#1529 one-turn `last_offer` rail (where the #1769 resume survival
+re-arms) — same soundness argument (`last_offer` is always-cleared at turn
+start, before every apply-seam call site), one skip log naming the store
+(`armed_store`); the canonical `offer_hint` write is first-arm-wins on the same
+argument (a live rail entry was armed THIS turn — the hint skip is logged, the
+#852 tracking unchanged on free turns). Regression:
+`test_soft_offer_survival_clobber_1753.py` (store half),
+`test_soft_offer_last_offer_clobber_1770.py` (rail half + no-over-block). **#1569 render half** (same commit): the floor's
 `_format_domain_context` renders the two context families as visually distinct
 sections with per-origin vocabulary instructions — `due_reminders` (from
 `context:reminders:{user_id}`) says "reminder", `pending_todos` (from
@@ -224,8 +232,9 @@ seam consults the predicate DIFFERENTIALLY (taught-vs-bare verdicts) so only
 flow-naming commands act unarmed — no local matcher survives, and the
 standup-hijack pin holds. Contract axis (a): "yes?" / "resume?" never fire;
 the armed STATE_QUESTION survives in the SILENT §5a form by re-arming the
-one-turn `last_offer` rail (⚠️ the #1753 store-peek guard covers the #846
-store, NOT this rail — clobber residue filed on #1769). Flow-exit ("end
+one-turn `last_offer` rail (clobber residue filed on #1769 as #1770 and
+discharged same day: the apply-seam guard now peeks this rail too, and the
+canonical `offer_hint` write is first-arm-wins). Flow-exit ("end
 standup") stays first and deterministic. NOT zero-widening (stated): the
 legacy sets were exact-match, so the LOW-tier vocabulary (greedy residue
 included) widens both surfaces while armed — pinned deliberately
