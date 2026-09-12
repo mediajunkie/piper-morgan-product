@@ -122,7 +122,7 @@ async def test_denial_routes_through_floor_not_system_error(
         # so stubs only need to cover what runs before the gate.
         with (
             patch.object(
-                service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
+                service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None, None))
             ),
             patch.object(
                 service,
@@ -175,7 +175,7 @@ async def test_floor_called_with_denial_mode_and_redirect_context(
             new=respond_mock,
         ),
         patch.object(
-            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
+            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None, None))
         ),
         patch.object(
             service,
@@ -218,7 +218,7 @@ async def test_non_violation_does_not_trigger_floor_denial_path(non_violating_de
             new=respond_mock,
         ),
         patch.object(
-            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
+            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None, None))
         ),
         patch.object(
             service,
@@ -255,7 +255,7 @@ async def test_ethics_disabled_skips_gate_entirely(violating_decision):
             new=enforcer_mock,
         ),
         patch.object(
-            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
+            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None, None))
         ),
         patch.object(
             service,

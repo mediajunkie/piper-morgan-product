@@ -755,6 +755,27 @@ class ConversationalFloor:
         if "current_time" in domain_context:
             lines.append(f"- Current time: {domain_context['current_time']}")
 
+        # #1596: a guided flow (standup interview, onboarding, …) ended or
+        # paused on THIS turn — the #1529/#899 escape fall-through. Without
+        # this line the floor composes with the flow's open question sitting
+        # in Recent conversation and nothing saying the flow closed (the
+        # system's short acknowledgment is prepended AFTER composition), so
+        # it can re-open the interview the user just escaped. Rendered as a
+        # rule, never a sample reply sentence (#1655 discipline).
+        if "guided_flow_escape" in domain_context:
+            esc = domain_context["guided_flow_escape"] or {}
+            flow_name = str(esc.get("process_type") or "guided")
+            lines.append(
+                f"- GUIDED FLOW ENDED THIS TURN: the {flow_name} flow that "
+                "was running in this conversation was exited or paused by "
+                "the user's current message. A short acknowledgment of that "
+                "is automatically prepended to your reply by the system, so "
+                "do not acknowledge the exit again, do not re-open or "
+                "continue that flow, and do not treat its last question "
+                "(visible in the recent conversation) as still awaiting an "
+                "answer. Respond to what the user is asking now."
+            )
+
         # #1566: due reminders — rendered for EVERY category (they were
         # gathered only for CONVERSATION and then never rendered at all; both
         # ends of #903's "I'll surface this" promise were broken). Placed

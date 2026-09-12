@@ -110,7 +110,7 @@ def _patched_pipeline(service, suspended=None):
 
     return (
         patch.object(
-            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
+            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None, None))
         ),
         patch("services.intent.intent_service.get_process_registry", return_value=mock_registry),
         patch.object(
