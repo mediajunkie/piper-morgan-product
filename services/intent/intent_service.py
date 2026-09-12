@@ -171,6 +171,46 @@ _AUTOEXEC_READONLY_ALLOWLIST = frozenset(
 )
 
 
+# --- #1769: the resume-offer seam's TAUGHT command vocabulary (#1739) ---
+#
+# Flow-NAMING commands, not bare acceptance vocabulary: each names the
+# suspended-flow operation unambiguously (#1529's explicit tier), so the
+# EXPLICIT sets are honored even with no offer pending. Threaded into THE
+# predicate as taught_accepts / taught_declines (FULL-MESSAGE matches only,
+# LOW tier only — the _REFINING_TAUGHT_ACCEPTS precedent); the seam never
+# consults them with its own matching logic. The ARMED-ONLY decline extras
+# are the one-word answers the offer copy invites ("…or start fresh?" /
+# "Reply 'continue' or 'restart'") — too ambiguous to abandon a flow when
+# nothing was just asked, so they act only while the offer is pending.
+_RESUME_TAUGHT_ACCEPTS = frozenset(
+    {
+        "continue",
+        "resume",
+        "pick it up",
+        "let's continue",
+    }
+)
+_RESUME_TAUGHT_DECLINES = frozenset(
+    {
+        "start over",
+        "start fresh",
+    }
+)
+_RESUME_ARMED_ONLY_DECLINES = frozenset(
+    {
+        "restart",
+        "fresh",
+        "new",
+    }
+)
+
+# #1769 axes source: accepting the resume offer re-enters the #585 standup
+# interview — the SAME flow whose start the registry declares at this entry
+# (WRITE×PRIVATE, #1557-classified by reading the handler; resuming mutates
+# the same durable conversation row). Look up, never hardcode.
+_RESUME_AXES_WORKFLOW = "standup_interview"
+
+
 def _principal_from_intent(intent) -> Optional[str]:
     """The single sanctioned read of the request principal from an intent.
 
@@ -1818,6 +1858,7 @@ class IntentService:
             #   affirmatives at the resume check are legitimate ONLY now.
             contextual_offer_bound = False
             resume_offer_pending = False
+            resume_offer_question = None
             if session_id:
                 from services.intent_service.conversation_context import get_or_create_context
 
@@ -1846,50 +1887,55 @@ class IntentService:
                     # non-accepts is the #852 invariant, unchanged — arm
                     # SURVIVAL on a state question at this store is #1739
                     # follow-on work, tracked on the issue.
-                    from services.intent_service.acceptance import (
-                        AcceptanceVerdict as _AV,
-                    )
-                    from services.intent_service.acceptance import (
-                        evaluate_acceptance as _eval_acceptance,
-                    )
-                    from services.shared_types import EffectClass as _EC
-                    from services.shared_types import Outwardness as _OW
-
-                    _ctx_verdict = _eval_acceptance(
-                        message,
-                        effect=_EC.READ,
-                        outwardness=_OW.PRIVATE,
-                        armed_question=getattr(last_offer, "offer_text", None),
-                    )
-                    response_type = {
-                        _AV.ACCEPT: "accept",
-                        _AV.DECLINE: "decline",
-                        _AV.STATE_QUESTION: "state_question",
-                    }.get(_ctx_verdict)
                     if last_offer.offer_type == "process_resume":
                         # #1529: resume offers are deterministic (handled at
                         # _check_pending_resume_offer), not classifier hints.
+                        # #1769: the seam consults THE predicate itself, at
+                        # its OWN axes — thread the arm-site's rendered ask
+                        # (#1665) instead of judging it here at READ axes.
                         resume_offer_pending = True
+                        resume_offer_question = getattr(last_offer, "offer_text", None)
                         self.logger.info(
                             "process_resume_offer_pending",
                             offer_hint=last_offer.continuation_hint,
                             session_id=session_id,
                         )
-                    elif response_type == "accept":
-                        contextual_continuation_hint = last_offer.continuation_hint
-                        contextual_offer_bound = True
-                        self.logger.info(
-                            "contextual_offer_accepted",
-                            continuation_hint=contextual_continuation_hint,
-                            session_id=session_id,
-                        )
                     else:
-                        self.logger.debug(
-                            "contextual_offer_expired",
-                            offer_hint=last_offer.continuation_hint,
-                            user_response_type=response_type,
-                            session_id=session_id,
+                        from services.intent_service.acceptance import (
+                            AcceptanceVerdict as _AV,
                         )
+                        from services.intent_service.acceptance import (
+                            evaluate_acceptance as _eval_acceptance,
+                        )
+                        from services.shared_types import EffectClass as _EC
+                        from services.shared_types import Outwardness as _OW
+
+                        _ctx_verdict = _eval_acceptance(
+                            message,
+                            effect=_EC.READ,
+                            outwardness=_OW.PRIVATE,
+                            armed_question=getattr(last_offer, "offer_text", None),
+                        )
+                        response_type = {
+                            _AV.ACCEPT: "accept",
+                            _AV.DECLINE: "decline",
+                            _AV.STATE_QUESTION: "state_question",
+                        }.get(_ctx_verdict)
+                        if response_type == "accept":
+                            contextual_continuation_hint = last_offer.continuation_hint
+                            contextual_offer_bound = True
+                            self.logger.info(
+                                "contextual_offer_accepted",
+                                continuation_hint=contextual_continuation_hint,
+                                session_id=session_id,
+                            )
+                        else:
+                            self.logger.debug(
+                                "contextual_offer_expired",
+                                offer_hint=last_offer.continuation_hint,
+                                user_response_type=response_type,
+                                session_id=session_id,
+                            )
 
             # Issue #826: Resolve trust stage from real computation service
             # Pre-fetch here so _apply_soft_offer() receives resolved domain data
@@ -1941,6 +1987,7 @@ class IntentService:
                     session_id=session_id,
                     message=message,
                     resume_offer_pending=resume_offer_pending,
+                    resume_offer_question=resume_offer_question,
                 )
                 if pending_resume_result:
                     return pending_resume_result
@@ -3168,12 +3215,43 @@ class IntentService:
             self.logger.warning(f"Could not check pending onboarding offer: {e}")
             return None
 
+    def _arm_resume_offer(
+        self,
+        session_id: Optional[str],
+        user_id: Optional[str],
+        *,
+        question: str,
+        process_type_value: str = "standup",
+    ) -> None:
+        """#1769 / #1766: arm the one-turn process-resume offer, storing the
+        RENDERED ask (#1665 input adequacy) — the same one-turn ``last_offer``
+        rail the greeting re-entry check writes (#1529, user-scoped per
+        #1394). The consume half (``_check_pending_resume_offer``) threads
+        ``offer_text`` into THE acceptance predicate as the armed ask."""
+        if not session_id:
+            return
+        from services.intent_service.conversation_context import (
+            LastOffer,
+            get_or_create_context,
+        )
+
+        try:
+            ctx = get_or_create_context(session_id, user_id=user_id)
+        except (ValueError, KeyError):
+            return  # Non-UUID session_id — offer stays reply-only
+        ctx.last_offer = LastOffer(
+            offer_type="process_resume",
+            continuation_hint=f"resume {process_type_value}",
+            offer_text=question,
+        )
+
     async def _check_pending_resume_offer(
         self,
         user_id: str,
         session_id: str,
         message: str,
         resume_offer_pending: bool = False,
+        resume_offer_question: Optional[str] = None,
     ) -> Optional[IntentProcessingResult]:
         """
         Issue #889: Check if user is responding to a suspended session resume offer.
@@ -3185,16 +3263,24 @@ class IntentService:
         #1529 OFFER-BINDING: bare affirmatives/negatives ("yes", "yes please",
         "no") are claimed ONLY when the resume offer was actually made on the
         previous turn (`resume_offer_pending`, carried via the one-turn
-        last_offer memory the reentry check writes). Before this gate, ANY
-        bare "yes" while a suspended standup existed in the durable repo
-        resumed it — which is how "Yes please", answering a list-archived
-        offer, started PM's standup hijack. Explicit resume commands
-        ("resume", "continue", "pick it up") still work at any time — they
-        name the flow unambiguously.
+        last_offer memory the arm sites write — with the rendered ask
+        threaded through as `resume_offer_question`, #1665). Before this
+        gate, ANY bare "yes" while a suspended standup existed in the durable
+        repo resumed it — which is how "Yes please", answering a
+        list-archived offer, started PM's standup hijack. Explicit resume
+        commands ("resume", "continue", "pick it up") still work at any time
+        — they name the flow unambiguously (the taught command vocabulary,
+        threaded into THE predicate; see below).
 
         #1529 part 3: flow-targeted exit phrases ("end standup") against a
         suspended flow are consumed here deterministically — abandoning the
         flow — so they never reach a classifier to be misrouted.
+
+        #1769 (#1739 acceptance-contract adoption): the seam consults THE
+        predicate (``acceptance.evaluate_acceptance``) — the four bespoke
+        inline word-sets that lived here (invisible to both #1739 ratchet
+        scans) are deleted. See the in-body comments for the axes mapping and
+        the stated arm-survival form.
 
         Returns IntentProcessingResult if the offer was handled, None otherwise.
         """
@@ -3205,11 +3291,9 @@ class IntentService:
             if suspended is None:
                 return None
 
-            # Determine if user is responding to resume offer
-            msg_lower = message.strip().lower()
-
             # #1529: "end standup" against a suspended standup ends it — no
-            # classifier involved.
+            # classifier involved. Deterministic, checked FIRST (a flow exit
+            # is a command, not an offer reply).
             from services.process.escape import detect_flow_exit
 
             if detect_flow_exit(message, suspended.process_type):
@@ -3222,86 +3306,123 @@ class IntentService:
                     return await self._abandon_suspended_standup(user_id)
                 return None
 
-            # Explicit resume/decline commands — unambiguous, honored anytime.
-            explicit_accept_signals = frozenset(
-                {
-                    "continue",
-                    "resume",
-                    "pick it up",
-                    "let's continue",
-                }
-            )
-            explicit_decline_signals = frozenset(
-                {
-                    "start over",
-                    "start fresh",
-                }
-            )
-            # Bare affirmatives/negatives — only meaningful while the resume
-            # offer is actually pending (#1529 offer-binding).
-            bare_accept_signals = frozenset(
-                {
-                    "yes",
-                    "yeah",
-                    "yep",
-                    "sure",
-                    "ok",
-                    "okay",
-                    "yes please",
-                    "y",
-                    "yea",
-                }
-            )
-            bare_decline_signals = frozenset(
-                {
-                    "no",
-                    "nah",
-                    "nope",
-                    "fresh",
-                    "new",
-                    "skip",
-                    "no thanks",
-                    "n",
-                }
+            # ── #1769 (#1739 adoption). AXES, MAPPED EXPLICITLY: accepting
+            #    resumes the suspended #585 interview — the SAME flow whose
+            #    start the registry declares at standup_interview
+            #    (WRITE×PRIVATE → LOW_CEREMONY: resuming mutates the user's
+            #    own durable conversation row; declining transitions it to
+            #    ABANDONED — also private, also that row). Looked up, never
+            #    hardcoded (#1557); an unregistered lookup degrades to the
+            #    strict tier (the safe direction).
+            #    NOT zero-widening, stated honestly: the legacy sets were
+            #    exact-match, so the LOW-tier vocabulary (crisp CONFIRM
+            #    superset + generic rows, greedy residue included) WIDENS
+            #    both surfaces while armed. Pinned deliberately in
+            #    test_resume_offer_acceptance_1769.py: the accept re-enters a
+            #    flow the user can end or re-suspend (recoverable), and the
+            #    seam inherits the CXO-owned LOW-tier tightening
+            #    automatically when it lands.
+            from services.intent_service.acceptance import (
+                AcceptanceVerdict,
+                declared_axes_for_workflow,
+                evaluate_acceptance,
             )
 
-            accept_signals = (
-                explicit_accept_signals | bare_accept_signals
-                if resume_offer_pending
-                else explicit_accept_signals
-            )
-            decline_signals = (
-                explicit_decline_signals | bare_decline_signals
-                if resume_offer_pending
-                else explicit_decline_signals
-            )
+            _axes = declared_axes_for_workflow(_RESUME_AXES_WORKFLOW)
+            _effect = _axes[0] if _axes else None
+            _outward = _axes[1] if _axes else None
 
-            if msg_lower in accept_signals:
-                # Resume the suspended session
+            if resume_offer_pending:
+                verdict = evaluate_acceptance(
+                    message,
+                    effect=_effect,
+                    outwardness=_outward,
+                    armed_question=resume_offer_question,  # #1665: as rendered
+                    taught_accepts=_RESUME_TAUGHT_ACCEPTS,
+                    taught_declines=_RESUME_TAUGHT_DECLINES | _RESUME_ARMED_ONLY_DECLINES,
+                )
+            else:
+                # No offer pending: ONLY the flow-naming taught commands act
+                # (#1529's explicit tier). DIFFERENTIAL consultation keeps
+                # this on THE predicate with no local matcher: a verdict that
+                # appears only WITH the taught vocabulary was earned by a
+                # taught command; a verdict the generic vocabulary produces
+                # on its own is a bare accept/decline, which binds to
+                # nothing here (the standup-hijack pin).
+                verdict_taught = evaluate_acceptance(
+                    message,
+                    effect=_effect,
+                    outwardness=_outward,
+                    armed_question=None,
+                    taught_accepts=_RESUME_TAUGHT_ACCEPTS,
+                    taught_declines=_RESUME_TAUGHT_DECLINES,
+                )
+                verdict_bare = evaluate_acceptance(
+                    message,
+                    effect=_effect,
+                    outwardness=_outward,
+                    armed_question=None,
+                )
+                if verdict_taught is not verdict_bare and verdict_taught in (
+                    AcceptanceVerdict.ACCEPT,
+                    AcceptanceVerdict.DECLINE,
+                ):
+                    verdict = verdict_taught
+                else:
+                    return None
+
+            if verdict is AcceptanceVerdict.ACCEPT:
                 self.logger.info(
                     "User accepted resume offer",
                     user_id=user_id,
                     process_type=suspended.process_type.value,
                 )
-
                 if suspended.process_type == ProcessType.STANDUP:
                     return await self._resume_suspended_standup(user_id, session_id)
                 # ADR-059: Onboarding resume disabled (onboarding on ice)
 
-            elif msg_lower in decline_signals:
-                # Abandon the suspended session
+            elif verdict is AcceptanceVerdict.DECLINE:
                 self.logger.info(
                     "User declined resume offer",
                     user_id=user_id,
                     process_type=suspended.process_type.value,
                 )
-
                 if suspended.process_type == ProcessType.STANDUP:
                     return await self._abandon_suspended_standup(user_id)
                 # ADR-059: Onboarding abandon disabled (onboarding on ice)
 
-            # Not a response to the resume offer — let normal classification handle it.
-            # The suspended session stays as-is for next greeting re-entry.
+            elif verdict is AcceptanceVerdict.STATE_QUESTION and resume_offer_pending:
+                # ── ARM SURVIVAL — the SILENT LOW-tier form (§5a), stated per
+                #    CXO's survival-must-be-stated rule: the one-turn arm is
+                #    re-armed with the SAME stored ask and normal processing
+                #    answers the question ("yes?" costs a turn, never an
+                #    action — contract axis (a)). NOTHING fires off the
+                #    survived arm this turn (we return None); a later accept
+                #    re-enters a flow the user can end or re-suspend, so the
+                #    cost of a stale accept is a recoverable re-entry.
+                #    Honest boundary: a soft contextual offer applied later
+                #    THIS turn writes the same one-slot last_offer field and
+                #    would clobber the survived arm — the #1753 store-peek
+                #    guard covers the #846 store, not this rail (filed as
+                #    discovered work on #1769). Even then the suspended flow
+                #    persists durably and re-offers at the next greeting.
+                self.logger.info(
+                    "resume_offer_survives_state_question",
+                    user_id=user_id,
+                    process_type=suspended.process_type.value,
+                )
+                self._arm_resume_offer(
+                    session_id,
+                    user_id,
+                    question=resume_offer_question or "",
+                    process_type_value=suspended.process_type.value,
+                )
+                return None
+
+            # PASS (or a non-standup process): not a response to the resume
+            # offer — normal classification handles the turn. The suspended
+            # session stays as-is for next greeting re-entry (the one-turn
+            # offer expiry is the #852 invariant, unchanged).
             return None
 
         except Exception as e:
@@ -3403,6 +3524,16 @@ class IntentService:
             )
         else:
             resume_msg += "What would you like to include in your standup today?"
+
+        # #1769 / #1766: the legacy either/or ask ARMS the one-turn
+        # process-resume offer with its rendered copy (#1665). The now-active
+        # conversation's guided rail claims the next turn in the normal case;
+        # the arm covers the raced/re-suspended path and records what was
+        # asked. The 3-part resume prompt above and the not-found copy are
+        # deliberately NOT armed: the former is the standup machine's own ask
+        # (consumed on its adopted state rail, #1739 table row 1), the latter
+        # teaches the /standup command rather than offering a resume.
+        self._arm_resume_offer(session_id, user_id, question=resume_msg)
 
         return IntentProcessingResult(
             success=True,
@@ -3723,6 +3854,13 @@ class IntentService:
                     "Would you like to continue where you left off, or start fresh?\n"
                     "Reply 'continue' or 'restart'."
                 )
+                # #1769 / #1766: this ask ARMS the one-turn process-resume
+                # offer with its rendered copy — a next-turn "yes"/"restart"
+                # binds to what was actually asked (#1665). If the
+                # conversation is ACTIVE the guided-process rail claims the
+                # reply first and the arm expires unused; it is load-bearing
+                # exactly when the conversation is SUSPENDED-with-session.
+                self._arm_resume_offer(session_id, user_id, question=response_msg)
                 return IntentProcessingResult(
                     success=True,
                     message=response_msg,

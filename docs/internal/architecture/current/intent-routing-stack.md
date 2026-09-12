@@ -206,6 +206,35 @@ keeps first claim on ambiguous shapes; singular unnamed 'delete my reminder'
 keeps the which-todo ask; the #1527 named-target and #1666 numbered legs
 unchanged. Regression: `test_bulk_delete_reminders_1696.py` + the updated
 bulk pin in `test_reminder_delete_misroute_1527.py`.
+**#1769 resume-offer seam adoption (2026-09-12, #1739 epic 3)**: the #889
+pre-classification resume check (`_check_pending_resume_offer`, the seam the
+#1595 flip-1 note calls "resume check") decided accept/decline with FOUR
+bespoke inline word-sets — a private acceptance vocabulary invisible to both
+#1739 ratchet scans (no legacy detector call, no shared vocabulary name;
+found by the #1766 census build). It now consults
+`acceptance.evaluate_acceptance` at registry-declared axes
+(`standup_interview` WRITE×PRIVATE → LOW_CEREMONY — accepting re-enters the
+same flow that entry declares) with the arm-site's rendered ask threaded
+(#1665: `LastOffer.offer_text` rides the pipeline into the seam as
+`resume_offer_question`). The #1529 explicit-anytime commands became TAUGHT
+vocabulary (`_RESUME_TAUGHT_*`, module constants) threaded into the
+predicate — `taught_declines` added to `evaluate_acceptance` (full-message,
+LOW tier only, symmetric with `taught_accepts`); with no offer pending the
+seam consults the predicate DIFFERENTIALLY (taught-vs-bare verdicts) so only
+flow-naming commands act unarmed — no local matcher survives, and the
+standup-hijack pin holds. Contract axis (a): "yes?" / "resume?" never fire;
+the armed STATE_QUESTION survives in the SILENT §5a form by re-arming the
+one-turn `last_offer` rail (⚠️ the #1753 store-peek guard covers the #846
+store, NOT this rail — clobber residue filed on #1769). Flow-exit ("end
+standup") stays first and deterministic. NOT zero-widening (stated): the
+legacy sets were exact-match, so the LOW-tier vocabulary (greedy residue
+included) widens both surfaces while armed — pinned deliberately
+(recoverable re-entry; inherits the CXO-owned tightening); "n"/"yea"
+narrowed out. ARM half (#1766): the reentry offer already armed with its
+rendered ask; the other two ask sites (`_start_standup_conversation`
+session-exists ask, `_resume_suspended_standup` legacy either/or ask) now
+arm via `_arm_resume_offer(question=…)` — both census rows shrank out.
+Regression: `test_resume_offer_acceptance_1769.py`.
 
 **#1595 Phase 1 inversion shadow observer (2026-08-14) — an explicitly
 NON-dispatching fifth party that watches the chain, never joins it.** When

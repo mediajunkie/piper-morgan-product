@@ -2451,6 +2451,7 @@ class TestAcceptanceContractRatchet:
     #1591 mode read-back answers (int_svc)        W/PRIV  ADOPTED     "question" on the record
     reminder_clear verb/correction turns          READ*   ADOPTED     "question" threaded 09-12
     reminder time/task turns (todo_handlers)      READ    ADOPTED     "question" threaded 09-12
+    resume-offer seam, #889 mechanic (int_svc)    W/PRIV  ADOPTED     "question" threaded 09-12
     generic offer seam, other non-READ kinds      W/PRIV  UNADOPTED   blocked: LOW-tier vocab
     FTUX interview turn (first_contact)           READ    UNADOPTED   holds
     verified_inference meta/decline seam          WRITE   UNADOPTED   holds (prose opt-out)
@@ -2582,6 +2583,33 @@ class TestAcceptanceContractRatchet:
     skipped honestly instead of replacing the arm in the one-slot #846
     store. The flag belt remains (#1652 pins stand). Regression:
     ``test_soft_offer_survival_clobber_1753.py``.
+
+    2026-09-12 (#1769, the seam BOTH scans structurally missed): the
+    resume-offer seam (``_check_pending_resume_offer``, the #889 mechanic)
+    adopted. Its four bespoke inline word-sets called no legacy detector and
+    referenced no shared vocabulary name — the stated boundary of this
+    class's file scans (name-based detection cannot see inline set
+    literals), found by the #1766 census build. The seam consults THE
+    predicate at registry-declared axes (standup_interview: WRITE×PRIVATE →
+    LOW_CEREMONY — accepting re-enters the SAME flow that entry declares;
+    declining transitions the same private row to ABANDONED) with the
+    arm-site's stored ask threaded (#1665, `resume_offer_question` from the
+    one-turn last_offer rail). The #1529 explicit-anytime commands
+    ("resume", "start over", …) became TAUGHT vocabulary threaded into the
+    predicate — `taught_declines` added to `evaluate_acceptance` for the
+    decline half (full-message, LOW tier only, symmetric with
+    `taught_accepts`); with no offer pending the seam consults the predicate
+    DIFFERENTIALLY (taught-vs-bare) so only flow-naming commands act — no
+    local matcher survives. STATE_QUESTION never fires the resume; the arm
+    survives in the SILENT §5a form (re-armed on the last_offer rail; the
+    #1753-shape clobber residue at THIS rail is filed on #1769). NOT
+    zero-widening, stated honestly: the legacy sets were exact-match, so the
+    LOW-tier vocabulary (greedy residue included) widens both surfaces while
+    armed — pinned deliberately in test_resume_offer_acceptance_1769.py
+    (recoverable re-entry; inherits the CXO-owned tightening); "n"/"yea"
+    narrowed out (bespoke-only tokens; a PASS leaves the flow suspended for
+    greeting re-entry). Arm half: both #1766 census rows for this seam's ask
+    sites shrank out in the same commit.
     """
 
     _CONTRACT_MODULES = (
@@ -2925,18 +2953,10 @@ class TestUnarmedAskSiteRatchet:
                 2,
                 "Reopen issue #{}: **{}**? Say 'yes, reopen #{}' to confirm.",
             ),
-            (
-                "services/intent/intent_service.py",
-                "IntentService._resume_suspended_standup",
-                3,
-                "Here's what we had so far: {} Would you like to continue ref",
-            ),
-            (
-                "services/intent/intent_service.py",
-                "IntentService._start_standup_conversation",
-                1,
-                "You have a standup conversation in progress. Would you like ",
-            ),
+            # 2026-09-12 (#1769): the _resume_suspended_standup and
+            # _start_standup_conversation rows shrank out — both ask sites
+            # now arm the one-turn process-resume offer with their rendered
+            # ask threaded as question= (_arm_resume_offer).
             (
                 "services/intent_service/canonical_handlers.py",
                 "CanonicalHandlers._format_general_setup_guidance",
