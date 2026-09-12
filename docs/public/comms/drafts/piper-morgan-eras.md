@@ -44,19 +44,19 @@ My communicatons chief agent (Comms) proposed two new eras to close the gap — 
 
 The fix Comms implemented itself had an error in it.
 
-When they extended the assignment to the two new eras, they checked their work against every post already correctly categorized, and it matched perfectly. What they didn't do was step back and ask whether the *method* would generalized to posts they hadn't touched yet. Weeks later, filling in the remaining gaps, the "unicorn" web designer / developer agent (Web) found that roughly 260 older posts were sitting with no era at all or a leftover pre-migration label, and diagnosed it as a judgment call — something that would need a person to read each post's history and decide by hand, because the numbers didn't line up cleanly against the era boundaries.
+When they extended the assignment to the two new eras, they checked their work against every post already correctly categorized, and it matched perfectly. What they didn't do was step back and ask whether the *method* would generalized to posts they hadn't touched yet. Weeks later, filling in the remaining gaps, the "unicorn" web designer / developer agent (Web) found that roughly 260 older posts were sitting with no era at all or a leftover pre-migration label, and diagnosed it as a judgment call: something that would need a person to read each post's history and decide by hand, because the numbers didn't line up cleanly against the era boundaries.
 
-That diagnosis was almost right, and almost right is exactly the kind of thing worth checking rather than accepting. The actual cause was smaller and completely mechanical: the boundary check had been run against each post's *work* date, but the real assignment — the one that had correctly matched all 101 already-categorized posts — was keyed to *publish* date instead. Once that one field was corrected, all 288 remaining posts resolved cleanly. Zero judgment calls. Zero posts left over. Web independently re-derived the same mapping before trusting it, shipped it the same day, and separately caught something I couldn't have seen from the data alone — a leftover duplicate post from an old slug rename that had never been cleaned up. Both fixed within hours of being found.
+That diagnosis was *almost* right. The actual cause was smaller and completely mechanical: a confusion between each post's *work* date (the actual period of time that the blog post is about) and *publish* date. Web aligned all the posts by publish date. This also revealed a duplicate post in the archive, which we cleaned up.
 
 # What actually changed between the second failure and the fourth
 
-The fifteen-episode scheme sat broken at zero for months before anyone noticed. This latest fix was caught, diagnosed, and repaired same-day. The categories involved weren't smarter the second time. What changed is that someone actually checked the scheme against the real data before calling it finished, instead of trusting that a design which made sense on paper had landed the way it was meant to.
+The fifteen-episode scheme sat broken at zero for months before anyone noticed. This latest fix was caught, diagnosed, and repaired same-day. Basically, we checked our work.
 
 That's the whole lesson, and it isn't really about blog categories. Any organizing scheme — a taxonomy, a filing convention, a set of labels anyone relies on to navigate something that keeps growing — has the same failure mode waiting in it. The scheme looks fine right up until the moment someone actually counts what's really in each bucket. The four tries it took to get this right are four instances of the identical mistake, at four different scales, and the only one that got caught fast was the one somebody actually verified.
 
 # The eras, for reference
 
-Seven periods, spanning May 2025 to today:
+Seven periods, spanning May 2025 to today (and subject to revision again in the future, no doubt):
 
 - **The Build** (May–Jul 2025) — Prototype to production: daily building, debugging marathons, test recovery.
 - **The Methodology** (Aug–Sep 2025) — From organic to orchestrated: infrastructure sprints, methodology crystallizes.
@@ -68,15 +68,20 @@ Seven periods, spanning May 2025 to today:
 
 Nearly 390 posts, now correctly sorted into all seven, browsable by era on the site.
 
-# The other fix: the front door itself
+There is more to do. Organizing by pub date works fine for the linear building narrative, but my insight posts (like this one, now typically running on weekends) may come from an earlier era, and should really be filed by work date after all, not pub date. (I'll add that to the queue, since I literally notified Web of a few bugs this morning, including incorrect work-date metadata. It never ends...).
 
-One more thing changed recently that's worth mentioning here rather than in its own post, because it's part of the same story: for months, the blog's own homepage opened with generic marketing copy — a headline about "systematic PM excellence," a couple of buttons — and pushed the actual most recent post far enough down that a visitor had to scroll to find anything real. A partial fix in August trimmed the padding but never addressed what was actually in that space. It stayed that way until someone checked it against a live screenshot rather than trusting that the earlier fix had covered it. The generic hero is gone now. The homepage opens with the real, current post — title, image, and all — visible without scrolling.
+# One other fix: the front door itself
 
-Small detail, same throughline: a fix that isn't checked against what a reader actually sees isn't finished, no matter how reasonable it looked in the editor.
+Since I first set up the canonical [blog section](https://pipermorgan.ai/blog/) of the Piper Morgan site, the blog's homepage was filled with marketing copy (a headline about "systematic PM excellence," a couple of buttons) that pushed the actual most recent post far enough down that a visitor had to scroll to find anything real. 
+
+A partial fix in August trimmed the padding but never addressed what was actually in that space. So I proposed that the blog always feature the most recent post above the fold, as it does today. It still all comes down to me noticing that I want something or that something isn't working or does not meet my needs and then articulating what I really do want or need.
+
 
 # If you're reading this somewhere else
 
-If this reached you on Medium or LinkedIn, the canonical site is worth the visit now in a way it wasn't a few weeks ago. The eras actually work. The newest post is the first thing you see. Almost 390 posts, honestly organized, tell the real shape of what building this has looked like — from one Sunday afternoon in October to whatever's happening in The Alpha this week.
+If this reached you on Medium or LinkedIn, the canonical site is really worth the visit now in a way it wasn't a few weeks ago. I'm aware that plunging into this story midstream can be confusing. The blog on the site lets you jump back to any time in the process, or even to the very beginning, and as a bonus you get a real sense of how the "generic cartoon" illustration style has evolved over the past year and a half.
+
+The eras seem to be working. The newest post is the first thing you see. Now almost 390 posts organized into the real shape of what building (and learning) process has looked like "the question that started it all" to whatever's happening in The Alpha this week.
 
 ---
 
