@@ -400,13 +400,18 @@ We've created a complete example plugin you can reference or copy.
 **Try it**:
 
 ```bash
-# Load the demo plugin
-python3 main.py
-# Visit http://localhost:8001/api/integrations/demo/health
+# Load the demo plugin — it is OFF by default (#1690) and needs explicit opt-in
+PIPER_DEMO_PLUGIN=1 python3 main.py
+# Visit http://localhost:8001/api/v1/integrations/demo/health
 
 # Run tests
 PYTHONPATH=. pytest services/integrations/demo/tests/ -v
 ```
+
+> **Note**: the demo plugin is excluded from the default-enabled plugin set so
+> its example routes never mount in a production deployment. Set
+> `PIPER_DEMO_PLUGIN=1` (as above) or list `demo` under `plugins.enabled` in
+> `config/PIPER.user.md` to enable it locally.
 
 **What it demonstrates**:
 
