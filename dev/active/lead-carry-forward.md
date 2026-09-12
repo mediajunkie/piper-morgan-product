@@ -1,8 +1,15 @@
 # Lead carry-forward — rewritten 2026-08-29 ~18:15 PT (freshness rule: full pass at START/STOP)
 
 ## Live state (receipts, refreshed 2026-09-12 07:0x — Saturday fire 1)
-- **v74 LIVE** (two deploys this fire, deploy-by-default; belt green each time: smoke 506 /
-  unit 10603 / ratchets 54 / jest 25). MVP **23 open**.
+- **v76 LIVE** (three deploys this fire; v75 FAILED on flyctl wait-timeout mid-image-pull —
+  retry with `--wait-timeout 600` fixed it; old machine kept serving throughout).
+- **MVP: 44 open in the milestone, MEASURED** (= board 34 Sprint Backlog + 3 In Progress +
+  7 In Review). ⚠️ My "25→24→23" was stale decrement-arithmetic, never a measurement —
+  RE-MEASURE the headline every time (`gh issue list --milestone MVP --state open`); never
+  decrement. Memo to PPM asks which denominator to pin; correction owned in PM's tracker.
+- **EPIC 2 filed remainder EMPTY**: 1690 + 1741 + 1733 all closed + live-verified today.
+  New tail (unplaced, PPM's call): 1750 (standup.html stale twin) · 1751 (canonical
+  personality page hardcodes user_id "default").
 - **1741 CLOSED + deployed**: suggestions UI escaped per the 1578 treatment (user text out of
   onclick; deliberately NOT the DOMPurify chokepoint — inline handlers are by design).
   ⚠️ jest verifies need `--config tests/frontend/jest.config.js` — bare `npx jest` runs
