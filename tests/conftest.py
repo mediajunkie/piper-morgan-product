@@ -69,28 +69,53 @@ def pytest_configure(config):
 
         keychain = get_keychain_service()
 
-        # Try to load OpenAI key (skip if already in environment)
-        if not os.environ.get("OPENAI_API_KEY"):
-            openai_key = keychain.get_api_key("openai")
-            if openai_key:
-                os.environ["OPENAI_API_KEY"] = openai_key
-                print("  [conftest] Loaded OPENAI_API_KEY from keychain")
+        # #1748: only a positively-confirmed OS keyring is a legitimate source
+        # of the developer's personal keys. In CI the runner's keyring is dead,
+        # so KeychainService routes to the #1382 encrypted-DB fallback backed
+        # by the shared per-job Postgres — a table provisioned EMPTY every job,
+        # whose only possible writers are tests. Loading a key from there turns
+        # test residue (sk-test etc.) into a "real" exported credential:
+        # llm-marked tests un-skip and later same-job pytest invocations make
+        # live calls with garbage → 401s that read as product failures. Seen
+        # live in Tests run 34639901479 (2026-09-11): "[conftest] Loaded
+        # ANTHROPIC_API_KEY from keychain" on an ubuntu runner, residue written
+        # by the pre-fix #1711 suite. Fail-safe by construction: anything not
+        # provably OS-keyring-backed (DB store, degraded no-secure-store, or
+        # renamed internals) is refused — worst case keys don't auto-load and
+        # llm/github tests skip visibly. Env vars still work everywhere.
+        # Pinned by tests/infrastructure/test_credential_pollution_1748.py.
+        if (
+            getattr(keychain, "_db_store", "missing") is not None
+            or getattr(keychain, "_no_secure_store", "missing") is not None
+        ):
+            print(
+                "  [conftest] Keychain service is not OS-keyring-backed — "
+                "refusing to load developer keys from it (#1748); "
+                "LLM/GitHub tests will use env vars or skip"
+            )
+        else:
+            # Try to load OpenAI key (skip if already in environment)
+            if not os.environ.get("OPENAI_API_KEY"):
+                openai_key = keychain.get_api_key("openai")
+                if openai_key:
+                    os.environ["OPENAI_API_KEY"] = openai_key
+                    print("  [conftest] Loaded OPENAI_API_KEY from keychain")
 
-        # Try to load Anthropic key (skip if already in environment)
-        if not os.environ.get("ANTHROPIC_API_KEY"):
-            anthropic_key = keychain.get_api_key("anthropic")
-            if anthropic_key:
-                os.environ["ANTHROPIC_API_KEY"] = anthropic_key
-                print("  [conftest] Loaded ANTHROPIC_API_KEY from keychain")
+            # Try to load Anthropic key (skip if already in environment)
+            if not os.environ.get("ANTHROPIC_API_KEY"):
+                anthropic_key = keychain.get_api_key("anthropic")
+                if anthropic_key:
+                    os.environ["ANTHROPIC_API_KEY"] = anthropic_key
+                    print("  [conftest] Loaded ANTHROPIC_API_KEY from keychain")
 
-        # Try to load GitHub token (Issue #914)
-        # The keychain stores it as "github_token" (via save_github_token route).
-        # The codebase reads it from GITHUB_TOKEN env var (get_github_token()).
-        if not os.environ.get("GITHUB_TOKEN"):
-            github_key = keychain.get_api_key("github_token")
-            if github_key:
-                os.environ["GITHUB_TOKEN"] = github_key
-                print("  [conftest] Loaded GITHUB_TOKEN from keychain")
+            # Try to load GitHub token (Issue #914)
+            # The keychain stores it as "github_token" (via save_github_token route).
+            # The codebase reads it from GITHUB_TOKEN env var (get_github_token()).
+            if not os.environ.get("GITHUB_TOKEN"):
+                github_key = keychain.get_api_key("github_token")
+                if github_key:
+                    os.environ["GITHUB_TOKEN"] = github_key
+                    print("  [conftest] Loaded GITHUB_TOKEN from keychain")
 
     except ImportError:
         # keyring or keychain_service not available - skip silently
