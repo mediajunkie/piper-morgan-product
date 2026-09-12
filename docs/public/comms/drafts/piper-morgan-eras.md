@@ -61,7 +61,7 @@ Seven periods, spanning May 2025 to today (and subject to revision again in the 
 - **The Build** (May–Jul 2025) — Prototype to production: daily building, debugging marathons, test recovery.
 - **The Methodology** (Aug–Sep 2025) — From organic to orchestrated: infrastructure sprints, methodology crystallizes.
 - **The Reflection** (Oct–Nov 2025) — Alpha prep, the Great Refactor, patterns named and documented.
-- **The Foundation** (Dec 2025–Jan 2026) — Strategic resets, completion discipline, minimum-viable-product planning.
+- **The Foundation** (Dec 2025–Jan 2026) — Strategic resets, completion discipline, minimum-valuable-product planning.
 - **The Sprint** (Feb–Mar 2026) — M0 ships, M1 sprint, multi-agent maturity, blog-first publishing.
 - **The Mechanism** (Apr–Jul 2026) — Rules become architecture: duty-cycle autonomy, the connector rebuild, production catches up to development.
 - **The Alpha** (Aug 2026–present) — Durable infrastructure lands, the hosted alpha opens to outside testers, verification culture hardens.
