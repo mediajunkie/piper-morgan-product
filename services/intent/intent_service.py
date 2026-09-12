@@ -375,11 +375,46 @@ class IntentService:
             # #1651: the standup's bound overdue-todo offer must survive
             # this turn (armed on the rail-dispatched get_standup path).
             "standup_todo_offer_pending",
+            # #1652: the two OLDER #1591 standup asks arm the same one-slot
+            # store on the same rail path and carried no flag — the
+            # partial-coverage gap #1651's fix left. The invitation flag
+            # covers BOTH its arm sites (after-report and PPM's empty lead).
+            "standup_interview_invitation_pending",
+            "verify_inference_read_back_pending",
             # #1688: the armed FTUX interview question (the cold-greeting
             # empty-state interview — its answer must find the carrier).
             "ftux_interview_question_pending",
         )
         if result.intent_data and any(result.intent_data.get(f) for f in _pending_flags):
+            return result
+
+        # #1753: the flags above cover ARM turns only — the arming handler
+        # composes the result and stamps its flag. They structurally CANNOT
+        # cover STATE_QUESTION survival turns (#1739 contract §5a): the seam
+        # re-arms the offer silently and NORMAL PROCESSING composes the
+        # result (floor, reminders list, …), so no flag rides it, and a
+        # soft offer allowed on that same turn would replace the survived
+        # arm in the one-slot #846 store — the question silently costing
+        # the user their pending ask, the exact failure the survival ruling
+        # exists to prevent. THE STORE is the single source of truth for
+        # "an arm is live right now": process_intent pops the store before
+        # classification (the #1529 binding semantic), so any entry present
+        # HERE was armed — or re-armed via survival — THIS turn. Peek is
+        # read-only (#1595); the pop semantics are untouched. The flag belt
+        # above remains (its #1652 pins stand); this guard covers what
+        # flags cannot: turns whose result the arm's owner never composes.
+        # (No defensive try here: the peek is a plain dict read on the
+        # session-keyed store — a raise would be a real defect to surface,
+        # not degrade around; #1424 silent-death ratchet.)
+        _live_arm = self.workflow_offer_service.peek_pending_offer(session_id, user_id=user_id)
+        if _live_arm is not None:
+            self.logger.info(
+                "soft_offer_skipped_live_pending_arm",
+                session_id=session_id,
+                armed_workflow_type=(
+                    _live_arm.get("workflow_type") if isinstance(_live_arm, dict) else None
+                ),
+            )
             return result
 
         try:
@@ -1405,6 +1440,8 @@ class IntentService:
                     else:
                         response_type = None
                 else:
+                    from services.intent_service import standup_preferences as _sp_module
+                    from services.intent_service import verified_inference as _vi_module
                     from services.intent_service.standup_todo_offer import (
                         STANDUP_COMPLETE_TODO_WORKFLOW as _STO_WORKFLOW,
                     )
@@ -1520,6 +1557,60 @@ class IntentService:
                                     "standup_todo_offer_state_question_no_stored_ask",
                                     session_id=session_id,
                                 )
+                        elif _verdict is AcceptanceVerdict.ACCEPT:
+                            response_type = "accept"
+                        elif _verdict is AcceptanceVerdict.DECLINE:
+                            response_type = "decline"
+                        else:
+                            response_type = None
+                    elif _wf_type in (
+                        _vi_module.VERIFY_INFERENCE_WORKFLOW,
+                        _sp_module.STANDUP_INTERVIEW_WORKFLOW,
+                    ):
+                        # #1652 (#1739 adoption, 2026-09-12): the two #1591
+                        # standup asks — the interview invitation and the
+                        # mode read-back — consult THE predicate at their
+                        # REGISTRY-DECLARED axes (both WRITE×PRIVATE →
+                        # LOW_CEREMONY; the same tier judgment as the
+                        # standup_complete_todo branch above, and the same
+                        # zero-widening argument: the LOW-tier vocabulary is
+                        # the legacy detect_offer_response rows plus only the
+                        # crisp CONFIRM superset, so adoption adds the
+                        # STATE_QUESTION verdict without loosening the accept
+                        # bar). The invitation's own copy teaches "just say
+                        # yes" — a bare affirmative MUST accept here (contract
+                        # axis (b)); the arm-site's rendered ask is threaded
+                        # per #1665 (both builders store "question").
+                        #
+                        # ARM SURVIVAL — the SILENT LOW-tier form, stated per
+                        # CXO's per-tier rule (contract doc §5a): a state
+                        # question re-arms the ask and normal processing
+                        # answers the turn. Deliberately NOT the
+                        # standup_complete_todo branch's visible form: that
+                        # seam holds a bound WRITE whose state questions
+                        # normal processing demonstrably misread as completion
+                        # attempts (PM live 09-11); these two asks hold no
+                        # bound object and their questions route like any
+                        # other turn. Before #1652 the legacy detector
+                        # returned None on a question and the off-intent pop
+                        # silently cost the user the pending ask.
+                        _verdict = evaluate_acceptance(
+                            message,
+                            effect=_axes[0] if _axes else None,
+                            outwardness=_axes[1] if _axes else None,
+                            armed_question=pending_offer.get("question"),
+                        )
+                        if _verdict is AcceptanceVerdict.STATE_QUESTION:
+                            self.workflow_offer_service.set_pending_offer(
+                                session_id, pending_offer, user_id=user_id
+                            )
+                            _offer_survived_state_question = True
+                            response_type = None
+                            self.logger.info(
+                                "armed_offer_survives_state_question",
+                                workflow_type=_wf_type,
+                                session_id=session_id,
+                            )
                         elif _verdict is AcceptanceVerdict.ACCEPT:
                             response_type = "accept"
                         elif _verdict is AcceptanceVerdict.DECLINE:
@@ -3973,26 +4064,35 @@ class IntentService:
                     and not vi.was_declined(session_id, sp.STANDUP_MODE_KEY)
                     else None
                 )
+                _empty_invite_armed = False
                 if invite is not None and session_id:
                     self.workflow_offer_service.set_pending_offer(
                         session_id, invite, user_id=user_id
                     )
                     empty_message = sp.INVITE_EMPTY_LEAD
+                    _empty_invite_armed = True
                 else:
                     empty_message = (
                         "I don't have anything to build your standup from yet — no "
                         "observed activity in your connected tools. Say 'my standup "
                         "interview' any time to capture one interactively."
                     )
+                _empty_intent_data: Dict[str, Any] = {
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                    "context": {"standup_data": summary.to_dict(), "empty": True},
+                }
+                if _empty_invite_armed:
+                    # #1652: same one-slot store, same rail funnel — the
+                    # empty-lead invitation needs the no-clobber flag exactly
+                    # as #1651's bound offer does (this was the third
+                    # flag-less arm site; the issue filed two).
+                    _empty_intent_data["standup_interview_invitation_pending"] = True
                 return IntentProcessingResult(
                     success=True,
                     message=empty_message,
-                    intent_data={
-                        "category": intent.category.value,
-                        "action": intent.action,
-                        "confidence": intent.confidence,
-                        "context": {"standup_data": summary.to_dict(), "empty": True},
-                    },
+                    intent_data=_empty_intent_data,
                     workflow_id=workflow_id,
                     requires_clarification=False,
                     clarification_type=None,
@@ -4069,6 +4169,13 @@ class IntentService:
             declined_any_ask = vi.was_declined(
                 session_id, sp.INVITE_DECLINE_KEY
             ) or vi.was_declined(session_id, sp.STANDUP_MODE_KEY)
+            # #1652: which of the two #1591 asks (if either) armed this turn —
+            # the flag stamped below is what keeps _apply_soft_offer from
+            # clobbering the just-armed ask on the rail-dispatched path
+            # (#1651's fix carried the flag for its NEW offer only; these two
+            # pre-existing arms rode the same one-slot store unprotected).
+            standup_read_back_armed = False
+            standup_invitation_armed = False
             if (
                 session_id
                 and user_id
@@ -4100,6 +4207,7 @@ class IntentService:
                             )
                             trailing = offer.question
                             asked = True
+                            standup_read_back_armed = True
                     elif decision is vi.VerificationDecision.AUTO_APPLY:
                         # Rail auto-apply semantics: apply without a read-back.
                         # Stored ONLY under a trust meta-preference (the rail's
@@ -4134,6 +4242,7 @@ class IntentService:
                             session_id, invite, user_id=user_id
                         )
                         trailing = sp.INVITE_AFTER_REPORT
+                        standup_invitation_armed = True
 
             _intent_data = {
                 "category": intent.category.value,
@@ -4146,6 +4255,13 @@ class IntentService:
                 # which shares the one-slot #846 store — the flag tells it
                 # not to clobber the just-armed bound offer.
                 _intent_data["standup_todo_offer_pending"] = True
+            # #1652: the same one-line treatment for the two older #1591
+            # arms (the asks are mutually exclusive per turn — one-slot
+            # store, at most one flag stamps).
+            if standup_read_back_armed:
+                _intent_data["verify_inference_read_back_pending"] = True
+            if standup_invitation_armed:
+                _intent_data["standup_interview_invitation_pending"] = True
             return IntentProcessingResult(
                 success=True,
                 # CXO property 1 pinned in the string shape itself: the

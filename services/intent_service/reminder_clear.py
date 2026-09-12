@@ -180,6 +180,14 @@ _EXCEPTION_RE = re.compile(
     re.IGNORECASE,
 )
 
+# #1696: PLURAL domain nouns — the bulk-shape signal for an EXPLICIT delete.
+# Deliberately plural-only: 'delete my reminder' (singular, unnamed) keeps
+# the which-one clarification; 'delete my reminders' is a bulk ask. These
+# are shape-detection constants (the #1605 handler-internal detection
+# precedent), not argument extraction — no prose is captured from them.
+_BULK_REMINDER_PLURAL_RE = re.compile(r"\breminders\b", re.IGNORECASE)
+_BULK_TODO_PLURAL_RE = re.compile(r"\b(?:to-?dos|tasks)\b", re.IGNORECASE)
+
 
 @dataclass(frozen=True)
 class ClearAsk:
@@ -244,6 +252,39 @@ def _extract_named_target(text: str) -> Optional[str]:
         if candidate.lower() in {"", "first", "last", "next", "that", "this", "one"}:
             return None
         return candidate
+    return None
+
+
+def detect_explicit_bulk_delete_ask(message: Optional[str]) -> Optional[str]:
+    """#1696 — detect an EXPLICIT bulk delete over the reminder/todo domain.
+
+    The inverse face of ``detect_clear_family_ask``: that seam deliberately
+    declines explicit imperatives (``_EXPLICIT_VERB_RE`` — the verb is not
+    ambiguous), which left 'delete my reminders' with LESS capability than
+    the ambiguous 'clear my reminders' (the 1527 lane's filed finding: the
+    single-item which-todo ask answered a bulk ask). This detector claims
+    the PLURAL/bulk shape only: a plural domain noun, no exception clause.
+    Number-free-ness and named-target-emptiness are the CALLER's checks
+    (``maybe_handle_explicit_bulk_delete``) — they need todo_handlers /
+    destructive_confirm machinery this module keeps lazy.
+
+    No verb check, deliberately: this runs only inside the delete_todo rail
+    entry point, so the classifier's delete_todo emission IS the verb
+    evidence — remove / erase / 'get rid of' phrasings ride the same seam
+    without this module growing a verb vocabulary.
+
+    Returns the copy noun ("reminder" | "todo", #1569 — reminder wins a
+    mixed mention, same tiebreak as ``detect_clear_family_ask``), or None.
+    """
+    text = (message or "").strip()
+    if not text:
+        return None
+    if _EXCEPTION_RE.search(text):
+        return None  # #1563's set-complement lane — never guess the set
+    if _BULK_REMINDER_PLURAL_RE.search(text):
+        return "reminder"
+    if _BULK_TODO_PLURAL_RE.search(text):
+        return "todo"
     return None
 
 
@@ -795,12 +836,129 @@ async def maybe_handle_clear_family(
     )
 
 
+async def maybe_handle_explicit_bulk_delete(
+    intent_service,
+    intent,
+    session_id: Optional[str],
+    user_id: Optional[str],
+    todo_user_id: UUID,
+):
+    """#1696 — the EXPLICIT bulk delete seam ('delete my reminders').
+
+    Runs inside ``run_delete_todo_workflow`` AFTER ``maybe_handle_clear_family``
+    declines (so #1605 keeps first claim on ambiguous shapes). Claims a turn
+    only when ALL of: bulk plural shape (``detect_explicit_bulk_delete_ask``),
+    a session to bind the confirm to, NO todo number, and NO named target —
+    i.e. exactly the turns whose only prior answer was the single-item
+    which-todo ask. Everything else returns None -> the caller proceeds to
+    ``handle_delete_todo`` unchanged (numbered, named, and singular asks).
+
+    The consent path is the clear-family flow's ALREADY-#1190-GATED delete
+    leg: targets resolved at OFFER time (``_resolve_targets`` — the noun
+    scopes the set, #1569), ids+texts bound into the pending action, and the
+    crisp "yes" dispatches ``CLEAR_DELETE_WORKFLOW`` (action_triggered=False,
+    offer-seam only). Nothing is deleted on the ask turn. Unlike variant 3,
+    the question is the plain confirm — the user SAID delete, so no
+    stored-preference framing, and nothing is read from or written to the
+    #1510 verb store.
+    """
+    from services.intent.intent_service import IntentProcessingResult
+
+    # Lazy import (same circularity note as the kind constants above).
+    from services.intent_service.destructive_confirm import _named_delete_target
+
+    original_message = intent.original_message or (intent.context or {}).get("original_message", "")
+    noun = detect_explicit_bulk_delete_ask(original_message)
+    if noun is None:
+        return None
+    if not session_id:
+        # No session to bind the confirm answer to — never arm an offer
+        # nothing can pop. Fall through to the caller's normal handling.
+        return None
+    if intent_service.todo_handlers._extract_todo_id(original_message):
+        return None  # numbered ask — the #1190 gate's positional leg owns it
+    if _named_delete_target(original_message):
+        return None  # named ask — the #1527 named-target leg owns it
+
+    principal = str(user_id) if user_id else str(todo_user_id)
+    base_intent_data = {
+        "category": intent.category.value if intent.category else "execution",
+        "action": intent.action,
+        "confidence": intent.confidence,
+        "clear_noun": noun,
+    }
+
+    todo_service = intent_service.todo_handlers.todo_service
+    try:
+        targets = await _resolve_targets(todo_service, todo_user_id, noun)
+    except Exception as e:  # silent-ok: logged at error w/ exc_info; a source failure must read as trouble-loading (#1425), never a guessed set or an ungated delete
+        logger.error(
+            "bulk_delete_target_resolution_failed",
+            error=str(e),
+            user_id=principal,
+            exc_info=True,
+        )
+        scope = "reminders" if noun == "reminder" else "todos"
+        return IntentProcessingResult(
+            success=True,
+            message=(
+                f"I had trouble loading your {scope} just now, so I haven't "
+                f"touched anything. You can try again in a moment."
+            ),
+            intent_data=base_intent_data,
+        )
+
+    if not targets:
+        return IntentProcessingResult(
+            success=True,
+            message=_empty_targets_message("delete", noun),
+            intent_data=base_intent_data,
+        )
+
+    ids = [str(t.id) for t in targets]
+    texts = [t.text for t in targets]
+    n = len(ids)
+    # Plain explicit confirm — variant 3's target grammar without its
+    # stored-preference clause (mechanism copy at the CXO-owned seam).
+    target = f"these {n} {noun}s" if n != 1 else f"this {noun}"
+    question = f"Delete {target}? (yes/no)"
+    intent_service.workflow_offer_service.set_pending_offer(
+        session_id,
+        _delete_confirmation_offer(
+            principal,
+            "delete",
+            noun,
+            ids,
+            texts,
+            original_message,
+            question=question,  # #1665: rendered once, stored + said
+        ),
+        user_id=user_id,
+    )
+    logger.info(
+        "explicit_bulk_delete_confirmation_offered",
+        noun=noun,
+        count=n,
+        session_id=session_id,
+    )
+    return IntentProcessingResult(
+        success=True,
+        message=question,
+        intent_data={
+            **base_intent_data,
+            "action": CLEAR_DELETE_WORKFLOW,
+            "explicit_bulk_delete": True,
+            "destructive_confirmation_pending": True,
+        },
+        requires_clarification=True,
+    )
+
+
 # ---------------------------------------------------------------------------
 # Offer-seam turn handling (kind-specific, BEFORE generic accept/decline —
 # the verified_inference.handle_verification_turn_meta precedent)
 # ---------------------------------------------------------------------------
 
-_DELETE_ANSWER_RE = re.compile(r"\bdelete\b|\bremove\b|\bget\s+rid\b", re.IGNORECASE)
 _COMPLETE_ANSWER_RE = re.compile(
     r"\bdone\b|\bcomplete(?:d)?\b|\bfinish(?:ed)?\b|\bcheck(?:ed)?\s+(?:them|these|it)?\s*off\b",
     re.IGNORECASE,
@@ -809,16 +967,25 @@ _NEGATED_DELETE_RE = re.compile(
     r"\b(?:don'?t|do\s+not|never)\b[^.!?]{0,20}\bdelete\b", re.IGNORECASE
 )
 
-# #1650: the correction window's claim must be a crisp correction phrase —
-# the delete verb anchored at the head of a short, single-line turn, after
-# at most a correction lead-in ("no,", "wait,", "actually", "I meant…").
-# The old unanchored \bdelete\b claimed ASIDES that merely mention deleting:
-# PM's live "please note that I'll need to figure out later why you thought
-# I wanted you to delete a project." (one line, ~95 chars — under the #1631
-# floor) reads as "I meant delete" to a substring match, and the claim arms
-# a live delete confirm. A false claim here is one crisp "yes" from data
-# loss, so the pattern is deliberately narrow; a missed correction phrase
-# just falls to off-intent, where the user can re-ask in full words.
+# #1650: a delete CLAIM must be a crisp phrase — the delete verb anchored at
+# the head of a short, single-line turn, after at most a lead-in ("no,",
+# "wait,", "actually", "I meant…"). The old unanchored \bdelete\b claimed
+# ASIDES that merely mention deleting: PM's live "please note that I'll need
+# to figure out later why you thought I wanted you to delete a project."
+# (one line, ~95 chars — under the #1631 floor) reads as "I meant delete" to
+# a substring match, and the claim arms a live delete confirm. A false claim
+# here is one crisp "yes" from data loss, so the pattern is deliberately
+# narrow; a missed phrase just falls to off-intent / an honest re-ask, where
+# the user can re-ask in full words.
+#
+# #1653: the SAME pattern (reused, not duplicated — no new extraction regex
+# per the TestExtractionPatternRatchet discipline) is also the verb-answer
+# turn's delete claim: the verb question's delete branch targets
+# clear_reminders_delete (registry-declared DESTRUCTIVE×PRIVATE →
+# NAMED_OBJECT tier), so the claim takes this crisp bar too. The unanchored
+# _DELETE_ANSWER_RE it replaces was the #1650 residue the issue filed: with
+# the verb QUESTION armed, the same PM aside read as "the verb means delete"
+# and stored a wrong, STICKY verb default.
 _CORRECTION_CLAIM_RE = re.compile(
     r"^(?:(?:no|yes|yeah|yep|wait|hold\s+on|actually|oops|oh|sorry|hmm)[,!\s]+)*"
     r"(?:i\s+(?:actually\s+)?(?:meant|want(?:ed)?\s+(?:you\s+to\s+)?)\s*)?"
@@ -851,10 +1018,18 @@ async def handle_reminder_clear_turn(
     else -> abandoned via the pop)."""
     payload = pending_offer.get("pending_action") or {}
     kind = payload.get("kind")
+    # #1665/#1653: the arm-site's rendered ask rides the offer record —
+    # threaded so the contract consult states what it knows (Arch's
+    # input-adequacy condition), even when that is None.
+    armed_question = pending_offer.get("question")
     if kind == CLEAR_VERB_QUESTION_KIND:
-        return await _handle_verb_answer_turn(payload, message, session_id, user_id, intent_service)
+        return await _handle_verb_answer_turn(
+            payload, message, session_id, user_id, intent_service, armed_question=armed_question
+        )
     if kind == CLEAR_CORRECTION_KIND:
-        return await _handle_correction_turn(payload, message, session_id, user_id, intent_service)
+        return await _handle_correction_turn(
+            payload, message, session_id, user_id, intent_service, armed_question=armed_question
+        )
     return None
 
 
@@ -864,6 +1039,7 @@ async def _handle_verb_answer_turn(
     session_id: Optional[str],
     user_id: Optional[str],
     intent_service,
+    armed_question: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
     from services.intent_service.verified_inference import (
         SOURCE_USER_VERIFIED,
@@ -932,10 +1108,65 @@ async def _handle_verb_answer_turn(
             "requires_clarification": True,
         }
 
-    wants_delete = bool(_DELETE_ANSWER_RE.search(message)) and not _NEGATED_DELETE_RE.search(
-        message
+    # ── #1653 (#1739 acceptance-contract adoption for this seam). AXES,
+    #    MAPPED EXPLICITLY: the ARMED workflow (clarify_reminder_clear_verb)
+    #    is registry-declared READ×PRIVATE → LOW_CEREMONY.
+    #
+    #    ARM SURVIVAL — the SILENT LOW-tier form, stated per CXO's
+    #    survival-must-be-stated rule (contract doc §5a READ row): a
+    #    STATE_QUESTION verdict returns None, which lands the turn on the
+    #    generic seam's already-adopted READ branch — that branch re-arms
+    #    THIS offer silently and normal processing answers the question.
+    #    Silent (not the standup_complete_todo visible form) because nothing
+    #    can fire from the survived arm: the delete branch still runs
+    #    through the #1190 NAMED_OBJECT confirm, and a stale "delete" answer
+    #    only arms a fresh, fully-rendered confirm. Before #1653 a question
+    #    mentioning 'delete' ("delete them?") was CLAIMED as a verb answer
+    #    by the unanchored substring below — a state query stored a sticky
+    #    preference (contract axis (a) violated at this seam).
+    #
+    #    ACCEPT/DECLINE verdicts deliberately do NOT act here: crisp verb
+    #    answers legitimately open with accept/decline lead-ins ("yes,
+    #    delete them" / "no, delete them") and must reach the claims below
+    #    first; a bare accept/decline matches no claim and falls through to
+    #    the generic seam's adopted READ branch exactly as before.
+    from services.intent_service.acceptance import (
+        AcceptanceVerdict,
+        declared_axes_for_workflow,
+        evaluate_acceptance,
     )
-    wants_complete = bool(_COMPLETE_ANSWER_RE.search(message))
+    from services.intent_service.soft_invocation import is_prose_reply
+
+    _axes = declared_axes_for_workflow(CLARIFY_CLEAR_VERB_WORKFLOW)
+    verdict = evaluate_acceptance(
+        message,
+        effect=_axes[0] if _axes else None,
+        outwardness=_axes[1] if _axes else None,
+        armed_question=armed_question,  # #1665: threaded from the offer record
+    )
+    if verdict is AcceptanceVerdict.STATE_QUESTION:
+        logger.info(
+            "reminder_clear_verb_state_question_falls_through",
+            session_id=session_id,
+        )
+        return None
+
+    # ── The verb claims. TIER JUDGMENT (#1653): each claim is judged at its
+    #    TARGET action's registry-declared axes, not the seam's —
+    #    - delete → clear_reminders_delete: DESTRUCTIVE×PRIVATE →
+    #      NAMED_OBJECT, so the claim takes the #1650 crisp bar: the SAME
+    #      anchored _CORRECTION_CLAIM_RE (reused, no new regex) + the #1631
+    #      prose floor. A missed crisp phrasing costs an honest re-ask turn,
+    #      never a wrong sticky store (the filed defect).
+    #    - complete → complete_todo: WRITE×PRIVATE → LOW_CEREMONY, so
+    #      word-level detection stands, gated by the prose floor only
+    #      (contract axis (c): asides neither accept nor steal, every tier).
+    text = (message or "").strip()
+    prose = is_prose_reply(text)
+    wants_delete = (
+        not prose and bool(_CORRECTION_CLAIM_RE.match(text)) and not _NEGATED_DELETE_RE.search(text)
+    )
+    wants_complete = not prose and bool(_COMPLETE_ANSWER_RE.search(message))
     if wants_delete and wants_complete:
         # contradictory — command-shaped forms ("delete the completed ones")
         # fall through and route normally; a genuinely garbled answer gets
@@ -1170,6 +1401,7 @@ async def _handle_correction_turn(
     session_id: Optional[str],
     user_id: Optional[str],
     intent_service,
+    armed_question: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
     """ "I meant delete" on the turn after a variant-2 auto-apply: route the
     just-completed batch to a #1190-gated delete. Does NOT flip the stored
@@ -1178,12 +1410,39 @@ async def _handle_correction_turn(
     #1650: the claim is ANCHORED and non-prose — a turn that merely mentions
     deleting mid-sentence (PM's live aside) is not a correction and falls
     through to the off-intent tier (the pop drops the window; the new turn
-    routes normally)."""
+    routes normally).
+
+    #1653 (contract axis (a)): an interrogative turn is a state query, not a
+    correction claim — "delete them?" is head-anchored AND question-shaped,
+    and before this gate it armed the delete confirm off a question. A
+    STATE_QUESTION verdict falls through to the generic seam's adopted READ
+    branch (reminder_clear_correction: READ×PRIVATE → LOW_CEREMONY), which
+    re-arms the window silently (§5a) and lets normal processing answer."""
     text = (message or "").strip()
+    from services.intent_service.acceptance import (
+        AcceptanceVerdict,
+        declared_axes_for_workflow,
+        evaluate_acceptance,
+    )
     from services.intent_service.soft_invocation import is_prose_reply
 
     if is_prose_reply(text):
         return None  # multi-line / long prose never claims the correction
+    _axes = declared_axes_for_workflow(CLEAR_CORRECTION_WORKFLOW)
+    if (
+        evaluate_acceptance(
+            message,
+            effect=_axes[0] if _axes else None,
+            outwardness=_axes[1] if _axes else None,
+            armed_question=armed_question,  # #1665: threaded from the record
+        )
+        is AcceptanceVerdict.STATE_QUESTION
+    ):
+        logger.info(
+            "reminder_clear_correction_state_question_falls_through",
+            session_id=session_id,
+        )
+        return None
     if not _CORRECTION_CLAIM_RE.match(text) or _NEGATED_DELETE_RE.search(text):
         return None
     if _principal_mismatch(payload, user_id):

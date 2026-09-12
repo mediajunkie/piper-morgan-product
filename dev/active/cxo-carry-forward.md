@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-11
+last_updated: 2026-09-12
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-11 at the 07:03 START.
+# CXO carry-forward — rewritten 2026-09-12 at the 07:17 START.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -33,6 +33,31 @@ depends on the label being applied.** ⚠️ **And for a small label the useful 
 non-empty," NOT "created since last fire"** — a last-seen marker would report clean forever on a standing
 backlog.
 
+> # 🔴🔴 THE ROOT CAUSE OF ALL OF THEM — found 2026-09-12, and I had already written the rule
+>
+> **Five steps of mine have silently stopped** (DAY-CLOSED 16d · MANIFEST regen 36d · heartbeat 24d ·
+> `cohort-freeze-detect` unverifiable · **`check-refresh-promises.py` — never run once, in any log**).
+> 📌 Exec's prompt: *"they share a single point of failure and it isn't any of them."*
+>
+> ⭐ **They share this: SUCCESS IS INDISTINGUISHABLE FROM SKIPPING.** Every one of them, run correctly,
+> produces nothing I can see this fire — a green exit, a suppressed row, a file only tomorrow reads.
+>
+> ⚠️ **And I already wrote that rule, on 09-04, about the heartbeat**: *"a step whose omission is
+> indistinguishable from compliance will be omitted."* 🔴 **I applied it to one step and never asked
+> which others it covered.** **Fixed the instance, didn't sweep — the exact thing I criticised in
+> someone else's work on 09-10.**
+>
+> **The test, applied to any step before adding it to this file:**
+> > 🔴 **If running it and skipping it look the same to me at the end of the fire, it WILL rot.**
+> > **Then it needs an external consumer or a visible output — never a firmer intention.**
+>
+> **The four that never rotted** (sync · mail drain · commit+push · tracker guards) **all fail
+> immediately and visibly if skipped.** ⭐ **That's not virtue; it's feedback.**
+>
+> ✅ **Applied once already, same morning: I committed today's START entry BEFORE the mail loop** — my
+> own proposed reorder, done on my seat rather than waiting for CIO's 7v pass. **The log's presence on
+> `origin/main` is now the visible output the old ordering lacked.**
+
 ## 🔴 EVERY DAY — the `DAY-CLOSED` marker. The FOURTH silently-stopped step, found 2026-09-11.
 
 **At STOP, the session log MUST carry a literal `<!-- DAY-CLOSED: {YYYY-MM-DD} -->` line.** At **START**,
@@ -52,11 +77,15 @@ not as a gap.**
 ✅ **09-10 closed retroactively (annotated idiom). 🔴 The other 15 days deliberately NOT retro-marked** —
 that would manufacture a record of a discipline I didn't have.
 
-## 🔴 EVERY FIRE — three steps, two of which I had silently stopped running
+## 🔴 EVERY FIRE — the invisible-success steps (all five now enumerated above)
 
-**Both lapses were case (c): invoked for weeks, then stopped, with no signal.** Found by looking, not by
-alarm.
+**All case (c): invoked for a while, then stopped, with no signal.** Found by looking, not by alarm.
 
+0. 🔴 **`check-refresh-promises.py --state-files cxo`** — the START-side currency check for this file's own
+   frontmatter (skill addition 2026-08-30; I adopted the frontmatter, so it applies). ⚠️ **NEVER RUN ONCE
+   — not in a single September log.** Ran it 09-12: **2 verifiable claims, neither stale.** ⭐ **Its own
+   output states its coverage boundary, which is more than most checks do.** **This is the fifth, and the
+   only one I never started rather than stopped.**
 1. **MANIFEST regen** (skill Step 3, recipient-owned) — `python3 scripts/regenerate-mailbox-manifests.py
    --role cxo` after draining mail. ⚠️ **Lapsed 2026-07-30 → 2026-09-04, 36 days.**
 2. **Heartbeat** — `scripts/duty-cycle-heartbeat.sh cxo {START|WATCH|WORK|STOP} --if-quiet` **before

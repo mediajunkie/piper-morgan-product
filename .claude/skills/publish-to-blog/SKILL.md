@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.23
+version: 0.24
 created: 2026-03-16
-updated: 2026-08-05
+updated: 2026-09-12
 ---
 
 # publish-to-blog
@@ -221,8 +221,11 @@ Then open the draft and the canonical references below.
 1. `docs/internal/planning/comms/editorial-calendar.csv` row for this post (Step 0 above)
 2. `docs/internal/planning/comms/blog-post-template.md` — structure, dateline format, heading conventions, footer pattern, frontmatter rules, "what Comms confirms before delivering" checklist
 3. `docs/internal/planning/comms/xian-voice-tone-guide.md` — voice/tone, sentence-structure preferences, transparency patterns, editorial moves applied at voice-pass
+4. `docs/internal/planning/comms/blog-style-guide.md` — house terminology decisions that deliberately override conventional wisdom (e.g. "minimum valuable product," not "viable") — check this AND the glossary before "fixing" any spelled-out term that looks wrong
 
 **Read these first, not memory.** Memory pins capture specific lessons (no semicolons / no superlatives / parenthetical-gloss on first use / comma splices as PM voice / etc.) but the template + voice guide are the source of truth. Working from memory alone is the failure mode that lets template drift slip past unnoticed.
+
+⚠️ **A term that looks like a typo may be a documented deliberate choice — check before "fixing."** 2026-09-12: "corrected" "minimum-valuable-product" to "minimum-viable-product" during proofread, reasoning from the conventional term rather than checking `blog-style-guide.md`/the glossary first — published live before catching it via the file's own git history (PM had just reasserted the deliberate spelling via the admin UI, after this session's initial sync). The lesson generalizes beyond this one term: **a stale sync plus an unverified "correction" is how a deliberate choice gets silently reverted.** Re-sync immediately before any edit that changes wording, not just at session start, and check the style guide before overriding anything that reads as unconventional.
 
 **Editorial calendar field semantics matter at proofread time too**: per template line 133, *"Dateline matches the actual work period covered."* The calendar's `workDate` / `endWorkDate` fields capture the *source-work-period* (dates of the work being written about), not the drafting window. If a row's workDate looks like it's the drafting window, surface the drift rather than treat it as source of truth.
 

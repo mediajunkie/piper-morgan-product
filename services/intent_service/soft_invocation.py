@@ -653,9 +653,12 @@ class WorkflowOfferService:
     ) -> Optional[Dict[str, Any]]:
         """Read a pending offer WITHOUT clearing it (#1595 shadow snapshot).
 
-        Observer-only: the inversion shadow-check uses this for its
-        lightweight session snapshot. Production offer handling must keep
-        using ``get_and_clear_pending_offer`` — the pop IS the #1529
+        Two sanctioned readers, neither on the dispatch path: the inversion
+        shadow-check's lightweight session snapshot (#1595), and
+        ``_apply_soft_offer``'s no-clobber guard at the SET site (#1753 —
+        a live entry here was armed or survival-re-armed THIS turn, and a
+        soft offer must not replace it). Production offer CONSUMPTION must
+        keep using ``get_and_clear_pending_offer`` — the pop IS the #1529
         offer-binding semantic (off-intent abandons via the clear); a peek
         must never replace it on the dispatch path. Store is session-keyed
         (#846); ``user_id`` is accepted for signature parity with the
