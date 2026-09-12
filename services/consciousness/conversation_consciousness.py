@@ -122,50 +122,10 @@ def format_chitchat_conscious(topic: Optional[str] = None) -> str:
     return "I'm doing well, thanks for asking! What's on your mind?"
 
 
-def format_clarification_conscious(
-    analysis_questions: List[Dict[str, Any]],
-    original_message: str,
-) -> str:
-    """
-    Format clarification request with consciousness.
-
-    Transforms from:
-        "I need a bit more information to help you:
-         1. What is the specific goal?
-         2. Are there any constraints?"
-
-    To:
-        "I want to make sure I understand what you're looking for.
-         Based on what you said, I have a couple of questions:
-
-         [questions]
-
-         Once I understand these better, I can help more effectively."
-    """
-    sections = []
-
-    # Opening with epistemic humility
-    sections.append(
-        "I want to make sure I understand what you're looking for. "
-        "Based on what you said, I have a couple of questions:"
-    )
-
-    # Questions
-    question_lines = []
-    for i, q in enumerate(analysis_questions[:3], 1):
-        question_text = q.get("question", "")
-        example = q.get("example_answer", "")
-        line = f"{i}. {question_text}"
-        if example:
-            line += f" (for example: {example})"
-        question_lines.append(line)
-
-    sections.append("\n".join(question_lines))
-
-    # Closing with invitation
-    sections.append("Once I understand these better, I can help more effectively.")
-
-    return "\n\n".join(sections)
+# #1759: format_clarification_conscious was deleted with the dead
+# clarify-carrier machinery — zero callers (its only referent was an unused
+# import in ConversationHandler, whose clarify path was removed per the
+# #1730 Gap-2 ruling).
 
 
 def _current_time_of_day(user_timezone: Optional[str]) -> str:

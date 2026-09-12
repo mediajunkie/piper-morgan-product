@@ -32,14 +32,8 @@ def test_conversation_session_interaction():
     assert len(session.history) == 1
     assert session.history[0]["intent"]["action"] == "greeting"
     assert session.history[0]["response"] == "Hello!"
-
-    # Test clarification
-    session.set_pending_clarification(intent, {"missing": "project"}, "Which project?")
-    pending = session.get_pending_clarification()
-    assert pending is not None
-    assert pending["clarification_prompt"] == "Which project?"
-    session.clear_pending_clarification()
-    assert session.get_pending_clarification() is None
+    # #1759: the pending_clarification assertions were excised with the
+    # deleted carrier trio (set/get/clear_pending_clarification).
 
 
 def test_session_manager_get_or_create():

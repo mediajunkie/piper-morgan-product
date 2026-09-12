@@ -857,13 +857,12 @@ class IntentClassifier:
                     place_settings=place_settings,
                 )
 
-            # Check for vague intent
-            if self._seems_vague(intent):
-                return self.failure_handler.handle_vague_intent(
-                    intent=intent,
-                    context=classification_context,
-                    place_settings=place_settings,
-                )
+            # #1759: the vague-intent branch (failure_handler.handle_vague_intent)
+            # was excised with the dead clarify-carrier machinery — the branch's
+            # sole purpose was calling the deleted member. Vague-but-classified
+            # intents proceed to the personality-bridge transform below.
+            # (_seems_vague itself stays: classify() at its low-confidence gate
+            # is a live caller.)
 
             # Transform to grammar-conscious understanding
             understanding = self.personality_bridge.transform(

@@ -4928,8 +4928,9 @@ What would you like to set up first?"""
 
         Phase 3D: Conversation handling without full orchestration.
         """
-        # Initialize conversation handler
-        conversation_handler = ConversationHandler(session_manager=None)
+        # Initialize conversation handler (#1759: the session_manager parameter
+        # was deleted with the dead clarify-carrier machinery)
+        conversation_handler = ConversationHandler()
 
         # Get conversation response
         # Issue #849: Thread user_id for user-scoped calendar auth

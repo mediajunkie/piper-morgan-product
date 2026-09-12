@@ -59,7 +59,7 @@ class TestGetCalendarSummaryUserIdThreading:
 
     @pytest.fixture
     def handler(self):
-        return ConversationHandler(session_manager=None)
+        return ConversationHandler()
 
     @pytest.mark.asyncio
     async def test_get_calendar_summary_passes_user_id(self, handler):

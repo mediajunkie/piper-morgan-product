@@ -1337,6 +1337,11 @@ async def handle_reminder_time_turn(
             if time_label.startswith(PAST_TODAY_PREFIX):
                 passed_time = time_label[len(PAST_TODAY_PREFIX) :]
                 detail = (
+                    # This re-ask is emitted AFTER _rearm_time_question()
+                    # above re-armed the one-slot store with this seam's
+                    # stored ask (#1654) — the arm lives in the callee,
+                    # outside the census's holder-local scan (#1766).
+                    # ask-census: armed-in-turn via _rearm_time_question
                     f"{passed_time} today has already passed on my clock. "
                     f"Did you mean tomorrow?"
                 )
