@@ -2450,8 +2450,8 @@ class TestAcceptanceContractRatchet:
     #1591 interview-invitation answers (int_svc)  W/PRIV  ADOPTED     "question" on the record
     #1591 mode read-back answers (int_svc)        W/PRIV  ADOPTED     "question" on the record
     reminder_clear verb/correction turns          READ*   ADOPTED     "question" threaded 09-12
+    reminder time/task turns (todo_handlers)      READ    ADOPTED     "question" threaded 09-12
     generic offer seam, other non-READ kinds      W/PRIV  UNADOPTED   blocked: LOW-tier vocab
-    reminder time/task turns (todo_handlers)      READ*   UNADOPTED   holds (kind-specific)
     FTUX interview turn (first_contact)           READ    UNADOPTED   holds
     verified_inference meta/decline seam          WRITE   UNADOPTED   holds (prose opt-out)
     onboarding portfolio_handler (own vocab)      WRITE   UNADOPTED   onboarding on ice
@@ -2474,8 +2474,8 @@ class TestAcceptanceContractRatchet:
     test_low_tier_keeps_the_generic_vocabulary_including_its_greedy_residue).
     READ* = the generic-branch residue of those kinds IS adopted; the
     kind-specific handlers' own detector calls are not (reminder_clear's
-    kind-specific turns adopted 2026-09-12, #1653 — see below; the
-    todo_handlers row still holds).
+    kind-specific turns adopted 2026-09-12, #1653; the todo_handlers turns
+    adopted the same day, #1654 — both see below).
 
     2026-09-11 (PM live PARTIAL on #1617's contract behavior, v71 06:54:
     "are we done with that standup?" against the armed overdue-todo offer
@@ -2534,6 +2534,26 @@ class TestAcceptanceContractRatchet:
     them") stay deliberately non-firing (issue #1653 note 2; evidence-gated
     to change).
 
+    2026-09-12 (#1654, the orphaned-clarify class's consume half): BOTH
+    todo_handlers kind-specific turns adopted — the row SHRANK OUT (no
+    legacy detector calls remain in the file). Each seam consults the
+    predicate at its REGISTRY-DECLARED axes (clarify_reminder_task /
+    clarify_reminder_time: READ×PRIVATE → LOW_CEREMONY) with the arm-site's
+    stored ask threaded (#1665). STATE_QUESTION falls through to the
+    generic READ branch's SILENT §5a re-arm (stated in-branch: nothing can
+    fire from the survived arm — the REAL save runs only off a fresh
+    answer turn). The load-bearing axis-(a) gains, all reproduced red
+    first: a question the pre-classifier couldn't claim BOUND AS THE TASK
+    ("what do you mean?" → "Got it — **what do you mean**"); a
+    time-bearing state question SAVED A REMINDER ("did I say 3pm?" parsed
+    and wrote a row); a plain question at the time seam got the re-ask
+    copy instead of an answer. Zero-widening: ACCEPT at both seams only
+    ever re-asks (never fires), and the crisp CONFIRM superset it adds
+    used to BIND as the task text ("confirm" became a reminder), so the
+    wider accept surface is a strict improvement. Question-suffixed time
+    answers ("tomorrow at 9?") now cost a turn, not an action — the §5b
+    trade, pinned deliberately.
+
     Arm-survival semantics as adopted (CXO ruling 2026-09-10, contract doc
     §5a/§5b — docs/internal/design/acceptance-contract-user-facing-2026-09-10.md):
     READ-tier arms survive a state question SILENTLY (re-armed, normal
@@ -2572,7 +2592,8 @@ class TestAcceptanceContractRatchet:
             ("services/intent/intent_service.py", "detect_offer_response"),
             ("services/intent_service/repo_clarification.py", "detect_offer_response"),
             ("services/intent_service/drafted_issue.py", "detect_offer_response"),
-            ("services/intent_service/todo_handlers.py", "detect_offer_response"),
+            # 2026-09-12: the todo_handlers row shrank out (#1654) — both
+            # reminder question turns consult the predicate directly.
             ("services/intent_service/reminder_clear.py", "detect_offer_response"),
             ("services/intent_service/first_contact.py", "detect_offer_response"),
             ("services/intent_service/verified_inference.py", "detect_offer_response"),
