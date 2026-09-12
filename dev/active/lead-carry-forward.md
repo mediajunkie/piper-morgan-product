@@ -61,3 +61,5 @@
   limits blast radius; take it when epic-2-class work resumes, not as cleanup.**
 - **NEXT-FIRE REPLAY OWED**: live "show me issue #112" vs test-piper-morgan on v87+ — closes
   #1736 (code done, deployed; unit evidence covers the PAT path that produced PM's turn).
+- **Log-entry mechanics (self-rule, 3rd timestamp guess today)**: entry headers use
+  `$(date +%H:%M)` command substitution inside the heredoc — never a typed time.
