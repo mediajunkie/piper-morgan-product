@@ -2,9 +2,9 @@
 name: draft-blog-post
 description: Draft a blog post (narrative, insight, or Weekly Ship) for an editorial-calendar slot. Use when Comms is drafting a scheduled post, when PM hands off a slot, when starting from a source artifact (session logs, omnibus, Granola transcript), or when picking up an in-progress draft. Mandates a Phase 0 pipeline-inventory precondition (Layer C), carries voice discipline upstream from voice-pass to draft-time, applies the four-category opacity sweep before handoff, runs the verifiable-claims discipline at draft time, and enforces the calendar-row-at-draft-creation rule (Layer A) that prevents orphan drafts.
 scope: role-specific
-version: 1.3
+version: 1.4
 created: 2026-05-15
-updated: 2026-09-06
+updated: 2026-09-12
 ---
 
 # draft-blog-post
@@ -127,11 +127,21 @@ After the calendar-row check, before drafting body content:
    - Note any PROPOSED blocks pending PM voice-pass — apply those with awareness; PM may revise
    - Voice-passed (canonical) blocks apply unconditionally
 
-2. **Editorial calendar** — `docs/internal/planning/comms/editorial-calendar.csv`
+2. **Blog style guide** — `docs/internal/planning/comms/blog-style-guide.md`
+   - House terminology where the deliberate choice is NOT the conventional one (e.g. "Minimum
+     Valuable Product," not "Viable") — check this **before** "fixing" any spelled-out acronym or
+     term that looks like an error, at draft time and again at any later proofread pass
+   - Created 2026-09-12 after a second incident of the same mistake, on two different roles, both
+     from treating a documented deliberate choice as a typo without checking first
+   - If a term isn't listed here or in the glossary and still looks wrong, flag it rather than
+     silently "correcting" it — especially on anything PM has touched directly (admin-UI edits can
+     land between a sync and a read)
+
+3. **Editorial calendar** — `docs/internal/planning/comms/editorial-calendar.csv`
    - Confirm slot: which row are you filling? What's its pubDate, category, slug?
    - Pull what the previous published piece's footer is teasing — your opening should resonate with that tease; your own footer teases the next item on the calendar regardless of category
 
-3. **Open-topics tracker** — `dev/active/comms-open-topics.md`
+4. **Open-topics tracker** — `dev/active/comms-open-topics.md`
    - Quick state-of-play on what's drafted, pending, flagged
    - Especially relevant when the slot ties to a topic with prior PM input
    - (Layer-B note: this tracker is being deprecated in favor of a calendar-derived query; until B lands, keep reading the hand-maintained file)

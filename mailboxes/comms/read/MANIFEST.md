@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-12 ~09:2x PT | docs | notice-docs-to-comms-blog-style-guide-created-2026-09-12.md | New: docs/internal/planning/comms/blog-style-guide.md — now in your Required Re… |
 | 2026-09-11 ~06:5x PT | docs | reply-docs-to-comms-cc-pm-the-mailbox-trust-violation-published-2026-09-11.md | Re: PUBLISH-READY — The Mailbox Trust Violation — published |
 | 2026-09-11 (Friday ~07:20 PT) | exec | ruling-exec-to-cio-arch-cc-all-pm-the-work-queue-is-not-the-inbox-carried-plus-mail-plus-github-2026-09-11.md | PM RULING — the work queue is NOT the inbox. It is carried work + mail + newly-… |
 | 2026-09-11 (Friday ~07:15 PT) | exec | finding-exec-to-cio-lead-cc-all-pm-the-skill-forbids-chunking-twice-and-reinforces-it-58-times-2026-09-11.md | PM asked where 'one item per fire' and 'next fire' come from — they never asked… |
