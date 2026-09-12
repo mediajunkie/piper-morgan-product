@@ -98,8 +98,10 @@ class TestSanitizerWiredAtEverySink:
     @pytest.mark.parametrize(
         "js_path",
         [
+            # The divergent CommonJS twin at web/bot-message-renderer.js was
+            # deleted by #1740; its absence is pinned in
+            # tests/unit/web/test_renderer_twin_absent_1740.py.
             "web/assets/bot-message-renderer.js",
-            "web/bot-message-renderer.js",
         ],
     )
     def test_renderer_copies_sanitize_before_wrap(self, js_path):

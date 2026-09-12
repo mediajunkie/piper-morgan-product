@@ -1234,10 +1234,20 @@ async def handle_reminder_time_turn(
     The save path is the REAL one: a row write via TodoManagementService,
     confirmed with the same 📅 copy the primary path composes — never an
     improvised confirmation (the floor roleplayed exactly that, live).
+
+    #1654 (#1739 acceptance-contract adoption, epic 3 — 2026-09-12): the
+    seam consults THE predicate (``acceptance.evaluate_acceptance``) at its
+    REGISTRY-DECLARED axes with the arm-site's stored ask threaded (#1665),
+    replacing the legacy ``detect_offer_response``. See the in-body comments
+    for the tier judgment and the stated arm-survival form.
     """
+    from services.intent_service.acceptance import (
+        AcceptanceVerdict,
+        declared_axes_for_workflow,
+        evaluate_acceptance,
+    )
     from services.intent_service.destructive_confirm import detect_bare_exit
     from services.intent_service.drafted_issue import is_command_shaped
-    from services.intent_service.soft_invocation import detect_offer_response
     from services.intent_service.temporal_utils import (
         PAST_TODAY_PREFIX,
         parse_reminder_time,
@@ -1271,14 +1281,48 @@ async def handle_reminder_time_turn(
 
     if detect_bare_exit(text):
         return None  # generic flow → honest decline via decline_message
-    resp = detect_offer_response(text)
-    if resp == "decline":
-        return None  # same honest decline path
+
+    # ── #1654 (#1739 adoption). AXES, MAPPED EXPLICITLY: the ARMED workflow
+    #    (clarify_reminder_time) is registry-declared READ×PRIVATE →
+    #    LOW_CEREMONY — the seam itself writes nothing off a verdict; the
+    #    REAL save below runs only off an ANSWER turn that names a time.
+    #    Zero-widening: the LOW-tier accept vocabulary is the legacy
+    #    detect_offer_response rows plus only the crisp CONFIRM superset,
+    #    and ACCEPT at this seam only ever re-asks (never fires), so the
+    #    accept surface loosens nothing (#1652's argument, verbatim).
+    _axes = declared_axes_for_workflow(CLARIFY_REMINDER_TIME_WORKFLOW)
+    verdict = evaluate_acceptance(
+        text,
+        effect=_axes[0] if _axes else None,
+        outwardness=_axes[1] if _axes else None,
+        armed_question=pending_offer.get("question"),  # #1665: from the record
+    )
+    if verdict is AcceptanceVerdict.DECLINE:
+        return None  # generic flow → honest decline via decline_message
 
     if _REMINDER_RESTATEMENT_RE.search(text):
         # A full restatement carries its own task and time — abandon via the
         # pop and let it route normally (deterministic pre-classifier claim).
+        # Checked before the question gate: a restatement REPLACES the flow
+        # regardless of shape, and the full handler re-asks anything unclear.
         logger.info("reminder_time_question_restatement_released", session_id=session_id)
+        return None
+
+    # ── ARM SURVIVAL — the SILENT LOW-tier form, stated per CXO's
+    #    survival-must-be-stated rule (contract doc §5a READ row): a
+    #    STATE_QUESTION verdict returns None, landing the turn on the
+    #    generic seam's already-adopted READ branch — that branch re-arms
+    #    THIS offer silently and normal processing answers the question.
+    #    Silent (not the standup_complete_todo visible form) because nothing
+    #    can fire from the survived arm: the save runs only off a fresh
+    #    answer naming a time. Checked BEFORE the time-signal bind —
+    #    contract axis (a): "did I say 3pm?" carries a parseable clock time,
+    #    and before adoption it SAVED A REMINDER off a state question.
+    if verdict is AcceptanceVerdict.STATE_QUESTION:
+        logger.info(
+            "reminder_time_question_state_question_falls_through",
+            session_id=session_id,
+        )
         return None
 
     if _has_time_signal(text):
@@ -1360,7 +1404,7 @@ async def handle_reminder_time_turn(
         }
 
     # No time signal in the turn.
-    if resp != "accept" and is_command_shaped(text):
+    if verdict is not AcceptanceVerdict.ACCEPT and is_command_shaped(text):
         # An unrelated command abandons via the pop and routes normally —
         # the carrier's documented off-intent rule.
         return None
@@ -1538,9 +1582,23 @@ async def handle_reminder_task_turn(
     question; a time already known (from the original message — rare — or
     given in the answer itself) saves for REAL: the same row write and 📅
     copy the primary path composes, never an improvised confirmation.
+
+    #1654 (#1739 acceptance-contract adoption, epic 3 — 2026-09-12): the
+    seam consults THE predicate (``acceptance.evaluate_acceptance``) at its
+    REGISTRY-DECLARED axes with the arm-site's stored ask threaded (#1665),
+    replacing the legacy ``detect_offer_response``. The load-bearing gain is
+    contract axis (a): before adoption a question the pre-classifier could
+    not claim BOUND AS THE TASK ("what do you mean?" → "Got it — **what do
+    you mean**"), and one it could claim was released with the arm's
+    survival left to the generic seam by composition rather than decided
+    here. See the in-body comments for tier + survival form.
     """
+    from services.intent_service.acceptance import (
+        AcceptanceVerdict,
+        declared_axes_for_workflow,
+        evaluate_acceptance,
+    )
     from services.intent_service.destructive_confirm import detect_bare_exit
-    from services.intent_service.soft_invocation import detect_offer_response
     from services.intent_service.temporal_utils import parse_reminder_time
 
     payload = pending_offer.get("pending_action") or {}
@@ -1569,20 +1627,58 @@ async def handle_reminder_task_turn(
 
     if detect_bare_exit(text):
         return None  # generic flow → honest decline via decline_message
-    resp = detect_offer_response(text)
-    if resp == "decline":
-        return None  # same honest decline path
+
+    # ── #1654 (#1739 adoption). AXES, MAPPED EXPLICITLY: the ARMED workflow
+    #    (clarify_reminder_task) is registry-declared READ×PRIVATE →
+    #    LOW_CEREMONY — the seam itself writes nothing off a verdict; the
+    #    REAL save runs only off an ANSWER turn (and usually only after the
+    #    chained time question). Zero-widening: the LOW-tier accept
+    #    vocabulary is the legacy detect_offer_response rows plus only the
+    #    crisp CONFIRM superset, and ACCEPT at this seam only ever re-asks
+    #    (never fires) — before adoption "confirm" wasn't accept vocabulary
+    #    at all and BOUND as the task text, so the widening is a strict
+    #    improvement here.
+    _axes = declared_axes_for_workflow(CLARIFY_REMINDER_TASK_WORKFLOW)
+    verdict = evaluate_acceptance(
+        text,
+        effect=_axes[0] if _axes else None,
+        outwardness=_axes[1] if _axes else None,
+        armed_question=pending_offer.get("question"),  # #1665: from the record
+    )
+    if verdict is AcceptanceVerdict.DECLINE:
+        return None  # generic flow → honest decline via decline_message
 
     if _REMINDER_RESTATEMENT_RE.search(text):
         # A full restatement carries its own task (and possibly time) —
         # abandon via the pop and let it route normally (deterministic
-        # pre-classifier claim; the full handler re-extracts both).
+        # pre-classifier claim; the full handler re-extracts both). Checked
+        # before the question gate: a restatement REPLACES the flow
+        # regardless of shape.
         logger.info("reminder_task_question_restatement_released", session_id=session_id)
         return None
 
-    if resp == "accept":
-        # A bare "yes" (or an accept-led turn) doesn't name a task — the
-        # honest re-ask, never a silent abandon (#1648 direction 2).
+    # ── ARM SURVIVAL — the SILENT LOW-tier form, stated per CXO's
+    #    survival-must-be-stated rule (contract doc §5a READ row): a
+    #    STATE_QUESTION verdict returns None, landing the turn on the
+    #    generic seam's already-adopted READ branch — that branch re-arms
+    #    THIS offer silently and normal processing answers the question.
+    #    Silent (not the standup_complete_todo visible form) because nothing
+    #    can fire from the survived arm: a stale arm's worst case is a bound
+    #    task and a fresh time question, one honest decline away from
+    #    nothing. Checked BEFORE the pre-classifier release AND before the
+    #    bind — contract axis (a): a question is a state query, never a task
+    #    answer ("what do you mean?" used to bind as the task verbatim).
+    if verdict is AcceptanceVerdict.STATE_QUESTION:
+        logger.info(
+            "reminder_task_question_state_question_falls_through",
+            session_id=session_id,
+        )
+        return None
+
+    if verdict is AcceptanceVerdict.ACCEPT:
+        # A bare "yes" (or an accept-led / crisp-confirm turn) doesn't name
+        # a task — the honest re-ask, never a silent abandon (#1648
+        # direction 2).
         rearmed = _rearm_task_question(intent_service, session_id, user_id, pending_offer)
         logger.info(
             "reminder_task_question_reasked",

@@ -2,7 +2,7 @@
 
 **For**: Communications Director
 **Use**: Copy this file into `docs/public/comms/drafts/{slug}.md` and fill in.
-**Last updated**: 2026-05-13 — added "Before you start drafting" preamble + expanded Ship Post Variant section.
+**Last updated**: 2026-09-12 — added the blog style guide to Required Reading.
 
 ---
 
@@ -13,6 +13,7 @@
 1. **Voice & tone guide** — `docs/internal/planning/comms/xian-voice-tone-guide.md`. PM's distinctive writing style, sentence-structure preferences, transparency patterns, and editorial moves applied at voice-pass. Updated periodically; check whenever drafting after a gap.
 2. **Editorial calendar** — `docs/internal/planning/comms/editorial-calendar.csv`. Confirm slot + cadence + what the previous piece's footer is teasing (shapes your opening *and* your own footer tease).
 3. **Open-topics tracker** — `dev/active/comms-open-topics.md`. Quick state-of-play on what's drafted, pending, and flagged.
+4. **Blog style guide** — `docs/internal/planning/comms/blog-style-guide.md`. House terminology decisions that deliberately override the conventional term (e.g. "minimum valuable product," not "viable"). Check this before "correcting" any spelled-out term that looks like an error — two separate incidents (pre-06-10, and 2026-09-12) came from treating a deliberate house choice as a typo.
 
 **Cross-cutting drafting discipline:**
 
