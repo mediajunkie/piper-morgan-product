@@ -55,3 +55,13 @@
   8/29 — the 8/19 staleness is the incident that earned the rule).
 - **Tracker artifact rule (adopted 09-12 after two same-day misses)**: an Artifact republish
   and the git commit of the tracker file are ONE unit — same Bash block, never separated.
+- **PPM rulings 09-12**: tracker headline = milestone-wide + status breakdown (sprint-truth.py
+  convention). #1750 parked (cleanup-class); **#1751 is MORE than cosmetic per PPM — real
+  multi-tenancy bug on the CANONICAL personality page, #1419/#1734-adjacent, PUT admin-gate
+  limits blast radius; take it when epic-2-class work resumes, not as cleanup.**
+- **NEXT-FIRE REPLAY OWED**: live "show me issue #112" vs test-piper-morgan on v87+ — closes
+  #1736 (code done, deployed; unit evidence covers the PAT path that produced PM's turn).
+- **Log-entry mechanics (self-rule, 3rd timestamp guess today)**: entry headers use
+  `$(date +%H:%M)` command substitution inside the heredoc — never a typed time.
+- **REPLAYS OWED next fire (both v88+)**: "show me issue #112" (#1736) + the v70 archived-
+  projects exchange (#1738). Then both close.

@@ -49,11 +49,14 @@ RESOLVER = "services.integrations.github.repo_resolver.get_user_default_repo"
 # PM's shape, pinned: the subjectless opening…
 SUBJECTLESS_ASK = "help me write a ticket"
 
-# …and the first answer: long prose carrying 'delete …' substrings — the
-# pre-fix steal shape (the #1527 portfolio pattern's food).
+# …and the first answer: long prose carrying 'delete … project' substrings —
+# the pre-fix steal shape (the #1527 portfolio pattern's food). Fixture
+# revisited 2026-09-12 (the 1527 audit narrowing requires a project noun
+# after the delete verb): "delete the wrong one" → "delete the wrong
+# project", so the theft-shape proof still pins a REAL thief.
 FIRST_ANSWER_PROSE = (
     "Deleting a project is instant and unrecoverable — if you delete the "
-    "wrong one there's no confirmation step, no undo, and no summary of "
+    "wrong project there's no confirmation step, no undo, and no summary of "
     "what will be lost. The ticket should ask for a confirmation dialog "
     "before any deletion, and suggest archiving as the safer default."
 )

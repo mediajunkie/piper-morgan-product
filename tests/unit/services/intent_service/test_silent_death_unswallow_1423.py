@@ -249,10 +249,11 @@ class TestGuidedProcessCheckFailureIsError:
             "services.intent.intent_service.get_process_registry",
             side_effect=RuntimeError("registry gone"),
         ):
-            result, prefix = await intent_service._check_active_guided_process(
+            result, prefix, escaped_type = await intent_service._check_active_guided_process(
                 "user-123", "sess-1", "yes, three blockers"
             )
         assert result is None and prefix is None  # designed fallback preserved
+        assert escaped_type is None  # #1596: no fall-through, no escaped flow
         assert mock_logger.error.called, "dropping a user out of a guided flow must be ops-visible"
 
 

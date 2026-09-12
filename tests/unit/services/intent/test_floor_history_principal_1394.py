@@ -221,7 +221,7 @@ class TestContextualOfferUserScoped:
         svc.canonical_handlers.can_handle = MagicMock(return_value=True)
         svc.canonical_handlers.handle = AsyncMock(return_value=canonical_result)
         # keep the pipeline hermetic — no guided processes, no resume offers
-        svc._check_active_guided_process = AsyncMock(return_value=(None, None))
+        svc._check_active_guided_process = AsyncMock(return_value=(None, None, None))
         svc._check_pending_resume_offer = AsyncMock(return_value=None)
         return svc, classifier
 

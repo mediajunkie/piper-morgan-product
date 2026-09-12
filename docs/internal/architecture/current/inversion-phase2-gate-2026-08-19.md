@@ -278,6 +278,9 @@ understanding; **what is unsettled is the emission convention for answer-turns**
 operation. That contract decision (re-word the RULE to demand NONE, or make the seam consume
 flow-matching selections) belongs to the Lead/Arch, not to this gate — filed as issue 1663.
 Until re-ruled, **the armed-state gate is NOT passed as scored.**
+*[Update 2026-09-12: ruled — Arch picked option (b) (flow-binding), ratified 2026-08-19 on the
+issue; the corpus re-expression the ruling required is executed. See the #1663 addendum at the
+bottom of this doc for the re-scored table; the 1/7 above stands unchanged as the as-run result.]*
 
 ### Phase0 movement vs Phase 1b (33/39 → 34/39), decomposed
 
@@ -337,3 +340,65 @@ Emission site: `services/intent_service/inversion_live.py` (single site).
 Pins updated same-commit: `test_inversion_live_1595.py`,
 `test_inversion_flip_groups_1667.py`. No corpus fixture, gate script, or
 other repo surface carried the old strings (repo-wide grep, 2026-08-21).
+
+---
+
+## Addendum — #1663 ruling executed: armed expectations re-expressed to flow-binding (2026-09-12)
+
+**The ruling** (Arch, on #1663, ratified 2026-08-19): **option (b)** — Phase 2.2's dispatch treats
+"router-selected operation == the armed flow's own action" as **BINDING TO THE FLOW**: the offer
+seam consumes a flow-matching emission (args in hand); it is never a fresh dispatch. A
+non-matching emission on an armed turn falls to the seam's existing re-ask, never to the floor.
+The ruling explicitly included re-expressing this corpus's armed rows accordingly; that
+re-expression is what this addendum records (corpus header + rows:
+`tests/fixtures/inversion_corpus_phase2_armed.yaml`; new `flow:<canonical>` expectation form in
+`scripts/inversion_phase2_gate.py`; pinned in `tests/unit/test_inversion_phase2_gate_1595.py::TestShippedArmedCorpus::test_armed_expectations_pin_the_1663_ruling`).
+
+**Required condition riding the ruling (pass criteria for wiring, recorded here where the gate's
+criteria live)**: before the seam binds any flow's completing operation, confirm **per flow — not
+assumed transitively** — that the flow's arm-time question is an adequate confirmation for the
+EffectClass tier its completing operation carries. At ruling time `delete_todo` (the verb-question
+row's operation) was named **BLOCKED on #1666** — it had no `WorkflowEntry` and never reached
+`consent_gate.decide_consent`. #1666 closed 2026-08-20 (`run_delete_todo_workflow`, DESTRUCTIVE,
+#1190-gated), so that named blocker has since landed; the per-flow adequacy confirmation itself
+remains required for **every** binding, delete_todo's included.
+
+**Both scores, both legible** (m-43: same instrument, same recorded emissions — this is a
+RE-SCORING of the 2026-08-19 run's recorded outputs under the ruled contract, not a new run; no
+LLM calls were made for this addendum):
+
+- **As scored 2026-08-19 (pre-ruling sentinel, route:NONE on answer-turns): 1/7 with-snapshot vs
+  3/7 without.** This number stands unchanged above as the as-run result.
+- **Re-scored under the ruled flow-binding expectations: 6/7 with-snapshot vs 2/7 without.**
+
+| pair | old expected | new expected | WITH emission → old → new | WITHOUT emission → old → new |
+|---|---|---|---|---|
+| verb-question | route:NONE | flow:delete_todo | `delete_todo` @0.85 → MISS → **MATCH (binds)** | `CLARIFY` @0.3 → MISS → MISS |
+| confirm-aside | route:NONE | route:NONE (unchanged — not an answer) | `NONE` @0.95 → MATCH → MATCH | `NONE` @0.95 → MATCH → MATCH |
+| draft-file-command | route:NONE | flow:create_issue | `create_issue` @0.95 → MISS → **MATCH (binds)** | `NONE` @0.95 → MATCH → **MISS (hollow NONE = floor path)** |
+| draft-body-prose | route:NONE | flow:create_issue | `update_document` @0.95 → MISS → MISS (not the flow's op) | `NONE` @0.95 → MATCH → **MISS (hollow NONE = floor path)** |
+| reminder-time-answer | route:NONE | flow:create_reminder | `create_reminder` @0.95 → MISS → **MATCH (binds)** | `CLARIFY` @0.95 → MISS → MISS |
+| standup-todo-offer | route:NONE | flow:complete_todo | `complete_todo` @0.95 → MISS → **MATCH (binds)** | `complete_todo` @0.85 → MISS → MATCH |
+| repo-question-answer | route:NONE | flow:create_issue | `create_issue` @0.95 → MISS → **MATCH (binds)** | `CLARIFY` @0.3 → MISS → MISS |
+
+Notes on the re-scored table, stated so nobody reads more than it says:
+
+- **The polarity flip is the ruling's point**: the WITHOUT column's two former "MATCHes" on
+  draft rows were the hollow stateless NONEs this doc's own caveat flagged — the #1648
+  fabrication path wearing a MATCH label. Under the ruled contract they score as the losses
+  they were in production.
+- **draft-body-prose stays a miss both ways** — `update_document` is not the drafted-issue
+  flow's completing operation (`create_issue`); the ruling scores it exactly as the
+  "one non-matching pick" the analysis above already called it.
+- **standup-todo-offer WITHOUT scores MATCH mechanically** (the stateless emission happens to
+  equal the flow's operation; the scoring convention — same expectation under both conditions —
+  is unchanged from the run). In production a stateless `complete_todo` still re-extracts
+  "overdue" and fails one layer down (#1651, m-43).
+- **Re-scored, the gate question ("does context flip the loss class") reads YES on this run's
+  data: 6/7 vs 2/7.** But this addendum does not by itself pass the armed gate for 2.2 flips:
+  the per-flow confirmation-adequacy condition above is part of the pass criteria, and #1665
+  (arm sites don't yet carry their rendered ask — live snapshots are weaker than these
+  fixtures) remains a 2.2 prerequisite as stated in the caveats above.
+- decisions.log entry 2026-09-12 records the re-expression; #1663 stays open for the 2.2
+  seam-consumes-hint dispatch build itself, which no part of this change implements
+  (`TestInversionShadowNoExecutionBoundary` still bars any live dispatch path).

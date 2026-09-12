@@ -1606,3 +1606,132 @@ class TestListPRsPreClassifierRouting:
         for message in test_cases:
             action = PreClassifier._get_github_action(message)
             assert action == "list_prs_query", f"Wrong action for: {message}"
+
+
+class TestReviewIssueHonestEmpty1736:
+    """#1736 — chat read-back fabricated "Description: No description" for an issue that HAS a body.
+
+    Root cause (two halves, both pinned here):
+    - The native PAT path (``get_github_issue_direct``) returns the normalized shape with the
+      GitHub body under ``description`` and NO ``body`` key at all.
+    - The composer read only ``issue.get("body", "No description")``, conflating "field absent
+      from the payload" with "issue has an empty body" — a fabricated absence (honest-empty
+      violation per the GatherOutcome contract,
+      docs/internal/design/gather-outcome-user-facing-contract-2026-09-09.md).
+
+    Three provenance states, three renders:
+      body delivered + non-empty  → the body preview (never "No description")
+      body delivered + empty      → a DEFINITE empty statement, no hedge (verified_empty)
+      body field absent           → honest couldn't-retrieve, NEVER an empty claim
+    """
+
+    async def _run_readback_via_pat_fallback(self, intent_service, issue_payload):
+        """Drive _handle_review_issue_query down the native PAT fallback with a given payload.
+
+        Mirrors TestReviewIssueResults' mocking: connector degrades CONNECT_REQUIRED so the
+        handler falls back to router.get_issue — the path PM's live 2026-09-09 turn took.
+        """
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="review_issue_query",
+            context={"original_message": "show me issue #112"},
+        )
+        from services.mcp.consumer.connector import DegradationReason, DegradationResponse
+        from services.mcp.consumer.github_adapter import GitHubIssueResult
+
+        connect_required = GitHubIssueResult(
+            degradation=DegradationResponse(
+                reason=DegradationReason.CONNECT_REQUIRED,
+                user_message="Connect GitHub to continue.",
+                action_hint="/api/v1/settings/integrations/github/connect",
+            )
+        )
+        with patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.get_issue_connector",
+            new=AsyncMock(return_value=connect_required),
+        ):
+            with patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+            ) as MockRouter:
+                mock_router = MagicMock()
+                mock_router.is_available = AsyncMock(return_value=True)
+                mock_router.initialize = AsyncMock()
+                mock_router.get_issue = AsyncMock(return_value=issue_payload)
+                MockRouter.return_value = mock_router
+                return await intent_service._handle_review_issue_query(intent, "workflow-id")
+
+    @pytest.mark.asyncio
+    async def test_native_pat_shape_renders_real_description_not_fabricated_absence(
+        self, intent_service
+    ):
+        """RED pin for #1736's exact live repro: the REAL native shape (description key,
+        no body key) must render the actual body — never 'No description'."""
+        native_issue = {
+            # The ACTUAL return shape of get_github_issue_direct — not the raw GitHub shape
+            # the older test in TestReviewIssueResults uses.
+            "number": 112,
+            "title": "issue body test",
+            "description": "checking that stated slots are used",
+            "state": "open",
+            "repository": "test-piper-morgan",
+            "uri": "https://github.com/mediajunkie/test-piper-morgan/issues/112",
+            "mime_type": "text/markdown",
+            "labels": ["enhancement"],
+            "assignees": [],
+            "milestone": None,
+            "user": "mediajunkie",
+            "retrieved_via": "github_api",
+        }
+        result = await self._run_readback_via_pat_fallback(intent_service, native_issue)
+        assert result.success is True
+        assert "checking that stated slots are used" in result.message
+        assert "No description" not in result.message
+
+    @pytest.mark.asyncio
+    async def test_native_pat_shape_renders_url_from_uri(self, intent_service):
+        """Same shape-mismatch family: the native shape carries 'uri', never 'html_url' —
+        the URL line must not silently vanish on the PAT path."""
+        native_issue = {
+            "number": 112,
+            "title": "issue body test",
+            "description": "body text",
+            "state": "open",
+            "uri": "https://github.com/mediajunkie/test-piper-morgan/issues/112",
+            "labels": [],
+            "assignees": [],
+        }
+        result = await self._run_readback_via_pat_fallback(intent_service, native_issue)
+        assert "https://github.com/mediajunkie/test-piper-morgan/issues/112" in result.message
+
+    @pytest.mark.asyncio
+    async def test_delivered_empty_body_renders_definite_none_without_hedge(self, intent_service):
+        """verified_empty: the field WAS delivered and is empty → a definite statement,
+        no hedge (hedging a verified empty is its own dishonesty — contract §3)."""
+        issue = {
+            "number": 7,
+            "title": "no body issue",
+            "description": "",
+            "body": "",
+            "state": "open",
+            "labels": [],
+            "assignees": [],
+        }
+        result = await self._run_readback_via_pat_fallback(intent_service, issue)
+        assert "(none — this issue has no description)" in result.message
+        assert "couldn't" not in result.message.lower()
+
+    @pytest.mark.asyncio
+    async def test_payload_missing_body_field_never_claims_no_description(self, intent_service):
+        """Field absent from the payload entirely → honest couldn't-retrieve; never claim
+        the description is empty when the truth is 'we didn't get the field'."""
+        issue = {
+            "number": 8,
+            "title": "shape with no body-ish key at all",
+            "state": "open",
+            "labels": [],
+            "assignees": [],
+        }
+        result = await self._run_readback_via_pat_fallback(intent_service, issue)
+        assert "couldn't retrieve the description" in result.message
+        assert "No description" not in result.message
+        assert "(none" not in result.message

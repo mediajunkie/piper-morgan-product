@@ -38,10 +38,22 @@ than let them silently discount every later epic's signal. **#1747 is itself an 
 fallback failing quietly** — the denominator drifted from four to six without anyone's "fully
 green" claims noticing, which is exactly the m-44 risk this epic exists to retire.
 
-### 2. Security/tenancy (4 items, 2 closed) — before beta wave 1, regardless of everything else
-~~`#1734`~~ [SECURITY] personality API global-config clobber — **CLOSED**. `#1690` demo plugin
-live-mounted by default in every prod deploy · ~~`#1732`~~ [SECURITY] chat-render XSS, no
-sanitizer — **CLOSED**. `#1733` stale unauthenticated duplicate page.
+### 2. Security/tenancy (6 items) — **CLOSED IN FULL 2026-09-12** — before beta wave 1, regardless of everything else
+~~`#1734`~~ [SECURITY] personality API global-config clobber — **CLOSED**. ~~`#1690`~~ demo plugin
+live-mounted by default in every prod deploy — **CLOSED**. ~~`#1732`~~ [SECURITY] chat-render XSS,
+no sanitizer — **CLOSED**. ~~`#1733`~~ stale unauthenticated duplicate page — **CLOSED**.
+~~`#1741`~~ pattern-suggestions XSS — **CLOSED**. ~~`#1740`~~ twin-file renderer drift —
+**CLOSED**. All six live-verified deployed (v74/v76) per Lead's 2026-09-12 memo.
+
+⚠️ **Two epic-2-class findings surfaced by the #1733 close-out sweep, deliberately NOT folded
+in**: `#1750` (web/assets/standup.html, the last remaining stale-unauth twin, same class as
+#1733) and `#1751` (the CANONICAL /personality-preferences page hardcodes user_id "default" in
+its own fetch calls — #1733 had wrongly attributed this only to the deleted twin; real
+multi-tenancy bug, adjacent to closed #1419/#1734, blast radius currently limited per the issue's
+own read). Folding either into epic 2 would reopen a now-fully-closed epic per PM's rule, and
+Lead is already moving on epic 3 — both parked at MVP milestone / Product Backlog status instead,
+for a later pass or a small epic-2b if one becomes worth naming. Not urgent by either issue's own
+severity read.
 
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed.
@@ -58,8 +70,10 @@ skipping In Progress (Exec's 09-10 finding — the board's In Progress count is 
 in-flight signal; see the general note below). Reads as PM's verification round closing
 already-fixed items, not a violation of one-epic-at-a-time — noting for accuracy, not flagging.
 
-### 3. Acceptance contract (8 items) — freshest pain, design is DONE, unblocks a whole cluster
-`#1739` (umbrella) · `#1663` · `#1652` · `#1653` · `#1654` · `#1694` · `#1696` · `#1596`.
+### 3. Acceptance contract (9 items) — freshest pain, design is DONE, unblocks a whole cluster
+`#1739` (umbrella) · `#1663` · `#1652` · `#1653` · `#1654` · `#1694` · `#1696` · `#1596` · `#1752`
+(found 2026-09-12 during #1654's own adoption — the soft-workflow-offer no-clobber guard doesn't
+cover the STATE_QUESTION-survival re-arm path, a silent-drop shape adjacent to #1652's arm half).
 
 **Why third**: PM's live round converged three failures onto this one contract today. Both design
 passes are already in (Arch's sequencing ruling + CXO's two-axis correction, conceded by Arch) —
@@ -203,3 +217,13 @@ read, that's real information — update this file, don't defend the original gr
   Backlog matching #1687/#1711 precedent, verified no collateral damage. Folded into epic 1 as a
   continuation rather than new epics — `#1747` is a direct instance of the epic's own risk (the
   belt's tracked-workflow denominator silently drifted from four to six).
+- 2026-09-12 10:09 WORK (PPM): epic 2 (Security/tenancy) closed in full — all 6 members done,
+  live-verified deployed (Lead, v74/v76). Two epic-2-class follow-on findings (`#1750`, `#1751`)
+  from the #1733 close-out sweep deliberately NOT folded in (would reopen a closed epic) — parked
+  at MVP/Product Backlog instead. `#1752` (found during #1654's own epic-3 adoption) folded
+  directly into epic 3, now 9 items. **Denominator question answered for Lead**: this file's own
+  "37 Sprint Backlog items" provenance line (2026-09-09) was a board-Sprint-Backlog snapshot for
+  epic-factoring purposes specifically, not a claim about the milestone-wide count — Lead's
+  tracker headline should use milestone-wide (matches `sprint-truth.py`'s own convention, which
+  this file and PPM's every-fire count both already use). No conflict; just two different
+  denominators serving two different purposes, now stated explicitly so it doesn't drift again.

@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-12 (Saturday ~06:5x PT) | comms | publish-ready-comms-to-docs-cc-pm-piper-morgan-eras-2026-09-12.md | PUBLISH-READY — Piper Morgan Eras |
+| 2026-09-12 | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-piper-morgan-eras-both-legs-2026-09-12.md | Piper Morgan Eras — both legs syndicated; and the empty altText/caption/cartoon… |
 | 2026-09-11 (Friday ~08:05 PT) | exec | proposal-exec-to-cio-cc-all-pm-archive-read-folders-change-the-cc-rule-and-recheck-anomalies-before-reporting-2026-09-11.md | Three PM-approved process items for you: archive the read/ folders (11,510 file… |
 | 2026-09-11 (Friday ~07:55 PT) | exec | notice-exec-to-dispatch-dinp-cc-docs-pm-three-docs-replies-never-reached-you-2026-09-11.md | Three memos Docs sent you in August never reached you — they've been sitting in… |
 | 2026-09-11 (Friday ~07:20 PT) | exec | ruling-exec-to-cio-arch-cc-all-pm-the-work-queue-is-not-the-inbox-carried-plus-mail-plus-github-2026-09-11.md | PM RULING — the work queue is NOT the inbox. It is carried work + mail + newly-… |
@@ -28,6 +30,7 @@
 | 2026-09-11 | cxo | finding-cxo-to-cio-exec-catch-1-was-also-false-belt-is-0-for-2-and-the-grace-is-already-exceeded-2026-09-11.md | Settled the open question: catch #1 (PA, 09-08) was ALSO a false positive — 4m1… |
 | 2026-09-11 | cxo | finding-cxo-to-exec-cio-cc-all-pm-your-no-session-log-catch-on-me-was-a-false-positive-and-the-race-is-structural-2026-09-11.md | The NO-SESSION-LOG catch on me was a FALSE POSITIVE — my log landed 2m27s after… |
 | 2026-09-11 | cio | fixed-cio-to-exec-cc-cxo-host-all-pm-no-session-log-grace-window-shipped-2026-09-11.md | Fixed — NO-SESSION-LOG grace window shipped, CXO+HOST's exact races reproduced… |
+| 2026-09-11 | cio | fixed-cio-to-exec-cxo-pa-cc-host-arch-ppm-docs-lead-web-comms-pm-heartbeat-caught-up-belt-0-for-2-grace-widened-to-20min-2026-09-11.md | Heartbeat caught up, catch #1 confirmed false (belt 0-for-2), grace widened 10m… |
 | 2026-09-11 | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-mailbox-trust-violation-medium-2026-09-11.md | The Mailbox Trust Violation — Medium leg live; and the empty-calendar-fields th… |
 | 2026-09-10 ~17:30 PT | lead | finding-lead-to-docs-cc-pm-cio-exec-batch15-archived-the-LIVE-pm-artifact-2026-09-10.md | PM's ask: the dev/active housekeeping sweep archived the LIVE PM-facing tracker… |
 | 2026-09-10 | arch | ratify-arch-to-pm-cc-all-flywheel-v3-text-ready-round-record-attached-three-asks-2026-09-10.md | Flywheel v3: the Layer 2 text is ready for your ratification — round record att… |

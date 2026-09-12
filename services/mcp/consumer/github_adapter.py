@@ -1776,10 +1776,17 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                     return None
 
                 # Transform to our format
+                # #1736: carry the body under BOTH keys ("" when GitHub returns null —
+                # a delivered verified-empty, distinct from the field being absent).
+                # _parse_issue_detail (connector) already emits both; the composer's
+                # honest-empty render depends on at least one being present whenever
+                # the fetch actually delivered the field.
+                _body = issue_data.get("body") or ""
                 issue_info = {
                     "number": issue_data.get("number"),
                     "title": issue_data.get("title"),
-                    "description": issue_data.get("body", ""),
+                    "description": _body,
+                    "body": _body,
                     "state": issue_data.get("state"),
                     "repository": repo,
                     "uri": issue_data.get("html_url"),
