@@ -12,7 +12,6 @@ class ConversationSession:
         self.created_at = datetime.now(timezone.utc)
         self.last_activity = datetime.now(timezone.utc)
         self.history: List[Dict] = []
-        self.pending_clarification: Optional[Dict] = None
         self.context: Dict = {}
         self.uploaded_files: List[Dict] = []  # Track file metadata
         self.active_file_id: Optional[str] = None  # Most recent file
@@ -31,25 +30,9 @@ class ConversationSession:
         )
         self.last_activity = datetime.now(timezone.utc)
 
-    def set_pending_clarification(
-        self, original_intent: Intent, missing_info: Dict, clarification_prompt: str
-    ):
-        """Store state for ongoing clarification"""
-        self.pending_clarification = {
-            "original_intent": original_intent,
-            "missing_info": missing_info,
-            "clarification_prompt": clarification_prompt,
-        }
-        self.last_activity = datetime.now(timezone.utc)
-
-    def get_pending_clarification(self) -> Optional[Dict]:
-        """Retrieve pending clarification if exists"""
-        return self.pending_clarification
-
-    def clear_pending_clarification(self):
-        """Clear after clarification is resolved"""
-        self.pending_clarification = None
-        self.last_activity = datetime.now(timezone.utc)
+    # #1759: the pending_clarification set/get/clear trio was deleted with the
+    # dead clarify-carrier (its only consumer was ConversationHandler's
+    # unreachable arm/consume pair, removed per the #1730 Gap-2 ruling).
 
     # NEW: File disambiguation methods
     def set_clarification(self, clarification_type: str, context: Dict):

@@ -24,7 +24,7 @@ class TestCalendarGreeting:
     @pytest.fixture
     def handler(self):
         """Create ConversationHandler instance for testing."""
-        return ConversationHandler(session_manager=None)
+        return ConversationHandler()
 
     @pytest.fixture
     def greeting_intent(self):

@@ -657,7 +657,9 @@ class WorkflowOfferService:
         shadow-check's lightweight session snapshot (#1595), and
         ``_apply_soft_offer``'s no-clobber guard at the SET site (#1753 —
         a live entry here was armed or survival-re-armed THIS turn, and a
-        soft offer must not replace it). Production offer CONSUMPTION must
+        soft offer must not replace it; since #1770 that guard peeks this
+        store AND the #852/#1529 one-turn ``last_offer`` rail, the second
+        one-slot arm store). Production offer CONSUMPTION must
         keep using ``get_and_clear_pending_offer`` — the pop IS the #1529
         offer-binding semantic (off-intent abandons via the clear); a peek
         must never replace it on the dispatch path. Store is session-keyed
