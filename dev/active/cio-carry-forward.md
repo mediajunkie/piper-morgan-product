@@ -4,35 +4,36 @@ currency_claim: rewritten at every substantive fire (3x/day cadence)
 max_age_days: 1
 ---
 
-# CIO carry-forward — rewritten 2026-09-12 (10:37 fire, complete)
+# CIO carry-forward — rewritten 2026-09-12 (16:37 fire, complete)
 
 **Cron**: `a03890a3` · `7 10,16,22 * * *` · armed at 2026-09-09 22:45 STOP · expires ~2026-09-16.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## Today's shape so far: the deferred 7v bundle shipped, m-53 strengthened not duplicated
+## Today's shape: two skill versions shipped, one of them fixing my own gap
 
-**duty-cycle-tick v1.33 shipped** (`0adaaa017`) — the named-trigger deferral from Friday resolved
-at its first legitimate opening. Four changes: 3-source work queue (carried + mail + per-role
-GitHub criteria line, generalizing v1.32), START-before-mail-loop reorder (kills the
-NO-SESSION-LOG race at its source), `## Fire N` heading retired (this session log is the first
-one written under the new work-unit-first convention — worth reading as a live example, not just
-a rule), anomalous-readings-get-one-recheck rule. Caught and fixed my own YAML frontmatter break
-before shipping, same-fire.
+**10:37**: duty-cycle-tick v1.33 shipped (3-source work queue, Step-0 reorder, Fire-N heading
+retired, re-check-anomalies rule) — the deferred 7v bundle, picked up at its first fresh-session
+opening. CXO's "success indistinguishable from skipping" folded into methodology-53 rather than
+filed as a duplicate entry. **16:37**: caught by my own belt — zero heartbeat invocations for two
+straight days despite heavy real commit activity, found by Exec via the same re-check-before-
+reporting rule I helped ship this morning. Fixed the instance (ran the heartbeat) and the
+mechanism (v1.34: Step 5b now self-verifies against `duty-cycle-freeze-check.sh`'s own per-role
+output, converting "trust you ran it" into "check a surface that doesn't depend on you having run
+anything"). Tested the fix on myself, same fire.
 
-**CXO's "success indistinguishable from skipping" finding folded into methodology-53** (`eebc12d7d`)
-rather than filed as a new entry — checked it against the existing corpus first and found it was
-the same test, independently re-derived on a second seat with a sharper discriminator. The
-discipline of checking before creating, applied to my own corpus-steward decision this time.
+**Worth being honest about**: this is now the second time in three days a colleague has caught a
+real gap on my own seat (yesterday's missing heartbeat, today's continuation of the same gap). The
+fix this time was structural, not just "try harder" — but two catches on the same underlying issue
+in one week is worth naming plainly rather than glossing.
 
 ## Open, needs a look
 
 - **Standing-item 7w**: Arch's ask for a formal methodology entry on the Lead/Arch skew-finding
   shape. Still haven't read the source memo directly — read it before drafting.
-- **Standing-item 7x**: Exec's 2 remaining process items (archive `mailboxes/*/read/` — needs a
-  one-seat exercise before cohort rollout; change the PM-cc rule) — home is CLAUDE.md's mailbox
-  section, not duty-cycle-tick. Not started.
+- **Standing-item 7x**: Exec's 2 remaining process items (archive `mailboxes/*/read/`; change the
+  PM-cc rule) — home is CLAUDE.md's mailbox section, not duty-cycle-tick. Not started.
 - **Standing-item 7y**: NO-DAY-CLOSE streak detector (CXO's finding). Correctly gated on real
   cohort DAY-CLOSED data existing before sizing the threshold — not urgent, no trigger fired yet.
 
@@ -59,6 +60,9 @@ discipline of checking before creating, applied to my own corpus-steward decisio
 - **The RACI/responsibility-notation backlog item** (Themis relay, filed 09-02) — still not started.
 - **The `mailboxes/*/MANIFEST.md` sibling-basename false-strand warning** — hit repeatedly this
   week, confirmed harmless every time, not mine to fix.
+- **My own heartbeat compliance** — new watch item after two real misses in three days. The v1.34
+  self-verification mechanism should catch this going forward; watch whether it actually does
+  rather than assume the fix worked because it looked right at build time.
 
 ## Standing corrections to myself
 
@@ -66,13 +70,12 @@ discipline of checking before creating, applied to my own corpus-steward decisio
 - **Never split a mailbox rename across two `mail-send.sh` calls.** (09-11, #1746.)
 - **A threshold sized against the observations you happen to have is not the same as a threshold
   sized against the distribution.** (09-11.)
-- **Run your own heartbeat.** (09-11.)
-- **A naive substring grep for a marker can false-positive on a log that merely mentions the
-  marker in prose** — use anchored patterns. (09-11.)
-- **NEW (09-12): before filing a new methodology entry, check the existing corpus for the same
-  test under different words.** CXO's finding was real and well-evidenced but was m-53's own test,
-  independently re-derived — filing it separately would have duplicated rather than strengthened.
-- **NEW (09-12): after editing a skill's frontmatter, actually parse it before trusting the edit
-  looked right.** A multi-line replacement inside a YAML scalar field can silently break parsing
-  even when the rendered markdown looks fine — caught this by running the file through a real YAML
-  parser, not by re-reading my own diff.
+- **Before filing a new methodology entry, check the existing corpus for the same test under
+  different words.** (09-12.)
+- **After editing a skill's frontmatter, actually parse it before trusting the edit looked right.**
+  (09-12 — twice in one day, once at 10:37 and again while fixing the 16:37 edit's own leftover
+  drift. Worth being more careful earlier, not just catching it each time after the fact.)
+- **NEW (09-12): a step whose success and skip look identical from your own side will rot no
+  matter how many times you personally fix an instance of it — fix the mechanism, not the memory.**
+  Two real misses in three days on the same underlying gap; the fix that finally addressed it was
+  external verification, not another resolution to remember better.
