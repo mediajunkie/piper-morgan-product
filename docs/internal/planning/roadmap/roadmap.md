@@ -313,7 +313,7 @@ Build sequence (Gall's Law) — **packaging model corrected v18 (PM 6/1 clarific
 | Anthropic productization | Our DIY equivalent | Status |
 |---|---|---|
 | **Outcomes** (rubric + grader + retry as API, May 6) | methodology-07/15/17 verification + audit-cascade skill + narrative-verification skill | **Investigation lane** (PA-leads + CIO-co-author, started May 25; sequence: CIO methodology-34 synthesis (Day 28-29) → PA Outcomes smoke-test scope-memo + execution follows) |
-| **Dreams** (memory consolidation primitives) | methodology-27 Type 2 Dreaming + Pattern-070 Cleanup-Job + memory-files structure | Spec-read pending Architect characterization |
+| **Dreams** (memory consolidation primitives) | methodology-27 Type 2 Dreaming + Pattern-070 Cleanup-Job + memory-files structure | **Converged 2026-06-08** (#1166, CXO+PPM+Arch three-way): roadmap YES → discovery-spike (not build) → post-M3 → PDR opens on spike-convergence (PPM-owned). Spec-read is done, not pending — row corrected 2026-09-12. |
 | **Multi-Agent** (orchestration) | mailbox-discipline cohort coordination + V2 Duty Cycle + methodology-31 Append-Only Architecture | PPM characterization queued |
 | **Webhooks** (event triggers) | `/loop` + CronCreate + `.claude/hooks/` + cycle-prompt-fires-as-Bash | Less urgent (event mechanics overlap; per-role prompt design stays DIY) |
 
