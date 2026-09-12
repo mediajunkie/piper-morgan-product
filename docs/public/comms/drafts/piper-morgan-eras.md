@@ -1,14 +1,14 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Piper Morgan Eras
 
 *September 2026*
 
-The blog you're reading this on now has a working "eras" structure — seven chronological periods, each with a real description, each holding the posts that actually belong to it. It looks like it was always this way. It wasn't. It took four tries, and every failed try broke the same way: someone designed a scheme, built it, and then nobody checked whether the posts actually landed where the scheme said they would.
+On the Piper Morgan website where this blog appears canonically (before some posts are syndicated to the Building Piper Morgan newsletter on LinkedIn or the Medium publication of the same name, or both), the navigation includes a working "eras" structure — now up to seven chronological periods, each with a description, each applying to a set of posts that belong to that era. It looks like it was always this way. It wasn't. It took four tries, and every failed try broke the same way: someone designed a scheme, built it, and then nobody checked whether the posts actually landed where the scheme said they would.
 
 # One Sunday, twelve episodes
 
