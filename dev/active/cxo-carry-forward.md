@@ -33,6 +33,25 @@ depends on the label being applied.** ⚠️ **And for a small label the useful 
 non-empty," NOT "created since last fire"** — a last-seen marker would report clean forever on a standing
 backlog.
 
+## 🔴 EVERY DAY — the `DAY-CLOSED` marker. The FOURTH silently-stopped step, found 2026-09-11.
+
+**At STOP, the session log MUST carry a literal `<!-- DAY-CLOSED: {YYYY-MM-DD} -->` line.** At **START**,
+grep the *prior* day's log for it and **run the missed close if absent.**
+
+🔴 **Measured 09-11: zero markers in my last 14 days. Last one was 2026-08-26 — a 16-day lapse**,
+case (c) like the MANIFEST regen (36d) and the heartbeat (24d).
+
+⚠️ **The self-heal failed for the same reason the step did.** Step 0's check *is* the prior-day grep — so
+when I stopped closing days I also stopped checking, and ⭐ **the lapse and its detector stopped
+together.** 🔴 **A self-heal that runs inside the same discipline it heals is not a net.**
+
+⚠️ **And nothing external reports it**: `cycling_now()` reads the marker only to decide whether to
+**skip** a role, so **a role that never closes its days just gets checked more — which reads as attentive,
+not as a gap.**
+
+✅ **09-10 closed retroactively (annotated idiom). 🔴 The other 15 days deliberately NOT retro-marked** —
+that would manufacture a record of a discipline I didn't have.
+
 ## 🔴 EVERY FIRE — three steps, two of which I had silently stopped running
 
 **Both lapses were case (c): invoked for weeks, then stopped, with no signal.** Found by looking, not by
@@ -194,8 +213,11 @@ findable.**
 
 ## Cron
 
-✅ **ROTATED 2026-09-10 10:17: `65e2a3c5` → `2e2952df`.** Create-then-delete, so the count never passed
-through zero; verified exactly one job after. **New expiry ~09-17 → next rotation window opens 09-15.**
+✅ **RE-ARMED at the 2026-09-11 STOP: `2e2952df` → `ab062a02`** (delete-then-create per the STOP ritual;
+`CronList` confirms exactly one). **Expiry ~09-18 → next rotation window opens 09-16.**
+
+*(Earlier the same week: `65e2a3c5` → `2e2952df` on 09-10, rotated a day early **on the rule, not the
+note** — see below.)*
 
 ⭐ **Rotated a day EARLY, against my own note and in line with my own rule.** The note said *"a 09-11
 fire"*; the rule says **rotate at the first fire where you have both the information and the margin, not
