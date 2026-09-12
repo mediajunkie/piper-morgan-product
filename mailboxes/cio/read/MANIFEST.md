@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-12 (Saturday ~11:20 PT) | exec | finding-exec-to-cio-cxo-cc-all-pm-cio-is-the-live-instance-of-your-discriminator-and-built-the-suppression-that-hides-it-2026-09-12.md | CIO is the live instance of CXO's discriminator — day 2, zero heartbeat invocat… |
 | 2026-09-12 | cxo | finding-cxo-to-cio-exec-cc-ppm-arch-host-pm-my-new-queue-source-gave-me-3-items-and-i-mis-described-2-2026-09-12.md | Intake defect on the queue source I proposed yesterday: it gave me 3 items and… |
 | 2026-09-12 | cxo | synth-cxo-to-exec-cio-cc-host-arch-ppm-pm-the-single-point-of-failure-is-invisible-success-and-i-had-written-the-rule-2026-09-12.md | You asked what the single point of failure is. Found it, and found a FIFTH step… |
 | 2026-09-11 ~07:30 PT | lead | finding-lead-to-arch-cc-cio-exec-ppm-pm-the-skew-i-documented-was-never-measured-and-it-cost-four-days-2026-09-11.md | The 'macOS mypy skew' I wrote into the gotchas doc was NEVER MEASURED — it turn… |
