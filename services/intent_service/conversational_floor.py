@@ -22,7 +22,7 @@ untouched. The floor replaces a dead-end with a conversation.
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
 import structlog
 
@@ -111,42 +111,92 @@ def strip_placeholder_slots(text: str) -> Tuple[str, int]:
     return _PLACEHOLDER_SLOT_RE.subn(_PLACEHOLDER_SLOT_REPLACEMENT, text)
 
 
-# ---- Source-failed flag registry (#1717 wrinkle 1, CXO structural review
-# 2026-09-09) ----
+# ---- Source-failed directive registry (#1717 — wrinkle 1 registry round,
+# CXO structural review 2026-09-09; single-site composition 2026-09-12) ----
 #
-# SINGLE SOURCE OF TRUTH for the source-failed honest-degrade directives in
-# _format_domain_context. Before this registry the flag list existed three
-# times by hand — the five render sites, the scope-directive gate's tuple,
-# and the 1717 test's own DIRECTIVES dict — so a sixth flag could render its
-# FAILED line while silently escaping the scope directive AND the tests (the
-# exact report-failures-that-didn't-happen leak wrinkle 1 exists to stop).
+# SINGLE SOURCE OF TRUTH for the #1425-family source-failed honest-degrade
+# directives, rendered by the ONE composition site in _format_domain_context
+# (after the topical content sections, where the scope-directive gate used to
+# sit). History: the flag list once existed three times by hand (five render
+# sites + the scope gate's tuple + the 1717 test's own dict); the 2026-09-09
+# registry round single-sourced the LIST, and the 2026-09-12 composition fix
+# (#1717 proper, epic 5 / GatherOutcome opener) single-sourced the RENDERING
+# too — the five hand-placed per-flag sites are gone.
 #
-# Now: the scope-directive gate iterates THIS tuple, and the 1717 composition
-# tests derive their denominator from it. The five render sites themselves
-# stay hand-placed (each FAILED line must sit inside its topical section —
-# reminders, first-contact, projects, pending/completed todos — and the scope
-# directive after the LAST of them, so "listed as FAILED above" stays
-# literally true; a unifying loop would break that interleaving). The
-# site↔registry association is therefore enforced structurally instead:
-# tests/unit/services/intent_service/test_source_failed_registry_1717.py
-# parses this module's AST and fails if the flags the render sites actually
-# check ever diverge from this registry (key set OR order).
+# The composed contract (CXO's GatherOutcome user-facing contract §4,
+# docs/internal/design/gather-outcome-user-facing-contract-2026-09-09.md):
+#   - ONE armed flag  -> its registered `directive` renders verbatim (the
+#     live-probe-tuned single-failure copy, unchanged from the pre-fix sites).
+#   - TWO OR MORE     -> one AGGREGATE directive naming exactly the armed
+#     `check_name`s in registry order, instructing one sentence covering them
+#     together (never one caveat per check) with one unified honesty guard —
+#     never the N-line additive pile the issue documented.
+#   - ANY armed flag  -> the wrinkle-1 scope directive rides once after the
+#     failure report, so "listed as FAILED above" stays literally true.
 #
-# To add a sixth source-failed directive: add its render site in its topical
-# section ABOVE the scope-directive gate, and add its (flag, rendered-line
-# prefix) pair here in the same source order. Miss either half and the
-# derivation test is a red build, not a silent leak.
-#
-# Shape: (domain_context flag key, stable prefix of the rendered line).
-# The prefix is what the tests key off; it must match the site's copy
-# byte-for-byte (the composition tests assert the derived prefix appears in
-# real renderer output, so a drifted prefix also fails behaviorally).
-SOURCE_FAILED_FLAGS: Tuple[Tuple[str, str], ...] = (
-    ("source_failed", "- Reminder check FAILED:"),
-    ("first_contact_source_failed", "- First-exchange GitHub check FAILED:"),
-    ("projects_source_failed", "- Project check FAILED:"),
-    ("pending_todos_source_failed", "- Todo check FAILED:"),
-    ("completed_todos_source_failed", "- Completed-todo check FAILED:"),
+# To add a sixth source-failed directive: add ONE SourceFailedDirective entry
+# here. Nothing else — the composition site, the scope gate, and the 1717
+# tests all derive from this registry. Do NOT add a per-flag if-block in the
+# renderer: test_source_failed_registry_1717.py parses the renderer's AST and
+# fails any literal `domain_context.get("<*_source_failed>")` read (a hand
+# site is a fork of this registry — the additive pile reappearing one flag at
+# a time).
+class SourceFailedDirective(NamedTuple):
+    """One registered #1425-family source-failed honest-degrade directive."""
+
+    flag: str  # domain_context key the assembler arms on a failed read
+    check_name: str  # short check name, comma-joined into the N>=2 aggregate
+    directive: str  # full single-failure line, rendered verbatim at N == 1
+
+
+SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
+    SourceFailedDirective(
+        # #1425 honesty: the reminder lookup failed — a promised reminder may
+        # exist. Say we couldn't check; NEVER present this as "nothing due".
+        "source_failed",
+        "reminders",
+        "- Reminder check FAILED: could not verify whether any "
+        "reminders are due right now. If reminders come up, say you "
+        "couldn't check them just now — do not claim none are due.",
+    ),
+    SourceFailedDirective(
+        # #1536 + #1425: GitHub is connected but the first-exchange read
+        # failed — a demonstration was promised by the connection, so say we
+        # couldn't check; never present the failure as an empty repo.
+        "first_contact_source_failed",
+        "GitHub",
+        "- First-exchange GitHub check FAILED: the user's GitHub is "
+        "connected but the read did not complete. If their repo or "
+        "issues come up, say you couldn't check GitHub just now — "
+        "never claim the repo is empty and never invent items.",
+    ),
+    SourceFailedDirective(
+        # #1645 (#1573 shape): the projects lookup failed — projects may
+        # exist. NEVER present this as "no projects".
+        "projects_source_failed",
+        "projects",
+        "- Project check FAILED: could not load the user's project "
+        "list just now. If projects come up, say you couldn't check "
+        "them — do not claim there are none.",
+    ),
+    SourceFailedDirective(
+        # #1573 (#1425 honesty): the pending-todos lookup failed — todos may
+        # exist. NEVER present this as "no todos".
+        "pending_todos_source_failed",
+        "pending todos",
+        "- Todo check FAILED: could not load the user's pending todos "
+        "just now. If todos come up, say you couldn't check them — do "
+        "not claim there are none.",
+    ),
+    SourceFailedDirective(
+        # #1645 (#1573 shape): the completed-todos lookup failed — the user
+        # may have completed things. NEVER present this as "nothing done".
+        "completed_todos_source_failed",
+        "completed todos",
+        "- Completed-todo check FAILED: could not load the user's "
+        "completed todos just now. If asked what they've finished, "
+        "say you couldn't check — do not claim there are none.",
+    ),
 )
 
 
@@ -817,15 +867,8 @@ class ConversationalFloor:
                         "reminder block only, not twice."
                     )
 
-        # #1425 honesty: the reminder lookup FAILED — a promised reminder may
-        # exist. Say we couldn't check; NEVER present this as "nothing due".
-        # Registered in SOURCE_FAILED_FLAGS (AST-enforced association).
-        if domain_context.get("source_failed"):
-            lines.append(
-                "- Reminder check FAILED: could not verify whether any "
-                "reminders are due right now. If reminders come up, say you "
-                "couldn't check them just now — do not claim none are due."
-            )
+        # (#1717 note: the reminder source-failed directive renders at the
+        # single composition site below, derived from SOURCE_FAILED_FLAGS.)
 
         # #1536 FTUX-COLDSTART: first exchange of a conversation with a
         # connected GitHub — open by demonstrating with the user's own data,
@@ -890,17 +933,8 @@ class ConversationalFloor:
                 "— no such capability exists."
             )
 
-        # #1536 + #1425 honesty: GitHub is connected but the first-exchange
-        # read FAILED — a demonstration was promised by the connection, so say
-        # we couldn't check; never present the failure as an empty repo.
-        # Registered in SOURCE_FAILED_FLAGS (AST-enforced association).
-        if domain_context.get("first_contact_source_failed"):
-            lines.append(
-                "- First-exchange GitHub check FAILED: the user's GitHub is "
-                "connected but the read did not complete. If their repo or "
-                "issues come up, say you couldn't check GitHub just now — "
-                "never claim the repo is empty and never invent items."
-            )
+        # (#1717 note: the first-contact source-failed directive renders at
+        # the single composition site below, derived from SOURCE_FAILED_FLAGS.)
 
         # #1187: fetched source content for a summarize request — the floor renders the
         # summary FROM this content (the source it couldn't otherwise reach, e.g. a
@@ -1069,15 +1103,8 @@ class ConversationalFloor:
             else:
                 lines.append(f"- Active project count: {total}")
 
-        # #1645 (#1573 shape): the projects lookup FAILED — projects may
-        # exist. Say we couldn't check; NEVER present this as "no projects".
-        # Registered in SOURCE_FAILED_FLAGS (AST-enforced association).
-        if domain_context.get("projects_source_failed"):
-            lines.append(
-                "- Project check FAILED: could not load the user's project "
-                "list just now. If projects come up, say you couldn't check "
-                "them — do not claim there are none."
-            )
+        # (#1717 note: the projects source-failed directive renders at the
+        # single composition site below, derived from SOURCE_FAILED_FLAGS.)
 
         # #950 iteration: user-anchoring fields from extended _gather_identity_context
         if "user_projects" in domain_context:
@@ -1164,15 +1191,8 @@ class ConversationalFloor:
                     "pending items right now."
                 )
 
-        # #1573 (#1425 honesty): the pending-todos lookup FAILED — todos may
-        # exist. Say we couldn't check; NEVER present this as "no todos".
-        # Registered in SOURCE_FAILED_FLAGS (AST-enforced association).
-        if domain_context.get("pending_todos_source_failed"):
-            lines.append(
-                "- Todo check FAILED: could not load the user's pending todos "
-                "just now. If todos come up, say you couldn't check them — do "
-                "not claim there are none."
-            )
+        # (#1717 note: the pending-todos source-failed directive renders at
+        # the single composition site below, derived from SOURCE_FAILED_FLAGS.)
 
         if "completed_todos" in domain_context:
             completed = domain_context["completed_todos"]
@@ -1198,29 +1218,41 @@ class ConversationalFloor:
                     "have no completed todos right now."
                 )
 
-        # #1645 (#1573 shape): the completed-todos lookup FAILED — the user
-        # may have completed things. Say we couldn't check; NEVER present
-        # this as "nothing completed".
-        # Registered in SOURCE_FAILED_FLAGS (AST-enforced association).
-        if domain_context.get("completed_todos_source_failed"):
-            lines.append(
-                "- Completed-todo check FAILED: could not load the user's "
-                "completed todos just now. If asked what they've finished, "
-                "say you couldn't check — do not claim there are none."
-            )
-
-        # #1717 wrinkle 1 (CXO copy, 2026-09-01 — verbatim from the directive
-        # memo): scope the failure report to EXACTLY the FAILED lines. The
-        # 1-flag live probe caught the model hedging about projects/todos when
-        # only reminders had failed — reporting failures that did not happen.
-        # Absent context ≠ failed check (#1425's distinction, leaking in the
-        # opposite direction). Renders ONCE whenever at least one of the
-        # source-failed directives rendered; placed after the last of the
-        # sites so "listed as FAILED above" is literally true for any armed
-        # subset. The flag list derives from SOURCE_FAILED_FLAGS (the module
-        # registry) — never enumerate flags by hand here: a hand tuple is how
-        # a sixth flag rendered a FAILED line while escaping this gate.
-        if any(domain_context.get(flag) for flag, _ in SOURCE_FAILED_FLAGS):
+        # #1717 — the SINGLE source-failed composition site (epic 5 /
+        # GatherOutcome opener, 2026-09-12; contract §4 in CXO's GatherOutcome
+        # user-facing contract). Everything derives from SOURCE_FAILED_FLAGS;
+        # never add a per-flag if-block (AST-enforced by
+        # test_source_failed_registry_1717.py).
+        #   N == 1 -> the registered per-source directive, verbatim (the
+        #             live-probe-tuned copy the pre-fix sites carried).
+        #   N >= 2 -> ONE aggregate directive naming exactly the failed
+        #             checks, replacing the pre-fix additive pile of N
+        #             independent directives (the issue's defect): one
+        #             sentence covering them together, one unified honesty
+        #             guard (never-empty + never-invent), never one caveat
+        #             per check.
+        _failed_sources = [entry for entry in SOURCE_FAILED_FLAGS if domain_context.get(entry.flag)]
+        if _failed_sources:
+            if len(_failed_sources) == 1:
+                lines.append(_failed_sources[0].directive)
+            else:
+                _failed_names = ", ".join(entry.check_name for entry in _failed_sources)
+                lines.append(
+                    f"- DATA CHECKS FAILED this turn — could not check: "
+                    f"{_failed_names}. If any of these come up, report the "
+                    "failure in ONE sentence naming them together — never "
+                    "one caveat per check. Do not claim any of them is empty "
+                    "or has none, and never invent items to fill the gap."
+                )
+            # #1717 wrinkle 1 (CXO copy, 2026-09-01 — verbatim from the
+            # directive memo; BINDING, do not paraphrase): scope the failure
+            # report to EXACTLY the checks reported above. The 1-flag live
+            # probe caught the model hedging about projects/todos when only
+            # reminders had failed — reporting failures that did not happen.
+            # Absent context ≠ failed check (#1425's distinction, leaking in
+            # the opposite direction). Rides ONCE, directly after the failure
+            # report, so "listed as FAILED above" is literally true for any
+            # armed subset.
             lines.append(
                 "- Name ONLY the checks explicitly listed as FAILED above. Do "
                 "not mention any other data source. If something was not "
