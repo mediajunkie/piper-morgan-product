@@ -86,8 +86,13 @@ CXO's arm-survival ruling (consent has a freshness property a draft offer doesn'
 survival policy feeds the DESTRUCTIVE-tier design). Cite that doc going forward, not the mail
 thread.
 
-### 4. Corpus/classifier deposits (6 items) — no dependency, pick up opportunistically
-`#1505` `#1527` `#1559` `#1579` `#1606` `#1693`.
+### 4. Corpus/classifier deposits (9 items) — no dependency, pick up opportunistically
+`#1505` `#1527` `#1559` `#1579` `#1606` `#1693`. Plus, folded 2026-09-12 (same audit family,
+found by agent lanes working these very items): `#1755` (multi-intent path suppresses a genuine
+temporal ask when a connect ask rides the same message, found during #1505) · `#1756` (read-lane
+pre-classifier patterns claim destructive delete asks, an #1527 sibling) · `#1757` (portfolio
+archive/hide/restore patterns carry the same unguarded greedy capture #1527 fixed for delete,
+another sibling).
 
 **Why here, not strictly ordered**: Arch's own note — these parallelize freely, cheap,
 ratchet-governed gate-side deposits with no dependency on anything else in this list. Placed
@@ -95,9 +100,25 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (4 items) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (9 items) — lands after the acceptance-contract idiom proves out
 `#1717` (the audit's own meta-evidence for this cousin) · `#1730` · `#1736` · `#1738` (shared with
-Deliverable below).
+Deliverable below). Plus, folded 2026-09-12: `#1754` (ConversationHandler clarify/chitchat lane
+unreachable, independent same-day finding overlapping `#1759` — see that item's note) · `#1759`
+(dead clarify-carrier machinery, found during #1730's own diagnosis — disposition already ruled:
+DELETE, per Lead's #1730 Gap-2 proposal + Arch's same-day concurrence) · `#1760` (test-theatre mock
+mismatch, found via #1736) · `#1761` (consumer_core.py fabricates "No description available,"
+self-identified honest-empty candidate) · `#1763` (get_project_status rider-failure evidence, tied
+to #1738).
+
+**#1717 status (2026-09-12)**: code-done and live on v86 — awaits one harness re-run + CXO's voice
+read against the contract's §6 acceptance test (item 1, the composition case). CXO's call, not
+PPM's; noting here for tracking only.
+
+**#1730 status (2026-09-12)**: Gap 1 evidence-complete. Gap 2's structural ruling landed same-day —
+Lead proposed "ask-only-when-armed as an invariant" (option 3), Arch concurred with one condition
+(the enforcement table's site census must be mechanical, not hand-maintained). #1759 (above) is
+disposed as part of this ruling. Tracked here; the actual ruling and enforcement-table work is
+Lead/Arch's.
 
 **Why after epic 3, not before**: Arch's note — this is design-then-fix, and it benefits from the
 acceptance contract proving the single-source-predicate idiom on a live seam first, rather than
@@ -130,8 +151,10 @@ consequence for whoever scopes this: "…and N more" is a claim the assistant mu
 if it can't name the N, the honest render is "6 archived; here are 5, ask for the rest," not a
 silent truncation. CXO explicit: not proposing the fix, not re-ranking the epics.
 
-### 6. Rendered deliverable (2 items + 2 shared with GatherOutcome/Security) — same reasoning as 5
-`#1729` · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome).
+### 6. Rendered deliverable (3 items + 2 shared with GatherOutcome/Security) — same reasoning as 5
+`#1729` · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome). Plus, folded
+2026-09-12: `#1762` (render-truncation sweep, ~18 more "...and N more" sites, self-identified as
+#1738's class / epic-6 threading).
 
 **Why here**: same "prove the idiom first" logic as epic 5; MCP-path-first per the ratified scope
 ruling, per Arch. **Same CXO flag applies** — name the copy-owner before scoping the fix.
@@ -227,3 +250,13 @@ read, that's real information — update this file, don't defend the original gr
   tracker headline should use milestone-wide (matches `sprint-truth.py`'s own convention, which
   this file and PPM's every-fire count both already use). No conflict; just two different
   denominators serving two different purposes, now stated explicitly so it doesn't drift again.
+- 2026-09-12 13:09 WORK (PPM): 10 unmilestoned issues triaged, all folded into already-open epics
+  (none reopened): `#1755`/`#1756`/`#1757` → epic 4 (now 9 items, classifier-audit siblings of
+  #1505/#1527); `#1754`/`#1759`/`#1760`/`#1761`/`#1763` → epic 5 (now 9 items — #1754/#1759 are
+  independent same-day findings of the same ConversationHandler dead-code shape, #1759's
+  disposition already ruled DELETE per Lead/Arch's same-day #1730 Gap-2 concurrence); `#1762` →
+  epic 6 (now 3+2 shared items). Also closed `#1166` (Type-2 Dreaming three-way convergence,
+  CXO/PPM/Arch, done since 2026-06-08) — corrected the stale `roadmap.md` Dreams row in the same
+  pass (had read "spec-read pending" for three months after convergence landed). Recorded #1717
+  and #1730's same-day status for tracking (both are CXO's and Lead/Arch's calls respectively,
+  not PPM's — noted here only so the file stays accurate).
