@@ -12212,6 +12212,10 @@ If you have suggestions on how to fix the bug, please describe them here.
         """Generate feature request issue template."""
         labels_yaml = ", ".join(f'"{label}"' for label in labels)
 
+        # GitHub issue-template body: its '?' lines are template section
+        # prose the user pastes into GitHub, not asks Piper expects an
+        # answer to bind against (#1766).
+        # ask-census: not-a-user-ask — issue-template document body
         return f"""---
 name: Feature Request
 about: Suggest a new feature or enhancement

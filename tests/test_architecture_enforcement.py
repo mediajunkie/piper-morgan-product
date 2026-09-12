@@ -2768,3 +2768,622 @@ class TestAcceptanceContractRatchet:
                 f"{rel} calls detect_confirm_response again — its acceptance "
                 "decision must route through the predicate (#1739)."
             )
+
+
+class TestUnarmedAskSiteRatchet:
+    """#1766 — ask-only-when-armed enforcement for the #1730 Gap-2 ruling
+    (Lead proposed + Arch concurred 2026-09-12): every question-emitting site
+    arms through the one-slot store (#846) or doesn't ask.
+
+    THE CENSUS PREDICATE (Arch's ratification condition: derived MECHANICALLY,
+    visible here so its coverage is arguable — a new question-emitting site
+    fails the build BY BEING FOUND, never by someone remembering a table):
+
+    Scope: every ``*.py`` under ``services/intent_service/`` and
+    ``services/intent/``, minus ``soft_invocation.py`` (the arming rail
+    itself — every offer template it declares reaches the user only through
+    the apply path that records + ``set_pending_offer``-arms it by
+    construction).
+
+    An INTERROGATIVE LITERAL is any string constant or f-string (constant
+    parts joined with ``{}`` placeholders) in which some line, after
+    stripping trailing whitespace and markdown closers (``*_)`]``), ends
+    with ``?`` — minimum 8 chars and containing a space (drops bare-token
+    matches). NOT counted (each rule earned by a measured false-positive
+    class, 2026-09-12 iteration):
+
+    - docstrings;
+    - operands of comparisons, dict KEYS, ``raise`` messages, and arguments
+      to string-matcher/regex/logging calls (``endswith``/``strip``/
+      ``re.search``/``logger.*`` etc.) — input matching, not emission;
+    - strings flowing into an ``utterance`` parameter (kwarg ``utterance=``,
+      or any argument of a corpus callable whose FIRST parameter is
+      ``utterance``, e.g. ``POINTER(...)``) — sample USER phrasings;
+    - holders named ``*EXAMPLE*`` (sample user messages, e.g.
+      ``ACTION_EXAMPLES``) or ``*PROMPT*`` (LLM-facing template constants);
+    - holders whose own name says ``question`` (``open_repo_question``,
+      ``FTUX_INTERVIEW_QUESTION``, ...) — ask-copy DEFINITIONS whose
+      emission lives at their consumers; every current consumer verified
+      arming at freeze time (they thread the copy as the stored
+      ``question=`` — itself an arm signal);
+    - literals carrying an ``# ask-census: <reason>`` marker on their own
+      line or the line directly above — the residual hand-annotation lives
+      AT the site, never in this table, and the marker count is ceilinged
+      below.
+
+    A HOLDER is the enclosing function/method (qualname), or the target
+    name of a module/class-level assignment (copy constants/containers).
+    A holder ARMS iff its OWN body (nested defs excluded) does any of:
+    call ``set_pending_offer``; pass a ``question=`` kwarg or build a dict
+    with a ``"question"`` key (the #1665 stored-ask idiom); or mention a
+    string ending ``_pending`` (the no-clobber flag stamp). The census is
+    every holder with >= 1 interrogative literal that does not arm.
+
+    KNOWN_UNARMED_ASK_SITES starts at the census MEASURED 2026-09-12
+    (measured, never base-minus-predicted) and is SHRINK-ONLY — the
+    KNOWN_UNADOPTED_DETECTOR_SITES / KNOWN_UNMIGRATED mechanics. Arm a
+    site (store the rendered ask + arm the one-slot store, or delete the
+    ask) and remove its row in the same commit. A row is
+    (file, holder, literal-count, fingerprint): copy edits or NEW ask copy
+    inside an already-listed holder change the row and fail the tightness
+    test — an unarmed site's ask copy cannot drift silently.
+
+    PRESENT-NOT-ENFORCED BOUNDARY (requirement 3, stated honestly — the
+    predicate is fully mechanical over its scope; these are the edges of
+    that scope, each carried here so "complete for the space it searched"
+    stays visible, m-44):
+
+    1. SCOPE: the two intent reply surfaces only. Question-emitting code
+       elsewhere is not censused: ``services/standup/`` (its conversation
+       machine arms via its own adopted state rail, not the one-slot
+       store — #1739 table), onboarding (on ice, ADR-059), web templates,
+       and above all LLM FREE TEXT — the conversational floor can generate
+       a question in prose at runtime; no static census can see it. Those
+       surfaces' ask-only-when-armed compliance is Present, not Enforced.
+    2. GRANULARITY: holder-level. A holder that arms on one path is
+       treated as arming all its asks — a mixed function with an armed ask
+       on path A and an unarmed ask on path B under-reports B (this is the
+       same granularity the acceptance-contract file scan accepts).
+    3. The ``*question*``-named copy-helper exemption trusts the consumer:
+       a FUTURE consumer that emits such a helper's copy without arming
+       holds no literal of its own and escapes the census.
+    """
+
+    _SCAN_GLOBS = (
+        os.path.join("services", "intent_service", "*.py"),
+        os.path.join("services", "intent", "*.py"),
+    )
+
+    _EXCLUDED_MODULES = frozenset({"services/intent_service/soft_invocation.py"})
+
+    _MATCHER_ATTRS = frozenset(
+        {
+            "endswith",
+            "startswith",
+            "strip",
+            "lstrip",
+            "rstrip",
+            "split",
+            "rsplit",
+            "removeprefix",
+            "removesuffix",
+            "count",
+            "find",
+            "rfind",
+            "index",
+            "replace",
+            "search",
+            "match",
+            "fullmatch",
+            "sub",
+            "subn",
+            "findall",
+            "finditer",
+            "compile",
+        }
+    )
+
+    _TRAILING_CLOSERS = " \t\n*_)`]"
+    _QUESTION_NAME_RE = re.compile(r"(?i)question")
+    _MARKER_RE = re.compile(r"ask-census:\s*\S")
+
+    # In-source marker exemptions, MEASURED 2026-09-12 and kept tight below:
+    # a marker is the sanctioned residual annotation (it lives AT the site,
+    # with its reason); this ceiling keeps it an exception, not an exit.
+    #   1. IntentService._generate_feature_request_template — GitHub
+    #      issue-template body; its '?' lines are template section prose.
+    #   2. todo_handlers.handle_reminder_time_turn — the re-ask copy is
+    #      emitted AFTER _rearm_time_question() re-armed the store with
+    #      this same stored ask (#1654); the arm lives in the callee, out
+    #      of the holder-local scan's sight.
+    MAX_MARKER_EXEMPTIONS = 2
+
+    # THE RATCHET TABLE — census MEASURED 2026-09-12 (predicate above, run
+    # over the scope above). SHRINK-ONLY: arm the site through the one-slot
+    # store (storing the rendered ask, #1665) or delete the ask, then remove
+    # the row in the same commit. NEVER add a row — a new unarmed ask site
+    # must arm instead. Row = (file, holder, literal-count, fingerprint:
+    # first 60 chars of the lexicographically-first whitespace-normalized
+    # interrogative literal).
+    KNOWN_UNARMED_ASK_SITES = frozenset(
+        {
+            (
+                "services/intent/intent_service.py",
+                "IntentService._get_contextual_fallback",
+                4,
+                "I can close issues! Just tell me the issue number, like 'clo",
+            ),
+            (
+                "services/intent/intent_service.py",
+                "IntentService._handle_close_issue_query",
+                2,
+                "Are you sure you want to close issue #{}: **{}**? Say 'yes, ",
+            ),
+            (
+                "services/intent/intent_service.py",
+                "IntentService._handle_reopen_issue_query",
+                2,
+                "Reopen issue #{}: **{}**? Say 'yes, reopen #{}' to confirm.",
+            ),
+            (
+                "services/intent/intent_service.py",
+                "IntentService._resume_suspended_standup",
+                3,
+                "Here's what we had so far: {} Would you like to continue ref",
+            ),
+            (
+                "services/intent/intent_service.py",
+                "IntentService._start_standup_conversation",
+                1,
+                "You have a standup conversation in progress. Would you like ",
+            ),
+            (
+                "services/intent_service/canonical_handlers.py",
+                "CanonicalHandlers._format_general_setup_guidance",
+                1,
+                "I'd be happy to help you get set up with Piper! **Getting St",
+            ),
+            (
+                "services/intent_service/canonical_handlers.py",
+                "CanonicalHandlers._format_integration_setup_guidance",
+                2,
+                "To connect integrations, visit the **Settings** hub: → [Sett",
+            ),
+            (
+                "services/intent_service/canonical_handlers.py",
+                "CanonicalHandlers._format_project_setup_guidance",
+                4,
+                "I'd be happy to help you set up your projects! To configure ",
+            ),
+            (
+                "services/intent_service/canonical_handlers.py",
+                "CanonicalHandlers._handle_portfolio_query",
+                12,
+                "I can help you manage your projects. You can ask me to: - Sh",
+            ),
+            (
+                "services/intent_service/canonical_handlers.py",
+                "CanonicalHandlers._handle_priority_query",
+                2,
+                "I'm having trouble accessing your configuration right now. Y",
+            ),
+            (
+                "services/intent_service/canonical_handlers.py",
+                "CanonicalHandlers._handle_project_setup_request",
+                2,
+                "Want to add another, or would you like to review what you ha",
+            ),
+            (
+                "services/intent_service/canonical_handlers.py",
+                "CanonicalHandlers._handle_provenance_query",
+                1,
+                "I ran into a snag retrieving what I was drawing on for that.",
+            ),
+            (
+                "services/intent_service/canonical_handlers.py",
+                "CanonicalHandlers._handle_spatial_project_list",
+                1,
+                "You don't have any active projects configured in your PIPER.",
+            ),
+            (
+                "services/intent_service/canonical_handlers.py",
+                "CanonicalHandlers._handle_status_query",
+                1,
+                "I'm having trouble accessing your configuration right now. Y",
+            ),
+            (
+                "services/intent_service/conversational_floor.py",
+                "_SCAFFOLDING_ONLY_FALLBACK",
+                1,
+                "I don't have that information in front of me right now — cou",
+            ),
+            (
+                "services/intent_service/first_contact.py",
+                "render_first_contact_block",
+                1,
+                "You don't need to hold this list — I've got it. Want to dig ",
+            ),
+            (
+                "services/intent_service/honest_failure.py",
+                "HonestFailureHandler.FOLLOW_UP_SUGGESTIONS",
+                4,
+                "Could you please rephrase your request?",
+            ),
+            (
+                "services/intent_service/honest_failure.py",
+                "HonestFailureHandler.handle_low_confidence",
+                3,
+                "Is that what you meant?",
+            ),
+            (
+                "services/intent_service/personality_bridge.py",
+                "PersonalityBridge._suggest_follow_up",
+                3,
+                "Could you tell me more about what you're looking for?",
+            ),
+            (
+                "services/intent_service/todo_handlers.py",
+                "TodoIntentHandlers.handle_create_todo",
+                1,
+                "I didn't catch what you'd like me to add. Could you try: 'ad",
+            ),
+            (
+                "services/intent_service/warmth_calibration.py",
+                "WarmthCalibrator.get_error_phrase",
+                2,
+                "I searched but came up empty—could you give me more details?",
+            ),
+            (
+                "services/intent_service/workflow_entries.py",
+                "run_summarize_document_workflow",
+                1,
+                "You've uploaded a few files and I'm not sure which one you m",
+            ),
+        }
+    )
+
+    # ---- census machinery (the predicate, executably) ----
+
+    def _repo_root(self) -> str:
+        return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    @staticmethod
+    def _interrogative(text: str) -> bool:
+        if len(text) < 8 or " " not in text:
+            return False
+        return any(
+            line.rstrip(TestUnarmedAskSiteRatchet._TRAILING_CLOSERS).endswith("?")
+            for line in text.splitlines()
+        )
+
+    @staticmethod
+    def _joined_text(node) -> str:
+        import ast
+
+        return "".join(
+            v.value if isinstance(v, ast.Constant) and isinstance(v.value, str) else "{}"
+            for v in node.values
+        )
+
+    @staticmethod
+    def _marker_lines(source: str) -> set:
+        import io
+        import tokenize
+
+        marked = set()
+        for tok in tokenize.generate_tokens(io.StringIO(source).readline):
+            if tok.type == tokenize.COMMENT and TestUnarmedAskSiteRatchet._MARKER_RE.search(
+                tok.string
+            ):
+                marked.add(tok.start[0])
+        return marked
+
+    @staticmethod
+    def _own_nodes(node):
+        """Walk a holder body WITHOUT descending into nested defs/classes."""
+        import ast
+
+        stack = list(ast.iter_child_nodes(node))
+        while stack:
+            child = stack.pop()
+            yield child
+            if not isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                stack.extend(ast.iter_child_nodes(child))
+
+    @classmethod
+    def _holder_arms(cls, nodes) -> bool:
+        import ast
+
+        for sub in nodes:
+            if isinstance(sub, ast.Call):
+                f = sub.func
+                attr = (
+                    f.attr
+                    if isinstance(f, ast.Attribute)
+                    else (f.id if isinstance(f, ast.Name) else None)
+                )
+                if attr == "set_pending_offer":
+                    return True
+                if any(kw.arg == "question" for kw in sub.keywords):
+                    return True
+            if isinstance(sub, ast.Dict) and any(
+                isinstance(k, ast.Constant) and k.value == "question" for k in sub.keys
+            ):
+                return True
+            if (
+                isinstance(sub, ast.Constant)
+                and isinstance(sub.value, str)
+                and sub.value.endswith("_pending")
+            ):
+                return True
+        return False
+
+    @staticmethod
+    def _utterance_ctors(tree) -> set:
+        """Corpus callables whose FIRST (non-self) parameter is `utterance` —
+        strings passed to them are sample USER phrasings, not Piper asks."""
+        import ast
+
+        names = set()
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef):
+                for item in node.body:
+                    if isinstance(item, ast.FunctionDef) and item.name == "__init__":
+                        args = [a.arg for a in item.args.args if a.arg != "self"]
+                        if args and args[0] == "utterance":
+                            names.add(node.name)
+            elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                args = [a.arg for a in node.args.args if a.arg not in ("self", "cls")]
+                if args and args[0] == "utterance":
+                    names.add(node.name)
+        return names
+
+    @classmethod
+    def _excluded_string_ids(cls, tree, utterance_ctors) -> set:
+        """ids of string nodes in non-emitting contexts (matching, logging,
+        raising, comparison, dict keys, utterance corpora)."""
+        import ast
+
+        excluded = set()
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Call):
+                f = node.func
+                attr = (
+                    f.attr
+                    if isinstance(f, ast.Attribute)
+                    else (f.id if isinstance(f, ast.Name) else None)
+                )
+                root = f
+                while isinstance(root, ast.Attribute):
+                    root = root.value
+                root_name = root.id if isinstance(root, ast.Name) else None
+                non_emitting = (
+                    attr in cls._MATCHER_ATTRS
+                    or root_name in ("logger", "logging", "log")
+                    or attr in utterance_ctors
+                )
+                if non_emitting:
+                    for arg in node.args:
+                        excluded.update(id(s) for s in ast.walk(arg))
+                for kw in node.keywords:
+                    if kw.arg == "utterance" or non_emitting:
+                        excluded.update(id(s) for s in ast.walk(kw.value))
+            elif isinstance(node, ast.Compare):
+                excluded.update(id(s) for s in ast.walk(node))
+            elif isinstance(node, ast.Dict):
+                for key in node.keys:
+                    if key is not None:
+                        excluded.update(id(s) for s in ast.walk(key))
+            elif isinstance(node, ast.Raise):
+                excluded.update(id(s) for s in ast.walk(node))
+        return excluded
+
+    @staticmethod
+    def _docstring_ids(tree) -> set:
+        import ast
+
+        ids = set()
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
+                body = node.body
+                if (
+                    body
+                    and isinstance(body[0], ast.Expr)
+                    and isinstance(body[0].value, ast.Constant)
+                ):
+                    ids.add(id(body[0].value))
+        return ids
+
+    @staticmethod
+    def _collect_holders(tree):
+        """(qualname, body-nodes) per holder: every def, plus module/class-
+        level assignment targets (copy constants/containers)."""
+        import ast
+
+        result = []
+
+        def rec(node, prefix, at_top):
+            for child in ast.iter_child_nodes(node):
+                if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    q = f"{prefix}{child.name}"
+                    result.append((q, list(TestUnarmedAskSiteRatchet._own_nodes(child))))
+                    rec(child, q + ".", False)
+                elif isinstance(child, ast.ClassDef):
+                    rec(child, f"{prefix}{child.name}.", True)
+                elif (
+                    at_top
+                    and isinstance(child, ast.Assign)
+                    and len(child.targets) == 1
+                    and isinstance(child.targets[0], ast.Name)
+                ):
+                    result.append((f"{prefix}{child.targets[0].id}", list(ast.walk(child.value))))
+                elif (
+                    at_top
+                    and isinstance(child, ast.AnnAssign)
+                    and child.value is not None
+                    and isinstance(child.target, ast.Name)
+                ):
+                    result.append((f"{prefix}{child.target.id}", list(ast.walk(child.value))))
+                elif at_top:
+                    result.append(
+                        (
+                            f"{prefix}<toplevel>",
+                            list(TestUnarmedAskSiteRatchet._own_nodes(child)) + [child],
+                        )
+                    )
+
+        rec(tree, "", True)
+        return result
+
+    def _census(self):
+        """Run the predicate. Returns (rows, stats) where rows is the set of
+        (file, holder, literal-count, fingerprint) for UNARMED ask sites and
+        stats carries the vacuity-guard denominators."""
+        import ast
+
+        root = self._repo_root()
+        parsed = []
+        utterance_ctors = set()
+        for pattern in self._SCAN_GLOBS:
+            for path in sorted(glob.glob(os.path.join(root, pattern))):
+                rel = os.path.relpath(path, root).replace(os.sep, "/")
+                if rel in self._EXCLUDED_MODULES:
+                    continue
+                with open(path, encoding="utf-8") as fh:
+                    source = fh.read()
+                tree = ast.parse(source)
+                parsed.append((rel, source, tree))
+                utterance_ctors |= self._utterance_ctors(tree)
+
+        sites = {}
+        arming = set()
+        marker_exemptions = []
+        for rel, source, tree in parsed:
+            marked = self._marker_lines(source)
+            excluded = self._excluded_string_ids(tree, utterance_ctors)
+            docs = self._docstring_ids(tree)
+            for qual, nodes in self._collect_holders(tree):
+                key = (rel, qual)
+                simple = qual.rsplit(".", 1)[-1].upper()
+                skip_holder = (
+                    "EXAMPLE" in simple
+                    or "PROMPT" in simple
+                    or self._QUESTION_NAME_RE.search(simple)
+                )
+                if self._holder_arms(nodes):
+                    arming.add(key)
+                for sub in nodes:
+                    text = None
+                    if isinstance(sub, ast.JoinedStr) and id(sub) not in excluded:
+                        text = self._joined_text(sub)
+                        for part in sub.values:
+                            excluded.add(id(part))
+                    elif (
+                        isinstance(sub, ast.Constant)
+                        and isinstance(sub.value, str)
+                        and id(sub) not in excluded
+                        and id(sub) not in docs
+                    ):
+                        text = sub.value
+                    if text is None or not self._interrogative(text):
+                        continue
+                    if skip_holder:
+                        continue
+                    lineno = getattr(sub, "lineno", 0)
+                    if lineno in marked or (lineno - 1) in marked:
+                        marker_exemptions.append((rel, qual, lineno))
+                        continue
+                    sites.setdefault(key, []).append(text)
+
+        rows = set()
+        for (rel, qual), texts in sites.items():
+            if (rel, qual) in arming:
+                continue
+            normalized = sorted(" ".join(t.split()) for t in texts)
+            rows.add((rel, qual, len(texts), normalized[0][:60]))
+
+        stats = {
+            "files": len(parsed),
+            "interrogative_literals": sum(len(v) for v in sites.values()),
+            "arming_holders": len(arming),
+            "arming": arming,
+            "marker_exemptions": marker_exemptions,
+        }
+        return rows, stats
+
+    # ---- the tests ----
+
+    def test_scan_space_is_populated(self):
+        """Vacuity guard (m-44): the census must actually see the known
+        world — an empty derivation is indistinguishable from a broken
+        scanner and must fail loudly, never pass as 'no violations'."""
+        rows, stats = self._census()
+        assert stats["files"] >= 40, (
+            f"ask-site census scanned only {stats['files']} files — the scan "
+            f"glob broke; fix the derivation before trusting any result."
+        )
+        assert stats["interrogative_literals"] >= 40, (
+            f"ask-site census found only {stats['interrogative_literals']} "
+            f"interrogative literals (dozens exist) — the literal detector "
+            f"broke; fix it before trusting any result."
+        )
+        assert stats["arming_holders"] >= 30, (
+            f"ask-site census found only {stats['arming_holders']} arming "
+            f"holders (the corpus has dozens of set_pending_offer sites) — "
+            f"the arm detector broke; fix it before trusting any result."
+        )
+        assert any(
+            rel == "services/intent_service/reminder_clear.py" for rel, _ in stats["arming"]
+        ), (
+            "The arm scan no longer sees reminder_clear.py's arm sites (the "
+            "densest set_pending_offer file) — the scanner is measuring "
+            "nothing; fix it before trusting this class's other results."
+        )
+
+    def test_no_new_unarmed_ask_sites(self):
+        """#1766 requirement 1: a NEW question-emitting site that does not
+        arm fails the build BY BEING FOUND. Fix: arm through the one-slot
+        store — render the ask once, store it (question= / \"question\" key,
+        #1665) and set_pending_offer — or don't ask. Do NOT add a row."""
+        rows, _stats = self._census()
+        new_rows = rows - self.KNOWN_UNARMED_ASK_SITES
+        assert not new_rows, (
+            f"NEW unarmed ask site(s): {sorted(new_rows)}. The #1730 Gap-2 "
+            f"ruling: every question-emitting site arms through the one-slot "
+            f"store (#846) or doesn't ask. Arm the site (store the rendered "
+            f"ask + set_pending_offer — see reminder_clear.py's verb-question "
+            f"seam for the reference shape) instead of adding a row; "
+            f"KNOWN_UNARMED_ASK_SITES only shrinks. (A changed row for an "
+            f"already-listed holder means its ask copy or count changed — "
+            f"re-measure and update the row in the same commit, shrinking if "
+            f"you armed it.)"
+        )
+
+    def test_unarmed_baseline_stays_tight(self):
+        """Shrink-only, enforced: a row whose site no longer emits an
+        unarmed ask is STALE — remove it in the arming commit so the table
+        always states the true remaining debt (m-44)."""
+        rows, _stats = self._census()
+        stale = self.KNOWN_UNARMED_ASK_SITES - rows
+        assert not stale, (
+            f"KNOWN_UNARMED_ASK_SITES lists sites the census no longer "
+            f"finds unarmed: {sorted(stale)}. Remove the rows (the table "
+            f"only shrinks); if the holder still asks but its copy changed, "
+            f"update the row's count/fingerprint in the same commit."
+        )
+
+    def test_marker_exemptions_stay_bounded(self):
+        """The `# ask-census:` marker is the sanctioned residual annotation
+        (it lives AT the site with its reason) — ceilinged and tight so it
+        stays an exception, never an exit ramp from the ratchet."""
+        _rows, stats = self._census()
+        n = len(stats["marker_exemptions"])
+        assert n == self.MAX_MARKER_EXEMPTIONS, (
+            f"ask-census marker exemptions: {n} "
+            f"(expected exactly {self.MAX_MARKER_EXEMPTIONS}): "
+            f"{stats['marker_exemptions']}. A new marker needs review — it "
+            f"must state at its site why the literal is not an unarmed ask "
+            f"(armed-in-turn via a callee, or not user-facing ask copy) — "
+            f"and this ceiling updated deliberately in the same commit; a "
+            f"removed marker lowers it."
+        )
