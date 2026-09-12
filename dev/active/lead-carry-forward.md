@@ -1,8 +1,12 @@
 # Lead carry-forward — rewritten 2026-08-29 ~18:15 PT (freshness rule: full pass at START/STOP)
 
 ## Live state (receipts, refreshed 2026-09-12 07:0x — Saturday fire 1)
-- **v73 LIVE** (deployed this fire, deploy-by-default; belt green: smoke 506 / unit 10603 /
-  ratchets 54). MVP **24 open**.
+- **v74 LIVE** (two deploys this fire, deploy-by-default; belt green each time: smoke 506 /
+  unit 10603 / ratchets 54 / jest 25). MVP **23 open**.
+- **1741 CLOSED + deployed**: suggestions UI escaped per the 1578 treatment (user text out of
+  onclick; deliberately NOT the DOMPurify chokepoint — inline handlers are by design).
+  ⚠️ jest verifies need `--config tests/frontend/jest.config.js` — bare `npx jest` runs
+  node-env and fails 9/9 while looking like a broken fix.
 - **1690 CLOSED + verified in prod**: demo plugin default-OFF (opt-in `PIPER_DEMO_PLUGIN=1`);
   running instance shows "Initialized 4/4 plugin(s)" — demo absent. ⚠️ curl probes of prod
   routes are UNINFORMATIVE for mounted/unmounted: auth middleware 401s before routing
@@ -18,8 +22,8 @@
 
 ## Queue (PM pre-authorized; one lane at a time in this worktree)
 - INTAKE NEXT FIRE: next never-started MVP item per PPM's epic order
-  (`dev/active/mvp-epic-order-2026-09-09.md`); epic-2 remainder = 1741 (suggestions XSS,
-  filed w/ repro) · 1733 (stale unauth personality page).
+  (`dev/active/mvp-epic-order-2026-09-09.md`); epic-2 remainder = 1733 (stale unauth
+  personality page) only — 1741 closed this fire.
 - THEN: Web's test credential (real signup path — unblocks 1512/1568/1578/1581 browser
   closes) · 1677/1488 close-out on PM's transcript · #1689 native dialogs · #1659/#1660
   file residues · #1653/#1652 consent keeps · pre-claim shadow probe (measurement for the
