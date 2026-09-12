@@ -1,6 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-11 ~16:20 PDT (15:57 fire, complete — quiet, fully drained).
+**Updated**: 2026-09-11 ~19:20 PDT (18:57 fire, complete). NO-SESSION-LOG thread fully closed
+(grace widened 10→20min, belt confirmed 0-for-2, structural fix bundled into CIO's 7v). Next fire
+(21:57) is today's last — day-close procedure due.
 **Session log**: `dev/2026/09/11/2026-09-11-0623-docs-code-log.md` (open).
 **New standing practice, effective immediately**: only cc PM (`xian (ceo)`) on memos that (a)
 contain a decision only PM can make, (b) relay a PM ruling, or (c) contain something PM would want
