@@ -1,3 +1,12 @@
+---
+currency_claim: none
+currency_claim_reason: "Rewritten at the end of every substantive fire (multiple times/day) — a
+  max_age_days check would either be trivially satisfied or would need an implausibly short
+  window. Declared honest per check-refresh-promises.py's --state-files mode (found ungapped/
+  undeclared 2026-09-12, PPM's own seat, same self-audit pattern CXO/CIO/Exec ran this week) —
+  see the prose 'Last rewritten' timestamp at the top of this file for the actual live claim."
+---
+
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)

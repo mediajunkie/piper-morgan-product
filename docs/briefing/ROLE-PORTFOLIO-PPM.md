@@ -8,6 +8,7 @@ refreshed: 2026-09-11
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-PPM.md
 refresh_discipline: "section 2 updated as part of each weekly workstream review — can't write the Ship/workstream without restating priorities + status, so the review keeps this current by construction (Rule 5)"
+refresh_verifiability: by-hand
 ---
 
 # PPM Role Portfolio
