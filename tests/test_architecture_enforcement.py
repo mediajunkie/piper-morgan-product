@@ -2447,6 +2447,8 @@ class TestAcceptanceContractRatchet:
     drafted_issue file-confirm decision           W/OUT   ADOPTED     "question" threaded 09-10
     repo_clarification accept/decline decision    W/OUT   ADOPTED     "question" threaded 09-10
     standup overdue-todo offer answers (int_svc)  W/PRIV  ADOPTED     "question" on the record
+    #1591 interview-invitation answers (int_svc)  W/PRIV  ADOPTED     "question" on the record
+    #1591 mode read-back answers (int_svc)        W/PRIV  ADOPTED     "question" on the record
     generic offer seam, other non-READ kinds      W/PRIV  UNADOPTED   blocked: LOW-tier vocab
     reminder time/task turns (todo_handlers)      READ*   UNADOPTED   holds (kind-specific)
     reminder_clear turns                          READ*   UNADOPTED   holds (kind-specific)
@@ -2487,9 +2489,24 @@ class TestAcceptanceContractRatchet:
     widened by nothing; the kind inherits the CXO-owned LOW-tier tightening
     automatically when it lands. The intent_service.py
     ``detect_offer_response`` baseline row REMAINS: the OTHER non-READ /
-    axis-less generic kinds (verify_inference and standup-interview
-    accept/decline residues, ftux and unregistered workflow types) still
-    take the legacy branch — the row states the true remaining debt (m-44).
+    axis-less generic kinds still take the legacy branch — the row states
+    the true remaining debt (m-44).
+
+    2026-09-12 (#1652, the offer-flag gap's consume half): the
+    ``verify_inference`` and ``standup_interview`` kinds adopted at the
+    generic seam, at their DECLARED axes (WRITE×PRIVATE → LOW_CEREMONY —
+    the standup_complete_todo tier judgment and zero-widening argument
+    apply verbatim; the invitation's own copy teaches "just say yes", so
+    the bare-affirmative bar is contract axis (b), not a loosening). Arm
+    survival is the SILENT LOW-tier form (§5a): these asks hold no bound
+    object, so normal processing answers their state questions correctly —
+    unlike the todo kind's visible form, whose questions the classifier
+    demonstrably misread. Remaining on the intent_service.py legacy branch:
+    ftux and unregistered workflow types. The arm half of #1652 is
+    flag-stamping only (``standup_interview_invitation_pending`` /
+    ``verify_inference_read_back_pending`` join ``_apply_soft_offer``'s
+    ``_pending_flags``), covering all three #1591 arm sites incl. PPM's
+    empty lead.
 
     Arm-survival semantics as adopted (CXO ruling 2026-09-10, contract doc
     §5a/§5b — docs/internal/design/acceptance-contract-user-facing-2026-09-10.md):
