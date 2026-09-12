@@ -182,6 +182,30 @@ The correction window gets the same axis-(a) gate. Echo-answers at the armed del
 confirm ("yes, delete them") remain deliberately non-firing (not crisp full-message
 vocabulary; the pop stands — issue #1653 note 2, evidence-gated to change).
 Regression: `test_reminder_clear_verb_anchor_1653.py`.
+**#1696 explicit bulk delete (2026-09-12)**: the seam's `_EXPLICIT_VERB_RE`
+decline (correct — an explicit verb isn't ambiguous) left 'delete my
+reminders' with LESS capability than the ambiguous 'clear my reminders': it
+dispatched the delete_todo rail, named no single target (every word is
+command vocabulary — `_named_delete_target` → ""), and fell to
+`handle_delete_todo`'s single-item which-todo ask. A SECOND seam in
+`run_delete_todo_workflow`, AFTER the clear-family seam declines
+(`reminder_clear.maybe_handle_explicit_bulk_delete`), claims the bulk shape —
+plural domain noun (reminders / todos / to-dos / tasks), no todo number, no
+named target, no exception clause (#1563's lane) — and arms the clear-family
+flow's already-#1190-gated delete leg: targets resolved at OFFER time (the
+noun scopes the set, #1569 — 'reminders' = reminder-dated rows, 'todos' = all
+active), ids+texts bound, plain confirm copy ("Delete these N reminders?
+(yes/no)" — no stored-preference framing; the user SAID delete, and the #1510
+verb store is neither read nor written), "yes" dispatches
+`clear_reminders_delete`. No verb vocabulary added: the delete_todo emission
+is the verb evidence, so remove/erase/'get rid of' phrasings ride the same
+seam. Companion: `_DELETE_COMMAND_NOISE` gains the bare quantifier "all"
+('delete all my reminders' used to resolve 'all' as a NAMED target and
+answer with the matching-"all" miss). Boundaries pinned both ways: #1605
+keeps first claim on ambiguous shapes; singular unnamed 'delete my reminder'
+keeps the which-todo ask; the #1527 named-target and #1666 numbered legs
+unchanged. Regression: `test_bulk_delete_reminders_1696.py` + the updated
+bulk pin in `test_reminder_delete_misroute_1527.py`.
 
 **#1595 Phase 1 inversion shadow observer (2026-08-14) — an explicitly
 NON-dispatching fifth party that watches the chain, never joins it.** When

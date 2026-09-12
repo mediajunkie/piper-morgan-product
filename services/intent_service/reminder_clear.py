@@ -180,6 +180,14 @@ _EXCEPTION_RE = re.compile(
     re.IGNORECASE,
 )
 
+# #1696: PLURAL domain nouns — the bulk-shape signal for an EXPLICIT delete.
+# Deliberately plural-only: 'delete my reminder' (singular, unnamed) keeps
+# the which-one clarification; 'delete my reminders' is a bulk ask. These
+# are shape-detection constants (the #1605 handler-internal detection
+# precedent), not argument extraction — no prose is captured from them.
+_BULK_REMINDER_PLURAL_RE = re.compile(r"\breminders\b", re.IGNORECASE)
+_BULK_TODO_PLURAL_RE = re.compile(r"\b(?:to-?dos|tasks)\b", re.IGNORECASE)
+
 
 @dataclass(frozen=True)
 class ClearAsk:
@@ -244,6 +252,39 @@ def _extract_named_target(text: str) -> Optional[str]:
         if candidate.lower() in {"", "first", "last", "next", "that", "this", "one"}:
             return None
         return candidate
+    return None
+
+
+def detect_explicit_bulk_delete_ask(message: Optional[str]) -> Optional[str]:
+    """#1696 — detect an EXPLICIT bulk delete over the reminder/todo domain.
+
+    The inverse face of ``detect_clear_family_ask``: that seam deliberately
+    declines explicit imperatives (``_EXPLICIT_VERB_RE`` — the verb is not
+    ambiguous), which left 'delete my reminders' with LESS capability than
+    the ambiguous 'clear my reminders' (the 1527 lane's filed finding: the
+    single-item which-todo ask answered a bulk ask). This detector claims
+    the PLURAL/bulk shape only: a plural domain noun, no exception clause.
+    Number-free-ness and named-target-emptiness are the CALLER's checks
+    (``maybe_handle_explicit_bulk_delete``) — they need todo_handlers /
+    destructive_confirm machinery this module keeps lazy.
+
+    No verb check, deliberately: this runs only inside the delete_todo rail
+    entry point, so the classifier's delete_todo emission IS the verb
+    evidence — remove / erase / 'get rid of' phrasings ride the same seam
+    without this module growing a verb vocabulary.
+
+    Returns the copy noun ("reminder" | "todo", #1569 — reminder wins a
+    mixed mention, same tiebreak as ``detect_clear_family_ask``), or None.
+    """
+    text = (message or "").strip()
+    if not text:
+        return None
+    if _EXCEPTION_RE.search(text):
+        return None  # #1563's set-complement lane — never guess the set
+    if _BULK_REMINDER_PLURAL_RE.search(text):
+        return "reminder"
+    if _BULK_TODO_PLURAL_RE.search(text):
+        return "todo"
     return None
 
 
@@ -791,6 +832,124 @@ async def maybe_handle_clear_family(
         success=True,
         message=question,
         intent_data={**base_intent_data, "verb_disambiguation_pending": True},
+        requires_clarification=True,
+    )
+
+
+async def maybe_handle_explicit_bulk_delete(
+    intent_service,
+    intent,
+    session_id: Optional[str],
+    user_id: Optional[str],
+    todo_user_id: UUID,
+):
+    """#1696 — the EXPLICIT bulk delete seam ('delete my reminders').
+
+    Runs inside ``run_delete_todo_workflow`` AFTER ``maybe_handle_clear_family``
+    declines (so #1605 keeps first claim on ambiguous shapes). Claims a turn
+    only when ALL of: bulk plural shape (``detect_explicit_bulk_delete_ask``),
+    a session to bind the confirm to, NO todo number, and NO named target —
+    i.e. exactly the turns whose only prior answer was the single-item
+    which-todo ask. Everything else returns None -> the caller proceeds to
+    ``handle_delete_todo`` unchanged (numbered, named, and singular asks).
+
+    The consent path is the clear-family flow's ALREADY-#1190-GATED delete
+    leg: targets resolved at OFFER time (``_resolve_targets`` — the noun
+    scopes the set, #1569), ids+texts bound into the pending action, and the
+    crisp "yes" dispatches ``CLEAR_DELETE_WORKFLOW`` (action_triggered=False,
+    offer-seam only). Nothing is deleted on the ask turn. Unlike variant 3,
+    the question is the plain confirm — the user SAID delete, so no
+    stored-preference framing, and nothing is read from or written to the
+    #1510 verb store.
+    """
+    from services.intent.intent_service import IntentProcessingResult
+
+    # Lazy import (same circularity note as the kind constants above).
+    from services.intent_service.destructive_confirm import _named_delete_target
+
+    original_message = intent.original_message or (intent.context or {}).get("original_message", "")
+    noun = detect_explicit_bulk_delete_ask(original_message)
+    if noun is None:
+        return None
+    if not session_id:
+        # No session to bind the confirm answer to — never arm an offer
+        # nothing can pop. Fall through to the caller's normal handling.
+        return None
+    if intent_service.todo_handlers._extract_todo_id(original_message):
+        return None  # numbered ask — the #1190 gate's positional leg owns it
+    if _named_delete_target(original_message):
+        return None  # named ask — the #1527 named-target leg owns it
+
+    principal = str(user_id) if user_id else str(todo_user_id)
+    base_intent_data = {
+        "category": intent.category.value if intent.category else "execution",
+        "action": intent.action,
+        "confidence": intent.confidence,
+        "clear_noun": noun,
+    }
+
+    todo_service = intent_service.todo_handlers.todo_service
+    try:
+        targets = await _resolve_targets(todo_service, todo_user_id, noun)
+    except Exception as e:  # silent-ok: logged at error w/ exc_info; a source failure must read as trouble-loading (#1425), never a guessed set or an ungated delete
+        logger.error(
+            "bulk_delete_target_resolution_failed",
+            error=str(e),
+            user_id=principal,
+            exc_info=True,
+        )
+        scope = "reminders" if noun == "reminder" else "todos"
+        return IntentProcessingResult(
+            success=True,
+            message=(
+                f"I had trouble loading your {scope} just now, so I haven't "
+                f"touched anything. You can try again in a moment."
+            ),
+            intent_data=base_intent_data,
+        )
+
+    if not targets:
+        return IntentProcessingResult(
+            success=True,
+            message=_empty_targets_message("delete", noun),
+            intent_data=base_intent_data,
+        )
+
+    ids = [str(t.id) for t in targets]
+    texts = [t.text for t in targets]
+    n = len(ids)
+    # Plain explicit confirm — variant 3's target grammar without its
+    # stored-preference clause (mechanism copy at the CXO-owned seam).
+    target = f"these {n} {noun}s" if n != 1 else f"this {noun}"
+    question = f"Delete {target}? (yes/no)"
+    intent_service.workflow_offer_service.set_pending_offer(
+        session_id,
+        _delete_confirmation_offer(
+            principal,
+            "delete",
+            noun,
+            ids,
+            texts,
+            original_message,
+            question=question,  # #1665: rendered once, stored + said
+        ),
+        user_id=user_id,
+    )
+    logger.info(
+        "explicit_bulk_delete_confirmation_offered",
+        noun=noun,
+        count=n,
+        session_id=session_id,
+    )
+    return IntentProcessingResult(
+        success=True,
+        message=question,
+        intent_data={
+            **base_intent_data,
+            "action": CLEAR_DELETE_WORKFLOW,
+            "explicit_bulk_delete": True,
+            "destructive_confirmation_pending": True,
+        },
         requires_clarification=True,
     )
 

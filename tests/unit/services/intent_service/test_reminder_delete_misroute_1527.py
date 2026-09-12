@@ -274,12 +274,16 @@ class TestEndToEndRoutedDestination:
         assert result.intent_data.get("action") == "delete_todo"
         assert todo_boundary["deleted"] == []
 
-    async def test_bulk_delete_my_reminders_gets_the_todo_family_clarification(
+    async def test_bulk_delete_my_reminders_arms_the_bulk_confirm(
         self, live_service, monkeypatch, todo_boundary
     ):
         """'delete my reminders' names no single target (every word is
-        command vocabulary) — the todo family's own which-todo clarification
-        answers, deletes nothing, and never mentions a project."""
+        command vocabulary) — a BULK ask. Pre-#1696 this pinned the todo
+        family's which-todo clarification (honest, but a single-item answer
+        to a bulk ask — the finding this suite's lane filed as #1696).
+        Now the explicit bulk seam arms the clear-family flow's #1190-gated
+        batch confirm: nothing deleted on the ask, never a project
+        mentioned. Full bulk coverage: test_bulk_delete_reminders_1696.py."""
         phrase = "delete my reminders"
         _stub_classification(monkeypatch, live_service, phrase, "delete_todo")
         result = await live_service.process_intent(
@@ -287,8 +291,9 @@ class TestEndToEndRoutedDestination:
         )
         assert "couldn't find a project" not in result.message.lower()
         assert "project" not in result.message.lower()
-        assert "Which todo should I remove?" in result.message
-        assert result.intent_data.get("action") == "delete_todo"
+        assert result.message == "Delete this reminder? (yes/no)"  # 1 reminder in this fixture
+        assert result.intent_data.get("destructive_confirmation_pending") is True
+        assert result.intent_data.get("action") == "clear_reminders_delete"
         assert todo_boundary["deleted"] == []
 
     async def test_numbered_delete_still_arms_the_title_bound_confirm(
