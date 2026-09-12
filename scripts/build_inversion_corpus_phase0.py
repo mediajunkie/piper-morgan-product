@@ -101,6 +101,21 @@ HAND_ROWS = [
     },
     # — corpus-tagged issues (the moratorium's deposit box) —
     {
+        "phrase": "remind me at 3pm tomorrow to review the PR",
+        "category": "TEMPORAL",
+        "expected": "action:create_reminder",
+        "source": (
+            "issue-1559 (turn-1 PM verbatim, #1517 T4 2026-08-08; pinned in "
+            "test_reminder_time_binding_1490.py)"
+        ),
+        "notes": (
+            "adjacency-gap twin of the 9:41 row — misses REMINDER_PATTERNS at "
+            "surface 1 (re-verified 2026-09-12: pre_classify -> None); turn 1 "
+            "executed live only because the LLM happened to emit create_reminder. "
+            "Both PM verbatims are the issue's stated Inversion acceptance cases"
+        ),
+    },
+    {
         "phrase": "remind me at 9:41 today to check in with the lead developer",
         "category": "TEMPORAL",
         "expected": "action:create_reminder",
@@ -117,6 +132,22 @@ HAND_ROWS = [
         "category": "PORTFOLIO",
         "expected": "action:list_archived_projects",
         "source": "issue-1579 (the working sibling phrasing — the 'me' token is the discriminator)",
+    },
+    {
+        "phrase": "list my archive projects",
+        "category": "PORTFOLIO",
+        "expected": "action:manage_portfolio",
+        "source": (
+            "issue-1579 comment 2026-09-09 (PM live v70: 'archive' for 'archived' -> "
+            "I couldn't find a project called 'projects')"
+        ),
+        "notes": (
+            "routing is CORRECT for this drift form (re-verified 2026-09-12: "
+            "pre_classify -> portfolio/manage_portfolio @1.0) — the failure is the "
+            "name-slot extractor taking the literal word 'projects' as a project "
+            "name. Deposited as a routing regression pin with the extraction gap "
+            "on record; one character of drift must not turn a list into a lookup"
+        ),
     },
     {
         "phrase": "Archive my project Test.",
@@ -186,6 +217,85 @@ HAND_ROWS = [
         "category": "DISCOVERY",
         "expected": "REVIEW",
         "source": "issue-1606 (interrogative parsed as imperative-with-garbage-args)",
+    },
+    # — issue-1606 comment thread: the deposit box's own deposits (08-13/15/18
+    #   comments filed these verbatims "per the deposit discipline"; none had
+    #   reached the corpus — deposited 2026-09-12). Elided fragments in the
+    #   08-13 comment ('…the status field of Issue #108…', '…the state field…',
+    #   the typo'd 'emind' retry) are NOT deposited: no full verbatim, nothing
+    #   invented. Grammar templates ('remind me: X') likewise stay out — the
+    #   corpus is live verbatims only.
+    {
+        "phrase": "use the interview from now on",
+        "category": "STATUS",
+        "expected": "REVIEW",
+        "source": "issue-1606 comment 2026-08-13 (PM 3:27-3:32 session; floor false-denial, #1591 verdict)",
+        "notes": (
+            "#1591 built the standup-mode declaration store AFTER this failure, but "
+            "deliberately excludes this tokenless form (pinned: "
+            "test_standup_mode_declaration_1591.py — no standup token, not a "
+            "declaration; surface 1 None re-verified 2026-09-12). What the turn "
+            "SHOULD do without conversational context is the open question"
+        ),
+    },
+    {
+        "phrase": "use the standup interview format by default from now on",
+        "category": "STATUS",
+        "expected": "REVIEW",
+        "source": "issue-1606 comment 2026-08-13 (floor improvised an unstored promise)",
+        "notes": (
+            "since HANDLED by #1591: detect_standup_mode_declaration stores the "
+            "interview default and confirms (pinned: "
+            "test_standup_mode_declaration_1591.py PM_DECLARATION). REVIEW because "
+            "the handling seam is the standup declaration detector, not an "
+            "action:/category: destination this schema can assert — regression "
+            "coverage lives in the 1591 pins"
+        ),
+    },
+    {
+        "phrase": "change the status of issue #108 to Done",
+        "category": "EXECUTION",
+        "expected": "action:update_issue",
+        "source": "issue-1606 comment 2026-08-13 (alternating-slot-loss family, #1411)",
+        "notes": (
+            "destination is the #1411 update lane (surface 1 None re-verified "
+            "2026-09-12 — LLM-layer routing); the recorded failures are slot loss, "
+            "not lane choice. Bare '#108' repo resolution is the B3/default-repo "
+            "question downstream of routing"
+        ),
+    },
+    {
+        "phrase": "please mark issue #108 in the mediajunkie/test-piper-morgan repo complete",
+        "category": "EXECUTION",
+        "expected": "REVIEW",
+        "source": "issue-1606 comment 2026-08-13 (cross-domain claim by the todo handler)",
+        "notes": (
+            "still claimed today: pre_classify -> execution/complete_todo @1.0 "
+            "(re-verified 2026-09-12) — a GitHub issue captured by the todo domain. "
+            "GH lane either way; REVIEW because close_issue_query vs update_issue "
+            "is undecided"
+        ),
+    },
+    {
+        "phrase": "add a reminder: test the safe clarification",
+        "category": "TEMPORAL",
+        "expected": "action:create_reminder",
+        "source": (
+            "issue-1606 comment 2026-08-15 (v53 retest: colon-form not extracted — "
+            "'I didn't catch what you'd like to be reminded about'; the taught "
+            "rephrase worked)"
+        ),
+        "notes": (
+            "surface 1 None (re-verified 2026-09-12): 'add a reminder' matches no "
+            "REMINDER_PATTERNS form; per the 08-18 comment the colon-form is the "
+            "highest-frequency reminder phrasing miss"
+        ),
+    },
+    {
+        "phrase": 'please remind me: ask Lead how to test "outwardness disclosure" today',
+        "category": "TEMPORAL",
+        "expected": "action:create_reminder",
+        "source": "issue-1606 comment 2026-08-18 (corpus +2: colon-form unparsed, twice in one session)",
     },
     {
         "phrase": "please mark 1, 2, 4, and 5 done",

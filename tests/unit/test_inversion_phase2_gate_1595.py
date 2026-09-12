@@ -82,6 +82,35 @@ class TestShippedArmedCorpus:
             if r["condition"] == "armed":
                 assert r["fixture"]["pending_offer_kind"] in real_kinds, r["pair"]
 
+    def test_armed_expectations_pin_the_1663_ruling(self):
+        """#1663 Arch ruling (option (b), ratified 2026-08-19), re-expression
+        executed 2026-09-12: armed ANSWER-turns assert the armed flow's own
+        completing operation as BINDING-TO-FLOW (`flow:<canonical>`); the
+        confirm-aside (a non-answer) keeps route:NONE. Control twins are
+        untouched. Anyone re-scoring these rows against route:NONE again is
+        reverting the ruling — this test makes that loud."""
+        expected_armed = {
+            "verb-question": "flow:delete_todo",
+            "confirm-aside": "route:NONE",
+            "draft-file-command": "flow:create_issue",
+            "draft-body-prose": "flow:create_issue",
+            "reminder-time-answer": "flow:create_reminder",
+            "standup-todo-offer": "flow:complete_todo",
+            "repo-question-answer": "flow:create_issue",
+        }
+        expected_control = {
+            "verb-question": "REVIEW",
+            "confirm-aside": "route:NONE",
+            "draft-file-command": "REVIEW",
+            "draft-body-prose": "REVIEW",
+            "reminder-time-answer": "REVIEW",
+            "standup-todo-offer": "action:complete_todo",
+            "repo-question-answer": "REVIEW",
+        }
+        for r in gate.load_armed_corpus():
+            want = (expected_armed if r["condition"] == "armed" else expected_control)[r["pair"]]
+            assert r["expected"] == want, (r["pair"], r["condition"])
+
     def test_phase0_corpus_is_untouched_by_extension(self):
         """The extension file must not leak rows into the phase0 loader —
         the frozen PHASE0_BASELINE comparison depends on it."""
@@ -165,6 +194,12 @@ class TestLoaderValidation:
         with pytest.raises(ValueError, match="bad expected"):
             gate.load_armed_corpus(_write(tmp_path, bad))
 
+    def test_flow_expected_form_loads(self, tmp_path):
+        # #1663: the BINDING-TO-FLOW expectation is valid loader vocabulary
+        ok = _VALID_ROW.replace("expected: route:NONE", "expected: flow:delete_todo")
+        rows = gate.load_armed_corpus(_write(tmp_path, ok))
+        assert rows[0]["expected"] == "flow:delete_todo"
+
     def test_fixture_over_serialization_cap_fails_loudly(self, tmp_path):
         # a question grossly over the excerpt clip still serializes (the clip
         # truncates) — the loud failure is the dataclass contract's job; what
@@ -212,6 +247,34 @@ class TestArmedMatches:
             op_categories,
         )
         assert ok
+
+    def test_flow_expected_binds_alias_aware(self, op_categories):
+        # #1663 ruling: flow:<op> scores like action:<op> (alias-aware) —
+        # set_reminder IS create_reminder (shared rail entry point)
+        ok, note = gate.armed_matches(
+            "flow:create_reminder",
+            RoutingDecision(outcome="operation", operation="set_reminder"),
+            op_categories,
+        )
+        assert ok and note == ""
+
+    def test_flow_expected_miss_annotates_emission(self, op_categories):
+        # the 2026-08-19 run's one non-matching pick: update_document is NOT
+        # the drafted-issue flow's completing operation — stays a MISS
+        ok, note = gate.armed_matches(
+            "flow:create_issue",
+            RoutingDecision(outcome="operation", operation="update_document"),
+            op_categories,
+        )
+        assert not ok and note == "update_document"
+
+    def test_flow_expected_none_is_a_miss_not_a_standdown_win(self, op_categories):
+        # under the ruling, NONE on an armed answer-turn is the #1648 floor
+        # path, not a win — polarity opposite to the pre-ruling sentinel
+        ok, note = gate.armed_matches(
+            "flow:create_issue", RoutingDecision(outcome="none"), op_categories
+        )
+        assert not ok and note == "NONE"
 
     def test_error_and_refused_annotated_never_matched(self, op_categories):
         ok, note = gate.armed_matches(

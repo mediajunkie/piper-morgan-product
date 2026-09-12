@@ -46,11 +46,14 @@ RESOLVER = "services.integrations.github.repo_resolver.get_user_default_repo"
 COMPOSE_ASK = "help me write a ticket about the project deletion flow"
 
 # PM's transcript shape: a long prose body answer carrying both an
-# action-like substring ("(a destructive action)") and the word that trips
-# the #1527 portfolio pattern ("delete the …").
+# action-like substring ("(a destructive action)") and the phrase that trips
+# the #1527 portfolio pattern ("delete the … project"). Fixture revisited
+# 2026-09-12 (the 1527 audit narrowing added a positive project-noun
+# requirement after the delete verb): "delete the wrong one" → "delete the
+# wrong project", so the theft-shape proof below still pins a REAL thief.
 PM_BODY_PROSE = (
     "The problem: deleting a project (a destructive action) happens "
-    "immediately — if you delete the wrong one there's no confirmation "
+    "immediately — if you delete the wrong project there's no confirmation "
     "step, no undo, and no summary of what will be lost. The body should "
     "ask for a confirmation dialog before any deletion, and suggest "
     "archiving as the safer default."

@@ -956,16 +956,42 @@ class PreClassifier:
     # added anywhere — a guarded miss is a fall-through, never a reroute.
     REMINDER_TODO_NOUN_GUARD = r"(?!.*\b(?:reminders?|to-?dos?|tasks?)\b)"
 
+    # 1527 audit round (2026-09-12): the reminder guard fixed exactly the
+    # reminder/todo vocabulary and nothing else — a 57-shape probe found the
+    # delete family still claiming 45 non-project deletes (issues, files,
+    # drafts, notes, meetings, credentials, messages, repos, lists, emails,
+    # accounts, and every free-text name: "delete the flayrod"). The claim
+    # space is OPEN (free text), so no blocklist can contain it; the
+    # discipline flips to POSITIVE EVIDENCE — the delete-family patterns
+    # claim only when the text after the verb carries the project noun
+    # ("delete the alpha project", "delete project X", "delete my project").
+    # Everything else falls through to later surfaces / the LLM lane, same
+    # fall-through-never-reroute contract as the reminder guard above (which
+    # stays: a reminder ABOUT a project is still a reminder delete). Guard on
+    # the EXISTING patterns — no new pattern, no new capture; the
+    # TestExtractionPatternRatchet pre-classifier count is unchanged.
+    PROJECT_NOUN_REQUIRED = r"(?=.*\bprojects?\b)"
+
+    # #1738: the portfolio LIST claim, named. NOT a new routing pattern
+    # (#1559 moratorium) — this is the literal that has closed
+    # PORTFOLIO_PATTERNS since #675, extracted so _apply_subsumption_filter
+    # can key on the SAME claim this group makes (portfolio-list subsumes
+    # the STATUS list/show overlap) rather than a re-derived copy.
+    PORTFOLIO_LIST_PATTERN = (
+        r"\b(?:show|list|view)\s+(?:my\s+)?(?:all\s+)?(?:archived\s+)?projects\b"
+    )
+
     PORTFOLIO_PATTERNS = [
         # Archive operations - "Archive my project X"
         r"\barchive\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         r"\bhide\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         r"\bput\s+(.+)\s+(?:away|aside)",
         # Delete operations - "Delete my project X" (reminder/todo-noun
-        # deletes decline via the guard, #1527 — see comment above)
-        rf"\bdelete\s+{REMINDER_TODO_NOUN_GUARD}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
-        rf"\bremove\s+{REMINDER_TODO_NOUN_GUARD}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
-        rf"\bget rid of\s+{REMINDER_TODO_NOUN_GUARD}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        # deletes decline via the negative guard; non-project deletes decline
+        # via the positive project-noun requirement, #1527 — see comments above)
+        rf"\bdelete\s+{REMINDER_TODO_NOUN_GUARD}{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        rf"\bremove\s+{REMINDER_TODO_NOUN_GUARD}{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        rf"\bget rid of\s+{REMINDER_TODO_NOUN_GUARD}{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         # Restore operations - "Restore project X"
         r"\brestore\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         r"\bunarchive\s+(?:my\s+)?(?:the\s+)?(.+)",
@@ -979,8 +1005,8 @@ class PreClassifier:
         # Update project - "Update project X"
         r"\bupdate\s+(?:my\s+)?(?:the\s+)?project\b",
         r"\bedit\s+(?:my\s+)?(?:the\s+)?project\b",
-        # List operations - "Show my projects"
-        r"\b(?:show|list|view)\s+(?:my\s+)?(?:all\s+)?(?:archived\s+)?projects\b",
+        # List operations - "Show my projects" (#1738: named constant above)
+        PORTFOLIO_LIST_PATTERN,
     ]
 
     # Set-default-repo patterns (RECONNECT #1327 gap 1) — conversational counterpart
@@ -1931,6 +1957,20 @@ class PreClassifier:
                 IntentCategory.STATUS,
                 "check_completion_status",
             ),
+            # #1505: integration-connect — the single path's #1417/#1471 claim
+            # made reachable on the multi path. Before this group existed, a
+            # connect ask riding with any other matched group was silently
+            # dropped ("hi piper, connect my github" -> greeting only), and
+            # because classify_multiple returns any non-empty detection, the
+            # LLM never saw it either. Checked BEFORE TEMPORAL (same
+            # precedence as pre_classify, #1471) and guarded in the loop body
+            # by _integration_connect_match so the #862 repo-lane and #1471
+            # event-write blockers hold here too.
+            (
+                PreClassifier.INTEGRATION_CONNECT_PATTERNS,
+                IntentCategory.GUIDANCE,
+                "get_contextual_guidance",
+            ),
             # Temporal patterns
             (PreClassifier.TEMPORAL_PATTERNS, IntentCategory.TEMPORAL, "get_current_time"),
             # Issue #671-#675: MUX-WIRE patterns must come BEFORE STATUS to match first
@@ -1966,22 +2006,21 @@ class PreClassifier:
         ]
 
         # Check each pattern group
-        connect_substituted = False
+        connect_claimed = False
         # Pre-claim shadow probe: which *PATTERNS list produced each intent,
         # keyed by object identity so the post-loop subsumption filter (which
         # preserves the surviving Intent OBJECTS) realigns for free.
         claimed_list_by_id: dict = {}
         for patterns, category, action in pattern_groups:
-            # #1471: same precedence as pre_classify() — an integration-connect
-            # ask must not surface as a TEMPORAL calendar/schedule query on the
-            # multi-intent path ("connect my calendar" was answered with the
-            # current time). Substitute the guidance-lane intent for the
-            # temporal one (rather than just skipping) so multi-intent
-            # messages keep their other parts ("hi piper, connect my calendar"
-            # stays greeting + setup guidance).
-            if patterns is PreClassifier.TEMPORAL_PATTERNS and PreClassifier._matches_patterns(
-                clean_for_matching, patterns
-            ):
+            # #1505: the integration-connect group is blocker-guarded — the
+            # shared _integration_connect_match (not the raw pattern match)
+            # decides, so the #862 repo-lane and #1471 event-write blockers
+            # apply on the multi-intent path too. This general group replaces
+            # the #1471 TEMPORAL-collision substitution special-case, which
+            # only covered integrations whose nouns happened to collide with
+            # TEMPORAL_PATTERNS (calendar) — github/slack/notion asks were
+            # dropped whenever any other group matched.
+            if patterns is PreClassifier.INTEGRATION_CONNECT_PATTERNS:
                 connect_match = PreClassifier._integration_connect_match(clean_for_matching)
                 if connect_match:
                     connect_intent = Intent(
@@ -1997,17 +2036,26 @@ class PreClassifier:
                     )
                     intents.append(connect_intent)
                     claimed_list_by_id[id(connect_intent)] = "INTEGRATION_CONNECT_PATTERNS"
-                    connect_substituted = True
+                    connect_claimed = True
                     logger.debug(
-                        "multi_intent_connect_substitution",
+                        "multi_intent_connect_detected",
                         category="guidance",
                         action="get_contextual_guidance",
                     )
-                    continue
-            # #1471: if the substitution already emitted the guidance-lane
+                continue
+            # #1471: a connect claim suppresses TEMPORAL — "connect my
+            # calendar" also matches the temporal `\bmy calendar\b` pattern on
+            # the same words; without this skip the user gets a current-time
+            # phantom beside the setup guidance. Byte-for-byte the behavior
+            # the substitution era produced (a genuinely two-part
+            # "what time is it? also connect my github" loses its temporal
+            # part here exactly as it did under the substitution).
+            if patterns is PreClassifier.TEMPORAL_PATTERNS and connect_claimed:
+                continue
+            # #1471: if the connect group already emitted the guidance-lane
             # intent, don't let GUIDANCE_PATTERNS add a duplicate of the same
             # (category, action) ("help me set up my calendar" matches both).
-            if patterns is PreClassifier.GUIDANCE_PATTERNS and connect_substituted:
+            if patterns is PreClassifier.GUIDANCE_PATTERNS and connect_claimed:
                 continue
             # #1521: the reminder-query group is blocker-guarded — the shared
             # helper (not the raw pattern match) decides, so creation
@@ -2210,10 +2258,47 @@ class PreClassifier:
                     reason="github_specific_query_subsumes_status",
                 )
 
-        if not drop_categories:
+        # Issue #1738 (defect 2): the PORTFOLIO list claim subsumes STATUS.
+        # "list my archived projects" matches BOTH PORTFOLIO_LIST_PATTERN
+        # (the ask: a portfolio listing) AND STATUS_PATTERNS' broad
+        # r"\blist.*projects\b" / r"\bshow.*projects\b". The phantom
+        # STATUS/get_project_status sibling made every list-projects turn
+        # multi-intent; whenever that sibling failed, _aggregate_messages
+        # stapled "I wasn't able to check on project status right now…"
+        # onto a SUCCESSFUL listing (PM live 2026-09-09 v70 — the §2
+        # reportability defect in the GatherOutcome contract; same rider as
+        # the #1431 screenshots). Mirrors pre_classify() precedence, where
+        # PORTFOLIO is checked before STATUS. Keyed on the LIST claim, not
+        # the PORTFOLIO category: a portfolio WRITE ("archive project X")
+        # beside a genuine status ask keeps both intents. Drops only the
+        # get_project_status action so STATUS/check_completion_status
+        # (COMPLETION_HISTORY group) is never collateral.
+        drop_intent_ids: set = set()
+        if "PORTFOLIO" in categories and "STATUS" in categories:
+            raw_message = next((i.original_message for i in intents if i.original_message), "")
+            if re.search(PreClassifier.PORTFOLIO_LIST_PATTERN, raw_message.strip().lower()):
+                phantom_status = [
+                    i
+                    for i in intents
+                    if i.category.value.upper() == "STATUS" and i.action == "get_project_status"
+                ]
+                if phantom_status:
+                    drop_intent_ids.update(id(i) for i in phantom_status)
+                    logger.debug(
+                        "subsumption_filter_applied",
+                        kept="PORTFOLIO",
+                        dropped="STATUS",
+                        reason="portfolio_list_subsumes_status",
+                    )
+
+        if not drop_categories and not drop_intent_ids:
             return intents
 
-        filtered = [i for i in intents if i.category.value.upper() not in drop_categories]
+        filtered = [
+            i
+            for i in intents
+            if i.category.value.upper() not in drop_categories and id(i) not in drop_intent_ids
+        ]
         logger.info(
             "subsumption_filter_result",
             original_count=len(intents),

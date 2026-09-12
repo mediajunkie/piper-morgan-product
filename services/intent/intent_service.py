@@ -1101,6 +1101,9 @@ class IntentService:
 
             # Issue #899: Off-topic pause message prefix (set by guided process check)
             off_topic_prefix = None
+            # #1596: which guided flow this turn's escape fall-through left
+            # (set beside off_topic_prefix by the guided process check).
+            escaped_process_type = None
             # #1739 (CXO arm-survival ruling §5a/§5b): the CONFIRM-tier
             # state-question restatement — the armed ask re-rendered in one
             # clause, appended to whatever answers the turn. Rides the same
@@ -1910,7 +1913,11 @@ class IntentService:
             # Domain invariant: Once a user enters a guided process (onboarding, standup, etc.),
             # ALL their messages belong to that process until completion/exit.
             # This check MUST run before any classification.
-            guided_process_result, off_topic_prefix = await self._check_active_guided_process(
+            (
+                guided_process_result,
+                off_topic_prefix,
+                escaped_process_type,
+            ) = await self._check_active_guided_process(
                 user_id=user_id,
                 session_id=session_id,
                 message=message,
@@ -2251,6 +2258,23 @@ class IntentService:
                     intent.context = {}
                 intent.context["user_id"] = user_id
                 self.logger.info(f"Added user_id to intent context: {user_id}")
+
+            # #1596: a guided flow ended or paused on THIS turn (the
+            # #1529/#899 escape fall-through). Stamp the fact onto the intent
+            # so the floor doors can hand it to the renderer — the
+            # off_topic_prefix alone reaches only the USER (glued onto the
+            # reply after composition), never the FLOOR, which otherwise
+            # composes with the flow's open question in history and nothing
+            # saying the flow closed. Strings only (the carrier idiom).
+            # Multi-intent turns keep the accepted #899 parity (prefix-only);
+            # the exit kind ("end standup") is consumed at the seam and never
+            # classifies, so it needs no stamp.
+            if off_topic_prefix and escaped_process_type is not None:
+                if intent.context is None:
+                    intent.context = {}
+                intent.context["guided_flow_escape"] = {
+                    "process_type": escaped_process_type.value,
+                }
 
             # Issue #248: Extract preference detection results from intent
             # Preferences are attached by IntentProcessingHooks during classification
@@ -3006,7 +3030,7 @@ class IntentService:
 
     async def _check_active_guided_process(
         self, user_id: str, session_id: str, message: str
-    ) -> tuple[Optional[IntentProcessingResult], Optional[str]]:
+    ) -> tuple[Optional[IntentProcessingResult], Optional[str], Optional[ProcessType]]:
         """
         ADR-049: Check for active guided processes before intent classification.
 
@@ -3015,9 +3039,19 @@ class IntentService:
 
         Guided processes include: onboarding, standup, planning, feedback, etc.
 
-        Issue #899: Returns a tuple of (result, off_topic_prefix). When off-topic
-        detection triggers, result is None (proceed with normal processing) and
-        off_topic_prefix contains the pause message to prepend to the response.
+        Issue #899: Returns (result, off_topic_prefix, escaped_process_type).
+        When off-topic/escape detection triggers, result is None (proceed with
+        normal processing) and off_topic_prefix contains the pause message to
+        prepend to the response.
+
+        #1596: the third element names WHICH flow the fall-through left
+        behind (the ProcessType from the registry's off_topic_pause result).
+        The prefix alone reaches only the USER — it is glued onto the reply
+        AFTER composition — so a floor-bound fall-through turn used to
+        compose with the flow's open question in history and nothing saying
+        the flow ended. The classification seam stamps this onto
+        intent.context["guided_flow_escape"]; the floor doors hand it to the
+        renderer. Always None when there is no fall-through prefix.
 
         Args:
             user_id: Authenticated user ID
@@ -3025,7 +3059,8 @@ class IntentService:
             message: User's message
 
         Returns:
-            Tuple of (IntentProcessingResult or None, off_topic_prefix or None)
+            (IntentProcessingResult or None, off_topic_prefix or None,
+            escaped ProcessType or None)
         """
         try:
             registry = get_process_registry()
@@ -3039,7 +3074,7 @@ class IntentService:
                     process_type=result.process_type.value if result.process_type else None,
                     user_id=user_id,
                 )
-                return None, result.response_message
+                return None, result.response_message, result.process_type
 
             if result.handled:
                 self.logger.info(
@@ -3061,9 +3096,10 @@ class IntentService:
                         requires_clarification=False,
                     ),
                     None,
+                    None,
                 )
 
-            return None, None
+            return None, None, None
 
         except Exception as e:  # silent-ok: #1423 — falling through to normal classification is the designed fallback, but a failure here silently drops the user OUT of an active guided flow (their answer gets re-classified as a fresh intent), so it is ERROR + traceback, not a bare warning
             self.logger.error(
@@ -3074,7 +3110,7 @@ class IntentService:
                 error=str(e),
                 exc_info=True,
             )
-            return None, None
+            return None, None, None
 
     async def _check_pending_onboarding_offer(
         self, user_id: str, message: str
@@ -5448,15 +5484,35 @@ class IntentService:
                 if isinstance(labels, list)
                 else []
             )
-            body = issue.get("body", "No description") or "No description"
-            body_preview = body[:200] + "..." if len(body) > 200 else body
+            # #1736 honest-empty (GatherOutcome contract): never render "No description"
+            # when the truth is "the field wasn't in the payload". The connector shape
+            # carries the body under BOTH "body" and "description"; the native PAT shape
+            # (get_github_issue_direct) historically carried only "description" — reading
+            # only "body" here fabricated an absence for issues that have a body (PM live
+            # 2026-09-09, v70). Three states, three renders:
+            #   delivered + non-empty → the preview; delivered + empty → a definite
+            #   "(none)" with no hedge (verified empty); field absent → honest
+            #   couldn't-retrieve, never an empty claim.
+            body_delivered = "body" in issue or "description" in issue
+            body = issue.get("body") or issue.get("description") or ""
+            if body:
+                body_preview = body[:200] + "..." if len(body) > 200 else body
+            elif body_delivered:
+                body_preview = "(none — this issue has no description)"
+            else:
+                body_preview = (
+                    "(I couldn't retrieve the description this turn — "
+                    "view the issue on GitHub to read it)"
+                )
             assignees = issue.get("assignees", [])
             assignee_names = (
                 [(a.get("login", "") if isinstance(a, dict) else a) for a in assignees]
                 if isinstance(assignees, list)
                 else []
             )
-            url = issue.get("html_url", "")
+            # #1736 same shape-mismatch family: native PAT shape carries "uri", never
+            # "html_url" — without the fallback the URL line silently vanished there.
+            url = issue.get("html_url") or issue.get("uri") or ""
 
             lines = [
                 f"**Issue #{issue_number}: {title}**\n",
@@ -14540,6 +14596,16 @@ Add any additional information here.
             # Issue #1030 R4: capture per-gatherer provenance map to pass to floor
             domain_context_provenance = assembler.get_last_provenance()
 
+        # #1596: the escape's state handoff — a guided flow ended or paused
+        # on this very turn. Hand the fact to the renderer; without it the
+        # floor composes with the flow's open question in history and
+        # nothing saying it closed (the exit copy is prepended AFTER
+        # composition, so the floor never sees it).
+        _flow_escape = (intent.context or {}).get("guided_flow_escape") if intent else None
+        if _flow_escape:
+            domain_context = dict(domain_context) if domain_context else {}
+            domain_context["guided_flow_escape"] = _flow_escape
+
         # Gather conversation history (#1122: shared builder, excludes in-flight turn)
         history = build_recent_history(session_id, user_id)
 
@@ -14739,6 +14805,12 @@ Add any additional information here.
         # Assemble domain context (calendar, projects, priorities)
         domain_context = await self._assemble_guidance_context(intent, session_id, user_id)
 
+        # #1596: escape handoff — see _handle_floor_with_context.
+        _flow_escape = (intent.context or {}).get("guided_flow_escape") if intent else None
+        if _flow_escape:
+            domain_context = dict(domain_context) if domain_context else {}
+            domain_context["guided_flow_escape"] = _flow_escape
+
         # Gather conversation history (#1122: shared builder, excludes in-flight turn)
         history = build_recent_history(session_id, user_id)
 
@@ -14849,6 +14921,12 @@ Add any additional information here.
                     action=intent.action,
                 )
                 domain_context = None
+
+        # #1596: escape handoff — see _handle_floor_with_context.
+        _flow_escape = (intent.context or {}).get("guided_flow_escape") if intent else None
+        if _flow_escape:
+            domain_context = dict(domain_context) if domain_context else {}
+            domain_context["guided_flow_escape"] = _flow_escape
 
         # Gather conversation history (#1122: shared builder, excludes in-flight turn)
         history = build_recent_history(session_id, user_id)

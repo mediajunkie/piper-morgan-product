@@ -374,13 +374,20 @@ class ContextAssembler:
                 ctx = await self._gather_memory_context(user_id, session_id)
                 context.update(ctx)
                 self._attribute_provenance(list(ctx.keys()), user_id=user_id)
-            elif category == "CONVERSATION":
-                # Issue #903 gathered due reminders HERE (greeting-only).
-                # #1566 hoisted reminder gathering below the dispatch so
-                # EVERY floor-bound category surfaces due reminders;
-                # CONVERSATION keeps its deliberately-minimal context (the
-                # #960 else-branch is for UNKNOWN categories, not greetings).
-                pass
+            # #1596: the CONVERSATION special-case (`pass` — deliberately-
+            # minimal context "for greetings") is REMOVED; CONVERSATION now
+            # falls to the #960 else-branch baseline below. The rationale it
+            # carried was keyed to a caller that no longer exists: pure
+            # pleasantries take the canned canonical greeting and never reach
+            # this assembler, while the turns that DO arrive here as
+            # CONVERSATION are the classifier's vague/low-confidence rewrite
+            # (`clarification_needed` — exactly where post-guided-flow-escape
+            # fragments like PM's verbatim 'none' land), compound greetings
+            # (#1416), and chitchat/farewell floor turns. Those floored with
+            # domain_context ≈ {current_time} — the wrong-empty half of the
+            # #1529-transcript floor amnesia (the history half was #1394).
+            # The #960 rationale applies a fortiori: a clarification turn's
+            # whole job is to re-anchor the conversation in real entities.
             elif category == "TEMPORAL":
                 # #965: Temporal context for non-date queries (agenda, retrospective, etc.)
                 ctx = await self._gather_temporal_context(user_id, session_id)
@@ -396,6 +403,9 @@ class ContextAssembler:
                 # context to reduce fabrication risk. Better to give the floor
                 # real entities (even if not the right ones for the specific
                 # query) than zero context where it might invent data.
+                # #1596: CONVERSATION lands here too (see the removed
+                # special-case above) — clarification/chitchat floor turns
+                # get the same baseline UNKNOWN always had.
                 if user_id:
                     ctx = await self._gather_status_priority_context(user_id)
                     context.update(ctx)

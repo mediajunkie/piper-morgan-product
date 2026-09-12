@@ -2,9 +2,10 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.32
+version: 1.33
 created: 2026-06-06
-changelog: v1.32 (2026-09-08) — **TWO PM-ruled amendments, same morning, both CIO's to write.** (1) **Task
+changelog: v1.33 (2026-09-12) — **FOUR changes, all from one week's mail thread, bundled into one focused pass rather than four piecemeal edits (deliberately deferred to this fresh session, named trigger, per the spine's own quality-banking rule).** (1) **The work queue is now THREE sources for every role**, not build-capable-roles-only: PM's ruling generalizes v1.32's Sprint-Backlog-only patch into carried-work + mail + a per-role GitHub criteria line (HOST's Step 1a was the prototype, 8 months early). Folded in CXO's same-week finding that a criteria line's own wording must require `gh issue view` on each result, not just `gh issue list` — a list is a fragment, and CXO wrote 2 of 3 tracker rows wrong from list output alone before catching it. (2) **START's session-log commit now precedes the mail loop, not follows it** (CXO's structural fix) — closes the NO-SESSION-LOG race at its source (a `mail(role):` push landing before the log commit, which `duty-cycle- freeze-check.sh`'s grace window only mitigated, not removed) rather than only detecting it after the fact. (3) **`## Fire N` retired as the session-log heading default** — Exec found the skill says "fire" 58 times against 2 anti-chunking warnings, and while a same-morning 8-seat self-audit found the actual chunking behavior mostly isn't happening, the heading convention itself demonstrably costs Docs real synthesis effort reconstructing "what shipped" from "what happened at wake N" across 11 differently-formatted logs. New default: head by work unit, wake time as a parenthetical. (4) **Anomalous readings (freeze checks, BELT-INVISIBLE, NO-SESSION-LOG) get re-checked once before being reported** — PM's rule, from watching Exec publish a stall that had already resolved 4 minutes earlier. Composes with m-44 (a clear isn't a measurement) as its converse (an alert isn't one either, if it's one sample of a moving value). Exec's other two proposals from the same thread (archiving `mailboxes/*/read/`, changing the PM-cc rule) are deliberately NOT in this edit — they're mailbox/communication policy, not fire procedure, and belong in CLAUDE.md's mailbox section or a standalone archival tool, not this skill.
+v1.32 (2026-09-08) — **TWO PM-ruled amendments, same morning, both CIO's to write.** (1) **Task
 Loop gains BACKLOG INTAKE**: PM found the structural defect in one sentence — the flywheel's work-
 definition is exactly two surfaces (mail + own standing-items), so "there is no work" and "28 open
 items" were both true at once, and Lead's quiet WATCH fires were the procedure executing correctly,
@@ -70,7 +71,17 @@ Everything else — what's owed, what's active, what's parked — this skill **r
 
 The flywheel runs **continuously and cron-independently**:
 
-> **check mail → do unblocked tasks → check mail → do tasks → … → DRAINED → idle**
+> **check mail → do carried work → check your criteria line's GitHub issues → check mail → … →
+> DRAINED (all three sources empty) → idle**
+
+**The work queue has three sources, not one** (PM's ruling, v1.33, 2026-09-11 — supersedes the
+two-source mail-plus-tasks framing this spine used to state): carried work (your standing-items
+tracker), incoming mail, and newly-observed GitHub issues meeting your own role's criteria (Step
+3.2b below). PM, verbatim: *"I think the issue is perhaps in being overly literal about the inbox
+as the only work queue... An agent should really only go idle when there is nothing to work on at
+all."* Treating the inbox as the sole queue is exactly the failure this ruling closes — a role can
+correctly report "mail: empty, standing-items: empty" and still not be drained if its own
+GitHub-criteria source has eligible work sitting unchecked.
 
 **The numbered Steps below are NOT a work-session and NOT a container** — they are only **how a WAKE re-enters this flywheel** (catch up on state, then drain). A wake joins the ongoing loop, drains everything ready, and returns to idle. The cron is a **wake-timer for when you're idle**, never a work-chunker.
 
@@ -187,11 +198,37 @@ Discard mailbox MANIFEST regen-noise. (Variant launch models — e.g. Web main-d
 **Step 2c — cohort-freeze check, all roles (relocated 2026-08-09 from "Step 1b," HOST's half of the freeze-monitor seam, CIO's detector).** On the 2026-08-06 cohort-wide freeze, every waking agent treated its own dead gap as a personal or session-specific problem — nobody's wake procedure asked "was this environmental." At **START or WATCH only** (skip on ordinary WORK fires — not worth the cost six times a day when the answer is almost always clear): run `scripts/cohort-freeze-detect.sh`, **now that Step 2b has just fetched** — the detector reads local `dev/heartbeats/*.tsv`, and running it before a sync produces a false COHORT-FREEZE from your own stale checkout rather than a real cohort signal (Web, 08-09: a 3h-cadence role hit this on close to every fire, reproduced and cross-verified against `git log origin/main` before it nearly became a false full-cohort alert to PM). **rc=1 (COHORT-FREEZE)** → your gap wasn't yours: state that explicitly in the fire-open line (*"resuming after a detected cohort-wide freeze, window=…, not a personal stall"*) instead of silently proceeding as an ordinary START, and skip any self-diagnostic you'd otherwise run on your own dead gap — the detector already answered that question at cohort scope, more reliably than a self-report could (you cannot detect absence from a surface authored by the party whose absence is in question — Arch/PPM, 2026-08-06). **rc=0** → ordinary wake, nothing to say. **rc=3** → detector couldn't measure (registry unreadable, internal error); note it, don't block on it, proceed as an ordinary wake.
 ⚠️ **What this does NOT cover — named, not implied.** This only helps an agent that gets a turn *after* the freeze lifts; it says nothing to PM *during* one, because every agent's duty cycle is itself frozen at that moment — the same structural limit Gap-C's self-heal has (heals on the next turn, doesn't cure the gap). **Alerting PM during a freeze needs a watcher outside the frozen set** (real crontab or equivalent, not `CronCreate`) — that integration is CIO/Pard's to build, not this skill's. HOST's stake there is content, not delivery: whatever fires that alert should say what this detector already prints (window, scheduled count, emission count, emitters) rather than a bare "something's wrong," per the state-what-you-measured discipline this detector was built to.
 
+**Re-check any anomalous reading once before reporting it — PM's rule, v1.33 (2026-09-11).** PM,
+after watching Exec publish a possible stall that had already resolved: *"races are normal, no
+stress... maybe it's good to re-check anomalous things soon after in case they were in a
+transitional state when last checked?"* Applies to this cohort-freeze check, to `BELT-INVISIBLE` /
+`NO-SESSION-LOG` reads from `duty-cycle-freeze-check.sh`, and to any other liveness snapshot — not
+just this step. **The rule**: an anomalous reading (freeze, stall, missing marker) gets re-checked
+once, a short interval later, before it's written into a memo or reported to PM. A role that is
+genuinely dark reads dark on both checks; a race resolves between them and costs one extra command
+to catch. This composes with m-44 rather than duplicating it — m-44 says a *clear* is not a
+measurement; this says an *alert* isn't one either if it's a single sample of a value that moves.
+The cost of skipping this: Exec's own real instance, a `BELT-INVISIBLE docs` read that was actually
+a 4-minute-old snapshot of a role that had already invoked its heartbeat, published as a possible
+stall before the second read would have shown it resolved.
+
 ### Step 3 — Read carry-forward, then dispatch by STATE (shape-independent — HOST finding 2026-06-06)
 Read the cycle-log tail + `{role}-carry-forward.md` so you know where you left off. Then dispatch by a **state + window hybrid** — *state* (session-log-today existence) gates START-vs-WORK; *hour* gates overnight-WATCH-vs-morning-START. (This is the v1.2 refinement: pure-state was *almost* right, but the continuous shape's ~2am WATCH fire also has no-session-log-today yet, so a bare "no-log→START" rule mis-STARTs it overnight. The overnight-window guard fixes that while keeping HOST's low-freq fix intact.) **Check the overnight branch FIRST:**
 
 - **Overnight window (local hour ~0–4, pre-morning) + nothing urgent** → **quiet-hold / WATCH** — *regardless of whether a session-log-today exists yet*. No START, no CronDelete, leave armed. For the continuous shape the single ~2am fire is the **WATCH** (quick `ls mailboxes/{role}/inbox/`; **commit a one-line WATCH entry**; see `procedures/watch.md`); low-freq shapes' overnight fires are plain quiet-holds. *(This branch first — and hour-gated — so the 2am fire doesn't fall into the START rule below.)*
-- **No session log exists for today AND past the overnight window (local hour ≥ ~4)** → **START**: **Step 0 FIRST — verify the prior day STOPped properly, and run the missed STOP tasks if not** (PM-ratified 2026-06-09, Comms-surfaced): `grep -lE '^(<!--[[:space:]]*)?#{0,4}[[:space:]]*\**[[:space:]]*DAY-CLOSED\**[[:space:]]*[:—-]?[[:space:]]+[0-9]{4}-[0-9]{2}-[0-9]{2}' dev/2026/<prior-day-path>/*{role}*log.md` — if the prior day's session log lacks the **`<!-- DAY-CLOSED: {date} -->`** marker, that day ended without a STOP (PM takeover, cron reshape, session-death, or engaged-past-STOP-window). **Run its missed close NOW before today's START**: reconstruct the prior day's wrap from its cycle log + commits — day-arc + the memory-eval 3-bucket + the sign-off checklist + the `DAY-CLOSED` marker. This is *self-healing* — it doesn't wait for Docs's merge-keeper sweep to catch it the next morning (that's the reactive net; this is the proactive source-catch). *Then* proceed: create today's session log (`create-session-log` skill) + fresh cycle log; mail-loop. **Commit a one-line START entry** (audit-visibility).
+- **No session log exists for today AND past the overnight window (local hour ≥ ~4)** → **START**: **Step 0 FIRST — verify the prior day STOPped properly, and run the missed STOP tasks if not** (PM-ratified 2026-06-09, Comms-surfaced): `grep -lE '^(<!--[[:space:]]*)?#{0,4}[[:space:]]*\**[[:space:]]*DAY-CLOSED\**[[:space:]]*[:—-]?[[:space:]]+[0-9]{4}-[0-9]{2}-[0-9]{2}' dev/2026/<prior-day-path>/*{role}*log.md` — if the prior day's session log lacks the **`<!-- DAY-CLOSED: {date} -->`** marker, that day ended without a STOP (PM takeover, cron reshape, session-death, or engaged-past-STOP-window). **Run its missed close NOW before today's START**: reconstruct the prior day's wrap from its cycle log + commits — day-arc + the memory-eval 3-bucket + the sign-off checklist + the `DAY-CLOSED` marker. This is *self-healing* — it doesn't wait for Docs's merge-keeper sweep to catch it the next morning (that's the reactive net; this is the proactive source-catch). *Then* proceed: create today's session log (`create-session-log` skill) + fresh cycle log, **and
+commit that one-line START entry immediately — BEFORE the mail loop, not after** (v1.33,
+2026-09-12, CXO's structural fix, applied on CXO's own seat same-day before the skill text caught
+up). **Why the order is load-bearing, not stylistic**: `role_committed_today()` (the NO-SESSION-LOG
+check's own signal, see `duty-cycle-freeze-check.sh`) matches ANY role-tagged commit, including a
+`mail(role):` push under the per-memo commit-and-push norm — and under the old ordering (mail loop,
+then the log commit), that mail push almost always lands FIRST, opening a window where "committed
+today" reads true while "log exists" reads false. Two real false-positive instances (CXO 2m27s, PA
+4m15s, both independently reproduced against `origin/main` commit timestamps) were this exact race,
+not a genuine missing log — `duty-cycle-freeze-check.sh` v1.1's 20-minute grace window absorbs the
+race as a mitigation, but **committing the log first removes the race at its source**: the log is
+on `origin/main` before anything else can be. A session that dies mid-mail-loop also benefits — it
+has a real log on `origin/main` instead of only on local disk.
   ⚠️ **CORRECTION 2026-07-30 (CXO's finding, applied by Web)**: a bare `grep -l "DAY-CLOSED"` matches **prose that talks about** a sentinel, not just the sentinel itself — and CXO showed the failure is systematic, not incidental: a log's own header routinely narrates the *prior* day's close (as this skill's own worked examples do), which is exactly the phrasing a naive grep can't distinguish from a real marker. **The logs most likely to contain that prose are the ones that just self-healed correctly** — so the old pattern was most likely to false-pass on the agents doing Step 0 right, silently leaving the day open while every future check reads it as closed. The line-anchored, date-shaped pattern above only matches the real sentinel. If your own session-start hook or a merge-keeper sweep greps for `DAY-CLOSED` elsewhere, check whether it needs the same anchor — a shared loose pattern would be a cohort-wide instance of this, not just here.
   ⚠️ **This pattern went through five rounds of correction in two days** (CXO/HOST/Web, 2026-07-30) — see `docs/internal/operations/day-closed-marker-census.md` for the full form census, who made each error, and `scripts/day-closed-census.py` (HOST, 2026-08-02) for the regenerable source itself — the numbers were previously inlined in the doc and drifted from the script that produced them, corrected by extracting one source. **The doc's own instruction is the load-bearing one: "regenerate before trusting — this is a build output, not prose."** ⚠️ **The figures below were themselves wrong once**: HOST's own table had been blending real markers (anchored at column 0) with narrations of markers (indented/quoted/mid-sentence) — the exact distinction a working predicate depends on. Corrected with `position` as the census's first dimension. **Current as of running the script directly on 2026-08-02** (not copied from a memo): 441 lines match a bare grep, of which **428 are real markers** and 13 are narrations; canonical form is **413 = 96% of real markers**; **4 real markers are permanently undated** (unreachable by any predicate — a missing datum, not a formatting gap). If you're touching this predicate again, run `scripts/day-closed-census.py` yourself rather than citing any number here or in a memo — this file's own history is the proof that a copied figure goes stale the moment the source moves.
 
@@ -223,26 +260,54 @@ Read the cycle-log tail + `{role}-carry-forward.md` so you know where you left o
   ⛔ **NEVER move mail with a directory glob** (`for f in inbox/*.md; do mv …`). **`read/` is not a folder — it is a CLAIM ABOUT YOUR OWN COGNITION**, and a glob makes that claim mechanically, for every arrival, without anyone reading anything. **The drain must iterate a list you appended to in the same tool call that displayed the memo's contents**: unread ⇒ never in the list ⇒ *cannot* move. Bad state unrepresentable rather than forbidden. **If a fire ends with unread mail it stays in `inbox/` and the fire entry says so — a non-empty inbox is honest; a `read/` holding unread mail is a lie nothing can detect.**
   *(Arch, 2026-08-09, PM-routed for cohort adoption after ruling "we need to prevent this from EVER happening. It is a real violation of trust." Their glob moved a memo they had never read; they then reported it did not exist, and a second role independently "confirmed" the absence by inheriting that framing. CIO's own drain had the identical defect. **PM offered a third folder and Arch declined it — the defect is an UNVERIFIED TRANSITION, not a missing state; a third folder just gives the bulk loop one more place to put unread things.** And note you cannot audit this from outside: grepping session logs for the idiom finds only roles who happened to paste their command, so each role must check its own drain.)*
   2. **Task Loop drain** — process queued tasks from `dev/active/{role}-standing-items.md` in **priority order**, until ALL are blocked-on-external or the queue is empty. **Do NOT stop after one task.**
-  2b. **BACKLOG INTAKE (v1.32, 2026-09-08, PM-found defect — build-capable roles only).** Before
-      treating an empty/all-blocked standing-items file as "nothing left," check the Sprint Backlog.
-      **This is not a third loop to skip — it is what "drained" now MEANS.** The gap this closes:
-      the flywheel's work-definition used to be exactly mail + your own standing-items, so "there is
-      no work" and "28 open milestone items" were simultaneously true, and a role idling on an empty
-      inbox + blocked tracker was the procedure working *exactly as specified* — not a lapse.
-      **Eligible = open, milestone MVP, board Status = Sprint Backlog** (PPM's denominator,
-      2026-09-08 — re-derivable from `sprint-truth.py`'s own Sprint Backlog bucket; no new artifact,
-      no new field). **Claim = set board Status to `In Progress` via `updateProjectV2ItemFieldValue`
-      (never the field-level `updateProjectV2Field` — see CLAUDE.md's GitHub-Projects-v2 gotcha)
-      before starting work.** First-write-wins is sufficient while one role at a time pulls from
-      this queue; if that changes, the claim needs a read-immediately-before-write check, not a
-      blind set (PPM's own flagged caveat — don't let this convention silently get outgrown the way
-      the two-surface work-definition did). **State the denominator when you report drained**: *"mail
-      (N drained) + standing-items (N drained) + backlog intake (checked M eligible, claimed
-      one/none)"* — not a bare "nothing left" — so a future missing surface announces itself instead
-      of hiding behind an all-clear for months, the way this one did (Arch's refinement, direct
-      application of methodology-44 to the work queue itself). **Not every role is build-capable**;
-      role-scoping which roles pull from Sprint Backlog is a separate, still-open question — if
-      you're unsure whether this applies to you, treat "no" as the default until told otherwise.
+  2b. **THIRD QUEUE SOURCE — PM's ruling, v1.33 (2026-09-11), supersedes v1.32's build-capable-only
+      scoping.** PM, verbatim: *"the mail inbox is not the single source of truth about new work to
+      do... we need to define the work queue as a combination of carried work (if any), incoming
+      memos in mail, and newly observed github issues that meet relevant criteria... An agent should
+      really only go idle when there is nothing to work on at all."* **This is not a third loop to
+      skip — it is what "drained" now MEANS, for every role, not only build-capable ones.** The gap
+      this closes: the flywheel's work-definition used to be exactly mail + your own standing-items,
+      so "there is no work" and "28 open milestone items" were simultaneously true, and a role idling
+      on an empty inbox + blocked tracker was the procedure working *exactly as specified* — not a
+      lapse. v1.32's Sprint-Backlog-only version was PM's first patch at this same gap; this widens
+      it to the general rule PM actually asked for, which names Docs (audit-labeled + audit-generated
+      issues) and "some of the other agents who get assigned github issues at times" explicitly, not
+      only Lead.
+
+      **Every role states its own criteria line** — a single, cheap, mechanical GitHub query,
+      committed to this role's own carry-forward or a config file, not re-derived from memory each
+      fire. Worked examples already in production: HOST's Step 1a (`label:sapient-trust`, state:open
+      — the earliest instance of this shape, shipped 8 months before this ruling generalized it);
+      Lead's is "new issues in the current sprint milestone"; CXO's is `label:UX state:open`
+      (denominator 3, explicitly NOT folding in the separate `MUX` label since that's a product
+      surface, not a review criterion). **If you don't have a criteria line yet, that's a gap to
+      name in your fire entry, not a blocker on everything else** — a role with no criteria line
+      simply has an empty third source until it writes one, same as an empty inbox is a fact, not a
+      failure.
+
+      **The criteria line's own wording must require opening each returned issue, not just listing
+      it** (CXO's finding, 2026-09-12 — filed after their own criteria line returned 3 issues and
+      CXO wrote 2 of 3 tracker rows wrong by working from `gh issue list`'s title/number output
+      alone): *"`gh issue list` finds the work. `gh issue view N` is what tells you what it is. A row
+      written from the list is a guess about the issue."* A list is a fragment by construction —
+      cheap to skip at a small denominator, which is exactly why it will get skipped silently at a
+      larger one if the criteria line's own wording doesn't say to open each one.
+
+      **Claim = set board Status to `In Progress` via `updateProjectV2ItemFieldValue` (never the
+      field-level `updateProjectV2Field` — see CLAUDE.md's GitHub-Projects-v2 gotcha) before starting
+      work**, for roles whose criteria line pulls from a board-tracked source (Sprint Backlog, etc.).
+      First-write-wins is sufficient while one role at a time pulls from a given queue; if that
+      changes, the claim needs a read-immediately-before-write check, not a blind set (PPM's own
+      flagged caveat — don't let this convention silently get outgrown the way the two-surface
+      work-definition did).
+
+      **State the denominator when you report drained**: *"mail (N drained) + standing-items (N
+      drained) + [your criteria line] (checked M eligible, claimed/actioned one/none)"* — not a bare
+      "nothing left" — so a missing or stale criteria line announces itself instead of hiding behind
+      an all-clear for months, the way the original two-surface definition did (Arch's refinement,
+      direct application of methodology-44 to the work queue itself). **Idle is now the state where
+      all three sources are checked and empty** — not a default you fall into when the inbox happens
+      to be quiet.
   3. **Re-check the Mail Loop** — new mail may have arrived while you were draining tasks.
   4. **Loop 1–3** until there is truly nothing left to do.
   5. **Only THEN return to IDLE.**
@@ -259,7 +324,25 @@ Read the cycle-log tail + `{role}-carry-forward.md` so you know where you left o
 Hold the discipline: holistic-not-tactical. Quiet hold beats manufactured busywork. Batch identical daytime no-op holds (don't commit a near-duplicate entry each fire) — but **WATCH and START always commit a one-line entry**.
 
 ### Step 5 — Log each work UNIT (single-surface — the session log)
-Event-based: the log entry rides with each **work-unit commit** — NOT a per-fire wrap (logging *per fire* is one of the things that re-implies fire-as-session). **Write each work unit to the SESSION log** (`dev/2026/MM/DD/{date}-{role}-code-opus-log.md`): `- (HH:MM PT) — what shipped (detail, commit refs, reasoning as warranted)`. A wake that drains several units MAY group them under a wake header (`Fire N (HH:MM) —` + sub-bullets) for readability — fine, but the **unit is the work, not the fire**. The session log is the **single canonical record** (PM 2026-06-12: *"simplify logging, minimize drift — do the logging in one place"*). Trivial/quiet-hold fires don't need an entry; any fire that ships a memo / decision / code / methodology edit DOES. **"Fire N" labels which *wakeup* initiated the work — it is NOT a work-unit boundary.** A single wake that drains several tasks logs them together under that one fire entry (sub-bullets are fine); the wake does not end after task 1. Don't let the record format pace the work (see the spine above).
+Event-based: the log entry rides with each **work-unit commit** — NOT a per-fire wrap (logging *per fire* is one of the things that re-implies fire-as-session). **Write each work unit to the SESSION log** (`dev/2026/MM/DD/{date}-{role}-code-opus-log.md`): `- (HH:MM PT) — what shipped (detail, commit refs, reasoning as warranted)`. The session log is the **single canonical record** (PM 2026-06-12: *"simplify logging, minimize drift — do the logging in one place"*). Trivial/quiet-hold fires don't need an entry; any fire that ships a memo / decision / code / methodology edit DOES. Don't let the record format pace the work (see the spine above).
+
+**Heading default changed, v1.33 (2026-09-11) — "next fire" vocabulary and the `## Fire N` heading
+retired as the organizing unit.** Exec found the skill's own text says "fire" 58 times against 2
+explicit anti-chunking warnings — the doctrine forbids per-fire chunking and reinforces the frame
+that produces it, 29-to-1. A same-morning cohort self-audit (8 seats) found the actual *chunking*
+behavior mostly isn't happening (2 of 8 genuine deferrals, both resolved same-cycle) — but the
+`## Fire N` heading convention is real and costs something concrete: Docs, who synthesizes all 11
+roles' logs into the daily omnibus, reported it directly costs real reconstruction effort to
+recover "what shipped" from "what happened at wake N" across differently-formatted logs, and every
+seat independently confirmed the headings are wake-timestamps, not work-unit labels. **New default:
+head each entry by the work unit (what shipped), with the wake time as a parenthetical, not a
+`Fire N` heading** — e.g. `### Grace window widened after CXO's distribution measurement (16:37
+fire)` rather than `## Fire 2 (16:37 WORK)`. A wake that drains several unrelated units gets several
+headings, each named for its own work, not one numbered container. **"Next fire" stays retired from
+agent vocabulary entirely** (the spine section above already states the rule — name a real trigger
+or don't defer; this is the vocabulary that makes violating it easy). If you're deferring
+genuinely-deep work, name the actual trigger (a fresh session, a compaction) in the heading or the
+entry itself, never "next fire" as a bucket.
 
 **Optional scratch**: an agent MAY keep a per-fire scratch list in `dev/active/cycle-log-{role}-{today}.md` if it's useful working state — but it is **not a logging surface, not a parallel record, and never the durable home for work**. The session log is where logging happens.
 

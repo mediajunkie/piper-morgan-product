@@ -231,6 +231,31 @@ def check_row(line_no: int, row: list[str], idx: dict) -> tuple[list[str], list[
             )
         # stem == cartoon -> cosmetic duplication (9 rows). Nothing to decide; silent.
 
+    # --- SOFT: altText empty on a live post. WARNING ONLY — measured 2026-09-12 before
+    # shipping this check, because the obvious version of it (also flagging caption/
+    # cartoon) is exactly the flood this file's own blogURL check above warns against:
+    # caption is empty on 282 of 385 published/distributed non-ship rows (73%) and
+    # cartoon on 109 (28%) — both are longstanding corpus convention, not a defect, so
+    # checking them would bury the one field that IS a clean signal in noise. altText
+    # alone is empty on 21 of 385 (5.5%) — a real, moderate, actionable rate.
+    #
+    # Added after the THIRD occurrence of the same gap on one row (Piper Morgan Eras,
+    # 09-08/09-11/09-12): Docs sets status/pubDate/blogURL/blogPath at publish time but
+    # kept forgetting to copy the draft frontmatter's alt/caption into the calendar's
+    # own columns — a step already written down in prose (publish-to-blog SKILL.md) and
+    # still skipped three times. Per this week's own cohort-wide lesson: a rule that
+    # lives only in prose doesn't change behavior; an external, unrationalizable check
+    # does. This is that check, scoped to the one field that won't cry wolf. ---
+    if (
+        val("status") in ("published", "distributed")
+        and val("theme") not in ({"ship"} | LEGACY_THEMES)
+        and not val("altText")
+    ):
+        warnings.append(
+            f"{tag}: status={val('status')!r} but altText empty — "
+            f"backfill from the draft frontmatter / website blog-metadata.csv"
+        )
+
     # --- SOFT: altText length. WARNING ONLY — long alt text is legitimate. ---
     if len(val("altText")) > ALT_TEXT_WARN_CHARS:
         warnings.append(

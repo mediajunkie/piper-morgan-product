@@ -14,14 +14,30 @@
 #   pair:      links an armed row to its stateless control twin (same phrase)
 #   condition: armed | control
 #   expected:  action:<canonical> | category:<NAME> | route:NONE |
-#              route:CLARIFY | REVIEW
+#              route:CLARIFY | flow:<canonical> | REVIEW
+#     flow:<canonical> — BINDING-TO-FLOW (#1663 Arch ruling, option (b),
+#     ratified 2026-08-19): the expected emission on an armed ANSWER-turn
+#     is the ARMED FLOW'S OWN completing operation, args in hand. Phase
+#     2.2's dispatch treats "router-selected operation == the armed flow's
+#     own action" as binding to the flow — the offer seam consumes the
+#     emission; it is NEVER a fresh dispatch. A non-matching emission on
+#     an armed turn falls to the seam's existing re-ask, never to the
+#     floor. Scored alias-aware, same as action:. Required condition
+#     (Arch, same ruling): before wiring each flow's binding, confirm
+#     PER FLOW (not assumed transitively) that the flow's arm-time
+#     question is an adequate confirmation for the EffectClass tier of
+#     its completing operation.
 #     route:NONE — the correct ROUTING decision is the NONE sentinel: the
-#     turn answers the armed flow's open question (or is prose no catalog
-#     operation covers), so no fresh operation may claim it. Per the
-#     SessionSnapshot contract's serialized RULE: "a turn that plausibly
-#     ANSWERS the open question routes to that flow's handler, not to a
-#     fresh operation." The flow's handler is the offer seam, not a catalog
-#     entry — the router's honest emission is NONE.
+#     turn does NOT answer the armed question (an aside, or prose no
+#     catalog operation covers), so no fresh operation may claim it and
+#     there is nothing to bind. HISTORY: before the #1663 ruling this file
+#     asserted route:NONE on answer-turns too (reading the serialized
+#     RULE's "routes to that flow's handler, not to a fresh operation" as
+#     demanding the sentinel, the seam not being a catalog entry). The
+#     2.1 gate run of 2026-08-19 was scored that way — 1/7 with-snapshot.
+#     The ruling chose the flow-matching reading; the same recorded
+#     emissions re-score 6/7. Both readings stay legible in the gate
+#     doc's #1663 addendum (inversion-phase2-gate-2026-08-19.md).
 #   fixture:   optional; keys are EXACTLY SessionSnapshot field names
 #     (services/intent_service/session_snapshot.py). The runner constructs
 #     the real dataclass — SessionSnapshot(**fixture) — and serializes via
@@ -46,9 +62,9 @@ corpus:
     pair: verb-question
     condition: armed
     category: TEMPORAL
-    expected: route:NONE
+    expected: flow:delete_todo
     source: "PM live 2026-08-15 v53 (#1605 exception-clause fallback; test_reminder_clear_verb_1605.py)"
-    notes: "bare verb ANSWERS the armed either/or question; a fresh delete operation is the theft"
+    notes: "bare verb ANSWERS the armed either/or question — BINDING-TO-FLOW (#1663 ruling): the reminder-clear flow's delete branch completes via delete_todo (todo-domain deletes canonicalize there — action_registry (DELETE, reminder) cell, #1666 family); binding args: verb=delete, the targeted reminders held by the flow. A FRESH delete dispatch is still the theft — binding vs fresh is the ruling's whole distinction. WIRING NOTE: Arch's ruling (2026-08-19) marked this row's binding BLOCKED on #1666 (delete_todo then had no WorkflowEntry, never reached consent_gate); #1666 closed 2026-08-20 (run_delete_todo_workflow, DESTRUCTIVE, #1190-gated) — the per-flow confirmation-adequacy check remains required before wiring, per the ruling's condition"
     fixture:
       pending_offer_kind: reminder_clear_verb_question
       pending_offer_question: "Before I touch these — when you say 'clear' on a reminder, do you want me to mark it done, or delete it? I'll remember for next time."
@@ -72,7 +88,7 @@ corpus:
     category: TEMPORAL
     expected: route:NONE
     source: "PM live 2026-08-18 (#1650 aside accepted a delete confirm; ~95 chars under the #1631 floor)"
-    notes: "risk both ways: 'delete a project' baits manage_portfolio; the armed confirm baits treating it as an answer"
+    notes: "risk both ways: 'delete a project' baits manage_portfolio; the armed confirm baits treating it as an answer. UNCHANGED by the #1663 ruling: the aside does not ANSWER the armed confirm, so there is nothing to bind — route:NONE remains the honest emission (flow: applies only to answer-turns)"
     fixture:
       pending_offer_kind: reminder_clear_delete_confirmation
       pending_offer_question: "Got it — delete the reminder instead? (yes/no)"
@@ -93,9 +109,9 @@ corpus:
     pair: draft-file-command
     condition: armed
     category: EXECUTION
-    expected: route:NONE
+    expected: flow:create_issue
     source: "PM live 2026-08-18 (#1648 instance 1 — phantom 'Filed in test-piper-morgan'; zero writes verified)"
-    notes: "the command addresses the ARMED draft (its flow files it); a fresh create_issue would file nothing the carrier holds. Draft title untitled: the incident record does not carry the draft's title (#1630 subjectless arm renders '(untitled)')"
+    notes: "the command ANSWERS the ARMED draft's open question — BINDING-TO-FLOW (#1663 ruling): the drafted-issue flow's completing operation is create_issue, filing the draft the carrier holds; binding args: file-as-is (no body change), draft content held by the flow. A FRESH create_issue would file nothing the carrier holds — binding vs fresh is the ruling's whole distinction. Draft title untitled: the incident record does not carry the draft's title (#1630 subjectless arm renders '(untitled)')"
     fixture:
       pending_offer_kind: drafted_issue
       pending_offer_question: "What should the body say? Give me the prose and I'll draft it — or say 'file it as is'."
@@ -117,9 +133,9 @@ corpus:
     pair: draft-body-prose
     condition: armed
     category: EXECUTION
-    expected: route:NONE
+    expected: flow:create_issue
     source: "PM live 2026-08-15 round 2 (#1627; PM_BODY_PROSE pinned in test_drafted_issue_body_steal_1627.py)"
-    notes: "prose ANSWERS the draft's open body question; 'delete the wrong one' baits the #1527 pattern family"
+    notes: "prose ANSWERS the draft's open body question — BINDING-TO-FLOW (#1663 ruling): the drafted-issue flow's completing operation is create_issue (body = this prose, title/draft held by the flow); 'delete the wrong one' baits the #1527 pattern family. The 2.1 gate run's with-snapshot emission was update_document @0.95 — NOT the flow's operation, so this row stays a MISS under the flow-binding reading (the one non-matching pick; a drafted issue is not a document)"
     fixture:
       pending_offer_kind: drafted_issue
       pending_offer_question: "What should the body say? Give me a sentence or two and I'll draft it."
@@ -142,9 +158,9 @@ corpus:
     pair: reminder-time-answer
     condition: armed
     category: TEMPORAL
-    expected: route:NONE
+    expected: flow:create_reminder
     source: "PM live 2026-08-18 (#1648 instance 2 — phantom reminder after the time-clarify exchange)"
-    notes: "the fragment ANSWERS the armed time question (whose flow holds the task text); a fresh create_reminder would lose the task"
+    notes: "the fragment ANSWERS the armed time question — BINDING-TO-FLOW (#1663 ruling): the reminder-time flow's completing operation is create_reminder; binding args: time='3pm', task text held by the flow. A FRESH create_reminder would lose the task — binding vs fresh is the ruling's whole distinction"
     fixture:
       pending_offer_kind: reminder_time_question
       pending_offer_question: "I caught the task — but couldn't work out the time. When should I remind you? (For example: 'at 3pm tomorrow' or 'in 2 hours'.)"
@@ -166,9 +182,9 @@ corpus:
     pair: standup-todo-offer
     condition: armed
     category: EXECUTION
-    expected: route:NONE
+    expected: flow:complete_todo
     source: "PM live 2026-08-18 (#1651 — the standup could not consume its own offer; todo_handlers.py:568)"
-    notes: "acceptance of the ARMED offer (which binds the todo id); a fresh complete_todo re-extracts 'overdue' and fails"
+    notes: "acceptance ANSWERS the ARMED offer — BINDING-TO-FLOW (#1663 ruling): the standup-todo-offer flow's completing operation is complete_todo, with the todo id bound by the flow; a FRESH complete_todo re-extracts 'overdue' and fails (#1651's failure, one layer down — m-43)"
     fixture:
       pending_offer_kind: standup_todo_offer
       pending_offer_question: "Also: your todo \"check in with the lead developer\" is overdue. Want me to mark \"check in with the lead developer\" done? (yes/no)"
@@ -189,9 +205,9 @@ corpus:
     pair: repo-question-answer
     condition: armed
     category: QUERY
-    expected: route:NONE
+    expected: flow:create_issue
     source: "PM live (#1567 repo clarification dead-end; dev/2026/08/16/2026-08-16-2251-prog-code-log.md)"
-    notes: "ANSWERS the armed repo question. is_confirm=false since issue 1664: live assembly now derives confirm-ness from the offer KIND (destructive_confirm.offer_is_confirm), and the OPEN repo question is not a yes/no — the 2.1 gate ran this row with is_confirm=true (then faithful to the workflow_type-derived live assembly; wrinkle flagged in the gate doc), so a rerun's condition differs here by design"
+    notes: "ANSWERS the armed repo question — BINDING-TO-FLOW (#1663 ruling): the repo-clarification flow completes the PENDING create_issue (its held draft plus binding arg repo=test-Piper-Morgan); a FRESH create_issue off a bare prepositional fragment is exactly the danger the seam's validation makes structurally impossible. is_confirm=false since issue 1664: live assembly now derives confirm-ness from the offer KIND (destructive_confirm.offer_is_confirm), and the OPEN repo question is not a yes/no — the 2.1 gate ran this row with is_confirm=true (then faithful to the workflow_type-derived live assembly; wrinkle flagged in the gate doc), so a rerun's condition differs here by design"
     fixture:
       pending_offer_kind: issue_repo_question
       pending_offer_question: "Which repository should I use? Give me the owner/name (like octocat/hello-world) — or just the repo name and I'll find it among your repositories."

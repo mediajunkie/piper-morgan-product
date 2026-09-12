@@ -829,14 +829,20 @@ async def run_archived_projects_query_workflow(
         )
 
     if projects:
-        names = [p.name for p in projects[:5]]
+        # #1738: render the FULL set — the rendered message is the only
+        # per-turn record that reaches next-turn context, so a `[:5]` cap
+        # here becomes the model's data next turn ("the list I got back
+        # only showed five names", PM live 2026-09-09 v70). GatherOutcome
+        # contract §5b: a render cap must never change what the system
+        # believes it has. Same fix as the #1431 canonical branch.
+        names = [p.name for p in projects]
         noun = "project" if len(projects) == 1 else "projects"
         message = f"You have {len(projects)} archived {noun}:\n\n" + "\n".join(
             f"- {name}" for name in names
         )
-        if len(projects) > 5:
-            message += f"\n\n...and {len(projects) - 5} more."
-        message += '\n\nSay "restore <name>" to bring one back.'
+        # #1738 defect 1: `<name>` is swallowed by the web render as an
+        # unknown HTML tag (rendered 'Say "restore "' with an empty slot).
+        message += '\n\nSay "restore [project name]" to bring one back.'
     else:
         message = "You don't have any archived projects."
 
