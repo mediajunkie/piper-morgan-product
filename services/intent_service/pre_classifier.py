@@ -972,6 +972,15 @@ class PreClassifier:
     # TestExtractionPatternRatchet pre-classifier count is unchanged.
     PROJECT_NOUN_REQUIRED = r"(?=.*\bprojects?\b)"
 
+    # #1738: the portfolio LIST claim, named. NOT a new routing pattern
+    # (#1559 moratorium) — this is the literal that has closed
+    # PORTFOLIO_PATTERNS since #675, extracted so _apply_subsumption_filter
+    # can key on the SAME claim this group makes (portfolio-list subsumes
+    # the STATUS list/show overlap) rather than a re-derived copy.
+    PORTFOLIO_LIST_PATTERN = (
+        r"\b(?:show|list|view)\s+(?:my\s+)?(?:all\s+)?(?:archived\s+)?projects\b"
+    )
+
     PORTFOLIO_PATTERNS = [
         # Archive operations - "Archive my project X"
         r"\barchive\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
@@ -996,8 +1005,8 @@ class PreClassifier:
         # Update project - "Update project X"
         r"\bupdate\s+(?:my\s+)?(?:the\s+)?project\b",
         r"\bedit\s+(?:my\s+)?(?:the\s+)?project\b",
-        # List operations - "Show my projects"
-        r"\b(?:show|list|view)\s+(?:my\s+)?(?:all\s+)?(?:archived\s+)?projects\b",
+        # List operations - "Show my projects" (#1738: named constant above)
+        PORTFOLIO_LIST_PATTERN,
     ]
 
     # Set-default-repo patterns (RECONNECT #1327 gap 1) — conversational counterpart
@@ -2249,10 +2258,47 @@ class PreClassifier:
                     reason="github_specific_query_subsumes_status",
                 )
 
-        if not drop_categories:
+        # Issue #1738 (defect 2): the PORTFOLIO list claim subsumes STATUS.
+        # "list my archived projects" matches BOTH PORTFOLIO_LIST_PATTERN
+        # (the ask: a portfolio listing) AND STATUS_PATTERNS' broad
+        # r"\blist.*projects\b" / r"\bshow.*projects\b". The phantom
+        # STATUS/get_project_status sibling made every list-projects turn
+        # multi-intent; whenever that sibling failed, _aggregate_messages
+        # stapled "I wasn't able to check on project status right now…"
+        # onto a SUCCESSFUL listing (PM live 2026-09-09 v70 — the §2
+        # reportability defect in the GatherOutcome contract; same rider as
+        # the #1431 screenshots). Mirrors pre_classify() precedence, where
+        # PORTFOLIO is checked before STATUS. Keyed on the LIST claim, not
+        # the PORTFOLIO category: a portfolio WRITE ("archive project X")
+        # beside a genuine status ask keeps both intents. Drops only the
+        # get_project_status action so STATUS/check_completion_status
+        # (COMPLETION_HISTORY group) is never collateral.
+        drop_intent_ids: set = set()
+        if "PORTFOLIO" in categories and "STATUS" in categories:
+            raw_message = next((i.original_message for i in intents if i.original_message), "")
+            if re.search(PreClassifier.PORTFOLIO_LIST_PATTERN, raw_message.strip().lower()):
+                phantom_status = [
+                    i
+                    for i in intents
+                    if i.category.value.upper() == "STATUS" and i.action == "get_project_status"
+                ]
+                if phantom_status:
+                    drop_intent_ids.update(id(i) for i in phantom_status)
+                    logger.debug(
+                        "subsumption_filter_applied",
+                        kept="PORTFOLIO",
+                        dropped="STATUS",
+                        reason="portfolio_list_subsumes_status",
+                    )
+
+        if not drop_categories and not drop_intent_ids:
             return intents
 
-        filtered = [i for i in intents if i.category.value.upper() not in drop_categories]
+        filtered = [
+            i
+            for i in intents
+            if i.category.value.upper() not in drop_categories and id(i) not in drop_intent_ids
+        ]
         logger.info(
             "subsumption_filter_result",
             original_count=len(intents),
