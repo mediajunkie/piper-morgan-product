@@ -2,9 +2,9 @@
 name: template-audit
 description: Run a mechanical template audit on a finished blog draft before sending the publish-ready signal to Docs. Use after PM's voice pass is complete. Produces a pass/fail report with specific flags. Blocks the publish-ready signal on any FAIL.
 scope: comms
-version: 1.13
+version: 1.14
 created: 2026-06-19
-updated: 2026-09-02
+updated: 2026-09-12
 ---
 
 # template-audit
@@ -25,7 +25,13 @@ NOT for: draft-time discipline (that's in `draft-blog-post`) or Docs' final proo
 
 1. Open `docs/internal/planning/comms/blog-post-template.md` — the structural reference
 2. Open `docs/internal/planning/comms/xian-voice-tone-guide.md` — the voice reference
-3. Pull the next scheduled post from `editorial-calendar.csv` — needed for footer tease verification
+3. Open `docs/internal/planning/comms/blog-style-guide.md` — house terms where the deliberate
+   choice is NOT the conventional one (e.g. "Minimum Valuable Product," not "Viable"). **Read this
+   before "fixing" any spelled-out acronym or term that looks like a typo** — the doc exists
+   because two separate roles independently "corrected" the same deliberate term back to
+   conventional wording, one of them at this exact audit stage. If a term isn't listed there or in
+   the glossary and still looks wrong, flag it to PM rather than silently changing it.
+4. Pull the next scheduled post from `editorial-calendar.csv` — needed for footer tease verification
 
 ```bash
 # Get the file's pubDate, then find the next post after it
@@ -375,3 +381,5 @@ On PASS: send the publish-ready memo to Docs inbox per the handoff protocol (Jun
 *v1.12 — 2026-09-02. **Check #2 gains title-case verification.** Ship #058 published as "What we actually had" — sentence case, against a corpus where the 8 most recent Ships and 10 most recent narratives/insights are 100% title case. The defect passed Exec's draft, PM's own voice pass, this skill's own audit, and Docs' independent post-publish audit — four layers, all checking sense, none checking case, because nothing had ever made the convention mechanically checkable. PM caught it after publish and fixed it directly. Added a small-word-aware title-case script to check #2 (the natural home, since both checks read the same H1 line) rather than opening a new numbered check and renumbering the other fifteen. Verified against three controls: the original defective title (flags "we," "actually," "had"), the corrected title (clean), and a false-positive sweep of 10 real published titles across all three variants (0 false positives). Same failure shape as v1.11's origin — and the irony wasn't lost: this is Ship #058's own learning-pattern theme ("no single layer was reliable enough alone") playing out inside the very checklist meant to catch it.*
 
 *v1.13 — 2026-09-09. **Ship calibration table gains a fifth row: check #14's short-form-role-name NO-GLOSS sub-check is N/A on Ships.** Reviewing Ship #059, the acronym check flagged Arch/CXO/PPM/CIO/HOST/Comms/Docs as unglossed. Rather than assume they were real findings or dismiss them on instinct, checked against 5 prior published Ships (#050, #051, #053, #054, #055) — #055 alone carries 5 different unglossed short forms and published clean, confirming this is established Ship-genre convention, not a defect. PM, on hearing the finding: *"we should keep track of the distinct conventions between the blog series and the Ship"* — this table is that tracking surface, so the finding belongs here rather than only in a session log. **Narrower than the other four rows**: only the short-form-glossing sub-pattern is exempt on Ships; check #14's actual hard-acronym FALSE-UNPACK findings still apply and still block.*
+
+*v1.14 — 2026-09-12. **Pre-Flight gains a third read: `blog-style-guide.md`, the new house-terminology doc.** Docs independently "corrected" PM's deliberate "minimum-valuable-product" back to the conventional "viable" while proofreading "Piper Morgan Eras" — the exact stage this skill exists to gate — published it live, then caught and fixed it via the file's own git history. This is the second known instance of the identical mistake (the first, pre-06-10, is what got MVP added to the glossary in the first place) — two different roles, same root cause: treating a documented deliberate term as a typo without checking first. PM's direct instruction: the fact belongs in a blog-specific style guide, which didn't exist yet. Docs created it and added it to `blog-post-template.md`'s Required Reading; added the same pointer here (Pre-Flight step 3) and to `draft-blog-post`'s Required Reading, since the mistake can happen at either the draft stage or this audit stage.*

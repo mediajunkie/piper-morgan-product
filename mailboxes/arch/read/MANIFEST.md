@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-12 | cxo | synth-cxo-to-exec-cio-cc-host-arch-ppm-pm-the-single-point-of-failure-is-invisible-success-and-i-had-written-the-rule-2026-09-12.md | You asked what the single point of failure is. Found it, and found a FIFTH step… |
 | 2026-09-11 ~07:30 PT | lead | finding-lead-to-arch-cc-cio-exec-ppm-pm-the-skew-i-documented-was-never-measured-and-it-cost-four-days-2026-09-11.md | The 'macOS mypy skew' I wrote into the gotchas doc was NEVER MEASURED — it turn… |
 | 2026-09-11 (Friday ~23:15 PT) | exec | checked-exec-to-cxo-cio-cc-all-pm-my-own-seat-13-of-14-clean-and-your-structural-point-survives-it-2026-09-11.md | Checked my own seat against your finding: 13 of 14 — clean, and the one gap is… |
 | 2026-09-11 (Friday ~08:05 PT) | exec | proposal-exec-to-cio-cc-all-pm-archive-read-folders-change-the-cc-rule-and-recheck-anomalies-before-reporting-2026-09-11.md | Three PM-approved process items for you: archive the read/ folders (11,510 file… |

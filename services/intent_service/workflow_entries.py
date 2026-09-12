@@ -729,6 +729,21 @@ async def run_delete_todo_workflow(
     if _clear_result is not None:
         return _clear_result
 
+    # #1696: an EXPLICIT bulk delete ("delete my reminders" — plural noun,
+    # no number, no named target) used to fall to handle_delete_todo's
+    # single-item which-todo ask; the one flow built for bulk clears
+    # (#1605) deliberately declines explicit imperatives, so the MORE
+    # explicit user got LESS capability. This seam hands the bulk shape to
+    # the clear-family flow's already-#1190-gated delete leg (targets bound
+    # at offer time; "yes" dispatches clear_reminders_delete). Runs AFTER
+    # the clear seam so #1605 keeps first claim; every non-bulk shape
+    # returns None and proceeds unchanged.
+    _bulk_result = await _rc.maybe_handle_explicit_bulk_delete(
+        intent_service, intent, session_id, user_id, todo_user_id
+    )
+    if _bulk_result is not None:
+        return _bulk_result
+
     message = await intent_service.todo_handlers.handle_delete_todo(
         intent, session_id, user_id=todo_user_id
     )

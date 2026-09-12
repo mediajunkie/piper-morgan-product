@@ -397,6 +397,11 @@ _DELETE_COMMAND_NOISE = frozenset(
         "titled",
         "named",
         "please",
+        # #1696: the bare universal quantifier never NAMES a todo — without
+        # this, "delete all my reminders" resolved 'all' as a named target
+        # and answered with the matching-"all" miss instead of reaching the
+        # explicit bulk seam at the rail entry point.
+        "all",
     }
 )
 
@@ -406,7 +411,9 @@ def _named_delete_target(message: str) -> str:
 
     "delete my hydrate reminder" → "hydrate"; "delete the reminder to
     hydrate" → "hydrate"; "delete my reminders" → "" (nothing named — the
-    caller passes through to the handler's which-todo ask).
+    caller passes through; at the rail entry point the #1696 explicit bulk
+    seam claims the plural/bulk shape, and only a singular unnamed ask
+    falls to the handler's which-todo ask).
     """
     from services.intent_service.todo_handlers import _STOPWORDS
 
@@ -470,9 +477,14 @@ async def build_todo_delete_confirmation(
       are ``None`` to ``detect_clear_family_ask`` by its _EXPLICIT_VERB_RE,
       so this gate owns them — the boundary holds in both directions.
     - **no principal**: the entry point returns the auth-required decline.
-    - **no parseable todo number AND no named target**: handle_delete_todo
-      returns the "Which todo should I remove?" clarification (its only
-      no-number path).
+    - **no parseable todo number AND no named target**: passthrough. At the
+      rail entry point the #1696 explicit bulk seam
+      (``reminder_clear.maybe_handle_explicit_bulk_delete``, after the
+      clear-family seam) claims the PLURAL/bulk shape ("delete my
+      reminders") and arms the clear-family flow's #1190-gated batch
+      confirm; a singular unnamed ask falls to handle_delete_todo's
+      "Which todo should I remove?" clarification (its only no-number
+      path). Both are read-only on this turn.
     - **number out of range / non-numeric**: handle_delete_todo returns the
       "couldn't find todo #N" / "doesn't look like a number" copy.
 
