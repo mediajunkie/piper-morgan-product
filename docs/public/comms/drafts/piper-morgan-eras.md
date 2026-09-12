@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'piper-morgan-eras-blog-eras.png'
+alt: 'In a seven-gallery museum, a founder holding an archival photograph points toward the earliest exhibits as a luminous curator pauses while filing a primitive machine in the newest display.'
+caption: '"But the tag is brand new!"'
 ---
 
 # Piper Morgan Eras
@@ -20,7 +20,7 @@ This twelve-episode scheme held for about a month. By November (I was still post
 
 # Backwards down the number line
 
-By March 2026 the blog had 275 posts. The fifteen-episode scheme was still sitting in the code, present in every page that referenced it but along the way the organization refreshed and design updates had completed detached the posts from their episode assignments. Now. each of the episodes matched **zero** of those 275 posts. The episode definitions and the actual post data had drifted apart so completely that the connection between them had stopped existing in practice, while every page kept rendering as though it still worked.
+By March 2026 the blog had 275 posts. The fifteen-episode scheme was still sitting in the code, present in every page that referenced it, but along the way the organization refreshed and design updates had completely detached the posts from their episode assignments. Now each of the episodes matched **zero** of those 275 posts. The episode definitions and the actual post data had drifted apart so completely that the connection between them had stopped existing in practice, while every page kept rendering as though it still worked.
 
 Posts kept publishing through the normal pipeline. The episode assignments just never got extended alongside them. A scheme that isn't checked against the data it's supposed to organize fails with a whimper, not a bang. It sat that way till I actually looked at it again.
 
@@ -36,15 +36,15 @@ This time the assignment was mechanical — computed from the data, not maintain
 
 # Stale again in August
 
-Five eras covered the story through March 2026 but the project didn't stop in March. By mid-August, five months of work had been added to the blog's narrative with no era at assigned, for the same underlying reason as before: the scheme had a fixed endpoint and no process for extendinfg it.
+Five eras covered the story through March 2026 but the project didn't stop in March. By mid-August, five months of work had been added to the blog's narrative with no era assigned, for the same underlying reason as before: the scheme had a fixed endpoint and no process for extending it.
 
-My communicatons chief agent (Comms) proposed two new eras to close the gap — The Mechanism and The Alpha — argued from two events a reader could actually recognize: the move to always-on infrastructure (when I put all my agents on semi-autonomous duty cycles), and the point the hosted alpha opened to real outside testers. It took me four days to realize that Comms was waiting for my approval and I green-lit it on the spot. Comms built the update that same evening: two new eras added to the code, a hundred-plus posts reassigned, catching a fix along the way: the newest era had no end date yet, and the code had been representing that with a placeholder that would eventually go stale, so Comms changed it to render "Present" instead of pretending to know a date nobody could know yet.
+My communications chief agent (Comms) proposed two new eras to close the gap — The Mechanism and The Alpha — argued from two events a reader could actually recognize: the move to always-on infrastructure (when I put all my agents on semi-autonomous duty cycles), and the point the hosted alpha opened to real outside testers. It took me four days to realize that Comms was waiting for my approval and I green-lit it on the spot. Comms built the update that same evening: two new eras added to the code, a hundred-plus posts reassigned, catching a fix along the way: the newest era had no end date yet, and the code had been representing that with a placeholder that would eventually go stale, so Comms changed it to render "Present" instead of pretending to know a date nobody could know yet.
 
-# The inevitable bug.
+# The inevitable bug
 
 The fix Comms implemented itself had an error in it.
 
-When they extended the assignment to the two new eras, they checked their work against every post already correctly categorized, and it matched perfectly. What they didn't do was step back and ask whether the *method* would generalized to posts they hadn't touched yet. Weeks later, filling in the remaining gaps, the "unicorn" web designer / developer agent (Web) found that roughly 260 older posts were sitting with no era at all or a leftover pre-migration label, and diagnosed it as a judgment call: something that would need a person to read each post's history and decide by hand, because the numbers didn't line up cleanly against the era boundaries.
+When they extended the assignment to the two new eras, they checked their work against every post already correctly categorized, and it matched perfectly. What they didn't do was step back and ask whether the *method* would generalize to posts they hadn't touched yet. Weeks later, filling in the remaining gaps, the "unicorn" web designer / developer agent (Web) found that roughly 260 older posts were sitting with no era at all or a leftover pre-migration label, and diagnosed it as a judgment call: something that would need a person to read each post's history and decide by hand, because the numbers didn't line up cleanly against the era boundaries.
 
 That diagnosis was *almost* right. The actual cause was smaller and completely mechanical: a confusion between each post's *work* date (the actual period of time that the blog post is about) and *publish* date. Web aligned all the posts by publish date. This also revealed a duplicate post in the archive, which we cleaned up.
 
@@ -61,7 +61,7 @@ Seven periods, spanning May 2025 to today (and subject to revision again in the 
 - **The Build** (May–Jul 2025) — Prototype to production: daily building, debugging marathons, test recovery.
 - **The Methodology** (Aug–Sep 2025) — From organic to orchestrated: infrastructure sprints, methodology crystallizes.
 - **The Reflection** (Oct–Nov 2025) — Alpha prep, the Great Refactor, patterns named and documented.
-- **The Foundation** (Dec 2025–Jan 2026) — Strategic resets, completion discipline, minimum-viable-product planning.
+- **The Foundation** (Dec 2025–Jan 2026) — Strategic resets, completion discipline, minimum-valuable-product planning.
 - **The Sprint** (Feb–Mar 2026) — M0 ships, M1 sprint, multi-agent maturity, blog-first publishing.
 - **The Mechanism** (Apr–Jul 2026) — Rules become architecture: duty-cycle autonomy, the connector rebuild, production catches up to development.
 - **The Alpha** (Aug 2026–present) — Durable infrastructure lands, the hosted alpha opens to outside testers, verification culture hardens.
@@ -81,7 +81,7 @@ A partial fix in August trimmed the padding but never addressed what was actuall
 
 If this reached you on Medium or LinkedIn, the canonical site is really worth the visit now in a way it wasn't a few weeks ago. I'm aware that plunging into this story midstream can be confusing. The blog on the site lets you jump back to any time in the process, or even to the very beginning, and as a bonus you get a real sense of how the "generic cartoon" illustration style has evolved over the past year and a half.
 
-The eras seem to be working. The newest post is the first thing you see. Now almost 390 posts organized into the real shape of what building (and learning) process has looked like "the question that started it all" to whatever's happening in The Alpha this week.
+The eras seem to be working. The newest post is the first thing you see. Now almost 390 posts organized into the real shape of what the building (and learning) process has looked like — from "the question that started it all" to whatever's happening in The Alpha this week.
 
 ---
 
