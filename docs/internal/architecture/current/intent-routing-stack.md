@@ -158,6 +158,24 @@ sections with per-origin vocabulary instructions — `due_reminders` (from
 says "todo"; mixed-origin turns instruct todo-list-first + a separate
 "Also due:" reminder block, an item in both origins appearing in the reminder
 block only. No new store, no schema change, no per-item data field.
+**#1653 verb-answer anchoring + contract adoption (2026-09-12)**: the verb-question
+answer turn shared the unanchored `\bdelete\b` claim #1650 fixed for the correction
+window — with the verb question armed, a prose aside mentioning "delete" (PM's live
+one-liner, under the #1631 floor) stored a wrong STICKY verb default and armed the
+V3 confirm. The reminder_clear kind-specific turns now adopt the #1739 acceptance
+contract: the seam consults `acceptance.evaluate_acceptance` at its declared axes
+(`clarify_reminder_clear_verb` READ×PRIVATE → LOW_CEREMONY; arm-site's stored ask
+threaded per #1665); a STATE_QUESTION verdict ("delete them?") falls through to the
+generic seam's adopted READ branch — silent §5a re-arm, normal processing answers —
+instead of being claimed as a verb answer. The verb CLAIMS are judged at their
+TARGET action's axes: delete → `clear_reminders_delete` (DESTRUCTIVE×PRIVATE →
+NAMED_OBJECT) takes the anchored `_CORRECTION_CLAIM_RE` crisp bar (same pattern
+reused — no new extraction regex) + prose floor; complete → `complete_todo`
+(WRITE×PRIVATE → LOW_CEREMONY) keeps word-level detection behind the prose floor.
+The correction window gets the same axis-(a) gate. Echo-answers at the armed delete
+confirm ("yes, delete them") remain deliberately non-firing (not crisp full-message
+vocabulary; the pop stands — issue #1653 note 2, evidence-gated to change).
+Regression: `test_reminder_clear_verb_anchor_1653.py`.
 
 **#1595 Phase 1 inversion shadow observer (2026-08-14) — an explicitly
 NON-dispatching fifth party that watches the chain, never joins it.** When

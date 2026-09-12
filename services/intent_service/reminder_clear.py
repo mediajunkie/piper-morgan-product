@@ -800,7 +800,6 @@ async def maybe_handle_clear_family(
 # the verified_inference.handle_verification_turn_meta precedent)
 # ---------------------------------------------------------------------------
 
-_DELETE_ANSWER_RE = re.compile(r"\bdelete\b|\bremove\b|\bget\s+rid\b", re.IGNORECASE)
 _COMPLETE_ANSWER_RE = re.compile(
     r"\bdone\b|\bcomplete(?:d)?\b|\bfinish(?:ed)?\b|\bcheck(?:ed)?\s+(?:them|these|it)?\s*off\b",
     re.IGNORECASE,
@@ -809,16 +808,25 @@ _NEGATED_DELETE_RE = re.compile(
     r"\b(?:don'?t|do\s+not|never)\b[^.!?]{0,20}\bdelete\b", re.IGNORECASE
 )
 
-# #1650: the correction window's claim must be a crisp correction phrase —
-# the delete verb anchored at the head of a short, single-line turn, after
-# at most a correction lead-in ("no,", "wait,", "actually", "I meant…").
-# The old unanchored \bdelete\b claimed ASIDES that merely mention deleting:
-# PM's live "please note that I'll need to figure out later why you thought
-# I wanted you to delete a project." (one line, ~95 chars — under the #1631
-# floor) reads as "I meant delete" to a substring match, and the claim arms
-# a live delete confirm. A false claim here is one crisp "yes" from data
-# loss, so the pattern is deliberately narrow; a missed correction phrase
-# just falls to off-intent, where the user can re-ask in full words.
+# #1650: a delete CLAIM must be a crisp phrase — the delete verb anchored at
+# the head of a short, single-line turn, after at most a lead-in ("no,",
+# "wait,", "actually", "I meant…"). The old unanchored \bdelete\b claimed
+# ASIDES that merely mention deleting: PM's live "please note that I'll need
+# to figure out later why you thought I wanted you to delete a project."
+# (one line, ~95 chars — under the #1631 floor) reads as "I meant delete" to
+# a substring match, and the claim arms a live delete confirm. A false claim
+# here is one crisp "yes" from data loss, so the pattern is deliberately
+# narrow; a missed phrase just falls to off-intent / an honest re-ask, where
+# the user can re-ask in full words.
+#
+# #1653: the SAME pattern (reused, not duplicated — no new extraction regex
+# per the TestExtractionPatternRatchet discipline) is also the verb-answer
+# turn's delete claim: the verb question's delete branch targets
+# clear_reminders_delete (registry-declared DESTRUCTIVE×PRIVATE →
+# NAMED_OBJECT tier), so the claim takes this crisp bar too. The unanchored
+# _DELETE_ANSWER_RE it replaces was the #1650 residue the issue filed: with
+# the verb QUESTION armed, the same PM aside read as "the verb means delete"
+# and stored a wrong, STICKY verb default.
 _CORRECTION_CLAIM_RE = re.compile(
     r"^(?:(?:no|yes|yeah|yep|wait|hold\s+on|actually|oops|oh|sorry|hmm)[,!\s]+)*"
     r"(?:i\s+(?:actually\s+)?(?:meant|want(?:ed)?\s+(?:you\s+to\s+)?)\s*)?"
@@ -851,10 +859,18 @@ async def handle_reminder_clear_turn(
     else -> abandoned via the pop)."""
     payload = pending_offer.get("pending_action") or {}
     kind = payload.get("kind")
+    # #1665/#1653: the arm-site's rendered ask rides the offer record —
+    # threaded so the contract consult states what it knows (Arch's
+    # input-adequacy condition), even when that is None.
+    armed_question = pending_offer.get("question")
     if kind == CLEAR_VERB_QUESTION_KIND:
-        return await _handle_verb_answer_turn(payload, message, session_id, user_id, intent_service)
+        return await _handle_verb_answer_turn(
+            payload, message, session_id, user_id, intent_service, armed_question=armed_question
+        )
     if kind == CLEAR_CORRECTION_KIND:
-        return await _handle_correction_turn(payload, message, session_id, user_id, intent_service)
+        return await _handle_correction_turn(
+            payload, message, session_id, user_id, intent_service, armed_question=armed_question
+        )
     return None
 
 
@@ -864,6 +880,7 @@ async def _handle_verb_answer_turn(
     session_id: Optional[str],
     user_id: Optional[str],
     intent_service,
+    armed_question: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
     from services.intent_service.verified_inference import (
         SOURCE_USER_VERIFIED,
@@ -932,10 +949,65 @@ async def _handle_verb_answer_turn(
             "requires_clarification": True,
         }
 
-    wants_delete = bool(_DELETE_ANSWER_RE.search(message)) and not _NEGATED_DELETE_RE.search(
-        message
+    # ── #1653 (#1739 acceptance-contract adoption for this seam). AXES,
+    #    MAPPED EXPLICITLY: the ARMED workflow (clarify_reminder_clear_verb)
+    #    is registry-declared READ×PRIVATE → LOW_CEREMONY.
+    #
+    #    ARM SURVIVAL — the SILENT LOW-tier form, stated per CXO's
+    #    survival-must-be-stated rule (contract doc §5a READ row): a
+    #    STATE_QUESTION verdict returns None, which lands the turn on the
+    #    generic seam's already-adopted READ branch — that branch re-arms
+    #    THIS offer silently and normal processing answers the question.
+    #    Silent (not the standup_complete_todo visible form) because nothing
+    #    can fire from the survived arm: the delete branch still runs
+    #    through the #1190 NAMED_OBJECT confirm, and a stale "delete" answer
+    #    only arms a fresh, fully-rendered confirm. Before #1653 a question
+    #    mentioning 'delete' ("delete them?") was CLAIMED as a verb answer
+    #    by the unanchored substring below — a state query stored a sticky
+    #    preference (contract axis (a) violated at this seam).
+    #
+    #    ACCEPT/DECLINE verdicts deliberately do NOT act here: crisp verb
+    #    answers legitimately open with accept/decline lead-ins ("yes,
+    #    delete them" / "no, delete them") and must reach the claims below
+    #    first; a bare accept/decline matches no claim and falls through to
+    #    the generic seam's adopted READ branch exactly as before.
+    from services.intent_service.acceptance import (
+        AcceptanceVerdict,
+        declared_axes_for_workflow,
+        evaluate_acceptance,
     )
-    wants_complete = bool(_COMPLETE_ANSWER_RE.search(message))
+    from services.intent_service.soft_invocation import is_prose_reply
+
+    _axes = declared_axes_for_workflow(CLARIFY_CLEAR_VERB_WORKFLOW)
+    verdict = evaluate_acceptance(
+        message,
+        effect=_axes[0] if _axes else None,
+        outwardness=_axes[1] if _axes else None,
+        armed_question=armed_question,  # #1665: threaded from the offer record
+    )
+    if verdict is AcceptanceVerdict.STATE_QUESTION:
+        logger.info(
+            "reminder_clear_verb_state_question_falls_through",
+            session_id=session_id,
+        )
+        return None
+
+    # ── The verb claims. TIER JUDGMENT (#1653): each claim is judged at its
+    #    TARGET action's registry-declared axes, not the seam's —
+    #    - delete → clear_reminders_delete: DESTRUCTIVE×PRIVATE →
+    #      NAMED_OBJECT, so the claim takes the #1650 crisp bar: the SAME
+    #      anchored _CORRECTION_CLAIM_RE (reused, no new regex) + the #1631
+    #      prose floor. A missed crisp phrasing costs an honest re-ask turn,
+    #      never a wrong sticky store (the filed defect).
+    #    - complete → complete_todo: WRITE×PRIVATE → LOW_CEREMONY, so
+    #      word-level detection stands, gated by the prose floor only
+    #      (contract axis (c): asides neither accept nor steal, every tier).
+    text = (message or "").strip()
+    prose = is_prose_reply(text)
+    wants_delete = (
+        not prose and bool(_CORRECTION_CLAIM_RE.match(text)) and not _NEGATED_DELETE_RE.search(text)
+    )
+    wants_complete = not prose and bool(_COMPLETE_ANSWER_RE.search(message))
     if wants_delete and wants_complete:
         # contradictory — command-shaped forms ("delete the completed ones")
         # fall through and route normally; a genuinely garbled answer gets
@@ -1170,6 +1242,7 @@ async def _handle_correction_turn(
     session_id: Optional[str],
     user_id: Optional[str],
     intent_service,
+    armed_question: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
     """ "I meant delete" on the turn after a variant-2 auto-apply: route the
     just-completed batch to a #1190-gated delete. Does NOT flip the stored
@@ -1178,12 +1251,39 @@ async def _handle_correction_turn(
     #1650: the claim is ANCHORED and non-prose — a turn that merely mentions
     deleting mid-sentence (PM's live aside) is not a correction and falls
     through to the off-intent tier (the pop drops the window; the new turn
-    routes normally)."""
+    routes normally).
+
+    #1653 (contract axis (a)): an interrogative turn is a state query, not a
+    correction claim — "delete them?" is head-anchored AND question-shaped,
+    and before this gate it armed the delete confirm off a question. A
+    STATE_QUESTION verdict falls through to the generic seam's adopted READ
+    branch (reminder_clear_correction: READ×PRIVATE → LOW_CEREMONY), which
+    re-arms the window silently (§5a) and lets normal processing answer."""
     text = (message or "").strip()
+    from services.intent_service.acceptance import (
+        AcceptanceVerdict,
+        declared_axes_for_workflow,
+        evaluate_acceptance,
+    )
     from services.intent_service.soft_invocation import is_prose_reply
 
     if is_prose_reply(text):
         return None  # multi-line / long prose never claims the correction
+    _axes = declared_axes_for_workflow(CLEAR_CORRECTION_WORKFLOW)
+    if (
+        evaluate_acceptance(
+            message,
+            effect=_axes[0] if _axes else None,
+            outwardness=_axes[1] if _axes else None,
+            armed_question=armed_question,  # #1665: threaded from the record
+        )
+        is AcceptanceVerdict.STATE_QUESTION
+    ):
+        logger.info(
+            "reminder_clear_correction_state_question_falls_through",
+            session_id=session_id,
+        )
+        return None
     if not _CORRECTION_CLAIM_RE.match(text) or _NEGATED_DELETE_RE.search(text):
         return None
     if _principal_mismatch(payload, user_id):

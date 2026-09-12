@@ -2449,9 +2449,9 @@ class TestAcceptanceContractRatchet:
     standup overdue-todo offer answers (int_svc)  W/PRIV  ADOPTED     "question" on the record
     #1591 interview-invitation answers (int_svc)  W/PRIV  ADOPTED     "question" on the record
     #1591 mode read-back answers (int_svc)        W/PRIV  ADOPTED     "question" on the record
+    reminder_clear verb/correction turns          READ*   ADOPTED     "question" threaded 09-12
     generic offer seam, other non-READ kinds      W/PRIV  UNADOPTED   blocked: LOW-tier vocab
     reminder time/task turns (todo_handlers)      READ*   UNADOPTED   holds (kind-specific)
-    reminder_clear turns                          READ*   UNADOPTED   holds (kind-specific)
     FTUX interview turn (first_contact)           READ    UNADOPTED   holds
     verified_inference meta/decline seam          WRITE   UNADOPTED   holds (prose opt-out)
     onboarding portfolio_handler (own vocab)      WRITE   UNADOPTED   onboarding on ice
@@ -2473,7 +2473,9 @@ class TestAcceptanceContractRatchet:
     vocabulary tightening (CXO-owned; see
     test_low_tier_keeps_the_generic_vocabulary_including_its_greedy_residue).
     READ* = the generic-branch residue of those kinds IS adopted; the
-    kind-specific handlers' own detector calls are not.
+    kind-specific handlers' own detector calls are not (reminder_clear's
+    kind-specific turns adopted 2026-09-12, #1653 — see below; the
+    todo_handlers row still holds).
 
     2026-09-11 (PM live PARTIAL on #1617's contract behavior, v71 06:54:
     "are we done with that standup?" against the armed overdue-todo offer
@@ -2507,6 +2509,30 @@ class TestAcceptanceContractRatchet:
     ``verify_inference_read_back_pending`` join ``_apply_soft_offer``'s
     ``_pending_flags``), covering all three #1591 arm sites incl. PPM's
     empty lead.
+
+    2026-09-12 (#1653, the confirm-greed residue's OTHER site): the
+    reminder_clear kind-specific turns adopted. The verb-answer turn
+    consults the predicate at the SEAM's declared axes
+    (clarify_reminder_clear_verb: READ×PRIVATE → LOW_CEREMONY) with the
+    arm-site's stored ask threaded; STATE_QUESTION falls through to the
+    generic READ branch's SILENT §5a re-arm (stated in-branch: nothing can
+    fire from the survived arm — the delete path still runs through the
+    #1190 NAMED_OBJECT confirm). The verb CLAIMS are judged at their TARGET
+    action's axes: delete → clear_reminders_delete (DESTRUCTIVE×PRIVATE →
+    NAMED_OBJECT) takes the #1650 anchored crisp bar — the SAME
+    ``_CORRECTION_CLAIM_RE``, reused, replacing the unanchored
+    ``_DELETE_ANSWER_RE`` residue that let PM's live aside store a wrong
+    sticky verb default; complete → complete_todo (WRITE×PRIVATE →
+    LOW_CEREMONY) keeps word-level detection behind the prose floor (axis
+    (c)). The correction window gets the same axis-(a) STATE_QUESTION gate
+    ("delete them?" no longer arms the confirm off a question). The
+    reminder_clear.py ``detect_offer_response`` row REMAINS below: its one
+    call is ``_reask_verb_question_if_unrecognized``'s DEFERRAL shape read
+    (returns None so the generic seam decides accepts/declines — the
+    drafted_issue/repo_clarification row rationale, not an acceptance
+    decision). Echo-answers at the armed delete confirm ("yes, delete
+    them") stay deliberately non-firing (issue #1653 note 2; evidence-gated
+    to change).
 
     Arm-survival semantics as adopted (CXO ruling 2026-09-10, contract doc
     §5a/§5b — docs/internal/design/acceptance-contract-user-facing-2026-09-10.md):
