@@ -1,0 +1,122 @@
+<title>Ship #060 — internal report</title>
+<style>
+  :root{--paper:#f5f4f1;--card:#fff;--ink:#191a17;--mute:#605e56;--line:#dad7cf;
+    --accent:#1f5f52;--soft:#e6efec;--red:#8f3324;--amber:#8a6516;--blue:#2a5578;}
+  @media (prefers-color-scheme:dark){:root{--paper:#121311;--card:#1b1c19;--ink:#e9e7e1;--mute:#9c9991;
+    --line:#2d2f28;--accent:#66c0ae;--soft:#18241f;--red:#e0917f;--amber:#d7a94f;--blue:#8bb4d8;}}
+  :root[data-theme="dark"]{--paper:#121311;--card:#1b1c19;--ink:#e9e7e1;--mute:#9c9991;--line:#2d2f28;
+    --accent:#66c0ae;--soft:#18241f;--red:#e0917f;--amber:#d7a94f;--blue:#8bb4d8;}
+  :root[data-theme="light"]{--paper:#f5f4f1;--card:#fff;--ink:#191a17;--mute:#605e56;--line:#dad7cf;
+    --accent:#1f5f52;--soft:#e6efec;--red:#8f3324;--amber:#8a6516;--blue:#2a5578;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.58 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:48rem;margin:0 auto;padding:1.8rem 1.15rem 5rem}
+  .eyebrow{font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 .5rem}
+  h1{font-size:1.7rem;line-height:1.16;margin:0 0 .5rem;letter-spacing:-.02em;text-wrap:balance}
+  .stand{color:var(--mute);margin:0;font-size:1rem}
+  .meta{color:var(--mute);font-size:.82rem;margin:1rem 0 0;padding-top:.7rem;border-top:1px solid var(--line)}
+  h2{font-size:1.1rem;margin:2.3rem 0 .6rem;letter-spacing:-.01em;padding-bottom:.35rem;border-bottom:2px solid var(--line)}
+  h3{font-size:.97rem;margin:1.3rem 0 .35rem;font-weight:600}
+  p{margin:.65rem 0}
+  .nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(7rem,1fr));gap:.55rem;margin:1rem 0}
+  .n{background:var(--soft);border-radius:8px;padding:.65rem .75rem}
+  .n b{display:block;font-size:1.55rem;line-height:1.1;font-variant-numeric:tabular-nums}
+  .n span{font-size:.71rem;color:var(--mute);letter-spacing:.02em}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:.9rem 1rem;margin:.9rem 0}
+  .box.hot{border-left:3px solid var(--red)}
+  .box.warm{border-left:3px solid var(--amber)}
+  .box.cool{border-left:3px solid var(--accent)}
+  .box p:first-child{margin-top:0}.box p:last-child{margin-bottom:0}
+  table{width:100%;border-collapse:collapse;margin:.6rem 0;font-size:.89rem;display:block;overflow-x:auto}
+  th,td{text-align:left;padding:.42rem .58rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  td.c{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--mute)}
+  ul{margin:.5rem 0;padding-left:1.25rem}li{margin:.3rem 0}
+  code{font:.87em ui-monospace,Menlo,monospace;background:var(--soft);padding:.08em .32em;border-radius:3px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Internal report for Ship #060, window 4–10 September: dashboard, the week's three arcs, the honest ledger, and what needs PM decisions.</h2>
+
+<p class="eyebrow">Internal report · for PM · not the public Ship</p>
+<h1>Ship #060 — the week the cohort spent correcting itself</h1>
+<p class="stand">Window: Friday 4 September – Thursday 10 September. All ten workstream reports in. The headline isn't what shipped — it's that nearly every role's most substantive contribution this week was catching their own error, usually before anyone else could.</p>
+<p class="meta">Exec · compiled 11 September · closures computed in Pacific · denominators from <code>sprint-truth.py</code> at compile time</p>
+
+<h2>At a glance</h2>
+<div class="nums">
+  <div class="n"><b>26</b><span>ISSUES CLOSED</span></div>
+  <div class="n"><b>18</b><span>OF THEM MVP</span></div>
+  <div class="n"><b>23</b><span>OPENED</span></div>
+  <div class="n"><b>−3</b><span>NET</span></div>
+  <div class="n"><b>1,998</b><span>COMMITS</span></div>
+  <div class="n"><b>4</b><span>DEPLOYS v69→v72</span></div>
+</div>
+<div class="box cool">
+<p><b>Milestone status:</b> MVP <b>45 not done</b> — 35 Sprint Backlog, 3 In Progress, 7 In Review; <b>1,133 done</b>; <b>zero unmilestoned</b>, first time. <b>49 days to 30 October.</b></p>
+<p><b>⚠️ The not-done count rose 39 → 45 inside the window, and that is a process story rather than a regression.</b> Arch's reading, which I checked and agree with: new discoveries from your two test rounds were filed <em>into</em> the sprint mid-week, then Tuesday's Product-Backlog default stopped the inflow. <b>The pile grew because we were looking harder, then we changed where looking lands.</b></p>
+<p><b>MVP closes by day:</b> Sun 1 · Tue 4 · <b>Wed 9</b> · Thu 4. The Wednesday spike is your test round converting directly into closures.</p>
+</div>
+
+<h2>The week's three arcs</h2>
+
+<h3>1. You named a feeling on Monday and it was ratified law by Friday</h3>
+<p>Your <em>"something has been lost despite this huge autonomy improvement and I honestly don't understand it"</em> → scope → Arch leading → <b>seven independent reads returned same-day</b> → synthesis of seven decisions → a challenge round producing <b>five accepted amendments</b> → your ratification this morning. <b>Three working days, kickoff to canon.</b></p>
+<p>The finding underneath it was concrete: <b>the duty cycle had no work source except mail and standing-items.</b> Nothing in the procedure read the sprint board. That is why "there is no work" and "35 never-started items" were simultaneously true, and why Lead's quiet fires were the procedure operating correctly.</p>
+<p class="stand" style="font-size:.9rem">Worth noting the challenge round caught the synthesis's own enforcement labels outrunning their evidence <b>twice</b>, and Arch withdrew their own proposed fold on its stated cost. A synthesis whose author's proposals all survived would be the one to distrust.</p>
+
+<h3>2. Your two test rounds produced the week's engineering spine</h3>
+<p><b>Four convergent bugs from your live testing became one contract.</b> #1617, #1631, #1650 and #1694 were the same acceptance mechanism failing in opposite directions — a question with no affirmative token fired a state change, while a bare <em>"yes"</em> did nothing. Lead turned that into a single predicate (<b>#1739</b>) with an adoption ratchet: <b>idea to full adoption in 48 hours</b>, three issues closed together.</p>
+<p><b>Security effectively closed in-window.</b> #1734 (admin gate, hash-proven), #1732 (chat-render sanitizer — and in fixing it Lead found the cited file was an <em>unserved twin</em> plus a fourth sink nobody had listed), #1637 (six stale pins and a collection-time hazard).</p>
+<p><b>The backlog got a shape.</b> Arch's un-modeled-noun audit — 435 issues, 6 confirmed cousins, <em>"a convention is not a model"</em> — supplied the epic boundaries; PPM built the ordered artifact Lead now actually works from. 37 items → 8 dependency-ordered epics + 6 honest singletons.</p>
+
+<h3>3. The methodology corpus had its most productive week in months</h3>
+<p>Four entries filed — m-50 (self-attestation isn't verification), m-51 (a bounded search isn't a total), m-52 (open it), m-53 (chokepoint vs bolt-on) — <b>each corroborated across multiple seats before filing</b>. CIO's framing is the right one: an entry earns canon by surviving contact with more than one seat, not by one agent asserting it.</p>
+
+<h2>⭐ The pattern worth the Ship's theme</h2>
+<div class="box hot">
+<p><b>Nearly every role's most substantive contribution this week was catching their own error.</b> Not each other's. Their own, usually first, usually published against themselves.</p>
+<table>
+<tr><th>Role</th><th>What they caught in themselves</th></tr>
+<tr><td><b>Lead</b></td><td>The nine-day "macOS mypy skew" they documented on 09-01 <b>was never measured</b> — and it masked four days of real drift: 21 true-positive errors. <em>"A documented false clear re-emits to every reader."</em></td></tr>
+<tr><td><b>Arch</b></td><td>Traced the cohort's m-45 miscitation to <b>their own relay memo</b>. The "independent convergence" dissolved into a propagation chain — instantiating m-45's thesis while disproving its citation.</td></tr>
+<tr><td><b>CXO</b></td><td>Self-corrected, then found <b>the self-correction was the wrong one</b> and the original instinct was right. Separately nearly reported three formatters dead before widening a grep that found 5 and 9 callers.</td></tr>
+<tr><td><b>PPM</b></td><td>A mailbox-structure defect they'd fixed once in August had silently recurred for a month, <b>nine times bigger</b>. Fixed structurally on the fourth occurrence rather than cleaned up a fourth time.</td></tr>
+<tr><td><b>PA</b></td><td>Found a <b>four-day gap on their own authorized work</b> — approved 09-02, nobody built it, including them.</td></tr>
+<tr><td><b>HOST</b></td><td>Applied the new re-verify discipline to their own carry-forward and found an internal contradiction: one section marking an item awaiting ratification, another eight lines away recording it ratified. 151 → 80 lines.</td></tr>
+<tr><td><b>Docs</b></td><td>Caught a publish check returning a live <b>200 that was a stale-cached "Ship Not Found"</b> — by reading page source and comparing headers rather than trusting the status code.</td></tr>
+<tr><td><b>CIO</b></td><td>Their own exit-code contract was dead on arrival. Then found and recovered a <code>mail-send.sh</code> bug <b>of their own making</b> that deleted 21 files, and wrote it up as a mechanism.</td></tr>
+<tr><td><b>Comms</b></td><td>A near-duplicate post traced to a June "rename" that was a copy-without-delete — fixed at the skill level, closing the class.</td></tr>
+<tr><td><b>Exec</b></td><td>Three throughput figures given to you, <b>two retracted</b>. Killed my own watchdog proposal. Read closure dates in UTC. Published a belt alert from a four-minute-stale snapshot.</td></tr>
+</table>
+<p>CIO's description of one afternoon is the whole week in miniature: <em>"Four people, one thread, each self-correcting rather than resting on the previous catch."</em></p>
+</div>
+
+<h2>🔴 The honest counterweight</h2>
+<div class="box warm">
+<p><b>CXO's own assessment is the most important sentence in the ten reports, and it is about their own work:</b></p>
+<p style="font-style:italic">"Almost none of it is verified at the layer that matters. Every contract I shipped this week is checked at 'source and structure,' and not one has been scored against a delivered turn. That gap is my workstream's real status, and it did not close this week."</p>
+<p><b>That generalises past CXO.</b> A great deal of this week's output is contracts, predicates, rulesets and methodology — things verified at the layer where they are <em>written</em>, not the layer where a user meets them. <b>Your live rounds are currently the only instrument that tests the second layer</b>, and they found four real defects in twenty minutes each time.</p>
+</div>
+
+<h2>Needs you</h2>
+<table>
+<tr><th>Decision</th><th>Shape</th></tr>
+<tr><td><b>The bot's path onto protected main</b></td><td>Arch's re-test: the PR rule is gone, <b>a second masked blocker surfaced</b> — the required status check. A direct push can't pre-satisfy a check that runs on pushes. Two options: a ruleset with <code>github-actions</code> as bypass actor (repo is public, zero rulesets exist, so this is free), or drop the required check. <b>Arch recommends the ruleset</b>; I agree.</td></tr>
+<tr><td><b>#1617 retest</b></td><td>~90 seconds. Lead's replay passes 3/3; your verdict is the last step.</td></tr>
+<tr><td><b>Vercel deployment storage</b></td><td>14.91 GB against a 10 GB Hobby cap. Deleting old deployments is free and sufficient; no auto-retention below Pro.</td></tr>
+<tr><td><b>Q5</b></td><td>Probably dissolved by your own work-queue ruling rather than needing an answer — worth confirming that reading.</td></tr>
+</table>
+
+<h2>What didn't move</h2>
+<ul>
+  <li><b>35 items never started</b> — the number that matters most for 30 October, and it did not fall this week.</li>
+  <li><b>The audit Lead owns</b> — fourth window with no movement. HOST is watching, not chasing.</li>
+  <li><b>48 pieces of undelivered mail</b> to janus / pard / dispatch-dinp, found by you this morning. Notices sent; triage pending.</li>
+  <li><b>The MCP path</b> — public-beta gate, unbuildable today, unchanged.</li>
+</ul>
+
+<p class="meta"><b>Sources.</b> All ten workstream reports read in full. Window metrics computed from the GitHub API in Pacific. Sprint denominators from <code>sprint-truth.py</code> at compile time. <b>Not independently verified:</b> per-role claims about their own work — I read them as reports, not as audited fact, and several roles state their own unverified layers explicitly.</p>
+</div>
