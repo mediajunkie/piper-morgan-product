@@ -1,67 +1,56 @@
-# Lead carry-forward — rewritten 2026-08-29 ~18:15 PT (freshness rule: full pass at START/STOP)
+# Lead carry-forward — rewritten 2026-09-12 ~15:10 PT (freshness rule: full pass at START/STOP)
 
-## Live state (receipts, refreshed 2026-09-12 07:0x — Saturday fire 1)
-- **v76 LIVE** (three deploys this fire; v75 FAILED on flyctl wait-timeout mid-image-pull —
-  retry with `--wait-timeout 600` fixed it; old machine kept serving throughout).
-- **MVP: 44 open in the milestone, MEASURED** (= board 34 Sprint Backlog + 3 In Progress +
-  7 In Review). ⚠️ My "25→24→23" was stale decrement-arithmetic, never a measurement —
-  RE-MEASURE the headline every time (`gh issue list --milestone MVP --state open`); never
-  decrement. Memo to PPM asks which denominator to pin; correction owned in PM's tracker.
-- **EPIC 2**: 1690 + 1741 + 1733 closed + live-verified today; remainder = **1740** (dead
-  renderer twin — folded into epic 2 per the order doc 9/10; my earlier "remainder EMPTY"
-  note was wrong, caught on re-reading the order doc).
-  New tail (unplaced, PPM's call): 1750 (standup.html stale twin) · 1751 (canonical
-  personality page hardcodes user_id "default").
-- **1741 CLOSED + deployed**: suggestions UI escaped per the 1578 treatment (user text out of
-  onclick; deliberately NOT the DOMPurify chokepoint — inline handlers are by design).
-  ⚠️ jest verifies need `--config tests/frontend/jest.config.js` — bare `npx jest` runs
-  node-env and fails 9/9 while looking like a broken fix.
-- **1690 CLOSED + verified in prod**: demo plugin default-OFF (opt-in `PIPER_DEMO_PLUGIN=1`);
-  running instance shows "Initialized 4/4 plugin(s)" — demo absent. ⚠️ curl probes of prod
-  routes are UNINFORMATIVE for mounted/unmounted: auth middleware 401s before routing
-  (calibrated with a nonexistent-route control). Use startup logs or route-table pins.
-- **Backlog burn-down**: test_github_place_has_name fixed (May-era #1042 sentinel bug,
-  backlog entry removed per the #1452 gate; 59 entries remain).
-- **Belt: SIX OF SEVEN GREEN** — E2E waits ONLY on PM's Anthropic repo-secret rotation
-  (escalated via Exec, ~3 min). 1687 close-out awaits the full 7-green snapshot.
-- **1617**: replay PASSED 3/3 (v72, still valid on v73) — PM's 90-second natural standup closes it.
-- **The keyless illusion**: conftest reloads the real key from Keychain at session start —
-  env-strip was NEVER keyless (1748 tracks the fix).
-- Cron 28c6042f (expires ~9/16, **rotate ~9/14 — tomorrow-ish**).
+## Live state (receipts, Saturday 09-12 — the big drain day)
+- **v90 LIVE** (17 deploys today, deploy-by-default, each verified releases+health; v75's
+  "failed" was a flyctl wait-timeout mid-pull — use `--wait-timeout 600`; old machine never
+  stopped serving). MVP milestone measured **46 open at 14:00** — up from 37 because PPM
+  triaged 12 discovered-today filings INTO epics (discovery visible, not hidden).
+- **CLOSED TODAY (21)**: 1690 1741 1733 1740 (epic 2 → FULLY CLOSED) · 1652 1653 1654 1753
+  1663 1696 1596 (epic 3 builds done) · 1505 1527 1693 (epic 4 drained; 1559/1579/1606
+  deposited, honestly open) · 1736 1738 (closed on FULL-STACK LIVE REPLAYS of PM's verbatim
+  v70 turns) · 1759 (dead clarify-carrier deleted, −1082) · 1766 + 1730 (ask-only-when-armed
+  INVARIANT: ruled + deleted + ENFORCED — TestUnarmedAskSiteRatchet, mechanical AST census,
+  22-row measured shrink-only baseline, tripwire proven both directions) · 1752 (dup) ·
+  May-era backlog burn-down (58 rows remain).
+- **Biggest find**: #1749's "CI flake" was a PRODUCTION BUG — keyed deploys searched history
+  by TITLE ONLY (encrypted preview/topics vs server-side ILIKE). Fixed per #1305's own
+  pattern, deployed v89, ciphertext-at-rest pin.
+- **Ratchets now 58** (census class +4). Extraction ratchet 567 unchanged all day.
 
-## Queue (PM pre-authorized; one lane at a time in this worktree)
-- INTAKE NEXT FIRE: next never-started MVP item per PPM's epic order
-  (`dev/active/mvp-epic-order-2026-09-09.md`); epic-2 remainder = 1733 (stale unauth
-  personality page) only — 1741 closed this fire.
-- THEN: Web's test credential (real signup path — unblocks 1512/1568/1578/1581 browser
-  closes) · 1677/1488 close-out on PM's transcript · #1689 native dialogs · #1659/#1660
-  file residues · #1653/#1652 consent keeps · pre-claim shadow probe (measurement for the
-  narrowing schedule) · #1522 fresh-scan-then-delegate · config-validator stub disposal ·
-  unassigned follow-ons: 1747/1748/1749/1740/1743/1735.
+## Waits (verify against the ISSUE, not this file)
+- **CXO voice read** of the 1717 transcripts (delivered unscored, both providers × 3 cases;
+  CXO pre-registered 5 properties, said no-deadline explicitly) → closes #1717.
+- **One CI Tests run** (post-cd980af2c) → guard line replaces "Loaded ANTHROPIC_API_KEY from
+  keychain" → closes #1748; same run green under real workflow env → closes #1749.
+- **PM ~5 min**: (a) 90-second natural standup → #1617 (then the #1739 umbrella can close);
+  (b) ~3-min Anthropic repo-secret rotation → E2E green → #1687 + #1747 close with the full
+  7-green snapshot.
 
-## PM-attention items (both ~5 min, standing)
-- (a) 90-second natural standup exchange → closes #1617.
-- (b) ~3-minute Anthropic repo-secret rotation → unblocks E2E workflow (escalated via Exec).
-
-## Recently resolved (for context, not action)
-- 1711 (bounded keychain guard) · Tests workflow green first time since Aug 8 · triage cut
-  fully executed · #1638 disposed · acceptance contract #1739 fully adopted, 1631/1650/1694
-  closed · #1732 render boundary sanitized.
+## Queue (PM pre-authorized; one lane at a time)
+- RUNNING: **#1769 lane** (resume-offer bespoke consume → 6th contract adoption of the day;
+  arm half already census-tracked).
+- NEXT: #1754 chitchat ruling proposal to Arch (evidence posted by the 1759 lane) · #1768
+  classify_conscious Rule-0 proposal · #1767 second dead clarification mechanism (needs
+  ruling) · epic 6: #1762 truncation sweep + #1729 doc-summary render · singletons per PPM
+  order · 1579-surfaced builder-dedupe ruling (HAND_ROW expected silently discarded; REVIEW
+  bucketed under QUERY) — Lead/Arch, still queued.
+- **#1751 is MORE than cosmetic per PPM** — real multi-tenancy bug on the CANONICAL
+  personality page (#1419/#1734-adjacent, PUT admin-gate limits blast radius); take when
+  epic-2-class work resumes, never as cleanup.
+- Older queue (pre-epic, still valid): Web's test credential (unblocks 1512/1568/1578/1581
+  browser closes) · 1677/1488 close-out on PM's transcript · #1689 native dialogs ·
+  #1659/#1660 file residues · pre-claim shadow probe · #1522 fresh-scan-then-delegate ·
+  config-validator stub disposal.
 
 ## Standing
-- Supersession gate; push-after-reading (batteries ≠ push chain); merge-BEFORE-inbox-ls at every
-  fire; verify awaited items against the ISSUE not this file; deletion = fresh sweep, never recall.
-- **This file gets a freshness pass at every START and a rewrite at every STOP** (Exec/PM ask,
-  8/29 — the 8/19 staleness is the incident that earned the rule).
-- **Tracker artifact rule (adopted 09-12 after two same-day misses)**: an Artifact republish
-  and the git commit of the tracker file are ONE unit — same Bash block, never separated.
-- **PPM rulings 09-12**: tracker headline = milestone-wide + status breakdown (sprint-truth.py
-  convention). #1750 parked (cleanup-class); **#1751 is MORE than cosmetic per PPM — real
-  multi-tenancy bug on the CANONICAL personality page, #1419/#1734-adjacent, PUT admin-gate
-  limits blast radius; take it when epic-2-class work resumes, not as cleanup.**
-- **NEXT-FIRE REPLAY OWED**: live "show me issue #112" vs test-piper-morgan on v87+ — closes
-  #1736 (code done, deployed; unit evidence covers the PAT path that produced PM's turn).
-- **Log-entry mechanics (self-rule, 3rd timestamp guess today)**: entry headers use
-  `$(date +%H:%M)` command substitution inside the heredoc — never a typed time.
-- **REPLAYS OWED next fire (both v88+)**: "show me issue #112" (#1736) + the v70 archived-
-  projects exchange (#1738). Then both close.
+- Supersession gate · push-after-reading · merge-BEFORE-inbox-ls · deletion = fresh sweep
+  never recall · RE-MEASURE never decrement · tracker republish + git commit = ONE unit,
+  same block · log-entry headers use $(date +%H:%M) substitution NEVER a typed time · no
+  sed on this file without grep-verifying the EXACT phrase (a near-miss phrase "verified"
+  a deletion that hit a different line today) · ENCRYPTION_MASTER_KEY = base64-32 not hex ·
+  jest needs --config tests/frontend/jest.config.js (bare npx jest fails 9/9 in node env) ·
+  prod curl can't see mounted-vs-unmounted (auth 401s before routing — startup logs or
+  route-table pins) · the keyless illusion: conftest loads the real key from Keychain, so
+  local env-strip is never keyless (the 1748 guard now bounds the CI side).
+- Cron 28c6042f (expires ~9/16, **rotate ~9/14**). This file: freshness pass at START,
+  rewrite at STOP.

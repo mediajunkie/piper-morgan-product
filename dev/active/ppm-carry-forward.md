@@ -10,7 +10,21 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-12 10:09 PT (WORK). **Epic 2 (Security/tenancy) CLOSED IN FULL** — all
+**Last rewritten**: 2026-09-12 13:09 PT (WORK). **Busy fire — 10 unmilestoned issues (drift 0→10),
+8 mail items, one direct PPM/PM disposition call.** All 10 issues folded into already-open epics
+(none reopened): epic 4 → 9 items (`#1755`/`#1756`/`#1757`, classifier-audit siblings), epic 5 → 9
+items (`#1754`/`#1759`/`#1760`/`#1761`/`#1763` — `#1754`+`#1759` are independent same-day findings
+of the identical ConversationHandler dead-clarify-carrier shape, flagged the overlap rather than
+silently pick one), epic 6 → 3+2 shared items (`#1762`). **Closed `#1166`** (Type-2 Dreaming
+three-way convergence, done since 2026-06-08 but never closed) and fixed `roadmap.md`'s Dreams row,
+stale at "spec-read pending" for three months after the convergence actually landed — caught my own
+initial close-reason mistake (`not_planned` when the work was actually `completed`) and fixed it
+before moving on. Lead's `#1730` Gap-2 ruling (option 3, ask-only-when-armed invariant) and `#1717`
+validation ask are both cc-only to PPM — real decisions, not mine (Lead/Arch and CXO respectively) —
+tracked in the epic-order file for visibility only. Replied to Lead confirming both, no PM cc (both
+are routine PPM-owned calls, matches Thursday's cc-rule change).
+
+**Prior fire: 2026-09-12 10:09 PT (WORK). Epic 2 (Security/tenancy) CLOSED IN FULL** — all
 6 members done, live-verified deployed (Lead). 3 unmilestoned issues triaged: `#1750`/`#1751`
 (epic-2-class findings from the #1733 close-out sweep, deliberately parked at MVP/Product Backlog
 rather than folded in — would reopen a closed epic) and `#1752` (found during #1654's own epic-3

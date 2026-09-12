@@ -155,8 +155,16 @@ result and stamps its flag), and a read-only STORE PEEK (#1595) covers
 STATE_QUESTION survival turns (#1739 §5a), whose result is composed by normal
 processing with no flag — any entry present at apply time was armed or
 survival-re-armed THIS turn (the store is popped before classification, #1529),
-so the soft offer is skipped honestly instead of replacing the arm. Regression:
-`test_soft_offer_survival_clobber_1753.py`. **#1569 render half** (same commit): the floor's
+so the soft offer is skipped honestly instead of replacing the arm. Since #1770
+(same day) the peek covers BOTH one-slot arm rails: the #846 store and the
+#852/#1529 one-turn `last_offer` rail (where the #1769 resume survival
+re-arms) — same soundness argument (`last_offer` is always-cleared at turn
+start, before every apply-seam call site), one skip log naming the store
+(`armed_store`); the canonical `offer_hint` write is first-arm-wins on the same
+argument (a live rail entry was armed THIS turn — the hint skip is logged, the
+#852 tracking unchanged on free turns). Regression:
+`test_soft_offer_survival_clobber_1753.py` (store half),
+`test_soft_offer_last_offer_clobber_1770.py` (rail half + no-over-block). **#1569 render half** (same commit): the floor's
 `_format_domain_context` renders the two context families as visually distinct
 sections with per-origin vocabulary instructions — `due_reminders` (from
 `context:reminders:{user_id}`) says "reminder", `pending_todos` (from
@@ -206,6 +214,36 @@ keeps first claim on ambiguous shapes; singular unnamed 'delete my reminder'
 keeps the which-todo ask; the #1527 named-target and #1666 numbered legs
 unchanged. Regression: `test_bulk_delete_reminders_1696.py` + the updated
 bulk pin in `test_reminder_delete_misroute_1527.py`.
+**#1769 resume-offer seam adoption (2026-09-12, #1739 epic 3)**: the #889
+pre-classification resume check (`_check_pending_resume_offer`, the seam the
+#1595 flip-1 note calls "resume check") decided accept/decline with FOUR
+bespoke inline word-sets — a private acceptance vocabulary invisible to both
+#1739 ratchet scans (no legacy detector call, no shared vocabulary name;
+found by the #1766 census build). It now consults
+`acceptance.evaluate_acceptance` at registry-declared axes
+(`standup_interview` WRITE×PRIVATE → LOW_CEREMONY — accepting re-enters the
+same flow that entry declares) with the arm-site's rendered ask threaded
+(#1665: `LastOffer.offer_text` rides the pipeline into the seam as
+`resume_offer_question`). The #1529 explicit-anytime commands became TAUGHT
+vocabulary (`_RESUME_TAUGHT_*`, module constants) threaded into the
+predicate — `taught_declines` added to `evaluate_acceptance` (full-message,
+LOW tier only, symmetric with `taught_accepts`); with no offer pending the
+seam consults the predicate DIFFERENTIALLY (taught-vs-bare verdicts) so only
+flow-naming commands act unarmed — no local matcher survives, and the
+standup-hijack pin holds. Contract axis (a): "yes?" / "resume?" never fire;
+the armed STATE_QUESTION survives in the SILENT §5a form by re-arming the
+one-turn `last_offer` rail (clobber residue filed on #1769 as #1770 and
+discharged same day: the apply-seam guard now peeks this rail too, and the
+canonical `offer_hint` write is first-arm-wins). Flow-exit ("end
+standup") stays first and deterministic. NOT zero-widening (stated): the
+legacy sets were exact-match, so the LOW-tier vocabulary (greedy residue
+included) widens both surfaces while armed — pinned deliberately
+(recoverable re-entry; inherits the CXO-owned tightening); "n"/"yea"
+narrowed out. ARM half (#1766): the reentry offer already armed with its
+rendered ask; the other two ask sites (`_start_standup_conversation`
+session-exists ask, `_resume_suspended_standup` legacy either/or ask) now
+arm via `_arm_resume_offer(question=…)` — both census rows shrank out.
+Regression: `test_resume_offer_acceptance_1769.py`.
 
 **#1595 Phase 1 inversion shadow observer (2026-08-14) — an explicitly
 NON-dispatching fifth party that watches the chain, never joins it.** When

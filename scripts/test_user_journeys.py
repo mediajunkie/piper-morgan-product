@@ -24,7 +24,6 @@ from services.conversation.conversation_handler import ConversationHandler
 from services.domain.models import Intent, IntentCategory
 from services.orchestration.engine import OrchestrationEngine
 from services.orchestration.workflow_factory import WorkflowFactory
-from services.session.session_manager import SessionManager
 from services.shared_types import TaskType, WorkflowType
 
 
@@ -48,8 +47,9 @@ class UserJourneyTester:
     def __init__(self):
         self.engine = OrchestrationEngine()
         self.factory = WorkflowFactory()
-        self.session_manager = SessionManager(ttl_minutes=30)
-        self.conversation_handler = ConversationHandler(session_manager=self.session_manager)
+        # #1759: ConversationHandler's session_manager parameter was deleted
+        # with the dead clarify-carrier machinery.
+        self.conversation_handler = ConversationHandler()
         self.results = []
 
     async def test_journey_create_github_issue(self) -> UserJourneyResult:

@@ -198,6 +198,7 @@ def evaluate_acceptance(
     outwardness: Optional[Outwardness] = None,
     armed_question,  # Optional[str], or LEGACY_UNTHREADED (alias path only)
     taught_accepts: Optional[Iterable[str]] = None,
+    taught_declines: Optional[Iterable[str]] = None,
 ) -> AcceptanceVerdict:
     """THE acceptance predicate — one function, consulted by every adopted
     armed seam (#1739; the ``decide_consent`` idiom at the reply-half).
@@ -219,6 +220,12 @@ def evaluate_acceptance(
             accepted as FULL-MESSAGE matches only, and only at the
             LOW_CEREMONY tier — taught vocabulary never loosens the
             NAMED_OBJECT bar.
+        taught_declines: seam-taught decline phrases, symmetric with
+            ``taught_accepts`` (#1769: the resume offer's own copy teaches
+            its decline — "…or start fresh?"). FULL-MESSAGE matches only,
+            LOW_CEREMONY tier only: taught vocabulary never loosens the
+            NAMED_OBJECT bar in either direction — a strict-tier seam's
+            declines are the shared vocabulary alone.
 
     Verdict order (most protective first):
         empty/prose → PASS  (asides neither accept nor steal, #1631)
@@ -227,8 +234,9 @@ def evaluate_acceptance(
                       arm survives)
         accept      → tier-scaled (crisp full-message at NAMED_OBJECT, the
                       generic vocabulary + taught phrases at LOW_CEREMONY)
-        decline     → the shared decline vocabulary (declines were never the
-                      greedy hazard, and a decline only cancels)
+        decline     → the shared decline vocabulary, plus taught phrases at
+                      LOW_CEREMONY (declines were never the greedy hazard,
+                      and a decline only cancels)
         otherwise   → PASS
     """
     # Absorbed #1650/#1631 machinery — the vocabularies stay declared at
@@ -283,6 +291,11 @@ def evaluate_acceptance(
         for pattern in ACCEPT_PATTERNS:
             if pattern.search(clean):
                 return AcceptanceVerdict.ACCEPT
+
+    if taught_declines and tier == AcceptanceTier.LOW_CEREMONY:
+        normalized = _normalize_taught(clean)
+        if normalized and normalized in {_normalize_taught(t) for t in taught_declines}:
+            return AcceptanceVerdict.DECLINE
 
     for pattern in DECLINE_PATTERNS:
         if pattern.search(clean):

@@ -5,14 +5,11 @@ import structlog
 from services.api.serializers import intent_to_dict
 from services.consciousness.conversation_consciousness import (
     format_chitchat_conscious,
-    format_clarification_conscious,
     format_farewell_conscious,
     format_greeting_conscious,
     format_thanks_conscious,
 )
 from services.domain.models import Intent
-from services.intelligence.conversation_aware import ConversationAwareClarifyingGenerator
-from services.session.session_manager import SessionManager
 from services.shared_types import IntentCategory, PortfolioOnboardingState
 
 logger = structlog.get_logger()
@@ -83,10 +80,6 @@ class ConversationHandler:
         ],
     }
 
-    def __init__(self, session_manager: SessionManager = None):
-        self.clarifying_generator = ConversationAwareClarifyingGenerator()
-        self.session_manager = session_manager
-
     async def respond(
         self, intent: Intent, session_id: str = None, user_id: Optional[str] = None
     ) -> Dict[str, Any]:
@@ -98,9 +91,11 @@ class ConversationHandler:
         # silently dropping it when intent.context lacks user_id.
         user_id = (intent.context or {}).get("user_id") or user_id
 
-        # Handle clarification_needed action
-        if intent.action == "clarification_needed":
-            return await self._handle_clarification_needed(intent, session_id)
+        # #1759: the clarification_needed arm/consume pair
+        # (_handle_clarification_needed / handle_clarification_response and
+        # the session pending_clarification carrier) was deleted as dead code
+        # per the #1730 Gap-2 ruling — clarification_needed intents floor-route
+        # at the action gate and never reach this handler live.
 
         # Issue #102: Enhanced greeting with calendar awareness
         if intent.action == "greeting":
@@ -664,192 +659,3 @@ class ConversationHandler:
         else:
             return "Good evening"
 
-    async def _handle_clarification_needed(
-        self, intent: Intent, session_id: str = None
-    ) -> Dict[str, Any]:
-        """Handle vague/unclear requests by generating clarifying questions"""
-        original_message = intent.context.get("original_message", "")
-        trigger = intent.context.get("trigger", "unknown")
-
-        # For very short inputs (1-2 words) that don't match any pattern,
-        # use a generic response rather than issue-specific questions
-        word_count = len(original_message.split())
-        if word_count <= 2 and trigger == "vague_pattern":
-            return {
-                "message": (
-                    "I'm not sure what you'd like me to help with. "
-                    "You can ask me about your projects, schedule, priorities, "
-                    "or just say 'help' to see what I can do!"
-                ),
-                "intent": intent_to_dict(intent),
-                "workflow_id": None,
-            }
-
-        # Use conversation-aware clarifying generator
-        analysis = await self.clarifying_generator.analyze_request(
-            description=original_message, conversation_id=session_id
-        )
-
-        if analysis.questions:
-            # Format questions for user
-            questions_text = self.clarifying_generator.format_questions_for_user(analysis)
-
-            # Store clarification state in session if available
-            if self.session_manager and session_id:
-                session = self.session_manager.get_or_create_session(session_id)
-                session.set_pending_clarification(
-                    original_intent=intent,
-                    missing_info={
-                        "detected_issues": [issue.value for issue in analysis.detected_issues],
-                        "questions": [
-                            {
-                                "question": q.question,
-                                "type": q.type.value,
-                                "priority": q.priority,
-                                "example_answer": q.example_answer,
-                            }
-                            for q in analysis.questions
-                        ],
-                    },
-                    clarification_prompt=questions_text,
-                )
-
-            return {
-                "message": questions_text,
-                "intent": intent_to_dict(intent),
-                "workflow_id": None,
-                "clarification_data": {
-                    "is_ambiguous": analysis.is_ambiguous,
-                    "detected_issues": [issue.value for issue in analysis.detected_issues],
-                    "questions": [
-                        {
-                            "question": q.question,
-                            "type": q.type.value,
-                            "priority": q.priority,
-                            "example_answer": q.example_answer,
-                        }
-                        for q in analysis.questions
-                    ],
-                    "can_proceed": analysis.can_proceed,
-                    "trigger": trigger,
-                },
-            }
-        else:
-            # Fallback if no questions generated
-            return {
-                "message": "I need a bit more information to help you effectively. Could you provide more details about what you'd like me to do?",
-                "intent": intent_to_dict(intent),
-                "workflow_id": None,
-            }
-
-    async def handle_clarification_response(
-        self, user_response: str, session_id: str
-    ) -> Dict[str, Any]:
-        """Handle user's response to clarification questions"""
-        if not self.session_manager or not session_id:
-            return {
-                "message": "I'm sorry, but I lost track of our conversation. Could you please start over?",
-                "intent": {
-                    "category": "CONVERSATION",
-                    "action": "clarification_needed",
-                    "confidence": 0.5,
-                },
-                "workflow_id": None,
-            }
-
-        session = self.session_manager.get_or_create_session(session_id)
-        pending_clarification = session.get_pending_clarification()
-
-        if not pending_clarification:
-            return {
-                "message": "I don't have any pending clarification questions. How can I help you?",
-                "intent": {
-                    "category": "CONVERSATION",
-                    "action": "chitchat",
-                    "confidence": 0.8,
-                },
-                "workflow_id": None,
-            }
-
-        # Get the original intent and missing info
-        original_intent = pending_clarification["original_intent"]
-        missing_info = pending_clarification["missing_info"]
-
-        # Combine original message with clarification response
-        original_message = original_intent.context.get("original_message", "")
-        combined_message = f"{original_message} {user_response}".strip()
-
-        # Re-analyze with the combined context
-        analysis = await self.clarifying_generator.analyze_request(
-            description=combined_message, conversation_id=session_id
-        )
-
-        if analysis.can_proceed:
-            # We have enough information now
-            session.clear_pending_clarification()
-
-            # Create a new intent with the clarified information
-            clarified_intent = Intent(
-                category=original_intent.category,
-                action=original_intent.action,
-                confidence=0.8,  # Higher confidence with clarification
-                context={
-                    "original_message": original_message,
-                    "clarification_response": user_response,
-                    "combined_message": combined_message,
-                    "clarification_resolved": True,
-                },
-            )
-
-            return {
-                "message": f"Perfect! Now I understand. Let me help you with that.",
-                "intent": intent_to_dict(clarified_intent),
-                "workflow_id": None,
-                "clarification_resolved": True,
-                "original_intent": intent_to_dict(original_intent),
-            }
-        else:
-            # Still need more clarification
-            questions_text = self.clarifying_generator.format_questions_for_user(analysis)
-
-            # Update the pending clarification
-            session.set_pending_clarification(
-                original_intent=original_intent,
-                missing_info={
-                    "detected_issues": [issue.value for issue in analysis.detected_issues],
-                    "questions": [
-                        {
-                            "question": q.question,
-                            "type": q.type.value,
-                            "priority": q.priority,
-                            "example_answer": q.example_answer,
-                        }
-                        for q in analysis.questions
-                    ],
-                },
-                clarification_prompt=questions_text,
-            )
-
-            return {
-                "message": questions_text,
-                "intent": {
-                    "category": "CONVERSATION",
-                    "action": "clarification_needed",
-                    "confidence": 0.6,
-                },
-                "workflow_id": None,
-                "clarification_data": {
-                    "is_ambiguous": analysis.is_ambiguous,
-                    "detected_issues": [issue.value for issue in analysis.detected_issues],
-                    "questions": [
-                        {
-                            "question": q.question,
-                            "type": q.type.value,
-                            "priority": q.priority,
-                            "example_answer": q.example_answer,
-                        }
-                        for q in analysis.questions
-                    ],
-                    "can_proceed": analysis.can_proceed,
-                },
-            }

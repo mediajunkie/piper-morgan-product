@@ -41,7 +41,6 @@ from services.consciousness.cli_consciousness import (
 from services.consciousness.context import ConsciousnessContext, analyze_context
 from services.consciousness.conversation_consciousness import (
     format_chitchat_conscious,
-    format_clarification_conscious,
     format_farewell_conscious,
     format_greeting_conscious,
     format_thanks_conscious,
@@ -119,7 +118,6 @@ __all__ = [
     "format_farewell_conscious",
     "format_thanks_conscious",
     "format_chitchat_conscious",
-    "format_clarification_conscious",
     # Loading consciousness (Wave 1)
     "get_conscious_loading_message",
     "format_progress_conscious",

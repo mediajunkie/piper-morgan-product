@@ -165,47 +165,9 @@ class HonestFailureHandler:
             follow_up_suggestion="Is that what you meant?",
         )
 
-    def handle_vague_intent(
-        self,
-        intent: Intent,
-        context: IntentClassificationContext,
-        place_settings: Dict[str, Any],
-    ) -> IntentUnderstanding:
-        """
-        Handle vague/underspecified intents by asking for details.
-
-        When the user's request is too vague to act on (e.g., "help me
-        with something"), Piper should ask for specifics.
-
-        Args:
-            intent: The vague Intent
-            context: Classification context
-            place_settings: Settings from PlaceDetector
-
-        Returns:
-            IntentUnderstanding that asks for specifics
-        """
-        formality = place_settings.get("formality", "professional")
-
-        # Vague request narratives
-        vague_narratives = {
-            "casual": "I'd love to help! What specifically are you looking for?",
-            "professional": "I'm ready to assist. Could you provide more details?",
-            "warm": "I'm here to help! What would you like me to do?",
-            "terse": "Please specify.",
-            "neutral": "Could you be more specific about what you need?",
-        }
-
-        narrative = vague_narratives.get(formality, vague_narratives["neutral"])
-
-        return IntentUnderstanding(
-            intent=intent,
-            understanding_narrative=narrative,
-            confidence_expression="",
-            place_awareness="",
-            perception_mode=PerceptionMode.NOTICING,
-            follow_up_suggestion=None,  # Narrative already asks
-        )
+    # #1759: handle_vague_intent was deleted with the dead clarify-carrier
+    # machinery — its only caller was classify_conscious's vague branch
+    # (itself zero-caller dead), removed per the #1730 Gap-2 ruling.
 
     def _humanize_action(self, action: str) -> str:
         """Convert technical action to human-readable form."""

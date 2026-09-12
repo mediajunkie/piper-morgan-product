@@ -10,7 +10,6 @@
 tests/features/test_quick_integration.py::test_method_signatures	triage
 tests/e2e/test_scenario_driver.py::test_multi_turn_scenario[fresh_tester_onboarding]	fixture
 tests/e2e/test_task_lifecycle_e2e.py::TestTodoLifecycleE2E::test_create_todo_returns_confirmation	fixture
-tests/integration/services/test_db_user_history_repository.py::test_search_matches_title_preview_topics	triage
 tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolCircuitBreaker::test_circuit_breaker_opens_on_failures	triage
 tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolCircuitBreaker::test_circuit_breaker_recovers_after_timeout	triage
 tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolGracefulShutdown::test_shutdown_disconnects_all_connections	triage
