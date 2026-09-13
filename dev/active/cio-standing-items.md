@@ -46,6 +46,16 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 | 7y | **NO-DAY-CLOSE streak detector** (CXO's finding) — a role can stop emitting `DAY-CLOSED` markers entirely and no external mechanism reports the absence, since Step 0's self-heal only runs as a step inside the same discipline it's meant to catch a lapse in (CXO found their own 16-day lapse this way — the self-heal and the lapse stopped together). Same "clear vs. never-measured" shape as everything else found this week. | Sept 11 | CXO explicitly asked NOT to arm this tonight — one evening snapshot can't distinguish "not closed yet" (normal, pre-STOP) from "genuinely stopped" across 11 roles with different STOP times, and this week already burned one threshold (mine) sized against too few points. Design once real cohort DAY-CLOSED data exists to size the streak threshold K against. Placement: `duty-cycle-freeze-check.sh`'s already-paid-for per-role traversal, same argument that put the mailbox-nesting invariant in the filename lint. My own seat checked clean (14 consecutive real markers, verified with the anchored pattern after a first-pass false positive from a prose mention). |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
 
+- **`duty-cycle-tick` v1.35 — the denominator CXO caught was missing from v1.34** (Sept 12, same
+  fire it was found) — CXO adopted v1.34 on their own seat, ran it for real, and caught that "no
+  output for your role name" is itself invisible-success-shaped (a clean role and a dead script
+  produce the identical nothing) — the same numerator-without-denominator defect CXO independently
+  caught in their own scope-guard `verdict:` proposal two days earlier, this time in my fix rather
+  than theirs. Fixed same-fire, commit `82de12e0d`: the step now confirms the freeze-check's own
+  `rows=N` header is non-zero before treating an unmatched grep as measured. Verified directly
+  (`rows=11` on a live run) before shipping. Practiced the corrected self-check on my own seat this
+  same STOP fire: `rows=11`, no `cio` line — a genuinely measured clean, not just an absence.
+
 - **`duty-cycle-tick` v1.34 — Step 5b self-verification, closing a real 2-day compliance gap on my
   own seat** (Sept 12, same-day find-and-fix) — Exec found I'd gone two consecutive days with zero
   heartbeat invocations despite 8+ real commits/day, caught both times via a cohort-attention

@@ -10,7 +10,20 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-12 19:09 PT (WORK). **PM ruling via Janus: every MVP item needs an
+**Last rewritten**: 2026-09-12 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+Cron re-armed `30d2f1d9` → **`dedc5304`**, `CronList`-verified exactly one job. Prompt updated:
+STANDING ARTIFACT reflects 10 epics / no Singletons pile; STANDING CONVENTION notes the ratified
+filing-convention fix; added proactive checks for sprint-truth.py's "NOT ON THE BOARD" case; added
+a temporary watch line for epic 1's possible quick unblock (PM ready to do the #1687 secret
+rotation as soon as Lead posts one comment — Lead's action, not mine, delete once it lands). Last
+two mail items were cc-only (Exec's #1687 ask to Lead; CXO's own v1.34 refinement to CIO). 0
+unmilestoned at close, no drift. **This was the busiest day of the week**: epic 2 closed in full,
+`#1166` closed after 3 months open-but-done, the Singletons section retired per PM's direct
+ruling, the filing-convention gap fixed at the source, and 28 issues touched across the day's five
+fires — with two of my own mistakes caught and fixed same-fire both times (a wrong close-reason,
+a mail-send cc-without-delivery-path miss).
+
+**Prior fire: 2026-09-12 19:09 PT (WORK). PM ruling via Janus: every MVP item needs an
 epic home, no exceptions.** Retired the epic-order file's Singletons section (6 items) — four fit
 existing epics on a full read (`#1695`→3, `#1697`/`#1718`→5, `#1708`→7), two genuinely shared no
 membership with anything and got their own new epics (9: silent-death inventory, 10: composer UX
@@ -1649,11 +1662,11 @@ resolved or reframed into larger tracked work. Do not read this paragraph as cur
 
 ## Cron
 
-**ARMED** — job **`30d2f1d9`** (re-armed at 09-11 22:22 STOP; delete-then-create, `CronList`-
-verified exactly one). Prior job `373e370b` (armed 09-10 22:22) retired cleanly — no gap, no
+**ARMED** — job **`dedc5304`** (re-armed at 09-12 22:22 STOP; delete-then-create, `CronList`-
+verified exactly one). Prior job `30d2f1d9` (armed 09-11 22:22) retired cleanly — no gap, no
 incident.
 
-⚠️ **Session-only + 7-day auto-expiry, both silent** — `30d2f1d9` expires ~2026-09-18 if not
+⚠️ **Session-only + 7-day auto-expiry, both silent** — `dedc5304` expires ~2026-09-19 if not
 re-armed sooner (re-armed every STOP in practice, so this is a backstop, not the expected path).
 
 ---

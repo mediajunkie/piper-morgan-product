@@ -1,53 +1,38 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-12 ~19:20 PDT (18:57 fire, complete — quiet, fully drained). Tomorrow's post
-("Who's Who at Piper Morgan," 9/13) still `drafted`, no handoff yet. Next fire (21:57) is today's
-last — day-close procedure due.
-**Session log**: `dev/2026/09/12/2026-09-12-0720-docs-code-log.md` (open).
+**Updated**: 2026-09-12 ~23:15 PDT (21:57 fire, day-close complete).
+**Session log**: `dev/2026/09/12/2026-09-12-0720-docs-code-log.md` — DAY-CLOSED.
 **Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
 make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything
 else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM's own words.
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
 
-## Today (09-12) so far — published "Piper Morgan Eras" (with a real self-caught mistake), then fixed the recurring altText gap at the mechanism
+## Yesterday (09-12) closed — headline: a real self-caught publish mistake, fixed at the mechanism after 3 recurrences; a 40-session engineering-marathon day
 
 Published "Piper Morgan Eras" (hashId `0547bee91100`). **Made a real, live mistake mid-proofread**:
-"corrected" the deliberate house term "minimum-**valuable**-product" to the conventional
-"**viable**," not realizing PM had just reasserted "valuable" via the admin UI 9 minutes before my
-publish (my session's initial sync predated that edit). Caught it myself via the file's own git
-history before reporting done, fixed the live content directly, corrected the calendar's own
-notes rather than let the wrong account stand. Same stale-snapshot failure shape as this whole
-week's other incidents (Docs BELT-INVISIBLE, the NO-SESSION-LOG race) — re-sync immediately before
-any wording edit, not just at session start.
+reverted PM's deliberate house term "minimum-**valuable**-product" to conventional "**viable**,"
+not realizing PM had reasserted "valuable" via the admin UI 9 minutes before my publish (session
+sync predated the edit). Caught it myself via the file's git history before reporting done, fixed
+the live content, corrected the calendar's own notes. Same stale-snapshot shape as this week's
+other incidents — re-sync immediately before any wording edit, not just at session start.
 
-PM's follow-up: this belongs in a blog style guide, which didn't exist. Created
-`docs/internal/planning/comms/blog-style-guide.md` (house terminology decisions that deliberately
-override convention), cross-linked into Comms' `blog-post-template.md` Required Reading and my own
-`publish-to-blog` SKILL.md. Notified Comms.
+PM's follow-up: this belongs in a style guide that didn't exist. Created
+`docs/internal/planning/comms/blog-style-guide.md`, cross-linked into Comms' template and my own
+publish skill.
 
-**Then the exact same underlying gap (empty altText/caption/cartoon on the calendar) recurred a
-THIRD time** on this same post (09-08, 09-11, 09-12), flagged by Dispatch-PM. I'd already told
-myself I'd fix it after the second occurrence and didn't — prose reminders to myself don't work.
-Fixed it at the mechanism instead: added an `altText`-empty-on-live-post warning to
-`scripts/validate-editorial-calendar.py`, measured carefully before shipping (the obvious version
-checking caption/cartoon too would have fired 337 times — both are empty on 73%/28% of the
-historical corpus, longstanding convention not defects). Verified against the file's own
-established 3-control discipline (known-positive/negative/full-sweep) — 28 clean warnings, no
-flood. Also found and fixed a real bug in my own new check during that verification (legacy
-`theme='shipping news'` rows leaking through).
+**The exact same altText/caption/cartoon calendar gap recurred a THIRD time** on this post
+(09-08/09-11/09-12) despite my own prior promise to fix it. Fixed it at the mechanism instead: a
+carefully-measured `altText`-empty warning in `scripts/validate-editorial-calendar.py` (the naive
+version would have fired 337 times on longstanding-but-fine historical rows; narrowed to 28 clean
+hits). Lesson recorded in Standing practices below — a prose promise to myself doesn't reliably
+change next-day behavior; a mechanical check does.
 
-Also caught and corrected a real timing-race claim from Dispatch-PM (`status=drafted` on a live
-post) — checked the actual commit timeline rather than assume either side was right; confirmed
-current state correct, named the underlying timing gap honestly rather than just asserting fixed.
-
-## 09-11 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-11-omnibus-log.md`)
-
-Published + syndicated "The Mailbox Trust Violation" (caught a real Dispatch-PM altText error).
-Flywheel v3 fully closed (PM ratified, CIO applied to canon, verified directly twice). Contributed
-twice to the cohort-wide NO-SESSION-LOG detector-bug thread. Filed Ship #060's report. Two mail-
-mechanics mistakes caught and fixed same-fire (stranded triage moves, missed cc copies). Omnibus
-(527 lines) required two real audit fixes (missing header field, commit-count correction).
+**Unrelated to my own lane**: today was a 40-session HIGH-COMPLEXITY day (11 roles + 29 prog
+delegations, one continuous Lead-driven push closing 5 epics end to end, 415 combined commits).
+Omnibus (515 lines) personally audited — commit counts, a methodology-53 canonical quote, and the
+#1717 closure claim all verified directly, zero discrepancies. Activity-log CSV extended with all
+40 rows, each prog delegation individually mapped to its issue via Lead's own narration.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
