@@ -2270,7 +2270,14 @@ class TestRetrospectiveQuery:
         assert "No completed tasks found" in result
 
     def test_format_standard_with_many_tasks(self, canonical_handlers):
-        """Test STANDARD format with more than 8 tasks."""
+        """STANDARD retrospective names every completed task — #1762 inverted
+        this from ``assert "and 4 more" in result``.
+
+        The render is the only per-turn record reaching next-turn context
+        (``build_recent_history``, #1122), so the 9th-12th tasks were ones the
+        assistant believed it had never been told about, while its own header
+        and summary both claimed 12. GatherOutcome §5b.
+        """
         from datetime import datetime
 
         # Arrange
@@ -2283,7 +2290,9 @@ class TestRetrospectiveQuery:
         # Assert
         assert "Yesterday's Accomplishments" in result
         assert "12" in result
-        assert "and 4 more" in result
+        for i in range(12):
+            assert f"Task {i}" in result
+        assert "more" not in result
 
     def test_format_granular_with_tasks_grouped_by_priority(self, canonical_handlers):
         """Test GRANULAR format groups tasks by priority."""

@@ -104,10 +104,13 @@ class Test1566Canaries:
         assert "DUE REMINDER" in out
         assert "check in with the Lead Developer" in out
 
-    def test_truncation_denominator_still_stated(self):
+    def test_denominator_still_stated_and_no_reminder_elided(self):
+        """#1762 removed the `[:5]` cap this canary's "more" clause pinned;
+        m-44's denominator property is unchanged and still asserted."""
         rems = [f"reminder {i}" for i in range(7)]
         out = _render({"due_reminders": rems, "reminder_count": 7})
-        assert "7" in out and "more" in out
+        assert "7" in out
+        assert all(r in out for r in rems)
 
     def test_source_failed_still_renders_honest_couldnt_check(self):
         out = _render({"source_failed": True})

@@ -186,8 +186,15 @@ class TestProjectSetupExistingProjects:
         assert result["intent"]["action"] == "provide_setup_guidance"
 
     @pytest.mark.asyncio
-    async def test_truncates_long_project_list(self, canonical_handlers):
-        """More than 5 projects shows '... and N more'."""
+    async def test_long_project_list_is_rendered_in_full(self, canonical_handlers):
+        """#1762 inverted this from ``assert "... and 2 more" in message``.
+
+        The intro states ``project_count``; the list must match it. The render
+        is the only per-turn record reaching next-turn context
+        (``build_recent_history``, #1122), so the 6th and 7th PIPER.md
+        projects were ones the assistant believed it had never been told
+        about. GatherOutcome §5b.
+        """
         intent = _make_intent("set up my projects")
 
         mock_user_context = MagicMock()
@@ -202,7 +209,9 @@ class TestProjectSetupExistingProjects:
                 intent, "sess-1", "user-1"
             )
 
-        assert "... and 2 more" in result["message"]
+        for i in range(7):
+            assert f"Project-{i}" in result["message"]
+        assert "more" not in result["message"]
 
 
 class TestProjectSetupFormality:

@@ -186,12 +186,24 @@ class TestFloorRendersDueReminders1566:
         assert "Reminder check FAILED" in out
         assert "couldn't check" in out or "could not verify" in out
 
-    def test_reminder_count_beyond_display_cap_is_stated(self):
-        """m-44: the denominator rides with a truncated list."""
+    def test_reminder_count_is_stated_and_every_reminder_rendered(self):
+        """m-44's denominator still rides — and #1762 removed the cap it used
+        to ride on.
+
+        This asserted ``"more" in out``, i.e. that a truncated list carried an
+        honest denominator. But this render is the LLM's own system prompt —
+        the data channel — and the directive above it orders the model to
+        surface every due reminder. An honest count of items the model was
+        never shown is still a promise only the prompt can see: the model
+        cannot surface reminder 6 if reminder 6 is not in its context.
+        ``get_due_reminders`` applies no limit, so this was a pure render cap
+        over an uncapped, bounded, user-owned set (GatherOutcome §5b).
+        """
         rems = [f"reminder {i}" for i in range(7)]
         out = self._render({"due_reminders": rems, "reminder_count": 7})
-        assert "7" in out
-        assert "more" in out
+        assert "7" in out  # m-44: the denominator is still stated
+        for r in rems:
+            assert r in out
 
     def test_empty_context_still_renders_empty(self):
         assert self._render({}) == ""

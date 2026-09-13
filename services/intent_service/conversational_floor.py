@@ -842,10 +842,21 @@ class ConversationalFloor:
                     "user's message is about something else — do not wait to "
                     "be asked:"
                 )
-                for r in rems[:5]:
+                # #1762 (#1738's class, sharpest instance): this is NOT
+                # turn.response — it is the LLM's own system prompt, i.e. the
+                # data channel. The directive three lines up orders the model
+                # to "Briefly surface them in your reply … do not wait to be
+                # asked", and the `[:5]` cap then elided items it had just
+                # ordered surfaced. The model cannot surface what it was never
+                # shown, so "…and N more" was a promise only the prompt could
+                # see. `get_due_reminders` (todo_handlers.py) applies NO limit
+                # and `reminder_count` is the true count, so this was a pure
+                # render cap over an uncapped, bounded, user-owned set — and
+                # due reminders are only those whose time has already passed.
+                # GatherOutcome §5b: a render cap may shorten what the user
+                # sees; it must never change what the system believes it has.
+                for r in rems:
                     lines.append(f"    • {r}")
-                if count > 5:
-                    lines.append(f"    • …and {count - 5} more")
                 # #1569 per-item vocabulary rule (CXO/PPM joint design):
                 # vocabulary is set by which context key an item arrived
                 # through — these arrived through the reminder key.
