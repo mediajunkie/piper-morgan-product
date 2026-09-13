@@ -39,7 +39,16 @@ case "$MODE" in
     exec "${STRIP[@]}" "$PG" "$PY" -m pytest tests/ -m "not llm" -q --ignore=tests/frontend \
       -o addopts="--ignore=tests/archive --ignore=services/integrations/*/tests --ignore=services/mcp/server/test_*.py --ignore=dev/ --tb=no --import-mode=importlib" "$@";;
   ratchets)
-    exec "${STRIP[@]}" "$PG" "$PY" -m pytest tests/test_completion_ratchets.py tests/test_architecture_enforcement.py -q \
-      -o addopts="--import-mode=importlib" -p no:cacheprovider "$@";;
+    # ⚠️ The mypy gate runs here TOO, and that is the whole point of this block.
+    # Before 2026-09-13 this mode ran only the two pytest ratchet files, and
+    # Architecture Enforcement's mypy step (scripts/check_mypy_gate.py) was a
+    # SEPARATE CI step nothing local covered. Result: "ratchets 58 passed" was
+    # reported honestly on ten consecutive pushes while [index] drifted +19 and
+    # [union-attr] +25 unnoticed, because the sentence was true about a
+    # denominator that silently excluded the failing gate. Cost: ~2 min. Pay it.
+    "${STRIP[@]}" "$PG" "$PY" -m pytest tests/test_completion_ratchets.py tests/test_architecture_enforcement.py -q \
+      -o addopts="--import-mode=importlib" -p no:cacheprovider "$@" || exit 1
+    echo "--- mypy per-code gate (#1436) ---"
+    exec "${STRIP[@]}" "$PG" "$PY" scripts/check_mypy_gate.py;;
   *) echo "unknown mode: $MODE (smoke|unit|full|ratchets)" >&2; exit 2;;
 esac

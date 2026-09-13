@@ -1,28 +1,40 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-13 ~11:35 PDT (PM-engaged, published "Who's Who at Piper Morgan").
+**Updated**: 2026-09-13 ~13:20 PDT (quiet fire, fully drained).
 **New publish-sequencing discipline**: commit the calendar update as its OWN fast, standalone
 commit immediately after the website publish (Step 6/7 of `publish-to-blog` — already documented
 this way), and do drafts-folder archival (Step 9) as a SEPARATE, later commit. Bundling the two
-into one commit (what I've been doing) adds avoidable seconds to the window between "post is live"
-and "calendar reflects it" — Dispatch caught this exact window on "Who's Who" (75s gap, my two
-commits at 11:15:06 and 11:16:21). Not a repeat of the old backfill-forgetting mistake — the fields
-WERE correctly populated, just landed slightly late. The gap can't be fully closed (two separate
-git repos), but splitting the commits shrinks it to just the calendar-script's own runtime.
+adds avoidable seconds to the "post live but calendar not yet updated" window — Dispatch caught
+this exact 75s gap on "Who's Who." Not a backfill-forgetting repeat; fields were correct, just late.
 **Session log**: `dev/2026/09/13/2026-09-13-0958-docs-code-log.md` (open).
 **Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
 make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything
 else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM's own words.
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
+**Watching**: PM's answer on whether to draft a routing memo to Lead Dev for two audit clusters
+found today (see "Watch surfaces" below) — offered, not yet answered, not chasing.
 
-## Today (09-13) so far — Dispatch-PM's honest correction closes the altText thread
+## Today (09-13) so far — publish, an unrelated image correction, and a real GitHub-audit dig
 
-Dispatch-PM confirmed my 09-11 catch was right and named the root cause plainly: they fabricated
-the 146-char altText value (not a misread), and their own memo held both the wrong number and the
-right one 12 lines apart — should have caught it before sending. Sent a brief acknowledgment via
-the relay-via-Exec protocol. Nothing further owed. Today's post ("Who's Who at Piper Morgan")
-still `drafted` — PM noted Comms is reviewing, watching for the handoff.
+Published "Who's Who at Piper Morgan" — independent proofread caught two real title inaccuracies
+against `ROSTER.md` (fixed) and a genuine name-privacy issue (2 of 6 named humans had zero prior
+public mentions despite the piece's own claim; flagged to PM, who chose to remove both and
+generalize rather than guess at consent). Dispatch-PM separately sent an honest correction on the
+09-11 altText discrepancy (confirmed fabrication, not a misread) — acknowledged, nothing owed.
+
+PM later found a mis-rendered figure in the published cover image and supplied a replacement.
+Swapped it on the canonical site through the exact same sips+cwebp pipeline the publish script
+uses, live-verified by byte-size match, and asked Dispatch to mirror it on both syndicated legs.
+Along the way, closed a real documentation gap Dispatch raised (`draftPath` should always resolve
+on `origin/main` — already my practice, now stated in the schema itself, not just a procedural
+step) rather than just answer in mail.
+
+PM then asked about open audit-related GitHub issues. Found and fixed two real ones mine to fix
+(#1720 closed with evidence — two public guides describing a fully-retired integration as
+"ACTIVE"; #1721 correctly left open, genuinely blocked on an unresolved upstream decision, not
+stale). Filed two adjacent discoveries separately (#1779, #1780) rather than scope-creep them in.
+Then dug into the rest and found a real cluster worth escalating — see Watch surfaces.
 
 ## 09-12 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-12-omnibus-log.md`)
 
@@ -37,6 +49,14 @@ discrepancies.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
+- **Time-handling audit cluster (#1493, closed) → 6 F-slice children**: #1556/1574/1575/1576/1577/1588,
+  all filed 08-09/08-10, root cause "no per-user timezone exists anywhere in the system," **zero
+  progress in over a month**. Proposed to PM 09-13 as one project routed to Lead Dev; offered to draft
+  the routing memo. Watching for PM's answer, not chasing.
+- **Three PM-directed audits, early August, zero follow-through**: #1499 (route-surface), #1522
+  (false-trails), #1533 (principal-dropping) — each has a real report + explicit remaining-work list,
+  **5+ weeks with no action**. Proposed 09-13 to nudge Lead Dev/Arch directly. Same PM-answer-pending
+  status as the cluster above.
 - **`last_verified` bulk-stamp cluster**: 24/38 as of 09-07's audit (#1725) — unchanged from 09-03,
   structural fix now filed as #1726 (CIO's lane) rather than re-escalated each audit. Check again
   at the next Weekly Docs Audit (09-14).

@@ -134,7 +134,20 @@ jobs:
     name: Canonical Routing Regression
     runs-on: ubuntu-latest
     if: github.event_name != 'schedule'
-    timeout-minutes: 15
+    # 25, not 15: measured on run 34786243866 (the first run ever to reach this
+    # step with WORKING credentials — the old keys pointed at a different
+    # account, so for months the step failed fast and 15 was never tested
+    # against real work). That run completed 23 of the 28 live-LLM
+    # `test_floor_response_no_template` cases before the axe fell at 15m16s —
+    # roughly one minute short. 25 covers that plus headroom for LLM latency
+    # variance (observed 5–13s per case).
+    #
+    # NOTE the cost this timeout is buying: -k selects 211 tests, a large
+    # share of them real LLM round-trips, on EVERY push to main. Raising the
+    # ceiling makes the job pass; it does not make it cheap. Whether this
+    # cohort belongs on push or on the nightly schedule (as AAXT already is)
+    # is a policy question, filed rather than decided here.
+    timeout-minutes: 25
 
     services:
       postgres:

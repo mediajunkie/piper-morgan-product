@@ -47,7 +47,15 @@ async def test_uses_connector_issues_when_bound(intent_service):
     assert res.success
     assert "179 open issue" in res.message  # counts by total_count, not len(page)
     assert "#7" in res.message
-    assert "174 more" in res.message  # 179 - 5 shown
+    # #1762 (epic 6, 2026-09-13) — this assertion USED to be `"174 more" in
+    # res.message`, and it was pinning the defect. A page of 1 with a source
+    # total of 179 produced "…and 174 more", a claim over 174 items the turn
+    # never held and could not produce if asked (GatherOutcome §5b: "…and N
+    # more" is a claim the assistant must be able to CASH). The honest render
+    # states what is in hand; the 179 denominator — the actual subject of this
+    # test — is unchanged and still asserted above.
+    assert "174 more" not in res.message
+    assert "That's all 1 I have in front of me, out of 179." in res.message
     native.assert_not_called()  # connector hit → native PAT path never touched
 
 
