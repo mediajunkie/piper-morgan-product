@@ -137,11 +137,15 @@ fi
     echo "  3. Re-stage only your own files with explicit paths"
     echo "  4. Verify with: git diff --cached --name-only | head -20"
     echo ""
-    echo "This is a WARNING, not a block (ruled 2026-09-13; see this file's own header for"
-    echo "why) — the commit has not yet happened but WILL proceed immediately after this"
-    echo "message unless you interrupt the tool call. If the staged set is intentional (e.g."
-    echo "a legitimate large multi-mailbox distribution), no action is needed. If it looks"
-    echo "wrong, stop before letting the commit run and restage explicit paths instead."
+    echo "⚠️ THIS COMMIT WAS BLOCKED. The 2026-09-13 ruling on this file decided WARN, not"
+    echo "block (see this file's own header) — but the PreToolUse exit-0 implementation of"
+    echo "that ruling was tested the same day and found to produce this exact message with"
+    echo "ZERO visible output to the agent, silently. Reverted to block as the safe interim"
+    echo "state pending a real fix (migrating this hook to PostToolUse, which can warn"
+    echo "without blocking AND is confirmed to actually surface — see"
+    echo "memory-index-overlimit-warn.sh). If the staged set is intentional (e.g. a"
+    echo "legitimate large multi-mailbox distribution), re-run with explicit paths split"
+    echo "into smaller commits."
     echo ""
     echo "Root-cause fix (PM ratified May 15): worktree-per-agent for substantive"
     echo "work. See CLAUDE.md §Branch / Worktree / Mailbox Discipline."
@@ -156,6 +160,18 @@ if [ -d "dev/active" ]; then
     } >> "$WARN_LOG" 2>/dev/null || true
 fi
 
-# Exit 0 = WARN, per the 2026-09-13 ruling (this file's header). Do not revert this to exit 2
-# without re-litigating the ruling above, not just this line.
-exit 0
+# ⚠️ TEMPORARY REVERT TO BLOCK, 2026-09-13, SAME FIRE AS THE WARN RULING ABOVE. Tested exit 0
+# behaviorally before trusting it (staged 25 files, committed for real, checked whether the
+# stderr text above appeared to the agent): it did NOT. The hook fired correctly (confirmed via
+# `dev/active/session-end-warnings.log`), but exit 0 in PreToolUse produces zero agent-visible
+# output — the commit just silently succeeds. WARN as a PreToolUse exit-0 hook is not a warning
+# at all; it's a no-op with extra steps. The header's own ruling (WARN, not BLOCK) still stands
+# — this reverts the IMPLEMENTATION, not the decision, because a PreToolUse hook structurally
+# cannot deliver "block=no, but the agent sees it" on exit 0. The correct architecture is a
+# PostToolUse hook (fires after the commit succeeds, can't block by definition, and IS confirmed
+# to surface loudly to the agent — see memory-index-overlimit-warn.sh, the working precedent).
+# Migrating this hook to PostToolUse is the real fix; not done in the same fire as this
+# discovery, deliberately, per this codebase's own rule against shipping an untested behavior
+# change to a cohort-wide gate. Block is the safe interim state: confirmed working, confirmed
+# visible, and it's what every agent has actually been operating under until today anyway.
+exit 2
