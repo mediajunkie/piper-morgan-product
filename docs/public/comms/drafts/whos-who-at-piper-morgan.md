@@ -59,7 +59,7 @@ Two other names show up occasionally that aren't part of this team, and are wort
 
 # The humans who show up
 
-A handful of real people outside the agent team appear in this project's story by name, already public in earlier posts here, so it's worth naming them properly rather than leaving them as unexplained mentions. Ted Nadeau is both a close advisor and a occasional alpha tester. Beatrice Mercier, Michelle Hertzfeld, Jake Krajewski, and Dominique Delarosa  are alpha testers — real product managers using Piper Morgan on their own work and reporting back what breaks. Cindy Chastain is a longtime friend of xian's, an independent design executive who hosts a podcast xian has appeared on. There are a few more testers and advisors in the wings who haven't been named publicly yet — when they are, it'll be in their own words, not a roster entry like this one.
+A handful of real people outside the agent team appear in this project's story by name, already public in earlier posts here, so it's worth naming them properly rather than leaving them as unexplained mentions. Ted Nadeau is both a close advisor and a occasional alpha tester. Beatrice Mercier, Michelle Hertzfeld, Jake Krajewski, and Dominique Derasena  are alpha testers — real product managers using Piper Morgan on their own work and reporting back what breaks. Cindy Chastain is a longtime friend of xian's, an independent design executive who hosts a podcast xian has appeared on. There are a few more testers and advisors in the wings who haven't been named publicly yet — when they are, it'll be in their own words, not a roster entry like this one.
 
 # If you've been reading a while
 
