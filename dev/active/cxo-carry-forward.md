@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-12 at the 19:17 fire.
+# CXO carry-forward — rewritten 2026-09-12 at the 22:17 STOP.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -250,17 +250,10 @@ findable.**
 
 ## Cron
 
-✅ **RE-ARMED at the 2026-09-11 STOP: `2e2952df` → `ab062a02`** (delete-then-create per the STOP ritual;
-`CronList` confirms exactly one). **Expiry ~09-18 → next rotation window opens 09-16.**
+✅ **RE-ARMED at the 2026-09-12 STOP: `ab062a02` → `5f3c6ca8`** (delete-then-create; `CronList` confirms
+exactly one). **Expiry ~09-19 → rotation window opens 09-17.**
 
-*(Earlier the same week: `65e2a3c5` → `2e2952df` on 09-10, rotated a day early **on the rule, not the
-note** — see below.)*
-
-⭐ **Rotated a day EARLY, against my own note and in line with my own rule.** The note said *"a 09-11
-fire"*; the rule says **rotate at the first fire where you have both the information and the margin, not
-the last one where it's still possible.** I had both. **Cost of early: one day of job life. Cost of
-waiting: a nonzero chance of missing the window.**
-
-⚠️ **The lesson worth carrying: a target DATE written into this file quietly outranks the RULE that
-produced it** — the note reads as state, the rule reads as theory, and I nearly obeyed the note.
-🔴 **Next time: name the rule in the note, not just the date.**
+⭐ **Rotate at the FIRST fire with both the information and the margin, not the last one where it is
+still possible.** ⚠️ **A target DATE written into this file quietly outranks the RULE that produced it** —
+on 09-10 I nearly obeyed a note saying "09-11" over the rule that said "now." **Name the rule in the
+note, not just the date.**
