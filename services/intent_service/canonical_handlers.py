@@ -883,7 +883,13 @@ class CanonicalHandlers:
         elif len(projects) <= 3:
             base = f"Working on {len(projects)} projects: {', '.join(projects)}"
         else:
-            base = f"Working on {len(projects)} projects: {', '.join(projects[:3])} + {len(projects)-3} more"
+            # #1762: EMBEDDED is a BREVITY mode, not a data-loss licence. The
+            # rendered string is the only per-turn record reaching next-turn
+            # context, so "+ N more" deleted projects from the model's world
+            # (#1738's mechanism). `projects` here is the user's hand-authored
+            # PIPER.md list — bounded by a human typing it, so naming all of
+            # them stays a single line. GatherOutcome §5b.
+            base = f"Working on {len(projects)} projects: {', '.join(projects)}"
 
         if has_metadata and total_issues > 0:
             return f"{base} ({total_issues} open issues)"
@@ -904,7 +910,11 @@ class CanonicalHandlers:
             f"You're working on {len(projects)} active project{'s' if len(projects) != 1 else ''}:\n"
         ]
 
-        for project in projects[:5]:  # Top 5
+        # #1762: every project, no "...and N more" — the header above already
+        # claims len(projects), and a render that shows fewer than it counts is
+        # a gap the assistant cannot answer about next turn (the render IS the
+        # next-turn record; #1738's mechanism, GatherOutcome §5b).
+        for project in projects:
             # Issue #18: Add issue count if available
             metadata = project_metadata.get(project, {})
             issues_count = metadata.get("open_issues_count")
@@ -912,9 +922,6 @@ class CanonicalHandlers:
                 summary.append(f"- {project} ({issues_count} open issues)")
             else:
                 summary.append(f"- {project}")
-
-        if len(projects) > 5:
-            summary.append(f"- ... and {len(projects) - 5} more")
 
         if user_context.organization:
             summary.append(f"\nOrganization: {user_context.organization}")
@@ -935,7 +942,8 @@ class CanonicalHandlers:
         elif project_count <= 3:
             return f"You have {project_count} active projects: {', '.join(projects)}"
         else:
-            return f"You have {project_count} active projects: {', '.join(projects[:3])} + {project_count - 3} more"
+            # #1762: see _format_consolidated_status — brevity mode, full set.
+            return f"You have {project_count} active projects: {', '.join(projects)}"
 
     def _format_project_list_standard(self, projects: list, project_metadata: Dict = None) -> str:
         """
@@ -1258,11 +1266,13 @@ class CanonicalHandlers:
 
         if len(priorities) > 1:
             message.append("\nOther priorities:")
-            for priority in priorities[1:4]:  # Show up to 3 more
+            # #1762: all of them. `priorities` is the user's hand-authored
+            # PIPER.md list (bounded by construction), and the render is the
+            # only per-turn record the model reads back next turn — an elided
+            # priority is one it believes it was never told (#1738's mechanism,
+            # GatherOutcome §5b).
+            for priority in priorities[1:]:
                 message.append(f"- {priority}")
-
-            if len(priorities) > 4:
-                message.append(f"- ... and {len(priorities) - 4} more")
 
         # Issue #496: Add high-priority GitHub issues if available
         high_priority_issues = priority_metadata.get("high_priority_issues", [])
@@ -2167,11 +2177,11 @@ Would you like me to explain more about how Piper uses project context, or are y
             intro = f"You have {project_count} project{'s' if project_count != 1 else ''} in your portfolio"
             outro = "Would you like to add another project, or review your current setup?"
 
+        # #1762: the intro above states project_count; the list must match it.
+        # Bounded user-owned set (PIPER.md), render == data (GatherOutcome §5b).
         project_list = ""
-        for project in project_names[:5]:
+        for project in project_names:
             project_list += f"- {project}\n"
-        if len(project_names) > 5:
-            project_list += f"- ... and {len(project_names) - 5} more\n"
 
         message = f"""{intro}!
 
@@ -2487,13 +2497,18 @@ What would you like to set up first?"""
             message += "**Tasks**: I couldn't check your tasks just now — the todo lookup failed. Try again shortly.\n"
         elif todos:
             message += "**Tasks**:\n"
-            for todo in todos[:5]:
+            # #1762: every gathered todo. The render is the only per-turn record
+            # reaching next-turn context (build_recent_history, #1122), so an
+            # elided task is one the assistant cannot name when asked "what else
+            # is on my list?" — it can only describe its own render (#1738).
+            # The user's todo list is theirs and bounded; §5b. (The gather above
+            # is separately capped at limit=10 in _get_todays_todos — a GATHER
+            # cap, a different defect, tracked in the #1762 census.)
+            for todo in todos:
                 priority_icon = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(
                     todo["priority"], "⚪"
                 )
                 message += f"- {priority_icon} {todo['title']}\n"
-            if len(todos) > 5:
-                message += f"  ... and {len(todos) - 5} more\n"
         else:
             message += "**Tasks**: No pending tasks\n"
 
@@ -2554,19 +2569,20 @@ What would you like to set up first?"""
                 for todo in high:
                     message += f"  - 🔴 {todo['title']}\n"
 
+            # #1762: the `high` band above already rendered in full — the
+            # medium/low caps were arbitrary asymmetry inside one function, and
+            # the "**Total**: N" line below counts the WHOLE list, so the render
+            # was contradicting its own total. All three bands now render the
+            # set the total claims (GatherOutcome §5b; #1738's mechanism).
             if medium:
                 message += "**Medium Priority**:\n"
-                for todo in medium[:5]:
+                for todo in medium:
                     message += f"  - 🟡 {todo['title']}\n"
-                if len(medium) > 5:
-                    message += f"  ... and {len(medium) - 5} more\n"
 
             if low:
                 message += "**Low Priority**:\n"
-                for todo in low[:3]:
+                for todo in low:
                     message += f"  - 🟢 {todo['title']}\n"
-                if len(low) > 3:
-                    message += f"  ... and {len(low) - 3} more\n"
 
             message += f"\n**Total**: {len(todos)} pending tasks\n"
         else:
@@ -2575,7 +2591,11 @@ What would you like to set up first?"""
         # Priorities section
         message += "\n## 🎯 Priorities\n"
         if priorities:
-            for i, priority in enumerate(priorities[:3], 1):
+            # #1762: GRANULAR is the MOST detailed mode and this cap was
+            # SILENT — no "...and N more" at all, so the render read as the
+            # complete list while dropping priorities 4+. Bounded PIPER.md
+            # set; render == data (§5b).
+            for i, priority in enumerate(priorities, 1):
                 message += f"{i}. {priority}\n"
         else:
             message += "No priorities configured.\n"
@@ -2789,12 +2809,14 @@ What would you like to set up first?"""
         message = f"**Yesterday's Accomplishments** ({date_str})\n\n"
         message += f"✅ **Completed Tasks** ({len(completed_todos)}):\n"
 
-        for todo in completed_todos[:8]:
+        # #1762: the header claims len(completed_todos) and the summary below
+        # repeats it — the [:8] cap made both counts things the render itself
+        # refuted, and the elided tasks never reached next-turn context
+        # (#1738's mechanism). One day's completed todos is a bounded,
+        # user-owned set; render == data (GatherOutcome §5b).
+        for todo in completed_todos:
             priority_icon = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(todo["priority"], "⚪")
             message += f"  - {priority_icon} {todo['title']}\n"
-
-        if len(completed_todos) > 8:
-            message += f"  - ... and {len(completed_todos) - 8} more\n"
 
         message += f"\n📊 **Summary**: Productive day with {len(completed_todos)} tasks completed!"
         return message
@@ -4411,7 +4433,18 @@ What would you like to set up first?"""
                         query=search_terms, user_id=user_id
                     )
                     if results:
-                        project_names = [p.name for p in results[:5]]
+                        # #1762 (#1738's class): the SEARCH branch of this very
+                        # handler kept its `[:5]` when #1738 fixed `list` and
+                        # `list_archived` — and it was worse than those, because
+                        # it elided SILENTLY under a count claim of len(results):
+                        # "Found 6 projects matching 'x':" followed by five. The
+                        # render is the only per-turn record reaching next-turn
+                        # context (build_recent_history, #1122), so the 6th match
+                        # was a project the model believed it had never seen.
+                        # GatherOutcome §5b: a render cap may shorten what the
+                        # user sees; it must never change what the system
+                        # believes it has.
+                        project_names = [p.name for p in results]
                         response = (
                             f"Found {len(results)} projects matching '{search_terms}':\n\n"
                             + "\n".join(f"- {name}" for name in project_names)

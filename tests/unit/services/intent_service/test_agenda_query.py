@@ -237,12 +237,25 @@ class TestAgendaQuery:
         assert "Tasks**: No pending tasks" in result
 
     def test_format_agenda_standard_many_tasks(self, canonical_handlers):
-        """Test STANDARD format shows only top 5 tasks plus count."""
+        """STANDARD format lists EVERY gathered task — inverted by #1762.
+
+        This test previously asserted ``"... and 3 more" in result``, pinning
+        the very cap #1762 removes. The rendered string is the only per-turn
+        record reaching next-turn context (``build_recent_history``, #1122),
+        so the 6th-8th tasks were ones the assistant believed it had never
+        been given — asked "what else is on my list?", it could only describe
+        its own render (#1738's live failure). GatherOutcome §5b: a render cap
+        may shorten what the user sees; it must never change what the system
+        believes it has. Full pinning in
+        ``test_render_truncation_sweep_1762.py``.
+        """
         todos = [{"title": f"Task {i}", "priority": "medium", "due_date": None} for i in range(8)]
 
         result = canonical_handlers._format_agenda_standard(None, todos, [])
 
-        assert "... and 3 more" in result
+        for i in range(8):
+            assert f"Task {i}" in result
+        assert "more" not in result
 
     def test_format_agenda_granular_with_all_details(self, canonical_handlers):
         """Test GRANULAR format with full calendar and task details."""

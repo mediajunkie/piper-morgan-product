@@ -38,10 +38,10 @@ Seven hold leadership roles:
 
 Four hold staff roles, each doing a specific, recurring job:
 
-- **Lead Developer** — coordinates the coding work across every other agent and enforces the discipline of "does it actually work," not just "does it look done" (they are the brilliant workhorse making or overseeing the crafting of the product)
-- **Piper Alpha** — product assistant to me directly, helping manage my own workload, functioning as a prototype of the Piper Morgan product itself and establishing a benchmark or bar that my product needs to surpass to justify its use over a well-prompted Claude code agent.
-- **Documentation Manager** (Docs) — keeps the historical record straight: synthesizes session logs from all agents into the omnibus logs that summarize each project day, runs the publishing pipeline for these posts, audits and cleans up the docs tree routinely, maintains the project glossary of what all these terms mean
-- **Unicorn Web Designer/Developer** (Web) — builds and runs the pipermorgan.ai site where this blog post appears first, maintains the publishing pipeline technically, and also handles manual testing of the Piper Morgan web interface
+- **Lead Developer** (Lead Dev) — coordinates the coding work across every other agent and enforces the discipline of "does it actually work," not just "does it look done" (they are the brilliant workhorse making or overseeing the crafting of the product)
+- **Piper Alpha** (PA) — product assistant to me directly, helping manage my own workload, functioning as a prototype of the Piper Morgan product itself and establishing a benchmark or bar that my product needs to surpass to justify its use over a well-prompted Claude code agent.
+- **Documentation Management** (Docs) — keeps the historical record straight: synthesizes session logs from all agents into the omnibus logs that summarize each project day, runs the publishing pipeline for these posts, audits and cleans up the docs tree routinely, maintains the project glossary of what all these terms mean
+- **Unicorn Web Designer** (Web) — builds and runs the pipermorgan.ai site where this blog post appears first, maintains the publishing pipeline technically, and also handles manual testing of the Piper Morgan web interface
 
 As mentioned a smaller set gets activated for specific shapes of work rather than running continuously: there are the coding agents that come and go to handle precise, well-scoped implementation tasks other agents hand off, we've spun up a temp role called Special Assignments in the past for work that doesn't fit any standing lane. We briefly worked with an "Exploratory Testing Agent" built to poke at Piper's systems the way a real user would. It's been dormant since March, not running now but available if we want to use it again. For the most part, it's these 11 roles that are running the show now.
 
@@ -59,7 +59,7 @@ Two other names show up occasionally that aren't part of this team, and are wort
 
 # The humans who show up
 
-A handful of real people outside the agent team appear in this project's story by name, already public in earlier posts here, so it's worth naming them properly rather than leaving them as unexplained mentions. Ted Nadeau is both a close advisor and an occasional alpha tester. Beatrice Mercier, Michelle Hertzfeld, Jake Krajewski, and Dominique Derosena have all helped with alpha testing at crucial points. Cindy Chastain is a longtime friend and an independent design executive who hosts a podcast I appeared on to discuss this project. There are a few more testers and advisors in the wings who haven't been named publicly yet. When they are, it'll be in their own words, not a roster entry like this one.
+A handful of real people outside the agent team appear in this project's story by name, already public in earlier posts here, so it's worth naming them properly rather than leaving them as unexplained mentions. Ted Nadeau is both a close advisor and an occasional alpha tester. Beatrice Mercier and Dominique Derosena have both helped with alpha testing at crucial points. Cindy Chastain is a longtime friend and an independent design executive who hosts a podcast I appeared on to discuss this project. A few other testers and advisors have been helping right alongside them and just haven't come up by name in this blog series yet. When they do, it'll be in their own words, not a roster entry like this one.
 
 # If you've been reading a while
 
