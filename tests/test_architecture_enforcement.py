@@ -2450,6 +2450,7 @@ class TestAcceptanceContractRatchet:
     reminder_clear verb/correction turns          READ*   ADOPTED     "question" threaded 09-12
     reminder time/task turns (todo_handlers)      READ    ADOPTED     "question" threaded 09-12
     resume-offer seam, #889 mechanic (int_svc)    W/PRIV  ADOPTED     "question" threaded 09-12
+    capped-list remainder seam (int_svc)          READ    ADOPTED     offer_text stored 09-13
     generic offer seam, other non-READ kinds      W/PRIV  UNADOPTED   blocked: LOW-tier vocab
     FTUX interview turn (first_contact)           READ    UNADOPTED   holds
     verified_inference meta/decline seam          WRITE   UNADOPTED   holds (prose opt-out)
@@ -2621,6 +2622,49 @@ class TestAcceptanceContractRatchet:
     armed or survival-re-armed THIS turn; a stale prior-turn arm cannot
     reach the guards (no-over-block pinned). Regression:
     ``test_soft_offer_last_offer_clobber_1770.py``.
+
+    2026-09-13 (#1762 epic 6, the FIRST seam with a PERSISTING arm): the
+    capped-list remainder seam (``_check_pending_list_remainder``) adopted.
+    A GitHub listing that caps its render now stores the unrendered tail
+    (GatherOutcome §5b: "…and N more" is a claim the assistant must be able
+    to CASH) and "show me the rest" consumes it through THE predicate at the
+    arming action's REGISTRY-DECLARED axes (all six ``_READ_QUERY_COHORT``
+    listings declare ``EffectClass.READ``, PRIVATE → LOW_CEREMONY), with the
+    arm-site's rendered offer threaded as the stored ask (#1665). The offer's
+    own copy teaches "the rest" via ``taught_accepts`` — ADDITIVE over the
+    shared vocabulary, never a substitute, because CXO §5b-i decision 2 is
+    that the affordance must not become a syntax (a bare "yes" still cashes;
+    pinned parametrically).
+
+    ⭐ ARM SURVIVAL, STATED — and this one is the NON-default form, so it is
+    spelled out rather than inherited (the ruling's survival-must-be-stated
+    clause). **PERSISTING**, not the §5a silent re-arm: a STATE_QUESTION *or
+    a PASS* leaves the remainder in place, and it stays in place across
+    arbitrary intervening turns. CXO's reason, which is the whole shape of
+    this build: *a capped-list offer is exactly the kind a user answers
+    LATE — they read the five, think, and come back*, and an acceptance test
+    of "immediate next turn asks" passes without exercising the property that
+    actually fails. Her tier ruling licenses it (COLLABORATE/READ arms MAY
+    survive; only CONFIRM must not) and what makes it safe is that NOTHING
+    CAN FIRE from it — cashing prints lines already gathered, touches no
+    state, and issues no request. Bounded by: cashed, declined, replaced by a
+    newer capped list, or stale past ``REMAINDER_MAX_AGE_MINUTES``.
+
+    The store is DELIBERATELY not one of the two one-slot rails, and
+    therefore deliberately NOT in the ``_apply_soft_offer`` store peek above:
+    peeking a store that lives 30 minutes would suppress every soft offer for
+    that whole window, which is the over-block the #1753/#1770 soundness
+    argument exists to avoid. The arm TURN is covered the ordinary way, by a
+    ``list_remainder_offer_pending`` flag in ``_pending_flags``. Precedence
+    is explicit: the seam runs AFTER the ``last_offer`` pop and the #889
+    resume check and only when neither bound, so a fresher arm always wins.
+
+    Honest boundary, pinned rather than papered over: contract axis (a)
+    means an interrogative REQUEST ("can I see the rest?") is a
+    STATE_QUESTION, not an accept — the arm survives and normal processing
+    answers, so nothing is lost, but it is the #1579 shape and the CONTRACT
+    is where it would change, not this seam. Regression:
+    ``test_cashable_list_remainder_1762.py``.
     """
 
     _CONTRACT_MODULES = (

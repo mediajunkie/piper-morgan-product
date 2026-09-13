@@ -1343,7 +1343,13 @@ class TestListPRsRouting:
                 },
             )
 
-            mock_handler.assert_called_once_with(intent, mock_workflow.id)
+            # #1762 (epic 6): the six GitHub LISTING handlers took a third
+            # positional arg, ``session_id`` (pass_session_id on their
+            # _READ_QUERY_COHORT entries) — a capped list arms its unrendered
+            # remainder, and arming is session-scoped state. The rail already
+            # passed session_id to every entry point; the flag selects which
+            # handlers accept it.
+            mock_handler.assert_called_once_with(intent, mock_workflow.id, "test-session")
 
     @pytest.mark.asyncio
     async def test_routes_list_prs_action(self, intent_service, mock_workflow):
