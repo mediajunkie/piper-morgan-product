@@ -10,7 +10,14 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-12 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+**Last rewritten**: 2026-09-13 09:58 PT (START). **Session resumed after a Claude Code re-auth
+interrupted the usual 06:52 START** — this fire ran at 09:58 instead, first of the day. Heartbeat's
+first push attempt failed (raced against Web's session-start push), diagnosed and fixed with a
+fetch+merge+retry — landed clean, verified the row actually present on `origin/main` rather than
+trusting the retry's own success line. One mail item (CIO's v1.35 fix, cc-only). `sprint-truth.py`:
+0 unmilestoned, no drift overnight. Quiet clean open after yesterday's busiest day.
+
+**Prior day close: 2026-09-12 22:22 PT (STOP). Day closed clean, DAY-CLOSED sentinel written.**
 Cron re-armed `30d2f1d9` → **`dedc5304`**, `CronList`-verified exactly one job. Prompt updated:
 STANDING ARTIFACT reflects 10 epics / no Singletons pile; STANDING CONVENTION notes the ratified
 filing-convention fix; added proactive checks for sprint-truth.py's "NOT ON THE BOARD" case; added
