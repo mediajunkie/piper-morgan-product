@@ -143,10 +143,11 @@ jobs:
     # variance (observed 5–13s per case).
     #
     # NOTE the cost this timeout is buying: -k selects 211 tests, a large
-    # share of them real LLM round-trips, on EVERY push to main. Raising the
-    # ceiling makes the job pass; it does not make it cheap. Whether this
-    # cohort belongs on push or on the nightly schedule (as AAXT already is)
-    # is a policy question, filed rather than decided here.
+    # share of them real LLM round-trips. As of 2026-09-13 the paths-filter
+    # below actually governs (the `|| github.event_name == 'push'` bypass that
+    # made it dead is gone), so this runs when conversation code changes rather
+    # than on every push. #1785 still holds the broader push-vs-nightly
+    # question.
     timeout-minutes: 25
 
     services:
@@ -177,6 +178,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # ⚠️ COST GATE — do not re-add `|| github.event_name == 'push'` to the
+      # steps below without reading this. That bypass made the paths-filter
+      # directly beneath it dead on every push to main, so the live-LLM
+      # canonical suite (211 tests, many real LLM round-trips) ran on EVERY
+      # push regardless of whether conversation code changed. Measured
+      # 2026-09-13: 26 runs on 09-12, 17 on 09-13, and $5 of API credit
+      # consumed in a day. The filter now governs, as its author intended:
+      # touch services/intent*, web/api/routes/intent.py, services/llm/** or
+      # llm_domain_service.py and it runs; otherwise it skips.
       - name: Check if conversation code changed
         id: changes
         uses: dorny/paths-filter@v2
@@ -190,19 +200,19 @@ jobs:
               - 'services/domain/llm_domain_service.py'
 
       - name: Set up Python
-        if: steps.changes.outputs.conversation == 'true' || github.event_name == 'push'
+        if: steps.changes.outputs.conversation == 'true'
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
 
       - name: Install dependencies
-        if: steps.changes.outputs.conversation == 'true' || github.event_name == 'push'
+        if: steps.changes.outputs.conversation == 'true'
         run: |
           pip install --upgrade pip
           pip install --no-deps -r requirements.txt
 
       - name: Run migrations
-        if: steps.changes.outputs.conversation == 'true' || github.event_name == 'push'
+        if: steps.changes.outputs.conversation == 'true'
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5433
@@ -212,7 +222,7 @@ jobs:
         run: python -m alembic upgrade head
 
       - name: Run canonical routing tests
-        if: steps.changes.outputs.conversation == 'true' || github.event_name == 'push'
+        if: steps.changes.outputs.conversation == 'true'
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5433
@@ -229,7 +239,7 @@ jobs:
           echo "✅ Canonical routing regression passed"
 
       - name: Skip — no conversation code changes
-        if: steps.changes.outputs.conversation != 'true' && github.event_name != 'push'
+        if: steps.changes.outputs.conversation != 'true'
         run: echo "⏭️ Skipped — no changes to conversation code paths"
 
   # ─── Job 3: AAXT Nightly (scheduled, ~$0.50/run) ───────────────────
