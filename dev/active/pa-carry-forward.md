@@ -65,6 +65,13 @@ days stale.
   `mailboxes/pa/sent/assessment-pa-to-pm-cc-exec-byoc-hosted-alpha-...-2026-09-12.md`.
   ⚠️ **Also found while checking (already noted 08-28, below): PM had already confirmed "BYOC is
   explicitly PA's to drive" once — today's redirect is a re-activation, not new territory.**
+  🟢 **UPDATE 09-13**: CXO sent design input for §6's probe (the MCP-surface recomposition test, not
+  yet built — "you'd be the one to run it if it ever runs"). Verified rather than assumed: rubric is
+  genuinely v0.7 now, §6b added, based on Lead's #1717 transcripts showing recomposition can *alter*
+  a payload (compress an enumerable list) while still honoring an explicit directive — a category the
+  probe's own survive/weakened/vanish measure was missing. CXO is explicit T stays `PENDING-PROBE`
+  (#1717 is our own model, not the MCP surface) and nothing is owed back. Filed for whenever §6
+  actually becomes active work — correct sequencing per CXO's own framing, not a thread to chase now.
   🔴 **Housekeeping debt, named rather than hidden**: the historical block immediately below (08-26
   through 09-01, ~190 lines) has NOT been compressed per CIO's resolved-items-get-deleted rule, despite
   most of its content being ✅-marked resolved. Deferring the actual compression pass to a fresh

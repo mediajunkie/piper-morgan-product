@@ -89,7 +89,7 @@ title,theme,status,workDate,endWorkDate,pubDate,mediumURL,liPubDate,linkedinURL,
 | blogPath | Path | e.g., `/blog/{slug}` |
 | cartoon | Slug | Image slug (no extension) |
 | chatDate | M/D/YYYY | Date of source chat session |
-| draftPath | Relative path | e.g., `docs/public/comms/drafts/draft-name.md` |
+| draftPath | Relative path | e.g., `docs/public/comms/drafts/draft-name.md`. **Deliberately a live pointer, not an authoring-history record** — it must always resolve on `origin/main`. When Step 9 archives a published draft to `drafts/published/`, update `draftPath` to match in the same pass (see Step 4b). A path that stops resolving after publish is a miss, not an accepted tradeoff — confirmed 2026-09-13 after Dispatch-PM asked rather than assumed. |
 | notes | Free text | Any notes |
 | altText | Free text | Image alt text (quote if contains commas) |
 | caption | Free text | Image caption (quote if contains commas) |

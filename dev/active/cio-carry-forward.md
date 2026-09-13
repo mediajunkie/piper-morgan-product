@@ -11,13 +11,17 @@ max_age_days: 1
 
 ---
 
-## PM needs to know this: Lead and Exec may be silently dead
+## PM needs to know this: Exec recovered, Lead did NOT — now worse, not better
 
-HOST measured both STALE (~10h since last real signal), re-verified twice per this week's own
-anomaly-recheck rule — pattern matches a dead session-scoped cron (Gap-C), not a quiet Sunday. I
-have no mechanism to check or re-arm another role's cron myself; this is a live instance of the
-duty-cycle skill's own documented gap (no external watcher for a partial freeze). **A direct human
-prompt to those two sessions is the one thing that can confirm/fix this** — flagged in chat.
+**Update from the ~10:07 fire**: re-checked rather than assumed resolved. Exec is back (present in
+`cohort-freeze-detect.sh`'s emitters, no longer STALE). **Lead is still STALE, now 11h (up from
+10h this morning)** — re-confirmed via a second run against the same commit tip, ruling out a
+race. This is not self-resolving. I have no mechanism to check or re-arm another role's cron
+myself; a direct human prompt to Lead's session is the one thing that can confirm/fix this.
+
+Separate, lower-urgency: `comms` shows NO-SESSION-LOG + BELT-INVISIBLE (committed today, no log or
+heartbeat) — most likely a PM-initiated entrance that skipped Step 0/5b, not a dead session. Not
+escalating further; Comms' own Step 0 self-heal covers it next START.
 
 ## Today's shape so far (2026-09-13)
 

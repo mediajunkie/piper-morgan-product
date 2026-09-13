@@ -37,68 +37,33 @@ class FeatureWorkflow:
 
 ## 📊 Current Integrations
 
-### Morning Standup + Issue Intelligence
+### Morning Standup
 
-**Status**: ✅ **ACTIVE** since August 24, 2025
-
-#### Integration Flow
-
-```mermaid
-graph LR
-    A[Morning Standup CLI] --> B[MorningStandupWorkflow]
-    B --> C[generate_with_issues]
-    C --> D[IssueIntelligenceCanonicalQueryEngine]
-    D --> E[CanonicalHandlers]
-    E --> F[Issue Priority Analysis]
-    F --> G[Integrated Standup Result]
-```
+**Status**: Standup generation runs through `StandupOrchestrationService`
+(`services/domain/standup_orchestration_service.py`), which delegates to `StandupAssembler` for
+honest derivation from live Radar EntitySources. This replaced the earlier `MorningStandupWorkflow`
+described in previous revisions of this guide (retired via #1289 — "the fabricating `/generate`
+path"). The `IssueIntelligenceCanonicalQueryEngine` integration shown in earlier revisions of this
+guide never actually shipped: it was disposed as a never-wired 2025 enhancer (#1633), so there is
+no live standup ↔ issue-intelligence integration to document at this time.
 
 #### Technical Implementation
 
 ```python
-# Morning Standup integration method
-async def generate_with_issues(self, user_id: str) -> StandupResult:
-    # Get base standup
-    base_standup = await self.generate_standup(user_id)
+from services.domain.standup_orchestration_service import StandupOrchestrationService
 
-    # Add issue context via canonical query
-    try:
-        if hasattr(self, 'canonical_handlers') and self.canonical_handlers:
-            issue_engine = IssueIntelligenceCanonicalQueryEngine(
-                user_id=user_id,
-                canonical_handlers=self.canonical_handlers
-            )
-
-            # Create intent for issue intelligence
-            intent = Intent(
-                user_id=user_id,
-                text="what needs attention",
-                category=IntentCategory.PROJECT_MANAGEMENT,
-                confidence_score=1.0
-            )
-
-            # Get enhanced results
-            enhanced_result = await issue_engine.enhance_canonical_query(intent, f"session_{user_id}")
-
-            # Integrate issue priorities into standup
-            if enhanced_result and enhanced_result.issue_intelligence.get("priority_issues"):
-                issue_priorities = enhanced_result.issue_intelligence["priority_issues"][:3]
-                for issue in issue_priorities:
-                    base_standup.today_priorities.append(f"🎯 Issue #{issue.get('number')}: {issue.get('title')}")
-
-    except Exception as e:
-        # Graceful degradation
-        base_standup.today_priorities.append(f"⚠️ Issue priorities unavailable: {str(e)[:50]}...")
-
-    return base_standup
+service = StandupOrchestrationService()
+result = await service.orchestrate_standup_workflow(user_id=user_id)
 ```
 
 #### CLI Integration
 
 ```bash
 # Usage examples
-python cli/commands/standup.py --with-issues    # Integrated output
-python cli/commands/standup.py                  # Standard output
+python cli/commands/standup.py                  # Standard CLI output
+python cli/commands/standup.py --format slack    # Slack-formatted output
+python cli/commands/standup.py --github          # Also create GitHub issues from action items
+python cli/commands/standup.py --notion          # Also update Notion database
 ```
 
 ## 🔧 Integration Best Practices
@@ -164,8 +129,8 @@ async def test_feature_integration():
 @pytest.mark.integration
 async def test_cross_feature_integration():
     # Test actual feature integration
-    standup = MorningStandupWorkflow(canonical_handlers=real_handlers)
-    result = await standup.generate_with_issues("test_user")
+    service = StandupOrchestrationService()
+    result = await service.orchestrate_standup_workflow(user_id="test_user")
     assert len(result.today_priorities) > 0
 ```
 

@@ -189,3 +189,29 @@ requesting an EXISTING keychain item blocks indefinitely and silently in SecItem
 Truly-fresh machines are fine (no item → falls through to the /setup wizard). Workarounds: click
 Always Allow once at the dialog, or PIPER_CREDENTIAL_STORE=db. Bites anyone who rebuilds a venv
 on a machine that has run the setup wizard.
+
+## `gh` returns EMPTY output with exit 0 inside the default Bash sandbox (2026-09-13, Lead lane)
+
+**Symptom**: a `gh issue view` / `gh issue create` prints nothing and exits **0** — the shape that
+reads as "no results" or "succeeded quietly," not as a failure. Found by the #1776 lane when a
+filing appeared to succeed and produced no issue.
+
+**Cause**: the default sandboxed Bash environment blocks the network/credential access `gh` needs;
+`gh` does not surface this as a non-zero exit in every subcommand.
+
+**Fix**: run `gh` with `dangerouslyDisableSandbox: true` (or use `gh api` where it errors loudly).
+
+⚠️ **Why this one is worth remembering**: it is a *silent-clear* failure, the exact class m-44
+names — "clear" emitted identically whether the check found nothing, measured the wrong thing, or
+never ran. If a `gh` call's output matters (a census, a "no such issue" conclusion, a filing you
+then report as done), **verify the result by reading it back**, not by trusting exit 0.
+
+## `patch.dict("sys.modules", …)` in a test file can break LATER test files (2026-09-13, Lead lane)
+
+A lane's first draft patched `sys.modules` to stub an import. Its own file passed; the *next*
+file alphabetically (`test_context_assembler.py`) went from 78-pass to 20-fail — and only when
+the polluting file ran first, so it was invisible to anyone running either file alone.
+
+**Rule**: don't patch `sys.modules` in unit tests; patch the attribute on the imported module
+instead. **And when verifying a lane's work, co-run the touched neighborhoods in ONE pytest
+invocation** — per-file runs cannot see cross-file import pollution by construction.

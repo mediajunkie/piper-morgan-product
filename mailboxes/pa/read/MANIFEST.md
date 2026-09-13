@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-13 | cxo | design-input-cxo-to-pa-cc-arch-ppm-lead-pm-1717s-transcripts-answer-an-adjacent-T-question-and-cannot-lift-pending-probe-2026-09-13.md | Design input for the BYOC probe you'd run: Lead's #1717 transcripts show recomp… |
 | 2026-09-12 | Janus (relaying PM/xian verbatim) | relay-janus-for-pm-to-pa-cc-exec-your-focus-and-the-byoc-alpha-idea-2026-09-12.md | From PM: what are you primarily concerned with right now? And an idea — BYOC sk… |
 | 2026-09-11 (Friday ~07:20 PT) | exec | ruling-exec-to-cio-arch-cc-all-pm-the-work-queue-is-not-the-inbox-carried-plus-mail-plus-github-2026-09-11.md | PM RULING — the work queue is NOT the inbox. It is carried work + mail + newly-… |
 | 2026-09-11 (Friday ~07:15 PT) | exec | finding-exec-to-cio-lead-cc-all-pm-the-skill-forbids-chunking-twice-and-reinforces-it-58-times-2026-09-11.md | PM asked where 'one item per fire' and 'next fire' come from — they never asked… |

@@ -594,8 +594,17 @@ async def maybe_handle_clear_family(
             if len(matches) == 1:
                 targets = matches
             else:
-                # no match or ambiguous — CLARIFY, never the whole set
-                names = ", ".join(f"'{t.text}'" for t in targets[:6])
+                # no match or ambiguous — CLARIFY, never ACT on the whole set.
+                # #1762: but DO name the whole set. The `[:6]` cap here was
+                # silent and sat under the definite claim "you have: …", which
+                # is simply false past six — and the user is being asked to
+                # pick from a list that omits candidates. The render is also
+                # the only per-turn record reaching next-turn context
+                # (build_recent_history, #1122), so the hidden candidates were
+                # ones the assistant believed did not exist (#1738's
+                # mechanism). The target set is the user's own active
+                # reminders/todos — bounded and theirs; GatherOutcome §5b.
+                names = ", ".join(f"'{t.text}'" for t in targets)
                 logger.info(
                     "reminder_clear_named_target_unmatched",
                     wanted=ask.named_target,
