@@ -57,4 +57,10 @@ fi
 # The payload is the committed script, run inside the prod container so it
 # resolves the real database URL from the app's own config (never from a
 # worktree's env). --apply is passed through deliberately and explicitly.
-exec fly ssh console -C "python /app/scripts/mint_invite_tokens.py $COUNT --apply"
+#
+# PYTHONPATH=/app is load-bearing: invoking `python /app/scripts/foo.py` puts
+# /app/scripts on sys.path, NOT /app, so `from services.…` raises
+# ModuleNotFoundError. Verified locally (the same invocation fails without it)
+# rather than assumed — this is the kind of thing that only surfaces at the
+# moment you need the command to work.
+exec fly ssh console -C "PYTHONPATH=/app python /app/scripts/mint_invite_tokens.py $COUNT --apply"
