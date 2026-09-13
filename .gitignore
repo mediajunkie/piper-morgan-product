@@ -55,6 +55,8 @@ next-env.d.ts
 
 # Python virtual environment and cache
 venv/
+# CI-faithful env for the #1436 mypy gate — scripts/bootstrap-mypy-gate-venv.sh
+venv-mypy-gate/
 __pycache__/
 *.pyc
 *.pyo
