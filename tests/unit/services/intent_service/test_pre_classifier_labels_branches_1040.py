@@ -125,17 +125,6 @@ class TestActionRegistry:
         assert ACTION_REGISTRY[("QUERY", "list_branches_query")] == ActionDisposition.WORKFLOW
 
 
-class TestLensInference:
-    """New actions map to PROJECTS lens."""
-
-    def test_labels_lens(self):
-        from services.intent_service.lens_inference import ACTION_TO_LENS
-        from services.shared_types import ConversationalLens
-
-        assert ACTION_TO_LENS["list_labels_query"] == ConversationalLens.PROJECTS
-
-    def test_branches_lens(self):
-        from services.intent_service.lens_inference import ACTION_TO_LENS
-        from services.shared_types import ConversationalLens
-
-        assert ACTION_TO_LENS["list_branches_query"] == ConversationalLens.PROJECTS
+# #1768 (2026-09-12): the TestLensInference class (ACTION_TO_LENS coverage for
+# the new actions) was deleted with services/intent_service/lens_inference.py —
+# the lens table's only consumer was zero-caller classify_conscious.
