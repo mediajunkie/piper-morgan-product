@@ -162,7 +162,13 @@ class TestListMilestonesHandler:
             result = await intent_service._handle_list_milestones_query(
                 _make_intent(), workflow_id="wf-1"
             )
-        assert "and 2 more" in result.message
+        # #1762 (epic 6, 2026-09-13) — this assertion pinned the uncashable
+        # claim. GatherOutcome §5b: "…and N more" is a claim the assistant
+        # must be able to CASH. Here the hidden tail is 2 — at or
+        # under PPM's threshold of 3, where an offer is ceremony — so all 7
+        # render instead, which is render == data for free.
+        assert "and 2 more" not in result.message
+        assert "say the word" not in result.message
         assert result.intent_data["context"]["milestone_count"] == 7
 
     async def test_exception_returns_honest_failure(self, intent_service):
@@ -281,7 +287,13 @@ class TestListReleasesHandler:
             result = await intent_service._handle_list_releases_query(
                 _make_release_intent(), workflow_id="wf-1"
             )
-        assert "and 2 more" in result.message
+        # #1762 (epic 6, 2026-09-13) — this assertion pinned the uncashable
+        # claim. GatherOutcome §5b: "…and N more" is a claim the assistant
+        # must be able to CASH. Here the hidden tail is 2 — at or
+        # under PPM's threshold of 3, where an offer is ceremony — so all 7
+        # render instead, which is render == data for free.
+        assert "and 2 more" not in result.message
+        assert "say the word" not in result.message
         assert result.intent_data["context"]["release_count"] == 7
 
     async def test_exception_returns_honest_failure(self, intent_service):

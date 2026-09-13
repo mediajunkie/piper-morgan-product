@@ -245,6 +245,65 @@ session-exists ask, `_resume_suspended_standup` legacy either/or ask) now
 arm via `_arm_resume_offer(question=…)` — both census rows shrank out.
 Regression: `test_resume_offer_acceptance_1769.py`.
 
+**#1762 capped-list remainder seam (2026-09-13, epic 6 first build) — a NEW
+pre-classification deterministic seam, and the chain's first PERSISTING arm.**
+Sits immediately after the #889 resume check and before classification, guarded
+by `not contextual_offer_bound` (`_check_pending_list_remainder` in
+`services/intent/intent_service.py`). It exists because the six GitHub listing
+handlers (`_handle_list_{issues,prs,milestones,releases,labels,branches}_query`)
+rendered `"...and N more"` — an honest SOURCE count they could not CASH, which
+is GatherOutcome contract §5b's violation profile and, per the #1738 joint
+invariant, real information loss inside the turn (whatever the render drops is,
+from the model's own position next turn, information it never had).
+
+RENDER half: all six now build the whole HELD set into lines and hand them to
+one shared renderer, `services/intent_service/list_remainder.compose_capped_list`
+— the renderer CONSUMES the gathered outcome and never rewrites it. Copy is
+CXO's §5b-i: *"That's 5 of 340 — say the word and I'll pull the rest."* (what
+you're holding, not what's missing); PPM's threshold skips the offer entirely
+when the hidden tail is ≤3 and renders them all; a PAGED source (issues:
+`total_count` 179 vs. a 50-item page) offers only what it can actually cash
+rather than promising "the rest"; a source that caps its own count supplies
+`source_total_display` so `1000+` prints as `1000+` and never as a fabricated
+exact number.
+
+ARM half: `_arm_list_remainder` stores the unrendered tail on
+`ConversationContext.pending_list_remainder` — DELIBERATELY its own store, not
+the #852/#1529 one-turn `last_offer` rail, because that rail's always-cleared-
+at-turn-start invariant is exactly what makes the #1753/#1770 no-clobber peeks
+sound. `session_id` reaches the six via `pass_session_id=True` on their
+`_READ_QUERY_COHORT` entries (`_READ_QUERY_SESSION_THREADED` in
+workflow_entries.py). The arm turn stamps `list_remainder_offer_pending`, which
+joins `_apply_soft_offer`'s `_pending_flags` so no second offer competes on the
+same turn; the STORE is deliberately NOT added to that method's store peek —
+it lives up to 30 minutes and peeking it would suppress soft offers for the
+whole window.
+
+CONSUME half (#1739 adoption): the seam consults `evaluate_acceptance` at the
+arming actions' registry-declared axes (all six declare `EffectClass.READ`,
+PRIVATE → LOW_CEREMONY) with the stored offer threaded as the armed ask
+(#1665). The offer's own copy TEACHES "the rest" via `taught_accepts`, additive
+over the shared vocabulary so a bare "yes" still cashes — §5b-i decision 2:
+offer the affordance, never the syntax. ⭐ **Arm survival is the NON-default
+PERSISTING form, stated**: STATE_QUESTION *and* PASS both leave the remainder
+standing, across arbitrary intervening turns, because a capped-list offer is
+precisely the kind users answer LATE (CXO) — an acceptance test of
+"immediate next turn asks" passes without exercising the property that fails.
+CXO's per-tier ruling licenses it (READ arms may survive; only CONFIRM must
+not) and nothing can FIRE from it: cashing prints lines already gathered.
+Bounded by cashed / declined / replaced by a newer capped list / stale past
+`REMAINDER_MAX_AGE_MINUTES` (30, borrowed from `ConversationContext.max_age_
+minutes`). A gone-or-stale remainder returns the honest `list_remainder_moved`
+turn — *the list has moved on, ask me again and I'll pull a fresh one* — and
+NEVER a silent re-fetch, which would be a fabrication of continuity (the user
+believes they hold items 6–340 of the list they saw). No GitHub surface is
+touched anywhere on the consume path; that is structural, pinned by explosive
+adapter/router stubs on both the cash and stale paths. Honest boundary pinned
+rather than papered over: contract axis (a) makes an interrogative REQUEST
+("can I see the rest?") a STATE_QUESTION, not an accept — the arm survives and
+normal processing answers, but the CONTRACT is where that would change.
+Regression: `test_cashable_list_remainder_1762.py`.
+
 **#1595 Phase 1 inversion shadow observer (2026-08-14) — an explicitly
 NON-dispatching fifth party that watches the chain, never joins it.** When
 `PIPER_INVERSION_SHADOW` is on (default OFF), `process_intent` fires-and-forgets

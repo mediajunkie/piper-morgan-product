@@ -125,7 +125,13 @@ class TestListLabelsHandler:
             result = await intent_service._handle_list_labels_query(
                 _make_label_intent(), workflow_id="wf-1"
             )
-        assert "and 5 more" in result.message
+        # #1762 (epic 6, 2026-09-13) — this assertion pinned the uncashable
+        # claim. GatherOutcome §5b: "…and N more" is a claim the assistant
+        # must be able to CASH. Here the hidden tail is 5 — past PPM's
+        # threshold — so the render makes the CASHABLE offer instead, and
+        # the 5 it hides are stored where "show me the rest" can reach them.
+        assert "and 5 more" not in result.message
+        assert "That's 20 of 25 — say the word and I'll pull the rest." in result.message
         assert result.intent_data["context"]["label_count"] == 25
 
     async def test_exception_returns_honest_failure(self, intent_service):
@@ -225,7 +231,13 @@ class TestListBranchesHandler:
             result = await intent_service._handle_list_branches_query(
                 _make_branch_intent(), workflow_id="wf-1"
             )
-        assert "and 5 more" in result.message
+        # #1762 (epic 6, 2026-09-13) — this assertion pinned the uncashable
+        # claim. GatherOutcome §5b: "…and N more" is a claim the assistant
+        # must be able to CASH. Here the hidden tail is 5 — past PPM's
+        # threshold — so the render makes the CASHABLE offer instead, and
+        # the 5 it hides are stored where "show me the rest" can reach them.
+        assert "and 5 more" not in result.message
+        assert "That's 20 of 25 — say the word and I'll pull the rest." in result.message
         assert result.intent_data["context"]["branch_count"] == 25
 
     async def test_protected_flag_displayed(self, intent_service):

@@ -1075,6 +1075,27 @@ _READ_QUERY_COHORT: dict[str, list[str]] = {
 }
 
 
+# #1762 (epic 6): handlers in this cohort that take ``session_id`` as a 3rd
+# positional arg. The six GitHub LISTINGS render capped lists, and a capped
+# list must ARM its unrendered remainder so "…and there are more" is a claim
+# it can cash (GatherOutcome §5b) — arming is session-scoped state, so the
+# session id has to reach the handler. The other three stay 2-arg:
+# shipped_this_week / stale_prs / review_issue_query render no capped list
+# with a hidden tail (the first two are window listings rendered whole; the
+# third is one issue). Adding a handler here is a signature change — the
+# factory passes the arg only for members of this set.
+_READ_QUERY_SESSION_THREADED: frozenset[str] = frozenset(
+    {
+        "_handle_list_issues_query",
+        "_handle_list_prs_query",
+        "_handle_list_milestones_query",
+        "_handle_list_releases_query",
+        "_handle_list_labels_query",
+        "_handle_list_branches_query",
+    }
+)
+
+
 # #1667 flip groups for the read-query cohort — handler_attr → wave-1 group
 # (see FLIP_GROUPS in workflow_dispatcher.py). Declared as its own map rather
 # than folded into the alias dict so the alias lists stay untouched; a handler
@@ -1795,7 +1816,14 @@ def register_default_workflows() -> None:
     # (safe direction: no wave flip can address it; `--audit` names it).
     for handler_attr, aliases in _READ_QUERY_COHORT.items():
         entry = WorkflowEntry(
-            entry_point=_make_query_dispatch_entry_point(handler_attr),
+            entry_point=_make_query_dispatch_entry_point(
+                handler_attr,
+                # #1762 (epic 6): the six listing handlers take session_id so
+                # a capped list can arm its remainder. See
+                # _READ_QUERY_SESSION_THREADED above for why the other three
+                # stay on the 2-arg shape.
+                pass_session_id=handler_attr in _READ_QUERY_SESSION_THREADED,
+            ),
             effect=EffectClass.READ,
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],
