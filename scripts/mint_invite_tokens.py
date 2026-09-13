@@ -31,6 +31,24 @@ from services.auth.invite_token_service import generate_invite_token  # noqa: E4
 _INSERT = text("INSERT INTO invite_tokens (token, created_at) VALUES (:token, now())")
 
 
+def _to_sync_url(url: str) -> str:
+    """Turn the app's async URL into one psycopg2 accepts.
+
+    Two independent differences, both of which bite:
+      * driver token: ``postgresql+asyncpg://`` -> ``postgresql://``
+      * TLS spelling: asyncpg's ``?ssl=X`` -> libpq's ``?sslmode=X``
+
+    The second is the non-obvious one — psycopg2 does not ignore the foreign
+    key, it raises ``invalid connection option "ssl"`` and the connection never
+    opens.
+    """
+    from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit  # noqa: PLC0415
+
+    parts = urlsplit(url.replace("+asyncpg", ""))
+    q = [(("sslmode" if k == "ssl" else k), v) for k, v in parse_qsl(parts.query)]
+    return urlunsplit(parts._replace(query=urlencode(q)))
+
+
 def _database_url() -> tuple[str, str]:
     """Resolve the DB URL the way the APP does, falling back to POSTGRES_*.
 
@@ -49,8 +67,11 @@ def _database_url() -> tuple[str, str]:
         from services.database.connection import db  # noqa: PLC0415
 
         url = db._build_database_url()
-        # The app speaks asyncpg; this script is sync.
-        return url.replace("+asyncpg", ""), "app config (services.database.connection)"
+        # The app speaks asyncpg; this script is sync (psycopg2). Stripping the
+        # driver is NOT enough: the two drivers spell TLS differently —
+        # asyncpg takes ?ssl=…, libpq/psycopg2 takes ?sslmode=…, and psycopg2
+        # hard-errors on the foreign key ("invalid connection option 'ssl'").
+        return _to_sync_url(url), "app config (services.database.connection)"
     except Exception as exc:  # noqa: BLE001 — fall back LOUDLY, never silently
         # A silent fallback here is the whole hazard: it degrades to localhost,
         # which in production means "mint into a database that isn't the one
