@@ -93,7 +93,11 @@ class TestInsightPullEnrichment:
         ]
         # Mock repo + session
         mock_repo = AsyncMock()
-        mock_repo.list_for_user.return_value = insights
+        # #1776: the gather reads through `list_for_user_with_total` so the
+        # floor's "(N total, …)" line is the query's own pre-LIMIT row count
+        # instead of `len(insights)` — the 50-row read cap wearing the word
+        # "total". Here nothing is truncated, so total == len(insights).
+        mock_repo.list_for_user_with_total.return_value = (insights, 0, len(insights))
         mock_session_factory = MagicMock()
         # session_scope is an async context manager
         mock_session_factory.session_scope.return_value.__aenter__ = AsyncMock(
@@ -143,7 +147,11 @@ class TestInsightPullEnrichment:
             ),
         ]
         mock_repo = AsyncMock()
-        mock_repo.list_for_user.return_value = insights
+        # #1776: the gather reads through `list_for_user_with_total` so the
+        # floor's "(N total, …)" line is the query's own pre-LIMIT row count
+        # instead of `len(insights)` — the 50-row read cap wearing the word
+        # "total". Here nothing is truncated, so total == len(insights).
+        mock_repo.list_for_user_with_total.return_value = (insights, 0, len(insights))
         mock_session_factory = MagicMock()
         mock_session_factory.session_scope.return_value.__aenter__ = AsyncMock(
             return_value=MagicMock()

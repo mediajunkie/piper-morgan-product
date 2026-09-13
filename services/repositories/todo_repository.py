@@ -4,7 +4,7 @@ Following established repository patterns with AsyncSessionFactory
 """
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 from uuid import UUID
 
 import structlog
@@ -79,8 +79,48 @@ class TodoRepository(BaseRepository):
         project_id: Optional[str] = None,
         limit: int = 100,
     ) -> List[domain.Todo]:
-        """Get todos for owner with comprehensive filtering"""
-        query = select(TodoDB).where(TodoDB.owner_id == owner_id)
+        """Get todos for owner with comprehensive filtering.
+
+        Contract unchanged (a plain list) for callers that do not state a
+        denominator over the result. Callers that DO — anything that renders
+        "N todos" beside a LIMIT-ed page — must use
+        ``get_todos_by_owner_with_total`` instead (#1776).
+        """
+        todos, _ = await self.get_todos_by_owner_with_total(
+            owner_id=owner_id,
+            status=status,
+            priority=priority,
+            context=context,
+            project_id=project_id,
+            limit=limit,
+        )
+        return todos
+
+    async def get_todos_by_owner_with_total(
+        self,
+        owner_id: str,
+        status: Optional[TodoStatus] = None,
+        priority: Optional[TodoPriority] = None,
+        context: Optional[str] = None,
+        project_id: Optional[str] = None,
+        limit: int = 100,
+    ) -> Tuple[List[domain.Todo], int]:
+        """`get_todos_by_owner` plus the matching row count BEFORE the LIMIT.
+
+        #1776 (m-44, mirroring #1645's ``_compute_projects``): a gather cap
+        truncates before any render exists, so the only way a downstream
+        render can state an honest denominator is for the gather to hand one
+        over. ``COUNT(*) OVER ()`` is evaluated before LIMIT is applied, so
+        every returned row carries the same pre-LIMIT total and the true
+        count costs NO extra round trip — a separate ``SELECT COUNT(*)``
+        would both cost a query and be able to disagree with the page.
+
+        Returns ``([], 0)`` on no matching rows: an exact zero, not an
+        absence (the #1544/#1639 verified-empty distinction).
+        """
+        query = select(TodoDB, func.count().over().label("_total_matching")).where(
+            TodoDB.owner_id == owner_id
+        )
 
         # #1460 discovered-work: TodoDB.status/priority are String columns
         # ("Changed from Enum to String") — comparing the raw Enum raises
@@ -102,8 +142,10 @@ class TodoRepository(BaseRepository):
         ).limit(limit)
 
         result = await self.session.execute(query)
-        db_todos = result.scalars().all()
-        return [db_todo.to_domain() for db_todo in db_todos]
+        rows = result.all()
+        if not rows:
+            return [], 0
+        return [row[0].to_domain() for row in rows], int(rows[0][1])
 
     async def get_assigned_todos(
         self, assigned_to: str, status: Optional[TodoStatus] = None

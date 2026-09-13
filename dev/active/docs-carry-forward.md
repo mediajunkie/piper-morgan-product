@@ -1,6 +1,14 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-13 ~10:10 PDT (session start, PM-engaged after Claude Code re-auth).
+**Updated**: 2026-09-13 ~11:35 PDT (PM-engaged, published "Who's Who at Piper Morgan").
+**New publish-sequencing discipline**: commit the calendar update as its OWN fast, standalone
+commit immediately after the website publish (Step 6/7 of `publish-to-blog` — already documented
+this way), and do drafts-folder archival (Step 9) as a SEPARATE, later commit. Bundling the two
+into one commit (what I've been doing) adds avoidable seconds to the window between "post is live"
+and "calendar reflects it" — Dispatch caught this exact window on "Who's Who" (75s gap, my two
+commits at 11:15:06 and 11:16:21). Not a repeat of the old backfill-forgetting mistake — the fields
+WERE correctly populated, just landed slightly late. The gap can't be fully closed (two separate
+git repos), but splitting the commits shrinks it to just the calendar-script's own runtime.
 **Session log**: `dev/2026/09/13/2026-09-13-0958-docs-code-log.md` (open).
 **Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
 make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything

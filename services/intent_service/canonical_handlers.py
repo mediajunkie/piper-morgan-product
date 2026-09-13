@@ -15,7 +15,7 @@ Issue #963: Removed dead handlers for IDENTITY, DISCOVERY, TRUST, MEMORY
 
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import structlog
 
@@ -883,7 +883,13 @@ class CanonicalHandlers:
         elif len(projects) <= 3:
             base = f"Working on {len(projects)} projects: {', '.join(projects)}"
         else:
-            base = f"Working on {len(projects)} projects: {', '.join(projects[:3])} + {len(projects)-3} more"
+            # #1762: EMBEDDED is a BREVITY mode, not a data-loss licence. The
+            # rendered string is the only per-turn record reaching next-turn
+            # context, so "+ N more" deleted projects from the model's world
+            # (#1738's mechanism). `projects` here is the user's hand-authored
+            # PIPER.md list — bounded by a human typing it, so naming all of
+            # them stays a single line. GatherOutcome §5b.
+            base = f"Working on {len(projects)} projects: {', '.join(projects)}"
 
         if has_metadata and total_issues > 0:
             return f"{base} ({total_issues} open issues)"
@@ -904,7 +910,11 @@ class CanonicalHandlers:
             f"You're working on {len(projects)} active project{'s' if len(projects) != 1 else ''}:\n"
         ]
 
-        for project in projects[:5]:  # Top 5
+        # #1762: every project, no "...and N more" — the header above already
+        # claims len(projects), and a render that shows fewer than it counts is
+        # a gap the assistant cannot answer about next turn (the render IS the
+        # next-turn record; #1738's mechanism, GatherOutcome §5b).
+        for project in projects:
             # Issue #18: Add issue count if available
             metadata = project_metadata.get(project, {})
             issues_count = metadata.get("open_issues_count")
@@ -912,9 +922,6 @@ class CanonicalHandlers:
                 summary.append(f"- {project} ({issues_count} open issues)")
             else:
                 summary.append(f"- {project}")
-
-        if len(projects) > 5:
-            summary.append(f"- ... and {len(projects) - 5} more")
 
         if user_context.organization:
             summary.append(f"\nOrganization: {user_context.organization}")
@@ -935,7 +942,8 @@ class CanonicalHandlers:
         elif project_count <= 3:
             return f"You have {project_count} active projects: {', '.join(projects)}"
         else:
-            return f"You have {project_count} active projects: {', '.join(projects[:3])} + {project_count - 3} more"
+            # #1762: see _format_consolidated_status — brevity mode, full set.
+            return f"You have {project_count} active projects: {', '.join(projects)}"
 
     def _format_project_list_standard(self, projects: list, project_metadata: Dict = None) -> str:
         """
@@ -1258,11 +1266,13 @@ class CanonicalHandlers:
 
         if len(priorities) > 1:
             message.append("\nOther priorities:")
-            for priority in priorities[1:4]:  # Show up to 3 more
+            # #1762: all of them. `priorities` is the user's hand-authored
+            # PIPER.md list (bounded by construction), and the render is the
+            # only per-turn record the model reads back next turn — an elided
+            # priority is one it believes it was never told (#1738's mechanism,
+            # GatherOutcome §5b).
+            for priority in priorities[1:]:
                 message.append(f"- {priority}")
-
-            if len(priorities) > 4:
-                message.append(f"- ... and {len(priorities) - 4} more")
 
         # Issue #496: Add high-priority GitHub issues if available
         high_priority_issues = priority_metadata.get("high_priority_issues", [])
@@ -2167,11 +2177,11 @@ Would you like me to explain more about how Piper uses project context, or are y
             intro = f"You have {project_count} project{'s' if project_count != 1 else ''} in your portfolio"
             outro = "Would you like to add another project, or review your current setup?"
 
+        # #1762: the intro above states project_count; the list must match it.
+        # Bounded user-owned set (PIPER.md), render == data (GatherOutcome §5b).
         project_list = ""
-        for project in project_names[:5]:
+        for project in project_names:
             project_list += f"- {project}\n"
-        if len(project_names) > 5:
-            project_list += f"- ... and {len(project_names) - 5} more\n"
 
         message = f"""{intro}!
 
@@ -2391,7 +2401,7 @@ What would you like to set up first?"""
 
         return False
 
-    async def _get_todays_todos(self, user_id, limit: int = 10) -> List[Dict]:
+    async def _get_todays_todos(self, user_id, limit: int = 10) -> Tuple[Optional[List[Dict]], int]:
         """
         Issue #499: Fetch today's pending todos for agenda aggregation.
 
@@ -2400,9 +2410,22 @@ What would you like to set up first?"""
         owner_id=user_id, so the agenda's Tasks section was structurally empty
         for every authenticated user. Sessions are not owners; principals are.
         Anonymous callers own no todos: honest [].
+
+        #1776 (m-44): returns ``(todos, total_pending)``. ``limit`` is a GATHER
+        cap — it truncates before any render exists — so ``len(todos)`` is the
+        CAP, not a measurement, and the formatters used to print it as
+        "**Total**: N pending tasks". The pre-LIMIT row count rides the same
+        query (``COUNT(*) OVER ()``, the #1645 idiom), so the total costs no
+        extra round trip and cannot disagree with the page it describes. The
+        tuple is deliberate: a caller that ignores the count now has to say so
+        in code rather than by omission.
+
+        Returns ``(None, 0)`` on a source failure — the #1425 sentinel is
+        preserved exactly, so the formatters still render "couldn't check"
+        rather than "no tasks".
         """
         if not user_id:
-            return []
+            return [], 0
         try:
             from services.database.models import TodoPriority, TodoStatus
             from services.database.session_factory import AsyncSessionFactory
@@ -2411,8 +2434,9 @@ What would you like to set up first?"""
             async with AsyncSessionFactory.session_scope() as session:
                 todo_repo = TodoRepository(session)
 
-                # Get pending todos ordered by priority
-                todos = await todo_repo.get_todos_by_owner(
+                # Get pending todos ordered by priority, plus the true count
+                # of pending rows this owner has (pre-LIMIT).
+                todos, total_pending = await todo_repo.get_todos_by_owner_with_total(
                     owner_id=str(user_id),
                     status=TodoStatus.PENDING,
                     limit=limit,
@@ -2431,13 +2455,32 @@ What would you like to set up first?"""
                         "context": todo.context,
                     }
                     for todo in todos
-                ]
+                ], total_pending
         except Exception as e:  # silent-ok: None sentinel -> formatters render honest "couldn't check", never "no tasks" (#1425)
             logger.warning(f"Could not fetch todos for agenda (source failed): {e}")
-            return None
+            return None, 0
+
+    @staticmethod
+    def _true_todo_total(todos: Optional[List[Dict]], total_pending: Optional[int]) -> int:
+        """The denominator an agenda render may state (#1776, m-44).
+
+        ``total_pending`` is the gather's own pre-LIMIT row count. When it is
+        absent (a caller that never had one — e.g. a direct formatter call in
+        a test), ``len(todos)`` is genuinely all that is known AND is then
+        true, because nothing was capped away by a gather that never ran.
+        Never the other way round: a supplied count always wins over the
+        slice length.
+        """
+        if total_pending is not None:
+            return total_pending
+        return len(todos or [])
 
     def _format_agenda_embedded(
-        self, calendar_context: Optional[Dict], todos: List[Dict], priorities: List[str]
+        self,
+        calendar_context: Optional[Dict],
+        todos: List[Dict],
+        priorities: List[str],
+        total_pending: Optional[int] = None,
     ) -> str:
         """Issue #499: Format minimal agenda for EMBEDDED spatial pattern."""
         parts = []
@@ -2456,7 +2499,10 @@ What would you like to set up first?"""
         if todos is None:
             parts.append("tasks unavailable")
         elif todos:
-            parts.append(f"{len(todos)} tasks")
+            # #1776: EMBEDDED renders a bare count and NO list, so the count is
+            # the ENTIRE claim — `len(todos)` here was the gather cap (10)
+            # announced as the user's task total.
+            parts.append(f"{self._true_todo_total(todos, total_pending)} tasks")
 
         # Top priority
         if priorities:
@@ -2465,7 +2511,11 @@ What would you like to set up first?"""
         return " | ".join(parts) if parts else "No agenda items"
 
     def _format_agenda_standard(
-        self, calendar_context: Optional[Dict], todos: List[Dict], priorities: List[str]
+        self,
+        calendar_context: Optional[Dict],
+        todos: List[Dict],
+        priorities: List[str],
+        total_pending: Optional[int] = None,
     ) -> str:
         """Issue #499: Format standard agenda response."""
         message = "Here's your agenda for today:\n\n"
@@ -2487,13 +2537,25 @@ What would you like to set up first?"""
             message += "**Tasks**: I couldn't check your tasks just now — the todo lookup failed. Try again shortly.\n"
         elif todos:
             message += "**Tasks**:\n"
-            for todo in todos[:5]:
+            # #1762: every gathered todo. The render is the only per-turn record
+            # reaching next-turn context (build_recent_history, #1122), so an
+            # elided task is one the assistant cannot name when asked "what else
+            # is on my list?" — it can only describe its own render (#1738).
+            # The user's todo list is theirs and bounded; §5b. (The gather above
+            # is separately capped at limit=10 in _get_todays_todos — a GATHER
+            # cap, a different defect, tracked in the #1762 census.)
+            for todo in todos:
                 priority_icon = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(
                     todo["priority"], "⚪"
                 )
                 message += f"- {priority_icon} {todo['title']}\n"
-            if len(todos) > 5:
-                message += f"  ... and {len(todos) - 5} more\n"
+            # #1776: STANDARD states no total at all, so a capped gather here
+            # is SILENT rather than false — m-44's purest form, since an
+            # unannounced subset reads as a measurement. Stated only when the
+            # gather actually truncated; the complete case renders as before.
+            _total = self._true_todo_total(todos, total_pending)
+            if _total > len(todos):
+                message += f"\n(Showing the first {len(todos)} of {_total} pending tasks.)\n"
         else:
             message += "**Tasks**: No pending tasks\n"
 
@@ -2504,7 +2566,11 @@ What would you like to set up first?"""
         return message
 
     def _format_agenda_granular(
-        self, calendar_context: Optional[Dict], todos: List[Dict], priorities: List[str]
+        self,
+        calendar_context: Optional[Dict],
+        todos: List[Dict],
+        priorities: List[str],
+        total_pending: Optional[int] = None,
     ) -> str:
         """Issue #499: Format detailed agenda for GRANULAR spatial pattern."""
         message = "# Today's Full Agenda\n\n"
@@ -2554,28 +2620,43 @@ What would you like to set up first?"""
                 for todo in high:
                     message += f"  - 🔴 {todo['title']}\n"
 
+            # #1762: the `high` band above already rendered in full — the
+            # medium/low caps were arbitrary asymmetry inside one function, and
+            # the "**Total**: N" line below counts the WHOLE list, so the render
+            # was contradicting its own total. All three bands now render the
+            # set the total claims (GatherOutcome §5b; #1738's mechanism).
             if medium:
                 message += "**Medium Priority**:\n"
-                for todo in medium[:5]:
+                for todo in medium:
                     message += f"  - 🟡 {todo['title']}\n"
-                if len(medium) > 5:
-                    message += f"  ... and {len(medium) - 5} more\n"
 
             if low:
                 message += "**Low Priority**:\n"
-                for todo in low[:3]:
+                for todo in low:
                     message += f"  - 🟢 {todo['title']}\n"
-                if len(low) > 3:
-                    message += f"  ... and {len(low) - 3} more\n"
 
-            message += f"\n**Total**: {len(todos)} pending tasks\n"
+            # #1776 (m-44): `len(todos)` was the GATHER cap presented as the
+            # truth — a user with 25 pending todos was told "**Total**: 10
+            # pending tasks". Not a missing denominator but a false one; the
+            # count now comes from the gather's own pre-LIMIT row count, and
+            # the shown subset is named so the true total is not read as a
+            # claim about what was listed.
+            _total = self._true_todo_total(todos, total_pending)
+            message += f"\n**Total**: {_total} pending tasks"
+            if _total > len(todos):
+                message += f" (showing the first {len(todos)} above)"
+            message += "\n"
         else:
             message += "No pending tasks - great day for deep work!\n"
 
         # Priorities section
         message += "\n## 🎯 Priorities\n"
         if priorities:
-            for i, priority in enumerate(priorities[:3], 1):
+            # #1762: GRANULAR is the MOST detailed mode and this cap was
+            # SILENT — no "...and N more" at all, so the render read as the
+            # complete list while dropping priorities 4+. Bounded PIPER.md
+            # set; render == data (§5b).
+            for i, priority in enumerate(priorities, 1):
                 message += f"{i}. {priority}\n"
         else:
             message += "No priorities configured.\n"
@@ -2607,8 +2688,10 @@ What would you like to set up first?"""
         # Issue #849: Thread user_id for user-scoped calendar auth
         calendar_context = await self._get_calendar_context(user_id=user_id)
 
-        # 2. Get todos
-        todos = await self._get_todays_todos(user_id)
+        # 2. Get todos — #1776: the gather's own pre-LIMIT row count rides
+        # along, so the formatters state a denominator the gather produced
+        # instead of counting their own capped input.
+        todos, total_pending = await self._get_todays_todos(user_id)
 
         # 3. Get priorities from user context
         priorities = []
@@ -2623,11 +2706,17 @@ What would you like to set up first?"""
 
         # Format based on spatial pattern
         if spatial_pattern == "EMBEDDED":
-            message = self._format_agenda_embedded(calendar_context, todos, priorities)
+            message = self._format_agenda_embedded(
+                calendar_context, todos, priorities, total_pending=total_pending
+            )
         elif spatial_pattern == "GRANULAR":
-            message = self._format_agenda_granular(calendar_context, todos, priorities)
+            message = self._format_agenda_granular(
+                calendar_context, todos, priorities, total_pending=total_pending
+            )
         else:
-            message = self._format_agenda_standard(calendar_context, todos, priorities)
+            message = self._format_agenda_standard(
+                calendar_context, todos, priorities, total_pending=total_pending
+            )
 
         # Issue #790: When calendar is not connected on an explicit agenda query,
         # surface guidance regardless of prior offer state — the user just asked.
@@ -2650,14 +2739,24 @@ What would you like to set up first?"""
                     # #1425 sentinel: todos is None when the lookup FAILED —
                     # never claim a count (len(None) crashed the whole agenda
                     # response once #1460 made this path reachable).
-                    "todo_count": len(todos) if todos is not None else None,
+                    # #1776: when the read SUCCEEDED, the count is the gather's
+                    # pre-LIMIT row count, not the length of its capped page —
+                    # this field is a denominator, and `len(todos)` made it the
+                    # cap. `todos_shown` carries the page size separately.
+                    "todo_count": total_pending if todos is not None else None,
+                    "todos_shown": len(todos) if todos is not None else None,
                     "has_priorities": bool(priorities),
                 },
             },
             "spatial_pattern": spatial_pattern,
             "agenda_sources": {
                 "calendar": bool(calendar_context),
-                "todos": len(todos),
+                # #1776 discovered-work (#1777): this was a bare `len(todos)`
+                # while the sibling field two lines up guarded the #1425 None
+                # sentinel explicitly — so a todo-source FAILURE raised
+                # TypeError here and took down the whole agenda response, the
+                # exact crash that guard exists to prevent.
+                "todos": len(todos) if todos is not None else 0,
                 "priorities": len(priorities),
             },
             "requires_clarification": False,
@@ -2789,12 +2888,14 @@ What would you like to set up first?"""
         message = f"**Yesterday's Accomplishments** ({date_str})\n\n"
         message += f"✅ **Completed Tasks** ({len(completed_todos)}):\n"
 
-        for todo in completed_todos[:8]:
+        # #1762: the header claims len(completed_todos) and the summary below
+        # repeats it — the [:8] cap made both counts things the render itself
+        # refuted, and the elided tasks never reached next-turn context
+        # (#1738's mechanism). One day's completed todos is a bounded,
+        # user-owned set; render == data (GatherOutcome §5b).
+        for todo in completed_todos:
             priority_icon = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(todo["priority"], "⚪")
             message += f"  - {priority_icon} {todo['title']}\n"
-
-        if len(completed_todos) > 8:
-            message += f"  - ... and {len(completed_todos) - 8} more\n"
 
         message += f"\n📊 **Summary**: Productive day with {len(completed_todos)} tasks completed!"
         return message
@@ -4411,7 +4512,18 @@ What would you like to set up first?"""
                         query=search_terms, user_id=user_id
                     )
                     if results:
-                        project_names = [p.name for p in results[:5]]
+                        # #1762 (#1738's class): the SEARCH branch of this very
+                        # handler kept its `[:5]` when #1738 fixed `list` and
+                        # `list_archived` — and it was worse than those, because
+                        # it elided SILENTLY under a count claim of len(results):
+                        # "Found 6 projects matching 'x':" followed by five. The
+                        # render is the only per-turn record reaching next-turn
+                        # context (build_recent_history, #1122), so the 6th match
+                        # was a project the model believed it had never seen.
+                        # GatherOutcome §5b: a render cap may shorten what the
+                        # user sees; it must never change what the system
+                        # believes it has.
+                        project_names = [p.name for p in results]
                         response = (
                             f"Found {len(results)} projects matching '{search_terms}':\n\n"
                             + "\n".join(f"- {name}" for name in project_names)

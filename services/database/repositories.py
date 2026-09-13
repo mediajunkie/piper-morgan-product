@@ -2393,16 +2393,50 @@ class InsightRepository:
         journal page render "N insights could not be displayed" instead of
         silently under-reporting.
         """
+        insights, skipped, _ = await self.list_for_user_with_total(
+            user_id=user_id, limit=limit, exclude_deleted=exclude_deleted
+        )
+        return insights, skipped
+
+    async def list_for_user_with_total(
+        self,
+        user_id: str,
+        limit: Optional[int] = None,
+        exclude_deleted: bool = True,
+    ) -> Tuple[List, int, int]:
+        """`list_for_user_with_skips` plus the matching row count BEFORE the
+        LIMIT — `(insights, skipped, total)`.
+
+        #1776 (m-44, mirroring #1645's `_compute_projects`): `limit` here is a
+        GATHER cap. Callers that state a denominator over the result — the
+        floor renders "(N total, sectioned by confidence)" from the context
+        assembler's `total_count` — were deriving it from `len(insights)`,
+        i.e. from the cap, so a user with 137 insights was described as having
+        50. `COUNT(*) OVER ()` is evaluated before LIMIT, so the true total
+        rides the same query at no extra round trip.
+
+        `total` counts ROWS, so it includes any row that later failed
+        deserialization (`skipped`). That is deliberate: the user HAS those
+        insights, we merely could not render them — the two numbers together
+        are the honest account.
+        """
         filters = [InsightDB.user_id == user_id]
         if exclude_deleted:
             filters.append(InsightDB.is_deleted == False)
-        stmt = select(InsightDB).where(and_(*filters)).order_by(InsightDB.created_at.desc())
+        stmt = (
+            select(InsightDB, func.count().over().label("_total_matching"))
+            .where(and_(*filters))
+            .order_by(InsightDB.created_at.desc())
+        )
         if limit is not None:
             stmt = stmt.limit(limit)
         result = await self.session.execute(stmt)
+        rows = result.all()
         insights: List = []
         skipped = 0
-        for row in result.scalars().all():
+        total = int(rows[0][1]) if rows else 0
+        for row_tuple in rows:
+            row = row_tuple[0]
             try:
                 insights.append(row.to_domain())
             except Exception as e:  # silent-ok: error-logged per row; good rows survive one bad row's deserialization failure (#1545)
@@ -2413,7 +2447,7 @@ class InsightRepository:
                     user_id=user_id,
                     error=str(e),
                 )
-        return insights, skipped
+        return insights, skipped, total
 
     async def update_user_correction(self, insight_id: str, user_id: str, correction_text: str):
         """Record the user's free-text correction for an insight (#1031 Q2).

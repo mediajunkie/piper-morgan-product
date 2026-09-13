@@ -1,13 +1,15 @@
 ---
 type: scoring-instrument
 name: BYOC Recomposition Rubric
-version: v0.6 — DRAFT, unratified. Class B now has a working mechanism (PA's member-not-metadata,
+version: v0.7 — DRAFT, unratified. Class B now has a working mechanism (PA's member-not-metadata,
   clean in both vendors, one shape, n=1). v0.5: class account CONFIRMED on Claude, UNRESOLVED on GPT-4o; not adopted
   as a scoring rule. Probe series recommended CLOSED 2026-09-03. v0.4 added ADDITION as well as SURVIVAL (2026-09-01 evening, on
   Lead's #1717 evidence: the observed failures were host-added claims, not lost qualifications).
   v0.3 restructured the axis by qualification class 2026-09-01 after a second
   falsification (the directive-field criterion was refuted in both vendors by its own deconfounder).
   Still PENDING-PROBE for issuing a PASS: n=1 per cell per vendor throughout.
+  v0.7 (2026-09-13): §6b adds adjacent-surface evidence from #1717 — recomposition ALTERS as well
+  as drops, both vendors. Design input for §6's probe only; T remains PENDING-PROBE.
 date: 2026-08-30
 owner: CXO
 branched_from: Colleague Test Rubric v2.3.2 (`colleague-test-rubric.md`), per its own §"How to Extend
@@ -15,11 +17,11 @@ branched_from: Colleague Test Rubric v2.3.2 (`colleague-test-rubric.md`), per it
 tier_status: instrument UNRATIFIED (PPM/PM own tier) — but the REQUIREMENT it serves is ratified law
   as of 2026-08-30 (ESSENCE v1.0 commitment 7). See the status banner; the two are not the same thing.
 closes: one of PDR-006's two named pre-user gates ("the recomposition rubric branch", PDR-006:35)
-last_updated: 2026-08-30
+last_updated: 2026-09-13
 currency_claim: revise-on-probe-result
 ---
 
-# BYOC Recomposition Rubric — v0.6
+# BYOC Recomposition Rubric — v0.7
 
 **The instrument for scoring Piper's quality on a surface where Piper does not compose what the user
 reads.**
@@ -203,6 +205,50 @@ no build commits yet. It closes the moment tool output starts being written.
 > composing our text ships new versions without telling us; a hedge that survives today's host may not
 > survive its successor. **This is a standing property of the BYOC surface, not a caveat on one probe** —
 > every claim we make about recomposition behavior is a claim about a third party's current build.
+
+### 6b. ⚠️ ADJACENT-SURFACE EVIDENCE, 2026-09-13 — design input for §6's probe, and it CANNOT lift `PENDING-PROBE`
+
+📄 **Source**: Lead/prog's #1717 transcripts, 2026-09-12 — **6 live composes, 3 cases × 2 vendors**
+(`openai/gpt-4o`, `anthropic/claude-sonnet-4-6`), prompt and delivered layers labelled, denominator
+stated as single-shot-per-cell.
+
+🔴 **STATED FIRST, because it is the part that gets forgotten: this is a DIFFERENT SURFACE and the
+evidence does not transfer.** §6's worked example says it outright — *"on the BYOC surface there is no
+floor prompt, because there is no model of ours in the loop."* **#1717 is our own prompt recomposed by a
+model we invoked.** ⚠️ **T asks what a host we do NOT control does to a tool payload. Nothing below
+answers that, and nothing below licenses a PASS.**
+
+**What it does supply — one mechanism observation worth designing the probe around:**
+
+> ⭐ **Recomposition ALTERED rather than dropped, in both vendors, and the alteration was an
+> improvement.** The prompt named **five** failed checks (*reminders, GitHub, projects, **pending
+> todos**, **completed todos***). **Every one of six replies said "todos."** The pending/completed
+> distinction was silently collapsed — **better voice, and no longer a faithful enumeration of the
+> input.**
+
+⭐ **And the sharper half**: the same prompt carried an explicit **directive** (*"report the failure in
+ONE sentence naming them together — never one caveat per check"*). **The directive was obeyed by both
+vendors. The item list underneath it was compressed anyway.**
+
+> 🔴 **So a directive can be honoured at the level it addresses while the payload it governs is altered
+> beneath it.** ⚠️ **That is a failure mode the T scale does not currently distinguish**, because T=3's
+> criterion is *"requires a directive field"* — and this shows a directive field can be satisfied by an
+> output whose data content has changed.
+
+**Three concrete consequences for §6's design, none of which change the criteria:**
+
+1. **The measure at step 3 (*"survive / weakened / vanish"*) is missing a category.** ⭐ **Add
+   *altered-but-present*** — the #1717 case is none of the three, and it is the one a naive scorer marks
+   as "survived."
+2. **The paired structural variant (step 5) should include a list whose members are individually
+   checkable**, so compression is detectable at all. **A single-fact hedge cannot show this.**
+3. **The negative control (step 4) needs a matching form**: an unhedged output containing an
+   enumerable list. ⭐ **If lists compress regardless of hedging, compression is a summarisation property
+   and not an honesty finding** — and the probe must be able to tell those apart.
+
+🔴 **Denominator and limits**: n=1 per cell, one surface, one day, our own model in the loop, and **I did
+not design this run** — it was produced for a voice read and I am reusing it. **Evidence generated for
+one purpose answering an adjacent question is worth noticing and worth distrusting in equal measure.**
 
 ## 7. Provenance and cross-reference
 

@@ -520,9 +520,16 @@ class TestUserContextPrioritiesShape:
 
         assert result is not None
         assert isinstance(result["priorities"], dict)
-        assert result["priorities"] == {
-            "user_priorities": ["ship Phase 4", "review the PRs", "unblock #1124"]
-        }
+        # #1776: the dict now carries a companion count beside the [:5] GATHER
+        # cap (the #1530/#1544 shape). The #496 property under test — the floor
+        # reads `priorities` as a DICT, not a bare list — is unchanged; only
+        # the exact-equality assertion had to widen to admit the denominator.
+        assert result["priorities"]["user_priorities"] == [
+            "ship Phase 4",
+            "review the PRs",
+            "unblock #1124",
+        ]
+        assert result["priorities"]["user_priority_count"] == 3
 
     def test_floor_renders_user_priorities_from_dict_shape(self):
         from services.intent_service.conversational_floor import ConversationalFloor

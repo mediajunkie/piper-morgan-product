@@ -24,14 +24,19 @@ async def test_real_todos_reach_the_agenda_dicts():
             due_date=datetime(2026, 7, 18, 17, 0, tzinfo=timezone.utc),
         ),
     ]
+    # #1776: the gather now returns (todos, total_pending) and sources the page
+    # from `get_todos_by_owner_with_total` so the true pre-LIMIT count rides
+    # along. This test's subject (real domain fields reach the dicts) is
+    # unchanged; only the seam it mocks and the arity it unpacks moved.
     with patch(
-        "services.repositories.todo_repository.TodoRepository.get_todos_by_owner",
-        new=AsyncMock(return_value=todos),
+        "services.repositories.todo_repository.TodoRepository.get_todos_by_owner_with_total",
+        new=AsyncMock(return_value=(todos, 2)),
     ):
-        out = await CanonicalHandlers()._get_todays_todos(user_id=str(uuid4()))
+        out, total = await CanonicalHandlers()._get_todays_todos(user_id=str(uuid4()))
 
     # Old code: AttributeError -> swallow -> None (source-failed). Now: real dicts.
     assert out is not None and len(out) == 2
+    assert total == 2
     assert out[0]["title"] == "Review the Q3 roadmap"  # sourced from .text
     assert out[0]["priority"] == "high"  # plain str, no .value
     assert out[1]["due_date"].startswith("2026-07-18")
@@ -42,11 +47,11 @@ async def test_formatter_renders_the_tasks_section_from_these_dicts():
         Todo(text="Ship the fix", priority="high"),
     ]
     with patch(
-        "services.repositories.todo_repository.TodoRepository.get_todos_by_owner",
-        new=AsyncMock(return_value=todos),
+        "services.repositories.todo_repository.TodoRepository.get_todos_by_owner_with_total",
+        new=AsyncMock(return_value=(todos, 1)),
     ):
-        dicts = await CanonicalHandlers()._get_todays_todos(user_id=str(uuid4()))
-    msg = CanonicalHandlers()._format_agenda_standard(None, dicts, [])
+        dicts, total = await CanonicalHandlers()._get_todays_todos(user_id=str(uuid4()))
+    msg = CanonicalHandlers()._format_agenda_standard(None, dicts, [], total_pending=total)
     assert "Ship the fix" in msg
     assert "No pending tasks" not in msg
     assert "couldn't check" not in msg.lower()

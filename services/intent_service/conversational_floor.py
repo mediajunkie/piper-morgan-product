@@ -842,10 +842,21 @@ class ConversationalFloor:
                     "user's message is about something else — do not wait to "
                     "be asked:"
                 )
-                for r in rems[:5]:
+                # #1762 (#1738's class, sharpest instance): this is NOT
+                # turn.response — it is the LLM's own system prompt, i.e. the
+                # data channel. The directive three lines up orders the model
+                # to "Briefly surface them in your reply … do not wait to be
+                # asked", and the `[:5]` cap then elided items it had just
+                # ordered surfaced. The model cannot surface what it was never
+                # shown, so "…and N more" was a promise only the prompt could
+                # see. `get_due_reminders` (todo_handlers.py) applies NO limit
+                # and `reminder_count` is the true count, so this was a pure
+                # render cap over an uncapped, bounded, user-owned set — and
+                # due reminders are only those whose time has already passed.
+                # GatherOutcome §5b: a render cap may shorten what the user
+                # sees; it must never change what the system believes it has.
+                for r in rems:
                     lines.append(f"    • {r}")
-                if count > 5:
-                    lines.append(f"    • …and {count - 5} more")
                 # #1569 per-item vocabulary rule (CXO/PPM joint design):
                 # vocabulary is set by which context key an item arrived
                 # through — these arrived through the reminder key.
@@ -1110,7 +1121,15 @@ class ConversationalFloor:
         if "user_projects" in domain_context:
             up = domain_context["user_projects"]
             if isinstance(up, list) and up:
-                lines.append(f"- User's active projects: {', '.join(str(x) for x in up)}")
+                line = f"- User's active projects: {', '.join(str(x) for x in up)}"
+                # #1776 (m-44, the #1530 renderer shape): the gatherer caps this
+                # list at 5 BEFORE any render exists, so without the count the
+                # LLM's denominator silently becomes the cap and the line reads
+                # as a complete enumeration.
+                _upc = domain_context.get("user_project_count")
+                if isinstance(_upc, int) and _upc > len(up):
+                    line += f" (that is the first {len(up)} of {_upc} — do not present it as all of them)"
+                lines.append(line)
 
         if "organization" in domain_context:
             org = domain_context["organization"]
@@ -1132,7 +1151,17 @@ class ConversationalFloor:
             if p.get("user_priorities"):
                 plist = p["user_priorities"]
                 if isinstance(plist, list):
-                    lines.append(f"- User's stated priorities: {', '.join(str(x) for x in plist)}")
+                    line = f"- User's stated priorities: {', '.join(str(x) for x in plist)}"
+                    # #1776 (m-44): same gather-cap shape as user_projects above
+                    # — the assembler slices priorities to 5 and the bare list
+                    # read as the user's complete stated set.
+                    _upc = domain_context.get("user_priority_count") or p.get("user_priority_count")
+                    if isinstance(_upc, int) and _upc > len(plist):
+                        line += (
+                            f" (that is the first {len(plist)} of {_upc} — do not "
+                            "present it as all of them)"
+                        )
+                    lines.append(line)
             if p.get("urgent_items"):
                 lines.append(f"- High-priority issues: {p['urgent_items']}")
 
