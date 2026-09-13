@@ -10,7 +10,28 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-12 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+**Last rewritten**: 2026-09-13 09:58 PT (START, extended). **Caught a real gap in Exec's
+epic-accounting doc for PM** (`dev/active/epic-accounting-2026-09-13.html`): it reported "nine
+epics," omitting epic 10 (`#1737`, Composer UX polish) entirely — the exact "doc may lag" risk
+Exec's own methodology note named. Also found smaller denominator inflation in epics 1/3/5 (totals
+off by 1-2, open-counts all correct) — likely the same mention-vs-membership leak Exec already
+caught once on epic 2. Sent a correction to Exec, cc PM, before it could be acted on as complete.
+**Adopted one real improvement to my own file**: epic 9 was undercounting its own named instances
+(`#1420`/`#1422`) — now 3 items, matching Exec's fuller read. While in the file, refreshed live
+closure state across epics 1/3/5 (lots closed since last night — epic 3 ran to its floor, epic 5
+is now the one Lead's actively working). Confirmed Lead's `#1687` secret-rotation comment landed —
+tonight's cron WATCH line can drop once PM actually does the rotation. Three push races this
+morning (very busy cohort-wide start-of-day) — none were mine to cause, each resolved by
+fetch+merge+retry, verified via `git cat-file -e` rather than trusting the retry's own output.
+
+**Prior fire: 2026-09-13 09:58 PT (START). Session resumed after a Claude Code re-auth
+interrupted the usual 06:52 START** — this fire ran at 09:58 instead, first of the day. Heartbeat's
+first push attempt failed (raced against Web's session-start push), diagnosed and fixed with a
+fetch+merge+retry — landed clean, verified the row actually present on `origin/main` rather than
+trusting the retry's own success line. One mail item (CIO's v1.35 fix, cc-only). `sprint-truth.py`:
+0 unmilestoned, no drift overnight. Quiet clean open after yesterday's busiest day.
+
+**Prior day close: 2026-09-12 22:22 PT (STOP). Day closed clean, DAY-CLOSED sentinel written.**
 Cron re-armed `30d2f1d9` → **`dedc5304`**, `CronList`-verified exactly one job. Prompt updated:
 STANDING ARTIFACT reflects 10 epics / no Singletons pile; STANDING CONVENTION notes the ratified
 filing-convention fix; added proactive checks for sprint-truth.py's "NOT ON THE BOARD" case; added

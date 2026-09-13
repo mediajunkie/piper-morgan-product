@@ -41,10 +41,32 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 | 7b | **PreCompact hook: locality differentiation (Option 1), genuinely unbuilt** | May 11 (orig.), reverified twice Aug 23 | **Docs corrected my count same-day**: Option 3 ("safe to compact" path) was already present in *substance* (SOFT tier's option (c)), just worded differently than my grep matched — reworded to the memo's exact language so this doesn't false-negative again (`298fd4f89`). Real corrected state: **2 of 3 addressed, 1 genuinely open** — Option 1 (locality differentiation, still the highest-leverage one) needs actual detection-logic design and is deliberately not being rushed, given the hook's own May 10-17 wedge-incident history. Docs owns it as scoped, unblocked work now — not CIO's to chase further. |
 | 7c | **Docs sign-off `git status` inventory pattern** — methodology-corpus candidate | May 10 | Needs HOST + Docs concurrence on framing; never pursued. Low priority. |
 | 7u | **Pard's duty-cycle standard v1.4 proposal (session-cron → boot-persistent LaunchAgent)** | Sept 10 | Cross-project cascade-model proposal to CIO+Exec, cc HOST/PM. My technical read (sent, `reply-cio-to-pard-...-2026-09-10.md`): **adopt** — the "detect-and-heal is good enough" case is weaker than it looks, since my own cron mitigations (Gap-C self-heal, proactive re-arm, freeze-watchdog) are the same "patch the symptom, not the mechanism" shape PPM's #1743 illustrated in the same fire's inbox. Cost (~2h Pard's time, ~10 LaunchAgents) is PM's provisioning decision, not mine to make unilaterally. Flagged to PM in chat same-fire. Also folding in Pard's two "worth taking regardless" items as candidate methodology additions: Test 8c (an instrument that can't measure must say so) and a capability/permission-envelope guarantee (escalate rather than report the same blocker forever — cova's 24-day example). Pending PM/Exec response. |
-| 7w | **Arch's ask**: give the Lead/Arch macOS-mypy-skew false-clear finding a formal methodology-record entry ("an unverified claim in a durable doc re-emits false-clear to every reader"; "set ceilings from measured count, never base-minus-predicted-delta"). | Sept 11 | Not yet verified against the source memo directly (only have a subagent's secondhand summary) — read the actual memo before drafting anything. Small, bounded task once read. |
 | 7x | **Exec's 2 remaining process items** (narrowed from 3 — the third, "re-check anomalies before reporting," landed inside 7v): archive `mailboxes/*/read/` (11,510 files cohort-wide, quarterly `read/archive/YYYY-QN/`, MANIFEST-regen-safe, exercise on one seat first per Exec's own caution); change the PM-cc rule (PM cc'd only for (a) PM-only decisions, (b) relaying PM's rulings, (c) something PM would contradict — everything else via attention rollup). | Sept 11 | Mine as skill/process owner. Neither belongs in `duty-cycle-tick` SKILL.md (mailbox/communication policy, not fire procedure) — home is CLAUDE.md's mailbox section or `mailboxes/DIRECTORY.md`, plus a standalone archival script for the first one. Not started. |
 | 7y | **NO-DAY-CLOSE streak detector** (CXO's finding) — a role can stop emitting `DAY-CLOSED` markers entirely and no external mechanism reports the absence, since Step 0's self-heal only runs as a step inside the same discipline it's meant to catch a lapse in (CXO found their own 16-day lapse this way — the self-heal and the lapse stopped together). Same "clear vs. never-measured" shape as everything else found this week. | Sept 11 | CXO explicitly asked NOT to arm this tonight — one evening snapshot can't distinguish "not closed yet" (normal, pre-STOP) from "genuinely stopped" across 11 roles with different STOP times, and this week already burned one threshold (mine) sized against too few points. Design once real cohort DAY-CLOSED data exists to size the streak threshold K against. Placement: `duty-cycle-freeze-check.sh`'s already-paid-for per-role traversal, same argument that put the mailbox-nesting invariant in the filename lint. My own seat checked clean (14 consecutive real markers, verified with the anchored pattern after a first-pass false positive from a prose mention). |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
+
+- **Methodology-54 filed** (#7w, filed Sept 11, closed Sept 13 — first Sunday-morning opening) —
+  read both source memos (Lead's finding, Arch's review) in full before drafting. Checked against
+  m-44/m-46/m-49 first and confirmed it's genuinely distinct: m-46 is a claim that was true then
+  went stale on promotion; this is a claim never verified from the moment it was written, whose
+  specific downstream failure is re-interpreting new correct evidence as self-confirmation — Lead's
+  own case shows the same author re-confirming the false claim in writing, four days later, against
+  real contradicting evidence. Filed Emerging (one instance, one seat) per the corpus's m-45
+  discipline. Commit `b552e46a1`.
+
+- **Live-fire discovery, Sept 13**: HOST found Lead and Exec both STALE (~10h since last signal),
+  re-verified twice per the anomaly re-check rule, consistent with dead session-scoped crons
+  (Gap-C) rather than a quiet Sunday. Acknowledged and routed — no mechanism exists for me to check
+  or re-arm another role's cron directly, and this is a live instance of the documented "no
+  external watcher for a partial (non-cohort-wide) freeze" gap. Flagged to PM directly in chat
+  since a human prompt is the only lever that can wake a genuinely dead session. Also caught and
+  fixed a real hook-mechanics finding from Lead the same morning: `pre-commit-broad-staging-warn.sh`
+  documents a `--no-verify` escape that cannot possibly work (a git-native flag with zero
+  relationship to Claude Code's PreToolUse hook layer) — confirmed by reading the actual hook
+  source (no override logic exists at all), found it compounds an already-unresolved Aug 3
+  block-vs-warn design question on the same file, and routed the actual decision to Arch (owns the
+  precedent from the July check-branch.sh PreToolUse-timing ruling) rather than unilaterally
+  patching a contested design.
 
 - **`duty-cycle-tick` v1.35 — the denominator CXO caught was missing from v1.34** (Sept 12, same
   fire it was found) — CXO adopted v1.34 on their own seat, ran it for real, and caught that "no
