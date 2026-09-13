@@ -1,7 +1,7 @@
 ---
 image: 'whos-who-at-piper-morgan-say-cheese.jpg'
 alt: 'A bespectacled founder holding coffee poses with eleven colorful luminous AI colleagues, while a developed photograph transforms the agents into role-playing variations of the founder himself.'
-caption: ''
+caption: '"How about one where everybody shows a little personality?"'
 ---
 
 # Who's Who at Piper Morgan
