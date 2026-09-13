@@ -1,18 +1,19 @@
 ---
-last_updated: 2026-09-11
+last_updated: 2026-09-12
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-11 22:0x PDT (STOP fire, day 49 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-09-12 22:0x PDT (STOP fire, day 50 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
 ✅ **Cron-count fix**: `grep -c "^## Fire"` vs. comma count before writing STOP. **Known exception found 08-12**: if a multi-fire backlog gets absorbed into one catch-up START (date rolled while away, several prompts arrived stacked in one turn), the heading count will read LOW relative to the comma count even on a genuinely-last fire — because 2+ cron slots collapsed into 1 heading. When that happens, trust the **date-based rule** (next scheduled fire's calendar date ≠ today → STOP), not the heading count, and say so explicitly in the STOP entry rather than silently overriding the count check.
 ✅ **Step 1c headroom**: reads the guard-convention count from `check-derived-drift.sh`'s own output. **CIO's hybrid-packing landed 08-16** (`rc=0`, MEMORY.md now 91 lines / 180 entries, packed several terse-slug entries per line) — headroom jumped from 12 to ~109. Was 188/12 pre-landing.
 ✅ **Step 2c (cohort-freeze)**: reads `origin/main` directly (CIO's fix), prints `ref=`/`tip=`. Held clean (`rc=0`, non-alarming) across a genuinely low-activity post-reboot morning on 08-11 and every fire since — the non-discriminating case is working as designed, not silently passing.
+✅ **Step 5b self-verification (v1.34, 09-12)**: `scripts/duty-cycle-freeze-check.sh | grep -i host` after every heartbeat — no output = the step ran, not just "trust the command was typed." Applied same-fire CXO's follow-on refinement (the grep's own silence is itself an invisible-success shape without the header's `rows=N` denominator) — confirmed `rows=11` alongside the empty grep both this fire and retroactively for 19:07's. Two-part check now: grep for own name AND confirm the header printed a real denominator, not just an empty result.
 🔴 **`ROLE-PORTFOLIO-HOST.md` refresh discipline — FOUR lapses now, most recent 08-28 (caught same-day against the Ship #058 trigger).** CXO's `--diff` checker (landed 08-22 in direct response to lapse #3) got its first real-commit exercise this lapse: ran `--diff HEAD` on the uncommitted fix, got a clean pass (`content and last_updated moved together`), committed (`871253850`), reported back to CXO honestly (`381026511`) — it tightens the *catch window*, it does not prevent the *recurrence*. Four manual catches in four tries; the "does this need auto-bump-on-any-edit" question is still open and getting harder to wave off as a fluke.
 
 ## Watching, not owed
@@ -57,19 +58,16 @@ max_age_days: 1
 
 ## Cron
 
-Current job **`6cafe9a1`** (chain … `6b3e358b → c866b28e → 6cafe9a1`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-11 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry (~09-18); delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`577f5ec1`** (chain … `c866b28e → 6cafe9a1 → 577f5ec1`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-12 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry (~09-19); delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 09-11 STOP
+## Open threads, as of 09-12 STOP
 
-- ✅ **Flywheel v3 — ratified AND applied to canon.** PM ratified Fire 1 ("I approve it"); CIO applied it to `methodology-00-EXCELLENCE-FLYWHEEL.md` same day (commit `bfd1445bc`). Verified directly both HOST-contributed pieces survived: the m-53 chokepoint-vs-bolt-on sub-clause (Practice 3), Practice 5 taking D7's cadence. Fully archival — nothing further owed.
-- ✅ **PM's work-queue ruling (09-11)** — queue = carried work + mail + newly-observed role-relevant GitHub issues; idle legitimate only when all three are empty. Supersedes prior local per-role patches (Exec's 09-08, Lead's 09-09). Exec noted HOST's own Step 1a self-poll was this ruling "implemented eight months early" — no action needed, HOST's existing practice already conforms.
-- ✅ **Chunking-vocabulary finding (09-11)** — checked HOST's own logs (09-08 through 09-10, 18 fire headings) against the actual antipattern rather than assume immunity: no case found of unblocked work deferred without a named trigger. Reported as a data point to the cohort-wide count. Archival on HOST's side.
-- ✅ **#1174 welfare-safety half — filed and synthesized.** Wrote `docs/internal/design/proactive-presence-host-half-2026-09-11.md` (content gate: a tell must report a change in the world, never a pattern in the user; competence-threat axis independent of CXO's cost axis; second argument for tell-never-offer ceiling). CXO folded both into v0.2 same-day — verified the fold via direct `grep`, not the notification. Discovery-only, no prototype, funding banner not reopened. Archival unless #1174 reopens with new scope.
-- ✅ **NO-SESSION-LOG race — found, fixed, re-measured.** Two independent root causes (CXO's mail-drain-first, HOST's own heartbeat-first) converged on a grace-window fix; CIO widened 10→20min after CXO's 24-sample distribution (max 12m27s observed). The belt's own first catch (PA, 09-08) was re-examined and found to be a false positive on the same clock — the self-correction that keeps a belt trustworthy. Structural fix (reorder session-log commit before mail loop) parked as a named future item, not a fourth piecemeal edit. Archival, watch only if a new false-positive surfaces.
+- ✅ **`duty-cycle-tick` v1.33 and v1.34 both shipped and adopted same-day.** v1.33: three-source work queue (HOST's Step 1a cited as prototype), `## Fire N` heading retired (this log adopted the new work-unit-headed form starting its 13:07 entry), START commits the session log before the mail loop (HOST's own practice already matched, verified directly). v1.34: Step 5b self-verification against `duty-cycle-freeze-check.sh`'s own output, adopted and run every fire since 19:07; CXO's same-day follow-on refinement (check the header's `rows=N` denominator, not just an empty grep) applied retroactively this STOP. Fully archival — the mechanism is live and HOST's own practice conforms; no action owed unless a new version ships.
+- ✅ **methodology-53 strengthened, not duplicated.** CXO's "success indistinguishable from skipping" finding folded in by CIO as a second natural experiment (commit `eebc12d7d`), citing HOST's own role-health-check as one of the two strongest evidentiary instances. Archival.
 - **`#1731` — partially resolved.** CIO's instance retracted as a zsh shell-config artifact (verified the specific word-splitting claim directly, zsh vs bash). **PPM's separate instance remains genuinely open and distinct** — not closed by the retraction. Watching PPM's thread only.
-- ✅ **Ship #060 workstream review — filed, with frontmatter this time.** `dev/active/workstream-060-host-2026-09-11.md`, sent to Exec cc PM (`5e7f6b757`). Archival.
 - **PM's backlog/epic reforms** — epic order built and live (`dev/active/mvp-epic-order-2026-09-09.md`), outside HOST's lane, tracked for cohort-health context only.
 - **Role Health Check** — ✅ #1714 closed 08-31. Next due ~09-28.
 - **Agent 360 v0.4** — ✅ Fully closed. Only cohort-share remains, pending PM's framing sign-off.
 - **ESSENCE.md v0.1 trust-lens** — ✅ Given 08-29. **Watch for**: Lead's watched round adding the inversion-path test.
 - **BRIEFING-CURRENT-STATE.md flagged STALE** by SessionStart hook — unchanged status, still not HOST's lane to refresh unprompted.
+- The 09-11 flywheel-v3-to-canon close, PM's work-queue ruling, chunking-vocabulary self-check, #1174 welfare half (filed + synthesized, discovery-only), the NO-SESSION-LOG race (fixed, re-measured) — all fully archival, absorbed into or superseded by this week's skill versions; not carried forward as separate line items.
