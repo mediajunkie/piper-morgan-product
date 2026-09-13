@@ -111,9 +111,9 @@ that would manufacture a record of a discipline I didn't have.
 
 ## 🔴 NEXT FIRE — first move
 
-Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 10`** — **7 blocked +
-3 UNBLOCKED rows; the old placeholder row is gone** (⚠️ **updated 09-11 07:03 when the three `label:UX`
-items entered the queue; this expectation is itself a fact that goes stale, so re-state it whenever you
+Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 11`** — **8 blocked +
+3 UNBLOCKED rows** (⚠️ **updated 09-12 19:17: the #1717 voice-read row was added and #1166 closed; this
+expectation is itself a fact that goes stale, so re-state it whenever you
 add or remove a row**). ⚠️ **A count below that means
 my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
 shipped the per-file count specifically so this is visible without building a control.
