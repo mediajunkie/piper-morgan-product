@@ -1,0 +1,107 @@
+<title>Epic accounting — 13 September</title>
+<style>
+  :root{--paper:#f5f4f1;--card:#fff;--ink:#191a17;--mute:#605e56;--line:#dad7cf;
+    --accent:#1f5f52;--soft:#e6efec;--red:#8f3324;--amber:#8a6516;--green:#2f6440;}
+  @media (prefers-color-scheme:dark){:root{--paper:#121311;--card:#1b1c19;--ink:#e9e7e1;--mute:#9c9991;
+    --line:#2d2f28;--accent:#66c0ae;--soft:#18241f;--red:#e0917f;--amber:#d7a94f;--green:#82c093;}}
+  :root[data-theme="dark"]{--paper:#121311;--card:#1b1c19;--ink:#e9e7e1;--mute:#9c9991;--line:#2d2f28;
+    --accent:#66c0ae;--soft:#18241f;--red:#e0917f;--amber:#d7a94f;--green:#82c093;}
+  :root[data-theme="light"]{--paper:#f5f4f1;--card:#fff;--ink:#191a17;--mute:#605e56;--line:#dad7cf;
+    --accent:#1f5f52;--soft:#e6efec;--red:#8f3324;--amber:#8a6516;--green:#2f6440;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.56 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:48rem;margin:0 auto;padding:1.8rem 1.15rem 5rem}
+  .eyebrow{font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 .5rem}
+  h1{font-size:1.65rem;line-height:1.16;margin:0 0 .5rem;letter-spacing:-.02em;text-wrap:balance}
+  .stand{color:var(--mute);margin:0;font-size:1rem}
+  .meta{color:var(--mute);font-size:.82rem;margin:1rem 0 0;padding-top:.7rem;border-top:1px solid var(--line)}
+  h2{font-size:1.08rem;margin:2.1rem 0 .6rem;letter-spacing:-.01em;padding-bottom:.35rem;border-bottom:2px solid var(--line)}
+  p{margin:.6rem 0}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:.9rem 1rem;margin:.9rem 0}
+  .box.hot{border-left:3px solid var(--red)}
+  .box.warm{border-left:3px solid var(--amber)}
+  .box.cool{border-left:3px solid var(--accent)}
+  .box p:first-child{margin-top:0}.box p:last-child{margin-bottom:0}
+  table{width:100%;border-collapse:collapse;margin:.6rem 0;font-size:.9rem;display:block;overflow-x:auto}
+  th,td{text-align:left;padding:.45rem .58rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  td.c{white-space:nowrap;font-variant-numeric:tabular-nums}
+  .st{font-size:.7rem;font-weight:600;padding:.1rem .42rem;border-radius:4px;white-space:nowrap}
+  .st.done{background:var(--soft);color:var(--green)}
+  .st.work{background:#fdf3e2;color:var(--amber)}
+  .st.block{background:#f8ece9;color:var(--red)}
+  .st.open{background:var(--soft);color:var(--mute)}
+  @media (prefers-color-scheme:dark){.st.work{background:#241d15}.st.block{background:#241613}}
+  code{font:.87em ui-monospace,Menlo,monospace;background:var(--soft);padding:.08em .32em;border-radius:3px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Epic-by-epic accounting with denominators stated, for PM, 13 September.</h2>
+
+<p class="eyebrow">Epic accounting · requested by PM · denominators stated</p>
+<h1>Nine epics, numbered — and the denominator caveat ships with the numbers, not after them</h1>
+<p class="stand">You said you keep hearing "green for the first time" across various scopes and suspect slippery denominators. You were right to, and the first thing that failed the test was my own count.</p>
+<p class="meta">Exec · 13 September 10:01 PT · computed live from the GitHub API this hour, not from the order doc's own figures</p>
+
+<h2>🔴 Read this before the table</h2>
+<div class="box hot">
+<p><b>My first pass at this was wrong in exactly the way you're suspicious of.</b> I regex-counted every issue <em>mentioned</em> in each epic's section. That reported <b>epic 2 as "2 open"</b> — because the order doc discusses two adjacent findings, <code>#1750</code> and <code>#1751</code>, and says explicitly they were <em>"deliberately NOT folded in."</em></p>
+<p><b>Mention is not membership.</b> Corrected: epic 2 is <b>0 of 6 — genuinely closed as scoped</b>. The table below excludes each section's caveat block.</p>
+<p><b>So take the table as: members-as-the-doc-defines-them, live issue state, computed this hour.</b> Not "every issue that could arguably belong."</p>
+</div>
+
+<h2>The nine</h2>
+<table>
+<tr><th>#</th><th>Epic</th><th class="c">open / total</th><th>Status</th></tr>
+<tr><td class="c">1</td><td><b>CI/infra red</b><br><span style="color:var(--mute);font-size:.85rem">#1687 #1747 #1764 #1765</span></td><td class="c">4 / 9</td><td><span class="st work">CURRENTLY WORKED</span></td></tr>
+<tr><td class="c">2</td><td><b>Security/tenancy</b></td><td class="c">0 / 6</td><td><span class="st done">CLOSED</span></td></tr>
+<tr><td class="c">3</td><td><b>Acceptance contract</b><br><span style="color:var(--mute);font-size:.85rem">#1695 #1739 #1771</span></td><td class="c">3 / 13</td><td><span class="st block">BLOCKED ON YOU</span></td></tr>
+<tr><td class="c">4</td><td><b>Corpus/classifier</b><br><span style="color:var(--mute);font-size:.85rem">#1559 #1579 #1606 #1755 #1756 #1757</span></td><td class="c">6 / 9</td><td><span class="st open">PARALLEL — carve-out</span></td></tr>
+<tr><td class="c">5</td><td><b>Honest-empty / GatherOutcome</b><br><span style="color:var(--mute);font-size:.85rem">#1697 #1718 #1760 #1761 #1763 #1772</span></td><td class="c">6 / 15</td><td><span class="st work">CURRENTLY WORKED</span></td></tr>
+<tr><td class="c">6</td><td><b>Rendered deliverable</b><br><span style="color:var(--mute);font-size:.85rem">#1729 #1762</span></td><td class="c">2 / 4</td><td><span class="st open">NOT STARTED</span></td></tr>
+<tr><td class="c">7</td><td><b>False-trails / claimed-not-wired</b><br><span style="color:var(--mute);font-size:.85rem">#1522 #1678 #1708 #1735</span></td><td class="c">4 / 4</td><td><span class="st open">NOT STARTED</span></td></tr>
+<tr><td class="c">8</td><td><b>Spatial-disposal</b><br><span style="color:var(--mute);font-size:.85rem">#1698 #1700</span></td><td class="c">2 / 2</td><td><span class="st open">NOT STARTED</span></td></tr>
+<tr><td class="c">9</td><td><b>Silent-death inventory</b><br><span style="color:var(--mute);font-size:.85rem">#1423</span></td><td class="c">1 / 3</td><td><span class="st open">NOT STARTED</span></td></tr>
+</table>
+<p style="font-size:.87rem;color:var(--mute)"><b>Status column honesty:</b> "closed" and the open counts are <em>measured</em>. "Currently worked" and "not started" are <em>read from Lead's session logs</em> — accurate as of their last entry, not live telemetry.</p>
+
+<h2>⭐ Your specific question: epic 5 worked while epic 3 is open</h2>
+<div class="box cool">
+<p><b>The rule was applied, not drifted past — and it's visible in Lead's own log rather than needing my inference.</b> The sequence, verbatim from their Saturday entries:</p>
+<p style="font-family:ui-monospace,Menlo,monospace;font-size:.84rem;line-height:1.7">NOW RUNNING: #1652 lane (epic 3)<br>NOW RUNNING: #1653 lane (epic 3)<br>NOW RUNNING: #1654 lane (epic 3)<br>NOW RUNNING: #1696 lane (epic 3)<br>NOW RUNNING: #1596 lane (epic 3)<br><b>"EPIC 3: only #1739 umbrella + PM's #1617 remain."</b><br><b>NOW RUNNING: #1717 lane (epic 5 opens)</b></p>
+<p><b>Lead worked epic 3 to its floor and only then opened epic 5.</b> What remains is <code>#1739</code>, an umbrella that closes when its children do, and <code>#1617</code> — <b>your standup retest.</b> <code>#1695</code> has since joined it.</p>
+<p><b>So epic 3 is blocked on you</b>, and the ~90-second retest is what unblocks it. That's the answer to whether the rule held: it did, and the record shows it being applied.</p>
+</div>
+
+<h2>🟡 The denominator problem, with a live specimen</h2>
+<div class="box warm">
+<p><b>Yesterday produced three different counts of the same day's closures:</b></p>
+<table>
+<tr><th>Source</th><th class="c">Count</th><th>Why it differs</th></tr>
+<tr><td>Lead's day-close</td><td class="c">31</td><td>Their scope and window</td></tr>
+<tr><td>My count, Pacific</td><td class="c">29</td><td>26 MVP + 2 unmilestoned + 1 Production</td></tr>
+<tr><td>Same data, UTC day</td><td class="c">23</td><td>Evening-Pacific closes land tomorrow</td></tr>
+</table>
+<p><b>None is wrong. All three are defensible. And any of them could be quoted as "yesterday's number."</b></p>
+<p>⭐ <b>The fix isn't picking one — it's that a count without its window and scope isn't a measurement.</b> Epic 1 is where this bites hardest: <code>#1747</code> exists <em>because</em> <code>#1687</code>'s own four-workflow denominator excluded two standing-red workflows. <b>The "belt fully green" claim was true against the four and false against the six.</b> That epic is where every later "green" gets its credibility.</p>
+</div>
+
+<h2>Where the milestone stands</h2>
+<div class="box cool">
+<p><code>MVP: 44 not done (30 Sprint Backlog, 3 In Progress, 7 In Review, 4 Product Backlog); 1158 done.</code><br><code>PLUS 0 unmilestoned — every open issue carries a milestone.</code><br><code>NOTE: 30 item(s) have NOT BEEN STARTED.</code></p>
+<p><b>47 days to 30 October.</b> The zero-unmilestoned line has now held two days under PPM's extended convention — the first time it's survived a weekend.</p>
+</div>
+
+<h2>What unblocks the most, in order</h2>
+<table>
+<tr><th>Action</th><th>Unblocks</th></tr>
+<tr><td><b>The #1617 standup retest</b> (~90s, with me)</td><td><b>Epic 3's floor</b> — the last non-umbrella item</td></tr>
+<tr><td><b>#1687 secret rotation</b> (~3 min, comment now posted)</td><td><b>Epic 1</b>, which taxes every epic after it</td></tr>
+<tr><td>Ruleset + bypass actor</td><td>The scope guard's delivery half</td></tr>
+<tr><td>Vercel deployment deletion</td><td>Website headroom, no epic</td></tr>
+</table>
+
+<p class="meta"><b>Method.</b> Epic membership from <code>dev/active/mvp-epic-order-2026-09-09.md</code>, excluding each section's explicitly-not-folded caveat block. Issue states from the GitHub API, live, this hour. Milestone line from <code>sprint-truth.py</code> at compile time. Lead's ordering account quoted from their 09-12 session log. <b>Not verified:</b> whether every doc-listed member is still the right home — PPM re-homed six singletons yesterday and the doc may lag.</p>
+</div>
