@@ -6,7 +6,9 @@ Tests verify:
 - Greeting without calendar falls back to standard response
 - Greeting with empty calendar shows "Clear calendar" message
 - Time-of-day greeting returns appropriate message
-- Non-greeting actions are unchanged (regression test)
+- Non-greeting actions are rejected (#1754: handler is greeting-only; the
+  farewell/thanks/chitchat branches and the RESPONSES canned table were
+  deleted — the action gate admits only pure-pleasantry greetings here)
 """
 
 from unittest.mock import AsyncMock, patch
@@ -77,13 +79,13 @@ class TestCalendarGreeting:
 
             # Should use standard greeting response (may be time-aware via consciousness)
             assert "message" in result
-            # Accept either static responses OR time-aware greetings (Issue #633-638)
+            # #1754: RESPONSES canned table deleted — greetings are always
+            # consciousness-formatted (format_greeting_conscious).
             msg = result["message"]
-            is_static = msg in handler.RESPONSES["greeting"]
             is_time_aware = any(
                 g in msg for g in ["Good morning", "Good afternoon", "Good evening", "Hello", "Hi"]
             )
-            assert is_static or is_time_aware, f"Unexpected greeting: {msg}"
+            assert is_time_aware, f"Unexpected greeting: {msg}"
 
     @pytest.mark.asyncio
     async def test_greeting_with_calendar_error(self, handler, greeting_intent):
@@ -100,13 +102,13 @@ class TestCalendarGreeting:
 
             # Should use standard greeting response (not show error)
             assert "message" in result
-            # Accept either static responses OR time-aware greetings (Issue #633-638)
+            # #1754: RESPONSES canned table deleted — greetings are always
+            # consciousness-formatted (format_greeting_conscious).
             msg = result["message"]
-            is_static = msg in handler.RESPONSES["greeting"]
             is_time_aware = any(
                 g in msg for g in ["Good morning", "Good afternoon", "Good evening", "Hello", "Hi"]
             )
-            assert is_static or is_time_aware, f"Unexpected greeting: {msg}"
+            assert is_time_aware, f"Unexpected greeting: {msg}"
 
     @pytest.mark.asyncio
     async def test_greeting_with_empty_calendar(self, handler, greeting_intent):
@@ -217,62 +219,23 @@ class TestCalendarGreeting:
         assert handler._get_time_of_day_greeting(22) == "Good evening"
 
     @pytest.mark.asyncio
-    async def test_non_greeting_actions_unchanged(self, handler):
-        """Issue #102: Verify non-greeting actions still work (regression test)."""
-        farewell_intent = Intent(
-            category=IntentCategory.CONVERSATION,
-            action="farewell",
-            confidence=0.95,
-            original_message="Goodbye",
-        )
-
-        result = await handler.respond(farewell_intent)
-
-        # Should use farewell response (Issue #633-638 may use consciousness-aware formatting)
-        msg = result["message"]
-        is_static = msg in handler.RESPONSES["farewell"]
-        is_conscious = any(
-            phrase in msg.lower() for phrase in ["goodbye", "take care", "see you", "bye"]
-        )
-        assert is_static or is_conscious, f"Unexpected farewell: {msg}"
-
-    @pytest.mark.asyncio
-    async def test_thanks_action_unchanged(self, handler):
-        """Issue #102: Verify thanks action still works (regression test)."""
-        thanks_intent = Intent(
-            category=IntentCategory.CONVERSATION,
-            action="thanks",
-            confidence=0.95,
-            original_message="Thank you",
-        )
-
-        result = await handler.respond(thanks_intent)
-
-        # Should use thanks response (Issue #633-638 may use consciousness-aware formatting)
-        msg = result["message"]
-        is_static = msg in handler.RESPONSES["thanks"]
-        is_conscious = any(
-            phrase in msg.lower() for phrase in ["welcome", "happy to", "glad", "anytime", "help"]
-        )
-        assert is_static or is_conscious, f"Unexpected thanks response: {msg}"
-
-    @pytest.mark.asyncio
-    async def test_chitchat_action_unchanged(self, handler):
-        """Issue #102: Verify chitchat action still works (regression test)."""
-        chitchat_intent = Intent(
-            category=IntentCategory.CONVERSATION,
-            action="chitchat",
-            confidence=0.95,
-            original_message="How are you?",
-        )
-
-        result = await handler.respond(chitchat_intent)
-
-        # Should use chitchat response (Issue #633-638 may use consciousness-aware formatting)
-        msg = result["message"]
-        is_static = msg in handler.RESPONSES["chitchat"]
-        is_conscious = any(
-            phrase in msg.lower()
-            for phrase in ["doing", "good", "great", "fine", "well", "busy", "help"]
-        )
-        assert is_static or is_conscious, f"Unexpected chitchat response: {msg}"
+    async def test_non_greeting_action_rejected(self, handler):
+        """#1754: the handler is greeting-only — farewell/thanks/chitchat
+        branches (and the RESPONSES canned table) were deleted; the action
+        gate floor-routes every non-greeting CONVERSATION action. A
+        non-greeting arriving here is a gate-contract violation and raises,
+        which canonical_handlers.handle converts to its honest generic
+        fallback."""
+        for action, message in [
+            ("farewell", "Goodbye"),
+            ("thanks", "Thank you"),
+            ("chitchat", "How are you?"),
+        ]:
+            intent = Intent(
+                category=IntentCategory.CONVERSATION,
+                action=action,
+                confidence=0.95,
+                original_message=message,
+            )
+            with pytest.raises(ValueError, match="non-greeting action"):
+                await handler.respond(intent)

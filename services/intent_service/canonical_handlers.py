@@ -4936,13 +4936,17 @@ What would you like to set up first?"""
         # Issue #849: Thread user_id for user-scoped calendar auth
         result = await conversation_handler.respond(intent, session_id, user_id=user_id)
 
-        # Return in canonical format (Dict)
+        # Return in canonical format (Dict).
+        # #1754: the requires_clarification/clarification_type passthrough was
+        # deleted — ConversationHandler.respond has never returned those keys
+        # (constant False/None vestige of the pre-#1759 clarify carrier). The
+        # sole envelope reader (intent_service.py, canonical_result.get(
+        # "requires_clarification", False)) defaults identically on absence;
+        # nothing reads clarification_type from canonical result dicts.
         canonical = {
             "message": result["message"],
             "intent": result["intent"],
             "workflow_id": result.get("workflow_id"),
-            "requires_clarification": result.get("requires_clarification", False),
-            "clarification_type": result.get("clarification_type"),
         }
         # #1688: the cold-greeting interview's #846 carrier rides through to
         # the intent_service canonical seam, which owns the offer store.

@@ -74,58 +74,15 @@ def format_greeting_conscious(
     return narrative
 
 
-def format_farewell_conscious() -> str:
-    """
-    Format farewell with consciousness.
-
-    Transforms from:
-        "Goodbye! Feel free to return if you need PM assistance."
-
-    To (honest, #1198 - no false monitoring promise):
-        "Take care! I'll be here whenever you want to pick things back up."
-    """
-    # #1198: no false monitoring promise ("I'll keep an eye on things") — Piper
-    # has no background watch on the user's behalf, and the phrasing is also
-    # surveillance-shaped (anti_surveillance class). Honest version:
-    return "Take care! I'll be here whenever you want to pick things back up."
-
-
-def format_thanks_conscious() -> str:
-    """
-    Format thanks response with consciousness.
-
-    Transforms from:
-        "You're welcome! Is there anything else I can help with?"
-
-    To:
-        "Happy to help! Is there anything else on your mind,
-         or should I check on something for you?"
-    """
-    return (
-        "Happy to help! Is there anything else on your mind, "
-        "or should I check on something for you?"
-    )
-
-
-def format_chitchat_conscious(topic: Optional[str] = None) -> str:
-    """
-    Format chitchat with consciousness.
-
-    Transforms from:
-        "I'm doing well, thanks! Ready to help with any PM tasks you have."
-
-    To (honest, #1198 - no false background-activity claim):
-        "I'm doing well, thanks for asking! What's on your mind?"
-    """
-    # #1198: "I've been keeping an eye on your projects" was a false claim
-    # (no such background activity) and surveillance-shaped. Honest version:
-    return "I'm doing well, thanks for asking! What's on your mind?"
-
-
 # #1759: format_clarification_conscious was deleted with the dead
 # clarify-carrier machinery — zero callers (its only referent was an unused
 # import in ConversationHandler, whose clarify path was removed per the
 # #1730 Gap-2 ruling).
+# #1754: format_farewell_conscious / format_thanks_conscious /
+# format_chitchat_conscious were deleted per the Arch GO ruling 2026-09-12 —
+# their only production consumers were ConversationHandler's live-unreachable
+# farewell/thanks/chitchat branches (the action gate admits only greeting;
+# everything else floor-routes, and the floor is the conversational surface).
 
 
 def _current_time_of_day(user_timezone: Optional[str]) -> str:
