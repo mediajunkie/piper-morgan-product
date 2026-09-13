@@ -239,8 +239,13 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
 # this table covers the ACTION_REGISTRY-only canonicals whose derived line was
 # previously the uninformative "<category> action (<disposition>-handled)".
 ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
-    # canonical_handlers._handle_conversation_query; pre_classifier
+    # greeting: canonical_handlers._handle_conversation_query; pre_classifier
     # GREETING/FAREWELL/THANKS_PATTERNS (#1416 pleasantry-only precondition).
+    # farewell/thanks: FLOOR-answered in practice — the action gate
+    # (_requires_canonical_handler) admits CONVERSATION to the canonical
+    # handler only for greeting, and ConversationHandler is greeting-only
+    # since #1754 (dead branches deleted). The CANONICAL disposition rows
+    # above are pre-existing metadata drift, tracked separately.
     ("CONVERSATION", "greeting"): ("Respond to a greeting when the message is only a pleasantry"),
     ("CONVERSATION", "farewell"): ("Respond to a goodbye when the message is only a pleasantry"),
     ("CONVERSATION", "thanks"): (

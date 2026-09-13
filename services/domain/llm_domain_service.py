@@ -163,7 +163,8 @@ class LLMDomainService:
 
             # #935 (May 9 2026): #271 cost-tracking call removed. The original
             # `if session and context: await self._log_usage(...)` was never
-            # reached in production — neither caller (lens_inference.py:275 or
+            # reached in production — neither then-caller (lens_inference.py:275,
+            # itself deleted with classify_conscious in #1768, or
             # slot_extractor.py:50) passed a session. APIUsageTracker deleted.
 
             return response

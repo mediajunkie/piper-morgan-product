@@ -2,9 +2,15 @@
 Discourse Working State (#427 MUX-IMPLEMENT-CONVERSE-MODEL)
 
 Tracks conversational state to enable:
-- Conversational follow-ups ("How about today?" after asking about tomorrow)
 - Context-dependent phrase resolution
 - Turn-by-turn memory within a session
+
+(#1768, 2026-09-12: the rule-based follow-up detectors — FollowUpType,
+FOLLOW_UP_PATTERNS, detect_follow_up, resolve_follow_up — and the
+extract_temporal_reference/extract_topic annotators were deleted with their
+sole caller, classify_conscious. The lens stack push/pop/reset trio went with
+them; lens_stack itself, current_lens, and ConversationTurn.lens stay — they
+are part of the live #953 persisted slice and the #820 soft-invocation read.)
 
 Design principle: "Intent inherits from context when ambiguous"
 
@@ -30,26 +36,14 @@ Architecture (#1207 unification, 2026-06-12 — where this module sits):
 
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from enum import Enum
 from typing import Any, Optional
 from uuid import UUID, uuid4
 
 import structlog
 
-from services.intent_service.intent_types import Intent, IntentCategory
+from services.intent_service.intent_types import Intent
 
 logger = structlog.get_logger()
-
-
-class FollowUpType(str, Enum):
-    """Types of conversational follow-ups."""
-
-    TEMPORAL_SHIFT = "temporal_shift"  # "How about today?" after "tomorrow"
-    ENTITY_REFERENCE = "entity_reference"  # "What about that one?"
-    CONFIRMATION = "confirmation"  # "Yes", "No", "Okay"
-    REFINEMENT = "refinement"  # "Just the morning ones"
-    CONTINUATION = "continuation"  # "And?" "What else?"
-    NEGATION = "negation"  # "Not that one" "Something else"
 
 
 @dataclass
@@ -105,10 +99,9 @@ class ConversationContext:
     Tracks the conversational context for a session.
 
     Maintains a sliding window of recent turns to enable:
-    - Follow-up detection
     - Reference resolution
     - Intent inheritance
-    - Lens tracking (#763 GLUE-FOLLOWUP)
+    - Lens state (#763 GLUE-FOLLOWUP; read-only in production since #1768)
     """
 
     session_id: UUID = field(default_factory=uuid4)
@@ -300,21 +293,10 @@ class ConversationContext:
             answer = state.get("ftux_interview_answer")
             self.ftux_interview_answer = str(answer) if answer is not None else None
 
-    # ---- Lens stack operations (#763 Phase 4) ----
-
-    def push_lens(self, lens: str) -> None:
-        """Push the current lens onto the stack before a sub-topic digression."""
-        current = self.current_lens
-        if current and current != lens:
-            self.lens_stack.append(current)
-
-    def pop_lens(self) -> Optional[str]:
-        """Pop the most recent lens from the stack (returning from a digression)."""
-        return self.lens_stack.pop() if self.lens_stack else None
-
-    def reset_lens(self) -> None:
-        """Clear the lens stack entirely (explicit topic change)."""
-        self.lens_stack.clear()
+    # #1768: the lens-stack push/pop/reset trio (#763 Phase 4) was deleted with
+    # classify_conscious, its only caller. lens_stack itself stays: it is part
+    # of the #953 persisted Layer-4 slice (to_persistable_state /
+    # apply_persisted_state above) and is cleared by _prune_old_turns.
 
     @property
     def last_turn(self) -> Optional[ConversationTurn]:
@@ -362,224 +344,9 @@ class ConversationContext:
         return self.last_turn.age_seconds < (self.max_age_minutes * 60)
 
 
-# Follow-up phrase patterns
-FOLLOW_UP_PATTERNS: dict[FollowUpType, list[str]] = {
-    FollowUpType.TEMPORAL_SHIFT: [
-        r"^how about (today|tomorrow|yesterday|this week|next week|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\??$",
-        r"^what about (today|tomorrow|yesterday|this week|next week|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\??$",
-        r"^and (today|tomorrow|yesterday|this week|next week|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\??$",
-        r"^(today|tomorrow|yesterday|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\??$",  # Single word temporal
-    ],
-    FollowUpType.CONFIRMATION: [
-        r"^(yes|yeah|yep|yup|sure|ok|okay|alright|sounds good|perfect|great)\.?$",
-        r"^(no|nope|nah|not really|never mind|cancel)\.?$",
-    ],
-    FollowUpType.ENTITY_REFERENCE: [
-        r"^(that one|the first one|the second one|the last one)\.?$",
-        r"^what about (that|this|it|them)\??$",
-        r"^tell me more( about (that|it|this))?\??$",
-    ],
-    FollowUpType.REFINEMENT: [
-        r"^just (the|my) (morning|afternoon|evening|work|personal) (ones?|meetings?|tasks?)\.?$",
-        r"^only (the|my) (urgent|important|priority) (ones?|items?)\.?$",
-        r"^(filter|show) (only|just) .+$",
-    ],
-    FollowUpType.CONTINUATION: [
-        r"^(and|what else|anything else|more|continue)\??$",
-        r"^go on\.?$",
-        r"^keep going\.?$",
-    ],
-    FollowUpType.NEGATION: [
-        r"^not (that|those|this|it)\.?$",
-        r"^something else\.?$",
-        r"^different (one|ones)\.?$",
-    ],
-}
-
-
-def detect_follow_up(
-    message: str,
-    context: ConversationContext,
-) -> Optional[tuple[FollowUpType, dict[str, Any]]]:
-    """
-    Detect if a message is a conversational follow-up.
-
-    Args:
-        message: The user's message
-        context: The conversation context
-
-    Returns:
-        Tuple of (follow_up_type, extracted_data) or None if not a follow-up
-    """
-    import re
-
-    if not context.is_active:
-        return None
-
-    clean_msg = message.strip().lower()
-
-    # Check each follow-up type
-    for follow_up_type, patterns in FOLLOW_UP_PATTERNS.items():
-        for pattern in patterns:
-            match = re.match(pattern, clean_msg, re.IGNORECASE)
-            if match:
-                extracted = {"groups": match.groups() if match.groups() else []}
-
-                # Extract specific data based on type
-                if follow_up_type == FollowUpType.TEMPORAL_SHIFT:
-                    # Extract the new temporal reference
-                    if match.groups():
-                        extracted["new_temporal"] = match.group(1)
-
-                return (follow_up_type, extracted)
-
-    return None
-
-
-def resolve_follow_up(
-    follow_up_type: FollowUpType,
-    extracted_data: dict[str, Any],
-    context: ConversationContext,
-) -> Optional[Intent]:
-    """
-    Resolve a follow-up into a concrete intent by inheriting from context.
-
-    Args:
-        follow_up_type: The type of follow-up detected
-        extracted_data: Data extracted from the follow-up message
-        context: The conversation context
-
-    Returns:
-        A resolved Intent that inherits from context, or None if unresolvable
-    """
-    last_intent = context.last_intent
-    if not last_intent:
-        return None
-
-    # #763: Inherit lens from context for all follow-up types
-    current_lens = context.current_lens
-
-    if follow_up_type == FollowUpType.TEMPORAL_SHIFT:
-        # Inherit the intent category and action, but update temporal context
-        new_temporal = extracted_data.get("new_temporal")
-        if new_temporal and last_intent:
-            # Create a new intent with updated temporal reference
-            return Intent(
-                category=last_intent.category,
-                action=last_intent.action,
-                confidence=0.9,  # Slightly lower confidence for inferred intent
-                context={
-                    **(last_intent.context or {}),
-                    "temporal_reference": new_temporal,
-                    "inherited_from": str(context.last_turn.id) if context.last_turn else None,
-                    "follow_up_type": follow_up_type.value,
-                    "inherited_lens": current_lens,
-                },
-            )
-
-    elif follow_up_type == FollowUpType.CONFIRMATION:
-        # Return a confirmation intent with the original context
-        return Intent(
-            category=IntentCategory.CONVERSATION,
-            action="confirmation",
-            confidence=1.0,
-            context={
-                "confirmed_intent": last_intent.action if last_intent else None,
-                "original_message": context.last_turn.message if context.last_turn else None,
-                "inherited_lens": current_lens,
-            },
-        )
-
-    elif follow_up_type == FollowUpType.CONTINUATION:
-        # Return a continuation intent
-        return Intent(
-            category=last_intent.category if last_intent else IntentCategory.CONVERSATION,
-            action="continue_previous",
-            confidence=0.9,
-            context={
-                "previous_intent": last_intent.action if last_intent else None,
-                "previous_topic": context.last_topic,
-                "inherited_lens": current_lens,
-            },
-        )
-
-    elif follow_up_type == FollowUpType.NEGATION:
-        # Return a negation/change intent
-        return Intent(
-            category=IntentCategory.CONVERSATION,
-            action="change_selection",
-            confidence=0.9,
-            context={
-                "rejected_intent": last_intent.action if last_intent else None,
-                "inherited_lens": current_lens,
-            },
-        )
-
-    return None
-
-
-def extract_temporal_reference(message: str) -> Optional[str]:
-    """
-    Extract temporal references from a message.
-
-    Args:
-        message: The user's message
-
-    Returns:
-        The temporal reference (e.g., "today", "tomorrow") or None
-    """
-    import re
-
-    temporal_patterns = [
-        (r"\b(today)\b", "today"),
-        (r"\b(tomorrow)\b", "tomorrow"),
-        (r"\b(yesterday)\b", "yesterday"),
-        (r"\b(this week)\b", "this_week"),
-        (r"\b(next week)\b", "next_week"),
-        (r"\b(last week)\b", "last_week"),
-        (r"\b(this month)\b", "this_month"),
-        (r"\b(next month)\b", "next_month"),
-        (r"\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b", None),  # Day name
-    ]
-
-    clean_msg = message.lower()
-    for pattern, replacement in temporal_patterns:
-        match = re.search(pattern, clean_msg, re.IGNORECASE)
-        if match:
-            return replacement or match.group(1).lower()
-
-    return None
-
-
-def extract_topic(message: str, intent: Optional[Intent] = None) -> Optional[str]:
-    """
-    Extract the topic from a message.
-
-    Args:
-        message: The user's message
-        intent: The classified intent (if available)
-
-    Returns:
-        The topic or None
-    """
-    # Topic inference based on intent category
-    topic_by_category = {
-        IntentCategory.QUERY: "information",
-        IntentCategory.TEMPORAL: "time",
-        IntentCategory.STATUS: "status",
-        IntentCategory.PRIORITY: "priorities",
-        IntentCategory.EXECUTION: "action",
-    }
-
-    if intent:
-        # Use action as topic if specific
-        if intent.action and intent.action not in ["get", "list", "query"]:
-            return intent.action
-
-        # Fall back to category-based topic
-        return topic_by_category.get(intent.category)
-
-    return None
+# #1768 (2026-09-12): FOLLOW_UP_PATTERNS, detect_follow_up, resolve_follow_up,
+# extract_temporal_reference, and extract_topic were deleted here — their sole
+# production caller was classify_conscious (deleted in the same commit).
 
 
 # Session storage (in-memory for now, can be backed by Redis/DB later)
