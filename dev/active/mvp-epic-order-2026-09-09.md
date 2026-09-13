@@ -19,7 +19,7 @@ agree: 37 items, same membership). Ordering and any reclassification below is PP
 
 ## Order
 
-### 1. CI/infra red (6 items, 1 closed) — cheap, and it's a quiet tax on every epic after it
+### 1. CI/infra red (8 items, 1 closed) — cheap, and it's a quiet tax on every epic after it
 `#1687` four CI workflows standing red · `#1711` Keychain ACL hang blocks server startup silently
 · ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**. Plus, filed
 2026-09-11 from a direct #1687 close-out audit (same author, same denominator problem, folded in
@@ -29,7 +29,12 @@ outside #1687's own four-workflow denominator, so every subsequent "belt fully g
 shape #1687 itself documented · `#1748` CI test-isolation defect — tests write fake provider keys
 into the shared per-job Postgres via #1382's DB store, conftest later loads one as real, turning
 keyless behavior into live 401s that read as product failures · `#1749` a deterministic-looking
-search test fails in CI only, passes locally, mechanism undiagnosed (env-divergence class).
+search test fails in CI only, passes locally, mechanism undiagnosed (env-divergence class). Plus,
+folded 2026-09-12, both found by the #1748 lane: `#1764` (`EncryptedDBCredentialStore` silently
+collapses `service_name`, dropping the namespace dimension the OS-keychain contract has — latent
+today, needs a migration plan if ever fixed) · `#1765` (2 `test_cross_user_isolation.py` failures
+reproduce locally on pristine HEAD but the Tests workflow is green — #1749's env-divergence class,
+inverted: local-red/CI-green instead of local-green/CI-red).
 
 **Why first**: every day CI stays red, every other epic's evidence weakens (a green suite means
 less when four — now confirmed six — workflows are already known-broken). Cheap relative to its
@@ -70,10 +75,14 @@ skipping In Progress (Exec's 09-10 finding — the board's In Progress count is 
 in-flight signal; see the general note below). Reads as PM's verification round closing
 already-fixed items, not a violation of one-epic-at-a-time — noting for accuracy, not flagging.
 
-### 3. Acceptance contract (9 items) — freshest pain, design is DONE, unblocks a whole cluster
+### 3. Acceptance contract (10 items) — freshest pain, design is DONE, unblocks a whole cluster
 `#1739` (umbrella) · `#1663` · `#1652` · `#1653` · `#1654` · `#1694` · `#1696` · `#1596` · `#1752`
 (found 2026-09-12 during #1654's own adoption — the soft-workflow-offer no-clobber guard doesn't
-cover the STATE_QUESTION-survival re-arm path, a silent-drop shape adjacent to #1652's arm half).
+cover the STATE_QUESTION-survival re-arm path, a silent-drop shape adjacent to #1652's arm half;
+**turned out to be an accidental duplicate of the already-fixed #1753 — closed, net zero change
+here**) · `#1771` (found 2026-09-12 during #1769's adoption, the sixth contract adoption — the
+shared decline vocabulary folds "maybe later"-class deferrals into DECLINE, which is harmless at
+most seams but abandons the resumable flow at the resume-offer seam).
 
 **Why third**: PM's live round converged three failures onto this one contract today. Both design
 passes are already in (Arch's sequencing ruling + CXO's two-axis correction, conceded by Arch) —
@@ -100,7 +109,7 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (9 items) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (11 items) — lands after the acceptance-contract idiom proves out
 `#1717` (the audit's own meta-evidence for this cousin) · `#1730` · `#1736` · `#1738` (shared with
 Deliverable below). Plus, folded 2026-09-12: `#1754` (ConversationHandler clarify/chitchat lane
 unreachable, independent same-day finding overlapping `#1759` — see that item's note) · `#1759`
@@ -108,7 +117,9 @@ unreachable, independent same-day finding overlapping `#1759` — see that item'
 DELETE, per Lead's #1730 Gap-2 proposal + Arch's same-day concurrence) · `#1760` (test-theatre mock
 mismatch, found via #1736) · `#1761` (consumer_core.py fabricates "No description available,"
 self-identified honest-empty candidate) · `#1763` (get_project_status rider-failure evidence, tied
-to #1738).
+to #1738) · `#1767` (dead file-disambiguation state on `ConversationSession`, found during the
+#1759 deletion sweep, zero live referents) · `#1768` (`classify_conscious` zero-caller dead code,
+residual from #1759's own deletion, larger unruled surface with dedicated test files).
 
 **#1717 status (2026-09-12)**: code-done and live on v86 — awaits one harness re-run + CXO's voice
 read against the contract's §6 acceptance test (item 1, the composition case). CXO's call, not
@@ -260,3 +271,14 @@ read, that's real information — update this file, don't defend the original gr
   pass (had read "spec-read pending" for three months after convergence landed). Recorded #1717
   and #1730's same-day status for tracking (both are CXO's and Lead/Arch's calls respectively,
   not PPM's — noted here only so the file stays accurate).
+- 2026-09-12 16:09 WORK (PPM): 5 more unmilestoned issues triaged (0→5 in one fire, all filed
+  today from Lead's lanes) — `#1764`/`#1765` → epic 1 (both #1748-lane findings, #1765 is #1749's
+  env-divergence class inverted); `#1767`/`#1768` → epic 5 (dead-code siblings of #1759, same
+  deletion sweep); `#1771` → epic 3 (found during #1769's own adoption — #1769 itself was already
+  closed+milestoned by Lead before this fire, net epic-3 change is +1 not +2). Verified against
+  #1748 as a known-good control — no collateral damage. **Ratified Exec's filing-convention
+  extension** (flagged same-day): new issues get Product Backlog status AND a milestone at filing
+  time, not just Status — "unset" should not be a reachable state for either field. Lead will fold
+  this into lane briefs the same day. This is the third time this week unmilestoned drift has hit
+  double digits across a few fires; the ratification is meant to close the gap at the source
+  rather than keep relying on per-fire triage to catch it.
