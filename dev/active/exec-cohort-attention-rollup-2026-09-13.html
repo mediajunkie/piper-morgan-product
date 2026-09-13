@@ -1,0 +1,130 @@
+<title>State of the forest — 13 September</title>
+<style>
+  :root{--paper:#f4f4f2;--card:#fff;--ink:#1b1a17;--mute:#66635c;--line:#dcdad4;
+    --red:#9d3427;--amber:#8a6516;--green:#2f6440;--blue:#2a5578;--soft:#ecebe6;}
+  @media (prefers-color-scheme:dark){:root{--paper:#131311;--card:#1c1c19;--ink:#e8e6e0;--mute:#9a968d;
+    --line:#2e2d28;--red:#e08a7a;--amber:#d7a94f;--green:#82c093;--blue:#8bb4d8;--soft:#232320;}}
+  :root[data-theme="dark"]{--paper:#131311;--card:#1c1c19;--ink:#e8e6e0;--mute:#9a968d;--line:#2e2d28;
+    --red:#e08a7a;--amber:#d7a94f;--green:#82c093;--blue:#8bb4d8;--soft:#232320;}
+  :root[data-theme="light"]{--paper:#f4f4f2;--card:#fff;--ink:#1b1a17;--mute:#66635c;--line:#dcdad4;
+    --red:#9d3427;--amber:#8a6516;--green:#2f6440;--blue:#2a5578;--soft:#ecebe6;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:47rem;margin:0 auto;padding:1.6rem 1.1rem 4rem}
+  h1{font-size:1.5rem;margin:0 0 .3rem;letter-spacing:-.015em}
+  .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.5rem}
+  h2{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:600;
+     margin:2rem 0 .7rem;padding-bottom:.35rem;border-bottom:1px solid var(--line)}
+  h2:first-of-type{margin-top:1rem}
+  .item{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--mute);
+    border-radius:7px;padding:.85rem .95rem;margin:0 0 .7rem}
+  .item.dec{border-left-color:var(--red)}.item.drift{border-left-color:var(--amber)}
+  .item.ok{border-left-color:var(--green)}.item.res{border-left-color:var(--blue)}
+  .who{font-weight:600;font-size:.83rem}
+  .item p{margin:.4rem 0 0;font-size:.94rem}
+  .item p.sub{color:var(--mute);font-size:.88rem}
+  .nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(6.5rem,1fr));gap:.55rem;margin:.3rem 0 0}
+  .n{background:var(--soft);border-radius:7px;padding:.55rem .65rem}
+  .n b{display:block;font-size:1.45rem;line-height:1.1;font-variant-numeric:tabular-nums}
+  .n span{font-size:.72rem;color:var(--mute)}
+  table{width:100%;border-collapse:collapse;margin:.4rem 0 0;font-size:.88rem;display:block;overflow-x:auto}
+  th,td{text-align:left;padding:.4rem .55rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  td.c{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--mute)}
+  code{font:.87em ui-monospace,Menlo,monospace;background:var(--soft);padding:.08em .3em;border-radius:3px}
+  footer{margin-top:2.2rem;border-top:1px solid var(--line);padding-top:1rem;color:var(--mute);font-size:.82rem}
+  footer b{color:var(--ink)}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">State of the project, Sunday 13 September: four things need PM, epic 3 nearly closed, and all ten roles active.</h2>
+
+<h1>State of the forest</h1>
+<p class="meta">Exec · <b>Sunday 13 September, 15:45 PT</b> · full sweep · every PM-facing item re-read from its owner's carry-forward this pass · closures in Pacific</p>
+
+<h2>🔴 Needs you today — four, and none is the two you're already doing</h2>
+<div class="item dec">
+  <span class="who">1 · The ruleset decision — blocking Arch AND CXO</span>
+  <p>Both carry it as their only PM-gated residual. <b>Arch: "scope-guard delivery blocked on PM's ruleset decision." CXO: "Blocked on PM's repo-settings decision."</b></p>
+  <p class="sub">Arch's re-test found the second, masked blocker: the required status check. A direct push can't pre-satisfy a check that runs on pushes. <b>Repo is public with zero rulesets, so the ruleset + <code>github-actions</code> bypass-actor path is free.</b> This is the one where two roles are parked on one setting.</p>
+</div>
+<div class="item dec">
+  <span class="who">2 · Vercel — Web is still hard-blocked</span>
+  <p>Unchanged since Wednesday: no CLI, no token, no dashboard. <b>Deployment storage 14.91 GB against a 10 GB cap.</b></p>
+  <p class="sub">Deleting old deployments is free and sufficient; there's no auto-retention below Pro. Web's carry-forward still lists it as their open PM/access item.</p>
+</div>
+<div class="item dec">
+  <span class="who">3 · PA — sequencing answer for the BYOC readiness plan</span>
+  <p>PA has the plan ready <b>for when MVP closes</b> and is <b>"awaiting PM's answer on sequencing before building"</b> it.</p>
+  <p class="sub">Not urgent by date, but it's a real hold — PA is deliberately not building ahead of your call rather than guessing.</p>
+</div>
+<div class="item dec">
+  <span class="who">4 · The internal report discussion — it gates the Ship</span>
+  <p><b>You ruled this comes before the public draft, and it hasn't happened.</b> Report: <a href="https://claude.ai/code/artifact/4af428b3-ea1e-4f02-b077-c4ce146dca72">Ship #060 internal</a>. Prep is complete to the gate; the draft starts when you've had your pass.</p>
+</div>
+
+<h2>✅ What you cleared today</h2>
+<div class="item ok">
+  <p><b>#1617 closed</b> — your standup retest. <b>#1739 closed</b> — the acceptance-contract umbrella that depended on it.</p>
+  <p><b>That takes epic 3 from three open to two</b>, and the two that remain (<code>#1695</code>, <code>#1771</code>) are ordinary build work, not PM-gated. <b>Epic 3's floor is cleared.</b></p>
+</div>
+
+<h2>📊 Epics, live this hour</h2>
+<div class="item ok">
+  <table>
+    <tr><th>#</th><th>Epic</th><th class="c">open/total</th></tr>
+    <tr><td class="c">1</td><td>CI/infra red — <span style="color:var(--mute)">#1687 #1747 #1764 #1765</span></td><td class="c">4 / 9</td></tr>
+    <tr><td class="c">2</td><td>Security/tenancy</td><td class="c"><b>0 / 6</b></td></tr>
+    <tr><td class="c">3</td><td>Acceptance contract — <span style="color:var(--mute)">#1695 #1771</span></td><td class="c">2 / 14</td></tr>
+    <tr><td class="c">4</td><td>Corpus/classifier</td><td class="c">6 / 9</td></tr>
+    <tr><td class="c">5</td><td>Honest-empty / GatherOutcome</td><td class="c">6 / 15</td></tr>
+    <tr><td class="c">6</td><td>Rendered deliverable</td><td class="c">2 / 5</td></tr>
+    <tr><td class="c">7</td><td>False-trails</td><td class="c">4 / 4</td></tr>
+    <tr><td class="c">8</td><td>Spatial-disposal</td><td class="c">2 / 2</td></tr>
+    <tr><td class="c">9</td><td>Silent-death</td><td class="c">1 / 3</td></tr>
+  </table>
+  <p class="sub">Membership excludes each section's explicitly-not-folded caveat block — the correction from yesterday's accounting. <b>#1687 is in epic 1, which is what you and Lead are on now.</b></p>
+</div>
+
+<h2>📈 Where the milestone stands</h2>
+<div class="item ok">
+  <div class="nums">
+    <div class="n"><b>49</b><span>NOT DONE</span></div>
+    <div class="n"><b>29</b><span>NEVER STARTED</span></div>
+    <div class="n"><b>6</b><span>IN REVIEW</span></div>
+    <div class="n"><b>1,161</b><span>DONE</span></div>
+    <div class="n"><b>47</b><span>DAYS TO 30 OCT</span></div>
+  </div>
+  <p class="sub" style="margin-top:.7rem"><b>Zero unmilestoned, third consecutive day</b> — PPM's extended convention is holding. Product Backlog is up 4 → 10, which is the inflow being triaged correctly rather than landing in Sprint. ⚠️ <b>One MVP issue is not on the project board at all</b> — <code>sprint-truth</code> flags it; worth PPM's eye, not yours.</p>
+</div>
+
+<h2>🟢 The cohort — all ten active today</h2>
+<div class="item ok">
+  <table>
+    <tr><th>Role</th><th class="c">commits</th><th>Last</th></tr>
+    <tr><td><b>lead</b></td><td class="c">26</td><td>15:33 — recovered from the outage, shipping since</td></tr>
+    <tr><td>cio</td><td class="c">15</td><td>10:39</td></tr>
+    <tr><td>cxo</td><td class="c">13</td><td>13:20</td></tr>
+    <tr><td>docs / host</td><td class="c">12 / 12</td><td>13:26 / 13:10</td></tr>
+    <tr><td>comms</td><td class="c">7</td><td>15:40</td></tr>
+    <tr><td>pa / ppm</td><td class="c">7 / 7</td><td>13:14 / 13:26</td></tr>
+    <tr><td>arch</td><td class="c">6</td><td>12:59</td></tr>
+    <tr><td>web</td><td class="c">5</td><td>12:53</td></tr>
+  </table>
+  <p class="sub">Belt clean — one BELT-INVISIBLE (comms) within threshold, working as designed.</p>
+</div>
+
+<h2>🔍 What this morning's outage taught us</h2>
+<div class="item res">
+  <p><b>Lead's dark period was real and both watchers caught it</b> — HOST at 10:02 (10h), me at 11:08 (12h), before Lead could self-report. Lead confirmed it as a true positive with their own evidence.</p>
+  <p><b>My hypothesis was wrong.</b> I guessed your re-sign-in killed their cron. <b>It survived.</b> The cause was a signed-out overnight window plus a classifier outage that gated commits for ~1.5h after sign-in. <b>Five seats logged that outage today</b> — exec, cxo, cio, pa, web — plus Lead's sustained version.</p>
+  <p>⭐ <b>And Lead caught a check I run five times a day and over-read.</b> <code>CronList</code> showing one job means <em>a job object exists</em> — not that the schedule is live. Their cron was armed and correct all night and fired nothing. <b>The only proof a cron fires is a fire.</b> Same error I flagged in the board's In-Progress column on Tuesday, run on my own routine.</p>
+</div>
+
+<footer>
+  <b>Bottom line:</b> you cleared epic 3's floor today; four things wait on you and the ruleset decision is the one parking two roles at once. <b>Nothing is on fire.</b><br><br>
+  <b>Live-state pass.</b> Liveness first — <code>duty-cycle-freeze-check</code> rc=0 across <b>11 of 11</b> rows. Every PM-facing item re-read from its owner's carry-forward this pass, not carried from my own notes. Epic counts computed live from the GitHub API. Sprint line from <code>sprint-truth</code> at compile time. Closures in Pacific.
+</footer>
+</div>
