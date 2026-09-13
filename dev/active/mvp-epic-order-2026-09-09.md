@@ -75,14 +75,17 @@ skipping In Progress (Exec's 09-10 finding — the board's In Progress count is 
 in-flight signal; see the general note below). Reads as PM's verification round closing
 already-fixed items, not a violation of one-epic-at-a-time — noting for accuracy, not flagging.
 
-### 3. Acceptance contract (10 items) — freshest pain, design is DONE, unblocks a whole cluster
+### 3. Acceptance contract (11 items) — freshest pain, design is DONE, unblocks a whole cluster
 `#1739` (umbrella) · `#1663` · `#1652` · `#1653` · `#1654` · `#1694` · `#1696` · `#1596` · `#1752`
 (found 2026-09-12 during #1654's own adoption — the soft-workflow-offer no-clobber guard doesn't
 cover the STATE_QUESTION-survival re-arm path, a silent-drop shape adjacent to #1652's arm half;
 **turned out to be an accidental duplicate of the already-fixed #1753 — closed, net zero change
 here**) · `#1771` (found 2026-09-12 during #1769's adoption, the sixth contract adoption — the
 shared decline vocabulary folds "maybe later"-class deferrals into DECLINE, which is harmless at
-most seams but abandons the resumable flow at the resume-offer seam).
+most seams but abandons the resumable flow at the resume-offer seam) · `#1695` (moved here from
+Singletons 2026-09-12 — compose-framed draft can arm a subject still carrying the bare repo phrase
+because the collaborate-gate ARM path doesn't resolve it, only the execute/file path does; same
+arm/consume-rail family as the rest of this epic).
 
 **Why third**: PM's live round converged three failures onto this one contract today. Both design
 passes are already in (Arch's sequencing ruling + CXO's two-axis correction, conceded by Arch) —
@@ -109,7 +112,7 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (11 items) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (14 items) — lands after the acceptance-contract idiom proves out
 `#1717` (the audit's own meta-evidence for this cousin) · `#1730` · `#1736` · `#1738` (shared with
 Deliverable below). Plus, folded 2026-09-12: `#1754` (ConversationHandler clarify/chitchat lane
 unreachable, independent same-day finding overlapping `#1759` — see that item's note) · `#1759`
@@ -119,7 +122,14 @@ mismatch, found via #1736) · `#1761` (consumer_core.py fabricates "No descripti
 self-identified honest-empty candidate) · `#1763` (get_project_status rider-failure evidence, tied
 to #1738) · `#1767` (dead file-disambiguation state on `ConversationSession`, found during the
 #1759 deletion sweep, zero live referents) · `#1768` (`classify_conscious` zero-caller dead code,
-residual from #1759's own deletion, larger unruled surface with dedicated test files).
+residual from #1759's own deletion, larger unruled surface with dedicated test files). Plus, moved
+here from Singletons 2026-09-12: `#1697` (files.html renders blank "Uploaded by:" because the live
+API response has no `owner_id` field — a rendering-a-missing-field defect, same family as #1736/
+#1761's fabricated-absence class, inverted: blank instead of a fabricated placeholder) · `#1718`
+(BYOC key validation discards the failure reason, showing flat "invalid" for both auth errors and
+quota/billing errors — already framed in this file as the audit's error-surfacing cousin #3,
+alongside Fast Follow's `#1108`) · `#1772` (N=1 degrade reply named three unarmed sources, found
+during #1717's own scoring — a scope-directive leak at the delivered layer).
 
 **#1717 status (2026-09-12)**: code-done and live on v86 — awaits one harness re-run + CXO's voice
 read against the contract's §6 acceptance test (item 1, the composition case). CXO's call, not
@@ -176,27 +186,41 @@ believes it has) applies here too — the direction (not yet the build) is that 
 consumes the structured GatherOutcome and never becomes the model's own evidence about the world.
 Fix design waits for this epic's turn; nothing jumps the queue.
 
-### 7. False-trails / claimed-not-wired (3 items) — pre-existing epic, no stated urgency
-`#1522` (the epic itself, PM-directed) · `#1735` · `#1678`.
+### 7. False-trails / claimed-not-wired (4 items) — pre-existing epic, no stated urgency
+`#1522` (the epic itself, PM-directed) · `#1735` · `#1678` · `#1708` (moved here from Singletons
+2026-09-12 — `ALPHA_QUICKSTART.md`, the tester-facing onboarding doc, tells testers to clone a
+branch 7,614 commits stale and describes the live hosted app as a future plan; a claimed-state vs.
+actual-state mismatch on a first-contact surface, the exact false-trails shape).
 
 ### 8. Spatial-disposal (2 items) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · `#1700`.
 
-### Singletons (6 items) — forcing these into groups would be taxonomy theater (Arch's framing)
-`#1423` (silent-death pattern — genuinely its own epic-of-one) · `#1695` · `#1697` · `#1708` ·
-`#1718` · `#1737`.
+### 9. Silent-death inventory (1 item) — genuinely its own epic, not a forced grouping
+`#1423` — broad try/except on core paths converts broken features into invisible defaults (two
+confirmed instances, `#1420`/`#1422`, neither ever surfaced to a user because the pattern's whole
+effect is that they can't). **Why its own epic**: this shares no real membership with any epic
+above — it's an inventory-and-un-swallow task at the exception-handling layer, not a rendering,
+security, or contract-adoption concern. Arch's original framing ("genuinely its own epic-of-one")
+was correct when written; PM's 2026-09-12 ruling (relayed via Janus — every MVP item needs an epic
+home, singleton or not) makes it official rather than parking it in an unordered pile.
 
-**Handling**: no group dependency to respect. Pick up opportunistically between epics, or fold
-into whichever numbered epic above touches the same file if one turns out to overlap on
-inspection — these were classified from titles, not full reads; PPM's own read of an individual
-issue may reclassify it without changing the shape of the other 36.
+### 10. Composer UX polish (1 item) — genuinely its own epic, PM's own live feedback
+`#1737` — the web chat composer ticker-tapes horizontally instead of growing vertically as PM
+types a longer message, so only the tail of what was typed stays visible. **Why its own epic**:
+pure frontend UX, no shared surface with anything else in this file. Kept in MVP rather than moved
+out — PM reported it live as direct usability friction on the primary chat surface, which reads as
+gating rather than deferrable polish; if that reading is wrong, this is the file's cheapest possible
+correction (move one item's milestone).
 
-**Cross-milestone note (2026-09-11)**: `#1718` is the audit's cousin #3 ("an error surfaced to a
-user," half-modeled at a broken seam). `#1108` (Fast Follow, out of this file's MVP scope) is a
-concrete second instance of the same cousin, per CXO — two OAuth error surfaces, one leaking a raw
-slug, one recommending a retry that cannot work. **If `#1718` ever gets promoted from singleton to
-a real scoped epic, cite `#1108` alongside it rather than fix either in isolation** — CXO's own
-framing, not fixed here since it's a different milestone.
+---
+
+**Retired 2026-09-12**: the old "Singletons" section (`#1423`/`#1695`/`#1697`/`#1708`/`#1718`/
+`#1737`) is gone. Per PM's ruling (relayed via Janus, 2026-09-12 evening): discovered work is fine,
+but every MVP item needs an epic home — a singleton pile outside the epic-relative view was
+invisible to the instrument PM actually reads. Four of six had genuine homes in existing epics
+(`#1695`→3, `#1697`/`#1718`→5, `#1708`→7); two (`#1423`, `#1737`) genuinely share no membership with
+anything else and got their own epics (9, 10) rather than a forced fit. The cross-milestone note
+on `#1718`/`#1108` carries forward into epic 5's entry above.
 
 ---
 
@@ -282,3 +306,15 @@ read, that's real information — update this file, don't defend the original gr
   this into lane briefs the same day. This is the third time this week unmilestoned drift has hit
   double digits across a few fires; the ratification is meant to close the gap at the source
   rather than keep relying on per-fire triage to catch it.
+- 2026-09-12 19:09 WORK (PPM): PM ruling relayed via Janus — discovered-work triage into epics is
+  "clear and welcome," but every MVP item needs an epic home, no exceptions. Retired the
+  Singletons section: `#1695`→epic 3, `#1697`/`#1718`→epic 5, `#1708`→epic 7 (real membership
+  fits, found on full reads rather than the original title-only classification). `#1423`/`#1737`
+  got their own new epics (9, 10) since neither shares real membership with anything — same
+  standard the file has used all along (an honest epic-of-one beats a forced fit), just now
+  applied to the last two holdouts instead of parking them unordered. Also fixed `#1772` (had MVP
+  milestone but was missing from the project board entirely — filing with `--milestone` doesn't
+  board-add, a new drift shape sprint-truth.py's "not on the board" check just caught for the
+  first time) and folded it into epic 5. Noted Lead's three Rule-0 delete proposals (`#1754`/
+  `#1767`/`#1768`) and Arch's GO/GO/GO-conditional rulings for tracking — Lead/Arch's call, not
+  PPM's, no epic-order change needed since deletion doesn't move milestone membership.
