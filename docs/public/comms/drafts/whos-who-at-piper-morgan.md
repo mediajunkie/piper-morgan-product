@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: 'A bespectacled founder holding coffee poses with eleven colorful luminous AI colleagues, while a developed photograph transforms the agents into role-playing variations of the founder himself.'
 caption: ''
 ---
 
