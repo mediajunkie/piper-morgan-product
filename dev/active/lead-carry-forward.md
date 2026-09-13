@@ -54,3 +54,7 @@
   local env-strip is never keyless (the 1748 guard now bounds the CI side).
 - Cron 28c6042f (expires ~9/16, **rotate ~9/14**). This file: freshness pass at START,
   rewrite at STOP.
+- **RATIFIED 09-12 (PPM)**: every new issue gets Product Backlog status AND a milestone AT
+  FILING — fold into every lane brief. 1717/1748/1749 closed this evening (CXO 4/4 + CI
+  guard-line before/after); #1772 filed (CXO's N=1 leak, measure-before-design). Waits are
+  down to PM's two items + the 1739 umbrella behind the standup.
