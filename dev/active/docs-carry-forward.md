@@ -1,38 +1,31 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-12 ~23:15 PDT (21:57 fire, day-close complete).
-**Session log**: `dev/2026/09/12/2026-09-12-0720-docs-code-log.md` — DAY-CLOSED.
+**Updated**: 2026-09-13 ~10:10 PDT (session start, PM-engaged after Claude Code re-auth).
+**Session log**: `dev/2026/09/13/2026-09-13-0958-docs-code-log.md` (open).
 **Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
 make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything
 else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM's own words.
 **Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
 — watch for a proactive re-arm before then, and watch whether Gap-C recurs.
 
-## Yesterday (09-12) closed — headline: a real self-caught publish mistake, fixed at the mechanism after 3 recurrences; a 40-session engineering-marathon day
+## Today (09-13) so far — Dispatch-PM's honest correction closes the altText thread
 
-Published "Piper Morgan Eras" (hashId `0547bee91100`). **Made a real, live mistake mid-proofread**:
-reverted PM's deliberate house term "minimum-**valuable**-product" to conventional "**viable**,"
-not realizing PM had reasserted "valuable" via the admin UI 9 minutes before my publish (session
-sync predated the edit). Caught it myself via the file's git history before reporting done, fixed
-the live content, corrected the calendar's own notes. Same stale-snapshot shape as this week's
-other incidents — re-sync immediately before any wording edit, not just at session start.
+Dispatch-PM confirmed my 09-11 catch was right and named the root cause plainly: they fabricated
+the 146-char altText value (not a misread), and their own memo held both the wrong number and the
+right one 12 lines apart — should have caught it before sending. Sent a brief acknowledgment via
+the relay-via-Exec protocol. Nothing further owed. Today's post ("Who's Who at Piper Morgan")
+still `drafted` — PM noted Comms is reviewing, watching for the handoff.
 
-PM's follow-up: this belongs in a style guide that didn't exist. Created
-`docs/internal/planning/comms/blog-style-guide.md`, cross-linked into Comms' template and my own
-publish skill.
+## 09-12 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-12-omnibus-log.md`)
 
-**The exact same altText/caption/cartoon calendar gap recurred a THIRD time** on this post
-(09-08/09-11/09-12) despite my own prior promise to fix it. Fixed it at the mechanism instead: a
-carefully-measured `altText`-empty warning in `scripts/validate-editorial-calendar.py` (the naive
-version would have fired 337 times on longstanding-but-fine historical rows; narrowed to 28 clean
-hits). Lesson recorded in Standing practices below — a prose promise to myself doesn't reliably
-change next-day behavior; a mechanical check does.
-
-**Unrelated to my own lane**: today was a 40-session HIGH-COMPLEXITY day (11 roles + 29 prog
-delegations, one continuous Lead-driven push closing 5 epics end to end, 415 combined commits).
-Omnibus (515 lines) personally audited — commit counts, a methodology-53 canonical quote, and the
-#1717 closure claim all verified directly, zero discrepancies. Activity-log CSV extended with all
-40 rows, each prog delegation individually mapped to its issue via Lead's own narration.
+Published "Piper Morgan Eras" — made a real live-content mistake mid-proofread (reverted PM's
+deliberate "minimum-valuable-product" to conventional "viable"), self-caught via git history
+before reporting done, fixed the live site. Created `blog-style-guide.md` at PM's request. The
+altText/caption/cartoon calendar gap recurred a THIRD time on that post despite a prior promise to
+fix it — fixed it at the mechanism this time (a carefully-measured validator warning, narrowed
+from 337 naive false positives to 28 clean hits). Separately, a 40-session HIGH-COMPLEXITY day
+(29 prog delegations, one Lead-driven push closing 5 epics) — omnibus personally audited, zero
+discrepancies.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
