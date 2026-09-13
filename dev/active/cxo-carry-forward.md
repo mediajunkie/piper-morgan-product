@@ -98,9 +98,14 @@ that would manufacture a record of a discipline I didn't have.
    `NO-SESSION-LOG` line naming me is an **in-fire action item**, not something for a colleague to
    notice days later. ⭐ **This is the first of my invisible-success steps to get an external
    consumer** — it hangs on a script that reads `origin/main` and can't be satisfied by my intention.
-   ⚠️ **BUT its success signal is "no output," which is the same shape.** 🔴 **So also confirm the
-   header's `rows=` is non-zero** — *"clean"* only means something against a script that actually ran.
-   **Verified 09-12: `rows=11`, one real non-alarm line (exec), no `cxo` line.**
+   ⚠️ **Its success signal is "no output," which was the same shape** — so I flagged that an unmatched
+   grep means nothing unless the script actually ran. ✅ **CIO shipped that as v1.35 (`82de12e0d`) the
+   same fire: Step 5b now confirms `rows=N` is non-zero itself.**
+   ⭐ **So this is now the SKILL's step, not my private addition — follow the skill and don't maintain a
+   second copy here.** ⚠️ **A hand-kept duplicate of a shared procedure is the drift shape I keep finding
+   in other people's work** (three copies of one flag list; two failure-reporting paths). **Deleting my
+   copy rather than keeping it in sync is the whole point.**
+   *(Verified once on this seat 09-12: `rows=11`, one real non-alarm line (exec), no `cxo` line.)*
 3. **`cohort-freeze-detect.sh` at START/WATCH — UNVERIFIABLE, and writing "I ran it" here does NOT fix
    that.** 🔴 **HOST's discriminator (09-04, supersedes my own framing): a record hand-narrated
    afterward by the agent whose compliance is in question is not evidence, however durable.** Only a
