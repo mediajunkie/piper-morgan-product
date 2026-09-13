@@ -61,16 +61,20 @@ def _malformed_row(*, user_id="alpha") -> InsightDB:
 
 
 class _FakeScalarResult:
-    def __init__(self, rows):
-        self._rows = rows
+    """#1776: the read now selects `(InsightDB, COUNT(*) OVER ())`, so the
+    result yields row TUPLES via `.all()` rather than entities via
+    `.scalars().all()`. The skip behaviour under test is unchanged — this
+    fixture just matches the statement the repository actually issues."""
 
-    def scalars(self):
-        rows = self._rows
-        return SimpleNamespace(all=lambda: rows)
+    def __init__(self, rows, total=None):
+        self._rows = [(r, total if total is not None else len(rows)) for r in rows]
+
+    def all(self):
+        return self._rows
 
 
-def _repo_with_rows(rows) -> InsightRepository:
-    session = SimpleNamespace(execute=AsyncMock(return_value=_FakeScalarResult(rows)))
+def _repo_with_rows(rows, total=None) -> InsightRepository:
+    session = SimpleNamespace(execute=AsyncMock(return_value=_FakeScalarResult(rows, total)))
     return InsightRepository(session)
 
 
@@ -116,6 +120,20 @@ async def test_all_good_rows_means_zero_skipped():
     insights, skipped = await repo.list_for_user_with_skips("alpha")
     assert [i.id for i in insights] == [a.id, b.id]
     assert skipped == 0
+
+
+async def test_total_counts_rows_including_the_ones_that_would_not_deserialize():
+    """#1776: `total` is a ROW count from the query's own window function —
+    the user HAS the malformed insight, we merely could not render it. The
+    skipped count and the total together are the honest account; silently
+    shrinking the total to the renderable rows would under-report."""
+    good = _good_row()
+    repo = _repo_with_rows([good, _malformed_row()], total=137)
+
+    insights, skipped, total = await repo.list_for_user_with_total("alpha")
+    assert [i.id for i in insights] == [good.id]
+    assert skipped == 1
+    assert total == 137, "the pre-LIMIT row count, not the renderable-slice length"
 
 
 # ---------------------------------------------------------------------------

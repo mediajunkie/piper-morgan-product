@@ -15,7 +15,7 @@ Issue #963: Removed dead handlers for IDENTITY, DISCOVERY, TRUST, MEMORY
 
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import structlog
 
@@ -2401,7 +2401,7 @@ What would you like to set up first?"""
 
         return False
 
-    async def _get_todays_todos(self, user_id, limit: int = 10) -> List[Dict]:
+    async def _get_todays_todos(self, user_id, limit: int = 10) -> Tuple[Optional[List[Dict]], int]:
         """
         Issue #499: Fetch today's pending todos for agenda aggregation.
 
@@ -2410,9 +2410,22 @@ What would you like to set up first?"""
         owner_id=user_id, so the agenda's Tasks section was structurally empty
         for every authenticated user. Sessions are not owners; principals are.
         Anonymous callers own no todos: honest [].
+
+        #1776 (m-44): returns ``(todos, total_pending)``. ``limit`` is a GATHER
+        cap — it truncates before any render exists — so ``len(todos)`` is the
+        CAP, not a measurement, and the formatters used to print it as
+        "**Total**: N pending tasks". The pre-LIMIT row count rides the same
+        query (``COUNT(*) OVER ()``, the #1645 idiom), so the total costs no
+        extra round trip and cannot disagree with the page it describes. The
+        tuple is deliberate: a caller that ignores the count now has to say so
+        in code rather than by omission.
+
+        Returns ``(None, 0)`` on a source failure — the #1425 sentinel is
+        preserved exactly, so the formatters still render "couldn't check"
+        rather than "no tasks".
         """
         if not user_id:
-            return []
+            return [], 0
         try:
             from services.database.models import TodoPriority, TodoStatus
             from services.database.session_factory import AsyncSessionFactory
@@ -2421,8 +2434,9 @@ What would you like to set up first?"""
             async with AsyncSessionFactory.session_scope() as session:
                 todo_repo = TodoRepository(session)
 
-                # Get pending todos ordered by priority
-                todos = await todo_repo.get_todos_by_owner(
+                # Get pending todos ordered by priority, plus the true count
+                # of pending rows this owner has (pre-LIMIT).
+                todos, total_pending = await todo_repo.get_todos_by_owner_with_total(
                     owner_id=str(user_id),
                     status=TodoStatus.PENDING,
                     limit=limit,
@@ -2441,13 +2455,32 @@ What would you like to set up first?"""
                         "context": todo.context,
                     }
                     for todo in todos
-                ]
+                ], total_pending
         except Exception as e:  # silent-ok: None sentinel -> formatters render honest "couldn't check", never "no tasks" (#1425)
             logger.warning(f"Could not fetch todos for agenda (source failed): {e}")
-            return None
+            return None, 0
+
+    @staticmethod
+    def _true_todo_total(todos: Optional[List[Dict]], total_pending: Optional[int]) -> int:
+        """The denominator an agenda render may state (#1776, m-44).
+
+        ``total_pending`` is the gather's own pre-LIMIT row count. When it is
+        absent (a caller that never had one — e.g. a direct formatter call in
+        a test), ``len(todos)`` is genuinely all that is known AND is then
+        true, because nothing was capped away by a gather that never ran.
+        Never the other way round: a supplied count always wins over the
+        slice length.
+        """
+        if total_pending is not None:
+            return total_pending
+        return len(todos or [])
 
     def _format_agenda_embedded(
-        self, calendar_context: Optional[Dict], todos: List[Dict], priorities: List[str]
+        self,
+        calendar_context: Optional[Dict],
+        todos: List[Dict],
+        priorities: List[str],
+        total_pending: Optional[int] = None,
     ) -> str:
         """Issue #499: Format minimal agenda for EMBEDDED spatial pattern."""
         parts = []
@@ -2466,7 +2499,10 @@ What would you like to set up first?"""
         if todos is None:
             parts.append("tasks unavailable")
         elif todos:
-            parts.append(f"{len(todos)} tasks")
+            # #1776: EMBEDDED renders a bare count and NO list, so the count is
+            # the ENTIRE claim — `len(todos)` here was the gather cap (10)
+            # announced as the user's task total.
+            parts.append(f"{self._true_todo_total(todos, total_pending)} tasks")
 
         # Top priority
         if priorities:
@@ -2475,7 +2511,11 @@ What would you like to set up first?"""
         return " | ".join(parts) if parts else "No agenda items"
 
     def _format_agenda_standard(
-        self, calendar_context: Optional[Dict], todos: List[Dict], priorities: List[str]
+        self,
+        calendar_context: Optional[Dict],
+        todos: List[Dict],
+        priorities: List[str],
+        total_pending: Optional[int] = None,
     ) -> str:
         """Issue #499: Format standard agenda response."""
         message = "Here's your agenda for today:\n\n"
@@ -2509,6 +2549,13 @@ What would you like to set up first?"""
                     todo["priority"], "⚪"
                 )
                 message += f"- {priority_icon} {todo['title']}\n"
+            # #1776: STANDARD states no total at all, so a capped gather here
+            # is SILENT rather than false — m-44's purest form, since an
+            # unannounced subset reads as a measurement. Stated only when the
+            # gather actually truncated; the complete case renders as before.
+            _total = self._true_todo_total(todos, total_pending)
+            if _total > len(todos):
+                message += f"\n(Showing the first {len(todos)} of {_total} pending tasks.)\n"
         else:
             message += "**Tasks**: No pending tasks\n"
 
@@ -2519,7 +2566,11 @@ What would you like to set up first?"""
         return message
 
     def _format_agenda_granular(
-        self, calendar_context: Optional[Dict], todos: List[Dict], priorities: List[str]
+        self,
+        calendar_context: Optional[Dict],
+        todos: List[Dict],
+        priorities: List[str],
+        total_pending: Optional[int] = None,
     ) -> str:
         """Issue #499: Format detailed agenda for GRANULAR spatial pattern."""
         message = "# Today's Full Agenda\n\n"
@@ -2584,7 +2635,17 @@ What would you like to set up first?"""
                 for todo in low:
                     message += f"  - 🟢 {todo['title']}\n"
 
-            message += f"\n**Total**: {len(todos)} pending tasks\n"
+            # #1776 (m-44): `len(todos)` was the GATHER cap presented as the
+            # truth — a user with 25 pending todos was told "**Total**: 10
+            # pending tasks". Not a missing denominator but a false one; the
+            # count now comes from the gather's own pre-LIMIT row count, and
+            # the shown subset is named so the true total is not read as a
+            # claim about what was listed.
+            _total = self._true_todo_total(todos, total_pending)
+            message += f"\n**Total**: {_total} pending tasks"
+            if _total > len(todos):
+                message += f" (showing the first {len(todos)} above)"
+            message += "\n"
         else:
             message += "No pending tasks - great day for deep work!\n"
 
@@ -2627,8 +2688,10 @@ What would you like to set up first?"""
         # Issue #849: Thread user_id for user-scoped calendar auth
         calendar_context = await self._get_calendar_context(user_id=user_id)
 
-        # 2. Get todos
-        todos = await self._get_todays_todos(user_id)
+        # 2. Get todos — #1776: the gather's own pre-LIMIT row count rides
+        # along, so the formatters state a denominator the gather produced
+        # instead of counting their own capped input.
+        todos, total_pending = await self._get_todays_todos(user_id)
 
         # 3. Get priorities from user context
         priorities = []
@@ -2643,11 +2706,17 @@ What would you like to set up first?"""
 
         # Format based on spatial pattern
         if spatial_pattern == "EMBEDDED":
-            message = self._format_agenda_embedded(calendar_context, todos, priorities)
+            message = self._format_agenda_embedded(
+                calendar_context, todos, priorities, total_pending=total_pending
+            )
         elif spatial_pattern == "GRANULAR":
-            message = self._format_agenda_granular(calendar_context, todos, priorities)
+            message = self._format_agenda_granular(
+                calendar_context, todos, priorities, total_pending=total_pending
+            )
         else:
-            message = self._format_agenda_standard(calendar_context, todos, priorities)
+            message = self._format_agenda_standard(
+                calendar_context, todos, priorities, total_pending=total_pending
+            )
 
         # Issue #790: When calendar is not connected on an explicit agenda query,
         # surface guidance regardless of prior offer state — the user just asked.
@@ -2670,14 +2739,24 @@ What would you like to set up first?"""
                     # #1425 sentinel: todos is None when the lookup FAILED —
                     # never claim a count (len(None) crashed the whole agenda
                     # response once #1460 made this path reachable).
-                    "todo_count": len(todos) if todos is not None else None,
+                    # #1776: when the read SUCCEEDED, the count is the gather's
+                    # pre-LIMIT row count, not the length of its capped page —
+                    # this field is a denominator, and `len(todos)` made it the
+                    # cap. `todos_shown` carries the page size separately.
+                    "todo_count": total_pending if todos is not None else None,
+                    "todos_shown": len(todos) if todos is not None else None,
                     "has_priorities": bool(priorities),
                 },
             },
             "spatial_pattern": spatial_pattern,
             "agenda_sources": {
                 "calendar": bool(calendar_context),
-                "todos": len(todos),
+                # #1776 discovered-work (#1777): this was a bare `len(todos)`
+                # while the sibling field two lines up guarded the #1425 None
+                # sentinel explicitly — so a todo-source FAILURE raised
+                # TypeError here and took down the whole agenda response, the
+                # exact crash that guard exists to prevent.
+                "todos": len(todos) if todos is not None else 0,
                 "priorities": len(priorities),
             },
             "requires_clarification": False,
