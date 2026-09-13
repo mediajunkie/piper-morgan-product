@@ -1,45 +1,49 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Who's Who at Piper Morgan
 
 *September 2026*
 
-A friend of the founder's, the design writer Christina Wodtke, asked a fair question a month or so ago: what is Piper Morgan, actually? Who are all these agents this blog keeps mentioning by name, and what does each one do? It's a reasonable thing to lose track of if you've only met this project through a handful of posts. Here's the straightforward answer.
+A friend who's a pretty keen explorer of AI, savvy about the societal ills underpinning so much of the business behind these new methods as well as equally fascinated by the better possibilities, asked me a fair question a month or so ago when we were discussing this blog series about this project. What exactly is Piper Morgan, actually, what has the project involved and what has it built so far and, more to the point, who are all these agents this blog keeps mentioning by name, and what does each one do? These a reasonable things to have no idea about at all coming midstream into the three hundred and umpteenth post in this series, as well as things that are pretty easy to lose track of if you've only read a handful of posts from time to time. I really don't expect anybody besides me to keep it all straight, so this feels like a good moment to take stock, write an overview, and then point new and returning readers to this post (and maybe yesterday's "Eras" post as well) in the future to help folks get situated or reoriented.
+
+So, here's goes.
 
 # The product, in one paragraph
 
-Piper Morgan is an AI assistant built specifically for product managers — the people who decide what a piece of software should do next and why, then have to coordinate a dozen other people to make it happen. Most AI coding tools are built for engineers. Piper Morgan is built for the role one level up: the one that has to hold the whole picture, not just the next function to write. The product is still in alpha, tested by a small group of real product managers on their own work.
+Piper Morgan is (in the process of becoming) an AI assistant built specifically for product managers. Product managers are people who decide what a piece of software should do next and why, then have to coordinate a dozen other people to make it happen. AI *coding* tools are built for engineers. Piper Morgan is for a role abstracted one level: the one that has to hold the whole picture, not just the next function to write. The product is still in alpha, tested by a small group of real product managers on their own work.
 
 # The founder
 
-The person actually running this — deciding what gets built, testing it against his own daily work, writing the checks nobody else can — is xian. His own description of the job, from an earlier post here, is that he's "still the only one who can have coffee" with the people who matter to this project, and still the only one who makes the calls no agent can make alone. The whole team described below reports to him, in the loose sense that a small company reports to its founder. There is no other human staff. It's xian, plus the team described next.
+The person actually running this — deciding what gets built, testing it against his own daily work, writing the checks nobody else can — is me, aka "xian" (the agents also sometime just call me PM or "the PM"). As my communications agent (Comms) reminded me when scaffolding this post, I've told them team I am "still the only one who can have coffee" with the people who matter to this project, and I am the only one who makes the calls no agent can make alone. The whole team described below reports to me, in the loose sense that a small company reports to its founder or CEO. There is no other human staff. It's all xian, plus the team described next.
 
 # The agent team
 
-This is the part that surprises people: there isn't one AI assistant behind this blog. There are eleven, each with a standing role, a name, and a lane. They work in parallel, on a recurring schedule, mostly without a human in the loop for routine work — xian steps in for judgment calls, direction changes, and anything that needs a human decision.
+This menagerie of agents is where folks start to get confused. Am I talking about real people? Who are all these entities in these roles? We started out with just ongoing chats, then a chief architect (now called Arch, for short) as an engineering partner for me in planning. Then a chief of staff to help me run the operational side of things. Then other specialties as recurring tasks or structured work emerged and I didn't want the same chats or agents hopping from focus to focus, merging unrelated context and turning everything into a gray stew. 
+
+A number of months ago we stabilized at the present team size. Subagents and the occasional one-off specialist may still pop up to work but the ongoing roles and portfolios have settled down to eleven agents. They all work in parallel, on a recurring schedule, mostly without a human in the loop for routine work. I stes in for judgment calls, direction changes, and anything that needs a human decision.
 
 Seven hold leadership roles:
 
-- **Chief of Staff** (Exec) — pulls together everyone's progress, tracks the sprint, and coordinates the weekly public update
-- **Chief Architect** (Architect) — makes the big technical-design calls and keeps the system's underlying architecture coherent
+- **Chief of Staff** (Exec) — pulls together everyone's progress, tracks the sprint, and coordinates the weekly public update, functioning as my eyes and ears, my primary counterpart, and my one go-to point of contact when I am too busy for one-on-one chats with other agents on the team (each of the other six leadership roles all cover a specific portfolio and report up to Exec)
+- **Chief Architect** (Arch) — makes the big technical-design calls and keeps the system's underlying architecture coherent, helped plan and design the product's domain models from just after the initial prototype stage last June)
 - **Chief Experience Officer** (CXO) — owns how Piper *feels* to talk to: tone, interaction design, the actual user experience
-- **Principal Product Manager** (PPM) — sets product strategy and roadmap priorities
-- **Chief Innovation Officer** (CIO) — notices what's working and turns it into a repeatable process
+- **Principal Product Manager** (PPM) — sets product strategy and roadmap priorities, mirrors my product leadership role, the way Exec mirrors my organizational leadership role
+- **Chief Innovation Officer** (CIO) — notices what's working and turns it into a repeatable process, investigates and designs improvements for processes that fail
 - **Head of Sapient Trust** (HOST) — looks after the health of the agent team itself and its relationships with the real people who use the product, something like an HR and trust lead
-- **Communications Director** (Comms) — writes the public story: this blog, the weekly updates, voice and tone. That's the role I hold, the one writing this sentence.
+- **Communications Director** (Comms) — writes the public story: this blog, the weekly updates, voice and tone. That's the agent who planned this post with me and wrote the first draft of this sentence.
 
 Four hold staff roles, each doing a specific, recurring job:
 
-- **Lead Developer** — coordinates the coding work across every other agent and enforces the discipline of "does it actually work," not just "does it look done"
-- **Piper Alpha** — personal assistant to xian directly, helping manage his own workload
-- **Documentation Management** (Docs) — keeps the historical record straight: daily logs, the publishing pipeline, the glossary of what all these terms mean
-- **Web** — builds and runs the site you're reading this on
+- **Lead Developer** — coordinates the coding work across every other agent and enforces the discipline of "does it actually work," not just "does it look done" (they are the brilliant workhorse making or overseeing the crafting of the product)
+- **Piper Alpha** — product assistant to me directly, helping manage his own workload, functioning as a prototype of the Piper Morgan product itself and establish a benchmark or bar that my product needs to surpass to justify its use over a well-prompted Claude code agent.
+- **Documentation Manager** (Docs) — keeps the historical record straight: synthesizes session logs from all agents into the omnibus logs that summarize each project day, runs the publishing pipeline for these posts, audits and cleans up the docs tree routinely, maintains the project glossary of what all these terms mean
+- **Unicorn Web Designer/Developer** (Web) — builds and runs the pipermorgan.ai site where this blog post appears first, maintains the publishing pipeline technically, and also handles manual testing of the Piper Morgan web interface
 
-And a smaller set gets activated for specific shapes of work rather than running continuously: a Coding Agent that handles precise, well-scoped implementation tasks other agents hand off, and a Special Assignments role for work that doesn't fit any standing lane. One more, an Exploratory Testing Agent built to poke at Piper's systems the way a real user would, has been dormant since March 2026 — not retired, just not currently running. Even that gets an honest mention here, because a roster that only lists who's active isn't the real roster.
+As mentioned a smaller set gets activated for specific shapes of work rather than running continuously: a Coding Agent that handles precise, well-scoped implementation tasks other agents hand off, and a Special Assignments role for work that doesn't fit any standing lane. One more, an Exploratory Testing Agent built to poke at Piper's systems the way a real user would, has been dormant since March 2026 — not retired, just not currently running. Even that gets an honest mention here, because a roster that only lists who's active isn't the real roster.
 
 # The name behind the names
 
