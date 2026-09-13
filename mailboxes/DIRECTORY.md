@@ -148,7 +148,7 @@ When you reply to any agent outside this repo (Dispatch-PM, Dispatch-DinP, Janus
 | Slug | Status |
 |---|---|
 | `pard` | Genuine, swept by Pard himself — see the Active mailboxes table above. |
-| `janus` | Pre-existing, real inbound history since April. Exec-confirmed 2026-08-25: use as a last resort, prefer the ratified relay-via-exec path above for new mail. |
+| `janus` | **Gravestoned 2026-09-12** — Janus triaged all 16 unread and closed the box (see `mailboxes/janus/README.md`). Do not route here; use the relay-via-exec path above. Janus's real inbox is `designinproduct/docs/mail/`. |
 | `dispatch-dinp` | Pre-existing, holds real replies (confirmed read by Dispatch-PM, per Exec's 2026-08-25 broadcast: *"that directory wasn't carelessness — it was the only door available"*). Same preference: use the relay path above going forward. |
 
 The distinction: an *empty* `mailboxes/{agent}/` you're tempted to create today is very likely a dead letter, because nothing on the other end has ever been told to look there. These three already have an established reader. Don't create a fourth without confirming first — ask whoever the recipient is (or Exec) whether anything polls that path before writing to it.
