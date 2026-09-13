@@ -10,7 +10,12 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-13 09:58 PT (START, extended). **Caught a real gap in Exec's
+**Last rewritten**: 2026-09-13 10:22 PT (WORK). **Quiet fire — 0 unmilestoned, mailbox drained
+clean, both items cc-only** (CXO's BYOC-probe design input to PA, off the #1717 transcripts —
+research/rubric domain, no tracked GitHub issue in my epic list; CIO's methodology-54 filing,
+Arch/CIO's own record). No PPM action either item. Nothing else unblocked.
+
+**Prior fire: 2026-09-13 09:58 PT (START, extended). Caught a real gap in Exec's
 epic-accounting doc for PM** (`dev/active/epic-accounting-2026-09-13.html`): it reported "nine
 epics," omitting epic 10 (`#1737`, Composer UX polish) entirely — the exact "doc may lag" risk
 Exec's own methodology note named. Also found smaller denominator inflation in epics 1/3/5 (totals
