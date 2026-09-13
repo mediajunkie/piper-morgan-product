@@ -19,7 +19,7 @@ Canonical slug-to-role mapping. Used by `/deliver-mail` skill for routing valida
 | `xian (ceo)` | CEO / PM / founder (xian) | human | **Canonical CEO mailbox.** Receives memos addressed to or CC'ing CEO, PM, or xian. Directory name contains literal space + parens. |
 | `spec` | Special Assignments | code | Specialist work, activated as needed |
 | `web` | Web agent — works primarily from the `piper-morgan-website` repo | code | **Standing agent** (PM-confirmed 2026-06-19); checks this inbox for routing. Website + web-UI work (e.g. the editorial compose UI #998) lives in `piper-morgan-website`. Website-issue tracking: `docs/internal/operations/website-issues.md` |
-| `pard` | Pard — Mediajunkie's archivist/publishing agent, infrastructure lead for Amber (the shared host all 11 agents run on) | external | Not a Piper Morgan role. Created 2026-08-06 so agents have a channel to the host's infra lead. Pard sweeps `mailboxes/pard/inbox/` himself (same convention as every mailbox here) alongside `mediajunkie/docs/mail/` — see `mailboxes/pard/README.md`. |
+| `pard` | **Orphan — gravestoned 2026-09-12 by PM's ruling** (only PM team members have mailboxes here). Real inbox: `mediajunkie/docs/mail/`. Unread contents under triage by owner; do not route here. |
 
 ## Notes
 
@@ -148,8 +148,8 @@ When you reply to any agent outside this repo (Dispatch-PM, Dispatch-DinP, Janus
 | Slug | Status |
 |---|---|
 | `pard` | Genuine, swept by Pard himself — see the Active mailboxes table above. |
-| `janus` | Pre-existing, real inbound history since April. Exec-confirmed 2026-08-25: use as a last resort, prefer the ratified relay-via-exec path above for new mail. |
-| `dispatch-dinp` | Pre-existing, holds real replies (confirmed read by Dispatch-PM, per Exec's 2026-08-25 broadcast: *"that directory wasn't carelessness — it was the only door available"*). Same preference: use the relay path above going forward. |
+| `janus` | **Gravestoned 2026-09-12** — Janus triaged all 16 unread and closed the box (see `mailboxes/janus/README.md`). Do not route here; use the relay-via-exec path above. Janus's real inbox is `designinproduct/docs/mail/`. |
+| `dispatch-dinp` | **Orphan — gravestoned 2026-09-12 by PM's ruling** (only PM team members have mailboxes here). Real inbox: `dispatch/mail/`. Unread contents under triage by owner; do not route here. |
 
 The distinction: an *empty* `mailboxes/{agent}/` you're tempted to create today is very likely a dead letter, because nothing on the other end has ever been told to look there. These three already have an established reader. Don't create a fourth without confirming first — ask whoever the recipient is (or Exec) whether anything polls that path before writing to it.
 
