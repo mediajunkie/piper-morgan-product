@@ -73,7 +73,13 @@ jobs:
   known-issues-check:
     name: Known Schema Issues Check
     runs-on: ubuntu-latest
-    needs: schema-validation
+    # NO `needs: schema-validation` — removed 2026-09-13. That dependency is the
+    # reason this job was invisible for months: job 1 died at "Install
+    # dependencies" (a stale Python 3.9 pin), so job 2 never ran at all and its
+    # real finding never surfaced. A job that can only report when a DIFFERENT
+    # job passes is a job whose silence means nothing. The two check unrelated
+    # things and neither consumes the other's output, so they report
+    # independently now.
 
     steps:
       - name: Checkout code
