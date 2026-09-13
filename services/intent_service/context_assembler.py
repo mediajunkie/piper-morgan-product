@@ -579,6 +579,15 @@ class ContextAssembler:
                         context["user_projects"] = [
                             p if isinstance(p, str) else str(p) for p in user_ctx.projects[:5]
                         ]
+                        # #1776 (m-44, the #1530/#1544 companion-count shape):
+                        # the slice above is a GATHER cap — it truncates before
+                        # any render exists — so without this the floor's
+                        # denominator silently BECOMES 5 and a user with 8
+                        # PIPER.md projects has a floor that believes they have
+                        # 5, with nothing in the prompt to indicate otherwise.
+                        # The source is an in-memory list, so the true count is
+                        # free. Cap kept (context budget); denominator honest.
+                        context["user_project_count"] = len(user_ctx.projects)
                     if getattr(user_ctx, "organization", None):
                         context["organization"] = user_ctx.organization
             except Exception as e:
@@ -776,7 +785,14 @@ class ContextAssembler:
 
             async with AsyncSessionFactory.session_scope() as session:
                 repo = InsightRepository(session)
-                insights = await repo.list_for_user(
+                # #1776 (m-44): `limit=50` is a GATHER cap, so the old
+                # `total_count = len(insights)` was the cap wearing the word
+                # "total" — and the floor renders it verbatim as "(N total,
+                # sectioned by confidence)". The window count rides the same
+                # query (#1645 idiom), so the denominator is row-derived at no
+                # extra round trip. Cap kept: insights are class-(b) long, and
+                # how to DISPLAY a long set honestly is the epic-6 question.
+                insights, _skipped, insight_total = await repo.list_for_user_with_total(
                     user_id=user_id,
                     limit=50,  # cap to avoid context bloat
                     exclude_deleted=True,
@@ -850,7 +866,17 @@ class ContextAssembler:
                 "high_confidence": high,
                 "medium_confidence": medium,
                 "low_confidence": low,
-                "total_count": len(insights),
+                # #1776: the query's own pre-LIMIT row count, never the length
+                # of the 50-row read slice.
+                "total_count": insight_total,
+                # Deliberately still keyed on the RENDERABLE rows, not the row
+                # count: `is_empty` gates the floor's "NONE YET, do not
+                # fabricate" branch, and switching it to the total would make a
+                # hypothetical all-rows-malformed read (#1545) emit a "137
+                # total, sectioned by confidence" header over zero items —
+                # trading one wrong render for another. Telling
+                # "has none" apart from "has some we could not deserialize"
+                # needs the #1425 three-state treatment, not a one-line swap.
                 "is_empty": len(insights) == 0,
             }
         except Exception as e:
@@ -1485,7 +1511,16 @@ class ContextAssembler:
                 # matching intent_service.py's other producer. Emitting a bare list here
                 # meant configured PIPER.md priorities never rendered (and would AttributeError
                 # if non-empty). Wrap in the dict shape so the floor surfaces them.
-                result["priorities"] = {"user_priorities": user_ctx.priorities[:5]}
+                # #1776 (m-44): `user_priority_count` is the companion count for
+                # the [:5] GATHER cap — a sibling of the list at the level the
+                # list lives, mirroring `projects`/`project_count` above. The
+                # floor rendered "User's stated priorities: a, b, c, d, e" as a
+                # definite complete list; past five it was a subset wearing a
+                # total's clothes.
+                result["priorities"] = {
+                    "user_priorities": user_ctx.priorities[:5],
+                    "user_priority_count": len(user_ctx.priorities),
+                }
             if hasattr(user_ctx, "organization") and user_ctx.organization:
                 result["organization"] = user_ctx.organization
             return result or None

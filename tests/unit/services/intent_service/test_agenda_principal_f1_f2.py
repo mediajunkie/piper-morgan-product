@@ -18,7 +18,11 @@ class TestAgendaPrincipalThreading:
     async def test_todos_queried_by_user_id_never_session(self):
         uid = str(uuid4())
         repo = MagicMock()
-        repo.get_todos_by_owner = AsyncMock(return_value=[])
+        # #1776: the agenda gather reads through `get_todos_by_owner_with_total`
+        # (page + pre-LIMIT row count in one query). The F1 property under test
+        # — the query is keyed by the PRINCIPAL, never the session — is
+        # unchanged; only the method name it must reach moved.
+        repo.get_todos_by_owner_with_total = AsyncMock(return_value=([], 0))
         scope = MagicMock()
         scope.__aenter__ = AsyncMock(return_value=MagicMock())
         scope.__aexit__ = AsyncMock(return_value=False)
@@ -30,13 +34,16 @@ class TestAgendaPrincipalThreading:
             patch("services.repositories.todo_repository.TodoRepository", return_value=repo),
         ):
             await CanonicalHandlers()._get_todays_todos(user_id=uid)
-        assert repo.get_todos_by_owner.await_args.kwargs["owner_id"] == uid
+        assert repo.get_todos_by_owner_with_total.await_args.kwargs["owner_id"] == uid
 
     @pytest.mark.asyncio
     async def test_anonymous_gets_empty_without_query(self):
         """No principal → no todos exist for you; must NOT fall back to a
         session-keyed query (the F1 bug shape)."""
         with patch("services.repositories.todo_repository.TodoRepository") as repo_cls:
-            out = await CanonicalHandlers()._get_todays_todos(user_id=None)
+            out, total = await CanonicalHandlers()._get_todays_todos(user_id=None)
+        # #1776: ([], 0) — an EXACT zero, not an absence. Anonymous callers own
+        # no todos, so both the page and its denominator are honestly empty.
         assert out == []
+        assert total == 0
         repo_cls.assert_not_called()

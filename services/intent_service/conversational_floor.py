@@ -1121,7 +1121,15 @@ class ConversationalFloor:
         if "user_projects" in domain_context:
             up = domain_context["user_projects"]
             if isinstance(up, list) and up:
-                lines.append(f"- User's active projects: {', '.join(str(x) for x in up)}")
+                line = f"- User's active projects: {', '.join(str(x) for x in up)}"
+                # #1776 (m-44, the #1530 renderer shape): the gatherer caps this
+                # list at 5 BEFORE any render exists, so without the count the
+                # LLM's denominator silently becomes the cap and the line reads
+                # as a complete enumeration.
+                _upc = domain_context.get("user_project_count")
+                if isinstance(_upc, int) and _upc > len(up):
+                    line += f" (that is the first {len(up)} of {_upc} — do not present it as all of them)"
+                lines.append(line)
 
         if "organization" in domain_context:
             org = domain_context["organization"]
@@ -1143,7 +1151,17 @@ class ConversationalFloor:
             if p.get("user_priorities"):
                 plist = p["user_priorities"]
                 if isinstance(plist, list):
-                    lines.append(f"- User's stated priorities: {', '.join(str(x) for x in plist)}")
+                    line = f"- User's stated priorities: {', '.join(str(x) for x in plist)}"
+                    # #1776 (m-44): same gather-cap shape as user_projects above
+                    # — the assembler slices priorities to 5 and the bare list
+                    # read as the user's complete stated set.
+                    _upc = domain_context.get("user_priority_count") or p.get("user_priority_count")
+                    if isinstance(_upc, int) and _upc > len(plist):
+                        line += (
+                            f" (that is the first {len(plist)} of {_upc} — do not "
+                            "present it as all of them)"
+                        )
+                    lines.append(line)
             if p.get("urgent_items"):
                 lines.append(f"- High-priority issues: {p['urgent_items']}")
 

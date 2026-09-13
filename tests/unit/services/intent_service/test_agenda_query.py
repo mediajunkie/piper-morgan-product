@@ -326,7 +326,10 @@ class TestAgendaQuery:
         ):
             with patch(
                 "services.intent_service.canonical_handlers.CanonicalHandlers._get_todays_todos",
-                return_value=[],
+                # #1776: the gather returns (todos, total_pending) — the
+                # pre-LIMIT row count rides beside the capped page so no
+                # formatter counts its own input and calls it a total.
+                return_value=([], 0),
             ):
                 result = await canonical_handlers._handle_agenda_query(intent, "test_session")
 
@@ -362,7 +365,10 @@ class TestAgendaQuery:
         ):
             with patch(
                 "services.intent_service.canonical_handlers.CanonicalHandlers._get_todays_todos",
-                return_value=[],
+                # #1776: the gather returns (todos, total_pending) — the
+                # pre-LIMIT row count rides beside the capped page so no
+                # formatter counts its own input and calls it a total.
+                return_value=([], 0),
             ):
                 result = await canonical_handlers._handle_agenda_query(intent, "test_session")
 
@@ -390,7 +396,10 @@ class TestAgendaQuery:
         ):
             with patch(
                 "services.intent_service.canonical_handlers.CanonicalHandlers._get_todays_todos",
-                return_value=[],
+                # #1776: the gather returns (todos, total_pending) — the
+                # pre-LIMIT row count rides beside the capped page so no
+                # formatter counts its own input and calls it a total.
+                return_value=([], 0),
             ):
                 result = await canonical_handlers._handle_agenda_query(intent, "test_session")
 
@@ -417,7 +426,10 @@ class TestAgendaQuery:
         ):
             with patch(
                 "services.intent_service.canonical_handlers.CanonicalHandlers._get_todays_todos",
-                return_value=[],
+                # #1776: the gather returns (todos, total_pending) — the
+                # pre-LIMIT row count rides beside the capped page so no
+                # formatter counts its own input and calls it a total.
+                return_value=([], 0),
             ):
                 result = await canonical_handlers._handle_agenda_query(intent, "test_session")
 
