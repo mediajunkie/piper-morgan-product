@@ -3,12 +3,7 @@ from typing import Any, Dict, Optional
 import structlog
 
 from services.api.serializers import intent_to_dict
-from services.consciousness.conversation_consciousness import (
-    format_chitchat_conscious,
-    format_farewell_conscious,
-    format_greeting_conscious,
-    format_thanks_conscious,
-)
+from services.consciousness.conversation_consciousness import format_greeting_conscious
 from services.domain.models import Intent
 from services.shared_types import IntentCategory, PortfolioOnboardingState
 
@@ -55,37 +50,29 @@ def _get_standup_components():
 
 
 class ConversationHandler:
-    """Handles conversational intents like greetings and chitchat"""
+    """Handles the greeting conversational intent (calendar-aware, FTUX-aware).
 
-    RESPONSES = {
-        "greeting": [
-            "Hello! I'm ready to help with your PM tasks. What would you like to work on today?",
-            "Hi there! How can I assist with your product management needs?",
-            "Good to see you! What PM challenge can I help you tackle?",
-        ],
-        "farewell": [
-            "Goodbye! Feel free to return if you need PM assistance.",
-            "See you later! Happy product managing!",
-            "Take care! I'll be here when you need help with your PM tasks.",
-        ],
-        "thanks": [
-            "You're welcome! Is there anything else I can help with?",
-            "Happy to help! Let me know if you need anything else.",
-            "My pleasure! Feel free to ask if you have more PM questions.",
-        ],
-        "chitchat": [
-            "I'm doing well, thanks! Ready to help with any PM tasks you have.",
-            "I'm here and ready to assist! What PM work can I help with?",
-            "All systems operational! What would you like to work on?",
-        ],
-    }
+    #1754: this handler is greeting-only. The farewell/thanks/chitchat
+    branches (and the RESPONSES canned-copy table) were deleted per the Arch
+    GO ruling 2026-09-12 — the action gate (_requires_canonical_handler)
+    admits CONVERSATION here only for pure-pleasantry greetings; every other
+    conversation action floor-routes, and the floor IS the conversational
+    surface. The orphaned canned table was also a #1655-class liability
+    (dead example copy that could become a live reply through an unexpected
+    path).
+    """
 
     async def respond(
         self, intent: Intent, session_id: str = None, user_id: Optional[str] = None
     ) -> Dict[str, Any]:
-        """Generate appropriate conversational response"""
-        import random
+        """Generate the greeting response.
 
+        #1754: greeting-only by contract. A non-greeting action arriving here
+        is a gate-contract violation — surface it rather than answer with
+        copy this handler no longer owns. The caller
+        (canonical_handlers.handle) converts the raise into its honest
+        generic fallback.
+        """
         # ADR-059: Active onboarding check disabled (onboarding on ice)
         # #1536: fall back to the caller-threaded principal instead of
         # silently dropping it when intent.context lacks user_id.
@@ -97,25 +84,16 @@ class ConversationHandler:
         # per the #1730 Gap-2 ruling — clarification_needed intents floor-route
         # at the action gate and never reach this handler live.
 
+        if intent.action != "greeting":
+            raise ValueError(
+                f"ConversationHandler.respond received non-greeting action "
+                f"{intent.action!r} — the action gate admits only pure-pleasantry "
+                f"'greeting' to this handler (#1754)"
+            )
+
         # Issue #102: Enhanced greeting with calendar awareness
-        if intent.action == "greeting":
-            # Issue #849: Thread user_id for user-scoped calendar auth
-            return await self._respond_to_greeting(intent, session_id, user_id=user_id)
-
-        # Issue #407: Handle other conversational actions with consciousness
-        if intent.action == "farewell":
-            response = format_farewell_conscious()
-        elif intent.action == "thanks":
-            response = format_thanks_conscious()
-        else:
-            # Chitchat and unknown actions
-            response = format_chitchat_conscious()
-
-        return {
-            "message": response,
-            "intent": intent_to_dict(intent),
-            "workflow_id": None,
-        }
+        # Issue #849: Thread user_id for user-scoped calendar auth
+        return await self._respond_to_greeting(intent, session_id, user_id=user_id)
 
     async def _get_calendar_summary(
         self, user_id: Optional[str] = None
@@ -151,8 +129,6 @@ class ConversationHandler:
         Issue #102: Generate calendar-aware greeting response.
         Issue #490: Check for portfolio onboarding trigger.
         """
-        import random
-
         # Issue #490: Check if this user should be offered portfolio onboarding
         # #1536: fall back to the caller-threaded principal instead of
         # silently dropping it when intent.context lacks user_id.
@@ -658,4 +634,3 @@ class ConversationHandler:
             return "Good afternoon"
         else:
             return "Good evening"
-

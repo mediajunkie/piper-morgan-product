@@ -39,12 +39,10 @@ from services.consciousness.cli_consciousness import (
     format_startup_conscious,
 )
 from services.consciousness.context import ConsciousnessContext, analyze_context
-from services.consciousness.conversation_consciousness import (
-    format_chitchat_conscious,
-    format_farewell_conscious,
-    format_greeting_conscious,
-    format_thanks_conscious,
-)
+
+# #1754: format_chitchat/farewell/thanks_conscious deleted with
+# ConversationHandler's live-unreachable non-greeting branches.
+from services.consciousness.conversation_consciousness import format_greeting_conscious
 from services.consciousness.error_consciousness import (
     enhance_error_pattern,
     format_conversational_error_conscious,
@@ -113,11 +111,8 @@ __all__ = [
     "format_todo_completed_conscious",
     "format_todo_deleted_conscious",
     "format_next_todo_conscious",
-    # Conversation consciousness (Phase 3)
+    # Conversation consciousness (Phase 3; greeting-only since #1754)
     "format_greeting_conscious",
-    "format_farewell_conscious",
-    "format_thanks_conscious",
-    "format_chitchat_conscious",
     # Loading consciousness (Wave 1)
     "get_conscious_loading_message",
     "format_progress_conscious",
