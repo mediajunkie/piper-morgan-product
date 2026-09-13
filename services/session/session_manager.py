@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 from services.domain.models import Intent
 from services.utils.serialization import serialize_dataclass
@@ -15,9 +15,6 @@ class ConversationSession:
         self.context: Dict = {}
         self.uploaded_files: List[Dict] = []  # Track file metadata
         self.active_file_id: Optional[str] = None  # Most recent file
-        # NEW: File disambiguation fields
-        self.awaiting_clarification: Optional[str] = None
-        self.clarification_context: Dict[str, Any] = {}
 
     def add_interaction(self, intent: Intent, response: str):
         """Record an interaction in session history"""
@@ -33,23 +30,11 @@ class ConversationSession:
     # #1759: the pending_clarification set/get/clear trio was deleted with the
     # dead clarify-carrier (its only consumer was ConversationHandler's
     # unreachable arm/consume pair, removed per the #1730 Gap-2 ruling).
-
-    # NEW: File disambiguation methods
-    def set_clarification(self, clarification_type: str, context: Dict):
-        """Set disambiguation state"""
-        self.awaiting_clarification = clarification_type
-        self.clarification_context = context
-        self.last_activity = datetime.now(timezone.utc)
-
-    def get_clarification_context(self, key: str, default=None):
-        """Get disambiguation context"""
-        return self.clarification_context.get(key, default)
-
-    def clear_clarification(self):
-        """Clear disambiguation state"""
-        self.awaiting_clarification = None
-        self.clarification_context = {}
-        self.last_activity = datetime.now(timezone.utc)
+    # #1767: the second (file-disambiguation) clarification mechanism —
+    # awaiting_clarification/clarification_context fields plus the
+    # set_clarification/get_clarification_context/clear_clarification trio —
+    # was deleted per the same Gap-2 invariant (one ask/consume carrier only);
+    # its sole referent was a collect-ignored archive test.
 
     def add_uploaded_file(self, file_id: str, filename: str, file_type: str, upload_time: datetime):
         """Track a file upload in session"""
