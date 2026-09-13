@@ -1,14 +1,14 @@
 ---
 type: copy-contract
 name: GatherOutcome — the user-facing contract (cousin 1's aggregation copy)
-version: v0.3 — §5b CONFIRMED by Arch 2026-09-10 and elevated to the joint invariant of epics #1 and #2; Arch's architectural half recorded inline
+version: v0.4 — §5b-i added 2026-09-13: what a capped list reads like once the remainder is cashable (epic 6). v0.3 recorded Arch's confirmation of §5b as the joint invariant of epics #1 and #2.
 date: 2026-09-09
 owner: CXO
 assigned_by: Arch 2026-09-09 — "cousin 1's aggregation copy (the N-failures→one-sentence rule) is CXO's
   user-facing contract, with the #1717 composition case as its acceptance test"
 applies_to: un-modeled-nouns audit cousin 1 ("an empty-or-degraded answer"); the GatherOutcome epic
 acceptance_test: §6
-last_updated: 2026-09-10
+last_updated: 2026-09-13
 currency_claim: static until the GatherOutcome epic starts; re-verify §5's site survey then
 max_age_days: 60
 ---
@@ -154,6 +154,55 @@ becomes real information loss *inside the turn*.
 🔴 **I am NOT proposing the fix.** Whether provenance rides a structured field, whether the assistant
 should ever read back its own render, and where the renderer sits are Arch's and Lead's. **This section
 says only what the user must be able to trust: that "I don't have it" means we don't have it.**
+
+### 5b-i. ⭐ What a capped list READS like once the remainder IS cashable (epic 6, answered 2026-09-13)
+
+📌 **Lead's ask**: *"what an honest capped turn should READ like once the remainder is cashable — does the
+user get 'ask me for more', a count, nothing?"* 📄 **Arch confirmed the remainder's home is
+`GatherOutcome` and that §5b above already states the claim rule.** **This is the copy half.**
+
+**The shape:**
+
+> ✅ **"That's 5 of 340 — say the word and I'll pull the rest."**
+
+**Four decisions, each with its reason:**
+
+1. ⭐ **"5 of 340", NOT "…and 335 more."** **Same fact; the first tells the user what they're HOLDING,
+   the second what's missing.** 📄 That is §2's rule applied to display — *the caveat is about their
+   answer, not our internals.* ⚠️ **And a remainder count invites subtraction the user didn't ask to do.**
+2. 🔴 **Offer the affordance, never the syntax.** *"Say the word"* — **not** *"say 'show me the rest'."*
+   📄 Teaching the parser's dialect is the #1579 failure (*"let me pull those up,"* then asking PM to
+   retype) and the #1108 one. **If only one phrasing works, that's an acceptance-contract defect, not
+   something to document at the user.**
+3. 🔴 **The count carries the same provenance discipline as anything else.** If the source says `1000+`
+   (GitHub caps some counts), **we say `1000+`.** ⚠️ **A cap rendered as an exact number is a fabricated
+   denominator** — the m-44 failure this whole contract exists to prevent, arriving through the one field
+   that looks purely mechanical.
+4. 🟡 **No offer when the remainder is trivially small — show them instead.** **A cap that hides two items
+   and then offers to reveal them is ceremony.** *(The threshold is a product call, not mine; I'm naming
+   that one is needed.)*
+
+### 🔴 The non-obvious constraint: this offer must be one of the SURVIVING kind
+
+⚠️ **A capped-list offer is exactly the kind a user answers LATE** — they read the five, think, and come
+back. 📄 **But arms live exactly one turn** (verified 09-09, `intent_service.py:1072` pops
+unconditionally). **So an intervening turn kills it, and the user's later "yes" lands on nothing —
+#1694's felt shape, manufactured deliberately.**
+
+✅ **My own tier ruling already licenses the fix**: 📄 *arm survival is per-tier; COLLABORATE/READ arms
+may survive; only CONFIRM must not.* ⭐ **A list read is the cheapest tier there is, so a surviving arm is
+admissible here — and this is the case that needs it most.**
+
+> 🔴 **Epic 6's acceptance test should therefore include the LATE follow-up, not just the immediate one.**
+> A test that asks for the rest on the very next turn passes without exercising the property that
+> actually fails.
+
+### ⚠️ And if the stored remainder can't be returned, say so — never silently re-fetch
+
+📄 Arch: *"RETURNS them, from the outcome, not a re-fetch that might disagree with the claim."*
+**The copy consequence**: if the remainder is gone or stale, the honest turn says the list moved and
+offers a fresh read. 🔴 **A silent re-fetch presented as "the rest" is a fabrication of continuity** —
+the user believes they are holding items 6–340 of the list they saw, and they are not.
 
 > ### ✅ CONFIRMED AND ELEVATED — Arch, 2026-09-10, same day
 >

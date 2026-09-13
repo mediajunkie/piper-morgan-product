@@ -10,7 +10,20 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-13 10:22 PT (WORK). **Quiet fire — 0 unmilestoned, mailbox drained
+**Last rewritten**: 2026-09-13 13:22 PT (WORK). **A real design ruling this fire — epic 6's first
+build.** Lead/CXO/Arch converged independently on GitHub-six-first (honest-count half already
+done, only threading missing); confirmed it, and made the one call left for PPM: skip the
+capped-list offer when the hidden remainder is ≤3 items (just show them, no ceremony). Added
+CXO's late-follow-up constraint (arm survives one turn today; a capped-list offer is answered
+late) to epic 6's acceptance test in the order doc so the first build can't pass without
+exercising the property that actually fails. Also triaged 2 unmilestoned docs-drift issues
+(`#1779`/`#1780`, found during `#1720`'s own lane) — milestone Ongoing not MVP, matching
+`#1720`'s precedent exactly, not part of the epic-order file. Two other mail items were an
+Exec escalation-then-self-correction (Lead looked dark 12h, turned out to be a classifier
+outage gating five seats today, not a dead session) — cc-only, no PPM action, resolved before I
+read it.
+
+**Prior fire: 2026-09-13 10:22 PT (WORK). Quiet fire — 0 unmilestoned, mailbox drained
 clean, both items cc-only** (CXO's BYOC-probe design input to PA, off the #1717 transcripts —
 research/rubric domain, no tracked GitHub issue in my epic list; CIO's methodology-54 filing,
 Arch/CIO's own record). No PPM action either item. Nothing else unblocked.

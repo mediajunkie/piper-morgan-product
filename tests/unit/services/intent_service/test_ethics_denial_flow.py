@@ -122,7 +122,9 @@ async def test_denial_routes_through_floor_not_system_error(
         # so stubs only need to cover what runs before the gate.
         with (
             patch.object(
-                service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None, None))
+                service,
+                "_check_active_guided_process",
+                new=AsyncMock(return_value=(None, None, None)),
             ),
             patch.object(
                 service,

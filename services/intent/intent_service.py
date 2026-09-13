@@ -44,6 +44,7 @@ from services.intent_service.conversation_context import (
     build_recent_history,
     get_or_create_context,
 )
+from services.intent_service.list_remainder import compose_capped_list
 from services.intent_service.orchestrator import IntentOrchestrator
 from services.intent_service.pre_classifier import MultiIntentResult
 from services.intent_service.soft_invocation import (
@@ -424,6 +425,15 @@ class IntentService:
             # #1688: the armed FTUX interview question (the cold-greeting
             # empty-state interview — its answer must find the carrier).
             "ftux_interview_question_pending",
+            # #1762 (epic 6): the capped list just offered to show the rest.
+            # A soft offer stapled onto the SAME turn would put two offers in
+            # front of the user and make the next "yes" ambiguous. NOTE the
+            # asymmetry with the two one-slot rails below: this store is
+            # deliberately NOT added to the ``_armed_store`` peek, because it
+            # persists for up to REMAINDER_MAX_AGE_MINUTES and peeking it
+            # there would suppress every soft offer for that whole window.
+            # The flag covers the arm turn, which is the turn that matters.
+            "list_remainder_offer_pending",
         )
         if result.intent_data and any(result.intent_data.get(f) for f in _pending_flags):
             return result
@@ -2013,6 +2023,24 @@ class IntentService:
                 if pending_resume_result:
                     return pending_resume_result
 
+            # #1762 (epic 6): "show me the rest" cashes the stored remainder of
+            # the last capped list. Placed HERE deliberately — after the
+            # one-turn ``last_offer`` binding and the #889 resume check, so a
+            # fresher arm always wins, and before classification, so the answer
+            # comes from the stored OUTCOME rather than from a re-fetch the
+            # classifier would route to (Arch: "RETURNS them, from the outcome,
+            # not a re-fetch that might disagree with the claim"). The arm
+            # PERSISTS across intervening turns — see _check_pending_list_
+            # remainder for the survival form and why READ tier licenses it.
+            if session_id and not contextual_offer_bound:
+                list_remainder_result = self._check_pending_list_remainder(
+                    session_id=session_id,
+                    user_id=user_id,
+                    message=message,
+                )
+                if list_remainder_result:
+                    return list_remainder_result
+
             # Issue #585: Check for /standup command BEFORE classification
             # This routes the explicit command to the interactive handler
             # Note: This starts a NEW standup, not checking an active one (registry handles that)
@@ -3285,6 +3313,53 @@ class IntentService:
             offer_text=question,
         )
 
+    def _arm_list_remainder(
+        self,
+        session_id: Optional[str],
+        user_id: Optional[str],
+        remainder,  # Optional[ListRemainder]
+    ) -> Dict[str, Any]:
+        """#1762 (epic 6): store a capped list's unrendered tail so the offer
+        it just made is CASHABLE, and hand back the intent_data flag that
+        keeps a soft offer off the same turn.
+
+        Returns ``{}`` when there is nothing to arm — the ≤3-remainder case
+        (PPM's threshold: those got rendered in full) and the no-session case
+        both land here, and both are honest: ``compose_capped_list`` emits no
+        offer in either, so nothing was promised.
+
+        The store is ``ConversationContext.pending_list_remainder``, NOT the
+        one-turn ``last_offer`` rail — see ``list_remainder`` module docs for
+        why the rail's one-turn invariant must not grow. Last list wins: a
+        newer capped list REPLACES the stored one, so the live offer always
+        refers to what the user most recently saw.
+        """
+        if remainder is None or not session_id:
+            return {}
+        from services.intent_service.conversation_context import get_or_create_context
+
+        try:
+            ctx = get_or_create_context(session_id, user_id=user_id)
+        except (ValueError, KeyError):
+            # Non-UUID session_id — same tolerance as every other arm site on
+            # this seam. Nothing armed, so nothing may be claimed: fall back
+            # by reporting no arm rather than by pretending one exists.
+            return {}
+        ctx.pending_list_remainder = remainder
+        self.logger.info(
+            "list_remainder_armed",
+            kind=remainder.kind,
+            shown=remainder.shown,
+            held_total=remainder.held_total,
+            source_total=remainder.source_total_display,
+            stored=len(remainder.lines),
+            session_id=session_id,
+        )
+        # #1753/#1652 idiom: the arm turn's result carries a flag so
+        # _apply_soft_offer doesn't staple a second, competing offer onto the
+        # very turn that just made one.
+        return {"list_remainder_offer_pending": True}
+
     @staticmethod
     def _peek_last_offer(session_id: Optional[str], user_id: Optional[str] = None):
         """#1770: read-only peek at the one-turn ``last_offer`` rail (#852/
@@ -3311,6 +3386,144 @@ class IntentService:
         except (ValueError, KeyError):
             return None  # Same tolerance as the pop/write sites (#1394 keying)
         return ctx.last_offer
+
+    def _check_pending_list_remainder(
+        self,
+        session_id: Optional[str],
+        user_id: Optional[str],
+        message: str,
+    ) -> Optional[IntentProcessingResult]:
+        """#1762 (epic 6): the CONSUME half — "show me the rest" cashes the
+        stored remainder of the last capped list.
+
+        THE #1739 ADOPTION, axes mapped explicitly: this seam consults
+        ``evaluate_acceptance`` at the arming action's REGISTRY-DECLARED axes
+        (every one of the six GitHub listings registers
+        ``EffectClass.READ``, and the read is PRIVATE — the ``_READ_QUERY_COHORT``
+        entries in workflow_entries.py) → LOW_CEREMONY, with the arm-site's
+        rendered ask threaded as ``armed_question`` (#1665 input adequacy).
+        No local matcher: the offer's own copy TEACHES "the rest" through
+        ``taught_accepts``, which is additive over the shared vocabulary, so
+        a plain "yes" still works — CXO §5b-i decision 2 (offer the
+        affordance, never the syntax; if only one phrasing works that is an
+        acceptance-contract defect).
+
+        ARM SURVIVAL, STATED (the convention, and this seam's form is the
+        NON-default one): **PERSISTING**, not the §5a silent re-arm. A
+        STATE_QUESTION or PASS leaves the remainder in place and this method
+        returns None so normal processing answers the turn — and it stays in
+        place for the turn after that, and the one after that, which is the
+        whole point (CXO: *a capped-list offer is exactly the kind a user
+        answers LATE*). CXO's per-tier ruling licenses it: COLLABORATE/READ
+        arms MAY survive, only CONFIRM must not, and a list read is the
+        cheapest tier there is. What makes the longer lifetime safe is that
+        **nothing can fire from it**: cashing prints lines already gathered,
+        touches no state, and issues no request. A mistaken accept costs one
+        turn and a list the user did not want.
+
+        PRECEDENCE: this runs AFTER the one-turn ``last_offer`` pop and the
+        #889 resume check, and only when neither bound. A fresher arm always
+        wins — a "yes" that answers the offer Piper made LAST TURN must not be
+        stolen by a list offer from five turns ago.
+
+        DECLINE clears the remainder and returns None: the turn falls through
+        to normal processing, so a decline never composes a reply here. A late
+        bare "no" that was meant for something else therefore costs the offer
+        and nothing more.
+        """
+        if not session_id:
+            return None
+        from services.intent_service.acceptance import AcceptanceVerdict, evaluate_acceptance
+        from services.intent_service.conversation_context import get_or_create_context
+        from services.intent_service.list_remainder import (
+            LIST_REMAINDER_TAUGHT_ACCEPTS,
+            render_cash,
+            render_moved,
+        )
+        from services.shared_types import EffectClass, Outwardness
+
+        try:
+            ctx = get_or_create_context(session_id, user_id=user_id)
+        except (ValueError, KeyError):
+            return None  # Non-UUID session_id — same tolerance as the arm site
+        remainder = ctx.pending_list_remainder
+        if remainder is None:
+            return None
+
+        verdict = evaluate_acceptance(
+            message,
+            effect=EffectClass.READ,
+            outwardness=Outwardness.PRIVATE,
+            armed_question=remainder.offer_text,
+            taught_accepts=LIST_REMAINDER_TAUGHT_ACCEPTS,
+        )
+
+        if verdict is AcceptanceVerdict.DECLINE:
+            ctx.pending_list_remainder = None
+            self.logger.info("list_remainder_declined", kind=remainder.kind, session_id=session_id)
+            return None
+
+        if verdict is not AcceptanceVerdict.ACCEPT:
+            # STATE_QUESTION / PASS → the arm PERSISTS (see the survival form
+            # above). Nothing is consumed and nothing is silently dropped.
+            return None
+
+        # Spent either way: cashed, or declared moved. Clearing before we
+        # compose means a stale remainder can never be offered twice.
+        ctx.pending_list_remainder = None
+
+        if remainder.is_stale() or not remainder.lines:
+            # §5b-i: say the list moved; NEVER silently re-fetch and present a
+            # possibly-different set as the one that was promised. There is no
+            # fetch anywhere on this path — that is the guarantee, not a
+            # policy this branch happens to follow.
+            self.logger.info(
+                "list_remainder_stale",
+                kind=remainder.kind,
+                age_seconds=round(remainder.age_seconds, 1),
+                stored=len(remainder.lines),
+                session_id=session_id,
+            )
+            return IntentProcessingResult(
+                success=True,
+                message=render_moved(remainder),
+                intent_data={
+                    "category": "query",
+                    "action": "list_remainder_moved",
+                    "context": {
+                        "kind": remainder.kind,
+                        "age_seconds": round(remainder.age_seconds, 1),
+                        "refetched": False,
+                    },
+                },
+            )
+
+        self.logger.info(
+            "list_remainder_cashed",
+            kind=remainder.kind,
+            returned=len(remainder.lines),
+            age_seconds=round(remainder.age_seconds, 1),
+            session_id=session_id,
+        )
+        return IntentProcessingResult(
+            success=True,
+            message=render_cash(remainder),
+            intent_data={
+                "category": "query",
+                "action": "list_remainder_cash",
+                "context": {
+                    "kind": remainder.kind,
+                    # The OUTCOME, not the rendered string (#1738's invariant):
+                    # what reaches next-turn context is the true shape of what
+                    # was handed over, whatever the render did with it.
+                    "returned": len(remainder.lines),
+                    "shown_before": remainder.shown,
+                    "held_total": remainder.held_total,
+                    "source_total": remainder.source_total_display,
+                    "refetched": False,
+                },
+            },
+        )
 
     async def _check_pending_resume_offer(
         self,
@@ -6774,7 +6987,7 @@ class IntentService:
             )
 
     async def _handle_list_issues_query(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """
         Handle "How many open issues?" and similar issue listing queries.
@@ -6783,6 +6996,11 @@ class IntentService:
         falling through to project status.
         """
         self.logger.info("Processing list issues query")
+        # #1762 (epic 6): set before any early return so every path below has
+        # a defined answer to 'did this render promise a remainder?'. The
+        # empty-list and honest-degrade returns leave it None, which is
+        # correct: those turns make no claim to cash.
+        _remainder = None
 
         try:
             _user_id = _principal_from_intent(intent)
@@ -6841,16 +7059,30 @@ class IntentService:
                 _scope = f" in {_named_repo}" if _named_repo else ""
                 message = f"You have **{total_count} open issue{'s' if total_count != 1 else ''}**{_scope}."
                 message += "\n\nHere are the most recent:"
-                for issue in issues[:5]:
+                # #1762 epic 6: render the WHOLE held set into lines, then let
+                # the shared renderer decide what to show and what to store —
+                # the cap now produces a remainder we can cash, not a claim we
+                # can't (GatherOutcome §5b).
+                _lines = []
+                for issue in issues:
                     number = issue.get("number", "?")
                     # #1628: degenerate GitHub titles never render verbatim
                     title = display_title(issue.get("title"), f"(untitled issue #{number})")
                     labels = ", ".join(label.get("name", "") for label in issue.get("labels", []))
                     label_str = f" ({labels})" if labels else ""
-                    message += f"\n- **#{number}**: {title}{label_str}"
-
-                if total_count > 5:
-                    message += f"\n\n...and {total_count - 5} more."
+                    _lines.append(f"\n- **#{number}**: {title}{label_str}")
+                _capped = compose_capped_list(
+                    lines=_lines,
+                    cap=5,
+                    kind="open issues",
+                    # total_count is the TRUE match count; `issues` is only a
+                    # page, so the held set can be strictly smaller — the one
+                    # site in the six where the offer must say what it can
+                    # actually cash instead of promising "the rest".
+                    source_total=total_count,
+                )
+                message += _capped.body
+                _remainder = _capped.remainder
             else:
                 message = (
                     f"No open issues in {_named_repo} right now."
@@ -6867,6 +7099,9 @@ class IntentService:
                     "context": {
                         "issue_count": total_count if issues else 0,
                     },
+                    **self._arm_list_remainder(
+                        session_id, _principal_from_intent(intent), _remainder
+                    ),
                 },
             )
 
@@ -7071,7 +7306,7 @@ class IntentService:
     # `unwired_writes.get_unwired_write_decline`, called directly from that branch.
 
     async def _handle_list_prs_query(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """
         Handle "Show my PRs" and similar PR listing queries.
@@ -7080,6 +7315,11 @@ class IntentService:
         falling through to the LLM classifier.
         """
         self.logger.info("Processing list PRs query")
+        # #1762 (epic 6): set before any early return so every path below has
+        # a defined answer to 'did this render promise a remainder?'. The
+        # empty-list and honest-degrade returns leave it None, which is
+        # correct: those turns make no claim to cash.
+        _remainder = None
 
         try:
             _user_id = _principal_from_intent(intent)
@@ -7138,17 +7378,23 @@ class IntentService:
             if prs:
                 message = f"You have **{pr_count} open PR{'s' if pr_count != 1 else ''}**."
                 message += "\n\nHere are the most recent:"
-                for pr in prs[:5]:
+                # #1762 epic 6 — render the whole held set, cap at the shared
+                # renderer, store what the cap hid (GatherOutcome §5b).
+                _lines = []
+                for pr in prs:
                     number = pr.get("number", "?")
                     # #1628: degenerate GitHub titles never render verbatim
                     title = display_title(pr.get("title"), f"(untitled PR #{number})")
                     url = pr.get("html_url", "")
-                    message += f"\n- **#{number}**: {title}"
+                    _line = f"\n- **#{number}**: {title}"
                     if url:
-                        message += f"\n  {url}"
-
-                if pr_count > 5:
-                    message += f"\n\n...and {pr_count - 5} more."
+                        _line += f"\n  {url}"
+                    _lines.append(_line)
+                _capped = compose_capped_list(
+                    lines=_lines, cap=5, kind="open pull requests", source_total=pr_count
+                )
+                message += _capped.body
+                _remainder = _capped.remainder
             else:
                 message = "You don't have any open pull requests right now."
 
@@ -7161,6 +7407,9 @@ class IntentService:
                     "context": {
                         "pr_count": pr_count,
                     },
+                    **self._arm_list_remainder(
+                        session_id, _principal_from_intent(intent), _remainder
+                    ),
                 },
             )
 
@@ -7179,7 +7428,7 @@ class IntentService:
             )
 
     async def _handle_list_milestones_query(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """Handle 'Show milestones' and similar queries (Issue #1039).
 
@@ -7188,6 +7437,11 @@ class IntentService:
         (state-filter UX deferred to #1051).
         """
         self.logger.info("Processing list milestones query")
+        # #1762 (epic 6): set before any early return so every path below has
+        # a defined answer to 'did this render promise a remainder?'. The
+        # empty-list and honest-degrade returns leave it None, which is
+        # correct: those turns make no claim to cash.
+        _remainder = None
         try:
             from services.integrations.github.github_integration_router import (
                 GitHubIntegrationRouter,
@@ -7206,16 +7460,21 @@ class IntentService:
                         key=lambda m: (m.get("due_on") is None, m.get("due_on") or ""),
                     )
                     message += "\n\nUpcoming:"
-                    for m in sorted_ms[:5]:
+                    # #1762 epic 6 — see the issues handler; same shared shape.
+                    _lines = []
+                    for m in sorted_ms:
                         # #1628: degenerate GitHub titles never render verbatim
                         title = display_title(m.get("title"), "(untitled milestone)")
                         due_raw = m.get("due_on")
                         due = due_raw.split("T")[0] if due_raw else "no due date"
                         open_count = m.get("open_issues", 0)
                         suffix = f" ({open_count} open issue" f"{'s' if open_count != 1 else ''})"
-                        message += f"\n- **{title}** — due {due}{suffix}"
-                    if count > 5:
-                        message += f"\n\n...and {count - 5} more."
+                        _lines.append(f"\n- **{title}** — due {due}{suffix}")
+                    _capped = compose_capped_list(
+                        lines=_lines, cap=5, kind="open milestones", source_total=count
+                    )
+                    message += _capped.body
+                    _remainder = _capped.remainder
             else:
                 message = "You don't have any open milestones right now."
 
@@ -7228,6 +7487,9 @@ class IntentService:
                     "context": {
                         "milestone_count": len(milestones) if milestones else 0,
                     },
+                    **self._arm_list_remainder(
+                        session_id, _principal_from_intent(intent), _remainder
+                    ),
                 },
             )
 
@@ -7248,7 +7510,7 @@ class IntentService:
             )
 
     async def _handle_list_releases_query(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """Handle 'Recent releases' / 'What version are we on?' (Issue #1039).
 
@@ -7259,6 +7521,11 @@ class IntentService:
         non-prerelease at the top of the response.
         """
         self.logger.info("Processing list releases query")
+        # #1762 (epic 6): set before any early return so every path below has
+        # a defined answer to 'did this render promise a remainder?'. The
+        # empty-list and honest-degrade returns leave it None, which is
+        # correct: those turns make no claim to cash.
+        _remainder = None
         try:
             _user_id = _principal_from_intent(intent)
 
@@ -7315,15 +7582,20 @@ class IntentService:
                     )
                 # Show top 5 recent (regardless of stable/prerelease)
                 message += "\n\nRecent releases:"
-                for r in sorted_releases[:5]:
+                # #1762 epic 6 — see the issues handler; same shared shape.
+                _lines = []
+                for r in sorted_releases:
                     tag = r.get("tag_name", "")
                     name = r.get("name") or tag
                     pub_raw = r.get("published_at")
                     pub = pub_raw.split("T")[0] if pub_raw else "unpublished"
                     flag = " (pre-release)" if r.get("prerelease") else ""
-                    message += f"\n- **{tag}**{flag} — {name} ({pub})"
-                if count > 5:
-                    message += f"\n\n...and {count - 5} more."
+                    _lines.append(f"\n- **{tag}**{flag} — {name} ({pub})")
+                _capped = compose_capped_list(
+                    lines=_lines, cap=5, kind="releases", source_total=count
+                )
+                message += _capped.body
+                _remainder = _capped.remainder
             else:
                 message = "You don't have any releases yet."
 
@@ -7344,6 +7616,9 @@ class IntentService:
                             else None
                         ),
                     },
+                    **self._arm_list_remainder(
+                        session_id, _principal_from_intent(intent), _remainder
+                    ),
                 },
             )
 
@@ -7364,7 +7639,7 @@ class IntentService:
             )
 
     async def _handle_list_labels_query(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """Handle 'What labels do we use?' / 'Show issue labels' (Issue #1040).
 
@@ -7379,6 +7654,11 @@ class IntentService:
         stays native, exactly like milestones (also no github-mcp-server tool).
         """
         self.logger.info("Processing list labels query")
+        # #1762 (epic 6): set before any early return so every path below has
+        # a defined answer to 'did this render promise a remainder?'. The
+        # empty-list and honest-degrade returns leave it None, which is
+        # correct: those turns make no claim to cash.
+        _remainder = None
         try:
             from services.integrations.github.github_integration_router import (
                 GitHubIntegrationRouter,
@@ -7393,13 +7673,18 @@ class IntentService:
                 # Sort alphabetically for stable presentation
                 sorted_labels = sorted(labels, key=lambda lbl: lbl.get("name", ""))
                 message += "\n"
-                for lbl in sorted_labels[:20]:
+                # #1762 epic 6 — see the issues handler; same shared shape.
+                _lines = []
+                for lbl in sorted_labels:
                     name = lbl.get("name", "")
                     desc = lbl.get("description") or ""
                     desc_suffix = f" — {desc}" if desc else ""
-                    message += f"\n- **{name}**{desc_suffix}"
-                if count > 20:
-                    message += f"\n\n...and {count - 20} more."
+                    _lines.append(f"\n- **{name}**{desc_suffix}")
+                _capped = compose_capped_list(
+                    lines=_lines, cap=20, kind="labels", source_total=count
+                )
+                message += _capped.body
+                _remainder = _capped.remainder
             else:
                 message = "I don't see any labels for this repository."
 
@@ -7412,6 +7697,9 @@ class IntentService:
                     "context": {
                         "label_count": len(labels) if labels else 0,
                     },
+                    **self._arm_list_remainder(
+                        session_id, _principal_from_intent(intent), _remainder
+                    ),
                 },
             )
 
@@ -7432,7 +7720,7 @@ class IntentService:
             )
 
     async def _handle_list_branches_query(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """Handle 'Active branches' / 'Show feature branches' (Issue #1040).
 
@@ -7443,6 +7731,11 @@ class IntentService:
         Local-git "what branch are we on?" tracked by #1044.
         """
         self.logger.info("Processing list branches query")
+        # #1762 (epic 6): set before any early return so every path below has
+        # a defined answer to 'did this render promise a remainder?'. The
+        # empty-list and honest-degrade returns leave it None, which is
+        # correct: those turns make no claim to cash.
+        _remainder = None
         try:
             _user_id = _principal_from_intent(intent)
 
@@ -7500,7 +7793,9 @@ class IntentService:
                 else:
                     message += "."
                 message += "\n"
-                for b in sorted_branches[:20]:
+                # #1762 epic 6 — see the issues handler; same shared shape.
+                _lines = []
+                for b in sorted_branches:
                     name = b.get("name", "")
                     flags = []
                     if name == default_branch:
@@ -7508,9 +7803,12 @@ class IntentService:
                     if b.get("protected"):
                         flags.append("protected")
                     flag_suffix = f" ({', '.join(flags)})" if flags else ""
-                    message += f"\n- **{name}**{flag_suffix}"
-                if count > 20:
-                    message += f"\n\n...and {count - 20} more."
+                    _lines.append(f"\n- **{name}**{flag_suffix}")
+                _capped = compose_capped_list(
+                    lines=_lines, cap=20, kind="branches", source_total=count
+                )
+                message += _capped.body
+                _remainder = _capped.remainder
             else:
                 message = "I don't see any branches for this repository."
 
@@ -7524,6 +7822,9 @@ class IntentService:
                         "branch_count": len(branches) if branches else 0,
                         "default_branch": default_branch or None,
                     },
+                    **self._arm_list_remainder(
+                        session_id, _principal_from_intent(intent), _remainder
+                    ),
                 },
             )
 

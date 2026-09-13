@@ -42,6 +42,7 @@ from uuid import UUID, uuid4
 import structlog
 
 from services.intent_service.intent_types import Intent
+from services.intent_service.list_remainder import ListRemainder
 
 logger = structlog.get_logger()
 
@@ -132,6 +133,23 @@ class ConversationContext:
     # WITHIN-SESSION use only: cross-session recall is #1705 (Leg D
     # increment 6) and does not exist; no surface may claim otherwise.
     ftux_interview_answer: Optional[str] = None
+
+    # #1762 (epic 6): the unrendered tail of the most recent capped list, so
+    # "…and N more" is a claim we can CASH (GatherOutcome §5b). DELIBERATELY
+    # NOT the ``last_offer`` rail above: that rail is always-cleared at turn
+    # start (the #852 one-turn invariant), which is exactly the property the
+    # #1770 no-clobber peek's soundness rests on — and a capped-list offer is
+    # the kind users answer LATE (CXO 2026-09-13), so it needs a lifetime the
+    # rail must not grow. Own store, own lifetime, rail untouched.
+    #
+    # Survival form, stated (CXO's per-tier ruling, READ × PRIVATE →
+    # LOW_CEREMONY): PERSISTING — it survives arbitrary intervening turns
+    # until cashed, declined, replaced by a newer capped list, or stale past
+    # REMAINDER_MAX_AGE_MINUTES. Admissible because cashing FIRES NOTHING: it
+    # prints lines already gathered. Not persisted across process restart
+    # (#953 hydration untouched); a lost remainder degrades to the honest
+    # "that list has moved" turn, never a silent re-fetch.
+    pending_list_remainder: Optional[ListRemainder] = None
 
     # Issue #1030 R4: per-turn provenance sidecar for "why did you suggest that?"
     # citations. Keyed by ConversationTurn.id. Values are dicts of

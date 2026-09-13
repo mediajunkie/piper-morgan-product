@@ -196,6 +196,19 @@ believes it has) applies here too — the direction (not yet the build) is that 
 consumes the structured GatherOutcome and never becomes the model's own evidence about the world.
 Fix design waits for this epic's turn; nothing jumps the queue.
 
+**Design landed 2026-09-13** (Lead's `#1762` census + CXO's copy + Arch's architecture, all
+converged same-day): the unrendered remainder lives in **GatherOutcome** (§5b already governs the
+claim; the #1738 joint invariant is the storage half). **First build scoped to the GitHub six**
+(issues, PRs, milestones, releases, labels, branches) — the only cohort where the honest-count half
+is already done and only threading is missing, per Lead's `#1720` census. Copy shape (CXO):
+*"That's 5 of 340 — say the word and I'll pull the rest,"* offer the affordance never the syntax,
+cap counts inherit source provenance (a source `1000+` stays `1000+`, never rounds to exact). **PPM
+call**: skip the offer entirely when the hidden remainder is ≤3 items — just render them, no
+ceremony. **Acceptance-test addition, not a scope change**: CXO flagged that a capped-list offer is
+exactly the kind answered LATE (read five, think, come back), but today's arm survives only one
+turn (`intent_service.py:1072`) — epic 6's acceptance test must include the late-follow-up case,
+not just the immediate one, or it passes without exercising the property that actually fails.
+
 ### 7. False-trails / claimed-not-wired (4 items) — pre-existing epic, no stated urgency
 `#1522` (the epic itself, PM-directed) · `#1735` · `#1678` · `#1708` (moved here from Singletons
 2026-09-12 — `ALPHA_QUICKSTART.md`, the tester-facing onboarding doc, tells testers to clone a
