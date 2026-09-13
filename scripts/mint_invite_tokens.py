@@ -31,13 +31,48 @@ from services.auth.invite_token_service import generate_invite_token  # noqa: E4
 _INSERT = text("INSERT INTO invite_tokens (token, created_at) VALUES (:token, now())")
 
 
+def _database_url() -> tuple[str, str]:
+    """Resolve the DB URL the way the APP does, falling back to POSTGRES_*.
+
+    Returns (url, source) — source is printed so the operator always sees which
+    database is about to be written to.
+
+    Why this isn't just the POSTGRES_* construction it used to be: those
+    defaults point at localhost:5433, i.e. the DEV database. Run from a
+    worktree that is correct; run anywhere else it silently mints tokens the
+    alpha tester cannot use, and the output looks identical to success. The
+    2026-07 batch worked around this with a throwaway script that called
+    ``db._build_database_url()``; doing it here instead means there is one
+    mint path and it is right in both environments.
+    """
+    try:
+        from services.database.connection import db  # noqa: PLC0415
+
+        url = db._build_database_url()
+        # The app speaks asyncpg; this script is sync.
+        return url.replace("+asyncpg", ""), "app config (services.database.connection)"
+    except Exception:  # noqa: BLE001 — fall back, but say so
+        u = os.getenv("POSTGRES_USER", "piper")
+        p = os.getenv("POSTGRES_PASSWORD", "dev_changeme_in_production")
+        h = os.getenv("POSTGRES_HOST", "localhost")
+        port = os.getenv("POSTGRES_PORT", "5433")
+        d = os.getenv("POSTGRES_DB", "piper_morgan")
+        return (
+            f"postgresql+psycopg2://{u}:{p}@{h}:{port}/{d}",
+            "POSTGRES_* env fallback",
+        )
+
+
+def _redacted(url: str) -> str:
+    """host:port/db only — never the password, this gets printed."""
+    tail = url.rsplit("@", 1)[-1]
+    return tail if "@" not in url else tail
+
+
 def _engine():
-    u = os.getenv("POSTGRES_USER", "piper")
-    p = os.getenv("POSTGRES_PASSWORD", "dev_changeme_in_production")
-    h = os.getenv("POSTGRES_HOST", "localhost")
-    port = os.getenv("POSTGRES_PORT", "5433")
-    db = os.getenv("POSTGRES_DB", "piper_morgan")
-    return create_engine(f"postgresql+psycopg2://{u}:{p}@{h}:{port}/{db}")
+    url, source = _database_url()
+    print(f"--- target: {_redacted(url)}  (resolved via {source})")
+    return create_engine(url)
 
 
 def main():
@@ -56,8 +91,18 @@ def main():
     if args.apply:
         eng = _engine()
         with eng.begin() as c:
+            before = c.execute(text("SELECT count(*) FROM invite_tokens")).scalar()
             for token in tokens:
                 c.execute(_INSERT, {"token": token})
+            after = c.execute(text("SELECT count(*) FROM invite_tokens")).scalar()
+        # The mint and its verification in one transaction — an inserted-count
+        # that doesn't match the requested count is visible immediately rather
+        # than discovered when a tester's code fails.
+        print(f"--- rows: {before} -> {after} (expected +{args.count})")
+        if after - before != args.count:
+            raise SystemExit(
+                f"MINT VERIFICATION FAILED: {after - before} rows added, expected {args.count}"
+            )
     for token in tokens:
         print(token)
     if not args.apply:
