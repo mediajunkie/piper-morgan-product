@@ -409,7 +409,13 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
       fires_note="~${fires_label} missed fires"
     fi
     if (( a >= thr_eff )); then
-      echo "STALE $role ${a}h (dyn-threshold ${thr_eff}h wake-window-aware, ${fires_note}; cron '$cron')"
+      # 2026-09-13 (Exec's belt-honesty finding, from a live incident): STALE reads as "this role
+      # has stopped," but the instrument only ever measures "no origin/main output for N hours" —
+      # it structurally cannot distinguish a genuine stop from a stall, a rate-limit wedge, or (the
+      # live case that prompted this) a session that is alive, synced, and working but gated on
+      # every state-changing tool call by an auth/classifier outage. Naming the limitation in the
+      # line itself rather than in a comment nobody reads at alert time.
+      echo "STALE $role ${a}h (dyn-threshold ${thr_eff}h wake-window-aware, ${fires_note}; cron '$cron') — no origin/main output for ${a}h; this instrument cannot tell a stop from a stall, a wedge, or a gated commit path"
     else
       # v0.11 (2026-09-03, Arch's "alive but belt-invisible" proposal via Exec, filed as standing-
       # item 7h). This role is ALIVE — age_of() found a recent commit/session-log signal, which is
