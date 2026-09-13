@@ -19,22 +19,24 @@ agree: 37 items, same membership). Ordering and any reclassification below is PP
 
 ## Order
 
-### 1. CI/infra red (8 items, 1 closed) — cheap, and it's a quiet tax on every epic after it
-`#1687` four CI workflows standing red · `#1711` Keychain ACL hang blocks server startup silently
-· ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**. Plus, filed
-2026-09-11 from a direct #1687 close-out audit (same author, same denominator problem, folded in
-rather than treated as new epics): `#1747` 'Tests' and 'E2E & AAXT' workflows are STANDING-RED —
-outside #1687's own four-workflow denominator, so every subsequent "belt fully green" claim
-(including this file's own ship-060 citations) silently meant "the five tracked," the exact m-44
-shape #1687 itself documented · `#1748` CI test-isolation defect — tests write fake provider keys
-into the shared per-job Postgres via #1382's DB store, conftest later loads one as real, turning
-keyless behavior into live 401s that read as product failures · `#1749` a deterministic-looking
-search test fails in CI only, passes locally, mechanism undiagnosed (env-divergence class). Plus,
-folded 2026-09-12, both found by the #1748 lane: `#1764` (`EncryptedDBCredentialStore` silently
-collapses `service_name`, dropping the namespace dimension the OS-keychain contract has — latent
-today, needs a migration plan if ever fixed) · `#1765` (2 `test_cross_user_isolation.py` failures
-reproduce locally on pristine HEAD but the Tests workflow is green — #1749's env-divergence class,
-inverted: local-red/CI-green instead of local-green/CI-red).
+### 1. CI/infra red (8 items, 4 closed) — cheap, and it's a quiet tax on every epic after it
+`#1687` four CI workflows standing red · ~~`#1711`~~ Keychain ACL hang blocks server startup
+silently — **CLOSED**. ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**.
+Plus, filed 2026-09-11 from a direct #1687 close-out audit (same author, same denominator problem,
+folded in rather than treated as new epics): `#1747` 'Tests' and 'E2E & AAXT' workflows are
+STANDING-RED — outside #1687's own four-workflow denominator, so every subsequent "belt fully
+green" claim (including this file's own ship-060 citations) silently meant "the five tracked," the
+exact m-44 shape #1687 itself documented · ~~`#1748`~~ CI test-isolation defect — tests write fake
+provider keys into the shared per-job Postgres via #1382's DB store, conftest later loads one as
+real, turning keyless behavior into live 401s that read as product failures — **CLOSED**. ·
+~~`#1749`~~ a deterministic-looking search test fails in CI only, passes locally, mechanism
+undiagnosed (env-divergence class) — **CLOSED**. Plus, folded 2026-09-12, both found by the #1748
+lane: `#1764` (`EncryptedDBCredentialStore` silently collapses `service_name`, dropping the
+namespace dimension the OS-keychain contract has — latent today, needs a migration plan if ever
+fixed) · `#1765` (2 `test_cross_user_isolation.py` failures reproduce locally on pristine HEAD but
+the Tests workflow is green — #1749's env-divergence class, inverted: local-red/CI-green instead of
+local-green/CI-red). **Remaining open: `#1687`, `#1747`, `#1764`, `#1765`** — `#1687`'s secret
+rotation comment is posted (2026-09-13), awaiting PM's ~3-minute action to actually unblock it.
 
 **Why first**: every day CI stays red, every other epic's evidence weakens (a green suite means
 less when four — now confirmed six — workflows are already known-broken). Cheap relative to its
@@ -75,8 +77,10 @@ skipping In Progress (Exec's 09-10 finding — the board's In Progress count is 
 in-flight signal; see the general note below). Reads as PM's verification round closing
 already-fixed items, not a violation of one-epic-at-a-time — noting for accuracy, not flagging.
 
-### 3. Acceptance contract (11 items) — freshest pain, design is DONE, unblocks a whole cluster
-`#1739` (umbrella) · `#1663` · `#1652` · `#1653` · `#1654` · `#1694` · `#1696` · `#1596` · `#1752`
+### 3. Acceptance contract (11 items, 8 closed) — freshest pain, design is DONE, unblocks a whole cluster
+`#1739` (umbrella, open) · ~~`#1663`~~ · ~~`#1652`~~ · ~~`#1653`~~ · ~~`#1654`~~ · ~~`#1694`~~ ·
+~~`#1696`~~ · ~~`#1596`~~ (all six **CLOSED**, per Lead's session log — the epic ran to its floor
+Saturday) · ~~`#1752`~~
 (found 2026-09-12 during #1654's own adoption — the soft-workflow-offer no-clobber guard doesn't
 cover the STATE_QUESTION-survival re-arm path, a silent-drop shape adjacent to #1652's arm half;
 **turned out to be an accidental duplicate of the already-fixed #1753 — closed, net zero change
@@ -85,7 +89,9 @@ shared decline vocabulary folds "maybe later"-class deferrals into DECLINE, whic
 most seams but abandons the resumable flow at the resume-offer seam) · `#1695` (moved here from
 Singletons 2026-09-12 — compose-framed draft can arm a subject still carrying the bare repo phrase
 because the collaborate-gate ARM path doesn't resolve it, only the execute/file path does; same
-arm/consume-rail family as the rest of this epic).
+arm/consume-rail family as the rest of this epic). **Remaining open: `#1739` (umbrella, closes when
+its children do), `#1771`, `#1695`** — per Exec's 09-13 accounting, `#1739`'s last real dependency
+is PM's own `#1617` standup retest (~90 seconds), which is what actually unblocks this epic's floor.
 
 **Why third**: PM's live round converged three failures onto this one contract today. Both design
 passes are already in (Arch's sequencing ruling + CXO's two-axis correction, conceded by Arch) —
@@ -112,24 +118,28 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (14 items) — lands after the acceptance-contract idiom proves out
-`#1717` (the audit's own meta-evidence for this cousin) · `#1730` · `#1736` · `#1738` (shared with
-Deliverable below). Plus, folded 2026-09-12: `#1754` (ConversationHandler clarify/chitchat lane
-unreachable, independent same-day finding overlapping `#1759` — see that item's note) · `#1759`
-(dead clarify-carrier machinery, found during #1730's own diagnosis — disposition already ruled:
-DELETE, per Lead's #1730 Gap-2 proposal + Arch's same-day concurrence) · `#1760` (test-theatre mock
-mismatch, found via #1736) · `#1761` (consumer_core.py fabricates "No description available,"
-self-identified honest-empty candidate) · `#1763` (get_project_status rider-failure evidence, tied
-to #1738) · `#1767` (dead file-disambiguation state on `ConversationSession`, found during the
-#1759 deletion sweep, zero live referents) · `#1768` (`classify_conscious` zero-caller dead code,
-residual from #1759's own deletion, larger unruled surface with dedicated test files). Plus, moved
+### 5. Honest-empty / GatherOutcome (14 items, 8 closed) — lands after the acceptance-contract idiom proves out
+~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
+· ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
+Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
+independent same-day finding overlapping `#1759` — see that item's note — **CLOSED**, per Arch's
+GO) · ~~`#1759`~~ (dead clarify-carrier machinery, found during #1730's own diagnosis — disposed
+per Lead's #1730 Gap-2 proposal + Arch's same-day concurrence — **CLOSED/DELETED**) · `#1760`
+(test-theatre mock mismatch, found via #1736) · `#1761` (consumer_core.py fabricates "No
+description available," self-identified honest-empty candidate) · `#1763` (get_project_status
+rider-failure evidence, tied to #1738) · ~~`#1767`~~ (dead file-disambiguation state on
+`ConversationSession`, found during the #1759 deletion sweep, zero live referents — **CLOSED**,
+per Arch's GO) · ~~`#1768`~~ (`classify_conscious` zero-caller dead code, residual from #1759's own
+deletion — **CLOSED**, per Arch's GO-conditional). Plus, moved
 here from Singletons 2026-09-12: `#1697` (files.html renders blank "Uploaded by:" because the live
 API response has no `owner_id` field — a rendering-a-missing-field defect, same family as #1736/
 #1761's fabricated-absence class, inverted: blank instead of a fabricated placeholder) · `#1718`
 (BYOC key validation discards the failure reason, showing flat "invalid" for both auth errors and
 quota/billing errors — already framed in this file as the audit's error-surfacing cousin #3,
 alongside Fast Follow's `#1108`) · `#1772` (N=1 degrade reply named three unarmed sources, found
-during #1717's own scoring — a scope-directive leak at the delivered layer).
+during #1717's own scoring — a scope-directive leak at the delivered layer). **Remaining open:
+`#1760`, `#1761`, `#1763`, `#1697`, `#1718`, `#1772`** (6 of 14) — this epic is currently the one
+Lead is actively working, per their own log (opened right after epic 3 hit its floor Saturday).
 
 **#1717 status (2026-09-12)**: code-done and live on v86 — awaits one harness re-run + CXO's voice
 read against the contract's §6 acceptance test (item 1, the composition case). CXO's call, not
@@ -195,10 +205,15 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · `#1700`.
 
-### 9. Silent-death inventory (1 item) — genuinely its own epic, not a forced grouping
-`#1423` — broad try/except on core paths converts broken features into invisible defaults (two
-confirmed instances, `#1420`/`#1422`, neither ever surfaced to a user because the pattern's whole
-effect is that they can't). **Why its own epic**: this shares no real membership with any epic
+### 9. Silent-death inventory (3 items, 2 closed) — genuinely its own epic, not a forced grouping
+`#1423` (the inventory-and-un-swallow task, open) — broad try/except on core paths converts broken
+features into invisible defaults. ~~`#1420`~~/~~`#1422`~~ (the two confirmed instances #1423 names,
+both already fixed and closed — neither was ever surfaced to a user because the pattern's whole
+effect is that they can't). **Item count corrected 2026-09-13** — Exec's own epic-accounting read
+(`dev/active/epic-accounting-2026-09-13.html`) counted all three where this file had only listed
+`#1423`; the fuller count is right, since #1420/#1422 are the concrete instances the inventory
+exists to cover, not incidental mentions. **Why its own epic**: this shares no real membership with
+any epic
 above — it's an inventory-and-un-swallow task at the exception-handling layer, not a rendering,
 security, or contract-adoption concern. Arch's original framing ("genuinely its own epic-of-one")
 was correct when written; PM's 2026-09-12 ruling (relayed via Janus — every MVP item needs an epic
@@ -318,3 +333,13 @@ read, that's real information — update this file, don't defend the original gr
   first time) and folded it into epic 5. Noted Lead's three Rule-0 delete proposals (`#1754`/
   `#1767`/`#1768`) and Arch's GO/GO/GO-conditional rulings for tracking — Lead/Arch's call, not
   PPM's, no epic-order change needed since deletion doesn't move milestone membership.
+- 2026-09-13 09:58 START (PPM): Exec published an epic-accounting doc for PM
+  (`dev/active/epic-accounting-2026-09-13.html`), computed live from the GitHub API. Caught and
+  corrected one real gap in it (missing epic 10 entirely — flagged to Exec/PM) and adopted one
+  real improvement to this file (epic 9's item count was undercounting its own two named
+  instances, `#1420`/`#1422` — now 3 items, matching Exec's fuller read). While cross-checking,
+  refreshed live-closure state across epics 1, 3, and 5 (many items closed since last night:
+  epic 1 now 4 closed of 8, epic 3 ran to its floor — 8 of 11 closed, only the umbrella + 2 stay
+  open — epic 5 is 8 of 14 closed and is the epic Lead is now actively working). Also confirmed
+  Lead posted the #1687 secret-rotation comment PM was waiting on — the WATCH FOR line in
+  tonight's cron prompt can drop once PM actually does the ~3-minute rotation.
