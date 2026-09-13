@@ -63,4 +63,9 @@ fi
 # ModuleNotFoundError. Verified locally (the same invocation fails without it)
 # rather than assumed — this is the kind of thing that only surfaces at the
 # moment you need the command to work.
-exec fly ssh console -C "PYTHONPATH=/app python /app/scripts/mint_invite_tokens.py $COUNT --apply"
+#
+# And `fly ssh console -C` fork/execs the command DIRECTLY — there is no shell,
+# so a bare `VAR=x cmd` prefix is parsed as a binary named "VAR=x"
+# ("fork/exec PYTHONPATH=/app: no such file or directory"). The explicit
+# /bin/sh -c is what gives the assignment a shell to be interpreted by.
+exec fly ssh console -C "/bin/sh -c 'cd /app && PYTHONPATH=/app python scripts/mint_invite_tokens.py $COUNT --apply'"

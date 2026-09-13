@@ -51,7 +51,19 @@ def _database_url() -> tuple[str, str]:
         url = db._build_database_url()
         # The app speaks asyncpg; this script is sync.
         return url.replace("+asyncpg", ""), "app config (services.database.connection)"
-    except Exception:  # noqa: BLE001 — fall back, but say so
+    except Exception as exc:  # noqa: BLE001 — fall back LOUDLY, never silently
+        # A silent fallback here is the whole hazard: it degrades to localhost,
+        # which in production means "mint into a database that isn't the one
+        # the app uses" — and the run still looks like a success. So: say what
+        # failed, and REFUSE outright when we can see we're in production.
+        print(f"!!! app-config DB resolution FAILED: {type(exc).__name__}: {exc}")
+        if os.getenv("PIPER_ENVIRONMENT", "").lower() == "production":
+            raise SystemExit(
+                "REFUSING to fall back to POSTGRES_* defaults in production — "
+                "that path points at localhost and would mint unusable tokens. "
+                "Fix the resolution error above instead."
+            ) from exc
+        print("!!! falling back to POSTGRES_* env (dev-only path)")
         u = os.getenv("POSTGRES_USER", "piper")
         p = os.getenv("POSTGRES_PASSWORD", "dev_changeme_in_production")
         h = os.getenv("POSTGRES_HOST", "localhost")
