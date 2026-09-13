@@ -144,10 +144,8 @@ Each standup includes performance metrics:
 ### Dependencies
 
 - **UserPreferenceManager**: User settings and context persistence
-- **SessionPersistenceManager**: Cross-session context continuity
-- **GitHubAgent**: GitHub activity retrieval and analysis
+- **StandupAssembler**: Honest derivation of standup content from live Radar EntitySources
 - **CanonicalHandlers**: Integration foundation for cross-feature functionality
-- **IssueIntelligenceCanonicalQueryEngine**: Priority issue analysis (optional)
 
 ### Error Handling
 
@@ -187,10 +185,7 @@ cat standup.md  # Review before sharing
 
 ```bash
 # Check specific components
-python -c "from services.features.morning_standup import MorningStandupWorkflow; print('Available')"
-
-# Test integration separately
-python -c "from services.features.issue_intelligence import IssueIntelligenceCanonicalQueryEngine; print('Available')"
+python -c "from services.domain.standup_orchestration_service import StandupOrchestrationService; print('Available')"
 ```
 
 ## 🛠️ Troubleshooting
