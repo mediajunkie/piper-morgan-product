@@ -1,41 +1,47 @@
 ---
-last_updated: 2026-09-12
+last_updated: 2026-09-13
 currency_claim: rewritten at every substantive fire (3x/day cadence)
 max_age_days: 1
 ---
 
-# CIO carry-forward — rewritten 2026-09-12 (22:37 STOP, day closed)
+# CIO carry-forward — rewritten 2026-09-13 (10:01 fire, PM-initiated resume)
 
 **Cron**: `a03890a3` · `7 10,16,22 * * *` · armed at 2026-09-09 22:45 STOP · expires ~2026-09-16.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## Today's full arc (2026-09-12, closed): three skill versions, each verified or verified-wrong by a colleague
+## PM needs to know this: Exec recovered, Lead did NOT — now worse, not better
 
-10:37: shipped the deferred 7v bundle (`duty-cycle-tick` v1.33) at its first fresh-session opening
-— 3-source work queue, START-before-mail-loop reorder, Fire-N heading retired, re-check-anomalies
-rule. Folded CXO's "success indistinguishable from skipping" into methodology-53 rather than filed
-as a duplicate entry. 16:37: caught by my own belt — zero heartbeat invocations for two straight
-days — fixed the instance and shipped v1.34 (Step 5b self-verification against
-`duty-cycle-freeze-check.sh`'s own output). 22:37: CXO adopted v1.34, tested it for real on their
-own seat, and caught that it had the exact numerator-without-denominator defect it was built to
-prevent — fixed same-fire as v1.35 (confirm the header's `rows=N` before treating a clean grep as
-measured). Practiced the corrected check on my own seat before signing off: genuinely verified
-clean, not just silent.
+**Update from the ~10:07 fire**: re-checked rather than assumed resolved. Exec is back (present in
+`cohort-freeze-detect.sh`'s emitters, no longer STALE). **Lead is still STALE, now 11h (up from
+10h this morning)** — re-confirmed via a second run against the same commit tip, ruling out a
+race. This is not self-resolving. I have no mechanism to check or re-arm another role's cron
+myself; a direct human prompt to Lead's session is the one thing that can confirm/fix this.
 
-**The pattern worth carrying forward, not just noting once**: every fix today either came from a
-colleague checking my work directly, or got checked by a colleague within hours of shipping. None
-of the three skill versions shipped in isolation and stayed unexamined.
+Separate, lower-urgency: `comms` shows NO-SESSION-LOG + BELT-INVISIBLE (committed today, no log or
+heartbeat) — most likely a PM-initiated entrance that skipped Step 0/5b, not a dead session. Not
+escalating further; Comms' own Step 0 self-heal covers it next START.
+
+## Today's shape so far (2026-09-13)
+
+**10:01 fire (PM-initiated resume, not cron)**: closed standing-item 7w — filed **methodology-54**
+("A False Claim in a Durable Doc Is a Lens," `b552e46a1`) after reading both source memos in full
+and checking it against m-44/46/49 first (genuinely distinct: never-verified-from-write, not
+verified-then-stale). Confirmed and routed a real hook-mechanics finding from Lead
+(`pre-commit-broad-staging-warn.sh`'s documented `--no-verify` escape is a category error — a
+git-native flag with no relationship to Claude Code's PreToolUse layer) to Arch, who owns the
+precedent. HOST owned a 5-week silent-decision gap on the same hook plainly. Cron confirmed alive
+despite PM's re-auth interruption (not a Gap-C casualty this time).
 
 ## Open, needs a look
 
-- **Standing-item 7w**: Arch's ask for a formal methodology entry on the Lead/Arch skew-finding
-  shape. Still haven't read the source memo directly — read it before drafting.
 - **Standing-item 7x**: Exec's 2 remaining process items (archive `mailboxes/*/read/`; change the
   PM-cc rule) — home is CLAUDE.md's mailbox section, not duty-cycle-tick. Not started.
 - **Standing-item 7y**: NO-DAY-CLOSE streak detector (CXO's finding). Correctly gated on real
   cohort DAY-CLOSED data existing before sizing the threshold — not urgent, no trigger fired yet.
+- **NEW**: the broad-staging hook block-vs-warn decision (Arch's to own, mine to loop back on if
+  a concrete proposal materializes — HOST wants in on the trust/safety side at that point).
 
 ## Still watching, not acting
 
@@ -60,23 +66,20 @@ of the three skill versions shipped in isolation and stayed unexamined.
 - **The RACI/responsibility-notation backlog item** (Themis relay, filed 09-02) — still not started.
 - **The `mailboxes/*/MANIFEST.md` sibling-basename false-strand warning** — hit repeatedly this
   week, confirmed harmless every time, not mine to fix.
-- **My own heartbeat compliance, going forward** — the v1.34/v1.35 self-check should catch a real
-  lapse now; verify it actually does over the coming days rather than assume the fix holds because
-  it worked today.
+- **My own heartbeat compliance** — v1.34/v1.35 self-check practiced twice this fire, both clean
+  and genuinely verified (rows=11, no cio line). Working so far; keep watching.
 
 ## Standing corrections to myself
 
 - **A syntax-checked script is not a tested script.** (recurring.)
 - **Never split a mailbox rename across two `mail-send.sh` calls.** (09-11, #1746.)
 - **Before filing a new methodology entry, check the existing corpus for the same test under
-  different words.** (09-12.)
-- **After editing a skill's frontmatter, actually parse it before trusting the edit looked right.**
-  (09-12.)
+  different words.** (09-12, applied again 09-13 against m-44/46/49 before filing m-54.)
 - **A step whose success and skip look identical from your own side will rot no matter how many
   times you personally fix an instance of it — fix the mechanism, not the memory.** (09-12.)
-- **NEW (09-12): a fix for an invisible-success problem can itself be invisible-success-shaped —
-  check what your own check's absence-of-output actually proves before shipping it as done.** My
-  v1.34 self-check's "no output = clean" had no denominator; CXO caught it same-fire by actually
-  running it rather than trusting my description. The fix for m-53's failure class needs the same
-  scrutiny the failure class itself does — building a check is not exempt from the discipline the
-  check exists to enforce.
+- **A fix for an invisible-success problem can itself be invisible-success-shaped.** (09-12.)
+- **NEW (09-13): when a colleague says "raised to PM/HOST, never answered," verify that claim
+  against decisions.log and session-log history before treating it as background context** — HOST
+  did exactly this rather than take the "raised to PM/HOST" line in the hook's own comment on
+  trust, and found it really had gone unanswered for five weeks. Worth doing myself next time
+  someone cites an "already routed" decision as a reason not to act.
