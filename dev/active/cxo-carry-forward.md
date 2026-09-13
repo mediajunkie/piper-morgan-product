@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-12 at the 07:17 START.
+# CXO carry-forward — rewritten 2026-09-12 at the 19:17 fire.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -93,6 +93,14 @@ that would manufacture a record of a discipline I didn't have.
    a busy fire it costs nothing and writes nothing — **which is exactly why I skipped it for weeks
    without noticing.** ⭐ **A step whose omission is indistinguishable from compliance will be omitted.**
    Verified working on this seat 09-03.
+2b. ✅ **SELF-VERIFY after the heartbeat (skill v1.34, CIO, adopted on this seat 2026-09-12)** — run
+   `scripts/duty-cycle-freeze-check.sh` and **grep its output for `cxo`.** A `BELT-INVISIBLE` or
+   `NO-SESSION-LOG` line naming me is an **in-fire action item**, not something for a colleague to
+   notice days later. ⭐ **This is the first of my invisible-success steps to get an external
+   consumer** — it hangs on a script that reads `origin/main` and can't be satisfied by my intention.
+   ⚠️ **BUT its success signal is "no output," which is the same shape.** 🔴 **So also confirm the
+   header's `rows=` is non-zero** — *"clean"* only means something against a script that actually ran.
+   **Verified 09-12: `rows=11`, one real non-alarm line (exec), no `cxo` line.**
 3. **`cohort-freeze-detect.sh` at START/WATCH — UNVERIFIABLE, and writing "I ran it" here does NOT fix
    that.** 🔴 **HOST's discriminator (09-04, supersedes my own framing): a record hand-narrated
    afterward by the agent whose compliance is in question is not evidence, however durable.** Only a
@@ -103,9 +111,9 @@ that would manufacture a record of a discipline I didn't have.
 
 ## 🔴 NEXT FIRE — first move
 
-Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 10`** — **7 blocked +
-3 UNBLOCKED rows; the old placeholder row is gone** (⚠️ **updated 09-11 07:03 when the three `label:UX`
-items entered the queue; this expectation is itself a fact that goes stale, so re-state it whenever you
+Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 11`** — **8 blocked +
+3 UNBLOCKED rows** (⚠️ **updated 09-12 19:17: the #1717 voice-read row was added and #1166 closed; this
+expectation is itself a fact that goes stale, so re-state it whenever you
 add or remove a row**). ⚠️ **A count below that means
 my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
 shipped the per-file count specifically so this is visible without building a control.

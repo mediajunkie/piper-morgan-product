@@ -10,7 +10,17 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-12 16:09 PT (WORK). **5 more unmilestoned issues (0→5 again — third
+**Last rewritten**: 2026-09-12 19:09 PT (WORK). **PM ruling via Janus: every MVP item needs an
+epic home, no exceptions.** Retired the epic-order file's Singletons section (6 items) — four fit
+existing epics on a full read (`#1695`→3, `#1697`/`#1718`→5, `#1708`→7), two genuinely shared no
+membership with anything and got their own new epics (9: silent-death inventory, 10: composer UX
+polish) rather than a forced fit. Also fixed `#1772` — carried MVP milestone but was missing from
+the project board entirely, a new drift shape (`--milestone` doesn't board-add) that
+`sprint-truth.py`'s "not on the board" check caught for the first time. Separately, no-objected on
+Lead's three Rule-0 delete proposals (Arch already ruled GO/GO/GO-conditional) and confirmed the
+singleton work back to Janus/PM. Five mail items drained, all handled in one fire.
+
+**Prior fire: 2026-09-12 16:09 PT (WORK). 5 more unmilestoned issues (0→5 again — third
 double-digit-adjacent drift this week), all from Lead's lanes today.** Triaged: `#1764`/`#1765` →
 epic 1, `#1767`/`#1768` → epic 5, `#1771` → epic 3 (net epic-3 change +1, since `#1769` was already
 handled by Lead and `#1752` turned out to be a duplicate). **Ratified Exec's filing-convention
