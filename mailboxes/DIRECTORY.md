@@ -51,12 +51,6 @@ Common synonyms in memo headers (all route to the same mailbox):
 | `ted-nadeau` | External alpha tester inbox |
 | `z-dan-heck` | External alpha tester inbox |
 
-## Special infrastructure
-
-| Slug | Notes |
-|---|---|
-| `incoming` | Staging area for inbound mail not yet routed |
-
 ## Retired / deprecated mailboxes (do not use)
 
 | Slug | Retired | Notes |
@@ -64,6 +58,7 @@ Common synonyms in memo headers (all route to the same mailbox):
 | `cos` | (pre-2026) | Was alias for Chief of Staff; use `exec` instead |
 | `pm` | 2026-04-29 | Was a separate PM mailbox; messages migrated to `mailboxes/xian (ceo)/read/`; directory deleted |
 | `ceo` | 2026-04-29 | Briefly created same day in error; reconciled with canonical `xian (ceo)` |
+| `incoming` | 2026-06-19 | Was a manual staging area for inbound mail not yet routed; eliminated by #1259's push-to-ref `mail-send.sh` migration, which removed the need for manual staging |
 
 ## 🔴 IF YOU ARE NOT CERTAIN WHERE MAIL GOES — READ THIS FIRST (PM directive, 2026-08-30)
 

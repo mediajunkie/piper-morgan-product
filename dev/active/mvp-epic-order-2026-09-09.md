@@ -19,7 +19,7 @@ agree: 37 items, same membership). Ordering and any reclassification below is PP
 
 ## Order
 
-### 1. CI/infra red (8 items, 4 closed) — cheap, and it's a quiet tax on every epic after it
+### 1. CI/infra red (9 items, 4 closed) — cheap, and it's a quiet tax on every epic after it
 `#1687` four CI workflows standing red · ~~`#1711`~~ Keychain ACL hang blocks server startup
 silently — **CLOSED**. ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**.
 Plus, filed 2026-09-11 from a direct #1687 close-out audit (same author, same denominator problem,
@@ -35,8 +35,13 @@ lane: `#1764` (`EncryptedDBCredentialStore` silently collapses `service_name`, d
 namespace dimension the OS-keychain contract has — latent today, needs a migration plan if ever
 fixed) · `#1765` (2 `test_cross_user_isolation.py` failures reproduce locally on pristine HEAD but
 the Tests workflow is green — #1749's env-divergence class, inverted: local-red/CI-green instead of
-local-green/CI-red). **Remaining open: `#1687`, `#1747`, `#1764`, `#1765`** — `#1687`'s secret
-rotation comment is posted (2026-09-13), awaiting PM's ~3-minute action to actually unblock it.
+local-green/CI-red). Plus, filed 2026-09-13 while confirming E2E went green post-rotation: `#1785`
+(the 211-test canonical-routing cohort makes real live-LLM calls on every push to main, ~20
+runs/day at 5-13s/case; open question is whether it belongs on push or moves to AAXT's nightly
+opt-in schedule — not decided unilaterally). **Remaining open: `#1687`, `#1747`, `#1764`, `#1765`,
+`#1785`** — PM's secret rotation appears to have happened (per `#1785`'s own filing account,
+"after PM's secret rotation"); `#1687` itself is still open pending Lead's close-out comment on
+the full belt snapshot.
 
 **Why first**: every day CI stays red, every other epic's evidence weakens (a green suite means
 less when four — now confirmed six — workflows are already known-broken). Cheap relative to its
@@ -188,7 +193,8 @@ silent truncation. CXO explicit: not proposing the fix, not re-ranking the epics
 #1738's class / epic-6 threading).
 
 **Why here**: same "prove the idiom first" logic as epic 5; MCP-path-first per the ratified scope
-ruling, per Arch. **Same CXO flag applies** — name the copy-owner before scoping the fix.
+ruling, per Arch. **Copy owner: CXO** (effective 2026-09-13, same day the copy shape below was
+delivered — matches epic 5's line, filled 09-11).
 
 **Joint invariant with epic 5, confirmed by Arch (2026-09-10)**: §5b's rule (provenance must
 survive rendering unchanged; a render cap may shorten what the user sees, never what the system
@@ -356,3 +362,11 @@ read, that's real information — update this file, don't defend the original gr
   open — epic 5 is 8 of 14 closed and is the epic Lead is now actively working). Also confirmed
   Lead posted the #1687 secret-rotation comment PM was waiting on — the WATCH FOR line in
   tonight's cron prompt can drop once PM actually does the ~3-minute rotation.
+- 2026-09-13 16:22 WORK (PPM): CXO caught a genuinely stale line in epic 6's own entry — "name the
+  copy-owner before scoping the fix" sitting eleven lines above the delivered copy shape from
+  earlier today. Fixed: epic 6's copy owner is now stated as CXO, matching epic 5's pattern.
+  Triaged 3 more issues: `#1785` (already had MVP milestone via the filing convention, but was
+  missing from the board — folded into epic 1, now 9 items) and `#1786`/`#1787` (both CI-hygiene
+  findings from the #1436 mypy-gate lane; milestoned Production, not MVP, matching #1436's own
+  milestone — not part of this file). PM's secret rotation on `#1687` appears to have happened,
+  per `#1785`'s own filing account; `#1687` itself stays open pending Lead's close-out comment.
