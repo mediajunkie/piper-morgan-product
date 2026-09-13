@@ -6,13 +6,15 @@ on:
     paths:
       - "services/domain/models.py"
       - "services/database/models.py"
-      - "scripts/schema_validator.py"
+      - "tools/schema_validator.py"
+      - "scripts/check_conversion_methods.py"
   pull_request:
     branches: [main, develop]
     paths:
       - "services/domain/models.py"
       - "services/database/models.py"
-      - "scripts/schema_validator.py"
+      - "tools/schema_validator.py"
+      - "scripts/check_conversion_methods.py"
   workflow_dispatch: # Allow manual triggering
 
 concurrency:
@@ -38,10 +40,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # The validator lives at tools/schema_validator.py (PM-056); scripts/schema_validator.py
+      # has never existed. --ci is required: without it the validator prints "Critical issues
+      # found" and still exits 0, so the step passes while reporting errors.
       - name: Run Schema Validator
         id: schema-validator
         run: |
-          PYTHONPATH=. python scripts/schema_validator.py
+          PYTHONPATH=. python tools/schema_validator.py --ci
         continue-on-error: true
 
       - name: Check Schema Validation Results
