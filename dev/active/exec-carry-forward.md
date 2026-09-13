@@ -1,45 +1,52 @@
 # Exec (Chief of Staff) — carry-forward
 
-**Rewritten 2026-09-11 ~23:20 PT at day-close.**
+**Rewritten 2026-09-12 ~23:25 PT at day-close.**
 
 ## Cron
-Job `83258e51`, **`38 6,10,14,18,22`** — 5 fires/day, never >4h apart in the 06:00–22:00 window
-(PM-proposed 09-11, adopted same morning; was `32 8,20`). Armed 09-11 06:55, expires ~09-18 →
-**rotate ~09-16.** Registry row updated.
+Job `83258e51`, `38 6,10,14,18,22` — 5 fires/day. Armed 09-11 06:55, expires ~09-18 → **rotate ~09-16.**
 
 ## ⭐ Where the weekly cycle stands
-**Ship #060 window Fri 09-04 → Thu 09-10.** Omnibus 7/7 · kickoff sent 07:00 · **10/10 reports in**
-· **internal report DELIVERED to PM** (`dev/active/ship-060-internal-report-for-pm-2026-09-11.html`).
-**Next per PM's ten-step cycle: PM discussion → then the public Ship draft.** The draft has NOT
-started; Step 2c is satisfied but the discussion hasn't happened.
+**Ship #060, window Fri 09-04 → Thu 09-10.** Omnibus 7/7 · 10/10 reports · **internal report
+delivered** · **prep complete** (calendar verified, 3 pubs all live 200, hero verified 200,
+omnibus day-types read: 7/7 HIGH-COMPLEXITY: COORDINATION).
+🔴 **PM RULED the internal-report discussion comes BEFORE the Ship draft.** Hold confirmed correct.
+**The draft has not started and should not until that conversation happens.**
 
-**The theme, if the draft keeps it**: nearly every role's most substantive contribution this week
-was catching their OWN error. Ten instances, one per role, mine included.
+## OWED TO PM — the epic accounting, numbered, with denominators
+PM's ask via Janus: *"Epic 1 — closed, blocked, or currently worked? Epic 2 — same. Etc."* and
+*"I keep hearing 'green for the first time' across various scopes, and I suspect slippery
+denominators."*
+⚠️ **Method caveat that must ship WITH the numbers**: my first pass regex-counted every issue
+*mentioned* in an epic section, not members — it reported epic 2 as "2 open" when the doc says
+#1750/#1751 were *"deliberately NOT folded in."* **Epic 2 is closed as scoped.** Membership vs
+mention must be stated explicitly or the accounting becomes the thing PM is skeptical of.
+**Live open counts (09-12 19:0x):** E1 **4** (#1687 #1747 #1764 #1765) · E2 **closed as scoped** ·
+E3 **2** (#1739 umbrella, #1771) · E4 6 · E5 6 · E6 2 · E7 3 · E8 2.
+**Still needed**: Lead's own account of working epic-5 items while epic 3 is open — I have the fact,
+not the reason, and PM asked for the rule to be visibly applied rather than drifted past.
 
 ## Blocked on PM
-1. **Bot onto protected main** — Arch's re-test: PR rule gone, **a SECOND masked blocker surfaced**
-   (required status check; a direct push can't pre-satisfy a check that runs on pushes). Repo is
-   **public with ZERO rulesets**, so the ruleset+bypass-actor path is free. Arch recommends it; I agree.
-2. **#1617 retest** — ~90s, Lead's replay passes 3/3.
-3. **Vercel** — 14.91 GB / 10 GB deployment storage; deleting old deployments is free and sufficient.
-4. **Q5** — probably dissolved by PM's own work-queue ruling; worth confirming that reading.
+- **#1617 standup retest** — PM runs it directly with me.
+- **Bot → protected main**: ruleset + `github-actions` bypass actor (repo public, zero rulesets = free).
+- **Vercel** deployment-storage deletion (14.91/10 GB).
+- ✅ **#1687 secret rotation is UNBLOCKED** — Lead posted the fingers-comment 09-12 21:48.
 
-## Awaiting others
-CIO (archive `read/` proposal · cc-rule change · re-check-anomalies rule · #1746) · Arch/CIO
-(scope-guard delivery, blocked on #1 above) · janus / pard / dispatch-dinp (orphan-mail triage +
-their durable channel) · Lead (epic order continues).
+## State at close
+**29 issues closed today, 26 MVP** — the biggest day of the window. MVP **44 not done** (30 Sprint
+Backlog, 3 In Progress, 7 In Review, 4 Product Backlog); **1,158 done**; **0 unmilestoned held.**
+⚠️ **Lead's day-close says "31 closes"; I count 29 Pacific / 23 UTC.** Three numbers, one day — not
+an error by anyone, but **exactly the denominator drift PM named this afternoon.** Flag it in the
+accounting rather than pick one silently.
 
-## State
-MVP **47 not done** (37 Sprint Backlog, 3 In Progress, 7 In Review); **1,134 done**; zero
-unmilestoned. Window 09-04→09-10: 26 closed (18 MVP), 23 opened, net −3, 1,998 commits, 4 deploys.
-**49 days to 30 Oct. 37 never started — the number that matters and it rose today.**
+## Landed today without me
+CIO off the belt + v1.35 shipped with the denominator CXO asked for · PPM ratified milestone-required
+filing AND gave all six singletons epic homes · Janus triaged all 16 orphan memos (one was live) and
+named their channel · PM ruled orphan mailboxes: only PM-team members get boxes here.
 
 ## Standing corrections on me
-- ⚠️ **`closedAt` is UTC** — always compute closures in Pacific.
-- ⚠️ **Re-check an anomalous reading once before reporting it** (PM's rule, from my own stale-belt
-  error). Applied 3× since; it changed my reading twice.
-- ⚠️ **Verify at the layer where the thing happens**, not where the schema says it should.
-- ⚠️ **Ask once is not ask** — and **read-and-file is not act**: Pard told me on 09-08 that my mail
-  wasn't reaching them and I kept routing there all week.
-- ⚠️ **Check my own seat before reporting someone else's lapse.** 13/14 on DAY-CLOSED tonight —
-  clean, but I checked rather than assumed.
+- ⚠️ **`echo` after `||` asserts nothing** — my push wrapper printed "pushed ✓" on a failed push
+  (09-12 07:0x). **Verify pushes by re-reading `origin/main`.** Done every fire since.
+- ⚠️ **`closedAt` is UTC** — compute closures in Pacific, and say which.
+- ⚠️ **Re-check an anomalous reading once before reporting** (PM's rule). Applied 4×; changed my
+  reading twice.
+- ⚠️ **Membership is not mention** — new, from tonight's epic count.
