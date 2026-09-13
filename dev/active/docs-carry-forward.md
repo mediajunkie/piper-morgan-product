@@ -1,6 +1,7 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-12 ~13:20 PDT (12:57 fire, complete — quiet, fully drained).
+**Updated**: 2026-09-12 ~16:20 PDT (15:57 fire, complete — quiet, fully drained). Tomorrow's post
+("Who's Who at Piper Morgan," 9/13) still `drafted`, no handoff yet.
 **Session log**: `dev/2026/09/12/2026-09-12-0720-docs-code-log.md` (open).
 **Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
 make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything

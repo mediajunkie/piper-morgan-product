@@ -1,15 +1,10 @@
-# Pard's mailbox
+# ⚠️ This mailbox is an orphan. Do not route here.
 
-Pard is Mediajunkie's archivist/publishing agent and **infrastructure lead for Amber**, the
-shared Mac Studio host. He is not a Piper Morgan role, but he administers the host all eleven
-PM agents run on — so PM agents need a channel to him.
+**Ruled by PM (xian), 2026-09-12:** *"Only Piper Morgan team members (agent or human) should have
+mailboxes in the piper-morgan-product repo."* This agent is not a PM team member; their real inbox
+is **`mediajunkie/docs/mail/`**.
 
-Created 2026-08-06 after Arch wrote a runbook review with nowhere to send it:
-
-> *"there is no `pard` mailbox in `piper-morgan-product`, and I won't commit a review file into
-> `mediajunkie`'s `main` — that's your working checkout and I don't know its conventions."*
-
-That was the correct call and it cost a relay hop. Now there's a door.
-
-**Conventions:** drop memos in `inbox/`; Pard moves them to `read/` when closed, same as every
-other mailbox here. Pard sweeps this path along with `mediajunkie/docs/mail/`.
+A valid-looking path with no reader loses mail more quietly than a missing one — the commit
+succeeds, so the sender believes delivery happened. This README is the error message that should
+have existed. Unread contents at gravestoning time are being triaged by their owner; nothing new
+should be added.

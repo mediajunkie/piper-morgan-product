@@ -10,7 +10,18 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-12 13:09 PT (WORK). **Busy fire — 10 unmilestoned issues (drift 0→10),
+**Last rewritten**: 2026-09-12 16:09 PT (WORK). **5 more unmilestoned issues (0→5 again — third
+double-digit-adjacent drift this week), all from Lead's lanes today.** Triaged: `#1764`/`#1765` →
+epic 1, `#1767`/`#1768` → epic 5, `#1771` → epic 3 (net epic-3 change +1, since `#1769` was already
+handled by Lead and `#1752` turned out to be a duplicate). **Ratified Exec's filing-convention
+fix** (Exec flagged directly, Lead gave filer-side data + epic-mapping suggestions I mostly
+adopted after independent verification): new issues now need Product Backlog status AND a
+milestone at filing, closing the gap that let "unset" be a reachable state on either field. Two
+more mail items were CXO/Lead's own `#1717` harness-handoff thread, cc-only, no PPM action. Caught
+my own mail-send miss mid-fire — cc'd Lead/Arch in a memo header without passing their delivery
+paths, tool warned correctly, fixed with a follow-up send.
+
+**Prior fire: 2026-09-12 13:09 PT (WORK). Busy fire — 10 unmilestoned issues (drift 0→10),
 8 mail items, one direct PPM/PM disposition call.** All 10 issues folded into already-open epics
 (none reopened): epic 4 → 9 items (`#1755`/`#1756`/`#1757`, classifier-audit siblings), epic 5 → 9
 items (`#1754`/`#1759`/`#1760`/`#1761`/`#1763` — `#1754`+`#1759` are independent same-day findings

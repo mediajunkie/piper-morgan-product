@@ -46,6 +46,17 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 | 7y | **NO-DAY-CLOSE streak detector** (CXO's finding) — a role can stop emitting `DAY-CLOSED` markers entirely and no external mechanism reports the absence, since Step 0's self-heal only runs as a step inside the same discipline it's meant to catch a lapse in (CXO found their own 16-day lapse this way — the self-heal and the lapse stopped together). Same "clear vs. never-measured" shape as everything else found this week. | Sept 11 | CXO explicitly asked NOT to arm this tonight — one evening snapshot can't distinguish "not closed yet" (normal, pre-STOP) from "genuinely stopped" across 11 roles with different STOP times, and this week already burned one threshold (mine) sized against too few points. Design once real cohort DAY-CLOSED data exists to size the streak threshold K against. Placement: `duty-cycle-freeze-check.sh`'s already-paid-for per-role traversal, same argument that put the mailbox-nesting invariant in the filename lint. My own seat checked clean (14 consecutive real markers, verified with the anchored pattern after a first-pass false positive from a prose mention). |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
 
+- **`duty-cycle-tick` v1.34 — Step 5b self-verification, closing a real 2-day compliance gap on my
+  own seat** (Sept 12, same-day find-and-fix) — Exec found I'd gone two consecutive days with zero
+  heartbeat invocations despite 8+ real commits/day, caught both times via a cohort-attention
+  rollup rather than anything in the skill itself. Ran the missing heartbeat immediately
+  (`570d55c60`). Built the actual mechanism, not just a personal fix: Step 5b now greps
+  `duty-cycle-freeze-check.sh`'s own per-role output for your own role name right after the
+  heartbeat command — commit `20a909f91`. Tested it on myself same-fire (clean, no output for
+  "cio," confirming the fix's own success signal). Root cause was Exec/CXO's shared finding from
+  the same week (m-53's evidence): running Step 5b and skipping it produce identical local output
+  on a busy fire, so there was no in-the-moment feedback that the step had been skipped.
+
 - **`duty-cycle-tick` v1.33 — the bundled skill-text pass** (#7v, filed Sept 11, **shipped Sept 12,
   first fresh-session opening after deferral**) — commit `0adaaa017`. Four changes: (1) work queue
   redefined as carried-work + mail + a per-role GitHub criteria line for every role, generalizing
