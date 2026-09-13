@@ -1,4 +1,23 @@
-# Lead carry-forward — rewritten 2026-09-12 ~15:10 PT (freshness rule: full pass at START/STOP)
+# Lead carry-forward — rewritten 2026-09-12 ~23:05 PT, SATURDAY DAY CLOSE (freshness rule: full pass at START/STOP)
+
+## DAY-CLOSE DELTA (evening fires 5–7, on top of the 15:10 state below)
+- **v95 LIVE. 31 closes, 23 deploys total.** Evening adds: 1717 (CXO pre-registered 4/4) ·
+  1748+1749 (CI guard-line before/after — the green ubuntu run carries the guard verbatim) ·
+  1767 + 1754 + 1768 (THE WHOLE RULE-0 BATCH EXECUTED — Arch GO×3, both 1768 proofs landed,
+  no STOP; principal-threading gate now ZERO exemptions repo-wide; silent-death ceiling
+  197→194; ~2,000 more dead lines out).
+- **PM's two items now have ZERO prep left**: the finger-followable rotation comment is ON
+  #1687 (names/consoles/paste/verify + the 08-28 handoff confirmed done); the standup remains
+  the only epic-3 gate.
+- **RATIFIED (PPM)**: every filing gets Product Backlog status AND milestone. In my briefs.
+- New follow-ons filed by lanes tonight: #1772 (CXO's N=1 leak, measure-before-design) ·
+  #1773 (registry disposition drift) · #1774 (orphaned conscious component family + the
+  writer-less lens surface). All board-added + milestoned per convention.
+- Flag routed to CIO/HOST: the broad-staging PreToolUse gate's documented --no-verify escape
+  is fictional (PreToolUse fires pre-Bash) — make the escape real or delete the doc.
+- NEXT QUEUE (fresh session): epic 6 (#1762 truncation sweep + #1729) · #1771 defer-tier
+  (CXO-adjacent) · #1772 measurement · singletons per the now-complete epic map · the
+  builder-dedupe ruling (Lead/Arch) · cron ROTATE ~9/14.
 
 ## Live state (receipts, Saturday 09-12 — the big drain day)
 - **v92 LIVE** (19 deploys today, deploy-by-default, each verified releases+health; v75's
