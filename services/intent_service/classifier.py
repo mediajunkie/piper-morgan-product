@@ -27,48 +27,21 @@ from services.domain.models import Intent, IntentCategory
 # GREAT-4B Phase 3: Intent caching
 from services.intent_service.cache import IntentCache
 
-# Conversation context (Issue #427)
-from services.intent_service.conversation_context import (
-    ConversationContext,
-    detect_follow_up,
-    extract_temporal_reference,
-    extract_topic,
-    get_or_create_context,
-    resolve_follow_up,
-)
-
 # --- Add fuzzy matcher import ---
 from services.intent_service.fuzzy_matcher import correct_common_typos, fuzzy_match
-from services.intent_service.honest_failure import (
-    HonestFailureHandler,
-    create_graceful_error_response,
-)
 from services.intent_service.intent_hooks import IntentProcessingHooks
-
-# Grammar-conscious classification components (Issue #619)
-from services.intent_service.intent_types import IntentClassificationContext, IntentUnderstanding
-
-# Lens inference (#763 GLUE-FOLLOWUP)
-from services.intent_service.lens_inference import (
-    decode_follow_up_with_llm,
-    extract_lens_from_intent,
-    is_lens_reset,
-    should_try_llm_decoder,
-)
-from services.intent_service.personality_bridge import PersonalityBridge
-from services.intent_service.place_detector import PlaceDetector
 from services.intent_service.pre_classifier import MultiIntentResult, PreClassifier
 from services.intent_service.preference_handler import PreferenceDetectionHandler
 from services.intent_service.prompts import INTENT_CLASSIFICATION_PROMPT
-from services.intent_service.warmth_calibration import WarmthCalibrator
 from services.knowledge_graph import get_ingester
-
-# Orientation system (Issue #410)
-from services.mux.orientation import ChannelType, OrientationState, TrustContext
-
-# Recognition system (Issue #411) - late import to avoid circular dependency
-# RecognitionTrigger and create_recognition_understanding are imported in __init__
 from shared.events import EventBus
+
+# #1768 (2026-09-12): classify_conscious — the grammar-conscious classification
+# pipeline (#619/#410/#411/#427/#763) — was deleted as zero-caller dead code
+# (Arch GO-conditional ruling, both proofs recorded in the deletion commit).
+# The conversation_context follow-up detectors, lens_inference, and the
+# place/orientation/personality/recognition/honest-failure component wiring it
+# drove left this module with it. classify() below is, and was, the live path.
 
 logger = structlog.get_logger()
 
@@ -194,19 +167,10 @@ class IntentClassifier:
         self.hooks = IntentProcessingHooks(self.preference_handler)
         logger.info("Preference detection hooks initialized for #248")
 
-        # Issue #619: Grammar-conscious classification components
-        self.place_detector = PlaceDetector()
-        self.personality_bridge = PersonalityBridge()
-        self.warmth_calibrator = WarmthCalibrator()
-        self.failure_handler = HonestFailureHandler(self.warmth_calibrator)
-        logger.info("Grammar-conscious classification components initialized (#619)")
-
-        # Issue #411: Recognition trigger for low-confidence handling
-        # Late import to avoid circular dependency with intent_types
-        from services.mux.recognition_trigger import RecognitionTrigger
-
-        self.recognition_trigger = RecognitionTrigger()
-        logger.info("Recognition trigger initialized (#411)")
+        # #1768: the grammar-conscious component instances (place_detector,
+        # personality_bridge, warmth_calibrator, failure_handler,
+        # recognition_trigger) were deleted with classify_conscious — their
+        # sole consumer. The component modules themselves still exist.
 
     @property
     def llm(self):
@@ -668,336 +632,9 @@ class IntentClassifier:
             # Raise a structured error instead of falling back
             raise IntentClassificationFailedError(details={"original_error": str(e)})
 
-    async def classify_conscious(
-        self,
-        message: str,
-        context: Optional[Dict] = None,
-        session: Optional[Any] = None,
-        spatial_context: Optional[Dict] = None,
-        use_cache: bool = True,
-        user_id: Optional[str] = None,
-    ) -> IntentUnderstanding:
-        """
-        Grammar-conscious intent classification (Issue #619).
-
-        This method returns IntentUnderstanding instead of raw Intent,
-        providing experiential framing of Piper's understanding.
-
-        For backward compatibility, use classify() which returns Intent.
-        New code should prefer this method for richer responses.
-
-        Integration point (Issue #410, Arch Decision 2026-01-23):
-        Request → PlaceDetector → OrientationState.gather() → IntentClassifier → Handler
-
-        Args:
-            message: User input text
-            context: Optional context dict
-            session: Optional session object
-            spatial_context: Optional spatial context
-            use_cache: Whether to use cache (default True)
-
-        Returns:
-            IntentUnderstanding with Piper's experiential understanding
-        """
-        # Detect Place first
-        place, place_settings = self.place_detector.detect_with_settings(spatial_context)
-
-        # Issue #410: Gather orientation after PlaceDetector, before classification
-        # This is Piper perceiving the current Situation through multiple lenses
-        orientation = self._gather_orientation(
-            context=context,
-            place=place,
-            spatial_context=spatial_context,
-        )
-
-        # Build rich classification context
-        classification_context = IntentClassificationContext.from_classify_args(
-            message=message,
-            context=context,
-            spatial_context=spatial_context,
-            place=place,
-        )
-
-        # Attach orientation to classification context for downstream use
-        classification_context.orientation = orientation
-
-        # Issue #427: Get or create conversation context for follow-up detection
-        session_id = context.get("session_id") if context else None
-        conv_context: Optional[ConversationContext] = None
-        if session_id:
-            conv_context = get_or_create_context(session_id)
-            classification_context.conversation_context = conv_context
-
-        try:
-            # Issue #427: Check for conversational follow-up before LLM classification
-            # This enables "How about today?" after asking about tomorrow
-            intent: Optional[Intent] = None
-            if conv_context and conv_context.is_active:
-                follow_up_result = detect_follow_up(message, conv_context)
-                if follow_up_result:
-                    follow_up_type, extracted_data = follow_up_result
-                    resolved_intent = resolve_follow_up(
-                        follow_up_type, extracted_data, conv_context
-                    )
-                    if resolved_intent:
-                        logger.info(
-                            "follow_up_resolved",
-                            follow_up_type=follow_up_type.value,
-                            resolved_action=resolved_intent.action,
-                            inherited_from=(
-                                str(conv_context.last_turn.id) if conv_context.last_turn else None
-                            ),
-                        )
-                        intent = resolved_intent
-
-            # #763 Phase 3: If rules didn't match but lens is active,
-            # try the LLM decoder for complex follow-ups
-            if intent is None and conv_context:
-                current_lens = conv_context.current_lens
-                # #1436: the None-check is already inside should_try_llm_decoder
-                # (returns False for a null lens); stating it here too lets the
-                # type checker see the decoder below only ever gets a str.
-                if current_lens is not None and should_try_llm_decoder(message, current_lens):
-                    decoded = await decode_follow_up_with_llm(
-                        message=message,
-                        turns=conv_context.turns,
-                        current_lens=current_lens,
-                        llm_service=self.llm,
-                    )
-                    if decoded:
-                        logger.info(
-                            "follow_up_llm_decoded",
-                            action=decoded.action,
-                            lens=decoded.context.get("inherited_lens"),
-                        )
-                        intent = decoded
-
-            # If not a follow-up, use existing classify() for the raw Intent
-            if intent is None:
-                intent = await self.classify(
-                    message=message,
-                    context=context,
-                    session=session,
-                    spatial_context=spatial_context,
-                    use_cache=use_cache,
-                    user_id=user_id,
-                )
-
-            # Issue #427: Record this turn in conversation context
-            if conv_context:
-                temporal_ref = extract_temporal_reference(message)
-                topic = extract_topic(message, intent)
-
-                # #763: Extract lens — for follow-ups, inherit from context;
-                # for new queries, infer from the classified intent
-                lens = intent.context.get("inherited_lens") or extract_lens_from_intent(intent)
-
-                # #763 Phase 4: Detect lens reset (explicit topic change)
-                if is_lens_reset(lens, conv_context.current_lens, intent):
-                    conv_context.reset_lens()
-                elif lens and conv_context.current_lens and lens != conv_context.current_lens:
-                    # #827: Lens changed but NOT a reset — this is a sub-topic
-                    # digression (e.g., calendar → "who's attending?" → people lens).
-                    # Check if the new lens matches a previous stack entry (returning
-                    # from digression) or is a new digression (push current lens).
-                    if lens in conv_context.lens_stack:
-                        # Returning to a previous topic — pop back to it
-                        while conv_context.lens_stack and conv_context.lens_stack[-1] != lens:
-                            conv_context.pop_lens()
-                        # Pop the matching entry itself (it becomes current via add_turn)
-                        conv_context.pop_lens()
-                    else:
-                        # New sub-topic digression — save current lens for later
-                        conv_context.push_lens(lens)
-
-                conv_context.add_turn(
-                    message=message,
-                    intent=intent,
-                    temporal_reference=temporal_ref,
-                    topic=topic,
-                    lens=lens,
-                )
-
-            # Issue #411: Check for recognition opportunity before failure handling
-            # Recognition fills the gap between confident action and honest failure
-            # by offering contextual options when confidence is moderate
-            recognition_result = self.recognition_trigger.evaluate(
-                intent=intent,
-                context=classification_context,
-                channel=self._get_channel_type(spatial_context),
-                trust_stage=self._get_trust_stage(context),
-            )
-
-            if recognition_result.should_trigger:
-                logger.debug(
-                    "Recognition triggered",
-                    confidence=intent.confidence,
-                    options_count=(
-                        recognition_result.recognition_options.options
-                        if recognition_result.recognition_options
-                        else 0
-                    ),
-                    reason=recognition_result.reason,
-                )
-                # Late import to avoid circular dependency
-                from services.mux.recognition_trigger import create_recognition_understanding
-
-                return create_recognition_understanding(
-                    intent=intent,
-                    context=classification_context,
-                    recognition_options=recognition_result.recognition_options,
-                    formatted_response=recognition_result.formatted_response,
-                )
-
-            # Check for low confidence - handle specially (below recognition threshold)
-            if intent.confidence < 0.35:
-                return self.failure_handler.handle_low_confidence(
-                    intent=intent,
-                    context=classification_context,
-                    place_settings=place_settings,
-                )
-
-            # #1759: the vague-intent branch (failure_handler.handle_vague_intent)
-            # was excised with the dead clarify-carrier machinery — the branch's
-            # sole purpose was calling the deleted member. Vague-but-classified
-            # intents proceed to the personality-bridge transform below.
-            # (_seems_vague itself stays: classify() at its low-confidence gate
-            # is a live caller.)
-
-            # Transform to grammar-conscious understanding
-            understanding = self.personality_bridge.transform(
-                intent=intent,
-                context=classification_context,
-                place_settings=place_settings,
-            )
-
-            # Record for pattern detection
-            if classification_context.user_id:
-                self.personality_bridge.record_intent(
-                    classification_context.user_id,
-                    intent.action,
-                )
-
-            return understanding
-
-        except Exception as e:
-            logger.error(f"Grammar-conscious classification failed: {e}", exc_info=True)
-            # Return graceful failure instead of raising
-            return create_graceful_error_response(
-                context=classification_context,
-                place_settings=place_settings,
-                error=e,
-            )
-
-    def _gather_orientation(
-        self,
-        context: Optional[Dict] = None,
-        place: Optional[Any] = None,
-        spatial_context: Optional[Dict] = None,
-    ) -> Optional[OrientationState]:
-        """
-        Gather Piper's orientation state.
-
-        Issue #410: This is Piper perceiving the current Situation
-        through multiple lenses (Identity, Temporal, Spatial, Agency, Prediction).
-
-        Integration point per Arch Decision 2026-01-23:
-        After PlaceDetector, before IntentClassifier.
-
-        Args:
-            context: Request context dict
-            place: Detected InteractionSpace
-            spatial_context: Spatial context dict
-
-        Returns:
-            OrientationState or None if gathering fails
-        """
-        try:
-            # Gather orientation from available context
-            # Note: ConsciousnessContext and UserContext would be passed
-            # from higher layers when available. For now, we gather what we can.
-            orientation = OrientationState.gather(
-                place=place,
-                # Future: pass user_context, consciousness_context, trust_context
-                # These will be wired in as the integration matures
-            )
-
-            logger.debug(
-                "orientation_gathered",
-                place=str(place) if place else None,
-                identity_confidence=orientation.identity.confidence,
-                temporal_confidence=orientation.temporal.confidence,
-                spatial_confidence=orientation.spatial.confidence,
-            )
-
-            return orientation
-
-        except Exception as e:
-            # Orientation is supplementary - don't fail classification if it fails
-            logger.warning(f"Orientation gathering failed (non-fatal): {e}")
-            return None
-
-    def _get_channel_type(
-        self,
-        spatial_context: Optional[Dict] = None,
-    ) -> ChannelType:
-        """
-        Determine channel type from spatial context.
-
-        Issue #411: Channel affects recognition formatting.
-
-        Args:
-            spatial_context: Spatial context dict
-
-        Returns:
-            ChannelType for current request
-        """
-        if not spatial_context:
-            return ChannelType.WEB
-
-        channel = spatial_context.get("channel", "").lower()
-
-        if channel == "slack":
-            return ChannelType.SLACK
-        elif channel == "cli":
-            return ChannelType.CLI
-        elif channel == "api":
-            return ChannelType.API
-        else:
-            return ChannelType.WEB
-
-    def _get_trust_stage(
-        self,
-        context: Optional[Dict] = None,
-    ) -> int:
-        """
-        Get trust stage from context.
-
-        Issue #411: Trust stage affects recognition language.
-
-        Args:
-            context: Request context dict
-
-        Returns:
-            Trust stage (1-4), defaults to 1 for new users
-        """
-        if not context:
-            return 1
-
-        # Trust stage may be in context or user context
-        trust_stage = context.get("trust_stage")
-        if trust_stage is not None:
-            return int(trust_stage)
-
-        # Check user context
-        user_context = context.get("user_context", {})
-        if isinstance(user_context, dict):
-            trust_stage = user_context.get("trust_stage")
-            if trust_stage is not None:
-                return int(trust_stage)
-
-        # Default to stage 1 (new user)
-        return 1
+    # #1768 (2026-09-12): classify_conscious + its private helpers
+    # (_gather_orientation, _get_channel_type, _get_trust_stage) deleted here —
+    # zero production callers (sole referent was a comment in intent_service.py).
 
     async def classify_multiple(
         self,

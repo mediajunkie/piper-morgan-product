@@ -1590,14 +1590,12 @@ class TestPrincipalThreadingGuards1532:
     # their rows. 2026-08-30: services/project_context/ WAS deleted (Batch-2
     # census-dead-family disposal) — its tuple and both counted call sites
     # left the set exactly as this comment predicted (3 → 1).
-    ALLOWED_UNTHREADED = {
-        (
-            os.path.join("services", "intent_service", "classifier.py"),
-            "classify_conscious",
-            "get_or_create_context",
-        ),
-    }
-    MAX_UNTHREADED_PRINCIPAL_READS = 1
+    # 2026-09-12 (#1768): classify_conscious WAS deleted — its tuple, the last
+    # allowlisted exemption, leaves the set (1 → 0). The gate is now fully
+    # tight: EVERY principal-keyed read must thread a principal. Never re-seed
+    # this set — fix the site instead.
+    ALLOWED_UNTHREADED: set = set()
+    MAX_UNTHREADED_PRINCIPAL_READS = 0
 
     @staticmethod
     def _call_name(call) -> str:

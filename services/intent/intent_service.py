@@ -476,8 +476,11 @@ class IntentService:
             return result
 
         try:
-            # Issue #820: Read current lens from conversation context
-            # Classifier already extracts and stores lens during classify_multiple()
+            # Issue #820: Read current lens from conversation context.
+            # NOTE (#1768, 2026-09-12): this read is best-effort and currently
+            # always None in production — the only writer of turn lenses was
+            # classify_conscious (zero-caller, deleted). A prior comment here
+            # claimed classify_multiple() stores lens; it never did.
             current_lens = None
             try:
                 conv_context = get_or_create_context(session_id, user_id=user_id)
@@ -14844,8 +14847,10 @@ Add any additional information here.
             conv_ctx.last_floor_category = category
 
             # Issue #1030 R4 bug fix 2026-06-02: intent_service calls
-            # IntentClassifier.classify() (basic), not classify_conscious(), so
-            # the in-memory conv_ctx.add_turn() side effect never fires for
+            # IntentClassifier.classify(), which has no in-memory
+            # conv_ctx.add_turn() side effect (classify_conscious, the method
+            # that recorded turns during classification, was zero-caller dead
+            # code — deleted 2026-09-12, issue 1768), so no turn is recorded for
             # pre-classifier-routed intents (which is ~most of them). Without
             # a turn, Step 6's `if conv_ctx.turns:` was always False → write
             # never happened. Add the turn explicitly here for the current
