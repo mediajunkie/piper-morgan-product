@@ -1,6 +1,14 @@
-# Web carry-forward — 2026-09-11 (active), cron ID last updated 2026-09-11
+# Web carry-forward — 2026-09-12 (active), cron ID last updated 2026-09-12
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `7aca645b`, re-armed at 2026-09-11 STOP) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `c2e04dab`, re-armed at 2026-09-12 STOP) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+
+**Open, one item (2026-09-12 close)**: website#35 — the 08-25 structural fix (`8edfc11`) is
+shipped; closable once PM answers whether the incident involved tabs/back-forward navigation
+(asked directly in conversation 09-12; if no recall, close on the fix's merits with that noted).
+Also pending PM: the WYSIWYG raw/rendered toggle with cursor preservation (PM's own proposal,
+accepted as direction, queued behind the bug work — now unblocked); Vercel Q1 (access);
+integration-reveals-all workDate (only if PM recalls). Repo-local git identity set in both repos
+09-12 after the host `~/.gitconfig` vanished (Comms found it first; Pard owns the host fix).
 
 ⚠️ **Trimmed 2026-08-29** — everything this file carried from 2026-08-03 through 2026-08-25 was
 fully-resolved historical record (marked CLOSED/FIXED/SHIPPED/SETTLED at the time), sitting in
