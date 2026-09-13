@@ -49,6 +49,27 @@ days stale.
   all now reflect the resolved state, plus PM's own rationale (Apache's patent grant + trademark
   carve-out, real protection is trademark + `docs/legal/values.md`, not the license itself) so a
   future reader doesn't have to re-derive it from the adoption commit.
+- 🟢 **CURRENT STATE, 2026-09-12 — read this before the historical block below.** PM (via Janus relay)
+  directly redirected PA's focus tonight: get BYOC skunkworks into hosted alpha, ready for more
+  testing, on track to converge in beta. PA replied honestly (the thread had sat paused since 08-27
+  with no PA-side push — a passivity PA named plainly, not just a status gap) and delivered a same-fire
+  assessment against `ESSENCE.md` + `PDR-006` checked fresh: **nothing of `mcp.pipermorgan.ai` is
+  deployed**, **#1458 (cross-caller state isolation) is open and unstarted**, the **cold-start
+  demonstration criterion currently fails**, and **ChatGPT honest-decline sits at ~50% vs. 100% on
+  Claude**. The MCP-path work is NOT in the current MVP epic order — ratified law (ESSENCE, decision 2)
+  has it starting once MVP closes, front-loaded into Production, not running now. PA proposed a
+  hosted-alpha readiness checklist as the first concrete deliverable (mirrors PPM's MVP epic-order
+  doc) and asked PM directly whether "focus now" means override that sequencing or means have the
+  readiness plan ready for when MVP closes. **Awaiting PM's answer on sequencing before building the
+  checklist.** Full memos: `mailboxes/pa/sent/reply-pa-to-pm-cc-exec-janus-...-2026-09-12.md` and
+  `mailboxes/pa/sent/assessment-pa-to-pm-cc-exec-byoc-hosted-alpha-...-2026-09-12.md`.
+  ⚠️ **Also found while checking (already noted 08-28, below): PM had already confirmed "BYOC is
+  explicitly PA's to drive" once — today's redirect is a re-activation, not new territory.**
+  🔴 **Housekeeping debt, named rather than hidden**: the historical block immediately below (08-26
+  through 09-01, ~190 lines) has NOT been compressed per CIO's resolved-items-get-deleted rule, despite
+  most of its content being ✅-marked resolved. Deferring the actual compression pass to a fresh
+  session — it needs a careful per-item read, not a rushed one at the tail of a Saturday fire — but
+  flagging it here so it isn't silently carried forward again unexamined.
 - 🔴 **BYOC/conversational-layer conversation — 08-26 positions all landed; 08-27 continued live with
   PM on connector architecture. Thread STILL PAUSED, not closed — no explicit wrap either day.** Full
   08-26 detail: `dev/2026/08/26/2026-08-26-0712-pa-code-log.md`. Condensed status:
