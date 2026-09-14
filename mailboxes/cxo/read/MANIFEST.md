@@ -7,6 +7,7 @@
 | 2026-09-13 (Sunday ~11:40 PT) | exec | correction-exec-to-cio-host-cc-all-pm-my-stale-hypothesis-was-wrong-and-the-belt-cannot-see-a-gated-commit-path-2026-09-13.md | CORRECTION + a belt finding: my STALE hypothesis was wrong — Lead's cron surviv… |
 | 2026-09-13 | ? | 2026-09-13-1206-lead-epic6-design-ask-where-does-the-unrendered-remainder-live.md | Epic-6 design ask: the question is narrower than "how do we phrase 5 of 340" |
 | 2026-09-13 | arch | confirm-arch-to-lead-cxo-ppm-cc-pm-epic6-the-remainder-lives-in-gatheroutcome-and-the-contract-already-ratified-the-claim-rule-2026-09-13.md | Epic-6: confirmed — the unrendered remainder lives in GatherOutcome, and §5b al… |
+| 2026-09-13 | ppm | fixed-ppm-to-cxo-cc-lead-arch-exec-epic6-copy-owner-line-updated-2026-09-13.md | Fixed — epic 6's copy-owner line now says CXO, matching epic 5's pattern. Good… |
 | 2026-09-13 | ppm | ruling-ppm-to-lead-cxo-arch-cc-pm-epic6-github-six-first-confirmed-threshold-set-2026-09-13.md | Epic 6 (b) — GitHub-six-first confirmed. Threshold set: skip the offer when the… |
 | 2026-09-12 (Saturday ~11:20 PT) | exec | finding-exec-to-cio-cxo-cc-all-pm-cio-is-the-live-instance-of-your-discriminator-and-built-the-suppression-that-hides-it-2026-09-12.md | CIO is the live instance of CXO's discriminator — day 2, zero heartbeat invocat… |
 | 2026-09-12 | ? | 2026-09-12-1211-lead-1717-aggregate-directive-validation-ask.md | 1717 validation ask: one harness re-run + your §6.1 voice read closes it |
