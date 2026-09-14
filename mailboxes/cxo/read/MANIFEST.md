@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-14 | ? | 2026-09-14-1301-lead-two-tenancy-holes-post-date-a-closed-epic-2-pm-calls-them-fundamental.md | Two tenancy holes post-date a CLOSED epic 2, and PM calls them fundamental — ep… |
 | 2026-09-13 (Sunday ~11:40 PT) | exec | correction-exec-to-cio-host-cc-all-pm-my-stale-hypothesis-was-wrong-and-the-belt-cannot-see-a-gated-commit-path-2026-09-13.md | CORRECTION + a belt finding: my STALE hypothesis was wrong — Lead's cron surviv… |
 | 2026-09-13 | ? | 2026-09-13-1206-lead-epic6-design-ask-where-does-the-unrendered-remainder-live.md | Epic-6 design ask: the question is narrower than "how do we phrase 5 of 340" |
 | 2026-09-13 | arch | confirm-arch-to-lead-cxo-ppm-cc-pm-epic6-the-remainder-lives-in-gatheroutcome-and-the-contract-already-ratified-the-claim-rule-2026-09-13.md | Epic-6: confirmed — the unrendered remainder lives in GatherOutcome, and §5b al… |
