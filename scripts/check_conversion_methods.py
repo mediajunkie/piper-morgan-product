@@ -38,7 +38,24 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 #
 # Disposal (tables, migrations, possible stray rows) is tracked separately -- deleting
 # a DB model has its own discipline and does not belong to this checker's lane.
+# TWO distinct sub-shapes live here, and the reason lines must let a reader tell
+# them apart (Arch, 2026-09-14 re-ruling):
+#   * "dead persistence twin"  -- the DB class is dead, the domain class may be
+#     very much alive (domain Intent has 26 importers; its DB twin has none).
+#   * "live owner-anchor row"  -- the INVERSE: the DB class is live and the
+#     name-matched domain class is the dead one. DocumentDB is this shape.
+#
+# The generalizable rule the second shape produced, now part of the ruling:
+# LIVENESS MUST BE MEASURED ON BOTH SIDES. A live DB class with a dead domain
+# twin fails the round-trip test exactly as a dead DB class with a live domain
+# twin does -- measuring one side answers the wrong question.
 DEAD_PERSISTENCE_TWINS: Dict[str, str] = {
+    "DocumentDB": (
+        "live owner-anchor row with no domain counterpart -- the name-matched "
+        "domain class is a different, dead object (content-bearing vs anchor-only); "
+        "a from_domain would have to invent chromadb_base_id and drop the ADR-071 "
+        "D1/D2 security fields (owner_id, is_global_pm_domain). See #1797."
+    ),
     "Feature": "dead persistence twin, zero importers, see #1273",
     "Intent": "dead persistence twin, zero importers, see #1273",
     "Product": "dead persistence twin, zero importers, see #1273",
