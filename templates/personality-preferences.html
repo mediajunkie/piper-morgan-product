@@ -436,7 +436,10 @@
       // Load current preferences on page load
       async function loadPreferences() {
         try {
-          const response = await fetch("/api/v1/personality/profile/default", {
+          // #1751: no user id in the URL. The server derives the principal
+          // from the auth_token cookie this request carries; a client-supplied
+          // id was the multi-tenancy bug, not the fix.
+          const response = await fetch("/api/v1/personality/profile", {
             credentials: "include"
           });
           const result = await response.json();
@@ -568,7 +571,8 @@
         const saveBtn = document.querySelector('button[onclick="savePreferences()"]');
         try {
           Loading.button(saveBtn, true);
-          const response = await fetch("/api/v1/personality/profile/default", {
+          // #1751: session-scoped address, no client-supplied user id.
+          const response = await fetch("/api/v1/personality/profile", {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -612,9 +616,10 @@
             headers: {
               "Content-Type": "application/json",
             },
+            // #1751: no user_id key — the server reads the principal from the
+            // session cookie, and ignores the key if a client sends one.
             body: JSON.stringify({
               content: testContent,
-              user_id: "default",
               confidence: 0.8,
             }),
             credentials: "include",

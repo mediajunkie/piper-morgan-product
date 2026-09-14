@@ -10,7 +10,16 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-13 13:22 PT (WORK). **A real design ruling this fire — epic 6's first
+**Last rewritten**: 2026-09-13 16:22 PT (WORK). **CXO caught a real stale-line defect in my own
+file** — epic 6's entry still asked to "name the copy-owner" eleven lines above CXO's own
+delivered copy shape from this morning; fixed to state CXO as owner (matching epic 5's pattern).
+Triaged 3 more issues: `#1785` (already MVP-milestoned via the filing convention, but missing from
+the board — folded into epic 1, now 9 items; also strong evidence PM's `#1687` secret rotation
+actually happened, per the issue's own filing account) and `#1786`/`#1787` (Production milestone,
+matching their parent `#1436`'s own milestone — not MVP, not part of the epic-order file). Two
+other mail items were CXO/Exec's own belt-methodology continuation, cc-only, no PPM action.
+
+**Prior fire: 2026-09-13 13:22 PT (WORK). A real design ruling this fire — epic 6's first
 build.** Lead/CXO/Arch converged independently on GitHub-six-first (honest-count half already
 done, only threading missing); confirmed it, and made the one call left for PPM: skip the
 capped-list offer when the hidden remainder is ≤3 items (just show them, no ceremony). Added

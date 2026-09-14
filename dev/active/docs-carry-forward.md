@@ -1,6 +1,10 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-13 ~13:20 PDT (quiet fire, fully drained).
+**Updated**: 2026-09-13 ~16:20 PDT (mail empty; fixed #1728 via the new GitHub-criteria source).
+**Third work-queue source, established 09-13 (PM's v1.33 ruling)**: Docs's criteria line is
+`gh issue list --search "label:documentation" --state open --limit 50` — open each result, don't
+trust the list view (CXO's 09-12 finding). Denominator was 7 as of 09-13. Check every WORK fire
+after the mail loop, alongside standing-items.
 **New publish-sequencing discipline**: commit the calendar update as its OWN fast, standalone
 commit immediately after the website publish (Step 6/7 of `publish-to-blog` — already documented
 this way), and do drafts-folder archival (Step 9) as a SEPARATE, later commit. Bundling the two
@@ -35,6 +39,11 @@ PM then asked about open audit-related GitHub issues. Found and fixed two real o
 "ACTIVE"; #1721 correctly left open, genuinely blocked on an unresolved upstream decision, not
 stale). Filed two adjacent discoveries separately (#1779, #1780) rather than scope-creep them in.
 Then dug into the rest and found a real cluster worth escalating — see Watch surfaces.
+
+A later quiet fire (16:20) used #1720/#1721's shared `documentation` label to establish a real
+GitHub-criteria line for the flywheel's third work-queue source (see header) — checked all 7 open
+hits, fixed one genuinely-mine small gap (#1728, stale mailbox-infrastructure row), left the rest
+correctly alone (one's CIO's lane, others already tracked or not current).
 
 ## 09-12 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-12-omnibus-log.md`)
 

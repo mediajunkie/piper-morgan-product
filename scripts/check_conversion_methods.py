@@ -49,35 +49,37 @@ def find_domain_models() -> List[str]:
 
 
 def check_conversion_methods(database_model_name: str) -> Tuple[bool, List[str]]:
-    """Check if database model has proper conversion methods"""
+    """Check if database model has proper conversion methods.
+
+    Detection note: `from_domain` is a @classmethod, and a classmethod accessed on the class
+    is a *bound method*, not a function. The previous implementation enumerated members with
+    `predicate=inspect.isfunction`, so every correctly-written `from_domain` classmethod was
+    reported as "Missing" -- 24 false positives, including ProjectDB and WorkItem, whose
+    from_domain implementations are plainly present in services/database/models.py.
+    Membership is now tested with getattr/callable, and the shape checks distinguish
+    instance methods from classmethods via inspect.ismethod on the class object.
+    """
     try:
         from services.database import models
 
         db_model = getattr(models, database_model_name)
-        methods = inspect.getmembers(db_model, predicate=inspect.isfunction)
-        method_names = [name for name, _ in methods]
+
+        to_domain = getattr(db_model, "to_domain", None)
+        from_domain = getattr(db_model, "from_domain", None)
 
         issues = []
 
-        # Check for to_domain method
-        if "to_domain" not in method_names:
-            issues.append(f"Missing to_domain() method")
+        if not callable(to_domain):
+            issues.append("Missing to_domain() method")
+        elif inspect.ismethod(to_domain):
+            # Bound to the class => declared as a classmethod; to_domain needs instance state.
+            issues.append("to_domain() should be an instance method, not a class method")
 
-        # Check for from_domain method
-        if "from_domain" not in method_names:
-            issues.append(f"Missing from_domain() method")
-
-        # Check if methods are properly decorated
-        # to_domain should be an instance method, from_domain should be a class method
-        if "to_domain" in method_names:
-            method = getattr(db_model, "to_domain")
-            if inspect.ismethod(method) and hasattr(method, "__self__"):
-                issues.append(f"to_domain() should be an instance method, not a class method")
-
-        if "from_domain" in method_names:
-            method = getattr(db_model, "from_domain")
-            if not inspect.ismethod(method) or not hasattr(method, "__self__"):
-                issues.append(f"from_domain() should be a class method")
+        if not callable(from_domain):
+            issues.append("Missing from_domain() method")
+        elif not inspect.ismethod(from_domain):
+            # Plain function on the class => not decorated as a classmethod.
+            issues.append("from_domain() should be a class method")
 
         return len(issues) == 0, issues
 
@@ -98,11 +100,29 @@ def main():
     print(f"📊 Found {len(domain_models)} domain models")
     print()
 
-    # Check each database model
+    # Only database models that HAVE a domain counterpart can have a conversion layer.
+    # Pure-persistence entities (TokenBlacklist, PasswordResetToken, InviteToken, SlackLinkCode,
+    # AuditLog, User, ...) have no domain dataclass to convert to or from, so demanding
+    # to_domain()/from_domain() on them is not a drift signal -- it is noise that kept this
+    # gate permanently red (46 of 47 models reported) and therefore unusable as a regression
+    # detector. Scoped by exact name match or the `<Name>DB` suffix convention.
+    domain_set = set(domain_models)
+    in_scope = [
+        name
+        for name in database_models
+        if name in domain_set or (name.endswith("DB") and name[:-2] in domain_set)
+    ]
+    skipped = sorted(set(database_models) - set(in_scope))
+
+    print(f"📊 {len(in_scope)} model(s) have a domain counterpart and are in scope")
+    print(f"📊 {len(skipped)} persistence-only model(s) skipped (no domain counterpart)")
+    print()
+
+    # Check each in-scope database model
     all_passed = True
     total_issues = 0
 
-    for db_model_name in database_models:
+    for db_model_name in in_scope:
         passed, issues = check_conversion_methods(db_model_name)
 
         if passed:
