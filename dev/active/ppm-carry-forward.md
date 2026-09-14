@@ -10,7 +10,15 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-13 16:22 PT (WORK). **CXO caught a real stale-line defect in my own
+**Last rewritten**: 2026-09-13 19:22 PT (WORK). **Added epic 11** for `#1788` (PM-056
+schema-validation workflow revived after months dead, found 13 apparent missing domain
+converters — Arch's ruling: 2 real, 5 dead persistence twins to configure-off + disposal). No
+existing epic fit honestly (different mechanism than epic 1's CI or epics 5/9's dead-code shapes),
+so it got its own rather than a forced fit — same discipline as epics 9/10. The technical ruling
+itself was Lead/Arch's, not PPM's; folded in for tracking. CIO's belt-methodology closeout was
+cc-only. 0 unmilestoned, no drift.
+
+**Prior fire: 2026-09-13 16:22 PT (WORK). CXO caught a real stale-line defect in my own
 file** — epic 6's entry still asked to "name the copy-owner" eleven lines above CXO's own
 delivered copy shape from this morning; fixed to state CXO as owner (matching epic 5's pattern).
 Triaged 3 more issues: `#1785` (already MVP-milestoned via the filing convention, but missing from
