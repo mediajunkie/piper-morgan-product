@@ -57,6 +57,13 @@ class TokenBlacklist:
         self.redis_factory = redis_factory
         self.db_session_factory = db_session_factory
         self._redis_available = False
+        # #1802: `_redis_available = False` used to mean two different things
+        # indistinguishably — "initialize() ran and found no Redis" and
+        # "initialize() never ran at all" (e.g. a bare TestClient that skips
+        # the app's startup lifespan). `_initialized` separates them so the
+        # DB-fallback log line below can say which one actually happened,
+        # instead of the silent default reading as a deliberate Redis check.
+        self._initialized = False
 
     async def initialize(self) -> None:
         """
@@ -75,6 +82,33 @@ class TokenBlacklist:
                 error=str(e),
             )
             self._redis_available = False
+        finally:
+            # Set regardless of outcome: "initialized" means initialize() was
+            # called and made a real determination, not that it succeeded.
+            self._initialized = True
+
+    def _warn_if_never_initialized(self, token_id: str, operation: str) -> None:
+        """Make the silent-default DB fallback loud (#1802 AC item 2).
+
+        Purely additive logging — does not change which branch is taken.
+        `_redis_available` being False routes to the database fallback either
+        way; this only tells an operator WHY, which they could not previously
+        distinguish from the log alone.
+        """
+        if not self._initialized:
+            logger.warning(
+                "token_blacklist_never_initialized",
+                token_id=token_id,
+                operation=operation,
+                detail=(
+                    "TokenBlacklist.initialize() was never called before this "
+                    "check — routing to the database fallback without ever "
+                    "having checked Redis (not 'Redis was checked and found "
+                    "down'). Expected under a bare TestClient that skips the "
+                    "app's startup lifespan; if seen on a running server, "
+                    "startup wiring is missing."
+                ),
+            )
 
     async def add(
         self,
@@ -130,6 +164,7 @@ class TokenBlacklist:
                 return True
             else:
                 # Database fallback
+                self._warn_if_never_initialized(token_id, operation="add")
                 return await self._add_to_database(token_id, reason, expires_at, user_id)
 
         except Exception as e:
@@ -165,6 +200,7 @@ class TokenBlacklist:
                 return bool(exists)
             else:
                 # Database fallback
+                self._warn_if_never_initialized(token_id, operation="is_blacklisted")
                 return await self._check_database(token_id)
 
         except BlacklistUnavailable:
@@ -298,9 +334,25 @@ class TokenBlacklist:
             False and the asyncpg session was bound to a dead event loop.
             Fixing only the cited site would have left the reproduced path
             still lying.
+
+        Note (#1802): `session_scope()` draws from the global `db` singleton
+        (services/database/connection.py), whose engine is bound to whatever
+        event loop happened to be running the first time it was lazily
+        initialized. A bare `TestClient` spins a fresh event loop per
+        request, so from request 2 onward the pooled asyncpg connection
+        belongs to a loop that no longer exists — "Task ... got Future ...
+        attached to a different loop", then "asyncpg.InterfaceError: cannot
+        perform operation: another operation is in progress". This method
+        uses `session_scope_fresh()` instead: a per-call engine bound to
+        whatever loop is CURRENTLY running (#442's documented manual opt-in
+        for exactly this failure class — the same guard #1452 gave
+        `RedisFactory.initialize` on the Redis side). The cost is a fresh
+        engine per fallback check, which is acceptable here because this
+        path only runs when Redis is unavailable (or never initialized);
+        the Redis path remains the O(1) hot path unaffected by this change.
         """
         try:
-            async with self.db_session_factory.session_scope() as session:
+            async with self.db_session_factory.session_scope_fresh() as session:
                 from sqlalchemy import select
 
                 from services.database.models import TokenBlacklist as DBTokenBlacklist
