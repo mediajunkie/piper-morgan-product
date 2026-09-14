@@ -189,12 +189,17 @@ class TestTokenBlacklistOperations:
         Fail-closed is asserted here as the ABSENCE of a `False` return: no
         caller can read this outcome as "not blacklisted, proceed".
         """
-        # Mock db_session_factory.session_scope to raise an error when used
+        # Mock db_session_factory.session_scope to raise an error when used.
+        # #1802: `_check_database` now opens its session via
+        # `session_scope_fresh()` (the #442 same-loop-safe opt-in), not
+        # `session_scope()` — stub both so this test still exercises the
+        # failure path regardless of which one production calls.
         failing_context = MagicMock()
         failing_context.__aenter__ = AsyncMock(side_effect=Exception("Database connection failed"))
         failing_context.__aexit__ = AsyncMock(return_value=False)
 
         mock_db_session_factory.session_scope = MagicMock(return_value=failing_context)
+        mock_db_session_factory.session_scope_fresh = MagicMock(return_value=failing_context)
 
         bl = TokenBlacklist(mock_redis_factory, mock_db_session_factory)
         bl._redis_available = False  # Simulate no Redis

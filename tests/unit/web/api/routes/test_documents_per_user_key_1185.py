@@ -56,15 +56,21 @@ async def test_header_wins_and_db_not_touched():
     svc.retrieve_user_key.assert_not_awaited()  # explicit per-call key → DB never read
 
 
-async def test_none_when_no_header_and_no_stored():
+async def test_refused_when_no_header_and_no_stored_1807():
+    """AMENDED by #1807. Was `assert got is None  # → LLM client falls back to the
+    server key` — i.e. this test pinned the billing exposure as intended behavior. A
+    signed-in user with no key of their own is refused now; the /documents routes turn
+    the refusal into an honest 403 (see test_documents_keyless_refusal_1807.py)."""
+    from services.llm.request_key import UserLLMKeyRequiredError
+
     svc = MagicMock()
     svc.retrieve_user_key = AsyncMock(return_value=None)
     with (
         patch("services.database.session_factory.AsyncSessionFactory", _mock_session_factory()),
         patch("services.security.user_api_key_service.UserAPIKeyService", return_value=svc),
+        pytest.raises(UserLLMKeyRequiredError),
     ):
-        got = await resolve_user_llm_key(None, _U)
-    assert got is None  # → LLM client falls back to the server key
+        await resolve_user_llm_key(None, _U)
 
 
 # ---- /documents endpoint: rail bound during the call + reset after (SECURITY) ----

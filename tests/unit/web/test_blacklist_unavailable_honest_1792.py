@@ -83,7 +83,16 @@ def _blacklist_redis_raises() -> TokenBlacklist:
 
 def _blacklist_database_raises() -> TokenBlacklist:
     """Database fallback branch, store unreachable — exercises _check_database's
-    SEPARATE handler. This is the site the live #1792 reproduction actually hit."""
+    SEPARATE handler. This is the site the live #1792 reproduction actually hit.
+
+    #1802: `_check_database` now opens its session via `session_scope_fresh()`
+    (a per-call engine bound to the currently-running loop, #442's documented
+    opt-in) instead of `session_scope()` (the global `db` singleton, whose
+    engine is bound to whichever loop first initialized it — the very thing
+    that made a bare TestClient's request 2+ hit a dead loop). Both are
+    stubbed to fail here so this test stays correct regardless of which one
+    the production code calls.
+    """
     failing_scope = MagicMock()
     failing_scope.__aenter__ = AsyncMock(
         side_effect=RuntimeError("Task ... attached to a different loop")
@@ -91,6 +100,7 @@ def _blacklist_database_raises() -> TokenBlacklist:
     failing_scope.__aexit__ = AsyncMock(return_value=False)
     db_factory = MagicMock()
     db_factory.session_scope = MagicMock(return_value=failing_scope)
+    db_factory.session_scope_fresh = MagicMock(return_value=failing_scope)
 
     bl = TokenBlacklist(MagicMock(), db_factory)
     bl._redis_available = False
