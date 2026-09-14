@@ -27,11 +27,40 @@ from services.intent_service.document_handlers import (
     handle_search_documents,
     handle_summarize_document,
 )
-from services.llm.request_key import request_api_key  # #1185: per-user LLM key rail
+from services.llm.request_key import (  # #1185: per-user LLM key rail
+    UserLLMKeyRequiredError,
+    request_api_key,
+)
 from web.utils.llm_key import resolve_user_llm_key  # #1185
 
 router = APIRouter(prefix="/api/v1/documents", tags=["documents"])
 logger = structlog.get_logger(__name__)
+
+# #1807: what a signed-in caller with no LLM key of their own is told. Same substance
+# as the /intent refusal (`_create_user_key_required_response`), phrased for a REST
+# surface. 403 follows `require_admin` (#1485/#1598) — the established in-codebase
+# answer for "you are authenticated, but this action needs something you don't have" —
+# and carries the same "nothing was changed" reassurance.
+USER_KEY_REQUIRED_DETAIL = (
+    "This needs an LLM key of your own — Piper doesn't bill anyone else's account. "
+    "Add your Anthropic API key in Settings and try this again. Nothing was charged."
+)
+
+
+async def _resolve_key_or_refuse(user_id: str) -> Optional[str]:
+    """Resolve the caller's LLM key, converting the #1807 refusal into an honest 403.
+
+    Kept as one helper so all five LLM-calling document routes refuse identically and
+    none of them can drift back into the silent server-key fallback.
+    """
+    try:
+        return await resolve_user_llm_key(None, user_id)
+    except UserLLMKeyRequiredError:
+        logger.warning("documents_user_key_required_1807", user_id=user_id)
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=USER_KEY_REQUIRED_DETAIL,
+        )
 
 
 # Request models
@@ -69,7 +98,7 @@ async def analyze_document(
     try:
         # #1185: bind the caller's stored Anthropic key for this request (header > stored
         # > server); else document analysis would silently use the server key, not theirs.
-        resolved_key = await resolve_user_llm_key(None, current_user.sub)
+        resolved_key = await _resolve_key_or_refuse(current_user.sub)
         with request_api_key(resolved_key):
             result = await handle_analyze_document(file_id=file_id, user_id=current_user.user_id)
         logger.info(
@@ -90,6 +119,13 @@ async def analyze_document(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(e),
         )
+
+    except HTTPException:
+        # #1807: a deliberate HTTP refusal (the key-required 403, or a validation
+        # 400) must reach the client as-is. Without this, the broad handler below
+        # relabels it a 500 "<operation> failed" — which both hides the real
+        # remediation and blames the server for the caller's missing key.
+        raise
 
     except Exception as e:
         logger.error(
@@ -131,7 +167,7 @@ async def ask_question_about_document(
     """
     try:
         # #1185: bind the caller's stored Anthropic key for this request.
-        resolved_key = await resolve_user_llm_key(None, current_user.sub)
+        resolved_key = await _resolve_key_or_refuse(current_user.sub)
         with request_api_key(resolved_key):
             result = await handle_question_document(
                 file_id=file_id, question=question, user_id=current_user.user_id
@@ -154,6 +190,13 @@ async def ask_question_about_document(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(e),
         )
+
+    except HTTPException:
+        # #1807: a deliberate HTTP refusal (the key-required 403, or a validation
+        # 400) must reach the client as-is. Without this, the broad handler below
+        # relabels it a 500 "<operation> failed" — which both hides the real
+        # remediation and blames the server for the caller's missing key.
+        raise
 
     except Exception as e:
         logger.error(
@@ -193,7 +236,7 @@ async def summarize_document(
     """
     try:
         # #1185: bind the caller's stored Anthropic key for this request.
-        resolved_key = await resolve_user_llm_key(None, current_user.sub)
+        resolved_key = await _resolve_key_or_refuse(current_user.sub)
         with request_api_key(resolved_key):
             result = await handle_summarize_document(
                 file_id=file_id, format=format, user_id=current_user.user_id
@@ -217,6 +260,13 @@ async def summarize_document(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(e),
         )
+
+    except HTTPException:
+        # #1807: a deliberate HTTP refusal (the key-required 403, or a validation
+        # 400) must reach the client as-is. Without this, the broad handler below
+        # relabels it a 500 "<operation> failed" — which both hides the real
+        # remediation and blames the server for the caller's missing key.
+        raise
 
     except Exception as e:
         logger.error(
@@ -267,7 +317,7 @@ async def compare_documents(
             )
 
         # #1185: bind the caller's stored Anthropic key for this request.
-        resolved_key = await resolve_user_llm_key(None, current_user.sub)
+        resolved_key = await _resolve_key_or_refuse(current_user.sub)
         with request_api_key(resolved_key):
             result = await handle_compare_documents(file_ids=file_ids, user_id=current_user.user_id)
         logger.info(
@@ -336,7 +386,7 @@ async def reference_in_conversation(
     """
     try:
         # #1185: bind the caller's stored Anthropic key for this request.
-        resolved_key = await resolve_user_llm_key(None, current_user.sub)
+        resolved_key = await _resolve_key_or_refuse(current_user.sub)
         with request_api_key(resolved_key):
             result = await handle_reference_in_conversation(
                 message=request.message,
@@ -362,6 +412,13 @@ async def reference_in_conversation(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(e),
         )
+
+    except HTTPException:
+        # #1807: a deliberate HTTP refusal (the key-required 403, or a validation
+        # 400) must reach the client as-is. Without this, the broad handler below
+        # relabels it a 500 "<operation> failed" — which both hides the real
+        # remediation and blames the server for the caller's missing key.
+        raise
 
     except Exception as e:
         logger.error(

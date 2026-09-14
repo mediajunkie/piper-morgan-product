@@ -41,11 +41,13 @@ from services.auth.jwt_service import JWTClaims, JWTService
 from services.domain.models import RequestContext
 from services.llm.request_key import (
     AnonymousLLMKeyRequiredError,
+    UserLLMKeyRequiredError,
     request_api_key,
     resolve_request_api_key,
 )
 from services.ui_messages.user_friendly_errors import make_error_user_friendly
 from web.utils.error_responses import internal_error, validation_error
+from web.utils.llm_key import is_designated_operator  # #1807
 
 logger = structlog.get_logger()
 
@@ -222,6 +224,39 @@ def _create_anonymous_key_required_response(original_message: str) -> dict:
         "preferences": {},
         "error": msg,
         "error_type": "anonymous_key_required",
+    }
+
+
+def _create_user_key_required_response(original_message: str) -> dict:
+    """#1807: the honest response when a SIGNED-IN user has no LLM key of their own.
+
+    This is the third member of the refusal family, and the distinction from its two
+    siblings is the whole point (#1520 is the cautionary case — serving the wrong one
+    of these blames the user for something that isn't their situation):
+      - anonymous (#1320) → "sign in, or bring a key"
+      - expired session (#1520) → "sign in again", never key-talk
+      - HERE → they ARE signed in and their session is fine. The one thing missing is
+        their own key, so that is the only thing this says.
+
+    Deliberately NOT `_create_degradation_response`: nothing is unavailable and
+    retrying changes nothing. Deliberately not a 500 either — a refusal is a correct
+    answer, not a server fault. Honest-degrade shape per #1425/#1792.
+    """
+    msg = (
+        "I can't run this without an LLM key of your own — Piper doesn't bill "
+        "anyone else's account. Add your Anthropic API key in Settings and I'll "
+        "pick right back up."
+    )
+    return {
+        "message": msg,
+        "intent": {"type": "unknown", "confidence": 0, "action": "clarify"},
+        "workflow_id": None,
+        "requires_clarification": True,
+        "clarification_type": "user_key_required",
+        "suggestions": ["Add your Anthropic API key in Settings"],
+        "preferences": {},
+        "error": msg,
+        "error_type": "user_key_required",
     }
 
 
@@ -470,8 +505,20 @@ async def process_intent(
 
         try:
             resolved_key = await resolve_request_api_key(
-                request.headers.get("X-User-Api-Key"), user_id, _fetch_stored_anthropic_key
+                request.headers.get("X-User-Api-Key"),
+                user_id,
+                _fetch_stored_anthropic_key,
+                # #1807: the designated-operator check — the ONE remaining path to the
+                # server's own key, and it is default-OFF. Without this argument the
+                # resolver refuses, which is the correct fail-closed default.
+                is_designated_operator,
             )
+        except UserLLMKeyRequiredError:
+            # #1807: signed in, session fine, no key of their own, not the operator.
+            # Refuse BEFORE intent_service/the LLM — an authenticated identity is not
+            # authorization to spend the operator's money.
+            logger.warning("intent_user_key_required_1807", session_id=session_id, user_id=user_id)
+            return _create_user_key_required_response(message)
         except AnonymousLLMKeyRequiredError:
             # #1320: refuse BEFORE touching intent_service/the LLM at all — never
             # silently bill the server's own key to a fully anonymous caller.
