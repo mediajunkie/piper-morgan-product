@@ -36,9 +36,28 @@
 # mistimed check (Lead found the hook fires before Bash runs; CIO's sharper read: the flag and
 # the mechanism it claimed to escape don't share a layer at all).
 #
-# EXIT SEMANTICS, now decided: exit 0 (warn). The commit proceeds; the agent reads the warning
-# and can inspect/restage if needed. With WARN, no escape hatch is needed at all — nothing
-# needs escaping from a warning. (If a future ruling reverses this to BLOCK: a real escape IS
+# EXIT SEMANTICS, decided but NOT YET LIVE: WARN (exit 0). The commit should proceed; the agent
+# reads the warning and can inspect/restage if needed. **This file currently runs BLOCK (exit 2)
+# as a NAMED, TEMPORARY INTERIM — not the ruled end-state, not something to read as settled.**
+# The exit-0 implementation was shipped, tested with a real commit, and found to produce ZERO
+# visible output to the agent (PreToolUse exit 0 does not surface stderr here) — a warning
+# nobody sees is not a warning. Tracked as **issue #1798**: migrate this hook's logic to
+# PostToolUse (Arch-confirmed architecture, 2026-09-13 — PostToolUse can't block by definition
+# and IS confirmed to surface, per the working `memory-index-overlimit-warn.sh` precedent), and
+# separately move it to the common-dir git-native `.git/hooks/pre-commit` (fixes a second bug,
+# below). **When #1798 lands and PostToolUse-WARN is confirmed working by a real test, this
+# BLOCK retires in the same commit.**
+#
+# ⚠️ THE CONFLICT THIS INTERIM DOES NOT RESOLVE (Lead, 2026-09-13): reason 2 above — a ruled
+# large deletion (delete-module-safely: exemption removal + ratchet ceiling + a decisions.log
+# entry must ride the SAME commit as the production deletion) will still HIT this block if it
+# needs >=20 paths, exactly as #1768 did. **Documented workaround**: split at a both-tips-green
+# seam into 2 commits (verify both commits' test suites pass green independently before and
+# after the split point). This is a real, live, unresolved conflict under the current interim —
+# not something the revert to BLOCK fixed. It returns when #1798 ships.
+#
+# With WARN eventually live, no escape hatch is needed at all — nothing needs escaping from a
+# warning. (If a future ruling ever reverses this back to a real BLOCK: a real escape IS
 # buildable, unlike --no-verify — PreToolUse hooks receive the tool call's JSON payload on
 # stdin, including the command text, the same mechanism `memory-index-overlimit-warn.sh`
 # already uses to read `tool_input.file_path`. A real marker in the command text, visible to a
@@ -174,4 +193,8 @@ fi
 # discovery, deliberately, per this codebase's own rule against shipping an untested behavior
 # change to a cohort-wide gate. Block is the safe interim state: confirmed working, confirmed
 # visible, and it's what every agent has actually been operating under until today anyway.
+# Tracked as issue #1798 (Arch-confirmed PostToolUse architecture + the common-dir move for the
+# separate compound-commit bypass found the same day). Accepted by Arch as a NAMED interim only
+# (2026-09-13) — not the ruled end-state; see the header's own interim note for the live,
+# unresolved conflict this does not fix (a ruled large deletion can still hit this block).
 exit 2

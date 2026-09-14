@@ -246,20 +246,30 @@ out — PM reported it live as direct usability friction on the primary chat sur
 gating rather than deferrable polish; if that reading is wrong, this is the file's cheapest possible
 correction (move one item's milestone).
 
-### 11. Schema/domain correspondence (1 item, new 2026-09-13) — genuinely its own epic
-`#1788` — the PM-056 schema-validation workflow came back to life today after months dead (four
-stacked breakages, all fixed same-day) and found 13 apparent missing `to_domain`/`from_domain`
-converters across 7 DB models. Arch's ruling, same day, by importer census not name-matching:
-**2 are real correspondence** (`DocumentDB`, `SessionActivityDB` — live importers, write the
-converters) · **5 are dead persistence twins with zero importers** (`Feature`, `Intent`, `Product`,
-`Stakeholder`, `Task` DB classes — create-all-era, tables never migrated per `#1273`; configure the
-checker off with the reason recorded, and file one disposal-pipeline issue for the five as a set
-rather than leave them as config rows forever). **Why its own epic**: this is schema/model-layer
-correctness work discovered via a revived CI workflow, sharing no real membership with epic 1's CI
-mechanics (that epic is about workflows themselves being broken; this is about what a working
-workflow found) or epic 5/9's dead-code shapes (found via unrelated lanes, different mechanism —
-missing converters and unmigrated tables, not swallowed exceptions or unreachable handlers). Not
-yet filed: the disposal-pipeline issue Arch's ruling calls for.
+### 11. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
+`#1788` (open, blocked on Arch's re-ruling below) · `#1797` (disposal-pipeline issue for the 5 dead
+persistence twins, filed 2026-09-13). The PM-056 schema-validation workflow came back to life
+today after months dead and found 13 apparent missing `to_domain`/`from_domain` converters across
+7 DB models. Arch's ruling, same day, by importer census not name-matching: **2 real
+correspondence** (`DocumentDB`, `SessionActivityDB`) · **5 dead persistence twins** (`Feature`,
+`Intent`, `Product`, `Stakeholder`, `Task` — create-all-era, tables never migrated per `#1273`).
+
+**Executed same day, 6 of 7 (Lead)**: the five twins confirmed by an independent census (domain
+`Intent`'s 26 importers reproduced exactly) — checker off, reason line, a stale-entry guard, and
+`#1797` filed. `SessionActivityDB` converter written and verified against a real read path (three
+live consumers), 7 round-trip tests. Two evidence corrections to Arch's ruling, neither changing
+it: "zero importers" was imprecise (the five have in-package importers forming a closed dead
+subgraph — the precise claim is zero *live consumers*), and #1788's "zero repository-layer
+conversion hits" was wrong (`TaskRepository.create_from_domain` exists, zero callers).
+
+**`DocumentDB` disagreement, unresolved — Arch's to re-rule, not PPM's**: Arch's importer census
+measured only DocumentDB's live side; Lead found its **domain twin is dead** (zero importers,
+content-bearing `Document` vs. `DocumentDB`'s ADR-071 D2 owner-anchor row with no content column
+at all — a converter would have to invent `chromadb_base_id` and drop the D1/D2 security fields).
+Lead's generalizable point: liveness must be measured on both sides of a correspondence, not just
+one. PM-056 job 2 stays honestly red on this single model until Arch rules. **Why its own epic**:
+schema/model-layer correctness discovered via a revived CI workflow, sharing no real membership
+with epic 1's CI mechanics or epics 5/9's dead-code shapes (different mechanism entirely).
 
 ---
 

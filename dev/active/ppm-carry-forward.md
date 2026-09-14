@@ -10,7 +10,17 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-13 19:22 PT (WORK). **Added epic 11** for `#1788` (PM-056
+**Last rewritten**: 2026-09-13 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+Cron re-armed `dedc5304` → **`b72aa208`**, `CronList`-verified exactly one job. Dropped the
+long-standing `#1687` watch line (satisfied — rotation appears done). Epic 11 updated: Lead
+executed 6 of 7 models same-day (5 dead twins confirmed + disposed via `#1797`, `SessionActivityDB`
+converter written and verified), one genuine disagreement open on `DocumentDB` (Lead found its
+domain twin is also dead — Arch's importer census only checked one side; Arch's to re-rule). 0
+unmilestoned at close, no drift. **Six fires today**, opened by catching a real gap in Exec's
+epic-accounting doc before PM could act on it, closed by tracking a real cross-role technical
+disagreement — every substantive item this fire was a judgment call, not routine housekeeping.
+
+**Prior fire: 2026-09-13 19:22 PT (WORK). Added epic 11** for `#1788` (PM-056
 schema-validation workflow revived after months dead, found 13 apparent missing domain
 converters — Arch's ruling: 2 real, 5 dead persistence twins to configure-off + disposal). No
 existing epic fit honestly (different mechanism than epic 1's CI or epics 5/9's dead-code shapes),
@@ -1718,11 +1728,13 @@ resolved or reframed into larger tracked work. Do not read this paragraph as cur
 
 ## Cron
 
-**ARMED** — job **`dedc5304`** (re-armed at 09-12 22:22 STOP; delete-then-create, `CronList`-
-verified exactly one). Prior job `30d2f1d9` (armed 09-11 22:22) retired cleanly — no gap, no
-incident.
+**ARMED** — job **`b72aa208`** (re-armed at 09-13 22:22 STOP; delete-then-create, `CronList`-
+verified exactly one). Prior job `dedc5304` (armed 09-12 22:22) retired cleanly — no gap, no
+incident. Note: this session survived a PM re-auth mid-day (09-13 09:58) with the cron intact —
+CronList showed it on return, matching Exec's finding that session-scoped crons are hostage to
+auth state but the job object itself can survive if the session isn't fully killed.
 
-⚠️ **Session-only + 7-day auto-expiry, both silent** — `dedc5304` expires ~2026-09-19 if not
+⚠️ **Session-only + 7-day auto-expiry, both silent** — `b72aa208` expires ~2026-09-20 if not
 re-armed sooner (re-armed every STOP in practice, so this is a backstop, not the expected path).
 
 ---
