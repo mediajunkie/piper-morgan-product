@@ -139,7 +139,8 @@
 
 ---
 
-**Last Updated**: August 17, 2026 (Docs — added methodology-48 through -49, missing from this catalog since filing; same gap pattern as the Aug 10 fix below, found again during weekly-docs-audit #1643. Two independent subagent audits converged on this same finding.)
+**Last Updated**: September 14, 2026 (Docs — banner metadata only, per weekly-docs-audit #1801: content was already current through methodology-54 (confirmed present at line 138), the banner text itself had just gone stale describing an older fill-point. No missing entries found this pass.)
+**Prior**: August 17, 2026 (Docs — added methodology-48 through -49, missing from this catalog since filing; same gap pattern as the Aug 10 fix below, found again during weekly-docs-audit #1643. Two independent subagent audits converged on this same finding.)
 **Prior**: August 10, 2026 (Docs — added methodology-43 through -47, missing from this catalog since filing; found during weekly-docs-audit #1583's NAVIGATION.md↔INDEX.md cross-check)
 **Maintained By**: Methodology Team
 **Questions?** Check [METHODOLOGY.md](../../../briefing/METHODOLOGY.md) or create a GitHub issue
