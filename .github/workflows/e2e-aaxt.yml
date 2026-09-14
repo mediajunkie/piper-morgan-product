@@ -39,8 +39,17 @@ on:
       - 'scripts/**'
       - '.github/workflows/**'
   schedule:
-    # Nightly at 6 AM UTC (11 PM PT) — AAXT only
-    - cron: '0 6 * * *'
+    # WEEKLY (Mondays 6 AM UTC / Sun 11 PM PT) — AAXT only. PM ruling 2026-09-13.
+    #
+    # Was nightly. That cost nothing for months because the API credentials were
+    # dead: the job failed fast and billed zero. Rotating the keys on 09-13
+    # silently switched on a real ~$0.50/run recurring charge (~$15/mo) against
+    # a $20 balance with no auto-renew — a charge nobody chose, arriving as a
+    # side effect of a fix. PM's call: weekly keeps the golden-scenario canary
+    # alive at roughly a tenth the cost; nothing else in the belt depends on its
+    # cadence. Detection latency goes from ~1 day to ~7 for quality drift only.
+    # Run it on demand any time via workflow_dispatch with run_aaxt=true.
+    - cron: '0 6 * * 1'
   workflow_dispatch:
     inputs:
       run_aaxt:
@@ -143,10 +152,11 @@ jobs:
     # variance (observed 5–13s per case).
     #
     # NOTE the cost this timeout is buying: -k selects 211 tests, a large
-    # share of them real LLM round-trips, on EVERY push to main. Raising the
-    # ceiling makes the job pass; it does not make it cheap. Whether this
-    # cohort belongs on push or on the nightly schedule (as AAXT already is)
-    # is a policy question, filed rather than decided here.
+    # share of them real LLM round-trips. As of 2026-09-13 the paths-filter
+    # below actually governs (the `|| github.event_name == 'push'` bypass that
+    # made it dead is gone), so this runs when conversation code changes rather
+    # than on every push. #1785 still holds the broader push-vs-nightly
+    # question.
     timeout-minutes: 25
 
     services:
@@ -177,6 +187,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # ⚠️ COST GATE — do not re-add `|| github.event_name == 'push'` to the
+      # steps below without reading this. That bypass made the paths-filter
+      # directly beneath it dead on every push to main, so the live-LLM
+      # canonical suite (211 tests, many real LLM round-trips) ran on EVERY
+      # push regardless of whether conversation code changed. Measured
+      # 2026-09-13: 26 runs on 09-12, 17 on 09-13, and $5 of API credit
+      # consumed in a day. The filter now governs, as its author intended:
+      # touch services/intent*, web/api/routes/intent.py, services/llm/** or
+      # llm_domain_service.py and it runs; otherwise it skips.
       - name: Check if conversation code changed
         id: changes
         uses: dorny/paths-filter@v2
@@ -190,19 +209,19 @@ jobs:
               - 'services/domain/llm_domain_service.py'
 
       - name: Set up Python
-        if: steps.changes.outputs.conversation == 'true' || github.event_name == 'push'
+        if: steps.changes.outputs.conversation == 'true'
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
 
       - name: Install dependencies
-        if: steps.changes.outputs.conversation == 'true' || github.event_name == 'push'
+        if: steps.changes.outputs.conversation == 'true'
         run: |
           pip install --upgrade pip
           pip install --no-deps -r requirements.txt
 
       - name: Run migrations
-        if: steps.changes.outputs.conversation == 'true' || github.event_name == 'push'
+        if: steps.changes.outputs.conversation == 'true'
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5433
@@ -212,7 +231,7 @@ jobs:
         run: python -m alembic upgrade head
 
       - name: Run canonical routing tests
-        if: steps.changes.outputs.conversation == 'true' || github.event_name == 'push'
+        if: steps.changes.outputs.conversation == 'true'
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5433
@@ -229,7 +248,7 @@ jobs:
           echo "✅ Canonical routing regression passed"
 
       - name: Skip — no conversation code changes
-        if: steps.changes.outputs.conversation != 'true' && github.event_name != 'push'
+        if: steps.changes.outputs.conversation != 'true'
         run: echo "⏭️ Skipped — no changes to conversation code paths"
 
   # ─── Job 3: AAXT Nightly (scheduled, ~$0.50/run) ───────────────────

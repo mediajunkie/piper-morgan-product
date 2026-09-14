@@ -13,29 +13,52 @@
 #   - Staged set touches multiple distinct dev/active/*-{role}-* session logs
 #     where files don't share a role slug — cross-agent log capture signal
 #
-# ⚠️ CORRECTED 2026-08-03. This block used to read "Exit 2 = warn (stderr surfaces to agent;
-# commit not blocked)". THAT IS FALSE FOR THIS HOOK. **This is a PreToolUse hook, and in
-# PreToolUse `exit 2` BLOCKS** — stderr reaches the model and the tool call does not run.
+# ⚠️ RULED 2026-09-13: WARN, NOT BLOCK. Two open questions closed here — a false documented
+# escape hatch, and a behavioral decision that sat unanswered from 2026-08-03 to 2026-09-13
+# (five weeks; HOST found and owned the silent gap).
 #
-# How the error got here, because it is instructive: the rationale below cites
-# `precompact-signoff-warning.sh` as the convention being matched — but that hook is a
-# **PreCompact** hook, where the exit codes mean something different. **The exit code was
-# borrowed across an event boundary on which its meaning inverts.** (That hook has since
-# moved to exit 0 anyway, so the cited convention no longer exists even at its source.)
+# THE RULING (Arch's input, HOST's trust/safety concurrence, reasons 1+2 only — Arch withdrew
+# a third reason after HOST caught it conflating two unrelated incidents by timestamp):
+#   1. The header's OWN ORIGINAL INTENT (below) was always warn-only — block was never a
+#      decided behavior, it was an undecided default that trapped a real case.
+#   2. The 2026-09-12 incident (#1768) is the argument: delete-module-safely's same-commit
+#      coherence discipline REQUIRES >=20 paths in one commit on exactly the commits where
+#      coherence matters most (ruled deletions: exemption removal + ratchet ceiling + a
+#      decisions.log entry, same commit, by design). An unconditional block put two of this
+#      project's own ratified disciplines in direct conflict. The workaround (a 2-commit split
+#      at a both-tips-green seam) was safe, but it existed only because a guard forced it.
 #
-# Found by Docs on 2026-08-03 during a 23-file archival sweep — it was blocked and had to
-# split into 4 batches. Verified and diagnosed by Comms rather than relayed.
+# THE FALSE ESCAPE, REMOVED: this file used to tell the agent to "re-run with --no-verify" on
+# block. That could never have worked, for a sharper reason than mistiming: `--no-verify` is a
+# GIT-NATIVE flag that tells git to skip git's OWN `.git/hooks/*` chain. It has zero
+# relationship to Claude Code's PreToolUse hook layer, which intercepts the tool call before
+# git ever runs. No timing fix could have made it work — it was a category error, not a
+# mistimed check (Lead found the hook fires before Bash runs; CIO's sharper read: the flag and
+# the mechanism it claimed to escape don't share a layer at all).
 #
-# ⚠️ BEHAVIOUR AND INTENT STILL DISAGREE. The intent, stated three times in this file, is
-# "warn, do not block" ("Block would be too high-friction"). The behaviour blocks. This fix
-# corrects only the FALSE STATEMENTS, so the hook no longer asserts the opposite of what it
-# does. **Whether the exit code should change to 0 is NOT fixed here** — that turns on
-# whether stderr still reaches the agent on exit 0 in PreToolUse, which I have not tested.
-# Shipping an untested behaviour change to a cohort-wide gate is the failure mode this
-# codebase has spent a fortnight cataloguing. Raised to PM/HOST for a behavioural decision.
+# EXIT SEMANTICS, now decided: exit 0 (warn). The commit proceeds; the agent reads the warning
+# and can inspect/restage if needed. With WARN, no escape hatch is needed at all — nothing
+# needs escaping from a warning. (If a future ruling reverses this to BLOCK: a real escape IS
+# buildable, unlike --no-verify — PreToolUse hooks receive the tool call's JSON payload on
+# stdin, including the command text, the same mechanism `memory-index-overlimit-warn.sh`
+# already uses to read `tool_input.file_path`. A real marker in the command text, visible to a
+# reviewer in the commit rather than an invisible env var per Lead's condition, would work.)
 #
-# Exit 2 = BLOCKS the commit (PreToolUse semantics), stderr surfaces to the agent
-# Exit 0 = pass
+# ⚠️ WORKTREE NOTE, found verifying this fix (2026-09-13): editing this file in an agent's own
+# worktree has ZERO effect on live hook behavior. Claude Code resolves `.claude/hooks/*.sh`
+# (registered via `.claude/settings.json`'s PreToolUse config) against a fixed canonical path
+# — the main checkout — regardless of which worktree the active session is running in.
+# Confirmed behaviorally: editing this exact file's exit code in a worktree copy, then
+# triggering the hook from that same worktree, still ran the main checkout's unmodified
+# version. A push to origin/main does NOT make a hook fix live — `scripts/sync-pm-local.sh`
+# (or an equivalent pull in the main checkout) is also required. This is worth knowing before
+# assuming any hook fix is "shipped" once it's on origin/main.
+#
+# History: found by Docs on 2026-08-03 during a 23-file archival sweep (blocked, split into 4
+# batches; diagnosed by Comms). The 08-03 fix corrected only the FALSE STATEMENT that block
+# didn't block — it deliberately left the actual block-vs-warn behavior undecided, "raised to
+# PM/HOST," and that sat for five weeks until Lead's unrelated #1768 workaround surfaced it
+# again on 2026-09-13.
 #
 # Rationale: B (worktree-per-agent for main) is the structural fix PM ratified
 # via PPM May 15. This hook is the D-layer safety net for the residual
@@ -43,9 +66,6 @@
 # spinning up a worktree). Warn-only because false-positives on legitimate
 # multi-mailbox commits (e.g., to-with-cc-copies) would be high-friction;
 # the warning prompts the agent to inspect rather than blocking outright.
-#
-# Aligns with existing hook patterns: precompact-signoff-warning.sh severity
-# tiering + check-branch.sh exit-2-stderr convention.
 
 # Resolve repo root; if we're not in a git working tree, exit silently.
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
@@ -117,10 +137,15 @@ fi
     echo "  3. Re-stage only your own files with explicit paths"
     echo "  4. Verify with: git diff --cached --name-only | head -20"
     echo ""
-    echo "⚠️ THIS COMMIT WAS BLOCKED. (Until 2026-08-03 this message claimed the opposite —"
-    echo "if you have seen that text, the commit did not run.) If the staged set is"
-    echo "intentional (e.g. a legitimate large multi-mailbox distribution), re-run with"
-    echo "--no-verify, or split it into smaller explicit-path commits."
+    echo "⚠️ THIS COMMIT WAS BLOCKED. The 2026-09-13 ruling on this file decided WARN, not"
+    echo "block (see this file's own header) — but the PreToolUse exit-0 implementation of"
+    echo "that ruling was tested the same day and found to produce this exact message with"
+    echo "ZERO visible output to the agent, silently. Reverted to block as the safe interim"
+    echo "state pending a real fix (migrating this hook to PostToolUse, which can warn"
+    echo "without blocking AND is confirmed to actually surface — see"
+    echo "memory-index-overlimit-warn.sh). If the staged set is intentional (e.g. a"
+    echo "legitimate large multi-mailbox distribution), re-run with explicit paths split"
+    echo "into smaller commits."
     echo ""
     echo "Root-cause fix (PM ratified May 15): worktree-per-agent for substantive"
     echo "work. See CLAUDE.md §Branch / Worktree / Mailbox Discipline."
@@ -135,8 +160,18 @@ if [ -d "dev/active" ]; then
     } >> "$WARN_LOG" 2>/dev/null || true
 fi
 
-# ⚠️ Exit 2 in PreToolUse BLOCKS. The comment here used to claim "commit proceeds" and cited
-# precompact-signoff-warning.sh — a PreCompact hook, different event, different semantics, and
-# since changed to exit 0 itself. Left as exit 2 deliberately pending a behavioural test of
-# whether exit 0 still surfaces stderr in PreToolUse; see the header note.
+# ⚠️ TEMPORARY REVERT TO BLOCK, 2026-09-13, SAME FIRE AS THE WARN RULING ABOVE. Tested exit 0
+# behaviorally before trusting it (staged 25 files, committed for real, checked whether the
+# stderr text above appeared to the agent): it did NOT. The hook fired correctly (confirmed via
+# `dev/active/session-end-warnings.log`), but exit 0 in PreToolUse produces zero agent-visible
+# output — the commit just silently succeeds. WARN as a PreToolUse exit-0 hook is not a warning
+# at all; it's a no-op with extra steps. The header's own ruling (WARN, not BLOCK) still stands
+# — this reverts the IMPLEMENTATION, not the decision, because a PreToolUse hook structurally
+# cannot deliver "block=no, but the agent sees it" on exit 0. The correct architecture is a
+# PostToolUse hook (fires after the commit succeeds, can't block by definition, and IS confirmed
+# to surface loudly to the agent — see memory-index-overlimit-warn.sh, the working precedent).
+# Migrating this hook to PostToolUse is the real fix; not done in the same fire as this
+# discovery, deliberately, per this codebase's own rule against shipping an untested behavior
+# change to a cohort-wide gate. Block is the safe interim state: confirmed working, confirmed
+# visible, and it's what every agent has actually been operating under until today anyway.
 exit 2

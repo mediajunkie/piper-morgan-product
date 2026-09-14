@@ -1,28 +1,31 @@
 name: Windows Compatibility Tests
 
+# ⏸ PARKED 2026-09-13 (PM ruling) — dispatch-only, not deleted.
+#
+# WHY: both jobs have failed at `actions/checkout` since 2026-08-13 — the
+# Windows-invalid-filename class tracked in #1457 (Production milestone), where
+# repo paths that are legal on POSIX cannot be checked out on Windows at all.
+# The failure is in checkout itself, so nothing downstream has ever run.
+#
+# PM's call: Windows compatibility matters only to open-source users who clone
+# the repo, and we have none waiting. Rather than leave a permanently-red gate
+# in the belt — which discounts every "green" claim made next to it — this is
+# parked as dispatch-only so the belt reports honestly.
+#
+# ⚠️ CLEARING CONDITION (falsifiable, so this cannot quietly become permanent):
+# restore the `push`/`pull_request` triggers below when EITHER a real user needs
+# a Windows clone, OR #1457 closes. The original triggers are preserved verbatim
+# in the comment block so restoring is a copy-paste, not an archaeology project.
+#
+#   push:
+#     branches: [main, production]
+#     paths: ['requirements.txt', 'scripts/*.bat', 'scripts/*.ps1',
+#             'scripts/validate_install.py', '.github/workflows/windows-test.yml']
+#   pull_request:
+#     branches: [main, production]
+#     paths: (same as above)
 on:
-  push:
-    branches: [main, production]
-    paths:
-      - 'requirements.txt'
-      - 'scripts/*.bat'
-      - 'scripts/*.ps1'
-      - 'scripts/validate_install.py'
-      - '.github/workflows/windows-test.yml'
-  pull_request:
-    branches: [main, production]
-    paths:
-      - 'requirements.txt'
-      - 'scripts/*.bat'
-      - 'scripts/*.ps1'
-      - 'scripts/validate_install.py'
-      - '.github/workflows/windows-test.yml'
-  # Allow manual trigger for full Windows testing
   workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   windows-smoke-test:

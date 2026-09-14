@@ -55,6 +55,13 @@ next-env.d.ts
 
 # Python virtual environment and cache
 venv/
+# CI-faithful env for the #1436 mypy gate — scripts/bootstrap-mypy-gate-venv.sh
+venv-mypy-gate/
+# ruffenv2/ — the pinned ruff 0.6.9 venv every lane builds to match CI's
+# formatter. Was untracked AND unignored (#1787), i.e. one `git add -A` away
+# from committing a virtualenv. Pattern is broad on purpose: seats have used
+# ruffenv, ruffenv2, ruffenv3 as the pin drifted.
+ruffenv*/
 __pycache__/
 *.pyc
 *.pyo

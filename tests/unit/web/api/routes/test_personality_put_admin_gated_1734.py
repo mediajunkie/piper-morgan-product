@@ -1,11 +1,19 @@
-"""1734: PUT /api/v1/personality/profile/{user_id} is admin-only until the
-store is per-user.
+"""1734: PUT /api/v1/personality/profile is admin-only until the store is
+per-user.
 
-The route LOOKS user-scoped ({user_id} in the path) but
+The route LOOKED user-scoped ({user_id} in the path) but
 PiperConfigParser.save_personality_config ignores user_id and rewrites the
 GLOBAL config/PIPER.user.md — any authed hosted-beta user's save clobbers the
 whole instance's overlay. Fix shape chosen: gate the PUT with require_admin
 (the #1508/#1598 idiom) rather than rewire the store under time pressure.
+
+RETARGETED 2026-09-13 by #1751, which removed the `{user_id}` path segment
+(and the GET's total lack of an auth dependency) so the principal comes from
+the session. The addresses under test moved from `/profile/{user_id}` to
+`/profile`; every pin below is preserved, none relaxed. Two tests changed
+meaning rather than just address, and say so at their own docstrings:
+`test_a_user_id_in_the_path_is_not_a_bypass` and
+`test_get_carries_no_ADMIN_dependency`.
 
 What this file pins, per the 1734 acceptance shape:
   1. Authenticated non-admin PUT → 403, and the overlay file is PROVABLY
@@ -13,7 +21,9 @@ What this file pins, per the 1734 acceptance shape:
      would satisfy a status-only check while doing exactly the harm).
   2. Admin PUT still works (200) and actually persists — the gate must not
      break the route for the people it admits.
-  3. GET stays ungated for all users (read-only is harmless).
+  3. GET carries no ADMIN gate — any authenticated user still reads (read-only
+     is harmless). It DOES require authentication as of #1751; 1734's claim was
+     always about admin authority, never about anonymity.
   4. The 403 carries no payload echo (#1598 no-leak idiom).
   5. Unauthenticated PUT → 401 before any admin DB lookup, file untouched.
 
@@ -36,7 +46,7 @@ from fastapi.testclient import TestClient
 
 from services.api.errors import APIError
 from services.auth import auth_middleware
-from services.auth.auth_middleware import get_current_user
+from services.auth.auth_middleware import get_current_user, require_admin
 from web.api.routes import personality as personality_module
 from web.personality_integration import PiperConfigParser
 
@@ -128,7 +138,7 @@ def as_admin(monkeypatch):
 class TestNonAdminPutRefused:
     def test_403_and_overlay_provably_untouched(self, client, as_non_admin, overlay):
         before = _sha256(overlay)
-        response = client.put("/api/v1/personality/profile/some-user", json=ATTACK_PAYLOAD)
+        response = client.put("/api/v1/personality/profile", json=ATTACK_PAYLOAD)
         assert response.status_code == 403, (
             f"authenticated non-admin PUT got {response.status_code}, expected 403. "
             f"body={response.text[:200]}"
@@ -142,24 +152,30 @@ class TestNonAdminPutRefused:
     def test_403_leaks_no_payload(self, client, as_non_admin, overlay):
         """#1598 idiom: the refusal must not echo config data — neither the
         attacker's submitted values nor the stored overlay's."""
-        body = client.put("/api/v1/personality/profile/some-user", json=ATTACK_PAYLOAD).text
+        body = client.put("/api/v1/personality/profile", json=ATTACK_PAYLOAD).text
         for leaked in ("warmth_level", "0.93", "0.31", "descriptive", "numeric"):
             assert leaked not in body, f"403 body still carries {leaked!r}"
 
-    def test_own_user_id_in_path_is_not_a_bypass(self, client, as_non_admin, overlay):
-        """The path segment matching the caller's own user_id must not admit —
-        the store is global regardless of what the path claims."""
+    def test_a_user_id_in_the_path_is_not_a_bypass(self, client, as_non_admin, overlay):
+        """Originally: a path segment matching the caller's OWN user_id must not
+        admit, because the store is global regardless of what the path claims.
+        #1751 made that unreachable by construction — there is no `{user_id}`
+        address left — so the pin now asserts the stronger property: no
+        id-bearing path exists to aim at all (404), own id or anyone else's,
+        and nothing is written either way."""
         before = _sha256(overlay)
-        response = client.put(
-            f"/api/v1/personality/profile/{_FakeClaims.user_id}", json=ATTACK_PAYLOAD
-        )
-        assert response.status_code == 403
-        assert _sha256(overlay) == before
+        for claimed in (_FakeClaims.user_id, "default", "22222222-2222-4222-8222-222222222222"):
+            response = client.put(f"/api/v1/personality/profile/{claimed}", json=ATTACK_PAYLOAD)
+            assert response.status_code == 404, (
+                f"/profile/{claimed} answered {response.status_code}; the "
+                "client-supplied-principal address must not exist (#1751)"
+            )
+            assert _sha256(overlay) == before
 
 
 class TestAdminPutStillWorks:
     def test_admin_put_200_and_persists(self, client, as_admin, overlay):
-        response = client.put("/api/v1/personality/profile/default", json=ATTACK_PAYLOAD)
+        response = client.put("/api/v1/personality/profile", json=ATTACK_PAYLOAD)
         assert response.status_code == 200, (
             f"admin PUT got {response.status_code} — the gate broke the route for "
             f"the people it is supposed to admit. body={response.text[:200]}"
@@ -172,24 +188,41 @@ class TestAdminPutStillWorks:
 
 class TestGetUnchangedForAllUsers:
     def test_non_admin_get_still_200(self, client, as_non_admin, overlay):
-        """GET is read-only and stays ungated at the route layer."""
-        response = client.get("/api/v1/personality/profile/some-user")
+        """GET is read-only and carries no ADMIN gate — an authenticated
+        non-admin still reads. (#1751 added an authentication dependency to the
+        GET; 1734's claim was always about admin authority, not authentication.)
+        """
+        response = client.get("/api/v1/personality/profile")
         assert (
             response.status_code == 200
         ), f"non-admin GET got {response.status_code} — 1734 gates the PUT only"
         # Serves the (sentinel) global config, proving the read path is intact.
         assert response.json()["data"]["warmth_level"] == 0.31
 
-    def test_get_carries_no_route_level_dependency(self):
-        """Wiring layer: no dependency crept onto the GET."""
+    def test_get_carries_no_ADMIN_dependency(self):
+        """Wiring layer, stated as such: the GET's dependency tree must not
+        contain require_admin anywhere. Was 'no dependency at all' until #1751
+        gave the GET its session principal via get_current_user — which is the
+        dependency that makes the read authenticated, not admin-gated."""
+
+        def _callables(dependant):
+            for sub in dependant.dependencies:
+                yield sub.call
+                yield from _callables(sub)
+
         for route in personality_module.router.routes:
-            if route.path == "/api/v1/personality/profile/{user_id}" and "GET" in route.methods:
+            if route.path == "/api/v1/personality/profile" and "GET" in route.methods:
+                calls = set(_callables(route.dependant))
                 assert (
-                    not route.dependant.dependencies
-                ), "GET grew a route-level dependency; 1734 scoped the gate to the PUT"
+                    require_admin not in calls
+                ), "require_admin crept onto the GET; 1734 scoped the gate to the PUT"
+                assert get_current_user in calls, (
+                    "the GET lost its authentication dependency — #1751's principal "
+                    "source is gone and the route is anonymous again"
+                )
                 break
         else:  # pragma: no cover
-            pytest.fail("GET /api/v1/personality/profile/{user_id} route not found")
+            pytest.fail("GET /api/v1/personality/profile route not found")
 
 
 class TestUnauthenticatedPut:
@@ -205,7 +238,7 @@ class TestUnauthenticatedPut:
         monkeypatch.setattr(auth_middleware, "_user_is_admin", _should_not_run)
         before = _sha256(overlay)
         with TestClient(app) as c:
-            response = c.put("/api/v1/personality/profile/some-user", json=ATTACK_PAYLOAD)
+            response = c.put("/api/v1/personality/profile", json=ATTACK_PAYLOAD)
         assert (
             response.status_code == 401
         ), f"unauthenticated PUT got {response.status_code}, expected 401"
