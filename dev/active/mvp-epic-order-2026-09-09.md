@@ -57,15 +57,10 @@ no sanitizer — **CLOSED**. ~~`#1733`~~ stale unauthenticated duplicate page �
 ~~`#1741`~~ pattern-suggestions XSS — **CLOSED**. ~~`#1740`~~ twin-file renderer drift —
 **CLOSED**. All six live-verified deployed (v74/v76) per Lead's 2026-09-12 memo.
 
-⚠️ **Two epic-2-class findings surfaced by the #1733 close-out sweep, deliberately NOT folded
-in**: `#1750` (web/assets/standup.html, the last remaining stale-unauth twin, same class as
-#1733) and `#1751` (the CANONICAL /personality-preferences page hardcodes user_id "default" in
-its own fetch calls — #1733 had wrongly attributed this only to the deleted twin; real
-multi-tenancy bug, adjacent to closed #1419/#1734, blast radius currently limited per the issue's
-own read). Folding either into epic 2 would reopen a now-fully-closed epic per PM's rule, and
-Lead is already moving on epic 3 — both parked at MVP milestone / Product Backlog status instead,
-for a later pass or a small epic-2b if one becomes worth naming. Not urgent by either issue's own
-severity read.
+⚠️ **`#1750`/`#1751` moved to epic 12 (2026-09-14)** — see below. They were parked here at Product
+Backlog on 2026-09-12 to avoid sending Lead backward; PM's 2026-09-14 escalation on tenancy
+("fundamental value," not a sprint item) changed that calculus, per Lead's own ask. Epic 2 stays
+closed for what it originally contained.
 
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed.
@@ -123,7 +118,7 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (14 items, 8 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (15 items, 8 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
@@ -142,9 +137,12 @@ API response has no `owner_id` field — a rendering-a-missing-field defect, sam
 (BYOC key validation discards the failure reason, showing flat "invalid" for both auth errors and
 quota/billing errors — already framed in this file as the audit's error-surfacing cousin #3,
 alongside Fast Follow's `#1108`) · `#1772` (N=1 degrade reply named three unarmed sources, found
-during #1717's own scoring — a scope-directive leak at the delivered layer). **Remaining open:
-`#1760`, `#1761`, `#1763`, `#1697`, `#1718`, `#1772`** (6 of 14) — this epic is currently the one
-Lead is actively working, per their own log (opened right after epic 3 hit its floor Saturday).
+during #1717's own scoring — a scope-directive leak at the delivered layer). Plus, folded
+2026-09-14: `#1811` (a calendar-context test mocks `_get_todays_todos`'s return shape wrong —
+`()` instead of `(todos, total)` — the same test-theatre class as `#1760`; confirmed pre-existing
+and unrelated to `#1807` via an A/B/A stash test). **Remaining open: `#1760`, `#1761`, `#1763`,
+`#1697`, `#1718`, `#1772`, `#1811`** (7 of 15) — this epic is currently the one Lead is actively
+working, per their own log (opened right after epic 3 hit its floor Saturday).
 
 **#1717 status (2026-09-12)**: code-done and live on v86 — awaits one harness re-run + CXO's voice
 read against the contract's §6 acceptance test (item 1, the composition case). CXO's call, not
@@ -278,6 +276,38 @@ finding, not yet filed as its own issue.
 **Why its own epic**: schema/model-layer correctness discovered via a revived CI workflow, sharing
 no real membership with epic 1's CI mechanics or epics 5/9's dead-code shapes (different mechanism
 entirely).
+
+### 12. Tenancy hardening (6 items, 2 closed) — PM-escalated 2026-09-14, ranks like a gate not a sprint item
+~~`#1807`~~ (BYOC key resolution fell through to PM's own server key for ANY authenticated caller
+— not just anonymous ones; #1320 closed the anonymous case, this was the same hole one level up.
+**CLOSED same-day**, Lead's lane, safe default shipped) · `#1791` (personality preferences have no
+per-user store — `PiperConfigParser` reads one instance-wide `config/PIPER.user.md`; making it
+per-user forks the ADR-075 D4 overlay, Arch's call, not a column addition) · `#1750` (moved from
+epic 2 — stale unauthenticated twin, same class as #1733) · ~~`#1751`~~ (moved from epic 2,
+**CLOSED** — canonical personality-preferences page hardcoded user_id "default"). Plus, found
+same-day during `#1807`'s own implementation: `#1809` (#1807's fix is entry-point-scoped — Slack
+inbound and any non-`/intent`/non-`/documents` LLM path still reaches the server key, since the
+resolver fix doesn't gate `services/llm/clients.py`'s `_user_api_key` ContextVar default) ·
+`#1810` (setup flow stores a global unprefixed copy of each user's LLM key alongside the per-user
+one, so each new user's setup silently overwrites "the server key" — explicitly adjacent to both
+`#1807` and `#1791` per the issue's own filing).
+
+**Why this exists**: epic 2 (Security/tenancy) closed 2026-09-12 for what it actually contained.
+`#1807` and `#1791` are epic-2-class findings that arrived after closure, and PM's escalation
+reframed tenancy as *"our fundamental value and promise,"* not a sprint item to schedule around —
+verbatim: *"there shouldn't be any key that belongs to the product itself that isn't paid for by
+somebody else"* and *"we can't ship an app that leaks between users anywhere."* Lead asked for a
+structural ruling rather than being left to work outside the epic order; three shapes were on the
+table (reopen epic 2, a successor epic, or MVP singletons) — **successor epic chosen**, Lead's own
+weak preference: it keeps "epic 2 closed" true for what it contained while giving the new,
+PM-named class explicit tracking instead of Product-Backlog limbo. `#1750`/`#1751` moved here from
+epic 2's parking note for the same reason.
+
+**Open work, not this file's to scope**: CXO flagged the safe-default fix needs new error copy
+(the existing error table has no pattern for "no key configured at all," and the adjacent pattern
+its own author called "a lie for exactly this shape" would otherwise catch it by default) — Lead's
+lane to land alongside the fix. Arch owns whether `#1791` forks the ADR-075 overlay or takes
+another shape. Neither PPM's call; this epic's job is giving them a home, not a design.
 
 ---
 
@@ -416,3 +446,15 @@ read, that's real information — update this file, don't defend the original gr
   instance's precedent). Also read the morning's model-tier-ceiling incident (Janus's correction
   to Exec's 7-role alert — only 2 seats genuinely blocked, PPM was among the 4 that self-recovered
   within 18 minutes, not part of the real outage) — cc-only, no epic-order impact.
+- 2026-09-14 13:22 WORK (PPM): **Real structural ruling** — PM escalated tenancy as "our
+  fundamental value and promise" after two epic-2-class holes (`#1807`, `#1791`) surfaced against
+  an already-closed epic 2. Lead asked for a ruling rather than guessing; created epic 12 (Tenancy
+  hardening), Lead's own weak preference — keeps epic 2's closure true for what it contained while
+  giving PM's newly-named class explicit tracking. Moved `#1750`/`#1751` here from epic 2's
+  parking note. `#1807` closed same-day (Lead's lane); two more findings from that same lane
+  (`#1809`, `#1810`) folded in immediately. Also fixed a missing board-add on `#1807` (closed
+  issues can still be missing from the board — same drift shape as `#1772`/`#1785`, just on a
+  closed item this time) and bumped `#1791`/`#1750` off Product Backlog now that they're actively
+  epic-tracked rather than parked. Separately triaged 4 docs-drift issues (Ongoing/FLYWHEEL,
+  matching `#1720`'s precedent) and folded `#1811` into epic 5 as a `#1760`-class test-theatre
+  finding.
