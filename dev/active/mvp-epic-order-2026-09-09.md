@@ -246,6 +246,21 @@ out — PM reported it live as direct usability friction on the primary chat sur
 gating rather than deferrable polish; if that reading is wrong, this is the file's cheapest possible
 correction (move one item's milestone).
 
+### 11. Schema/domain correspondence (1 item, new 2026-09-13) — genuinely its own epic
+`#1788` — the PM-056 schema-validation workflow came back to life today after months dead (four
+stacked breakages, all fixed same-day) and found 13 apparent missing `to_domain`/`from_domain`
+converters across 7 DB models. Arch's ruling, same day, by importer census not name-matching:
+**2 are real correspondence** (`DocumentDB`, `SessionActivityDB` — live importers, write the
+converters) · **5 are dead persistence twins with zero importers** (`Feature`, `Intent`, `Product`,
+`Stakeholder`, `Task` DB classes — create-all-era, tables never migrated per `#1273`; configure the
+checker off with the reason recorded, and file one disposal-pipeline issue for the five as a set
+rather than leave them as config rows forever). **Why its own epic**: this is schema/model-layer
+correctness work discovered via a revived CI workflow, sharing no real membership with epic 1's CI
+mechanics (that epic is about workflows themselves being broken; this is about what a working
+workflow found) or epic 5/9's dead-code shapes (found via unrelated lanes, different mechanism —
+missing converters and unmigrated tables, not swallowed exceptions or unreachable handlers). Not
+yet filed: the disposal-pipeline issue Arch's ruling calls for.
+
 ---
 
 **Retired 2026-09-12**: the old "Singletons" section (`#1423`/`#1695`/`#1697`/`#1708`/`#1718`/
@@ -370,3 +385,8 @@ read, that's real information — update this file, don't defend the original gr
   findings from the #1436 mypy-gate lane; milestoned Production, not MVP, matching #1436's own
   milestone — not part of this file). PM's secret rotation on `#1687` appears to have happened,
   per `#1785`'s own filing account; `#1687` itself stays open pending Lead's close-out comment.
+- 2026-09-13 19:22 WORK (PPM): `#1788` (PM-056 schema-validation finding, MVP-milestoned, no epic
+  home) added as epic 11 — genuinely doesn't share membership with epic 1 (CI mechanics vs. what a
+  working CI found) or epics 5/9 (different dead-code discovery mechanism). Arch's per-model
+  ruling was Lead/Arch's own technical call, not PPM's; folded in for tracking only. CIO's
+  belt-methodology closeout thread was cc-only, no PPM action.
