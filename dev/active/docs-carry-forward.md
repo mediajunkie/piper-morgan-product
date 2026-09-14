@@ -1,49 +1,50 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-13 ~16:20 PDT (mail empty; fixed #1728 via the new GitHub-criteria source).
+**Updated**: 2026-09-13 ~22:5x PDT (STOP — day closed, cron re-armed).
 **Third work-queue source, established 09-13 (PM's v1.33 ruling)**: Docs's criteria line is
 `gh issue list --search "label:documentation" --state open --limit 50` — open each result, don't
-trust the list view (CXO's 09-12 finding). Denominator was 7 as of 09-13. Check every WORK fire
-after the mail loop, alongside standing-items.
-**New publish-sequencing discipline**: commit the calendar update as its OWN fast, standalone
-commit immediately after the website publish (Step 6/7 of `publish-to-blog` — already documented
-this way), and do drafts-folder archival (Step 9) as a SEPARATE, later commit. Bundling the two
-adds avoidable seconds to the "post live but calendar not yet updated" window — Dispatch caught
-this exact 75s gap on "Who's Who." Not a backfill-forgetting repeat; fields were correct, just late.
-**Session log**: `dev/2026/09/13/2026-09-13-0958-docs-code-log.md` (open).
+trust the list view (CXO's 09-12 finding). Denominator was 6 as of day-close (was 7, #1728 closed).
+Check every WORK fire after the mail loop, alongside standing-items.
+**Publish-sequencing discipline** (adopted 09-13, applied cleanly the same day): commit the
+calendar update as its OWN fast, standalone commit immediately after the website publish (Step 6/7
+of `publish-to-blog` — already documented this way), and do drafts-folder archival (Step 9) as a
+SEPARATE, later commit. Bundling the two adds avoidable seconds to the "post live but calendar not
+yet updated" window — Dispatch caught this exact 75s gap on "Who's Who."
+**Session log**: `dev/2026/09/13/2026-09-13-0958-docs-code-log.md` (CLOSED, `<!-- DAY-CLOSED:
+2026-09-13 -->` present). Tomorrow needs a fresh log at START.
 **Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
 make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything
 else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM's own words.
-**Cron**: `433c7e09`, `57 6,9,12,15,18,21 * * *`, healthy. Expires ~2026-09-15 (7-day auto-expiry)
-— watch for a proactive re-arm before then, and watch whether Gap-C recurs.
+**Cron**: `f79bd5c0`, `57 6,9,12,15,18,21 * * *`, re-armed at STOP via delete-then-create (was
+`433c7e09`), CronList-verified sole job. Expires ~2026-09-20 (7-day auto-expiry) — watch for a
+proactive re-arm before then.
 **Watching**: PM's answer on whether to draft a routing memo to Lead Dev for two audit clusters
-found today (see "Watch surfaces" below) — offered, not yet answered, not chasing.
+found 09-13 (see "Watch surfaces" below) — offered, not yet answered, not chasing.
 
-## Today (09-13) so far — publish, an unrelated image correction, and a real GitHub-audit dig
+## 09-13 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-13-omnibus-log.md`)
 
-Published "Who's Who at Piper Morgan" — independent proofread caught two real title inaccuracies
-against `ROSTER.md` (fixed) and a genuine name-privacy issue (2 of 6 named humans had zero prior
-public mentions despite the piece's own claim; flagged to PM, who chose to remove both and
-generalize rather than guess at consent). Dispatch-PM separately sent an honest correction on the
-09-11 altText discrepancy (confirmed fabrication, not a misread) — acknowledged, nothing owed.
+HIGH-COMPLEXITY: COORDINATION day, 19 sessions (11 named roles + 8 Lead-delegated prog subagents).
+A cohort-wide re-auth gap produced the belt's first genuine STALE true-positive (Lead, ~12 dark
+hours); an epic-6 design-to-shipped-build chain ran Lead→Arch→PPM→CXO in one day; a five-week-
+overdue hook block-vs-warn ruling was executed, tested, caught silently broken, and reverted; and
+a #1788 schema ruling produced a real recorded Lead/Arch disagreement, correctly left unresolved
+rather than forced. Full narrative in the omnibus.
 
-PM later found a mis-rendered figure in the published cover image and supplied a replacement.
-Swapped it on the canonical site through the exact same sips+cwebp pipeline the publish script
-uses, live-verified by byte-size match, and asked Dispatch to mirror it on both syndicated legs.
-Along the way, closed a real documentation gap Dispatch raised (`draftPath` should always resolve
-on `origin/main` — already my practice, now stated in the schema itself, not just a procedural
-step) rather than just answer in mail.
-
-PM then asked about open audit-related GitHub issues. Found and fixed two real ones mine to fix
-(#1720 closed with evidence — two public guides describing a fully-retired integration as
-"ACTIVE"; #1721 correctly left open, genuinely blocked on an unresolved upstream decision, not
-stale). Filed two adjacent discoveries separately (#1779, #1780) rather than scope-creep them in.
-Then dug into the rest and found a real cluster worth escalating — see Watch surfaces.
-
-A later quiet fire (16:20) used #1720/#1721's shared `documentation` label to establish a real
-GitHub-criteria line for the flywheel's third work-queue source (see header) — checked all 7 open
-hits, fixed one genuinely-mine small gap (#1728, stale mailbox-infrastructure row), left the rest
-correctly alone (one's CIO's lane, others already tracked or not current).
+My own day: published "Who's Who at Piper Morgan" with a real pre-publish name-privacy catch (2 of
+6 named humans had zero prior public mentions despite the piece's own claim; PM chose to remove
+both and generalize rather than guess at consent). Corrected a mis-rendered cover-image figure PM
+supplied mid-day, verified by byte-size match. Root-caused a Dispatch-reported "empty fields again"
+complaint as a genuine 75-second publish/calendar timing gap (not a repeat mistake) and fixed the
+underlying process. Surveyed audit-related GitHub issues at PM's request: closed #1720 with
+evidence, correctly left #1721 open (genuinely blocked on #1708), filed #1779/#1780 separately, and
+surfaced two stale-for-weeks audit clusters as a proposed routing plan (see Watch surfaces —
+PM-answer pending). Established a real GitHub-issue criteria line for the flywheel's third
+work-queue source (`label:documentation state:open`, PM's v1.33 ruling) and used it same-day to
+find and fix #1728 (stale mailbox-infrastructure row). Closed the day by delegating the omnibus
+draft to a reviewed subagent, personally verifying two load-bearing claims against primary sources
+(methodology-54's canonical title; prog-subagent-to-Lead attribution) and catching+fixing a real
+chronological-ordering defect in the draft before committing — 420 lines, well under the 600-line
+HIGH-COMPLEXITY budget. Appended 19 Shape-B activity-log rows in a separate commit.
 
 ## 09-12 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-12-omnibus-log.md`)
 
