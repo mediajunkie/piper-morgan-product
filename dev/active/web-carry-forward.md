@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-09-12 (active), cron ID last updated 2026-09-12
+# Web carry-forward — 2026-09-13 (active), cron ID last updated 2026-09-13
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `c2e04dab`, re-armed at 2026-09-12 STOP) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `a8417203`, re-armed at 2026-09-13 STOP) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 **Open, one item (2026-09-12 close)**: website#35 — the 08-25 structural fix (`8edfc11`) is
 shipped; closable once PM answers whether the incident involved tabs/back-forward navigation
