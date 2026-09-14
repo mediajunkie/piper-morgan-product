@@ -16,7 +16,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import select
 
 from services.auth.auth_middleware import get_current_user
-from services.auth.jwt_service import JWTClaims, JWTService
+from services.auth.jwt_service import BlacklistUnavailable, JWTClaims, JWTService
 from services.auth.models import (
     LoginRequest,
     LoginResponse,
@@ -354,6 +354,19 @@ async def refresh_token(
                 session=db_session,
                 audit_context=audit_context,
             )
+    except BlacklistUnavailable as e:
+        # #1792: MUST precede the generic handler below. Falling through to
+        # `new_access_token = None` would 401 "Refresh token invalid or
+        # expired" AND clear the auth cookies — telling the user their
+        # session ended because our revocation store was unreachable.
+        logger.error("token_revocation_check_unavailable", error=str(e))
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=(
+                "Couldn't verify your session right now — nothing was "
+                "changed. Try again in a moment."
+            ),
+        )
     except Exception as e:
         logger.warning("refresh_token_validation_error", error=str(e))
         new_access_token = None

@@ -10,7 +10,15 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-13 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+**Last rewritten**: 2026-09-14 07:22 PT (START, ~30min late). **Recovered from a 7-role
+delayed-start event** — arch/cio/cxo/docs/pa/ppm/web all STOPped cleanly last night and didn't
+fire on schedule this morning (comms/lead/host were unaffected). Exec escalated to PM; this fire
+firing at all is PPM's own recovery evidence. Cron survived intact (`b72aa208` unchanged) — same
+"armed ≠ live schedule" pattern from the last two days, now at cohort scale rather than one seat.
+Triaged 1 unmilestoned issue (`#1798`, git-hooks infrastructure) — Ongoing/FLYWHEEL, matching
+`#1720`'s precedent. Nothing else unblocked.
+
+**Prior fire: 2026-09-13 22:22 PT (STOP). Day closed clean, DAY-CLOSED sentinel written.**
 Cron re-armed `dedc5304` → **`b72aa208`**, `CronList`-verified exactly one job. Dropped the
 long-standing `#1687` watch line (satisfied — rotation appears done). Epic 11 updated: Lead
 executed 6 of 7 models same-day (5 dead twins confirmed + disposed via `#1797`, `SessionActivityDB`

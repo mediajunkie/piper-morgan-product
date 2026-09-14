@@ -48,6 +48,28 @@ class TokenInvalid(Exception):
     pass
 
 
+class BlacklistUnavailable(Exception):
+    """The revocation store could not be reached, so revocation status is UNKNOWN.
+
+    #1792. Deliberately NOT a subclass of TokenRevoked. Before this existed,
+    `TokenBlacklist.is_blacklisted` failed closed by returning `True`, which
+    `validate_token` could not distinguish from a real blacklist hit — so a
+    Redis or database blip told every active user 401 "Token has been revoked".
+    That names a security action taken against them that did not happen, and
+    it names it for every session at once, which is exactly backwards as an
+    incident-response signal.
+
+    The security posture is UNCHANGED: raising refuses the request just as
+    returning `True` did. Nothing is granted on error; this is still fail-closed.
+    Only the claim attached to the refusal changes — 401 "revoked" becomes
+    503 "couldn't verify right now", matching the idiom `require_admin`
+    (services/auth/auth_middleware.py, #1485/#1598) already chose for the
+    same situation.
+    """
+
+    pass
+
+
 class TokenType(Enum):
     """JWT token types for different use cases"""
 
@@ -373,6 +395,9 @@ class JWTService:
             TokenRevoked: If token has been revoked
             TokenExpired: If token has expired
             TokenInvalid: If token is invalid
+            BlacklistUnavailable: If the revocation store could not be reached,
+                so revocation status is unknown (#1792). Distinct from
+                TokenRevoked on purpose — see that exception's docstring.
         """
         try:
             # Decode and validate token
@@ -433,6 +458,12 @@ class JWTService:
             raise TokenExpired("Token has expired")
         except TokenRevoked:
             # Re-raise TokenRevoked as-is
+            raise
+        except BlacklistUnavailable:
+            # #1792: re-raise as-is. Without this clause the generic
+            # `except Exception` below would rewrite a store outage into
+            # TokenInvalid ("Invalid token", 401) — a different false claim
+            # about the user's own credential, not an improvement.
             raise
         except jwt.InvalidTokenError as e:
             logger.warning("Token validation failed: invalid", error=str(e))
