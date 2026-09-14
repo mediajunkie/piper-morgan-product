@@ -10,7 +10,20 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-14 10:22 PT (WORK). **Correction to my own START entry**: Janus's
+**Last rewritten**: 2026-09-14 13:22 PT (WORK). **A real structural ruling — epic 12 (Tenancy
+hardening) created.** PM escalated tenancy as "our fundamental value and promise" after two
+epic-2-class holes (`#1807`, `#1791`) surfaced against an already-closed epic 2. Lead asked for a
+ruling rather than working outside the order; created a successor epic (Lead's own weak
+preference) rather than reopen epic 2 or leave them as singletons — keeps epic 2's closure true
+for what it contained while giving PM's newly-named class explicit tracking. Moved `#1750`/`#1751`
+over from epic 2's old parking note; `#1807` already closed same-day (Lead's lane), two more
+findings from that lane (`#1809`, `#1810`) folded in immediately. Fixed a board-add gap on the
+*closed* `#1807` — same drift shape as `#1772`/`#1785`, just discovered on a closed item this
+time. Triaged 4 docs-drift issues (Ongoing/FLYWHEEL) and folded `#1811` into epic 5 as a
+`#1760`-class test-theatre finding. My `#1386`-adjacent WATCH FOR line on DocumentDB can also drop
+at tonight's STOP — resolved last fire.
+
+**Prior fire: 2026-09-14 10:22 PT (WORK). Correction to my own START entry**: Janus's
 investigation of this morning's alert (cc-only, read this fire) found the "7 roles down" was
 actually a 2-seat account-level Fable-5 model-tier ceiling (arch, web genuinely blocked); PPM was
 among the 4 seats that self-recovered within 18 minutes with no real problem — not part of the
