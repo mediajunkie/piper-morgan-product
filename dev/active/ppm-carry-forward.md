@@ -10,7 +10,19 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-14 07:22 PT (START, ~30min late). **Recovered from a 7-role
+**Last rewritten**: 2026-09-14 10:22 PT (WORK). **Correction to my own START entry**: Janus's
+investigation of this morning's alert (cc-only, read this fire) found the "7 roles down" was
+actually a 2-seat account-level Fable-5 model-tier ceiling (arch, web genuinely blocked); PPM was
+among the 4 seats that self-recovered within 18 minutes with no real problem — not part of the
+actual outage. Noting the correction plainly rather than let the earlier framing stand uncorrected.
+**Epic 11 resolved**: Arch re-ruled `#1788`'s DocumentDB question — Lead's disagreement was
+correct (DocumentDB's domain twin is also dead; a converter would invent a NOT NULL key and drop
+security fields), now cat (2) with its own reason line, and the "measure both sides" principle is
+in the ruling itself. `#1788` is one registry entry from green — my WATCH FOR line on this can
+drop at STOP. Triaged 2 unmilestoned issues (`#1798` git-hooks, `#1801` auto-generated weekly
+docs-audit), both Ongoing, both matched to clean precedent.
+
+**Prior fire: 2026-09-14 07:22 PT (START, ~30min late). Recovered from a 7-role
 delayed-start event** — arch/cio/cxo/docs/pa/ppm/web all STOPped cleanly last night and didn't
 fire on schedule this morning (comms/lead/host were unaffected). Exec escalated to PM; this fire
 firing at all is PPM's own recovery evidence. Cron survived intact (`b72aa208` unchanged) — same

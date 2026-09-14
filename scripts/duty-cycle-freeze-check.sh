@@ -20,6 +20,32 @@
 # Heartbeat / session log / DAY-CLOSED are all read from origin/main (no working-tree currency dependency).
 # Output: "STALE <role> <detail>" per frozen role; empty = healthy / off-hours / not-cycling. Exit 0 always
 # (a watchdog must never fail loudly itself). A wrapper (launchd) turns STALE lines into the PM alert.
+#
+# ⚠️ WHAT "SILENCE" ACTUALLY MEANS — three real, distinct causes observed on live seats in four
+# days (2026-09-13/14, Lead's ask: "worth writing down somewhere durable" rather than re-derived
+# each time a STALE reading comes in ambiguous). STALE means "no origin/main output for N hours,"
+# full stop — it structurally cannot distinguish these, and each needs a DIFFERENT remedy:
+#   1. **Signed out / auth-gated** (Lead, 2026-09-13): the session itself was signed out overnight;
+#      the cron object survived and was correct, but a signed-out session fires nothing. Remedy:
+#      PM re-authenticates the session.
+#   2. **Classifier/permission-layer outage** (multiple seats, 2026-09-13): the session is live and
+#      synced but every state-changing tool call (Bash, commit, CronCreate) is transiently gated.
+#      Remedy: wait it out or retry; self-clears, no session restart needed.
+#   3. **Model-tier usage ceiling, with a session restart** (Fable-ceiling incident + Web's
+#      self-report, 2026-09-14): a model-tier limit is hit; PM switches the seat to a different
+#      model; **a model switch restarts the Claude Code session.** `CronCreate` jobs are
+#      session-scoped, so the restart's own re-arm can still leave `CronList` showing the SAME job
+#      id as before (the object survived) while the fire that was due during the switch never
+#      landed — "the cron is present" is not evidence "fires are being delivered" in this specific
+#      case. Remedy: PM switches the model tier; the next scheduled fire after the restart should
+#      land normally. **Mitigation, not a cure** (Pard, 2026-09-14): a seat whose launch pins an
+#      explicit `--model` rather than inheriting a session default is not exposed to that tier's
+#      ceiling at all — this is a provisioning/launch-time decision, outside what this script or
+#      duty-cycle-tick can create from inside an already-running session.
+# **The common thread**: don't infer cause from a STALE reading alone. Route to the affected role
+# for self-report once it gets a turn (per Lead's and Web's own model this week — report back with
+# your own evidence, not just a confirmation of the alerting role's number) before assuming which
+# of these three (or a fourth, not-yet-observed cause) applies.
 # Also emits (never STALE-prefixed, so a `grep "^STALE "` consumer is unaffected): "PARK-NO-EXIT",
 # "HEARTBEAT-WRITER-SILENT", (v0.11) "BELT-INVISIBLE <role>" — a role that's alive by every
 # liveness signal but wrote no heartbeat row today, distinct from and never affecting STALE status —
