@@ -308,7 +308,12 @@ class AuthMiddleware(BaseHTTPMiddleware):
             token = self._extract_token(request)
             if token:
                 # Import exceptions for specific handling
-                from services.auth.jwt_service import TokenExpired, TokenInvalid, TokenRevoked
+                from services.auth.jwt_service import (
+                    BlacklistUnavailable,
+                    TokenExpired,
+                    TokenInvalid,
+                    TokenRevoked,
+                )
 
                 try:
                     claims = await self.jwt_service.validate_token(token)
@@ -343,6 +348,23 @@ class AuthMiddleware(BaseHTTPMiddleware):
                         client_ip=self._get_client_ip(request),
                     )
                     return self._unauthorized_response("Token has been revoked", request)
+                except BlacklistUnavailable as e:
+                    # #1792: the revocation store is down, so we do NOT know
+                    # whether this token was revoked. Refuse (fail closed),
+                    # but say what is actually true. Logged at a distinct
+                    # event name so incident response can tell a store
+                    # outage apart from a real mass-revocation event.
+                    logger.error(
+                        "token_revocation_check_unavailable",
+                        path=request.url.path,
+                        client_ip=self._get_client_ip(request),
+                        error=str(e),
+                    )
+                    return self._service_unavailable_response(
+                        "Couldn't verify your session right now — nothing was "
+                        "changed. Try again in a moment.",
+                        request,
+                    )
                 except TokenExpired:
                     logger.warning(
                         "Expired token rejected",
@@ -413,6 +435,33 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
         # Fall back to direct client IP
         return request.client.host if request.client else "unknown"
+
+    def _service_unavailable_response(
+        self, message: str, request: Optional[Request] = None
+    ) -> Response:
+        """Create a 503 for a check we could not COMPLETE (#1792).
+
+        Deliberately does NOT redirect browsers to /login the way
+        `_unauthorized_response` does. Bouncing a user to the login form
+        during a revocation-store outage tells them their session ended —
+        the same false story in a different costume — and since login does
+        not consult the blacklist they would land straight back here.
+
+        Shape follows the in-repo precedent `require_admin` set for the
+        analogous case (#1485/#1598): 503 + "couldn't verify ... right now
+        — nothing was changed. Try again in a moment."
+        """
+        from fastapi.responses import JSONResponse
+
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={
+                "error": "verification_unavailable",
+                "message": message,
+                "type": "service_unavailable",
+            },
+            headers={"Retry-After": "5"},
+        )
 
     def _unauthorized_response(self, message: str, request: Request = None) -> Response:
         """
@@ -492,7 +541,12 @@ async def get_current_user(
     """
     from services.api.errors import APIError
     from services.auth.container import AuthContainer
-    from services.auth.jwt_service import TokenExpired, TokenInvalid, TokenRevoked
+    from services.auth.jwt_service import (
+        BlacklistUnavailable,
+        TokenExpired,
+        TokenInvalid,
+        TokenRevoked,
+    )
 
     # Extract token from Authorization header or cookie (Issue #455)
     token = None
@@ -529,6 +583,19 @@ async def get_current_user(
             status_code=401,
             error_code="TOKEN_REVOKED",
             details={"detail": "Token has been revoked"},
+        )
+    except BlacklistUnavailable as e:
+        # #1792: unknown ≠ revoked. Fail closed, but honestly.
+        logger.error("token_revocation_check_unavailable", error=str(e))
+        raise APIError(
+            status_code=503,
+            error_code="REVOCATION_CHECK_UNAVAILABLE",
+            details={
+                "detail": (
+                    "Couldn't verify your session right now — nothing was "
+                    "changed. Try again in a moment."
+                )
+            },
         )
     except TokenExpired:
         raise APIError(
@@ -696,6 +763,10 @@ class MCPAuthAdapter:
             }
         except (TokenRevoked, TokenExpired, TokenInvalid):
             return None
+        # #1792: BlacklistUnavailable is deliberately NOT caught here. `None`
+        # from this adapter means "this token is not valid", which is the same
+        # false claim in a quieter form. An MCP caller should see the store
+        # outage propagate rather than be told its credential is bad.
 
     def create_mcp_context(self, claims: JWTClaims) -> Dict[str, Any]:
         """

@@ -23,6 +23,7 @@ from uuid import UUID
 
 import structlog
 
+from services.auth.jwt_service import BlacklistUnavailable
 from services.cache.redis_factory import RedisFactory
 from services.database.session_factory import AsyncSessionFactory
 from services.utils.datetime_utils import ensure_utc, utc_now
@@ -143,10 +144,17 @@ class TokenBlacklist:
             token_id: Token identifier to check
 
         Returns:
-            True if blacklisted, False otherwise
+            True if blacklisted, False if definitively not blacklisted
+
+        Raises:
+            BlacklistUnavailable: if the store could not be reached, so
+                revocation status is UNKNOWN (#1792)
 
         Note:
-            Fails closed (returns True) on errors for security
+            Still fails CLOSED — an unreachable store refuses the request. It
+            just refuses it honestly. Returning True here used to be
+            indistinguishable from a real blacklist hit, which made a store
+            outage report as a mass revocation (see BlacklistUnavailable).
         """
         try:
             if self._redis_available:
@@ -159,14 +167,20 @@ class TokenBlacklist:
                 # Database fallback
                 return await self._check_database(token_id)
 
+        except BlacklistUnavailable:
+            # Already reported honestly by the inner check; don't re-wrap.
+            raise
         except Exception as e:
             logger.error(
-                "Failed to check blacklist, failing closed",
+                "blacklist_check_unavailable",
                 token_id=token_id,
+                store="redis" if self._redis_available else "database",
                 error=str(e),
+                outcome="refused_revocation_status_unknown",
             )
-            # Fail closed: assume blacklisted on error for security
-            return True
+            raise BlacklistUnavailable(
+                f"Could not check revocation status for token {token_id}: {e}"
+            ) from e
 
     async def remove_expired(self) -> int:
         """
@@ -271,7 +285,19 @@ class TokenBlacklist:
             token_id: Token identifier to check
 
         Returns:
-            True if blacklisted, False otherwise
+            True if blacklisted, False if definitively not blacklisted
+
+        Raises:
+            BlacklistUnavailable: if the database could not answer (#1792)
+
+        Note:
+            #1792 found TWO fail-closed-by-returning-True sites, not one. The
+            issue cited only `is_blacklisted`'s outer handler; the live
+            reproduction (200, 401, 401, 401, 401 through a bare TestClient)
+            actually ran through THIS one, because `_redis_available` was
+            False and the asyncpg session was bound to a dead event loop.
+            Fixing only the cited site would have left the reproduced path
+            still lying.
         """
         try:
             async with self.db_session_factory.session_scope() as session:
@@ -290,12 +316,18 @@ class TokenBlacklist:
 
         except Exception as e:
             logger.error(
-                "Database check failed, failing closed",
+                "blacklist_check_unavailable",
                 token_id=token_id,
+                store="database",
                 error=str(e),
+                outcome="refused_revocation_status_unknown",
             )
-            # Fail closed for security
-            return True
+            # Still fail closed — the request is refused. It is refused
+            # honestly (503 "couldn't verify") instead of as a false
+            # revocation claim (401 "Token has been revoked").
+            raise BlacklistUnavailable(
+                f"Could not check revocation status for token {token_id}: {e}"
+            ) from e
 
     async def _cleanup_database(self) -> int:
         """
