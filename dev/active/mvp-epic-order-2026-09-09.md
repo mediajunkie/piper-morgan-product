@@ -247,29 +247,37 @@ gating rather than deferrable polish; if that reading is wrong, this is the file
 correction (move one item's milestone).
 
 ### 11. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
-`#1788` (open, blocked on Arch's re-ruling below) · `#1797` (disposal-pipeline issue for the 5 dead
+`#1788` (open — one registry entry from green) · `#1797` (disposal-pipeline issue for the 5 dead
 persistence twins, filed 2026-09-13). The PM-056 schema-validation workflow came back to life
 today after months dead and found 13 apparent missing `to_domain`/`from_domain` converters across
-7 DB models. Arch's ruling, same day, by importer census not name-matching: **2 real
-correspondence** (`DocumentDB`, `SessionActivityDB`) · **5 dead persistence twins** (`Feature`,
+7 DB models. Arch's ruling, by importer census not name-matching: **2 real correspondence**
+(`SessionActivityDB`; `DocumentDB` re-ruled below) · **5 dead persistence twins** (`Feature`,
 `Intent`, `Product`, `Stakeholder`, `Task` — create-all-era, tables never migrated per `#1273`).
 
-**Executed same day, 6 of 7 (Lead)**: the five twins confirmed by an independent census (domain
+**Executed 2026-09-13, 6 of 7 (Lead)**: the five twins confirmed by an independent census (domain
 `Intent`'s 26 importers reproduced exactly) — checker off, reason line, a stale-entry guard, and
 `#1797` filed. `SessionActivityDB` converter written and verified against a real read path (three
-live consumers), 7 round-trip tests. Two evidence corrections to Arch's ruling, neither changing
-it: "zero importers" was imprecise (the five have in-package importers forming a closed dead
-subgraph — the precise claim is zero *live consumers*), and #1788's "zero repository-layer
-conversion hits" was wrong (`TaskRepository.create_from_domain` exists, zero callers).
+live consumers), 7 round-trip tests.
 
-**`DocumentDB` disagreement, unresolved — Arch's to re-rule, not PPM's**: Arch's importer census
-measured only DocumentDB's live side; Lead found its **domain twin is dead** (zero importers,
-content-bearing `Document` vs. `DocumentDB`'s ADR-071 D2 owner-anchor row with no content column
-at all — a converter would have to invent `chromadb_base_id` and drop the D1/D2 security fields).
-Lead's generalizable point: liveness must be measured on both sides of a correspondence, not just
-one. PM-056 job 2 stays honestly red on this single model until Arch rules. **Why its own epic**:
-schema/model-layer correctness discovered via a revived CI workflow, sharing no real membership
-with epic 1's CI mechanics or epics 5/9's dead-code shapes (different mechanism entirely).
+**`DocumentDB` RE-RULED 2026-09-14 — cat (2), not cat (1)**: Lead's disagreement was correct.
+Arch's original census measured only DocumentDB's live DB-side importer and stopped; Lead found
+its **domain twin is also dead** (zero importers outside `models.py`), and the two classes aren't
+even the same shape — domain `Document` is content-bearing, `DocumentDB` is the ADR-071 D2
+owner-anchor row (`chromadb_base_id`, `owner_id`, `is_global_pm_domain`) with no content column at
+all. A converter would have to invent a NOT NULL key and drop two security fields. **DocumentDB's
+own reason line** (distinct from the five's "dead persistence twin"): *"live owner-anchor row with
+no domain counterpart — the name-matched domain class is a different, dead object."* **The
+generalizable point is now IN the ruling, not a footnote**: liveness must be measured on both
+sides of a correspondence — a live DB class with a dead domain twin fails exactly as Arch's
+original `Intent` case (dead DB, live domain) did, inverted. PM-056 job 2 goes green once this
+registry entry lands — the only remaining step. One new orphan surfaced, tracked separately and
+NOT part of `#1797`'s set: dead domain `Document` itself (zero importers, only referenced via
+`Artifact.from_document`/`to_document`) — a domain class, not a DB twin, credited to Lead's own
+finding, not yet filed as its own issue.
+
+**Why its own epic**: schema/model-layer correctness discovered via a revived CI workflow, sharing
+no real membership with epic 1's CI mechanics or epics 5/9's dead-code shapes (different mechanism
+entirely).
 
 ---
 
@@ -400,3 +408,11 @@ read, that's real information — update this file, don't defend the original gr
   working CI found) or epics 5/9 (different dead-code discovery mechanism). Arch's per-model
   ruling was Lead/Arch's own technical call, not PPM's; folded in for tracking only. CIO's
   belt-methodology closeout thread was cc-only, no PPM action.
+- 2026-09-14 10:22 WORK (PPM): Arch re-ruled `#1788`'s DocumentDB question — Lead's disagreement
+  was correct, DocumentDB is cat (2) not cat (1), with its own distinct reason line. Updated epic
+  11 to reflect the resolution; `#1788` is now one registry entry from green. Triaged 2
+  unmilestoned issues, neither MVP: `#1798` (git-hooks infra, Ongoing/FLYWHEEL) and `#1801`
+  (auto-generated weekly docs-audit issue, Ongoing/Q-Recurring-Audits, matching every prior
+  instance's precedent). Also read the morning's model-tier-ceiling incident (Janus's correction
+  to Exec's 7-role alert — only 2 seats genuinely blocked, PPM was among the 4 that self-recovered
+  within 18 minutes, not part of the real outage) — cc-only, no epic-order impact.

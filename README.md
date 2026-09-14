@@ -19,22 +19,9 @@ If you're part of the Piper Morgan alpha program, go to [pmorgan.tech](https://p
 
 ### For Developers
 
-```bash
-# Clone and setup
-git clone https://github.com/mediajunkie/piper-morgan-product.git
-cd piper-morgan-product
-python -m venv venv && source venv/bin/activate
-
-# Install dependencies
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-
-# Start infrastructure
-docker compose up -d
-
-# Run the application
-python main.py
-```
+Full setup steps (including environment configuration and database migration) live in
+**[CONTRIBUTING.md](CONTRIBUTING.md)** — that sequence is probe-verified against a fresh clone
+and is the canonical starting point.
 
 **See the [Technical Reference](docs/TECHNICAL-DEVELOPERS.md) for complete development documentation.**
 
