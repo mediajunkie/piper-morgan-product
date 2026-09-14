@@ -650,6 +650,57 @@ class PreClassifier:
         r"\b(?:delete|remove|cancel|clear|dismiss)\b|\bget\s+rid\s+of\b",
     ]
 
+    # #1756: the #1521 failure class, generalized to the OTHER read lanes.
+    # A 2026-09-13 census (100 destructive shapes, real pre-classifier, both
+    # entry paths) found the read lanes claiming destructive asks at surface 1:
+    # STATUS 30/30 ("get rid of my tasks" -> status/get_project_status),
+    # TEMPORAL 24/24 ("delete the meeting tomorrow" -> temporal/
+    # get_current_time), MEMORY 15/15 ("delete our conversation history" ->
+    # memory/get_memory), CALENDAR_QUERY 5/6 ("delete my meetings this week"
+    # -> query/week_calendar). The user asks for a deletion and is handed a
+    # status report / the current time / their own memory contents back.
+    #
+    # Worse than a wrong answer: a surface-1 claim SHORT-CIRCUITS the LLM lane
+    # (classifier.py returns on the pre_classify branch before the LLM call),
+    # so the destructive ask never becomes a DESTRUCTIVE rail action and the
+    # #1190 confirm gate — which only ever sees rail actions — never gets a
+    # turn on it. A read lane silently swallowing a destructive ask is the one
+    # miss the consent architecture cannot compensate for downstream.
+    #
+    # Positive evidence (#1527's PROJECT_NOUN_REQUIRED) has no analogue here:
+    # a read lane's legitimate claim space is not marked by any single noun.
+    # So this is the blocker idiom (REMINDER_QUERY_BLOCKERS /
+    # INTEGRATION_CONNECT_BLOCKERS), narrowed by POSITION rather than by
+    # vocabulary: the destructive verb must be in ASK position — heading the
+    # turn, or under an explicit request frame. A bare mention anywhere else
+    # is a read about deletion, not a deletion ("what did I delete yesterday",
+    # "what's the status of the delete feature", "show me my cancelled
+    # meetings") and those keep their claim; the census pins all three shapes.
+    #
+    # NARROWING ONLY — a blocked lane FALLS THROUGH to the surfaces that can
+    # route the ask honestly (later pattern lanes, then the LLM lane, whose
+    # destructive emissions dispatch the rail the #1190 gate guards). Nothing
+    # is rerouted, no new claim is created anywhere. Not an extraction
+    # surface: like its two sibling *_BLOCKERS lists this narrows an existing
+    # claim rather than adding one, and TestExtractionPatternRatchet's
+    # pre-classifier count (which sums the `*PATTERNS` lists) is unchanged.
+    DESTRUCTIVE_ASK_BLOCKERS = [
+        # Imperative head of the turn: "delete the meeting tomorrow",
+        # "please clear my calendar", "just wipe my history".
+        r"^(?:please\s+|pls\s+|just\s+|now\s+|go\s+ahead\s+and\s+)*"
+        r"(?:delete|remove|erase|wipe|purge|cancel|clear|discard|trash|drop)\b",
+        # Request frame: "can you delete …", "could you please cancel …".
+        r"\b(?:can|could|will|would)\s+you\s+(?:please\s+)?"
+        r"(?:delete|remove|erase|wipe|purge|cancel|clear|discard|trash|drop)\b",
+        # Intent frame: "I want to delete …", "let's clear …", "help me wipe …".
+        r"\b(?:i\s+(?:want|need)\s+(?:you\s+)?to|i'?d\s+like\s+(?:you\s+)?to"
+        r"|let'?s|help\s+me|please)\s+"
+        r"(?:delete|remove|erase|wipe|purge|cancel|clear|discard|trash|drop)\b",
+        # Phrasal — "get rid of" is never a read in any position (the same
+        # phrasal-form miss #1527 found in REMINDER_QUERY_BLOCKERS).
+        r"\bget\s+rid\s+of\b",
+    ]
+
     # Issue #903: Reminder patterns - Query #32
     REMINDER_PATTERNS = [
         # "remind me to X" / "remind me about X"
@@ -970,6 +1021,18 @@ class PreClassifier:
     # stays: a reminder ABOUT a project is still a reminder delete). Guard on
     # the EXISTING patterns — no new pattern, no new capture; the
     # TestExtractionPatternRatchet pre-classifier count is unchanged.
+    # 1757 (2026-09-13): the same lookahead, extended to the sibling verbs the
+    # 1527 round explicitly left alone. A 42-shape census found the
+    # archive/hide/put-away/restore/unarchive/bring-back patterns claiming
+    # 28/28 non-project targets ("archive my notes", "hide my email", "put my
+    # files away", "restore my reminders", "bring back the draft") — the same
+    # unguarded greedy `(.+)` the delete family carried, minus the destructive
+    # blast radius. Same open claim space, same answer: require the project
+    # noun. All 14 legitimate project phrasings (every shape the existing
+    # test_portfolio_patterns / test_archived_list_1431 pins carry) already
+    # contain it, so the keep set is untouched. Note `unarchive` has no
+    # `(?:project\s+)?` group of its own; the lookahead reads the whole
+    # message, so it guards that shape cleanly too.
     PROJECT_NOUN_REQUIRED = r"(?=.*\bprojects?\b)"
 
     # #1738: the portfolio LIST claim, named. NOT a new routing pattern
@@ -982,20 +1045,21 @@ class PreClassifier:
     )
 
     PORTFOLIO_PATTERNS = [
-        # Archive operations - "Archive my project X"
-        r"\barchive\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
-        r"\bhide\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
-        r"\bput\s+(.+)\s+(?:away|aside)",
+        # Archive operations - "Archive my project X" (non-project targets
+        # decline via the positive project-noun requirement, #1757)
+        rf"\barchive\s+{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        rf"\bhide\s+{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        rf"\bput\s+{PROJECT_NOUN_REQUIRED}(.+)\s+(?:away|aside)",
         # Delete operations - "Delete my project X" (reminder/todo-noun
         # deletes decline via the negative guard; non-project deletes decline
         # via the positive project-noun requirement, #1527 — see comments above)
         rf"\bdelete\s+{REMINDER_TODO_NOUN_GUARD}{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         rf"\bremove\s+{REMINDER_TODO_NOUN_GUARD}{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         rf"\bget rid of\s+{REMINDER_TODO_NOUN_GUARD}{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
-        # Restore operations - "Restore project X"
-        r"\brestore\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
-        r"\bunarchive\s+(?:my\s+)?(?:the\s+)?(.+)",
-        r"\bbring back\s+(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        # Restore operations - "Restore project X" (same #1757 requirement)
+        rf"\brestore\s+{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        rf"\bunarchive\s+{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(.+)",
+        rf"\bbring back\s+{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         # Search operations - "Search projects for Y"
         r"\bsearch\s+(?:my\s+)?projects?\s+(?:for\s+)?(.+)",
         r"\bfind\s+(?:my\s+)?project\s+(.+)",
@@ -1245,7 +1309,11 @@ class PreClassifier:
 
         # Issue #674: Check MEMORY before IDENTITY
         # "What do you remember about me?" routes to UserHistoryService
-        if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.MEMORY_PATTERNS):
+        # #1756: a destructive ask ("delete our conversation history") is not a
+        # memory READ — decline so it reaches a surface that can gate it.
+        if not PreClassifier._is_destructive_ask(
+            clean_for_matching
+        ) and PreClassifier._matches_patterns(clean_for_matching, PreClassifier.MEMORY_PATTERNS):
             return Intent(
                 category=IntentCategory.MEMORY,
                 action="get_memory",
@@ -1387,7 +1455,11 @@ class PreClassifier:
         # Issue #523: Phase A Canonical Query patterns
         # Issue #589: Check Calendar queries BEFORE temporal to route to QUERY handler
         # Check Calendar queries (Queries #34, #35, #61)
-        if PreClassifier._matches_patterns(
+        # #1756: "delete my meetings this week" / "clear my agenda" are calendar
+        # WRITES; this lane answers with a listing. Decline and fall through.
+        if not PreClassifier._is_destructive_ask(
+            clean_for_matching
+        ) and PreClassifier._matches_patterns(
             clean_for_matching, PreClassifier.CALENDAR_QUERY_PATTERNS
         ):
             # Determine specific action based on which pattern matched
@@ -1710,7 +1782,10 @@ class PreClassifier:
                 },
             ), "INTEGRATION_CONNECT_PATTERNS"
 
-        if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.TEMPORAL_PATTERNS):
+        # #1756: "delete the meeting tomorrow" is not a current-time query.
+        if not PreClassifier._is_destructive_ask(
+            clean_for_matching
+        ) and PreClassifier._matches_patterns(clean_for_matching, PreClassifier.TEMPORAL_PATTERNS):
             return Intent(
                 category=IntentCategory.TEMPORAL,
                 action="get_current_time",
@@ -1738,7 +1813,10 @@ class PreClassifier:
                 context={"original_message": message},
             ), "ANALYSIS_PATTERNS"
 
-        if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.STATUS_PATTERNS):
+        # #1756: "get rid of my tasks" is not a status report.
+        if not PreClassifier._is_destructive_ask(
+            clean_for_matching
+        ) and PreClassifier._matches_patterns(clean_for_matching, PreClassifier.STATUS_PATTERNS):
             return Intent(
                 category=IntentCategory.STATUS,
                 action="get_project_status",
@@ -1847,6 +1925,25 @@ class PreClassifier:
         if PreClassifier._matches_patterns(clean_message, PreClassifier.REMINDER_QUERY_BLOCKERS):
             return False
         return PreClassifier._matches_patterns(clean_message, PreClassifier.REMINDER_QUERY_PATTERNS)
+
+    @staticmethod
+    def _is_destructive_ask(clean_message: str) -> bool:
+        """#1756: True iff the turn is a destructive ASK, not a read.
+
+        Applied as a decline-guard on the READ lanes (STATUS, TEMPORAL,
+        MEMORY, CALENDAR_QUERY) at BOTH entry surfaces — pre_classify() and
+        detect_multiple_intents() — so the two resolve the shape with
+        identical precedence, the same shared-helper discipline as
+        _reminder_query_match (#1521) and _integration_connect_match (#1471).
+
+        A True here makes the read lane DECLINE; the turn falls through to
+        later surfaces and ultimately the LLM lane, whose destructive
+        emissions dispatch the rail that the #1190 confirm gate guards.
+        Never a reroute — this helper creates no claim of its own.
+        """
+        return PreClassifier._matches_patterns(
+            clean_message, PreClassifier.DESTRUCTIVE_ASK_BLOCKERS
+        )
 
     @staticmethod
     def _integration_connect_match(clean_message: str):
@@ -2005,6 +2102,17 @@ class PreClassifier:
             (PreClassifier.GUIDANCE_PATTERNS, IntentCategory.GUIDANCE, "get_contextual_guidance"),
         ]
 
+        # #1756: the read lanes that must DECLINE a destructive ask on this
+        # path too. Membership is tested by IDENTITY below (never `in`, which
+        # would compare list CONTENTS — the same reason _pattern_list_name
+        # resolves by identity rather than a parallel name table).
+        _READ_LANE_GROUPS = (
+            PreClassifier.STATUS_PATTERNS,
+            PreClassifier.TEMPORAL_PATTERNS,
+            PreClassifier.MEMORY_PATTERNS,
+            PreClassifier.CALENDAR_QUERY_PATTERNS,
+        )
+
         # Check each pattern group
         connect_claimed = False
         # Pre-claim shadow probe: which *PATTERNS list produced each intent,
@@ -2063,6 +2171,16 @@ class PreClassifier:
             # the multi-intent path either.
             if patterns is PreClassifier.REMINDER_QUERY_PATTERNS and not (
                 PreClassifier._reminder_query_match(clean_for_matching)
+            ):
+                continue
+            # #1756: the READ lanes decline destructive asks here too — the
+            # multi path is a live claim surface (classify_multiple returns on
+            # any non-empty detection, so a claim here also short-circuits the
+            # LLM lane and with it the #1190 gate). Same shared helper, same
+            # precedence as pre_classify; a skip is a fall-through, never a
+            # reroute.
+            if any(patterns is group for group in _READ_LANE_GROUPS) and (
+                PreClassifier._is_destructive_ask(clean_for_matching)
             ):
                 continue
             if PreClassifier._matches_patterns(clean_for_matching, patterns):
