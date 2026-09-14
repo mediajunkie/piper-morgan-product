@@ -3,7 +3,7 @@ type: successor-read
 role: CXO (Chief Experience Officer)
 author: CXO (the one writing 2026-07→present)
 status: living — written mid-role, not at handover, deliberately
-last_updated: 2026-09-08
+last_updated: 2026-09-13
 currency_claim: updated when a lesson is earned, not on a schedule
 max_age_days: 60
 ---
@@ -242,6 +242,59 @@ answer.** ⭐ **A hand-maintained currency claim degrades in whichever direction
 "keep the content fresh, update the date later" produces the same wrong answer as the reverse.** Touch
 the date in the same edit as the body — and note that on a file only you read, **nothing else will ever
 tell you.**
+
+---
+
+### ⭐⭐ The one I'd keep if you kept nothing else: WHICH steps rot, and why
+
+**Five procedural steps of mine silently stopped.** Dated, measured, not remembered: the `DAY-CLOSED`
+marker (**16 days**), MANIFEST regen (**36**), the heartbeat (**24**), `cohort-freeze-detect` (never
+verifiable), and `check-refresh-promises.py` — ⚠️ **which I never ran once, in any log.**
+
+**I went looking for what they shared. My first answer was wrong** — I guessed *"their consumer isn't
+this fire,"* then found a counterexample in thirty seconds (the currency check's consumer **is** me).
+**The counterexample handed me the real one:**
+
+> 🔴 **SUCCESS IS INDISTINGUISHABLE FROM SKIPPING.** Every one of them, run correctly, produces nothing
+> you can see at the end of the fire — a green exit, a self-suppressed row, a file only tomorrow reads.
+
+**The four steps that never rotted** — sync, mail drain, commit+push, the tracker guards — **all fail
+immediately and visibly if skipped.** ⭐ **That is not virtue. It is feedback.**
+
+> **The test, before you add any step to your own routine:**
+> 🔴 **If running it and skipping it look the same to you at the end of the fire, it WILL rot.**
+> **It then needs an external consumer or a visible output — never a firmer intention.**
+
+⚠️ **And the part that should make you distrust your own notes**: **I had written that rule myself**,
+about the heartbeat, eight days before I found the other four. **I applied it to one row and never asked
+which others it covered.** ⭐ **Fixed the instance, didn't sweep — the exact failure I had criticised in
+a colleague's work two days earlier.** **Having the generalisation written down is not the same as having
+applied it.**
+
+**Two corollaries earned the same week:**
+
+- ⭐ **A self-heal that runs inside the discipline it heals is not a net.** The prior-day close check
+  lives in START; when I stopped closing days I also stopped checking — **the lapse and its detector
+  stopped together.**
+- ⭐ **A rule with no mechanism gets honoured in the act and rots in the record.** I asked that epic
+  owners name a copy-owner "before scoping the fix." The fix got scoped **with my copy in it** and the
+  request was still sitting there, unanswered on paper — so the next reader sees an open gap that isn't
+  one. **Small, cheap, and the same shape as everything above.**
+
+### ⭐ Pre-register when your own record is bad — it will cost you a finding, and that is the point
+
+**My prediction record on how a model recomposes our prompts is 0 for 3.** So when I was asked to score
+a live run against my own criteria, I **fixed five properties in writing before seeing any output.**
+
+**The registered test passed 4/4 — and then I found a real defect in a case my registration hadn't
+covered.** 🔴 **I reported it as a SEPARATE finding rather than widening the registration to capture it.**
+⭐ **Widening it would have destroyed the only thing that made the pass worth anything.** **Expect this to
+feel bad in the moment and to be obviously right afterwards.**
+
+⚠️ **And state the boundary nobody will state for you**: I wrote the criteria I was scoring against, so
+my read was a **design-intent check**, not an independent test. **There is no mechanism in this cohort
+that routes a voice read to someone who wrote neither half.** **If you find one, that's a real
+contribution.**
 
 ## 5. What is live as I write this
 
