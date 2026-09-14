@@ -1,14 +1,14 @@
 ---
 type: copy-contract
 name: GatherOutcome — the user-facing contract (cousin 1's aggregation copy)
-version: v0.4 — §5b-i added 2026-09-13: what a capped list reads like once the remainder is cashable (epic 6). v0.3 recorded Arch's confirmation of §5b as the joint invariant of epics #1 and #2.
+version: v0.5 — §6a adds RUNNABLE fixtures for acceptance cases 2-4 (2026-09-14); all four provenance states verified representable in today's code, so case 3 is NOT blocked on the epic. v0.4 added §5b-i 2026-09-13: what a capped list reads like once the remainder is cashable (epic 6). v0.3 recorded Arch's confirmation of §5b as the joint invariant of epics #1 and #2.
 date: 2026-09-09
 owner: CXO
 assigned_by: Arch 2026-09-09 — "cousin 1's aggregation copy (the N-failures→one-sentence rule) is CXO's
   user-facing contract, with the #1717 composition case as its acceptance test"
 applies_to: un-modeled-nouns audit cousin 1 ("an empty-or-degraded answer"); the GatherOutcome epic
 acceptance_test: §6
-last_updated: 2026-09-13
+last_updated: 2026-09-14
 currency_claim: static until the GatherOutcome epic starts; re-verify §5's site survey then
 max_age_days: 60
 ---
@@ -240,6 +240,78 @@ the user believes they are holding items 6–340 of the list they saw, and they 
 a stated denominator, not a unit test** — a unit test can assert the string count; only a read of the
 turn can say whether the user was told something true and useful. **Both are worth having; neither
 substitutes.**
+
+### 6a. ⭐ RUNNABLE FIXTURES for cases 2–4, written 2026-09-13/14 — because "not discharged" was as far as I'd taken it
+
+🔴 **Case 1 was run on 09-12 only because I specified the 5/2/1-flag shapes and asked.** ⚠️ **Cases 2–4
+I had named twice and never made runnable** — *"not discharged"* is a status, not a spec, and **a rule
+with no mechanism is the failure this contract keeps documenting in other people's work.** ⭐ **Below is
+the mechanism.**
+
+**First, the good news from tracing the code**: 🔴 **all four provenance states ARE representable today**,
+just not by one typed field — which is exactly the epic's job. **Verified in `context_assembler.py`:**
+
+| Provenance | How it appears in `domain_context` today | Source |
+|---|---|---|
+| `fresh` | the populated key | — |
+| **`verified_empty`** | ⭐ **an empty list PLUS a zero count** — `{"pending_todos": [], "pending_todo_count": 0}` | `:1301` (#1544 — *"returning None here made verified-empty indistinguishable from never-gathered"*) |
+| `source_failed` | a dedicated `{"<lane>_source_failed": True}` | `:1405` (#1645) |
+| **`not_attempted`** | **the key is simply ABSENT** (`return None`) | same |
+
+> ⭐ **So case 3 — the discriminating case — is constructible right now.** **I had been treating it as
+> blocked on the epic. It isn't.**
+
+#### Fixture A — cases 3 and 4 together
+
+**User turn**: *"good morning, what's my status?"* *(broad, so todos AND projects are both relevant)*
+
+```python
+domain_context = {
+    "pending_todos": [], "pending_todo_count": 0,   # verified_empty — relevant
+    "projects_source_failed": True,                  # source_failed  — relevant
+    # completed_todos: KEY ABSENT                    # not_attempted
+}
+```
+
+**Pre-registered scoring — fixed before any run, per the 0-for-3 rule:**
+
+1. ✅ **The todo statement is DEFINITE — no hedge.** *"Nothing pending"*, not *"I don't see any pending
+   todos"*. 🔴 **A hedged verified-empty is an auto-fail** — §3's least intuitive row, and the one
+   implementers will soften.
+2. ✅ **The projects statement IS hedged** — *"couldn't check"*, never *"you have none."*
+3. ⭐ **1 and 2 hold IN THE SAME REPLY.** **That is the whole case**: the two rails must behave
+   *differently* about two slices in one breath.
+4. ✅ **Completed todos appear nowhere.** **Any mention — including *"I didn't check your completed
+   todos"* — is a failure**, because `not_attempted` is silence and *"we didn't check X"* is an infinite
+   set.
+
+#### Fixture B — case 2 (Exec's rider), which needs its own turn
+
+⚠️ **It cannot ride Fixture A**: the rider case requires a failed source that is **irrelevant** to what
+was asked, and Fixture A's question makes everything relevant.
+
+**User turn**: *"what's on my todo list?"* *(narrow)*
+
+```python
+domain_context = {
+    "pending_todos": [3 real items], "pending_todo_count": 3,   # fresh, relevant
+    "projects_source_failed": True,                              # failed, NOT relevant
+}
+```
+
+**Pre-registered scoring:**
+
+1. 🔴 **No mention of projects, at all.** ⭐ **This is §2's reportability rule at its sharpest** — the
+   projects content would not have appeared in an answer about the todo list, so its failure is not
+   reportable. 📄 **Exec observed the violation live on a succeeding turn.**
+2. ✅ The three todos are answered plainly.
+
+#### Denominator and limits, stated in advance
+
+**Both fixtures, both providers, one reply per cell = 4 composes.** 🔴 **Single-shot per cell, as case 1
+was** — so a pass is *"not observed to fail"*, never *"does not fail."* ⚠️ **And my read of the results
+would again be a DESIGN-INTENT check, not an independent Colleague Test** — I wrote both the criteria and
+the copy rules they test.
 
 ## 7. Scope, and what I have not done
 
