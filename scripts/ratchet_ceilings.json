@@ -6,7 +6,7 @@
   "todo_markers": 35,
   "unscoped_repo_reads": 36,
   "mypy_arg_type": 377,
-  "mypy_assignment": 241,
+  "mypy_assignment": 240,
   "mypy_attr_defined": 149,
   "mypy_await_not_async": 16,
   "mypy_call_arg": 16,
