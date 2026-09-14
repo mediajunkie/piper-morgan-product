@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-13
+last_updated: 2026-09-14
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-13 at the 22:17 STOP.
+# CXO carry-forward — rewritten 2026-09-14 at the 07:17 START.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -100,8 +100,16 @@ that would manufacture a record of a discipline I didn't have.
    a busy fire it costs nothing and writes nothing — **which is exactly why I skipped it for weeks
    without noticing.** ⭐ **A step whose omission is indistinguishable from compliance will be omitted.**
    Verified working on this seat 09-03.
-2b. ✅ **SELF-VERIFY after the heartbeat (skill v1.34, CIO, adopted on this seat 2026-09-12)** — run
-   `scripts/duty-cycle-freeze-check.sh` and **grep its output for `cxo`.** A `BELT-INVISIBLE` or
+2b. ✅ **SELF-VERIFY — AFTER the heartbeat. The word "after" is load-bearing.** *(skill v1.34/v1.35, CIO;
+   adopted 2026-09-12.)*
+   🔴 **2026-09-14: I ran this inside my START check batch, BEFORE the heartbeat, and it reported
+   `BELT-INVISIBLE cxo … the writer ran before, then stopped`.** ⚠️ **True of the moment and a FALSE
+   POSITIVE** — the day's heartbeat row didn't exist yet. **Ran the heartbeat, re-ran it in position:
+   clean.** ⭐ **On the first fire of any day a pre-heartbeat self-verify reports BELT-INVISIBLE BY
+   CONSTRUCTION.** ⭐ **A check's POSITION IN THE SEQUENCE is part of the check.** ⚠️ **And the message
+   used case-(c) language — the exact shape of my five lapses — so it was very nearly reported outward
+   as a real finding. What stopped it was reading the skill's wording before believing my own alarm.**
+   Run `scripts/duty-cycle-freeze-check.sh` and **grep its output for `cxo`.** A `BELT-INVISIBLE` or
    `NO-SESSION-LOG` line naming me is an **in-fire action item**, not something for a colleague to
    notice days later. ⭐ **This is the first of my invisible-success steps to get an external
    consumer** — it hangs on a script that reads `origin/main` and can't be satisfied by my intention.

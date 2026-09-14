@@ -1,52 +1,52 @@
 # Exec (Chief of Staff) — carry-forward
 
-**Rewritten 2026-09-12 ~23:25 PT at day-close.**
+**Rewritten 2026-09-13 ~23:20 PT at day-close.**
 
 ## Cron
 Job `83258e51`, `38 6,10,14,18,22` — 5 fires/day. Armed 09-11 06:55, expires ~09-18 → **rotate ~09-16.**
+⚠️ **"CronList shows one job" means a job OBJECT exists, NOT that the schedule is live** (Lead's
+catch, 09-13 — their cron was armed and correct all night and fired nothing while signed out).
+**Report "one job, correct expression." Never "therefore the schedule is live." The only proof a
+cron fires is a fire.**
 
-## ⭐ Where the weekly cycle stands
-**Ship #060, window Fri 09-04 → Thu 09-10.** Omnibus 7/7 · 10/10 reports · **internal report
-delivered** · **prep complete** (calendar verified, 3 pubs all live 200, hero verified 200,
-omnibus day-types read: 7/7 HIGH-COMPLEXITY: COORDINATION).
-🔴 **PM RULED the internal-report discussion comes BEFORE the Ship draft.** Hold confirmed correct.
-**The draft has not started and should not until that conversation happens.**
-
-## OWED TO PM — the epic accounting, numbered, with denominators
-PM's ask via Janus: *"Epic 1 — closed, blocked, or currently worked? Epic 2 — same. Etc."* and
-*"I keep hearing 'green for the first time' across various scopes, and I suspect slippery
-denominators."*
-⚠️ **Method caveat that must ship WITH the numbers**: my first pass regex-counted every issue
-*mentioned* in an epic section, not members — it reported epic 2 as "2 open" when the doc says
-#1750/#1751 were *"deliberately NOT folded in."* **Epic 2 is closed as scoped.** Membership vs
-mention must be stated explicitly or the accounting becomes the thing PM is skeptical of.
-**Live open counts (09-12 19:0x):** E1 **4** (#1687 #1747 #1764 #1765) · E2 **closed as scoped** ·
-E3 **2** (#1739 umbrella, #1771) · E4 6 · E5 6 · E6 2 · E7 3 · E8 2.
-**Still needed**: Lead's own account of working epic-5 items while epic 3 is open — I have the fact,
-not the reason, and PM asked for the rule to be visibly applied rather than drifted past.
+## Weekly cycle — Ship #060
+Omnibus 7/7 · 10/10 reports · **internal report delivered** · **prep complete**.
+🔴 **PM ruled the internal-report discussion comes BEFORE the draft. It has not happened. The draft
+has not started and should not.**
+Artifacts: internal report `4af428b3-ea1e-4f02-b077-c4ce146dca72` · epic accounting
+`6b09674a-2d60-46c5-807d-9952951adca0` · rollup `a0d0af86-9505-4dcf-8b22-c63017251a47`.
 
 ## Blocked on PM
-- **#1617 standup retest** — PM runs it directly with me.
-- **Bot → protected main**: ruleset + `github-actions` bypass actor (repo public, zero rulesets = free).
-- **Vercel** deployment-storage deletion (14.91/10 GB).
-- ✅ **#1687 secret rotation is UNBLOCKED** — Lead posted the fingers-comment 09-12 21:48.
+1. ⭐ **The ruleset decision — parks TWO roles** (Arch: scope-guard delivery; CXO: same). Repo public,
+   zero rulesets, bypass-actor path free. Highest leverage.
+2. **Vercel** — Web hard-blocked on access since 09-09. 14.91/10 GB deployment storage.
+3. **PA** — awaiting PM's sequencing answer before building the BYOC readiness plan.
+4. **The internal-report discussion** (gates the Ship).
+5. ✅ **Janne Lammi's invite token is READY TO SEND** — HOST recorded the roster row, Lead minted at
+   v99, status UNUSED. Nothing needed from either; it's PM's to send.
+
+## Epic 1 — the credibility epic, and PM worked it today
+✅ **PM rotated the secrets. E2E & AAXT went RED → GREEN.** Belt now: E2E, Docker, Config Validation,
+Router, Code Quality all **green**; **`Tests` is the ONLY red** — 4 consecutive failures
+(23:52, 00:14, 01:53, 05:06). That's the product-failure half Lead predicted under the auth errors.
+**#1687 still OPEN** (close condition = its four green on a real push; Tests was never in its
+denominator — that gap is #1747's whole point).
+**#1747 needs diagnosis + milestone/epic triage** (PM's ask) — ⚠️ **its own snapshot is now stale:
+it recorded E2E red, and E2E is green.** Half-true; the remaining half is Tests.
+**#1764 / #1765 can move in parallel** — neither depends on #1687. ⚠️ #1765's premise ("Tests green
+since 09-11") **has expired** — Tests is red now. Whoever diagnoses must re-establish which.
 
 ## State at close
-**29 issues closed today, 26 MVP** — the biggest day of the window. MVP **44 not done** (30 Sprint
-Backlog, 3 In Progress, 7 In Review, 4 Product Backlog); **1,158 done**; **0 unmilestoned held.**
-⚠️ **Lead's day-close says "31 closes"; I count 29 Pacific / 23 UTC.** Three numbers, one day — not
-an error by anyone, but **exactly the denominator drift PM named this afternoon.** Flag it in the
-accounting rather than pick one silently.
-
-## Landed today without me
-CIO off the belt + v1.35 shipped with the denominator CXO asked for · PPM ratified milestone-required
-filing AND gave all six singletons epic homes · Janus triaged all 16 orphan memos (one was live) and
-named their channel · PM ruled orphan mailboxes: only PM-team members get boxes here.
+**9 closed today (6 MVP)** incl. #1617 + #1739 (PM cleared epic 3's floor). MVP **51 not done**
+(28 Sprint Backlog, 3 In Progress, 6 In Review, **14 Product Backlog**); **1,164 done**.
+⚠️ **`PLUS 1 unmilestoned` — the 3-day zero streak broke at 22:38** with `#1798`. One issue, filed
+minutes ago; flag to PPM, not an alarm.
 
 ## Standing corrections on me
-- ⚠️ **`echo` after `||` asserts nothing** — my push wrapper printed "pushed ✓" on a failed push
-  (09-12 07:0x). **Verify pushes by re-reading `origin/main`.** Done every fire since.
-- ⚠️ **`closedAt` is UTC** — compute closures in Pacific, and say which.
-- ⚠️ **Re-check an anomalous reading once before reporting** (PM's rule). Applied 4×; changed my
-  reading twice.
-- ⚠️ **Membership is not mention** — new, from tonight's epic count.
+- ⚠️ **"No conclusion" is not "no failure."** A `gh run list` returning nothing because runs were
+  *cancelled* reads exactly like clean. Widen the window before reporting.
+- ⚠️ **`echo` after `||` asserts nothing.** Verify pushes by re-reading `origin/main`.
+- ⚠️ **`closedAt` is UTC.** Compute in Pacific and say so.
+- ⚠️ **Membership is not mention** (epic counts).
+- ⚠️ **Re-check an anomalous reading once before reporting** (PM's rule). Applied 6×; changed the
+  reading 3 times.

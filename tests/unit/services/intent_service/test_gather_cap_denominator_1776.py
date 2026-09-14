@@ -344,7 +344,13 @@ class TestAgendaHandlerSeamThreadsTheTotal:
 
         assert "couldn't check your tasks" in result["message"]
         assert result["intent"]["context"]["todo_count"] is None
-        assert result["agenda_sources"]["todos"] == 0
+        # #1777 sweep: this asserted `== 0`, the value the #1776 guard chose to
+        # stop the crash. Stopping the crash was right; reporting a failed
+        # source as having contributed zero todos was the SAME false claim one
+        # layer down. Now `None`, matching `todo_count` above. The full census
+        # and the retrospective twin live in
+        # tests/unit/services/intent_service/test_sentinel_consumer_sweep_1777.py.
+        assert result["agenda_sources"]["todos"] is None
 
 
 # ===========================================================================

@@ -2478,7 +2478,7 @@ What would you like to set up first?"""
     def _format_agenda_embedded(
         self,
         calendar_context: Optional[Dict],
-        todos: List[Dict],
+        todos: Optional[List[Dict]],
         priorities: List[str],
         total_pending: Optional[int] = None,
     ) -> str:
@@ -2513,7 +2513,7 @@ What would you like to set up first?"""
     def _format_agenda_standard(
         self,
         calendar_context: Optional[Dict],
-        todos: List[Dict],
+        todos: Optional[List[Dict]],
         priorities: List[str],
         total_pending: Optional[int] = None,
     ) -> str:
@@ -2568,7 +2568,7 @@ What would you like to set up first?"""
     def _format_agenda_granular(
         self,
         calendar_context: Optional[Dict],
-        todos: List[Dict],
+        todos: Optional[List[Dict]],
         priorities: List[str],
         total_pending: Optional[int] = None,
     ) -> str:
@@ -2756,7 +2756,13 @@ What would you like to set up first?"""
                 # sentinel explicitly — so a todo-source FAILURE raised
                 # TypeError here and took down the whole agenda response, the
                 # exact crash that guard exists to prevent.
-                "todos": len(todos) if todos is not None else 0,
+                # #1777 sweep: the guard that stopped the crash reported the
+                # failed source as `0` — the SAME false claim the sentinel
+                # exists to prevent, one layer down, and indistinguishable from
+                # a user who genuinely has no pending todos. `None` is what
+                # `todo_count` two lines up already says for this condition;
+                # the three fields must not drift apart again.
+                "todos": len(todos) if todos is not None else None,
                 "priorities": len(priorities),
             },
             "requires_clarification": False,
@@ -2802,11 +2808,20 @@ What would you like to set up first?"""
 
     async def _get_completed_todos_for_date(
         self, session_id: str, target_date: datetime, limit: int = 20
-    ) -> List[Dict]:
+    ) -> Optional[List[Dict]]:
         """
         Issue #501: Fetch todos completed on a specific date.
 
-        Returns a list of completed todo dictionaries.
+        Returns a list of completed todo dictionaries, or ``None`` on a source
+        failure — the #1425 sentinel, so the formatters render "couldn't check"
+        rather than "no completed tasks".
+
+        #1777: the annotation said ``List[Dict]`` while the except branch
+        returned ``None``, so every consumer's type-checked contract promised a
+        value the function does not always produce. That is the same defect as
+        the unguarded ``len()`` this sweep fixed, expressed in the type system
+        instead of the payload: mypy reported it (``[return-value]``) and the
+        gate's aggregate ceiling absorbed it.
         """
         try:
             from sqlalchemy import and_, select
@@ -2864,7 +2879,7 @@ What would you like to set up first?"""
             return None
 
     def _format_retrospective_embedded(
-        self, completed_todos: List[Dict], target_date: datetime
+        self, completed_todos: Optional[List[Dict]], target_date: datetime
     ) -> str:
         """Issue #501: Format minimal retrospective for EMBEDDED spatial pattern."""
         date_str = target_date.strftime("%B %d")
@@ -2875,7 +2890,7 @@ What would you like to set up first?"""
         return f"{date_str}: No completed tasks"
 
     def _format_retrospective_standard(
-        self, completed_todos: List[Dict], target_date: datetime
+        self, completed_todos: Optional[List[Dict]], target_date: datetime
     ) -> str:
         """Issue #501: Format standard retrospective response."""
         date_str = target_date.strftime("%A, %B %d, %Y")
@@ -2901,7 +2916,7 @@ What would you like to set up first?"""
         return message
 
     def _format_retrospective_granular(
-        self, completed_todos: List[Dict], target_date: datetime
+        self, completed_todos: Optional[List[Dict]], target_date: datetime
     ) -> str:
         """Issue #501: Format detailed retrospective for GRANULAR spatial pattern."""
         date_str = target_date.strftime("%A, %B %d, %Y")
@@ -2982,13 +2997,25 @@ What would you like to set up first?"""
                 "confidence": 1.0,
                 "context": {
                     "target_date": yesterday.strftime("%Y-%m-%d"),
-                    "completed_count": len(completed_todos or []),
+                    # #1777 sweep: this was `len(completed_todos or [])`. The
+                    # `or []` cannot raise, which is exactly why it survived the
+                    # #1425 rounds that fixed the three formatters above — it
+                    # reads as a guard and is a DEFAULT, and the default it
+                    # supplies is a claim about the user's day. A failed lookup
+                    # is not "you completed nothing"; it is `None`, the value
+                    # the agenda's `todo_count` uses for the same condition.
+                    "completed_count": (
+                        len(completed_todos) if completed_todos is not None else None
+                    ),
                 },
             },
             "spatial_pattern": spatial_pattern,
             "retrospective": {
                 "date": yesterday.strftime("%Y-%m-%d"),
-                "completed_tasks": len(completed_todos or []),
+                # #1777 sweep: the second half of the same pair. Fixing one and
+                # leaving its twin four lines away is the shape that produced
+                # this issue in the first place.
+                "completed_tasks": (len(completed_todos) if completed_todos is not None else None),
             },
             "requires_clarification": False,
         }
@@ -3183,8 +3210,10 @@ What would you like to set up first?"""
             status = health["status"]
             health_summary[status] += 1
 
-        # Try to get open todos count
-        open_todos_count = 0
+        # Try to get open todos count. #1777: annotated Optional because the
+        # except branch below assigns the #1425 None sentinel — the bare `= 0`
+        # made mypy infer `int` and report the sentinel as [assignment] drift.
+        open_todos_count: Optional[int] = 0
         try:
             from services.database.models import TodoStatus
             from services.database.session_factory import AsyncSessionFactory
