@@ -15,6 +15,38 @@ from typing import Dict, List, Set, Tuple
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
+# ---------------------------------------------------------------------------
+# Explicit, documented exceptions (#1788 AC-3 — registered here, never silently
+# skipped; every entry below is PRINTED with its reason on every run).
+#
+# Ruling: Arch, 2026-09-13 (`mailboxes/arch/sent/ruling-arch-to-lead-cc-ppm-pm-1788-
+# two-converters-five-checker-offs-...-2026-09-13.md`). The discriminator is NOT
+# name-matching a DB class to a domain class -- it is "does any live path actually
+# round-trip this row." Writing a converter where nothing round-trips asserts a
+# correspondence the product does not have: a lie with a type signature.
+#
+# These five are create-all-era persistence twins. Their DOMAIN namesakes are alive
+# (domain `Intent` has 26 importing files -- it is the classifier spine); the DB
+# twins are not. #1273 already found their tables never got create-migrations.
+#
+# Census re-run by the executing lane 2026-09-13 (denominator: services/ + web/,
+# tests excluded). Each of the five has only in-package importers, and those form a
+# CLOSED DEAD SUBGRAPH -- nothing anywhere imports `from services.database import ...`,
+# so the `services/database/__init__.py` re-export surface has zero consumers, and
+# ProductRepository / FeatureRepository / TaskRepository / RepositoryFactory have zero
+# callers outside services/database/. Precise claim: zero LIVE CONSUMERS.
+#
+# Disposal (tables, migrations, possible stray rows) is tracked separately -- deleting
+# a DB model has its own discipline and does not belong to this checker's lane.
+DEAD_PERSISTENCE_TWINS: Dict[str, str] = {
+    "Feature": "dead persistence twin, zero importers, see #1273",
+    "Intent": "dead persistence twin, zero importers, see #1273",
+    "Product": "dead persistence twin, zero importers, see #1273",
+    "Stakeholder": "dead persistence twin, zero importers, see #1273",
+    "Task": "dead persistence twin, zero importers, see #1273",
+}
+
+
 def find_database_models() -> List[str]:
     """Find all database model classes"""
     try:
@@ -107,16 +139,38 @@ def main():
     # gate permanently red (46 of 47 models reported) and therefore unusable as a regression
     # detector. Scoped by exact name match or the `<Name>DB` suffix convention.
     domain_set = set(domain_models)
-    in_scope = [
+    name_matched = [
         name
         for name in database_models
         if name in domain_set or (name.endswith("DB") and name[:-2] in domain_set)
     ]
-    skipped = sorted(set(database_models) - set(in_scope))
+    in_scope = [name for name in name_matched if name not in DEAD_PERSISTENCE_TWINS]
+    skipped = sorted(set(database_models) - set(name_matched))
 
     print(f"📊 {len(in_scope)} model(s) have a domain counterpart and are in scope")
     print(f"📊 {len(skipped)} persistence-only model(s) skipped (no domain counterpart)")
     print()
+
+    # #1788 AC-3: registered exceptions are announced with their reason on every
+    # run, so "off" is visible in the log rather than silent.
+    registered = sorted(set(name_matched) & set(DEAD_PERSISTENCE_TWINS))
+    if registered:
+        print(f"🔕 {len(registered)} registered exception(s) (name-matched but not round-tripped):")
+        for name in registered:
+            print(f"   - {name}: {DEAD_PERSISTENCE_TWINS[name]}")
+        print()
+
+    # A registry that outlives its models is how a config file becomes a graveyard.
+    # If an entry no longer names a real DB model, fail loudly rather than pass
+    # quietly on a stale exception (m-44: a "clear" that measured nothing).
+    stale = sorted(set(DEAD_PERSISTENCE_TWINS) - set(database_models))
+    if stale:
+        print("❌ Stale entries in DEAD_PERSISTENCE_TWINS (no such database model):")
+        for name in stale:
+            print(f"   - {name}")
+        print("   Remove the entry -- the model it excused is gone.")
+        print()
+        return 1
 
     # Check each in-scope database model
     all_passed = True

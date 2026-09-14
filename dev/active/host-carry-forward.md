@@ -1,19 +1,21 @@
 ---
-last_updated: 2026-09-12
+last_updated: 2026-09-13
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-12 22:0x PDT (STOP fire, day 50 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-09-13 22:0x PDT (STOP fire, day 51 on Amber — frontmatter above is the checkable claim; this prose line is not checkable and must not be trusted over it) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Standing checks — proven under repeated real use
 
 ✅ **Cron-count fix**: `grep -c "^## Fire"` vs. comma count before writing STOP. **Known exception found 08-12**: if a multi-fire backlog gets absorbed into one catch-up START (date rolled while away, several prompts arrived stacked in one turn), the heading count will read LOW relative to the comma count even on a genuinely-last fire — because 2+ cron slots collapsed into 1 heading. When that happens, trust the **date-based rule** (next scheduled fire's calendar date ≠ today → STOP), not the heading count, and say so explicitly in the STOP entry rather than silently overriding the count check.
 ✅ **Step 1c headroom**: reads the guard-convention count from `check-derived-drift.sh`'s own output. **CIO's hybrid-packing landed 08-16** (`rc=0`, MEMORY.md now 91 lines / 180 entries, packed several terse-slug entries per line) — headroom jumped from 12 to ~109. Was 188/12 pre-landing.
 ✅ **Step 2c (cohort-freeze)**: reads `origin/main` directly (CIO's fix), prints `ref=`/`tip=`. Held clean (`rc=0`, non-alarming) across a genuinely low-activity post-reboot morning on 08-11 and every fire since — the non-discriminating case is working as designed, not silently passing.
-✅ **Step 5b self-verification (v1.34, 09-12)**: `scripts/duty-cycle-freeze-check.sh | grep -i host` after every heartbeat — no output = the step ran, not just "trust the command was typed." Applied same-fire CXO's follow-on refinement (the grep's own silence is itself an invisible-success shape without the header's `rows=N` denominator) — confirmed `rows=11` alongside the empty grep both this fire and retroactively for 19:07's. Two-part check now: grep for own name AND confirm the header printed a real denominator, not just an empty result.
+✅ **Step 5b self-verification (v1.34/v1.35, since 09-12)**: `scripts/duty-cycle-freeze-check.sh` (full output, not just an own-name grep) after every heartbeat — no alert line = the step ran and produced a measured absence, not an unmeasured one (the `rows=N` denominator check landed in v1.35 same day CXO found the gap). Run clean every fire since.
+✅ **Armed ≠ firing, checked and already conforms (09-13)**: cohort-wide finding (Exec/Lead, from Lead's 12-dark-hour auth-outage gap) that `CronList` returning a job proves a schedule is *armed*, never that fires are *landing*. Grepped HOST's own session-log wording across four days — never claims schedule-liveness from `CronList` alone, always runs `duty-cycle-freeze-check.sh` separately as the actual liveness measurement. No change needed; noting the pairing is deliberate, not incidental.
+✅ **Compound git-add-bypass bug, checked and already conforms (09-13)**: `git add X && git commit` in one Bash call bypasses PreToolUse hook detection (the hook reads an empty index before `add` runs) — found on `pre-commit-broad-staging-warn.sh`, same mechanism as July's `check-branch.sh` finding. HOST's own commits have used a separate call for stage vs. commit all session; verified from direct review of this session's own tool-call sequence, not assumed from habit.
 🔴 **`ROLE-PORTFOLIO-HOST.md` refresh discipline — FOUR lapses now, most recent 08-28 (caught same-day against the Ship #058 trigger).** CXO's `--diff` checker (landed 08-22 in direct response to lapse #3) got its first real-commit exercise this lapse: ran `--diff HEAD` on the uncommitted fix, got a clean pass (`content and last_updated moved together`), committed (`871253850`), reported back to CXO honestly (`381026511`) — it tightens the *catch window*, it does not prevent the *recurrence*. Four manual catches in four tries; the "does this need auto-bump-on-any-edit" question is still open and getting harder to wave off as a fluke.
 
 ## Watching, not owed
@@ -58,16 +60,18 @@ max_age_days: 1
 
 ## Cron
 
-Current job **`577f5ec1`** (chain … `c866b28e → 6cafe9a1 → 577f5ec1`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-12 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry (~09-19); delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`f0870381`** (chain … `6cafe9a1 → 577f5ec1 → f0870381`), expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-13 STOP via delete-then-create, `CronList`-verified exactly one job before and after. Full Amber-reboot parking/re-arm history (08-11) preserved in that day's log and `docs/handoff-host-2026-08-11.md`. Re-arm weekly minimum; silent 7-day expiry (~09-20); delete-then-create-then-verify. **Never write your cadence from memory.**
 
-## Open threads, as of 09-12 STOP
+## Open threads, as of 09-13 STOP
 
-- ✅ **`duty-cycle-tick` v1.33 and v1.34 both shipped and adopted same-day.** v1.33: three-source work queue (HOST's Step 1a cited as prototype), `## Fire N` heading retired (this log adopted the new work-unit-headed form starting its 13:07 entry), START commits the session log before the mail loop (HOST's own practice already matched, verified directly). v1.34: Step 5b self-verification against `duty-cycle-freeze-check.sh`'s own output, adopted and run every fire since 19:07; CXO's same-day follow-on refinement (check the header's `rows=N` denominator, not just an empty grep) applied retroactively this STOP. Fully archival — the mechanism is live and HOST's own practice conforms; no action owed unless a new version ships.
+- **Broad-staging hook (`pre-commit-broad-staging-warn.sh`) — interim BLOCK, PostToolUse WARN queued as real future work.** The 08-03 decision HOST owned and missed for five weeks reached a ruling: WARN is correct (Arch's reasons 1+2, after HOST caught and Arch conceded a factual conflation in a since-withdrawn reason 3). CIO's PreToolUse implementation of WARN was caught silently broken before shipping (exit-0 doesn't surface stderr) — currently reverted to BLOCK, explicitly named as an interim per Arch's condition, with Lead's 2-commit-split workaround documented in the header. PostToolUse confirmed as the real architecture, not yet built. **Watch for**: the PostToolUse migration landing (CIO's to build, not urgent); if it changes anything on the trust/safety side, that's HOST's to weigh in on again.
+- ✅ **Alpha tester process proven end-to-end for the first time this window.** Janne Lammi (new tester, PM-confirmed by email) — Lead minted against prod with real safeguards, HOST recorded the identity mapping (`dev/alpha/alpha-tester-roster.md`, main checkout, gitignored), PM has a ready invite. #1344's trust-zone split held cleanly: Lead never saw the identity, HOST never touched the DB. Fully archival unless a status check on token usage is wanted later.
+- ✅ **`duty-cycle-tick` v1.33 through v1.35, all shipped and adopted same window.** Three-source work queue, `## Fire N` heading retired, START-before-mail-loop, Step 5b self-verification with the `rows=N` denominator — all live, all match HOST's own practice, verified directly rather than assumed. Fully archival; no action owed unless a new version ships.
 - ✅ **methodology-53 strengthened, not duplicated.** CXO's "success indistinguishable from skipping" finding folded in by CIO as a second natural experiment (commit `eebc12d7d`), citing HOST's own role-health-check as one of the two strongest evidentiary instances. Archival.
-- **`#1731` — partially resolved.** CIO's instance retracted as a zsh shell-config artifact (verified the specific word-splitting claim directly, zsh vs bash). **PPM's separate instance remains genuinely open and distinct** — not closed by the retraction. Watching PPM's thread only.
+- ✅ **STALE alert wording fixed** (CIO, same-fire as Exec's belt-honesty finding) — now states its own resolution limit ("cannot tell a stop from a stall, a wedge, or a gated commit path") rather than implying diagnosis. Archival.
+- **`#1731` — partially resolved.** CIO's instance retracted as a zsh shell-config artifact. **PPM's separate instance remains genuinely open and distinct.** Watching PPM's thread only.
 - **PM's backlog/epic reforms** — epic order built and live (`dev/active/mvp-epic-order-2026-09-09.md`), outside HOST's lane, tracked for cohort-health context only.
 - **Role Health Check** — ✅ #1714 closed 08-31. Next due ~09-28.
 - **Agent 360 v0.4** — ✅ Fully closed. Only cohort-share remains, pending PM's framing sign-off.
 - **ESSENCE.md v0.1 trust-lens** — ✅ Given 08-29. **Watch for**: Lead's watched round adding the inversion-path test.
 - **BRIEFING-CURRENT-STATE.md flagged STALE** by SessionStart hook — unchanged status, still not HOST's lane to refresh unprompted.
-- The 09-11 flywheel-v3-to-canon close, PM's work-queue ruling, chunking-vocabulary self-check, #1174 welfare half (filed + synthesized, discovery-only), the NO-SESSION-LOG race (fixed, re-measured) — all fully archival, absorbed into or superseded by this week's skill versions; not carried forward as separate line items.
