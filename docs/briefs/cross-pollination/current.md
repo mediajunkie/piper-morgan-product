@@ -1,57 +1,42 @@
-# Cross-Pollination Brief — September 13, 2026
+# Cross-Pollination Brief — September 14, 2026
 
-Klatch's backup/restore probe arc (Rounds 194–199) surfaces two structural gaps: SQLite's own format-validity checks cannot distinguish an empty shell from a healthy database, and a name-extraction pattern set with 100% training accuracy had 0/9 precision on the real corpus — because the training population was the wrong regime. Piper Morgan's Pard separately discovers the same monitoring-family failure from a different angle: a watchdog pointed at a nonexistent path reports all-quiet not because everything is fine but because it cannot see anything at all.
+Klatch's backfill work (Rounds 204–205) surfaced a plan/apply divergence: when both phases independently re-resolve an id from a name, and the name is not unique, they can bind different records — invisibly, because the plan reports the label and both labels match. One Job, applying Klatch's earlier 0-byte-file finding to its own import path, documented a companion discipline: when two validation layers share a test input as their vehicle, disabling one silently removes coverage of the other.
 
 *Letters to xian: have a question for xian about anything here or elsewhere in his work? File `question-{from}-{date}-{topic}.md` to dispatch mail. AI prompts human; one letter featured at the end of each brief.*
 
 ## Key Insights
 
-### 1. SQLite's structural checks return `ok` for a 0-byte file — Klatch Round 197
+### 1. A plan that records a label but re-resolves the key at apply time can silently bind the wrong record — Klatch Round 205
 
-**From:** Klatch (Theseus, backup/restore probe arc)
-**Relevant to:** Any system that validates backups or snapshots with SQLite integrity checks
+**From:** Klatch (Theseus + Daedalus, Rounds 204–205)
+**Relevant to:** Any system with a plan/review/apply CLI for data operations
 
-Round 196 added `quick_check` immediately after copying a snapshot, so a corrupt source would fail early. Round 197 found the deeper gap: SQLite opens a 0-byte file as a valid empty database. Both `quick_check` and `integrity_check` return `ok`. A `cp` interrupted before writing a single byte leaves exactly such a file — format-valid, structurally sound, completely empty.
+Klatch's entity-backfill CLI has a `plan` phase that shows which entity a channel will be bound to ("MATCHED-BY-NAME → Daedalus"), and an `apply` phase that executes the binding. Both phases resolve the entity independently from a name lookup — but they use different orderings. The plan phase uses a `new Map` over an unordered `SELECT`, producing the *last* row for a given name. The apply phase calls `getAllEntities()` with `ORDER BY created_at ASC` + `.find()`, producing the *first* row.
 
-The concrete failure: the tool's recovery logic named "the newest snapshot that reads as sound" as the way back. A 0-byte file is both the newest and structurally sound. It passes every check designed to catch corruption. The mitigation added in Round 197: after structural checks pass, verify candidate count (records > 0). For a backup that should contain conversations, zero candidates is a reliable signal that the copy failed before any data was written.
+When two entities share the same name, the plan and apply pick opposite ends of the list. The plan sheet prints the name correctly — "Daedalus" — and so does the apply's output. But the `id` written to the database is different from the one the plan computed. The divergence is invisible from the plan output because the plan records the human-readable label, not the opaque id. Theseus drove this end-to-end through the real CLI (Round 205): `plan.targetEntityId = bbbbbbbb` (the newer entity), `--apply` writes `aaaaaaaa` (the older one). Because the undo record holds the id actually written rather than the planned label, the wrong binding is recoverable — but only because the undo was designed to record the applied id.
 
-**Suggested action:** Any backup validation pipeline that relies solely on format or integrity checks — SQLite or otherwise — should add a content-presence check as a second gate. Structural validity answers "is this a well-formed file?" Content presence answers "did anything actually get written?" Both questions are necessary; neither answers the other.
+**Suggested action:** In any plan/apply CLI that resolves an id from a label, the plan step should pin and pass through the exact id it chose — not just the label — so the apply phase does not need to re-resolve. This is especially load-bearing when the label space has duplicates. If the apply must re-resolve, it must use the exact same resolver as the plan.
 
-### 2. A pattern set validated on the wrong population can have zero production precision — Klatch Round 199
+---
 
-**From:** Klatch (Theseus, entity name-extraction dry run)
-**Relevant to:** Any classifier, extractor, or pattern set deployed against real-world data
+### 2. Layered defenses must not share a test vehicle, or disabling one silently untests the other — One Job
 
-Round 199 ran the first dry run of Klatch's entity name-extractor against the actual corpus: 139 channels, 2,652 messages from a March 2026 backup. Training had been done on new-session openings (agents introducing themselves). Results: 9 channels would move; 0/9 proposed names were correct.
+**From:** One Job (Coral, 2026-09-13)
+**Relevant to:** Any codebase with multi-layer validation (import guards, restore checks, auth layers)
 
-Two bugs surfaced by the real corpus:
-1. **Wrong vocabulary in exclusion filter.** The NOT_NAMES filter blocked introduction-pattern stopwords but not continuation verbs ("succeeding," "taking," "continuing"). The training population had no resumptions, so these words were never seen — and therefore never excluded. The real corpus is mostly resumed sessions.
-2. **A rejected match widens rather than narrows.** When a stopword rejects the first candidate in a pattern, the pattern falls through to the next match anywhere in the full message, not in a tightened scope. A match 269 characters into the message wins.
+Coral applied Klatch's Round 197 finding (SQLite structural checks pass a 0-byte file as valid) to One Job's import path: added a content-presence gate that refuses a restore if the incoming deck has zero cards and the existing deck has something to lose. A pre-existing snapshot-guard test used `importTasks([])` as its vehicle — the new gate refused that input and the test went red. The straightforward fix would have been routing the snapshot-guard test through a back channel that bypassed the new gate — but that would have entangled the two defenses. The correct fix was a separate, legitimate empty route (trash+purge) that the gate correctly allows, keeping both defenses independently tested.
 
-Neither bug was visible during training. 100% accuracy on new-session openings, 0% accuracy on resumed sessions. The two populations look superficially similar (both are conversation openings) but differ in the vocabulary that dominates them.
+The principle Coral extracted: *layered defenses must not share test vehicles. If removing one defense would make the other's test pass, the test was not independently verifying the other defense.*
 
-**Suggested action:** Before deploying any classifier, extractor, or pattern set, verify precision on a sample of the data it will actually run against. A zero-error training pass on proxy data from a different regime is not evidence of production accuracy — it is evidence that the proxy and the production distribution differ less than the failure case requires. The Round 199 result is the demonstration.
+**Suggested action:** When adding a new validation layer, check whether any existing tests use inputs the new layer would legitimately refuse. If so, give each layer its own test vehicle rather than routing one through a shared path. A test that passes only because a deeper guard accepted the input does not independently verify the layer it claims to test.
 
-### 3. A check that cannot see its target silently reports all-clear — Piper Morgan/Mediajunkie
-
-**From:** Mediajunkie (Pard, watchdog capability check pre-fire)
-**Relevant to:** Any monitoring or watchdog check, especially capability or health checks that target a path or resource
-
-Pard's watchdog included a capability check for a monitored path. The check was pointed at a nonexistent directory. Because the directory did not exist, the check found nothing — no errors, no failures, no alarms. It silently reported all-quiet, indistinguishable from a genuinely passing check.
-
-Caught pre-fire and generalized to a spec test rule: *a check must first assert it can see its own target before reporting on that target's state.* An affirmative "target visible" assertion converts a silent misconfiguration into a caught error. Without it, a moved path, a renamed directory, or an unprovisioned mount silently disables a monitor while the monitor continues to report healthy.
-
-This is structurally distinct from the September 12 insight (a health check inside the procedure it monitors — topological position). This one is about target reachability: the monitor's subject may not exist at all, so the monitor's report carries no information about it. Both are monitoring blind spots, but they require different fixes: the first requires moving the check to an external surface; this one requires a precondition that asserts visibility before reporting.
+---
 
 ## Sources Read
 
-- **Klatch** (`origin/main` via fetch): Rounds 194–199 of the backup/restore probe arc. R196 added post-copy `quick_check` validation; R197 found the 0-byte SQLite gap (Key Insight #1 above); R199 ran the first dry run against the real corpus (139 channels, 2,652 messages) and surfaced the pattern/population mismatch (Key Insight #2 above). Also in-window: the corpus location puzzle (backup at `klatch.db.backup-2026-03-14` is not matched by a `klatch*.db` glob); `source.backup()` copies pages without verifying them (a corrupt source produces a corrupt copy with a success return). Round 198 added the corpus-as-ground-truth orientation.
-- **Piper Morgan** (`origin/main` via fetch): 374+ commits in window. Three deletion refactors: `classify_conscious` pipeline removed (zero callers, refs #1768), second clarification mechanism removed (refs #1767), dead non-greeting surface removed (refs #1754). `duty-cycle-tick` v1.35: Step 5b self-check now reads the `rows=N` header the freeze-check script already emits and confirms rows > 0 before treating a no-match grep as clean — catching the case where the script itself produced no output. Not brief-worthy as a new structural insight (the denominator discipline is established), but a clean implementation of it.
-- **Globe, Weather**: cross-pollination brief deliveries; CLAUDE.md documentation updates for mail routing (the 2026-09-12 audit closing).
-- **One-Job** (21 commits): 1.1(38) shipped (R-INTENT — Shortcuts/Siri Add Card seam); 1.1(39) external-card placement ruling (behind-top, FIFO drain); ASC What-to-Test automation (`asc-whats-new.mjs`). Active release work; no cross-team transferable insight distinct from established patterns.
-- **NYT-Crossword**: automated daily status pulls only.
-- **Mediajunkie/Pard** (40+ commits): Optilisten 2.0(1) IPA delivery arc (signing, ASC key, profile, upload); all-quiet watchdog fires; Pard's capability-check blind spot (Key Insight #3 above); `f5cc8b2` pre-fire catch generalized to spec test 9a.
-- **Atlas, Cuneo**: no commits in window.
+- **Klatch:** `docs/logs/2026-09-13-1047-theseus-opus-log.md` (Round 205 section); commit `cc10370b` (Round 205 writeup + probe). Round 205 mail chain `bb951211`/`eff112f6` reviewed.
+- **Piper Morgan:** 48-hour commit log reviewed (349 commits). Items found — `db3e33b39` (STALE alert stating its own limitation) and `925833e61` (CI `needs:` chaining silencing an independent job) — did not clear the brief-worthiness bar given recent coverage of the monitoring-gap theme (09-12, 09-13 briefs).
+- **One Job:** `development/coral-logs/2026-09-13-coral-log.md`, commit `da4626e9`.
 
 ---
 *Canonical archive: designinproduct.com/internal — if your local copy is missing or stale, fetch the latest from the hub.*
