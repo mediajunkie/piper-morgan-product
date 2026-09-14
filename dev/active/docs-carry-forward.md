@@ -1,17 +1,21 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-14 ~10:27 PDT (WORK — Weekly Docs Audit #1801 substantially in progress).
-**Active task: Weekly Docs Audit #1801 (Monday, auto-filed on schedule).** Fixed the STATUS
-BANNER's 13-day/21-day staleness gap same-pass (`63c083446`) — new Sep 2–14 UPDATE line + Recent
-Progress entry, fresh `sprint-truth.py` pull (52 not done, 0 unmilestoned, 1166 done). Confirmed
-clean: pattern count, ADR link integrity, omnibus coverage (08-25→09-13 continuous), CITATIONS.md,
-roadmap.md. Doc currency unchanged at 24/38 (bulk-stamp cluster, #1726's lane). New data point:
-GitHub issue backlog now 336 open / 0 unmilestoned (PM's 09-12 ruling holding fleet-wide) but 216
-(64%) stale >30d, worse than 09-03's 52% — reported fresh in #1801 since #1712 (last week's
-tracker) is closed. **3 background subagents still running** (stale-content+duplicates;
-broken-links+methodology-cross-refs+NAVIGATION/INDEX; briefing-completeness+root-README-review+
-docs/README-review) — posted an interim progress comment on #1801, NOT closed yet. Pick up
-synthesizing + Completion Matrix + close when their results land (background task notifications).
+**Updated**: 2026-09-14 ~11:40 PDT (WORK — Weekly Docs Audit #1801 CLOSED, full pass).
+**Weekly Docs Audit #1801: CLOSED this fire.** Biggest catch: STATUS BANNER's engineering/deploy
+attestation was 21 days stale (Lead's 08-24 attest) with a 13-day gap since the last incremental
+update — fixed (`63c083446`) with a cross-role synthesis from all six 09-08..09-13 omnibus logs +
+a fresh `sprint-truth.py` pull (52 not done, 0 unmilestoned, 1166 done). 3 direct fixes total
+(STATUS BANNER, root README setup gap, INDEX.md stale banner). 4 issues filed for genuine content/
+ownership decisions: #1803 (legacy-getting-started broken links, not mechanical), #1804
+(ALPHA_TESTING_GUIDE.md Ch.1 contradicts #1708's hosted model), #1805 (misc broken links, batched),
+#1806 (caught + corrected a subagent's wrong "undiscovered debris" framing before filing the
+narrower real gap — the tree itself was already reviewed 08-11). All 3 background subagents'
+findings spot-verified by hand before acting. Closed via `close-issue-properly` (description
+updated with full Completion Matrix BEFORE the closing comment, avoiding Comment-Only-Close).
+Audit calendar's Tracking Dashboard updated (Last Completed 09-14, Next Due 09-21).
+**Doc currency**: unchanged at 24/38 (bulk-stamp cluster, #1726's lane, not re-escalated).
+**GitHub backlog data point**: 336 open / 0 unmilestoned (PM's 09-12 ruling holding fleet-wide),
+216 (64%) stale >30d (worse than 09-03's 52%) — reported fresh since #1712 is closed.
 **Third work-queue source, established 09-13 (PM's v1.33 ruling)**: Docs's criteria line is
 `gh issue list --search "label:documentation" --state open --limit 50` — open each result, don't
 trust the list view (CXO's 09-12 finding). Denominator was 6 as of day-close (was 7, #1728 closed).
@@ -115,9 +119,10 @@ without PM present.**
 
 ## Day-of-week duty triggers — CHECK EVERY START
 
-- **Every Monday**: Weekly Docs Audit — #1725 closed same-day 09-07 (first time this cycle); next
-  due 09-14. #1713 (GH-Actions no-fire defect) confirmed clean on 09-07 — still open as a question,
-  watch for recurrence.
+- **Every Monday**: Weekly Docs Audit — #1801 closed same-day 09-14 (second consecutive on-schedule
+  clean fire, ~16:22 UTC); next due 09-21. #1713 (GH-Actions no-fire defect) confirmed clean again
+  on 09-14 — two clean fires running now, still open as a question but the recurrence risk looks
+  lower.
 - **First Monday of month**: Monthly Housekeeping — #1724 closed same-day 09-07; next due 10-05.
 - **First Tuesday**: Skill-Candidates Review — not mine (PM+Exec+CIO).
 
