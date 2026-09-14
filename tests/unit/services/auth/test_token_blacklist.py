@@ -17,7 +17,13 @@ from uuid import UUID, uuid4
 
 import pytest
 
-from services.auth.jwt_service import JWTService, TokenExpired, TokenInvalid, TokenRevoked
+from services.auth.jwt_service import (
+    BlacklistUnavailable,
+    JWTService,
+    TokenExpired,
+    TokenInvalid,
+    TokenRevoked,
+)
 from services.auth.token_blacklist import TokenBlacklist
 
 # ============================================================================
@@ -173,7 +179,16 @@ class TestTokenBlacklistOperations:
 
     @pytest.mark.smoke
     async def test_security_fail_closed_on_error(self, mock_redis_factory, mock_db_session_factory):
-        """Should fail closed (assume blacklisted) on errors"""
+        """Should still fail closed on errors — now by RAISING, not returning True.
+
+        #1792 changed the signal, not the posture. Returning `True` was
+        indistinguishable from a real blacklist hit, so a store outage reported
+        as "Token has been revoked" to every active user. `BlacklistUnavailable`
+        refuses exactly as before while saying what is actually true.
+
+        Fail-closed is asserted here as the ABSENCE of a `False` return: no
+        caller can read this outcome as "not blacklisted, proceed".
+        """
         # Mock db_session_factory.session_scope to raise an error when used
         failing_context = MagicMock()
         failing_context.__aenter__ = AsyncMock(side_effect=Exception("Database connection failed"))
@@ -184,9 +199,8 @@ class TestTokenBlacklistOperations:
         bl = TokenBlacklist(mock_redis_factory, mock_db_session_factory)
         bl._redis_available = False  # Simulate no Redis
 
-        # Should return True (fail closed) on error
-        result = await bl.is_blacklisted("any-token")
-        assert result is True
+        with pytest.raises(BlacklistUnavailable):
+            await bl.is_blacklisted("any-token")
 
     @pytest.mark.smoke
     async def test_remove_expired_redis_noop(self, blacklist):
