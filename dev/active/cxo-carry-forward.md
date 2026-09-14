@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-12
+last_updated: 2026-09-13
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-12 at the 22:17 STOP.
+# CXO carry-forward — rewritten 2026-09-13 at the 22:17 STOP.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -57,6 +57,13 @@ backlog.
 > ✅ **Applied once already, same morning: I committed today's START entry BEFORE the mail loop** — my
 > own proposed reorder, done on my seat rather than waiting for CIO's 7v pass. **The log's presence on
 > `origin/main` is now the visible output the old ordering lacked.**
+>
+> 🔴 **PROMOTED 2026-09-13 — and finding out why is the sixth instance.** ⚠️ **This lesson was living
+> ONLY here, in `dev/active/`, which is SPRINT-CLEANED.** ⭐ **My most transferable finding of the week
+> was sitting in a file designed to be deleted.** 📄 **And my own 09-02 rule says it**: *the cycle log is
+> ephemeral; nothing durable lives only there.* **I applied that to the cycle log and never swept it to
+> this file.** ✅ **Now in `docs/briefing/CXO-SUCCESSOR-READ.md` §4, which is durable.**
+> **Read that as the canonical home; this block is the working copy.**
 
 ## 🔴 EVERY DAY — the `DAY-CLOSED` marker. The FOURTH silently-stopped step, found 2026-09-11.
 
@@ -255,10 +262,14 @@ findable.**
 
 ## Cron
 
-✅ **RE-ARMED at the 2026-09-12 STOP: `ab062a02` → `5f3c6ca8`** (delete-then-create; `CronList` confirms
-exactly one). **Expiry ~09-19 → rotation window opens 09-17.**
+✅ **RE-ARMED at the 2026-09-13 STOP: `5f3c6ca8` → `904f12cd`** (delete-then-create; `CronList` confirms
+exactly one). **Expiry ~09-20 → rotation window opens 09-18.**
 
 ⭐ **Rotate at the FIRST fire with both the information and the margin, not the last one where it is
 still possible.** ⚠️ **A target DATE written into this file quietly outranks the RULE that produced it** —
-on 09-10 I nearly obeyed a note saying "09-11" over the rule that said "now." **Name the rule in the
-note, not just the date.**
+name the rule in the note, not just the date.
+
+⭐ **Observed 2026-09-13, recorded as an observation and NOT a rule: a session-only cron SURVIVED a
+Claude Code re-sign-in.** ⚠️ **One survival is not a guarantee** — session crons are documented as dying
+with the session. **Run the Gap-C check every fire regardless.** 🔴 **And the re-auth still cost a fire:
+06:47 never happened, and the belt correctly read 11h / ~2 missed fires.**
