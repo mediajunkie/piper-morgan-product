@@ -1917,6 +1917,45 @@ class SessionActivityDB(Base):
             created_at=self.created_at,
         )
 
+    @classmethod
+    def from_domain(cls, activity: "domain.SessionActivity") -> "SessionActivityDB":
+        """Construct a ledger row from the domain ``SessionActivity`` (#1788).
+
+        The exact inverse of ``to_domain`` — the two field sets correspond 1:1
+        (id, conversation_id, owner_id, action_type, target_ref, turn_id,
+        target_title, created_at), so this round-trips without loss in either
+        direction. That correspondence is what earns the signature here: #1788
+        ruled (Arch, 2026-09-13) that a converter may only be written where a
+        live path actually round-trips the row, and this one does — the observer
+        at ``IntentService._record_session_activity`` writes via
+        ``SessionActivityRepository.record``, and both the B4 recall reader
+        (``session_activity_read``) and ``list_for_session`` return
+        ``domain.SessionActivity``.
+
+        D1a note: ``owner_id`` is NOT NULL on the table and non-Optional on the
+        dataclass, so it is carried straight through — there is no path here that
+        can produce an owner-less row. ``created_at`` is passed only when the
+        domain record carries one; otherwise the column server_default applies
+        (matching ``SessionActivityRepository.record``, which never sets it).
+        """
+        row = cls(
+            id=activity.id,
+            conversation_id=activity.conversation_id,
+            owner_id=activity.owner_id,
+            action_type=activity.action_type,
+            target_ref=activity.target_ref,
+            turn_id=activity.turn_id,
+            target_title=activity.target_title,
+        )
+        # Set only when present, so an unset timestamp leaves the column to its
+        # server_default rather than writing an explicit NULL into a NOT NULL
+        # column. (Built by attribute rather than a **kwargs dict on purpose:
+        # a mixed-value dict widens to dict[str, str | None] and the datetime
+        # assignment then trips the #1436 mypy gate.)
+        if activity.created_at is not None:
+            row.created_at = activity.created_at
+        return row
+
 
 class KnowledgeNodeDB(Base):
     """Database model for knowledge graph nodes"""
