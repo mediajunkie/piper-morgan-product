@@ -281,7 +281,12 @@ async def get_current_user_optional(
 
     # Validate token
     from services.api.errors import APIError
-    from services.auth.jwt_service import TokenExpired, TokenInvalid, TokenRevoked
+    from services.auth.jwt_service import (
+        BlacklistUnavailable,
+        TokenExpired,
+        TokenInvalid,
+        TokenRevoked,
+    )
 
     jwt_service = JWTService()
 
@@ -302,6 +307,18 @@ async def get_current_user_optional(
             status_code=401,
             error_code="TOKEN_REVOKED",
             details={"detail": "Token has been revoked"},
+        )
+    except BlacklistUnavailable:
+        # #1792: store outage — refuse, but do not claim a revocation.
+        raise APIError(
+            status_code=503,
+            error_code="REVOCATION_CHECK_UNAVAILABLE",
+            details={
+                "detail": (
+                    "Couldn't verify your session right now — nothing was "
+                    "changed. Try again in a moment."
+                )
+            },
         )
     except TokenExpired:
         raise APIError(

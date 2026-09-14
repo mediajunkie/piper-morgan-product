@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-13 ~22:5x PDT (STOP — day closed, cron re-armed).
+**Updated**: 2026-09-14 ~07:27 PDT (START, re-verified — no change since 09-13's STOP).
 **Third work-queue source, established 09-13 (PM's v1.33 ruling)**: Docs's criteria line is
 `gh issue list --search "label:documentation" --state open --limit 50` — open each result, don't
 trust the list view (CXO's 09-12 finding). Denominator was 6 as of day-close (was 7, #1728 closed).
@@ -10,8 +10,7 @@ calendar update as its OWN fast, standalone commit immediately after the website
 of `publish-to-blog` — already documented this way), and do drafts-folder archival (Step 9) as a
 SEPARATE, later commit. Bundling the two adds avoidable seconds to the "post live but calendar not
 yet updated" window — Dispatch caught this exact 75s gap on "Who's Who."
-**Session log**: `dev/2026/09/13/2026-09-13-0958-docs-code-log.md` (CLOSED, `<!-- DAY-CLOSED:
-2026-09-13 -->` present). Tomorrow needs a fresh log at START.
+**Session log**: `dev/2026/09/14/2026-09-14-0727-docs-code-log.md` (open, today).
 **Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
 make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything
 else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM's own words.
