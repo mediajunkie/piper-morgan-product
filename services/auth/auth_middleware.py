@@ -463,7 +463,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
             headers={"Retry-After": "5"},
         )
 
-    def _unauthorized_response(self, message: str, request: Request = None) -> Response:
+    def _unauthorized_response(self, message: str, request: Optional[Request] = None) -> Response:
         """
         Create unauthorized response.
 
