@@ -105,14 +105,29 @@ class LLMClient:
         )
 
     def _init_clients(self):
-        """Initialize API clients using LLMConfigService"""
+        """Initialize API clients using LLMConfigService.
+
+        These are the SERVER's own long-lived singleton clients, so every key read
+        here is deliberately request-blind (``include_request_key=False``, #1814).
+        ``LLMClient()`` is constructed lazily inside a request in several places
+        (intent_service, conversational_floor, semantic_boundary_detector) — reading
+        the request-scoped BYOC key here would bake one user's credential into an
+        object the NEXT caller reuses. The per-request key reaches the Anthropic call
+        the only way it should: ``anthropic_client_for_request`` in
+        ``_anthropic_complete``, which builds a fresh client per request.
+
+        Each client is also gated on a truthy server key rather than on provider
+        membership alone: ``get_configured_providers()`` is request-AWARE (that is the
+        whole point of #1814), so mid-request it can legitimately report "anthropic"
+        while the server itself holds nothing.
+        """
         # Get configured providers from config service
         configured_providers = self._config_service.get_configured_providers()
 
         # Anthropic
-        if "anthropic" in configured_providers:
+        anthropic_key = self._config_service.get_api_key("anthropic", include_request_key=False)
+        if "anthropic" in configured_providers and anthropic_key:
             try:
-                anthropic_key = self._config_service.get_api_key("anthropic")
                 self.anthropic_client = Anthropic(api_key=anthropic_key)
                 logger.info("Anthropic client initialized")
             except ValueError as e:
@@ -121,9 +136,9 @@ class LLMClient:
             logger.warning("No ANTHROPIC_API_KEY configured")
 
         # OpenAI
-        if "openai" in configured_providers:
+        openai_key = self._config_service.get_api_key("openai", include_request_key=False)
+        if "openai" in configured_providers and openai_key:
             try:
-                openai_key = self._config_service.get_api_key("openai")
                 self.openai_client = OpenAI(api_key=openai_key)
                 logger.info("OpenAI client initialized")
             except ValueError as e:
@@ -136,7 +151,7 @@ class LLMClient:
             try:
                 import google.generativeai as genai
 
-                gemini_key = self._config_service.get_api_key("gemini")
+                gemini_key = self._config_service.get_api_key("gemini", include_request_key=False)
                 genai.configure(api_key=gemini_key)
                 # Gemini uses a per-call GenerativeModel rather than a stateless client.
                 # We set this flag to True to signal "configured"; actual model instances

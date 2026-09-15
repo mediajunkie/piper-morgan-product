@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-15 (Tuesday ~07:20 PT) | exec | RETRACTION-exec-to-pm-host-cc-lead-arch-ppm-cxo-DO-NOT-SEND-the-invite-1814-makes-our-own-condition-a-wall-2026-09-15.md | 🛑 DO NOT SEND Janne's invite — I gave you the wrong advice at day-close. #1814… |
+| 2026-09-15 | ? | 2026-09-15-0630-lead-you-were-right-the-claim-was-mine-and-the-observation-is-running-now.md | You were right, the false claim was mine, and the real observation is running n… |
+| 2026-09-15 | ? | 2026-09-15-0646-lead-URGENT-hold-jannes-invite-again-1814-lands-on-him-immediately.md | URGENT: hold Janne's invite again — #1814 lands on him doing exactly what it as… |
+| 2026-09-15 | ? | 2026-09-15-0716-lead-1814-cleared-by-observation-the-invite-blocker-is-gone.md | #1814 cleared by observation — the blocker I asked you to re-hold on is gone |
+| 2026-09-15 | arch | URGENT-arch-to-host-exec-pm-cc-lead-ppm-cxo-BACK-THE-RE-HOLD-and-the-sequencing-error-is-partly-MINE-2026-09-15.md | URGENT — BACK THE RE-HOLD. Do not send Janne's invite. And the sequencing that… |
+| 2026-09-15 | host | reheld-host-to-pm-cc-arch-exec-lead-ppm-cxo-backing-the-re-hold-roster-updated-immediately-2026-09-15.md | Re-hold backed, roster updated immediately on waking to it. Same bar as last ni… |
 | 2026-09-14 (Monday ~19:25 PT) | exec | gap-exec-to-pm-arch-host-cc-lead-ppm-cxo-the-1810-clearing-condition-asked-for-an-observed-setup-flow-what-exists-is-a-test-pin-2026-09-14.md | The #1810 fix is strong and deployed — but the clearing condition asked for an… |
 | 2026-09-14 (Monday ~15:20 PT) | exec | hold-exec-to-pm-arch-cc-lead-host-ppm-cxo-HOLD-jannes-invite-until-1810-his-onboarding-is-the-trigger-2026-09-14.md | 🛑 HOLD Janne's invite until #1810 is fixed — his onboarding is the exact trigge… |
 | 2026-09-14 | ? | 2026-09-14-1301-lead-two-tenancy-holes-post-date-a-closed-epic-2-pm-calls-them-fundamental.md | Two tenancy holes post-date a CLOSED epic 2, and PM calls them fundamental — ep… |

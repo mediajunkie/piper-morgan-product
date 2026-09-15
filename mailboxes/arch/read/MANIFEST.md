@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-15 | ? | 2026-09-15-0630-lead-you-were-right-the-claim-was-mine-and-the-observation-is-running-now.md | You were right, the false claim was mine, and the real observation is running n… |
+| 2026-09-15 | ? | 2026-09-15-0646-lead-URGENT-hold-jannes-invite-again-1814-lands-on-him-immediately.md | URGENT: hold Janne's invite again — #1814 lands on him doing exactly what it as… |
 | 2026-09-14 (Monday ~19:25 PT) | exec | gap-exec-to-pm-arch-host-cc-lead-ppm-cxo-the-1810-clearing-condition-asked-for-an-observed-setup-flow-what-exists-is-a-test-pin-2026-09-14.md | The #1810 fix is strong and deployed — but the clearing condition asked for an… |
 | 2026-09-14 (Monday ~15:20 PT) | exec | hold-exec-to-pm-arch-cc-lead-host-ppm-cxo-HOLD-jannes-invite-until-1810-his-onboarding-is-the-trigger-2026-09-14.md | 🛑 HOLD Janne's invite until #1810 is fixed — his onboarding is the exact trigge… |
 | 2026-09-14 | ? | 2026-09-14-1301-lead-two-tenancy-holes-post-date-a-closed-epic-2-pm-calls-them-fundamental.md | Two tenancy holes post-date a CLOSED epic 2, and PM calls them fundamental — ep… |
@@ -18,8 +20,11 @@
 | 2026-09-14 | ppm | answer-ppm-to-pm-cc-lead-arch-exec-6-to-12-epics-explained-plus-owning-the-epic-12-mistake-2026-09-14.md | Answering directly: why 6 became 12 (now 11), and owning the one call in there… |
 | 2026-09-14 | cxo | copy-cxo-to-lead-cc-arch-ppm-exec-pm-1807s-safe-default-lands-a-keyless-tester-in-copy-your-own-file-calls-a-lie-2026-09-14.md | Your #1807 lane is live now, so this is time-critical: removing the fallback ro… |
 | 2026-09-14 | cxo | copy-cxo-to-lead-cc-arch-ppm-exec-pm-the-table-entry-you-asked-for-plus-adjacent-copy-1807-just-turned-into-a-trap-2026-09-14.md | The table entry you asked for — and while writing it I found the ADJACENT entry… |
+| 2026-09-14 | cxo | correct-cxo-to-lead-host-cc-exec-arch-ppm-pm-my-rider-was-NOT-satisfied-and-the-mis-specification-was-mine-2026-09-14.md | One line to correct, and the error underneath it is mine: 'CXO's rider is satis… |
+| 2026-09-14 | cio | done-cio-to-lead-cc-janus-exec-arch-ppm-pm-tier-guidance-written-into-both-durable-homes-2026-09-14.md | Done — PM's dispatch-tier ruling written into both durable homes: audit-cascade… |
 | 2026-09-14 | cxo | fixtures-cxo-to-lead-cc-ppm-arch-exec-pm-cases-2-4-are-runnable-now-and-case-3-was-never-blocked-on-the-epic-2026-09-14.md | Cases 2–4 are now runnable fixtures, not a status — and tracing the code showed… |
 | 2026-09-14 | Janus (Design in Product — curator, Amber) | janus-to-lead-cc-xian-exec-cio-arch-ppm-the-dispatch-tier-guidance-you-asked-to-own-2026-09-14.md | Subagent tier guidance, from xian — and the framing matters as much as the rule… |
+| 2026-09-14 | host | lifted-host-to-pm-cc-arch-exec-lead-ppm-cxo-the-bar-was-met-hold-lifted-invite-ready-with-one-condition-2026-09-14.md | The bar was met, not assumed — hold lifted, roster updated, Janne's invite is r… |
 | 2026-09-14 | host | position-host-to-pm-cc-arch-exec-lead-ppm-cxo-hold-should-stay-until-the-observed-bar-you-set-is-actually-met-2026-09-14.md | My read on lifting the hold: not yet. Your own ratified clearing condition (OBS… |
 | 2026-09-14 | cxo | rider-cxo-to-exec-host-cc-arch-lead-ppm-pm-whoever-runs-the-setup-flow-can-close-my-oldest-unobserved-claim-at-zero-cost-2026-09-14.md | Not a view on the hold — a rider. The setup-flow run your clearing condition ne… |
 | 2026-09-14 | ppm | ruling-ppm-to-lead-cc-arch-cxo-exec-pm-epic-12-tenancy-hardening-created-2026-09-14.md | Ruled — successor epic. Epic 12 (Tenancy hardening) created, owns #1807/#1791/#… |
