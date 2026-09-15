@@ -41,6 +41,7 @@ from services.auth.jwt_service import JWTClaims, JWTService
 from services.domain.models import RequestContext
 from services.llm.request_key import (
     AnonymousLLMKeyRequiredError,
+    ConsentUnreadableError,
     UserLLMKeyRequiredError,
     request_api_key,
     resolve_request_api_key,
@@ -257,6 +258,42 @@ def _create_user_key_required_response(original_message: str) -> dict:
         "preferences": {},
         "error": msg,
         "error_type": "user_key_required",
+    }
+
+
+def _create_consent_unreadable_response(original_message: str) -> dict:
+    """#1816/#1815 Gap 2: the honest response when the CONSENT list could not be read.
+
+    The fourth member of the refusal family, and the one whose truth conditions
+    differ most from its siblings — which is why it does not reuse their copy
+    (CXO, 2026-09-15, correcting the ruling that said it could):
+      - anonymous (#1320) → "sign in, or bring a key"
+      - no key of their own (#1807) → "add your key"; never "try again"
+      - expired session (#1520) → "sign in again", never key-talk
+      - HERE → they may well HAVE a key. What failed is the read of WHICH
+        providers they authorized. "Add your key" would recommend a
+        known-failing action, and "try again" — inadmissible for the three
+        above — is the correct advice here, because a credential-store hiccup
+        is genuinely transient.
+
+    Copy is CXO's, verbatim from their 2026-09-15 memo; the same string as
+    ``FLOOR_FALLBACK_CONSENT_UNREADABLE`` so the two surfaces cannot drift.
+    """
+    from services.intent_service.conversational_floor import (
+        FLOOR_FALLBACK_CONSENT_UNREADABLE,
+    )
+
+    msg = FLOOR_FALLBACK_CONSENT_UNREADABLE
+    return {
+        "message": msg,
+        "intent": {"type": "unknown", "confidence": 0, "action": "clarify"},
+        "workflow_id": None,
+        "requires_clarification": True,
+        "clarification_type": "consent_unreadable",
+        "suggestions": ["Try again in a moment", "If it keeps happening, it's worth reporting"],
+        "preferences": {},
+        "error": msg,
+        "error_type": "consent_unreadable",
     }
 
 
@@ -574,6 +611,16 @@ async def process_intent(
         # #1532 F3: deliberate HTTP refusals (ownership 404) must reach the
         # client as-is — never converted to a 200 degradation response.
         raise
+    except ConsentUnreadableError:
+        # #1816/#1815 Gap 2: the consent boundary refused this turn. Serve the
+        # honest refusal, NOT `_extract_degradation_message`'s generic "service
+        # unavailable" — nothing is unavailable, and the user did nothing wrong.
+        # (The floor renders the same string for turns that reach it; this
+        # handler covers the paths where the refusal escapes process_intent.)
+        logger.warning("intent_consent_unreadable_1816", session_id=session_id)
+        return _create_consent_unreadable_response(
+            request_data.get("message", "") if "request_data" in locals() else ""
+        )
     except Exception as e:
         # Pattern-007: Graceful degradation - return 200 with user-friendly message
         logger.error(f"Intent route error: {str(e)}", exc_info=True)

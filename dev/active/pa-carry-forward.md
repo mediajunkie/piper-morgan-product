@@ -72,6 +72,20 @@ days stale.
   probe's own survive/weakened/vanish measure was missing. CXO is explicit T stays `PENDING-PROBE`
   (#1717 is our own model, not the MCP surface) and nothing is owed back. Filed for whenever §6
   actually becomes active work — correct sequencing per CXO's own framing, not a thread to chase now.
+  🟢 **UPDATE 09-15 — sequencing question ANSWERED, plan approved, work now active.** PM ruled
+  in-conversation: parallel BYOC work is fine, including possibly real alpha testing, provided (1) it
+  doesn't distract Lead Dev and (2) nothing merges that risks the MVP milestone — MVP stays top
+  priority, on its convergence path. Wrote the plan against that ruling, grounded in two checks run
+  live: #1458 still absent from the current MVP epic order (confirmed again), and real `prog`-agent
+  capacity distinct from Lead already in active daily use (the mechanism that makes "doesn't distract
+  Lead" satisfiable — route Phase C build work to prog, not Lead's queue). PM approved and asked for
+  it written up properly: `dev/active/byoc-parallel-work-plan-2026-09-15.md` (three phases: design
+  now / infra-only DNS-TLS / real build via prog, plus a mechanical merge-discipline check). **Next
+  concrete step, unblocked, no dependency on anyone else**: build the Phase A hosted-alpha readiness
+  checklist. Separately, PM also opened a related-but-distinct thread — inventorying which cohort
+  operational disciplines Piper's own product harness is/isn't reproducing (skills vs. underlying
+  state layer, e.g. the memory/colleague-model gap) — kept as its own document per PM's explicit
+  request: `dev/active/piper-harness-inventory-2026-09-15.md`.
   🔴 **Housekeeping debt, named rather than hidden**: the historical block immediately below (08-26
   through 09-01, ~190 lines) has NOT been compressed per CIO's resolved-items-get-deleted rule, despite
   most of its content being ✅-marked resolved. Deferring the actual compression pass to a fresh

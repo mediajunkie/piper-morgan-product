@@ -116,6 +116,30 @@ class UserLLMKeyRequiredError(LLMKeyRequiredError):
     """
 
 
+class ConsentUnreadableError(LLMKeyRequiredError):
+    """Raised when the #946/#1415 CONSENT list could not be READ (#1816).
+
+    The third member of this family, and the one whose truth conditions differ
+    most from its siblings — which is exactly why it needs its own type and its
+    own copy rather than inheriting theirs (CXO, 2026-09-15):
+
+      - anonymous (#1320)      → "sign in, or bring a key"
+      - authenticated (#1807)  → "add your own key"; never "try again"
+      - HERE                   → the user may well HAVE a key. What failed is the
+        read of which providers they authorized. Telling them to add a key
+        recommends a known-failing action (the #1108 shape). And unlike its
+        siblings, "try again in a moment" IS admissible here: a store hiccup is
+        genuinely transient, where a missing key is not.
+
+    Why it is a refusal at all, rather than a degradation (#1815 Gap 2, Arch
+    ruling 2026-09-15 §3): #1415's F1 closed state was "narrow to the
+    server-default provider", which assumed a server that owns a key. PM ruled
+    (#1812) the server key is "not a real concept, not to be supported in any
+    sense", so that degradation is now incoherent. **Fail-closed means closed,
+    not quietly reassigned to the operator's key.**
+    """
+
+
 def get_request_api_key() -> Optional[str]:
     """The current request's user-supplied API key, or None (→ use the server key)."""
     return _user_api_key.get()
