@@ -10,7 +10,19 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-15 10:22 PT (WORK). **The tenancy family keeps growing, this fire's
+**Last rewritten**: 2026-09-15 13:22 PT (WORK). **The consent fail-open thread closed same-day** —
+`#1815`/`#1816` both closed (v111, CXO's own proposed copy shipped ahead of formal ratification,
+confirmed with one clause cut same-fire), `#1817` (the invalidation-trigger tripwire Arch's ruling
+required) triaged and folded in. Separately, `#1772` (epic 5) got a real measurement upgrade — n=10
+per cell instead of the original n=1: **50% leak rate on claude-sonnet, production's default
+provider, 0% on gpt-4o**. Also found `'calendar'` isn't a registered flag at all, a different
+failure than originally filed. CXO's discipline (refusing to widen a pre-registration to capture
+an out-of-scope anecdote) is why this got measured rather than argued about. No PPM ruling needed
+anywhere — Arch also proposed a mechanical fix for their own third same-shape cross-reference
+failure in three days (quote inline or mark unverified), noted for the record. **PM's reply on the
+epics-9/10 choice still hasn't landed** — fourth fire watching, still not chasing.
+
+**Prior fire: 2026-09-15 10:22 PT (WORK). The tenancy family keeps growing, this fire's
 addition is `#1816`** — a consent boundary that fails OPEN (a broad exception swallow in
 `KeychainService.get_api_key` means a real keyring failure reads as "everything authorized"
 rather than triggering the fail-closed branch). Arch ruled it the honest-empty family's shape one
