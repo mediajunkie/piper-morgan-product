@@ -4,29 +4,36 @@ currency_claim: rewritten at every substantive fire (3x/day cadence)
 max_age_days: 1
 ---
 
-# CIO carry-forward — rewritten 2026-09-14 (16:37 fire, complete)
+# CIO carry-forward — rewritten 2026-09-14 (22:37 STOP, day closed)
 
-**Cron**: `a03890a3` · `7 10,16,22 * * *` · armed at 2026-09-09 22:45 STOP · expires ~2026-09-16
-22:45. **Not yet within the ~48h proactive re-arm window (still ~54h out) — will be by tonight's
-STOP or definitely by tomorrow's 10:xx fire. Check and re-arm at the first fire that's within 48h.**
+**Cron**: re-armed fresh at this STOP (delete-then-create) — see the new job id in the STOP
+commit/report. `7 10,16,22 * * *`, expires ~7 days from tonight.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## Today's shape so far: the Fable-ceiling incident traced to its real root cause
+## Today's full arc (2026-09-14, closed): the Fable-ceiling story, start to finish
 
-**10:37**: Exec's "seven roles dark" alert self-corrected to "a two" (Fable model-tier ceiling on
-arch+web). Pard answered my own 08-29 rate-limit question with real data. Catalogued three real
-causes of "silence" (Lead's ask) in `duty-cycle-freeze-check.sh`'s header.
+**10:37**: Exec's "seven roles dark" alert self-corrected to "a two" (Fable ceiling on arch+web).
+Pard answered my own 08-29 rate-limit question with real data. Catalogued three real causes of
+"silence" in `duty-cycle-freeze-check.sh`'s header, per Lead's ask.
 
-**16:37**: Janus's retrospective + Exec's analysis traced the ceiling to its actual source — Lead's
-30 Saturday subagent dispatches, all inheriting Lead's Fable tier by default (a fan-out inherits
-the dispatcher's model), exhausting the tier that arch and web then got refused against, though
-neither of them dispatched anything. Lead owned it immediately and adopted explicit model-pinning
-for all future dispatches. **Checked my own exposure**: one dispatch this week, inherited Sonnet
-not Fable, wasn't part of this incident — but adopted the same "pin explicitly, never inherit"
-discipline for my own future dispatches regardless. Deliberately did NOT write this into CLAUDE.md
-as a cohort default — Exec's memo frames that as still open (decide before Thursday), not ruled.
+**16:37**: traced the ceiling to its root — Lead's 30 Saturday subagent dispatches silently
+inherited Lead's top tier, exhausting it for two seats that never dispatched anything. Lead owned
+it immediately, adopted explicit model-pinning. Checked my own exposure (one dispatch this week,
+didn't hit the scarce tier, adopted the same discipline anyway). Deliberately did NOT write the
+still-open "should this be a cohort default" question into CLAUDE.md.
+
+**22:37 (STOP)**: PM ruled via Janus — dispatcher holds the judgment, subagent executes, state the
+tier explicitly. This was the exact trigger I'd been watching for. Written into two durable homes:
+`audit-cascade` SKILL.md v1.2 Step 1b (the mechanism) and CLAUDE.md's Subagents section (the
+broader net). Caught and fixed my own YAML frontmatter mistake before committing — same trap as
+two days ago, fixed properly this time with block-scalar syntax, verified by parsing. Day closed
+clean.
+
+**The through-line across all three fires today**: real findings from real incidents, engaged with
+by checking my own exposure rather than just crediting the finder, and durable artifacts placed
+where a confused future reader will actually look rather than left in a memo that scrolls away.
 
 ## Open, needs a look
 
@@ -34,9 +41,6 @@ as a cohort default — Exec's memo frames that as still open (decide before Thu
 - **Standing-item 7x**: Exec's 2 remaining process items (archive `mailboxes/*/read/`; change the
   PM-cc rule). Not started.
 - **Standing-item 7y**: NO-DAY-CLOSE streak detector. Correctly gated on cohort data.
-- **Watch, not mine**: whether "subagent dispatches pin a cheaper tier by default" becomes an
-  actual cohort ruling before Thursday — if it does and needs writing into CLAUDE.md's Subagents
-  section, that's a natural pickup for me as the one who's been tracking the thread.
 
 ## Still watching, not acting
 
@@ -47,6 +51,8 @@ as a cohort default — Exec's memo frames that as still open (decide before Thu
 - **#1744**: will show up in future live scope-drift-check runs as a correct, expected flag.
 - **#1746**: filed Sept 11 (mail-send.sh reconcile + split-call rename hazard). Watching for
   Pard's response.
+- **Janus is tracking dispatches×turns through 09-21** to check whether the tier guidance actually
+  reduces total consumption or just shifts it — watch for that verdict, not mine to chase.
 
 ## Open, non-blocking
 
@@ -61,9 +67,9 @@ as a cohort default — Exec's memo frames that as still open (decide before Thu
 - **The RACI/responsibility-notation backlog item** (Themis relay, filed 09-02) — still not started.
 - **The `mailboxes/*/MANIFEST.md` sibling-basename false-strand warning** — hit repeatedly this
   week, confirmed harmless every time, not mine to fix.
-- **My own heartbeat compliance** — clean today, v1.34/v1.35 self-check working as designed.
-- **My own future subagent dispatches** — adopted explicit model-pinning today; watch whether I
-  actually follow through on the next real dispatch rather than defaulting back to omission.
+- **My own heartbeat compliance** — clean all day today.
+- **My own future subagent dispatches** — adopted explicit model-pinning; watch whether it
+  actually happens on the next real dispatch.
 
 ## Standing corrections to myself
 
@@ -78,11 +84,13 @@ as a cohort default — Exec's memo frames that as still open (decide before Thu
   itself and document what it doesn't fix.** (09-13.)
 - **A durable "here's what actually happened" catalog belongs in the artifact a future confused
   reader will actually open, not a memo that scrolls away.** (09-14.)
-- **NEW (09-14): when a colleague owns a real mistake publicly, check your own exposure to the
-  same class of error before just crediting them.** Lead's dispatch-inheritance mistake wasn't
-  unique to Lead — it's available to anyone who calls Agent/Task without a model argument. I
-  hadn't hit it this week, but I would have eventually without the check.
-- **NEW (09-14): don't write a still-open cross-role decision into a durable doc as if it were
-  settled, even when you personally agree with the likely outcome.** Exec explicitly framed the
-  dispatch-tier-pinning question as pending a decision before Thursday — CLAUDE.md waits for that,
-  not my own read of where it's heading.
+- **When a colleague owns a real mistake publicly, check your own exposure to the same class of
+  error before just crediting them.** (09-14.)
+- **Don't write a still-open cross-role decision into a durable doc as if it were settled.**
+  (09-14.)
+- **NEW (09-14): the multi-line-YAML-changelog mistake recurred a second time in three days.**
+  First time (09-12) I fixed it by reflowing to a single line after the fact. This time I used the
+  correct tool from the start (`changelog: >` block scalar) and verified by parsing before
+  committing, not after. If a mistake repeats once, the fix the first time wasn't the right fix —
+  worth remembering that the SECOND occurrence is the one that should change the actual habit, not
+  just get patched again.
