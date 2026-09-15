@@ -1,14 +1,14 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-09-14 06:42 PT START fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-09-14 21:42 PT STOP fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
-`a7920e84`, expression `12 6,9,12,15,18,21 * * *` — unchanged.
+`a7920e84`, expression `12 6,9,12,15,18,21 * * *` — unchanged, re-armed via delete-then-create at this STOP.
 
-## Closed today (so far)
+## Closed today
 
-- Nothing yet — START fire, mail empty, pipeline clean, no post scheduled (Monday).
+- Nothing substantive — genuinely quiet Monday, no post scheduled, no PM engagement across all six fires, mail empty every check. Git identity re-verified correct at every fire.
 
 ## Open items — no Comms-side move available right now
 
