@@ -458,7 +458,40 @@ class LLMClient:
             )
 
     def _is_provider_configured(self, provider: LLMProvider) -> bool:
-        """Return True if the given provider has a live client / configured flag."""
+        """Return True if `provider` can be called ON THIS REQUEST.
+
+        #1815 Gap 1. This used to mean "the SERVER has a live client for it", which is the
+        same server-singleton-as-availability-proxy shape #1814 removed from the primary
+        path — surviving one frame lower, in `_complete_raw`'s cross-provider fallback
+        loop (this method's only caller). Post-#1810 the server owns no Anthropic key on a
+        BYOC deployment, so `self.anthropic_client` is None and a user's own working key
+        satisfied the gate above `_call_provider` but was skipped in silence as a
+        *fallback*. Primary=openai is the default (`PIPER_DEFAULT_PROVIDER`), so this bit
+        any mixed instance the moment OpenAI had a bad minute.
+
+        The fix reuses #1814's shape rather than inventing a parallel one: read the SAME
+        ContextVar the consumer reads, so the gate and the consumer cannot disagree.
+        `_anthropic_complete` resolves its client through `anthropic_client_for_request`,
+        which returns a fresh client whenever `get_request_api_key()` is truthy — so that
+        read, and only that read, is what "available" has to mean here.
+
+        Two constraints this deliberately respects:
+        - **Anthropic only, named via `REQUEST_KEY_PROVIDER`.** The per-request key is an
+          Anthropic key by construction and `_anthropic_complete` is its only consumer;
+          `_openai_complete` / `_gemini_complete` read the server's client and nothing
+          else. Reporting them available off a request key would route the loop into a
+          provider guaranteed to raise — a silent skip traded for a guaranteed failure.
+        - **Nothing is constructed or stored.** This is a pure read. The reason
+          `_init_clients` stays request-BLIND (`include_request_key=False`, #1814) is that
+          `LLMClient()` is built lazily inside requests in several services, so a
+          request-scoped key reaching `self.anthropic_client` would be spent by the NEXT
+          caller. Answering True here does not put the key anywhere it can outlive the
+          request; it reaches Anthropic only via `anthropic_client_for_request`.
+        """
+        from services.llm.request_key import REQUEST_KEY_PROVIDER, get_request_api_key
+
+        if provider.value == REQUEST_KEY_PROVIDER and get_request_api_key():
+            return True
         if provider == LLMProvider.ANTHROPIC:
             return self.anthropic_client is not None
         if provider == LLMProvider.OPENAI:
