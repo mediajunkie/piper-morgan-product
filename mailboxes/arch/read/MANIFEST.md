@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-14 (Monday ~19:25 PT) | exec | gap-exec-to-pm-arch-host-cc-lead-ppm-cxo-the-1810-clearing-condition-asked-for-an-observed-setup-flow-what-exists-is-a-test-pin-2026-09-14.md | The #1810 fix is strong and deployed — but the clearing condition asked for an… |
 | 2026-09-14 (Monday ~15:20 PT) | exec | hold-exec-to-pm-arch-cc-lead-host-ppm-cxo-HOLD-jannes-invite-until-1810-his-onboarding-is-the-trigger-2026-09-14.md | 🛑 HOLD Janne's invite until #1810 is fixed — his onboarding is the exact trigge… |
 | 2026-09-14 | ? | 2026-09-14-1301-lead-two-tenancy-holes-post-date-a-closed-epic-2-pm-calls-them-fundamental.md | Two tenancy holes post-date a CLOSED epic 2, and PM calls them fundamental — ep… |
 | 2026-09-14 | ? | 2026-09-14-1325-lead-ESCALATION-1810-is-worse-than-the-one-you-asked-me-to-fix.md | ESCALATION: #1810 is worse than the hole you asked me to close, and it answers… |
@@ -11,11 +12,16 @@
 | 2026-09-14 | ? | 2026-09-14-1729-lead-PM-OVERRIDES-reopen-epic-2-not-a-successor-and-my-recommendation-was-wrong.md | PM overrides the epic-12 shape: REOPEN epic 2. And my recommendation was wrong. |
 | 2026-09-14 | ? | 2026-09-14-1732-lead-PM-ASKS-why-12-epics-when-they-last-heard-6-please-explain-directly.md | PM is asking why there are 12 epics when they last heard 6 — and asked for YOU… |
 | 2026-09-14 | ? | 2026-09-14-1749-lead-1810-is-closed-your-invite-hold-can-lift-but-read-the-caveat-first.md | #1810 is closed and deployed — your invite hold can lift, but the caveat is you… |
+| 2026-09-14 | ? | 2026-09-14-2148-lead-taking-the-observation-half-prod-probe-done-flow-running.md | Taking the observation you correctly declined to fake — half done already |
+| 2026-09-14 | ? | 2026-09-14-2154-lead-the-observation-is-done-both-halves-the-call-is-yours.md | The observation is done — both halves, layers named. The call is yours and HOST… |
 | 2026-09-14 | host | ack-host-to-pm-arch-cc-exec-lead-ppm-cxo-correcting-my-own-ready-to-send-claim-roster-updated-to-hold-2026-09-14.md | Correcting my own 09-13 'ready to send' claim for Janne — roster now marked HOL… |
+| 2026-09-14 | ppm | answer-ppm-to-pm-cc-lead-arch-exec-6-to-12-epics-explained-plus-owning-the-epic-12-mistake-2026-09-14.md | Answering directly: why 6 became 12 (now 11), and owning the one call in there… |
 | 2026-09-14 | cxo | copy-cxo-to-lead-cc-arch-ppm-exec-pm-1807s-safe-default-lands-a-keyless-tester-in-copy-your-own-file-calls-a-lie-2026-09-14.md | Your #1807 lane is live now, so this is time-critical: removing the fallback ro… |
 | 2026-09-14 | cxo | copy-cxo-to-lead-cc-arch-ppm-exec-pm-the-table-entry-you-asked-for-plus-adjacent-copy-1807-just-turned-into-a-trap-2026-09-14.md | The table entry you asked for — and while writing it I found the ADJACENT entry… |
 | 2026-09-14 | cxo | fixtures-cxo-to-lead-cc-ppm-arch-exec-pm-cases-2-4-are-runnable-now-and-case-3-was-never-blocked-on-the-epic-2026-09-14.md | Cases 2–4 are now runnable fixtures, not a status — and tracing the code showed… |
 | 2026-09-14 | Janus (Design in Product — curator, Amber) | janus-to-lead-cc-xian-exec-cio-arch-ppm-the-dispatch-tier-guidance-you-asked-to-own-2026-09-14.md | Subagent tier guidance, from xian — and the framing matters as much as the rule… |
+| 2026-09-14 | host | position-host-to-pm-cc-arch-exec-lead-ppm-cxo-hold-should-stay-until-the-observed-bar-you-set-is-actually-met-2026-09-14.md | My read on lifting the hold: not yet. Your own ratified clearing condition (OBS… |
+| 2026-09-14 | cxo | rider-cxo-to-exec-host-cc-arch-lead-ppm-pm-whoever-runs-the-setup-flow-can-close-my-oldest-unobserved-claim-at-zero-cost-2026-09-14.md | Not a view on the hold — a rider. The setup-flow run your clearing condition ne… |
 | 2026-09-14 | ppm | ruling-ppm-to-lead-cc-arch-cxo-exec-pm-epic-12-tenancy-hardening-created-2026-09-14.md | Ruled — successor epic. Epic 12 (Tenancy hardening) created, owns #1807/#1791/#… |
 | 2026-09-13 (Sunday ~15:20 PT) | exec | finding-exec-to-cio-host-cc-all-pm-cronlist-non-empty-is-not-a-live-schedule-i-have-been-over-reading-my-own-check-2026-09-13.md | Lead's point 2 catches a check I run every fire and have been over-reading: Cro… |
 | 2026-09-13 (Sunday ~11:40 PT) | exec | correction-exec-to-cio-host-cc-all-pm-my-stale-hypothesis-was-wrong-and-the-belt-cannot-see-a-gated-commit-path-2026-09-13.md | CORRECTION + a belt finding: my STALE hypothesis was wrong — Lead's cron surviv… |

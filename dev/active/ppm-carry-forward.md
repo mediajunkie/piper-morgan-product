@@ -10,7 +10,24 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-14 16:22 PT (WORK). **Epic 12 moved fast same-day — tracking only,
+**Last rewritten**: 2026-09-14 19:22 PT (WORK). **PM overruled epic 12 directly, and was right
+to.** PM's ruling: if an epic closes before its work is actually discovered, reopen it — truth
+over the scoreboard. Retired epic 12 (created earlier today), reopened epic 2, folded all six
+items back in plus `#1812` (the root architectural question under the whole tenancy family, also
+found missing from the board). **Owned the mistake plainly rather than let Lead carry it alone** —
+I approved the successor-epic shape, and did it for exactly the reason PM's sentence names: "epic
+2 closed" was a scoreboard fact, not an accurate one. Now 11 epics, not 12.
+
+**Separately, PM asked directly why the count went from 6 to 12** — answered by memo, cc Lead/
+Arch/Exec: most of the growth traces to two of PM's own prior rulings (Arch's 09-09 cause-
+factoring, the 09-12 "every item needs a home" rule) plus three genuine new-discovery epics this
+week, not scope creep. Epic 12 was the one real overreach, now fixed. Offered PM an explicit
+choice on epics 9/10 (1-3 items each): keep as epics, or revert to a named short list if PM wants
+a stricter "epic = multi-item track" definition — my lean is to keep them, but said so as a
+recommendation, not a done deal. **This is the most consequential single fire of the week** —
+worth reading my own reply back before the next epic-shape call, not just trusting memory of it.
+
+**Prior fire: 2026-09-14 16:22 PT (WORK). Epic 12 moved fast same-day — tracking only,
 no new PPM ruling needed.** Lead escalated `#1810` as worse than `#1807` (leak runs both
 directions: PM's key leaked outward, now every completed setup leaks a tester's key inward and
 overwrites PM's, last-writer-wins). Exec/HOST/Arch/PM held the first external tester's invite

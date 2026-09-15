@@ -50,32 +50,57 @@ than let them silently discount every later epic's signal. **#1747 is itself an 
 fallback failing quietly** — the denominator drifted from four to six without anyone's "fully
 green" claims noticing, which is exactly the m-44 risk this epic exists to retire.
 
-### 2. Security/tenancy (6 items) — **CLOSED IN FULL 2026-09-12** — before beta wave 1, regardless of everything else
-~~`#1734`~~ [SECURITY] personality API global-config clobber — **CLOSED**. ~~`#1690`~~ demo plugin
-live-mounted by default in every prod deploy — **CLOSED**. ~~`#1732`~~ [SECURITY] chat-render XSS,
-no sanitizer — **CLOSED**. ~~`#1733`~~ stale unauthenticated duplicate page — **CLOSED**.
-~~`#1741`~~ pattern-suggestions XSS — **CLOSED**. ~~`#1740`~~ twin-file renderer drift —
-**CLOSED**. All six live-verified deployed (v74/v76) per Lead's 2026-09-12 memo.
+### 2. Security/tenancy (13 items, 8 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
+**Original six, all CLOSED 2026-09-12**: ~~`#1734`~~ personality API global-config clobber ·
+~~`#1690`~~ demo plugin live-mounted by default · ~~`#1732`~~ chat-render XSS · ~~`#1733`~~ stale
+unauthenticated duplicate page · ~~`#1741`~~ pattern-suggestions XSS · ~~`#1740`~~ twin-file
+renderer drift. All six live-verified deployed (v74/v76).
 
-⚠️ **`#1750`/`#1751` moved to epic 12 (2026-09-14)** — see below. They were parked here at Product
-Backlog on 2026-09-12 to avoid sending Lead backward; PM's 2026-09-14 escalation on tenancy
-("fundamental value," not a sprint item) changed that calculus, per Lead's own ask. Epic 2 stays
-closed for what it originally contained.
+**Seven more, from the 2026-09-14 tenancy family**: ~~`#1807`~~ (BYOC key resolution fell through
+to PM's own server key for ANY authenticated caller — CLOSED, safe default shipped) · `#1791`
+(personality preferences have no per-user store — Arch's call whether it forks the ADR-075 D4
+overlay) · `#1750` (stale unauthenticated twin, same class as `#1733`) · ~~`#1751`~~ (canonical
+personality-preferences page hardcoded user_id "default" — CLOSED) · `#1809` (`#1807`'s fix is
+entry-point-scoped — Slack inbound and any unbound LLM path still resolves the server key; the
+durable fix inverts the default so unbound refuses rather than spends, gated on copy) ·
+~~`#1810`~~ (setup flow stored a global unprefixed key copy each new user's setup silently
+overwrote — CLOSED, v108, the write deleted; readers of the stale slot are `#1809`'s remaining
+surface) · `#1812` (the root question underneath the whole family — PM asked why the product owns
+an LLM key at all; the agent's own trace found no principled need for one, MVP-milestoned, found
+missing from the board and fixed same fire).
+
+⚠️ **REOPENED 2026-09-14, not a successor epic** — see the change log entry below for the full
+account. Epic 2 was closed 2026-09-12 for six items; it was not actually complete, and the tenancy
+family that surfaced two days later is the same epic, not a new one. PM's own words: *"if we
+discover that there's more work on an epic than we realized and we closed it before discovering
+that work, then yes we need to reopen the epic... the truth is more important than the feeling of
+progress."*
+
+**Sequencing on the open three**: `#1810` (closed) → `#1809` → `#1791`, per Lead and Arch — each
+is the same "a credential/preference is never resolved by absence of binding" principle one layer
+down, not three separate calls. `#1809` is gated on CXO's "no key configured at all" copy (the
+existing error table has no pattern for that state), which Lead asked CXO to draft ahead of need.
+Arch owns whether `#1791` forks the ADR-075 overlay or takes another shape — neither is PPM's
+call; this epic's job is giving them a home, not a design.
+
+**Live, unfiled finding**: CXO found the *existing* out-of-quota recovery copy now routes a tester
+into a worse state (tells them to remove their key to "fall back to the built-in model," a
+fallback `#1807` already removed for non-operators) — reachable today, not gated behind `#1809`.
+Not yet its own issue as of 2026-09-14 evening.
 
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
-half-closed.
+half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
 
-**Two more findings folded in (2026-09-10), both surfaced fixing `#1732`, both matched to this
-epic rather than filed standalone**: `#1741` [SECURITY] pattern-suggestions UI interpolates
-unescaped into innerHTML, outside `#1732`'s chokepoint · `#1740` twin-file renderer drift (a dead
-unserved copy of `bot-message-renderer.js` diverged from the live one) — folded here rather than
-into false-trails since it's the exact same "fixing X surfaced Y in the same file" shape as
-`#1741`, not a separate parallel-system finding.
+**Two findings folded in 2026-09-10, both surfaced fixing `#1732`**: `#1741` pattern-suggestions
+UI interpolates unescaped into innerHTML, outside `#1732`'s chokepoint · `#1740` twin-file
+renderer drift (a dead unserved copy diverged from the live one).
 
 ⚠️ **Caution, not an alarm**: `#1637`/`#1732`/`#1734` closed Sprint Backlog → Done directly,
 skipping In Progress (Exec's 09-10 finding — the board's In Progress count is not a reliable
-in-flight signal; see the general note below). Reads as PM's verification round closing
-already-fixed items, not a violation of one-epic-at-a-time — noting for accuracy, not flagging.
+in-flight signal). **General note, now proven twice**: closed issues can be missing from the
+project board entirely, same drift shape as the open-issue version (`#1772`/`#1785`) — found on
+`#1807` this week while it was already closed. Worth checking board presence on any closure, not
+just at filing time.
 
 ### 3. Acceptance contract (11 items, 8 closed) — freshest pain, design is DONE, unblocks a whole cluster
 `#1739` (umbrella, open) · ~~`#1663`~~ · ~~`#1652`~~ · ~~`#1653`~~ · ~~`#1654`~~ · ~~`#1694`~~ ·
@@ -277,57 +302,6 @@ finding, not yet filed as its own issue.
 no real membership with epic 1's CI mechanics or epics 5/9's dead-code shapes (different mechanism
 entirely).
 
-### 12. Tenancy hardening (6 items, 2 closed) — PM-escalated 2026-09-14, ranks like a gate not a sprint item
-~~`#1807`~~ (BYOC key resolution fell through to PM's own server key for ANY authenticated caller
-— not just anonymous ones; #1320 closed the anonymous case, this was the same hole one level up.
-**CLOSED same-day**, Lead's lane, safe default shipped) · `#1791` (personality preferences have no
-per-user store — `PiperConfigParser` reads one instance-wide `config/PIPER.user.md`; making it
-per-user forks the ADR-075 D4 overlay, Arch's call, not a column addition) · `#1750` (moved from
-epic 2 — stale unauthenticated twin, same class as #1733) · ~~`#1751`~~ (moved from epic 2,
-**CLOSED** — canonical personality-preferences page hardcoded user_id "default"). Plus, found
-same-day during `#1807`'s own implementation: `#1809` (#1807's fix is entry-point-scoped — Slack
-inbound and any non-`/intent`/non-`/documents` LLM path still reaches the server key, since the
-resolver fix doesn't gate `services/llm/clients.py`'s `_user_api_key` ContextVar default) ·
-`#1810` (setup flow stores a global unprefixed copy of each user's LLM key alongside the per-user
-one, so each new user's setup silently overwrites "the server key" — explicitly adjacent to both
-`#1807` and `#1791` per the issue's own filing).
-
-**Escalated same day, worse than first read**: Lead traced `#1810` further and found the leak
-runs both directions — `#1807` stopped PM's key leaking *outward* to keyless callers; `#1810` is
-the *inward* direction, every completed setup silently overwriting the global slot last-writer-
-wins. The first external tester's invite (Janne Lammi, HOST's token) would have made him bill
-PM's account on his own first action while silently displacing PM's key. **Exec HOLD the invite**
-until `#1810` closes; **HOST corrected their own "ready to send" claim** and marked the roster
-row HOLD. **Arch ruled the fix**: the global slot has no legitimate consumer post-BYOC (traced,
-not assumed — `#1807`'s operator path is already env-only and never reads it) — delete the write
-entirely, both provider branches. **Sequencing ruled by both Lead and Arch: `#1810` → `#1809` →
-`#1791`**, since `#1809`'s fix (inverting "unbound means use the server key" to "unbound refuses")
-is architecturally the same ruling one layer down, not a separate call.
-
-**CXO found a live, separate trap while writing #1809's copy** (not yet filed as its own issue):
-the *existing* out-of-quota recovery message tells users to remove their key to "fall back to the
-built-in model" — a fallback `#1807` already removed for non-operators, so a tester following our
-own advice lands in a worse state than they started in. Higher priority than the copy CXO was
-originally asked for, since it's reachable today, not gated behind `#1809`. Whoever picks this up
-should check whether it needs its own issue number before fixing it.
-
-**Why this exists**: epic 2 (Security/tenancy) closed 2026-09-12 for what it actually contained.
-`#1807` and `#1791` are epic-2-class findings that arrived after closure, and PM's escalation
-reframed tenancy as *"our fundamental value and promise,"* not a sprint item to schedule around —
-verbatim: *"there shouldn't be any key that belongs to the product itself that isn't paid for by
-somebody else"* and *"we can't ship an app that leaks between users anywhere."* Lead asked for a
-structural ruling rather than being left to work outside the epic order; three shapes were on the
-table (reopen epic 2, a successor epic, or MVP singletons) — **successor epic chosen**, Lead's own
-weak preference: it keeps "epic 2 closed" true for what it contained while giving the new,
-PM-named class explicit tracking instead of Product-Backlog limbo. `#1750`/`#1751` moved here from
-epic 2's parking note for the same reason.
-
-**Open work, not this file's to scope**: CXO flagged the safe-default fix needs new error copy
-(the existing error table has no pattern for "no key configured at all," and the adjacent pattern
-its own author called "a lie for exactly this shape" would otherwise catch it by default) — Lead's
-lane to land alongside the fix. Arch owns whether `#1791` forks the ADR-075 overlay or takes
-another shape. Neither PPM's call; this epic's job is giving them a home, not a design.
-
 ---
 
 **Retired 2026-09-12**: the old "Singletons" section (`#1423`/`#1695`/`#1697`/`#1708`/`#1718`/
@@ -485,3 +459,20 @@ read, that's real information — update this file, don't defend the original gr
   #1809's — not yet filed as its own issue, noted for whoever picks it up. No PPM ruling needed
   this fire beyond keeping the file current; Exec explicitly confirmed epic 12 already answered
   the "where does this sit" question from this morning.
+- 2026-09-14 19:22 WORK (PPM): **PM overruled epic 12, and was right to.** PM's ruling, verbatim:
+  *"If we discover that there's more work on an epic than we realized and we closed it before
+  discovering that work, then yes we need to reopen the epic... the truth is more important than
+  the feeling of progress."* Epic 12 (Tenancy hardening, created this same day) is retired; its
+  six items fold back into epic 2, which reopens. **Owning this plainly**: the successor-epic
+  shape was mine to approve, not just Lead's to propose, and I approved it for the reason PM's
+  sentence names exactly — "epic 2 closed" is a scoreboard property, and epic 2 was not actually
+  complete when it closed; new work arriving after an incomplete closure is not the same fact as
+  new work arriving after a real one. I had the audit-bias discipline in hand for other people's
+  artifacts this week and didn't apply it hard enough to my own boundary call. Now 11 epics, not
+  12. **Separately, PM asked directly why the count went from 6 to 12** (now 11) — answered by
+  memo to PM (not duplicated here in full): most of the growth traces to two of PM's own prior
+  directives (Arch's 09-09 cause-factoring, and the 09-12 "every item needs a home" ruling) plus
+  three genuine new-discovery clusters this week (epics 9, 10, 11), not scope creep in the sense
+  of invented tracks. Epic 12 was the one real overreach, now corrected. Offered PM the option to
+  simplify epics 9/10 (1-3 items each) into a named short list rather than epic framing, if PM
+  prefers a stricter definition of what counts as a track.
