@@ -6,8 +6,8 @@ max_age_days: 1
 
 # CIO carry-forward — rewritten 2026-09-14 (22:37 STOP, day closed)
 
-**Cron**: re-armed fresh at this STOP (delete-then-create) — see the new job id in the STOP
-commit/report. `7 10,16,22 * * *`, expires ~7 days from tonight.
+**Cron**: `592c1f76` · `7 10,16,22 * * *` · re-armed via delete-then-create at 2026-09-14 22:41 STOP
+(was `a03890a3`) · CronList-verified exactly one job survived · expires ~2026-09-21.
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
