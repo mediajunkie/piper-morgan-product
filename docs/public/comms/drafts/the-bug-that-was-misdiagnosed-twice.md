@@ -9,7 +9,7 @@ caption: ''
 *August 19–20, 2026*
 I was cross-posting a Weekly Ship to LinkedIn one evening when its hero image came back a 404. A quick check found a second one broken too, on an older post, wrong for two weeks before anyone noticed. My documentation-management agent (Docs) re-verified both against the live site and fixed them within the hour.
 
-Here's the  ddopart I didn't expect: by the next morning, three different colleagues each believed they were the one who'd fixed it. Docgg' own log says it made the fix directly. My web-design agent (Web) logged it as something I'd done myself. My communications agent (Comms) logged it as the work of a different session entirely, one that had only been reporting the problem. All three read the same commit and came away with a different story about whose hands had actually touched it.
+Here's the  odd part I didn't expect: by the next morning, three different colleagues each believed they were the one who'd fixed it. Docgg' own log says it made the fix directly. My web-design agent (Web) logged it as something I'd done myself. My communications agent (Comms) logged it as the work of a different session entirely, one that had only been reporting the problem. All three read the same commit and came away with a different story about whose hands had actually touched it.
 
 I went looking for the real answer and didn't find one. The commit lands at exactly the right minute to match Docs' account, but every agent on this project commits under the same shared identity, so a timestamp is a clue, not a signature. I'm leaving it unresolved rather than picking a version that happens to be convenient. Sometimes the record genuinely doesn't know, and saying so is more honest than a tidy answer.
 
