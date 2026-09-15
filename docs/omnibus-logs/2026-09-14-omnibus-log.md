@@ -1,7 +1,7 @@
 # Omnibus Log: Monday, September 14, 2026
 
 **Day**: Monday
-**Sessions**: 16 (11 role logs — Lead Dev, Docs, Chief Architect, Chief of Staff/Exec, HOST, Communications, CXO, CIO, PPM, Piper Alpha/PA, Web — plus 5 `prog` coding-agent subagent sessions, all dispatched from Lead Dev's worktree)
+**Sessions**: 17 (11 role logs — Lead Dev, Docs, Chief Architect, Chief of Staff/Exec, HOST, Communications, CXO, CIO, PPM, Piper Alpha/PA, Web — plus 6 `prog` coding-agent subagent sessions, all dispatched from Lead Dev's worktree; corrected from an initial miscount of 16/5 — see Sources, which lists and counts all 6)
 **Day Type**: HIGH-COMPLEXITY — COORDINATION (target 450–600 lines)
 **Git Commits**: 295 (`git log --oneline --since="2026-09-14 00:00" --until="2026-09-15 00:00" | wc -l`)
 
