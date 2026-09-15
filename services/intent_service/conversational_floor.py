@@ -623,10 +623,17 @@ FLOOR_FALLBACK_NO_PROVIDER = (
 # fault it is; and "try again" is admissible HERE and nowhere else in this
 # family, because a store hiccup is genuinely transient where a missing key
 # is not.
+# Copy RATIFIED by CXO 2026-09-15 after review in situ (it was shipped as their
+# proposal ahead of ratification, to close a live fail-open boundary). They cut
+# the trailing "and if it keeps happening it's worth reporting" deliberately: an
+# instruction with no destination is the same defect as a wrong instruction, just
+# quieter — and they declined to replace it with "tell me and I'll flag it",
+# because that is a promise about future behaviour with no write path (#1735).
+# "I'm not going to guess" is kept on purpose: it implies we COULD have guessed
+# and chose not to, which is accurate, and is the reassurance.
 FLOOR_FALLBACK_CONSENT_UNREADABLE = (
     "I couldn't read which providers you've authorized, so I'm not going to guess. "
-    "That's ours to fix, not yours — try again in a moment, and if it keeps "
-    "happening it's worth reporting."
+    "That's ours to fix, not yours — try again in a moment."
 )
 
 # Legacy name kept for backwards compatibility
