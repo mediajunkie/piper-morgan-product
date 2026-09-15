@@ -43,13 +43,27 @@ class UserFriendlyErrorService:
             # lie that leaves the user with no path forward.
             r"insufficient_quota|exceeded your current quota|billing.*hard limit|current quota": {
                 "message": "I can't reach a language model — the API key on your account is out of quota (or its billing needs attention).",
-                "recovery": "Add a funded key under Settings → LLM API Keys, or remove the current key to fall back to the built-in model.",
+                "recovery": "Top up the key's billing, or replace it with a funded one under Settings → LLM API Keys.",
                 "severity": ErrorSeverity.ERROR,
                 "category": "llm_key",
             },
             r"invalid_api_key|incorrect api key|invalid.*x-api-key|authentication_error|invalid api key provided": {
                 "message": "The language-model API key on your account isn't valid.",
                 "recovery": "Check or replace it under Settings → LLM API Keys.",
+                "severity": ErrorSeverity.ERROR,
+                "category": "llm_key",
+            },
+            # #1807/#1812 — the caller has NO key at all. Distinct from the two
+            # entries above (which describe a key that EXISTS and is broken) and
+            # from #1320's anonymous refusal (they ARE signed in). Copy is CXO's,
+            # deliberately weaker than the entry-point copy in intent.py/documents.py
+            # because the generic layer knows less: surface-neutral ("That needs",
+            # not "I can't run this"), no "Nothing was charged" (a generic handler
+            # cannot cash that claim), and a recovery that promises the action only,
+            # never an outcome. Pattern matches what request_key.py actually raises.
+            r"has no llm key of their own|user llm key required|no llm key configured|no api key configured": {
+                "message": "That needs an LLM key of your own — Piper doesn't bill anyone else's account.",
+                "recovery": "Add your Anthropic API key under Settings → LLM API Keys.",
                 "severity": ErrorSeverity.ERROR,
                 "category": "llm_key",
             },

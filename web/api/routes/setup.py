@@ -1018,27 +1018,22 @@ async def complete_setup(req: SetupCompleteRequest):
                 except Exception as e:
                     logger.warning("notion_key_storage_failed", user_id=req.user_id, error=str(e))
 
-            # Issue #724: Also store GLOBAL copies of LLM keys (without user prefix)
-            # This allows LLMClient to find keys during server startup when no user context exists.
-            # Keys are stored both as:
-            # - {user_id}_openai_api_key (for multi-user support)
-            # - openai_api_key (for startup initialization)
+            # #1810: Issue #724 used to ALSO store GLOBAL, unprefixed copies of
+            # the LLM keys here ("openai_api_key" / "anthropic_api_key", no
+            # username) "so LLMClient can find keys during server startup when
+            # no user context exists." That global slot is exactly what
+            # LLMConfigService.get_api_key()/LLMClient._init_clients() resolve
+            # as "the server's key" — every user completing setup silently
+            # overwrote whichever key the operator (or an earlier user) had in
+            # place, last-writer-wins, no audit, no confirmation. PM ruling
+            # 2026-09-14 (decisions.log): "the server key is not a real
+            # concept and will not be supported in any sense" — #724's stated
+            # startup consumer does not survive tracing (see #1812). The
+            # per-user write below (unchanged) is the only credential setup
+            # completion ever needs to create.
             from services.infrastructure.keychain_service import KeychainService
 
             keychain = KeychainService()
-            if req.openai_key:
-                try:
-                    keychain.store_api_key("openai", req.openai_key)  # No username = global
-                    logger.info("global_openai_key_stored", reason="startup_initialization")
-                except Exception as e:
-                    logger.warning("global_openai_key_storage_failed", error=str(e))
-
-            if req.anthropic_key:
-                try:
-                    keychain.store_api_key("anthropic", req.anthropic_key)  # No username = global
-                    logger.info("global_anthropic_key_stored", reason="startup_initialization")
-                except Exception as e:
-                    logger.warning("global_anthropic_key_storage_failed", error=str(e))
 
             # Issue #946: Store the user's chosen LLM provider as the system default
             # AND the authorized providers list (consent boundary).

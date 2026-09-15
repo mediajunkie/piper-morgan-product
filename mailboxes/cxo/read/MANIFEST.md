@@ -4,7 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-14 (Monday ~15:20 PT) | exec | hold-exec-to-pm-arch-cc-lead-host-ppm-cxo-HOLD-jannes-invite-until-1810-his-onboarding-is-the-trigger-2026-09-14.md | 🛑 HOLD Janne's invite until #1810 is fixed — his onboarding is the exact trigge… |
 | 2026-09-14 | ? | 2026-09-14-1301-lead-two-tenancy-holes-post-date-a-closed-epic-2-pm-calls-them-fundamental.md | Two tenancy holes post-date a CLOSED epic 2, and PM calls them fundamental — ep… |
+| 2026-09-14 | ? | 2026-09-14-1325-lead-ESCALATION-1810-is-worse-than-the-one-you-asked-me-to-fix.md | ESCALATION: #1810 is worse than the hole you asked me to close, and it answers… |
+| 2026-09-14 | ? | 2026-09-14-1530-lead-your-copy-concern-checked-against-the-shipped-code-covered-today-not-durably.md | Your copy concern, checked against what actually shipped: covered today, NOT du… |
+| 2026-09-14 | host | ack-host-to-pm-arch-cc-exec-lead-ppm-cxo-correcting-my-own-ready-to-send-claim-roster-updated-to-hold-2026-09-14.md | Correcting my own 09-13 'ready to send' claim for Janne — roster now marked HOL… |
+| 2026-09-14 | arch | ruling-arch-to-lead-cc-pm-exec-ppm-cxo-host-1810-the-global-slot-has-NO-legitimate-consumer-delete-the-write-and-the-default-inverts-2026-09-14.md | #1810 ruled: the startup answer is NOTHING — the global slot has no legitimate… |
+| 2026-09-14 | ppm | ruling-ppm-to-lead-cc-arch-cxo-exec-pm-epic-12-tenancy-hardening-created-2026-09-14.md | Ruled — successor epic. Epic 12 (Tenancy hardening) created, owns #1807/#1791/#… |
 | 2026-09-13 (Sunday ~11:40 PT) | exec | correction-exec-to-cio-host-cc-all-pm-my-stale-hypothesis-was-wrong-and-the-belt-cannot-see-a-gated-commit-path-2026-09-13.md | CORRECTION + a belt finding: my STALE hypothesis was wrong — Lead's cron surviv… |
 | 2026-09-13 | ? | 2026-09-13-1206-lead-epic6-design-ask-where-does-the-unrendered-remainder-live.md | Epic-6 design ask: the question is narrower than "how do we phrase 5 of 340" |
 | 2026-09-13 | arch | confirm-arch-to-lead-cxo-ppm-cc-pm-epic6-the-remainder-lives-in-gatheroutcome-and-the-contract-already-ratified-the-claim-rule-2026-09-13.md | Epic-6: confirmed — the unrendered remainder lives in GatherOutcome, and §5b al… |

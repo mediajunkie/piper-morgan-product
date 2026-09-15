@@ -10,7 +10,19 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-14 13:22 PT (WORK). **A real structural ruling — epic 12 (Tenancy
+**Last rewritten**: 2026-09-14 16:22 PT (WORK). **Epic 12 moved fast same-day — tracking only,
+no new PPM ruling needed.** Lead escalated `#1810` as worse than `#1807` (leak runs both
+directions: PM's key leaked outward, now every completed setup leaks a tester's key inward and
+overwrites PM's, last-writer-wins). Exec/HOST/Arch/PM held the first external tester's invite
+(Janne) until `#1810` closes — HOST corrected their own "ready to send" claim same-day. Arch ruled
+the fix (delete the global-slot write, no legitimate consumer, traced not assumed) and the
+sequencing (`#1810`→`#1809`→`#1791`, same architectural principle each layer down). Exec
+explicitly confirmed epic 12 already answered this morning's "where does this sit" question —
+good validation of the ruling. CXO found a separate live copy trap (existing out-of-quota recovery
+advice now routes testers into a worse state) — not yet its own issue, noted for whoever picks it
+up. Updated epic 12's entry with the full picture; 0 unmilestoned all fire.
+
+**Prior fire: 2026-09-14 13:22 PT (WORK). A real structural ruling — epic 12 (Tenancy
 hardening) created.** PM escalated tenancy as "our fundamental value and promise" after two
 epic-2-class holes (`#1807`, `#1791`) surfaced against an already-closed epic 2. Lead asked for a
 ruling rather than working outside the order; created a successor epic (Lead's own weak
