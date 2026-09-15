@@ -55,6 +55,7 @@ from services.intent_service.soft_invocation import (
 from services.intent_service.todo_handlers import TodoIntentHandlers
 from services.knowledge.conversation_integration import ConversationKnowledgeGraphIntegration
 from services.learning.learning_handler import LearningHandler
+from services.llm.request_key import LLMKeyRequiredError
 from services.personality.personality_profile import PersonalityProfile
 from services.process import ProcessCheckResult, ProcessType, get_process_registry
 from services.repositories.user_trust_profile_repository import UserTrustProfileRepository
@@ -3139,6 +3140,13 @@ class IntentService:
 
             return result
 
+        except LLMKeyRequiredError:
+            # #1816/#1815 Gap 2: a refusal is a correct ANSWER, not a processing
+            # failure. Wrapping it in IntentProcessingError erases the type the
+            # route needs to serve the honest, case-specific copy — the caller
+            # would get the generic "service unavailable, try again" degradation,
+            # which for a consent-read failure is the wrong blame.
+            raise
         except Exception as e:
             self.logger.error(f"Intent processing error: {e}")
             raise IntentProcessingError(f"Intent processing failed: {str(e)}")

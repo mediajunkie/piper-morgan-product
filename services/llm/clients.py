@@ -13,6 +13,7 @@ from anthropic import Anthropic
 from openai import OpenAI
 
 from services.config.llm_config_service import LLMConfigService
+from services.llm.request_key import LLMKeyRequiredError
 
 from .config import (
     MODEL_CONFIGS,
@@ -362,6 +363,16 @@ class LLMClient:
         try:
             default_provider_name = self._config_service.get_default_provider(user_id)
             primary_provider = LLMProvider(default_provider_name)
+        except LLMKeyRequiredError:
+            # #1815 Gap 2 / #1816: a REFUSAL is not a selection failure. The
+            # blanket handler below degrades to "whichever client is initialized"
+            # — i.e. the SERVER's own long-lived client — which for a consent-read
+            # failure would be precisely the outcome Arch's ruling forbids:
+            # fail-closed quietly reassigned to the operator's key. Measured
+            # 2026-09-15 before this line existed: a consent-read failure was
+            # swallowed here and the turn was served by the operator's Anthropic
+            # client. Closed means closed; let it out.
+            raise
         except (ValueError, Exception):
             # Fall back to whichever client is initialized
             if self.anthropic_client:
@@ -407,7 +418,7 @@ class LLMClient:
             # process the user's message even when everything else is down).
             try:
                 user_authorized = set(self._config_service.get_configured_providers(user_id))
-            except Exception as consent_err:  # silent-ok: consent unknown -> no cross-provider fallback (fail closed); the primary error below still surfaces honestly (#1415)
+            except Exception as consent_err:  # silent-ok: consent unknown -> no cross-provider fallback (fail closed); the primary error below still surfaces honestly (#1415). #1816: a ConsentUnreadableError landing here is ALSO fail-closed — an empty authorized set means every fallback candidate is skipped; the primary provider's own error is the honest thing to report, since the primary had already been selected from a consent read that succeeded.
                 logger.warning(f"fallback_consent_check_failed: {consent_err}")
                 user_authorized = set()
             fallback_errors: list[str] = [f"{primary_provider.value}: {e}"]
