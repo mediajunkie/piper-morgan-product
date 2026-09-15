@@ -1,6 +1,6 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-09-15 12:12 PT WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten mid-turn, following PM's merge-conflict thread on "The Bug That Was Misdiagnosed Twice." Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
@@ -8,8 +8,9 @@
 
 ## Closed today (so far)
 
-- Reviewed "The Bug That Was Misdiagnosed Twice" (today's scheduled beat): fixed 3 real issues, verified the piece's central factual claims against original session logs (all confirmed exact). Content clean, but frontmatter (image/alt/caption) still empty — not sending PUBLISH-READY yet.
-- Real cross-role convergence: two of my three "typos" were actually genuine damage from a P0 compose-UI bug (a caret-restore regression Web fixed the same fire), not typos — Web independently root-caused and fixed the same two spots moments before I did. Clean rebase, no conflict.
+- Reviewed "The Bug That Was Misdiagnosed Twice" (today's scheduled beat): fixed 3 real issues, verified factual claims against source logs (confirmed exact).
+- Real cross-role convergence: two of my three "typos" were actually genuine damage from a P0 compose-UI bug (a caret-restore regression Web fixed the same fire), not typos.
+- Walked PM through a real merge conflict in the same file (PM's own local voice-pass rewrite vs. origin/main) — diagnosed the one true conflict, resolved via scripted find-and-replace PM ran themselves (declined to edit PM's main checkout directly myself, explained why, gave a zero-manual-risk alternative instead), caught a lost blank-line as a side effect of the conflict-marker removal, re-verified the whole file end to end after PM's follow-up admin-UI edit. Content fully clean; frontmatter still empty — PM confirmed art is in progress. Not sending PUBLISH-READY yet.
 
 ## Open items — no Comms-side move available right now
 
