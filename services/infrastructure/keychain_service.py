@@ -15,6 +15,7 @@ Security Features:
 import os
 import threading
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any, Callable, Dict, List, Optional
 
 import keyring
@@ -49,6 +50,55 @@ KEYCHAIN_HANG_GUIDANCE = (
 
 class KeychainTimeoutError(RuntimeError):
     """A keyring call exceeded the bounded wait (#1711 ACL-dialog hang)."""
+
+
+class SecretProvenance(Enum):
+    """WHY a secret read came back the way it did (#1816).
+
+    ``get_api_key`` collapses all three of these into ``None``, and for a
+    CREDENTIAL that is correct: "absent" and "unreadable" both legitimately mean
+    *try the next source* (#1711). For any caller where the two have OPPOSITE
+    meanings — a **consent** list is the found case — that collapse is a defect,
+    because the caller cannot tell "the user restricted nothing" from "I could
+    not find out what the user restricted", and the permissive reading wins by
+    default.
+
+    Root shape (Arch ruling 2026-09-15 §2): this is the honest-empty family at
+    the security layer — the same defect as ``verified_empty`` /
+    ``source_failed`` / ``never_gathered`` collapsing into one falsy value, and
+    the same cure: a **provenance-carrying read**. The difference is only the
+    consequence — there it produces a dishonest sentence, here an unauthorized
+    provider.
+    """
+
+    PRESENT = "present"
+    VERIFIED_ABSENT = "verified_absent"
+    STORE_FAILED = "store_failed"
+
+
+@dataclass(frozen=True)
+class SecretRead:
+    """A secret read that carries its own provenance (#1816).
+
+    ``value`` is meaningful only when ``provenance is PRESENT``; ``error``
+    only when ``STORE_FAILED``.
+    """
+
+    provenance: SecretProvenance
+    value: Optional[str] = None
+    error: Optional[str] = None
+
+    @property
+    def is_present(self) -> bool:
+        return self.provenance is SecretProvenance.PRESENT
+
+    @property
+    def is_verified_absent(self) -> bool:
+        return self.provenance is SecretProvenance.VERIFIED_ABSENT
+
+    @property
+    def store_failed(self) -> bool:
+        return self.provenance is SecretProvenance.STORE_FAILED
 
 
 # Process-wide: once ONE keyring call has hung, every later call would hang
@@ -289,6 +339,67 @@ class KeychainService:
             logger.error(f"Failed to store API key for {log_identifier}: {e}")
             raise RuntimeError(f"Failed to store API key: {e}")
 
+    def _fetch_from_store(self, provider: str, username: Optional[str]) -> Optional[str]:
+        """The raw store fetch, with NO exception handling — store failures
+        propagate to the caller, which decides what they mean.
+
+        Extracted (#1816) so the credential reader (``get_api_key``, which
+        swallows) and the provenance-carrying reader (``read_secret``, which
+        does not) share one implementation of *where the bytes come from*
+        while keeping two deliberately different failure contracts.
+        """
+        if self._db_store is not None:
+            key = self._db_store.get(self._get_key_name(provider, username))
+        else:
+            key = self._keyring_call(
+                "get_password",
+                keyring.get_password,
+                self.service_name,
+                self._get_key_name(provider, username),
+            )
+        if key:
+            log_identifier = f"{username}/{provider}" if username else provider
+            logger.debug(f"Retrieved API key for {log_identifier} from keychain")
+        return key
+
+    def read_secret(self, provider: str, username: Optional[str] = None) -> SecretRead:
+        """Read a stored secret, reporting WHY the answer is what it is (#1816).
+
+        This is the accessor for any caller where "absent" and "unreadable" have
+        **opposite** meanings — the #946/#1415 consent list being the found case.
+        It does not replace ``get_api_key`` and must not: for a CREDENTIAL the
+        collapse to ``None`` is correct (#1711), and Arch's 2026-09-15 ruling is
+        explicit that fixing a consent bug by changing that primitive would break
+        a sound contract to patch its caller.
+
+        Returns:
+            SecretRead with provenance PRESENT / VERIFIED_ABSENT / STORE_FAILED.
+
+        ⚠️ ``_no_secure_store`` is reported **VERIFIED_ABSENT, not STORE_FAILED**,
+        and that is a deliberate call: there is no store, so there is definitively
+        no stored secret — nothing failed to answer. Per #1382 the whole install
+        is degraded and reads are "truthfully empty" there. Calling it a failure
+        would make every keyring-less install (hosted-without-encryptor, CI) fail
+        closed on every consent read, i.e. brick the instance — the exact outcome
+        #1415's F1 note said the closed state must avoid.
+        """
+        if not provider:
+            return SecretRead(SecretProvenance.VERIFIED_ABSENT)
+        if self._no_secure_store:
+            return SecretRead(SecretProvenance.VERIFIED_ABSENT)
+
+        try:
+            value = self._fetch_from_store(provider, username)
+        except Exception as e:
+            # Includes KeychainTimeoutError (#1711): a hung store answered
+            # NOTHING — it did not tell us the slot is empty.
+            log_identifier = f"{username}/{provider}" if username else provider
+            logger.error(f"Secret read FAILED (not absent) for {log_identifier}: {e}")
+            return SecretRead(SecretProvenance.STORE_FAILED, error=str(e))
+        if value:
+            return SecretRead(SecretProvenance.PRESENT, value=value)
+        return SecretRead(SecretProvenance.VERIFIED_ABSENT)
+
     def get_api_key(self, provider: str, username: Optional[str] = None) -> Optional[str]:
         """
         Retrieve API key from keychain
@@ -300,6 +411,11 @@ class KeychainService:
         Returns:
             API key if found, None otherwise (including when no secure store
             exists — the degraded state is error-logged once at construction)
+
+        ⚠️ #1816: the ``None``-on-failure swallow below is CORRECT HERE and must
+        stay. For a credential, "absent" and "unreadable" both truthfully mean
+        *try the next source*. It is wrong only for callers whose two cases have
+        opposite security meanings — those must use ``read_secret`` instead.
         """
         if not provider:
             return None
@@ -307,19 +423,7 @@ class KeychainService:
             return None
 
         try:
-            if self._db_store is not None:
-                key = self._db_store.get(self._get_key_name(provider, username))
-            else:
-                key = self._keyring_call(
-                    "get_password",
-                    keyring.get_password,
-                    self.service_name,
-                    self._get_key_name(provider, username),
-                )
-            if key:
-                log_identifier = f"{username}/{provider}" if username else provider
-                logger.debug(f"Retrieved API key for {log_identifier} from keychain")
-            return key
+            return self._fetch_from_store(provider, username)
         except KeychainTimeoutError:
             # #1711: the loud, actionable error already fired in _keyring_call.
             # Return None — truthfully "no key from THIS store" — so callers
