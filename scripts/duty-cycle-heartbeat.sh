@@ -179,5 +179,11 @@ fi
 
 # Fail LOUDLY rather than quietly (m-44): a heartbeat that silently fails to land is worse than none,
 # because the belt would then read the role as stale and nobody would know why.
+#
+# WATCHED IT FIRE (Arch, 2026-09-15): first confirmed live instance of this path, not just a
+# theoretical design — Arch's 06:53 START heartbeat hit this exact branch (a push race, four roles
+# firing inside the same minute), the message printed verbatim as written above, and Arch retried
+# immediately and verified the retry landed at trunk. Per this corpus's own discipline ("a net you
+# haven't seen fire is a claim, not a mechanism"), this discharges that claim for this branch.
 echo "heartbeat: FAILED to land $FILE on origin/main — the belt will read $ROLE as stale and the cause will not be visible. Investigate now." >&2
 exit 1
