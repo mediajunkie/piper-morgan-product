@@ -50,7 +50,7 @@ than let them silently discount every later epic's signal. **#1747 is itself an 
 fallback failing quietly** — the denominator drifted from four to six without anyone's "fully
 green" claims noticing, which is exactly the m-44 risk this epic exists to retire.
 
-### 2. Security/tenancy (13 items, 8 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
+### 2. Security/tenancy (15 items, 9 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
 **Original six, all CLOSED 2026-09-12**: ~~`#1734`~~ personality API global-config clobber ·
 ~~`#1690`~~ demo plugin live-mounted by default · ~~`#1732`~~ chat-render XSS · ~~`#1733`~~ stale
 unauthenticated duplicate page · ~~`#1741`~~ pattern-suggestions XSS · ~~`#1740`~~ twin-file
@@ -99,6 +99,26 @@ close-out** ("CXO's rider is satisfied by the same run") and corrected it same-n
 was about an unobserved FTUX copy claim, not the setup flow, and CXO's own re-check found the
 rider had been mis-specified from the start (it needed a real prod account, which nobody has
 created); that claim stays open, unrelated to `#1810`'s own closure.
+
+**`#1814`, found by the very observation CXO's correction demanded — the invite re-held within
+hours of being lifted**: `#1809`'s own sequencing (`#1810`→`#1809`→`#1791`) removed the global-key
+write before verifying the resolver could read a per-user key at all — `get_api_key()` takes no
+user parameter and never consults `UserAPIKeyService`. So a BYOC user's own stored key was never
+used; the invite's own onboarding condition (configure your key first) walked Janne straight into
+a false "not configured" wall. Lead, Arch, and Exec each independently named their own piece of
+the sequencing gap before being asked — Arch's rule for the record: *"deleting a write requires
+demonstrating that every reader of that slot has another source FIRST,"* not just that readers
+still resolve without erroring. HOST re-held immediately on waking to it, verified independently
+again, and required the sharper bar this time (an actual BYOC query succeeding on a stored key, not
+just an empty-slot check). **Fixed and confirmed the same night** — deployed v109, observed via a
+real turn hitting the network (a 401 from a throwaway key, proving resolution actually happened,
+not just that a test passed) — invite blocker gone. Two residuals filed as `#1815` (cross-provider
+fallback loop still gates on the server's own client; a consent fail-closed branch can reproduce
+the same symptom from a different cause) — both MVP-milestoned, folded in here. CXO separately
+found `#1814` exposes a conflation in the keyless-refusal copy written the day before (a failed key
+lookup and a verified-absent key produce the same exception, so the copy can only assert the
+stronger claim) — not live today, latent pending whether the resolver can even distinguish the two
+states.
 
 **Live, unfiled finding**: CXO found the *existing* out-of-quota recovery copy now routes a tester
 into a worse state (tells them to remove their key to "fall back to the built-in model," a

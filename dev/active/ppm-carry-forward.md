@@ -10,7 +10,17 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-14 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+**Last rewritten**: 2026-09-15 07:22 PT (START). **Overnight sequel to last night's #1810 fix —
+resolved before I woke to it.** The fix had a sequencing hazard: deleted a key-write before
+verifying the resolver could read a per-user key at all, so the invite's own onboarding condition
+walked the first external tester into a false "not configured" wall. Lead/Arch/Exec each owned
+their piece unprompted; HOST re-held immediately and required a sharper bar; fixed and confirmed
+same morning via a real network call (v109). Two residuals filed as `#1815`. Triaged `#1814`
+(closed, missing from board — same drift shape all week) and `#1815` into the reopened epic 2.
+**No PM reply yet on the epics-9/10 choice from last night** — still watching, not chasing. 0
+unmilestoned after triage.
+
+**Prior fire: 2026-09-14 22:22 PT (STOP). Day closed clean, DAY-CLOSED sentinel written.**
 Cron re-armed `b72aa208` → **`e61f6248`**, `CronList`-verified exactly one job. Dropped the
 resolved DocumentDB watch line (should have dropped it two days ago — caught the miss tonight).
 `#1810`'s clearing condition was actually met tonight (real observation, not a test pin — Arch

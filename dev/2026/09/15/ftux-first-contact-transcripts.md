@@ -154,3 +154,147 @@ The ephemeral harness server (PID 73905, port 59901) was killed; the pre-existin
 30735, port 8001) was confirmed untouched throughout and still listening afterward. No production
 system, no the alpha tester's own minted invite token, and no real Anthropic spend were touched at any
 point.
+
+---
+
+# RE-RUN 2026-09-15 (07:07–07:13) — proving #1814 fixed, by observation
+
+**Observer**: Coding Agent (prog), delegated by Lead Developer. **Purpose**: re-run Case 2 (the case
+that failed above) after `a3404c609` ("fix(llm): make credential resolution principal-aware so a BYOC
+user's own key is actually used (1814)") — confirmed via `git merge-base --is-ancestor a3404c609 HEAD`
+to be an ancestor of this worktree's HEAD, deployed as prod v109. This gates the external alpha tester's
+invite, currently held on this exact observation.
+
+## Layer statement for this re-run
+
+Same method as above, same layer: **deployed code path** (`a3404c609`, ancestor of `origin/main`, 0
+commits behind at run time) via a **local `main.py` subprocess** (`--no-browser`, `ANTHROPIC_*` stripped,
+ephemeral port 60696) against the **real shared local Postgres** (5433), forced onto
+`PIPER_CREDENTIAL_STORE=db` (confirmed via the server's own startup log line). Real HTTP routes end to
+end: `create-user`, `complete`, `login`, `intent`. **Not a production first-contact.** Unlike the original
+run above, **all three cases this time produced genuine, complete replies** — nothing here needed to be
+flagged as incomplete or unreachable.
+
+## Case 2 (re-run) — signed-in user, own stored key, "What can you do?"
+
+Same setup shape as the original Case 1/2 above: throwaway account (`user_id=1df455e5-ed38-4a76-bc53-
+8fdf36a068d6`), `/complete` with a fresh validator-shaped (`sk-ant-`, 110 chars) throwaway Anthropic key,
+`default_llm_provider=anthropic`. Turn 1 ("Hi there!") reproduced the original Case 1 **verbatim**
+(deterministic greeting + ADR-075 notice — not re-quoted here, see Case 1 above). Turn 2:
+
+**Request**: `POST /api/v1/intent` — `{"message": "What can you do?", "session_id": "<same session>"}`
+
+**Verbatim reply**:
+```
+I can't generate responses right now because my LLM connection isn't working. This blocks most of my
+core functionality. The issue could be an expired API key, a deprecated model, or a configuration
+problem. Please check your LLM API key in Settings — once that's resolved, I'll be back to full
+capability.
+```
+
+**Server log for this request** (three consecutive structured-log lines):
+```
+{"provider": "anthropic", "task_type": "conversation", "error": "Error code: 401 - {'type': 'error',
+'error': {'type': 'authentication_error', 'message': 'API key is invalid.'}, 'request_id': None}",
+"event": "llm_primary_failed", "logger": "services.llm.clients", "level": "warning"}
+{"event": "All LLM providers failed: [\"anthropic: Error code: 401 - {'type': 'error', 'error':
+{'type': 'authentication_error', 'message': 'API key is invalid.'}, 'request_id': None}\"]",
+"logger": "services.llm.clients", "level": "error"}
+{"error": "All configured LLM providers failed. Details: anthropic: Error code: 401 - ...",
+"error_type": "auth", "session_id": "be56505b-...", "intent_category": "DISCOVERY",
+"event": "conversational_floor_error", "logger": "services.intent_service.conversational_floor",
+"level": "error"}
+```
+
+### Classification and why this is the PASS
+
+**Reaching an auth error IS the pass.** The request reached the real Anthropic API — `provider:
+anthropic` shows in the log, a real network call was made — and got back a genuine 401
+`authentication_error` ("API key is invalid."), because the throwaway key is syntactically valid but not
+a real credential. This is categorically different from yesterday's failure, where the request never
+left the process: `FLOOR_FALLBACK_NO_PROVIDER` fired because the upstream "is anything configured" gate
+never consulted the user's own key at all. Today, `_classify_llm_error`
+(`services/intent_service/conversational_floor.py:618-651`) inspected the real exception string and
+classified it `"auth"` (matched on `"401"`/`"authentication"` at :627-639) rather than `"no_provider"`
+(which needs `"not configured"`/`"no llm provider"` in the string, and neither appears — the LLM layer
+was reached this time). The `"auth"` classification selects `FLOOR_FALLBACK_AUTH`
+(`conversational_floor.py:593-598`) over `FLOOR_FALLBACK_NO_PROVIDER` (:607-612, yesterday's bug text,
+"I don't have an LLM provider configured yet..."). **The user's own stored key was resolved, selected by
+the per-request `ContextVar` path `a3404c609` added, and actually sent to Anthropic.** That resolution is
+exactly what #1814 says was broken, and exactly what this observation now shows working.
+
+### Correction to what copy the user actually sees here (mechanism, not judgment)
+
+The task brief expected this case's copy to be compared against `user_friendly_errors.py`'s
+`invalid_api_key` entry. Read in full (`services/ui_messages/user_friendly_errors.py`): that entry's
+message/recovery are real and current, but they are **not what fired for this call**. `intent.py`'s
+`_extract_degradation_message` → `UserFriendlyErrorService.make_error_user_friendly` only runs for
+exceptions that propagate to `/api/v1/intent`'s top-level exception handler. `ConversationalFloor`
+catches its own LLM exception internally (`conversational_floor.py:1573-1584`) and returns a
+`FloorResponse` with `FLOOR_FALLBACK_AUTH` directly — it never raises, so the top-level handler and
+`UserFriendlyErrorService` are never reached on this floor-routed path. **The actual invalid-key copy a
+signed-in user sees on a floor-routed capability question is `FLOOR_FALLBACK_AUTH`'s text** (quoted
+above), not the `user_friendly_errors.py` string. Reporting this precisely rather than describing the
+`user_friendly_errors.py` copy as what appeared, which it did not.
+
+**Separately, for completeness**: the `user_friendly_errors.py` recovery text the task brief actually
+quoted ("Top up the key's billing, or replace it with a funded one under Settings → LLM API Keys.")
+belongs to the **`insufficient_quota`** entry (rewritten 2026-09-14, commit `ce8fd6f90`, replacing the
+old "...or remove the current key to fall back to the built-in model" — the #1807-obsolete advice CXO
+flagged as actively routing a tester into a worse state). The **`invalid_api_key`** entry's recovery
+("Check or replace it under Settings → LLM API Keys.") is unchanged since 2026-07-14. Both are correct,
+current, and neither contains the old "fall back to the built-in model" trap language — confirmed by
+reading the file in full — but neither is the mechanism that produced Case 2's copy above. Whichever
+call surface eventually does route through `UserFriendlyErrorService` (e.g. a non-floor exception path),
+the copy there is confirmed clean of the #1807-obsolete trap language.
+
+## Case 3 (re-run) — keyless new user, first turn — #1807 no-regress
+
+Second throwaway account (`user_id=0cb32c66-e420-4fe0-bb2c-0f58132b725c`), `/complete` called with only
+`user_id` (no key fields at all — the same supported skip-the-key path).
+
+**Verbatim reply** (identical to the original Case 3 above):
+```
+I can't run this without an LLM key of your own — Piper doesn't bill anyone else's account. Add your
+Anthropic API key in Settings and I'll pick right back up.
+```
+`clarification_type=user_key_required`. Server log shows only `intent_user_key_required_1807` — no
+`conversational_floor`/LLM log lines — confirming the #1807 gate still fires before classification/LLM,
+**unchanged by the #1814 fix**. `personalization_contexts` row count 0 for this account (ADR-075 notice
+correctly never seeded), `conversations` 1 (auto-created before the gate fires, same as the original run).
+
+## Greeting + ADR-075 notice — re-confirmed
+
+Case 1 (re-run, keyed user, "Hi there!") reproduced the original Case 1 **verbatim**: deterministic
+greeting, ADR-075 once-per-account parenthetical notice appended, `category=conversation`,
+`action=greeting`, `confidence=1.0`. Turn 2 (Case 2 above) correctly carried **no** second notice —
+confirming the once-per-account (DB-row-tracked, not per-process) behavior still holds after the #1814
+fix. Behavior unchanged from the original run in every respect.
+
+## Cleanup verification (re-run)
+
+Baseline before this run: `users` 2215 / `setup_complete=true` 0 / `secure_credentials` 0 /
+`invite_tokens` 235. A recovered-before-it-mattered incident occurred identical in class to the original
+run's `$USERNAME` hazard (a shell variable named `USERNAME` is read-only/special in zsh) — caught via
+the response echoing back `username=xian` in a validation error, before any user row existed; verified
+`users WHERE username='xian'` = 0 both before and after; re-ran with `TESTUSER` instead.
+
+Both throwaway accounts and every row they created (`users`, `user_api_keys`, `secure_credentials`
+per-user entries via `KeychainService.delete_api_key`, `personalization_contexts`, `conversations`/
+`conversation_turns`, `audit_logs`, `learned_patterns`, `invite_tokens`) were deleted and re-verified at
+0 for each account's UUID across every table checked. Global counts returned to exact baseline: `users`
+2215, `setup_complete=true` 0, `secure_credentials` 0, `invite_tokens` 235 (both minted tokens confirmed
+gone). The ephemeral harness server (PID 14479, port 60696) was killed; the pre-existing dev server (PID
+30735, port 8001) confirmed untouched throughout and still listening afterward. No production system, no
+alpha tester's own minted invite token, and no real Anthropic spend were touched at any point.
+
+## Bottom line for the invite-hold decision
+
+**#1814 is fixed at the layer this observation can see.** Case 2 — the exact scenario that failed before
+the fix — now reaches the real Anthropic API with the signed-in user's own resolved key and receives a
+genuine authentication error, correctly classified and correctly worded (no "not configured" text, no
+reference to a server-side fallback). The #1807 keyless refusal (a separate, deliberately-unchanged gate)
+still fires correctly and was not regressed by this fix. The one open item for a *real* billable key
+(as opposed to this throwaway one) is untested by this observation — a live, funded key would need to
+reach `_anthropic_complete` and return real capability content, which this task correctly does not
+require and this observer correctly did not attempt.

@@ -1,12 +1,11 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-14 ~22:5x PDT (STOP — day closed, cron re-armed).
+**Updated**: 2026-09-15 ~07:27 PDT (START, re-verified — no change since 09-14's STOP).
 **Third work-queue source, established 09-13 (PM's v1.33 ruling)**: Docs's criteria line is
 `gh issue list --search "label:documentation" --state open --limit 50` — open each result, don't
-trust the list view (CXO's 09-12 finding). Denominator was 10 at day-close (4 new: my own
-#1803-#1806 from today's audit). Check every WORK fire after the mail loop, alongside standing-items.
-**Session log**: `dev/2026/09/14/2026-09-14-0727-docs-code-log.md` (CLOSED, `<!-- DAY-CLOSED:
-2026-09-14 -->` present). Tomorrow needs a fresh log at START.
+trust the list view (CXO's 09-12 finding). Denominator 10 as of 09-15 START, unchanged from 09-14's
+close (4 are my own #1803-#1806). Check every WORK fire after the mail loop, alongside standing-items.
+**Session log**: `dev/2026/09/15/2026-09-15-0727-docs-code-log.md` (open, today).
 **Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
 make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything
 else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM's own words.
