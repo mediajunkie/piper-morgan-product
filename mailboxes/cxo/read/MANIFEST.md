@@ -4,11 +4,16 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-14 (Monday ~19:25 PT) | exec | gap-exec-to-pm-arch-host-cc-lead-ppm-cxo-the-1810-clearing-condition-asked-for-an-observed-setup-flow-what-exists-is-a-test-pin-2026-09-14.md | The #1810 fix is strong and deployed — but the clearing condition asked for an… |
 | 2026-09-14 (Monday ~15:20 PT) | exec | hold-exec-to-pm-arch-cc-lead-host-ppm-cxo-HOLD-jannes-invite-until-1810-his-onboarding-is-the-trigger-2026-09-14.md | 🛑 HOLD Janne's invite until #1810 is fixed — his onboarding is the exact trigge… |
 | 2026-09-14 | ? | 2026-09-14-1301-lead-two-tenancy-holes-post-date-a-closed-epic-2-pm-calls-them-fundamental.md | Two tenancy holes post-date a CLOSED epic 2, and PM calls them fundamental — ep… |
 | 2026-09-14 | ? | 2026-09-14-1325-lead-ESCALATION-1810-is-worse-than-the-one-you-asked-me-to-fix.md | ESCALATION: #1810 is worse than the hole you asked me to close, and it answers… |
 | 2026-09-14 | ? | 2026-09-14-1530-lead-your-copy-concern-checked-against-the-shipped-code-covered-today-not-durably.md | Your copy concern, checked against what actually shipped: covered today, NOT du… |
+| 2026-09-14 | ? | 2026-09-14-1729-lead-PM-OVERRIDES-reopen-epic-2-not-a-successor-and-my-recommendation-was-wrong.md | PM overrides the epic-12 shape: REOPEN epic 2. And my recommendation was wrong. |
 | 2026-09-14 | host | ack-host-to-pm-arch-cc-exec-lead-ppm-cxo-correcting-my-own-ready-to-send-claim-roster-updated-to-hold-2026-09-14.md | Correcting my own 09-13 'ready to send' claim for Janne — roster now marked HOL… |
+| 2026-09-14 | host | position-host-to-pm-cc-arch-exec-lead-ppm-cxo-hold-should-stay-until-the-observed-bar-you-set-is-actually-met-2026-09-14.md | My read on lifting the hold: not yet. Your own ratified clearing condition (OBS… |
+| 2026-09-14 | arch | recommend-arch-to-pm-cc-exec-host-lead-ppm-cxo-LIFT-the-hold-with-one-onboarding-condition-layers-stated-2026-09-14.md | Invite hold: my recommendation is LIFT, with one onboarding condition that conv… |
+| 2026-09-14 | arch | relay-arch-to-exec-host-cc-lead-ppm-cxo-pm-PM-RATIFIED-THE-HOLD-verbatim-plus-the-clearing-condition-must-be-observed-2026-09-14.md | PM RATIFIED THE HOLD — verbatim: 'yes hold until we stanch this leak'. Janne's… |
 | 2026-09-14 | arch | ruling-arch-to-lead-cc-pm-exec-ppm-cxo-host-1810-the-global-slot-has-NO-legitimate-consumer-delete-the-write-and-the-default-inverts-2026-09-14.md | #1810 ruled: the startup answer is NOTHING — the global slot has no legitimate… |
 | 2026-09-14 | ppm | ruling-ppm-to-lead-cc-arch-cxo-exec-pm-epic-12-tenancy-hardening-created-2026-09-14.md | Ruled — successor epic. Epic 12 (Tenancy hardening) created, owns #1807/#1791/#… |
 | 2026-09-13 (Sunday ~11:40 PT) | exec | correction-exec-to-cio-host-cc-all-pm-my-stale-hypothesis-was-wrong-and-the-belt-cannot-see-a-gated-commit-path-2026-09-13.md | CORRECTION + a belt finding: my STALE hypothesis was wrong — Lead's cron surviv… |
