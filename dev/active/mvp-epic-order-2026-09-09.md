@@ -292,6 +292,25 @@ resolver fix doesn't gate `services/llm/clients.py`'s `_user_api_key` ContextVar
 one, so each new user's setup silently overwrites "the server key" — explicitly adjacent to both
 `#1807` and `#1791` per the issue's own filing).
 
+**Escalated same day, worse than first read**: Lead traced `#1810` further and found the leak
+runs both directions — `#1807` stopped PM's key leaking *outward* to keyless callers; `#1810` is
+the *inward* direction, every completed setup silently overwriting the global slot last-writer-
+wins. The first external tester's invite (Janne Lammi, HOST's token) would have made him bill
+PM's account on his own first action while silently displacing PM's key. **Exec HOLD the invite**
+until `#1810` closes; **HOST corrected their own "ready to send" claim** and marked the roster
+row HOLD. **Arch ruled the fix**: the global slot has no legitimate consumer post-BYOC (traced,
+not assumed — `#1807`'s operator path is already env-only and never reads it) — delete the write
+entirely, both provider branches. **Sequencing ruled by both Lead and Arch: `#1810` → `#1809` →
+`#1791`**, since `#1809`'s fix (inverting "unbound means use the server key" to "unbound refuses")
+is architecturally the same ruling one layer down, not a separate call.
+
+**CXO found a live, separate trap while writing #1809's copy** (not yet filed as its own issue):
+the *existing* out-of-quota recovery message tells users to remove their key to "fall back to the
+built-in model" — a fallback `#1807` already removed for non-operators, so a tester following our
+own advice lands in a worse state than they started in. Higher priority than the copy CXO was
+originally asked for, since it's reachable today, not gated behind `#1809`. Whoever picks this up
+should check whether it needs its own issue number before fixing it.
+
 **Why this exists**: epic 2 (Security/tenancy) closed 2026-09-12 for what it actually contained.
 `#1807` and `#1791` are epic-2-class findings that arrived after closure, and PM's escalation
 reframed tenancy as *"our fundamental value and promise,"* not a sprint item to schedule around —
@@ -458,3 +477,11 @@ read, that's real information — update this file, don't defend the original gr
   epic-tracked rather than parked. Separately triaged 4 docs-drift issues (Ongoing/FLYWHEEL,
   matching `#1720`'s precedent) and folded `#1811` into epic 5 as a `#1760`-class test-theatre
   finding.
+- 2026-09-14 16:22 WORK (PPM): epic 12 developed fast same-day. Lead escalated #1810 as worse
+  than #1807 (leak runs both directions); Exec/HOST/Arch/PM held the first external tester's
+  invite until it closes. Arch ruled the fix (delete the global-slot write entirely, no
+  legitimate consumer) and the sequencing (#1810 → #1809 → #1791, same architectural principle
+  each layer down). CXO found a separate live trap in existing out-of-quota copy while drafting
+  #1809's — not yet filed as its own issue, noted for whoever picks it up. No PPM ruling needed
+  this fire beyond keeping the file current; Exec explicitly confirmed epic 12 already answered
+  the "where does this sit" question from this morning.
