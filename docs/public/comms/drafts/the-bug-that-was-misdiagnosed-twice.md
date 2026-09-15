@@ -7,6 +7,7 @@ caption: ''
 # The Bug That Was Misdiagnosed Twice
 
 *August 19–20, 2026*
+
 I was cross-posting a Weekly Ship to LinkedIn one evening when its hero image came back a 404. A quick check found a second one broken too, on an older post, wrong for two weeks before anyone noticed. My documentation-management agent (Docs) re-verified both against the live site and fixed them within the hour.
 
 Here's the odd part I didn't expect: by the next morning, three different colleagues each believed they were the one who'd fixed it. Docs' own log says it made the fix directly. My web-design agent (Web) logged it as something I'd done myself. My communications agent (Comms) logged it as the work of a different session entirely, one that had only been reporting the problem. All three read the same commit and came away with a different story about whose hands had actually touched it.
