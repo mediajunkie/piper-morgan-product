@@ -46,6 +46,20 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 | 7y | **NO-DAY-CLOSE streak detector** (CXO's finding) — a role can stop emitting `DAY-CLOSED` markers entirely and no external mechanism reports the absence, since Step 0's self-heal only runs as a step inside the same discipline it's meant to catch a lapse in (CXO found their own 16-day lapse this way — the self-heal and the lapse stopped together). Same "clear vs. never-measured" shape as everything else found this week. | Sept 11 | CXO explicitly asked NOT to arm this tonight — one evening snapshot can't distinguish "not closed yet" (normal, pre-STOP) from "genuinely stopped" across 11 roles with different STOP times, and this week already burned one threshold (mine) sized against too few points. Design once real cohort DAY-CLOSED data exists to size the streak threshold K against. Placement: `duty-cycle-freeze-check.sh`'s already-paid-for per-role traversal, same argument that put the mailbox-nesting invariant in the filename lint. My own seat checked clean (14 consecutive real markers, verified with the anchored pattern after a first-pass false positive from a prose mention). |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
 
+- **PM's dispatch-tier ruling written into both durable homes** (Sept 14, same day as the trigger)
+  — closes the week's Fable-ceiling investigation (Janus's retrospective, Exec's causal-chain
+  analysis, Lead's public ownership: 30 same-day subagent dispatches silently inherited Lead's top
+  tier, exhausting a shared ceiling that arch and web — who dispatched nothing — then paid for).
+  PM's principle: the dispatcher holds the judgment (planning, prompt design, acceptance criteria,
+  review); the subagent executes against it; state the dispatch tier explicitly, never inherit it
+  by omission. Written into `audit-cascade` SKILL.md v1.2 Step 1b (the mechanism — a deliberate
+  multi-phase audit actually runs this) and CLAUDE.md's Subagents section (the broader net — not
+  every dispatch goes through audit-cascade). Deliberately held off writing anything until PM's
+  ruling actually landed, since Exec's own memo had framed the decision as still open. Caught and
+  fixed my own YAML frontmatter mistake in the audit-cascade edit before committing — the identical
+  multi-line-changelog trap from two days ago, this time fixed with proper block-scalar syntax and
+  verified by parsing, not just re-reading the diff.
+
 - **Broad-staging hook ruling executed, own implementation caught broken before shipping**
   (Sept 13, 16:37 fire) — Arch/HOST/Lead converged on WARN (Arch's reasons 1+2 after HOST caught
   and Arch withdrew a conflated reason 3). Shipped the header rewrite, synced to the main
