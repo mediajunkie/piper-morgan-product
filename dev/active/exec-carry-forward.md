@@ -1,52 +1,49 @@
 # Exec (Chief of Staff) — carry-forward
 
-**Rewritten 2026-09-13 ~23:20 PT at day-close.**
+**Rewritten 2026-09-14 ~23:30 PT at day-close.**
 
 ## Cron
-Job `83258e51`, `38 6,10,14,18,22` — 5 fires/day. Armed 09-11 06:55, expires ~09-18 → **rotate ~09-16.**
-⚠️ **"CronList shows one job" means a job OBJECT exists, NOT that the schedule is live** (Lead's
-catch, 09-13 — their cron was armed and correct all night and fired nothing while signed out).
-**Report "one job, correct expression." Never "therefore the schedule is live." The only proof a
-cron fires is a fire.**
+`83258e51`, `38 6,10,14,18,22`. Armed 09-11 06:55, expires ~09-18 → **rotate ~09-16.**
+⚠️ One job, correct expression — **NOT evidence the schedule is live.** Only a fire proves that.
 
-## Weekly cycle — Ship #060
-Omnibus 7/7 · 10/10 reports · **internal report delivered** · **prep complete**.
-🔴 **PM ruled the internal-report discussion comes BEFORE the draft. It has not happened. The draft
-has not started and should not.**
-Artifacts: internal report `4af428b3-ea1e-4f02-b077-c4ce146dca72` · epic accounting
-`6b09674a-2d60-46c5-807d-9952951adca0` · rollup `a0d0af86-9505-4dcf-8b22-c63017251a47`.
+## ⭐ Ship #060 — DRAFTED, awaiting PM's edit
+`docs/public/comms/drafts/weekly-ship-060-draft-2026-09-14.md` · **calendar row added in the SAME
+commit** (pubDate **2026-09-16**, Wednesday).
+**PM's direction, followed**: *"focuses on what was delivered primarily in the product and
+secondarily in process improvements"* and *"finding our own errors… not necessarily fresh… a single
+item."* **Self-correction appears once, in the P.S., not as the theme.**
+Title: **"Four bugs, one contract."** Template audit clean — 0 semicolons, 0 banned terms, 0 bare
+issue numbers in prose, 5 workstreams engineering-first, 5 learning-pattern components, hero image
+live-verified 200.
+
+## Resolved tonight without me
+- **#1810 hold LIFTED.** HOST verified before ruling (`gh issue view` + `merge-base`), kept the
+  struck-through status history visible rather than erasing it. **Janne's invite is ready** with one
+  condition: **the invite asks Janne to configure his own LLM key first** — defense-in-depth against
+  **#1809**, which is still open.
+- ⚠️ **CXO corrected the record: their FTUX rider was NOT satisfied** by Lead's run, and owned the
+  mis-specification as theirs. **The FTUX first exchange remains unobserved in production.**
+- **Dispatch repo mass deletion** — 1,683 of 1,684 files deleted by an ordinary-looking commit
+  against an incomplete local clone. **Found by the nightly stranded-work sweep, reverted, verified
+  by live `ls-remote`.** Nothing needed from me; on the radar as a clone-integrity pattern.
+- **PPM owned the epic-12 mistake** rather than defending it — epic 2 reopened, epic 12 retired.
+  **Now 11 epics** (my own 09-13 accounting said 9; the drift was real and PM caught it first).
 
 ## Blocked on PM
-1. ⭐ **The ruleset decision — parks TWO roles** (Arch: scope-guard delivery; CXO: same). Repo public,
-   zero rulesets, bypass-actor path free. Highest leverage.
-2. **Vercel** — Web hard-blocked on access since 09-09. 14.91/10 GB deployment storage.
-3. **PA** — awaiting PM's sequencing answer before building the BYOC readiness plan.
-4. **The internal-report discussion** (gates the Ship).
-5. ✅ **Janne Lammi's invite token is READY TO SEND** — HOST recorded the roster row, Lead minted at
-   v99, status UNUSED. Nothing needed from either; it's PM's to send.
+1. ⭐ **The ruleset** — verified still ZERO rulesets, #1744 open, parked since Friday. **Parks Arch
+   AND CXO.** Highest leverage item on the board.
+2. **Janne's invite** — cleared to send with the key-first condition.
+3. **Vercel** deployment storage · **PA's sequencing answer** · **Ship #060 edit before Wed 09-16.**
 
-## Epic 1 — the credibility epic, and PM worked it today
-✅ **PM rotated the secrets. E2E & AAXT went RED → GREEN.** Belt now: E2E, Docker, Config Validation,
-Router, Code Quality all **green**; **`Tests` is the ONLY red** — 4 consecutive failures
-(23:52, 00:14, 01:53, 05:06). That's the product-failure half Lead predicted under the auth errors.
-**#1687 still OPEN** (close condition = its four green on a real push; Tests was never in its
-denominator — that gap is #1747's whole point).
-**#1747 needs diagnosis + milestone/epic triage** (PM's ask) — ⚠️ **its own snapshot is now stale:
-it recorded E2E red, and E2E is green.** Half-true; the remaining half is Tests.
-**#1764 / #1765 can move in parallel** — neither depends on #1687. ⚠️ #1765's premise ("Tests green
-since 09-11") **has expired** — Tests is red now. Whoever diagnoses must re-establish which.
-
-## State at close
-**9 closed today (6 MVP)** incl. #1617 + #1739 (PM cleared epic 3's floor). MVP **51 not done**
-(28 Sprint Backlog, 3 In Progress, 6 In Review, **14 Product Backlog**); **1,164 done**.
-⚠️ **`PLUS 1 unmilestoned` — the 3-day zero streak broke at 22:38** with `#1798`. One issue, filed
-minutes ago; flag to PPM, not an alarm.
+## State
+MVP **54 not done** (32 Sprint Backlog, 3 In Progress, 6 In Review, 13 Product Backlog);
+**1,171 done**; 0 unmilestoned. Belt clean.
 
 ## Standing corrections on me
-- ⚠️ **"No conclusion" is not "no failure."** A `gh run list` returning nothing because runs were
-  *cancelled* reads exactly like clean. Widen the window before reporting.
-- ⚠️ **`echo` after `||` asserts nothing.** Verify pushes by re-reading `origin/main`.
-- ⚠️ **`closedAt` is UTC.** Compute in Pacific and say so.
+- ⚠️ **"No conclusion" is not "no failure"** (cancelled CI runs read as clean).
+- ⚠️ **`echo` after `||` asserts nothing** — verify pushes against `origin/main`.
+- ⚠️ **`closedAt` is UTC** — compute in Pacific, say so.
 - ⚠️ **Membership is not mention** (epic counts).
-- ⚠️ **Re-check an anomalous reading once before reporting** (PM's rule). Applied 6×; changed the
-  reading 3 times.
+- ⚠️ **Don't hand-roll liveness comparisons.** My `(role)` grep has a **29% false-negative rate**;
+  the belt is wake-window-aware and I am not. **Check every named role's cadence before escalating.**
+- ⚠️ **Re-check an anomalous reading once before reporting.** Applied 7×; changed the reading 3 times.

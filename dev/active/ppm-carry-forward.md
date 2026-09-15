@@ -10,7 +10,17 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-14 19:22 PT (WORK). **PM overruled epic 12 directly, and was right
+**Last rewritten**: 2026-09-14 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+Cron re-armed `b72aa208` → **`e61f6248`**, `CronList`-verified exactly one job. Dropped the
+resolved DocumentDB watch line (should have dropped it two days ago — caught the miss tonight).
+`#1810`'s clearing condition was actually met tonight (real observation, not a test pin — Arch
+conceded trying to substitute a weaker bar than the one they'd set, HOST correctly held the line,
+Lead supplied the real evidence, CXO caught one loose sentence in the close-out same-night) —
+Janne's invite is ready to send. Recorded the full resolution in epic 2. **PM's reply on the
+epics-9/10 choice (offered last fire) hasn't landed yet — check for it before assuming the
+current shape stands.** 0 unmilestoned at close, all board items reconciled.
+
+**Prior fire: 2026-09-14 19:22 PT (WORK). PM overruled epic 12 directly, and was right
 to.** PM's ruling: if an epic closes before its work is actually discovered, reopen it — truth
 over the scoreboard. Retired epic 12 (created earlier today), reopened epic 2, folded all six
 items back in plus `#1812` (the root architectural question under the whole tenancy family, also
@@ -1790,13 +1800,12 @@ resolved or reframed into larger tracked work. Do not read this paragraph as cur
 
 ## Cron
 
-**ARMED** — job **`b72aa208`** (re-armed at 09-13 22:22 STOP; delete-then-create, `CronList`-
-verified exactly one). Prior job `dedc5304` (armed 09-12 22:22) retired cleanly — no gap, no
-incident. Note: this session survived a PM re-auth mid-day (09-13 09:58) with the cron intact —
-CronList showed it on return, matching Exec's finding that session-scoped crons are hostage to
-auth state but the job object itself can survive if the session isn't fully killed.
+**ARMED** — job **`e61f6248`** (re-armed at 09-14 22:22 STOP; delete-then-create, `CronList`-
+verified exactly one). Prior job `b72aa208` (armed 09-13 22:22) retired cleanly — no gap, no
+incident. Survived a mid-day model-tier-ceiling event on 09-14 without needing re-arming (this
+seat self-recovered within 18 minutes per Janus's investigation, no cron impact).
 
-⚠️ **Session-only + 7-day auto-expiry, both silent** — `b72aa208` expires ~2026-09-20 if not
+⚠️ **Session-only + 7-day auto-expiry, both silent** — `e61f6248` expires ~2026-09-21 if not
 re-armed sooner (re-armed every STOP in practice, so this is a backstop, not the expected path).
 
 ---

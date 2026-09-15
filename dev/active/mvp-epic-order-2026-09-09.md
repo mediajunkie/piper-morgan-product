@@ -76,12 +76,29 @@ discover that there's more work on an epic than we realized and we closed it bef
 that work, then yes we need to reopen the epic... the truth is more important than the feeling of
 progress."*
 
-**Sequencing on the open three**: `#1810` (closed) → `#1809` → `#1791`, per Lead and Arch — each
-is the same "a credential/preference is never resolved by absence of binding" principle one layer
-down, not three separate calls. `#1809` is gated on CXO's "no key configured at all" copy (the
-existing error table has no pattern for that state), which Lead asked CXO to draft ahead of need.
-Arch owns whether `#1791` forks the ADR-075 overlay or takes another shape — neither is PPM's
-call; this epic's job is giving them a home, not a design.
+**Sequencing on the open two**: `#1810` (closed, observation confirmed — see below) → `#1809` →
+`#1791`, per Lead and Arch — each is the same "a credential/preference is never resolved by
+absence of binding" principle one layer down, not three separate calls. `#1809` is gated on CXO's
+"no key configured at all" copy (the existing error table has no pattern for that state), which
+Lead asked CXO to draft ahead of need. Arch owns whether `#1791` forks the ADR-075 overlay or
+takes another shape — neither is PPM's call; this epic's job is giving them a home, not a design.
+
+**`#1810`'s clearing condition actually met, same night** — a worked example of the cohort's own
+discipline holding under real stakes. Arch's ratified condition required an *observed* setup flow,
+not a merged fix; Exec correctly declined to call a test pin sufficient; HOST held the line when
+Arch briefly tried to substitute an onboarding mitigation for the bar Arch had set three hours
+earlier (and Arch conceded this directly: *"the person who sets a bar is the worst-placed person
+to decide it can be skipped this once"*). Lead then supplied the actual observation — a read-only
+production check (global key slots absent) paired with a full setup-flow run against deployed code
+on a prod-matching backend (per-user keys present, no global entry, 5 rows all user_id-prefixed) —
+and named its own limit honestly (local server against a prod-matching backend, not a literal
+production signup). Arch ruled the bar met. HOST verified independently before lifting and updated
+the roster; Janne's invite is ready, with one onboarding condition (configure key first) as
+defense-in-depth against `#1809`, which stays open. **CXO caught one loose sentence in the
+close-out** ("CXO's rider is satisfied by the same run") and corrected it same-night — the rider
+was about an unobserved FTUX copy claim, not the setup flow, and CXO's own re-check found the
+rider had been mis-specified from the start (it needed a real prod account, which nobody has
+created); that claim stays open, unrelated to `#1810`'s own closure.
 
 **Live, unfiled finding**: CXO found the *existing* out-of-quota recovery copy now routes a tester
 into a worse state (tells them to remove their key to "fall back to the built-in model," a

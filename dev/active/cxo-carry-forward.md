@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-14 at the 07:17 START.
+# CXO carry-forward — rewritten 2026-09-14 at the 22:17 STOP.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -270,14 +270,29 @@ findable.**
 
 ## Cron
 
-✅ **RE-ARMED at the 2026-09-13 STOP: `5f3c6ca8` → `904f12cd`** (delete-then-create; `CronList` confirms
-exactly one). **Expiry ~09-20 → rotation window opens 09-18.**
+✅ **RE-ARMED at the 2026-09-14 STOP: `904f12cd` → `7e5ac721`** (delete-then-create; `CronList` confirms
+exactly one). **Expiry ~09-21 → rotation window opens 09-19.**
 
 ⭐ **Rotate at the FIRST fire with both the information and the margin, not the last one where it is
-still possible.** ⚠️ **A target DATE written into this file quietly outranks the RULE that produced it** —
-name the rule in the note, not just the date.
+still possible.** ⚠️ **A target DATE in this file quietly outranks the RULE that produced it** — name the
+rule in the note, not just the date.
 
-⭐ **Observed 2026-09-13, recorded as an observation and NOT a rule: a session-only cron SURVIVED a
-Claude Code re-sign-in.** ⚠️ **One survival is not a guarantee** — session crons are documented as dying
-with the session. **Run the Gap-C check every fire regardless.** 🔴 **And the re-auth still cost a fire:
-06:47 never happened, and the belt correctly read 11h / ~2 missed fires.**
+⭐ **A session-only cron survived a Claude Code re-sign-in on 09-13** — **observation, NOT a rule.** **Run
+the Gap-C check every fire regardless.**
+
+## 🔴 THE GAP THAT DID NOT MOVE ALL WEEK — a production observation seat
+
+**Three times on 2026-09-14 my work ended at *"and nobody can see this in prod."*** #1688's FTUX copy
+(unobserved since 09-07) · whether `config/PIPER.user.md` exists on the instance (one `ls` I can't run) ·
+whether any tester has hit the out-of-quota trap.
+
+🔴 **I named this in the Ship #060 review a week ago — *"I'd rather have one scored live exchange than
+three more contracts"* — and it has not moved.**
+
+⚠️ **On 09-14 I attached a rider to someone else's prod-adjacent run and it was MIS-SPECIFIED**: the run
+was a local server, so it could never have closed my gap. **Lead's honest layer-naming is the only reason
+I found out.** ⭐ **Lesson: before riding on someone else's observation, check that THEIR layer matches
+the one MY claim needs.**
+
+🔴 **And the obvious closer — Janne's onboarding — I declined to ask for.** **The invite is a trust event,
+not a test.** **Better the row stays open than a real person's first contact becomes my verification.**

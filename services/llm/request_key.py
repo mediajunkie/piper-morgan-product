@@ -75,6 +75,14 @@ _user_api_key: ContextVar[Optional[str]] = ContextVar("user_api_key", default=No
 OPERATOR_SERVER_KEY_ENV = "PIPER_OPERATOR_SERVER_KEY"
 _TRUTHY = {"1", "true", "yes", "on"}
 
+# The provider the per-request key belongs to. It is an ANTHROPIC key by construction:
+# `web/utils/llm_key.py` fetches the stored key for provider "anthropic", the
+# `X-User-Api-Key` header is documented as the caller's Anthropic key, and
+# `anthropic_client_for_request` below is its only consumer. Named here so readers of
+# this ContextVar (#1814 added one in `LLMConfigService.get_api_key`) assert that
+# binding in ONE place instead of each re-hardcoding "anthropic" on their own authority.
+REQUEST_KEY_PROVIDER = "anthropic"
+
 
 def operator_server_key_opted_in() -> bool:
     """True only when the operator explicitly allowed their own key to be spent (#1807).

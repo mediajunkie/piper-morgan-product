@@ -2,8 +2,15 @@
 name: audit-cascade
 description: Perform systematic audit-and-correct between phases of multi-step work. Use when PM says "audit cascade", before transitioning from issue to gameplan, gameplan to agent prompts, or prompts to execution. Catches drift before it accumulates.
 scope: cross-role
-version: 1.1
+version: 1.2
 created: 2026-01-23
+changelog: >
+  v1.2 (2026-09-14) -- Step 1b added, PM's dispatch-tier ruling (via Janus): Agent Prompts-phase
+  audits of a subagent dispatch now check whether the prompt's specification level matches a
+  cheaper tier, per "the dispatcher holds the judgment, the subagent executes" -- closes the
+  week's Fable-ceiling investigation (one seat's fan-out inheriting its dispatcher's model
+  exhausted a shared tier that two unrelated seats then paid for). v1.1 -- prior worktree-preamble
+  update (Step 0, 2026-08-23).
 ---
 
 # audit-cascade
@@ -56,6 +63,36 @@ What are you auditing?
 | Issue | `.github/ISSUE_TEMPLATE/` (feature.md, bug_report_alpha.md, e2e-bug.md) |
 | Gameplan | `knowledge/gameplan-template.md` |
 | Agent Prompts | `knowledge/agent-prompt-template.md` |
+
+### Step 1b: Agent Prompts phase only — audit the dispatch tier
+
+**Added 2026-09-14, PM's ruling** (via Janus, closing the week's Fable-ceiling investigation):
+when the phase being audited is Agent Prompts and the prompt dispatches a subagent, the audit
+matrix gets one more row. **The principle, in PM's own words**: *"A subagent absolutely can run
+Opus but I think should rarely need Fable if the agent dispatching it is already using Fable to
+run the show, plan the work, write the gameplan, draft the prompt, audit everything, and hold the
+subagent accountable."* **The dispatcher holds the judgment; the subagent executes against it.**
+Tier follows from that — a subagent doesn't need to re-derive judgment the dispatcher already
+applied and put into the prompt.
+
+**The check, worded exactly as PM specified**: *does this prompt carry enough specification that
+a cheaper tier could execute it? If not, is that deliberate, or is the prompt underspecified?*
+That question improves the prompt whether or not it changes the tier, which is what makes it worth
+asking every time rather than only when a Fable dispatch looks suspicious.
+
+**Rough tier guide** (not a rule to apply mechanically — judgment on the actual unit of work):
+Haiku for mechanical, fully-specified work (sweeps, inventories, format conversions — success is
+checkable without judgment); Sonnet for bounded implementation against clear criteria (most
+issue-level work); Opus for genuinely hard reasoning inside the unit (tricky debugging, a design
+call deliberately delegated, adversarial review — explicitly fine, not a ceiling to apologize for);
+Fable rarely, and if you reach for it, treat that as a signal to look at the prompt first, not the
+tier.
+
+**Do not skip this for the model your OWN dispatching session runs.** A fan-out silently inherits
+the dispatcher's model unless the `model` parameter is passed explicitly — this was the actual
+mechanism behind the incident that produced this ruling (one seat's 30 dispatches exhausted a
+shared tier ceiling that two unrelated, non-dispatching seats then paid for). State the tier
+explicitly in the audit matrix row rather than leaving it implicit.
 
 ### Step 2: Create Audit Matrix
 

@@ -1,39 +1,46 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-14 ~11:40 PDT (WORK — Weekly Docs Audit #1801 CLOSED, full pass).
-**Weekly Docs Audit #1801: CLOSED this fire.** Biggest catch: STATUS BANNER's engineering/deploy
-attestation was 21 days stale (Lead's 08-24 attest) with a 13-day gap since the last incremental
-update — fixed (`63c083446`) with a cross-role synthesis from all six 09-08..09-13 omnibus logs +
-a fresh `sprint-truth.py` pull (52 not done, 0 unmilestoned, 1166 done). 3 direct fixes total
-(STATUS BANNER, root README setup gap, INDEX.md stale banner). 4 issues filed for genuine content/
-ownership decisions: #1803 (legacy-getting-started broken links, not mechanical), #1804
-(ALPHA_TESTING_GUIDE.md Ch.1 contradicts #1708's hosted model), #1805 (misc broken links, batched),
-#1806 (caught + corrected a subagent's wrong "undiscovered debris" framing before filing the
-narrower real gap — the tree itself was already reviewed 08-11). All 3 background subagents'
-findings spot-verified by hand before acting. Closed via `close-issue-properly` (description
-updated with full Completion Matrix BEFORE the closing comment, avoiding Comment-Only-Close).
-Audit calendar's Tracking Dashboard updated (Last Completed 09-14, Next Due 09-21).
-**Doc currency**: unchanged at 24/38 (bulk-stamp cluster, #1726's lane, not re-escalated).
-**GitHub backlog data point**: 336 open / 0 unmilestoned (PM's 09-12 ruling holding fleet-wide),
-216 (64%) stale >30d (worse than 09-03's 52%) — reported fresh since #1712 is closed.
+**Updated**: 2026-09-14 ~22:5x PDT (STOP — day closed, cron re-armed).
 **Third work-queue source, established 09-13 (PM's v1.33 ruling)**: Docs's criteria line is
 `gh issue list --search "label:documentation" --state open --limit 50` — open each result, don't
-trust the list view (CXO's 09-12 finding). Denominator was 6 as of day-close (was 7, #1728 closed).
-Check every WORK fire after the mail loop, alongside standing-items.
-**Publish-sequencing discipline** (adopted 09-13, applied cleanly the same day): commit the
-calendar update as its OWN fast, standalone commit immediately after the website publish (Step 6/7
-of `publish-to-blog` — already documented this way), and do drafts-folder archival (Step 9) as a
-SEPARATE, later commit. Bundling the two adds avoidable seconds to the "post live but calendar not
-yet updated" window — Dispatch caught this exact 75s gap on "Who's Who."
-**Session log**: `dev/2026/09/14/2026-09-14-0727-docs-code-log.md` (open, today).
+trust the list view (CXO's 09-12 finding). Denominator was 10 at day-close (4 new: my own
+#1803-#1806 from today's audit). Check every WORK fire after the mail loop, alongside standing-items.
+**Session log**: `dev/2026/09/14/2026-09-14-0727-docs-code-log.md` (CLOSED, `<!-- DAY-CLOSED:
+2026-09-14 -->` present). Tomorrow needs a fresh log at START.
 **Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
 make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything
 else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM's own words.
-**Cron**: `f79bd5c0`, `57 6,9,12,15,18,21 * * *`, re-armed at STOP via delete-then-create (was
-`433c7e09`), CronList-verified sole job. Expires ~2026-09-20 (7-day auto-expiry) — watch for a
+**Cron**: `6709059b`, `57 6,9,12,15,18,21 * * *`, re-armed at STOP via delete-then-create (was
+`f79bd5c0`), CronList-verified sole job. Expires ~2026-09-21 (7-day auto-expiry) — watch for a
 proactive re-arm before then.
 **Watching**: PM's answer on whether to draft a routing memo to Lead Dev for two audit clusters
-found 09-13 (see "Watch surfaces" below) — offered, not yet answered, not chasing.
+found 09-13 (see "Watch surfaces" below) — offered 09-13, still not yet answered, not chasing.
+
+## 09-14 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-14-omnibus-log.md`)
+
+Two substantial fires: closed the Weekly Docs Audit (#1801) and wrote+verified the day's omnibus.
+
+**Audit #1801**: biggest catch was STATUS BANNER's engineering/deploy attestation being 21 days
+stale (Lead's 08-24 attest) with a 13-day gap since the last incremental update — fixed with a
+cross-role synthesis from all six 09-08..09-13 omnibus logs + a fresh `sprint-truth.py` pull (52
+not done, 0 unmilestoned, 1166 done). 3 direct fixes (STATUS BANNER, root README setup gap,
+INDEX.md stale banner). 4 issues filed for genuine content/ownership decisions: #1803
+(legacy-getting-started broken links, not mechanical), #1804 (ALPHA_TESTING_GUIDE.md Ch.1
+contradicts #1708's hosted model), #1805 (misc broken links, batched), #1806 (caught + corrected a
+subagent's wrong "undiscovered debris" framing before filing the narrower real gap). Closed via
+`close-issue-properly` (description-first, avoiding Comment-Only-Close). Doc currency unchanged at
+24/38 (#1726's lane). GitHub backlog: 336 open / 0 unmilestoned (PM's 09-12 ruling holding
+fleet-wide), 216 (64%) stale >30d (worse than 09-03's 52%) — reported fresh since #1712 is closed.
+
+**Omnibus (HIGH-COMPLEXITY, 17 sessions)**: a cohort-wide false alarm ("seven roles dark")
+self-corrected in 2.5 hours to its real cause (a Fable 5 model-tier ceiling exhausted by one seat's
+weekend dispatch fan-out); a live security-exposure chain (#1807→#1809→#1810→#1812) ran PM's-top-
+priority-to-closed in one day, ending with PM ruling the "server key" concept out of existence
+entirely; a same-day epic-12 creation-then-reversal on PM's direct override ("the truth is more
+important than the feeling of progress"). Caught a real internal inconsistency in the draft (header
+undercounted sessions 16/5 vs. the Sources section's correct 17/6) and fixed it before the
+activity-log reconciliation used the wrong denominator; spot-verified the two highest-stakes quoted
+rulings directly against `decisions.log` and source logs rather than trust the draft.
 
 ## 09-13 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-13-omnibus-log.md`)
 
@@ -59,17 +66,6 @@ draft to a reviewed subagent, personally verifying two load-bearing claims again
 (methodology-54's canonical title; prog-subagent-to-Lead attribution) and catching+fixing a real
 chronological-ordering defect in the draft before committing — 420 lines, well under the 600-line
 HIGH-COMPLEXITY budget. Appended 19 Shape-B activity-log rows in a separate commit.
-
-## 09-12 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-12-omnibus-log.md`)
-
-Published "Piper Morgan Eras" — made a real live-content mistake mid-proofread (reverted PM's
-deliberate "minimum-valuable-product" to conventional "viable"), self-caught via git history
-before reporting done, fixed the live site. Created `blog-style-guide.md` at PM's request. The
-altText/caption/cartoon calendar gap recurred a THIRD time on that post despite a prior promise to
-fix it — fixed it at the mechanism this time (a carefully-measured validator warning, narrowed
-from 337 naive false positives to 28 clean hits). Separately, a 40-session HIGH-COMPLEXITY day
-(29 prog delegations, one Lead-driven push closing 5 epics) — omnibus personally audited, zero
-discrepancies.
 
 ## Watch surfaces (things owned by others, checked periodically)
 
