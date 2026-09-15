@@ -50,7 +50,7 @@ than let them silently discount every later epic's signal. **#1747 is itself an 
 fallback failing quietly** — the denominator drifted from four to six without anyone's "fully
 green" claims noticing, which is exactly the m-44 risk this epic exists to retire.
 
-### 2. Security/tenancy (15 items, 9 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
+### 2. Security/tenancy (16 items, 9 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
 **Original six, all CLOSED 2026-09-12**: ~~`#1734`~~ personality API global-config clobber ·
 ~~`#1690`~~ demo plugin live-mounted by default · ~~`#1732`~~ chat-render XSS · ~~`#1733`~~ stale
 unauthenticated duplicate page · ~~`#1741`~~ pattern-suggestions XSS · ~~`#1740`~~ twin-file
@@ -68,6 +68,16 @@ overwrote — CLOSED, v108, the write deleted; readers of the stale slot are `#1
 surface) · `#1812` (the root question underneath the whole family — PM asked why the product owns
 an LLM key at all; the agent's own trace found no principled need for one, MVP-milestoned, found
 missing from the board and fixed same fire).
+
+**Three more, from the 2026-09-15 sequencing follow-on**: ~~`#1814`~~ (CLOSED, v109 — `#1810`'s fix
+removed a key-write before verifying the reader could resolve a per-user key at all, walking the
+invite's own onboarding condition into a false "not configured" wall) · `#1815` (two residuals from
+closing `#1814`: the cross-provider fallback loop still gates on the server's own client; Gap 2, a
+consent fail-closed branch, ruled together with `#1816` below) · `#1816` (a consent boundary fails
+OPEN — `KeychainService.get_api_key`'s broad exception swallow means a real keyring failure falls
+through to "everything authorized" rather than the fail-closed branch; Arch's ruling: fix the
+consent reader's own read path, never the credential primitive, and #1815's Gap 2 must refuse the
+turn rather than degrade to the now-abolished server key).
 
 ⚠️ **REOPENED 2026-09-14, not a successor epic** — see the change log entry below for the full
 account. Epic 2 was closed 2026-09-12 for six items; it was not actually complete, and the tenancy
@@ -119,6 +129,34 @@ found `#1814` exposes a conflation in the keyless-refusal copy written the day b
 lookup and a verified-absent key produce the same exception, so the copy can only assert the
 stronger claim) — not live today, latent pending whether the resolver can even distinguish the two
 states.
+
+**Invite lifted again same morning** — HOST verified independently (`gh issue view 1814` →
+CLOSED, Lead's 401-over-the-network evidence meets the bar) — and, in the same pass, checked
+`#1816` (below) directly against Janne's own path before treating it as unrelated: it doesn't
+touch him today, tracked not gated.
+
+**`#1816`, found while investigating #1815's Gap 2 — a consent boundary fails OPEN, not closed**:
+Lead inverted a premise from their own brief — `KeychainService.get_api_key` swallows exceptions
+broadly and returns `None`, so a real keyring failure never reaches the fail-closed branch; control
+falls through to "everything authorized." **The durable shape, Arch confirmed as a live instance of
+the honest-empty family one layer down**: `None` means "try the next source" for a *credential*
+read (correct, #1711's reasoning) but "no restriction" for a *consent* read (wrong) — the same
+return type inverts meaning depending on who's asking, same defect class as `verified_empty` vs
+`source_failed` collapsing into one falsy value. **Arch's ruling, four parts**: (1) fix belongs at
+the consent reader, never the credential primitive — a tri-state read, not a change to `#1711`'s
+sound contract; (2) the root shape is added to `#1816` as stated fact, not a new methodology entry;
+(3) `#1815`'s Gap 2 (the latent over-restrictive half, deliberately left undecided until now)
+rules together with `#1816` — a consent-read failure must *refuse the turn*, not degrade to the
+server key, since PM's own `#1812` ruling already abolished that concept; (4) inferring consent
+from key presence stays acceptable today only because no de-authorize surface exists — dated
+explicitly as a **dated assumption, not a design**, with the first de-authorize surface named as
+its own invalidation trigger. **CXO caught a build-time defect in the ruling's own copy line**
+before anyone wrote code to it: "CXO's copy work already covers the user-visible state" is false —
+existing copy tells a consent-read-failure user to add a key they already have, the same
+absence-vs-failure conflation CXO reported hours earlier on a different call site. Proposed the
+correct string (reports a failed read, names whose fault it is, and — uniquely in this family —
+permits "try again" since a store hiccup is genuinely transient). Gap 1 (BYOC key as fallback
+provider, not just primary) is fixed and deployed, v110.
 
 **Live, unfiled finding**: CXO found the *existing* out-of-quota recovery copy now routes a tester
 into a worse state (tells them to remove their key to "fall back to the built-in model," a
@@ -513,3 +551,9 @@ read, that's real information — update this file, don't defend the original gr
   of invented tracks. Epic 12 was the one real overreach, now corrected. Offered PM the option to
   simplify epics 9/10 (1-3 items each) into a named short list rather than epic framing, if PM
   prefers a stricter definition of what counts as a track.
+- 2026-09-15 10:22 WORK (PPM): `#1816` (consent-boundary fail-open) folded into epic 2 — found
+  during `#1815`'s own investigation, ruled by Arch as the honest-empty family's shape one layer
+  down at the security boundary. Board-bumped from Product Backlog/no-sprint to Sprint Backlog/
+  Beta Blockers, matching every other active epic-2 item this week. Invite lifted again same
+  morning after HOST independently checked #1816 doesn't touch Janne's own path. No PPM ruling
+  needed — all four of Arch's rulings and CXO's copy catch are Lead/Arch/CXO's own domain.

@@ -10,7 +10,20 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-15 07:22 PT (START). **Overnight sequel to last night's #1810 fix —
+**Last rewritten**: 2026-09-15 10:22 PT (WORK). **The tenancy family keeps growing, this fire's
+addition is `#1816`** — a consent boundary that fails OPEN (a broad exception swallow in
+`KeychainService.get_api_key` means a real keyring failure reads as "everything authorized"
+rather than triggering the fail-closed branch). Arch ruled it the honest-empty family's shape one
+layer down at the security boundary, fixed at the consent reader not the credential primitive,
+and ruled `#1815`'s Gap 2 together with it (a consent-read failure must refuse the turn, not
+degrade to the now-abolished server key). CXO caught a build-time defect in Arch's own ruling text
+before code was written to it. HOST checked `#1816` directly against Janne's actual path before
+calling it unrelated — it doesn't touch him, tracked not gated — and lifted the invite again. Only
+PPM action was the board bump (Product Backlog/no-sprint → Sprint Backlog/Beta Blockers, matching
+other active epic-2 items) and keeping the order file current. **PM's reply on the epics-9/10
+choice still hasn't landed** — third fire watching, still not chasing.
+
+**Prior fire: 2026-09-15 07:22 PT (START). Overnight sequel to last night's #1810 fix —
 resolved before I woke to it.** The fix had a sequencing hazard: deleted a key-write before
 verifying the resolver could read a per-user key at all, so the invite's own onboarding condition
 walked the first external tester into a false "not configured" wall. Lead/Arch/Exec each owned

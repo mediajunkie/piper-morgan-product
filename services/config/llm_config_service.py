@@ -166,10 +166,18 @@ class LLMConfigService:
         are filtered out.
 
         #1415: the consent list resolves PER USER (the acting principal's list
-        first, then the server/global list, else legacy all-configured), and a
-        consent-read failure now FAILS CLOSED to the server-default provider
-        only — the old behavior failed OPEN to everything configured, silently
-        disabling the consent boundary (census F1).
+        first, then the server/global list, else legacy all-configured).
+
+        #1816/#1815 Gap 2: a consent-read FAILURE raises ``ConsentUnreadableError``
+        and is deliberately NOT caught here. Census F1's fail-closed branch was
+        unreachable (the keychain's credential swallow meant a real store failure
+        arrived as an empty list, i.e. fail-OPEN), and its chosen degradation —
+        narrow to the server default — assumed a server key PM has ruled is not a
+        concept (#1812). Propagating the refusal is the closed state now. Anything
+        that catches it here and substitutes a list re-opens the boundary.
+
+        Raises:
+            ConsentUnreadableError: the caller's consent list could not be read.
         """
         from services.llm.provider_selection import resolve_authorized_providers
 
@@ -181,7 +189,6 @@ class LLMConfigService:
         filtered = resolve_authorized_providers(
             user_id,
             all_configured,
-            server_default=self._default_provider,
             keychain=self._keychain_service,
         )
         if filtered != all_configured:

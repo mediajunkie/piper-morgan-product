@@ -611,12 +611,39 @@ FLOOR_FALLBACK_NO_PROVIDER = (
     "GitHub issues, and other structured tasks."
 )
 
+# #1816/#1815 Gap 2 — the consent-read failure. CXO-authored, 2026-09-15, and
+# deliberately NOT any of the three above:
+#   - not FLOOR_FALLBACK_NO_PROVIDER: the user may well HAVE a key; telling them
+#     to add one recommends a known-failing action (the #1108 shape CXO named).
+#   - not FLOOR_FALLBACK_AUTH: nothing is wrong with their key.
+#   - not FLOOR_FALLBACK_TRANSIENT: that blames "my reasoning engine" for what is
+#     a credential-store read, and says nothing about whose fault it is.
+# Three properties CXO made explicit: it reports a FAILED READ rather than an
+# absence (source_failed must never render as verified_empty); it says whose
+# fault it is; and "try again" is admissible HERE and nowhere else in this
+# family, because a store hiccup is genuinely transient where a missing key
+# is not.
+FLOOR_FALLBACK_CONSENT_UNREADABLE = (
+    "I couldn't read which providers you've authorized, so I'm not going to guess. "
+    "That's ours to fix, not yours — try again in a moment, and if it keeps "
+    "happening it's worth reporting."
+)
+
 # Legacy name kept for backwards compatibility
 FLOOR_GRACEFUL_FALLBACK = FLOOR_FALLBACK_TRANSIENT
 
 
 def _classify_llm_error(error: Exception) -> str:
     """Classify an LLM error to select the appropriate fallback message."""
+    # #1816: matched by TYPE, before any string sniffing. The consent refusal is
+    # a deliberate, typed outcome — classifying it by substring would let an
+    # unrelated message reshuffle it into "auth" or "no_provider" and serve a
+    # user the wrong blame (the #1520 failure mode).
+    from services.llm.request_key import ConsentUnreadableError
+
+    if isinstance(error, ConsentUnreadableError):
+        return "consent_unreadable"
+
     error_str = str(error).lower()
 
     # No provider configured at all
@@ -1577,6 +1604,7 @@ class ConversationalFloor:
                 "auth": FLOOR_FALLBACK_AUTH,
                 "no_provider": FLOOR_FALLBACK_NO_PROVIDER,
                 "transient": FLOOR_FALLBACK_TRANSIENT,
+                "consent_unreadable": FLOOR_FALLBACK_CONSENT_UNREADABLE,  # #1816
             }
             fallback_message = fallback_messages.get(error_type, FLOOR_FALLBACK_TRANSIENT)
 

@@ -15,10 +15,13 @@ Resolution chains (every call, no instance state):
                      -> first available
   consent filter:    per-user list  -> server/global list    -> legacy (all
                      configured)
-                     and on ANY read error: FAIL CLOSED to the server-default
-                     provider only (census F1: the old code failed OPEN to all
-                     configured providers, silently disabling the #946 consent
-                     boundary).
+                     and on a FAILED read: FAIL CLOSED by REFUSING the turn
+                     (``ConsentUnreadableError``). Census F1 established the
+                     fail-closed requirement; #1816 made it reachable (the old
+                     branch could not fire in production) and #1815 Gap 2
+                     replaced its "narrow to the server default" degradation
+                     with a refusal, because PM abolished the server-key
+                     concept (#1812). See ``resolve_authorized_providers``.
 
 Keychain slots (server/global slots kept for the local single-user install and
 as the authenticated fallback; per-user slots are username-scoped per #1185):
@@ -32,6 +35,8 @@ from __future__ import annotations
 from typing import List, Optional
 
 import structlog
+
+from services.infrastructure.keychain_service import SecretProvenance, SecretRead
 
 logger = structlog.get_logger()
 
@@ -47,10 +52,53 @@ def _keychain(keychain=None):
     return KeychainService()
 
 
+def _read_slot(kc, username: Optional[str]) -> SecretRead:
+    """One consent-slot read, with provenance, from whatever keychain we were given.
+
+    ``keychain=`` is an injection point, so this must cope with stand-ins that
+    implement only the ``get_api_key`` primitive. It deliberately validates the
+    RESULT rather than probing for the attribute: a ``Mock(spec=KeychainService)``
+    grows a ``read_secret`` that returns a ``Mock``, whose ``.store_failed`` is
+    truthy — i.e. attribute-presence detection would make every such stand-in
+    refuse every turn while looking like a real provenance read. Trust the shape
+    you got back, not the name you found.
+
+    For a stand-in on the primitive path, an exception propagates (the caller
+    converts it to STORE_FAILED) and a ``None`` is a verified absence — which is
+    the truth for a dict-backed double.
+    """
+    reader = getattr(kc, "read_secret", None)
+    if reader is not None:
+        read = reader(CONSENT_SLOT, username=username)
+        if isinstance(read, SecretRead):
+            return read
+
+    value = kc.get_api_key(CONSENT_SLOT, username=username)
+    if isinstance(value, str) and value:
+        return SecretRead(SecretProvenance.PRESENT, value=value)
+    return SecretRead(SecretProvenance.VERIFIED_ABSENT)
+
+
+def _read_consent_slot(kc, user_id: Optional[str]) -> SecretRead:
+    """Read the consent slot for the acting principal (#1816).
+
+    Per-user slot first, then the server/global slot — but only ever falling
+    through on a **verified absence**. A failed read of the per-user slot stops
+    here: falling through to the global list on an error would be the same
+    absence-means-permission mistake one slot down, and the global list is
+    typically the permissive one.
+    """
+    if user_id:
+        per_user = _read_slot(kc, str(user_id))
+        if not per_user.is_verified_absent:
+            return per_user
+    # global-ok: server-level consent list — the per-user slot was checked first (#1415)
+    return _read_slot(kc, None)
+
+
 def resolve_authorized_providers(
     user_id: Optional[str],
     all_configured: List[str],
-    server_default: Optional[str],
     keychain=None,
 ) -> List[str]:
     """Apply the #946 consent filter for the acting principal.
@@ -58,32 +106,73 @@ def resolve_authorized_providers(
     Per-user list first, then the server/global list, else legacy behavior
     (no list anywhere -> everything configured is authorized).
 
-    FAIL CLOSED (#1415 F1): if the consent read errors, return the
-    server-default provider only (if configured) — never the full configured
-    set. A keychain hiccup must not route a user's messages to providers they
-    explicitly de-authorized; it also must not brick the instance, so the
-    operator's default stays usable.
+    FAIL CLOSED (#1415 F1, repaired by #1816): if the consent read FAILS, this
+    raises ``ConsentUnreadableError`` and the turn is refused. It never returns
+    the full configured set, and it no longer narrows to the server default.
+
+    ⚠️ Read the two rulings behind that sentence before changing it:
+
+    **#1816 — why the read is provenance-carrying.** The F1 fail-closed branch
+    was *unreachable in production*. ``KeychainService.get_api_key`` swallows
+    ``Exception`` and returns ``None`` (correctly, for a credential — #1711), so
+    a real keyring failure never reached the old ``except``; control fell to
+    ``return list(all_configured)``, the fail-OPEN path F1 was written to
+    eliminate. Measured 2026-09-15 with a real ``KeychainService`` and a raising
+    backend: ``['anthropic', 'openai']``. **Absence was read as permission.**
+    The cure is a read that reports WHY (``KeychainService.read_secret``), not a
+    change to the credential primitive — see ``SecretProvenance``.
+
+    **#1815 Gap 2 — why the closed state refuses instead of degrading.** F1's
+    closed state was "the server-default provider only", which assumes a server
+    that owns a key. PM ruled that concept abolished (#1812), so degrading to it
+    would silently reassign a BYOC user's turn to a credential that should not
+    exist — and on a BYOC-only instance it resolves to ``[]`` anyway, which
+    manufactures the #1814 "no provider configured" wall from a second cause.
+    Refusing with the #1807-family error is the honest closed state.
+
+    Raises:
+        ConsentUnreadableError: the consent list could not be read.
     """
+    from services.llm.request_key import ConsentUnreadableError
+
     kc = _keychain(keychain)
     try:
-        raw = None
-        if user_id:
-            raw = kc.get_api_key(CONSENT_SLOT, username=str(user_id))
-        if not raw:
-            # global-ok: server-level consent list — the per-user slot was checked first (#1415)
-            raw = kc.get_api_key(CONSENT_SLOT)
-        if raw:
-            allowed = {p.strip().lower() for p in raw.split(",") if p.strip()}
-            return [p for p in all_configured if p.lower() in allowed]
-        return list(all_configured)
-    except Exception as e:  # silent-ok: fail-CLOSED consent — degrades to server default only, logged; never widens to de-authorized providers (#1415 F1)
+        read = _read_consent_slot(kc, user_id)
+    except Exception as e:  # silent-ok: NOT a swallow — the exception is converted to STORE_FAILED provenance, which the very next block logs and re-raises as ConsentUnreadableError. This handler exists so a keychain stand-in that signals failure by RAISING and one that signals it by returning STORE_FAILED land on the same fail-closed path (#1816).
+        read = SecretRead(SecretProvenance.STORE_FAILED, error=str(e))
+
+    if read.store_failed:
         logger.warning(
-            "authorized_providers_read_failed_failing_closed",
-            error=str(e),
+            "authorized_providers_read_failed_refusing",
+            error=read.error,
             user_id=str(user_id) if user_id else None,
-            fallback=server_default,
+            configured=all_configured,
         )
-        return [p for p in all_configured if server_default and p == server_default]
+        raise ConsentUnreadableError(
+            "Could not read the authorized-provider list for this caller — "
+            "refusing the turn rather than guessing at consent (#1816/#1815)."
+        )
+
+    if read.is_present and read.value:
+        allowed = {p.strip().lower() for p in read.value.split(",") if p.strip()}
+        return [p for p in all_configured if p.lower() in allowed]
+
+    # VERIFIED ABSENT — no consent list anywhere. Legacy behavior: everything
+    # configured is authorized. This is the "consent inferred from key presence"
+    # inference, and per Arch's ruling (2026-09-15 §4) it is a DATED ASSUMPTION,
+    # not a design:
+    #
+    #   Consent is inferred from key presence. Dated 2026-09-15. This is valid
+    #   ONLY while no surface lets a user de-authorize a provider whose key they
+    #   still hold — today the consent list has exactly one writer (/setup) and
+    #   is derived mechanically from which keys the user supplied, so "has a key"
+    #   and "authorized it" cannot disagree. THE FIRST SUCH DE-AUTHORIZE SURFACE
+    #   INVALIDATES THIS LINE: from that moment a verified-absent list stops
+    #   meaning "nothing was restricted" and starts meaning "we never asked", and
+    #   this branch must be revisited rather than inherited. INVALIDATION TRIGGER
+    #   TRACKED ON #1817; an inferred consent that carries no expiry silently
+    #   becomes a claim about a user's wishes the user never made.
+    return list(all_configured)
 
 
 def resolve_default_provider(

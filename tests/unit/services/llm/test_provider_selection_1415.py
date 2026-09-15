@@ -10,7 +10,8 @@ Pinned here:
   - the resolution chains (per-user -> server -> env -> first), stateless
   - THE INCIDENT SCENARIO: global slots pinned to a dead provider, the acting
     user's own choice wins anyway
-  - consent fail-CLOSED (server-default only, never all-configured)
+  - consent fail-CLOSED — now by REFUSING the turn (#1816/#1815 Gap 2 superseded
+    F1's "server-default only" degradation; see the test's own docstring)
   - resilience never overrides consent (fallback set is consent-filtered)
   - identity threads from LLMClient.complete() into selection
 """
@@ -24,6 +25,7 @@ from services.llm.provider_selection import (
     resolve_authorized_providers,
     resolve_default_provider,
 )
+from services.llm.request_key import ConsentUnreadableError
 
 
 class FakeKeychain:
@@ -113,34 +115,50 @@ class TestConsentFilter:
                 ("authorized_llm_providers", None): "openai,gemini",
             }
         )
-        assert resolve_authorized_providers("user-a", self.CONFIGURED, "openai", kc) == [
-            "anthropic"
-        ]
+        assert resolve_authorized_providers("user-a", self.CONFIGURED, kc) == ["anthropic"]
 
     def test_global_list_applies_when_no_user_list(self):
         kc = FakeKeychain({("authorized_llm_providers", None): "openai"})
-        assert resolve_authorized_providers("user-a", self.CONFIGURED, "openai", kc) == ["openai"]
+        assert resolve_authorized_providers("user-a", self.CONFIGURED, kc) == ["openai"]
 
     def test_legacy_no_lists_returns_all_configured(self):
         assert (
-            resolve_authorized_providers("user-a", self.CONFIGURED, "openai", FakeKeychain())
+            resolve_authorized_providers("user-a", self.CONFIGURED, FakeKeychain())
             == self.CONFIGURED
         )
 
-    def test_f1_read_error_fails_closed_to_server_default_only(self):
-        """Census F1: the old code failed OPEN to all configured providers on a
-        consent-read error — silently disabling the #946 boundary. Now: the
-        server-default provider only."""
-        kc = FakeKeychain(raise_on="authorized_llm_providers")
-        assert resolve_authorized_providers("user-a", self.CONFIGURED, "openai", kc) == ["openai"]
-        # and never the full set
-        assert resolve_authorized_providers("user-a", self.CONFIGURED, "openai", kc) != (
-            self.CONFIGURED
-        )
+    def test_f1_read_error_fails_closed_by_refusing(self):
+        """Census F1's requirement, with its DEGRADATION superseded.
 
-    def test_f1_fail_closed_with_unconfigured_default_is_empty(self):
+        F1 was right that a consent-read error must never widen access, and the
+        "never the full set" half of this pin is unchanged. Two things changed
+        under #1816 / #1815 Gap 2 (Arch ruling, 2026-09-15):
+
+        1. **F1's branch could not fire in production.** The keychain's
+           credential swallow (#1711, correct for a credential) delivered a real
+           store failure as an empty list, so control reached the fail-OPEN
+           return instead. Only an injected raising double — this one — ever
+           reached the closed branch. The real-keychain pin now lives in
+           ``tests/unit/services/llm/test_consent_read_provenance_1816.py``,
+           deliberately at that layer, because a double measures the other
+           branch and reports clean.
+        2. **The closed state is now a REFUSAL, not "the server default only".**
+           That degradation assumed a server that owns a key; PM ruled the
+           server key is not a concept (#1812), and on a BYOC-only instance it
+           resolved to ``[]`` and manufactured the #1814 wall from a second
+           cause. Fail-closed means closed, not quietly reassigned to the
+           operator's key.
+        """
         kc = FakeKeychain(raise_on="authorized_llm_providers")
-        assert resolve_authorized_providers("user-a", self.CONFIGURED, "mistral", kc) == []
+        with pytest.raises(ConsentUnreadableError):
+            resolve_authorized_providers("user-a", self.CONFIGURED, kc)
+
+    def test_f1_fail_closed_never_returns_a_provider_list_at_all(self):
+        """The property that outlived the degradation: an unreadable consent list
+        yields NO authorized set — not the full one, not a narrowed one."""
+        kc = FakeKeychain(raise_on="authorized_llm_providers")
+        with pytest.raises(ConsentUnreadableError):
+            resolve_authorized_providers("user-a", self.CONFIGURED, kc)
 
 
 # ---------------------------------------------------------------------------
