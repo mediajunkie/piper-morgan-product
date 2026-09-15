@@ -210,15 +210,44 @@ class LLMConfigService:
 
         return available
 
-    def get_api_key(self, provider: str) -> Optional[str]:
+    def get_api_key(self, provider: str, *, include_request_key: bool = True) -> Optional[str]:
         """
-        Get API key for provider with keychain-first fallback
+        Get the API key to use for ``provider`` on THIS call.
 
-        Tries keychain first (secure), falls back to environment
-        variables for migration support.
+        Resolution order:
+          0. (#1814) the key the CURRENT REQUEST already resolved for its acting
+             principal — the BYOC ContextVar in ``services/llm/request_key.py``,
+             populated by ``resolve_request_api_key`` (header > the user's OWN stored
+             key > designated operator, else refuse). Anthropic only; see
+             ``REQUEST_KEY_PROVIDER``.
+          1. the server's own keychain slot (secure storage)
+          2. the server's own environment variable (migration fallback)
+
+        #1814 — WHY STEP 0 EXISTS. Provider SELECTION became principal-aware in
+        #946/#1415 (``get_configured_providers(user_id)``, ``get_default_provider(
+        user_id)``); credential RESOLUTION did not. That asymmetry was invisible while
+        ``/setup/complete`` also wrote the caller's key into the global slot as a side
+        effect. #1810 correctly removed that write — and with the global slot now empty,
+        this method returned ``None`` for every provider, so
+        ``get_configured_providers`` returned ``[]``, ``get_default_provider`` raised,
+        and ``LLMClient._complete_raw`` reported "No LLM providers configured. Add an
+        API key in Settings." to a user whose key WAS stored and WAS already resolved
+        for that very request. The availability gate refused on behalf of a consumer
+        (``_anthropic_complete`` → ``anthropic_client_for_request``) that would have
+        succeeded.
+
+        This adds NO new credential source and NO server-owned key: step 0 reads the
+        same ContextVar the Anthropic call itself reads, so the gate and the consumer
+        can no longer disagree. A caller with no key of their own binds nothing here and
+        is still refused honestly upstream at the route (#1807 / #1320).
 
         Args:
             provider: Provider name (openai, anthropic, gemini, perplexity)
+            include_request_key: keyword-only. ``False`` skips step 0, i.e. "the
+                SERVER's own key, ignoring whatever this request bound". Required by
+                ``LLMClient._init_clients``, which builds long-lived singleton clients
+                and can run inside a request — baking a request-scoped user key into one
+                would serve it to the NEXT caller.
 
         Returns:
             API key if found, None otherwise
@@ -226,6 +255,16 @@ class LLMConfigService:
         if provider not in self._providers:
             logger.debug(f"Unknown provider: {provider}")
             return None
+
+        # Priority 0: this request's own resolved key (#1814).
+        if include_request_key:
+            from services.llm.request_key import REQUEST_KEY_PROVIDER, get_request_api_key
+
+            if provider == REQUEST_KEY_PROVIDER:
+                request_key = get_request_api_key()
+                if request_key:
+                    # Never logged — credential handling (see request_key.py).
+                    return request_key
 
         # Priority 1: Try keychain (secure storage)
         key = self._keychain_service.get_api_key(provider)
