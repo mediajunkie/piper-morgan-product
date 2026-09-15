@@ -290,7 +290,13 @@ def _create_consent_unreadable_response(original_message: str) -> dict:
         "workflow_id": None,
         "requires_clarification": True,
         "clarification_type": "consent_unreadable",
-        "suggestions": ["Try again in a moment", "If it keeps happening, it's worth reporting"],
+        # ONE action, per CXO 2026-09-15. The previous second entry was a
+        # sentence fragment from their memo's PROSE sitting in a slot that
+        # renders ACTIONS — not clickable, not an utterance. That is the #1108
+        # failure (an affordance that cannot be taken). And "Try again" over
+        # "Try again in a moment": a chip is a thing you DO, not a thing you
+        # wait to do — the timing lives in the sentence, the chip is the verb.
+        "suggestions": ["Try again"],
         "preferences": {},
         "error": msg,
         "error_type": "consent_unreadable",
