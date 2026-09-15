@@ -50,7 +50,7 @@ than let them silently discount every later epic's signal. **#1747 is itself an 
 fallback failing quietly** — the denominator drifted from four to six without anyone's "fully
 green" claims noticing, which is exactly the m-44 risk this epic exists to retire.
 
-### 2. Security/tenancy (16 items, 9 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
+### 2. Security/tenancy (17 items, 11 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
 **Original six, all CLOSED 2026-09-12**: ~~`#1734`~~ personality API global-config clobber ·
 ~~`#1690`~~ demo plugin live-mounted by default · ~~`#1732`~~ chat-render XSS · ~~`#1733`~~ stale
 unauthenticated duplicate page · ~~`#1741`~~ pattern-suggestions XSS · ~~`#1740`~~ twin-file
@@ -69,15 +69,17 @@ surface) · `#1812` (the root question underneath the whole family — PM asked 
 an LLM key at all; the agent's own trace found no principled need for one, MVP-milestoned, found
 missing from the board and fixed same fire).
 
-**Three more, from the 2026-09-15 sequencing follow-on**: ~~`#1814`~~ (CLOSED, v109 — `#1810`'s fix
-removed a key-write before verifying the reader could resolve a per-user key at all, walking the
-invite's own onboarding condition into a false "not configured" wall) · `#1815` (two residuals from
-closing `#1814`: the cross-provider fallback loop still gates on the server's own client; Gap 2, a
-consent fail-closed branch, ruled together with `#1816` below) · `#1816` (a consent boundary fails
-OPEN — `KeychainService.get_api_key`'s broad exception swallow means a real keyring failure falls
-through to "everything authorized" rather than the fail-closed branch; Arch's ruling: fix the
-consent reader's own read path, never the credential primitive, and #1815's Gap 2 must refuse the
-turn rather than degrade to the now-abolished server key).
+**Four more, from the 2026-09-15 sequencing follow-on — all CLOSED same day except the trigger**:
+~~`#1814`~~ (v109 — `#1810`'s fix removed a key-write before verifying the reader could resolve a
+per-user key at all, walking the invite's own onboarding condition into a false "not configured"
+wall) · ~~`#1815`~~ (two residuals from closing `#1814`: cross-provider fallback loop, and Gap 2 —
+a consent fail-closed branch ruled together with `#1816`) · ~~`#1816`~~ (a consent boundary failed
+OPEN — `KeychainService.get_api_key`'s broad exception swallow meant a real keyring failure fell
+through to "everything authorized"; fixed at the consent reader, v111, shipped with CXO's own
+proposed copy ahead of formal ratification, confirmed with one clause cut same-fire) · `#1817`
+(open — the invalidation-trigger issue Arch's `#1816` ruling required in §4: consent-from-key-
+presence stays a *dated assumption*, not a design, until a de-authorize surface exists; this issue
+is that surface's tripwire, not a bug).
 
 ⚠️ **REOPENED 2026-09-14, not a successor epic** — see the change log entry below for the full
 account. Epic 2 was closed 2026-09-12 for six items; it was not actually complete, and the tenancy
@@ -237,7 +239,15 @@ API response has no `owner_id` field — a rendering-a-missing-field defect, sam
 (BYOC key validation discards the failure reason, showing flat "invalid" for both auth errors and
 quota/billing errors — already framed in this file as the audit's error-surfacing cousin #3,
 alongside Fast Follow's `#1108`) · `#1772` (N=1 degrade reply named three unarmed sources, found
-during #1717's own scoring — a scope-directive leak at the delivered layer). Plus, folded
+during #1717's own scoring — a scope-directive leak at the delivered layer. **Measured 2026-09-15**
+at n=10/cell rather than CXO's original n=1: **50% leak rate on claude-sonnet (production's
+default provider), 0% on gpt-4o** — the N≥2 aggregate path is clean on both, only the N=1 single-
+directive path leaks, and only on one provider. Not caused by `#1717` (byte-identical prompt
+pre/post-fix, re-verified). Also found: `'calendar'` isn't a registered `SOURCE_FAILED_FLAGS` check
+at all — the model is naming a data category with no flag, not misreading which flags were set, a
+different failure than originally filed. CXO's own discipline (refusing to widen a pre-registration
+to capture an out-of-scope anecdote) is why this got measured rather than argued about). Plus,
+folded
 2026-09-14: `#1811` (a calendar-context test mocks `_get_todays_todos`'s return shape wrong —
 `()` instead of `(todos, total)` — the same test-theatre class as `#1760`; confirmed pre-existing
 and unrelated to `#1807` via an A/B/A stash test). **Remaining open: `#1760`, `#1761`, `#1763`,
@@ -557,3 +567,13 @@ read, that's real information — update this file, don't defend the original gr
   Beta Blockers, matching every other active epic-2 item this week. Invite lifted again same
   morning after HOST independently checked #1816 doesn't touch Janne's own path. No PPM ruling
   needed — all four of Arch's rulings and CXO's copy catch are Lead/Arch/CXO's own domain.
+- 2026-09-15 13:22 WORK (PPM): epic 2's `#1815`/`#1816` both closed same-day (fixed at v111, CXO's
+  own proposed copy shipped ahead of formal ratification, confirmed with one clause cut same-fire)
+  — the whole consent fail-open thread resolved in roughly six hours from discovery. `#1817` (the
+  invalidation-trigger issue Arch's ruling required) triaged and folded in — a dated assumption's
+  tripwire, not a bug. Separately updated epic 5's `#1772` entry with real measurement data: 50%
+  leak rate on claude-sonnet (production's default), 0% on gpt-4o, n=10/cell — a genuine escalation
+  from the original n=1 anecdote CXO deliberately declined to over-claim from. No PPM ruling needed
+  anywhere this fire; Arch also proposed a mechanical fix for their own recurring cross-reference
+  failure mode (quote-inline or mark unverified) after a third same-shape instance in three days —
+  noted for the record, not PPM's mechanism to adopt.
