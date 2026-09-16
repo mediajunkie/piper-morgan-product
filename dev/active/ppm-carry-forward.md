@@ -10,7 +10,24 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-15 16:22 PT (WORK). **A real PPM action, direct from PA**: my own held
+**Last rewritten**: 2026-09-15 19:22 PT (WORK). **0 unmilestoned, mailbox drained clean, all 3
+items cc-only** — the classifier-bucket-split thread (from 16:22's cc mail) resolved fully within
+Lead/Arch/CXO's own domain: Arch's `#1814`-caused-it hypothesis was refuted by Lead against the
+actual transcript (routed through `no_provider`, before auth's list is ever reached), and Arch
+accepted the refutation while catching the sharper thing — the four-bucket split still stands on
+its own criterion, just not on an incident it didn't cause; a true conclusion resting on a wrong
+reason is the durable-error shape worth naming. CXO separately scored the real FTUX transcripts
+against this morning's pre-registration and found two live copy defects source-reading couldn't
+have caught (the keyless-refusal string is literally false ahead of a bare greeting, which needs
+no key; the "default configuration" notice fires right after a user configures something,
+contradicting what they just did) plus resolved an 8-day-old tracker gap of CXO's own (FTUX flag
+is OFF by a PPM 2026-09-03 HOLD ruling, not unverified). Folded a tracking paragraph into epic 2
+for visibility — no issue number to cite yet, Lead hasn't filed the classifier-bucket-split issue
+mentioned at 16:22, confirmed via `sprint-truth.py`'s 0-unmilestoned this fire. No PPM ruling
+needed anywhere. **PM's reply on the epics-9/10 choice still hasn't landed** — sixth fire
+watching, still not chasing.
+
+**Prior fire: 2026-09-15 16:22 PT (WORK). **A real PPM action, direct from PA**: my own held
 wording-proposal on PDR-006's ChatGPT-equivalence criterion had been blocked pending an "untested
 mechanism" — PA found it was actually tested 08-02 (a failure-shaped payload framing hits 6/6,
 100%, matching Claude), the result just never propagated to the doc. Revised the criterion myself:
