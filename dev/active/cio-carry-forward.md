@@ -1,77 +1,38 @@
 ---
-last_updated: 2026-09-15
+last_updated: 2026-09-16
 currency_claim: rewritten at every substantive fire (3x/day cadence)
 max_age_days: 1
 ---
 
-# CIO carry-forward — rewritten 2026-09-15 (10:37 fire, complete)
+# CIO carry-forward — STANDDOWN, 2026-09-16
 
-**Cron**: `592c1f76` · `7 10,16,22 * * *` · re-armed via delete-then-create at 2026-09-14 22:41
-STOP · expires ~2026-09-21.
+**STANDDOWN IN EFFECT.** PM directive via Exec, 2026-09-16: duty cycle suspended, cohort-wide,
+until the Thursday 2026-09-17 22:00 reset. Do not resume from this file alone — resume only on a
+direct PM ask naming CIO specifically, or after the reset.
+
+**Cron**: deleted (`592c1f76`, was `7 10,16,22 * * *`). **Do not re-arm on session-resume, on this
+file, or on a feeling — the restoration bar is a verified fire after the Thursday reset, nothing
+earlier.** Registry row already parked centrally by Exec with a falsifiable clearing condition;
+do not touch it.
+
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## Today's shape so far: a quiet, well-run fire
+## What's on hold, unresolved, from before the standdown
 
-Arch reported a genuine "watched it fire" instance of the heartbeat's fail-loud path (a push race,
-self-healed on retry, verified at trunk) — evidence-banking, no fix needed. Added a one-line note
-directly in `duty-cycle-heartbeat.sh` marking this as the first confirmed live instance. Comment-
-only, full suite 16/16.
+- **2026-09-15 never got its 22:37 STOP fire** — no `DAY-CLOSED` marker in that day's log.
+  Deliberately not retroactively closed during the standdown (that would itself be queue-draining
+  work the directive forbids). Address after the reset if still relevant then.
+- **`finding-host-...-stale-lead-web-9h-...`** sat in inbox at standdown time, untouched — the
+  standdown memo explicitly names this exact shape as expected ("silence is the expected outcome,
+  not a fault... do not investigate a dark peer"). Not mine to chase during the standdown.
+- Everything from before the standdown (issue #1798 / 7z, 7x, 7y, 7t, 7u, #1744, #1746, Janus's
+  dispatch-tier tracking through 09-21) is exactly as it stood at the last real fire (09-15
+  16:37) — see git history on this file for that full state if needed after the reset.
 
-## Open, needs a look
+## Why this file is minimal right now
 
-- **Issue #1798** (standing-item 7z): hook PostToolUse migration + common-dir move. Not urgent.
-- **Standing-item 7x**: Exec's 2 remaining process items (archive `mailboxes/*/read/`; change the
-  PM-cc rule). Not started.
-- **Standing-item 7y**: NO-DAY-CLOSE streak detector. Correctly gated on cohort data.
-
-## Still watching, not acting
-
-- **7t (scope guard)**: narrowed to one PM decision — bypass the required status check for the
-  bot's actor, or remove it.
-- **Standing-item 7u (Pard's LaunchAgent proposal)**: sent my "adopt" read Sept 10; watching for
-  Exec's read and PM's word.
-- **#1744**: will show up in future live scope-drift-check runs as a correct, expected flag.
-- **#1746**: filed Sept 11 (mail-send.sh reconcile + split-call rename hazard). Watching for
-  Pard's response.
-- **Janus is tracking dispatches×turns through 09-21** to check whether the tier guidance
-  actually reduces total consumption or just shifts it — watch for that verdict, not mine to chase.
-
-## Open, non-blocking
-
-- **Standing-items 7a/7b/7c** — 7a raised directly to PM in chat 08-31, no reply yet; 7b Docs-
-  owned; 7c needs HOST+Docs concurrence, low priority.
-- **Chess-board day-close commit wiring** — second half of PM's cadence ruling. Not built.
-
-## Watch
-
-- **#1731** — PPM's reconcile-sequencing hypothesis, unconfirmed, not actively chasing.
-- **The 1 still-held worktree** (`agent-af6f27891de682d61`) — inconclusive, correctly held.
-- **The RACI/responsibility-notation backlog item** (Themis relay, filed 09-02) — still not started.
-- **The `mailboxes/*/MANIFEST.md` sibling-basename false-strand warning** — hit repeatedly this
-  week, confirmed harmless every time, not mine to fix.
-- **My own heartbeat compliance** — clean today.
-- **My own future subagent dispatches** — adopted explicit model-pinning yesterday; watch whether
-  it actually happens on the next real dispatch.
-
-## Standing corrections to myself
-
-- **A syntax-checked script is not a tested script.** (recurring.)
-- **Before filing a new methodology entry, check the existing corpus for the same test under
-  different words.** (09-12/13.)
-- **A fix for an invisible-success problem can itself be invisible-success-shaped.** (09-12/13.)
-- **Test a fix against the actual live mechanism before calling it shipped.** (09-13.)
-- **A compound `git add && git commit` in one Bash call silently bypasses any PreToolUse hook
-  that reads `git diff --cached`.** (09-13.)
-- **When accepting an interim state after finding a bug, name it as an interim in the artifact
-  itself and document what it doesn't fix.** (09-13.)
-- **A durable "here's what actually happened" catalog belongs in the artifact a future confused
-  reader will actually open, not a memo that scrolls away.** (09-14/15 — applied again today to
-  Arch's watched-it-fire evidence.)
-- **When a colleague owns a real mistake publicly, check your own exposure to the same class of
-  error before just crediting them.** (09-14.)
-- **Don't write a still-open cross-role decision into a durable doc as if it were settled.**
-  (09-14.)
-- **The multi-line-YAML-changelog mistake recurred once — use the correct block-scalar syntax
-  from the start and verify by parsing, not just re-reading the diff.** (09-14.)
+The standdown directive is explicit: stop, don't finish "just this one thing." This file was
+updated only enough to prevent it sitting stale and claiming an armed cron that no longer exists —
+not as a substantive fire.
