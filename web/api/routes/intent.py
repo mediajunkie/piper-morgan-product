@@ -243,10 +243,22 @@ def _create_user_key_required_response(original_message: str) -> dict:
     retrying changes nothing. Deliberately not a 500 either — a refusal is a correct
     answer, not a server fault. Honest-degrade shape per #1425/#1792.
     """
+    # CXO 2026-09-15, from OBSERVED transcripts rather than a source read: the
+    # previous sentence said "I can't run THIS", and the #1807 gate fires before
+    # classification — so a keyless user who types "hi" got it too, while the
+    # greeting is a deterministic handler that needs no key at all. The copy
+    # asserted something untrue about the very first thing a new tester types.
+    # Same shape as the over-broad auth bucket: ONE STRING SPANNING STATES WHOSE
+    # TRUTH CONDITIONS DIFFER — here the states are request types, not error
+    # causes. This wording is true for both.
+    #
+    # NOT decided here: whether a deterministic greeting should pass the gate at
+    # all. That is a routing question (filed separately) — and it is no longer
+    # urgent precisely because the sentence is now true either way.
     msg = (
-        "I can't run this without an LLM key of your own — Piper doesn't bill "
-        "anyone else's account. Add your Anthropic API key in Settings and I'll "
-        "pick right back up."
+        "I need an LLM key of your own before I can help with anything — Piper "
+        "doesn't bill anyone else's account. Add your Anthropic API key in "
+        "Settings and I'll pick right back up."
     )
     return {
         "message": msg,

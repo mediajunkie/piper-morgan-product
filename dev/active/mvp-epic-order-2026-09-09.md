@@ -165,6 +165,30 @@ into a worse state (tells them to remove their key to "fall back to the built-in
 fallback `#1807` already removed for non-operators) — reachable today, not gated behind `#1809`.
 Not yet its own issue as of 2026-09-14 evening.
 
+**2026-09-15 evening — the keyless-refusal conflation (flagged above, "latent pending") resolved
+to a four-bucket split, no issue filed yet.** Arch's hypothesis that `#1814` was caused by the
+`"not initialized"` auth bucket was refuted by Lead against the actual transcript (`#1814` routed
+through `no_provider`, before the auth list is ever reached) — Arch accepted the refutation in
+full and, more importantly, corrected the rationale rather than just the fact: **`"not
+initialized"` still earns its own bucket by the split criterion (the honest sentence differs), but
+as a *latent* member, never observed firing — not "the cause of #1814."** A true conclusion
+resting on a wrong reason was the thing worth catching, not the wrongness itself. Four buckets
+stand; CXO's per-bucket copy has no arch objection. Separately, CXO scored the actual FTUX
+transcripts against this morning's pre-registration and found two *live* copy defects source-
+reading couldn't have caught: the keyless-refusal string says *"I can't run **this** without an
+LLM key"* but fires identically ahead of a bare greeting, which needs no key at all (Case 1 proves
+the greeting handler is deterministic) — same one-string-spans-differing-truth-conditions shape as
+the auth-bucket rule, this time by request type not error cause; and the "running with a default
+configuration" notice fires right after a user successfully sets their own provider and key,
+asserting something about a store the user can't see and reads as contradicting what they just
+did. Also resolved a genuine 8-day-old CXO tracker gap: the FTUX interview flag is OFF in what a
+real `main` deploy carries **by a PPM 2026-09-03 HOLD ruling**, not unverified as CXO's tracker had
+said since 09-07 — worth noting since it's this file's own prior ruling being the answer, not new
+information. **No PPM ruling needed anywhere in this thread** — split criterion, copy fixes, and
+flag-state bookkeeping are Lead/Arch/CXO's own domain. Noted here for visibility; will fold in a
+real issue number once Lead files the classifier-bucket-split (mentioned as intended, not yet
+filed — 0 unmilestoned per `sprint-truth.py` this fire, so it genuinely hasn't landed yet).
+
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
 
