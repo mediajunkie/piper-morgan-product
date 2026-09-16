@@ -1,11 +1,21 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-16 ~06:20 PDT (PM-engaged — retroactive 09-15 close written, Weekly Ship #060
-published).
+**Updated**: 2026-09-16 ~06:50 PDT (PAUSED — duty cycle deliberately stopped at PM's direct
+request; NOT a day-close).
+**⚠️ DUTY CYCLE PARKED — READ BEFORE ASSUMING A FIRE SHOULD HAPPEN.** PM directed: "make the
+omnibus now... but then pause your duty cycle," given pipermorgan.ai's weekly usage limit (97%
+hit 09-15, PM manually rationing overage credits 09-16). Cron `6709059b` deliberately
+`CronDelete`'d — confirmed via `CronList`: "No scheduled jobs." **Clearing condition (falsifiable,
+per CLAUDE.md's going-dark protocol): resume only when PM explicitly asks to resume, or a fresh
+session's own `CronList` shows a job actually armed — never infer resumption from this file's
+prose alone.** Registry row parked with the same condition, written before going dark since a
+parked role can't edit its own row once dark.
 **Rate-limit note (PM, 09-16)**: pipermorgan.ai hit its weekly usage limit, resets Thursday;
-PM added overage credit for essential functions. If work goes quiet or errors appear, check this
-before assuming a real defect. Dispatch-PM independently flagged the same thing 09-15 (97% of
-weekly limit, "faoilean" account).
+PM added overage credit for essential functions. If a session resumes and work seems to go quiet
+or errors appear, check this before assuming a real defect. Dispatch-PM independently flagged the
+same thing 09-15 (97% of weekly limit, "faoilean" account) — re-verify the actual reset time with
+PM directly rather than trust either secondhand figure (PM said "Thursday ~10am," Dispatch-PM said
+"Thursday 22:00" — not reconciled, don't guess which is right).
 **09-15 21:57 fire was superseded by direct PM engagement, not dropped** — retroactive
 `DAY-CLOSED: 2026-09-15` written 09-16 06:04 per Step 0 self-heal; cron never died
 (`6709059b` unchanged, no re-arm needed).
