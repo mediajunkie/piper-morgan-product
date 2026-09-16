@@ -31,7 +31,13 @@ satisfy those conditions structurally, not by good intentions per-PR.
   epic (epic 2). It is genuinely unclaimed BYOC-only work.
 - The cold-start demonstration criterion (PDR-006's single load-bearing product claim) currently
   fails.
-- ChatGPT's honest-decline capability sits at ~50% vs. 100% on Claude (PA's N=6 probe, still current).
+- **CORRECTED same-day, found while building the readiness checklist**: ChatGPT's honest-decline gap
+  is better news than "sits at ~50% vs. 100%" (the figure this plan cited earlier today) — a
+  **failure-shaped payload framing already tests at 6/6, 100%, matching Claude** (per #1462's own
+  body, PA's N=6/cell probe, 2026-08-02; PDR-006 had the same stale figure, fixed same-fire). Real
+  remaining gap: this is provider-API-direct evidence, not tested against a deployed
+  `mcp.pipermorgan.ai` — a deployed-host retest is still owed before treating it as settled, but it's
+  a verification task now, not an open capability question.
 - The recomposition-rubric instrument (#1463) is closed with a design-level answer (v0.7, PA's
   member-not-metadata mechanism) but its T-axis remains `PENDING-PROBE` — informs design, can't issue
   a pass.

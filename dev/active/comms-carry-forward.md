@@ -1,6 +1,6 @@
 # Comms carry-forward
 
-*Rewritten mid-turn, following PM's merge-conflict thread on "The Bug That Was Misdiagnosed Twice." Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten following PM's "art landed, double-check + send to Docs" confirmation on "The Bug That Was Misdiagnosed Twice." Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
@@ -8,13 +8,12 @@
 
 ## Closed today (so far)
 
-- Reviewed "The Bug That Was Misdiagnosed Twice" (today's scheduled beat): fixed 3 real issues, verified factual claims against source logs (confirmed exact).
-- Real cross-role convergence: two of my three "typos" were actually genuine damage from a P0 compose-UI bug (a caret-restore regression Web fixed the same fire), not typos.
-- Walked PM through a real merge conflict in the same file (PM's own local voice-pass rewrite vs. origin/main) — diagnosed the one true conflict, resolved via scripted find-and-replace PM ran themselves (declined to edit PM's main checkout directly myself, explained why, gave a zero-manual-risk alternative instead), caught a lost blank-line as a side effect of the conflict-marker removal, re-verified the whole file end to end after PM's follow-up admin-UI edit. Content fully clean; frontmatter still empty — PM confirmed art is in progress. Not sending PUBLISH-READY yet.
+- "The Bug That Was Misdiagnosed Twice" — fully closed on my side. Content reviewed + fixed, merge conflict resolved, Web's stand-off thread handled and both claims verified, final art-landed diff confirmed zero prose drift, full re-audit clean, PUBLISH-READY sent to Docs (cc PM).
+- Real cross-role convergence during the day: 2 of 3 "typos" turned out to be genuine damage from a P0 compose-UI bug Web independently fixed the same fire.
 
 ## Open items — no Comms-side move available right now
 
-- **"The Bug That Was Misdiagnosed Twice"** — content fixed and clean, but frontmatter still empty. Watch for it to complete, then send PUBLISH-READY.
+- **Open question for PM whenever convenient**: earlier, `say-cheese.png` (Web's guess at the art) shared a filename pattern with the already-published Who's Who image — turned out not to matter, since the actual landed art file is `the-bug-that-was-misdiagnosed-twice-gallery-hooks.png`, a distinct, correctly-named file. No longer a live concern; noting only because it was flagged in an earlier fire and should be marked resolved.
 - **Possible durable fix worth raising**: `template-audit` has no check for "claims a named person is already public" — the Who's Who miss (9/13) was the second data point. Not filed as a proposal — flagging for awareness, not unilaterally acting.
 - **Building narrative**: front is Aug 31, 15 days unassessed since. PM hasn't asked for Step 2 (the gap read).
 - **ChicagoCamps slide deck** — landed 9/12, still not reviewed by Comms; watching for PM to confirm or ask.
@@ -26,7 +25,8 @@
 
 ## Waiting on others
 
-- **PM** — the art pass on "The Bug That Was Misdiagnosed Twice"; voice-pass + art on the other 8 drafted items; ChicagoCamps script/slide review; whether to move on the building-narrative gap.
+- **Docs** — proofread + publish "The Bug That Was Misdiagnosed Twice."
+- **PM** — voice-pass + art on the other 8 drafted items; ChicagoCamps script/slide review; whether to move on the building-narrative gap.
 - **Web** — the phone image-upload issue from 9/10 (PM's own ask, not routed through Comms).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15); #1647 (filed 08-18).

@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-15 | Web (Unicorn Web Designer) | 2026-09-15-web-URGENT-stand-off-misdiagnosed-twice-draft-pm-has-it-open.md | URGENT — stop editing the-bug-that-was-misdiagnosed-twice.md, PM has it open an… |
+| 2026-09-15 | Web (Unicorn Web Designer) | 2026-09-15-web-art-for-misdiagnosed-twice-is-held-in-pms-local-merge.md | The art you're awaiting for "Misdiagnosed Twice" probably exists — it's stuck i… |
+| 2026-09-15 | Web (Unicorn Web Designer) | 2026-09-15-web-correction-my-stand-off-memo-mischaracterized-your-work.md | Correction — my "stand off" memo mischaracterized your work. The hold still sta… |
 | 2026-09-12 ~09:2x PT | docs | notice-docs-to-comms-blog-style-guide-created-2026-09-12.md | New: docs/internal/planning/comms/blog-style-guide.md — now in your Required Re… |
 | 2026-09-11 ~06:5x PT | docs | reply-docs-to-comms-cc-pm-the-mailbox-trust-violation-published-2026-09-11.md | Re: PUBLISH-READY — The Mailbox Trust Violation — published |
 | 2026-09-11 (Friday ~07:20 PT) | exec | ruling-exec-to-cio-arch-cc-all-pm-the-work-queue-is-not-the-inbox-carried-plus-mail-plus-github-2026-09-11.md | PM RULING — the work queue is NOT the inbox. It is carried work + mail + newly-… |
