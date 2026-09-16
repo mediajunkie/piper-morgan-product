@@ -10,7 +10,19 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-15 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+**Last rewritten**: 2026-09-16 07:22 PT (START, then STANDDOWN). **PM directive via Exec: suspend
+duty cycles now, until Thursday 2026-09-17 22:00 reset** — cohort is past the 97%-of-weekly wall,
+running on overage credits PM is deliberately spending only on today's Weekly Ship publish.
+`CronDelete`d `c6df1cc8` (restore cron expression: `52 6,9,12,15,18,21 * * *`). Registry row parked
+centrally by Exec for all eleven roles — not independently verified, per Exec's own reasoning that
+checking would itself be the unrequested spend this standdown exists to stop. **Restore only when a
+cron job is actually armed and `CronList`-verified after Thursday 22:00 — not on session-resume,
+not on a memo alone.** If PM asks directly for a specific task before then, that supersedes this
+memo. Nothing was mid-drain; `sprint-truth.py` showed `56 not done, 1176 done, 0 unmilestoned`
+before the standdown was read, and epics-9/10 still has no PM reply — both exactly as left at last
+night's STOP, unchanged by this fire.
+
+**Prior fire: 2026-09-15 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
 Cron re-armed `e61f6248` → **`c6df1cc8`**, `CronList`-verified exactly one job. One board-add fix
 this fire: `#1818` (a genuine, deliberately-unrushed design question — should a zero-cost
 deterministic greeting pass the `#1807` keyless gate? — split out of the evening's copy fix rather
