@@ -1,6 +1,17 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-15 ~07:27 PDT (START, re-verified — no change since 09-14's STOP).
+**Updated**: 2026-09-15 ~17:00 PDT (PM-engaged — published "The Bug That Was Misdiagnosed Twice";
+real sync-discipline miss caught by PM).
+**Sync-before-reading, not just sync-before-fire, added 09-15**: reported a draft's frontmatter as
+empty when PM had already uploaded it — worktree was 10 commits behind, including Comms' own
+PUBLISH-READY memo sitting unread. The existing "sync at fire-open" habit doesn't cover a
+mid-conversation direct PM engagement outside the duty-cycle fire ritual. PM's sharper point:
+Comms is careful and had just sent PUBLISH-READY, so "both of them missed something this basic"
+should have been the least likely explanation, not the first one reported. **New rule: before
+reporting any file's content as a finding or blocker, sync first — every time, not just at fire
+boundaries** — this generalizes the existing `feedback_careful_git_sync_on_shared_main` /
+`a duty-cycle sync from earlier is a timestamped fact, not a durable one` lessons to apply within
+a single conversation, not just across fires.
 **Third work-queue source, established 09-13 (PM's v1.33 ruling)**: Docs's criteria line is
 `gh issue list --search "label:documentation" --state open --limit 50` — open each result, don't
 trust the list view (CXO's 09-12 finding). Denominator 10 as of 09-15 START, unchanged from 09-14's
@@ -166,6 +177,11 @@ without PM present.**
   script parsing timeline entries needs to handle both.
 - A duty-cycle sync from earlier in the session is a timestamped fact, not a durable one — re-sync
   if meaningful time has passed.
+- **Sync applies to mid-conversation direct PM engagement too, not just fire-opens.** Reported a
+  draft's frontmatter as empty (09-15) from a 10-commits-stale read, including a missed PUBLISH-READY
+  memo — PM caught it, asking "are you synced?" A confident-sounding claim about file content is
+  only as good as the last sync; if a PM engagement wasn't preceded by this fire's sync step,
+  re-sync before reading, not after being asked.
 - **"Last scheduled fire of today" is arithmetic on the cron expression**, not a feel-based
   judgment. Verify before STOPping.
 - **A fire is a WAKE, not a time-box** — drain unblocked work. Legitimate holds: a real external
