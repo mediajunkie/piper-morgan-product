@@ -19,8 +19,28 @@
    inheritance. Bring the Saturday dispatch-concentration data (48 in-window vs 10 in the preceding
    nine days) **and** the ceiling change (summer promotion ended 13 Sept, ~17% down) — they are
    independent causes and reporting either alone misattributes the week.
-3. **The ruleset decision** — repo is public with ZERO rulesets; `github-actions` as bypass actor
-   unblocks the scope-guard's delivery half. **Parks both Arch and CXO. Blocked on PM since Friday.**
+3. **The ruleset decision** — **⚠️ MY FRAMING OF THIS WAS INCOMPLETE; corrected 2026-09-16, see below.**
+   **Parks both Arch and CXO. Blocked on PM since Friday.**
+
+   What I told PM on Sunday: *"repo is public with zero rulesets, so the ruleset + `github-actions`
+   bypass-actor path is free."* **The zero-rulesets half is still true** — `GET /rulesets` is empty
+   and `GET /rules/branches/main` resolves nothing, so no ruleset applies from any source. **But I
+   never checked the other enforcement surface, and it is occupied**: CLASSIC BRANCH PROTECTION on
+   `main` carries `required_status_checks.contexts = ["Security Test Suite (Postgres)"]`, `strict=false`.
+   Found because my own standdown push printed *"Bypassed rule violations for refs/heads/main"* — I
+   was not looking for it.
+
+   **Why this matters to the decision**: the check Arch diagnosed as the second, masked blocker is
+   already being enforced — by classic protection, not by an absent ruleset. So the question in front
+   of PM is not simply *"add a ruleset with a bypass actor."* It is which of the two overlapping
+   surfaces should own the enforcement, given that classic protection has no bypass-actor concept in
+   the way rulesets do. **Adding a ruleset without retiring or reconciling the classic rule stacks two
+   layers on one branch.**
+
+   **Verified how**: `gh api repos/.../branches/main/protection` and `.../rules/branches/main`, both
+   run 2026-09-16 07:2x. Layer measured: repo configuration, **not** a behavioral test — I have not
+   pushed a scope-guard delivery to confirm which surface actually refuses it. Denominator: two
+   enforcement surfaces checked (rulesets, classic protection); I did not check org-level policy.
 4. **Vercel** — deployment storage 14.91 GB against the 10 GB Hobby cap; deleting old deployments is
    free and sufficient. Web is hard-blocked (no CLI, no token, no dashboard).
 5. **PA's sequencing answer** for the BYOC readiness plan — PA is deliberately not building ahead.
