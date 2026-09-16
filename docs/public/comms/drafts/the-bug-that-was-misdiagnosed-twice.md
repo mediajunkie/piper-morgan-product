@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: 'In a bright gallery, luminous AI workers expose mismatched picture hooks while two frames lie fallen and a human inspector studies a never-used wall space.'
 caption: ''
 ---
 
