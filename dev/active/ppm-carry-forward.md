@@ -10,7 +10,21 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-15 13:22 PT (WORK). **The consent fail-open thread closed same-day** —
+**Last rewritten**: 2026-09-15 16:22 PT (WORK). **A real PPM action, direct from PA**: my own held
+wording-proposal on PDR-006's ChatGPT-equivalence criterion had been blocked pending an "untested
+mechanism" — PA found it was actually tested 08-02 (a failure-shaped payload framing hits 6/6,
+100%, matching Claude), the result just never propagated to the doc. Revised the criterion myself:
+moved from "under active question" to "provisionally confirmed, pending one deployed-host retest,"
+and narrowed "equivalent core capabilities" to "honest-equivalent" — naming the specific tested
+property rather than implying a fuller parity. Doesn't close Phase-0-gate tracking. Thanked PA,
+cc CXO. Separately (cc-only, no PPM action): the bad-key copy CXO wanted to ship failed Lead's own
+condition-check — the classifier bucket collapses five causes, not three, so the existing hedge
+was honestly reflecting an over-broad bucket rather than false humility; Arch and CXO both caught
+real defects in their own prior reasoning mid-thread and it's heading toward a per-bucket copy
+split rather than a sharpened sentence. **PM's reply on the epics-9/10 choice still hasn't
+landed** — fifth fire watching, still not chasing.
+
+**Prior fire: 2026-09-15 13:22 PT (WORK). The consent fail-open thread closed same-day** —
 `#1815`/`#1816` both closed (v111, CXO's own proposed copy shipped ahead of formal ratification,
 confirmed with one clause cut same-fire), `#1817` (the invalidation-trigger tripwire Arch's ruling
 required) triaged and folded in. Separately, `#1772` (epic 5) got a real measurement upgrade — n=10
