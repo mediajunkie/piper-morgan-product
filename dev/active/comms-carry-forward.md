@@ -1,26 +1,22 @@
 # Comms carry-forward
 
-*Rewritten at the 2026-09-15 21:45 PT STOP fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten 2026-09-16 mid-morning. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
-## Cron
+## Cron / budget note
 
-`815ce10d`, expression `12 6,9,12,15,18,21 * * *` — unchanged. Today was the last fire; next is tomorrow 06:12.
+`815ce10d`, expression `12 6,9,12,15,18,21 * * *` — unchanged. **Weekly usage limit hit; PM added credit for essential work only through Thursday evening reset (2026-09-16/17).** Bias toward essential, scoped work — hold discretionary/exploratory work for after reset.
 
-## Lead item for next wake — building-narrative gap, two-part, both PM-gated
+## Lead item — building-narrative backfill: BOTH HALVES APPROVED 2026-09-16, drafting deferred to Friday
 
-PM caught that today's published beat ("The Bug That Was Misdiagnosed Twice," Aug 19-20) sits ~10 days after the prior one ("The Mailbox Trust Violation," Aug 9) and asked whether Aug 9-18 was reviewed. Checked: real gap. A dispatched subagent did a genuine day-by-day re-read of Aug 10-18 (justified by the session's own Aug 21-26 precedent of the same failure mode) and found it's arguably the densest 9-day run in the month — 5 strong previously-missed candidates (Aug 10, 12, 13, 14, 15), several weaker near-misses (Aug 11, 16, 17, 18). Reported in full, chronological order, no drafting done.
+PM approved both the backfill slate and the process-fix design (see 2026-09-15 session log for the full research trail). Status:
 
-**PM's direction**: backfill now (today's slot can't retroactively move; get the schedule back on track), AND fix the review process so this doesn't recur a third time — explicit 14-month chronological-accuracy stake, wants durable help not a one-off patch.
+1. **Process fix — DONE.** `continue-narrative` bumped to v1.2: Step 2 now requires an explicit per-calendar-day ledger (`candidate`/`thin`, machine-parseable HTML-comment block in the session log) before any slate reaches PM, enforced by a new `scripts/check-narrative-survey-coverage.py` (smoke-tested: clean range, gap, and no-ledger cases all behave correctly). Committed + pushed 2026-09-16 (`d813d3f5e`).
+2. **Backfill slate — approved, drafting HELD until Friday** (PM: "put off writing new drafts until Friday"). The 5 confirmed beats, in work-date order: Aug 10 ("The Contract Tested the Day It Was Born"), Aug 12 ("Three Silent Failures Became One Law"), Aug 13 ("Giving It Away, and Worrying Who'd Take It"), Aug 14 ("The Message That Deleted Itself"), Aug 15 ("The Feature That Was Never Real"). No calendar rows added yet — per `draft-blog-post` Phase 1 the row belongs at draft-file creation, and no draft files exist yet. **Friday: draft all 5 using the v1.2 ledger discipline** (worth writing the retroactive Aug 10-18 ledger into the record then too, since the source re-read already happened 09-15 — just wasn't in the new machine-checkable format yet), add calendar rows, work out the pubDate cascade for the downstream queue.
 
-**Proposed back to PM, awaiting confirmation on both**:
-1. Backfill slate: the 5 strong candidates, in work-date order (Aug 10/12/13/14/15), as individual beats.
-2. Process fix for `continue-narrative` (v1.2): every front-survey must produce an explicit per-calendar-day ledger (candidate found / checked-thin+why — no day silently absent), plus a small completeness-check script asserting no gap before a slate reaches PM. Root cause: the Sep 1 survey's failure was output *shape* (an aggregate "rich everywhere" mood, unauditable) not effort.
+## Closed 2026-09-15/16
 
-**Not yet actioned** — no calendar edits, no drafting, no skill changes. Full detail in today's session log (`dev/2026/09/15/2026-09-15-0642-comms-code-log.md`, "PM thread" section). **First thing to pick up on PM's reply, or at tomorrow's START fire if no reply lands first.**
-
-## Closed today
-
-- "The Bug That Was Misdiagnosed Twice" — fully closed, published, distributed (Medium leg synced by Docs this evening per the last sync). Real cross-role convergence: 2 of 3 "typos" were genuine damage from a P0 compose-UI bug Web independently fixed same-day, with a regression test suite shipped for it.
+- "The Bug That Was Misdiagnosed Twice" — fully closed, published, distributed.
+- Weekly Ship #060 "Four Bugs, One Contract" — editorial review done 09-16 (title-case fix, typo fix, schedule-slip claim verified against calendar), PUBLISH-READY sent to Docs.
 
 ## Open items — no Comms-side move available right now
 
@@ -34,7 +30,8 @@ PM caught that today's published beat ("The Bug That Was Misdiagnosed Twice," Au
 
 ## Waiting on others
 
-- **PM** — confirm the backfill slate + process-fix design above; voice-pass + art on the other 8 drafted items; ChicagoCamps script/slide review.
+- **PM** — voice-pass + art on the other 8 drafted items; ChicagoCamps script/slide review; Ship #060 publish.
+- **Friday (self)** — draft the 5-beat Aug 10-18 backfill slate, now unblocked.
 - **Web** — the phone image-upload issue from 9/10 (PM's own ask, not routed through Comms).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15); #1647 (filed 08-18).
