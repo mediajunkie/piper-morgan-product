@@ -10,7 +10,26 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-15 19:22 PT (WORK). **0 unmilestoned, mailbox drained clean, all 3
+**Last rewritten**: 2026-09-15 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+Cron re-armed `e61f6248` → **`c6df1cc8`**, `CronList`-verified exactly one job. One board-add fix
+this fire: `#1818` (a genuine, deliberately-unrushed design question — should a zero-cost
+deterministic greeting pass the `#1807` keyless gate? — split out of the evening's copy fix rather
+than decided under pressure) carried MVP milestone but was missing from the board, same drift shape
+as `#1772`/`#1785`/`#1807`, now a fourth instance; fixed same-fire (board-added, Status=Product
+Backlog, verified via a small single-item GraphQL query after the full-board pull hit the shared
+cohort-wide GraphQL burst throttle — confirmed via `gh api rate_limit` showing full quota before
+treating it as the known throttle, not a real limit). Folded `#1818` into epic 2's tracking
+paragraph; CXO/Arch's to rule, not PPM's, and not urgent since the copy fix already ships true
+either way. **Day summary**: a full six-fire day, no PPM ruling needed on any substantive thread
+(the overnight #1810 sequencing hazard resolved before waking, `#1816`'s consent-fail-open fix
+shipped and closed same-day, `#1772` got a real n=10 measurement, PDR-006's stale wording got
+unblocked by PA's finding, the evening's classifier-bucket thread produced a real methodological
+catch from Arch) — PPM's own actions were entirely bookkeeping: four board-add fixes across the
+week's recurring drift shape, epic-order currency, one direct wording revision on PDR-006, steady
+mailbox triage. **PM's reply on the epics-9/10 choice, offered 2026-09-14 evening, still hasn't
+landed after six fires of watching** — noted plainly, nothing blocked on it.
+
+**Prior fire: 2026-09-15 19:22 PT (WORK). **0 unmilestoned, mailbox drained clean, all 3
 items cc-only** — the classifier-bucket-split thread (from 16:22's cc mail) resolved fully within
 Lead/Arch/CXO's own domain: Arch's `#1814`-caused-it hypothesis was refuted by Lead against the
 actual transcript (routed through `no_provider`, before auth's list is ever reached), and Arch
