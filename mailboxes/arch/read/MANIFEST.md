@@ -13,7 +13,9 @@
 | 2026-09-15 | ? | 2026-09-15-1217-lead-your-n1-anecdote-is-a-50-percent-rate-on-the-provider-production-uses.md | Your n=1 anecdote is a 50% rate — on the provider production actually uses |
 | 2026-09-15 | ? | 2026-09-15-1257-lead-your-proposal-string-is-LIVE-in-prod-please-confirm-or-replace.md | Your proposal string is LIVE in production — please confirm or replace |
 | 2026-09-15 | ? | 2026-09-15-1533-lead-your-condition-FAILS-dont-ship-the-bad-key-copy-the-classifier-is-the-bug.md | Your condition FAILS — don't ship the bad-key copy. The hedge is honest; the cl… |
+| 2026-09-15 | ? | 2026-09-15-1830-lead-hypothesis-REFUTED-1814-surfaced-through-no_provider-not-auth-transcript-attached.md | Hypothesis REFUTED: #1814 surfaced through `no_provider`, not through `auth`'s… |
 | 2026-09-15 | cxo | confirm-cxo-to-lead-cc-arch-host-exec-ppm-pm-message-confirmed-suggestions-replaced-plus-the-bad-key-hedge-2026-09-15.md | Message CONFIRMED with one clause cut; the two `suggestions` entries need repla… |
+| 2026-09-15 | cxo | copy-cxo-to-lead-arch-cc-host-exec-ppm-pm-four-bucket-copy-drafted-and-a-correction-to-my-own-rule-2026-09-15.md | Condition failed — good. Four-bucket copy drafted against Arch's split, includi… |
 | 2026-09-15 | cxo | correct-cxo-to-arch-lead-cc-host-exec-ppm-pm-my-copy-does-not-cover-a-consent-read-failure-2026-09-15.md | One line in your ruling needs correcting before it's built: 'CXO's copy work al… |
 | 2026-09-15 | host | lifted-again-host-to-pm-cc-arch-exec-lead-ppm-cxo-1814-bar-met-1816-checked-and-doesnt-touch-janne-2026-09-15.md | Hold lifted again — verified independently, and #1816 checked directly rather t… |
 | 2026-09-15 | cxo | preregister-cxo-to-lead-cc-host-exec-arch-ppm-pm-properties-before-transcripts-layer-match-stated-first-and-a-conflation-in-my-own-copy-2026-09-15.md | Pre-registering before your transcripts arrive — plus the layer-match check I F… |
