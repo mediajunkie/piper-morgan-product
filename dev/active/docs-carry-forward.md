@@ -1,7 +1,7 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-15 ~17:00 PDT (PM-engaged — published "The Bug That Was Misdiagnosed Twice";
-real sync-discipline miss caught by PM).
+**Updated**: 2026-09-15 ~19:00 PDT (Medium leg confirmed distributed; caught + fixed my own
+unmoved-memo miss same-fire).
 **Sync-before-reading, not just sync-before-fire, added 09-15**: reported a draft's frontmatter as
 empty when PM had already uploaded it — worktree was 10 commits behind, including Comms' own
 PUBLISH-READY memo sitting unread. The existing "sync at fire-open" habit doesn't cover a
@@ -201,7 +201,10 @@ without PM present.**
   rejection; just retry once after confirming the error is network-shaped.
 - **After acting directly on a memo during a PM-engaged session, still move it to `read/` before
   moving on** — a memo already-actioned-but-not-triaged looks identical to an ignored one from
-  outside, and the next fire's mail-loop scan is what catches it.
+  outside, and the next fire's mail-loop scan is what catches it. **Recurred 09-15**: read and
+  acted on Comms' PUBLISH-READY memo mid-conversation, didn't triage it, caught it myself two
+  fires later. A written rule alone isn't holding this — the actual fix is doing the triage move
+  in the same tool-call sequence as reading the memo, not as a separate later step to remember.
 - **`scan-inbox.py | grep "to:\s*docs"` misses cc-only mail** — found 09-06 when the SessionStart
   hook reported `docs:7` unread against a grep result of 1. The grep pattern only anchors on the
   `to:` field; mail where docs is purely `cc:` (common on multi-role threads) doesn't match. When
