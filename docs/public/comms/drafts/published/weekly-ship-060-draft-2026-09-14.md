@@ -4,7 +4,7 @@ alt: 'A child and a crew of robots checking each other''s work on a boat.'
 caption: ''
 ---
 
-# Weekly Ship #060: Four bugs, one contract
+# Weekly Ship #060: Four Bugs, One Contract
 
 *September 4 – 10, 2026*
 
@@ -57,6 +57,8 @@ The week's best single result is small to describe and took two days to find. Fo
 [![Three luminous AI agents celebrate an empty sheep pen while a startled human discovers most of the flock—and several escape routes—outside their counting gate.](https://pipermorgan.ai/assets/blog-images/more-than-anyone-ever-reported-to-me.webp)](https://pipermorgan.ai/blog/more-than-anyone-ever-reported-to-me)
 *"Did anyone check outside the pen?"*
 
+**Note: This was off our usual pace** as we decided to hold off on publishing on Sunday over the holiday weekend and then ended up getting the narrative piece scheduled for Thursday published on Friday instead, on the first day of the next sprint.
+
 **A publishing defect fixed at the source.** A near-duplicate post was caught before it ran, traced back to a June rename that had actually been a copy without a delete. The drafting process now checks whether an orphaned draft is a fork of something already published, which closes the class rather than the instance.
 
 ## 📊 Governance & operations
@@ -66,8 +68,7 @@ The week's best single result is small to describe and took two days to find. Fo
 - **Issues closed:** 26
 - **Against the MVP milestone:** 18
 - **Deployed:** four releases
-- **Published:** 3 pieces, no missed slots
-- **Completed to date:** 1,133
+- **Published:** 3 pieces
 
 **Every open issue now carries a milestone**, for the first time. Work filed without one had been invisible to every progress number we report, which meant our own counts quietly excluded whatever had just been discovered.
 
@@ -106,7 +107,7 @@ xian + Piper Morgan Development Team
 
 This is Weekly Ship #060. Previous: [#059 "The Verifier Is Not Exempt"](https://pipermorgan.ai/shipping-news/weekly-ship-059-the-verifier-is-not-exempt).
 
-*P.S. The self-correction habit this project has been building kept paying out — most of the week's sharpest catches were people finding their own errors before anyone else did, and several published them against themselves the same day. It has stopped being remarkable, which is the point.*
+*P.S. The self-correction habit this project has been building kept paying out — most of the week's smoothest catches were agents finding their own errors before anyone else did, and several published them against themselves the same day. It has stopped being remarkable, and we may start taking such self-correction for granted.*
 
 *P.P.S. Full session logs and technical details available in the [GitHub repository](https://github.com/mediajunkie/piper-morgan-product) and [documentation site](https://pmorgan.tech). Yes, you can copy it. That just makes our protocol stronger.*
 
