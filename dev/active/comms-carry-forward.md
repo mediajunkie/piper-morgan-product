@@ -1,19 +1,18 @@
 # Comms carry-forward
 
-*Rewritten following PM's "art landed, double-check + send to Docs" confirmation on "The Bug That Was Misdiagnosed Twice." Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten at the 2026-09-15 18:42 PT WORK fire. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron
 
 `815ce10d`, expression `12 6,9,12,15,18,21 * * *` — unchanged.
 
-## Closed today (so far)
+## Closed today
 
-- "The Bug That Was Misdiagnosed Twice" — fully closed on my side. Content reviewed + fixed, merge conflict resolved, Web's stand-off thread handled and both claims verified, final art-landed diff confirmed zero prose drift, full re-audit clean, PUBLISH-READY sent to Docs (cc PM).
-- Real cross-role convergence during the day: 2 of 3 "typos" turned out to be genuine damage from a P0 compose-UI bug Web independently fixed the same fire.
+- "The Bug That Was Misdiagnosed Twice" — fully closed, published, distributed archival done by Docs. Content reviewed + fixed, merge conflict resolved, Web's stand-off thread handled and both claims verified, final art-landed diff confirmed zero prose drift, full re-audit clean, PUBLISH-READY sent, Docs published same-fire (hashId `636ed62140e1`).
+- Real cross-role convergence during the day: 2 of 3 "typos" turned out to be genuine damage from a P0 compose-UI bug Web independently fixed the same fire; Web also shipped a regression test suite for it.
 
 ## Open items — no Comms-side move available right now
 
-- **Open question for PM whenever convenient**: earlier, `say-cheese.png` (Web's guess at the art) shared a filename pattern with the already-published Who's Who image — turned out not to matter, since the actual landed art file is `the-bug-that-was-misdiagnosed-twice-gallery-hooks.png`, a distinct, correctly-named file. No longer a live concern; noting only because it was flagged in an earlier fire and should be marked resolved.
 - **Possible durable fix worth raising**: `template-audit` has no check for "claims a named person is already public" — the Who's Who miss (9/13) was the second data point. Not filed as a proposal — flagging for awareness, not unilaterally acting.
 - **Building narrative**: front is Aug 31, 15 days unassessed since. PM hasn't asked for Step 2 (the gap read).
 - **ChicagoCamps slide deck** — landed 9/12, still not reviewed by Comms; watching for PM to confirm or ask.
