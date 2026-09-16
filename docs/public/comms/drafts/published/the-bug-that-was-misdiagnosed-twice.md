@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'the-bug-that-was-misdiagnosed-twice-gallery-hooks.png'
+alt: 'In a bright gallery, luminous AI workers expose mismatched picture hooks while two frames lie fallen and a human inspector studies a never-used wall space.'
+caption: '"We’ve narrowed it down to three completely different explanations!"'
 ---
 
 # The Bug That Was Misdiagnosed Twice
