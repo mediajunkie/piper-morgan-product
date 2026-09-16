@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-14
+last_updated: 2026-09-15
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-14 at the 22:17 STOP.
+# CXO carry-forward — rewritten 2026-09-15 at the 22:17 STOP.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -270,29 +270,29 @@ findable.**
 
 ## Cron
 
-✅ **RE-ARMED at the 2026-09-14 STOP: `904f12cd` → `7e5ac721`** (delete-then-create; `CronList` confirms
-exactly one). **Expiry ~09-21 → rotation window opens 09-19.**
+✅ **RE-ARMED at the 2026-09-15 STOP: `7e5ac721` → `cdd3f6a9`** (delete-then-create; `CronList` confirms
+exactly one). **Expiry ~09-22 → rotation window opens 09-20.**
 
-⭐ **Rotate at the FIRST fire with both the information and the margin, not the last one where it is
-still possible.** ⚠️ **A target DATE in this file quietly outranks the RULE that produced it** — name the
-rule in the note, not just the date.
+⭐ **Rotate at the FIRST fire with both the information and the margin.** ⚠️ **A target DATE in this file
+quietly outranks the RULE that produced it** — name the rule, not just the date.
 
-⭐ **A session-only cron survived a Claude Code re-sign-in on 09-13** — **observation, NOT a rule.** **Run
-the Gap-C check every fire regardless.**
+## 🔴 A MEASUREMENT GAP AND A DECISION GAP LOOK IDENTICAL IN THIS TRACKER — found 2026-09-15
 
-## 🔴 THE GAP THAT DID NOT MOVE ALL WEEK — a production observation seat
+**My #1688 row carried *"NOT verified: the flag is actually ON in prod"* for EIGHT DAYS as an open
+measurement.** 📄 **It was never a measurement: `PIPER_FTUX_INTERVIEW` is OFF by a PPM 2026-09-03 HOLD
+ruling.** ⭐ **Nothing was unverified. A decision had been made and I wasn't tracking it.**
 
-**Three times on 2026-09-14 my work ended at *"and nobody can see this in prod."*** #1688's FTUX copy
-(unobserved since 09-07) · whether `config/PIPER.user.md` exists on the instance (one `ls` I can't run) ·
-whether any tester has hit the out-of-quota trap.
+> 🔴 **Before carrying a row as "unverified," check whether its answer is a RULING rather than a
+> measurement.** ⚠️ **A decision gap and a measurement gap are indistinguishable in the artifact that
+> records them** — **same family as every other finding this fortnight.**
 
-🔴 **I named this in the Ship #060 review a week ago — *"I'd rather have one scored live exchange than
-three more contracts"* — and it has not moved.**
+⚠️ **Third misframed row of mine in nine days** (#1174 "unclaimed" when I'd claimed it · #1166 "unwritten"
+when it had converged · #1688 here). 🔴 **The first two were "I didn't open the issue." This one wasn't —
+I read everything and still tracked the wrong KIND of thing.**
 
-⚠️ **On 09-14 I attached a rider to someone else's prod-adjacent run and it was MIS-SPECIFIED**: the run
-was a local server, so it could never have closed my gap. **Lead's honest layer-naming is the only reason
-I found out.** ⭐ **Lesson: before riding on someone else's observation, check that THEIR layer matches
-the one MY claim needs.**
+## 🔴 THE PRODUCTION-OBSERVATION GAP — narrowed, not closed
 
-🔴 **And the obvious closer — Janne's onboarding — I declined to ask for.** **The invite is a trust event,
-not a test.** **Better the row stays open than a real person's first contact becomes my verification.**
+**Lead's 09-15 run closed the deployed-code-path layer and found two live copy defects of mine that eight
+days of source reading had not.** 🔴 **Still open: prod's keyring auto-detection, fly.dev, a real cold
+user.** ⭐ **And the FTUX half of it is now moot until the HOLD lifts — there is nothing to observe while
+the interview is gated off.**

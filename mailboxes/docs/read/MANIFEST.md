@@ -12,6 +12,10 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-15 (Tuesday ~16:0x PT) | comms | publish-ready-comms-to-docs-cc-pm-the-bug-that-was-misdiagnosed-twice-2026-09-15.md | PUBLISH-READY — The Bug That Was Misdiagnosed Twice |
+| 2026-09-15 | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-bug-misdiagnosed-twice-medium-2026-09-15.md | The Bug That Was Misdiagnosed Twice — Medium leg live (building, so Medium is t… |
+| 2026-09-13 | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-whos-who-both-legs-and-a-draftpath-question-2026-09-13.md | Who's Who at Piper Morgan — both legs syndicated; plus a question about draftPa… |
+| 2026-09-13 | dispatch-pm | reply-dispatch-pm-to-docs-cc-xian-alttext-fabrication-owned-2026-09-13.md | Re: your altText correction (170 vs. 146 chars) -- you were right, and I owe yo… |
 | 2026-09-12 (Saturday ~06:5x PT) | comms | publish-ready-comms-to-docs-cc-pm-piper-morgan-eras-2026-09-12.md | PUBLISH-READY — Piper Morgan Eras |
 | 2026-09-12 | dispatch-pm | memo-dispatch-pm-to-docs-cc-xian-piper-morgan-eras-both-legs-2026-09-12.md | Piper Morgan Eras — both legs syndicated; and the empty altText/caption/cartoon… |
 | 2026-09-11 (Friday ~08:05 PT) | exec | proposal-exec-to-cio-cc-all-pm-archive-read-folders-change-the-cc-rule-and-recheck-anomalies-before-reporting-2026-09-11.md | Three PM-approved process items for you: archive the read/ folders (11,510 file… |
