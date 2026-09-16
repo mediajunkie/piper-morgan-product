@@ -80,9 +80,16 @@ days stale.
   capacity distinct from Lead already in active daily use (the mechanism that makes "doesn't distract
   Lead" satisfiable — route Phase C build work to prog, not Lead's queue). PM approved and asked for
   it written up properly: `dev/active/byoc-parallel-work-plan-2026-09-15.md` (three phases: design
-  now / infra-only DNS-TLS / real build via prog, plus a mechanical merge-discipline check). **Next
-  concrete step, unblocked, no dependency on anyone else**: build the Phase A hosted-alpha readiness
-  checklist. Separately, PM also opened a related-but-distinct thread — inventorying which cohort
+  now / infra-only DNS-TLS / real build via prog, plus a mechanical merge-discipline check).
+  🟢 **Checklist built same-day**: `dev/active/byoc-hosted-alpha-readiness-checklist-2026-09-15.md`
+  — a live-status pass against #1462's own requirements, an ownership map (who does each open item
+  without touching Lead), and a real correction found along the way: the ChatGPT honest-decline gap
+  is better than represented (a failure-shaped payload framing already tests 6/6 = 100%, matching
+  Claude — PDR-006 and this plan's own earlier "~50%" citation were both stale on the same figure,
+  fixed same-fire; flagged to PPM directly since it supersedes the wording-proposal they're holding
+  on #1462). **Next concrete step**: Phase B (DNS/TLS stand-up) — unlocks retesting both the
+  recomposition and honest-decline mitigations against a real deployed host, per the checklist's own
+  sequencing. Separately, PM also opened a related-but-distinct thread — inventorying which cohort
   operational disciplines Piper's own product harness is/isn't reproducing (skills vs. underlying
   state layer, e.g. the memory/colleague-model gap) — kept as its own document per PM's explicit
   request: `dev/active/piper-harness-inventory-2026-09-15.md`.

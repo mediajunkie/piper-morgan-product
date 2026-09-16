@@ -187,10 +187,28 @@ buckets and picks a matching user-facing fallback message:
 |---|---|---|
 | `no_provider` | "not configured" or "no llm provider" in error text | `FLOOR_FALLBACK_NO_PROVIDER` — "I don't have an LLM provider configured yet..." |
 | `auth` | 401/403/unauthorized/forbidden, "invalid api key", "authentication", "not initialized", model-not-found, 404 | `FLOOR_FALLBACK_AUTH` — "I can't generate responses right now... check your LLM API key in Settings" |
+| `consent_unreadable` | a `ConsentUnreadableError` — matched by TYPE, not substring (#1816) | `FLOOR_FALLBACK_CONSENT_UNREADABLE` — "I couldn't read which providers you've authorized, so I'm not going to guess…" |
 | `transient` | everything else (timeouts, 500s, network errors) | `FLOOR_FALLBACK_TRANSIENT` — "I'm having trouble connecting to my reasoning engine right now... try again in a moment" |
 
 Model-not-found and 404 are intentionally classified as `auth` rather than
 `transient`: they almost always mean a config problem the user needs to fix.
+
+⚠️ **The breadth of `auth` is deliberate and it constrains the COPY** (recorded 2026-09-15,
+after CXO proposed sharpening `FLOOR_FALLBACK_AUTH` to "your key was rejected — the provider
+says it isn't valid"). That replacement was **declined**, because the bucket merges at least
+four distinct causes: a rejected key (401/invalid_api_key), a *valid* key lacking permission
+(403/forbidden), a client that was never initialized ("not initialized" — no key was rejected
+at all), and a deprecated or wrong model ID. **The existing hedge is not false humility; it is
+an accurate description of an over-broad bucket** — CXO's own three-cause list maps almost
+exactly onto what this row catches, which is *why* the copy reads as hedging.
+
+**So sharpening the sentence requires splitting the bucket first.** Until then, any copy that
+names one cause is a lie for the other three. This is the same shape as #1816's root finding
+(one value carrying several meanings, so the honest response is the vague one) — here it costs
+a vague sentence rather than an unauthorized provider.
+
+`consent_unreadable` is matched by exception TYPE rather than substring precisely to avoid
+joining this family: rewording its message cannot silently re-route it.
 
 ---
 

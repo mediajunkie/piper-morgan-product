@@ -1,14 +1,14 @@
 ---
 type: copy-contract
 name: GatherOutcome — the user-facing contract (cousin 1's aggregation copy)
-version: v0.5 — §6a adds RUNNABLE fixtures for acceptance cases 2-4 (2026-09-14); all four provenance states verified representable in today's code, so case 3 is NOT blocked on the epic. v0.4 added §5b-i 2026-09-13: what a capped list reads like once the remainder is cashable (epic 6). v0.3 recorded Arch's confirmation of §5b as the joint invariant of epics #1 and #2.
+version: v0.6 — §1 refined 2026-09-15 (a hedge is dishonest only if the distinction still exists where the sentence is written — I misapplied my own rule). v0.5 added RUNNABLE fixtures for acceptance cases 2-4 (2026-09-14); all four provenance states verified representable in today's code, so case 3 is NOT blocked on the epic. v0.4 added §5b-i 2026-09-13: what a capped list reads like once the remainder is cashable (epic 6). v0.3 recorded Arch's confirmation of §5b as the joint invariant of epics #1 and #2.
 date: 2026-09-09
 owner: CXO
 assigned_by: Arch 2026-09-09 — "cousin 1's aggregation copy (the N-failures→one-sentence rule) is CXO's
   user-facing contract, with the #1717 composition case as its acceptance test"
 applies_to: un-modeled-nouns audit cousin 1 ("an empty-or-degraded answer"); the GatherOutcome epic
 acceptance_test: §6
-last_updated: 2026-09-14
+last_updated: 2026-09-15
 currency_claim: static until the GatherOutcome epic starts; re-verify §5's site survey then
 max_age_days: 60
 ---
@@ -38,6 +38,22 @@ humility.** A colleague who ends every correct answer with a disclaimer is not b
 making you do the work of deciding whether to believe them.
 
 **So the contract's job is not "be more cautious." It is: say exactly as much as is true, and stop.**
+
+> ### 🔴 REFINEMENT 2026-09-15 — I misapplied this rule myself, and the correction is a layer check
+>
+> **I read a hedge (*"could be an expired API key, a deprecated model, or a configuration problem"*) as
+> false uncertainty, on the grounds that *we hold a 401*.** ⚠️ **We do. The layer WRITING THE SENTENCE
+> does not** — the classifier hands the floor a bucket label, and 📄 Arch's read found that bucket
+> collapses **five** causes. 📌 **Lead: *"the copy is honestly reflecting a classifier that can't
+> tell."***
+>
+> > 🔴 **Before calling a hedge dishonest, check whether the distinction it declines to draw still EXISTS
+> > where the sentence is written.** **If it was destroyed upstream, the hedge is honest and the defect
+> > is upstream.**
+>
+> ⭐ **The cure is a discriminating read, never better prose downstream** — the same cure as this whole
+> cousin. ⚠️ **And the failure mode is specific: I diagnosed the copy layer for a defect in the layer
+> above it**, which is the m-43 *name-the-layer* discipline applied to blame rather than to evidence.
 
 ## 2. The reportability rule — one line, and it is the core
 
