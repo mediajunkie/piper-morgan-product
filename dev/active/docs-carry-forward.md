@@ -1,15 +1,18 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-16 ~06:50 PDT (PAUSED — duty cycle deliberately stopped at PM's direct
-request; NOT a day-close).
-**⚠️ DUTY CYCLE PARKED — READ BEFORE ASSUMING A FIRE SHOULD HAPPEN.** PM directed: "make the
-omnibus now... but then pause your duty cycle," given pipermorgan.ai's weekly usage limit (97%
-hit 09-15, PM manually rationing overage credits 09-16). Cron `6709059b` deliberately
-`CronDelete`'d — confirmed via `CronList`: "No scheduled jobs." **Clearing condition (falsifiable,
-per CLAUDE.md's going-dark protocol): resume only when PM explicitly asks to resume, or a fresh
-session's own `CronList` shows a job actually armed — never infer resumption from this file's
-prose alone.** Registry row parked with the same condition, written before going dark since a
-parked role can't edit its own row once dark.
+**Updated**: 2026-09-17 ~12:20 PDT (still PAUSED — one scoped PM-authorized task done, not a
+resumption).
+**⚠️ DUTY CYCLE STILL PARKED — READ BEFORE ASSUMING A FIRE SHOULD HAPPEN.** Same clearing
+condition as 09-16: resume only on PM's explicit ask, or a fresh session's own `CronList`
+confirming a job is actually armed. **09-17 update**: PM authorized a *specific, scoped* overage
+to publish today's post only — not a resumption. Published "The Week the Checks Started Checking
+Themselves" (hashId `19c8e3b74bc2`), fully distributed pending Medium confirmation. Also closed
+two cheap loose threads found in the mailbox: Ship #060's LinkedIn leg (calendar updated) and a
+real correction sent to Janus (cross-project) — their ceiling/resume-failure hypothesis for the
+missing 09-15 omnibus was reasonable but wrong; actual cause was PM engaging directly before the
+STOP fire ran, not a silent resume failure. Caught and fixed my own cc-delivery miss on that reply
+same-fire (mail-send.sh's warning was real, not the known MANIFEST false positive — verified both
+before deciding which). **Duty cycle cron NOT re-armed** — still deliberately dark.
 **Rate-limit note (PM, 09-16)**: pipermorgan.ai hit its weekly usage limit, resets Thursday;
 PM added overage credit for essential functions. If a session resumes and work seems to go quiet
 or errors appear, check this before assuming a real defect. Dispatch-PM independently flagged the
