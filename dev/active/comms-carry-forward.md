@@ -1,10 +1,14 @@
 # Comms carry-forward
 
-*Rewritten 2026-09-16 mid-morning. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten 2026-09-17 midday. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron / budget note
 
-`815ce10d`, expression `12 6,9,12,15,18,21 * * *` — unchanged. **Weekly usage limit hit; PM added credit for essential work only through Thursday evening reset (2026-09-16/17).** Bias toward essential, scoped work — hold discretionary/exploratory work for after reset.
+`815ce10d`, expression `12 6,9,12,15,18,21 * * *` — unchanged. **Weekly usage limit hit 2026-09-15; account resets tonight (2026-09-17, ~10pm per PM).** PM granted a small overage today specifically to review/edit today's post, then asked to go idle again until reset. Going idle now — no further action expected until the reset or PM's next direct ask.
+
+## Closed today
+
+- "The Week the Checks Started Checking Themselves" — editorial review done (4 negation-reveal AI-tic instances found and fixed, everything else clean, footer tease verified against calendar). Calendar row → `ready-for-docs`, PUBLISH-READY sent to Docs (cc PM).
 
 ## Lead item — building-narrative backfill: BOTH HALVES APPROVED 2026-09-16, drafting deferred to Friday
 
@@ -30,8 +34,9 @@ PM approved both the backfill slate and the process-fix design (see 2026-09-15 s
 
 ## Waiting on others
 
-- **PM** — voice-pass + art on the other 8 drafted items; ChicagoCamps script/slide review; Ship #060 publish.
-- **Friday (self)** — draft the 5-beat Aug 10-18 backfill slate, now unblocked.
+- **Docs** — publish "The Week the Checks Started Checking Themselves" (PUBLISH-READY sent 09-17).
+- **PM** — voice-pass + art on the other 8 drafted items; ChicagoCamps script/slide review.
+- **After reset (self)** — draft the 5-beat Aug 10-18 backfill slate, now unblocked, originally planned for Friday.
 - **Web** — the phone image-upload issue from 9/10 (PM's own ask, not routed through Comms).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15); #1647 (filed 08-18).
