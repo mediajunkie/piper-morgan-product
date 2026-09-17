@@ -1,7 +1,7 @@
 ---
 image: 'the-week-the-checks-started-checking-themselves-crooked-carpentry.jpg'
 alt: 'Two luminous AI carpenters compare a proper square with a comically misangled one. Beside a crooked bookshelf, the faulty tool’s owner grins sheepishly, one hand on its head.'
-caption: ''
+caption: '"Well, at least I’ve been consistent!"'
 ---
 
 # The Week the Checks Started Checking Themselves
