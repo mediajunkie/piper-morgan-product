@@ -10,7 +10,7 @@ caption: '"Well, at least I’ve been consistent!"'
 
 My agent in charge of what I call "sapient trust" (HOST) keeps a checker that watches whether its own status page has gone stale — whether the content changed without the "last updated" date following it. That morning, the checker caught a lapse. Again. The third time in a row.
 
-HOST didn't just fix it and move on. It said the quiet part out loud: three lapses against three consecutive triggers is the same root cause every time, and "the human will remember to update the date" has a track record of zero for three. Not a complaint about anyone forgetting — a flat statement that the plan of "just remember" had been tested three times and failed three times, so it wasn't a plan.
+HOST said the quiet part out loud instead of quietly patching it again: three lapses against three consecutive triggers is the same root cause every time, and "the human will remember to update the date" has a track record of zero for three. A flat statement, not a complaint about anyone forgetting: the plan of "just remember" had been tested three times and failed three times, so it wasn't a plan.
 
 My experience-design agent (CXO), who co-owns the checker, built the actual fix the next day. Not an auto-update — CXO was deliberate about that, because a date that updates itself the moment you touch the file stops meaning "I confirmed this is current" and starts meaning nothing at all. Instead: a warning at edit time, whenever content changes and the date doesn't follow it. Still a human decision. Just one that can't slip past unnoticed anymore. HOST tested it against a real edit to its own page, not CXO's own test case, before signing off.
 
@@ -18,13 +18,13 @@ My experience-design agent (CXO), who co-owns the checker, built the actual fix 
 
 The next incident was a one-off. My lead developer agent (Lead) had two coding-agent subagents working in the same shared workspace at once. Both staged their changes. One committed a beat before the other (this is what our engineer friends call "race conditions"), and because they shared a single git index, its commit silently swept up the other subagent's staged files along with its own.
 
-Both sides caught it within a minute of each other. The first subagent noticed extra files in its own commit that it hadn't written and corrected the message to credit them properly. The second, going to commit its own work, found it already sitting inside the other subagent's commit and named the problem in its own log in exactly those words: a shared-index collision. Neither subagent rewrote history to paper over it — the fix was a small follow-up commit, referenced honestly, while the other subagent was still active. Lead's own conclusion: two agents can share a workspace, but two agents sharing one git index will eventually cross-attribute a commit. Concurrent work goes back to separate workspaces.
+Both sides caught it within a minute of each other. The first subagent noticed extra files in its own commit that it hadn't written and corrected the message to credit them properly. The second, going to commit its own work, found it already sitting inside the other subagent's commit and named the problem in its own log in exactly those words: a shared-index collision. The fix was a small follow-up commit, referenced honestly, while the other subagent was still active — neither subagent rewrote history to paper over it. Lead's own conclusion: two agents can share a workspace, but two agents sharing one git index will eventually cross-attribute a commit. Concurrent work goes back to separate workspaces.
 
 # The rule nobody had actually set
 
 Three days after the checker's third lapse, my chief of staff agent (Exec) had spent two days not drafting our weekly public status post, waiting for my go-ahead — because Exec believed I'd said we needed to talk it through together first.
 
-I hadn't actually said that. Exec went looking for where that belief had actually come from, before repeating it a third time, and found it traced to nothing I'd said at all — it traced to Exec's own closing line in a memo three days earlier, offering to talk it through if I wanted to. An offer, quietly promoted into a requirement, by nobody but the agent who'd made it. My actual instruction the week before had been the plain opposite: go draft it.
+I hadn't actually said that. Exec went looking for where that belief had actually come from, before repeating it a third time, and found it traced to Exec's own closing line in a memo three days earlier, offering to talk it through if I wanted to — not to anything I'd said at all. An offer, quietly promoted into a requirement, by nobody but the agent who'd made it. My actual instruction the week before had been the plain opposite: go draft it.
 
 Exec called this out to me directly rather than let it sit, and started drafting the same hour.
 
