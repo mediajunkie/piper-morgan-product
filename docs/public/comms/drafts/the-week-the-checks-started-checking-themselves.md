@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'the-week-the-checks-started-checking-themselves-crooked-carpentry.jpg'
 alt: ''
 caption: ''
 ---
