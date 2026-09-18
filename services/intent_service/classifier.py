@@ -34,6 +34,7 @@ from services.intent_service.pre_classifier import MultiIntentResult, PreClassif
 from services.intent_service.preference_handler import PreferenceDetectionHandler
 from services.intent_service.prompts import INTENT_CLASSIFICATION_PROMPT
 from services.knowledge_graph import get_ingester
+from services.llm.request_key import LLMKeyRequiredError
 from shared.events import EventBus
 
 # #1768 (2026-09-12): classify_conscious — the grammar-conscious classification
@@ -626,6 +627,15 @@ class IntentClassifier:
 
         except LowConfidenceIntentError:
             # Re-raise to be caught by the middleware
+            raise
+        except LLMKeyRequiredError:
+            # #1809: a key refusal is a correct ANSWER, not a classification
+            # failure. Wrapping it in IntentClassificationFailedError erases the
+            # type the boundary needs to serve the honest, case-specific copy
+            # (the same #1815 Gap 2 / #1816 principle already applied in
+            # `_complete_raw` and `_process_intent_internal`). This is what lets
+            # an unbound Slack turn surface "bring your own key" instead of a
+            # generic classification error.
             raise
         except Exception as e:
             logger.error(f"Classification failed: {e}", exc_info=True)

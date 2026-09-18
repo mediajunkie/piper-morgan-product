@@ -6,6 +6,8 @@ a blank header falls back to the server key, and the client-selection uses the
 user key when bound. The route wiring + the LLM call site consume this module.
 """
 
+import pytest
+
 from services.llm.request_key import (
     anthropic_client_for_request,
     get_request_api_key,
@@ -46,8 +48,13 @@ def test_reset_even_on_exception():
 
 def test_client_selection_uses_user_key_when_bound():
     server_client = object()  # sentinel for the server's configured client
-    # absent → the server client (PM's own use / unauthenticated)
-    assert anthropic_client_for_request(server_client) is server_client
+    # absent → REFUSE (#1809 inversion; this line used to assert the server
+    # client — "PM's own use / unauthenticated" — which #1807/#1320 closed at
+    # the resolver and #1809 closed at the chokepoint itself)
+    from services.llm.request_key import UnboundLLMKeyError
+
+    with pytest.raises(UnboundLLMKeyError):
+        anthropic_client_for_request(server_client)
     # bound → a FRESH client keyed to the user's BYOC key, not the server client
     with request_api_key("sk-ant-user"):
         client = anthropic_client_for_request(server_client)

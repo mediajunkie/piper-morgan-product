@@ -344,13 +344,22 @@ class TestByocKeyIsUsableAsAFallbackProvider:
         request`` is what ``_anthropic_complete`` actually calls. For the same request
         these two must never contradict each other — two layers disagreeing about whether
         a credential exists is what #1814 WAS, and the fallback loop is where it survived.
+
+        AMENDED by #1809: the unbound arm used to assert the consumer RETURNED the
+        (absent) server client — `is None`. Unbound is now a REFUSAL
+        (`UnboundLLMKeyError`), which states the same agreement more strongly: the gate
+        says unavailable, and the consumer doesn't merely come back empty-handed, it
+        refuses to be reached without a binding at all.
         """
+        from services.llm.request_key import UnboundLLMKeyError
+
         llm = clients_module.LLMClient()
 
         # No request bound: the server owns no Anthropic key, so Anthropic is genuinely
-        # unavailable and nothing is invented.
+        # unavailable and nothing is invented — and the consumer refuses (#1809).
         assert llm._is_provider_configured(LLMProvider.ANTHROPIC) is False
-        assert anthropic_client_for_request(llm.anthropic_client) is None
+        with pytest.raises(UnboundLLMKeyError):
+            anthropic_client_for_request(llm.anthropic_client)
 
         with request_api_key(STORED_USER_KEY):
             assert llm._is_provider_configured(LLMProvider.ANTHROPIC) is True
@@ -359,9 +368,10 @@ class TestByocKeyIsUsableAsAFallbackProvider:
             assert consumer_client.api_key == STORED_USER_KEY
 
         # And the agreement holds in the other direction too: the binding does not outlive
-        # the request, so neither does the availability answer.
+        # the request, so neither does the availability answer — nor the entitlement.
         assert llm._is_provider_configured(LLMProvider.ANTHROPIC) is False
-        assert anthropic_client_for_request(llm.anthropic_client) is None
+        with pytest.raises(UnboundLLMKeyError):
+            anthropic_client_for_request(llm.anthropic_client)
 
     def test_a_request_key_never_makes_a_provider_without_a_per_request_path_look_available(
         self,
