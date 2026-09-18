@@ -7,36 +7,44 @@ by the wave-0 successor session** (survived the clear), expires ~09-25.
 live. Note that this was a cold start on a *running* Amber; **the Amber reboot itself is still
 ahead**, and preregistration §4 is explicit that wave 0 passing does not clear the reboot path.
 
-⚠️ **AMBER RESTART IS IMMINENT — today, possibly early.** PM ruled it a **cold start**, not a resume,
-and **Exec goes first as the shakedown cruise** (PM: *"not risk the lead developer's mental model of
-what they're working on just yet"*). If you are reading this as a fresh session: that worked, and
-**`docs/handoff-exec-2026-09-18.md` is the file written for you** — read it before this one.
+**Fresh session?** `docs/handoff-exec-2026-09-18.md` was written for you — read it before this file.
 
 ## In flight — the thing that breaks if nobody picks it up
 
-🔴 **WAVE 0 IS GO as of 2026-09-18 ~10:5x — Pard's hand, on THIS seat, now.** Janus certified to PM
-that all three of us share a plan. **If you are a fresh Exec reading this, the cold start already
-happened and you are the experiment.** Before anything else, open
-**`docs/shakedown-wave0-exec-preregistration-2026-09-18.md`** — it holds the criteria written BEFORE
-you existed, precisely so you cannot grade yourself. **Answer its §1 from the repo, then hand the
-result to Janus, Pard or PM. Do not self-certify.**
+✅ **SPRINT CLOSEOUT IS DONE — 10 of 10 filed, synthesis written and on trunk**
+(`dev/active/exec-sprint-closeout-synthesis-sep11-17-2026-09-18.md`). Nine on track; **CXO reports
+NOT on track deliberately** (T axis in `PENDING-PROBE` under ESSENCE commitment 7, which is ratified
+law citing an instrument that cannot issue a pass). Lead, ppm, pa, cxo all filed within an hour of
+PM's nudge. **Nothing further owed on the closeout.**
 
-**Sprint closeout for Sep 11–17 — PM expects a synthesis from me.** Sent 09-18 to all ten roles.
-Each owes ONE primary goal, progress, **on-track as a yes/no word**, next steps, portfolio +
-contributor updates, ~400 words.
+🔴 **PM IS MID-WALKTHROUGH OF THE DECISION QUEUE.** Board:
+`dev/active/exec-cohort-attention-rollup-2026-09-18.html`. PM's framing: *"I will expedite what I can
+and ask for support with anything tricky."* **Five blockers, four of which take under a minute; only
+the scope-guard ruling needs real thought.** If you are a fresh session: read the board before
+re-deriving anything, and do not re-board what PM has already cleared.
 
-- ✅ **SIX filed: docs, comms, cio, web, host, arch.**
-- ⏳ **Four outstanding: cxo, lead, pa, ppm — and all four are the still-dark roles.**
-  **Every awake role has filed. The outstanding set is exactly the set that cannot yet.** Do not
-  read it as non-compliance and do not nudge them; PM wakes them one-on-one. Nudge only if they
-  are awake and past Sunday 09-20.
-- Their wake packet: `mailboxes/exec/sent/wake-exec-to-idle-roles-*-2026-09-18.md`.
+⚠️ **THE LARGEST HOLE I KNOW ABOUT, found 15:1x and not yet fixed: PM's conversational rulings are
+recorded nowhere the re-verify rule checks.** I carried PA's BYOC sequencing as a live blocker; **PM
+had answered it on 09-15 in conversation.** It is absent from PA's carry-forward, `decisions.log`, and
+every `sent/` — the three surfaces the v1.32 re-verify rule names. **I committed this four hours
+after cataloguing the same miss-class.** Candidate fix (NOT designed, do not treat as agreed):
+`decisions.log` is append-by-any-agent and exists for exactly this; the gap is that nobody logs PM's
+spoken rulings on another role's behalf. **Raise with CIO/HOST — do not patch alone.**
 
-✅ **CIO RATIFIED the weekly reflection** (09-18) — Section A (~150 words on the closeout template,
-PM's question verbatim) and Section B (Exec's standing cross-cohort reflection) both stand as
-written, unamended. CIO logged it as a live instance of **m-53 chokepoint-vs-bolt-on**, which they
-own: the original handoff ritual died the way m-53 predicts a bolt-on dies. **Section B is now a
-standing duty of this seat** — reflect each week on what is not already captured.
+⚠️ **§2.2 IS WITH PARD/JANUS, NOT SELF-ASSESSED.** My 14:38 fire **arrived 15:08** — 8 min past the
+~15:00 ceiling we both computed from "+~10% jitter". Cron alive and it did fire; I cannot distinguish
+"REPL busy" from "jitter model wrong". **The fleet half is the important half: if the jitter model is
+wrong, every per-seat reboot deadline is wrong and the belt will read late-but-healthy seats as
+dead.** Offered to measure actual arrival-vs-slot deltas across seats from trunk timestamps — awaiting
+their word. Memo `1b929ebed`.
+
+⭐ **SHIPPED TODAY, and the reason matters more than the artifact**: PM asked *"are we fixing routing
+issues as we detect them?"* Measured: **29 check-shaped scripts; the ones catching this class are
+wired into CI 0× and hooks 0×.** We build detectors and route their invocation through prose.
+Answered with code — `scripts/check-unboarded-pm-items.sh`, wired as the attention-rollup skill's
+**Step 0b**, regression-tested against the memo that was actually missed. **Triage-cadence wiring is
+PM's design and CIO's surface** — proposed (`cc4b5bd1e`), **reply owed**. The skill text says outright
+that if that proposal never landed, it is itself an instance of the failure it describes.
 
 ## Also live
 
@@ -89,7 +97,10 @@ standing duty of this seat** — reflect each week on what is not already captur
    enforcement surfaces checked (rulesets, classic protection); I did not check org-level policy.
 4. **Vercel** — deployment storage 14.91 GB against the 10 GB Hobby cap; deleting old deployments is
    free and sufficient. Web is hard-blocked (no CLI, no token, no dashboard).
-5. **PA's sequencing answer** for the BYOC readiness plan — PA is deliberately not building ahead.
+5. ✅ **PA's BYOC sequencing — ANSWERED by PM 2026-09-15** (proceed in parallel with MVP; conditions:
+   don't distract Lead, nothing merges that risks MVP). PA's closeout confirms it and reports the goal
+   ON TRACK. ⚠️ **I carried this as a live blocker until 15:1x today** — PM ruled it in conversation and
+   it is in none of the three surfaces the re-verify rule checks. See the conversational-ruling hole above.
 6. **Janne Lammi's alpha invite** — token `ZVHWT5408X2NFA6P0D838B35`, UNUSED. #1814 closed and
    verified, so the technical blocker is cleared; the Lead/Arch/CXO copy-bucket thread is downstream
    refinement on a closed fix and does NOT re-block it.
