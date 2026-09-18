@@ -404,6 +404,15 @@ class LLMClient:
                 served["provider"] = primary_provider.value
                 served["model"] = served_model
             return result
+        except LLMKeyRequiredError:
+            # #1809: a key refusal from the provider call itself (the inverted
+            # chokepoint in `anthropic_client_for_request` — unbound is now an
+            # ERROR, never a server-key fallback) is a correct ANSWER, not a
+            # provider failure. Letting the blanket handler below treat it as one
+            # would relabel the refusal as "All configured LLM providers failed"
+            # — try-again copy for a condition retrying cannot fix. Same #1815
+            # Gap 2 principle applied at the call layer.
+            raise
         except Exception as e:
             logger.warning(
                 "llm_primary_failed",
@@ -455,6 +464,13 @@ class LLMClient:
                         served["provider"] = fallback_provider.value
                         served["model"] = fallback_served_model
                     return result
+                except LLMKeyRequiredError:
+                    # #1809: same as the primary arm — a refusal is not a provider
+                    # failure to be papered over by the next candidate. Only the
+                    # Anthropic leg can raise this (the per-request key's sole
+                    # consumer), and it means this request has no key it is
+                    # entitled to spend: the honest outcome is the refusal.
+                    raise
                 except Exception as fallback_error:
                     logger.warning(
                         f"Fallback provider {fallback_provider.value} failed: {fallback_error}"
@@ -539,9 +555,11 @@ class LLMClient:
         system: Optional[str] = None,
     ) -> str:
         """Get completion from Anthropic"""
-        # #1162 BYOC: use the request's user-supplied key (if one was bound at the
-        # /api/v1/intent route) instead of the server's configured client; falls back
-        # to the server client when absent. The key is never logged here.
+        # #1162 BYOC / #1809 inversion: use the request's user-supplied key (bound by
+        # the entry point via `request_api_key`). UNBOUND raises `UnboundLLMKeyError`
+        # — there is no server-key fallback any more (PM ruling, #1812); the only
+        # server-client path is the resolver's explicit designated-operator binding
+        # (#1807, both gates). The key is never logged here.
         from services.llm.request_key import anthropic_client_for_request
 
         client = anthropic_client_for_request(self.anthropic_client)

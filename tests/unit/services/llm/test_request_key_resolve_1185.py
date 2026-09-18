@@ -82,5 +82,10 @@ async def test_resolved_stored_key_flows_through_the_rail_to_the_client():
         client = anthropic_client_for_request(server_client)
         assert client is not server_client
         assert getattr(client, "api_key", None) == "sk-stored-u1"
-    # after the block: ContextVar reset → back to the server client (no leak)
-    assert anthropic_client_for_request(server_client) is server_client
+    # after the block: ContextVar reset → no leak. AMENDED by #1809: reset used to
+    # mean "back to the server client"; unbound is now a refusal, which is the
+    # stronger form of the same no-residue property.
+    from services.llm.request_key import UnboundLLMKeyError
+
+    with pytest.raises(UnboundLLMKeyError):
+        anthropic_client_for_request(server_client)

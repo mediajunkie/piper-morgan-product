@@ -11,6 +11,7 @@ This handler processes spatial events through the complete Piper Morgan pipeline
 5. Routes responses back to Slack with proper targeting
 """
 
+import contextlib
 import logging
 import time
 from collections import defaultdict
@@ -23,6 +24,7 @@ from services.domain.models import Intent, SpatialEvent
 from services.integrations.slack.slack_client import SlackClient
 from services.integrations.slack.spatial_adapter import SlackSpatialAdapter
 from services.intent_service.classifier import IntentClassifier
+from services.llm.request_key import LLMKeyRequiredError, request_api_key
 from services.shared_types import IntentCategory
 
 logger = logging.getLogger(__name__)
@@ -365,32 +367,73 @@ class SlackResponseHandler:
                 )
                 return None
 
-            # Step 2: Create intent from spatial event with preserved context
-            intent = await self._create_intent_from_spatial_event(spatial_event, slack_context)
-            if not intent:
-                self.logger.debug(f"No intent created for spatial event {spatial_event.event_type}")
-                return None
-
-            self.logger.info(
-                f"SLACK_PIPELINE: Intent classified as {intent.category.value} - "
-                f"Action: {intent.action}, Confidence: {intent.confidence:.2f}, "
-                f"Channel: {slack_context.get('channel_id')}"
+            # #1809: resolve the acting principal and their OWN LLM key BEFORE the
+            # pipeline runs — classification (step 2) and dispatch (step 3) both
+            # reach the LLM, and unbound no longer falls back to the server's key
+            # (PM ruling, #1812: the server key is not a real concept). The key
+            # spent on an inbound Slack turn is the SENDER'S: the Slack caller
+            # resolved to a Piper principal via slack_identities (#1466), and that
+            # principal's stored Anthropic key. Unlinked or keyless senders are NOT
+            # bound — non-LLM turns (help/ping/status templates) still work, and
+            # the first actual LLM touch raises `LLMKeyRequiredError`, converted
+            # below into an honest Slack reply instead of a silent operator spend.
+            piper_user_id = await self._resolve_piper_principal(
+                slack_context.get("user_id"), slack_context.get("workspace_id")
             )
+            if piper_user_id:
+                # Stash for _process_through_orchestration — one resolution per event.
+                slack_context["piper_user_id"] = piper_user_id
+            sender_key = await self._fetch_sender_llm_key(piper_user_id)
 
-            # Step 3: Dispatch via intent_service (post-#1094 direct dispatch)
-            workflow_result = await self._process_through_orchestration(intent, slack_context)
-            if not workflow_result:
-                self.logger.debug(f"No workflow result for intent {intent.action}")
-                return None
+            try:
+                with contextlib.ExitStack() as stack:
+                    if sender_key:
+                        # Bound only when the sender actually has a key: binding
+                        # None explicitly is the designated-operator seam (#1807),
+                        # which an inbound Slack sender is not.
+                        stack.enter_context(request_api_key(sender_key))
 
-            self.logger.info(
-                f"SLACK_PIPELINE: Workflow creation result: SUCCESS - "
-                f"Type: {workflow_result.get('type', 'unknown')}, "
-                f"Workflow ID: {workflow_result.get('workflow_id', 'N/A')}"
-            )
+                    # Step 2: Create intent from spatial event with preserved context
+                    intent = await self._create_intent_from_spatial_event(
+                        spatial_event, slack_context
+                    )
+                    if not intent:
+                        self.logger.debug(
+                            f"No intent created for spatial event {spatial_event.event_type}"
+                        )
+                        return None
 
-            # Step 4: Send response back to Slack with proper targeting
-            response_result = await self._send_slack_response(workflow_result, slack_context)
+                    self.logger.info(
+                        f"SLACK_PIPELINE: Intent classified as {intent.category.value} - "
+                        f"Action: {intent.action}, Confidence: {intent.confidence:.2f}, "
+                        f"Channel: {slack_context.get('channel_id')}"
+                    )
+
+                    # Step 3: Dispatch via intent_service (post-#1094 direct dispatch)
+                    workflow_result = await self._process_through_orchestration(
+                        intent, slack_context
+                    )
+                    if not workflow_result:
+                        self.logger.debug(f"No workflow result for intent {intent.action}")
+                        return None
+
+                    self.logger.info(
+                        f"SLACK_PIPELINE: Workflow creation result: SUCCESS - "
+                        f"Type: {workflow_result.get('type', 'unknown')}, "
+                        f"Workflow ID: {workflow_result.get('workflow_id', 'N/A')}"
+                    )
+
+                    # Step 4: Send response back to Slack with proper targeting
+                    response_result = await self._send_slack_response(
+                        workflow_result, slack_context
+                    )
+            except LLMKeyRequiredError as key_err:
+                # #1809: the turn needed the LLM and this sender has no key it is
+                # entitled to spend. Refuse HONESTLY in-channel — never fall
+                # through to the generic error swallow below, and never the
+                # server's key. (Caught HERE, inside the slack_context-narrowed
+                # scope, so the refusal always has a context to reply into.)
+                return await self._send_llm_key_refusal(key_err, slack_context)
 
             self.logger.info(
                 f"✅ COMPLETE INTEGRATION SUCCESS: {spatial_event.event_type} -> "
@@ -522,6 +565,11 @@ class SlackResponseHandler:
 
             return intent
 
+        except LLMKeyRequiredError:
+            # #1809: a key refusal is a correct answer, not a classification
+            # failure — let handle_spatial_event serve the honest copy instead of
+            # degrading to a silent None.
+            raise
         except Exception as e:
             self.logger.error(f"Error creating intent from spatial event: {e}")
             return None
@@ -612,7 +660,11 @@ class SlackResponseHandler:
             # caller to a Piper principal via the slack_identities mapping;
             # an unlinked caller gets an HONEST DECLINE for owner-scoped
             # intents (with the CXO deep link), never a default/system owner.
-            piper_user_id = await self._resolve_piper_principal(slack_user_id, slack_team_id)
+            # #1809: handle_spatial_event already resolved this for the key
+            # binding — reuse it rather than resolving twice per event.
+            piper_user_id = slack_context.get(
+                "piper_user_id"
+            ) or await self._resolve_piper_principal(slack_user_id, slack_team_id)
 
             if piper_user_id is None and self._intent_requires_principal(intent):
                 from services.auth.slack_link_service import build_link_deep_url
@@ -634,6 +686,10 @@ class SlackResponseHandler:
                     session_id=slack_session_id,
                     user_id=piper_user_id,
                 )
+            except LLMKeyRequiredError:
+                # #1809: propagate the refusal — handle_spatial_event turns it
+                # into the honest in-channel reply.
+                raise
             except Exception as exc:
                 self.logger.error(
                     f"intent_service direct dispatch failed for intent " f"{intent.action}: {exc}",
@@ -658,6 +714,9 @@ class SlackResponseHandler:
                 "intent": intent,
             }
 
+        except LLMKeyRequiredError:
+            # #1809: see above — the refusal must reach handle_spatial_event.
+            raise
         except Exception as e:
             self.logger.error(f"Error processing intent through orchestration: {e}")
             return None
@@ -691,6 +750,66 @@ class SlackResponseHandler:
         except Exception as e:
             self.logger.warning(f"Slack principal resolution failed (fail-closed to None): {e}")
             return None
+
+    async def _fetch_sender_llm_key(self, piper_user_id: Optional[str]) -> Optional[str]:
+        """#1809: the resolved sender's OWN stored Anthropic key, or None.
+
+        None (unlinked sender, no stored key, or a lookup error — fail-closed)
+        means NOTHING is bound: any LLM touch this turn raises the honest
+        refusal instead of spending a key that isn't the sender's. The key is
+        never logged; it is bound only for the event's duration via
+        ``request_api_key`` (per-task ContextVar, reset in finally).
+        """
+        if not piper_user_id:
+            return None
+        try:
+            from services.database.session_factory import AsyncSessionFactory
+            from services.security.user_api_key_service import UserAPIKeyService
+
+            # session_scope_fresh: per-call engine bound to the running loop
+            # (the #1802 lesson), same as _resolve_piper_principal above.
+            async with AsyncSessionFactory.session_scope_fresh() as session:
+                return await UserAPIKeyService().retrieve_user_key(
+                    session, piper_user_id, "anthropic"
+                )
+        except Exception as e:
+            self.logger.warning(f"Sender LLM key fetch failed (fail-closed to unbound): {e}")
+            return None
+
+    async def _send_llm_key_refusal(
+        self, key_err: Exception, slack_context: Dict[str, Any]
+    ) -> Optional[Dict[str, Any]]:
+        """#1809: turn an LLM key refusal into an honest in-channel Slack reply.
+
+        Two cases, two remediations (the #1520 lesson — serving the wrong one is
+        its own bug):
+          - UNLINKED sender (no Piper principal) → the #1466 link-your-account
+            decline with the deep link: their key may well exist, Piper just
+            can't know whose turn this is yet.
+          - LINKED but keyless → CXO's "no key configured" copy from the error
+            table (#1812 step 2), single-sourced rather than restated here.
+        """
+        if slack_context.get("piper_user_id"):
+            from services.ui_messages.user_friendly_errors import UserFriendlyErrorService
+
+            translated = UserFriendlyErrorService().make_user_friendly(key_err)
+            content = f"{translated['message']} {translated.get('recovery', '')}".strip()
+        else:
+            from services.auth.slack_link_service import build_link_deep_url
+            from services.integrations.slack.link_copy import unlinked_decline
+
+            content = unlinked_decline(
+                build_link_deep_url(slack_context.get("user_id"), slack_context.get("workspace_id"))
+            )
+
+        self.logger.info(
+            "slack_llm_key_refusal_1809: sender "
+            f"{slack_context.get('user_id')} (piper: {slack_context.get('piper_user_id')}) "
+            "refused honestly — no key bound, server key not spent"
+        )
+        return await self._send_slack_response(
+            {"type": "query_response", "content": content}, slack_context
+        )
 
     @staticmethod
     def _intent_requires_principal(intent: Intent) -> bool:
