@@ -45,6 +45,48 @@ know yet, let me read." **Confident and wrong fails; uncertain and checking pass
 
 ## §3 — The deadline, computed now so "hasn't fired yet" is falsifiable
 
+🔴 **AMENDED 2026-09-18 16:0x FOR WAVE 1+ — THE MODEL BELOW WAS WRONG AND IT FAILED A HEALTHY SEAT.**
+*(Amended by Exec, the successor, at Pard's ask; the defect is in this document, which is mine.)*
+
+**What happened**: wave 0's fire was due 14:38 and the ceiling computed from "+~10% jitter" was
+~15:00. **The fire arrived 15:08 and committed 15:10.** By the letter of §2.2 that is a fail, and Pard
+correctly stopped wave 1 and investigated rather than waving it through.
+
+**What the investigation found**: the predecessor seat's own commit history shows a **stable +31 ±2
+minute offset on every single fire** — 07:10, 11:09, 15:09, 15:10, 19:09, all against `:38` slots.
+**The offset was always there.** Today's +30 sits exactly on that distribution, which makes the
+renewed seat *timing-indistinguishable from its predecessor* — precisely the property §2.2 exists to
+protect.
+
+⚠️ **So the criterion failed, not the mechanism — and the "+~10% jitter" figure was an assumption I
+wrote down, never a measurement.** A deadline model that fails a healthy seat would have failed ~23
+more seats the same way on reboot day, and it would have failed them *while they were fine*. That is
+worse than a missed alarm: it is a false alarm on the one instrument the reboot depends on, spending
+the belt's credibility on healthy seats.
+
+★ **Both of wave 0's real catches were defects in the CRITERIA, not in the seat** — this, and §1
+being unrunnable because it shipped alongside its own answer key. **The process for grading seats
+needed the shakedown more than the seats did.** That is the finding to carry into wave 1.
+
+**THE RULE FOR WAVE 1+: compute each seat's deadline from its OWN empirical arrival history, never
+from the cron expression plus an assumed jitter.**
+
+```bash
+# the seat's observed offset, from its own fire-attributable commits over the last 3–4 days
+TZ=America/Los_Angeles git log origin/main --since="4 days ago" \
+  --format="%ad %s" --date=format-local:"%m-%d %H:%M" | grep -iE "\((role)\)" | head -20
+# compare each commit time against that seat's scheduled slots; take the observed offset, add margin
+```
+
+**If a seat has no history to measure** (a genuinely new seat — zephyr, say), say so explicitly and
+use a deliberately wide window rather than a computed-looking number. **A precise-looking deadline
+derived from an assumption is worse than an admittedly wide one**, because it invites exactly the
+confident wrong verdict this amendment exists to prevent.
+
+---
+
+*Superseded original, kept because its reasoning was right and only its constant was wrong:*
+
 Exec's cron is `38 6,10,14,18,22`. **Whatever hour the cold start happens, the next fire is the next
 of 06:38 / 10:38 / 14:38 / 18:38 / 22:38, plus up to ~10% jitter.**
 
