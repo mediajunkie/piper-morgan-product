@@ -96,6 +96,31 @@ never ran against the right object).
 2. **GitHub** — live-verify every candidate (the half-reason the docs were foldable: re-derive truth rather than trust a doc).
 3. **Blocker mail** — your exec inbox + cc'd blocker memos (the active-memo-the-gate path — blockers ride mail, not docs; see the Blocker bucket in Step 3).
 
+   🔴 **AND `read/` SINCE THE LAST BOARD — not just `inbox/`. Triage evicts items from the only mail
+   surface this step sweeps, so the better your mail hygiene, the more invisible your PM items become.**
+
+   *Added 2026-09-18 (Exec), from a traced miss. HOST's memo "Janne's roster row recorded, invite ready
+   to send" — our first external alpha tester — **arrived and was triaged `inbox/`→`read/` in the same
+   commit**, `19:09:08` on 09-13, **3.5 hours after that day's board was compiled at 15:42**. The next
+   compile was five days later. In between, the item existed only in `read/`, which no Step 1 source
+   looks at. It sat unsurfaced for three more days after the technical blocker cleared, and PM was
+   never actually asked.*
+   
+   ⚠️ **The inversion is the point, and it is why nobody catches this by being more careful: a memo
+   left sitting unread in `inbox/` WOULD have been caught. Prompt triage is what hid it.** Every
+   incentive we have — drain the inbox, don't let mail rot — pushes items out of the swept surface.
+   Diligence is the failure mode, so no amount of additional diligence fixes it.
+
+   **So the mail sweep is two commands, not one:**
+   ```bash
+   ls mailboxes/{role}/inbox/
+   # AND — everything triaged since the last board was compiled:
+   LAST=$(git log --format=%aI -1 -- dev/active/{role}-cohort-attention-rollup-*.html)
+   git log --since="$LAST" --diff-filter=A --name-only --format= -- "mailboxes/{role}/read/" | sort -u
+   ```
+   If no prior board exists, bound it by the last ~7 days rather than skipping the check. **State the
+   window you swept in the footer** — an unbounded "checked the mail" is the m-44 false clear.
+
 Read the carry-forwards. Each is that role's self-reported view of what (if anything) needs PM
 attention. **Treat them as perspectives, not ground truth** — they can be stale (a role may not have
 refreshed since its last fire). That's exactly what Step 2 corrects.
@@ -241,6 +266,25 @@ Step 2 live-verification pass on each hit as you would any other candidate, then
 - **Genuinely PM-gated** → onto the board, **first-seen = the row's filed date**, not today. An item
   that has aged 3 months should render as 3 months, not as new.
 - **The agent's own deferred work** → not PM's problem. Note it to that role, don't board it.
+
+🔴 **THE SCRIPT EMITS THREE LABELS. THIS SECTION ONLY EVER ROUTED ONE.**
+
+*Found 2026-09-18 (Exec) by counting, not by reading: `aging-standing-items.sh` emits `AGING`,
+`STALE-BLOCKER` and `COVERAGE GAP`. Before this edit, `STALE-BLOCKER` appeared in this skill **zero
+times** — so a hit under that label arrived with no instruction and got skimmed past. CIO's row 7u
+(Pard's cron→LaunchAgent proposal) flagged `STALE-BLOCKER` and **had never reached a board** despite
+CIO's technical read being done and sent on 09-10, leaving only PM's cost call outstanding. An
+un-routed label is a check that runs and reports into a vacuum.*
+
+| Label | What it means | Route it to |
+|---|---|---|
+| **`AGING`** | ≥21d, no blocking language — quietly deferred | The sort above |
+| **`STALE-BLOCKER`** | The row's *blocker* cites a `#NNNN` that is now **CLOSED** | ⚠️ **Verify the issue, then treat the row as UNBLOCKED.** A row blocked on a closed issue is not blocked — it is *unblocked work nobody has noticed became unblocked*, which is strictly worse than an aging row because its own text argues against looking at it. If it is PM-gated → board it. If it is the role's own work → tell them it's free. |
+| **`COVERAGE GAP`** | File has no parseable per-item date | Not a board item. Tell that role which of the two accepted date forms to adopt (CLAUDE.md names both). Count it in the footer's denominator. |
+
+**Today's run flagged four `STALE-BLOCKER` rows** — cio 7u (`#1743`), cxo (`#1739`), exec 17
+(`#1615`), exec 18 (`#1527`). **Two of those four are my own**, which is the honest reason this label
+went unrouted for as long as it did.
 
 ⚠️ **STATE THE COVERAGE, EVERY TIME — and take it from the script's own output, not from a memo.**
 
