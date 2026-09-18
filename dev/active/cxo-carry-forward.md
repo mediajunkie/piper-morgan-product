@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-15
+last_updated: 2026-09-18
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-15 at the 22:17 STOP.
+# CXO carry-forward — rewritten 2026-09-18 at the 13:15 fire, after the standdown.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -270,29 +270,40 @@ findable.**
 
 ## Cron
 
-✅ **RE-ARMED at the 2026-09-15 STOP: `7e5ac721` → `cdd3f6a9`** (delete-then-create; `CronList` confirms
-exactly one). **Expiry ~09-22 → rotation window opens 09-20.**
+✅ **RE-ARMED 2026-09-18 11:5x after the PM standdown: job `4f984f8f`**, `CronList`-verified singular.
+**Expiry ~09-25 → rotation window opens 09-23.** **Registry row UNPARKED by this session** — the bar is
+*armed and CronList-verified*, and 🔴 **only the owning session can meet it** (`CronList` is
+session-scoped).
 
 ⭐ **Rotate at the FIRST fire with both the information and the margin.** ⚠️ **A target DATE in this file
 quietly outranks the RULE that produced it** — name the rule, not just the date.
+🔴 **`CronList` proves a job OBJECT exists. The only proof a cron FIRES is a fire** (Lead, 09-13).
 
-## 🔴 A MEASUREMENT GAP AND A DECISION GAP LOOK IDENTICAL IN THIS TRACKER — found 2026-09-15
+## 🔴 THE STANDDOWN, and what it taught about my own currency claim
 
-**My #1688 row carried *"NOT verified: the flag is actually ON in prod"* for EIGHT DAYS as an open
-measurement.** 📄 **It was never a measurement: `PIPER_FTUX_INTERVIEW` is OFF by a PPM 2026-09-03 HOLD
-ruling.** ⭐ **Nothing was unverified. A decision had been made and I wasn't tracking it.**
+**2026-09-16: PM suspended all duty cycles to the 09-17 22:00 reset** (weekly usage ceiling; it had
+**dropped ~17% on 09-13** when a promotion ended — ⚠️ **if you reconstruct "what changed," you need that
+denominator or you will blame a person**). **Cron deleted, day closed, stopped without draining.**
+**09-17 has no log: a DECISION gap, not an unclosed day — deliberately not backfilled.**
 
-> 🔴 **Before carrying a row as "unverified," check whether its answer is a RULING rather than a
-> measurement.** ⚠️ **A decision gap and a measurement gap are indistinguishable in the artifact that
-> records them** — **same family as every other finding this fortnight.**
+⚠️ **On 09-18's second fire, `check-refresh-promises.py` flagged this file STALE** — *3d old, claim
+allows 1d.* ⭐ **That is the step I had NEVER run until 09-12, doing exactly its job on the first fire
+after a gap.** 🔴 **And the honest response was to REFRESH the file, not to widen `max_age_days` so the
+flag stops firing** — **loosening a threshold to silence a true report is the failure this whole
+carry-forward catalogues.**
 
-⚠️ **Third misframed row of mine in nine days** (#1174 "unclaimed" when I'd claimed it · #1166 "unwritten"
-when it had converged · #1688 here). 🔴 **The first two were "I didn't open the issue." This one wasn't —
-I read everything and still tracked the wrong KIND of thing.**
+## Live threads — current as of 2026-09-18
 
-## 🔴 THE PRODUCTION-OBSERVATION GAP — narrowed, not closed
-
-**Lead's 09-15 run closed the deployed-code-path layer and found two live copy defects of mine that eight
-days of source reading had not.** 🔴 **Still open: prod's keyring auto-detection, fly.dev, a real cold
-user.** ⭐ **And the FTUX half of it is now moot until the HOLD lifts — there is nothing to observe while
-the interview is gated off.**
+- ✅ **BYOC §6 probe — ASKED AND ANSWERED.** PA: *"yes, mine"*, picking up §6's design **at their next
+  substantive fire**, with a **named next step rather than a vague someday.** ⭐ **The whole reason it
+  moved is that I asked instead of assuming** — PA's line: *"'I assumed you'd run it' is exactly the kind
+  of thing that reads as coordination until someone checks."* **T stays `PENDING-PROBE` until it runs.**
+- 🟡 **Contract §6 cases 2–4** — runnable fixtures in §6a; **unrun.** Lead has them.
+- 🟡 **Four-bucket auth copy** — drafted 09-15 against Arch's split; **Lead files the issue.**
+- 🟡 **#1791 / my FTUX personalization notice** — *"Running with a default configuration"* fires right
+  after a user configures something. **Observed live 09-15. No replacement proposed — the fix interacts
+  with #1791's per-user overlay question.**
+- 🔴 **`PIPER_FTUX_INTERVIEW` is OFF by a PPM 09-03 HOLD** — **a ruling, not an open measurement.** **I
+  tracked it wrong for eight days.**
+- **Amber cold-start reboot** — handoff filed at `docs/handoff-cxo-2026-09-18.md`. ⚠️ **Under a cold
+  start this file becomes load-bearing; keep it current.**

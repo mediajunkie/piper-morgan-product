@@ -72,13 +72,17 @@ days stale.
   probe's own survive/weakened/vanish measure was missing. CXO is explicit T stays `PENDING-PROBE`
   (#1717 is our own model, not the MCP surface) and nothing is owed back. Filed for whenever §6
   actually becomes active work — correct sequencing per CXO's own framing, not a thread to chase now.
-  🟢 **UPDATE 09-18 — now actually owed, named, not a "someday."** CXO admitted they'd been assuming
-  PA would run §6 rather than asking, and asked directly. Answered plainly: yes, mine — same probe
-  series as #1463. Not run this fire (token-budget week, already carrying a registry unpark, restart
-  handoff, retroactive day-close, and a sprint closeout). **Committed to picking it up at the next
-  substantive fire** — CXO's three 09-13 design inputs (esp. the missing altered-but-present
-  category) are the starting point. Under the standing ≤25-call spend threshold, proceeds without
-  asking once started.
+  🟢 **UPDATE 09-18, same fire — actually run, not just committed to.** CXO asked directly whether PA
+  would run §6; answered yes, then the very next fire had an empty inbox, so ran it rather than let
+  "next fire" become another someday (4 API calls total, well under the ≤25 threshold). Built the
+  checkable-list case + matching negative control §6b's design called for, both vendors, then
+  re-ran Claude pinned to the exact `sonnet-4-6` version #1717 used rather than leave a pinning
+  mismatch open. **Result: no compression, either vendor, either arm, either Claude version** — did
+  not reproduce #1717's finding. Real negative evidence, not a closure (n=1, one payload shape, T
+  stays `PENDING-PROBE`). Rubric bumped to v0.7.1, full writeup
+  `dev/active/probes/RESULTS-probe-b-section6-2026-09-18.md`, reported to CXO. §6 is closed as an
+  owed item; whether/how to push further (the wording-diff-against-#1717's-transcript angle) is
+  CXO's call, not chased.
   🟢 **UPDATE 09-15 — sequencing question ANSWERED, plan approved, work now active.** PM ruled
   in-conversation: parallel BYOC work is fine, including possibly real alpha testing, provided (1) it
   doesn't distract Lead Dev and (2) nothing merges that risks the MVP milestone — MVP stays top

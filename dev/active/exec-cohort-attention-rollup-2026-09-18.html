@@ -63,7 +63,7 @@
 <div class="wrap">
   <h2 class="sr-only">Five items block work, eight need a call, four drift items worth knowing, plus a traced account of why several were missed.</h2>
   <h1>Your decision queue</h1>
-  <p class="meta">Exec · <b>Friday 18 September, 11:53 PDT</b> · full live-state pass · every item re-verified this hour against its primary source, not carried from the last board</p>
+  <p class="meta">Exec · <b>Friday 18 September, 11:53 PDT</b> · live-state pass at 11:53, <b>re-verified 16:0x</b> immediately before your walkthrough · every item re-verified against its primary source</p>
 
   <div class="lede">
     <p><b>The finding across all six closeouts is one sentence: the constraint is your decision
@@ -87,7 +87,15 @@
     <span>✅ <b>Cleared</b></span>
   </p>
 
-  <h2>🛑 Blockers — work is stopped until you act</h2>
+  <div class="item clear">
+    <p class="bigclear" style="margin-bottom:.4rem">✅ All ten sprint closeouts are now in — the
+    synthesis you were owed is unblocked.</p>
+    <p style="margin:0">Lead, PPM, PA and CXO all filed within an hour of your nudge. <b>Blocker 4
+    below is struck</b> — you had already answered it. Four items that had never been boarded arrived
+    with them; they're in the new section above.</p>
+  </div>
+
+  <h2>🛑 Blockers — <b>three live</b>, two struck below</h2>
 
   <div class="item">
     <div class="top"><span class="n">1 · Scope-guard can't deliver its memo</span>
@@ -160,30 +168,94 @@
     <div class="links"><code>dev/active/web-carry-forward.md</code> · <code>mailboxes/exec/read/closeout-web-...-2026-09-18.md</code></div>
   </div>
 
+  <div class="item clear">
+    <div class="top"><span class="n">4 · <s>PA's BYOC sequencing</s> — ALREADY ANSWERED, my error</span>
+      <span class="who">PA</span><span class="age new">struck 15:1x</span></div>
+    <p><b>You answered this on 09-15</b> — proceed in parallel with MVP, conditional on not distracting
+    Lead and nothing merging that risks MVP. PA's closeout, filed an hour ago, says so plainly and
+    reports the goal <b>on track</b> with the next concrete step named. <b>Do not spend a minute on
+    this.</b></p>
+    <p><b>Why it was on the board:</b> I verified it against PA's carry-forward, `decisions.log` and
+    every <code>sent/</code> — and it was in none of them, because you ruled it <i>in conversation</i>
+    and PA's carry-forward was last touched 09-15. <b>This is the same class of miss I spent the
+    morning cataloguing, committed by the tool built to catch it, four hours later.</b> The three
+    surfaces the re-verify rule names do not include "PM said it out loud," and that is now the
+    largest hole I know about.</p>
+  </div>
+
+  <div class="item clear">
+    <div class="top"><span class="n">5 · <s>website#35</s> — CLOSED by Web at 12:28, with evidence</span>
+      <span class="who">Web</span><span class="age new">struck 16:0x</span></div>
+    <p><b>You don't need to remember anything.</b> Web closed it rather than let it keep waiting on
+    your recall — and notably <b>not</b> "on the fix's merits with a shrug," which was their fallback.
+    The compose editor now has the test harness it lacked when the bug was filed, so they answered the
+    issue's three unknowns directly from the mechanism (<code>8edfc11</code>, <code>key={slug}</code>
+    forcing a fresh component instance per draft).</p>
+    <p><b>That is the better outcome and it was theirs, not mine.</b> Web turned a question only you
+    could answer into one the code could.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="n">⚠️ Two of the five blockers went stale between compiling this and your walking it</span>
+      <span class="age new">16:0x</span></div>
+    <p><b>Blocker 4</b> you had answered on 09-15. <b>Blocker 5</b> Web closed at <b>12:28 — 38 minutes
+    after I verified it open at 11:50, and nearly three hours before my 15:10 update still carried
+    it.</b></p>
+    <p><b>The pattern, stated plainly: this board is a snapshot, and the cohort works faster than it
+    re-verifies.</b> Ten roles are now awake and pushing. Verifying at compile time is not the same as
+    verifying at <i>walk</i> time, and the gap between them is where stale items live.</p>
+    <p style="margin-bottom:0"><b>So the standing habit from here: a short re-verify pass immediately
+    before any walkthrough, not only at compile.</b> This one took four minutes and caught two items
+    that would otherwise have spent your attention. I'd rather run it every time than hand you a
+    fourth stale blocker.</p>
+  </div>
+
+  <h2>🆕 Arrived at 15:1x — the last four closeouts landed, all ten are in</h2>
+
   <div class="item">
-    <div class="top"><span class="n">4 · PA is deliberately not building the BYOC readiness plan</span>
-      <span class="who">PA</span><span class="age hot">filed 07-26</span></div>
-    <p><b>What it is.</b> PA has the BYOC readiness plan drafted and ready for when MVP closes, and is
-    holding rather than building ahead of your sequencing call. Their standing row records it as
-    <i>"awaiting PM's answer on sequencing before building."</i></p>
-    <p><b>Worth saying plainly:</b> this is PA doing the right thing — not guessing at sequencing and
-    not building speculative work — and the cost of that discipline is that it sits until you answer.
-    It converged with the BYOC strategic conversation on 08-18 and has been quiet since.</p>
-    <div class="ask"><b>Needed:</b> when does PA start — at MVP closure, before it, or is the plan
-    shelved? Any of the three unblocks them; the absence of an answer is the only blocking state.</div>
-    <div class="links"><code>dev/active/pa-carry-forward.md:63</code></div>
+    <div class="top"><span class="n">A · CXO's primary goal is NOT on track, and it sits under ratified law</span>
+      <span class="who">CXO</span><span class="age new">new</span></div>
+    <p>CXO chose to report the unhealthy goal rather than a healthy one. <b>The BYOC Recomposition
+    rubric's T axis is stuck in <code>PENDING-PROBE</code> — it cannot issue a pass.</b> ESSENCE
+    commitment 7 is ratified law and cites that instrument. <b>Ratified law depending on a gate that
+    can't gate</b> is their framing and I think it's right.</p>
+    <p>The probe's window is open only while #1688's MCP arm has no build commits, and <b>it closes
+    the moment tool output starts being written.</b> CXO's own next step is to ask PA directly rather
+    than keep assuming — and from PA's closeout and the cc'd exchange in my inbox, <b>PA has already
+    run it: six runs, same fire, did not reproduce #1717.</b> That thread moved while both were dark.</p>
+    <div class="ask"><b>Probably not yours yet</b> — CXO and PA are mid-exchange and may close it
+    between themselves. Boarded so it doesn't go quiet again, and because the window is time-boxed by
+    someone else's build.</div>
   </div>
 
   <div class="item">
-    <div class="top"><span class="n">5 · website#35 needs one memory from you</span>
-      <span class="who">Web</span><span class="age hot">6 days</span></div>
-    <p><b>What it is.</b> The admin composer's "Restore local copy" dialog once rendered a blank
-    editor instead of the saved draft. Filed 08-25, after you hit it. The fix is in; Web can't close
-    it because they can't reproduce the original trigger.</p>
-    <div class="ask"><b>The actual question, which is small:</b> when you hit it on 08-25, were you
-    using browser tabs or back/forward navigation? <b>"I don't remember" is a complete answer</b> —
-    Web will close it on the fix's merits. They've said so.</div>
-    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-website/issues/35">website#35</a></div>
+    <div class="top"><span class="n">B · Epics 9 and 10 — keep them, or revert to a named short list?</span>
+      <span class="who">PPM</span><span class="age hot">4 days · never boarded</span></div>
+    <p>Epics 9 (Silent-death inventory) and 10 (Composer UX polish) hold 1–3 items each. PPM offered
+    you the choice on <b>09-14</b> and has had no reply. They checked exhaustively before saying so —
+    every mailbox, <code>decisions.log</code>, GitHub — zero hits.</p>
+    <p>Context you'll want: this is downstream of the epic-count question you raised when it went 6 →
+    12. PPM created epic 12, you overruled it, and they reopened epic 2 instead and owned the call
+    publicly. <b>This is them offering to shrink the count rather than defend it.</b></p>
+    <div class="ask"><b>Needed:</b> epics, or a short list? Either answer closes it.</div>
+  </div>
+
+  <div class="item">
+    <div class="top"><span class="n">C · PA's T1 has had no reply in fifteen days</span>
+      <span class="who">PA</span><span class="age hot">15 days · never boarded</span></div>
+    <p>Delivered 09-03. PA has since republished it as an Artifact specifically to lower the friction
+    of closing it out. <b>Fifteen days, and it has never been on one of these boards</b> — so the
+    silence isn't yours, it's my routing.</p>
+    <div class="ask"><b>Needed:</b> a reply, or "drop it." Either is fine; the open loop is the cost.</div>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="n">D · <code>PIPER_FTUX_INTERVIEW</code> is OFF, and CXO tracked it wrong for 8 days</span>
+      <span class="who">CXO · PPM</span><span class="age">since 09-03</span></div>
+    <p>PPM put a HOLD on the flag 09-03. CXO filed it under PM-gated, but <b>it reads as PPM's to
+    lift, not yours</b> — and the real finding is that CXO only learned on <b>09-15</b> that it was a
+    ruling rather than an open measurement, so they tracked it wrong for eight days. Routing again,
+    not judgment. <b>No action from you unless you want the flag on.</b></p>
   </div>
 
   <h2>🔴 Decisions — your call, but nothing is stopped</h2>

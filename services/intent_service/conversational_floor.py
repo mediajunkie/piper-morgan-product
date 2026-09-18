@@ -26,6 +26,8 @@ from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
 import structlog
 
+from services.llm.request_key import LLMKeyRequiredError
+
 logger = structlog.get_logger()
 
 
@@ -1604,6 +1606,15 @@ class ConversationalFloor:
                 provenance=self._build_response_provenance(ctx),
             )
 
+        except LLMKeyRequiredError:
+            # #1809: a key refusal is a correct ANSWER, not an LLM outage to be
+            # degraded into fallback copy. `_process_intent_internal` already
+            # re-raises this family (#1816); catching it here would strand the
+            # honest refusal one frame below that carve-out. On the web path the
+            # resolver refuses BEFORE the floor ever runs, so this changes
+            # nothing there — it exists for entry points (Slack inbound, #1809)
+            # where the unbound chokepoint raise happens mid-turn.
+            raise
         except Exception as e:
             # #940: Classify error to provide actionable fallback
             error_type = _classify_llm_error(e)

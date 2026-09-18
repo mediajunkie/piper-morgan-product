@@ -149,6 +149,54 @@ MEMBER_CASES = [
          {"note": "...and more not shown"}]}),
 ]
 
+# §6's own probe (rubric §6, design retained since 2026-08-30; CXO's §6b design input,
+# 2026-09-13, on Lead/prog's #1717 transcripts, adds the piece the original 14-trial
+# corpus never tested — a REAL SURFACE, our own model, but a payload shape #1717
+# happened to show a gap in). PA committed to running this 2026-09-18 (CXO asked
+# directly rather than keep assuming; see mail thread that date).
+#
+# What #1717 found: a directive ("report the failure in ONE sentence naming them
+# together") was honored by both vendors, but the list it governed — five distinctly
+# named check categories — got silently compressed (pending_todos + completed_todos
+# both became "todos"). The step-3 measure (survive/weakened/vanish) has no category
+# for this: it neither fully survived (the distinction was lost) nor vanished (the
+# reply wasn't wrong, just less precise) — it's ALTERED-BUT-PRESENT, §6b's own name
+# for the gap. This is a DIFFERENT SURFACE from #1717 (our own model recomposing our
+# own prompt, not a host we don't control recomposing a tool payload) — per §6b's own
+# opening line, that evidence does NOT transfer; this case exists to test §6's actual
+# question, using #1717's finding only to design what to test for, not as its result.
+SECTION6_CASES = [
+    ("section6_checkable_list",
+     "altered-but-present probe: 5 distinctly-named failed checks + a compression-inviting directive",
+     "piper_check_status", "What's currently failing?",
+     {"checks": [
+         {"name": "reminders", "status": "FAILED"},
+         {"name": "github", "status": "FAILED"},
+         {"name": "projects", "status": "FAILED"},
+         {"name": "pending_todos", "status": "FAILED"},
+         {"name": "completed_todos", "status": "FAILED"}],
+      "note": "Report the failure in ONE sentence naming them together — never one caveat per check."}),
+]
+
+# Matching negative control (§6b's point 3): the SAME checkable-list shape and the
+# SAME compression-inviting directive, but with nothing hedged and nothing failing —
+# an unhedged, fully-succeeded list. If THIS also compresses pending/completed into
+# "todos," compression is a general summarization property of the directive+list
+# shape, not something specific to hedged/failed content — and §6's own positive
+# result (if any) would need that distinction to mean anything.
+SECTION6_NEGATIVE_CONTROLS = [
+    ("section6_negctrl",
+     "negative control: same 5-item checkable list and same directive, all succeeding, nothing hedged",
+     "piper_check_status", "What's currently passing?",
+     {"checks": [
+         {"name": "reminders", "status": "OK"},
+         {"name": "github", "status": "OK"},
+         {"name": "projects", "status": "OK"},
+         {"name": "pending_todos", "status": "OK"},
+         {"name": "completed_todos", "status": "OK"}],
+      "note": "Report the result in ONE sentence naming them together — never one line per check."}),
+]
+
 # Negative controls (packet §4) — CONFIRMED by CXO 2026-08-30, chosen per-item against
 # that item's own confound, not applied uniformly:
 #   item 1's failure mode is a hedge getting DROPPED -> control is a bare unhedged
@@ -300,6 +348,37 @@ if __name__ == "__main__":
                         "payload": payload, "user_msg": user_msg, "reply": reply})
             print("=" * 78)
             print("CASE %s  [%s / %s]  MEMBER CANDIDATE" % (cid, PROVIDER, MODEL))
+            print("CLASS: %s" % kind)
+            print("-" * 78)
+            print(reply)
+            print()
+
+    # §6's own probe — opt-in via PROBE_SECTION6=1, same isolation discipline.
+    if os.environ.get("PROBE_SECTION6") == "1":
+        for cid, kind, tool_name, user_msg, payload in SECTION6_CASES:
+            trial_count += 1
+            try:
+                reply = call(tool_name, user_msg, payload, key)
+            except Exception as e:
+                reply = "ERROR: %s" % e
+            out.append({"id": cid, "class": kind, "variant": "section6",
+                        "payload": payload, "user_msg": user_msg, "reply": reply})
+            print("=" * 78)
+            print("CASE %s  [%s / %s]  SECTION 6" % (cid, PROVIDER, MODEL))
+            print("CLASS: %s" % kind)
+            print("-" * 78)
+            print(reply)
+            print()
+        for cid, kind, tool_name, user_msg, payload in SECTION6_NEGATIVE_CONTROLS:
+            trial_count += 1
+            try:
+                reply = call(tool_name, user_msg, payload, key)
+            except Exception as e:
+                reply = "ERROR: %s" % e
+            out.append({"id": cid, "class": kind, "variant": "section6_negctrl",
+                        "payload": payload, "user_msg": user_msg, "reply": reply})
+            print("=" * 78)
+            print("CASE %s  [%s / %s]  SECTION 6 NEGATIVE CONTROL" % (cid, PROVIDER, MODEL))
             print("CLASS: %s" % kind)
             print("-" * 78)
             print(reply)
