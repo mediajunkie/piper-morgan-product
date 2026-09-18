@@ -62,6 +62,6 @@ The reminder-shaped version of this lesson — *be careful out there* — is the
 
 ---
 
-*Next on Building Piper Morgan: the next piece, once the queue extends past October 11. [Comms: this is the last drafted/queued post in the insight queue as of 2026-09-08 — re-verify and fill this tease once the next one is scheduled.]*
+*Next on Building Piper Morgan: "Giving It Away, and Worrying Who'd Take It" — open-sourcing the project comes with an honest worry about who might build a bad-faith copy from it, and a plan that settles for protecting the name instead of pretending a license could stop that.*
 
 *Where in your own work is there an action with no undo that you've been treating like all the others — and what would it take to give it its own moment of pause before you reach for it?*

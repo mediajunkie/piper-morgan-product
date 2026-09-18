@@ -36,6 +36,6 @@ The fix isn't "review configs more carefully." Careful review is exactly what bo
 
 ---
 
-*Next on Building Piper Morgan: "Distribution Is a Product Decision, Not a Marketing One" — why choosing where a product lives changes what it actually is, using a listing we can't honestly write yet as the proof.*
+*Next on Building Piper Morgan: "The Contract Tested the Day It Was Born" — a brand-new honesty rule gets stretched wider by one team and pushed back on by another, on the very day it's signed.*
 
 *Where in your own systems is a config, a doc, or a status line quietly standing in for a check you haven't actually run?*
