@@ -10,6 +10,9 @@ version: v0.7 — DRAFT, unratified. Class B now has a working mechanism (PA's m
   Still PENDING-PROBE for issuing a PASS: n=1 per cell per vendor throughout.
   v0.7 (2026-09-13): §6b adds adjacent-surface evidence from #1717 — recomposition ALTERS as well
   as drops, both vendors. Design input for §6's probe only; T remains PENDING-PROBE.
+  v0.7.1 (2026-09-18): §6's own probe actually run (PA) — altered-but-present case + matching
+  negative control, both vendors, plus Claude re-run pinned to #1717's exact version. Did NOT
+  reproduce #1717's compression on this payload shape. n=1 throughout; T remains PENDING-PROBE.
 date: 2026-08-30
 owner: CXO
 branched_from: Colleague Test Rubric v2.3.2 (`colleague-test-rubric.md`), per its own §"How to Extend
@@ -249,6 +252,25 @@ vendors. The item list underneath it was compressed anyway.**
 🔴 **Denominator and limits**: n=1 per cell, one surface, one day, our own model in the loop, and **I did
 not design this run** — it was produced for a voice read and I am reusing it. **Evidence generated for
 one purpose answering an adjacent question is worth noticing and worth distrusting in equal measure.**
+
+### 6c. §6's own probe, actually run — 2026-09-18 (PA), did NOT reproduce §6b's finding
+
+📄 **Full writeup**: `dev/active/probes/RESULTS-probe-b-section6-2026-09-18.md`. Built the two cases
+§6b's own points 1-3 called for (a checkable list — 5 distinctly-named items — plus a matching
+unhedged negative control) and ran both vendors, then re-ran the Claude arm pinned to
+`claude-sonnet-4-6` specifically, matching #1717's exact version rather than leave a pinning
+mismatch unresolved.
+
+**Result: no compression, in either vendor, on either the main case or its negative control, on
+either Claude version tested.** All five categories (reminders, github, projects, pending_todos,
+completed_todos) named distinctly every time. This does not reproduce the exact failure §6b
+surfaced on the adjacent #1717 surface.
+
+⚠️ **Does not disconfirm §6b, and does not lift `PENDING-PROBE`.** n=1 across three runs, one
+payload shape, one exact prompt wording that may not match #1717's closely enough to be the same
+test in every respect that matters. **T remains `PENDING-PROBE`** — this is still our own model
+recomposing our own prompt, not the actual MCP surface, the same caveat §6b opened with. Real,
+useful negative evidence; not a closure.
 
 ## 7. Provenance and cross-reference
 
