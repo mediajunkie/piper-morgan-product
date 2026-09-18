@@ -80,6 +80,34 @@ while :; do
             GIT_INDEX_FILE="$TMPIDX" G update-index --add --cacheinfo "100644,$blob,$f" \
                 || { echo "mail-send: update-index --add failed: $f" >&2; exit 1; }
         else
+            # --- #1746 GUARD: absent-in-worktree is NOT always "the caller wants this deleted" ----
+            # CIO, 2026-09-16: a 21-file rename split across two calls deleted 21 memos from
+            # origin/main for a whole push cycle. Mechanism: call 1 added them to origin, then the
+            # #1310 reconcile below `rm -f`'d those same paths from the worktree (correctly — they
+            # were not in local HEAD yet). Call 2 then found them absent, read that as a deletion,
+            # and force-removed them from the tree it pushed. Nothing failed; every step did exactly
+            # what it was told.
+            #
+            # The discriminator is LOCAL HEAD, and it is exact:
+            #   genuine delete  → the path IS in local HEAD (this clone knows the file; the caller
+            #                     removed it on purpose). Proceed.
+            #   reconcile residue → the path is NOT in local HEAD, is absent from the worktree, and
+            #                     EXISTS on the remote base. That is only reachable by the sequence
+            #                     above. Refuse: deleting it destroys content this clone never had.
+            #
+            # This is the same rule the whole fleet has been relearning all month — an absence in a
+            # convenient local surface is not an absence in the world — applied where it can delete
+            # someone else's mail. Refuse rather than warn: the failure is silent and the recovery
+            # costs a revert, so a false refusal is far cheaper than a false deletion.
+            if ! G cat-file -e "HEAD:$f" 2>/dev/null && G cat-file -e "$base:$f" 2>/dev/null; then
+                echo "mail-send: ⛔ REFUSING to delete '$f' — it exists on $REMOTE/$BRANCH, is absent from this" >&2
+                echo "mail-send:    worktree, and is NOT in local HEAD. That is the #1746 signature: a prior" >&2
+                echo "mail-send:    send added it and this script's own reconcile removed the local copy." >&2
+                echo "mail-send:    If you are splitting a rename across calls, pass BOTH halves in ONE call." >&2
+                echo "mail-send:    If you genuinely mean to delete it, 'git merge $REMOTE/$BRANCH' first so the" >&2
+                echo "mail-send:    file is in your HEAD, then remove it — the delete will be intentional and visible." >&2
+                exit 1
+            fi
             GIT_INDEX_FILE="$TMPIDX" G update-index --force-remove "$f" \
                 || { echo "mail-send: update-index --force-remove failed: $f" >&2; exit 1; }
         fi

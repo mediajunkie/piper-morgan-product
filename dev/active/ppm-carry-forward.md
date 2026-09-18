@@ -10,7 +10,38 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-15 19:22 PT (WORK). **0 unmilestoned, mailbox drained clean, all 3
+**Last rewritten**: 2026-09-16 07:22 PT (START, then STANDDOWN). **PM directive via Exec: suspend
+duty cycles now, until Thursday 2026-09-17 22:00 reset** — cohort is past the 97%-of-weekly wall,
+running on overage credits PM is deliberately spending only on today's Weekly Ship publish.
+`CronDelete`d `c6df1cc8` (restore cron expression: `52 6,9,12,15,18,21 * * *`). Registry row parked
+centrally by Exec for all eleven roles — not independently verified, per Exec's own reasoning that
+checking would itself be the unrequested spend this standdown exists to stop. **Restore only when a
+cron job is actually armed and `CronList`-verified after Thursday 22:00 — not on session-resume,
+not on a memo alone.** If PM asks directly for a specific task before then, that supersedes this
+memo. Nothing was mid-drain; `sprint-truth.py` showed `56 not done, 1176 done, 0 unmilestoned`
+before the standdown was read, and epics-9/10 still has no PM reply — both exactly as left at last
+night's STOP, unchanged by this fire.
+
+**Prior fire: 2026-09-15 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+Cron re-armed `e61f6248` → **`c6df1cc8`**, `CronList`-verified exactly one job. One board-add fix
+this fire: `#1818` (a genuine, deliberately-unrushed design question — should a zero-cost
+deterministic greeting pass the `#1807` keyless gate? — split out of the evening's copy fix rather
+than decided under pressure) carried MVP milestone but was missing from the board, same drift shape
+as `#1772`/`#1785`/`#1807`, now a fourth instance; fixed same-fire (board-added, Status=Product
+Backlog, verified via a small single-item GraphQL query after the full-board pull hit the shared
+cohort-wide GraphQL burst throttle — confirmed via `gh api rate_limit` showing full quota before
+treating it as the known throttle, not a real limit). Folded `#1818` into epic 2's tracking
+paragraph; CXO/Arch's to rule, not PPM's, and not urgent since the copy fix already ships true
+either way. **Day summary**: a full six-fire day, no PPM ruling needed on any substantive thread
+(the overnight #1810 sequencing hazard resolved before waking, `#1816`'s consent-fail-open fix
+shipped and closed same-day, `#1772` got a real n=10 measurement, PDR-006's stale wording got
+unblocked by PA's finding, the evening's classifier-bucket thread produced a real methodological
+catch from Arch) — PPM's own actions were entirely bookkeeping: four board-add fixes across the
+week's recurring drift shape, epic-order currency, one direct wording revision on PDR-006, steady
+mailbox triage. **PM's reply on the epics-9/10 choice, offered 2026-09-14 evening, still hasn't
+landed after six fires of watching** — noted plainly, nothing blocked on it.
+
+**Prior fire: 2026-09-15 19:22 PT (WORK). **0 unmilestoned, mailbox drained clean, all 3
 items cc-only** — the classifier-bucket-split thread (from 16:22's cc mail) resolved fully within
 Lead/Arch/CXO's own domain: Arch's `#1814`-caused-it hypothesis was refuted by Lead against the
 actual transcript (routed through `no_provider`, before auth's list is ever reached), and Arch

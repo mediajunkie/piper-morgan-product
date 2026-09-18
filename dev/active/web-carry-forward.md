@@ -1,21 +1,39 @@
-# Web carry-forward — 2026-09-14 (active), cron ID last updated 2026-09-14
+# Web carry-forward — 2026-09-18 (active), cron ID last updated 2026-09-18 06:30
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `97871a22`, re-armed at 2026-09-14 STOP) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 (since 09-14; Fable access ceiling) · cron
+`22 6,9,12,15,18,21 * * *` (job **`027db348`**, delete-then-create 2026-09-18 06:30 post-standdown,
+CronList-verified, expires ~2026-09-25) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
-**Open, one item (2026-09-14 close)**: website#35 — the 08-25 structural fix (`8edfc11`) is
-shipped; closable once PM answers whether the incident involved tabs/back-forward navigation
-(asked directly in conversation 09-12; if no recall, close on the fix's merits with that noted).
-Also pending PM: Vercel Q1 (access); integration-reveals-all workDate (only if PM recalls).
-✅ **WYSIWYG toggle DISCHARGED 2026-09-14** — Source/Split/Preview with caret+scroll preservation
-shipped as website `bb579b5`, browser-verified, deploy confirmed. Repo-local git identity set in
-both repos 09-12 after the host `~/.gitconfig` vanished (Comms found it first; Pard owns the host
-fix).
+**Open — three items, all PM-gated or access-blocked; nothing unblocked:**
+1. **website#35** — the 08-25 structural fix (`8edfc11`, `key={slug}`) is shipped; closable once PM
+   answers whether the incident involved tabs or back/forward navigation (asked 09-12, re-raised
+   since, still unanswered). If no recall, close on the fix's merits with that noted.
+2. **Vercel usage Q1** — genuinely access-blocked (no CLI, token, or dashboard from this seat).
+3. **`integration-reveals-all` workDate** — only fixable if PM recalls the actual date.
 
-⚠️ **Gap-C variant learned 2026-09-14, worth carrying**: a MODEL SWITCH restarts the session and
-drops pending cron firings, but the cron OBJECT survives with the same job id — so `CronList`
-showing a job is NOT evidence that fires are being delivered, and Step 1's "zero crons → re-arm"
-self-heal never triggers. Cost an 11.7h dark gap; HOST's freeze-check caught it (their belt's
-first true positive). Only a live fire proves delivery.
+✅ **DISCHARGED, do not re-open**: WYSIWYG toggle (09-14, `bb579b5`) · **P0 compose typing-reversal**
+(09-15, `45ab4a9` — my own regression from `bb579b5`; the draft corruption it wrote to disk was
+repaired separately in product `0ccb9314e`) · **website#42** (09-15, `d1dfc8b` — jest + `next/jest`
++ `npm test` + 4 assertions on the compose body field; CI wiring deliberately left to PM since it
+changes deploy gating).
+
+**Standdown + outage (09-16 → 09-18), resolved**: cohort-wide suspension on PM's directive (weekly
+account allowance exhausted). Two gaps, one root — account ceiling delayed 09-16 fires ~6h, then
+~42h with no turn at all; **13 ticks arrived stacked**. Full account in
+`dev/2026/09/16/…-web-code-log.md`'s retroactive-close section. Self-report + token-efficiency input
+sent to HOST/Exec cc CIO/PM (`ec685accd`); HOST has since proposed the shape as a confirmed 4th
+STALE cause across two seats, CIO agreed.
+
+⚠️ **Three distinct dark-gap causes now seen on this seat — they are NOT interchangeable:**
+- **Model switch (09-14)**: restarts the session and **drops** pending firings, but the cron OBJECT
+  survives with the same id — so `CronList` showing a job is NOT evidence fires are delivered, and
+  Step 1's "zero crons → re-arm" self-heal never triggers. Cost 11.7h.
+- **Account ceiling (09-15/16)**: fires **queue and deliver late**, not lost. Looks identical from
+  outside; resolves itself on its own.
+- **Session-unreachable (09-16→18)**: cron alive and firing into a session that gets no turn.
+  Returns as a **pile of stacked ticks** — that pile is the diagnostic tell distinguishing it from
+  the other two.
+**Only a live fire proves delivery** — in all three cases.
 
 ⚠️ **Trimmed 2026-08-29** — everything this file carried from 2026-08-03 through 2026-08-25 was
 fully-resolved historical record (marked CLOSED/FIXED/SHIPPED/SETTLED at the time), sitting in

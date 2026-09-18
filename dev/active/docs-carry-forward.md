@@ -1,7 +1,34 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-15 ~19:00 PDT (Medium leg confirmed distributed; caught + fixed my own
-unmoved-memo miss same-fire).
+**Updated**: 2026-09-18 ~07:16 PDT, verified via `date` (correcting last fire's unverified
+"~13:00" timestamp — see the handoff doc for the full self-catch).
+**Amber restart pending — handoff doc written**: `docs/handoff-docs-2026-09-18.md` committed
+(cohort-wide restart gate was `24 RED / 0 GREEN`, blocking on missing handoff docs per role).
+Covers cron state, nothing-mid-build, open PM-gated items, and this seat's real repeat-error
+shapes. Could not independently verify the gate flip (no `amber-fleet` tooling access from this
+worktree) — confirmed filename matches the required pattern, didn't overclaim beyond that.
+**Sprint closeout sent** (Sep 11-17 window, to Exec cc PM) — 388 words, fresh `sprint-truth.py`
+denominator pasted, cc-delivery done correctly this time (no warning on send).
+**Duty cycle is ACTIVE.** Cron `37386761` (`57 6,9,12,15,18,21 * * *`), `CronList`-verified sole
+job. Registry row `active`.
+**Duty cycle is ACTIVE again.** PM: "new billing week, back in action" (09-18). Cron `37386761`
+(`57 6,9,12,15,18,21 * * *`), `CronList`-verified sole job. Registry row updated to `active`.
+Standdown ran 09-16 ~06:50 → 09-18 ~12:30. Both standdown days retroactively closed (own session
+logs got their `DAY-CLOSED` markers 09-18; omnibus logs for both written same-day as catch-up).
+**What happened during the standdown, briefly**: 2 scoped blog publishes (Weekly Ship #060 on
+09-16, "The Week the Checks Started Checking Themselves" on 09-17), a genuine ~39-hour HOST
+no-scheduling-turn gap found and closed, a registry-parking discrepancy in Exec's own centralizing
+commit found and corrected, and a real correction sent to Janus (cross-project) whose ceiling/
+resume-failure hypothesis for the 09-15 omnibus gap was reasonable but wrong.
+**PM crossposted "The Week the Checks..." to Medium manually** (09-17 evening) after Dispatch-PM's
+attempt cost ~$7 without completing — calendar updated 09-18 with the URL PM supplied directly.
+**PM is reconsidering automated crossposting** given the cost-to-value ratio ("the old electric
+can opener thing... good to sunset some ideas") — not yet a decision, just a real signal worth
+watching. If PM raises this again, don't assume Dispatch-PM syndication requests are still the
+default path without checking first.
+**09-15 21:57 fire was superseded by direct PM engagement, not dropped** — retroactive
+`DAY-CLOSED: 2026-09-15` written 09-16 06:04 per Step 0 self-heal; cron never died
+(`6709059b` unchanged, no re-arm needed).
 **Sync-before-reading, not just sync-before-fire, added 09-15**: reported a draft's frontmatter as
 empty when PM had already uploaded it — worktree was 10 commits behind, including Comms' own
 PUBLISH-READY memo sitting unread. The existing "sync at fire-open" habit doesn't cover a
@@ -14,9 +41,9 @@ boundaries** — this generalizes the existing `feedback_careful_git_sync_on_sha
 a single conversation, not just across fires.
 **Third work-queue source, established 09-13 (PM's v1.33 ruling)**: Docs's criteria line is
 `gh issue list --search "label:documentation" --state open --limit 50` — open each result, don't
-trust the list view (CXO's 09-12 finding). Denominator 10 as of 09-15 START, unchanged from 09-14's
-close (4 are my own #1803-#1806). Check every WORK fire after the mail loop, alongside standing-items.
-**Session log**: `dev/2026/09/15/2026-09-15-0727-docs-code-log.md` (open, today).
+trust the list view (CXO's 09-12 finding). Denominator 10 as of 09-18, unchanged since 09-15, all
+already understood/triaged. Check every WORK fire after the mail loop, alongside standing-items.
+**Session log**: `dev/2026/09/18/2026-09-18-1230-docs-code-log.md` (open, today).
 **Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
 make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything
 else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM's own words.
@@ -52,30 +79,21 @@ undercounted sessions 16/5 vs. the Sources section's correct 17/6) and fixed it 
 activity-log reconciliation used the wrong denominator; spot-verified the two highest-stakes quoted
 rulings directly against `decisions.log` and source logs rather than trust the draft.
 
-## 09-13 closed (full detail: that day's session log + `docs/omnibus-logs/2026-09-13-omnibus-log.md`)
+## 09-15 closed (retroactively, 09-16 06:04 — full detail: that day's session log; **omnibus still
+owed**, not yet written)
 
-HIGH-COMPLEXITY: COORDINATION day, 19 sessions (11 named roles + 8 Lead-delegated prog subagents).
-A cohort-wide re-auth gap produced the belt's first genuine STALE true-positive (Lead, ~12 dark
-hours); an epic-6 design-to-shipped-build chain ran Lead→Arch→PPM→CXO in one day; a five-week-
-overdue hook block-vs-warn ruling was executed, tested, caught silently broken, and reverted; and
-a #1788 schema ruling produced a real recorded Lead/Arch disagreement, correctly left unresolved
-rather than forced. Full narrative in the omnibus.
-
-My own day: published "Who's Who at Piper Morgan" with a real pre-publish name-privacy catch (2 of
-6 named humans had zero prior public mentions despite the piece's own claim; PM chose to remove
-both and generalize rather than guess at consent). Corrected a mis-rendered cover-image figure PM
-supplied mid-day, verified by byte-size match. Root-caused a Dispatch-reported "empty fields again"
-complaint as a genuine 75-second publish/calendar timing gap (not a repeat mistake) and fixed the
-underlying process. Surveyed audit-related GitHub issues at PM's request: closed #1720 with
-evidence, correctly left #1721 open (genuinely blocked on #1708), filed #1779/#1780 separately, and
-surfaced two stale-for-weeks audit clusters as a proposed routing plan (see Watch surfaces —
-PM-answer pending). Established a real GitHub-issue criteria line for the flywheel's third
-work-queue source (`label:documentation state:open`, PM's v1.33 ruling) and used it same-day to
-find and fix #1728 (stale mailbox-infrastructure row). Closed the day by delegating the omnibus
-draft to a reviewed subagent, personally verifying two load-bearing claims against primary sources
-(methodology-54's canonical title; prog-subagent-to-Lead attribution) and catching+fixing a real
-chronological-ordering defect in the draft before committing — 420 lines, well under the 600-line
-HIGH-COMPLEXITY budget. Appended 19 Shape-B activity-log rows in a separate commit.
+Published "The Bug That Was Misdiagnosed Twice" (hashId `636ed62140e1`), fully distributed
+(Medium leg confirmed by Dispatch-PM same day). Two real self-inflicted misses, both caught and
+fixed same-day rather than left to compound: (1) reported the draft's frontmatter as empty from a
+10-commits-stale local read — PM caught it directly, re-synced, republished correctly, and the
+lesson (sync before reading, not just at fire-open) is now a standing carry-forward practice; (2)
+read and acted on Comms' PUBLISH-READY memo but didn't triage it to `read/`, an exact recurrence
+of an already-written rule — fixed two fires later when Dispatch-PM's Medium confirmation arrived.
+The 21:57 STOP never formally ran (superseded by PM engaging directly with the next day's Ship
+request) — no work was lost, but the day's own omnibus hasn't been created yet. **Action needed**:
+run `create-omnibus` for 2026-09-15 at the next opportunity — it's a real gap, not just a formality,
+given the two self-caught misses are exactly the kind of thing the omnibus's narrative should carry
+forward accurately.
 
 ## Watch surfaces (things owned by others, checked periodically)
 

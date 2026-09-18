@@ -185,9 +185,17 @@ did. Also resolved a genuine 8-day-old CXO tracker gap: the FTUX interview flag 
 real `main` deploy carries **by a PPM 2026-09-03 HOLD ruling**, not unverified as CXO's tracker had
 said since 09-07 — worth noting since it's this file's own prior ruling being the answer, not new
 information. **No PPM ruling needed anywhere in this thread** — split criterion, copy fixes, and
-flag-state bookkeeping are Lead/Arch/CXO's own domain. Noted here for visibility; will fold in a
-real issue number once Lead files the classifier-bucket-split (mentioned as intended, not yet
-filed — 0 unmilestoned per `sprint-truth.py` this fire, so it genuinely hasn't landed yet).
+flag-state bookkeeping are Lead/Arch/CXO's own domain.
+
+**`#1818` — the keyless-copy fix (v113) shipped same day, but the design question underneath it
+was deliberately split out rather than decided under copy pressure**: should a deterministic
+greeting (spends nothing, needs no LLM call) pass the `#1807` keyless gate at all? Two honest
+arguments, neither adopted yet — over-blocking a zero-cost first word vs. one clear message at the
+door beating a friendly exchange that quietly stops working later. Not urgent: CXO's corrected
+copy is true under either ruling, so nothing else waits on this. Needs CXO (experience) and Arch
+(if it touches the gate's structure) to decide, not PPM. **Found missing from the board at 22:22
+STOP despite carrying MVP milestone — the same `--milestone`-doesn't-board-add drift shape as
+`#1772`/`#1785`/`#1807`, fixed same-fire (board-added, Status set to Product Backlog).**
 
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
