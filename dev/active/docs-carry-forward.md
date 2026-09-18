@@ -1,6 +1,16 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-18 ~13:00 PDT (RESUMED — duty cycle re-armed, standdown fully closed out).
+**Updated**: 2026-09-18 ~07:16 PDT, verified via `date` (correcting last fire's unverified
+"~13:00" timestamp — see the handoff doc for the full self-catch).
+**Amber restart pending — handoff doc written**: `docs/handoff-docs-2026-09-18.md` committed
+(cohort-wide restart gate was `24 RED / 0 GREEN`, blocking on missing handoff docs per role).
+Covers cron state, nothing-mid-build, open PM-gated items, and this seat's real repeat-error
+shapes. Could not independently verify the gate flip (no `amber-fleet` tooling access from this
+worktree) — confirmed filename matches the required pattern, didn't overclaim beyond that.
+**Sprint closeout sent** (Sep 11-17 window, to Exec cc PM) — 388 words, fresh `sprint-truth.py`
+denominator pasted, cc-delivery done correctly this time (no warning on send).
+**Duty cycle is ACTIVE.** Cron `37386761` (`57 6,9,12,15,18,21 * * *`), `CronList`-verified sole
+job. Registry row `active`.
 **Duty cycle is ACTIVE again.** PM: "new billing week, back in action" (09-18). Cron `37386761`
 (`57 6,9,12,15,18,21 * * *`), `CronList`-verified sole job. Registry row updated to `active`.
 Standdown ran 09-16 ~06:50 → 09-18 ~12:30. Both standdown days retroactively closed (own session

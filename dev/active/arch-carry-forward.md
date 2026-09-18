@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-03
+last_updated: 2026-09-18
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -26,14 +26,31 @@ in git history.
 | Mail | `mail-send.sh` push-to-ref; never touch PM's main checkout. Inbox verified at trunk (`git ls-tree origin/main`), never local `ls`. |
 | ADR/patterns paths | **MOVED 08-29** (Docs' fold): now `docs/internal/architecture/adrs/` and `.../patterns/` — no `current/` segment. |
 
-## Flywheel Re-Evaluation: CLOSED 09-11 (ratified + applied to canon)
-PM ratified 09-11; CIO applied to methodology-00 (`bfd1445bc`) verbatim. No standing duty — the
-milestone-close trigger (in the doc itself) carries it. Q5 formally un-ruled but the work-queue
-ruling (carried+mail+github) supplied its substance; the slot in canon takes PM's word whenever
-it comes. Residuals in MY lane: scope-guard delivery blocked on PM's ruleset decision (#1744
-open, blocker 2 of 2 = required status check that binds only the bot); GatherOutcome +
-Deliverable epics await their turn in PPM's order (inputs banked: two-mechanism finding, §5b
-provenance invariant, the adapter list-wrapper as first adoption site).
+## IN FLIGHT as of 2026-09-18 (post-standdown resume)
+
+**The credential/tenancy family is the live lane** (epic 12). My rulings, 09-14/15, all on
+origin/main + decisions.log:
+- **#1810** — the global unprefixed LLM-key slot had no legitimate consumer post-BYOC; delete
+  both writes. CLOSED + observed (v108/v110). **My sequencing error**: I ruled the write's
+  deletion without requiring every READER of that slot be shown another source first → #1814
+  (BYOC key stored and never read) was a consequence of my ordering, not just a follow-on.
+  **The rule that earned: deleting a write requires enumerating that slot's readers with their
+  post-deletion source named.**
+- **#1809** — default-open ("unbound means use the server key") must INVERT: unbound refuses.
+- **#1816 / #1815 Gap 2** (ruled together): fix the CONSENT reader, never the credential
+  primitive (None-on-failure is correct for credentials, #1711); fail-closed must REFUSE not
+  degrade (F1's server-default target predates PM's #1812 "server key is not a real concept");
+  consent-from-key-presence kept as a DATED assumption with its invalidation trigger named.
+- **The `auth` bucket collapses FIVE causes** (401/403 · not-initialized · model-not-found ·
+  404), so the copy cannot be honest. Split criterion: a bucket earns its own name when the
+  honest user-facing sentence differs. `"not initialized"` earns one by the CRITERION and is
+  LATENT — **do NOT cite #1814 as its cause; that hypothesis was refuted by transcript.**
+
+**Blocked on PM**: #1744 scope-guard delivery (needs the Action as a ruleset bypass actor, or
+the required check removed); Q5's formal word; Bets 001-003 fields.
+**Banked, awaiting board turn**: epic-6 GatherOutcome/Deliverable — remainder lives in
+GatherOutcome, GitHub-six-first, CXO owns the copy contract; the two-mechanism finding
+(directive path vs deterministic composer) must reach BOTH.
 
 ## Prior thread: Architectural Review 2026 → Reorientation Plan v1.0
 
