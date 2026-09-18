@@ -1,24 +1,52 @@
 # Exec carry-forward
 
-**STATE: PARKED — cohort-wide standdown, 2026-09-16.** Not idle, not stalled. Deliberate.
+**STATE: LIVE.** Cron `d070a7df`, expression `38 6,10,14,18,22`, CronList-verified 2026-09-18 07:1x,
+expires ~09-25. Resumed from the cohort standdown on PM's direct instruction.
 
-## Cron — DELETED, restore after the reset
+⚠️ **AMBER RESTART IS IMMINENT — today, possibly early.** PM ruled it a **cold start**, not a resume,
+and **Exec goes first as the shakedown cruise** (PM: *"not risk the lead developer's mental model of
+what they're working on just yet"*). If you are reading this as a fresh session: that worked, and
+**`docs/handoff-exec-2026-09-18.md` is the file written for you** — read it before this one.
 
-- **Job `83258e51` was CronDelete'd 2026-09-16 07:15**, verified (`CronList` → "No scheduled jobs").
-- **Restore expression, verbatim: `38 6,10,14,18,22 * * *`** (5 fires/day, max 4h apart, 06:00–22:00).
-  PM set this cadence 2026-09-11, replacing `32 8,20`.
-- **Do not re-arm before Thursday 2026-09-17 22:00.** After that: `CronCreate` → `CronList` to confirm
-  exactly one job → then, and only then, overwrite the `exec` registry row's parked state.
+## In flight — the thing that breaks if nobody picks it up
 
-## What is owed the moment we come back
+**Sprint closeout for Sep 11–17 is OUT; responses are arriving and PM expects a synthesis from me.**
+Sent 2026-09-18 to all ten roles. Each leadership role owes ONE primary goal, progress, **on-track as
+a yes/no word**, next steps, plus portfolio + contributor updates, ~400 words.
 
-1. **Ship #060** — published (or not) on overage credits today, 09-16. Check before assuming.
-   Draft: `docs/public/comms/drafts/weekly-ship-060-draft-2026-09-14.md`, calendar `pubDate 2026-09-16`.
-2. **Friday-morning planning session with PM on token efficiency for next week.** PM named this
-   explicitly. The input already on the table: deliberate sub-agent model selection rather than
-   inheritance. Bring the Saturday dispatch-concentration data (48 in-window vs 10 in the preceding
-   nine days) **and** the ceiling change (summer promotion ended 13 Sept, ~17% down) — they are
-   independent causes and reporting either alone misattributes the week.
+- ✅ **Docs filed** (first in). Standing goal, on track, sprint-truth fresh, `Verified how:` present.
+  Flags an unanswered 09-13 routing offer to Lead — two stale audit clusters sitting on nobody.
+- ⏳ Nine outstanding. **Five of those roles are deliberately dark** (cio, lead, cxo, ppm, pa) and PM
+  is waking them one-on-one. **Their silence is the plan, not non-compliance.** Nudge Sunday 09-20.
+- The wake packet they each get on rousing: `mailboxes/exec/sent/wake-exec-to-idle-roles-*-2026-09-18.md`.
+
+## Also live
+
+- **Reboot gate** — `amber-fleet gate` (in the `mediajunkie` repo) is the pre-reboot check. Was
+  **0 GREEN / 24 RED** this morning; exec and docs are GREEN now. ⚠️ **Run it FRESH immediately before
+  any reboot** — the roster itself moves (`zephyr` appeared within two hours) so a stale count
+  under-reports. Handoff filename must match `handoff[-_]{role}([-_.]|$)`; a good doc misnamed reads
+  as missing.
+- **Memory export** — `dev/2026/09/18/memory-export-2026-09-18-pre-restart.md`, 195 files verbatim,
+  integrity-checked. **One shared pool keyed to the git common dir**, not per-role, not per-worktree,
+  living in `~/.claude-pm/` outside the repo. First export not tied to a prune. **Open question I
+  raised and PM has not ruled on: should this be a cadence rather than an event?** CIO's surface.
+- **Weekly reflection proposal is with CIO** (PM-approved to draft, CIO's to ratify) — a section on
+  the closeout carrying PM's question verbatim: *"what would I want to know that I might not get from
+  the automated processes?"* The design constraint, which matters more than the wording: **it must
+  ride an artifact with a live reader.** The 2025 handoff ritual died when its reader disappeared,
+  not from laziness — ten months dark, 2025-10-01 → 2026-08-11.
+- **Registry rule established today**: anyone may PARK any row; **only the owning session may UN-PARK
+  its own**, because only it can CronList-verify. Routed to CIO for the registry header.
+
+## Standing PM-gated items (unchanged by the standdown)
+
+1. ✅ **Ship #060 published** Wednesday 09-16 on overage credits.
+2. ✅ **Friday planning happened** 09-18. Outcome: **Fable reserved for Lead Developer; everyone else
+   Opus or Sonnet**, plus the standing rule that sub-agent dispatches must set their model explicitly
+   rather than inherit. Context for anyone reconstructing the spend: **two independent causes** — the
+   dispatch concentration (48 in-window vs 10 in the preceding nine days, all inheriting Fable) AND
+   the ceiling dropping ~17% when the summer promotion ended 13 Sept. Neither subsumes the other.
 3. **The ruleset decision** — **⚠️ MY FRAMING OF THIS WAS INCOMPLETE; corrected 2026-09-16, see below.**
    **Parks both Arch and CXO. Blocked on PM since Friday.**
 
