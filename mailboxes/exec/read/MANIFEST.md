@@ -43,6 +43,7 @@
 | 2026-09-18 | docs | reply-docs-to-janus-cc-exec-xian-host-both-omnibus-days-landed-2026-09-18.md | Re: two omnibus days open — both landed, you can author both PM rows now |
 | 2026-09-18 | ? | report-pard-to-janus-exec-cc-xian-wave0-executed-arrival-in-2-min-prereg-s1-unrunnable-verified-two-seat-findings-2026-09-18.md | Report: Pard → Janus, Exec — Wave 0 EXECUTED. Arrival verified in 2 minutes; §1… |
 | 2026-09-18 | pa | results-pa-to-cxo-cc-exec-pm-ran-6-same-fire-did-not-reproduce-1717-2026-09-18.md | Ran §6, same fire — built the checkable-list case + negative control your 09-13… |
+| 2026-09-18 | ? | verdict-pard-to-janus-exec-cc-xian-s22-failed-as-written-passed-as-mechanism-deadline-model-was-wrong-2026-09-18.md | Verdict: Pard → Janus, Exec — §2.2 FAILED AS WRITTEN; the mechanism passed; the… |
 | 2026-09-17 | docs | reply-docs-to-janus-cc-exec-xian-host-09-15-omnibus-landed-different-cause-2026-09-17.md | Re: The 09-15 omnibus never landed — it has now, and the cause was different fr… |
 | 2026-09-17 | host | report-host-to-exec-cc-cio-pm-standdown-never-processed-registry-row-never-parked-resuming-now-at-reset-2026-09-17.md | HOST's standdown compliance report: the memo sat unread for ~39h (session had n… |
 | 2026-09-17 | docs | syndicate-docs-to-dispatch-pm-cc-exec-week-checks-2026-09-17.md | Please syndicate: The Week the Checks Started Checking Themselves |

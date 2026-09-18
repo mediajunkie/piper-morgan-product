@@ -63,7 +63,7 @@
 <div class="wrap">
   <h2 class="sr-only">Five items block work, eight need a call, four drift items worth knowing, plus a traced account of why several were missed.</h2>
   <h1>Your decision queue</h1>
-  <p class="meta">Exec · <b>Friday 18 September, 11:53 PDT</b> · live-state pass at 11:53, <b>updated 15:1x</b> when the last four closeouts landed · every item re-verified against its primary source</p>
+  <p class="meta">Exec · <b>Friday 18 September, 11:53 PDT</b> · live-state pass at 11:53, <b>re-verified 16:0x</b> immediately before your walkthrough · every item re-verified against its primary source</p>
 
   <div class="lede">
     <p><b>The finding across all six closeouts is one sentence: the constraint is your decision
@@ -95,7 +95,7 @@
     with them; they're in the new section above.</p>
   </div>
 
-  <h2>🛑 Blockers — work is stopped until you act</h2>
+  <h2>🛑 Blockers — <b>three live</b>, two struck below</h2>
 
   <div class="item">
     <div class="top"><span class="n">1 · Scope-guard can't deliver its memo</span>
@@ -183,16 +183,31 @@
     largest hole I know about.</p>
   </div>
 
-  <div class="item">
-    <div class="top"><span class="n">5 · website#35 needs one memory from you</span>
-      <span class="who">Web</span><span class="age hot">6 days</span></div>
-    <p><b>What it is.</b> The admin composer's "Restore local copy" dialog once rendered a blank
-    editor instead of the saved draft. Filed 08-25, after you hit it. The fix is in; Web can't close
-    it because they can't reproduce the original trigger.</p>
-    <div class="ask"><b>The actual question, which is small:</b> when you hit it on 08-25, were you
-    using browser tabs or back/forward navigation? <b>"I don't remember" is a complete answer</b> —
-    Web will close it on the fix's merits. They've said so.</div>
-    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-website/issues/35">website#35</a></div>
+  <div class="item clear">
+    <div class="top"><span class="n">5 · <s>website#35</s> — CLOSED by Web at 12:28, with evidence</span>
+      <span class="who">Web</span><span class="age new">struck 16:0x</span></div>
+    <p><b>You don't need to remember anything.</b> Web closed it rather than let it keep waiting on
+    your recall — and notably <b>not</b> "on the fix's merits with a shrug," which was their fallback.
+    The compose editor now has the test harness it lacked when the bug was filed, so they answered the
+    issue's three unknowns directly from the mechanism (<code>8edfc11</code>, <code>key={slug}</code>
+    forcing a fresh component instance per draft).</p>
+    <p><b>That is the better outcome and it was theirs, not mine.</b> Web turned a question only you
+    could answer into one the code could.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="n">⚠️ Two of the five blockers went stale between compiling this and your walking it</span>
+      <span class="age new">16:0x</span></div>
+    <p><b>Blocker 4</b> you had answered on 09-15. <b>Blocker 5</b> Web closed at <b>12:28 — 38 minutes
+    after I verified it open at 11:50, and nearly three hours before my 15:10 update still carried
+    it.</b></p>
+    <p><b>The pattern, stated plainly: this board is a snapshot, and the cohort works faster than it
+    re-verifies.</b> Ten roles are now awake and pushing. Verifying at compile time is not the same as
+    verifying at <i>walk</i> time, and the gap between them is where stale items live.</p>
+    <p style="margin-bottom:0"><b>So the standing habit from here: a short re-verify pass immediately
+    before any walkthrough, not only at compile.</b> This one took four minutes and caught two items
+    that would otherwise have spent your attention. I'd rather run it every time than hand you a
+    fourth stale blocker.</p>
   </div>
 
   <h2>🆕 Arrived at 15:1x — the last four closeouts landed, all ten are in</h2>

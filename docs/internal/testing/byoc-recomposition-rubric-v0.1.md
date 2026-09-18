@@ -1,7 +1,7 @@
 ---
 type: scoring-instrument
 name: BYOC Recomposition Rubric
-version: v0.7 — DRAFT, unratified. Class B now has a working mechanism (PA's member-not-metadata,
+version: v0.7.2 — DRAFT, unratified. §6b point 2 CORRECTED 2026-09-18: the fixture property is shared HEAD NOUNS, not mere checkability — PA's null result on 5 distinctly-named items is what showed it. Class B now has a working mechanism (PA's member-not-metadata,
   clean in both vendors, one shape, n=1). v0.5: class account CONFIRMED on Claude, UNRESOLVED on GPT-4o; not adopted
   as a scoring rule. Probe series recommended CLOSED 2026-09-03. v0.4 added ADDITION as well as SURVIVAL (2026-09-01 evening, on
   Lead's #1717 evidence: the observed failures were host-added claims, not lost qualifications).
@@ -20,11 +20,11 @@ branched_from: Colleague Test Rubric v2.3.2 (`colleague-test-rubric.md`), per it
 tier_status: instrument UNRATIFIED (PPM/PM own tier) — but the REQUIREMENT it serves is ratified law
   as of 2026-08-30 (ESSENCE v1.0 commitment 7). See the status banner; the two are not the same thing.
 closes: one of PDR-006's two named pre-user gates ("the recomposition rubric branch", PDR-006:35)
-last_updated: 2026-09-13
+last_updated: 2026-09-18
 currency_claim: revise-on-probe-result
 ---
 
-# BYOC Recomposition Rubric — v0.7
+# BYOC Recomposition Rubric — v0.7.2
 
 **The instrument for scoring Piper's quality on a surface where Piper does not compose what the user
 reads.**
@@ -243,8 +243,19 @@ vendors. The item list underneath it was compressed anyway.**
 1. **The measure at step 3 (*"survive / weakened / vanish"*) is missing a category.** ⭐ **Add
    *altered-but-present*** — the #1717 case is none of the three, and it is the one a naive scorer marks
    as "survived."
-2. **The paired structural variant (step 5) should include a list whose members are individually
-   checkable**, so compression is detectable at all. **A single-fact hedge cannot show this.**
+2. ⚠️ **CORRECTED 2026-09-18 — this point named the wrong property and PA's probe proved it.** It read:
+   *"a list whose members are individually checkable, so compression is detectable at all."* 🔴 **PA
+   built exactly that — five distinctly-named checks, both vendors, three runs including a
+   version-matched arm — and got NO compression.**
+   ⭐ **Because #1717 was never list-shortening.** 📄 Its list was *reminders · GitHub · projects ·
+   **pending todos** · **completed todos***, and every reply said *reminders · GitHub · projects ·
+   **todos***. **The three distinctly-named items survived. The two that merged shared a head noun.**
+   > 🔴 **The fixture property is: at least two members sharing a HEAD NOUN, distinguished only by a
+   > modifier.** ⚠️ **A list of five distinctly-named items has nothing to compress INTO, so a null
+   > result there is expected rather than informative.**
+   **Checkability is still necessary — it is just not sufficient, and I specified only the necessary
+   half.** 🔴 **Hypothesis is post-hoc from one transcript; it should be PRE-REGISTERED before anyone
+   tests it.**
 3. **The negative control (step 4) needs a matching form**: an unhedged output containing an
    enumerable list. ⭐ **If lists compress regardless of hedging, compression is a summarisation property
    and not an honesty finding** — and the probe must be able to tell those apart.
