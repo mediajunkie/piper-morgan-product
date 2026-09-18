@@ -1,24 +1,21 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-17 ~12:20 PDT (still PAUSED — one scoped PM-authorized task done, not a
-resumption).
-**⚠️ DUTY CYCLE STILL PARKED — READ BEFORE ASSUMING A FIRE SHOULD HAPPEN.** Same clearing
-condition as 09-16: resume only on PM's explicit ask, or a fresh session's own `CronList`
-confirming a job is actually armed. **09-17 update**: PM authorized a *specific, scoped* overage
-to publish today's post only — not a resumption. Published "The Week the Checks Started Checking
-Themselves" (hashId `19c8e3b74bc2`), fully distributed pending Medium confirmation. Also closed
-two cheap loose threads found in the mailbox: Ship #060's LinkedIn leg (calendar updated) and a
-real correction sent to Janus (cross-project) — their ceiling/resume-failure hypothesis for the
-missing 09-15 omnibus was reasonable but wrong; actual cause was PM engaging directly before the
-STOP fire ran, not a silent resume failure. Caught and fixed my own cc-delivery miss on that reply
-same-fire (mail-send.sh's warning was real, not the known MANIFEST false positive — verified both
-before deciding which). **Duty cycle cron NOT re-armed** — still deliberately dark.
-**Rate-limit note (PM, 09-16)**: pipermorgan.ai hit its weekly usage limit, resets Thursday;
-PM added overage credit for essential functions. If a session resumes and work seems to go quiet
-or errors appear, check this before assuming a real defect. Dispatch-PM independently flagged the
-same thing 09-15 (97% of weekly limit, "faoilean" account) — re-verify the actual reset time with
-PM directly rather than trust either secondhand figure (PM said "Thursday ~10am," Dispatch-PM said
-"Thursday 22:00" — not reconciled, don't guess which is right).
+**Updated**: 2026-09-18 ~13:00 PDT (RESUMED — duty cycle re-armed, standdown fully closed out).
+**Duty cycle is ACTIVE again.** PM: "new billing week, back in action" (09-18). Cron `37386761`
+(`57 6,9,12,15,18,21 * * *`), `CronList`-verified sole job. Registry row updated to `active`.
+Standdown ran 09-16 ~06:50 → 09-18 ~12:30. Both standdown days retroactively closed (own session
+logs got their `DAY-CLOSED` markers 09-18; omnibus logs for both written same-day as catch-up).
+**What happened during the standdown, briefly**: 2 scoped blog publishes (Weekly Ship #060 on
+09-16, "The Week the Checks Started Checking Themselves" on 09-17), a genuine ~39-hour HOST
+no-scheduling-turn gap found and closed, a registry-parking discrepancy in Exec's own centralizing
+commit found and corrected, and a real correction sent to Janus (cross-project) whose ceiling/
+resume-failure hypothesis for the 09-15 omnibus gap was reasonable but wrong.
+**PM crossposted "The Week the Checks..." to Medium manually** (09-17 evening) after Dispatch-PM's
+attempt cost ~$7 without completing — calendar updated 09-18 with the URL PM supplied directly.
+**PM is reconsidering automated crossposting** given the cost-to-value ratio ("the old electric
+can opener thing... good to sunset some ideas") — not yet a decision, just a real signal worth
+watching. If PM raises this again, don't assume Dispatch-PM syndication requests are still the
+default path without checking first.
 **09-15 21:57 fire was superseded by direct PM engagement, not dropped** — retroactive
 `DAY-CLOSED: 2026-09-15` written 09-16 06:04 per Step 0 self-heal; cron never died
 (`6709059b` unchanged, no re-arm needed).
@@ -34,9 +31,9 @@ boundaries** — this generalizes the existing `feedback_careful_git_sync_on_sha
 a single conversation, not just across fires.
 **Third work-queue source, established 09-13 (PM's v1.33 ruling)**: Docs's criteria line is
 `gh issue list --search "label:documentation" --state open --limit 50` — open each result, don't
-trust the list view (CXO's 09-12 finding). Denominator 10 as of 09-15 close, not yet re-checked
-today. Check every WORK fire after the mail loop, alongside standing-items.
-**Session log**: `dev/2026/09/16/2026-09-16-0604-docs-code-log.md` (open, today).
+trust the list view (CXO's 09-12 finding). Denominator 10 as of 09-18, unchanged since 09-15, all
+already understood/triaged. Check every WORK fire after the mail loop, alongside standing-items.
+**Session log**: `dev/2026/09/18/2026-09-18-1230-docs-code-log.md` (open, today).
 **Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
 make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything
 else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM's own words.
