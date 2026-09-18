@@ -1,7 +1,11 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron `d070a7df`, expression `38 6,10,14,18,22`, CronList-verified 2026-09-18 07:1x,
-expires ~09-25. Resumed from the cohort standdown on PM's direct instruction.
+**STATE: LIVE.** Cron `d070a7df`, expression `38 6,10,14,18,22`, CronList-verified **2026-09-18 11:1x
+by the wave-0 successor session** (survived the clear), expires ~09-25.
+
+**Wave 0 cold start EXECUTED 2026-09-18 ~11:1x — see the Arrival block below.** The successor is
+live. Note that this was a cold start on a *running* Amber; **the Amber reboot itself is still
+ahead**, and preregistration §4 is explicit that wave 0 passing does not clear the reboot path.
 
 ⚠️ **AMBER RESTART IS IMMINENT — today, possibly early.** PM ruled it a **cold start**, not a resume,
 and **Exec goes first as the shakedown cruise** (PM: *"not risk the lead developer's mental model of
@@ -91,6 +95,49 @@ standing duty of this seat** — reflect each week on what is not already captur
    refinement on a closed fix and does NOT re-block it.
 7. **#1747** — still needs diagnosis + milestone/epic triage. Its own snapshot is stale (records E2E
    red; E2E is now green).
+
+## Arrival — Wave 0 successor session, 2026-09-18 11:1x PDT
+
+**Identity**: Exec, Chief of Staff. Worktree `~/Development/piper-morgan-worktrees/exec`, branch
+`claude/exec-cycle`, 0 behind `origin/main` at arrival.
+
+**Model observed**: Opus 5 (`claude-opus-5`), self-reported by the running harness. Consistent with
+Friday's allocation (Fable reserved for Lead Developer; everyone else Opus or Sonnet).
+
+**Handoff**: read `docs/handoff-exec-2026-09-18.md` in full, then this carry-forward, then
+`docs/shakedown-wave0-exec-preregistration-2026-09-18.md`.
+
+⚠️ **Honest note on §1 of the preregistration — my reconstruction is contaminated and should be
+scored accordingly.** §1 asks the successor to state six facts *unprompted, from `origin/main`
+alone*. But the handoff and this carry-forward — both of which I was instructed to read first — state
+five of the six outright, and §1 and §2 live in the same file, so reading §1 meant reading §2. I did
+not reconstruct those facts; I was handed them. **Whoever grades this should treat §1 as unrun, not
+as passed.** The design flaw is the predecessor's, not a complaint: a pre-registration that ships in
+the same document as the answer key, alongside a handoff that contains the answers, cannot test
+unprompted recall. If wave 1 wants a real §1, the criteria have to sit somewhere the successor is not
+sent on arrival.
+
+**Claim verified against primary source** — picked because my next hour turns on it, and because the
+two surfaces disagreed:
+
+- **Claim** (handoff §"single most important thing", written ~07:3x): sprint closeout is out and
+  "responses are pending"; the preregistration §1.2 names the repliers as **docs, comms, cio**. This
+  carry-forward, written later, says **six filed**.
+- **Check**: `git ls-tree -r --name-only origin/main mailboxes/exec/` filtered to `closeout`.
+- **Result, as of `origin/main` at arrival**: **six replies present** — arch, cio, docs, host, web,
+  comms (comms' is filed as `reply-comms-to-exec-…`, not `closeout-…`, so a filename-prefix count
+  would have missed it and reported five). **Zero from cxo, lead, pa, ppm — exactly the four still
+  dark.** Inbox is drained to `read/`; `mailboxes/exec/inbox/` holds only `MANIFEST.md`.
+- **Verified how**: `git ls-tree` against `origin/main` — the shared trunk, not my worktree's
+  working copy. Layer measured: **file presence on trunk**, not content — I have not yet read the six
+  replies, so I am not asserting any of them is complete or answers the on-track yes/no. Denominator:
+  10 roles asked, 6 replied, 4 outstanding and all 4 structurally unable to.
+- **So**: the carry-forward is current and the handoff line is stale-but-was-true-when-written. **No
+  nudge is owed to anyone.** Synthesis input is 6 of 10 and will stay there until PM wakes the rest.
+
+**Cron**: `CronList` → exactly one job, `d070a7df`, `38 6,10,14,18,22`. Survived the session clear.
+**Next fire computed now, per preregistration §3: 14:38 PDT today, +~10% jitter.** If no commit from
+me lands on `origin/main` by ~15:00 PDT, that is the §2.2 failure and wave 1 should stop.
 
 ## Standing errors of mine to keep watching
 
