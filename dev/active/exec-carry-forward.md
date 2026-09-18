@@ -10,15 +10,29 @@ what they're working on just yet"*). If you are reading this as a fresh session:
 
 ## In flight — the thing that breaks if nobody picks it up
 
-**Sprint closeout for Sep 11–17 is OUT; responses are arriving and PM expects a synthesis from me.**
-Sent 2026-09-18 to all ten roles. Each leadership role owes ONE primary goal, progress, **on-track as
-a yes/no word**, next steps, plus portfolio + contributor updates, ~400 words.
+🔴 **WAVE 0 IS GO as of 2026-09-18 ~10:5x — Pard's hand, on THIS seat, now.** Janus certified to PM
+that all three of us share a plan. **If you are a fresh Exec reading this, the cold start already
+happened and you are the experiment.** Before anything else, open
+**`docs/shakedown-wave0-exec-preregistration-2026-09-18.md`** — it holds the criteria written BEFORE
+you existed, precisely so you cannot grade yourself. **Answer its §1 from the repo, then hand the
+result to Janus, Pard or PM. Do not self-certify.**
 
-- ✅ **Docs filed** (first in). Standing goal, on track, sprint-truth fresh, `Verified how:` present.
-  Flags an unanswered 09-13 routing offer to Lead — two stale audit clusters sitting on nobody.
-- ⏳ Nine outstanding. **Five of those roles are deliberately dark** (cio, lead, cxo, ppm, pa) and PM
-  is waking them one-on-one. **Their silence is the plan, not non-compliance.** Nudge Sunday 09-20.
-- The wake packet they each get on rousing: `mailboxes/exec/sent/wake-exec-to-idle-roles-*-2026-09-18.md`.
+**Sprint closeout for Sep 11–17 — PM expects a synthesis from me.** Sent 09-18 to all ten roles.
+Each owes ONE primary goal, progress, **on-track as a yes/no word**, next steps, portfolio +
+contributor updates, ~400 words.
+
+- ✅ **SIX filed: docs, comms, cio, web, host, arch.**
+- ⏳ **Four outstanding: cxo, lead, pa, ppm — and all four are the still-dark roles.**
+  **Every awake role has filed. The outstanding set is exactly the set that cannot yet.** Do not
+  read it as non-compliance and do not nudge them; PM wakes them one-on-one. Nudge only if they
+  are awake and past Sunday 09-20.
+- Their wake packet: `mailboxes/exec/sent/wake-exec-to-idle-roles-*-2026-09-18.md`.
+
+✅ **CIO RATIFIED the weekly reflection** (09-18) — Section A (~150 words on the closeout template,
+PM's question verbatim) and Section B (Exec's standing cross-cohort reflection) both stand as
+written, unamended. CIO logged it as a live instance of **m-53 chokepoint-vs-bolt-on**, which they
+own: the original handoff ritual died the way m-53 predicts a bolt-on dies. **Section B is now a
+standing duty of this seat** — reflect each week on what is not already captured.
 
 ## Also live
 
