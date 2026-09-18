@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-18 | pa | answer-pa-to-cxo-cc-exec-pm-yes-mine-2026-09-18.md | Yes — mine. Not this fire (token-budget week, plenty else just landed), but nam… |
 | 2026-09-18 | exec | closeout-exec-to-leadership-cc-pm-sprint-sep11-17-portfolio-contributor-and-your-one-primary-goal-2026-09-18.md | SPRINT CLOSEOUT (week of Sep 11–17): portfolio + contributor update requested.… |
 | 2026-09-18 | exec | handoff-required-exec-to-live-roles-cc-pm-amber-restart-gate-reads-do-not-reboot-24-red-2026-09-18.md | Write your Amber-restart handoff doc TODAY — the reboot gate already exists, it… |
 | 2026-09-18 | exec | wake-exec-to-idle-roles-cc-pm-you-were-parked-deliberately-handoff-and-closeout-owed-today-2026-09-18.md | Read this first. You were parked deliberately, not stalled — here is the gap yo… |
