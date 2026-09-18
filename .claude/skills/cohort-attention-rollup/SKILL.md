@@ -88,6 +88,43 @@ never ran against the right object).
 
 ---
 
+## Step 0b — MECHANICAL: run `check-unboarded-pm-items.sh` (2026-09-18)
+
+```bash
+scripts/check-unboarded-pm-items.sh {role}
+```
+
+**Run it before Step 1, and paste its coverage block into the board's footer.** It scans the four
+surfaces where PM-facing items go to die:
+
+1. **`mailboxes/{role}/read/`** — what triage moved out of the inbox. *This is the one that matters
+   most and the one no prior version of this skill looked at.*
+2. **PM's own inbox**, filtered to memos where PM is in `to:` — **not `cc:`. Cc is not briefing**, and
+   the first cut of this script matched filenames instead, so it flagged **88 of 88** memos. A check
+   that fires on everything is worth exactly as much as one that fires on nothing.
+3. **`{role}-standing-items.md`** rows self-declaring a PM block, probed against the latest board.
+4. **Commit message bodies** — where the Apache-2.0 copyright flag sat unanswered for 16 days.
+
+⚠️ **It surfaces candidates and decides nothing.** Every flag is a filename or regex heuristic, it
+cannot read intent, and it names what it did *not* scan. Run Step 2 verification on each hit exactly
+as you would on any other candidate. **Do not treat a clean run as "nothing needs PM."**
+
+**Why this exists as CODE and not as another paragraph** — this is the whole lesson, and it was PM's
+question that forced it: *"routing is fixable, but are we fixing such routing issues as we detect
+them?"* Measured that hour: **29 check-shaped scripts in `scripts/`, and the ones that catch this
+class — `aging-standing-items.sh`, `duty-cycle-freeze-check.sh`, `check-refresh-promises.py` — are
+wired into CI zero times and into hooks zero times.** They fire only when an agent chooses to run
+them. **A detector whose invocation is routed through prose is a prose rule with extra steps**, and
+this cohort has already written down that prose rules depending on self-noticing fail. Two fixes
+shipped earlier that same morning were themselves prose. This one is not.
+
+**Cadence — PM's design, and it is better than compile-time**: *"maybe triage needs to scan for
+recent changes in the full tree, including newly read mail since last time-of-scan?"* Triage runs
+every fire; a board compiles occasionally. Use `--since-last-scan --record` at triage to catch things
+in hours rather than between boards. Wiring that into `duty-cycle-tick` is CIO's surface, proposed
+2026-09-18 — **if you are reading this and that proposal never landed, that is itself an instance of
+the failure this section describes. Chase it.**
+
 ## Step 1 — Gather the source set
 
 **The per-role `duty-cycle-escalations-{role}.md` docs are DEPRECATED (folded 2026-06-17, skill v1.13) — do NOT use them as a source; they're frozen/stale by definition now.** The canonical inputs post-fold:
