@@ -1,42 +1,42 @@
 # Comms carry-forward
 
-*Rewritten 2026-09-17 midday. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
+*Rewritten 2026-09-18 midday. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log.*
 
 ## Cron / budget note
 
-`815ce10d`, expression `12 6,9,12,15,18,21 * * *` — unchanged. **Weekly usage limit hit 2026-09-15; account resets tonight (2026-09-17, ~10pm per PM).** PM granted a small overage today specifically to review/edit today's post, then asked to go idle again until reset. Going idle now — no further action expected until the reset or PM's next direct ask.
+`815ce10d`, expression `12 6,9,12,15,18,21 * * *` — unchanged. Weekly usage limit reset occurred as scheduled (Thursday 09-17, ~10pm); normal operation resumed 09-18.
 
-## Closed today
+## Closed today — the Aug 10-18 backfill, PM-approved 09-16, drafted 09-18
 
-- "The Week the Checks Started Checking Themselves" — editorial review done (4 negation-reveal AI-tic instances found and fixed, everything else clean, footer tease verified against calendar). Calendar row → `ready-for-docs`, PUBLISH-READY sent to Docs (cc PM).
+All 5 confirmed beats are drafted, edited, and in the queue — full detail in today's session log:
 
-## Lead item — building-narrative backfill: BOTH HALVES APPROVED 2026-09-16, drafting deferred to Friday
+- Aug 10 "The Contract Tested the Day It Was Born" → pubDate 2026-10-06
+- Aug 12 "Three Silent Failures Became One Law" → pubDate 2026-10-08
+- Aug 13 "Giving It Away, and Worrying Who'd Take It" → pubDate 2026-10-13
+- Aug 14 "The Message That Deleted Itself" → pubDate 2026-10-15
+- Aug 15 "The Feature That Was Never Real" → pubDate 2026-10-20 (new tail of the building queue)
 
-PM approved both the backfill slate and the process-fix design (see 2026-09-15 session log for the full research trail). Status:
+Sourced via 5 parallel subagents (full-omnibus verification each), full editorial pass done (negation-reveal AI tic found and fixed in 4 of 5 — same pattern as 09-17's review, clearly a strong generation default, not a one-off), footer-tease chain repaired end-to-end across 7 files (Described Is Not Running → ... → new tail), calendar rows added, whole-file CSV verification passed. Committed + pushed, `origin/main..HEAD` confirmed empty.
 
-1. **Process fix — DONE.** `continue-narrative` bumped to v1.2: Step 2 now requires an explicit per-calendar-day ledger (`candidate`/`thin`, machine-parseable HTML-comment block in the session log) before any slate reaches PM, enforced by a new `scripts/check-narrative-survey-coverage.py` (smoke-tested: clean range, gap, and no-ledger cases all behave correctly). Committed + pushed 2026-09-16 (`d813d3f5e`).
-2. **Backfill slate — approved, drafting HELD until Friday** (PM: "put off writing new drafts until Friday"). The 5 confirmed beats, in work-date order: Aug 10 ("The Contract Tested the Day It Was Born"), Aug 12 ("Three Silent Failures Became One Law"), Aug 13 ("Giving It Away, and Worrying Who'd Take It"), Aug 14 ("The Message That Deleted Itself"), Aug 15 ("The Feature That Was Never Real"). No calendar rows added yet — per `draft-blog-post` Phase 1 the row belongs at draft-file creation, and no draft files exist yet. **Friday: draft all 5 using the v1.2 ledger discipline** (worth writing the retroactive Aug 10-18 ledger into the record then too, since the source re-read already happened 09-15 — just wasn't in the new machine-checkable format yet), add calendar rows, work out the pubDate cascade for the downstream queue.
+**Process fix used for real, first time, and it worked**: `continue-narrative` v1.2's per-day ledger + `check-narrative-survey-coverage.py` caught a genuine miss on first use — **Aug 16 was wrongly marked "thin" in the original 09-15 pass** and actually contains a strong candidate (PM's own unscheduled ~40-minute live sprint-board reconciliation). Full detail in the ledger, today's session log. **Not drafted — new find beyond the 5 PM already approved, held for explicit go-ahead.**
 
-## Closed 2026-09-15/16
+## Open — needs PM's steer
 
-- "The Bug That Was Misdiagnosed Twice" — fully closed, published, distributed.
-- Weekly Ship #060 "Four Bugs, One Contract" — editorial review done 09-16 (title-case fix, typo fix, schedule-slip claim verified against calendar), PUBLISH-READY sent to Docs.
+- **Aug 16 candidate beat** (see above): "Six hours after most of the team called it a quiet Sunday, PM sat down with the actual sprint board, found it didn't match reality anymore, and spent forty unscheduled minutes closing more of the backlog than the entire day before it had." Draft it as a 6th backfill beat, or leave the gap? If yes: it would need its own pubDate slot (next open Tue/Thu after Oct 20 is Oct 22... Tue, need to recompute) and its own tease-chain link.
 
 ## Open items — no Comms-side move available right now
 
 - **Possible durable fix worth raising**: `template-audit` has no check for "claims a named person is already public" — the Who's Who miss (9/13) was the second data point. Not filed as a proposal — flagging for awareness, not unilaterally acting.
 - **ChicagoCamps slide deck** — landed 9/12, still not reviewed by Comms; watching for PM to confirm or ask.
-- **8 other drafts in the queue** — building beats + insights, all `drafted`, all await PM's voice-pass + art. (Independent of the Aug 10-18 backfill, which would add up to 5 more.)
+- **9 other drafts in the queue** (8 pre-existing + Distribution now pubDate-assigned) — all `drafted`, all await PM's voice-pass + art.
 - **Cross-doc title inconsistency** — DIRECTORY.md says "Communications Chief," ROSTER.md says "Communications Director." Noted, not mine to reconcile.
 - **website#35** — PM watching for recurrence, not actively pursuing.
-- **BYOC listing copy** — held per the ESSENCE ratification; the marketplace *narrative* piece is a separate artifact, already published (not blocked by this).
-- **Series structure (era split + blog-index featuring)** — the *data-correctness* half is fully resolved; the *structural* question remains separately open, PM/Web's call.
+- **BYOC listing copy** — held per the ESSENCE ratification; the marketplace *narrative* piece is a separate artifact, already published.
+- **Series structure (era split + blog-index featuring)** — the *data-correctness* half is fully resolved; the *structural* question remains separately open, PM/Web's call. (Now more load-bearing than before, per PM's 09-17 note that Eras is the intended source of truth for true sequence.)
 
 ## Waiting on others
 
-- **Docs** — publish "The Week the Checks Started Checking Themselves" (PUBLISH-READY sent 09-17).
-- **PM** — voice-pass + art on the other 8 drafted items; ChicagoCamps script/slide review.
-- **After reset (self)** — draft the 5-beat Aug 10-18 backfill slate, now unblocked, originally planned for Friday.
+- **PM** — steer on the Aug 16 candidate; voice-pass + art on the 9 other drafted items (now including the 5 fresh backfill drafts); ChicagoCamps script/slide review; "The Week the Checks..." was published 09-17, nothing further needed there.
 - **Web** — the phone image-upload issue from 9/10 (PM's own ask, not routed through Comms).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15); #1647 (filed 08-18).
