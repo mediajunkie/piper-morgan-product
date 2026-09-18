@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your decision queue — 18 September</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#16181c; --card:#1e2127; --line:#32363e; --ink:#e8e8e8; --mute:#9aa0aa;
+            --red:#e8705f; --amber:#e0a94a; --grey:#7a8089; --green:#5cbf72; --link:#79aefb; }
+  }
+  body { font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:860px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; letter-spacing:-.01em; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 .5rem; }
+  .lede { margin:.75rem 0 1.25rem; padding:.8rem 1rem; background:var(--card);
+          border:1px solid var(--line); border-radius:6px; }
+  .legend { font-size:.78rem; color:var(--mute); margin:.5rem 0 1.5rem; }
+  .legend span { margin-right:1rem; white-space:nowrap; }
+  h2 { font-size:1.05rem; margin:2rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--red);
+          border-radius:6px; padding:.8rem 1rem; margin:.7rem 0; }
+  .item.decide { border-left-color:var(--amber); }
+  .item.drift { border-left-color:var(--grey); }
+  .item.clear { border-left-color:var(--green); }
+  .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.3rem; }
+  .n { font-weight:700; font-size:1.02rem; }
+  .who { font-size:.78rem; color:var(--mute); }
+  .age { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.12rem .45rem;
+         border-radius:4px; background:#eee; color:#444; }
+  @media (prefers-color-scheme: dark) { .age { background:#2c3038; color:#c3c8d0; } }
+  .age.hot { background:#fbe6e2; color:var(--red); }
+  @media (prefers-color-scheme: dark) { .age.hot { background:#3a2523; color:#f0938a; } }
+  .age.new { background:#e4f0e6; color:var(--green); }
+  @media (prefers-color-scheme: dark) { .age.new { background:#1f3324; color:#7fd08f; } }
+  p { margin:.45rem 0; }
+  .ask { margin-top:.5rem; padding:.45rem .65rem; background:rgba(127,127,127,.09);
+         border-radius:4px; font-size:.93rem; }
+  .ask b { color:var(--ink); }
+  .links { margin-top:.5rem; font-size:.8rem; }
+  .links a, .links code { color:var(--link); text-decoration:none; margin-right:.85rem;
+                          word-break:break-all; }
+  .links a:hover { text-decoration:underline; }
+  code { font:.86em ui-monospace,SFMono-Regular,Menlo,monospace; background:rgba(127,127,127,.12);
+         padding:.08em .32em; border-radius:3px; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  .bigclear { font-size:1.02rem; color:var(--green); font-weight:600; margin:0; }
+  .resolved s { color:var(--mute); }
+  table { border-collapse:collapse; width:100%; font-size:.88rem; margin:.4rem 0; }
+  th,td { text-align:left; padding:.3rem .5rem; border-bottom:1px solid var(--line); }
+  th { color:var(--mute); font-weight:500; font-size:.78rem; text-transform:uppercase; letter-spacing:.03em; }
+  .scroll { overflow-x:auto; }
+  footer { margin-top:2.5rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only">Five items block work, eight need a call, four drift items worth knowing, plus a traced account of why several were missed.</h2>
+  <h1>Your decision queue</h1>
+  <p class="meta">Exec · <b>Friday 18 September, 11:53 PDT</b> · full live-state pass · every item re-verified this hour against its primary source, not carried from the last board</p>
+
+  <div class="lede">
+    <p><b>The finding across all six closeouts is one sentence: the constraint is your decision
+    bandwidth, not agent throughput.</b> Five independent roles named a PM-gated item or your
+    voice-pass queue as what's holding them. Nobody is short of work.</p>
+    <p><b>Several of these had never been on a board before.</b> They were "flagged" in memos, standing-items
+    rows and commit bodies — which by our own rule means they were never flagged. That is my seat's
+    miss, not yours, and I've traced each one to its cause rather than just adding them.
+    <a href="#misses">The causes are at the bottom</a>; they're three different holes, not one.</p>
+    <p style="margin-bottom:0"><b>Correcting myself from an hour ago:</b> I told you "three items
+    never boarded" and called all three a miss. <b>The memory-export question was raised at 08:10
+    today and boarded at 11:53 — four hours. That one is the system working, not failing</b>, and
+    counting it as a miss inflated the number. The real count is worse in a different direction: the
+    misses are older than three days and <b>more than half of them are in my own files.</b></p>
+  </div>
+
+  <p class="legend">
+    <span>🛑 <b>Blocker</b> — work is stopped</span>
+    <span>🔴 <b>Decision</b> — needs your call, work continues</span>
+    <span>⚪ <b>Drift</b> — worth knowing, no call</span>
+    <span>✅ <b>Cleared</b></span>
+  </p>
+
+  <h2>🛑 Blockers — work is stopped until you act</h2>
+
+  <div class="item">
+    <div class="top"><span class="n">1 · Scope-guard can't deliver its memo</span>
+      <span class="who">Arch · CXO · PPM</span><span class="age hot">8 days</span></div>
+    <p><b>What it is.</b> Scope-guard is the Action that watches commits for scope drift and files a
+    memo when it finds one. The <i>detection</i> half works and is tested live. The <i>delivery</i>
+    half can't push to <code>main</code>, so a flagged drift produces nothing. Three roles carry
+    this as their only PM-gated residual.</p>
+    <p><b>Why it's still here after you already fixed it once.</b> You removed the PR requirement on
+    <code>main</code> on 09-11, which cleared the first blocker. A second one was underneath.</p>
+    <p><b>What I got wrong, and the corrected picture — verified live at 11:50 today.</b> I told you
+    on Sunday the repo had zero rulesets so the bypass-actor path was free. The zero-rulesets half is
+    true (<code>GET /rulesets</code> returns <code>[]</code>). But I never checked the other
+    enforcement surface, and it's occupied: <b>classic branch protection</b> on <code>main</code>
+    requires one status check, <code>Security Test Suite (Postgres)</code>, and carries
+    <code>enforce_admins: false</code>.</p>
+    <p><b>That last flag is the whole thing.</b> Admins are exempt, and every human and every agent
+    pushes as an admin — my own two pushes this morning both printed <i>"Bypassed rule violations for
+    refs/heads/main."</i> So the required check today binds exactly one actor: the Actions bot, which
+    is not an admin. That is precisely why scope-guard's push fails while everyone else's sails
+    through.</p>
+    <div class="ask"><b>Your call — three options, and they differ in kind, not just detail:</b><br>
+      <b>(a)</b> Add a ruleset naming <code>github-actions</code> as a bypass actor. Arch's
+      recommendation. Cost: you now have two enforcement layers stacked on one branch unless the
+      classic rule is retired in the same motion — and classic protection has no bypass-actor concept
+      to reconcile it with.<br>
+      <b>(b)</b> Give scope-guard a scoped PAT. No branch config changes at all; cost is a credential
+      to mint, store and rotate.<br>
+      <b>(c)</b> Drop the required check from classic protection. Simplest, and it removes the only
+      protection <code>main</code> currently has — which, given admins already bypass it, may be
+      less than it sounds.<br>
+      <b>My read:</b> (b) is the smallest blast radius and doesn't touch branch config at all, but
+      Arch owns this surface and recommended (a) — worth hearing them before you rule.</p>
+    </div>
+    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/1744">#1744</a>
+      <code>dev/active/arch-carry-forward.md:49</code>
+      <code>dev/active/ppm-carry-forward.md:373</code>
+      <code>dev/active/cxo-carry-forward.md:250</code></div>
+  </div>
+
+  <div class="item">
+    <div class="top"><span class="n">2 · Janne Lammi's invite is sitting ready, unsent</span>
+      <span class="who">HOST</span><span class="age hot">3 days · never boarded</span></div>
+    <p><b>What it is.</b> Our first real external alpha tester. Token
+    <code>ZVHWT5408X2NFA6P0D838B35</code>, minted and <b>still unused</b>.</p>
+    <p><b>The history is the reason to trust it now.</b> It was ready 09-13, held when #1810 surfaced,
+    re-held on 09-15 when #1814 landed directly on Janne's own first step (the invite tells him to
+    configure his key; #1814 was the wall he'd have hit doing exactly that). Both holds were cleared
+    with an observed, driven flow — never a test pin. #1814 is closed and verified. HOST's re-lift
+    bar was met.</p>
+    <p><b>Where it actually stands:</b> HOST's closeout asks whether you've sent it, which means
+    nobody knows. It has been ready and quiet through the standdown, and it has never appeared on one
+    of these boards — so you were never really asked.</p>
+    <div class="ask"><b>Needed:</b> send it, or tell HOST what's still missing. If you'd like, I can
+    confirm the invite copy is current against the post-#1814 flow before you send.</div>
+    <div class="links"><code>mailboxes/xian (ceo)/inbox/ready-host-to-pm-...-invite-ready-to-send-2026-09-13.md</code>
+      <code>mailboxes/xian (ceo)/inbox/reheld-host-to-pm-...-2026-09-15.md</code></div>
+  </div>
+
+  <div class="item">
+    <div class="top"><span class="n">3 · Vercel storage — Web is hard-blocked</span>
+      <span class="who">Web</span><span class="age hot">9 days</span></div>
+    <p><b>What it is.</b> Deployment storage sits at 14.91 GB against a 10 GB Hobby cap. Deleting old
+    deployments is free and sufficient — there's no auto-retention below Pro, so it will recur.</p>
+    <p><b>Why Web can't do it:</b> no CLI, no token, no dashboard access from that seat. This isn't a
+    judgment call they're deferring; they have no hands on it.</p>
+    <div class="ask"><b>Needed, either one:</b> you delete the old deployments yourself (a few minutes
+    in the dashboard), <b>or</b> you give Web an API token and they handle it and every recurrence.
+    The second one is the one that stops this coming back.</div>
+    <div class="links"><code>dev/active/web-carry-forward.md</code> · <code>mailboxes/exec/read/closeout-web-...-2026-09-18.md</code></div>
+  </div>
+
+  <div class="item">
+    <div class="top"><span class="n">4 · PA is deliberately not building the BYOC readiness plan</span>
+      <span class="who">PA</span><span class="age hot">filed 07-26</span></div>
+    <p><b>What it is.</b> PA has the BYOC readiness plan drafted and ready for when MVP closes, and is
+    holding rather than building ahead of your sequencing call. Their standing row records it as
+    <i>"awaiting PM's answer on sequencing before building."</i></p>
+    <p><b>Worth saying plainly:</b> this is PA doing the right thing — not guessing at sequencing and
+    not building speculative work — and the cost of that discipline is that it sits until you answer.
+    It converged with the BYOC strategic conversation on 08-18 and has been quiet since.</p>
+    <div class="ask"><b>Needed:</b> when does PA start — at MVP closure, before it, or is the plan
+    shelved? Any of the three unblocks them; the absence of an answer is the only blocking state.</div>
+    <div class="links"><code>dev/active/pa-carry-forward.md:63</code></div>
+  </div>
+
+  <div class="item">
+    <div class="top"><span class="n">5 · website#35 needs one memory from you</span>
+      <span class="who">Web</span><span class="age hot">6 days</span></div>
+    <p><b>What it is.</b> The admin composer's "Restore local copy" dialog once rendered a blank
+    editor instead of the saved draft. Filed 08-25, after you hit it. The fix is in; Web can't close
+    it because they can't reproduce the original trigger.</p>
+    <div class="ask"><b>The actual question, which is small:</b> when you hit it on 08-25, were you
+    using browser tabs or back/forward navigation? <b>"I don't remember" is a complete answer</b> —
+    Web will close it on the fix's merits. They've said so.</div>
+    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-website/issues/35">website#35</a></div>
+  </div>
+
+  <h2>🔴 Decisions — your call, but nothing is stopped</h2>
+
+  <div class="item decide">
+    <div class="top"><span class="n">6 · The reboot: §2 ruling and the window</span>
+      <span class="who">Pard · Janus</span><span class="age new">today</span></div>
+    <p>Wave 0 (this seat) passed everything runnable — one criterion is unrunnable by construction and
+    one is pending until 15:00. Pard's two decisions for your 1-1 are the §2 ruling and the reboot
+    window.</p>
+    <p><b>One finding that should change the plan:</b> the session cron <b>survived</b> the
+    <code>/clear</code>. Crons are process-scoped and <code>/clear</code> keeps the process, so the
+    renewal waves don't need the park/re-arm dance at all. Only an actual reboot kills them. That
+    removes a chunk of ceremony from every wave after this one.</p>
+    <p><b>And one new hazard class:</b> Zephyr's first-ever fire hit a trust-folder dialog, and the
+    wrapper's blind double-Enter selected "No, exit" — killing the session to a bare shell. Recovered
+    by hand. After a reboot, any seat whose config or worktree reads as new can block the same way.</p>
+    <div class="ask"><b>Needed at the 1-1:</b> the §2 ruling and the window. Nothing else here needs
+    you first.</div>
+    <div class="links"><code>mailboxes/exec/inbox/report-pard-to-janus-exec-...-2026-09-18.md</code>
+      <code>docs/shakedown-wave0-exec-preregistration-2026-09-18.md</code></div>
+  </div>
+
+  <div class="item decide">
+    <div class="top"><span class="n">7 · Your voice-pass queue is now the pipeline's bottleneck</span>
+      <span class="who">Comms</span><span class="age">today</span></div>
+    <p>Comms closed the Aug 10–18 narrative gap — six beats, found by a two-stage catch, now fully
+    drafted. The result is that <b>9–10 drafted pieces are queued on your voice pass</b>, and Comms
+    names this explicitly: the bottleneck has moved from sourcing to your bandwidth.</p>
+    <p>This is a good problem — it means the sourcing safeguard works — but the queue only drains at
+    your pace, and it will keep growing at roughly three pieces a week.</p>
+    <div class="ask"><b>Needed:</b> a steer on order — chronological, or publish-date-first? Comms
+    can sequence the queue either way, and right now they're guessing.</div>
+    <div class="links"><code>mailboxes/exec/read/reply-comms-to-exec-...-sprint-closeout-sep11-17-2026-09-18.md</code></div>
+  </div>
+
+  <div class="item decide">
+    <div class="top"><span class="n">8 · Weekly Ship #061 has no calendar row</span>
+      <span class="who">Exec · Comms</span><span class="age new">found today</span></div>
+    <p>Ship rows carry a Fri–Thu work window. #060 covered Sep 4–10 and published 09-16. <b>#061 would
+    cover Sep 11–17 — the exact week this sprint closeout is collecting — and there is no row for it.</b>
+    Eleven calendar rows sit between 09-16 and 10-03 and none is a Ship.</p>
+    <p>I'm not asserting the closeout and the Ship's workstream reviews are the same artifact; that's
+    worth one question to Comms. But the closeout asks for exactly the Ship's input shape, and the
+    downstream slot is missing.</p>
+    <div class="ask"><b>Needed:</b> is #061 intended, and on what date? If yes I'll have Comms add the
+    row. If the Ship is pausing, say so and I'll stop treating the closeout as its input.</div>
+    <div class="links"><code>docs/internal/planning/comms/editorial-calendar.csv</code></div>
+  </div>
+
+  <div class="item decide">
+    <div class="top"><span class="n">9 · Cron → LaunchAgent (Pard's v1.4 proposal)</span>
+      <span class="who">CIO</span><span class="age hot">8 days · never boarded</span></div>
+    <p>Pard proposed moving duty cycles off session-scoped crons onto boot-persistent LaunchAgents.
+    <b>CIO's technical read is "adopt"</b> and was sent 09-10. What's left is yours: cost and
+    provisioning.</p>
+    <p><b>Today made this concrete.</b> Session crons die two ways, both silent — on session exit and
+    at a 7-day cap. Every seat re-arms by hand at every fire and verifies with <code>CronList</code>
+    because of it. A boot-persistent agent removes that whole class. Against that: it's new
+    infrastructure on Amber to provision and maintain.</p>
+    <div class="ask"><b>Needed:</b> a yes/no on spend and provisioning. CIO has done the technical
+    work; this has sat 8 days only because it was never surfaced to you.</div>
+    <div class="links"><code>dev/active/cio-standing-items.md:44</code> (row 7u) ·
+      <code>mailboxes/cio/sent/reply-cio-to-pard-...-2026-09-10.md</code></div>
+  </div>
+
+  <div class="item decide">
+    <div class="top"><span class="n">10 · Q5 — is "idle" a legitimate terminal state?</span>
+      <span class="who">Arch</span><span class="age hot">7 days</span></div>
+    <p>A methodology question with a slot already built for either answer in
+    <code>methodology-00</code> (the Excellence Flywheel). Arch needs your formal word, and has since
+    09-11. Either answer lands cleanly — the structure doesn't prefer one.</p>
+    <div class="ask"><b>Needed:</b> a yes or no, in your words, so Arch can fill the slot.</div>
+    <div class="links"><code>docs/handoff-arch-2026-09-18.md:34</code> ·
+      <code>docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md</code></div>
+  </div>
+
+  <div class="item decide">
+    <div class="top"><span class="n">11 · Should the memory export be a cadence, not an event?</span>
+      <span class="who">Exec → CIO</span><span class="age new">today · never boarded</span></div>
+    <p>My predecessor exported all 195 memory files verbatim before the restart
+    (<code>dev/2026/09/18/memory-export-2026-09-18-pre-restart.md</code>, integrity-checked). It was
+    the first export not tied to a prune.</p>
+    <p><b>Why it's worth your ruling:</b> memory lives in <code>~/.claude-pm/</code>, outside the repo,
+    with no git history, no reflog and no <code>origin/main</code> copy. It's one shared pool across
+    the whole cohort keyed to the git common dir — not per-role. Deleting a memory is irreversible
+    in a way nothing else we touch is, and today it's backed up only when someone remembers.</p>
+    <div class="ask"><b>Needed:</b> should this run on a schedule? CIO owns the surface if yes.</div>
+    <div class="links"><code>dev/2026/09/18/memory-export-2026-09-18-pre-restart.md</code></div>
+  </div>
+
+  <div class="item decide">
+    <div class="top"><span class="n">12 · Your six-item test round</span>
+      <span class="who">Exec · Lead</span><span class="age hot">11 days · never boarded</span></div>
+    <p>The walkthrough was delivered 09-07 and you sequenced it behind that day's blog post. <b>It has
+    not resurfaced since</b>, and it has never been on one of these boards — it sat in my own
+    standing-items file as "Blocked on PM."</p>
+    <p>Lead's brief decision 2 is the same round: decisions 1 (deploy) and 3 (the FTUX flip) were both
+    ruled on 09-07 and shipped; decision 2 is the only one of the three still open.</p>
+    <div class="ask"><b>Needed:</b> either run the round, or tell me to drop it. Eleven days of silence
+    behind a one-day deferral is the shape our own aging rule exists to catch, and I'm the one who
+    should have caught it.</div>
+    <div class="links"><code>dev/active/exec-standing-items.md</code> rows 8 &amp; 16</div>
+  </div>
+
+  <div class="item decide">
+    <div class="top"><span class="n">13 · Two small ones you can clear in a sentence each</span>
+      <span class="who">Arch · Web</span><span class="age">19 days · 9 days</span></div>
+    <p><b>Bets 001–003</b> (Arch, since 08-30) — fields await your input. Non-blocking by design, and
+    Arch says so; it's here because 19 days is past the point where silence should be read as
+    intent.</p>
+    <p><b><code>integration-reveals-all</code> workDate</b> (Web, since 09-09) — needs your recall of
+    when the work happened, nothing more. Same as #5: "I don't remember" resolves it.</p>
+  </div>
+
+  <h2>⚪ Drift — worth knowing, no decision needed</h2>
+
+  <div class="item drift">
+    <div class="top"><span class="n">Code Quality has been red on <code>main</code> all day</span>
+      <span class="age new">today</span></div>
+    <p>Five consecutive failures on <code>main</code> since 17:12 UTC. Cause is narrow and harmless:
+    <code>ruff format</code> wants two long <code>print()</code> calls wrapped in
+    <code>scripts/check-narrative-survey-coverage.py</code> — Comms' new survey-coverage script,
+    shipped 09-16. It's a formatting failure, not a logic one. One <code>ruff format</code> run fixes
+    it. Flagging rather than reaching into Comms' file mid-compile; <b>say the word and I'll fix it.</b></p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="n">#1747 is live and accurate — I had it recorded as stale</span>
+      <span class="age">5 days</span></div>
+    <p>My own carry-forward says #1747's snapshot is stale because E2E has gone green. <b>That's
+    wrong.</b> Checked live: <code>Tests</code> and <code>E2E &amp; AAXT Tests</code> both last ran
+    2026-09-17 and both <b>failed</b>; nothing has run since. So #1747's claim — that these sit
+    outside #1687's four-workflow denominator, making "belt fully green" a subset claim phrased as a
+    total — still stands exactly as filed. Correcting my own record rather than carrying it forward.</p>
+    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/1747">#1747</a></div>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="n">CIO is awake but its registry row still reads parked</span>
+      <span class="age new">today</span></div>
+    <p>CIO filed its closeout, ratified the weekly-reflection proposal and shipped its handoff today —
+    plainly alive. Its row still says <code>parked</code>, so the freeze-check reports 5 parked when
+    only 4 roles are dark. That's the un-park rule working correctly, not a bug: only the owning
+    session can <code>CronList</code>-verify itself, so only CIO can clear it. <b>I'm sending CIO a
+    note; no action from you.</b> It matters at reboot time, when a stale parked row and a dead seat
+    look identical.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="n">Rulings are outpacing mechanisms</span><span class="age">theme</span></div>
+    <p>Arch names this about their own lane unprompted: two conditions they set this week exist as
+    prose in memos rather than as ratchets. CIO has four standing items described as <i>"genuinely
+    open, unblocked, carried forward — not stalled, just not yet scheduled."</i> Two of CIO's rows
+    are 132 and 26 days old. Not urgent this week; it compounds quietly, and it's the exact shape our
+    own deferral rule exists to catch.</p>
+  </div>
+
+  <h2 id="misses">🔧 Why these were missed — traced, and two fixes already shipped</h2>
+
+  <div class="item drift">
+    <p>You asked for the reasons, not just the items. I traced each one to a commit rather than
+    guessing. <b>They are three different holes, and only one of them is about carelessness.</b></p>
+
+    <p><b>Cause 1 — triage evicts items from the only mail surface the board sweeps.</b><br>
+    HOST's invite memo landed at <code>19:09:08</code> on 09-13 and was moved
+    <code>inbox/</code>→<code>read/</code> <i>in the same commit</i> — the "inbox drained, 5 triaged"
+    pass. That day's board had been compiled at <code>15:42</code>, three and a half hours earlier.
+    The next compile was today. In between, the item existed only in <code>read/</code>, and the
+    skill's mail source says <i>"your exec inbox."</i><br>
+    ⚠️ <b>The inversion is why no one catches this by trying harder: a memo left rotting unread would
+    have been caught. Prompt triage is what hid it.</b> Every incentive we have pushes items out of
+    the swept surface, so diligence is the failure mode.<br>
+    <b>Fixed.</b> The mail sweep is now two commands — <code>inbox/</code> plus everything added to
+    <code>read/</code> since the last board's own commit timestamp, with the window stated in the
+    footer.</p>
+
+    <p><b>Cause 2 — the aging script emits three labels and the skill routed one.</b><br>
+    <code>aging-standing-items.sh</code> emits <code>AGING</code>, <code>STALE-BLOCKER</code> and
+    <code>COVERAGE GAP</code>. <code>STALE-BLOCKER</code> appeared in the skill <b>zero times</b>, so
+    hits under it arrived with no instruction and got skimmed. That's how CIO's LaunchAgent row sat 8
+    days with its technical work finished.<br>
+    ⚠️ <b>And <code>STALE-BLOCKER</code> is the label that matters most</b> — it means a row's stated
+    blocker cites an issue that has since closed. That isn't an aging row; it's <b>unblocked work
+    nobody noticed became unblocked, whose own text argues against looking at it.</b><br>
+    <b>Fixed.</b> All three labels now have explicit routing in the skill.</p>
+
+    <p><b>Cause 3 — my own standing-items file was never subject to the rule I enforce on others.</b><br>
+    Today's scan flagged four <code>STALE-BLOCKER</code> rows. <b>Two are mine.</b> Applying my own
+    "check the recipient's <code>sent/</code>" rule to my own file for the first time, I found:<br>
+    • <b>Rows 9 and 20 were the same question filed twice</b>, both reading "Blocked on PM, unanswered"
+    — and <b>CIO ruled and shipped it on 09-08.</b> Ten days stale. It was never blocked on you.<br>
+    • <b>Row 1</b> was waiting on your review of Weekly Ship #059. <b>#059 published, and #060 has
+    published since.</b> The row outlived its subject by two Ships.<br>
+    • <b>Row 16</b> — your six-item test round — was genuinely open, 11 days, and had never been
+    boarded. It's now item 12 above.<br>
+    ★ <b>The sharp bit:</b> the very amendment CIO shipped on 09-08 mandates a three-surface re-check
+    on every PM-gated row. It applies to <i>carry-forward</i> rows. Standing-items rows aren't covered,
+    so this file never got it. <b>The fix for this exact class shipped ten days ago and structurally
+    could not reach the file that needed it.</b><br>
+    <b>Not yet fixed</b> — extending that re-check to standing-items files is a cohort-wide change to
+    <code>duty-cycle-tick</code>, which is CIO's surface, not mine to edit unilaterally. Proposing it
+    to them is on me; flagging it to you here so it isn't a third thing that lives only in a memo.</p>
+
+    <p style="margin-bottom:0"><b>What the three share:</b> in every case a check ran, or a
+    person acted correctly, and the result landed somewhere nothing downstream reads. None of them
+    was a judgment failure. All three were routing failures — which is the good news, because routing
+    is fixable and judgment isn't.</p>
+  </div>
+
+  <h2>📈 Where the milestone stands</h2>
+  <div class="item drift">
+    <div class="scroll"><table>
+      <tr><th>not done</th><th>never started</th><th>in progress</th><th>in review</th><th>done</th><th>to 30 Oct</th></tr>
+      <tr><td><b>56</b></td><td><b>33</b></td><td>3</td><td>6</td><td>1,176</td><td>42 days</td></tr>
+    </table></div>
+    <p style="margin-bottom:0"><code>sprint-truth.py</code>, run fresh at compile time; 1,651 board
+    items pulled, 0 unmilestoned. <b>33 of the 56 have not been started</b> — any "nearly there"
+    reading has to exclude those explicitly.</p>
+  </div>
+
+  <h2>✅ Cleared since the last board (13 Sept)</h2>
+  <div class="item clear">
+    <p class="resolved">
+      <s>The internal report discussion gating the Ship</s> — happened; <b>Ship #060 published 09-16</b>.<br>
+      <s>#1814</s> — closed and verified, which is what cleared the technical half of Janne's invite.<br>
+      <s>Model allocation after the Fable ceiling event</s> — ruled 09-18: Fable reserved for Lead
+      Developer, everyone else Opus or Sonnet, and sub-agent dispatches must set their tier explicitly
+      rather than inherit.<br>
+      <s>The weekly reflection proposal</s> — CIO ratified it unamended; Section B is now a standing
+      duty of this seat.
+    </p>
+  </div>
+
+  <h2>🟢 The cohort</h2>
+  <div class="item clear">
+    <p class="clean"><b>Awake and cycling — 7:</b> exec, arch, host, comms, web, docs, cio.<br>
+    <b>Resuming at your ask — 4:</b> lead, ppm, pa, cxo. Their rows stay parked until each un-parks
+    its own; that's by design, not neglect.<br>
+    <b>Note the two denominators:</b> 11 registry rows is the opt-in watch list. The reboot gate covers
+    24 residents. The registry is not the roster.</p>
+    <p class="clean" style="margin-bottom:0"><b>No blocked-work reports in my inbox</b> beyond what's
+    boarded above — inbox is drained, one new item from Pard read and boarded.</p>
+  </div>
+
+  <footer>
+    <b>Bottom line: five things are stopped and four of the five need less than a minute of your
+    time — the invite, the Vercel deletions, PA's sequencing, and one memory about browser tabs. Only
+    the scope-guard ruling needs real thought.</b><br><br>
+    <b>Live-state pass — what I actually verified, and at which layer.</b>
+    Liveness first: <code>DUTY_CYCLE_COVERAGE=1 duty-cycle-freeze-check.sh</code>, rc=0, all 11 rows
+    (not the cohort-level tool). Branch protection and rulesets: <code>gh api</code> against the live
+    repo at 11:50 today, including confirming <code>Security Test Suite (Postgres)</code> matches a
+    real job name rather than a phantom context — <b>repo configuration layer, not a behavioral test;
+    I have not pushed a scope-guard delivery to confirm which surface actually refuses it.</b>
+    CI states: <code>gh run list</code> per named workflow, conclusions quoted by date.
+    #1744/#1747/website#35: <code>gh issue view</code>, all three OPEN.
+    <code>decisions.log</code> grepped per topic for rulings already made — none found for ruleset,
+    Vercel, LaunchAgent, memory export or Janne. Every mail-based ask checked for an existing reply in
+    the recipient's <code>sent/</code> — none found. Milestone line from <code>sprint-truth.py</code>
+    at compile time. First-seen dates taken from the rollup series where the item was previously
+    boarded, and from the owning role's own filed date where it was not.<br><br>
+    <b>Denominator:</b> 6 of 10 sprint closeouts filed; the four missing (lead, ppm, pa, cxo) are the
+    four roles that were dark, now resuming. Their carry-forwards were read directly for PM-gated
+    items so their lanes are represented here even though their closeouts aren't in. Aging scan
+    coverage, quoted from the script rather than summarized: <i>11 standing-items files found, 6 with
+    a readable per-item date, 3 with no parseable date column (arch, comms, lead), 52 rows examined,
+    3 flagged aging, 6 correctly excluded for blocking language.</i> A clean run is not a claim that
+    the 3 unreadable files carry nothing.
+  </footer>
+</div>
+</body>
+</html>

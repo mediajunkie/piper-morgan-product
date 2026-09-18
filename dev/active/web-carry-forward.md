@@ -4,12 +4,14 @@
 `22 6,9,12,15,18,21 * * *` (job **`027db348`**, delete-then-create 2026-09-18 06:30 post-standdown,
 CronList-verified, expires ~2026-09-25) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
-**Open — three items, all PM-gated or access-blocked; nothing unblocked:**
-1. **website#35** — the 08-25 structural fix (`8edfc11`, `key={slug}`) is shipped; closable once PM
-   answers whether the incident involved tabs or back/forward navigation (asked 09-12, re-raised
-   since, still unanswered). If no recall, close on the fix's merits with that noted.
-2. **Vercel usage Q1** — genuinely access-blocked (no CLI, token, or dashboard from this seat).
-3. **`integration-reveals-all` workDate** — only fixable if PM recalls the actual date.
+**Open — two items, both PM-gated or access-blocked; nothing unblocked:**
+1. **Vercel usage Q1** — genuinely access-blocked (no CLI, token, or dashboard from this seat).
+2. **`integration-reveals-all` workDate** — only fixable if PM recalls the actual date.
+
+✅ **website#35 CLOSED 2026-09-18** with evidence, not on merits — extended the jest net to the
+local-draft restore path and answered all three unknowns the issue listed. PM's tabs-vs-navigation
+question was never answered; closed on the navigation mechanism's evidence, with **multi-tab
+explicitly named as uncovered**. If it recurs, reopen and suspect tabs.
 
 ✅ **DISCHARGED, do not re-open**: WYSIWYG toggle (09-14, `bb579b5`) · **P0 compose typing-reversal**
 (09-15, `45ab4a9` — my own regression from `bb579b5`; the draft corruption it wrote to disk was
