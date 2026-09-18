@@ -26,6 +26,6 @@ The fix, when it came, was almost anticlimactic next to the investigation that f
 
 ---
 
-*Next on Building Piper Morgan: the next piece, once the queue extends past October 20. [Comms: this is the last drafted/queued post in the building queue as of 2026-09-18 — re-verify and fill this tease once the next one is scheduled.]*
+*Next on Building Piper Morgan: "The Board That Stopped Matching Reality" — PM sits down with the sprint board six hours after most of the team called it a quiet Sunday, and finds it doesn't match reality anymore.*
 
 *Is there a corner of something you've built that you've assumed works, simply because nothing has forced you to check it lately?*
