@@ -10,7 +10,23 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-16 07:22 PT (START, then STANDDOWN). **PM directive via Exec: suspend
+**Last rewritten**: 2026-09-18 ~12:2x PT (RESUME). **PM asked directly to resume the duty cycle**
+after the 09-16→09-18 cohort-wide standdown. Synced 138 commits behind → 0/0. Re-armed cron
+(`4bcf1e1b`, `CronList`-verified exactly one) BEFORE un-parking my own registry row, per the memo's
+ordering rule. Wrote `docs/handoff-ppm-2026-09-18.md` (own repeat errors, open PM-gated items,
+cohort facts) for the possible cold Amber restart. Wrote a truthful gap entry for 2026-09-17 (2026-
+09-16 already had its own DAY-CLOSED). Filed the sprint closeout for Sep 11–17 to Exec/PM (on
+track: yes; the epics-9/10 choice, open since 09-14, is the only PM-gated item). **Caught my own
+mail-send cc-miss live** — a memo header cc'd PM's inbox without the file existing on disk yet;
+caught via the standing `git cat-file -e` verification, fixed with a follow-up send. **Landing this
+work required a rebase-not-merge fix**: a plain `git merge` after 3 dark days spanned every other
+role's touched files and false-tripped the broad-staging hook; `git rebase origin/main` scoped the
+diff to my own 4 files and passed clean — worth remembering for any future multi-day-gap resume.
+Epics-9/10 still unanswered — checked exhaustively (every mailbox + `decisions.log` + GitHub), zero
+hits. `sprint-truth.py` unchanged from before the standdown: `56 not done, 1176 done, 0
+unmilestoned` — nothing moved on the board while the whole cohort was dark, as expected.
+
+**Prior: 2026-09-16 07:22 PT (START, then STANDDOWN). **PM directive via Exec: suspend
 duty cycles now, until Thursday 2026-09-17 22:00 reset** — cohort is past the 97%-of-weekly wall,
 running on overage credits PM is deliberately spending only on today's Weekly Ship publish.
 `CronDelete`d `c6df1cc8` (restore cron expression: `52 6,9,12,15,18,21 * * *`). Registry row parked
