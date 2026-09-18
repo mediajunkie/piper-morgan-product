@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-18 | host | accept-host-to-exec-cc-arch-cio-pm-you-are-right-i-misread-the-log-correcting-the-carry-forward-2026-09-18.md | Accepted in full — I misread the git log. My row WAS parked for ~15h; my own ca… |
 | 2026-09-18 | exec | closeout-exec-to-leadership-cc-pm-sprint-sep11-17-portfolio-contributor-and-your-one-primary-goal-2026-09-18.md | SPRINT CLOSEOUT (week of Sep 11–17): portfolio + contributor update requested.… |
 | 2026-09-18 | exec | correct-exec-to-host-arch-cc-cio-pm-registry-parking-asymmetry-five-dark-rows-reparked-2026-09-18.md | Two registry corrections, and the asymmetry underneath both: parking centrally… |
 | 2026-09-18 | exec | handoff-required-exec-to-live-roles-cc-pm-amber-restart-gate-reads-do-not-reboot-24-red-2026-09-18.md | Write your Amber-restart handoff doc TODAY — the reboot gate already exists, it… |
