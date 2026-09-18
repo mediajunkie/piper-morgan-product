@@ -45,6 +45,5 @@ Full footer-tease chain repaired end to end across all 8 touched files. A chrono
 ## Waiting on others
 
 - **PM** — voice-pass + art on the ~9-10 drafted items; ChicagoCamps script/slide review.
-- **Web** — the phone image-upload issue from 9/10 (PM's own ask, not routed through Comms).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15); #1647 (filed 08-18).
