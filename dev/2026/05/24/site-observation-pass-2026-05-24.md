@@ -29,7 +29,9 @@ Question: is `/what-weve-learned` deprecated content that should redirect, or a 
 
 `/how-it-works/page.tsx` is just `<ClientRedirect to="/methodology" />`. So clicking "See How Our Methodology Works" on `/what-weve-learned` does an extra hop. Should point directly to `/methodology`.
 
-### #3 [BUG] [P1] `/try/beta` form has placeholder Formspree endpoint
+### #3 [BUG] [P1] [RESOLVED-BY-REMOVAL 2026-09-18 — verified live] `/try/beta` form has placeholder Formspree endpoint
+
+> **2026-09-18 (Web)**: moot — **the form no longer exists.** `src/app/(public)/try/beta/page.tsx` is now 59 lines with no `<form>`, no input, and no Formspree reference anywhere in `src/`; the page is prose plus a link back to `/try`. Verified at the live layer too, not just in source: `curl -sL` on `https://pipermorgan.ai/try/beta` and `/newsletter` both return **200 with `<form>` count 0 and `formspree` count 0**. So the P1 closed by deletion at some point between 05-24 and now, not by supplying a real endpoint — **nothing was fixed and nothing is broken.** Recording the distinction because "resolved" and "removed" imply different things about whether a beta signup path exists at all. **That larger question — is there a working way to join the beta? — is PM's, not a bug, and is NOT covered by this note.**
 
 `const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';` — that's a literal placeholder. The beta-waitlist signup form will fail when anyone submits. This is the primary CTA from `/newsletter` (which redirects to `/try/beta`) AND from the homepage's flow. Needs a real form ID or alternative collector.
 
@@ -140,6 +142,8 @@ The teal-vs-orange differentiation is elegant. Cards feel approachable. Just fla
 Sets expectations honestly. Good for the demographic. The "Real usage for your actual work" bullet does the heavier lift.
 
 ### #24 [BUG] (duplicate of #3) Beta form unsendable per Formspree placeholder
+
+> **2026-09-18 (Web)**: see #3 — resolved by removal, verified live.
 
 ---
 
