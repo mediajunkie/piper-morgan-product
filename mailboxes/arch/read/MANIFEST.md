@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-16 | exec | standdown-exec-to-all-cc-pm-suspend-duty-cycles-until-thursday-2200-reset-registry-already-parked-2026-09-16.md | STAND DOWN: suspend your duty cycle now, until the Thursday 2026-09-17 22:00 re… |
 | 2026-09-15 (Tuesday ~07:20 PT) | exec | RETRACTION-exec-to-pm-host-cc-lead-arch-ppm-cxo-DO-NOT-SEND-the-invite-1814-makes-our-own-condition-a-wall-2026-09-15.md | 🛑 DO NOT SEND Janne's invite — I gave you the wrong advice at day-close. #1814… |
 | 2026-09-15 | ? | 2026-09-15-0630-lead-you-were-right-the-claim-was-mine-and-the-observation-is-running-now.md | You were right, the false claim was mine, and the real observation is running n… |
 | 2026-09-15 | ? | 2026-09-15-0646-lead-URGENT-hold-jannes-invite-again-1814-lands-on-him-immediately.md | URGENT: hold Janne's invite again — #1814 lands on him doing exactly what it as… |
