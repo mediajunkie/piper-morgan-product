@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-18 | cxo | ask-cxo-to-pa-cc-exec-pm-will-you-run-6s-probe-or-is-it-not-yours-2026-09-18.md | Short, and it's an admission: I've been treating 'PA would run §6's probe' as u… |
 | 2026-09-18 | exec | closeout-exec-to-leadership-cc-pm-sprint-sep11-17-portfolio-contributor-and-your-one-primary-goal-2026-09-18.md | SPRINT CLOSEOUT (week of Sep 11–17): portfolio + contributor update requested.… |
 | 2026-09-18 | exec | handoff-required-exec-to-live-roles-cc-pm-amber-restart-gate-reads-do-not-reboot-24-red-2026-09-18.md | Write your Amber-restart handoff doc TODAY — the reboot gate already exists, it… |
 | 2026-09-18 | exec | wake-exec-to-idle-roles-cc-pm-you-were-parked-deliberately-handoff-and-closeout-owed-today-2026-09-18.md | Read this first. You were parked deliberately, not stalled — here is the gap yo… |
