@@ -1,10 +1,10 @@
 ---
 name: delete-module-safely
-description: Delete a dead/fabricated module (or module family) without stranding importers, tests, CI jobs, or docs. Use for any fix-or-delete execution, Tier-3-style dead-code removal, or retiring a superseded subsystem. Encodes the Finish-the-Unfinished sprint's deletion lessons (Families 1-3, 2026-07-18/19).
+description: Delete a dead/fabricated module (or module family) — or a WRITE to a shared slot — without stranding importers, readers, tests, CI jobs, or docs. Use for any fix-or-delete execution, Tier-3-style dead-code removal, or retiring a superseded subsystem. Encodes the Finish-the-Unfinished sprint's deletion lessons (Families 1-3, 2026-07-18/19).
 scope: cross-role (Lead/Arch lanes primarily)
-version: 1.0
+version: 1.1
 created: 2026-07-19
-updated: 2026-07-19
+updated: 2026-09-18
 ---
 
 # delete-module-safely
