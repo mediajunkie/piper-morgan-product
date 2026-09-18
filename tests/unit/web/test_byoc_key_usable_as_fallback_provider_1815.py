@@ -128,12 +128,14 @@ class _FailingOpenAI:
     """
 
     constructed_with: list = []
+    calls: int = 0  # #1819: completion ATTEMPTS (construction alone is not billing)
 
     def __init__(self, api_key=None, **kwargs):
         self.api_key = api_key
         type(self).constructed_with.append(api_key)
 
         def _create(**kw):
+            _FailingOpenAI.calls += 1
             raise RuntimeError(OPENAI_OUTAGE)
 
         self.chat = SimpleNamespace(completions=SimpleNamespace(create=_create))
@@ -174,6 +176,7 @@ def _mixed_byoc_instance(monkeypatch):
 
     _RecordingAnthropic.constructed_with = []
     _FailingOpenAI.constructed_with = []
+    _FailingOpenAI.calls = 0
     monkeypatch.setattr("anthropic.Anthropic", _RecordingAnthropic)
     monkeypatch.setattr(clients_module, "Anthropic", _RecordingAnthropic)
     monkeypatch.setattr(clients_module, "OpenAI", _FailingOpenAI)
@@ -246,7 +249,17 @@ async def _fake_session_scope():
 @contextlib.contextmanager
 def _stored_key(value):
     """Point the route's DB-backed stored-key fetcher at `value` without a database.
-    Resolution, binding and refusal all still run for real."""
+    Resolution, binding and refusal all still run for real.
+
+    #1819 AMENDMENT: provider-aware. The stored-key fetch is per-provider now (the
+    route's binding expansion also asks for the user's openai row), and this world's
+    tester owns an ANTHROPIC key and nothing else — a blanket return would silently
+    hand the tester an "openai key" too and dissolve the very scenario this file
+    exists to pin (Anthropic in the fallback position)."""
+
+    async def _per_provider(_session, _uid, provider):
+        return value if provider == "anthropic" else None
+
     with (
         patch(
             "services.database.session_factory.AsyncSessionFactory.session_scope_fresh",
@@ -254,7 +267,7 @@ def _stored_key(value):
         ),
         patch(
             "services.security.user_api_key_service.UserAPIKeyService.retrieve_user_key",
-            AsyncMock(return_value=value),
+            AsyncMock(side_effect=_per_provider),
         ),
     ):
         yield
@@ -316,9 +329,18 @@ class TestByocKeyIsUsableAsAFallbackProvider:
             "the route must bind the user's resolved key for the request — if this fails "
             "the defect is upstream of #1815, in #1807's resolution or #1814's gate"
         )
-        # The primary really did run and really did fail — otherwise this test would pass
-        # without ever entering the fallback loop it exists to cover.
+        # #1819 AMENDMENT (was: `constructed_with == [SERVER_OPENAI_KEY]` with the comment
+        # "the primary really did run and really did fail"). The primary leg refuses
+        # ENTITLEMENT now: the tester holds no OpenAI key, so `_openai_complete` raises
+        # `UnboundLLMKeyError` before any completion is attempted — the operator's OpenAI
+        # key is never spent on the tester's turn (that spend was #1819's other half).
+        # The singleton still CONSTRUCTS the server client at `_init_clients` (request-
+        # blind, #1814 — construction is not billing); the pin is zero completion CALLS.
         assert _FailingOpenAI.constructed_with == [SERVER_OPENAI_KEY]
+        assert _FailingOpenAI.calls == 0, (
+            "the operator's OpenAI client served a completion for a tester who owns no "
+            "OpenAI key — the #1819 silent spend, resurrected"
+        )
 
         assert turn.raised is None, (
             f"the routed turn failed instead of falling back: {turn.raised!r} — the "
@@ -378,16 +400,19 @@ class TestByocKeyIsUsableAsAFallbackProvider:
     ):
         """The constraint #1815 states explicitly, pinned so a later refactor cannot lose it.
 
-        The per-request key is an ANTHROPIC key by construction (``REQUEST_KEY_PROVIDER``),
-        and ``_anthropic_complete`` is its only consumer. OpenAI and Gemini have no
-        per-request path at all: ``_openai_complete`` and ``_gemini_complete`` read the
-        server's client/flag and nothing else. Reporting them available off the back of a
-        request key would send the fallback loop into a provider that is guaranteed to
-        raise — trading a silent skip for a guaranteed failure, which is not a fix.
+        #1819 AMENDMENT (the second half of the original wording fell): the binding is
+        provider-keyed now, so "a key bound for one provider never makes ANOTHER look
+        available" is the surviving constraint — an Anthropic key still never makes
+        Gemini (no per-request client path, the leg refuses a bound key) or OpenAI
+        (no OpenAI key bound) callable. What CHANGED: the server's OpenAI client
+        existing is no longer availability either — unbound, `_openai_complete` refuses
+        rather than spending the operator's key, so reporting True would route the loop
+        into a guaranteed refusal (the exact trap the original docstring named). An
+        OpenAI binding of the user's OWN key is what makes OpenAI available.
         """
         llm = clients_module.LLMClient()
-        # Gemini is unconfigured server-side in this world; OpenAI IS configured, so its
-        # answer must be True for the server's OWN reason and not because of the user key.
+        # Gemini is unconfigured server-side in this world; OpenAI IS configured
+        # server-side — which post-#1819 is an operator credential, not entitlement.
         assert llm.gemini_client in (None, False)
 
         with request_api_key(STORED_USER_KEY):
@@ -395,10 +420,21 @@ class TestByocKeyIsUsableAsAFallbackProvider:
                 "an Anthropic request key made Gemini look callable — `_gemini_complete` "
                 "has no per-request path and would raise"
             )
-            assert llm._is_provider_configured(LLMProvider.OPENAI) is True
+            assert llm._is_provider_configured(LLMProvider.OPENAI) is False, (
+                "the SERVER's OpenAI client leaked through as availability for a request "
+                "holding only an Anthropic key — unbound, that leg refuses (#1819)"
+            )
             assert llm.openai_client is not None, (
-                "OpenAI must read True because the SERVER holds an OpenAI key, not because "
-                "a request bound an Anthropic one"
+                "precondition: the operator's client exists; its existence just is not "
+                "this request's entitlement"
+            )
+
+        # And the user's OWN OpenAI key is exactly what makes OpenAI available (#1819).
+        with request_api_key({"openai": "sk-oai-the-users-own"}):
+            assert llm._is_provider_configured(LLMProvider.OPENAI) is True
+            assert llm._is_provider_configured(LLMProvider.ANTHROPIC) is False, (
+                "an OpenAI binding must not make Anthropic look callable either — the "
+                "constraint is symmetric"
             )
 
 
