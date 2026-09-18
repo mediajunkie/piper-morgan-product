@@ -59,6 +59,19 @@ designated-operator seam survives as an *explicit* ``None`` binding (producible 
 resolver's double-gated operator rung, and re-checked against gate 1 at the chokepoint)
 until #1812 step 5 deletes it.
 
+#1819 (2026-09-18): **the binding is PER-PROVIDER.** #1809 inverted the Anthropic
+chokepoint, but ``_openai_complete`` / ``_gemini_complete`` still read the server's own
+long-lived clients with no per-request path at all, and the KG embedding function read
+the server's OpenAI key straight from the keychain — three spend surfaces outside the
+inversion. The ContextVar now holds a provider-keyed mapping (a plain ``str`` binding
+normalizes to ``{REQUEST_KEY_PROVIDER: key}``, so every #1162/#1809 call site is
+unchanged), and ``request_spend_key(provider)`` is the ONE decision the non-Anthropic
+legs and the embedding path share: bound key for THAT provider → spend it; explicit
+operator ``None`` binding (gate 1 re-checked) → the server's own credential; anything
+else → ``UnboundLLMKeyError``. A key bound for one provider never makes another
+provider spendable (#1815's constraint, now enforced at the chokepoint rather than
+merely at the availability gate).
+
 Security properties (this is credential handling — keep them):
 - The key lives ONLY in the ContextVar for the request's duration and is **reset in
   a finally** (`request_api_key` context manager) → it never outlives the request.
@@ -74,7 +87,7 @@ from __future__ import annotations
 import contextlib
 import os
 from contextvars import ContextVar
-from typing import Any, Awaitable, Callable, Iterator, Optional, Union
+from typing import Any, Awaitable, Callable, Dict, Iterator, Mapping, Optional, Union
 
 
 class _UnboundType:
@@ -99,7 +112,10 @@ _UNBOUND = _UnboundType()
 # (#1812, decisions.log 2026-09-14 ×2); the sole surviving server-key path is the
 # EXPLICIT `None` binding the resolver's operator rung produces (#1807 double gate),
 # and that seam lasts only until #1812 step 5 removes it.
-_user_api_key: ContextVar[Union[str, None, _UnboundType]] = ContextVar(
+# #1819: the bound value is a provider-keyed mapping (str bindings normalize to
+# {REQUEST_KEY_PROVIDER: key} at set time in `request_api_key`). `None` remains the
+# explicit operator binding; the UNBOUND sentinel remains the refusing default.
+_user_api_key: ContextVar[Union[Dict[str, str], None, _UnboundType]] = ContextVar(
     "user_api_key", default=_UNBOUND
 )
 
@@ -109,13 +125,22 @@ _user_api_key: ContextVar[Union[str, None, _UnboundType]] = ContextVar(
 OPERATOR_SERVER_KEY_ENV = "PIPER_OPERATOR_SERVER_KEY"
 _TRUTHY = {"1", "true", "yes", "on"}
 
-# The provider the per-request key belongs to. It is an ANTHROPIC key by construction:
-# `web/utils/llm_key.py` fetches the stored key for provider "anthropic", the
-# `X-User-Api-Key` header is documented as the caller's Anthropic key, and
-# `anthropic_client_for_request` below is its only consumer. Named here so readers of
-# this ContextVar (#1814 added one in `LLMConfigService.get_api_key`) assert that
-# binding in ONE place instead of each re-hardcoding "anthropic" on their own authority.
+# The provider the HEADER's key belongs to. The `X-User-Api-Key` header is documented
+# as the caller's Anthropic key, so a plain-``str`` binding (the #1162 form every
+# pre-#1819 call site uses) normalizes to this provider. Named here so readers assert
+# that binding in ONE place instead of each re-hardcoding "anthropic" on their own
+# authority. #1819: stored-key resolution is per-provider (each `user_api_keys` row
+# names its provider), so OTHER providers bind through the mapping form of
+# `request_api_key`, not through this constant.
 REQUEST_KEY_PROVIDER = "anthropic"
+
+# Providers whose completion leg can build a FRESH per-request client from a bound key
+# (#1819). Anthropic: `anthropic_client_for_request`. OpenAI: `_openai_complete`
+# constructs `OpenAI(api_key=...)` per call. Gemini is deliberately ABSENT:
+# `google.generativeai` configures credentials process-globally (`genai.configure`),
+# so honoring a per-request Gemini key would risk serving request A under request B's
+# credential — the leg refuses instead (see `LLMClient._gemini_complete`).
+PER_REQUEST_CLIENT_PROVIDERS = frozenset({"anthropic", "openai"})
 
 
 def operator_server_key_opted_in() -> bool:
@@ -194,39 +219,143 @@ class ConsentUnreadableError(LLMKeyRequiredError):
     """
 
 
-def get_request_api_key() -> Optional[str]:
-    """The current request's user-supplied API key, or None when there isn't one.
+def get_request_api_key(provider: str = REQUEST_KEY_PROVIDER) -> Optional[str]:
+    """The current request's user-supplied key for ``provider``, or None.
 
     Deliberately collapses UNBOUND and the explicit operator-``None`` binding to
-    ``None`` — its two production readers (#1814's ``get_api_key`` step 0 and #1815's
-    ``_is_provider_configured``) both ask "did this request bring its OWN key?", for
+    ``None`` — its production readers (#1814's ``get_api_key`` step 0 and #1815's
+    ``_is_provider_configured``) ask "did this request bring its OWN key?", for
     which the distinction is irrelevant. The distinction matters only at the SPEND
-    point, and ``anthropic_client_for_request`` reads the raw ContextVar for it.
+    point, and ``request_spend_key`` reads the raw ContextVar for it.
+
+    #1819: provider-keyed. The no-argument form keeps the #1162/#1809 contract
+    (the header's provider, ``REQUEST_KEY_PROVIDER``); a key bound for one provider
+    is never reported for another.
     """
     value = _user_api_key.get()
-    return value if isinstance(value, str) else None
+    if isinstance(value, dict):
+        key = value.get(provider)
+        return key if isinstance(key, str) and key else None
+    return None
 
 
 @contextlib.contextmanager
-def request_api_key(key: Optional[str]) -> Iterator[None]:
-    """Bind a per-request user API key for the duration of the block, then reset.
+def request_api_key(key: Union[str, Mapping[str, Optional[str]], None]) -> Iterator[None]:
+    """Bind the per-request user API key(s) for the duration of the block, then reset.
 
     #1809: binding ``None`` (or blank → ``None``) is now an EXPLICIT statement —
     "the resolver's designated-operator rung authorized the server's key" (#1807,
     both gates). It is no longer interchangeable with not binding at all: unbound
-    contexts REFUSE at ``anthropic_client_for_request``, and an explicit ``None``
-    is itself re-checked against gate 1 there. Only ever feed this the output of
+    contexts REFUSE at the spend chokepoints, and an explicit ``None`` is itself
+    re-checked against gate 1 there. Only ever feed this the output of
     ``resolve_request_api_key`` (or a genuinely user-supplied key).
+
+    #1819 accepted forms:
+      - ``str``      → the header's key; normalizes to ``{REQUEST_KEY_PROVIDER: key}``
+                       (every pre-#1819 call site keeps its exact behavior).
+      - ``Mapping``  → provider-keyed binding (e.g. the user's stored anthropic AND
+                       openai keys). Blank/None values are dropped; an empty result
+                       binds NOTHING SPENDABLE — every leg refuses. It does NOT
+                       collapse to the operator binding: "no usable keys" and "the
+                       operator authorized the server's credential" must never be
+                       the same value again (that conflation was #1809's whole bug).
+      - ``None``/"" → the explicit designated-operator binding (unchanged).
 
     The reset in the ``finally`` guarantees the binding never outlives the request —
     no cross-request leak, and the context returns to UNBOUND (refuse), not to any
     fallback.
     """
-    token = _user_api_key.set(key or None)
+    normalized: Union[Dict[str, str], None]
+    if key is None or key == "":
+        normalized = None
+    elif isinstance(key, str):
+        normalized = {REQUEST_KEY_PROVIDER: key}
+    else:
+        normalized = {p: k for p, k in key.items() if isinstance(k, str) and k}
+    token = _user_api_key.set(normalized)
     try:
         yield
     finally:
         _user_api_key.reset(token)
+
+
+def request_spend_key(provider: str) -> Optional[str]:
+    """The credential this request is entitled to spend on ``provider`` — or REFUSE.
+
+    #1819: the single spend decision every provider leg shares (Anthropic reaches it
+    through ``anthropic_client_for_request``; ``_openai_complete``, ``_gemini_complete``
+    and the KG embedding function call it directly):
+
+      - a key is bound for THIS provider → return it (billed to the user, as ever).
+        A key bound for a DIFFERENT provider does not count — #1815's constraint,
+        enforced at the chokepoint.
+      - EXPLICIT ``None`` binding (the resolver's operator rung, #1807 both gates) →
+        return ``None``, meaning "the operator's own server-side credential is
+        authorized" — with gate 1 (``PIPER_OPERATOR_SERVER_KEY``) re-checked here so a
+        stray ``request_api_key(None)`` cannot smuggle it. This seam dies with #1812
+        step 5.
+      - anything else (UNBOUND, or bound-but-not-for-this-provider) →
+        ``UnboundLLMKeyError``. Forgetting is an error, not a spend (#1809).
+
+    Kept tiny + pure (env read at most) so every leg is unit-testable without
+    standing up the full LLM client.
+
+    Raises:
+        UnboundLLMKeyError: no binding usable for ``provider``, or an explicit
+            ``None`` binding without the operator opt-in (#1807 gate 1).
+    """
+    bound = _user_api_key.get()
+    if isinstance(bound, dict):
+        key = bound.get(provider)
+        if isinstance(key, str) and key:
+            return key
+        raise UnboundLLMKeyError(
+            f"No LLM key configured for provider '{provider}' on this call: the "
+            "request bound no key for this provider, and a key bound for another "
+            "provider is never spendable across providers (#1815/#1819). Bind the "
+            "acting user's own key for this provider, or refuse honestly."
+        )
+    if bound is None:
+        # Explicit operator binding. Gate 2 (is_designated_operator) was checked at
+        # the resolver — it is DB-backed and cannot be re-checked in this DB-free
+        # module — but gate 1 is env-only and cheap, so assert it again here.
+        if operator_server_key_opted_in():
+            return None
+        raise UnboundLLMKeyError(
+            "A server-key binding (None) was made without the operator opt-in — "
+            f"{OPERATOR_SERVER_KEY_ENV} is off, so there is no LLM key configured "
+            "for this call. Only resolve_request_api_key's designated-operator rung "
+            "may authorize the server's key (#1807/#1809)."
+        )
+    raise UnboundLLMKeyError(
+        "No LLM key configured for this call: the request context never bound a key, "
+        "and unbound no longer falls back to the server's own key (#1809). Bind the "
+        "acting user's key (resolve_request_api_key -> request_api_key) before "
+        "reaching the LLM, or refuse honestly."
+    )
+
+
+def provider_spend_entitled(provider: str) -> bool:
+    """Non-raising peek: would ``request_spend_key(provider)`` succeed right now,
+    AND does the leg have a client path to spend it?
+
+    For the availability gate (`LLMClient._is_provider_configured`), which must
+    answer per-REQUEST (#1815) without raising. Three arms:
+      - bound key for ``provider`` → True only when the leg can actually build a
+        per-request client from it (``PER_REQUEST_CLIENT_PROVIDERS``). A bound
+        Gemini key is NOT spendable (no per-request client path) — reporting it
+        available would route the fallback loop into a guaranteed refusal.
+      - operator ``None`` binding → gate 1. (The caller still needs the server's
+        client to exist; that check is the caller's.)
+      - unbound → False.
+    """
+    bound = _user_api_key.get()
+    if isinstance(bound, dict):
+        key = bound.get(provider)
+        return provider in PER_REQUEST_CLIENT_PROVIDERS and isinstance(key, str) and bool(key)
+    if bound is None:
+        return operator_server_key_opted_in()
+    return False
 
 
 def anthropic_client_for_request(server_client: Any) -> Any:
@@ -253,29 +382,13 @@ def anthropic_client_for_request(server_client: Any) -> Any:
         UnboundLLMKeyError: no binding at all, or an explicit ``None`` binding
             without the operator opt-in (#1807 gate 1).
     """
-    bound = _user_api_key.get()
-    if isinstance(bound, str) and bound:
+    key = request_spend_key(REQUEST_KEY_PROVIDER)
+    if key:
         from anthropic import Anthropic
 
-        return Anthropic(api_key=bound)
-    if bound is None:
-        # Explicit operator binding. Gate 2 (is_designated_operator) was checked at
-        # the resolver — it is DB-backed and cannot be re-checked in this DB-free
-        # module — but gate 1 is env-only and cheap, so assert it again here.
-        if operator_server_key_opted_in():
-            return server_client
-        raise UnboundLLMKeyError(
-            "A server-key binding (None) was made without the operator opt-in — "
-            f"{OPERATOR_SERVER_KEY_ENV} is off, so there is no LLM key configured "
-            "for this call. Only resolve_request_api_key's designated-operator rung "
-            "may authorize the server's key (#1807/#1809)."
-        )
-    raise UnboundLLMKeyError(
-        "No LLM key configured for this call: the request context never bound a key, "
-        "and unbound no longer falls back to the server's own key (#1809). Bind the "
-        "acting user's key (resolve_request_api_key -> request_api_key) before "
-        "reaching the LLM, or refuse honestly."
-    )
+        return Anthropic(api_key=key)
+    # Operator binding (request_spend_key returned None with gate 1 held).
+    return server_client
 
 
 async def resolve_request_api_key(

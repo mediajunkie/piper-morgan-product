@@ -31,7 +31,7 @@ and keeps every other caller fail-closed. The middle rung of the old resolution 
 from __future__ import annotations
 
 import uuid
-from typing import Optional
+from typing import Dict, Optional, Union
 
 import structlog
 
@@ -117,3 +117,75 @@ async def resolve_user_llm_key(header_key: Optional[str], user_id: Optional[str]
             return await UserAPIKeyService().retrieve_user_key(session, uid, "anthropic")
 
     return await resolve_request_api_key(header_key, user_id, _fetch_stored, is_designated_operator)
+
+
+async def _fetch_stored_provider_key(user_id: str, provider: str) -> Optional[str]:
+    """DB-backed stored-key fetch for one provider row (#1819).
+
+    ``session_scope_fresh`` (not ``session_scope``): a per-call engine bound to the
+    running loop — the #1802 lesson, same as ``is_designated_operator`` above.
+    """
+    from services.database.session_factory import AsyncSessionFactory
+    from services.security.user_api_key_service import UserAPIKeyService
+
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        return await UserAPIKeyService().retrieve_user_key(session, user_id, provider)
+
+
+async def expand_llm_key_binding(
+    resolved: Optional[str], user_id: Optional[str]
+) -> Union[None, Dict[str, str]]:
+    """Expand a resolved Anthropic key into the provider-keyed binding (#1819).
+
+    ``resolved`` is the output of ``resolve_request_api_key`` / ``resolve_user_llm_key``
+    (so the #1807/#1320 refusal rungs have ALREADY run — this function never decides
+    entitlement, it only widens a granted one):
+      - ``None`` (designated operator) → ``None`` unchanged: the operator binding
+        authorizes the server's own clients on every leg; nothing to widen.
+      - a key → ``{"anthropic": key}``, plus the user's OWN stored OpenAI key when one
+        exists — so provider selection (#1415) can route their turn to OpenAI and the
+        leg spends THEIR key, not a refusal. A fetch failure degrades to fewer bound
+        providers (fail-closed for spend: the OpenAI leg refuses), never to a wider
+        binding.
+
+    Gemini is deliberately not fetched: ``_gemini_complete`` has no per-request client
+    path (see clients.py, #1819) and setup stores no Gemini rows — fetching one would
+    be plumbing to a leg that refuses it.
+    """
+    if resolved is None:
+        return None
+    binding: Dict[str, str] = {"anthropic": resolved}
+    if user_id:
+        try:
+            openai_key = await _fetch_stored_provider_key(user_id, "openai")
+        except Exception as e:  # silent-ok: fewer providers bound = fail-closed for spend
+            logger.warning("stored_openai_key_fetch_failed_1819", error=str(e))
+            openai_key = None
+        if openai_key:
+            binding["openai"] = openai_key
+    return binding
+
+
+async def resolve_user_openai_key(user_id: Optional[str]) -> Optional[str]:
+    """Resolve the per-request OPENAI key for a route whose spend is an OpenAI
+    credential (#1819 — today: the KG embedding search surface).
+
+    Same rungs as ``resolve_user_llm_key``, same refusal semantics (#1807/#1320),
+    different provider row: the user's own stored OpenAI key, else the designated
+    operator, else refuse. There is no header rung — ``X-User-Api-Key`` is an
+    Anthropic key by construction (``REQUEST_KEY_PROVIDER``).
+
+    Returns the key, or None *only* for the designated operator. Feed it to
+    ``request_api_key({"openai": key})`` (or ``request_api_key(None)`` for the
+    operator) at the call site.
+
+    Raises:
+        UserLLMKeyRequiredError: authenticated, no OpenAI key of their own, not the
+            operator.
+        AnonymousLLMKeyRequiredError: no authenticated user (#1320).
+    """
+
+    async def _fetch_stored(uid: str) -> Optional[str]:
+        return await _fetch_stored_provider_key(uid, "openai")
+
+    return await resolve_request_api_key(None, user_id, _fetch_stored, is_designated_operator)

@@ -28,10 +28,15 @@ from services.intent_service.document_handlers import (
     handle_summarize_document,
 )
 from services.llm.request_key import (  # #1185: per-user LLM key rail
+    LLMKeyRequiredError,
     UserLLMKeyRequiredError,
     request_api_key,
 )
-from web.utils.llm_key import resolve_user_llm_key  # #1185
+from web.utils.llm_key import (  # #1185; #1819 (binding expansion + openai resolver)
+    expand_llm_key_binding,
+    resolve_user_llm_key,
+    resolve_user_openai_key,
+)
 
 router = APIRouter(prefix="/api/v1/documents", tags=["documents"])
 logger = structlog.get_logger(__name__)
@@ -46,21 +51,34 @@ USER_KEY_REQUIRED_DETAIL = (
     "Add your Anthropic API key in Settings and try this again. Nothing was charged."
 )
 
+# #1819: document search embeds the query via OpenAI, so the key it needs is an
+# OPENAI key — same principle as above, honest about which key.
+SEARCH_KEY_REQUIRED_DETAIL = (
+    "Document search uses OpenAI embeddings and needs an OpenAI API key of your own — "
+    "Piper doesn't bill anyone else's account. Add your OpenAI API key in Settings "
+    "and try this again. Nothing was charged."
+)
 
-async def _resolve_key_or_refuse(user_id: str) -> Optional[str]:
-    """Resolve the caller's LLM key, converting the #1807 refusal into an honest 403.
+
+async def _resolve_key_or_refuse(user_id: str):
+    """Resolve the caller's LLM key binding, converting the #1807 refusal into an
+    honest 403.
 
     Kept as one helper so all five LLM-calling document routes refuse identically and
-    none of them can drift back into the silent server-key fallback.
+    none of them can drift back into the silent server-key fallback. #1819: the
+    resolved Anthropic key is expanded to the provider-keyed binding (their stored
+    OpenAI key rides along) — expansion runs AFTER the refusal rungs and never widens
+    a refusal into a grant.
     """
     try:
-        return await resolve_user_llm_key(None, user_id)
+        resolved = await resolve_user_llm_key(None, user_id)
     except UserLLMKeyRequiredError:
         logger.warning("documents_user_key_required_1807", user_id=user_id)
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=USER_KEY_REQUIRED_DETAIL,
         )
+    return await expand_llm_key_binding(resolved, user_id)
 
 
 # Request models
@@ -454,9 +472,25 @@ async def search_documents(
         HTTPException 500: Server error during search
 
     Issue #290: CORE-ALPHA-DOC-PROCESSING (Test 24)
+
+    #1819: semantic search EMBEDS the query via OpenAI — a billable spend this route
+    used to make on a server-owned keychain key, bypassing the #1809 chokepoint. It
+    now binds the caller's own stored OpenAI key (or the designated operator's
+    explicit authorization) and refuses honestly otherwise, same shape as the five
+    LLM-calling routes above.
     """
     try:
-        result = await handle_search_documents(query=q, user_id=current_user.user_id)
+        embed_key = await resolve_user_openai_key(current_user.sub)
+    except UserLLMKeyRequiredError:
+        logger.warning("documents_search_openai_key_required_1819", user_id=current_user.sub)
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=SEARCH_KEY_REQUIRED_DETAIL,
+        )
+    search_binding = None if embed_key is None else {"openai": embed_key}
+    try:
+        with request_api_key(search_binding):
+            result = await handle_search_documents(query=q, user_id=current_user.user_id)
         logger.info(
             "Documents searched",
             query=q,
@@ -465,6 +499,11 @@ async def search_documents(
         )
         return result
 
+    except LLMKeyRequiredError as e:
+        # A spend refusal that surfaced from the embedding layer itself (#1819) —
+        # e.g. the operator binding without gate 1. Honest 403, never a 500.
+        logger.warning("documents_search_key_refusal_1819", user_id=current_user.sub)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
     except Exception as e:
         logger.error(
             "Search failed",
