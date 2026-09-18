@@ -1,10 +1,10 @@
 ---
 name: delete-module-safely
-description: Delete a dead/fabricated module (or module family) without stranding importers, tests, CI jobs, or docs. Use for any fix-or-delete execution, Tier-3-style dead-code removal, or retiring a superseded subsystem. Encodes the Finish-the-Unfinished sprint's deletion lessons (Families 1-3, 2026-07-18/19).
+description: Delete a dead/fabricated module (or module family) — or a WRITE to a shared slot — without stranding importers, readers, tests, CI jobs, or docs. Use for any fix-or-delete execution, Tier-3-style dead-code removal, or retiring a superseded subsystem. Encodes the Finish-the-Unfinished sprint's deletion lessons (Families 1-3, 2026-07-18/19).
 scope: cross-role (Lead/Arch lanes primarily)
-version: 1.0
+version: 1.1
 created: 2026-07-19
-updated: 2026-07-19
+updated: 2026-09-18
 ---
 
 # delete-module-safely
@@ -54,6 +54,38 @@ class, 6 instances named by Arch). For module `pkg.mod`:
    And don't `| head`-truncate sweep output — truncation hid two dedicated
    test files in the same batch; use `grep -rl` file-level output instead.
 
+## Deleting a WRITE, not a module — enumerate the slot's READERS first
+*(Added v1.1, 2026-09-18, Arch — from #1810/#1814, and it is MY ordering error being
+codified, not a lane's.)*
+
+The sweep above is **module-shaped**: it enumerates importers of a thing that is
+going away. **A write-deletion is the sibling case and the sweep above cannot see
+it** — the module stays, the slot stays, only the *producer* goes. Nobody greps for
+"who reads this slot," so nothing fails.
+
+**The rule: before deleting a write, enumerate every reader of that slot and NAME
+each one's post-deletion source.** Not "the readers still resolve whatever is
+there" — true, and worthless the moment the slot empties. An actual list:
+reader → where it gets the value once this write is gone.
+
+**The worked case**: #1810 deleted a global LLM-key write (a real cross-user
+credential leak — the right call). The readers were left pointing at the
+now-permanently-empty slot, so a BYOC user's key was stored and never read: every
+substantive query hit a false "not configured" wall (#1814). **A billing leak was
+converted into a functionality wall, and it landed the day an external tester's
+invite was ready.** The ruling that ordered the deletion had the reader/writer
+picture in front of it and gated only the write.
+
+**Two tells that you are in this case and not the module case**:
+- the thing you are deleting is a *statement*, not a file;
+- the grep that would reassure you ("who imports this?") returns the same answer
+  before and after your change.
+
+**And the reader enumeration is evidence, not narration** — it goes in the ruling
+or the issue, with each source named, so a reviewer can check it. If a reader has
+no post-deletion source, that is a precondition to fix first, not a follow-on to
+file.
+
 ## The cut
 - `git rm` explicit paths only. Family tests (dedicated test files) ride the
   same commit; live-subject test files get SURGERY (excise the coupled
@@ -97,6 +129,11 @@ class, 6 instances named by Arch). For module `pkg.mod`:
 | Batch the decisions.log entry "for later" | The record rides the commit or it doesn't exist |
 
 ## Changelog
+- **v1.1** (2026-09-18, Arch): Added the write-deletion case (enumerate the
+  slot's READERS with each one's post-deletion source named). The module-shaped
+  sweep is structurally blind to it. Source: #1810 → #1814, an ordering error in
+  my own ruling — a credential leak correctly closed, converted into a
+  functionality wall because only the write was gated.
 - **v1.0** (2026-07-19, Lead Dev): Created from #1436 Tier-3 Families 1–3
   execution lessons, per the 7/18 memory-eval gap ("worth codifying if
   Tier-3-scale deletion recurs" — it recurred the next morning).

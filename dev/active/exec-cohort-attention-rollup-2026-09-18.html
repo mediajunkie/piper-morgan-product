@@ -61,7 +61,7 @@
 </head>
 <body>
 <div class="wrap">
-  <h2 class="sr-only">Five items block work, eight need a call, four drift items worth knowing.</h2>
+  <h2 class="sr-only">Five items block work, eight need a call, four drift items worth knowing, plus a traced account of why several were missed.</h2>
   <h1>Your decision queue</h1>
   <p class="meta">Exec · <b>Friday 18 September, 11:53 PDT</b> · full live-state pass · every item re-verified this hour against its primary source, not carried from the last board</p>
 
@@ -69,9 +69,15 @@
     <p><b>The finding across all six closeouts is one sentence: the constraint is your decision
     bandwidth, not agent throughput.</b> Five independent roles named a PM-gated item or your
     voice-pass queue as what's holding them. Nobody is short of work.</p>
-    <p style="margin-bottom:0"><b>Three of these have never been on a board before</b> — Janne's
-    invite, the LaunchAgent proposal, the memory-export cadence. They were "flagged" in memos and
-    commit bodies, which means they were never actually flagged. That is my miss, not yours.</p>
+    <p><b>Several of these had never been on a board before.</b> They were "flagged" in memos, standing-items
+    rows and commit bodies — which by our own rule means they were never flagged. That is my seat's
+    miss, not yours, and I've traced each one to its cause rather than just adding them.
+    <a href="#misses">The causes are at the bottom</a>; they're three different holes, not one.</p>
+    <p style="margin-bottom:0"><b>Correcting myself from an hour ago:</b> I told you "three items
+    never boarded" and called all three a miss. <b>The memory-export question was raised at 08:10
+    today and boarded at 11:53 — four hours. That one is the system working, not failing</b>, and
+    counting it as a miss inflated the number. The real count is worse in a different direction: the
+    misses are older than three days and <b>more than half of them are in my own files.</b></p>
   </div>
 
   <p class="legend">
@@ -270,7 +276,21 @@
   </div>
 
   <div class="item decide">
-    <div class="top"><span class="n">12 · Two small ones you can clear in a sentence each</span>
+    <div class="top"><span class="n">12 · Your six-item test round</span>
+      <span class="who">Exec · Lead</span><span class="age hot">11 days · never boarded</span></div>
+    <p>The walkthrough was delivered 09-07 and you sequenced it behind that day's blog post. <b>It has
+    not resurfaced since</b>, and it has never been on one of these boards — it sat in my own
+    standing-items file as "Blocked on PM."</p>
+    <p>Lead's brief decision 2 is the same round: decisions 1 (deploy) and 3 (the FTUX flip) were both
+    ruled on 09-07 and shipped; decision 2 is the only one of the three still open.</p>
+    <div class="ask"><b>Needed:</b> either run the round, or tell me to drop it. Eleven days of silence
+    behind a one-day deferral is the shape our own aging rule exists to catch, and I'm the one who
+    should have caught it.</div>
+    <div class="links"><code>dev/active/exec-standing-items.md</code> rows 8 &amp; 16</div>
+  </div>
+
+  <div class="item decide">
+    <div class="top"><span class="n">13 · Two small ones you can clear in a sentence each</span>
       <span class="who">Arch · Web</span><span class="age">19 days · 9 days</span></div>
     <p><b>Bets 001–003</b> (Arch, since 08-30) — fields await your input. Non-blocking by design, and
     Arch says so; it's here because 19 days is past the point where silence should be read as
@@ -320,6 +340,58 @@
     open, unblocked, carried forward — not stalled, just not yet scheduled."</i> Two of CIO's rows
     are 132 and 26 days old. Not urgent this week; it compounds quietly, and it's the exact shape our
     own deferral rule exists to catch.</p>
+  </div>
+
+  <h2 id="misses">🔧 Why these were missed — traced, and two fixes already shipped</h2>
+
+  <div class="item drift">
+    <p>You asked for the reasons, not just the items. I traced each one to a commit rather than
+    guessing. <b>They are three different holes, and only one of them is about carelessness.</b></p>
+
+    <p><b>Cause 1 — triage evicts items from the only mail surface the board sweeps.</b><br>
+    HOST's invite memo landed at <code>19:09:08</code> on 09-13 and was moved
+    <code>inbox/</code>→<code>read/</code> <i>in the same commit</i> — the "inbox drained, 5 triaged"
+    pass. That day's board had been compiled at <code>15:42</code>, three and a half hours earlier.
+    The next compile was today. In between, the item existed only in <code>read/</code>, and the
+    skill's mail source says <i>"your exec inbox."</i><br>
+    ⚠️ <b>The inversion is why no one catches this by trying harder: a memo left rotting unread would
+    have been caught. Prompt triage is what hid it.</b> Every incentive we have pushes items out of
+    the swept surface, so diligence is the failure mode.<br>
+    <b>Fixed.</b> The mail sweep is now two commands — <code>inbox/</code> plus everything added to
+    <code>read/</code> since the last board's own commit timestamp, with the window stated in the
+    footer.</p>
+
+    <p><b>Cause 2 — the aging script emits three labels and the skill routed one.</b><br>
+    <code>aging-standing-items.sh</code> emits <code>AGING</code>, <code>STALE-BLOCKER</code> and
+    <code>COVERAGE GAP</code>. <code>STALE-BLOCKER</code> appeared in the skill <b>zero times</b>, so
+    hits under it arrived with no instruction and got skimmed. That's how CIO's LaunchAgent row sat 8
+    days with its technical work finished.<br>
+    ⚠️ <b>And <code>STALE-BLOCKER</code> is the label that matters most</b> — it means a row's stated
+    blocker cites an issue that has since closed. That isn't an aging row; it's <b>unblocked work
+    nobody noticed became unblocked, whose own text argues against looking at it.</b><br>
+    <b>Fixed.</b> All three labels now have explicit routing in the skill.</p>
+
+    <p><b>Cause 3 — my own standing-items file was never subject to the rule I enforce on others.</b><br>
+    Today's scan flagged four <code>STALE-BLOCKER</code> rows. <b>Two are mine.</b> Applying my own
+    "check the recipient's <code>sent/</code>" rule to my own file for the first time, I found:<br>
+    • <b>Rows 9 and 20 were the same question filed twice</b>, both reading "Blocked on PM, unanswered"
+    — and <b>CIO ruled and shipped it on 09-08.</b> Ten days stale. It was never blocked on you.<br>
+    • <b>Row 1</b> was waiting on your review of Weekly Ship #059. <b>#059 published, and #060 has
+    published since.</b> The row outlived its subject by two Ships.<br>
+    • <b>Row 16</b> — your six-item test round — was genuinely open, 11 days, and had never been
+    boarded. It's now item 12 above.<br>
+    ★ <b>The sharp bit:</b> the very amendment CIO shipped on 09-08 mandates a three-surface re-check
+    on every PM-gated row. It applies to <i>carry-forward</i> rows. Standing-items rows aren't covered,
+    so this file never got it. <b>The fix for this exact class shipped ten days ago and structurally
+    could not reach the file that needed it.</b><br>
+    <b>Not yet fixed</b> — extending that re-check to standing-items files is a cohort-wide change to
+    <code>duty-cycle-tick</code>, which is CIO's surface, not mine to edit unilaterally. Proposing it
+    to them is on me; flagging it to you here so it isn't a third thing that lives only in a memo.</p>
+
+    <p style="margin-bottom:0"><b>What the three share:</b> in every case a check ran, or a
+    person acted correctly, and the result landed somewhere nothing downstream reads. None of them
+    was a judgment failure. All three were routing failures — which is the good news, because routing
+    is fixable and judgment isn't.</p>
   </div>
 
   <h2>📈 Where the milestone stands</h2>
