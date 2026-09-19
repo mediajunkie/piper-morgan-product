@@ -15,13 +15,13 @@ import pytest
 
 @pytest.mark.e2e
 @pytest.mark.asyncio
-async def test_intent_returns_structured_response(e2e_client, e2e_auth_headers):
+async def test_intent_returns_structured_response(e2e_client, e2e_byoc_auth):
     """Authenticated intent request returns well-structured response."""
     session_id = f"e2e-test-session-{uuid4()}"
     response = await e2e_client.post(
         "/api/v1/intent",
         json={"message": "Hello", "session_id": session_id},
-        **e2e_auth_headers,
+        **e2e_byoc_auth,
     )
 
     assert response.status_code == 200
@@ -56,14 +56,14 @@ async def test_intent_without_auth_still_responds(e2e_client):
 
 @pytest.mark.e2e
 @pytest.mark.asyncio
-async def test_intent_does_not_echo_input(e2e_client, e2e_auth_headers):
+async def test_intent_does_not_echo_input(e2e_client, e2e_byoc_auth):
     """Response should never be a verbatim echo of user input."""
     test_message = "This is a unique test string that should not be echoed back verbatim"
 
     response = await e2e_client.post(
         "/api/v1/intent",
         json={"message": test_message, "session_id": f"e2e-echo-test-{uuid4()}"},
-        **e2e_auth_headers,
+        **e2e_byoc_auth,
     )
 
     assert response.status_code == 200
@@ -73,12 +73,12 @@ async def test_intent_does_not_echo_input(e2e_client, e2e_auth_headers):
 
 @pytest.mark.e2e
 @pytest.mark.asyncio
-async def test_intent_handles_empty_message_gracefully(e2e_client, e2e_auth_headers):
+async def test_intent_handles_empty_message_gracefully(e2e_client, e2e_byoc_auth):
     """Empty message should get a response, not a crash."""
     response = await e2e_client.post(
         "/api/v1/intent",
         json={"message": "", "session_id": f"e2e-empty-test-{uuid4()}"},
-        **e2e_auth_headers,
+        **e2e_byoc_auth,
     )
 
     # Should return 200 (graceful degradation) or 422 (validation error)

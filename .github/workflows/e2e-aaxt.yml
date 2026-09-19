@@ -132,6 +132,12 @@ jobs:
           POSTGRES_DB: piper_morgan
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # #1747/#1809: puts THIS JOB's real key on the BYOC header rung (CI is
+          # the operator, deliberately spending its own key — the same spend this
+          # job made pre-#1809 via env fallback). Every other environment gets
+          # the fake key and spends nothing; see tests/e2e/conftest.py
+          # e2e_header_key().
+          PIPER_E2E_LIVE_HEADER_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           echo "🧪 Running E2E task lifecycle tests (#927)"
           python -m pytest tests/e2e/test_task_lifecycle_e2e.py \

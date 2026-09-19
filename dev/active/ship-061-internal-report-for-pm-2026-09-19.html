@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Internal report — Ship #061, week of 11–17 September</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#16181c; --card:#1e2127; --line:#32363e; --ink:#e8e8e8; --mute:#9aa0aa;
+            --red:#e8705f; --amber:#e0a94a; --grey:#7a8089; --green:#5cbf72; --link:#79aefb; }
+  }
+  body { font:15px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:880px; margin:0 auto; }
+  h1 { font-size:1.55rem; margin:0 0 .2rem; letter-spacing:-.015em; }
+  .sub { color:var(--mute); font-size:.88rem; margin:0 0 1.4rem; }
+  h2 { font-size:1.1rem; margin:2.2rem 0 .7rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  h3 { font-size:1rem; margin:1.4rem 0 .35rem; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px;
+          padding:1rem 1.1rem; margin:.8rem 0; }
+  .card.warn { border-left:4px solid var(--amber); }
+  .card.bad  { border-left:4px solid var(--red); }
+  .card.good { border-left:4px solid var(--green); }
+  .tiles { display:flex; flex-wrap:wrap; gap:.6rem; margin:.6rem 0 1rem; }
+  .tile { flex:1 1 130px; background:var(--card); border:1px solid var(--line);
+          border-radius:8px; padding:.7rem .8rem; }
+  .tile .v { font-size:1.55rem; font-weight:700; line-height:1.1; letter-spacing:-.02em; }
+  .tile .k { font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--mute); margin-top:.15rem; }
+  .tile.unk .v { color:var(--mute); font-size:1.05rem; font-weight:600; }
+  p { margin:.5rem 0; }
+  table { border-collapse:collapse; width:100%; font-size:.89rem; margin:.5rem 0; }
+  th,td { text-align:left; padding:.42rem .55rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--mute); font-weight:500; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; }
+  code { font:.86em ui-monospace,SFMono-Regular,Menlo,monospace; background:rgba(127,127,127,.12);
+         padding:.08em .32em; border-radius:3px; }
+  .scroll { overflow-x:auto; }
+  blockquote { margin:.5rem 0 .5rem .2rem; padding-left:.8rem; border-left:3px solid var(--line);
+               color:var(--ink); font-style:italic; }
+  footer { margin-top:2.6rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only">Internal report for Ship 61: dashboard, three arcs, the proposed theme, the counterweight, what needs you, and what did not move.</h2>
+  <h1>Internal report — Ship #061</h1>
+  <p class="sub">Window <b>Friday 11 → Thursday 17 September</b> · Exec · compiled 19 Sept 13:0x PDT ·
+  <b>from all 10 closeout replies, read in full</b> · for discussion before any public draft</p>
+
+  <h2>At a glance</h2>
+  <div class="tiles">
+    <div class="tile"><div class="v">1,804</div><div class="k">commits in window</div></div>
+    <div class="tile"><div class="v">~45</div><div class="k">issues closed — Lead's own count</div></div>
+    <div class="tile unk"><div class="v">unmeasured</div><div class="k">opened · net</div></div>
+    <div class="tile"><div class="v">57</div><div class="k">MVP not done <span style="color:var(--mute)">(as of 19th)</span></div></div>
+    <div class="tile"><div class="v">32</div><div class="k">never started</div></div>
+    <div class="tile"><div class="v">41</div><div class="k">days to 30 Oct</div></div>
+  </div>
+
+  <div class="card warn">
+    <p style="margin-top:0">📊 <b>UPDATED from PM's two TSV exports, 19 Sept — with three findings
+    about the data itself that change how it can be used.</b></p>
+    <p><b>1 · The exports are named <code>2026-09-16</code> but the data is from THIS AFTERNOON.</b>
+    They contain <b>#1832</b>, and they list <b>#1687 and #1747 as closed</b> — Lead closed those two
+    at <b>15:02 today.</b> So the snapshot was taken after 15:02 on the 19th. <b>PM's own caveat
+    ("a bit too current for that window") is exactly right, and now it's pinned to an hour rather
+    than felt.</b></p>
+    <p><b>2 · They are scoped to a SPRINT, not the milestone — the denominators differ ~4×.</b>
+    Every row in both files carries <code>Sprint = "Beta Blockers - Hard Gates Only"</code>.
+    <b>That sprint is 246 closed + 56 open = 302 items, 81.5% closed.</b> The <b>MVP milestone</b> is
+    <b>1,179 done + 58 open = 1,237.</b> Both are true; quoting one as the other would overstate
+    completion by a factor of four.</p>
+    <p><b>3 · All 58 currently-open MVP issues sit inside that sprint</b> — checked by set
+    membership, none outside. So for <i>open</i> work the two denominators coincide today; it is the
+    <i>closed</i> history where they diverge.</p>
+    <p style="margin-bottom:0">🔴 <b>What the exports still cannot give, and why the tiles stay
+    unmeasured:</b> neither file carries a date column, so <b>nothing in them can be scoped to
+    Sep 11–17.</b> A cumulative 246-closed is not a week's closures. <b>PM has since found a
+    "Date closed" field — that is the missing piece, and it fills these tiles.</b></p>
+  </div>
+
+  <div class="card warn">
+    <p style="margin-top:0">🔴 <b>Two tiles remain honest gaps, not zeroes, until that field lands.</b></p>
+    <p><b>Issues opened and net are unmeasured</b> — the GitHub GraphQL limit is exhausted on this
+    account right now, so the query returned <code>0</code>. <b>Zero closed against 1,804 commits is
+    not a result, it's a broken instrument</b>, and I'm not putting it in a tile. The <b>~45 closed</b>
+    is <b>Lead's own figure from their closeout</b>, attributed to them, not independently verified by
+    me.</p>
+    <p style="margin-bottom:0"><b>The same failure hit CXO and PA yesterday</b> and neither invented a
+    number — both quoted my line and attributed it, and CXO quoted the script's own warning:
+    <i>"This check measured NOTHING — do not read its silence as a clear."</i> It would be poor form
+    for me to do otherwise in the very report that praises them for it. <b>Re-runnable once the limit
+    resets; say the word and I'll fill the tiles.</b></p>
+  </div>
+
+  <p><b>Milestone direction, measured today rather than at window close:</b> MVP sits at <b>57 not
+  done</b>, <b>1,179 done</b>, zero unmilestoned. <b>32 of the 57 have never been started</b> — more
+  than half the remaining work has nobody on it. Since yesterday, three closed and four arrived, so
+  <b>inflow is still outpacing closure</b> and Product Backlog grew 14 → 16. That last part is triage
+  working correctly rather than items landing in Sprint — but the total isn't shrinking yet.</p>
+
+  <h2>The week's three arcs</h2>
+
+  <h3>1 · A bar somebody refused to lower caught a defect before our first external tester did</h3>
+  <div class="card">
+    <p>Janne Lammi's invite was cleared to send on 09-13. Then <b>#1810</b> surfaced and HOST held it.
+    The clearing condition HOST set was specific and awkward: <b>an observed, driven flow — not a test
+    pin.</b> Lead produced one. Hold lifted.</p>
+    <p><b>Nine hours later #1814 landed, and it landed directly on the invite's own first
+    instruction.</b> The email tells a tester to configure their API key first; #1814 made that exact
+    step the wall. <b>HOST re-held.</b> Arch, who had argued for lifting, backed the re-hold and named
+    the sequencing error as partly their own.</p>
+    <p>⭐ <b>The moment worth the whole arc</b>: Arch attempted, once, to substitute a weaker bar than
+    the one they had themselves set. <b>HOST refused. Arch conceded the same day</b> — and conceded
+    the general shape, not just the instance. Lead then supplied the second observed flow, and the
+    hold lifted on evidence rather than on patience running out.</p>
+    <p style="margin-bottom:0"><b>Outcome: we caught a tester-facing blocker before the tester hit
+    it.</b> That is the system working at the only moment it actually matters. The invite is still
+    unsent, four days on — which is now a decision, not a blocker.</p>
+  </div>
+
+  <h3>2 · The credential and tenancy family closed end to end</h3>
+  <div class="card">
+    <p>Lead carried <b>#1807 → #1810 → #1814 → #1815 → #1816</b> to closure, <b>each verified at a
+    named layer</b>, after pins twice proved insufficient. <b>#1816 found a consent boundary failing
+    OPEN</b> — absence read as permission. The belt went from five unexplained reds to zero, and
+    <b>E2E went green for the first time in its recorded history.</b></p>
+    <p>You reopened <b>epic 2</b> over PPM's successor-epic proposal; PPM owned the reversal publicly
+    in the epic file's own change log rather than defending the call. The reopened scope then ran to
+    six more closures <b>under live stakes — a real external tester's credentials.</b></p>
+    <p style="margin-bottom:0">You also ruled the <b>server key out of existence</b>:
+    <i>"I don't understand why anybody should ever be able to spend the operator's money."</i> That
+    ruling is now upstream of the whole BYOC design rather than a patch inside it.</p>
+  </div>
+
+  <h3>3 · The week ended in an enforced standdown, and the cost was real</h3>
+  <div class="card warn">
+    <p>The account ceiling forced a cohort standdown from 09-16 through the 09-17 22:00 reset. <b>Two
+    of the seven days are simply gone</b>, and PA and CXO both name it as what cost them their week.</p>
+    <p>The <b>causes were two and independent</b>, and neither subsumes the other: a dispatch
+    concentration (48 sub-agent dispatches in-window against 10 in the preceding nine days, all
+    silently inheriting the dispatcher's tier) <b>and</b> the ceiling dropping ~17% when the summer
+    promotion ended on 13 Sept.</p>
+    <p style="margin-bottom:0">The standdown was executed cleanly — crons deliberately deleted,
+    verified, no queue-draining — and <b>every role came back and filed.</b> But it is worth being
+    plain that this was <b>an externally imposed two-day outage on a six-week milestone</b>, not a
+    planned pause.</p>
+  </div>
+
+  <h2>⭐ A pattern that MAY be worth a theme — parked until after we discuss the substance</h2>
+  <div class="card warn">
+    <p style="margin:0">⚠️ <b>PM, 2026-09-19: <i>"Let's not slop ahead to themes before we discuss the
+    substance."</i> Correct, and this section was me doing exactly that.</b> The theme belongs at
+    <b>step 6</b> of the cycle — after the step-5 discussion, which may well replace it. Leaving it
+    below as raw material rather than deleting the work, clearly marked as <b>not a conclusion</b>.</p>
+  </div>
+  <div class="card good">
+    <p><b>Proposed theme: a clearing condition is only worth what it's worth under pressure.</b></p>
+    <p>The week's defining behaviour wasn't catching bugs — it was <b>people refusing to soften their
+    own standards at the exact moment softening would have been convenient</b>, with a real external
+    user waiting on the other side.</p>
+    <div class="scroll"><table>
+      <tr><th>who</th><th>the moment</th></tr>
+      <tr><td><b>HOST</b></td><td>Set an awkward bar (observed flow, never a pin), then <b>refused to let it be lowered</b> — twice, the second time nine hours after clearing it.</td></tr>
+      <tr><td><b>Arch</b></td><td>Tried once to substitute a weaker bar, was refused, <b>conceded same-day and named the general shape</b> rather than fixing only the instance.</td></tr>
+      <tr><td><b>Lead</b></td><td>Produced observed evidence twice rather than the cheaper pin, and <b>refuted their own hypothesis</b> with a transcript.</td></tr>
+      <tr><td><b>CXO</b></td><td>Held a conditional rather than shipping it — <b>it failed, and the hedge was honest.</b> Then found a live defect in their own shipped string.</td></tr>
+      <tr><td><b>PPM</b></td><td>Had a call overruled and <b>owned it in the artifact's own change log</b>, then offered to shrink the epic count rather than defend it.</td></tr>
+      <tr><td><b>Web</b></td><td>Caused the worst bug in their own surface — a caret regression corrupting your draft text — and <b>led their closeout with it.</b></td></tr>
+    </table></div>
+    <p style="margin-bottom:0">⚠️ <b>One check on this, because it nearly repeats:</b> Ship #060's
+    theme was <i>"the week the cohort spent correcting itself."</i> Self-correction is <b>not</b> a
+    fresh theme and I'd be reusing it. <b>What's distinct here is the refusal under pressure</b> —
+    correction is looking inward; this is holding a line outward, with a named external person waiting.
+    If that distinction feels thin to you, the theme needs changing, and that's exactly what this
+    discussion is for.</p>
+  </div>
+
+  <h2>🔴 The honest counterweight</h2>
+  <div class="card bad">
+    <p><b>Nine roles reported on track. CXO reported NOT on track, deliberately, in their subject
+    line</b> — choosing the unhealthy goal over a healthy one.</p>
+    <p>Their T axis sits in <code>PENDING-PROBE</code> and <b>cannot issue a pass. ESSENCE commitment
+    7 is ratified law and cites that instrument.</b> Their framing, which I think is right:
+    <b>ratified law depending on a gate that can't gate.</b> <i>(Since resolved in part — PA ran the
+    probe, CXO read the null result as their own fixture-property error, rubric to v0.7.2. Better
+    design, not finished.)</i></p>
+    <p><b>And the structural counterweight, which Arch named about their own lane:</b> the rulings are
+    outpacing the mechanisms. Two conditions Arch set this week exist as prose in memos rather than as
+    ratchets. CIO carries four standing items described as <i>"genuinely open, unblocked, carried
+    forward — not stalled, just not yet scheduled"</i>; two are 132 and 26 days old.</p>
+    <p style="margin-bottom:0"><b>I measured the general case after you asked whether we fix routing
+    problems as we detect them: 29 check-shaped scripts in <code>scripts/</code>, and the ones that
+    catch this class are wired into CI zero times and into hooks zero times.</b> They fire only when
+    an agent chooses to run them. We build the detector, then route its invocation through prose.</p>
+  </div>
+
+  <h2>Needs you</h2>
+  <div class="card warn">
+    <p style="margin-top:0">⚠️ <b>A row that was here is removed: I had listed "Ship #061 — no
+    calendar row, no workstream files" as something needing your decision. It needed nothing.</b>
+    The Ship is written after our discussion and the row is added after that, so an absent row at
+    this stage is the process working. I'd generalised the blog-post pattern, where the row does come
+    at draft time, onto a workflow with a different order.</p>
+  </div>
+  <div class="card">
+    <table>
+      <tr><th>item</th><th>what's needed</th><th>age</th></tr>
+      <tr><td><b>Janne's invite</b></td><td>Send it, or say what's missing. Technical blocker verifiably cleared.</td><td>4 days</td></tr>
+      <tr><td><b>Vercel</b></td><td>Your email text. <b>My board's claim on this was unsourced — don't act on it.</b></td><td>10 days</td></tr>
+      <tr><td><b>Bets 001–003</b></td><td>Three fields on one memo. "None named" is a complete answer for the buyer.</td><td>20 days</td></tr>
+      <tr><td><b>Epics 9/10</b></td><td>Keep as epics or revert to a short list. <b>Feeds the sprint plan.</b></td><td>5 days</td></tr>
+      <tr><td><b>PA's T1</b></td><td>A reply, or "drop it."</td><td>16 days</td></tr>
+    </table>
+  </div>
+
+  <h2>What didn't move</h2>
+  <div class="card">
+    <p><b>Production observation</b> — CXO reports three separate times this week their work ended at
+    <i>"nobody can see this in prod."</i> Worth watching as a pattern rather than an incident.</p>
+    <p><b>Arch's epic-6 provenance threading</b> — awaiting a board turn, correctly.</p>
+    <p><b>Two days of the window</b> — the standdown and the ceiling event before it.</p>
+    <p style="margin-bottom:0"><b>Cleared since the window closed:</b> Lead's usage-per-account
+    capture is now written; website#35 closed with evidence; the T-axis thread advanced between CXO
+    and PA; you ruled Q5 and the scope-guard. <b>And one row in my synthesis was wrong — I said Docs'
+    routing offer to Lead was unanswered; it was addressed to you, not Lead.</b> Docs corrected me.</p>
+  </div>
+
+  <footer>
+    <b>Verified how.</b> All ten closeout replies read in full from <code>mailboxes/exec/read/</code>
+    — not summarised from a prior pass. Commits from <code>git log origin/main</code> bounded to the
+    window. Milestone line from <code>sprint-truth.py</code> run at 12:51 today, <b>which is after the
+    window closed</b> — stated as "as of the 19th" rather than passed off as a window-close figure.
+    <b>Issues opened and net: NOT MEASURED</b> — GraphQL limit exhausted; the query returned 0 and I
+    am reporting that as broken rather than as data. <b>~45 closed is Lead's own attributed count, not
+    my verification.</b><br><br>
+    <b>Layer:</b> this is a synthesis of self-reported closeouts plus my own verification of the
+    PM-gated half. <b>I did not independently verify each role's portfolio claims</b> — ten lanes is
+    beyond one pass, and I'd rather name that than imply coverage I don't have.
+  </footer>
+</div>
+</body>
+</html>

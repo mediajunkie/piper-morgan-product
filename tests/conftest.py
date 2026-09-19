@@ -768,6 +768,17 @@ async def _1452_session_scope_nullpool(_1452_nullpool_engine, monkeypatch):
 # child → users. On a new FK violation here, re-derive the list (query in the
 # #1452 thread) and extend THIS function only.
 # ---------------------------------------------------------------------------
+# #1747/#1809 (2026-09-19): a syntactically-valid-shaped but FAKE key. Post-#1809 every
+# provider leg refuses an unbound spend, so tests whose principal holds no stored key are
+# (correctly) refused at /intent's gate before reaching the deterministic paths they
+# actually test. Tests exercising NON-SPENDING paths bind this via the documented
+# X-User-Api-Key header rung (the first rung of resolve_request_api_key — real product
+# path, not a test backdoor). If a test's path unexpectedly makes a live LLM call, this
+# key 401s loudly instead of silently spending anything — which is itself the #1821
+# key-independence property. Tests that assert the keyless REFUSAL must NOT send it.
+E2E_FAKE_BYOC_KEY = "sk-ant-e2e-fake-never-live-1747"
+
+
 async def delete_test_user_fully(session, user_id: str) -> None:
     from sqlalchemy import text as _text
 

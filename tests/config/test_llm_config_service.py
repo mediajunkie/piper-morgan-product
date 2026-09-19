@@ -542,8 +542,11 @@ class TestProviderSelection:
     def test_default_provider_selection(self, mock_keychain_service):
         """Default provider is returned if available"""
 
-        # Mock keychain: openai key available, no stored default_llm_provider
-        def mock_get(name):
+        # Mock keychain: openai key available, no stored default_llm_provider.
+        # username= accepted since #1415's per-user resolution passes it (a stub
+        # without it TypeErrors, which #1816's provenance read reports as a failed
+        # store and refuses the turn — the exact 5-test CI red of 2026-09-19).
+        def mock_get(name, username=None):
             if name == "openai":
                 return "test-key"
             return None
@@ -721,7 +724,8 @@ class TestAuthorizedProviders:
         """When authorized_llm_providers is set, only those are returned."""
 
         # Simulate: both keys exist, but only anthropic is authorized
-        def mock_get_key(provider):
+        # (username= accepted: #1415 per-user reads pass it — see mock_get above)
+        def mock_get_key(provider, username=None):
             if provider == "openai":
                 return "sk-stale-openai-key"
             if provider == "anthropic":
@@ -742,7 +746,7 @@ class TestAuthorizedProviders:
     def test_unauthorized_provider_with_key_excluded(self, mock_keychain_service):
         """A provider with a valid key but NOT in authorized list is excluded."""
 
-        def mock_get_key(provider):
+        def mock_get_key(provider, username=None):
             if provider == "openai":
                 return "sk-valid-but-unauthorized"
             if provider == "authorized_llm_providers":
@@ -760,7 +764,7 @@ class TestAuthorizedProviders:
     def test_no_authorized_list_returns_all_configured(self, mock_keychain_service):
         """Legacy: when no authorized_llm_providers stored, return all configured."""
 
-        def mock_get_key(provider):
+        def mock_get_key(provider, username=None):
             if provider == "openai":
                 return "sk-openai"
             if provider == "anthropic":
@@ -781,7 +785,7 @@ class TestAuthorizedProviders:
     def test_multiple_authorized_providers(self, mock_keychain_service):
         """Both providers authorized — both returned."""
 
-        def mock_get_key(provider):
+        def mock_get_key(provider, username=None):
             if provider == "openai":
                 return "sk-openai"
             if provider == "anthropic":

@@ -209,7 +209,10 @@ class TestGetCalendarContextUserIdThreading:
         ) as mock_cal_ctx:
             mock_cal_ctx.return_value = None
             with patch.object(handlers, "_get_todays_todos", new_callable=AsyncMock) as mock_todos:
-                mock_todos.return_value = []
+                # #1811: the real _get_todays_todos returns (todos, total_pending) —
+                # canonical_handlers.py unpacks two values; a bare [] unpacked as 0
+                # values and crashed the handler before the assertion under test.
+                mock_todos.return_value = ([], 0)
                 with patch(
                     "services.intent_service.canonical_handlers.piper_config_loader"
                 ) as mock_config:

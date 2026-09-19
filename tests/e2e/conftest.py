@@ -18,6 +18,7 @@ Requirements:
 Issue: #352 TEST-SMOKE-E2E
 """
 
+import os
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from uuid import uuid4
@@ -152,3 +153,46 @@ async def e2e_auth_headers(e2e_client, e2e_test_user):
     assert login_response.status_code == 200, f"Login failed: {login_response.text}"
 
     yield {"cookies": login_response.cookies}
+
+
+# #1747/#1809 (2026-09-19): re-exported from the root conftest (single source) — see
+# tests/conftest.py E2E_FAKE_BYOC_KEY for the full rationale. Short form: a FAKE key on
+# the documented X-User-Api-Key header rung lets keyless-safe deterministic tests past
+# the (correct) post-#1809 refusal gate; any path that unexpectedly spends 401s loudly.
+# Tests that assert the keyless REFUSAL itself keep e2e_auth_headers.
+from tests.conftest import E2E_FAKE_BYOC_KEY  # noqa: F401  (re-export for e2e modules)
+
+
+def e2e_header_key() -> str:
+    """The key e2e suites put on the X-User-Api-Key header rung.
+
+    Default: the FAKE key (no environment can be billed; an unexpectedly-spending
+    path 401s loudly). Opt-in override: ``PIPER_E2E_LIVE_HEADER_KEY`` — set ONLY
+    by the E2E workflow's own env from its repo secret, restoring that job's
+    pre-#1809 behavior (CI is the operator, deliberately spending its own key on
+    the few genuinely-live paths, e.g. task-lifecycle's classifier turns). Local
+    seats never set it, so local sweeps stay spend-free (#1821) even when the
+    developer's keychain holds real keys.
+    """
+    return os.environ.get("PIPER_E2E_LIVE_HEADER_KEY") or E2E_FAKE_BYOC_KEY
+
+
+@pytest.fixture
+async def e2e_byoc_auth(e2e_client, e2e_test_user):
+    """Login cookies + the BYOC header (fake by default — see e2e_header_key).
+
+    Same shape as e2e_auth_headers with an added 'headers' entry, so call sites
+    that spread it into httpx kwargs need only swap the fixture name.
+    """
+    _, username, password = e2e_test_user
+
+    login_response = await e2e_client.post(
+        "/api/v1/auth/login",
+        data={"username": username, "password": password},
+    )
+    assert login_response.status_code == 200, f"Login failed: {login_response.text}"
+
+    yield {
+        "cookies": login_response.cookies,
+        "headers": {"X-User-Api-Key": e2e_header_key()},
+    }

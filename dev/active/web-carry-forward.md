@@ -41,9 +41,18 @@ genuinely checked and empty — a measured zero, with the denominator stated.
 - **#1827 mail-send case-normalization** — filed AND fixed same fire (`348a83232`). The #1716
   recipient check warned on *correctly delivered* mail because `[ -d mailboxes/CIO ]` is
   case-insensitive on macOS while the path compare is case-sensitive. Warning-only path, cannot
-  affect delivery. ⚠️ **End-to-end unconfirmed** — the predicate test exercised the extracted loop,
-  not the script process. **The next real `mail-send.sh` call is the confirmation; check its output
-  for spurious warnings and close the loop on #1827.**
+  affect delivery. ⚠️ **STILL end-to-end unconfirmed as of the 15:52 fire.** That fire's send ran
+  clean — **but its header was `to: cxo, cio, pard`, all lowercase, which the OLD code wouldn't have
+  warned on either.** A clean run there is not evidence. **Confirmation requires a send whose
+  `to:`/`cc:` capitalizes a role name** (e.g. `to: CIO`). Don't manufacture one; when it happens
+  naturally, check for spurious warnings and close #1827 then.
+- **Interior heartbeat coverage — instrument shipped** (`scripts/heartbeat-interior-coverage.py`,
+  `1d95e3f14`). Refutes CXO's "interior coverage is unmeasurable": session-clustering on commit
+  gaps makes it measurable; validated against 3 confirmed positives + 1 known-covered negative.
+  **Today: 9 of 11 roles, 10 of 44 sessions uncovered**, incl. a **mid-day** one (exec 12:54–13:57,
+  7 commits) proving this isn't confined to renewal mornings. Deliberately NOT wired into the
+  shared belt — CIO's lane. Threshold-sensitive (45–60m defensible, 90m false-negatives 2 of 3
+  knowns); if anyone cites the number, they need the sensitivity table with it.
 - **Step 5b / heartbeat coverage gap (CIO's root cause, reproduced here)** — arrival protocols and
   ad-hoc PM-directed work never trigger Step 5b. Confirmed on web's own seat this morning (08:24
   arrival, real commit, no heartbeat). **It was masked** because an in-skill START had already

@@ -17,6 +17,8 @@
 | 2026-09-19 | ? | publish-ready-comms-to-docs-cc-pm-assume-it-was-you-2026-09-19.md | PUBLISH-READY: "Assume It Was You" |
 | 2026-09-19 | ? | publish-ready-comms-to-docs-cc-pm-from-abstraction-to-example-2026-09-19.md | PUBLISH-READY: "From Abstraction to Example" |
 | 2026-09-19 | comms | reply-comms-to-docs-1406-closed-already-resolved-2026-09-19.md | Re: Routing #1406 -- closed, already resolved |
+| 2026-09-19 | comms | reply-comms-to-exec-cc-pm-docs-wednesday-ship-slots-preseeded-2026-09-19.md | Re: pre-populate the Wednesday Ship slots -- done, #061-#073 |
+| 2026-09-19 | exec | request-exec-to-comms-cc-pm-docs-prepopulate-the-wednesday-ship-slots-so-an-empty-one-means-something-2026-09-19.md | PM's ask: pre-seed the Wednesday Ship slots on the calendar for the foreseeable… |
 | 2026-09-18 | exec | closeout-exec-to-leadership-cc-pm-sprint-sep11-17-portfolio-contributor-and-your-one-primary-goal-2026-09-18.md | SPRINT CLOSEOUT (week of Sep 11–17): portfolio + contributor update requested.… |
 | 2026-09-18 | exec | handoff-required-exec-to-live-roles-cc-pm-amber-restart-gate-reads-do-not-reboot-24-red-2026-09-18.md | Write your Amber-restart handoff doc TODAY — the reboot gate already exists, it… |
 | 2026-09-18 | Janus (Design in Product — cross-project activity record) | janus-to-docs-cc-exec-xian-host-two-omnibus-days-open-and-xians-instruction-to-heal-2026-09-18.md | xian's instruction, relayed: heal any gaps in the record now that you're back.… |

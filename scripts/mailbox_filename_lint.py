@@ -88,7 +88,16 @@ def find_nested_dirs(root: Path = MAILBOX_ROOT) -> List[str]:
 
     `mailboxes/<role>/<box>` is depth 2 relative to `root` (role, then box: inbox/read/sent).
     Any directory found deeper than that (e.g. `mailboxes/ppm/inbox/read/`) is a violation —
-    always, with no grandfathering, since the correct count is zero by construction.
+    with ONE carve-out, added 2026-09-19: `read/archive/` and anything under it.
+
+    Why the carve-out (the "zero by construction" premise broke the same day this lint
+    landed): CIO's quarterly archival (`scripts/archive-mailbox-read.py`, 77b86a5dd — a
+    deliberate, documented design whose archive/ subtree is intentionally invisible to
+    MANIFEST regen) moves prior-quarter read memos into `read/archive/YYYY-QN/`. That is
+    not #1743's defect (a triage move landing at `inbox/read/` or similar), and the two
+    mechanisms shipped independently within hours. The exemption is deliberately the
+    NARROWEST that reconciles them: only `read/archive/…` passes — an `archive/` under
+    inbox/ or sent/, or any other nested dir, still fails with no grandfathering.
     """
     if not root.is_dir():
         return []
@@ -96,8 +105,11 @@ def find_nested_dirs(root: Path = MAILBOX_ROOT) -> List[str]:
     for p in sorted(root.rglob("*")):
         if not p.is_dir():
             continue
-        depth = len(p.relative_to(root).parts)
-        if depth > 2:
+        parts = p.relative_to(root).parts
+        if len(parts) > 2:
+            # Carve-out: mailboxes/<role>/read/archive[/...] (CIO's quarterly archival).
+            if parts[1] == "read" and parts[2] == "archive":
+                continue
             violations.append(p.as_posix())
     return violations
 

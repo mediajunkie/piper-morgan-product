@@ -120,8 +120,7 @@ don't** — and every routing miss today was that one.
 6. **Janne Lammi's alpha invite** — token `ZVHWT5408X2NFA6P0D838B35`, UNUSED. #1814 closed and
    verified, so the technical blocker is cleared; the Lead/Arch/CXO copy-bucket thread is downstream
    refinement on a closed fix and does NOT re-block it.
-7. **#1747** — still needs diagnosis + milestone/epic triage. Its own snapshot is stale (records E2E
-   red; E2E is now green).
+7. ✅ **#1747 CLOSED 2026-09-19 by Lead** — epic-1 lane complete, belt green 10/10, #1687 closed with it. The standing-red finding it recorded is genuinely resolved, not re-scoped. Stop carrying it.
 
 ## Arrival — Wave 0 successor session, 2026-09-18 11:1x PDT
 

@@ -69,6 +69,11 @@ class TestStartupIntegration:
                     process.kill()
                     process.wait()
 
+    @pytest.mark.skip(
+        reason="#1832: /health/slack no longer exists at HEAD — dead-route test; "
+        "passes in CI only via its own connection-refused skip, fails against any "
+        "actually-running server (404). Deletion proposed, Arch GO pending."
+    )
     def test_slack_health_endpoint_exists(self):
         """Test that /health/slack endpoint exists (may be in degraded state)"""
         # This test assumes the main application is running

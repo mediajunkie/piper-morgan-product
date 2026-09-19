@@ -78,6 +78,18 @@ in the meantime.
   already resolved by an earlier reconciliation pass (whole-file scan: 449 rows, only valid values
   present). Closed with evidence, replied to Docs.
 
+## Closed this fire (15:42) — new mechanism: `planned` status + pre-seeded Ship slots
+
+PM's ask (via Exec, cc PM/Docs): pre-populate the Wednesday Ship slot going forward so an empty
+Wednesday is a real signal, not the default state. **Introduced a new calendar status value,
+`planned`** — verified `drafted`/`queued` would have broken `reconcile-drafts-calendar.py`'s
+draft-required assumption; `planned` is deliberately excluded from that check. Documented in
+`update-calendar` skill + both scripts' own comments. **Pre-seeded Ships #061 (Sept 23) through
+#073 (Dec 16)** — one quarter, sequential. #061 also flagged as already at step 5 (internal report
+exists). When you decide any of these, the recipe is: update the existing row in place
+(status→drafted, title, workDate, draftPath) — not a new row. Known minor cosmetic gap, not fixed:
+the HTML calendar view has no `planned` CSS/JS case yet (falls back to `drafted` styling).
+
 ## Waiting on others
 
 - **PM** — voice-pass + art on the ~9-10 drafted items; ChicagoCamps outcome/script-slide review;
