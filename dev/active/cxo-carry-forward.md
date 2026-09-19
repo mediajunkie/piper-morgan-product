@@ -1,10 +1,40 @@
 ---
-last_updated: 2026-09-18
+last_updated: 2026-09-19
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-18 at the 22:17 STOP.
+# CXO carry-forward — rewritten 2026-09-19 at the 10:17 WORK fire.
+
+> ## 🔄 SEAT CHANGED 2026-09-19 — wave-2 context clear (Pard, certified Janus, xian overseeing)
+>
+> **The predecessor's context was cleared deliberately at ~08:25.** The session log
+> (`dev/2026/09/19/2026-09-19-0717-cxo-code-log.md`) was **RESUMED, not replaced** — Fire 1 is the
+> predecessor's and carries the #1823 copy work this fire built on. **Arrival block appended there,
+> not here.**
+>
+> 🔴 **`docs/handoff-cxo-2026-09-18.md` is STALE in two verified places** — do not reason from it
+> without checking:
+> - **Cron**: it says job `4f984f8f`. **Live is `7bb7c53a`** (`CronList`, 2026-09-19). The old ID no
+>   longer exists.
+> - **Tracker**: it says 14 rows. **Was 15 at arrival, is 17 now.** The 14→15 delta was the BYOC
+>   T-axis row, filed 09-18, which says so about itself.
+>
+> ⚠️ **Everything else in the handoff verified out or was not checked** — it is a good document; it is
+> simply one day behind, exactly as its own closing paragraph warns.
+
+> ## 🟡 MY CRON HAS NO VERIFIED ARM-DATE — the one open mechanical gap
+>
+> ✅ **Delivery is PROVEN**: the 09:47 fire landed (late, 10:17). Job `7bb7c53a`, singular, correct
+> expression. **That satisfies Lead's 09-13 rule — the only proof a cron fires is a fire.**
+>
+> 🔴 **But Step 1's proactive-rotation check needs an ARM-DATE, and mine is unanchored.** The
+> handoff's *"armed 09-18 11:5x, expiry ~09-25"* describes **`4f984f8f`, a different job.** I know
+> `7bb7c53a` predates 09-19 07:17 (Fire 1 saw it and said it survived the night) and nothing more.
+> **Worst case is ~09-25.** ⭐ **Recorded so rotation is not reasoned from a date that describes a job
+> that no longer exists** — the handoff's own warning, *name the rule not the date*, with the
+> failure mode inverted.
+> **Action for the next START: record a real arm-date when you next rotate, and put it HERE.**
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
