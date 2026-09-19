@@ -194,16 +194,66 @@
     </table>
   </div>
 
-  <h2>What didn't move</h2>
+  <h2>What didn't move — expanded, with sources</h2>
   <div class="card">
-    <p><b>Production observation</b> — CXO reports three separate times this week their work ended at
-    <i>"nobody can see this in prod."</i> Worth watching as a pattern rather than an incident.</p>
-    <p><b>Arch's epic-6 provenance threading</b> — awaiting a board turn, correctly.</p>
-    <p><b>Two days of the window</b> — the standdown and the ceiling event before it.</p>
-    <p style="margin-bottom:0"><b>Cleared since the window closed:</b> Lead's usage-per-account
-    capture is now written; website#35 closed with evidence; the T-axis thread advanced between CXO
-    and PA; you ruled Q5 and the scope-guard. <b>And one row in my synthesis was wrong — I said Docs'
-    routing offer to Lead was unanswered; it was addressed to you, not Lead.</b> Docs corrected me.</p>
+    <p style="margin-top:0"><b>Written out properly this time.</b> The previous version used internal
+    shorthand — "T1", "a board turn" — that carried no meaning outside the role that wrote it.</p>
+
+    <p><b>1 · "Nobody can see this in prod" — CXO, three times this week.</b> Work completed, and then
+    no way to observe it running. <b>I do not know the cause</b> — CXO reported the symptom without
+    enumerating the three instances, and I have asked them for those rather than theorise. <b>Two
+    documented candidates exist, and they are different problems with different fixes:</b></p>
+    <ul>
+      <li><b>No test account.</b> The running app has no self-serve <code>/register</code> (removed
+      in #1504) and no documented test login, so <i>anything behind authentication</i> cannot be
+      observed. Web has this as a standing blocker in their own carry-forward — Playwright
+      verification of any signed-in view is blocked until a test account or a seeded instance is
+      provisioned.</li>
+      <li><b>The deployed build is months old.</b> Lead found <b>no droplet deploy since July</b>.
+      If production runs July code, September work is <i>literally not there to look at</i>.</li>
+    </ul>
+    <p>⭐ <b>If it's the second one, it is the same root cause as the hold on Janne's invite</b> — and
+    that would make it a single blockage presenting as two unrelated complaints. Worth knowing which
+    before spending anything on it.</p>
+
+    <p><b>2 · Epic 6 "awaits a board turn" — in plain terms: nothing is wrong.</b> Epic 6 (Rendered
+    deliverable) is <b>sixth in PPM's ordering</b>, and the cohort works one epic at a time. It is
+    waiting for its <i>position in the queue</i> to arrive — not for a decision, a person, or an
+    unblocking. <b>"Board turn" meant "its turn in the ordered list," and I should have written
+    that.</b> Source: <code>dev/active/mvp-epic-order-2026-09-09.md</code> §6.</p>
+
+    <p><b>3 · PA's "T1" is the Cross-Piper synthesis</b> — a written comparison of how the several
+    Piper projects have diverged, drafted from 5 product-owner retrospectives, 2 session logs and 3
+    code files. Draft: <code>dev/active/t1-cross-piper-comparison-2026-08-31.md</code>, delivered
+    09-03, since republished as an Artifact.
+    <b>The specific thing awaiting you is one question, not the document:</b> <i>draft-then-review or
+    review-then-draft as the trust model?</i> PA has been waiting 16 days on that single answer.</p>
+
+    <p style="margin-bottom:0"><b>4 · Arch's epic-6 provenance threading</b> — same queue-position
+    point as (2): correctly not started. <b>5 · Two days</b> to the ceiling event.</p>
+  </div>
+
+  <h2>Plan for the week ahead — Fri 18 → Thu 24</h2>
+  <div class="card">
+    <p style="margin-top:0"><b>Bets 001–003 sit here rather than in "needs you"</b>, per your
+    sequencing: they follow the review and belong to the week's plan.</p>
+    <p><b>Bets 001–003 — three fields on one memo</b>, not three documents. Bet 001 needs a named
+    buyer for the enterprise tier (<b>"none named" is a complete answer</b> — it converts the bet to
+    labelled speculation or retires the milestone), a cost box (Arch's recommendation is pre-written:
+    zero build until the buyer field has a name), and a kill-condition date (Arch suggests the beta
+    retrospective). 002 is the same shape; <b>003 is partly pre-filled from your own 08-29 answer</b>
+    — confirm-or-amend. Source: <code>docs/internal/architecture/bets/</code>.</p>
+    <p><b>Also in the week's plan, in the order they gate each other:</b></p>
+    <ul>
+      <li><b>The droplet question</b> — it holds Janne's invite <i>and</i> may be the cause of CXO's
+      three unobservable results. <b>Highest leverage item on this page.</b> Needs Lead plus droplet
+      access.</li>
+      <li><b>Epics 9/10</b> — decide before the sprint plan firms up, since it changes the ordering
+      source Lead reads from.</li>
+      <li><b>CXO's probe window</b> — closes when #1688's MCP work starts writing output. Decide
+      whether to spend the re-run now or accept the gate stays unenforceable.</li>
+      <li><b>PA's one question</b> — draft-then-review, or review-then-draft.</li>
+    </ul>
   </div>
 
   <footer>
