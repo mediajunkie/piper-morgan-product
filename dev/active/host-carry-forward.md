@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-18
+last_updated: 2026-09-19
 currency_claim: per-stop
 max_age_days: 1
 ---
@@ -68,7 +68,16 @@ Current job **`e018f052`** (chain … `db3710ca → bc447bf5 → e018f052`), exp
 
 ## Open threads, as of 09-18 STOP
 
-- ⚠️ **Janne Lammi's invite — still HOLD LIFTED / ready to send, unchanged since ~10:15 PT 09-15 — now over THREE days unsent.** Checked the roster directly again this fire — no status change. Named as HOST's own standing top priority in the 09-18 sprint closeout. **Getting stale enough to actively ask about, not just watch** — if it's still unsent next fire, consider asking PM directly rather than continuing to note it passively.
+- ⚠️ **Janne Lammi's invite — NEW BLOCKER found 09-19, NOT a simple "ready to send" anymore.** PM
+  drafted the pre-qualification email via Gmail MCP this session (local-install copy, per the
+  standing template), then caught in review that it may be pointed at the wrong onboarding mode:
+  Janne's roster token was minted against `piper-morgan-db.flycast` (Fly's internal-only DNS,
+  private-networked per #1311), which a local install cannot reach at all. Held the draft — do not
+  send. Asked Lead directly (cc Arch, PM, 09-19 13:xx) which hosted URL (`alpha.pipermorgan.ai` vs
+  `beta.pipermorgan.ai`) the token actually targets and whether #1814's fix is confirmed there (its
+  own verification ran against a local harness, not a hosted deploy). **Watching for Lead's answer,
+  not passively — this supersedes the prior "ask PM directly" framing, since the answer isn't
+  PM's to give.** Full writeup: `dev/2026/09/19/2026-09-19-0707-host-code-log.md`, Fire 2/3/4.
 - ✅ **Amber-restart handoff doc filed** (`docs/handoff-host-2026-09-18.md`, 09-18) — gate-blocking cohort requirement, met same-day. Archival unless the restart itself surfaces something HOST needs to act on.
 - ✅ **Sprint closeout for Sep 11–17 filed** (09-18, to Exec cc PM). Archival.
 - ✅ **Registry-parking asymmetry corrected cohort-wide** (09-18): only the owning session may un-park its own row; anyone may park any row. Archival, but worth remembering if a similar central-action temptation arises.
