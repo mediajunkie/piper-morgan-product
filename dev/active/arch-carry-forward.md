@@ -26,7 +26,19 @@ in git history.
 | Mail | `mail-send.sh` push-to-ref; never touch PM's main checkout. Inbox verified at trunk (`git ls-tree origin/main`), never local `ls`. |
 | ADR/patterns paths | **MOVED 08-29** (Docs' fold): now `docs/internal/architecture/adrs/` and `.../patterns/` — no `current/` segment. |
 
-## IN FLIGHT as of 2026-09-18 (post-standdown resume)
+## GitHub criteria line (third work-queue source, PM's v1.33 ruling) — ADOPTED 2026-09-19
+
+```
+gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open
+```
+
+**Arch had no criteria line until today** — which meant the third source was structurally empty and
+"drained" was being reported against two surfaces, not three. Denominator was **9** on 09-19.
+**Open each returned issue; do not write a row from the list** (CXO 09-12: a row written from
+`gh issue list` is a guess about the issue). Report drained as *"mail (N) + standing-items (N) +
+label:architecture (M eligible)"* — never a bare "nothing left."
+
+## IN FLIGHT as of 2026-09-19
 
 **The credential/tenancy family is the live lane** (epic 12). My rulings, 09-14/15, all on
 origin/main + decisions.log:
