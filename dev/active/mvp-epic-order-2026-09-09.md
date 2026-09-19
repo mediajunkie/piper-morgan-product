@@ -205,6 +205,28 @@ genuine product decision, not a bug: should one stored LLM key of *any* provider
 for PM/product, not something Lead can resolve in code. Both already correctly milestoned/boarded
 at filing (the convention held); folded in here for epic-2 continuity.
 
+**`#1823` RULED 2026-09-19 — gate on any spendable provider key, accepting Arch's recommendation
+in full.** Arch's finding made this cheap: `resolve_request_api_key`'s ladder never knew what a
+provider was — the Anthropic constraint was injected at the call site (`web/utils/llm_key.py`), not
+structural — so the ruling needs no restructuring, just a different injection plus constraining
+provider selection to the providers actually bound (not "accept any key, refuse later at route
+time"). Zero-key refusal is unchanged; fail-closed at the true boundary holds. Where a task type is
+genuinely Anthropic-tuned, refuse — but name the task type, not the vendor, held as part of the
+ruling per Arch's condition. CXO's copy ships as drafted (the "any spendable provider" branch),
+which also resolves a defect CXO found independent of this ruling: the existing refusal
+self-contradicted (an ownership claim followed by a vendor name) and diverged from
+`conversational_floor.py:610`'s already-neutral convention — no separate issue needed, this
+ruling's copy fixes both.
+
+⚠️ **Sequencing, recorded here so it's visible before either lands**: `#1824`'s four-bucket
+classifier split lands first, or together with `#1823`, not after — an honest task-type refusal
+needs a bucket to live in, and shipping `#1823` first would invent a fifth bucket informally.
+
+**One precondition on implementation, Lead's to trace, not assumed either way**: whether provider
+selection (`#1415`) actually consults the binding to constrain routing, or selects first and looks
+up the key after. That ordering is the hinge between "ships as designed" and "a user can pass the
+gate and still fail at route time" (a third state CXO flagged, distinct from both existing states).
+
 **`#1818` — the keyless-copy fix (v113) shipped same day, but the design question underneath it
 was deliberately split out rather than decided under copy pressure**: should a deterministic
 greeting (spends nothing, needs no LLM call) pass the `#1807` keyless gate at all? Two honest
