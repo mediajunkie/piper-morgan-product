@@ -33,17 +33,19 @@
   + Arch's mechanism call.
 
 ## Queue (unblocked, in order)
-- **#1821** — the 37 tests that were LIVE-BILLING OpenAI on every sweep all month: containment
-  is in (operator-binding conftest); the hygiene fix (tests shouldn't need a live key at all)
-  dispatched 09-18 evening, cheap tier.
-- **#1822** — Slack binding is anthropic-only; extend to the provider mapping (mechanical,
-  follows #1819's provider-keyed ContextVar).
+- ~~#1821~~ CLOSED (verified on GitHub 09-19 — the 09-18-evening dispatched hygiene fix landed).
+- ~~#1822~~ CLOSED + deployed v116 (09-19 morning, pre-renewal).
 - #1797 (dead-twin disposal, deletion discipline) · #1817 · #1774 · #1796 (2 failures invisible
   to the burn-down gate) · #1813 (fixed-PK test poisoning) · #1811 · epic 6 remainder (#1729;
   #1762 class-b waits on nothing now that the GitHub-six shipped) · #1793 docs 404s.
-- **Standing action I owe**: usage-per-account capture shared with Dispatch (taken 09-15,
-  nothing written yet — mine, not blocked; PM reaffirmed 09-15 "track more granularly as a
-  rule").
+  All held for PM's next-week plan (09-19 morning assessment; weekend token directive standing).
+- ~~Standing action: usage-per-account capture~~ **WRITTEN 09-19**
+  (`dev/active/usage-per-account-capture-2026-09-19.md`; Dispatch signal dropped; Exec+PM
+  notified). Open on it: Dispatch's can-it-read-the-usage-surface answer; xian's seat→account
+  mapping. Build implications go in the plan.
+- **Docs' 09-13 routing-memo offer** — Filed: 2026-09-19 (from Exec's closeout; original not
+  locatable in my boxes). Blocked on: Docs re-pointing me at it (ask sent 09-19). Answer when
+  re-pointed.
 
 ## Standing (unchanged load-bearing rules — full set in the 09-14 rewrite + handoff doc)
 - Model pinning on EVERY dispatch (tier is a shared capability; 48 unpinned dispatches cost
