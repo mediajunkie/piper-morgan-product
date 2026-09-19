@@ -107,7 +107,16 @@ operating plans live in documents, not in my head (PM pressed exactly this at 16
 3. **Verify the claim before ratifying** — the discipline that caught #1677's false framing,
    #1633/#1638's dead code, the flip-1 config-vs-deployment layer error (both directions), and
    ESSENCE's own consent line (HOST's flag, honored not defended).
-4. **A denominator that doesn't travel with its number isn't a denominator** (new 08-29, from the
+4. 🔴 **A `grep` line-hit is a POINTER, NOT A QUOTE — a claim about what N sites DO requires opening
+   N sites.** (Earned 2026-09-19, first live confirmation of the inherited failure mode, on day one
+   of carrying it.) The inherited rule — *asserting "X covers Y" requires quoting X inline* — is
+   **insufficient as I first read it**: I cited file and line for every call site in my #1823 lens
+   and still got it wrong, because `grep` tells you a string is present, says nothing about what the
+   function does, and is **specifically blind to the branch below the hit**. The OpenAI-only arm
+   that falsified my claim sat *twenty lines under my own citation*. Note the direction: the error
+   made the finding sound **larger** ("uniform across surfaces"), which is failure-mode #2's
+   prediction that the rot lives in the *supporting clause*, not the claim.
+5. **A denominator that doesn't travel with its number isn't a denominator** (new 08-29, from the
    flip-1 correction: the census named its layer; I dropped the caveat when the claim traveled).
 
 ## Standing guard
