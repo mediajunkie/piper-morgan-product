@@ -54,13 +54,16 @@ One of my philosophy professors made one of those academic jokes that border on 
 
 The other thing Lead included in each that made the example communicate effectively to me (and to any future evaluator) was a contrast.
 
+[Note to Comms: This section would work better with one of the actual comparisons, instead of repeating the generic line from above with nothing for the reader to compare
+
 Below the three worked examples, on its own line:
 
 > ❌ *"Request blocked due to ethics policy: Content contains potential harassment patterns (matched: 3 patterns)"*
 
 This is what we would have produced before the architectural change. Same situation. Different output. The contrast does work that the positive examples alone cannot do: it shows what the technique is *actively steering away from.*
+]
 
-A shape defined only by what falls inside it is incomplete. You also need to know what falls outside. The contrast example is the boundary marker. *Not this. Anything but this.* When future instances drift, the drift will probably drift toward the failure shape — toward system-speak, toward parroting, toward refusal-without-redirect. Having the failure shape written out, labeled, and contrasted means future-you (or future-LLM) can recognize the drift earlier.
+Boundaries are defined both by what falls inside and what falls outside. The contrast is the boundary marker. *Not this. Anything but this.* When future instances drift, the drift will probably drift toward the failure shape — toward system-speak, toward parroting, toward refusal-without-redirect. Having the failure shape written out, labeled, and contrasted means future-you (or future-LLM) can recognize the drift earlier.
 
 This is especially useful for voice work, where the difference between "right" and "wrong" can be subtle and the failure mode is rarely obvious in any single case. You don't always know what *Piper's voice* is, but you can usually tell that *"Request blocked due to ethics policy"* isn't it. The contrast names the negative space.
 
