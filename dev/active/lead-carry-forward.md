@@ -33,14 +33,17 @@
   + Arch's mechanism call.
 
 ## Queue (unblocked, in order)
-- **EPIC 1 LANE ACTIVE (09-19 afternoon, PM directive: earliest unfinished epic, don't wait
-  for plan)**: CI-red fixes pushed (a795f7170 + 9db314adc style follow-up); awaiting belt
-  verdict → then #1687 close-out comment (its 4 workflows: CodeQual/Docker/ConfigVal/Router)
-  + #1747 disposition (Tests/E2E). #1811 CLOSED (pulled from epic 5, gated the belt).
-  **#1831 filed** (tests/intent live-LLM cohort, local-red/CI-green, #1821's class) —
-  **board-add still owed** (Filed: 2026-09-19; blocked on: shared GraphQL bucket, retry when
-  quiet). #1785 decision memo with PM (split live-LLM canonical to nightly). Cron DELETED for
-  the lane — RE-ARM at idle (17 6,9,12,15,18,21).
+- **EPIC 1 LANE COMPLETE 09-19 (~15:00): FULL BELT GREEN, 10/10 gating workflows.** #1687 +
+  #1747 CLOSED with snapshot evidence; #1811 CLOSED (pulled from epic 5). #1831 filed +
+  boarded + Status set (tests/intent live-LLM cohort — scoped, ready, the epic's next build
+  item). Epic 1 residue: #1764 (latent, wants a migration plan) · #1765 (env-divergence
+  diagnosis; 3rd instance recorded) · #1785 (decision memo with PM: split live-LLM canonical
+  to nightly) · #1831. Watch item: PPM/CIO may overrule the nesting-lint carve-out
+  (notice sent 09-19, either can; one-commit revert).
+- PM directive standing (09-19): don't wait for the plan — earliest unfinished epic. With
+  epic 1's standing-reds retired, next per the order: #1831 (epic 1 build) or epic 2's open
+  items (#1791 waits on Arch; #1817 tripwire; #1812 steps 5-6 PM-gated) → then epic 3 floor
+  (#1739 umbrella waits on PM's #1617 retest, #1771, #1695).
 - ~~#1821~~ CLOSED (verified on GitHub 09-19 — the 09-18-evening dispatched hygiene fix landed).
 - ~~#1822~~ CLOSED + deployed v116 (09-19 morning, pre-renewal).
 - **Audit Cluster 1** (Filed: 2026-09-19, Docs route, PM-approved): per-user-timezone family —
