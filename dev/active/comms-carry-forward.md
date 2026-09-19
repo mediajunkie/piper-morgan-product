@@ -49,17 +49,29 @@ Full footer-tease chain repaired end to end across all 8 touched files. A chrono
   has no cheap mechanical GitHub query defined for "issues meeting my role's criteria." Gap named,
   not yet filled; nothing blocked on it.
 
-## Today AM — PM's stated plan (from 2026-09-18 ~22:xx, in-conversation), re-verified this morning
+## Today's two-post thread — CLOSED for "Assume It Was You", IN PROGRESS for tomorrow's post
 
-PM: "tomorrow am we'll have a blog post to work on. After that we can resume our editorial calendar
-planning work." Likely candidate, re-verified against the calendar this morning (still `drafted`,
-unchanged overnight): **"Assume It Was You"** (`docs/public/comms/drafts/assume-it-was-you.md`),
-`pubDate` **2026-09-19** — publishing today. Fully drafted + fact-checked (2026-07-09), but has
-**one open PM-input bracket**: whether the "compaction hand-wave rejection" paragraph is PM's own
-words or the Architect's account of PM. That bracket plus the voice-pass are the likely "work on"
-ask. Still not confirmed by PM which post they meant — flagged as the best-fit inference, not a
-certainty. After that: resume editorial calendar planning (no further detail given yet on what
-aspect).
+**"Assume It Was You"** (pubDate 2026-09-19): confirmed correct guess from this morning. Full
+editorial review + proofreading pass done, footer teaser retitled at PM's request, calendar synced,
+status → `ready-for-docs`, publish-ready memo sent to Docs (cc PM) — `mailboxes/docs/read/` (or
+`inbox/` until Docs triages) `publish-ready-comms-to-docs-cc-pm-assume-it-was-you-2026-09-19.md`.
+**Nothing further owed here unless Docs/PM flags something.**
+
+**"From Abstraction to Example"** (renamed from "...Worked Example", pubDate 2026-09-20): PM got a
+day ahead — finished editing, added illustration + frontmatter, and asked Comms to resolve an open
+`[Note to Comms]` editorial bracket in the "illuminating contrast" section using real source facts.
+Resolved: real harassment-case worked example (source: `dev/2026/04/22/2026-04-22-1645-lead-code-
+opus-log.md`, cross-confirmed against the published sibling post "The Voice of a Denial") now sits
+paired against the pre-change contrast line already in the draft. **PM is now doing their own voice
+pass** before handoff to Docs. **Comms' next move once that's done: run the full template audit**
+(noted a few pre-existing typos while reading — stray period, "the the models," "origianal",
+double spaces — worth a full sweep, not just spot fixes). Calendar title already synced to match
+the rename; draft filename intentionally left as `from-abstraction-to-worked-example.md` (PM hasn't
+asked for a rename; confirmed not functionally required since `publish-to-blog` takes an explicit
+`--slug` at publish time).
+
+PM's broader stated plan: after these two posts, resume editorial calendar planning work (no
+further detail given yet on what aspect).
 
 ## Waiting on others
 
