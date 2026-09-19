@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.24
+version: 0.25
 created: 2026-03-16
-updated: 2026-09-12
+updated: 2026-09-19
 ---
 
 # publish-to-blog
@@ -194,6 +194,8 @@ git fetch origin main -q && git merge origin/main -q --no-edit
 Run this before opening the draft, before reading the calendar row, before anything. Takes ~2 seconds and prevents the entire class of "stale draft" false alarms.
 
 **The 2026-07-18 incident**: PM added frontmatter and revised the draft via the Web UI; Comms caught and fixed an encoding error in the caption. Docs read the pre-edit local copy, reported three frontmatter FAIL findings, and had to be corrected by PM before proceeding. One merge would have caught it immediately.
+
+⚠️ **This sync is not a one-time gate — re-run it any time PM says something mid-pipeline that implies a file changed, not just at the start.** 2026-09-19 near-miss: mid-publish, after the proofread pass and after generating the hashId, PM mentioned in conversation ("I changed the title... I've made an editorial pass on tomorrow's post too") that both today's and tomorrow's drafts had been edited further. The pipeline had already been running on an earlier sync. Re-fetching at that point surfaced a real state change: the calendar's own status field had moved from `drafted` to `ready-for-docs` with a fresh Comms note, and tomorrow's post title had changed in a way that (by luck) already matched the footer tease in today's draft. Had the mid-pipeline mention been treated as FYI-only and not acted on, the publish would likely still have succeeded on stale-but-consistent data this time — but the near-miss is the pattern, not this specific outcome: **any PM remark implying an edit, anywhere between the initial sync and the final commit, is a re-sync trigger, not just a note to file away.** Same discipline as `feedback_sync_applies_to_every_file_read` generalized to a multi-step pipeline: the risk isn't only reading a stale file, it's *continuing to act* on a sync that was correct when taken but has since aged past a signal that it's stale.
 
 ### Step 0: Check the editorial calendar first
 
@@ -602,6 +604,8 @@ After publishing:
 ---
 
 *Changelog gap, noted 2026-07-31: frontmatter read `version: 0.20` while the notes below stop at v0.16 — versions 0.17-0.20 were bumped without entries. Not backfilled here; I don't know what they changed and inventing it would be worse than the gap.*
+
+*v0.25 — **Pre-Step sync gains a mid-pipeline re-trigger.** The sync rule previously read as a one-time gate ("run this before opening the draft"). 2026-09-19 near-miss on *Assume It Was You*: mid-publish, after the proofread pass and hashId generation, PM mentioned conversationally that both today's and tomorrow's drafts had been edited further since the initial sync. Re-fetching surfaced a real state change (calendar status `drafted` → `ready-for-docs`, tomorrow's title changed) that the pipeline was about to proceed without. Added an explicit note: any PM remark implying an edit, anywhere in the pipeline, re-triggers the sync — not just the start. (Frontmatter version bumped 0.24 → 0.25; no changelog entry exists for 0.24, consistent with the gap already noted below for 0.17-0.20.)*
 
 *v0.23 — **Confirmed: a publish resolves a pre-existing cached 404 on its own URL.** Web's soft-404 fix
 (`03b77d9d`, 2026-08-04) corrected unknown-slug behavior to a real 404 — but that 404 is itself cached
