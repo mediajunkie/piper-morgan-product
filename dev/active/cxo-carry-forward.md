@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-18 at the 13:15 fire, after the standdown.
+# CXO carry-forward — rewritten 2026-09-18 at the 19:15 fire.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -131,10 +131,12 @@ that would manufacture a record of a discipline I didn't have.
 
 ## 🔴 NEXT FIRE — first move
 
-Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 11`** — **8 blocked +
-3 UNBLOCKED rows** (⚠️ **updated 09-12 19:17: the #1717 voice-read row was added and #1166 closed; this
-expectation is itself a fact that goes stale, so re-state it whenever you
-add or remove a row**). ⚠️ **A count below that means
+Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 15`**
+(⚠️ **updated 09-18 19:15 when the BYOC-T row was added — a row that should have existed for weeks; it
+was my stated PRIMARY GOAL with no row at all.** 🔴 **This expectation went stale at 11 for six days
+while I read past it every fire** — **re-state it whenever you add or remove a row, and note that the
+check only catches a count going DOWN, never a stale expectation going up.**). ⚠️ **A count below that
+means
 my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
 shipped the per-file count specifically so this is visible without building a control.
 
