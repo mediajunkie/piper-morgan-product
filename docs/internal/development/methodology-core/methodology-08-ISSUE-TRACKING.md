@@ -1,3 +1,10 @@
+---
+type: methodology
+title: "Methodology 08: Issue Tracking Verification"
+valid_from: "2025-09-21"
+last_updated: "2026-06-11"
+---
+
 # Methodology 08: Issue Tracking Verification
 
 **Status**: ✅ **PRODUCTION READY** - Systematic Protocol Established

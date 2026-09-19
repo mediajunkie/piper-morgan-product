@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Documentation Creation Checklist
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # Documentation Creation Checklist
 *Living document - Last updated: August 18, 2025*
 

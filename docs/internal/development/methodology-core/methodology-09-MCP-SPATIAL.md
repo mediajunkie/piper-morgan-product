@@ -1,3 +1,10 @@
+---
+type: methodology
+title: MCP+Spatial Pattern Implementation Methodology
+valid_from: "2025-09-21"
+last_updated: "2026-08-29"
+---
+
 # MCP+Spatial Pattern Implementation Methodology
 
 > ⚠️ **Dated note (2026-08-29)**: code excerpts below referencing `NotionSpatialIntelligence`

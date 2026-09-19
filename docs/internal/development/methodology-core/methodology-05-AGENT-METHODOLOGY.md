@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Agent Methodology for Piper Morgan
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # Agent Methodology for Piper Morgan
 *Living document - Last updated: August 18, 2025*
 

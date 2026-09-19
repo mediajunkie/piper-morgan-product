@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Verification-First Methodology
+valid_from: "2025-09-21"
+last_updated: "2026-09-01"
+---
+
 # Verification-First Methodology
 
 > **Cross-corpus note (2026-09-01)**: ruled canonical for this principle by Arch's B3 synthesis

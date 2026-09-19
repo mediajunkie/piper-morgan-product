@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Systematic Methodology Breakthroughs
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # Systematic Methodology Breakthroughs
 
 **Date**: July 24, 2025
