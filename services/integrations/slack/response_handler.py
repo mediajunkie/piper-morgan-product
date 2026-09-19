@@ -15,7 +15,7 @@ import contextlib
 import logging
 import time
 from collections import defaultdict
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set, Union
 from uuid import UUID
 
 import structlog
@@ -372,26 +372,31 @@ class SlackResponseHandler:
             # reach the LLM, and unbound no longer falls back to the server's key
             # (PM ruling, #1812: the server key is not a real concept). The key
             # spent on an inbound Slack turn is the SENDER'S: the Slack caller
-            # resolved to a Piper principal via slack_identities (#1466), and that
-            # principal's stored Anthropic key. Unlinked or keyless senders are NOT
-            # bound — non-LLM turns (help/ping/status templates) still work, and
-            # the first actual LLM touch raises `LLMKeyRequiredError`, converted
-            # below into an honest Slack reply instead of a silent operator spend.
+            # resolved to a Piper principal via slack_identities (#1466), and
+            # #1822 widens that to the PROVIDER-KEYED binding (whichever of their
+            # stored anthropic/openai keys exist), reusing the exact same
+            # expansion the web routes make (#1819's expand_llm_key_binding) —
+            # see `_fetch_sender_llm_key_binding`. Unlinked or keyless senders are
+            # NOT bound — non-LLM turns (help/ping/status templates) still work,
+            # and the first actual LLM touch raises `LLMKeyRequiredError`,
+            # converted below into an honest Slack reply instead of a silent
+            # operator spend.
             piper_user_id = await self._resolve_piper_principal(
                 slack_context.get("user_id"), slack_context.get("workspace_id")
             )
             if piper_user_id:
                 # Stash for _process_through_orchestration — one resolution per event.
                 slack_context["piper_user_id"] = piper_user_id
-            sender_key = await self._fetch_sender_llm_key(piper_user_id)
+            sender_key_binding = await self._fetch_sender_llm_key_binding(piper_user_id)
 
             try:
                 with contextlib.ExitStack() as stack:
-                    if sender_key:
-                        # Bound only when the sender actually has a key: binding
-                        # None explicitly is the designated-operator seam (#1807),
-                        # which an inbound Slack sender is not.
-                        stack.enter_context(request_api_key(sender_key))
+                    if sender_key_binding:
+                        # Bound only when the sender actually has AT LEAST ONE
+                        # provider key: binding None explicitly is the
+                        # designated-operator seam (#1807), which an inbound
+                        # Slack sender is not.
+                        stack.enter_context(request_api_key(sender_key_binding))
 
                     # Step 2: Create intent from spatial event with preserved context
                     intent = await self._create_intent_from_spatial_event(
@@ -759,6 +764,9 @@ class SlackResponseHandler:
         refusal instead of spending a key that isn't the sender's. The key is
         never logged; it is bound only for the event's duration via
         ``request_api_key`` (per-task ContextVar, reset in finally).
+
+        #1822: this is now only the ANTHROPIC leg of sender key resolution —
+        see ``_fetch_sender_llm_key_binding`` for the provider-keyed whole.
         """
         if not piper_user_id:
             return None
@@ -775,6 +783,49 @@ class SlackResponseHandler:
         except Exception as e:
             self.logger.warning(f"Sender LLM key fetch failed (fail-closed to unbound): {e}")
             return None
+
+    async def _fetch_sender_llm_key_binding(
+        self, piper_user_id: Optional[str]
+    ) -> Union[None, Dict[str, str]]:
+        """#1822: the resolved sender's key(s), widened to the PROVIDER-KEYED
+        binding — extending #1809's anthropic-only fetch so an OpenAI-only
+        sender is served too, instead of getting the honest refusal for
+        lacking an anthropic key specifically.
+
+        Reuses the SAME widening the web routes use (``expand_llm_key_binding``,
+        #1819) rather than inventing a Slack-specific rule, so when a sender
+        holds BOTH keys, provider SELECTION (per-user default + fallback,
+        #1415/#1819) decides which is actually spent — identically to the web
+        routes. Two arms, both fail-closed to ``None`` (nothing bound → the
+        honest refusal fires at the first actual LLM touch, same as before
+        #1822):
+
+          - sender HAS a stored anthropic key → ``expand_llm_key_binding``
+            widens it with their stored openai key too, if any — the exact
+            call ``/api/v1/intent`` and ``/api/v1/documents/*`` make (#1819).
+          - sender has NO anthropic key → fetch their stored openai key
+            directly. Passing ``None`` straight into ``expand_llm_key_binding``
+            would NOT do this: that function treats a ``None`` "resolved" as
+            the #1807 designated-OPERATOR seam (it is the output shape of
+            ``resolve_request_api_key``, which Slack never calls) and returns
+            it unchanged — which an inbound Slack sender must never receive
+            implicitly (see the #1809 binding note above).
+        """
+        if not piper_user_id:
+            return None
+        anthropic_key = await self._fetch_sender_llm_key(piper_user_id)
+        if anthropic_key:
+            from web.utils.llm_key import expand_llm_key_binding
+
+            return await expand_llm_key_binding(anthropic_key, piper_user_id)
+        try:
+            from web.utils.llm_key import _fetch_stored_provider_key
+
+            openai_key = await _fetch_stored_provider_key(piper_user_id, "openai")
+        except Exception as e:
+            self.logger.warning(f"Sender OpenAI key fetch failed (fail-closed to unbound): {e}")
+            return None
+        return {"openai": openai_key} if openai_key else None
 
     async def _send_llm_key_refusal(
         self, key_err: Exception, slack_context: Dict[str, Any]
