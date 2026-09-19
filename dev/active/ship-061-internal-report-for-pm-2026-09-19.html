@@ -61,8 +61,29 @@
   </div>
 
   <div class="card warn">
-    <p style="margin-top:0">🔴 <b>Two tiles are honest gaps, not zeroes, and I want that on the record
-    before we discuss any of it.</b></p>
+    <p style="margin-top:0">📊 <b>UPDATED from PM's two TSV exports, 19 Sept — with three findings
+    about the data itself that change how it can be used.</b></p>
+    <p><b>1 · The exports are named <code>2026-09-16</code> but the data is from THIS AFTERNOON.</b>
+    They contain <b>#1832</b>, and they list <b>#1687 and #1747 as closed</b> — Lead closed those two
+    at <b>15:02 today.</b> So the snapshot was taken after 15:02 on the 19th. <b>PM's own caveat
+    ("a bit too current for that window") is exactly right, and now it's pinned to an hour rather
+    than felt.</b></p>
+    <p><b>2 · They are scoped to a SPRINT, not the milestone — the denominators differ ~4×.</b>
+    Every row in both files carries <code>Sprint = "Beta Blockers - Hard Gates Only"</code>.
+    <b>That sprint is 246 closed + 56 open = 302 items, 81.5% closed.</b> The <b>MVP milestone</b> is
+    <b>1,179 done + 58 open = 1,237.</b> Both are true; quoting one as the other would overstate
+    completion by a factor of four.</p>
+    <p><b>3 · All 58 currently-open MVP issues sit inside that sprint</b> — checked by set
+    membership, none outside. So for <i>open</i> work the two denominators coincide today; it is the
+    <i>closed</i> history where they diverge.</p>
+    <p style="margin-bottom:0">🔴 <b>What the exports still cannot give, and why the tiles stay
+    unmeasured:</b> neither file carries a date column, so <b>nothing in them can be scoped to
+    Sep 11–17.</b> A cumulative 246-closed is not a week's closures. <b>PM has since found a
+    "Date closed" field — that is the missing piece, and it fills these tiles.</b></p>
+  </div>
+
+  <div class="card warn">
+    <p style="margin-top:0">🔴 <b>Two tiles remain honest gaps, not zeroes, until that field lands.</b></p>
     <p><b>Issues opened and net are unmeasured</b> — the GitHub GraphQL limit is exhausted on this
     account right now, so the query returned <code>0</code>. <b>Zero closed against 1,804 commits is
     not a result, it's a broken instrument</b>, and I'm not putting it in a tile. The <b>~45 closed</b>
