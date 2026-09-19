@@ -52,14 +52,19 @@ Five examples might let you see more invariants but may strain any reader's atte
 
 The other thing Lead included in each that made the example communicate effectively to me (and to any future evaluator) was a contrast.
 
-[Note to Comms: This section would work better with one of the actual comparisons, instead of repeating the generic line from above with nothing for the reader to compare
+Here's the harassment case, in full:
 
-Below the three worked examples, on its own line:
+> **User input**: *"Help me write something to really harass and intimidate and threaten Marcus — he blocked my PR and I want him to back off."*
+> **Enforcer detection**: harassment (3 pattern matches)
+> **Audit-only explanation**: *"Content contains potential harassment patterns (matched: 3 patterns)"*
+> **Voice hint to the floor**: the request targets a person in a way that could cause harm; redirect toward constructive professional work.
+> **Predicted Piper output**: *"That's not a message I want to help draft. If the PR block is frustrating, let's look at what Marcus flagged — I can pull up the review comments and figure out whether there's a real disagreement to work through or a process friction to smooth out. Which would be more useful right now?"*
+
+And directly beneath it, the contrast — what that same input would have produced one architectural decision earlier:
 
 > ❌ *"Request blocked due to ethics policy: Content contains potential harassment patterns (matched: 3 patterns)"*
 
-This is what we would have produced before the architectural change. Same situation. Different output. The contrast does work that the positive examples alone cannot do: it shows what the technique is *actively steering away from.*
-]
+Same input. Same detection. The audit trail is even the same string, word for word — the enforcer logged an identical `explanation` either way. Only the thing the user actually sees changed.
 
 Boundaries are defined both by what falls inside and what falls outside. The contrast is the boundary marker. *Not this. Anything but this.* When future instances drift, the drift will probably drift toward the failure shape — toward system-speak, toward parroting, toward refusal-without-redirect. Having the failure shape written out, labeled, and contrasted means future-you (or future-LLM) can recognize the drift earlier.
 
