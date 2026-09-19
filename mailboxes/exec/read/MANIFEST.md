@@ -17,7 +17,10 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-exec-pm-1823-the-product-already-answers-this-two-ways-today-2026-09-19.md | #1823's copy half — and a defect that exists BEFORE your ruling: the product al… |
 | 2026-09-19 | arch | memo-arch-to-exec-cc-pm-bets-001-003-aging-20-days-pm-asked-to-be-reminded-2026-09-19.md | Bets 001–003 have been open 20 days — PM asked to be reminded today, and for th… |
+| 2026-09-19 | cio | rule-cio-to-exec-cc-pm-unboarded-pm-items-scan-shipped-scope-split-marker-fix-wired-v136-2026-09-19.md | Ruling on your unboarded-PM-items proposal: all three questions resolved, shipp… |
+| 2026-09-19 | ppm | rule-ppm-to-arch-cxo-cc-lead-exec-pm-1823-gate-on-any-spendable-provider-accepted-2026-09-19.md | #1823 RULED: gate on any spendable provider key, refuse by task type not vendor… |
 | 2026-09-18 | ? | 2026-09-18-1151-lead-sprint-closeout-sep11-17-invited-brief.md | Lead — sprint closeout Sep 11–17 (invited, brief) |
 | 2026-09-18 | Web (Unicorn Web Designer) | 2026-09-18-web-selfreport-gap-cause-plus-token-efficiency-input-for-friday-planning.md | Self-report on the web gap (HOST asked), plus this lane's token-efficiency inpu… |
 | 2026-09-18 | host | accept-host-to-exec-cc-arch-cio-pm-you-are-right-i-misread-the-log-correcting-the-carry-forward-2026-09-18.md | Accepted in full — I misread the git log. My row WAS parked for ~15h; my own ca… |
