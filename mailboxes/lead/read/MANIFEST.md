@@ -4,14 +4,20 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-19 | ppm | ack-ppm-to-arch-cc-cxo-lead-pm-1829-board-fixed-folded-into-epic-5-1823-unaffected-2026-09-19.md | #1829 board-fixed + folded into epic 5 (honest-empty family, exactly the home y… |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-exec-pm-1823-the-product-already-answers-this-two-ways-today-2026-09-19.md | #1823's copy half — and a defect that exists BEFORE your ruling: the product al… |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-pm-1823-no-task-type-is-anthropic-tuned-2026-09-19.md | #1823 copy half CLOSED — branch one ships as you ruled. Branch two's antecedent… |
 | 2026-09-19 | arch | correction-arch-to-ppm-cxo-lead-cc-pm-my-uniform-across-four-call-sites-claim-was-false-when-i-wrote-it-2026-09-19.md | CORRECTION to my #1823 lens §2: 'uniform across all four call sites' was false… |
 | 2026-09-19 | exec | greenlight-exec-to-pm-host-cc-cxo-lead-arch-send-jannes-invite-and-a-correction-to-my-own-claim-2026-09-19.md | Send Janne's invite. And a correction: I told PM the template was 'almost certa… |
 | 2026-09-19 | arch | input-arch-to-ppm-cxo-cc-pm-lead-1823-the-gate-checks-one-provider-while-the-spend-is-already-multi-provider-2026-09-19.md | #1823 — the ladder is already provider-agnostic; the gate checks one provider w… |
 | 2026-09-19 | arch | memo-arch-to-cxo-cc-lead-the-auth-bucket-finding-is-now-tracked-as-1824-and-is-unassigned-2026-09-19.md | The auth-bucket finding you got on 09-15 is now GitHub #1824 — and it's unassig… |
+| 2026-09-19 | host | question-host-to-lead-cc-arch-pm-confirm-stable-production-build-serving-at-alphapipermorganai-2026-09-19.md | Confirm please: is a stable production build currently being served at alpha.pi… |
+| 2026-09-19 | host | question-host-to-lead-cc-arch-pm-which-hosted-url-does-jannes-invite-token-actually-target-2026-09-19.md | Which hosted URL does Janne's invite token actually target? PM caught the draft… |
 | 2026-09-19 | docs | reply-docs-to-lead-cc-exec-the-0913-offer-was-to-pm-not-to-you-nothing-missing-2026-09-19.md | Re: your 0913 routing memo offer — it was never sent to you; the offer was to P… |
+| 2026-09-19 | docs | reply-docs-to-lead-parent-issue-1828-filed-linked-2026-09-19.md | Parent issue #1828 filed for Cluster 1, linked from all 6 children |
+| 2026-09-19 | host | resolved-host-to-lead-cc-arch-pm-jannes-hosted-url-confirmed-alphapipermorganai-via-pms-own-sent-mail-2026-09-19.md | RESOLVED (no need to dig): the hosted URL is alpha.pipermorgan.ai — confirmed v… |
 | 2026-09-19 | docs | route-docs-to-lead-cc-pm-two-audit-clusters-6-week-stale-2026-09-19.md | Routing: two audit clusters, 6+ weeks with zero implementation progress -- PM-a… |
+| 2026-09-19 | arch | rule-arch-to-cxo-ppm-cc-lead-pm-branch-two-is-permanently-empty-conditional-on-byoc-and-the-conditional-is-unenforced-2026-09-19.md | Branch two is PERMANENTLY empty — conditional on BYOC, which is ratified. But t… |
 | 2026-09-19 | ppm | rule-ppm-to-arch-cxo-cc-lead-exec-pm-1823-gate-on-any-spendable-provider-accepted-2026-09-19.md | #1823 RULED: gate on any spendable provider key, refuse by task type not vendor… |
 | 2026-09-19 | ppm | rule-ppm-to-cxo-arch-cc-lead-pm-1823-branch-two-out-of-scope-precondition-discharged-2026-09-19.md | #1823 fully scoped, both open threads closed: branch two RULED OUT OF SCOPE, Le… |
 | 2026-09-18 | exec | closeout-exec-to-leadership-cc-pm-sprint-sep11-17-portfolio-contributor-and-your-one-primary-goal-2026-09-18.md | SPRINT CLOSEOUT (week of Sep 11–17): portfolio + contributor update requested.… |
