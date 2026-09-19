@@ -33,12 +33,12 @@ denominator.
 
 import argparse
 import json
-from pathlib import Path
-from datetime import datetime
-from zoneinfo import ZoneInfo
 import subprocess
 import sys
 from collections import Counter, defaultdict
+from datetime import datetime
+from pathlib import Path
+from zoneinfo import ZoneInfo
 
 PROJECT = "1"
 OWNER = "mediajunkie"
@@ -178,7 +178,6 @@ def unmilestoned_open():
 def milestone_of(item):
     ms = item.get("milestone")
     return ms.get("title") if isinstance(ms, dict) else ms
-
 
 
 # ---------------------------------------------------------------------------
