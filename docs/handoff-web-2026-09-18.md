@@ -24,7 +24,7 @@ easiest mistake to make on this seat.
 ## Cron
 
 - Expression: **`22 6,9,12,15,18,21 * * *`** (six fires/day, 06:22 → 21:22)
-- Job id as of this writing: **`027db348`**, armed 2026-09-18 06:30, expires **~2026-09-25**
+- Job id as of this writing: **`580a4989`**, re-armed 2026-09-18 21:24 at STOP (was `027db348`), expires **~2026-09-25**
 - Registry row: `dev/active/duty-cycle-registry.tsv`, line `web`
 
 Jobs are **session-only** — in-memory, never on disk, gone when the session exits, and recurring
@@ -33,23 +33,21 @@ does not exist**; re-arm and CronList-verify before trusting any row that says o
 
 ## What is genuinely in flight
 
-**Nothing breaks if nobody picks it up today.** All three open items are PM-gated or
-access-blocked, which is a real state and not a euphemism for postponed:
+**Nothing breaks if nobody picks it up.** The GitHub issue queue for this lane is **empty**; both
+remaining items are PM-gated or access-blocked, which is a real state and not a euphemism for
+postponed:
 
-1. **website#35** — admin composer "Restore local copy" can render blank. The structural fix
-   already shipped (`8edfc11`, `key={slug}` forcing a remount). It is closable the moment PM
-   answers whether the 08-25 incident involved tabs or back/forward navigation. Asked 09-12,
-   re-raised repeatedly, unanswered. **If PM has no recall, close it on the fix's merits and say
-   so** — do not keep it open indefinitely waiting for a memory.
-2. **Vercel usage Q1** — genuinely blocked: no `vercel` CLI, no auth token, no dashboard from this
+1. **Vercel usage Q1** — genuinely blocked: no `vercel` CLI, no auth token, no dashboard from this
    seat. Needs PM's warning text/screenshot or API credentials. Do not "investigate" this; you
    cannot.
-3. **`integration-reveals-all` workDate** — no dateline, no chatDate, nothing derivable. PM recall
+2. **`integration-reveals-all` workDate** — no dateline, no chatDate, nothing derivable. PM recall
    only.
 
 **Recently shipped, do not re-open**: the compose Source/Split/Preview toggle (`bb579b5`), the P0
 fix for the regression it caused (`45ab4a9`), the draft corruption repair (product `0ccb9314e`),
-and the jest test net (`d1dfc8b`, `npm test`, 4 assertions).
+the jest test net (`d1dfc8b` + `e3751f1`, `npm test`, **7** assertions), and **website#35**, closed
+2026-09-18 with test evidence — its one caveat is that the **multi-tab** variant is uncovered, so if
+a blank restore recurs, reopen and suspect tabs.
 
 ## Read these two files, in this order
 
@@ -93,8 +91,17 @@ Grepped raw HTML for `<img>` to verify a post's hero image, found zero, and near
 incident. A control against a known-good post showed the same zero — images aren't in the initial
 HTML on *any* post here. The method could not distinguish broken from normal.
 
+⚠️ **Then I did it again, hours after writing this section.** On 09-18 I grepped raw HTML for
+`<form` on `/try/beta`, got zero, and **published** a claim that the beta signup had been deleted —
+into the obs-pass doc PM uses for the walkthrough. The form is client-rendered and works fine. Worse:
+I had explicitly reasoned *"source alone would be the wrong layer"* and used that to justify `curl`
+**instead of** reading the source. **Invoking the layer rule is not satisfying it**, and a check that
+*feels* rigorous is the most effective thing there is at stopping you from looking further.
+
 **When a check returns "nothing found," run it against a known-good control before believing the
-nothing.** This is the single highest-value habit on this seat.
+nothing** — and on any client-rendered page, read the source or use a browser; raw HTML cannot see
+it. This is the single highest-value habit on this seat, and the fact that writing it down did not
+prevent the repeat is exactly why it is first among the ones to re-read.
 
 ### 4. Reading a snapshot taken early in a decline as a level
 

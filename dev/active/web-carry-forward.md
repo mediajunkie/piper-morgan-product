@@ -1,7 +1,7 @@
-# Web carry-forward — 2026-09-18 (active), cron ID last updated 2026-09-18 06:30
+# Web carry-forward — 2026-09-18 (active), cron ID last updated 2026-09-18 21:24
 
 **Session**: Amber / pipermorgan.ai, Opus 5 (since 09-14; Fable access ceiling) · cron
-`22 6,9,12,15,18,21 * * *` (job **`027db348`**, delete-then-create 2026-09-18 06:30 post-standdown,
+`22 6,9,12,15,18,21 * * *` (job **`580a4989`**, delete-then-create 2026-09-18 21:24 STOP,
 CronList-verified, expires ~2026-09-25) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 **Open — two items, both PM-gated or access-blocked; nothing unblocked:**

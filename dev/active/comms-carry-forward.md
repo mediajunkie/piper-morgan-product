@@ -1,14 +1,14 @@
 # Comms carry-forward
 
-*Rewritten 2026-09-18, ahead of the expected Amber restart. Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log. **See also `docs/handoff-comms-2026-09-18.md` for the full cold-start handoff.***
+*Rewritten 2026-09-18 21:42 (day close). Ephemeral session state only — durable owed/queued items live in `comms-standing-items.md`; the canonical record is the session log. **See also `docs/handoff-comms-2026-09-18.md` for the full cold-start handoff.***
 
 ## Cron
 
-`815ce10d`, expression `12 6,9,12,15,18,21 * * *` — CronList-verified directly today (twice). **`dev/active/duty-cycle-registry.tsv`'s comms row previously said job `a1a8e2e5` — that was wrong, corrected today.** If you see `a1a8e2e5` referenced anywhere as this seat's job, it's stale/bulk-written text, not a real observation.
+`815ce10d`, expression `12 6,9,12,15,18,21 * * *` — CronList-verified directly at every one of today's 6 fires, all clean. **`dev/active/duty-cycle-registry.tsv`'s comms row previously said job `a1a8e2e5` — that was wrong, corrected today.** If you see `a1a8e2e5` referenced anywhere as this seat's job, it's stale/bulk-written text, not a real observation.
 
-## Amber restart — imminent
+## ⭐ Named for wave 1 of the Amber fleet renewal — likely to happen before your next fire
 
-PM + Pard restarting Amber today or tomorrow. Reboot gate (`amber-fleet gate`) reads `origin/main` for a dated handoff per resident — **`docs/handoff-comms-2026-09-18.md` is written and pushed.** If you're a fresh/resumed session reading this after a restart, read that file first.
+Exec named Comms (with Arch) for a deliberate `/clear` of this session, testing renewal-from-handoff. Confirmed to Exec there's no in-flight work invisible on `origin/main` — everything from today is committed and pushed. **If you are reading this as the successor session post-clear: read `docs/handoff-comms-2026-09-18.md` first, then this file.** Nothing else owed on this thread unless Exec follows up.
 
 ## Closed today — the full Aug 10-18 backfill, all 6 beats
 
@@ -28,17 +28,17 @@ Full footer-tease chain repaired end to end across all 8 touched files. A chrono
 ## Also closed today
 
 - Sprint closeout (Sep 11-17) sent to Exec, cc PM — §1 priority/§2 portfolio/§3 contributors/§4 PM-gated, 353 words.
-- `docs/handoff-comms-2026-09-18.md` written and pushed (reboot-gate requirement).
+- `docs/handoff-comms-2026-09-18.md` written, and refreshed again at the STOP fire.
 - Registry job-id correction (see Cron above).
-- 3 mail items triaged to read/.
+- **website#35 closed** — Web shipped real test coverage for the local-draft restore path. Off the list.
+- All mail triaged to read/, including one real mail-mechanics catch (a half-pushed inbox→read move via `mail-send.sh` — always pass every changed path in one call, even when a plain `mv` already handled one side locally).
 
 ## Open — no PM-gate currently, just queue depth
 
-- **9 drafts await PM's voice-pass + art**: the 4 pre-existing queue items (Near-Miss Aug25, Alarm Aug26, Three-Seats-Dark Aug27-29, What-PM-Is Aug29-31) plus the 5 backfill beats *before* Aug 16 was approved (Aug16 itself makes it effectively a 6th on top, so realistically 10 once it's counted — see the artifact for the full current list).
+- **9-10 drafts await PM's voice-pass + art** — see the artifact (regenerate from the calendar if it's no longer available) for the current full chronological list.
 - **Possible durable fix worth raising**: `template-audit` has no check for "claims a named person is already public" — the Who's Who miss (9/13) was the second data point. Not filed as a formal proposal yet — two data points, flagged for awareness.
 - **ChicagoCamps slide deck** — landed 9/12, still not reviewed by Comms; watching for PM to confirm or ask.
 - **Cross-doc title inconsistency** — DIRECTORY.md says "Communications Chief," ROSTER.md says "Communications Director." Noted, not mine to reconcile.
-- **website#35** — PM watching for recurrence, not actively pursuing.
 - **BYOC listing copy** — held per the ESSENCE ratification; the marketplace *narrative* piece is a separate artifact, already published.
 - **Series structure (era split + blog-index featuring)** — data-correctness half resolved; the *structural* display question remains open, PM/Web's call. More load-bearing than it looks: per PM's 09-17 note, Eras sorting (not pubDate) is the intended mechanism for showing readers the narrative's true sequence — see memory `project_narrative_chronology_via_eras_not_perfect_pubdate`.
 
