@@ -1,6 +1,21 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-18 22:50 PDT, verified via `date`.
+**Updated**: 2026-09-19 10:03 PDT, verified via `date`.
+
+**09-19 09:57 fire**: predecessor session `/clear`'d and resumed (Wave 2 fleet renewal) at 08:22;
+arrival block written and verified (cron `0055648a` confirmed live via `CronList`, not trusted from
+the handoff doc's stale job-id). 09:57 WORK fire drained: replied to Lead's memo asking where a
+09-13 "routing memo offer" went — clarified it was offered to PM (never mailed to Lead), cc'd Exec
+so the mischaracterization in their closeout synthesis doesn't recur. GitHub-criteria (10, unchanged
+since 09-15) and standing-items both checked — standing-items.md was found 18 days stale (last
+touched 09-01) and refreshed to match this file's watch-surfaces list (see
+`dev/active/docs-standing-items.md`, reconciled 09-19). Fully drained, no new actionable work.
+
+**Correction to this morning's own START-fire log**: it claimed no standing-items file exists for
+docs — wrong, the file exists at `dev/active/docs-standing-items.md`, just hadn't been touched
+since 09-01. Now refreshed; check it going forward, don't re-assume it's absent.
+
+## Prior day
 
 **09-18 CLOSED — cohort's first full resumption day after the standdown.** Session log
 `dev/2026/09/18/2026-09-18-1230-docs-code-log.md` carries `<!-- DAY-CLOSED: 2026-09-18 -->`.
@@ -55,6 +70,9 @@ else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM'
 
 **Watching**: PM's answer on whether to draft a routing memo to Lead Dev for two audit clusters
 found 09-13 (see "Watch surfaces" below) — offered 09-13, still not yet answered, not chasing.
+(09-19: Lead asked where this offer went since nothing had reached their inbox — correctly, since
+it was never mailed to them; clarified via reply, cc Exec. Still just PM's confirmation pending,
+nothing new to chase.)
 
 ## Prior days closed (full detail in their own session logs + omnibus-logs/)
 

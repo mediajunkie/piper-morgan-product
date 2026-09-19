@@ -6,7 +6,9 @@ session-to-session state, read `dev/active/docs-carry-forward.md` first; it's th
 source and is rewritten every substantive fire.
 
 **Owner**: Documentation Management (Docs)
-**Last touched**: 2026-09-01 ~13:5x PT — B3 workstream closed (ratified + executed, see below).
+**Last touched**: 2026-09-19 ~09:57 PT — Watch surfaces reconciled against `docs-carry-forward.md`
+(the fresher source), which had drifted 18 days ahead of this file without a corresponding refresh
+here. No new action items found; this is a sync pass, not new work discovered.
 **Last full rewrite**: 2026-08-19 13:0x PT. The prior version (unrefreshed since 2026-05-27, with
 checkbox items dated through 06-15) had gone stale to the point of being misleading: 6 of its
 cited GitHub issues (#1058, #974, #972, #1127, #1128, #1206) were all CLOSED (verified live via
@@ -98,35 +100,44 @@ silently — flag at next PM engagement rather than resume unprompted.
 
 ## Watch surfaces (things owned by others, checked periodically — don't re-derive, don't re-chase)
 
+*Reconciled 2026-09-19 against `docs-carry-forward.md`'s "Watch surfaces" section (the fresher,
+continuously-updated source). Items below carry the carry-forward's own dates where they've moved
+since this file's last full rewrite; anything not re-confirmed there in the last few weeks is
+marked accordingly rather than silently dropped.*
+
 - [x] **BRIEFING-CURRENT-STATE engineering/CI/backlog staleness** — flagged 2026-08-17 (#1643),
-  escalated directly to Lead Dev 2026-08-24 (a 2nd, name-addressed flag after the first sat a
-  week), fixed same-day. Resolved, dropping from watch.
-- [ ] **`last_verified: "2026-06-19"` bulk-stamp cluster** — **Added**: 2026-07-30 (flagged;
-  entered this tracker 2026-08-19). **Escalated by name 2026-09-01**: still 20 of 38 on the stamp
-  (was 20/26 on 08-24 — zero movement in a week, denominator only grew), 31/38 = 82% stale overall,
-  crossed the 75% threshold with no progress. Mailed CIO by name (cohort-wide staleness-mechanism
-  owner, not a single-fix-mine item). Fixed my own two surfaces this pass (BRIEFING-ESSENTIAL-DOCS
-  re-verified, ROLE-PORTFOLIO-DOCS PDR-007 row corrected). Watch for CIO's response; don't re-chase
-  before next Monday audit.
-- [ ] **`universal-list-architecture-guide.md` duplicate** — **Added**: entered this tracker
-  2026-08-19; GH #1585 created 2026-08-10. Two paths, diverged content, Sept 2025 reorg artifact.
-  Confirmed via #1585 (2026-08-30 update) as a genuine judgment call, not a mechanical fix —
-  different detail levels, not a version-bump pair. Still unowned/unclaimed.
-- [ ] **#1644** — **Added**: entered this tracker 2026-08-19; GH #1644 created 2026-08-17. Full
-  v19 historical fold of roadmap.md still owed (PPM's lane). The header-date symptom was fixed
-  2026-08-24 (confirmed still correct, verified live 2026-08-30 when the issue description was
-  refreshed to reflect it); the underlying narrative content is still frozen at July 16 state.
-- [ ] **#1683** — **Added**: 2026-08-25, matches GH creation. 145 editorial-calendar rows
-  genuinely syndicated but `status`/`canonicalSite` never bumped (root cause: 2026-07-19 migration
-  used an unreliable selection field). Historical, not urgent. **Independently corroborated
-  2026-08-30** by Dispatch-PM via platform-verification (~150 rows, same shape, different method)
-  — comment added to the issue, disposition unchanged (deliberately not rushed). Needs a scripted
-  per-row day-of-week-routing reconstruction before any bulk fix — not something to attempt casually.
-- [ ] **Feature-guide 4-item PM click-through** — **Added**: entered this tracker 2026-08-19; PM
-  commitment cited 2026-08-16. PA's code-level verification is done; 4 items need a live browser
-  PM doesn't have on their Amber seat's normal path. PM said they'd take it directly (2026-08-16);
-  status of completion still unconfirmed as of 2026-08-25 — surface at next PM engagement, don't
-  chase.
+  escalated directly to Lead Dev 2026-08-24, fixed same-day. Resolved, dropping from watch.
+- [ ] **Time-handling audit cluster (#1493, closed) → 6 F-slice children** —
+  #1556/1574/1575/1576/1577/1588, filed 08-09/08-10, root cause "no per-user timezone exists
+  anywhere in the system." **New to this file 2026-09-19** (was tracked only in carry-forward since
+  09-13). Proposed to PM 09-13 as one project routed to Lead Dev; offer to draft the routing memo
+  still not confirmed by PM as of 09-19 — watching, not chasing. (09-19: Lead asked where this offer
+  went, since it was never mailed to them — clarified it was a PM-facing offer, not a Lead-facing
+  one; see `mailboxes/docs/sent/reply-docs-to-lead-cc-exec-the-0913-offer-...-2026-09-19.md`.)
+- [ ] **Three PM-directed audits, early August, zero follow-through** — #1499 (route-surface),
+  #1522 (false-trails), #1533 (principal-dropping). **New to this file 2026-09-19**, same
+  PM-answer-pending status as the cluster above.
+- [ ] **`last_verified` bulk-stamp cluster** — **superseded numbers**: this file's 09-01 figure
+  (20/38) is stale; carry-forward's 09-07 audit (#1725) read 24/38, unchanged from 09-03. Structural
+  fix now filed as **#1726**, CIO's lane — no longer a re-escalate-each-audit item. Check again at
+  the 09-21 Weekly Docs Audit.
+- [ ] **`universal-list-architecture-guide.md` duplicate** — GH #1585, two paths, diverged content,
+  Sept 2025 reorg artifact. Confirmed 2026-08-30 as a genuine judgment call, not mechanical. Still
+  unowned/unclaimed as of last check (2026-08-30) — not re-verified this pass, due for a live check.
+- [ ] **#1644** — full v19 historical fold of roadmap.md still owed (PPM's lane). Header-date
+  symptom fixed 2026-08-24; narrative content still frozen at July 16 state as of last check
+  (2026-08-30). Not mine to force.
+- [ ] **#1683** — 145 editorial-calendar rows genuinely syndicated but `status`/`canonicalSite`
+  never bumped (2026-07-19 migration root cause). Independently corroborated 2026-08-30 by
+  Dispatch-PM. Needs a scripted per-row day-of-week-routing reconstruction before any bulk fix.
+- [ ] **#1720/#1721** — filed by Docs (missing onboarding screenshots), already triaged by PPM into
+  FLYWHEEL — watch for progress. **New to this file 2026-09-19** (carried in carry-forward only).
+- [ ] **CXO's marker-provenance-field finding** — no observed/derived flag on the heartbeat marker,
+  found 2026-09-05. CIO's lane, not mine. Watch for the fix landing. **New to this file 2026-09-19.**
+- [ ] **Feature-guide 4-item PM click-through** — PM commitment cited 2026-08-16, PA's code-level
+  verification done 2026-08-19. **Status unknown — dropped out of carry-forward's watch list at
+  some point without an explicit resolution note.** Not re-verified this pass; flagging the gap
+  rather than assuming either "done" or "still open." Worth a direct PM check next engagement.
 
 ## Blocked items
 
