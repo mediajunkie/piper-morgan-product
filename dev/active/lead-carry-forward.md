@@ -1,8 +1,12 @@
 # Lead carry-forward — rewritten 2026-09-18 ~18:50 PT (freshness rule: full pass at START/STOP)
 
 ## Live state
-- **v115 LIVE**, health 200. Cron **4de17177** (17 6,9,12,15,18,21; armed 09-18 on resume,
-  expires ~09-25, **rotate ~09-23**). Registry row current.
+- **v116 LIVE on Fly**, health 200 (deployed 09-19 morning). ⚠️ alpha.pipermorgan.ai (the
+  droplet, the actual tester surface) likely runs a JULY cut — no droplet deploy since the
+  07-12 cutover found in any log; version-read + upgrade plan owed (HOST/PM thread 09-19).
+  Cron **82fbe692** (17 6,9,12,15,18,21; re-armed 09-19 ~15:00 after the epic-1 lane's
+  delete — same expression, id rotated from 4de17177; expires ~09-26, **rotate ~09-24**).
+  Registry row current (cadence unchanged; registry carries no id column).
 - **The server-key class is CLOSED on every provider leg** (#1807→#1810→#1814→#1815→#1816→
   #1809→#1819, all deployed): unbound raises at one shared spend decision across all three
   completion legs AND embeddings; Slack inbound binds the sender's own key via #1466; Gemini
