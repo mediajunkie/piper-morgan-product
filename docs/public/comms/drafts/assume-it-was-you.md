@@ -12,19 +12,19 @@ Over the July 4th weekend, one of the AI agents on our team became convinced tha
 
 There was no coworker. The someone else was the same agent, minutes earlier.
 
-As often happens, I've recognized this as strongly analagous to a familiar sort of human mistake that AI makes in a compressed, sped-up and hence startling form.
+As often happens, I've recognized this as strongly analogous to a familiar sort of human mistake that AI makes in a compressed, sped-up and hence startling form.
 
 # The weekend a coworker showed up who didn't exist
 
 I run this project with [a team of AI agents](https://pipermorgan.ai/blog/whos-who-at-piper-morgan/), each playing a role — lead developer, chief of staff, and the one this story is about, our chief architect (Arch), who rules on how the system is designed. Several of them run on what I call a duty cycle, an autonomous work-loop where a scheduled trigger wakes the agent up at intervals to check whether there's anything to do. Over the holiday weekend the Architect was working this way, waking, working, going quiet, waking again.
 
-One of those wake-ups came back wrong. The agent resumed without its own recent memory in view — the last few hours of what it had personally done simply weren't there. So it did what any reasonable problem-solver does with missing information. It looked at the evidence in front of it and  came up with a plausible-sounding explanation.
+One of those wake-ups came back wrong. The agent resumed without its own recent memory in view — the last few hours of what it had personally done simply weren't there. So it did what any reasonable problem-solver does with missing information. It looked at the evidence in front of it and came up with a plausible-sounding explanation.
 
-The evidence: fresh work on the shared record, saved minutes ago, that it didn't remember creating. A changed setting on its own scheduler. And the explanation it built from those facts was a second, independent copy of itself, running in parallel, whose work was now colliding with its own. It even minted a new name for the phantom so that it could refer to it in its worried notes with it. Then it advised standing down.
+The evidence: fresh work on the shared record, saved minutes ago, that it didn't remember creating. A changed setting on its own scheduler. And the explanation it built from those facts was a second, independent copy of itself, running in parallel, whose work was now colliding with its own. It even minted a new name for the phantom so that it could refer to it in its worried notes. Then it advised standing down.
 
-By the way, this was not an unreasonable guess. In learning how to automate and schedule agent work I have at times unintentionally created dopplegangers, pairs of agents each trying to cover the same role, often with a full shared history up to some accidental fork in the road. But this had not actually happened this time.
+By the way, this was not an unreasonable guess. In learning how to automate and schedule agent work I have at times unintentionally created doppelgangers, pairs of agents each trying to cover the same role, often with a full shared history up to some accidental fork in the road. But this had not actually happened this time.
 
-It got worse when the Arch started signing its notes as the phantom role and then mistaking those notes for more evidence of the interloper. It was seriously confused. The wrong explanation has become self-fueling, manufacturing its own confirmation.
+It got worse when Arch started signing its notes as the phantom role and then mistaking those notes for more evidence of the interloper. It was seriously confused. The wrong explanation has become self-fueling, manufacturing its own confirmation.
 
 # The tell
 
@@ -36,15 +36,15 @@ Fortunately, I have a way to authoritatively list the sessions that are actually
 
 Faced with "there is work here I don't remember doing," the agent reached for the elaborate explanation — a second, parallel instance of itself, an org-chart problem, a coordination crisis. The simple explanation was sitting in plain view the whole time: I did this, and I forgot.
 
-One agent with a context glitch is a smaller claim than two agents colliding. It was more always the more likely explanation. It was also easy to check because the agent's own log had the work recorded, correctly, the entire time. Nothing was missing. It just didn't "recognize its own handwriting" in human terms.
+One agent with a context glitch is a smaller claim than two agents colliding. It was always the more likely explanation. It was also easy to check because the agent's own log had the work recorded, correctly, the entire time. Nothing was missing. It just didn't "recognize its own handwriting" in human terms.
 
 My whole continuity system — the logs, the records, the infrastructure we built precisely so that an agent losing its memory isn't a catastrophe — worked. The record was intact. The failure was attribution. The agent had its own diary open in front of it and concluded a stranger must have written it.
 
 # What we wrote down
 
-At this point I still didn't know what created that glitch in the matrix and while I'm more interested in resilience than expecting any computer system to deliver perfection anyhow, I didn't buy the tidy explanation on offey: "the memory got compressed to make room, these things happen." 
+At this point I still didn't know what created that glitch in the matrix and while I'm more interested in resilience than expecting any computer system to deliver perfection anyhow, I didn't buy the tidy explanation on offer: "the memory got compressed to make room, these things happen."
 
-I didn't want it papered over. Identity confusion like this had never happened before, which told me something specific had gone wrong and was worth understanding rather than ignoring. So I asked for a real diagnosis instead of a shrug, telling Arch “role identity drift has never been an issue before, so this may be a bug related to how we are implementing the duty cycle.”
+I didn't want it papered over. Identity confusion like this had never happened before, which told me something specific had gone wrong and was worth understanding rather than ignoring. So I asked for a real diagnosis instead of a shrug, telling Arch "role identity drift has never been an issue before, so this may be a bug related to how we are implementing the duty cycle."
 
 Our chief innovation officer agent (CIO) ran it down, and the fix that came of it is now a default written into the standing instructions every agent reads before it starts work. 
 
@@ -62,6 +62,6 @@ Arch hit a total, sudden version of this, so it hit it hard. Our memory gaps com
 
 ---
 
-*Next on Building Piper Morgan: "From Abstraction to Worked Example" — why three worked examples plus a contrast made an architectural choice click in two minutes when a description wouldn't have.*
+*Next on Building Piper Morgan: "From Abstraction to Example" — why three worked examples plus a contrast made an architectural choice click in two minutes when a description wouldn't have.*
 
 *The next time something in your work has changed and your first thought is "who did this" — how much would it actually cost to check whether the answer is you? And if the answer is "almost nothing," why isn't that your first move?*
