@@ -1,3 +1,12 @@
+---
+type: adr
+number: 3
+title: "LLM-Based Intent Classification"
+status: "Proposed"
+valid_from: "2025-07-09"
+last_updated: "2026-08-29"
+---
+
 # ADR-003: LLM-Based Intent Classification
 
 **Date**: July 8, 2025

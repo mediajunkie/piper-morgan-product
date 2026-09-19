@@ -1,3 +1,12 @@
+---
+type: adr
+number: 1
+title: "MCP Integration Pilot"
+status: "Accepted"
+valid_from: "2025-07-09"
+last_updated: "2026-08-29"
+---
+
 # ADR-001: MCP Integration Pilot
 
 **Date**: July 3, 2025

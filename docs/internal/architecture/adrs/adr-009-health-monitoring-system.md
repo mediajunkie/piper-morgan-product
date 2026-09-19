@@ -1,3 +1,12 @@
+---
+type: adr
+number: 9
+title: "Health Monitoring System Design"
+status: "Accepted"
+valid_from: "2025-07-21"
+last_updated: "2026-08-29"
+---
+
 # ADR-009: Health Monitoring System Design
 
 **Date**: July 20, 2025

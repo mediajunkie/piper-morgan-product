@@ -1,3 +1,12 @@
+---
+type: adr
+number: 11
+title: "Test Infrastructure Hanging Fixes"
+status: "Accepted - 2025-07-30"
+valid_from: "2025-07-30"
+last_updated: "2026-08-29"
+---
+
 # ADR-011: Test Infrastructure Hanging Fixes
 
 ## Status

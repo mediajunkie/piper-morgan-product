@@ -1,3 +1,12 @@
+---
+type: adr
+number: 10
+title: "Configuration Access Patterns"
+status: "ACCEPTED - July 21, 2025"
+valid_from: "2025-07-21"
+last_updated: "2026-08-29"
+---
+
 # ADR-010: Configuration Access Patterns
 
 ## Status

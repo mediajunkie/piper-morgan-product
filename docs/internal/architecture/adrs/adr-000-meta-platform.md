@@ -1,3 +1,12 @@
+---
+type: adr
+number: 0
+title: "Piper Morgan as Meta-Platform Vision"
+status: "Proposed"
+valid_from: "2025-08-20"
+last_updated: "2026-08-29"
+---
+
 # ADR-000: Piper Morgan as Meta-Platform Vision
 
 **Status**: Proposed

@@ -1,3 +1,12 @@
+---
+type: adr
+number: 4
+title: "Action Humanizer Integration"
+status: "Accepted"
+valid_from: "2025-07-13"
+last_updated: "2026-08-29"
+---
+
 # ADR-004: Action Humanizer Integration
 
 ## Status

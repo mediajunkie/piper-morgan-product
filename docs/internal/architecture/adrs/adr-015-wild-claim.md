@@ -1,3 +1,12 @@
+---
+type: adr
+number: 15
+title: "Wild Claim Verification Protocol"
+status: "Proposed"
+valid_from: "2025-08-20"
+last_updated: "2026-08-29"
+---
+
 # ADR-015: Wild Claim Verification Protocol
 
 **Status**: Proposed
