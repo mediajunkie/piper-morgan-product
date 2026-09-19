@@ -1,3 +1,12 @@
+---
+type: adr
+number: 51
+title: "Unified User Session Context"
+status: "AMENDED"
+valid_from: "2026-01-13"
+last_updated: "2026-08-29"
+---
+
 # ADR-051: Unified User Session Context
 
 **Status**: AMENDED — Completed with scope-clarification (Phase 2/3, 2026-05-16)

@@ -1,3 +1,12 @@
+---
+type: adr
+number: 64
+title: "Project-Scope Search Index Architecture — Pre-1.0 Commitment for Surface 5"
+status: "v0.1"
+valid_from: "2026-05-16"
+last_updated: "2026-08-29"
+---
+
 # ADR-064: Project-Scope Search Index Architecture — Pre-1.0 Commitment for Surface 5
 
 **Status**: **v0.1 (drafted 2026-05-16)** — pre-1.0 Architect-lane ADR per MUX/UI Round 2 (Surface 5 user-facing search is post-1.0; this ADR commits to the index architecture before 1.0 so new surfaces have known indexing shape)

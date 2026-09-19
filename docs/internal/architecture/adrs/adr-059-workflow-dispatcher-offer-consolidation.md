@@ -1,3 +1,12 @@
+---
+type: adr
+number: 59
+title: "Workflow Dispatcher and Offer System Consolidation"
+status: "APPROVED"
+valid_from: "2026-03-19"
+last_updated: "2026-08-29"
+---
+
 # ADR-059: Workflow Dispatcher and Offer System Consolidation
 
 **Status**: APPROVED (2026-03-19, Chief Architect)

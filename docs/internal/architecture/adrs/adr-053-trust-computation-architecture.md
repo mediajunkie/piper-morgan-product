@@ -1,3 +1,12 @@
+---
+type: adr
+number: 53
+title: "Trust Computation Architecture"
+status: "ACCEPTED"
+valid_from: "2026-01-14"
+last_updated: "2026-08-29"
+---
+
 # ADR-053: Trust Computation Architecture
 
 **Status**: ACCEPTED

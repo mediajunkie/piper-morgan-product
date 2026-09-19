@@ -1,3 +1,12 @@
+---
+type: adr
+number: 56
+title: "Consciousness Expression Patterns"
+status: "Proposed"
+valid_from: "2026-01-21"
+last_updated: "2026-08-29"
+---
+
 # ADR-056: Consciousness Expression Patterns
 
 **Status**: Proposed — DORMANT since 2026-01 (status annotated 2026-08-29)

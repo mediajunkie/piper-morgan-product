@@ -1,3 +1,12 @@
+---
+type: adr
+number: 54
+title: "Cross-Session Memory Architecture"
+status: "APPROVED"
+valid_from: "2026-01-14"
+last_updated: "2026-08-29"
+---
+
 # ADR-054: Cross-Session Memory Architecture
 
 **Status**: APPROVED

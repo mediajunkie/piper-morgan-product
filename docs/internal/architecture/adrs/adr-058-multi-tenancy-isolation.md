@@ -1,3 +1,12 @@
+---
+type: adr
+number: 58
+title: "Multi-Tenancy Isolation Architecture"
+status: "APPROVED"
+valid_from: "2026-01-31"
+last_updated: "2026-08-29"
+---
+
 # ADR-058: Multi-Tenancy Isolation Architecture
 
 **Status**: APPROVED

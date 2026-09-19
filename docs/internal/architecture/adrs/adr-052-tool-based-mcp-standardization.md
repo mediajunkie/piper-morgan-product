@@ -1,3 +1,12 @@
+---
+type: adr
+number: 52
+title: "Standardize on Tool-Based MCP Implementation"
+status: "Accepted"
+valid_from: "2025-10-19"
+last_updated: "2026-08-29"
+---
+
 # ADR-052: Standardize on Tool-Based MCP Implementation
 
 **Status**: Accepted

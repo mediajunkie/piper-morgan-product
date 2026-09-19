@@ -1,3 +1,12 @@
+---
+type: adr
+number: 65
+title: "Canonical Context-Package Format (BYOC / Plugin-Packaged)"
+status: "v0.1"
+valid_from: "2026-06-06"
+last_updated: "2026-08-29"
+---
+
 # ADR-065: Canonical Context-Package Format (BYOC / Plugin-Packaged)
 
 **Status**: v0.1 (filed 2026-06-06) — Architect-authored; companion to PDR-005 v1.0 §Open question 6; in-house material per Klatch-pause Evolution-section convention (HOST 2026-05-24). Three-fire bursty-lane drafted (Fire 1 skeleton + plugin-packaging framing; Fire 2 §Decision D1-D6 substantive content; Fire 3 polish + §Consequences refinement + v0.1 final).

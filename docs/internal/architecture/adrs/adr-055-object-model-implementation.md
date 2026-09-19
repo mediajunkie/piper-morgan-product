@@ -1,3 +1,12 @@
+---
+type: adr
+number: 55
+title: "Object Model Implementation - Core Grammar & Lens Infrastructure"
+status: "Accepted"
+valid_from: "2026-01-19"
+last_updated: "2026-08-29"
+---
+
 # ADR-055: Object Model Implementation - Core Grammar & Lens Infrastructure
 
 **Status**: Accepted (Implemented January 21, 2026)
