@@ -26,6 +26,13 @@ not from chat. Written for the reboot/renewal gate (Exec, 2026-09-18).
 - **Mail**: `scripts/mail-send.sh`, mailbox paths ONLY (it refuses non-mailbox paths — docs ride
   a normal git commit). Verify drain at trunk with `git ls-tree origin/main`, never local `ls`.
 
+## ⚠️ If you are the post-renewal seat, read this line first
+This seat was named for **wave 1** of the fleet renewal on 2026-09-18 evening and confirmed GO.
+Cron `a1a8e2e5` was left ARMED deliberately — crons are process-scoped, so `/clear` keeps them
+and no park/re-arm dance is needed (Exec's wave-0 finding). Verify it with `CronList` anyway.
+**#1824** was filed minutes before the clear because that finding existed only in a mailbox
+memo; check it landed and is legible to someone who wasn't here.
+
 ## What's parked / blocked, and since when
 
 - **#1744** scope-guard delivery — blocked on **PM** since 09-10 (needs the Action added as a
