@@ -1,3 +1,12 @@
+---
+type: adr
+number: 57
+title: "CommandRegistry - Unified Command Discovery and Routing"
+status: "APPROVED"
+valid_from: "2026-01-24"
+last_updated: "2026-08-29"
+---
+
     # ADR-057: CommandRegistry - Unified Command Discovery and Routing
 
 **Status**: APPROVED (Phase 3 Implementation In Progress)

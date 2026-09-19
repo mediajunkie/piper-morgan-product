@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working session — 19 September</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#16181c; --card:#1e2127; --line:#32363e; --ink:#e8e8e8; --mute:#9aa0aa;
+            --red:#e8705f; --amber:#e0a94a; --grey:#7a8089; --green:#5cbf72; --link:#79aefb; }
+  }
+  body { font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:880px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; letter-spacing:-.01em; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1rem; }
+  .lede { margin:.75rem 0 1.5rem; padding:.85rem 1rem; background:var(--card);
+          border:1px solid var(--line); border-radius:6px; }
+  h2 { font-size:1.08rem; margin:2rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--amber);
+          border-radius:6px; padding:.85rem 1rem; margin:.7rem 0; }
+  .item.block { border-left-color:var(--red); }
+  .item.drift { border-left-color:var(--grey); }
+  .item.clear { border-left-color:var(--green); }
+  .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.35rem; }
+  .n { font-weight:700; font-size:1.03rem; }
+  .who { font-size:.78rem; color:var(--mute); }
+  .age { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.12rem .45rem;
+         border-radius:4px; background:#eee; color:#444; }
+  @media (prefers-color-scheme: dark) { .age { background:#2c3038; color:#c3c8d0; } }
+  .age.hot { background:#fbe6e2; color:var(--red); }
+  @media (prefers-color-scheme: dark) { .age.hot { background:#3a2523; color:#f0938a; } }
+  .age.new { background:#e4f0e6; color:var(--green); }
+  @media (prefers-color-scheme: dark) { .age.new { background:#1f3324; color:#7fd08f; } }
+  p { margin:.45rem 0; }
+  .ask { margin-top:.55rem; padding:.5rem .7rem; background:rgba(127,127,127,.09);
+         border-radius:4px; font-size:.93rem; }
+  code { font:.86em ui-monospace,SFMono-Regular,Menlo,monospace; background:rgba(127,127,127,.12);
+         padding:.08em .32em; border-radius:3px; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  table { border-collapse:collapse; width:100%; font-size:.88rem; margin:.5rem 0; }
+  th,td { text-align:left; padding:.35rem .5rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--mute); font-weight:500; font-size:.75rem; text-transform:uppercase; letter-spacing:.03em; }
+  .scroll { overflow-x:auto; }
+  .big { font-size:1.6rem; font-weight:700; }
+  footer { margin-top:2.5rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only">Your five agenda items in order, plus relay traffic and the cohort's state.</h2>
+  <h1>Working session — your running order</h1>
+  <p class="meta">Exec · <b>Saturday 19 September, 12:5x PDT</b> · built to your agenda, not my previous structure · live-state pass this hour</p>
+
+  <div class="lede">
+    <p><b>All eleven cohort seats are past the clear seam</b> — verified by arrival block, one per
+    role, not counted from memory. Wave 0 exec, wave 1 arch + comms, wave 2 the remaining eight.</p>
+    <p style="margin-bottom:0">⚠️ <b>Two caveats on that, both mine to state rather than let you
+    infer.</b> The <b>24-resident Amber fleet</b> is a different denominator and not mine to verify —
+    Janus counted 19/24 on the gate yesterday with <b>piper-open silent since 8/10</b>. And <b>past
+    the clear seam is not reboot-ready</b>: preregistration §4 says explicitly that waves passing does
+    not clear the reboot path, and the untested condition is the <i>absence</i> of a fresh handoff.</p>
+  </div>
+
+  <h2>1 · Janne's invite</h2>
+  <div class="item block">
+    <div class="top"><span class="n">Token is live and unused; you're checking with HOST on the draft</span>
+      <span class="who">HOST · Exec</span><span class="age hot">4 days ready</span></div>
+    <p><b>Status as of this hour:</b> token <code>ZVHWT5408X2NFA6P0D838B35</code>, <b>UNUSED</b>,
+    roster READY TO SEND since 09-15 10:15. <b>No draft email has appeared on trunk yet</b> — if you
+    asked HOST for one this morning, it hasn't landed as of 12:5x.</p>
+    <p><b>My green-light stands, and one piece of it is a correction to myself.</b> I told you the
+    template "pins 0.8.11.0, almost certainly stale." <b>It isn't</b> — <code>VERSION</code> reads
+    0.8.11.0 and the template says 0.8.11.0. I inferred from the shape of a number instead of reading
+    the file.</p>
+    <p><b>The blocker that caused both holds is genuinely gone.</b> #1814 — the wall a tester hits
+    following the invite's own first instruction — is closed and verified by <b>Lead's observed driven
+    flow</b>, against a bar HOST set and refused to lower. That evidence is the strongest in the chain
+    and it is not mine.</p>
+    <div class="ask">⚠️ <b>One claim I could not discharge, at its real layer:</b> the template promises
+    the wizard "validates your API keys before storing them." I verified the endpoint <b>exists</b> —
+    code presence, <b>not a behavioural test</b>. That's a copy question on CXO's surface, not a
+    tester-facing wall, and <b>not a reason to hold a four-day-old invite.</b></div>
+  </div>
+
+  <h2>2 · Vercel</h2>
+  <div class="item block">
+    <div class="top"><span class="n">My board was the unreliable source here — that hasn't changed</span>
+      <span class="who">Web · Pard</span><span class="age hot">10 days</span></div>
+    <p>🔴 <b>Repeating it because it's the thing to not act on:</b> "deleting old deployments is free
+    and sufficient" entered on the 09-13 board, <b>is sourced to nothing</b>, and contradicts both
+    Web's own carry-forward (open and access-blocked since 09-09) and Vercel's UI as you read it.</p>
+    <p><b>What is actually known: nothing</b> about which resource runs out, how close it is, or
+    whether the ceiling throttles or hard-stops. The 09-10 board said exactly that and was right; the
+    09-13 board replaced it with a confident sentence nobody could source, and I repeated it twice.</p>
+    <div class="ask"><b>The unblocking artifact is your Vercel email text.</b> Paste or forward it and
+    Web can answer properly. The token via Pard makes it permanently answerable rather than a one-off.
+    <b>On "what's recurring" I still don't know, and I'm not going to invent a second version of the
+    same mistake.</b></div>
+  </div>
+
+  <h2>3 · The workstream review for Sep 11–17</h2>
+  <div class="item">
+    <div class="top"><span class="n">What exists, what doesn't, and the question that's actually yours</span>
+      <span class="who">Exec · Comms</span><span class="age hot">open since 09-18</span></div>
+    <p><b>Exists:</b> my <b>sprint closeout synthesis</b>, all 10 of 10 roles, on trunk at
+    <code>dev/active/exec-sprint-closeout-synthesis-sep11-17-2026-09-18.md</code>. Nine on track; CXO
+    deliberately reported theirs as <i>not</i>.</p>
+    <p><b>Does not exist:</b> per-role <b>workstream-061 files</b> — only the 060 set is on disk,
+    dated 09-11 and covering Sep 4–10, which fed Ship #060. And <b>Ship #061 has no calendar row</b>,
+    which I flagged Thursday and which is still open.</p>
+    <p><b>So the honest framing:</b> the closeout collected what a workstream review collects — one
+    primary goal, progress, on-track, next steps, portfolio, contributors. <b>I don't know whether you
+    intend it as the substitute for this week's workstream reviews or as a separate thing</b>, and
+    I'd rather ask than assume, because the answer decides whether Ship #061 has an input.</p>
+    <div class="ask"><b>Two questions:</b> (a) does the closeout stand in for this week's workstream
+    reviews? (b) does Ship #061 exist, and on what date? If yes to both, Comms adds the calendar row
+    and drafts from the synthesis. <b>If the Ship is pausing, say so and I'll stop treating the
+    closeout as its input.</b></div>
+  </div>
+
+  <h2>4 · Plan for the sprint week that started yesterday</h2>
+  <div class="item">
+    <div class="top"><span class="n">Fri 18 Sep → Thu 24 Sep · live numbers this hour</span>
+      <span class="who">PPM · Lead</span><span class="age new">week 1 of 6</span></div>
+    <div class="scroll"><table>
+      <tr><th>not done</th><th>never started</th><th>in progress</th><th>in review</th><th>product backlog</th><th>done</th><th>to 30 Oct</th></tr>
+      <tr><td class="big">57</td><td class="big">32</td><td>3</td><td>6</td><td>16</td><td>1,179</td><td><b>41 days</b></td></tr>
+    </table></div>
+    <p><code>sprint-truth.py</code> run at compile. <b>Note the direction:</b> not-done went 56 → 57
+    while done went 1,176 → 1,179 — so three closed and four arrived. <b>Inflow is still outpacing
+    closure</b>, and Product Backlog grew 14 → 16. That's triage working correctly rather than items
+    landing in Sprint, but it means the 57 isn't shrinking yet.</p>
+    <p><b>32 of the 57 have not been started.</b> Any "nearly there" reading has to exclude those
+    explicitly — that's more than half the remaining work with nobody on it.</p>
+    <div class="ask"><b>You've asked Lead for a sprint update</b>, which is the right first input.
+    The ordering source is PPM's <code>dev/active/mvp-epic-order-2026-09-09.md</code> — <b>11 epics</b>
+    after epic 12 was retired and epic 2 reopened on your override. <b>The open shape question
+    (epics 9/10, item 6 below) feeds directly into this plan</b>, so it's worth taking that one first
+    rather than after.</div>
+  </div>
+
+  <h2>5 · Bets 001–003</h2>
+  <div class="item">
+    <div class="top"><span class="n">Three fields on one memo — not three documents</span>
+      <span class="who">Arch</span><span class="age hot">20 days</span></div>
+    <p>★ <b>Arch's re-sizing is the useful part.</b> Bet 001 needs three short answers:</p>
+    <div class="scroll"><table>
+      <tr><th>field</th><th>what's needed</th></tr>
+      <tr><td><b>The buyer</b></td><td>A named human or org wanting the enterprise tier. <b>"None named" is a complete and valid answer</b> — it converts the bet to labelled speculation on a short leash, or retires the milestone.</td></tr>
+      <tr><td><b>Cost box</b></td><td>Arch's recommendation is pre-written: zero build until the buyer field carries a name.</td></tr>
+      <tr><td><b>Kill-condition date</b></td><td>Arch suggests the beta retrospective.</td></tr>
+    </table></div>
+    <p>002 and 003 are the same shape; <b>003 is partly pre-filled from your own 08-29 answer</b> —
+    confirm-or-amend, not authorship.</p>
+    <p>⭐ <b>Arch's structural point outlasts the reminder:</b> <i>"'non-blocking' is exactly what let
+    them sit 20 days. A label that removes something from the critical path also removes it from
+    everyone's attention, and nothing in the system was going to surface them."</i></p>
+  </div>
+
+  <h2>6 · Still open, smaller — worth a minute each while we're here</h2>
+  <div class="item">
+    <p><b>Epics 9 and 10 — keep, or revert to a short list?</b> (PPM, 5 days.) 1–3 items each. <b>Feeds
+    item 4's plan</b>, so worth taking before the sprint plan rather than after.</p>
+    <p><b>PA's T1</b> — 16 days, no reply, republished as an Artifact to lower the friction. A reply
+    or "drop it" both close it.</p>
+    <p><b>Your six-item test round</b> — 12 days; you sequenced it behind a blog post on 09-07 and it
+    hasn't resurfaced. Run it or tell me to drop it.</p>
+    <p style="margin-bottom:0"><b>Q5's qualifier</b> — you ruled the headline ("idle is a legitimate
+    state"); Arch correctly kept the <i>denominator</i> question open rather than letting the headline
+    close it. No action, noted so it doesn't read as settled.</p>
+  </div>
+
+  <h2>📨 Relay — from the team to you</h2>
+  <div class="item clear">
+    <p>✅ <b>The model question is settled, and you were right.</b> Pard audited the tooling rather than
+    recalling it: <b>the renewal assigns no model anywhere</b> — a wave clear is <code>/clear</code>
+    into the seat's existing process, and the model is process state, so <b>preservation is structural,
+    not a feature to build.</b> The apparent dislocations are <b>guessed labels being exposed</b> by
+    successors who actually observe — HOST's header had the shape of the allocation memo copied
+    forward; their observation quoted a source. Comms' process banner read Sonnet 5 across its clear,
+    directly evidencing preservation. <b>No seat needs "fixing."</b></p>
+    <p><b>Two fixes adopted where the gaps really are</b>: arrival protocol now requires a model claim
+    to <b>quote its source or say "unsourced"</b>; and <code>amber-fleet snapshot</code> gains a model
+    column before B2 — <b>that</b> is the one place your detect-and-reuse needs building, for the
+    reboot's cold-fallback path where a failed resume has nothing to reuse from.</p>
+    <p>✅ <b>CIO's mailbox archival</b> — I ruled the rollout: self-serve per role, <b>wired to the
+    quarterly-maintenance workflow that already fires Oct 1</b>, so it isn't "ten roles remember."
+    One run then archives Q1+Q2+Q3 together and no agent touches another's mailbox.</p>
+    <p>✅ <b>Lead's usage-per-account capture is written.</b> ⚠️ <b>Two unknowns in it are yours, not
+    Lead's</b>: the seat→account mapping, and where the authoritative usage number is read.</p>
+    <p style="margin-bottom:0">✅ <b>CXO's <code>PIPER_FTUX_INTERVIEW</code></b> sits behind a PPM hold
+    from 09-03 — <b>PPM's to lift, not yours</b>, listed only so it isn't mistaken for a PM item.</p>
+  </div>
+
+  <h2>🟢 Cohort</h2>
+  <div class="item clear">
+    <p class="clean"><b>Eleven of eleven past the clear seam.</b> All running normally; today's fires
+    are landing on cadence. <b>Arch found a real gap because wave 1 asked</b> — a finding living only
+    in a mailbox memo, now #1824.</p>
+    <p class="clean" style="margin-bottom:0"><b>Your day, for the record:</b> today's post live and
+    syndicated; tomorrow's through proofread with a durable publish plan on Docs' 09-20 START fire;
+    Lead asked for a sprint update; HOST and Arch questions answered. <b>Nothing in this artifact is
+    waiting on any of that.</b></p>
+  </div>
+
+  <footer>
+    <b>Bottom line: send the invite, paste me the Vercel email, tell me whether Ship #061 exists, and
+    fill three blanks. The sprint plan wants the epics-9/10 answer first.</b><br><br>
+    <b>Live-state pass — what was checked, at which layer.</b> Clear-seam status from one arrival
+    block per role across <code>dev/2026/09/18–19/</code>, 11 of 11 — <b>not the 24-resident fleet,
+    which is Pard and Janus's denominator and which I did not check.</b> Sprint line from
+    <code>sprint-truth.py</code> at compile. Workstream/Ship status from <code>ls</code> on the
+    workstream files and a count of Ship #061 rows in the calendar — <b>0 rows, 0 files.</b> Invite
+    status from the roster in your own checkout, read-only. Model answer quoted from Pard's audit,
+    <b>their evidence not mine.</b><br><br>
+    <b>Known gap, unchanged:</b> your rulings made in conversation still have no durable home. I
+    started using <code>decisions.log</code> for it yesterday; that's a habit, not yet a mechanism.
+  </footer>
+</div>
+</body>
+</html>

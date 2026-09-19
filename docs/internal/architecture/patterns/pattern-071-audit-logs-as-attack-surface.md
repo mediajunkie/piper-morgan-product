@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "071"
+title: "Audit Logs as Attack Surface"
+status: "**Emerging** — Filed 2026-05-15 by Lead Developer per CIO disposition (May 15) following Architect's observation during #1017 Phase 1 ratification + Lead Dev's methodology memo to CIO. Slot 071 allocated after 12l pre-filing slot-availability check. Sibling-of-Pattern-064 framing co-signed by CIO (\"dark twin of Alive Scaffolding\" — same skeletal shape covering a different load-bearing problem; distinct slots tracking filing chronology rather than taxonomic adjacency). Promotion to Proven contingent on **no exceptions surfacing in 4-6 weeks of cohort exposure** — i.e., does the hash-only-as-only-allowed-shape discipline hold up under all audit-log uses, or do compliance-required surfaces emerge where raw-content is externally mandated and an explicit exception path is needed."
+valid_from: "2026-05-15"
+last_updated: "2026-08-29"
+---
+
 # Pattern-071: Audit Logs as Attack Surface
 
 ## Status

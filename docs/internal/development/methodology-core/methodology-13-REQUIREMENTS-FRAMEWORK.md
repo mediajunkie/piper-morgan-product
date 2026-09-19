@@ -1,3 +1,10 @@
+---
+type: methodology
+title: TDD and Domain Authority Requirements
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # TDD and Domain Authority Requirements
 
 ## Domain Authority Principle

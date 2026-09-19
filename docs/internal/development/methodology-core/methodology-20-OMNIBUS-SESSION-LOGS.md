@@ -1,3 +1,10 @@
+---
+type: methodology
+title: "Methodology 20: Omnibus Session Log Creation"
+valid_from: "2025-09-21"
+last_updated: "2026-07-29"
+---
+
 # Methodology 20: Omnibus Session Log Creation
 *Living document - Last updated: March 21, 2026*
 

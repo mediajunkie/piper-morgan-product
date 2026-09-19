@@ -1,3 +1,12 @@
+---
+type: adr
+number: 37
+title: "Test-Driven Locking Strategy"
+status: "Accepted"
+valid_from: "2025-09-26"
+last_updated: "2026-08-29"
+---
+
 # ADR-037: Test-Driven Locking Strategy
 
 **Status**: Accepted

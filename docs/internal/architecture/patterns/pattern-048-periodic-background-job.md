@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "048"
+title: "Periodic Background Job"
+status: "Unknown"
+valid_from: "2026-01-10"
+last_updated: "2026-08-29"
+---
+
 # Pattern-048: Periodic Background Job
 
 **Status**: Proven

@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "036"
+title: "Signal Convergence for Breakthrough Detection"
+status: "Unknown"
+valid_from: "2025-11-04"
+last_updated: "2026-08-29"
+---
+
 # Pattern-036: Signal Convergence for Breakthrough Detection
 
 **Category**: Development & Process Patterns (META-PATTERN)

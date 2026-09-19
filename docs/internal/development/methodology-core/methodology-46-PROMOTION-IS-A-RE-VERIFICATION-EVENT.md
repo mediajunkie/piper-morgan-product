@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Promotion Is a Re-Verification Event — The Durable Copy Needs a Named Source
+valid_from: "2026-07-30"
+last_updated: "2026-08-04"
+---
+
 # Promotion Is a Re-Verification Event — The Durable Copy Needs a Named Source
 
 **Status**: **EMERGING.** Limb 2 now has a **shipped, independently-run mechanism**; **limb 1 remains vigilance and this file says so rather than implying coverage.** HOST's hold (*"I don't want to file it as prose-only"*) is **discharged**. Numbering and corpus placement remain CIO's.

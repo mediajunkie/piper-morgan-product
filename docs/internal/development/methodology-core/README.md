@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Methodology Core Index
+valid_from: "2025-09-21"
+last_updated: "2026-06-11"
+---
+
 # Methodology Core Index
 
 > **🧭 Complete Navigation**: [INDEX.md](INDEX.md) - Full methodology index with quick decision tree

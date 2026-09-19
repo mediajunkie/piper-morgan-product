@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Orchestration Testing Methodology
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # Orchestration Testing Methodology
 
 ## Overview

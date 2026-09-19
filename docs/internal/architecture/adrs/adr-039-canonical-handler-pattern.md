@@ -1,3 +1,12 @@
+---
+type: adr
+number: 39
+title: "Canonical Handler Fast-Path Pattern"
+status: "Approved & Implemented"
+valid_from: "2025-10-07"
+last_updated: "2026-08-29"
+---
+
 # ADR-039: Canonical Handler Fast-Path Pattern
 
 ## Status

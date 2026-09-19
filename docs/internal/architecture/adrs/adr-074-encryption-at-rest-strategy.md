@@ -1,3 +1,12 @@
+---
+type: adr
+number: 74
+title: "Encryption at Rest Strategy"
+status: "ACCEPTED"
+valid_from: "2026-07-06"
+last_updated: "2026-08-29"
+---
+
 # ADR-074: Encryption at Rest Strategy
 
 **Status**: ACCEPTED (documenting already-shipped work) — written 2026-07-05 (Lead Dev) as part of #358's closure, retroactively recording the design + decisions behind work implemented 2026-06-20 and live-verified on alpha 2026-06-25. No new decision is made here; this is the durable record #358 asked for.

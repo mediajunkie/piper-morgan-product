@@ -1,3 +1,12 @@
+---
+type: adr
+number: 42
+title: "Mobile Strategy - Progressive Enhancement"
+status: "Accepted"
+valid_from: "2025-11-20"
+last_updated: "2026-08-29"
+---
+
 # ADR-042: Mobile Strategy - Progressive Enhancement
 
 ## Status

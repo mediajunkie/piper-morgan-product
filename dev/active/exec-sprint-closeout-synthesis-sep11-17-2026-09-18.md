@@ -111,9 +111,16 @@ terms, and it is the mechanism behind most of this week's routing misses.
 - **Production observation** — CXO reports three separate times this week their work ended at
   *"nobody can see this in prod."* Worth watching as a pattern, not an incident.
 - **Arch's epic-6 provenance threading** — awaiting a board turn, correctly.
-- **Lead's usage-per-account capture** owed to Dispatch — taken 09-15, nothing written, and Lead
-  names it as theirs rather than blocked.
-- **Docs' routing-memo offer to Lead** from 09-13 — still unanswered, not being chased.
+- ~~**Lead's usage-per-account capture** owed to Dispatch — taken 09-15, nothing written~~ →
+  ✅ **CLEARED 2026-09-19**: written (`dev/active/usage-per-account-capture-2026-09-19.md`), Dispatch
+  copy dropped, and the one Dispatch-answerable question called out. Shape: append-only daily TSV per
+  account, **written from OUTSIDE the seat fleet** — a ceiling-refused seat cannot self-report, the
+  same watcher-outside-the-frozen-set argument as the freeze-watchdog. **Two unknowns are PM's, not
+  Lead's**: the seat→account mapping, and where the authoritative number is read.
+- ~~**Docs' routing-memo offer to Lead** from 09-13 — still unanswered~~ → ⚠️ **I had the recipient
+  wrong. Docs corrected it 2026-09-19: the 09-13 offer was to PM, not to Lead, and nothing is
+  missing.** My row implied Lead was sitting on something they were never sent. Corrected here
+  rather than left to stand, since the synthesis is the artifact PM reads.
 - **Two days of the window** — the standdown and the account ceiling before it. Real, and it cost PA
   and CXO most of their week.
 

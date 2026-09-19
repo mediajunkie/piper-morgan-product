@@ -1,3 +1,12 @@
+---
+type: adr
+number: 22
+title: "Autonomy Experimentation"
+status: "Accepted"
+valid_from: "2025-08-20"
+last_updated: "2026-08-29"
+---
+
 # ADR-022: Autonomy Experimentation
 
 **Date**: August 17, 2025

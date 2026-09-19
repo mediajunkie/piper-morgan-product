@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "060"
+title: "Cascade Investigation"
+status: "**Proven** — demonstrated in #745, #771 (promoted 2026-06-17, instances verified)"
+valid_from: "2026-02-06"
+last_updated: "2026-08-29"
+---
+
 # Pattern-060: Cascade Investigation
 
 ## Status

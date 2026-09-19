@@ -1,3 +1,10 @@
+---
+type: methodology
+title: A False Claim in a Durable Doc Is a Lens, Not Just an Error
+valid_from: "2026-09-13"
+last_updated: "2026-09-13"
+---
+
 # A False Claim in a Durable Doc Is a Lens, Not Just an Error
 
 **Status**: Emerging (one clean instance, self-corrected by its own author within four days;

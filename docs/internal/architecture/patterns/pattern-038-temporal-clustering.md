@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "038"
+title: "Temporal Clustering for Coordination Analysis"
+status: "Unknown"
+valid_from: "2025-11-04"
+last_updated: "2026-08-29"
+---
+
 # Pattern-038: Temporal Clustering for Coordination Analysis
 
 **Category**: Development & Process Patterns (META-PATTERN)

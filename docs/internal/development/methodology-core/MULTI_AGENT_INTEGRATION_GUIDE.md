@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Multi-Agent Coordinator Integration Guide
+valid_from: "2025-09-21"
+last_updated: "2026-09-01"
+---
+
 # Multi-Agent Coordinator Integration Guide
 
 > 🔴 **HISTORICAL — the whole subsystem this guide teaches is deleted (2026-09-01 banner, supersedes

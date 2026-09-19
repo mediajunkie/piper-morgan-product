@@ -1,3 +1,12 @@
+---
+type: adr
+number: 63
+title: "User-Facing Audit Envelope Read Surface — ADR-061 Companion (Four-Element READ-Side Principle)"
+status: "v0.1"
+valid_from: "2026-05-16"
+last_updated: "2026-08-29"
+---
+
 # ADR-063: User-Facing Audit Envelope Read Surface — ADR-061 Companion (Four-Element READ-Side Principle)
 
 **Status**: **v0.1 (drafted 2026-05-16)** — pairs with Surface 7 MUX doc (CXO + Comms lane); CEO ratification of paired-deliverable approach received 2026-05-16 via MUX/UI Round 2 ratification (Architect decision walkthrough Item 2)

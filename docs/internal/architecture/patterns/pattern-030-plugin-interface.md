@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "030"
+title: "Plugin Interface"
+status: "**Emerging** — partially implemented (GitHub integration + the piper-morgan plugin surface); refreshed 2026-06-17 (was \"Experimental, June 3 vision\")"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern-030: Plugin Interface
 
 ## Status

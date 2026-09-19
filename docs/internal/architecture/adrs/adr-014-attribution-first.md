@@ -1,3 +1,12 @@
+---
+type: adr
+number: 14
+title: "Attribution-First Development"
+status: "Proposed"
+valid_from: "2025-08-20"
+last_updated: "2026-08-29"
+---
+
 # ADR-014: Attribution-First Development
 
 **Status**: Proposed

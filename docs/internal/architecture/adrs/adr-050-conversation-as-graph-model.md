@@ -1,3 +1,12 @@
+---
+type: adr
+number: 50
+title: "Conversation-as-Graph Model"
+status: "Accepted"
+valid_from: "2026-01-14"
+last_updated: "2026-08-29"
+---
+
 # ADR-050: Conversation-as-Graph Model
 
 **Status**: Accepted

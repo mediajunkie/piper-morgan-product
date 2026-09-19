@@ -1,3 +1,12 @@
+---
+type: adr
+number: 5
+title: "Eliminate Dual Repository Implementations via Pattern #1 Migration"
+status: "Accepted"
+valid_from: "2025-07-14"
+last_updated: "2026-08-29"
+---
+
 # ADR-005: Eliminate Dual Repository Implementations via Pattern #1 Migration
 
 **Date**: July 14, 2025

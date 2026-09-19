@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Name the Layer — We Verify the Proxy Nearest to Hand, Not the Claim
+valid_from: "2026-07-25"
+last_updated: "2026-07-25"
+---
+
 # Name the Layer — We Verify the Proxy Nearest to Hand, Not the Claim
 
 **Status**: Emerging (5 instances in one day across 2 roles — clears the methodology-29 formation threshold; Proven awaits evidence that naming it reduces recurrence)

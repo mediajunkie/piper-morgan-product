@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "022"
+title: "MCP+Spatial Intelligence Integration Pattern"
+status: "**Proven**"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern-022: MCP+Spatial Intelligence Integration Pattern
 
 ## Status

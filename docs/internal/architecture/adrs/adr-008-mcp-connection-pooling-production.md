@@ -1,3 +1,12 @@
+---
+type: adr
+number: 8
+title: "MCP Connection Pooling Strategy for Production"
+status: "Accepted"
+valid_from: "2025-07-21"
+last_updated: "2026-08-29"
+---
+
 # ADR-008: MCP Connection Pooling Strategy for Production
 
 **Date**: July 20, 2025

@@ -1,3 +1,12 @@
+---
+type: adr
+number: 73
+title: "No Destructive Git in PM's Main Checkout Working Tree"
+status: "ACCEPTED"
+valid_from: "2026-06-27"
+last_updated: "2026-08-29"
+---
+
 # ADR-073: No Destructive Git in PM's Main Checkout Working Tree
 
 **Status**: ACCEPTED — PM-approved 2026-06-27. The operational rule has been in force via the CLAUDE.md ⚠️ HARD RULE callout since 2026-06-21 (`6d1292d09`); this ADR is the formal decision record + rationale for the archive.

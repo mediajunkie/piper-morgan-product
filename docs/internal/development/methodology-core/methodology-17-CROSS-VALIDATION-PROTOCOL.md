@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Cross-Validation Protocol
+valid_from: "2025-09-21"
+last_updated: "2026-05-18"
+---
+
 # Cross-Validation Protocol
 **Version**: 1.0
 **Date**: September 4, 2025

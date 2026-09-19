@@ -1,6 +1,70 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-19 10:03 PDT, verified via `date`.
+**Updated**: 2026-09-19 12:46 PDT, verified via `date`.
+
+## ⚠️ TOP-OF-QUEUE TOMORROW (09-20): publish "From Abstraction to Example" — PM-directed, do NOT do this today
+
+PM's explicit instruction (2026-09-19, in-conversation): proofread today, publish is deferred to
+**tomorrow morning's first START fire (09-20)**, so PM can handle crossposting once they're up.
+**This is a real, PM-named trigger for the deferral (per CLAUDE.md's "no rush is not a trigger"
+rule) — not a discretionary hold.** Do not publish today even if idle with nothing else to do.
+
+**Proofread already complete and independently verified this session (09-19 ~12:46 PM)** — do not
+re-proofread from scratch tomorrow unless something changed overnight (re-sync and spot-check
+before publishing regardless, per the mid-pipeline re-sync discipline in `publish-to-blog` v0.25):
+- Ran my own full 16-check template-audit independently (not just trusting Comms' memo) — 16/16
+  pass, matches Comms' own count exactly (word count 1,739, identical both ways — confirms same
+  synced file).
+- Fact-checked the harassment worked-example content against BOTH the original session log
+  (`dev/2026/04/22/2026-04-22-1645-lead-code-opus-log.md:224-229`) and the published sibling post
+  (`docs/public/comms/drafts/published/the-voice-of-a-denial.md:49-55`) — identical user input,
+  identical audit `explanation` string, matching predicted output. Real content, not invented.
+- Footer tease verified against calendar: correctly teases "The Near-Miss and the Missing Key"
+  (next non-Ship post, pubDate 09-22).
+- Calendar row confirmed `status: ready-for-docs`, `pubDate: 2026-09-20`, frontmatter complete.
+
+**Publish parameters, pre-derived so tomorrow's execution has zero ambiguity left to resolve**:
+- Draft: `docs/public/comms/drafts/from-abstraction-to-worked-example.md` (filename intentionally
+  NOT renamed — title inside is already "From Abstraction to Example"; `--slug` below is explicit)
+- Image: `docs/public/comms/drafts/from-abstraction-to-worked-example-pattern-makers.png`
+- `--slug from-abstraction-to-example` (matches current title, not the legacy filename)
+- `--category insight`
+- `--work-date 2026-04-22` (matches both the draft's own dateline AND the calendar's `workDate`
+  field — confirmed they agree, per the mandatory pre-publish check)
+- `--cluster the-mechanism` (derived from nearby `blog-metadata.csv` rows by workDate this
+  session — 04-22 itself already has two other posts both tagged `the-mechanism`: "The Log That
+  Fact-Checked Itself" and "The Voice of a Denial")
+
+**Tomorrow's sequence** (same as today's — `publish-to-blog` skill, full procedure, not shortcuts
+just because the params are pre-filled): re-sync BOTH worktrees first (mid-pipeline re-sync rule
+applies even though this is a fresh-fire sync, not literally mid-pipeline — the params above are
+~18h old by the time they're used); re-verify the calendar row hasn't changed; re-run the two
+pre-flight checks (file existence, two-copy diff) fresh; dry-run; real publish; website commit;
+calendar update (status→published, blogURL/blogPath, **canonicalSite stays EMPTY** — same v1.5
+correction as today, this is blog-first not cross-post); live content-verify (not status code);
+archive draft+image; **then send PM a short message that it's live**, so PM can crosspost when
+they're up — this is the whole point of doing it first thing, per PM's stated goal of getting a day
+ahead so morning publishing is less stressful.
+
+**After publishing, this whole section should be deleted from carry-forward** — it's a one-shot
+plan, not a standing note.
+
+**12:40 PM — YAML-frontmatter upgrade (#1826) closed, all 230 files done.** PM confirmed priority
+at direct engagement (the exact "flag at next PM engagement" trigger the item had been carrying
+since 08-31). Filed #1826 with live counts, dispatched 3 background agents (isolated worktrees),
+independently re-verified all three corpora myself against `origin/main` before closing — didn't
+trust either subagent's self-report. `.serena/memories` (~29 files) deliberately left out of scope,
+same as the original directive intended. `dev/active/docs-standing-items.md` updated to DONE.
+
+**12:00 PM — "Assume It Was You" published.** PM handed off directly ("ready for your
+proofreading and publishing"). Full pipeline run: template-audit 16/16, dry-run, real publish
+(hashId `bb47f451fe5c`, `/blog/assume-it-was-you`), calendar updated (`canonicalSite` correctly
+left empty — that's cross-post-only, not blog-first), live content-verified (not just status
+code), draft archived. **Owed next**: when PM provides Medium/LinkedIn URLs, update calendar
+(mediumURL/linkedinURL/liPubDate, status→`distributed`, canonicalSite→`distributed`) per Step 8.
+**Mid-pipeline re-sync near-miss, fixed durably**: PM mentioned an edit mid-publish; re-syncing
+surfaced real state (calendar already at `ready-for-docs`, tomorrow's title changed). Added an
+explicit mid-pipeline re-sync trigger to `publish-to-blog` SKILL.md (v0.25), per PM's direct ask.
 
 **09-19 09:57 fire**: predecessor session `/clear`'d and resumed (Wave 2 fleet renewal) at 08:22;
 arrival block written and verified (cron `0055648a` confirmed live via `CronList`, not trusted from
@@ -54,10 +118,12 @@ but only one prog log file exists for 09-18. Read it directly — it legitimatel
 sequential same-day sessions inside one file (`## Session 2`, `## Session 3`), per the project's
 one-log-per-role-per-day convention. Wrote one activity-log row for prog, not three.
 
-**PM is reconsidering automated crossposting** given the cost-to-value ratio ("the old electric
-can opener thing... good to sunset some ideas") — surfaced 09-17, not yet a decision, just a real
-signal worth watching. If PM raises this again, don't assume Dispatch-PM syndication requests are
-still the default path without checking first.
+**DECIDED 2026-09-19 12:04 PM (was "watching" as of 09-17): PM will do Medium/LinkedIn crossposts
+manually, not via Dispatch-PM automation** — "it is faster and... extremely token-inefficient"
+despite the experiment proving the concept. Logged in `decisions.log`. **Practical effect**: don't
+route future syndication asks to Dispatch-PM by default; when PM provides syndication URLs after
+a publish, that's a manual cross-post to record (mediumURL/linkedinURL/status→distributed), not a
+delegated pipeline step to track.
 
 **Third work-queue source** (PM's v1.33 ruling, established 09-13): Docs's GitHub-criteria line is
 `gh issue list --search "label:documentation" --state open --limit 50` — open each result, don't

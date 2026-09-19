@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Chokepoint vs. Bolt-On — Attach the Obligation to Something That Can't Be Skipped
+valid_from: "2026-09-08"
+last_updated: "2026-09-12"
+---
+
 # Chokepoint vs. Bolt-On — Attach the Obligation to Something That Can't Be Skipped
 
 **Status**: Proven-by-use, filed late. **This is not a new claim** — it has shaped at least four

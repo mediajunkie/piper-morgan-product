@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Coverage-Audit Gate for Refactor Deltas
+valid_from: "2026-05-27"
+last_updated: "2026-08-29"
+---
+
 # Coverage-Audit Gate for Refactor Deltas
 
 ## Overview

@@ -1,3 +1,12 @@
+---
+type: adr
+number: 71
+title: "User-Auth Anchoring Pattern for Content Stores"
+status: "v0.1"
+valid_from: "2026-06-15"
+last_updated: "2026-08-29"
+---
+
 # ADR-071: User-Auth Anchoring Pattern for Content Stores
 
 **Status**: v0.1 (Lead-authored 2026-06-15) — **RATIFIED by Arch 2026-06-15** ("clean fold; every guidance point folded faithfully"; 2 minor cross-refs folded below). Grounded in the #1241 content-anchoring audit (PM-directed systemic flag 2026-06-14; Arch D1 ruling + D1–D7 grounding-confirm 2026-06-15). Companion to **ADR-058** (Multi-Tenancy Isolation) at the *content* altitude — same make-impossible-by-construction shape, one layer down from credentials.

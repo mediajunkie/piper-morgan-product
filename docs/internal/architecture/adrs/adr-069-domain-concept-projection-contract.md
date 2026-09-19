@@ -1,3 +1,12 @@
+---
+type: adr
+number: 69
+title: "Domain Concept Projection Contract — System of Record vs. In-Process Working State"
+status: "v0.2"
+valid_from: "2026-06-12"
+last_updated: "2026-08-29"
+---
+
 # ADR-069: Domain Concept Projection Contract — System of Record vs. In-Process Working State
 
 **Status**: **v0.2 (RATIFIED 2026-06-12)** — Lead-Dev-authored from the #1207 implementation; Architect ratified the carve (memo ~19:35 "strong concur") and the artifact (memo ~22:30 "v0.1 clean, ratified"). v0.2 folds in Arch's three optional polish edits (D6 Intent-shape sketch · Source-incidents tracer · D5 negative-pattern made code-explicit).

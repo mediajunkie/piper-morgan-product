@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Methodology Integration Points
+valid_from: "2025-09-21"
+last_updated: "2026-08-12"
+---
+
 # Methodology Integration Points
 
 > ⚠️ **Legacy planning doc — numbering resolved 2026-08-12 (CIO, #1584 Part C, Docs-flagged).** This file

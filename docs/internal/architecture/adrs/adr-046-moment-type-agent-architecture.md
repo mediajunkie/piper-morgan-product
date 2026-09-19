@@ -1,3 +1,12 @@
+---
+type: adr
+number: 46
+title: "Moment.type Agent Architecture"
+status: "Proposed"
+valid_from: "2025-12-28"
+last_updated: "2026-08-29"
+---
+
 # ADR-046: Moment.type Agent Architecture
 
 **Status**: Proposed — DORMANT since 2025-12 (status annotated 2026-08-29)

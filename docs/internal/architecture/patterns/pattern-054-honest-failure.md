@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "054"
+title: "Honest Failure with Suggestion"
+status: "Unknown"
+valid_from: "2026-01-22"
+last_updated: "2026-08-29"
+---
+
 # Pattern-054: Honest Failure with Suggestion
 
 **Status**: Proven

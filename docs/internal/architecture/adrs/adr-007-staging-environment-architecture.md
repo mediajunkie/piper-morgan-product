@@ -1,3 +1,12 @@
+---
+type: adr
+number: 7
+title: "Staging Environment Architecture with Docker Compose"
+status: "Accepted"
+valid_from: "2025-07-21"
+last_updated: "2026-08-29"
+---
+
 # ADR-007: Staging Environment Architecture with Docker Compose
 
 **Date**: July 20, 2025

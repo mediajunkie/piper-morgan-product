@@ -1,3 +1,12 @@
+---
+type: adr
+number: 19
+title: "Full Orchestration Commitment"
+status: "Superseded"
+valid_from: "2025-08-20"
+last_updated: "2026-08-29"
+---
+
 # ADR-019: Full Orchestration Commitment
 
 **Date**: August 17, 2025

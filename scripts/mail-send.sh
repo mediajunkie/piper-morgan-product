@@ -175,6 +175,13 @@ while :; do
                 mailboxes/*/read/*)
                     role="${f#mailboxes/}"; role="${role%%/*}"
                     name="${f#mailboxes/*/read/}"
+                    # #1825 (CXO, 2026-09-19): MANIFEST.md is a per-directory INDEX, not a movable
+                    # memo — it legitimately and permanently exists in both inbox/ and read/ at once
+                    # (regenerate-mailbox-manifests.py writes only the manifest whose content
+                    # changed, so a well-drained inbox/ manifest with nothing to update is the
+                    # NORMAL end state, not evidence of a stranded half-move). Skip the sibling-pairing
+                    # check entirely for this basename; every other memo still pairs as before.
+                    [ "$name" = "MANIFEST.md" ] && continue
                     sib="mailboxes/$role/inbox/$name"
                     # Docs 2026-08-26 false-positive, same-day report with evidence: checking only
                     # "does sib exist in $tree" can't distinguish "caller forgot to pass sib" (real
@@ -282,7 +289,15 @@ while :; do
                 [ -z "$line" ] && continue
                 IFS=',' read -ra tokens <<<"$line"
                 for tok in "${tokens[@]}"; do
-                    slug="$(printf '%s' "$tok" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/^"//' -e 's/"$//')"
+                    # Lowercased deliberately: on macOS (every Amber seat) the filesystem is
+                    # case-INsensitive, so the `[ -d mailboxes/$slug ]` guard below returns true
+                    # for a header-cased 'CIO'/'CXO'/'Pard' — but the `[ "$g" = "$expected" ]`
+                    # comparison two lines down is bash string equality, which is case-SENSITIVE.
+                    # A correctly-delivered memo to mailboxes/cio/ therefore warned that cio was
+                    # omitted. Fired 4x on 2 correct sends (Web, 2026-09-19) before being traced.
+                    # Every real mailbox dir is lowercase (verified against origin/main), so
+                    # normalizing here makes the guard and the comparison agree.
+                    slug="$(printf '%s' "$tok" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/^"//' -e 's/"$//' | tr '[:upper:]' '[:lower:]')"
                     [ -z "$slug" ] && continue
                     [ -d "$REPO/mailboxes/$slug" ] || continue
                     expected="mailboxes/$slug/inbox/$bn"

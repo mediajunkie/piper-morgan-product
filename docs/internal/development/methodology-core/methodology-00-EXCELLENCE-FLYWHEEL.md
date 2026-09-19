@@ -1,3 +1,10 @@
+---
+type: methodology
+title: The Excellence Flywheel — Methodology-00
+valid_from: "2025-09-21"
+last_updated: "2026-09-11"
+---
+
 # The Excellence Flywheel — Methodology-00
 
 **Status**: v3.0 — Layer 2 re-derived for autonomous agent-pull operation (Sept 11, 2026)

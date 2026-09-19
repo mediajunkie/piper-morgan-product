@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "063"
+title: "Parallel-Authoring Drift"
+status: "**Proven** — Promoted from Emerging May 8, 2026 (CIO promotion authority per `methodology-audit-policy-updates-2026-03-16.md`). Trial-application evidence: diagnostic operated at origin (Apr 26 C-axis incident); branch-or-anchor rule shipped to two surfaces (methodology-24 + CT v2.3) without subsequent silent-extension recurrence; Architect May 4 architectural-soundness review identified parallel-authoring instance at code layer (legacy/refactored boundary_enforcer.py coexistence) using pattern's framing. Three independent surface validations. Originally identified April 26, 2026 (CXO + PPM rubric C-axis reconciliation incident); filed Emerging Apr 27 under CIO self-approval authority + PM concurrence on slot allocation. Promotion analysis at `dev/active/cio-pattern-promotion-analysis-2026-05-08.md`."
+valid_from: "2026-04-27"
+last_updated: "2026-08-29"
+---
+
 # Pattern-063: Parallel-Authoring Drift
 
 ## Status

@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Common Failures That Break The Flywheel
+valid_from: "2025-09-21"
+last_updated: "2025-12-02"
+---
+
 # Common Failures That Break The Flywheel
 
 ## Top 5 Excellence Killers

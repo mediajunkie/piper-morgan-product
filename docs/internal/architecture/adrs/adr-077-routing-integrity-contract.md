@@ -1,3 +1,12 @@
+---
+type: adr
+number: 77
+title: "Routing-Integrity Contract (Action↔Handler Reachability)"
+status: "ACCEPTED"
+valid_from: "2026-07-09"
+last_updated: "2026-08-29"
+---
+
 # ADR-077 — Routing-Integrity Contract (Action↔Handler Reachability)
 
 **Status**: ACCEPTED (v0.1, 2026-07-09) — Arch-authored; formalizes the #1283 AC-4 SSOT ruling (2026-07-08) after Lead's static audit + behavioral probe validated the approach. Lead builds the enforcement.

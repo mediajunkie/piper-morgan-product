@@ -1,3 +1,12 @@
+---
+type: adr
+number: 34
+title: "Plugin Architecture Implementation"
+status: "Implementation Status: Complete"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # ADR-034: Plugin Architecture Implementation
 
 ## Status

@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "008"
+title: "DDD Service Layer Pattern"
+status: "**Proven**"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern-008: DDD Service Layer Pattern
 
 ## Status

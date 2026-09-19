@@ -1,3 +1,12 @@
+---
+type: adr
+number: 21
+title: "Multi-Federation Achievement"
+status: "Superseded"
+valid_from: "2025-08-20"
+last_updated: "2026-08-29"
+---
+
 # ADR-021: Multi-Federation Achievement
 
 **Date**: August 17, 2025

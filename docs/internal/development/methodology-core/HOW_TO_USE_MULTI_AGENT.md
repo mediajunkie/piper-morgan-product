@@ -1,3 +1,10 @@
+---
+type: methodology
+title: How to Use the Multi-Agent Coordinator
+valid_from: "2025-09-21"
+last_updated: "2026-09-01"
+---
+
 # How to Use the Multi-Agent Coordinator
 
 > 🔴 **HISTORICAL — the whole subsystem this guide teaches is deleted (2026-09-01 banner, supersedes

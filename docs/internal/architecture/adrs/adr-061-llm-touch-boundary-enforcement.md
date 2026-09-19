@@ -1,3 +1,12 @@
+---
+type: adr
+number: 61
+title: "LLM-Touch Boundary Enforcement — Two-Layer Detection with Floor as De-Facto Ethics Layer"
+status: "Ratified v1.0"
+valid_from: "2026-04-28"
+last_updated: "2026-08-29"
+---
+
 # ADR-061: LLM-Touch Boundary Enforcement — Two-Layer Detection with Floor as De-Facto Ethics Layer
 
 **Status**: **Ratified** v1.0 (PM verbal ratification 2026-05-03); **v1.1 amendment 2026-05-15** (output-side companion shipped per #1017 — see §"Amendment 2026-05-15")

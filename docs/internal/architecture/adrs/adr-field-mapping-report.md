@@ -1,3 +1,11 @@
+---
+type: adr
+title: "ADR Metadata Field Analysis Report"
+status: "Unknown"
+valid_from: "2025-08-29"
+last_updated: "2026-08-29"
+---
+
 # ADR Metadata Field Analysis Report
 
 **Generated:** August 29, 2025 4:51 PM

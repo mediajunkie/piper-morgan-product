@@ -35,10 +35,19 @@
 ## Queue (unblocked, in order)
 - ~~#1821~~ CLOSED (verified on GitHub 09-19 — the 09-18-evening dispatched hygiene fix landed).
 - ~~#1822~~ CLOSED + deployed v116 (09-19 morning, pre-renewal).
+- **Audit Cluster 1** (Filed: 2026-09-19, Docs route, PM-approved): per-user-timezone family —
+  #1574 FIRST (in-memory pref store, re-verified at HEAD 09-19), then #1556/1575/1576/1577/1588.
+  Docs filing the parent issue. One project, not six fixes.
+- **Audit Cluster 2** (Filed: 2026-09-19, same route): #1499 route-surface · #1522 false-trails ·
+  #1533 principal-dropping — reports done, "implement the list" work, mutually independent.
 - #1797 (dead-twin disposal, deletion discipline) · #1817 · #1774 · #1796 (2 failures invisible
   to the burn-down gate) · #1813 (fixed-PK test poisoning) · #1811 · epic 6 remainder (#1729;
   #1762 class-b waits on nothing now that the GitHub-six shipped) · #1793 docs 404s.
-  All held for PM's next-week plan (09-19 morning assessment; weekend token directive standing).
+  Everything above held for PM's next-week plan (09-19 assessment; weekend token directive).
+- **#1823 fully scoped 09-19 (PPM, final)**: branch one ONLY (any-spendable-provider gate +
+  CXO's neutral copy; branch two ruled out of scope — no task type is provider-constrained,
+  `config.py:74`). Implementation pairs with #1824 (classifier split, my lane). Nothing owed
+  until pulled.
 - ~~Standing action: usage-per-account capture~~ **WRITTEN 09-19**
   (`dev/active/usage-per-account-capture-2026-09-19.md`; Dispatch signal dropped; Exec+PM
   notified). Open on it: Dispatch's can-it-read-the-usage-surface answer; xian's seat→account

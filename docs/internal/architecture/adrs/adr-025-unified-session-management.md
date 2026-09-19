@@ -1,3 +1,12 @@
+---
+type: adr
+number: 25
+title: "Unified Session Management Architecture"
+status: "Unknown"
+valid_from: "2025-08-08"
+last_updated: "2026-08-29"
+---
+
 # ADR-025: Unified Session Management Architecture
 
 **Status:** Accepted

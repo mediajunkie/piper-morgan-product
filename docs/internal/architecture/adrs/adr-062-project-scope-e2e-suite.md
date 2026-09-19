@@ -1,3 +1,12 @@
+---
+type: adr
+number: 62
+title: "Project-Scope End-to-End Suite — Generalizing ADR-061 Simulation Harness"
+status: "Phase 0 ADR"
+valid_from: "2026-05-16"
+last_updated: "2026-08-29"
+---
+
 # ADR-062: Project-Scope End-to-End Suite — Generalizing ADR-061 Simulation Harness
 
 **Status**: **Phase 0 ADR (scoping)** — v0.1 (drafted 2026-05-16); CEO ratification of proposal direction received 2026-05-15 via Architect decision walkthrough (Item 1); Phase 1+ gated on trigger signals (see §"Phase Sequencing")

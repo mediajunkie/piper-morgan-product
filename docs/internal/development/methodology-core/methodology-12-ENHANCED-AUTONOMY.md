@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Enhanced Autonomy Experiment Methodology Breakthrough
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # Enhanced Autonomy Experiment Methodology Breakthrough
 
 **Date:** 2025-08-15

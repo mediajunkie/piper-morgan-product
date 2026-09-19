@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "N/A"
+title: "Pattern Index"
+status: "Unknown"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern Index
 
 _Consolidated from pattern-catalog.md and PATTERN-INDEX.md_

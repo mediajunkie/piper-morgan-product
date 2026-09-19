@@ -1,3 +1,12 @@
+---
+type: adr
+number: 32
+title: "Intent Classification as Universal Entry Point"
+status: "Accepted & Validated"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # ADR-032: Intent Classification as Universal Entry Point
 
 ## Status

@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "073"
+title: "Documentation-Asserted-Behavior Drift"
+status: "**Proven** — Promoted from Emerging 2026-05-18 (CIO catalog-management authority, per `memo-cio-to-lead-cc-ceo-arch-host-exec-pa-pattern-073-promotion-ratified-emerging-to-proven-2026-05-18.md`). Emerging filing 2026-05-16 by Lead Developer per CIO methodology disposition (`memo-cio-to-lead-arch-cc-ceo-pattern-073-disposition-2026-05-16.md`). **Fourteen reference instances across eleven distinct surface layers** logged during the May 15–20 evidence-accumulation window; cross-agent engagement during that window (Lead Dev + CIO + Architect + HOST + PM) validated the recognition discipline empirically even ahead of the formal `doc-sync-sweep` skill v1.0 cross-agent-application criterion. **Methodology-29 (\"Pattern Formation via Successful Imitation\") three-instance threshold massively exceeded**; 11-layer breadth establishes the pattern as structural rather than layer-specific."
+valid_from: "2026-05-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern-073: Documentation-Asserted-Behavior Drift
 
 ## Status

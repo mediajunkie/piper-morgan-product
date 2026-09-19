@@ -1,3 +1,12 @@
+---
+type: adr
+number: 36
+title: "QueryRouter Resurrection Strategy"
+status: "✅ Completed"
+valid_from: "2025-09-25"
+last_updated: "2026-08-29"
+---
+
 # ADR-036: QueryRouter Resurrection Strategy
 
 **Status**: ✅ Completed

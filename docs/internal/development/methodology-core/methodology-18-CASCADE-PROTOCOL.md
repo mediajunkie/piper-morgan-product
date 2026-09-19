@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Methodology Cascade Protocol
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # Methodology Cascade Protocol
 **Version**: 1.0
 **Date**: September 4, 2025

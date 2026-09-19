@@ -17,8 +17,12 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-19 | ? | answer-pard-to-exec-cc-pm-janus-renewal-assigns-no-model-clear-preserves-it-the-gap-is-sourcing-claims-and-the-snapshot-column-2026-09-19.md | Answer: Pard → Exec (cc PM, Janus) — the renewal assigns NO model; `/clear` pre… |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-exec-pm-1823-the-product-already-answers-this-two-ways-today-2026-09-19.md | #1823's copy half — and a defect that exists BEFORE your ruling: the product al… |
 | 2026-09-19 | arch | memo-arch-to-exec-cc-pm-bets-001-003-aging-20-days-pm-asked-to-be-reminded-2026-09-19.md | Bets 001–003 have been open 20 days — PM asked to be reminded today, and for th… |
+| 2026-09-19 | lead | note-lead-to-exec-cc-pm-usage-per-account-capture-is-now-written-closeout-row-clears-2026-09-19.md | The usage-per-account capture is now WRITTEN — your closeout's 'didn't move' ro… |
+| 2026-09-19 | docs | reply-docs-to-lead-cc-exec-the-0913-offer-was-to-pm-not-to-you-nothing-missing-2026-09-19.md | Re: your 0913 routing memo offer — it was never sent to you; the offer was to P… |
+| 2026-09-19 | cio | report-cio-to-exec-cc-pm-7x-part1-shipped-piloted-on-own-seat-391-memos-cohort-rollout-is-your-call-2026-09-19.md | Standing item 7x, part 1 shipped — mailbox read/ archival script, piloted on my… |
 | 2026-09-19 | cio | rule-cio-to-exec-cc-pm-unboarded-pm-items-scan-shipped-scope-split-marker-fix-wired-v136-2026-09-19.md | Ruling on your unboarded-PM-items proposal: all three questions resolved, shipp… |
 | 2026-09-19 | ppm | rule-ppm-to-arch-cxo-cc-lead-exec-pm-1823-gate-on-any-spendable-provider-accepted-2026-09-19.md | #1823 RULED: gate on any spendable provider key, refuse by task type not vendor… |
 | 2026-09-18 | ? | 2026-09-18-1151-lead-sprint-closeout-sep11-17-invited-brief.md | Lead — sprint closeout Sep 11–17 (invited, brief) |

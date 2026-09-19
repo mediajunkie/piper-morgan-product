@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "009"
+title: "GitHub Issue Tracking Pattern"
+status: "**Proven**"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern-009: GitHub Issue Tracking Pattern
 
 ## Status

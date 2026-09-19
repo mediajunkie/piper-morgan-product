@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Asymmetric Discipline — Operational Rules with Creation Without Paired Cleanup
+valid_from: "2026-05-24"
+last_updated: "2026-08-29"
+---
+
 # Asymmetric Discipline — Operational Rules with Creation Without Paired Cleanup
 
 ## Overview

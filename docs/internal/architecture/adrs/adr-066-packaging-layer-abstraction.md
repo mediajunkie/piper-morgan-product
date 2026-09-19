@@ -1,3 +1,12 @@
+---
+type: adr
+number: 66
+title: "Packaging-Layer Abstraction (BYOC Plugin Per-Host Deployment)"
+status: "v0.2"
+valid_from: "2026-06-06"
+last_updated: "2026-08-29"
+---
+
 # ADR-066: Packaging-Layer Abstraction (BYOC Plugin Per-Host Deployment)
 
 **Status**: v0.2 (amended 2026-06-14) — Architect-authored; companion to PDR-005 v1.0 §Open question 7; gated by ADR-065 v0.1 ✅.

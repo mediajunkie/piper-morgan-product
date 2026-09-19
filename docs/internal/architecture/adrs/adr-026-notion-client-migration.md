@@ -1,3 +1,12 @@
+---
+type: adr
+number: 26
+title: "Notion Client Migration to Official Library"
+status: "Unknown"
+valid_from: "2025-08-29"
+last_updated: "2026-08-29"
+---
+
 # ADR-026: Notion Client Migration to Official Library
 
 **Status:** Accepted

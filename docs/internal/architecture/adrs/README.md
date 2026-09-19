@@ -1,3 +1,11 @@
+---
+type: adr
+title: "Architecture Decision Records (ADRs)"
+status: "Unknown"
+valid_from: "2025-10-01"
+last_updated: "2026-08-29"
+---
+
 # Architecture Decision Records (ADRs)
 
 ## Overview

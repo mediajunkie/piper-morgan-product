@@ -1,3 +1,10 @@
+---
+type: methodology
+title: methodology-49 — Described Is Not Running
+valid_from: "2026-08-12"
+last_updated: "2026-09-07"
+---
+
 # methodology-49 — Described Is Not Running
 
 **Status**: Emerging (one canonical instance plus five corroborating — three original, two added

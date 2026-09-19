@@ -1,3 +1,10 @@
+---
+type: methodology
+title: methodology-50 — Self-Attestation Is Not Verification
+valid_from: "2026-09-05"
+last_updated: "2026-09-05"
+---
+
 # methodology-50 — Self-Attestation Is Not Verification
 
 **Status**: Emerging (three confirmed real instances in one week, plus a distinct fourth-order

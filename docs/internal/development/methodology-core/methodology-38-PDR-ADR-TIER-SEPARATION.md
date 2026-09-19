@@ -1,3 +1,10 @@
+---
+type: methodology
+title: "Methodology-38: PDR/ADR Tier Separation — Decision-Rule Altitude vs Architectural-Implementation Altitude"
+valid_from: "2026-06-03"
+last_updated: "2026-08-29"
+---
+
 # Methodology-38: PDR/ADR Tier Separation — Decision-Rule Altitude vs Architectural-Implementation Altitude
 
 **Status**: v0.1 — **Emerging** (Architect-authored; CIO catalog confirmed 2026-06-03)

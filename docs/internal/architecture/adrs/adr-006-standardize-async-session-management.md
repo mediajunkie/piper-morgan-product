@@ -1,3 +1,12 @@
+---
+type: adr
+number: 6
+title: "Standardize Async Session Management Pattern"
+status: "Accepted"
+valid_from: "2025-07-15"
+last_updated: "2026-08-29"
+---
+
 # ADR-006: Standardize Async Session Management Pattern
 
 **Date**: July 14, 2025

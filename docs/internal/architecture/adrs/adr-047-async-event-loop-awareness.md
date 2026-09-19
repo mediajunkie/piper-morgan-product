@@ -1,3 +1,12 @@
+---
+type: adr
+number: 47
+title: "Async Event Loop Awareness for Database Connections"
+status: "Draft"
+valid_from: "2025-12-03"
+last_updated: "2026-08-29"
+---
+
 # ADR-047: Async Event Loop Awareness for Database Connections
 
 **Date**: December 3, 2025

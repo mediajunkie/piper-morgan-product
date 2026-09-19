@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Architectural Agility - Systematic Excellence in Technical Decision Making
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # Architectural Agility - Systematic Excellence in Technical Decision Making
 
 ## Overview

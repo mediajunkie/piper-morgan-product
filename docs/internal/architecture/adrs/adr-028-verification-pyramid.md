@@ -1,3 +1,12 @@
+---
+type: adr
+number: 28
+title: "Three-Tier Verification Pyramid Architecture"
+status: "SUPERSEDED"
+valid_from: "2025-09-02"
+last_updated: "2026-08-29"
+---
+
 # ADR-028: Three-Tier Verification Pyramid Architecture
 
 **Date**: September 2, 2025

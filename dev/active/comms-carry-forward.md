@@ -49,17 +49,34 @@ Full footer-tease chain repaired end to end across all 8 touched files. A chrono
   has no cheap mechanical GitHub query defined for "issues meeting my role's criteria." Gap named,
   not yet filled; nothing blocked on it.
 
-## Today AM — PM's stated plan (from 2026-09-18 ~22:xx, in-conversation), re-verified this morning
+## Today's two-post thread — CLOSED for "Assume It Was You", IN PROGRESS for tomorrow's post
 
-PM: "tomorrow am we'll have a blog post to work on. After that we can resume our editorial calendar
-planning work." Likely candidate, re-verified against the calendar this morning (still `drafted`,
-unchanged overnight): **"Assume It Was You"** (`docs/public/comms/drafts/assume-it-was-you.md`),
-`pubDate` **2026-09-19** — publishing today. Fully drafted + fact-checked (2026-07-09), but has
-**one open PM-input bracket**: whether the "compaction hand-wave rejection" paragraph is PM's own
-words or the Architect's account of PM. That bracket plus the voice-pass are the likely "work on"
-ask. Still not confirmed by PM which post they meant — flagged as the best-fit inference, not a
-certainty. After that: resume editorial calendar planning (no further detail given yet on what
-aspect).
+**"Assume It Was You"** (pubDate 2026-09-19): confirmed correct guess from this morning. Full
+editorial review + proofreading pass done, footer teaser retitled at PM's request, calendar synced,
+status → `ready-for-docs`, publish-ready memo sent to Docs (cc PM) — `mailboxes/docs/read/` (or
+`inbox/` until Docs triages) `publish-ready-comms-to-docs-cc-pm-assume-it-was-you-2026-09-19.md`.
+**Nothing further owed here unless Docs/PM flags something.**
+
+**"From Abstraction to Example"** (renamed from "...Worked Example", pubDate 2026-09-20): CLOSED.
+Full template audit run after PM's voice pass — 16/16 clean. Fixed 5 semicolons, typos, formatting;
+PM supplied the fix for one garbled sentence directly (line 45, after hitting a GitHub save-conflict
+in the admin UI — resolved by applying PM's fix via git rather than a reload/re-edit round-trip).
+Calendar → `ready-for-docs`, publish-ready memo sent to Docs (cc PM). Draft filename intentionally
+left as `from-abstraction-to-worked-example.md` (not functionally required to rename; confirmed
+`publish-to-blog` takes an explicit `--slug` at publish time).
+
+**Both of today's blog-post threads are now closed on Comms' end** — nothing further owed on either
+unless Docs/PM flags something. "Assume It Was You" is confirmed live + distributed (Docs handled it
+directly, crossed with my publish-ready memo). PM's stated next step: resume editorial calendar
+planning work (no further detail given yet on what aspect) — PM is pacing themselves on the
+one-day-ahead rhythm rather than getting further ahead, and asked Comms to catch up on mail/backlog
+in the meantime.
+
+## Closed this fire (12:42)
+
+- **#1406** (calendar `canonicalSite` legacy stale values, routed by Docs) — investigated, found
+  already resolved by an earlier reconciliation pass (whole-file scan: 449 rows, only valid values
+  present). Closed with evidence, replied to Docs.
 
 ## Waiting on others
 

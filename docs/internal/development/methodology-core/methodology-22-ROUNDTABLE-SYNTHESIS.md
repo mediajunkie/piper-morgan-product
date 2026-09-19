@@ -1,3 +1,10 @@
+---
+type: methodology
+title: "Methodology-22: Roundtable Synthesis"
+valid_from: "2026-03-23"
+last_updated: "2026-09-01"
+---
+
 # Methodology-22: Roundtable Synthesis
 
 ## Purpose

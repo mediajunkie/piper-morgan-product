@@ -1,3 +1,12 @@
+---
+type: adr
+number: 45
+title: "Object Model - \"Entities Experience Moments in Places\""
+status: "Accepted"
+valid_from: "2025-11-29"
+last_updated: "2026-08-29"
+---
+
 # ADR-045: Object Model - "Entities Experience Moments in Places"
 
 **Status**: Accepted

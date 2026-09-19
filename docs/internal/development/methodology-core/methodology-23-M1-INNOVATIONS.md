@@ -1,3 +1,10 @@
+---
+type: methodology
+title: "Methodology 23: M1-Era Methodology Innovations"
+valid_from: "2026-03-31"
+last_updated: "2026-08-29"
+---
+
 # Methodology 23: M1-Era Methodology Innovations
 
 *Catalog of methodology changes from the M0-M1 period (Mar 2026). These innovations are already in practice but were not previously documented in methodology-core.*

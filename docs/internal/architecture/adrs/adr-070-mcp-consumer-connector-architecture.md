@@ -1,3 +1,12 @@
+---
+type: adr
+number: 70
+title: "MCP-Consumer Connector Architecture"
+status: "v0.1"
+valid_from: "2026-06-15"
+last_updated: "2026-08-29"
+---
+
 # ADR-070: MCP-Consumer Connector Architecture
 
 **Status**: v0.1 (filed 2026-06-15) — Architect-authored; PM-ratified direction (2026-06-14: connectors move to MCP-consumer; staying native is "dated and clunky"); gates Lead Dev WS-1..9 decomposition on the RECONNECT sprint (#1220 umbrella + 12 issues).

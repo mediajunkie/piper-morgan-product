@@ -1,3 +1,12 @@
+---
+type: adr
+number: 60
+title: "Floor-First Routing Architecture"
+status: "Approved"
+valid_from: "2026-03-20"
+last_updated: "2026-08-29"
+---
+
 # ADR-060: Floor-First Routing Architecture
 
 **Status**: Approved

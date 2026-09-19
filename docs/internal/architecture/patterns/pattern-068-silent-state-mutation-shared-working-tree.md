@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "068"
+title: "Silent State Mutation in Shared Working Tree"
+status: "**Emerging** — Filed 2026-05-11 by CIO under self-approval authority per `methodology-audit-policy-updates-2026-03-16.md`, with PM ratification on the same-day directive (\"we need to solve these issues to avoid a real problem occurring or loss of valuable effort\"). **Slot renumber 067→068 same session** per Lead Dev (May 11 ~8:35) + Architect (May 11 ~8:35) coordination memos flagging slot conflict with Lead Dev's May 9 Pattern-067 (Issue-Body Reality Mismatch) — first-filed-wins disposition; ironic Pattern-063 instance at catalog layer. Parent meta-pattern surfaced by Code agent's May 10 staging-race memo + HOST May 10 concurrence on shelf-placement. Subsumes three named children already in anti-pattern index (P-13 branch-drift, P-15 branch-collision, P-16 candidate Cross-Agent Residue Accumulation) plus a fourth child surfaced May 10–11 (worktree-vs-main physical-tree-fragmentation). Promotion to Proven contingent on naming holding through ~2 more sub-instance recurrences across the named children OR a single new-shape instance fitting the parent (e.g., lockfile drift, ephemeral-state drift)."
+valid_from: "2026-05-11"
+last_updated: "2026-08-29"
+---
+
 # Pattern-068: Silent State Mutation in Shared Working Tree
 
 ## Status

@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "037"
+title: "Cross-Context Validation"
+status: "Unknown"
+valid_from: "2025-11-04"
+last_updated: "2026-08-29"
+---
+
 # Pattern-037: Cross-Context Validation
 
 **Category**: Development & Process Patterns (META-PATTERN)

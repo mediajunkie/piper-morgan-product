@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "069"
+title: "Coarse Triggers Causing False-Positive Triage Cost"
+status: "**Proven** — Promoted from Emerging 2026-08-25 by CIO. Filed 2026-05-11 by CIO under self-approval authority per `methodology-audit-policy-updates-2026-03-16.md`, with PM directive to close the loop on the May 10 disposition (elevate from \"tactical observation\" to formal Emerging). **Slot renumber 068→069 same session** as cascade from Pattern-068 (Silent State Mutation) renumber per Lead Dev + Architect coordination — see Pattern-068's Status note for full slot-conflict-resolution context. Surfaced by Code agent's May 10 PreCompact-hook second-incident addendum; HOST May 10 concurred on naming, deferred proto-pattern-vs-tactical-observation call to CIO."
+valid_from: "2026-05-11"
+last_updated: "2026-08-29"
+---
+
 # Pattern-069: Coarse Triggers Causing False-Positive Triage Cost
 
 ## Status
