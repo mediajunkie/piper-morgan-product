@@ -112,6 +112,17 @@ archive/
 !docs/internal/architecture/archive/
 !docs/internal/architecture/archive/**
 
+# mailboxes/*/read/archive/ — same footgun, caught before it cost anything this time
+# (scripts/archive-mailbox-read.py, standing item 7x, 2026-09-19): the broad `archive/` rule
+# above silently gitignores quarterly mailbox archive buckets, which would make
+# `git status` report the archived memos as plain deletions with nothing added back —
+# i.e. this exact directory name would silently drop 391 historical memos from version
+# control on the first real run. Caught pre-commit because the untracked-files list was
+# missing entries it should have had; never trust "the move script ran cleanly" without
+# checking git actually sees the new location. Mirrors the two negations above.
+!mailboxes/*/read/archive/
+!mailboxes/*/read/archive/**
+
 *.dmg
 *.png
 *.docx
