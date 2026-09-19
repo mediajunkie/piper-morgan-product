@@ -23,8 +23,56 @@ from chromadb.utils import embedding_functions
 
 from services.configuration.piper_config_loader import piper_config_loader
 from services.infrastructure.keychain_service import KeychainService
+from services.llm.request_key import LLMKeyRequiredError, request_spend_key
 
 logger = structlog.get_logger()
+
+
+class RequestKeyedOpenAIEmbeddingFunction:
+    """#1819: resolve the OpenAI embedding credential PER SPEND, never at construction.
+
+    Before this class, ``DocumentIngester.embedding_function`` read the SERVER's OpenAI
+    key from the keychain once and baked it into ChromaDB's ``OpenAIEmbeddingFunction``
+    — every embedding (document ingest, semantic search) was billed to a product-owned
+    credential, bypassing the #1809-inverted chokepoint entirely (embeddings, OpenAI,
+    direct keychain read). PM ruled the server key "is not a real concept" (#1812).
+
+    This wrapper holds NO key. At each call (ChromaDB invokes it per add/query batch)
+    it asks ``request_spend_key("openai")`` — the same decision every completion leg
+    uses:
+      - the request bound the user's own OpenAI key → embed on THEIR key.
+      - explicit designated-operator binding (#1807 both gates; how the CLI ingest
+        path authorizes itself) → the operator's own server-side credential
+        (keychain first, env fallback — mirrors ``LLMConfigService`` order).
+      - unbound → ``UnboundLLMKeyError``. The refusal propagates: a read path
+        (semantic search) surfaces it as an honest refusal, and an ingest path
+        fails BEFORE any chunk is written — no partially-embedded document.
+
+    Cacheable safely (``DocumentIngester`` is a module singleton): the ContextVar read
+    happens at spend time, so no user's key can outlive their request (#1814
+    containment, applied to embeddings).
+    """
+
+    _MODEL_NAME = "text-embedding-ada-002"
+
+    def __call__(self, input):  # noqa: A002 — chromadb's EmbeddingFunction protocol names it `input`
+        key = request_spend_key("openai")
+        if key is None:
+            # Operator binding (gate 1 re-checked in request_spend_key): the
+            # operator's own server-side credential.
+            keychain = KeychainService()
+            key = keychain.get_api_key("openai") or os.getenv("OPENAI_API_KEY")
+            if not key:
+                raise RuntimeError(
+                    "Operator OpenAI embedding credential not configured "
+                    "(keychain and OPENAI_API_KEY both empty)."
+                )
+        # Constructed per call — cheap next to the embedding HTTP round trip, and it
+        # guarantees the credential is never cached anywhere it could cross requests.
+        delegate = embedding_functions.OpenAIEmbeddingFunction(
+            api_key=key, model_name=self._MODEL_NAME
+        )
+        return delegate(input)
 
 
 class DocumentIngester:
@@ -39,20 +87,17 @@ class DocumentIngester:
         # of surfaces that never embed (radar's build_entity_sources ->
         # DocumentService) — a keyless server 500'd its whole radar feed.
         # Same operation-boundary principle as the document_handlers fix.
-        self._embedding_function = None
+        self._embedding_function: Optional[RequestKeyedOpenAIEmbeddingFunction] = None
         self._collection = None
 
     @property
     def embedding_function(self):
         if self._embedding_function is None:
-            # Get OpenAI API key from keychain (not environment variables)
-            keychain = KeychainService()
-            api_key = keychain.get_api_key("openai")
-
-            # Use OpenAI embeddings
-            self._embedding_function = embedding_functions.OpenAIEmbeddingFunction(
-                api_key=api_key, model_name="text-embedding-ada-002"
-            )
+            # #1819: request-keyed wrapper — the credential decision happens at each
+            # SPEND (ChromaDB add/query), not here. No key is read or cached at
+            # construction, so the #1452 lazy-construction guarantee (keyless
+            # environments can build this without raising) holds a fortiori.
+            self._embedding_function = RequestKeyedOpenAIEmbeddingFunction()
         return self._embedding_function
 
     @property
@@ -152,6 +197,12 @@ Be specific and concise. Extract real concepts from the content."""
             )
             return relationship_metadata
 
+        except LLMKeyRequiredError:
+            # #1819 (the #1809/#1815-Gap-2 principle): a key REFUSAL is not an
+            # analysis failure to degrade around — silently shipping fallback
+            # metadata would hide that the caller has no credential to spend, and
+            # the embedding step right after would refuse anyway. Let it out.
+            raise
         except Exception as e:
             logger.warning(f"Relationship analysis failed, using basic metadata: {e}")
             return {

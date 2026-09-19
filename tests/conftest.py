@@ -173,6 +173,14 @@ def pytest_collection_modifyitems(config, items):
                 )
             )
 
+        # #1819: live-LLM tests spend the DEVELOPER'S OWN keys (the env/keychain keys
+        # that un-skipped them above). Post-#1809/#1819 every provider leg REFUSES an
+        # unbound spend, so these tests must hold the binding a real spender would:
+        # the explicit designated-operator form (`request_api_key(None)` + gate 1),
+        # which is exactly what "my machine, my keys, run the live tests" is.
+        if has_llm_keys and "llm" in item.keywords:
+            item.fixturenames.append("_operator_spend_binding_for_live_llm_1819")
+
         # Skip GitHub tests if no GitHub token (Issue #914)
         if not has_github and "github" in item.keywords:
             item.add_marker(
@@ -200,6 +208,18 @@ def event_loop():
 def mock_session():
     """Provide a mock session for tests that need it"""
     return Mock()
+
+
+@pytest.fixture
+def _operator_spend_binding_for_live_llm_1819(monkeypatch):
+    """#1819: injected by pytest_collection_modifyitems into every `llm`-marked test
+    that will actually run (live keys present). See the comment there. Never autouse —
+    non-live tests keep the refusing UNBOUND default, which is itself under test."""
+    from services.llm.request_key import OPERATOR_SERVER_KEY_ENV, request_api_key
+
+    monkeypatch.setenv(OPERATOR_SERVER_KEY_ENV, "1")
+    with request_api_key(None):
+        yield
 
 
 @pytest.fixture(autouse=True)

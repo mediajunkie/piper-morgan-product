@@ -12,7 +12,15 @@ import click
 from services.database.session_factory import AsyncSessionFactory
 from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.knowledge_graph.document_service import get_document_service
+from services.llm.request_key import request_api_key
 from services.repositories.document_repository import resolve_pm_owner_id
+
+# #1819: these commands embed (and `add` also completes) against real billable APIs.
+# The CLI is the OPERATOR at a terminal, so each command binds the EXPLICIT
+# designated-operator authorization (`request_api_key(None)`, the #1807 seam) around
+# its service call. The spend chokepoint honors it only with PIPER_OPERATOR_SERVER_KEY
+# opted in (gate 1) — absent that, the command refuses honestly instead of silently
+# billing a product-owned key (PM ruling, #1812: the server key is not a real concept).
 
 
 @click.group()
@@ -30,7 +38,8 @@ async def decide(topic: str, timeframe: str):
 
     try:
         service = get_document_service()  # Use existing singleton
-        results = await service.find_decisions(topic, timeframe)
+        with request_api_key(None):  # #1819 operator binding (see module comment)
+            results = await service.find_decisions(topic, timeframe)
 
         # Display results from extended DocumentService
         if results.get("decisions"):
@@ -56,7 +65,8 @@ async def context(days: int):
 
     try:
         service = get_document_service()  # Use existing singleton
-        results = await service.get_relevant_context(timeframe)
+        with request_api_key(None):  # #1819 operator binding (see module comment)
+            results = await service.get_relevant_context(timeframe)
 
         # Display context from extended DocumentService
         if results.get("context_documents"):
@@ -98,9 +108,10 @@ async def add(file_path: str, title: str = None, domain: str = None):
         # string to an UploadFile-typed method (broken).
         async with AsyncSessionFactory.session_scope() as session:
             owner_id = await resolve_pm_owner_id(session)
-        result = await service.ingest_path(
-            file_path, metadata, owner_id=owner_id, is_global_pm_domain=True
-        )
+        with request_api_key(None):  # #1819 operator binding (see module comment)
+            result = await service.ingest_path(
+                file_path, metadata, owner_id=owner_id, is_global_pm_domain=True
+            )
 
         # Display upload results
         if result.get("status") == "success":
@@ -122,7 +133,8 @@ async def review(focus: str):
 
     try:
         service = get_document_service()  # Use existing singleton
-        results = await service.suggest_documents(focus)
+        with request_api_key(None):  # #1819 operator binding (see module comment)
+            results = await service.suggest_documents(focus)
 
         # Display suggestions from extended DocumentService
         if results.get("suggestions"):
@@ -155,7 +167,8 @@ async def status():
         click.echo("✅ Extended methods accessible")
 
         # Test a basic query to verify integration
-        test_results = await service.get_relevant_context("today")
+        with request_api_key(None):  # #1819 operator binding (see module comment)
+            test_results = await service.get_relevant_context("today")
         if test_results:
             click.echo("✅ ChromaDB integration operational")
 

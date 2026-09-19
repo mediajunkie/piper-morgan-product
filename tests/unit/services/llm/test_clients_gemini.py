@@ -9,6 +9,22 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+from services.llm.request_key import OPERATOR_SERVER_KEY_ENV, request_api_key
+
+
+@pytest.fixture(autouse=True)
+def _operator_spend_binding(monkeypatch):
+    """#1819 AMENDMENT: `_gemini_complete` now refuses UNBOUND like every other leg
+    (`request_spend_key("gemini")` — the server's global genai config is spendable only
+    under the explicit designated-operator binding, #1807 both gates). These tests pin
+    Gemini call MECHANICS (system_instruction, JSON mode, temperature), so they run
+    under the operator binding the real operator path would hold; the refusal itself
+    is pinned in test_provider_request_key_1819.py."""
+    monkeypatch.setenv(OPERATOR_SERVER_KEY_ENV, "1")
+    with request_api_key(None):
+        yield
+
+
 # ---------------------------------------------------------------------
 # Client initialization
 # ---------------------------------------------------------------------
