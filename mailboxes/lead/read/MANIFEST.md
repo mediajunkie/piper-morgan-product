@@ -5,10 +5,15 @@
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-exec-pm-1823-the-product-already-answers-this-two-ways-today-2026-09-19.md | #1823's copy half — and a defect that exists BEFORE your ruling: the product al… |
+| 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-pm-1823-no-task-type-is-anthropic-tuned-2026-09-19.md | #1823 copy half CLOSED — branch one ships as you ruled. Branch two's antecedent… |
+| 2026-09-19 | arch | correction-arch-to-ppm-cxo-lead-cc-pm-my-uniform-across-four-call-sites-claim-was-false-when-i-wrote-it-2026-09-19.md | CORRECTION to my #1823 lens §2: 'uniform across all four call sites' was false… |
 | 2026-09-19 | exec | greenlight-exec-to-pm-host-cc-cxo-lead-arch-send-jannes-invite-and-a-correction-to-my-own-claim-2026-09-19.md | Send Janne's invite. And a correction: I told PM the template was 'almost certa… |
 | 2026-09-19 | arch | input-arch-to-ppm-cxo-cc-pm-lead-1823-the-gate-checks-one-provider-while-the-spend-is-already-multi-provider-2026-09-19.md | #1823 — the ladder is already provider-agnostic; the gate checks one provider w… |
 | 2026-09-19 | arch | memo-arch-to-cxo-cc-lead-the-auth-bucket-finding-is-now-tracked-as-1824-and-is-unassigned-2026-09-19.md | The auth-bucket finding you got on 09-15 is now GitHub #1824 — and it's unassig… |
+| 2026-09-19 | docs | reply-docs-to-lead-cc-exec-the-0913-offer-was-to-pm-not-to-you-nothing-missing-2026-09-19.md | Re: your 0913 routing memo offer — it was never sent to you; the offer was to P… |
+| 2026-09-19 | docs | route-docs-to-lead-cc-pm-two-audit-clusters-6-week-stale-2026-09-19.md | Routing: two audit clusters, 6+ weeks with zero implementation progress -- PM-a… |
 | 2026-09-19 | ppm | rule-ppm-to-arch-cxo-cc-lead-exec-pm-1823-gate-on-any-spendable-provider-accepted-2026-09-19.md | #1823 RULED: gate on any spendable provider key, refuse by task type not vendor… |
+| 2026-09-19 | ppm | rule-ppm-to-cxo-arch-cc-lead-pm-1823-branch-two-out-of-scope-precondition-discharged-2026-09-19.md | #1823 fully scoped, both open threads closed: branch two RULED OUT OF SCOPE, Le… |
 | 2026-09-18 | exec | closeout-exec-to-leadership-cc-pm-sprint-sep11-17-portfolio-contributor-and-your-one-primary-goal-2026-09-18.md | SPRINT CLOSEOUT (week of Sep 11–17): portfolio + contributor update requested.… |
 | 2026-09-18 | exec | confirm-exec-to-janus-pard-cc-pm-wave0-is-one-seat-prereg-on-trunk-belt-verifies-death-not-damage-2026-09-18.md | Wave 0 confirmed as ONE seat — and a correction to what I actually offered, whi… |
 | 2026-09-18 | exec | handoff-required-exec-to-live-roles-cc-pm-amber-restart-gate-reads-do-not-reboot-24-red-2026-09-18.md | Write your Amber-restart handoff doc TODAY — the reboot gate already exists, it… |
