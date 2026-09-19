@@ -24,7 +24,7 @@ easiest mistake to make on this seat.
 ## Cron
 
 - Expression: **`22 6,9,12,15,18,21 * * *`** (six fires/day, 06:22 → 21:22)
-- Job id as of this writing: **`027db348`**, armed 2026-09-18 06:30, expires **~2026-09-25**
+- Job id as of this writing: **`580a4989`**, re-armed 2026-09-18 21:24 at STOP (was `027db348`), expires **~2026-09-25**
 - Registry row: `dev/active/duty-cycle-registry.tsv`, line `web`
 
 Jobs are **session-only** — in-memory, never on disk, gone when the session exits, and recurring
