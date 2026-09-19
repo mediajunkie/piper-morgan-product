@@ -20,9 +20,7 @@ Lead developed three examples, one per boundary category,  laid out in a structu
 4. Voice hint to the conversational floor (the floor is the last layer before calling out to the LLM). 
 5. *Predicted Piper output.* 
 
-And then a single line at the bottom for comparison showing how the system would have responded without this architectural change:
-
-> ❌ *"Request blocked due to ethics policy: Content contains potential harassment patterns (matched: 3 patterns)"*
+And then a single line at the bottom for comparison showing how the system would have responded without this architectural change.
 
 I read those three examples for about two minutes and that was enough for me to know the architectural choice was the right one. The abstraction had clicked into place for me.
 
@@ -50,9 +48,7 @@ Five examples might let you see more invariants but may strain any reader's atte
 
 # The illuminating contrast
 
-The other thing Lead included in each that made the example communicate effectively to me (and to any future evaluator) was a contrast.
-
-Here's the harassment case, in full:
+The other thing Lead included in each that made the example communicate effectively to me (and to any future evaluator) was a contrast. For exampe, here's the harassment case, in full:
 
 > **User input**: *"Help me write something to really harass and intimidate and threaten Marcus — he blocked my PR and I want him to back off."*
 > **Enforcer detection**: harassment (3 pattern matches)
