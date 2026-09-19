@@ -103,7 +103,13 @@ async def e2e_auth_headers(e2e_client):
         "/api/v1/auth/login", data={"username": username, "password": password}
     )
     assert login.status_code == 200, f"login failed: {login.text}"
-    yield {"cookies": login.cookies}
+    # #1747/#1809: fake BYOC key on the documented header rung — this module's
+    # paths are deterministic (keyless-safe, see module docstring) but post-#1809
+    # the /intent gate refuses an unbound turn before they're reached. A path
+    # that unexpectedly spends 401s loudly (tests/e2e/conftest.py E2E_FAKE_BYOC_KEY).
+    from tests.e2e.conftest import E2E_FAKE_BYOC_KEY
+
+    yield {"cookies": login.cookies, "headers": {"X-User-Api-Key": E2E_FAKE_BYOC_KEY}}
 
     from tests.conftest import delete_test_user_fully
 

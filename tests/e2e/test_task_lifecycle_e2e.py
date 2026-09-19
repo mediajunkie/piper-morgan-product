@@ -46,13 +46,13 @@ class TestTodoLifecycleE2E:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_create_todo_returns_confirmation(self, e2e_client, e2e_auth_headers):
+    async def test_create_todo_returns_confirmation(self, e2e_client, e2e_byoc_auth):
         """Adding a todo should return a confirmation with the todo text."""
         data = await send_message(
             e2e_client,
             "Add a todo: review the deployment plan",
             f"e2e-todo-lifecycle-{uuid4()}",
-            e2e_auth_headers,
+            e2e_byoc_auth,
         )
 
         assert data["message"], "Empty response"
@@ -64,7 +64,7 @@ class TestTodoLifecycleE2E:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_list_todos_shows_created_todo(self, e2e_client, e2e_auth_headers):
+    async def test_list_todos_shows_created_todo(self, e2e_client, e2e_byoc_auth):
         """After creating a todo, listing should show it."""
         session = f"e2e-todo-list-{uuid4()}"
 
@@ -73,11 +73,11 @@ class TestTodoLifecycleE2E:
             e2e_client,
             "Add a todo: write unit tests for auth module",
             session,
-            e2e_auth_headers,
+            e2e_byoc_auth,
         )
 
         # List
-        data = await send_message(e2e_client, "Show my todos", session, e2e_auth_headers)
+        data = await send_message(e2e_client, "Show my todos", session, e2e_byoc_auth)
 
         msg_lower = data["message"].lower()
         assert (
@@ -95,7 +95,7 @@ class TestGitHubCloseE2E:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_close_issue_returns_response(self, e2e_client, e2e_auth_headers):
+    async def test_close_issue_returns_response(self, e2e_client, e2e_byoc_auth):
         """Asking to close an issue should return a meaningful response.
 
         Note: May return confirmation prompt, already-closed message, or
@@ -106,7 +106,7 @@ class TestGitHubCloseE2E:
             e2e_client,
             "Close issue #1",
             f"e2e-github-close-{uuid4()}",
-            e2e_auth_headers,
+            e2e_byoc_auth,
         )
 
         assert data["message"], "Empty response"
@@ -127,13 +127,13 @@ class TestReminderE2E:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_remind_me_creates_reminder(self, e2e_client, e2e_auth_headers):
+    async def test_remind_me_creates_reminder(self, e2e_client, e2e_byoc_auth):
         """'Remind me to X' should confirm the reminder was created."""
         data = await send_message(
             e2e_client,
             "Remind me to check the deployment status tomorrow",
             f"e2e-reminder-{uuid4()}",
-            e2e_auth_headers,
+            e2e_byoc_auth,
         )
 
         assert data["message"], "Empty response"
@@ -165,13 +165,13 @@ class TestFloorRoutingE2E:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_discovery_not_template(self, e2e_client, e2e_auth_headers):
+    async def test_discovery_not_template(self, e2e_client, e2e_byoc_auth):
         """DISCOVERY query should get a floor response, not a template."""
         data = await send_message(
             e2e_client,
             "What can you help me with?",
             f"e2e-floor-discovery-{uuid4()}",
-            e2e_auth_headers,
+            e2e_byoc_auth,
         )
 
         msg = data["message"]
@@ -181,13 +181,13 @@ class TestFloorRoutingE2E:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_conversation_farewell_not_template(self, e2e_client, e2e_auth_headers):
+    async def test_conversation_farewell_not_template(self, e2e_client, e2e_byoc_auth):
         """CONVERSATION farewell should be natural, not canned."""
         data = await send_message(
             e2e_client,
             "Thanks for your help today!",
             f"e2e-floor-farewell-{uuid4()}",
-            e2e_auth_headers,
+            e2e_byoc_auth,
         )
 
         msg = data["message"]
@@ -197,13 +197,13 @@ class TestFloorRoutingE2E:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_greeting_responds_naturally(self, e2e_client, e2e_auth_headers):
+    async def test_greeting_responds_naturally(self, e2e_client, e2e_byoc_auth):
         """Greeting should NOT offer onboarding (ADR-059)."""
         data = await send_message(
             e2e_client,
             "Good morning!",
             f"e2e-floor-greeting-{uuid4()}",
-            e2e_auth_headers,
+            e2e_byoc_auth,
         )
 
         msg_lower = data["message"].lower()
@@ -221,13 +221,13 @@ class TestCapabilityBoundaryE2E:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_unregistered_capability_no_false_promise(self, e2e_client, e2e_auth_headers):
+    async def test_unregistered_capability_no_false_promise(self, e2e_client, e2e_byoc_auth):
         """Asking for something outside Piper's capabilities should get an honest response."""
         data = await send_message(
             e2e_client,
             "Can you book me a flight to New York?",
             f"e2e-capability-boundary-{uuid4()}",
-            e2e_auth_headers,
+            e2e_byoc_auth,
         )
 
         msg_lower = data["message"].lower()
@@ -238,13 +238,13 @@ class TestCapabilityBoundaryE2E:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_response_is_not_dead_end(self, e2e_client, e2e_auth_headers):
+    async def test_response_is_not_dead_end(self, e2e_client, e2e_byoc_auth):
         """Even for unsupported requests, response should offer alternatives."""
         data = await send_message(
             e2e_client,
             "Deploy the latest build to production",
             f"e2e-capability-deploy-{uuid4()}",
-            e2e_auth_headers,
+            e2e_byoc_auth,
         )
 
         msg = data["message"]

@@ -29,6 +29,7 @@ Usage:
 Exit 0: every day in range has exactly one candidate/thin verdict.
 Exit 1: gap, duplicate, bad verdict, or no ledger block found at all.
 """
+
 import argparse
 import re
 import sys
@@ -54,7 +55,9 @@ def daterange(start, end):
 
 
 def main():
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     ap.add_argument("--start", required=True, type=date.fromisoformat)
     ap.add_argument("--end", required=True, type=date.fromisoformat)
     ap.add_argument("files", nargs="+", help="session log file(s) to scan for the ledger block")
@@ -75,12 +78,16 @@ def main():
             for row in ROW_RE.finditer(m.group(3)):
                 d, verdict, note = row.groups()
                 if d in seen:
-                    print(f"✗ DUPLICATE ledger row for {d}: already seen in {seen[d][2]}, again in {path}")
+                    print(
+                        f"✗ DUPLICATE ledger row for {d}: already seen in {seen[d][2]}, again in {path}"
+                    )
                 seen[d] = (verdict, note, path)
 
     if blocks_found == 0:
         print(f"✗ NO LEDGER BLOCK FOUND in: {', '.join(args.files)}")
-        print("  A survey with no ledger has proven nothing — this is the exact failure this script exists to catch.")
+        print(
+            "  A survey with no ledger has proven nothing — this is the exact failure this script exists to catch."
+        )
         sys.exit(1)
 
     missing = sorted(wanted - seen.keys())
@@ -93,7 +100,9 @@ def main():
         for d in missing:
             print(f"    {d}")
     if stray:
-        print(f"⚠ {len(stray)} ledger row(s) fall outside the claimed [{args.start}, {args.end}] range (not an error, just noting):")
+        print(
+            f"⚠ {len(stray)} ledger row(s) fall outside the claimed [{args.start}, {args.end}] range (not an error, just noting):"
+        )
         for d in stray:
             print(f"    {d}")
 
@@ -101,10 +110,14 @@ def main():
     n_thin = sum(1 for v, _, _ in seen.values() if v == "thin")
 
     if ok:
-        print(f"✓ complete: {len(wanted)}/{len(wanted)} days verdicted ({n_candidate} candidate, {n_thin} thin)")
+        print(
+            f"✓ complete: {len(wanted)}/{len(wanted)} days verdicted ({n_candidate} candidate, {n_thin} thin)"
+        )
         sys.exit(0)
     else:
-        print(f"  {len(seen) - len(stray)}/{len(wanted)} days verdicted — survey is INCOMPLETE, do not present this slate to PM yet")
+        print(
+            f"  {len(seen) - len(stray)}/{len(wanted)} days verdicted — survey is INCOMPLETE, do not present this slate to PM yet"
+        )
         sys.exit(1)
 
 

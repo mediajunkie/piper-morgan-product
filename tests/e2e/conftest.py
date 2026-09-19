@@ -152,3 +152,32 @@ async def e2e_auth_headers(e2e_client, e2e_test_user):
     assert login_response.status_code == 200, f"Login failed: {login_response.text}"
 
     yield {"cookies": login_response.cookies}
+
+
+# #1747/#1809 (2026-09-19): re-exported from the root conftest (single source) — see
+# tests/conftest.py E2E_FAKE_BYOC_KEY for the full rationale. Short form: a FAKE key on
+# the documented X-User-Api-Key header rung lets keyless-safe deterministic tests past
+# the (correct) post-#1809 refusal gate; any path that unexpectedly spends 401s loudly.
+# Tests that assert the keyless REFUSAL itself keep e2e_auth_headers.
+from tests.conftest import E2E_FAKE_BYOC_KEY  # noqa: F401  (re-export for e2e modules)
+
+
+@pytest.fixture
+async def e2e_byoc_auth(e2e_client, e2e_test_user):
+    """Login cookies + the fake BYOC header (see E2E_FAKE_BYOC_KEY above).
+
+    Same shape as e2e_auth_headers with an added 'headers' entry, so call sites
+    that spread it into httpx kwargs need only swap the fixture name.
+    """
+    _, username, password = e2e_test_user
+
+    login_response = await e2e_client.post(
+        "/api/v1/auth/login",
+        data={"username": username, "password": password},
+    )
+    assert login_response.status_code == 200, f"Login failed: {login_response.text}"
+
+    yield {
+        "cookies": login_response.cookies,
+        "headers": {"X-User-Api-Key": E2E_FAKE_BYOC_KEY},
+    }

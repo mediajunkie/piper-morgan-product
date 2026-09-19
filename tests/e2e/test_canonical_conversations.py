@@ -526,6 +526,20 @@ async def e2e_auth_headers(e2e_auth_state):
     return e2e_auth_state["auth"]
 
 
+@pytest_asyncio.fixture(scope="module")
+async def e2e_byoc_auth(e2e_auth_state):
+    """#1747/#1809: e2e_auth_headers plus the fake BYOC key on the documented
+    X-User-Api-Key header rung. The canonical user holds no stored key, so
+    post-#1809 the /intent gate (correctly) refuses before the deterministic
+    paths these tests exercise; the header restores the pre-#1809 reach. The
+    key is fake by design — a path that unexpectedly spends 401s loudly
+    (see tests/e2e/conftest.py E2E_FAKE_BYOC_KEY, same reasoning)."""
+    from tests.e2e.conftest import E2E_FAKE_BYOC_KEY
+
+    auth = e2e_auth_state["auth"]
+    return {**auth, "headers": {"X-User-Api-Key": E2E_FAKE_BYOC_KEY}}
+
+
 # ---------------------------------------------------------------------------
 # Tier 1: Routing + Structure (deterministic, every PR)
 # ---------------------------------------------------------------------------
@@ -1064,7 +1078,7 @@ class TestCanonicalGroundTruthMocked:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_week_calendar_reflects_known_events(self, e2e_client, e2e_auth_headers):
+    async def test_week_calendar_reflects_known_events(self, e2e_client, e2e_byoc_auth):
         """Patch the calendar router to return a known event, assert 'what's my
         week look like?' renders it — i.e. external data flows through the
         handler→formatter wiring."""
@@ -1095,7 +1109,7 @@ class TestCanonicalGroundTruthMocked:
             ),
         ):
             data = await send_canonical_query(
-                e2e_client, "what's my week look like?", "gtmock-cal", e2e_auth_headers
+                e2e_client, "what's my week look like?", "gtmock-cal", e2e_byoc_auth
             )
         msg = data.get("message") or ""
         assert marker in msg, (
@@ -1106,7 +1120,7 @@ class TestCanonicalGroundTruthMocked:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_week_calendar_empty_is_honest(self, e2e_client, e2e_auth_headers):
+    async def test_week_calendar_empty_is_honest(self, e2e_client, e2e_byoc_auth):
         """Patch the calendar router to return NO events, assert the response says
         so honestly (doesn't fabricate a schedule)."""
         from services.integrations.calendar.calendar_integration_router import (
@@ -1122,7 +1136,7 @@ class TestCanonicalGroundTruthMocked:
             ),
         ):
             data = await send_canonical_query(
-                e2e_client, "what's my week look like?", "gtmock-cal-empty", e2e_auth_headers
+                e2e_client, "what's my week look like?", "gtmock-cal-empty", e2e_byoc_auth
             )
         msg = (data.get("message") or "").lower()
         assert "didn't find any events" in msg or "no events" in msg, (
@@ -1133,7 +1147,7 @@ class TestCanonicalGroundTruthMocked:
     @pytest.mark.e2e
     @pytest.mark.asyncio
     async def test_week_calendar_degrades_honestly_on_adapter_error(
-        self, e2e_client, e2e_auth_headers
+        self, e2e_client, e2e_byoc_auth
     ):
         """Patch the calendar router to RAISE; assert the response degrades to a
         conversational message and NO raw exception/traceback leaks to the user
@@ -1156,7 +1170,7 @@ class TestCanonicalGroundTruthMocked:
             ),
         ):
             data = await send_canonical_query(
-                e2e_client, "what's my week look like?", "gtmock-cal-err", e2e_auth_headers
+                e2e_client, "what's my week look like?", "gtmock-cal-err", e2e_byoc_auth
             )
         msg = data.get("message") or ""
         assert len(msg) > 10, f"degradation response too short/empty: {msg!r}"
@@ -1171,7 +1185,7 @@ class TestCanonicalGroundTruthMocked:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_milestones_reflect_known_data(self, e2e_client, e2e_auth_headers):
+    async def test_milestones_reflect_known_data(self, e2e_client, e2e_byoc_auth):
         """Patch the GitHub router to return a known milestone, assert the
         milestones query renders it (GitHub external data flows through)."""
         from services.integrations.github.github_integration_router import (
@@ -1186,7 +1200,7 @@ class TestCanonicalGroundTruthMocked:
             new=AsyncMock(return_value=known),
         ):
             data = await send_canonical_query(
-                e2e_client, "What's the next milestone?", "gtmock-ms", e2e_auth_headers
+                e2e_client, "What's the next milestone?", "gtmock-ms", e2e_byoc_auth
             )
         msg = data.get("message") or ""
         assert marker in msg, (
@@ -1196,7 +1210,7 @@ class TestCanonicalGroundTruthMocked:
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
-    async def test_milestones_empty_is_honest(self, e2e_client, e2e_auth_headers):
+    async def test_milestones_empty_is_honest(self, e2e_client, e2e_byoc_auth):
         """Patch the GitHub router to return NO milestones, assert the response
         says so honestly (no fabrication)."""
         from services.integrations.github.github_integration_router import (
@@ -1209,7 +1223,7 @@ class TestCanonicalGroundTruthMocked:
             new=AsyncMock(return_value=[]),
         ):
             data = await send_canonical_query(
-                e2e_client, "What's the next milestone?", "gtmock-ms-empty", e2e_auth_headers
+                e2e_client, "What's the next milestone?", "gtmock-ms-empty", e2e_byoc_auth
             )
         msg = (data.get("message") or "").lower()
         assert "don't have any open milestones" in msg or "no milestones" in msg, (

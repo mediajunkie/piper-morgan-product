@@ -85,17 +85,34 @@ def quarter_of(date_str: str) -> str:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--role", required=True, help="exactly one role slug (e.g. cio) — no all-roles mode, by design")
-    ap.add_argument("--execute", action="store_true", help="actually move files (default: dry-run, report only)")
-    ap.add_argument("--current-quarter", default=None, help="override for testing, e.g. 2026-Q3 (default: derived from today's date via --today)")
-    ap.add_argument("--today", default=None, help="YYYY-MM-DD override for 'today', for reproducible dry-runs (default: real today)")
+    ap = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    ap.add_argument(
+        "--role",
+        required=True,
+        help="exactly one role slug (e.g. cio) — no all-roles mode, by design",
+    )
+    ap.add_argument(
+        "--execute", action="store_true", help="actually move files (default: dry-run, report only)"
+    )
+    ap.add_argument(
+        "--current-quarter",
+        default=None,
+        help="override for testing, e.g. 2026-Q3 (default: derived from today's date via --today)",
+    )
+    ap.add_argument(
+        "--today",
+        default=None,
+        help="YYYY-MM-DD override for 'today', for reproducible dry-runs (default: real today)",
+    )
     args = ap.parse_args()
 
     if args.today:
         today = args.today
     else:
         import datetime as _dt
+
         today = _dt.date.today().isoformat()
 
     current_q = args.current_quarter or quarter_of(today)
@@ -127,15 +144,25 @@ def main() -> int:
 
     total_to_move = sum(len(v) for v in by_quarter.values())
 
-    print(f"── archive-mailbox-read · role={args.role} · today={today} · current_quarter={current_q} ──")
-    print(f"mode: {'EXECUTE' if args.execute else 'DRY-RUN (pass --execute to actually move files)'}")
+    print(
+        f"── archive-mailbox-read · role={args.role} · today={today} · current_quarter={current_q} ──"
+    )
+    print(
+        f"mode: {'EXECUTE' if args.execute else 'DRY-RUN (pass --execute to actually move files)'}"
+    )
     print()
-    print(f"{total_to_move} file(s) eligible for archival (completed quarters, strictly before {current_q}):")
+    print(
+        f"{total_to_move} file(s) eligible for archival (completed quarters, strictly before {current_q}):"
+    )
     for q in sorted(by_quarter):
         print(f"  {q}: {len(by_quarter[q])} file(s) -> read/archive/{q}/")
     print()
-    print(f"left in place: {already_current_or_future} file(s) in {current_q} or later (current quarter stays live)")
-    print(f"left in place: {len(undated)} file(s) with no extractable date (never archived — a date-extraction gap, not a decision)")
+    print(
+        f"left in place: {already_current_or_future} file(s) in {current_q} or later (current quarter stays live)"
+    )
+    print(
+        f"left in place: {len(undated)} file(s) with no extractable date (never archived — a date-extraction gap, not a decision)"
+    )
     if undated:
         for p in undated[:10]:
             print(f"    undated: {p.name}")
@@ -160,8 +187,12 @@ def main() -> int:
             moved += 1
 
     print()
-    print(f"moved {moved} file(s). Run scripts/regenerate-mailbox-manifests.py --role {args.role} next")
-    print("(archive/ subdirectories are invisible to the MANIFEST regen by construction — no flag needed).")
+    print(
+        f"moved {moved} file(s). Run scripts/regenerate-mailbox-manifests.py --role {args.role} next"
+    )
+    print(
+        "(archive/ subdirectories are invisible to the MANIFEST regen by construction — no flag needed)."
+    )
     return 0
 
 

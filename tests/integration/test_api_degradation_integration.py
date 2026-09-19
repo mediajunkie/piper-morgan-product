@@ -31,6 +31,14 @@ class TestAPIDegradationIntegration:
             )
             # Add token to default headers for all requests
             client.headers["Authorization"] = f"Bearer {test_token}"
+            # #1747/#1809: this fixed test principal holds no stored key, so
+            # post-#1809 the /intent gate (correctly) refuses before the
+            # degradation behaviors under test are reached. The fake BYOC key on
+            # the documented header rung restores reach; an unexpected live
+            # spend 401s loudly (see tests/conftest.py E2E_FAKE_BYOC_KEY).
+            from tests.conftest import E2E_FAKE_BYOC_KEY
+
+            client.headers["X-User-Api-Key"] = E2E_FAKE_BYOC_KEY
             yield client
 
     def test_api_handles_database_degradation_gracefully(self, test_client):
