@@ -1,3 +1,12 @@
+---
+type: adr
+number: 72
+title: "Skill-Routing Architecture — Fluid Model with Defense-in-Depth"
+status: "ACCEPTED"
+valid_from: "2026-06-17"
+last_updated: "2026-08-29"
+---
+
 # ADR-072: Skill-Routing Architecture — Fluid Model with Defense-in-Depth
 
 **Status**: ACCEPTED (v0.2) — D1–D4 Arch-ratified in-lane; **D5 ratified 2026-06-17 with CXO + HOST trust-lens folded** (both aligned: gate Piper-initiated, never user-reaching-for-own; + HOST's consequential-action carve-out + transparency-when-gated)

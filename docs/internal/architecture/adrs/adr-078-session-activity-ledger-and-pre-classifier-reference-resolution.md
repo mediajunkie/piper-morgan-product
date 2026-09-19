@@ -1,3 +1,12 @@
+---
+type: adr
+number: 78
+title: "Session-Activity Ledger + Pre-Classifier Reference Resolution (the #1394 cross-turn continuity architecture)"
+status: "ACCEPTED"
+valid_from: "2026-07-12"
+last_updated: "2026-08-29"
+---
+
 # ADR-078 — Session-Activity Ledger + Pre-Classifier Reference Resolution (the #1394 cross-turn continuity architecture)
 
 **Status**: **ACCEPTED (v0.2, 2026-07-14)** — Arch-accepted on the integrity authority PM delegated (2026-07-12, "maintain the architectural integrity") + greenlit authorship. Both ACCEPT gates cleared: (1) **Lead's ledger-feasibility read — DONE** (2026-07-14; it *corrected* D1 from association-over-existing to a dedicated additive `session_activity` ledger — see OQ-1); (2) **pre-classifier direction (D2/D4) — Lead CONCURS + HOST trust-lens PASS** (2026-07-13). **PM retains veto** — flagged to PM on acceptance (this is the architecture call PM asked me to hold; surfaced, not silently flipped). Lead is cleared to build B4 against the D1 `session_activity` contract. *(v0.1 PROPOSED 2026-07-12; HOST D1a folded 2026-07-13; D1 corrected + accepted 2026-07-14. **B4 built + Arch-ratified 2026-07-15** — SessionActivityDB + owner-scoped reader + central observer + recall, suite-green; B3 pre-classifier resolution pending, needs new ADR-077 D5 rows.)*

@@ -1,3 +1,12 @@
+---
+type: adr
+number: 76
+title: "Usage-Cap Enforcement (Alpha Load Backstop)"
+status: "ACCEPTED"
+valid_from: "2026-07-06"
+last_updated: "2026-08-29"
+---
+
 # ADR-076 — Usage-Cap Enforcement (Alpha Load Backstop)
 
 **Status**: ACCEPTED (v0.1, 2026-07-06) — Arch-authored; HOST trust-lens PASS folded; **implemented and closed** (#1370, `01c28848b`, 2026-07-06; BUILD-ratified clean against D1-D6 by Arch 2026-07-07; live-verified 2026-07-07 against a real server + real Redis — rate limit, concurrency cap, and fail-closed all hit their exact documented boundary and response shape) — `web/middleware/usage_cap_middleware.py`, 12 unit tests. Fully closed, no open items.

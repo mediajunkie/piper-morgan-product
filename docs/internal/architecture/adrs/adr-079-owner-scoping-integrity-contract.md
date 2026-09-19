@@ -1,3 +1,12 @@
+---
+type: adr
+number: 79
+title: "Owner-Scoping Integrity Contract (unscoped reads impossible-by-construction, mechanically enforced)"
+status: "ACCEPTED"
+valid_from: "2026-07-16"
+last_updated: "2026-08-29"
+---
+
 # ADR-079 — Owner-Scoping Integrity Contract (unscoped reads impossible-by-construction, mechanically enforced)
 
 **Status**: **ACCEPTED (v0.1, 2026-07-16)** — Arch-authored, on the integrity authority PM delegated + Lead's confirmation that the #1419 multi-tenancy audit's scope is systemic. Synthesizes already-accepted per-feature owner-scoping decisions into one contract + its mechanical enforcement. **HOST trust-lens welcome** (this is a trust-boundary contract) — informative, not gating, since the constituent decisions are already accepted. **PM retains veto.**

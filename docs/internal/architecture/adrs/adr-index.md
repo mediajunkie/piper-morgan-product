@@ -1,3 +1,11 @@
+---
+type: adr
+title: "Architectural Decision Records (ADR) Index — DERIVED VIEW"
+status: "Unknown"
+valid_from: "2025-08-29"
+last_updated: "2026-09-01"
+---
+
 # Architectural Decision Records (ADR) Index — DERIVED VIEW
 
 > 🤖 **GENERATED FILE — DO NOT EDIT.** Regenerate with `python3 scripts/derive-adr-index.py`; verify with `--check`. The individual ADR files' own Status lines are the single source of truth; this index is a build artifact (Architectural Review 2026 workstream B4, closes #1455). Per the B3 rule: counts here TRIAGE, they never DISPOSE — check the live document before treating any status as the whole story.
