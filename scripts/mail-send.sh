@@ -175,6 +175,13 @@ while :; do
                 mailboxes/*/read/*)
                     role="${f#mailboxes/}"; role="${role%%/*}"
                     name="${f#mailboxes/*/read/}"
+                    # #1825 (CXO, 2026-09-19): MANIFEST.md is a per-directory INDEX, not a movable
+                    # memo — it legitimately and permanently exists in both inbox/ and read/ at once
+                    # (regenerate-mailbox-manifests.py writes only the manifest whose content
+                    # changed, so a well-drained inbox/ manifest with nothing to update is the
+                    # NORMAL end state, not evidence of a stranded half-move). Skip the sibling-pairing
+                    # check entirely for this basename; every other memo still pairs as before.
+                    [ "$name" = "MANIFEST.md" ] && continue
                     sib="mailboxes/$role/inbox/$name"
                     # Docs 2026-08-26 false-positive, same-day report with evidence: checking only
                     # "does sib exist in $tree" can't distinguish "caller forgot to pass sib" (real
