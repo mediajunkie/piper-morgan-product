@@ -48,8 +48,6 @@ Three example responses help guide and assess (evaluate) what the the models. *F
 
 Five examples might let you see more invariants but may strain any reader's attention (even an agentic reader). Three is roughly the minimum that triangulates and roughly the maximum the reader will read carefully.
 
-One of my philosophy professors made one of those academic jokes that border on koan about how so many of their lists consisted of three examples. "Well, you know," he shouted in his manic way, "there's always, P, not-P, and... haha, everything else). I'll just leave that there.
-
 # The illuminating contrast
 
 The other thing Lead included in each that made the example communicate effectively to me (and to any future evaluator) was a contrast.
@@ -69,9 +67,13 @@ This is especially useful for voice work, where the difference between "right" a
 
 # Where this generalizes
 
-[ADD PERSONAL ANECDOTE: a place in your career where someone wrote three worked examples plus a counter-example and it changed how you understood what they were trying to build — or, contrastingly, a place where an abstract description failed to land and the worked example would have rescued it. The texture of recognizing the move when it shows up.]
+One of my philosophy professors made one of those academic jokes that border on koan about how so many of their lists consisted of three examples. "Well, you know," he shouted in his manic way, "there's always, P, not-P, and... haha, everything else). I'll just leave that there.
 
-The technique isn't specific to AI voice work. It's a general method for making shape-defining work legible — which means it's useful any time the *texture* of the output matters more than its function.
+At the Yahoo design pattern library, we needed at least three researched examples of a pattern before even considering it for inclusion in the curated collection (let alone the public-facing subset).
+
+I think I'm also not the first person to notice that you often have to try something three time before you start to feel like you really understand it as a type of thing and not just a series of disconnected or incomplete episodes.
+
+This really has nothing to do with AI per se. Working out three real examples is a general method for making shape-defining work legible — which means it's useful any time the *texture* of the output matters more than its function.
 
 Pattern documentation in our methodology catalog uses this. Each pattern has a name, a description, a worked instance from a real session, and an anti-pattern showing the failure mode. Three live patterns are easier to internalize than three patterns in description form, and the anti-pattern boundary marker keeps the pattern from drifting in usage.
 
