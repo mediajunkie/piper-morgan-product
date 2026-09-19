@@ -55,7 +55,7 @@
     <div class="tile"><div class="v">45</div><div class="k">closed in window</div></div>
     <div class="tile"><div class="v">56</div><div class="k">created in window</div></div>
     <div class="tile" style="border-color:var(--red)"><div class="v" style="color:var(--red)">+11</div><div class="k">net — the pile GREW</div></div>
-    <div class="tile"><div class="v">5 of 7</div><div class="k">days actually worked</div></div>
+    <div class="tile"><div class="v">5 of 7</div><div class="k">working days — a normal week</div></div>
     <div class="tile"><div class="v">29</div><div class="k">never started, of 56 open</div></div>
     <div class="tile"><div class="v">1,804</div><div class="k">commits</div></div>
     <div class="tile"><div class="v">81.5%</div><div class="k">sprint closed — 246 of 302</div></div>
@@ -63,7 +63,7 @@
 
   <div class="card bad">
     <p style="margin-top:0">🔴 <b>The number that should lead the discussion: we closed 45 and opened
-    56. The pile grew by 11 in a week where we only worked five days.</b></p>
+    56. The pile grew by 11 across five working days.</b></p>
     <p><b>This is the quantitative form of what you said this afternoon</b> — <i>"too much unfinished
     business is piling up, chasing newer things."</i> It is the same finding as <b>29 of 56 never started</b> and as Arch's <i>"rulings are outpacing mechanisms."</i> <b>Three independent
     surfacings, and now a measured one.</b></p>
@@ -105,81 +105,55 @@
   with 41 days to 30 October. <b>Two denominators, both true:</b> quoting the milestone's 1,179-done as
   if it were the sprint's would overstate completion roughly fourfold.</p>
 
-  <h2>The week's three arcs</h2>
+  <h2>Are we progressing toward beta, or wandering?</h2>
 
-  <h3>1 · A bar somebody refused to lower caught a defect before our first external tester did</h3>
-  <div class="card">
-    <p>Janne Lammi's invite was cleared to send on 09-13. Then <b>#1810</b> surfaced and HOST held it.
-    The clearing condition HOST set was specific and awkward: <b>an observed, driven flow — not a test
-    pin.</b> Lead produced one. Hold lifted.</p>
-    <p><b>Nine hours later #1814 landed, and it landed directly on the invite's own first
-    instruction.</b> The email tells a tester to configure their API key first; #1814 made that exact
-    step the wall. <b>HOST re-held.</b> Arch, who had argued for lifting, backed the re-hold and named
-    the sequencing error as partly their own.</p>
-    <p>⭐ <b>The moment worth the whole arc</b>: Arch attempted, once, to substitute a weaker bar than
-    the one they had themselves set. <b>HOST refused. Arch conceded the same day</b> — and conceded
-    the general shape, not just the instance. Lead then supplied the second observed flow, and the
-    hold lifted on evidence rather than on patience running out.</p>
-    <p style="margin-bottom:0"><b>Outcome: we caught a tester-facing blocker before the tester hit
-    it.</b> That is the system working at the only moment it actually matters. The invite is still
-    unsent, four days on — which is now a decision, not a blocker.</p>
-  </div>
-
-  <h3>2 · The credential and tenancy family closed end to end</h3>
-  <div class="card">
-    <p>Lead carried <b>#1807 → #1810 → #1814 → #1815 → #1816</b> to closure, <b>each verified at a
-    named layer</b>, after pins twice proved insufficient. <b>#1816 found a consent boundary failing
-    OPEN</b> — absence read as permission. The belt went from five unexplained reds to zero, and
-    <b>E2E went green for the first time in its recorded history.</b></p>
-    <p>You reopened <b>epic 2</b> over PPM's successor-epic proposal; PPM owned the reversal publicly
-    in the epic file's own change log rather than defending the call. The reopened scope then ran to
-    six more closures <b>under live stakes — a real external tester's credentials.</b></p>
-    <p style="margin-bottom:0">You also ruled the <b>server key out of existence</b>:
-    <i>"I don't understand why anybody should ever be able to spend the operator's money."</i> That
-    ruling is now upstream of the whole BYOC design rather than a patch inside it.</p>
-  </div>
-
-  <h3>3 · The week ended in an enforced standdown, and the cost was real</h3>
-  <div class="card warn">
-    <p>The account ceiling forced a cohort standdown from 09-16 through the 09-17 22:00 reset. <b>Two
-    of the seven days are simply gone</b>, and PA and CXO both name it as what cost them their week.</p>
-    <p>The <b>causes were two and independent</b>, and neither subsumes the other: a dispatch
-    concentration (48 sub-agent dispatches in-window against 10 in the preceding nine days, all
-    silently inheriting the dispatcher's tier) <b>and</b> the ceiling dropping ~17% when the summer
-    promotion ended on 13 Sept.</p>
-    <p style="margin-bottom:0">The standdown was executed cleanly — crons deliberately deleted,
-    verified, no queue-draining — and <b>every role came back and filed.</b> But it is worth being
-    plain that this was <b>an externally imposed two-day outage on a six-week milestone</b>, not a
-    planned pause.</p>
-  </div>
-
-  <h2>⭐ A pattern that MAY be worth a theme — parked until after we discuss the substance</h2>
-  <div class="card warn">
-    <p style="margin:0">⚠️ <b>PM, 2026-09-19: <i>"Let's not slop ahead to themes before we discuss the
-    substance."</i> Correct, and this section was me doing exactly that.</b> The theme belongs at
-    <b>step 6</b> of the cycle — after the step-5 discussion, which may well replace it. Leaving it
-    below as raw material rather than deleting the work, clearly marked as <b>not a conclusion</b>.</p>
-  </div>
   <div class="card good">
-    <p><b>Proposed theme: a clearing condition is only worth what it's worth under pressure.</b></p>
-    <p>The week's defining behaviour wasn't catching bugs — it was <b>people refusing to soften their
-    own standards at the exact moment softening would have been convenient</b>, with a real external
-    user waiting on the other side.</p>
+    <p style="margin-top:0"><b>Not wandering. The 45 closures are not 45 separate fixes — they
+    collapse into six families, and two of them ran to completion.</b></p>
     <div class="scroll"><table>
-      <tr><th>who</th><th>the moment</th></tr>
-      <tr><td><b>HOST</b></td><td>Set an awkward bar (observed flow, never a pin), then <b>refused to let it be lowered</b> — twice, the second time nine hours after clearing it.</td></tr>
-      <tr><td><b>Arch</b></td><td>Tried once to substitute a weaker bar, was refused, <b>conceded same-day and named the general shape</b> rather than fixing only the instance.</td></tr>
-      <tr><td><b>Lead</b></td><td>Produced observed evidence twice rather than the cheaper pin, and <b>refuted their own hypothesis</b> with a transcript.</td></tr>
-      <tr><td><b>CXO</b></td><td>Held a conditional rather than shipping it — <b>it failed, and the hedge was honest.</b> Then found a live defect in their own shipped string.</td></tr>
-      <tr><td><b>PPM</b></td><td>Had a call overruled and <b>owned it in the artifact's own change log</b>, then offered to shrink the epic count rather than defend it.</td></tr>
-      <tr><td><b>Web</b></td><td>Caused the worst bug in their own surface — a caret regression corrupting your draft text — and <b>led their closeout with it.</b></td></tr>
+      <tr><th>front</th><th>closed</th><th>state</th></tr>
+      <tr><td><b>Ask-only-when-armed</b> — offers clobbering each other's arms<br><span style="color:var(--mute)">#1652 #1653 #1654 #1696 #1753 #1752 #1769 #1770 #1596 #1663</span></td><td><b>10</b></td><td>✅ <b>CLOSED AND FENCED</b> — #1766 landed a ratchet with a <i>mechanical site census</i>, so it can't silently regrow</td></tr>
+      <tr><td><b>BYOC credential / billing</b><br><span style="color:var(--mute)">#1807 → #1810 → #1814 → #1816 → #1815</span></td><td><b>5</b></td><td>✅ <b>CLOSED END TO END</b>, each verified by observed flow. #1816 found a consent boundary failing OPEN</td></tr>
+      <tr><td><b>Routing greed</b> — delete/portfolio patterns over-capturing<br><span style="color:var(--mute)">#1505 #1527 #1693 #1756 #1757</span></td><td>5</td><td>family understood; pattern-level fix</td></tr>
+      <tr><td><b>Honesty gaps</b> — Piper misreporting its own data<br><span style="color:var(--mute)">#1730 #1736 #1738 #1717 #1776</span></td><td>5</td><td>incl. Piper reading its own truncated render as its data source</td></tr>
+      <tr><td><b>Dead code</b> — zero-caller machinery removed<br><span style="color:var(--mute)">#1759 #1767 #1754 #1768</span></td><td>4</td><td>four subsystems deleted outright</td></tr>
+      <tr><td><b>Security surface</b><br><span style="color:var(--mute)">#1690 #1741 #1733 #1740</span></td><td>4</td><td>demo plugin live in prod; unescaped innerHTML; an unauthenticated duplicate page</td></tr>
     </table></div>
-    <p style="margin-bottom:0">⚠️ <b>One check on this, because it nearly repeats:</b> Ship #060's
-    theme was <i>"the week the cohort spent correcting itself."</i> Self-correction is <b>not</b> a
-    fresh theme and I'd be reusing it. <b>What's distinct here is the refusal under pressure</b> —
-    correction is looking inward; this is holding a line outward, with a named external person waiting.
-    If that distinction feels thin to you, the theme needs changing, and that's exactly what this
-    discussion is for.</p>
+    <p>⭐ <b>The single best evidence against "fractal wandering" is #1739</b>: <i>"ONE acceptance
+    contract for every armed seam — 1617/1631/1650/1694 are the same contract failing."</i> <b>Four
+    issues recognised as one contract.</b> That is the opposite of an expanding surface — it is
+    finding the general case and closing four things with one idea.</p>
+    <p style="margin-bottom:0"><b>#1766 is the other one.</b> Closing ten arming bugs is work;
+    landing a <i>census-backed ratchet</i> so the eleventh can't appear quietly is progress that
+    holds.</p>
+  </div>
+
+  <h2>Did an epic close and stay closed?</h2>
+  <div class="card bad">
+    <p style="margin-top:0"><b>No — and that is the week's most honest single fact.</b></p>
+    <p><b>Epic 2 (Security/tenancy) closed 2026-09-12 and was REOPENED 2026-09-14.</b> It had been
+    closed for six items and was not actually complete; the tenancy gaps surfaced two days later,
+    under a real external tester's credentials.</p>
+    <p><b>But read the direction:</b> the error was closing it early, and the correction was reopening
+    it rather than filing a successor epic — <b>your override.</b> PPM recorded the reversal in the
+    file's own change log. <b>The reopened scope then ran to six further closures.</b> An epic that
+    reopens and then drains is a better signal than one that stays shut by accounting.</p>
+    <p style="margin-bottom:0"><b>Where the epics actually stand</b> (PPM's ordering file): epic 1
+    CI/infra <b>closed today, 09-19</b> — belt green 10/10, outside this window. Epic 2 reopened,
+    11 of 20. Epic 3 acceptance contract 8 of 11. Epic 5 honest-empty 8 of 15. Epic 9 silent-death
+    2 of 3. <b>Three epics are past two-thirds; none besides epic 1 has closed.</b></p>
+  </div>
+
+  <h2>The counter-evidence, stated plainly</h2>
+  <div class="card warn">
+    <p style="margin-top:0"><b>56 new issues in five days.</b> The surface is still generating faster
+    than it closes.</p>
+    <p style="margin-bottom:0"><b>What I can't tell you from this data, and it's the question that
+    matters:</b> whether that inflow is <i>discovery converging</i> (finding the last members of
+    families we already understand) or <i>surface expanding</i> (new families). The titles suggest
+    the former — most new issues sit inside the six fronts above rather than opening a seventh — but
+    <b>I'd want two more weeks of this same snapshot before claiming a trend.</b> That is now cheap:
+    `sprint-truth.py` stores the baseline as of today.</p>
   </div>
 
   <h2>🔴 The honest counterweight</h2>
