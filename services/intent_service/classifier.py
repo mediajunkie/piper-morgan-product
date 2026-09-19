@@ -33,7 +33,12 @@ from services.intent_service.intent_hooks import IntentProcessingHooks
 from services.intent_service.pre_classifier import MultiIntentResult, PreClassifier
 from services.intent_service.preference_handler import PreferenceDetectionHandler
 from services.intent_service.prompts import INTENT_CLASSIFICATION_PROMPT
-from services.knowledge_graph import get_ingester
+
+# #1819 census correction: `from services.knowledge_graph import get_ingester` was a
+# DEAD import here (0 uses — AST-verified 2026-09-18). Removed so nobody re-derives
+# "the classifier searches the KG via the ingester" from it; the classifier's KG
+# context comes from KnowledgeGraphService.get_relevant_context (its own node store,
+# no ChromaDB/OpenAI embeddings).
 from services.llm.request_key import LLMKeyRequiredError
 from shared.events import EventBus
 

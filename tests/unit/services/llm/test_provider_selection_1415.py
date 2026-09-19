@@ -166,6 +166,20 @@ class TestConsentFilter:
 # ---------------------------------------------------------------------------
 
 
+@pytest.fixture(autouse=True)
+def _byoc_spend_binding():
+    """#1819 AMENDMENT: `_is_provider_configured` (the fallback loop's gate) now answers
+    per-REQUEST entitlement — a server client's mere existence is no longer availability,
+    because every leg refuses unbound. These tests pin SELECTION + consent-filtered
+    fallback mechanics, so they run under the BYOC binding a real turn would hold (the
+    acting user's own anthropic + openai keys); the unbound refusals themselves are
+    pinned in test_provider_request_key_1819.py."""
+    from services.llm.request_key import request_api_key
+
+    with request_api_key({"anthropic": "sk-ant-test", "openai": "sk-oai-test"}):
+        yield
+
+
 class _StubConfigService:
     """Per-user-aware stub: returns what a real (resolver-backed) service would."""
 

@@ -53,6 +53,18 @@ def _snapshot_record():
     # no cleanup: the record is append-only by design
 
 
+@pytest.fixture(autouse=True)
+def _byoc_spend_binding():
+    """#1819 AMENDMENT: the fallback loop's availability gate now answers per-request
+    ENTITLEMENT (every leg refuses unbound), so these record-mechanics tests run under
+    the BYOC binding a real turn would hold. The refusals themselves are pinned in
+    test_provider_request_key_1819.py."""
+    from services.llm.request_key import request_api_key
+
+    with request_api_key({"anthropic": "sk-ant-test", "openai": "sk-oai-test"}):
+        yield
+
+
 def _delta(before):
     return Counter(SERVING_MODEL_RECORD) - before
 

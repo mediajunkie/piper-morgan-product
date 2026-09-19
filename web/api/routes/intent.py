@@ -587,7 +587,14 @@ async def process_intent(
                 return _create_session_expired_response(message)
             logger.warning("intent_anonymous_key_required_1320", session_id=session_id)
             return _create_anonymous_key_required_response(message)
-        with request_api_key(resolved_key):
+        # #1819: widen the granted binding to provider-keyed form — the user's own
+        # stored OpenAI key rides alongside their Anthropic one, so provider
+        # selection (#1415) can route to OpenAI and spend THEIR key. Refusal rungs
+        # already ran above; expansion never grants what resolution refused.
+        from web.utils.llm_key import expand_llm_key_binding
+
+        key_binding = await expand_llm_key_binding(resolved_key, user_id)
+        with request_api_key(key_binding):
             result = await intent_service.process_intent(
                 message=message, session_id=session_id, user_id=user_id, ctx=ctx
             )
