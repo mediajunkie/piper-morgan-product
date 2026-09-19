@@ -67,25 +67,33 @@
     not clear the reboot path, and the untested condition is the <i>absence</i> of a fresh handoff.</p>
   </div>
 
-  <h2>1 · Janne's invite</h2>
-  <div class="item block">
-    <div class="top"><span class="n">Token is live and unused; you're checking with HOST on the draft</span>
-      <span class="who">HOST · Exec</span><span class="age hot">4 days ready</span></div>
-    <p><b>Status as of this hour:</b> token <code>ZVHWT5408X2NFA6P0D838B35</code>, <b>UNUSED</b>,
-    roster READY TO SEND since 09-15 10:15. <b>No draft email has appeared on trunk yet</b> — if you
-    asked HOST for one this morning, it hasn't landed as of 12:5x.</p>
-    <p><b>My green-light stands, and one piece of it is a correction to myself.</b> I told you the
-    template "pins 0.8.11.0, almost certainly stale." <b>It isn't</b> — <code>VERSION</code> reads
-    0.8.11.0 and the template says 0.8.11.0. I inferred from the shape of a number instead of reading
-    the file.</p>
-    <p><b>The blocker that caused both holds is genuinely gone.</b> #1814 — the wall a tester hits
-    following the invite's own first instruction — is closed and verified by <b>Lead's observed driven
-    flow</b>, against a bar HOST set and refused to lower. That evidence is the strongest in the chain
-    and it is not mine.</p>
-    <div class="ask">⚠️ <b>One claim I could not discharge, at its real layer:</b> the template promises
-    the wizard "validates your API keys before storing them." I verified the endpoint <b>exists</b> —
-    code presence, <b>not a behavioural test</b>. That's a copy question on CXO's surface, not a
-    tester-facing wall, and <b>not a reason to hold a four-day-old invite.</b></div>
+  <h2>1 · Janne's invite — <span style="color:var(--green)">YOU RULED: HOLD</span></h2>
+  <div class="item clear">
+    <div class="top"><span class="n">Decided 14:5x — and the reasoning is bigger than the invite</span>
+      <span class="who">HOST · Lead</span><span class="age new">ruled today</span></div>
+    <p><b>HOLD. Do not send until the underlying issue is resolved</b> — not accepted as a known
+    caveat. Your words, via HOST: <i>"I want to sort out the underlying issues before sending out the
+    invitation. Too much unfinished business is piling up, chasing newer things."</i></p>
+    <p><b>What surfaced it:</b> the alpha is live and healthy, but Lead's dig found <b>no droplet
+    deploy since July</b> — so it is likely running a build that <b>predates the server-key
+    abolition.</b> That flips the risk: the invite would land a real tester on pre-ruling billing
+    semantics.</p>
+    <p><b>To lift the hold, one concrete thing:</b> someone with droplet SSH reads
+    <code>/app/VERSION</code> to turn the July-era-cut hypothesis into fact rather than strong
+    inference. <b>That may be you directly</b> — or a keyed seat, which is the enabler Lead named.</p>
+    <p style="margin-bottom:0">⭐ <b>HOST relayed the second half deliberately and was right to.</b>
+    Lead had proposed treating the droplet fix as "next week's plan, not weekend work," and your
+    response pushed back <b>on that deferral framing specifically</b>, not just on this invite. HOST
+    passed it along as signal without converting it into a deadline they had no standing to set.
+    <b>That distinction is the whole job done properly.</b></p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="n">The deferral signal connects to this report's counterweight</span></div>
+    <p style="margin-bottom:0"><i>"Too much unfinished business is piling up, chasing newer things"</i>
+    is the same finding as <b>32 of 57 MVP items never started with 41 days left</b>, and as Arch's
+    <i>"rulings are outpacing mechanisms."</i> <b>Three independent surfacings of one thing in one
+    week</b> — worth treating as the week's real theme candidate rather than the one I proposed.</p>
   </div>
 
   <h2>2 · Vercel</h2>
