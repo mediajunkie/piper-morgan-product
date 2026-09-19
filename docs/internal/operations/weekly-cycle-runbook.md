@@ -4,8 +4,8 @@
 **Why this exists**: it wasn't written down anywhere. Two of its nine steps had skills
 (`create-omnibus`, `draft-weekly-ship`); the other seven lived only in habit, so a new Exec session
 **guessed at them** — produced a markdown synthesis instead of the established internal-report
-artifact, and didn't notice that Ship #061 had no calendar row, no workstream files and no internal
-report until PM asked. **PM, 2026-09-19: *"we need to capture it so you don't try to guess in the
+artifact — missing the very section the Ship gets drafted from — and then misread two *normal*
+absences (no calendar row, no per-role workstream files) as further symptoms of the same failure. **PM, 2026-09-19: *"we need to capture it so you don't try to guess in the
 future."*** That is the whole motivation; nothing here is new policy.
 
 ---
@@ -101,24 +101,46 @@ four-minute re-verify pass caught two items that had already been resolved.
 Skill: `draft-weekly-ship`. **Only after step 5.** The theme comes out of that discussion.
 
 ### 7 · PM reviews · 8 · Publish Wednesday · 9 · LinkedIn newsletter
-**The calendar row is created at draft time, not publish time** — a Ship with no row is an orphan,
-and that's how #061 went unnoticed for two days. Comms is the sole hand-editor of
-`editorial-calendar.csv`. Syndication per `reference_syndication_targets_by_category`.
+
+⚠️ **CORRECTED 2026-09-19, same day this file was written — the first version of this section had the
+order backwards and it is worth knowing why.**
+
+**The Ship is written AFTER the step-5 discussion, and the calendar row is added after that.** PM,
+verbatim: *"We write the Ship **after** this step and then we add it to the calendar."*
+
+🔴 **So an absent calendar row for an undrafted Ship is CORRECT, not a defect.** I read #061's
+missing row as a stalled pipeline and put that in this runbook as a rule. It was the normal order.
+**The error underneath it: I generalised the blog-post pattern — where the row does come at draft
+creation — onto the Ship, which has a different sequence.** Two adjacent workflows, one habit, wrong
+transfer.
+
+★ **PM's improvement, which removes the ambiguity entirely**: *"it would be fine to prepopulate the
+Wednesday slot on the calendar for the foreseeable future with the sequential Ships. That is our
+cadence after all."* **With the slots pre-seeded, an empty Wednesday becomes a real signal instead of
+an unreadable one** — today it means nothing, because absence is the default state until late in the
+cycle. Routed to Comms (**sole hand-editor of `editorial-calendar.csv`**).
+
+Syndication per `reference_syndication_targets_by_category`.
 
 ---
 
-## The check that would have caught this being missed
+## What actually went wrong for #061 — and what didn't
 
-**All three of these were true at once for Ship #061 and nobody connected them:** no calendar row ·
-no per-role workstream files · no internal report in the established form. **Any one of the three is
-a signal the cycle has stalled; all three together is the pipeline never having started.**
+**One real gap**: the internal report existed only as a markdown synthesis, not in the established
+`ship-NNN-internal-report-for-pm-*.html` form — so it was missing **the section the Ship is drafted
+from**. That is the failure this runbook exists to prevent, and step 4 above is the fix.
 
-At step 4, verify all three:
-```bash
-grep -c "Weekly Ship #NNN" docs/internal/planning/comms/editorial-calendar.csv   # expect ≥1
-ls dev/active/workstream-NNN-*.md                                                # per-role files
-ls dev/active/ship-NNN-internal-report-for-pm-*.html                             # the artifact
-```
+⚠️ **Two things I wrongly called gaps, recorded so nobody re-flags them:**
+- **No calendar row** — correct at that stage. The row follows the draft, which follows the
+  discussion. See step 7 above.
+- **No `workstream-061-*` files** — the ten update memos ARE the input. There is no separate per-role
+  workstream artifact owed in this cycle, and asking for one is inventing a step.
+
+★ **The generalisable error**: I found three absences at once, assumed they were one failure, and
+wrote a "any of these three is a stall signal" check into the first draft of this file. **Two of the
+three were the process working normally.** A cluster of absences is not evidence of a stall unless
+you know which absences are *supposed* to be there at that point in the cycle — and the runbook not
+existing is exactly why I didn't know.
 
 ---
 
