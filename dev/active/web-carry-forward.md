@@ -1,12 +1,55 @@
-# Web carry-forward — 2026-09-18 (active), cron ID last updated 2026-09-18 21:24
+# Web carry-forward — 2026-09-19 (active), cron ID last updated 2026-09-18 21:24
 
 **Session**: Amber / pipermorgan.ai, Opus 5 (since 09-14; Fable access ceiling) · cron
 `22 6,9,12,15,18,21 * * *` (job **`580a4989`**, delete-then-create 2026-09-18 21:24 STOP,
 CronList-verified, expires ~2026-09-25) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
-**Open — two items, both PM-gated or access-blocked; nothing unblocked:**
+⭐ **2026-09-19 — context cleared deliberately at ~08:23 (Wave 2, Amber fleet renewal; Pard
+conducting, Janus certifying, xian overseeing).** Context clear, **not** a session exit. Consequence
+worth carrying: **the cron OBJECT survived the clear with the same id (`580a4989`), and the 09:22
+fire then DELIVERED** — so this is now a *third* observation of "session restarts, cron survives,"
+and the first where delivery across the restart was confirmed rather than assumed. The 09:22 fire
+reached me at 09:52, i.e. **~30 min late**; noting the latency without diagnosing it (could be
+scheduler lag or queueing — one sample, and I can't see the scheduler). Arrival block with full
+detail: `dev/2026/09/19/2026-09-19-0652-web-code-log.md`.
+
+## ⭐ Web's GitHub criteria line (the third queue source) — WRITTEN 2026-09-19
+
+Per PM's v1.33 ruling, "drained" = mail **+** standing-items **+** newly-observed GitHub issues
+meeting this role's own criteria. **Web had no criteria line at all until today** — which meant
+this seat's third source was silently empty every fire, not checked-and-clear. Naming it and
+fixing it in the same fire rather than logging the gap and moving on.
+
+**Web's criteria line** (run both; open each hit with `gh issue view`, never judge from the list):
+
+```bash
+gh issue list --repo mediajunkie/piper-morgan-website --state open --limit 50
+gh issue list --repo mediajunkie/piper-morgan-product  --state open --search "label:web" --limit 20
+```
+
+Rationale for the denominator: Web **owns `piper-morgan-website` outright**, so every open issue
+there is in-lane by construction — no label filter, and the label filter is what a product-repo
+query needs instead, since Web is one lane among many there. **Explicitly NOT in the criteria**:
+product-repo issues Web merely *filed* (e.g. #1697) — filing is not owning, and #1697 is assigned
+to PM under milestone MVP, i.e. backend lane. Reading those back in would manufacture work.
+
+**Reading on 2026-09-19 09:5x**: website open = **0**; product `label:web` = **0**. Third source
+genuinely checked and empty — a measured zero, with the denominator stated.
+
+**Open — two items; one just moved from blocked to awaiting-a-one-line-answer:**
 1. **Vercel usage Q1** — genuinely access-blocked (no CLI, token, or dashboard from this seat).
-2. **`integration-reveals-all` workDate** — only fixable if PM recalls the actual date.
+2. **`integration-reveals-all` workDate** — ⬆️ **sharpened 2026-09-19, no longer "PM recall only,
+   unbounded."** The field is **not empty — it's a placeholder**: `workDate == pubDate ==
+   2025-06-27`, untouched since the archive import (`58da3dd`). That combination occurs in **1 of
+   396 rows** (this one); **395/395 others have workDate strictly before pubDate**, min lag 2 days —
+   so it's a value the corpus never legitimately produces. Also **live-visible**: `BlogPostCard.tsx:126`
+   only renders the labeled `Work:/Published:` pair when the two differ, so this card alone shows a
+   single bare date — observed on `pipermorgan.ai/blog?page=16` against 10 controls. Sent PM a
+   **yes/no** (`was it ~week of 2025-05-26, likely 05-27?`) plus a fallback proposal (blank the
+   field rather than keep a wrong one). **Waiting on PM.**
+   ⚠️ **Deliberately NOT claimed**: the sort-order consequence. `blog-utils.ts:19` sorts on
+   `workDateISO`, which *would* misplace the post — but the position I actually observed matches
+   pubDate ordering, so I haven't established which sorter that view uses. Unverified, not asserted.
 
 ✅ **website#35 CLOSED 2026-09-18** with evidence, not on merits — extended the jest net to the
 local-draft restore path and answered all three unknowns the issue listed. PM's tabs-vs-navigation
