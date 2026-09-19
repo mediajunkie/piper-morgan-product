@@ -46,8 +46,22 @@ origin/main + decisions.log:
   honest user-facing sentence differs. `"not initialized"` earns one by the CRITERION and is
   LATENT — **do NOT cite #1814 as its cause; that hypothesis was refuted by transcript.**
 
-**Blocked on PM**: #1744 scope-guard delivery (needs the Action as a ruleset bypass actor, or
-the required check removed); Q5's formal word; Bets 001-003 fields.
+**Blocked on PM**: #1744 scope-guard delivery — ⚠️ **the inherited framing of this was WRONG and
+is corrected 2026-09-18**: there is no ruleset (`GET /rulesets` → `[]`); `main` runs **classic
+branch protection**, which has no bypass-actor feature at all. Live config: required check
+`"Security Test Suite (Postgres)"` (app_id 15368), **`enforce_admins: false`** ← the whole
+mechanism: we push as mediajunkie (sole admin, id 3227378) and bypass; the Action pushes as
+`GITHUB_TOKEN` (`scope-guard.yml:46`) and does not. PM chose option (2) — migrate to a ruleset with
+the Action as a bypass actor. **Payload prepared and IDs verified, not guessed** (User 3227378 from
+`gh api user`; Integration 15368 from this repo's own classic config). ⚠️ **The migration MUST carry
+an admin bypass actor** — a ruleset without one subjects all 12 seats to the required check and
+breaks every `mail-send.sh` push and heartbeat in the cohort. Must also re-express
+`allow_force_pushes:false` → `non_fast_forward` and `allow_deletions:false` → `deletion`, or the
+migration silently weakens `main`. Safe order: **create ruleset → test an admin push → only then
+delete classic**. Classic backup: `dev/2026/09/18/branch-protection-main-classic-backup-2026-09-18.json`.
+**Currently blocked on the permission classifier**, not on PM's decision — PM has already said do it.
+Q5: **headline RULED 09-18** (idle is legitimate); the denominator is still open — see standing
+items. Bets 001-003 fields: **PM-requested reminder DUE 09-19** + carry in the rollup for Exec/Janus.
 **Banked, awaiting board turn**: epic-6 GatherOutcome/Deliverable — remainder lives in
 GatherOutcome, GitHub-six-first, CXO owns the copy contract; the two-mechanism finding
 (directive path vs deterministic composer) must reach BOTH.
