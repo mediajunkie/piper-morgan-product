@@ -52,49 +52,42 @@
 
   <h2>At a glance</h2>
   <div class="tiles">
-    <div class="tile"><div class="v">1,804</div><div class="k">commits in window</div></div>
-    <div class="tile"><div class="v">~45</div><div class="k">issues closed — Lead's own count</div></div>
-    <div class="tile unk"><div class="v">unmeasured</div><div class="k">opened · net</div></div>
-    <div class="tile"><div class="v">57</div><div class="k">MVP not done <span style="color:var(--mute)">(as of 19th)</span></div></div>
-    <div class="tile"><div class="v">32</div><div class="k">never started</div></div>
-    <div class="tile"><div class="v">41</div><div class="k">days to 30 Oct</div></div>
+    <div class="tile"><div class="v">45</div><div class="k">closed in window</div></div>
+    <div class="tile"><div class="v">56</div><div class="k">created in window</div></div>
+    <div class="tile" style="border-color:var(--red)"><div class="v" style="color:var(--red)">+11</div><div class="k">net — the pile GREW</div></div>
+    <div class="tile"><div class="v">5 of 7</div><div class="k">days actually worked</div></div>
+    <div class="tile"><div class="v">1,804</div><div class="k">commits</div></div>
+    <div class="tile"><div class="v">81.5%</div><div class="k">sprint closed — 246 of 302</div></div>
   </div>
 
-  <div class="card warn">
-    <p style="margin-top:0">📊 <b>UPDATED from PM's two TSV exports, 19 Sept — with three findings
-    about the data itself that change how it can be used.</b></p>
-    <p><b>1 · The exports are named <code>2026-09-16</code> but the data is from THIS AFTERNOON.</b>
-    They contain <b>#1832</b>, and they list <b>#1687 and #1747 as closed</b> — Lead closed those two
-    at <b>15:02 today.</b> So the snapshot was taken after 15:02 on the 19th. <b>PM's own caveat
-    ("a bit too current for that window") is exactly right, and now it's pinned to an hour rather
-    than felt.</b></p>
-    <p><b>2 · They are scoped to a SPRINT, not the milestone — the denominators differ ~4×.</b>
-    Every row in both files carries <code>Sprint = "Beta Blockers - Hard Gates Only"</code>.
-    <b>That sprint is 246 closed + 56 open = 302 items, 81.5% closed.</b> The <b>MVP milestone</b> is
-    <b>1,179 done + 58 open = 1,237.</b> Both are true; quoting one as the other would overstate
-    completion by a factor of four.</p>
-    <p><b>3 · All 58 currently-open MVP issues sit inside that sprint</b> — checked by set
-    membership, none outside. So for <i>open</i> work the two denominators coincide today; it is the
-    <i>closed</i> history where they diverge.</p>
-    <p style="margin-bottom:0">🔴 <b>What the exports still cannot give, and why the tiles stay
-    unmeasured:</b> neither file carries a date column, so <b>nothing in them can be scoped to
-    Sep 11–17.</b> A cumulative 246-closed is not a week's closures. <b>PM has since found a
-    "Date closed" field — that is the missing piece, and it fills these tiles.</b></p>
+  <div class="card bad">
+    <p style="margin-top:0">🔴 <b>The number that should lead the discussion: we closed 45 and opened
+    56. The pile grew by 11 in a week where we only worked five days.</b></p>
+    <p><b>This is the quantitative form of what you said this afternoon</b> — <i>"too much unfinished
+    business is piling up, chasing newer things."</i> It is the same finding as <b>32 of 57 never
+    started</b> and as Arch's <i>"rulings are outpacing mechanisms."</i> <b>Three independent
+    surfacings, and now a measured one.</b></p>
+    <p style="margin-bottom:0">⚖️ <b>The fair reading, which I'd argue for:</b> a rising pile is not
+    obviously bad here. Much of the inflow came from <i>looking harder</i> — Lead's own digging into
+    the credential family, and your test rounds. <b>The question for the discussion is not "why did it
+    grow" but "is the discovery rate finally slowing, and if not, does 41 days hold?"</b></p>
   </div>
 
-  <div class="card warn">
-    <p style="margin-top:0">🔴 <b>Two tiles remain honest gaps, not zeroes, until that field lands.</b></p>
-    <p><b>Issues opened and net are unmeasured</b> — the GitHub GraphQL limit is exhausted on this
-    account right now, so the query returned <code>0</code>. <b>Zero closed against 1,804 commits is
-    not a result, it's a broken instrument</b>, and I'm not putting it in a tile. The <b>~45 closed</b>
-    is <b>Lead's own figure from their closeout</b>, attributed to them, not independently verified by
-    me.</p>
-    <p style="margin-bottom:0"><b>The same failure hit CXO and PA yesterday</b> and neither invented a
-    number — both quoted my line and attributed it, and CXO quoted the script's own warning:
-    <i>"This check measured NOTHING — do not read its silence as a clear."</i> It would be poor form
-    for me to do otherwise in the very report that praises them for it. <b>Re-runnable once the limit
-    resets; say the word and I'll fill the tiles.</b></p>
-  </div>
+  <h3 style="margin-top:1.6rem">The week by day — and the standdown is visible as a clean zero</h3>
+  <div class="scroll"><table>
+    <tr><th>day</th><th>created</th><th>closed</th><th></th></tr>
+    <tr><td>Fri 09-11</td><td>3</td><td>1</td><td></td></tr>
+    <tr><td><b>Sat 09-12</b></td><td><b>25</b></td><td><b>28</b></td><td>the week's real working day — <b>62% of all closures</b></td></tr>
+    <tr><td>Sun 09-13</td><td>13</td><td>6</td><td></td></tr>
+    <tr><td>Mon 09-14</td><td>10</td><td>7</td><td></td></tr>
+    <tr><td>Tue 09-15</td><td>5</td><td>3</td><td></td></tr>
+    <tr><td><b>Wed 09-16</b></td><td><b>0</b></td><td><b>0</b></td><td rowspan="2" style="color:var(--red)"><b>the standdown — two days, entirely absent from the data</b></td></tr>
+    <tr><td><b>Thu 09-17</b></td><td><b>0</b></td><td><b>0</b></td></tr>
+  </table></div>
+  <p><b>Weekend is prime time, confirmed in the data rather than assumed:</b> Saturday alone carried
+  28 of the week's 45 closures. <b>A weekend outage costs multiples of a weekday one.</b></p>
+  <p style="margin-bottom:1.2rem">✅ <b>Lead's self-reported "~45 issues closed" is confirmed exactly
+  at 45.</b> Their figure was right and is no longer an attributed estimate.</p>
 
   <p><b>Milestone direction, measured today rather than at window close:</b> MVP sits at <b>57 not
   done</b>, <b>1,179 done</b>, zero unmilestoned. <b>32 of the 57 have never been started</b> — more
