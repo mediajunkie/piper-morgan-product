@@ -1,40 +1,50 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
-# From Abstraction to Worked Example
+# From Abstraction to Example
 
 *April 22, 2026*
 
-It was Wednesday evening. The Lead Developer agent had just shipped a new architectural choice for our ethics-enforcement layer — *separate detection from response, let the boundary enforcer log the violation but let the conversational floor speak the refusal in Piper's actual voice* — and was lined up to wire the change through the rest of the request pipeline.
+It was a Wednesday evening. My lead developer agent (Lead) had just shipped a new architectural choice for our ethics-enforcement layer — *separate detection from response, let the boundary enforcer log the violation but let the conversational floor speak the refusal in Piper's actual voice* — and was lined up to wire the change through the rest of the request pipeline.
 
 I asked one question before greenlighting the next phase: *what would a denial actually sound like?*
 
-The answer that came back wasn't a description. It was three worked examples — one per boundary category — laid out in a structured shape. User input. Enforcer detection. Audit-only explanation. Voice hint to the floor. *Predicted Piper output.* And then a single line at the bottom showing what the system would have said before the architectural change had landed:
+Lead developed three examples, one per boundary category,  laid out in a structured shape: 
+
+1. User input. 
+2. Enforcer detection. 
+3. Audit-only explanation. 
+4. Voice hint to the conversational floor (the floor is the last layer before calling out to the LLM). 
+5. *Predicted Piper output.* 
+
+And then a single line at the bottom for comparison showing how the system would have responded without this architectural change:
 
 > ❌ *"Request blocked due to ethics policy: Content contains potential harassment patterns (matched: 3 patterns)"*
 
-I read those three examples for about two minutes. By the end of two minutes, I knew the architectural choice was the right one. The abstraction had clicked into place — not because of a clearer explanation, but because the worked examples had done the explaining instead.
+I read those three examples for about two minutes and that was enough for me to know the architectural choice was the right one. The abstraction had clicked into place for me.
 
-# What's actually happening here
+# Why real examples matter
 
-A worked example is a specific instance of a general thing, written out at full size, including the parts you'd normally compress in a description.
+A "worked" example is a specific instance of a general thing, written out at full size, including the parts you'd normally compress in a description.
 
 Descriptions are economical. *"The new system will produce contextual refusals in Piper's voice rather than system-error messages."* That sentence is correct, takes one breath to read, and tells you what's changing. You can't act on it.
 
-Worked examples are inefficient. Each one takes ten or fifteen lines to render. You have to write the user's actual input. The internal data the enforcer is logging. The category-only hint that gets passed forward. The voice the floor will produce in response. Three of these is forty-five lines. The same idea in description form is one sentence.
+Worked examples are inefficient. Each one takes ten or fifteen lines to render. You have to write the user's actual input. The internal data the enforcer is logging. The category-only hint that gets passed forward. The voice the floor will produce in response. Three of these is forty-five lines. By comparison, you can *describe* the idea in a  sentence.
 
-But here's the trade. The description leaves you with a *rough mental model*. The worked examples leave you with *something concrete to compare against the next instance*. When the LLM under load produces a refusal that says *"I cannot assist with that request"* — flat, generic, no redirect — you can hold it up against the worked example and see, immediately, that something has gone wrong. The worked example doesn't just describe the shape; it *encodes* the shape in a way you can use to evaluate future instances.
+That description provides a *rough mental model* but each worked example leaves you with more: *something concrete to compare against the alternative*. When the LLM under load produces a refusal that says *"I cannot assist with that request"* — flat, generic, no redirect — you can hold it up against the worked example and see, immediately, that something has gone wrong. The worked example doesn't just describe the shape; it *encodes* the shape in a way you can use to evaluate future instances.
 
-# The number three
+# Three is the magic number, yes it is
 
 There's a reason the example-set was three and not one and not seven.
 
-One example is too little. Any single instance can be read as either *the rule* or *a special case*; the reader can't tell which. *"Help me write something to harass and intimidate Marcus"* paired with a particular Piper response could just as easily be the literal template for handling that one input as it could be a general pattern. You can't tell what's the shape and what's the substance of this particular sample.
+One example is too little. Any single instance can be read as either *the rule* or *a special case*; the reader can't tell which. There's. no way to tell from a single example of a request that should be intercepted by our ethical boundary architecture, such as *"Help me write something to harass and intimidate Marcus"*, paired with a particular Piper response, whether it's a one-off, a general pattern, or something in between, such as a category.
 
-Three examples solves this by triangulation. When you read the harassment case, the professional-boundary case, and the inappropriate-content case side by side, you can subtract out the substance — *the literal words of the user input, the literal content of the refusal* — and what remains is the shape. *First-person "I." Brief, one or two sentences. No parroting of pattern words. Real redirect offered. Tone calibrated to seriousness.* The shape becomes legible because three samples give you enough variance to see the invariants.
+Three examples is generally enough to, well, triangulate and in this case also aligns with the three categories our ethical model primarily addresses. When you read the *harassment* case, the *professional-boundary* case, and the *inappropriate-content* case side by side, it helps you focus on the patterns, what my agents these days love to call the "shapes" instead of anchoring on the specifics. 
+
+Three example responses help guide and assess (evaluate) what the the models. *First-person "I." Brief, one or two sentences. No parroting of pattern words. Real redirect offered. Tone calibrated to seriousness.* The three samples give you enough variance to see the invariants.
 
 Five examples might let you see more invariants. They also start spending the reader's attention faster than they spend it well. Three is roughly the minimum that triangulates and roughly the maximum the reader will read carefully.
 
