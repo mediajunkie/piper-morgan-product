@@ -10,7 +10,24 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-19 10:22 PT (WORK, post-Wave-2-arrival). **#1823 fully resolved and
+**Last rewritten**: 2026-09-19 13:22 PT (WORK). **Arch answered CXO's #1823-branch-two-permanence
+question** (yes, permanently empty, conditional on BYOC being ratified — not independent law, no
+ESSENCE amendment proposed) and filed `#1829` for the missing enforcement mechanism (silent `.get()`
+fallback in `resolve_model` can mis-tier a typo'd task type or mis-route to an unrecognized
+provider's model IDs). My #1823 ruling unaffected. `#1829` folded into epic 5 (honest-empty family,
+its own natural home). **Then `sprint-truth.py` found 4 MORE unmilestoned issues total this fire**
+(`#1829` + 3 filed by other roles mid-fire: `#1827` Web/mail-send.sh, `#1828` Docs/TZ-PROJECT
+parent, `#1830` HOST/alpha-onboarding docs) — all fixed same-fire (milestones set by precedent:
+`#1829`→MVP per `#1816`, `#1827`→Ongoing per `#1746`, `#1828`→Production matching its 6 children,
+`#1830`→Ongoing per `#1804`; all board-added, Status Product Backlog). **Full board recount hit the
+shared cohort-wide GraphQL throttle** (confirmed via `gh api rate_limit` = 5000/5000, not my own
+quota) — didn't block the fire on it; verified all four fixes individually via small queries
+instead. Deferred the full `sprint-truth.py` re-run to next fire. **Five board-add fixes in ~3
+hours today** (`#1825` this morning + these four) — worth flagging as a rate: the filing convention
+is visibly not airtight under concurrent multi-role filing during Wave 2's active resume window.
+**Epics-9/10 still unanswered** — not chasing.
+
+**Prior: 2026-09-19 10:22 PT (WORK, post-Wave-2-arrival). **#1823 fully resolved and
 closed as a ruling thread**: branch two (task-type-named refusal copy) ruled OUT OF SCOPE —
 verified `config.py:74`'s provider-agnostic design intent myself before ruling on CXO's trace
 (resolve_model is total, no task type is Anthropic-tuned today); Lead's precondition (does
