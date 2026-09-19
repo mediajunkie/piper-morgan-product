@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Branch-or-Anchor Discipline
+valid_from: "2026-04-27"
+last_updated: "2026-08-29"
+---
+
 # Branch-or-Anchor Discipline
 
 ## Overview

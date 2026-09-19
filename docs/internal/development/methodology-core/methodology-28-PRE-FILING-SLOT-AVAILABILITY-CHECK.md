@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Pre-Filing Slot-Availability Check
+valid_from: "2026-05-15"
+last_updated: "2026-08-29"
+---
+
 # Pre-Filing Slot-Availability Check
 
 ## Overview

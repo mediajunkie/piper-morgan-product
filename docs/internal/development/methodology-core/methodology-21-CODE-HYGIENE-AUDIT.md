@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Code Hygiene Audit Methodology
+valid_from: "2025-12-02"
+last_updated: "2025-12-02"
+---
+
 # Code Hygiene Audit Methodology
 
 ## Overview

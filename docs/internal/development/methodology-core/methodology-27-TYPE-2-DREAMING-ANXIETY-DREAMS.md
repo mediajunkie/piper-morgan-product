@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Type 2 Dreaming (Anxiety Dreams) — Threat-Simulation Memory Pattern
+valid_from: "2026-05-15"
+last_updated: "2026-06-08"
+---
+
 # Type 2 Dreaming (Anxiety Dreams) — Threat-Simulation Memory Pattern
 
 ## Overview

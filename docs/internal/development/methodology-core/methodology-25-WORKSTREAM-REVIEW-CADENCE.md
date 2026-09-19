@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Workstream Review Cadence
+valid_from: "2026-04-27"
+last_updated: "2026-08-30"
+---
+
 # Workstream Review Cadence
 
 ## Overview

@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Indoor Plumbing vs. Bathing Experience — Scope Filter
+valid_from: "2026-04-27"
+last_updated: "2026-04-27"
+---
+
 # Indoor Plumbing vs. Bathing Experience — Scope Filter
 
 ## Overview

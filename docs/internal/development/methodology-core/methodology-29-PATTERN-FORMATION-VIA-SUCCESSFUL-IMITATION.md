@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Pattern Formation via Successful Imitation
+valid_from: "2026-05-15"
+last_updated: "2026-05-18"
+---
+
 # Pattern Formation via Successful Imitation
 
 ## Overview
