@@ -37,10 +37,12 @@ from services.llm.request_key import (
     UnboundLLMKeyError,
     anthropic_client_for_request,
     get_request_api_key,
+    request_spend_key,
 )
 from services.shared_types import IntentCategory
 
 STORED_SENDER_KEY = "sk-ant-api03-the-slack-senders-own-stored-key-1809"
+STORED_SENDER_OPENAI_KEY = "sk-openai-the-slack-senders-own-stored-key-1822"
 SERVER_CLIENT = SimpleNamespace(name="THE-SERVERS-OWN-ANTHROPIC-CLIENT")
 
 
@@ -110,6 +112,30 @@ def _stored_key(value):
         yield
 
 
+@contextlib.contextmanager
+def _stored_keys_by_provider(anthropic=None, openai=None):
+    """#1822: a PROVIDER-AWARE stored-key world — unlike `_stored_key` above (which
+    returns the same value regardless of which provider row was asked for), this
+    distinguishes the anthropic and openai rows, the way a real sender who stored
+    only one of the two actually looks to `UserAPIKeyService`."""
+    rows = {"anthropic": anthropic, "openai": openai}
+
+    async def _retrieve(session, user_id, provider):
+        return rows.get(provider)
+
+    with (
+        patch(
+            "services.database.session_factory.AsyncSessionFactory.session_scope_fresh",
+            lambda *a, **k: _fake_session(),
+        ),
+        patch(
+            "services.security.user_api_key_service.UserAPIKeyService.retrieve_user_key",
+            AsyncMock(side_effect=_retrieve),
+        ),
+    ):
+        yield
+
+
 def _touch_the_llm(**kwargs):
     """A classifier stub that does what the real LLM leg does at the spend point:
     asks the REAL chokepoint for a client. Bound → returns (and we record the key);
@@ -117,6 +143,14 @@ def _touch_the_llm(**kwargs):
     client = anthropic_client_for_request(SERVER_CLIENT)
     _touch_the_llm.key_at_llm_time = get_request_api_key()
     _touch_the_llm.client = client
+    return _query_intent()
+
+
+def _touch_the_llm_openai(**kwargs):
+    """#1822: the OpenAI-leg equivalent of `_touch_the_llm` — asks the REAL
+    per-provider spend chokepoint (`request_spend_key`, #1819) for the openai
+    credential, the same call `LLMClient._openai_complete` makes."""
+    _touch_the_llm_openai.key_at_llm_time = request_spend_key("openai")
     return _query_intent()
 
 
@@ -230,3 +264,104 @@ class TestKeylessTurnsRefuseHonestly:
         sent_text = handler.slack_client.send_message.await_args.kwargs["text"]
         assert link_copy.UNLINKED_DECLINE_PROSE not in sent_text
         assert "key of your own" not in sent_text
+
+
+class TestOpenAIOnlySenderIsServed:
+    """#1822 — the #1809 anthropic-only binding refused an OpenAI-only sender even
+    though they had a key of their own. Extending the binding to the SAME
+    provider-keyed widening the web routes use (#1819) serves them instead."""
+
+    @pytest.mark.asyncio
+    async def test_openai_only_sender_is_served_under_their_own_key(self):
+        """A linked sender with ONLY a stored OpenAI key (no anthropic key at
+        all): the pipeline runs with THEIR openai key bound — the openai leg's
+        real spend chokepoint (`request_spend_key`, #1819) resolves it, not a
+        refusal. Before #1822 this sender got the honest-but-narrow "no key of
+        your own" reply despite holding a perfectly good OpenAI key."""
+        handler = _handler()
+        piper_id = str(uuid.uuid4())
+        context = _slack_context(piper_id, "C-1822-openai-only")
+        handler._get_slack_context_from_spatial_event = AsyncMock(return_value=context)
+
+        _touch_the_llm_openai.key_at_llm_time = None
+        handler.intent_classifier.classify = AsyncMock(side_effect=_touch_the_llm_openai)
+
+        with _stored_keys_by_provider(anthropic=None, openai=STORED_SENDER_OPENAI_KEY):
+            result = await handler.handle_spatial_event(_spatial_event())
+
+        assert _touch_the_llm_openai.key_at_llm_time == STORED_SENDER_OPENAI_KEY
+        assert result is not None, "the turn completed and a reply went back to Slack"
+        sent_text = handler.slack_client.send_message.await_args.kwargs["text"]
+        assert "key of your own" not in sent_text, "served, not refused"
+        handler.slack_client.send_message.assert_awaited()
+
+    @pytest.mark.asyncio
+    async def test_anthropic_only_sender_is_unaffected(self):
+        """Regression: a sender with ONLY the anthropic key (no openai row at
+        all) still runs on it — #1822 must not narrow the pre-existing #1809
+        behavior."""
+        handler = _handler()
+        piper_id = str(uuid.uuid4())
+        context = _slack_context(piper_id, "C-1822-anthropic-only")
+        handler._get_slack_context_from_spatial_event = AsyncMock(return_value=context)
+
+        _touch_the_llm.key_at_llm_time = None
+        _touch_the_llm.client = None
+        handler.intent_classifier.classify = AsyncMock(side_effect=_touch_the_llm)
+
+        with _stored_keys_by_provider(anthropic=STORED_SENDER_KEY, openai=None):
+            result = await handler.handle_spatial_event(_spatial_event())
+
+        assert _touch_the_llm.key_at_llm_time == STORED_SENDER_KEY
+        assert result is not None
+        handler.slack_client.send_message.assert_awaited()
+
+    @pytest.mark.asyncio
+    async def test_keyless_linked_sender_still_refuses_honestly(self):
+        """Regression: a linked sender with NEITHER key stored still gets the
+        honest refusal — #1822's widening must never manufacture a binding out
+        of nothing."""
+        handler = _handler()
+        piper_id = str(uuid.uuid4())
+        context = _slack_context(piper_id, "C-1822-keyless")
+        handler._get_slack_context_from_spatial_event = AsyncMock(return_value=context)
+        handler.intent_classifier.classify = AsyncMock(side_effect=_touch_the_llm)
+
+        with _stored_keys_by_provider(anthropic=None, openai=None):
+            result = await handler.handle_spatial_event(_spatial_event())
+
+        assert result is not None
+        sent_text = handler.slack_client.send_message.await_args.kwargs["text"]
+        assert "key of your own" in sent_text
+
+    @pytest.mark.asyncio
+    async def test_binding_composition_matches_the_web_routes_widening(self):
+        """Unit-level check of `_fetch_sender_llm_key_binding` in isolation —
+        the same three shapes `expand_llm_key_binding` (#1819) produces, plus
+        the openai-only arm #1822 adds. No invented Slack-specific precedence:
+        provider SELECTION among a both-keys binding is left entirely to the
+        shared #1415/#1819 code the pipeline already calls."""
+        handler = _handler()
+        piper_id = str(uuid.uuid4())
+
+        with _stored_keys_by_provider(anthropic=STORED_SENDER_KEY, openai=None):
+            assert await handler._fetch_sender_llm_key_binding(piper_id) == {
+                "anthropic": STORED_SENDER_KEY
+            }
+
+        with _stored_keys_by_provider(anthropic=STORED_SENDER_KEY, openai=STORED_SENDER_OPENAI_KEY):
+            assert await handler._fetch_sender_llm_key_binding(piper_id) == {
+                "anthropic": STORED_SENDER_KEY,
+                "openai": STORED_SENDER_OPENAI_KEY,
+            }
+
+        with _stored_keys_by_provider(anthropic=None, openai=STORED_SENDER_OPENAI_KEY):
+            assert await handler._fetch_sender_llm_key_binding(piper_id) == {
+                "openai": STORED_SENDER_OPENAI_KEY
+            }
+
+        with _stored_keys_by_provider(anthropic=None, openai=None):
+            assert await handler._fetch_sender_llm_key_binding(piper_id) is None
+
+        # Unlinked (no piper_user_id): fail-closed with no DB touch at all.
+        assert await handler._fetch_sender_llm_key_binding(None) is None
