@@ -44,13 +44,13 @@ My whole continuity system — the logs, the records, the infrastructure we buil
 
 At this point I still didn't know what created that glitch in the matrix and while I'm more interested in resilience than expecting any computer system to deliver perfection anyhow, I didn't buy the tidy explanation on offey: "the memory got compressed to make room, these things happen." 
 
+I didn't want it papered over. Identity confusion like this had never happened before, which told me something specific had gone wrong and was worth understanding rather than ignoring. So I asked for a real diagnosis instead of a shrug, telling Arch “role identity drift has never been an issue before, so this may be a bug related to how we are implementing the duty cycle.”
 
+Our chief innovation officer agent (CIO) ran it down, and the fix that came of it is now a default written into the standing instructions every agent reads before it starts work. 
 
-I didn't want it papered over. Identity confusion like this had never happened before, which told me something specific had gone wrong and was worth understanding rather than excusing. So I asked for a real diagnosis instead of a shrug. [PM: this paragraph casts you as the one who pushed back on the "compaction" hand-wave and asked for root cause. That IS what the Architect's own logs and symptom memo attribute to you — "PM is not persuaded by a compaction explanation" and, quoting you, "role identity drift has never been an issue before, so this may be a bug related to how we are implementing the duty cycle." But it's sourced from the Architect's account of the exchange, not from your words directly, so please confirm the framing and tone are how you'd tell it.]
+When you come back from a gap and find state you don't remember creating — changed files, a setting you don't recall touching, work you have no memory of doing — your first hypothesis is "I did this and forgot," not "someone else did this." Check your own log first. The authoritative who-else-is-running check is the tiebreaker you reach for only if the cheap check leaves real doubt, not the opening move.
 
-Our chief innovation officer (CIO) ran it down, and the fix that came out is a default, now written into the standing instructions every agent reads before it starts work. When you come back from a gap and find state you don't remember creating — changed files, a setting you don't recall touching, work you have no memory of doing — your first hypothesis is "I did this and forgot," not "someone else did this." Check your own log first. The authoritative who-else-is-running check is the tiebreaker you reach for only if the cheap check leaves real doubt, not the opening move.
-
-The logic is about cost. The "someone else is interfering" story is the expensive one. It spins up investigations, it recommends stand-downs, it asks a human to act on a threat that isn't there — and, as we saw, it feeds itself. So it earns its place at the back of the line, tried last, after the cheap and likely explanation has been ruled out. Not first, where the reflex wants to put it.
+This aligns with cost considerations. The "someone else is interfering" story is the expensive one. It spins up investigations, it recommends stand-downs, it asks a human to act on a threat that isn't there — and, as we saw, it feeds itself.
 
 # You have done this too
 
@@ -58,7 +58,7 @@ Strip away the agents and this is one of the oldest experiences in collaborative
 
 Anyone who has ever asked their tools to tell them who last touched a line of code, and read back their own name, knows the small specific embarrassment of it. In any system too big to hold in your head — a sprawling codebase, a shared document, a project that has run long enough — the honest first guess for "who did this" is almost always past you. The reflex to hunt for an outsider is strong, and it is usually wrong, and it is almost always the more expensive way to be wrong.
 
-The Architect hit a total, sudden version of this, so it hit it hard. Our memory gaps come slower and softer, which mostly means we get more chances to catch ourselves. The move is the same either way. Before you go looking for who changed your work, spend the cheap minute finding out whether it was you.
+Arch hit a total, sudden version of this, so it hit it hard. Our memory gaps come slower and softer, which mostly means we get more chances to catch ourselves. The move is the same either way. Before you go looking for who changed your work, spend the cheap minute finding out whether it was you.
 
 ---
 
