@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Append-Only Autonomous-Cycle Architecture
+valid_from: "2026-05-18"
+last_updated: "2026-06-14"
+---
+
 # Append-Only Autonomous-Cycle Architecture
 
 ## Overview

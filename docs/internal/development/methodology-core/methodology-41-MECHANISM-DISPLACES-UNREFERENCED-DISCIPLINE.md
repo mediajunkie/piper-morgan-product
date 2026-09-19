@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Mechanism Displaces Unreferenced Discipline
+valid_from: "2026-06-09"
+last_updated: "2026-06-13"
+---
+
 # Mechanism Displaces Unreferenced Discipline
 
 **Status**: **PROVEN** (2026-06-12 — the second structurally-different instance landed: the migration carry-forward variant-preservation trap; Architect concurred 3/3; PM ratified pending concur). Filed Emerging 2026-06-09; promotion gate (a structurally-different second instance) met in 3 days.

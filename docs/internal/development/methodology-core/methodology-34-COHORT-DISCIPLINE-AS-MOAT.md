@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Cohort-Discipline as Moat — Operating Norms the Platform Doesn't Productize
+valid_from: "2026-05-24"
+last_updated: "2026-06-10"
+---
+
 # Cohort-Discipline as Moat — Operating Norms the Platform Doesn't Productize
 
 ## Overview

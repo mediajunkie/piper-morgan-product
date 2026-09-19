@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Mechanism Beats Vigilance — Promote Recurring Vigilance-Disciplines to Mechanisms
+valid_from: "2026-05-24"
+last_updated: "2026-08-29"
+---
+
 # Mechanism Beats Vigilance — Promote Recurring Vigilance-Disciplines to Mechanisms
 
 *(Originating instance + file slug: Derived Views Over Hand-Maintained Trackers, 2026-05-24. Generalized beyond trackers 2026-05-28 per PM steer.)*

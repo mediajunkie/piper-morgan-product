@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Autonomy Relocates the Bottleneck to the Convergence Point
+valid_from: "2026-06-03"
+last_updated: "2026-06-03"
+---
+
 # Autonomy Relocates the Bottleneck to the Convergence Point
 
 **Status**: Emerging (filed 2026-06-03; PM-ratification pending on framing). Credit: PM (framing) + PA (the mechanism — attention-dashboard v0.1).

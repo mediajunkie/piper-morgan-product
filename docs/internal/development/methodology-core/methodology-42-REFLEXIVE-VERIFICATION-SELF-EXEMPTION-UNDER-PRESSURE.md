@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Reflexive Verification — We Self-Exempt From Our Own Rigor Under Pressure
+valid_from: "2026-06-11"
+last_updated: "2026-06-11"
+---
+
 # Reflexive Verification — We Self-Exempt From Our Own Rigor Under Pressure
 
 **Status**: Emerging (5 cohort instances clear the methodology-29 formation threshold; Proven awaits evidence that naming it reduces recurrence)

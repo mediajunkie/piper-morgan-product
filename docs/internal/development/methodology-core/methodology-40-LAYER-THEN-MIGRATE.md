@@ -1,3 +1,10 @@
+---
+type: methodology
+title: "Methodology-40: Layer-Then-Migrate — Decision Discipline for Retiring Legacy Abstractions Safely"
+valid_from: "2026-06-09"
+last_updated: "2026-08-29"
+---
+
 # Methodology-40: Layer-Then-Migrate — Decision Discipline for Retiring Legacy Abstractions Safely
 
 **Status**: v0.1 — **Emerging** (Architect-authored 2026-06-09; **CIO catalog confirmed 2026-06-09** — slot 40 allocated + indexed in INDEX.md; the m-38 precedent honored)

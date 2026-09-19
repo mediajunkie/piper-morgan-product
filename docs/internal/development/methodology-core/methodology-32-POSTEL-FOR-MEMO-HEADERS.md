@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Postel for Memo Headers
+valid_from: "2026-05-18"
+last_updated: "2026-05-24"
+---
+
 # Postel for Memo Headers
 
 ## Overview
