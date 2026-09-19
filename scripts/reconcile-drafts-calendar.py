@@ -54,6 +54,9 @@ DRAFTPATH_COL = "draftPath"
 STATUS_COL = "status"
 TITLE_COL = "title"
 # Statuses for which a draftPath link is expected (active, not-yet-published work).
+# Deliberately excludes "planned" — a pre-seeded future Ship slot (2026-09-19, PM's
+# ask via Exec) that intentionally has no draft yet. Adding "planned" here would
+# make every pre-seeded row a permanent MISSING DRAFTPATH false positive.
 ACTIVE_STATUSES = {"drafted", "queued"}
 
 
