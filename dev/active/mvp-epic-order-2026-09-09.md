@@ -43,6 +43,13 @@ opt-in schedule — not decided unilaterally). **Remaining open: `#1687`, `#1747
 "after PM's secret rotation"); `#1687` itself is still open pending Lead's close-out comment on
 the full belt snapshot.
 
+**`#1785` decision memo sent to PM 2026-09-19** (Lead, correctly routed direct-to-PM since the
+issue was explicitly filed "not decided unilaterally," PPM only cc'd) — the push-time canonical job
+spends PM's real key ~20×/day (28 live-LLM cases at 5-13s each, verified against
+`.github/workflows/e2e-aaxt.yml` directly); recommends splitting deterministic routing (stays on
+push, free) from the live-LLM floor cases (move to the existing AAXT nightly). One-line workflow
+change either way. **Not a PPM call** — noting for continuity only, watching for PM's answer.
+
 **Why first**: every day CI stays red, every other epic's evidence weakens (a green suite means
 less when four — now confirmed six — workflows are already known-broken). Cheap relative to its
 value. If it turns out not-cheap, the fallback is explicitly accepting these as known-red rather
