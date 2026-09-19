@@ -46,13 +46,13 @@ Three examples is generally enough to, well, triangulate and in this case also a
 
 Three example responses help guide and assess (evaluate) what the the models. *First-person "I." Brief, one or two sentences. No parroting of pattern words. Real redirect offered. Tone calibrated to seriousness.* The three samples give you enough variance to see the invariants.
 
-Five examples might let you see more invariants. They also start spending the reader's attention faster than they spend it well. Three is roughly the minimum that triangulates and roughly the maximum the reader will read carefully.
+Five examples might let you see more invariants but may strain any reader's attention (even an agentic reader). Three is roughly the minimum that triangulates and roughly the maximum the reader will read carefully.
 
-[CONSIDER: a brief aside about the cognitive psychology research on this — it isn't required but it's earned its place if you want it. The "rule of three" in narrative structure, the three-instance threshold for pattern extraction, the way teaching examples land. Skip if it makes the piece feel academic.]
+One of my philosophy professors made one of those academic jokes that border on koan about how so many of their lists consisted of three examples. "Well, you know," he shouted in his manic way, "there's always, P, not-P, and... haha, everything else). I'll just leave that there.
 
-# The contrast
+# The illuminating contrast
 
-The other thing the Lead Developer included, and what made the examples land in two minutes rather than ten, was a contrast.
+The other thing Lead included in each that made the example communicate effectively to me (and to any future evaluator) was a contrast.
 
 Below the three worked examples, on its own line:
 
