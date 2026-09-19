@@ -64,10 +64,12 @@ but only one prog log file exists for 09-18. Read it directly — it legitimatel
 sequential same-day sessions inside one file (`## Session 2`, `## Session 3`), per the project's
 one-log-per-role-per-day convention. Wrote one activity-log row for prog, not three.
 
-**PM is reconsidering automated crossposting** given the cost-to-value ratio ("the old electric
-can opener thing... good to sunset some ideas") — surfaced 09-17, not yet a decision, just a real
-signal worth watching. If PM raises this again, don't assume Dispatch-PM syndication requests are
-still the default path without checking first.
+**DECIDED 2026-09-19 12:04 PM (was "watching" as of 09-17): PM will do Medium/LinkedIn crossposts
+manually, not via Dispatch-PM automation** — "it is faster and... extremely token-inefficient"
+despite the experiment proving the concept. Logged in `decisions.log`. **Practical effect**: don't
+route future syndication asks to Dispatch-PM by default; when PM provides syndication URLs after
+a publish, that's a manual cross-post to record (mediumURL/linkedinURL/status→distributed), not a
+delegated pipeline step to track.
 
 **Third work-queue source** (PM's v1.33 ruling, established 09-13): Docs's GitHub-criteria line is
 `gh issue list --search "label:documentation" --state open --limit 50` — open each result, don't
