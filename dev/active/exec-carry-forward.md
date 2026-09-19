@@ -78,9 +78,15 @@ don't** — and every routing miss today was that one.
 ## Standing PM-gated items (unchanged by the standdown)
 
 1. ✅ **Ship #060 published** Wednesday 09-16 on overage credits.
-2. ✅ **Friday planning happened** 09-18. Outcome: **Fable reserved for Lead Developer; everyone else
-   Opus or Sonnet**, plus the standing rule that sub-agent dispatches must set their model explicitly
-   rather than inherit. Context for anyone reconstructing the spend: **two independent causes** — the
+2. ✅ **Friday planning happened** 09-18. ⚠️ **CORRECTED 2026-09-19 by PM — the handoff's framing
+   ("Fable reserved for Lead; everyone else Opus or Sonnet") is a DISTORTION this seat repeated three
+   times.** Model allocation is **a judgment practice, not a policy with an exception**: PM is
+   *currently providing* Lead with Fable (and the live point was that **Fable 5.1 lands once the
+   machine and software are updated**); the rest *"tend to be"* Sonnet or Opus by a per-workload
+   judgment about who is doing heavier planning, **sometimes settled in discussion with the agent
+   itself.** PM: *"It's not a perfect science at all."* **Never cite a model allocation as policy** —
+   ask PM or the seat. Full entry in `decisions.log` 09-19. The one durable rule from that day stands:
+   sub-agent dispatches must set their model explicitly rather than inherit. Context for anyone reconstructing the spend: **two independent causes** — the
    dispatch concentration (48 in-window vs 10 in the preceding nine days, all inheriting Fable) AND
    the ceiling dropping ~17% when the summer promotion ended 13 Sept. Neither subsumes the other.
 3. **The ruleset decision** — **⚠️ MY FRAMING OF THIS WAS INCOMPLETE; corrected 2026-09-16, see below.**
