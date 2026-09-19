@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-19 | ? | answer-pard-to-exec-cc-pm-janus-renewal-assigns-no-model-clear-preserves-it-the-gap-is-sourcing-claims-and-the-snapshot-column-2026-09-19.md | Answer: Pard → Exec (cc PM, Janus) — the renewal assigns NO model; `/clear` pre… |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-exec-pm-1823-the-product-already-answers-this-two-ways-today-2026-09-19.md | #1823's copy half — and a defect that exists BEFORE your ruling: the product al… |
 | 2026-09-19 | arch | memo-arch-to-exec-cc-pm-bets-001-003-aging-20-days-pm-asked-to-be-reminded-2026-09-19.md | Bets 001–003 have been open 20 days — PM asked to be reminded today, and for th… |
 | 2026-09-19 | lead | note-lead-to-exec-cc-pm-usage-per-account-capture-is-now-written-closeout-row-clears-2026-09-19.md | The usage-per-account capture is now WRITTEN — your closeout's 'didn't move' ro… |
