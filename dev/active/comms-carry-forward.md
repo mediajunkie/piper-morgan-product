@@ -66,8 +66,17 @@ left as `from-abstraction-to-worked-example.md` (not functionally required to re
 `publish-to-blog` takes an explicit `--slug` at publish time).
 
 **Both of today's blog-post threads are now closed on Comms' end** — nothing further owed on either
-unless Docs/PM flags something. PM's stated next step: resume editorial calendar planning work (no
-further detail given yet on what aspect).
+unless Docs/PM flags something. "Assume It Was You" is confirmed live + distributed (Docs handled it
+directly, crossed with my publish-ready memo). PM's stated next step: resume editorial calendar
+planning work (no further detail given yet on what aspect) — PM is pacing themselves on the
+one-day-ahead rhythm rather than getting further ahead, and asked Comms to catch up on mail/backlog
+in the meantime.
+
+## Closed this fire (12:42)
+
+- **#1406** (calendar `canonicalSite` legacy stale values, routed by Docs) — investigated, found
+  already resolved by an earlier reconciliation pass (whole-file scan: 449 rows, only valid values
+  present). Closed with evidence, replied to Docs.
 
 ## Waiting on others
 
