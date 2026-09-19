@@ -26,15 +26,28 @@
 #   scripts/check-unboarded-pm-items.sh [role]              # window = last board compile
 #   scripts/check-unboarded-pm-items.sh [role] --since-last-scan
 #   scripts/check-unboarded-pm-items.sh [role] --since-last-scan --record   # then stamp the marker
+#   scripts/check-unboarded-pm-items.sh [role] --scope=role      # surfaces 1+3 only (role-scoped)
+#   scripts/check-unboarded-pm-items.sh [role] --scope=global    # surfaces 2+4 only (cohort-wide)
 #   BOARD_SINCE=2026-09-13 scripts/check-unboarded-pm-items.sh exec
+#
+# --scope (CIO ruling, 2026-09-19, on Exec's Q1 — mailboxes/*/read/proposal-exec-to-cio-...):
+#   surfaces 1 (own read/) and 3 (own standing-items) are PER-ROLE — every role's own state.
+#   surfaces 2 (PM's inbox) and 4 (commit bodies, --all) are COHORT-WIDE — identical for every
+#   role. Running all 4 from every one of 11 roles' fires means surfaces 2+4 print the same
+#   answer 11 times per cycle. Default (no --scope) still runs all 4, unchanged, for any caller
+#   that wants the full picture (e.g. ad-hoc investigation) — --scope is opt-in, not a breaking
+#   change to existing callers.
 
 set -uo pipefail
 
-ROLE="exec"; MODE="board"; RECORD=0
+ROLE="exec"; MODE="board"; RECORD=0; SCOPE="all"
 for a in "$@"; do
   case "$a" in
     --since-last-scan) MODE="scan" ;;
     --record) RECORD=1 ;;
+    --scope=role) SCOPE="role" ;;
+    --scope=global) SCOPE="global" ;;
+    --scope=all) SCOPE="all" ;;
     -*) echo "unknown flag: $a" >&2; exit 2 ;;
     *) ROLE="$a" ;;
   esac
@@ -45,7 +58,13 @@ cd "$(git rev-parse --show-toplevel)" || exit 2
 PM_BOX="mailboxes/xian (ceo)/inbox"
 READ_BOX="mailboxes/${ROLE}/read"
 STANDING="dev/active/${ROLE}-standing-items.md"
-MARKER="dev/active/${ROLE}-last-pm-scan"
+# CIO ruling on Q2 (same thread): dev/active/ is sprint-cleaned (cleanup-dev-active skill), so a
+# marker there silently degrades to the 24h default the day it gets swept — coverage narrows with
+# no error, the exact m-44 shape this script's own header already warns about elsewhere. dev/state/
+# is a new, NOT-sprint-cleaned home for small durable machine-state markers (as opposed to
+# dev/active/'s human scratch/carry-forward role) — same convention as dev/heartbeats/.
+MARKER="dev/state/${ROLE}-last-pm-scan"
+mkdir -p dev/state
 
 BOARD=$(git ls-files "dev/*${ROLE}-cohort-attention-rollup-*.html" 2>/dev/null | sort | tail -1)
 
@@ -81,6 +100,11 @@ addressed_to_pm() {
     | grep -qiE 'xian|\bpm\b|ceo'
 }
 
+N1=0; N1_ALL=0; N2=0; N2_ALL=0; N3=0; N3U=0; N4=0
+RAN1=0; RAN2=0; RAN3=0; RAN4=0
+
+if [[ "$SCOPE" != "global" ]]; then
+RAN1=1
 echo "1. MAIL TRIAGED TO read/ IN THE WINDOW — the surface triage moves things TO"
 TRIAGED=$(git log --since="$SINCE" --diff-filter=A --name-only --format= -- "$READ_BOX" 2>/dev/null | sed '/^$/d' | sort -u)
 N1_ALL=$(printf '%s' "$TRIAGED" | grep -c . || true); N1=0
@@ -94,7 +118,10 @@ fi
 [[ "$N1" -eq 0 ]] && echo "   none addressed to PM."
 echo "   → ${N1} of ${N1_ALL} triaged memos name PM in \`to:\` (cc-only deliberately excluded)."
 echo
+fi
 
+if [[ "$SCOPE" != "role" ]]; then
+RAN2=1
 echo "2. MEMOS LANDED IN PM'S INBOX IN THE WINDOW, ADDRESSED TO PM"
 PMNEW=$(git log --since="$SINCE" --diff-filter=A --name-only --format= -- "$PM_BOX" 2>/dev/null | sed '/^$/d' | sort -u)
 N2_ALL=$(printf '%s' "$PMNEW" | grep -c . || true); N2=0
@@ -109,8 +136,11 @@ fi
 echo "   → ${N2} of ${N2_ALL} landed memos are addressed TO PM. The rest are cc copies —"
 echo "     real mail, but cc is not briefing, so they are not automatically PM's to action."
 echo
+fi
 
 # ---- 3. standing-items rows self-declaring a PM block --------------------------------------------
+if [[ "$SCOPE" != "global" ]]; then
+RAN3=1
 echo "3. ROWS IN ${STANDING} SELF-DECLARING A PM BLOCK"
 N3=0; N3U=0
 if [[ ! -f "$STANDING" ]]; then
@@ -145,8 +175,11 @@ echo "     (that count includes UNTESTABLE rows — not-confirmed is not the sam
 echo "     ⚠️  Keyword probe against the board's HTML: false 'on board' on common words, false"
 echo "        'NOT ON BOARD' when the board rephrased it. Every line is a candidate to eyeball."
 echo
+fi
 
 # ---- 4. COMMIT MESSAGE BODIES (PM's "full tree" — the 16-day Apache-2.0 hole) ---------------------
+if [[ "$SCOPE" != "role" ]]; then
+RAN4=1
 echo "4. COMMIT MESSAGES IN THE WINDOW THAT FLAG SOMETHING FOR PM"
 PAT='flagging (to|for) PM|for PM.s (confirmation|call|ruling|decision)|needs PM|PM to (confirm|decide|rule)|awaiting PM|not asserting it as settled|unowned'
 CM=$(git log --since="$SINCE" --format='%h%x09%s%x09%b' --all 2>/dev/null | grep -iE "$PAT" | head -20 || true)
@@ -157,6 +190,7 @@ fi
 echo "   → ${N4} commit(s). This is the surface that hid the Apache-2.0 copyright flag for 16 days:"
 echo "     a commit body saying 'flagging to PM for confirmation' is NOT flagging. The board is."
 echo
+fi
 
 # ---- marker ---------------------------------------------------------------------------------------
 if [[ "$RECORD" -eq 1 ]]; then
@@ -165,16 +199,26 @@ if [[ "$RECORD" -eq 1 ]]; then
   echo
 fi
 
+SCANNED_LIST=""
+[[ "$RAN1" -eq 1 ]] && SCANNED_LIST="${SCANNED_LIST}  · mailboxes/${ROLE}/read/           ${N1} added
+"
+[[ "$RAN2" -eq 1 ]] && SCANNED_LIST="${SCANNED_LIST}  · ${PM_BOX}/    ${N2} added
+"
+[[ "$RAN3" -eq 1 ]] && SCANNED_LIST="${SCANNED_LIST}  · ${STANDING}   ${N3} open PM rows (${N3U} unmatched)
+"
+[[ "$RAN4" -eq 1 ]] && SCANNED_LIST="${SCANNED_LIST}  · commit message bodies (--all)     ${N4} flagged
+"
+SCANNED_COUNT=$((RAN1 + RAN2 + RAN3 + RAN4))
+
 cat <<EOF
 ── coverage ────────────────────────────────────────────────────────
-role '${ROLE}', window from ${SINCE}. Surfaces scanned — 4:
-  · mailboxes/${ROLE}/read/           ${N1} added
-  · ${PM_BOX}/    ${N2} added
-  · ${STANDING}   ${N3} open PM rows (${N3U} unmatched)
-  · commit message bodies (--all)     ${N4} flagged
-
-  ⚠️ Deliberately NOT summed into one number. The four surfaces measure different things at
-     different confidence, and a single "N candidates" figure would imply they are comparable.
+role '${ROLE}', window from ${SINCE}, scope=${SCOPE}. Surfaces scanned — ${SCANNED_COUNT} of 4:
+${SCANNED_LIST}
+  ⚠️ Deliberately NOT summed into one number, even within scope. The surfaces measure different
+     things at different confidence, and a single "N candidates" figure would imply they are
+     comparable. ${SCANNED_COUNT} of 4 is the scan's own denominator — with --scope=role or
+     --scope=global, the other two surfaces were not run this call, not run-and-clean; call with
+     no --scope (or --scope=all) for the full 4-surface picture.
 
 NOT scanned — real gaps, do not infer safety from their absence:
   · GitHub issue comments — not a signalling surface by norm, but flags land there anyway
