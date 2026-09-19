@@ -50,7 +50,7 @@ than let them silently discount every later epic's signal. **#1747 is itself an 
 fallback failing quietly** — the denominator drifted from four to six without anyone's "fully
 green" claims noticing, which is exactly the m-44 risk this epic exists to retire.
 
-### 2. Security/tenancy (17 items, 11 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
+### 2. Security/tenancy (20 items, 11 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
 **Original six, all CLOSED 2026-09-12**: ~~`#1734`~~ personality API global-config clobber ·
 ~~`#1690`~~ demo plugin live-mounted by default · ~~`#1732`~~ chat-render XSS · ~~`#1733`~~ stale
 unauthenticated duplicate page · ~~`#1741`~~ pattern-suggestions XSS · ~~`#1740`~~ twin-file
@@ -186,6 +186,24 @@ real `main` deploy carries **by a PPM 2026-09-03 HOLD ruling**, not unverified a
 said since 09-07 — worth noting since it's this file's own prior ruling being the answer, not new
 information. **No PPM ruling needed anywhere in this thread** — split criterion, copy fixes, and
 flag-state bookkeeping are Lead/Arch/CXO's own domain.
+
+**`#1824` — the four-bucket split above, now filed** (Arch, 2026-09-18, after the classifier-split
+thread lived only in mailbox memos through a session renewal). Confirms the shape verbatim against
+source (`conversational_floor.py:660-682` collapses five distinct causes into one `"auth"` return,
+two of them with comments admitting they aren't auth) and carries the same self-correction as the
+mail thread: **explicitly warns future readers not to cite `#1814` as the reason for the split** —
+`"not initialized"` earns its own bucket by the criterion alone, and citing an incident it didn't
+cause would be a true conclusion resting on a wrong reason. Found missing from board/milestone at
+this fire despite the standing filing convention; fixed same-fire (MVP, board-added, Status=Product
+Backlog).
+
+**Two more from today's BYOC/Slack-key-binding family** (both surfaced by `#1819`, prog,
+2026-09-18): `#1822` — Slack inbound only binds the sender's Anthropic key, not the fuller
+provider-keyed mapping `#1819` gave the web routes; a residue, not a new defect class. `#1823` — a
+genuine product decision, not a bug: should one stored LLM key of *any* provider be enough to pass
+`/intent`'s refusal rung, or does the rung stay Anthropic-specific? Explicitly filed as a decision
+for PM/product, not something Lead can resolve in code. Both already correctly milestoned/boarded
+at filing (the convention held); folded in here for epic-2 continuity.
 
 **`#1818` — the keyless-copy fix (v113) shipped same day, but the design question underneath it
 was deliberately split out rather than decided under copy pressure**: should a deterministic
