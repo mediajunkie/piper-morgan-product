@@ -57,20 +57,16 @@ status → `ready-for-docs`, publish-ready memo sent to Docs (cc PM) — `mailbo
 `inbox/` until Docs triages) `publish-ready-comms-to-docs-cc-pm-assume-it-was-you-2026-09-19.md`.
 **Nothing further owed here unless Docs/PM flags something.**
 
-**"From Abstraction to Example"** (renamed from "...Worked Example", pubDate 2026-09-20): PM got a
-day ahead — finished editing, added illustration + frontmatter, and asked Comms to resolve an open
-`[Note to Comms]` editorial bracket in the "illuminating contrast" section using real source facts.
-Resolved: real harassment-case worked example (source: `dev/2026/04/22/2026-04-22-1645-lead-code-
-opus-log.md`, cross-confirmed against the published sibling post "The Voice of a Denial") now sits
-paired against the pre-change contrast line already in the draft. **PM is now doing their own voice
-pass** before handoff to Docs. **Comms' next move once that's done: run the full template audit**
-(noted a few pre-existing typos while reading — stray period, "the the models," "origianal",
-double spaces — worth a full sweep, not just spot fixes). Calendar title already synced to match
-the rename; draft filename intentionally left as `from-abstraction-to-worked-example.md` (PM hasn't
-asked for a rename; confirmed not functionally required since `publish-to-blog` takes an explicit
-`--slug` at publish time).
+**"From Abstraction to Example"** (renamed from "...Worked Example", pubDate 2026-09-20): CLOSED.
+Full template audit run after PM's voice pass — 16/16 clean. Fixed 5 semicolons, typos, formatting;
+PM supplied the fix for one garbled sentence directly (line 45, after hitting a GitHub save-conflict
+in the admin UI — resolved by applying PM's fix via git rather than a reload/re-edit round-trip).
+Calendar → `ready-for-docs`, publish-ready memo sent to Docs (cc PM). Draft filename intentionally
+left as `from-abstraction-to-worked-example.md` (not functionally required to rename; confirmed
+`publish-to-blog` takes an explicit `--slug` at publish time).
 
-PM's broader stated plan: after these two posts, resume editorial calendar planning work (no
+**Both of today's blog-post threads are now closed on Comms' end** — nothing further owed on either
+unless Docs/PM flags something. PM's stated next step: resume editorial calendar planning work (no
 further detail given yet on what aspect).
 
 ## Waiting on others
