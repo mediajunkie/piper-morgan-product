@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "053"
+title: "Warmth Calibration"
+status: "Unknown"
+valid_from: "2026-01-22"
+last_updated: "2026-08-29"
+---
+
 # Pattern-053: Warmth Calibration
 
 **Status**: Proven

@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "050"
+title: "Context Dataclass Pair"
+status: "Unknown"
+valid_from: "2026-01-22"
+last_updated: "2026-08-29"
+---
+
 # Pattern-050: Context Dataclass Pair
 
 **Status**: Proven

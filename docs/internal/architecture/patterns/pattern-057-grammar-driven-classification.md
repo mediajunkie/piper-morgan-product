@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "057"
+title: "Grammar-Driven Classification"
+status: "**Proven** — demonstrated in #433 Core-Object-Model-Grammar (promoted 2026-06-17, instance verified)"
+valid_from: "2026-01-22"
+last_updated: "2026-08-29"
+---
+
 # Pattern-057: Grammar-Driven Classification
 
 ## Status

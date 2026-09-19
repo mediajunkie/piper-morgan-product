@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "051"
+title: "Parallel Place Gathering"
+status: "Unknown"
+valid_from: "2026-01-22"
+last_updated: "2026-08-29"
+---
+
 # Pattern-051: Parallel Place Gathering
 
 **Status**: Proven

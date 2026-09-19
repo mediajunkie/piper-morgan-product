@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "056"
+title: "Consciousness Attribute Layering"
+status: "**Proven** — demonstrated in #434 Entity-with-Consciousness (promoted 2026-06-17, instance verified)"
+valid_from: "2026-01-21"
+last_updated: "2026-08-29"
+---
+
 # Pattern-056: Consciousness Attribute Layering
 
 ## Status

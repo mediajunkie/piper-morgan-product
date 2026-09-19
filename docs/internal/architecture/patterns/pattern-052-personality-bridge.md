@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "052"
+title: "Personality Bridge"
+status: "Unknown"
+valid_from: "2026-01-22"
+last_updated: "2026-08-29"
+---
+
 # Pattern-052: Personality Bridge
 
 **Status**: Proven
