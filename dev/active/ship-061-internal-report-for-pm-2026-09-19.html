@@ -56,6 +56,7 @@
     <div class="tile"><div class="v">56</div><div class="k">created in window</div></div>
     <div class="tile" style="border-color:var(--red)"><div class="v" style="color:var(--red)">+11</div><div class="k">net — the pile GREW</div></div>
     <div class="tile"><div class="v">5 of 7</div><div class="k">days actually worked</div></div>
+    <div class="tile"><div class="v">29</div><div class="k">never started, of 56 open</div></div>
     <div class="tile"><div class="v">1,804</div><div class="k">commits</div></div>
     <div class="tile"><div class="v">81.5%</div><div class="k">sprint closed — 246 of 302</div></div>
   </div>
@@ -64,8 +65,7 @@
     <p style="margin-top:0">🔴 <b>The number that should lead the discussion: we closed 45 and opened
     56. The pile grew by 11 in a week where we only worked five days.</b></p>
     <p><b>This is the quantitative form of what you said this afternoon</b> — <i>"too much unfinished
-    business is piling up, chasing newer things."</i> It is the same finding as <b>32 of 57 never
-    started</b> and as Arch's <i>"rulings are outpacing mechanisms."</i> <b>Three independent
+    business is piling up, chasing newer things."</i> It is the same finding as <b>29 of 56 never started</b> and as Arch's <i>"rulings are outpacing mechanisms."</i> <b>Three independent
     surfacings, and now a measured one.</b></p>
     <p style="margin-bottom:0">⚖️ <b>The fair reading, which I'd argue for:</b> a rising pile is not
     obviously bad here. Much of the inflow came from <i>looking harder</i> — Lead's own digging into
@@ -84,16 +84,26 @@
     <tr><td><b>Wed 09-16</b></td><td><b>0</b></td><td><b>0</b></td><td rowspan="2" style="color:var(--red)"><b>the standdown — two days, entirely absent from the data</b></td></tr>
     <tr><td><b>Thu 09-17</b></td><td><b>0</b></td><td><b>0</b></td></tr>
   </table></div>
+  <p>✅ <b>The by-day figures are confirmed independently.</b> Your timestamp syntax works — querying
+  Saturday in halves (<code>closed:2026-09-12T00:00:00-07:00..T12:00:00-07:00</code> and its
+  complement) returns <b>14 + 14 = 28</b>, matching the TSV-derived Saturday count exactly.
+  <b>Two methods, same answer.</b></p>
   <p><b>Weekend is prime time, confirmed in the data rather than assumed:</b> Saturday alone carried
   28 of the week's 45 closures. <b>A weekend outage costs multiples of a weekday one.</b></p>
   <p style="margin-bottom:1.2rem">✅ <b>Lead's self-reported "~45 issues closed" is confirmed exactly
   at 45.</b> Their figure was right and is no longer an attributed estimate.</p>
 
-  <p><b>Milestone direction, measured today rather than at window close:</b> MVP sits at <b>57 not
-  done</b>, <b>1,179 done</b>, zero unmilestoned. <b>32 of the 57 have never been started</b> — more
-  than half the remaining work has nobody on it. Since yesterday, three closed and four arrived, so
-  <b>inflow is still outpacing closure</b> and Product Backlog grew 14 → 16. That last part is triage
-  working correctly rather than items landing in Sprint — but the total isn't shrinking yet.</p>
+  <p><b>Where it stands now</b> — from your own full-sprint export (pulled after 15:02 today), so it
+  needs no API call and supersedes the hourly-drifting figures I was quoting earlier:</p>
+  <div class="scroll"><table>
+    <tr><th></th><th>Beta-Blockers sprint</th><th>MVP milestone</th></tr>
+    <tr><td><b>open now</b></td><td><b>56</b> — 29 Sprint Backlog · 18 Product Backlog · 6 In Review · 3 In Progress</td><td>the same 56 — all open MVP work sits in this sprint</td></tr>
+    <tr><td><b>closed</b></td><td>246</td><td>1,179</td></tr>
+    <tr><td><b>total</b></td><td>302 → <b>81.5% closed</b></td><td>1,235</td></tr>
+  </table></div>
+  <p><b>29 of the 56 have never been started</b> — just over half the remaining work has nobody on it,
+  with 41 days to 30 October. <b>Two denominators, both true:</b> quoting the milestone's 1,179-done as
+  if it were the sprint's would overstate completion roughly fourfold.</p>
 
   <h2>The week's three arcs</h2>
 
