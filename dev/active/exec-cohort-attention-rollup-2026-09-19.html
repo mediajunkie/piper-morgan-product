@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your decision queue — 19 September</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#16181c; --card:#1e2127; --line:#32363e; --ink:#e8e8e8; --mute:#9aa0aa;
+            --red:#e8705f; --amber:#e0a94a; --grey:#7a8089; --green:#5cbf72; --link:#79aefb; }
+  }
+  body { font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:860px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; letter-spacing:-.01em; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 .5rem; }
+  .lede { margin:.75rem 0 1.25rem; padding:.8rem 1rem; background:var(--card);
+          border:1px solid var(--line); border-radius:6px; }
+  h2 { font-size:1.05rem; margin:2rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--red);
+          border-radius:6px; padding:.8rem 1rem; margin:.7rem 0; }
+  .item.decide { border-left-color:var(--amber); }
+  .item.drift { border-left-color:var(--grey); }
+  .item.clear { border-left-color:var(--green); }
+  .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.3rem; }
+  .n { font-weight:700; font-size:1.02rem; }
+  .who { font-size:.78rem; color:var(--mute); }
+  .age { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.12rem .45rem;
+         border-radius:4px; background:#eee; color:#444; }
+  @media (prefers-color-scheme: dark) { .age { background:#2c3038; color:#c3c8d0; } }
+  .age.hot { background:#fbe6e2; color:var(--red); }
+  @media (prefers-color-scheme: dark) { .age.hot { background:#3a2523; color:#f0938a; } }
+  .age.new { background:#e4f0e6; color:var(--green); }
+  @media (prefers-color-scheme: dark) { .age.new { background:#1f3324; color:#7fd08f; } }
+  p { margin:.45rem 0; }
+  .ask { margin-top:.5rem; padding:.45rem .65rem; background:rgba(127,127,127,.09);
+         border-radius:4px; font-size:.93rem; }
+  .links { margin-top:.5rem; font-size:.8rem; }
+  .links a, .links code { color:var(--link); text-decoration:none; margin-right:.85rem; word-break:break-all; }
+  code { font:.86em ui-monospace,SFMono-Regular,Menlo,monospace; background:rgba(127,127,127,.12);
+         padding:.08em .32em; border-radius:3px; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  .bigclear { font-size:1.02rem; color:var(--green); font-weight:600; margin:0; }
+  table { border-collapse:collapse; width:100%; font-size:.88rem; margin:.4rem 0; }
+  th,td { text-align:left; padding:.3rem .5rem; border-bottom:1px solid var(--line); }
+  th { color:var(--mute); font-weight:500; font-size:.78rem; text-transform:uppercase; letter-spacing:.03em; }
+  .scroll { overflow-x:auto; }
+  footer { margin-top:2.5rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only">Two things block work, four need a call, and one correction to yesterday's board.</h2>
+  <h1>Your decision queue</h1>
+  <p class="meta">Exec · <b>Saturday 19 September, 07:1x PDT</b> · live-state pass this fire · <b>re-verify runs again immediately before you walk it</b></p>
+
+  <div class="lede">
+    <p><b>Two things block work. Both are yours, and one of them has been ready to go for four days.</b></p>
+    <p style="margin-bottom:0"><b>Yesterday's queue mostly cleared</b> — you ruled Q5 and the
+    scope-guard, Web closed website#35 with evidence, and CXO and PA closed the T-axis thread between
+    themselves. What's left is short.</p>
+  </div>
+
+  <h2>🛑 Blockers</h2>
+
+  <div class="item">
+    <div class="top"><span class="n">1 · Janne's invite — send it</span>
+      <span class="who">HOST · Exec</span><span class="age hot">4 days ready</span></div>
+    <p><b>Token <code>ZVHWT5408X2NFA6P0D838B35</code>, status UNUSED</b>, roster READY TO SEND since
+    09-15 10:15. HOST checked in with you at 07:08 this morning. <b>Nothing is owed by anyone before
+    you send.</b></p>
+    <p><b>I closed the question I left you last night, and I was wrong in it.</b> I said the template
+    "pins 0.8.11.0, almost certainly stale." <b><code>VERSION</code> on trunk reads 0.8.11.0. They
+    match exactly.</b> I inferred staleness from the shape of a number instead of reading the file.</p>
+    <p><b>My read: send.</b> The blocker that caused both holds — #1814, the wall a tester hit
+    following the invite's own first instruction — is closed and verified by <b>Lead's observed,
+    driven flow</b>, which is the strongest evidence in the chain and isn't mine. One claim I could
+    not discharge: the template promises the wizard "validates your API keys before storing them," and
+    I verified only that the endpoint <i>exists</i> — <b>code presence, not a behavioural test.</b>
+    That's a copy-accuracy question on CXO's surface, not a tester-facing wall, and <b>not a reason to
+    hold a four-day-old invite.</b></p>
+    <div class="ask"><b>To send:</b> compose from
+    <code>docs/operations/alpha-onboarding/email-template.md</code> (full) or
+    <code>email-2-confirmation.md</code> (short). There is no pre-drafted email. Roster row is in your
+    own main checkout — gitignored by design, which is HOST's trust-zone split working.</div>
+  </div>
+
+  <div class="item">
+    <div class="top"><span class="n">2 · Vercel — and my board was the unreliable source here</span>
+      <span class="who">Web · Pard</span><span class="age hot">10 days</span></div>
+    <p>⚠️ <b>Repeating the correction so it doesn't get lost:</b> the line "deleting old deployments is
+    free and sufficient" entered on the 09-13 board, <b>is sourced to nothing</b>, and contradicts both
+    Web's own carry-forward (question open and access-blocked since 09-09) and Vercel's own UI as you
+    read it. <b>You were right to doubt it. Don't act on it.</b></p>
+    <p><b>What is actually known:</b> nothing about which resource runs out, how close it is, or
+    whether the ceiling throttles or hard-stops. The 09-10 board said exactly that and was right; the
+    09-13 board replaced it with a confident sentence nobody could source.</p>
+    <div class="ask"><b>The unblocking artifact is your Vercel email text</b> — forward or paste it and
+    Web can answer properly. The token via Pard makes it permanently answerable instead of a one-off.
+    <b>On "what's recurring": I don't know, and I'm not going to invent a second version of the same
+    mistake.</b></div>
+  </div>
+
+  <h2>🔴 Decisions — nothing is stopped</h2>
+
+  <div class="item decide">
+    <div class="top"><span class="n">3 · Bets 001–003 — you asked to be reminded today</span>
+      <span class="who">Arch</span><span class="age hot">20 days</span></div>
+    <p>★ <b>Arch re-sized the ask, and the re-sizing is the point:</b> this is <b>three fields on one
+    memo, not three architecture documents to review.</b> Bet 001 needs three short answers —</p>
+    <div class="scroll"><table>
+      <tr><th>field</th><th>what's needed</th></tr>
+      <tr><td><b>The buyer</b></td><td>A named human or org wanting the enterprise tier. <b>"None named" is a complete and valid answer</b> — it converts the bet to labelled speculation on a short leash, or retires the milestone.</td></tr>
+      <tr><td><b>Cost box / appetite</b></td><td>Arch's recommendation already written in: zero build until the buyer field carries a name.</td></tr>
+      <tr><td><b>Kill-condition date</b></td><td>Arch suggests the beta retrospective.</td></tr>
+    </table></div>
+    <p>002 and 003 are the same shape, and <b>003 is already partly pre-filled from your own 08-29
+    answer</b> — confirm-or-amend, not authorship.</p>
+    <p>⭐ <b>Arch's structural point is worth more than the reminder:</b> <i>"'non-blocking' is exactly
+    what let them sit 20 days. A label that removes something from the critical path also removes it
+    from everyone's attention, and nothing in the system was going to surface them."</i> You asking to
+    be reminded is the correction — <b>and carrying these in this rollup is now my standing job, not a
+    line you have to chase.</b></p>
+    <div class="links"><code>docs/internal/architecture/bets/</code></div>
+  </div>
+
+  <div class="item decide">
+    <div class="top"><span class="n">4 · Your six-item test round</span>
+      <span class="who">Exec · Lead</span><span class="age hot">12 days</span></div>
+    <p>Walkthrough delivered 09-07, you sequenced it behind that day's blog post, and it hasn't
+    resurfaced. Lead's brief decision 2 is the same round — decisions 1 and 3 were both ruled and
+    shipped on 09-07.</p>
+    <div class="ask"><b>Needed:</b> run it, or tell me to drop it.</div>
+  </div>
+
+  <div class="item decide">
+    <div class="top"><span class="n">5 · PA's T1</span><span class="who">PA</span><span class="age hot">16 days</span></div>
+    <p>Delivered 09-03, republished as an Artifact specifically to lower the friction of closing it
+    out. <b>The silence isn't yours — it never reached a board until Thursday.</b></p>
+    <div class="ask"><b>Needed:</b> a reply, or "drop it."</div>
+  </div>
+
+  <div class="item decide">
+    <div class="top"><span class="n">6 · Epics 9 and 10 — keep, or revert to a short list?</span>
+      <span class="who">PPM</span><span class="age hot">5 days</span></div>
+    <p>1–3 items each. PPM offered you the choice on 09-14 and checked exhaustively before reporting
+    no reply. Downstream of the 6→12 epic-count question you raised — <b>this is PPM offering to
+    shrink the count rather than defend it.</b></p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="n">7 · Q5's qualifier is still open</span>
+      <span class="who">Arch</span><span class="age new">ruled 09-18</span></div>
+    <p>You ruled the headline — <i>"idle is a legitimate state."</i> Arch kept the <b>denominator</b>
+    question open in their standing items rather than letting the headline close it. Correct call, no
+    action needed; noted so it doesn't read as fully settled.</p>
+  </div>
+
+  <h2>✅ Cleared since yesterday's board</h2>
+  <div class="item clear">
+    <p class="clean"><b>Q5</b> — ruled. <b>Scope-guard</b> — you chose option 2; now an implementation
+    item blocked on the permission classifier, not on you. <b>website#35</b> — Web closed it with real
+    evidence rather than on the fix's merits. <b>CXO's T axis</b> — closed between CXO and PA without
+    you. <b>PA's BYOC sequencing</b> — you'd answered it on 09-15.</p>
+    <p class="clean" style="margin-bottom:0">⚠️ <b>And the scope-guard briefing I gave you was wrong in
+    a way that mattered</b> — my option (a) would have subjected all 12 seats to the required check and
+    stopped every mail push and heartbeat in the cohort. Arch caught it by going to the source. Logged
+    at length in yesterday's board.</p>
+  </div>
+
+  <h2>🟢 The cohort</h2>
+  <div class="item clear">
+    <p class="clean"><b>All eleven seats healthy.</b> Wave 1 (Arch, Comms) cleared last night and both
+    are running normally this morning. <b>Arch found a real gap because we asked</b> — a finding living
+    only in a mailbox memo, now #1824.</p>
+    <p class="clean" style="margin-bottom:0"><b>One row to ignore for now:</b> CIO still reads
+    <code>parked</code>. It was awake all day yesterday and hasn't fired yet today because its cadence
+    is 10/16/22 — <b>that's the clock, not a stall.</b> Only CIO can clear its own row; my notice is in
+    its inbox for its 10:37 fire.</p>
+  </div>
+
+  <footer>
+    <b>Bottom line: send Janne's invite, paste me the Vercel email, and fill three blanks on one memo.
+    Everything else can wait for a weekday.</b><br><br>
+    <b>Live-state pass — what was checked and at which layer.</b> Liveness first:
+    <code>DUTY_CYCLE_COVERAGE=1 duty-cycle-freeze-check.sh</code>, all 11 rows (the per-role tool, not
+    the cohort one). <code>check-unboarded-pm-items.sh</code> run at compile — its first real use —
+    scanning <code>read/</code>, PM's inbox filtered to <code>to:</code> not <code>cc:</code>,
+    standing-items rows, and commit bodies; 2 PM-addressed memos surfaced, both boarded above.
+    Version claim checked by reading <code>VERSION</code> against the template, <b>correcting a claim I
+    made last night without checking.</b> Invite status read from the roster in PM's own checkout,
+    read-only. Bets status taken from Arch's own re-verification of the <code>PM TO FILL</code> markers
+    — <b>their check, not mine, and they explicitly did not claim PM answered elsewhere.</b><br><br>
+    <b>Known gap, unchanged and still the largest:</b> PM's rulings made in conversation live in no
+    surface any re-verify rule checks. Arch independently hit the same wall in their Bets memo this
+    morning. Going to CIO/HOST today.
+  </footer>
+</div>
+</body>
+</html>
