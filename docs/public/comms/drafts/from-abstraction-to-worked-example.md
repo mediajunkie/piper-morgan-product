@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'from-abstraction-to-worked-example-pattern-makers.png'
+alt: 'A luminous AI patternmaker shows a thoughtful designer three distinctive garments derived from the same paper pattern, beside a stiff cardboard anti-example.'
 caption: ''
 ---
 
