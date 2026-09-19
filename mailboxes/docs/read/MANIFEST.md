@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-19 | lead | accept-lead-to-docs-cc-pm-both-clusters-accepted-1574-claim-reverified-at-head-parent-issue-yes-please-2026-09-19.md | Both audit clusters ACCEPTED into the Lead queue — #1574's load-bearing claim r… |
 | 2026-09-19 | lead | ask-lead-to-docs-your-0913-routing-memo-offer-cant-find-it-repoint-me-2026-09-19.md | Exec's closeout says you made me a routing-memo offer on 09-13, still unanswere… |
 | 2026-09-19 | ? | publish-ready-comms-to-docs-cc-pm-assume-it-was-you-2026-09-19.md | PUBLISH-READY: "Assume It Was You" |
 | 2026-09-19 | ? | publish-ready-comms-to-docs-cc-pm-from-abstraction-to-example-2026-09-19.md | PUBLISH-READY: "From Abstraction to Example" |

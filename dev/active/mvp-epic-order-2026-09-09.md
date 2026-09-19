@@ -346,9 +346,31 @@ to capture an out-of-scope anecdote) is why this got measured rather than argued
 folded
 2026-09-14: `#1811` (a calendar-context test mocks `_get_todays_todos`'s return shape wrong —
 `()` instead of `(todos, total)` — the same test-theatre class as `#1760`; confirmed pre-existing
-and unrelated to `#1807` via an A/B/A stash test). **Remaining open: `#1760`, `#1761`, `#1763`,
-`#1697`, `#1718`, `#1772`, `#1811`** (7 of 15) — this epic is currently the one Lead is actively
-working, per their own log (opened right after epic 3 hit its floor Saturday).
+and unrelated to `#1807` via an A/B/A stash test). Plus, folded 2026-09-19: `#1829` (Arch, from the
+`#1823` branch-two trace) — `resolve_model`'s totality (services/llm/config.py) is achieved by
+silent `.get()` fallback, not exhaustiveness: an unrecognized `task_type` silently resolves to the
+`heavy` tier, and an unrecognized provider silently returns OpenAI's model IDs (latent at 3/3
+providers today, live the moment a fourth is added). Same mechanism CXO/Arch already used to rule
+`#1823` safe (provider-agnosticism holds today) is also what hides a mistier/mis-route defect — a
+`.get()` with a default can't distinguish "absent" from "found the default," same shape as #1816
+and this epic's own class. Asks for a build-time ratchet, not a vacuous
+`assert resolve_model(p, t) is not None` (passes trivially given the fallbacks — the
+`test_standup_data_sources` shape, `#1642`). Found missing from board/milestone at filing despite
+the standing convention — fixed same-fire (MVP, board-added, Status=Product Backlog). **Remaining
+open: `#1760`, `#1761`, `#1763`, `#1697`, `#1718`, `#1772`, `#1811`, `#1829`** (8 of 16) — this
+epic is currently the one Lead is actively working, per their own log (opened right after epic 3
+hit its floor Saturday).
+
+**Separately, same memo: Arch also answered CXO's #1823 branch-two scope question** (is
+provider-agnosticism deliberate/load-bearing, making branch two *permanently* empty rather than
+merely empty today) — **yes, derived from BYOC (PM's #1812 ruling), not an independent preference;
+trading it away breaks BYOC for any non-Anthropic-only user.** But it is not currently law — absent
+from both `ESSENCE.md`'s five standing rules and the seven commitments, protected only by one
+source comment and the incidental fact that all three providers today define all three tiers.
+Arch explicitly declined to propose an ESSENCE amendment (would restate an existing law — BYOC — at
+lower altitude) and instead filed `#1829` for the missing mechanism. **My #1823 ruling (branch two
+out of scope) is unchanged and unaffected** — this only answers *how permanently* empty, which
+doesn't change what ships.
 
 **#1717 status (2026-09-12)**: code-done and live on v86 — awaits one harness re-run + CXO's voice
 read against the contract's §6 acceptance test (item 1, the composition case). CXO's call, not

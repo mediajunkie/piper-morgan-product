@@ -289,7 +289,15 @@ while :; do
                 [ -z "$line" ] && continue
                 IFS=',' read -ra tokens <<<"$line"
                 for tok in "${tokens[@]}"; do
-                    slug="$(printf '%s' "$tok" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/^"//' -e 's/"$//')"
+                    # Lowercased deliberately: on macOS (every Amber seat) the filesystem is
+                    # case-INsensitive, so the `[ -d mailboxes/$slug ]` guard below returns true
+                    # for a header-cased 'CIO'/'CXO'/'Pard' — but the `[ "$g" = "$expected" ]`
+                    # comparison two lines down is bash string equality, which is case-SENSITIVE.
+                    # A correctly-delivered memo to mailboxes/cio/ therefore warned that cio was
+                    # omitted. Fired 4x on 2 correct sends (Web, 2026-09-19) before being traced.
+                    # Every real mailbox dir is lowercase (verified against origin/main), so
+                    # normalizing here makes the guard and the comparison agree.
+                    slug="$(printf '%s' "$tok" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/^"//' -e 's/"$//' | tr '[:upper:]' '[:lower:]')"
                     [ -z "$slug" ] && continue
                     [ -d "$REPO/mailboxes/$slug" ] || continue
                     expected="mailboxes/$slug/inbox/$bn"
