@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Multi-Agent Coordinator Quick Start Guide
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # Multi-Agent Coordinator Quick Start Guide
 
 **Purpose**: Get Multi-Agent coordination working in 5 minutes

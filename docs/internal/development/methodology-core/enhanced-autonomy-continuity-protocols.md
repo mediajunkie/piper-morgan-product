@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Enhanced Autonomy Continuity Protocols & Transition Success
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # Enhanced Autonomy Continuity Protocols & Transition Success
 
 **Date**: August 15, 2025

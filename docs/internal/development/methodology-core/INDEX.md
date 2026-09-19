@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Methodology Documentation Index
+valid_from: "2025-09-26"
+last_updated: "2026-09-14"
+---
+
 # Methodology Documentation Index
 
 **Quick Navigation Guide**: Find the right methodology document for your needs.

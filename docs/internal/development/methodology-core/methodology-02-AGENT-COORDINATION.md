@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Agent Coordination Methodology
+valid_from: "2025-09-21"
+last_updated: "2026-09-01"
+---
+
 # Agent Coordination Methodology
 
 > **Status: HISTORICAL — superseded by `pattern-029-multi-agent-coordination.md`** (B3

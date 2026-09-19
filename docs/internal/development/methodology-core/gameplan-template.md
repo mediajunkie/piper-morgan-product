@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Gameplan Template — moved, retired as a fork
+valid_from: "2026-01-11"
+last_updated: "2026-09-01"
+---
+
 # Gameplan Template — moved, retired as a fork
 
 > 🔴 **ABSORBED — canonical copy lives at `knowledge/gameplan-template.md`.** Ruled by Arch's B3

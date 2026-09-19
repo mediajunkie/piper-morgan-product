@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Chat Protocols and Session Management
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # Chat Protocols and Session Management
 
 ## Session Management

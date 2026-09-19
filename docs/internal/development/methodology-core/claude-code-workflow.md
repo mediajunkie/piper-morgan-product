@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Claude Code Workflow Documentation
+valid_from: "2025-09-21"
+last_updated: "2026-05-15"
+---
+
 # Claude Code Workflow Documentation
 
 ## Overview

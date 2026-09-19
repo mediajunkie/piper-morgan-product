@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Development Methodology Index
+valid_from: "2025-09-21"
+last_updated: "2026-06-11"
+---
+
 # Development Methodology Index
 
 **Status**: ✅ **PRODUCTION READY** - Central Discovery Point Established
