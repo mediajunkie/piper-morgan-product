@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "023"
+title: "Query Layer Patterns"
+status: "**Proven**"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern-023: Query Layer Patterns
 
 ## Status

@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "027"
+title: "CLI Integration Pattern"
+status: "**Proven**"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern-027: CLI Integration Pattern
 
 ## Status

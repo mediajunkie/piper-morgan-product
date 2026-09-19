@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "028"
+title: "Intent Classification"
+status: "Proven (Updated October 5, 2025 - GREAT-4A validation complete)"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern-028: Intent Classification
 
 ## Status

@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "020"
+title: "Spatial Metaphor Integration Pattern (PM-074)"
+status: "**Proven**"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern-020: Spatial Metaphor Integration Pattern (PM-074)
 
 ## Status

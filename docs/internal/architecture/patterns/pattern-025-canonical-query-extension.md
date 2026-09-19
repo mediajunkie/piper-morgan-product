@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "025"
+title: "Canonical Query Extension Pattern"
+status: "**Proven**"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern-025: Canonical Query Extension Pattern
 
 ## Status

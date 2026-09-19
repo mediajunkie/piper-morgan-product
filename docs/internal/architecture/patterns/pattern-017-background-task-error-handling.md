@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "017"
+title: "Background Task Error Handling Pattern"
+status: "**Proven**"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern-017: Background Task Error Handling Pattern
 
 ## Status
