@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "005"
+title: "Transaction Management Pattern"
+status: "**Proven**"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # Pattern-005: Transaction Management Pattern
 
 ## Status

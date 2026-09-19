@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "N/A"
+title: "Grammar Application Patterns"
+status: "Unknown"
+valid_from: "2026-01-22"
+last_updated: "2026-08-29"
+---
+
 # Grammar Application Patterns
 
 **Overview**: Reusable patterns for applying the MUX grammar "Entities experience Moments in Places" to features

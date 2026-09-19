@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "N/A"
+title: "Meta-Patterns"
+status: "Unknown"
+valid_from: "2025-12-28"
+last_updated: "2026-08-29"
+---
+
 # Meta-Patterns
 
 **Status**: Established
