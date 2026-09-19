@@ -83,7 +83,7 @@ EXPECTED_FIELDS = len(EXPECTED_HEADER)
 
 # --- enums. Empty is ALWAYS allowed: a queued row legitimately has blanks. ---
 THEMES = {"building", "insight", "ship"}
-STATUSES = {"drafted", "queued", "ready-for-docs", "published", "distributed"}
+STATUSES = {"planned", "drafted", "queued", "ready-for-docs", "published", "distributed"}
 CANONICAL_SITES = {"distributed"}
 
 # Recognized LEGACY vocabulary. These are drift (a superseded convention), NOT

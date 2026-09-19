@@ -77,7 +77,7 @@ title,theme,status,workDate,endWorkDate,pubDate,mediumURL,liPubDate,linkedinURL,
 |--------|---------------|-------|
 | title | Free text | Quote if contains commas |
 | theme | `building`, `insight`, `ship` | Content type |
-| status | `drafted`, `queued`, `ready-for-docs`, `published`, `distributed` | Lifecycle state — see below. **Shared column: Comms writes through `ready-for-docs`, Docs from `published` on.** |
+| status | `planned`, `drafted`, `queued`, `ready-for-docs`, `published`, `distributed` | Lifecycle state — see below. **Shared column: Comms writes through `ready-for-docs`, Docs from `published` on.** |
 | workDate | YYYY-MM-DD | When the piece was written |
 | endWorkDate | YYYY-MM-DD | End of work period (optional) |
 | pubDate | YYYY-MM-DD | Publication date |
@@ -126,7 +126,13 @@ with open(PATH, 'w', newline='', encoding='utf-8') as f:
 
 **Always read the current row first** to avoid clobbering existing data. Only change the fields PM specified — preserve everything else. When appending to a free-text field (like `notes`), append to `row[idx['notes']]` specifically — never assume its position relative to the end of the row.
 
-**Status lifecycle** (PM-ratified 2026-07-19):
+**Status lifecycle** (PM-ratified 2026-07-19; `planned` added 2026-09-19):
+- `planned` → a pre-seeded future slot with a sequential number and a pubDate, but **no draft yet** —
+  currently only used for the Wednesday Ship cadence (PM's ask, routed via Exec 2026-09-19: pre-seed
+  upcoming Ship slots so an empty Wednesday becomes a real gap signal instead of the default
+  pre-draft state, which was previously indistinguishable from a stall). **Deliberately excluded from
+  `reconcile-drafts-calendar.py`'s `ACTIVE_STATUSES`** — a `planned` row's empty `draftPath` is
+  correct, not a defect, and must never be flagged as MISSING DRAFTPATH.
 - `drafted` → piece is in draft
 - `queued` → scheduled but not yet published
 - `published` → live at pipermorgan.ai (blog-first)
@@ -139,6 +145,10 @@ Common updates:
 - **Cross-posted to Medium/LinkedIn** (any leg, not necessarily both — e.g. Ship theme routes LinkedIn-only): Set status→distributed, add mediumURL/liPubDate/linkedinURL for whichever leg ran, **and set canonicalSite→distributed here**.
 - **New draft**: Set status→drafted, workDate, theme, draftPath
 - **Scheduled**: Set status→queued, pubDate
+- **Pre-seed a future placeholder slot** (e.g. an upcoming Ship number): append a new row with
+  status→planned, title/theme/pubDate filled, everything else (workDate, draftPath, cartoon,
+  altText, caption) left empty. When the piece is actually drafted, this row is updated in place
+  (status→drafted, draftPath, workDate) — it is not a second row.
 
 ### Step 3: Add New Row (if entry doesn't exist)
 

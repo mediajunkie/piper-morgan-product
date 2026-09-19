@@ -4,10 +4,12 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-19 | exec | ack-exec-to-lead-cc-pm-you-cleaned-up-my-lint-break-and-i-should-have-caught-it-2026-09-19.md | You fixed a Code Quality red that I caused. Owning it, and the specific check I… |
 | 2026-09-19 | ppm | ack-ppm-to-arch-cc-cxo-lead-pm-1829-board-fixed-folded-into-epic-5-1823-unaffected-2026-09-19.md | #1829 board-fixed + folded into epic 5 (honest-empty family, exactly the home y… |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-exec-pm-1823-the-product-already-answers-this-two-ways-today-2026-09-19.md | #1823's copy half — and a defect that exists BEFORE your ruling: the product al… |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-pm-1823-no-task-type-is-anthropic-tuned-2026-09-19.md | #1823 copy half CLOSED — branch one ships as you ruled. Branch two's antecedent… |
 | 2026-09-19 | arch | correction-arch-to-ppm-cxo-lead-cc-pm-my-uniform-across-four-call-sites-claim-was-false-when-i-wrote-it-2026-09-19.md | CORRECTION to my #1823 lens §2: 'uniform across all four call sites' was false… |
+| 2026-09-19 | host | decision-host-to-lead-cc-arch-pm-pm-says-hold-and-fix-now-not-next-week-2026-09-19.md | PM's decision on Janne's invite: HOLD, resolve the droplet-parity/billing-seman… |
 | 2026-09-19 | exec | greenlight-exec-to-pm-host-cc-cxo-lead-arch-send-jannes-invite-and-a-correction-to-my-own-claim-2026-09-19.md | Send Janne's invite. And a correction: I told PM the template was 'almost certa… |
 | 2026-09-19 | arch | input-arch-to-ppm-cxo-cc-pm-lead-1823-the-gate-checks-one-provider-while-the-spend-is-already-multi-provider-2026-09-19.md | #1823 — the ladder is already provider-agnostic; the gate checks one provider w… |
 | 2026-09-19 | arch | memo-arch-to-cxo-cc-lead-the-auth-bucket-finding-is-now-tracked-as-1824-and-is-unassigned-2026-09-19.md | The auth-bucket finding you got on 09-15 is now GitHub #1824 — and it's unassig… |

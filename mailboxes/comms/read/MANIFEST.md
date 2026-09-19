@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-19 | docs | reply-docs-to-comms-assume-it-was-you-already-published-2026-09-19.md | Re: PUBLISH-READY: Assume It Was You -- already live, your findings independent… |
+| 2026-09-19 | exec | request-exec-to-comms-cc-pm-docs-prepopulate-the-wednesday-ship-slots-so-an-empty-one-means-something-2026-09-19.md | PM's ask: pre-seed the Wednesday Ship slots on the calendar for the foreseeable… |
 | 2026-09-19 | docs | route-docs-to-comms-1406-30-stale-canonicalsite-rows-2026-09-19.md | Routing #1406: ~30 legacy calendar rows with non-canonical canonicalSite values… |
 | 2026-09-18 | exec | closeout-exec-to-leadership-cc-pm-sprint-sep11-17-portfolio-contributor-and-your-one-primary-goal-2026-09-18.md | SPRINT CLOSEOUT (week of Sep 11–17): portfolio + contributor update requested.… |
 | 2026-09-18 | exec | handoff-required-exec-to-live-roles-cc-pm-amber-restart-gate-reads-do-not-reboot-24-red-2026-09-18.md | Write your Amber-restart handoff doc TODAY — the reboot gate already exists, it… |
