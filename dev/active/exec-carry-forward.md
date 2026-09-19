@@ -17,10 +17,30 @@ NOT on track deliberately** (T axis in `PENDING-PROBE` under ESSENCE commitment 
 law citing an instrument that cannot issue a pass). Lead, ppm, pa, cxo all filed within an hour of
 PM's nudge. **Nothing further owed on the closeout.**
 
+🔴 **WAVE 1 IS GO — Arch and Comms, named by me and TOLD (a deliberate break from wave 0).** Pard
+runs it, Janus concurred 18:34, timing is Pard's. I asked both to flag in-flight work invisible on
+trunk; **a "not tonight" from either outranks my read and I re-name, no justification needed.**
+★ **The gap I flagged and nobody has answered: two clean waves will LOOK like the reboot is cleared
+while having tested neither the no-fresh-handoff case nor a seat dying without a predecessor writing
+it a letter.** Reboot day's defining feature is the ABSENCE of a fresh handoff, not surprise. That
+needs a purpose-built test, not an inference from two passes.
+
+✅ **§2.2 ruled by Pard, concurred by Janus: the CRITERION failed, the mechanism passed.** My
+predecessor ran a stable **+31 ±2 min offset on every fire**; the "+~10% jitter" was an assumption I
+had written down, never measured. **Prereg §3 amended: per-seat deadlines now come from the seat's
+own empirical arrival history, never from the cron expression.** The 18:38 fire then arrived 19:08
+(+30) — **the amendment predicted the very next fire correctly.**
+★ Pard's meta-point, which Janus asked to outlive the restart: **both of wave 0's real catches were
+CRITERIA defects, not seat defects. The process for grading seats needed the shakedown more than the
+seats did.**
+
 🔴 **PM IS MID-WALKTHROUGH OF THE DECISION QUEUE.** Board:
 `dev/active/exec-cohort-attention-rollup-2026-09-18.html`. PM's framing: *"I will expedite what I can
-and ask for support with anything tricky."* **Five blockers, four of which take under a minute; only
-the scope-guard ruling needs real thought.** If you are a fresh session: read the board before
+and ask for support with anything tricky."* **THREE live blockers as of 19:1x** — Janne's invite, Vercel,
+and the scope-guard ruling (the only one needing real thought). **Two were struck by re-verification,
+not by PM**: #4 PM had answered 09-15 in conversation; #5 Web closed at 12:28 with real evidence.
+⚠️ **Re-verify immediately BEFORE any walkthrough, not only at compile** — the board is a snapshot and
+ten awake roles move faster than it. That four-minute pass saved PM two items today. If you are a fresh session: read the board before
 re-deriving anything, and do not re-board what PM has already cleared.
 
 ⚠️ **THE LARGEST HOLE I KNOW ABOUT, found 15:1x and not yet fixed: PM's conversational rulings are
@@ -37,6 +57,14 @@ spoken rulings on another role's behalf. **Raise with CIO/HOST — do not patch 
 wrong, every per-seat reboot deadline is wrong and the belt will read late-but-healthy seats as
 dead.** Offered to measure actual arrival-vs-slot deltas across seats from trunk timestamps — awaiting
 their word. Memo `1b929ebed`.
+
+⭐ **JANUS'S FAILURE IS THE ONE TO BUILD ON, and it is in my lane.** They read 1 of Pard's 5 memos
+and told PM wave 0 had not run when it had; PM acted on it for three hours. Their own diagnosis:
+*"I improvise a check instead of running the drain."* **The durable line: "Janus has not replied" was
+indistinguishable from "Janus has not read it."** That is the same shape as `read/` being a claim
+about your own cognition. At 24 seats on reboot day, unread-vs-unanswered is the expensive ambiguity
+— **the roll-call table should carry READ state, not only alive state.** Connects directly to
+`check-unboarded-pm-items.sh`; expect to build on it.
 
 ⭐ **SHIPPED TODAY, and the reason matters more than the artifact**: PM asked *"are we fixing routing
 issues as we detect them?"* Measured: **29 check-shaped scripts; the ones catching this class are
