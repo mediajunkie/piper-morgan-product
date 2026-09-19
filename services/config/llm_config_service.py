@@ -225,8 +225,10 @@ class LLMConfigService:
           0. (#1814) the key the CURRENT REQUEST already resolved for its acting
              principal — the BYOC ContextVar in ``services/llm/request_key.py``,
              populated by ``resolve_request_api_key`` (header > the user's OWN stored
-             key > designated operator, else refuse). Anthropic only; see
-             ``REQUEST_KEY_PROVIDER``.
+             key > designated operator, else refuse). #1819: provider-keyed — the
+             mapping is asked for THIS provider (the header's key binds under
+             ``REQUEST_KEY_PROVIDER``; stored keys bind under their own row's
+             provider).
           1. the server's own keychain slot (secure storage)
           2. the server's own environment variable (migration fallback)
 
@@ -264,14 +266,16 @@ class LLMConfigService:
             return None
 
         # Priority 0: this request's own resolved key (#1814).
+        # #1819: the binding is provider-keyed now (the user's stored openai key binds
+        # alongside their anthropic one), so ask the mapping for THIS provider — a key
+        # bound for one provider is never reported for another (#1815's constraint).
         if include_request_key:
-            from services.llm.request_key import REQUEST_KEY_PROVIDER, get_request_api_key
+            from services.llm.request_key import get_request_api_key
 
-            if provider == REQUEST_KEY_PROVIDER:
-                request_key = get_request_api_key()
-                if request_key:
-                    # Never logged — credential handling (see request_key.py).
-                    return request_key
+            request_key = get_request_api_key(provider)
+            if request_key:
+                # Never logged — credential handling (see request_key.py).
+                return request_key
 
         # Priority 1: Try keychain (secure storage)
         key = self._keychain_service.get_api_key(provider)

@@ -14,6 +14,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import UploadFile
 
 from services.database.session_factory import AsyncSessionFactory
+from services.llm.request_key import LLMKeyRequiredError
 from services.repositories.document_repository import DocumentRepository
 
 from .ingestion import get_ingester
@@ -315,6 +316,13 @@ class DocumentService:
                 "source": "chromadb_pm_knowledge",
             }
 
+        except LLMKeyRequiredError:
+            # #1819 (the #1809/#1815-Gap-2 principle): the embedding layer REFUSING to
+            # spend is not a search failure to degrade into an empty "fallback_mode"
+            # result — that would hide the missing credential behind a quietly empty
+            # answer. Let the refusal reach the route, which turns it into the honest
+            # "add your OpenAI key" 403.
+            raise
         except Exception as e:
             logger.error(f"Decision search failed: {e}")
             return {

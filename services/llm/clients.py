@@ -392,6 +392,8 @@ class LLMClient:
         }
 
         # Try primary provider first
+        primary_exc: Exception
+        primary_refused: bool
         try:
             result = await self._call_provider(
                 primary_provider, prompt, config, response_format, context, system
@@ -404,85 +406,104 @@ class LLMClient:
                 served["provider"] = primary_provider.value
                 served["model"] = served_model
             return result
-        except LLMKeyRequiredError:
-            # #1809: a key refusal from the provider call itself (the inverted
-            # chokepoint in `anthropic_client_for_request` — unbound is now an
-            # ERROR, never a server-key fallback) is a correct ANSWER, not a
-            # provider failure. Letting the blanket handler below treat it as one
-            # would relabel the refusal as "All configured LLM providers failed"
-            # — try-again copy for a condition retrying cannot fix. Same #1815
-            # Gap 2 principle applied at the call layer.
-            raise
-        except Exception as e:
+        except LLMKeyRequiredError as e:
+            # #1809: a key refusal from the provider leg (the inverted chokepoint —
+            # unbound is now an ERROR, never a server-key fallback) is a correct
+            # ANSWER, not a provider failure to relabel as "All configured LLM
+            # providers failed" (try-again copy for a condition retrying cannot fix;
+            # #1815 Gap 2 at the call layer).
+            # #1819 refinement: with the binding PER-PROVIDER, "not entitled on the
+            # primary" no longer implies "not entitled at all" — a user whose
+            # instance defaults to OpenAI may hold only their own Anthropic key
+            # (#1815's exact scenario). So the refusal falls through to the loop
+            # below, whose availability gate is entitlement-aware: only providers
+            # this REQUEST can spend are tried. If none exists, the refusal — not a
+            # fabricated outage — is what surfaces (the #1809 pin, preserved).
+            logger.info(
+                "llm_primary_not_entitled",
+                provider=primary_provider.value,
+                task_type=task_type,
+            )
+            primary_exc = e
+            primary_refused = True
+        except Exception as e:  # silent-ok: DEFERRED, not swallowed — captured as primary_exc; every path below either returns a successful fallback or re-raises (the refusal, or the aggregate RuntimeError) (#1819)
             logger.warning(
                 "llm_primary_failed",
                 provider=primary_provider.value,
                 task_type=task_type,
                 error=str(e),
             )
+            primary_exc = e
+            primary_refused = False
 
-            # Try each other configured provider in the fallback order (Apr 16: Gemini added)
-            # #1415: the fallback set respects the acting user's consent list —
-            # resilience never overrides #946 (a de-authorized provider must not
-            # process the user's message even when everything else is down).
+        # Try each other configured provider in the fallback order (Apr 16: Gemini added)
+        # #1415: the fallback set respects the acting user's consent list —
+        # resilience never overrides #946 (a de-authorized provider must not
+        # process the user's message even when everything else is down).
+        try:
+            user_authorized = set(self._config_service.get_configured_providers(user_id))
+        except Exception as consent_err:  # silent-ok: consent unknown -> no cross-provider fallback (fail closed); the primary error below still surfaces honestly (#1415). #1816: a ConsentUnreadableError landing here is ALSO fail-closed — an empty authorized set means every fallback candidate is skipped; the primary provider's own error is the honest thing to report, since the primary had already been selected from a consent read that succeeded.
+            logger.warning(f"fallback_consent_check_failed: {consent_err}")
+            user_authorized = set()
+        fallback_errors: list[str] = [f"{primary_provider.value}: {primary_exc}"]
+        attempted_fallback = False
+        for fallback_provider in _FALLBACK_ORDER:
+            if fallback_provider == primary_provider:
+                continue
+            if not self._is_provider_configured(fallback_provider):
+                continue
+            if fallback_provider.value not in user_authorized:
+                continue
+
+            fallback_config = {
+                **task_config,
+                "provider": fallback_provider,
+                "model": resolve_model(fallback_provider, task_type),
+            }
+
+            logger.info(f"Falling back to {fallback_provider.value}")
+            attempted_fallback = True
+
             try:
-                user_authorized = set(self._config_service.get_configured_providers(user_id))
-            except Exception as consent_err:  # silent-ok: consent unknown -> no cross-provider fallback (fail closed); the primary error below still surfaces honestly (#1415). #1816: a ConsentUnreadableError landing here is ALSO fail-closed — an empty authorized set means every fallback candidate is skipped; the primary provider's own error is the honest thing to report, since the primary had already been selected from a consent read that succeeded.
-                logger.warning(f"fallback_consent_check_failed: {consent_err}")
-                user_authorized = set()
-            fallback_errors: list[str] = [f"{primary_provider.value}: {e}"]
-            for fallback_provider in _FALLBACK_ORDER:
-                if fallback_provider == primary_provider:
-                    continue
-                if not self._is_provider_configured(fallback_provider):
-                    continue
-                if fallback_provider.value not in user_authorized:
-                    continue
+                result = await self._call_provider(
+                    fallback_provider,
+                    prompt,
+                    fallback_config,
+                    response_format,
+                    context,
+                    system,
+                )
+                # #1676: a cross-provider fallback CHANGES the serving model —
+                # record it so the instrument's identity is never silent.
+                fallback_served_model = resolve_model_alias(fallback_config["model"].value)
+                _record_serving(fallback_provider.value, fallback_served_model)
+                if served is not None:  # #1620: per-call resolved provider+model
+                    served["provider"] = fallback_provider.value
+                    served["model"] = fallback_served_model
+                return result
+            except LLMKeyRequiredError:
+                # #1809/#1819: the gate above (`_is_provider_configured`) is
+                # entitlement-aware, so a refusal HERE means the gate and the
+                # consumer disagreed about this request's spend entitlement — the
+                # #1814/#1815 agreement property broke. Surface it; papering over
+                # it with the next candidate would hide the disagreement.
+                raise
+            except Exception as fallback_error:
+                logger.warning(
+                    f"Fallback provider {fallback_provider.value} failed: {fallback_error}"
+                )
+                fallback_errors.append(f"{fallback_provider.value}: {fallback_error}")
+                continue
 
-                fallback_config = {
-                    **task_config,
-                    "provider": fallback_provider,
-                    "model": resolve_model(fallback_provider, task_type),
-                }
-
-                logger.info(f"Falling back to {fallback_provider.value}")
-
-                try:
-                    result = await self._call_provider(
-                        fallback_provider,
-                        prompt,
-                        fallback_config,
-                        response_format,
-                        context,
-                        system,
-                    )
-                    # #1676: a cross-provider fallback CHANGES the serving model —
-                    # record it so the instrument's identity is never silent.
-                    fallback_served_model = resolve_model_alias(fallback_config["model"].value)
-                    _record_serving(fallback_provider.value, fallback_served_model)
-                    if served is not None:  # #1620: per-call resolved provider+model
-                        served["provider"] = fallback_provider.value
-                        served["model"] = fallback_served_model
-                    return result
-                except LLMKeyRequiredError:
-                    # #1809: same as the primary arm — a refusal is not a provider
-                    # failure to be papered over by the next candidate. Only the
-                    # Anthropic leg can raise this (the per-request key's sole
-                    # consumer), and it means this request has no key it is
-                    # entitled to spend: the honest outcome is the refusal.
-                    raise
-                except Exception as fallback_error:
-                    logger.warning(
-                        f"Fallback provider {fallback_provider.value} failed: {fallback_error}"
-                    )
-                    fallback_errors.append(f"{fallback_provider.value}: {fallback_error}")
-                    continue
-
-            # No fallback succeeded
-            logger.error(f"All LLM providers failed: {fallback_errors}")
-            raise RuntimeError(
-                f"All configured LLM providers failed. Details: {'; '.join(fallback_errors)}"
-            )
+        if primary_refused and not attempted_fallback:
+            # #1809: the request held no spendable key for ANY consented provider —
+            # the refusal is the honest answer, never "all providers failed".
+            raise primary_exc
+        # No fallback succeeded
+        logger.error(f"All LLM providers failed: {fallback_errors}")
+        raise RuntimeError(
+            f"All configured LLM providers failed. Details: {'; '.join(fallback_errors)}"
+        )
 
     def _is_provider_configured(self, provider: LLMProvider) -> bool:
         """Return True if `provider` can be called ON THIS REQUEST.
@@ -497,28 +518,39 @@ class LLMClient:
         any mixed instance the moment OpenAI had a bad minute.
 
         The fix reuses #1814's shape rather than inventing a parallel one: read the SAME
-        ContextVar the consumer reads, so the gate and the consumer cannot disagree.
-        `_anthropic_complete` resolves its client through `anthropic_client_for_request`,
-        which returns a fresh client whenever `get_request_api_key()` is truthy — so that
-        read, and only that read, is what "available" has to mean here.
+        ContextVar the consumers read, so the gate and the consumers cannot disagree.
+        Every leg resolves its spend entitlement through `request_spend_key` (#1819), so
+        that read — surfaced non-raising as `provider_spend_entitled` — and only that
+        read, is what "available" has to mean here.
 
-        Two constraints this deliberately respects:
-        - **Anthropic only, named via `REQUEST_KEY_PROVIDER`.** The per-request key is an
-          Anthropic key by construction and `_anthropic_complete` is its only consumer;
-          `_openai_complete` / `_gemini_complete` read the server's client and nothing
-          else. Reporting them available off a request key would route the loop into a
-          provider guaranteed to raise — a silent skip traded for a guaranteed failure.
-        - **Nothing is constructed or stored.** This is a pure read. The reason
-          `_init_clients` stays request-BLIND (`include_request_key=False`, #1814) is that
-          `LLMClient()` is built lazily inside requests in several services, so a
-          request-scoped key reaching `self.anthropic_client` would be spent by the NEXT
-          caller. Answering True here does not put the key anywhere it can outlive the
-          request; it reaches Anthropic only via `anthropic_client_for_request`.
+        #1819 (superseding the #1815-era "Anthropic only" carve): the per-request
+        binding is provider-keyed now, and EVERY leg refuses unbound. So a server
+        client's mere existence is no longer availability — an unbound request that
+        reached `_openai_complete` would refuse, and reporting True here would route
+        the fallback loop into that guaranteed refusal (the exact trap the #1815
+        docstring named). Entitlement first, then the leg's client-path check:
+        - bound key for the provider → True only for legs that can build a
+          per-request client from it (`PER_REQUEST_CLIENT_PROVIDERS` — a bound
+          Gemini key has no safe consumer and reads False).
+        - explicit operator binding (gate 1 held) → the server's own clients are
+          authorized (#1807 seam); answer from their existence, as before.
+        - unbound → False for every provider.
+
+        **Nothing is constructed or stored.** This is a pure read. The reason
+        `_init_clients` stays request-BLIND (`include_request_key=False`, #1814) is that
+        `LLMClient()` is built lazily inside requests in several services, so a
+        request-scoped key reaching `self.anthropic_client` would be spent by the NEXT
+        caller. Answering True here does not put the key anywhere it can outlive the
+        request; it reaches the provider only via the leg's own chokepoint read.
         """
-        from services.llm.request_key import REQUEST_KEY_PROVIDER, get_request_api_key
+        from services.llm.request_key import get_request_api_key, provider_spend_entitled
 
-        if provider.value == REQUEST_KEY_PROVIDER and get_request_api_key():
+        if not provider_spend_entitled(provider.value):
+            return False
+        if get_request_api_key(provider.value):
+            # Bound key + per-request client path (entitlement checked both).
             return True
+        # Operator binding: the server's own clients are the authorized credential.
         if provider == LLMProvider.ANTHROPIC:
             return self.anthropic_client is not None
         if provider == LLMProvider.OPENAI:
@@ -618,8 +650,26 @@ class LLMClient:
         context: Optional[Dict[str, Any]] = None,
         system: Optional[str] = None,
     ) -> str:
-        """Get completion from OpenAI"""
-        if not self.openai_client:
+        """Get completion from OpenAI.
+
+        #1819: same inversion as `_anthropic_complete` (#1809). `request_spend_key`
+        decides WHOSE credential this call spends: a bound per-request OpenAI key
+        (the user's own, from `user_api_keys`) builds a FRESH client for this call
+        — never stored on `self` (#1814 containment) — while the server's long-lived
+        client is reachable only through the explicit designated-operator binding
+        (#1807 both gates, gate 1 re-checked at the chokepoint). UNBOUND raises
+        `UnboundLLMKeyError`; there is no server-key fallback (PM ruling, #1812).
+        The key is never logged here.
+        """
+        from services.llm.request_key import request_spend_key
+
+        per_request_key = request_spend_key("openai")
+        if per_request_key:
+            client = OpenAI(api_key=per_request_key)
+        else:
+            # Operator binding: the server's own client is the operator's credential.
+            client = self.openai_client
+        if not client:
             raise RuntimeError("OpenAI client not initialized")
 
         # Build messages list
@@ -647,7 +697,7 @@ class LLMClient:
         if response_format:
             request_params["response_format"] = response_format
 
-        response = self.openai_client.chat.completions.create(**request_params)
+        response = client.chat.completions.create(**request_params)
 
         # Extract actual token counts from response
         prompt_tokens = (
@@ -695,7 +745,28 @@ class LLMClient:
         structured JSON rather than prose. Without this, Gemini often returns
         natural-language text where the classifier expects JSON, causing
         downstream ValueError on parse.
+
+        #1819: same inversion as the other legs — with one deliberate asymmetry.
+        `google.generativeai` configures credentials PROCESS-GLOBALLY
+        (`genai.configure` at `_init_clients`), so there is no safe per-request
+        client path: honoring a bound per-request Gemini key would risk serving
+        request A under request B's credential in concurrent traffic. No binding
+        site produces a Gemini key today (setup stores openai/anthropic/notion;
+        the header is Anthropic by construction), so the leg refuses a bound key
+        HONESTLY rather than building unreachable — and unsafe — plumbing. The
+        only spend path is the explicit designated-operator binding (#1807),
+        under which the global configuration IS the operator's own credential.
         """
+        from services.llm.request_key import UnboundLLMKeyError, request_spend_key
+
+        per_request_key = request_spend_key("gemini")
+        if per_request_key is not None:
+            raise UnboundLLMKeyError(
+                "A per-request Gemini key was bound, but Gemini has no per-request "
+                "client path (google.generativeai credentials are process-global) — "
+                "refusing rather than risking a cross-request credential mix-up "
+                "(#1819). Use Anthropic or OpenAI for per-user keys."
+            )
         if not self.gemini_client:
             raise RuntimeError("Gemini client not initialized")
 
