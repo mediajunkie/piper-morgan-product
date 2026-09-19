@@ -1,6 +1,16 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-19 10:03 PDT, verified via `date`.
+**Updated**: 2026-09-19 12:00 PDT, verified via `date`.
+
+**12:00 PM — "Assume It Was You" published.** PM handed off directly ("ready for your
+proofreading and publishing"). Full pipeline run: template-audit 16/16, dry-run, real publish
+(hashId `bb47f451fe5c`, `/blog/assume-it-was-you`), calendar updated (`canonicalSite` correctly
+left empty — that's cross-post-only, not blog-first), live content-verified (not just status
+code), draft archived. **Owed next**: when PM provides Medium/LinkedIn URLs, update calendar
+(mediumURL/linkedinURL/liPubDate, status→`distributed`, canonicalSite→`distributed`) per Step 8.
+**Mid-pipeline re-sync near-miss, fixed durably**: PM mentioned an edit mid-publish; re-syncing
+surfaced real state (calendar already at `ready-for-docs`, tomorrow's title changed). Added an
+explicit mid-pipeline re-sync trigger to `publish-to-blog` SKILL.md (v0.25), per PM's direct ask.
 
 **09-19 09:57 fire**: predecessor session `/clear`'d and resumed (Wave 2 fleet renewal) at 08:22;
 arrival block written and verified (cron `0055648a` confirmed live via `CronList`, not trusted from
