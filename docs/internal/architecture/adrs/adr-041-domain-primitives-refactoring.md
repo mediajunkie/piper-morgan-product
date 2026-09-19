@@ -1,3 +1,12 @@
+---
+type: adr
+number: 41
+title: "Domain Primitives - Item and List Refactoring"
+status: "✅ Implemented"
+valid_from: "2025-11-04"
+last_updated: "2026-08-29"
+---
+
 # ADR-041: Domain Primitives - Item and List Refactoring
 
 ## Status

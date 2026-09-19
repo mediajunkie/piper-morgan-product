@@ -1,3 +1,12 @@
+---
+type: adr
+number: 40
+title: "Local Database Per Environment Architecture"
+status: "Accepted"
+valid_from: "2025-11-01"
+last_updated: "2026-08-29"
+---
+
 # ADR-040: Local Database Per Environment Architecture
 
 **Status**: Accepted

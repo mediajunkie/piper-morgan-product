@@ -1,3 +1,12 @@
+---
+type: adr
+number: 33
+title: "Multi-Agent Scripts Deployment"
+status: "Accepted"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # ADR-033: Multi-Agent Scripts Deployment
 
 ## Status

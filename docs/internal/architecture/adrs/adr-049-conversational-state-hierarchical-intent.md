@@ -1,3 +1,12 @@
+---
+type: adr
+number: 49
+title: "Conversational State and Hierarchical Intent Architecture"
+status: "Unknown"
+valid_from: "2026-01-09"
+last_updated: "2026-08-29"
+---
+
 # ADR-049: Conversational State and Hierarchical Intent Architecture
 
 **Status:** Accepted

@@ -1,3 +1,12 @@
+---
+type: adr
+number: 43
+title: "Application-Layer Stored Procedures Pattern"
+status: "Accepted"
+valid_from: "2025-11-22"
+last_updated: "2026-08-29"
+---
+
 # ADR-043: Application-Layer Stored Procedures Pattern
 
 **Date**: November 22, 2025

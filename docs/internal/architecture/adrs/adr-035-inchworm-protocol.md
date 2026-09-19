@@ -1,3 +1,12 @@
+---
+type: adr
+number: 35
+title: "The Inchworm Protocol"
+status: "Accepted"
+valid_from: "2025-09-26"
+last_updated: "2026-08-29"
+---
+
 # ADR-035: The Inchworm Protocol
 
 **Status**: Accepted

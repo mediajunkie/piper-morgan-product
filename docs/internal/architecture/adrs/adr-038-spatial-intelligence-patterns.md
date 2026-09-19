@@ -1,3 +1,12 @@
+---
+type: adr
+number: 38
+title: "Spatial Intelligence Architecture Patterns"
+status: "Accepted · AMENDED 2026-07-30"
+valid_from: "2025-09-30"
+last_updated: "2026-08-29"
+---
+
 # ADR-038: Spatial Intelligence Architecture Patterns
 
 **Date**: September 30, 2025 (Updated: October 1, 2025)

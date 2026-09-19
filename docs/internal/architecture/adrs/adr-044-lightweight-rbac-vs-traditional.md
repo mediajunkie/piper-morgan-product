@@ -1,3 +1,12 @@
+---
+type: adr
+number: 44
+title: "Lightweight RBAC vs Traditional Role-Permission Tables"
+status: "✅ Accepted"
+valid_from: "2025-11-22"
+last_updated: "2026-08-29"
+---
+
 # ADR-044: Lightweight RBAC vs Traditional Role-Permission Tables
 
 **Status**: ✅ Accepted
