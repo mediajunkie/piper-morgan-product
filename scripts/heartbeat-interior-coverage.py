@@ -56,7 +56,10 @@ Known blind spots, stated rather than discovered later:
   * A genuinely quiet fire (zero commits) is out of scope by construction — it has no work session
     to cover, and it is exactly the case that still needs the explicit Step 5b call.
 """
-import argparse, subprocess, sys
+
+import argparse
+import subprocess
+import sys
 from datetime import datetime
 
 HB_PREFIXES = ("hb(", "hb-last-invoked(")
@@ -81,9 +84,21 @@ def roles_from_registry(path):
 
 
 def commits(repo, ref, role, day):
-    raw = sh("git", "-C", repo, "log", ref, "--since", f"{day} 00:00:00",
-             "--until", f"{day} 23:59:59", "--format=%ct%x09%s",
-             "-E", f"--grep=^{role}:", f"--grep=\\({role}\\):")
+    raw = sh(
+        "git",
+        "-C",
+        repo,
+        "log",
+        ref,
+        "--since",
+        f"{day} 00:00:00",
+        "--until",
+        f"{day} 23:59:59",
+        "--format=%ct%x09%s",
+        "-E",
+        f"--grep=^{role}:",
+        f"--grep=\\({role}\\):",
+    )
     rows = []
     for line in raw.strip().splitlines():
         if "\t" in line:
@@ -98,21 +113,31 @@ def main():
     p.add_argument("--ref", default="origin/main")
     p.add_argument("--day", default=datetime.now().strftime("%Y-%m-%d"))
     p.add_argument("--gap", type=int, default=45, help="idle minutes that end a work session")
-    p.add_argument("--grace", type=int, default=20, help="minutes after a session a heartbeat still counts")
-    p.add_argument("--recency", type=int, default=30, help="skip sessions whose last commit is newer than this")
+    p.add_argument(
+        "--grace", type=int, default=20, help="minutes after a session a heartbeat still counts"
+    )
+    p.add_argument(
+        "--recency", type=int, default=30, help="skip sessions whose last commit is newer than this"
+    )
     p.add_argument("--registry", default="dev/active/duty-cycle-registry.tsv")
     a = p.parse_args()
 
     now = int(datetime.now().timestamp())
-    roles = roles_from_registry(f"{a.repo}/{a.registry}" if not a.registry.startswith("/") else a.registry)
+    roles = roles_from_registry(
+        f"{a.repo}/{a.registry}" if not a.registry.startswith("/") else a.registry
+    )
     if not roles:
-        sys.exit("interior-coverage: registry produced 0 roles — refusing to report a clean sweep of nothing")
+        sys.exit(
+            "interior-coverage: registry produced 0 roles — refusing to report a clean sweep of nothing"
+        )
 
     tip = sh("git", "-C", a.repo, "rev-parse", "--short", a.ref).strip() or "?"
     # Say what was measured, up front — an all-clear must carry its own denominator.
-    print(f"interior-coverage: ref={a.ref} tip={tip} day={a.day} roles={len(roles)} "
-          f"gap={a.gap}m grace={a.grace}m recency={a.recency}m "
-          f"layer=git-commit-history (NOT a live belt run)")
+    print(
+        f"interior-coverage: ref={a.ref} tip={tip} day={a.day} roles={len(roles)} "
+        f"gap={a.gap}m grace={a.grace}m recency={a.recency}m "
+        f"layer=git-commit-history (NOT a live belt run)"
+    )
 
     total_unc = total_sess = flagged_roles = skipped = 0
     for role in roles:
@@ -125,7 +150,8 @@ def main():
         sessions, cur = [], [work[0]]
         for t, s in work[1:]:
             if t - cur[-1][0] > a.gap * 60:
-                sessions.append(cur); cur = [(t, s)]
+                sessions.append(cur)
+                cur = [(t, s)]
             else:
                 cur.append((t, s))
         sessions.append(cur)
@@ -144,13 +170,17 @@ def main():
             flagged_roles += 1
             detail = "  ".join(
                 f"{datetime.fromtimestamp(s).strftime('%H:%M')}-{datetime.fromtimestamp(e).strftime('%H:%M')}"
-                f" ({n} commit{'s' if n != 1 else ''})" for s, e, n in bad)
+                f" ({n} commit{'s' if n != 1 else ''})"
+                for s, e, n in bad
+            )
             print(f"  {role:6} UNCOVERED {len(bad)}/{len(sessions)} sessions:  {detail}")
         else:
             print(f"  {role:6} covered    {len(sessions)}/{len(sessions)} sessions")
 
-    print(f"interior-coverage: {flagged_roles} of {len(roles)} roles have >=1 uncovered session; "
-          f"{total_unc} uncovered of {total_sess} sessions measured; {skipped} in-flight session(s) skipped")
+    print(
+        f"interior-coverage: {flagged_roles} of {len(roles)} roles have >=1 uncovered session; "
+        f"{total_unc} uncovered of {total_sess} sessions measured; {skipped} in-flight session(s) skipped"
+    )
     return 1 if total_unc else 0
 
 
