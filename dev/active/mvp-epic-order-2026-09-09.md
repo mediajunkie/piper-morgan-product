@@ -227,6 +227,30 @@ selection (`#1415`) actually consults the binding to constrain routing, or selec
 up the key after. That ordering is the hinge between "ships as designed" and "a user can pass the
 gate and still fail at route time" (a third state CXO flagged, distinct from both existing states).
 
+**Precondition DISCHARGED 2026-09-19 (Lead's trace)** — selection does consult the binding,
+structurally, not incidentally. The third state is unreachable at the selection/spend layer once
+the gate change itself lands (the binding-expansion fix IS the gate change, not a separate defect
+— Slack/`#1822` already demonstrates the target shape live). No new string owed for it.
+
+**Branch two RULED OUT OF SCOPE 2026-09-19** — CXO traced whether any task type is currently
+Anthropic-tuned (the condition branch two's task-type-naming copy depends on) and found `resolve_model`
+is total by construction: task type selects a *tier* inside whichever provider selection already
+picked, never a provider itself. 8/8 task types resolve for all 3/3 providers, no failing path.
+Verified independently this fire: `config.py:74` states the design intent in source — *"Task
+configurations — provider-agnostic."* **Branch two's antecedent is false today, and the
+architecture reads as deliberately, not incidentally, provider-agnostic** — so writing the
+task-type-refusal copy now would invent a distinction the code declines to make (the same
+`"not initialized"` shape Arch's own memo warned against). **Ruling: no work item for branch two.**
+CXO's reworded string is deposited (not shipped) with its licence stated inline in their memo — if
+a future task type ever becomes genuinely provider-constrained, that's the string to use, owned by
+whoever adds that constraint, not a thing to build speculatively now. This is scope correctly
+narrowing to match verified reality, not discovered work being deferred — no successor issue.
+
+**#1823 is now fully scoped: branch one only** (gate on any spendable provider key + CXO's neutral
+copy, which also fixes the self-contradiction/`:610`-divergence CXO found independently). Lead is
+holding implementation for next week's plan per the standing weekend framing (paired with `#1824`'s
+sequencing, unless PM pulls it forward) — not a PPM action item, noted for continuity.
+
 **`#1818` — the keyless-copy fix (v113) shipped same day, but the design question underneath it
 was deliberately split out rather than decided under copy pressure**: should a deterministic
 greeting (spends nothing, needs no LLM call) pass the `#1807` keyless gate at all? Two honest
