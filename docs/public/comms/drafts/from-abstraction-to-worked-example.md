@@ -69,13 +69,13 @@ This is especially useful for voice work, where the difference between "right" a
 
 One of my philosophy professors made one of those academic jokes that border on koan about how so many of their lists consisted of three examples. "Well, you know," he shouted in his manic way, "there's always, P, not-P, and... haha, everything else). I'll just leave that there.
 
-At the Yahoo design pattern library, we needed at least three researched examples of a pattern before even considering it for inclusion in the curated collection (let alone the public-facing subset).
-
 I think I'm also not the first person to notice that you often have to try something three time before you start to feel like you really understand it as a type of thing and not just a series of disconnected or incomplete episodes.
 
 This really has nothing to do with AI per se. Working out three real examples is a general method for making shape-defining work legible — which means it's useful any time the *texture* of the output matters more than its function.
 
-Pattern documentation in our methodology catalog uses this. Each pattern has a name, a description, a worked instance from a real session, and an anti-pattern showing the failure mode. Three live patterns are easier to internalize than three patterns in description form, and the anti-pattern boundary marker keeps the pattern from drifting in usage.
+At the Yahoo design pattern library, we needed at least three researched examples of a pattern before even considering it for inclusion in the curated collection (let alone the public-facing subset).
+
+Pattern documentation in the Piper Morgan methodology follows this same approach. Each pattern has a name, a description, a worked instance from a real session, and an anti-pattern showing the failure mode. Three live patterns are easier to internalize than three patterns in description form, and the anti-pattern boundary marker keeps the pattern from drifting in usage.
 
 Our [Colleague Test](https://github.com/mediajunkie/piper-morgan-product) rubric uses it. The R/C/T scoring framework (Resolution / Context / Tone) is described abstractly in a paragraph, and then illustrated with worked exchanges showing what each score looks like in practice. The abstract scoring rules don't really land until you've read the worked examples; the worked examples don't make sense without the abstract framework. Both halves are necessary.
 
