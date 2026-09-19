@@ -17,10 +17,15 @@
 - **Arch**: placement of "not initialized" in the auth-bucket split (criterion ratified:
   a bucket earns its name when the honest sentence differs; CXO's 4-bucket copy DRAFTED).
 - **PM/Arch product calls, none urgent**: Slack sponsorship (whose key does an inbound sender
-  spend — safe default live) · #1823 (does any-provider key suffice at /intent, or anthropic
-  specifically) · #1818 (greeting through the keyless gate) · #1791 per-user personality
-  (needs Arch's ADR-075 overlay-fork design) · the KG shared-embeddings sponsor when the
-  operator seam dies.
+  spend — safe default live) · #1818 (greeting through the keyless gate) · #1791 per-user
+  personality (needs Arch's ADR-075 overlay-fork design) · the KG shared-embeddings sponsor
+  when the operator seam dies.
+- **#1823 RULED 09-19 (PPM)**: gate on any spendable provider; task-type-not-vendor refusals;
+  #1824 bucket split lands FIRST or TOGETHER, never after. Lead's precondition trace done +
+  memo'd 09-19 (selection consults the binding; third state unreachable). Implementation =
+  web gate + `expand_llm_key_binding` widening (mirror #1822's Slack shape) + #1824 classifier
+  split (my lane; CXO's 4-bucket copy drafted, second-branch reword owed by CXO). NEW work —
+  held for PM's next-week plan.
 - **#1812 steps 5–6 deliberately parked** until the calls above: remove PIPER_OPERATOR_SERVER_
   KEY (step 5 — this is ALSO the "does PM's own use require a stored key" decision moment,
   PM leaning yes, not ruled) · pull the import-time singleton (clients.py:~675/734, step 6).
