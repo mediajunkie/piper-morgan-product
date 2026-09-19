@@ -1,3 +1,12 @@
+---
+type: adr
+number: 23
+title: "Test Infrastructure Activation Pattern"
+status: "Accepted"
+valid_from: "2025-08-22"
+last_updated: "2026-08-29"
+---
+
 # ADR-023: Test Infrastructure Activation Pattern
 
 ## Status

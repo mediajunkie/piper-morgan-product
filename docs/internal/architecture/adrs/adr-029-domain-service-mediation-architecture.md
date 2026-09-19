@@ -1,3 +1,12 @@
+---
+type: adr
+number: 29
+title: "Domain Service Mediation Architecture"
+status: "Accepted"
+valid_from: "2025-09-15"
+last_updated: "2026-08-29"
+---
+
 # ADR-029: Domain Service Mediation Architecture
 
 ## Status

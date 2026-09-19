@@ -1,3 +1,12 @@
+---
+type: adr
+number: 18
+title: "Server Functionality Architecture"
+status: "Superseded"
+valid_from: "2025-08-20"
+last_updated: "2026-08-29"
+---
+
 # ADR-018: Server Functionality Architecture
 
 **Date**: August 17, 2025

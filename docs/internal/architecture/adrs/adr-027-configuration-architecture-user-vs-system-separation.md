@@ -1,3 +1,12 @@
+---
+type: adr
+number: 27
+title: "Configuration Architecture - User vs System Separation"
+status: "Accepted"
+valid_from: "2025-09-02"
+last_updated: "2026-08-29"
+---
+
 # ADR-027: Configuration Architecture - User vs System Separation
 
 **Status**: Accepted

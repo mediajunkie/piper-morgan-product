@@ -1,3 +1,12 @@
+---
+type: adr
+number: 31
+title: "MVP Redefinition - Core vs Feature Distinction"
+status: "Accepted"
+valid_from: "2025-09-16"
+last_updated: "2026-08-29"
+---
+
 # ADR-031: MVP Redefinition - Core vs Feature Distinction
 
 ## Status

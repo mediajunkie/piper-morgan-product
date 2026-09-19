@@ -1,3 +1,12 @@
+---
+type: adr
+number: 30
+title: "Configuration Service Centralization"
+status: "Accepted"
+valid_from: "2025-09-15"
+last_updated: "2026-08-29"
+---
+
 # ADR-030: Configuration Service Centralization
 
 ## Status

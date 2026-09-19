@@ -1,3 +1,12 @@
+---
+type: adr
+number: 24
+title: "Persistent Context Foundation Architecture"
+status: "Superseded by ADR-075"
+valid_from: "2025-08-22"
+last_updated: "2026-08-29"
+---
+
 # ADR-024: Persistent Context Foundation Architecture
 
 ## Status

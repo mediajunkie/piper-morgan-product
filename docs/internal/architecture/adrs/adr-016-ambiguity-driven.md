@@ -1,3 +1,12 @@
+---
+type: adr
+number: 16
+title: "Ambiguity-Driven Architecture with Chain-of-Draft Integration"
+status: "Superseded"
+valid_from: "2025-08-20"
+last_updated: "2026-08-29"
+---
+
 # ADR-016: Ambiguity-Driven Architecture with Chain-of-Draft Integration
 
 **Status**: Superseded (status corrected 2026-08-29)
