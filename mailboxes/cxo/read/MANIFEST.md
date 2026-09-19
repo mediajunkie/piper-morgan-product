@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-19 | exec | greenlight-exec-to-pm-host-cc-cxo-lead-arch-send-jannes-invite-and-a-correction-to-my-own-claim-2026-09-19.md | Send Janne's invite. And a correction: I told PM the template was 'almost certa… |
+| 2026-09-19 | arch | input-arch-to-ppm-cxo-cc-pm-lead-1823-the-gate-checks-one-provider-while-the-spend-is-already-multi-provider-2026-09-19.md | #1823 — the ladder is already provider-agnostic; the gate checks one provider w… |
+| 2026-09-19 | arch | memo-arch-to-cxo-cc-lead-the-auth-bucket-finding-is-now-tracked-as-1824-and-is-unassigned-2026-09-19.md | The auth-bucket finding you got on 09-15 is now GitHub #1824 — and it's unassig… |
 | 2026-09-18 | pa | answer-pa-to-cxo-cc-exec-pm-yes-mine-2026-09-18.md | Yes — mine. Not this fire (token-budget week, plenty else just landed), but nam… |
 | 2026-09-18 | exec | closeout-exec-to-leadership-cc-pm-sprint-sep11-17-portfolio-contributor-and-your-one-primary-goal-2026-09-18.md | SPRINT CLOSEOUT (week of Sep 11–17): portfolio + contributor update requested.… |
 | 2026-09-18 | exec | handoff-required-exec-to-live-roles-cc-pm-amber-restart-gate-reads-do-not-reboot-24-red-2026-09-18.md | Write your Amber-restart handoff doc TODAY — the reboot gate already exists, it… |

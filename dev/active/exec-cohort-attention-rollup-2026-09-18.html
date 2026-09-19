@@ -95,45 +95,30 @@
     with them; they're in the new section above.</p>
   </div>
 
-  <h2>🛑 Blockers — <b>three live</b>, two struck below</h2>
+  <h2>🛑 Blockers — <b>two live</b>: Janne's invite and Vercel. Three struck.</h2>
 
-  <div class="item">
-    <div class="top"><span class="n">1 · Scope-guard can't deliver its memo</span>
-      <span class="who">Arch · CXO · PPM</span><span class="age hot">8 days</span></div>
-    <p><b>What it is.</b> Scope-guard is the Action that watches commits for scope drift and files a
-    memo when it finds one. The <i>detection</i> half works and is tested live. The <i>delivery</i>
-    half can't push to <code>main</code>, so a flagged drift produces nothing. Three roles carry
-    this as their only PM-gated residual.</p>
-    <p><b>Why it's still here after you already fixed it once.</b> You removed the PR requirement on
-    <code>main</code> on 09-11, which cleared the first blocker. A second one was underneath.</p>
-    <p><b>What I got wrong, and the corrected picture — verified live at 11:50 today.</b> I told you
-    on Sunday the repo had zero rulesets so the bypass-actor path was free. The zero-rulesets half is
-    true (<code>GET /rulesets</code> returns <code>[]</code>). But I never checked the other
-    enforcement surface, and it's occupied: <b>classic branch protection</b> on <code>main</code>
-    requires one status check, <code>Security Test Suite (Postgres)</code>, and carries
-    <code>enforce_admins: false</code>.</p>
-    <p><b>That last flag is the whole thing.</b> Admins are exempt, and every human and every agent
-    pushes as an admin — my own two pushes this morning both printed <i>"Bypassed rule violations for
-    refs/heads/main."</i> So the required check today binds exactly one actor: the Actions bot, which
-    is not an admin. That is precisely why scope-guard's push fails while everyone else's sails
-    through.</p>
-    <div class="ask"><b>Your call — three options, and they differ in kind, not just detail:</b><br>
-      <b>(a)</b> Add a ruleset naming <code>github-actions</code> as a bypass actor. Arch's
-      recommendation. Cost: you now have two enforcement layers stacked on one branch unless the
-      classic rule is retired in the same motion — and classic protection has no bypass-actor concept
-      to reconcile it with.<br>
-      <b>(b)</b> Give scope-guard a scoped PAT. No branch config changes at all; cost is a credential
-      to mint, store and rotate.<br>
-      <b>(c)</b> Drop the required check from classic protection. Simplest, and it removes the only
-      protection <code>main</code> currently has — which, given admins already bypass it, may be
-      less than it sounds.<br>
-      <b>My read:</b> (b) is the smallest blast radius and doesn't touch branch config at all, but
-      Arch owns this surface and recommended (a) — worth hearing them before you rule.</p>
-    </div>
-    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/1744">#1744</a>
-      <code>dev/active/arch-carry-forward.md:49</code>
-      <code>dev/active/ppm-carry-forward.md:373</code>
-      <code>dev/active/cxo-carry-forward.md:250</code></div>
+  <div class="item clear">
+    <div class="top"><span class="n">1 · <s>Scope-guard</s> — YOU RULED IT, and my briefing was wrong in a way that mattered</span>
+      <span class="who">Arch</span><span class="age new">struck 23:1x</span></div>
+    <p><b>You chose option 2</b> — migrate to a ruleset with the Action as a bypass actor. No longer a
+    PM decision; it is an implementation item and it is <b>blocked on the permission classifier</b>,
+    not on you.</p>
+    <p>🔴 <b>Arch corrected my framing at the source, and the correction is the important part.</b> My
+    option (a) read "add a ruleset naming <code>github-actions</code> as a bypass actor." <b>That
+    alone would have broken the entire cohort.</b> A ruleset without an <i>admin</i> bypass actor
+    subjects all 12 seats to the required check — every <code>mail-send.sh</code> push and every
+    heartbeat stops. I handed you a three-option menu in which one option was a cohort-wide outage,
+    and I did not know it.</p>
+    <p><b>Two more things the migration needs that I never mentioned</b>, both Arch's:
+    <code>allow_force_pushes:false</code> must be re-expressed as <code>non_fast_forward</code>, and
+    <code>allow_deletions:false</code> as <code>deletion</code>, <b>or the migration silently weakens
+    <code>main</code></b>. Safe order: create ruleset → test an admin push → <i>only then</i> delete
+    classic. Arch has the payload prepared with IDs verified rather than guessed, plus a classic
+    backup at <code>dev/2026/09/18/branch-protection-main-classic-backup-2026-09-18.json</code>.</p>
+    <p style="margin-bottom:0"><b>Nothing needed from you.</b> Recorded at length because it is the
+    clearest case today of a briefing being confidently wrong on the very item it called the one
+    needing real thought — and of the owner catching it by going to the source instead of trusting
+    the summary.</p>
   </div>
 
   <div class="item">
@@ -321,12 +306,12 @@
   </div>
 
   <div class="item decide">
-    <div class="top"><span class="n">10 · Q5 — is "idle" a legitimate terminal state?</span>
-      <span class="who">Arch</span><span class="age hot">7 days</span></div>
+    <div class="top"><span class="n">10 · <s>Q5</s> — RULED tonight: <i>"Idle is a legitimate state."</i></span>
+      <span class="who">Arch</span><span class="age new">ruled 09-18</span></div>
     <p>A methodology question with a slot already built for either answer in
     <code>methodology-00</code> (the Excellence Flywheel). Arch needs your formal word, and has since
     09-11. Either answer lands cleanly — the structure doesn't prefer one.</p>
-    <div class="ask"><b>Needed:</b> a yes or no, in your words, so Arch can fill the slot.</div>
+    <p style="margin-bottom:0"><b>One qualifier stays open</b> — Arch notes the <i>denominator</i> question is unresolved and carried it to their standing items rather than letting your headline ruling close it. Correct call.</p>
     <div class="links"><code>docs/handoff-arch-2026-09-18.md:34</code> ·
       <code>docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md</code></div>
   </div>
@@ -362,9 +347,7 @@
   <div class="item decide">
     <div class="top"><span class="n">13 · Two small ones you can clear in a sentence each</span>
       <span class="who">Arch · Web</span><span class="age">19 days · 9 days</span></div>
-    <p><b>Bets 001–003</b> (Arch, since 08-30) — fields await your input. Non-blocking by design, and
-    Arch says so; it's here because 19 days is past the point where silence should be read as
-    intent.</p>
+    <p><b>Bets 001–003</b> (Arch, since 08-30) — ★ <b>you asked tonight to be reminded, DUE 09-19, and for these to ride the rollup so Exec — and through Exec, Janus — keeps them visible. That is now my standing job, not a line you have to chase.</b> Fields still await your input.</p>
     <p><b><code>integration-reveals-all</code> workDate</b> (Web, since 09-09) — needs your recall of
     when the work happened, nothing more. Same as #5: "I don't remember" resolves it.</p>
   </div>
