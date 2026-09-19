@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Open It — A Summary Is Not Its Contents
+valid_from: "2026-09-07"
+last_updated: "2026-09-07"
+---
+
 # Open It — A Summary Is Not Its Contents
 
 **Status**: Emerging. **Two instances, two seats, one week** — CXO's own m-45 miscitation and Exec's

@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Piper Morgan Resource Map
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # Piper Morgan Resource Map
 
 **Purpose**: Prevent agents from assuming resources don't exist. Always check here first!

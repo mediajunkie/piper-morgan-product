@@ -1,3 +1,10 @@
+---
+type: methodology
+title: methodology-48 — A Proxy Count Is Not The Quantity (and at selection time it propagates)
+valid_from: "2026-08-10"
+last_updated: "2026-08-10"
+---
+
 # methodology-48 — A Proxy Count Is Not The Quantity (and at selection time it propagates)
 
 **Status**: Proven (two independent instances, opposite directions, 2026-08-09→10)

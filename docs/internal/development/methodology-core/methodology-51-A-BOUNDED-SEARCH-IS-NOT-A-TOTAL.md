@@ -1,3 +1,10 @@
+---
+type: methodology
+title: A Bounded Search Is Not a Total — The Scope Was Chosen, Not Given
+valid_from: "2026-09-06"
+last_updated: "2026-09-07"
+---
+
 # A Bounded Search Is Not a Total — The Scope Was Chosen, Not Given
 
 **Status**: Emerging, scoped to one seat. **Three instances, one week, one agent (CXO)** — by this

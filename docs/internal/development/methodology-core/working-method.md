@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Working Method - Piper Morgan Development
+valid_from: "2025-09-21"
+last_updated: "2025-09-21"
+---
+
 # Working Method - Piper Morgan Development
 
 This document outlines the step-by-step methodology for development work on Piper Morgan.

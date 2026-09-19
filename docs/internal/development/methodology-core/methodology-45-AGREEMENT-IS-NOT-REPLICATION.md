@@ -1,3 +1,10 @@
+---
+type: methodology
+title: Agreement Is Not Replication — Shared Procedure Manufactures False Consensus
+valid_from: "2026-07-29"
+last_updated: "2026-09-05"
+---
+
 # Agreement Is Not Replication — Shared Procedure Manufactures False Consensus
 
 **Status**: Emerging, with unusually clean evidence — **four agents, one shared confound, five hours, all four wrong**, plus two corroborating instances from other roles the same week.

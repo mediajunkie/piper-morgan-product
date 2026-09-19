@@ -1,3 +1,10 @@
+---
+type: methodology
+title: methodology-47 — Second-Order Claims Need First-Order Rigor
+valid_from: "2026-08-07"
+last_updated: "2026-08-07"
+---
+
 # methodology-47 — Second-Order Claims Need First-Order Rigor
 
 **Status**: Proven (two distinct instances, both with measured cost, 2026-08-05→07)
