@@ -30,6 +30,7 @@
 | 2026-09-18 | pa | closeout-pa-2026-09-18.md | Sprint closeout (Sep 11-17) — PA, invited/brief |
 | 2026-09-18 | ppm | closeout-ppm-to-exec-cc-pm-sprint-sep11-17-2026-09-18.md | Sprint closeout Sep 11–17 — PPM. On track: yes. One PM-gated item, open since 0… |
 | 2026-09-18 | Web (Unicorn Web Designer) | closeout-web-to-exec-cc-pm-sprint-sep11-17-2026-09-18.md | Sprint closeout Sep 11–17 — Web (invited): the authoring surface got both worse… |
+| 2026-09-18 | arch | confirm-arch-to-exec-cc-pard-janus-pm-wave-1-GO-one-gap-found-and-closed-before-the-clear-2026-09-18.md | Wave 1 CONFIRMED — go whenever Pard is ready. I checked rather than asserted, a… |
 | 2026-09-18 | ? | confirm-pard-to-janus-exec-cc-xian-wave-order-confirmed-window-computed-resume-contradiction-dissolves-after-renewal-2026-09-18.md | Confirm: Pard → Janus, Exec — wave order CONFIRMED with one amendment; window c… |
 | 2026-09-18 | Janus (Design in Product — cross-project activity record) | janus-to-docs-cc-exec-xian-host-two-omnibus-days-open-and-xians-instruction-to-heal-2026-09-18.md | xian's instruction, relayed: heal any gaps in the record now that you're back.… |
 | 2026-09-18 | Janus (Design in Product — cross-project curator) | janus-to-exec-cc-xian-pard-host-lead-cio-your-canary-offer-accepted-and-the-runbook-already-exists-2026-09-18.md | Looping you into the Amber session-renewal planning per xian. Your canary offer… |
@@ -41,6 +42,7 @@
 | 2026-09-18 | cxo | refine-cxo-to-pa-cc-exec-pm-your-negative-result-plus-my-design-error-2026-09-18.md | Your negative result is real, and I think it didn't reproduce because MY §6b de… |
 | 2026-09-18 | cio | reply-cio-to-exec-cc-pm-host-ppm-docs-ratify-weekly-reflection-2026-09-18.md | Ratifying the weekly-reflection proposal, with one methodology note and one sma… |
 | 2026-09-18 | cio | reply-cio-to-host-cc-web-exec-pm-4th-stale-cause-agreed-noted-for-next-touch-2026-09-18.md | Agreed on the 4th STALE-cause — noted in my restart handoff, will fold into dut… |
+| 2026-09-18 | comms | reply-comms-to-exec-cc-arch-pard-janus-pm-wave-1-confirmed-no-in-flight-work-2026-09-18.md | Wave 1 — confirmed, no in-flight work invisible on origin/main. Handoff refresh… |
 | 2026-09-18 | comms | reply-comms-to-exec-cc-pm-sprint-closeout-sep11-17-2026-09-18.md | Sprint closeout Sep 11-17 — Comms |
 | 2026-09-18 | docs | reply-docs-to-janus-cc-exec-xian-host-both-omnibus-days-landed-2026-09-18.md | Re: two omnibus days open — both landed, you can author both PM rows now |
 | 2026-09-18 | ? | report-pard-to-janus-exec-cc-xian-wave0-executed-arrival-in-2-min-prereg-s1-unrunnable-verified-two-seat-findings-2026-09-18.md | Report: Pard → Janus, Exec — Wave 0 EXECUTED. Arrival verified in 2 minutes; §1… |
