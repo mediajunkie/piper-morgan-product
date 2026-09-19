@@ -1,60 +1,64 @@
 ---
-last_updated: 2026-09-18
+last_updated: 2026-09-19
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-09-18, standing by for a PM-initiated wake
+# CIO carry-forward — 2026-09-19, back on normal duty cycle post Wave-2 renewal
 
-**Not on the normal duty cycle right now, by PM instruction, not by stall.** PM directive
-(09-18, in-chat, echoed in Exec's wake memo): the cohort is doing a "measured" restart —
-Exec goes through it first as a test case, then PM wakes the remaining dark roles (cio, lead,
-cxo, ppm, pa) **one-on-one**. **Do not `CronCreate` on your own initiative.** If you are reading
-this file cold, the fact that you're running at all is probably the wake — but confirm in chat
-before arming a cron if there's any ambiguity. Full context, cold-start-safe:
-`docs/handoff-cio-2026-09-18.md` (written today, gate-blocking, more complete than this file).
+**Fully resumed.** Predecessor session was `/clear`'d deliberately as part of Wave-2 Amber
+fleet-renewal (Pard-conducted, Janus-certified, xian overseeing). Arrival protocol executed:
+identity/model confirmed, handoff read (`docs/handoff-cio-2026-09-18.md`), one handoff claim
+verified against primary source (its "still owed" list was stale — see below), `CronList`-verified
+cron armed, registry row un-parked by this session (only the owning session can). Full detail:
+`dev/2026/09/19/2026-09-19-0829-cio-code-log.md`.
 
-**Cron**: none armed. Prior job `592c1f76` (`7 10,16,22 * * *`, LEAN, PM-approved) was
-`CronList`-confirmed then `CronDelete`-confirmed on 2026-09-16 per the standdown directive — see
-`dev/2026/09/16/2026-09-16-1037-cio-code-log.md`. If/when you get the go-ahead to resume: same
-cadence, `CronList` first to confirm zero, then `CronCreate`, then `CronList` again to confirm
-exactly one survived.
+**Cron**: `f308bd35`, `7 10,16,22 * * *` (LEAN, PM-approved, unchanged cadence), session-only,
+`CronList`-verified singular. Next fire: 10:07 AM PDT.
 
-**Registry**: `dev/active/duty-cycle-registry.tsv`'s `cio` row is `parked`, correctly, with the
-bar "clear only when a cron is armed and `CronList`-verified" (only I can clear it). I fixed a
-factual error in it today — it had claimed my cron "survived un-deleted" citing a job ID
-(`a1a8e2e5`) I never created; corrected against my own committed log. Comms found the identical
-phantom-ID artifact in their own row same day — one bad placeholder from a batch re-park sweep,
-not two separate bugs.
+**Registry**: `dev/active/duty-cycle-registry.tsv`'s `cio` row is `active`, correctly, as of this
+session (commit `efe8a8560`).
 
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## What shipped today (09-18), while standing by
+## What shipped this session (09-19)
 
-- `docs/handoff-cio-2026-09-18.md` — gate-blocking restart handoff, on `origin/main`.
-- Registry `cio`-row correction (commit `4e6d0a691` + merge).
-- Sprint closeout Sep 11-17 sent to Exec/PM (`mail-send.sh`, subject "sprint closeout Sep 11-17").
+- Wave-2 arrival block, `dev/2026/09/19/2026-09-19-0829-cio-code-log.md` — includes a genuine
+  correction: the 09-18 handoff/carry-forward's "still owed" list (weekly-reflection reply,
+  4th-STALE-cause note) was **stale** — both were actually done later the same 09-18 session
+  (commits `6fc0b5348`, `6e6e91a19`) but the closing log entry never recorded it. Verified via
+  `git log`, not trusted from either doc.
+- Registry un-park (commit `efe8a8560`).
+- **Ruled on and shipped Exec's unboarded-PM-items proposal** — a real cross-role design decision,
+  not deferred to prose: `--scope=role|global|all` flag on `scripts/check-unboarded-pm-items.sh`,
+  marker moved `dev/active/` → `dev/state/` (new, not sprint-cleaned), wired into `duty-cycle-tick`
+  as step 1c (v1.35 → v1.36). Commit `de84a5ae2`, synced to PM's local checkout via
+  `scripts/sync-pm-local.sh` (skill edits need this to take effect — worktree-vs-canonical-path).
+  Ruling reply sent to Exec (cc PM) via `mail-send.sh`. Found (but deliberately did NOT fix) a
+  pre-existing, cosmetic YAML-invalidity in the skill's frontmatter `changelog:` field, present
+  since ≥v1.35 — named it rather than silently discovering or silently "fixing" it under pressure.
+- Full mail drain: 2 direct memos (both actioned), 2 cc (both skimmed, no action, triaged). Inbox
+  at zero.
 
 ## What's still owed / open
 
-- **Reply to Exec's weekly-reflection proposal**
-  (`mailboxes/cio/inbox/proposal-exec-to-cio-...-2026-09-18.md`) — mine to ratify/amend/refuse,
-  not yet sent. Read it in full; it's a real decision (add a ~150-word reflection section to the
-  closeout template), not a rubber stamp.
-- **HOST's proposed 4th STALE-cause** for `duty-cycle-freeze-check.sh` (a live, armed session that
-  gets no scheduling turn for a long window) — worth folding in next time that script is touched.
-- **2026-09-15 never got its 22:37 STOP fire.** Still an honest gap, not retroactively fabricated.
-  Low priority now that the standdown itself is closed out; leave as a documented gap rather than
-  invent activity.
-- **Standing items 7z (#1798 hook migration), 7x (mailbox archive + cc-rule), 7y (NO-DAY-CLOSE
-  streak detector), 7u (Pard's LaunchAgent proposal, pending PM/Exec ruling)** — see
-  `dev/active/cio-standing-items.md`'s "Genuinely still open" table (last full audit 2026-08-23,
-  entries re-confirmed current as of Sept 13). All genuinely unblocked, none started; not stalled,
-  just not yet scheduled — don't let this line go stale without checking the actual table.
+- **Standing item 7x** (mailbox archival script for `mailboxes/*/read/`, 11,510 files
+  cohort-wide + PM-cc-rule policy change) — genuinely unblocked, mine as skill/process owner, not
+  started. Deliberately not picked up this fire (tail of an already-large session; Exec's own
+  caution says exercise on one seat first, which deserves a clear-headed start, not a rushed one).
+  **This is the one open item from this fire** — start it at the next fire (10:07 AM, same live
+  session) rather than let it silently roll forward unnamed.
+- **7z** (#1798 hook migration — PreToolUse→PostToolUse + common-dir pre-commit) — needs a careful
+  architectural pass, not a quick pickup. See `cio-standing-items.md`'s full row for detail.
+- **7u** (Pard's LaunchAgent proposal) — pending PM/Exec response, not mine to advance further.
+- **7y** (NO-DAY-CLOSE streak detector) — CXO explicitly asked to hold until real cohort
+  DAY-CLOSED data exists to size the threshold.
+- **No GitHub-criteria line yet for CIO** (third work-queue source, v1.33 ruling) — a named gap,
+  not yet written. Follow-up, not a blocker.
 
-## Why this file is fully current again (not the minimal standdown stub)
+## Why this file is fully current (not a minimal stub)
 
-Per Exec's own guidance in the wake memo: under a cold start, this file becomes load-bearing.
-Rewritten in full 09-18 rather than left as the minimal 09-16 standdown placeholder.
+Rewritten in full at the end of this fire's substantive work, per the standing "rewrite at end of
+every substantive fire" rule — a cold read of this file should need nothing else to continue.
