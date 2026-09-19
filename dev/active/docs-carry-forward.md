@@ -1,6 +1,13 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-19 12:00 PDT, verified via `date`.
+**Updated**: 2026-09-19 12:40 PDT, verified via `date`.
+
+**12:40 PM — YAML-frontmatter upgrade (#1826) closed, all 230 files done.** PM confirmed priority
+at direct engagement (the exact "flag at next PM engagement" trigger the item had been carrying
+since 08-31). Filed #1826 with live counts, dispatched 3 background agents (isolated worktrees),
+independently re-verified all three corpora myself against `origin/main` before closing — didn't
+trust either subagent's self-report. `.serena/memories` (~29 files) deliberately left out of scope,
+same as the original directive intended. `dev/active/docs-standing-items.md` updated to DONE.
 
 **12:00 PM — "Assume It Was You" published.** PM handed off directly ("ready for your
 proofreading and publishing"). Full pipeline run: template-audit 16/16, dry-run, real publish

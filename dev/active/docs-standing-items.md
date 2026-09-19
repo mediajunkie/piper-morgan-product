@@ -59,33 +59,27 @@ CXO, CIO) in the May 10-17 incidents — needs proper behavioral testing before 
 control-flow change, not a same-fire patch. Scope the detection mechanism first, then implement +
 watch it fire before trusting it, per CLAUDE.md's hook-verification discipline.
 
-### Critical-docs YAML-frontmatter upgrade (PM-directed 2026-05-28; still genuinely incomplete)
-**Added**: 2026-05-28 — **95 days as of 2026-08-31, per CIO's audit. Real candidate, not
-neglect-by-omission: the item's own text already names its trigger ("flag at next PM
-engagement"), it's just that a natural PM-engagement moment for THIS item specifically hasn't
-landed yet. Surfacing plainly rather than let the honest deferral condition become a silent one.**
+### Critical-docs YAML-frontmatter upgrade — DONE 2026-09-19 (except explicitly-deferred .serena/memories)
+**Added**: 2026-05-28. **Closed**: 2026-09-19, same day PM confirmed it was still wanted, at the
+next real PM engagement — exactly the deferral condition this item had been carrying since 08-31.
 
-PM directive: upgrade critical docs to proper YAML frontmatter; Docs prompts + supervises +
-validates subagents. **Validated pattern** (briefing pilot, `b40876b87`): subagent prepends
-frontmatter extracting existing metadata, body untouched; validate via `git diff --numstat`
-(0 deletions) + spot-check + confirm `---` start.
+PM directive: upgrade critical docs to proper YAML frontmatter. Filed **#1826** with live counts
+(81 ADRs / 80 patterns / 69 methodology docs, all previously frontmatter-less) once PM confirmed
+priority; dispatched 3 background agents to execute the validated pilot pattern (prepend-only,
+0 body deletions, git-log-derived `valid_from`/`last_updated`) per corpus. All three landed clean
+and were independently re-verified against `origin/main` (not taken from either agent's
+self-report) — `grep -L '^---$'` across all 230 files returns empty, numstat deletion sum is 0
+across every batch. Issue closed with full evidence.
 
-Schema: `type:` (briefing|methodology|adr|pattern|memory) + `title:` + `valid_from:` +
-class-specific fields (number/status for adr/pattern/methodology; last_updated for
-briefing/methodology).
-
-- [x] **Briefing (17)** — DONE, `b40876b87`.
-- [ ] **ADRs (~78)** — spot-checked live this fire: still plain `# ADR-NNN: Title` headers, no
-  frontmatter block. Genuinely not started beyond the pilot.
-- [ ] **Patterns (~80)** — spot-checked live this fire: still `# Pattern-NNN: Name` + `## Status`,
-  no frontmatter. Genuinely not started.
-- [ ] **Methodology (~52)** — not verified this fire; assume not started absent evidence.
-- [ ] **.serena/memories (~29)** — lower priority (Serena tool memory, not the institutional-
-  memory target the directive was really aimed at).
-
-Dormant since the briefing pilot (2.5+ months, no further progress logged). Worth a direct check
-with PM on whether this is still wanted at this priority, rather than continuing to carry it
-silently — flag at next PM engagement rather than resume unprompted.
+- [x] **Briefing (17)** — DONE, `b40876b87` (2026-05-28 pilot).
+- [x] **ADRs (81)** — DONE, `bf77d8743`..`fd702c23d` (2026-09-19).
+- [x] **Patterns (80)** — DONE, `f7a677a17`..`00e23dc88` (2026-09-19).
+- [x] **Methodology (69)** — DONE, `9a2dbcbb8`..`5b2f9c138` (2026-09-19).
+- [ ] **.serena/memories (~29)** — explicitly out of scope per #1826's own AC (lower priority,
+  Serena tool memory, not the institutional-memory target the original directive was aimed at).
+  Separate pass if ever wanted. **Note for whoever picks this up**: both #1826 agents found that a
+  naive `git log --diff-filter=A` reports the wrong `valid_from` for any file re-added by the
+  2026-08-29 repo-wide reorg (reports the reorg date, not true creation) — use `--follow`.
 
 ### Cycle / daily ops (recurring, still current)
 
