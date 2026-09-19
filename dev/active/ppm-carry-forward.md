@@ -10,7 +10,21 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-18 ~12:2x PT (RESUME). **PM asked directly to resume the duty cycle**
+**Last rewritten**: 2026-09-18 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+Cron re-armed `4bcf1e1b` → **`619147bb`**, `CronList`-verified exactly one job. One board-add fix
+at STOP: `#1824` (the classifier-bucket-split, formalized into an issue by Arch — the "true
+conclusion resting on a wrong reason" catch from 09-15's mail thread, now on GitHub) had skipped
+the standing filing convention entirely, a new drift shape (mailbox-memo-turned-issue bypassing the
+normal entry point, distinct from `--milestone`-doesn't-board-add) — fixed same-fire (MVP,
+board-added, Status Product Backlog). Folded it into epic 2 along with two same-day BYOC/Slack-key
+items already correctly filed (`#1822`, `#1823` — the latter an explicit PM/product decision, not
+code). Epic 2 now 20 items, 11 closed. **Day summary**: this was the resume day — synced 138
+commits, un-parked the registry row, wrote the Amber-restart handoff, filed the sprint closeout for
+Sep 11-17, caught a live mail-send cc-miss and a merge-vs-rebase false-positive on the broad-
+staging hook in the same session as documenting that error class. Rest of the day was quiet cohort
+activity plus this one real fix at STOP. **Epics-9/10 still unanswered, unchanged since 09-14.**
+
+**Prior: 2026-09-18 ~12:2x PT (RESUME). PM asked directly to resume the duty cycle**
 after the 09-16→09-18 cohort-wide standdown. Synced 138 commits behind → 0/0. Re-armed cron
 (`4bcf1e1b`, `CronList`-verified exactly one) BEFORE un-parking my own registry row, per the memo's
 ordering rule. Wrote `docs/handoff-ppm-2026-09-18.md` (own repeat errors, open PM-gated items,

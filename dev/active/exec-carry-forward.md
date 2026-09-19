@@ -1,78 +1,60 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron `d070a7df`, expression `38 6,10,14,18,22`, CronList-verified **2026-09-18 11:1x
-by the wave-0 successor session** (survived the clear), expires ~09-25.
-
-**Wave 0 cold start EXECUTED 2026-09-18 ~11:1x — see the Arrival block below.** The successor is
-live. Note that this was a cold start on a *running* Amber; **the Amber reboot itself is still
-ahead**, and preregistration §4 is explicit that wave 0 passing does not clear the reboot path.
+**STATE: LIVE, day closed 2026-09-18.** Cron **`4a6add06`**, expression `38 6,10,14,18,22`,
+delete-then-create at STOP, CronList-verified exactly one, expires ~09-25.
+⚠️ **This seat's empirical arrival offset is +30/+31 min past the slot, measured over 8 fires.**
+Compute any deadline from that, never from the cron expression plus assumed jitter — that assumption
+failed wave 0 and is why prereg §3 was amended.
 
 **Fresh session?** `docs/handoff-exec-2026-09-18.md` was written for you — read it before this file.
+**This seat was replaced 2026-09-18 11:12 and ran a full normal day afterward.** Wave 1 (Arch, Comms)
+went the same evening; both confirmed clean beforehand.
 
-## In flight — the thing that breaks if nobody picks it up
+## Owed by me, first thing 2026-09-19
 
-✅ **SPRINT CLOSEOUT IS DONE — 10 of 10 filed, synthesis written and on trunk**
-(`dev/active/exec-sprint-closeout-synthesis-sep11-17-2026-09-18.md`). Nine on track; **CXO reports
-NOT on track deliberately** (T axis in `PENDING-PROBE` under ESSENCE commitment 7, which is ratified
-law citing an instrument that cannot issue a pass). Lead, ppm, pa, cxo all filed within an hour of
-PM's nudge. **Nothing further owed on the closeout.**
+1. ★ **REMIND PM ABOUT BETS 001–003 — PM-requested, DUE 09-19**, and carry them in the rollup so PM
+   and (through me) Janus keep seeing them. **This is now a standing rollup duty, not a one-off.**
+2. **The invite-copy question is unanswered and Janne's email may go out.** I offered PM a CXO check
+   of `docs/operations/alpha-onboarding/email-template.md` against the post-#1814 flow — it still says
+   *"have your LLM API key ready to paste"* (the instruction #1814 turned into a wall) and pins
+   **0.8.11.0**, almost certainly stale. **PM has not answered whether to check first or send now.**
+3. **Raise the conversational-ruling gap with CIO/HOST** — see below. Do not patch alone.
 
-🔴 **WAVE 1 IS GO — Arch and Comms, named by me and TOLD (a deliberate break from wave 0).** Pard
-runs it, Janus concurred 18:34, timing is Pard's. I asked both to flag in-flight work invisible on
-trunk; **a "not tonight" from either outranks my read and I re-name, no justification needed.**
-★ **The gap I flagged and nobody has answered: two clean waves will LOOK like the reboot is cleared
-while having tested neither the no-fresh-handoff case nor a seat dying without a predecessor writing
-it a letter.** Reboot day's defining feature is the ABSENCE of a fresh handoff, not surprise. That
-needs a purpose-built test, not an inference from two passes.
+## The two live blockers — everything else on the board is struck
 
-✅ **§2.2 ruled by Pard, concurred by Janus: the CRITERION failed, the mechanism passed.** My
-predecessor ran a stable **+31 ±2 min offset on every fire**; the "+~10% jitter" was an assumption I
-had written down, never measured. **Prereg §3 amended: per-seat deadlines now come from the seat's
-own empirical arrival history, never from the cron expression.** The 18:38 fire then arrived 19:08
-(+30) — **the amendment predicted the very next fire correctly.**
-★ Pard's meta-point, which Janus asked to outlive the restart: **both of wave 0's real catches were
-CRITERIA defects, not seat defects. The process for grading seats needed the shakedown more than the
-seats did.**
+**Janne's invite** (token `ZVHWT5408X2NFA6P0D838B35`, UNUSED; roster is gitignored in PM's main
+checkout; no drafted email exists — templates only) and **Vercel**.
 
-🔴 **PM IS MID-WALKTHROUGH OF THE DECISION QUEUE.** Board:
-`dev/active/exec-cohort-attention-rollup-2026-09-18.html`. PM's framing: *"I will expedite what I can
-and ask for support with anything tricky."* **THREE live blockers as of 19:1x** — Janne's invite, Vercel,
-and the scope-guard ruling (the only one needing real thought). **Two were struck by re-verification,
-not by PM**: #4 PM had answered 09-15 in conversation; #5 Web closed at 12:28 with real evidence.
-⚠️ **Re-verify immediately BEFORE any walkthrough, not only at compile** — the board is a snapshot and
-ten awake roles move faster than it. That four-minute pass saved PM two items today. If you are a fresh session: read the board before
-re-deriving anything, and do not re-board what PM has already cleared.
+⚠️ **On Vercel, my own board was WRONG and PM caught it.** The line *"deleting old deployments is free
+and sufficient"* entered on the 09-13 board, **is sourced to nothing**, and contradicts both Web's
+carry-forward (question open, access-blocked since 09-09) and Vercel's own UI as PM read it. **Do not
+repeat it.** The unblocking artifact is PM's Vercel email text; PM is getting Web a token via Pard.
 
-⚠️ **THE LARGEST HOLE I KNOW ABOUT, found 15:1x and not yet fixed: PM's conversational rulings are
-recorded nowhere the re-verify rule checks.** I carried PA's BYOC sequencing as a live blocker; **PM
-had answered it on 09-15 in conversation.** It is absent from PA's carry-forward, `decisions.log`, and
-every `sent/` — the three surfaces the v1.32 re-verify rule names. **I committed this four hours
-after cataloguing the same miss-class.** Candidate fix (NOT designed, do not treat as agreed):
-`decisions.log` is append-by-any-agent and exists for exactly this; the gap is that nobody logs PM's
-spoken rulings on another role's behalf. **Raise with CIO/HOST — do not patch alone.**
+✅ **PM RULED TONIGHT**: Q5 — *"idle is a legitimate state"* (headline only; Arch carries the open
+denominator qualifier). Scope-guard — **option 2, ruleset migration**; no longer a PM decision, now
+blocked on the permission classifier.
+🔴 **And Arch corrected my scope-guard briefing at the source: my option (a) would have broken all 12
+seats** (a ruleset without an *admin* bypass actor subjects every seat to the required check and stops
+every `mail-send.sh` push and heartbeat). **I wrote a decision brief on someone else's surface without
+having them read it first. Don't do that again.**
 
-⚠️ **§2.2 IS WITH PARD/JANUS, NOT SELF-ASSESSED.** My 14:38 fire **arrived 15:08** — 8 min past the
-~15:00 ceiling we both computed from "+~10% jitter". Cron alive and it did fire; I cannot distinguish
-"REPL busy" from "jitter model wrong". **The fleet half is the important half: if the jitter model is
-wrong, every per-seat reboot deadline is wrong and the belt will read late-but-healthy seats as
-dead.** Offered to measure actual arrival-vs-slot deltas across seats from trunk timestamps — awaiting
-their word. Memo `1b929ebed`.
+## 🔴 The largest open gap — PM's conversational rulings have no durable home
 
-⭐ **JANUS'S FAILURE IS THE ONE TO BUILD ON, and it is in my lane.** They read 1 of Pard's 5 memos
-and told PM wave 0 had not run when it had; PM acted on it for three hours. Their own diagnosis:
-*"I improvise a check instead of running the drain."* **The durable line: "Janus has not replied" was
-indistinguishable from "Janus has not read it."** That is the same shape as `read/` being a claim
-about your own cognition. At 24 seats on reboot day, unread-vs-unanswered is the expensive ambiguity
-— **the roll-call table should carry READ state, not only alive state.** Connects directly to
-`check-unboarded-pm-items.sh`; expect to build on it.
+I carried PA's BYOC sequencing as a live blocker; **PM had ruled it aloud on 09-15**. It is in none of
+the three surfaces the v1.32 re-verify rule checks (`decisions.log` / own `sent/` / GitHub). I
+committed this four hours after cataloguing the same miss-class. `decisions.log` is append-by-any-agent
+and is the obvious home; the gap is that **nobody logs PM's spoken rulings on another role's behalf.**
+**Raise with CIO/HOST — it is a cohort convention, not my patch to make.**
 
-⭐ **SHIPPED TODAY, and the reason matters more than the artifact**: PM asked *"are we fixing routing
-issues as we detect them?"* Measured: **29 check-shaped scripts; the ones catching this class are
-wired into CI 0× and hooks 0×.** We build detectors and route their invocation through prose.
-Answered with code — `scripts/check-unboarded-pm-items.sh`, wired as the attention-rollup skill's
-**Step 0b**, regression-tested against the memo that was actually missed. **Triage-cadence wiring is
-PM's design and CIO's surface** — proposed (`cc4b5bd1e`), **reply owed**. The skill text says outright
-that if that proposal never landed, it is itself an instance of the failure it describes.
+## ★ The day's through-line, found independently by four roles
+
+**A thing can be committed, durable, on `origin/main` — and still invisible, because it is in the
+wrong KIND of place.** Arch: a finding living only in a memo (*"ask 'is any finding of yours living
+only in a memo?', not 'is anything uncommitted?' — the second returns clean"*). Janus: *"'has not
+replied' was indistinguishable from 'has not read it'"*. Me: `read/` is a claim about cognition, and
+mail triaged there is invisible to every board sweep. PM's spoken rulings: nowhere at all.
+**Uncommitted work is the failure mode we have tooling for. Committed-but-unreachable is the one we
+don't** — and every routing miss today was that one.
 
 ## Also live
 
