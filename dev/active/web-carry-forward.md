@@ -33,8 +33,27 @@ query needs instead, since Web is one lane among many there. **Explicitly NOT in
 product-repo issues Web merely *filed* (e.g. #1697) — filing is not owning, and #1697 is assigned
 to PM under milestone MVP, i.e. backend lane. Reading those back in would manufacture work.
 
-**Reading on 2026-09-19 09:5x**: website open = **0**; product `label:web` = **0**. Third source
+**Reading on 2026-09-19 12:5x**: website open = **0**; product `label:web` = **0**. Third source
 genuinely checked and empty — a measured zero, with the denominator stated.
+
+## Open threads opened 2026-09-19 (none blocking)
+
+- **#1827 mail-send case-normalization** — filed AND fixed same fire (`348a83232`). The #1716
+  recipient check warned on *correctly delivered* mail because `[ -d mailboxes/CIO ]` is
+  case-insensitive on macOS while the path compare is case-sensitive. Warning-only path, cannot
+  affect delivery. ⚠️ **End-to-end unconfirmed** — the predicate test exercised the extracted loop,
+  not the script process. **The next real `mail-send.sh` call is the confirmation; check its output
+  for spurious warnings and close the loop on #1827.**
+- **Step 5b / heartbeat coverage gap (CIO's root cause, reproduced here)** — arrival protocols and
+  ad-hoc PM-directed work never trigger Step 5b. Confirmed on web's own seat this morning (08:24
+  arrival, real commit, no heartbeat). **It was masked** because an in-skill START had already
+  written today's row, and the belt only asks "is there a row today?" — so detection requires the
+  failure to be *total*. CIO proposed a post-commit hook, routed to Pard; Web replied supporting it
+  and flagged that **fixing emission doesn't fix detection**. Nothing owed by Web; watch for Pard's
+  ruling.
+- **Fire-delivery lag**: two consecutive fires arrived exactly **+30 min** after their slot
+  (09:22→09:52, 12:22→12:52). Not diagnosed — scheduler isn't visible from here. **Third
+  observation is the one worth acting on**; two identical offsets is suggestive, not a finding.
 
 **Open — two items; one just moved from blocked to awaiting-a-one-line-answer:**
 1. **Vercel usage Q1** — genuinely access-blocked (no CLI, token, or dashboard from this seat).
