@@ -33,6 +33,9 @@ denominator.
 
 import argparse
 import json
+from pathlib import Path
+from datetime import datetime
+from zoneinfo import ZoneInfo
 import subprocess
 import sys
 from collections import Counter, defaultdict
@@ -177,10 +180,111 @@ def milestone_of(item):
     return ms.get("title") if isinstance(ms, dict) else ms
 
 
+
+# ---------------------------------------------------------------------------
+# Snapshot + delta (PM's ask, 2026-09-19: "we need the sprint truth script to
+# write a last best snapshot somewhere and to seek the diff / changes").
+#
+# WHY THIS EXISTS: before this, the script computed a correct figure every run
+# and remembered nothing. So "57 not done" was always true and never informative
+# — you could not tell a week of hard closing from a quiet week, because the
+# only number on offer was a level, never a change. Planning needs the change.
+#
+# It stores ISSUE NUMBERS, not just counts, deliberately. Counts alone tell you
+# the pile moved by one; they cannot tell you three closed and four arrived,
+# which is the shape that actually matters and which a net figure hides.
+#
+# Home is dev/state/ — the not-swept directory CIO established 2026-09-19 for
+# small durable machine-state markers, precisely because dev/active/ is
+# sprint-cleaned and a marker that vanishes degrades silently.
+# ---------------------------------------------------------------------------
+SNAPSHOT_DIR = Path(__file__).resolve().parent.parent / "dev" / "state"
+
+
+def _snapshot_path(milestone):
+    safe = "".join(c if c.isalnum() or c in "-_" else "_" for c in milestone)
+    return SNAPSHOT_DIR / f"sprint-truth-{safe}.json"
+
+
+def load_snapshot(milestone):
+    p = _snapshot_path(milestone)
+    if not p.exists():
+        return None
+    try:
+        return json.loads(p.read_text())
+    except (json.JSONDecodeError, OSError) as exc:
+        # A corrupt snapshot must not take the whole check down: the live figure
+        # above is still valid and is the thing people came for.
+        print(f"\n⚠️  snapshot unreadable ({exc}) — reporting level only, no delta.")
+        return None
+
+
+def write_snapshot(milestone, not_done, done, open_numbers, when):
+    SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
+    _snapshot_path(milestone).write_text(
+        json.dumps(
+            {
+                "milestone": milestone,
+                "taken_at": when,
+                "not_done_total": sum(not_done.values()),
+                "done": done,
+                "by_status": dict(not_done),
+                "open_numbers": sorted(open_numbers),
+            },
+            indent=2,
+        )
+        + "\n"
+    )
+
+
+def report_delta(prev, not_done, done, open_numbers):
+    """Print what MOVED since the last snapshot. Silent-but-stated when first run."""
+    if prev is None:
+        print(
+            "\n--- delta ---\n"
+            "NO PRIOR SNAPSHOT — this run establishes the baseline. A first run "
+            "cannot report change, and that is not the same as reporting no change."
+        )
+        return
+    prev_open = set(prev.get("open_numbers") or [])
+    now_open = set(open_numbers)
+    closed = prev_open - now_open
+    arrived = now_open - prev_open
+    d_total = sum(not_done.values()) - prev.get("not_done_total", 0)
+    d_done = done - prev.get("done", 0)
+    print(f"\n--- delta since {prev.get('taken_at', 'unknown')} ---")
+    print(
+        f"not done {prev.get('not_done_total', '?')} → {sum(not_done.values())} ({d_total:+d})   "
+        f"done {prev.get('done', '?')} → {done} ({d_done:+d})"
+    )
+    print(f"left the open set: {len(closed)}   arrived: {len(arrived)}")
+    if closed:
+        print("  closed/moved out: " + " ".join(f"#{n}" for n in sorted(closed)[:25]))
+    if arrived:
+        print("  arrived:          " + " ".join(f"#{n}" for n in sorted(arrived)[:25]))
+    if not prev_open:
+        print("  ⚠️  prior snapshot carried no issue numbers — counts only, membership unknown.")
+    # per-status movement, which is where the story usually is
+    prev_by = prev.get("by_status") or {}
+    moved = [
+        (k, prev_by.get(k, 0), not_done.get(k, 0))
+        for k in sorted(set(prev_by) | set(not_done))
+        if prev_by.get(k, 0) != not_done.get(k, 0)
+    ]
+    if moved:
+        print("  by status: " + " · ".join(f"{k} {a}→{b}" for k, a, b in moved))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--milestone", default="MVP")
     ap.add_argument("--list", action="store_true", help="itemize the not-Done work")
+    ap.add_argument(
+        "--no-snapshot",
+        action="store_true",
+        help="read the last snapshot and report the delta, but do NOT overwrite it "
+        "(for ad-hoc reads that shouldn't move the baseline)",
+    )
     args = ap.parse_args()
 
     items = fetch()
@@ -254,6 +358,38 @@ def main():
     tail = f" + {off_board} not on the board" if off_board else ""
     print("\n--- paste this, not a single number ---")
     print(f"{args.milestone}: {total_open} not done ({parts}{tail}); {done} done.")
+
+    # --- snapshot + delta ------------------------------------------------
+    # Collect the open issue numbers this run actually saw. Board items nest the
+    # issue under "content"; fall back to a top-level number so a shape change
+    # degrades to counts-only rather than crashing the whole check.
+    open_numbers = []
+    for i in scoped:
+        if (i.get("status") or "") == "Done":
+            continue
+        n = (i.get("content") or {}).get("number") if isinstance(i.get("content"), dict) else None
+        if n is None:
+            n = i.get("number")
+        if isinstance(n, int):
+            open_numbers.append(n)
+    if len(open_numbers) != board_sum:
+        # Say so rather than let a partial set masquerade as the membership.
+        print(
+            f"\n⚠️  recovered {len(open_numbers)} issue numbers for {board_sum} open board items — "
+            "the delta's membership lists below are INCOMPLETE (counts remain correct)."
+        )
+    prev = load_snapshot(args.milestone)
+    report_delta(prev, not_done, done, open_numbers)
+    if args.no_snapshot:
+        print("  (--no-snapshot: baseline left unchanged)")
+    else:
+        write_snapshot(
+            args.milestone,
+            not_done,
+            done,
+            open_numbers,
+            datetime.now(ZoneInfo("America/Los_Angeles")).strftime("%Y-%m-%d %H:%M %Z"),
+        )
     un = unmilestoned_open()
     if un is None:
         print("⚠️  UNMILESTONED COUNT UNAVAILABLE — this figure covers ONE milestone only.")
