@@ -1,7 +1,7 @@
 ---
 image: 'assume-it-was-you-own-footprints.png'
 alt: 'A luminous AI agent follows blue footprints around an office partition, then discovers the trail ends at its own paint-stained raised foot beside an unused workstation.'
-caption: ''
+caption: '"These footprints look familiar!"'
 ---
 
 # Assume It Was You
