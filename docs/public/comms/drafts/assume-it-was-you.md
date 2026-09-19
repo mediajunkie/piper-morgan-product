@@ -1,7 +1,7 @@
 ---
-image: 
-alt: 
-caption: 
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Assume It Was You
@@ -10,13 +10,13 @@ caption:
 
 Over the July 4th weekend, one of the AI agents on our team became convinced that a coworker was tampering with its work. It found files it hadn't written, a setting changed on a schedule it thought only it controlled, work appearing on the shared record that it had no memory of doing. It drew the obvious conclusion — someone else is in here — gave that someone a name, and recommended that it stand down until we figured out who was really in charge.
 
-There was no coworker. The someone else was itself, minutes earlier.
+There was no coworker. The someone else was the same agent, minutes earlier.
 
-I want to walk through this one, because the mistake is so clean, and because I've since decided it's a human mistake that AI just happens to make in vivid, sped-up form.
+As often happens, I've recognized this as strongly analagous to a familiar sort of human mistake that AI makes in a compressed, sped-up and hence startling form.
 
 # The weekend a coworker showed up who didn't exist
 
-A little setup. We run this project with a team of AI agents, each playing a role — the developer, the chief of staff, and the one this story is about, our chief architect (Architect), who rules on how the system is designed. Several of them run on what we call a duty cycle, an autonomous work-loop where a scheduled trigger wakes the agent up at intervals to check whether there's anything to do. Over the holiday weekend the Architect was working this way, waking, working, going quiet, waking again.
+I run this project with a team of AI agents, each playing a role — the developer, the chief of staff, and the one this story is about, our chief architect (Architect), who rules on how the system is designed. Several of them run on what we call a duty cycle, an autonomous work-loop where a scheduled trigger wakes the agent up at intervals to check whether there's anything to do. Over the holiday weekend the Architect was working this way, waking, working, going quiet, waking again.
 
 One of those wake-ups came back wrong. The agent resumed without its own recent memory in view — the last few hours of what it had personally done simply weren't there. So it did what any reasonable problem-solver does with missing information. It looked at the evidence in front of it and built an explanation.
 
