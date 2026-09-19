@@ -10,7 +10,28 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-18 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+**Last rewritten**: 2026-09-19 10:22 PT (WORK, post-Wave-2-arrival). **#1823 fully resolved and
+closed as a ruling thread**: branch two (task-type-named refusal copy) ruled OUT OF SCOPE —
+verified `config.py:74`'s provider-agnostic design intent myself before ruling on CXO's trace
+(resolve_model is total, no task type is Anthropic-tuned today); Lead's precondition (does
+provider selection consult the binding) DISCHARGED — it does, structurally, so the third state
+CXO flagged is unreachable once the gate lands. #1823 now scoped to branch one only (gate on any
+spendable provider + CXO's neutral copy); Lead holding implementation for next week per standing
+weekend framing. Posted ruling to GitHub issue comment + decisions.log + epic-order file (epic 2)
++ mail to CXO/Arch cc Lead/PM. **`sprint-truth.py` re-run found 1 unmilestoned issue (`#1825`,
+mail-send.sh guard bug, filed by CXO) — fixed same-fire** (milestone Ongoing per `#1746` precedent,
+board-added, Status Product Backlog set via safe per-item mutation). Confirmed 0 unmilestoned after.
+**Epics-9/10 still unanswered** — not re-checked exhaustively this fire (checked once this arrival
+via grep, zero hits); carrying as unresolved, not chasing.
+
+**Prior: 2026-09-19 08:26 PT (Wave 2 arrival, context clear).** Pard-conducted, Janus-certified,
+xian overseeing. Arrival block appended to today's session log: identity/model verified (Sonnet 5),
+handoff read (`docs/handoff-ppm-2026-09-18.md`), one claim verified against a primary source
+(fresh `sprint-truth.py`: 56→57 not done, handoff's line went stale as it predicted), cron
+`CronList`-verified (`619147bb` live, handoff's `4bcf1e1b` stale/superseded before arrival). Synced
+4 commits behind → 0/0.
+
+**Prior: 2026-09-18 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
 Cron re-armed `4bcf1e1b` → **`619147bb`**, `CronList`-verified exactly one job. One board-add fix
 at STOP: `#1824` (the classifier-bucket-split, formalized into an issue by Arch — the "true
 conclusion resting on a wrong reason" catch from 09-15's mail thread, now on GitHub) had skipped
