@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "041"
+title: "Systematic Fix Planning"
+status: "**Proven** (Evidence from Nov 18, 2025 Alpha Testing session)"
+valid_from: "2025-11-21"
+last_updated: "2026-08-29"
+---
+
 # Pattern-041: Systematic Fix Planning
 
 ## Status

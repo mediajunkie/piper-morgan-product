@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "035"
+title: "MCP Integration Router with Adapter Methods"
+status: "**Proven** — demonstrated in GitHub integration (promoted 2026-06-17 per stale-pattern triage; instance confirmed)"
+valid_from: "2025-10-19"
+last_updated: "2026-08-29"
+---
+
 # Pattern-035: MCP Integration Router with Adapter Methods
 
 ## Status

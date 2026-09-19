@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "042"
+title: "Investigation-Only Protocol"
+status: "**Proven** (Evidence from Nov 18, 2025 E2E Bug Testing session)"
+valid_from: "2025-11-21"
+last_updated: "2026-08-29"
+---
+
 # Pattern-042: Investigation-Only Protocol
 
 ## Status

@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "031"
+title: "Plugin Wrapper Pattern"
+status: "Unknown"
+valid_from: "2025-10-04"
+last_updated: "2026-08-29"
+---
+
 # Plugin Wrapper Pattern
 
 **Status**: Active

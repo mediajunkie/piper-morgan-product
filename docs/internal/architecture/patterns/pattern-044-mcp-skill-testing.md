@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "044"
+title: "MCP Skill Testing Pattern"
+status: "Unknown"
+valid_from: "2025-11-22"
+last_updated: "2026-08-29"
+---
+
 # MCP Skill Testing Pattern
 
 **Status**: Established
