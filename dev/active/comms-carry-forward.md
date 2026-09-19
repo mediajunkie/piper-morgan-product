@@ -42,6 +42,18 @@ Full footer-tease chain repaired end to end across all 8 touched files. A chrono
 - **BYOC listing copy** — held per the ESSENCE ratification; the marketplace *narrative* piece is a separate artifact, already published.
 - **Series structure (era split + blog-index featuring)** — data-correctness half resolved; the *structural* display question remains open, PM/Web's call. More load-bearing than it looks: per PM's 09-17 note, Eras sorting (not pubDate) is the intended mechanism for showing readers the narrative's true sequence — see memory `project_narrative_chronology_via_eras_not_perfect_pubdate`.
 
+## Tomorrow AM — PM's stated plan (2026-09-18 22:xx, in-conversation)
+
+PM: "tomorrow am we'll have a blog post to work on. After that we can resume our editorial calendar
+planning work." Likely candidate, verified against the calendar: **"Assume It Was You"**
+(`docs/public/comms/drafts/assume-it-was-you.md`), status `drafted`, `pubDate` **2026-09-19** —
+publishing tomorrow. Fully drafted + fact-checked (2026-07-09), but has **one open PM-input
+bracket**: whether the "compaction hand-wave rejection" paragraph is PM's own words or the
+Architect's account of PM. That bracket plus the voice-pass are the likely "work on" ask. Not yet
+confirmed by PM which post they meant — flagged as the best-fit inference from calendar state, not
+a certainty. After that: resume editorial calendar planning (no further detail given yet on what
+aspect).
+
 ## Waiting on others
 
 - **PM** — voice-pass + art on the ~9-10 drafted items; ChicagoCamps script/slide review.
