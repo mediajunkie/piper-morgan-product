@@ -68,16 +68,20 @@ Current job **`e018f052`** (chain … `db3710ca → bc447bf5 → e018f052`), exp
 
 ## Open threads, as of 09-18 STOP
 
-- ⚠️ **Janne Lammi's invite — NEW BLOCKER found 09-19, NOT a simple "ready to send" anymore.** PM
-  drafted the pre-qualification email via Gmail MCP this session (local-install copy, per the
-  standing template), then caught in review that it may be pointed at the wrong onboarding mode:
-  Janne's roster token was minted against `piper-morgan-db.flycast` (Fly's internal-only DNS,
-  private-networked per #1311), which a local install cannot reach at all. Held the draft — do not
-  send. Asked Lead directly (cc Arch, PM, 09-19 13:xx) which hosted URL (`alpha.pipermorgan.ai` vs
-  `beta.pipermorgan.ai`) the token actually targets and whether #1814's fix is confirmed there (its
-  own verification ran against a local harness, not a hosted deploy). **Watching for Lead's answer,
-  not passively — this supersedes the prior "ask PM directly" framing, since the answer isn't
-  PM's to give.** Full writeup: `dev/2026/09/19/2026-09-19-0707-host-code-log.md`, Fire 2/3/4.
+- 🛑 **Janne Lammi's invite — PM-DECIDED HOLD, 09-19 ~13:4x PT. Do not send. Do not re-raise as
+  "ready" without a new fact.** Chain: local-install-template mismatch found → resolved via PM's
+  own sent Gmail (`alpha.pipermorgan.ai` confirmed real/live, 10+ prior invites since 07-12,
+  Rebecca succeeded there 09-02) → draft corrected → Lead verified alpha live+healthy via direct
+  HTTP probe BUT found **no droplet deploy since the July cutover** — every Sept release
+  (#1810/#1814/#1809 arc) went to Fly, not the droplet, so alpha is very likely running a
+  pre-server-key-abolition build (may still carry the old operator-key-fallback model PM ruled
+  dead, #1812). **PM's own words, quoted because they matter beyond this one item**: *"I want to
+  sort out the underlying issues before sending out the invitation. Too much unfinished business
+  is piling up, chasing newer things."* Told Lead this explicitly — including that PM's response
+  reads as pushing back on Lead's own "next week's plan" deferral framing, not just this invite.
+  **To lift**: someone with droplet SSH (Lead's seat has none) reads `/app/VERSION` to confirm the
+  July-cut hypothesis as fact. Full thread: `dev/2026/09/19/2026-09-19-0707-host-code-log.md`.
+  Roster (main checkout, gitignored) carries the same hold with PM's quote verbatim.
 - ✅ **Amber-restart handoff doc filed** (`docs/handoff-host-2026-09-18.md`, 09-18) — gate-blocking cohort requirement, met same-day. Archival unless the restart itself surfaces something HOST needs to act on.
 - ✅ **Sprint closeout for Sep 11–17 filed** (09-18, to Exec cc PM). Archival.
 - ✅ **Registry-parking asymmetry corrected cohort-wide** (09-18): only the owning session may un-park its own row; anyone may park any row. Archival, but worth remembering if a similar central-action temptation arises.
