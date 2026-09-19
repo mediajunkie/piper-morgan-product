@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "062"
+title: "Assembly Assumption"
+status: "**Methodology-Elevated** (was Proven) — Identified February 2026, validated through M0 sprint wiring pass; principle graduated into the methodology corpus as Excellence Flywheel v2.0 Practice 5 (\"Audit the Composition\"). The Flywheel practice is now the canonical, actively-cited form; this entry remains the catalog record of origin. See `docs/internal/architecture/patterns/README.md` §\"Pattern Status Levels\" for the Methodology-Elevated definition (formalized 2026-05-28)."
+valid_from: "2026-03-20"
+last_updated: "2026-08-29"
+---
+
 # Pattern-062: Assembly Assumption
 
 ## Status

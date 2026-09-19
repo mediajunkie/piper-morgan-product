@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "074"
+title: "Visibility Loss After Premature Retirement"
+status: "**Emerging** — Filed 2026-05-24 by CIO per Comms's process-improvement seed memo (`memo-comms-to-cio-cc-host-pa-pm-pattern-of-visibility-loss-lapses-plus-guards-2026-05-24.md`). **Two reference instances** logged within a single day (both Comms-side, May 24, 2026). Meets methodology-29 framework's minimum-for-Emerging threshold (≥2 independent instances within a bounded window); needs ≥1 more independent cross-role instance to graduate Emerging → Proven."
+valid_from: "2026-05-24"
+last_updated: "2026-08-29"
+---
+
 # Pattern-074: Visibility Loss After Premature Retirement
 
 ## Status

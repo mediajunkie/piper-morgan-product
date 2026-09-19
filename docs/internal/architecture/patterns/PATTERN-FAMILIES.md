@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "N/A"
+title: "Pattern Family Index"
+status: "Unknown"
+valid_from: "2026-02-06"
+last_updated: "2026-08-29"
+---
+
 # Pattern Family Index
 
 _Patterns organized by how they work together, not just what they're about._

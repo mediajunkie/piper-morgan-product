@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "070"
+title: "Cleanup-Job-with-Cancellation-Hygiene"
+status: "**Emerging** — Filed 2026-05-15 by Architect per CIO disposition (May 15) following May 15 candidate proposal. Slot 070 allocated after 12l pre-filing slot-availability check (`ls patterns/pattern-NNN-*`); first pattern filed under that discipline. Promotion to Proven contingent on **fourth instance landing and using the four invariants without rediscovery** — Anthropic Dreams Type 1 consolidation pipeline (per PA Phase 3 review May 12 + CEO substrate decision May 12 to build PM-side) is the natural fourth-instance target; promotion to Proven when that ships and naturally adopts the invariants. CIO co-signs the methodology sidecar (\"Pattern Formation via Successful Imitation,\" tracker 12o, drafting Mon May 18 → Tue May 19)."
+valid_from: "2026-05-15"
+last_updated: "2026-08-29"
+---
+
 # Pattern-070: Cleanup-Job-with-Cancellation-Hygiene
 
 ## Status

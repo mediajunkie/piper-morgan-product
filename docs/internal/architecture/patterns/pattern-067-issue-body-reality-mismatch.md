@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "067"
+title: "Issue-Body Reality Mismatch"
+status: "**Emerging** — Identified 2026-05-09 by Lead Developer during M2f Group A+B audit-cascade work (3 of 5 issues encountered the pattern in a single session). Filed under Lead Dev self-approval authority 2026-05-09 per recent precedent (CIO Pattern-066 filed under self-approval same day). Promotion to Proven pending one trial-application cycle on a future issue triage where the Phase 0 dead-code check is applied prophylactically."
+valid_from: "2026-05-09"
+last_updated: "2026-08-29"
+---
+
 # Pattern-067: Issue-Body Reality Mismatch
 
 ## Status

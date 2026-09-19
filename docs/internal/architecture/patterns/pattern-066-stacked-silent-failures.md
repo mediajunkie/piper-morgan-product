@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "066"
+title: "Stacked Silent Failures"
+status: "**Emerging** — Identified 2026-04-10 by CIO predecessor during M1 gate UAT debugging (named explicitly as \"a new diagnostic pattern worth naming\"). Filed under CIO self-approval authority 2026-05-09 per Pattern Sweep #1025 Phase 2C TRUE EMERGENCE finding (validated independently in Phase 2E meta-synthesis against P-041, P-042, P-043, P-045, P-060, P-062 — closest neighbor P-045 but mechanism distinct). PM concurrence on slot allocation recommended given recent slot-conflict precedent (Pattern-063 vs. predecessor Architect's Pattern-064 claim Apr 26-27). Promotion to Proven pending one trial-application cycle."
+valid_from: "2026-05-09"
+last_updated: "2026-08-29"
+---
+
 # Pattern-066: Stacked Silent Failures
 
 ## Status

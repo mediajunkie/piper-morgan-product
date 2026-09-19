@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "072"
+title: "Registries that Grow into Architectural Shapes"
+status: "**Proven** — Promoted from Emerging on 2026-05-16 by CIO per `methodology-audit-policy-updates-2026-03-16.md` self-approval authority. Promotion-to-Proven trigger fired via #1094 ENGINE-DELETION close-out (commit `d48bc1d0`, merged 2026-05-15 14:38 PST): Slack handler dispatch routes through `intent_service.process_intent` which dispatches via the `task_type` registry to canonical handlers — fourth meaningful behavior-deciding consumer of the registry, landing without violation of the formalization discipline (typed enum / documented consumer set / explicit default policy / register-time validation, all four invariants intact). Originally filed Emerging 2026-05-15 by Lead Developer per CIO disposition (May 15) following Architect's observation during #1017 Phase 1 ratification + Lead Dev's methodology memo. Slot 072 allocated after 12l pre-filing slot-availability check. **Methodology-29 (\"Pattern Formation via Successful Imitation\") instance applied to registries** rather than to code shapes. Three-consumer recognition threshold + fourth-consumer Proven trigger both fired within ~6 hours on 2026-05-15 — Pattern-072 is the framework's first sub-day Emerging-to-Proven promotion."
+valid_from: "2026-05-15"
+last_updated: "2026-08-29"
+---
+
 # Pattern-072: Registries that Grow into Architectural Shapes
 
 ## Status

@@ -1,3 +1,12 @@
+---
+type: pattern
+number: "N/A"
+title: "Proto-Pattern Tracking"
+status: "Unknown"
+valid_from: "2026-02-06"
+last_updated: "2026-08-29"
+---
+
 # Proto-Pattern Tracking
 
 _Candidates for formalization that need additional evidence before full pattern status._
