@@ -83,19 +83,21 @@ API design uses this every time it's done well — code samples are worked examp
 
 User-facing copywriting uses it whenever someone writes "voice and tone" guidelines that include not just rules but examples of what the voice sounds like applied to specific scenarios — *and* anti-examples of what it doesn't sound like.
 
-# What it costs
+# Why it feels expensive
 
-The reason this technique isn't universally used is that it's expensive, in the moment, to produce.
+The reason this technique isn't universally used is that it's effortful, in the moment, to produce.
 
-A description is a sentence. Three worked examples plus a contrast is a forty-five-line artifact, and each line has to be written carefully — the user input has to be plausible, the predicted output has to be calibrated, the contrast has to be the actual failure shape rather than a strawman. You can dash off a description in thirty seconds. Three worked examples take twenty minutes if you know what you're doing and an hour if you don't.
+A description can be jotted down in as sentence or two. Three worked examples against a default contrast simply takes more time and attention. It needs to be done carefully, reviewed thoughtfully. It's best if you as the accountable person frame the expectations up front and review the examples you get back carefully against those origianal requirements.
 
-That cost is the entire reason worked examples land harder than descriptions. The reader can feel the time the writer put in. The careful calibration of each example shows up as confidence in what the shape actually is, and confidence in the shape transfers to the reader as understanding.
+The user input has to be plausible, the predicted output has to be calibrated, the contrast has to be the real alternate failure shape, not imaginary strawman. You can dash off a description in thirty seconds. Three worked examples take twenty minutes if you know what you're doing and hours if you don't. (If we're talking about an agent doing the drafting that part will go faster of course, but the attention required to validate and approve what you're given won't compress much at all and may expand.)
 
-So the cost isn't a bug. The cost is the feature.
+This cost in effort pays off. The reader benefits from the care the writer put in. The attentive calibration of each example communicates confidence in what the expectation actually is, fostering clearer understanding.
 
-The decision worth making, more often than I do make it, is *this is the kind of thing that needs worked examples.* Voice work always does. Architectural shape-claims usually do. New methodology patterns benefit. Abstract design principles almost demand it. The default of "write a description and move on" is the right default for most communication. But for the small subset of communication where the shape *is* the thing, the worked-examples-plus-contrast pattern is the most reliable way I know to make abstraction land.
+The effort is a feature, not a bug.
 
-Three examples. The contrast. The shape becomes the thing the reader can hold.
+Naturally, not every specification needs worked examples. Voice work always does, I'm finding. Architectural decisions usually do. New methodology patterns definitely benefit from this. Abstract design principles almost demand it or risk severe flattening. 
+
+The default of "write a description and move on" is the right default much of the time but for the small subset of communication geared towward making an abstract concept concrete and legible, the worked-examples-plus-contrast approach is the most reliable way I know to make a pattern touch grass.
 
 ---
 
