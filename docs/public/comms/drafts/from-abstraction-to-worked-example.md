@@ -42,7 +42,7 @@ One example is too little. Any single instance can be read as either *the rule* 
 
 Three examples is generally enough to, well, triangulate and in this case also aligns with the three categories our ethical model primarily addresses. When you read the *harassment* case, the *professional-boundary* case, and the *inappropriate-content* case side by side, it helps you focus on the patterns, what my agents these days love to call the "shapes" instead of anchoring on the specifics. 
 
-Three example responses help guide and assess (evaluate) what the the models. *First-person "I." Brief, one or two sentences. No parroting of pattern words. Real redirect offered. Tone calibrated to seriousness.* The three samples give you enough variance to see the invariants.
+Three example responses help guide and assess (evaluate) what the models respond for Piper. *First-person "I." Brief, one or two sentences. No parroting of pattern words. Real redirect offered. Tone calibrated to seriousness.* The three samples give you enough variance to see the invariants.
 
 Five examples might let you see more invariants but may strain any reader's attention (even an agentic reader). Three is roughly the minimum that triangulates and roughly the maximum the reader will read carefully.
 
