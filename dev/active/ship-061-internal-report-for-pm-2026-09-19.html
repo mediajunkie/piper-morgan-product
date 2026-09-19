@@ -223,6 +223,14 @@
   </div>
 
   <footer>
+    <b>Window definition — checked, not assumed.</b> PM's exports filter on GitHub's
+    <code>created:</code>/<code>closed:</code>, which are <b>UTC calendar dates</b>; our sprint week
+    is <b>Pacific</b>. Those differ by 7 hours at each end, and 17:00–24:00 PT is prime time here, so
+    the gap is real work. <b>I computed independently in Pacific from the unfiltered full-sprint file
+    and both definitions give the same answer — 56 created, 45 closed.</b> The two boundary slivers
+    are genuinely empty: the late one <b>because the cohort was in the standdown</b>, the early one
+    because Thursday evening was quiet. <b>Agreement this week, not a general property — on a normal
+    week a Thursday-evening push would land in one window and not the other.</b><br><br>
     <b>Verified how.</b> All ten closeout replies read in full from <code>mailboxes/exec/read/</code>
     — not summarised from a prior pass. Commits from <code>git log origin/main</code> bounded to the
     window. Milestone line from <code>sprint-truth.py</code> run at 12:51 today, <b>which is after the

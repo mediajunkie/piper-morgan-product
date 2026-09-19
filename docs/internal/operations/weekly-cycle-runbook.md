@@ -87,6 +87,32 @@ net. Use the delta, because a level ("57 not done") is always true and never inf
 **If a figure is taken after the window closed, label it "as of <date>" rather than passing it off
 as a window-close number.**
 
+**PM's export criteria** (use these; they produce the three files the report is built from):
+```
+milestone:MVP sprint:"Beta Blockers - Hard Gates Only" created:YYYY-MM-DD..YYYY-MM-DD
+milestone:MVP sprint:"Beta Blockers - Hard Gates Only" closed:YYYY-MM-DD..YYYY-MM-DD
+milestone:MVP sprint:"Beta Blockers - Hard Gates Only"
+```
+Ask for columns `Title · URL · Sprint · Status · Milestone · Created · Closed · Updated`. **Created
+dates are needed on the CLOSED file too** — an issue opened and closed inside the window appears only
+there, so without them the "opened" figure systematically undercounts fast-turnaround work.
+
+⚠️ **GitHub's `created:`/`closed:` ranges are UTC calendar dates. Our week is Pacific. Those are
+different windows by 7 hours at each end** — and the difference is real work, since 17:00–24:00
+Pacific is prime time here.
+
+**So don't just trust either. Check the two boundary slivers against the UNFILTERED full-sprint
+file:**
+```python
+# in PM's UTC window but not our Pacific one:  09-11 00:00 UTC .. 09-11 07:00 UTC
+# in our Pacific window but not PM's UTC one:  09-18 00:00 UTC .. 09-18 07:00 UTC
+```
+★ **For Sep 11–17 both slivers were EMPTY and the two definitions agreed exactly (56 created,
+45 closed) — but that was luck with a cause, not a property.** The late sliver was empty *because
+the cohort was in the standdown*; the early one because Thursday evening happened to be quiet. **On a
+normal week, a Thursday-evening push lands in one window and not the other.** Run the check; don't
+inherit this week's agreement as a general result.
+
 ⚠️ **PM can pull GitHub data directly. Ask rather than burn the API** — the GraphQL limit is shared
 across the whole cohort and exhausting it breaks `sprint-truth.py` for everyone. **A query that
 returns 0 against a week of obvious activity is a broken instrument, not a result: report it as
