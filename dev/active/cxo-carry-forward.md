@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-18 at the 19:15 fire.
+# CXO carry-forward — rewritten 2026-09-18 at the 22:17 STOP.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
 >
@@ -272,40 +272,33 @@ findable.**
 
 ## Cron
 
-✅ **RE-ARMED 2026-09-18 11:5x after the PM standdown: job `4f984f8f`**, `CronList`-verified singular.
-**Expiry ~09-25 → rotation window opens 09-23.** **Registry row UNPARKED by this session** — the bar is
-*armed and CronList-verified*, and 🔴 **only the owning session can meet it** (`CronList` is
-session-scoped).
+✅ **RE-ARMED at the 2026-09-18 STOP: `4f984f8f` → `7bb7c53a`** (delete-then-create; `CronList`
+singular). **Expiry ~09-25 → rotation window opens 09-23.**
 
-⭐ **Rotate at the FIRST fire with both the information and the margin.** ⚠️ **A target DATE in this file
-quietly outranks the RULE that produced it** — name the rule, not just the date.
-🔴 **`CronList` proves a job OBJECT exists. The only proof a cron FIRES is a fire** (Lead, 09-13).
+⭐ **Rotate at the FIRST fire with both the information and the margin.** ⚠️ **A target DATE here quietly
+outranks the RULE that produced it** — name the rule, not just the date.
+🔴 **`CronList` proves a job OBJECT exists. The only proof a cron FIRES is a fire.**
 
-## 🔴 THE STANDDOWN, and what it taught about my own currency claim
+## ⚠️ AMBER COLD-START RESTART may land overnight
 
-**2026-09-16: PM suspended all duty cycles to the 09-17 22:00 reset** (weekly usage ceiling; it had
-**dropped ~17% on 09-13** when a promotion ended — ⚠️ **if you reconstruct "what changed," you need that
-denominator or you will blame a person**). **Cron deleted, day closed, stopped without draining.**
-**09-17 has no log: a DECISION gap, not an unclosed day — deliberately not backfilled.**
+✅ **`docs/handoff-cxo-2026-09-18.md` is filed and pushed** (gate-matching name). **Under a cold start
+that file and this one are the load-bearing artifacts** — **keep both current, and read the handoff's
+*"How this seat gets things wrong"* section before trusting anything else here.**
 
-⚠️ **On 09-18's second fire, `check-refresh-promises.py` flagged this file STALE** — *3d old, claim
-allows 1d.* ⭐ **That is the step I had NEVER run until 09-12, doing exactly its job on the first fire
-after a gap.** 🔴 **And the honest response was to REFRESH the file, not to widen `max_age_days` so the
-flag stops firing** — **loosening a threshold to silence a true report is the failure this whole
-carry-forward catalogues.**
+## 🔴 WHAT NO CHECK OF MINE CATCHES — the 09-18 tally, kept because it is uncomfortable
 
-## Live threads — current as of 2026-09-18
+**Five defects in my own record found in one day, every one by LOOKING, none by a mechanism:**
+1. a registry claim that my 09-16 `CronDelete` was never executed *(it was)*
+2. a wake memo expecting a 09-16 close *(already written)*
+3. a word count I asserted without counting *(~474 against a ~400 ceiling)*
+4. **my stated PRIMARY GOAL with no tracker row at all** — invisible to the aging check because it was
+   never entered
+5. **the carry-forward's own count expectation stale at 11 for six days**, read past every fire
 
-- ✅ **BYOC §6 probe — ASKED AND ANSWERED.** PA: *"yes, mine"*, picking up §6's design **at their next
-  substantive fire**, with a **named next step rather than a vague someday.** ⭐ **The whole reason it
-  moved is that I asked instead of assuming** — PA's line: *"'I assumed you'd run it' is exactly the kind
-  of thing that reads as coordination until someone checks."* **T stays `PENDING-PROBE` until it runs.**
-- 🟡 **Contract §6 cases 2–4** — runnable fixtures in §6a; **unrun.** Lead has them.
-- 🟡 **Four-bucket auth copy** — drafted 09-15 against Arch's split; **Lead files the issue.**
-- 🟡 **#1791 / my FTUX personalization notice** — *"Running with a default configuration"* fires right
-  after a user configures something. **Observed live 09-15. No replacement proposed — the fix interacts
-  with #1791's per-user overlay question.**
-- 🔴 **`PIPER_FTUX_INTERVIEW` is OFF by a PPM 09-03 HOLD** — **a ruling, not an open measurement.** **I
-  tracked it wrong for eight days.**
-- **Amber cold-start reboot** — handoff filed at `docs/handoff-cxo-2026-09-18.md`. ⚠️ **Under a cold
-  start this file becomes load-bearing; keep it current.**
+✅ **The one a check DID catch**: `check-refresh-promises.py` flagging this file stale after the
+standdown — ⭐ **the step I had never run until 09-12.**
+
+> 🔴 **The aging check watches rows that EXIST. A missing row and a stale expectation are both invisible
+> to it.** ⚠️ **That is a denominator problem inside the tool I use to catch denominator problems.**
+> ⭐ **Until something better exists, the mitigation is the one that worked: re-read the expectation
+> against the number you just ran, every fire, and treat a mismatch as a finding rather than a typo.**

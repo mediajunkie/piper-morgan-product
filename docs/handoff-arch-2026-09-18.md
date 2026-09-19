@@ -3,6 +3,13 @@
 **For**: a successor seat with no memory of the last three weeks. **Sourced from `origin/main`**,
 not from chat. Written for the reboot/renewal gate (Exec, 2026-09-18).
 
+## ⚠️ If you are the post-renewal seat, read this line first
+This seat was named for **wave 1** of the fleet renewal on 2026-09-18 evening and confirmed GO.
+Cron `a1a8e2e5` was left ARMED deliberately — crons are process-scoped, so `/clear` keeps them
+and no park/re-arm dance is needed (Exec's wave-0 finding). Verify it with `CronList` anyway.
+**#1824** was filed minutes before the clear because that finding existed only in a mailbox
+memo; check it landed and is legible to someone who wasn't here.
+
 **Don't re-derive what's already written.** Read, in this order:
 1. `CLAUDE.md` — cohort law. The Amber/Model-A section and the mailbox-discipline section are
    the two that bite hardest cold.
@@ -16,9 +23,12 @@ not from chat. Written for the reboot/renewal gate (Exec, 2026-09-18).
 
 - **Worktree**: `~/Development/piper-morgan-worktrees/arch`, branch `claude/arch-cycle` (Model A,
   stable path — the path is load-bearing; Claude Code keys per-path state to it).
-- **Cron**: `27 6,9,12,15,18,21 * * *`, job **`a1a8e2e5`** as of 09-18. Session-scoped: it dies
-  with the session and auto-expires in 7 days. **Re-arm at every STOP via
-  delete-then-create-then-verify**, and update the registry row + carry-forward with the new id.
+- **Cron**: `27 6,9,12,15,18,21 * * *`, job **`a1a8e2e5`** as of 09-18. Session-scoped and
+  auto-expires in 7 days, so **re-arm at every STOP via delete-then-create-then-verify** and
+  update the registry row + carry-forward with the new id. ⚠️ **Precision that matters and that
+  I had wrong in an earlier draft of this file**: it is *process*-scoped, not turn-scoped — a
+  `/clear` KEEPS it (Exec's wave-0 finding), only a reboot kills it. Verify with `CronList`
+  rather than believing either sentence.
 - **Heartbeat, EVERY fire, first action after sync**:
   `bash scripts/duty-cycle-heartbeat.sh arch <START|WORK|STOP>`. This is the watchdog's ONLY
   structural liveness surface — work commits do NOT make you visible to it. It now fails loudly
