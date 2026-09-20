@@ -2,8 +2,12 @@
 
 **STATE: LIVE, day closed 2026-09-19.** Cron **`0f219adf`**, `38 6,10,14,18,22`, delete-then-create
 at STOP, CronList-verified exactly one, expires ~09-26.
-⚠️ **Arrival offset is +30/+31 min past the slot — held for all six fires today.** Compute any
-deadline from that, never from the cron expression.
+🔴 **RETRACTED 2026-09-20 — do not use +30.** That claim was falsified at **+7** on the very next
+fire. `CronCreate` documents jitter as **max 15 min**, so +30 exceeded the cap and was never
+scheduling at all — **it was this seat being busy in PM conversation.** Fires land only when the REPL
+is idle. **Use slot + up to 15 min; anything beyond that is a busy-REPL signal, not a late fire.**
+⚠️ **This matters for the reboot**: seats come up IDLE and will fire near schedule, so a +30
+expectation makes per-seat deadlines ~23 min too generous. Retracted to Pard and Janus 09-20.
 
 **Fresh session?** `docs/handoff-exec-2026-09-18.md` was written for you. This seat was replaced
 2026-09-18 11:12 (wave 0) and has run two full normal days since. **All eleven seats are past the
