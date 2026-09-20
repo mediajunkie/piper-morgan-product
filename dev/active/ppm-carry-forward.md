@@ -10,7 +10,18 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-20 12:55 PT (WORK). **`#1818` fully RULED by PM: option (b)** — no
+**Last rewritten**: 2026-09-20 15:55 PT (WORK). **CXO refined yesterday's product-file-writing
+answer**: default to scaffold when audience is unknown (asymmetric costs), and the sharper catch —
+scaffolding doesn't fix confabulation if the completion claim still overstates it ("I've written
+your standup" over a scaffold is the same false claim, relocated). Tied directly to `#1836`, agreed,
+folded the completion-claim principle into `#1836`'s epic-5 tracking as design guidance (no new
+issue). **`#1818`'s copy set delivered by CXO**, Lead unblocked — two open decisions folded into
+epic 2 (repeat-turn copy, and whether (b) supersedes `#1823`'s gate string — Arch's call). **Board
+hygiene**: `#1839` found NOT ON THE BOARD (from Arch's deployment-pipeline finding), fixed. **Nothing
+PM-gated carried forward** — watching for Arch's rulings on `#1836`'s deeper cause, `#1837`'s three
+proposed shapes, and the (b)-vs-`#1823` supersession question, not chasing any of them.
+
+**Prior: 2026-09-20 12:55 PT (WORK). **`#1818` fully RULED by PM: option (b)** — no
 exemption predicate, uniform acknowledge-in-kind response + key explanation for every keyless first
 message; Lead's ratchet measured only 5/14 `CANONICAL` pairs are actually spend-free. Epic 2 updated
 with the real ruling. **PM's first real dogfood session on alpha produced three filed defects, one

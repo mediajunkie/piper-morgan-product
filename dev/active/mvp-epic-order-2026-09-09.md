@@ -380,6 +380,18 @@ but strengthened as its own fix (a deterministic thanks/farewell would get promo
 own improvement-side check). **Not a PPM ruling — PM's, fully implemented in design, build now
 straightforward.**
 
+**CXO delivered the copy set 2026-09-20, Lead unblocked**: one shared constant (the key-explanation
+sentence, literally shared in source, not pasted four times — same discipline as `#1823`'s family)
+prefixed by a kind-matched acknowledgment (greeting/farewell/thanks/neutral); `thanks` deliberately
+does NOT say "you're welcome" since nothing was done yet (the honest-empty family showing up inside
+a pleasantry). **Two decisions flagged, not built**: (1) the repeat-turn case is unspecified by PM's
+ruling (which covers "every keyless *first* message") — CXO proposed a short-form nag-free variant
+for turn 2+, needs a decision; (2) whether (b) supersedes `#1823`'s branch-one string at the
+`/intent` gate — CXO's read: `#1823` governs the gate's condition, (b) governs its response, they
+compose and `#1823`'s string is replaced on the first-contact path — but named it as Arch's call,
+not decided yet. **Not a PPM decision on either** — watching for Arch's answer on (2), whoever picks
+up (1).
+
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
 
@@ -506,6 +518,16 @@ half (denying an offer made three turns earlier) are this epic's own honest-empt
 class — tracked in both epics, built once. **Remaining open: `#1760`, `#1761`, `#1763`, `#1697`,
 `#1718`, `#1772`, `#1811`, `#1829`, `#1836`, `#1837`** (10 of 18) — this epic is currently the one
 Lead is actively working, per their own log (opened right after epic 3 hit its floor Saturday).
+
+**CXO's design guidance for `#1836`'s fix, worth carrying to whoever builds it**: from the same-day
+product-file-writing thread (PM's question, answered by PPM+CXO jointly) — scaffolding or an honest
+re-entry into the interview state doesn't by itself fix confabulation if the completion CLAIM still
+overstates it. *"A scaffold announced as 'I've written your standup' is still a false claim."* The
+fix needs both halves: (1) the draft state must actually reflect what happened (Lead's proposed
+honest-re-entry fix), and (2) the message describing that state must match it exactly — no
+"I've updated" language unless a verified diff backs it (already Lead's stated direction for the
+first-layer fix). Same principle, stated once so it isn't rediscovered per-issue: a corrected
+artifact with an uncorrected completion claim is the confabulation relocated, not fixed.
 
 **Separately, same memo: Arch also answered CXO's #1823 branch-two scope question** (is
 provider-agnosticism deliberate/load-bearing, making branch two *permanently* empty rather than
