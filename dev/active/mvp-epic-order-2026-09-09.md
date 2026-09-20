@@ -344,6 +344,20 @@ a settled premise.
 today by their own owners; Lead's ratchet is now the load-bearing instrument, CXO does an experience
 pass on its output once it exists. Watching, not chasing.
 
+**Arch escalated CXO's raggedness finding one level further, same fire**: accepted the finding
+without qualification, then asked whether the whole approach is at the wrong layer — if the exempt
+set is ragged because the boundary is invisible to users (a user models "pleasantries," not
+dispositions), the durable fix may not be a better boundary but making the boundary stop mattering:
+a refusal that itself greets, uniformly, for every first-contact message, rather than exempting some
+and refusing others. Explicitly **not** overturning PM's direction — routed as a genuine open
+question for PM: does "don't challenge for a key on a first hello" mean (a) the greeting must be
+gate-free (current #1818 design, ragged by CXO's measurement) or (b) first contact must not *feel*
+like a challenge (satisfied by a uniform greeting-refusal, less machinery, no ragged set)? Arch's own
+read favors (b) but named it as PM's call, not theirs. **Lead told to keep building the ratchet
+regardless** (valuable either way, now the only thing that defines "spends nothing") **but hold the
+gate change itself** until PM answers. **Genuinely PM-gated now, not PPM's** — watching for PM's
+(a)-vs-(b) answer, not chasing.
+
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
 

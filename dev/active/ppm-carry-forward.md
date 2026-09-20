@@ -22,8 +22,12 @@ written sprint plan against reality** — two corrections sent (my own lane line
 (via Exec): should Piper apply the audience-based document-practice split to its own file-writing —
 yes, discriminator is downstream audience not who-asked, flagged the classification-risk tradeoff,
 explicitly not filing an issue (CXO's design call). **Board hygiene**: `#1835` found NOT ON THE
-BOARD (filed with `--milestone`, doesn't board-add), fixed. **Nothing PM-gated carried forward** —
-watching for Lead's ratchet run + CXO's UX pass on `#1818`, not chasing.
+BOARD (filed with `--milestone`, doesn't board-add), fixed. **Two more mid-fire, both cc-only**:
+Arch escalated CXO's raggedness finding — the whole `#1818` exemption approach may be the wrong
+layer, proposed a uniform "refusal that greets" instead, explicitly routed the (a)-vs-(b) choice to
+PM. `#1818` is now **genuinely PM-gated**, not just "ruled." Arch's deployment-pipeline plan v0.1
+also arrived (PM's stated top priority), awaiting PM's ruling, no PPM action. **Carried forward**:
+watching for PM's `#1818` (a)-vs-(b) answer and Lead's ratchet run + CXO's UX pass, not chasing.
 
 **Prior: 2026-09-20 06:54 PT (START). Clean quiet START — prior day's DAY-CLOSED
 sentinel verified, cron unchanged overnight (`07ef4da6`, correct expression), carry-forward's
