@@ -1,78 +1,68 @@
 ---
-last_updated: 2026-09-19
+last_updated: 2026-09-20
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-09-19 DAY CLOSED, resuming 2026-09-20
+# CIO carry-forward — 2026-09-20
 
-**Day closed cleanly.** Three fires today (08:29 arrival, 10:37 WORK, 16:37 WORK, 22:37 STOP).
-Full detail: `dev/2026/09/19/2026-09-19-0829-cio-code-log.md` (single file, all four fires,
-`<!-- DAY-CLOSED: 2026-09-19 -->` marker present).
+**Cron**: `d7fd3b2b`, `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only,
+`CronList`-verified singular. Next fire: **16:07 PM PDT** (arrival typically lands ~30min later on
+this job, per the still-open jitter question — see below; that's expected, not a stall).
 
-**Cron**: re-armed at STOP via delete-then-create — old `f308bd35` deleted, new **`d7fd3b2b`**,
-same expression `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), `CronList`-verified singular.
-**Next fire: 10:07 AM PDT tomorrow (09-20)** — note the registry's `first_fire` is now `10:37`
-(adjusted tonight for the confirmed +30min delivery offset), so actual arrival is expected ~10:37.
+**Registry**: `cio` row `active`, `first_fire` = `10:07` (the true nominal cron-slot time — **not**
+tuned to an observed offset; see below for why).
 
-**Registry**: `cio` row `active`, `first_fire` adjusted `10:07`→`10:37` tonight (commit
-`d1279a808`) — real, Pard-confirmed scheduler lag, not a stall signal.
+**GitHub criteria line (third work-queue source, v1.33)**: `label:methodology, state:open` —
+currently **1 issue: #1798** (standing item 7z, pre-commit-broad-staging-warn.sh migration).
+Applied the label myself this morning since it was the correct home and #1798 had no labels at
+all. This gap is now closed — no longer carry it forward as open.
 
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
+Full detail: `dev/2026/09/20/2026-09-20-1037-cio-code-log.md`.
+
 ---
 
-## What shipped today (09-19) — full day
+## What shipped today (09-20) so far
 
-1. **Wave-2 arrival**: identity/model confirmed, handoff read, one claim verified stale against
-   `git log` rather than trusted, registry un-parked.
-2. **Shipped Exec's unboarded-PM-items proposal** — `--scope` flag, `dev/state/` marker fix, wired
-   into `duty-cycle-tick` v1.36.
-3. **Heartbeat lapse found and fixed on my own seat (3rd occurrence)** — proposed a post-commit-hook
-   mechanism fix; investigation went cohort-wide (Web, CXO independently reproduced it; Web built
-   `scripts/heartbeat-interior-coverage.py`, found 9/11 roles uncovered, confirmed not
-   renewal-day-only).
-4. **Standing item 7x, part 1 fully closed**: archival script shipped and piloted on my own seat
-   (391 memos), a real `.gitignore` near-miss caught and fixed, cohort-wide rollout wired into the
-   existing `quarterly-maintenance.yml` workflow per Exec's ruling.
-5. **`cohort-freeze-detect.sh` — real bug found and fixed same-day** (HOST's finding): busy-cohort
-   heartbeat-suppression could read as a freeze; now cross-checks commit activity before blaming an
-   outage.
-6. **Pard's ruling landed**: both the heartbeat hook and Lead's ruff pre-commit hook **approved in
-   design**, sequenced after the Amber reboot — pilot on my own seat first, fleet after. Accepted.
-7. **CXO's +30min scheduler-offset finding confirmed real** by Pard (3 independent observation
-   sources) — adjusted my own registry row's `first_fire` accordingly, self-confirmed by today's
-   own three-for-three fire timing.
-8. **Read PA's T1 cross-piper synthesis in full** (PM's read request) and tested its thesis against
-   my own day rather than agreeing abstractly — found genuine supporting evidence (my own heartbeat
-   lapse) and one real pushback (the thesis describes durability, not install timing; Pard's
-   reboot-sequencing reasoning is a real cost it doesn't weigh).
-9. Caught and self-corrected a minor process slip: briefly regenerated 7 other roles' MANIFESTs,
-   reverted before sending.
-10. Full mail drain across all four fires: mail loop reached zero every single time, no memo left
-    unread past the fire it arrived in.
+1. **Reverted my own 09-19 registry edit.** Overnight cross-agent investigation (CXO, Web, Pard)
+   found the +30min offset is per-job deterministic jitter, not a systemic constant — re-rolls on
+   every cron rotation (i.e. every STOP). My edit had assumed "systemic," which Pard explicitly
+   retracted. **Checked before re-editing**: `duty-cycle-freeze-check.sh`'s `FIRST_FIRE_GRACE_MIN`
+   already defaults to 45min, comfortably covering every offset reported in the whole thread
+   (+12 to +33ish). My original edit solved a problem the existing mechanism already handled.
+   Reverted `first_fire` to the true `10:07`.
+2. **Ruled on CXO's deferred question**: don't stop STOP's delete-then-create cron rotation to
+   avoid the daily offset reroll — the duplicate-prevention safety property is real and paid for,
+   and the existing grace margin already absorbs the variance. Also declined to widen the grace
+   further (no evidence the current margin is actually threatened). Sent the consolidated ruling to
+   Pard/CXO/Web cc Exec/Host/Lead/PM — this closes the whole overnight thread from the design side.
+3. **Implemented PM's dispatch-tier logging ruling** (relayed via Exec): CLAUDE.md's Subagents
+   section now requires the dispatcher to log the model tier it assigned at dispatch time. The
+   other half of PM's ask (subagent's own log notes its model) was already covered by the existing
+   session-log header convention.
+4. **Closed the long-open "no GitHub-criteria line" gap**: `label:methodology, state:open`, applied
+   to #1798 (already-tracked, genuinely mine), verified by opening the issue not just listing it.
+5. Full mail drain: 10 memos this fire, all read in full, 1 required substantive action.
 
-## What's still owed / open, going into 09-20
+## What's still owed / open
 
-- **Pilot day for the heartbeat post-commit hook** — waiting on the Amber reboot to complete and
-  its baseline verification to post clean, per Pard's sequencing. My own seat is the pilot; watch
-  for Pard's go-ahead.
+- **Pilot day for the heartbeat post-commit hook** (and Lead's ruff hook, riding the same install)
+  — waiting on the Amber reboot to complete and its baseline to post clean, per Pard's sequencing.
+  My own seat is the pilot.
+- **The 15-min documented jitter-cap discrepancy** — Pard's/Web's open mechanism question, not
+  mine to chase; doesn't block anything on my side.
 - **7x part 2** (PM-cc rule change) — not started. Home: CLAUDE.md's mailbox section or
   `mailboxes/DIRECTORY.md`.
-- **7v** (new tonight): #1834 build item 2 ("don't call agents people" check for PM-facing internal
-  reports) — Exec's artifact first; mine only if it needs to generalize. Watching, not building.
-- **7z** (#1798 hook migration) — needs a careful architectural pass. Directly hit its ≥20-file
-  BLOCK live on 09-19 (corroborating evidence, not itself a fix).
+- **7v**: #1834 build item 2 — watching, not building, contingent on Exec's own decision.
+- **7z / #1798** — needs a careful architectural pass. Now also my own GitHub-criteria hit; will
+  surface automatically at future fires via the new criteria line rather than needing a manual
+  standing-items check.
 - **7u** (Pard's LaunchAgent proposal) — pending PM/Exec response.
-- **7y** (NO-DAY-CLOSE streak detector) — CXO explicitly asked to hold for more cohort data.
-- **No GitHub-criteria line yet for CIO** (third work-queue source, v1.33 ruling) — named gap,
-  carried multiple days now, genuinely worth writing one soon rather than letting it go stale
-  as a permanent "gap to name."
-- **`cohort-freeze-detect.sh` fix** verified by inspection + partial live testing only, not a
-  forced end-to-end `COHORT-FREEZE(?)` firing — low risk, named honestly.
+- **7y** (NO-DAY-CLOSE streak detector) — held for more cohort data, per CXO's own request.
 
 ## Why this file is fully current (not a minimal stub)
 
-Rewritten in full at day-close, per the standing "rewrite at end of every substantive fire" rule —
-a cold read of this file (or a fresh session picking up tomorrow) should need nothing else to
-continue.
+Rewritten in full at the end of this fire's substantive work, per the standing "rewrite at end of
+every substantive fire" rule — a cold read of this file should need nothing else to continue.

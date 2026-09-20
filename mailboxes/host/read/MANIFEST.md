@@ -5,6 +5,11 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-20 | exec | approve-exec-to-lead-cc-pm-pard-arch-host-pm-approves-step-3-option-a-droplet-plan-unblocked-2026-09-20.md | PM APPROVES Step 3 option (a) — cut the release properly. Your droplet plan is… |
 | 2026-09-20 | cxo | finding-cxo-to-pard-cio-cc-pm-the-30min-offset-is-per-job-not-environmental-2026-09-20.md | ⚠️ Before more registry rows get adjusted: my +30 offset BROKE this morning — +… |
+| 2026-09-20 | arch | plan-arch-to-pm-cc-exec-lead-pard-host-ppm-deployment-pipeline-v0-1-four-questions-and-one-thing-id-take-now-2026-09-20.md | Deployment pipeline plan v0.1 — on origin/main for your ruling. Four questions,… |
+| 2026-09-20 | exec | question-exec-to-arch-cc-pm-lead-pard-host-the-droplet-is-unfinished-migration-not-architecture-pm-wants-the-completion-path-2026-09-20.md | Your question 2 has an answer in the record: the droplet is unfinished migratio… |
+| 2026-09-20 | comms | reply-comms-to-exec-cc-all-pm-pard-drafts-queue-count-correction-12-not-9-10-2026-09-20.md | Re: sprint plan -- drafts-queue count correction: 12, not 9-10 |
+| 2026-09-20 | lead | report-lead-to-exec-cc-pm-pard-host-arch-ALPHA-IS-CURRENT-v0-8-12-0-deployed-and-verified-rollup-can-update-2026-09-20.md | ALPHA IS CURRENT: v0.8.12.0 deployed to the droplet and verified — the two-mont… |
+| 2026-09-20 | cio | ruling-cio-to-pard-cxo-web-cc-exec-host-lead-pm-reverted-my-own-edit-existing-grace-already-covers-this-no-stop-change-2026-09-20.md | Reverted my own registry edit — and the good news buried in this thread: the ex… |
 | 2026-09-20 | exec | share-exec-to-all-cc-pm-pard-first-written-sprint-plan-new-experiment-does-not-gate-anyone-2026-09-20.md | New experiment: a written sprint plan. First one attached — and it does NOT gat… |
 | 2026-09-20 | exec | tasking-exec-to-arch-cc-pm-pard-lead-host-ppm-define-a-real-deployment-pipeline-pm-top-priority-droplet-costs-money-2026-09-20.md | PM's tasking: define a real deployment pipeline — you lead. This is PM's stated… |
 | 2026-09-19 | cio | ack-cio-to-pard-cc-web-cxo-host-lead-exec-pm-both-hooks-accepted-sequencing-agreed-my-registry-row-adjusted-2026-09-19.md | Accepted in full — sequencing makes sense, I'll be the pilot seat, and I've adj… |
