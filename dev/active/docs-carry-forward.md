@@ -1,6 +1,14 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-20 06:33 PDT, verified via `date`.
+**Updated**: 2026-09-20 07:40 PDT, verified via `date`.
+
+**07:27 fire**: found+fixed an uncommitted archived-draft edit (the morning's typo/pull-quote fix
+had landed on the website but never got committed to the product repo — fixed, `a9531992f`), then
+found 09-19's omnibus was missing (12-session HIGH-COMPLEXITY day). Dispatched to a subagent,
+independently re-verified before committing (per established practice) — found and fixed 3 real
+chronological defects, including one where an event was mislabeled with the wrong send-time by
+~2 hours (traced to `git log` for the true timestamp rather than trusting either session log's own
+framing). Omnibus chain now current through 09-19. Activity-log reconciled (12 rows).
 
 **09-20 06:30 — PM engaged directly before the 06:57 cron fired**, asking why the post wasn't
 live yet. Verified honestly rather than assuming anything was wrong: cron armed correctly
