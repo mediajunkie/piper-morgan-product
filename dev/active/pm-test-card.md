@@ -25,6 +25,10 @@ dogfooding decision. LOCAL remains available for pre-deploy work.
   completed flow releases its claim; off-tail turns process as normal intents.
 - **On PASS**: say so — it discharges #1739's last dependency and unlocks epic 3's floor.
   On FAIL: paste the transcript; that reopens #1617 with fresh evidence.
+- **Status 09-20**: ATTEMPTED on alpha; the flow broke UPSTREAM of the tail (interview
+  never delivered, generic template fabricated, edit confabulated — #1836/#1837/#1838
+  filed from PM's transcript). Row stays OPEN; #1837's fix is the practical prerequisite
+  before the tail is even reachable.
 
 ### 2. PARKED (was: OpenAI-only Slack turn, #1822) — not PM-cheap after all
 - PM correctly flagged (09-19): this needs an account configured with ONLY an OpenAI key —
