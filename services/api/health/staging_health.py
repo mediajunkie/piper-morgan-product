@@ -73,11 +73,31 @@ def _deployed_git_sha() -> str:
 
 
 def _deployed_environment() -> str:
-    """Which environment this process believes it is.
+    """Which environment this process believes it is — REPORTED, never interpreted.
 
-    Set PIPER_ENVIRONMENT per host (local | staging | prod). Returns "unknown"
-    rather than assuming, because assuming is what the previous hardcoded
-    "staging" did on the production droplet.
+    🔴 ``PIPER_ENVIRONMENT`` IS NOT A FREE-TEXT LABEL. It is an existing, canonical
+    variable with **security-gate consumers**, and its established vocabulary is
+    ``development`` / ``production`` (see ``Environment`` in
+    ``services/config/llm_config_service.py``, which warns and falls back to
+    ``development`` on any value it doesn't recognise):
+
+      - ``services/security/encrypted_types.py:57`` — ``== "production"`` makes an
+        unset ``ENCRYPTION_MASTER_KEY`` **fatal on the write path** (#1387). Any
+        other value silently restores warn-and-write-plaintext.
+      - ``services/auth/jwt_service.py:177`` — fails loudly in production (#1087).
+      - ``services/utils/env_hygiene.py:44`` — production hygiene CRITICAL.
+
+    ⚠️ So setting this to a near-miss like ``prod`` does not merely mislabel the
+    health output — **it silently disarms the gates above**, because they compare
+    against the exact string ``"production"``. An earlier draft of this docstring
+    said ``local | staging | prod``; that would have re-opened exactly the
+    plaintext-PII hole #1387 was written to close. Fixed before it shipped anywhere.
+
+    This function therefore **reports the raw value and interprets nothing** — it
+    is a mirror, not a source of truth. If the deployment vocabulary is ever
+    changed (plan v0.1 §2 proposes ``local``/``staging``/``prod`` as *environment
+    names*), that is a **migration with security-gate consumers**, not a rename,
+    and it must be done at those call sites first.
     """
     return os.getenv("PIPER_ENVIRONMENT", "").strip() or _UNKNOWN
 
