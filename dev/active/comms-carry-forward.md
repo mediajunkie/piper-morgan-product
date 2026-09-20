@@ -19,8 +19,9 @@ updated to match. Next fire: 2026-09-20 06:12.
 - **"From Abstraction to Example"** (renamed from "...Worked Example", pubDate 09-20): resolved an
   open `[Note to Comms]` bracket by tracking down the real April 22 source material (session log +
   a published sibling post cross-check), then a full template audit after PM's voice pass — 16/16
-  clean. **Published overnight by Docs** — confirmed live at `/blog/from-abstraction-to-example/`,
-  calendar status `published`, draft archived to `drafts/published/`. **Fully closed, nothing owed.**
+  clean. **Published by Docs this morning (06:33 PDT, 09-20)** — confirmed live at
+  `/blog/from-abstraction-to-example/`, calendar status `published`, draft archived to
+  `drafts/published/`. **Fully closed, nothing owed.**
 
 ## Closed today — calendar mechanism: `planned` status + pre-seeded Ship slots
 
