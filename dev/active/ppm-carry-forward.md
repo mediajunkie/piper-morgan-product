@@ -10,7 +10,29 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-19 16:22 PT (WORK). **Sent Arch the canonical board-add values**
+**Last rewritten**: 2026-09-19 19:22 PT (WORK). **The epics-9/10 question I'd carried open since
+09-14 is RESOLVED — PM ruled** (via Exec): collapse mini-epics into a catch-all, "don't overindex
+on filing rules." Implemented: former epics 9+10 merged into one catch-all epic 9 (preserving
+epic 9's own mechanism-distinctness as a subgroup), `#1420`/`#1422` now `#1423`'s children not
+epic members, epic count 11→10, change-log entry added. **Three more epic-file corrections same
+fire**: `#1785` corrected to "shipped wholesale" (Lead's own re-verification found their
+recommendation's premise was wrong before shipping — a live instance of exactly the relay-failure
+class PA's Cross-Piper doc names); `#1812` step 5 UNBLOCKED (PM ruled own-account gets normal
+semantics), Arch's 6-site consumer enumeration folded in for Lead, dissolves the "on a BYOC
+deployment" qualifier on my own #1823 ruling (not reopening it); `#1818` updated with CXO's
+experience-half ruling. **Read PA's Cross-Piper synthesis in full per PM's direct ask** — replied
+to Exec/PM/CIO/CXO with two concrete same-day instances of the relay-failure-class it names in my
+own lane (the #1785 correction, the MVP-done delta cross-verification), explicit about NOT having
+a dedicated check for it, just having caught both by other-reason re-verification. **Arch's
+board-add fix shipped and behaviorally verified** (#1833 test, closed) — resolved Arch's flagged
+tension with PM's "don't overindex" ruling using PM's actual words from the same fire (scoped to
+epic taxonomy, not automated filing mechanics). **#1834 board-add fix** (HOST, governance/agent-
+personhood check) — milestone Ongoing per 5-issue `sapient-trust` precedent, board-added, verified.
+7-8 direct mail items this fire, the largest single-fire inbox this session — all read in full, 2
+got substantive replies, rest got explicit epic-file action. **Epics-9/10 thread now fully closed**
+— nothing left open from that question.
+
+**Prior: 2026-09-19 16:22 PT (WORK). **Sent Arch the canonical board-add values**
 (project `PVT_kwHOADE-8s4A-JwA`, `gh project item-add 1 --owner mediajunkie`, Status field
 `PVTSSF_lAHOADE-8s4A-JwAzgxpGyU`, `Product Backlog` option `e7d1c990`) so `piper-draft-issue` can
 close the recurring board-add gap Arch traced (the skill sets milestone but has zero board-add/

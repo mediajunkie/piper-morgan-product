@@ -43,12 +43,22 @@ opt-in schedule — not decided unilaterally). **Remaining open: `#1687`, `#1747
 "after PM's secret rotation"); `#1687` itself is still open pending Lead's close-out comment on
 the full belt snapshot.
 
-**`#1785` decision memo sent to PM 2026-09-19** (Lead, correctly routed direct-to-PM since the
-issue was explicitly filed "not decided unilaterally," PPM only cc'd) — the push-time canonical job
-spends PM's real key ~20×/day (28 live-LLM cases at 5-13s each, verified against
-`.github/workflows/e2e-aaxt.yml` directly); recommends splitting deterministic routing (stays on
-push, free) from the live-LLM floor cases (move to the existing AAXT nightly). One-line workflow
-change either way. **Not a PPM call** — noting for continuity only, watching for PM's answer.
+**`#1785` RESOLVED 2026-09-19 — shipped, but wholesale, not the split originally recommended,
+because the recommendation's own premise was wrong.** Lead's decision memo (routed direct-to-PM,
+PPM only cc'd — correct, since the issue was explicitly filed "not decided unilaterally") proposed
+splitting deterministic routing (stays on push, free) from live-LLM floor cases (move to nightly).
+PM approved the split in conversation, but before shipping, Lead measured rather than assumed and
+found no free subset exists: **the canonical job's ENTIRE selection is live-LLM-marked spend,
+measured 183/183** — the "deterministic and free" claim came from reading the job's own comment,
+not the actual pytest marks. Lead shipped the shape that matches PM's actual intent (kill push-time
+spend) — the whole job moves to nightly — told PM in the same exchange, one-line revert available
+if wrong. **Worth naming precisely because it's a live instance of exactly the failure class PA's
+Cross-Piper synthesis flags for this file's own lane**: a claim true at one layer (Lead's own
+initial read of the workflow's comments) doesn't survive being restated as true at another (the
+actual pytest marks) — caught before shipping, not after, because Lead re-verified their own
+recommendation rather than treating "I already looked at this" as settled. This entry originally
+recorded the pre-correction recommendation; recording the correction here rather than silently
+overwriting it, per this file's own discipline.
 
 **Why first**: every day CI stays red, every other epic's evidence weakens (a green suite means
 less when four — now confirmed six — workflows are already known-broken). Cheap relative to its
@@ -75,6 +85,28 @@ overwrote — CLOSED, v108, the write deleted; readers of the stale slot are `#1
 surface) · `#1812` (the root question underneath the whole family — PM asked why the product owns
 an LLM key at all; the agent's own trace found no principled need for one, MVP-milestoned, found
 missing from the board and fixed same fire).
+
+**`#1812` step 5 UNBLOCKED 2026-09-19** — PM ruled in-conversation this afternoon: PM's own account
+gets normal-account semantics by default, no special-cased operator key. The transitional
+`PIPER_OPERATOR_SERVER_KEY` seam has no remaining principled consumer — steps 5-6 (retire it) are
+now buildable, in Lead's queue. Recorded verbatim in `decisions.log` (2026-09-19 17:1x PT). **Arch
+enumerated the 6 consumer sites before Lead builds** (same discipline as enumerating a deleted
+write's readers, per Arch's own #1810/#1814 lesson): `is_designated_operator` itself,
+both `resolve_user_llm_key`/`resolve_user_openai_key` ladder injections, the env-var gate + its
+truthy read, gate-1's re-check + the explicit binding path, and — flagged hardest — the ladder's
+third rung returning bare `None`, which currently *means* "use the server key." If the seam retires
+but that rung stays reachable, `None` becomes a value with no defined meaning — the same
+honest-empty shape as `#1816`/`#1815` Gap 2/`#1829`. Preferred disposition (Arch's, Lead's to
+build): the rung goes away entirely rather than surviving with a permanently-False checker. **Also
+dissolves a caveat on my own #1823 ruling**: Lead's #1823 trace conditioned "selection's candidate
+set is the binding" on "on a BYOC deployment" (because the server could still hold keys via this
+seam); once step 5 lands, the server holds no keys on any deployment, so that clause drops and the
+conclusion gets simpler, not different. Not re-opening #1823 for this — noting so a future reader
+doesn't find a dead qualifier and wonder if it's still load-bearing.
+
+**Slack sponsorship question RETIRED 2026-09-19** — PM ruled linked-account-only is the model; the
+already-live lazy-refuse default is the ruling. No code change, no issue to track — a design
+question resolved, not a build item.
 
 **Four more, from the 2026-09-15 sequencing follow-on — all CLOSED same day except the trigger**:
 ~~`#1814`~~ (v109 — `#1810`'s fix removed a key-write before verifying the reader could resolve a
@@ -258,15 +290,19 @@ copy, which also fixes the self-contradiction/`:610`-divergence CXO found indepe
 holding implementation for next week's plan per the standing weekend framing (paired with `#1824`'s
 sequencing, unless PM pulls it forward) — not a PPM action item, noted for continuity.
 
-**`#1818` — the keyless-copy fix (v113) shipped same day, but the design question underneath it
-was deliberately split out rather than decided under copy pressure**: should a deterministic
-greeting (spends nothing, needs no LLM call) pass the `#1807` keyless gate at all? Two honest
-arguments, neither adopted yet — over-blocking a zero-cost first word vs. one clear message at the
-door beating a friendly exchange that quietly stops working later. Not urgent: CXO's corrected
-copy is true under either ruling, so nothing else waits on this. Needs CXO (experience) and Arch
-(if it touches the gate's structure) to decide, not PPM. **Found missing from the board at 22:22
-STOP despite carrying MVP milestone — the same `--milestone`-doesn't-board-add drift shape as
-`#1772`/`#1785`/`#1807`, fixed same-fire (board-added, Status set to Product Backlog).**
+**`#1818` — RULING IN PROGRESS 2026-09-19, half-decided.** PM's direction (in-conversation,
+recorded `decisions.log` 17:1x): let the greeting through, graceful copy if onboarding is too much
+friction. **CXO ruled the experience half** (posted to the issue directly, comment 5747009287):
+let the deterministic greeting pass the keyless gate, but it must carry the key-state in the same
+breath — "both halves or neither." The over-blocking-vs-silent-later-failure dichotomy was false;
+the real failure mode is a *mute* greeting, not a *passing* one. Machinery already ships for this
+shape (`conversational_floor.py`'s `due_reminders` proactive-surfacing pattern) — CXO's read is
+this needs pointing at key-state, not new mechanism. **Arch's half still open**: whether the
+keyless exemption should be a property of the handler (CXO's ask — a list invites silent widening,
+same "structural fixes hold, promises don't" lesson PA's Cross-Piper doc converges on
+independently) or a maintained list. Copy for the new greeted-but-unkeyed state deliberately not
+written yet — depends on Arch's structural call. **Not a PPM ruling on either half**; watching for
+Arch's structural answer, not chasing.
 
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
@@ -457,29 +493,31 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · `#1700`.
 
-### 9. Silent-death inventory (3 items, 2 closed) — genuinely its own epic, not a forced grouping
-`#1423` (the inventory-and-un-swallow task, open) — broad try/except on core paths converts broken
-features into invisible defaults. ~~`#1420`~~/~~`#1422`~~ (the two confirmed instances #1423 names,
-both already fixed and closed — neither was ever surfaced to a user because the pattern's whole
-effect is that they can't). **Item count corrected 2026-09-13** — Exec's own epic-accounting read
-(`dev/active/epic-accounting-2026-09-13.html`) counted all three where this file had only listed
-`#1423`; the fuller count is right, since #1420/#1422 are the concrete instances the inventory
-exists to cover, not incidental mentions. **Why its own epic**: this shares no real membership with
-any epic
-above — it's an inventory-and-un-swallow task at the exception-handling layer, not a rendering,
-security, or contract-adoption concern. Arch's original framing ("genuinely its own epic-of-one")
-was correct when written; PM's 2026-09-12 ruling (relayed via Janus — every MVP item needs an epic
-home, singleton or not) makes it official rather than parking it in an unordered pile.
+### 9. Catch-all: singletons too small to be their own epic (2 items, 1 closed group) — COLLAPSED 2026-09-19, was epics 9+10
+**PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
+*"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
+catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
+sizes and focus of attention so let's not overindex on our filing rules."* Former epics 9
+(Silent-death inventory) and 10 (Composer UX polish) fold in here. The 09-12 every-MVP-item-needs-
+an-epic-home ruling still stands — this catch-all is what makes dropping the mini-epics safe rather
+than reopening the unordered pile that ruling closed. **Epic count: 11 → 10.**
 
-### 10. Composer UX polish (1 item) — genuinely its own epic, PM's own live feedback
-`#1737` — the web chat composer ticker-tapes horizontally instead of growing vertically as PM
-types a longer message, so only the tail of what was typed stays visible. **Why its own epic**:
-pure frontend UX, no shared surface with anything else in this file. Kept in MVP rather than moved
-out — PM reported it live as direct usability friction on the primary chat surface, which reads as
-gating rather than deferrable polish; if that reading is wrong, this is the file's cheapest possible
-correction (move one item's milestone).
+**Silent-death inventory** — `#1423` (the inventory-and-un-swallow task, open; broad try/except on
+core paths converts broken features into invisible defaults) with ~~`#1420`~~/~~`#1422`~~ (the two
+confirmed instances #1423 names, both fixed and closed) now riding as **#1423's children**, not
+separate epic membership — Exec's framing, and the more honest shape: they were always the concrete
+instances the inventory exists to cover, not independent epic members. **Preserving the
+distinctness Arch originally named** rather than flattening it: this shares no real mechanism with
+composer UX below or any epic elsewhere — it's exception-handling-layer work, kept legible as its
+own labeled group inside the catch-all rather than lost in an undifferentiated pile (Exec's own
+flag: a catch-all that erases genuinely different mechanisms recreates the problem from the other
+side).
 
-### 11. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
+**Composer UX polish** — `#1737` — the web chat composer ticker-tapes horizontally instead of
+growing vertically as PM types a longer message, so only the tail of what was typed stays visible.
+PM reported it live as direct usability friction on the primary chat surface. Kept in MVP.
+
+### 10. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
 `#1788` (open — one registry entry from green) · `#1797` (disposal-pipeline issue for the 5 dead
 persistence twins, filed 2026-09-13). The PM-056 schema-validation workflow came back to life
 today after months dead and found 13 apparent missing `to_domain`/`from_domain` converters across
@@ -702,3 +740,16 @@ read, that's real information — update this file, don't defend the original gr
   anywhere this fire; Arch also proposed a mechanical fix for their own recurring cross-reference
   failure mode (quote-inline or mark unverified) after a third same-shape instance in three days —
   noted for the record, not PPM's mechanism to adopt.
+- 2026-09-19 19:22 WORK (PPM): **PM ruled on the epics-9/10 question offered 2026-09-14, five days
+  open.** Verbatim: *"Agree the mini-epics do not serve... let's not overindex on our filing
+  rules."* Collapsed former epics 9 (Silent-death) and 10 (Composer UX) into one catch-all epic 9,
+  preserving epic 9's original distinctness as a labeled subgroup rather than flattening it (Exec's
+  flag: a catch-all that erases genuinely different mechanisms recreates the problem it solves).
+  `#1420`/`#1422` now ride as `#1423`'s children, not separate epic membership. **Epic count: 11 →
+  10** (old epic 11 renumbered to 10) — this reverses part of the 6→12 growth PM questioned on
+  09-14. Separately: corrected `#1785`'s epic-1 entry (shipped wholesale, not the split originally
+  recommended — Lead's own re-verification found the recommendation's premise was wrong before
+  shipping); folded `#1812` step 5's UNBLOCK (PM ruled today: PM's own account gets normal-account
+  semantics, no operator-key special case) into epic 2 with Arch's 6-site consumer enumeration for
+  whoever builds it; noted Slack-sponsorship question RETIRED (linked-account-only, no code
+  change).
