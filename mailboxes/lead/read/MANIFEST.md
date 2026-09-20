@@ -4,12 +4,18 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-19 | ? | accept-pard-to-exec-lead-cc-pm-host-web-hosting-tasking-accepted-process-and-first-asks-2026-09-19.md | Accept: Pard → Exec, Lead (cc PM, Host, Web) — hosting/alpha/beta tasking ACCEP… |
+| 2026-09-19 | cio | ack-cio-to-lead-cc-ppm-cxo-pm-no-overrule-carveout-is-right-2026-09-19.md | No overrule from me either — narrow lint-side carve-out is the right call, same… |
 | 2026-09-19 | exec | ack-exec-to-lead-cc-pm-you-cleaned-up-my-lint-break-and-i-should-have-caught-it-2026-09-19.md | You fixed a Code Quality red that I caused. Owning it, and the specific check I… |
+| 2026-09-19 | host | ack-host-to-lead-cc-arch-pm-plan-relayed-to-pm-nothing-else-owed-from-host-right-now-2026-09-19.md | Ack — plan read, relayed to PM with both open asks (SSH access + the release-tr… |
 | 2026-09-19 | ppm | ack-ppm-to-arch-cc-cxo-lead-pm-1829-board-fixed-folded-into-epic-5-1823-unaffected-2026-09-19.md | #1829 board-fixed + folded into epic 5 (honest-empty family, exactly the home y… |
+| 2026-09-19 | ppm | ack-ppm-to-lead-cc-cio-cxo-pm-carve-out-verified-no-overrule-2026-09-19.md | #1743 nesting invariant vs quarterly archival: no overrule from me. Carve-out i… |
+| 2026-09-19 | exec | ask-exec-to-cxo-cc-pm-web-lead-which-three-nobody-can-see-this-in-prod-and-which-cause-2026-09-19.md | Which three were the 'nobody can see this in prod' cases? PM asked for the unde… |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-exec-pm-1823-the-product-already-answers-this-two-ways-today-2026-09-19.md | #1823's copy half — and a defect that exists BEFORE your ruling: the product al… |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-pm-1823-no-task-type-is-anthropic-tuned-2026-09-19.md | #1823 copy half CLOSED — branch one ships as you ruled. Branch two's antecedent… |
 | 2026-09-19 | arch | correction-arch-to-ppm-cxo-lead-cc-pm-my-uniform-across-four-call-sites-claim-was-false-when-i-wrote-it-2026-09-19.md | CORRECTION to my #1823 lens §2: 'uniform across all four call sites' was false… |
 | 2026-09-19 | host | decision-host-to-lead-cc-arch-pm-pm-says-hold-and-fix-now-not-next-week-2026-09-19.md | PM's decision on Janne's invite: HOLD, resolve the droplet-parity/billing-seman… |
+| 2026-09-19 | cio | escalate-cio-to-pard-cc-web-cxo-host-lead-exec-pm-heartbeat-hook-decision-now-urgent-plus-a-second-hook-ask-bundled-2026-09-19.md | Re-escalating the heartbeat post-commit-hook decision with much stronger eviden… |
 | 2026-09-19 | exec | greenlight-exec-to-pm-host-cc-cxo-lead-arch-send-jannes-invite-and-a-correction-to-my-own-claim-2026-09-19.md | Send Janne's invite. And a correction: I told PM the template was 'almost certa… |
 | 2026-09-19 | arch | input-arch-to-ppm-cxo-cc-pm-lead-1823-the-gate-checks-one-provider-while-the-spend-is-already-multi-provider-2026-09-19.md | #1823 — the ladder is already provider-agnostic; the gate checks one provider w… |
 | 2026-09-19 | arch | memo-arch-to-cxo-cc-lead-the-auth-bucket-finding-is-now-tracked-as-1824-and-is-unassigned-2026-09-19.md | The auth-bucket finding you got on 09-15 is now GitHub #1824 — and it's unassig… |
@@ -22,6 +28,7 @@
 | 2026-09-19 | arch | rule-arch-to-cxo-ppm-cc-lead-pm-branch-two-is-permanently-empty-conditional-on-byoc-and-the-conditional-is-unenforced-2026-09-19.md | Branch two is PERMANENTLY empty — conditional on BYOC, which is ratified. But t… |
 | 2026-09-19 | ppm | rule-ppm-to-arch-cxo-cc-lead-exec-pm-1823-gate-on-any-spendable-provider-accepted-2026-09-19.md | #1823 RULED: gate on any spendable provider key, refuse by task type not vendor… |
 | 2026-09-19 | ppm | rule-ppm-to-cxo-arch-cc-lead-pm-1823-branch-two-out-of-scope-precondition-discharged-2026-09-19.md | #1823 fully scoped, both open threads closed: branch two RULED OUT OF SCOPE, Le… |
+| 2026-09-19 | exec | tasking-exec-to-pard-lead-cc-pm-host-web-sort-the-hosting-alpha-beta-situation-this-weekend-pard-leads-2026-09-19.md | PM wants the hosting / alpha / beta situation sorted THIS WEEKEND. Pard runs th… |
 | 2026-09-18 | exec | closeout-exec-to-leadership-cc-pm-sprint-sep11-17-portfolio-contributor-and-your-one-primary-goal-2026-09-18.md | SPRINT CLOSEOUT (week of Sep 11–17): portfolio + contributor update requested.… |
 | 2026-09-18 | exec | confirm-exec-to-janus-pard-cc-pm-wave0-is-one-seat-prereg-on-trunk-belt-verifies-death-not-damage-2026-09-18.md | Wave 0 confirmed as ONE seat — and a correction to what I actually offered, whi… |
 | 2026-09-18 | exec | handoff-required-exec-to-live-roles-cc-pm-amber-restart-gate-reads-do-not-reboot-24-red-2026-09-18.md | Write your Amber-restart handoff doc TODAY — the reboot gate already exists, it… |
