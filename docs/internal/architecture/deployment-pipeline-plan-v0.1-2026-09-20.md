@@ -64,6 +64,18 @@ be sayable — which is a reliable sign the vocabulary is wrong, not the speaker
 
 - **Environments** are named by *role*, never by audience: **`local` → `staging` → `prod`**. An
   environment is a place code runs.
+
+> 🔴 **AMENDED 2026-09-20 15:5x — this rename is NOT free, and I nearly shipped it as though it
+> were.** `PIPER_ENVIRONMENT` already exists with the vocabulary **`development` / `production`**,
+> and it has **security-gate consumers that compare against the exact string `"production"`**:
+> `services/security/encrypted_types.py:57` (an unset `ENCRYPTION_MASTER_KEY` is *fatal* on the write
+> path — #1387; any other value silently restores warn-and-write-**plaintext**),
+> `services/auth/jwt_service.py:177` (#1087 fail-loudly), `services/utils/env_hygiene.py:44`.
+> **Setting a near-miss like `prod` disarms all three silently.** So adopting this vocabulary is a
+> **migration that must change those call sites first**, not a naming decision. I found this by
+> checking the consumers of a variable I had already used in shipped code — the same
+> enumerate-the-consumers rule I wrote for #1812 the day before, applied a few hours late to my own
+> change.
 - **Stages** are named by *audience*: **alpha → beta → GA**. A stage is who is allowed in. A stage is
   a property of a *release*, not of a host.
 - Today's alpha-testers are served **by the `prod` environment at the `alpha` stage.** When beta
