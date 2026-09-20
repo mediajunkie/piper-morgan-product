@@ -10,7 +10,16 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-19 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+**Last rewritten**: 2026-09-20 06:54 PT (START). Clean quiet START — prior day's DAY-CLOSED
+sentinel verified, cron unchanged overnight (`07ef4da6`, correct expression), carry-forward's
+"nothing PM-gated" claim held true (no surprises). Mail: 1 cc-only (CIO's T1 reflection, no PPM
+action). `sprint-truth.py` fresh: 54 not done / 1129 done, 0 unmilestoned, 2 issues closed
+overnight (`#1765`, `#1813`), no board-add drift. **Still no formalized PPM third-queue-source
+criteria line** — flagged again, worth actually building at a future START rather than re-noting
+the gap. Nothing else carried forward; watching for Lead's `#1818` downstream-spend trace, not
+chasing.
+
+**Prior: 2026-09-19 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
 Cron re-armed `619147bb` → **`07ef4da6`** (delete-then-create, `CronList`-verified exactly one job
 survives). No board-add fix at STOP this time — `sprint-truth.py` fresh at this
 fire showed `0 unmilestoned`, no delta since the prior WORK fire. **#1818 both formal halves now
