@@ -139,15 +139,36 @@ if [ "$MODE" = "--if-quiet" ]; then
       echo "heartbeat: $ROLE committed within 3h — that commit IS the heartbeat; nothing written (refinement a)"
       exit 0
     fi
-    if git commit -q -m "hb-last-invoked($ROLE): suppressed $FIRE $TS" -- "$LAST_INVOKED_FILE" 2>/dev/null \
-       && git fetch origin main -q 2>/dev/null \
-       && git merge origin/main --no-edit -q 2>/dev/null \
-       && git push -q origin HEAD:main 2>/dev/null; then
-      git push -q origin HEAD 2>/dev/null || true
-      echo "heartbeat: $ROLE committed within 3h — row suppressed (refinement a), last-invoked marker updated"
+    # ⚠️ RETRY ADDED 2026-09-20 (Web's finding): a plain fetch+merge+push, on failure, used to warn
+    # and give up — leaving the just-created marker commit STRANDED, UNPUSHED, on the agent's own
+    # branch. "Not treated as fatal" was the right call for the FIRE (a marker-update failure
+    # shouldn't abort a duty-cycle turn) but the consequence was worse than the stale marker it was
+    # trying to avoid: `origin/main..HEAD` becomes non-empty, which is the PASS CONDITION of the
+    # sign-off checklist itself — reproduced twice on Web's seat in one day, once with a clean index,
+    # ruling out "probably a staged-index artifact." Most likely cause: a push race against
+    # concurrent cohort writes to `main` (11 seats), which is exactly what mail-send.sh already
+    # retries around. Same fix here: re-fetch, re-merge, re-push, up to 3 attempts, before giving up.
+    if git commit -q -m "hb-last-invoked($ROLE): suppressed $FIRE $TS" -- "$LAST_INVOKED_FILE" 2>/dev/null; then
+      attempt=0; landed=0
+      while [ "$attempt" -lt 3 ]; do
+        attempt=$((attempt + 1))
+        if git fetch origin main -q 2>/dev/null \
+           && git merge origin/main --no-edit -q 2>/dev/null \
+           && git push -q origin HEAD:main 2>/dev/null; then
+          landed=1; break
+        fi
+      done
+      if [ "$landed" = 1 ]; then
+        git push -q origin HEAD 2>/dev/null || true
+        echo "heartbeat: $ROLE committed within 3h — row suppressed (refinement a), last-invoked marker updated"
+        exit 0
+      fi
+      # Name the actual residue and the fix, not just "failed to land" — a vague warning is what let
+      # this go unnoticed twice; only running the sign-off checklist's own verify step caught it.
+      echo "heartbeat: WARNING — last-invoked marker for $ROLE is STRANDED: committed locally after $attempt push attempt(s), still NOT on origin/main (push race against concurrent cohort writes, most likely). NOT fatal to this fire, but 'git push origin HEAD:main' before you end it, or the sign-off checklist's 'origin/main..HEAD empty' check will fail on this exact commit." >&2
       exit 0
     fi
-    echo "heartbeat: WARNING — last-invoked marker failed to land for $ROLE (row itself correctly suppressed); not treated as fatal" >&2
+    echo "heartbeat: WARNING — could not create last-invoked marker commit for $ROLE; not treated as fatal" >&2
     exit 0
   fi
 fi
