@@ -189,3 +189,4 @@ dev/active/duty-cycle-watchdog-nudge-state.tsv
 
 # Agent mailboxes — fully tracked for cross-machine sync
 # (Previously ignored read/ but this prevented syncing mail state across devices)
+.claude/settings.local.json

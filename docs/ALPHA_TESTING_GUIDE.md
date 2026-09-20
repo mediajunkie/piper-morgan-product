@@ -1,7 +1,7 @@
 # Piper Morgan Alpha Testing Guide
 
-**Version**: 0.8.11.0
-**Last Updated**: July 17, 2026
+**Version**: 0.8.12.0
+**Last Updated**: September 20, 2026
 **For**: Alpha Testers
 
 ---
@@ -9,8 +9,8 @@
 ## Returning Tester? Start Here
 
 If you already have Piper set up and running, skip straight to what matters:
-- **[What's New in 0.8.11](#whats-new-in-0811)** - Personality questionnaire restored, per-user provider choice, honest answers and errors, session recall
-- **[What to Test in 0.8.11](#what-to-test-in-0811)** - Priority test walks for this release
+- **[What's New in 0.8.12](#whats-new-in-0812)** - Your key/your billing end to end, honest keyless refusals, flows that release, truthful lists
+- **[What to Test in 0.8.12](#what-to-test-in-0812)** - Priority test walks for this release
 - **[Troubleshooting](#chapter-3-troubleshooting)** - If something isn't working
 
 ---
@@ -76,7 +76,7 @@ This guide has three main sections:
 
 **⚠️ ALPHA SOFTWARE WARNING ⚠️**
 
-This is pre-release alpha software (version 0.8.11.0). By proceeding, you acknowledge:
+This is pre-release alpha software (version 0.8.12.0). By proceeding, you acknowledge:
 
 1. **Expected Issues**: Bugs, crashes, and incomplete features are normal
 2. **Data Loss Risk**: Your data may be lost at any time without warning
@@ -91,7 +91,39 @@ See `ALPHA_AGREEMENT_v2.md` for complete legal terms.
 
 ---
 
-## What's New in 0.8.11
+## What's New in 0.8.12
+
+v0.8.12.0 is the "Your Key, Your Account" release — two months of work making the
+bring-your-own-credentials model true end to end, plus security hardening and fixes for
+flows that wouldn't let go of the conversation.
+
+**Your key, your billing:**
+
+- **The server key is gone** ([#1807](https://github.com/mediajunkie/piper-morgan-product/issues/1807), [#1810](https://github.com/mediajunkie/piper-morgan-product/issues/1810), [#1812](https://github.com/mediajunkie/piper-morgan-product/issues/1812)): every LLM call spends YOUR stored key. No shared fallback credential exists; setup no longer writes your key anywhere another tester's setup could overwrite.
+- **Keyless turns refuse honestly** ([#1809](https://github.com/mediajunkie/piper-morgan-product/issues/1809), [#1814](https://github.com/mediajunkie/piper-morgan-product/issues/1814)): a missing/invalid key produces a clear message about the key — never a vague error, never a silently-billed answer.
+- **Per-provider keys** ([#1819](https://github.com/mediajunkie/piper-morgan-product/issues/1819), [#1822](https://github.com/mediajunkie/piper-morgan-product/issues/1822)): your Anthropic and OpenAI keys bind independently; OpenAI-only users are fully served in Slack. (Web chat's front door still asks for Anthropic — fix ruled and queued, #1823.)
+- **Consent fails closed** ([#1816](https://github.com/mediajunkie/piper-morgan-product/issues/1816)): if your authorized-provider list can't be read, Piper refuses the turn rather than assuming everything is allowed.
+
+**Flows that let go:**
+
+- **A finished standup releases your next message** ([#1617](https://github.com/mediajunkie/piper-morgan-product/issues/1617)): after "Anything else?", an unrelated command routes normally on the first try.
+- **Offers stop eating replies** ([#1652](https://github.com/mediajunkie/piper-morgan-product/issues/1652)–[#1654](https://github.com/mediajunkie/piper-morgan-product/issues/1654)): four "the flow swallowed my message" bugs were one contract, fixed once with a regression rail.
+
+**Truthful rendering:**
+
+- Aggregate answers name failed sources instead of reporting false emptiness ([#1717](https://github.com/mediajunkie/piper-morgan-product/issues/1717), [#1730](https://github.com/mediajunkie/piper-morgan-product/issues/1730)).
+- GitHub lists show honest counts with an offer for the remainder — no silent truncation.
+
+**Security:**
+
+- Chat-render and pattern-suggestion XSS fixed; unauthenticated stale page twins removed; demo plugin unmounted by default; cross-user isolation regression-hardened ([#1732](https://github.com/mediajunkie/piper-morgan-product/issues/1732), [#1741](https://github.com/mediajunkie/piper-morgan-product/issues/1741), [#1733](https://github.com/mediajunkie/piper-morgan-product/issues/1733), [#1690](https://github.com/mediajunkie/piper-morgan-product/issues/1690), [#1813](https://github.com/mediajunkie/piper-morgan-product/issues/1813)).
+
+**Database migrations**: run automatically on deploy (hosted testers: nothing to do).
+
+See [Release Notes v0.8.12.0](releases/RELEASE-NOTES-v0.8.12.0.md) for full details.
+
+<details>
+<summary><strong>Previous release (0.8.11 — Finish the Unfinished)</strong></summary>
 
 v0.8.11.0 is the "Finish the Unfinished" release: a systematic audit of half-done work across the whole codebase, fixes for every serious problem it found, and permanent build-time checks so the same classes of bugs can't quietly return. What you'll feel as a tester: **Piper stops lying** — about your data, about its capabilities, and about what went wrong.
 
@@ -120,7 +152,10 @@ v0.8.11.0 is the "Finish the Unfinished" release: a systematic audit of half-don
 
 **Database Migration Required**: Run `alembic upgrade head` after updating (two migrations: the session-activity ledger and the restored preferences column).
 
-See [Release Notes v0.8.11.0](releases/RELEASE-NOTES-v0.8.11.0.md) for full details.
+See [Release Notes v0.8.11.0](releases/RELEASE-NOTES-v0.8.11.0.md) for details.
+
+</details>
+
 
 <details>
 <summary><strong>Previous release (0.8.9 — connector infra / security / Design D2)</strong></summary>
@@ -430,7 +465,7 @@ Click the button to go to the login page and start using Piper Morgan.
 
 This chapter covers what to test and how. If you're already set up, **start here**.
 
-## What to Test in 0.8.11
+## What to Test in 0.8.12
 
 Personalization and honesty are the focus this release. **Does the questionnaire change Piper's tone? Does chat use YOUR provider? Are Piper's claims about your todos and issues honest?**
 
@@ -878,7 +913,7 @@ SELECT * FROM users;
 
 ## Questions?
 
-Remember: This is alpha software (version 0.8.11.0). The GUI setup wizard handles most complexity, but you're still testing early-stage software. Expect bugs and incomplete features.
+Remember: This is alpha software (version 0.8.12.0). The GUI setup wizard handles most complexity, but you're still testing early-stage software. Expect bugs and incomplete features.
 
 If guided setup seems overwhelming, a hosted version is planned for later in 2026.
 
@@ -896,4 +931,4 @@ Thank you for being an early adopter and helping us improve! 🚀
 ---
 
 _Last updated: July 17, 2026_
-_Software version: 0.8.11.0_
+_Software version: 0.8.12.0_

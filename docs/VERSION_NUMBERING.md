@@ -6,7 +6,7 @@
 > rule that `scripts/check-version-consistency.py` enforces. They overlap on the current-version
 > header only.
 
-**Current Version**: 0.8.11.0 (Alpha, released 2026-07-17 — Finish-the-Unfinished sprint; `main` and `production` converged at the cut; next: 0.9.0 beta at MVP)
+**Current Version**: 0.8.12.0 (Alpha, released 2026-09-20 — the BYOC/tenancy arc "Your Key, Your Account"; `main` and `production` converged at the cut; next: 0.9.0 beta at MVP)
 **Last Updated**: July 3, 2026
 
 ---

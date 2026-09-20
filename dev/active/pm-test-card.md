@@ -4,16 +4,14 @@
 live verification and struck when done. When PM asks "what do I test?", the answer is this
 file. Each row: what to do, what PASS looks like, which surface to use.
 
-⚠️ **Surface note until the droplet upgrade lands**: alpha.pipermorgan.ai runs a July-era
-cut — NOTHING from the last two months can be verified there. Rows below say `LOCAL` (the
-fresh dev server on `http://localhost:8001`, current code as of 09-19 15:55) until alpha is
-upgraded, after which real-data testing on alpha becomes the norm (matches PM's 09-19
-decision to rely on Piper for one real project).
+✅ **Surface note UPDATED 09-20**: alpha.pipermorgan.ai now runs **v0.8.12.0** (deployed
+and verified 09-20) — **ALPHA is the preferred test surface**, matching PM's real-project
+dogfooding decision. LOCAL remains available for pre-deploy work.
 
 ## Open rows
 
 ### 1. Standup tail-release retest (#1617 fix → gates #1739 → gates all of epic 3) — ~90s
-- **Surface**: LOCAL (the fix is not on alpha).
+- **Surface**: **ALPHA** (v0.8.12.0 carries the #1617 fix as of 09-20) — or LOCAL.
 - **Do**: run a standup to completion — through the final summary and its "Anything else?"
   tail. Then send, in order, your exact three turns from the 08-13 transcript:
   1. `do things directly from now on`
