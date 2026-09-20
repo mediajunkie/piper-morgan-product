@@ -17,23 +17,18 @@
   h1 { font-size:1.5rem; margin:0 0 .25rem; }
   .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.2rem; }
   h2 { font-size:1.08rem; margin:2rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
-  h3 { font-size:.97rem; margin:1.1rem 0 .3rem; }
   .card { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
           border-radius:7px; padding:.85rem 1rem; margin:.7rem 0; }
-  .card.fuse { border-left-color:var(--red); border-left-width:6px; }
-  .card.dec { border-left-color:var(--amber); }
+  .card.watch { border-left-color:var(--red); border-left-width:6px; }
+  .card.act { border-left-color:var(--amber); }
   .card.ok  { border-left-color:var(--green); }
   .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.3rem; }
   .n { font-weight:700; font-size:1.02rem; }
   .who { font-size:.78rem; color:var(--mute); }
   p { margin:.45rem 0; }
-  .do { margin-top:.55rem; padding:.55rem .75rem; background:rgba(192,57,43,.09);
-        border-radius:5px; font-size:.94rem; border:1px solid rgba(192,57,43,.25); }
-  ol.steps { margin:.4rem 0 .2rem 1.1rem; padding:0; }
-  ol.steps li { margin:.3rem 0; }
+  .do { margin-top:.55rem; padding:.55rem .75rem; background:rgba(183,121,31,.1);
+        border-radius:5px; font-size:.94rem; border:1px solid rgba(183,121,31,.3); }
   code { font:.86em ui-monospace,SFMono-Regular,Menlo,monospace; background:rgba(127,127,127,.12); padding:.08em .32em; border-radius:3px; }
-  pre { background:rgba(127,127,127,.1); padding:.6rem .8rem; border-radius:5px; overflow-x:auto;
-        font:.84em ui-monospace,SFMono-Regular,Menlo,monospace; margin:.4rem 0; }
   table { border-collapse:collapse; width:100%; font-size:.87rem; margin:.5rem 0; }
   th,td { text-align:left; padding:.36rem .5rem; border-bottom:1px solid var(--line); vertical-align:top; }
   th { color:var(--mute); font-weight:500; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; }
@@ -46,86 +41,76 @@
 </head>
 <body>
 <div class="wrap">
-  <h2 class="sr-only">Three actions for you, each with steps.</h2>
+  <h2 class="sr-only">One standing item, one action, everything else moving.</h2>
   <h1>Attention rollup — Sunday 20 September</h1>
-  <p class="meta">Exec · 11:0x PDT · live state</p>
+  <p class="meta">Exec · live state</p>
 
-  <h2>🔥 One action left</h2>
+  <h2>📌 Standing at the top until resolved — per your instruction</h2>
 
-  <div class="card fuse">
-    <div class="top"><span class="n">Drive alpha once — it releases Janne's invite</span><span class="who">~90 seconds, whenever you're ready</span></div>
-    <p><b>Alpha runs v0.8.12.0</b>, deployed and verified this morning. The reason the invite was held
-    — a tester landing on July code with abolished billing semantics — <b>no longer exists.</b></p>
-    <p><b>What remains is HOST's clearing bar</b>: an observed, driven flow rather than a test
-    fixture. You're the right person to satisfy it.</p>
-    <div class="do"><b>Run your #1617 standup-tail test card on alpha</b> rather than locally — the
-    card said "local only" because alpha lacked the fix, which it now has. <b>One drive closes
-    both</b> the deploy's final verification layer and HOST's bar. <b>Then HOST lifts and the invite
-    goes.</b></div>
-  </div>
-
-  <h2>✅ Cleared</h2>
-  <div class="card ok">
-    <p class="clean"><b>Vercel token</b> — stored in the Amber keychain as service <code>vercel</code>,
-    account <code>api-token</code>; verified at 60 chars, <code>vcp_</code> prefix. <b>Web is unblocked
-    after 11 days</b> and has been told, with the instruction to probe whether the scope can read
-    team-level usage before reporting any figure.<br>
-    <b>Bets 001</b> — all three blanks filled. Kill condition: <i>"Dormant indefinitely. Revisit only
-    if a named buyer appears after production release."</i><br>
-    <b>Bets 002</b> — no buyer for team workspaces. Arch has your non-foreclosure constraint as the
-    operative one, with the standing question of whether any part of the cleanup would make future
-    team support <i>harder</i> rather than just later.<br>
-    <b>Bets 003</b> — <b>yes, Piper holds the connection, and its home is the MCP path.</b><br>
-    <b>Buttondown</b> — held, with the live piece carved out: audit whether current signup options
-    match what we actually publish today.<br>
-    <b><code>integration-reveals-all</code></b> — June 27, from your archive.<br>
-    <b>Walkthroughs</b> — Web is standing by for both, today if you get to it.</p>
-  </div>
-
-  <h2>📋 Web's remaining two</h2>
-  <div class="card">
+  <div class="card watch">
+    <div class="top"><span class="n">Complete the Fly migration</span><span class="who">with Arch · no rush · stays here until a path lands</span></div>
+    <p><b>The droplet was never the "alpha-appropriate" surface.</b> A full Fly.io migration was
+    decided by you and Lead on <b>10 July</b> — database, Redis to Fly Upstash, ChromaDB onto its own
+    Fly app. <b>Cutover was 12 July, and every deploy since went to Fly. Alpha simply never
+    followed.</b></p>
+    <p><b>There's also a recorded functional reason Fly was preferred.</b> From 09 July:
+    <i>"the droplet has no python-keyring backend, so per-user OAuth/slack/calendar keychain ops
+    fail."</i> An encrypted-DB fallback was built specifically to work around that. <b>So the droplet
+    is the surface that couldn't do something we needed.</b></p>
+    <p><b>Two facts that make completing it cheap right now:</b></p>
     <div class="scroll"><table>
-      <tr><th>age</th><th>item</th><th>what you do</th></tr>
-      <tr><td><b>113d</b></td><td><b>Site walkthrough</b> — a joint pass over pipermorgan.ai with Web</td><td><b>Book a session.</b> You and Web look at the site together; Web notes what you react to.</td></tr>
-      <tr><td><b>94d</b></td><td><b>Obs-pass walkthrough</b> — ~31 observations Web collected</td><td><b>A working session.</b> Each needs +1 / −1 / defer. <b>An hour, not a reply.</b></td></tr>
-      <tr><td>35d</td><td><b>Buttondown newsletter</b> — publish the newsletter natively through Buttondown?</td><td><b>Your research.</b> A product and cost judgement Web can't make for you.</td></tr>
-      <tr><td>1d</td><td><b><code>integration-reveals-all</code> workDate</b> — a post's calendar row lacks the date the work happened</td><td><b>One yes/no:</b> roughly the week of 2025-05-26?</td></tr>
+      <tr><td><b>Zero active users</b></td><td>No sessions to preserve, no downtime to negotiate. <b>Migration risk will never be lower — and the window closes when Janne logs in.</b></td></tr>
+      <tr><td><b>Cost is not the driver</b></td><td>Droplet $24/mo · Fly $16 last, $10 next. <b>You've de-escalated the money angle</b>; the value is one surface instead of two.</td></tr>
     </table></div>
+    <p><b>Known migration surface, from today's deploy:</b> bind-mounted <code>uploads/</code>, redis
+    and chroma all live on the droplet. Lead hit a case where the repo's skeleton directories
+    <i>masked</i> those mounts during the swap.</p>
+    <div class="do"><b>With Arch, who has it.</b> Your ask as I passed it on: a non-disruptive
+    completion path, and <i>"put this class of issues to bed"</i> — which I read as leaving behind a
+    setup where <b>"what version is on which environment" is never again unanswerable.</b> That's the
+    part that actually cost us this month. <b>Nothing needed from you until Arch responds.</b></div>
+  </div>
+
+  <h2>🔸 One action, when you're ready</h2>
+  <div class="card act">
+    <div class="top"><span class="n">Drive alpha once — releases Janne's invite</span><span class="who">~90 seconds · Lead has the steps</span></div>
+    <p>Alpha runs <b>v0.8.12.0</b>, verified. The reason for the hold — a tester landing on July code
+    with abolished billing semantics — is gone. <b>What remains is HOST's bar: an observed flow rather
+    than a test fixture.</b> Your #1617 standup-tail card on alpha satisfies it and closes the
+    deploy's final verification layer at the same time.</p>
   </div>
 
   <h2>🟢 Moving without you</h2>
   <div class="card ok">
-    <p class="clean"><b>Alpha is current</b> — v0.8.12.0, cut from main today. <code>main</code> and
-    <code>production</code> converged for the first time since July 17. Full two-month migration chain
-    ran, DB backed up first, blue-green with the old tree intact for rollback, ~7 minutes downtime.<br>
-    <b>Arch</b> — deployment pipeline v0.1 delivered: four questions and one thing they'd take now.<br>
-    <b>Pard</b> — retired two-thirds of their own hosting proposal as superseded by your decisions;
-    the remainder folds into Arch's plan.<br>
-    <b>Web</b> — website#43 in flight, moving 240 MB of build inputs out of <code>public/</code>.<br>
-    <b>PPM</b> — mini-epics collapsed into a catch-all at last night's close.<br>
-    <b>CXO</b> — running the T-axis probe. <b>Their window is not closing</b>; the #1688 flag is already
-    on in prod, so this proceeds without time pressure.<br>
-    <b>Comms</b> — <b>12 pieces</b> at <code>status=drafted</code> awaiting your voice pass, counted
-    from the calendar directly.<br>
-    <b>CIO</b> — baking subagent model tier into session-log conventions.</p>
+    <p class="clean"><b>Arch</b> — deployment pipeline design, now carrying the Fly-completion
+    question. Also filling all three Bets with your answers.<br>
+    <b>Web</b> — <b>unblocked</b>; Vercel token in the keychain, verified. Running website#43
+    (240 MB of build inputs out of <code>public/</code>), then the storage reading. Standing by for
+    both walkthroughs whenever you surface.<br>
+    <b>Lead</b> — #1765, plus the alpha deploy landed this morning.<br>
+    <b>Comms</b> — 12 pieces awaiting your voice pass. Also picking up the calendar-accuracy pass
+    against your archived records.<br>
+    <b>CXO</b> — running the T-axis probe, no time pressure.<br>
+    <b>PPM, CIO, Docs, HOST, PA</b> — all lanes running, nothing gated on you.</p>
   </div>
 
   <h2>⚪ Lower priority</h2>
   <div class="card">
-    <p style="margin-top:0"><b>Usage</b> — no throttle. <b>Reassess Monday 10:00</b>: closer to 50%
-    than to 33% means it's converging. Friday and Saturday carried the fleet renewal and the closeout
-    cycle, both one-time.</p>
-    <p style="margin-bottom:0"><b>Droplet shutdown</b> — the old tree stays at
-    <code>/opt/piper-old-0.8.10.14</code> as the rollback path. <b>Retiring the droplet entirely is
-    part of Arch's pipeline plan</b>, and stopping the spend is an explicit outcome in it.</p>
+    <p style="margin-top:0"><b>Web's remaining two</b> — the <b>94-day obs-pass</b> (~31 verdicts, an
+    hour rather than a reply) and the <b>113-day site walkthrough</b>. Both waiting on a session with
+    you, today if you get to it.</p>
+    <p><b>Buttondown</b> — held. The live piece Web is doing: audit whether current signup options
+    match what we actually publish.</p>
+    <p style="margin-bottom:0"><b>Usage</b> — no throttle. Reassess <b>Monday 10:00</b>: closer to 50%
+    than 33% means converging.</p>
   </div>
 
   <footer>
-    <b>Three actions: store the token on Amber in a GUI session, drive alpha once to release the
-    invite, confirm the Bets 001 wording.</b><br><br>
-    Live-state pass this hour. Alpha version verified by Lead at the in-container layer through the
-    live front door. Drafts count from the editorial calendar. Credential procedure per Pard, who owns
-    the Amber standard.
+    <b>Nothing needs you right now. The Fly question sits with Arch and stays at the top of this board
+    until it's resolved.</b><br><br>
+    Live state this hour. Migration history from <code>decisions.log</code> entries of 09 and 10 July,
+    read directly; cutover date and deploy pattern from commit history. Costs are your figures. Alpha
+    version verified by Lead in-container through the live front door.
   </footer>
 </div>
 </body>
