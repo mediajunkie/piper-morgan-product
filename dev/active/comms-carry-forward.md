@@ -90,6 +90,20 @@ exists). When you decide any of these, the recipe is: update the existing row in
 (status→drafted, title, workDate, draftPath) — not a new row. Known minor cosmetic gap, not fixed:
 the HTML calendar view has no `planned` CSS/JS case yet (falls back to `drafted` styling).
 
+## Watching for — no action yet
+
+- **Agents-called-"people" language governance**: PM asked HOST (via Exec referral, cc PM/CIO/Comms,
+  2026-09-19) for a mechanism to stop agents being called "people" in prose — triggered by Exec's own
+  #061 internal report thesis sentence. Exec explicitly named "reconciliation against the existing
+  public-prose convention" (`feedback_agent_naming_convention_in_public_prose`, "cohort is
+  internal-use team in public") as **yours and Comms'** once HOST proposes a mechanism. Nothing to do
+  until HOST responds — watch for it.
+- **#061 pre-seeding worked on day one**: Exec's duplicate-guard caught the placeholder before adding
+  a parallel row, confirmed the mechanism does what it was built for. Exec will edit pre-seeded rows
+  directly going forward per same-commit-as-draft convention (I confirmed this is fine). Caught +
+  fixed one real defect verifying their edit: draftPath pointed at `dev/active/` instead of
+  `docs/public/comms/drafts/` — same class as Ship #058's documented mistake.
+
 ## Waiting on others
 
 - **PM** — voice-pass + art on the ~9-10 drafted items; ChicagoCamps outcome/script-slide review;
