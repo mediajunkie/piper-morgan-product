@@ -57,23 +57,24 @@
     <p><b>Where:</b> on Amber, in a screen-sharing or physical GUI session — <b>not over plain SSH.</b>
     The macOS keychain is tied to the GUI login session, and step 4 pops a permission dialog you need
     to see and click.</p>
-    <div class="do"><b>Exactly this:</b>
+    <div class="do"><b>Exactly this — four commands:</b>
       <ol class="steps">
-        <li>On Amber, open Terminal in the GUI session</li>
-        <li><code>cd ~/Development/mediajunkie</code> &nbsp;(where <code>scripts/cred.sh</code> lives)</li>
-        <li><code>scripts/cred.sh</code> — it prompts interactively, so nothing lands in shell history or on disk.
-            <b>Service name: <code>pm-vercel-website</code></b> — its own name, kept separate from the
-            09-17 token for DinP, which is a different Vercel account.</li>
-        <li><b>Verify, eyes on the screen</b> — this read may pop a one-time <i>"always allow"</i> dialog. Click it:
-            <pre>security find-generic-password -a "$USER" -s pm-vercel-website -w | head -c 8; echo</pre>
-            Should print the first 8 characters of the token. <b>If it prints <code>-U</code> or
-            anything flag-shaped, the store went wrong</b> — redo step 3.</li>
-        <li><code>scripts/cred.sh --check</code> — asserts plausibility, exit 5 if a flag got stored</li>
+        <li><b>On Amber, open Terminal in the GUI session.</b> No <code>cd</code> needed for the store.</li>
+        <li><b>Store it.</b> Type this, press return, and it will prompt you for the token:
+            <pre>security add-generic-password -a api-token -s vercel -U -w</pre>
+            ⚠️ <b><code>-w</code> MUST be last.</b> Written <code>-w -U</code>, the tool takes
+            <code>"-U"</code> as the password value, stores a two-character secret without prompting,
+            and <b>exits 0.</b> That exact thing happened on this machine on 09-17.</li>
+        <li><b>Verify without printing the secret</b> — this read may pop a one-time
+            <i>"always allow"</i> dialog, so keep your eyes on the screen:
+            <pre>cd ~/Development/mediajunkie && scripts/cred.sh --check vercel</pre>
+            It reports length and a 4-character prefix only. <b>A short length means the
+            argument-order trap fired</b> — redo step 2.</li>
+        <li><b>Tell Web it's stored as service <code>vercel</code>, account <code>api-token</code>.</b>
+            The names are safe to write down; the value never is.</li>
       </ol>
-      <b>How it gets used</b> (Web reads at invocation; the value never sits in a file):
-      <pre>VERCEL_TOKEN="$(security find-generic-password -a "$USER" -s pm-vercel-website -w)" vercel …</pre>
-      <b>Then tell Web it's stored under <code>pm-vercel-website</code></b> — the name is safe to write
-      down, the value never is.</div>
+      <b>How Web reads it</b> — never into a file:
+      <pre>TOKEN="$(scripts/cred.sh vercel)" || exit 1</pre></div>
     <p style="margin-bottom:0"><b>One forward note:</b> cron cannot read the keychain; LaunchAgents and
     interactive sessions can. Web's seat is interactive, so this is fine. If the token ever feeds a
     scheduled job, that job must be a LaunchAgent.</p>
