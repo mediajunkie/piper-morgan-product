@@ -13,6 +13,18 @@ PM-attention items live **here**, in the section immediately below.
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-04 fire 3.)*
 
+🟢 **CURRENT STATE, 2026-09-19 (STOP, day-close) — read this before anything below.** Nothing
+PM-gated open as of tonight. **T1 (Cross-Piper synthesis) is fully resolved** — PM read it today,
+endorsed it verbatim ("excellent as usual"), apologised for the 16-day delay; now in wider
+circulation (CIO/PPM/CXO asked to read against their own thinking; shared with Themis/DinP for OS +
+Pimento). Full detail lives in `pa-standing-items.md`'s Resolved table, not duplicated here. **BYOC
+Phase B (`mcp.pipermorgan.ai` DNS/TLS) verified live this morning (08:24 arrival check) — still not
+deployed**, `dig`/`curl` both failed to resolve the host; no change expected until Phase B actually
+lands, don't re-check every fire, retest when there's reason to think it might have moved. **Known
+gap, named not fixed**: PA has no defined GitHub-issues criteria line (v1.33's third work-queue
+source) — flagged three times today (10:12/13:12/19:12 fires), worth a deliberate pass on a quiet
+day rather than an ad hoc invention under fire pressure.
+
 **Beta target: MOVED BACK A MONTH from 2026-08-09** (PM, 08-08 10:10 PT, in-conversation with Lead,
 verbatim: *"I am going to move the beta date back a month. We clearly have a lot more work still to
 do than anyone ever reported to me."* — `decisions.log:1242`). No new fixed date recorded as of this
