@@ -17,20 +17,23 @@ decision to rely on Piper for one real project).
 - **Do**: run a standup to completion — through the final summary and its "Anything else?"
   tail. Then send, in order, your exact three turns from the 08-13 transcript:
   1. `do things directly from now on`
-  2. `change the status of issue #108 to Done` (any real issue command works)
-  3. the same issue command again if turn 2 misbehaved.
+  2. `change the status of issue #99999 to Done` — deliberately nonexistent: the PASS
+     criterion is ROUTING (the command reaching the issue rail), not the mutation
+     succeeding, so an honest "issue not found" from the rail is a PASS and nothing real
+     gets mutated. (#108 is CLOSED already — checked 09-19 — and needn't be touched.)
+  3. the same command again if turn 2 misbehaved.
 - **PASS**: turn 2 reaches the issue rail on the FIRST try — no re-rendered standup
   summary, no "Your standup is ready! Have a great day!" swallowing the command. The
   completed flow releases its claim; off-tail turns process as normal intents.
 - **On PASS**: say so — it discharges #1739's last dependency and unlocks epic 3's floor.
   On FAIL: paste the transcript; that reopens #1617 with fresh evidence.
 
-### 2. (Optional, 2 min) OpenAI-only Slack turn (#1822, v116)
-- **Surface**: Slack (this one IS live on the deployed Fly app).
-- **Do**: from a Piper-linked account whose only stored key is OpenAI, send Piper any
-  Slack message needing an LLM turn.
-- **PASS**: a real answer served under your own OpenAI key — not the "add your Anthropic
-  key" refusal. (This path has exactly one live exercise so far: the #1822 repro.)
+### 2. PARKED (was: OpenAI-only Slack turn, #1822) — not PM-cheap after all
+- PM correctly flagged (09-19): this needs an account configured with ONLY an OpenAI key —
+  setup walk-through included, it's well over the advertised 2 minutes. Parked until a
+  natural openai-only account exists (a real tester) or Lead provisions a test account
+  once the hosting/test-account question is ruled (it's inside Pard's weekend proposal
+  scope). Not PM's to set up.
 
 ## Struck rows
 *(none yet)*
