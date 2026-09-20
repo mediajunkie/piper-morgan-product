@@ -9,6 +9,7 @@ import logging
 import os
 import time
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import aiohttp
@@ -23,6 +24,62 @@ logger = logging.getLogger(__name__)
 
 # Health check router for staging
 staging_health_router = APIRouter(prefix="/health", tags=["health"])
+
+
+# ---------------------------------------------------------------------------
+# Deploy identity (#1839) — what is actually running, answerable without SSH.
+#
+# DESIGN RULE, and it is the whole point: **never fabricate a plausible value.**
+# Each of these returns the literal string "unknown" when it cannot determine the
+# answer. That is deliberate and is the lesson of what it replaces — the fields
+# these succeed were hardcoded to "staging"/"PM-038-staging", so they were always
+# populated, always confident, and carried no information. A reader saw a filled-in
+# `version` and concluded the surface worked.
+#
+# "unknown" is a measurement. A default that looks like an answer is not.
+# ---------------------------------------------------------------------------
+
+_UNKNOWN = "unknown"
+
+
+def _deployed_version() -> str:
+    """The running build's version, read from the VERSION file shipped in the image.
+
+    Falls back to PIPER_VERSION, then "unknown". Never guesses.
+    """
+    env = os.getenv("PIPER_VERSION", "").strip()
+    if env:
+        return env
+    # VERSION sits at the repo/image root; this file is services/api/health/.
+    candidate = Path(__file__).resolve().parents[3] / "VERSION"
+    try:
+        text = candidate.read_text(encoding="utf-8").strip()
+        return text or _UNKNOWN
+    except OSError:
+        return _UNKNOWN
+
+
+def _deployed_git_sha() -> str:
+    """The commit this image was built from.
+
+    Populated by a build arg (see Dockerfile PIPER_GIT_SHA). Returns "unknown"
+    when the build did not supply one — which is the honest answer for any image
+    built before that wiring existed, and must NOT be replaced by reading the
+    local .git of whatever host happens to be running: that would report the
+    *host's* checkout, not the *image's* provenance, which is precisely the
+    build-vs-release confusion this field exists to end.
+    """
+    return os.getenv("PIPER_GIT_SHA", "").strip() or _UNKNOWN
+
+
+def _deployed_environment() -> str:
+    """Which environment this process believes it is.
+
+    Set PIPER_ENVIRONMENT per host (local | staging | prod). Returns "unknown"
+    rather than assuming, because assuming is what the previous hardcoded
+    "staging" did on the production droplet.
+    """
+    return os.getenv("PIPER_ENVIRONMENT", "").strip() or _UNKNOWN
 
 
 class HealthStatus:
@@ -84,8 +141,15 @@ class StagingHealthChecker:
         final_result = {
             "overall_status": overall_status,
             "timestamp": datetime.now(timezone.utc).isoformat(),
-            "environment": "staging",
-            "version": "PM-038-staging",
+            # #1839: these two used to be the hardcoded literals "staging" and
+            # "PM-038-staging". They were PRESENT and WRONG on every host — the alpha
+            # droplet reported environment="staging" for months — which is worse than
+            # absent: a populated field reads as a working surface, so nobody looked
+            # again. Deploy-version confusion in Sep 2026 cost an SSH archaeology dig
+            # to answer "what is running"; this is that answer, unauthenticated.
+            "environment": _deployed_environment(),
+            "version": _deployed_version(),
+            "git_sha": _deployed_git_sha(),
             "components": results,
             "summary": self._generate_health_summary(results),
         }

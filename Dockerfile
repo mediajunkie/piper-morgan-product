@@ -50,6 +50,17 @@ RUN python --version && \
 # Copy application code
 COPY . .
 
+# #1839: deploy identity baked at build time, so a running container can answer
+# "what commit am I?" without SSH. Inert when unset — the health surface reports
+# the literal string "unknown" rather than inventing a plausible value, which is
+# the failure mode it replaces (a hardcoded "PM-038-staging" that was always
+# populated, always confident, and carried no information).
+# Do NOT read the host's .git at runtime to fill this: that reports the *host's*
+# checkout, not the *image's* provenance — the exact build-vs-release confusion
+# this field exists to end.
+ARG PIPER_GIT_SHA=""
+ENV PIPER_GIT_SHA=${PIPER_GIT_SHA}
+
 # Create version verification script inline (avoids CRLF issues from Windows hosts)
 RUN set -e && cat > /usr/local/bin/verify-python-version.sh << 'VERIFY_EOF'
 #!/bin/bash
