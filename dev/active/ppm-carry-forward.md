@@ -10,7 +10,26 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-19 13:22 PT (WORK). **Arch answered CXO's #1823-branch-two-permanence
+**Last rewritten**: 2026-09-19 16:22 PT (WORK). **Sent Arch the canonical board-add values**
+(project `PVT_kwHOADE-8s4A-JwA`, `gh project item-add 1 --owner mediajunkie`, Status field
+`PVTSSF_lAHOADE-8s4A-JwAzgxpGyU`, `Product Backlog` option `e7d1c990`) so `piper-draft-issue` can
+close the recurring board-add gap Arch traced (the skill sets milestone but has zero board-add/
+Status steps at all) — should retire the "PPM manually fixes it every time" pattern at its source.
+**Acked Lead's #1743-vs-quarterly-archival lint carve-out** after verifying the exemption in source
+myself (`read/archive/…` only, nothing broader) — no overrule, it's sound. **#1785** (push-vs-
+nightly canonical-job spend) correctly routed direct-to-PM by Lead, PPM only cc'd — not my call,
+folded into epic 1 for tracking, not chasing PM. **Investigated a large `sprint-truth.py` delta
+before reporting it**: MVP "done" dropped 1179→1127 — cross-verified via raw GitHub REST
+(`gh api .../milestones`, confirms 1127 live) and found the mechanism (62 recurring housekeeping
+issues — FLY-AUDIT/ROLE-HEALTH-CHECK/PATTERN-SWEEP/Quarterly-Maintenance — bulk-retriaged from MVP
+to Ongoing in a 7-minute window, matching Ongoing's own description). Reads as legitimate
+housekeeping, not data loss (0 unmilestoned, no missing board items, issue-native field not the
+dangerous Projects-v2 full-replace shape). Could not find attribution — not chasing. **1127 is now
+the correct MVP-done baseline, not 1179** — my own prior fires' citations of 1179 are now stale by
+this legitimate reclassification, not an error at the time. **Epics-9/10 still unanswered** — not
+chasing.
+
+**Prior: 2026-09-19 13:22 PT (WORK). **Arch answered CXO's #1823-branch-two-permanence
 question** (yes, permanently empty, conditional on BYOC being ratified — not independent law, no
 ESSENCE amendment proposed) and filed `#1829` for the missing enforcement mechanism (silent `.get()`
 fallback in `resolve_model` can mis-tier a typo'd task type or mis-route to an unrecognized

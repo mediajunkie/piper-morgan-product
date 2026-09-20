@@ -54,6 +54,7 @@ jobs:
 
             ### Agent Infrastructure
             - [ ] \`ls mailboxes/*/inbox/\` - Check for undelivered mail
+            - [ ] **Each role archives its own \`mailboxes/{role}/read/\`**: \`python3 scripts/archive-mailbox-read.py {role} --execute\` (dry-run without \`--execute\` first if unsure). Moves completed-quarter memos into \`read/archive/YYYY-QN/\`; current quarter stays live. One role per invocation, by design — never run against another role's mailbox. Two things to know before running it: (1) everything under \`mailboxes/\` must go through \`scripts/mail-send.sh\` in one call, not a normal \`git commit\` — the ≥20-file broad-staging warn and \`check-branch.sh\`'s mailbox-on-feature-branch block will both fire otherwise; (2) \`mail-send.sh\` can take a couple of minutes to return on a large first run (783 paths took just over 2 min) — the push lands well before that, the delay is its own post-push advisory scans, so a slow return is not a hang. CIO piloted this on its own seat 2026-09-19 (391 memos, commit \`77b86a5dd\`) before this line was added.
             - [ ] Review \`.claude/skills/\` for outdated procedures
             - [ ] Verify \`.claude/hooks/\` are functional
             - [ ] Check editorial calendar CSV column count consistency

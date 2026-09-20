@@ -36,6 +36,7 @@ A row with no blocker and a `Filed` date ≥21 days old will be flagged — that
 | 18 | Lead — #1527: did named-delete ship (a) or is the capability-decline false (b)? | 2026-09-08 | Awaiting Lead; if (b), a decline is a false claim about our own surface |
 | 19 | PA — confirm whether the ESSENCE ruling reference is live or historical | 2026-09-08 | Awaiting PA; deliberately not boarded as open OR stale |
 | 20 | ~~PM — should the START-side carry-forward refresh become a cohort norm?~~ | 2026-09-06 | **CLOSED 09-18 — duplicate of row 9, same question filed twice, both stale for 10 days.** Resolved by CIO 09-08; see row 9. ⚠️ The irony is the finding: **the very amendment CIO shipped mandates a three-surface re-check per PM-gated row — and it lands on carry-forward rows, not standing-items rows, so this file never got it applied.** |
+| 21 | ~~REMIND PM to review PA's Cross-Piper synthesis~~ | 2026-09-19 | ✅ **CLOSED same day** — PM read it, called it "excellent as usual", supports observations and recommendations, apologised for the 16-day delay. Relayed to PA. Reminder never needed. |
 
 ## Closed
 
