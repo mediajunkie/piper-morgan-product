@@ -57,8 +57,15 @@ minor cosmetic gap, not fixed: the HTML calendar view has no `planned` CSS case 
 
 ## Open — no PM-gate currently, just queue depth
 
-- **~7-8 drafts still await PM's voice-pass + art** (down from 9-10 — two closed today). Regenerate
-  the chronological artifact from the calendar if a current list is needed.
+- **12 drafts await PM's voice-pass** (verified by direct calendar query 09-20, not the old running
+  estimate — the prior "9-10"/"7-8" figures under-counted because they were scoped to the
+  building-narrative artifact only and missed 2 real insight-theme drafts already sitting in
+  `status=drafted`: "Distribution Is a Product Decision, Not a Marketing One" and "No Undo".
+  Corrected + flagged to Exec/PM/cohort via reply-all on the sprint-plan share. Full list: The
+  Near-Miss and the Missing Key, The Alarm That Had Been Working All Along, Three Seats Stay Dark
+  Longer, What Piper Morgan Actually Is, The Contract Tested the Day It Was Born, Three Silent
+  Failures Became One Law, Distribution Is a Product Decision, No Undo, Giving It Away, The Message
+  That Deleted Itself, The Feature That Was Never Real, The Board That Stopped Matching Reality.
 - **ChicagoCamps talk (Sept 17) — outcome still unconfirmed.** No session-log mention of it
   happening in any 09-17/18/19 log. Ask PM directly rather than keep treating the deck as pre-event.
 - **`template-audit` gap, still just flagged (2 data points)**: no check for "claims a named person
