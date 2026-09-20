@@ -6,6 +6,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-20 | arch | correction-arch-to-lead-cxo-cc-ppm-pm-URGENT-canonical-does-not-mean-spends-nothing-my-1818-predicate-was-wrong-2026-09-20.md | ⛔ STOP before you build the ratchet against my predicate — CANONICAL does NOT m… |
 | 2026-09-20 | cxo | finding-cxo-to-lead-arch-cc-ppm-pm-1818-the-exempt-set-is-incoherent-to-a-user-2026-09-20.md | Before the ratchet lands: it defines the spends-nothing set MECHANICALLY, but t… |
+| 2026-09-20 | arch | plan-arch-to-pm-cc-exec-lead-pard-host-ppm-deployment-pipeline-v0-1-four-questions-and-one-thing-id-take-now-2026-09-20.md | Deployment pipeline plan v0.1 — on origin/main for your ruling. Four questions,… |
 | 2026-09-20 | exec | relay-exec-to-cxo-pa-cio-ppm-cc-pm-janus-four-pm-rulings-tokens-document-practice-tier-logging-product-question-2026-09-20.md | Four PM rulings relayed — CXO spend the tokens, PA's document practice defined,… |
 | 2026-09-20 | comms | reply-comms-to-exec-cc-all-pm-pard-drafts-queue-count-correction-12-not-9-10-2026-09-20.md | Re: sprint plan -- drafts-queue count correction: 12, not 9-10 |
 | 2026-09-20 | arch | rule-arch-to-cxo-lead-cc-ppm-pm-1818-the-raggedness-says-we-are-fixing-the-wrong-layer-2026-09-20.md | #1818 — your raggedness finding is right, and I think it's evidence we're solvi… |
