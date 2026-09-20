@@ -1,78 +1,53 @@
 # Exec carry-forward
 
-**STATE: LIVE, day closed 2026-09-18.** Cron **`4a6add06`**, expression `38 6,10,14,18,22`,
-delete-then-create at STOP, CronList-verified exactly one, expires ~09-25.
-⚠️ **This seat's empirical arrival offset is +30/+31 min past the slot, measured over 8 fires.**
-Compute any deadline from that, never from the cron expression plus assumed jitter — that assumption
-failed wave 0 and is why prereg §3 was amended.
+**STATE: LIVE, day closed 2026-09-19.** Cron **`0f219adf`**, `38 6,10,14,18,22`, delete-then-create
+at STOP, CronList-verified exactly one, expires ~09-26.
+🔴 **RETRACTED 2026-09-20 — do not use +30.** That claim was falsified at **+7** on the very next
+fire. `CronCreate` documents jitter as **max 15 min**, so +30 exceeded the cap and was never
+scheduling at all — **it was this seat being busy in PM conversation.** Fires land only when the REPL
+is idle. **Use slot + up to 15 min; anything beyond that is a busy-REPL signal, not a late fire.**
+⚠️ **This matters for the reboot**: seats come up IDLE and will fire near schedule, so a +30
+expectation makes per-seat deadlines ~23 min too generous. Retracted to Pard and Janus 09-20.
 
-**Fresh session?** `docs/handoff-exec-2026-09-18.md` was written for you — read it before this file.
-**This seat was replaced 2026-09-18 11:12 and ran a full normal day afterward.** Wave 1 (Arch, Comms)
-went the same evening; both confirmed clean beforehand.
+**Fresh session?** `docs/handoff-exec-2026-09-18.md` was written for you. This seat was replaced
+2026-09-18 11:12 (wave 0) and has run two full normal days since. **All eleven seats are past the
+clear seam**; the Amber reboot itself is still ahead.
 
-## Owed by me, first thing 2026-09-19
+## Owed by me, 2026-09-20
 
-1. ★ **REMIND PM ABOUT BETS 001–003 — PM-requested, DUE 09-19**, and carry them in the rollup so PM
-   and (through me) Janus keep seeing them. **This is now a standing rollup duty, not a one-off.**
-2. **The invite-copy question is unanswered and Janne's email may go out.** I offered PM a CXO check
-   of `docs/operations/alpha-onboarding/email-template.md` against the post-#1814 flow — it still says
-   *"have your LLM API key ready to paste"* (the instruction #1814 turned into a wall) and pins
-   **0.8.11.0**, almost certainly stale. **PM has not answered whether to check first or send now.**
-3. **Raise the conversational-ruling gap with CIO/HOST** — see below. Do not patch alone.
+1. ★ **CHECK WITH PM ON VERCEL STORAGE — daily** (standing item 22). PM set retention 09-19 (Prod
+   1wk / Pre-Prod 1wk / Errored 1wk / Canceled 1d, all projects) and wants to bump Production back
+   to 30d once storage drops. ⚠️ **Confounder: Web's website#43** (move 240 MB of build inputs out
+   of `public/`) is a second change to the same system — **if both land before a reading, the
+   before/after is unattributable.** Web is holding deliberately for that reason.
+2. **Ship #061**: PM close-reads **Mon or Tue**; pubDate **Wed 09-23**; **Comms reviews between**.
+   A Tuesday read leaves Comms under a day. **PM gates the Comms handoff — never self-initiate.**
+   Open flag: draft is 1,430 words vs a 800–1,200 target, uncut on purpose.
+3. **The team-deployment conversation is still open** — PM said "no worries on just starting the
+   planning now." Shape offered and not yet walked: five roles need nothing from PM; three small
+   answers unblock three more (~15 min); the drafts queue is the only real bottleneck.
 
-## The two live blockers — everything else on the board is struck
+## Live threads
 
-**Janne's invite** (token `ZVHWT5408X2NFA6P0D838B35`, UNUSED; roster is gitignored in PM's main
-checkout; no drafted email exists — templates only) and **Vercel**.
+- **Hosting/alpha/beta**: Pard leads, Lead advises, proposal to PM. **Droplet is FACT now** — alpha
+  runs `0.8.10.14`, deployed **July 16**, three-way corroborated. Current main is 0.8.11.0 + ~2
+  months unversioned. **Janne's invite is held by PM** pending this.
+- 🔴 **"Nothing routinely exercises production at all."** CXO's three 09-14 cases: only **one** is the
+  stale deploy; ① needs a shell on the box (13-month-old gitignored file), ③ was competently run but
+  not against prod. **I had framed all three as one blockage and CXO corrected it** — carry the
+  messier number.
+- **Web's four PM items, none previously boarded, oldest 113 days** — site walkthrough (113d),
+  obs-pass needing ~31 verdicts (94d), Buttondown (35d), a workDate yes/no. **Now on the board.**
+  ⭐ **My "four across the whole team" estimate was the floor, not the number.**
+- **PPM** executing PM's mini-epic ruling (collapse + catch-all, *"don't overindex on filing rules"*).
+- **CXO's T-axis probe window** closes when #1688's MCP arm starts writing output — PM's call.
+- **HOST ruled the agents-are-not-people rule AND mechanized it** (#1834); Comms shipped build item 1.
 
-⚠️ **On Vercel, my own board was WRONG and PM caught it.** The line *"deleting old deployments is free
-and sufficient"* entered on the 09-13 board, **is sourced to nothing**, and contradicts both Web's
-carry-forward (question open, access-blocked since 09-09) and Vercel's own UI as PM read it. **Do not
-repeat it.** The unblocking artifact is PM's Vercel email text; PM is getting Web a token via Pard.
+## 🔴 The largest open gap, unchanged
 
-✅ **PM RULED TONIGHT**: Q5 — *"idle is a legitimate state"* (headline only; Arch carries the open
-denominator qualifier). Scope-guard — **option 2, ruleset migration**; no longer a PM decision, now
-blocked on the permission classifier.
-🔴 **And Arch corrected my scope-guard briefing at the source: my option (a) would have broken all 12
-seats** (a ruleset without an *admin* bypass actor subjects every seat to the required check and stops
-every `mail-send.sh` push and heartbeat). **I wrote a decision brief on someone else's surface without
-having them read it first. Don't do that again.**
-
-## 🔴 The largest open gap — PM's conversational rulings have no durable home
-
-I carried PA's BYOC sequencing as a live blocker; **PM had ruled it aloud on 09-15**. It is in none of
-the three surfaces the v1.32 re-verify rule checks (`decisions.log` / own `sent/` / GitHub). I
-committed this four hours after cataloguing the same miss-class. `decisions.log` is append-by-any-agent
-and is the obvious home; the gap is that **nobody logs PM's spoken rulings on another role's behalf.**
-**Raise with CIO/HOST — it is a cohort convention, not my patch to make.**
-
-## ★ The day's through-line, found independently by four roles
-
-**A thing can be committed, durable, on `origin/main` — and still invisible, because it is in the
-wrong KIND of place.** Arch: a finding living only in a memo (*"ask 'is any finding of yours living
-only in a memo?', not 'is anything uncommitted?' — the second returns clean"*). Janus: *"'has not
-replied' was indistinguishable from 'has not read it'"*. Me: `read/` is a claim about cognition, and
-mail triaged there is invisible to every board sweep. PM's spoken rulings: nowhere at all.
-**Uncommitted work is the failure mode we have tooling for. Committed-but-unreachable is the one we
-don't** — and every routing miss today was that one.
-
-## Ship #061 — drafted, awaiting PM's close read
-
-**Draft**: `dev/active/weekly-ship-061-draft-2026-09-19.md` (synced to `docs/public/comms/drafts/`).
-Title **"Closed means observed."** PM's high-level read 09-19: *"looks solid"*, **close review Monday
-or Tuesday.**
-
-⚠️ **Watch the Comms window.** Sequence is fixed — **draft → PM → Comms → publish** — and **pubDate is
-Wed 2026-09-23**. A Monday review leaves Comms comfortable; **a Tuesday review leaves them under a
-day** for a review that has its own audit skill and is not a rubber stamp. Flagged to PM 09-19,
-deliberately without pressing. **Exec never self-initiates the Comms handoff — PM gates it.**
-
-**Open flag for the review**: draft is **1,430 words against the 800–1,200 target.** Not cut to fit;
-Product and Methodology carry the most trimmable material. Trimming is a review call.
-
-**Calendar**: Comms pre-seeded **#061–#073** (a full quarter of Wednesday slots) within hours of PM's
-ask — the mechanism worked on day one. I filled their #061 placeholder rather than adding a second
-row, and told them I'd touched their file.
+**PM's conversational rulings still have no durable home.** I used `decisions.log` by hand twice
+today. **That is a habit, not a mechanism** — and it is the same shape as the finding three separate
+sources reached this week: *structural fixes hold, promises don't.*
 
 ## Also live
 
