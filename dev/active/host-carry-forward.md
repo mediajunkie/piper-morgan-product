@@ -79,9 +79,14 @@ Current job **`e018f052`** (chain … `db3710ca → bc447bf5 → e018f052`), exp
   sort out the underlying issues before sending out the invitation. Too much unfinished business
   is piling up, chasing newer things."* Told Lead this explicitly — including that PM's response
   reads as pushing back on Lead's own "next week's plan" deferral framing, not just this invite.
-  **To lift**: someone with droplet SSH (Lead's seat has none) reads `/app/VERSION` to confirm the
-  July-cut hypothesis as fact. Full thread: `dev/2026/09/19/2026-09-19-0707-host-code-log.md`.
-  Roster (main checkout, gitignored) carries the same hold with PM's quote verbatim.
+  **UPDATE 19:0x**: the version check is DONE — PM authorized SSH within minutes, Lead confirmed
+  live `/app/VERSION` = `0.8.10.14`, deployed July 16 (dated fact now, not inference), stack
+  healthy, migrate landmine defused (it did run). **But the hold does NOT lift on that alone** —
+  scope widened same evening: PM tasked Pard (process lead) + Lead (specifics) with a full
+  alpha/beta/hosting proposal due this weekend, now tied to CXO's prod-visibility gap and Web's
+  test-account gap too. HOST is informed on this thread, not driving it — watch for Pard's proposal
+  and PM's ruling on it, don't act unilaterally. Full thread: `dev/2026/09/19/2026-09-19-0707-host-
+  code-log.md`, Fires 2-6. Roster (main checkout, gitignored) carries the same state.
 - ✅ **Amber-restart handoff doc filed** (`docs/handoff-host-2026-09-18.md`, 09-18) — gate-blocking cohort requirement, met same-day. Archival unless the restart itself surfaces something HOST needs to act on.
 - ✅ **Sprint closeout for Sep 11–17 filed** (09-18, to Exec cc PM). Archival.
 - ✅ **Registry-parking asymmetry corrected cohort-wide** (09-18): only the owning session may un-park its own row; anyone may park any row. Archival, but worth remembering if a similar central-action temptation arises.
