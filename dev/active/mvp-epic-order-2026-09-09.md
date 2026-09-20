@@ -108,6 +108,14 @@ doesn't find a dead qualifier and wonder if it's still load-bearing.
 already-live lazy-refuse default is the ruling. No code change, no issue to track — a design
 question resolved, not a build item.
 
+**`#1838` folded 2026-09-20, from PM's first dogfood session on alpha**: after the keyless first-turn
+key ask (PM's own word: "nicely" worded — this part working), PM added a key in Settings, and the
+just-started chat could not be found again on return. Session-continuity break at the exact seam
+this epic already owns end-to-end (the key-add/onboarding path) — the issue's own filing left the
+epic call to PPM, placed here rather than the composer catch-all given the overlap with `#1807`/
+`#1809`/`#1812`/`#1818`'s shared flow. Mechanism undiagnosed — needs a driven repro (keyless start →
+refusal → Settings → add key → return), not yet assigned.
+
 **Four more, from the 2026-09-15 sequencing follow-on — all CLOSED same day except the trigger**:
 ~~`#1814`~~ (v109 — `#1810`'s fix removed a key-write before verifying the reader could resolve a
 per-user key at all, walking the invite's own onboarding condition into a false "not configured"
@@ -353,10 +361,24 @@ and refusing others. Explicitly **not** overturning PM's direction — routed as
 question for PM: does "don't challenge for a key on a first hello" mean (a) the greeting must be
 gate-free (current #1818 design, ragged by CXO's measurement) or (b) first contact must not *feel*
 like a challenge (satisfied by a uniform greeting-refusal, less machinery, no ragged set)? Arch's own
-read favors (b) but named it as PM's call, not theirs. **Lead told to keep building the ratchet
-regardless** (valuable either way, now the only thing that defines "spends nothing") **but hold the
-gate change itself** until PM answers. **Genuinely PM-gated now, not PPM's** — watching for PM's
-(a)-vs-(b) answer, not chasing.
+read favors (b) but named it as PM's call, not theirs.
+
+**`#1818` RULED 2026-09-20 — PM picked (b).** *decisions.log 13:3x*. No spends-nothing exemption at
+the gate, no new predicate or marker: every keyless first message gets a warm response that
+acknowledges in kind (CXO's refinement to literal (b), which failed one case on inspection —
+answering `"bye"` with a greeting reads as not having understood, not as policy — fixed by matching
+the response type to the pre-classified pleasantry: greet a greeting, farewell a farewell,
+you're-welcome a thanks, all ending in the same key explanation) and explains the key requirement in
+the same breath. CXO owns the four-string copy set (shared text for the shared half, per the same
+discipline as `#1823`'s family). Lead owns the ordering + kind-matched dispatch wiring. **The
+ratchet stays as the definition + regression guard**, not gate plumbing — and its first live run
+measured the hinge decisively: **only 5 of 14 registry-`CANONICAL` pairs are actually spend-free**
+(`greeting`, `get_current_time`, `manage_portfolio`, `manage_repos`, `explain_suggestion`); the
+other 9 — including `thanks` and `farewell`, which route to the floor and get LLM-composed — bill.
+`#1773`'s registry-vs-runtime drift is now confirmed with billing evidence, decoupled from `#1818`
+but strengthened as its own fix (a deterministic thanks/farewell would get promoted by the ratchet's
+own improvement-side check). **Not a PPM ruling — PM's, fully implemented in design, build now
+straightforward.**
 
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
@@ -386,7 +408,19 @@ Singletons 2026-09-12 — compose-framed draft can arm a subject still carrying 
 because the collaborate-gate ARM path doesn't resolve it, only the execute/file path does; same
 arm/consume-rail family as the rest of this epic). **Remaining open: `#1739` (umbrella, closes when
 its children do), `#1771`, `#1695`** — per Exec's 09-13 accounting, `#1739`'s last real dependency
-is PM's own `#1617` standup retest (~90 seconds), which is what actually unblocks this epic's floor.
+was PM's own `#1617` standup retest (~90 seconds).
+
+**`#1617`'s retest attempted 2026-09-20 — NOT REACHED, and the reason is now this epic's own
+blocker.** PM drove a real standup on alpha and the flow broke upstream of the tail: `#1837` — the
+guided-interview offer, once accepted ("Sure, thanks."), never arms the interview (`#1651`/`#1652`
+acceptance-contract-rail machinery, this epic's own family) — instead falls through to a generic
+fabricated template, and a later turn has Piper deny having made the offer at all (a conversation-
+state contradiction, since the offer history isn't consulted). **`#1739`'s dependency chain updates:
+`#1617`'s retest now depends on `#1837` landing first**, not the other way around. Lead's proposed
+shape: extend the acceptance-contract rail so offer-acceptance actually arms the interview, and give
+the restate branch access to its own offer history. **Shared with epic 5** (below) for the
+fabricated-template half of the same issue. Arch's ruling on the shape is pending (Lead's request,
+same fire).
 
 **Why third**: PM's live round converged three failures onto this one contract today. Both design
 passes are already in (Arch's sequencing ruling + CXO's two-axis correction, conceded by Arch) —
@@ -453,10 +487,25 @@ providers today, live the moment a fourth is added). Same mechanism CXO/Arch alr
 and this epic's own class. Asks for a build-time ratchet, not a vacuous
 `assert resolve_model(p, t) is not None` (passes trivially given the fallbacks — the
 `test_standup_data_sources` shape, `#1642`). Found missing from board/milestone at filing despite
-the standing convention — fixed same-fire (MVP, board-added, Status=Product Backlog). **Remaining
-open: `#1760`, `#1761`, `#1763`, `#1697`, `#1718`, `#1772`, `#1811`, `#1829`** (8 of 16) — this
-epic is currently the one Lead is actively working, per their own log (opened right after epic 3
-hit its floor Saturday).
+the standing convention — fixed same-fire (MVP, board-added, Status=Product Backlog).
+
+**Folded 2026-09-20, from PM's first real dogfood session on alpha (v0.8.12.0) — trust-critical,
+this epic's own class at its sharpest**: `#1836` — the standup edit path claimed *"I've updated
+your standup"* and rendered the VERBATIM UNCHANGED draft, discarding PM's explicit dictated content
+silently. The `#1331` anti-confabulation rule ("never claim unverified action-success") violated
+live, in front of the founder, in the first real dogfooding session. **This is now the epic's
+top-priority item** — no reordering needed since epic 5 is already what Lead is actively working;
+Lead already shipped a first-layer fix same-day (`300ef8bbe`, makes the success message derive from
+a verified diff) but the issue stays open pending Arch's ruling on the deeper architectural cause
+(the fabricating fallback `_generate_basic_standup`/`_graceful_fallback` being `#1289`'s undead
+default for every empty-capture turn — Lead's proposed fix: kill it, empty capture re-enters the
+interview state honestly). **Shared with epic 3** (below): `#1837` — the interview-offer-acceptance
+half is an acceptance-contract-rail defect (`#1651`/`#1652` machinery, offer accepted but never
+arms the interview), while its fabricated-generic-template half and conversation-state-contradiction
+half (denying an offer made three turns earlier) are this epic's own honest-empty/confabulation
+class — tracked in both epics, built once. **Remaining open: `#1760`, `#1761`, `#1763`, `#1697`,
+`#1718`, `#1772`, `#1811`, `#1829`, `#1836`, `#1837`** (10 of 18) — this epic is currently the one
+Lead is actively working, per their own log (opened right after epic 3 hit its floor Saturday).
 
 **Separately, same memo: Arch also answered CXO's #1823 branch-two scope question** (is
 provider-agnosticism deliberate/load-bearing, making branch two *permanently* empty rather than
