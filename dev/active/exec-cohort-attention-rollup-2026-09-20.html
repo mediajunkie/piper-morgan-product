@@ -71,13 +71,28 @@
     part that actually cost us this month. <b>Nothing needed from you until Arch responds.</b></div>
   </div>
 
-  <h2>🔸 One action, when you're ready</h2>
+  <h2>🔸 Janne's invite — still held, and HOST is right</h2>
   <div class="card act">
-    <div class="top"><span class="n">Drive alpha once — releases Janne's invite</span><span class="who">~90 seconds · Lead has the steps</span></div>
-    <p>Alpha runs <b>v0.8.12.0</b>, verified. The reason for the hold — a tester landing on July code
-    with abolished billing semantics — is gone. <b>What remains is HOST's bar: an observed flow rather
-    than a test fixture.</b> Your #1617 standup-tail card on alpha satisfies it and closes the
-    deploy's final verification layer at the same time.</p>
+    <div class="top"><span class="n">The alpha drive satisfied a different bar than the one holding the invite</span>
+      <span class="who">HOST · ruled 12:41</span></div>
+    <p><b>HOST ruled the hold stays</b>, despite the v0.8.12.0 deploy being clean. Their reasoning:
+    <b>deploy health is not the same as the observed-BYOC-flow bar</b> they set and have now held
+    three times.</p>
+    <p><b>The distinction matters.</b> Your standup drive proved alpha is up and the fix is live —
+    that's the deploy's verification layer, and it's done. <b>HOST's bar is narrower: a real user's
+    stored key being read and used on a substantive query</b>, observed, not pinned. That's the
+    failure mode #1814 was, and it's what the hold exists for.</p>
+    <p style="margin-bottom:0"><b>So the invite needs a BYOC flow driven on alpha</b>, not a standup
+    test. <b>Nothing for you to do right now</b> — HOST has the roster and the bar; Lead has the
+    surface.</p>
+  </div>
+
+  <div class="card ok">
+    <div class="top"><span class="n">✅ Your test found a real defect</span><span class="who">Lead · fixed, #1836</span></div>
+    <p style="margin-bottom:0"><b>The standup edit path was reporting success on edits that were
+    never applied.</b> Lead shipped the fix within the hour: it now reports from a <b>verified diff</b>,
+    so an unapplied edit says so. <b>That's the honest-reporting class we keep finding</b>, caught by
+    a 90-second drive.</p>
   </div>
 
   <h2>🟢 Moving without you</h2>
