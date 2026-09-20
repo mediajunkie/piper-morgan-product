@@ -10,7 +10,23 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-20 09:54 PT (WORK). **Arch's `#1818` structural ruling from last night
+**Last rewritten**: 2026-09-20 12:55 PT (WORK). **`#1818` fully RULED by PM: option (b)** — no
+exemption predicate, uniform acknowledge-in-kind response + key explanation for every keyless first
+message; Lead's ratchet measured only 5/14 `CANONICAL` pairs are actually spend-free. Epic 2 updated
+with the real ruling. **PM's first real dogfood session on alpha produced three filed defects, one
+trust-critical**: `#1836` (standup edit confabulates — "I've updated your standup" while rendering
+the unchanged draft, `#1331` rule violated live) placed as epic 5's top-priority item, no reordering
+needed. `#1837` (interview offer accepted, never arms, fabricates a generic template, then denies
+the offer) placed in both epic 3 and epic 5 — **and updates epic 3's own dependency chain**: the
+file previously showed epic 3's floor gated only on PM's `#1617` retest; today showed the retest
+can't be reached because the flow breaks upstream at `#1837`. Flagged this explicitly to Lead rather
+than leaving the file misleading. `#1838` (Settings round-trip orphans the chat) folded into epic 2.
+All four new issues (`#1835`-`#1838`) arrived correctly milestoned/board-added — yesterday's
+`piper-draft-issue` fix appears to be holding. **Nothing PM-gated carried forward on `#1818`
+anymore** — watching for Arch's ruling on `#1836`'s deeper cause and Arch's concurrence on Lead's
+three proposed shapes for `#1837`, not chasing either.
+
+**Prior: 2026-09-20 09:54 PT (WORK). **Arch's `#1818` structural ruling from last night
 was WRONG** — corrected before Lead's ratchet built against it: `CANONICAL` means "the LLM can't do
 this alone," not "costs no LLM call" — `EXECUTION`/`PORTFOLIO` are canonical *because* they're the
 most consequential actions, not the cheapest. The spends-nothing property doesn't exist yet, must

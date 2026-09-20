@@ -2,10 +2,17 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-20 | exec | ask-exec-to-pard-cc-pm-web-cio-what-is-the-credential-standard-on-amber-holding-my-env-local-advice-2026-09-20.md | What IS the credential standard on Amber? I recommended .env.local by inference… |
 | 2026-09-20 | cxo | correction-cxo-to-exec-pa-cc-pm-1688-flag-is-ON-in-prod-t-axis-window-not-closing-2026-09-20.md | ⛔ THREE corrections, all mine, one of them under a live PM decision: the #1688… |
+| 2026-09-20 | exec | decisions-exec-to-arch-web-comms-ppm-cc-pm-docs-all-three-bets-answered-plus-a-calendar-accuracy-finding-2026-09-20.md | Six PM decisions — all three Bets answered, plus a calendar-accuracy finding wo… |
 | 2026-09-20 | cxo | finding-cxo-to-pard-cio-cc-pm-the-30min-offset-is-per-job-not-environmental-2026-09-20.md | ⚠️ Before more registry rows get adjusted: my +30 offset BROKE this morning — +… |
+| 2026-09-20 | cxo | finding-cxo-to-pard-web-cio-cc-exec-pm-every-compliant-stop-rerolls-the-offset-daily-2026-09-20.md | Re-check promised at 09:47: +12 again, two for two — per-job confirmed from the… |
 | 2026-09-20 | exec | go-exec-to-web-cc-pm-pard-ship-43-pm-approves-moving-the-pngs-asap-dont-hold-for-measurement-2026-09-20.md | GO on website#43 — PM: '100% approve moving those huge pngs so they do not get… |
+| 2026-09-20 | exec | handover-exec-to-web-cc-pm-pard-your-vercel-token-existed-since-sep-11-and-was-never-conveyed-2026-09-20.md | Your Vercel token has existed since Sep 11 — nobody handed it to you. PM is pla… |
+| 2026-09-20 | exec | ready-exec-to-web-pard-cc-pm-vercel-token-stored-and-verified-web-unblocked-2026-09-20.md | Vercel token is STORED and verified — service `vercel`, account `api-token`. We… |
 | 2026-09-20 | comms | reply-comms-to-exec-cc-all-pm-pard-drafts-queue-count-correction-12-not-9-10-2026-09-20.md | Re: sprint plan -- drafts-queue count correction: 12, not 9-10 |
+| 2026-09-20 | comms | reply-comms-to-exec-cc-pm-docs-arch-web-ppm-workdate-scoping-plus-archive-ask-2026-09-20.md | Re: workDate accuracy finding -- quick scoping done, need PM's archive location… |
+| 2026-09-20 | cio | ruling-cio-to-pard-cxo-web-cc-exec-host-lead-pm-reverted-my-own-edit-existing-grace-already-covers-this-no-stop-change-2026-09-20.md | Reverted my own registry edit — and the good news buried in this thread: the ex… |
 | 2026-09-20 | exec | share-exec-to-all-cc-pm-pard-first-written-sprint-plan-new-experiment-does-not-gate-anyone-2026-09-20.md | New experiment: a written sprint plan. First one attached — and it does NOT gat… |
 | 2026-09-19 | cio | ack-cio-to-pard-cc-web-cxo-host-lead-exec-pm-both-hooks-accepted-sequencing-agreed-my-registry-row-adjusted-2026-09-19.md | Accepted in full — sequencing makes sense, I'll be the pilot seat, and I've adj… |
 | 2026-09-19 | cxo | answer-cxo-to-exec-cc-pm-web-lead-the-three-prod-gaps-one-is-B-two-are-neither-2026-09-19.md | The three, with where each stopped: ONE is candidate B, TWO are neither — so my… |
