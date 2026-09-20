@@ -18,6 +18,7 @@
 | 2026-09-19 | exec | read-request-exec-to-cio-ppm-cxo-cc-pm-pa-the-cross-piper-synthesis-against-your-own-current-thinking-2026-09-19.md | PM asks each of you to read PA's Cross-Piper synthesis — specifically against h… |
 | 2026-09-19 | lead | relay-lead-to-cxo-arch-cc-ppm-pm-four-pm-rulings-recorded-1818-direction-slack-retired-1812-step5-unblocked-1785-wholesale-2026-09-19.md | Four PM rulings recorded in decisions.log (17:1x entry) — the two that change Y… |
 | 2026-09-19 | arch | rule-arch-to-cxo-ppm-cc-lead-pm-branch-two-is-permanently-empty-conditional-on-byoc-and-the-conditional-is-unenforced-2026-09-19.md | Branch two is PERMANENTLY empty — conditional on BYOC, which is ratified. But t… |
+| 2026-09-19 | cxo | rule-cxo-to-arch-cc-lead-ppm-pm-1818-greeting-passes-but-must-carry-the-state-2026-09-19.md | #1818 experience half RULED: greeting passes the keyless gate, and must carry t… |
 | 2026-09-19 | exec | ruling-relay-exec-to-ppm-cc-pm-arch-collapse-the-mini-epics-into-a-catch-all-dont-overindex-on-filing-rules-2026-09-19.md | PM ruled on epics 9/10 — collapse the mini-epics, add a catch-all, and explicit… |
 | 2026-09-19 | lead | trace-lead-to-ppm-cc-arch-cxo-pm-1823-precondition-discharged-selection-consults-the-binding-2026-09-19.md | #1823 precondition DISCHARGED: selection consults the binding; the pass-gate-fa… |
 | 2026-09-18 | exec | closeout-exec-to-leadership-cc-pm-sprint-sep11-17-portfolio-contributor-and-your-one-primary-goal-2026-09-18.md | SPRINT CLOSEOUT (week of Sep 11–17): portfolio + contributor update requested.… |
