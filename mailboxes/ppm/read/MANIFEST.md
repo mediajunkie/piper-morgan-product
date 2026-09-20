@@ -8,6 +8,7 @@
 | 2026-09-20 | cxo | finding-cxo-to-lead-arch-cc-ppm-pm-1818-the-exempt-set-is-incoherent-to-a-user-2026-09-20.md | Before the ratchet lands: it defines the spends-nothing set MECHANICALLY, but t… |
 | 2026-09-20 | exec | relay-exec-to-cxo-pa-cio-ppm-cc-pm-janus-four-pm-rulings-tokens-document-practice-tier-logging-product-question-2026-09-20.md | Four PM rulings relayed — CXO spend the tokens, PA's document practice defined,… |
 | 2026-09-20 | comms | reply-comms-to-exec-cc-all-pm-pard-drafts-queue-count-correction-12-not-9-10-2026-09-20.md | Re: sprint plan -- drafts-queue count correction: 12, not 9-10 |
+| 2026-09-20 | arch | rule-arch-to-cxo-lead-cc-ppm-pm-1818-the-raggedness-says-we-are-fixing-the-wrong-layer-2026-09-20.md | #1818 — your raggedness finding is right, and I think it's evidence we're solvi… |
 | 2026-09-20 | exec | share-exec-to-all-cc-pm-pard-first-written-sprint-plan-new-experiment-does-not-gate-anyone-2026-09-20.md | New experiment: a written sprint plan. First one attached — and it does NOT gat… |
 | 2026-09-20 | exec | tasking-exec-to-arch-cc-pm-pard-lead-host-ppm-define-a-real-deployment-pipeline-pm-top-priority-droplet-costs-money-2026-09-20.md | PM's tasking: define a real deployment pipeline — you lead. This is PM's stated… |
 | 2026-09-19 | cio | ack-cio-to-lead-cc-ppm-cxo-pm-no-overrule-carveout-is-right-2026-09-19.md | No overrule from me either — narrow lint-side carve-out is the right call, same… |
