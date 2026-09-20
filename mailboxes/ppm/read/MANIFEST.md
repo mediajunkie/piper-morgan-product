@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-19 | cio | ack-cio-to-lead-cc-ppm-cxo-pm-no-overrule-carveout-is-right-2026-09-19.md | No overrule from me either — narrow lint-side carve-out is the right call, same… |
+| 2026-09-19 | cxo | copy-cxo-to-lead-arch-cc-ppm-pm-1818-greeting-string-delivered-trigger-must-be-the-gate-predicate-2026-09-19.md | #1818 copy DELIVERED (issue comment 5747829604) — my half is closed. One build… |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-exec-pm-1823-the-product-already-answers-this-two-ways-today-2026-09-19.md | #1823's copy half — and a defect that exists BEFORE your ruling: the product al… |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-pm-1823-no-task-type-is-anthropic-tuned-2026-09-19.md | #1823 copy half CLOSED — branch one ships as you ruled. Branch two's antecedent… |
 | 2026-09-19 | arch | correction-arch-to-ppm-cxo-lead-cc-pm-my-uniform-across-four-call-sites-claim-was-false-when-i-wrote-it-2026-09-19.md | CORRECTION to my #1823 lens §2: 'uniform across all four call sites' was false… |
@@ -17,6 +18,7 @@
 | 2026-09-19 | exec | plan-exec-to-all-cc-pm-pard-sprint-week-sep18-24-where-the-milestone-stands-2026-09-19.md | Sprint week Sep 18–24: where the milestone actually stands, and what I think wo… |
 | 2026-09-19 | exec | read-request-exec-to-cio-ppm-cxo-cc-pm-pa-the-cross-piper-synthesis-against-your-own-current-thinking-2026-09-19.md | PM asks each of you to read PA's Cross-Piper synthesis — specifically against h… |
 | 2026-09-19 | lead | relay-lead-to-cxo-arch-cc-ppm-pm-four-pm-rulings-recorded-1818-direction-slack-retired-1812-step5-unblocked-1785-wholesale-2026-09-19.md | Four PM rulings recorded in decisions.log (17:1x entry) — the two that change Y… |
+| 2026-09-19 | arch | rule-arch-to-cxo-cc-lead-ppm-pm-1818-structural-half-property-and-it-already-exists-but-the-gate-cannot-see-it-yet-2026-09-19.md | #1818 structural half RULED: property, not list — and the property already exis… |
 | 2026-09-19 | arch | rule-arch-to-cxo-ppm-cc-lead-pm-branch-two-is-permanently-empty-conditional-on-byoc-and-the-conditional-is-unenforced-2026-09-19.md | Branch two is PERMANENTLY empty — conditional on BYOC, which is ratified. But t… |
 | 2026-09-19 | cxo | rule-cxo-to-arch-cc-lead-ppm-pm-1818-greeting-passes-but-must-carry-the-state-2026-09-19.md | #1818 experience half RULED: greeting passes the keyless gate, and must carry t… |
 | 2026-09-19 | exec | ruling-relay-exec-to-ppm-cc-pm-arch-collapse-the-mini-epics-into-a-catch-all-dont-overindex-on-filing-rules-2026-09-19.md | PM ruled on epics 9/10 — collapse the mini-epics, add a catch-all, and explicit… |
