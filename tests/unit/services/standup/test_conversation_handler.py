@@ -921,3 +921,63 @@ class TestRefiningAcceptanceContract1739:
         stored_ask = conv.context.get("refining_ask")
         assert stored_ask
         assert stored_ask in response.message
+
+
+class TestRefinementHonesty1836:
+    """#1836 (PM live, 2026-09-20): the edit path claimed 'I've updated your
+    standup' unconditionally while _apply_refinement's default branch returns
+    the draft untouched — a free-form edit was silently discarded UNDER a
+    success claim (the #1331 anti-confabulation rule, violated at this seam).
+    The success message is now derived from a verified diff of the draft."""
+
+    @pytest.fixture
+    def handler(self):
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
+
+    @pytest_asyncio.fixture
+    async def refining_conversation(self, handler):
+        conv = await handler.manager.create_conversation("s1836", "u1836")
+        await handler.manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await handler.manager.set_standup_content(
+            conv.id, "*Yesterday:*\n* Made progress on assigned tasks\n\n*Today:*\n* Continue"
+        )
+        await handler.manager.transition_state(conv.id, StandupConversationState.REFINING)
+        return await handler.manager.get_conversation(conv.id)
+
+    @pytest.mark.asyncio
+    async def test_unapplied_edit_never_claims_update(self, handler, refining_conversation):
+        """PM's exact turn shape: an imperative free-form edit with dictated
+        replacement text. The refinement engine can't apply it — the response
+        must say so, never 'I've updated'."""
+        response = await handler.handle_turn(
+            refining_conversation,
+            "change what I did yesterday. right now that is just generic. say that "
+            "yesterday I spent all day getting the Piper Morgan team back on track.",
+        )
+
+        assert response.state == StandupConversationState.REFINING
+        assert "I've updated" not in response.message
+        assert "couldn't apply" in response.message
+        # The draft is honestly presented as unchanged.
+        assert "Made progress on assigned tasks" in response.message
+
+    @pytest.mark.asyncio
+    async def test_applied_edit_still_claims_update_truthfully(
+        self, handler, refining_conversation
+    ):
+        """The one edit the engine CAN do keeps its success message — and the
+        claim is now backed by an actual diff."""
+        response = await handler.handle_turn(
+            refining_conversation, "add blocker: waiting on the API review"
+        )
+
+        assert "I've updated" in response.message
+        assert "waiting on the API review" in response.standup_content
+
+    @pytest.mark.asyncio
+    async def test_focus_stub_does_not_claim_update(self, handler, refining_conversation):
+        """'focus on X' stores an invisible preference and changes nothing the
+        user can see — it must not claim an update either."""
+        response = await handler.handle_turn(refining_conversation, "focus on github work")
+
+        assert "I've updated" not in response.message

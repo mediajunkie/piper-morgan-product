@@ -645,8 +645,35 @@ class StandupConversationHandler:
         # this seam's asks are inverted-polarity ("any changes?"), so a "no"
         # is NOT a decline of the standup — polarity handling is CXO-owned
         # copy/interaction design, tracked on #1739; behavior unchanged.
+        #
+        # #1836 (PM live, 2026-09-20): "I've updated your standup" was emitted
+        # UNCONDITIONALLY, while _apply_refinement's default branch returns the
+        # draft untouched — so any edit outside its three keyword tricks (add
+        # blocker / remove / focus on) was silently discarded UNDER a success
+        # claim: the #1331 anti-confabulation rule violated at this seam. The
+        # success message is now derived from a verified diff; an unapplied
+        # edit gets the honest capability statement instead of a lie.
+        before = conversation.current_standup or ""
         refined = await self._apply_refinement(conversation, user_message)
         conversation.context["refining_ask"] = _REFINING_ANYTHING_ELSE_ASK
+        if refined == before:
+            # ⚠️ COPY SEAM: Lead-drafted mechanism copy; CXO owns the voice of
+            # this surface — adjust wording here, not at call sites.
+            return ConversationResponse(
+                message=(
+                    "I couldn't apply that change — right now I can only add a "
+                    "blocker ('add blocker: …'), remove a line ('remove …'), or "
+                    "start the draft over. Free-form edits like that aren't wired "
+                    "up yet, so your draft is unchanged:\n\n"
+                    f"{before}\n\n"
+                    "Want to try one of those, or dictate a whole section and say "
+                    "'start over' to rebuild around it?"
+                ),
+                state=StandupConversationState.REFINING,
+                standup_content=before,
+                requires_input=True,
+                suggestions=["Add a blocker", "Start over", "Looks good"],
+            )
         return ConversationResponse(
             message=f"I've updated your standup:\n\n{refined}\n\nAnything else?",
             state=StandupConversationState.REFINING,
