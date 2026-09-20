@@ -79,14 +79,16 @@ minor cosmetic gap, not fixed: the HTML calendar view has no `planned` CSS case 
 - **No stated GitHub-criteria line yet** (duty-cycle-tick v1.33's third work-queue source) — gap
   named at this morning's START, still unfilled, nothing blocked on it.
 
-## Watching for — no action yet (added this fire)
+## Watching for — no action yet
 
-- **workDate accuracy audit — waiting on PM's archive location.** PM worries current calendar
-  `workDate` values may be inferred/guessed where PM's own archived editorial calendars have the
-  real answer (triggered by "Integration Reveals All"'s workDate question). Exec routed this to
-  Comms as a suggestion, explicitly "ask PM, don't guess at the archive location." Did a cheap
-  scoping pass (462 rows: 12 missing workDate, 1 workDate==pubDate exact match — the triggering row
-  itself) and asked PM directly via reply-all. **Real audit can't start until PM answers.**
+- **workDate accuracy audit — still waiting on PM's archive location.** The one specific row this
+  morning's scoping flagged ("Integration Reveals All," workDate==pubDate) is now CONFIRMED
+  CORRECT — Web self-corrected (cc PM/Exec/Comms/Docs): June 27 is right, PM's own archive record
+  matches, no fix needed, Web's proposed "blank-if-uncertain" fallback would have destroyed a
+  correct value. Web's own lesson lands on exactly my open ask: "ask for the authoritative source
+  before modelling it... Comms' archive-location question is the right next move." **The broader
+  audit (checking other rows against PM's archive) is still blocked on PM actually naming where the
+  archive lives** — this exchange didn't supply that, just confirmed the one row.
 
 ## Waiting on others
 

@@ -68,25 +68,27 @@ Current job **`e018f052`** (chain … `db3710ca → bc447bf5 → e018f052`), exp
 
 ## Open threads, as of 09-18 STOP
 
-- 🛑 **Janne Lammi's invite — PM-DECIDED HOLD, 09-19 ~13:4x PT. Do not send. Do not re-raise as
-  "ready" without a new fact.** Chain: local-install-template mismatch found → resolved via PM's
-  own sent Gmail (`alpha.pipermorgan.ai` confirmed real/live, 10+ prior invites since 07-12,
-  Rebecca succeeded there 09-02) → draft corrected → Lead verified alpha live+healthy via direct
-  HTTP probe BUT found **no droplet deploy since the July cutover** — every Sept release
-  (#1810/#1814/#1809 arc) went to Fly, not the droplet, so alpha is very likely running a
-  pre-server-key-abolition build (may still carry the old operator-key-fallback model PM ruled
-  dead, #1812). **PM's own words, quoted because they matter beyond this one item**: *"I want to
-  sort out the underlying issues before sending out the invitation. Too much unfinished business
-  is piling up, chasing newer things."* Told Lead this explicitly — including that PM's response
-  reads as pushing back on Lead's own "next week's plan" deferral framing, not just this invite.
-  **UPDATE 19:0x**: the version check is DONE — PM authorized SSH within minutes, Lead confirmed
-  live `/app/VERSION` = `0.8.10.14`, deployed July 16 (dated fact now, not inference), stack
-  healthy, migrate landmine defused (it did run). **But the hold does NOT lift on that alone** —
-  scope widened same evening: PM tasked Pard (process lead) + Lead (specifics) with a full
-  alpha/beta/hosting proposal due this weekend, now tied to CXO's prod-visibility gap and Web's
-  test-account gap too. HOST is informed on this thread, not driving it — watch for Pard's proposal
-  and PM's ruling on it, don't act unilaterally. Full thread: `dev/2026/09/19/2026-09-19-0707-host-
-  code-log.md`, Fires 2-6. Roster (main checkout, gitignored) carries the same state.
+- 🛑 **Janne Lammi's invite — PM-DECIDED HOLD, still in force, 09-20 ~15:4x PT state (compressed
+  from the 09-19/20 chain — full history in the roster, main checkout, and
+  `dev/2026/09/19/...`/`dev/2026/09/20/...` session logs if the chain itself ever matters).**
+  Current position: alpha (`alpha.pipermorgan.ai`, the DO droplet) is now upgraded to `v0.8.12.0`
+  (Lead, 09-20 morning, verified live — blue-green, backup, rollback path, genuinely solid work),
+  closing the stale-billing-semantics risk that drove the original hold. **But the hold does NOT
+  lift on deploy-health alone** — HOST's own established bar for THIS invite (09-14, 09-15,
+  reapplied 09-20) requires an actually-driven BYOC flow (signed-in user, own stored key, real
+  network call, a real 401 proving selection-and-transmission), never just a deploy check, and that
+  layer has never run against alpha specifically. **In flight now**: Lead mints a throwaway
+  test-burn invite token and drives the full real path (register → store key → substantive turn) —
+  stronger evidence than the 09-14/15 method since it also exercises the registration gate. HOST
+  verifies independently once Lead reports, same discipline as both prior lifts. **Separately**:
+  PM asked to run one read-only DB check themselves (the #1599 admin-grant gap on their own alpha
+  account) — HOST declined to run it (would cross HOST's own "never touches the DB" line), Lead
+  can't either (would see identity data), so it's PM's alone. **Scope stays wider than just this
+  invite**: PM's separately tasked Arch with a full deployment-pipeline design (stated top
+  priority, driven by cost — the droplet was superseded by July's Fly cutover and PM's been paying
+  for a dead box ~2 months) and Pard with the immediate archaeology/unblock thread. HOST watches
+  both, drives neither. **What would actually move this forward next**: Lead's token-drive report
+  landing in HOST's inbox — that's the next real decision point, not a status check.
 - ✅ **Amber-restart handoff doc filed** (`docs/handoff-host-2026-09-18.md`, 09-18) — gate-blocking cohort requirement, met same-day. Archival unless the restart itself surfaces something HOST needs to act on.
 - ✅ **Sprint closeout for Sep 11–17 filed** (09-18, to Exec cc PM). Archival.
 - ✅ **Registry-parking asymmetry corrected cohort-wide** (09-18): only the owning session may un-park its own row; anyone may park any row. Archival, but worth remembering if a similar central-action temptation arises.

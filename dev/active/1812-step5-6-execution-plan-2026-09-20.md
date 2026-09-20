@@ -17,6 +17,23 @@ application of PM's two standing rulings (#1812 "every call is the user's call" 
 PM embeds on PM's stored OpenAI key, resolved like any request. No new concepts. Awaiting
 PM's confirm; Phase B's ingestion change assumes it unless PM says otherwise.
 
+## SECOND FACE (found at Phase-B open, 14:1x — expands Arch's six): the None-RETURN consumers
+
+Retiring None-means-operator changes `request_spend_key`'s contract to str-or-raise,
+which kills every `key is None -> server client` branch downstream:
+- `anthropic_client_for_request` (request_key.py:361+) — loses its `server_client`
+  parameter entirely; fresh per-request client is the ONLY path.
+- `_openai_complete` (clients.py:~655) + `_gemini_complete` (:~760) — their None arms die.
+- `_is_provider_configured` (clients.py:~546-560) — the operator arm (server-client
+  existence as availability) dies; entitlement = bound key, full stop.
+- `provider_spend_entitled` (request_key.py) — operator branch dies.
+- **Step 6 folds in naturally**: with no operator path, `LLMClient.__init__`'s
+  server-keyed clients (anthropic/openai/gemini from server keychain slots) lose their
+  LAST consumer — the singleton conversion becomes an amputation of server-client
+  construction, not just laziness. `_call_provider`'s `self.*_client` refs all revisit.
+- Slack's `expand_llm_key_binding` None-contract comment + response_handler's
+  operator-seam comments rewrite.
+
 ## Phase B checklist — production code (order matters)
 
 1. **`services/llm/request_key.py`** — retire gate 1 + the explicit-operator binding:
