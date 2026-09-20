@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attention rollup — 20 September</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#16181c; --card:#1e2127; --line:#32363e; --ink:#e8e8e8; --mute:#9aa0aa;
+            --red:#e8705f; --amber:#e0a94a; --grey:#7a8089; --green:#5cbf72; --link:#79aefb; }
+  }
+  body { font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:900px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; letter-spacing:-.01em; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.2rem; }
+  h2 { font-size:1.08rem; margin:2.1rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  h3 { font-size:.98rem; margin:1.2rem 0 .35rem; }
+  .card { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:7px; padding:.85rem 1rem; margin:.7rem 0; }
+  .card.act { border-left-color:var(--red); }
+  .card.dec { border-left-color:var(--amber); }
+  .card.ok  { border-left-color:var(--green); }
+  .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.3rem; }
+  .n { font-weight:700; font-size:1.02rem; }
+  .who { font-size:.78rem; color:var(--mute); }
+  .age { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.12rem .45rem;
+         border-radius:4px; background:#eee; color:#444; }
+  @media (prefers-color-scheme: dark) { .age { background:#2c3038; color:#c3c8d0; } }
+  .age.hot { background:#fbe6e2; color:var(--red); }
+  @media (prefers-color-scheme: dark) { .age.hot { background:#3a2523; color:#f0938a; } }
+  p { margin:.45rem 0; }
+  .ask { margin-top:.5rem; padding:.5rem .7rem; background:rgba(127,127,127,.09); border-radius:4px; font-size:.93rem; }
+  code { font:.86em ui-monospace,SFMono-Regular,Menlo,monospace; background:rgba(127,127,127,.12); padding:.08em .32em; border-radius:3px; }
+  table { border-collapse:collapse; width:100%; font-size:.87rem; margin:.5rem 0; }
+  th,td { text-align:left; padding:.36rem .5rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--mute); font-weight:500; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; }
+  .scroll { overflow-x:auto; }
+  .bar { display:inline-block; height:.75rem; background:var(--link); border-radius:2px; vertical-align:middle; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  footer { margin-top:2.4rem; padding-top:1rem; border-top:1px solid var(--line); color:var(--mute); font-size:.8rem; }
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only">Cycles and capacity first, then what needs you, then the fleet.</h2>
+  <h1>Attention rollup — Sunday 20 September</h1>
+  <p class="meta">Exec · 07:0x PDT · built around your two questions: where the cycles are going, and what needs triage against them</p>
+
+  <h2>🔋 Cycles — your hypothesis looks right, and the data says wait before throttling</h2>
+
+  <div class="card ok">
+    <p style="margin-top:0"><b>You said the clears and refreshes may have front-loaded activity that
+    amortizes. The shape of the week supports that strongly.</b></p>
+    <div class="scroll"><table>
+      <tr><th>day</th><th>cohort commits</th><th></th><th>what was happening</th></tr>
+      <tr><td>Thu 09-17</td><td><b>5</b></td><td><span class="bar" style="width:2px"></span></td><td>standdown, cohort dark</td></tr>
+      <tr><td>Fri 09-18</td><td><b>314</b></td><td><span class="bar" style="width:93px"></span></td><td><b>wave 0 + wave 1 renewal · all 11 seats resuming · the whole closeout cycle</b></td></tr>
+      <tr><td>Sat 09-19</td><td><b>472</b></td><td><span class="bar" style="width:140px"></span></td><td><b>wave 2 (eight seats) · internal report · Ship draft · sprint memo</b></td></tr>
+      <tr><td>Sun 09-20</td><td>64 <span style="color:var(--mute)">(morning only)</span></td><td><span class="bar" style="width:19px"></span></td><td>ordinary</td></tr>
+    </table></div>
+    <p><b>The one-time costs in that spike are identifiable, not speculative:</b> eleven seats each
+    wrote a handoff, got cleared, and ran an arrival protocol with verification. Ten roles wrote
+    closeouts. I wrote a synthesis, an internal report rebuilt twice, and a Ship draft. <b>The fleet
+    renewal happens once. The closeout cycle happens weekly. Neither recurs Monday through
+    Wednesday.</b></p>
+    <p style="margin-bottom:0">⚖️ <b>So my read: don't throttle yet.</b> A cut made now would be
+    priced off two of the most expensive days this project has ever had. <b>Keep checking as you have
+    been</b> — if Monday and Tuesday come in near Sunday's rate, the 40% was front-load and we have
+    room. If they come in near Saturday's, throttle then and we'll have a real baseline to cut from.</p>
+  </div>
+
+  <div class="card dec">
+    <h3 style="margin-top:0">"Or maybe it was all that hammering on GitHub?" — partly, and the mechanism matters</h3>
+    <p style="margin-top:0"><b>These are two different quotas and it's worth not merging them.</b>
+    GitHub's GraphQL limit is GitHub's, and exhausting it costs nothing in Claude usage directly.
+    <b>But the work <i>around</i> a broken query absolutely does.</b></p>
+    <p>🔴 <b>And that one is mine.</b> I exhausted the GitHub limit <b>twice</b> on Saturday —
+    redundant <code>sprint-truth</code> runs across fires, a doubled freeze-check to get a header and
+    a body separately, and <b>two throwaway tables that were wrong and had to be rebuilt.</b> Each
+    failure then cost a debugging round: reasoning about why a query returned zero, re-running,
+    checking rate limits, re-deriving. <b>The API calls were free. The thinking around them was not.</b></p>
+    <p style="margin-bottom:0">⚖️ <b>So it's a real contributor, and it is a different fix from
+    either throttling or front-load.</b> It isn't cadence and it isn't scale — it's <b>wasted motion
+    on a busy day</b>, and the corrective is the one I already committed to: one
+    <code>sprint-truth</code> per fire quoted from the log, nothing asked of an API that
+    <code>git</code> can answer, and <b>no third bad table.</b> Worth naming separately so we don't
+    throttle the team for something one seat did.</p>
+  </div>
+
+  <div class="card dec">
+    <h3 style="margin-top:0">If we do need to throttle — ranked by what it costs us</h3>
+    <div class="scroll"><table>
+      <tr><th>lever</th><th>saving</th><th>cost to capability</th></tr>
+      <tr><td><b>1 · Sub-agent dispatch tier</b></td><td><b>Potentially large</b></td><td><b>Near zero.</b> This caused the last ceiling breach — 48 dispatches inheriting the dispatcher's tier. Lead is already tagging cheap tiers explicitly (<i>"1822 dispatched, cheap tier"</i>). <b>Cheapest real saving available.</b></td></tr>
+      <tr><td><b>2 · My conversation length</b></td><td><b>Large</b></td><td><b>Yours to weigh, not mine.</b> I'm <b>12% of all commits this week — the largest single role</b>, and most of it is this conversation. That isn't autonomous drift; it's us working. <b>But if you want a lever you control directly, it's the biggest one on this list.</b></td></tr>
+      <tr><td>3 · Cadence on low-volume lanes</td><td>Modest</td><td>Low. <b>Nine roles fire 6×/day; CIO fires 3×.</b> CIO also has the highest quiet rate. Dropping the quietest lanes to 4×/day costs little.</td></tr>
+      <tr><td>4 · Blanket cadence cut</td><td>Modest</td><td><b>Highest.</b> A quiet fire is cheap — a wake, a mail check, a heartbeat. <b>Cutting fires mostly cuts responsiveness, not spend.</b> I'd do this last.</td></tr>
+    </table></div>
+    <p style="margin-bottom:0"><b>Scheduled load, for reference: 62 fires/day</b> across 11 roles.
+    <b>Roughly a quarter produce nothing substantive</b> (10–34% by role) — but those are the cheap
+    ones, which is why cadence is a worse lever than it looks.</p>
+  </div>
+
+  <h2>🛑 Needs you</h2>
+
+  <div class="card act">
+    <div class="top"><span class="n">1 · Vercel — and what #43 is</span>
+      <span class="who">Web</span><span class="age hot">storage at 100%</span></div>
+    <p><b>website#43 is Web's issue for this</b>: <b>240.7 MB of the repo's 324.3 MB — 74% — is
+    <code>public/assets/blog-images/source/</code></b>, the original PNGs that get converted to
+    <code>.webp</code> at publish. They sit inside <code>public/</code>, so they're served statically
+    and <b>ship inside every single deployment.</b> Nothing in the running site references them —
+    only six manual scripts, none wired into the build.</p>
+    <p><b>The fix is a move, not a delete</b> — out of <code>public/</code> into a non-served path,
+    plus one constant updated in six scripts. Reversible. website#37 says we want the archive; it
+    just shouldn't be served.</p>
+    <p>✅ <b>Your retention change is already working on the other axis</b> — Production at 1 week
+    ages out the ~40 deployments beyond that window. <b>Retention multiplies a payload; #43 shrinks
+    every copy retention keeps.</b> Both together is the real fix.</p>
+    <div class="ask"><b>The only decision: sequence.</b> Web is holding deliberately so the two
+    changes stay measurable — <i>"two simultaneous changes to the same system make any before/after
+    reading unattributable."</i> <b>Tell Web to go and note today's storage figure first</b>, or read
+    tomorrow's number from retention alone and then release #43. Either order works; both at once
+    loses the measurement.</div>
+  </div>
+
+  <div class="card act">
+    <div class="top"><span class="n">2 · Web's four items, none previously on a board</span>
+      <span class="who">Web</span><span class="age hot">113 · 94 · 35 days</span></div>
+    <p>Web checked their lane against yesterday's rollup rather than assuming, and found four waiting
+    on you. <b>The 94-day one is a working session, not a reply</b> — roughly 31 items each needing a
+    +1 / −1 / defer.</p>
+    <div class="scroll"><table>
+      <tr><th>age</th><th>item</th><th>needs</th></tr>
+      <tr><td><b>113d</b></td><td>Site walkthrough (joint pass)</td><td>the session itself</td></tr>
+      <tr><td><b>94d</b></td><td>Obs-pass joint walkthrough</td><td><b>~31 verdicts — schedule it</b></td></tr>
+      <tr><td>35d</td><td>Buttondown newsletter publishing</td><td>your research</td></tr>
+      <tr><td>1d</td><td><code>integration-reveals-all</code> workDate</td><td>one yes/no</td></tr>
+    </table></div>
+  </div>
+
+  <h2>🔴 Decisions, small</h2>
+  <div class="card dec">
+    <p><b>Bets 001–003</b> — three fields on one memo; <i>"none named"</i> is a complete answer for
+    the buyer. <b>20 days.</b></p>
+    <p><b>CXO's T-axis probe</b> — the window closes when #1688's MCP arm starts writing output.
+    Spend the re-run, or accept that ratified law cites a gate that can't gate.</p>
+    <p><b>PA's one question</b> — draft-then-review, or review-then-draft.</p>
+    <p style="margin-bottom:0"><b>Your six-item test round</b> — 13 days, sequenced behind a blog post
+    on 09-07 and not resurfaced since.</p>
+  </div>
+
+  <h2>🟢 Running without you</h2>
+  <div class="card ok">
+    <p class="clean"><b>Lead</b> — #1765 first thing today, approved. Epic 1 closed, belt green 10/10.
+    Turned the droplet question from inference into fact with SSH: <b>alpha runs 0.8.10.14, deployed
+    July 16</b>, corroborated three ways.<br>
+    <b>Pard + Lead</b> — hosting/alpha/beta proposal. <b>Highest-leverage thread in flight</b>: it
+    gates the tester invite and one of CXO's three unobservable results.<br>
+    <b>PPM</b> — executing your mini-epic ruling (collapse + catch-all).<br>
+    <b>HOST</b> — ruled and <i>mechanized</i> the agents-are-not-people rule same day (#1834); Comms
+    shipped build item 1 within hours.<br>
+    <b>Comms</b> — pre-seeded Ship slots #061–#073; the mechanism proved itself on day one.<br>
+    <b>CIO</b> — 7x wired into the quarterly workflow; hooks approved in design, sequenced after the
+    reboot pilot.<br>
+    <b>Docs, Arch, CXO, PA</b> — all reported their sprint-memo lane reads accurate.</p>
+    <p class="clean" style="margin-bottom:0"><b>Ship #061 is parked till after the weekend at your
+    call.</b> pubDate Wed 09-23, Comms reviews between your pass and publish.</p>
+  </div>
+
+  <h2>⚪ Worth knowing</h2>
+  <div class="card">
+    <p>🔴 <b>"Nothing routinely exercises production at all."</b> CXO answered the question I asked
+    and corrected my framing: <b>only one of their three "nobody can see this" cases is the stale
+    deploy.</b> One needs a shell on the box — a 13-month-old gitignored file, nothing to do with code
+    age. One was competently run but simply not against prod. <b>Fixing the deploy closes one of
+    three.</b> The shared absence underneath is bigger than any of them.</p>
+    <p style="margin-bottom:0">🔴 <b>I retracted a claim this morning.</b> I told you and Pard this
+    seat's arrival offset was a stable +30 minutes, from nine consecutive fires. <b>Today's fire came
+    in at +7.</b> The tool documents jitter as max 15 min, so +30 was never scheduling — <b>it was
+    this seat being busy in conversation with you.</b> That matters for the reboot: seats come up
+    idle and will fire near schedule, so a +30 expectation would make per-seat deadlines ~23 minutes
+    too generous. Corrected everywhere it reached.</p>
+  </div>
+
+  <footer>
+    <b>Three candidate causes, not one: front-load (biggest, and self-limiting), my wasted motion on GitHub (mine to fix, already committed to), and genuine run-rate (unproven). Don't throttle yet — Friday and Saturday were the two most expensive days this
+    project has had, and both causes were one-time. Keep measuring. If Monday runs hot, dispatch tier
+    is the first cut and costs almost nothing.</b><br><br>
+    <b>Verified how.</b> Commit counts from <code>git log origin/main</code> bounded to the usage week
+    (reset Thu 09-17 22:00), computed in Pacific. Cadences read from
+    <code>duty-cycle-registry.tsv</code>. Quiet ratios from commit-subject classification — <b>a
+    heuristic, not an audit</b>, and it cannot see token spend at all. <b>I have no visibility into
+    actual usage figures; you do.</b> Everything here reasons from commit volume as a proxy, which
+    overweights roles that commit often and underweights expensive single operations like sub-agent
+    dispatches. <b>Treat the ranking as a hypothesis to test against your real numbers, not a
+    measurement of spend.</b>
+  </footer>
+</div>
+</body>
+</html>
