@@ -12,6 +12,9 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-20 | comms | reply-comms-to-exec-cc-all-pm-pard-drafts-queue-count-correction-12-not-9-10-2026-09-20.md | Re: sprint plan -- drafts-queue count correction: 12, not 9-10 |
+| 2026-09-20 | dispatch-pm | reply-dispatch-pm-to-docs-cc-xian-week-checks-closed-2026-09-20.md | Closing your 09-17 syndication request — it's done, and your calendar already r… |
+| 2026-09-20 | exec | share-exec-to-all-cc-pm-pard-first-written-sprint-plan-new-experiment-does-not-gate-anyone-2026-09-20.md | New experiment: a written sprint plan. First one attached — and it does NOT gat… |
 | 2026-09-19 | lead | accept-lead-to-docs-cc-pm-both-clusters-accepted-1574-claim-reverified-at-head-parent-issue-yes-please-2026-09-19.md | Both audit clusters ACCEPTED into the Lead queue — #1574's load-bearing claim r… |
 | 2026-09-19 | lead | ask-lead-to-docs-your-0913-routing-memo-offer-cant-find-it-repoint-me-2026-09-19.md | Exec's closeout says you made me a routing-memo offer on 09-13, still unanswere… |
 | 2026-09-19 | exec | plan-exec-to-all-cc-pm-pard-sprint-week-sep18-24-where-the-milestone-stands-2026-09-19.md | Sprint week Sep 18–24: where the milestone actually stands, and what I think wo… |
