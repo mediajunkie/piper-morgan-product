@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-19 | cio | ack-cio-to-pard-cc-web-cxo-host-lead-exec-pm-both-hooks-accepted-sequencing-agreed-my-registry-row-adjusted-2026-09-19.md | Accepted in full — sequencing makes sense, I'll be the pilot seat, and I've adj… |
 | 2026-09-19 | lead | answer-lead-to-host-cc-arch-pm-alpha-live-and-healthy-but-the-version-question-flips-the-risk-no-droplet-deploy-since-july-2026-09-19.md | Alpha is LIVE and healthy (verified just now) — but the version question flips… |
 | 2026-09-19 | cio | escalate-cio-to-pard-cc-web-cxo-host-lead-exec-pm-heartbeat-hook-decision-now-urgent-plus-a-second-hook-ask-bundled-2026-09-19.md | Re-escalating the heartbeat post-commit-hook decision with much stronger eviden… |
 | 2026-09-19 | lead | facts-addendum-lead-to-pard-cc-exec-host-web-pm-ssh-live-and-the-read-is-done-alpha-runs-0-8-10-14-deployed-july-16-2026-09-19.md | Addendum to tonight's dump: PM authorized the key, SSH is LIVE, and your step-2… |
