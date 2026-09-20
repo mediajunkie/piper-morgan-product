@@ -30,8 +30,10 @@
   .do { margin-top:.55rem; padding:.55rem .75rem; background:rgba(192,57,43,.09);
         border-radius:5px; font-size:.94rem; border:1px solid rgba(192,57,43,.25); }
   ol.steps { margin:.4rem 0 .2rem 1.1rem; padding:0; }
-  ol.steps li { margin:.25rem 0; }
+  ol.steps li { margin:.3rem 0; }
   code { font:.86em ui-monospace,SFMono-Regular,Menlo,monospace; background:rgba(127,127,127,.12); padding:.08em .32em; border-radius:3px; }
+  pre { background:rgba(127,127,127,.1); padding:.6rem .8rem; border-radius:5px; overflow-x:auto;
+        font:.84em ui-monospace,SFMono-Regular,Menlo,monospace; margin:.4rem 0; }
   table { border-collapse:collapse; width:100%; font-size:.87rem; margin:.5rem 0; }
   th,td { text-align:left; padding:.36rem .5rem; border-bottom:1px solid var(--line); vertical-align:top; }
   th { color:var(--mute); font-weight:500; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; }
@@ -44,139 +46,128 @@
 </head>
 <body>
 <div class="wrap">
-  <h2 class="sr-only">Two things need you, each with steps. Everything you resolved today has been pruned.</h2>
+  <h2 class="sr-only">Three actions for you, each with steps.</h2>
   <h1>Attention rollup — Sunday 20 September</h1>
-  <p class="meta">Exec · rebuilt · <b>pruned:</b> everything you resolved today is gone from the board · <b>every item carries its own content — no file hunting</b></p>
+  <p class="meta">Exec · 11:0x PDT · live state</p>
 
-  <h2>🔥 Two things need you</h2>
+  <h2>🔥 Your three actions</h2>
 
   <div class="card fuse">
-    <div class="top"><span class="n">1 · Grant Web a Vercel token</span><span class="who">~3 minutes · yes, you still need to execute this</span></div>
-    <p><b>This is NOT what you did with Lead yesterday.</b> Yesterday you added an SSH key so Lead
-    could read the droplet — done, and it worked. <b>This is a different system entirely</b>: Vercel
-    dashboard access so Web can read storage numbers without you screenshotting them.</p>
-    <div class="do"><b>Exactly what to do:</b>
+    <div class="top"><span class="n">1 · Store the Vercel token in Keychain</span><span class="who">~4 min · must be done ON Amber in a GUI session</span></div>
+    <p><b>Where:</b> on Amber, in a screen-sharing or physical GUI session — <b>not over plain SSH.</b>
+    The macOS keychain is tied to the GUI login session, and step 4 pops a permission dialog you need
+    to see and click.</p>
+    <div class="do"><b>Exactly this:</b>
       <ol class="steps">
-        <li>Go to <b>vercel.com/account/tokens</b> — your account settings, not the project</li>
-        <li><b>Create Token</b> → name it something like <code>web-agent-readonly</code></li>
-        <li><b>Scope:</b> the <b>piper-morgan</b> team</li>
-        <li><b>Expiration:</b> your call — 90 days is a sensible default</li>
-        <li><b>Copy it immediately</b> — Vercel shows a token once and never again</li>
-        <li>Hand it to Web. <b>Don't paste it into chat or a memo</b> — it's a live credential. Ask
-            Web where to store it and they'll answer in one line.</li>
+        <li>On Amber, open Terminal in the GUI session</li>
+        <li><code>cd ~/Development/mediajunkie</code> &nbsp;(where <code>scripts/cred.sh</code> lives)</li>
+        <li><code>scripts/cred.sh</code> — it prompts interactively, so nothing lands in shell history or on disk.
+            <b>Service name: <code>pm-vercel-website</code></b> — its own name, kept separate from the
+            09-17 token for DinP, which is a different Vercel account.</li>
+        <li><b>Verify, eyes on the screen</b> — this read may pop a one-time <i>"always allow"</i> dialog. Click it:
+            <pre>security find-generic-password -a "$USER" -s pm-vercel-website -w | head -c 8; echo</pre>
+            Should print the first 8 characters of the token. <b>If it prints <code>-U</code> or
+            anything flag-shaped, the store went wrong</b> — redo step 3.</li>
+        <li><code>scripts/cred.sh --check</code> — asserts plausibility, exit 5 if a flag got stored</li>
       </ol>
-      <b>What it unblocks:</b> Web answers storage questions directly instead of you reading
-      dashboards, and can verify whether the retention change and their own fix actually worked.</div>
+      <b>How it gets used</b> (Web reads at invocation; the value never sits in a file):
+      <pre>VERCEL_TOKEN="$(security find-generic-password -a "$USER" -s pm-vercel-website -w)" vercel …</pre>
+      <b>Then tell Web it's stored under <code>pm-vercel-website</code></b> — the name is safe to write
+      down, the value never is.</div>
+    <p style="margin-bottom:0"><b>One forward note:</b> cron cannot read the keychain; LaunchAgents and
+    interactive sessions can. Web's seat is interactive, so this is fine. If the token ever feeds a
+    scheduled job, that job must be a LaunchAgent.</p>
   </div>
 
-  <div class="card ok">
-    <div class="top"><span class="n">2 · Droplet — APPROVED and moving, nothing owed</span><span class="who">Lead</span></div>
-    <p>✅ <b>You approved Step 3 option (a); Lead has it.</b> Cut the release properly onto
-    <code>production</code> from current <code>main</code>, archive that to the droplet. Steps 0 and 1
-    were already done, and the backup at Step 2 is non-negotiable and built in.</p>
-    <p style="margin-bottom:0"><b>The preservation plan you remembered isn't lost.</b> I searched and
-    found no older one — but Lead's plan from 09-19 has that caution built into it.
-    ⭐ <b>And Lead's key line: "every deploy since the 07-12 cutover went to Fly." The droplet was
-    superseded in July and nobody turned it off.</b> I've asked that "stop paying for it" land as an
-    explicit outcome rather than an implication.</p>
-  </div>
-
-  <h2>🔴 Bets — your 001 answers recorded; 002 and 003 in plain terms</h2>
-
-  <div class="card dec">
-    <h3 style="margin-top:0">001 Enterprise tier — you've answered all three</h3>
-    <div class="scroll"><table>
-      <tr><th>blank</th><th>your answer, as I understood it</th></tr>
-      <tr><td><b>Buyer</b></td><td><b>None.</b> No entity has asked for an enterprise tier. Entirely speculative; may always be B2C. <b>And it's open source — anyone wanting enterprise features can send pull requests.</b></td></tr>
-      <tr><td><b>Cost box</b></td><td><b>Zero build until nonzero demand.</b></td></tr>
-      <tr><td><b>Kill date</b></td><td>You'd only know after production release and significant adoption — <b>but you're fine spending no effort indefinitely, which you noted is effectively killing it for now.</b></td></tr>
-    </table></div>
-    <p style="margin-bottom:0"><b>Suggestion for that last blank, so it's an answer rather than a
-    deferral:</b> <i>"Dormant indefinitely. Revisit only if a named buyer appears after production
-    release."</i> <b>Say yes and Arch writes all three in.</b></p>
+  <div class="card fuse">
+    <div class="top"><span class="n">2 · Drive alpha once — it releases Janne's invite</span><span class="who">~90 seconds</span></div>
+    <p><b>Alpha now runs v0.8.12.0</b>, deployed and verified this morning. The reason the invite was
+    held — a tester landing on July code with abolished billing semantics — <b>no longer exists.</b></p>
+    <p><b>What's left is HOST's clearing bar</b>: an observed, driven flow rather than a test fixture.
+    <b>You are the right person to satisfy it</b>, and Lead has named the cheapest way.</p>
+    <div class="do"><b>Run your #1617 standup-tail test card on alpha</b> instead of locally — the card
+    said "local only" because alpha lacked the fix, which it now has. <b>One fresh drive closes two
+    things at once</b>: the deploy's final verification layer, and HOST's bar for lifting the hold.
+    <br><br><b>Then HOST lifts and the invite goes.</b></div>
   </div>
 
   <div class="card dec">
-    <h3 style="margin-top:0">002 Workspace/team tenancy — what it actually means</h3>
-    <p><b>Plainly:</b> should Piper support <b>teams sharing a workspace</b> — several humans in one
-    account, seeing each other's projects and todos — instead of every user being an island?</p>
-    <p><b>State of it:</b> some half-built machinery already sits in the database for this (Arch calls
-    them "sentinels"). <b>Nobody asked for it</b> — Arch's note says the buyer is <i>"still
-    unnamed."</i></p>
-    <p>⚠️ <b>Don't confuse this with the tenancy security work.</b> That had a real driver — alpha
-    testers leaking into each other's data — and is untouched by this bet.</p>
-    <p><b>Arch's recommendation, already written in:</b> delete the half-built sentinels so the
-    database schema tells the truth, spend zero, re-add properly behind a new bet if a buyer appears.
-    Cost to delete: one database migration.</p>
-    <div class="do"><b>The ask:</b> is there a buyer for team workspaces? <b>If the honest answer is
-    "no, same as 001" — say so and it's finished.</b></div>
+    <div class="top"><span class="n">3 · Confirm the Bets 001 wording</span><span class="who">~1 min</span></div>
+    <p>You've answered all three blanks. The only open piece is how the kill condition gets written.
+    <b>Proposed:</b> <i>"Dormant indefinitely. Revisit only if a named buyer appears after production
+    release."</i></p>
+    <div class="do"><b>Say yes and Arch writes all three in</b> — buyer: none named; cost box: zero
+    build until nonzero demand; kill: the wording above.</div>
   </div>
 
+  <h2>🔴 Bets 002 and 003 — in plain terms, whenever you have a minute</h2>
   <div class="card dec">
-    <h3 style="margin-top:0">003 Notion as a backend-held grant — what it actually means</h3>
-    <p><b>Plainly:</b> should <b>Piper hold the Notion connection on the server</b> — you authorise
-    once, Piper reaches Notion on its own — versus each user bringing their own connection?</p>
-    <p><b>Why it's live:</b> what exists today is a shim with no real Notion calls behind it. The
-    transport isn't the question. <b>The question is whether documents genuinely flow both ways</b>,
-    or whether it's a demo shaped like an integration.</p>
-    <p>⚠️ <b>This touches a decision you already made.</b> You ruled the "server key" out of existence
-    on 09-14 — <i>"why should anybody be able to spend the operator's money."</i> <b>A backend-held
-    grant is the same shape for a different service</b>, so your instinct may already answer it.</p>
-    <p style="margin-bottom:0"><b>003 is partly pre-filled from your own 08-29 answer</b> — it needs
-    confirm-or-amend rather than authorship.</p>
+    <h3 style="margin-top:0">002 Workspace/team tenancy</h3>
+    <p><b>Should Piper support teams sharing a workspace</b> — several humans in one account, seeing
+    each other's projects and todos — instead of every user being an island?</p>
+    <p>Some half-built machinery already sits in the database for this. Nobody has asked for it; the
+    buyer is unnamed. <b>Arch recommends deleting it so the schema tells the truth</b>, spending zero,
+    and re-adding behind a new bet if a buyer appears. Cost to delete: one migration.</p>
+    <p style="margin-bottom:0"><b>Not the same as the tenancy security work</b>, which had a real
+    driver — testers leaking into each other's data — and is untouched by this.</p>
+    <div class="do"><b>The ask:</b> is there a buyer for team workspaces? "No, same as 001" finishes it.</div>
+  </div>
+  <div class="card dec">
+    <h3 style="margin-top:0">003 Notion as a backend-held grant</h3>
+    <p><b>Should Piper hold the Notion connection on the server</b> — you authorise once, Piper reaches
+    Notion on its own — versus each user bringing their own connection?</p>
+    <p>What exists today is a shim with no real Notion calls behind it. The question isn't transport,
+    it's whether documents genuinely flow both ways.</p>
+    <p style="margin-bottom:0"><b>This is the same shape as the server-key question you ruled on
+    09-14</b> — <i>"why should anybody be able to spend the operator's money"</i> — so your instinct
+    may already answer it. <b>003 is partly pre-filled from your 08-29 answer</b>; it needs
+    confirm-or-amend.</p>
   </div>
 
-  <h2>📋 Web's four — what each actually needs from you</h2>
+  <h2>📋 Web's four — what each needs from you</h2>
   <div class="card">
-    <p style="margin-top:0"><b>You said you were unclear what's needed. Each expanded below.</b> Worth
-    taking after the droplet settles, as you suggested.</p>
     <div class="scroll"><table>
-      <tr><th>age</th><th>item</th><th>what you actually do</th></tr>
-      <tr><td><b>113d</b></td><td><b>Site walkthrough</b> — a joint pass over pipermorgan.ai with Web</td><td><b>Book a session.</b> Not a decision — you and Web look at the site together and Web notes what you react to.</td></tr>
-      <tr><td><b>94d</b></td><td><b>Obs-pass walkthrough</b> — ~31 observations Web collected about the site</td><td><b>A working session.</b> Each needs +1 (do it) / −1 (don't) / defer. <b>This is the big one</b> — 31 verdicts is an hour, not a reply.</td></tr>
-      <tr><td>35d</td><td><b>Buttondown newsletter</b> — whether to publish the newsletter natively through Buttondown</td><td><b>Your research.</b> You said "when back at desk." Web can't evaluate it for you — it's a product and cost judgement.</td></tr>
-      <tr><td>1d</td><td><b><code>integration-reveals-all</code> workDate</b> — a blog post's calendar row is missing the date the work happened</td><td><b>One yes/no:</b> was it roughly the week of 2025-05-26?</td></tr>
+      <tr><th>age</th><th>item</th><th>what you do</th></tr>
+      <tr><td><b>113d</b></td><td><b>Site walkthrough</b> — a joint pass over pipermorgan.ai with Web</td><td><b>Book a session.</b> You and Web look at the site together; Web notes what you react to.</td></tr>
+      <tr><td><b>94d</b></td><td><b>Obs-pass walkthrough</b> — ~31 observations Web collected</td><td><b>A working session.</b> Each needs +1 / −1 / defer. <b>An hour, not a reply.</b></td></tr>
+      <tr><td>35d</td><td><b>Buttondown newsletter</b> — publish the newsletter natively through Buttondown?</td><td><b>Your research.</b> A product and cost judgement Web can't make for you.</td></tr>
+      <tr><td>1d</td><td><b><code>integration-reveals-all</code> workDate</b> — a post's calendar row lacks the date the work happened</td><td><b>One yes/no:</b> roughly the week of 2025-05-26?</td></tr>
     </table></div>
   </div>
 
-  <h2>✅ Resolved today — pruned</h2>
+  <h2>🟢 Moving without you</h2>
   <div class="card ok">
-    <p class="clean"><b>CXO's untested rubric axis</b> — you said <b>spend the tokens now</b>. Relayed.
-    No further tracking unless it fails.<br>
-    <b>PA's document practice</b> — you ruled it: <b>draft fully for reports to you; rich scaffolding
-    with placeholders for documents going to other people</b>, plus a plain-language review and your
-    HALT proofread before release. Relayed, with your follow-on question routed to CXO and PPM —
-    whether Piper the product should follow the same rules for its own file-writing.<br>
-    <b>website#43</b> — approved; <b>Web is doing it</b>, moving 240 MB of build inputs out of
-    <code>public/</code>.<br>
-    <b>Subagent tier logging</b> — routed to CIO to bake into session-log conventions.<br>
-    <b>Sprint plan</b> — shared with all ten as a non-blocking experiment.</p>
-    <p class="clean" style="margin-bottom:0">🔴 <b>Removed as STALE — my error, not your silence.</b>
-    "Your six-item test round, 13 days waiting." <b>You completed it on 09-08 at 05:14</b> — four pass,
-    two fail, per-item verdicts with screenshots, three issues closed on your live verdict. <b>My
-    tracker sat stale twelve days and I put it in front of you twice.</b> Closed with the evidence.</p>
+    <p class="clean"><b>Alpha is current</b> — v0.8.12.0, cut from main today. <code>main</code> and
+    <code>production</code> converged for the first time since July 17. Full two-month migration chain
+    ran, DB backed up first, blue-green with the old tree intact for rollback, ~7 minutes downtime.<br>
+    <b>Arch</b> — deployment pipeline v0.1 delivered: four questions and one thing they'd take now.<br>
+    <b>Pard</b> — retired two-thirds of their own hosting proposal as superseded by your decisions;
+    the remainder folds into Arch's plan.<br>
+    <b>Web</b> — website#43 in flight, moving 240 MB of build inputs out of <code>public/</code>.<br>
+    <b>PPM</b> — mini-epics collapsed into a catch-all at last night's close.<br>
+    <b>CXO</b> — running the T-axis probe. <b>Their window is not closing</b>; the #1688 flag is already
+    on in prod, so this proceeds without time pressure.<br>
+    <b>Comms</b> — <b>12 pieces</b> at <code>status=drafted</code> awaiting your voice pass, counted
+    from the calendar directly.<br>
+    <b>CIO</b> — baking subagent model tier into session-log conventions.</p>
   </div>
 
-  <h2>⚪ Lower priority, as you asked</h2>
+  <h2>⚪ Lower priority</h2>
   <div class="card">
-    <p style="margin-top:0"><b>Usage</b> — no throttle, agreed. <b>Reassess Monday 10:00</b>: closer to
-    50% than to 33% means it's converging. Friday and Saturday carried the entire fleet renewal plus
-    the closeout cycle, both one-time.</p>
-    <p style="margin-bottom:0"><b>Cron drift</b> — not a concern while the duty-cycle shape holds. I
-    retracted my own "+30 minutes" claim this morning; it was measuring how busy I was, not the
-    scheduler.</p>
+    <p style="margin-top:0"><b>Usage</b> — no throttle. <b>Reassess Monday 10:00</b>: closer to 50%
+    than to 33% means it's converging. Friday and Saturday carried the fleet renewal and the closeout
+    cycle, both one-time.</p>
+    <p style="margin-bottom:0"><b>Droplet shutdown</b> — the old tree stays at
+    <code>/opt/piper-old-0.8.10.14</code> as the rollback path. <b>Retiring the droplet entirely is
+    part of Arch's pipeline plan</b>, and stopping the spend is an explicit outcome in it.</p>
   </div>
 
   <footer>
-    <b>Two actions: create the Vercel token, and confirm the Bets 001 kill-condition wording.
-    Everything else is moving or closed.</b><br><br>
-    <b>What changed, per your instruction.</b> Pruned every item you resolved today rather than
-    leaving it to read past. Every item carries its own content — the Bets blanks are written out,
-    Web's four say what you actually do, the Vercel token has numbered steps. <b>No item requires
-    opening a file to act on it.</b><br><br>
-    <b>One correction worth seeing:</b> I had boarded your six-item test round as pending for thirteen
-    days. <b>You did it on day one.</b> That is the clearest instance of the circling you named, it
-    was my stale tracker rather than your silence, and it's now closed with the evidence attached.
+    <b>Three actions: store the token on Amber in a GUI session, drive alpha once to release the
+    invite, confirm the Bets 001 wording.</b><br><br>
+    Live-state pass this hour. Alpha version verified by Lead at the in-container layer through the
+    live front door. Drafts count from the editorial calendar. Credential procedure per Pard, who owns
+    the Amber standard.
   </footer>
 </div>
 </body>
