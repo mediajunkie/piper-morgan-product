@@ -307,9 +307,42 @@ CXO's copy would be wrong (promising "spends nothing" while it might). Lead's to
 gate moves, same shape as the #1823 precondition. **CXO delivered the greeting-state copy** (issue
 comment 5747829604) contingent on that hinge clearing, and separately caught their own citation was
 one layer off (the `due_reminders` floor-directive shape doesn't apply — greetings are `CANONICAL`
-and never reach the floor — so this ships as fixed text, not a model-composed directive). **Not a
-PPM ruling on any of this** — both formal halves are now ruled, Lead's downstream-spend trace is
-the last open item before build starts. Watching, not chasing.
+and never reach the floor — so this ships as fixed text, not a model-composed directive).
+
+**CORRECTION 2026-09-20 — Arch's structural ruling above was WRONG and would have opened a keyless
+path to issue creation and DB writes.** Caught before Lead's ratchet built, not after. Tracing
+`#1773`, Arch finally opened the live routing authority (`_requires_canonical_handler`) rather than
+reasoning from the `CANONICAL` disposition name and a registry comment — and found `CANONICAL`
+means *"the LLM cannot do this on its own,"* not *"costs no LLM call."* `EXECUTION` and `PORTFOLIO`
+are canonical precisely **because** they write to the database and create issues — the most
+consequential actions in the product, not the cheapest. **The corrected ruling**: the
+spends-nothing property does not exist yet and must be created new — not `ActionDisposition`, not
+`_requires_canonical_handler`, neither of which was ever a cost claim — defaulting to `False`
+(fail-closed: a handler is exempt only if deliberately marked *and* the ratchet proves it). The
+pre-classify-before-gate ordering cure survives unchanged. **The ratchet Lead was about to build
+against the wrong predicate now becomes the actual definition of the spends-nothing set**: the
+pairs that survive a keyless drive with `LLMClient.complete` rigged to explode *are* the set: this
+is the honest-empty family's fifth instance in eight days (#1816, #1815 Gap 2, #1829, #1773, now
+this) — Arch's own rule (*"a grep line-hit is not a read"*) failed one level up this time (*"a name
+is not a definition"* — reasoning from the word "canonical" rather than the authority it's supposed
+to describe). Corrected inline at the issue comment and decisions.log, not appended.
+
+**CXO found a further, separate problem in the same fire, orthogonal to Arch's fix**: even under
+the corrected design, the resulting keyless-exempt set is **incoherent to a user** — `"hi"` passes
+(greeting has a branch), but `"Hi, how do I address you?"` and `"thanks"`/`"bye"` are refused
+(compound-greeting falls to floor which spends; `farewell`/`thanks` are registered `CANONICAL` but
+have no branch in the routing authority at all — `#1773`'s drift, now confirmed at the specific
+pairs). The more natural, more human opener gets refused and the terser one doesn't. Not a design
+flaw in Arch's fix — a UX consistency pass CXO is claiming once the ratchet's actual output exists
+("copy for a set nobody has measured is copy for a mechanism that doesn't exist," same reasoning as
+`#1823` branch two). Also flagged as unverified rather than assumed: `#1818`'s own filing claims a
+greeting "spends nothing," but the routing authority's stated reason for greeting being canonical is
+side effects (onboarding/calendar), not cost — the ratchet answers this, it shouldn't be listed as
+a settled premise.
+
+**Not a PPM ruling on any of this** — structural and experience halves both corrected/extended
+today by their own owners; Lead's ratchet is now the load-bearing instrument, CXO does an experience
+pass on its output once it exists. Watching, not chasing.
 
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
