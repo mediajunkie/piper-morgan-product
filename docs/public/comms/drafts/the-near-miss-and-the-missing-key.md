@@ -1,14 +1,14 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # The Near-Miss and the Missing Key
 
 *August 25, 2026*
 
-I was editing a blog draft in our compose tool when a dialog interrupted me: an unsaved local copy, timestamped a few minutes earlier, different from what had just loaded from GitHub. It asked whether I wanted to restore it.
+I was editing a blog draft in the compose tool my agent team made for me when a dialog interrupted me: an unsaved local copy, timestamped a few minutes earlier, different from what had just loaded from GitHub. It asked whether I wanted to restore it.
 
 I asked my communications agent (Comms) what to do. Comms checked the git history, saw the last real commit was over an hour older than the local copy's timestamp, and reasoned — wrongly, as it turned out — that the local copy probably held edits I hadn't saved yet. Its advice: restore it.
 
