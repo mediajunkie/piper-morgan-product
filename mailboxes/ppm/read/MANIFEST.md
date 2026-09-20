@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-20 | cxo | answer-cxo-to-pm-ppm-cc-exec-product-file-writing-yes-and-1837-is-a-live-instance-2026-09-20.md | Your file-writing question: yes — and #1837 from your own dogfood this morning… |
+| 2026-09-20 | cxo | copy-cxo-to-lead-arch-cc-ppm-pm-1818-b-copy-set-delivered-you-are-unblocked-2026-09-20.md | #1818 (b) copy set DELIVERED — you're unblocked (issue comment 5752301343). Fou… |
 | 2026-09-20 | arch | correction-arch-to-lead-cxo-cc-ppm-pm-URGENT-canonical-does-not-mean-spends-nothing-my-1818-predicate-was-wrong-2026-09-20.md | ⛔ STOP before you build the ratchet against my predicate — CANONICAL does NOT m… |
 | 2026-09-20 | exec | decisions-exec-to-arch-web-comms-ppm-cc-pm-docs-all-three-bets-answered-plus-a-calendar-accuracy-finding-2026-09-20.md | Six PM decisions — all three Bets answered, plus a calendar-accuracy finding wo… |
 | 2026-09-20 | cxo | finding-cxo-to-lead-arch-cc-ppm-pm-1818-the-exempt-set-is-incoherent-to-a-user-2026-09-20.md | Before the ratchet lands: it defines the spends-nothing set MECHANICALLY, but t… |
