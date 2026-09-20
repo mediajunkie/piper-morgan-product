@@ -11,7 +11,7 @@ Created: 2026-01-30
 """
 
 from unittest.mock import AsyncMock, MagicMock
-from uuid import UUID
+from uuid import UUID, uuid4
 
 import pytest
 
@@ -179,6 +179,8 @@ class TestCrossUserIsolation:
 
         This tests the core multi-tenancy isolation requirement.
         """
+        from sqlalchemy import text as sql_text
+
         import services.domain.models as domain
         from services.database.models import ListDB
         from services.repositories.universal_list_repository import UniversalListRepository
@@ -188,9 +190,15 @@ class TestCrossUserIsolation:
 
         repo = UniversalListRepository(db_session)
 
-        # Create a list owned by User A
+        # #1813/#1765: a PER-RUN id, not the module's fixed TEST_LIST_ID. These
+        # tests COMMIT to the shared long-lived dev Postgres and had no teardown,
+        # so a fixed id passes exactly once and poisons every later run — which
+        # is precisely the local-red/CI-green divergence #1765 catalogued (CI's
+        # DB is fresh per job and never sees the residue). Random id + the
+        # finally-cleanup below make the test idempotent on a stateful DB.
+        list_id = str(uuid4())
         user_a_list = ListDB(
-            id=str(TEST_LIST_ID),
+            id=list_id,
             owner_id=str(TEST_USER_A),
             name="User A Private List",
             item_type="todo",
@@ -199,14 +207,19 @@ class TestCrossUserIsolation:
         db_session.add(user_a_list)
         await db_session.commit()
 
-        # User A should be able to access their own list
-        result_a = await repo.get_list_by_id(str(TEST_LIST_ID), owner_id=str(TEST_USER_A))
-        assert result_a is not None, "User A should see their own list"
-        assert result_a.name == "User A Private List"
+        try:
+            # User A should be able to access their own list
+            result_a = await repo.get_list_by_id(list_id, owner_id=str(TEST_USER_A))
+            assert result_a is not None, "User A should see their own list"
+            assert result_a.name == "User A Private List"
 
-        # User B should NOT be able to access User A's list
-        result_b = await repo.get_list_by_id(str(TEST_LIST_ID), owner_id=str(TEST_USER_B))
-        assert result_b is None, "User B should NOT see User A's list"
+            # User B should NOT be able to access User A's list
+            result_b = await repo.get_list_by_id(list_id, owner_id=str(TEST_USER_B))
+            assert result_b is None, "User B should NOT see User A's list"
+        finally:
+            # Surgical cleanup by the exact id this run created — never broad.
+            await db_session.execute(sql_text("DELETE FROM lists WHERE id = :i"), {"i": list_id})
+            await db_session.commit()
 
     @pytest.mark.asyncio
     @pytest.mark.integration
@@ -214,6 +227,8 @@ class TestCrossUserIsolation:
         """
         Todos owned by User A should not be returned when querying as User B.
         """
+        from sqlalchemy import text as sql_text
+
         from services.database.models import TodoDB
         from services.repositories.todo_repository import TodoRepository
 
@@ -222,23 +237,35 @@ class TestCrossUserIsolation:
 
         repo = TodoRepository(db_session)
 
-        # Create a todo owned by User A
+        # #1813/#1765: per-run id + finally-cleanup — see the list test above for
+        # the full reasoning (fixed committed ids with no teardown poison the
+        # shared dev DB and produce the local-red/CI-green divergence).
+        todo_id = str(uuid4())
         user_a_todo = TodoDB(
-            id=str(TEST_TODO_ID),
+            id=todo_id,
             owner_id=str(TEST_USER_A),
             text="User A Private Todo",
         )
         db_session.add(user_a_todo)
         await db_session.commit()
 
-        # User A should be able to access their own todo
-        result_a = await repo.get_todo_by_id(str(TEST_TODO_ID), owner_id=str(TEST_USER_A))
-        assert result_a is not None, "User A should see their own todo"
-        assert result_a.text == "User A Private Todo"
+        try:
+            # User A should be able to access their own todo
+            result_a = await repo.get_todo_by_id(todo_id, owner_id=str(TEST_USER_A))
+            assert result_a is not None, "User A should see their own todo"
+            assert result_a.text == "User A Private Todo"
 
-        # User B should NOT be able to access User A's todo
-        result_b = await repo.get_todo_by_id(str(TEST_TODO_ID), owner_id=str(TEST_USER_B))
-        assert result_b is None, "User B should NOT see User A's todo"
+            # User B should NOT be able to access User A's todo
+            result_b = await repo.get_todo_by_id(todo_id, owner_id=str(TEST_USER_B))
+            assert result_b is None, "User B should NOT see User A's todo"
+        finally:
+            # todo_items rows cascade from items in this schema family; delete
+            # both surgically by the exact id this run created.
+            await db_session.execute(
+                sql_text("DELETE FROM todo_items WHERE id = :i"), {"i": todo_id}
+            )
+            await db_session.execute(sql_text("DELETE FROM items WHERE id = :i"), {"i": todo_id})
+            await db_session.commit()
 
     @pytest.mark.asyncio
     @pytest.mark.integration
