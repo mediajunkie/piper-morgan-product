@@ -8,7 +8,6 @@
 #   flaky        = oscillates run-to-run (tolerated both states); burn-down = DE-FLAKE, then retag
 # Source: dev/2026/07/19/fullsuite-enumeration-2026-07-19.txt (CI-parity local run 2).
 tests/features/test_quick_integration.py::test_method_signatures	triage
-tests/e2e/test_task_lifecycle_e2e.py::TestTodoLifecycleE2E::test_create_todo_returns_confirmation	flaky
 tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolCircuitBreaker::test_circuit_breaker_opens_on_failures	triage
 tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolCircuitBreaker::test_circuit_breaker_recovers_after_timeout	triage
 tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolGracefulShutdown::test_shutdown_disconnects_all_connections	triage

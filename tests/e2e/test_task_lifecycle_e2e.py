@@ -45,6 +45,16 @@ class TestTodoLifecycleE2E:
     """Issue #927: Full todo create → list → complete → verify cycle."""
 
     @pytest.mark.e2e
+    # #1765 (diagnosed 2026-09-20): this test is GENUINELY LIVE — its phrasing is not
+    # pre-classifier-caught, so it requires real LLM classification, and its outcome
+    # varied purely by each environment's key material (CI E2E job's real header key:
+    # pass · fake header key: 401 → "Something unexpected" · pre-#1809 keyless: the
+    # refusal wall). Three different failures, one cause: a live test sitting in a
+    # deterministic suite. The llm mark puts it in the live tier: the keyless burn-down
+    # (-m "not llm") deselects it; the E2E CI job runs it with its real secret on the
+    # header rung (PIPER_E2E_LIVE_HEADER_KEY); a local live run sets that env var the
+    # same way. Its old backlog row is removed — deselected tests never reach the gate.
+    @pytest.mark.llm
     @pytest.mark.asyncio
     async def test_create_todo_returns_confirmation(self, e2e_client, e2e_byoc_auth):
         """Adding a todo should return a confirmation with the todo text."""
