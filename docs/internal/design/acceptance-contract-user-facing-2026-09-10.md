@@ -13,6 +13,11 @@ max_age_days: 60
 
 # The acceptance contract — what the user feels, and what happens to their "yes"
 
+> **v1.1 — amended 2026-09-20.** §5b's case enumeration was **incomplete**: PM's first live dogfood
+> session (#1837) produced a third case within four turns — **an acceptance captured by a different
+> flow**. See the amendment box at §5b. ⭐ **This is the first live sequence this contract has ever
+> been tested against, and it falsified an enumeration I had asserted was complete.**
+
 > ## 🔴 Why this is a document and not three memos
 >
 > **This contract has been amended twice in 24 hours** — the outwardness axis added (Arch conceded), and
@@ -134,6 +139,32 @@ away from being an inherited wrong one.**
 
 🔴 **A bare affirmative that finds nothing armed must NEVER produce "please retype your request."** That
 is #1694's felt shape and it is the worst thing in the round.
+
+> ## 🔴 AMENDED v1.1, 2026-09-20 — THE ENUMERATION BELOW WAS INCOMPLETE. There is a third case.
+>
+> **I wrote "two cases, and neither needs new state." PM's first live dogfood session produced a
+> third one within four turns** (#1837, alpha v0.8.12.0, 2026-09-20). ⚠️ **This document's §6 said
+> *"No live turns observed."* This was the first, and it falsified the enumeration on first contact.**
+>
+> **3. The acceptance is CAPTURED BY A DIFFERENT FLOW.** PM accepted a guided-interview offer
+> (*"Sure, thanks."*) and the affirmative did not reach orphan handling at all — it became the input
+> to an unrelated greeting/mode-fork path. **Neither case 1 nor case 2 fired.**
+>
+> 🔴 **Case 3 is worse than case 2, and the reason is visibility, not severity.** Case 2 announces
+> itself *"I've lost the thread"* and the user knows immediately. **Case 3 is silent**: the user
+> believes they are in the flow they accepted, the product believes otherwise, and **the divergence
+> surfaces only later as a contradiction** — in PM's session, three turns later, as Piper denying its
+> own offer. ⭐ **A silent mis-binding costs more than a visible miss, because the user spends turns
+> on it before learning anything is wrong.**
+>
+> ⭐ **My one-line rule below still holds and is still the right test — but PM's acceptance was NOT
+> ambiguous and it still cost an action.** **So the scope widens; the wording doesn't change:**
+>
+> > **An acceptance must bind to the offer it answers, or to nothing. It must never bind to a
+> > different flow.**
+>
+> 📌 **Recorded as an amendment rather than an edit of the line below, because the error worth keeping
+> is that I asserted the enumeration was complete.**
 
 **Two cases, and neither needs new state:**
 
