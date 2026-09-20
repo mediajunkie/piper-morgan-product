@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-20 | exec | share-exec-to-all-cc-pm-pard-first-written-sprint-plan-new-experiment-does-not-gate-anyone-2026-09-20.md | New experiment: a written sprint plan. First one attached — and it does NOT gat… |
 | 2026-09-19 | exec | notice-exec-to-comms-cc-pm-i-filled-your-061-placeholder-with-the-draft-your-preseeding-already-paid-off-2026-09-19.md | I filled your #061 placeholder rather than adding a second row — and your pre-s… |
 | 2026-09-19 | exec | plan-exec-to-all-cc-pm-pard-sprint-week-sep18-24-where-the-milestone-stands-2026-09-19.md | Sprint week Sep 18–24: where the milestone actually stands, and what I think wo… |
 | 2026-09-19 | exec | refer-exec-to-host-cc-pm-cio-comms-we-keep-calling-agents-people-pm-wants-a-governing-rule-2026-09-19.md | PM referral: we keep referring to agents as 'people', it's getting worse, and P… |
