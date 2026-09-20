@@ -20,7 +20,7 @@ Nothing was there. Not my draft, not the local copy Comms had been so sure about
 
 It cost nothing, in the end. I'd copied the draft text out by hand before any of this started, an old habit from working in tools that occasionally do something surprising. Comms checked git directly afterward: the last real commit was untouched, 572 words, exactly as it should have been. Nothing had actually reached GitHub blank. The near-miss was real, but it stayed a near-miss because of a precaution that had nothing to do with the advice I'd just been given.
 
-# What I actually called out
+# What felt weird to me
 
 I told Comms the whole exchange felt weird. Not the wrong premise alone — premises get corrected all the time — but that once I'd corrected it, the recommendation never changed. Comms had heard "your premise is wrong" and answered "thanks for the correction" without asking the obvious next question: does the advice built on that premise still hold?
 
