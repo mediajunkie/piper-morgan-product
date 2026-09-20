@@ -1,67 +1,30 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-19 22:01 PDT (STOP, day-close), verified via `date`.
+**Updated**: 2026-09-20 06:33 PDT, verified via `date`.
+
+**09-20 06:30 — PM engaged directly before the 06:57 cron fired**, asking why the post wasn't
+live yet. Verified honestly rather than assuming anything was wrong: cron armed correctly
+(`f1d19f9b`), no session log yet for today, post genuinely not live — the 06:57 fire simply hadn't
+happened yet (27 min out). Since PM was here and everything was pre-verified from last night,
+published immediately rather than making PM wait for the cron. Full pipeline: re-synced both
+worktrees, re-verified the calendar row unchanged, re-ran pre-flight checks, dry-run, real publish
+(`from-abstraction-to-example`, hashId `2c897f542fdf`), website commit, calendar update
+(`canonicalSite` correctly left empty — blog-first, not cross-post), live content-verified
+(backgrounded poll, confirmed), draft archived. All on `origin/main`. **Still owed**: PM's
+Medium/LinkedIn URLs when they cross-post — record via `/update-calendar` (status→`distributed`,
+`canonicalSite`→`distributed`) same as yesterday.
+
+**PM also raised (06:31): duty-cycle start time should move earlier (no later than 5am, PM is
+often up by 5–6)** — explicitly framed as a discussion for CIO/Exec, not a request to me, and PM
+confirmed "no need to change anything unilaterally" when I said the same. **Not my lane to act
+on** — cron cadence is a fleet-wide shape decision. Flag to CIO/Exec if it comes up, don't self
+re-arm to an earlier hour on my own initiative.
 
 **09-19 CLOSED cleanly.** Session log `dev/2026/09/19/2026-09-19-0657-docs-code-log.md` carries
 `<!-- DAY-CLOSED: 2026-09-19 -->` + a full day-arc summary. All 6 scheduled fires ran (06:57
 resumed from pre-clear, 09:57, 12:57, 15:57, 18:57, 21:57/STOP), plus substantial PM-engaged work
 between fires. Everything on `origin/main`, nothing stranded. Cron re-armed via delete-then-create
 at STOP (see below).
-
-## ⚠️ TOP-OF-QUEUE 09-20 START: publish "From Abstraction to Example" — PM-directed, do NOT do this today
-
-**This is the FIRST thing to do at tomorrow's 06:57 START fire, before the mail loop, before
-anything else — it was PM-directed for first-thing-tomorrow specifically.**
-
-PM's explicit instruction (2026-09-19, in-conversation): proofread today, publish is deferred to
-**tomorrow morning's first START fire (09-20)**, so PM can handle crossposting once they're up.
-**This is a real, PM-named trigger for the deferral (per CLAUDE.md's "no rush is not a trigger"
-rule) — not a discretionary hold.** Do not publish today even if idle with nothing else to do.
-
-PM's explicit instruction (2026-09-19, in-conversation): proofread today, publish is deferred to
-**tomorrow morning's first START fire (09-20)**, so PM can handle crossposting once they're up.
-**This is a real, PM-named trigger for the deferral (per CLAUDE.md's "no rush is not a trigger"
-rule) — not a discretionary hold.** Do not publish today even if idle with nothing else to do.
-
-**Proofread already complete and independently verified this session (09-19 ~12:46 PM)** — do not
-re-proofread from scratch tomorrow unless something changed overnight (re-sync and spot-check
-before publishing regardless, per the mid-pipeline re-sync discipline in `publish-to-blog` v0.25):
-- Ran my own full 16-check template-audit independently (not just trusting Comms' memo) — 16/16
-  pass, matches Comms' own count exactly (word count 1,739, identical both ways — confirms same
-  synced file).
-- Fact-checked the harassment worked-example content against BOTH the original session log
-  (`dev/2026/04/22/2026-04-22-1645-lead-code-opus-log.md:224-229`) and the published sibling post
-  (`docs/public/comms/drafts/published/the-voice-of-a-denial.md:49-55`) — identical user input,
-  identical audit `explanation` string, matching predicted output. Real content, not invented.
-- Footer tease verified against calendar: correctly teases "The Near-Miss and the Missing Key"
-  (next non-Ship post, pubDate 09-22).
-- Calendar row confirmed `status: ready-for-docs`, `pubDate: 2026-09-20`, frontmatter complete.
-
-**Publish parameters, pre-derived so tomorrow's execution has zero ambiguity left to resolve**:
-- Draft: `docs/public/comms/drafts/from-abstraction-to-worked-example.md` (filename intentionally
-  NOT renamed — title inside is already "From Abstraction to Example"; `--slug` below is explicit)
-- Image: `docs/public/comms/drafts/from-abstraction-to-worked-example-pattern-makers.png`
-- `--slug from-abstraction-to-example` (matches current title, not the legacy filename)
-- `--category insight`
-- `--work-date 2026-04-22` (matches both the draft's own dateline AND the calendar's `workDate`
-  field — confirmed they agree, per the mandatory pre-publish check)
-- `--cluster the-mechanism` (derived from nearby `blog-metadata.csv` rows by workDate this
-  session — 04-22 itself already has two other posts both tagged `the-mechanism`: "The Log That
-  Fact-Checked Itself" and "The Voice of a Denial")
-
-**Tomorrow's sequence** (same as today's — `publish-to-blog` skill, full procedure, not shortcuts
-just because the params are pre-filled): re-sync BOTH worktrees first (mid-pipeline re-sync rule
-applies even though this is a fresh-fire sync, not literally mid-pipeline — the params above are
-~18h old by the time they're used); re-verify the calendar row hasn't changed; re-run the two
-pre-flight checks (file existence, two-copy diff) fresh; dry-run; real publish; website commit;
-calendar update (status→published, blogURL/blogPath, **canonicalSite stays EMPTY** — same v1.5
-correction as today, this is blog-first not cross-post); live content-verify (not status code);
-archive draft+image; **then send PM a short message that it's live**, so PM can crosspost when
-they're up — this is the whole point of doing it first thing, per PM's stated goal of getting a day
-ahead so morning publishing is less stressful.
-
-**After publishing, this whole section should be deleted from carry-forward** — it's a one-shot
-plan, not a standing note.
 
 **12:40 PM — YAML-frontmatter upgrade (#1826) closed, all 230 files done.** PM confirmed priority
 at direct engagement (the exact "flag at next PM engagement" trigger the item had been carrying
