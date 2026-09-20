@@ -1,9 +1,12 @@
 # Lead carry-forward — rewritten 2026-09-19 ~21:55 PT at STOP (freshness rule: full pass at START/STOP)
 
-## TOMORROW FIRST (PM-approved, Exec-rolled-up)
-- **#1765 diagnosis lane, first thing** — fresh session. Three catalogued instances of
-  env-divergence (cross_user local-red/CI-green ×2 · test_create_todo CI-green/local-red ·
-  the tests/intent cohort now pinned by #1831's conftest). Then: #1764 (migration-plan) →
+## TODAY (2026-09-20)
+- ~~#1765 + #1813~~ **BOTH CLOSED 09-20 morning** (fixture poisoning fixed + live test
+  relocated to llm tier; family fully diagnosed — state + credentials are the only two
+  divergence causes seen). **NEXT UNIT (banked, this morning): the #1818 CANONICAL
+  spend-reach ratchet** (explosive LLM boundary, all 14 pairs keyless; answers Arch's
+  hinge mechanically; #1773 folds in or lands first — registry is dispatch-inert, my
+  09-20 interim memo). Then: #1764 (migration-plan) →
   **#1812 steps 5–6** (Arch's six-consumer enumeration in read/ — the `return None` rung
   is the hazard; rung dies, refusal becomes unconditional; also dissolves my #1823 §2
   caveat — update the trace's record when it lands) → #1823 branch-one + #1824 (paired).
