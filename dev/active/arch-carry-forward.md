@@ -21,7 +21,7 @@ in git history.
 | Fact | Value |
 |---|---|
 | Host / model | **Amber**, Model A stable worktree `~/Development/piper-morgan-worktrees/arch`, branch `claude/arch-cycle` |
-| Cron | **`27 6,9,12,15,18,21`**, job **`a1a8e2e5`** (re-armed 09-15 STOP; session-only; empty `CronList` → re-arm). Registry row current. |
+| Cron | **`27 6,9,12,15,18,21`**, job **`66baedd3`** (re-armed at the 09-19 STOP via delete-then-create; prior `a1a8e2e5`; **auto-expires ~2026-09-26**; session-only; empty `CronList` → re-arm). Registry row current as of 09-19 22:0x. |
 | **Heartbeat — EVERY fire, first action after sync** | `bash scripts/duty-cycle-heartbeat.sh arch <START\|WORK\|STOP>` — the watchdog's ONLY structural liveness surface. ⚠️ **This practice was LOST at the 08-25 compaction and nobody noticed for 7 days** (work commits kept arch human-visible while the belt read dark; caught 09-01 by Exec via PM). **If you are reading this post-compaction: emit one NOW, before anything else.** |
 | Mail | `mail-send.sh` push-to-ref; never touch PM's main checkout. Inbox verified at trunk (`git ls-tree origin/main`), never local `ls`. |
 | ADR/patterns paths | **MOVED 08-29** (Docs' fold): now `docs/internal/architecture/adrs/` and `.../patterns/` — no `current/` segment. |
@@ -38,7 +38,31 @@ gh issue list --repo mediajunkie/piper-morgan-product --label architecture --sta
 `gh issue list` is a guess about the issue). Report drained as *"mail (N) + standing-items (N) +
 label:architecture (M eligible)"* — never a bare "nothing left."
 
-## IN FLIGHT as of 2026-09-19
+## IN FLIGHT as of 2026-09-19 STOP (day 1 of the post-renewal seat)
+
+**Awaiting PM, both cheap and both re-verified today:**
+- **#1744** — PM approved migrating `main`'s classic branch protection to a ruleset with the Action
+  as bypass actor. **Blocked on PM at a keyboard** (the API write is classifier-gated; PM chose the
+  UI path, which is safer anyway). ⚠️ **The migration MUST carry an admin bypass actor** or all 12
+  seats lose push, and must re-express `allow_force_pushes:false`/`allow_deletions:false` as
+  `non_fast_forward`/`deletion` rules or it silently weakens `main`. Backup of the current classic
+  config: `dev/2026/09/18/branch-protection-main-classic-backup-2026-09-18.json`.
+- **Q5 denominator** — PM ruled the headline (idle IS legitimate, 09-18). The enumeration is still
+  open: §Q5's role-scoped version vs PM's flat three-surface test. **My recommendation is on record**
+  (adopt the flat test, drop the tiering). On acceptance: write §Q5, log it, and file the
+  criteria-line rollout as tracked work rather than assuming 11 roles each notice.
+- **Bets 001–003** — reminder delivered 09-19 as PM asked; re-sized to "three fields on one memo."
+
+**Shipped today, nothing owed**: #1823 (PPM ruled my §4 unmodified; Lead discharged the hinge; my own
+scope error corrected at three surfaces) · #1829 filed (folded by PPM into epic 5, honest-empty
+family) · #1818 structural half ruled · #1812 step-5 consumer enumeration sent to Lead ·
+`piper-draft-issue` board step added **and behaviorally verified** (#1833).
+
+**Watch**: #1818's open hinge is Lead's — can any CANONICAL path reach an LLM call downstream? If
+yes, CANONICAL is necessary-but-not-sufficient and the gate needs a second condition. Should be
+discharged **before** the gate moves, so the ratchet doesn't encode an assumption.
+
+## Prior IN FLIGHT (2026-09-18)
 
 **The credential/tenancy family is the live lane** (epic 12). My rulings, 09-14/15, all on
 origin/main + decisions.log:
