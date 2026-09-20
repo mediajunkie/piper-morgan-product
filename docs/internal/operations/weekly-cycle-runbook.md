@@ -101,8 +101,20 @@ there, so without them the "opened" figure systematically undercounts fast-turna
 different windows by 7 hours at each end** — and the difference is real work, since 17:00–24:00
 Pacific is prime time here.
 
-**So don't just trust either. Check the two boundary slivers against the UNFILTERED full-sprint
-file:**
+✅ **BETTER: GitHub accepts an explicit timestamp + UTC offset, so you can just query Pacific
+directly and skip the whole reconciliation.** Verified live 2026-09-19 — the syntax parses, and it
+discriminates at sub-day granularity:
+```
+closed:2026-09-11T00:00:00-07:00..2026-09-18T00:00:00-07:00     # our Pacific week, exactly
+closed:2026-09-12T00:00:00-07:00..2026-09-12T12:00:00-07:00     # half-days work too
+```
+**Proof it discriminates rather than merely parses**: Saturday 09-12 split into halves returned
+**14 + 14 = 28**, matching the TSV-derived Saturday count exactly — two independent methods, one
+answer. ⚠️ **`-07:00` is PDT. It becomes `-08:00` when DST ends 1 Nov 2026** — a weekly recurring
+query will silently shift by an hour if nobody changes it.
+
+**If you use date-only form instead, check the two boundary slivers against the UNFILTERED
+full-sprint file:**
 ```python
 # in PM's UTC window but not our Pacific one:  09-11 00:00 UTC .. 09-11 07:00 UTC
 # in our Pacific window but not PM's UTC one:  09-18 00:00 UTC .. 09-18 07:00 UTC

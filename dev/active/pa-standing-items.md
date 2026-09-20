@@ -38,8 +38,6 @@ _(T1 promoted to Active 2026-08-31 — see below. Nothing else currently sits in
 | # | Item | Filed | Notes |
 |---|---|---|---|
 | 1 | **Architecture/BYOC — live thread with PM** | 2026-07-26, converged with the BYOC strategic conversation 2026-08-18 | **Current state lives in `pa-carry-forward.md` PM Attention section, not here** — it's rewritten every substantive fire. The 08-10 architecture-diagram connector-overlap question and 08-18's BYOC conversation are the same underlying topic; carry-forward tracks both together now. This row exists only so the Task List doesn't look empty on the thread that's actually the most active one PA owns; don't duplicate the detail in both places. |
-| T1 | ✅ **Cross-Piper synthesis — DELIVERED to PM 2026-09-03** | Noted 2026-06-07, triggered 2026-08-31, delivered 2026-09-03 | PM's 08-31 ask (compare PA and Piper Open as the bar Piper Morgan needs to clear) answered with a compressed rollup memo (`mailboxes/pa/sent/deliver-pa-to-pm-t1-piper-alpha-piper-open-comparison-2026-09-03.md`), pointing to the full working draft (`dev/active/t1-cross-piper-comparison-2026-08-31.md`) for detail. Six convergent lessons, one PA-specific divergence (multi-agent state coordination), and PM's own trust-model answer all covered. Explicitly labeled DRAFT v0 in the delivery — good enough to act on, not exhaustively audited. **Correction, same day**: don't auto-close this on silence — no PM reply yet is not the same as PM confirming no more depth is wanted (never read signal from a non-reply). Leave as Delivered until PM actually responds or enough time passes that it's fair to treat as settled, not on a fixed next-fire timer. |
-
 ### Pending external action
 
 _(none as of this update — see Resolved below)_
@@ -52,12 +50,13 @@ _(none as of this prune)_
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Cross-pollination signal** — Klatch (paused), Atlas, Globe sibling projects | Pre-migration carry | Per `[[project_sibling_projects]]` memory. Surfaces if any sibling-project signal reactivates. Same underlying thread as T1 above; kept in both sections because one is "revisit over time" and this is "watch for a trigger" — merge if they ever diverge in practice. |
+| 1 | **Cross-pollination signal** — Klatch (paused), Atlas, Globe sibling projects | Pre-migration carry | Per `[[project_sibling_projects]]` memory. Surfaces if any sibling-project signal reactivates. Same underlying thread as T1 (now resolved, see below); kept as "watch for a trigger" since PM's DinP/Themis discussion (see T1's resolution note) may reactivate cross-pollination specifically. |
 
 ### Resolved (preserved for one cycle)
 
 | # | Item | Resolved | Notes |
 |---|---|---|---|
+| T1 | ✅ **Cross-Piper synthesis — PM RESPONDED 2026-09-19, endorsed** | Delivered 2026-09-03, PM responded 2026-09-19 (16 days) | PM read it, verbatim: *"I read PA's analysis and it's excellent as usual... I support the observations and recommendations,"* with an unprompted apology for the delay (relayed by Exec, `mailboxes/pa/sent/deliver-pa-to-pm-t1-piper-alpha-piper-open-comparison-2026-09-03.md` was the delivery). The one outstanding question (draft-then-review vs. review-then-draft) was already answered by PM 09-02 and recorded in the doc's own divergence section — nothing re-litigated. **Now in wider circulation**: Exec asked CIO/PPM/CXO to read it against their own current thinking (not as an FYI), and shared it with Themis at Design in Product per PM's explicit request, for both DinP OS and the Pimento skunkworks. Nothing further owed by PA on this thread — the "convergent lessons" finding is doing real work elsewhere now. Full loop: `dev/active/t1-cross-piper-comparison-2026-08-31.md` (the document), `mailboxes/pa/inbox/relay-exec-to-pa-cc-pm-xian-read-t1-supports-it-and-apologises-for-the-delay-2026-09-19.md` (PM's response, relayed). |
 | R5 | **ALPHA_FEATURE_GUIDE refresh — PA's part done** | 2026-08-13 | Docs confirmed: correction folded (all tags now cite `origin/main`), all 7 code-level findings incorporated, PA's "Email or User ID" nuance kept, the #4 dispatch-layer grep Docs ran independently confirmed PA's standup-only read. PM picked up the 4-item live click-through directly. Nothing further for PA — Docs folds PM's results and ships. Full trail: this session's 08-13 log, three sent memos in `mailboxes/pa/sent/`. |
 
 ---

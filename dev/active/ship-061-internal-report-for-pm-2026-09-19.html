@@ -55,17 +55,17 @@
     <div class="tile"><div class="v">45</div><div class="k">closed in window</div></div>
     <div class="tile"><div class="v">56</div><div class="k">created in window</div></div>
     <div class="tile" style="border-color:var(--red)"><div class="v" style="color:var(--red)">+11</div><div class="k">net — the pile GREW</div></div>
-    <div class="tile"><div class="v">5 of 7</div><div class="k">days actually worked</div></div>
+    <div class="tile"><div class="v">5 of 7</div><div class="k">working days — a normal week</div></div>
+    <div class="tile"><div class="v">29</div><div class="k">never started, of 56 open</div></div>
     <div class="tile"><div class="v">1,804</div><div class="k">commits</div></div>
     <div class="tile"><div class="v">81.5%</div><div class="k">sprint closed — 246 of 302</div></div>
   </div>
 
   <div class="card bad">
     <p style="margin-top:0">🔴 <b>The number that should lead the discussion: we closed 45 and opened
-    56. The pile grew by 11 in a week where we only worked five days.</b></p>
+    56. The pile grew by 11 across five working days.</b></p>
     <p><b>This is the quantitative form of what you said this afternoon</b> — <i>"too much unfinished
-    business is piling up, chasing newer things."</i> It is the same finding as <b>32 of 57 never
-    started</b> and as Arch's <i>"rulings are outpacing mechanisms."</i> <b>Three independent
+    business is piling up, chasing newer things."</i> It is the same finding as <b>29 of 56 never started</b> and as Arch's <i>"rulings are outpacing mechanisms."</i> <b>Three independent
     surfacings, and now a measured one.</b></p>
     <p style="margin-bottom:0">⚖️ <b>The fair reading, which I'd argue for:</b> a rising pile is not
     obviously bad here. Much of the inflow came from <i>looking harder</i> — Lead's own digging into
@@ -84,92 +84,76 @@
     <tr><td><b>Wed 09-16</b></td><td><b>0</b></td><td><b>0</b></td><td rowspan="2" style="color:var(--red)"><b>the standdown — two days, entirely absent from the data</b></td></tr>
     <tr><td><b>Thu 09-17</b></td><td><b>0</b></td><td><b>0</b></td></tr>
   </table></div>
+  <p>✅ <b>The by-day figures are confirmed independently.</b> Your timestamp syntax works — querying
+  Saturday in halves (<code>closed:2026-09-12T00:00:00-07:00..T12:00:00-07:00</code> and its
+  complement) returns <b>14 + 14 = 28</b>, matching the TSV-derived Saturday count exactly.
+  <b>Two methods, same answer.</b></p>
   <p><b>Weekend is prime time, confirmed in the data rather than assumed:</b> Saturday alone carried
   28 of the week's 45 closures. <b>A weekend outage costs multiples of a weekday one.</b></p>
   <p style="margin-bottom:1.2rem">✅ <b>Lead's self-reported "~45 issues closed" is confirmed exactly
   at 45.</b> Their figure was right and is no longer an attributed estimate.</p>
 
-  <p><b>Milestone direction, measured today rather than at window close:</b> MVP sits at <b>57 not
-  done</b>, <b>1,179 done</b>, zero unmilestoned. <b>32 of the 57 have never been started</b> — more
-  than half the remaining work has nobody on it. Since yesterday, three closed and four arrived, so
-  <b>inflow is still outpacing closure</b> and Product Backlog grew 14 → 16. That last part is triage
-  working correctly rather than items landing in Sprint — but the total isn't shrinking yet.</p>
+  <p><b>Where it stands now</b> — from your own full-sprint export (pulled after 15:02 today), so it
+  needs no API call and supersedes the hourly-drifting figures I was quoting earlier:</p>
+  <div class="scroll"><table>
+    <tr><th></th><th>Beta-Blockers sprint</th><th>MVP milestone</th></tr>
+    <tr><td><b>open now</b></td><td><b>56</b> — 29 Sprint Backlog · 18 Product Backlog · 6 In Review · 3 In Progress</td><td>the same 56 — all open MVP work sits in this sprint</td></tr>
+    <tr><td><b>closed</b></td><td>246</td><td>1,179</td></tr>
+    <tr><td><b>total</b></td><td>302 → <b>81.5% closed</b></td><td>1,235</td></tr>
+  </table></div>
+  <p><b>29 of the 56 have never been started</b> — just over half the remaining work has nobody on it,
+  with 41 days to 30 October. <b>Two denominators, both true:</b> quoting the milestone's 1,179-done as
+  if it were the sprint's would overstate completion roughly fourfold.</p>
 
-  <h2>The week's three arcs</h2>
+  <h2>Are we progressing toward beta, or wandering?</h2>
 
-  <h3>1 · A bar somebody refused to lower caught a defect before our first external tester did</h3>
-  <div class="card">
-    <p>Janne Lammi's invite was cleared to send on 09-13. Then <b>#1810</b> surfaced and HOST held it.
-    The clearing condition HOST set was specific and awkward: <b>an observed, driven flow — not a test
-    pin.</b> Lead produced one. Hold lifted.</p>
-    <p><b>Nine hours later #1814 landed, and it landed directly on the invite's own first
-    instruction.</b> The email tells a tester to configure their API key first; #1814 made that exact
-    step the wall. <b>HOST re-held.</b> Arch, who had argued for lifting, backed the re-hold and named
-    the sequencing error as partly their own.</p>
-    <p>⭐ <b>The moment worth the whole arc</b>: Arch attempted, once, to substitute a weaker bar than
-    the one they had themselves set. <b>HOST refused. Arch conceded the same day</b> — and conceded
-    the general shape, not just the instance. Lead then supplied the second observed flow, and the
-    hold lifted on evidence rather than on patience running out.</p>
-    <p style="margin-bottom:0"><b>Outcome: we caught a tester-facing blocker before the tester hit
-    it.</b> That is the system working at the only moment it actually matters. The invite is still
-    unsent, four days on — which is now a decision, not a blocker.</p>
-  </div>
-
-  <h3>2 · The credential and tenancy family closed end to end</h3>
-  <div class="card">
-    <p>Lead carried <b>#1807 → #1810 → #1814 → #1815 → #1816</b> to closure, <b>each verified at a
-    named layer</b>, after pins twice proved insufficient. <b>#1816 found a consent boundary failing
-    OPEN</b> — absence read as permission. The belt went from five unexplained reds to zero, and
-    <b>E2E went green for the first time in its recorded history.</b></p>
-    <p>You reopened <b>epic 2</b> over PPM's successor-epic proposal; PPM owned the reversal publicly
-    in the epic file's own change log rather than defending the call. The reopened scope then ran to
-    six more closures <b>under live stakes — a real external tester's credentials.</b></p>
-    <p style="margin-bottom:0">You also ruled the <b>server key out of existence</b>:
-    <i>"I don't understand why anybody should ever be able to spend the operator's money."</i> That
-    ruling is now upstream of the whole BYOC design rather than a patch inside it.</p>
-  </div>
-
-  <h3>3 · The week ended in an enforced standdown, and the cost was real</h3>
-  <div class="card warn">
-    <p>The account ceiling forced a cohort standdown from 09-16 through the 09-17 22:00 reset. <b>Two
-    of the seven days are simply gone</b>, and PA and CXO both name it as what cost them their week.</p>
-    <p>The <b>causes were two and independent</b>, and neither subsumes the other: a dispatch
-    concentration (48 sub-agent dispatches in-window against 10 in the preceding nine days, all
-    silently inheriting the dispatcher's tier) <b>and</b> the ceiling dropping ~17% when the summer
-    promotion ended on 13 Sept.</p>
-    <p style="margin-bottom:0">The standdown was executed cleanly — crons deliberately deleted,
-    verified, no queue-draining — and <b>every role came back and filed.</b> But it is worth being
-    plain that this was <b>an externally imposed two-day outage on a six-week milestone</b>, not a
-    planned pause.</p>
-  </div>
-
-  <h2>⭐ A pattern that MAY be worth a theme — parked until after we discuss the substance</h2>
-  <div class="card warn">
-    <p style="margin:0">⚠️ <b>PM, 2026-09-19: <i>"Let's not slop ahead to themes before we discuss the
-    substance."</i> Correct, and this section was me doing exactly that.</b> The theme belongs at
-    <b>step 6</b> of the cycle — after the step-5 discussion, which may well replace it. Leaving it
-    below as raw material rather than deleting the work, clearly marked as <b>not a conclusion</b>.</p>
-  </div>
   <div class="card good">
-    <p><b>Proposed theme: a clearing condition is only worth what it's worth under pressure.</b></p>
-    <p>The week's defining behaviour wasn't catching bugs — it was <b>people refusing to soften their
-    own standards at the exact moment softening would have been convenient</b>, with a real external
-    user waiting on the other side.</p>
+    <p style="margin-top:0"><b>Not wandering. The 45 closures are not 45 separate fixes — they
+    collapse into six families, and two of them ran to completion.</b></p>
     <div class="scroll"><table>
-      <tr><th>who</th><th>the moment</th></tr>
-      <tr><td><b>HOST</b></td><td>Set an awkward bar (observed flow, never a pin), then <b>refused to let it be lowered</b> — twice, the second time nine hours after clearing it.</td></tr>
-      <tr><td><b>Arch</b></td><td>Tried once to substitute a weaker bar, was refused, <b>conceded same-day and named the general shape</b> rather than fixing only the instance.</td></tr>
-      <tr><td><b>Lead</b></td><td>Produced observed evidence twice rather than the cheaper pin, and <b>refuted their own hypothesis</b> with a transcript.</td></tr>
-      <tr><td><b>CXO</b></td><td>Held a conditional rather than shipping it — <b>it failed, and the hedge was honest.</b> Then found a live defect in their own shipped string.</td></tr>
-      <tr><td><b>PPM</b></td><td>Had a call overruled and <b>owned it in the artifact's own change log</b>, then offered to shrink the epic count rather than defend it.</td></tr>
-      <tr><td><b>Web</b></td><td>Caused the worst bug in their own surface — a caret regression corrupting your draft text — and <b>led their closeout with it.</b></td></tr>
+      <tr><th>front</th><th>closed</th><th>state</th></tr>
+      <tr><td><b>Ask-only-when-armed</b> — offers clobbering each other's arms<br><span style="color:var(--mute)">#1652 #1653 #1654 #1696 #1753 #1752 #1769 #1770 #1596 #1663</span></td><td><b>10</b></td><td>✅ <b>CLOSED AND FENCED</b> — #1766 landed a ratchet with a <i>mechanical site census</i>, so it can't silently regrow</td></tr>
+      <tr><td><b>BYOC credential / billing</b><br><span style="color:var(--mute)">#1807 → #1810 → #1814 → #1816 → #1815</span></td><td><b>5</b></td><td>✅ <b>CLOSED END TO END</b>, each verified by observed flow. #1816 found a consent boundary failing OPEN</td></tr>
+      <tr><td><b>Routing greed</b> — delete/portfolio patterns over-capturing<br><span style="color:var(--mute)">#1505 #1527 #1693 #1756 #1757</span></td><td>5</td><td>family understood; pattern-level fix</td></tr>
+      <tr><td><b>Honesty gaps</b> — Piper misreporting its own data<br><span style="color:var(--mute)">#1730 #1736 #1738 #1717 #1776</span></td><td>5</td><td>incl. Piper reading its own truncated render as its data source</td></tr>
+      <tr><td><b>Dead code</b> — zero-caller machinery removed<br><span style="color:var(--mute)">#1759 #1767 #1754 #1768</span></td><td>4</td><td>four subsystems deleted outright</td></tr>
+      <tr><td><b>Security surface</b><br><span style="color:var(--mute)">#1690 #1741 #1733 #1740</span></td><td>4</td><td>demo plugin live in prod; unescaped innerHTML; an unauthenticated duplicate page</td></tr>
     </table></div>
-    <p style="margin-bottom:0">⚠️ <b>One check on this, because it nearly repeats:</b> Ship #060's
-    theme was <i>"the week the cohort spent correcting itself."</i> Self-correction is <b>not</b> a
-    fresh theme and I'd be reusing it. <b>What's distinct here is the refusal under pressure</b> —
-    correction is looking inward; this is holding a line outward, with a named external person waiting.
-    If that distinction feels thin to you, the theme needs changing, and that's exactly what this
-    discussion is for.</p>
+    <p>⭐ <b>The single best evidence against "fractal wandering" is #1739</b>: <i>"ONE acceptance
+    contract for every armed seam — 1617/1631/1650/1694 are the same contract failing."</i> <b>Four
+    issues recognised as one contract.</b> That is the opposite of an expanding surface — it is
+    finding the general case and closing four things with one idea.</p>
+    <p style="margin-bottom:0"><b>#1766 is the other one.</b> Closing ten arming bugs is work;
+    landing a <i>census-backed ratchet</i> so the eleventh can't appear quietly is progress that
+    holds.</p>
+  </div>
+
+  <h2>Did an epic close and stay closed?</h2>
+  <div class="card bad">
+    <p style="margin-top:0"><b>No — and that is the week's most honest single fact.</b></p>
+    <p><b>Epic 2 (Security/tenancy) closed 2026-09-12 and was REOPENED 2026-09-14.</b> It had been
+    closed for six items and was not actually complete; the tenancy gaps surfaced two days later,
+    under a real external tester's credentials.</p>
+    <p><b>But read the direction:</b> the error was closing it early, and the correction was reopening
+    it rather than filing a successor epic — <b>your override.</b> PPM recorded the reversal in the
+    file's own change log. <b>The reopened scope then ran to six further closures.</b> An epic that
+    reopens and then drains is a better signal than one that stays shut by accounting.</p>
+    <p style="margin-bottom:0"><b>Where the epics actually stand</b> (PPM's ordering file): epic 1
+    CI/infra <b>closed today, 09-19</b> — belt green 10/10, outside this window. Epic 2 reopened,
+    11 of 20. Epic 3 acceptance contract 8 of 11. Epic 5 honest-empty 8 of 15. Epic 9 silent-death
+    2 of 3. <b>Three epics are past two-thirds; none besides epic 1 has closed.</b></p>
+  </div>
+
+  <h2>The counter-evidence, stated plainly</h2>
+  <div class="card warn">
+    <p style="margin-top:0"><b>56 new issues in five days.</b> The surface is still generating faster
+    than it closes.</p>
+    <p style="margin-bottom:0"><b>What I can't tell you from this data, and it's the question that
+    matters:</b> whether that inflow is <i>discovery converging</i> (finding the last members of
+    families we already understand) or <i>surface expanding</i> (new families). The titles suggest
+    the former — most new issues sit inside the six fronts above rather than opening a seventh — but
+    <b>I'd want two more weeks of this same snapshot before claiming a trend.</b> That is now cheap:
+    `sprint-truth.py` stores the baseline as of today.</p>
   </div>
 
   <h2>🔴 The honest counterweight</h2>
@@ -210,16 +194,147 @@
     </table>
   </div>
 
-  <h2>What didn't move</h2>
+  <h2>What didn't move — expanded, with sources</h2>
   <div class="card">
-    <p><b>Production observation</b> — CXO reports three separate times this week their work ended at
-    <i>"nobody can see this in prod."</i> Worth watching as a pattern rather than an incident.</p>
-    <p><b>Arch's epic-6 provenance threading</b> — awaiting a board turn, correctly.</p>
-    <p><b>Two days of the window</b> — the standdown and the ceiling event before it.</p>
-    <p style="margin-bottom:0"><b>Cleared since the window closed:</b> Lead's usage-per-account
-    capture is now written; website#35 closed with evidence; the T-axis thread advanced between CXO
-    and PA; you ruled Q5 and the scope-guard. <b>And one row in my synthesis was wrong — I said Docs'
-    routing offer to Lead was unanswered; it was addressed to you, not Lead.</b> Docs corrected me.</p>
+    <p style="margin-top:0"><b>Written out properly this time.</b> The previous version used internal
+    shorthand — "T1", "a board turn" — that carried no meaning outside the role that wrote it.</p>
+
+    <p><b>1 · "Nobody can see this in prod" — CXO, three times this week.</b> Work completed, and then
+    no way to observe it running. <b>I do not know the cause</b> — CXO reported the symptom without
+    enumerating the three instances, and I have asked them for those rather than theorise. <b>Two
+    documented candidates exist, and they are different problems with different fixes:</b></p>
+    <ul>
+      <li><b>No test account.</b> The running app has no self-serve <code>/register</code> (removed
+      in #1504) and no documented test login, so <i>anything behind authentication</i> cannot be
+      observed. Web has this as a standing blocker in their own carry-forward — Playwright
+      verification of any signed-in view is blocked until a test account or a seeded instance is
+      provisioned.</li>
+      <li><b>The deployed build is months old.</b> Lead found <b>no droplet deploy since July</b>.
+      If production runs July code, September work is <i>literally not there to look at</i>.</li>
+    </ul>
+    <p>⭐ <b>If it's the second one, it is the same root cause as the hold on Janne's invite</b> — and
+    that would make it a single blockage presenting as two unrelated complaints. Worth knowing which
+    before spending anything on it.</p>
+
+    <p><b>2 · Epic 6 "awaits a board turn" — in plain terms: nothing is wrong.</b> Epic 6 (Rendered
+    deliverable) is <b>sixth in PPM's ordering</b>, and the cohort works one epic at a time. It is
+    waiting for its <i>position in the queue</i> to arrive — not for a decision, a person, or an
+    unblocking. <b>"Board turn" meant "its turn in the ordered list," and I should have written
+    that.</b> Source: <code>dev/active/mvp-epic-order-2026-09-09.md</code> §6.</p>
+
+    <p><b>3 · PA's "T1" is the Cross-Piper synthesis</b> — a written comparison of how the several
+    Piper projects have diverged, drafted from 5 product-owner retrospectives, 2 session logs and 3
+    code files. Draft: <code>dev/active/t1-cross-piper-comparison-2026-08-31.md</code>, delivered
+    09-03, since republished as an Artifact.
+    <b>The specific thing awaiting you is one question, not the document:</b> <i>draft-then-review or
+    review-then-draft as the trust model?</i> PA has been waiting 16 days on that single answer.</p>
+
+    <p style="margin-bottom:0"><b>4 · Arch's epic-6 provenance threading</b> — same queue-position
+    point as (2): correctly not started. <b>5 · Two days</b> to the ceiling event.</p>
+  </div>
+
+  <h2>⚡ Vercel — Web found a bigger lever than mine. Read this before you set retention.</h2>
+  <div class="card bad">
+    <p style="margin-top:0">🔴 <b>Web measured the payload side tonight, which nobody had done, and
+    it changes which fix you pick first.</b></p>
+    <div class="scroll"><table>
+      <tr><th></th><th>size</th><th>files</th></tr>
+      <tr><td>whole tracked repo</td><td>324.3 MB</td><td>1,214</td></tr>
+      <tr><td><code>public/</code></td><td>304.7 MB</td><td>580</td></tr>
+      <tr><td><b><code>public/assets/blog-images/source/</code></b></td><td><b>240.7 MB</b></td><td><b>172</b></td></tr>
+      <tr><td>the <code>.webp</code> the site actually uses</td><td>63.4 MB</td><td>375</td></tr>
+    </table></div>
+    <p><b>74% of every deployment is original PNGs that get converted to <code>.webp</code> at
+    publish time.</b> They sit inside <code>public/</code>, so they are served statically and
+    <b>ship in every single deployment</b>. Nothing in the running site references them — only six
+    manual scripts, <b>none of which is wired into <code>build</code> or <code>prebuild</code></b>.</p>
+    <p>⭐ <b>So each deployment is roughly four times larger than it needs to be.</b> Removing that
+    alone would take storage from 10 GB-at-100% to somewhere near 2.6 GB — <b>without touching
+    retention at all.</b> Retention multiplies a payload; shrinking the payload shrinks every copy
+    retention keeps.</p>
+    <p>⚠️ <b>They are also publicly reachable</b> — Web confirmed by <code>curl</code> against
+    production, with a served <code>.webp</code> as a control. Blog art, so low stakes, but
+    unintended.</p>
+    <div class="ask"><b>Web's fix: MOVE <code>source/</code> out of <code>public/</code></b> (not
+    delete — website#37 wants the archive, it just should not be served) and update one constant in
+    six scripts. Filed as <b>website#43</b>. <b>They are deliberately holding</b> because you may be
+    setting retention right now, and <b>two simultaneous changes make any before/after reading
+    unattributable.</b> That is the right instinct and worth honouring.<br><br>
+    <b>My suggestion: do them in sequence, not together.</b> Set retention tonight if you want, note
+    the Usage number, then tell Web to go — or tell Web to go first and set retention after. Either
+    order works; <b>both at once loses the measurement.</b></div>
+    <p style="margin-bottom:0"><b>Web's own note</b>: if they don't hear back they will ship it anyway
+    on the correctness argument — serving 240 MB of build inputs is wrong regardless of what it does
+    to storage — and say so in the commit so it cannot be mistaken for a storage claim. <b>I think
+    that is right.</b></p>
+  </div>
+
+  <div class="card good">
+    <h3 style="margin-top:0">✅ The droplet question is answered — it is fact now, with a date</h3>
+    <p><b>You authorised the key, SSH is live, and Lead has done the read.</b> <b>Alpha runs
+    <code>0.8.10.14</code>, deployed <b>July 16</b></b> — repo VERSION and in-container
+    <code>/app/VERSION</code> agree, corroborated by the deploy log's own completion stamp and by
+    <code>piper-app</code> having been up two months.</p>
+    <p style="margin-bottom:0"><b>Current main is 0.8.11.0 plus roughly two months of unversioned
+    work.</b> Lead also confirmed the July migrations ran clean, so the next deploy runs only
+    July-16-to-now migrations rather than a backlog. <b>The "July-era cut" is no longer an inference
+    — and that was the one open ask blocking the invite.</b></p>
+  </div>
+
+  <div class="card warn">
+    <h3 style="margin-top:0">⚠️ Deployment Storage is not traffic — and this is the confusion worth clearing</h3>
+    <p><b>The thing at 100% is Deployment Storage: the disk Vercel uses to keep your PAST BUILDS.</b>
+    It has nothing to do with visitors, requests, or bandwidth. <b>Vercel's "congrats on your
+    traffic!" line is boilerplate in a template that got sent about storage</b>, and it is what sent
+    us both down the wrong path.</p>
+    <p>🔴 <b>So: bot scraping cannot be causing this, and blocking bots will not fix it.</b> Scrapers
+    consume bandwidth and function invocations. They do not create deployments. <b>Your storage grew
+    because you pushed 54 times, not because anyone visited.</b></p>
+    <p><b>What the other numbers on that screen were saying:</b> Build Time <b>3 h of 100 h</b> — 3%
+    used, no concern. Global Config Reads and Writes both <b>0</b>. <b>Deployment Storage was the only
+    metric at its ceiling.</b></p>
+    <p style="margin-bottom:0"><b>And on "should I be paying for Pro":</b> the email is an automated
+    tier notice, not an assessment of your traffic being valuable. <b>Retention is the free fix for
+    the thing that is actually full.</b> If bot traffic <i>is</i> separately costing you, that shows
+    up as bandwidth or function invocations — <b>different metrics, different page, and I have not
+    seen them.</b> Worth a look while you are in there, but it is not this problem.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Does this cover the beta app too? No — and the sprawl is its own finding</h3>
+    <p><b>Vercel hosts the website only.</b> You have one project there, which is consistent.</p>
+    <p><b>Three environments, three providers, and no single place that says so:</b></p>
+    <div class="scroll"><table>
+      <tr><th>what</th><th>where</th><th>state</th></tr>
+      <tr><td><b>Website</b> (pipermorgan.ai)</td><td><b>Vercel</b></td><td>storage at 100%, fixable today</td></tr>
+      <tr><td><b>Beta app</b></td><td><b>Fly</b></td><td>separate account — this ceiling cannot touch it</td></tr>
+      <tr><td><b>Alpha app</b></td><td><b>a droplet</b></td><td>no deploy since July</td></tr>
+    </table></div>
+    <p style="margin-bottom:0">⭐ <b>That you had to ask which one this covers is itself the answer to
+    why the hosting review is worth doing.</b> Pard and Lead have it.</p>
+  </div>
+
+  <h2>Plan for the week ahead — Fri 18 → Thu 24</h2>
+  <div class="card">
+    <p style="margin-top:0"><b>Bets 001–003 sit here rather than in "needs you"</b>, per your
+    sequencing: they follow the review and belong to the week's plan.</p>
+    <p><b>Bets 001–003 — three fields on one memo</b>, not three documents. Bet 001 needs a named
+    buyer for the enterprise tier (<b>"none named" is a complete answer</b> — it converts the bet to
+    labelled speculation or retires the milestone), a cost box (Arch's recommendation is pre-written:
+    zero build until the buyer field has a name), and a kill-condition date (Arch suggests the beta
+    retrospective). 002 is the same shape; <b>003 is partly pre-filled from your own 08-29 answer</b>
+    — confirm-or-amend. Source: <code>docs/internal/architecture/bets/</code>.</p>
+    <p><b>Also in the week's plan, in the order they gate each other:</b></p>
+    <ul>
+      <li><b>The droplet question</b> — it holds Janne's invite <i>and</i> may be the cause of CXO's
+      three unobservable results. <b>Highest leverage item on this page.</b> Needs Lead plus droplet
+      access.</li>
+      <li><b>Epics 9/10</b> — decide before the sprint plan firms up, since it changes the ordering
+      source Lead reads from.</li>
+      <li><b>CXO's probe window</b> — closes when #1688's MCP work starts writing output. Decide
+      whether to spend the re-run now or accept the gate stays unenforceable.</li>
+      <li><b>PA's one question</b> — draft-then-review, or review-then-draft.</li>
+    </ul>
   </div>
 
   <footer>

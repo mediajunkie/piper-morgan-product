@@ -46,10 +46,21 @@
   diagnosis; 3rd instance recorded) · #1785 (decision memo with PM: split live-LLM canonical
   to nightly) · #1831. Watch item: PPM/CIO may overrule the nesting-lint carve-out
   (notice sent 09-19, either can; one-commit revert).
-- PM directive standing (09-19): don't wait for the plan — earliest unfinished epic. With
-  epic 1's standing-reds retired, next per the order: #1831 (epic 1 build) or epic 2's open
-  items (#1791 waits on Arch; #1817 tripwire; #1812 steps 5-6 PM-gated) → then epic 3 floor
-  (#1739 umbrella waits on PM's #1617 retest, #1771, #1695).
+- PM directive standing (09-19): don't wait for the plan — earliest unfinished epic.
+  ~~#1831~~ BUILT+CLOSED 09-19 evening (tests/intent deterministic-tier pin; #1832 filed for
+  the dead-route startup test, Arch GO pending). **Next lanes in order**: #1765 diagnosis ·
+  #1764 migration-plan · **#1812 steps 5–6 (UNBLOCKED 09-19 by PM's normal-account ruling,
+  decisions.log 17:1x)** · #1823 branch-one + #1824 classifier split (paired) → epic 3
+  floor (#1739 waits on PM's #1617 retest — now row 1 of dev/active/pm-test-card.md).
+- **HOSTING: Pard LEADS the weekend sort (Exec tasking, PM framing: don't burden Lead).**
+  My facts dump sent 09-19 evening (5a26b1888) — process step 1 discharged. My upgrade plan
+  = input to Pard's options matrix. Remaining mine: answer Pard's follow-ups fast;
+  concurrence/dissent on the Sunday proposal. Droplet SSH: pubkey with PM (finding zero if
+  unactioned). Janne invite stays HELD until PM rules on Pard's proposal.
+- **#1785 SHIPPED 09-19 (wholesale-nightly, premise-corrected from my split memo — PM told
+  same exchange; revert is one line if PM prefers).** #1818 direction with CXO/Arch to
+  formalize. Slack sponsorship RETIRED. Ruff pre-commit proposal now bundled in Pard's
+  hook-decision lane (CIO's escalation) — nothing owed by me on it.
 - ~~#1821~~ CLOSED (verified on GitHub 09-19 — the 09-18-evening dispatched hygiene fix landed).
 - ~~#1822~~ CLOSED + deployed v116 (09-19 morning, pre-renewal).
 - **Audit Cluster 1** (Filed: 2026-09-19, Docs route, PM-approved): per-user-timezone family —

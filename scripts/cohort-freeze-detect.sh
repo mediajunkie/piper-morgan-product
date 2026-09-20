@@ -124,7 +124,32 @@ done
 
 ws=$(date -r "$win_start" "+%Y-%m-%d %H:%M" 2>/dev/null || date -d "@$win_start" "+%Y-%m-%d %H:%M")
 we=$(date -r "$NOW_EPOCH" "+%Y-%m-%d %H:%M" 2>/dev/null || date -d "@$NOW_EPOCH" "+%Y-%m-%d %H:%M")
-echo "cohort-freeze: examined ref=origin/main tip=$TIP$FETCH_NOTE window=[$ws .. $we] (${WINDOW_H}h) watched_roles=$roles scheduled_fires=$sched emissions=$emitted emitters=[${emitters# }] min_sched=$MIN_SCHED lag=${DISPATCH_LAG_MIN}m" >&2
+
+# 🔴 THIRD FALSE-POSITIVE CAUSE, added 2026-09-19 (HOST's finding, wave-2 renewal day — cc'd to CIO
+# as this script's owner, re-checked at trunk before being reported, not a raw rc=1 forwarded blind).
+# The design comment at the top of this file ("ZERO emissions across EVERY watched role ... is not
+# something a busy session can produce") was TRUE when written (2026-08-07) and is no longer true:
+# duty-cycle-heartbeat.sh's --if-quiet refinement (a), added later, SUPPRESSES the .tsv row write
+# whenever a role has committed recently — the row is redundant with the commit itself. A cohort
+# that is maximally busy (every role committing, every heartbeat call correctly self-suppressing)
+# now produces emissions=0 on THIS surface by design, which is exactly what a genuine freeze also
+# produces. HOST's case: 13:07, emissions=0, rc=1 — and 156 commits had landed on origin/main in the
+# same 4h window. Not a false alarm from stale local state (the 08-09 cause above) — a structural
+# blind spot in what "emissions" counts, now that the emission mechanism it was designed against has
+# changed underneath it.
+#
+# Fix: count commit activity in the SAME window as a corroborating signal, cheap and read-only, and
+# say so in the verdict rather than silently downgrading the alert (m-44 — report what was measured,
+# don't quietly reclassify). This does NOT suppress the exit-1 signal or the "look at this" verdict —
+# a window with zero heartbeat emissions is still worth a human glance regardless of cause — it only
+# stops the message from pointing a responder at "account limit / host outage" when the more likely
+# explanation (busy-cohort suppression) is sitting right there in the commit log.
+commits_in_window=0
+if [ -n "${TIP:-}" ]; then
+  commits_in_window=$(git -C "$REPO" log --since="$ws" --until="$we" origin/main --oneline 2>/dev/null | wc -l | tr -d ' ')
+fi
+
+echo "cohort-freeze: examined ref=origin/main tip=$TIP$FETCH_NOTE window=[$ws .. $we] (${WINDOW_H}h) watched_roles=$roles scheduled_fires=$sched emissions=$emitted emitters=[${emitters# }] commits_in_window=$commits_in_window min_sched=$MIN_SCHED lag=${DISPATCH_LAG_MIN}m" >&2
 
 if [ "$sched" -lt "$MIN_SCHED" ]; then
   echo "INSUFFICIENT-SCHEDULE ($sched scheduled fires < $MIN_SCHED in window) — NOT an all-clear, this window cannot discriminate" >&2
@@ -139,7 +164,11 @@ if [ "$emitted" -eq 0 ]; then
   # That is not a false positive -- a cohort-wide delivery failure IS worth waking someone for -- but
   # naming the wrong cause sends the responder to the wrong place. So the message now states what was
   # measured and lists the causes as alternatives, per m-44.
-  echo "COHORT-FREEZE $sched scheduled fires across $roles watched roles in the last ${WINDOW_H}h, and ZERO emissions REACHED origin/main. Something cohort-wide, not N separate stalls — stand the cohort down and notify PM. ⚠️ CAUSE NOT DETERMINED: this measures DELIVERY, so an account limit, a host outage, AND a cohort that is working-but-not-pushing all look identical here. Check whether work exists un-pushed on the seats before concluding the cohort is idle."
+  if [ "$commits_in_window" -gt 0 ]; then
+    echo "COHORT-FREEZE(?) $sched scheduled fires across $roles watched roles in the last ${WINDOW_H}h, ZERO heartbeat emissions, BUT $commits_in_window commit(s) landed on origin/main in the same window — the likelier explanation is busy-cohort heartbeat suppression (duty-cycle-heartbeat.sh --if-quiet), NOT a freeze. Verify with 'git log' before standing the cohort down; account-limit/host-outage are less likely than commit activity suggests. Still worth a human glance — this surface alone cannot rule out a freeze that happens to coincide with a few stray commits — but do not treat this as equivalent to a genuine zero-activity blackout."
+  else
+    echo "COHORT-FREEZE $sched scheduled fires across $roles watched roles in the last ${WINDOW_H}h, ZERO emissions REACHED origin/main, and ZERO commits landed in the same window either. Something cohort-wide, not N separate stalls — stand the cohort down and notify PM. ⚠️ CAUSE NOT DETERMINED: this measures DELIVERY, so an account limit, a host outage, AND a cohort that is working-but-not-pushing all look identical here. Check whether work exists un-pushed on the seats before concluding the cohort is idle."
+  fi
   exit 1
 fi
 exit 0

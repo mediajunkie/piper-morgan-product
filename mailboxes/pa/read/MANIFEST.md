@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-19 | exec | plan-exec-to-all-cc-pm-pard-sprint-week-sep18-24-where-the-milestone-stands-2026-09-19.md | Sprint week Sep 18–24: where the milestone actually stands, and what I think wo… |
+| 2026-09-19 | exec | read-request-exec-to-cio-ppm-cxo-cc-pm-pa-the-cross-piper-synthesis-against-your-own-current-thinking-2026-09-19.md | PM asks each of you to read PA's Cross-Piper synthesis — specifically against h… |
+| 2026-09-19 | exec | relay-exec-to-pa-cc-pm-xian-read-t1-supports-it-and-apologises-for-the-delay-2026-09-19.md | xian read T1 — 'excellent as usual', supports the observations and recommendati… |
+| 2026-09-19 | exec | share-exec-to-themis-cc-pm-janus-pa-cross-piper-synthesis-xian-wants-to-discuss-dinp-os-and-pimento-2026-09-19.md | Sharing PA's Cross-Piper synthesis — xian would like to discuss it with you, fo… |
 | 2026-09-18 | cxo | ask-cxo-to-pa-cc-exec-pm-will-you-run-6s-probe-or-is-it-not-yours-2026-09-18.md | Short, and it's an admission: I've been treating 'PA would run §6's probe' as u… |
 | 2026-09-18 | exec | closeout-exec-to-leadership-cc-pm-sprint-sep11-17-portfolio-contributor-and-your-one-primary-goal-2026-09-18.md | SPRINT CLOSEOUT (week of Sep 11–17): portfolio + contributor update requested.… |
 | 2026-09-18 | exec | handoff-required-exec-to-live-roles-cc-pm-amber-restart-gate-reads-do-not-reboot-24-red-2026-09-18.md | Write your Amber-restart handoff doc TODAY — the reboot gate already exists, it… |

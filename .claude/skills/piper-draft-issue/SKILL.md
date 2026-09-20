@@ -166,7 +166,39 @@ gh issue create \
   --body-file /tmp/issue-draft.md
 ```
 
-Note the issue number returned. If this is a child of an epic, add a comment to the epic linking it:
+Note the issue number and URL returned.
+
+### Step 5b — Add to the board and set Status (MANDATORY — do not skip)
+
+⚠️ **An issue that isn't on the board is invisible to sprint planning.** This step used to be absent
+from this skill, so an author could follow it perfectly and still produce an off-board issue — which
+happened **six times in three days** (2026-09-17→19, across at least four different roles) and was
+hand-fixed by PPM each time. Creation was specified; this half wasn't. That asymmetry is what made
+it recur across people rather than being learned once.
+
+```bash
+# 1. Add to the board (use the issue URL from Step 5)
+gh project item-add 1 --owner mediajunkie --url <issue-url>
+```
+
+```bash
+# 2. Set Status = Product Backlog, using the item id from the item-add response
+gh api graphql -f query='mutation{ updateProjectV2ItemFieldValue(input:{
+  projectId:"PVT_kwHOADE-8s4A-JwA", itemId:"<ITEM_ID>", fieldId:"PVTSSF_lAHOADE-8s4A-JwAzgxpGyU",
+  value:{ singleSelectOptionId:"e7d1c990" } }){ projectV2Item{ id } } }'
+```
+
+**`Product Backlog` is always the target, regardless of milestone** (ratified 2026-09-12). This is
+not a judgment call the skill makes — it's a fixed default, which is exactly why it's safe to
+hardcode here. *(Milestone is the opposite: it IS a judgment call about the work's content, so it
+stays in Steps 4-5 where a human picks it.)*
+
+> 🔴 **Use `updateProjectV2ItemFieldValue` (per-item), NEVER `updateProjectV2Field` (field-level).**
+> The field-level mutation's `singleSelectOptions` argument is a **full replace with no undo path**
+> and wiped Sprint assignments for **1175 items** on 2026-07-05. The per-item form above is the safe
+> one. See CLAUDE.md §GitHub and Tooling Gotchas.
+
+If this is a child of an epic, add a comment to the epic linking it:
 ```bash
 gh issue comment EPIC_NUMBER --repo OWNER/REPO \
   --body "Child issue filed: #NEW_NUMBER (SLUG)"

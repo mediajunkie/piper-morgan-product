@@ -36,6 +36,7 @@ A row with no blocker and a `Filed` date ≥21 days old will be flagged — that
 | 18 | Lead — #1527: did named-delete ship (a) or is the capability-decline false (b)? | 2026-09-08 | Awaiting Lead; if (b), a decline is a false claim about our own surface |
 | 19 | PA — confirm whether the ESSENCE ruling reference is live or historical | 2026-09-08 | Awaiting PA; deliberately not boarded as open OR stale |
 | 20 | ~~PM — should the START-side carry-forward refresh become a cohort norm?~~ | 2026-09-06 | **CLOSED 09-18 — duplicate of row 9, same question filed twice, both stale for 10 days.** Resolved by CIO 09-08; see row 9. ⚠️ The irony is the finding: **the very amendment CIO shipped mandates a three-surface re-check per PM-gated row — and it lands on carry-forward rows, not standing-items rows, so this file never got it applied.** |
+| 21 | ~~REMIND PM to review PA's Cross-Piper synthesis~~ | 2026-09-19 | ✅ **CLOSED same day** — PM read it, called it "excellent as usual", supports observations and recommendations, apologised for the 16-day delay. Relayed to PA. Reminder never needed. |
 
 ## Closed
 
@@ -44,3 +45,4 @@ A row with no blocker and a `Filed` date ≥21 days old will be flagged — that
 | Attention board — nine open decisions | 2026-08-30 | 2026-09-06 | Walked one by one with PM. Three already resolved (board was 33% stale), five ruled, one re-scoped. Board empty. |
 | #1709 — why does nobody enforce the interface | 2026-09-06 | 2026-09-06 | Root-caused, routed to Arch, Protocol shipped as #1723, Lead drained the routing, #1709 closed. Same day. |
 | Session-log START gap (7q) | 2026-09-06 | 2026-09-06 | PM directive → CIO shipped NO-SESSION-LOG detector in `duty-cycle-freeze-check.sh` v0.15; verified on my seat. |
+| 22 | ★ **REMIND PM: check Vercel Deployment Storage** — retention set 2026-09-19 (Prod 1wk, Pre-Prod 1wk, Errored 1wk, Canceled 1d, applied to all projects). PM: *"Remind me to check tomorrow and thereafter for a while."* **CHECK AT A FIRE EACH DAY** until PM confirms a number, then weekly until it's stable. PM intends to bump Production back to 30d once storage drops. ⚠️ Confounder: Web's website#43 (move 240MB of build inputs out of `public/`) is a SECOND change to the same system — if both land before a reading, the before/after is unattributable. | 2026-09-19 | **Open — daily until PM reports a figure** |

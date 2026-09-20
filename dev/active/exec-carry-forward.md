@@ -56,6 +56,24 @@ mail triaged there is invisible to every board sweep. PM's spoken rulings: nowhe
 **Uncommitted work is the failure mode we have tooling for. Committed-but-unreachable is the one we
 don't** — and every routing miss today was that one.
 
+## Ship #061 — drafted, awaiting PM's close read
+
+**Draft**: `dev/active/weekly-ship-061-draft-2026-09-19.md` (synced to `docs/public/comms/drafts/`).
+Title **"Closed means observed."** PM's high-level read 09-19: *"looks solid"*, **close review Monday
+or Tuesday.**
+
+⚠️ **Watch the Comms window.** Sequence is fixed — **draft → PM → Comms → publish** — and **pubDate is
+Wed 2026-09-23**. A Monday review leaves Comms comfortable; **a Tuesday review leaves them under a
+day** for a review that has its own audit skill and is not a rubber stamp. Flagged to PM 09-19,
+deliberately without pressing. **Exec never self-initiates the Comms handoff — PM gates it.**
+
+**Open flag for the review**: draft is **1,430 words against the 800–1,200 target.** Not cut to fit;
+Product and Methodology carry the most trimmable material. Trimming is a review call.
+
+**Calendar**: Comms pre-seeded **#061–#073** (a full quarter of Wednesday slots) within hours of PM's
+ask — the mechanism worked on day one. I filled their #061 placeholder rather than adding a second
+row, and told them I'd touched their file.
+
 ## Also live
 
 - **Reboot gate** — `amber-fleet gate` (in the `mediajunkie` repo) is the pre-reboot check. Was
