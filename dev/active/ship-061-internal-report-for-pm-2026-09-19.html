@@ -233,39 +233,68 @@
     point as (2): correctly not started. <b>5 · Two days</b> to the ceiling event.</p>
   </div>
 
-  <h2>⚡ Vercel — do this now, it takes about two minutes</h2>
+  <h2>⚡ Vercel — corrected, and the lever is not the one I named</h2>
   <div class="card bad">
-    <p style="margin-top:0"><b>The problem is Deployment Storage at 100% of the 10 GB free tier</b> —
-    not traffic. <i>"Congrats on your traffic"</i> in Vercel's email is boilerplate; the metric named
-    in it is storage.</p>
-    <p>🔴 <b>And the fix is not deleting deployments one by one. It's a retention policy</b>, which is
-    also the answer to "what's recurring": <b>every push creates a preview deployment, and without a
-    retention period they accumulate forever.</b> Deleting by hand clears the symptom and it refills.</p>
+    <p style="margin-top:0">⚠️ <b>Two corrections to what I told you, both from you finding the
+    actual screen.</b></p>
+    <p><b>1 · The path is Settings → Build and Deployment</b>, not Security &amp; Privacy. I took
+    that from Vercel's docs page rather than the product. <b>Your UI is the authority; the docs were
+    stale.</b></p>
+    <p><b>2 · You have ONE project</b>, so the "apply to all existing projects" warning I flagged is
+    moot. Nothing to be careful about there.</p>
 
-    <h3 style="margin-top:1rem">Set the team default</h3>
-    <ol>
-      <li>Open <b>Team Settings</b> → <b>Security &amp; Privacy</b></li>
-      <li>Find <b>Deployment Retention Policy</b></li>
-      <li>Set periods for <b>Canceled</b>, <b>Errored</b>, <b>Pre-Production</b>, <b>Production</b></li>
-      <li>⚠️ <b>CLEAR the "Apply this policy to all existing projects" checkbox</b> unless you
-      actually intend to overwrite every existing project's policy — Vercel's own docs flag this, and
-      it is the irreversible-looking step on the page</li>
-      <li><b>Save</b></li>
-    </ol>
-    <p><b>What to set each period from</b> (Vercel's framing, which is a sensible way to decide):</p>
+    <h3 style="margin-top:1rem">Your proposed TTLs — three of four are right, one is the whole ballgame</h3>
     <div class="scroll"><table>
-      <tr><th>state</th><th>keep long enough for</th><th>likely the big one for us</th></tr>
-      <tr><td><b>Pre-Production</b></td><td>code review, QA, external approvals, regression investigation</td><td>✅ <b>yes</b> — this is where per-push previews pile up</td></tr>
-      <tr><td><b>Production</b></td><td>incident recovery, rollback, release audits</td><td>keep generous</td></tr>
-      <tr><td><b>Canceled / Errored</b></td><td>build debugging</td><td>✅ safe to make short</td></tr>
+      <tr><th>setting</th><th>yours</th><th>verdict</th></tr>
+      <tr><td>Canceled</td><td>1 day</td><td>✅ fine — nothing to debug in a canceled build</td></tr>
+      <tr><td>Errored</td><td>1 week</td><td>✅ fine — a week is plenty to debug a failed build</td></tr>
+      <tr><td>Pre-Production</td><td>1 day</td><td>✅ <b>and your instinct is right — this barely matters for us.</b> The site deploys from <code>main</code>; there are two stale <code>claude/*</code> branches and no PR-preview workflow. <b>I said "keep this generous" earlier and that was wrong for our setup.</b></td></tr>
+      <tr><td><b>Production</b></td><td><b>30 days</b></td><td>🔴 <b>THIS is the lever, and 30 days is the expensive choice</b> — see below</td></tr>
     </table></div>
-    <p><b>Per-project instead of team-wide:</b> open the project → <b>Settings</b> → <b>Security</b> →
-    <b>Deployment Retention Policy</b>. Affects only that project.</p>
-    <p style="margin-bottom:0"><b>Instructions:</b>
-    <a href="https://vercel.com/docs/deployment-storage/optimize">vercel.com/docs/deployment-storage/optimize</a>.
-    ⚠️ <b>Retention changes affect stored history over time, not instantly</b> — Vercel's Usage page
-    refreshes on its own schedule, so don't read an unchanged number five minutes later as failure.
-    <b>Web stays access-blocked until they have a token</b>, so this one is yours or Pard's.</p>
+
+    <p>🔴 <b>Measured, not guessed: 54 pushes to <code>main</code> in the last 30 days.</b> Every one
+    is a Production deployment. <b>So a 30-day Production retention keeps roughly 54 builds</b> — and
+    at a 10 GB cap that is about 185 MB each, which is a plausible size for this site.</p>
+    <p><b>The distribution is lumpy, which is the real point:</b> 10 of those 54 pushes landed on
+    Saturday 09-12 alone. <b>Retention measured in days behaves very differently under a burst than
+    the average suggests.</b></p>
+    <div class="ask"><b>My suggestion: try Production at 7 days.</b> That keeps roughly 13 builds
+    instead of 54 — about a 75% cut — and still covers rollback for a week, which is longer than any
+    regression has gone unnoticed here. <b>If a week feels thin for release audits, 14 days still
+    halves it.</b> Start there, watch Usage, and go shorter only if it hasn't moved.</div>
+  </div>
+
+  <div class="card warn">
+    <h3 style="margin-top:0">⚠️ Deployment Storage is not traffic — and this is the confusion worth clearing</h3>
+    <p><b>The thing at 100% is Deployment Storage: the disk Vercel uses to keep your PAST BUILDS.</b>
+    It has nothing to do with visitors, requests, or bandwidth. <b>Vercel's "congrats on your
+    traffic!" line is boilerplate in a template that got sent about storage</b>, and it is what sent
+    us both down the wrong path.</p>
+    <p>🔴 <b>So: bot scraping cannot be causing this, and blocking bots will not fix it.</b> Scrapers
+    consume bandwidth and function invocations. They do not create deployments. <b>Your storage grew
+    because you pushed 54 times, not because anyone visited.</b></p>
+    <p><b>What the other numbers on that screen were saying:</b> Build Time <b>3 h of 100 h</b> — 3%
+    used, no concern. Global Config Reads and Writes both <b>0</b>. <b>Deployment Storage was the only
+    metric at its ceiling.</b></p>
+    <p style="margin-bottom:0"><b>And on "should I be paying for Pro":</b> the email is an automated
+    tier notice, not an assessment of your traffic being valuable. <b>Retention is the free fix for
+    the thing that is actually full.</b> If bot traffic <i>is</i> separately costing you, that shows
+    up as bandwidth or function invocations — <b>different metrics, different page, and I have not
+    seen them.</b> Worth a look while you are in there, but it is not this problem.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Does this cover the beta app too? No — and the sprawl is its own finding</h3>
+    <p><b>Vercel hosts the website only.</b> You have one project there, which is consistent.</p>
+    <p><b>Three environments, three providers, and no single place that says so:</b></p>
+    <div class="scroll"><table>
+      <tr><th>what</th><th>where</th><th>state</th></tr>
+      <tr><td><b>Website</b> (pipermorgan.ai)</td><td><b>Vercel</b></td><td>storage at 100%, fixable today</td></tr>
+      <tr><td><b>Beta app</b></td><td><b>Fly</b></td><td>separate account — this ceiling cannot touch it</td></tr>
+      <tr><td><b>Alpha app</b></td><td><b>a droplet</b></td><td>no deploy since July</td></tr>
+    </table></div>
+    <p style="margin-bottom:0">⭐ <b>That you had to ask which one this covers is itself the answer to
+    why the hosting review is worth doing.</b> Pard and Lead have it.</p>
   </div>
 
   <h2>Plan for the week ahead — Fri 18 → Thu 24</h2>
