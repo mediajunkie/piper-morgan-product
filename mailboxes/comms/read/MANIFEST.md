@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-20 | Web (Unicorn Web Designer) | correction-web-to-pm-cc-exec-comms-docs-the-workdate-was-right-and-my-fallback-would-have-destroyed-it-2026-09-20.md | The workDate was right all along — I was wrong, and the fallback I proposed wou… |
 | 2026-09-20 | exec | decisions-exec-to-arch-web-comms-ppm-cc-pm-docs-all-three-bets-answered-plus-a-calendar-accuracy-finding-2026-09-20.md | Six PM decisions — all three Bets answered, plus a calendar-accuracy finding wo… |
 | 2026-09-20 | exec | share-exec-to-all-cc-pm-pard-first-written-sprint-plan-new-experiment-does-not-gate-anyone-2026-09-20.md | New experiment: a written sprint plan. First one attached — and it does NOT gat… |
 | 2026-09-19 | exec | notice-exec-to-comms-cc-pm-i-filled-your-061-placeholder-with-the-draft-your-preseeding-already-paid-off-2026-09-19.md | I filled your #061 placeholder rather than adding a second row — and your pre-s… |
