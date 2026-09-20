@@ -1,8 +1,27 @@
-# Web carry-forward — 2026-09-19 (active), cron ID last updated 2026-09-18 21:24
+# Web carry-forward — 2026-09-19 (DAY-CLOSED), cron ID last updated 2026-09-19 21:57
 
 **Session**: Amber / pipermorgan.ai, Opus 5 (since 09-14; Fable access ceiling) · cron
-`22 6,9,12,15,18,21 * * *` (job **`580a4989`**, delete-then-create 2026-09-18 21:24 STOP,
-CronList-verified, expires ~2026-09-25) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+`22 6,9,12,15,18,21 * * *` (job **`f1f73a46`**, delete-then-create 2026-09-19 21:57 STOP, was
+`580a4989`, CronList-verified exactly one, expires ~2026-09-26) · registry row
+`dev/active/duty-cycle-registry.tsv` line `web`
+
+## 🔴 FIRST THING TOMORROW — two PM answers may have landed overnight
+
+1. **`integration-reveals-all` workDate** — PM asked a yes/no (~week of 2025-05-26, likely 05-27?).
+   If answered: set it in `data/blog-metadata.csv`, regenerate `medium-posts.json` via
+   `sync-csv-to-json.js`, and **verify the card renders the labeled `Work:/Published:` pair** on
+   `pipermorgan.ai/blog?page=16` (it currently shows a single bare date — that's the tell).
+   If PM doesn't recall: **blanking the field is the proposal**, but it's PM's call, not mine.
+2. **website#43 — the Vercel `source/` move, READY TO EXECUTE, DO NOT SHIP UNPROMPTED.**
+   ⚠️ I told PM at 18:52 I'd ship absent a reply, then **revised that out loud** at STOP: Exec put
+   a sequencing decision in front of PM (*"set retention, note the Usage number, then tell Web to
+   go — or tell Web to go first"*). **Trigger is now PM's word, either order** — shipping
+   unprompted preempts a live decision and destroys the clean before/after. Exec's read: Web's
+   payload finding **supersedes retention as the first lever**. Plan: `git mv
+   public/assets/blog-images/source` → a non-served path, update `SOURCE_DIR` in six scripts
+   (`match-blog-images`, `verify-images`, `inventory-report`, `list-missing-images`,
+   `inventory-gaps`, `image-matcher-helper`); **move, not delete** (website#37 wants the archive).
+   Knock-on: `docs/matching-data.json`'s 80 paths go stale — regenerable output, not a blocker.
 
 ⭐ **2026-09-19 — context cleared deliberately at ~08:23 (Wave 2, Amber fleet renewal; Pard
 conducting, Janus certifying, xian overseeing).** Context clear, **not** a session exit. Consequence

@@ -1,4 +1,18 @@
-# Lead carry-forward — rewritten 2026-09-18 ~18:50 PT (freshness rule: full pass at START/STOP)
+# Lead carry-forward — rewritten 2026-09-19 ~21:55 PT at STOP (freshness rule: full pass at START/STOP)
+
+## TOMORROW FIRST (PM-approved, Exec-rolled-up)
+- **#1765 diagnosis lane, first thing** — fresh session. Three catalogued instances of
+  env-divergence (cross_user local-red/CI-green ×2 · test_create_todo CI-green/local-red ·
+  the tests/intent cohort now pinned by #1831's conftest). Then: #1764 (migration-plan) →
+  **#1812 steps 5–6** (Arch's six-consumer enumeration in read/ — the `return None` rung
+  is the hazard; rung dies, refusal becomes unconditional; also dissolves my #1823 §2
+  caveat — update the trace's record when it lands) → #1823 branch-one + #1824 (paired).
+- **Hosting**: Pard's options matrix lands Saturday, proposal to PM Sunday evening; my
+  remaining part = fast answers + concurrence/dissent. Droplet SSH now LIVE from this seat
+  (PM authorized 09-19 evening); alpha = 0.8.10.14 (July 16) as FACT; further probes only
+  on Pard's ask. PM may want a droplet vacated — routed to Pard's proposal.
+- **#1818**: CXO ruled experience half (greeting passes + carries key-state); structural
+  half (property-not-list) with Arch; NOTHING owed by me until structure settles.
 
 ## Live state
 - **v116 LIVE on Fly**, health 200 (deployed 09-19 morning). ⚠️ alpha.pipermorgan.ai (the
