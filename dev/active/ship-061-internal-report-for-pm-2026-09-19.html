@@ -233,6 +233,41 @@
     point as (2): correctly not started. <b>5 · Two days</b> to the ceiling event.</p>
   </div>
 
+  <h2>⚡ Vercel — do this now, it takes about two minutes</h2>
+  <div class="card bad">
+    <p style="margin-top:0"><b>The problem is Deployment Storage at 100% of the 10 GB free tier</b> —
+    not traffic. <i>"Congrats on your traffic"</i> in Vercel's email is boilerplate; the metric named
+    in it is storage.</p>
+    <p>🔴 <b>And the fix is not deleting deployments one by one. It's a retention policy</b>, which is
+    also the answer to "what's recurring": <b>every push creates a preview deployment, and without a
+    retention period they accumulate forever.</b> Deleting by hand clears the symptom and it refills.</p>
+
+    <h3 style="margin-top:1rem">Set the team default</h3>
+    <ol>
+      <li>Open <b>Team Settings</b> → <b>Security &amp; Privacy</b></li>
+      <li>Find <b>Deployment Retention Policy</b></li>
+      <li>Set periods for <b>Canceled</b>, <b>Errored</b>, <b>Pre-Production</b>, <b>Production</b></li>
+      <li>⚠️ <b>CLEAR the "Apply this policy to all existing projects" checkbox</b> unless you
+      actually intend to overwrite every existing project's policy — Vercel's own docs flag this, and
+      it is the irreversible-looking step on the page</li>
+      <li><b>Save</b></li>
+    </ol>
+    <p><b>What to set each period from</b> (Vercel's framing, which is a sensible way to decide):</p>
+    <div class="scroll"><table>
+      <tr><th>state</th><th>keep long enough for</th><th>likely the big one for us</th></tr>
+      <tr><td><b>Pre-Production</b></td><td>code review, QA, external approvals, regression investigation</td><td>✅ <b>yes</b> — this is where per-push previews pile up</td></tr>
+      <tr><td><b>Production</b></td><td>incident recovery, rollback, release audits</td><td>keep generous</td></tr>
+      <tr><td><b>Canceled / Errored</b></td><td>build debugging</td><td>✅ safe to make short</td></tr>
+    </table></div>
+    <p><b>Per-project instead of team-wide:</b> open the project → <b>Settings</b> → <b>Security</b> →
+    <b>Deployment Retention Policy</b>. Affects only that project.</p>
+    <p style="margin-bottom:0"><b>Instructions:</b>
+    <a href="https://vercel.com/docs/deployment-storage/optimize">vercel.com/docs/deployment-storage/optimize</a>.
+    ⚠️ <b>Retention changes affect stored history over time, not instantly</b> — Vercel's Usage page
+    refreshes on its own schedule, so don't read an unchanged number five minutes later as failure.
+    <b>Web stays access-blocked until they have a token</b>, so this one is yours or Pard's.</p>
+  </div>
+
   <h2>Plan for the week ahead — Fri 18 → Thu 24</h2>
   <div class="card">
     <p style="margin-top:0"><b>Bets 001–003 sit here rather than in "needs you"</b>, per your
