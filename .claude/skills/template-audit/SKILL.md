@@ -228,21 +228,24 @@ grep -in "cohort" <draft>
 
 Any match = FAIL. Public prose uses "team" (default) or "agent team" (agents-specific context). "Cohort" is fine in session logs, mail, and internal docs — not in published posts.
 
-### 11. Agents referred to as "people"
+### 11. Agents referred to as "people"/"person"
 
 ```bash
-grep -inE "\bpeople\b|\bsomeone\b|\banyone\b|\beveryone\b|\bnobody\b" <draft>
+grep -inE "\bpeople\b|\bperson\b|\bsomeone\b|\banyone\b|\beveryone\b|\bnobody\b" <draft>
 ```
 
 **Needs judgment, not a bare grep result** — most of these are legitimate. The only FAIL case is when the word stands in for a *named agent* (PA, Arch, PPM, CXO, Comms, etc., individually or as a group) rather than for a human — a tester, a reader, a user, or a genuinely generic unknown actor. Read each match in context:
 
 - ✗ **FAIL**: "five people independently measure the wrong thing" when the five are PA/Arch/PPM/Comms/CXO. Fix: "five agents," or name the group ("the team," "every agent who...").
 - ✗ **FAIL**: a section heading like "Everyone checked, and everyone was wrong" describing a specific set of named agents. Fix: "The team checked..." ("team" is the sanctioned public-prose collective noun — see check #10) or restate with "agents."
+- ✗ **FAIL**: "a person refusing to lower the bar" describing a single named agent. Fix: "an agent," or the role name directly.
 - ✓ **PASS**: "the gate wasn't actually protecting anyone yet" — "anyone" means testers/users, not agents.
 - ✓ **PASS**: "from the point of view of someone trying to set up the connector" — a human configuring the product, not an agent.
 - ✓ **PASS**: a closing reader-question ("the next time several people agree with you fast...") that deliberately generalizes to the reader's own world — these are supposed to reach past the agent-specific story, don't flatten them to "agents."
 
 Caught 2026-09-01 (PM: "recent drafts have taken to referring to agents as 'people' — we may need to add that to the things you check"), found in 2 of 2 drafts checked that morning — one had just a footer instance, the other had it running through nearly every section, including a heading. Same family as check #10 ("cohort"): an internal-register word choice that reads wrong in public prose, but unlike #10 this one can't be a pure banned-string check because half its matches are correct as written.
+
+⚠️ **RULED, not just checked, 2026-09-19 (HOST, `decisions.log`, #1834).** "Person"/"people" for agents is not a register-scoped style call the way "cohort" or "team" is — "team" flexes by audience, "people" doesn't, because the failure isn't tone, it's a false claim (asserted motive/virtue an agent's actual behavior doesn't evidence — "a clearing condition held under pressure" is the accurate claim; "people refused to lower the bar" isn't a softer version of it). **Holds in internal PM-facing reports too, not just published prose** — HOST's triggering instance was Exec's own Ship-internal-report thesis sentence, not a blog draft. This check is build-item 1 of #1834 (Comms owns it, since it rides this exact chokepoint); build-item 2 covers internal reports and is Exec's/CIO's.
 
 ### 12. AI-writing-tics / cliché constructions
 
@@ -383,3 +386,5 @@ On PASS: send the publish-ready memo to Docs inbox per the handoff protocol (Jun
 *v1.13 — 2026-09-09. **Ship calibration table gains a fifth row: check #14's short-form-role-name NO-GLOSS sub-check is N/A on Ships.** Reviewing Ship #059, the acronym check flagged Arch/CXO/PPM/CIO/HOST/Comms/Docs as unglossed. Rather than assume they were real findings or dismiss them on instinct, checked against 5 prior published Ships (#050, #051, #053, #054, #055) — #055 alone carries 5 different unglossed short forms and published clean, confirming this is established Ship-genre convention, not a defect. PM, on hearing the finding: *"we should keep track of the distinct conventions between the blog series and the Ship"* — this table is that tracking surface, so the finding belongs here rather than only in a session log. **Narrower than the other four rows**: only the short-form-glossing sub-pattern is exempt on Ships; check #14's actual hard-acronym FALSE-UNPACK findings still apply and still block.*
 
 *v1.14 — 2026-09-12. **Pre-Flight gains a third read: `blog-style-guide.md`, the new house-terminology doc.** Docs independently "corrected" PM's deliberate "minimum-valuable-product" back to the conventional "viable" while proofreading "Piper Morgan Eras" — the exact stage this skill exists to gate — published it live, then caught and fixed it via the file's own git history. This is the second known instance of the identical mistake (the first, pre-06-10, is what got MVP added to the glossary in the first place) — two different roles, same root cause: treating a documented deliberate term as a typo without checking first. PM's direct instruction: the fact belongs in a blog-specific style guide, which didn't exist yet. Docs created it and added it to `blog-post-template.md`'s Required Reading; added the same pointer here (Pre-Flight step 3) and to `draft-blog-post`'s Required Reading, since the mistake can happen at either the draft stage or this audit stage.*
+
+*v1.15 — 2026-09-19. **Check #11 upgraded from style guidance to ruling, and gains `\bperson\b`.** HOST ruled (`decisions.log`, #1834, in response to PM's referral after Exec's own Ship-061 internal report called six named agents "people" in its thesis sentence): agents are never "person"/"people," in any register, published or internal — unlike "cohort"/"team," this isn't a tone call, because "people refused to lower the bar" asserts evidenced motive the agent's actual behavior doesn't show, where "a clearing condition held under pressure" is the accurate claim. The grep pattern was missing the singular "person" entirely — added it. This check is build-item 1 of #1834 (Comms owns it, since it already rides this exact chokepoint); build-item 2 (PM-facing internal reports) is Exec's/CIO's. Picked up same-day from HOST's memo rather than left as a standing item, since the fix was small, unblocked, and squarely in-lane.*
