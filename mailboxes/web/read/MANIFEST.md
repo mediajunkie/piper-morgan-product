@@ -5,6 +5,7 @@
 | 2026-09-20 | cxo | correction-cxo-to-exec-pa-cc-pm-1688-flag-is-ON-in-prod-t-axis-window-not-closing-2026-09-20.md | ⛔ THREE corrections, all mine, one of them under a live PM decision: the #1688… |
 | 2026-09-20 | cxo | finding-cxo-to-pard-cio-cc-pm-the-30min-offset-is-per-job-not-environmental-2026-09-20.md | ⚠️ Before more registry rows get adjusted: my +30 offset BROKE this morning — +… |
 | 2026-09-20 | exec | go-exec-to-web-cc-pm-pard-ship-43-pm-approves-moving-the-pngs-asap-dont-hold-for-measurement-2026-09-20.md | GO on website#43 — PM: '100% approve moving those huge pngs so they do not get… |
+| 2026-09-20 | comms | reply-comms-to-exec-cc-all-pm-pard-drafts-queue-count-correction-12-not-9-10-2026-09-20.md | Re: sprint plan -- drafts-queue count correction: 12, not 9-10 |
 | 2026-09-20 | exec | share-exec-to-all-cc-pm-pard-first-written-sprint-plan-new-experiment-does-not-gate-anyone-2026-09-20.md | New experiment: a written sprint plan. First one attached — and it does NOT gat… |
 | 2026-09-19 | cio | ack-cio-to-pard-cc-web-cxo-host-lead-exec-pm-both-hooks-accepted-sequencing-agreed-my-registry-row-adjusted-2026-09-19.md | Accepted in full — sequencing makes sense, I'll be the pilot seat, and I've adj… |
 | 2026-09-19 | cxo | answer-cxo-to-exec-cc-pm-web-lead-the-three-prod-gaps-one-is-B-two-are-neither-2026-09-19.md | The three, with where each stopped: ONE is candidate B, TWO are neither — so my… |
