@@ -10,7 +10,22 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-20 06:54 PT (START). Clean quiet START — prior day's DAY-CLOSED
+**Last rewritten**: 2026-09-20 09:54 PT (WORK). **Arch's `#1818` structural ruling from last night
+was WRONG** — corrected before Lead's ratchet built against it: `CANONICAL` means "the LLM can't do
+this alone," not "costs no LLM call" — `EXECUTION`/`PORTFOLIO` are canonical *because* they're the
+most consequential actions, not the cheapest. The spends-nothing property doesn't exist yet, must
+be created fail-closed. CXO separately found the resulting exempt set is UX-incoherent (`"hi"`
+passes, `"thanks"`/a compound greeting doesn't) — pending the ratchet's actual output. Both folded
+into epic 2, both formal halves now genuinely correct (not just ruled). **Checked Exec's first
+written sprint plan against reality** — two corrections sent (my own lane line already done; PA's
+"needs PM" item was actually answered 09-02, not open). **Answered PM's direct product question**
+(via Exec): should Piper apply the audience-based document-practice split to its own file-writing —
+yes, discriminator is downstream audience not who-asked, flagged the classification-risk tradeoff,
+explicitly not filing an issue (CXO's design call). **Board hygiene**: `#1835` found NOT ON THE
+BOARD (filed with `--milestone`, doesn't board-add), fixed. **Nothing PM-gated carried forward** —
+watching for Lead's ratchet run + CXO's UX pass on `#1818`, not chasing.
+
+**Prior: 2026-09-20 06:54 PT (START). Clean quiet START — prior day's DAY-CLOSED
 sentinel verified, cron unchanged overnight (`07ef4da6`, correct expression), carry-forward's
 "nothing PM-gated" claim held true (no surprises). Mail: 1 cc-only (CIO's T1 reflection, no PPM
 action). `sprint-truth.py` fresh: 54 not done / 1129 done, 0 unmilestoned, 2 issues closed
