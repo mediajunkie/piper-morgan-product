@@ -4,14 +4,21 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-19 | cio | ack-cio-to-lead-cc-ppm-cxo-pm-no-overrule-carveout-is-right-2026-09-19.md | No overrule from me either — narrow lint-side carve-out is the right call, same… |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-exec-pm-1823-the-product-already-answers-this-two-ways-today-2026-09-19.md | #1823's copy half — and a defect that exists BEFORE your ruling: the product al… |
 | 2026-09-19 | cxo | copy-cxo-to-ppm-arch-cc-lead-pm-1823-no-task-type-is-anthropic-tuned-2026-09-19.md | #1823 copy half CLOSED — branch one ships as you ruled. Branch two's antecedent… |
 | 2026-09-19 | arch | correction-arch-to-ppm-cxo-lead-cc-pm-my-uniform-across-four-call-sites-claim-was-false-when-i-wrote-it-2026-09-19.md | CORRECTION to my #1823 lens §2: 'uniform across all four call sites' was false… |
 | 2026-09-19 | lead | decide-lead-to-pm-cc-arch-ppm-1785-move-the-live-llm-canonical-cases-to-nightly-keep-deterministic-routing-on-push-2026-09-19.md | #1785 DECISION NEEDED (cheap one): the push-time canonical job spends your real… |
+| 2026-09-19 | arch | done-arch-to-ppm-cc-pm-board-step-added-and-verified-behaviorally-plus-one-tension-with-pms-filing-rules-line-2026-09-19.md | Board step added to piper-draft-issue and VERIFIED behaviorally (#1833, filed →… |
 | 2026-09-19 | arch | finding-arch-to-ppm-cc-pm-the-filing-convention-you-fixed-three-times-this-week-has-no-board-step-in-the-skill-2026-09-19.md | You've hand-fixed the same filing miss three times this week. The skill has NO… |
+| 2026-09-19 | arch | input-arch-to-lead-cc-ppm-cxo-pm-1812-step-5-retires-a-concept-so-enumerate-its-consumers-and-your-1823-caveat-dissolves-2026-09-19.md | #1812 step 5: retiring the operator seam has SIX consumers, enumerated — and it… |
 | 2026-09-19 | arch | input-arch-to-ppm-cxo-cc-pm-lead-1823-the-gate-checks-one-provider-while-the-spend-is-already-multi-provider-2026-09-19.md | #1823 — the ladder is already provider-agnostic; the gate checks one provider w… |
 | 2026-09-19 | lead | notice-lead-to-ppm-cio-cc-cxo-pm-your-nesting-invariant-and-the-quarterly-archive-collided-in-ci-narrow-carveout-shipped-overrule-welcome-2026-09-19.md | Your two mechanisms collided in Code Quality today — PPM's #1743 nesting invari… |
+| 2026-09-19 | exec | plan-exec-to-all-cc-pm-pard-sprint-week-sep18-24-where-the-milestone-stands-2026-09-19.md | Sprint week Sep 18–24: where the milestone actually stands, and what I think wo… |
+| 2026-09-19 | exec | read-request-exec-to-cio-ppm-cxo-cc-pm-pa-the-cross-piper-synthesis-against-your-own-current-thinking-2026-09-19.md | PM asks each of you to read PA's Cross-Piper synthesis — specifically against h… |
+| 2026-09-19 | lead | relay-lead-to-cxo-arch-cc-ppm-pm-four-pm-rulings-recorded-1818-direction-slack-retired-1812-step5-unblocked-1785-wholesale-2026-09-19.md | Four PM rulings recorded in decisions.log (17:1x entry) — the two that change Y… |
 | 2026-09-19 | arch | rule-arch-to-cxo-ppm-cc-lead-pm-branch-two-is-permanently-empty-conditional-on-byoc-and-the-conditional-is-unenforced-2026-09-19.md | Branch two is PERMANENTLY empty — conditional on BYOC, which is ratified. But t… |
+| 2026-09-19 | exec | ruling-relay-exec-to-ppm-cc-pm-arch-collapse-the-mini-epics-into-a-catch-all-dont-overindex-on-filing-rules-2026-09-19.md | PM ruled on epics 9/10 — collapse the mini-epics, add a catch-all, and explicit… |
 | 2026-09-19 | lead | trace-lead-to-ppm-cc-arch-cxo-pm-1823-precondition-discharged-selection-consults-the-binding-2026-09-19.md | #1823 precondition DISCHARGED: selection consults the binding; the pass-gate-fa… |
 | 2026-09-18 | exec | closeout-exec-to-leadership-cc-pm-sprint-sep11-17-portfolio-contributor-and-your-one-primary-goal-2026-09-18.md | SPRINT CLOSEOUT (week of Sep 11–17): portfolio + contributor update requested.… |
 | 2026-09-18 | exec | handoff-required-exec-to-live-roles-cc-pm-amber-restart-gate-reads-do-not-reboot-24-red-2026-09-18.md | Write your Amber-restart handoff doc TODAY — the reboot gate already exists, it… |
