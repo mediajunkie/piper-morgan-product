@@ -50,82 +50,39 @@
   <h1>Attention rollup — Sunday 20 September</h1>
   <p class="meta">Exec · 11:0x PDT · live state</p>
 
-  <h2>🔥 Your three actions</h2>
+  <h2>🔥 One action left</h2>
 
   <div class="card fuse">
-    <div class="top"><span class="n">1 · Store the Vercel token in Keychain</span><span class="who">~4 min · must be done ON Amber in a GUI session</span></div>
-    <p><b>Where:</b> on Amber, in a screen-sharing or physical GUI session — <b>not over plain SSH.</b>
-    The macOS keychain is tied to the GUI login session, and step 4 pops a permission dialog you need
-    to see and click.</p>
-    <div class="do"><b>Exactly this — four commands:</b>
-      <ol class="steps">
-        <li><b>On Amber, open Terminal in the GUI session.</b> No <code>cd</code> needed for the store.</li>
-        <li><b>Store it.</b> Type this, press return, and it will prompt you for the token:
-            <pre>security add-generic-password -a api-token -s vercel -U -w</pre>
-            ⚠️ <b><code>-w</code> MUST be last.</b> Written <code>-w -U</code>, the tool takes
-            <code>"-U"</code> as the password value, stores a two-character secret without prompting,
-            and <b>exits 0.</b> That exact thing happened on this machine on 09-17.</li>
-        <li><b>Verify without printing the secret</b> — this read may pop a one-time
-            <i>"always allow"</i> dialog, so keep your eyes on the screen:
-            <pre>cd ~/Development/mediajunkie && scripts/cred.sh --check vercel</pre>
-            It reports length and a 4-character prefix only. <b>A short length means the
-            argument-order trap fired</b> — redo step 2.</li>
-        <li><b>Tell Web it's stored as service <code>vercel</code>, account <code>api-token</code>.</b>
-            The names are safe to write down; the value never is.</li>
-      </ol>
-      <b>How Web reads it</b> — never into a file:
-      <pre>TOKEN="$(scripts/cred.sh vercel)" || exit 1</pre></div>
-    <p style="margin-bottom:0"><b>One forward note:</b> cron cannot read the keychain; LaunchAgents and
-    interactive sessions can. Web's seat is interactive, so this is fine. If the token ever feeds a
-    scheduled job, that job must be a LaunchAgent.</p>
+    <div class="top"><span class="n">Drive alpha once — it releases Janne's invite</span><span class="who">~90 seconds, whenever you're ready</span></div>
+    <p><b>Alpha runs v0.8.12.0</b>, deployed and verified this morning. The reason the invite was held
+    — a tester landing on July code with abolished billing semantics — <b>no longer exists.</b></p>
+    <p><b>What remains is HOST's clearing bar</b>: an observed, driven flow rather than a test
+    fixture. You're the right person to satisfy it.</p>
+    <div class="do"><b>Run your #1617 standup-tail test card on alpha</b> rather than locally — the
+    card said "local only" because alpha lacked the fix, which it now has. <b>One drive closes
+    both</b> the deploy's final verification layer and HOST's bar. <b>Then HOST lifts and the invite
+    goes.</b></div>
   </div>
 
-  <div class="card fuse">
-    <div class="top"><span class="n">2 · Drive alpha once — it releases Janne's invite</span><span class="who">~90 seconds</span></div>
-    <p><b>Alpha now runs v0.8.12.0</b>, deployed and verified this morning. The reason the invite was
-    held — a tester landing on July code with abolished billing semantics — <b>no longer exists.</b></p>
-    <p><b>What's left is HOST's clearing bar</b>: an observed, driven flow rather than a test fixture.
-    <b>You are the right person to satisfy it</b>, and Lead has named the cheapest way.</p>
-    <div class="do"><b>Run your #1617 standup-tail test card on alpha</b> instead of locally — the card
-    said "local only" because alpha lacked the fix, which it now has. <b>One fresh drive closes two
-    things at once</b>: the deploy's final verification layer, and HOST's bar for lifting the hold.
-    <br><br><b>Then HOST lifts and the invite goes.</b></div>
+  <h2>✅ Cleared</h2>
+  <div class="card ok">
+    <p class="clean"><b>Vercel token</b> — stored in the Amber keychain as service <code>vercel</code>,
+    account <code>api-token</code>; verified at 60 chars, <code>vcp_</code> prefix. <b>Web is unblocked
+    after 11 days</b> and has been told, with the instruction to probe whether the scope can read
+    team-level usage before reporting any figure.<br>
+    <b>Bets 001</b> — all three blanks filled. Kill condition: <i>"Dormant indefinitely. Revisit only
+    if a named buyer appears after production release."</i><br>
+    <b>Bets 002</b> — no buyer for team workspaces. Arch has your non-foreclosure constraint as the
+    operative one, with the standing question of whether any part of the cleanup would make future
+    team support <i>harder</i> rather than just later.<br>
+    <b>Bets 003</b> — <b>yes, Piper holds the connection, and its home is the MCP path.</b><br>
+    <b>Buttondown</b> — held, with the live piece carved out: audit whether current signup options
+    match what we actually publish today.<br>
+    <b><code>integration-reveals-all</code></b> — June 27, from your archive.<br>
+    <b>Walkthroughs</b> — Web is standing by for both, today if you get to it.</p>
   </div>
 
-  <div class="card dec">
-    <div class="top"><span class="n">3 · Confirm the Bets 001 wording</span><span class="who">~1 min</span></div>
-    <p>You've answered all three blanks. The only open piece is how the kill condition gets written.
-    <b>Proposed:</b> <i>"Dormant indefinitely. Revisit only if a named buyer appears after production
-    release."</i></p>
-    <div class="do"><b>Say yes and Arch writes all three in</b> — buyer: none named; cost box: zero
-    build until nonzero demand; kill: the wording above.</div>
-  </div>
-
-  <h2>🔴 Bets 002 and 003 — in plain terms, whenever you have a minute</h2>
-  <div class="card dec">
-    <h3 style="margin-top:0">002 Workspace/team tenancy</h3>
-    <p><b>Should Piper support teams sharing a workspace</b> — several humans in one account, seeing
-    each other's projects and todos — instead of every user being an island?</p>
-    <p>Some half-built machinery already sits in the database for this. Nobody has asked for it; the
-    buyer is unnamed. <b>Arch recommends deleting it so the schema tells the truth</b>, spending zero,
-    and re-adding behind a new bet if a buyer appears. Cost to delete: one migration.</p>
-    <p style="margin-bottom:0"><b>Not the same as the tenancy security work</b>, which had a real
-    driver — testers leaking into each other's data — and is untouched by this.</p>
-    <div class="do"><b>The ask:</b> is there a buyer for team workspaces? "No, same as 001" finishes it.</div>
-  </div>
-  <div class="card dec">
-    <h3 style="margin-top:0">003 Notion as a backend-held grant</h3>
-    <p><b>Should Piper hold the Notion connection on the server</b> — you authorise once, Piper reaches
-    Notion on its own — versus each user bringing their own connection?</p>
-    <p>What exists today is a shim with no real Notion calls behind it. The question isn't transport,
-    it's whether documents genuinely flow both ways.</p>
-    <p style="margin-bottom:0"><b>This is the same shape as the server-key question you ruled on
-    09-14</b> — <i>"why should anybody be able to spend the operator's money"</i> — so your instinct
-    may already answer it. <b>003 is partly pre-filled from your 08-29 answer</b>; it needs
-    confirm-or-amend.</p>
-  </div>
-
-  <h2>📋 Web's four — what each needs from you</h2>
+  <h2>📋 Web's remaining two</h2>
   <div class="card">
     <div class="scroll"><table>
       <tr><th>age</th><th>item</th><th>what you do</th></tr>
