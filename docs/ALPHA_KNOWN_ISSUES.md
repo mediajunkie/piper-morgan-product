@@ -1,15 +1,27 @@
-# Alpha Known Issues (v0.8.11.0)
+# Alpha Known Issues (v0.8.12.0)
 
-**Version**: 0.8.11.0
-**Last Updated**: July 17, 2026
+**Version**: 0.8.12.0
+**Last Updated**: September 20, 2026
 
 This document helps alpha testers avoid wasting time on things we already know about.
 
-v0.8.11.0 is the "Finish the Unfinished" release: a systematic audit of half-done work across the whole codebase, fixes for every serious problem it found, and build-time enforcement so the same classes of bugs can't quietly return. The smoke gate was 565 tests green (1 skipped) at the release cut. What's below are the rough edges that remain.
+v0.8.12.0 is the "Your Key, Your Account" release: the bring-your-own-credentials model
+end to end (your key is the only one ever billed; keyless turns refuse honestly), plus a
+security-hardening pass and fixes for flows that swallowed your next message. The full CI
+belt was green at the cut (10/10 gating workflows). What's below are the rough edges that
+remain.
+
+## Known Issues in 0.8.12 (the honest list)
+
+- **Web chat's front door still asks for an Anthropic key specifically** ([#1823](https://github.com/mediajunkie/piper-morgan-product/issues/1823) — ruled, queued). OpenAI-only users are fully served in Slack; on web, add an Anthropic key for now.
+- **A keyless first "hi" is refused at the door** ([#1818](https://github.com/mediajunkie/piper-morgan-product/issues/1818) — design settled, build queued). The refusal copy is honest; it's just earlier than we want.
+- **Personality preferences are not yet per-user** ([#1791](https://github.com/mediajunkie/piper-morgan-product/issues/1791)): the questionnaire works but preferences aren't isolated per account yet.
+- **Some docs links 404** ([#1793](https://github.com/mediajunkie/piper-morgan-product/issues/1793)).
+- The REST `/api/v1/todos` endpoint is still mocked ([#1427](https://github.com/mediajunkie/piper-morgan-product/issues/1427)) — chat and UI todos are real.
 
 ---
 
-## Recent Improvements (Fixed in 0.8.11)
+## Previously Fixed (0.8.11, July)
 
 These are the changes alpha testers are most likely to notice. If something on this list still seems broken for you, please report it.
 

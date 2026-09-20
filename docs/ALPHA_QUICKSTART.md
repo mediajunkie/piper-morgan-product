@@ -35,27 +35,34 @@ takes to log in.**
 
 ---
 
-## What's New in 0.8.11
+## What's New in 0.8.12
 
-This release is a systematic sweep through half-finished corners of the product: four parallel audits over the whole codebase, fixes for every serious problem they found, and build-time guards so the same classes of bugs can't quietly return. What you'll feel as a tester: **Piper stops lying** — about your data, about its capabilities, and about what went wrong.
+Two months of work, one theme: **your key, your account**. Every LLM call Piper makes is
+now billed to *your* stored key — there is no shared server credential, no silent fallback
+to anyone else's account, and no way for your setup to overwrite another tester's. When no
+key is bound, Piper refuses honestly and says what to do, instead of erroring vaguely or
+quietly spending.
 
-**Personality questionnaire works again** (#1422) — Your questionnaire answers now actually shape Piper's tone: warmth, confidence, level of detail. A database column lost in an earlier migration had been silently discarding them. Prior answers were unrecoverable, so re-answer the questionnaire once after updating.
+**Your key is always the one spent** (#1807–#1819) — the "server key" concept is gone by
+ruling and by code. Keyless turns get an honest refusal with instructions, never
+"Something unexpected happened."
 
-**Your LLM provider choice is respected** (#1415) — Provider selection is now per-user. One user's setup can no longer pin the whole instance to their provider — your default provider and authorized list are yours alone.
+**OpenAI-only? Slack works fully** (#1822) — Slack conversations bind whichever of your
+keys exist. (Web chat still asks for an Anthropic key at the door for now — see Known
+limitations.)
 
-**Greetings answer your actual question** (#1416) — "Hi! How do I address you?" gets the question answered. Only pure pleasantries get the short greeting response.
+**Finished flows let go** (#1617 and the acceptance-contract family) — after a standup's
+"Anything else?", your next command routes normally on the first try instead of the flow
+re-rendering its summary or swallowing the message.
 
-**"Connect my GitHub" gets real guidance** (#1417) — Asking to connect GitHub or another tool now points you at Settings → Integrations with real instructions, instead of a wrong generic decline.
+**Truthful lists and statuses** (#1717, #1730, the GitHub-six) — aggregate answers name
+failed sources instead of blending them into a false "nothing found," and long GitHub
+lists carry honest counts with an offer to fetch the rest instead of silent truncation.
 
-**No more false "there is nothing" claims** (#1425) — Status, agenda, and priority answers now distinguish "I couldn't check" from "genuinely empty." If the todo lookup fails, Piper says "I couldn't check your todos just now" — never a false "no pending tasks."
+**Security hardening** — chat-render XSS fixed, stale unauthenticated page twins removed,
+demo plugin unmounted by default, cross-user isolation regression-hardened.
 
-**Honest error messages for API-key problems** (#1414) — When your LLM key is missing, invalid, or out of quota, Piper says so instead of "Something unexpected happened."
-
-**Session memory** (#1394) — Ask "what did we create this session?" and Piper recalls it from a real ledger of session activity. Follow-ups like "update the title" resolve to the issue you just created.
-
-**Also in this release** — Owner-scoping fixes so searches and defaults can't leak across users (#1420, #1421, #1434); list/todo metadata that actually persists instead of being silently discarded on save (#1435); and an end to false capability denials — Piper no longer claims it can't accept file uploads or set reminders when it can (#1426).
-
-See [Release Notes v0.8.11.0](releases/RELEASE-NOTES-v0.8.11.0.md) for full details. (Deploying an
+See [Release Notes v0.8.12.0](releases/RELEASE-NOTES-v0.8.12.0.md) for full details. (Deploying an
 update yourself? See `CONTRIBUTING.md` — migrations are an operator step, not a tester one.)
 
 ---
@@ -106,7 +113,7 @@ After logging in at [piper-morgan.fly.dev](https://piper-morgan.fly.dev):
 
 ---
 
-## Testing Focus for 0.8.11
+## Testing Focus for 0.8.12
 
 **What's Stable** (light testing recommended):
 - ✅ Login/authentication
@@ -116,46 +123,17 @@ After logging in at [piper-morgan.fly.dev](https://piper-morgan.fly.dev):
 - ✅ Per-user API keys, encrypted at rest
 
 **Where to Focus Testing** (these need your attention):
-- 🔍 **Questionnaire → tone shift**: Re-answer the personality questionnaire, then chat — does Piper's tone actually reflect your answers?
-- 🔍 **Your own provider**: Set your own LLM key and provider in Settings → LLM Keys — does chat use your provider? (Check your provider's usage dashboard.)
-- 🔍 **Greeting + question**: Send "Hi!" plus a real question in one message — does the question get answered?
-- 🔍 **Connect guidance**: Try "connect my github" or "can you connect my slack" — do you get real setup guidance pointing at Settings → Integrations?
-- 🔍 **Honest status claims**: Ask for your status, agenda, or standup — are the claims about your todos and issues honest? "I couldn't check" is correct when a lookup fails; a false "nothing found" is a bug.
-- 🔍 **Session recall**: Create an issue in chat, then ask "what did we create this session?" — does Piper recall it?
+- 🔍 **Key honesty**: remove your key, try a chat turn — do you get a clear "add your own
+  key" message (never a vague error, never a served answer billed to nobody-knows-who)?
+  Re-add the key — does everything resume?
+- 🔍 **Your provider's dashboard**: after a chat session, check YOUR provider's usage
+  page — the calls should be there (and nowhere else).
+- 🔍 **Flow release**: run a standup to the end, then immediately issue an unrelated
+  command ("change the status of issue #… ") — does it route on the first try?
+- 🔍 **Honest emptiness**: ask for your agenda/todos when you have none — does Piper
+  distinguish "nothing there" from "couldn't check"?
 
----
-
-## If Something Breaks
-
-### Can't log in / forgot your password?
-
-Email **xian@pipermorgan.ai** — accounts are provisioned directly for this small a tester group,
-so there's no self-serve password reset yet.
-
-### Something else looks broken?
-
-Check [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) first — it may already be tracked. If not,
-report it (see "Getting Help" below).
-
-*(Running a local copy and hit a setup problem instead? That's `CONTRIBUTING.md`'s
-troubleshooting section, not this one.)*
-
-### UI Navigation
-
-After logging in at [piper-morgan.fly.dev](https://piper-morgan.fly.dev):
-
-- **Home** → `/` (chat interface)
-- **Lists** → `/lists`
-- **Todos** → `/todos`
-- **Projects** → `/projects`
-- **Files** → `/files`
-- **Standup** → `/standup`
-- **Settings** → `/settings` (preferences, integrations)
-- **User Menu** (top right) → Logout, profile settings
-
----
-
-## What's Working in 0.8.11
+## What's Working in 0.8.12
 
 ✅ **Conversational AI**:
    - LLM-grounded responses in Piper's voice, drawing on your work context
@@ -202,18 +180,18 @@ See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for current limitations.
   discrepancy.
 - **Known Issues**: [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) (bugs and status)
 - **Legal**: [ALPHA_AGREEMENT_v2.md](ALPHA_AGREEMENT_v2.md) (terms and conditions)
-- **Version Info**: [VERSION_NUMBERING.md](VERSION_NUMBERING.md) (what 0.8.11.0 means)
+- **Version Info**: [VERSION_NUMBERING.md](VERSION_NUMBERING.md) (what 0.8.12.0 means)
 
 ---
 
 ## Remember
 
-This is **alpha software** (0.8.11.0). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
+This is **alpha software** (0.8.12.0). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
 
-**Testing Focus**: Does the questionnaire actually change Piper's tone? Does chat use YOUR provider? Do greetings with a question attached get the question answered? Are status and agenda claims honest? Does session recall work?
+**Testing Focus**: Is every key message honest (never vague, never someone else's bill)? Does chat spend YOUR key only? Do finished flows release your next command? Are empty-vs-failed answers distinguished?
 
 ---
 
 **Happy testing!** 🚀
 
-_Last Updated: August 31, 2026_
+_Last Updated: September 20, 2026_

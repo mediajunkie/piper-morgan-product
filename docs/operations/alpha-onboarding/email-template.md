@@ -1,9 +1,9 @@
 # Alpha Tester Pre-Qualification Email Template
 
 **Version**: 2.7
-**For**: Piper Morgan 0.8.11.0 Alpha Release
+**For**: Piper Morgan 0.8.12.0 Alpha Release
 **Purpose**: Internal template for PM to send to potential alpha testers
-**Last Updated**: July 17, 2026
+**Last Updated**: September 20, 2026
 
 ---
 
@@ -44,7 +44,7 @@ Accounts & API Keys You'll Need:
 □ Budget $5-20 for API testing costs
 □ Notion account (optional but recommended)
 
-**WHAT MAKES THIS EASY (0.8.11)**
+**WHAT MAKES THIS EASY (0.8.12)**
 
 Our GUI setup wizard (`python main.py` → opens in browser) will:
 - Check your system automatically (Docker, Python, ports, database)
@@ -61,7 +61,7 @@ After setup, you can optionally configure your preferences (`python main.py pref
 
 **CRITICAL DISCLAIMERS**
 
-This is ALPHA software (version 0.8.11.0). That means:
+This is ALPHA software (version 0.8.12.0). That means:
 - It will have bugs and rough edges
 - It might crash or lose data
 - Security is not fully audited (API key secrets are encrypted; content/PII at rest not yet encrypted)
@@ -75,7 +75,7 @@ Week 1: Guided setup call (30 mins) + initial testing
 Week 2-3: You test, I fix bugs you find
 Week 4+: Quick weekly check-ins
 
-Setup, login, and core features are stable in 0.8.11.0. **Focus your testing on**: the personality questionnaire (re-answer it once after updating — earlier answers were lost to a bug — then check whether Piper's tone reflects your choices), provider selection (set your own key and provider in Settings → LLM Keys and confirm chat uses it), greetings with a question attached (the question should get answered), "connect my GitHub"-style requests (should get real guidance, not a decline), and status/agenda answers (claims about your todos should be honest — "I couldn't check" is fine; a false "nothing found" is a bug). The goal is finding PM workflows that delight you, despite the rough edges.
+Setup, login, and core features are stable in 0.8.12.0. **Focus your testing on**: key honesty (every LLM answer bills YOUR key — check your provider's usage dashboard; a keyless turn should get a clear add-your-key message, never a vague error), flow release (finish a standup, then immediately issue an unrelated command — it should route on the first try), and honest emptiness (agenda/todo answers should distinguish "nothing there" from "couldn't check"). The goal is finding PM workflows that delight you, despite the rough edges.
 
 **STILL INTERESTED?**
 
@@ -154,7 +154,7 @@ Attachments:
 Before sending:
 
 - [ ] Personalize name and tester number
-- [ ] Verify all technical claims are current for version 0.8.11.0
+- [ ] Verify all technical claims are current for version 0.8.12.0
 - [ ] Attach current documentation (from docs/)
 - [ ] Schedule setup call before sending confirmation
 - [ ] Update internal tracking (who's in alpha cohort)
@@ -169,7 +169,7 @@ Before sending:
 **Documentation References**: Always reference official docs by filename:
 - `ALPHA_TESTING_GUIDE.md` (not "the guide")
 - `ALPHA_AGREEMENT_v2.md` (not "the legal doc")
-- Version 0.8.11.0 (not "alpha" or "latest")
+- Version 0.8.12.0 (not "alpha" or "latest")
 
 **Support Commitment**: Only promise what you can deliver. Small cohort (2-5) is manageable for close support.
 
