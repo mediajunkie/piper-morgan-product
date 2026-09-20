@@ -13,17 +13,34 @@ PM-attention items live **here**, in the section immediately below.
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-04 fire 3.)*
 
-🟢 **CURRENT STATE, 2026-09-19 (STOP, day-close) — read this before anything below.** Nothing
-PM-gated open as of tonight. **T1 (Cross-Piper synthesis) is fully resolved** — PM read it today,
-endorsed it verbatim ("excellent as usual"), apologised for the 16-day delay; now in wider
-circulation (CIO/PPM/CXO asked to read against their own thinking; shared with Themis/DinP for OS +
-Pimento). Full detail lives in `pa-standing-items.md`'s Resolved table, not duplicated here. **BYOC
-Phase B (`mcp.pipermorgan.ai` DNS/TLS) verified live this morning (08:24 arrival check) — still not
-deployed**, `dig`/`curl` both failed to resolve the host; no change expected until Phase B actually
-lands, don't re-check every fire, retest when there's reason to think it might have moved. **Known
-gap, named not fixed**: PA has no defined GitHub-issues criteria line (v1.33's third work-queue
-source) — flagged three times today (10:12/13:12/19:12 fires), worth a deliberate pass on a quiet
-day rather than an ad hoc invention under fire pressure.
+🟢 **CURRENT STATE, 2026-09-20 (10:01 fire) — read this before anything below.** Nothing PM-gated
+open. **T1 (Cross-Piper synthesis) is fully resolved** (09-19) — PM endorsed it, apologised for the
+16-day delay; now in wider circulation (CIO/PPM/CXO reading against their own thinking; shared with
+Themis/DinP for OS + Pimento; CIO's 09-19 reflection tested the thesis against their own day and
+found it held three times, with one genuine nuance — mechanisms outlast promises, but "structural
+fixes hold" isn't itself a rule for *when* to install one). Full detail in `pa-standing-items.md`'s
+Resolved table. **PM also ruled on PA's document-practice question (09-02, relayed by Exec 09-20)**:
+reports to PM get drafted fully; documents meant for other people get a rich scaffold with
+placeholders for PM's own detail, then a plain-language review, then PM's HALT proofread before
+release. Saved as `feedback_document_practice_by_audience` — applies to any future document PA
+routes to a third party (the Themis share is a `pa`-adjacent example of exactly this shape, though
+Exec drafted and sent that one, not PA).
+
+**BYOC Phase B (`mcp.pipermorgan.ai` DNS/TLS) — still not deployed, now independently corroborated
+twice, two different methods.** PA's own 08:24 arrival check (`dig`/`curl`, host doesn't resolve) is
+now backed by CXO's 09-20 finding from the *code side*: `services/mcp/` is consumer-only (`client.py`,
+`consumer/`, `protocol/` — no served server, no `@mcp.tool`), and #1688's own 09-04 comment says the
+same in words, closed 09-15 with the MCP half explicitly BLOCKED ON INCREMENT-1 INFRA. **Practical
+consequence for PA specifically**: no retest of the recomposition/honest-decline mitigations against
+a real deployed host is possible yet, and — per CXO's memo — there's no false deadline pressuring
+this either; the "T-axis probe window" Exec had framed as closing soon isn't actually closing,
+because the MCP arm that would close it can't start until infra that doesn't exist gets built.
+Flagged to Exec (cc PM, CXO) that the sprint-plan doc's "PA's question" line is stale (already
+resolved 09-02) — correction sent 10:01 fire.
+
+**Known gap, named not fixed**: PA has no defined GitHub-issues criteria line (v1.33's third
+work-queue source) — flagged four times now (09-19's three fires + today) — worth a deliberate pass
+on a quiet day rather than an ad hoc invention under fire pressure.
 
 **Beta target: MOVED BACK A MONTH from 2026-08-09** (PM, 08-08 10:10 PT, in-conversation with Lead,
 verbatim: *"I am going to move the beta date back a month. We clearly have a lot more work still to
