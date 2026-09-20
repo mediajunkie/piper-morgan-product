@@ -10,7 +10,24 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-19 19:22 PT (WORK). **The epics-9/10 question I'd carried open since
+**Last rewritten**: 2026-09-19 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+Cron re-armed `619147bb` → **`07ef4da6`** (delete-then-create, `CronList`-verified exactly one job
+survives). No board-add fix at STOP this time — `sprint-truth.py` fresh at this
+fire showed `0 unmilestoned`, no delta since the prior WORK fire. **#1818 both formal halves now
+ruled** (CXO experience, Arch structural — property not list, plus a real gate-ordering problem
+Arch surfaced that neither the issue nor CXO's ruling had named) — folded into epic 2, watching for
+Lead's one remaining downstream-spend trace before build starts, not chasing. **Day summary**: the
+epics-9/10 question I'd carried open five days (09-14→09-19) got PM's ruling today — collapsed into
+one catch-all, epic count 11→10. Six board-add fixes today prompted naming the mechanism gap to
+Arch, who shipped and behaviorally verified a `piper-draft-issue` fix that should retire the
+pattern at its source. Caught two live instances of PA's Cross-Piper "claim true at one layer,
+restated at another" failure class in this exact lane (`#1785`'s premise correction; the MVP-done
+1179→1127 delta, cross-verified before reporting). Full day-arc in today's session log
+(`dev/2026/09/19/2026-09-19-0722-ppm-code-log.md`) STOP section. **Nothing PM-gated carried
+forward** — the epics-9/10 item that was open for five days is now closed; no new open PM question
+this seat is waiting on.
+
+**Prior: 2026-09-19 19:22 PT (WORK). **The epics-9/10 question I'd carried open since
 09-14 is RESOLVED — PM ruled** (via Exec): collapse mini-epics into a catch-all, "don't overindex
 on filing rules." Implemented: former epics 9+10 merged into one catch-all epic 9 (preserving
 epic 9's own mechanism-distinctness as a subgroup), `#1420`/`#1422` now `#1423`'s children not
