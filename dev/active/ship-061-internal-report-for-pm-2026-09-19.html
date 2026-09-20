@@ -233,35 +233,52 @@
     point as (2): correctly not started. <b>5 · Two days</b> to the ceiling event.</p>
   </div>
 
-  <h2>⚡ Vercel — corrected, and the lever is not the one I named</h2>
+  <h2>⚡ Vercel — Web found a bigger lever than mine. Read this before you set retention.</h2>
   <div class="card bad">
-    <p style="margin-top:0">⚠️ <b>Two corrections to what I told you, both from you finding the
-    actual screen.</b></p>
-    <p><b>1 · The path is Settings → Build and Deployment</b>, not Security &amp; Privacy. I took
-    that from Vercel's docs page rather than the product. <b>Your UI is the authority; the docs were
-    stale.</b></p>
-    <p><b>2 · You have ONE project</b>, so the "apply to all existing projects" warning I flagged is
-    moot. Nothing to be careful about there.</p>
-
-    <h3 style="margin-top:1rem">Your proposed TTLs — three of four are right, one is the whole ballgame</h3>
+    <p style="margin-top:0">🔴 <b>Web measured the payload side tonight, which nobody had done, and
+    it changes which fix you pick first.</b></p>
     <div class="scroll"><table>
-      <tr><th>setting</th><th>yours</th><th>verdict</th></tr>
-      <tr><td>Canceled</td><td>1 day</td><td>✅ fine — nothing to debug in a canceled build</td></tr>
-      <tr><td>Errored</td><td>1 week</td><td>✅ fine — a week is plenty to debug a failed build</td></tr>
-      <tr><td>Pre-Production</td><td>1 day</td><td>✅ <b>and your instinct is right — this barely matters for us.</b> The site deploys from <code>main</code>; there are two stale <code>claude/*</code> branches and no PR-preview workflow. <b>I said "keep this generous" earlier and that was wrong for our setup.</b></td></tr>
-      <tr><td><b>Production</b></td><td><b>30 days</b></td><td>🔴 <b>THIS is the lever, and 30 days is the expensive choice</b> — see below</td></tr>
+      <tr><th></th><th>size</th><th>files</th></tr>
+      <tr><td>whole tracked repo</td><td>324.3 MB</td><td>1,214</td></tr>
+      <tr><td><code>public/</code></td><td>304.7 MB</td><td>580</td></tr>
+      <tr><td><b><code>public/assets/blog-images/source/</code></b></td><td><b>240.7 MB</b></td><td><b>172</b></td></tr>
+      <tr><td>the <code>.webp</code> the site actually uses</td><td>63.4 MB</td><td>375</td></tr>
     </table></div>
+    <p><b>74% of every deployment is original PNGs that get converted to <code>.webp</code> at
+    publish time.</b> They sit inside <code>public/</code>, so they are served statically and
+    <b>ship in every single deployment</b>. Nothing in the running site references them — only six
+    manual scripts, <b>none of which is wired into <code>build</code> or <code>prebuild</code></b>.</p>
+    <p>⭐ <b>So each deployment is roughly four times larger than it needs to be.</b> Removing that
+    alone would take storage from 10 GB-at-100% to somewhere near 2.6 GB — <b>without touching
+    retention at all.</b> Retention multiplies a payload; shrinking the payload shrinks every copy
+    retention keeps.</p>
+    <p>⚠️ <b>They are also publicly reachable</b> — Web confirmed by <code>curl</code> against
+    production, with a served <code>.webp</code> as a control. Blog art, so low stakes, but
+    unintended.</p>
+    <div class="ask"><b>Web's fix: MOVE <code>source/</code> out of <code>public/</code></b> (not
+    delete — website#37 wants the archive, it just should not be served) and update one constant in
+    six scripts. Filed as <b>website#43</b>. <b>They are deliberately holding</b> because you may be
+    setting retention right now, and <b>two simultaneous changes make any before/after reading
+    unattributable.</b> That is the right instinct and worth honouring.<br><br>
+    <b>My suggestion: do them in sequence, not together.</b> Set retention tonight if you want, note
+    the Usage number, then tell Web to go — or tell Web to go first and set retention after. Either
+    order works; <b>both at once loses the measurement.</b></div>
+    <p style="margin-bottom:0"><b>Web's own note</b>: if they don't hear back they will ship it anyway
+    on the correctness argument — serving 240 MB of build inputs is wrong regardless of what it does
+    to storage — and say so in the commit so it cannot be mistaken for a storage claim. <b>I think
+    that is right.</b></p>
+  </div>
 
-    <p>🔴 <b>Measured, not guessed: 54 pushes to <code>main</code> in the last 30 days.</b> Every one
-    is a Production deployment. <b>So a 30-day Production retention keeps roughly 54 builds</b> — and
-    at a 10 GB cap that is about 185 MB each, which is a plausible size for this site.</p>
-    <p><b>The distribution is lumpy, which is the real point:</b> 10 of those 54 pushes landed on
-    Saturday 09-12 alone. <b>Retention measured in days behaves very differently under a burst than
-    the average suggests.</b></p>
-    <div class="ask"><b>My suggestion: try Production at 7 days.</b> That keeps roughly 13 builds
-    instead of 54 — about a 75% cut — and still covers rollback for a week, which is longer than any
-    regression has gone unnoticed here. <b>If a week feels thin for release audits, 14 days still
-    halves it.</b> Start there, watch Usage, and go shorter only if it hasn't moved.</div>
+  <div class="card good">
+    <h3 style="margin-top:0">✅ The droplet question is answered — it is fact now, with a date</h3>
+    <p><b>You authorised the key, SSH is live, and Lead has done the read.</b> <b>Alpha runs
+    <code>0.8.10.14</code>, deployed <b>July 16</b></b> — repo VERSION and in-container
+    <code>/app/VERSION</code> agree, corroborated by the deploy log's own completion stamp and by
+    <code>piper-app</code> having been up two months.</p>
+    <p style="margin-bottom:0"><b>Current main is 0.8.11.0 plus roughly two months of unversioned
+    work.</b> Lead also confirmed the July migrations ran clean, so the next deploy runs only
+    July-16-to-now migrations rather than a backlog. <b>The "July-era cut" is no longer an inference
+    — and that was the one open ask blocking the invite.</b></p>
   </div>
 
   <div class="card warn">
