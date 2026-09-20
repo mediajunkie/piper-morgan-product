@@ -79,6 +79,15 @@ minor cosmetic gap, not fixed: the HTML calendar view has no `planned` CSS case 
 - **No stated GitHub-criteria line yet** (duty-cycle-tick v1.33's third work-queue source) — gap
   named at this morning's START, still unfilled, nothing blocked on it.
 
+## Watching for — no action yet (added this fire)
+
+- **workDate accuracy audit — waiting on PM's archive location.** PM worries current calendar
+  `workDate` values may be inferred/guessed where PM's own archived editorial calendars have the
+  real answer (triggered by "Integration Reveals All"'s workDate question). Exec routed this to
+  Comms as a suggestion, explicitly "ask PM, don't guess at the archive location." Did a cheap
+  scoping pass (462 rows: 12 missing workDate, 1 workDate==pubDate exact match — the triggering row
+  itself) and asked PM directly via reply-all. **Real audit can't start until PM answers.**
+
 ## Waiting on others
 
 - **PM** — voice-pass + art on ~7-8 drafted items; ChicagoCamps outcome; editorial calendar planning
