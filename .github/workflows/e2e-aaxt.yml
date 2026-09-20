@@ -144,11 +144,19 @@ jobs:
             -v --tb=short --override-ini="addopts="
           echo "✅ E2E task lifecycle passed"
 
-  # ─── Job 2: Canonical Routing Regression (conversation-code PRs) ────
+  # ─── Job 2: Canonical Routing Regression (NIGHTLY since #1785) ────
+  # #1785 (PM-approved 2026-09-19): this job's ENTIRE selection is llm-marked
+  # live spend (183 routing/structure + 28 floor cases = the 211-call cohort);
+  # keyless it all SKIPS (measured — no free subset exists in this job). It was
+  # spending the repo's real key ~20×/day at push time. Now it runs once
+  # nightly (same cron as AAXT) or on manual dispatch. Push-time deterministic
+  # coverage of the canonical corpus continues via the Tests workflow's
+  # keyless run (mocked ground-truth + unmarked tiers); a live routing
+  # regression surfaces next morning instead of at push.
   canonical-regression:
     name: Canonical Routing Regression
     runs-on: ubuntu-latest
-    if: github.event_name != 'schedule'
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     # 25, not 15: measured on run 34786243866 (the first run ever to reach this
     # step with WORKING credentials — the old keys pointed at a different
     # account, so for months the step failed fast and 15 was never tested
@@ -193,41 +201,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # ⚠️ COST GATE — do not re-add `|| github.event_name == 'push'` to the
-      # steps below without reading this. That bypass made the paths-filter
-      # directly beneath it dead on every push to main, so the live-LLM
-      # canonical suite (211 tests, many real LLM round-trips) ran on EVERY
-      # push regardless of whether conversation code changed. Measured
-      # 2026-09-13: 26 runs on 09-12, 17 on 09-13, and $5 of API credit
-      # consumed in a day. The filter now governs, as its author intended:
-      # touch services/intent*, web/api/routes/intent.py, services/llm/** or
-      # llm_domain_service.py and it runs; otherwise it skips.
-      - name: Check if conversation code changed
-        id: changes
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            conversation:
-              - 'services/intent/**'
-              - 'services/intent_service/**'
-              - 'web/api/routes/intent.py'
-              - 'services/llm/**'
-              - 'services/domain/llm_domain_service.py'
-
+      # ⚠️ COST GATE HISTORY — this job is nightly/dispatch-only since #1785
+      # (PM-approved 2026-09-19; the job-level `if` above is the gate now, and
+      # the old paths-filter apparatus is removed as dead weight). Why it kept
+      # ratcheting: a `|| push` bypass once made the filter dead and the
+      # live-LLM canonical suite (211 tests, real round-trips) ran on EVERY
+      # push — measured 2026-09-13: 26 runs in one day, ~$5 of API credit.
+      # The path filter cut that to conversation-code pushes (~20/day at the
+      # 09-19 measurement — still live spend at push time); #1785 moved it to
+      # once nightly. Do not widen the job-level `if` back toward push events
+      # without a PM cost decision on the record.
       - name: Set up Python
-        if: steps.changes.outputs.conversation == 'true'
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
 
       - name: Install dependencies
-        if: steps.changes.outputs.conversation == 'true'
         run: |
           pip install --upgrade pip
           pip install --no-deps -r requirements.txt
 
       - name: Run migrations
-        if: steps.changes.outputs.conversation == 'true'
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5433
@@ -237,7 +231,6 @@ jobs:
         run: python -m alembic upgrade head
 
       - name: Run canonical routing tests
-        if: steps.changes.outputs.conversation == 'true'
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5433
@@ -247,15 +240,11 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          echo "🧪 Running canonical routing regression (#928 Tier 1)"
+          echo "🧪 Running canonical routing regression (#928 Tier 1 — nightly per #1785)"
           python -m pytest tests/e2e/test_canonical_conversations.py \
             -k "TestCanonicalRouting or TestCanonicalResponseStructure" \
             -v --tb=short --override-ini="addopts="
           echo "✅ Canonical routing regression passed"
-
-      - name: Skip — no conversation code changes
-        if: steps.changes.outputs.conversation != 'true'
-        run: echo "⏭️ Skipped — no changes to conversation code paths"
 
   # ─── Job 3: AAXT Nightly (scheduled, ~$0.50/run) ───────────────────
   aaxt-nightly:
