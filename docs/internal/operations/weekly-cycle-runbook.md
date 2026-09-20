@@ -19,6 +19,7 @@ future."*** That is the whole motivation; nothing here is new policy.
 | 3 | All ten roles reply | **each role** | ASAP — "due at your next fire" |
 | 4 | Exec synthesizes; shares the artifact with PM | **Exec** | once all ten are in |
 | 5 | PM + Exec discuss and make plans | **PM + Exec** | — |
+| 5b | **Exec writes the sprint plan** (non-blocking) | **Exec** | Friday, after step 5 |
 | 6 | Exec drafts the Weekly Ship | **Exec** | after step 5 |
 | 7 | PM reviews it | **PM** | — |
 | 8 | Publish | **Docs** | the following **Wednesday** |
@@ -134,6 +135,39 @@ unmeasured, never as zero.**
 Where "how do we get a goal back on track" belongs. **Before the discussion, re-verify the
 PM-facing items** — the board is a snapshot and ten awake roles move faster than it. On 09-19 a
 four-minute re-verify pass caught two items that had already been resolved.
+
+### 5b · Exec writes the sprint plan — NEW, PM-requested 2026-09-20
+
+**Output of step 5, written Friday, covering the Fri→Thu week ahead.** PM's framing:
+
+> *"I'd like to start building a muscle of writing down the plan at the start of each week and then
+> referring to the plan at the end of each week while reviewing results."*
+
+**File**: `dev/active/sprint-plan-YYYY-MM-DD-to-DD.md`. First instance:
+`dev/active/sprint-plan-2026-09-18-to-24.md` (written late, on purpose — *"better late than never
+and that will give us something to iterate on next Friday"*).
+
+⚠️ **THE PLAN DOES NOT GATE ANYONE.** PM's standing rule, and it is the most important line here:
+
+> *"The team should never freeze waiting for the new week's plan. When in doubt, current priorities
+> continue until refreshed or updated."*
+
+**So the plan is published late rather than blocking, and a role's own read of their lane outranks
+it.** Write per-lane lines as *intentions observed from outside*, never assignments.
+
+**What it carries** (shape, iterate freely):
+- Where the milestone stands, with the `sprint-truth` delta
+- **The one thing the week is about** — one, not five
+- Per-lane: what's in flight, what it's gated on
+- What needs PM, split by cost: *small answers* vs *needs a session* vs *the real bottleneck*
+- **What we are deliberately NOT doing** — the part that makes it a plan rather than a list
+- ★ **"How we will know on Friday"** — the falsifiable questions the next review answers against
+  this document
+
+⭐ **That last section is what makes the muscle work.** A plan nobody scores against is a wish list.
+**Step 4's report should open the plan and answer its own questions before synthesising anything
+new** — if the same items appear unmoved two Fridays running, the finding is about routing, not
+about the items.
 
 ### 6 · Exec drafts the Weekly Ship
 Skill: `draft-weekly-ship`. **Only after step 5.** The theme comes out of that discussion.
