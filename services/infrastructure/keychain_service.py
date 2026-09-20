@@ -210,6 +210,28 @@ class KeychainService:
             return
 
         if backend_dead:
+            # #1764: the DB store keys rows by bare composed name — it has NO
+            # service_name dimension, so two KeychainService instances with
+            # different service_names would silently READ AND WRITE EACH OTHER'S
+            # ROWS on the same database (the OS keyring namespaces by
+            # (service_name, account); this backend flattens that away, and the
+            # encryption context binds the bare name, so retrofitting the
+            # namespace requires a decrypt/re-encrypt migration — planned on the
+            # issue, not yet ruled). Until parity exists, a non-default
+            # service_name over this backend is a silent-collision trap: refuse
+            # LOUDLY at construction instead. Zero current callers hit this
+            # (only the #1711 tests use a custom service_name, and they force
+            # PIPER_CREDENTIAL_STORE=keychain before construction).
+            if self.service_name != SERVICE_NAME:
+                raise RuntimeError(
+                    f"KeychainService(service_name={self.service_name!r}) cannot "
+                    "use the encrypted-DB store: that backend has no service_name "
+                    "namespace, so a custom namespace would silently collide with "
+                    f"the default ({SERVICE_NAME!r}) on the same database (#1764). "
+                    "Either use the default service_name, force the OS keyring "
+                    "(PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 "
+                    "namespace migration first."
+                )
             try:
                 from services.infrastructure.secure_credential_store import (
                     EncryptedDBCredentialStore,
