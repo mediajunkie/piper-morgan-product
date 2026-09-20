@@ -4,7 +4,43 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-19 at the 10:17 WORK fire.
+# CXO carry-forward — rewritten 2026-09-19 at the 22:17 STOP.
+
+> ## 🔴 READ FIRST TOMORROW — the finding that outranks everything else here
+>
+> **My #1688 tracker row said *"OFF, deliberately, by a ruling."* That is true of `main` and NOT true
+> of prod, where the flag is ABSENT** — `PIPER_FTUX_INTERVIEW` landed 2026-09-03 (`acc0b83eb`) and
+> **Lead's finding is no droplet deploy since July.**
+>
+> ⭐ **I had built the ruling-vs-measurement distinction and still missed *true-of-`main`-vs-true-of-
+> prod* underneath it.** 📌 **This generalises past my seat: while the deploy gap is open, every
+> "verified on `origin/main`" claim this cohort makes is a claim about `main`, not about what users
+> run.** **Row amended. I do not know how many other rows cohort-wide have that shape.**
+
+> ## ✅ CRON — GAP CLOSED. Arm-date is now verified and recorded here.
+>
+> | | |
+> |---|---|
+> | **Job** | **`23d4c124`** — `47 6,9,12,15,18,21 * * *`, recurring |
+> | **Armed** | **2026-09-19 22:2x PDT** (at the STOP, delete-then-create: `CronList` → `CronDelete 7bb7c53a` → `CronCreate` → `CronList` confirmed **exactly one**) |
+> | **Expires** | **~2026-09-26** (7-day auto-expiry) |
+>
+> ⭐ **This closes the gap I flagged at arrival**: the handoff's *"armed 09-18, expiry ~09-25"*
+> described `4f984f8f`, a job that no longer existed, so Step 1's proactive-rotation check had nothing
+> to compare against. **It does now.**
+> 📌 **Rotate at the FIRST fire with both the information and the margin — name the RULE, not the date.**
+> ⚠️ **Predecessors: `4f984f8f` (handoff) → `7bb7c53a` (survived the night, ran all five of today's
+> fires) → `23d4c124`. Cadence UNCHANGED, so no registry edit is owed** — only the job id moved.
+> 🔴 **And the standing caveat: `CronList` proves the OBJECT. Only a fire proves DELIVERY.**
+
+> ## ⏱️ EVERY FIRE TODAY ARRIVED EXACTLY +30 MIN — five for five
+>
+> `09:47→10:17` · `12:47→13:17` · `15:47→16:17` · `18:47→19:17` · `21:47→22:17`. **Exact, no drift.**
+> ⚠️ **I tried to establish whether it's cohort-wide and THE CHECK DOES NOT WORK** — registry
+> cron-minute vs first `hb(role)` commit is confounded by START-work duration, and `docs` breaks the
+> pattern. 🔴 **Do not report a cohort number from that method.** **Raised to Pard, who can see actual
+> delivery times.** **One consequence named**: the registry's `first_fire` feeds the freeze-watchdog's
+> should-be-cycling gate, so a constant offset silently spends that grace window.
 
 > ## 🔄 SEAT CHANGED 2026-09-19 — wave-2 context clear (Pard, certified Janus, xian overseeing)
 >

@@ -1,8 +1,22 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-19 12:46 PDT, verified via `date`.
+**Updated**: 2026-09-19 22:01 PDT (STOP, day-close), verified via `date`.
 
-## ⚠️ TOP-OF-QUEUE TOMORROW (09-20): publish "From Abstraction to Example" — PM-directed, do NOT do this today
+**09-19 CLOSED cleanly.** Session log `dev/2026/09/19/2026-09-19-0657-docs-code-log.md` carries
+`<!-- DAY-CLOSED: 2026-09-19 -->` + a full day-arc summary. All 6 scheduled fires ran (06:57
+resumed from pre-clear, 09:57, 12:57, 15:57, 18:57, 21:57/STOP), plus substantial PM-engaged work
+between fires. Everything on `origin/main`, nothing stranded. Cron re-armed via delete-then-create
+at STOP (see below).
+
+## ⚠️ TOP-OF-QUEUE 09-20 START: publish "From Abstraction to Example" — PM-directed, do NOT do this today
+
+**This is the FIRST thing to do at tomorrow's 06:57 START fire, before the mail loop, before
+anything else — it was PM-directed for first-thing-tomorrow specifically.**
+
+PM's explicit instruction (2026-09-19, in-conversation): proofread today, publish is deferred to
+**tomorrow morning's first START fire (09-20)**, so PM can handle crossposting once they're up.
+**This is a real, PM-named trigger for the deferral (per CLAUDE.md's "no rush is not a trigger"
+rule) — not a discretionary hold.** Do not publish today even if idle with nothing else to do.
 
 PM's explicit instruction (2026-09-19, in-conversation): proofread today, publish is deferred to
 **tomorrow morning's first START fire (09-20)**, so PM can handle crossposting once they're up.
@@ -134,11 +148,11 @@ understood/triaged. Check every WORK fire after the mail loop, alongside standin
 make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything
 else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM's own words.
 
-**Watching**: PM's answer on whether to draft a routing memo to Lead Dev for two audit clusters
-found 09-13 (see "Watch surfaces" below) — offered 09-13, still not yet answered, not chasing.
-(09-19: Lead asked where this offer went since nothing had reached their inbox — correctly, since
-it was never mailed to them; clarified via reply, cc Exec. Still just PM's confirmation pending,
-nothing new to chase.)
+**RESOLVED 09-19 (was "watching" since 09-13)**: the two audit clusters (#1493's 6 F-slice
+children, 3 PM-directed early-August audits) were routed to Lead, accepted, and a parent tracking
+issue (#1828) filed and linked to all 6 children same day. Full chain: PM confirmed "yes please" →
+re-verified all 9 issues live → routed → Lead accepted (re-verifying #1574's blocking claim at HEAD
+first) → asked for the parent issue → filed + linked. Nothing further owed on this thread.
 
 ## Prior days closed (full detail in their own session logs + omnibus-logs/)
 
@@ -159,14 +173,6 @@ nothing new to chase.)
 
 ## Watch surfaces (things owned by others, checked periodically)
 
-- **Time-handling audit cluster (#1493, closed) → 6 F-slice children**: #1556/1574/1575/1576/1577/1588,
-  all filed 08-09/08-10, root cause "no per-user timezone exists anywhere in the system," zero
-  progress in over a month. Proposed to PM 09-13 as one project routed to Lead Dev; offered to draft
-  the routing memo. Still not yet answered as of 09-18 — watching, not chasing.
-- **Three PM-directed audits, early August, zero follow-through**: #1499 (route-surface), #1522
-  (false-trails), #1533 (principal-dropping) — each has a real report + explicit remaining-work list,
-  5+ weeks with no action. Proposed 09-13 to nudge Lead Dev/Arch directly. Same PM-answer-pending
-  status as the cluster above.
 - **`last_verified` bulk-stamp cluster**: 24/38 as of 09-07's audit (#1725) — unchanged from 09-03,
   structural fix now filed as #1726 (CIO's lane) rather than re-escalated each audit. Check again
   at the next Weekly Docs Audit (09-21).

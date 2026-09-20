@@ -6,8 +6,9 @@ live in `comms-standing-items.md`; the canonical record is the session log
 
 ## Cron
 
-`815ce10d`, expression `12 6,9,12,15,18,21 * * *` — CronList-verified directly at every one of
-today's 6 fires, all clean. `dev/active/duty-cycle-registry.tsv`'s comms row confirmed correct.
+`d904b1d9`, expression `12 6,9,12,15,18,21 * * *` — re-armed at 21:42 STOP via delete-then-create
+(815ce10d → d904b1d9, same cadence), CronList-verified exactly one job survives. Registry row
+updated to match. Next fire: 2026-09-20 06:12.
 
 ## Closed today — both queued blog posts
 

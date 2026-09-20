@@ -4,60 +4,75 @@ currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-09-19, normal duty cycle, post Wave-2 renewal
+# CIO carry-forward — 2026-09-19 DAY CLOSED, resuming 2026-09-20
 
-**Three fires today**: 08:29 arrival (Wave-2 context clear), 10:37 scheduled WORK, 16:37 scheduled
-WORK. Cron `f308bd35`, `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only,
-`CronList`-verified singular. Next fire: **22:07 PM PDT**. Registry row `active` (commit
-`efe8a8560`). Worktree: Model A, `claude/cio-cycle`, upstream `origin/main`.
+**Day closed cleanly.** Three fires today (08:29 arrival, 10:37 WORK, 16:37 WORK, 22:37 STOP).
+Full detail: `dev/2026/09/19/2026-09-19-0829-cio-code-log.md` (single file, all four fires,
+`<!-- DAY-CLOSED: 2026-09-19 -->` marker present).
 
-Full detail for all three fires: `dev/2026/09/19/2026-09-19-0829-cio-code-log.md`.
+**Cron**: re-armed at STOP via delete-then-create — old `f308bd35` deleted, new **`d7fd3b2b`**,
+same expression `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), `CronList`-verified singular.
+**Next fire: 10:07 AM PDT tomorrow (09-20)** — note the registry's `first_fire` is now `10:37`
+(adjusted tonight for the confirmed +30min delivery offset), so actual arrival is expected ~10:37.
+
+**Registry**: `cio` row `active`, `first_fire` adjusted `10:07`→`10:37` tonight (commit
+`d1279a808`) — real, Pard-confirmed scheduler lag, not a stall signal.
+
+**Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
 ---
 
-## What shipped today (09-19)
+## What shipped today (09-19) — full day
 
-- **Arrival + registry un-park**, one claim verified stale against `git log` rather than trusted.
-- **Shipped Exec's unboarded-PM-items proposal** — `--scope` flag, `dev/state/` marker fix, wired
-  into `duty-cycle-tick` v1.36.
-- **Heartbeat lapse found and fixed on my own seat (3rd occurrence)** — proposed a post-commit-hook
-  mechanism fix to Pard rather than re-promising vigilance.
-- **Standing item 7x, part 1 fully closed**: archival script shipped, piloted on my own seat (391
-  memos), a real `.gitignore` near-miss caught and fixed, cohort-wide rollout wired into the
-  existing `quarterly-maintenance.yml` workflow per Exec's ruling (commit `94c51f41f`) rather than
-  a one-time coordinated sweep.
-- **`cohort-freeze-detect.sh` — real bug found and fixed same-day (HOST's finding)**: a busy,
-  fully-alive cohort can produce `emissions=0` (every heartbeat correctly self-suppressing) and get
-  misread as a freeze. Now cross-checks commit activity in the window before pointing at
-  account-limit/host-outage. Commit `d36ec6bca`.
-- **Heartbeat investigation went cohort-wide**: Web and CXO independently reproduced the same gap,
-  Web built `scripts/heartbeat-interior-coverage.py` (validated instrument) — **9 of 11 roles
-  uncovered today, confirmed NOT limited to renewal day** (exec/host both had ordinary mid-day
-  gaps). Re-escalated the hook decision to Pard with this evidence, bundled Lead's separate ruff
-  pre-commit-hook proposal into the same ask. My own ruling: not wiring the interior-coverage
-  instrument into the mandatory belt yet — fix the emission-side cause first.
-- Caught and self-corrected a minor process slip mid-fire: briefly regenerated 7 other roles'
-  MANIFESTs (not mine to write), reverted before sending.
-- Full mail drain across all three fires: 15 direct memos actioned, 7 cc/multi-addressed read in
-  full and folded into a consolidated reply. Inbox at zero.
+1. **Wave-2 arrival**: identity/model confirmed, handoff read, one claim verified stale against
+   `git log` rather than trusted, registry un-parked.
+2. **Shipped Exec's unboarded-PM-items proposal** — `--scope` flag, `dev/state/` marker fix, wired
+   into `duty-cycle-tick` v1.36.
+3. **Heartbeat lapse found and fixed on my own seat (3rd occurrence)** — proposed a post-commit-hook
+   mechanism fix; investigation went cohort-wide (Web, CXO independently reproduced it; Web built
+   `scripts/heartbeat-interior-coverage.py`, found 9/11 roles uncovered, confirmed not
+   renewal-day-only).
+4. **Standing item 7x, part 1 fully closed**: archival script shipped and piloted on my own seat
+   (391 memos), a real `.gitignore` near-miss caught and fixed, cohort-wide rollout wired into the
+   existing `quarterly-maintenance.yml` workflow per Exec's ruling.
+5. **`cohort-freeze-detect.sh` — real bug found and fixed same-day** (HOST's finding): busy-cohort
+   heartbeat-suppression could read as a freeze; now cross-checks commit activity before blaming an
+   outage.
+6. **Pard's ruling landed**: both the heartbeat hook and Lead's ruff pre-commit hook **approved in
+   design**, sequenced after the Amber reboot — pilot on my own seat first, fleet after. Accepted.
+7. **CXO's +30min scheduler-offset finding confirmed real** by Pard (3 independent observation
+   sources) — adjusted my own registry row's `first_fire` accordingly, self-confirmed by today's
+   own three-for-three fire timing.
+8. **Read PA's T1 cross-piper synthesis in full** (PM's read request) and tested its thesis against
+   my own day rather than agreeing abstractly — found genuine supporting evidence (my own heartbeat
+   lapse) and one real pushback (the thesis describes durability, not install timing; Pard's
+   reboot-sequencing reasoning is a real cost it doesn't weigh).
+9. Caught and self-corrected a minor process slip: briefly regenerated 7 other roles' MANIFESTs,
+   reverted before sending.
+10. Full mail drain across all four fires: mail loop reached zero every single time, no memo left
+    unread past the fire it arrived in.
 
-## What's still owed / open
+## What's still owed / open, going into 09-20
 
-- **Pard's verdict** on the post-commit heartbeat hook (now with strong evidence: 9/11 roles,
-  not renewal-day-only) AND Lead's bundled ruff pre-commit-hook proposal. Don't install either
-  myself without it.
+- **Pilot day for the heartbeat post-commit hook** — waiting on the Amber reboot to complete and
+  its baseline verification to post clean, per Pard's sequencing. My own seat is the pilot; watch
+  for Pard's go-ahead.
 - **7x part 2** (PM-cc rule change) — not started. Home: CLAUDE.md's mailbox section or
   `mailboxes/DIRECTORY.md`.
+- **7v** (new tonight): #1834 build item 2 ("don't call agents people" check for PM-facing internal
+  reports) — Exec's artifact first; mine only if it needs to generalize. Watching, not building.
 - **7z** (#1798 hook migration) — needs a careful architectural pass. Directly hit its ≥20-file
-  BLOCK live this fire (corroborating evidence, not itself a fix).
+  BLOCK live on 09-19 (corroborating evidence, not itself a fix).
 - **7u** (Pard's LaunchAgent proposal) — pending PM/Exec response.
 - **7y** (NO-DAY-CLOSE streak detector) — CXO explicitly asked to hold for more cohort data.
-- **No GitHub-criteria line yet for CIO** (third work-queue source, v1.33 ruling) — named gap.
-- **`cohort-freeze-detect.sh` fix verified by inspection + partial live testing, not a forced
-  end-to-end COHORT-FREEZE(?) firing** — low risk (simple conditional on an already-verified value)
-  but named honestly, not glossed over.
+- **No GitHub-criteria line yet for CIO** (third work-queue source, v1.33 ruling) — named gap,
+  carried multiple days now, genuinely worth writing one soon rather than letting it go stale
+  as a permanent "gap to name."
+- **`cohort-freeze-detect.sh` fix** verified by inspection + partial live testing only, not a
+  forced end-to-end `COHORT-FREEZE(?)` firing — low risk, named honestly.
 
 ## Why this file is fully current (not a minimal stub)
 
-Rewritten in full at the end of this fire's substantive work, per the standing "rewrite at end of
-every substantive fire" rule — a cold read of this file should need nothing else to continue.
+Rewritten in full at day-close, per the standing "rewrite at end of every substantive fire" rule —
+a cold read of this file (or a fresh session picking up tomorrow) should need nothing else to
+continue.

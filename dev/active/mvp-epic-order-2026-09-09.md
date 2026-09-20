@@ -290,19 +290,26 @@ copy, which also fixes the self-contradiction/`:610`-divergence CXO found indepe
 holding implementation for next week's plan per the standing weekend framing (paired with `#1824`'s
 sequencing, unless PM pulls it forward) — not a PPM action item, noted for continuity.
 
-**`#1818` — RULING IN PROGRESS 2026-09-19, half-decided.** PM's direction (in-conversation,
-recorded `decisions.log` 17:1x): let the greeting through, graceful copy if onboarding is too much
-friction. **CXO ruled the experience half** (posted to the issue directly, comment 5747009287):
-let the deterministic greeting pass the keyless gate, but it must carry the key-state in the same
-breath — "both halves or neither." The over-blocking-vs-silent-later-failure dichotomy was false;
-the real failure mode is a *mute* greeting, not a *passing* one. Machinery already ships for this
-shape (`conversational_floor.py`'s `due_reminders` proactive-surfacing pattern) — CXO's read is
-this needs pointing at key-state, not new mechanism. **Arch's half still open**: whether the
-keyless exemption should be a property of the handler (CXO's ask — a list invites silent widening,
-same "structural fixes hold, promises don't" lesson PA's Cross-Piper doc converges on
-independently) or a maintained list. Copy for the new greeted-but-unkeyed state deliberately not
-written yet — depends on Arch's structural call. **Not a PPM ruling on either half**; watching for
-Arch's structural answer, not chasing.
+**`#1818` — BOTH HALVES NOW RULED 2026-09-19, build-ready.** Experience half: CXO ruled let the
+greeting pass but it must carry key-state in the same breath, "both halves or neither." **Arch
+ruled the structural half same evening: property, not list** — the property already exists
+(`ActionDisposition.CANONICAL`, `action_registry.py:17-38`, greeting already registered, enforced
+by a startup validator), so this needs no new mechanism, just declining to duplicate one (ESSENCE's
+"derive, don't hand-maintain" rule, already in force). **The real work Arch surfaced that neither
+the issue nor CXO's ruling named**: the keyless gate fires *before* `process_intent` even runs the
+pre-classifier that determines disposition — so "let the greeting through" can't be bolted onto the
+existing gate; the pre-classifier (regex-only, no LLM call, verified) has to run *before* the gate
+and the gate condition becomes a disposition lookup, not a message-content list. Wants a same-PR
+ratchet asserting every `CANONICAL` pair is keyless-reachable and every other pair isn't. **One
+unverified hinge, named rather than assumed**: whether any `CANONICAL` path can still reach an LLM
+call downstream (fallback/enrichment/floor-handoff) — if so, `CANONICAL` alone isn't sufficient and
+CXO's copy would be wrong (promising "spends nothing" while it might). Lead's to trace before the
+gate moves, same shape as the #1823 precondition. **CXO delivered the greeting-state copy** (issue
+comment 5747829604) contingent on that hinge clearing, and separately caught their own citation was
+one layer off (the `due_reminders` floor-directive shape doesn't apply — greetings are `CANONICAL`
+and never reach the floor — so this ships as fixed text, not a model-composed directive). **Not a
+PPM ruling on any of this** — both formal halves are now ruled, Lead's downstream-spend trace is
+the last open item before build starts. Watching, not chasing.
 
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.

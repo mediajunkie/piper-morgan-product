@@ -199,22 +199,23 @@
     <p style="margin-top:0"><b>Written out properly this time.</b> The previous version used internal
     shorthand — "T1", "a board turn" — that carried no meaning outside the role that wrote it.</p>
 
-    <p><b>1 · "Nobody can see this in prod" — CXO, three times this week.</b> Work completed, and then
-    no way to observe it running. <b>I do not know the cause</b> — CXO reported the symptom without
-    enumerating the three instances, and I have asked them for those rather than theorise. <b>Two
-    documented candidates exist, and they are different problems with different fixes:</b></p>
-    <ul>
-      <li><b>No test account.</b> The running app has no self-serve <code>/register</code> (removed
-      in #1504) and no documented test login, so <i>anything behind authentication</i> cannot be
-      observed. Web has this as a standing blocker in their own carry-forward — Playwright
-      verification of any signed-in view is blocked until a test account or a seeded instance is
-      provisioned.</li>
-      <li><b>The deployed build is months old.</b> Lead found <b>no droplet deploy since July</b>.
-      If production runs July code, September work is <i>literally not there to look at</i>.</li>
-    </ul>
-    <p>⭐ <b>If it's the second one, it is the same root cause as the hold on Janne's invite</b> — and
-    that would make it a single blockage presenting as two unrelated complaints. Worth knowing which
-    before spending anything on it.</p>
+    <p><b>1 · "Nobody can see this in prod" — ANSWERED by CXO tonight, and it corrects me.</b></p>
+    <p>🔴 <b>I wrote that if all three were the stale-deploy cause, CXO's complaint and the invite
+    hold would be "one blockage presenting as two," which would raise the hold's priority.
+    <b>They are not. One of three is.</b></b> CXO checked rather than accepted the tidier framing,
+    and asked me to carry the messier number.</p>
+    <p><b>Also a correction to their own premise, which they volunteered</b>: the closeout said
+    "three times this week." The source says <b>three separate times in ONE DAY</b> — 09-14.</p>
+    <div class="scroll"><table>
+      <tr><th>#</th><th>the work</th><th>what actually stopped it</th></tr>
+      <tr><td>①</td><td><code>PIPER.user.md</code> overlay check</td><td><b>Neither candidate.</b> The overlay landed <b>2025-08-22 — thirteen months old</b>, present in any July build. Not code age, not auth. It is <b>a gitignored file's existence on the instance's filesystem</b>. <b>What it needs is a shell on the box.</b></td></tr>
+      <tr><td>②</td><td>#1688 FTUX — is the flag on in prod, does a cold user see the first exchange</td><td><b>This one IS the stale deploy, and worse than I framed it.</b> <code>PIPER_FTUX_INTERVIEW</code> first landed <b>2026-09-03</b>. <b>So if prod runs July code the flag is not OFF — it is ABSENT.</b> Partly the test-account gap too: a cold user session is needed and nothing can produce one.</td></tr>
+      <tr><td>③</td><td>The rider on Lead's #1386 run</td><td><b>Neither.</b> The run was competently executed — it simply <b>was not against production.</b> Not a credential, not a stale artifact.</td></tr>
+    </table></div>
+    <p style="margin-bottom:0">⭐ <b>The finding underneath all three is bigger than any of them:
+    nothing routinely exercises production at all.</b> Three different mechanisms — a filesystem
+    check, a feature flag, a verification run — and each stopped at the same absence. <b>Fixing the
+    deploy pipeline closes one of the three. The other two need a shell and a habit.</b></p>
 
     <p><b>2 · Epic 6 "awaits a board turn" — in plain terms: nothing is wrong.</b> Epic 6 (Rendered
     deliverable) is <b>sixth in PPM's ordering</b>, and the cohort works one epic at a time. It is
