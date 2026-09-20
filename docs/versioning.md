@@ -5,9 +5,9 @@
 > `scripts/check-version-consistency.py` enforces. **[VERSION_NUMBERING.md](VERSION_NUMBERING.md)**
 > explains the numbering **scheme** — what each tier of X.Y.Z means.
 
-## Current Version: 0.8.11.0 (released 2026-07-17; `main` and `production` converged at the cut)
+## Current Version: 0.8.12.0 (released 2026-09-20; `main` and `production` converged at the cut)
 
-v0.8.11.0 was cut from `main` (pyproject/VERSION bumped there) and `production` fast-forwarded to the same commit — ending the v0.8.9.1→v0.8.10.14 era of production-only cherry-pick cuts (whose content had all been merged back to main). From here, releases cut from `main`; `production` tracks the released commit.
+v0.8.12.0 was cut from `main` (pyproject/VERSION bumped there) and `production` fast-forwarded to the same commit — the first cut since v0.8.11.0 (2026-07-17), closing a two-month gap during which every deploy went to Fly directly. Releases cut from `main`; `production` tracks the released commit. (A real staged pipeline is being designed under Arch's 09-20 tasking.)
 
 ## Versioning Scheme
 

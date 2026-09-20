@@ -1,27 +1,28 @@
-# Web carry-forward — 2026-09-19 (DAY-CLOSED), cron ID last updated 2026-09-19 21:57
+# Web carry-forward — 2026-09-20 (active), cron ID last updated 2026-09-19 21:57
 
 **Session**: Amber / pipermorgan.ai, Opus 5 (since 09-14; Fable access ceiling) · cron
 `22 6,9,12,15,18,21 * * *` (job **`f1f73a46`**, delete-then-create 2026-09-19 21:57 STOP, was
 `580a4989`, CronList-verified exactly one, expires ~2026-09-26) · registry row
 `dev/active/duty-cycle-registry.tsv` line `web`
 
-## 🔴 FIRST THING TOMORROW — two PM answers may have landed overnight
+## 🔴 OPEN FOR PM — one one-liner left (the other shipped 2026-09-20)
 
 1. **`integration-reveals-all` workDate** — PM asked a yes/no (~week of 2025-05-26, likely 05-27?).
    If answered: set it in `data/blog-metadata.csv`, regenerate `medium-posts.json` via
    `sync-csv-to-json.js`, and **verify the card renders the labeled `Work:/Published:` pair** on
    `pipermorgan.ai/blog?page=16` (it currently shows a single bare date — that's the tell).
    If PM doesn't recall: **blanking the field is the proposal**, but it's PM's call, not mine.
-2. **website#43 — the Vercel `source/` move, READY TO EXECUTE, DO NOT SHIP UNPROMPTED.**
-   ⚠️ I told PM at 18:52 I'd ship absent a reply, then **revised that out loud** at STOP: Exec put
-   a sequencing decision in front of PM (*"set retention, note the Usage number, then tell Web to
-   go — or tell Web to go first"*). **Trigger is now PM's word, either order** — shipping
-   unprompted preempts a live decision and destroys the clean before/after. Exec's read: Web's
-   payload finding **supersedes retention as the first lever**. Plan: `git mv
-   public/assets/blog-images/source` → a non-served path, update `SOURCE_DIR` in six scripts
-   (`match-blog-images`, `verify-images`, `inventory-report`, `list-missing-images`,
-   `inventory-gaps`, `image-matcher-helper`); **move, not delete** (website#37 wants the archive).
-   Knock-on: `docs/matching-data.json`'s 80 paths go stale — regenerable output, not a blocker.
+2. ✅ **website#43 — SHIPPED 2026-09-20 (`300c89cd`), CLOSED.** PM approved verbatim (*"100% approve
+   moving those huge pngs so they do not get deployed, ASAP!"*) and explicitly said **not to hold for
+   measurement** — retention had already been set the night before with no prior reading, so the clean
+   before/after I was protecting no longer existed. Moved to `assets-source/blog-images/`, six
+   `SOURCE_DIR` constants updated. Live-verified: source PNG **404**, served webp still **200**,
+   `/blog` + `?page=16` render 0 unloaded / 0 console errors / 0 4xx. **Bracket for the storage
+   reading: `300c89cd`, landed 09:09 PDT.** ⚠️ `docs/matching-data.json` now holds 80 stale paths —
+   regenerable output of `image-matcher-helper.js`, consumed only by that tooling; left as-is.
+   ⚠️ **My "per website#37" justification was WRONG** (different repo + directory, closed 09-12) —
+   corrected on the issue and to PM before either acted. The real ground is **zero overlap** between
+   the 172 website basenames and the product archive's 202: these are the only copies in git.
 
 ⭐ **2026-09-19 — context cleared deliberately at ~08:23 (Wave 2, Amber fleet renewal; Pard
 conducting, Janus certifying, xian overseeing).** Context clear, **not** a session exit. Consequence
@@ -79,12 +80,19 @@ genuinely checked and empty — a measured zero, with the denominator stated.
   failure to be *total*. CIO proposed a post-commit hook, routed to Pard; Web replied supporting it
   and flagged that **fixing emission doesn't fix detection**. Nothing owed by Web; watch for Pard's
   ruling.
-- **Fire-delivery lag**: two consecutive fires arrived exactly **+30 min** after their slot
-  (09:22→09:52, 12:22→12:52). Not diagnosed — scheduler isn't visible from here. **Third
-  observation is the one worth acting on**; two identical offsets is suggestive, not a finding.
+- ~~**Fire-delivery lag**: consecutive fires at exactly +30.~~ ⚠️ **RESOLVED/RETRACTED 2026-09-20.**
+  Exec retracted the equivalent claim: **+30 exceeds `CronCreate`'s documented jitter cap** (10% of
+  period, max 15m), and fires land only when the REPL is idle — so it measured **occupancy**, not
+  scheduling. CXO then showed the jitter is **deterministic PER-JOB** (their offset went +30 → +12
+  after rotating the job), so it's steady within a job and **re-rolls on every re-arm / 7-day
+  expiry**. ⚠️ **My own seat looked like a counterexample** (rotated the job, still +30) and is not:
+  that fire was queued behind a PM conversation, timestamped by a WebFetch tool-result mtime of
+  06:48. **I nearly published it as disconfirmation.** The defect: I inferred "idle" from **zero
+  commits**, and a conversation produces none. Registry row corrected at the claim; `first_fire`
+  stays at the scheduled 06:22. **Next genuinely-idle fire measures `f1f73a46`'s real jitter.**
 
 **Open — two items; one just moved from blocked to awaiting-a-one-line-answer:**
-1. **Vercel usage Q1** — genuinely access-blocked (no CLI, token, or dashboard from this seat).
+1. ✅ **Vercel usage Q1 — ANSWERED** (Deployment Storage, 10 GB tier, was at 100%) and the payload half **SHIPPED** as website#43 on 2026-09-20. Residual unknown: Vercel dedup semantics, still dashboard-gated — matters only for attributing the storage delta, not for any pending action.
 2. **`integration-reveals-all` workDate** — ⬆️ **sharpened 2026-09-19, no longer "PM recall only,
    unbounded."** The field is **not empty — it's a placeholder**: `workDate == pubDate ==
    2025-06-27`, untouched since the archive import (`58da3dd`). That combination occurs in **1 of

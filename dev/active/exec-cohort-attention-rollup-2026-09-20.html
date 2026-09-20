@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attention rollup — 20 September</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#16181c; --card:#1e2127; --line:#32363e; --ink:#e8e8e8; --mute:#9aa0aa;
+            --red:#e8705f; --amber:#e0a94a; --grey:#7a8089; --green:#5cbf72; --link:#79aefb; }
+  }
+  body { font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:900px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.2rem; }
+  h2 { font-size:1.08rem; margin:2rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  h3 { font-size:.97rem; margin:1.1rem 0 .3rem; }
+  .card { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:7px; padding:.85rem 1rem; margin:.7rem 0; }
+  .card.fuse { border-left-color:var(--red); border-left-width:6px; }
+  .card.dec { border-left-color:var(--amber); }
+  .card.ok  { border-left-color:var(--green); }
+  .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.3rem; }
+  .n { font-weight:700; font-size:1.02rem; }
+  .who { font-size:.78rem; color:var(--mute); }
+  p { margin:.45rem 0; }
+  .do { margin-top:.55rem; padding:.55rem .75rem; background:rgba(192,57,43,.09);
+        border-radius:5px; font-size:.94rem; border:1px solid rgba(192,57,43,.25); }
+  ol.steps { margin:.4rem 0 .2rem 1.1rem; padding:0; }
+  ol.steps li { margin:.25rem 0; }
+  code { font:.86em ui-monospace,SFMono-Regular,Menlo,monospace; background:rgba(127,127,127,.12); padding:.08em .32em; border-radius:3px; }
+  table { border-collapse:collapse; width:100%; font-size:.87rem; margin:.5rem 0; }
+  th,td { text-align:left; padding:.36rem .5rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--mute); font-weight:500; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; }
+  .scroll { overflow-x:auto; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  footer { margin-top:2.2rem; padding-top:1rem; border-top:1px solid var(--line); color:var(--mute); font-size:.8rem; }
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only">Two things need you, each with steps. Everything you resolved today has been pruned.</h2>
+  <h1>Attention rollup — Sunday 20 September</h1>
+  <p class="meta">Exec · rebuilt · <b>pruned:</b> everything you resolved today is gone from the board · <b>every item carries its own content — no file hunting</b></p>
+
+  <h2>🔥 Two things need you</h2>
+
+  <div class="card fuse">
+    <div class="top"><span class="n">1 · Grant Web a Vercel token</span><span class="who">~3 minutes · yes, you still need to execute this</span></div>
+    <p><b>This is NOT what you did with Lead yesterday.</b> Yesterday you added an SSH key so Lead
+    could read the droplet — done, and it worked. <b>This is a different system entirely</b>: Vercel
+    dashboard access so Web can read storage numbers without you screenshotting them.</p>
+    <div class="do"><b>Exactly what to do:</b>
+      <ol class="steps">
+        <li>Go to <b>vercel.com/account/tokens</b> — your account settings, not the project</li>
+        <li><b>Create Token</b> → name it something like <code>web-agent-readonly</code></li>
+        <li><b>Scope:</b> the <b>piper-morgan</b> team</li>
+        <li><b>Expiration:</b> your call — 90 days is a sensible default</li>
+        <li><b>Copy it immediately</b> — Vercel shows a token once and never again</li>
+        <li>Hand it to Web. <b>Don't paste it into chat or a memo</b> — it's a live credential. Ask
+            Web where to store it and they'll answer in one line.</li>
+      </ol>
+      <b>What it unblocks:</b> Web answers storage questions directly instead of you reading
+      dashboards, and can verify whether the retention change and their own fix actually worked.</div>
+  </div>
+
+  <div class="card ok">
+    <div class="top"><span class="n">2 · Droplet — APPROVED and moving, nothing owed</span><span class="who">Lead</span></div>
+    <p>✅ <b>You approved Step 3 option (a); Lead has it.</b> Cut the release properly onto
+    <code>production</code> from current <code>main</code>, archive that to the droplet. Steps 0 and 1
+    were already done, and the backup at Step 2 is non-negotiable and built in.</p>
+    <p style="margin-bottom:0"><b>The preservation plan you remembered isn't lost.</b> I searched and
+    found no older one — but Lead's plan from 09-19 has that caution built into it.
+    ⭐ <b>And Lead's key line: "every deploy since the 07-12 cutover went to Fly." The droplet was
+    superseded in July and nobody turned it off.</b> I've asked that "stop paying for it" land as an
+    explicit outcome rather than an implication.</p>
+  </div>
+
+  <h2>🔴 Bets — your 001 answers recorded; 002 and 003 in plain terms</h2>
+
+  <div class="card dec">
+    <h3 style="margin-top:0">001 Enterprise tier — you've answered all three</h3>
+    <div class="scroll"><table>
+      <tr><th>blank</th><th>your answer, as I understood it</th></tr>
+      <tr><td><b>Buyer</b></td><td><b>None.</b> No entity has asked for an enterprise tier. Entirely speculative; may always be B2C. <b>And it's open source — anyone wanting enterprise features can send pull requests.</b></td></tr>
+      <tr><td><b>Cost box</b></td><td><b>Zero build until nonzero demand.</b></td></tr>
+      <tr><td><b>Kill date</b></td><td>You'd only know after production release and significant adoption — <b>but you're fine spending no effort indefinitely, which you noted is effectively killing it for now.</b></td></tr>
+    </table></div>
+    <p style="margin-bottom:0"><b>Suggestion for that last blank, so it's an answer rather than a
+    deferral:</b> <i>"Dormant indefinitely. Revisit only if a named buyer appears after production
+    release."</i> <b>Say yes and Arch writes all three in.</b></p>
+  </div>
+
+  <div class="card dec">
+    <h3 style="margin-top:0">002 Workspace/team tenancy — what it actually means</h3>
+    <p><b>Plainly:</b> should Piper support <b>teams sharing a workspace</b> — several humans in one
+    account, seeing each other's projects and todos — instead of every user being an island?</p>
+    <p><b>State of it:</b> some half-built machinery already sits in the database for this (Arch calls
+    them "sentinels"). <b>Nobody asked for it</b> — Arch's note says the buyer is <i>"still
+    unnamed."</i></p>
+    <p>⚠️ <b>Don't confuse this with the tenancy security work.</b> That had a real driver — alpha
+    testers leaking into each other's data — and is untouched by this bet.</p>
+    <p><b>Arch's recommendation, already written in:</b> delete the half-built sentinels so the
+    database schema tells the truth, spend zero, re-add properly behind a new bet if a buyer appears.
+    Cost to delete: one database migration.</p>
+    <div class="do"><b>The ask:</b> is there a buyer for team workspaces? <b>If the honest answer is
+    "no, same as 001" — say so and it's finished.</b></div>
+  </div>
+
+  <div class="card dec">
+    <h3 style="margin-top:0">003 Notion as a backend-held grant — what it actually means</h3>
+    <p><b>Plainly:</b> should <b>Piper hold the Notion connection on the server</b> — you authorise
+    once, Piper reaches Notion on its own — versus each user bringing their own connection?</p>
+    <p><b>Why it's live:</b> what exists today is a shim with no real Notion calls behind it. The
+    transport isn't the question. <b>The question is whether documents genuinely flow both ways</b>,
+    or whether it's a demo shaped like an integration.</p>
+    <p>⚠️ <b>This touches a decision you already made.</b> You ruled the "server key" out of existence
+    on 09-14 — <i>"why should anybody be able to spend the operator's money."</i> <b>A backend-held
+    grant is the same shape for a different service</b>, so your instinct may already answer it.</p>
+    <p style="margin-bottom:0"><b>003 is partly pre-filled from your own 08-29 answer</b> — it needs
+    confirm-or-amend rather than authorship.</p>
+  </div>
+
+  <h2>📋 Web's four — what each actually needs from you</h2>
+  <div class="card">
+    <p style="margin-top:0"><b>You said you were unclear what's needed. Each expanded below.</b> Worth
+    taking after the droplet settles, as you suggested.</p>
+    <div class="scroll"><table>
+      <tr><th>age</th><th>item</th><th>what you actually do</th></tr>
+      <tr><td><b>113d</b></td><td><b>Site walkthrough</b> — a joint pass over pipermorgan.ai with Web</td><td><b>Book a session.</b> Not a decision — you and Web look at the site together and Web notes what you react to.</td></tr>
+      <tr><td><b>94d</b></td><td><b>Obs-pass walkthrough</b> — ~31 observations Web collected about the site</td><td><b>A working session.</b> Each needs +1 (do it) / −1 (don't) / defer. <b>This is the big one</b> — 31 verdicts is an hour, not a reply.</td></tr>
+      <tr><td>35d</td><td><b>Buttondown newsletter</b> — whether to publish the newsletter natively through Buttondown</td><td><b>Your research.</b> You said "when back at desk." Web can't evaluate it for you — it's a product and cost judgement.</td></tr>
+      <tr><td>1d</td><td><b><code>integration-reveals-all</code> workDate</b> — a blog post's calendar row is missing the date the work happened</td><td><b>One yes/no:</b> was it roughly the week of 2025-05-26?</td></tr>
+    </table></div>
+  </div>
+
+  <h2>✅ Resolved today — pruned</h2>
+  <div class="card ok">
+    <p class="clean"><b>CXO's untested rubric axis</b> — you said <b>spend the tokens now</b>. Relayed.
+    No further tracking unless it fails.<br>
+    <b>PA's document practice</b> — you ruled it: <b>draft fully for reports to you; rich scaffolding
+    with placeholders for documents going to other people</b>, plus a plain-language review and your
+    HALT proofread before release. Relayed, with your follow-on question routed to CXO and PPM —
+    whether Piper the product should follow the same rules for its own file-writing.<br>
+    <b>website#43</b> — approved; <b>Web is doing it</b>, moving 240 MB of build inputs out of
+    <code>public/</code>.<br>
+    <b>Subagent tier logging</b> — routed to CIO to bake into session-log conventions.<br>
+    <b>Sprint plan</b> — shared with all ten as a non-blocking experiment.</p>
+    <p class="clean" style="margin-bottom:0">🔴 <b>Removed as STALE — my error, not your silence.</b>
+    "Your six-item test round, 13 days waiting." <b>You completed it on 09-08 at 05:14</b> — four pass,
+    two fail, per-item verdicts with screenshots, three issues closed on your live verdict. <b>My
+    tracker sat stale twelve days and I put it in front of you twice.</b> Closed with the evidence.</p>
+  </div>
+
+  <h2>⚪ Lower priority, as you asked</h2>
+  <div class="card">
+    <p style="margin-top:0"><b>Usage</b> — no throttle, agreed. <b>Reassess Monday 10:00</b>: closer to
+    50% than to 33% means it's converging. Friday and Saturday carried the entire fleet renewal plus
+    the closeout cycle, both one-time.</p>
+    <p style="margin-bottom:0"><b>Cron drift</b> — not a concern while the duty-cycle shape holds. I
+    retracted my own "+30 minutes" claim this morning; it was measuring how busy I was, not the
+    scheduler.</p>
+  </div>
+
+  <footer>
+    <b>Two actions: create the Vercel token, and confirm the Bets 001 kill-condition wording.
+    Everything else is moving or closed.</b><br><br>
+    <b>What changed, per your instruction.</b> Pruned every item you resolved today rather than
+    leaving it to read past. Every item carries its own content — the Bets blanks are written out,
+    Web's four say what you actually do, the Vercel token has numbered steps. <b>No item requires
+    opening a file to act on it.</b><br><br>
+    <b>One correction worth seeing:</b> I had boarded your six-item test round as pending for thirteen
+    days. <b>You did it on day one.</b> That is the clearest instance of the circling you named, it
+    was my stale tracker rather than your silence, and it's now closed with the evidence attached.
+  </footer>
+</div>
+</body>
+</html>

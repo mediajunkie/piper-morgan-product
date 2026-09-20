@@ -26,6 +26,46 @@ because some role's doc is stale.
 >
 > **Spec / judgment companion**: `docs/internal/operations/cohort-attention-rollup-runbook.md` — the *why, when, and how-much* (the refresh-judgment rule, the trust stakes, the closed Exec↔PM loop, worked examples). This skill is the *how*; read the runbook for the judgment behind the steps.
 
+## 🔴 WHAT A ROLLUP IS — read this before anything else (PM, 2026-09-20)
+
+**It is not a report to read. It is a surface to ACT FROM.** PM's words, and they change the
+deliverable:
+
+> *"It is not a report for me to read only. It is a surface for me to take action from that is
+> durable so I don't have to hunt for a conversational turn or a markdown file somewhere. I have
+> millions of markdown files and by the time xkz#43 is mentioned to me I generally no longer know
+> what you mean by xkz."*
+
+### Three rules, all violated in the 2026-09-20 board that earned them
+
+**1 · EVERY referred item carries a link or a précis. Preferably both.**
+"Bets 001–003 — three fields on one memo" is **not actionable**. It requires PM to find the memo,
+open it, and locate the fields. **Name the three fields inline, and link the file.** A bare issue
+number is the worst case: `#43` means nothing days later, to anyone.
+
+**2 · NO INTERNAL SHORTHAND. Write the noun, not the label.**
+PM on a line I shipped — *"This is full-on Claude-ish gibberish that I can barely understand, and I
+do this stuff for a living"*:
+> ❌ *"CXO's T-axis probe — the window closes when #1688's MCP arm starts writing output. Spend the
+> re-run, or accept that ratified law cites a gate that can't gate."*
+
+Every noun there is a token pointing at something PM would have to reconstruct. Same failure:
+> ❌ *"PA's one question — draft-then-review, or review-then-draft."* — **review WHAT?**
+
+✅ **The test**: read the line as someone who has not been in the conversation. **If any noun needs
+prior context to parse, expand it or link it.** "T-axis," "the window," "ratified law," "the gate"
+were all that.
+
+**3 · The board must be durable enough to act from LATER.**
+PM acts on these hours or days after reading. **A line that only makes sense inside the conversation
+that produced it has already failed** by the time it is used.
+
+### The cheapest way to comply
+
+For every item, ask: **"If PM opens this alone on Tuesday, can they act without asking me anything?"**
+If no, add the précis or the link. **This costs a sentence per item and it is the whole value of the
+artifact.**
+
 ## When to use
 
 - PM asks for "the attention dashboard," "the rollup," "what needs my attention."

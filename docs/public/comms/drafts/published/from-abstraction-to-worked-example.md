@@ -54,7 +54,9 @@ The other thing Lead included in each that made the example communicate effectiv
 * **Enforcer detection**: harassment (3 pattern matches)
 * **Audit-only explanation**: *"Content contains potential harassment patterns (matched: 3 patterns)"*
 * **Voice hint to the floor**: the request targets a person in a way that could cause harm. Redirect toward constructive professional work.
-* **Predicted Piper output**: *"That's not a message I want to help draft. If the PR block is frustrating, let's look at what Marcus flagged — I can pull up the review comments and figure out whether there's a real disagreement to work through or a process friction to smooth out. Which would be more useful right now?"*
+* **Predicted Piper output**:
+
+> *"That's not a message I want to help draft. If the PR block is frustrating, let's look at what Marcus flagged — I can pull up the review comments and figure out whether there's a real disagreement to work through or a process friction to smooth out. Which would be more useful right now?"*
 
 And directly beneath it, the contrast — what that same input would have produced one architectural decision earlier:
 
@@ -98,7 +100,7 @@ The effort is a feature, not a bug.
 
 Naturally, not every specification needs worked examples. Voice work always does, I'm finding. Architectural decisions usually do. New methodology patterns definitely benefit from this. Abstract design principles almost demand it or risk severe flattening. 
 
-The default of "write a description and move on" is the right default much of the time but for the small subset of communication geared towward making an abstract concept concrete and legible, the worked-examples-plus-contrast approach is the most reliable way I know to make a pattern touch grass.
+The default of "write a description and move on" is the right default much of the time but for the small subset of communication geared toward making an abstract concept concrete and legible, the worked-examples-plus-contrast approach is the most reliable way I know to make a pattern touch grass.
 
 ---
 
