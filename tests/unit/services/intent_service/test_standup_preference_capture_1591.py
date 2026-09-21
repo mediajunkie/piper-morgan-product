@@ -324,7 +324,10 @@ class TestAcceptStartsInterview:
         result = await service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert result.success is True
         assert result.message == "interview started"
-        service._start_standup_conversation.assert_awaited_once_with(_USER, sid)
+        # #1837: acceptance arms the interview (starts at the first question).
+        service._start_standup_conversation.assert_awaited_once_with(
+            _USER, sid, interview_accepted=True
+        )
         assert _pending(service, sid) is None  # consumed, one-turn offer
 
     async def test_yes_on_the_empty_lead_starts_the_interview(self, service):
@@ -335,7 +338,9 @@ class TestAcceptStartsInterview:
         await _report_turn(service, sid, empty=True)
         result = await service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert result.message == "interview started"
-        service._start_standup_conversation.assert_awaited_once_with(_USER, sid)
+        service._start_standup_conversation.assert_awaited_once_with(
+            _USER, sid, interview_accepted=True
+        )
 
 
 # ---------------------------------------------------------------------------

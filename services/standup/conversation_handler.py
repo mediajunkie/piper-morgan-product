@@ -17,6 +17,7 @@ Issue #556: Performance & Reliability enhancements:
 """
 
 import asyncio
+import re
 import time
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
@@ -60,7 +61,13 @@ _SKIP_SIGNAL_PHRASES = (
 # a persistence boundary). Input adequacy per Arch condition (a) on #1739.
 _REFINING_DEFAULT_ASK = "Would you like to make any changes?"
 _REFINING_ANYTHING_ELSE_ASK = "Anything else?"
-_REFINING_FALLBACK_ASK = "You can customize it to fit your day."
+# (#1837: _REFINING_FALLBACK_ASK retired with _graceful_fallback — a failure
+# is an honest failure message now, never a template presented for refining.)
+
+# #1837: the composite offer the REFINING restate branch arms when it owes the
+# user an interview it never ran (offer accepted, draft not built from their
+# answers). CXO's contract copy (turn-4 composite), verbatim.
+_REFINING_START_INTERVIEW_ASK = "Want to start it now?"
 
 # Taught closing phrases for the REFINING seam — the flow's own suggestion
 # chips plus the short closing forms the old word-list accepted. FULL-MESSAGE
@@ -358,6 +365,25 @@ class StandupConversationHandler:
             initial_context=initial_context,
         )
 
+        # #1837 shape 2: entered via an ACCEPTED interview invitation (the
+        # #1651/#1652 offer rail) — the user already said yes, so asking
+        # "Ready for your standup?" again is the exact re-greeting that made
+        # PM say yes twice and still get no interview (PM live, 2026-09-20).
+        # Acceptance ARMS the interview: skip INITIATED and ask the first
+        # question. The flag rides initial_context → conversation.context
+        # (persisted at creation), so the REFINING restate branch can also
+        # see that an interview was offered and accepted this conversation.
+        if (initial_context or {}).get("interview_offer_accepted"):
+            await self.manager.transition_state(
+                conversation.id, StandupConversationState.GATHERING_YESTERDAY
+            )
+            return ConversationResponse(
+                message="Great — let's do it. What did you work on yesterday?",
+                state=StandupConversationState.GATHERING_YESTERDAY,
+                requires_input=True,
+                suggestions=["nothing", "skip"],
+            )
+
         # Generate initial greeting based on available context
         greeting = await self._generate_greeting(conversation, initial_context or {})
 
@@ -381,16 +407,22 @@ class StandupConversationHandler:
         bypasses to GENERATING for users who want a one-shot LLM standup.
         """
         message_lower = user_message.lower()
+        # #1837: WORD-BOUNDARY matching, not substring. The substring form is
+        # what turned PM's "ready (as I just said)" into a quick-mode bypass
+        # ("just" matched inside the aside) and then a fabricated template —
+        # the literal turn-3 mechanism of the live incident. Same disease as
+        # "no" matching inside "nothing"/"know" on the cancel list below.
+        words = set(re.findall(r"[a-z']+", message_lower))
 
         # Quick/fast/skip → bypass guided collection, go straight to GENERATING
-        if any(word in message_lower for word in ["quick", "fast", "skip", "just"]):
+        if words & {"quick", "fast", "skip"} or message_lower.strip() in ("just the report",):
             await self.manager.transition_state(
                 conversation.id, StandupConversationState.GENERATING
             )
             return await self._generate_standup(conversation, context)
 
         # Cancel
-        if any(word in message_lower for word in ["no", "not now", "cancel", "later", "nope"]):
+        if words & {"no", "nope", "cancel", "later"} or "not now" in message_lower:
             await self.manager.transition_state(conversation.id, StandupConversationState.ABANDONED)
             return ConversationResponse(
                 message="No problem! Just say 'standup' when you're ready.",
@@ -599,13 +631,47 @@ class StandupConversationHandler:
             # stays in REFINING; the armed ask is restated in one clause
             # (CXO: answer the question truthfully from state, then restate
             # the armed offer — the arm survives).
-            # ⚠️ COPY SEAM: Lead-drafted mechanism copy; CXO owns the voice
-            # of this surface — adjust wording here, not at call sites.
+            #
+            # #1837 (PM live 2026-09-20, turn 4): this branch used to see only
+            # `current_standup` — structurally BLIND to whether an interview
+            # was offered and accepted this conversation, so it answered
+            # "Not quite" while contradicting its own three-turn-old offer.
+            # The offer state now reaches it: `interview_offer_accepted` rides
+            # conversation.context from the acceptance seam (persisted at
+            # creation), and draft provenance is recomputed from the persisted
+            # capture (user-authored iff partial_capture is non-empty). When
+            # the flow owes an interview it never ran, it SAYS SO (CXO's
+            # composite, verbatim) and arms the start-interview offer — the
+            # next "yes" binds to that offer, not to finalizing the draft
+            # (CXO's bind-to-the-offer-or-to-nothing rule).
+            # ⚠️ COPY SEAM: Lead-drafted mechanism copy except CXO's composite
+            # sentence; CXO owns the voice — adjust wording here, not at call
+            # sites.
+            capture = conversation.partial_capture
+            draft_is_user_authored = capture is not None and not capture.is_empty()
+            offer_accepted = bool(conversation.context.get("interview_offer_accepted"))
+            if offer_accepted and not draft_is_user_authored:
+                conversation.context["refining_offer"] = "start_interview"
+                conversation.context["refining_ask"] = _REFINING_START_INTERVIEW_ASK
+                return ConversationResponse(
+                    message=(
+                        "Yes — I offered a guided interview and then didn't run "
+                        f"it. {_REFINING_START_INTERVIEW_ASK}"
+                    ),
+                    state=StandupConversationState.REFINING,
+                    standup_content=conversation.current_standup,
+                    requires_input=True,
+                    suggestions=["Yes, start the interview", "Keep this draft"],
+                )
             draft = conversation.current_standup or "(no draft yet)"
+            provenance = (
+                "built from your answers and waiting on your go-ahead"
+                if draft_is_user_authored
+                else "drafted and waiting on your go-ahead"
+            )
             return ConversationResponse(
                 message=(
-                    f"Not quite — your standup's drafted and waiting on your "
-                    f"go-ahead:\n\n{draft}\n\n"
+                    f"Not quite — your standup's {provenance}:\n\n{draft}\n\n"
                     "Say 'looks good' to finalize it, or tell me what to change."
                 ),
                 state=StandupConversationState.REFINING,
@@ -615,6 +681,23 @@ class StandupConversationHandler:
             )
 
         if verdict is AcceptanceVerdict.ACCEPT:
+            # #1837: an acceptance binds to the SPECIFIC armed offer. When the
+            # restate branch armed "want to start the interview now?", a "yes"
+            # starts the interview — it must not finalize a draft the user was
+            # just told shouldn't exist. (If the arm didn't survive a
+            # persistence boundary, the fallback is the old finalize behavior —
+            # recoverable via 'start over'; never a fabricated state.)
+            if conversation.context.get("refining_offer") == "start_interview":
+                conversation.context.pop("refining_offer", None)
+                await self.manager.transition_state(
+                    conversation.id, StandupConversationState.GATHERING_YESTERDAY
+                )
+                return ConversationResponse(
+                    message="Great — let's do it. What did you work on yesterday?",
+                    state=StandupConversationState.GATHERING_YESTERDAY,
+                    requires_input=True,
+                    suggestions=["nothing", "skip"],
+                )
             # #1617 (PM live 2026-08-13): the final confirmation COMPLETES the
             # flow — no FINALIZING tail turn. The old tail ('share this or
             # save your preferences?') claimed every subsequent turn and its
@@ -634,12 +717,30 @@ class StandupConversationHandler:
                 requires_input=False,
             )
 
-        # Check for start over
+        # Any non-acceptance turn past this point abandons the armed
+        # start-interview offer (#1837): off-intent drops the arm, the same
+        # discipline as the #1651 off-intent abandonment — an arm never
+        # silently outlives the exchange that made it.
+        conversation.context.pop("refining_offer", None)
+
+        # Check for start over. #1837: "start over" now actually starts over —
+        # the old path re-entered GENERATING with the same capture, which
+        # re-rendered the identical draft (a no-op wearing a restart), or (with
+        # no capture) fell to the fabricating template. Clear the capture and
+        # re-enter the interview.
         if "start over" in message_lower or "restart" in message_lower:
+            from services.domain.models import StandupPartialCapture
+
+            await self.manager.update_partial_capture(conversation.id, StandupPartialCapture())
             await self.manager.transition_state(
-                conversation.id, StandupConversationState.GENERATING
+                conversation.id, StandupConversationState.GATHERING_YESTERDAY
             )
-            return await self._generate_standup(conversation, context)
+            return ConversationResponse(
+                message="Fresh start. What did you work on yesterday?",
+                state=StandupConversationState.GATHERING_YESTERDAY,
+                requires_input=True,
+                suggestions=["nothing", "skip"],
+            )
 
         # Handle refinement request. DECLINE falls through here deliberately:
         # this seam's asks are inverted-polarity ("any changes?"), so a "no"
@@ -714,6 +815,17 @@ class StandupConversationHandler:
         has already authored the content, no LLM round-trip needed. The
         legacy LLM-workflow path remains for the quick/skip bypass and
         for installations without a partial capture.
+
+        #1837 (PM live, 2026-09-20): the third leg — `_generate_basic_standup`,
+        a hard-coded "Made progress on assigned tasks" template — is DELETED.
+        It was #1289's undead twin: the workflow was retired, `self._workflow`
+        is permanently None, and the "fallback" silently became the primary
+        surface for any keyless-data path, fabricating boilerplate and
+        presenting it as the user's draft. Empty is a STATE, not a
+        content-generation trigger (#1331's rule; the week's honest-empty
+        cluster): no capture at all → re-enter the interview, the only honest
+        keyless-data path; a capture the user explicitly emptied → say so and
+        complete. The generic placeholder is UNREACHABLE.
         """
         generation_start = time.perf_counter()
         used_workflow = False
@@ -730,9 +842,59 @@ class StandupConversationHandler:
                 # Legacy LLM workflow path (quick/skip bypass)
                 standup_content = await self._generate_with_retry(context)
                 used_workflow = True
+            elif conversation.previous_state in (
+                StandupConversationState.GATHERING_YESTERDAY,
+                StandupConversationState.GATHERING_TODAY,
+                StandupConversationState.GATHERING_BLOCKERS,
+            ):
+                # The user came THROUGH the interview and skipped every part
+                # (partial_capture defaults to an empty capture, so emptiness
+                # alone can't distinguish "skipped everything" from "never
+                # asked" — previous_state can, and it's persisted): honest
+                # nothing-to-draft and the flow ends. Re-entering gathering
+                # here would loop them through the same three skips forever.
+                await self.manager.transition_state(
+                    conversation.id, StandupConversationState.ABANDONED
+                )
+                logger.info(
+                    "standup_generation_nothing_captured",
+                    conversation_id=conversation.id,
+                )
+                # ⚠️ COPY SEAM: Lead-drafted mechanism copy; CXO owns the voice
+                # of this surface — adjust wording here, not at call sites.
+                return ConversationResponse(
+                    message=(
+                        "You skipped all three parts, so there's nothing to build "
+                        "a standup from — and I won't invent one. Say 'my standup "
+                        "interview' whenever you want to capture it for real."
+                    ),
+                    state=StandupConversationState.ABANDONED,
+                    requires_input=False,
+                )
             else:
-                # Fallback to basic generation
-                standup_content = self._generate_basic_standup(context)
+                # No capture was ever taken (quick-mode bypass with no
+                # observed data): the interview is the only honest source —
+                # re-enter it instead of fabricating.
+                await self.manager.transition_state(
+                    conversation.id, StandupConversationState.GATHERING_YESTERDAY
+                )
+                logger.info(
+                    "standup_generation_reentered_interview",
+                    conversation_id=conversation.id,
+                )
+                # ⚠️ COPY SEAM: Lead-drafted mechanism copy; CXO owns the voice
+                # of this surface — adjust wording here, not at call sites.
+                return ConversationResponse(
+                    message=(
+                        "I don't have anything to build your standup from — no "
+                        "observed activity and nothing captured yet, and I won't "
+                        "invent one. Let's capture it: what did you work on "
+                        "yesterday?"
+                    ),
+                    state=StandupConversationState.GATHERING_YESTERDAY,
+                    requires_input=True,
+                    suggestions=["nothing", "skip"],
+                )
 
             generation_time_ms = (time.perf_counter() - generation_start) * 1000
 
@@ -772,7 +934,24 @@ class StandupConversationHandler:
                 generation_time_ms=round(generation_time_ms, 2),
                 used_fallback=True,
             )
-            return await self._graceful_fallback(conversation, str(e))
+            # #1837: `_graceful_fallback` (a fabricated template presented as
+            # "a basic standup template" under an error) is DELETED with
+            # `_generate_basic_standup`. A failure gets an honest failure
+            # message; the conversation stays in GENERATING, whose handler
+            # regenerates on the next turn — the user's captured answers are
+            # untouched, so "try again" actually retries.
+            # ⚠️ COPY SEAM: Lead-drafted mechanism copy; CXO owns the voice of
+            # this surface — adjust wording here, not at call sites.
+            return ConversationResponse(
+                message=(
+                    "Something went wrong assembling your standup — your answers "
+                    "are saved. Say 'try again' and I'll rebuild it."
+                ),
+                state=StandupConversationState.GENERATING,
+                requires_input=True,
+                suggestions=["Try again", "Cancel"],
+                metadata={"generation_failed": True, "error": str(e)},
+            )
 
     async def _generate_with_retry(self, context: Dict[str, Any]) -> str:
         """Generate standup with retry logic and timeout.
@@ -964,35 +1143,9 @@ class StandupConversationHandler:
         # Default - return current content unchanged
         return current
 
-    def _generate_basic_standup(self, context: Dict[str, Any]) -> str:
-        """Generate basic standup when workflow unavailable."""
-        return """*Yesterday:*
-* Made progress on assigned tasks
-
-*Today:*
-* Continue current work items
-* Review any blockers
-
-*Blockers:*
-* None at this time"""
-
-    async def _graceful_fallback(
-        self,
-        conversation: StandupConversation,
-        error: str,
-    ) -> ConversationResponse:
-        """Handle graceful fallback when generation fails."""
-        basic = self._generate_basic_standup({})
-        await self.manager.set_standup_content(conversation.id, basic)
-        await self.manager.transition_state(conversation.id, StandupConversationState.REFINING)
-        conversation.context["refining_ask"] = _REFINING_FALLBACK_ASK  # #1739 arm site
-
-        return ConversationResponse(
-            message=(
-                f"Here's a basic standup template:\n\n{basic}\n\n" f"{_REFINING_FALLBACK_ASK}"
-            ),
-            state=StandupConversationState.REFINING,
-            standup_content=basic,
-            suggestions=["Looks good", "Let me customize", "Try again"],
-            metadata={"fallback": True, "error": error},
-        )
+    # #1837: `_generate_basic_standup` and `_graceful_fallback` are DELETED.
+    # They were #1289's undead twin — a hard-coded "Made progress on assigned
+    # tasks" template fabricated and presented as the user's draft whenever the
+    # (permanently-None) workflow was absent or generation failed. Empty/failed
+    # is a state to say honestly, never a content-generation trigger. Git has
+    # the bodies; do not resurrect a placeholder draft on any path.

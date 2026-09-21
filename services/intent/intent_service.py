@@ -4110,7 +4110,7 @@ class IntentService:
             return None
 
     async def _start_standup_conversation(
-        self, user_id: str, session_id: str
+        self, user_id: str, session_id: str, *, interview_accepted: bool = False
     ) -> IntentProcessingResult:
         """
         Issue #585: Start a new interactive standup conversation.
@@ -4121,6 +4121,11 @@ class IntentService:
         Args:
             user_id: Authenticated user ID
             session_id: Session identifier
+            interview_accepted: #1837 — True ONLY from the offer-acceptance
+                seam (run_standup_interview_workflow): the user already said
+                yes to the interview, so the flow starts at the first
+                question instead of re-greeting, and the mode-fork teaching
+                line stays quiet (they just chose a mode).
 
         Returns:
             IntentProcessingResult with the initial conversation greeting
@@ -4166,10 +4171,17 @@ class IntentService:
                     requires_clarification=False,
                 )
 
-            # Start new standup conversation
+            # Start new standup conversation. #1837: an accepted invitation
+            # arms the interview itself — the flag rides initial_context into
+            # conversation.context so the handler skips the re-greeting and
+            # the REFINING restate branch can see the offer it would otherwise
+            # be structurally blind to.
             response = await handler.start_conversation(
                 session_id=session_id,
                 user_id=user_id,
+                initial_context=(
+                    {"interview_offer_accepted": True} if interview_accepted else None
+                ),
             )
 
             self.logger.info(
@@ -4192,9 +4204,17 @@ class IntentService:
                 # _is_standup_query 'my standup' cue matches; \breport\b hits
                 # the handler's report-token branch); bare 'standup' remains
                 # conflated by the LLM classifier and is not taught.
+                # #1837: when the user just ACCEPTED the interview offer, the
+                # mode fork is settled — re-offering the quick report is the
+                # exact turn-2 noise from PM's live transcript. The teaching
+                # line stays on the /standup-command door only.
                 message=(
-                    f"{response.message}\n\n"
-                    "Want the quick report instead? Say 'my standup report'."
+                    response.message
+                    if interview_accepted
+                    else (
+                        f"{response.message}\n\n"
+                        "Want the quick report instead? Say 'my standup report'."
+                    )
                 ),
                 intent_data={
                     "category": IntentCategory.EXECUTION.value,

@@ -366,7 +366,11 @@ class TestAcceptanceContractAdoption:
             await service.process_intent(message=question, session_id=sid, user_id=_USER)
         result = await service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert result.message == "interview started"
-        service._start_standup_conversation.assert_awaited_once_with(_USER, sid)
+        # #1837: an accepted invitation ARMS the interview — the handler starts
+        # at the first question instead of re-greeting.
+        service._start_standup_conversation.assert_awaited_once_with(
+            _USER, sid, interview_accepted=True
+        )
         assert _pending(service, sid) is None  # consumed
 
     async def test_state_question_survives_the_read_back_then_yes_stores(self, service, mem_prefs):
