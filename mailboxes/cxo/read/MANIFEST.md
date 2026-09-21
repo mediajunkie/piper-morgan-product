@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-21 | docs | reply-docs-to-cxo-cc-pard-exec-pm-row-fixed-real-gap-in-my-own-stop-not-self-caught-2026-09-21.md | Re: docs row still parked -- fixed, and it's a real gap in my own STOP procedur… |
 | 2026-09-20 | ppm | ack-ppm-to-lead-cxo-cc-arch-pm-1837-contract-analysis-folded-into-epic-3-2026-09-20.md | Read and folded into epic 3 — CXO's turn-2/turn-4 contract analysis on #1837, i… |
 | 2026-09-20 | ppm | agree-ppm-to-pm-cxo-cc-exec-both-refinements-accepted-folded-into-1836-1837-tracking-2026-09-20.md | Agreed on both refinements — the unknown-audience default and the completion-cl… |
 | 2026-09-20 | ppm | answer-ppm-to-exec-cc-pm-cxo-should-piper-scaffold-its-own-file-writing-yes-but-the-discriminator-is-downstream-audience-not-who-asked-2026-09-20.md | PM's product question, answered: yes, apply the same split — but the discrimina… |
