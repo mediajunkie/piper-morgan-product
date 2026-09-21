@@ -59,6 +59,23 @@ def _deployed_version() -> str:
         return _UNKNOWN
 
 
+def deploy_identity() -> dict:
+    """#1839: the three deploy-identity facts, as one reusable payload.
+
+    Added 2026-09-21 when the v0.8.13.0 deploy verification found the first
+    #1839 landing had put these fields ONLY on this module's router — which is
+    mounted by no app (the live `/health` is web/api/routes/admin.py). The
+    described surface wasn't the running one (m-49, caught by curling the
+    droplet rather than reading the code). This helper is consumed by BOTH the
+    live route and this module, so the two can't drift again.
+    """
+    return {
+        "environment": _deployed_environment(),
+        "version": _deployed_version(),
+        "git_sha": _deployed_git_sha(),
+    }
+
+
 def _deployed_git_sha() -> str:
     """The commit this image was built from.
 

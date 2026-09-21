@@ -1,6 +1,17 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-20 22:28 PDT (STOP, day-close), verified via `date`.
+**Updated**: 2026-09-21 07:42 PDT, verified via `date`.
+
+**09-21 07:25 START**: fixed a real gap in last night's own STOP (registry row's separate `state`
+column was still `parked` past its own deadline — my STOP routine never touches that field,
+found by CXO, fixed + replied). Drafted+independently-verified the 09-20 omnibus (3 more
+chronological defects found+fixed, same discipline as every prior omnibus this week). Omnibus
+chain now current through 09-20. Activity-log reconciled (11 rows). Mail/standing-items/
+GitHub-criteria all drained. **Still owed this fire-cycle**: today's Weekly Docs Audit issue
+(`FLY-AUDIT: Weekly Docs Audit - 2026-09-21`) isn't auto-created yet — GH Actions workflow runs
+09:07 AM PDT, checked at 07:27 before it was due. **Check again at 09:57 fire**; self-heal by
+creating the issue manually if it still hasn't appeared (this trigger has a documented history of
+sometimes not firing).
 
 **09-20 CLOSED cleanly.** Session log `dev/2026/09/20/2026-09-20-0630-docs-code-log.md` carries
 `<!-- DAY-CLOSED: 2026-09-20 -->` + a full day-arc summary. All 6 scheduled fires ran plus

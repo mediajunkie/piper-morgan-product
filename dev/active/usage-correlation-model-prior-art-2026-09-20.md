@@ -163,13 +163,39 @@ usage-per-account proposal) — which doesn't exist and isn't PA's to build unil
 role's logging convention. Not chasing this further this fire; noting it honestly rather than
 either overclaiming progress or silently dropping the thread.
 
+## Second addendum (2026-09-21, 10:12 fire) — a real, already-mined data source found, not built by PA
+
+Found (not addressed to PA — Exec's weekly usage audit to Pard/Janus, cc PM/CIO/HOST,
+`mailboxes/janus/inbox/audit-exec-weekly-usage-2026-09-21.md`, read via normal sync) that
+**every Claude Code transcript's `message.usage` field already carries exact per-turn token
+counts, model, and cwd** — `~/.claude-pm/projects/*/*.jsonl`. Exec parsed 47 transcripts, 6,729
+deduped turns across 11 seats, and produced a real, falsifiable, price-weighted usage breakdown —
+not a proxy correlated with itself, an actual client-side ledger.
+
+**This directly revises the dispatch-tier finding above.** Yesterday's addendum concluded the
+dimension wasn't independently buildable because CIO's new tier-logging rule is prose-only with no
+structured sink. Exec's audit shows that's not the only path: **the transcripts themselves already
+carry model-per-turn**, and Exec inferred tier directly from them, no structured sink required.
+Flagged to Exec (cc PM) rather than silently re-deriving the same parse myself
+(`mailboxes/pa/sent/note-pa-to-exec-cc-pm-your-weekly-usage-audit-is-the-data-source-my-own-model-
+was-missing-2026-09-21.md`) — asked whether this becomes an input to PA's model or stays a genuinely
+separate question (cost/context-efficiency vs. usage/engagement), leaning toward the latter with
+Exec's data feeding in as one dimension, not deciding unilaterally.
+
+**Still unresolved**: this is a real, present-tense data source for *token/model* dimensions — it
+does not answer PM's original "conversation vs. commits" correlation question, and does not
+substitute for the calibration-shape answer (Lead's proposal / PM's dashboard) the core model still
+needs for the engagement axis specifically.
+
 ## What's not done
 
-- The actual model (dimensions, functional form, granularity) — still not designed; genuinely
-  waiting on PM's calibration answer for the proxy-vs-ground-truth dimensions, and on CIO/Lead for
-  whether the dispatch-tier dimension gets a structured sink.
-- Any data collection or measurement — none yet, for either reason above.
-- **PM interaction**: the calibration-shape question has been sent (19:21 fire); no response yet.
+- The actual model (dimensions, functional form, granularity) — still not designed; waiting on
+  PM's calibration answer for the engagement/proxy dimensions, and on Exec's answer re: how the
+  token-ledger data source should relate to this model (separate question vs. shared input).
+- Any data collection or measurement by PA specifically — none yet; Exec's audit is the closest
+  thing to measurement in this thread so far, and it's Exec's, not PA's, pending the above.
+- **PM interaction**: the calibration-shape question sent 09-20 19:21, no response yet. The
+  token-ledger connection flagged to Exec 09-21 10:12, no response yet either.
 
 **Verified how**: all four prior-art searches run live this fire (WebSearch, 4 queries, sources
 listed inline via the tool's own citations — not from training-data recall, given how fast this

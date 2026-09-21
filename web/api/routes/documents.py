@@ -32,9 +32,8 @@ from services.llm.request_key import (  # #1185: per-user LLM key rail
     UserLLMKeyRequiredError,
     request_api_key,
 )
-from web.utils.llm_key import (  # #1185; #1819 (binding expansion + openai resolver)
-    expand_llm_key_binding,
-    resolve_user_llm_key,
+from web.utils.llm_key import (  # #1185; #1819/#1823 (any-provider binding + openai resolver)
+    resolve_user_llm_binding,
     resolve_user_openai_key,
 )
 
@@ -46,9 +45,11 @@ logger = structlog.get_logger(__name__)
 # surface. 403 follows `require_admin` (#1485/#1598) — the established in-codebase
 # answer for "you are authenticated, but this action needs something you don't have" —
 # and carries the same "nothing was changed" reassurance.
+# #1823: provider-neutral (CXO's ruled convention — the policy is ownership, not a
+# vendor; one stored key of ANY spendable provider passes the gate now).
 USER_KEY_REQUIRED_DETAIL = (
     "This needs an LLM key of your own — Piper doesn't bill anyone else's account. "
-    "Add your Anthropic API key in Settings and try this again. Nothing was charged."
+    "Add an OpenAI or Anthropic API key in Settings and try this again. Nothing was charged."
 )
 
 # #1819: document search embeds the query via OpenAI, so the key it needs is an
@@ -71,14 +72,15 @@ async def _resolve_key_or_refuse(user_id: str):
     a refusal into a grant.
     """
     try:
-        resolved = await resolve_user_llm_key(None, user_id)
+        # #1823 branch one: one stored key of ANY spendable provider is enough —
+        # the same widened gate /intent uses (resolver mirrors #1822's Slack arm).
+        return await resolve_user_llm_binding(None, user_id)
     except UserLLMKeyRequiredError:
         logger.warning("documents_user_key_required_1807", user_id=user_id)
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=USER_KEY_REQUIRED_DETAIL,
         )
-    return await expand_llm_key_binding(resolved, user_id)
 
 
 # Request models

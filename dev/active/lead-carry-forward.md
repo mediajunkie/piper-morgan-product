@@ -1,21 +1,27 @@
 # Lead carry-forward — rewritten 2026-09-19 ~21:55 PT at STOP (freshness rule: full pass at START/STOP)
 
-## MONDAY FIRST (2026-09-21) — the three spec-complete builds, in order
-- **#1812 Phase B** — the two-face cut per dev/active/1812-step5-6-execution-plan-2026-09-20.md
-  (complete consumer map incl. second face; PM's embeddings-sponsor confirm recorded;
-  deploy rides the NEXT cut, never same-day). Lands whole, fresh context.
-- **#1837 build** — Arch CONCURRED all three shapes 09-20 evening (independently verified;
-  deletion blast radius contained; the restate branch is structurally blind to offers —
-  fix must thread offer state to it; home = the existing #1739 acceptance rail, one seam).
-  PPM: #1837 blocks epic 3's floor. CXO's contract analysis folded (bind-to-the-offer-or-
-  to-nothing). #1836's deeper half rides with it.
-- **#1818(b) wiring** — CXO's copy set delivered (ONE shared constant + four kind
-  prefixes); pre-classifier-before-gate ordering + kind-matched dispatch; the spend
-  ratchet is the canary (membership must not change).
-- **INVITE: HOLD LIFTED 09-20 ~21:00 (HOST, independently verified on alpha)** — Janne's
-  invite is PM's to send. Test-burn account drive_test_1812 awaiting HOST retirement.
-- Watch: Arch's pipeline plan v0.2 with PM · #1840 (mail half-landing; my drains now
-  post-push-verify) · #1832 needs Arch GO · #1599 username check with PM.
+## STATE (2026-09-21 midday): SIX closed today — the trio + release + the #1823/#1824 pair
+- **#1812 CLOSED** (steps 5–6 landed: operator seam deleted, LLMClient credential-free) ·
+  **#1837 CLOSED** (all 3 shapes: template dead, acceptance arms interview, refinement
+  via floor) · **#1836 CLOSED** (rode #1837 shape 3) · **#1818 CLOSED** ((b) shipped,
+  CXO copy, one shared constant).
+- **v0.8.13.0 CUT + DEPLOYED TO ALPHA 09-21 ~09:00 (PM-approved)** — all four fixes LIVE;
+  /health attests version+sha+environment publicly. Full alpha-docs audit rode the cut
+  (#1804 + #1830 closed; guide + email template hosted-only; tester URL unified on
+  alpha.pipermorgan.ai — flag for Pard's hosting sort). #1617 retest READY on the card.
+- Filed while building: **#1841** (pm039 live-LLM drift, baseline-verified) · **#1842**
+  (accuracy-suite container-fallback defect, keyed-lane red-nobody-sees) · **#1843**
+  (ACCEPT_PATTERNS '^please ' fires on short imperatives — finalizes drafts; #1739
+  contract owners' lane, Arch+CXO should rule).
+- **INVITE: HOLD LIFTED 09-20 (HOST)** — Janne's invite is PM's to send.
+  drive_test_1812 account awaiting HOST retirement.
+- **#1823 + #1824 CLOSED 09-21 midday** (`9ec028406`, landed together per PPM's rule):
+  any-provider gate + the four-bucket split + the wrap fix that was the live
+  "Something unexpected happened" cause. **UNDEPLOYED — next cut carries them**
+  (test-card row added for the invalid-key retest post-deploy).
+- Watch: Arch's pipeline plan v0.2 with PM · #1832 needs Arch GO · #1599 username
+  check with PM · pm-test-card: #1617 retest READY NOW (deployed); #1824 retest after
+  next cut.
 
 ## Live state
 - **v116 LIVE on Fly**, health 200 (deployed 09-19 morning). ⚠️ alpha.pipermorgan.ai (the

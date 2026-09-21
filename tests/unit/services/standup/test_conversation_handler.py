@@ -169,19 +169,26 @@ class TestHandleTurnInitiated:
         return await handler.manager.create_conversation("s1", "u1")
 
     @pytest.mark.asyncio
-    async def test_quick_skips_to_generating(self, handler, conversation):
-        """'Quick' skips preferences and generates standup."""
+    async def test_quick_with_no_data_reenters_interview_never_fabricates(
+        self, handler, conversation
+    ):
+        """#1837 AMENDMENT (was: 'quick' → REFINING with content — which, with
+        no capture and no workflow, was the fabricated template presented as
+        the user's draft). Quick mode with nothing to build from now re-enters
+        the interview honestly: empty is a state, not a content trigger."""
         response = await handler.handle_turn(conversation, "quick standup")
 
-        assert response.state == StandupConversationState.REFINING
-        assert response.standup_content is not None
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
+        assert response.standup_content is None
+        assert "won't invent" in response.message
+        assert "Made progress on assigned tasks" not in response.message
 
     @pytest.mark.asyncio
-    async def test_fast_skips_to_generating(self, handler, conversation):
-        """'Fast' also skips to generation."""
+    async def test_fast_with_no_data_reenters_interview(self, handler, conversation):
+        """'Fast' takes the same honest path (#1837 amendment, as above)."""
         response = await handler.handle_turn(conversation, "fast please")
 
-        assert response.state == StandupConversationState.REFINING
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
 
     @pytest.mark.asyncio
     async def test_cancel_abandons(self, handler, conversation):
@@ -233,10 +240,13 @@ class TestHandleTurnGathering:
 
     @pytest.mark.asyncio
     async def test_extracts_github_preference(self, handler, gathering_conversation):
-        """Extracts GitHub focus preference and proceeds."""
+        """Extracts GitHub focus preference and proceeds. #1837 AMENDMENT: with
+        no capture and no workflow this used to land in REFINING holding the
+        fabricated template; the honest destination is the interview's first
+        question — the preference is still extracted and stored."""
         response = await handler.handle_turn(gathering_conversation, "focus on github work")
 
-        assert response.state == StandupConversationState.REFINING
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
         conv = await handler.manager.get_conversation(gathering_conversation.id)
         assert conv.preferences.get("focus") == "github"
 
@@ -304,12 +314,16 @@ class TestHandleTurnRefining:
         assert response.standup_content is not None
 
     @pytest.mark.asyncio
-    async def test_start_over_regenerates(self, handler, refining_conversation):
-        """'Start over' regenerates standup."""
+    async def test_start_over_actually_starts_over(self, handler, refining_conversation):
+        """#1837 AMENDMENT (was: 'start over' → REFINING with content — a
+        re-render of the same capture, i.e. a no-op wearing a restart, or the
+        fabricated template with no capture). Start-over clears the capture and
+        re-enters the interview."""
         response = await handler.handle_turn(refining_conversation, "start over")
 
-        assert response.state == StandupConversationState.REFINING
-        assert response.standup_content is not None
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
+        conv = await handler.manager.get_conversation(refining_conversation.id)
+        assert conv.partial_capture.is_empty()
 
 
 class TestHandleTurnFinalizing:
@@ -378,7 +392,9 @@ class TestHandleTerminalStates:
 
 
 class TestGracefulFallback:
-    """Tests for graceful fallback behavior."""
+    """#1837 AMENDMENT: generation failure gets an HONEST failure message and a
+    retryable state — never `_graceful_fallback`'s fabricated template presented
+    as 'a basic standup template' (deleted with `_generate_basic_standup`)."""
 
     @pytest.fixture
     def handler_with_failing_workflow(self):
@@ -401,9 +417,11 @@ class TestGracefulFallback:
 
         response = await handler_with_failing_workflow.handle_turn(conv, "quick")
 
-        # Should still get a response with basic standup via fallback
-        assert response.standup_content is not None
-        assert response.metadata.get("fallback") is True
+        # #1837: no fabricated content — an honest failure, retryable in place.
+        assert response.standup_content is None
+        assert response.metadata.get("generation_failed") is True
+        assert response.state == StandupConversationState.GENERATING
+        assert "Made progress on assigned tasks" not in response.message
 
     @pytest.mark.asyncio
     async def test_fallback_includes_error(self, handler_with_failing_workflow):
@@ -485,8 +503,9 @@ class TestRefinementLogic:
 
     @pytest.mark.asyncio
     async def test_add_blocker_with_colon(self, handler, conversation_with_content):
-        """Add blocker with colon syntax."""
-        result = await handler._apply_refinement(
+        """Chip parser (#1837 shape 3): 'add blocker:' is a strict PREFIX form
+        — the deterministic, key-free chip action."""
+        result = await handler._refine_draft(
             conversation_with_content, "add blocker: waiting for code review"
         )
 
@@ -494,8 +513,8 @@ class TestRefinementLogic:
 
     @pytest.mark.asyncio
     async def test_remove_by_keyword(self, handler, conversation_with_content):
-        """Remove items by keyword."""
-        result = await handler._apply_refinement(conversation_with_content, "remove feature X")
+        """Chip parser: 'remove …' prefix removes matching lines."""
+        result = await handler._refine_draft(conversation_with_content, "remove feature X")
 
         assert "feature X" not in result
 
@@ -509,15 +528,23 @@ class TestFullConversationFlow:
 
     @pytest.mark.asyncio
     async def test_quick_flow(self, handler):
-        """Quick path: start -> quick -> accept -> done."""
+        """Quick path (#1837 amendment): with nothing to build from, 'quick'
+        re-enters the interview honestly; one answer then early-completion
+        renders a draft FROM THAT ANSWER; accept completes (#1617 one-turn)."""
         # Start
         response = await handler.start_conversation("s1", "u1")
         assert response.state == StandupConversationState.INITIATED
 
-        # Quick
+        # Quick with no data -> honest interview re-entry, never a template
         conv = await handler.manager.get_conversation_by_session("s1")
         response = await handler.handle_turn(conv, "quick")
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
+
+        # One real answer, then early-completion -> draft built from it
+        conv = await handler.manager.get_conversation(conv.id)
+        response = await handler.handle_turn(conv, "shipped the release. that's all")
         assert response.state == StandupConversationState.REFINING
+        assert "shipped the release" in (response.standup_content or "")
 
         # Accept — #1617: the final confirmation completes the flow in ONE
         # turn (no FINALIZING tail turn to claim the next command).
@@ -583,41 +610,42 @@ class TestFullConversationFlow:
 
     @pytest.mark.asyncio
     async def test_restart_during_refinement(self, handler):
-        """#1063 rewrite: 'start over' from REFINING regenerates standup.
-
-        Post-#900: REFINING is reached via the 3-part flow's blockers
-        handler. From there, "start over" transitions REFINING → GENERATING
-        and regenerates.
+        """#1837 AMENDMENT (was #1063: 'start over' → GENERATING → the same
+        capture re-rendered, or the fabricated template): from REFINING,
+        'start over' clears the capture and re-enters the interview.
         """
-        # Walk to REFINING via the 3-part flow (using "quick" bypass for speed)
+        # Walk to REFINING via the 3-part flow with a real answer
         response = await handler.start_conversation("s1", "u1")
         conv = await handler.manager.get_conversation_by_session("s1")
-        response = await handler.handle_turn(conv, "quick")
+        response = await handler.handle_turn(conv, "yes")
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
+        conv = await handler.manager.get_conversation(conv.id)
+        response = await handler.handle_turn(conv, "fixed the login bug. that's all")
         assert response.state == StandupConversationState.REFINING
-        original_content = response.standup_content
+        assert "fixed the login bug" in (response.standup_content or "")
 
-        # Restart from REFINING
+        # Restart from REFINING → a genuinely fresh interview
         conv = await handler.manager.get_conversation(conv.id)
         response = await handler.handle_turn(conv, "start over")
 
-        assert response.state == StandupConversationState.REFINING
-        assert response.standup_content is not None
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
+        conv = await handler.manager.get_conversation(conv.id)
+        assert conv.partial_capture.is_empty()
 
 
 class TestBasicStandupGeneration:
-    """Tests for basic standup generation fallback."""
+    """#1837: the fabricating fallback stays DELETED."""
 
     @pytest.fixture
     def handler(self):
         return StandupConversationHandler()
 
-    def test_basic_standup_format(self, handler):
-        """Basic standup has correct sections."""
-        basic = handler._generate_basic_standup({})
-
-        assert "*Yesterday:*" in basic
-        assert "*Today:*" in basic
-        assert "*Blockers:*" in basic
+    def test_the_template_fallback_stays_deleted(self, handler):
+        """`_generate_basic_standup` and `_graceful_fallback` fabricated a
+        generic draft and presented it as the user's standup (PM live,
+        2026-09-20). Their absence is the contract."""
+        assert not hasattr(handler, "_generate_basic_standup")
+        assert not hasattr(handler, "_graceful_fallback")
 
 
 class TestRetryAndErrorRecovery:
@@ -690,16 +718,18 @@ class TestRetryAndErrorRecovery:
 
     @pytest.mark.asyncio
     async def test_fallback_on_permanent_failure(self, handler_with_permanent_failure):
-        """#1063 rewrite + Issue #556: permanent failures fall back to basic template."""
+        """#1837 AMENDMENT (was #1063/#556: permanent failure → the fabricated
+        template): a permanent failure is an HONEST failure — no content, a
+        retryable state, the error surfaced."""
         handler = handler_with_permanent_failure
         conv = await handler.manager.create_conversation("s1", "u1")
 
         response = await handler.handle_turn(conv, "quick")
 
-        # Should fallback to basic standup
-        assert response.standup_content is not None
-        assert response.metadata.get("fallback") is True
+        assert response.standup_content is None
+        assert response.metadata.get("generation_failed") is True
         assert "error" in response.metadata
+        assert response.state == StandupConversationState.GENERATING
 
     @pytest.mark.asyncio
     async def test_timeout_triggers_fallback(self, handler_with_timeout):
@@ -711,9 +741,10 @@ class TestRetryAndErrorRecovery:
 
         response = await handler.handle_turn(conv, "quick")
 
-        # Should fallback due to timeout
-        assert response.standup_content is not None
-        assert response.metadata.get("fallback") is True
+        # #1837: timeout is an honest failure, not a fabricated template.
+        assert response.standup_content is None
+        assert response.metadata.get("generation_failed") is True
+        assert response.state == StandupConversationState.GENERATING
 
     def test_retry_configuration_exists(self):
         """Issue #556: Retry configuration constants are defined."""
@@ -787,27 +818,26 @@ class TestMonitoringIntegration:
 
         response = await handler.handle_turn(conv, "quick")
 
-        # Should fallback with error metadata
-        assert response.metadata.get("fallback") is True
+        # #1837: honest failure with error metadata (no fabricated fallback).
+        assert response.metadata.get("generation_failed") is True
         assert "error" in response.metadata
 
     @pytest.mark.asyncio
     async def test_conversation_completion_metrics_logged(self, handler):
         """#1063 rewrite + Issue #556: conversation completion logs metrics.
 
-        Walk the full post-#900 path: 'quick' → REFINING → 'looks good' →
-        FINALIZING → 'done' → COMPLETE.
+        Walk the full post-#900/#1837 path: interview with one real answer →
+        REFINING → 'looks good' → COMPLETE (#1617 one-turn completion).
         """
         conv = await handler.manager.create_conversation("s1", "u1")
 
-        # Quick to REFINING
-        await handler.handle_turn(conv, "quick")
+        # Enter the interview and answer once, completing early
+        await handler.handle_turn(conv, "yes")
         conv = await handler.manager.get_conversation(conv.id)
-        # Accept → FINALIZING
+        await handler.handle_turn(conv, "shipped it. that's all")
+        conv = await handler.manager.get_conversation(conv.id)
+        # Accept → COMPLETE
         await handler.handle_turn(conv, "looks good")
-        conv = await handler.manager.get_conversation(conv.id)
-        # Done → COMPLETE
-        await handler.handle_turn(conv, "done")
         conv = await handler.manager.get_conversation(conv.id)
 
         # Should be complete
@@ -947,8 +977,10 @@ class TestRefinementHonesty1836:
     @pytest.mark.asyncio
     async def test_unapplied_edit_never_claims_update(self, handler, refining_conversation):
         """PM's exact turn shape: an imperative free-form edit with dictated
-        replacement text. The refinement engine can't apply it — the response
-        must say so, never 'I've updated'."""
+        replacement text. #1837 shape 3 AMENDMENT: this now routes to the
+        floor; in this keyless test world the floor's spend refuses — and the
+        honest invariant is the same under every engine: never 'I've updated'
+        when nothing changed, and the draft honestly presented as unchanged."""
         response = await handler.handle_turn(
             refining_conversation,
             "change what I did yesterday. right now that is just generic. say that "
@@ -957,7 +989,7 @@ class TestRefinementHonesty1836:
 
         assert response.state == StandupConversationState.REFINING
         assert "I've updated" not in response.message
-        assert "couldn't apply" in response.message
+        assert "unchanged" in response.message
         # The draft is honestly presented as unchanged.
         assert "Made progress on assigned tasks" in response.message
 
@@ -981,3 +1013,254 @@ class TestRefinementHonesty1836:
         response = await handler.handle_turn(refining_conversation, "focus on github work")
 
         assert "I've updated" not in response.message
+
+
+class TestInterviewOfferContract1837:
+    """#1837 (PM live, alpha v0.8.12.0, 2026-09-20): accepting the interview
+    offer starts the interview; the fabricated template is unreachable; the
+    flow never denies an offer it made. PM's exact 4-turn shape pinned."""
+
+    @pytest.fixture
+    def handler(self):
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
+
+    @pytest.mark.asyncio
+    async def test_accepted_offer_starts_at_the_first_question(self, handler):
+        """PM's turn 2: 'Sure, thanks.' against the interview offer must get
+        the interview's first question — not 'Ready for your standup?' again
+        (the re-greeting that made PM say yes twice and still get nothing)."""
+        response = await handler.start_conversation(
+            session_id="s1837",
+            user_id="u1837",
+            initial_context={"interview_offer_accepted": True},
+        )
+
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
+        assert "yesterday" in response.message.lower()
+        assert "ready for your standup" not in response.message.lower()
+
+    @pytest.mark.asyncio
+    async def test_ready_as_i_just_said_does_not_bypass_to_a_template(self, handler):
+        """PM's turn 3, verbatim mechanism: the old substring matcher read
+        'just' inside 'ready (as I just said)' as quick-mode, bypassed the
+        interview, and fabricated the template. Word-boundary matching + the
+        template's deletion: this turn now enters the interview."""
+        conv = await handler.manager.create_conversation("s1837b", "u1837")
+
+        response = await handler.handle_turn(conv, "ready (as I just said)")
+
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
+        assert "Made progress on assigned tasks" not in response.message
+        assert response.standup_content is None
+
+    @pytest.mark.asyncio
+    async def test_restate_branch_acknowledges_its_own_offer(self, handler):
+        """PM's turn 4: 'no, I thought you said you'd do a guided interview?'
+        The branch used to answer 'Not quite' — structurally blind to its own
+        offer (Arch's confirm). With the offer state threaded through and the
+        draft not built from the user's answers, it now owns it (CXO's
+        composite, verbatim) and arms the start-interview offer."""
+        conv = await handler.manager.create_conversation(
+            "s1837c", "u1837", initial_context={"interview_offer_accepted": True}
+        )
+        await handler.manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        # A draft that did NOT come from the user's answers (capture empty) —
+        # the fabricated-state shape #1837 makes unreachable going forward,
+        # still representable for conversations created by older builds.
+        await handler.manager.set_standup_content(conv.id, "*Yesterday:*\n* boilerplate")
+        await handler.manager.transition_state(conv.id, StandupConversationState.REFINING)
+        conv = await handler.manager.get_conversation(conv.id)
+        conv.context["interview_offer_accepted"] = True
+
+        response = await handler.handle_turn(
+            conv, "no, I thought you said you'd do a guided standup interview with me?"
+        )
+
+        assert "I offered a guided interview and then didn't run it" in response.message
+        assert "Not quite" not in response.message
+        assert response.state == StandupConversationState.REFINING
+
+        # CXO's bind-to-the-offer rule: the next 'yes' starts the interview —
+        # it must NOT finalize the draft the user was just told shouldn't exist.
+        conv = await handler.manager.get_conversation(conv.id)
+        conv.context["interview_offer_accepted"] = True
+        conv.context["refining_offer"] = "start_interview"
+        response = await handler.handle_turn(conv, "yes")
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
+        assert "yesterday" in response.message.lower()
+
+    @pytest.mark.asyncio
+    async def test_restate_branch_on_user_authored_draft_stays_honest(self, handler):
+        """The other arm: a draft genuinely built from the user's answers gets
+        the truthful status answer, naming its provenance."""
+        conv = await handler.manager.create_conversation("s1837d", "u1837")
+        await handler.manager.transition_state(
+            conv.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        conv = await handler.manager.get_conversation(conv.id)
+        await handler.handle_turn(conv, "shipped the release. that's all")
+        conv = await handler.manager.get_conversation(conv.id)
+        assert conv.state == StandupConversationState.REFINING
+
+        response = await handler.handle_turn(conv, "are we done with that standup?")
+
+        assert response.state == StandupConversationState.REFINING
+        assert "built from your answers" in response.message
+
+    @pytest.mark.asyncio
+    async def test_pm_exact_four_turn_regression(self, handler):
+        """The whole live sequence, replayed at the handler layer: offer
+        accepted → interview actually runs → the draft is the user's own
+        words → no denial, no template, anywhere."""
+        # Turn 2 ('Sure, thanks.' consumed by the offer rail upstream):
+        response = await handler.start_conversation(
+            "s1837e", "u1837", initial_context={"interview_offer_accepted": True}
+        )
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
+
+        # The interview actually asks, and the answers are actually used:
+        conv = await handler.manager.get_conversation_by_session("s1837e")
+        response = await handler.handle_turn(
+            conv, "spent all day getting the Piper Morgan team back on track"
+        )
+        assert response.state == StandupConversationState.GATHERING_TODAY
+        conv = await handler.manager.get_conversation(conv.id)
+        response = await handler.handle_turn(conv, "alpha invite goes out. that's all")
+        assert response.state == StandupConversationState.REFINING
+        content = response.standup_content or ""
+        assert "getting the Piper Morgan team back on track" in content
+        assert "Made progress on assigned tasks" not in content
+
+
+class TestRefinementViaFloor1837:
+    """#1837 shape 3: free-form refinement is the FLOOR's job (one place for
+    free-form language, on the user's own key); the substring toy NLU is
+    retired. The chip actions stay deterministic and key-free as strict
+    prefix parsers. #1836's verified-diff honesty is engine-independent."""
+
+    @pytest.fixture
+    def handler(self):
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
+
+    @pytest_asyncio.fixture
+    async def refining_conversation(self, handler):
+        conv = await handler.manager.create_conversation("s1837f", "u1837")
+        await handler.manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await handler.manager.set_standup_content(
+            conv.id, "*Yesterday:*\n* Made progress on assigned tasks\n\n*Today:*\n* Continue"
+        )
+        await handler.manager.transition_state(conv.id, StandupConversationState.REFINING)
+        return await handler.manager.get_conversation(conv.id)
+
+    def _mock_floor(self, handler, revise):
+        floor = MagicMock()
+        floor.revise_draft = revise
+        handler._floor = floor
+        return floor
+
+    @pytest.mark.asyncio
+    async def test_free_form_edit_is_applied_via_the_floor(self, handler, refining_conversation):
+        """PM's exact turn, with the floor able to serve: the dictated text
+        replaces the generic line and the success claim is TRUE."""
+        revised = (
+            "*Yesterday:*\n* Spent all day getting the Piper Morgan team back "
+            "on track\n\n*Today:*\n* Continue"
+        )
+        self._mock_floor(handler, AsyncMock(return_value=revised))
+
+        response = await handler.handle_turn(
+            refining_conversation,
+            "change what I did yesterday. say that yesterday I spent all day "
+            "getting the Piper Morgan team back on track.",
+        )
+
+        assert "I've updated" in response.message
+        assert "getting the Piper Morgan team back on track" in response.message
+        # …and the persisted draft matches the claim (verified diff persisted).
+        conv = await handler.manager.get_conversation(refining_conversation.id)
+        assert conv.current_standup == revised
+
+    @pytest.mark.asyncio
+    async def test_floor_no_change_gets_the_honest_no_change_copy(
+        self, handler, refining_conversation
+    ):
+        """The revision contract returns the draft unchanged for an
+        inapplicable request — the response says so, never 'I've updated'."""
+        self._mock_floor(
+            handler,
+            AsyncMock(return_value=refining_conversation.current_standup),
+        )
+
+        response = await handler.handle_turn(refining_conversation, "make it better somehow")
+
+        assert "I've updated" not in response.message
+        assert "unchanged" in response.message
+
+    @pytest.mark.asyncio
+    async def test_keyless_free_form_edit_refuses_honestly(self, handler, refining_conversation):
+        """#1809 at this seam: a free-form edit spends the USER's key; keyless
+        gets the honest copy naming the key AND the key-free chip actions."""
+        from services.llm.request_key import UnboundLLMKeyError
+
+        self._mock_floor(handler, AsyncMock(side_effect=UnboundLLMKeyError("no key")))
+
+        response = await handler.handle_turn(refining_conversation, "rewrite it punchier")
+
+        assert "your own key" in response.message
+        assert "add blocker" in response.message.lower()
+        assert "I've updated" not in response.message
+        assert response.state == StandupConversationState.REFINING
+
+    @pytest.mark.asyncio
+    async def test_floor_error_is_an_honest_error_not_a_silent_discard(
+        self, handler, refining_conversation
+    ):
+        self._mock_floor(handler, AsyncMock(side_effect=RuntimeError("provider down")))
+
+        response = await handler.handle_turn(refining_conversation, "tighten the wording")
+
+        assert response.metadata.get("refinement_failed") is True
+        assert "unchanged" in response.message
+        assert "I've updated" not in response.message
+
+    @pytest.mark.asyncio
+    async def test_chip_actions_never_touch_the_floor(self, handler, refining_conversation):
+        """The two deterministic chip actions stay key-free — the floor must
+        not be consulted (a keyless user can always use them)."""
+        floor = self._mock_floor(
+            handler, AsyncMock(side_effect=AssertionError("floor consulted for a chip action"))
+        )
+
+        response = await handler.handle_turn(
+            refining_conversation, "add blocker: waiting on review"
+        )
+        assert "waiting on review" in response.message
+        response = await handler.handle_turn(
+            await handler.manager.get_conversation(refining_conversation.id),
+            "remove Continue",
+        )
+        assert "I've updated" in response.message
+        floor.revise_draft.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_substring_triggers_are_retired(self, handler, refining_conversation):
+        """'remove'/'add blocker' INSIDE a sentence is free-form language for
+        the floor — not a chip trigger (the toy-NLU disease, retired). The old
+        matcher would have line-filtered on 'the fluff and make it punchier'."""
+        captured = {}
+
+        async def _capture(**kwargs):
+            captured["message"] = kwargs["user_message"]
+            return kwargs["draft"]
+
+        self._mock_floor(handler, _capture)
+
+        # (Imperative, not question-form — a question-form turn is #1739's
+        # STATE_QUESTION and never reaches refinement; and not "please"-led —
+        # a leading "please" currently fires the shared ACCEPT vocabulary and
+        # finalizes the draft, filed as #1843 in the contract's lane.)
+        await handler.handle_turn(
+            refining_conversation, "cut the filler words and make it punchier"
+        )
+
+        assert captured["message"] == "cut the filler words and make it punchier"

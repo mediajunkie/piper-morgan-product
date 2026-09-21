@@ -53,6 +53,16 @@ class UserFriendlyErrorService:
                 "severity": ErrorSeverity.ERROR,
                 "category": "llm_key",
             },
+            # #1824 insufficient-permission (CXO's bucket 2 copy): a VALID key the
+            # provider won't allow for this model/endpoint. Deliberately does NOT
+            # point at our Settings — the fix is at the provider, and sending them
+            # to our Settings would recommend a known-failing action (#1108).
+            r"permission_error|permission denied.*model|does not have access to model": {
+                "message": "Your key works, but the provider won't allow this model or endpoint for it.",
+                "recovery": "That's a permissions setting on your account with them — it isn't something I can change from here.",
+                "severity": ErrorSeverity.ERROR,
+                "category": "llm_key",
+            },
             # #1807/#1812 — the caller has NO key at all. Distinct from the two
             # entries above (which describe a key that EXISTS and is broken) and
             # from #1320's anonymous refusal (they ARE signed in). Copy is CXO's,
@@ -63,7 +73,7 @@ class UserFriendlyErrorService:
             # never an outcome. Pattern matches what request_key.py actually raises.
             r"has no llm key of their own|user llm key required|no llm key configured|no api key configured": {
                 "message": "That needs an LLM key of your own — Piper doesn't bill anyone else's account.",
-                "recovery": "Add your Anthropic API key under Settings → LLM API Keys.",
+                "recovery": "Add an OpenAI or Anthropic key under Settings → LLM API Keys.",
                 "severity": ErrorSeverity.ERROR,
                 "category": "llm_key",
             },

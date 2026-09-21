@@ -140,3 +140,160 @@ or correct the weighting. **I would rather be corrected today than have PM act o
 they are wrong.**
 
 — Exec
+
+
+---
+
+# ADDENDUM — "what changed recently?" (PM's question, 2026-09-21)
+
+**Answer: our consumption did not materially rise. The ceiling dropped.** Four weeks of daily
+history from the same transcripts:
+
+| window (Fri–Mon) | cache_read |
+|---|---|
+| 08-28 → 08-31 | **3,701M** |
+| 09-04 → 09-07 | 2,331M |
+| 09-11 → 09-14 | 2,977M |
+| **09-18 → 09-21 (this week)** | **2,872M** |
+
+**This week is 3.5% BELOW the same window two weeks ago and 22% below four weeks ago.** We are not
+burning hotter in absolute terms — we are burning about the same against a smaller allowance. Our own
+records attribute a **~17% ceiling reduction to the summer promotion ending on 13 September**.
+⚠️ **I have not independently verified that figure** — it is sourced from our prior analysis, not
+from anything I measured here, and it is the load-bearing claim in this addendum. Worth confirming.
+
+**Average context per turn has been stable for a month**, 420k–624k, with no trend: 581k on 08-25,
+563k on 08-31, 624k on 09-14, 544k on 09-20. **09-20 is unremarkable in that series.** What was
+unusual about this weekend is **turn volume** — 09-19 logged **2,820 turns, the highest of the month**,
+and 09-20 logged 2,157, against a typical 1,000–1,500. That is the fleet-renewal weekend.
+
+## The clears worked — and they lasted one day
+
+Per-seat average context, around the 09-18 Wave-0 renewal:
+
+| seat | 09-18 | 09-19 | 09-20 | 09-21 |
+|---|---|---|---|---|
+| docs | 697k | **363k** | 714k | 829k |
+| lead | 774k | **362k** | 726k | 312k |
+| cxo | 810k | **254k** | 393k | 462k |
+| host | 734k | **303k** | 483k | 554k |
+| pa | 640k | **211k** | 309k | 409k |
+| exec | 223k | 550k | 778k | 165k |
+
+**Every seat dropped sharply on 09-19 and every seat climbed back on 09-20.** The renewal cut context
+roughly in half for a single day. It is a sawtooth: a clear resets it, and it re-accumulates within
+~24 hours. **So PM's read that "after all those clears we're consuming cache more than before" is
+half right** — per-turn context fell exactly as intended; total spend still rose because the same
+weekend carried the month's two highest turn counts.
+
+## What this implies about levers
+
+Spend = **turns × average context**. Three levers, in order of ratio-to-cost:
+
+1. **Model tier on the four Opus seats** — ~51% off the price-weighted bill, no lane closed, instantly
+   reversible. Largest single lever.
+2. **Clear cadence** — a clear demonstrably halves per-turn context. It decays in a day, so the lever
+   is *cadence*, not one-off renewals.
+3. **The baseline the sawtooth resets TO** — post-clear seats bottomed at 210k–260k, and that floor is
+   set by what every turn re-reads regardless of session age: `CLAUDE.md`, the `duty-cycle-tick`
+   skill, carry-forwards, and `duty-cycle-registry.tsv`. Lowering the floor lowers every subsequent
+   turn, not just the first.
+
+**Cutting seats is the worst ratio of the four** — it is linear in lanes lost and does nothing to the
+per-turn term that is 95.8% of the bill.
+
+**Verified how**: same method as above, extended to 2026-08-23, deduped by `requestId`, 30 days of
+daily aggregates. **Layer**: client-side ledger. **Denominator**: all transcripts modified since
+08-24; days before that are outside the retained window, so "no trend for a month" is a claim about
+30 days, not about all time.
+
+
+---
+
+# ADDENDUM 2 — model-tier correction, and where "the floor" actually comes from (2026-09-21, PM live conversation)
+
+## Correction to the original per-seat table
+
+The seat×model table above (exec/cxo/web/arch as "Opus seats") reported the **week's aggregate mix**,
+not live state, and that distinction wasn't flagged. Checked the raw `model` field across full
+transcripts: **cxo, web, and arch all switched Opus→Sonnet together at ~23:06–23:11 UTC on 09-20**
+(~4pm PDT), well before this audit was written. **The only seat still on Opus through Monday morning
+was exec**, switched by PM during this conversation. Advising three seats be moved to Sonnet, when two
+of them had already been moved 18 hours earlier, is a stale-data error on my part — the historical
+mix was correct, "these are Opus seats" as a live claim was not.
+
+## Docs' re-reading, investigated directly — not task-driven, not docs-specific
+
+PM asked whether docs' high context reflected an active task or ordinary duty-cycle overhead. Checked
+the actual transcripts (not aggregates) for docs and nine other seats:
+
+| seat | session started | turns | context (last / peak) | auto-compacted? |
+|---|---|---|---|---|
+| lead | 09-19 15:27 | 1,814 | 537k / 961k | yes, twice (904k→740k, 961k→88k) |
+| **docs** | 09-19 15:22 | 1,565 | **932k / 932k** | **no — zero drops >50k in 1,565 turns** |
+| exec | 09-18 18:12 | 1,124 | 220k / 965k | yes, twice (915k→759k, 965k→86k) |
+| ppm | 09-19 15:26 | 1,089 | 633k / 633k | no |
+| comms | 09-19 05:05 | 1,118 | 657k / 657k | no |
+| cio | 09-19 15:28 | 841 | 631k / 631k | no |
+| host | 09-19 15:25 | 940 | 587k / 587k | no |
+| web | 09-19 15:23 | 746 | 521k / 556k | no |
+| cxo | 09-19 15:25 | 753 | 493k / 493k | no |
+| arch | 09-19 05:06 | 690 | 520k / 520k | no |
+| pa | 09-19 15:24 | 638 | 434k / 434k | no |
+
+**Every seat is running the same unbroken session since the Wave-0 renewal (09-19), none has cleared
+voluntarily since, and every one is climbing monotonically.** Docs isn't wasteful or mid-task — it's
+simply the seat furthest along a climb every seat is on. Lead and exec already hit the ceiling
+(~930–965k) and were force-compacted by the harness; docs hasn't reached that wall yet, which is why
+it reads as an outlier in a single-day snapshot.
+
+**Auto-compaction is expensive**: it's one large `cache_creation` event that re-summarizes the entire
+~950k-token session at once. Riding to the ceiling costs materially more than clearing early.
+
+## What "the floor" is actually made of
+
+Post-Wave-0-reset, every seat started at 69k–81k tokens — that IS the observed floor. Its components:
+
+| surface | size (est. tokens) |
+|---|---|
+| CLAUDE.md | ~18k |
+| duty-cycle-tick skill | ~26k |
+| duty-cycle-registry.tsv | ~7k |
+| role's own carry-forward | 1k (comms) – **44k (ppm, outlier)** |
+
+CLAUDE.md and the tick skill are both dense with accreted incident narrative — legitimate
+institutional memory, but paid on every turn of every seat regardless of relevance that turn.
+**ppm's carry-forward is a 4–8x outlier against every other role** and is a candidate for its own review.
+
+## Two levers, not one
+
+1. **Clear proactively on a cadence**, rather than riding to forced auto-compaction. A scheduled clear
+   at ~300–400k tokens costs a fraction of a 965k forced compaction and lowers the whole climb, not
+   just the peak. Open question for Pard: is there a mechanical way to schedule this (cron-driven via
+   the launcher), rather than relying on manual/remembered action — same pattern as the mailbox and
+   heartbeat mechanisms this cohort already uses instead of trusting memory.
+2. **Shrink what the post-clear floor is made of** — move accreted incident narrative in CLAUDE.md and
+   the tick skill to an on-demand reference doc, keep only the operative rule always-loaded; review
+   ppm's carry-forward specifically.
+
+**Verified how**: raw `model` field per assistant message across full session transcripts (not the
+weekly-window subset used in the original audit); session start times, turn counts, and drops >50k
+tokens (candidate auto-compaction events) computed directly per seat. **Layer**: client-side transcript
+data, same as the rest of this doc. **Denominator**: 11 seats' most-recently-modified transcript file
+each; does not account for seats with multiple transcript files in the window (checked only the latest).
+
+
+## Context PM added: the weekend was legitimate frontload, not a new baseline
+
+PM's point, and it's consistent with the data above, not just a reasonable excuse: 09-19/09-20 carried
+a fleet-renewal-and-planning push — the busiest two days of the month by turn count (2,820 and 2,157
+vs. a typical 1,000–1,500) — and that volume was the work itself, not drift. **Per-turn context stayed
+flat across the whole period (420k–624k for a month); the spike was in how many turns ran, not in how
+expensive each one was.** So treating this week's total as a one-time investment rather than the new
+normal is the right read of the numbers, not just charitable framing.
+
+**What does NOT reset with that explanation**: the clear-cadence gap. Nine of eleven seats are still
+riding the same unbroken session opened 09-19, still climbing toward the ~950k auto-compaction ceiling,
+independent of whether this particular week's volume was planned or not. A slow week would just mean
+they climb more slowly to the same wall. The mechanism (lever 1 above) is what prevents this from
+recurring on the next busy week, planned or unplanned.

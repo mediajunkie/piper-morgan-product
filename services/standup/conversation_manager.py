@@ -98,6 +98,10 @@ class StandupConversationManager:
         StandupConversationState.GENERATING: [
             StandupConversationState.REFINING,
             StandupConversationState.FINALIZING,  # Skip refinement if user accepts
+            # #1837: nothing captured + no data source → the honest path is the
+            # interview, not a fabricated template (the deleted
+            # _generate_basic_standup). Generation re-enters gathering.
+            StandupConversationState.GATHERING_YESTERDAY,
             StandupConversationState.ABANDONED,
             StandupConversationState.SUSPENDED,  # Escape command or timeout
         ],
@@ -108,6 +112,9 @@ class StandupConversationManager:
             # FINALIZING tail state claimed turns while ignoring their content
             # (PM live 2026-08-13). Also the completion-tail release target.
             StandupConversationState.COMPLETE,
+            # #1837: accepting the restate branch's start-interview offer
+            # (an interview was offered and never run) enters gathering.
+            StandupConversationState.GATHERING_YESTERDAY,
             StandupConversationState.ABANDONED,
             StandupConversationState.SUSPENDED,  # Escape command or timeout
         ],

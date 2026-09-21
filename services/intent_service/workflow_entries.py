@@ -460,7 +460,12 @@ async def run_standup_interview_workflow(
             has_session=bool(session_id),
         )
         return None
-    result = await intent_service._start_standup_conversation(effective_user, session_id)
+    # #1837: the acceptance ARMS the interview — the handler starts at the
+    # first question instead of re-greeting ("Ready for your standup?"), which
+    # is what made PM say yes twice and still get no interview.
+    result = await intent_service._start_standup_conversation(
+        effective_user, session_id, interview_accepted=True
+    )
     # The acceptance seam consumes {"message", "intent_data"}; the interview
     # entry returns IntentProcessingResult — adapt (confirm_pending_action idiom).
     if isinstance(result, dict):

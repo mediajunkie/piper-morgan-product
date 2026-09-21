@@ -1,463 +1,146 @@
 # Piper Morgan Alpha Testing Guide
 
-**Version**: 0.8.12.0
-**Last Updated**: September 20, 2026
+**Version**: 0.8.13.0
+**Last Updated**: September 21, 2026
 **For**: Alpha Testers
+
+**Rewritten 2026-09-21 (Lead), closing #1804.** This guide previously walked testers
+through a local clone/Docker/setup-wizard install — a flow retired by #1708 (2026-08-31):
+Piper Morgan's alpha is a **hosted app** at
+[alpha.pipermorgan.ai](https://alpha.pipermorgan.ai), and that's what this guide now
+describes. Engineers who want to run the code locally: see `CONTRIBUTING.md` — local
+setup lives there, not here.
 
 ---
 
 ## Returning Tester? Start Here
 
-If you already have Piper set up and running, skip straight to what matters:
-- **[What's New in 0.8.12](#whats-new-in-0812)** - Your key/your billing end to end, honest keyless refusals, flows that release, truthful lists
-- **[What to Test in 0.8.12](#what-to-test-in-0812)** - Priority test walks for this release
-- **[Troubleshooting](#chapter-3-troubleshooting)** - If something isn't working
+If you already have an account, skip straight to what matters:
+- **[What's New in 0.8.13](#whats-new-in-0813)** — the standup stops inventing things, keyless turns get a human answer, every LLM call is on your own key
+- **[What to Test in 0.8.13](#what-to-test-in-0813)** — priority test walks for this release
+- **[Troubleshooting](#chapter-3-troubleshooting)** — if something isn't working
 
 ---
 
 ## Quick Navigation
 
-This guide has three main sections:
-
 | Section | Description | Start Here If... |
 |---------|-------------|------------------|
-| **[Chapter 1: Setup](#chapter-1-setup)** | Prerequisites, installation, configuration | You're setting up for the first time |
-| **[Chapter 2: Testing](#chapter-2-testing)** | Test scenarios, features to explore | You already have an account and want to start testing |
+| **[Chapter 1: Setup](#chapter-1-setup)** | Account creation, your LLM key, optional connections | You're setting up for the first time |
+| **[Chapter 2: Testing](#chapter-2-testing)** | Test scenarios, features to explore | You have an account and want to start testing |
 | **[Chapter 3: Troubleshooting](#chapter-3-troubleshooting)** | Common issues and solutions | Something isn't working |
-
-**First-time setup?** Start with [Chapter 1](#chapter-1-setup). **Already have an account?** Jump to [Chapter 2: Testing](#chapter-2-testing).
 
 ---
 
 # Chapter 1: Setup
 
-## Before You Begin - Prerequisites Checklist
+Piper Morgan runs as a hosted app — **there is nothing to install**. Setup is three steps:
+an account, your LLM key, and (optionally) your tool connections.
 
-**Required Software:**
+## What you need
 
-- [ ] Git installed and configured
-- [ ] Python 3.11 or higher
-- [ ] Docker installed and running
-- [ ] A code editor (VS Code recommended)
-- [ ] Terminal/command line access
+- [ ] A modern browser
+- [ ] **Your invite code** — alpha is invite-only; codes come directly from
+      **xian@pipermorgan.ai**. If you don't have one, that's the address to write.
+- [ ] **At least one LLM API key of your own**:
+  - An [Anthropic API key](https://console.anthropic.com/) (Claude), and/or
+  - An [OpenAI API key](https://platform.openai.com/api-keys) (GPT-4-class models)
+- [ ] Budget roughly $5–20 for LLM API costs over the alpha period — **Piper runs on
+      your key and your account**; it never bills anyone else's (see What's New).
 
-**Required Accounts & Keys:**
+**Optional (for the integration features):**
 
-- [ ] **GitHub account with SSH key configured** (required BEFORE cloning)
+- [ ] A GitHub personal access token (issue creation/management features)
+- [ ] A Notion API key (document features)
+- [ ] A Slack workspace you can connect (notifications, chat-with-Piper-from-Slack)
 
-  - **Why needed**: You must authenticate to GitHub to clone the repository
-  - **If you already have SSH keys**: Test with `ssh -T git@github.com`
-    - ✅ Success: "Hi username! You've successfully authenticated..."
-    - ❌ Failure: See setup guide below
-  - **If you need to set up SSH keys**: Follow GitHub's official guides:
-    - 📖 [Generating SSH Keys](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
-    - 📖 [Adding SSH Key to GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
-  - **Note**: This MUST be done before Step 1 (cloning repository)
+**Time commitment**: ~10 minutes to first conversation; 15–30 minutes weekly for
+feedback during the alpha period.
 
-- [ ] At least one LLM API key:
-  - OpenAI API key (GPT-4 access preferred), OR
-  - Anthropic API key (Claude access)
-- [ ] Budget $5-20 for LLM API testing costs
+## Step 1 — Create your account
 
-**Optional but Recommended:**
+1. Go to **[alpha.pipermorgan.ai/setup](https://alpha.pipermorgan.ai/setup)**
+2. Choose a username and password, and enter your email
+3. Enter your **invite code** — account creation is invite-gated; the form won't
+   proceed without a valid, unused code
+4. Log in at [alpha.pipermorgan.ai](https://alpha.pipermorgan.ai)
 
-- [ ] Notion API key (for document management features)
-- [ ] Slack workspace (for notification features)
-- [ ] GitHub personal access token (for issue creation features)
+## Step 2 — Add your LLM key (the one required step)
 
-**Time Commitment:**
+Piper can't answer anything substantive until it has a key of yours to run on:
 
-- [ ] 45-60 minutes for guided setup and initial exploration (includes Docker installation if needed)
-- [ ] 15-30 minutes weekly for feedback during alpha period
+1. Open **Settings → LLM Keys**
+2. Paste your Anthropic and/or OpenAI key and save
+3. If you add both, you can pick a default provider; either alone works
 
----
+Until you do this, Piper will tell you so honestly — a keyless "hi" gets a greeting and
+a pointer to Settings, and a keyless request gets a refusal that names exactly what's
+missing. That's by design (see What's New): **no key, no spend, no borrowing**.
 
-## Important Disclaimers - Please Read
+## Step 3 (optional) — Connect your tools
+
+In **Settings → Integrations**: GitHub (personal access token), Notion (API key),
+Slack (OAuth). Each is optional; core chat, lists, files, and standups work without any.
+
+## Important Disclaimers — Please Read
 
 **⚠️ ALPHA SOFTWARE WARNING ⚠️**
 
-This is pre-release alpha software (version 0.8.12.0). By proceeding, you acknowledge:
+This is pre-release alpha software (version 0.8.13.0). By proceeding, you acknowledge:
 
-1. **Expected Issues**: Bugs, crashes, and incomplete features are normal
-2. **Data Loss Risk**: Your data may be lost at any time without warning
-3. **No Production Use**: Do NOT use for mission-critical or time-sensitive work
-4. **Employer Systems**: Do NOT install on employer hardware without written permission
-5. **API Charges**: You are responsible for all LLM API costs incurred
-6. **Security**: Not security audited - use test data only, no sensitive information
-7. **No Warranty**: Software provided "as-is" without any warranty whatsoever
-8. **No Support SLA**: Best-effort support only, no guaranteed response times
+1. **Expected Issues**: bugs, rough edges, and incomplete features are normal
+2. **Data Loss Risk**: your data on the alpha instance may be lost at any time
+3. **No Production Use**: do NOT use it for mission-critical or time-sensitive work
+4. **API Charges**: you are responsible for all LLM API costs your key incurs
+5. **Security**: not security audited — use test data only, no sensitive information
+6. **No Warranty**: provided "as-is", without any warranty whatsoever
+7. **No Support SLA**: best-effort support only, no guaranteed response times
 
-See `ALPHA_AGREEMENT_v2.md` for complete legal terms.
-
----
-
-## What's New in 0.8.12
-
-v0.8.12.0 is the "Your Key, Your Account" release — two months of work making the
-bring-your-own-credentials model true end to end, plus security hardening and fixes for
-flows that wouldn't let go of the conversation.
-
-**Your key, your billing:**
-
-- **The server key is gone** ([#1807](https://github.com/mediajunkie/piper-morgan-product/issues/1807), [#1810](https://github.com/mediajunkie/piper-morgan-product/issues/1810), [#1812](https://github.com/mediajunkie/piper-morgan-product/issues/1812)): every LLM call spends YOUR stored key. No shared fallback credential exists; setup no longer writes your key anywhere another tester's setup could overwrite.
-- **Keyless turns refuse honestly** ([#1809](https://github.com/mediajunkie/piper-morgan-product/issues/1809), [#1814](https://github.com/mediajunkie/piper-morgan-product/issues/1814)): a missing/invalid key produces a clear message about the key — never a vague error, never a silently-billed answer.
-- **Per-provider keys** ([#1819](https://github.com/mediajunkie/piper-morgan-product/issues/1819), [#1822](https://github.com/mediajunkie/piper-morgan-product/issues/1822)): your Anthropic and OpenAI keys bind independently; OpenAI-only users are fully served in Slack. (Web chat's front door still asks for Anthropic — fix ruled and queued, #1823.)
-- **Consent fails closed** ([#1816](https://github.com/mediajunkie/piper-morgan-product/issues/1816)): if your authorized-provider list can't be read, Piper refuses the turn rather than assuming everything is allowed.
-
-**Flows that let go:**
-
-- **A finished standup releases your next message** ([#1617](https://github.com/mediajunkie/piper-morgan-product/issues/1617)): after "Anything else?", an unrelated command routes normally on the first try.
-- **Offers stop eating replies** ([#1652](https://github.com/mediajunkie/piper-morgan-product/issues/1652)–[#1654](https://github.com/mediajunkie/piper-morgan-product/issues/1654)): four "the flow swallowed my message" bugs were one contract, fixed once with a regression rail.
-
-**Truthful rendering:**
-
-- Aggregate answers name failed sources instead of reporting false emptiness ([#1717](https://github.com/mediajunkie/piper-morgan-product/issues/1717), [#1730](https://github.com/mediajunkie/piper-morgan-product/issues/1730)).
-- GitHub lists show honest counts with an offer for the remainder — no silent truncation.
-
-**Security:**
-
-- Chat-render and pattern-suggestion XSS fixed; unauthenticated stale page twins removed; demo plugin unmounted by default; cross-user isolation regression-hardened ([#1732](https://github.com/mediajunkie/piper-morgan-product/issues/1732), [#1741](https://github.com/mediajunkie/piper-morgan-product/issues/1741), [#1733](https://github.com/mediajunkie/piper-morgan-product/issues/1733), [#1690](https://github.com/mediajunkie/piper-morgan-product/issues/1690), [#1813](https://github.com/mediajunkie/piper-morgan-product/issues/1813)).
-
-**Database migrations**: run automatically on deploy (hosted testers: nothing to do).
-
-See [Release Notes v0.8.12.0](releases/RELEASE-NOTES-v0.8.12.0.md) for full details.
-
-<details>
-<summary><strong>Previous release (0.8.11 — Finish the Unfinished)</strong></summary>
-
-v0.8.11.0 is the "Finish the Unfinished" release: a systematic audit of half-done work across the whole codebase, fixes for every serious problem it found, and permanent build-time checks so the same classes of bugs can't quietly return. What you'll feel as a tester: **Piper stops lying** — about your data, about its capabilities, and about what went wrong.
-
-(If your install reported a 0.8.10.x version at some point, those were small production-only hotfixes — 0.8.11.0 includes all of them.)
-
-**Your data, correctly yours:**
-
-- **Personality questionnaire works again** ([#1422](https://github.com/mediajunkie/piper-morgan-product/issues/1422)): questionnaire answers now actually shape Piper's tone — warmth, confidence, level of detail. A database column lost in an earlier migration had been silently discarding them. Prior answers were unrecoverable, so everyone re-answers once after updating.
-- **Your LLM provider choice is yours** ([#1415](https://github.com/mediajunkie/piper-morgan-product/issues/1415)): provider selection (default provider + authorized list) now resolves per user. One user's setup can no longer pin the whole instance to their provider.
-- **Owner-scoping fixes** ([#1420](https://github.com/mediajunkie/piper-morgan-product/issues/1420), [#1421](https://github.com/mediajunkie/piper-morgan-product/issues/1421), [#1434](https://github.com/mediajunkie/piper-morgan-product/issues/1434)): similarity search and default-project resolution are scoped to your account, and they fail closed — deny rather than fall back to shared data — when ownership can't be confirmed. An authentication check that silently fell back to a global key is also fixed.
-- **List/todo metadata persists** ([#1435](https://github.com/mediajunkie/piper-morgan-product/issues/1435)): a bug silently discarded list and todo metadata on every save.
-
-**Honest conversation:**
-
-- **Greetings don't swallow your question** ([#1416](https://github.com/mediajunkie/piper-morgan-product/issues/1416)): "Hi! How do I address you?" gets the question answered — only pure pleasantries get the short greeting response.
-- **"Connect my GitHub" gets real guidance** ([#1417](https://github.com/mediajunkie/piper-morgan-product/issues/1417)): connect/setup requests reach a real answer pointing at Settings → Integrations, instead of a wrong generic decline.
-- **No more false "there is nothing" claims** ([#1425](https://github.com/mediajunkie/piper-morgan-product/issues/1425)): status, agenda, retrospective, and priority answers distinguish "the lookup failed" from "genuinely empty" — you'll see "I couldn't check your todos just now" instead of a false "no pending tasks."
-- **No more false capability denials** ([#1426](https://github.com/mediajunkie/piper-morgan-product/issues/1426)): stale responses claiming Piper can't accept file uploads or set reminders (both have worked for a while) are gone.
-- **Classification failures tell the truth** ([#1414](https://github.com/mediajunkie/piper-morgan-product/issues/1414)): LLM key and quota problems surface an honest message about the key instead of "Something unexpected happened."
-- **Session memory recall** ([#1394](https://github.com/mediajunkie/piper-morgan-product/issues/1394)): "what did we create this session?" reads a real ledger of session activity, and follow-ups like "update the title" resolve to the issue you just created.
-
-**Under the hood:**
-
-- Route-level cleanups: several endpoints return clean validation errors (422/404) instead of crashing with 500s, and knowledge-graph writes now record which user acted ([#1436](https://github.com/mediajunkie/piper-morgan-product/issues/1436)).
-- Build-time ratchets now count known debt classes (unscoped data reads, silently-swallowed exceptions, stubs) and fail the build if any count grows — the audited problems can't quietly return.
-
-**Database Migration Required**: Run `alembic upgrade head` after updating (two migrations: the session-activity ledger and the restored preferences column).
-
-See [Release Notes v0.8.11.0](releases/RELEASE-NOTES-v0.8.11.0.md) for details.
-
-</details>
-
-
-<details>
-<summary><strong>Previous release (0.8.9 — connector infra / security / Design D2)</strong></summary>
-
-Connector config moved to the database (survives restarts), real standup pipeline, field encryption for user secrets (AES-256-GCM), per-user LLM key routing, auth hardening, design token system + mobile nav, Documents → Radar rename.
-
-</details>
-
-<details>
-<summary><strong>Previous release (0.8.8 — D1/RECONNECT)</strong></summary>
-
-Conscious Floor, BYOC credential layer, Radar as default workspace, navigation IA (History→Radar, Collections→Lists), full-height home chat, compose autosave, source-provenance badges on files. 252/252 canonical regression clean.
-
-</details>
-
-<details>
-<summary><strong>Previous release (0.8.5.3)</strong></summary>
-
-**Windows Compatibility & Setup UX** - 14 issues from Ted Nadeau's Windows testing: uvloop fix, missing migrations, CRLF handling, installation validator, actionable errors.
-
-</details>
-
-<details>
-<summary><strong>Previous release (0.8.5)</strong></summary>
-
-**MUX-IMPLEMENT Complete** - The Modeled User Experience super epic:
-- WCAG 2.1 AA Accessibility (11 colors fixed, all ratios ≥4.5:1)
-- Lifecycle State Persistence with visual indicators
-- New Views: Work Items and Project Detail
-- ProcessRegistry for guided processes (ADR-049)
-
-</details>
-
-<details>
-<summary><strong>Previous release history (0.8.3 - 0.8.4.3)</strong></summary>
-
-**0.8.4.3**: Fresh install fixes, migration validation at startup, GUI wizard routing.
-
-**0.8.4.2**: Calendar bug fixes (TEMPORAL handler), markdown rendering, sidebar ordering.
-
-**0.8.4.1**: Chat auto-load on refresh, `/standup` routing fix, RequestContext model (ADR-051).
-
-**0.8.4**: Integration Settings (OAuth for Slack/Calendar, PAT for GitHub, API key for Notion), Portfolio Onboarding, logout fix.
-
-**0.8.3.2**: Interactive Standup Assistant (conversational standup creation, preference learning, iterative refinement).
-
-**0.8.3**: Integration Health Dashboard, OAuth Connection Management, Notion in Setup Wizard.
-
-</details>
+See `ALPHA_AGREEMENT_v2.md` for complete terms.
 
 ---
 
-## Windows Alpha Tester Setup
-
-**Best Option: Use the Automated Setup Script**
-
-We've created a Windows batch file that automates the entire setup process:
-
-```cmd
-REM Fast clone (~91MB instead of ~800MB) - recommended for alpha testers
-git clone --depth 1 -b production https://github.com/mediajunkie/piper-morgan-product.git
-cd piper-morgan-product
-.\scripts\alpha-setup.bat
-```
-
-The script will:
-- Check for Python 3.11/3.12 and Docker
-- Create a virtual environment
-- Install all dependencies
-- Generate a secure JWT key
-- Start Docker containers
-- Launch the setup wizard at http://localhost:8001/setup
-
-### Alternative: WSL2 (Windows Subsystem for Linux)
-
-If you prefer a Linux-like environment on Windows, WSL2 provides a smooth setup experience:
-
-```powershell
-# 1. Run as Administrator
-wsl --install
-wsl --set-default-version 2
-wsl --install -d Ubuntu-22.04
-
-# 2. Inside Ubuntu terminal
-sudo apt update && sudo apt upgrade -y
-sudo apt install python3.11 python3.11-venv git
-
-# 3. Clone and setup (uses bash script - faster)
-# --depth 1 gives you a fast ~91MB download (vs ~800MB full history)
-git clone --depth 1 -b production https://github.com/mediajunkie/piper-morgan-product.git
-cd piper-morgan-product
-./scripts/alpha-setup.sh
-```
-
-### Manual Setup (If You Prefer Full Control)
-
-If you prefer not to use automated scripts, follow the guided setup below. On Windows, use:
-- PowerShell or Command Prompt
-- `venv\Scripts\Activate.ps1` to activate (Windows-style path)
-- See [Windows Setup Guide](installation/windows-setup-guide.md) for troubleshooting
-
-### Known Windows Issues for Alpha Testers
-
-1. **Clone failures**: Ensure you have long path support enabled:
-   ```powershell
-   # Run as Administrator
-   New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
-     -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
-   ```
-
-2. **Python not found**:
-   - Reinstall from https://www.python.org/downloads
-   - **IMPORTANT**: Check "Add Python to PATH" during installation
-   - Restart Command Prompt/PowerShell after installing
-
-3. **Path errors in commands**: Use backslashes (Windows-native) or quotes with forward slashes:
-   ```powershell
-   python main.py setup              # Works on all platforms
-   python -c "import sys; print(sys.version)"  # Also works
-   ```
-
-4. **Docker Desktop not running**: The setup script will fail if Docker Desktop isn't running
-   - Start Docker Desktop before running the setup script
-   - Wait for it to fully initialize (check system tray)
-
----
-
-## Guided Setup Instructions
-
-### Step 1: Clone the Repository
-
-```bash
-# --depth 1 gives you a fast ~91MB download (vs ~800MB full history)
-# You get all the code, just not the git history (which you don't need for testing)
-git clone --depth 1 -b production https://github.com/mediajunkie/piper-morgan-product.git
-cd piper-morgan-product
-```
-
-**Note**: On Windows, use the WSL2 terminal or PowerShell with proper path handling
-
-### Step 2: Create Virtual Environment
-
-```bash
-python3.12 -m venv venv
-# Requires Python 3.11 or 3.12 - verify with: python --version
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-### Step 3: Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Step 4: Start Server for First-Time Setup
-
-Setup uses a visual web interface by default.
-
-```bash
-python main.py
-# → Opens http://localhost:8001/setup (GUI setup wizard)
-```
-
-The GUI setup wizard will automatically open in your browser and guide you through:
-
-- ✅ System health checks (Docker, Python, Port, Database)
-- ✅ API key configuration (OpenAI, Anthropic, Gemini)
-- ✅ User account creation (username, email, password)
-- ✅ Setup verification and confirmation
-
-**See the Setup Wizard Walkthrough section below** for detailed screenshots and step-by-step guidance.
-
-#### Alternative: Command-Line Setup
-
-If you prefer the original command-line interface:
-
-```bash
-python main.py setup
-```
-
-This will run the CLI setup wizard with prompts in your terminal. Both methods configure the same settings - use whichever you're comfortable with.
-
-### Step 5: Configure Your Preferences
-
-After setup, personalize your experience:
-
-```bash
-python main.py preferences
-```
-
-This 2-minute questionnaire configures:
-
-- **Communication Style**: concise, balanced, detailed
-- **Work Style**: structured, flexible, exploratory
-- **Decision Making**: data-driven, intuitive, collaborative
-- **Learning Style**: examples, explanations, exploration
-- **Feedback Level**: minimal, moderate, detailed
-
-**Returning tester?** Re-answer the questionnaire once after updating to 0.8.11 — answers saved before this release were lost to a database bug ([#1422](https://github.com/mediajunkie/piper-morgan-product/issues/1422)), and your answers now genuinely shape Piper's tone.
-
-### Step 6: Verify Installation
-
-```bash
-python main.py status
-```
-
-You should see:
-
-```
-==================================================
-Piper Morgan System Status
-==================================================
-
-Database:
-  ✓ PostgreSQL connected
-     Users: 1, Size: 15.2 MB
-
-API Keys:
-User: [your-username]
-  ✓ openai: Valid
-  ✓ anthropic: Valid (or ○ Not configured)
-
-Performance:
-  ✓ Database response: 12ms
-
-Recommendations:
-  ✓ All systems operational!
-```
-
-### Step 7: First Run
-
-```bash
-python main.py
-```
-
-The server will start and automatically open http://localhost:8001 in your browser.
-
-**Login with your credentials:**
-
-- Username: [from setup wizard]
-- Password: [from setup wizard]
-
-After login, you'll see the Piper Morgan chat interface.
-
----
-
-## Setup Wizard Walkthrough
-The GUI setup wizard provides a visual, step-by-step interface for configuration. Here's what to expect at each stage:
-
-### Step 1: Welcome Screen
-
-<!-- screenshot pending capture (file was never added to the repo — found 2026-08-13): ![Setup Wizard - Welcome](assets/images/alpha-onboarding/setup-wizard-welcome.png) -->
-
-The welcome screen introduces the setup process and explains what will be configured. Click "Get Started" to begin.
-
-### Step 2: System Health Check
-
-<!-- screenshot pending capture (file was never added to the repo — found 2026-08-13): ![Setup Wizard - Health Check](assets/images/alpha-onboarding/setup-wizard-health-check.png) -->
-
-Automatic validation of your system:
-- ✓ Docker installed and running
-- ✓ Python version correct (3.11 or 3.12)
-- ✓ Port 8001 available
-- ✓ Database accessible
-
-If any checks fail, the wizard provides specific guidance on how to fix them.
-
-### Step 3: API Key Configuration
-
-<!-- screenshot pending capture (file was never added to the repo — found 2026-08-13): ![Setup Wizard - API Keys](assets/images/alpha-onboarding/setup-wizard-api-keys.png) -->
-
-Configure your LLM API keys through a web form interface. This is **much easier** than the command-line method - you can see what you're typing, correct mistakes easily, and get immediate validation feedback.
-
-Supports:
-- OpenAI (GPT-4, GPT-3.5)
-- Anthropic (Claude)
-- Google Gemini
-
-You can configure one, two, or all three providers. At least one is required.
-
-### Step 4: User Account Creation
-
-<!-- screenshot pending capture (file was never added to the repo — found 2026-08-13): ![Setup Wizard - User Creation](assets/images/alpha-onboarding/setup-wizard-user-creation.png) -->
-
-Create your admin account:
-- Username (alphanumeric, unique)
-- Email address (valid format required)
-- Secure password (min 8 chars, bcrypt-hashed)
-- Password confirmation with validation
-
-The form provides real-time feedback on password strength and format requirements.
-
-### Step 5: Setup Complete
-
-<!-- screenshot pending capture (file was never added to the repo — found 2026-08-13): ![Setup Wizard - Success](assets/images/alpha-onboarding/setup-wizard-success.png) -->
-
-Setup confirmation screen with:
-- Summary of what was configured
-- Next steps and quick links
-- "Start Using Piper" button to proceed to login
-
-Click the button to go to the login page and start using Piper Morgan.
+## What's New in 0.8.13
+
+v0.8.13.0 is the "Nothing Invented, Nothing Borrowed" release — a fast follow to
+v0.8.12.0, cut one day later so the first real dogfood session's fixes reach you quickly.
+
+**The standup stops inventing things** ([#1837](https://github.com/mediajunkie/piper-morgan-product/issues/1837), [#1836](https://github.com/mediajunkie/piper-morgan-product/issues/1836)):
+
+- Accepting the guided-interview offer **actually starts the interview** — first
+  question, straight away, no second "Ready for your standup?"
+- The generic placeholder draft ("Made progress on assigned tasks") is **deleted and
+  unreachable**. With nothing to build from, Piper interviews you or says so — it never
+  presents boilerplate as your day.
+- **Free-form draft edits work**: "change what I did yesterday — say I spent the day on
+  X" now applies (it runs a model on your key). "Add blocker: …" and "remove …" stay
+  instant and key-free.
+- "I've updated your standup" is only ever said **when something actually changed**;
+  otherwise you get an honest "unchanged" answer.
+- Ask "didn't you offer me an interview?" and Piper answers from what actually happened
+  in the conversation — it no longer denies its own three-turns-ago offer.
+
+**Keyless first contact is human** ([#1818](https://github.com/mediajunkie/piper-morgan-product/issues/1818)):
+
+- A keyless "hi" now gets *"Hello — good to meet you."* plus one clear sentence about
+  the key, instead of a wall of policy. "Thanks" gets an honest *"That's kind — though I
+  haven't actually done anything yet."*
+
+**The server-key concept is deleted, not just refused** ([#1812](https://github.com/mediajunkie/piper-morgan-product/issues/1812)):
+
+- v0.8.12.0 closed every door to a product-owned LLM credential; this release removes
+  the doors' frames — there is no code path, gated or otherwise, to spend anything but
+  the acting user's own key.
+
+**Operational honesty**:
+
+- `/health` now reports the real deployed version, git SHA, and environment
+  ([#1839](https://github.com/mediajunkie/piper-morgan-product/issues/1839)) — the alpha
+  had reported a hardcoded `environment=staging` for months.
+
+See [Release Notes v0.8.13.0](releases/RELEASE-NOTES-v0.8.13.0.md) for full details, and
+[releases/README.md](releases/README.md) for prior release history (v0.8.12.0's "Your
+Key, Your Account" notes cover the BYOC model this release completes).
 
 ---
 
@@ -465,344 +148,154 @@ Click the button to go to the login page and start using Piper Morgan.
 
 This chapter covers what to test and how. If you're already set up, **start here**.
 
-## What to Test in 0.8.12
+## What to Test in 0.8.13
 
-Personalization and honesty are the focus this release. **Does the questionnaire change Piper's tone? Does chat use YOUR provider? Are Piper's claims about your todos and issues honest?**
+The standup flow and the keyless experience are the focus — both were rebuilt from a
+real tester transcript this weekend. **Does the interview actually run? Do edits
+actually apply? Do refusals tell the truth?**
 
-Each walk below is a concrete sequence you can follow and report on.
+### Test Walk 1: The interview offer keeps its word ([#1837](https://github.com/mediajunkie/piper-morgan-product/issues/1837))
 
-### Test Walk 1: Questionnaire → tone shift ([#1422](https://github.com/mediajunkie/piper-morgan-product/issues/1422))
+1. In chat, say "let's do my standup"
+2. If Piper has no observed activity for you, it should say so and offer a guided
+   interview — answer "yes"
+3. Check: does it immediately ask "What did you work on yesterday?" (not re-greet you,
+   not ask if you're ready again)?
+4. Answer the questions with real content
+5. Check: the draft it shows is built from **your words** — never "Made progress on
+   assigned tasks" or other boilerplate
 
-1. Re-answer the personality questionnaire: run `python main.py preferences` (or use the Settings page)
-2. Answer deliberately — for example, pick "concise" and "minimal feedback"
-3. Chat with Piper: ask a few ordinary questions
-4. Check: does the tone reflect your answers (shorter, more direct)?
-5. Change your answers to the opposite (for example, "detailed") and chat again — does the tone shift with them?
+### Test Walk 2: Free-form standup edits ([#1837](https://github.com/mediajunkie/piper-morgan-product/issues/1837)/[#1836](https://github.com/mediajunkie/piper-morgan-product/issues/1836))
 
-**Note**: answers from before 0.8.11 were lost to a database bug ([#1422](https://github.com/mediajunkie/piper-morgan-product/issues/1422)) and can't be recovered — everyone re-answers once.
+1. With a standup draft on screen, ask for a real edit in your own words — e.g.
+   "change the yesterday section to say I ran the quarterly review"
+2. Check: the draft actually changes, and the change matches what you asked
+3. Ask for something inapplicable ("make it more purple") — check you get an honest
+   "unchanged" answer, not a false "I've updated your standup"
+4. Try the instant forms too: "add blocker: waiting on legal", "remove [some line]",
+   "start over" (should genuinely restart the interview, not re-show the same draft)
 
-### Test Walk 2: Your own LLM provider ([#1415](https://github.com/mediajunkie/piper-morgan-product/issues/1415))
+### Test Walk 3: Keyless first contact ([#1818](https://github.com/mediajunkie/piper-morgan-product/issues/1818)) — needs a keyless account
 
-1. Go to Settings → LLM Keys
-2. Enter your own API key and select your provider as the default
-3. Send a few chat messages
-4. Check your provider's usage dashboard — do the requests show up there?
-5. If you can test with a second user: have each account pick a different provider, and confirm each user's chats hit their own provider — not the other user's.
+1. Before adding your LLM key (or after removing it in Settings): send "hi"
+2. Check: you get a greeting-shaped acknowledgment plus one sentence about adding a key
+   — friendly, short, no error-speak
+3. Send "thanks" — check it does NOT say "you're welcome" (nothing has been done yet;
+   it should say so)
+4. Send a real request ("create an issue") — check the refusal names the key as the one
+   missing thing and points at Settings
 
-### Test Walk 3: Greeting + question in one message ([#1416](https://github.com/mediajunkie/piper-morgan-product/issues/1416))
+### Test Walk 4: Honest key errors ([#1414](https://github.com/mediajunkie/piper-morgan-product/issues/1414) no-regress)
 
-1. Send: "Hi! What can you help me with?"
-2. Check: does the reply answer the question, not just greet you back?
-3. Try variants: "Good morning — what's on my list today?", "Hey Piper, how do I address you?"
-4. A pure greeting ("Hi!") should still get a short, friendly response.
-
-### Test Walk 4: Connect-my-GitHub guidance ([#1417](https://github.com/mediajunkie/piper-morgan-product/issues/1417))
-
-1. In chat, send: "connect my github"
-2. Check: do you get concrete guidance pointing at Settings → Integrations — not a generic "I can't do that"?
-3. Try variants: "can you connect my slack", "set up my github integration"
-
-### Test Walk 5: Honest status and agenda claims ([#1425](https://github.com/mediajunkie/piper-morgan-product/issues/1425))
-
-1. Ask: "what's my status?", "what's on my agenda?", or "what's my standup?"
-2. Check every claim about your todos and issues against what you actually have
-3. "I couldn't check your todos just now" is correct behavior when a lookup fails
-4. A false "you have no pending tasks" when you DO have tasks is a bug — please report it
-
-### Test Walk 6: Honest LLM-key errors ([#1414](https://github.com/mediajunkie/piper-morgan-product/issues/1414))
-
-1. Temporarily break your API key (remove it in Settings, or paste an invalid one)
+1. Paste an invalid key in Settings → LLM Keys
 2. Send a chat message
-3. Check: does the error say something honest about the key or provider problem — not "Something unexpected happened"?
-4. Restore your key and confirm chat works again
+3. Check: the error talks about the key/provider honestly — not "Something unexpected
+   happened" (if you see the generic message, that's [#1824](https://github.com/mediajunkie/piper-morgan-product/issues/1824) — report it with the exact wording)
+4. Restore your real key and confirm chat works again
 
-### Test Walk 7: Session recall ([#1394](https://github.com/mediajunkie/piper-morgan-product/issues/1394))
+### Test Walk 5: Your key, your billing ([#1812](https://github.com/mediajunkie/piper-morgan-product/issues/1812) no-regress)
 
-1. In chat, create something — for example, "create an issue about testing session recall"
-2. Ask: "what did we create this session?"
-3. Check: does Piper recall the issue you just created?
-4. Try a follow-up like "update the title to add a version number" — does it resolve to the item you just created?
+1. Note your provider dashboard's usage count (Anthropic console / OpenAI usage page)
+2. Send a few chat messages
+3. Check: the requests appear on **your** dashboard
+4. If you test with two accounts with different providers: each account's chats hit its
+   own provider, never the other's
 
 ### Basic Functionality Tests
-
-Start with these simple tests to verify everything works:
 
 1. **Basic Chat**: "Hello, what can you help me with?"
 2. **Task Creation**: "Add a todo: Review Q3 metrics"
 3. **Information Query**: "What tasks do I have?"
-4. **File Upload**: Upload a PDF or DOCX file (max 10MB) and ask for analysis
+4. **File Upload**: upload a PDF or DOCX (max 10MB) and ask for analysis
 5. **Document Summary**: "Summarize the document I just uploaded"
-6. **Preference Check**: "How do you prefer to communicate?" (should reflect your settings)
-7. **Multi-User Test**: If testing with others, verify you can't see their data
+6. **Multi-User Privacy**: if testing alongside someone else, verify you can't see each
+   other's data
 
 ---
 
 ## Exploring Piper's Features
 
-### Lists, Todos, and Projects Management
+All URLs below are on the hosted app — e.g. `https://alpha.pipermorgan.ai/lists`.
 
-**Basic CRUD Operations** (test these first):
+### Lists, Todos, and Projects
 
-1. **Create a List**
-   - Navigate to http://localhost:8001/lists
-   - Click "Create New List" button
-   - Enter name: "Alpha Testing Tasks"
-   - Enter description: "Testing the Lists feature"
-   - Verify list appears in the list view
-
-2. **Edit and Delete**
-   - Open the list you created
-   - Edit the name or description
-   - Try deleting a list (should show confirmation)
-
-3. **Repeat for Todos and Projects**
-   - Navigate to /todos and /projects
-   - Same CRUD operations available
-   - Test that all three resource types work consistently
+1. **Create a List**: go to `/lists` → "Create New List" → name it "Alpha Testing
+   Tasks" → verify it appears
+2. **Edit and Delete**: open your list, edit the name, then try deleting one (should
+   confirm first)
+3. **Repeat for Todos and Projects** (`/todos`, `/projects`) — the three resource types
+   should behave consistently
 
 ### File Management
 
-**Basic File Operations** (test these first):
+1. **Upload**: `/files` → upload or drag-and-drop (PDF, DOCX, TXT, MD, JSON; max 10MB)
+2. **Download** and **Delete**: both from the file's row
+3. **Privacy**: files are private to you — another tester should never see them
 
-1. **Upload a File**
-   - Navigate to http://localhost:8001/files
-   - Click "Upload File" or drag-and-drop a file
-   - Supported formats: PDF, DOCX, TXT, MD, JSON (max 10MB)
-   - Verify file appears in file list with correct metadata
+### Interactive Standup Assistant
 
-2. **Download a File**
-   - Click "Download" button on uploaded file
-   - Verify file downloads correctly
+Covered by Test Walks 1–2 above — that flow was rebuilt this release and is the single
+most valuable thing to exercise. Also worth trying:
 
-3. **Delete a File**
-   - Click "Delete" button on a file
-   - Verify file is removed from list
+- Abandon a standup mid-conversation ("not now") and confirm your next message routes
+  normally
+- Ask "are we done with that standup?" mid-flow — you should get an honest status
+  answer, not a surprise finalization
 
-4. **Test File Privacy**
-   - Files are owner-based (private to you)
-   - Other users should NOT see your files
+### Authentication
 
-### Interactive Standup Assistant (New in 0.8.3.2)
+1. **Logout**: user menu (top right) → Logout → verify redirect to login
+2. **Login again**: your data (lists, files) should all still be there
 
-1. **Start a Standup Conversation**
-   - In the chat, say "let's write a standup" or "/standup"
-   - Piper should respond with initial guidance
-   - Verify conversation flow starts properly
+### Sharing & Permissions (advanced — needs two accounts)
 
-2. **Test Preference Gathering**
-   - Tell Piper your preferences: "I prefer bullet points" or "keep it concise"
-   - Verify Piper acknowledges and remembers your preference
-   - Generate content should reflect your stated style
-
-3. **Test Iterative Refinement**
-   - Ask Piper to make changes: "add more detail about the bug fix" or "make it shorter"
-   - Verify Piper updates the standup accordingly
-   - Previous versions should be saved for comparison
-
-4. **Complete the Standup**
-   - Say "looks good, let's use this" or "finalize"
-   - Verify standup is marked complete
-   - Check that performance is fast (sub-500ms responses)
-
-5. **Edge Cases to Test**
-   - Abandon a standup mid-conversation (say "nevermind" or navigate away)
-   - Start multiple standups in one session
-   - Long conversations (10+ turns) - verify memory isn't growing unbounded
-
-### Quick Standup Generation (Legacy)
-
-1. **Generate a Standup**
-   - Navigate to http://localhost:8001/standup
-   - Click "Generate Standup" button
-   - Wait 2-3 seconds for AI generation
-   - Verify standup report appears with meaningful content
-   - Note: First standup may be generic if no prior activity
-
-2. **Test with Activity**
-   - Create some lists, todos, upload files
-   - Generate standup again
-   - Verify it reflects your recent activity
-
-### Authentication & Logout
-
-1. **Test Logout**
-   - Click user menu (top right corner of page)
-   - Click "Logout" button
-   - Verify you're redirected to login page
-   - Verify session is cleared (can't access /lists without login)
-
-2. **Test Login After Logout**
-   - Enter your credentials on login page
-   - Verify you can log back in
-   - Verify your data is still there (lists, files, etc.)
-
-### Navigation & Polish
-
-1. **Test Breadcrumbs**
-   - Navigate to /lists, /todos, /projects, /files, /standup
-   - Verify each page shows breadcrumb: Home › [Page Name]
-   - Click "Home" in breadcrumb, verify navigation works
-
-2. **Test Page Consistency**
-   - Check that Settings pages are on unified grid
-   - Verify no "My Lists" prefix (should just be "Lists")
-   - Check that Integrations page shows placeholder (not 404)
-   - Check Privacy & Data settings has informative content
-
----
-
-## Advanced Testing (Multi-User Sharing)
-
-> **Note**: These features require multiple user accounts and are considered advanced. Focus on basic CRUD operations first.
-
-### Sharing Lists, Todos, and Projects
-
-1. **Share a List**
-   - Open a list you created
-   - Click "Share" button
-   - Enter another user's email (if multi-user testing)
-   - Select role: Editor
-   - Verify sharing modal shows success
-
-2. **Test Permission Badges**
-   - Notice "Owner" badge on your list
-   - If shared with another user, verify their role badge shows
-
-### Permission System
-
-1. **Conversational Permission Commands**
-   Try these in the chat interface:
-   - "share my Alpha Testing Tasks list with [email] as editor"
-   - "who can access my Alpha Testing Tasks?"
-   - "show me shared lists"
-   - "give [email] viewer access to my project plan"
-
-2. **Role-Based Access Testing** (requires 2 users)
-   - Create a list as User A
-   - Share with User B as "Viewer"
-   - Log in as User B
-   - Verify: Can view list but NOT edit/delete
-   - Share same list with User C as "Editor"
-   - Log in as User C
-   - Verify: CAN edit and update list
+1. Share a list: open it → "Share" → another tester's email → role "Viewer" or "Editor"
+2. Verify the viewer can see but not edit; the editor can edit
+3. Conversational forms work too: "share my Alpha Testing Tasks list with [email] as
+   editor", "who can access my Alpha Testing Tasks?"
 
 ---
 
 # Chapter 3: Troubleshooting
 
-## Troubleshooting
+### Login & account issues
 
-### Setup Wizard Issues
+**Invite code rejected?** Codes are single-use and exact — check for copy/paste
+whitespace. If it still fails, yours may already have been consumed; email
+**xian@pipermorgan.ai** for a fresh one.
 
-**GUI setup wizard not loading?**
+**Forgot your password?** Email **xian@pipermorgan.ai** — there's no self-serve reset
+in the alpha yet.
 
-- Make sure you ran `python main.py` (not `python main.py setup`)
-- Check that http://localhost:8001/setup opens in your browser
-- If browser didn't auto-open, manually navigate to http://localhost:8001/setup
-- Alternative: Use CLI setup with `python main.py setup`
+**Can't reach the site?** Check `https://alpha.pipermorgan.ai/health` — if it doesn't
+return a healthy JSON response, the instance is down; please report it.
 
-**"Docker not installed" or "Docker not running"**
+### Key & chat issues
 
-The setup wizard (GUI or CLI) will guide you through Docker installation with platform-specific instructions. If you encounter issues:
+**"Piper runs on an LLM key of your own…" on every message?** You haven't added a key
+yet (or it didn't save) — Settings → LLM Keys. This message is working as intended for
+keyless accounts.
 
-- Make sure Docker Desktop is running (look for whale icon in system tray/menu bar)
-- Restart Docker Desktop if it seems stuck
-- On macOS: Check Applications folder for Docker Desktop
-- On Windows: Check if Docker Desktop service is running
-- Test manually with: `docker --version`
+**Honest key error after adding a key?** Verify the key works in your provider's own
+console; regenerate it if in doubt. Anthropic keys start `sk-ant-`, OpenAI keys `sk-`.
 
-**"Python 3.11+ not found"**
+**"Something unexpected happened"?** That generic message on a key-shaped problem is
+itself a bug we're hunting ([#1824](https://github.com/mediajunkie/piper-morgan-product/issues/1824)) —
+please report the exact message and what you did.
 
-- Install Python 3.11 or 3.12: https://www.python.org/downloads/
-- Test with: `python --version`
+**High API costs?** Piper uses GPT-4-class/Claude models. Watch your provider dashboard;
+concise-preference settings reduce token use.
 
-**"Port 8001 not available"**
+### Feature issues
 
-- Another service is using port 8001
-- Find what's using it: `lsof -i :8001`
-- Stop other Piper Morgan instances or change port
+**Standup seems stuck?** Say "start over" (genuinely restarts now) or "not now" (lets
+go of the conversation). If a standup ever shows content you didn't say, that's a
+serious bug — please report the transcript.
 
-**"Database not accessible"**
+**File upload fails?** Formats: PDF, DOCX, TXT, MD, JSON; max 10MB; you must be logged
+in.
 
-- Ensure database is running: `docker compose up -d db`
-- Wait 10 seconds for database to start
-- Check Docker containers: `docker ps`
-
-### Runtime Issues
-
-**"No LLM provider configured"**
-
-- Re-run GUI setup wizard: Navigate to http://localhost:8001/setup
-- Or use CLI setup: `python main.py setup`
-- Verify API keys are valid in your provider dashboard (OpenAI, Anthropic, Google)
-- Check status: `python main.py status`
-
-**High API costs**
-
-- Piper uses GPT-4/Claude by default for best results
-- Monitor usage in your provider's dashboard
-- Configure preferences for more concise responses
-
-**Preference changes not taking effect**
-
-- Re-run: `python main.py preferences`
-- Restart Piper Morgan after preference changes
-- Check status shows your username correctly
-
-**Login issues**
-
-- Forgot password? Run `python main.py setup` to create a new account
-- Can't access http://localhost:8001? Try http://127.0.0.1:8001
-- Check server is running: Look for "Server ready" message
-- Browser didn't open? Manually navigate to http://localhost:8001
-
-**File upload issues**
-
-- Supported formats: PDF, DOCX, TXT, MD, JSON
-- Max file size: 10MB
-- Check file isn't corrupted or password-protected
-- Verify you're logged in (file upload requires authentication)
-
-### Feature-Specific Troubleshooting
-
-**Can't create lists/todos/projects?**
-- Make sure you're on the `production` branch: `git status`
-- Update to latest: `git pull origin production`
-- Refresh browser page
-- Check browser console for errors (F12)
-- Verify you're logged in (authentication required for CRUD operations)
-
-**Files page not loading or shows errors?**
-- Update to latest: `git pull origin production`
-- Restart server: `python main.py`
-- Clear browser cache if needed
-- Check file size limit: 10MB maximum
-- Verify supported formats: PDF, DOCX, TXT, MD, JSON
-
-**Interactive Standup issues?**
-- Conversation should respond in <500ms (P95 target)
-- If conversation seems stuck, try "start over" or navigate away
-- Each turn should build on previous context
-- Preferences should be remembered within the conversation
-
-**Quick Standup generation hangs or fails?**
-- Should complete in 2-3 seconds
-- If hanging, check API key configuration: `python main.py status`
-- Verify you have activity data (lists, todos, files created)
-- Try refreshing the page and generating again
-
-**Logout not working?**
-- Logout is in the user menu (top right corner)
-- Click user menu → "Logout"
-- Verify redirect to login page after logout
-- If session persists, clear browser cookies
-
-**Permission sharing not working?**
-- Requires multi-user setup (2+ user accounts)
-- Make sure other user exists in database
-- Try conversational command: "share my [resource] with [email] as editor"
-- Verify resource ownership (you must own the resource to share it)
-- Check that owner-based access control (internally called SEC-RBAC) is active: `python main.py status`
+**Sharing fails?** The other account must already exist, and you must own the resource.
 
 ---
 
@@ -812,28 +305,25 @@ We need your feedback to improve! Please report:
 
 ### What to Report
 
-- Bugs and crashes (with error messages)
-- Setup wizard issues or confusing steps
-- Preference system problems
-- Missing features you expected
-- Performance issues
-- Successful workflows that delighted you
+- Bugs and crashes (with the exact error message)
+- Anything Piper said that turned out to be untrue — false claims are our top-priority
+  bug class, even when they're polite
+- Confusing flows, missing features you expected, performance problems
+- Successful workflows that delighted you (genuinely useful signal)
 
 ### How to Report
 
-1. **GitHub Issues**: Preferred for bugs (if comfortable with GitHub)
-2. **Email**: xian@pipermorgan.ai for private feedback
-3. **Weekly Check-in**: Optional 15-minute calls available
+1. **GitHub Issues**: preferred for bugs (if you're comfortable with GitHub)
+2. **Email**: xian@pipermorgan.ai for anything, including private feedback
+3. **Weekly check-in**: optional 15-minute calls available
 
 ### Helpful Feedback Format
 
 ```
-SETUP METHOD: [wizard/manual]
-WHAT I TRIED: [specific action]
+WHAT I TRIED: [specific action, ideally the exact message you sent]
 WHAT I EXPECTED: [expected result]
-WHAT HAPPENED: [actual result]
+WHAT HAPPENED: [actual result / exact reply text]
 ERROR MESSAGE: [if any]
-SYSTEM STATUS: [output of `python main.py status`]
 SEVERITY: [blocker/major/minor]
 ```
 
@@ -841,94 +331,33 @@ SEVERITY: [blocker/major/minor]
 
 ## Privacy & Data Collection
 
-- We collect anonymous usage analytics to improve the product
-- Error logs may be transmitted (no personal data included)
-- Your LLM API keys are stored securely in system keychain, never transmitted
-- Preference data is stored locally in your database
-- You can opt out of analytics in settings
-- Setup wizard completion statistics help us improve onboarding
-- Owner-based access control (internally called SEC-RBAC Phase 1) keeps your resources yours
-- Shared resources require explicit permission grants
-- Your files, lists, todos, and projects are private by default
-- **Note**: Data is not yet fully encrypted at rest (see `ALPHA_KNOWN_ISSUES.md` for details)
-
----
-
-## Advanced: Manual Setup (If Wizard Fails)
-
-If the setup wizard fails, you can fall back to manual configuration:
-
-1. **Environment Variables**: Copy `.env.example` to `.env` and edit
-2. **Database**: Run `docker compose up -d db`
-3. **API Keys**: Manually add to `.env` file
-4. **Database Migration**: Run database setup scripts
-
-See original testing guide for detailed manual steps.
-
----
-
-## Advanced: Browsing the Database Directly
-
-For debugging and development, you can browse the PostgreSQL database directly:
-
-### Connection Details
-
-| Setting | Value |
-|---------|-------|
-| Host | `localhost` (or `127.0.0.1` on Windows) |
-| Port | `5433` (note: not default 5432) |
-| Database | `piper_morgan` |
-| Username | `piper` (from docker-compose.yml) |
-| Password | `dev_changeme_in_production` (from docker-compose.yml) |
-
-### GUI Tools (Optional)
-
-**pgAdmin** (recommended for beginners):
-1. Download from https://www.pgadmin.org/
-2. Add Server → Enter connection details above
-3. Browse tables under Databases → piper_morgan → Schemas → public → Tables
-
-**DBeaver** (full-featured alternative):
-1. Download from https://dbeaver.io/
-2. New Connection → PostgreSQL → Enter connection details
-3. Browse schema visually
-
-### Command Line Access
-
-```bash
-# Connect via Docker container
-docker exec -it piper-postgres psql -U piper -d piper_morgan
-
-# List tables
-\dt
-
-# Query example
-SELECT * FROM users;
-
-# Exit
-\q
-```
+- Your LLM API keys are stored encrypted (AES-256-GCM field encryption) on the alpha
+  instance and used only to make your own requests; they are never shown back or shared
+- Your files, lists, todos, and projects are private by default; sharing requires an
+  explicit grant from you
+- Error logs may be reviewed by the team to fix bugs
+- This is a small, curated alpha — the operators can technically access the instance's
+  database; don't put anything sensitive in it (see the disclaimers above)
+- **Note**: data is not yet fully encrypted at rest (see `ALPHA_KNOWN_ISSUES.md`)
 
 ---
 
 ## Questions?
 
-Remember: This is alpha software (version 0.8.12.0). The GUI setup wizard handles most complexity, but you're still testing early-stage software. Expect bugs and incomplete features.
-
-If guided setup seems overwhelming, a hosted version is planned for later in 2026.
-
-Thank you for being an early adopter and helping us improve! 🚀
+This is alpha software (version 0.8.13.0) — expect rough edges, and thank you for being
+an early adopter. 🚀
 
 ---
 
 ## See Also
 
-- `VERSION_NUMBERING.md` - Understanding Piper Morgan's version scheme
-- `ALPHA_AGREEMENT_v2.md` - Legal terms and conditions
-- `ALPHA_KNOWN_ISSUES.md` - Current bugs and limitations
-- `ALPHA_QUICKSTART.md` - Quick 2-5 minute setup guide
+- `ALPHA_QUICKSTART.md` — the 2-minute version of Chapter 1
+- `ALPHA_KNOWN_ISSUES.md` — current bugs and limitations
+- `ALPHA_AGREEMENT_v2.md` — terms and conditions
+- `VERSION_NUMBERING.md` — what 0.8.13.0 means
+- `CONTRIBUTING.md` — running the code locally (engineers)
 
 ---
 
-_Last updated: July 17, 2026_
-_Software version: 0.8.12.0_
+_Last updated: September 21, 2026_
+_Software version: 0.8.13.0_

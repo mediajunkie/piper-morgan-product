@@ -116,9 +116,34 @@ class IntentProcessingResult:
 
 
 class IntentProcessingError(Exception):
-    """Raised when intent processing fails"""
+    """Raised when intent processing fails.
 
-    pass
+    #1824: carries ``details["original_error"]`` (the APIError convention the
+    route's #1414 unwrap reads) so wrapping never destroys the cause.
+    """
+
+    details: Optional[Dict[str, Any]] = None
+
+
+def _wrap_processing_error(e: Exception) -> IntentProcessingError:
+    """Wrap a processing failure WITHOUT destroying its cause (#1824).
+
+    Live alpha evidence, 2026-09-20: `str(e)` of an APIError is just
+    "API Error [CODE]" — the real provider message (e.g. the 401 for a typo'd
+    key) lives in ``e.details["original_error"]``, and the route's #1414 unwrap
+    cannot see through TWO wrappers. So a rejected credential surfaced as the
+    generic "Something unexpected happened". Mirror the APIError ``details``
+    convention on the wrapper so the route's existing unwrap finds the truth.
+    """
+    wrapped = getattr(e, "details", None)
+    original = (
+        wrapped.get("original_error")
+        if isinstance(wrapped, dict) and wrapped.get("original_error")
+        else str(e)
+    )
+    err = IntentProcessingError(f"Intent processing failed: {str(e)}")
+    err.details = {"original_error": str(original)}
+    return err
 
 
 def _autonomous_execution_enabled() -> bool:
@@ -3149,7 +3174,7 @@ class IntentService:
             raise
         except Exception as e:
             self.logger.error(f"Intent processing error: {e}")
-            raise IntentProcessingError(f"Intent processing failed: {str(e)}")
+            raise _wrap_processing_error(e)
 
     async def _check_active_guided_process(
         self, user_id: str, session_id: str, message: str
@@ -4110,7 +4135,7 @@ class IntentService:
             return None
 
     async def _start_standup_conversation(
-        self, user_id: str, session_id: str
+        self, user_id: str, session_id: str, *, interview_accepted: bool = False
     ) -> IntentProcessingResult:
         """
         Issue #585: Start a new interactive standup conversation.
@@ -4121,6 +4146,11 @@ class IntentService:
         Args:
             user_id: Authenticated user ID
             session_id: Session identifier
+            interview_accepted: #1837 — True ONLY from the offer-acceptance
+                seam (run_standup_interview_workflow): the user already said
+                yes to the interview, so the flow starts at the first
+                question instead of re-greeting, and the mode-fork teaching
+                line stays quiet (they just chose a mode).
 
         Returns:
             IntentProcessingResult with the initial conversation greeting
@@ -4166,10 +4196,17 @@ class IntentService:
                     requires_clarification=False,
                 )
 
-            # Start new standup conversation
+            # Start new standup conversation. #1837: an accepted invitation
+            # arms the interview itself — the flag rides initial_context into
+            # conversation.context so the handler skips the re-greeting and
+            # the REFINING restate branch can see the offer it would otherwise
+            # be structurally blind to.
             response = await handler.start_conversation(
                 session_id=session_id,
                 user_id=user_id,
+                initial_context=(
+                    {"interview_offer_accepted": True} if interview_accepted else None
+                ),
             )
 
             self.logger.info(
@@ -4192,9 +4229,17 @@ class IntentService:
                 # _is_standup_query 'my standup' cue matches; \breport\b hits
                 # the handler's report-token branch); bare 'standup' remains
                 # conflated by the LLM classifier and is not taught.
+                # #1837: when the user just ACCEPTED the interview offer, the
+                # mode fork is settled — re-offering the quick report is the
+                # exact turn-2 noise from PM's live transcript. The teaching
+                # line stays on the /standup-command door only.
                 message=(
-                    f"{response.message}\n\n"
-                    "Want the quick report instead? Say 'my standup report'."
+                    response.message
+                    if interview_accepted
+                    else (
+                        f"{response.message}\n\n"
+                        "Want the quick report instead? Say 'my standup report'."
+                    )
                 ),
                 intent_data={
                     "category": IntentCategory.EXECUTION.value,
