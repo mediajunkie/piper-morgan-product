@@ -227,7 +227,9 @@ def _create_anonymous_key_required_response(original_message: str) -> dict:
     }
 
 
-def _create_user_key_required_response(original_message: str) -> dict:
+def _create_user_key_required_response(
+    original_message: str, session_id: Optional[str] = None
+) -> dict:
     """#1807: the honest response when a SIGNED-IN user has no LLM key of their own.
 
     This is the third member of the refusal family, and the distinction from its two
@@ -251,10 +253,17 @@ def _create_user_key_required_response(original_message: str) -> dict:
     # TRUTH CONDITIONS DIFFER — here the states are request types, not error
     # causes. This wording is true for both.
     #
-    # NOT decided here: whether a deterministic greeting should pass the gate at
-    # all. That is a routing question (filed separately) — and it is no longer
-    # urgent precisely because the sentence is now true either way.
-    msg = (
+    # #1818 RULED (b), 2026-09-20: the routing question above is answered — a
+    # greeting does NOT pass the gate; the gate answers it like a person would.
+    # The first refused turn of a session gets CXO's kind-matched acknowledgment
+    # + the ONE shared key sentence; a repeated bare pleasantry gets the short
+    # form; a repeated substantive request falls through to this gate string
+    # (— #1823's branch-one string when it lands). keyless_pleasantry owns the
+    # (b) copy; this string remains the gate's own voice for the fall-through.
+    from services.ui_messages.keyless_pleasantry import keyless_gate_message
+
+    ruled_b = keyless_gate_message(session_id, original_message)
+    msg = ruled_b or (
         "I need an LLM key of your own before I can help with anything — Piper "
         "doesn't bill anyone else's account. Add your Anthropic API key in "
         "Settings and I'll pick right back up."
@@ -265,7 +274,7 @@ def _create_user_key_required_response(original_message: str) -> dict:
         "workflow_id": None,
         "requires_clarification": True,
         "clarification_type": "user_key_required",
-        "suggestions": ["Add your Anthropic API key in Settings"],
+        "suggestions": ["Add your OpenAI or Anthropic key in Settings"],
         "preferences": {},
         "error": msg,
         "error_type": "user_key_required",
@@ -569,7 +578,7 @@ async def process_intent(
             # Refuse BEFORE intent_service/the LLM — an authenticated identity is not
             # authorization to spend anyone else's money (#1812: no operator exemption).
             logger.warning("intent_user_key_required_1807", session_id=session_id, user_id=user_id)
-            return _create_user_key_required_response(message)
+            return _create_user_key_required_response(message, session_id)
         except AnonymousLLMKeyRequiredError:
             # #1320: refuse BEFORE touching intent_service/the LLM at all — never
             # silently bill the server's own key to a fully anonymous caller.
