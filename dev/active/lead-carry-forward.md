@@ -1,6 +1,6 @@
 # Lead carry-forward — rewritten 2026-09-19 ~21:55 PT at STOP (freshness rule: full pass at START/STOP)
 
-## STATE (2026-09-21 morning): the Monday trio is DONE — all closed by 08:25
+## STATE (2026-09-21 midday): SIX closed today — the trio + release + the #1823/#1824 pair
 - **#1812 CLOSED** (steps 5–6 landed: operator seam deleted, LLMClient credential-free) ·
   **#1837 CLOSED** (all 3 shapes: template dead, acceptance arms interview, refinement
   via floor) · **#1836 CLOSED** (rode #1837 shape 3) · **#1818 CLOSED** ((b) shipped,
@@ -15,8 +15,13 @@
   contract owners' lane, Arch+CXO should rule).
 - **INVITE: HOLD LIFTED 09-20 (HOST)** — Janne's invite is PM's to send.
   drive_test_1812 account awaiting HOST retirement.
+- **#1823 + #1824 CLOSED 09-21 midday** (`9ec028406`, landed together per PPM's rule):
+  any-provider gate + the four-bucket split + the wrap fix that was the live
+  "Something unexpected happened" cause. **UNDEPLOYED — next cut carries them**
+  (test-card row added for the invalid-key retest post-deploy).
 - Watch: Arch's pipeline plan v0.2 with PM · #1832 needs Arch GO · #1599 username
-  check with PM · pm-test-card row 1 (#1617 retest) unblocked IN CODE, needs the cut.
+  check with PM · pm-test-card: #1617 retest READY NOW (deployed); #1824 retest after
+  next cut.
 
 ## Live state
 - **v116 LIVE on Fly**, health 200 (deployed 09-19 morning). ⚠️ alpha.pipermorgan.ai (the

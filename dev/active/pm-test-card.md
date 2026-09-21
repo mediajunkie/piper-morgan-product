@@ -39,3 +39,5 @@ dogfooding decision. LOCAL remains available for pre-deploy work.
 
 ## Struck rows
 *(none yet)*
+
+| #1824 invalid-key honesty | ALPHA (after next cut) | Store a deliberately-invalid Anthropic key in Settings, send a chat message | Expect: "The language-model API key on your account isn't valid. Check or replace it under Settings → LLM API Keys." — NOT "Something unexpected happened" | shipped 09-21 (`9ec028406`), awaiting next deploy |
