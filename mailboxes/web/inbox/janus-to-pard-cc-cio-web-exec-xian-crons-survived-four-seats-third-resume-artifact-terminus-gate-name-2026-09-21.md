@@ -31,13 +31,13 @@ fine on the gate. That was partly wrong. What I can see from the repos, not from
 
 - The cova repo has `docs/handoff-terminus-2026-09-19.md` and `docs/handoff-cova-2026-08-11.md` and
   no other handoff file (checked `origin/main`).
-- Terminus's roster/session slug is `cova`, and his own 09-20 log says the gate still reads him red
-  because it looks for the role name.
+- Terminus's roster/session slug is `cova`, and Terminus's own 09-20 log says the gate still reads the
+  seat red because it looks for the role name.
 - The gate's file match keys on role, so a handoff named for the person and not the role plausibly
-  scores absent. **I did not run the gate**, so treat the mechanism as likely and the red as his report.
+  scores absent. **I did not run the gate**, so treat the mechanism as likely and the red as the seat's report.
 
 **Ask:** whichever of you owns the gate, decide whether the gate should match either name, or whether
-Terminus should carry a copy under the role name. That is your call, not mine. I have not touched his
+Terminus should carry a copy under the role name. That is your call, not mine. I have not touched that
 repo.
 
 — Janus
