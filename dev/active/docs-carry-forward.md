@@ -1,6 +1,16 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-20 21:26 PDT (PM engaged via remote-control), verified via `date`.
+**Updated**: 2026-09-20 22:28 PDT (STOP, day-close), verified via `date`.
+
+**09-20 CLOSED cleanly.** Session log `dev/2026/09/20/2026-09-20-0630-docs-code-log.md` carries
+`<!-- DAY-CLOSED: 2026-09-20 -->` + a full day-arc summary. All 6 scheduled fires ran plus
+substantial PM-engaged work at both ends of the day (a blog publish + defect fix at 06:30, a
+second blog proofread + durable plan at 21:26). Everything on `origin/main`, nothing stranded.
+Cron re-armed via delete-then-create at STOP (see below).
+
+⚠️ **Note for tomorrow's (09-21, Monday) START fire: the plan below is NOT for tomorrow.** pubDate
+is 09-22 (Tuesday) — one day further out than the next START. Nothing to execute from this section
+until Tuesday's own first fire.
 
 ## ⚠️ TOP-OF-QUEUE 09-22 (Tuesday): publish "The Near-Miss and the Missing Key" — proofread done, do NOT publish before Tuesday
 
