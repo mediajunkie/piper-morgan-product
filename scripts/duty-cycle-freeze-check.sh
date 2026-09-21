@@ -17,7 +17,13 @@
 # LEGACY/TEST MODE: set DUTY_CYCLE_ROLES (+ optional DUTY_CYCLE_STALE_H / WAKE_START / WAKE_END) to force a
 #   check of those roles against one global threshold, bypassing the registry AND the cycling-state gate.
 #
-# Heartbeat / session log / DAY-CLOSED are all read from origin/main (no working-tree currency dependency).
+# Heartbeat / session log / DAY-CLOSED / registry are all read from origin/main directly (no working-tree
+# currency dependency) — fixed 2026-09-21 (CXO's finding): the registry read was the one exception, a
+# plain local-checkout file path despite the banner below claiming "examined ref=origin/main." A self-verify
+# run between a push and that push's own sync-pm-local.sh could read a stale local registry and raise a
+# false PARK-EXPIRED quoting text that had already been superseded on origin/main. Now materialized via
+# `git show origin/main:...` like every other surface this script reads, removing the sync-timing dependency
+# entirely rather than just documenting it.
 # Output: "STALE <role> <detail>" per frozen role; empty = healthy / off-hours / not-cycling. Exit 0 always
 # (a watchdog must never fail loudly itself). A wrapper (launchd) turns STALE lines into the PM alert.
 #
@@ -137,6 +143,25 @@ NO_SESSION_LOG_GRACE_MIN="${NO_SESSION_LOG_GRACE_MIN:-20}"   # minutes a role-ta
 now=$(date +%s); hour=${FREEZE_CHECK_NOW_HOUR:-$(date +%-H)}; min=$(date +%-M); now_min=$(( hour * 60 + min ))
 today=$(date +%Y/%m/%d); today_dash=$(date +%Y-%m-%d)
 git -C "$REPO" fetch origin main -q 2>/dev/null || true
+
+# ── REGISTRY SOURCED FROM origin/main, NOT the local working tree (2026-09-21, CXO's finding) ──
+# $REG previously pointed straight at the local checkout's dev/active/duty-cycle-registry.tsv, the one
+# surface in this script that didn't follow the origin/main-only rule every other read already uses
+# (see the git -C "$REPO" show/log/ls-tree calls throughout). A local checkout can lag origin/main
+# between an agent's own push and that agent's own sync-pm-local.sh run — CXO hit exactly that window
+# and got a false PARK-EXPIRED quoting already-superseded row text. Only applies when the caller hasn't
+# explicitly pointed DUTY_CYCLE_REGISTRY at a literal file (test/override mode keeps reading that path
+# as-is, unchanged). REG_TMP cleaned up on every exit path via the trap below.
+if [ -z "${DUTY_CYCLE_REGISTRY:-}" ]; then
+  REG_TMP="$(mktemp "${TMPDIR:-/tmp}/freeze-check-registry.XXXXXX")"
+  trap 'rm -f "$REG_TMP"' EXIT
+  if git -C "$REPO" show origin/main:dev/active/duty-cycle-registry.tsv > "$REG_TMP" 2>/dev/null; then
+    REG="$REG_TMP"
+  else
+    rm -f "$REG_TMP"
+    echo "freeze-check: WARNING could not read registry from origin/main — falling back to local checkout ($REG), which may lag" >&2
+  fi
+fi
 
 # hours since the role's newest heartbeat on origin/main; non-zero exit if none found.
 # Heartbeat = the more-recent of: (a) a role-tagged commit message, OR (b) any commit touching the
@@ -352,7 +377,15 @@ fi
 # nothing. Caught by running it. Suppress per-command, never around the reporting line itself.
 _tip=$(git -C "$REPO" log origin/main -1 --format='%h %ad' --date=format:'%Y-%m-%d %H:%M' 2>/dev/null)
 _n=$(grep -vcE '^(#|role|$)' "$REG" 2>/dev/null || echo 0)
-echo "freeze-check: examined ref=origin/main tip=${_tip:-<NONE — could not read origin/main>} registry=$REG rows=${_n:-0} at $(date '+%Y-%m-%d %H:%M')" >&2
+# Print the registry SOURCE as a claim a reader can trust (the banner's own wording was the trap CXO
+# found — "ref=origin/main" sat next to a value that was actually a local path) rather than the
+# throwaway temp-file path, which would just be a new, differently-confusing thing to print.
+if [ "${REG:-}" = "${REG_TMP:-}" ]; then
+  _reg_source="origin/main:dev/active/duty-cycle-registry.tsv"
+else
+  _reg_source="$REG (local checkout — DUTY_CYCLE_REGISTRY override or origin/main read failed)"
+fi
+echo "freeze-check: examined ref=origin/main tip=${_tip:-<NONE — could not read origin/main>} registry=$_reg_source rows=${_n:-0} at $(date '+%Y-%m-%d %H:%M')" >&2
 
 while IFS=$'\t' read -r role cron thr ws we ff since state; do
   case "$role" in '#'*|''|role) continue ;; esac     # skip comments / blank / header

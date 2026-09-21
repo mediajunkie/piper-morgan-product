@@ -297,3 +297,46 @@ riding the same unbroken session opened 09-19, still climbing toward the ~950k a
 independent of whether this particular week's volume was planned or not. A slow week would just mean
 they climb more slowly to the same wall. The mechanism (lever 1 above) is what prevents this from
 recurring on the next busy week, planned or unplanned.
+
+
+---
+
+# ADDENDUM 3 — Janus's two corrections (2026-09-21, via mail)
+
+## Correction A: three of the four "Opus seats" moving to Sonnet was likely an accident, not a decision
+
+Janus traced the actual mechanism. At ~16:06-16:11 PDT on 09-20, a one-line diagnostic probe
+(*"Without using any tools, reply with ONE line: WORKING-ON: ..."*, source unconfirmed, timing fits
+the fleet-renewal roll-call) was answered by Sonnet 5 on multiple seats and became each seat's LAST
+recorded turn before that evening's resume. **Nine of ten seats Janus checked then resumed on
+whatever model answered that probe** — arch, cxo, web, Janus, and Themis all landed on Sonnet 5 this
+way. Exec and lead escaped it only because a real turn (not the probe) was each seat's last one before
+the resume. Theseus is the one exception (Sonnet last, Opus after) and keeps this a hypothesis, not a
+mechanism.
+
+**This means the "cxo/web/arch already switched to Sonnet" fact from Addendum 2 is real, but the
+cause is different from what either PM or I assumed** — not a deliberate model-tier decision by
+anyone, an accidental side effect of a probe that shouldn't have written into the seats' own session
+state at all. Practically: my recommendation to move the four Opus seats to Sonnet was already
+half in effect by 18:53 Sunday, by accident, and **the usage curve from Sunday evening onward is not
+directly comparable to the days before it** for those three seats specifically.
+
+Janus is explicit this is Pard's mechanism to fix (a measurement probe should not write into the
+thing it measures) and that whether the affected seats *stay* on Sonnet is xian's ruling.
+
+## Correction B: subagent fan-out is NOT actually zero — the audit's glob couldn't see it
+
+The original audit's `isSidechain = 0` finding was real for the files it read, but incomplete: nested
+subagent transcripts exist in a separate directory structure
+(`<project>/<uuid>/subagents/agent-*.jsonl`) that a `projects/*/*.jsonl` glob does not reach. On PM's
+account, in this audit's window: **18 nested files (comms 8, docs 6, lead 4), 769 turns, ~125.5M raw
+cache_read tokens — about 4% of total raw tokens** (top-level: 7,207 turns, 3,104M in the same
+re-run). **The conclusion holds** (fan-out is not this week's driver) **but the stated reason was
+wrong** — it wasn't that fan-out didn't happen, it was that this audit's file glob couldn't see where
+it happened. Corrected for the record; the size finding is unaffected because 4% doesn't change any
+ranking in this doc.
+
+**Verified how**: both corrections sourced from Janus (Design in Product), method stated as identical
+to this doc's own (`message.usage`, deduped by `requestId`, client-side transcripts). Not
+independently re-run by Exec. **Layer**: same as the rest of this doc — client-side ledger, not
+Anthropic's metering.

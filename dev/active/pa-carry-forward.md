@@ -16,24 +16,23 @@ PM-attention items live **here**, in the section immediately below.
 🔴 **PM-GATED, genuinely open as of tonight (caught by the unboarded-PM-items scan at STOP —
 neither had reached this section before, tracked only in `pa-standing-items.md`):**
 
-1. **Usage-correlation model — TWO questions now pending, neither answered.** PM tasked PA (via
-   Exec, no deadline) to build a real model of what correlates with usage instead of hand-waving,
-   prior art first. Prior-art pass done, two addenda
+1. **Usage-correlation model — Q1 still open, Q2 resolved, first empirical pass done.** PM tasked
+   PA (via Exec, no deadline) to build a real model of what correlates with usage instead of
+   hand-waving, prior art first. Prior-art pass done, two addenda
    (`dev/active/usage-correlation-model-prior-art-2026-09-20.md`).
-   **Q1 (sent 09-20 19:21)**: does Lead's `usage-per-account-capture-2026-09-19.md` proposal (the
-   calibration mechanism for the engagement axis, zero rows captured) get implemented — without it
-   no model here can ever be calibrated on that axis. Full memo:
+   **Q1 (sent 09-20 19:21) — STILL OPEN**: does Lead's `usage-per-account-capture-2026-09-19.md`
+   proposal (the calibration mechanism for the engagement axis, zero rows captured) get implemented
+   — without it no model here can ever be calibrated on that axis. Full memo:
    `mailboxes/pa/sent/question-pa-to-exec-cc-pm-calibration-shape-for-usage-model-and-leads-
    unimplemented-proposal-2026-09-20.md`.
-   **Q2 (sent 09-21 10:12, new today)**: Exec's weekly usage audit to Pard/Janus
-   (`mailboxes/janus/inbox/audit-exec-weekly-usage-2026-09-21.md`) revealed every Claude Code
-   transcript's `message.usage` field is a real, already-minable token/model ledger — a genuine
-   data source PA's prior-art pass hadn't found, and it also supersedes yesterday's "dispatch-tier
-   isn't buildable" conclusion (Exec inferred tier straight from transcripts, no structured sink
-   needed). Flagged to Exec rather than duplicating the audit:
-   `mailboxes/pa/sent/note-pa-to-exec-cc-pm-your-weekly-usage-audit-is-the-data-source-my-own-model-
-   was-missing-2026-09-21.md` — asking whether it's an input to PA's model or a genuinely separate
-   question (Exec's is cost/context-efficiency, PA's is usage/engagement).
+   **Q2 — RESOLVED 09-21 13:12**: Exec agreed to keep the threads separate (their audit is
+   cost/context-efficiency, PA's is usage/engagement), offered `scripts/usage-audit.py` as a
+   reusable input, said build the correlation layer now rather than wait
+   (`mailboxes/pa/inbox/ack-exec-to-pa-cc-pm-agree-option-2-2026-09-21.md`).
+   **First empirical pass done same fire** (`dev/active/usage-correlation-model-first-pass-
+   2026-09-21.md`): commits vs. weighted-token-share, all 11 seats, Pearson r=0.435, Spearman
+   rho=0.664 — moderate, explicitly labeled exploratory/uncalibrated (proxy-vs-proxy, not
+   proxy-vs-PM's-ground-truth). Still waiting on Q1 before this becomes a calibrated model.
 2. **T-axis probe execution — blocked on CXO's pre-registration, not PM, but worth naming since
    PM ruled "spend the tokens now."** CXO (axis owner) handed execution to PA directly, explicit
    that there's no deadline and PA shouldn't design or run a round before CXO's pre-registered

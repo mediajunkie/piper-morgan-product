@@ -67,15 +67,28 @@ class TokenBlacklist:
 
     async def initialize(self) -> None:
         """
-        Initialize Redis connection and verify availability.
+        Initialize Redis connection, verify availability, and SEED it from the DB.
 
-        Checks Redis connectivity. If unavailable, falls back to database storage.
+        #1808 activation contract (this method was dead code until the startup
+        phase began calling it — see TokenBlacklistInitPhase): the DATABASE is
+        the durable record of revocations (exactly what production has always
+        written); Redis is a WRITE-THROUGH READ CACHE layered on top. Turning
+        Redis on without seeding would un-revoke every token blacklisted before
+        this process started (Redis-mode reads consult only Redis); a restart
+        with Redis down would likewise un-revoke Redis-only entries. Seeding at
+        init + writing through on every add() closes both flap hazards: the DB
+        always holds the truth, and Redis always holds a superset of the
+        unexpired truth while available.
+
+        A seeding failure degrades to database-only mode (fail-closed for
+        correctness: slower, never wrong).
         """
         try:
             redis = await self.redis_factory.create_client()
             await redis.ping()
+            seeded = await self._seed_redis_from_database(redis)
             self._redis_available = True
-            logger.info("TokenBlacklist: Redis available")
+            logger.info("TokenBlacklist: Redis available", seeded_entries=seeded)
         except Exception as e:
             logger.warning(
                 "TokenBlacklist: Redis unavailable, using database fallback",
@@ -86,6 +99,39 @@ class TokenBlacklist:
             # Set regardless of outcome: "initialized" means initialize() was
             # called and made a real determination, not that it succeeded.
             self._initialized = True
+
+    async def _seed_redis_from_database(self, redis) -> int:
+        """Copy every unexpired DB revocation into Redis with its remaining TTL.
+
+        Part of the #1808 activation contract (see initialize). Raises on
+        failure so initialize() can fall back to database-only mode rather than
+        serve a Redis that silently lacks historical revocations.
+        """
+        from sqlalchemy import select
+
+        from services.database.models import TokenBlacklist as DBTokenBlacklist
+
+        now = utc_now()
+        seeded = 0
+        async with self.db_session_factory.session_scope_fresh() as session:
+            result = await session.execute(
+                select(DBTokenBlacklist).where(DBTokenBlacklist.expires_at > now)
+            )
+            for row in result.scalars():
+                ttl = max(int((ensure_utc(row.expires_at) - now).total_seconds()), 1)
+                key = f"blacklist:jwt:{row.token_id}"
+                value = json.dumps(
+                    {
+                        "reason": row.reason,
+                        "user_id": str(row.user_id) if row.user_id else None,
+                        "blacklisted_at": (
+                            row.created_at.isoformat() if row.created_at else now.isoformat()
+                        ),
+                    }
+                )
+                await redis.setex(key, ttl, value)
+                seeded += 1
+        return seeded
 
     def _warn_if_never_initialized(self, token_id: str, operation: str) -> None:
         """Make the silent-default DB fallback loud (#1802 AC item 2).
@@ -143,29 +189,52 @@ class TokenBlacklist:
                 )
                 return True
 
-            if self._redis_available:
-                # Redis: O(1) with automatic expiration
-                redis = await self.redis_factory.create_client()
-                key = f"blacklist:jwt:{token_id}"
-                value = json.dumps(
-                    {
-                        "reason": reason,
-                        "user_id": user_id,
-                        "blacklisted_at": now.isoformat(),
-                    }
-                )
-                await redis.setex(key, ttl, value)
-                logger.info(
-                    "Token blacklisted via Redis",
-                    token_id=token_id,
-                    reason=reason,
-                    ttl=ttl,
-                )
-                return True
-            else:
-                # Database fallback
+            # #1808 activation contract: the DATABASE write is REQUIRED — it is
+            # the durable record and exactly what production has always done
+            # (Redis was never actually enabled before the init phase existed).
+            # Redis is a write-through cache on top: best-effort, so a Redis
+            # hiccup never blocks a revocation, but a failed cache write DOWNGRADES
+            # to database-only mode — Redis-mode reads consult only Redis, so a
+            # cache that missed a write would report a revoked token as valid.
+            if not self._redis_available:
                 self._warn_if_never_initialized(token_id, operation="add")
-                return await self._add_to_database(token_id, reason, expires_at, user_id)
+            db_ok = await self._add_to_database(token_id, reason, expires_at, user_id)
+            if not db_ok:
+                return False
+
+            if self._redis_available:
+                try:
+                    redis = await self.redis_factory.create_client()
+                    key = f"blacklist:jwt:{token_id}"
+                    value = json.dumps(
+                        {
+                            "reason": reason,
+                            # str(): a raw UUID here raised in json.dumps — latent
+                            # in the never-enabled Redis path until #1808 lit it.
+                            "user_id": str(user_id) if user_id else None,
+                            "blacklisted_at": now.isoformat(),
+                        }
+                    )
+                    await redis.setex(key, ttl, value)
+                    logger.info(
+                        "Token blacklisted (db + redis cache)",
+                        token_id=token_id,
+                        reason=reason,
+                        ttl=ttl,
+                    )
+                except Exception as e:
+                    self._redis_available = False
+                    logger.error(
+                        "token_blacklist_redis_write_failed_downgrading_to_db_only",
+                        token_id=token_id,
+                        error=str(e),
+                        note=(
+                            "revocation IS durably recorded in the database; Redis "
+                            "read cache disabled for this process so the miss can't "
+                            "report the token as valid (#1808)"
+                        ),
+                    )
+            return True
 
         except Exception as e:
             logger.error("Failed to blacklist token", token_id=token_id, error=str(e))
@@ -228,13 +297,9 @@ class TokenBlacklist:
         Returns:
             Number of entries removed (0 for Redis)
         """
-        if self._redis_available:
-            # Redis handles expiration automatically
-            logger.debug("Redis auto-expires, no cleanup needed")
-            return 0
-        else:
-            # Database cleanup
-            return await self._cleanup_database()
+        # #1808: the DB is ALWAYS written now (write-through contract), so it
+        # always needs cleanup — Redis entries still auto-expire via TTL.
+        return await self._cleanup_database()
 
     async def revoke_user_tokens(self, user_id: UUID, reason: str = "security") -> int:
         """
@@ -284,7 +349,10 @@ class TokenBlacklist:
             True if successful
         """
         try:
-            async with self.db_session_factory.session_scope() as session:
+            # #1808 part 2: session_scope_fresh — the same dead-event-loop defect
+            # #1802 fixed on the read path (`_check_database`) existed here on the
+            # write and cleanup paths, unexercised only by accident of repro shape.
+            async with self.db_session_factory.session_scope_fresh() as session:
                 # Import here to avoid circular dependencies
                 from services.database.models import TokenBlacklist as DBTokenBlacklist
 
@@ -389,7 +457,8 @@ class TokenBlacklist:
             Number of entries removed
         """
         try:
-            async with self.db_session_factory.session_scope() as session:
+            # #1808 part 2: session_scope_fresh (see _add_to_database).
+            async with self.db_session_factory.session_scope_fresh() as session:
                 from sqlalchemy import delete
 
                 from services.database.models import TokenBlacklist as DBTokenBlacklist
