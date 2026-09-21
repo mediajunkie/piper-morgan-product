@@ -6,9 +6,9 @@ live in `comms-standing-items.md`; the canonical record is the session log
 
 ## Cron
 
-`d904b1d9`, expression `12 6,9,12,15,18,21 * * *` — CronList-verified at every fire today, including
-across a coordinated Amber reboot at ~18:38:39 (the job survived unchanged, not a fresh re-arm; see
-below). Registry row `active`, current.
+`1b05adf6` — re-armed at 21:42 STOP via delete-then-create (d904b1d9 → 1b05adf6, same cadence),
+CronList-verified exactly one job survives. Registry row updated to match. Next fire: 2026-09-21
+06:12.
 
 ## Notable: comms' cron survived the 2026-09-20 Amber reboot — n=2 fleet finding, unresolved
 
