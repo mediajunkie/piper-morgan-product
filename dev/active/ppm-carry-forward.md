@@ -10,7 +10,18 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-21 10:22 PT (WORK). **Five real closures landed this morning** —
+**Last rewritten**: 2026-09-21 13:22 PT (WORK). **Real security finding, already remediated**:
+`#1845` — Janne's invite code (a bearer account-creation credential) appeared in full across 4+
+mailbox memos in this PUBLIC repo since 09-13, plus a stacked second defect (minted against the
+wrong instance — Fly, not alpha — so it would have bounced at the gate regardless). Lead found AND
+fixed it same-fire: exposed code confirmed never consumed, fresh replacement minted correctly,
+delivered PM in-conversation only. One residual (burning the exposed Fly-side row) needs
+Fly-write access. Milestoned MVP (matches `#1816`'s precedent), folded into epic 2 with the full
+remediation trail. Standing-rule proposal (credentials never travel through `mailboxes/`) is PM's to
+ratify. Two docs-audit findings (`#1846`/`#1847`) matched established precedent cleanly, `Ongoing`.
+`0 unmilestoned` confirmed. **Nothing PM-gated carried forward** on any of this fire's items.
+
+**Prior: 2026-09-21 10:22 PT (WORK). **Five real closures landed this morning** —
 `#1818`, `#1823`, `#1824`, `#1836`, `#1837` — the entire family this seat has tracked since 09-18/19
 plus both of PM's dogfood-session defects. Verified each individually via closing evidence, not
 assumed from the sprint-truth delta count. Consolidated into the epic file: epic 2 gets

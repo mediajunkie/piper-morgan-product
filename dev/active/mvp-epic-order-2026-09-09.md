@@ -417,6 +417,22 @@ on any short message starting "please," so *"please remove the fluff"* finalizes
 instead of editing it. Found missing milestone/board at filing — fixed same-fire (MVP, board-added,
 Status Product Backlog).
 
+**`#1845` folded in 2026-09-21 — bearer credentials traveling through `mailboxes/`, a PUBLIC repo.**
+Lead found Janne's invite code appearing in full across at least 4 mailbox memos since 09-13 (a
+single-use, first-consumer-wins account-creation credential, this repo confirmed PUBLIC via
+`gh repo view`), plus a second stacked defect: the code was minted against the wrong instance (Fly,
+not alpha's droplet) — the invite would have bounced at the gate on send day regardless of the
+exposure. **Already remediated same-fire, not just found**: Lead confirmed the exposed code was
+never consumed on either instance (no unauthorized account), minted a fresh replacement on the
+correct instance, delivered PM in-conversation only. One residual: the exposed Fly-side row still
+needs burning (a DB delete only PM or a Fly-write-granted seat can run — Lead's own droplet SSH
+grant doesn't extend to Fly). **Standing rule proposed, PM to ratify**: bearer credentials never
+travel through `mailboxes/` or any repo-committed surface — this seat's own mail-send discipline
+(explicit paths, per-memo commits) has never carried a credential, but the rule needs to be explicit
+rather than incidental. Milestoned MVP (same family as `#1816`'s consent-boundary precedent — a
+security defect found during real operational work on the current alpha rollout, not a pre-launch
+gate item). Not a PPM ruling on the standing-rule proposal — PM's to ratify.
+
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
 
