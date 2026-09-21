@@ -11,36 +11,49 @@ PM-attention items live **here**, in the section immediately below.
 
 ## PM Attention
 
-*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-04 fire 3.)*
+*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-04 fire 3, refreshed 2026-09-20 STOP.)*
 
-🟢 **CURRENT STATE, 2026-09-20 (10:01 fire) — read this before anything below.** Nothing PM-gated
-open. **T1 (Cross-Piper synthesis) is fully resolved** (09-19) — PM endorsed it, apologised for the
-16-day delay; now in wider circulation (CIO/PPM/CXO reading against their own thinking; shared with
-Themis/DinP for OS + Pimento; CIO's 09-19 reflection tested the thesis against their own day and
-found it held three times, with one genuine nuance — mechanisms outlast promises, but "structural
-fixes hold" isn't itself a rule for *when* to install one). Full detail in `pa-standing-items.md`'s
-Resolved table. **PM also ruled on PA's document-practice question (09-02, relayed by Exec 09-20)**:
-reports to PM get drafted fully; documents meant for other people get a rich scaffold with
-placeholders for PM's own detail, then a plain-language review, then PM's HALT proofread before
-release. Saved as `feedback_document_practice_by_audience` — applies to any future document PA
-routes to a third party (the Themis share is a `pa`-adjacent example of exactly this shape, though
-Exec drafted and sent that one, not PA).
+🔴 **PM-GATED, genuinely open as of tonight (caught by the unboarded-PM-items scan at STOP —
+neither had reached this section before, tracked only in `pa-standing-items.md`):**
 
-**BYOC Phase B (`mcp.pipermorgan.ai` DNS/TLS) — still not deployed, now independently corroborated
-twice, two different methods.** PA's own 08:24 arrival check (`dig`/`curl`, host doesn't resolve) is
-now backed by CXO's 09-20 finding from the *code side*: `services/mcp/` is consumer-only (`client.py`,
-`consumer/`, `protocol/` — no served server, no `@mcp.tool`), and #1688's own 09-04 comment says the
-same in words, closed 09-15 with the MCP half explicitly BLOCKED ON INCREMENT-1 INFRA. **Practical
-consequence for PA specifically**: no retest of the recomposition/honest-decline mitigations against
-a real deployed host is possible yet, and — per CXO's memo — there's no false deadline pressuring
-this either; the "T-axis probe window" Exec had framed as closing soon isn't actually closing,
-because the MCP arm that would close it can't start until infra that doesn't exist gets built.
-Flagged to Exec (cc PM, CXO) that the sprint-plan doc's "PA's question" line is stale (already
-resolved 09-02) — correction sent 10:01 fire.
+1. **Usage-correlation model — calibration-shape question, sent 09-20 19:21, awaiting PM.** PM
+   tasked PA (via Exec, no deadline) to build a real model of what correlates with usage instead of
+   hand-waving, prior art first. Prior-art pass done (`dev/active/usage-correlation-model-prior-art-
+   2026-09-20.md`) — four converging fields all say a proxy-only model with zero ground-truth
+   readings is uncalibrated, not just weaker. The load-bearing finding is internal: Lead's
+   `usage-per-account-capture-2026-09-19.md` (PM-reaffirmed 09-15) already proposes the exact
+   calibration mechanism needed and has zero rows captured. **The question sent to Exec/PM**: does
+   Lead's proposal get implemented — without it, no model here can ever be calibrated. Full memo:
+   `mailboxes/pa/sent/question-pa-to-exec-cc-pm-calibration-shape-for-usage-model-and-leads-
+   unimplemented-proposal-2026-09-20.md`. Separately (not PM-gated, CIO/Lead's call): checked the
+   dispatch-tier dimension and found the same pattern one layer down — PM's 09-20 ruling was
+   implemented as a prose-only rule with no structured aggregation, so that dimension isn't
+   independently buildable today either.
+2. **T-axis probe execution — blocked on CXO's pre-registration, not PM, but worth naming since
+   PM ruled "spend the tokens now."** CXO (axis owner) handed execution to PA directly, explicit
+   that there's no deadline and PA shouldn't design or run a round before CXO's pre-registered
+   scoring properties land ("this cycle," per CXO's own memo 09-20). Not PM-gated in the sense of
+   needing an answer, but PM should know the token-spend ruling hasn't actually started spending
+   yet, for a real reason (CXO's own 0-for-3 prediction record on this instrument, pre-registration
+   is the stated mitigation).
+
+🟢 **CURRENT STATE, 2026-09-20 (day-close) — the rest is resolved, not open.** **T1 (Cross-Piper
+synthesis) is fully resolved** (09-19) — PM endorsed it, apologised for the 16-day delay; now in
+wider circulation (CIO/PPM/CXO reading against their own thinking; shared with Themis/DinP for OS +
+Pimento). Full detail in `pa-standing-items.md`'s Resolved table. **PM also ruled on PA's
+document-practice question** (09-02, relayed by Exec 09-20): reports to PM get drafted fully;
+documents meant for other people get a rich scaffold with placeholders for PM's own detail, then a
+plain-language review, then PM's HALT proofread before release. Saved as
+`feedback_document_practice_by_audience`.
+
+**BYOC Phase B (`mcp.pipermorgan.ai` DNS/TLS) — still not deployed, independently corroborated
+twice, two different methods** (PA's own DNS/TLS check; CXO's code-side check that `services/mcp/`
+is consumer-only). No false deadline pressuring the recomposition/honest-decline retest either —
+flagged to Exec/PM/CXO that the sprint-plan doc's stale "PA's question" line has been corrected.
 
 **Known gap, named not fixed**: PA has no defined GitHub-issues criteria line (v1.33's third
-work-queue source) — flagged four times now (09-19's three fires + today) — worth a deliberate pass
-on a quiet day rather than an ad hoc invention under fire pressure.
+work-queue source) — flagged repeatedly this week — worth a deliberate pass on a quiet day rather
+than an ad hoc invention under fire pressure.
 
 **Beta target: MOVED BACK A MONTH from 2026-08-09** (PM, 08-08 10:10 PT, in-conversation with Lead,
 verbatim: *"I am going to move the beta date back a month. We clearly have a lot more work still to
