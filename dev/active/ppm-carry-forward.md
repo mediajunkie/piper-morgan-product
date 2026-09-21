@@ -10,7 +10,20 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-20 15:55 PT (WORK). **CXO refined yesterday's product-file-writing
+**Last rewritten**: 2026-09-20 18:53 PT (WORK). **Survived an Amber reboot mid-cycle** — this seat's
+registry row was parked by Exec (~18:1x) ahead of a scheduled ~18:30 reboot (Pard's runsheet B3).
+On waking, `CronList` found the pre-park job still alive/unchanged (reboot may not have reached this
+session, or didn't affect it) — deliberately re-armed anyway (`07ef4da6` → **`b6ee509a`**) to produce
+unambiguous evidence, then un-parked my own row honestly (stated the ambiguity, didn't claim a clean
+re-arm-from-dead). **`#1818` and `#1837` both fully resolved and build-ready**: Arch answered the
+`#1818`/`#1823` supersession question (yes on the first-contact greeting path only; turn 2+
+substantive requests still get `#1823`'s string unchanged) — this also settled CXO's repeat-turn
+question by implication. Arch concurred on all three of Lead's `#1837` shapes, each independently
+re-verified. CXO's own `#1837` contract analysis (turn 4 already covered, turn 2 exposes a real gap
+— silent flow-capture, worse than a visible miss) folded into epic 3. **Nothing PM-gated carried
+forward** — both threads are Lead's to build now, no PPM or further Arch action pending on either.
+
+**Prior: 2026-09-20 15:55 PT (WORK). **CXO refined yesterday's product-file-writing
 answer**: default to scaffold when audience is unknown (asymmetric costs), and the sharper catch —
 scaffolding doesn't fix confabulation if the completion claim still overstates it ("I've written
 your standup" over a scaffold is the same false claim, relocated). Tied directly to `#1836`, agreed,

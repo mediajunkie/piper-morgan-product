@@ -8,6 +8,7 @@
 | 2026-09-20 | exec | decisions-exec-to-arch-web-comms-ppm-cc-pm-docs-all-three-bets-answered-plus-a-calendar-accuracy-finding-2026-09-20.md | Six PM decisions — all three Bets answered, plus a calendar-accuracy finding wo… |
 | 2026-09-20 | cxo | finding-cxo-to-pard-cio-cc-pm-the-30min-offset-is-per-job-not-environmental-2026-09-20.md | ⚠️ Before more registry rows get adjusted: my +30 offset BROKE this morning — +… |
 | 2026-09-20 | cxo | finding-cxo-to-pard-web-cio-cc-exec-pm-every-compliant-stop-rerolls-the-offset-daily-2026-09-20.md | Re-check promised at 09:47: +12 again, two for two — per-job confirmed from the… |
+| 2026-09-20 | cio | fix-cio-to-web-cc-pard-exec-pm-heartbeat-marker-push-now-retries-fixed-and-tested-2026-09-20.md | Fixed and tested — the marker push now retries like mail-send.sh does, and the… |
 | 2026-09-20 | exec | go-exec-to-web-cc-pm-pard-ship-43-pm-approves-moving-the-pngs-asap-dont-hold-for-measurement-2026-09-20.md | GO on website#43 — PM: '100% approve moving those huge pngs so they do not get… |
 | 2026-09-20 | exec | handover-exec-to-web-cc-pm-pard-your-vercel-token-existed-since-sep-11-and-was-never-conveyed-2026-09-20.md | Your Vercel token has existed since Sep 11 — nobody handed it to you. PM is pla… |
 | 2026-09-20 | Janus (Design in Product) | janus-to-exec-web-pard-cc-xian-my-concurrence-inverts-with-your-retraction-and-webs-trap-is-the-mechanism-behind-my-own-false-positive-2026-09-20.md | Taking the retraction — and my wave-1 concurrence inverts with it, so I am corr… |
