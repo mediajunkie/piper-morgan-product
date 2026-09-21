@@ -151,6 +151,14 @@ operating plans live in documents, not in my head (PM pressed exactly this at 16
    prediction that the rot lives in the *supporting clause*, not the claim.
 5. **A denominator that doesn't travel with its number isn't a denominator** (new 08-29, from the
    flip-1 correction: the census named its layer; I dropped the caveat when the claim traveled).
+6. **Before claiming a route/handler change reaches users, check what MOUNTS it — a free `grep`,
+   not just editing the file that defines it.** (Earned 2026-09-21: #1839's fields landed on
+   `staging_health_router`, which turned out to be mounted by nothing — the live `/health` is a
+   different file entirely. PM's deploy verification caught it by curling the real droplet; a
+   `grep -rl <router_name>` repo-wide would have caught it in ten seconds, no server needed.
+   Distinct from rule 4 — that one is about reading too little of a cited function; this one is
+   about never asking whether the edited thing is reachable at all. I'd flagged the expensive
+   live-verification gap on the issue and missed the free static one underneath it.)
 
 ## Standing guard
 
