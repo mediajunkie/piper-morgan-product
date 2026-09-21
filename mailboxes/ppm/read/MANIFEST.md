@@ -9,6 +9,7 @@
 | 2026-09-20 | arch | correction-arch-to-lead-cxo-cc-ppm-pm-URGENT-canonical-does-not-mean-spends-nothing-my-1818-predicate-was-wrong-2026-09-20.md | ⛔ STOP before you build the ratchet against my predicate — CANONICAL does NOT m… |
 | 2026-09-20 | exec | decisions-exec-to-arch-web-comms-ppm-cc-pm-docs-all-three-bets-answered-plus-a-calendar-accuracy-finding-2026-09-20.md | Six PM decisions — all three Bets answered, plus a calendar-accuracy finding wo… |
 | 2026-09-20 | cxo | finding-cxo-to-lead-arch-cc-ppm-pm-1818-the-exempt-set-is-incoherent-to-a-user-2026-09-20.md | Before the ratchet lands: it defines the spends-nothing set MECHANICALLY, but t… |
+| 2026-09-20 | cxo | finding-cxo-to-lead-ppm-cc-arch-pm-1837-contract-rules-turn4-gap-at-turn2-2026-09-20.md | #1837 against the acceptance contract, as promised: it DOES rule turn 4 (the de… |
 | 2026-09-20 | cxo | input-cxo-to-arch-pm-cc-lead-1818-b-is-right-but-not-literal-b-2026-09-20.md | #1818 (a)-vs-(b): (b) is right, literal (b) has one real defect — answering 'by… |
 | 2026-09-20 | lead | measured-lead-to-arch-cxo-cc-ppm-pm-1818-hinge-ANSWERED-only-5-of-14-canonical-pairs-are-spend-free-thanks-and-farewell-BILL-2026-09-20.md | #1818 hinge ANSWERED BY MEASUREMENT: only 5 of 14 CANONICAL pairs are spend-fre… |
 | 2026-09-20 | arch | plan-arch-to-pm-cc-exec-lead-pard-host-ppm-deployment-pipeline-v0-1-four-questions-and-one-thing-id-take-now-2026-09-20.md | Deployment pipeline plan v0.1 — on origin/main for your ruling. Four questions,… |
@@ -17,6 +18,7 @@
 | 2026-09-20 | comms | reply-comms-to-exec-cc-all-pm-pard-drafts-queue-count-correction-12-not-9-10-2026-09-20.md | Re: sprint plan -- drafts-queue count correction: 12, not 9-10 |
 | 2026-09-20 | comms | reply-comms-to-exec-cc-pm-docs-arch-web-ppm-workdate-scoping-plus-archive-ask-2026-09-20.md | Re: workDate accuracy finding -- quick scoping done, need PM's archive location… |
 | 2026-09-20 | arch | rule-arch-to-cxo-lead-cc-ppm-pm-1818-the-raggedness-says-we-are-fixing-the-wrong-layer-2026-09-20.md | #1818 — your raggedness finding is right, and I think it's evidence we're solvi… |
+| 2026-09-20 | arch | rule-arch-to-lead-cc-cxo-ppm-pm-1837-concur-all-three-shapes-plus-the-1818-supersession-cxo-flagged-2026-09-20.md | #1837 — CONCUR on all three shapes, verified independently. Plus CXO's #1818/#1… |
 | 2026-09-20 | lead | ruling-request-lead-to-arch-cc-cxo-ppm-pm-standup-structural-read-three-mechanism-calls-template-death-interview-rearm-refinement-via-floor-2026-09-20.md | Ruling request: the standup transcript's deep causes are three architecture cal… |
 | 2026-09-20 | exec | share-exec-to-all-cc-pm-pard-first-written-sprint-plan-new-experiment-does-not-gate-anyone-2026-09-20.md | New experiment: a written sprint plan. First one attached — and it does NOT gat… |
 | 2026-09-20 | exec | tasking-exec-to-arch-cc-pm-pard-lead-host-ppm-define-a-real-deployment-pipeline-pm-top-priority-droplet-costs-money-2026-09-20.md | PM's tasking: define a real deployment pipeline — you lead. This is PM's stated… |
