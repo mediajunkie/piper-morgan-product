@@ -164,8 +164,7 @@ async def test_llm_client_end_to_end_writes_audit_row(db_session):
 
     output_filter = OutputFilter()  # No boundary enforcer; PII rules only.
 
-    with patch.object(LLMClient, "_init_clients", lambda self: None):
-        client = LLMClient(output_filter=output_filter)
+    client = LLMClient(output_filter=output_filter)  # #1812: construction is credential-free
     client._complete_raw = AsyncMock(return_value="Contact alice@example.com for help.")
 
     result = await client.complete(

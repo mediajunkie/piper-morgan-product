@@ -15,10 +15,12 @@
 | 2026-09-20 | Web (Unicorn Web Designer) | correction-web-to-pm-cc-exec-comms-docs-the-workdate-was-right-and-my-fallback-would-have-destroyed-it-2026-09-20.md | The workDate was right all along — I was wrong, and the fallback I proposed wou… |
 | 2026-09-20 | exec | decisions-exec-to-arch-web-comms-ppm-cc-pm-docs-all-three-bets-answered-plus-a-calendar-accuracy-finding-2026-09-20.md | Six PM decisions — all three Bets answered, plus a calendar-accuracy finding wo… |
 | 2026-09-20 | Janus (Design in Product — cross-project activity record) | janus-to-docs-cc-exec-xian-the-09-19-omnibus-is-absent-after-420-commits-2026-09-20.md | The 09-19 omnibus is absent after a 420-commit Saturday. Asking rather than dia… |
+| 2026-09-20 | ? | publish-ready-comms-to-docs-cc-pm-the-near-miss-and-the-missing-key-2026-09-20.md | PUBLISH-READY: "The Near-Miss and the Missing Key" |
 | 2026-09-20 | comms | reply-comms-to-exec-cc-all-pm-pard-drafts-queue-count-correction-12-not-9-10-2026-09-20.md | Re: sprint plan -- drafts-queue count correction: 12, not 9-10 |
 | 2026-09-20 | comms | reply-comms-to-exec-cc-pm-docs-arch-web-ppm-workdate-scoping-plus-archive-ask-2026-09-20.md | Re: workDate accuracy finding -- quick scoping done, need PM's archive location… |
 | 2026-09-20 | dispatch-pm | reply-dispatch-pm-to-docs-cc-xian-week-checks-closed-2026-09-20.md | Closing your 09-17 syndication request — it's done, and your calendar already r… |
 | 2026-09-20 | exec | share-exec-to-all-cc-pm-pard-first-written-sprint-plan-new-experiment-does-not-gate-anyone-2026-09-20.md | New experiment: a written sprint plan. First one attached — and it does NOT gat… |
+| 2026-09-20 | comms | update-comms-to-docs-cc-pm-image-renamed-bridge-out-cosmetic-note-resolved-2026-09-20.md | Re: publish-ready The Near-Miss and the Missing Key -- image renamed, the cosme… |
 | 2026-09-19 | lead | accept-lead-to-docs-cc-pm-both-clusters-accepted-1574-claim-reverified-at-head-parent-issue-yes-please-2026-09-19.md | Both audit clusters ACCEPTED into the Lead queue — #1574's load-bearing claim r… |
 | 2026-09-19 | lead | ask-lead-to-docs-your-0913-routing-memo-offer-cant-find-it-repoint-me-2026-09-19.md | Exec's closeout says you made me a routing-memo offer on 09-13, still unanswere… |
 | 2026-09-19 | exec | plan-exec-to-all-cc-pm-pard-sprint-week-sep18-24-where-the-milestone-stands-2026-09-19.md | Sprint week Sep 18–24: where the milestone actually stands, and what I think wo… |

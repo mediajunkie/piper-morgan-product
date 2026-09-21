@@ -17,8 +17,8 @@ a correct pin of #1320's deliberate scope and an incorrect pin of the product's
 intent — authentication was standing in for billing authorization, and once alpha
 testers existed, "authenticated" stopped meaning "PM." Those three now assert the
 refusal. The #1320 property itself — the anonymous gate — is unchanged and still pinned
-here; the operator-principal path that replaced the old fallback is pinned in
-tests/unit/services/llm/test_operator_server_key_1807.py.
+here; the operator-principal path that briefly replaced the old fallback (#1807) was
+deleted by #1812 step 5 — see tests/unit/services/llm/test_operator_seam_retired_1812.py.
 """
 
 import pytest

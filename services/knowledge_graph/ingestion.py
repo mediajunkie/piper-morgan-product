@@ -3,8 +3,6 @@ Document ingestion for knowledge base with relationship analysis
 PM-007 Enhancement: Dynamic knowledge hierarchy and relationships
 """
 
-import os
-
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -22,7 +20,6 @@ import structlog
 from chromadb.utils import embedding_functions
 
 from services.configuration.piper_config_loader import piper_config_loader
-from services.infrastructure.keychain_service import KeychainService
 from services.llm.request_key import LLMKeyRequiredError, request_spend_key
 
 logger = structlog.get_logger()
@@ -41,12 +38,16 @@ class RequestKeyedOpenAIEmbeddingFunction:
     it asks ``request_spend_key("openai")`` — the same decision every completion leg
     uses:
       - the request bound the user's own OpenAI key → embed on THEIR key.
-      - explicit designated-operator binding (#1807 both gates; how the CLI ingest
-        path authorizes itself) → the operator's own server-side credential
-        (keychain first, env fallback — mirrors ``LLMConfigService`` order).
       - unbound → ``UnboundLLMKeyError``. The refusal propagates: a read path
         (semantic search) surfaces it as an honest refusal, and an ingest path
         fails BEFORE any chunk is written — no partially-embedded document.
+
+    #1812 step 5: the operator fallback (keychain/env read for a product-owned
+    credential) is DELETED with the operator seam. No CLI ingest entry point exists
+    in the tree (verified 2026-09-21: nothing outside this package constructs
+    ``DocumentIngester``); if one is added, it must resolve and bind the INVOKING
+    user's stored OpenAI key (PM confirm, decisions.log 2026-09-20) — never a
+    product credential.
 
     Cacheable safely (``DocumentIngester`` is a module singleton): the ContextVar read
     happens at spend time, so no user's key can outlive their request (#1814
@@ -57,16 +58,6 @@ class RequestKeyedOpenAIEmbeddingFunction:
 
     def __call__(self, input):  # noqa: A002 — chromadb's EmbeddingFunction protocol names it `input`
         key = request_spend_key("openai")
-        if key is None:
-            # Operator binding (gate 1 re-checked in request_spend_key): the
-            # operator's own server-side credential.
-            keychain = KeychainService()
-            key = keychain.get_api_key("openai") or os.getenv("OPENAI_API_KEY")
-            if not key:
-                raise RuntimeError(
-                    "Operator OpenAI embedding credential not configured "
-                    "(keychain and OPENAI_API_KEY both empty)."
-                )
         # Constructed per call — cheap next to the embedding HTTP round trip, and it
         # guarantees the credential is never cached anywhere it could cross requests.
         delegate = embedding_functions.OpenAIEmbeddingFunction(

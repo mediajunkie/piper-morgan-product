@@ -173,13 +173,14 @@ def pytest_collection_modifyitems(config, items):
                 )
             )
 
-        # #1819: live-LLM tests spend the DEVELOPER'S OWN keys (the env/keychain keys
-        # that un-skipped them above). Post-#1809/#1819 every provider leg REFUSES an
-        # unbound spend, so these tests must hold the binding a real spender would:
-        # the explicit designated-operator form (`request_api_key(None)` + gate 1),
-        # which is exactly what "my machine, my keys, run the live tests" is.
+        # #1819: live-LLM tests spend the DEVELOPER'S OWN keys (the env keys that
+        # un-skipped them above). Post-#1809/#1819 every provider leg REFUSES an
+        # unbound spend, so these tests must hold the binding a real spender would.
+        # #1812 step 5: that binding is the EXPLICIT provider-keyed mapping of those
+        # same env keys — the operator form (`request_api_key(None)` + gate 1) is
+        # deleted with the seam. Same spend, same payer, no operator concept.
         if has_llm_keys and "llm" in item.keywords:
-            item.fixturenames.append("_operator_spend_binding_for_live_llm_1819")
+            item.fixturenames.append("_live_llm_spend_binding_1819")
 
         # Skip GitHub tests if no GitHub token (Issue #914)
         if not has_github and "github" in item.keywords:
@@ -211,14 +212,41 @@ def mock_session():
 
 
 @pytest.fixture
-def _operator_spend_binding_for_live_llm_1819(monkeypatch):
-    """#1819: injected by pytest_collection_modifyitems into every `llm`-marked test
-    that will actually run (live keys present). See the comment there. Never autouse —
-    non-live tests keep the refusing UNBOUND default, which is itself under test."""
-    from services.llm.request_key import OPERATOR_SERVER_KEY_ENV, request_api_key
+def _live_llm_spend_binding_1819():
+    """#1819/#1812: injected by pytest_collection_modifyitems into every `llm`-marked
+    test that will actually run (live keys present). See the comment there. Binds the
+    developer's own keys as an explicit provider-keyed mapping — the operator binding
+    this fixture used to hold was deleted by #1812 step 5. Env first, then the dev
+    keychain, per provider: that is exactly the credential set the old operator form
+    spent (the server clients were built from the keychain), so live-tier provider
+    selection is unchanged by the seam's removal. Never autouse — non-live tests keep
+    the refusing UNBOUND default, which is itself under test."""
+    from services.infrastructure.keychain_service import KeychainService
+    from services.llm.request_key import request_api_key
 
-    monkeypatch.setenv(OPERATOR_SERVER_KEY_ENV, "1")
-    with request_api_key(None):
+    try:
+        keychain = KeychainService()
+    except Exception:  # silent-ok: no keychain backend -> env-only binding
+        keychain = None
+
+    def _dev_key(provider: str, env_var: str):
+        key = os.environ.get(env_var)
+        if not key and keychain is not None:
+            try:
+                key = keychain.get_api_key(provider)
+            except Exception:  # silent-ok: fewer providers bound = fail-closed
+                key = None
+        return key
+
+    binding = {
+        provider: key
+        for provider, key in (
+            ("anthropic", _dev_key("anthropic", "ANTHROPIC_API_KEY")),
+            ("openai", _dev_key("openai", "OPENAI_API_KEY")),
+        )
+        if key
+    }
+    with request_api_key(binding):
         yield
 
 

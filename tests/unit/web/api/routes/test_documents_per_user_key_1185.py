@@ -130,13 +130,26 @@ async def test_no_cross_request_leak_between_users_1185():
     ):
         await documents.analyze_document(file_id="f", current_user=user_a)
 
-    # User B → resolves None (no stored key)
+    # User B → no stored key. #1812 step 5: the resolver RAISES now (it never
+    # returns None any more), so B is refused with the honest 403 — and the
+    # no-leak property is even stronger: B's handler never runs at all, so there
+    # is no moment at which A's key could have been visible to B's request.
+    from fastapi import HTTPException
+
+    from services.llm.request_key import UserLLMKeyRequiredError
+
     with (
-        patch.object(documents, "resolve_user_llm_key", AsyncMock(return_value=None)),
+        patch.object(
+            documents,
+            "resolve_user_llm_key",
+            AsyncMock(side_effect=UserLLMKeyRequiredError("no key")),
+        ),
         patch.object(documents, "handle_analyze_document", _make_spy("B")),
     ):
-        await documents.analyze_document(file_id="f", current_user=user_b)
+        with pytest.raises(HTTPException) as exc_info:
+            await documents.analyze_document(file_id="f", current_user=user_b)
 
+    assert exc_info.value.status_code == 403
     assert seen["A"] == "kA"
-    assert seen["B"] is None  # NOT "kA" — no leak from A's request into B's
+    assert "B" not in seen  # B's handler never ran — no window for A's key to leak
     assert get_request_api_key() is None

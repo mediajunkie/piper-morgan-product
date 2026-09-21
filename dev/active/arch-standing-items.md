@@ -32,7 +32,13 @@
   under the environment/stage vocabulary, alpha+beta collapse into two stages of one Fly `prod`
   environment, now possible because #1812 removed alpha's droplet-specific account model this week.
   Folded in Pard's two requirements (§4d). **PM's ruling pending** — see carry-forward IN FLIGHT.
-- [ ] *(filed 2026-09-18 22:xx; **DUE 2026-09-19 — PM-requested reminder**)* **★ Remind PM about Bets 001–003, and carry them in the rollup so Exec — and through Exec, Janus — sees them.** PM 09-18: does not want these to go too long; asked to be reminded tomorrow and surfaced in the rollup, and will try to find uninterrupted time for **at least the first** this weekend. **Clearing condition**: PM files Bet 001's fields, OR PM explicitly re-defers. Awaiting since 08-30 (19 days). Marked non-blocking by design — but "non-blocking" is precisely what let them sit 19 days, so this row exists to make the silence visible rather than polite.
+- [ ] *(filed 2026-09-18 22:xx; re-checked 2026-09-21, still open)* **Bets 001–003 — PM's self-set
+  "this weekend" window has now passed** (Sat 09-19/Sun 09-20) with all three `PM TO FILL` markers
+  still present, re-verified by grep this morning, not assumed. **Not re-nudging** — PM already knows,
+  it's already in the rollup, and the weekend clearly filled with other real priorities (the deploy
+  pipeline tasking, #1837's dogfood transcript). Noting the passed window honestly rather than
+  quietly re-dating the row as if nothing happened. **Clearing condition unchanged**: PM files Bet
+  001's fields, or explicitly re-defers. Awaiting since 08-30 (23 days).
 
 - [ ] *(filed 2026-09-19 13:1x; watch, not owed)* **#1829 — provider-agnosticism ratchet + two silent fallbacks in `resolve_model`.** Filed from CXO's #1823 branch-two trace after ruling their flagged question: provider-agnosticism is **derived from BYOC**, load-bearing, and **absent from both ESSENCE's standing rules and its seven commitments** — protected today by one comment plus the incidental fact that all 3 providers define all 3 tiers. Deliberately did *not* propose an ESSENCE amendment (the law exists as BYOC; a new commitment restates it at lower altitude). **Clearing condition**: a ratchet lands that asserts every (provider, task_type) pair resolves *without falling through to a default* — ⚠️ the naive `is not None` form passes vacuously (#1642 shape) and would be a test that cannot fail. Second half: decide the two silent fallbacks deliberately (unknown `task_type` → heavy tier is a **spend** defect under BYOC; unrecognized provider → OpenAI models is latent at 3/3, live at a fourth). **Nothing owed by me unless a lane asks** — but if someone hardens the typo path without the provider path, that's incoherent and worth saying: they are the same mechanism.
 

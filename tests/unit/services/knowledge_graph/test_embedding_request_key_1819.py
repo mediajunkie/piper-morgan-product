@@ -11,8 +11,11 @@ RED evidence (pre-fix tree, 2026-09-18 probe):
     embedding fn constructed with: sk-SERVER-KEYCHAIN-OPENAI
 
 Now ``RequestKeyedOpenAIEmbeddingFunction`` holds NO key and asks ``request_spend_key
-("openai")`` at each call: the user's own bound key, or the operator's explicit
-authorization (#1807 seam — the CLI ingest path), or an honest ``UnboundLLMKeyError``.
+("openai")`` at each call: the user's own bound key, or an honest
+``UnboundLLMKeyError``. #1812 step 5 (2026-09-21) deleted the operator arm this file
+used to pin (explicit ``None`` binding → the operator's keychain credential) — the
+module no longer imports ``KeychainService`` at all, which is the strongest form of
+"never touches the keychain".
 """
 
 from unittest.mock import MagicMock, patch
@@ -21,7 +24,6 @@ import pytest
 
 from services.knowledge_graph.ingestion import RequestKeyedOpenAIEmbeddingFunction
 from services.llm.request_key import (
-    OPERATOR_SERVER_KEY_ENV,
     LLMKeyRequiredError,
     UnboundLLMKeyError,
     request_api_key,
@@ -32,13 +34,18 @@ USER_OPENAI_KEY = "sk-user-openai-EMBED"
 
 class TestRequestKeyedEmbeddingFunction:
     def test_unbound_refuses_and_never_touches_the_keychain(self):
-        """THE #1819 pin (red on the pre-fix tree: keychain read + server key baked in)."""
+        """THE #1819 pin (red on the pre-fix tree: keychain read + server key baked in).
+        #1812 step 5 made the no-keychain half structural: the module no longer even
+        imports KeychainService, so there is no read path to observe."""
+        import services.knowledge_graph.ingestion as ingestion_module
+
         fn = RequestKeyedOpenAIEmbeddingFunction()
-        with patch("services.knowledge_graph.ingestion.KeychainService") as keychain_cls:
-            with pytest.raises(UnboundLLMKeyError):
-                fn(["some document text"])
-        keychain_cls.assert_not_called()
-        keychain_cls.return_value.get_api_key.assert_not_called()
+        with pytest.raises(UnboundLLMKeyError):
+            fn(["some document text"])
+        assert not hasattr(ingestion_module, "KeychainService"), (
+            "KeychainService came back into the ingestion module — the #1812 cut "
+            "regressed (a server-credential read path exists again)"
+        )
 
     def test_bound_user_key_embeds_on_the_users_own_key(self):
         fn = RequestKeyedOpenAIEmbeddingFunction()
@@ -46,12 +53,10 @@ class TestRequestKeyedEmbeddingFunction:
             "services.knowledge_graph.ingestion.embedding_functions.OpenAIEmbeddingFunction"
         ) as ef_cls:
             ef_cls.return_value.return_value = [[0.1, 0.2]]
-            with patch("services.knowledge_graph.ingestion.KeychainService") as keychain_cls:
-                with request_api_key({"openai": USER_OPENAI_KEY}):
-                    out = fn(["some document text"])
+            with request_api_key({"openai": USER_OPENAI_KEY}):
+                out = fn(["some document text"])
         assert out == [[0.1, 0.2]]
         assert ef_cls.call_args.kwargs["api_key"] == USER_OPENAI_KEY
-        keychain_cls.assert_not_called()  # the user's key means no server credential read
 
     def test_an_anthropic_binding_does_not_authorize_an_embedding_spend(self):
         """#1815's constraint applied to embeddings: an Anthropic key never pays OpenAI."""
@@ -59,29 +64,6 @@ class TestRequestKeyedEmbeddingFunction:
         with request_api_key("sk-ant-user-KEY"):
             with pytest.raises(UnboundLLMKeyError):
                 fn(["text"])
-
-    def test_operator_binding_with_gate_uses_the_operators_server_credential(self, monkeypatch):
-        """The CLI ingest path (#1807 seam): explicit None binding + gate 1 → the
-        operator's own keychain (or env) credential — the one surviving server-side
-        spend, until #1812 step 5."""
-        monkeypatch.setenv(OPERATOR_SERVER_KEY_ENV, "1")
-        fn = RequestKeyedOpenAIEmbeddingFunction()
-        with patch("services.knowledge_graph.ingestion.KeychainService") as keychain_cls:
-            keychain_cls.return_value.get_api_key.return_value = "sk-OPERATOR-KEYCHAIN"
-            with patch(
-                "services.knowledge_graph.ingestion.embedding_functions.OpenAIEmbeddingFunction"
-            ) as ef_cls:
-                ef_cls.return_value.return_value = [[0.3]]
-                with request_api_key(None):
-                    out = fn(["text"])
-        assert out == [[0.3]]
-        keychain_cls.return_value.get_api_key.assert_called_once_with("openai")
-        assert ef_cls.call_args.kwargs["api_key"] == "sk-OPERATOR-KEYCHAIN"
-
-    def test_operator_binding_without_gate_refuses(self):
-        with request_api_key(None):
-            with pytest.raises(UnboundLLMKeyError):
-                RequestKeyedOpenAIEmbeddingFunction()(["text"])
 
     def test_no_key_is_cached_across_requests(self):
         """The wrapper is cacheable on the module-singleton ingester precisely because
@@ -107,11 +89,9 @@ class TestRequestKeyedEmbeddingFunction:
         embedding function reads NOTHING — keyless environments never raise here."""
         from services.knowledge_graph.ingestion import DocumentIngester
 
-        with patch("services.knowledge_graph.ingestion.KeychainService") as keychain_cls:
-            ingester = DocumentIngester(chroma_path=str(tmp_path / "chroma"))
-            fn = ingester.embedding_function
+        ingester = DocumentIngester(chroma_path=str(tmp_path / "chroma"))
+        fn = ingester.embedding_function
         assert isinstance(fn, RequestKeyedOpenAIEmbeddingFunction)
-        keychain_cls.assert_not_called()
 
 
 class TestFindDecisionsSurfacesTheRefusal:

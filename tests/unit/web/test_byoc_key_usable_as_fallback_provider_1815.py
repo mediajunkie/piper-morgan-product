@@ -177,8 +177,9 @@ def _mixed_byoc_instance(monkeypatch):
     _RecordingAnthropic.constructed_with = []
     _FailingOpenAI.constructed_with = []
     _FailingOpenAI.calls = 0
+    # #1812 step 6: clients.py no longer imports Anthropic (the chokepoint's late
+    # import is the only construction site), so only the SDK-level patch is needed.
     monkeypatch.setattr("anthropic.Anthropic", _RecordingAnthropic)
-    monkeypatch.setattr(clients_module, "Anthropic", _RecordingAnthropic)
     monkeypatch.setattr(clients_module, "OpenAI", _FailingOpenAI)
     yield
 
@@ -329,14 +330,13 @@ class TestByocKeyIsUsableAsAFallbackProvider:
             "the route must bind the user's resolved key for the request — if this fails "
             "the defect is upstream of #1815, in #1807's resolution or #1814's gate"
         )
-        # #1819 AMENDMENT (was: `constructed_with == [SERVER_OPENAI_KEY]` with the comment
-        # "the primary really did run and really did fail"). The primary leg refuses
-        # ENTITLEMENT now: the tester holds no OpenAI key, so `_openai_complete` raises
-        # `UnboundLLMKeyError` before any completion is attempted — the operator's OpenAI
-        # key is never spent on the tester's turn (that spend was #1819's other half).
-        # The singleton still CONSTRUCTS the server client at `_init_clients` (request-
-        # blind, #1814 — construction is not billing); the pin is zero completion CALLS.
-        assert _FailingOpenAI.constructed_with == [SERVER_OPENAI_KEY]
+        # #1819 AMENDMENT (was: `constructed_with == [SERVER_OPENAI_KEY]`, "the primary
+        # really did run and really did fail"): the primary leg refuses ENTITLEMENT —
+        # the tester holds no OpenAI key. #1812 step 6 AMENDMENT: `_init_clients` is
+        # amputated, so the operator's keychain OpenAI key is no longer even turned
+        # into a client object — zero constructions AND zero completion calls is now
+        # the correct pin (strictly stronger than #1819's zero-calls-only form).
+        assert _FailingOpenAI.constructed_with == []
         assert _FailingOpenAI.calls == 0, (
             "the operator's OpenAI client served a completion for a tester who owns no "
             "OpenAI key — the #1819 silent spend, resurrected"
@@ -381,11 +381,11 @@ class TestByocKeyIsUsableAsAFallbackProvider:
         # unavailable and nothing is invented — and the consumer refuses (#1809).
         assert llm._is_provider_configured(LLMProvider.ANTHROPIC) is False
         with pytest.raises(UnboundLLMKeyError):
-            anthropic_client_for_request(llm.anthropic_client)
+            anthropic_client_for_request()
 
         with request_api_key(STORED_USER_KEY):
             assert llm._is_provider_configured(LLMProvider.ANTHROPIC) is True
-            consumer_client = anthropic_client_for_request(llm.anthropic_client)
+            consumer_client = anthropic_client_for_request()
             assert consumer_client is not None
             assert consumer_client.api_key == STORED_USER_KEY
 
@@ -393,7 +393,7 @@ class TestByocKeyIsUsableAsAFallbackProvider:
         # the request, so neither does the availability answer — nor the entitlement.
         assert llm._is_provider_configured(LLMProvider.ANTHROPIC) is False
         with pytest.raises(UnboundLLMKeyError):
-            anthropic_client_for_request(llm.anthropic_client)
+            anthropic_client_for_request()
 
     def test_a_request_key_never_makes_a_provider_without_a_per_request_path_look_available(
         self,
@@ -411,9 +411,9 @@ class TestByocKeyIsUsableAsAFallbackProvider:
         OpenAI binding of the user's OWN key is what makes OpenAI available.
         """
         llm = clients_module.LLMClient()
-        # Gemini is unconfigured server-side in this world; OpenAI IS configured
-        # server-side — which post-#1819 is an operator credential, not entitlement.
-        assert llm.gemini_client in (None, False)
+        # #1812 step 6: NO server clients exist at all any more — availability is
+        # entitlement, full stop.
+        assert not hasattr(llm, "gemini_client")
 
         with request_api_key(STORED_USER_KEY):
             assert llm._is_provider_configured(LLMProvider.GEMINI) is False, (
@@ -421,12 +421,9 @@ class TestByocKeyIsUsableAsAFallbackProvider:
                 "has no per-request path and would raise"
             )
             assert llm._is_provider_configured(LLMProvider.OPENAI) is False, (
-                "the SERVER's OpenAI client leaked through as availability for a request "
-                "holding only an Anthropic key — unbound, that leg refuses (#1819)"
-            )
-            assert llm.openai_client is not None, (
-                "precondition: the operator's client exists; its existence just is not "
-                "this request's entitlement"
+                "OpenAI read available for a request holding only an Anthropic key — "
+                "unbound, that leg refuses (#1819); post-#1812 there is no server "
+                "client whose existence could even be mistaken for entitlement"
             )
 
         # And the user's OWN OpenAI key is exactly what makes OpenAI available (#1819).
@@ -461,17 +458,18 @@ class TestNoServerOwnedKeyIsReintroduced:
             assert (
                 llm._is_provider_configured(LLMProvider.ANTHROPIC) is True
             ), "precondition: this test is only meaningful while the gate says available"
-            assert llm.anthropic_client is None, (
-                "the server's singleton Anthropic client captured a request-scoped user "
-                "key — it would be reused for the next caller"
+            assert not hasattr(llm, "anthropic_client"), (
+                "a server-singleton Anthropic client attribute reappeared (#1812 step 6 "
+                "amputated it) — if it captured a request-scoped user key it would be "
+                "reused for the next caller"
             )
             assert _RecordingAnthropic.constructed_with == [], (
-                "_init_clients constructed an Anthropic client from a key the server does "
-                "not own"
+                "constructing LLMClient built an Anthropic client from a key the server "
+                "does not own"
             )
 
         # A client constructed with a key bound is still clean once the request ends.
-        assert llm.anthropic_client is None
+        assert not hasattr(llm, "anthropic_client")
         assert llm._is_provider_configured(LLMProvider.ANTHROPIC) is False
 
     def test_a_keyless_caller_gets_no_anthropic_fallback_from_anywhere(self):
@@ -482,5 +480,5 @@ class TestNoServerOwnedKeyIsReintroduced:
 
         assert get_request_api_key() is None
         assert llm._is_provider_configured(LLMProvider.ANTHROPIC) is False
-        assert llm.anthropic_client is None
+        assert not hasattr(llm, "anthropic_client")
         assert _RecordingAnthropic.constructed_with == []

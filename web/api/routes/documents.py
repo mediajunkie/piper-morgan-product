@@ -475,9 +475,9 @@ async def search_documents(
 
     #1819: semantic search EMBEDS the query via OpenAI — a billable spend this route
     used to make on a server-owned keychain key, bypassing the #1809 chokepoint. It
-    now binds the caller's own stored OpenAI key (or the designated operator's
-    explicit authorization) and refuses honestly otherwise, same shape as the five
-    LLM-calling routes above.
+    now binds the caller's own stored OpenAI key and refuses honestly otherwise
+    (#1812 step 5: the designated-operator authorization is gone), same shape as
+    the five LLM-calling routes above.
     """
     try:
         embed_key = await resolve_user_openai_key(current_user.sub)
@@ -487,9 +487,10 @@ async def search_documents(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=SEARCH_KEY_REQUIRED_DETAIL,
         )
-    search_binding = None if embed_key is None else {"openai": embed_key}
+    # #1812 step 5: the resolver never returns None any more (the operator form is
+    # deleted) — the binding is always the caller's own OpenAI key.
     try:
-        with request_api_key(search_binding):
+        with request_api_key({"openai": embed_key}):
             result = await handle_search_documents(query=q, user_id=current_user.user_id)
         logger.info(
             "Documents searched",
