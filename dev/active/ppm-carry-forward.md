@@ -10,7 +10,17 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-20 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+**Last rewritten**: 2026-09-21 07:22 PT (START). Clean quiet START — prior day's DAY-CLOSED
+sentinel verified, cron unchanged overnight (`69c1ab94`, correct expression). Noted CXO's overnight
+finding that the 09-20 Amber reboot never actually reached most seats (Arch/Host/Web/Comms/CXO) —
+consistent with this seat's own ambiguous re-arm last night; not chasing further, just corroborating
+context. Mail: inbox empty. `sprint-truth.py` fresh found 2 unmilestoned issues (`#1841`/`#1842`,
+Lead's Phase B test-infra findings) — fixed (milestone `Production` per precedent, board-added,
+verified), `0 unmilestoned` confirmed after. **`#1812` closed overnight** (epic 2's operator-key-seam
+retirement) — verified via closing evidence, epic file updated. **Still no formalized PPM
+third-queue-source criteria line** — flagged again. Nothing PM-gated carried forward.
+
+**Prior: 2026-09-20 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
 Cron re-armed `b6ee509a` → **`69c1ab94`** (delete-then-create, `CronList`-verified exactly one job
 survives). One board-add fix at STOP: `#1840` (Lead's mail-send half-landed-batch incident —
 `read/` additions landed, inbox deletions silently dropped, 8 memos read as unread on `origin/main`

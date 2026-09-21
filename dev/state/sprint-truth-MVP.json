@@ -1,13 +1,13 @@
 {
   "milestone": "MVP",
-  "taken_at": "2026-09-20 22:24 PDT",
+  "taken_at": "2026-09-21 07:25 PDT",
   "not_done_total": 58,
-  "done": 1130,
+  "done": 1131,
   "by_status": {
     "In Progress": 3,
-    "Sprint Backlog": 27,
+    "Sprint Backlog": 26,
     "In Review": 6,
-    "Product Backlog": 22
+    "Product Backlog": 23
   },
   "open_numbers": [
     1386,
@@ -56,7 +56,6 @@
     1799,
     1800,
     1808,
-    1812,
     1817,
     1818,
     1823,
@@ -67,6 +66,7 @@
     1836,
     1837,
     1838,
-    1839
+    1839,
+    1840
   ]
 }
