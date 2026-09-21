@@ -140,3 +140,69 @@ or correct the weighting. **I would rather be corrected today than have PM act o
 they are wrong.**
 
 — Exec
+
+
+---
+
+# ADDENDUM — "what changed recently?" (PM's question, 2026-09-21)
+
+**Answer: our consumption did not materially rise. The ceiling dropped.** Four weeks of daily
+history from the same transcripts:
+
+| window (Fri–Mon) | cache_read |
+|---|---|
+| 08-28 → 08-31 | **3,701M** |
+| 09-04 → 09-07 | 2,331M |
+| 09-11 → 09-14 | 2,977M |
+| **09-18 → 09-21 (this week)** | **2,872M** |
+
+**This week is 3.5% BELOW the same window two weeks ago and 22% below four weeks ago.** We are not
+burning hotter in absolute terms — we are burning about the same against a smaller allowance. Our own
+records attribute a **~17% ceiling reduction to the summer promotion ending on 13 September**.
+⚠️ **I have not independently verified that figure** — it is sourced from our prior analysis, not
+from anything I measured here, and it is the load-bearing claim in this addendum. Worth confirming.
+
+**Average context per turn has been stable for a month**, 420k–624k, with no trend: 581k on 08-25,
+563k on 08-31, 624k on 09-14, 544k on 09-20. **09-20 is unremarkable in that series.** What was
+unusual about this weekend is **turn volume** — 09-19 logged **2,820 turns, the highest of the month**,
+and 09-20 logged 2,157, against a typical 1,000–1,500. That is the fleet-renewal weekend.
+
+## The clears worked — and they lasted one day
+
+Per-seat average context, around the 09-18 Wave-0 renewal:
+
+| seat | 09-18 | 09-19 | 09-20 | 09-21 |
+|---|---|---|---|---|
+| docs | 697k | **363k** | 714k | 829k |
+| lead | 774k | **362k** | 726k | 312k |
+| cxo | 810k | **254k** | 393k | 462k |
+| host | 734k | **303k** | 483k | 554k |
+| pa | 640k | **211k** | 309k | 409k |
+| exec | 223k | 550k | 778k | 165k |
+
+**Every seat dropped sharply on 09-19 and every seat climbed back on 09-20.** The renewal cut context
+roughly in half for a single day. It is a sawtooth: a clear resets it, and it re-accumulates within
+~24 hours. **So PM's read that "after all those clears we're consuming cache more than before" is
+half right** — per-turn context fell exactly as intended; total spend still rose because the same
+weekend carried the month's two highest turn counts.
+
+## What this implies about levers
+
+Spend = **turns × average context**. Three levers, in order of ratio-to-cost:
+
+1. **Model tier on the four Opus seats** — ~51% off the price-weighted bill, no lane closed, instantly
+   reversible. Largest single lever.
+2. **Clear cadence** — a clear demonstrably halves per-turn context. It decays in a day, so the lever
+   is *cadence*, not one-off renewals.
+3. **The baseline the sawtooth resets TO** — post-clear seats bottomed at 210k–260k, and that floor is
+   set by what every turn re-reads regardless of session age: `CLAUDE.md`, the `duty-cycle-tick`
+   skill, carry-forwards, and `duty-cycle-registry.tsv`. Lowering the floor lowers every subsequent
+   turn, not just the first.
+
+**Cutting seats is the worst ratio of the four** — it is linear in lanes lost and does nothing to the
+per-turn term that is 95.8% of the bill.
+
+**Verified how**: same method as above, extended to 2026-08-23, deduped by `requestId`, 30 days of
+daily aggregates. **Layer**: client-side ledger. **Denominator**: all transcripts modified since
+08-24; days before that are outside the retained window, so "no trend for a month" is a claim about
+30 days, not about all time.
