@@ -263,9 +263,8 @@ Current open items: see `dev/active/cxo-standing-items.md`, 19 rows, both guards
 
 ## Cron
 
-✅ **RE-ARMED at the 2026-09-20 STOP: `23d4c124` → new job** (delete-then-create; `CronList` singular
-before signing off — id recorded in the sign-off section below). **Expiry ~7 days from tonight's
-arm-time.**
+✅ **RE-ARMED at the 2026-09-20 STOP: `23d4c124` → `8cd7d5c2`**, delete-then-create, `CronList`
+confirmed exactly one. **Armed 2026-09-20 22:24 PDT. Expires ~2026-09-27.**
 
 ⭐ **Rotate at the FIRST fire with both the information and the margin.** ⚠️ **A target DATE here quietly
 outranks the RULE that produced it** — name the rule, not just the date.
