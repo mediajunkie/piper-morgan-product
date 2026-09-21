@@ -49,10 +49,14 @@ Stop and surface to PM if: cut commit is ambiguous, tests are broken, P0 is open
 
 ## Phase 2 — Version bump + release notes
 
-### pyproject.toml
+### pyproject.toml AND the repo-root VERSION file (both, always)
 ```bash
-# Change: version = "{PREV_VERSION}" → version = "{NEW_VERSION}"
-# Verify: grep "^version" pyproject.toml
+# Change: version = "{PREV_VERSION}" → version = "{NEW_VERSION}" in pyproject.toml
+# Change: the repo-root VERSION file → {NEW_VERSION}   ← #1839's /health reads THIS file
+# Verify BOTH with the existing checker (added to this skill 2026-09-21 after the
+# v0.8.13.0 cut shipped with VERSION stale — the deployed /health would have reported
+# the previous version):
+python scripts/check-version-consistency.py   # must print OK
 ```
 
 ### Create release notes
@@ -230,6 +234,10 @@ If any section still describes old functionality: fix it now, before the release
 # Surface to PM: production branch is at v{NEW_VERSION}
 # Deployment to alpha.pipermorgan.ai is a manual step on the Droplet
 # See: docs/internal/operations/alpha-deployment-runbook.md
+# ⚠️ Build with the SHA so /health reports real deploy identity (#1839):
+#   docker compose build --build-arg PIPER_GIT_SHA=$(git rev-parse --short origin/production) app
+# Post-deploy: `curl -s https://alpha.pipermorgan.ai/health` must show the NEW version +
+# the SHA you just built — this is the check that caught the unmounted-router gap on 09-21.
 ```
 
 ---
@@ -294,4 +302,9 @@ Phase 7 — Audit
 
 ## Changelog
 
+- **v1.1** (2026-09-21, Lead): Phase 2 now bumps the repo-root VERSION file alongside
+  pyproject and runs `scripts/check-version-consistency.py` (the v0.8.13.0 cut shipped
+  with VERSION stale — the file #1839's /health reads; caught by the same-session docs
+  audit). Phase 7's deployment note gains the PIPER_GIT_SHA build-arg + the live
+  /health identity check.
 - **v1.0** (2026-06-20, PA): Initial skill. Created after ALPHA_QUICKSTART was discovered with stale body content post-v0.8.8 release — version header bumped but "What's New", "Testing Focus", and "What's Working" sections still described v0.8.6 features. Root cause: runbook listed "Update Version and 'What's New' section" as one checkbox item; under time pressure it read as one action (bump the number). This skill splits them explicitly and makes prose rewrites non-skippable.

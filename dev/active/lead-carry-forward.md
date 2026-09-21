@@ -5,9 +5,10 @@
   **#1837 CLOSED** (all 3 shapes: template dead, acceptance arms interview, refinement
   via floor) · **#1836 CLOSED** (rode #1837 shape 3) · **#1818 CLOSED** ((b) shipped,
   CXO copy, one shared constant).
-- **DEPLOY: all four ride the NEXT cut** (pre-registered; #1812 changes spend
-  authorization). Alpha runs v0.8.12.0. → Propose cut v0.8.13.0 to PM (the #1617
-  standup retest and the invite-era testing want these fixes live).
+- **v0.8.13.0 CUT + DEPLOYED TO ALPHA 09-21 ~09:00 (PM-approved)** — all four fixes LIVE;
+  /health attests version+sha+environment publicly. Full alpha-docs audit rode the cut
+  (#1804 + #1830 closed; guide + email template hosted-only; tester URL unified on
+  alpha.pipermorgan.ai — flag for Pard's hosting sort). #1617 retest READY on the card.
 - Filed while building: **#1841** (pm039 live-LLM drift, baseline-verified) · **#1842**
   (accuracy-suite container-fallback defect, keyed-lane red-nobody-sees) · **#1843**
   (ACCEPT_PATTERNS '^please ' fires on short imperatives — finalizes drafts; #1739

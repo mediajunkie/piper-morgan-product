@@ -2,7 +2,7 @@
 
 **Status**: COMPLETE — mechanism reverse-engineered from the live droplet by Lead Dev, 2026-06-19 (was a STUB; PA flagged the gap in `memo-pa-to-lead-cc-pm-alpha-deploy-runbook-gap-2026-06-19`).
 **Created**: June 19, 2026 (PA)
-**Last Updated**: June 22, 2026 (Lead Dev — **0.8.9 deployed live**; corrected the #1299 migrate script for 0.8.9 [db singleton, not `engine`; POSTGRES_PASSWORD unset]; added the secrets-must-be-named-in-app gotcha + the encryption round-trip smoke). Prior: June 20 (migrate-never-ran, #1299; 0.8.8); June 19 (full mechanism + safe procedure)
+**Last Updated**: September 21, 2026 (Lead Dev — v0.8.13.0 deploy: (1) `deploy.sh`'s bare `docker compose up -d` fails on the dead `orchestration` service (#1835) — bring up NAMED services: `docker compose up -d postgres redis chromadb github-mcp app caddy`; (2) build with `docker compose build --build-arg PIPER_GIT_SHA=$(git rev-parse --short origin/production) app` so `/health` reports real deploy identity (#1839); (3) post-deploy check is now one unauthenticated curl: `curl -s https://alpha.pipermorgan.ai/health` must show the new `version` + the `git_sha` you built — this exact check caught #1839's first landing being wired to an unmounted router; (4) the Caddy gate is long gone — `/health` is 200 unauthed, ignore this doc's older 401 notes.) Prior: June 22, 2026 (Lead Dev — **0.8.9 deployed live**; corrected the #1299 migrate script for 0.8.9 [db singleton, not `engine`; POSTGRES_PASSWORD unset]; added the secrets-must-be-named-in-app gotcha + the encryption round-trip smoke). Prior: June 20 (migrate-never-ran, #1299; 0.8.8); June 19 (full mechanism + safe procedure)
 
 ---
 
