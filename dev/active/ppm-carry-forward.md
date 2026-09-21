@@ -10,7 +10,19 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-21 07:22 PT (START). Clean quiet START — prior day's DAY-CLOSED
+**Last rewritten**: 2026-09-21 10:22 PT (WORK). **Five real closures landed this morning** —
+`#1818`, `#1823`, `#1824`, `#1836`, `#1837` — the entire family this seat has tracked since 09-18/19
+plus both of PM's dogfood-session defects. Verified each individually via closing evidence, not
+assumed from the sprint-truth delta count. Consolidated into the epic file: epic 2 gets
+`#1818`/`#1823`/`#1824`'s close-out; epic 3 gets `#1837`'s close-out and its real consequence —
+**the epic's own blocker is cleared**, `#1739`'s dependency chain reverts to `#1617`'s retest alone;
+epic 5 gets `#1836`+`#1837`'s joint close-out (CXO's completion-claim principle from yesterday held
+— the fix needed both halves, and both shipped). **Board hygiene**: two more issues fixed same
+fire — `#1843` (found during `#1837`'s shape-3 build, MVP) and `#1844` (recurring FLY-AUDIT,
+`Ongoing`). `0 unmilestoned` confirmed. **Nothing PM-gated carried forward** — no open PPM or Arch
+action on any of the five closed items.
+
+**Prior: 2026-09-21 07:22 PT (START). Clean quiet START — prior day's DAY-CLOSED
 sentinel verified, cron unchanged overnight (`69c1ab94`, correct expression). Noted CXO's overnight
 finding that the 09-20 Amber reboot never actually reached most seats (Arch/Host/Web/Comms/CXO) —
 consistent with this seat's own ambiguous re-arm last night; not chasing further, just corroborating

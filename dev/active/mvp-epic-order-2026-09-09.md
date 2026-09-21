@@ -404,6 +404,19 @@ spend, not a courtesy reminder. This preserves CXO's own "one policy, one string
 the canonical path never answers "what do I need to do real work," the gate never handles
 pleasantries. **Both decisions now resolved — build is Lead's, no PPM action either way.**
 
+**`#1818` CLOSED 2026-09-21** — "(b) implemented with evidence above." **`#1823` CLOSED 2026-09-21**
+(`9ec028406` on `origin/main`) — branch one shipped: the gate now matches the spend
+(`resolve_user_llm_binding`: header/stored-Anthropic → unchanged; no Anthropic but a stored OpenAI
+key → bound alone, mirroring `#1822`'s Slack arm; neither → CXO's ruled provider-neutral refusal
+copy). **`#1824` CLOSED 2026-09-21**, same commit — the four-bucket classifier split shipped:
+`_classify_llm_error` now discriminates `rejected_credential`/`insufficient_permission`/
+`not_configured`/`config_endpoint`, `return "auth"` no longer exists in the function, pinned by
+test. **One new issue surfaced during the `#1837` shape-3 build** (Lead, found by a regression test
+phrasing an edit request politely): `#1843` — `soft_invocation.py`'s `ACCEPT_PATTERNS` row 2 fires
+on any short message starting "please," so *"please remove the fluff"* finalizes a standup draft
+instead of editing it. Found missing milestone/board at filing — fixed same-fire (MVP, board-added,
+Status Product Backlog).
+
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
 
@@ -465,6 +478,12 @@ must bind to the offer it answers, or to nothing. It must never bind to a differ
 confirmed turn 3 (the fabricated generic standup) stays correctly outside this contract, homed to
 `#1836`/epic 5 as already tracked here — not annexing it. No PPM action needed; Lead's existing
 acceptance criteria on `#1837` already cover the fix.
+
+**`#1837` CLOSED 2026-09-21 — "all three shapes landed with evidence above."** This epic's own
+blocker (the `#1617` retest couldn't be reached without it) is cleared. **`#1739`'s dependency chain
+reverts to its original shape** — `#1617`'s standup retest is once again the umbrella's last real
+dependency, now actually reachable. Not re-running the retest myself; noting it's unblocked, not
+verifying it passed.
 
 **Why third**: PM's live round converged three failures onto this one contract today. Both design
 passes are already in (Arch's sequencing ruling + CXO's two-axis correction, conceded by Arch) —
@@ -560,6 +579,14 @@ honest-re-entry fix), and (2) the message describing that state must match it ex
 "I've updated" language unless a verified diff backs it (already Lead's stated direction for the
 first-layer fix). Same principle, stated once so it isn't rediscovered per-issue: a corrected
 artifact with an uncorrected completion claim is the confabulation relocated, not fixed.
+
+**`#1836` and `#1837` both CLOSED 2026-09-21.** `#1836` closed alongside `#1837`'s completion — the
+immediate defect shipped 2026-09-20 (`300ef8bbe`, verified-diff honesty), and the deeper cause (the
+substring toy-NLU refinement engine that made most edits unappliable) is retired by `#1837` shape 3
+(`5d52431d9`): free-form edits now go to the floor on the user's own key and actually apply, with
+the diff-honesty rule staying as the engine-independent guardrail — exactly the two-halves fix
+CXO's completion-claim principle called for. **Remaining open: `#1760`, `#1761`, `#1763`, `#1697`,
+`#1718`, `#1772`, `#1811`, `#1829`** (8 of 18, both closures counted).
 
 **Separately, same memo: Arch also answered CXO's #1823 branch-two scope question** (is
 provider-agnosticism deliberate/load-bearing, making branch two *permanently* empty rather than
