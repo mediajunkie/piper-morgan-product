@@ -384,13 +384,18 @@ straightforward.**
 sentence, literally shared in source, not pasted four times — same discipline as `#1823`'s family)
 prefixed by a kind-matched acknowledgment (greeting/farewell/thanks/neutral); `thanks` deliberately
 does NOT say "you're welcome" since nothing was done yet (the honest-empty family showing up inside
-a pleasantry). **Two decisions flagged, not built**: (1) the repeat-turn case is unspecified by PM's
-ruling (which covers "every keyless *first* message") — CXO proposed a short-form nag-free variant
-for turn 2+, needs a decision; (2) whether (b) supersedes `#1823`'s branch-one string at the
-`/intent` gate — CXO's read: `#1823` governs the gate's condition, (b) governs its response, they
-compose and `#1823`'s string is replaced on the first-contact path — but named it as Arch's call,
-not decided yet. **Not a PPM decision on either** — watching for Arch's answer on (2), whoever picks
-up (1).
+a pleasantry).
+
+**(2) RESOLVED by Arch, same day**: yes, (b) supersedes `#1823`'s branch-one string, but only on the
+first-contact path — a keyless greeting never reaches the gate at all under (b) (handled canonically,
+pre-classified, before `resolve_request_api_key` is consulted), so there's no double-answer risk
+there by construction. **The sharper part of Arch's answer also settles (1)**: CXO's repeat-turn
+short form is for *repeated pleasantries* only (a second `hi`/`thanks`), staying on the
+canonical/keyless-copy path — the moment a keyless user's message is a genuine substantive request
+(turn 2+ or otherwise), `#1823`'s gate and its string fire unchanged, because that's a real attempted
+spend, not a courtesy reminder. This preserves CXO's own "one policy, one string per layer" property:
+the canonical path never answers "what do I need to do real work," the gate never handles
+pleasantries. **Both decisions now resolved — build is Lead's, no PPM action either way.**
 
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
@@ -431,8 +436,28 @@ state contradiction, since the offer history isn't consulted). **`#1739`'s depen
 `#1617`'s retest now depends on `#1837` landing first**, not the other way around. Lead's proposed
 shape: extend the acceptance-contract rail so offer-acceptance actually arms the interview, and give
 the restate branch access to its own offer history. **Shared with epic 5** (below) for the
-fabricated-template half of the same issue. Arch's ruling on the shape is pending (Lead's request,
-same fire).
+fabricated-template half of the same issue. **Arch CONCURRED on all three of Lead's proposed shapes,
+same fire, each independently verified at source (not a rubber stamp)**: (1) kill the fabricating
+fallback, checked zero external callers before endorsing deletion; (2) arm-on-acceptance lands on
+the existing acceptance-contract rail (Lead's #4, the restate branch lacking offer-history access,
+confirmed as the sharper bug — it's structurally blind, not just poorly worded); (3) refinement
+moves to the floor, `#1836`'s shipped fix correctly orthogonal either way. **Sequencing: (2) first**
+— it's the shape blocking epic 3's own floor per the dependency-chain update above. **Build is
+Lead's now** — no PPM or further Arch action pending.
+
+**CXO checked `#1837` against the acceptance contract directly, same day — first live transcript the
+contract has ever been tested against.** Turn 4 (Piper denying its own offer) is already covered by
+the contract's §3 (question-forms request state, answer truthfully) — a violation of an existing
+clause, not a gap. **Turn 2 exposed a real gap CXO is amending the contract to cover**: PM's
+acceptance ("Sure, thanks.") wasn't ambiguous and still cost an action — it was silently captured by
+an unrelated flow (greeting/mode-fork) rather than falling through to either of §5b's two enumerated
+cases. Named as a third, worse case: invisible at the moment it happens (the user believes they're in
+the flow they accepted; the divergence only surfaces turns later as a contradiction), unlike the
+existing "say so plainly" case which is visible immediately. New rule CXO is adding: *"An acceptance
+must bind to the offer it answers, or to nothing. It must never bind to a different flow."* CXO
+confirmed turn 3 (the fabricated generic standup) stays correctly outside this contract, homed to
+`#1836`/epic 5 as already tracked here — not annexing it. No PPM action needed; Lead's existing
+acceptance criteria on `#1837` already cover the fix.
 
 **Why third**: PM's live round converged three failures onto this one contract today. Both design
 passes are already in (Arch's sequencing ruling + CXO's two-axis correction, conceded by Arch) —
