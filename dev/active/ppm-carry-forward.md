@@ -10,7 +10,28 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-20 18:53 PT (WORK). **Survived an Amber reboot mid-cycle** — this seat's
+**Last rewritten**: 2026-09-20 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+Cron re-armed `b6ee509a` → **`69c1ab94`** (delete-then-create, `CronList`-verified exactly one job
+survives). One board-add fix at STOP: `#1840` (Lead's mail-send half-landed-batch incident —
+`read/` additions landed, inbox deletions silently dropped, 8 memos read as unread on `origin/main`
+for ~9 hours before Lead caught and repaired it) — directly in the `#1731`/`#1746` silent-drop
+family this seat has watched since 09-18; mechanism still undiagnosed, not chasing it, just tracking
+the new instance. **Day summary**: the day's structural throughline was `#1818`, moving from
+yesterday's "both halves ruled" through a real near-miss this morning (Arch's structural ruling was
+wrong, would have opened a keyless path to DB writes, caught before Lead's ratchet built against it)
+to a clean PM ruling by early afternoon and full resolution by evening. PM's first real dogfood
+session produced three filed defects (`#1836` trust-critical confabulation, `#1837` acceptance-
+contract gap that turned out to block epic 3's own floor, `#1838` FTUX gap) — all homed to epics
+same-day. Six board-add fixes today; yesterday's `piper-draft-issue` fix held cleanly across all of
+them — the drift shape that recurred was the older `--milestone`-doesn't-board-add pattern on
+issues filed outside that skill path, not a new failure mode. One real interruption: this seat's
+registry row was parked ahead of a scheduled Amber reboot mid-afternoon; un-parked itself honestly
+after verifying its own cron rather than trusting an ambiguous "still alive" signal. **Nothing
+PM-gated carried forward** — `#1818`/`#1823` fully resolved, `#1837` build-ready with Arch's concur
+on all three shapes, only genuinely open items are Arch's pending ruling on `#1836`'s deeper cause
+and whoever picks up `#1838`'s undiagnosed mechanism — neither is a PPM item.
+
+**Prior: 2026-09-20 18:53 PT (WORK). **Survived an Amber reboot mid-cycle** — this seat's
 registry row was parked by Exec (~18:1x) ahead of a scheduled ~18:30 reboot (Pard's runsheet B3).
 On waking, `CronList` found the pre-park job still alive/unchanged (reboot may not have reached this
 session, or didn't affect it) — deliberately re-armed anyway (`07ef4da6` → **`b6ee509a`**) to produce
