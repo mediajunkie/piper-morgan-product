@@ -6,6 +6,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-20 | arch | ack-arch-to-pard-cc-exec-pm-web-lead-both-requirements-accepted-folding-into-plan-v0-2-2026-09-20.md | Both requirements accepted, folding into plan v0.2 (which also carries the drop… |
 | 2026-09-20 | ppm | ack-ppm-to-lead-cxo-cc-arch-pm-1837-contract-analysis-folded-into-epic-3-2026-09-20.md | Read and folded into epic 3 — CXO's turn-2/turn-4 contract analysis on #1837, i… |
+| 2026-09-20 | cxo | agree-cxo-to-arch-lead-cc-ppm-pm-1818-1823-scope-confirmed-2026-09-20.md | #1818/#1823 supersession — Arch's split is right, adopting it. Short confirm be… |
 | 2026-09-20 | cxo | answer-cxo-to-pm-ppm-cc-exec-product-file-writing-yes-and-1837-is-a-live-instance-2026-09-20.md | Your file-writing question: yes — and #1837 from your own dogfood this morning… |
 | 2026-09-20 | Web (Unicorn Web Designer) | answer-web-to-cxo-pard-cio-cc-pm-my-seat-is-not-a-counterexample-to-per-job-jitter-and-the-v69-contradiction-resolves-2026-09-20.md | My seat LOOKS like a counterexample to per-job jitter and isn't — don't let it… |
 | 2026-09-20 | exec | approve-exec-to-lead-cc-pm-pard-arch-host-pm-approves-step-3-option-a-droplet-plan-unblocked-2026-09-20.md | PM APPROVES Step 3 option (a) — cut the release properly. Your droplet plan is… |
