@@ -1,11 +1,18 @@
-# Deployment Pipeline — Plan v0.1 (for PM's ruling)
+# Deployment Pipeline — Plan v0.2 (for PM's ruling)
 
-**Author**: Arch · **Date**: 2026-09-20 · **Status**: PROPOSED, nothing built
+**Author**: Arch · **Date**: 2026-09-20 (v0.1 morning, v0.2 evening) · **Status**: PROPOSED, nothing
+built except §3a's `/health` item, PM-approved same-day (#1839, shipped).
 **Tasking**: PM, via Exec — *"define and implement a real deployment pipeline… write down a plan for
 how we should start doing it now and then operationalize it."* PM's stated top priority.
 
 **What this is**: a plan to rule on, not a pipeline. PM said the prior expectations *"can be
 revised"*, so they are treated as a starting point below, not a constraint.
+
+**v0.2 changelog**: §4 rewritten from "(A) keep the droplet vs (B) collapse it" — a framing PM's own
+Exec found was wrong, not merely one option among two — into a completion path, per PM's direct
+follow-up ask (*"how do we complete the Fly migration in a nondisruptive way…"*). §4d added, folding
+in Pard's two requirements (test-account policy, Web's verification access). §2's security caveat and
+§6's item 3 (struck, done) were amended earlier the same day and are unchanged here.
 
 ---
 
@@ -148,31 +155,120 @@ all**, so "haven't cut in ages" was nobody's alarm.
 
 ---
 
-## 4. The droplet, and the money
+## 4. The droplet — completion path (AMENDED 2026-09-20 evening, v0.2)
 
-PM: *"I want to be able to stop using the droplet… it is getting continually punted while continuing
-to cost me money."*
+> **This section replaces the original (A)-vs-(B) framing below the line, which was wrong in a way
+> worth stating rather than quietly editing away.** I originally posed keeping vs. collapsing the
+> droplet as a live choice PM had to make. **Exec's archaeology (verified by me against
+> `decisions.log` before I amend anything here) shows it isn't one**: a full Fly.io migration was
+> **already decided and executed** — org, app shell, database, Redis→Fly Upstash, ChromaDB to its
+> own Fly app — on **2026-07-10, cutover 2026-07-12** (`decisions.log:189,191`, PM+Lead in the #1278
+> walkthrough, quoted verbatim). **Every deploy since has gone to Fly. Alpha simply never followed.**
+> So "(A) keep vs (B) collapse" was the wrong question — **(B) is finishing a decision already made**,
+> and "keep the droplet" isn't a neutral default, it's an unfinished migration wearing the shape of a
+> choice.
+>
+> **There is also a recorded *functional* reason, not just a historical one, that Fly was preferred**:
+> `decisions.log:179` (2026-07-09, my own #1382 concur) — *"the droplet has no python-keyring backend,
+> so per-user OAuth/slack/calendar keychain ops fail."* We built an encrypted-DB fallback specifically
+> to route around a limitation the droplet has and Fly doesn't. The droplet isn't merely older; it's
+> the surface that structurally can't do something we need.
 
-**The honest finding**: we run **three environments across three providers** (droplet = alpha, Fly =
-beta app, Vercel = website) **with no document saying so**, and — per CXO, whose line is the sharpest
-statement of the whole problem — ***"nothing routinely exercises production at all."*** Three
-separate failures this week shared that one absence.
+### 4a. The design call this unlocks: retire the droplet, don't replace it with a second Fly app
 
-Two shapes, and this is a **money decision PM owns**, not an architecture one:
+If §2's environment-vs-stage split is adopted, the completion path is simpler than "migrate alpha to
+its own Fly deployment." **Alpha and beta stop being two environments and become two *stages* of
+access to the same `prod` environment**, which already exists on Fly and has run since 2026-07-12.
+Opening alpha on Fly is then an **access-list decision** (who gets in), not an infrastructure build
+(where does it run) — exactly the simplification §2 promised, now cashed against a real decision.
 
-- **(A) Keep the droplet as `prod`; add `staging` on Fly** (we already pay for Fly). Least
-  disruption. Cost unchanged. Requires the `.env.staging` gap (§1) be closed.
-- **(B) Collapse onto Fly; retire the droplet.** Ends the droplet spend. Real migration work —
-  bind-mounted `uploads/`, redis, chroma, and a named postgres volume all move, and today's deploy
-  showed those are exactly where the sharp edges are. **Not free, and I would not attempt it in the
-  same week as opening beta.**
+**This also removes a real blocker that existed until three days ago**: pre-#1812, alpha's droplet
+had its own operator/server-key semantics that differed from beta's. That distinction is now gone —
+PM's own account "gets normal-account semantics by default... no system credential concept"
+(`decisions.log`, 2026-09-19 ~13:0x). **Alpha and beta are now the same account model**, which is a
+precondition for them safely sharing one environment that this plan didn't have when it was written
+this morning.
 
-**My lean: (A) now, revisit (B) once the pipeline is boring.** Reason: (B)'s savings are real but
-one-time-costly, and the current pain is *not knowing what's deployed* — which (A) plus
-Recommendation 1 fixes immediately and (B) does not fix any faster.
+### 4b. What has to happen, phased for zero disruption
 
-⚠️ **I hold no credentials for the droplet, Fly, or Vercel and have not touched any of them.** The
-relative cost of (A) vs (B) is a number I do not have; PM does.
+PM's two facts from Exec's memo make this the cheapest it will ever be: **zero active users**, and
+**cost is explicitly not the driver** (both hosts are affordable; the ask is consolidation, not
+savings). That means the phasing below can be sequenced for safety, not speed.
+
+1. **Confirm Fly's `prod` app can serve alpha's access pattern** — an access-list gate (who is
+   admitted) in front of the same app beta uses, not a parallel deployment. *(Lead/Pard's call —
+   I don't hold Fly credentials and haven't inspected the app's current config.)*
+2. **Migrate droplet-local state, if any exists.** Redis, ChromaDB, and the database are **already**
+   on Fly infrastructure per the 07-10 decision — the droplet was never the source of truth for
+   those. The open question is **file uploads** (`uploads/`, bind-mounted on the droplet per today's
+   deploy notes) and any data a tester created against the droplet specifically. **Given zero active
+   users, this is very likely near-empty** — but "very likely" is a guess I'm naming as one, not a
+   verified fact. Someone with droplet SSH should confirm the actual volume size before calling this
+   step trivial.
+3. **Cut `alpha.pipermorgan.ai`'s DNS to Fly.** Reversible up to the DNS TTL; the droplet stays warm
+   as rollback until step 4 is verified, same blue-green discipline as today's droplet deploy.
+4. **Verify on the real domain** — the layered verification plan v0.1 §3c already specifies (a
+   watched real-user flow, not a curl), run against `alpha.pipermorgan.ai` now pointed at Fly.
+5. **Decommission the droplet.** Only after step 4 passes. This is the step that actually stops the
+   spend; everything before it is preparation.
+6. **Retire the `production` branch** (§2's proposal) and update any doc/runbook that still names the
+   droplet as `alpha`'s host — the *"no single document says so"* finding from §1 applies to this
+   migration's own record-keeping too, not only to the pipeline's steady state.
+
+### 4c. What this plan does NOT resolve, named rather than glossed over
+
+- **I have not inspected Fly's current app configuration** — whether it already has volumes/capacity
+  provisioned for a second class of traffic, or whether alpha's admission needs its own Fly resources
+  inside the same app. That's an empirical question for whoever holds Fly credentials.
+- **The actual size of droplet-local user data is unverified.** "Probably near-empty" is an inference
+  from "zero active users," not a measurement.
+- **This plan does not set a timeline.** PM said no rush twice; nothing above manufactures one.
+
+**Consolidated answer to "how do we complete the Fly migration in a nondisruptive way and put this
+class of issue to bed"**: it already IS a completion, not a new migration — the infrastructure exists
+and has run for two months; what's missing is an access decision, a DNS cut, and confirming
+droplet-local state is truly empty before the last step. The reason it never happened isn't that it
+was hard; alpha simply had nobody chasing it the way beta's cutover was chased in July.
+
+### 4d. Two requirements folded in, per Pard's 09-20 memo (the un-owned remainders)
+
+Pard named two inputs this plan must cover rather than leave implicit. Both are requirements on the
+*design*, not new design choices — folded here rather than as a parallel document, per Pard's own
+scoping.
+
+**Test-account policy, per environment.** Under 4a's collapse, this becomes simpler than it would
+have been under two separate environments: **one account model, one test-account policy**, gated by
+stage (alpha/beta access list) rather than duplicated per host. Requirements this plan commits to:
+- **A cold account is a first-class fixture** — zero seed data, no chat history, no bound connectors,
+  available on demand. Web's two stalled verification attempts (09-07, 09-08) were both blocked on
+  this not existing; whatever mechanism mints test accounts must produce a genuinely cold one, not a
+  reused one.
+- **Test accounts exercise the post-#1812 model only** — normal-account semantics, no operator/server-
+  key fallback. This is now the *only* model (4a), so there is no longer a legacy path a test account
+  could accidentally validate instead.
+- **The `connector_bindings.mcp_server_ref` landmine is a named migration step, not an implementation
+  detail** — it stores literal per-environment URLs (compose hostname vs. `.internal`), so any
+  test-account or DB-state copy between environments needs an explicit repoint step until ADR-070A's
+  resolver lands. Section 4b step 2 (state migration) must account for this if any droplet-side
+  fixture data is carried forward.
+
+**Web's verification access path.** Pard's finding — *"today the honest answer is: it doesn't [have
+one]"* — is confirmed by this plan's own §3a finding (no unauthenticated version surface existed) and
+is now **partially resolved**: #1839 (shipped this fire, see §3a) gives Web an unauthenticated
+version/health surface per host, satisfying requirement (b) below once `PIPER_ENVIRONMENT` is set per
+host (still open — see the #1839 issue). Full requirement set, carried into the gates (§3c):
+- (a) **a per-environment access statement for Web** — what it can reach, with what credential, minted
+  by whom, on what turnaround. Not yet written; owed as part of operationalizing §3c's gates.
+- (b) **a version/health surface Web can read without SSH** — ✅ in progress via #1839.
+- (c) **no routine verification gate routes through ad-hoc peer action** — token-minting for Web's
+  access must be a provisioned path, not a favor from whoever happens to hold droplet SSH that day.
+  This is a **consequence** of 4b step 1 (an access-list gate) done right: the same mechanism that
+  admits alpha testers should be the mechanism that provisions Web's verification credential, not a
+  separate manual process.
+
+**Not resolved by this plan**: the concrete provisioning mechanism for (a)/(c) above. That's
+build-level detail for whoever implements 4b step 1's access-list gate, informed by these
+requirements rather than reopening them.
 
 ---
 
@@ -194,12 +290,17 @@ not days, and each stands on its own if PM rules differently on the rest.
 ## 6. Open questions for PM
 
 1. **§2 vocabulary** — adopt environment-vs-stage separation, and **retire the `production` branch**?
-2. **§4 (A) vs (B)** — keep the droplet and add staging on Fly, or collapse onto Fly and end the
-   droplet spend? *(Money call; my lean is A-now-B-later, and I'm missing the cost numbers.)*
-3. **Recommendation 1** — may I take the `/health` version surface now, ahead of the rest?
+   *(§4a now depends on this: the droplet completion path only simplifies to "an access decision" if
+   this is adopted. If PM prefers to keep alpha/beta as separate environments, §4b's phasing still
+   works but doesn't get the simplification — flag if that's the intent.)*
+2. **§4's completion path** — approve the phasing in 4b (access-list gate → verify state is empty →
+   DNS cut → verify live → decommission), or redirect if I've misjudged the risk anywhere.
+3. ~~**Recommendation 1**~~ — **DONE, unprompted.** PM approved this same-day via Lead's relay; #1839
+   shipped this fire (§3a). Struck rather than left looking open.
 4. **Anything more pressing?** Exec relayed PM's invitation to say so. **I don't think so** — but I'd
-   flag that #1818 and #1823 are both mid-build and touch first-contact experience, so if beta opens
-   soon those compete for the same week.
+   flag that #1818 and #1823 are both mid-build and touch first-contact experience, and #1837 (today's
+   dogfood transcript) now blocks epic 3's own floor per PPM — so if beta opens soon those compete for
+   the same week as this plan's operationalization.
 
 ---
 
@@ -212,3 +313,11 @@ file existence. Drift measured with `git rev-list --count origin/production..ori
 **Denominator: 4 of 4 deploy/release scripts opened; 1 of 1 build workflows read; 0 of 3 live hosts
 touched — I hold no credentials, so every claim about what is *running* is Lead's SSH read (alpha
 v0.8.12.0, verified in-container today) or Exec's relay, cited as theirs, not re-derived by me.**
+
+**§4/4d verified how (added, v0.2)**: independently re-read `decisions.log` lines 179, 189, 191 at
+`origin/main` this evening — the 07-09 #1382 keyring rationale, the 07-10 14:00/14:15 Fly migration
+decision, all quoted verbatim above, not taken from Exec's memo on trust. #1812's account-semantics
+ruling confirmed by grep against the 2026-09-19 ~13:0x entry. #1839's shipped state confirmed by its
+own commit on `origin/main` this session. **Layer: decisions.log + repo state, static. Denominator:
+3 of 3 cited decisions.log entries independently re-read; 0 of 1 live Fly app configurations
+inspected (no credentials) — 4c states this gap explicitly rather than assuming an answer.**
