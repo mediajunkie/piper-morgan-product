@@ -393,6 +393,42 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
       if ! printf '%s' "$reason" | grep -qiE 'clear (this|the|it)|until|when .* (is|are|has|have)|expires?'; then
         echo "PARK-NO-EXIT $role — parked with no falsifiable clearing condition, so this row cannot go stale visibly. Reason on file: '${reason# }'"
       fi
+      # ── PARK-EXPIRED detection (v0.7, Exec 2026-09-21) ────────────────────────────────────────────
+      # PARK-NO-EXIT checks that a clearing condition EXISTS. Nothing checked whether one had PASSED.
+      # Found the hard way: on 2026-09-20 Exec parked all 11 rows for the Amber reboot, each carrying
+      # an explicit "DEADLINE <stamp> — if this row is STILL PARKED after that stamp, this seat did not
+      # come back." Eight seats un-parked themselves. Six rows did not, every deadline expired at
+      # 22:42, and this script reported the cohort clear for the next 8.5 hours — because `continue`
+      # above skips a parked row unconditionally once it has a clearing condition at all.
+      # That is PARKED's own failure mode one level up: a park with a deadline nobody reads is exactly
+      # as invisible as a park with no exit, and it reads MORE trustworthy for having a deadline.
+      #
+      # Deliberately narrow, for the same reason the commit-recency heuristic above was rejected: it
+      # fires ONLY on a date stamp explicitly LABELED `DEADLINE` (see the exclusion note below).
+      # A park reason routinely contains other dates — when it was parked, which incident it refers to —
+      # and flagging any past date would fire on essentially every parked row on day one.
+      # ⚠️ Residual gap, named rather than implied: a park whose clearing condition is an EVENT rather
+      # than a date ("clear this note only when a cron job is actually armed") still cannot expire
+      # visibly. This narrows the hole; it does not close it. A date is checkable, an event is not.
+      # ⚠️ Pattern is DEADLINE-only, and that exclusion is load-bearing. The first version of this
+      # also accepted `expires?`, which reads a row's CRON auto-expiry ("expires ~2026-09-27") — an
+      # unrelated 7-day CronCreate limit, not a park deadline. With a `tail -1` it silently preferred
+      # that future date over the real expired DEADLINE sitting earlier in the same field, and flagged
+      # 2 of 5 eligible rows while looking like it worked. Take the FIRST match: the row's current
+      # state is written at the front, and every prior state is appended behind it as "was:"/"Prior:".
+      dl=$(printf '%s' "$reason" | grep -oiE 'deadline[^0-9]{0,6}[0-9]{4}-[0-9]{2}-[0-9]{2}([ T]+[0-9]{2}:[0-9]{2})?' | head -1 \
+             | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}([ T]+[0-9]{2}:[0-9]{2})?' || true)
+      if [ -n "$dl" ]; then
+        dl_norm="${dl/T/ }"; case "$dl_norm" in *:*) ;; *) dl_norm="$dl_norm 23:59" ;; esac
+        dl_epoch=$(date -j -f '%Y-%m-%d %H:%M' "$dl_norm" +%s 2>/dev/null || date -d "$dl_norm" +%s 2>/dev/null || echo "")
+        if [ -n "$dl_epoch" ] && (( now > dl_epoch )); then
+          over=$(( (now - dl_epoch) / 3600 ))
+          # Truncate hard. A registry reason accretes its whole history (docs' runs past 12,000
+          # characters), and an alert that dumps it is one nobody reads — the same alert fatigue
+          # PARKED exists to prevent. The deadline and the role are the payload; the row has the rest.
+          echo "PARK-EXPIRED $role — park deadline '$dl' passed ${over}h ago and the row is STILL PARKED, so this role has been unwatched since. That stamp WAS the falsifiable exit; it fired and nothing read it. Head of reason: '$(printf '%s' "${reason# }" | cut -c1-140)…'"
+        fi
+      fi
       [ -n "${DUTY_CYCLE_COVERAGE:-}" ] && echo "PARKED $role (not watched — intentionally dark${state#parked}; since $since)"
       continue ;;
   esac

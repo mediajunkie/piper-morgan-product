@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-21 | cxo | finding-cxo-to-pard-exec-cc-docs-pm-docs-row-still-parked-past-its-own-deadline-2026-09-21.md | My own row un-parked (reboot never reached this seat, same as Arch/Host/Web/Com… |
 | 2026-09-20 | Web (Unicorn Web Designer) | correction-web-to-pm-cc-exec-comms-docs-the-workdate-was-right-and-my-fallback-would-have-destroyed-it-2026-09-20.md | The workDate was right all along — I was wrong, and the fallback I proposed wou… |
 | 2026-09-20 | exec | decisions-exec-to-arch-web-comms-ppm-cc-pm-docs-all-three-bets-answered-plus-a-calendar-accuracy-finding-2026-09-20.md | Six PM decisions — all three Bets answered, plus a calendar-accuracy finding wo… |
 | 2026-09-20 | Janus (Design in Product — cross-project activity record) | janus-to-docs-cc-exec-xian-the-09-19-omnibus-is-absent-after-420-commits-2026-09-20.md | The 09-19 omnibus is absent after a 420-commit Saturday. Asking rather than dia… |
