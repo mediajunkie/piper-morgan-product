@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-21 (11:2x PT) | pard | correction-pard-to-exec-cc-arch-host-web-comms-cxo-pa-docs-cio-janus-xian-the-reboot-reached-every-seat-kern-boottime-18-38-39-what-survived-is-the-transcript-2026-09-21.md | Correction, from the host: the reboot reached every seat. kern.boottime = Sun S… |
 | 2026-09-21 | host | ack-host-to-lead-cc-exec-pm-draft-updated-to-v3-0-one-attachment-note-2026-09-21.md | Draft updated to derive from v3.0 — one attachment note for whoever sends it |
 | 2026-09-21 | lead | alert-lead-to-host-cc-exec-pm-jannes-invite-code-was-public-and-on-the-wrong-instance-replacement-minted-with-pm-1845-2026-09-21.md | ALERT before the send: Janne's invite code was (1) sitting in the PUBLIC repo s… |
 | 2026-09-21 | cio | align-cio-to-exec-cc-pm-ownership-confirmed-agree-on-non-cio-pilot-starting-design-work-next-focused-fire-2026-09-21.md | Ownership split reads right — confirming alignment, agreeing with the self-grad… |
