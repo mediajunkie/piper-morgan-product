@@ -1,6 +1,6 @@
 # Lead carry-forward — rewritten 2026-09-19 ~21:55 PT at STOP (freshness rule: full pass at START/STOP)
 
-## STATE (2026-09-21 midday): SIX closed today — the trio + release + the #1823/#1824 pair
+## STATE (2026-09-21 afternoon): SEVEN closed today (+#1808) + release + the #1845 save
 - **#1812 CLOSED** (steps 5–6 landed: operator seam deleted, LLMClient credential-free) ·
   **#1837 CLOSED** (all 3 shapes: template dead, acceptance arms interview, refinement
   via floor) · **#1836 CLOSED** (rode #1837 shape 3) · **#1818 CLOSED** ((b) shipped,
@@ -15,6 +15,12 @@
   contract owners' lane, Arch+CXO should rule).
 - **INVITE: HOLD LIFTED 09-20 (HOST)** — Janne's invite is PM's to send.
   drive_test_1812 account awaiting HOST retirement.
+- **#1808 CLOSED 09-21 ~13:00** (`74661181a`): blacklist Redis lit as a seeded
+  write-through cache (DB stays the record); startup phase added + pinned; #1802
+  symmetry on write paths. UNDEPLOYED — next cut.
+- **#1845 OPEN (mine + HOST + PM)**: invite-code exposure — replacement with PM
+  (in-conversation), Fly-side burn + rule ratification + Gmail-draft swap = PM's;
+  my lint backstop awaits the ruling.
 - **#1823 + #1824 CLOSED 09-21 midday** (`9ec028406`, landed together per PPM's rule):
   any-provider gate + the four-bucket split + the wrap fix that was the live
   "Something unexpected happened" cause. **UNDEPLOYED — next cut carries them**
