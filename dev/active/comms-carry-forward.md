@@ -10,17 +10,18 @@ live in `comms-standing-items.md`; the canonical record is the session log
 CronList-verified exactly one job survives. Registry row updated to match. Next fire: 2026-09-21
 06:12.
 
-## Notable: comms' cron survived the 2026-09-20 Amber reboot — n=2 fleet finding, unresolved
+## Notable: cron-survives-reboot finding — now n=4, still no Pard/Janus ruling
 
-Exec pre-emptively parked comms's registry row ahead of a coordinated reboot (Pard's runsheet B3),
-reasoning "a reboot kills every cron." Self-verified before acting (CronList, twice) rather than
-trusting the alert: found `d904b1d9` unchanged from before the reboot. Un-parked per the B9 clearing
-condition (only the owning session, only after self-verifying). Reported to Pard/Janus (cc PM/Exec/
-CIO) as a **second** confirming data point — Exec found the identical shape on their own seat
-independently. **n=2, not resolved fleet-wide, not claimed to generalize.** Risk flagged: if this
-does generalize, seats that blindly re-arm per B9's original instruction could duplicate-stack a
-second job on the same expression. **Watch for Pard/Janus's ruling on this** — it may change the
-reboot-recovery procedure for future reboots.
+Comms's own cron (`d904b1d9`) survived the 2026-09-20 ~18:38:39 Amber reboot unchanged. Reported as
+the 2nd confirming data point after Exec's identical finding on their own seat. **Web (3rd) and CIO
+(4th) have since confirmed the same shape** — CIO also added a new detail: the delivery-jitter
+offset didn't reroll across the reboot either (same +30 both before and after boot on their seat,
+matching Web's report), suggesting rotation (delete-then-create), not the reboot itself, is what
+resets jitter. CIO also flagged unexplained session-resume-shaped artifacts (a `/remote-control` with
+no content, an "Exited Plan Mode" event despite never entering plan mode) around the reboot window,
+matching Web's separate unrequested-model-shift report — flagged as a second data point, not a
+mechanism. **Still no ruling from Pard/Janus as of 09-21 morning** — checked, nothing found. Nothing
+further for Comms to do here; just watch for the ruling landing.
 
 ## Closed today
 
