@@ -1,132 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Attention rollup — 20 September</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attention rollup — 20 September, day close</title>
 <style>
-  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
-          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg:#16181c; --card:#1e2127; --line:#32363e; --ink:#e8e8e8; --mute:#9aa0aa;
-            --red:#e8705f; --amber:#e0a94a; --grey:#7a8089; --green:#5cbf72; --link:#79aefb; }
-  }
-  body { font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
-  .wrap { max-width:900px; margin:0 auto; }
-  h1 { font-size:1.5rem; margin:0 0 .25rem; }
-  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.2rem; }
-  h2 { font-size:1.08rem; margin:2rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
-  .card { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
-          border-radius:7px; padding:.85rem 1rem; margin:.7rem 0; }
-  .card.watch { border-left-color:var(--red); border-left-width:6px; }
-  .card.act { border-left-color:var(--amber); }
-  .card.ok  { border-left-color:var(--green); }
-  .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.3rem; }
-  .n { font-weight:700; font-size:1.02rem; }
-  .who { font-size:.78rem; color:var(--mute); }
-  p { margin:.45rem 0; }
-  .do { margin-top:.55rem; padding:.55rem .75rem; background:rgba(183,121,31,.1);
-        border-radius:5px; font-size:.94rem; border:1px solid rgba(183,121,31,.3); }
-  code { font:.86em ui-monospace,SFMono-Regular,Menlo,monospace; background:rgba(127,127,127,.12); padding:.08em .32em; border-radius:3px; }
-  table { border-collapse:collapse; width:100%; font-size:.87rem; margin:.5rem 0; }
-  th,td { text-align:left; padding:.36rem .5rem; border-bottom:1px solid var(--line); vertical-align:top; }
-  th { color:var(--mute); font-weight:500; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; }
-  .scroll { overflow-x:auto; }
-  .clean { color:var(--mute); font-size:.9rem; }
-  .clean b { color:var(--ink); }
-  footer { margin-top:2.2rem; padding-top:1rem; border-top:1px solid var(--line); color:var(--mute); font-size:.8rem; }
-  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
-</style>
-</head>
-<body>
-<div class="wrap">
-  <h2 class="sr-only">One standing item, one action, everything else moving.</h2>
-  <h1>Attention rollup — Sunday 20 September</h1>
-  <p class="meta">Exec · live state</p>
+ :root{--bg:#fafafa;--card:#fff;--line:#e2e2e2;--ink:#1a1a1a;--mute:#6b6b6b;--red:#c0392b;--amber:#b7791f;--grey:#8a8a8a;--green:#2d7a3e;--link:#1a5fb4}
+ @media(prefers-color-scheme:dark){:root{--bg:#16181c;--card:#1e2127;--line:#32363e;--ink:#e8e8e8;--mute:#9aa0aa;--red:#e8705f;--amber:#e0a94a;--grey:#7a8089;--green:#5cbf72;--link:#79aefb}}
+ body{font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:2rem 1.25rem}
+ .wrap{max-width:900px;margin:0 auto}h1{font-size:1.5rem;margin:0 0 .25rem}
+ .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.2rem}
+ h2{font-size:1.08rem;margin:2rem 0 .6rem;padding-bottom:.3rem;border-bottom:2px solid var(--line)}
+ .card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--grey);border-radius:7px;padding:.85rem 1rem;margin:.7rem 0}
+ .card.win{border-left-color:var(--green)}.card.act{border-left-color:var(--amber)}.card.watch{border-left-color:var(--red);border-left-width:6px}
+ .top{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;margin-bottom:.3rem}
+ .n{font-weight:700;font-size:1.02rem}.who{font-size:.78rem;color:var(--mute)}
+ p{margin:.45rem 0}code{font:.86em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.08em .32em;border-radius:3px}
+ .do{margin-top:.55rem;padding:.55rem .75rem;background:rgba(183,121,31,.1);border-radius:5px;font-size:.94rem;border:1px solid rgba(183,121,31,.3)}
+ table{border-collapse:collapse;width:100%;font-size:.87rem;margin:.5rem 0}
+ th,td{text-align:left;padding:.36rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+ th{color:var(--mute);font-weight:500;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+ .scroll{overflow-x:auto}.clean{color:var(--mute);font-size:.9rem}.clean b{color:var(--ink)}
+ footer{margin-top:2.2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--mute);font-size:.8rem}
+ .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style></head><body><div class="wrap">
+<h2 class="sr-only">Two wins tonight; one decision waiting.</h2>
+<h1>Attention rollup — Sunday 20 September, day close</h1>
+<p class="meta">Exec · 22:5x · post-reboot, cohort back</p>
 
-  <h2>📌 Standing at the top until resolved — per your instruction</h2>
+<h2>✅ Two things resolved tonight</h2>
 
-  <div class="card watch">
-    <div class="top"><span class="n">Complete the Fly migration</span><span class="who">with Arch · no rush · stays here until a path lands</span></div>
-    <p><b>The droplet was never the "alpha-appropriate" surface.</b> A full Fly.io migration was
-    decided by you and Lead on <b>10 July</b> — database, Redis to Fly Upstash, ChromaDB onto its own
-    Fly app. <b>Cutover was 12 July, and every deploy since went to Fly. Alpha simply never
-    followed.</b></p>
-    <p><b>There's also a recorded functional reason Fly was preferred.</b> From 09 July:
-    <i>"the droplet has no python-keyring backend, so per-user OAuth/slack/calendar keychain ops
-    fail."</i> An encrypted-DB fallback was built specifically to work around that. <b>So the droplet
-    is the surface that couldn't do something we needed.</b></p>
-    <p><b>Two facts that make completing it cheap right now:</b></p>
-    <div class="scroll"><table>
-      <tr><td><b>Zero active users</b></td><td>No sessions to preserve, no downtime to negotiate. <b>Migration risk will never be lower — and the window closes when Janne logs in.</b></td></tr>
-      <tr><td><b>Cost is not the driver</b></td><td>Droplet $24/mo · Fly $16 last, $10 next. <b>You've de-escalated the money angle</b>; the value is one surface instead of two.</td></tr>
-    </table></div>
-    <p><b>Known migration surface, from today's deploy:</b> bind-mounted <code>uploads/</code>, redis
-    and chroma all live on the droplet. Lead hit a case where the repo's skeleton directories
-    <i>masked</i> those mounts during the swap.</p>
-    <div class="do"><b>With Arch, who has it.</b> Your ask as I passed it on: a non-disruptive
-    completion path, and <i>"put this class of issues to bed"</i> — which I read as leaving behind a
-    setup where <b>"what version is on which environment" is never again unanswerable.</b> That's the
-    part that actually cost us this month. <b>Nothing needed from you until Arch responds.</b></div>
-  </div>
-
-  <h2>🔸 Janne's invite — still held, and HOST is right</h2>
-  <div class="card act">
-    <div class="top"><span class="n">The alpha drive satisfied a different bar than the one holding the invite</span>
-      <span class="who">HOST · ruled 12:41</span></div>
-    <p><b>HOST ruled the hold stays</b>, despite the v0.8.12.0 deploy being clean. Their reasoning:
-    <b>deploy health is not the same as the observed-BYOC-flow bar</b> they set and have now held
-    three times.</p>
-    <p><b>The distinction matters.</b> Your standup drive proved alpha is up and the fix is live —
-    that's the deploy's verification layer, and it's done. <b>HOST's bar is narrower: a real user's
-    stored key being read and used on a substantive query</b>, observed, not pinned. That's the
-    failure mode #1814 was, and it's what the hold exists for.</p>
-    <p style="margin-bottom:0"><b>So the invite needs a BYOC flow driven on alpha</b>, not a standup
-    test. <b>Nothing for you to do right now</b> — HOST has the roster and the bar; Lead has the
-    surface.</p>
-  </div>
-
-  <div class="card ok">
-    <div class="top"><span class="n">✅ Your test found a real defect</span><span class="who">Lead · fixed, #1836</span></div>
-    <p style="margin-bottom:0"><b>The standup edit path was reporting success on edits that were
-    never applied.</b> Lead shipped the fix within the hour: it now reports from a <b>verified diff</b>,
-    so an unapplied edit says so. <b>That's the honest-reporting class we keep finding</b>, caught by
-    a 90-second drive.</p>
-  </div>
-
-  <h2>🟢 Moving without you</h2>
-  <div class="card ok">
-    <p class="clean"><b>Arch</b> — deployment pipeline design, now carrying the Fly-completion
-    question. Also filling all three Bets with your answers.<br>
-    <b>Web</b> — <b>unblocked</b>; Vercel token in the keychain, verified. Running website#43
-    (240 MB of build inputs out of <code>public/</code>), then the storage reading. Standing by for
-    both walkthroughs whenever you surface.<br>
-    <b>Lead</b> — #1765, plus the alpha deploy landed this morning.<br>
-    <b>Comms</b> — 12 pieces awaiting your voice pass. Also picking up the calendar-accuracy pass
-    against your archived records.<br>
-    <b>CXO</b> — running the T-axis probe, no time pressure.<br>
-    <b>PPM, CIO, Docs, HOST, PA</b> — all lanes running, nothing gated on you.</p>
-  </div>
-
-  <h2>⚪ Lower priority</h2>
-  <div class="card">
-    <p style="margin-top:0"><b>Web's remaining two</b> — the <b>94-day obs-pass</b> (~31 verdicts, an
-    hour rather than a reply) and the <b>113-day site walkthrough</b>. Both waiting on a session with
-    you, today if you get to it.</p>
-    <p><b>Buttondown</b> — held. The live piece Web is doing: audit whether current signup options
-    match what we actually publish.</p>
-    <p style="margin-bottom:0"><b>Usage</b> — no throttle. Reassess <b>Monday 10:00</b>: closer to 50%
-    than 33% means converging.</p>
-  </div>
-
-  <footer>
-    <b>Nothing needs you right now. The Fly question sits with Arch and stays at the top of this board
-    until it's resolved.</b><br><br>
-    Live state this hour. Migration history from <code>decisions.log</code> entries of 09 and 10 July,
-    read directly; cutover date and deploy pattern from commit history. Costs are your figures. Alpha
-    version verified by Lead in-container through the live front door.
-  </footer>
+<div class="card win">
+  <div class="top"><span class="n">Janne's invite — HOLD LIFTED</span><span class="who">HOST ruled 22:4x</span></div>
+  <p><b>Lead ran the full driven flow on alpha</b>: token minted via the sanctioned mechanism,
+  registration through the <b>real #1344 gate</b>, login via the real auth endpoint, key stored via
+  the real Settings API — <b>which rejected a low-entropy fake on the way through</b>, an unplanned
+  confirmation the validator is genuinely live.</p>
+  <p style="margin-bottom:0">⭐ <b>HOST verified before ruling rather than taking it on Lead's word</b>
+  — checked #1824 is really open, and confirmed both quoted log lines are <b>verbatim real code</b> at
+  named file and line, not a plausible-sounding reconstruction. <b>That is the fourth time HOST has
+  held or tested this bar, and the reason the lift is trustworthy.</b></p>
 </div>
-</body>
-</html>
+
+<div class="card win">
+  <div class="top"><span class="n">The Fly question has an answer — and it's cheaper than a migration</span><span class="who">Arch · plan v0.2</span></div>
+  <p><b>Arch verified the archaeology independently against <code>decisions.log</code> rather than
+  take it from me</b>, and reached the same finding: the droplet is an unfinished migration, not a
+  live architectural choice.</p>
+  <p>⭐ <b>But their conclusion is better than "migrate alpha to Fly."</b> If the environment-vs-stage
+  vocabulary is adopted, <b>alpha and beta stop being two environments</b> and become two <i>stages of
+  access</i> to the <b>one</b> <code>prod</code> environment already running on Fly for two months.
+  <b>Opening alpha there becomes an access-list decision, not an infrastructure build.</b></p>
+  <p style="margin-bottom:0"><b>And it only became possible three days ago</b> — pre-#1812, alpha's
+  droplet ran different operator/server-key semantics than beta. Your Wednesday ruling removed that
+  distinction. <b>Plan is on <code>origin/main</code> at
+  <code>docs/internal/architecture/deployment-pipeline-plan-v0.1-2026-09-20.md</code> (now v0.2).</b></p>
+</div>
+
+<h2>🔸 One decision, whenever you want it</h2>
+<div class="card act">
+  <div class="top"><span class="n">Adopt the environment-vs-stage vocabulary?</span><span class="who">Arch · gates the cheap path</span></div>
+  <p><b>The proposal</b>: <code>environment</code> (local / staging / prod) and <code>stage</code>
+  (alpha / beta / GA) become permanently separate words. Today "alpha" means both a box and a
+  audience, and that conflation is what made <i>"what version is on alpha"</i> unanswerable.</p>
+  <div class="do"><b>Say yes and the droplet retires as an access-list change rather than a
+  migration.</b> Say no and it stays a real migration with the bind-mount surface Lead hit this
+  morning. <b>Everything else in Arch's plan follows from this one word choice.</b></div>
+</div>
+
+<h2>🟢 The reboot — cohort is back</h2>
+<div class="card">
+  <p><b>Boot 18:38:39. Eight of eleven seats came back and un-parked themselves within the hour.</b>
+  Three remain parked with deadlines still in the future, so nothing is late.</p>
+  <p>🔴 <b>The runsheet's core premise was wrong, and four seats now confirm it: crons SURVIVE a
+  reboot.</b> Mine came back with the same job ID and fired 13 minutes after boot; comms, web and CIO
+  independently found the same. <b>n=4.</b> Web's is the cleanest — a cron armed the previous day was
+  still alive at 21:52.</p>
+  <p style="margin-bottom:0"><b>Why it matters:</b> B9 told every seat to re-arm before un-parking. On
+  a surviving cron that produces <b>two jobs on one expression</b> — the duplicate-stacking failure
+  the delete-then-create rotation exists to prevent. <b>Flagged to Pard and Janus before acting;
+  Janus has since retracted two of their own cron claims.</b></p>
+</div>
+
+<h2>⚪ Carried</h2>
+<div class="card">
+  <p style="margin-top:0"><b>Monday 10:00</b> — usage reassessment. Your test: closer to 50% than 33%
+  means converging. <b>I'll interpret your figure rather than bring an estimate.</b></p>
+  <p><b>Ship #061</b> — you close-read Mon or Tue; Comms reviews before Wed 09-23 publish.</p>
+  <p style="margin-bottom:0"><b>Web's two walkthroughs</b> — the 94-day obs-pass (~31 verdicts, an
+  hour) and the 113-day site pass. <b>PA has a question about the calibration shape for the usage
+  model</b>, which I'll answer rather than route to you.</p>
+</div>
+
+<footer><b>Nothing blocking. The invite is free to send, and the Fly path needs one word-choice
+ruling whenever you want it.</b><br><br>
+Hold-lift verified by HOST at source. Arch's plan read on <code>origin/main</code>. Cron survival
+n=4 across four independently-reporting seats. Registry: 8 of 11 un-parked, 3 within deadline.</footer>
+</div></body></html>
