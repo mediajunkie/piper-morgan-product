@@ -44,10 +44,10 @@ from services.llm.request_key import (
     ConsentUnreadableError,
     UserLLMKeyRequiredError,
     request_api_key,
-    resolve_request_api_key,
 )
 from services.ui_messages.user_friendly_errors import make_error_user_friendly
 from web.utils.error_responses import internal_error, validation_error
+from web.utils.llm_key import resolve_user_llm_binding  # #1823 any-provider gate
 
 logger = structlog.get_logger()
 
@@ -210,9 +210,10 @@ def _create_anonymous_key_required_response(original_message: str) -> dict:
     remediation is signing in or bringing a key. Same IntentResponse shape, honest
     case-specific copy (mirrors the #1231/#1333 honest-degrade discipline).
     """
+    # #1823 copy half (CXO): the policy is OWNERSHIP, not a vendor — provider-neutral.
     msg = (
         "I can't process this without you being signed in or supplying your own "
-        "Anthropic API key — sign in, or connect your own key."
+        "LLM API key — sign in, or connect your own key."
     )
     return {
         "message": msg,
@@ -220,7 +221,7 @@ def _create_anonymous_key_required_response(original_message: str) -> dict:
         "workflow_id": None,
         "requires_clarification": True,
         "clarification_type": "auth_or_key_required",
-        "suggestions": ["Sign in to continue", "Or connect your own Anthropic API key"],
+        "suggestions": ["Sign in to continue", "Or connect your own LLM API key"],
         "preferences": {},
         "error": msg,
         "error_type": "anonymous_key_required",
@@ -263,10 +264,16 @@ def _create_user_key_required_response(
     from services.ui_messages.keyless_pleasantry import keyless_gate_message
 
     ruled_b = keyless_gate_message(session_id, original_message)
+    # #1823 (CXO's ruled string, verbatim): the whole sentence is about
+    # OWNERSHIP, which is what the policy was always about — provider-neutral,
+    # matching FLOOR_FALLBACK_NO_PROVIDER's convention, so the product stops
+    # answering "what key do I need?" two different ways. One stored key of ANY
+    # spendable provider passes this gate now, so naming a single vendor would
+    # also simply be wrong.
     msg = ruled_b or (
-        "I need an LLM key of your own before I can help with anything — Piper "
-        "doesn't bill anyone else's account. Add your Anthropic API key in "
-        "Settings and I'll pick right back up."
+        "I need an LLM key of your own before I can help — Piper doesn't bill "
+        "anyone else's account. Add an OpenAI or Anthropic key in Settings and "
+        "I'll pick right back up."
     )
     return {
         "message": msg,
@@ -555,23 +562,17 @@ async def process_intent(
         # Issue #490: Pass user_id to service for user-specific features
         # ADR-051 Phase 3: Pass RequestContext alongside old params (dual pattern)
         # ctx is None for unauthenticated requests - service handles gracefully
-        # #1162/#1185 BYOC: resolve this request's Anthropic key — the X-User-Api-Key
-        # header (Claude Desktop BYOC) wins; else the authenticated user's STORED key
-        # (hosted web, #1185), resolved by user_id from user_api_keys; else an honest
-        # refusal (#1807/#1812 — there is no server key). Bound to the request-scoped
-        # ContextVar (reset in finally; never logged).
-        async def _fetch_stored_anthropic_key(uid: str):
-            from services.database.session_factory import AsyncSessionFactory
-            from services.security.user_api_key_service import UserAPIKeyService
-
-            async with AsyncSessionFactory.session_scope_fresh() as _s:
-                return await UserAPIKeyService().retrieve_user_key(_s, uid, "anthropic")
-
+        # #1162/#1185/#1823 BYOC: resolve this request's LLM key binding — the
+        # X-User-Api-Key header (Claude Desktop BYOC) wins; else the user's STORED
+        # keys (hosted web, #1185), where ONE key of ANY spendable provider is
+        # enough (#1823 branch one, PPM-ruled: the gate matches the spend, which
+        # #1819 already made multi-provider); else an honest refusal (#1807/#1812
+        # — there is no server key). Bound to the request-scoped ContextVar
+        # (reset in finally; never logged).
         try:
-            resolved_key = await resolve_request_api_key(
+            key_binding = await resolve_user_llm_binding(
                 request.headers.get("X-User-Api-Key"),
                 user_id,
-                _fetch_stored_anthropic_key,
             )
         except UserLLMKeyRequiredError:
             # #1807: signed in, session fine, no key of their own.
@@ -592,13 +593,10 @@ async def process_intent(
                 return _create_session_expired_response(message)
             logger.warning("intent_anonymous_key_required_1320", session_id=session_id)
             return _create_anonymous_key_required_response(message)
-        # #1819: widen the granted binding to provider-keyed form — the user's own
-        # stored OpenAI key rides alongside their Anthropic one, so provider
-        # selection (#1415) can route to OpenAI and spend THEIR key. Refusal rungs
-        # already ran above; expansion never grants what resolution refused.
-        from web.utils.llm_key import expand_llm_key_binding
-
-        key_binding = await expand_llm_key_binding(resolved_key, user_id)
+        # #1819/#1823: `key_binding` is already the provider-keyed form — the
+        # user's stored keys, whichever exist, so provider selection (#1415)
+        # routes each turn to a leg their own key can serve. Refusal rungs ran
+        # inside the resolver; the binding never grants what resolution refused.
         with request_api_key(key_binding):
             result = await intent_service.process_intent(
                 message=message, session_id=session_id, user_id=user_id, ctx=ctx

@@ -34,7 +34,7 @@ from typing import Dict, Optional
 
 import structlog
 
-from services.llm.request_key import resolve_request_api_key
+from services.llm.request_key import UserLLMKeyRequiredError, resolve_request_api_key
 
 logger = structlog.get_logger(__name__)
 
@@ -58,12 +58,10 @@ async def resolve_user_llm_key(header_key: Optional[str], user_id: Optional[str]
     """
 
     async def _fetch_stored(uid: str) -> Optional[str]:
-        # Injected DB-backed fetcher — the only DB touch; opens a scoped session.
-        from services.database.session_factory import AsyncSessionFactory
-        from services.security.user_api_key_service import UserAPIKeyService
-
-        async with AsyncSessionFactory.session_scope() as session:
-            return await UserAPIKeyService().retrieve_user_key(session, uid, "anthropic")
+        # Injected DB-backed fetcher — the only DB touch. `session_scope_fresh`
+        # (unified 2026-09-21 with every other fetcher in this module): a
+        # per-call engine bound to the running loop, the #1802 lesson.
+        return await _fetch_stored_provider_key(uid, "anthropic")
 
     return await resolve_request_api_key(header_key, user_id, _fetch_stored)
 
@@ -116,6 +114,53 @@ async def expand_llm_key_binding(resolved: str, user_id: Optional[str]) -> Dict[
         if openai_key:
             binding["openai"] = openai_key
     return binding
+
+
+async def resolve_user_llm_binding(
+    header_key: Optional[str], user_id: Optional[str]
+) -> Dict[str, str]:
+    """#1823 branch one (PPM ruling 2026-09-19): ONE stored key of ANY spendable
+    provider is enough at the general LLM gate.
+
+    The pre-#1823 shape required the caller's ANTHROPIC key specifically —
+    while #1819 had already made the SPEND multi-provider, so an OpenAI-only
+    user was refused at the door for a turn their own key could serve (Arch:
+    "the gate checks one provider while the spend is already multi-provider";
+    the binding outgrew the thing the gate checks). This helper widens the
+    GATE to match the spend, mirroring #1822's Slack arm exactly:
+
+      - header / stored-Anthropic resolves → expand to the provider-keyed
+        binding (unchanged — the #1819 path).
+      - no Anthropic key, but a stored OPENAI key exists → bind that alone;
+        provider selection (#1415/#1819) serves the turn on the OpenAI leg,
+        billed to their own key.
+      - neither → the same honest refusals as ever (#1807/#1320), now with
+        provider-neutral copy at the call sites (CXO's ruled string: the
+        policy is OWNERSHIP, not a vendor).
+
+    Never widens a refusal into a grant: the anonymous rung
+    (``AnonymousLLMKeyRequiredError``) propagates untouched, and the OpenAI
+    arm runs only for an AUTHENTICATED caller the Anthropic rung refused.
+
+    Returns a non-empty provider-keyed binding for ``request_api_key(...)``.
+    """
+    try:
+        resolved = await resolve_user_llm_key(header_key, user_id)
+    except UserLLMKeyRequiredError:
+        # #1823/#1822: the sender has no Anthropic key — their stored OpenAI
+        # key is spendable on its own leg. `expand_llm_key_binding` cannot do
+        # this (it REQUIRES a resolved Anthropic key); fetch the row directly,
+        # the exact arm Slack's `_fetch_sender_llm_key_binding` uses.
+        if user_id:
+            try:
+                openai_key = await _fetch_stored_provider_key(user_id, "openai")
+            except Exception as e:  # silent-ok: fetch failure = fewer keys = fail-closed
+                logger.warning("stored_openai_key_fetch_failed_1823", error=str(e))
+                openai_key = None
+            if openai_key:
+                return {"openai": openai_key}
+        raise
+    return await expand_llm_key_binding(resolved, user_id)
 
 
 async def resolve_user_openai_key(user_id: Optional[str]) -> str:

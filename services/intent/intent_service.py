@@ -116,9 +116,34 @@ class IntentProcessingResult:
 
 
 class IntentProcessingError(Exception):
-    """Raised when intent processing fails"""
+    """Raised when intent processing fails.
 
-    pass
+    #1824: carries ``details["original_error"]`` (the APIError convention the
+    route's #1414 unwrap reads) so wrapping never destroys the cause.
+    """
+
+    details: Optional[Dict[str, Any]] = None
+
+
+def _wrap_processing_error(e: Exception) -> IntentProcessingError:
+    """Wrap a processing failure WITHOUT destroying its cause (#1824).
+
+    Live alpha evidence, 2026-09-20: `str(e)` of an APIError is just
+    "API Error [CODE]" — the real provider message (e.g. the 401 for a typo'd
+    key) lives in ``e.details["original_error"]``, and the route's #1414 unwrap
+    cannot see through TWO wrappers. So a rejected credential surfaced as the
+    generic "Something unexpected happened". Mirror the APIError ``details``
+    convention on the wrapper so the route's existing unwrap finds the truth.
+    """
+    wrapped = getattr(e, "details", None)
+    original = (
+        wrapped.get("original_error")
+        if isinstance(wrapped, dict) and wrapped.get("original_error")
+        else str(e)
+    )
+    err = IntentProcessingError(f"Intent processing failed: {str(e)}")
+    err.details = {"original_error": str(original)}
+    return err
 
 
 def _autonomous_execution_enabled() -> bool:
@@ -3149,7 +3174,7 @@ class IntentService:
             raise
         except Exception as e:
             self.logger.error(f"Intent processing error: {e}")
-            raise IntentProcessingError(f"Intent processing failed: {str(e)}")
+            raise _wrap_processing_error(e)
 
     async def _check_active_guided_process(
         self, user_id: str, session_id: str, message: str

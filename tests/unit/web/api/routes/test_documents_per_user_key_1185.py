@@ -28,6 +28,9 @@ def _mock_session_factory():
     scope.__aexit__ = AsyncMock(return_value=False)
     factory = MagicMock()
     factory.session_scope.return_value = scope
+    # 2026-09-21: the anthropic fetcher was unified onto session_scope_fresh
+    # (the #1802 per-loop-engine lesson) — mock both scope shapes.
+    factory.session_scope_fresh.return_value = scope
     return factory
 
 
@@ -91,7 +94,9 @@ async def test_analyze_binds_user_key_during_call_and_resets_after_1185():
 
     assert get_request_api_key() is None  # clean baseline
     with (
-        patch.object(documents, "resolve_user_llm_key", AsyncMock(return_value="kUSER")),
+        patch.object(
+            documents, "resolve_user_llm_binding", AsyncMock(return_value={"anthropic": "kUSER"})
+        ),
         patch.object(documents, "handle_analyze_document", _spy_handler),
     ):
         result = await documents.analyze_document(file_id="f1", current_user=mock_user)
@@ -125,7 +130,9 @@ async def test_no_cross_request_leak_between_users_1185():
 
     # User A → resolves "kA"
     with (
-        patch.object(documents, "resolve_user_llm_key", AsyncMock(return_value="kA")),
+        patch.object(
+            documents, "resolve_user_llm_binding", AsyncMock(return_value={"anthropic": "kA"})
+        ),
         patch.object(documents, "handle_analyze_document", _make_spy("A")),
     ):
         await documents.analyze_document(file_id="f", current_user=user_a)
@@ -141,7 +148,7 @@ async def test_no_cross_request_leak_between_users_1185():
     with (
         patch.object(
             documents,
-            "resolve_user_llm_key",
+            "resolve_user_llm_binding",
             AsyncMock(side_effect=UserLLMKeyRequiredError("no key")),
         ),
         patch.object(documents, "handle_analyze_document", _make_spy("B")),

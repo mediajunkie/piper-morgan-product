@@ -614,12 +614,45 @@ class FloorResponse:
 
 # ---- Graceful Fallbacks (Issue #940: differentiated by failure type) ----
 
-FLOOR_FALLBACK_AUTH = (
-    "I can't generate responses right now because my LLM connection isn't working. "
-    "This blocks most of my core functionality. The issue could be an expired API key, "
-    "a deprecated model, or a configuration problem. Please check your LLM API key "
-    "in Settings — once that's resolved, I'll be back to full capability."
+# #1824 (Arch's split criterion, CXO's copy 2026-09-15, verbatim): the old "auth"
+# bucket collapsed FIVE causes into one label, so its copy hedged across all of
+# them — the distinction was destroyed before the sentence was written, and the
+# honest sentence differs per cause (that difference IS the split criterion).
+# Four buckets replace it; each string is CXO's draft, message + recovery.
+
+FLOOR_FALLBACK_REJECTED_CREDENTIAL = (
+    "Your LLM API key was rejected — the provider says it isn't valid. "
+    "Check or replace it in Settings → LLM API Keys."
 )
+
+FLOOR_FALLBACK_INSUFFICIENT_PERMISSION = (
+    "Your key works, but the provider won't allow this model or endpoint for it. "
+    "That's a permissions setting on your account with them — it isn't something "
+    "I can change from here."
+    # 🔴 Deliberately does NOT point at our Settings (CXO): the fix is at the
+    # provider; sending them to our Settings would be #1108's
+    # recommends-a-known-failing-action exactly.
+)
+
+FLOOR_FALLBACK_NOT_CONFIGURED = (
+    "I couldn't get a language-model connection set up for this turn. That's on "
+    "our side, not something you've done wrong. Try again in a moment."
+    # Asserts nothing about whether they have a key — the label doesn't say, so
+    # the copy mustn't (CXO). This bucket is LATENT (never observed firing;
+    # #1824's own do-not-justify-with-#1814 warning applies).
+)
+
+FLOOR_FALLBACK_CONFIG_ENDPOINT = (
+    "I'm set up to use a model that isn't available. That's ours to fix."
+    # 🔴 Recovery: NONE, on purpose (CXO) — the user can do nothing, and the
+    # recovery slot's existence is not a reason to invent an affordance that
+    # can't be taken.
+)
+
+# Retired alias (#1824): the old single-bucket copy hedged honestly across a
+# classifier that couldn't tell; the classifier can tell now. Kept pointing at
+# the commonest member so any straggler import degrades to true-if-vague copy.
+FLOOR_FALLBACK_AUTH = FLOOR_FALLBACK_REJECTED_CREDENTIAL
 
 FLOOR_FALLBACK_TRANSIENT = (
     "I'm having trouble connecting to my reasoning engine right now — "
@@ -681,29 +714,40 @@ def _classify_llm_error(error: Exception) -> str:
     if "not configured" in error_str or "no llm provider" in error_str:
         return "no_provider"
 
-    # Auth failures (bad/expired/revoked key)
+    # #1824: the old "auth" bucket returned one label for five causes — two of
+    # its own branches said "config issue" in a comment while returning "auth".
+    # Split per the ruled criterion (a bucket earns its own name when the honest
+    # user-facing sentence differs):
+
+    # A client that was never constructed — no credential was rejected at all.
+    # Latent (never observed firing); NOT the #1814 wall, per the issue's own
+    # refutation — do not conflate.
+    if "not initialized" in error_str:
+        return "not_configured"
+
+    # A VALID key without permission (scope/entitlement — fix is at the provider).
+    if "403" in error_str or "forbidden" in error_str:
+        return "insufficient_permission"
+
+    # A rejected credential — the only cause the old bucket's docstring described.
     if any(
         term in error_str
         for term in [
             "401",
-            "403",
             "unauthorized",
-            "forbidden",
             "invalid api key",
             "invalid_api_key",
             "authentication",
-            "not initialized",
         ]
     ):
-        return "auth"
+        return "rejected_credential"
 
-    # Model not found (deprecated or wrong model ID)
+    # Operator-side config: model ID stale, or a wrong endpoint. The user's key
+    # and account are fine; nothing on their side will help.
     if "model" in error_str and ("not found" in error_str or "does not exist" in error_str):
-        return "auth"  # Config issue — model ID needs updating
-
-    # Explicit 404 (wrong endpoint)
+        return "config_endpoint"
     if "404" in error_str:
-        return "auth"  # Treat as config issue
+        return "config_endpoint"
 
     # Everything else is transient (timeout, 500, network, etc.)
     return "transient"
@@ -1641,7 +1685,12 @@ class ConversationalFloor:
             # #940: Classify error to provide actionable fallback
             error_type = _classify_llm_error(e)
             fallback_messages = {
-                "auth": FLOOR_FALLBACK_AUTH,
+                # #1824: the four buckets that replaced "auth" — the honest
+                # sentence differs per cause, which is why each has its own.
+                "rejected_credential": FLOOR_FALLBACK_REJECTED_CREDENTIAL,
+                "insufficient_permission": FLOOR_FALLBACK_INSUFFICIENT_PERMISSION,
+                "not_configured": FLOOR_FALLBACK_NOT_CONFIGURED,
+                "config_endpoint": FLOOR_FALLBACK_CONFIG_ENDPOINT,
                 "no_provider": FLOOR_FALLBACK_NO_PROVIDER,
                 "transient": FLOOR_FALLBACK_TRANSIENT,
                 "consent_unreadable": FLOOR_FALLBACK_CONSENT_UNREADABLE,  # #1816
