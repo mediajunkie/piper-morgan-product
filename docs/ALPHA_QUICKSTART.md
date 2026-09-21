@@ -24,46 +24,48 @@ setup now lives there, not here.
 ## Getting Started
 
 Piper Morgan runs as a hosted app — there's nothing to install. Go to
-**[piper-morgan.fly.dev](https://piper-morgan.fly.dev)** and log in.
+**[alpha.pipermorgan.ai](https://alpha.pipermorgan.ai)** and log in.
 
-If you don't have login credentials yet, you're likely a new tester — email
-**xian@pipermorgan.ai** to get set up. Alpha testing is currently a small, curated group (per
-`ESSENCE.md`, ~11 testers), so access is arranged directly rather than through self-serve signup.
+*(URL updated 2026-09-21: this doc previously pointed at a `fly.dev` address; the alpha
+testers' instance — the one invites are issued for — is `alpha.pipermorgan.ai`, matching
+`docs/README.md` and your invite email.)*
 
-That's it — no clone, no Docker, no Python version to check. **Time to first use: however long it
-takes to log in.**
+New tester? Alpha is invite-only — codes come directly from **xian@pipermorgan.ai**. With
+your invite code in hand: go to
+**[alpha.pipermorgan.ai/setup](https://alpha.pipermorgan.ai/setup)**, create your account
+(the form asks for the invite code), log in, then add your own LLM key under
+**Settings → LLM Keys** (an Anthropic or OpenAI key — Piper runs on *your* key and can't
+answer substantive requests without one).
+
+That's it — no clone, no Docker, no Python version to check. **Time to first use: however
+long it takes to log in and paste a key.**
 
 ---
 
-## What's New in 0.8.12
+## What's New in 0.8.13
 
-Two months of work, one theme: **your key, your account**. Every LLM call Piper makes is
-now billed to *your* stored key — there is no shared server credential, no silent fallback
-to anyone else's account, and no way for your setup to overwrite another tester's. When no
-key is bound, Piper refuses honestly and says what to do, instead of erroring vaguely or
-quietly spending.
+A fast follow to v0.8.12.0 — cut one day later so the first real dogfood session's fixes
+reach testers quickly. Theme: **nothing invented, nothing borrowed**.
 
-**Your key is always the one spent** (#1807–#1819) — the "server key" concept is gone by
-ruling and by code. Keyless turns get an honest refusal with instructions, never
-"Something unexpected happened."
+**The standup stops inventing things** (#1837, #1836) — accepting the guided-interview
+offer actually starts the interview; the generic placeholder draft ("Made progress on
+assigned tasks") is deleted and unreachable; free-form edits ("change yesterday to say I
+ran the quarterly review") genuinely apply; "I've updated your standup" is only said when
+something actually changed; and Piper no longer denies an interview offer it made three
+turns earlier.
 
-**OpenAI-only? Slack works fully** (#1822) — Slack conversations bind whichever of your
-keys exist. (Web chat still asks for an Anthropic key at the door for now — see Known
-limitations.)
+**Keyless first contact is human** (#1818) — a keyless "hi" gets *"Hello — good to meet
+you."* plus one clear sentence about adding a key, instead of a wall of policy. "Thanks"
+gets an honest acknowledgment, never a "you're welcome" for work that never happened.
 
-**Finished flows let go** (#1617 and the acceptance-contract family) — after a standup's
-"Anything else?", your next command routes normally on the first try instead of the flow
-re-rendering its summary or swallowing the message.
+**The server-key concept is deleted, not just refused** (#1812 complete) — there is no
+code path, gated or otherwise, to any credential but yours. Every LLM call bills the
+acting user's own key, or refuses honestly.
 
-**Truthful lists and statuses** (#1717, #1730, the GitHub-six) — aggregate answers name
-failed sources instead of blending them into a false "nothing found," and long GitHub
-lists carry honest counts with an offer to fetch the rest instead of silent truncation.
+**`/health` tells the truth** (#1839) — real deployed version, git SHA, and environment,
+replacing values that had been hardcoded for months.
 
-**Security hardening** — chat-render XSS fixed, stale unauthenticated page twins removed,
-demo plugin unmounted by default, cross-user isolation regression-hardened.
-
-See [Release Notes v0.8.12.0](releases/RELEASE-NOTES-v0.8.12.0.md) for full details. (Deploying an
-update yourself? See `CONTRIBUTING.md` — migrations are an operator step, not a tester one.)
+See [Release Notes v0.8.13.0](releases/RELEASE-NOTES-v0.8.13.0.md) for full details.
 
 ---
 
@@ -88,7 +90,7 @@ for the full setup (Python, Docker, Postgres, the setup wizard). Point at `main`
 
 ### Via UI Features
 
-After logging in at [piper-morgan.fly.dev](https://piper-morgan.fly.dev):
+After logging in at [alpha.pipermorgan.ai](https://alpha.pipermorgan.ai):
 
 1. **Lists Management** → Click "Lists" → "Create New List"
    - Add list name and description
@@ -113,30 +115,32 @@ After logging in at [piper-morgan.fly.dev](https://piper-morgan.fly.dev):
 
 ---
 
-## Testing Focus for 0.8.12
+## Testing Focus for 0.8.13
 
 **What's Stable** (light testing recommended):
-- ✅ Login/authentication
+- ✅ Login/authentication; invite-gated account creation
 - ✅ Lists, Todos, Projects management (chat todos are real; the REST `/api/v1/todos` endpoint is still mocked, #1427)
 - ✅ Files upload/download/preview/tagging
 - ✅ GitHub connector reads (issue summaries, repo resolution)
 - ✅ Per-user API keys, encrypted at rest
 
 **Where to Focus Testing** (these need your attention):
-- 🔍 **Key honesty**: remove your key, try a chat turn — do you get a clear "add your own
-  key" message (never a vague error, never a served answer billed to nobody-knows-who)?
-  Re-add the key — does everything resume?
-- 🔍 **Your provider's dashboard**: after a chat session, check YOUR provider's usage
-  page — the calls should be there (and nowhere else).
-- 🔍 **Flow release**: run a standup to the end, then immediately issue an unrelated
-  command ("change the status of issue #… ") — does it route on the first try?
-- 🔍 **Honest emptiness**: ask for your agenda/todos when you have none — does Piper
-  distinguish "nothing there" from "couldn't check"?
+- 🔍 **The standup interview**: say "let's do my standup", accept the interview offer —
+  does it immediately ask about yesterday? Is the resulting draft built from YOUR words
+  (never boilerplate)?
+- 🔍 **Free-form standup edits**: ask for a real change in your own words — does it
+  apply? Ask for an inapplicable one — do you get an honest "unchanged" instead of a
+  false success?
+- 🔍 **Keyless first contact** (if you can spare a keyless moment): "hi" and "thanks"
+  before adding a key — friendly acknowledgment plus one key sentence, no error-speak?
+- 🔍 **Key honesty no-regress**: remove your key, try a chat turn — a clear "add your
+  own key" message? Re-add — does everything resume?
 
-## What's Working in 0.8.12
+## What's Working in 0.8.13
 
 ✅ **Conversational AI**:
    - LLM-grounded responses in Piper's voice, drawing on your work context
+   - Guided standup interview that actually runs, drafts built only from your words, free-form draft edits (#1837)
    - Greeting + question handled together — your question gets answered (#1416)
    - Honest answers when a data source fails — "I couldn't check" instead of a false "nothing found" (#1425)
    - Honest error messages when your LLM key is missing, invalid, or out of quota (#1414)
@@ -174,24 +178,22 @@ See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for current limitations.
 
 ## Getting Help
 
-- **Full Guide**: [ALPHA_TESTING_GUIDE.md](ALPHA_TESTING_GUIDE.md) — deeper testing walkthrough.
-  ⚠️ **Not yet audited for the hosted-primary change** (that doc still assumes local install in
-  places) — if it contradicts this one on how to get started, trust this doc and flag the
-  discrepancy.
+- **Full Guide**: [ALPHA_TESTING_GUIDE.md](ALPHA_TESTING_GUIDE.md) — deeper testing
+  walkthrough (rewritten 2026-09-21 for the hosted flow; the two docs now agree).
 - **Known Issues**: [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) (bugs and status)
 - **Legal**: [ALPHA_AGREEMENT_v2.md](ALPHA_AGREEMENT_v2.md) (terms and conditions)
-- **Version Info**: [VERSION_NUMBERING.md](VERSION_NUMBERING.md) (what 0.8.12.0 means)
+- **Version Info**: [VERSION_NUMBERING.md](VERSION_NUMBERING.md) (what 0.8.13.0 means)
 
 ---
 
 ## Remember
 
-This is **alpha software** (0.8.12.0). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
+This is **alpha software** (0.8.13.0). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
 
-**Testing Focus**: Is every key message honest (never vague, never someone else's bill)? Does chat spend YOUR key only? Do finished flows release your next command? Are empty-vs-failed answers distinguished?
+**Testing Focus**: Does the standup interview keep its word — and its drafts to YOUR words? Do edits honestly apply or honestly decline? Is every keyless/key-error message human and true? Does chat spend YOUR key only?
 
 ---
 
 **Happy testing!** 🚀
 
-_Last Updated: September 20, 2026_
+_Last Updated: September 21, 2026_

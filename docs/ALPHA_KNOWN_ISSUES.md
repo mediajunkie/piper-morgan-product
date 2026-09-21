@@ -1,23 +1,37 @@
-# Alpha Known Issues (v0.8.12.0)
+# Alpha Known Issues (v0.8.13.0)
 
-**Version**: 0.8.12.0
-**Last Updated**: September 20, 2026
+**Version**: 0.8.13.0
+**Last Updated**: September 21, 2026
 
 This document helps alpha testers avoid wasting time on things we already know about.
 
-v0.8.12.0 is the "Your Key, Your Account" release: the bring-your-own-credentials model
-end to end (your key is the only one ever billed; keyless turns refuse honestly), plus a
-security-hardening pass and fixes for flows that swallowed your next message. The full CI
-belt was green at the cut (10/10 gating workflows). What's below are the rough edges that
-remain.
+v0.8.13.0 is the "Nothing Invented, Nothing Borrowed" release — a one-day fast follow to
+v0.8.12.0 carrying the fixes from the first real dogfood session: the standup interview
+keeps its word and its drafts to your words, keyless first contact is human, and the
+server-key concept is deleted from the code outright. What's below are the rough edges
+that remain.
 
-## Known Issues in 0.8.12 (the honest list)
+## Known Issues in 0.8.13 (the honest list)
 
 - **Web chat's front door still asks for an Anthropic key specifically** ([#1823](https://github.com/mediajunkie/piper-morgan-product/issues/1823) — ruled, queued). OpenAI-only users are fully served in Slack; on web, add an Anthropic key for now.
-- **A keyless first "hi" is refused at the door** ([#1818](https://github.com/mediajunkie/piper-morgan-product/issues/1818) — design settled, build queued). The refusal copy is honest; it's just earlier than we want.
+- **A short polite imperative can finalize a standup draft** ([#1843](https://github.com/mediajunkie/piper-morgan-product/issues/1843), found by this release's own regression work): "please remove the fluff" can be mis-read as an acceptance. Workaround: phrase edits without a leading "please", or say "start over" if a draft finalizes on you.
+- **An invalid stored key can still surface the generic "Something unexpected happened"** ([#1824](https://github.com/mediajunkie/piper-morgan-product/issues/1824) — observed live; the honest-copy split is designed and queued). If you see it, the fix is the same: check your key in Settings.
 - **Personality preferences are not yet per-user** ([#1791](https://github.com/mediajunkie/piper-morgan-product/issues/1791)): the questionnaire works but preferences aren't isolated per account yet.
 - **Some docs links 404** ([#1793](https://github.com/mediajunkie/piper-morgan-product/issues/1793)).
 - The REST `/api/v1/todos` endpoint is still mocked ([#1427](https://github.com/mediajunkie/piper-morgan-product/issues/1427)) — chat and UI todos are real.
+
+---
+
+## Fixed in 0.8.13 (from PM's live dogfood transcript)
+
+If any of these still happens to you, that's a regression — please report it:
+
+- **[#1837](https://github.com/mediajunkie/piper-morgan-product/issues/1837)** — Accepting the standup interview offer starts the interview (no re-greeting); the generic placeholder draft is deleted and unreachable; the flow never denies an offer it made.
+- **[#1836](https://github.com/mediajunkie/piper-morgan-product/issues/1836)** — "I've updated your standup" is only said when the draft actually changed; free-form edits now genuinely apply (on your own key).
+- **[#1818](https://github.com/mediajunkie/piper-morgan-product/issues/1818)** — A keyless "hi" gets a human acknowledgment plus one key sentence, not a policy wall.
+- **[#1812](https://github.com/mediajunkie/piper-morgan-product/issues/1812)** — The transitional operator/server-key seam is deleted; every spend is the acting user's own key or an honest refusal (was already the enforced behavior; now it's the only representable one).
+- **[#1839](https://github.com/mediajunkie/piper-morgan-product/issues/1839)** — `/health` reports the real version, git SHA, and environment.
+- **[#1764](https://github.com/mediajunkie/piper-morgan-product/issues/1764)** — Credential-store namespace collisions fail loudly instead of silently mixing credentials.
 
 ---
 
@@ -48,7 +62,7 @@ _None currently at P0._
 | Issue | Description | Workaround |
 |-------|-------------|------------|
 | [#1418](https://github.com/mediajunkie/piper-morgan-product/issues/1418) | Conversation picker sometimes loads the most recent chat regardless of which one you selected | Fix in progress; re-select or refresh |
-| [#1105](https://github.com/mediajunkie/piper-morgan-product/issues/1105) | Settings UI sometimes requires re-pasting API key even when saved correctly server-side | Restart the server after saving — keychain read works correctly on restart |
+| [#1105](https://github.com/mediajunkie/piper-morgan-product/issues/1105) | Settings UI sometimes requires re-pasting API key even when saved correctly server-side | Re-paste if prompted; if chat works, the save took — report it if refusals persist |
 | [#1164](https://github.com/mediajunkie/piper-morgan-product/issues/1164) | "Start private session" toggle in History slide-out is UI-only — no backend behavior | Cosmetic; don't rely on it |
 | [#1216](https://github.com/mediajunkie/piper-morgan-product/issues/1216) | "What have you learned about my workstyle?" claims a seed-vs-real distinction the system can't actually make | Report these — they're honesty gaps |
 | [#1256](https://github.com/mediajunkie/piper-morgan-product/issues/1256) | Stakeholder-update queries occasionally misclassify as update_document_query | Rephrase as "write a stakeholder update for..." if response feels off |
@@ -87,17 +101,16 @@ _None currently at P0._
 
 ## Needs Testing
 
-These features shipped in 0.8.11 and need real-world validation:
+These shipped in 0.8.13 and need real-world validation:
 
 | Feature | What to Test | How to Access |
 |---------|--------------|---------------|
-| **Questionnaire → tone** | Re-answer the questionnaire, then chat — does Piper's tone reflect your answers? | `python main.py preferences` or Settings |
-| **Per-user provider** | Set your own key and provider — does chat use your provider? | Settings → LLM Keys, then your provider's usage dashboard |
-| **Greeting + question** | "Hi! What can you help me with?" — does the question get answered? | Chat |
-| **Connect guidance** | "connect my github" / "can you connect my slack" — real guidance, not a decline? | Chat |
-| **Honest status claims** | Ask for status/agenda/standup — are todo/issue claims honest? "I couldn't check" is correct on failure | Chat |
-| **Honest key errors** | Break your API key, send a message — honest key message, not "Something unexpected happened"? | Settings → LLM Keys, then chat |
-| **Session recall** | Create an issue in chat, then ask "what did we create this session?" | Chat |
+| **Interview offer → interview** | Accept the guided-interview offer — first question immediately? Draft built from your words only? | Chat: "let's do my standup" |
+| **Free-form standup edits** | Ask for a real edit in your own words — applies? An inapplicable one — honest "unchanged"? | A standup draft in REFINING |
+| **Keyless first contact** | "hi" / "thanks" with no key — human acknowledgment + one key sentence? | A keyless account or key removed |
+| **Honest key errors** | Break your key, send a message — honest key message? (Generic message = #1824, report it) | Settings → LLM Keys, then chat |
+| **Your key, your billing** | Chat, then check YOUR provider dashboard — requests there and nowhere else? | Provider usage page |
+| **Session recall (no-regress)** | Create an issue in chat, then "what did we create this session?" | Chat |
 
 ---
 
@@ -140,8 +153,8 @@ ERROR MESSAGE: [if any]
 
 - [ALPHA_QUICKSTART.md](ALPHA_QUICKSTART.md) — Quick setup
 - [ALPHA_TESTING_GUIDE.md](ALPHA_TESTING_GUIDE.md) — What to test and how
-- [Release Notes v0.8.11.0](releases/RELEASE-NOTES-v0.8.11.0.md) — Full 0.8.11.0 changelog
+- [Release Notes v0.8.13.0](releases/RELEASE-NOTES-v0.8.13.0.md) — Full 0.8.13.0 changelog
 
 ---
 
-_Last Updated: July 17, 2026_
+_Last Updated: September 21, 2026_

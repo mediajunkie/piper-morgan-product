@@ -6,9 +6,9 @@ This directory contains release notes for all Piper Morgan versions.
 
 ## Current Version
 
-**v0.8.12.0** (September 20, 2026) - [Release Notes](RELEASE-NOTES-v0.8.12.0.md)
+**v0.8.13.0** (September 21, 2026) - [Release Notes](RELEASE-NOTES-v0.8.13.0.md)
 
-"Your Key, Your Account" — BYOC end to end: every LLM call bills the acting user's own key, server-key concept abolished (#1812 family), honest keyless refusals, per-provider keys incl. OpenAI-only Slack; security six (XSS, unauth twins, isolation); acceptance-contract fixes (flows release your next command); truth-in-rendering; full CI belt green at cut.
+"Nothing Invented, Nothing Borrowed" — one-day fast follow carrying the first dogfood session's fixes: standup interview keeps its word (offer→interview, no fabricated drafts, free-form edits via the floor on your key, verified-diff honesty); keyless first contact acknowledged like a person (#1818b); server-key concept DELETED from code (#1812 steps 5–6 — no representable path to a product credential); /health reports real deploy identity (#1839); keychain collision guard (#1764).
 
 ---
 
@@ -16,6 +16,7 @@ This directory contains release notes for all Piper Morgan versions.
 
 | Version | Date | Type | Highlights |
 |---------|------|------|------------|
+| [v0.8.13.0](RELEASE-NOTES-v0.8.13.0.md) | Sep 21, 2026 | Fast follow | Dogfood fixes: standup trust rebuild (#1837/#1836), keyless first contact (#1818b), server-key concept deleted (#1812 complete), /health deploy identity (#1839) |
 | [v0.8.12.0](RELEASE-NOTES-v0.8.12.0.md) | Sep 20, 2026 | Feature | BYOC/tenancy arc complete — your key/your billing, honest refusals, security six, acceptance contract, truth-in-rendering; first full-belt-green cut |
 | [v0.8.11.0](RELEASE-NOTES-v0.8.11.0.md) | Jul 17, 2026 | Feature | Finish-the-Unfinished — multi-tenancy correctness (per-user provider, personality restored), honest conversation (no false claims/denials), completion ratchets |
 | v0.8.9.1–v0.8.10.14 | Jul 2–16, 2026 | Hotfix train | production-only cherry-pick cuts: #1343/#1344 security, Fly beta cutover (#1278), tester-loop fixes, login regression (.14) — all content since merged to main |
@@ -65,4 +66,4 @@ For current known issues and limitations, see [ALPHA_KNOWN_ISSUES.md](../ALPHA_K
 
 ---
 
-*Last updated: September 20, 2026*
+*Last updated: September 21, 2026*

@@ -5,9 +5,9 @@
 > `scripts/check-version-consistency.py` enforces. **[VERSION_NUMBERING.md](VERSION_NUMBERING.md)**
 > explains the numbering **scheme** — what each tier of X.Y.Z means.
 
-## Current Version: 0.8.12.0 (released 2026-09-20; `main` and `production` converged at the cut)
+## Current Version: 0.8.13.0 (released 2026-09-21; `main` and `production` converged at the cut)
 
-v0.8.12.0 was cut from `main` (pyproject/VERSION bumped there) and `production` fast-forwarded to the same commit — the first cut since v0.8.11.0 (2026-07-17), closing a two-month gap during which every deploy went to Fly directly. Releases cut from `main`; `production` tracks the released commit. (A real staged pipeline is being designed under Arch's 09-20 tasking.)
+v0.8.13.0 was cut from `main` (pyproject bumped there) and `production` fast-forwarded to the same commit — a one-day fast follow to v0.8.12.0 (2026-09-20), which had closed the two-month gap since v0.8.11.0 (2026-07-17). Releases cut from `main`; `production` tracks the released commit. (A real staged pipeline is being designed under Arch's 09-20 tasking.)
 
 ## Versioning Scheme
 
@@ -93,6 +93,8 @@ During alpha testing, versions follow this pattern:
 
 | Version | Date       | Milestone | Notes                                          |
 | ------- | ---------- | --------- | ---------------------------------------------- |
+| 0.8.13.0 | Sep 21, 2026 | Fast follow | Dogfood fixes — standup trust rebuild (#1837/#1836), keyless first contact (#1818b), server-key concept deleted (#1812 complete), /health deploy identity (#1839) |
+| 0.8.12.0 | Sep 20, 2026 | Feature | "Your Key, Your Account" — BYOC end to end, honest keyless refusals, security six, acceptance contract; first full-belt-green cut (row added 09-21; missed at the 09-20 cut) |
 | 0.8.11.0 | Jul 17, 2026 | Feature | Finish-the-Unfinished sprint — multi-tenancy correctness, honest conversation, completion ratchets (#1424/#1419); migrations j1394ledger + k1422prefs |
 | 0.8.10.x | Jul 8–16, 2026 | Dot train | production-only tester-loop cuts (.1–.14): Fly beta cutover, per-user LLM keys page, login regression fix |
 | 0.8.9.2 | Jul 2026   | Patch     | Security fix (#1344) — open-registration exposure closed, invite-token gate (hotfix on `production`) |

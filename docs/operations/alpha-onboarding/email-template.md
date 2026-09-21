@@ -1,17 +1,25 @@
-# Alpha Tester Pre-Qualification Email Template
+# Alpha Tester Invitation Email Template
 
-**Version**: 2.7
-**For**: Piper Morgan 0.8.12.0 Alpha Release
-**Purpose**: Internal template for PM to send to potential alpha testers
-**Last Updated**: September 20, 2026
+**Version**: 3.0
+**For**: Piper Morgan 0.8.13.0 Alpha Release (hosted)
+**Purpose**: Internal template for PM to send to invited alpha testers
+**Last Updated**: September 21, 2026
+
+**v3.0 rewrite (2026-09-21, Lead — closes #1830)**: v2.x of this template described the
+retired local-install flow (clone, Docker, Python, guided setup calls) and told
+prospects a hosted version was "planned for later in 2026" — while the hosted alpha at
+`alpha.pipermorgan.ai` has been the actual tester surface since July. This version
+matches reality: **invite code → account → paste your LLM key → chat.** HOST drafts the
+live invite email against the current roster; this template is the canonical baseline
+they adapt — if the two drift, fix THIS file and re-derive.
 
 ---
 
 ## Subject Lines (A/B test these)
 
-- "Ready to test Piper Morgan? Check requirements first"
-- "Piper Morgan alpha access - Prerequisites inside"
-- "[Name], before we set up Piper Morgan..."
+- "Your Piper Morgan alpha invite"
+- "Piper Morgan alpha access — your invite code inside"
+- "[Name], your Piper Morgan alpha account awaits"
 
 ---
 
@@ -20,119 +28,97 @@
 ```
 Hey [Name],
 
-You mentioned interest in testing Piper Morgan - excited to have you as an early alpha tester!
+You mentioned interest in testing Piper Morgan — excited to have you as an early alpha
+tester!
 
-Before we schedule setup, let's make sure you have everything needed. The good news: we've built a visual setup wizard that makes initial configuration much easier.
+Piper Morgan runs as a hosted app now, so there's nothing to install. Getting started
+takes about ten minutes:
 
-**PREREQUISITES CHECKLIST**
+**GETTING STARTED**
 
-Technical Requirements:
-□ Comfortable using command line/terminal (for initial clone and install)
-□ Python 3.11 or 3.12 installed on your machine
-□ Docker installed and running
-□ Git installed and working
-□ About 1GB free disk space
-□ 30-45 minutes available for guided setup (includes Docker installation if needed)
+1. Go to https://alpha.pipermorgan.ai/setup
+2. Create your account — you'll need this invite code (single-use, just for you):
 
-Accounts & API Keys You'll Need:
-□ GitHub account
-□ At least one LLM API key:
-  - OpenAI (GPT-4 preferred) -OR-
-  - Anthropic (Claude) -OR-
-  - Google Gemini
-  (You can configure multiple providers)
-□ Budget $5-20 for API testing costs
-□ Notion account (optional but recommended)
+   [INVITE_CODE]
 
-**WHAT MAKES THIS EASY (0.8.12)**
+3. Log in, then open Settings → LLM Keys and paste an API key of your own:
+   - an Anthropic key (https://console.anthropic.com/), and/or
+   - an OpenAI key (https://platform.openai.com/api-keys)
+4. Say hello.
 
-Our GUI setup wizard (`python main.py` → opens in browser) will:
-- Check your system automatically (Docker, Python, ports, database)
-- Show results visually with clear status indicators
-- Guide you through API key configuration in a web form (much easier than CLI)
-- Guide you through account creation with real-time validation
-- Validate your API keys before storing them
-- Set up the database and services for you
-- Take about 10-15 minutes total (or 30-45 minutes if Docker installation is needed)
+**THE ONE REAL REQUIREMENT**
 
-Once set up, your API keys and provider choice are genuinely yours: keys are stored per-user and encrypted at rest, and every chat request uses YOUR chosen provider — one tester's setup can't affect another's. The personality questionnaire (`python main.py preferences`) shapes how Piper talks to you: tone, confidence, level of detail. And when something goes wrong — an invalid or out-of-quota API key, a data source Piper can't reach — Piper tells you honestly what happened instead of guessing or claiming there's nothing there.
+Piper runs on YOUR LLM key and bills YOUR account — it never spends anyone else's.
+That's a design principle, not a limitation: your data and your costs stay yours.
+Budget roughly $5–20 in API usage over the alpha period, and keep an eye on your
+provider's usage dashboard (that's also a great way to verify the promise!).
 
-After setup, you can optionally configure your preferences (`python main.py preferences`) to personalize how Piper works for you.
+Optional, for the integration features: a GitHub personal access token, a Notion API
+key, or a Slack workspace — all connectable later under Settings → Integrations.
+None are needed for core chat, lists, files, or standups.
 
 **CRITICAL DISCLAIMERS**
 
-This is ALPHA software (version 0.8.12.0). That means:
+This is ALPHA software (version 0.8.13.0). That means:
 - It will have bugs and rough edges
-- It might crash or lose data
-- Security is not fully audited (API key secrets are encrypted; content/PII at rest not yet encrypted)
-- You're responsible for your API charges
-- Not for mission-critical work
-- Not for employer machines (without permission)
+- The alpha instance's data may be lost at any time — use test data only
+- Security is not fully audited (your API key is stored encrypted; content at rest
+  is not yet encrypted)
+- You're responsible for your own API charges
+- Not for mission-critical work or sensitive information
+
+The full terms are in the attached Alpha Agreement — please read it before diving in.
 
 **WHAT TO EXPECT**
 
-Week 1: Guided setup call (30 mins) + initial testing
-Week 2-3: You test, I fix bugs you find
-Week 4+: Quick weekly check-ins
+Week 1: try it on real-ish PM work (test data!), tell me what confused you
+Week 2-3: you test, I fix what you find
+Week 4+: quick weekly check-ins if you're up for them
 
-Setup, login, and core features are stable in 0.8.12.0. **Focus your testing on**: key honesty (every LLM answer bills YOUR key — check your provider's usage dashboard; a keyless turn should get a clear add-your-key message, never a vague error), flow release (finish a standup, then immediately issue an unrelated command — it should route on the first try), and honest emptiness (agenda/todo answers should distinguish "nothing there" from "couldn't check"). The goal is finding PM workflows that delight you, despite the rough edges.
+One thing we care about more than anything: **if Piper ever tells you something that
+turns out not to be true — about your data, your tools, or what it just did — that's
+our top-priority bug class.** Polite lies count double. Please report those first.
 
 **STILL INTERESTED?**
 
 Reply with:
-1. Which LLM provider you'll use (OpenAI/Anthropic)
+1. Which LLM provider you'll use (Anthropic / OpenAI / both)
 2. Your biggest PM pain point you hope Piper helps with
-3. Best time for a 30-min setup call (recommended for first-time setup)
-
-If this feels like too much technical setup, totally understand! We're planning a hosted version for later in 2026.
+3. Anything that blocked or confused you in the first ten minutes
 
 Best,
 Christian
 
-P.S. We're keeping the alpha cohort small so I can provide proper support.
+P.S. We're keeping the alpha cohort small so I can provide proper support — your
+invite code is single-use and yours alone.
 ```
 
 ---
 
-## Follow-up After Confirmation
+## Follow-up After First Login
 
 ```
 [Name],
 
-Perfect! You're confirmed for Piper Morgan alpha access.
+Great — saw you're in! A few pointers for the first real session:
 
-**NEXT STEPS:**
+**WORTH TRYING FIRST**
+- "let's do my standup" — the guided interview builds a standup from your words
+- Upload a PDF or DOCX and ask for a summary
+- "Add a todo: [something real-ish]" then "what tasks do I have?"
+- Connect GitHub under Settings → Integrations if you want issue features
 
-1. Review the attached Alpha Testing Guide (streamlined setup instructions)
-2. Read and acknowledge the Alpha Agreement (legal stuff)
-3. Gather your API keys
-4. Our setup call is [DATE/TIME] (calendar invite coming)
+**THE DOCS** (attached / linked)
+- ALPHA_QUICKSTART.md — the 2-minute version of everything above
+- ALPHA_TESTING_GUIDE.md — test walks for this release
+- ALPHA_KNOWN_ISSUES.md — don't waste time on what we already know
+- ALPHA_AGREEMENT_v2.md — the terms you acknowledged
 
-**WHAT TO PREPARE:**
-- Your LLM API key ready to paste
-- A test PM task/project (nothing sensitive)
-- Questions about what Piper can/can't do
-- Patience for alpha software quirks
-
-**SETUP PREVIEW:**
-We'll run `python main.py` together, which opens the GUI setup wizard in your browser. It handles:
-- System verification (Docker, Python, database) with visual indicators
-- API key configuration via web form (much easier than CLI)
-- Account creation with real-time validation
-- Service initialization
-
-The visual interface makes setup straightforward. Optionally, you can run `python main.py preferences` to personalize your experience.
-
-Looking forward to your feedback! You're helping shape the future of AI-assisted PM work.
+Looking forward to your feedback — you're helping shape the future of AI-assisted PM
+work.
 
 Best,
 Christian
-
-Attachments:
-- ALPHA_TESTING_GUIDE.md (comprehensive setup guide)
-- ALPHA_AGREEMENT.md (legal terms)
-- ALPHA_QUICKSTART.md (minimal 2-minute guide)
-- ALPHA_KNOWN_ISSUES.md (current bugs and limitations)
 ```
 
 ---
@@ -141,11 +127,11 @@ Attachments:
 
 **Customize these for each tester:**
 
-- `[Name]` - Tester's first name
-- `[2/3/4]` - Tester number (keep cohort small)
-- `[DATE/TIME]` - Scheduled setup call
-- `[domain]` - `pipermorgan.ai`
-- `christian@[domain]` - `xian@pipermorgan.ai`
+- `[Name]` — tester's first name
+- `[INVITE_CODE]` — mint via the Lead-owned mechanism (`scripts/mint_prod_invite.sh`
+  on the droplet; see `docs/internal/operations/` runbooks). Single-use; HOST records
+  who received which code (trust-zone split: Lead mints, HOST records identity,
+  PM sends).
 
 ---
 
@@ -153,39 +139,37 @@ Attachments:
 
 Before sending:
 
-- [ ] Personalize name and tester number
-- [ ] Verify all technical claims are current for version 0.8.12.0
-- [ ] Attach current documentation (from docs/)
-- [ ] Schedule setup call before sending confirmation
-- [ ] Update internal tracking (who's in alpha cohort)
-- [ ] Mention the personality questionnaire, per-user provider choice, and the honesty fixes as key new features
+- [ ] Mint a fresh invite code (never reuse; never send the same code to two people)
+- [ ] Personalize the name
+- [ ] Verify all technical claims are current for version 0.8.13.0
+- [ ] Attach/link current documentation (from docs/)
+- [ ] HOST records the invitee ↔ code pairing in the roster (PII stays out of the repo)
 
 ---
 
 ## Notes
 
-**Email Tone**: Friendly but honest about alpha status. Set realistic expectations upfront.
+**Email Tone**: friendly but honest about alpha status. Set realistic expectations
+upfront.
 
-**Documentation References**: Always reference official docs by filename:
-- `ALPHA_TESTING_GUIDE.md` (not "the guide")
-- `ALPHA_AGREEMENT_v2.md` (not "the legal doc")
-- Version 0.8.12.0 (not "alpha" or "latest")
+**Documentation References**: always reference official docs by filename
+(`ALPHA_TESTING_GUIDE.md`, `ALPHA_AGREEMENT_v2.md`), and versions by number
+(0.8.13.0, not "latest").
 
-**Support Commitment**: Only promise what you can deliver. Small cohort (2-5) is manageable for close support.
-
-**Technical Prerequisites**: Don't sugarcoat - command line comfort is required. Better to filter out now than frustrate later.
+**Support Commitment**: only promise what you can deliver. Small cohort is what makes
+close support possible.
 
 ---
 
 ## See Also
 
-- `../../ALPHA_TESTING_GUIDE.md` - Reference for what testers will receive
-- `../../ALPHA_AGREEMENT_v2.md` - Legal terms testers will see
-- `../../VERSION_NUMBERING.md` - Version scheme documentation
-- `../../ALPHA_QUICKSTART.md` - Quick reference guide for testers
+- `../../ALPHA_QUICKSTART.md` — what the tester's first ten minutes look like
+- `../../ALPHA_TESTING_GUIDE.md` — what testers receive for depth
+- `../../ALPHA_AGREEMENT_v2.md` — legal terms testers acknowledge
+- `../../VERSION_NUMBERING.md` — version scheme documentation
 
 ---
 
-_Template Version: 2.7_
-_For Software Version: 0.8.11.0_
-_Last Updated: July 17, 2026_
+_Template Version: 3.0_
+_For Software Version: 0.8.13.0_
+_Last Updated: September 21, 2026_
