@@ -503,8 +503,9 @@ class TestRefinementLogic:
 
     @pytest.mark.asyncio
     async def test_add_blocker_with_colon(self, handler, conversation_with_content):
-        """Add blocker with colon syntax."""
-        result = await handler._apply_refinement(
+        """Chip parser (#1837 shape 3): 'add blocker:' is a strict PREFIX form
+        — the deterministic, key-free chip action."""
+        result = await handler._refine_draft(
             conversation_with_content, "add blocker: waiting for code review"
         )
 
@@ -512,8 +513,8 @@ class TestRefinementLogic:
 
     @pytest.mark.asyncio
     async def test_remove_by_keyword(self, handler, conversation_with_content):
-        """Remove items by keyword."""
-        result = await handler._apply_refinement(conversation_with_content, "remove feature X")
+        """Chip parser: 'remove …' prefix removes matching lines."""
+        result = await handler._refine_draft(conversation_with_content, "remove feature X")
 
         assert "feature X" not in result
 
@@ -976,8 +977,10 @@ class TestRefinementHonesty1836:
     @pytest.mark.asyncio
     async def test_unapplied_edit_never_claims_update(self, handler, refining_conversation):
         """PM's exact turn shape: an imperative free-form edit with dictated
-        replacement text. The refinement engine can't apply it — the response
-        must say so, never 'I've updated'."""
+        replacement text. #1837 shape 3 AMENDMENT: this now routes to the
+        floor; in this keyless test world the floor's spend refuses — and the
+        honest invariant is the same under every engine: never 'I've updated'
+        when nothing changed, and the draft honestly presented as unchanged."""
         response = await handler.handle_turn(
             refining_conversation,
             "change what I did yesterday. right now that is just generic. say that "
@@ -986,7 +989,7 @@ class TestRefinementHonesty1836:
 
         assert response.state == StandupConversationState.REFINING
         assert "I've updated" not in response.message
-        assert "couldn't apply" in response.message
+        assert "unchanged" in response.message
         # The draft is honestly presented as unchanged.
         assert "Made progress on assigned tasks" in response.message
 
@@ -1127,3 +1130,137 @@ class TestInterviewOfferContract1837:
         content = response.standup_content or ""
         assert "getting the Piper Morgan team back on track" in content
         assert "Made progress on assigned tasks" not in content
+
+
+class TestRefinementViaFloor1837:
+    """#1837 shape 3: free-form refinement is the FLOOR's job (one place for
+    free-form language, on the user's own key); the substring toy NLU is
+    retired. The chip actions stay deterministic and key-free as strict
+    prefix parsers. #1836's verified-diff honesty is engine-independent."""
+
+    @pytest.fixture
+    def handler(self):
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
+
+    @pytest_asyncio.fixture
+    async def refining_conversation(self, handler):
+        conv = await handler.manager.create_conversation("s1837f", "u1837")
+        await handler.manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await handler.manager.set_standup_content(
+            conv.id, "*Yesterday:*\n* Made progress on assigned tasks\n\n*Today:*\n* Continue"
+        )
+        await handler.manager.transition_state(conv.id, StandupConversationState.REFINING)
+        return await handler.manager.get_conversation(conv.id)
+
+    def _mock_floor(self, handler, revise):
+        floor = MagicMock()
+        floor.revise_draft = revise
+        handler._floor = floor
+        return floor
+
+    @pytest.mark.asyncio
+    async def test_free_form_edit_is_applied_via_the_floor(self, handler, refining_conversation):
+        """PM's exact turn, with the floor able to serve: the dictated text
+        replaces the generic line and the success claim is TRUE."""
+        revised = (
+            "*Yesterday:*\n* Spent all day getting the Piper Morgan team back "
+            "on track\n\n*Today:*\n* Continue"
+        )
+        self._mock_floor(handler, AsyncMock(return_value=revised))
+
+        response = await handler.handle_turn(
+            refining_conversation,
+            "change what I did yesterday. say that yesterday I spent all day "
+            "getting the Piper Morgan team back on track.",
+        )
+
+        assert "I've updated" in response.message
+        assert "getting the Piper Morgan team back on track" in response.message
+        # …and the persisted draft matches the claim (verified diff persisted).
+        conv = await handler.manager.get_conversation(refining_conversation.id)
+        assert conv.current_standup == revised
+
+    @pytest.mark.asyncio
+    async def test_floor_no_change_gets_the_honest_no_change_copy(
+        self, handler, refining_conversation
+    ):
+        """The revision contract returns the draft unchanged for an
+        inapplicable request — the response says so, never 'I've updated'."""
+        self._mock_floor(
+            handler,
+            AsyncMock(return_value=refining_conversation.current_standup),
+        )
+
+        response = await handler.handle_turn(refining_conversation, "make it better somehow")
+
+        assert "I've updated" not in response.message
+        assert "unchanged" in response.message
+
+    @pytest.mark.asyncio
+    async def test_keyless_free_form_edit_refuses_honestly(self, handler, refining_conversation):
+        """#1809 at this seam: a free-form edit spends the USER's key; keyless
+        gets the honest copy naming the key AND the key-free chip actions."""
+        from services.llm.request_key import UnboundLLMKeyError
+
+        self._mock_floor(handler, AsyncMock(side_effect=UnboundLLMKeyError("no key")))
+
+        response = await handler.handle_turn(refining_conversation, "rewrite it punchier")
+
+        assert "your own key" in response.message
+        assert "add blocker" in response.message.lower()
+        assert "I've updated" not in response.message
+        assert response.state == StandupConversationState.REFINING
+
+    @pytest.mark.asyncio
+    async def test_floor_error_is_an_honest_error_not_a_silent_discard(
+        self, handler, refining_conversation
+    ):
+        self._mock_floor(handler, AsyncMock(side_effect=RuntimeError("provider down")))
+
+        response = await handler.handle_turn(refining_conversation, "tighten the wording")
+
+        assert response.metadata.get("refinement_failed") is True
+        assert "unchanged" in response.message
+        assert "I've updated" not in response.message
+
+    @pytest.mark.asyncio
+    async def test_chip_actions_never_touch_the_floor(self, handler, refining_conversation):
+        """The two deterministic chip actions stay key-free — the floor must
+        not be consulted (a keyless user can always use them)."""
+        floor = self._mock_floor(
+            handler, AsyncMock(side_effect=AssertionError("floor consulted for a chip action"))
+        )
+
+        response = await handler.handle_turn(
+            refining_conversation, "add blocker: waiting on review"
+        )
+        assert "waiting on review" in response.message
+        response = await handler.handle_turn(
+            await handler.manager.get_conversation(refining_conversation.id),
+            "remove Continue",
+        )
+        assert "I've updated" in response.message
+        floor.revise_draft.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_substring_triggers_are_retired(self, handler, refining_conversation):
+        """'remove'/'add blocker' INSIDE a sentence is free-form language for
+        the floor — not a chip trigger (the toy-NLU disease, retired). The old
+        matcher would have line-filtered on 'the fluff and make it punchier'."""
+        captured = {}
+
+        async def _capture(**kwargs):
+            captured["message"] = kwargs["user_message"]
+            return kwargs["draft"]
+
+        self._mock_floor(handler, _capture)
+
+        # (Imperative, not question-form — a question-form turn is #1739's
+        # STATE_QUESTION and never reaches refinement; and not "please"-led —
+        # a leading "please" currently fires the shared ACCEPT vocabulary and
+        # finalizes the draft, filed as #1843 in the contract's lane.)
+        await handler.handle_turn(
+            refining_conversation, "cut the filler words and make it punchier"
+        )
+
+        assert captured["message"] == "cut the filler words and make it punchier"

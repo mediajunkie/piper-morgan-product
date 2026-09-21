@@ -748,33 +748,74 @@ class StandupConversationHandler:
         # copy/interaction design, tracked on #1739; behavior unchanged.
         #
         # #1836 (PM live, 2026-09-20): "I've updated your standup" was emitted
-        # UNCONDITIONALLY, while _apply_refinement's default branch returns the
-        # draft untouched — so any edit outside its three keyword tricks (add
-        # blocker / remove / focus on) was silently discarded UNDER a success
-        # claim: the #1331 anti-confabulation rule violated at this seam. The
-        # success message is now derived from a verified diff; an unapplied
-        # edit gets the honest capability statement instead of a lie.
+        # UNCONDITIONALLY, while the old refinement engine's default branch
+        # returned the draft untouched — a silent discard UNDER a success claim
+        # (#1331 violated at this seam). The success message is derived from a
+        # verified diff, under every engine (#1837 shape 3 moved the engine to
+        # the floor; the diff rule is engine-independent and stays).
+        from services.llm.request_key import LLMKeyRequiredError
+
         before = conversation.current_standup or ""
-        refined = await self._apply_refinement(conversation, user_message)
         conversation.context["refining_ask"] = _REFINING_ANYTHING_ELSE_ASK
-        if refined == before:
+        try:
+            refined = await self._refine_draft(conversation, user_message)
+        except LLMKeyRequiredError:
+            # #1837/#1809: a free-form edit is an LLM spend on the USER's key —
+            # keyless refuses honestly, and the deterministic chip actions are
+            # named as the paths that still work without one.
             # ⚠️ COPY SEAM: Lead-drafted mechanism copy; CXO owns the voice of
             # this surface — adjust wording here, not at call sites.
             return ConversationResponse(
                 message=(
-                    "I couldn't apply that change — right now I can only add a "
-                    "blocker ('add blocker: …'), remove a line ('remove …'), or "
-                    "start the draft over. Free-form edits like that aren't wired "
-                    "up yet, so your draft is unchanged:\n\n"
-                    f"{before}\n\n"
-                    "Want to try one of those, or dictate a whole section and say "
-                    "'start over' to rebuild around it?"
+                    "Free-form edits like that use an LLM running on your own "
+                    "key, and you don't have one connected yet — add an OpenAI "
+                    "or Anthropic key in Settings. Meanwhile I can add a blocker "
+                    "('add blocker: …'), remove a line ('remove …'), or start "
+                    "over, no key needed. Your draft is unchanged:\n\n"
+                    f"{before}"
                 ),
                 state=StandupConversationState.REFINING,
                 standup_content=before,
                 requires_input=True,
                 suggestions=["Add a blocker", "Start over", "Looks good"],
             )
+        except Exception as e:
+            logger.error(
+                "standup_refinement_failed",
+                conversation_id=conversation.id,
+                error=str(e),
+                error_type=type(e).__name__,
+            )
+            # ⚠️ COPY SEAM: Lead-drafted mechanism copy; CXO owns the voice.
+            return ConversationResponse(
+                message=(
+                    "I hit an error applying that change — your draft is "
+                    f"unchanged:\n\n{before}\n\nWant to try again?"
+                ),
+                state=StandupConversationState.REFINING,
+                standup_content=before,
+                requires_input=True,
+                suggestions=["Try again", "Looks good", "Start over"],
+                metadata={"refinement_failed": True, "error": str(e)},
+            )
+        if refined == before:
+            # The engine ran and made no change (the revision contract returns
+            # the draft unchanged when the request describes nothing
+            # applicable). Honest no-change — never "I've updated" (#1836).
+            # ⚠️ COPY SEAM: Lead-drafted mechanism copy; CXO owns the voice.
+            return ConversationResponse(
+                message=(
+                    "I couldn't work out a change to make from that, so your "
+                    f"draft is unchanged:\n\n{before}\n\n"
+                    "Tell me more specifically what to change, or say 'looks "
+                    "good' to finalize."
+                ),
+                state=StandupConversationState.REFINING,
+                standup_content=before,
+                requires_input=True,
+                suggestions=["Add a blocker", "Start over", "Looks good"],
+            )
+        await self.manager.set_standup_content(conversation.id, refined)
         return ConversationResponse(
             message=f"I've updated your standup:\n\n{refined}\n\nAnything else?",
             state=StandupConversationState.REFINING,
@@ -1086,62 +1127,72 @@ class StandupConversationHandler:
 
         return preferences
 
-    async def _apply_refinement(
+    def _get_floor(self):
+        """Lazy ConversationalFloor for free-form draft revision (#1837 shape 3).
+
+        Lazy + cached: the floor's own LLM client is per-request-keyed at spend
+        time (#1814/#1819), so a shared instance holds no credential state.
+        """
+        if getattr(self, "_floor", None) is None:
+            from services.intent_service.conversational_floor import ConversationalFloor
+
+            self._floor = ConversationalFloor()
+        return self._floor
+
+    async def _refine_draft(
         self,
         conversation: StandupConversation,
         user_message: str,
     ) -> str:
-        """Apply user refinement to standup content."""
+        """Produce the refined draft for a REFINING-state edit request.
+
+        #1837 shape 3: the old `_apply_refinement` substring matcher is
+        RETIRED — its triggers fired inside unrelated sentences ("remove" in
+        "can you remove the fluff", the same disease as INITIATED's "just"
+        bypass), and every keyword patch deepened a parallel toy NLU instead
+        of fixing one (Arch concur). What remains deterministic is exactly the
+        two suggestion-chip actions, as strict PREFIX parsers (chip grammar,
+        not NLU); everything else is free-form language and goes to the floor
+        (`revise_draft`) — the one place free-form understanding lives, on the
+        user's own key.
+
+        Returns the refined text; NEVER persists (the caller persists on a
+        verified diff — #1836's rule stays engine-independent). Raises
+        `LLMKeyRequiredError` through to the caller for the honest keyless
+        copy.
+        """
         current = conversation.current_standup or ""
-        message_lower = user_message.lower()
+        message = user_message.strip()
+        message_lower = message.lower()
 
-        # Handle add blocker
-        if "add" in message_lower and "blocker" in message_lower:
-            # Extract blocker text - remove the "add blocker" prefix
-            blocker_text = user_message
-            for prefix in ["add blocker", "add a blocker", "add blocker:"]:
-                if prefix in message_lower:
-                    start_idx = message_lower.find(prefix) + len(prefix)
-                    blocker_text = user_message[start_idx:].strip()
-                    break
+        # Chip parser 1: "add blocker: …" / "add a blocker …" (prefix-only).
+        for prefix in ("add a blocker", "add blocker"):
+            if message_lower.startswith(prefix):
+                blocker_text = message[len(prefix) :].strip(" :-—")
+                if blocker_text:
+                    if "*Blockers:*" in current:
+                        return current.replace("*Blockers:*\n", f"*Blockers:*\n* {blocker_text}\n")
+                    return current + f"\n\n*Blockers:*\n* {blocker_text}"
+                # The bare chip ("Add a blocker") names no blocker — no change;
+                # the caller's honest no-change copy asks for specifics.
+                return current
 
-            if blocker_text:
-                if "*Blockers:*" in current:
-                    # Find the Blockers section and add to it
-                    refined = current.replace("*Blockers:*\n", f"*Blockers:*\n* {blocker_text}\n")
-                else:
-                    # Add a Blockers section
-                    refined = current + f"\n\n*Blockers:*\n* {blocker_text}"
-                await self.manager.set_standup_content(conversation.id, refined)
-                return refined
-
-        # Handle remove request
-        if "remove" in message_lower:
-            # Extract what to remove
-            remove_target = user_message
-            for prefix in ["remove", "remove the", "delete"]:
-                if prefix in message_lower:
-                    start_idx = message_lower.find(prefix) + len(prefix)
-                    remove_target = user_message[start_idx:].strip().lower()
-                    break
-
-            # Try to remove matching lines
+        # Chip parser 2: "remove …" / "delete …" (prefix-only). A target that
+        # matches no line falls through to the floor — at that point it's a
+        # free-form request, not the chip.
+        if message_lower.startswith(("remove ", "delete ")):
+            target = message.split(" ", 1)[1].strip().lower()
             lines = current.split("\n")
-            filtered_lines = [line for line in lines if remove_target not in line.lower()]
-            refined = "\n".join(filtered_lines)
-            await self.manager.set_standup_content(conversation.id, refined)
-            return refined
+            filtered = [line for line in lines if target not in line.lower()]
+            if target and filtered != lines:
+                return "\n".join(filtered)
 
-        # Handle focus request
-        if "focus on" in message_lower:
-            focus_target = message_lower.split("focus on")[-1].strip()
-            preferences = {"focus": focus_target}
-            await self.manager.update_preferences(conversation.id, preferences)
-            # For now, just note the preference - would regenerate with focus
-            return current
-
-        # Default - return current content unchanged
-        return current
+        # Free-form → the floor (LLM on the user's own key).
+        return await self._get_floor().revise_draft(
+            user_message=message,
+            draft=current,
+            user_id=conversation.user_id,
+        )
 
     # #1837: `_generate_basic_standup` and `_graceful_fallback` are DELETED.
     # They were #1289's undead twin — a hard-coded "Made progress on assigned

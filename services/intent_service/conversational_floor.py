@@ -443,6 +443,28 @@ Prohibitions:
 """.strip()
 
 
+# FLOOR_DRAFT_REVISION_INSTRUCTION — #1837 shape 3.
+# Used by `revise_draft` (an ARTIFACT operation, not a chat turn — it skips the
+# conversational apparatus: no push, no manifest, no provenance). The output
+# contract is load-bearing: the caller diffs the result against the original
+# draft (#1836's verified-diff honesty), so commentary or fences would read as
+# a content change and get presented as the user's draft.
+FLOOR_DRAFT_REVISION_INSTRUCTION = """
+You are revising the user's standup draft. Apply exactly the change they asked
+for — rewrite, rephrase, replace, add, or remove what they said, and nothing
+else. Preserve the draft's section structure (*Yesterday:* / *Today:* /
+*Blockers:*) and its bullet format.
+
+Output contract (strict):
+- Return ONLY the complete revised draft text.
+- No commentary, no preamble, no "here's the revised draft", no code fences.
+- Never invent activities or details the user did not state — their words are
+  the source of truth for their own day.
+- If the request doesn't describe an applicable change, return the draft
+  EXACTLY as given, unchanged.
+""".strip()
+
+
 # ---- Capability Manifest (#1517) ----
 
 # Static prose only — deliberately CAPABILITY-NAME-FREE. The derived list is
@@ -1678,6 +1700,48 @@ class ConversationalFloor:
 
         self.llm_client = LLMClient()
         return self.llm_client
+
+    async def revise_draft(
+        self,
+        *,
+        user_message: str,
+        draft: str,
+        user_id: Optional[str] = None,
+    ) -> str:
+        """#1837 shape 3: apply a free-form edit request to a draft artifact.
+
+        The floor is the ONE place free-form language understanding lives —
+        the standup flow's `_apply_refinement` substring matcher was a
+        parallel toy NLU that each keyword patch deepened (Arch concur,
+        2026-09-20), and it is retired onto this seam. This is an ARTIFACT
+        operation, not a chat turn: it shares the floor's identity base and
+        LLM path (per-user provider selection, the user's own key — #1415/
+        #1819) but deliberately skips the conversational apparatus (push,
+        manifest, provenance, history).
+
+        Returns the revised draft text. The CALLER owns honesty about the
+        result (#1836's verified-diff rule): an unchanged return means "no
+        applicable change", a refusal (`LLMKeyRequiredError`) propagates so
+        the flow can say honestly that free-form edits spend the user's key.
+        """
+        system = FLOOR_DRAFT_REVISION_INSTRUCTION
+        prompt = (
+            f"Current draft:\n{draft}\n\n" f"Requested change:\n{user_message}\n\n" "Revised draft:"
+        )
+        llm = self._get_llm_client()
+        revised = await llm.complete(
+            task_type="conversation",
+            prompt=prompt,
+            system=system,
+            user_id=user_id,
+        )
+        revised = (revised or "").strip()
+        # The output contract forbids fences, but strip them if the model
+        # drifts — a fenced draft would diff as changed and render as fences.
+        if revised.startswith("```"):
+            revised = re.sub(r"^```[a-z]*\n?", "", revised)
+            revised = re.sub(r"\n?```$", "", revised).strip()
+        return revised or draft
 
     async def _maybe_append_push(self, primary_message: str, ctx: FloorContext) -> str:
         """Issue #1032 INSIGHT-PUSH: call maybe_push and append payload if eligible.
