@@ -1,304 +1,51 @@
 """
-Tests for Gemini integration in LLMClient.
+Tests for Gemini's place in LLMClient after #1812 steps 5–6.
 
-Scope: verify Gemini is a real primary/fallback provider, not a stub.
-Paired with config changes in services/llm/config.py.
+HISTORY. This file used to pin Gemini SERVING mechanics (client init,
+system_instruction, #988 JSON mode) under the designated-operator binding — the
+only credential Gemini could ever spend, because `google.generativeai` configures
+credentials process-globally and so has no safe per-request client path (#1819).
+#1812 step 5 deleted the operator seam, which deleted Gemini's only spend path;
+step 6 amputated `_init_clients` (no server clients exist to initialize). The
+serving code and these tests went with it — git has both. Resurrect them only
+alongside a SAFE per-request Gemini credential path, which the SDK does not offer.
+
+What remains true, and pinned here: the dispatch table still routes GEMINI (so a
+future leg needs no router change), the leg refuses honestly (the refusal pins
+live in test_provider_request_key_1819.py), and the model config stays coherent.
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from services.llm.request_key import OPERATOR_SERVER_KEY_ENV, request_api_key
-
-
-@pytest.fixture(autouse=True)
-def _operator_spend_binding(monkeypatch):
-    """#1819 AMENDMENT: `_gemini_complete` now refuses UNBOUND like every other leg
-    (`request_spend_key("gemini")` — the server's global genai config is spendable only
-    under the explicit designated-operator binding, #1807 both gates). These tests pin
-    Gemini call MECHANICS (system_instruction, JSON mode, temperature), so they run
-    under the operator binding the real operator path would hold; the refusal itself
-    is pinned in test_provider_request_key_1819.py."""
-    monkeypatch.setenv(OPERATOR_SERVER_KEY_ENV, "1")
-    with request_api_key(None):
-        yield
-
 
 # ---------------------------------------------------------------------
-# Client initialization
+# The leg is a pure, honest refusal (summary pin; full set in the 1819 file)
 # ---------------------------------------------------------------------
 
 
-class TestGeminiClientInit:
-    def test_gemini_client_initialized_when_configured(self):
-        """LLMClient initializes a gemini_client when the config service reports gemini configured."""
-        from services.llm.clients import LLMClient
-
-        with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
-            mock_config = mock_config_cls.return_value
-            mock_config.get_configured_providers.return_value = ["gemini"]
-            mock_config.get_api_key.return_value = "test-gemini-key"
-
-            with patch("google.generativeai.configure") as mock_configure:
-                client = LLMClient()
-
-        assert (
-            client.gemini_client is not None
-        ), "Gemini client should be initialized when configured"
-        mock_configure.assert_called_with(api_key="test-gemini-key")
-
-    def test_gemini_client_none_when_not_configured(self):
-        """LLMClient leaves gemini_client as None when gemini is absent from configured providers."""
-        from services.llm.clients import LLMClient
-
-        with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
-            mock_config = mock_config_cls.return_value
-            mock_config.get_configured_providers.return_value = ["anthropic"]
-            mock_config.get_api_key.return_value = "test-anthropic-key"
-
-            client = LLMClient()
-
-        assert client.gemini_client is None
-
-    def test_providers_initialized_includes_gemini(self):
-        """providers_initialized returns True when only Gemini is configured."""
-        from services.llm.clients import LLMClient
-
-        with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
-            mock_config = mock_config_cls.return_value
-            mock_config.get_configured_providers.return_value = ["gemini"]
-            mock_config.get_api_key.return_value = "test-gemini-key"
-
-            with patch("google.generativeai.configure"):
-                client = LLMClient()
-
-        assert client.providers_initialized is True
-
-
-# ---------------------------------------------------------------------
-# Gemini completion
-# ---------------------------------------------------------------------
-
-
-class TestGeminiComplete:
+class TestGeminiLegRefuses:
     @pytest.mark.asyncio
-    async def test_gemini_complete_success(self):
-        """_gemini_complete returns text from the response."""
+    async def test_gemini_complete_refuses_unbound(self):
         from services.llm.clients import LLMClient
         from services.llm.config import LLMModel, LLMProvider
+        from services.llm.request_key import UnboundLLMKeyError
 
-        with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
-            mock_config = mock_config_cls.return_value
-            mock_config.get_configured_providers.return_value = ["gemini"]
-            mock_config.get_api_key.return_value = "test-key"
-
-            with patch("google.generativeai.configure"):
-                with patch("google.generativeai.GenerativeModel") as mock_model_cls:
-                    mock_response = MagicMock()
-                    mock_response.text = "I'm Piper."
-                    mock_response.usage_metadata = MagicMock(
-                        prompt_token_count=42, candidates_token_count=8
-                    )
-
-                    mock_model = mock_model_cls.return_value
-                    mock_model.generate_content_async = AsyncMock(return_value=mock_response)
-
-                    client = LLMClient()
-                    # Mark gemini_client as truthy so the method proceeds
-                    client.gemini_client = True
-
-                    config = {
-                        "provider": LLMProvider.GEMINI,
-                        "model": LLMModel.GEMINI_FLASH,
-                        "max_tokens": 1000,
-                        "temperature": 0.7,
-                    }
-                    result = await client._gemini_complete(
-                        prompt="who are you?",
-                        config=config,
-                        system=None,
-                    )
-
-        assert result == "I'm Piper."
-
-    @pytest.mark.asyncio
-    async def test_gemini_complete_with_system_prompt(self):
-        """System prompt is passed as system_instruction to GenerativeModel."""
-        from services.llm.clients import LLMClient
-        from services.llm.config import LLMModel, LLMProvider
-
-        with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
-            mock_config = mock_config_cls.return_value
-            mock_config.get_configured_providers.return_value = ["gemini"]
-            mock_config.get_api_key.return_value = "test-key"
-
-            with patch("google.generativeai.configure"):
-                with patch("google.generativeai.GenerativeModel") as mock_model_cls:
-                    mock_response = MagicMock()
-                    mock_response.text = "ok"
-                    mock_response.usage_metadata = MagicMock(
-                        prompt_token_count=1, candidates_token_count=1
-                    )
-                    mock_model_cls.return_value.generate_content_async = AsyncMock(
-                        return_value=mock_response
-                    )
-
-                    client = LLMClient()
-                    client.gemini_client = True
-
-                    config = {
-                        "provider": LLMProvider.GEMINI,
-                        "model": LLMModel.GEMINI_FLASH,
-                        "max_tokens": 1000,
-                        "temperature": 0.7,
-                    }
-                    await client._gemini_complete(
-                        prompt="hi",
-                        config=config,
-                        system="You are Piper.",
-                    )
-
-        # Verify GenerativeModel was constructed with system_instruction
-        call_args = mock_model_cls.call_args
-        assert call_args.kwargs.get("system_instruction") == "You are Piper." or (
-            len(call_args.args) > 1 and call_args.args[1] == "You are Piper."
-        ), f"Expected system_instruction='You are Piper.' in {call_args}"
-
-    @pytest.mark.asyncio
-    async def test_gemini_complete_raises_when_not_initialized(self):
-        """Unconfigured Gemini raises RuntimeError instead of crashing obscurely."""
-        from services.llm.clients import LLMClient
-        from services.llm.config import LLMModel, LLMProvider
-
-        with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
-            mock_config = mock_config_cls.return_value
-            mock_config.get_configured_providers.return_value = ["anthropic"]
-            mock_config.get_api_key.return_value = "test-key"
-
-            client = LLMClient()
-            # gemini_client should be None
-            assert client.gemini_client is None
-
-            config = {
-                "provider": LLMProvider.GEMINI,
-                "model": LLMModel.GEMINI_FLASH,
-                "max_tokens": 1000,
-                "temperature": 0.7,
-            }
-
-            with pytest.raises(RuntimeError, match="Gemini client not initialized"):
-                await client._gemini_complete(prompt="hi", config=config, system=None)
+        client = LLMClient.__new__(LLMClient)
+        client._output_filter = None
+        config = {
+            "provider": LLMProvider.GEMINI,
+            "model": LLMModel.GEMINI_FLASH,
+            "max_tokens": 1000,
+            "temperature": 0.7,
+        }
+        with pytest.raises(UnboundLLMKeyError):
+            await client._gemini_complete(prompt="hi", config=config, system=None)
 
 
 # ---------------------------------------------------------------------
-# #988 GEMINI-JSON: response_mime_type wiring for JSON mode
-# ---------------------------------------------------------------------
-
-
-class TestGeminiJSONMode:
-    """Gemini JSON mode — response_format={type: json_object} → response_mime_type='application/json'."""
-
-    async def _call_gemini(self, client, response_format):
-        """Helper: invoke _gemini_complete, return the GenerationConfig passed to generate_content_async."""
-        from services.llm.config import LLMModel, LLMProvider
-
-        with patch("google.generativeai.configure"):
-            with patch("google.generativeai.GenerativeModel") as mock_model_cls:
-                mock_response = MagicMock()
-                mock_response.text = '{"ok": true}'
-                mock_response.usage_metadata = MagicMock(
-                    prompt_token_count=1, candidates_token_count=1
-                )
-                mock_model_cls.return_value.generate_content_async = AsyncMock(
-                    return_value=mock_response
-                )
-
-                config = {
-                    "provider": LLMProvider.GEMINI,
-                    "model": LLMModel.GEMINI_FLASH,
-                    "max_tokens": 1000,
-                    "temperature": 0.3,
-                }
-                await client._gemini_complete(
-                    prompt="classify this",
-                    config=config,
-                    response_format=response_format,
-                    system=None,
-                )
-
-                # Extract the generation_config passed into generate_content_async
-                call = mock_model_cls.return_value.generate_content_async.call_args
-                return call.kwargs.get("generation_config")
-
-    @pytest.mark.asyncio
-    async def test_json_mode_sets_response_mime_type(self):
-        """response_format={type: json_object} → response_mime_type='application/json'."""
-        from services.llm.clients import LLMClient
-
-        with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
-            mock_config = mock_config_cls.return_value
-            mock_config.get_configured_providers.return_value = ["gemini"]
-            mock_config.get_api_key.return_value = "test-key"
-
-            with patch("google.generativeai.configure"):
-                client = LLMClient()
-            client.gemini_client = True
-
-            gen_config = await self._call_gemini(client, response_format={"type": "json_object"})
-
-        # generation_config is a GenerationConfig object; check attribute or dict access
-        mime_type = getattr(gen_config, "response_mime_type", None)
-        assert (
-            mime_type == "application/json"
-        ), f"Expected response_mime_type='application/json', got {mime_type!r}"
-
-    @pytest.mark.asyncio
-    async def test_no_json_mode_when_response_format_absent(self):
-        """response_format=None → response_mime_type not set (defaults to None/text)."""
-        from services.llm.clients import LLMClient
-
-        with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
-            mock_config = mock_config_cls.return_value
-            mock_config.get_configured_providers.return_value = ["gemini"]
-            mock_config.get_api_key.return_value = "test-key"
-
-            with patch("google.generativeai.configure"):
-                client = LLMClient()
-            client.gemini_client = True
-
-            gen_config = await self._call_gemini(client, response_format=None)
-
-        mime_type = getattr(gen_config, "response_mime_type", None)
-        # When absent, GenerationConfig shouldn't have set it
-        assert (
-            mime_type != "application/json"
-        ), f"Expected no JSON mode when response_format absent, got {mime_type!r}"
-
-    @pytest.mark.asyncio
-    async def test_no_json_mode_when_response_format_is_other_shape(self):
-        """response_format without 'json_object' type → no JSON mode."""
-        from services.llm.clients import LLMClient
-
-        with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
-            mock_config = mock_config_cls.return_value
-            mock_config.get_configured_providers.return_value = ["gemini"]
-            mock_config.get_api_key.return_value = "test-key"
-
-            with patch("google.generativeai.configure"):
-                client = LLMClient()
-            client.gemini_client = True
-
-            gen_config = await self._call_gemini(client, response_format={"type": "text"})
-
-        mime_type = getattr(gen_config, "response_mime_type", None)
-        assert (
-            mime_type != "application/json"
-        ), f"Expected no JSON mode for type='text', got {mime_type!r}"
-
-
-# ---------------------------------------------------------------------
-# Dispatch routing
+# Dispatch routing (unchanged by #1812 — a future safe leg slots back in here)
 # ---------------------------------------------------------------------
 
 
@@ -310,12 +57,8 @@ class TestCallProviderDispatch:
         from services.llm.config import LLMModel, LLMProvider
 
         with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
-            mock_config = mock_config_cls.return_value
-            mock_config.get_configured_providers.return_value = ["gemini"]
-            mock_config.get_api_key.return_value = "test-key"
-
-            with patch("google.generativeai.configure"):
-                client = LLMClient()
+            mock_config_cls.return_value = MagicMock()
+            client = LLMClient()
 
         config = {
             "provider": LLMProvider.GEMINI,
