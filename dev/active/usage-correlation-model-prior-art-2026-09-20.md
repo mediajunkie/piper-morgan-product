@@ -137,13 +137,39 @@ would produce exactly the "beautiful internal-consistency exercise" Exec's memo 
    and it doesn't need PM's usage dashboard to start being useful (dispatch tier vs. token cost is
    internally verifiable today).
 
+## Addendum (19:21 fire) — calibration question sent; dispatch-tier dimension checked, same pattern found in miniature
+
+**Calibration-shape question sent to Exec, cc PM** (`mailboxes/pa/sent/question-pa-to-exec-cc-pm-
+calibration-shape-for-usage-model-and-leads-unimplemented-proposal-2026-09-20.md`): does Lead's
+proposal get implemented, since no model here can be calibrated without it. Pending PM's answer.
+
+**Checked the dispatch-tier dimension (recommendation 3 above) rather than leaving it as a bare
+suggestion**: CIO implemented PM's 09-20 dispatch-tier-logging ruling same-day, but **only as a
+prose rule** — CLAUDE.md's Subagents section now asks each dispatcher to log the assigned tier
+inside their own session log entry, per-dispatch. There is **no structured, queryable, or
+aggregated surface** — the data (where it exists at all) is scattered as prose across 11 different
+roles' session logs, unverifiable for compliance the same way the original 09-14 rule was before
+this ruling. `grep`-ing recent session logs for tier mentions found real hits (09-14 through
+09-20, multiple roles) but no consistent format to parse reliably.
+
+**This is the exact pattern the prior-art pass already found, recurring one layer down**:
+a real, PM-ratified rule with zero mechanical enforcement or aggregation is not the same as
+instrumented data — "structural fixes hold, promises don't," now visible in this dimension
+specifically, not just in the calibration-mechanism question above. **Revises recommendation 3**:
+the dispatch-tier dimension is *not* actually independently buildable today without either (a) a
+prose-parsing pass across session logs (fragile, same fragility this whole exercise is trying to
+avoid) or (b) CIO/Lead adding a structured sink (a TSV row per dispatch, same shape as Lead's
+usage-per-account proposal) — which doesn't exist and isn't PA's to build unilaterally on another
+role's logging convention. Not chasing this further this fire; noting it honestly rather than
+either overclaiming progress or silently dropping the thread.
+
 ## What's not done
 
-- The actual model (which dimensions, what functional form, at what granularity) — not designed.
-- The calibration-shape question to PM — not yet drafted, per this pass's own recommendation that
-  it should incorporate the Lead-proposal-status finding rather than being drafted separately.
-- Any data collection or measurement of PA's own proposed dimensions.
-- No PM interaction has happened yet on this thread beyond the original tasking.
+- The actual model (dimensions, functional form, granularity) — still not designed; genuinely
+  waiting on PM's calibration answer for the proxy-vs-ground-truth dimensions, and on CIO/Lead for
+  whether the dispatch-tier dimension gets a structured sink.
+- Any data collection or measurement — none yet, for either reason above.
+- **PM interaction**: the calibration-shape question has been sent (19:21 fire); no response yet.
 
 **Verified how**: all four prior-art searches run live this fire (WebSearch, 4 queries, sources
 listed inline via the tool's own citations — not from training-data recall, given how fast this
