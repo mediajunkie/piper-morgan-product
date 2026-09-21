@@ -71,7 +71,9 @@ class _Observer:
 
     async def __call__(self, *args, **kwargs):
         self.calls += 1
-        self.client_for_request = anthropic_client_for_request(SERVER_CLIENT)
+        # #1812 step 5: the chokepoint takes no server client any more — SERVER_CLIENT
+        # is now a pure sentinel that nothing can produce, which is the property.
+        self.client_for_request = anthropic_client_for_request()
         return {"summary": "ok", "key_findings": []}
 
 

@@ -2,8 +2,9 @@
 
 Semantic search EMBEDS the query via OpenAI — a billable spend this route used to make
 on a server-owned keychain key with no key resolution at all (the only one of the six
-document routes with none). It now resolves stored-openai > designated-operator > refuse
-(the #1807 rung structure with the provider row the spend actually needs) and binds it
+document routes with none). It now resolves stored-openai > refuse (#1807's rung
+structure with the provider row the spend actually needs; #1812 step 5 deleted the
+designated-operator rung this file used to pin) and binds it
 for the handler's duration, same reset-in-finally rail as the five LLM-calling routes
 (#1185).
 """
@@ -78,8 +79,9 @@ async def test_search_refuses_a_keyless_caller_with_the_openai_specific_403():
 
 
 async def test_search_surfaces_an_embed_layer_refusal_as_403_not_500():
-    """If the refusal fires at the spend itself (e.g. operator binding without gate 1),
-    the route answers honestly instead of masking it as a server error."""
+    """If the refusal fires at the spend itself (a deeper layer re-deciding
+    entitlement), the route answers honestly instead of masking it as a server
+    error."""
     from services.llm.request_key import UnboundLLMKeyError
     from web.api.routes import documents
 
@@ -87,35 +89,13 @@ async def test_search_surfaces_an_embed_layer_refusal_as_403_not_500():
         raise UnboundLLMKeyError("no spendable key")
 
     with (
-        patch.object(documents, "resolve_user_openai_key", AsyncMock(return_value=None)),
+        patch.object(documents, "resolve_user_openai_key", AsyncMock(return_value="kOPENAI")),
         patch.object(documents, "handle_search_documents", _refusing_handler),
     ):
         with pytest.raises(HTTPException) as exc_info:
             await documents.search_documents(q="pricing", current_user=_user())
 
     assert exc_info.value.status_code == 403
-
-
-async def test_operator_resolution_binds_the_explicit_none_form():
-    """The designated operator's None resolution binds the operator form (server-side
-    credential authorized at the chokepoint, gate 1 re-checked there) — not a fake key."""
-    from web.api.routes import documents
-
-    captured = {}
-
-    async def _spy_handler(**kwargs):
-        from services.llm.request_key import _user_api_key
-
-        captured["raw_binding"] = _user_api_key.get()
-        return {"results": [], "count": 0}
-
-    with (
-        patch.object(documents, "resolve_user_openai_key", AsyncMock(return_value=None)),
-        patch.object(documents, "handle_search_documents", _spy_handler),
-    ):
-        await documents.search_documents(q="pricing", current_user=_user())
-
-    assert captured["raw_binding"] is None  # the explicit operator binding, verbatim
 
 
 async def test_resolve_user_openai_key_reads_the_openai_row():
@@ -154,10 +134,13 @@ async def test_expand_llm_key_binding_carries_the_stored_openai_key_alongside():
     assert binding == {"anthropic": "kANTHROPIC", "openai": "stored-openai-key"}
 
 
-async def test_expand_llm_key_binding_never_widens_an_operator_grant():
+async def test_expand_llm_key_binding_requires_a_resolved_key():
+    """#1812 step 5: the None passthrough (the operator grant, verbatim) is deleted —
+    an empty 'resolved' now raises, because nothing legitimately produces one."""
     from web.utils.llm_key import expand_llm_key_binding
 
-    assert await expand_llm_key_binding(None, _U) is None
+    with pytest.raises(ValueError, match="1812"):
+        await expand_llm_key_binding(None, _U)
 
 
 async def test_expand_llm_key_binding_fetch_failure_is_fail_closed():
