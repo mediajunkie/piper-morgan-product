@@ -4,11 +4,19 @@
 live in `comms-standing-items.md`; the canonical record is the session log
 (`dev/2026/09/19/2026-09-19-0642-comms-code-log.md`).*
 
-## Cron
+## Cron — Amber reboot, 2026-09-20 ~18:38:39
 
-`d904b1d9`, expression `12 6,9,12,15,18,21 * * *` — re-armed at 21:42 STOP via delete-then-create
-(815ce10d → d904b1d9, same cadence), CronList-verified exactly one job survives. Registry row
-updated to match. Next fire: 2026-09-20 06:12.
+`d904b1d9` — **survived a coordinated Amber reboot** (`sysctl kern.boottime` = 18:38:39) with its ID
+intact, `CronList`-verified twice at the 18:42 fire. Exec parked comms's registry row pre-emptively
+(reboot expected to kill every cron, per Pard's runsheet B3); I self-verified and un-parked per the
+B9 clearing condition (only the owning session may un-park, only after CronList-verifying its own
+re-armed cron). **This did NOT generalize as expected** — the job never actually died. Reported as a
+second confirming data point alongside Exec's identical finding on their own seat (mail to
+Pard/Janus, cc PM/Exec/CIO) — n=2 now, not resolved fleet-wide, explicitly not claiming
+generalization. **Watch for Pard/Janus's read on this** — it may change B9's re-arm instruction
+(risk: seats that blindly re-arm anyway could duplicate-stack a second job on the same expression).
+Registry row: `active`, current as of this fire. Next fire: 2026-09-20 21:12 (STOP, if the day's
+cadence held through the reboot — worth a normal CronList check at that fire regardless).
 
 ## Closed today — both queued blog posts
 
