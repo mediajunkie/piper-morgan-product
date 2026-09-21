@@ -68,20 +68,29 @@ Current job **`e018f052`** (chain … `db3710ca → bc447bf5 → e018f052`), exp
 
 ## Open threads, as of 09-18 STOP
 
-- ✅ **Janne Lammi's invite — HOLD LIFTED, 09-20 ~18:5x PT. The multi-day thread is resolved.**
-  Lead drove the full real BYOC path on `alpha.pipermorgan.ai` itself (throwaway token → real
-  #1344 registration → real Settings-API key store, live validation confirmed → substantive
-  LLM-path turn → real provider 401 proving selection-and-transmission of the stored key).
-  HOST independently verified before ruling (not on Lead's word alone): `gh issue view 1824`
-  confirmed real; both quoted app-log lines grepped against actual source at HEAD and confirmed
-  verbatim. One non-blocking finding (generic error copy instead of specific invalid-key text)
-  tracked under the existing `#1824`, correctly scoped as copy work, not a security/billing gap.
-  **What's left is entirely PM's**: the corrected draft has sat ready in Gmail since 09-19; sending
-  it is PM's own action, not gated by HOST further. Full ruling:
-  `dev/2026/09/20/2026-09-20-0641-host-code-log.md` (this fire) and the roster (main checkout).
-  **Broader scope still open, not HOST's to drive**: Arch's deployment-pipeline plan awaits PM's
-  ruling; Pard's hosting proposal continues. Neither blocks the invite anymore — that thread has
-  fully closed.
+- 🔴 **LIVE INCIDENT, read this FIRST at next fire — Janne's invite went out 09-21 with a
+  compromised, wrong-instance code. Not resolved as of 09-21 ~16:0x PT.** Chain: HOLD LIFTED
+  09-20 evening (full real BYOC path independently verified) → PM sent the invite 09-21 morning
+  using the standing draft → Lead found the SAME morning that the code in that draft
+  (`ZVHWT5408X2NFA6P0D838B35`) had been (a) sitting in the PUBLIC repo since HOST's own 09-13
+  roster memo (HOST's own leak, acknowledged directly to Lead/PM, not minimized) and (b) minted
+  against the wrong database (Fly, not alpha) — would bounce Janne's first click regardless of
+  the leak. **The send had already happened by the time this was caught** — HOST confirmed via
+  Gmail directly (draft gone, sent-mail shows the dead code went out 20:05 UTC).
+  Lead minted a safe replacement, kept off-repo (PM-conversation only, masked form `NCBN…65FH`),
+  filed `#1845` proposing bearer-credentials-never-in-mailboxes as a durable rule — HOST endorsed
+  without reservation. **Live evidence as of Lead's 22:10 UTC check**: Janne on the setup page,
+  had NOT yet submitted a code — real recovery window. **As of HOST's own check at 23:07 UTC, PM
+  had not yet sent the follow-up email with the replacement code** — flagged directly to PM twice
+  (once folded into the mail chain, once as a standalone nudge). **Next fire's first action**:
+  check Gmail sent-mail for the follow-up. If it's there, read the replacement code FROM THAT
+  MESSAGE (never from any mailbox memo — that's the whole point of the new rule), record the
+  roster row from it, verify independently. If it's STILL not there, that's worth a direct,
+  time-stamped nudge again — this has been open long enough that a wake finding it unresolved
+  should treat it as still-urgent, not routine. **Do NOT revive the old code under any
+  circumstance** — Lead's reasoning (it's now publicly advertised via `#1845` itself) is sound
+  and durable, not just true in the moment. Full incident: `dev/2026/09/21/2026-09-21-0707-host-
+  code-log.md`, Fires 3-4.
 - ✅ **Amber-restart handoff doc filed** (`docs/handoff-host-2026-09-18.md`, 09-18) — gate-blocking cohort requirement, met same-day. Archival unless the restart itself surfaces something HOST needs to act on.
 - ✅ **Sprint closeout for Sep 11–17 filed** (09-18, to Exec cc PM). Archival.
 - ✅ **Registry-parking asymmetry corrected cohort-wide** (09-18): only the owning session may un-park its own row; anyone may park any row. Archival, but worth remembering if a similar central-action temptation arises.

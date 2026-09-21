@@ -1,6 +1,16 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-21 ~10:50 PDT, verified via `date`.
+**Updated**: 2026-09-21 ~13:30 PDT, verified via `date`.
+
+**09-21 13:25 fire**: direct memo from CIO closing the loop on this morning's registry-state-column
+finding — both fixes independently verified via `git show --stat` on the cited commits (`02f59bc9d`
+freeze-check now reads registry from `origin/main`; `cd5b938dd` duty-cycle-tick v1.37 names the
+`state` column explicitly in START). Confirmed v1.37's text is live in this session's own skill
+re-invocation. No reply needed, triaged, MANIFEST regenerated+sent. Checked standing-items (nothing
+new unblocked) and GitHub-criteria (12 open, all already this fire-cycle's own work or correctly
+out-of-scope — #830/#337/#335 checked directly: `Production`/`Fast Follow` milestone-scoped,
+PM-assigned, not due yet). **Drained**: mail (1 direct handled+verified), standing-items (0 new),
+GitHub-criteria (0 new actionable). Idle.
 
 **09-21 10:25 fire — Weekly Docs Audit #1844 CLOSED.** Full 8-row Completion Matrix, all ✅. 3
 subagents dispatched, every finding independently re-verified against primary sources before

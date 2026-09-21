@@ -124,6 +124,24 @@ class CappedListRender(NamedTuple):
     remainder: Optional[ListRemainder]
 
 
+GITHUB_LIST_PAGE_CAP = 100
+
+
+def page_floor(count: int, page_cap: int = GITHUB_LIST_PAGE_CAP) -> tuple:
+    """#1778/#1781/#1782: a count taken from a FULL API page is a FLOOR, not a total.
+
+    The GitHub list endpoints return one page (per_page=100, unpaginated at our
+    call sites); ``len(page)`` equals the true total only while the repo is
+    under the cap. At the cap, presenting the number as exact is a fabricated
+    denominator (CXO §5b-i decision 3: "if the source says 1000+, we say 1000+").
+
+    Returns ``(display, is_floor)``: ``("100+", True)`` at/over the cap,
+    ``("37", False)`` under it. Feed ``display`` to headlines and to
+    ``compose_capped_list(source_total_display=...)`` when ``is_floor``.
+    """
+    return (f"{count}+", True) if count >= page_cap else (str(count), False)
+
+
 def compose_capped_list(
     *,
     lines: Sequence[str],

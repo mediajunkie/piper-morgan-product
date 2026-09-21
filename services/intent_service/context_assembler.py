@@ -1564,6 +1564,7 @@ class ContextAssembler:
         return {
             "blocked_items": cached["blocked_items"][:limit],
             "blocked_count": cached.get("blocked_count", len(cached["blocked_items"])),
+            "blocked_count_capped": cached.get("blocked_count_capped", False),
         }
 
     async def _compute_blocked_items(self, user_id: str) -> Optional[Dict[str, Any]]:
@@ -1606,6 +1607,9 @@ class ContextAssembler:
                     for i in blocked[:10]
                 ],
                 "blocked_count": len(blocked),
+                # #1778: blocked is filtered from ONE page — a full page means
+                # the count is a floor (unseen pages may hold more blocked items).
+                "blocked_count_capped": len(all_open) >= 100,
             }
         except Exception as e:
             logger.warning("context_assembler_blocked_items_error", error=str(e))
@@ -1648,6 +1652,7 @@ class ContextAssembler:
         return {
             "high_priority_issues": cached["high_priority_issues"][:limit],
             "open_issue_count": cached.get("open_issue_count", len(cached["high_priority_issues"])),
+            "open_issue_count_capped": cached.get("open_issue_count_capped", False),
             # #1226 Phase 3: preserve the no-repo signal through the cache unpack.
             "github_repo_unconfigured": cached.get("github_repo_unconfigured", False),
         }
@@ -1707,6 +1712,8 @@ class ContextAssembler:
                     for i in ranked[:_HIGH_PRIORITY_ISSUES_CAP]
                 ],
                 "open_issue_count": len(all_open),
+                # #1778: a full page means the count is a floor, not a total.
+                "open_issue_count_capped": len(all_open) >= 100,
             }
         except Exception as e:
             logger.warning("context_assembler_high_priority_issues_error", error=str(e))
@@ -1862,6 +1869,7 @@ class ContextAssembler:
             "recent_activity_count": cached.get(
                 "recent_activity_count", len(cached["recent_activity"])
             ),
+            "recent_activity_count_capped": cached.get("recent_activity_count_capped", False),
             "recent_activity_window_days": cached.get(
                 "recent_activity_window_days", _RECENT_ACTIVITY_WINDOW_DAYS
             ),
@@ -1881,7 +1889,7 @@ class ContextAssembler:
         Issue #1085 slice 2: Slack DM aggregator (channel_type 'im' / 'mpim').
         Issue #1085 slice 3: Slack @-mentions aggregator (channel_type 'mention').
         """
-        github_items = await self._fetch_github_activity_items(user_id)
+        github_items, _github_page_capped = await self._fetch_github_activity_items(user_id)
         calendar_items = await self._fetch_calendar_activity_items(user_id)
         slack_items = await self._fetch_slack_activity_items(user_id)
         slack_mention_items = await self._fetch_slack_mentions_items(user_id)
@@ -1908,15 +1916,22 @@ class ContextAssembler:
         return {
             "recent_activity": all_items[:_RECENT_ACTIVITY_CAP],
             "recent_activity_count": len(all_items),
+            # #1778: the GitHub source reads ONE page — a full page makes the
+            # aggregate count a floor (older-in-window items may be unseen).
+            "recent_activity_count_capped": _github_page_capped,
             "recent_activity_window_days": _RECENT_ACTIVITY_WINDOW_DAYS,
         }
 
-    async def _fetch_github_activity_items(self, user_id: str) -> List[Dict[str, Any]]:
+    async def _fetch_github_activity_items(self, user_id: str) -> tuple:
         """Fetch GitHub issues + PRs within the activity window.
 
         Per-source helper for `_compute_recent_activity`. Fail-graceful:
-        returns [] on any error. Each item carries `source: 'github'`
+        returns ([], False) on any error. Each item carries `source: 'github'`
         (#1085 slice 1 schema unification).
+
+        #1778: returns ``(items, page_capped)`` — the underlying read is ONE
+        page, so a full page means the window census is incomplete and any
+        count built on it is a floor.
         """
         try:
             from services.integrations.github.github_integration_router import (
@@ -1928,15 +1943,15 @@ class ContextAssembler:
 
             resolved = await github._resolve_default_repo()
             if not resolved:
-                return []
+                return [], False
             owner, repo = resolved
 
             adapter = github.mcp_adapter
             if not adapter:
-                return []
+                return [], False
             all_items = await adapter.list_github_issues_direct(repo, owner)
             if not all_items:
-                return []
+                return [], False
 
             # Time-window filter.
             now = datetime.now(timezone.utc)
@@ -1972,10 +1987,10 @@ class ContextAssembler:
                     "url": i.get("uri"),
                 }
                 for i in recent
-            ]
+            ], len(all_items) >= 100
         except Exception as e:
             logger.warning("context_assembler_github_activity_error", error=str(e))
-            return []
+            return [], False
 
     async def _fetch_calendar_activity_items(self, user_id: str) -> List[Dict[str, Any]]:
         """Fetch past calendar meetings within the activity window (#1086).

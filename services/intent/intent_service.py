@@ -44,7 +44,7 @@ from services.intent_service.conversation_context import (
     build_recent_history,
     get_or_create_context,
 )
-from services.intent_service.list_remainder import compose_capped_list
+from services.intent_service.list_remainder import compose_capped_list, page_floor
 from services.intent_service.orchestrator import IntentOrchestrator
 from services.intent_service.pre_classifier import MultiIntentResult
 from services.intent_service.soft_invocation import (
@@ -7373,6 +7373,10 @@ class IntentService:
         # empty-list and honest-degrade returns leave it None, which is
         # correct: those turns make no claim to cash.
         _remainder = None
+        # #1782: True only on the native-PAT branch when its issues-page census
+        # was full (pr_count is then a floor). The OAuth branch's total comes
+        # from search (honest) and never sets this.
+        _pr_census_capped = False
 
         try:
             _user_id = _principal_from_intent(intent)
@@ -7416,6 +7420,10 @@ class IntentService:
                 open_items = await github_router.get_open_issues(limit=100)
                 prs = [item for item in open_items if item.get("pull_request")]
                 pr_count = len(prs)
+                # #1782: the census ran over ONE page of open ISSUES — a full
+                # page means pr_count is "PRs among the first 100 open issues",
+                # a floor on the true PR count, not the count itself.
+                _pr_census_capped = len(open_items) >= 100
             else:
                 # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
@@ -7429,7 +7437,10 @@ class IntentService:
                 )
 
             if prs:
-                message = f"You have **{pr_count} open PR{'s' if pr_count != 1 else ''}**."
+                _pr_display = f"{pr_count}+" if _pr_census_capped else str(pr_count)
+                message = f"You have **{_pr_display} open PR{'s' if pr_count != 1 else ''}**."
+                if _pr_census_capped:
+                    message += " (counted among your first 100 open issues — there may be more)"
                 message += "\n\nHere are the most recent:"
                 # #1762 epic 6 — render the whole held set, cap at the shared
                 # renderer, store what the cap hid (GatherOutcome §5b).
@@ -7505,7 +7516,11 @@ class IntentService:
 
             if milestones:
                 count = len(milestones)
-                message = f"You have **{count} open milestone" f"{'s' if count != 1 else ''}**."
+                # #1781: full page -> floor, not total.
+                count_display, count_is_floor = page_floor(count)
+                message = (
+                    f"You have **{count_display} open milestone" f"{'s' if count != 1 else ''}**."
+                )
                 if count > 0:
                     # Sort by due_on (None last); show top 5
                     sorted_ms = sorted(
@@ -7524,7 +7539,11 @@ class IntentService:
                         suffix = f" ({open_count} open issue" f"{'s' if open_count != 1 else ''})"
                         _lines.append(f"\n- **{title}** — due {due}{suffix}")
                     _capped = compose_capped_list(
-                        lines=_lines, cap=5, kind="open milestones", source_total=count
+                        lines=_lines,
+                        cap=5,
+                        kind="open milestones",
+                        source_total=count,
+                        source_total_display=count_display if count_is_floor else None,
                     )
                     message += _capped.body
                     _remainder = _capped.remainder
@@ -7613,6 +7632,8 @@ class IntentService:
 
             if releases:
                 count = len(releases)
+                # #1781: full page -> floor, not total.
+                count_display, count_is_floor = page_floor(count)
                 # Sort by published_at descending (most recent first); None last
                 sorted_releases = sorted(
                     releases,
@@ -7630,7 +7651,7 @@ class IntentService:
                     message = f"Current version: **{tag}** ({name})."
                 else:
                     message = (
-                        f"You have **{count} release{'s' if count != 1 else ''}**, "
+                        f"You have **{count_display} release{'s' if count != 1 else ''}**, "
                         "all pre-releases."
                     )
                 # Show top 5 recent (regardless of stable/prerelease)
@@ -7645,7 +7666,11 @@ class IntentService:
                     flag = " (pre-release)" if r.get("prerelease") else ""
                     _lines.append(f"\n- **{tag}**{flag} — {name} ({pub})")
                 _capped = compose_capped_list(
-                    lines=_lines, cap=5, kind="releases", source_total=count
+                    lines=_lines,
+                    cap=5,
+                    kind="releases",
+                    source_total=count,
+                    source_total_display=count_display if count_is_floor else None,
                 )
                 message += _capped.body
                 _remainder = _capped.remainder
@@ -7722,7 +7747,9 @@ class IntentService:
 
             if labels:
                 count = len(labels)
-                message = f"You have **{count} label{'s' if count != 1 else ''}**."
+                # #1781: a full page means the count is a FLOOR ("100+"), not a total.
+                count_display, count_is_floor = page_floor(count)
+                message = f"You have **{count_display} label{'s' if count != 1 else ''}**."
                 # Sort alphabetically for stable presentation
                 sorted_labels = sorted(labels, key=lambda lbl: lbl.get("name", ""))
                 message += "\n"
@@ -7734,7 +7761,11 @@ class IntentService:
                     desc_suffix = f" — {desc}" if desc else ""
                     _lines.append(f"\n- **{name}**{desc_suffix}")
                 _capped = compose_capped_list(
-                    lines=_lines, cap=20, kind="labels", source_total=count
+                    lines=_lines,
+                    cap=20,
+                    kind="labels",
+                    source_total=count,
+                    source_total_display=count_display if count_is_floor else None,
                 )
                 message += _capped.body
                 _remainder = _capped.remainder
@@ -7833,6 +7864,8 @@ class IntentService:
 
             if branches:
                 count = len(branches)
+                # #1781: full page -> floor, not total.
+                count_display, count_is_floor = page_floor(count)
 
                 # Sort: default branch first (if found), then alphabetical
                 def _sort_key(b):
@@ -7840,7 +7873,7 @@ class IntentService:
                     return (0 if name == default_branch else 1, name)
 
                 sorted_branches = sorted(branches, key=_sort_key)
-                message = f"You have **{count} branch{'es' if count != 1 else ''}**"
+                message = f"You have **{count_display} branch{'es' if count != 1 else ''}**"
                 if default_branch:
                     message += f" (default: `{default_branch}`)."
                 else:
@@ -7858,7 +7891,11 @@ class IntentService:
                     flag_suffix = f" ({', '.join(flags)})" if flags else ""
                     _lines.append(f"\n- **{name}**{flag_suffix}")
                 _capped = compose_capped_list(
-                    lines=_lines, cap=20, kind="branches", source_total=count
+                    lines=_lines,
+                    cap=20,
+                    kind="branches",
+                    source_total=count,
+                    source_total_display=count_display if count_is_floor else None,
                 )
                 message += _capped.body
                 _remainder = _capped.remainder
