@@ -10,7 +10,13 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-21 13:22 PT (WORK). **Real security finding, already remediated**:
+**Last rewritten**: 2026-09-21 16:22 PT (WORK). Quiet fire — mail empty, `sprint-truth.py` clean
+(`0 unmilestoned`), 3 more closures (`#1778`/`#1781`/`#1782`) that were never in this seat's epic
+tracking while open, same gap as this morning's `#1808` — not backfilling, just naming the pattern
+(two-for-two today) as the thing a real third-queue-source criteria line would catch earlier.
+Nothing else this fire. Nothing PM-gated carried forward.
+
+**Prior: 2026-09-21 13:22 PT (WORK). **Real security finding, already remediated**:
 `#1845` — Janne's invite code (a bearer account-creation credential) appeared in full across 4+
 mailbox memos in this PUBLIC repo since 09-13, plus a stacked second defect (minted against the
 wrong instance — Fly, not alpha — so it would have bounced at the gate regardless). Lead found AND
