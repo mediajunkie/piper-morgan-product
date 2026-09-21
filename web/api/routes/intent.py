@@ -48,7 +48,6 @@ from services.llm.request_key import (
 )
 from services.ui_messages.user_friendly_errors import make_error_user_friendly
 from web.utils.error_responses import internal_error, validation_error
-from web.utils.llm_key import is_designated_operator  # #1807
 
 logger = structlog.get_logger()
 
@@ -549,8 +548,9 @@ async def process_intent(
         # ctx is None for unauthenticated requests - service handles gracefully
         # #1162/#1185 BYOC: resolve this request's Anthropic key — the X-User-Api-Key
         # header (Claude Desktop BYOC) wins; else the authenticated user's STORED key
-        # (hosted web, #1185), resolved by user_id from user_api_keys; else the server
-        # key. Bound to the request-scoped ContextVar (reset in finally; never logged).
+        # (hosted web, #1185), resolved by user_id from user_api_keys; else an honest
+        # refusal (#1807/#1812 — there is no server key). Bound to the request-scoped
+        # ContextVar (reset in finally; never logged).
         async def _fetch_stored_anthropic_key(uid: str):
             from services.database.session_factory import AsyncSessionFactory
             from services.security.user_api_key_service import UserAPIKeyService
@@ -563,15 +563,11 @@ async def process_intent(
                 request.headers.get("X-User-Api-Key"),
                 user_id,
                 _fetch_stored_anthropic_key,
-                # #1807: the designated-operator check — the ONE remaining path to the
-                # server's own key, and it is default-OFF. Without this argument the
-                # resolver refuses, which is the correct fail-closed default.
-                is_designated_operator,
             )
         except UserLLMKeyRequiredError:
-            # #1807: signed in, session fine, no key of their own, not the operator.
+            # #1807: signed in, session fine, no key of their own.
             # Refuse BEFORE intent_service/the LLM — an authenticated identity is not
-            # authorization to spend the operator's money.
+            # authorization to spend anyone else's money (#1812: no operator exemption).
             logger.warning("intent_user_key_required_1807", session_id=session_id, user_id=user_id)
             return _create_user_key_required_response(message)
         except AnonymousLLMKeyRequiredError:

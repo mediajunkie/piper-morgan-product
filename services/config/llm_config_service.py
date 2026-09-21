@@ -225,7 +225,8 @@ class LLMConfigService:
           0. (#1814) the key the CURRENT REQUEST already resolved for its acting
              principal — the BYOC ContextVar in ``services/llm/request_key.py``,
              populated by ``resolve_request_api_key`` (header > the user's OWN stored
-             key > designated operator, else refuse). #1819: provider-keyed — the
+             key, else refuse — #1812 step 5 deleted the operator rung). #1819:
+             provider-keyed — the
              mapping is asked for THIS provider (the header's key binds under
              ``REQUEST_KEY_PROVIDER``; stored keys bind under their own row's
              provider).
