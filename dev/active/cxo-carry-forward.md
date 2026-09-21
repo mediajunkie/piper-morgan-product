@@ -1,89 +1,61 @@
 ---
-last_updated: 2026-09-19
+last_updated: 2026-09-20
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-19 at the 22:17 STOP.
+# CXO carry-forward — rewritten 2026-09-20 at the 22:17 STOP.
 
-> ## 🔴 READ FIRST TOMORROW — the finding that outranks everything else here
+> ## 🔴 READ FIRST TOMORROW — every START re-verify this seat has run has found a real stale row
 >
-> **My #1688 tracker row said *"OFF, deliberately, by a ruling."* That is true of `main` and NOT true
-> of prod, where the flag is ABSENT** — `PIPER_FTUX_INTERVIEW` landed 2026-09-03 (`acc0b83eb`) and
-> **Lead's finding is no droplet deploy since July.**
+> **Three for three now.** 09-19's re-verify found the #1688 "OFF by a ruling" row was true of `main`
+> and NOT of prod (flag absent, not off). 09-20's re-verify found **that same corrected row was
+> ALSO wrong** — the flag has been ON in prod since 09-07 (PM overruled the hold), and separately
+> found the T-axis "closing window" was false and had already reached PM as a deadline, and that
+> #1807 sat marked time-critical after it had closed.
 >
-> ⭐ **I had built the ruling-vs-measurement distinction and still missed *true-of-`main`-vs-true-of-
-> prod* underneath it.** 📌 **This generalises past my seat: while the deploy gap is open, every
-> "verified on `origin/main`" claim this cohort makes is a claim about `main`, not about what users
-> run.** **Row amended. I do not know how many other rows cohort-wide have that shape.**
+> 📌 **The generalisable finding, stated once rather than per-incident**: this seat's own error mode
+> is trusting a prior tracker entry over the live source. **The START re-verify step is not
+> ceremony — it has paid out every single time it's been run.** Run it before touching anything the
+> tracker claims is settled.
 
-> ## ✅ CRON — GAP CLOSED. Arm-date is now verified and recorded here.
+> ## ⏱️ THE CRON OFFSET IS NOT A STABLE SINGLE VALUE — even on one unrotated job, across a day
 >
-> | | |
-> |---|---|
-> | **Job** | **`23d4c124`** — `47 6,9,12,15,18,21 * * *`, recurring |
-> | **Armed** | **2026-09-19 22:2x PDT** (at the STOP, delete-then-create: `CronList` → `CronDelete 7bb7c53a` → `CronCreate` → `CronList` confirmed **exactly one**) |
-> | **Expires** | **~2026-09-26** (7-day auto-expiry) |
+> Job `23d4c124` (armed 09-19 22:2x STOP, expires ~09-26) produced, today: 06:59 (+12) ·
+> 09:59:47 (+12) · 12:59:49 (+12:49) · 15:59:48 (+12:48) · **19:18:51 (+31:51)** ·
+> **22:17:14 (+30)**. ⭐ **Yesterday's "five for five, exactly +30" and this morning's "two for two,
+> exactly +12" were both real reads of real data — and neither one is the job's stable constant. A
+> job's offset can shift mid-day with no rotation at all.**
 >
-> ⭐ **This closes the gap I flagged at arrival**: the handoff's *"armed 09-18, expiry ~09-25"*
-> described `4f984f8f`, a job that no longer existed, so Step 1's proactive-rotation check had nothing
-> to compare against. **It does now.**
-> 📌 **Rotate at the FIRST fire with both the information and the margin — name the RULE, not the date.**
-> ⚠️ **Predecessors: `4f984f8f` (handoff) → `7bb7c53a` (survived the night, ran all five of today's
-> fires) → `23d4c124`. Cadence UNCHANGED, so no registry edit is owed** — only the job id moved.
-> 🔴 **And the standing caveat: `CronList` proves the OBJECT. Only a fire proves DELIVERY.**
+> ✅ **This does NOT need re-litigating.** CIO found the operative answer already ships:
+> `duty-cycle-freeze-check.sh`'s `FIRST_FIRE_GRACE_MIN` defaults to **45 minutes**, and every value
+> above fits inside it with margin. **Leave `first_fire` at the nominal cron slot; do not tune a
+> registry row to any observed offset — today is direct proof a tuned constant goes wrong same-day,
+> not just at the next rotation.** Full thread: `finding-cxo-to-pard-web-cio-cc-exec-pm-…` (09-20) and
+> the closing memo to Web/CIO/Pard the same day.
 
-> ## ⏱️ EVERY FIRE TODAY ARRIVED EXACTLY +30 MIN — five for five
+> ## ✅ #1818 and #1823 — CLOSED, full arc in the tracker (below), nothing open
 >
-> `09:47→10:17` · `12:47→13:17` · `15:47→16:17` · `18:47→19:17` · `21:47→22:17`. **Exact, no drift.**
-> ⚠️ **I tried to establish whether it's cohort-wide and THE CHECK DOES NOT WORK** — registry
-> cron-minute vs first `hb(role)` commit is confounded by START-work duration, and `docs` breaks the
-> pattern. 🔴 **Do not report a cohort number from that method.** **Raised to Pard, who can see actual
-> delivery times.** **One consequence named**: the registry's `first_fire` feeds the freeze-watchdog's
-> should-be-cycling gate, so a constant offset silently spends that grace window.
+> PM ruled (b): kind-matched acknowledgment + one shared explanation string, fixed text, no gate
+> exemption. Copy delivered same day. Turn-2+ scope split confirmed with Arch at 22:1x tonight:
+> **my short form covers repeated pleasantries only; #1823's gate string fires unchanged on any
+> substantive request.** Nothing further owed by me on either issue.
 
-> ## 🔄 SEAT CHANGED 2026-09-19 — wave-2 context clear (Pard, certified Janus, xian overseeing)
+> ## ✅ Acceptance contract → v1.1 — my own artifact had a real gap, found by PM's first live transcript
 >
-> **The predecessor's context was cleared deliberately at ~08:25.** The session log
-> (`dev/2026/09/19/2026-09-19-0717-cxo-code-log.md`) was **RESUMED, not replaced** — Fire 1 is the
-> predecessor's and carries the #1823 copy work this fire built on. **Arrival block appended there,
-> not here.**
->
-> 🔴 **`docs/handoff-cxo-2026-09-18.md` is STALE in two verified places** — do not reason from it
-> without checking:
-> - **Cron**: it says job `4f984f8f`. **Live is `7bb7c53a`** (`CronList`, 2026-09-19). The old ID no
->   longer exists.
-> - **Tracker**: it says 14 rows. **Was 15 at arrival, is 17 now.** The 14→15 delta was the BYOC
->   T-axis row, filed 09-18, which says so about itself.
->
-> ⚠️ **Everything else in the handoff verified out or was not checked** — it is a good document; it is
-> simply one day behind, exactly as its own closing paragraph warns.
+> §5b's two-case enumeration for a bare affirmative was INCOMPLETE — PM's #1837 dogfood session hit a
+> third case (acceptance silently captured by an unrelated flow) within four turns. Amended as a dated
+> box, not a silent edit. **If a future acceptance-adjacent finding shows up, check §5b's amendment
+> box before assuming the two-case version is still current** — anyone citing this contract from
+> memory rather than the file is citing the pre-09-20 version.
 
-> ## 🟡 MY CRON HAS NO VERIFIED ARM-DATE — the one open mechanical gap
+> ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS ONCE — the reason for the discipline below
 >
-> ✅ **Delivery is PROVEN**: the 09:47 fire landed (late, 10:17). Job `7bb7c53a`, singular, correct
-> expression. **That satisfies Lead's 09-13 rule — the only proof a cron fires is a fire.**
->
-> 🔴 **But Step 1's proactive-rotation check needs an ARM-DATE, and mine is unanchored.** The
-> handoff's *"armed 09-18 11:5x, expiry ~09-25"* describes **`4f984f8f`, a different job.** I know
-> `7bb7c53a` predates 09-19 07:17 (Fire 1 saw it and said it survived the night) and nothing more.
-> **Worst case is ~09-25.** ⭐ **Recorded so rotation is not reasoned from a date that describes a job
-> that no longer exists** — the handoff's own warning, *name the rule not the date*, with the
-> failure mode inverted.
-> **Action for the next START: record a real arm-date when you next rotate, and put it HERE.**
-
-> ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS — read this before trusting any frontmatter
->
-> The previous version opened: *"frontmatter is the checkable claim; this prose line is not, and must not
-> be trusted over it."* **Correct instruction. And its `last_updated` read `2026-09-02` while the body
-> carried 09-04 and 09-05 events** — so anyone following the instruction would have trusted the **stale**
-> field over the **current** prose. ⚠️ **`max_age_days: 1` made it 6× over, and nothing flagged it**,
-> because nothing reads this file's frontmatter but me.
->
-> ⭐ **The reusable part**: I kept the body current and the metadata stale, which is the *opposite* of the
-> failure the header warns about and **produces the same wrong answer**. A currency claim you update by
-> hand, on a file only you read, degrades silently in whichever direction you aren't looking.
-> **Touch the date whenever you touch the body — same edit, not a later one.**
+> A prior version's `last_updated` sat stale for days while the body stayed current — the *opposite*
+> of the failure the frontmatter warns about, and it produces the same wrong answer for a reader who
+> trusts the field over the prose. **Touch the date whenever you touch the body — same edit, not a
+> later one.** *(This entry stays compact rather than re-told in full each rewrite — the lesson is
+> "touch the date with the body," and this file now does, every STOP.)*
 
 ## 🔴 THE QUEUE IS THREE SOURCES, NOT TWO (PM ruling, 2026-09-11)
 
@@ -197,12 +169,10 @@ that would manufacture a record of a discipline I didn't have.
 
 ## 🔴 NEXT FIRE — first move
 
-Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 15`**
-(⚠️ **updated 09-18 19:15 when the BYOC-T row was added — a row that should have existed for weeks; it
-was my stated PRIMARY GOAL with no row at all.** 🔴 **This expectation went stale at 11 for six days
-while I read past it every fire** — **re-state it whenever you add or remove a row, and note that the
-check only catches a count going DOWN, never a stale expectation going up.**). ⚠️ **A count below that
-means
+Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 19`**
+(⚠️ **updated 09-20 22:1x STOP: 18→19, one new #1837 row.** **Re-state this expectation every time you
+add or remove a row** — the check only catches a count going DOWN, never a stale expectation going
+up, and a stale expectation here has hidden a real gap before.). ⚠️ **A count below that means
 my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
 shipped the per-file count specifically so this is visible without building a control.
 
@@ -260,8 +230,9 @@ findable.**
 
 ## Waiting on others — nothing owed to PM
 
-✅ **The #1463 PM ask is DISCHARGED** — authorized, run 09-03, series **CLOSED** on my recommendation.
-**Nothing is currently queued for PM from this seat.**
+**Nothing is currently queued for PM from this seat.** T-axis tokens ("spend the tokens now") land on
+PA's queue, not mine — my half was pre-registered scoring properties, owed to PA this cycle, not to
+PM. #1824's classifier owner is Lead's open question, not mine.
 
 ## ⚠️ Instrument state — read before scoring anything
 
@@ -269,87 +240,48 @@ findable.**
   for its version — no version numbers in briefings.**
 - **C-axis**: report **per bucket, never pooled**. `not_applicable` = full marks at C=2. The
   C=2-clustering diagnostic applies to the **`required` bucket only**.
-- 🔴 **BYOC rubric (v0.6)**: **T scores ADDITION as well as survival.** Still `PENDING-PROBE` — informs
-  design, **cannot close a Layer-B gate on T.** ⭐ **This is exactly the split I challenged Arch's
-  enforcement column over on 09-08: present ≠ enforced, and my own lane is the proof.**
-- ⭐ **Standing bias to correct for: I model the host as executing literally; it SYNTHESISES.** Three
-  falsified predictions share that root. **My track record on the class-B mechanism is 0 for 2** — treat
-  any new mechanism of mine as a candidate until tested.
+- 🔴 **BYOC rubric (v0.7.2 as of 09-18)**: T axis still `PENDING-PROBE`. **Open the instrument itself
+  before scoring anything** — it names FOUR blockers, and as of 09-20 only three are token-solvable
+  (one vendor / n=1 / a design confound). **The fourth — "still our model, not the actual MCP
+  surface" — is stated in the instrument's own §6c as sufficient on its own to hold `PENDING-PROBE`
+  regardless of spend.** Proposed splitting the axis (T-own-surface vs T-MCP-surface) to PM/PPM; not
+  ruled on as of this writing. **Owe PA pre-registered scoring properties before their round.**
+- ⭐ **Standing bias to correct for: I model the host as executing literally; it SYNTHESISES.** My
+  prediction record on this class is **0 for 3** as of 09-19 — pre-registration in writing, before
+  seeing output, is the only mitigation that has worked. Treat any new mechanism claim of mine as a
+  candidate until tested against real output.
 
 ## Live threads (watch only)
 
-- 🟡 **inbox/read defect — THIRD cleanup in a month; invariant proposed, not yet installed.** PA fixed
-  their 30 same-day. 🔴 **But PPM had already found, fixed AND cohort-swept this on 08-10 (21 files,
-  "PPM only") — the habit resumed the next day and returned as 188.** ⭐ **A cleanup that doesn't change
-  the behaviour is a rollback, not a fix**, and **a cohort sweep has a shelf life — including mine.**
-  Proposed a one-line repo invariant (no dir below `mailboxes/<role>/<box>`), home suggested as the
-  existing lint belt. **PPM/CIO's call. Watch for whether anything actually gets installed** — if not,
-  the fourth instance is the falsification.
-
-- ✅ **Flywheel v3 — CLOSED for me.** Both challenges accepted; the table fix landed only in the
-  amendment note until I checked the file, then **Arch corrected it in place at v3.0.2 with a visible
-  marker.** **D4/D2 declined twice on no evidence — that stands, and the window closes 09-09 EOD.**
-- ✅ **#1730 Gap 1 · FTUX 3rd line · #1717 wrinkles 1+2 — ALL LANDED**, verified verbatim in source
-  09-09. 🔴 **Layer: source presence. NOT tests-run, NOT deployed, NOT user-observed.**
-- ✅ **Aggregation-guard gap — FILED AND CLOSED 09-09 in under three hours.** Lead single-sourced it to
-  a `SOURCE_FAILED_FLAGS` registry with **AST-enforced** association, and made the tests' denominator
-  derive from the thing under test. **All five of his claims verified by me in the file. NOT verified:
-  the suite run** (no pytest on this seat).
-- ✅ **Acceptance contract — my correction ACCEPTED 09-09.** Arch conceded same-day: *"I cited ratified
-  law from memory of its shape rather than from its signature — CXO opened the function; I didn't."*
-  Amended condition (b): the predicate takes `(effect, outwardness)`; **outward WRITEs accept at the
-  DESTRUCTIVE bar.** Lead builds. ✅ **Arm-lifetime question ANSWERED BY ME 09-09 22:17 rather than left
-  in Lead's input: arms live EXACTLY ONE TURN** (`intent_service.py:1072` pops unconditionally, before
-  classification; in-process dict, no TTL; #1529's documented "off-intent abandons via the clear").
-  🔴 **My §5 hazard was RETRACTED — it was a no-op, and its framing implied the opposite of the truth.**
-  ⭐ **Real exposure is the inverse: an arm is lost if anything at all intervenes.** Multi-worker theory
-  for #1694 **ruled out by config**, not merely untested.
-- ✅ **Six-cousin epics — my flag was ADOPTED and I was named an owner.** PPM's `mvp-epic-order-2026-09-09.md`
-  carries the line requiring the user-facing-contract owner named *before* the copy; Arch named the first
-  one: **cousin 1's aggregation copy is mine**, #1717's composition case as its acceptance test.
-- ✅ **#1738 rule is now the JOINT INVARIANT of epics #1 and #2** (Arch, 09-10). §5b is the citation
-  target both inherit. ⭐ **Arch's sharper half, recorded verbatim in the doc**: *the assistant reading
-  its own render as evidence is the architectural defect, not the truncation.*
-- 🟡 **Scope-guard**: my `verdict: UNSET` line shipped (PPM, `542a6ec03`) — **then I found my own count
-  is a NUMERATOR WITH NO DENOMINATOR**: over zero files the grep prints nothing, identical to "no flags
-  yet," and Arch proved no memo has ever landed (bot can't push to protected main). ⭐ **Success reports
-  to the watched channel; failure and denominator report to the unwatched one — backwards.** Offered a
-  one-line-per-run committed ledger, **sequenced with arming, not before** (it rides the same push).
-  **Blocked on PM's repo-settings decision.**
-- 🟢 **Cousin-1 contract DELIVERED 09-09** — `docs/internal/design/gather-outcome-user-facing-contract-2026-09-09.md`.
-  🔴 **Its finding**: aggregation already exists in the **composed** path (`orchestrator._combine_results`)
-  and not the **directive** path (the floor's five sites) — **two mechanisms, one noun.** ⚠️ **Exec's live
-  rider is therefore a REPORTABILITY defect, not an aggregation one — fixing aggregation would leave it
-  untouched.** **Site not identified; I did not claim one.**
-- **#1688 MCP arm** — spec delivered 09-02; production-milestoned, build unstarted.
-- 🔴 **#1386 criterion 3** — re-runs at **MVP close**. ⚠️ **CORRECTED 09-09 16:17, three hours after I
-  wrote it**: I recorded *"fell 52 → 46 today… the trigger is days away, not weeks."* **It is 49 now —
-  it went back UP**, and 📄 Exec's longitudinal pull the same afternoon shows MVP closures averaged
-  **~25/week** and *collapsed* to 7–11 in the last fortnight. ⭐ **I extrapolated a trend from two points
-  three hours apart** — the same error class Exec corrected in themselves the same day (*"a narrow recent
-  window presented as the steady state"*), on the same metric, independently. **Re-read the count every
-  START; do not carry a remembered number OR a remembered direction.**
-- **Spatial committed-theory synthesis** — Arch publishes.
-- **Voice watch** — ⚠️ **method is per-trigger**: code change → **structural** review; live decline →
-  **Colleague Test with denominator**. Do not claim the second when doing the first. ✅ **Trigger (a)
-  fired 09-09 and the structural review was delivered as a structural review.**
-- **Exec #17 (render method)** — ✅ **my half answered 09-08**, after reading the render layer. Awaiting
-  Arch.
+🔴 **PRUNED 2026-09-20 STOP — the prior version of this section was 09-08 through 09-10 content,
+eleven days stale, sitting under a file whose own header claims per-stop currency.** Every item in it
+was either closed, superseded by a later ruling, or already carried more currently in
+`cxo-standing-items.md` (the durable tracker, which is where open items belong — this file is
+ephemeral session state, not a running history). **Kept nothing rather than re-verify eleven days of
+claims I'd need to re-check anyway; the tracker is the source of truth for what's actually open.**
+Current open items: see `dev/active/cxo-standing-items.md`, 19 rows, both guards clean as of tonight.
 
 ## Cron
 
-✅ **RE-ARMED at the 2026-09-18 STOP: `4f984f8f` → `7bb7c53a`** (delete-then-create; `CronList`
-singular). **Expiry ~09-25 → rotation window opens 09-23.**
+✅ **RE-ARMED at the 2026-09-20 STOP: `23d4c124` → new job** (delete-then-create; `CronList` singular
+before signing off — id recorded in the sign-off section below). **Expiry ~7 days from tonight's
+arm-time.**
 
 ⭐ **Rotate at the FIRST fire with both the information and the margin.** ⚠️ **A target DATE here quietly
 outranks the RULE that produced it** — name the rule, not just the date.
 🔴 **`CronList` proves a job OBJECT exists. The only proof a cron FIRES is a fire.**
+🔴 **And per tonight's finding above: do NOT infer the new job's offset from today's data.** A job's
+offset is not even stable within itself across a day — the 45-min grace absorbs it; don't tune
+anything to a number from the outgoing job.
 
 ## ⚠️ AMBER COLD-START RESTART may land overnight
 
-✅ **`docs/handoff-cxo-2026-09-18.md` is filed and pushed** (gate-matching name). **Under a cold start
-that file and this one are the load-bearing artifacts** — **keep both current, and read the handoff's
-*"How this seat gets things wrong"* section before trusting anything else here.**
+⚠️ **`docs/handoff-cxo-2026-09-18.md` is now TWO DAYS STALE** — verified stale in two places at
+09-19 arrival (cron job id, tracker row count) and superseded further by everything above since. **No
+seat change happened tonight, so no fresh handoff doc was written** — under an ordinary overnight gap,
+**this carry-forward plus tonight's session log
+(`dev/2026/09/20/2026-09-20-0659-cxo-code-log.md`) are the load-bearing artifacts.** If a genuine seat
+change lands, write a fresh dated handoff before assuming the 09-18 one still applies — it doesn't.
 
 ## 🔴 WHAT NO CHECK OF MINE CATCHES — the 09-18 tally, kept because it is uncomfortable
 
