@@ -71,9 +71,43 @@ def mock_redis_factory(mock_redis):
 
 @pytest.fixture(scope="function")
 def mock_db_session_factory():
-    """Mock database session factory"""
+    """Mock database session factory.
+
+    #1808: initialize() now SEEDS Redis from the DB (session_scope_fresh +
+    an async execute whose result iterates), and add() write-throughs to the
+    DB first — the mock supports both with an empty table by default.
+    """
     factory = MagicMock()
-    # We'll configure this as needed in tests
+
+    session = MagicMock()
+    empty_result = MagicMock()
+    empty_result.scalars.return_value = []
+    empty_result.rowcount = 0
+
+    async def _execute(*a, **k):
+        return empty_result
+
+    session.execute = _execute
+    session.add = MagicMock()
+
+    async def _commit():
+        return None
+
+    session.commit = _commit
+
+    scope = MagicMock()
+
+    async def _aenter(*a, **k):
+        return session
+
+    async def _aexit(*a, **k):
+        return False
+
+    scope.__aenter__ = _aenter
+    scope.__aexit__ = _aexit
+    factory.session_scope_fresh.return_value = scope
+    factory.session_scope.return_value = scope
+    factory._session = session  # test hook
     return factory
 
 
@@ -208,8 +242,10 @@ class TestTokenBlacklistOperations:
             await bl.is_blacklisted("any-token")
 
     @pytest.mark.smoke
-    async def test_remove_expired_redis_noop(self, blacklist):
-        """Should be no-op for Redis (auto-expires via TTL)"""
+    async def test_remove_expired_cleans_db_even_in_redis_mode(self, blacklist):
+        """#1808 AMENDMENT (was: Redis mode -> cleanup no-op): the DB is ALWAYS
+        written now (write-through contract), so cleanup always runs against it;
+        Redis entries still TTL-expire on their own. Should be no-op for Redis (auto-expires via TTL)"""
         count = await blacklist.remove_expired()
         assert count == 0
 
@@ -386,3 +422,197 @@ class TestEdgeCases:
         # Should fail after revocation
         new_token = await jwt_service.refresh_access_token(refresh_token)
         assert new_token is None
+
+
+# ============================================================================
+# #1808 — the activation contract: DB is the record, Redis is a seeded
+# write-through cache. These are the properties that make it SAFE to finally
+# call initialize() (which was dead code — Redis configured, wired, never used).
+# ============================================================================
+
+
+def _db_factory_with_rows(rows):
+    """A session factory whose seed query returns `rows` and which records
+    every ORM add() (the write-through's durable half)."""
+    factory = MagicMock()
+    session = MagicMock()
+    result = MagicMock()
+    result.scalars.return_value = rows
+    result.rowcount = 0
+
+    async def _execute(*a, **k):
+        return result
+
+    session.execute = _execute
+    session.added = []
+    session.add = lambda entry: session.added.append(entry)
+
+    async def _commit():
+        return None
+
+    session.commit = _commit
+
+    scope = MagicMock()
+
+    async def _aenter(*a, **k):
+        return session
+
+    async def _aexit(*a, **k):
+        return False
+
+    scope.__aenter__ = _aenter
+    scope.__aexit__ = _aexit
+    factory.session_scope_fresh.return_value = scope
+    factory.session_scope.return_value = scope
+    factory._session = session
+    return factory
+
+
+def _db_row(token_id, minutes_left=60):
+    from datetime import timedelta
+
+    from services.utils.datetime_utils import utc_now
+
+    row = MagicMock()
+    row.token_id = token_id
+    row.reason = "logout"
+    row.user_id = None
+    row.expires_at = utc_now() + timedelta(minutes=minutes_left)
+    row.created_at = utc_now()
+    return row
+
+
+@pytest.mark.asyncio
+@pytest.mark.integration
+class TestActivationContract1808:
+    async def test_initialize_seeds_redis_from_unexpired_db_rows(
+        self, mock_redis_factory, mock_redis
+    ):
+        """THE switch-on safety pin: a token revoked into the DB BEFORE this
+        process started must be honored by Redis-mode reads — otherwise
+        activating Redis un-revokes every historical revocation."""
+        factory = _db_factory_with_rows([_db_row("historic-revocation-1")])
+        bl = TokenBlacklist(mock_redis_factory, factory)
+        await bl.initialize()
+
+        assert bl._redis_available is True
+        # The seeded entry is now visible on the Redis read path:
+        assert await bl.is_blacklisted("historic-revocation-1") is True
+
+    async def test_seed_failure_degrades_to_database_only(self, mock_redis_factory):
+        """A Redis that couldn't be seeded must NOT serve reads — it silently
+        lacks historical revocations. Database-only is slower, never wrong."""
+        factory = MagicMock()
+        scope = MagicMock()
+
+        async def _aenter(*a, **k):
+            raise RuntimeError("db unreachable during seed")
+
+        async def _aexit(*a, **k):
+            return False
+
+        scope.__aenter__ = _aenter
+        scope.__aexit__ = _aexit
+        factory.session_scope_fresh.return_value = scope
+
+        bl = TokenBlacklist(mock_redis_factory, factory)
+        await bl.initialize()
+
+        assert bl._redis_available is False
+        assert bl._initialized is True
+
+    async def test_add_writes_the_database_even_in_redis_mode(self, mock_redis_factory, mock_redis):
+        """Write-through: the DB is the durable record. A Redis-era revocation
+        must survive a restart into database-only mode (the flap hazard)."""
+        from datetime import timedelta
+
+        from services.utils.datetime_utils import utc_now
+
+        factory = _db_factory_with_rows([])
+        bl = TokenBlacklist(mock_redis_factory, factory)
+        await bl.initialize()
+        assert bl._redis_available is True
+
+        ok = await bl.add("jti-flap", "logout", utc_now() + timedelta(hours=1))
+
+        assert ok is True
+        assert len(factory._session.added) == 1  # durable half
+        assert await bl.is_blacklisted("jti-flap") is True  # cache half
+
+    async def test_redis_write_failure_downgrades_but_revocation_stands(
+        self, mock_redis_factory, mock_redis
+    ):
+        """A cache write that fails must not lose the revocation NOR leave a
+        Redis in service that would report the token as valid."""
+        from datetime import timedelta
+
+        from services.utils.datetime_utils import utc_now
+
+        factory = _db_factory_with_rows([])
+        bl = TokenBlacklist(mock_redis_factory, factory)
+        await bl.initialize()
+
+        async def _boom(*a, **k):
+            raise RuntimeError("redis died mid-write")
+
+        mock_redis.setex = _boom
+
+        ok = await bl.add("jti-degrade", "logout", utc_now() + timedelta(hours=1))
+
+        assert ok is True  # the DB took it — the revocation IS recorded
+        assert bl._redis_available is False  # and the lossy cache is out of service
+        assert len(factory._session.added) == 1
+
+    async def test_db_write_failure_fails_the_revocation_loudly(
+        self, mock_redis_factory, mock_redis
+    ):
+        """The durable half is REQUIRED: no DB write, no success claim — a
+        Redis-only revocation would silently evaporate on the next restart."""
+        from datetime import timedelta
+
+        from services.utils.datetime_utils import utc_now
+
+        factory = _db_factory_with_rows([])
+
+        async def _commit_boom():
+            raise RuntimeError("db down")
+
+        factory._session.commit = _commit_boom
+
+        bl = TokenBlacklist(mock_redis_factory, factory)
+        await bl.initialize()
+
+        ok = await bl.add("jti-dbfail", "logout", utc_now() + timedelta(hours=1))
+        assert ok is False
+
+
+@pytest.mark.asyncio
+class TestStartupPhase1808:
+    async def test_phase_initializes_the_container_blacklist(self):
+        from unittest.mock import patch
+
+        from web.startup import TokenBlacklistInitPhase
+
+        bl = AsyncMock()
+        with patch("services.auth.container.AuthContainer.get_token_blacklist", return_value=bl):
+            await TokenBlacklistInitPhase.startup(app=MagicMock())
+        bl.initialize.assert_awaited_once()
+
+    async def test_phase_never_raises(self):
+        from unittest.mock import patch
+
+        from web.startup import TokenBlacklistInitPhase
+
+        with patch(
+            "services.auth.container.AuthContainer.get_token_blacklist",
+            side_effect=RuntimeError("container exploded"),
+        ):
+            await TokenBlacklistInitPhase.startup(app=MagicMock())  # must not raise
+
+    def test_phase_is_in_the_startup_sequence(self):
+        """The whole #1808 defect was a phase that EXISTED nowhere — pin its
+        membership so it can't quietly fall out of the list."""
+        from web.startup import StartupManager, TokenBlacklistInitPhase
+
+        manager = StartupManager(app=MagicMock())
+        assert TokenBlacklistInitPhase in manager.phases

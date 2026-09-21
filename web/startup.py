@@ -163,6 +163,35 @@ class SchemaValidationPhase:
             app.state.schema_validation = {"error": str(e)}
 
 
+class TokenBlacklistInitPhase:
+    """#1808: actually call TokenBlacklist.initialize() — it was never called
+    anywhere, so Redis was configured, wired, and permanently unused; every
+    blacklist check silently took the database fallback in every environment.
+
+    initialize() is fail-soft by design (Redis down, or the DB-seed failing,
+    degrades to database-only mode — slower, never wrong), so this phase never
+    blocks startup. The activation is safe because of the #1808 contract inside
+    the class: the DB stays the durable record (production's existing
+    behavior), Redis becomes a write-through read cache seeded from the DB
+    here, so historical revocations survive the switch-on and restarts survive
+    Redis flaps.
+    """
+
+    @staticmethod
+    async def startup(app) -> None:
+        try:
+            from services.auth.container import AuthContainer
+
+            blacklist = AuthContainer.get_token_blacklist()
+            await blacklist.initialize()
+            print("🔑 Token blacklist initialized")
+        except Exception as e:
+            # Belt over the fail-soft: even an unexpected error here must not
+            # take the app down — checks fall back to the DB path, which is
+            # exactly what every deploy before this phase existed did.
+            print(f"⚠️ Token blacklist init failed (database fallback stays active): {e}")
+
+
 class ServiceRetrievalPhase:
     """Phase 1.5: Get services from ServiceContainer"""
 
@@ -659,6 +688,7 @@ class StartupManager:
             ConfigValidationPhase,
             UploadStorageProbePhase,  # #1656: loud boot signal when UPLOAD_DIR is unwritable
             SchemaValidationPhase,  # Issue #484: Validate models match DB schema
+            TokenBlacklistInitPhase,  # #1808: light the Redis cache (seeded, write-through)
             ServiceRetrievalPhase,
             WebComponentsInitializationPhase,
             PluginInitializationPhase,
