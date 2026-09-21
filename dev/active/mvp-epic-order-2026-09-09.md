@@ -104,6 +104,13 @@ seam); once step 5 lands, the server holds no keys on any deployment, so that cl
 conclusion gets simpler, not different. Not re-opening #1823 for this — noting so a future reader
 doesn't find a dead qualifier and wonder if it's still load-bearing.
 
+**`#1812` CLOSED 2026-09-21** — built and verified, per the issue's own closing evidence: *"the
+server key is not a real concept — now structurally, not just by ruling."* Steps 5-6 (retire the
+transitional operator seam) shipped. Found during Lead's own Phase B verification pass: two new
+pre-existing (not regressions) test-infra issues, `#1841`/`#1842`, board-fixed same morning
+(milestone `Production`, matching the `#1372`/`#1356`/`#1506` precedent for incidentally-discovered
+test-suite defects) — not epic 2's concern, tracked on the board only.
+
 **Slack sponsorship question RETIRED 2026-09-19** — PM ruled linked-account-only is the model; the
 already-live lazy-refuse default is the ruling. No code change, no issue to track — a design
 question resolved, not a build item.
