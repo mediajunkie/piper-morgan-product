@@ -1,21 +1,21 @@
 # Lead carry-forward — rewritten 2026-09-19 ~21:55 PT at STOP (freshness rule: full pass at START/STOP)
 
-## TODAY (2026-09-20)
-- ~~#1765 + #1813~~ **BOTH CLOSED 09-20 morning** (fixture poisoning fixed + live test
-  relocated to llm tier; family fully diagnosed — state + credentials are the only two
-  divergence causes seen). **NEXT UNIT (banked, this morning): the #1818 CANONICAL
-  spend-reach ratchet** (explosive LLM boundary, all 14 pairs keyless; answers Arch's
-  hinge mechanically; #1773 folds in or lands first — registry is dispatch-inert, my
-  09-20 interim memo). Then: #1764 (migration-plan) →
-  **#1812 steps 5–6** (Arch's six-consumer enumeration in read/ — the `return None` rung
-  is the hazard; rung dies, refusal becomes unconditional; also dissolves my #1823 §2
-  caveat — update the trace's record when it lands) → #1823 branch-one + #1824 (paired).
-- **Hosting**: Pard's options matrix lands Saturday, proposal to PM Sunday evening; my
-  remaining part = fast answers + concurrence/dissent. Droplet SSH now LIVE from this seat
-  (PM authorized 09-19 evening); alpha = 0.8.10.14 (July 16) as FACT; further probes only
-  on Pard's ask. PM may want a droplet vacated — routed to Pard's proposal.
-- **#1818**: CXO ruled experience half (greeting passes + carries key-state); structural
-  half (property-not-list) with Arch; NOTHING owed by me until structure settles.
+## MONDAY FIRST (2026-09-21) — the three spec-complete builds, in order
+- **#1812 Phase B** — the two-face cut per dev/active/1812-step5-6-execution-plan-2026-09-20.md
+  (complete consumer map incl. second face; PM's embeddings-sponsor confirm recorded;
+  deploy rides the NEXT cut, never same-day). Lands whole, fresh context.
+- **#1837 build** — Arch CONCURRED all three shapes 09-20 evening (independently verified;
+  deletion blast radius contained; the restate branch is structurally blind to offers —
+  fix must thread offer state to it; home = the existing #1739 acceptance rail, one seam).
+  PPM: #1837 blocks epic 3's floor. CXO's contract analysis folded (bind-to-the-offer-or-
+  to-nothing). #1836's deeper half rides with it.
+- **#1818(b) wiring** — CXO's copy set delivered (ONE shared constant + four kind
+  prefixes); pre-classifier-before-gate ordering + kind-matched dispatch; the spend
+  ratchet is the canary (membership must not change).
+- **INVITE: HOLD LIFTED 09-20 ~21:00 (HOST, independently verified on alpha)** — Janne's
+  invite is PM's to send. Test-burn account drive_test_1812 awaiting HOST retirement.
+- Watch: Arch's pipeline plan v0.2 with PM · #1840 (mail half-landing; my drains now
+  post-push-verify) · #1832 needs Arch GO · #1599 username check with PM.
 
 ## Live state
 - **v116 LIVE on Fly**, health 200 (deployed 09-19 morning). ⚠️ alpha.pipermorgan.ai (the

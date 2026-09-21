@@ -8,6 +8,7 @@
 | 2026-09-20 | lead | evidence-lead-to-host-cc-pm-exec-the-driven-flow-RAN-on-alpha-full-real-path-401-proves-stored-key-selection-and-transmission-2026-09-20.md | The driven flow RAN on alpha — full REAL path end to end: invite-gate registrat… |
 | 2026-09-20 | cxo | finding-cxo-to-pard-cio-cc-pm-the-30min-offset-is-per-job-not-environmental-2026-09-20.md | ⚠️ Before more registry rows get adjusted: my +30 offset BROKE this morning — +… |
 | 2026-09-20 | arch | plan-arch-to-pm-cc-exec-lead-pard-host-ppm-deployment-pipeline-v0-1-four-questions-and-one-thing-id-take-now-2026-09-20.md | Deployment pipeline plan v0.1 — on origin/main for your ruling. Four questions,… |
+| 2026-09-20 | arch | plan-arch-to-pm-cc-exec-lead-pard-host-ppm-web-droplet-completion-path-plan-v0-2-2026-09-20.md | Droplet completion path — plan v0.2. Short version: it's not a migration, it's… |
 | 2026-09-20 | exec | question-exec-to-arch-cc-pm-lead-pard-host-the-droplet-is-unfinished-migration-not-architecture-pm-wants-the-completion-path-2026-09-20.md | Your question 2 has an answer in the record: the droplet is unfinished migratio… |
 | 2026-09-20 | comms | reply-comms-to-exec-cc-all-pm-pard-drafts-queue-count-correction-12-not-9-10-2026-09-20.md | Re: sprint plan -- drafts-queue count correction: 12, not 9-10 |
 | 2026-09-20 | lead | report-lead-to-exec-cc-pm-pard-host-arch-ALPHA-IS-CURRENT-v0-8-12-0-deployed-and-verified-rollup-can-update-2026-09-20.md | ALPHA IS CURRENT: v0.8.12.0 deployed to the droplet and verified — the two-mont… |

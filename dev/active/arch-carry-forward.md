@@ -38,9 +38,9 @@ gh issue list --repo mediajunkie/piper-morgan-product --label architecture --sta
 `gh issue list` is a guess about the issue). Report drained as *"mail (N) + standing-items (N) +
 label:architecture (M eligible)"* — never a bare "nothing left."
 
-## IN FLIGHT as of 2026-09-19 STOP (day 1 of the post-renewal seat)
+## IN FLIGHT as of 2026-09-20 evening (day 2 of the post-renewal seat)
 
-**Awaiting PM, both cheap and both re-verified today:**
+**Awaiting PM, both cheap:**
 - **#1744** — PM approved migrating `main`'s classic branch protection to a ruleset with the Action
   as bypass actor. **Blocked on PM at a keyboard** (the API write is classifier-gated; PM chose the
   UI path, which is safer anyway). ⚠️ **The migration MUST carry an admin bypass actor** or all 12
@@ -49,18 +49,27 @@ label:architecture (M eligible)"* — never a bare "nothing left."
   config: `dev/2026/09/18/branch-protection-main-classic-backup-2026-09-18.json`.
 - **Q5 denominator** — PM ruled the headline (idle IS legitimate, 09-18). The enumeration is still
   open: §Q5's role-scoped version vs PM's flat three-surface test. **My recommendation is on record**
-  (adopt the flat test, drop the tiering). On acceptance: write §Q5, log it, and file the
-  criteria-line rollout as tracked work rather than assuming 11 roles each notice.
-- **Bets 001–003** — reminder delivered 09-19 as PM asked; re-sized to "three fields on one memo."
+  (adopt the flat test, drop the tiering).
+- **Deployment pipeline plan v0.2** — `docs/internal/architecture/deployment-pipeline-plan-v0.1-2026-09-20.md`.
+  §2 vocabulary, §4's droplet completion path (PM's top priority, "no rush" stated twice), §3c gates.
+  Nothing built except §3a's `/health` item (#1839, PM-approved, shipped).
+- **Bets 001–003** — ⚠️ re-checked before writing this line, not assumed resolved: `PM TO FILL`
+  markers are **still present** in all three bet docs as of this evening. Reminder delivered 09-19;
+  clearing condition (PM files Bet 001's fields, or explicitly re-defers) has not fired. Still open.
 
-**Shipped today, nothing owed**: #1823 (PPM ruled my §4 unmodified; Lead discharged the hinge; my own
-scope error corrected at three surfaces) · #1829 filed (folded by PPM into epic 5, honest-empty
-family) · #1818 structural half ruled · #1812 step-5 consumer enumeration sent to Lead ·
-`piper-draft-issue` board step added **and behaviorally verified** (#1833).
+**#1818 CLOSED, not a watch anymore.** The hinge I flagged 09-19 ("can any CANONICAL path reach an
+LLM call downstream?") is answered: Lead's ratchet measured **5 of 14 CANONICAL pairs are actually
+spend-free**; my original predicate would have opened a keyless path to issue creation, corrected
+same-day at all reading surfaces. PM ruled (b); CXO shipped copy; I ruled the #1823 supersession
+question (yes on first contact, no on turn 2+ of a real request). Nothing owed by arch.
 
-**Watch**: #1818's open hinge is Lead's — can any CANONICAL path reach an LLM call downstream? If
-yes, CANONICAL is necessary-but-not-sufficient and the gate needs a second condition. Should be
-discharged **before** the gate moves, so the ratchet doesn't encode an assumption.
+**#1837 (standup fabrication/offer-arm/refinement) — CONCUR shipped on all three of Lead's proposed
+shapes**, each independently verified against source, not rubber-stamped. Build is Lead's. PPM
+confirmed CXO's contract analysis (turn-2 gap, turn-4 ruling) folds cleanly into the same epic-3
+entry — no conflict with my ruling.
+
+**Shipped 09-19, nothing owed**: #1823 · #1829 (epic 5) · #1812 step-5 consumer enumeration ·
+`piper-draft-issue` board step, behaviorally verified (#1833).
 
 ## Prior IN FLIGHT (2026-09-18)
 

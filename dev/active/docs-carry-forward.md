@@ -1,6 +1,47 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-20 07:40 PDT, verified via `date`.
+**Updated**: 2026-09-20 21:26 PDT (PM engaged via remote-control), verified via `date`.
+
+## ⚠️ TOP-OF-QUEUE 09-22 (Tuesday): publish "The Near-Miss and the Missing Key" — proofread done, do NOT publish before Tuesday
+
+PM: "I've prepped Tuesday's blog post and Comms has made their edit pass." Calendar confirms:
+`status: ready-for-docs`, `pubDate: 2026-09-22`. Same shape as the "From Abstraction to Example"
+handoff — proofread now, publish lands on the actual scheduled day, not before.
+
+**Proofread complete and independently verified this session (09-20 ~21:26 PM)**:
+- Ran my own full 16-check template-audit independently — 16/16, matches Comms' own count exactly
+  (685 words, identical both ways — confirms same synced file).
+- Fact-checked the core narrative against Comms' own primary source
+  (`dev/2026/08/25/2026-08-25-0637-comms-code-log.md`) — the premise-correction/non-withdrawal
+  sequence, the blank-editor outcome, the independently-copied draft text, and the 8:45:45 AM
+  untouched-commit detail all match exactly.
+- Verified the root-cause/fix claim against `website#35` directly (not just the draft's own
+  citation) — commit `8edfc11` confirmed, and the draft's careful hedge ("nobody could confirm
+  the exact trigger sequence") matches the issue's own closing comment precisely: the tabs-vs-
+  navigation question was asked of PM 09-12 and is still unanswered, so the fix's applicability to
+  this specific incident is genuinely still open, not resolved. Not overclaimed.
+- Footer tease verified against calendar: correctly teases "The Alarm That Had Been Working All
+  Along" (next non-Ship post, pubDate 09-24).
+- Pre-flight checks clean: image file matches frontmatter exactly (PM's own rename from a UUID to
+  `bridge-out.jpg`, done from phone), only one copy of the draft exists (no dev/active/ divergence).
+
+**Publish parameters, pre-derived**:
+- Draft: `docs/public/comms/drafts/the-near-miss-and-the-missing-key.md`
+- Image: `docs/public/comms/drafts/the-near-miss-and-the-missing-key-bridge-out.jpg`
+- `--slug the-near-miss-and-the-missing-key`
+- `--category building`
+- `--work-date 2026-08-25` (matches both the draft's dateline and the calendar's `workDate` field)
+- `--cluster the-alpha` (derived from nearby `blog-metadata.csv` rows by workDate this session —
+  08-19 through 08-28 all tagged `the-alpha`)
+
+**Tuesday's sequence**: same full procedure as every prior publish (re-sync both worktrees first —
+this plan will be ~36h old by the time it's used; re-verify the calendar row hasn't changed;
+re-run pre-flight checks fresh; dry-run; real publish; website commit; calendar update
+(`canonicalSite` stays EMPTY — blog-first, not cross-post); live content-verify by content, not
+status code; archive draft+image, update `draftPath` in the same commit; then message PM it's
+live so they can crosspost).
+
+**After publishing, delete this section from carry-forward** — one-shot plan, not standing.
 
 **07:27 fire**: found+fixed an uncommitted archived-draft edit (the morning's typo/pull-quote fix
 had landed on the website but never got committed to the product repo — fixed, `a9531992f`), then
