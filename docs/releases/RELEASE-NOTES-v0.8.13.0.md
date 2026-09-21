@@ -83,7 +83,9 @@ tasks") is deleted and unreachable, free-form draft edits genuinely apply, and a
   sits on the release commit (version bump + this doc set) directly atop it — lockstep
   mode: `production` fast-forwarded to the tagged commit in this session.
 - **Tag**: `v0.8.13.0`
-- **pyproject.toml**: `0.8.13.0`
+- **pyproject.toml** and **VERSION**: `0.8.13.0` (the VERSION file — which #1839's
+  `/health` reads — was caught stale in the same-session docs audit and bumped in a
+  follow-up commit directly atop the tag; `production` includes it)
 
 ## Upgrade instructions
 
