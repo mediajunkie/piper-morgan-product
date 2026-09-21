@@ -77,8 +77,10 @@ async def health(request: Request):
 
     It is correspondingly cheap to leave open: the response is a fixed set of
     service-liveness strings (web / intent_enforcement / intent_service =
-    healthy|degraded) plus a timestamp. No user data, no config values, no
-    counts, no identifiers.
+    healthy|degraded) plus a timestamp and the #1839 deploy identity
+    (environment / version / git SHA — deliberately unauthenticated, per the
+    issue: "what is actually deployed" must be a curl, not an inference; these
+    are release facts, not user data or secrets).
 
     Returns basic service status for monitoring and load balancers.
 
@@ -100,10 +102,16 @@ async def health(request: Request):
     # Overall status degrades if any required service is missing.
     overall_status = "healthy" if intent_service_present else "degraded"
 
+    # #1839: deploy identity on the surface infrastructure actually polls.
+    # The first landing put these fields only on staging_health's router,
+    # which no app mounts — this route is the served /health (2026-09-21).
+    from services.api.health.staging_health import deploy_identity
+
     return {
         "status": overall_status,
         "message": "Piper Morgan web service is running",
         "timestamp": datetime.now().isoformat(),
+        **deploy_identity(),
         "services": services_status,
     }
 
