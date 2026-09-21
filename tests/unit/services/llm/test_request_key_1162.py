@@ -27,12 +27,17 @@ def test_binds_then_resets():
     assert get_request_api_key() is None
 
 
-def test_blank_or_none_binds_nothing():
-    """An absent/blank X-User-Api-Key header must fall back to the server key."""
-    with request_api_key(""):
-        assert get_request_api_key() is None
-    with request_api_key(None):
-        assert get_request_api_key() is None
+def test_blank_or_none_raises_at_bind_time():
+    """AMENDED by #1812 step 5. A blank/None binding used to mean the operator's
+    server credential (and before #1809, simply 'nothing bound'). The seam is
+    deleted: binding None/blank now raises — an absent header falls through at
+    the RESOLVER (which refuses or finds a stored key), never at the binder."""
+    with pytest.raises(ValueError, match="1812"):
+        with request_api_key(""):  # pragma: no cover - must not enter
+            pass
+    with pytest.raises(ValueError, match="1812"):
+        with request_api_key(None):  # pragma: no cover - must not enter
+            pass
 
 
 def test_reset_even_on_exception():
@@ -47,18 +52,17 @@ def test_reset_even_on_exception():
 
 
 def test_client_selection_uses_user_key_when_bound():
-    server_client = object()  # sentinel for the server's configured client
     # absent → REFUSE (#1809 inversion; this line used to assert the server
     # client — "PM's own use / unauthenticated" — which #1807/#1320 closed at
-    # the resolver and #1809 closed at the chokepoint itself)
+    # the resolver, #1809 closed at the chokepoint, and #1812 step 5 made
+    # unrepresentable: the chokepoint takes no server client at all)
     from services.llm.request_key import UnboundLLMKeyError
 
     with pytest.raises(UnboundLLMKeyError):
-        anthropic_client_for_request(server_client)
-    # bound → a FRESH client keyed to the user's BYOC key, not the server client
+        anthropic_client_for_request()
+    # bound → a FRESH client keyed to the user's BYOC key
     with request_api_key("sk-ant-user"):
-        client = anthropic_client_for_request(server_client)
-        assert client is not server_client
+        client = anthropic_client_for_request()
         assert getattr(client, "api_key", None) == "sk-ant-user"
 
 

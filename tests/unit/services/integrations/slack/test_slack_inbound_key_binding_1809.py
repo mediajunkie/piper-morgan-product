@@ -140,7 +140,9 @@ def _touch_the_llm(**kwargs):
     """A classifier stub that does what the real LLM leg does at the spend point:
     asks the REAL chokepoint for a client. Bound → returns (and we record the key);
     unbound → the production `UnboundLLMKeyError` — not a hand-raised stand-in."""
-    client = anthropic_client_for_request(SERVER_CLIENT)
+    # #1812 step 5: the chokepoint takes no server client — SERVER_CLIENT is a
+    # pure sentinel nothing can produce.
+    client = anthropic_client_for_request()
     _touch_the_llm.key_at_llm_time = get_request_api_key()
     _touch_the_llm.client = client
     return _query_intent()
@@ -192,7 +194,7 @@ class TestLinkedSenderWithKeyRunsOnTheirOwnKey:
 
         assert get_request_api_key() is None
         with pytest.raises(UnboundLLMKeyError):
-            anthropic_client_for_request(SERVER_CLIENT)
+            anthropic_client_for_request()
 
 
 class TestKeylessTurnsRefuseHonestly:

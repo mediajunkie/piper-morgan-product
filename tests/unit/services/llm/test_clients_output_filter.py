@@ -56,9 +56,9 @@ def _build_client_with_filter(boundary_enforcer=None, raw_responses: list[str] |
 
     output_filter = OutputFilter(boundary_enforcer=boundary_enforcer)
 
-    # Don't actually run client init (no real API keys in test); patch it out.
-    with patch.object(LLMClient, "_init_clients", lambda self: None):
-        client = LLMClient(output_filter=output_filter)
+    # #1812 step 6: construction reads no credentials any more (_init_clients was
+    # amputated with the server clients), so no patching is needed.
+    client = LLMClient(output_filter=output_filter)
 
     responses = list(raw_responses or [])
 
@@ -77,8 +77,7 @@ class TestBackwardCompatibility:
     async def test_no_filter_returns_raw_response(self):
         from services.llm.clients import LLMClient
 
-        with patch.object(LLMClient, "_init_clients", lambda self: None):
-            client = LLMClient()  # no output_filter
+        client = LLMClient()  # no output_filter (#1812: construction is credential-free)
         client._complete_raw = AsyncMock(return_value="Raw LLM response")
 
         result = await client.complete(task_type="conversation", prompt="hi")
@@ -92,8 +91,7 @@ class TestBackwardCompatibility:
         (the existing behavior before #1017 — backward compat)."""
         from services.llm.clients import LLMClient
 
-        with patch.object(LLMClient, "_init_clients", lambda self: None):
-            client = LLMClient()
+        client = LLMClient()
         client._complete_raw = AsyncMock(return_value="Email is alice@example.com here.")
 
         result = await client.complete(task_type="conversation", prompt="hi")

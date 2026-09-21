@@ -24,8 +24,8 @@ actually lived.
 DENOMINATOR. Four callers are covered at the route: (1) authenticated + no stored key
 [the defect], (2) authenticated + stored key [the control — must still work], (3) fully
 anonymous [#1320 no-regress], (4) authenticated + BYOC header [#1162 no-regress]. The
-designated-operator path is covered at the resolver + config layer in
-`tests/unit/services/llm/test_operator_server_key_1807.py`; the `/documents` family's
+designated-operator path was deleted by #1812 step 5 — its staying-retired contract is
+`tests/unit/services/llm/test_operator_seam_retired_1812.py`; the `/documents` family's
 refusal surface is covered in `tests/unit/web/api/routes/test_documents_keyless_refusal_1807.py`.
 NOT covered here: the Slack/MCP entry points, which do not route through `/intent`.
 """
@@ -76,7 +76,9 @@ class _ObservingIntentService:
 
     async def process_intent(self, **kwargs):
         self.calls += 1
-        self.client_for_request = anthropic_client_for_request(SERVER_CLIENT)
+        # #1812 step 5: the chokepoint takes no server client any more — SERVER_CLIENT
+        # is now a pure sentinel that nothing can produce, which is the property.
+        self.client_for_request = anthropic_client_for_request()
         return _intent_result()
 
 

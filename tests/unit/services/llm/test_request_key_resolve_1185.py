@@ -1,14 +1,14 @@
 """#1185 BYO-KEY: resolve the per-request LLM key.
 
 Priority: header (Claude Desktop BYOC) > stored (hosted web, by authenticated
-user_id) > the designated operator principal, else refuse. The resolver is **pure** —
-the DB-backed stored-key fetch and the operator check are both injected, so this
-unit-tests without a database. The route (/api/v1/intent) wires the real fetch
-(UserAPIKeyService.retrieve_user_key).
+user_id), else refuse. The resolver is **pure** — the DB-backed stored-key fetch is
+injected, so this unit-tests without a database. The route (/api/v1/intent) wires the
+real fetch (UserAPIKeyService.retrieve_user_key).
 
 ⚠️ AMENDED 2026-09-14 (#1807): the third rung used to be "None (→ server key fallback)"
-for any authenticated caller. It is now the designated-operator path, default OFF, and
-everyone else is refused — see tests/unit/services/llm/test_operator_server_key_1807.py.
+for any authenticated caller; #1807 narrowed it to a designated operator, default OFF.
+⚠️ AMENDED 2026-09-21 (#1812 step 5): the operator rung is deleted outright — see
+tests/unit/services/llm/test_operator_seam_retired_1812.py. Header > stored > refuse.
 """
 
 import pytest
@@ -76,11 +76,9 @@ async def test_resolved_stored_key_flows_through_the_rail_to_the_client():
     proving #1185's stored-key path rides the same #1162 rail end-to-end."""
     from services.llm.request_key import anthropic_client_for_request, request_api_key
 
-    server_client = object()  # sentinel for the server's configured client
     key = await resolve_request_api_key(None, "u1", _fetch_key)  # → sk-stored-u1
     with request_api_key(key):
-        client = anthropic_client_for_request(server_client)
-        assert client is not server_client
+        client = anthropic_client_for_request()
         assert getattr(client, "api_key", None) == "sk-stored-u1"
     # after the block: ContextVar reset → no leak. AMENDED by #1809: reset used to
     # mean "back to the server client"; unbound is now a refusal, which is the
@@ -88,4 +86,4 @@ async def test_resolved_stored_key_flows_through_the_rail_to_the_client():
     from services.llm.request_key import UnboundLLMKeyError
 
     with pytest.raises(UnboundLLMKeyError):
-        anthropic_client_for_request(server_client)
+        anthropic_client_for_request()

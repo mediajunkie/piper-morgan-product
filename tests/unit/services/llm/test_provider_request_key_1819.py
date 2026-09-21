@@ -13,9 +13,15 @@ RED evidence (pre-fix tree, 2026-09-18 probe):
 
 Now: `request_spend_key(provider)` is the one spend decision every leg shares — bound key
 for THAT provider → spend it (fresh per-request client, never stored on self, #1814);
-explicit operator ``None`` binding (gate 1 re-checked) → the server's own client (#1807
-seam, until #1812 step 5); anything else → ``UnboundLLMKeyError``. A key bound for one
-provider is never spendable on another (#1815's constraint, enforced at the chokepoint).
+anything else → ``UnboundLLMKeyError``. A key bound for one provider is never spendable
+on another (#1815's constraint, enforced at the chokepoint).
+
+#1812 step 5 (2026-09-21): the operator ``None``-binding arm this file used to pin is
+DELETED with the seam (str-or-raise now); its staying-deleted contract lives in
+test_operator_seam_retired_1812.py. The ``client.openai_client``-style attributes some
+tests still set are DECOYS — production `LLMClient` no longer has server clients at all
+(step 6 amputated `_init_clients`); the decoys pin that nothing resurrects an
+attribute-read spend path without these assertions catching it.
 """
 
 from unittest.mock import MagicMock, patch
@@ -25,7 +31,6 @@ import pytest
 from services.llm.clients import LLMClient
 from services.llm.config import LLMModel, LLMProvider
 from services.llm.request_key import (
-    OPERATOR_SERVER_KEY_ENV,
     UnboundLLMKeyError,
     get_request_api_key,
     request_api_key,
@@ -37,12 +42,10 @@ USER_ANTHROPIC_KEY = "sk-ant-user-TEST"
 
 
 def _bare_client() -> LLMClient:
-    """LLMClient without the heavyweight __init__ (no SDK/keychain construction)."""
+    """LLMClient without __init__ (no config-service construction). Tests that want a
+    server-client DECOY set the attribute themselves — production has none (#1812)."""
     client = LLMClient.__new__(LLMClient)
     client._output_filter = None
-    client.anthropic_client = None
-    client.openai_client = None
-    client.gemini_client = None
     return client
 
 
@@ -100,18 +103,10 @@ class TestRequestSpendKey:
             with pytest.raises(UnboundLLMKeyError):
                 request_spend_key("gemini")
 
-    def test_operator_none_binding_authorizes_with_gate_1_only(self, monkeypatch):
-        with request_api_key(None):
-            with pytest.raises(UnboundLLMKeyError):
-                request_spend_key("openai")
-        monkeypatch.setenv(OPERATOR_SERVER_KEY_ENV, "1")
-        with request_api_key(None):
-            assert request_spend_key("openai") is None  # None = server credential authorized
-
-    def test_empty_mapping_binds_nothing_spendable_not_the_operator(self, monkeypatch):
-        """'No usable keys' must never collapse into 'operator authorized' — that
-        conflation (unbound == server-key) was #1809's whole bug."""
-        monkeypatch.setenv(OPERATOR_SERVER_KEY_ENV, "1")
+    def test_empty_mapping_binds_nothing_spendable(self):
+        """'No usable keys' refuses at spend — it must never collapse into any
+        authorized form; that conflation (unbound == server-key) was #1809's bug,
+        and #1812 step 5 removed the operator form it could have collapsed into."""
         with request_api_key({}):
             with pytest.raises(UnboundLLMKeyError):
                 request_spend_key("anthropic")
@@ -177,28 +172,6 @@ class TestOpenAILegInversion:
                 await client._openai_complete(prompt="hi", config=_openai_config())
         assert not server.chat.completions.create.called
 
-    @pytest.mark.asyncio
-    async def test_operator_binding_with_gate_uses_the_server_client(self, monkeypatch):
-        monkeypatch.setenv(OPERATOR_SERVER_KEY_ENV, "1")
-        client = _bare_client()
-        server = _server_openai_client()
-        client.openai_client = server
-
-        with request_api_key(None):
-            out = await client._openai_complete(prompt="hi", config=_openai_config())
-        assert out == "served"
-        assert server.chat.completions.create.called
-
-    @pytest.mark.asyncio
-    async def test_operator_binding_without_a_server_client_is_still_not_initialized(
-        self, monkeypatch
-    ):
-        monkeypatch.setenv(OPERATOR_SERVER_KEY_ENV, "1")
-        client = _bare_client()
-        with request_api_key(None):
-            with pytest.raises(RuntimeError, match="OpenAI client not initialized"):
-                await client._openai_complete(prompt="hi", config=_openai_config())
-
 
 # ---------------------------------------------------------------------------
 # _gemini_complete — refuses unbound; refuses a bound key honestly (no per-request path)
@@ -225,25 +198,6 @@ class TestGeminiLegInversion:
             with pytest.raises(UnboundLLMKeyError, match="no per-request client path"):
                 await client._gemini_complete(prompt="hi", config=_gemini_config())
 
-    @pytest.mark.asyncio
-    async def test_operator_binding_with_gate_proceeds_on_the_global_config(self, monkeypatch):
-        monkeypatch.setenv(OPERATOR_SERVER_KEY_ENV, "1")
-        client = _bare_client()
-        client.gemini_client = True
-
-        fake_resp = MagicMock()
-        fake_resp.text = "served-by-operator-gemini"
-        fake_resp.usage_metadata = MagicMock(prompt_token_count=1, candidates_token_count=1)
-
-        async def _gen(*a, **k):
-            return fake_resp
-
-        with patch("google.generativeai.GenerativeModel") as model_cls:
-            model_cls.return_value.generate_content_async = _gen
-            with request_api_key(None):
-                out = await client._gemini_complete(prompt="hi", config=_gemini_config())
-        assert out == "served-by-operator-gemini"
-
 
 # ---------------------------------------------------------------------------
 # availability gate + config-service step 0 agree with the chokepoints (#1814/#1815 shape)
@@ -268,14 +222,6 @@ class TestAvailabilityAgreesWithTheChokepoint:
         client.gemini_client = True
         for provider in (LLMProvider.ANTHROPIC, LLMProvider.OPENAI, LLMProvider.GEMINI):
             assert client._is_provider_configured(provider) is False
-
-    def test_operator_binding_restores_server_client_availability(self, monkeypatch):
-        monkeypatch.setenv(OPERATOR_SERVER_KEY_ENV, "1")
-        client = _bare_client()
-        client.openai_client = _server_openai_client()
-        with request_api_key(None):
-            assert client._is_provider_configured(LLMProvider.OPENAI) is True
-            assert client._is_provider_configured(LLMProvider.ANTHROPIC) is False  # no client
 
     def test_a_bound_gemini_key_never_reads_available(self):
         """No per-request Gemini client path exists — reporting True would route the

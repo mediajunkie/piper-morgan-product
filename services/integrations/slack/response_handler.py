@@ -393,9 +393,8 @@ class SlackResponseHandler:
                 with contextlib.ExitStack() as stack:
                     if sender_key_binding:
                         # Bound only when the sender actually has AT LEAST ONE
-                        # provider key: binding None explicitly is the
-                        # designated-operator seam (#1807), which an inbound
-                        # Slack sender is not.
+                        # provider key. (Binding None raises since #1812 step 5 —
+                        # the operator seam it once encoded is deleted.)
                         stack.enter_context(request_api_key(sender_key_binding))
 
                     # Step 2: Create intent from spatial event with preserved context
@@ -804,12 +803,10 @@ class SlackResponseHandler:
             widens it with their stored openai key too, if any — the exact
             call ``/api/v1/intent`` and ``/api/v1/documents/*`` make (#1819).
           - sender has NO anthropic key → fetch their stored openai key
-            directly. Passing ``None`` straight into ``expand_llm_key_binding``
-            would NOT do this: that function treats a ``None`` "resolved" as
-            the #1807 designated-OPERATOR seam (it is the output shape of
-            ``resolve_request_api_key``, which Slack never calls) and returns
-            it unchanged — which an inbound Slack sender must never receive
-            implicitly (see the #1809 binding note above).
+            directly. ``expand_llm_key_binding`` cannot do this: it REQUIRES a
+            resolved Anthropic key (and raises on an empty one since #1812
+            step 5 — the ``None``-means-operator contract it once carried is
+            deleted along with the seam).
         """
         if not piper_user_id:
             return None

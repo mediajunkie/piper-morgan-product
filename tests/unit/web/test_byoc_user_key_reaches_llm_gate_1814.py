@@ -298,7 +298,7 @@ class TestSignedInUsersOwnKeyIsActuallyUsed:
             assert config.get_default_provider(user_id) == "anthropic"
             assert config.get_api_key("anthropic") == STORED_USER_KEY
             # ...and the consumer resolves to a client keyed to the SAME credential.
-            assert anthropic_client_for_request(None).api_key == STORED_USER_KEY
+            assert anthropic_client_for_request().api_key == STORED_USER_KEY
 
         # The binding does not outlive the request (ContextVar reset in `finally`).
         assert config.get_api_key("anthropic") is None
@@ -354,13 +354,15 @@ class TestNoServerOwnedKeyIsReintroduced:
 
         with request_api_key(STORED_USER_KEY):
             client = clients_module.LLMClient()
-            assert client.anthropic_client is None, (
-                "the server's singleton Anthropic client captured a request-scoped user "
-                "key — it would be reused for the next caller"
-            )
-            assert client.openai_client is None
-            assert not client.gemini_client
+            # #1812 step 6: the server-client attributes were amputated with the
+            # operator seam — their reappearance would be this leak's first step.
+            for attr in ("anthropic_client", "openai_client", "gemini_client"):
+                assert not hasattr(client, attr), (
+                    f"a server-singleton client attribute ({attr}) reappeared — if it "
+                    "captured a request-scoped user key it would be reused for the "
+                    "next caller"
+                )
 
-        assert _RecordingAnthropic.constructed_with == [], (
-            "_init_clients constructed an Anthropic client from a key the server does " "not own"
-        )
+        assert (
+            _RecordingAnthropic.constructed_with == []
+        ), "constructing LLMClient built an Anthropic client from a key the server does not own"

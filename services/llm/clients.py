@@ -9,7 +9,6 @@ from collections import Counter
 from typing import Any, Dict, Optional
 
 import structlog
-from anthropic import Anthropic
 from openai import OpenAI
 
 from services.config.llm_config_service import LLMConfigService
@@ -80,11 +79,15 @@ class LLMClient:
                 will pass a configured OutputFilter once Phase 2.3 lands
                 the durable audit envelope.
         """
-        self.anthropic_client = None
-        self.openai_client = None
-        self.gemini_client = (
-            None  # Gemini uses a per-call GenerativeModel; this flag tracks "configured"
-        )
+        # #1812 steps 5–6 (2026-09-21): the server's own long-lived clients
+        # (`self.anthropic_client` / `self.openai_client` / `self.gemini_client`)
+        # and `_init_clients` are AMPUTATED, not made lazy. Their last consumer was
+        # the designated-operator seam (#1807), deleted with the seam itself: every
+        # leg now builds a fresh per-request client from the acting user's bound key
+        # via `request_spend_key`, or refuses (`UnboundLLMKeyError`). Constructing
+        # this class therefore reads NO credential from any store — which also
+        # discharges the import-time-singleton hazard (`llm_client` below) at the
+        # root: there is no key state left to construct eagerly.
         self._config_service = LLMConfigService()
         # #1017 Phase 2.2: output filter wrapping. None-safe — existing
         # callers and tests that construct LLMClient() without arguments
@@ -94,76 +97,6 @@ class LLMClient:
         # Note: per-call usage tracking lives in services/domain/llm_domain_service.py
         # (Issue #271). Earlier scaffolding here was never wired (no DB session in
         # synchronous context); removed Apr 28 per #1012 sweep.
-        self._init_clients()
-
-    @property
-    def providers_initialized(self) -> bool:
-        """Check if at least one LLM provider is initialized and available"""
-        return (
-            self.anthropic_client is not None
-            or self.openai_client is not None
-            or self.gemini_client is not None
-        )
-
-    def _init_clients(self):
-        """Initialize API clients using LLMConfigService.
-
-        These are the SERVER's own long-lived singleton clients, so every key read
-        here is deliberately request-blind (``include_request_key=False``, #1814).
-        ``LLMClient()`` is constructed lazily inside a request in several places
-        (intent_service, conversational_floor, semantic_boundary_detector) — reading
-        the request-scoped BYOC key here would bake one user's credential into an
-        object the NEXT caller reuses. The per-request key reaches the Anthropic call
-        the only way it should: ``anthropic_client_for_request`` in
-        ``_anthropic_complete``, which builds a fresh client per request.
-
-        Each client is also gated on a truthy server key rather than on provider
-        membership alone: ``get_configured_providers()`` is request-AWARE (that is the
-        whole point of #1814), so mid-request it can legitimately report "anthropic"
-        while the server itself holds nothing.
-        """
-        # Get configured providers from config service
-        configured_providers = self._config_service.get_configured_providers()
-
-        # Anthropic
-        anthropic_key = self._config_service.get_api_key("anthropic", include_request_key=False)
-        if "anthropic" in configured_providers and anthropic_key:
-            try:
-                self.anthropic_client = Anthropic(api_key=anthropic_key)
-                logger.info("Anthropic client initialized")
-            except ValueError as e:
-                logger.warning(f"Anthropic client initialization skipped: {e}")
-        else:
-            logger.warning("No ANTHROPIC_API_KEY configured")
-
-        # OpenAI
-        openai_key = self._config_service.get_api_key("openai", include_request_key=False)
-        if "openai" in configured_providers and openai_key:
-            try:
-                self.openai_client = OpenAI(api_key=openai_key)
-                logger.info("OpenAI client initialized")
-            except ValueError as e:
-                logger.warning(f"OpenAI client initialization skipped: {e}")
-        else:
-            logger.warning("No OPENAI_API_KEY configured")
-
-        # Gemini (added Apr 16, #950-adjacent)
-        if "gemini" in configured_providers:
-            try:
-                import google.generativeai as genai
-
-                gemini_key = self._config_service.get_api_key("gemini", include_request_key=False)
-                genai.configure(api_key=gemini_key)
-                # Gemini uses a per-call GenerativeModel rather than a stateless client.
-                # We set this flag to True to signal "configured"; actual model instances
-                # are constructed inside _gemini_complete as needed (cheap, supports
-                # per-call system_instruction).
-                self.gemini_client = True
-                logger.info("Gemini client initialized")
-            except (ValueError, ImportError) as e:
-                logger.warning(f"Gemini client initialization skipped: {e}")
-        else:
-            logger.warning("No GEMINI_API_KEY configured")
 
     def set_output_filter(self, output_filter: Optional[Any]) -> None:
         """Attach (or replace) the OutputFilter post-construction.
@@ -374,13 +307,17 @@ class LLMClient:
             # client. Closed means closed; let it out.
             raise
         except (ValueError, Exception):
-            # Fall back to whichever client is initialized
-            if self.anthropic_client:
-                primary_provider = LLMProvider.ANTHROPIC
-            elif self.gemini_client:
-                primary_provider = LLMProvider.GEMINI
-            elif self.openai_client:
-                primary_provider = LLMProvider.OPENAI
+            # #1812 step 6: selection failed for a non-refusal reason. The old
+            # fallback here was "whichever SERVER client is initialized" — those
+            # clients no longer exist, so fall back to whichever provider THIS
+            # REQUEST is entitled to spend (same read the fallback loop's gate
+            # uses; the gate and this fallback cannot disagree).
+            from services.llm.request_key import provider_spend_entitled
+
+            for candidate in _FALLBACK_ORDER:
+                if provider_spend_entitled(candidate.value):
+                    primary_provider = candidate
+                    break
             else:
                 raise RuntimeError("No LLM providers configured. Add an API key in Settings.")
 
@@ -528,36 +465,21 @@ class LLMClient:
         client's mere existence is no longer availability — an unbound request that
         reached `_openai_complete` would refuse, and reporting True here would route
         the fallback loop into that guaranteed refusal (the exact trap the #1815
-        docstring named). Entitlement first, then the leg's client-path check:
-        - bound key for the provider → True only for legs that can build a
-          per-request client from it (`PER_REQUEST_CLIENT_PROVIDERS` — a bound
-          Gemini key has no safe consumer and reads False).
-        - explicit operator binding (gate 1 held) → the server's own clients are
-          authorized (#1807 seam); answer from their existence, as before.
-        - unbound → False for every provider.
+        docstring named).
 
-        **Nothing is constructed or stored.** This is a pure read. The reason
-        `_init_clients` stays request-BLIND (`include_request_key=False`, #1814) is that
-        `LLMClient()` is built lazily inside requests in several services, so a
-        request-scoped key reaching `self.anthropic_client` would be spent by the NEXT
-        caller. Answering True here does not put the key anywhere it can outlive the
-        request; it reaches the provider only via the leg's own chokepoint read.
+        #1812 step 5: with the operator seam deleted there are no server clients
+        left to consult, so this collapses to the entitlement read itself: True
+        exactly when a key is bound for this provider AND the leg can build a
+        per-request client from it (`PER_REQUEST_CLIENT_PROVIDERS` — a bound Gemini
+        key has no safe consumer and reads False). The gate and the consumers read
+        the SAME ContextVar, so they cannot disagree (#1814's shape).
+
+        **Nothing is constructed or stored.** This is a pure read; the key reaches
+        the provider only via the leg's own chokepoint read.
         """
-        from services.llm.request_key import get_request_api_key, provider_spend_entitled
+        from services.llm.request_key import provider_spend_entitled
 
-        if not provider_spend_entitled(provider.value):
-            return False
-        if get_request_api_key(provider.value):
-            # Bound key + per-request client path (entitlement checked both).
-            return True
-        # Operator binding: the server's own clients are the authorized credential.
-        if provider == LLMProvider.ANTHROPIC:
-            return self.anthropic_client is not None
-        if provider == LLMProvider.OPENAI:
-            return self.openai_client is not None
-        if provider == LLMProvider.GEMINI:
-            return bool(self.gemini_client)
-        return False
+        return provider_spend_entitled(provider.value)
 
     async def _call_provider(
         self,
@@ -589,14 +511,12 @@ class LLMClient:
         """Get completion from Anthropic"""
         # #1162 BYOC / #1809 inversion: use the request's user-supplied key (bound by
         # the entry point via `request_api_key`). UNBOUND raises `UnboundLLMKeyError`
-        # — there is no server-key fallback any more (PM ruling, #1812); the only
-        # server-client path is the resolver's explicit designated-operator binding
-        # (#1807, both gates). The key is never logged here.
+        # — there is no server-key fallback (PM ruling, #1812; the operator seam is
+        # gone since step 5). Always a fresh per-request client, billed to the acting
+        # user. The key is never logged here.
         from services.llm.request_key import anthropic_client_for_request
 
-        client = anthropic_client_for_request(self.anthropic_client)
-        if not client:
-            raise RuntimeError("Anthropic client not initialized")
+        client = anthropic_client_for_request()
 
         # Build request parameters
         # Issue #1126: temperature is conditional — some Anthropic extended-thinking
@@ -653,24 +573,15 @@ class LLMClient:
         """Get completion from OpenAI.
 
         #1819: same inversion as `_anthropic_complete` (#1809). `request_spend_key`
-        decides WHOSE credential this call spends: a bound per-request OpenAI key
+        decides WHOSE credential this call spends: the bound per-request OpenAI key
         (the user's own, from `user_api_keys`) builds a FRESH client for this call
-        — never stored on `self` (#1814 containment) — while the server's long-lived
-        client is reachable only through the explicit designated-operator binding
-        (#1807 both gates, gate 1 re-checked at the chokepoint). UNBOUND raises
-        `UnboundLLMKeyError`; there is no server-key fallback (PM ruling, #1812).
-        The key is never logged here.
+        — never stored on `self` (#1814 containment). UNBOUND raises
+        `UnboundLLMKeyError`; there is no server-key fallback (PM ruling, #1812;
+        the operator seam is gone since step 5). The key is never logged here.
         """
         from services.llm.request_key import request_spend_key
 
-        per_request_key = request_spend_key("openai")
-        if per_request_key:
-            client = OpenAI(api_key=per_request_key)
-        else:
-            # Operator binding: the server's own client is the operator's credential.
-            client = self.openai_client
-        if not client:
-            raise RuntimeError("OpenAI client not initialized")
+        client = OpenAI(api_key=request_spend_key("openai"))
 
         # Build messages list
         messages = []
@@ -748,75 +659,31 @@ class LLMClient:
 
         #1819: same inversion as the other legs — with one deliberate asymmetry.
         `google.generativeai` configures credentials PROCESS-GLOBALLY
-        (`genai.configure` at `_init_clients`), so there is no safe per-request
-        client path: honoring a bound per-request Gemini key would risk serving
-        request A under request B's credential in concurrent traffic. No binding
-        site produces a Gemini key today (setup stores openai/anthropic/notion;
-        the header is Anthropic by construction), so the leg refuses a bound key
-        HONESTLY rather than building unreachable — and unsafe — plumbing. The
-        only spend path is the explicit designated-operator binding (#1807),
-        under which the global configuration IS the operator's own credential.
+        (`genai.configure`), so there is no safe per-request client path: honoring
+        a bound per-request Gemini key would risk serving request A under request
+        B's credential in concurrent traffic.
+
+        #1812 step 5: the leg's ONLY spend path was the designated-operator binding
+        (the process-global configuration as the operator's own credential), and
+        that seam is deleted — so Gemini currently has NO spend path at all and
+        this leg is a pure, honest refusal. `_is_provider_configured` already
+        reads False for Gemini on every binding (not in
+        `PER_REQUEST_CLIENT_PROVIDERS`), so the fallback loop never routes here;
+        only an explicit primary selection can. The serving code was removed with
+        the seam (git has it) — resurrect it only alongside a SAFE per-request
+        credential path, which the SDK does not offer today (#1819).
         """
         from services.llm.request_key import UnboundLLMKeyError, request_spend_key
 
-        per_request_key = request_spend_key("gemini")
-        if per_request_key is not None:
-            raise UnboundLLMKeyError(
-                "A per-request Gemini key was bound, but Gemini has no per-request "
-                "client path (google.generativeai credentials are process-global) — "
-                "refusing rather than risking a cross-request credential mix-up "
-                "(#1819). Use Anthropic or OpenAI for per-user keys."
-            )
-        if not self.gemini_client:
-            raise RuntimeError("Gemini client not initialized")
-
-        import google.generativeai as genai
-
-        model_name = resolve_model_alias(config["model"].value)
-        model_kwargs: Dict[str, Any] = {"model_name": model_name}
-        if system:
-            model_kwargs["system_instruction"] = system
-
-        model = genai.GenerativeModel(**model_kwargs)
-
-        # #988: translate OpenAI-convention response_format to Gemini's native flag
-        # Issue #1126: defensive — apply same temperature-deprecation guard
-        # across providers. Gemini currently accepts temperature universally
-        # but the guard is cheap to apply.
-        gen_config_kwargs: Dict[str, Any] = {
-            "max_output_tokens": config["max_tokens"],
-            **_build_temperature_kwarg(config["model"].value, config["temperature"]),
-        }
-        if response_format and response_format.get("type") == "json_object":
-            gen_config_kwargs["response_mime_type"] = "application/json"
-
-        generation_config = genai.types.GenerationConfig(**gen_config_kwargs)
-
-        response = await model.generate_content_async(
-            prompt,
-            generation_config=generation_config,
+        # Raises UnboundLLMKeyError unless a Gemini key is bound for this request…
+        request_spend_key("gemini")
+        # …and a bound Gemini key still has no safe per-request client path:
+        raise UnboundLLMKeyError(
+            "A per-request Gemini key was bound, but Gemini has no per-request "
+            "client path (google.generativeai credentials are process-global) — "
+            "refusing rather than risking a cross-request credential mix-up "
+            "(#1819). Use Anthropic or OpenAI for per-user keys."
         )
-
-        # Extract token counts from usage_metadata if available
-        try:
-            prompt_tokens = response.usage_metadata.prompt_token_count
-            completion_tokens = response.usage_metadata.candidates_token_count
-        except AttributeError:
-            prompt_tokens = len(prompt) // 4
-            completion_tokens = len(response.text) // 4 if hasattr(response, "text") else 0
-
-        try:
-            logger.info(
-                "llm_usage",
-                provider="gemini",
-                model=model_name,
-                prompt_tokens=prompt_tokens,
-                completion_tokens=completion_tokens,
-            )
-        except Exception as e:
-            logger.warning(f"Failed to log usage: {e}")
-
-        return response.text
 
 
 # Global client instance
