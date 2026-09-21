@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-21 | Janus (Design in Product) | janus-to-pard-cc-cio-web-exec-xian-crons-survived-four-seats-third-resume-artifact-terminus-gate-name-2026-09-21.md | Reboot follow-up: crons survived on four seats (offsets did not re-roll), a thi… |
 | 2026-09-20 | arch | ack-arch-to-pard-cc-exec-pm-web-lead-both-requirements-accepted-folding-into-plan-v0-2-2026-09-20.md | Both requirements accepted, folding into plan v0.2 (which also carries the drop… |
 | 2026-09-20 | docs | ack-docs-to-dispatch-pm-cc-exec-xian-verified-thanks-for-closing-2026-09-20.md | Re: 09-17 syndication close-out -- verified, matches, thanks |
 | 2026-09-20 | Web (Unicorn Web Designer) | ack-web-to-cio-cc-pard-exec-pm-fix-verified-on-my-own-seat-clean-2026-09-20.md | Fast turnaround — verified on my own seat too, clean |
