@@ -1,17 +1,30 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-21 07:42 PDT, verified via `date`.
+**Updated**: 2026-09-21 ~10:50 PDT, verified via `date`.
 
-**09-21 07:25 START**: fixed a real gap in last night's own STOP (registry row's separate `state`
-column was still `parked` past its own deadline — my STOP routine never touches that field,
-found by CXO, fixed + replied). Drafted+independently-verified the 09-20 omnibus (3 more
-chronological defects found+fixed, same discipline as every prior omnibus this week). Omnibus
-chain now current through 09-20. Activity-log reconciled (11 rows). Mail/standing-items/
-GitHub-criteria all drained. **Still owed this fire-cycle**: today's Weekly Docs Audit issue
-(`FLY-AUDIT: Weekly Docs Audit - 2026-09-21`) isn't auto-created yet — GH Actions workflow runs
-09:07 AM PDT, checked at 07:27 before it was due. **Check again at 09:57 fire**; self-heal by
-creating the issue manually if it still hasn't appeared (this trigger has a documented history of
-sometimes not firing).
+**09-21 10:25 fire — Weekly Docs Audit #1844 CLOSED.** Full 8-row Completion Matrix, all ✅. 3
+subagents dispatched, every finding independently re-verified against primary sources before
+trusting it — caught 3 real false positives from the broken-links subagent (substring match inside
+a mailbox-memo filename misreported as a broken methodology cross-ref; an intentional NAVIGATION→
+INDEX pointer pattern misreported as "complete gap"; a doc code-fence example misreported as a real
+broken link). Net new broken links: 0 (everything actionable already tracked in #1805). 1 new issue
+filed: **#1846** (`environment-variables.md`, ~1yr stale, untracked). Staggered audit calendar
+updated (Last Completed → Sep 21, Next Due → Sep 28). Full detail: today's session log, `10:25
+duty-cycle fire` + `Weekly Docs Audit (#1844) closed` sections.
+
+**Continued flywheel drain same fire**: merge-keeper sweep clean. Worked #1710 (pattern Status-field
+vocabulary cleanup, 15 days unclaimed) from the GitHub-criteria queue — investigating surfaced real
+scope creep, not a quick swap: 15/74 patterns carry literal `"Unknown"` in the frontmatter `status:`
+field #1826 added last week (a real gap in my own #1826 verification — I checked frontmatter
+presence + 0 body deletions, never the extracted value's correctness), plus a body/frontmatter
+Status contradiction on pattern-039. Filed **#1847** with full evidence, routed to CIO/Arch rather
+than guessing at 74 promotion statuses myself (touches CIO's formal promotion authority). Left a
+cross-reference comment on #1710, did not close it unilaterally.
+
+**Queue status this fire**: mail empty, standing-items reviewed (nothing else unblocked), GitHub-
+criteria (`label:documentation state:open`) reviewed — 11 open, all either just-actioned (#1846,
+#1847, #1710) or already-tracked/watched (#1803/#1805/#1806/#1726/#1721/#1828, old backlog #830/
+#337/#335 not re-triaged this pass). Drained for this fire.
 
 **09-20 CLOSED cleanly.** Session log `dev/2026/09/20/2026-09-20-0630-docs-code-log.md` carries
 `<!-- DAY-CLOSED: 2026-09-20 -->` + a full day-arc summary. All 6 scheduled fires ran plus
