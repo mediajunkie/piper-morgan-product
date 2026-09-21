@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attention rollup — 21 September</title>
+<style>
+ :root{--bg:#fafafa;--card:#fff;--line:#e2e2e2;--ink:#1a1a1a;--mute:#6b6b6b;--red:#c0392b;--amber:#b7791f;--grey:#8a8a8a;--green:#2d7a3e;--link:#1a5fb4}
+ @media(prefers-color-scheme:dark){:root{--bg:#16181c;--card:#1e2127;--line:#32363e;--ink:#e8e8e8;--mute:#9aa0aa;--red:#e8705f;--amber:#e0a94a;--grey:#7a8089;--green:#5cbf72;--link:#79aefb}}
+ body{font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:2rem 1.25rem}
+ .wrap{max-width:900px;margin:0 auto}h1{font-size:1.5rem;margin:0 0 .25rem}
+ .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.2rem}
+ h2{font-size:1.08rem;margin:2rem 0 .6rem;padding-bottom:.3rem;border-bottom:2px solid var(--line)}
+ .card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--grey);border-radius:7px;padding:.85rem 1rem;margin:.7rem 0}
+ .card.win{border-left-color:var(--green)}.card.act{border-left-color:var(--amber)}.card.watch{border-left-color:var(--red);border-left-width:6px}
+ .top{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;margin-bottom:.3rem}
+ .n{font-weight:700;font-size:1.02rem}.who{font-size:.78rem;color:var(--mute)}
+ p{margin:.45rem 0}code{font:.86em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.08em .32em;border-radius:3px}
+ .do{margin-top:.55rem;padding:.55rem .75rem;background:rgba(183,121,31,.1);border-radius:5px;font-size:.94rem;border:1px solid rgba(183,121,31,.3)}
+ table{border-collapse:collapse;width:100%;font-size:.87rem;margin:.5rem 0}
+ th,td{text-align:left;padding:.36rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+ th{color:var(--mute);font-weight:500;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+ .scroll{overflow-x:auto}.clean{color:var(--mute);font-size:.9rem}.clean b{color:var(--ink)}
+ footer{margin-top:2.2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--mute);font-size:.8rem}
+ .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style></head><body><div class="wrap">
+<h2 class="sr-only">Two new decisions; one pinned; nothing broken.</h2>
+<h1>Attention rollup — Monday 21 September</h1>
+<p class="meta">Exec · 07:1x · cohort back after the reboot, 8 of 11 seats live this morning</p>
+
+<h2>🔸 Two new decisions, both small, both yours alone</h2>
+
+<div class="card act">
+  <div class="top"><span class="n">1. Does anything actually get sent to our newsletter subscribers?</span><span class="who">Web · audit complete</span></div>
+  <p>You asked Web to check that our signup options match what we actually offer. <b>Web did the
+  whole audit and it collapses to one question only you can answer</b>, because the evidence stops
+  at the edge of what a repo can show.</p>
+  <p><b>Signup works</b> — it posts to Buttondown, so subscribers are really being collected.
+  <b>But Web found no send mechanism in either repo</b>, and the weekly runbook's newsletter step is
+  LinkedIn, not Buttondown. Web is explicit that this isn't proof: <i>"you may send manually from
+  Buttondown's UI, which I'd have no way to see."</i></p>
+  <p>🔴 <b>Why it matters more than copy</b>: <code>/blog</code> promises <i>"delivered weekly"</i>
+  and says <i>"Join 576+ PM professionals"</i> twice. <b>If nothing is sent regularly, several
+  hundred people consented to weekly delivery, got a confirmation email, and then silence.</b>
+  Web's framing, which I'd keep: that's a trust issue, not a wording issue.</p>
+  <div class="do"><b>Answer one thing: does anything go out to Buttondown subscribers today, and how
+  often?</b> Web has both follow-up paths already written — soften the copy to what's true, or wire
+  up a real send. Two smaller items ride along: <i>"early access"</i> points at the beta waitlist,
+  which is a different signup; and <b>576 is hardcoded in two places</b> and can't be verified from
+  Web's seat.<br><br>
+  Full audit: <code>mailboxes/xian (ceo)/inbox/audit-web-to-pm-cc-exec-comms-signup-options-vs-what-we-actually-publish-one-question-decides-most-of-it-2026-09-20.md</code></div>
+</div>
+
+<div class="card act">
+  <div class="top"><span class="n">2. One read-only line on alpha, whenever convenient</span><span class="who">HOST · not urgent</span></div>
+  <p>Lead found the <b>#1599 admin-grant migration matched zero rows for your account</b> on the
+  upgraded alpha database — so your alpha login may not carry the flags it does elsewhere.
+  <b>Neither Lead nor HOST will run it</b>: Lead would be reading your identity data, HOST would be
+  touching the database, and both held that line all weekend rather than ask forgiveness.</p>
+  <p style="margin-bottom:0"><b>So it's genuinely yours to run</b>, and it's two lines:</p>
+  <pre style="font-size:.8rem;overflow-x:auto;background:rgba(127,127,127,.1);padding:.6rem;border-radius:5px"><code>ssh root@146.190.151.63
+docker compose -f /opt/piper/docker-compose.yml exec -T postgres psql -U piper \
+  -d piper_morgan -t -c "SELECT username, role FROM users ORDER BY created_at;"</code></pre>
+  <div class="do"><b>Run it and say what came back.</b> The point is to know what your account
+  actually looks like there before anyone treats a live drive on that box as representative.
+  <b>Note the address — that's the droplet.</b> If the pinned decision below goes the cheap way,
+  this question moves to Fly rather than disappearing.</div>
+</div>
+
+<h2>📌 Pinned until resolved — the droplet</h2>
+<div class="card watch">
+  <div class="top"><span class="n">Adopt the environment-vs-stage vocabulary?</span><span class="who">Arch · plan v0.2 · unchanged since Sunday</span></div>
+  <p><b>The proposal</b>: <code>environment</code> (local / staging / prod) and <code>stage</code>
+  (alpha / beta / GA) become permanently separate words. Today "alpha" means both a box and an
+  audience, and that conflation is what made <i>"what version is on alpha"</i> unanswerable.</p>
+  <p><b>Say yes and the droplet retires as an access-list change, not a migration</b> — alpha and
+  beta become two stages of access to the one <code>prod</code> that has been running on Fly for two
+  months. Say no and it stays a real migration. <b>It only became possible three days ago</b>:
+  pre-#1812, alpha ran different server-key semantics than beta, and your Wednesday ruling removed
+  that distinction.</p>
+  <div class="do"><b>Everything else in Arch's plan follows from this one word choice</b> — and the
+  $24/month stops when it lands. Plan is on <code>origin/main</code> at
+  <code>docs/internal/architecture/deployment-pipeline-plan-v0.1-2026-09-20.md</code>.</div>
+</div>
+
+<h2>⚪ On today's clock</h2>
+<div class="card">
+  <p style="margin-top:0"><b>10:00 — usage reassessment.</b> Your test: closer to 50% than 33% means
+  converging. <b>I'll interpret your figure rather than bring an estimate</b>, since commits
+  understate conversational load.</p>
+  <p><b>One thing to weigh that wasn't there Friday</b>: Janus reports their own seat came back from
+  the reboot on <b>Sonnet 5 instead of Opus 5, which nobody chose</b> — with two other unchosen state
+  changes across the resume. <b>If a seat can silently change tier, usage figures mean something
+  different than we assumed.</b> n=1 and Janus says so; not a conclusion, a caveat on the number.</p>
+  <p><b>Janne's invite is free to send</b> — HOST lifted the hold Sunday night after verifying Lead's
+  evidence at source rather than on Lead's word.</p>
+  <p style="margin-bottom:0"><b>Ship #061</b> — you close-read Mon or Tue; <b>Comms reviews before
+  Wednesday's publish</b>. Draft: <code>dev/active/weekly-ship-061-draft-2026-09-19.md</code>.</p>
+</div>
+
+<footer><b>Nothing is blocking and nothing is on fire.</b> Two new questions, one pinned decision,
+and the 10:00 check-in.<br><br>
+Cohort: 8 of 11 seats live by 07:15 — <b>cxo, ppm and docs hadn't fired yet, but at 07:15 none was
+past its 45-minute grace, so this is a watch, not an alert.</b> All three have live sessions. I've
+set a one-shot re-check for 07:47 rather than leave it until my 10:38 fire; if they're still silent
+then it goes to Pard, who owns that layer.</footer>
+</div></body></html>
