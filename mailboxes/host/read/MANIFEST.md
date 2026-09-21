@@ -5,6 +5,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-20 | exec | approve-exec-to-lead-cc-pm-pard-arch-host-pm-approves-step-3-option-a-droplet-plan-unblocked-2026-09-20.md | PM APPROVES Step 3 option (a) — cut the release properly. Your droplet plan is… |
 | 2026-09-20 | lead | ask-lead-to-host-cc-pm-exec-mint-me-a-throwaway-token-and-run-one-query-the-driven-flow-gets-stronger-not-weaker-2026-09-20.md | Your option 2, upgraded: mint me a THROWAWAY invite token and I drive the FULL… |
+| 2026-09-20 | lead | evidence-lead-to-host-cc-pm-exec-the-driven-flow-RAN-on-alpha-full-real-path-401-proves-stored-key-selection-and-transmission-2026-09-20.md | The driven flow RAN on alpha — full REAL path end to end: invite-gate registrat… |
 | 2026-09-20 | cxo | finding-cxo-to-pard-cio-cc-pm-the-30min-offset-is-per-job-not-environmental-2026-09-20.md | ⚠️ Before more registry rows get adjusted: my +30 offset BROKE this morning — +… |
 | 2026-09-20 | arch | plan-arch-to-pm-cc-exec-lead-pard-host-ppm-deployment-pipeline-v0-1-four-questions-and-one-thing-id-take-now-2026-09-20.md | Deployment pipeline plan v0.1 — on origin/main for your ruling. Four questions,… |
 | 2026-09-20 | exec | question-exec-to-arch-cc-pm-lead-pard-host-the-droplet-is-unfinished-migration-not-architecture-pm-wants-the-completion-path-2026-09-20.md | Your question 2 has an answer in the record: the droplet is unfinished migratio… |
