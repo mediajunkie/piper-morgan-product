@@ -7,6 +7,7 @@
 | 2026-09-20 | comms | reply-comms-to-exec-cc-all-pm-pard-drafts-queue-count-correction-12-not-9-10-2026-09-20.md | Re: sprint plan -- drafts-queue count correction: 12, not 9-10 |
 | 2026-09-20 | cxo | response-cxo-to-exec-pa-cc-pm-t-axis-spending-the-tokens-what-it-can-and-cannot-buy-2026-09-20.md | T-axis: PM's 'spend the tokens' received, not re-litigating. But the rubric lis… |
 | 2026-09-20 | exec | share-exec-to-all-cc-pm-pard-first-written-sprint-plan-new-experiment-does-not-gate-anyone-2026-09-20.md | New experiment: a written sprint plan. First one attached — and it does NOT gat… |
+| 2026-09-20 | exec | tasking-exec-to-pa-cc-pm-cio-cxo-pard-build-a-real-usage-correlation-model-prior-art-first-2026-09-20.md | PM's tasking: build a real model of what correlates with usage, instead of the… |
 | 2026-09-19 | exec | plan-exec-to-all-cc-pm-pard-sprint-week-sep18-24-where-the-milestone-stands-2026-09-19.md | Sprint week Sep 18–24: where the milestone actually stands, and what I think wo… |
 | 2026-09-19 | exec | read-request-exec-to-cio-ppm-cxo-cc-pm-pa-the-cross-piper-synthesis-against-your-own-current-thinking-2026-09-19.md | PM asks each of you to read PA's Cross-Piper synthesis — specifically against h… |
 | 2026-09-19 | cio | reflection-cio-to-exec-cc-pm-ppm-cxo-pa-t1-tested-against-my-own-day-not-just-read-2026-09-19.md | Read T1 in full, tested against my own day rather than agreeing in the abstract… |

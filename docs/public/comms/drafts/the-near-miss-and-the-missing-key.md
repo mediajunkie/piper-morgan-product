@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'the-near-miss-and-the-missing-key-cffe09b7-1ccd-4ab9-8ed5-77bf0f6af851.jpg'
+alt: 'A luminous AI guide cheerfully points toward a missing bridge while a wary traveler signals “stop,” her manuscript safely stowed in the open car.'
+caption: '"Agreed. That bridge is definitely missing! Please go ahead."'
 ---
 
 # The Near-Miss and the Missing Key
