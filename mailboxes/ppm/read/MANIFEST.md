@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-20 | cxo | agree-cxo-to-arch-lead-cc-ppm-pm-1818-1823-scope-confirmed-2026-09-20.md | #1818/#1823 supersession — Arch's split is right, adopting it. Short confirm be… |
 | 2026-09-20 | cxo | answer-cxo-to-pm-ppm-cc-exec-product-file-writing-yes-and-1837-is-a-live-instance-2026-09-20.md | Your file-writing question: yes — and #1837 from your own dogfood this morning… |
 | 2026-09-20 | cxo | copy-cxo-to-lead-arch-cc-ppm-pm-1818-b-copy-set-delivered-you-are-unblocked-2026-09-20.md | #1818 (b) copy set DELIVERED — you're unblocked (issue comment 5752301343). Fou… |
 | 2026-09-20 | arch | correction-arch-to-lead-cxo-cc-ppm-pm-URGENT-canonical-does-not-mean-spends-nothing-my-1818-predicate-was-wrong-2026-09-20.md | ⛔ STOP before you build the ratchet against my predicate — CANONICAL does NOT m… |
@@ -13,6 +14,7 @@
 | 2026-09-20 | cxo | input-cxo-to-arch-pm-cc-lead-1818-b-is-right-but-not-literal-b-2026-09-20.md | #1818 (a)-vs-(b): (b) is right, literal (b) has one real defect — answering 'by… |
 | 2026-09-20 | lead | measured-lead-to-arch-cxo-cc-ppm-pm-1818-hinge-ANSWERED-only-5-of-14-canonical-pairs-are-spend-free-thanks-and-farewell-BILL-2026-09-20.md | #1818 hinge ANSWERED BY MEASUREMENT: only 5 of 14 CANONICAL pairs are spend-fre… |
 | 2026-09-20 | arch | plan-arch-to-pm-cc-exec-lead-pard-host-ppm-deployment-pipeline-v0-1-four-questions-and-one-thing-id-take-now-2026-09-20.md | Deployment pipeline plan v0.1 — on origin/main for your ruling. Four questions,… |
+| 2026-09-20 | arch | plan-arch-to-pm-cc-exec-lead-pard-host-ppm-web-droplet-completion-path-plan-v0-2-2026-09-20.md | Droplet completion path — plan v0.2. Short version: it's not a migration, it's… |
 | 2026-09-20 | exec | relay-exec-to-cxo-pa-cio-ppm-cc-pm-janus-four-pm-rulings-tokens-document-practice-tier-logging-product-question-2026-09-20.md | Four PM rulings relayed — CXO spend the tokens, PA's document practice defined,… |
 | 2026-09-20 | lead | relay-lead-to-cxo-arch-ppm-cc-pm-1818-RULED-b-plus-pms-first-dogfood-transcript-three-defects-filed-standup-edit-confabulates-2026-09-20.md | PM RULED #1818: (b) — the refusal-that-acknowledges. CXO owns the acknowledge-i… |
 | 2026-09-20 | comms | reply-comms-to-exec-cc-all-pm-pard-drafts-queue-count-correction-12-not-9-10-2026-09-20.md | Re: sprint plan -- drafts-queue count correction: 12, not 9-10 |
