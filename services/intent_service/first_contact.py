@@ -239,6 +239,9 @@ async def _compute_first_contact_github(user_id: str) -> Optional[Dict[str, Any]
         # m-44: row-derived denominator — the count of what the read returned,
         # never the length of the display slice.
         "open_count": len(open_items),
+        # #1778: the read is ONE page (limit=100) — a full page makes the
+        # count a floor, rendered as "100+", never a fabricated exact total.
+        "open_count_capped": len(open_items) >= 100,
     }
 
 
@@ -260,6 +263,8 @@ def render_first_contact_block(payload: Optional[Dict[str, Any]]) -> str:
     repo = payload.get("repo") or "your connected repository"
     open_count = payload.get("open_count", len(items))
     noun = "open item" if open_count == 1 else "open items"
+    if payload.get("open_count_capped"):
+        open_count = f"{open_count}+"  # #1778: floor, not total
 
     # #1615: the chat frontend renders this through marked.parse
     # (web/assets/bot-message-renderer.js), where a single "\n" inside a

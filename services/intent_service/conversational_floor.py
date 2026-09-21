@@ -1398,6 +1398,9 @@ class ConversationalFloor:
             blocked = domain_context["blocked_items"]
             if isinstance(blocked, list) and blocked:
                 total = domain_context.get("blocked_count", len(blocked))
+                # #1778: a capped census renders as a floor, never an exact total.
+                if domain_context.get("blocked_count_capped"):
+                    total = f"{total}+"
                 lines.append(f"- Blocked items ({total} open issues labeled status: blocked):")
                 for b in blocked[:10]:
                     if isinstance(b, dict):
@@ -1430,6 +1433,9 @@ class ConversationalFloor:
             activity = domain_context["recent_activity"]
             if isinstance(activity, list) and activity:
                 total = domain_context.get("recent_activity_count", len(activity))
+                # #1778: floor, not total, when the source page was full.
+                if domain_context.get("recent_activity_count_capped"):
+                    total = f"{total}+"
                 window = domain_context.get("recent_activity_window_days", 7)
                 lines.append(f"- Recent GitHub activity ({total} events in last {window} days):")
                 for a in activity:
@@ -1468,6 +1474,9 @@ class ConversationalFloor:
             hp = domain_context["high_priority_issues"]
             if isinstance(hp, list) and hp:
                 total = domain_context.get("open_issue_count", len(hp))
+                # #1778: floor, not total, when the source page was full.
+                if domain_context.get("open_issue_count_capped"):
+                    total = f"{total}+"
                 lines.append(f"- High-priority open issues ({total} open; top {len(hp)} shown):")
                 for it in hp:
                     if isinstance(it, dict):
