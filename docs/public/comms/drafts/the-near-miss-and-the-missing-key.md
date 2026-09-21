@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: 'A luminous AI guide cheerfully points toward a missing bridge while a wary traveler signals “stop,” her manuscript safely stowed in the open car.'
 caption: ''
 ---
 
