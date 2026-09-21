@@ -1,53 +1,58 @@
 # Exec carry-forward
 
-**STATE: LIVE, day closed 2026-09-19.** Cron **`0f219adf`**, `38 6,10,14,18,22`, delete-then-create
-at STOP, CronList-verified exactly one, expires ~09-26.
-🔴 **RETRACTED 2026-09-20 — do not use +30.** That claim was falsified at **+7** on the very next
-fire. `CronCreate` documents jitter as **max 15 min**, so +30 exceeded the cap and was never
-scheduling at all — **it was this seat being busy in PM conversation.** Fires land only when the REPL
-is idle. **Use slot + up to 15 min; anything beyond that is a busy-REPL signal, not a late fire.**
-⚠️ **This matters for the reboot**: seats come up IDLE and will fire near schedule, so a +30
-expectation makes per-seat deadlines ~23 min too generous. Retracted to Pard and Janus 09-20.
+🔴 **STATE: PARKED FOR THE AMBER REBOOT, 2026-09-20 ~18:30.** Cron `0f219adf` (`38 6,10,14,18,22`)
+**will be DEAD when you read this** — a reboot kills every cron, unlike `/clear` which preserves them.
 
-**Fresh session?** `docs/handoff-exec-2026-09-18.md` was written for you. This seat was replaced
-2026-09-18 11:12 (wave 0) and has run two full normal days since. **All eleven seats are past the
-clear seam**; the Amber reboot itself is still ahead.
+## FIRST THREE THINGS, in order
 
-## Owed by me, 2026-09-20
+1. **`CronList`.** If zero jobs, **`CronCreate` `38 6,10,14,18,22 * * *` immediately**, then
+   `CronList` again to confirm exactly one.
+2. **Un-park ONLY the `exec` row** in `dev/active/duty-cycle-registry.tsv` — after step 1 verifies,
+   never before. **Do not un-park any other seat's row**; each owns its own. All 11 were parked by
+   this seat at 18:1x per Pard's runsheet B3.
+3. **`scripts/sync-pm-local.sh`.** The freeze-watchdog reads PM's local checkout, not `origin`. A
+   push alone does not change what the instrument sees. This is this seat's recorded trap.
 
-1. ★ **CHECK WITH PM ON VERCEL STORAGE — daily** (standing item 22). PM set retention 09-19 (Prod
-   1wk / Pre-Prod 1wk / Errored 1wk / Canceled 1d, all projects) and wants to bump Production back
-   to 30d once storage drops. ⚠️ **Confounder: Web's website#43** (move 240 MB of build inputs out
-   of `public/`) is a second change to the same system — **if both land before a reading, the
-   before/after is unattributable.** Web is holding deliberately for that reason.
-2. **Ship #061**: PM close-reads **Mon or Tue**; pubDate **Wed 09-23**; **Comms reviews between**.
-   A Tuesday read leaves Comms under a day. **PM gates the Comms handoff — never self-initiate.**
-   Open flag: draft is 1,430 words vs a 800–1,200 target, uncut on purpose.
-3. **The team-deployment conversation is still open** — PM said "no worries on just starting the
-   planning now." Shape offered and not yet walked: five roles need nothing from PM; three small
-   answers unblock three more (~15 min); the drafts queue is the only real bottleneck.
+⚠️ **Your arrival offset is UNKNOWN and will differ from before.** The offset is **per-job** and
+**re-rolls whenever a cron is created** — confirmed across three jobs (+31, +30, +7). **Use the
+documented bound: slot + up to 15 minutes.** Do not use any pre-reboot empirical figure; that error
+is mine, retracted 09-20, and Janus amended the runsheet over it.
 
-## Live threads
+## What was in flight when the lights went out
 
-- **Hosting/alpha/beta**: Pard leads, Lead advises, proposal to PM. **Droplet is FACT now** — alpha
-  runs `0.8.10.14`, deployed **July 16**, three-way corroborated. Current main is 0.8.11.0 + ~2
-  months unversioned. **Janne's invite is held by PM** pending this.
-- 🔴 **"Nothing routinely exercises production at all."** CXO's three 09-14 cases: only **one** is the
-  stale deploy; ① needs a shell on the box (13-month-old gitignored file), ③ was competently run but
-  not against prod. **I had framed all three as one blockage and CXO corrected it** — carry the
-  messier number.
-- **Web's four PM items, none previously boarded, oldest 113 days** — site walkthrough (113d),
-  obs-pass needing ~31 verdicts (94d), Buttondown (35d), a workDate yes/no. **Now on the board.**
-  ⭐ **My "four across the whole team" estimate was the floor, not the number.**
-- **PPM** executing PM's mini-epic ruling (collapse + catch-all, *"don't overindex on filing rules"*).
-- **CXO's T-axis probe window** closes when #1688's MCP arm starts writing output — PM's call.
-- **HOST ruled the agents-are-not-people rule AND mechanized it** (#1834); Comms shipped build item 1.
+📌 **PINNED UNTIL RESOLVED, per PM: complete the Fly migration.** With **Arch**. The droplet is
+**unfinished migration, not architecture** — a full Fly cutover was decided 07-10 and executed 07-12;
+alpha never followed. Also recorded: *"the droplet has no python-keyring backend"* (#1382), which
+forced an encrypted-DB fallback. **Zero active users makes this the cheapest it will ever be, and
+that window closes when the first tester logs in.** Costs (PM's figures): droplet $24/mo, Fly $10–16.
+**PM has de-escalated the money angle — the value is one surface, not savings.**
 
-## 🔴 The largest open gap, unchanged
+**Janne's invite: STILL HELD.** HOST ruled 09-20 that **deploy health ≠ the observed-BYOC-flow bar**
+they have now held three times. Alpha is current (**v0.8.12.0**, deployed 09-20, verified
+in-container). What's needed is a **real BYOC flow driven on alpha** — a user's stored key read and
+used on a substantive query. Lead has asked HOST to mint a throwaway token for it; HOST replied
+splitting the ask. **Not PM's to do.**
 
-**PM's conversational rulings still have no durable home.** I used `decisions.log` by hand twice
-today. **That is a habit, not a mechanism** — and it is the same shape as the finding three separate
-sources reached this week: *structural fixes hold, promises don't.*
+**Owed by me:**
+- **MONDAY 10:00 — usage reassessment with PM.** Their test: closer to 50% than to 33% means
+  converging. ⚠️ **Do NOT bring a commit-count estimate** — commits understate conversational load.
+  **PM holds the only real number; interpret theirs.**
+- **Ship #061** — drafted (`dev/active/weekly-ship-061-draft-2026-09-19.md`), PM close-reads Mon/Tue,
+  **Comms reviews before Wed 09-23 publish**, PM gates that handoff.
+- **PA is tasked** with a real usage-correlation model, prior art first.
+
+**PM is on non-Piper work** and explicitly not waiting on anything. **Do not push at them.**
+
+## This seat's standing errors
+
+- **Verify the artifact the instrument reads**, not the one you edited (`sync-pm-local.sh`).
+- **`echo` after `||` asserts nothing** — re-read `origin/main`.
+- **Don't write a decision brief on another role's surface without them reading it first.** Three
+  instances: scope-guard options, the credential mechanism, the Vercel retention advice.
+- **Nine consistent observations is what makes a confound invisible.** Repeatability felt like
+  validity; the variable I failed to control for was myself.
+- **A request with a deadline inside my own fire gap cannot arrive on time.** Pard's B3 landed 15:48
+  for a ~17:15 deadline; my next fire was 18:38. **PM's prompt is the only reason it happened.**
 
 ## Also live
 
