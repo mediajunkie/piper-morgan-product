@@ -31,7 +31,10 @@ switch, an artifact of what `--resume` does and doesn't restore.
 HOST verified independently (checked #1824 open, confirmed quoted log lines are verbatim real code at
 named file:line) before ruling. **PM is free to send it.**
 
-✅ **FLY MIGRATION — RULED, no longer pinned.** PM tonight, in-conversation, recorded in
+✅✅ **FLY MIGRATION — RULED AND CONFIRMED GO for tomorrow (Tue 09-22) morning.** PM confirmed
+directly. Relayed to Lead/Pard/Arch/HOST. Nothing further owed from me unless something changes.
+
+Original ruling recorded in
 `decisions.log`: *"the real question is just when and how... not whether."* Decided 2026-07-10,
 reaffirmed repeatedly since. Lead proposes **execution tomorrow (Tue 09-22) morning**, ~half-day,
 short write-freeze on alpha — full step table in
