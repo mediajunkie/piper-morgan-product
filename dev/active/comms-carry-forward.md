@@ -6,8 +6,9 @@ live in `comms-standing-items.md`; the canonical record is the session log
 
 ## Cron
 
-`1b05adf6` — CronList-verified at every fire today, including the START heartbeat push race (see
-below). Registry row current. Re-arming at tonight's STOP as usual.
+`2db6101f` — re-armed at 21:40 STOP via delete-then-create (1b05adf6 → 2db6101f, same cadence),
+CronList-verified exactly one job survives. Registry row updated to match. Next fire: 2026-09-22
+06:12.
 
 ## Notable: cron-survives-reboot finding — n=4, still no Pard/Janus ruling (2 days now)
 
