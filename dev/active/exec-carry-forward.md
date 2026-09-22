@@ -47,13 +47,12 @@ calling it settled on one data point.
 
 **Next check**: `git log` + mail for CIO's own BRIEFING entry, and Pard on scheduled clears.
 
-## New — needs PM assignment, not urgent
+## In progress — mcp.pipermorgan.ai assignment
 
-- **`mcp.pipermorgan.ai` (DNS/TLS) has no owner.** PA verified live (dig/curl): nothing deployed.
-  Blocks retesting two design-complete BYOC mitigations and all of Phase C. Pure deployment config,
-  near-zero MVP risk — the 09-15 plan named a candidate (Arch or a `prog` instance) but nobody was
-  ever actually assigned. PA batched this per PM's own instruction rather than mail PM directly —
-  first real use of that pattern.
+- **PM asked PA directly to propose who does it**, not just flag it unassigned. Floated one idea
+  for PA to weigh, not a ruling: **Arch supervising** (likely a `prog` instance doing the actual
+  deployment config under review, rather than Arch's own hands-on time). Relayed to PA with that
+  context. **Waiting on PA's proposal**, not PM's decision yet.
 
 ## Open, needs today's attention
 
