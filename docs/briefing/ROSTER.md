@@ -51,16 +51,8 @@ Standing staff roles. Each owns operational infrastructure + a hands-on producti
 | **Documentation Management** (Docs) | `docs` | `BRIEFING-ESSENTIAL-DOCS.md` | Omnibus logs; mailbox system; blog metadata pipeline; merge-keeper sweep |
 | **Web** (Unicorn Web Designer) | `web` | `BRIEFING-ESSENTIAL-WEB.md` | pipermorgan.ai public site + publishing pipeline; a two-repo role (product-repo infra worktree + `piper-morgan-website` worktree) |
 
-**Web retiered from Tier 3 → Tier 2, 2026-08-05 (Docs ruling).** Web flagged this 2026-08-03 as a
-question rather than deciding it unilaterally; HOST independently reached the same read 2026-08-03 and
-quoted both tier definitions verbatim rather than paraphrasing. By this doc's own stated criteria:
-Tier 2 requires "operational infrastructure + a hands-on production lane" (Web owns the publishing
-pipeline + the site — matches); Tier 3 is for roles "deployed for specific work shapes rather than
-continuous standing presence" (Web runs a continuous 6×/day cron since ~2026-06 — contradicted by the
-tier's own definition). Tier 3 fit the role once as "the least-contested slot" while its status was
-unverified; it stopped fitting the moment the role's actual operating pattern was confirmed. Both
-people closest to the evidence read it the same way and neither overrode the other's lane to act on it
-— exactly the discipline this doc depends on to stay authoritative.
+**Web is Tier 2** (retiered from Tier 3, 2026-08-05 — full rationale in
+`docs/internal/architecture/decisions/claude-md-history.log`).
 
 ---
 
@@ -78,20 +70,22 @@ Roles deployed for specific work shapes rather than continuous standing presence
 
 ## Session log naming
 
-Every role's session logs live at `dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-{slug}-{tool}-{model}-log.md`:
+Every role's session logs live at `dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-{slug}-{tool}-log.md`:
 
 - **Slug** column above identifies the role
-- **Tool**: `code` for Claude Code (default since the Apr 22–26 migration wave)
-- **Model**: `opus` (current default)
-- **Historical slug variants**: legacy chat-era sessions used `{slug}-opus` (no `-code-` infix); Code-era uses `{slug}-code-opus`
+- **Tool**: `code` for Claude Code
+- **Model**: NOT in the filename — recorded in the session log's own header instead (models vary
+  by role and change over time; encoding one in the filename would go stale). See CLAUDE.md's
+  Session Discipline section.
+- **Historical logs** (pre-2026-06-29) do carry a `-opus` or `-sonnet` suffix — leave those as-is
+  when you encounter them, don't rename to match the current convention.
 
-Examples:
-- `2026-05-22-1346-docs-code-opus-log.md` — Docs Code session, May 22 13:46
-- `2026-05-18-2033-pa-opus-log.md` — Piper Alpha session, May 18 20:33
+Example (current convention):
+- `2026-09-22-0632-docs-code-log.md` — Docs Code session, Sep 22 06:32 (model in the log header)
 
 ## General-purpose Code sessions
 
-If no role is assigned, the agent is a **general-purpose Claude Code agent**. Use slug `code-opus`. Per CLAUDE.md: "Do not assume you are the Lead Developer — ask PM what role you should take if the task is ambiguous."
+If no role is assigned, the agent is a **general-purpose Claude Code agent**. Use slug `code` (per CLAUDE.md's own Role section). Per CLAUDE.md: "Do not assume you are the Lead Developer — ask PM what role you should take if the task is ambiguous."
 
 ---
 
