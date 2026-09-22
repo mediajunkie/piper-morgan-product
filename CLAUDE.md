@@ -96,7 +96,8 @@ git branch  # Should show claude/* branch, not main
 
 ⚠️ **Two Amber-specific gotchas, both found on the first migration** (`dev/2026/07/25/2026-07-25-1053-cio-code-log.md`):
 1. **A worktree cut from a pre-existing role branch inherits that branch's staleness silently.** The first one arrived **5,393 commits behind `origin/main`** — a six-week-old CLAUDE.md, briefings, and mailboxes, with no error. Provisioning now asserts 0-behind before handover; if you suspect otherwise, check `git rev-list --count HEAD..origin/main` yourself.
-2. ✅ **The pre-commit hooks were dead everywhere — an invalid matcher, not a worktree problem. Matcher fixed and verified 2026-07-25; mechanism fully explained 2026-07-26.** Full record, evidence, and four refuted hypotheses: **`docs/internal/operations/amber-hooks-investigation-2026-07.md`** (companion memory pin `project_amber_worktree_hooks_not_firing` is a *partial* record — it predates the five-seat validation).
+2. ✅ **The pre-commit hooks were dead everywhere — an invalid matcher, now fixed.** Full record,
+   evidence, and four refuted hypotheses: **`docs/internal/operations/amber-hooks-investigation-2026-07.md`**.
    **The operative rules — this is all you need at load time:**
    - ⚠️ **Hooks are ADVISORY, not a control.** Bypassable with `git -c` or `--no-verify`. The prose discipline is primary; do not treat mailbox discipline as solved because a hook exists.
    - **The mechanism, in one line**: `check-branch.sh` decides via `git diff --cached --name-only`, and **PreToolUse fires BEFORE the Bash call runs.** So the variable is **index state at hook-fire time**, never command shape.
@@ -105,8 +106,11 @@ git branch  # Should show claude/* branch, not main
    - ✅ **`scripts/mail-send.sh` is structurally safe regardless** — it uses `commit-tree`, never `git commit`, and lands mail on `main` directly.
    - **If you probe it**: print `git diff --cached --name-only` before the first probe and after every block, and run the **compound** probe first against a verified-empty index. **A blocked commit never runs, so its file stays staged and silently arms the next probe** — that one confound produced four wrong datasets across five seats.
    - ⚠️ **Property (a), "hook settings reload live," is UNRESOLVED.** Verify on your own seat; don't rely on any model of it. Layer naming in the error is **noise, not a diagnostic**. Do not consolidate the two hook layers.
-   **Three standing rules this earned**, each paid for: (1) **verify behaviorally, never by config presence** — an absent hook and a silent hook look identical; (2) **a diagnosis of a silent mechanism carries the same evidentiary burden as the mechanism itself**; (3) **the probe's shape must match the shape you actually use** — a behavioral test of a shape nobody writes is closer to a config check than a verification.
-   **And the second-order lesson**: when N investigators agree, ask what procedure they share before treating agreement as evidence. Five seats converged on the same wrong answer because they inherited the same unexamined probe default. **Independent agents converging via a shared default is indistinguishable from replication.**
+
+   Closing epistemics lessons from this investigation (verify behaviorally not by config presence;
+   a diagnosis needs the same evidentiary burden as the mechanism; N agreeing investigators sharing
+   one unexamined default isn't replication): full text in
+   `docs/internal/architecture/decisions/claude-md-history.log`.
 
 Historical context: Lead Dev's 6/12 determination that the ephemeral worktree sufficed for all roles including dev-server sessions was correct *for Desktop*, and `dev/2026/06/19/cohort-plan-of-record-2026-06-12.html` records it (path corrected 2026-09-02, #1486 — archived from `dev/active/`). Model-A setup details: `docs/internal/operations/git-worktrees-model-a-setup.md`. Lifecycle (create / freshness / cleanup): `docs/internal/operations/amber-worktree-lifecycle.md`.
 
@@ -154,17 +158,14 @@ alembic upgrade head
 ```
 
 > ⚠️ **Restarting the server from a Claude Code shell? Strip the inherited `ANTHROPIC_*` env vars.**
-> ⚠️ **CORRECTED 2026-07-31 (PA) — the prescription below is still right; its stated mechanism was stale, and on Amber there is a SECOND, unrelated cause of the identical symptom.** This paragraph used to say the empty key "shadows the real key in `.env`." **There is no `.env` — not in the shared checkout, not in any worktree.** Keys resolve via `services/config/llm_config_service.py:213`: **Keychain first** (`piper-morgan` / `{provider}_api_key`, per `keychain_service._get_key_name`), **then** the env var. So the empty env var can still shadow — but what it shadows is the *env fallback*, not a dotenv file.
-> 🔴 **And on the Amber seat, the Keychain entries are simply ABSENT** — no `anthropic`, `openai`, or `github_token` (Lead, probed via `KeychainService`, 07-30; PA independently confirmed 07-31 that **every** path in the resolution order is empty). The `_db_store` fallback (#1382) will **not** cover this: it activates only when there is no real keyring backend, and Amber's `keyring.backends.macOS` is live. **So on Amber this symptom currently has an unprovisioned-credential cause, not an env-shadowing one — and stripping the vars will not fix it.** Provisioning must go through `KeychainService`, **not** the `security` CLI (the service appends `_api_key`; CLI-stored entries are invisible to the app). One missing step was found blocking four lanes at once on 07-31 (#1386 criterion 2, PA's Probe A, #1445, #1395).
->
-> A Claude Code Bash shell exports `ANTHROPIC_API_KEY=` (**empty**), plus `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` / `ANTHROPIC_CUSTOM_HEADERS`, for Claude Code's own use. If you launch `main.py` directly from that shell, the server **inherits the empty key, which shadows whatever the env fallback would have supplied** (python-dotenv won't override an already-set var) → every LLM call fails with `APIConnectionError`: *"All configured LLM providers failed. Details: anthropic: Connection error."* This masquerades as a rate limit or transient outage but is neither — a rate limit is HTTP 429; this is a connection failure with no usable credential. The tell: a plain `curl`/`httpx` GET to `api.anthropic.com` succeeds (no auth needed → HTTP 405) while the server's authenticated POST fails. **Always restart the server (and any script that calls the Anthropic SDK directly — e.g. the canonical-retest harness's in-process judge) with those vars stripped:**
+> A Claude Code Bash shell exports `ANTHROPIC_API_KEY=` (**empty**), plus `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` / `ANTHROPIC_CUSTOM_HEADERS`. Launching `main.py` directly from that shell inherits the empty key, which shadows the real credential-resolution path (Keychain first, then env var — see `services/config/llm_config_service.py:213`) → every LLM call fails with `APIConnectionError: "All configured LLM providers failed."` This is NOT a rate limit (that's HTTP 429) — a plain `curl` to `api.anthropic.com` succeeds while the server's authenticated call fails. **Always restart the server with those vars stripped:**
 > ```bash
 > env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
 >   POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &
 > ```
-> Diagnosed 2026-06-04 (Lead Dev) after it masqueraded as a canonical-retest "rate limit" across multiple restarts. The fix is launch-environment only — no code change. (Future-proofing tracked in #1152: multi-LLM / local-model fallback.)
+> **On Amber specifically**: if stripping the vars doesn't fix it, the Keychain entries themselves may be absent for that seat — provision via `KeychainService` (not the `security` CLI, which stores entries under a name the app doesn't look for). Full investigation history (both causes, how they were distinguished, dates): `docs/internal/architecture/decisions/claude-md-history.log`.
 
-> ⚠️ **`origin/production` is NOT what's deployed — don't cite it as "what's live."** Found 2026-08-13 (PA) mid-verification-task: `origin/production` was **4,195 commits / 18 days stale** relative to `origin/main` at the time, predating even the security-relevant #1481 Slack hold. `.github/workflows/docker.yml`'s build trigger is `push: branches: [main]`, not `production` — the branch looks abandoned, not a deploy source. **For "what does the app actually do right now," check `origin/main`** (or, better, whatever the live host's actual running commit is if you can determine it — branch staleness and deployed-artifact staleness are two different numbers; see the 2026-08-06 "2,269 commits behind" incident where the branch measure and the artifact measure differed by two orders of magnitude). If you're about to cite any named ref as ground truth for "current" or "live," check what it actually is first — don't trust the name.
+> ⚠️ **`origin/production` is NOT what's deployed — don't cite it as "what's live."** It has been found badly stale relative to `origin/main` (the actual build trigger, per `.github/workflows/docker.yml`). **For "what does the app actually do right now," check `origin/main`** (or, better, the live host's actual running commit — branch staleness and deployed-artifact staleness are two different numbers). Don't trust a ref's name as ground truth for "current"; check what it actually is. Full incident history: `docs/internal/architecture/decisions/claude-md-history.log`.
 
 **Critical Paths**:
 - Entry point: `main.py` (not web/app.py)
@@ -575,37 +576,10 @@ git log --oneline origin/main..HEAD
 #   doesn't resolve, `git log … 2>/dev/null` prints NOTHING and exits 128 — it
 #   reads exactly like a clean pass while having measured nothing. That is m-44
 #   inside the sign-off checklist itself: assert what you actually looked at.
-# ⚠️ WHY THIS CHANGED (HOST, 2026-08-01 — both old commands measured the wrong ref):
-#   OLD step 2: `git log --oneline @{u}..HEAD`  — `@{u}` is whatever the worktree was
-#     provisioned to track. Measured across all 11 agent worktrees: 8 track `origin/main`
-#     (correct); cio + host tracked `origin/claude/{role}-cycle`, a ref this workflow
-#     NEVER pushes to. host read 6741 against origin/main..HEAD = 0. It is provisioning
-#     drift, not a Model-A property (PA's fleet census corrected HOST's first diagnosis),
-#     and it FAILS SILENTLY until the branch diverges — cio sat at 0 for weeks and went
-#     to 61 within hours of the census.
-#   OLD step 3: `git log --oneline main..HEAD` — its own comment said "reachable from
-#     origin/main" while the command used LOCAL `main`, which lags in a worktree.
-#     Misreporting on 3 of 11 seats at the moment it was found (host 8, arch 8, web 4).
-#   Both produced output where the checklist said "Expected: empty" — i.e. a MANDATORY
-#   step that cries wolf every session. That trains the discipline away, which is worse
-#   than the wrong number.
-#   ⚠️ And why it went undetected: HOST ran `origin/main..HEAD` in all 7 of its sign-offs
-#   and never the specified command — NON-COMPLIANCE MASKED THE DEFECT. The people it was
-#   wrong for were not running it. If a step is broken, the ones who'd notice are the ones
-#   following it verbatim; if they've quietly substituted something better, nobody reports.
-#   Fix both halves: normalize the upstream (`git branch -u origin/main`) AND use an
-#   explicit ref here, so this is correct regardless of how a seat was provisioned.
-#   THIRD failure mode, added same day (PA, found on a non-Piper worktree with NO
-#   upstream at all): a step can report clean because the command DIED. HOST's first
-#   fix had this too — `origin/main..HEAD` on a repo without that ref exits 128 with
-#   empty stdout, and the `2>/dev/null` we all reflexively add makes it silent. Hence
-#   the rev-parse guard above. Three distinct ways one checklist line lied: wrong ref
-#   (step 2), stale ref (step 3), unresolved ref (this). All three printed something
-#   an agent would read as fine.
-#   FLEET SCOPE, corrected twice: HOST measured one repo, PA said "every worktree on
-#   Amber" and had globbed one of FIVE roots, Web caught that. Full run: 18 worktrees,
-#   5 roots. Local `main` lags 10–15 in the website and designinproduct worktrees.
-#   Both censuses stopped at the repo their author works in.
+#   ⚠️ This explicit-ref + rev-parse-guard form replaced two earlier versions that
+#   each measured the wrong or a stale ref and reported false-clean ("Expected: empty"
+#   while real unpushed work existed) — full incident record, three distinct failure
+#   modes found, in docs/internal/architecture/decisions/claude-md-history.log.
 # If output has lines, you have THREE options:
 #   (a) merge your branch to main now (preferred for completed work):
 #       git checkout main && git pull origin main && git merge <your-branch> --no-ff && git push origin main
@@ -625,18 +599,19 @@ git log --oneline origin/main..HEAD
 
 ### Reactive safety nets
 
-Two layers are *supposed* to catch sign-off-discipline lapses. **As of 2026-07-25: one is verified, one is re-wired but unproven. Do not lean on the first until someone has watched it fire.**
+Two safety nets exist for sign-off lapses — neither is the primary discipline, and neither
+replaces pushing routinely yourself:
 
-1. ✅ **PreCompact hook — CONFIRMED FIRING 2026-07-29. This line was 🟡 unproven for weeks; it is now discharged by evidence.**
-   **The evidence** (`dev/active/session-end-warnings.log`, HOST's seat):
-   `[2026-07-30T05:10:07Z] event=PreCompact tier=HARD branch=claude/host-cycle uncommitted=0 substantive=0 unpushed=6217 ahead_of_main=0`
-   ⚠️ **Why nobody found it for weeks, and the lesson that outlasts the finding**: `.gitignore:136` excludes that log. It is therefore invisible to `git ls-files`, absent from `origin/main`, and unfindable by grepping the repo — it exists only on the local disk of the seat where it fired. **Six surfaces recorded the file as "never existed," every one a correct inference from a corpus that structurally could not contain the answer.** *(Before concluding a file has never existed, run `git check-ignore -v <path>`.)*
-   ⚠️ **Its HARD tier is uninformative on a Model-A push-to-main seat.** The firing above says HARD while `uncommitted=0`, `substantive=0`, `ahead_of_main=0` — everything clean. `precompact-signoff-warning.sh:54` gates HARD on `git log '@{u}..HEAD'`, and `@{u}` is `origin/claude/{role}-cycle`, **a ref this workflow never pushes to** (we push `HEAD:main`). Measured 2026-08-01: `@{u}..HEAD` = 6711, `origin/main..HEAD` = 0. **So on THAT SEAT the hook can only ever fire HARD.** ⚠️ **CORRECTED 2026-08-01 (PA, fleet census): this is NOT a Model-A property — it is provisioning drift, and it is the minority case.** Measured across all 11 agent worktrees: **8 have `upstream = origin/main`** (arch, cxo, docs, exec, lead, pa, ppm, web) where `@{u}..HEAD` is **0 and correct**; **3 have `upstream = origin/claude/{role}-cycle`** (cio, comms, host) — comms 8699, host 6717, **cio 0**. `origin/main..HEAD` is **0 on all twelve**. cio is the instructive one: role-branch upstream *and* currently 0, so this **fails silently until the branch diverges from the ref it tracks.** 🔴 **And it hits more than the hook: §Sign-Off step 2 is `git log --oneline @{u}..HEAD` with "Expected: empty" — on comms and host that step reports thousands every session, which trains people to skip a step in the mandatory checklist.** **Preferred fix: normalize the three upstreams (`git branch -u origin/main`), not just patch the hook** — patching fixes the hook; normalizing fixes the hook *and* the checklist *and* anything else reasoning about `@{u}`. For a workflow whose every push is `HEAD:main`, `origin/main` is arguably the correct upstream and the three are the outliers. The right number is already computed at line 61 (`AHEAD_OF_MAIN_COUNT`, against `origin/main`). Fix pending with CIO — and per this file's own rule, whoever changes it should *watch it fire*, not read the config.
-   *(Superseded text, kept because the reasoning was right and only the conclusion was wrong: "RE-WIRED 2026-07-25, but NOT YET SEEN TO FIRE. Treat as unproven.")*
+1. **PreCompact hook** — fires on compaction, pushes a heartbeat marker so a stalled session is
+   detectable. Confirmed firing (2026-07-29); its severity tier can misreport on some worktree
+   upstream configurations (fix pending with CIO).
+2. **Docs' daily merge-keeper sweep** — catches any `claude/*` branch with unmerged commits within
+   24 hours of session start.
 
-2. ✅ **Docs merge-keeper sweep at session start** for all `claude/*` branches with commits not on main — this one is real. While layer 1 remains unproven, treat this as the only net you can count on; it catches things within 24 hours rather than at the moment of risk.
-
-Both layers are **safety nets, not the primary discipline** — and this section is itself the cautionary case for why that matters: a documented net asserted in the present tense stayed false for ten weeks because nothing verified it. **A safety net you haven't seen fire is a claim, not a mechanism.** If you notice another one here you can't confirm behaviorally, treat that as a finding rather than an assumption.
+**A safety net you haven't seen fire is a claim, not a mechanism.** If you notice one here you
+can't confirm behaviorally, treat that as a finding, not an assumption. Full investigation
+history (evidence, the two real ref-measurement bugs found and fixed, the fleet-census
+corrections): `docs/internal/architecture/decisions/claude-md-history.log`.
 
 ### Why this is unmistakable
 
@@ -677,45 +652,35 @@ Full incident detail and procedures: `docs/internal/operations/github-and-toolin
 > - **All agent commits go from YOUR worktree** (`git push origin HEAD:main`); mail goes via `scripts/mail-send.sh` (push-to-ref). Neither touches the main checkout's working tree — that's the whole point of Model-B + push-to-ref.
 > - **MANIFEST noise:** clear only by **surgical explicit path** (`git checkout -- mailboxes/{role}/inbox/MANIFEST.md`), never `git checkout -- mailboxes/` or broader.
 >
-> ### 🔴 SCOPE IS NOT DIRECTION — added 2026-08-08 (CIO, on PM's direct ask after the merge-drop incident)
-> **Every rule above is about SCOPE** — how many paths a command touches. **None of them is about DIRECTION** — which way the content flows. That gap destroyed work on 2026-08-08, and the agent was following this file correctly at the time.
->
-> **What happened**: Arch found two files modified in their worktree, judged them superseded, and ran
-> `git checkout HEAD -- services/intent_service/temporal_utils.py services/intent_service/todo_handlers.py`.
-> **That is scope-perfect** — explicit paths, no broad sweep, exactly the "surgical" form this file endorses. **It also silently destroyed the #1490 refix**, because HEAD already carried merge damage and the *working tree* held the good version. Arch's own words: *"I reasoned from the fix existing on `origin/main` to 'my copy must be the old one,' and never diffed the two. The whole apparatus of care was applied to a conclusion I hadn't checked."*
->
-> ⚠️ **`git checkout <ref> -- <path>` OVERWRITES the working tree from `<ref>` and the discarded version is unrecoverable** — it was never committed. Being surgical about *which* files does nothing about *which direction*.
+> ### 🔴 SCOPE IS NOT DIRECTION
+> **Every rule above is about SCOPE** — how many paths a command touches. **None of them is about DIRECTION** — which way the content flows. Being surgical about *which* files does nothing about *which direction*, and `git checkout <ref> -- <path>` OVERWRITES the working tree from `<ref>` — the discarded version is unrecoverable if it was never committed.
 >
 > **THE RULE: before any `git checkout <ref> -- <path>`, diff first.**
 > ```bash
 > git diff HEAD -- <path>      # shows exactly what you are about to discard. Empty = safe.
 > ```
-> **If that diff is non-empty, you are about to throw away uncommitted work — read it before you decide which side is stale.** Never infer staleness from "the fix exists upstream, so my copy must be old": a merge can leave HEAD holding the *pre-fix* state while your tree holds the fix, which is precisely the case that bit.
+> **If that diff is non-empty, you are about to throw away uncommitted work — read it before you decide which side is stale.** Never infer staleness from "the fix exists upstream, so my copy must be old": a merge can leave HEAD holding the *pre-fix* state while your tree holds the fix.
 >
-> **Corollary for detection**: `--diff-filter=D` finds *deleted files* and misses *reverted hunks*, so a merge audit built on it under-reports. Compare content against the merge's other parent (`^2`), not file presence. (Arch corrected their own published check on this the same day.)
+> **Corollary for detection**: `--diff-filter=D` finds *deleted files* and misses *reverted hunks*, so a merge audit built on it under-reports. Compare content against the merge's other parent (`^2`), not file presence.
+>
+> Full incident (what this rule was learned from): `docs/internal/architecture/decisions/claude-md-history.log`.
 
 > - **Rebase/merge blocked by unstaged changes in the main checkout? STOP.** Do NOT clear. Investigate what they are first — **if they're PM's work, leave them and find another path** (push from your worktree). PM's principle: *"fix your mistakes directly, not with sweeping careless irreversible steps."*
 
-> ### ⚠️ Pause before any irreversible action — two related failure modes, not just git in PM's main checkout (PM-named pattern, ratified 2026-07-06)
-> The git-specific HARD RULE above is one instance of a general principle. Three incidents in ~2 weeks, three different agents, split across two distinct failure modes — not one:
-> 1. **Escalating to a broader/more destructive mechanism when a narrower one was already working.** PA wiped sprint assignments during a sort operation (6/27); Lead Dev reached for `docker volume rm` on the shared dev Postgres after successful narrow per-row `DELETE`s were already working (7/5). Before reaching for a broad, no-undo action — deleting a volume, `rm -rf`, force-push, hard reset, a bulk delete/update — pause and ask whether the narrow, reversible thing you were already doing still works. "This is probably just disposable scratch state" is not the same as verified-disposable; if unsure, the cost of asking or doing the narrow thing first is near-zero next to the cost of being wrong.
-> 2. **Trusting a partial-looking operation without verifying it's actually additive, not full-replace.** The 7/5 GitHub Projects v2 Sprint-field wipe: `updateProjectV2Field`'s option-list mutation silently requires the *complete* new option list — omitting existing options drops every issue's assignment to them, project-wide. An operation that looks incremental can be secretly destructive underneath. Before using any API/mutation for what looks like a small partial update, verify whether it's actually additive or full-replace.
+> ### ⚠️ Pause before any irreversible action — two related failure modes, not just git in PM's main checkout
+> The git-specific HARD RULE above is one instance of a general principle:
+> 1. **Escalating to a broader/more destructive mechanism when a narrower one was already working.** Before reaching for a broad, no-undo action — deleting a volume, `rm -rf`, force-push, hard reset, a bulk delete/update — pause and ask whether the narrow, reversible thing you were already doing still works. "This is probably just disposable scratch state" is not the same as verified-disposable; if unsure, the cost of asking or doing the narrow thing first is near-zero next to the cost of being wrong.
+> 2. **Trusting a partial-looking operation without verifying it's actually additive, not full-replace.** GitHub Projects v2's `updateProjectV2Field` option-list mutation is the sharpest example: it silently requires the *complete* new option list — omitting existing options drops every issue's assignment to them, project-wide. Before using any API/mutation for what looks like a small partial update, verify whether it's actually additive or full-replace.
 >
-> 3. ⚠️ **Deleting a memory file is IRREVERSIBLE — export first.** *(Added 2026-07-28; this hazard was undocumented here.)* Memory lives in `~/.claude-pm/`, **not in the repo** — there is no `git revert`, no reflog, no `origin/main` copy. It does not behave like anything else you touch, and it is the cohort's **shared** pool, not your role's. **Before any prune, merge, or delete: export the whole directory verbatim to a git-tracked file.** *(`dev/2026/07/27/memory-export-2026-07-27-pre-prune.md` is the worked example — path corrected 2026-09-02, #1486.)* Pruning the shared pool is also a governance action, not a formatting choice for whoever trips a size limit.
+> 3. ⚠️ **Deleting a memory file is IRREVERSIBLE — export first.** Memory lives in `~/.claude-pm/`, **not in the repo** — there is no `git revert`, no reflog, no `origin/main` copy. It does not behave like anything else you touch, and it is the cohort's **shared** pool, not your role's. **Before any prune, merge, or delete: export the whole directory verbatim to a git-tracked file.** Pruning the shared pool is also a governance action, not a formatting choice for whoever trips a size limit.
 >
-> Neither is a mechanical blocker — like the git HARD RULE above, this is prose discipline, not a hook or linter (PM: guardrails shouldn't be "too stiff"; agents are trusted to assess what works in the moment). The ask is the same across all three failure modes: **when an action has no undo, the seconds it takes to check beat the cost of being wrong.**
+> Neither is a mechanical blocker — this is prose discipline, not a hook or linter; agents are trusted to assess what works in the moment. The ask is the same across all three failure modes: **when an action has no undo, the seconds it takes to check beat the cost of being wrong.** Full incident detail behind each: `docs/internal/architecture/decisions/claude-md-history.log`.
 
 ### The five rules at a glance
 
 1. **Worktree per substantive session — model depends on host** *(revised 2026-07-25, PM-approved)*. **On Amber: Model A** — your stable per-agent worktree at `~/Development/piper-morgan-worktrees/{role}` on `claude/{role}-cycle`, reused across every session (the path is load-bearing; see §"Worktree model" above). **On Claude Desktop: Model B** — the ephemeral auto-worktree Desktop creates per session. Either way, push finished units to `origin/main`. Tiny mailbox-only or housekeeping passes can stay on `main`. LD's 6/12 determination (ephemeral suffices even for the dev-server) remains correct for Desktop; it assumed a per-session auto-worktree that Amber doesn't provide.
 2. **Commit-before-close** — every session ends with a clean working tree on its branch + branch merged to `main` (or NOTICE memo explaining why holding). See "Sign-Off Discipline" section above.
-3. **Mailbox writes always commit to `main`** — never on feature branches. Mail is cross-agent infrastructure; trunk only.
-   > ⚠️ **The hook is ADVISORY, not a control — the prose discipline is primary.** *(Added 2026-07-28: this operative rule was missing from this file while 12.8% of it described the investigation that produced it.)*
-   > - **It is bypassable**: `git -c …` steps around it, and the script documents `--no-verify` as a legitimate escape. A guard you can step around with a flag is a discipline aid, not a guarantee.
-   > - **It is shape-dependent**: a **standalone** `git commit` (staged in a previous call) **is** gated; **`… && git add … && git commit …` in one call is NOT** — PreToolUse fires *before* the Bash call runs, so `git add` hasn't executed when the hook reads the index. On **Model B it doesn't gate at either shape.**
-   > - **Free mitigation, costs nothing**: when you want a commit gated, **stage in one call and commit bare in the next.**
-   > - `mail-send.sh` is structurally safe regardless — it uses `commit-tree`, never `git commit`, and lands mail on `main` directly.
-   > **Do not treat mailbox discipline as solved because a hook exists.** Full reasoning: memory pin `project_amber_worktree_hooks_not_firing`.
+3. **Mailbox writes always commit to `main`** — never on feature branches. Mail is cross-agent infrastructure; trunk only. **The enforcement hook is advisory, not a control** — full mechanism, bypass conditions, and the stage-then-commit mitigation are in §"Worktree model" → Amber gotcha 2, above. Do not treat mailbox discipline as solved because a hook exists.
 4. **Branch/worktree registry** — agents record their branch + last-commit + status so other agents can see who's working where. Implementation in canonical doc.
 5. **Designated merge-keeper** — Docs runs a daily merge-keeper sweep (`scripts/merge-keeper-sweep.py`) catching anything stranded within 24 hours. See `docs/briefing/BRIEFING-ESSENTIAL-DOCS.md` "Merge-Keeper Sweep" section.
 
