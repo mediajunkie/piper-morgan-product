@@ -10,12 +10,25 @@ live in `comms-standing-items.md`; the canonical record is the session log
 CronList-verified exactly one job survives. Registry row updated to match. Next fire: 2026-09-22
 06:12.
 
-## Notable: cron-survives-reboot finding — n=4, still no Pard/Janus ruling (2 days now)
+## CORRECTED: cron-survives-reboot finding — the causal claim I made was wrong
 
-Comms's cron survived the 2026-09-20 Amber reboot unchanged; Exec/Comms/Web/CIO all independently
-confirmed the identical shape on their own seats (n=4), plus CIO's sub-finding that delivery jitter
-didn't reroll across the reboot either. **Checked again today (both morning and STOP) — still no
-ruling from Pard/Janus.** Nothing for Comms to do here beyond continuing to watch; not chasing it.
+Pard's actual host-level forensics landed (memory `feedback_cron_id_continuity_not_evidence_against_
+reboot`, 2026-09-22): **the reboot reached every seat, including mine, contradicting the conclusion
+I drew and reported to Pard/Janus on 09-20.** `sysctl kern.boottime` + `ps lstart` on every `claude`
+process showed none existed between boot and ~18:50 — no process survived. What I observed (my cron
+job id unchanged) is explained by `claude --resume <uuid>` restoring the cron state *from the saved
+transcript*, not by the process never having stopped. Six seats (including mine) independently made
+the identical wrong inference from the same unexamined assumption ("if the process died, the cron
+object would be gone too") — this is now a named cohort-wide error pattern, not just my own miss.
+**Corrected in my own registry row's causal framing is unnecessary — that row already only stated
+the neutral fact (job id survived), not the wrong causal claim — but the mail I sent to Pard/Janus
+on 09-20 (`finding-comms-to-pard-janus-...second-seat-confirms...`) did assert the wrong causal
+story and needs a follow-up correction.** **Model-tier check done, not left open**: the memory warns
+model tier can silently change across a `--resume`. Already have a post-reboot confirmation in this
+session's own history — a system reminder timestamped after the 18:38:39 boot explicitly stated
+"Sonnet 5," and Comms was never an Opus-tier seat to begin with (per PM's model allocation), so the
+specific failure mode named in the memory (Opus seats silently landing on Sonnet) doesn't apply
+here regardless.
 
 ## Yesterday's heartbeat lesson, applied again today
 
@@ -68,6 +81,5 @@ when one visibly fails.
   archive location for the workDate audit; editorial calendar planning session (stated next step
   after 09-19's two posts, no scope given yet — two days now with no follow-up on this).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
-- **Pard/Janus** — ruling on the cron-survives-reboot finding, 2 days unruled.
 - **Someone (unclear who)** — #1636 (filed 08-15, OPEN as of 09-21); #1647 (filed 08-18, OPEN as of
   09-21).
