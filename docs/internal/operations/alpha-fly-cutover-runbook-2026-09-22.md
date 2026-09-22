@@ -136,8 +136,8 @@ into a repo, mailbox, or chat.
 
 ```sh
 # 1. deploy current main  (verify: /health identity shows the new sha + version)
-git fetch origin -q && git status -sb | head -1            # expect: ## main...origin/main (no ahead/behind)
-fly deploy -a piper-morgan --remote-only
+git pull --rebase -q origin main && git status -sb | head -1   # expect: ## main...origin/main (no ahead/behind) — fly deploy builds the LOCAL tree
+fly deploy -a piper-morgan --remote-only --build-arg PIPER_GIT_SHA="$(git rev-parse HEAD)"   # the Dockerfile ARG that /health's git_sha reads; without it /health says "unknown" (learned 09-22 v117)
 curl -s https://piper-morgan.fly.dev/health | head -c 400   # READ: version/sha of the deploy just made
 fly releases -a piper-morgan | head -3                       # READ: new vN "complete"
 
