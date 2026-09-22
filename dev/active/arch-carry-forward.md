@@ -26,11 +26,9 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
-- **Fly cutover migration (my deployment-pipeline plan v0.2) — EXECUTING TODAY, 2026-09-22.** PM
-  approved; runbook `docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md`. My step-8
-  concern (`mcp_server_ref` backfill coverage) resolved clean: droplet has exactly one binding
-  total (github), zero literal rows — Lead verified live pre-restore. Watching for anything
-  surfacing that needs architectural input; not driving execution, that's Lead/Pard's.
+- **Fly cutover migration — SUCCEEDED 2026-09-22.** Plan `deployment-pipeline-plan-v0.1-2026-09-20.md`
+  now v0.3. §4e (post-migration deploy path) is design-complete; PM ruled **Pard builds it**
+  (token-facts → CI deploy → staging). Nothing owed by arch; watching only.
 - **#1744** — ruleset migration for `main`'s branch protection. PM approved the shape; blocked on
   PM doing it in the GitHub UI (a keyboard action, not something I can do). Payload/backup exist if
   needed: `dev/2026/09/18/branch-protection-main-classic-backup-2026-09-18.json`.
