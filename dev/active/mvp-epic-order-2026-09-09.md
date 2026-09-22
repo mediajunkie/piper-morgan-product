@@ -679,7 +679,16 @@ reports every drift site — but isn't wired as a ratchet, the exact "measured b
 this epic's own `#1829`/`#1836` entries already name). `#1839` (`/health` reported a hardcoded
 version and environment for months — a stale value presented as current, the same claim-doesn't-
 match-state shape as `#1836`'s confabulation, just at the ops-observability layer instead of the
-chat layer).
+chat layer). **`#1849` folded in 2026-09-22, same day, direct follow-on to `#1839`'s own fix**:
+the Fly build path leaves `/health`'s `git_sha` reporting `"unknown"` — the deploy-identity fix
+shipped but the SHA isn't actually injected at Fly deploy time, so the honest-value guarantee
+`#1839` was supposed to establish doesn't yet hold on that specific path. Same claim-vs-state class,
+found same-day because the fix is now live enough to be checked against. **`#1850` folded in
+2026-09-22, caught by this seat's own new third-queue-source criteria line same-day it was
+filed** — `connector_bindings`' write path accepts arbitrary `mcp_server_ref` values with nothing
+enforcing ADR-070's amendment; found by Arch ahead of the Fly cutover (live data was clean, but the
+gap is structural, not a one-time data issue). Same "measured but not enforced" shape as `#1800`,
+one layer down at the write-path/DB-constraint boundary instead of the mypy-sentinel one.
 
 ### 6. Rendered deliverable (3 items + 2 shared with GatherOutcome/Security) — same reasoning as 5
 `#1729` · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome). Plus, folded
