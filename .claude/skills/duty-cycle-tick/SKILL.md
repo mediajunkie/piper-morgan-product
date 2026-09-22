@@ -2,9 +2,9 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.37
+version: 1.38
 created: 2026-06-06
-changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present, moved out 2026-09-22, context-floor item 2 Phase A -- nothing lost, just relocated off the surface every fire re-reads). Most recent: v1.37 (2026-09-21) — **START's registry-row step now names the `state` column explicitly and requires clearing a stale `parked` value, not just implicitly assuming a full-row rewrite covers it.** Docs found their own row stayed `parked` through a clean day-close after the 09-20 Amber-reboot park event, because their STOP habit narratively rewrites `active_since` (col 7) but nothing in this skill's steps named col 8 (`state`) as something to check separately — CXO relayed the finding since it lands on this skill, not on Docs's own carry-forward. Same shape as finding #6 (a missing row is invisible to the watchdog) one column over: a row that EXISTS but lies about being parked is just as invisible, in the opposite direction — the watchdog treats `parked` as "deliberately dark, no stall alerts," so a role stuck reading `parked` while actually fine loses real future-stall coverage, silently. Fix: the START registry-row paragraph's column list now includes `state` explicitly, with its own instruction to clear a stale `parked:` value at START (never STOP, never a peer) per the row's own clearing-condition text."
+changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.38 (2026-09-22) — **Mail/task loop exit condition tightened to PM's exact two-consecutive-empty-rounds requirement, closing a real gap PM found by formalizing the flywheel as a 16-state table.** PM's rule: exit to idle ONLY on two consecutive (0 mail, 0 tasks) rounds; every other pattern -- including new mail/tasks in the round BEFORE the current one, even if the current round is itself clean -- continues the loop. Fix: Step 5 now explicitly defines a "round" (one full 1-2-2b-3 pass), requires tracking empty-vs-non-empty per round, and exits only when the just-finished round AND the one before it were both empty."
 ---
 
 # duty-cycle-tick
@@ -297,7 +297,20 @@ has a real log on `origin/main` instead of only on local disk.
       to be quiet.
   3. **Re-check the Mail Loop** — new mail may have arrived while you were draining tasks.
   4. **Loop 1–3** until there is truly nothing left to do.
-  5. **Only THEN return to IDLE.**
+  5. **Only THEN return to IDLE — and "nothing left" means TWO CONSECUTIVE EMPTY ROUNDS, not one
+     clean pass.** (PM's own formalization, 2026-09-22, verified against this prose and found
+     weaker than specified: PM's exact rule is a 16-state table over two rounds of (mail, tasks)
+     — every pattern except **two consecutive (0 mail, 0 tasks) rounds** continues the loop, and
+     that includes a round with new mail but no tasks, new tasks but no mail, or either appearing
+     in the round *before* the current one even if the current round is itself clean. This prose
+     previously said only "loop until nothing left, then exit," which a single clean pass through
+     1→2→2b→3 already satisfies — weaker than PM's requirement, and exactly the gap Docs flagged
+     when relaying PM's ask.) **A "round" is one full pass through steps 1, 2, 2b, 3.** Track
+     whether the round you just finished found ANYTHING across all three sources (call it
+     **non-empty**) or found nothing at all (**empty**). **Exit to IDLE only when the round you
+     just finished AND the round immediately before it were BOTH empty.** One empty round is not
+     enough on its own — run one more full round before going idle, specifically to catch anything
+     that lands in the gap between "I just checked" and "I'm about to stop checking."
 
   **Report what you actually did** (Exec's verification half, folded in here rather than added alongside — it verifies a rule that already exists): `mail: N direct, N read in full; M cc, skimmed`. A count you cannot state is a drain you did not do.
 
