@@ -63,7 +63,10 @@ win_start=$(( NOW_EPOCH - WINDOW_H*3600 ))
 # ── scheduled fires in the window, from each watched role's cron hours ──────────
 sched=0; roles=0
 while IFS=$'\t' read -r role cron _ _ _ _ _ state; do
-  case "$role" in ''|'#'*|role) continue;; esac   # 'role' is the TSV HEADER, not a role: it is not a
+  # ⚠️ 2026-09-22 (CXO's finding, same bug in duty-cycle-freeze-check.sh's sibling exclusion):
+  # widened '#'* to also match a leading '"#' — a CSV-style quote-escape wrapped 7 registry comment
+  # lines overnight, which don't match a literal '#' as the first character.
+  case "$role" in ''|'#'*|'"#'*|role) continue;; esac   # 'role' is the TSV HEADER, not a role: it is not a
                                                   # comment, so it silently inflated watched_roles to 12
                                                   # against a true roster of 11 on this tool's first run.
   case "${state:-watched}" in parked|parked:*) continue;; esac
