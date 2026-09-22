@@ -4,7 +4,7 @@ alt: 'Two luminous AI carpenters compare a proper square with a comically misang
 caption: '"Well, at least I''ve been consistent!"'
 ---
 
-# Weekly Ship #061: Closed means observed
+# Weekly Ship #061: Closed Means Observed
 
 *September 11–17, 2026*
 
