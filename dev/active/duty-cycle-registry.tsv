@@ -1,21 +1,21 @@
 # duty-cycle-registry.tsv — the OPT-IN list of roles the freeze-watchdog watches (Exec's design, 2026-06-16).
-"# A row = ""watch this role."" No row = not watched (not opted in / not migrated). To watch a new role, add a"
+# A row = "watch this role." No row = not watched (not opted in / not migrated). To watch a new role, add a
 # row; that's the whole registration step (no per-fire skill mutation).
 #
-"# ""Actively cycling right now"" is DERIVED from the session-log lifecycle the agent already maintains (m-36):"
+# "Actively cycling right now" is DERIVED from the session-log lifecycle the agent already maintains (m-36):
 #   • session log carries  <!-- DAY-CLOSED -->            → cleanly STOPped today → not checked.
 #   • no session log today AND before first_fire (+grace) → legitimately not STARTed yet → not checked
 #       (kills the morning false-positive).
 #   • no session log today AND PAST first_fire (+grace)   → SHOULD be cycling → CHECK heartbeat age. This is
 #       the closed→never-restarted catch (Exec 2026-06-17): a role that cleanly STOPped + went dormant
 #       overnight + missed its morning START shows a stale heartbeat past first_fire → flagged. (Without this
-"#       it read as ""just hasn't started yet"" and the load-bearing overnight-dormancy Gap-C slipped through.)"
+#       it read as "just hasn't started yet" and the load-bearing overnight-dormancy Gap-C slipped through.)
 #   • else (STARTed, not yet STOPped)                     → CHECK heartbeat age vs threshold.
 # ⚠️ CORRECTED 2026-07-27 (HOST found it; CIO owns both surfaces). This line USED to read:
-"#   ""A live cycle commits every fire (push-to-main-routinely), so age > threshold_h here = genuinely frozen."""
+#   "A live cycle commits every fire (push-to-main-routinely), so age > threshold_h here = genuinely frozen."
 # That premise is FALSE and contradicted duty-cycle-tick SKILL.md, which tells agents the opposite:
-"#   ""Batch identical daytime no-op holds (don't commit a near-duplicate entry each fire)"" and"
-"#   ""Trivial/quiet-hold fires don't need an entry."""
+#   "Batch identical daytime no-op holds (don't commit a near-duplicate entry each fire)" and
+#   "Trivial/quiet-hold fires don't need an entry."
 # So a CORRECTLY-EXECUTED quiet fire writes neither a commit nor a session-log line and is invisible
 # to this watchdog BY CONSTRUCTION. The more faithfully an agent follows the no-churn discipline, the
 # more often it is flagged frozen — we were alerting on COMPLIANCE. lead was alerted 3x on 07-27 while
@@ -51,7 +51,7 @@
 # threshold_h = a bit more than the role's LARGEST in-window inter-fire gap (so a healthy role never trips).
 # wake_start/wake_end = waking/alerting window (local hour, [start,end)); we don't alert PM outside it.
 # first_fire = the role's first START-fire of the day, HH:MM (the first cron fire at/after wake_start — NOT an
-"#   overnight WATCH fire below wake_start). The ""should be cycling by now"" gate for the closed→never-restarted"
+#   overnight WATCH fire below wake_start). The "should be cycling by now" gate for the closed→never-restarted
 #   catch. cio fires 03:07 (overnight WATCH, < wake_start 7) then 10:07 (START) → first_fire = 10:07.
 # active_since = when the role joined the watch list (bookkeeping only).
 # Columns (TAB-separated): role<TAB>cron_expr<TAB>threshold_h<TAB>wake_start<TAB>wake_end<TAB>first_fire<TAB>active_since[<TAB>state]

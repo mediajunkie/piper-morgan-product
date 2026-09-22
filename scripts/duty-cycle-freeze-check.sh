@@ -376,7 +376,7 @@ fi
 # which swallowed the very line it exists to print, shipping a show-your-work feature that showed
 # nothing. Caught by running it. Suppress per-command, never around the reporting line itself.
 _tip=$(git -C "$REPO" log origin/main -1 --format='%h %ad' --date=format:'%Y-%m-%d %H:%M' 2>/dev/null)
-_n=$(grep -vcE '^(#|role|$)' "$REG" 2>/dev/null || echo 0)
+_n=$(grep -vcE '^("?#|role|$)' "$REG" 2>/dev/null || echo 0)
 # Print the registry SOURCE as a claim a reader can trust (the banner's own wording was the trap CXO
 # found — "ref=origin/main" sat next to a value that was actually a local path) rather than the
 # throwaway temp-file path, which would just be a new, differently-confusing thing to print.
@@ -388,7 +388,12 @@ fi
 echo "freeze-check: examined ref=origin/main tip=${_tip:-<NONE — could not read origin/main>} registry=$_reg_source rows=${_n:-0} at $(date '+%Y-%m-%d %H:%M')" >&2
 
 while IFS=$'\t' read -r role cron thr ws we ff since state; do
-  case "$role" in '#'*|''|role) continue ;; esac     # skip comments / blank / header
+  # ⚠️ 2026-09-22 (CXO's finding): widened '#'* to also match a leading '"#' — a CSV-style quote-
+  # escape wrapped 7 comment lines overnight (mechanism unknown), which don't match a literal '#'
+  # as the first character, so they slipped past this exclusion and inflated rows 11->18. Same
+  # failure shape as the pre-existing 'role' exception below (a check written against a specific
+  # STRING rather than the CLASS of non-data line it means to exclude) — one input-shape removed.
+  case "$role" in '#'*|'"#'*|''|role) continue ;; esac     # skip comments / blank / header
   [ -z "${ff:-}" ] && continue                        # malformed row (missing first_fire column) → skip
   # ── PARKED (v0.5, CIO 2026-07-26, HOST-proposed) ───────────────────────────────────────────────
   # Third state between "watched" and "no row". A deliberately-dark role (awaiting migration, paused
