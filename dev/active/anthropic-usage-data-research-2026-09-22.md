@@ -42,27 +42,26 @@ real-time) for teams that want to pipe Claude Code telemetry into their own obse
 mentioning for completeness, but it's off by default and would need deliberate setup; not a
 "check the dashboard" answer.
 
-## What PM needs to check (I can't determine these from in here)
+## Closed 2026-09-22 — PM confirmed both accounts are personal Max x20, not Organization/Team/Enterprise
 
-1. **Is `xian@pipermorgan.ai` an Anthropic Organization or an individual account?** Gates whether
-   the Admin API (#2) is even possible.
-2. **What plan is it on** (Free/Pro/Max/Team/Enterprise)? Gates whether `claude.ai/analytics/
-   claude-code` (#3) exists at all.
-3. **If #3 exists**: does the DAU/session/leaderboard data actually distinguish the 11 duty-cycle
-   roles from each other, or does everything show up as one undifferentiated account? (Unknown
-   from documentation alone — this needs an actual look at the dashboard.)
+Both `xian@pipermorgan.ai` and `xian@designinproduct.com` are personal Max x20 subscriptions.
+**This rules out both promising surfaces**: the Admin Usage-Cost API needs an actual Anthropic
+Organization (#2, closed); the Claude Code team-analytics dashboard needs Team/Enterprise (#3,
+closed). The plain Console CSV export (#1) is uncertain too — that surface is generally tied to
+pay-per-token Developer Platform/API billing, not a flat-rate Max subscription's own usage, so it
+may not even apply here. **Not chasing this further** — PM's own read is that upgrading to
+Team/Enterprise didn't pencil out economically last time it was analyzed, and re-litigating that
+isn't this thread's job.
 
-## Why this matters more than it might first appear
+**Net effect on the usage-correlation model**: no change to the actual plan. Lead's manual-capture
+proposal (Q1, still the open question) and Exec's local-transcript-parsing method
+(`scripts/usage-audit.py`, already built and working) **both read data that already lives on
+Amber's disk or in PM's own head** — neither depends on Anthropic-side dashboard or API access at
+all. This was a real avenue worth checking (per PM's own tip), it just isn't open; the existing
+path is unaffected.
 
-If #3 is real and already collecting data (per-role sessions, since July), it could be a
-**genuinely better calibration source** than Lead's proposed manual daily capture — automatic,
-already backfilled, and Claude-Code-specific rather than a general usage number. It wouldn't
-replace Lead's proposal's purpose entirely (that's about ceiling-proximity for the freeze-watchdog
-specifically), but for the usage-correlation model's actual question — what correlates with real
-usage — this could be the direct answer rather than something to correlate proxies against.
-
-**Recommend**: PM checks `claude.ai/analytics/claude-code` directly (or forwards the email that
-prompted this) — that single look would answer most of the open questions above at once.
+**Status: CLOSED, 2026-09-22.** Both promising surfaces are gated behind plan/account types PM
+doesn't have and isn't planning to acquire for this reason alone. Nothing further to chase here.
 
 **Verified how**: four live `WebSearch` queries this fire, sources cited inline via the tool's own
 citations. No access to PM's actual account/dashboard — everything here is from Anthropic's public
