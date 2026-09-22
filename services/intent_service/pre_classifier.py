@@ -1644,12 +1644,16 @@ class PreClassifier:
                 # Review issue query - Query #60
                 action = "review_issue_query"
 
-            return Intent(
-                category=IntentCategory.QUERY,
-                action=action,
-                confidence=1.0,
-                context={"original_message": message},
-            ), "GITHUB_QUERY_PATTERNS"
+            # #1794: a destructive ask never rides out on a READ claim — only
+            # the gated rail actions (close/reopen) may carry that vocabulary.
+            # Blocked = fall through to later surfaces and the LLM lane.
+            if not PreClassifier._github_read_claim_blocked(clean_for_matching, action):
+                return Intent(
+                    category=IntentCategory.QUERY,
+                    action=action,
+                    confidence=1.0,
+                    context={"original_message": message},
+                ), "GITHUB_QUERY_PATTERNS"
 
         # Check Session-activity recall (#1394 / ADR-078 B4) — "what did we create
         # this session". Before Productivity; distinct from GITHUB's "what did we
@@ -1926,6 +1930,32 @@ class PreClassifier:
             return False
         return PreClassifier._matches_patterns(clean_message, PreClassifier.REMINDER_QUERY_PATTERNS)
 
+    # #1794: the GITHUB_QUERY claims that are LEGITIMATELY allowed to carry
+    # destructive vocabulary — each is a registered DESTRUCTIVE rail key
+    # (destructive_confirm._CLOSE_FAMILY), so the #1190 confirm gate sees it.
+    # Everything else the lane claims is a READ, and a read must never claim a
+    # destructive ask (the #1521/#1756 class: the user asks to delete their
+    # issues and gets a listing of them).
+    _GITHUB_GATED_RAIL_ACTIONS = frozenset({"close_issue_query", "reopen_issue_query"})
+
+    @staticmethod
+    def _github_read_claim_blocked(clean_message: str, action: str) -> bool:
+        """#1794: True iff a GITHUB_QUERY claim must DECLINE because the turn is
+        a destructive ask and the resolved action is a READ.
+
+        Per-claim discrimination — the reason #1756 left this lane out of its
+        blanket read-lane guard: a blanket block on GITHUB_QUERY_PATTERNS would
+        regress ``close issue 42`` / ``reopen issue 42``, whose claims are
+        themselves #1190-gated and therefore correct. Shared by pre_classify()
+        and detect_multiple_intents() so both surfaces resolve the shape with
+        identical precedence (the #1521/#1471/#1756 shared-helper discipline).
+        A True never reroutes — the turn falls through to the LLM lane, whose
+        destructive emissions dispatch the gated rail.
+        """
+        if action in PreClassifier._GITHUB_GATED_RAIL_ACTIONS:
+            return False
+        return PreClassifier._is_destructive_ask(clean_message)
+
     @staticmethod
     def _is_destructive_ask(clean_message: str) -> bool:
         """#1756: True iff the turn is a destructive ASK, not a read.
@@ -2198,6 +2228,11 @@ class PreClassifier:
                 # Special handling for GitHub queries
                 elif category == IntentCategory.QUERY and action == "github_query":
                     final_action = PreClassifier._get_github_action(clean_for_matching)
+                    # #1794: same per-claim guard as the single-intent surface —
+                    # a destructive ask never rides out on a READ claim; the
+                    # gated close/reopen rail claims pass through unchanged.
+                    if PreClassifier._github_read_claim_blocked(clean_for_matching, final_action):
+                        continue
 
                 # Special handling for todo queries
                 elif category == IntentCategory.QUERY and action == "list_todos_query":
