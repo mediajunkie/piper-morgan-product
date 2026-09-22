@@ -78,15 +78,16 @@ Current job **`e018f052`** (chain … `db3710ca → bc447bf5 → e018f052`), exp
   leaked code is never revived even as an emergency shortcut — per `#1845`, HOST endorsed without
   reservation. Archival unless the pattern recurs. Full arc: `dev/2026/09/21/2026-09-21-0707-
   host-code-log.md`, Fires 3-5.
-- ✅ **HOST's Fly-cutover pre-step, RESOLVED 09-22 ~07:1x PT — not by the identifier pull, by an
-  equally-safe alternative.** Lead's own seat hit the same classifier gate trying to pull the 4
-  identifiers; proposed instead that runbook step 3's pre-restore Fly-DB snapshot makes the
-  accounts fully recoverable regardless, so the roster-check isn't a hard gate. HOST evaluated
-  the substitute against the actual underlying risk (irrecoverable loss, not replacement per se)
-  before accepting — sound, accepted, migration window proceeds unblocked. Rebecca-not-one-of-
-  the-4 inference confirmed correct by Lead's own droplet dates. Archival unless the snapshot is
-  ever actually consulted. Full arc: `dev/2026/09/21/2026-09-21-0707-host-code-log.md` Fires 4-6,
-  `dev/2026/09/22/2026-09-22-0707-host-code-log.md` Fire 1.
+- ✅ **Droplet→Fly migration COMPLETE 09-22 ~13:0x PT, HOST's part closed cleanly.** Pard's
+  courtesy pull of the 4 "stale Fly accounts" turned out to be all PM's own accounts, one with
+  real preference data as recent as 09-13 — flagged before the real freeze; PM answered directly
+  ("nothing irreplaceable... test data only") and replace-all proceeded. Real freeze: 18:06:20Z,
+  3s exposure, zero data drift, zero rows lost, Janne's invite token confirmed intact.
+  `alpha.pipermorgan.ai` now serves from Fly, PM logged in as a real user on the live domain,
+  droplet stopped (decommission ~09-29). **This closes the entire multi-day hosting saga** that
+  started with Saturday's template mismatch. Archival. Full arc: the roster (main checkout) has
+  the complete chain; session logs `dev/2026/09/19` through `dev/2026/09/22` if the reasoning
+  ever needs re-deriving.
 - ✅ **Amber-restart handoff doc filed** (`docs/handoff-host-2026-09-18.md`, 09-18) — gate-blocking cohort requirement, met same-day. Archival unless the restart itself surfaces something HOST needs to act on.
 - ✅ **Sprint closeout for Sep 11–17 filed** (09-18, to Exec cc PM). Archival.
 - ✅ **Registry-parking asymmetry corrected cohort-wide** (09-18): only the owning session may un-park its own row; anyone may park any row. Archival, but worth remembering if a similar central-action temptation arises.
